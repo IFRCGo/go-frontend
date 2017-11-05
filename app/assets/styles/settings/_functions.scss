@@ -1,0 +1,40 @@
+/* ==========================================================================
+   Functions
+   ========================================================================== */
+
+/* Range function
+   ========================================================================== */
+
+/**
+ * Define ranges for various things, like media queries. 
+ */
+
+@function lower-bound($range){
+  @if length($range) <= 0 {
+    @return 0;
+  }
+  @return nth($range,1);
+}
+
+@function upper-bound($range) {
+  @if length($range) < 2 {
+    @return 999999999999;
+  }
+  @return nth($range, 2);
+}
+
+
+/* SVG functions
+   ========================================================================== */
+
+@function svg-desktop-top($fillColor) {
+  @return url('data:image/svg+xml;utf8,' + urlencode('<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="44px" height="12px" viewBox="0 0 44 12" enable-background="new 0 0 44 12" xml:space="preserve"><path fill="' + $fillColor + '" d="M6,0C2.7,0,0,2.7,0,6s2.7,6,6,6s6-2.7,6-6S9.3,0,6,0z M22,0c-3.3,0-6,2.7-6,6s2.7,6,6,6s6-2.7,6-6 S25.3,0,22,0z M38,0c-3.3,0-6,2.7-6,6s2.7,6,6,6s6-2.7,6-6S41.3,0,38,0z"/></svg>'));
+}
+
+@function svg-mobile-top($fillColor) {
+  @return url('data:image/svg+xml;utf8,' + urlencode('<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="108px" height="16px" viewBox="0 0 108 16" enable-background="new 0 0 108 16" xml:space="preserve"><path fill="' + $fillColor + '" d="M8,0C3.6,0,0,3.6,0,8s3.6,8,8,8s8-3.6,8-8S12.4,0,8,0z M100,0H36c-4.4,0-8,3.6-8,8s3.6,8,8,8h64 c4.4,0,8-3.6,8-8S104.4,0,100,0z" /></svg>'));
+}
+
+@function svg-mobile-bottom($fillColor) {
+  @return url('data:image/svg+xml;utf8,' + urlencode('<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve"><path fill="' + $fillColor + '" d="M32,0C14.3,0,0,14.3,0,32s14.3,32,32,32s32-14.3,32-32S49.7,0,32,0z" /></svg>'));
+}

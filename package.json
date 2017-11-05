@@ -1,0 +1,99 @@
+{
+  "name": "go-frontend",
+  "version": "0.1.0",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ifrcgo/go-frontend"
+  },
+  "author": {
+    "name": "Development Seed",
+    "url": "https://developmentseed.org"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ifrcgo/go-frontend/issues"
+  },
+  "homepage": "",
+  "scripts": {
+    "postinstall": "[ -f app/assets/scripts/config/local.js ] || echo 'module.exports = {};' > app/assets/scripts/config/local.js",
+    "serve": "DS_ENV=development gulp collecticons && DS_ENV=development gulp serve",
+    "build": "NODE_ENV=production gulp",
+    "lint": "eslint app/assets/scripts/ --ext .js",
+    "test": "echo \"No tests\" && exit 0"
+  },
+  "engines": {
+    "node": "8.x"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "es2015",
+            "react"
+          ]
+        }
+      ],
+      "require-globify",
+      "envify"
+    ]
+  },
+  "devDependencies": {
+    "babel": "^6.23.0",
+    "babel-core": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babelify": "^8.0.0",
+    "browser-sync": "^2.18.13",
+    "browserify": "^14.5.0",
+    "collecticons-processor": "^3.1.0",
+    "connect-history-api-fallback": "^1.5.0",
+    "del": "^3.0.0",
+    "envify": "^4.1.0",
+    "eslint": "^4.10.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-react": "^7.4.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "gulp": "^3.9.1",
+    "gulp-cache": "^1.0.1",
+    "gulp-csso": "^3.0.0",
+    "gulp-exit": "0.0.2",
+    "gulp-if": "^2.0.2",
+    "gulp-imagemin": "^3.4.0",
+    "gulp-load-plugins": "^1.5.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-rev": "^8.1.0",
+    "gulp-rev-replace": "^0.4.3",
+    "gulp-sass": "^3.1.0",
+    "gulp-size": "^2.1.0",
+    "gulp-sourcemaps": "^2.6.1",
+    "gulp-uglify": "^3.0.0",
+    "gulp-useref": "^3.1.3",
+    "gulp-util": "^3.0.8",
+    "jeet": "^7.2.0",
+    "node-bourbon": "^4.2.8",
+    "node-notifier": "^5.1.2",
+    "node-sass": "^4.6.0",
+    "require-globify": "^1.4.1",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.9.0"
+  },
+  "dependencies": {
+    "classnames": "^2.2.5",
+    "lodash.defaultsdeep": "^4.6.0",
+    "prop-types": "^15.6.0",
+    "react": "^16.1.0",
+    "react-dom": "^16.1.0",
+    "react-redux": "^5.0.6",
+    "react-router-dom": "^4.2.2",
+    "redux": "^3.7.2",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.2.0"
+  }
+}

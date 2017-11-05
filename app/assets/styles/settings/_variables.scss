@@ -1,0 +1,75 @@
+/* ==========================================================================
+   Variables
+   ========================================================================== */
+
+/* Colors
+   ========================================================================== */
+
+$base-color: #002244;                                   // WBG Solid Blue
+$primary-color: #0071BC;                                // WBG Dark Blue (used on WBG website links)
+$secondary-color: #872B90;                              // Vivid Violet
+$accent-color: #009FDA;                                 // WBG Bright Blue
+$link-color: $primary-color;
+$base-alpha-color: rgba($base-color, 0.08);
+
+/* State colors */
+
+$danger-color: #FF5722;                                 // Red
+$success-color: #16A085;                                // Green
+$warning-color: #f6d55f;                                // Yellow
+$info-color: $accent-color;                             // Blue
+
+
+/* Typography
+   ========================================================================== */
+
+$root-font-size: 16px;
+
+$base-font-color: tint($base-color, 32%);
+$base-font-family: "Muli", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$base-font-style: normal;
+$base-font-light: 100;
+$base-font-regular: 400;
+$base-font-bold: 800;
+$base-font-weight: $base-font-regular;
+$base-font-size: 1rem;
+$base-line-height: 1.5;
+
+$code-font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+
+
+/* Decoration
+   ========================================================================== */
+
+/* Border radius */
+
+$base-border-radius: 0.25rem;
+$full-border-radius: 60rem;
+
+
+/* Sizing, spacing and media queries
+   ========================================================================== */
+
+/* Sizing */
+
+$page-header-y: 0 !default;
+
+/* Spacing */
+
+$global-spacing: 1rem;
+
+/* Rows */
+
+$row-min-width: 768px;
+$row-max-width: 1280px;
+$jeet-max-width: $row-max-width; // reset jeet.gs max width
+
+/* Media queries */
+
+$xsmall-range: (0, 543px);
+$small-range: (544px, 767px);
+$medium-range: (768px, 991px);
+$large-range: (992px, 1199px);
+$xlarge-range: (1200px);
+
+$screen: "only screen";

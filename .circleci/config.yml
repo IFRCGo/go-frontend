@@ -1,0 +1,56 @@
+# ssh-keygen -t rsa -b 4096 -C ifrcgo/go-frontend -f deploy_key
+version: 2
+jobs:
+  build:
+    docker:
+      - image: node:7
+
+    working_directory: ~/repo
+
+    environment:
+      - DEPLOY_BRANCH: master
+      - GH_REF: git@github.com:ifrcgo/go-frontend.git
+      - GH_NAME: "Development Seed"
+      - GH_EMAIL: "dev@developmentseed.org"
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run: yarn install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      - run: yarn test
+
+      - add_ssh_keys:
+          fingerprints:
+            - ""
+
+      - run: 
+          name: Building site
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "${DEPLOY_BRANCH}" ]; then
+              yarn build
+            else
+              echo "Skip building site"
+            fi
+
+      - run:
+          name: Deploy to GH Pages
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "${DEPLOY_BRANCH}" ]; then
+              cd build
+              echo "It will deploy"
+            else
+              echo "Skip deploying to Github"
+            fi

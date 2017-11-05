@@ -1,0 +1,144 @@
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+/* Reset the box-sizing */
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+/* Make viewport responsive on every browser */
+
+@at-root {
+  @-moz-viewport      { width: device-width; }
+  @-ms-viewport       { width: device-width; }
+  @-o-viewport        { width: device-width; }
+  @-webkit-viewport   { width: device-width; }
+  @viewport           { width: device-width; }
+}
+
+/* Reset HTML, body, etc */
+
+html {
+  font-size: $root-font-size;
+  /* Changes the default tap highlight to be completely transparent in iOS. */
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+body {
+  background: tint($base-color, 98%);
+  color: $base-font-color;
+  font-size: $base-font-size;
+  line-height: $base-line-height;
+  font-family: $base-font-family;
+  font-weight: $base-font-weight;
+  font-style: $base-font-style;
+  min-width: $row-min-width;
+}
+
+
+/* Links
+   ========================================================================== */
+
+a {
+  cursor: pointer;
+  color: $link-color;
+  text-decoration: none;
+  transition: opacity 0.24s ease 0s;
+}
+
+a:visited {
+  color: $link-color;
+}
+
+a:hover {
+  opacity: 0.64;
+}
+
+a:active {
+  outline: none;
+  transform: translate(0, 1px);
+}
+
+a:focus {
+  outline: none; // This causes usability problems. Needs fixing.
+}
+
+.link-wrapper {
+  display: inline-block;
+  vertical-align: top;
+}
+
+
+/* Buttons
+   ========================================================================== */
+
+/**
+ * iOS "clickable elements" fix for role="button":
+ * https://developer.mozilla.org/en-US/docs/Web/Events/click#Safari_Mobile
+ */
+
+[role="button"] {
+  cursor: pointer;
+}
+
+
+/* Forms
+   ========================================================================== */
+
+input, select, textarea {
+  font: inherit;
+  height: auto;
+  width: auto;
+  margin: 0;
+}
+
+
+/* Tables
+   ========================================================================== */
+
+/**
+ * Remove most spacing between table cells.
+ */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+
+/* Misc
+   ========================================================================== */
+
+/**
+ * Make all browsers render the <main> element correctly.
+ */
+
+main {
+  display: block;
+}
+
+/**
+ * Style selection appearance (via ::selection pseudo-element).
+ */
+
+::selection {
+  background-color: rgba($base-color, 0.64);
+  color: #fff;
+}
+
+
+/**
+ * Remove margin-bottom on the last 'rwrapper' child.
+ */
+
+.rwrapper > *:last-child {
+  margin-bottom: 0;
+}
