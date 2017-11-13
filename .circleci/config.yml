@@ -8,7 +8,7 @@ jobs:
     working_directory: ~/repo
 
     environment:
-      - DEPLOY_BRANCH: deploy
+      - DEPLOY_BRANCH: develop
       - GH_REF: git@github.com:ifrcgo/go-frontend.git
       - GH_NAME: "Development Seed"
       - GH_EMAIL: "dev@developmentseed.org"
@@ -51,5 +51,5 @@ jobs:
             if [ "${CIRCLE_BRANCH}" == "${DEPLOY_BRANCH}" ]; then
               yarn deploy
             else
-              echo "Skip deploying to Github"
+              echo "Skip deploying to Azure Blob Storage"
             fi
