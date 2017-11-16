@@ -170,7 +170,7 @@ gulp.task('collecticons', function (done) {
   var args = [
     'node_modules/collecticons-processor/bin/collecticons.js',
     'compile',
-    'app/assets/graphics/collecticons/',
+    'app/assets/icons/collecticons/',
     '--font-embed',
     '--font-dest', 'app/assets/fonts',
     '--font-name', 'Collecticons',
@@ -268,6 +268,7 @@ gulp.task('extras', function () {
     'app/**/*',
     '!app/*.html',
     '!app/assets/graphics/**',
+    '!app/assets/icons/**',
     '!app/assets/vendor/**',
     '!app/assets/styles/**',
     '!app/assets/scripts/**'
