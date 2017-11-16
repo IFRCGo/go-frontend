@@ -5,19 +5,21 @@
 /* Colors
    ========================================================================== */
 
-$base-color: #002244;                                   // WBG Solid Blue
-$primary-color: #0071BC;                                // WBG Dark Blue (used on WBG website links)
-$secondary-color: #872B90;                              // Vivid Violet
-$accent-color: #009FDA;                                 // WBG Bright Blue
-$link-color: $primary-color;
-$base-alpha-color: rgba($base-color, 0.08);
+$base-color: #213431;                                   // Dark green
+$primary-color: #659b5e;                                // Green
+$secondary-color: #709e92;                              // Blue
 
 /* State colors */
 
-$danger-color: #FF5722;                                 // Red
-$success-color: #16A085;                                // Green
-$warning-color: #f6d55f;                                // Yellow
-$info-color: $accent-color;                             // Blue
+$danger-color: #c0392b;                                 // Pomegranate (red)
+$success-color: #4CB5AE;                                // Turquoise
+$warning-color: #f39c12;                                // Orange
+$info-color: #2980b9;                                   // Belize hole (blue)
+
+/* Helper colors */
+
+$link-color: $primary-color;
+$base-alpha-color: rgba($base-color, 0.12);
 
 
 /* Typography
@@ -25,17 +27,24 @@ $info-color: $accent-color;                             // Blue
 
 $root-font-size: 16px;
 
-$base-font-color: tint($base-color, 32%);
-$base-font-family: "Muli", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$base-font-color: tint($base-color, 8%);
+$base-font-family: "Nunito", "Helvetica Neue", Helvetica, Arial, sans-serif;
 $base-font-style: normal;
-$base-font-light: 100;
+$base-font-light: 300;
 $base-font-regular: 400;
-$base-font-bold: 800;
-$base-font-weight: $base-font-regular;
+$base-font-bold: 700;
+$base-font-weight: $base-font-light;
 $base-font-size: 1rem;
 $base-line-height: 1.5;
 
 $code-font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+
+// $heading-font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$heading-font-family: $base-font-family;
+$base-font-light: 300;
+$heading-font-regular: 400;
+$heading-font-bold: 700;
+$heading-font-weight: $heading-font-bold;
 
 
 /* Decoration
@@ -44,7 +53,9 @@ $code-font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 /* Border radius */
 
 $base-border-radius: 0.25rem;
-$full-border-radius: 60rem;
+$full-border-radius: 100vh;
+
+$base-border-width: 1px;
 
 
 /* Sizing, spacing and media queries
@@ -60,7 +71,7 @@ $global-spacing: 1rem;
 
 /* Rows */
 
-$row-min-width: 768px;
+$row-min-width: 320px;
 $row-max-width: 1280px;
 $jeet-max-width: $row-max-width; // reset jeet.gs max width
 

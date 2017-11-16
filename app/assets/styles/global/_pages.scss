@@ -1,0 +1,83 @@
+/* ==========================================================================
+   Global: Pages
+   ========================================================================== */
+
+.page {
+}
+
+/* Header
+   ========================================================================== */
+
+.page__header {
+  position: relative;
+  z-index: 10;
+  background: transparent;
+  color: $base-font-color;
+  padding: $global-spacing 0;
+  box-shadow: 0 1px 0 0 $base-alpha-color;
+  background: tint($base-color, 92%);
+
+  > .inner {
+    @extend .row, .row--centered;
+    display: flex;
+    align-items: center;
+    flex-flow: row nowrap;
+  }
+}
+
+/* Headline */
+.page__title {
+  font-size: 1.25rem;
+  line-height: 2rem;
+  font-weight: $base-font-bold;
+  text-transform: uppercase;
+  margin: 0;
+  display: inline-block;
+
+  a {
+    display: inline-block;
+    vertical-align: top;
+    color: inherit;
+
+    img {
+      vertical-align: top;
+      height: 2rem;
+      width: auto;
+    }
+
+    span {
+      @extend .visually-hidden;
+    }
+  }
+}
+
+.page__headline {
+}
+
+/* Body
+   ========================================================================== */
+
+.page__body {
+  @extend .clearfix;
+}
+
+
+/* Footer
+   ========================================================================== */
+
+.page__footer {
+  background: tint($base-color, 96%);
+  padding: 2rem 0;
+  text-align: center;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: rgba($base-font-color, 0.64);
+  
+  > .inner {
+    @extend .row, .row--centered;
+  }
+
+  *:last-child {
+    margin-bottom: 0;
+  }
+}

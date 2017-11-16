@@ -1,0 +1,140 @@
+/* ==========================================================================
+   Navs
+   ========================================================================== */
+
+.nav {
+   color: $base-font-color;
+}
+
+.nav__contents {
+  display: flex;
+  flex-wrap: nowrap;
+
+  > * {
+    display: inline-flex;
+  }
+}
+
+.nav__label,
+.nav__link {
+  @extend .heading-alt;
+  font-size: 0.875rem;
+  line-height: 1rem;
+  display: inline-flex;
+  padding: $global-spacing;
+  margin: 0;
+}
+
+.nav__label {
+  color: rgba($base-font-color, 0.64);
+
+  &:not(:first-child) {
+    margin: 0 0 0 $global-spacing;
+  }
+}
+
+.nav__link {
+  &,
+  &:hover,
+  &:visited {
+    color: inherit;
+  }
+
+  &--active {
+    box-shadow: inset 0 (-$base-border-width) 0 0 $base-color;
+  }
+
+  /* Vertical */
+
+  &--active {
+    box-shadow: inset 0 (-$base-border-width) 0 0 $base-color;
+  }
+}
+
+
+/* Nav modifiers
+   ========================================================================== */
+
+.nav--contained {
+  box-shadow: inset 0 (-$base-border-width) 0 0 $base-alpha-color;
+}
+
+.nav--negative {
+  @extend .antialiased;
+  color: #fff;
+
+  &.nav--contained {
+    box-shadow: inset 0 (-$base-border-width) 0 0 rgba(#fff, 0.12);
+  }
+  
+  .nav__label {
+    color: rgba(#fff, 0.48);
+  }
+
+  .nav__link {
+    &--active {
+      box-shadow: inset 0 (-$base-border-width) 0 0 #fff;
+    }
+  }
+}
+
+/* Vertical */
+
+.nav--vertical {
+  &.nav--contained {
+    box-shadow: inset $base-border-width 0 0 0 $base-alpha-color;
+  }
+
+  .nav__contents {
+    flex-direction: column;
+  }
+
+  .nav__label:not(:first-child) {
+    margin: $global-spacing 0 0 0;
+  }
+
+  .nav__link {
+    &--active {
+      box-shadow: inset $base-border-width 0 0 0 $base-color;
+    }
+  }
+}
+
+/* Vertical & Negative */
+
+.nav--vertical.nav--negative {
+  .nav__link {
+    &--active {
+      box-shadow: inset $base-border-width 0 0 0 #fff;
+    }
+  }
+}
+
+/* Vertical, Negative & Contained */
+
+.nav--vertical.nav--negative.nav--contained {
+  box-shadow: inset $base-border-width 0 0 0 rgba(#fff, 0.12);
+}
+
+
+/* Tablist
+   ========================================================================== */
+
+.nav__tablist {
+  display: flex;
+  flex-wrap: nowrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  /* Vertical */
+
+  .nav--vertical & {
+    flex-direction: column;
+  }
+}
+
+.nav__tab {
+  margin: 0;
+  padding: 0;
+}

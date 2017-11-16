@@ -1,0 +1,41 @@
+/* ==========================================================================
+   Global: Page Prime Nav
+   ========================================================================== */
+
+.page__prime-nav {
+  flex: 1;
+  display: flex;
+  justify-content: right;
+  padding-left: 1rem;
+}
+
+/* Global menu */
+
+.nav-global-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-weight: $base-font-bold;
+  font-size: 1rem;
+  line-height: 1,5rem;
+  display: inline-flex;
+  flex-flow: row nowrap;
+  align-items: center;
+
+  a {
+    color: inherit;
+    display: block;
+  }
+
+  > li {
+    margin: 0 $global-spacing;
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}

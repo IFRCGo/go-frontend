@@ -33,7 +33,7 @@ html {
 }
 
 body {
-  background: tint($base-color, 98%);
+  background: #ffffff;
   color: $base-font-color;
   font-size: $base-font-size;
   line-height: $base-line-height;
@@ -76,6 +76,26 @@ a:focus {
   vertical-align: top;
 }
 
+
+/* Rows
+   ========================================================================== */
+
+.row {
+  @extend .clearfix;
+  padding-left: $global-spacing;
+  padding-right: $global-spacing;
+
+  @include media(xlarge-up) {
+    padding-left: $global-spacing * 2;
+    padding-right: $global-spacing * 2;
+  }
+  
+  &--centered {
+    max-width: $row-max-width;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
 
 /* Buttons
    ========================================================================== */
@@ -132,13 +152,4 @@ main {
 ::selection {
   background-color: rgba($base-color, 0.64);
   color: #fff;
-}
-
-
-/**
- * Remove margin-bottom on the last 'rwrapper' child.
- */
-
-.rwrapper > *:last-child {
-  margin-bottom: 0;
 }
