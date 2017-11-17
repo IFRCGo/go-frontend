@@ -4,6 +4,7 @@ import { PropTypes as T } from 'prop-types';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { polyfill } from 'es6-promise';
 
 import store from './utils/store';
 
@@ -13,6 +14,8 @@ import Login from './views/login';
 import Register from './views/register';
 import RecoverAccount from './views/recover-account';
 import UhOh from './views/uhoh';
+
+polyfill();
 
 // Root component. Used by the router.
 class Root extends React.Component {
