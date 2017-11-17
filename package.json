@@ -91,6 +91,7 @@
     "classnames": "^2.2.5",
     "es6-promise": "^4.1.1",
     "isomorphic-fetch": "^2.2.1",
+    "local-storage": "^1.4.2",
     "lodash.clonedeep": "^4.5.0",
     "lodash.defaultsdeep": "^4.6.0",
     "lodash.set": "^4.3.2",
@@ -103,7 +104,6 @@
     "redux": "^3.7.2",
     "redux-listener-middleware": "^0.2.0",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.2.0",
-    "store": "^2.0.12"
+    "redux-thunk": "^2.2.0"
   }
 }
