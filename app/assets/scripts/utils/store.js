@@ -2,7 +2,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { createLogger } from 'redux-logger';
 import listen from 'redux-listener-middleware';
-import * as localStorage from 'store';
+import * as localStorage from 'local-storage';
 
 import config from '../config';
 import reducer from '../reducers';
@@ -19,7 +19,10 @@ const logger = createLogger({
 });
 
 const tokenListener = ({ data }) => {
-  localStorage.set('Authorization', `ApiKey ${data.username}:${data.token}`);
+  localStorage.set('token', {
+    Authorization: `ApiKey ${data.username}:${data.token}`,
+    expires: data.expires
+  });
 };
 const listener = listen();
 listener.createListener(tokenListener).addRule(/^TOKEN_SUCCESS/);
