@@ -1,6 +1,8 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { createLogger } from 'redux-logger';
+import listen from 'redux-listener-middleware';
+import * as localStorage from 'store';
 
 import config from '../config';
 import reducer from '../reducers';
@@ -16,7 +18,17 @@ const logger = createLogger({
   }
 });
 
+const tokenListener = ({ data }) => {
+  localStorage.set('Authorization', `ApiKey ${data.username}:${data.token}`);
+};
+const listener = listen();
+listener.createListener(tokenListener).addRule(/^TOKEN_SUCCESS/);
+
 const composeEnhancers = config.environment !== 'production' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose : compose;
-const store = createStore(reducer, initialState, composeEnhancers(applyMiddleware(thunkMiddleware, logger)));
+const store = createStore(reducer, initialState, composeEnhancers(applyMiddleware(
+  thunkMiddleware,
+  listener,
+  logger
+)));
 
 module.exports = store;
