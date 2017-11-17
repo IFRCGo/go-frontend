@@ -1,5 +1,6 @@
 'use strict';
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { PropTypes as T } from 'prop-types';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
@@ -92,25 +93,27 @@ export class Modal extends React.Component {
     }
 
     return (
-      <TransitionGroup>
-        {this.props.revealed ? (
-          <CSSTransition
-            component='div'
-            classNames='modal'
-            timeout={{ enter: 300, exit: 300 }}>
+      <Portal>
+        <TransitionGroup appear={true}>
+          {this.props.revealed ? (
+            <CSSTransition
+              component='div'
+              classNames='modal'
+              timeout={{ enter: 3000, exit: 300 }}>
 
-            <section className={klasses.join(' ')} key={'modal-' + this.props.id} onClick={this.onOverlayClick} id={this.props.id}>
-              <div className='modal__inner'>
-                {this.getChild('ModalHeader')}
-                {this.getChild('ModalBody')}
-                {this.getChild('ModalFooter')}
-              </div>
-              <button className='mma-xmark' title='Close' onClick={this.onCloseClick}><span>Dismiss</span></button>
-            </section>
+              <section className={klasses.join(' ')} key={'modal-' + this.props.id} onClick={this.onOverlayClick} id={this.props.id}>
+                <div className='modal__inner'>
+                  {this.getChild('ModalHeader')}
+                  {this.getChild('ModalBody')}
+                  {this.getChild('ModalFooter')}
+                </div>
+                <button className='mma-xmark' title='Close' onClick={this.onCloseClick}><span>Dismiss</span></button>
+              </section>
 
-          </CSSTransition>
-        ) : null}
-      </TransitionGroup>
+            </CSSTransition>
+          ) : null}
+        </TransitionGroup>
+      </Portal>
     );
   }
 }
@@ -217,6 +220,34 @@ export class ModalFooter extends React.Component {
 
 if (process.env.NODE_ENV !== 'production') {
   ModalFooter.propTypes = {
+    children: T.node
+  };
+}
+
+class Portal extends React.Component {
+  constructor (props) {
+    super(props);
+    this.el = document.createElement('div');
+    this.el.className = `modal-portal-${Math.random().toString()}`;
+    this.rootEl = document.querySelector('#app-container');
+    if (!this.rootEl) throw new Error('Portal root element does not exist.');
+  }
+
+  componentDidMount () {
+    this.rootEl.appendChild(this.el);
+  }
+
+  componentWillUnmount () {
+    this.rootEl.removeChild(this.el);
+  }
+
+  render () {
+    return createPortal(this.props.children, this.el);
+  }
+}
+
+if (process.env.NODE_ENV !== 'production') {
+  Portal.propTypes = {
     children: T.node
   };
 }

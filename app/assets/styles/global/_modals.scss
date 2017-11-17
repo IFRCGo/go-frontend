@@ -89,11 +89,11 @@
 
 .modal-enter {
   transform: translate3d(0, 0, 0);
-  transition: opacity 0.32s ease 0s, visibility 0.32s linear 0s;
   opacity: 0;
   visibility: hidden;
 
   &.modal-enter-active {
+    transition: opacity 0.32s ease 0s, visibility 0.32s linear 0s;
     opacity: 1;
     visibility: visible;
   }
