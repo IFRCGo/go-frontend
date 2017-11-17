@@ -10,6 +10,8 @@ import store from './utils/store';
 // Views.
 import Home from './views/home';
 import Login from './views/login';
+import Register from './views/register';
+import RecoverAccount from './views/recover-account';
 import UhOh from './views/uhoh';
 
 // Root component. Used by the router.
@@ -21,6 +23,8 @@ class Root extends React.Component {
           <Switch>
             <Route exact path="/" component={Home}/>
             <Route exact path="/login" component={Login}/>
+            <Route exact path="/register" component={Register}/>
+            <Route exact path="/recover-account" component={RecoverAccount}/>
             <Route component={UhOh}/>
           </Switch>
         </Router>
