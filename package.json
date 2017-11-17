@@ -89,6 +89,8 @@
   },
   "dependencies": {
     "classnames": "^2.2.5",
+    "es6-promise": "^4.1.1",
+    "isomorphic-fetch": "^2.2.1",
     "lodash.clonedeep": "^4.5.0",
     "lodash.defaultsdeep": "^4.6.0",
     "lodash.set": "^4.3.2",
