@@ -1,6 +1,5 @@
 'use strict';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import c from 'classnames';
 
 import App from './app';
