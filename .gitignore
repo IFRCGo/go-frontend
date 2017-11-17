@@ -82,6 +82,7 @@ lib-cov
 *.log
 *.out
 *.pid
+*.swp
 npm-debug.log
 
 
