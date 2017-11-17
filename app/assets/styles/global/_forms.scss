@@ -8,6 +8,11 @@
   > *:last-child {
     margin-bottom: 0;
   }
+
+  &--centered {
+    max-width: 32rem;
+    margin: 0 auto;
+  }
 }
 
 .form__control {

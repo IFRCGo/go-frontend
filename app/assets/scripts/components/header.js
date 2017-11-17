@@ -2,8 +2,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import AuthControls from './auth-controls';
-
 class Header extends React.Component {
   render () {
     return (
@@ -17,7 +15,7 @@ class Header extends React.Component {
               <li><Link to='/operations' title='Visit operations page'><span>Operations</span></Link></li>
               <li><Link to='/deployments' title='Visit deployments page'><span>Deployments</span></Link></li>
               <li><Link to='/field-reports' title='Visit field reports page'><span>Field Reports</span></Link></li>
-              <li><AuthControls/></li>
+              <li><Link to='/login' title='Login'><span>Login</span></Link></li>
             </ul>
           </nav>
         </div>
