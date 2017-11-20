@@ -9,6 +9,7 @@ import store from './utils/store';
 
 // Views.
 import Home from './views/home';
+import About from './views/about';
 import Login from './views/login';
 import Register from './views/register';
 import RecoverAccount from './views/recover-account';
@@ -22,6 +23,7 @@ class Root extends React.Component {
         <Router>
           <Switch>
             <Route exact path="/" component={Home}/>
+            <Route exact path="/about" component={About}/>
             <Route exact path="/login" component={Login}/>
             <Route exact path="/register" component={Register}/>
             <Route exact path="/recover-account" component={RecoverAccount}/>
