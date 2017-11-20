@@ -5,8 +5,27 @@
 .page__prime-nav {
   flex: 1;
   display: flex;
+  padding-left: 1rem;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -$global-spacing;
+    left: 0;
+    height: 1px;
+    width: 200vw;
+    margin-left: -50vw;
+    background: tint($base-color, 92%);
+  }
+}
+
+.page__meta-nav {
+  flex: 1;
+  display: flex;
   justify-content: right;
   padding-left: 1rem;
+  position: relative;
 }
 
 /* Global menu */
@@ -15,9 +34,9 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  font-weight: $base-font-bold;
   font-size: 1rem;
-  line-height: 1,5rem;
+  line-height: 1.5rem;
+  flex: 1;
   display: inline-flex;
   flex-flow: row nowrap;
   align-items: center;
@@ -37,5 +56,39 @@
     &:last-child {
       margin-right: 0;
     }
+  }
+}
+
+/* Site Search */
+
+.nav-global-search {
+  min-width: 20rem;
+}
+
+.gsearch {
+  position: relative;
+
+  .form__group {
+    margin-bottom: 0;
+  }
+
+  .form__label {
+    @extend .visually-hidden;
+  }
+
+  .form__control {
+    border-radius: $full-border-radius;
+    padding-left: 2rem;
+  }
+}
+
+.gsearch__button {
+  @extend .button, .button--primary-plain, .button--text-hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  &::before {
+    @extend %collecticon-magnifier-right;
   }
 }

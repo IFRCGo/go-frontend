@@ -1,14 +1,26 @@
 'use strict';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import c from 'classnames';
-import { default as _set } from 'lodash.set';
-import { default as _cloneDeep } from 'lodash.clonedeep';
+import _set from 'lodash.set';
+import _cloneDeep from 'lodash.clonedeep';
+import Ajv from 'ajv';
+import ajvKeywords from 'ajv-keywords';
 
 import { isValidEmail, isRedCrossEmail } from '../utils/utils';
 
 import App from './app';
-import { FormInput } from '../components/form-elements';
+import { FormInput, FormError } from '../components/form-elements';
+import registerSchemaDef from '../schemas/register';
+
+const ajv = new Ajv({ $data: true, allErrors: true, errorDataPath: 'property' });
+ajvKeywords(ajv);
+const registerValidator = ajv.compile(registerSchemaDef);
+
+const getClassIfError = (errors, prop) => {
+  if (!errors) return '';
+  let err = errors.find(o => o.dataPath === `.${prop}`);
+  return err ? 'form__control--danger' : '';
+};
 
 export default class Login extends React.Component {
   constructor (props) {
@@ -16,30 +28,33 @@ export default class Login extends React.Component {
 
     this.state = {
       data: {
-        email: '',
-        password: '',
-        passwordConf: '',
-        country: '',
-        organization: '',
-        contact: [0, 1].map(o => ({ name: '', email: '' }))
-      }
+        email: undefined,
+        password: undefined,
+        passwordConf: undefined,
+        country: undefined,
+        organization: undefined,
+        contact: [0, 1].map(o => ({ name: undefined, email: undefined }))
+      },
+      errors: []
     };
 
     this.onSubmit = this.onSubmit.bind(this);
   }
 
   onSubmit () {
+    registerValidator(this.state.data);
+    this.setState({ errors: _cloneDeep(registerValidator.errors) });
+
+    if (registerValidator.errors !== null) {
+      return null;
+    }
   }
 
   onFieldChange (field, e) {
     let data = _cloneDeep(this.state.data);
-    _set(data, field, e.target.value);
+    let val = e.target.value;
+    _set(data, field, val === '' ? undefined : val);
     this.setState({data});
-  }
-
-  allowSubmit () {
-    // Do proper validation.
-    return this.state.data.email && this.state.data.password;
   }
 
   shouldRequestAccess () {
@@ -54,17 +69,29 @@ export default class Login extends React.Component {
           type='password'
           name='register-password'
           id='register-password'
+          className={getClassIfError(this.state.errors, 'password')}
           value={this.state.data.password}
           onChange={this.onFieldChange.bind(this, 'password')}
-        />
+        >
+          <FormError
+            errors={this.state.errors}
+            property='password'
+          />
+        </FormInput>
         <FormInput
           label='Confirm Password'
           type='password'
           name='register-password-conf'
           id='register-password-conf'
+          className={getClassIfError(this.state.errors, 'passwordConf')}
           value={this.state.data.passwordConf}
           onChange={this.onFieldChange.bind(this, 'passwordConf')}
-        />
+        >
+          <FormError
+            errors={this.state.errors}
+            property='passwordConf'
+          />
+        </FormInput>
       </div>
     );
   }
@@ -77,17 +104,29 @@ export default class Login extends React.Component {
           type='text'
           name='register-country'
           id='register-country'
+          className={getClassIfError(this.state.errors, 'country')}
           value={this.state.data.country}
           onChange={this.onFieldChange.bind(this, 'country')}
-        />
+        >
+          <FormError
+            errors={this.state.errors}
+            property='country'
+          />
+        </FormInput>
         <FormInput
           label='Organization'
           type='text'
           name='register-organization'
           id='register-organization'
+          className={getClassIfError(this.state.errors, 'organization')}
           value={this.state.data.organization}
           onChange={this.onFieldChange.bind(this, 'organization')}
-        />
+        >
+          <FormError
+            errors={this.state.errors}
+            property='organization'
+          />
+        </FormInput>
       </div>
     );
   }
@@ -109,17 +148,29 @@ export default class Login extends React.Component {
               type='text'
               name={`register-contact[${o}][name]`}
               id={`register-contact-name-${o}`}
+              className={getClassIfError(this.state.errors, `contact[${o}].name`)}
               value={this.state.data.contact[o].name}
               onChange={this.onFieldChange.bind(this, `contact[${o}].name`)}
-            />
+            >
+              <FormError
+                errors={this.state.errors}
+                property={`contact[${o}].name`}
+              />
+            </FormInput>
             <FormInput
               label='Contact email'
               type='text'
               name={`register-contact[${o}][email]`}
               id={`register-contact-email-${o}`}
+              className={getClassIfError(this.state.errors, `contact[${o}].email`)}
               value={this.state.data.contact[o].email}
               onChange={this.onFieldChange.bind(this, `contact[${o}].email`)}
-            />
+            >
+              <FormError
+                errors={this.state.errors}
+                property={`contact[${o}].email`}
+              />
+            </FormInput>
           </div>
         ))}
       </div>
@@ -128,9 +179,9 @@ export default class Login extends React.Component {
 
   renderSubmitButton () {
     return this.shouldRequestAccess() ? (
-      <button className={c('mfa-tick', { disabled: !this.allowSubmit() })} type='button' onClick={this.onSubmit}><span>Request Access</span></button>
+      <button className='mfa-tick' type='button' onClick={this.onSubmit}><span>Request Access</span></button>
     ) : (
-      <button className={c('mfa-tick', { disabled: !this.allowSubmit() })} type='button' onClick={this.onSubmit}><span>Register</span></button>
+      <button className='mfa-tick' type='button' onClick={this.onSubmit}><span>Register</span></button>
     );
   }
 
@@ -153,10 +204,16 @@ export default class Login extends React.Component {
                   type='text'
                   name='register-email'
                   id='register-email'
+                  className={getClassIfError(this.state.errors, 'email')}
                   value={this.state.data.email}
                   onChange={this.onFieldChange.bind(this, 'email')}
                   autoFocus
-                />
+                >
+                  <FormError
+                    errors={this.state.errors}
+                    property='email'
+                  />
+                </FormInput>
 
                 {this.renderPasswordFields()}
                 {this.renderAdditionalInfo()}

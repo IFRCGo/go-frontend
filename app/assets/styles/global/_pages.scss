@@ -11,14 +11,14 @@
 .page__header {
   position: relative;
   z-index: 10;
-  background: transparent;
   color: $base-font-color;
-  padding: $global-spacing 0;
-  box-shadow: 0 1px 0 0 $base-alpha-color;
-  background: tint($base-color, 92%);
+  background: #ffffff;
+  overflow: hidden;
 
   > .inner {
     @extend .row, .row--centered;
+    padding-top: $global-spacing;
+    padding-bottom: $global-spacing;
     display: flex;
     align-items: center;
     flex-flow: row nowrap;
@@ -28,7 +28,7 @@
 /* Headline */
 .page__title {
   font-size: 1.25rem;
-  line-height: 2rem;
+  line-height: 3rem;
   font-weight: $base-font-bold;
   text-transform: uppercase;
   margin: 0;
@@ -41,7 +41,7 @@
 
     img {
       vertical-align: top;
-      height: 2rem;
+      height: 3rem;
       width: auto;
     }
 

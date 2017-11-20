@@ -33,7 +33,7 @@ html {
 }
 
 body {
-  background: #ffffff;
+  background: tint($base-color, 98%);
   color: $base-font-color;
   font-size: $base-font-size;
   line-height: $base-line-height;
