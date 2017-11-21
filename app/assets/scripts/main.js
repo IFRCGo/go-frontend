@@ -11,6 +11,7 @@ import store from './utils/store';
 // Views.
 import Home from './views/home';
 import About from './views/about';
+import Account from './views/account';
 import Login from './views/login';
 import Register from './views/register';
 import RecoverAccount from './views/recover-account';
@@ -33,6 +34,17 @@ if (process.env.NODE_ENV !== 'production') {
   };
 }
 
+// Route available only if the user is logged in.
+// Redirects to login page and takes the user back afterwards.
+const PrivateRoute = ({ component: Component, ...rest }) => {
+  const isAuthenticated = !!store.getState().user.data.token;
+  const render = props => isAuthenticated
+    ? <Component {...props}/>
+    : <Redirect to={{
+      pathname: '/login',
+      state: { from: props.location } // eslint-disable-line
+    }} />;
+  return <Route {...rest} render={render} />;
 };
 
 if (process.env.NODE_ENV !== 'production') {
@@ -48,6 +60,7 @@ const Root = () => (
       <Switch>
         <Route exact path="/" component={Home}/>
         <Route exact path="/about" component={About}/>
+        <PrivateRoute exact path="/account" component={Account}/>
         <AnonymousRoute exact path="/login" component={Login}/>
         <AnonymousRoute exact path="/register" component={Register}/>
         <AnonymousRoute exact path="/recover-account" component={RecoverAccount}/>
