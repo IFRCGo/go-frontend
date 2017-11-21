@@ -95,11 +95,11 @@ export class Modal extends React.Component {
     return (
       <Portal>
         <TransitionGroup appear={true}>
-          {this.props.revealed ? (
+          {this.props.revealed && (
             <CSSTransition
               component='div'
               classNames='modal'
-              timeout={{ enter: 3000, exit: 300 }}>
+              timeout={{ enter: 300, exit: 300 }}>
 
               <section className={klasses.join(' ')} key={'modal-' + this.props.id} onClick={this.onOverlayClick} id={this.props.id}>
                 <div className='modal__inner'>
@@ -111,7 +111,7 @@ export class Modal extends React.Component {
               </section>
 
             </CSSTransition>
-          ) : null}
+          )}
         </TransitionGroup>
       </Portal>
     );
