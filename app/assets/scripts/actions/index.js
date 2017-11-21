@@ -10,6 +10,9 @@ export function getAuthToken (username, password) {
   });
 }
 
+export const LOGOUT_USER = 'LOGOUT_USER';
+export function logoutUser () {
+  return { type: LOGOUT_USER };
 }
 
 export const GET_FIELD_REPORT = 'GET_FIELD_REPORT';

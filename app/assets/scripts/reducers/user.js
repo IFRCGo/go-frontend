@@ -27,6 +27,8 @@ export default function reducer (state = initialState, action) {
         data: action.data
       });
       break;
+    case 'LOGOUT_USER':
+      return initialState;
   }
   return state;
 }

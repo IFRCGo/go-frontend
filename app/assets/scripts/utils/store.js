@@ -49,8 +49,13 @@ const tokenListener = ({ data }) => {
   });
 };
 
+const logoutListener = ({ data }) => {
+  localStorage.remove('user');
+};
+
 const listener = listen();
 listener.createListener(tokenListener).addRule(/^TOKEN_SUCCESS/);
+listener.createListener(logoutListener).addRule(/^LOGOUT_USER/);
 
 const composeEnhancers = config.environment !== 'production' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose : compose;
 const store = createStore(reducer, initialState, composeEnhancers(applyMiddleware(
