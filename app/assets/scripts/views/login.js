@@ -47,6 +47,17 @@ class Login extends React.Component {
     return this.state.data.email && this.state.data.password;
   }
 
+  renderError () {
+    const error = this.props.user.error;
+    if (!error) { return null; }
+
+    if (error.statusCode === 400) {
+      return <p className='form__note'>Invalid username or password</p>;
+    }
+
+    return <p className='form__note'>Error: {error.message}</p>;
+  }
+
   render () {
     if (this.state.authenticated) {
       const { from } = this.props.location.state || { from: { pathname: '/' } };
@@ -90,11 +101,7 @@ class Login extends React.Component {
                   </p>
                 </FormInput>
 
-                {this.props.user.error && (
-                  <pre>
-                    {JSON.stringify(this.props.user.error, null, ' ')}
-                  </pre>
-                )}
+                {this.renderError()}
 
                 <button className={c('mfa-tick', { disabled: !this.allowSubmit() })} type='button' onClick={this.onSubmit}><span>Login</span></button>
                 <p>
