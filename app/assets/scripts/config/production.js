@@ -3,5 +3,6 @@
  * App config for production.
  */
 module.exports = {
-  environment: 'production'
+  environment: 'production',
+  api: 'http://dsgoapi.northeurope.cloudapp.azure.com'
 };
