@@ -1,12 +1,16 @@
 'use strict';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { PropTypes as T } from 'prop-types';
+import { Link, Redirect } from 'react-router-dom';
 import c from 'classnames';
+
+import { getAuthToken } from '../actions';
 
 import App from './app';
 import { FormInput } from '../components/form-elements';
 
-export default class Login extends React.Component {
+class Login extends React.Component {
   constructor (props) {
     super(props);
 
@@ -14,13 +18,23 @@ export default class Login extends React.Component {
       data: {
         email: '',
         password: ''
-      }
+      },
+      authenticated: false
     };
 
     this.onSubmit = this.onSubmit.bind(this);
   }
 
   onSubmit () {
+    this.props._getAuthToken(this.state.data.email, this.state.data.password);
+  }
+
+  componentWillReceiveProps (nextProps) {
+    if (this.props.user.fetching && !nextProps.user.fetching) {
+      if (!nextProps.user.error) {
+        this.setState({ authenticated: true });
+      }
+    }
   }
 
   onFieldChange (field, e) {
@@ -33,7 +47,25 @@ export default class Login extends React.Component {
     return this.state.data.email && this.state.data.password;
   }
 
+  renderError () {
+    const error = this.props.user.error;
+    if (!error) { return null; }
+
+    if (error.statusCode === 400) {
+      return <p className='form__note'>Invalid username or password</p>;
+    }
+
+    return <p className='form__note'>Error: {error.message}</p>;
+  }
+
   render () {
+    if (this.state.authenticated) {
+      const { from } = this.props.location.state || { from: { pathname: '/' } };
+      return (
+        <Redirect to={from}/>
+      );
+    }
+
     return (
       <App className='page--login'>
         <section className='inpage'>
@@ -69,6 +101,8 @@ export default class Login extends React.Component {
                   </p>
                 </FormInput>
 
+                {this.renderError()}
+
                 <button className={c('mfa-tick', { disabled: !this.allowSubmit() })} type='button' onClick={this.onSubmit}><span>Login</span></button>
                 <p>
                   Don’t have an account? <Link to='/register' title='Create new account'><span>Sign Up.</span></Link>
@@ -81,3 +115,24 @@ export default class Login extends React.Component {
     );
   }
 }
+
+if (process.env.NODE_ENV !== 'production') {
+  Login.propTypes = {
+    _getAuthToken: T.func,
+    user: T.object,
+    location: T.object
+  };
+}
+
+// /////////////////////////////////////////////////////////////////// //
+// Connect functions
+
+const selector = (state) => ({
+  user: state.user
+});
+
+const dispatcher = (dispatch) => ({
+  _getAuthToken: (...args) => dispatch(getAuthToken(...args))
+});
+
+export default connect(selector, dispatcher)(Login);

@@ -2,6 +2,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import UserMenu from './connected/user-menu';
+
 class Header extends React.Component {
   render () {
     return (
@@ -17,7 +19,7 @@ class Header extends React.Component {
           </div>
           <nav className='page__meta-nav' role='navigation'>
             <Link to='/new' className='button button--primary-raised-dark' title='Create Field Report'><span>Create Field Report</span></Link>
-            <Link to='/login' className='button button--primary-raised-dark' title='Login'><span>Login</span></Link>
+            <UserMenu />
           </nav>
         </div>
         <div className='inner'>

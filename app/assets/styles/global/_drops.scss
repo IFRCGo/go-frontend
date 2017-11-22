@@ -181,10 +181,10 @@
     }
   }
 
-  &.drop-trans-leave {
+  &.drop-trans-exit {
     @include drop-top-end();
 
-    &.drop-trans-leave-active {
+    &.drop-trans-exit-active {
       @include drop-top-start();
     }
   }
@@ -203,10 +203,10 @@
     }
   }
 
-  &.drop-trans-leave {
+  &.drop-trans-exit {
     @include drop-bottom-end();
 
-    &.drop-trans-leave-active {
+    &.drop-trans-exit-active {
       @include drop-bottom-start();
     }
   }
@@ -225,10 +225,10 @@
     }
   }
 
-  &.drop-trans-leave {
+  &.drop-trans-exit {
     @include drop-left-end();
 
-    &.drop-trans-leave-active {
+    &.drop-trans-exit-active {
       @include drop-left-start();
     }
   }
@@ -247,10 +247,10 @@
     }
   }
 
-  &.drop-trans-leave {
+  &.drop-trans-exit {
     @include drop-right-end();
 
-    &.drop-trans-leave-active {
+    &.drop-trans-exit-active {
       @include drop-right-start();
     }
   }
@@ -278,7 +278,6 @@
   margin: (-$global-spacing) (-$global-spacing) $global-spacing (-$global-spacing);
   box-shadow: 0 $base-border-width 0 0 $base-alpha-color;
   padding: ($global-spacing / 2) 0;
-  font-weight: $base-font-bold;
   min-width: 12rem;
 
   &:last-child {

@@ -1,8 +1,10 @@
 'use strict';
 import { combineReducers } from 'redux';
 
+import user from './user';
+
 export const reducers = {
-  main: (state = {}, action) => state
+  user
 };
 
 export default combineReducers(reducers);

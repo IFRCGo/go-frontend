@@ -26,6 +26,14 @@
   justify-content: right;
   padding-left: 1rem;
   position: relative;
+
+  > * {
+    margin-right: 1rem;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
 }
 
 /* Global menu */
@@ -90,5 +98,16 @@
 
   &::before {
     @extend %collecticon-magnifier-right;
+  }
+}
+
+
+/* User menu */
+
+.drop__togle--user {
+  @extend .button, .button--primary-plain, .button--text-hidden;
+
+  &::before {
+    @extend %collecticon-user;
   }
 }
