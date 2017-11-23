@@ -54,7 +54,6 @@
   &--active {
     outline: 0;
     box-shadow: inset 0 0 0 $base-border-width rgba($base-color, 0.32);
-    background: none;
   }
 
   /* Animation */
@@ -71,9 +70,10 @@ select.form__control {
   appearance: none;
   padding-right: 2rem;
   cursor: pointer;
-  background-image: url('data:image/svg+xml;utf8,' + urlencode('<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="10px" height="5px" viewBox="0 0 10 5" enable-background="new 0 0 10 5" xml:space="preserve"><g><polygon fill="#{$link-color}" points="5,5 0,0 10,0  "/></g></svg>'));
+  background-image: url('data:image/svg+xml;utf8,' + urlencode('<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="512px" height="512px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><polygon fill="#{$secondary-color}" points="256,384 73.373,201.373 118.628,156.118 256,293.49 393.373,156.118 438.627,201.373"/></svg>'));
   background-position: calc(100% - 0.5rem) center;
   background-repeat: no-repeat;
+  background-size: 1rem auto;
 
   /* Size modifiers */
 
@@ -178,7 +178,7 @@ textarea.form__control {
     top: 50%;
     right: 0.5rem;
     transform: translate(0, -50%);
-    color: $link-color;
+    color: $secondary-color;
     font-size: 1rem;
     line-height: 1;
     width: 1rem;
@@ -514,6 +514,13 @@ label[for] {
   &:not(:last-child) {
     padding: 0 ($global-spacing / 2) 0 0;
   }
+
+  em {
+    display: block;
+    font-style: normal;
+    font-size: 0.875rem;
+    line-height: 1rem;
+  }
 }
 
 .form__option__ui {
@@ -578,7 +585,7 @@ label[for] {
   }
 
   input:checked ~ .form__option__ui {
-    box-shadow: inset 0 0 0 $base-border-width $link-color;
+    box-shadow: inset 0 0 0 $base-border-width $secondary-color;
 
     &::before {
       opacity: 1;
@@ -596,7 +603,7 @@ label[for] {
       content: "";
       height: 0.5rem;
       width: 0.5rem;
-      background: $link-color;
+      background: $secondary-color;
     }
   }
 }
@@ -609,7 +616,7 @@ label[for] {
 
     &::before {
       @extend %collecticon-sm-tick;
-      color: $link-color;
+      color: $secondary-color;
     }
   }
 }
@@ -671,7 +678,7 @@ label[for] {
 
   &.form__option--checked .form__option__ui,
   input:checked ~ .form__option__ui {
-    background: $link-color;
+    background: $secondary-color;
 
     &::before {
       left: 100%;
@@ -865,6 +872,13 @@ label[for] {
   > *:last-child {
     margin-bottom: 0;
   }
+}
+
+.form__description {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: rgba($base-font-color, 0.48);
+  margin-top: $global-spacing / 2;
 }
 
 .form__note {
