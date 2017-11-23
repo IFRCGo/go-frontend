@@ -1,0 +1,28 @@
+/* ==========================================================================
+   Field Report form
+   ========================================================================== */
+
+.sources-list {
+  &__item {
+    @include column(12/12);
+
+    @include media(small-up) {
+      @include column(6/12, $cycle: 2);
+    }
+
+    @include media(medium-up) {
+      @include column(4/12, $cycle: 3);
+    }
+
+    @include media(large-up) {
+      @include column(3/12, $cycle: 4);
+    }
+
+    .form__label {
+      font-size: 0.75rem;
+      line-height: 1rem;
+      font-weight: $base-font-weight;
+      opacity: 0.64;
+    }
+  }
+}
