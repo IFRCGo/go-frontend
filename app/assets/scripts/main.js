@@ -17,6 +17,9 @@ import Register from './views/register';
 import RecoverAccount from './views/recover-account';
 import UhOh from './views/uhoh';
 
+// Field report Views
+import FieldReportForm from './views/field-report/form';
+
 polyfill();
 
 // Route available only if the user is not logged in.
@@ -61,6 +64,7 @@ const Root = () => (
         <Route exact path="/" component={Home}/>
         <Route exact path="/about" component={About}/>
         <PrivateRoute exact path="/account" component={Account}/>
+        <PrivateRoute exact path="/field-reports" component={FieldReportForm}/>
         <AnonymousRoute exact path="/login" component={Login}/>
         <AnonymousRoute exact path="/register" component={Register}/>
         <AnonymousRoute exact path="/recover-account" component={RecoverAccount}/>

@@ -28,10 +28,24 @@ function failed (action) {
   return action + '_FAILED';
 }
 
-export function fetchJSON (path, action, options) {
+export function fetchJSON (...args) {
+  return makeRequest(...args);
+}
+
+export function createResource (path, action, payload, options) {
+  options = options || {};
+  options.headers = options.headers || {};
+  options.headers['Content-Type'] = 'application/json';
+  options.headers['Accept'] = 'application/json';
+  options.method = 'POST';
+  options.body = JSON.stringify(payload);
+  return makeRequest(null, path, action, options);
+}
+
+function makeRequest (id, path, action, options) {
   options = options || {};
   return function (dispatch) {
-    dispatch({ type: inflight(action) });
+    dispatch({ type: inflight(action), id });
     fetch(url.resolve(api, path), options)
       .then(response => {
         return response.text()
@@ -58,10 +72,10 @@ export function fetchJSON (path, action, options) {
         });
       })
       .then(data => {
-        dispatch({ type: success(action), data, receivedAt: Date.now() });
+        dispatch({ type: success(action), data, receivedAt: Date.now(), id });
       })
       .catch(error => {
-        dispatch({ type: failed(action), error });
+        dispatch({ type: failed(action), error, id });
       });
   };
 }
