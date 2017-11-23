@@ -12,7 +12,7 @@ class Header extends React.Component {
           <div className='page__headline'>
             <h1 className='page__title'>
               <Link to='/' title='Visit page'>
-                <img src='assets/graphics/layout/logo.png' alt='IFRC GO logo'/>
+                <img src='/assets/graphics/layout/logo.png' alt='IFRC GO logo'/>
                 <span>IFRC GO</span>
               </Link>
             </h1>
