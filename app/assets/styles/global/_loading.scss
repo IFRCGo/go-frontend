@@ -86,12 +86,12 @@
   }
 }
 
-.loading-pane-leave {
+.loading-pane-exit {
   transition: opacity 0.32s ease 0s, visibility 0.32s linear 0s;
   opacity: 1;
   visibility: visible;
 
-  &.loading-pane-leave-active {
+  &.loading-pane-exit-active {
     opacity: 0;
     visibility: hidden;
   }

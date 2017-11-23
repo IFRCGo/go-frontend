@@ -6,6 +6,7 @@ import { Link, Redirect } from 'react-router-dom';
 import c from 'classnames';
 
 import { getAuthToken } from '../actions';
+import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 
 import App from './app';
 import { FormInput } from '../components/form-elements';
@@ -27,12 +28,15 @@ class Login extends React.Component {
 
   onSubmit () {
     this.props._getAuthToken(this.state.data.email, this.state.data.password);
+    showGlobalLoading();
   }
 
   componentWillReceiveProps (nextProps) {
     if (this.props.user.fetching && !nextProps.user.fetching) {
       if (!nextProps.user.error) {
-        this.setState({ authenticated: true });
+        hideGlobalLoading(() => {
+          this.setState({ authenticated: true });
+        });
       }
     }
   }

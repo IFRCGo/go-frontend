@@ -6,6 +6,7 @@ import c from 'classnames';
 import { environment } from '../config';
 
 import Header from '../components/header';
+import GlobalLoading from '../components/global-loading';
 
 class App extends React.Component {
   render () {
@@ -15,6 +16,7 @@ class App extends React.Component {
         <main className='page__body' role='main'>
           {this.props.children}
         </main>
+        <GlobalLoading />
       </div>
     );
   }
