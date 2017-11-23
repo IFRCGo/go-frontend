@@ -9,7 +9,7 @@ import ajvKeywords from 'ajv-keywords';
 import { isValidEmail, isRedCrossEmail } from '../utils/utils';
 
 import App from './app';
-import { FormInput, FormError } from '../components/form-elements';
+import { FormInput, FormError } from '../components/form-elements/';
 import registerSchemaDef from '../schemas/register';
 
 const ajv = new Ajv({ $data: true, allErrors: true, errorDataPath: 'property' });

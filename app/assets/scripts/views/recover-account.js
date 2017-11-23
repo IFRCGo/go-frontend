@@ -3,7 +3,7 @@ import React from 'react';
 import c from 'classnames';
 
 import App from './app';
-import { FormInput } from '../components/form-elements';
+import { FormInput } from '../components/form-elements/';
 
 export default class RecoverAccount extends React.Component {
   constructor (props) {
