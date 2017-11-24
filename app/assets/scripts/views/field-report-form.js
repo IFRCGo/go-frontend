@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import _set from 'lodash.set';
 import _cloneDeep from 'lodash.clonedeep';
+import c from 'classnames';
 
 import { environment } from '../config';
 
@@ -18,6 +19,7 @@ import {
 } from '../components/form-elements/';
 import { FormDescription } from '../components/form-elements/misc';
 
+// Form data for group fields like radio buttons, and selects.
 const formData = {
   status: [
     {
@@ -29,6 +31,36 @@ const formData = {
       label: 'Event',
       value: 'event',
       description: 'First report for this disaster.'
+    }
+  ],
+
+  disasterType: [
+    {
+      value: '',
+      label: '-- Select one --'
+    },
+    {
+      value: 'hurricane',
+      label: 'Hurricane'
+    },
+    {
+      value: 'typhoon',
+      label: 'Typhoon'
+    }
+  ],
+
+  event: [
+    {
+      value: '',
+      label: '-- Select one --'
+    },
+    {
+      value: 'event1',
+      label: 'Event One'
+    },
+    {
+      value: 'event2',
+      label: 'Event Two'
     }
   ],
 
@@ -125,8 +157,9 @@ class FieldReportForm extends React.Component {
     super(props);
 
     this.state = {
-      step: 3,
+      step: 1,
       data: {
+        // Step 1
         summary: undefined,
         status: undefined,
         disasterType: undefined,
@@ -201,8 +234,8 @@ class FieldReportForm extends React.Component {
             type='text'
             name='summary'
             id='summary'
-            description={<p className='form__description'>Write a short summary of the report's topic. It will be used as the subject of the e-mail notification,
-            later as the tittle of the RSS feed and possibly as the text message on mobile phones.<br /><em>Example: 250 dead after an earthquake in Indonesia</em></p>}
+            description={<div className='form__description'><p>Write a short summary of the report's topic. It will be used as the subject of the e-mail notification,
+            later as the tittle of the RSS feed and possibly as the text message on mobile phones.</p><em>Example: 250 dead after an earthquake in Indonesia</em></div>}
             value={this.state.data.summary}
             onChange={this.onFieldChange.bind(this, 'summary')}
             autoFocus
@@ -220,20 +253,7 @@ class FieldReportForm extends React.Component {
               label='Disaster Type'
               name='disaster-type'
               id='disaster-type'
-              options={[
-                {
-                  value: '--',
-                  label: '-- Select one --'
-                },
-                {
-                  value: 'hurricane',
-                  label: 'Hurricane'
-                },
-                {
-                  value: 'typhoon',
-                  label: 'Typhoon'
-                }
-              ]}
+              options={formData.disasterType}
               value={this.state.data.disasterType}
               onChange={this.onFieldChange.bind(this, 'disasterType')} />
 
@@ -241,27 +261,14 @@ class FieldReportForm extends React.Component {
               label='Event'
               name='event'
               id='event'
-              options={[
-                {
-                  value: '--',
-                  label: '-- Select one --'
-                },
-                {
-                  value: 'event1',
-                  label: 'Event One'
-                },
-                {
-                  value: 'event2',
-                  label: 'Event Two'
-                }
-              ]}
+              options={formData.event}
               value={this.state.data.event}
               onChange={this.onFieldChange.bind(this, 'event')} />
           </div>
 
           <div className='form__group'>
             <label className='form__label'>Sources</label>
-            <div className="form__description">
+            <div className='form__description'>
               <p>Check the box next to the source of information and specify:</p>
               <ul>
                 <li>UN agency - OCHA</li>
