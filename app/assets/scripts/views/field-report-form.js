@@ -219,6 +219,14 @@ class FieldReportForm extends React.Component {
         fact: undefined,
         eru: undefined,
         rfl: undefined,
+
+        // Step 5
+        contactOriginator: { name: undefined, func: undefined, email: undefined },
+        contactPrimary: { name: undefined, func: undefined, email: undefined },
+        contactNatSoc: { name: undefined, func: undefined, email: undefined },
+        contactFederation: { name: undefined, func: undefined, email: undefined },
+        contactMediaNatSoc: { name: undefined, func: undefined, email: undefined },
+        contactMedia: { name: undefined, func: undefined, email: undefined }
       },
       errors: []
     };
@@ -606,6 +614,52 @@ class FieldReportForm extends React.Component {
       </Fold>
     );
   }
+
+  renderStep5 () {
+    return (
+      <Fold title='Contacts'>
+        <form className='form' onSubmit={this.onSubmit}>
+          <ContactRow
+            label='Originator'
+            description='Your name, function and e-mail.'
+            name='contact-originator'
+            values={this.state.data.contactOriginator}
+            onChange={this.onFieldChange.bind(this, 'contactOriginator')} />
+          <ContactRow
+            label='Primary Contact'
+            description='The person to contact for more information'
+            name='contact-primary'
+            values={this.state.data.contactPrimary}
+            onChange={this.onFieldChange.bind(this, 'contactPrimary')} />
+          <ContactRow
+            label='National Society Contact'
+            description='A contact in the National Society for more information. Select someone who will be available for interview.'
+            name='contact-nat-soc'
+            values={this.state.data.contactNatSoc}
+            onChange={this.onFieldChange.bind(this, 'contactNatSoc')} />
+          <ContactRow
+            label='Federation Contact'
+            description='A contact of the Federation (Secretariat/Zone/DMUs) for more information. Select someone who will be available for interview.'
+            name='contact-federation'
+            values={this.state.data.contactFederation}
+            onChange={this.onFieldChange.bind(this, 'contactFederation')} />
+          <ContactRow
+            label='Media Contact in the National Society'
+            description='A media contact in the National Society. This person could be contacted by journalists.'
+            name='contact-media-nat-soc'
+            values={this.state.data.contactMediaNatSoc}
+            onChange={this.onFieldChange.bind(this, 'contactMediaNatSoc')} />
+          <ContactRow
+            label='Media Contact'
+            description='A media contact in the Secretariat/Zone/DMU. This person could be contacted by journalists.'
+            name='contact-media'
+            values={this.state.data.contactMedia}
+            onChange={this.onFieldChange.bind(this, 'contactMedia')} />
+        </form>
+      </Fold>
+    );
+  }
+
   render () {
     return (
       <App className='page--frep-form'>
@@ -847,6 +901,74 @@ if (environment !== 'production') {
     values: T.shape({
       options: T.array,
       description: T.string
+    }),
+    onChange: T.func
+  };
+}
+
+class ContactRow extends React.Component {
+  onFieldChange (field, e) {
+    const { values, onChange } = this.props;
+    const newVals = Object.assign({}, values, {[field]: e.target.value});
+    onChange(newVals);
+  }
+
+  render () {
+    const {
+      label,
+      name,
+      description,
+      values
+    } = this.props;
+
+    return (
+      <div className='form__group contact-row'>
+        <div className='form__inner-header'>
+          <div className='form__inner-headline'>
+            <label className='form__label'>{label}</label>
+            <p className='form__description'>{description}</p>
+          </div>
+        </div>
+        <div className='form__inner-body'>
+          <FormInput
+            label='Name'
+            type='text'
+            name={`${name}[name]`}
+            id={`${name}-name`}
+            classLabel='form__label--nested'
+            value={values.name}
+            onChange={this.onFieldChange.bind(this, 'name')} />
+          <FormInput
+            label='Function'
+            type='text'
+            name={`${name}[func]`}
+            id={`${name}-func`}
+            classLabel='form__label--nested'
+            value={values.func}
+            onChange={this.onFieldChange.bind(this, 'func')} />
+          <FormInput
+            label='Email'
+            type='text'
+            name={`${name}[email]`}
+            id={`${name}-email`}
+            classLabel='form__label--nested'
+            value={values.email}
+            onChange={this.onFieldChange.bind(this, 'email')} />
+        </div>
+      </div>
+    );
+  }
+}
+
+if (environment !== 'production') {
+  ContactRow.propTypes = {
+    label: T.string,
+    name: T.string,
+    description: T.string,
+    values: T.shape({
+      name: T.string,
+      func: T.string,
+      email: T.string
     }),
     onChange: T.func
   };
