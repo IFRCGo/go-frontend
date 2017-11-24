@@ -45,7 +45,9 @@ const tokenListener = ({ data }) => {
   localStorage.set('user', {
     username: data.username,
     token: data.token,
-    expires: data.expires
+    expires: data.expires,
+    firstName: data.first,
+    lastName: data.last
   });
 };
 
