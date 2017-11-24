@@ -5,6 +5,7 @@ import { PropTypes as T } from 'prop-types';
 import _set from 'lodash.set';
 import _cloneDeep from 'lodash.clonedeep';
 import c from 'classnames';
+import Select from 'react-select';
 
 import { environment } from '../config';
 
@@ -161,6 +162,9 @@ class FieldReportForm extends React.Component {
       data: {
         // Step 1
         summary: undefined,
+        // Countries follows the structure defined by react-select.
+        // Will need to be converted.
+        countries: [],
         status: undefined,
         disasterType: undefined,
         event: undefined,
@@ -291,6 +295,22 @@ class FieldReportForm extends React.Component {
             onChange={this.onFieldChange.bind(this, 'summary')}
             autoFocus
           />
+
+          <div className='form__group'>
+            <label className='form__label'>Countries</label>
+            <p className='form__description'>Seach for the affected country. You can select more than one.</p>
+            <Select
+              name='countries'
+              value={this.state.data.countries}
+              onChange={this.onFieldChange.bind(this, 'countries')}
+              options={[
+                { value: 'one', label: 'One' },
+                { value: 'two', label: 'Two' },
+                { value: 'three', label: 'Three' },
+                { value: 'four', label: 'Four' }
+              ]}
+              multi />
+          </div>
 
           <FormRadioGroup
             label='Status'

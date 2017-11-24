@@ -110,7 +110,14 @@
 @import "core/utilities";
 
 
+/* Third Party
+   ========================================================================== */
+
+@import "../../../node_modules/react-select/dist/react-select";
+
+
 /* Vendor
    ========================================================================== */
 
 @import "vendor/react-paginate";
+@import "vendor/react-select";
