@@ -244,6 +244,38 @@ class FieldReportForm extends React.Component {
     this.setState({data});
   }
 
+  onStepperClick (step, e) {
+    e.preventDefault();
+    // Can't move forward. Only backwards.
+    // if (step > this.state.step) {
+    //   return;
+    // }
+    this.setState({ step });
+  }
+
+  renderStepper () {
+    const step = this.state.step;
+    const items = [
+      'Basic Information',
+      'Numeric Details',
+      'Actions Taken',
+      'Planned Response',
+      'Contacts'
+    ];
+    return (
+      <ol className='stepper'>
+        {items.map((o, idx) => {
+          idx += 1;
+          const classes = c('stepper__item', {
+            'stepper__item--complete': step > idx,
+            'stepper__item--current': step === idx
+          });
+          return <li key={o} className={classes}><a href='#' onClick={this.onStepperClick.bind(this, idx)}><span>{o}</span></a></li>;
+        })}
+      </ol>
+    );
+  }
+
   renderStep1 () {
     return (
       <Fold title='Basic Information'>
@@ -673,6 +705,7 @@ class FieldReportForm extends React.Component {
           </header>
           <div className='inpage__body'>
             <div className='inner'>
+              {this.renderStepper()}
               {this[`renderStep${this.state.step}`]()}
             </div>
           </div>

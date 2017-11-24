@@ -17,12 +17,185 @@
     @include media(large-up) {
       @include column(3/12, $cycle: 4);
     }
+  }
+}
 
-    .form__label {
-      font-size: 0.75rem;
-      line-height: 1rem;
-      font-weight: $base-font-weight;
-      opacity: 0.64;
+.contact-row {
+  > .form__inner-header {
+    @include column(12/12);
+
+    @include media(large-up) {
+      @include column(3/12);
+    }
+  }
+
+  > .form__inner-body {
+    @include column(12/12);
+
+    @include media(large-up) {
+      @include column(9/12);
+    }
+    > .form__group {
+      @include column(12/12);
+
+      @include media(small-up) {
+        @include column(6/12, $cycle: 2);
+      }
+
+      @include media(large-up) {
+        @include column(4/12, $cycle: 3);
+      }
+    }
+  }
+}
+
+.estimation-row {
+  > .form__inner-header {
+    @include column(12/12);
+
+    @include media(large-up) {
+      @include column(4/12);
+    }
+  }
+
+  > .form__inner-body {
+    @include column(12/12);
+
+    @include media(large-up) {
+      @include column(8/12);
+    }
+    > .form__group {
+      @include column(12/12);
+
+      @include media(small-up) {
+        @include column(6/12);
+      }
+    }
+  }
+}
+
+.form__label--nested {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: $base-font-weight;
+  opacity: 0.64;
+}
+
+.form__group--kv {
+  > * {
+    @include column(12/12);
+
+    @include media(small-up) {
+      @include column(6/12);
+    }
+
+    @include media(medium-up) {
+      @include column(4/12);
+    }
+
+    @include media(large-up) {
+      @include column(3/12);
+    }
+  }
+}
+
+.stepper {
+  display: flex;
+  flex-flow: column wrap;
+  list-style: none;
+  margin: 0 0 ($global-spacing * 2) 0;
+  padding: 0;
+  max-width: 60rem;
+  font-family: $heading-font-family;
+  font-size: 0.875rem;
+  line-height: 1rem;
+
+  @include media(medium-up) {
+    flex-flow: row wrap;
+    margin: 0 0 ($global-spacing * 4) 0;
+  }
+}
+
+.stepper__item {
+  position: relative;
+  flex-grow: 1;
+  padding: 0 0 1rem 1.5rem;
+  margin: 0 0 0.5rem 0;
+  overflow: hidden;
+  color: tint($base-color, 80%);
+
+  @include media(medium-up) {
+    padding: 1.5rem 1rem 0 0;
+    margin: 0 0.5rem 0 0;
+  }
+
+  &:not(.stepper__item--complete) {
+    &::before {
+      content: ''
+    }
+  }
+
+  &::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1rem;
+    height: 1rem;
+    border-radius: $full-border-radius;
+    background: tint($base-color, 80%);
+    color: #fff;
+    text-align: center;
+    font-size: 0.75rem;
+    line-height: 1rem;
+
+    @include media(medium-up) {
+      top: 0;
+    }
+  }
+
+  &::after {
+    position: absolute;
+    top: 1.5rem;
+    left: 0.5rem;
+    content: '';
+    width: 2px;
+    height: 100%;
+    transform: translate(-1px, 0);
+    background: tint($base-color, 80%);
+
+    @include media(medium-up) {
+      width: 100%;
+      height: 2px;
+      transform: translate(0, -1px);
+      top: 0.5rem;
+      left: 1.5rem;
+    }
+  }
+
+  &:last-child {
+    padding-bottom: 0;
+    margin-bottom: 0;
+
+    &::after {
+      display: none;
+    }
+  }
+
+  a {
+    color: inherit;
+  }
+
+  &--complete, &--current {
+    color: $secondary-color;
+
+    &::before, &::after {
+      background: $secondary-color;
+    }
+  }
+
+  &--complete {
+    &::before {
+      @extend %collecticon-sm-tick;
     }
   }
 }
