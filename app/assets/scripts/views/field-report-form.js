@@ -464,6 +464,7 @@ class ReportSource extends React.Component {
           type='text'
           name={`source[${idx || 0}][spec]`}
           id='source-spec'
+          classLabel='form__label--nested'
           value={specificationValue}
           disabled={!checked}
           onChange={this.onSpecificationChange} />
@@ -533,6 +534,7 @@ class ActionsCheckboxes extends React.Component {
           label='Description'
           name={`${name}[description]`}
           id={`${name}-description`}
+          classLabel='form__label--nested'
           value={values.description}
           onChange={this.onDescriptionChange} />
       </div>

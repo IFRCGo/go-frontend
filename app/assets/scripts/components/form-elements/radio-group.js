@@ -1,6 +1,7 @@
 'use strict';
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
+import c from 'classnames';
 
 import { FormDescription } from './misc';
 import FormRadio from './radio';
@@ -12,25 +13,32 @@ export default function FormRadioGroup (props) {
     description,
     options,
     selectedOption,
+    classWrapper,
+    classLabel,
     onChange
   } = props;
 
   return (
-    <div className='form__group'>
-      <label className='form__label'>{label}</label>
-      <FormDescription value={description} />
-      {options.map(o => (
-        <FormRadio
-          key={o.value}
-          label={o.label}
-          name={name}
-          id={`${name}-${o.value}`}
-          value={o.value}
-          checked={selectedOption === o.value}
-          onChange={onChange}
-          description={o.description} />
-      ))}
-
+    <div className={c('form__group', classWrapper)}>
+      <div className='form__inner-header'>
+        <div className='form__inner-headline'>
+          <label className={c('form__label', classLabel)}>{label}</label>
+          <FormDescription value={description} />
+        </div>
+      </div>
+      <div className='form__inner-body'>
+        {options.map(o => (
+          <FormRadio
+            key={o.value}
+            label={o.label}
+            name={name}
+            id={`${name}-${o.value}`}
+            value={o.value}
+            checked={selectedOption === o.value}
+            onChange={onChange}
+            description={o.description} />
+        ))}
+      </div>
     </div>
   );
 }
@@ -45,6 +53,8 @@ if (process.env.NODE_ENV !== 'production') {
     ]),
     options: T.array,
     selectedOption: T.string,
+    classWrapper: T.string,
+    classLabel: T.string,
     checked: T.bool,
     onChange: T.func
   };
