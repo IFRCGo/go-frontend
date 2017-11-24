@@ -207,7 +207,18 @@ class FieldReportForm extends React.Component {
             checked: false
           })),
           description: undefined
-        }
+        },
+
+        // Step 4
+        drefRequested: undefined,
+        amountChf: undefined,
+        drefApproved: undefined,
+        drefBulletin: undefined,
+        emergencyAppeal: undefined,
+        rdrtrits: undefined,
+        fact: undefined,
+        eru: undefined,
+        rfl: undefined,
       },
       errors: []
     };
@@ -460,6 +471,141 @@ class FieldReportForm extends React.Component {
     );
   }
 
+  renderStep4 () {
+    const optsNoPlannedPub = [
+      {
+        label: 'No',
+        value: 'no'
+      },
+      {
+        label: 'Planned/Requested',
+        value: 'planned'
+      },
+      {
+        label: 'Published',
+        value: 'published'
+      }
+    ];
+
+    return (
+      <Fold title='Planned Response'>
+        <form className='form' onSubmit={this.onSubmit}>
+          <div className='form__group'>
+            <label className='form__label'>Planned International Response</label>
+            <div className='form__description'>
+              <p>Indicate the status of the differents international tools: Was DREF requested? How much ? Has it been approved ? How many beneficiaries ? Has the DREF operation been issued?</p>
+              <p>Same for the emergency appeal</p>
+              <p>For RDRT/FACT/ERU, only indicate if used, planned/requested or not used.</p>
+            </div>
+
+            <FormRadioGroup
+              label='DREF Requested'
+              name='dref-requested'
+              options={[
+                {
+                  label: 'No',
+                  value: 'no'
+                },
+                {
+                  label: 'Planned',
+                  value: 'planned'
+                },
+                {
+                  label: 'Yes',
+                  value: 'yes'
+                }
+              ]}
+              selectedOption={this.state.data.drefRequested}
+              onChange={this.onFieldChange.bind(this, 'drefRequested')} />
+
+            <FormInput
+              label='Amount CHF'
+              type='text'
+              name='amount-chf'
+              id='amount-chf'
+              value={this.state.data.amountChf}
+              onChange={this.onFieldChange.bind(this, 'amountChf')} />
+
+            <FormRadioGroup
+              label='DREF Approved'
+              name='dref-approved'
+              options={[
+                {
+                  label: 'No',
+                  value: 'no'
+                },
+                {
+                  label: 'No reply now',
+                  value: 'no-reply'
+                },
+                {
+                  label: 'Yes',
+                  value: 'yes'
+                }
+              ]}
+              selectedOption={this.state.data.drefApproved}
+              onChange={this.onFieldChange.bind(this, 'drefApproved')} />
+
+            <FormRadioGroup
+              label='DREF Bulletin'
+              name='dref-bulletin'
+              options={optsNoPlannedPub}
+              selectedOption={this.state.data.drefBulletin}
+              onChange={this.onFieldChange.bind(this, 'drefBulletin')} />
+
+            <FormRadioGroup
+              label='Emergency Appeal'
+              name='emergency-appeal'
+              options={[
+                {
+                  label: 'No',
+                  value: 'no'
+                },
+                {
+                  label: 'Planned',
+                  value: 'planned'
+                },
+                {
+                  label: 'Yes',
+                  value: 'yes'
+                }
+              ]}
+              selectedOption={this.state.data.emergencyAppeal}
+              onChange={this.onFieldChange.bind(this, 'emergencyAppeal')} />
+
+            <FormRadioGroup
+              label='RDRT/RITS'
+              name='rdrt-rits'
+              options={optsNoPlannedPub}
+              selectedOption={this.state.data.rdrtrits}
+              onChange={this.onFieldChange.bind(this, 'rdrtrits')} />
+
+            <FormRadioGroup
+              label='FACT'
+              name='fact'
+              options={optsNoPlannedPub}
+              selectedOption={this.state.data.fact}
+              onChange={this.onFieldChange.bind(this, 'fact')} />
+
+            <FormRadioGroup
+              label='ERU'
+              name='eru'
+              options={optsNoPlannedPub}
+              selectedOption={this.state.data.eru}
+              onChange={this.onFieldChange.bind(this, 'eru')} />
+
+            <FormRadioGroup
+              label='RFL'
+              name='rfl'
+              options={optsNoPlannedPub}
+              selectedOption={this.state.data.rfl}
+              onChange={this.onFieldChange.bind(this, 'rfl')} />
+
+          </div>
+        </form>
+      </Fold>
+    );
+  }
   render () {
     return (
       <App className='page--frep-form'>
