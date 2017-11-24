@@ -139,6 +139,18 @@ class FieldReportForm extends React.Component {
         description: undefined,
         assistance: undefined,
 
+        // Step 2
+        numInjured: { redCross: undefined, government: undefined },
+        numDead: { redCross: undefined, government: undefined },
+        numMissing: { redCross: undefined, government: undefined },
+        numAffected: { redCross: undefined, government: undefined },
+        numDisplaced: { redCross: undefined, government: undefined },
+        numAssistedGov: undefined,
+        numAssistedRedCross: undefined,
+        numLocalStaff: undefined,
+        numVolunteers: undefined,
+        numExpats: undefined,
+
         // Step 3
         bulletin: undefined,
         actionsOthers: undefined,
@@ -303,6 +315,78 @@ class FieldReportForm extends React.Component {
     return (
       <Fold title='Numeric Details (People)'>
         <form className='form' onSubmit={this.onSubmit}>
+
+          <SourceEstimation
+            label='Injured'
+            description='Number of people suffering from physical injuries, trauma or an illness requiring immediate medical treatment as a direct result of a disaster.'
+            name='num-injured'
+            values={this.state.data.numInjured}
+            onChange={this.onFieldChange.bind(this, 'numInjured')} />
+          <SourceEstimation
+            label='Dead'
+            description='Number of people confirmed dead and number missing and presumed dead.'
+            name='num-dead'
+            values={this.state.data.numDead}
+            onChange={this.onFieldChange.bind(this, 'numDead')} />
+          <SourceEstimation
+            label='Missing'
+            description='Number of people missing and presumed dead.'
+            name='num-missing'
+            values={this.state.data.numMissing}
+            onChange={this.onFieldChange.bind(this, 'numMissing')} />
+          <SourceEstimation
+            label='Affected'
+            description='Number of people requiring immediate assistance during a period of emergency; this may include displaced or evacuated people.'
+            name='num-affected'
+            values={this.state.data.numAffected}
+            onChange={this.onFieldChange.bind(this, 'numAffected')} />
+          <SourceEstimation
+            label='Displaced'
+            description='Number of people temporary displaced.'
+            name='num-displaced'
+            values={this.state.data.numDisplaced}
+            onChange={this.onFieldChange.bind(this, 'numDisplaced')} />
+
+          <FormInput
+            label='Assisted by Government'
+            type='text'
+            name='num-assisted-gov'
+            id='num-assisted-gov'
+            classWrapper='form__group--kv'
+            value={this.state.data.numAssistedGov}
+            onChange={this.onFieldChange.bind(this, 'numAssistedGov')} />
+          <FormInput
+            label='Assisted By Red Cross'
+            type='text'
+            name='num-assisted-red-cross'
+            id='num-assisted-red-cross'
+            classWrapper='form__group--kv'
+            value={this.state.data.numAssistedRedCross}
+            onChange={this.onFieldChange.bind(this, 'numAssistedRedCross')} />
+          <FormInput
+            label='Number of local staff involved'
+            type='text'
+            name='num-local-staff'
+            id='num-local-staff'
+            classWrapper='form__group--kv'
+            value={this.state.data.numLocalStaff}
+            onChange={this.onFieldChange.bind(this, 'numLocalStaff')} />
+          <FormInput
+            label='Number of volunteers involved'
+            type='text'
+            name='num-volunteers'
+            id='num-volunteers'
+            classWrapper='form__group--kv'
+            value={this.state.data.numVolunteers}
+            onChange={this.onFieldChange.bind(this, 'numVolunteers')} />
+          <FormInput
+            label='Number of expats/delegates'
+            type='text'
+            name='num-expats'
+            id='num-expats'
+            classWrapper='form__group--kv'
+            value={this.state.data.numExpats}
+            onChange={this.onFieldChange.bind(this, 'numExpats')} />
         </form>
       </Fold>
     );
@@ -481,6 +565,65 @@ if (environment !== 'production') {
     specificationValue: T.string,
     value: T.string,
     checked: T.bool,
+    onChange: T.func
+  };
+}
+
+class SourceEstimation extends React.Component {
+  onFieldChange (field, e) {
+    const { values, onChange } = this.props;
+    const newVals = Object.assign({}, values, {[field]: e.target.value});
+    onChange(newVals);
+  }
+
+  render () {
+    const {
+      label,
+      name,
+      description,
+      values
+    } = this.props;
+
+    return (
+      <div className='form__group estimation-row'>
+        <div className='form__inner-header'>
+          <div className='form__inner-headline'>
+            <label className='form__label'>{label}</label>
+            <p className='form__description'>{description}</p>
+          </div>
+        </div>
+        <div className='form__inner-body'>
+          <FormInput
+            label='Estimation Red Cross'
+            type='text'
+            name={`${name}[red-cross]`}
+            id={`${name}-red-cross`}
+            classLabel='form__label--nested'
+            value={values.redCross}
+            onChange={this.onFieldChange.bind(this, 'redCross')} />
+          <FormInput
+            label='Estimation Government'
+            type='text'
+            name={`${name}[government]`}
+            id={`${name}-government`}
+            classLabel='form__label--nested'
+            value={values.government}
+            onChange={this.onFieldChange.bind(this, 'government')} />
+        </div>
+      </div>
+    );
+  }
+}
+
+if (environment !== 'production') {
+  SourceEstimation.propTypes = {
+    label: T.string,
+    name: T.string,
+    description: T.string,
+    values: T.shape({
+      redCross: T.string,
+      government: T.string
+    }),
     onChange: T.func
   };
 }
