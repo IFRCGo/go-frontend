@@ -1,5 +1,5 @@
 'use strict';
-import { get } from 'object-path';
+import get from 'lodash.get';
 
 export const nope = '--';
 export const na = 'N/A';
