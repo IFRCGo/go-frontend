@@ -46,7 +46,7 @@ export const apiPropertyDisplay = (propOrPath) => {
 
 // Ie. given ('org', { org: 'NATL' }) return 'National Society'.
 const apiPropertyFormatters = {
-  'org': organizationType
+  'org_type': organizationType
 };
 export const apiPropertyValue = (propOrPath, object) => {
   const value = get(object, propOrPath);
