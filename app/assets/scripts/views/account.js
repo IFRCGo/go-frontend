@@ -43,7 +43,7 @@ class Account extends React.Component {
           <header className='inpage__header'>
             <div className='inner'>
               <div className='inpage__headline'>
-                <h1 className='inpage__title'>Hello {this.props.user.first}</h1>
+                <h1 className='inpage__title'>Hello {this.props.user.firstName}</h1>
               </div>
             </div>
           </header>
