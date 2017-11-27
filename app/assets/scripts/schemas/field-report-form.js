@@ -37,15 +37,6 @@ export const step1 = {
   required: ['summary', 'countries', 'status', 'disasterType']
 };
 
-// numDead: { redCross: undefined, government: undefined },
-// numMissing: { redCross: undefined, government: undefined },
-// numAffected: { redCross: undefined, government: undefined },
-// numDisplaced: { redCross: undefined, government: undefined },
-// numAssistedGov: undefined,
-// numAssistedRedCross: undefined,
-// numLocalStaff: undefined,
-// numVolunteers: undefined,
-// numExpats: undefined,
 export const step2 = {
   properties: {
     numInjured: {
@@ -83,5 +74,111 @@ export const step2 = {
     numLocalStaff: { type: 'number', minimum: 0 },
     numVolunteers: { type: 'number', minimum: 0 },
     numExpats: { type: 'number', minimum: 0 }
+  }
+};
+
+export const step3 = {
+  definitions: {
+    actionsCheckboxes: {
+      properties: {
+        options: {
+          type: 'array',
+          items: {
+            properties: {
+              checked: {
+                type: 'boolean'
+              }
+            }
+          }
+        },
+        description: {
+          type: 'string'
+        }
+      }
+    }
+  },
+  properties: {
+    actionsNatSoc: {
+      '$ref': '#/definitions/actionsCheckboxes'
+    },
+    actionsPns: {
+      '$ref': '#/definitions/actionsCheckboxes'
+    },
+    actionsFederation: {
+      '$ref': '#/definitions/actionsCheckboxes'
+    },
+    bulletin: {
+      type: 'string'
+    },
+    actionsOthers: {
+      type: 'string'
+    }
+  }
+};
+
+export const step4 = {
+  properties: {
+    dref: {
+      type: 'string'
+    },
+    amountDref: {
+      type: 'number'
+    },
+    emergencyAppeal: {
+      type: 'string'
+    },
+    amountEmergencyAppeal: {
+      type: 'number'
+    },
+    rdrtrits: {
+      type: 'string'
+    },
+    numPplRdrits: {
+      type: 'number'
+    },
+    fact: {
+      type: 'string'
+    },
+    numPplFact: {
+      type: 'number'
+    },
+    ifrcStaff: {
+      type: 'string'
+    },
+    numPplIfrcStaff: {
+      type: 'number'
+    }
+  }
+};
+
+export const step5 = {
+  definitions: {
+    contact: {
+      properties: {
+        name: { type: 'string' },
+        func: { type: 'string' },
+        email: { type: 'string', format: 'email' }
+      }
+    }
+  },
+  properties: {
+    contactOriginator: {
+      '$ref': '#/definitions/contact'
+    },
+    contactPrimary: {
+      '$ref': '#/definitions/contact'
+    },
+    contactNatSoc: {
+      '$ref': '#/definitions/contact'
+    },
+    contactFederation: {
+      '$ref': '#/definitions/contact'
+    },
+    contactMediaNatSoc: {
+      '$ref': '#/definitions/contact'
+    },
+    contactMedia: {
+      '$ref': '#/definitions/contact'
+    }
   }
 };
