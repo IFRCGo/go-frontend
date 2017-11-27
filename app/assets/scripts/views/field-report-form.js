@@ -4,10 +4,18 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import _set from 'lodash.set';
 import _cloneDeep from 'lodash.clonedeep';
+import _toNumber from 'lodash.tonumber';
 import c from 'classnames';
 import Select from 'react-select';
+import Ajv from 'ajv';
+import ajvKeywords from 'ajv-keywords';
 
 import { environment } from '../config';
+import {
+  step1 as schemaStep1,
+  step2 as schemaStep2
+} from '../schemas/field-report-form';
+import * as formData from '../utils/field-report-constants';
 
 import App from './app';
 import Fold from '../components/fold';
@@ -16,141 +24,86 @@ import {
   FormTextarea,
   FormRadioGroup,
   FormCheckbox,
-  FormSelect
+  FormSelect,
+  FormError
 } from '../components/form-elements/';
 import { FormDescription } from '../components/form-elements/misc';
 
-// Form data for group fields like radio buttons, and selects.
-const formData = {
-  status: [
-    {
-      label: 'Early Warning',
-      value: 'early-warning',
-      description: 'Early warning message for an upcoming disaster.'
-    },
-    {
-      label: 'Event',
-      value: 'event',
-      description: 'First report for this disaster.'
-    }
-  ],
+const ajv = new Ajv({ $data: true, allErrors: true, errorDataPath: 'property' });
+ajvKeywords(ajv);
 
-  disasterType: [
-    {
-      value: '',
-      label: '-- Select one --'
-    },
-    {
-      value: 'hurricane',
-      label: 'Hurricane'
-    },
-    {
-      value: 'typhoon',
-      label: 'Typhoon'
-    }
-  ],
+const dataPathToDisplay = (path) => {
+  path = path.substring(1);
+  const index = {
+    // Step 1.
+    summary: 'Summary',
+    countries: 'Countries',
+    status: 'Status',
+    disasterType: 'Disaster Type',
+    event: 'Event',
+    sources: 'Sources',
+    description: 'Brief Description of the Situation',
+    assistance: 'Government requests international assistance?',
 
-  event: [
-    {
-      value: '',
-      label: '-- Select one --'
-    },
-    {
-      value: 'event1',
-      label: 'Event One'
-    },
-    {
-      value: 'event2',
-      label: 'Event Two'
-    }
-  ],
+    // Step 2.
+    'numInjured.redCross': 'Injured Red Cross',
+    'numInjured.governmMissingent': 'Injured Government',
+    'numDead.redCross': 'Dead Red Cross',
+    'numDead.government': 'Dead Government',
+    'numMissing.redCross': 'Missing Red Cross',
+    'numMissing.government': 'Missing Government',
+    'numAffected.redCross': 'Affected Red Cross',
+    'numAffected.government': 'Affected Government',
+    'numDisplaced.redCross': 'Displaced Red Cross',
+    'numDisplaced.government': 'Displaced Government',
+    numAssistedGov: 'Assisted by Government',
+    numAssistedRedCross: 'Assisted By Red Cross',
+    numLocalStaff: 'Number of local staff involved',
+    numVolunteers: 'Number of volunteers involved',
+    numExpats: 'Number of expats/delegates'
+  };
+  if (!index[path]) {
+    console.warn('No display value found for', path);
+    return 'N/A';
+  }
+  return index[path];
+};
 
-  sources: [
-    {
-      label: 'National Society',
-      name: 'national-society'
-    },
-    {
-      label: 'Government',
-      name: 'government'
-    },
-    {
-      label: 'Delegation/Secretariat',
-      name: 'delegation-secretariat'
-    },
-    {
-      label: 'UN agency',
-      name: 'un-agency'
-    },
-    {
-      label: 'Academia/Research',
-      name: 'academia-research'
-    },
-    {
-      label: 'Press',
-      name: 'press'
-    },
-    {
-      label: 'NGOs',
-      name: 'ngo'
-    },
-    {
-      label: 'Other',
-      name: 'other'
-    }
-  ],
+const prepStateForValidation = (state) => {
+  state = _cloneDeep(state);
 
-  // Step 3
-  actions: [
-    {
-      label: 'Damage/Needs Assessment',
-      name: 'damage-needs'
-    },
-    {
-      label: 'Health',
-      name: 'health'
-    },
-    {
-      label: 'Camp Mangement',
-      name: 'camp-management'
-    },
-    {
-      label: 'Search and Rescue',
-      name: 'search-rescue'
-    },
-    {
-      label: 'Tracing/RFP',
-      name: 'tracing'
-    },
-    {
-      label: 'Psychosocial support services',
-      name: 'psychosocial'
-    },
-    {
-      label: 'Water and Sanitation',
-      name: 'water-sanitation'
-    },
-    {
-      label: 'Shelter',
-      name: 'shelter'
-    },
-    {
-      label: 'Evacuation',
-      name: 'evacuation'
-    },
-    {
-      label: 'First Aid',
-      name: 'first-aid'
-    },
-    {
-      label: 'Relief/Supply Distribution',
-      name: 'relief'
-    },
-    {
-      label: 'Human remains management and identification',
-      name: 'human remains'
+  // Conversion functions.
+  const toBool = (val) => val === 'true';
+  const toNumIfNum = (val) => {
+    let v = _toNumber(val);
+    return isNaN(v) ? val : v;
+  };
+
+  const formatter = {
+    // Step 1.
+    assistance: toBool,
+    countries: (val) => val.map(o => o.value),
+
+    // Step 2.
+    numInjured: (val) => ({redCross: toNumIfNum(val.redCross), government: toNumIfNum(val.government)}),
+    numDead: (val) => ({redCross: toNumIfNum(val.redCross), government: toNumIfNum(val.government)}),
+    numMissing: (val) => ({redCross: toNumIfNum(val.redCross), government: toNumIfNum(val.government)}),
+    numAffected: (val) => ({redCross: toNumIfNum(val.redCross), government: toNumIfNum(val.government)}),
+    numDisplaced: (val) => ({redCross: toNumIfNum(val.redCross), government: toNumIfNum(val.government)}),
+    numAssistedGov: toNumIfNum,
+    numAssistedRedCross: toNumIfNum,
+    numLocalStaff: toNumIfNum,
+    numVolunteers: toNumIfNum,
+    numExpats: toNumIfNum
+  };
+
+  for (let prop in state) {
+    if (formatter[prop]) {
+      state[prop] = formatter[prop](state[prop]);
     }
-  ]
+  }
+
+  return state;
 };
 
 class FieldReportForm extends React.Component {
@@ -158,7 +111,7 @@ class FieldReportForm extends React.Component {
     super(props);
 
     this.state = {
-      step: 1,
+      step: 2,
       data: {
         // Step 1
         summary: undefined,
@@ -233,7 +186,7 @@ class FieldReportForm extends React.Component {
         contactMediaNatSoc: { name: undefined, func: undefined, email: undefined },
         contactMedia: { name: undefined, func: undefined, email: undefined }
       },
-      errors: []
+      errors: null
     };
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -241,6 +194,35 @@ class FieldReportForm extends React.Component {
 
   onSubmit (e) {
     e.preventDefault();
+    const { step, data } = this.state;
+    let state = prepStateForValidation(data);
+    console.log('state', state);
+
+    let validator;
+    switch (step) {
+      case 1:
+        validator = ajv.compile(schemaStep1);
+        break;
+      case 2:
+        validator = ajv.compile(schemaStep2);
+        // Some values need to be converted.
+        break;
+    }
+    validator(state);
+
+    this.setState({ errors: _cloneDeep(validator.errors) });
+    console.log('validator.errors', validator.errors);
+    if (validator.errors !== null) {
+      return null;
+    } else {
+      console.log('good');
+      return;
+      if (step === 5) {
+        console.log('Submit data!!!');
+      } else {
+        this.setState({ step: step + 1 });
+      }
+    }
   }
 
   onFieldChange (field, e) {
@@ -294,8 +276,14 @@ class FieldReportForm extends React.Component {
           later as the tittle of the RSS feed and possibly as the text message on mobile phones.</p><em>Example: 250 dead after an earthquake in Indonesia</em></div>}
           value={this.state.data.summary}
           onChange={this.onFieldChange.bind(this, 'summary')}
-          autoFocus
-        />
+          autoFocus >
+
+          <FormError
+            errors={this.state.errors}
+            property='summary'
+          />
+
+        </FormInput>
 
         <div className='form__group'>
           <label className='form__label'>Countries *</label>
@@ -304,13 +292,13 @@ class FieldReportForm extends React.Component {
             name='countries'
             value={this.state.data.countries}
             onChange={this.onFieldChange.bind(this, 'countries')}
-            options={[
-              { value: 'one', label: 'One' },
-              { value: 'two', label: 'Two' },
-              { value: 'three', label: 'Three' },
-              { value: 'four', label: 'Four' }
-            ]}
+            options={formData.countries}
             multi />
+
+          <FormError
+            errors={this.state.errors}
+            property='countries'
+          />
         </div>
 
         <FormRadioGroup
@@ -318,7 +306,12 @@ class FieldReportForm extends React.Component {
           name='status'
           options={formData.status}
           selectedOption={this.state.data.status}
-          onChange={this.onFieldChange.bind(this, 'status')} />
+          onChange={this.onFieldChange.bind(this, 'status')}>
+          <FormError
+            errors={this.state.errors}
+            property='status'
+          />
+        </FormRadioGroup>
 
         <div className='form__hascol form__hascol--2'>
           <FormSelect
@@ -327,7 +320,12 @@ class FieldReportForm extends React.Component {
             id='disaster-type'
             options={formData.disasterType}
             value={this.state.data.disasterType}
-            onChange={this.onFieldChange.bind(this, 'disasterType')} />
+            onChange={this.onFieldChange.bind(this, 'disasterType')} >
+            <FormError
+              errors={this.state.errors}
+              property='disasterType'
+            />
+          </FormSelect>
 
           <FormSelect
             label='Event'
@@ -335,7 +333,12 @@ class FieldReportForm extends React.Component {
             id='event'
             options={formData.event}
             value={this.state.data.event}
-            onChange={this.onFieldChange.bind(this, 'event')} />
+            onChange={this.onFieldChange.bind(this, 'event')} >
+            <FormError
+              errors={this.state.errors}
+              property='event'
+            />
+          </FormSelect>
         </div>
 
         <div className='form__group'>
@@ -367,7 +370,12 @@ class FieldReportForm extends React.Component {
           id='description'
           description={'Briefly describe the situation.'}
           value={this.state.data.description}
-          onChange={this.onFieldChange.bind(this, 'description')} />
+          onChange={this.onFieldChange.bind(this, 'description')} >
+          <FormError
+            errors={this.state.errors}
+            property='description'
+          />
+        </FormTextarea>
 
         <FormRadioGroup
           label='Government requests international assistance?'
@@ -384,7 +392,12 @@ class FieldReportForm extends React.Component {
             }
           ]}
           selectedOption={this.state.data.assistance}
-          onChange={this.onFieldChange.bind(this, 'assistance')} />
+          onChange={this.onFieldChange.bind(this, 'assistance')} >
+          <FormError
+            errors={this.state.errors}
+            property='assistance'
+          />
+        </FormRadioGroup>
       </Fold>
     );
   }
@@ -397,30 +410,40 @@ class FieldReportForm extends React.Component {
           description='Number of people suffering from physical injuries, trauma or an illness requiring immediate medical treatment as a direct result of a disaster.'
           name='num-injured'
           values={this.state.data.numInjured}
+          fieldKey='numInjured'
+          errors={this.state.errors}
           onChange={this.onFieldChange.bind(this, 'numInjured')} />
         <SourceEstimation
           label='Dead'
           description='Number of people confirmed dead and number missing and presumed dead.'
           name='num-dead'
           values={this.state.data.numDead}
+          fieldKey='numDead'
+          errors={this.state.errors}
           onChange={this.onFieldChange.bind(this, 'numDead')} />
         <SourceEstimation
           label='Missing'
           description='Number of people missing and presumed dead.'
           name='num-missing'
           values={this.state.data.numMissing}
+          fieldKey='numMissing'
+          errors={this.state.errors}
           onChange={this.onFieldChange.bind(this, 'numMissing')} />
         <SourceEstimation
           label='Affected'
           description='Number of people requiring immediate assistance during a period of emergency; this may include displaced or evacuated people.'
           name='num-affected'
           values={this.state.data.numAffected}
+          fieldKey='numAffected'
+          errors={this.state.errors}
           onChange={this.onFieldChange.bind(this, 'numAffected')} />
         <SourceEstimation
           label='Displaced'
           description='Number of people temporary displaced.'
           name='num-displaced'
           values={this.state.data.numDisplaced}
+          fieldKey='numDisplaced'
+          errors={this.state.errors}
           onChange={this.onFieldChange.bind(this, 'numDisplaced')} />
 
         <FormInput
@@ -430,7 +453,13 @@ class FieldReportForm extends React.Component {
           id='num-assisted-gov'
           classWrapper='form__group--kv'
           value={this.state.data.numAssistedGov}
-          onChange={this.onFieldChange.bind(this, 'numAssistedGov')} />
+          onChange={this.onFieldChange.bind(this, 'numAssistedGov')} >
+          <FormError
+            errors={this.state.errors}
+            property='numAssistedGov'
+          />
+        </FormInput>
+
         <FormInput
           label='Assisted By Red Cross'
           type='text'
@@ -438,7 +467,12 @@ class FieldReportForm extends React.Component {
           id='num-assisted-red-cross'
           classWrapper='form__group--kv'
           value={this.state.data.numAssistedRedCross}
-          onChange={this.onFieldChange.bind(this, 'numAssistedRedCross')} />
+          onChange={this.onFieldChange.bind(this, 'numAssistedRedCross')} >
+          <FormError
+            errors={this.state.errors}
+            property='numAssistedRedCross'
+          />
+        </FormInput>
         <FormInput
           label='Number of local staff involved'
           type='text'
@@ -446,7 +480,12 @@ class FieldReportForm extends React.Component {
           id='num-local-staff'
           classWrapper='form__group--kv'
           value={this.state.data.numLocalStaff}
-          onChange={this.onFieldChange.bind(this, 'numLocalStaff')} />
+          onChange={this.onFieldChange.bind(this, 'numLocalStaff')} >
+          <FormError
+            errors={this.state.errors}
+            property='numLocalStaff'
+          />
+        </FormInput>
         <FormInput
           label='Number of volunteers involved'
           type='text'
@@ -454,7 +493,12 @@ class FieldReportForm extends React.Component {
           id='num-volunteers'
           classWrapper='form__group--kv'
           value={this.state.data.numVolunteers}
-          onChange={this.onFieldChange.bind(this, 'numVolunteers')} />
+          onChange={this.onFieldChange.bind(this, 'numVolunteers')} >
+          <FormError
+            errors={this.state.errors}
+            property='numVolunteers'
+          />
+        </FormInput>
         <FormInput
           label='Number of expats/delegates'
           type='text'
@@ -462,7 +506,12 @@ class FieldReportForm extends React.Component {
           id='num-expats'
           classWrapper='form__group--kv'
           value={this.state.data.numExpats}
-          onChange={this.onFieldChange.bind(this, 'numExpats')} />
+          onChange={this.onFieldChange.bind(this, 'numExpats')} >
+          <FormError
+            errors={this.state.errors}
+            property='numExpats'
+          />
+        </FormInput>
       </Fold>
     );
   }
@@ -705,6 +754,23 @@ class FieldReportForm extends React.Component {
     );
   }
 
+  renderErrorSummary () {
+    const { errors } = this.state;
+    if (!errors) {
+      return null;
+    }
+
+    return (
+      <div className='form__errrors'>
+        <h3>Page {this.state.step} of 5 incomplete.</h3>
+        <p>To continue please fix:</p>
+        <ul>
+          {errors.map(o => <li key={o.dataPath}>{dataPathToDisplay(o.dataPath)}</li>)}
+        </ul>
+      </div>
+    );
+  }
+
   render () {
     return (
       <App className='page--frep-form'>
@@ -721,6 +787,8 @@ class FieldReportForm extends React.Component {
               <form className='form' onSubmit={this.onSubmit}>
                 {this.renderStepper()}
                 {this[`renderStep${this.state.step}`]()}
+
+                {this.renderErrorSummary()}
 
                 <div className='form__actions'>
                   <button type='submit' className='button button--secondary-raised-dark' title='Save and continue'>Save and continue</button>
@@ -840,7 +908,9 @@ class SourceEstimation extends React.Component {
       label,
       name,
       description,
-      values
+      values,
+      fieldKey,
+      errors
     } = this.props;
 
     return (
@@ -859,7 +929,13 @@ class SourceEstimation extends React.Component {
             id={`${name}-red-cross`}
             classLabel='form__label--nested'
             value={values.redCross}
-            onChange={this.onFieldChange.bind(this, 'redCross')} />
+            onChange={this.onFieldChange.bind(this, 'redCross')} >
+            <FormError
+              errors={errors}
+              property={`${fieldKey}.redCross`}
+            />
+          </FormInput>
+
           <FormInput
             label='Estimation Government'
             type='text'
@@ -867,7 +943,12 @@ class SourceEstimation extends React.Component {
             id={`${name}-government`}
             classLabel='form__label--nested'
             value={values.government}
-            onChange={this.onFieldChange.bind(this, 'government')} />
+            onChange={this.onFieldChange.bind(this, 'government')} >
+            <FormError
+              errors={errors}
+              property={`${fieldKey}.government`}
+            />
+          </FormInput>
         </div>
       </div>
     );
@@ -883,6 +964,8 @@ if (environment !== 'production') {
       redCross: T.string,
       government: T.string
     }),
+    fieldKey: T.string,
+    errors: T.array,
     onChange: T.func
   };
 }
