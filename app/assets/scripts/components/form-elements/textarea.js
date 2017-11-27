@@ -10,7 +10,9 @@ export default function FormTextarea (props) {
     label,
     name,
     description,
-    className,
+    classInput,
+    classWrapper,
+    classLabel,
     id,
     value,
     onChange,
@@ -19,17 +21,23 @@ export default function FormTextarea (props) {
   } = props;
 
   return (
-    <div className='form__group'>
-      <label className='form__label' htmlFor={id}>{label}</label>
-      <FormDescription value={description} />
-      <textarea
-        id={id}
-        name={name}
-        className={c('form__control form__control--medium', className)}
-        value={value || ''}
-        onChange={onChange}
-        autoFocus={autoFocus} />
-      {children || null}
+    <div className={c('form__group', classWrapper)}>
+      <div className='form__inner-header'>
+        <div className='form__inner-headline'>
+          <label className={c('form__label', classLabel)} htmlFor={id}>{label}</label>
+          <FormDescription value={description} />
+        </div>
+      </div>
+      <div className='form__inner-body'>
+        <textarea
+          id={id}
+          name={name}
+          className={c('form__control form__control--medium', classInput)}
+          value={value || ''}
+          onChange={onChange}
+          autoFocus={autoFocus} />
+        {children || null}
+      </div>
     </div>
   );
 }
@@ -46,7 +54,9 @@ if (process.env.NODE_ENV !== 'production') {
       T.node,
       T.object
     ]),
-    className: T.string,
+    classWrapper: T.string,
+    classLabel: T.string,
+    classInput: T.string,
     id: T.string,
     value: T.string,
     onChange: T.func,

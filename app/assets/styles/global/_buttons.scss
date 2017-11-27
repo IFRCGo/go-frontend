@@ -103,6 +103,12 @@
   @include button-variation($primary-color, "raised", "dark");
 }
 
+/* Primary Raised Dark */
+
+.button--secondary-raised-dark {
+  @include button-variation($secondary-color, "raised", "dark");
+}
+
 /* Primary Plain */
 
 .button--primary-plain {

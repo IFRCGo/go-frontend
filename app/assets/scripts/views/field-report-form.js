@@ -4,8 +4,18 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import _set from 'lodash.set';
 import _cloneDeep from 'lodash.clonedeep';
+import _toNumber from 'lodash.tonumber';
+import c from 'classnames';
+import Select from 'react-select';
+import Ajv from 'ajv';
+import ajvKeywords from 'ajv-keywords';
 
 import { environment } from '../config';
+import {
+  step1 as schemaStep1,
+  step2 as schemaStep2
+} from '../schemas/field-report-form';
+import * as formData from '../utils/field-report-constants';
 
 import App from './app';
 import Fold from '../components/fold';
@@ -14,57 +24,86 @@ import {
   FormTextarea,
   FormRadioGroup,
   FormCheckbox,
-  FormSelect
+  FormSelect,
+  FormError
 } from '../components/form-elements/';
+import { FormDescription } from '../components/form-elements/misc';
 
-const formData = {
-  status: [
-    {
-      label: 'Early Warning',
-      value: 'early-warning',
-      description: 'Early warning message for an upcoming disaster.'
-    },
-    {
-      label: 'Event',
-      value: 'event',
-      description: 'First report for this disaster.'
-    }
-  ],
+const ajv = new Ajv({ $data: true, allErrors: true, errorDataPath: 'property' });
+ajvKeywords(ajv);
 
-  sources: [
-    {
-      label: 'National Society',
-      name: 'national-society'
-    },
-    {
-      label: 'Government',
-      name: 'government'
-    },
-    {
-      label: 'Delegation/Secretariat',
-      name: 'delegation-secretariat'
-    },
-    {
-      label: 'UN agency',
-      name: 'un-agency'
-    },
-    {
-      label: 'Academia/Research',
-      name: 'academia-research'
-    },
-    {
-      label: 'Press',
-      name: 'press'
-    },
-    {
-      label: 'NGOs',
-      name: 'ngo'
-    },
-    {
-      label: 'Other',
-      name: 'other'
+const dataPathToDisplay = (path) => {
+  path = path.substring(1);
+  const index = {
+    // Step 1.
+    summary: 'Summary',
+    countries: 'Countries',
+    status: 'Status',
+    disasterType: 'Disaster Type',
+    event: 'Event',
+    sources: 'Sources',
+    description: 'Brief Description of the Situation',
+    assistance: 'Government requests international assistance?',
+
+    // Step 2.
+    'numInjured.redCross': 'Injured Red Cross',
+    'numInjured.governmMissingent': 'Injured Government',
+    'numDead.redCross': 'Dead Red Cross',
+    'numDead.government': 'Dead Government',
+    'numMissing.redCross': 'Missing Red Cross',
+    'numMissing.government': 'Missing Government',
+    'numAffected.redCross': 'Affected Red Cross',
+    'numAffected.government': 'Affected Government',
+    'numDisplaced.redCross': 'Displaced Red Cross',
+    'numDisplaced.government': 'Displaced Government',
+    numAssistedGov: 'Assisted by Government',
+    numAssistedRedCross: 'Assisted By Red Cross',
+    numLocalStaff: 'Number of local staff involved',
+    numVolunteers: 'Number of volunteers involved',
+    numExpats: 'Number of expats/delegates'
+  };
+  if (!index[path]) {
+    console.warn('No display value found for', path);
+    return 'N/A';
+  }
+  return index[path];
+};
+
+const prepStateForValidation = (state) => {
+  state = _cloneDeep(state);
+
+  // Conversion functions.
+  const toBool = (val) => val === 'true';
+  const toNumIfNum = (val) => {
+    let v = _toNumber(val);
+    return isNaN(v) ? val : v;
+  };
+
+  const formatter = {
+    // Step 1.
+    assistance: toBool,
+    countries: (val) => val.map(o => o.value),
+
+    // Step 2.
+    numInjured: (val) => ({redCross: toNumIfNum(val.redCross), government: toNumIfNum(val.government)}),
+    numDead: (val) => ({redCross: toNumIfNum(val.redCross), government: toNumIfNum(val.government)}),
+    numMissing: (val) => ({redCross: toNumIfNum(val.redCross), government: toNumIfNum(val.government)}),
+    numAffected: (val) => ({redCross: toNumIfNum(val.redCross), government: toNumIfNum(val.government)}),
+    numDisplaced: (val) => ({redCross: toNumIfNum(val.redCross), government: toNumIfNum(val.government)}),
+    numAssistedGov: toNumIfNum,
+    numAssistedRedCross: toNumIfNum,
+    numLocalStaff: toNumIfNum,
+    numVolunteers: toNumIfNum,
+    numExpats: toNumIfNum
+  };
+
+  for (let prop in state) {
+    if (formatter[prop]) {
+      state[prop] = formatter[prop](state[prop]);
     }
-  ]
+  }
+
+  return state;
 };
 
 class FieldReportForm extends React.Component {
@@ -72,8 +111,13 @@ class FieldReportForm extends React.Component {
     super(props);
 
     this.state = {
+      step: 2,
       data: {
+        // Step 1
         summary: undefined,
+        // Countries follows the structure defined by react-select.
+        // Will need to be converted.
+        countries: [],
         status: undefined,
         disasterType: undefined,
         event: undefined,
@@ -83,15 +127,102 @@ class FieldReportForm extends React.Component {
           specification: undefined
         })),
         description: undefined,
-        assistance: undefined
+        assistance: undefined,
+
+        // Step 2
+        numInjured: { redCross: undefined, government: undefined },
+        numDead: { redCross: undefined, government: undefined },
+        numMissing: { redCross: undefined, government: undefined },
+        numAffected: { redCross: undefined, government: undefined },
+        numDisplaced: { redCross: undefined, government: undefined },
+        numAssistedGov: undefined,
+        numAssistedRedCross: undefined,
+        numLocalStaff: undefined,
+        numVolunteers: undefined,
+        numExpats: undefined,
+
+        // Step 3
+        bulletin: undefined,
+        actionsOthers: undefined,
+        actionsNatSoc: {
+          options: formData.actions.map(o => ({
+            name: o.name,
+            checked: false
+          })),
+          description: undefined
+        },
+        actionsPns: {
+          options: formData.actions.map(o => ({
+            name: o.name,
+            checked: false
+          })),
+          description: undefined
+        },
+        actionsFederation: {
+          options: formData.actions.map(o => ({
+            name: o.name,
+            checked: false
+          })),
+          description: undefined
+        },
+
+        // Step 4
+        dref: undefined,
+        amountDref: undefined,
+        emergencyAppeal: undefined,
+        amountEmergencyAppeal: undefined,
+        rdrtrits: undefined,
+        numPplRdrits: undefined,
+        fact: undefined,
+        numPplFact: undefined,
+        ifrcStaff: undefined,
+        numPplIfrcStaff: undefined,
+
+        // Step 5
+        contactOriginator: { name: undefined, func: undefined, email: undefined },
+        contactPrimary: { name: undefined, func: undefined, email: undefined },
+        contactNatSoc: { name: undefined, func: undefined, email: undefined },
+        contactFederation: { name: undefined, func: undefined, email: undefined },
+        contactMediaNatSoc: { name: undefined, func: undefined, email: undefined },
+        contactMedia: { name: undefined, func: undefined, email: undefined }
       },
-      errors: []
+      errors: null
     };
 
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onSubmit () {
+  onSubmit (e) {
+    e.preventDefault();
+    const { step, data } = this.state;
+    let state = prepStateForValidation(data);
+    console.log('state', state);
+
+    let validator;
+    switch (step) {
+      case 1:
+        validator = ajv.compile(schemaStep1);
+        break;
+      case 2:
+        validator = ajv.compile(schemaStep2);
+        // Some values need to be converted.
+        break;
+    }
+    validator(state);
+
+    this.setState({ errors: _cloneDeep(validator.errors) });
+    console.log('validator.errors', validator.errors);
+    if (validator.errors !== null) {
+      return null;
+    } else {
+      console.log('good');
+      return;
+      if (step === 5) {
+        console.log('Submit data!!!');
+      } else {
+        this.setState({ step: step + 1 });
+      }
+    }
   }
 
   onFieldChange (field, e) {
@@ -101,28 +232,541 @@ class FieldReportForm extends React.Component {
     this.setState({data});
   }
 
-  renderReportSources () {
+  onStepperClick (step, e) {
+    e.preventDefault();
+    // Can't move forward. Only backwards.
+    // if (step > this.state.step) {
+    //   return;
+    // }
+    this.setState({ step });
+  }
+
+  renderStepper () {
+    const step = this.state.step;
+    const items = [
+      'Basic Information',
+      'Numeric Details',
+      'Actions Taken',
+      'Planned Response',
+      'Contacts'
+    ];
     return (
-      <div className='form__group'>
-        <label className='form__label'>Sources</label>
-        <div className="form__description">
-          <p>Check the box next to the source of information and specify:</p>
-          <ul>
-            <li>UN agency - OCHA</li>
-            <li>Academia/Research - Tropical Storm Risk</li>
-          </ul>
+      <ol className='stepper'>
+        {items.map((o, idx) => {
+          idx += 1;
+          const classes = c('stepper__item', {
+            'stepper__item--complete': step > idx,
+            'stepper__item--current': step === idx
+          });
+          return <li key={o} className={classes}><a href='#' onClick={this.onStepperClick.bind(this, idx)}><span>{o}</span></a></li>;
+        })}
+      </ol>
+    );
+  }
+
+  renderStep1 () {
+    return (
+      <Fold title='Basic Information'>
+        <FormInput
+          label='Summary *'
+          type='text'
+          name='summary'
+          id='summary'
+          description={<div className='form__description'><p>Write a short summary of the report's topic. It will be used as the subject of the e-mail notification,
+          later as the tittle of the RSS feed and possibly as the text message on mobile phones.</p><em>Example: 250 dead after an earthquake in Indonesia</em></div>}
+          value={this.state.data.summary}
+          onChange={this.onFieldChange.bind(this, 'summary')}
+          autoFocus >
+
+          <FormError
+            errors={this.state.errors}
+            property='summary'
+          />
+
+        </FormInput>
+
+        <div className='form__group'>
+          <label className='form__label'>Countries *</label>
+          <p className='form__description'>Seach for the affected country. You can select more than one.</p>
+          <Select
+            name='countries'
+            value={this.state.data.countries}
+            onChange={this.onFieldChange.bind(this, 'countries')}
+            options={formData.countries}
+            multi />
+
+          <FormError
+            errors={this.state.errors}
+            property='countries'
+          />
         </div>
-        <div className='sources-list'>
-          {formData.sources.map((source, idx) => (
-            <ReportSource
-              key={source.name}
-              label={source.label}
-              sourceName={source.name}
-              specificationValue={this.state.data.sources[idx].specification}
-              checked={this.state.data.sources[idx].checked}
-              onChange={this.onFieldChange.bind(this, `sources[${idx}]`)} />
-          ))}
+
+        <FormRadioGroup
+          label='Status *'
+          name='status'
+          options={formData.status}
+          selectedOption={this.state.data.status}
+          onChange={this.onFieldChange.bind(this, 'status')}>
+          <FormError
+            errors={this.state.errors}
+            property='status'
+          />
+        </FormRadioGroup>
+
+        <div className='form__hascol form__hascol--2'>
+          <FormSelect
+            label='Disaster Type *'
+            name='disaster-type'
+            id='disaster-type'
+            options={formData.disasterType}
+            value={this.state.data.disasterType}
+            onChange={this.onFieldChange.bind(this, 'disasterType')} >
+            <FormError
+              errors={this.state.errors}
+              property='disasterType'
+            />
+          </FormSelect>
+
+          <FormSelect
+            label='Event'
+            name='event'
+            id='event'
+            options={formData.event}
+            value={this.state.data.event}
+            onChange={this.onFieldChange.bind(this, 'event')} >
+            <FormError
+              errors={this.state.errors}
+              property='event'
+            />
+          </FormSelect>
         </div>
+
+        <div className='form__group'>
+          <label className='form__label'>Sources</label>
+          <div className='form__description'>
+            <p>Check the box next to the source of information and specify:</p>
+            <ul>
+              <li>UN agency - OCHA</li>
+              <li>Academia/Research - Tropical Storm Risk</li>
+            </ul>
+          </div>
+          <div className='sources-list'>
+            {formData.sources.map((source, idx) => (
+              <ReportSource
+                key={source.name}
+                idx={idx}
+                label={source.label}
+                sourceName={source.name}
+                specificationValue={this.state.data.sources[idx].specification}
+                checked={this.state.data.sources[idx].checked}
+                onChange={this.onFieldChange.bind(this, `sources[${idx}]`)} />
+            ))}
+          </div>
+        </div>
+
+        <FormTextarea
+          label='Brief Description of the Situation'
+          name='description'
+          id='description'
+          description={'Briefly describe the situation.'}
+          value={this.state.data.description}
+          onChange={this.onFieldChange.bind(this, 'description')} >
+          <FormError
+            errors={this.state.errors}
+            property='description'
+          />
+        </FormTextarea>
+
+        <FormRadioGroup
+          label='Government requests international assistance?'
+          description={'Indicate if the government requested international assistance.'}
+          name='assistance'
+          options={[
+            {
+              label: 'Yes',
+              value: 'true'
+            },
+            {
+              label: 'No',
+              value: 'false'
+            }
+          ]}
+          selectedOption={this.state.data.assistance}
+          onChange={this.onFieldChange.bind(this, 'assistance')} >
+          <FormError
+            errors={this.state.errors}
+            property='assistance'
+          />
+        </FormRadioGroup>
+      </Fold>
+    );
+  }
+
+  renderStep2 () {
+    return (
+      <Fold title='Numeric Details (People)'>
+        <SourceEstimation
+          label='Injured'
+          description='Number of people suffering from physical injuries, trauma or an illness requiring immediate medical treatment as a direct result of a disaster.'
+          name='num-injured'
+          values={this.state.data.numInjured}
+          fieldKey='numInjured'
+          errors={this.state.errors}
+          onChange={this.onFieldChange.bind(this, 'numInjured')} />
+        <SourceEstimation
+          label='Dead'
+          description='Number of people confirmed dead and number missing and presumed dead.'
+          name='num-dead'
+          values={this.state.data.numDead}
+          fieldKey='numDead'
+          errors={this.state.errors}
+          onChange={this.onFieldChange.bind(this, 'numDead')} />
+        <SourceEstimation
+          label='Missing'
+          description='Number of people missing and presumed dead.'
+          name='num-missing'
+          values={this.state.data.numMissing}
+          fieldKey='numMissing'
+          errors={this.state.errors}
+          onChange={this.onFieldChange.bind(this, 'numMissing')} />
+        <SourceEstimation
+          label='Affected'
+          description='Number of people requiring immediate assistance during a period of emergency; this may include displaced or evacuated people.'
+          name='num-affected'
+          values={this.state.data.numAffected}
+          fieldKey='numAffected'
+          errors={this.state.errors}
+          onChange={this.onFieldChange.bind(this, 'numAffected')} />
+        <SourceEstimation
+          label='Displaced'
+          description='Number of people temporary displaced.'
+          name='num-displaced'
+          values={this.state.data.numDisplaced}
+          fieldKey='numDisplaced'
+          errors={this.state.errors}
+          onChange={this.onFieldChange.bind(this, 'numDisplaced')} />
+
+        <FormInput
+          label='Assisted by Government'
+          type='text'
+          name='num-assisted-gov'
+          id='num-assisted-gov'
+          classWrapper='form__group--kv'
+          value={this.state.data.numAssistedGov}
+          onChange={this.onFieldChange.bind(this, 'numAssistedGov')} >
+          <FormError
+            errors={this.state.errors}
+            property='numAssistedGov'
+          />
+        </FormInput>
+
+        <FormInput
+          label='Assisted By Red Cross'
+          type='text'
+          name='num-assisted-red-cross'
+          id='num-assisted-red-cross'
+          classWrapper='form__group--kv'
+          value={this.state.data.numAssistedRedCross}
+          onChange={this.onFieldChange.bind(this, 'numAssistedRedCross')} >
+          <FormError
+            errors={this.state.errors}
+            property='numAssistedRedCross'
+          />
+        </FormInput>
+        <FormInput
+          label='Number of local staff involved'
+          type='text'
+          name='num-local-staff'
+          id='num-local-staff'
+          classWrapper='form__group--kv'
+          value={this.state.data.numLocalStaff}
+          onChange={this.onFieldChange.bind(this, 'numLocalStaff')} >
+          <FormError
+            errors={this.state.errors}
+            property='numLocalStaff'
+          />
+        </FormInput>
+        <FormInput
+          label='Number of volunteers involved'
+          type='text'
+          name='num-volunteers'
+          id='num-volunteers'
+          classWrapper='form__group--kv'
+          value={this.state.data.numVolunteers}
+          onChange={this.onFieldChange.bind(this, 'numVolunteers')} >
+          <FormError
+            errors={this.state.errors}
+            property='numVolunteers'
+          />
+        </FormInput>
+        <FormInput
+          label='Number of expats/delegates'
+          type='text'
+          name='num-expats'
+          id='num-expats'
+          classWrapper='form__group--kv'
+          value={this.state.data.numExpats}
+          onChange={this.onFieldChange.bind(this, 'numExpats')} >
+          <FormError
+            errors={this.state.errors}
+            property='numExpats'
+          />
+        </FormInput>
+      </Fold>
+    );
+  }
+
+  renderStep3 () {
+    return (
+      <Fold title='Actions taken'>
+        <ActionsCheckboxes
+          label='Actions Taken by National Society Red Cross (if any)'
+          description={'Select the activities taken by the National Society and briefly describe'}
+          name='actions-nat-soc'
+          options={formData.actions}
+          values={this.state.data.actionsNatSoc}
+          onChange={this.onFieldChange.bind(this, 'actionsNatSoc')} />
+
+        <ActionsCheckboxes
+          label='Actions Taken by PNS Red Cross (if any)'
+          description={'Select the activities taken by the foreign National Society and briefly describe'}
+          name='actions-pns'
+          options={formData.actions}
+          values={this.state.data.actionsPns}
+          onChange={this.onFieldChange.bind(this, 'actionsPns')} />
+
+        <ActionsCheckboxes
+          label='Actions Taken by Federation Red Cross (if any)'
+          description={'Select the activities taken by the Federation (could be the Zone office, DMUS, ...) and briefly describe'}
+          name='actions-federation'
+          options={formData.actions}
+          values={this.state.data.actionsFederation}
+          onChange={this.onFieldChange.bind(this, 'actionsFederation')} />
+
+        <FormRadioGroup
+          label='Information Bulletin'
+          description={'About information management, indicate if an Information Bulletin was published, is planned or if no Information Bulletin will be issued for this operation/disaster.'}
+          name='bulletin'
+          options={[
+            {
+              label: 'No',
+              value: 'no'
+            },
+            {
+              label: 'Planned',
+              value: 'planned'
+            },
+            {
+              label: 'Yes/Published',
+              value: 'published'
+            }
+          ]}
+          selectedOption={this.state.data.bulletin}
+          onChange={this.onFieldChange.bind(this, 'bulletin')} />
+
+        <FormTextarea
+          label='Actions Taken by Others (Governemnts, UN)'
+          name='actions-others'
+          id='actions-others'
+          description={'Who else was involved? UN agencies? NGOs? Government? Describe what other actors did.'}
+          value={this.state.data.actionsOthers}
+          onChange={this.onFieldChange.bind(this, 'actionsOthers')} />
+      </Fold>
+    );
+  }
+
+  renderStep4 () {
+    const optsPlanReqDep = [
+      {
+        label: 'Planned',
+        value: 'planned'
+      },
+      {
+        label: 'Requested',
+        value: 'requested'
+      },
+      {
+        label: 'Deployed',
+        value: 'deployed'
+      }
+    ];
+
+    return (
+      <Fold title='Planned Response'>
+        <div className='form__group'>
+          <label className='form__label'>Planned International Response</label>
+          <div className='form__description'>
+            <p>Indicate the status of the differents international tools: Was DREF requested? How much ? Has it been approved ? How many beneficiaries ? Has the DREF operation been issued?</p>
+            <p>Same for the emergency appeal</p>
+            <p>For RDRT/FACT/ERU, only indicate if used, planned/requested or not used.</p>
+          </div>
+
+          <FormRadioGroup
+            label='DREF Requested'
+            name='dref'
+            options={[
+              {
+                label: 'Planned',
+                value: 'planned'
+              },
+              {
+                label: 'Requested',
+                value: 'requested'
+              },
+              {
+                label: 'Allocated',
+                value: 'allocated'
+              }
+            ]}
+            classWrapper='form__group--asymmetric'
+            selectedOption={this.state.data.dref}
+            onChange={this.onFieldChange.bind(this, 'dref')} />
+
+          <FormInput
+            label='Amount CHF'
+            type='text'
+            name='amount-dref'
+            id='amount-dref'
+            value={this.state.data.amountDref}
+            onChange={this.onFieldChange.bind(this, 'amountDref')} />
+
+          <FormRadioGroup
+            label='Emergency Appeal'
+            name='emergency-appeal'
+            options={[
+              {
+                label: 'Planned',
+                value: 'planned'
+              },
+              {
+                label: 'Requested',
+                value: 'requested'
+              },
+              {
+                label: 'Launched',
+                value: 'launched'
+              }
+            ]}
+            classWrapper='form__group--asymmetric'
+            selectedOption={this.state.data.emergencyAppeal}
+            onChange={this.onFieldChange.bind(this, 'emergencyAppeal')} />
+
+          <FormInput
+            label='Amount CHF'
+            type='text'
+            name='amount-emergency-appeal'
+            id='amount-emergency-appeal'
+            value={this.state.data.amountEmergencyAppeal}
+            onChange={this.onFieldChange.bind(this, 'amountEmergencyAppeal')} />
+
+          <FormRadioGroup
+            label='RDRT/RITS'
+            name='rdrt-rits'
+            options={optsPlanReqDep}
+            classWrapper='form__group--asymmetric'
+            selectedOption={this.state.data.rdrtrits}
+            onChange={this.onFieldChange.bind(this, 'rdrtrits')} />
+
+          <FormInput
+            label='Number of people'
+            type='text'
+            name='num-ppl-rdrt-rits'
+            id='num-ppl-rdrt-rits'
+            value={this.state.data.numPplRdrits}
+            onChange={this.onFieldChange.bind(this, 'numPplRdrits')} />
+
+          <FormRadioGroup
+            label='FACT'
+            name='fact'
+            options={optsPlanReqDep}
+            classWrapper='form__group--asymmetric'
+            selectedOption={this.state.data.fact}
+            onChange={this.onFieldChange.bind(this, 'fact')} />
+
+          <FormInput
+            label='Number of people'
+            type='text'
+            name='num-fact'
+            id='num-fact'
+            value={this.state.data.numPplFact}
+            onChange={this.onFieldChange.bind(this, 'numPplFact')} />
+
+          <FormRadioGroup
+            label='IFRC Staff Relocated'
+            name='ifrc-staff'
+            options={optsPlanReqDep}
+            classWrapper='form__group--asymmetric'
+            selectedOption={this.state.data.ifrcStaff}
+            onChange={this.onFieldChange.bind(this, 'ifrcStaff')} />
+
+          <FormInput
+            label='Number of people'
+            type='text'
+            name='num-ifrc-staff'
+            id='num-ifrc-staff'
+            value={this.state.data.numPplIfrcStaff}
+            onChange={this.onFieldChange.bind(this, 'numPplIfrcStaff')} />
+        </div>
+      </Fold>
+    );
+  }
+
+  renderStep5 () {
+    return (
+      <Fold title='Contacts'>
+        <ContactRow
+          label='Originator'
+          description='Your name, function and e-mail.'
+          name='contact-originator'
+          values={this.state.data.contactOriginator}
+          onChange={this.onFieldChange.bind(this, 'contactOriginator')} />
+        <ContactRow
+          label='Primary Contact'
+          description='The person to contact for more information'
+          name='contact-primary'
+          values={this.state.data.contactPrimary}
+          onChange={this.onFieldChange.bind(this, 'contactPrimary')} />
+        <ContactRow
+          label='National Society Contact'
+          description='A contact in the National Society for more information. Select someone who will be available for interview.'
+          name='contact-nat-soc'
+          values={this.state.data.contactNatSoc}
+          onChange={this.onFieldChange.bind(this, 'contactNatSoc')} />
+        <ContactRow
+          label='Federation Contact'
+          description='A contact of the Federation (Secretariat/Zone/DMUs) for more information. Select someone who will be available for interview.'
+          name='contact-federation'
+          values={this.state.data.contactFederation}
+          onChange={this.onFieldChange.bind(this, 'contactFederation')} />
+        <ContactRow
+          label='Media Contact in the National Society'
+          description='A media contact in the National Society. This person could be contacted by journalists.'
+          name='contact-media-nat-soc'
+          values={this.state.data.contactMediaNatSoc}
+          onChange={this.onFieldChange.bind(this, 'contactMediaNatSoc')} />
+        <ContactRow
+          label='Media Contact'
+          description='A media contact in the Secretariat/Zone/DMU. This person could be contacted by journalists.'
+          name='contact-media'
+          values={this.state.data.contactMedia}
+          onChange={this.onFieldChange.bind(this, 'contactMedia')} />
+      </Fold>
+    );
+  }
+
+  renderErrorSummary () {
+    const { errors } = this.state;
+    if (!errors) {
+      return null;
+    }
+
+    return (
+      <div className='form__errrors'>
+        <h3>Page {this.state.step} of 5 incomplete.</h3>
+        <p>To continue please fix:</p>
+        <ul>
+          {errors.map(o => <li key={o.dataPath}>{dataPathToDisplay(o.dataPath)}</li>)}
+        </ul>
       </div>
     );
   }
@@ -140,100 +784,16 @@ class FieldReportForm extends React.Component {
           </header>
           <div className='inpage__body'>
             <div className='inner'>
-              <Fold title='Basic Information'>
-                <form className='form' onSubmit={this.onSubmit}>
-                  <FormInput
-                    label='Summary'
-                    type='text'
-                    name='summary'
-                    id='summary'
-                    description={<p className='form__description'>Write a short summary of the report's topic. It will be used as the subject of the e-mail notification,
-                    later as the tittle of the RSS feed and possibly as the text message on mobile phones.<br /><em>Example: 250 dead after an earthquake in Indonesia</em></p>}
-                    value={this.state.data.summary}
-                    onChange={this.onFieldChange.bind(this, 'summary')}
-                    autoFocus
-                  />
+              <form className='form' onSubmit={this.onSubmit}>
+                {this.renderStepper()}
+                {this[`renderStep${this.state.step}`]()}
 
-                  <FormRadioGroup
-                    label='Status'
-                    name='status'
-                    options={formData.status}
-                    selectedOption={this.state.data.status}
-                    onChange={this.onFieldChange.bind(this, 'status')} />
+                {this.renderErrorSummary()}
 
-                  <div className='form__hascol form__hascol--2'>
-                    <FormSelect
-                      label='Disaster Type'
-                      name='disaster-type'
-                      id='disaster-type'
-                      options={[
-                        {
-                          value: '--',
-                          label: '-- Select one --'
-                        },
-                        {
-                          value: 'hurricane',
-                          label: 'Hurricane'
-                        },
-                        {
-                          value: 'typhoon',
-                          label: 'Typhoon'
-                        }
-                      ]}
-                      value={this.state.data.disasterType}
-                      onChange={this.onFieldChange.bind(this, 'disasterType')} />
-
-                    <FormSelect
-                      label='Event'
-                      name='event'
-                      id='event'
-                      options={[
-                        {
-                          value: '--',
-                          label: '-- Select one --'
-                        },
-                        {
-                          value: 'event1',
-                          label: 'Event One'
-                        },
-                        {
-                          value: 'event2',
-                          label: 'Event Two'
-                        }
-                      ]}
-                      value={this.state.data.event}
-                      onChange={this.onFieldChange.bind(this, 'event')} />
-                  </div>
-
-                  {this.renderReportSources()}
-
-                  <FormTextarea
-                    label='Brief Description of the Situation'
-                    type='text'
-                    name='description'
-                    id='description'
-                    description={'Briefly describe the situation.'}
-                    value={this.state.data.description}
-                    onChange={this.onFieldChange.bind(this, 'description')} />
-
-                  <FormRadioGroup
-                    label='Government requests international assistance?'
-                    description={'Indicate if the government requested international assistance.'}
-                    name='assistance'
-                    options={[
-                      {
-                        label: 'Yes',
-                        value: 'true'
-                      },
-                      {
-                        label: 'No',
-                        value: 'false'
-                      }
-                    ]}
-                    selectedOption={this.state.data.assistance}
-                    onChange={this.onFieldChange.bind(this, 'assistance')} />
-                </form>
-              </Fold>
+                <div className='form__actions'>
+                  <button type='submit' className='button button--secondary-raised-dark' title='Save and continue'>Save and continue</button>
+                </div>
+              </form>
             </div>
           </div>
         </section>
@@ -293,6 +853,7 @@ class ReportSource extends React.Component {
 
   render () {
     const {
+      idx,
       label,
       sourceName,
       specificationValue,
@@ -303,7 +864,7 @@ class ReportSource extends React.Component {
       <div className='sources-list__item'>
         <FormCheckbox
           label={label}
-          name={'source[name]'}
+          name={`source[${idx || 0}][name]`}
           id={`source-name-${sourceName}`}
           value={sourceName}
           checked={checked}
@@ -312,8 +873,9 @@ class ReportSource extends React.Component {
         <FormInput
           label='Specification'
           type='text'
-          name='source[spec]'
+          name={`source[${idx || 0}][spec]`}
           id='source-spec'
+          classLabel='form__label--nested'
           value={specificationValue}
           disabled={!checked}
           onChange={this.onSpecificationChange} />
@@ -324,11 +886,233 @@ class ReportSource extends React.Component {
 
 if (environment !== 'production') {
   ReportSource.propTypes = {
+    idx: T.number,
     label: T.string,
     sourceName: T.string,
     specificationValue: T.string,
     value: T.string,
     checked: T.bool,
+    onChange: T.func
+  };
+}
+
+class SourceEstimation extends React.Component {
+  onFieldChange (field, e) {
+    const { values, onChange } = this.props;
+    const newVals = Object.assign({}, values, {[field]: e.target.value});
+    onChange(newVals);
+  }
+
+  render () {
+    const {
+      label,
+      name,
+      description,
+      values,
+      fieldKey,
+      errors
+    } = this.props;
+
+    return (
+      <div className='form__group estimation-row'>
+        <div className='form__inner-header'>
+          <div className='form__inner-headline'>
+            <label className='form__label'>{label}</label>
+            <p className='form__description'>{description}</p>
+          </div>
+        </div>
+        <div className='form__inner-body'>
+          <FormInput
+            label='Estimation Red Cross'
+            type='text'
+            name={`${name}[red-cross]`}
+            id={`${name}-red-cross`}
+            classLabel='form__label--nested'
+            value={values.redCross}
+            onChange={this.onFieldChange.bind(this, 'redCross')} >
+            <FormError
+              errors={errors}
+              property={`${fieldKey}.redCross`}
+            />
+          </FormInput>
+
+          <FormInput
+            label='Estimation Government'
+            type='text'
+            name={`${name}[government]`}
+            id={`${name}-government`}
+            classLabel='form__label--nested'
+            value={values.government}
+            onChange={this.onFieldChange.bind(this, 'government')} >
+            <FormError
+              errors={errors}
+              property={`${fieldKey}.government`}
+            />
+          </FormInput>
+        </div>
+      </div>
+    );
+  }
+}
+
+if (environment !== 'production') {
+  SourceEstimation.propTypes = {
+    label: T.string,
+    name: T.string,
+    description: T.string,
+    values: T.shape({
+      redCross: T.string,
+      government: T.string
+    }),
+    fieldKey: T.string,
+    errors: T.array,
+    onChange: T.func
+  };
+}
+
+class ActionsCheckboxes extends React.Component {
+  constructor (props) {
+    super(props);
+    this.onDescriptionChange = this.onDescriptionChange.bind(this);
+  }
+
+  onCheckChange (idx) {
+    const { values, onChange } = this.props;
+    const prevState = values.options[idx].checked;
+    let newVals = _cloneDeep(values);
+    _set(newVals, `options[${idx}].checked`, !prevState);
+
+    onChange(newVals);
+  }
+
+  onDescriptionChange (e) {
+    const { values, onChange } = this.props;
+    const newVals = Object.assign({}, values, {description: e.target.value});
+    onChange(newVals);
+  }
+
+  render () {
+    const {
+      label,
+      name,
+      description,
+      options,
+      values
+    } = this.props;
+
+    return (
+      <div className='form__group'>
+        <div className='form__inner-header'>
+          <div className='form__inner-headline'>
+            <label className='form__label'>{label}</label>
+            <FormDescription value={description} />
+          </div>
+        </div>
+        <div className='form__inner-body'>
+          <div className='form__options-group'>
+            {options.map((o, idx) => (
+              <FormCheckbox
+                key={o.name}
+                label={o.label}
+                name={`${name}[options][]`}
+                id={`${name}-${o.name}`}
+                value={o.name}
+                checked={values.options[idx].checked}
+                onChange={this.onCheckChange.bind(this, idx)} />
+            ))}
+          </div>
+
+          <FormTextarea
+            label='Description'
+            name={`${name}[description]`}
+            id={`${name}-description`}
+            classLabel='form__label--nested'
+            value={values.description}
+            onChange={this.onDescriptionChange} />
+        </div>
+      </div>
+    );
+  }
+}
+
+if (environment !== 'production') {
+  ActionsCheckboxes.propTypes = {
+    label: T.string,
+    name: T.string,
+    description: T.string,
+    options: T.array,
+    values: T.shape({
+      options: T.array,
+      description: T.string
+    }),
+    onChange: T.func
+  };
+}
+
+class ContactRow extends React.Component {
+  onFieldChange (field, e) {
+    const { values, onChange } = this.props;
+    const newVals = Object.assign({}, values, {[field]: e.target.value});
+    onChange(newVals);
+  }
+
+  render () {
+    const {
+      label,
+      name,
+      description,
+      values
+    } = this.props;
+
+    return (
+      <div className='form__group contact-row'>
+        <div className='form__inner-header'>
+          <div className='form__inner-headline'>
+            <label className='form__label'>{label}</label>
+            <p className='form__description'>{description}</p>
+          </div>
+        </div>
+        <div className='form__inner-body'>
+          <FormInput
+            label='Name'
+            type='text'
+            name={`${name}[name]`}
+            id={`${name}-name`}
+            classLabel='form__label--nested'
+            value={values.name}
+            onChange={this.onFieldChange.bind(this, 'name')} />
+          <FormInput
+            label='Function'
+            type='text'
+            name={`${name}[func]`}
+            id={`${name}-func`}
+            classLabel='form__label--nested'
+            value={values.func}
+            onChange={this.onFieldChange.bind(this, 'func')} />
+          <FormInput
+            label='Email'
+            type='text'
+            name={`${name}[email]`}
+            id={`${name}-email`}
+            classLabel='form__label--nested'
+            value={values.email}
+            onChange={this.onFieldChange.bind(this, 'email')} />
+        </div>
+      </div>
+    );
+  }
+}
+
+if (environment !== 'production') {
+  ContactRow.propTypes = {
+    label: T.string,
+    name: T.string,
+    description: T.string,
+    values: T.shape({
+      name: T.string,
+      func: T.string,
+      email: T.string
+    }),
     onChange: T.func
   };
 }

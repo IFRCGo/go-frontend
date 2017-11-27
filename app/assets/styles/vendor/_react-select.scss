@@ -1,0 +1,11 @@
+.Select--multi .Select-value {
+  border: none;
+  background: tint($secondary-color, 80%);
+  border-radius: $full-border-radius;
+  padding: 0 0.25rem;
+
+  .Select-value-icon, .Select-value-label {
+    border: none;
+    color: $secondary-color;
+  }
+}
