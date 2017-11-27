@@ -74,6 +74,24 @@
   }
 }
 
+.form__options-group {
+  .form__option {
+    @include column(12/12);
+
+    @include media(small-up) {
+      @include column(6/12, $cycle: 2);
+    }
+
+    @include media(medium-up) {
+      @include column(4/12, $cycle: 3);
+    }
+
+    @include media(large-up) {
+      @include column(3/12, $cycle: 4);
+    }
+  }
+}
+
 .form__label--nested {
   font-size: 0.75rem;
   line-height: 1rem;
@@ -95,6 +113,32 @@
 
     @include media(large-up) {
       @include column(3/12);
+    }
+  }
+}
+
+.form__group--asymmetric  {
+  > .form__inner-header {
+    @include column(12/12);
+
+    @include media(medium-up) {
+      @include column(3/12);
+    }
+
+    @include media(large-up) {
+      @include column(2/12);
+    }
+  }
+
+  > .form__inner-body {
+    @include column(12/12);
+
+    @include media(medium-up) {
+      @include column(9/12);
+    }
+
+    @include media(large-up) {
+      @include column(10/12);
     }
   }
 }

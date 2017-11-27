@@ -285,7 +285,7 @@ class FieldReportForm extends React.Component {
     return (
       <Fold title='Basic Information'>
         <FormInput
-          label='Summary'
+          label='Summary *'
           type='text'
           name='summary'
           id='summary'
@@ -297,7 +297,7 @@ class FieldReportForm extends React.Component {
         />
 
         <div className='form__group'>
-          <label className='form__label'>Countries</label>
+          <label className='form__label'>Countries *</label>
           <p className='form__description'>Seach for the affected country. You can select more than one.</p>
           <Select
             name='countries'
@@ -313,7 +313,7 @@ class FieldReportForm extends React.Component {
         </div>
 
         <FormRadioGroup
-          label='Status'
+          label='Status *'
           name='status'
           options={formData.status}
           selectedOption={this.state.data.status}
@@ -321,7 +321,7 @@ class FieldReportForm extends React.Component {
 
         <div className='form__hascol form__hascol--2'>
           <FormSelect
-            label='Disaster Type'
+            label='Disaster Type *'
             name='disaster-type'
             id='disaster-type'
             options={formData.disasterType}
@@ -568,6 +568,7 @@ class FieldReportForm extends React.Component {
                 value: 'yes'
               }
             ]}
+            classWrapper='form__group--asymmetric'
             selectedOption={this.state.data.drefRequested}
             onChange={this.onFieldChange.bind(this, 'drefRequested')} />
 
@@ -596,6 +597,7 @@ class FieldReportForm extends React.Component {
                 value: 'yes'
               }
             ]}
+            classWrapper='form__group--asymmetric'
             selectedOption={this.state.data.drefApproved}
             onChange={this.onFieldChange.bind(this, 'drefApproved')} />
 
@@ -603,6 +605,7 @@ class FieldReportForm extends React.Component {
             label='DREF Bulletin'
             name='dref-bulletin'
             options={optsNoPlannedPub}
+            classWrapper='form__group--asymmetric'
             selectedOption={this.state.data.drefBulletin}
             onChange={this.onFieldChange.bind(this, 'drefBulletin')} />
 
@@ -623,6 +626,7 @@ class FieldReportForm extends React.Component {
                 value: 'yes'
               }
             ]}
+            classWrapper='form__group--asymmetric'
             selectedOption={this.state.data.emergencyAppeal}
             onChange={this.onFieldChange.bind(this, 'emergencyAppeal')} />
 
@@ -630,6 +634,7 @@ class FieldReportForm extends React.Component {
             label='RDRT/RITS'
             name='rdrt-rits'
             options={optsNoPlannedPub}
+            classWrapper='form__group--asymmetric'
             selectedOption={this.state.data.rdrtrits}
             onChange={this.onFieldChange.bind(this, 'rdrtrits')} />
 
@@ -637,6 +642,7 @@ class FieldReportForm extends React.Component {
             label='FACT'
             name='fact'
             options={optsNoPlannedPub}
+            classWrapper='form__group--asymmetric'
             selectedOption={this.state.data.fact}
             onChange={this.onFieldChange.bind(this, 'fact')} />
 
@@ -644,6 +650,7 @@ class FieldReportForm extends React.Component {
             label='ERU'
             name='eru'
             options={optsNoPlannedPub}
+            classWrapper='form__group--asymmetric'
             selectedOption={this.state.data.eru}
             onChange={this.onFieldChange.bind(this, 'eru')} />
 
@@ -651,6 +658,7 @@ class FieldReportForm extends React.Component {
             label='RFL'
             name='rfl'
             options={optsNoPlannedPub}
+            classWrapper='form__group--asymmetric'
             selectedOption={this.state.data.rfl}
             onChange={this.onFieldChange.bind(this, 'rfl')} />
         </div>
@@ -915,26 +923,34 @@ class ActionsCheckboxes extends React.Component {
 
     return (
       <div className='form__group'>
-        <label className='form__label'>{label}</label>
-        <FormDescription value={description} />
-        {options.map((o, idx) => (
-          <FormCheckbox
-            key={o.name}
-            label={o.label}
-            name={`${name}[options][]`}
-            id={`${name}-${o.name}`}
-            value={o.name}
-            checked={values.options[idx].checked}
-            onChange={this.onCheckChange.bind(this, idx)} />
-        ))}
+        <div className='form__inner-header'>
+          <div className='form__inner-headline'>
+            <label className='form__label'>{label}</label>
+            <FormDescription value={description} />
+          </div>
+        </div>
+        <div className='form__inner-body'>
+          <div className='form__options-group'>
+            {options.map((o, idx) => (
+              <FormCheckbox
+                key={o.name}
+                label={o.label}
+                name={`${name}[options][]`}
+                id={`${name}-${o.name}`}
+                value={o.name}
+                checked={values.options[idx].checked}
+                onChange={this.onCheckChange.bind(this, idx)} />
+            ))}
+          </div>
 
-        <FormTextarea
-          label='Description'
-          name={`${name}[description]`}
-          id={`${name}-description`}
-          classLabel='form__label--nested'
-          value={values.description}
-          onChange={this.onDescriptionChange} />
+          <FormTextarea
+            label='Description'
+            name={`${name}[description]`}
+            id={`${name}-description`}
+            classLabel='form__label--nested'
+            value={values.description}
+            onChange={this.onDescriptionChange} />
+        </div>
       </div>
     );
   }
