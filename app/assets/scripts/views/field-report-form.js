@@ -238,7 +238,8 @@ class FieldReportForm extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onSubmit () {
+  onSubmit (e) {
+    e.preventDefault();
   }
 
   onFieldChange (field, e) {
@@ -283,108 +284,106 @@ class FieldReportForm extends React.Component {
   renderStep1 () {
     return (
       <Fold title='Basic Information'>
-        <form className='form' onSubmit={this.onSubmit}>
-          <FormInput
-            label='Summary'
-            type='text'
-            name='summary'
-            id='summary'
-            description={<div className='form__description'><p>Write a short summary of the report's topic. It will be used as the subject of the e-mail notification,
-            later as the tittle of the RSS feed and possibly as the text message on mobile phones.</p><em>Example: 250 dead after an earthquake in Indonesia</em></div>}
-            value={this.state.data.summary}
-            onChange={this.onFieldChange.bind(this, 'summary')}
-            autoFocus
-          />
+        <FormInput
+          label='Summary'
+          type='text'
+          name='summary'
+          id='summary'
+          description={<div className='form__description'><p>Write a short summary of the report's topic. It will be used as the subject of the e-mail notification,
+          later as the tittle of the RSS feed and possibly as the text message on mobile phones.</p><em>Example: 250 dead after an earthquake in Indonesia</em></div>}
+          value={this.state.data.summary}
+          onChange={this.onFieldChange.bind(this, 'summary')}
+          autoFocus
+        />
 
-          <div className='form__group'>
-            <label className='form__label'>Countries</label>
-            <p className='form__description'>Seach for the affected country. You can select more than one.</p>
-            <Select
-              name='countries'
-              value={this.state.data.countries}
-              onChange={this.onFieldChange.bind(this, 'countries')}
-              options={[
-                { value: 'one', label: 'One' },
-                { value: 'two', label: 'Two' },
-                { value: 'three', label: 'Three' },
-                { value: 'four', label: 'Four' }
-              ]}
-              multi />
-          </div>
-
-          <FormRadioGroup
-            label='Status'
-            name='status'
-            options={formData.status}
-            selectedOption={this.state.data.status}
-            onChange={this.onFieldChange.bind(this, 'status')} />
-
-          <div className='form__hascol form__hascol--2'>
-            <FormSelect
-              label='Disaster Type'
-              name='disaster-type'
-              id='disaster-type'
-              options={formData.disasterType}
-              value={this.state.data.disasterType}
-              onChange={this.onFieldChange.bind(this, 'disasterType')} />
-
-            <FormSelect
-              label='Event'
-              name='event'
-              id='event'
-              options={formData.event}
-              value={this.state.data.event}
-              onChange={this.onFieldChange.bind(this, 'event')} />
-          </div>
-
-          <div className='form__group'>
-            <label className='form__label'>Sources</label>
-            <div className='form__description'>
-              <p>Check the box next to the source of information and specify:</p>
-              <ul>
-                <li>UN agency - OCHA</li>
-                <li>Academia/Research - Tropical Storm Risk</li>
-              </ul>
-            </div>
-            <div className='sources-list'>
-              {formData.sources.map((source, idx) => (
-                <ReportSource
-                  key={source.name}
-                  idx={idx}
-                  label={source.label}
-                  sourceName={source.name}
-                  specificationValue={this.state.data.sources[idx].specification}
-                  checked={this.state.data.sources[idx].checked}
-                  onChange={this.onFieldChange.bind(this, `sources[${idx}]`)} />
-              ))}
-            </div>
-          </div>
-
-          <FormTextarea
-            label='Brief Description of the Situation'
-            name='description'
-            id='description'
-            description={'Briefly describe the situation.'}
-            value={this.state.data.description}
-            onChange={this.onFieldChange.bind(this, 'description')} />
-
-          <FormRadioGroup
-            label='Government requests international assistance?'
-            description={'Indicate if the government requested international assistance.'}
-            name='assistance'
+        <div className='form__group'>
+          <label className='form__label'>Countries</label>
+          <p className='form__description'>Seach for the affected country. You can select more than one.</p>
+          <Select
+            name='countries'
+            value={this.state.data.countries}
+            onChange={this.onFieldChange.bind(this, 'countries')}
             options={[
-              {
-                label: 'Yes',
-                value: 'true'
-              },
-              {
-                label: 'No',
-                value: 'false'
-              }
+              { value: 'one', label: 'One' },
+              { value: 'two', label: 'Two' },
+              { value: 'three', label: 'Three' },
+              { value: 'four', label: 'Four' }
             ]}
-            selectedOption={this.state.data.assistance}
-            onChange={this.onFieldChange.bind(this, 'assistance')} />
-        </form>
+            multi />
+        </div>
+
+        <FormRadioGroup
+          label='Status'
+          name='status'
+          options={formData.status}
+          selectedOption={this.state.data.status}
+          onChange={this.onFieldChange.bind(this, 'status')} />
+
+        <div className='form__hascol form__hascol--2'>
+          <FormSelect
+            label='Disaster Type'
+            name='disaster-type'
+            id='disaster-type'
+            options={formData.disasterType}
+            value={this.state.data.disasterType}
+            onChange={this.onFieldChange.bind(this, 'disasterType')} />
+
+          <FormSelect
+            label='Event'
+            name='event'
+            id='event'
+            options={formData.event}
+            value={this.state.data.event}
+            onChange={this.onFieldChange.bind(this, 'event')} />
+        </div>
+
+        <div className='form__group'>
+          <label className='form__label'>Sources</label>
+          <div className='form__description'>
+            <p>Check the box next to the source of information and specify:</p>
+            <ul>
+              <li>UN agency - OCHA</li>
+              <li>Academia/Research - Tropical Storm Risk</li>
+            </ul>
+          </div>
+          <div className='sources-list'>
+            {formData.sources.map((source, idx) => (
+              <ReportSource
+                key={source.name}
+                idx={idx}
+                label={source.label}
+                sourceName={source.name}
+                specificationValue={this.state.data.sources[idx].specification}
+                checked={this.state.data.sources[idx].checked}
+                onChange={this.onFieldChange.bind(this, `sources[${idx}]`)} />
+            ))}
+          </div>
+        </div>
+
+        <FormTextarea
+          label='Brief Description of the Situation'
+          name='description'
+          id='description'
+          description={'Briefly describe the situation.'}
+          value={this.state.data.description}
+          onChange={this.onFieldChange.bind(this, 'description')} />
+
+        <FormRadioGroup
+          label='Government requests international assistance?'
+          description={'Indicate if the government requested international assistance.'}
+          name='assistance'
+          options={[
+            {
+              label: 'Yes',
+              value: 'true'
+            },
+            {
+              label: 'No',
+              value: 'false'
+            }
+          ]}
+          selectedOption={this.state.data.assistance}
+          onChange={this.onFieldChange.bind(this, 'assistance')} />
       </Fold>
     );
   }
@@ -392,80 +391,77 @@ class FieldReportForm extends React.Component {
   renderStep2 () {
     return (
       <Fold title='Numeric Details (People)'>
-        <form className='form' onSubmit={this.onSubmit}>
+        <SourceEstimation
+          label='Injured'
+          description='Number of people suffering from physical injuries, trauma or an illness requiring immediate medical treatment as a direct result of a disaster.'
+          name='num-injured'
+          values={this.state.data.numInjured}
+          onChange={this.onFieldChange.bind(this, 'numInjured')} />
+        <SourceEstimation
+          label='Dead'
+          description='Number of people confirmed dead and number missing and presumed dead.'
+          name='num-dead'
+          values={this.state.data.numDead}
+          onChange={this.onFieldChange.bind(this, 'numDead')} />
+        <SourceEstimation
+          label='Missing'
+          description='Number of people missing and presumed dead.'
+          name='num-missing'
+          values={this.state.data.numMissing}
+          onChange={this.onFieldChange.bind(this, 'numMissing')} />
+        <SourceEstimation
+          label='Affected'
+          description='Number of people requiring immediate assistance during a period of emergency; this may include displaced or evacuated people.'
+          name='num-affected'
+          values={this.state.data.numAffected}
+          onChange={this.onFieldChange.bind(this, 'numAffected')} />
+        <SourceEstimation
+          label='Displaced'
+          description='Number of people temporary displaced.'
+          name='num-displaced'
+          values={this.state.data.numDisplaced}
+          onChange={this.onFieldChange.bind(this, 'numDisplaced')} />
 
-          <SourceEstimation
-            label='Injured'
-            description='Number of people suffering from physical injuries, trauma or an illness requiring immediate medical treatment as a direct result of a disaster.'
-            name='num-injured'
-            values={this.state.data.numInjured}
-            onChange={this.onFieldChange.bind(this, 'numInjured')} />
-          <SourceEstimation
-            label='Dead'
-            description='Number of people confirmed dead and number missing and presumed dead.'
-            name='num-dead'
-            values={this.state.data.numDead}
-            onChange={this.onFieldChange.bind(this, 'numDead')} />
-          <SourceEstimation
-            label='Missing'
-            description='Number of people missing and presumed dead.'
-            name='num-missing'
-            values={this.state.data.numMissing}
-            onChange={this.onFieldChange.bind(this, 'numMissing')} />
-          <SourceEstimation
-            label='Affected'
-            description='Number of people requiring immediate assistance during a period of emergency; this may include displaced or evacuated people.'
-            name='num-affected'
-            values={this.state.data.numAffected}
-            onChange={this.onFieldChange.bind(this, 'numAffected')} />
-          <SourceEstimation
-            label='Displaced'
-            description='Number of people temporary displaced.'
-            name='num-displaced'
-            values={this.state.data.numDisplaced}
-            onChange={this.onFieldChange.bind(this, 'numDisplaced')} />
-
-          <FormInput
-            label='Assisted by Government'
-            type='text'
-            name='num-assisted-gov'
-            id='num-assisted-gov'
-            classWrapper='form__group--kv'
-            value={this.state.data.numAssistedGov}
-            onChange={this.onFieldChange.bind(this, 'numAssistedGov')} />
-          <FormInput
-            label='Assisted By Red Cross'
-            type='text'
-            name='num-assisted-red-cross'
-            id='num-assisted-red-cross'
-            classWrapper='form__group--kv'
-            value={this.state.data.numAssistedRedCross}
-            onChange={this.onFieldChange.bind(this, 'numAssistedRedCross')} />
-          <FormInput
-            label='Number of local staff involved'
-            type='text'
-            name='num-local-staff'
-            id='num-local-staff'
-            classWrapper='form__group--kv'
-            value={this.state.data.numLocalStaff}
-            onChange={this.onFieldChange.bind(this, 'numLocalStaff')} />
-          <FormInput
-            label='Number of volunteers involved'
-            type='text'
-            name='num-volunteers'
-            id='num-volunteers'
-            classWrapper='form__group--kv'
-            value={this.state.data.numVolunteers}
-            onChange={this.onFieldChange.bind(this, 'numVolunteers')} />
-          <FormInput
-            label='Number of expats/delegates'
-            type='text'
-            name='num-expats'
-            id='num-expats'
-            classWrapper='form__group--kv'
-            value={this.state.data.numExpats}
-            onChange={this.onFieldChange.bind(this, 'numExpats')} />
-        </form>
+        <FormInput
+          label='Assisted by Government'
+          type='text'
+          name='num-assisted-gov'
+          id='num-assisted-gov'
+          classWrapper='form__group--kv'
+          value={this.state.data.numAssistedGov}
+          onChange={this.onFieldChange.bind(this, 'numAssistedGov')} />
+        <FormInput
+          label='Assisted By Red Cross'
+          type='text'
+          name='num-assisted-red-cross'
+          id='num-assisted-red-cross'
+          classWrapper='form__group--kv'
+          value={this.state.data.numAssistedRedCross}
+          onChange={this.onFieldChange.bind(this, 'numAssistedRedCross')} />
+        <FormInput
+          label='Number of local staff involved'
+          type='text'
+          name='num-local-staff'
+          id='num-local-staff'
+          classWrapper='form__group--kv'
+          value={this.state.data.numLocalStaff}
+          onChange={this.onFieldChange.bind(this, 'numLocalStaff')} />
+        <FormInput
+          label='Number of volunteers involved'
+          type='text'
+          name='num-volunteers'
+          id='num-volunteers'
+          classWrapper='form__group--kv'
+          value={this.state.data.numVolunteers}
+          onChange={this.onFieldChange.bind(this, 'numVolunteers')} />
+        <FormInput
+          label='Number of expats/delegates'
+          type='text'
+          name='num-expats'
+          id='num-expats'
+          classWrapper='form__group--kv'
+          value={this.state.data.numExpats}
+          onChange={this.onFieldChange.bind(this, 'numExpats')} />
       </Fold>
     );
   }
@@ -473,60 +469,58 @@ class FieldReportForm extends React.Component {
   renderStep3 () {
     return (
       <Fold title='Actions taken'>
-        <form className='form' onSubmit={this.onSubmit}>
-          <ActionsCheckboxes
-            label='Actions Taken by National Society Red Cross (if any)'
-            description={'Select the activities taken by the National Society and briefly describe'}
-            name='actions-nat-soc'
-            options={formData.actions}
-            values={this.state.data.actionsNatSoc}
-            onChange={this.onFieldChange.bind(this, 'actionsNatSoc')} />
+        <ActionsCheckboxes
+          label='Actions Taken by National Society Red Cross (if any)'
+          description={'Select the activities taken by the National Society and briefly describe'}
+          name='actions-nat-soc'
+          options={formData.actions}
+          values={this.state.data.actionsNatSoc}
+          onChange={this.onFieldChange.bind(this, 'actionsNatSoc')} />
 
-          <ActionsCheckboxes
-            label='Actions Taken by PNS Red Cross (if any)'
-            description={'Select the activities taken by the foreign National Society and briefly describe'}
-            name='actions-pns'
-            options={formData.actions}
-            values={this.state.data.actionsPns}
-            onChange={this.onFieldChange.bind(this, 'actionsPns')} />
+        <ActionsCheckboxes
+          label='Actions Taken by PNS Red Cross (if any)'
+          description={'Select the activities taken by the foreign National Society and briefly describe'}
+          name='actions-pns'
+          options={formData.actions}
+          values={this.state.data.actionsPns}
+          onChange={this.onFieldChange.bind(this, 'actionsPns')} />
 
-          <ActionsCheckboxes
-            label='Actions Taken by Federation Red Cross (if any)'
-            description={'Select the activities taken by the Federation (could be the Zone office, DMUS, ...) and briefly describe'}
-            name='actions-federation'
-            options={formData.actions}
-            values={this.state.data.actionsFederation}
-            onChange={this.onFieldChange.bind(this, 'actionsFederation')} />
+        <ActionsCheckboxes
+          label='Actions Taken by Federation Red Cross (if any)'
+          description={'Select the activities taken by the Federation (could be the Zone office, DMUS, ...) and briefly describe'}
+          name='actions-federation'
+          options={formData.actions}
+          values={this.state.data.actionsFederation}
+          onChange={this.onFieldChange.bind(this, 'actionsFederation')} />
 
-          <FormRadioGroup
-            label='Information Bulletin'
-            description={'About information management, indicate if an Information Bulletin was published, is planned or if no Information Bulletin will be issued for this operation/disaster.'}
-            name='bulletin'
-            options={[
-              {
-                label: 'No',
-                value: 'no'
-              },
-              {
-                label: 'Planned',
-                value: 'planned'
-              },
-              {
-                label: 'Yes/Published',
-                value: 'published'
-              }
-            ]}
-            selectedOption={this.state.data.bulletin}
-            onChange={this.onFieldChange.bind(this, 'bulletin')} />
+        <FormRadioGroup
+          label='Information Bulletin'
+          description={'About information management, indicate if an Information Bulletin was published, is planned or if no Information Bulletin will be issued for this operation/disaster.'}
+          name='bulletin'
+          options={[
+            {
+              label: 'No',
+              value: 'no'
+            },
+            {
+              label: 'Planned',
+              value: 'planned'
+            },
+            {
+              label: 'Yes/Published',
+              value: 'published'
+            }
+          ]}
+          selectedOption={this.state.data.bulletin}
+          onChange={this.onFieldChange.bind(this, 'bulletin')} />
 
-          <FormTextarea
-            label='Actions Taken by Others (Governemnts, UN)'
-            name='actions-others'
-            id='actions-others'
-            description={'Who else was involved? UN agencies? NGOs? Government? Describe what other actors did.'}
-            value={this.state.data.actionsOthers}
-            onChange={this.onFieldChange.bind(this, 'actionsOthers')} />
-        </form>
+        <FormTextarea
+          label='Actions Taken by Others (Governemnts, UN)'
+          name='actions-others'
+          id='actions-others'
+          description={'Who else was involved? UN agencies? NGOs? Government? Describe what other actors did.'}
+          value={this.state.data.actionsOthers}
+          onChange={this.onFieldChange.bind(this, 'actionsOthers')} />
       </Fold>
     );
   }
@@ -549,120 +543,117 @@ class FieldReportForm extends React.Component {
 
     return (
       <Fold title='Planned Response'>
-        <form className='form' onSubmit={this.onSubmit}>
-          <div className='form__group'>
-            <label className='form__label'>Planned International Response</label>
-            <div className='form__description'>
-              <p>Indicate the status of the differents international tools: Was DREF requested? How much ? Has it been approved ? How many beneficiaries ? Has the DREF operation been issued?</p>
-              <p>Same for the emergency appeal</p>
-              <p>For RDRT/FACT/ERU, only indicate if used, planned/requested or not used.</p>
-            </div>
-
-            <FormRadioGroup
-              label='DREF Requested'
-              name='dref-requested'
-              options={[
-                {
-                  label: 'No',
-                  value: 'no'
-                },
-                {
-                  label: 'Planned',
-                  value: 'planned'
-                },
-                {
-                  label: 'Yes',
-                  value: 'yes'
-                }
-              ]}
-              selectedOption={this.state.data.drefRequested}
-              onChange={this.onFieldChange.bind(this, 'drefRequested')} />
-
-            <FormInput
-              label='Amount CHF'
-              type='text'
-              name='amount-chf'
-              id='amount-chf'
-              value={this.state.data.amountChf}
-              onChange={this.onFieldChange.bind(this, 'amountChf')} />
-
-            <FormRadioGroup
-              label='DREF Approved'
-              name='dref-approved'
-              options={[
-                {
-                  label: 'No',
-                  value: 'no'
-                },
-                {
-                  label: 'No reply now',
-                  value: 'no-reply'
-                },
-                {
-                  label: 'Yes',
-                  value: 'yes'
-                }
-              ]}
-              selectedOption={this.state.data.drefApproved}
-              onChange={this.onFieldChange.bind(this, 'drefApproved')} />
-
-            <FormRadioGroup
-              label='DREF Bulletin'
-              name='dref-bulletin'
-              options={optsNoPlannedPub}
-              selectedOption={this.state.data.drefBulletin}
-              onChange={this.onFieldChange.bind(this, 'drefBulletin')} />
-
-            <FormRadioGroup
-              label='Emergency Appeal'
-              name='emergency-appeal'
-              options={[
-                {
-                  label: 'No',
-                  value: 'no'
-                },
-                {
-                  label: 'Planned',
-                  value: 'planned'
-                },
-                {
-                  label: 'Yes',
-                  value: 'yes'
-                }
-              ]}
-              selectedOption={this.state.data.emergencyAppeal}
-              onChange={this.onFieldChange.bind(this, 'emergencyAppeal')} />
-
-            <FormRadioGroup
-              label='RDRT/RITS'
-              name='rdrt-rits'
-              options={optsNoPlannedPub}
-              selectedOption={this.state.data.rdrtrits}
-              onChange={this.onFieldChange.bind(this, 'rdrtrits')} />
-
-            <FormRadioGroup
-              label='FACT'
-              name='fact'
-              options={optsNoPlannedPub}
-              selectedOption={this.state.data.fact}
-              onChange={this.onFieldChange.bind(this, 'fact')} />
-
-            <FormRadioGroup
-              label='ERU'
-              name='eru'
-              options={optsNoPlannedPub}
-              selectedOption={this.state.data.eru}
-              onChange={this.onFieldChange.bind(this, 'eru')} />
-
-            <FormRadioGroup
-              label='RFL'
-              name='rfl'
-              options={optsNoPlannedPub}
-              selectedOption={this.state.data.rfl}
-              onChange={this.onFieldChange.bind(this, 'rfl')} />
-
+        <div className='form__group'>
+          <label className='form__label'>Planned International Response</label>
+          <div className='form__description'>
+            <p>Indicate the status of the differents international tools: Was DREF requested? How much ? Has it been approved ? How many beneficiaries ? Has the DREF operation been issued?</p>
+            <p>Same for the emergency appeal</p>
+            <p>For RDRT/FACT/ERU, only indicate if used, planned/requested or not used.</p>
           </div>
-        </form>
+
+          <FormRadioGroup
+            label='DREF Requested'
+            name='dref-requested'
+            options={[
+              {
+                label: 'No',
+                value: 'no'
+              },
+              {
+                label: 'Planned',
+                value: 'planned'
+              },
+              {
+                label: 'Yes',
+                value: 'yes'
+              }
+            ]}
+            selectedOption={this.state.data.drefRequested}
+            onChange={this.onFieldChange.bind(this, 'drefRequested')} />
+
+          <FormInput
+            label='Amount CHF'
+            type='text'
+            name='amount-chf'
+            id='amount-chf'
+            value={this.state.data.amountChf}
+            onChange={this.onFieldChange.bind(this, 'amountChf')} />
+
+          <FormRadioGroup
+            label='DREF Approved'
+            name='dref-approved'
+            options={[
+              {
+                label: 'No',
+                value: 'no'
+              },
+              {
+                label: 'No reply now',
+                value: 'no-reply'
+              },
+              {
+                label: 'Yes',
+                value: 'yes'
+              }
+            ]}
+            selectedOption={this.state.data.drefApproved}
+            onChange={this.onFieldChange.bind(this, 'drefApproved')} />
+
+          <FormRadioGroup
+            label='DREF Bulletin'
+            name='dref-bulletin'
+            options={optsNoPlannedPub}
+            selectedOption={this.state.data.drefBulletin}
+            onChange={this.onFieldChange.bind(this, 'drefBulletin')} />
+
+          <FormRadioGroup
+            label='Emergency Appeal'
+            name='emergency-appeal'
+            options={[
+              {
+                label: 'No',
+                value: 'no'
+              },
+              {
+                label: 'Planned',
+                value: 'planned'
+              },
+              {
+                label: 'Yes',
+                value: 'yes'
+              }
+            ]}
+            selectedOption={this.state.data.emergencyAppeal}
+            onChange={this.onFieldChange.bind(this, 'emergencyAppeal')} />
+
+          <FormRadioGroup
+            label='RDRT/RITS'
+            name='rdrt-rits'
+            options={optsNoPlannedPub}
+            selectedOption={this.state.data.rdrtrits}
+            onChange={this.onFieldChange.bind(this, 'rdrtrits')} />
+
+          <FormRadioGroup
+            label='FACT'
+            name='fact'
+            options={optsNoPlannedPub}
+            selectedOption={this.state.data.fact}
+            onChange={this.onFieldChange.bind(this, 'fact')} />
+
+          <FormRadioGroup
+            label='ERU'
+            name='eru'
+            options={optsNoPlannedPub}
+            selectedOption={this.state.data.eru}
+            onChange={this.onFieldChange.bind(this, 'eru')} />
+
+          <FormRadioGroup
+            label='RFL'
+            name='rfl'
+            options={optsNoPlannedPub}
+            selectedOption={this.state.data.rfl}
+            onChange={this.onFieldChange.bind(this, 'rfl')} />
+        </div>
       </Fold>
     );
   }
@@ -670,44 +661,42 @@ class FieldReportForm extends React.Component {
   renderStep5 () {
     return (
       <Fold title='Contacts'>
-        <form className='form' onSubmit={this.onSubmit}>
-          <ContactRow
-            label='Originator'
-            description='Your name, function and e-mail.'
-            name='contact-originator'
-            values={this.state.data.contactOriginator}
-            onChange={this.onFieldChange.bind(this, 'contactOriginator')} />
-          <ContactRow
-            label='Primary Contact'
-            description='The person to contact for more information'
-            name='contact-primary'
-            values={this.state.data.contactPrimary}
-            onChange={this.onFieldChange.bind(this, 'contactPrimary')} />
-          <ContactRow
-            label='National Society Contact'
-            description='A contact in the National Society for more information. Select someone who will be available for interview.'
-            name='contact-nat-soc'
-            values={this.state.data.contactNatSoc}
-            onChange={this.onFieldChange.bind(this, 'contactNatSoc')} />
-          <ContactRow
-            label='Federation Contact'
-            description='A contact of the Federation (Secretariat/Zone/DMUs) for more information. Select someone who will be available for interview.'
-            name='contact-federation'
-            values={this.state.data.contactFederation}
-            onChange={this.onFieldChange.bind(this, 'contactFederation')} />
-          <ContactRow
-            label='Media Contact in the National Society'
-            description='A media contact in the National Society. This person could be contacted by journalists.'
-            name='contact-media-nat-soc'
-            values={this.state.data.contactMediaNatSoc}
-            onChange={this.onFieldChange.bind(this, 'contactMediaNatSoc')} />
-          <ContactRow
-            label='Media Contact'
-            description='A media contact in the Secretariat/Zone/DMU. This person could be contacted by journalists.'
-            name='contact-media'
-            values={this.state.data.contactMedia}
-            onChange={this.onFieldChange.bind(this, 'contactMedia')} />
-        </form>
+        <ContactRow
+          label='Originator'
+          description='Your name, function and e-mail.'
+          name='contact-originator'
+          values={this.state.data.contactOriginator}
+          onChange={this.onFieldChange.bind(this, 'contactOriginator')} />
+        <ContactRow
+          label='Primary Contact'
+          description='The person to contact for more information'
+          name='contact-primary'
+          values={this.state.data.contactPrimary}
+          onChange={this.onFieldChange.bind(this, 'contactPrimary')} />
+        <ContactRow
+          label='National Society Contact'
+          description='A contact in the National Society for more information. Select someone who will be available for interview.'
+          name='contact-nat-soc'
+          values={this.state.data.contactNatSoc}
+          onChange={this.onFieldChange.bind(this, 'contactNatSoc')} />
+        <ContactRow
+          label='Federation Contact'
+          description='A contact of the Federation (Secretariat/Zone/DMUs) for more information. Select someone who will be available for interview.'
+          name='contact-federation'
+          values={this.state.data.contactFederation}
+          onChange={this.onFieldChange.bind(this, 'contactFederation')} />
+        <ContactRow
+          label='Media Contact in the National Society'
+          description='A media contact in the National Society. This person could be contacted by journalists.'
+          name='contact-media-nat-soc'
+          values={this.state.data.contactMediaNatSoc}
+          onChange={this.onFieldChange.bind(this, 'contactMediaNatSoc')} />
+        <ContactRow
+          label='Media Contact'
+          description='A media contact in the Secretariat/Zone/DMU. This person could be contacted by journalists.'
+          name='contact-media'
+          values={this.state.data.contactMedia}
+          onChange={this.onFieldChange.bind(this, 'contactMedia')} />
       </Fold>
     );
   }
@@ -725,8 +714,14 @@ class FieldReportForm extends React.Component {
           </header>
           <div className='inpage__body'>
             <div className='inner'>
-              {this.renderStepper()}
-              {this[`renderStep${this.state.step}`]()}
+              <form className='form' onSubmit={this.onSubmit}>
+                {this.renderStepper()}
+                {this[`renderStep${this.state.step}`]()}
+
+                <div className='form__actions'>
+                  <button type='submit' className='button button--secondary-raised-dark' title='Save and continue'>Save and continue</button>
+                </div>
+              </form>
             </div>
           </div>
         </section>
