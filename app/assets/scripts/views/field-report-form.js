@@ -214,15 +214,16 @@ class FieldReportForm extends React.Component {
         },
 
         // Step 4
-        drefRequested: undefined,
-        amountChf: undefined,
-        drefApproved: undefined,
-        drefBulletin: undefined,
+        dref: undefined,
+        amountDref: undefined,
         emergencyAppeal: undefined,
+        amountEmergencyAppeal: undefined,
         rdrtrits: undefined,
+        numPplRdrits: undefined,
         fact: undefined,
-        eru: undefined,
-        rfl: undefined,
+        numPplFact: undefined,
+        ifrcStaff: undefined,
+        numPplIfrcStaff: undefined,
 
         // Step 5
         contactOriginator: { name: undefined, func: undefined, email: undefined },
@@ -526,18 +527,18 @@ class FieldReportForm extends React.Component {
   }
 
   renderStep4 () {
-    const optsNoPlannedPub = [
+    const optsPlanReqDep = [
       {
-        label: 'No',
-        value: 'no'
-      },
-      {
-        label: 'Planned/Requested',
+        label: 'Planned',
         value: 'planned'
       },
       {
-        label: 'Published',
-        value: 'published'
+        label: 'Requested',
+        value: 'requested'
+      },
+      {
+        label: 'Deployed',
+        value: 'deployed'
       }
     ];
 
@@ -553,114 +554,109 @@ class FieldReportForm extends React.Component {
 
           <FormRadioGroup
             label='DREF Requested'
-            name='dref-requested'
+            name='dref'
             options={[
-              {
-                label: 'No',
-                value: 'no'
-              },
               {
                 label: 'Planned',
                 value: 'planned'
               },
               {
-                label: 'Yes',
-                value: 'yes'
+                label: 'Requested',
+                value: 'requested'
+              },
+              {
+                label: 'Allocated',
+                value: 'allocated'
               }
             ]}
             classWrapper='form__group--asymmetric'
-            selectedOption={this.state.data.drefRequested}
-            onChange={this.onFieldChange.bind(this, 'drefRequested')} />
+            selectedOption={this.state.data.dref}
+            onChange={this.onFieldChange.bind(this, 'dref')} />
 
           <FormInput
             label='Amount CHF'
             type='text'
-            name='amount-chf'
-            id='amount-chf'
-            value={this.state.data.amountChf}
-            onChange={this.onFieldChange.bind(this, 'amountChf')} />
-
-          <FormRadioGroup
-            label='DREF Approved'
-            name='dref-approved'
-            options={[
-              {
-                label: 'No',
-                value: 'no'
-              },
-              {
-                label: 'No reply now',
-                value: 'no-reply'
-              },
-              {
-                label: 'Yes',
-                value: 'yes'
-              }
-            ]}
-            classWrapper='form__group--asymmetric'
-            selectedOption={this.state.data.drefApproved}
-            onChange={this.onFieldChange.bind(this, 'drefApproved')} />
-
-          <FormRadioGroup
-            label='DREF Bulletin'
-            name='dref-bulletin'
-            options={optsNoPlannedPub}
-            classWrapper='form__group--asymmetric'
-            selectedOption={this.state.data.drefBulletin}
-            onChange={this.onFieldChange.bind(this, 'drefBulletin')} />
+            name='amount-dref'
+            id='amount-dref'
+            value={this.state.data.amountDref}
+            onChange={this.onFieldChange.bind(this, 'amountDref')} />
 
           <FormRadioGroup
             label='Emergency Appeal'
             name='emergency-appeal'
             options={[
               {
-                label: 'No',
-                value: 'no'
-              },
-              {
                 label: 'Planned',
                 value: 'planned'
               },
               {
-                label: 'Yes',
-                value: 'yes'
+                label: 'Requested',
+                value: 'requested'
+              },
+              {
+                label: 'Launched',
+                value: 'launched'
               }
             ]}
             classWrapper='form__group--asymmetric'
             selectedOption={this.state.data.emergencyAppeal}
             onChange={this.onFieldChange.bind(this, 'emergencyAppeal')} />
 
+          <FormInput
+            label='Amount CHF'
+            type='text'
+            name='amount-emergency-appeal'
+            id='amount-emergency-appeal'
+            value={this.state.data.amountEmergencyAppeal}
+            onChange={this.onFieldChange.bind(this, 'amountEmergencyAppeal')} />
+
           <FormRadioGroup
             label='RDRT/RITS'
             name='rdrt-rits'
-            options={optsNoPlannedPub}
+            options={optsPlanReqDep}
             classWrapper='form__group--asymmetric'
             selectedOption={this.state.data.rdrtrits}
             onChange={this.onFieldChange.bind(this, 'rdrtrits')} />
 
+          <FormInput
+            label='Number of people'
+            type='text'
+            name='num-ppl-rdrt-rits'
+            id='num-ppl-rdrt-rits'
+            value={this.state.data.numPplRdrits}
+            onChange={this.onFieldChange.bind(this, 'numPplRdrits')} />
+
           <FormRadioGroup
             label='FACT'
             name='fact'
-            options={optsNoPlannedPub}
+            options={optsPlanReqDep}
             classWrapper='form__group--asymmetric'
             selectedOption={this.state.data.fact}
             onChange={this.onFieldChange.bind(this, 'fact')} />
 
-          <FormRadioGroup
-            label='ERU'
-            name='eru'
-            options={optsNoPlannedPub}
-            classWrapper='form__group--asymmetric'
-            selectedOption={this.state.data.eru}
-            onChange={this.onFieldChange.bind(this, 'eru')} />
+          <FormInput
+            label='Number of people'
+            type='text'
+            name='num-fact'
+            id='num-fact'
+            value={this.state.data.numPplFact}
+            onChange={this.onFieldChange.bind(this, 'numPplFact')} />
 
           <FormRadioGroup
-            label='RFL'
-            name='rfl'
-            options={optsNoPlannedPub}
+            label='IFRC Staff Relocated'
+            name='ifrc-staff'
+            options={optsPlanReqDep}
             classWrapper='form__group--asymmetric'
-            selectedOption={this.state.data.rfl}
-            onChange={this.onFieldChange.bind(this, 'rfl')} />
+            selectedOption={this.state.data.ifrcStaff}
+            onChange={this.onFieldChange.bind(this, 'ifrcStaff')} />
+
+          <FormInput
+            label='Number of people'
+            type='text'
+            name='num-ifrc-staff'
+            id='num-ifrc-staff'
+            value={this.state.data.numPplIfrcStaff}
+            onChange={this.onFieldChange.bind(this, 'numPplIfrcStaff')} />
         </div>
       </Fold>
     );
