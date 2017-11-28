@@ -3,14 +3,13 @@ import * as url from 'url';
 import * as localStorage from 'local-storage';
 import { api } from '../config';
 
-export function withToken (options) {
+export function withToken (options = {}) {
   const user = localStorage.get('user');
   if (!user) {
     throw new Error('No login token found');
   } else if (Date.parse(user.expires) <= Date.now()) {
     throw new Error('Token is expired');
   }
-  options = options || {};
   options.headers = options.headers || {};
   options.headers['Authorization'] = `ApiKey ${user.username}:${user.token}`;
   return options;
@@ -29,6 +28,19 @@ function failed (action) {
 }
 
 export function fetchJSON (path, action, options) {
+  return makeRequest(path, action, options);
+}
+
+export function postJSON (path, action, payload, options = {}) {
+  options.headers = options.headers || {};
+  options.headers['Content-Type'] = 'application/json';
+  options.headers['Accept'] = 'application/json';
+  options.method = 'POST';
+  options.body = JSON.stringify(payload);
+  return makeRequest(path, action, options);
+}
+
+export function makeRequest (path, action, options) {
   options = options || {};
   return function (dispatch) {
     dispatch({ type: inflight(action) });
