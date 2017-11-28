@@ -450,10 +450,10 @@ class FieldReportForm extends React.Component {
           <div className='sources-list'>
             {formData.sources.map((source, idx) => (
               <ReportSource
-                key={source.name}
+                key={source.value}
                 idx={idx}
                 label={source.label}
-                sourceName={source.name}
+                sourceName={source.value}
                 specificationValue={this.state.data.sources[idx].specification}
                 checked={this.state.data.sources[idx].checked}
                 onChange={this.onFieldChange.bind(this, `sources[${idx}]`)} />
