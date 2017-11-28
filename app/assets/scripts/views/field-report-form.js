@@ -272,6 +272,7 @@ class FieldReportForm extends React.Component {
       if (step === 5) {
         console.log('Submit data!!!');
       } else {
+        window.scrollTo(0, 0);
         this.setState({ step: step + 1 });
       }
     }
@@ -286,6 +287,7 @@ class FieldReportForm extends React.Component {
 
   onStepBackClick () {
     if (this.state.step > 1) {
+      window.scrollTo(0, 0);
       this.setState({ step: this.state.step - 1 });
     }
   }
@@ -296,6 +298,7 @@ class FieldReportForm extends React.Component {
     // if (step > this.state.step) {
     //   return;
     // }
+    window.scrollTo(0, 0);
     this.setState({ step });
   }
 
