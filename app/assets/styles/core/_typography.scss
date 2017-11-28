@@ -115,14 +115,15 @@ ol {
 }
 
 dt {
-  @extend .heading-alt;
-  color: rgba($base-font-color, 0.64);
-  font-size: 0.875rem;
+  font-weight: 400;
+  font-size: 1rem;
   line-height: 1.25rem;
 }
 
 dd {
   margin: 0 0 ($global-spacing / 2) 0;
+  font-size: 1rem;
+  font-weight: 300;
 
   &:last-child {
     margin-bottom: 0;

@@ -32,7 +32,7 @@ class Account extends React.Component {
     const profileData = profile.data.objects[0];
     return attributes.map(a => [
       <dt key={`dt-${a}`}>{apiPropertyDisplay(a)}</dt>,
-      <dl key={`dl-${a}`}>{apiPropertyValue(a, profileData)}</dl>
+      <dd key={`dl-${a}`}>{apiPropertyValue(a, profileData)}</dd>
     ]);
   }
 
@@ -50,9 +50,52 @@ class Account extends React.Component {
           <div className='inpage__body'>
             <div className='inner'>
               <div className='prose prose--responsive'>
-                <dl className='dl--horizontal'>
-                  {this.renderProfileAttributes(this.props.profile)}
-                </dl>
+                <section className='fold'>
+                  <div className='inner'>
+                    <div className='fold__header'>
+                      <h2 className='fold__title'>Account Information</h2>
+                      <button className='button '></button>
+                    </div>
+                    <div className='fold__body'>
+                      <dl className='dl--horizontal'>
+                        {this.renderProfileAttributes(this.props.profile)}
+                      </dl>
+                    </div>
+                  </div>
+                </section>
+                <section className='fold'>
+                  <div className='inner'>
+                    <div className='fold__header'>
+                      <h2 className='fold__title'>Subscription Preferences</h2>
+                    </div>
+                    <div className='fold__body'>
+                      <div className='form__group'>
+                        <div className='sources-list'>
+                        </div>
+                      </div>
+                      <div className='form__group'>
+                        <label className='form__label'>Notifications by Continent</label>
+                        <div className='sources-list'>
+                        </div>
+                      </div>
+                      <div className='form__group'>
+                        <label className='form__label'>Notifications by Region</label>
+                        <div className='sources-list'>
+                        </div>
+                      </div>
+                      <div className='form__group'>
+                        <label className='form__label'>Notifications by Country</label>
+                        <div className='sources-list'>
+                        </div>
+                      </div>
+                      <div className='form__group'>
+                        <label className='form__label'>Notifications by Event Type</label>
+                        <div className='sources-list'>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
               </div>
             </div>
           </div>
