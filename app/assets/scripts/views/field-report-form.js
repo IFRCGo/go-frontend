@@ -21,7 +21,8 @@ import {
 import * as formData from '../utils/field-report-constants';
 import { showAlert } from '../components/system-alerts';
 import { createFieldReport } from '../actions';
-import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
+// import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
+import { hideGlobalLoading } from '../components/global-loading';
 
 import App from './app';
 import Fold from '../components/fold';
@@ -29,6 +30,7 @@ import {
   FormInput,
   FormTextarea,
   FormRadioGroup,
+  FormCheckboxGroup,
   FormCheckbox,
   FormSelect,
   FormError
@@ -1115,16 +1117,12 @@ if (environment !== 'production') {
 class ActionsCheckboxes extends React.Component {
   constructor (props) {
     super(props);
-    this.onDescriptionChange = this.onDescriptionChange.bind(this);
+    this.onChecksChange = this.onChecksChange.bind(this);
   }
 
-  onCheckChange (idx) {
+  onChecksChange (checkValues) {
     const { values, onChange } = this.props;
-    const prevState = values.options[idx].checked;
-    let newVals = _cloneDeep(values);
-    _set(newVals, `options[${idx}].checked`, !prevState);
-
-    onChange(newVals);
+    onChange(Object.assign({}, values, {options: checkValues}));
   }
 
   onDescriptionChange (e) {
@@ -1143,36 +1141,22 @@ class ActionsCheckboxes extends React.Component {
     } = this.props;
 
     return (
-      <div className='form__group'>
-        <div className='form__inner-header'>
-          <div className='form__inner-headline'>
-            <label className='form__label'>{label}</label>
-            <FormDescription value={description} />
-          </div>
-        </div>
-        <div className='form__inner-body'>
-          <div className='form__options-group'>
-            {options.map((o, idx) => (
-              <FormCheckbox
-                key={o.name}
-                label={o.label}
-                name={`${name}[options][]`}
-                id={`${name}-${o.name}`}
-                value={o.name}
-                checked={values.options[idx].checked}
-                onChange={this.onCheckChange.bind(this, idx)} />
-            ))}
-          </div>
-
-          <FormTextarea
-            label='Description'
-            name={`${name}[description]`}
-            id={`${name}-description`}
-            classLabel='form__label--nested'
-            value={values.description}
-            onChange={this.onDescriptionChange} />
-        </div>
-      </div>
+      <FormCheckboxGroup
+        label={label}
+        description={description}
+        name={name}
+        classWrapper='action-checkboxes'
+        options={options}
+        values={values.options}
+        onChange={this.onChecksChange} >
+        <FormTextarea
+          label='Description'
+          name={`${name}[description]`}
+          id={`${name}-description`}
+          classLabel='form__label--nested'
+          value={values.description}
+          onChange={this.onDescriptionChange} />
+      </FormCheckboxGroup>
     );
   }
 }
