@@ -21,6 +21,10 @@ class SysAlerts extends React.Component {
     theSysAlerts = this;
   }
 
+  componentWillUnmount () {
+    theSysAlerts = null;
+  }
+
   onDismiss (id) {
     this.props._hide(id);
   }
