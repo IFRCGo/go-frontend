@@ -91,3 +91,21 @@
     @extend %collecticon-sm-xmark;
   }
 }
+
+.alert-container {
+  pointer-events: none;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  z-index: 9996;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 24rem;
+  padding: $global-spacing $global-spacing 0 $global-spacing;
+
+  & > * {
+    pointer-events: auto;
+  }
+}
