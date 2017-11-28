@@ -26,7 +26,8 @@ class Login extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onSubmit () {
+  onSubmit (e) {
+    e.preventDefault();
     this.props._getAuthToken(this.state.data.email, this.state.data.password);
     showGlobalLoading();
   }
@@ -107,7 +108,7 @@ class Login extends React.Component {
 
                 {this.renderError()}
 
-                <button className={c('mfa-tick', { disabled: !this.allowSubmit() })} type='button' onClick={this.onSubmit}><span>Login</span></button>
+                <button className={c('mfa-tick', { disabled: !this.allowSubmit() })} type='submit' onClick={this.onSubmit}><span>Login</span></button>
                 <p>
                   Don’t have an account? <Link to='/register' title='Create new account'><span>Sign Up.</span></Link>
                 </p>

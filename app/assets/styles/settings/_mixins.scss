@@ -139,6 +139,13 @@
     $bg-color-active: rgba($color, 0.24);
   }
 
+  @else if $style == "filled" {
+    $text-color: tint($color, 100%);
+    $bg-color: $color;
+    $bg-color-hover: shade($color, 8%);
+    $bg-color-active: shade($color, 12%);
+  }
+
   @else {
     @error "Invalid style property for button.";
   }

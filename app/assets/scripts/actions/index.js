@@ -6,6 +6,11 @@ export function getAuthToken (username, password) {
   return postJSON('get_auth_token', TOKEN, { username, password });
 }
 
+export const GET_PROFILE = 'GET_PROFILE';
+export function getUserProfile (username) {
+  return fetchJSON(`api/v1/profile/?user__username=${username}`, GET_PROFILE, withToken());
+}
+
 export const LOGOUT_USER = 'LOGOUT_USER';
 export function logoutUser () {
   return { type: LOGOUT_USER };

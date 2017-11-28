@@ -29,7 +29,7 @@ class UserMenu extends React.Component {
           direction='down'
           alignment='center' >
 
-          <h6 className='drop__title'>Hello {this.props.userData.username}</h6>
+          <h6 className='drop__title'>Hello {this.props.userData.firstName} {this.props.userData.lastName}</h6>
           <ul className='drop__menu' role='menu'>
             <li><Link to='/account' title='View user account' className='drop__menu-item' data-hook='dropdown:close'>Account</Link></li>
             <li><a href='#' title='Logout' className='drop__menu-item' data-hook='dropdown:close' onClick={this.onLogoutClick.bind(this)}>Logout</a></li>
