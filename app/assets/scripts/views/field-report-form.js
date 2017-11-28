@@ -283,11 +283,15 @@ class FieldReportForm extends React.Component {
     // Extract properties that need processing.
     let {
       countries,
+      disasterType,
       ...state
     } = _cloneDeep(this.state.data);
 
     // Process properties.
-    // state.countries = countries.map()
+    state.countries = countries.map(o => ({id: o.value}));
+    state.dtype = {id: disasterType};
+
+    // Remove empty fields.
 
     return state;
   }
@@ -298,9 +302,9 @@ class FieldReportForm extends React.Component {
     const result = this.validate();
     if (result) {
       if (step === 5) {
-        console.log('Submit data!!!');
-        this.props._createFieldReport(this.getSubmitPayload());
-        showGlobalLoading();
+        console.log('Submit data!!!', this.getSubmitPayload());
+        // this.props._createFieldReport(this.getSubmitPayload());
+        // showGlobalLoading();
       } else {
         window.scrollTo(0, 0);
         this.setState({ step: step + 1 });
