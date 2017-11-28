@@ -19,6 +19,7 @@ import {
   step5 as schemaStep5
 } from '../schemas/field-report-form';
 import * as formData from '../utils/field-report-constants';
+import { showAlert } from '../components/system-alerts';
 
 import App from './app';
 import Fold from '../components/fold';
@@ -233,8 +234,7 @@ class FieldReportForm extends React.Component {
     this.onStepBackClick = this.onStepBackClick.bind(this);
   }
 
-  onSubmit (e) {
-    e.preventDefault();
+  validate () {
     const { step, data } = this.state;
     let state = prepStateForValidation(data);
     console.log('state', state);
@@ -264,17 +264,22 @@ class FieldReportForm extends React.Component {
 
     this.setState({ errors: _cloneDeep(validator.errors) });
     console.log('validator.errors', validator.errors);
-    if (validator.errors !== null) {
-      return null;
-    } else {
-      console.log('good');
-      return;
+    return validator.errors === null;
+  }
+
+  onSubmit (e) {
+    e.preventDefault();
+    const step = this.state.step;
+    const result = this.validate();
+    if (result) {
       if (step === 5) {
         console.log('Submit data!!!');
       } else {
         window.scrollTo(0, 0);
         this.setState({ step: step + 1 });
       }
+    } else {
+      showAlert('danger', <p><strong>Error:</strong> There are errors in the form</p>, true, 4500);
     }
   }
 
@@ -294,12 +299,13 @@ class FieldReportForm extends React.Component {
 
   onStepperClick (step, e) {
     e.preventDefault();
-    // Can't move forward. Only backwards.
-    // if (step > this.state.step) {
-    //   return;
-    // }
-    window.scrollTo(0, 0);
-    this.setState({ step });
+    const result = this.validate();
+    if (result) {
+      window.scrollTo(0, 0);
+      this.setState({ step });
+    } else {
+      showAlert('danger', <p><strong>Error:</strong> There are errors in the form</p>, true, 4500);
+    }
   }
 
   renderStepper () {
