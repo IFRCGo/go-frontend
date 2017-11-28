@@ -54,7 +54,7 @@
     @include column(12/12);
 
     @include media(large-up) {
-      @include column(4/12);
+      @include column(3/12);
     }
   }
 
@@ -62,19 +62,32 @@
     @include column(12/12);
 
     @include media(large-up) {
-      @include column(8/12);
+      @include column(9/12);
     }
-    > .form__group {
-      @include column(12/12);
+  }
 
-      @include media(small-up) {
-        @include column(6/12);
-      }
+  .estimation {
+    @extend .clearfix;
+  }
+
+  .estimation__item-field {
+    @include column(12/12);
+
+    @include media(medium-up) {
+      @include column(2/12);
+    }
+  }
+
+  .estimation__item {
+    @include column(12/12);
+
+    @include media(medium-up) {
+      @include column(5/12);
     }
   }
 }
 
-.form__options-group {
+.action-checkboxes .form__options-group {
   .form__option {
     @include column(12/12);
 
@@ -241,5 +254,21 @@
     &::before {
       @extend %collecticon-sm-tick;
     }
+  }
+}
+
+.button--add-source {
+  @extend .button, .button--secondary-raised-light;
+
+  &::before {
+    @extend %collecticon-sm-plus;
+  }
+}
+
+.button--remove-source {
+  @extend .button, .button--base-plain;
+
+  &::before {
+    @extend %collecticon-trash-bin;
   }
 }

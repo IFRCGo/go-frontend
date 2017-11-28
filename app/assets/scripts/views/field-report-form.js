@@ -13,9 +13,16 @@ import ajvKeywords from 'ajv-keywords';
 import { environment } from '../config';
 import {
   step1 as schemaStep1,
-  step2 as schemaStep2
+  step2 as schemaStep2,
+  step3 as schemaStep3,
+  step4 as schemaStep4,
+  step5 as schemaStep5
 } from '../schemas/field-report-form';
 import * as formData from '../utils/field-report-constants';
+import { showAlert } from '../components/system-alerts';
+import { createFieldReport } from '../actions';
+// import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
+import { hideGlobalLoading } from '../components/global-loading';
 
 import App from './app';
 import Fold from '../components/fold';
@@ -23,17 +30,18 @@ import {
   FormInput,
   FormTextarea,
   FormRadioGroup,
+  FormCheckboxGroup,
   FormCheckbox,
   FormSelect,
   FormError
 } from '../components/form-elements/';
-import { FormDescription } from '../components/form-elements/misc';
 
 const ajv = new Ajv({ $data: true, allErrors: true, errorDataPath: 'property' });
 ajvKeywords(ajv);
 
 const dataPathToDisplay = (path) => {
-  path = path.substring(1);
+  // Remove first . and any array ref.
+  path = path.substring(1).replace(/\[[0-9]+\]/g, '');
   const index = {
     // Step 1.
     summary: 'Summary',
@@ -46,21 +54,46 @@ const dataPathToDisplay = (path) => {
     assistance: 'Government requests international assistance?',
 
     // Step 2.
-    'numInjured.redCross': 'Injured Red Cross',
-    'numInjured.governmMissingent': 'Injured Government',
-    'numDead.redCross': 'Dead Red Cross',
-    'numDead.government': 'Dead Government',
-    'numMissing.redCross': 'Missing Red Cross',
-    'numMissing.government': 'Missing Government',
-    'numAffected.redCross': 'Affected Red Cross',
-    'numAffected.government': 'Affected Government',
-    'numDisplaced.redCross': 'Displaced Red Cross',
-    'numDisplaced.government': 'Displaced Government',
+    'numInjured.estimation': 'Estimation Injured',
+    'numDead.estimation': 'Estimation Dead',
+    'numMissing.estimation': 'Estimation Missing',
+    'numAffected.estimation': 'Estimation Affected',
+    'numDisplaced.estimation': 'Estimation Displaced',
     numAssistedGov: 'Assisted by Government',
     numAssistedRedCross: 'Assisted By Red Cross',
     numLocalStaff: 'Number of local staff involved',
     numVolunteers: 'Number of volunteers involved',
-    numExpats: 'Number of expats/delegates'
+    numExpats: 'Number of expats/delegates',
+
+    // Step 3.
+    // No validation for step 3.
+
+    // Step 4.
+    amountDref: 'DREF Requested - Amount CHF',
+    amountEmergencyAppeal: 'Emergency Appeal - Amount CHF',
+    numPplRdrits: 'RDRT/RITS - Number of people',
+    numPplFact: 'FACT - Number of people',
+    numPplIfrcStaff: 'IFRC Staff Relocated - Number of people',
+
+    // Step 5.
+    'contactOriginator.name': 'Originator - Name',
+    'contactOriginator.func': 'Originator - Function',
+    'contactOriginator.email': 'Originator - Email',
+    'contactPrimary.name': 'Primary Contact - Name',
+    'contactPrimary.func': 'Primary Contact - Function',
+    'contactPrimary.email': 'Primary Contact - Email',
+    'contactNatSoc.name': 'National Society Contact - Name',
+    'contactNatSoc.func': 'National Society Contact - Function',
+    'contactNatSoc.email': 'National Society Contact - Email',
+    'contactFederation.name': 'Federation Contact - Name',
+    'contactFederation.func': 'Federation Contact - Function',
+    'contactFederation.email': 'Federation Contact - Email',
+    'contactMediaNatSoc.name': 'Media Contact in the National Society - Name',
+    'contactMediaNatSoc.func': 'Media Contact in the National Society - Function',
+    'contactMediaNatSoc.email': 'Media Contact in the National Society - Email',
+    'contactMedia.name': 'Media Contact - Name',
+    'contactMedia.func': 'Media Contact - Function',
+    'contactMedia.email': 'Media Contact - Email'
   };
   if (!index[path]) {
     console.warn('No display value found for', path);
@@ -79,22 +112,31 @@ const prepStateForValidation = (state) => {
     return isNaN(v) ? val : v;
   };
 
+  const convertEstimation = (val) => val.map(o => { o.estimation = toNumIfNum(o.estimation); return o; });
+
   const formatter = {
     // Step 1.
     assistance: toBool,
     countries: (val) => val.map(o => o.value),
 
     // Step 2.
-    numInjured: (val) => ({redCross: toNumIfNum(val.redCross), government: toNumIfNum(val.government)}),
-    numDead: (val) => ({redCross: toNumIfNum(val.redCross), government: toNumIfNum(val.government)}),
-    numMissing: (val) => ({redCross: toNumIfNum(val.redCross), government: toNumIfNum(val.government)}),
-    numAffected: (val) => ({redCross: toNumIfNum(val.redCross), government: toNumIfNum(val.government)}),
-    numDisplaced: (val) => ({redCross: toNumIfNum(val.redCross), government: toNumIfNum(val.government)}),
+    numInjured: convertEstimation,
+    numDead: convertEstimation,
+    numMissing: convertEstimation,
+    numAffected: convertEstimation,
+    numDisplaced: convertEstimation,
     numAssistedGov: toNumIfNum,
     numAssistedRedCross: toNumIfNum,
     numLocalStaff: toNumIfNum,
     numVolunteers: toNumIfNum,
-    numExpats: toNumIfNum
+    numExpats: toNumIfNum,
+
+    // Step 4.
+    amountDref: toNumIfNum,
+    amountEmergencyAppeal: toNumIfNum,
+    numPplRdrits: toNumIfNum,
+    numPplFact: toNumIfNum,
+    numPplIfrcStaff: toNumIfNum
   };
 
   for (let prop in state) {
@@ -111,7 +153,7 @@ class FieldReportForm extends React.Component {
     super(props);
 
     this.state = {
-      step: 2,
+      step: 1,
       data: {
         // Step 1
         summary: undefined,
@@ -122,7 +164,7 @@ class FieldReportForm extends React.Component {
         disasterType: undefined,
         event: undefined,
         sources: formData.sources.map(o => ({
-          name: o.name,
+          value: o.value,
           checked: false,
           specification: undefined
         })),
@@ -130,11 +172,11 @@ class FieldReportForm extends React.Component {
         assistance: undefined,
 
         // Step 2
-        numInjured: { redCross: undefined, government: undefined },
-        numDead: { redCross: undefined, government: undefined },
-        numMissing: { redCross: undefined, government: undefined },
-        numAffected: { redCross: undefined, government: undefined },
-        numDisplaced: { redCross: undefined, government: undefined },
+        numInjured: [{ estimation: undefined, source: undefined }],
+        numDead: [{ estimation: undefined, source: undefined }],
+        numMissing: [{ estimation: undefined, source: undefined }],
+        numAffected: [{ estimation: undefined, source: undefined }],
+        numDisplaced: [{ estimation: undefined, source: undefined }],
         numAssistedGov: undefined,
         numAssistedRedCross: undefined,
         numLocalStaff: undefined,
@@ -146,21 +188,21 @@ class FieldReportForm extends React.Component {
         actionsOthers: undefined,
         actionsNatSoc: {
           options: formData.actions.map(o => ({
-            name: o.name,
+            value: o.value,
             checked: false
           })),
           description: undefined
         },
         actionsPns: {
           options: formData.actions.map(o => ({
-            name: o.name,
+            value: o.value,
             checked: false
           })),
           description: undefined
         },
         actionsFederation: {
           options: formData.actions.map(o => ({
-            name: o.name,
+            value: o.value,
             checked: false
           })),
           description: undefined
@@ -190,10 +232,19 @@ class FieldReportForm extends React.Component {
     };
 
     this.onSubmit = this.onSubmit.bind(this);
+    this.onStepBackClick = this.onStepBackClick.bind(this);
   }
 
-  onSubmit (e) {
-    e.preventDefault();
+  componentWillReceiveProps (nextProps) {
+    if (this.fieldReportForm.fetching && !nextProps.fieldReportForm.fetching) {
+      if (!nextProps.fieldReportForm) {
+        console.log('nextProps.fieldReportForm', nextProps.fieldReportForm);
+        hideGlobalLoading();
+      }
+    }
+  }
+
+  validate () {
     const { step, data } = this.state;
     let state = prepStateForValidation(data);
     console.log('state', state);
@@ -205,23 +256,60 @@ class FieldReportForm extends React.Component {
         break;
       case 2:
         validator = ajv.compile(schemaStep2);
-        // Some values need to be converted.
+        break;
+      case 3:
+        // Schema is being compiled and used but there are no errors being
+        // displayed for this step, for no fields are required nor prone
+        // to error.
+        validator = ajv.compile(schemaStep3);
+        break;
+      case 4:
+        validator = ajv.compile(schemaStep4);
+        break;
+      case 5:
+        validator = ajv.compile(schemaStep5);
         break;
     }
     validator(state);
 
     this.setState({ errors: _cloneDeep(validator.errors) });
     console.log('validator.errors', validator.errors);
-    if (validator.errors !== null) {
-      return null;
-    } else {
-      console.log('good');
-      return;
+    return validator.errors === null;
+  }
+
+  getSubmitPayload () {
+    // Prepare the payload for submission.
+    // Extract properties that need processing.
+    let {
+      countries,
+      disasterType,
+      ...state
+    } = _cloneDeep(this.state.data);
+
+    // Process properties.
+    state.countries = countries.map(o => ({id: o.value}));
+    state.dtype = {id: disasterType};
+
+    // Remove empty fields.
+
+    return state;
+  }
+
+  onSubmit (e) {
+    e.preventDefault();
+    const step = this.state.step;
+    const result = this.validate();
+    if (result) {
       if (step === 5) {
-        console.log('Submit data!!!');
+        console.log('Submit data!!!', this.getSubmitPayload());
+        // this.props._createFieldReport(this.getSubmitPayload());
+        // showGlobalLoading();
       } else {
+        window.scrollTo(0, 0);
         this.setState({ step: step + 1 });
       }
+    } else {
+      showAlert('danger', <p><strong>Error:</strong> There are errors in the form</p>, true, 4500);
     }
   }
 
@@ -232,13 +320,22 @@ class FieldReportForm extends React.Component {
     this.setState({data});
   }
 
+  onStepBackClick () {
+    if (this.state.step > 1) {
+      window.scrollTo(0, 0);
+      this.setState({ step: this.state.step - 1 });
+    }
+  }
+
   onStepperClick (step, e) {
     e.preventDefault();
-    // Can't move forward. Only backwards.
-    // if (step > this.state.step) {
-    //   return;
-    // }
-    this.setState({ step });
+    const result = this.validate();
+    if (result) {
+      window.scrollTo(0, 0);
+      this.setState({ step });
+    } else {
+      showAlert('danger', <p><strong>Error:</strong> There are errors in the form</p>, true, 4500);
+    }
   }
 
   renderStepper () {
@@ -253,12 +350,12 @@ class FieldReportForm extends React.Component {
     return (
       <ol className='stepper'>
         {items.map((o, idx) => {
-          idx += 1;
+          const stepNum = idx + 1;
           const classes = c('stepper__item', {
-            'stepper__item--complete': step > idx,
-            'stepper__item--current': step === idx
+            'stepper__item--complete': step > stepNum,
+            'stepper__item--current': step === stepNum
           });
-          return <li key={o} className={classes}><a href='#' onClick={this.onStepperClick.bind(this, idx)}><span>{o}</span></a></li>;
+          return <li key={o} className={classes}><a href='#' onClick={this.onStepperClick.bind(this, stepNum)}><span>{o}</span></a></li>;
         })}
       </ol>
     );
@@ -353,10 +450,10 @@ class FieldReportForm extends React.Component {
           <div className='sources-list'>
             {formData.sources.map((source, idx) => (
               <ReportSource
-                key={source.name}
+                key={source.value}
                 idx={idx}
                 label={source.label}
-                sourceName={source.name}
+                sourceName={source.value}
                 specificationValue={this.state.data.sources[idx].specification}
                 checked={this.state.data.sources[idx].checked}
                 onChange={this.onFieldChange.bind(this, `sources[${idx}]`)} />
@@ -517,6 +614,8 @@ class FieldReportForm extends React.Component {
   }
 
   renderStep3 () {
+    // Note: There's no need for validation on this step.
+    // All the fields are optional, and the text fields are just strings.
     return (
       <Fold title='Actions taken'>
         <ActionsCheckboxes
@@ -628,7 +727,12 @@ class FieldReportForm extends React.Component {
             name='amount-dref'
             id='amount-dref'
             value={this.state.data.amountDref}
-            onChange={this.onFieldChange.bind(this, 'amountDref')} />
+            onChange={this.onFieldChange.bind(this, 'amountDref')} >
+            <FormError
+              errors={this.state.errors}
+              property='amountDref'
+            />
+          </FormInput>
 
           <FormRadioGroup
             label='Emergency Appeal'
@@ -657,7 +761,12 @@ class FieldReportForm extends React.Component {
             name='amount-emergency-appeal'
             id='amount-emergency-appeal'
             value={this.state.data.amountEmergencyAppeal}
-            onChange={this.onFieldChange.bind(this, 'amountEmergencyAppeal')} />
+            onChange={this.onFieldChange.bind(this, 'amountEmergencyAppeal')} >
+            <FormError
+              errors={this.state.errors}
+              property='amountEmergencyAppeal'
+            />
+          </FormInput>
 
           <FormRadioGroup
             label='RDRT/RITS'
@@ -673,7 +782,12 @@ class FieldReportForm extends React.Component {
             name='num-ppl-rdrt-rits'
             id='num-ppl-rdrt-rits'
             value={this.state.data.numPplRdrits}
-            onChange={this.onFieldChange.bind(this, 'numPplRdrits')} />
+            onChange={this.onFieldChange.bind(this, 'numPplRdrits')} >
+            <FormError
+              errors={this.state.errors}
+              property='numPplRdrits'
+            />
+          </FormInput>
 
           <FormRadioGroup
             label='FACT'
@@ -689,7 +803,12 @@ class FieldReportForm extends React.Component {
             name='num-fact'
             id='num-fact'
             value={this.state.data.numPplFact}
-            onChange={this.onFieldChange.bind(this, 'numPplFact')} />
+            onChange={this.onFieldChange.bind(this, 'numPplFact')} >
+            <FormError
+              errors={this.state.errors}
+              property='numPplFact'
+            />
+          </FormInput>
 
           <FormRadioGroup
             label='IFRC Staff Relocated'
@@ -705,7 +824,12 @@ class FieldReportForm extends React.Component {
             name='num-ifrc-staff'
             id='num-ifrc-staff'
             value={this.state.data.numPplIfrcStaff}
-            onChange={this.onFieldChange.bind(this, 'numPplIfrcStaff')} />
+            onChange={this.onFieldChange.bind(this, 'numPplIfrcStaff')} >
+            <FormError
+              errors={this.state.errors}
+              property='numPplIfrcStaff'
+            />
+          </FormInput>
         </div>
       </Fold>
     );
@@ -719,36 +843,48 @@ class FieldReportForm extends React.Component {
           description='Your name, function and e-mail.'
           name='contact-originator'
           values={this.state.data.contactOriginator}
+          fieldKey='contactOriginator'
+          errors={this.state.errors}
           onChange={this.onFieldChange.bind(this, 'contactOriginator')} />
         <ContactRow
           label='Primary Contact'
           description='The person to contact for more information'
           name='contact-primary'
           values={this.state.data.contactPrimary}
+          fieldKey='contactPrimary'
+          errors={this.state.errors}
           onChange={this.onFieldChange.bind(this, 'contactPrimary')} />
         <ContactRow
           label='National Society Contact'
           description='A contact in the National Society for more information. Select someone who will be available for interview.'
           name='contact-nat-soc'
           values={this.state.data.contactNatSoc}
+          fieldKey='contactNatSoc'
+          errors={this.state.errors}
           onChange={this.onFieldChange.bind(this, 'contactNatSoc')} />
         <ContactRow
           label='Federation Contact'
           description='A contact of the Federation (Secretariat/Zone/DMUs) for more information. Select someone who will be available for interview.'
           name='contact-federation'
           values={this.state.data.contactFederation}
+          fieldKey='contactFederation'
+          errors={this.state.errors}
           onChange={this.onFieldChange.bind(this, 'contactFederation')} />
         <ContactRow
           label='Media Contact in the National Society'
           description='A media contact in the National Society. This person could be contacted by journalists.'
           name='contact-media-nat-soc'
           values={this.state.data.contactMediaNatSoc}
+          fieldKey='contactMediaNatSoc'
+          errors={this.state.errors}
           onChange={this.onFieldChange.bind(this, 'contactMediaNatSoc')} />
         <ContactRow
           label='Media Contact'
           description='A media contact in the Secretariat/Zone/DMU. This person could be contacted by journalists.'
           name='contact-media'
           values={this.state.data.contactMedia}
+          fieldKey='contactMedia'
+          errors={this.state.errors}
           onChange={this.onFieldChange.bind(this, 'contactMedia')} />
       </Fold>
     );
@@ -791,6 +927,7 @@ class FieldReportForm extends React.Component {
                 {this.renderErrorSummary()}
 
                 <div className='form__actions'>
+                  <button type='button' className={c('button button--base-plain', {disabled: this.state.step <= 1})} title='Go back to previous step' onClick={this.onStepBackClick}>Back</button>
                   <button type='submit' className='button button--secondary-raised-dark' title='Save and continue'>Save and continue</button>
                 </div>
               </form>
@@ -804,6 +941,8 @@ class FieldReportForm extends React.Component {
 
 if (environment !== 'production') {
   FieldReportForm.propTypes = {
+    _createFieldReport: T.func,
+    fieldReportForm: T.object
   };
 }
 
@@ -811,9 +950,11 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state) => ({
+  fieldReportForm: state.fieldReportForm
 });
 
 const dispatcher = (dispatch) => ({
+  _createFieldReport: (...args) => dispatch(createFieldReport(...args))
 });
 
 export default connect(selector, dispatcher)(FieldReportForm);
@@ -897,9 +1038,35 @@ if (environment !== 'production') {
 }
 
 class SourceEstimation extends React.Component {
-  onFieldChange (field, e) {
+  onEstimationChange (idx, e) {
     const { values, onChange } = this.props;
-    const newVals = Object.assign({}, values, {[field]: e.target.value});
+    const newVals = _cloneDeep(values);
+    newVals[idx].estimation = e.target.value;
+    onChange(newVals);
+  }
+
+  onSourceChange (idx, e) {
+    const { values, onChange } = this.props;
+    const val = e.target.value;
+    let newVals = _cloneDeep(values);
+    // Ensure vertical exclusivity in the radio button matrix.
+    newVals = newVals.map(o => {
+      if (o.source === val) o.source = undefined;
+      return o;
+    });
+    newVals[idx].source = val;
+    onChange(newVals);
+  }
+
+  onAddSource () {
+    const { values, onChange } = this.props;
+    onChange(values.concat({estimation: undefined, source: undefined}));
+  }
+
+  onRemoveSource (idx) {
+    const { values, onChange } = this.props;
+    const newVals = _cloneDeep(values);
+    newVals.splice(idx, 1);
     onChange(newVals);
   }
 
@@ -922,33 +1089,45 @@ class SourceEstimation extends React.Component {
           </div>
         </div>
         <div className='form__inner-body'>
-          <FormInput
-            label='Estimation Red Cross'
-            type='text'
-            name={`${name}[red-cross]`}
-            id={`${name}-red-cross`}
-            classLabel='form__label--nested'
-            value={values.redCross}
-            onChange={this.onFieldChange.bind(this, 'redCross')} >
-            <FormError
-              errors={errors}
-              property={`${fieldKey}.redCross`}
-            />
-          </FormInput>
+          {values.map((o, idx) => (
+            <div key={o.source || idx} className='estimation'>
+              <FormInput
+                label='Estimation'
+                type='text'
+                name={`${name}[${idx}][estimation]`}
+                id={`${name}-${idx}-estimation`}
+                classLabel={c('form__label--nested', {'visually-hidden': idx > 0})}
+                classWrapper='estimation__item-field'
+                value={o.estimation}
+                onChange={this.onEstimationChange.bind(this, idx)} >
+                <FormError
+                  errors={errors}
+                  property={`${fieldKey}[${idx}].estimation`}
+                />
+              </FormInput>
 
-          <FormInput
-            label='Estimation Government'
-            type='text'
-            name={`${name}[government]`}
-            id={`${name}-government`}
-            classLabel='form__label--nested'
-            value={values.government}
-            onChange={this.onFieldChange.bind(this, 'government')} >
-            <FormError
-              errors={errors}
-              property={`${fieldKey}.government`}
-            />
-          </FormInput>
+              <FormRadioGroup
+                label='Source'
+                name={`${name}[${idx}][source]`}
+                options={[
+                  {label: 'Red Cross', value: 'red-cross'},
+                  {label: 'Government', value: 'government'}
+                ]}
+                classLabel={c('form__label--nested', {'visually-hidden': idx > 0})}
+                classWrapper='estimation__item'
+                selectedOption={o.source}
+                onChange={this.onSourceChange.bind(this, idx)} />
+
+              <div className='estimation__item'>
+                {values.length > 1 ? (
+                  <button type='button' className='button--remove-source' title='Delete Source' onClick={this.onRemoveSource.bind(this, idx)}>Delete source</button>
+                ) : (
+                  <button type='button' className='button--add-source' title='Add new source' onClick={this.onAddSource.bind(this)}>Add another source</button>
+                )}
+              </div>
+            </div>
+          ))}
+
         </div>
       </div>
     );
@@ -960,10 +1139,7 @@ if (environment !== 'production') {
     label: T.string,
     name: T.string,
     description: T.string,
-    values: T.shape({
-      redCross: T.string,
-      government: T.string
-    }),
+    values: T.array,
     fieldKey: T.string,
     errors: T.array,
     onChange: T.func
@@ -973,16 +1149,13 @@ if (environment !== 'production') {
 class ActionsCheckboxes extends React.Component {
   constructor (props) {
     super(props);
+    this.onChecksChange = this.onChecksChange.bind(this);
     this.onDescriptionChange = this.onDescriptionChange.bind(this);
   }
 
-  onCheckChange (idx) {
+  onChecksChange (checkValues) {
     const { values, onChange } = this.props;
-    const prevState = values.options[idx].checked;
-    let newVals = _cloneDeep(values);
-    _set(newVals, `options[${idx}].checked`, !prevState);
-
-    onChange(newVals);
+    onChange(Object.assign({}, values, {options: checkValues}));
   }
 
   onDescriptionChange (e) {
@@ -1001,36 +1174,22 @@ class ActionsCheckboxes extends React.Component {
     } = this.props;
 
     return (
-      <div className='form__group'>
-        <div className='form__inner-header'>
-          <div className='form__inner-headline'>
-            <label className='form__label'>{label}</label>
-            <FormDescription value={description} />
-          </div>
-        </div>
-        <div className='form__inner-body'>
-          <div className='form__options-group'>
-            {options.map((o, idx) => (
-              <FormCheckbox
-                key={o.name}
-                label={o.label}
-                name={`${name}[options][]`}
-                id={`${name}-${o.name}`}
-                value={o.name}
-                checked={values.options[idx].checked}
-                onChange={this.onCheckChange.bind(this, idx)} />
-            ))}
-          </div>
-
-          <FormTextarea
-            label='Description'
-            name={`${name}[description]`}
-            id={`${name}-description`}
-            classLabel='form__label--nested'
-            value={values.description}
-            onChange={this.onDescriptionChange} />
-        </div>
-      </div>
+      <FormCheckboxGroup
+        label={label}
+        description={description}
+        name={`${name}[options]`}
+        classWrapper='action-checkboxes'
+        options={options}
+        values={values.options}
+        onChange={this.onChecksChange} >
+        <FormTextarea
+          label='Description'
+          name={`${name}[description]`}
+          id={`${name}-description`}
+          classLabel='form__label--nested'
+          value={values.description}
+          onChange={this.onDescriptionChange} />
+      </FormCheckboxGroup>
     );
   }
 }
@@ -1061,7 +1220,9 @@ class ContactRow extends React.Component {
       label,
       name,
       description,
-      values
+      values,
+      errors,
+      fieldKey
     } = this.props;
 
     return (
@@ -1080,7 +1241,12 @@ class ContactRow extends React.Component {
             id={`${name}-name`}
             classLabel='form__label--nested'
             value={values.name}
-            onChange={this.onFieldChange.bind(this, 'name')} />
+            onChange={this.onFieldChange.bind(this, 'name')} >
+            <FormError
+              errors={errors}
+              property={`${fieldKey}.name`}
+            />
+          </FormInput>
           <FormInput
             label='Function'
             type='text'
@@ -1088,7 +1254,12 @@ class ContactRow extends React.Component {
             id={`${name}-func`}
             classLabel='form__label--nested'
             value={values.func}
-            onChange={this.onFieldChange.bind(this, 'func')} />
+            onChange={this.onFieldChange.bind(this, 'func')} >
+            <FormError
+              errors={errors}
+              property={`${fieldKey}.func`}
+            />
+          </FormInput>
           <FormInput
             label='Email'
             type='text'
@@ -1096,7 +1267,12 @@ class ContactRow extends React.Component {
             id={`${name}-email`}
             classLabel='form__label--nested'
             value={values.email}
-            onChange={this.onFieldChange.bind(this, 'email')} />
+            onChange={this.onFieldChange.bind(this, 'email')} >
+            <FormError
+              errors={errors}
+              property={`${fieldKey}.email`}
+            />
+          </FormInput>
         </div>
       </div>
     );
@@ -1113,6 +1289,8 @@ if (environment !== 'production') {
       func: T.string,
       email: T.string
     }),
+    fieldKey: T.string,
+    errors: T.array,
     onChange: T.func
   };
 }

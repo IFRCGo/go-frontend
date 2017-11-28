@@ -1,13 +1,9 @@
 'use strict';
-import { fetchJSON, withToken } from '../utils/network';
+import { fetchJSON, postJSON, withToken } from '../utils/network';
 
 export const TOKEN = 'TOKEN';
 export function getAuthToken (username, password) {
-  return fetchJSON('get_auth_token', TOKEN, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password })
-  });
+  return postJSON('get_auth_token', TOKEN, { username, password });
 }
 
 export const GET_PROFILE = 'GET_PROFILE';
@@ -23,4 +19,9 @@ export function logoutUser () {
 export const GET_FIELD_REPORT = 'GET_FIELD_REPORT';
 export function getFieldReportById (id) {
   return fetchJSON(`api/v1/field_report/${id}`, GET_FIELD_REPORT, withToken());
+}
+
+export const CREATE_FIELD_REPORT = 'CREATE_FIELD_REPORT';
+export function createFieldReport (payload) {
+  return postJSON('api/v1/field_report/', CREATE_FIELD_REPORT, payload, withToken());
 }
