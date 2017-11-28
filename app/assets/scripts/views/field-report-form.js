@@ -20,6 +20,8 @@ import {
 } from '../schemas/field-report-form';
 import * as formData from '../utils/field-report-constants';
 import { showAlert } from '../components/system-alerts';
+import { createFieldReport } from '../actions';
+import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 
 import App from './app';
 import Fold from '../components/fold';
@@ -234,6 +236,15 @@ class FieldReportForm extends React.Component {
     this.onStepBackClick = this.onStepBackClick.bind(this);
   }
 
+  componentWillReceiveProps (nextProps) {
+    if (this.fieldReportForm.fetching && !nextProps.fieldReportForm.fetching) {
+      if (!nextProps.fieldReportForm) {
+        console.log('nextProps.fieldReportForm', nextProps.fieldReportForm);
+        hideGlobalLoading();
+      }
+    }
+  }
+
   validate () {
     const { step, data } = this.state;
     let state = prepStateForValidation(data);
@@ -267,6 +278,20 @@ class FieldReportForm extends React.Component {
     return validator.errors === null;
   }
 
+  getSubmitPayload () {
+    // Prepare the payload for submission.
+    // Extract properties that need processing.
+    let {
+      countries,
+      ...state
+    } = _cloneDeep(this.state.data);
+
+    // Process properties.
+    // state.countries = countries.map()
+
+    return state;
+  }
+
   onSubmit (e) {
     e.preventDefault();
     const step = this.state.step;
@@ -274,6 +299,8 @@ class FieldReportForm extends React.Component {
     if (result) {
       if (step === 5) {
         console.log('Submit data!!!');
+        this.props._createFieldReport(this.getSubmitPayload());
+        showGlobalLoading();
       } else {
         window.scrollTo(0, 0);
         this.setState({ step: step + 1 });
@@ -911,6 +938,8 @@ class FieldReportForm extends React.Component {
 
 if (environment !== 'production') {
   FieldReportForm.propTypes = {
+    _createFieldReport: T.func,
+    fieldReportForm: T.object
   };
 }
 
@@ -918,9 +947,11 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state) => ({
+  fieldReportForm: state.fieldReportForm
 });
 
 const dispatcher = (dispatch) => ({
+  _createFieldReport: (...args) => dispatch(createFieldReport(...args))
 });
 
 export default connect(selector, dispatcher)(FieldReportForm);
