@@ -38,36 +38,32 @@ export const step1 = {
 };
 
 export const step2 = {
+  definitions: {
+    estimation: {
+      type: 'array',
+      items: {
+        properties: {
+          estimation: { type: 'number', minimum: 0 },
+          source: {enum: ['red-cross', 'government']}
+        }
+      }
+    }
+  },
   properties: {
     numInjured: {
-      properties: {
-        redCross: { type: 'number', minimum: 0 },
-        government: { type: 'number', minimum: 0 }
-      }
+      '$ref': '#/definitions/estimation'
     },
     numDead: {
-      properties: {
-        redCross: { type: 'number', minimum: 0 },
-        government: { type: 'number', minimum: 0 }
-      }
+      '$ref': '#/definitions/estimation'
     },
     numMissing: {
-      properties: {
-        redCross: { type: 'number', minimum: 0 },
-        government: { type: 'number', minimum: 0 }
-      }
+      '$ref': '#/definitions/estimation'
     },
     numAffected: {
-      properties: {
-        redCross: { type: 'number', minimum: 0 },
-        government: { type: 'number', minimum: 0 }
-      }
+      '$ref': '#/definitions/estimation'
     },
     numDisplaced: {
-      properties: {
-        redCross: { type: 'number', minimum: 0 },
-        government: { type: 'number', minimum: 0 }
-      }
+      '$ref': '#/definitions/estimation'
     },
     numAssistedGov: { type: 'number', minimum: 0 },
     numAssistedRedCross: { type: 'number', minimum: 0 },

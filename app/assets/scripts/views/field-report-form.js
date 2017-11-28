@@ -35,13 +35,13 @@ import {
   FormSelect,
   FormError
 } from '../components/form-elements/';
-import { FormDescription } from '../components/form-elements/misc';
 
 const ajv = new Ajv({ $data: true, allErrors: true, errorDataPath: 'property' });
 ajvKeywords(ajv);
 
 const dataPathToDisplay = (path) => {
-  path = path.substring(1);
+  // Remove first . and any array ref.
+  path = path.substring(1).replace(/\[[0-9]+\]/g, '');
   const index = {
     // Step 1.
     summary: 'Summary',
@@ -54,16 +54,11 @@ const dataPathToDisplay = (path) => {
     assistance: 'Government requests international assistance?',
 
     // Step 2.
-    'numInjured.redCross': 'Injured Red Cross',
-    'numInjured.governmMissingent': 'Injured Government',
-    'numDead.redCross': 'Dead Red Cross',
-    'numDead.government': 'Dead Government',
-    'numMissing.redCross': 'Missing Red Cross',
-    'numMissing.government': 'Missing Government',
-    'numAffected.redCross': 'Affected Red Cross',
-    'numAffected.government': 'Affected Government',
-    'numDisplaced.redCross': 'Displaced Red Cross',
-    'numDisplaced.government': 'Displaced Government',
+    'numInjured.estimation': 'Estimation Injured',
+    'numDead.estimation': 'Estimation Dead',
+    'numMissing.estimation': 'Estimation Missing',
+    'numAffected.estimation': 'Estimation Affected',
+    'numDisplaced.estimation': 'Estimation Displaced',
     numAssistedGov: 'Assisted by Government',
     numAssistedRedCross: 'Assisted By Red Cross',
     numLocalStaff: 'Number of local staff involved',
@@ -117,17 +112,19 @@ const prepStateForValidation = (state) => {
     return isNaN(v) ? val : v;
   };
 
+  const convertEstimation = (val) => val.map(o => { o.estimation = toNumIfNum(o.estimation); return o; });
+
   const formatter = {
     // Step 1.
     assistance: toBool,
     countries: (val) => val.map(o => o.value),
 
     // Step 2.
-    numInjured: (val) => ({redCross: toNumIfNum(val.redCross), government: toNumIfNum(val.government)}),
-    numDead: (val) => ({redCross: toNumIfNum(val.redCross), government: toNumIfNum(val.government)}),
-    numMissing: (val) => ({redCross: toNumIfNum(val.redCross), government: toNumIfNum(val.government)}),
-    numAffected: (val) => ({redCross: toNumIfNum(val.redCross), government: toNumIfNum(val.government)}),
-    numDisplaced: (val) => ({redCross: toNumIfNum(val.redCross), government: toNumIfNum(val.government)}),
+    numInjured: convertEstimation,
+    numDead: convertEstimation,
+    numMissing: convertEstimation,
+    numAffected: convertEstimation,
+    numDisplaced: convertEstimation,
     numAssistedGov: toNumIfNum,
     numAssistedRedCross: toNumIfNum,
     numLocalStaff: toNumIfNum,
@@ -175,11 +172,11 @@ class FieldReportForm extends React.Component {
         assistance: undefined,
 
         // Step 2
-        numInjured: { redCross: undefined, government: undefined },
-        numDead: { redCross: undefined, government: undefined },
-        numMissing: { redCross: undefined, government: undefined },
-        numAffected: { redCross: undefined, government: undefined },
-        numDisplaced: { redCross: undefined, government: undefined },
+        numInjured: [{ estimation: undefined, source: undefined }],
+        numDead: [{ estimation: undefined, source: undefined }],
+        numMissing: [{ estimation: undefined, source: undefined }],
+        numAffected: [{ estimation: undefined, source: undefined }],
+        numDisplaced: [{ estimation: undefined, source: undefined }],
         numAssistedGov: undefined,
         numAssistedRedCross: undefined,
         numLocalStaff: undefined,
@@ -1041,9 +1038,35 @@ if (environment !== 'production') {
 }
 
 class SourceEstimation extends React.Component {
-  onFieldChange (field, e) {
+  onEstimationChange (idx, e) {
     const { values, onChange } = this.props;
-    const newVals = Object.assign({}, values, {[field]: e.target.value});
+    const newVals = _cloneDeep(values);
+    newVals[idx].estimation = e.target.value;
+    onChange(newVals);
+  }
+
+  onSourceChange (idx, e) {
+    const { values, onChange } = this.props;
+    const val = e.target.value;
+    let newVals = _cloneDeep(values);
+    // Ensure vertical exclusivity in the radio button matrix.
+    newVals = newVals.map(o => {
+      if (o.source === val) o.source = undefined;
+      return o;
+    });
+    newVals[idx].source = val;
+    onChange(newVals);
+  }
+
+  onAddSource () {
+    const { values, onChange } = this.props;
+    onChange(values.concat({estimation: undefined, source: undefined}));
+  }
+
+  onRemoveSource (idx) {
+    const { values, onChange } = this.props;
+    const newVals = _cloneDeep(values);
+    newVals.splice(idx, 1);
     onChange(newVals);
   }
 
@@ -1066,33 +1089,45 @@ class SourceEstimation extends React.Component {
           </div>
         </div>
         <div className='form__inner-body'>
-          <FormInput
-            label='Estimation Red Cross'
-            type='text'
-            name={`${name}[red-cross]`}
-            id={`${name}-red-cross`}
-            classLabel='form__label--nested'
-            value={values.redCross}
-            onChange={this.onFieldChange.bind(this, 'redCross')} >
-            <FormError
-              errors={errors}
-              property={`${fieldKey}.redCross`}
-            />
-          </FormInput>
+          {values.map((o, idx) => (
+            <div key={o.source || idx} className='estimation'>
+              <FormInput
+                label='Estimation'
+                type='text'
+                name={`${name}[${idx}][estimation]`}
+                id={`${name}-${idx}-estimation`}
+                classLabel={c('form__label--nested', {'visually-hidden': idx > 0})}
+                classWrapper='estimation__item-field'
+                value={o.estimation}
+                onChange={this.onEstimationChange.bind(this, idx)} >
+                <FormError
+                  errors={errors}
+                  property={`${fieldKey}[${idx}].estimation`}
+                />
+              </FormInput>
 
-          <FormInput
-            label='Estimation Government'
-            type='text'
-            name={`${name}[government]`}
-            id={`${name}-government`}
-            classLabel='form__label--nested'
-            value={values.government}
-            onChange={this.onFieldChange.bind(this, 'government')} >
-            <FormError
-              errors={errors}
-              property={`${fieldKey}.government`}
-            />
-          </FormInput>
+              <FormRadioGroup
+                label='Source'
+                name={`${name}[${idx}][source]`}
+                options={[
+                  {label: 'Red Cross', value: 'red-cross'},
+                  {label: 'Government', value: 'government'}
+                ]}
+                classLabel={c('form__label--nested', {'visually-hidden': idx > 0})}
+                classWrapper='estimation__item'
+                selectedOption={o.source}
+                onChange={this.onSourceChange.bind(this, idx)} />
+
+              <div className='estimation__item'>
+                {values.length > 1 ? (
+                  <button type='button' className='button--remove-source' title='Delete Source' onClick={this.onRemoveSource.bind(this, idx)}>Delete source</button>
+                ) : (
+                  <button type='button' className='button--add-source' title='Add new source' onClick={this.onAddSource.bind(this)}>Add another source</button>
+                )}
+              </div>
+            </div>
+          ))}
+
         </div>
       </div>
     );
@@ -1104,10 +1139,7 @@ if (environment !== 'production') {
     label: T.string,
     name: T.string,
     description: T.string,
-    values: T.shape({
-      redCross: T.string,
-      government: T.string
-    }),
+    values: T.array,
     fieldKey: T.string,
     errors: T.array,
     onChange: T.func
