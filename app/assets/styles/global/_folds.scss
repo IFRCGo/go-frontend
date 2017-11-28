@@ -41,8 +41,7 @@
 }
 
 .fold__title {
-  @include heading(1rem, medium-up);
-  @extend .heading-deco;
+  @include heading(1.5rem, medium-up);
 }
 
 

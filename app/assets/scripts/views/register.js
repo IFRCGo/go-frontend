@@ -9,7 +9,7 @@ import ajvKeywords from 'ajv-keywords';
 import { isValidEmail, isRedCrossEmail } from '../utils/utils';
 
 import App from './app';
-import { FormInput, FormError } from '../components/form-elements';
+import { FormInput, FormError } from '../components/form-elements/';
 import registerSchemaDef from '../schemas/register';
 
 const ajv = new Ajv({ $data: true, allErrors: true, errorDataPath: 'property' });
@@ -69,7 +69,7 @@ export default class Login extends React.Component {
           type='password'
           name='register-password'
           id='register-password'
-          className={getClassIfError(this.state.errors, 'password')}
+          classInput={getClassIfError(this.state.errors, 'password')}
           value={this.state.data.password}
           onChange={this.onFieldChange.bind(this, 'password')}
         >
@@ -83,7 +83,7 @@ export default class Login extends React.Component {
           type='password'
           name='register-password-conf'
           id='register-password-conf'
-          className={getClassIfError(this.state.errors, 'passwordConf')}
+          classInput={getClassIfError(this.state.errors, 'passwordConf')}
           value={this.state.data.passwordConf}
           onChange={this.onFieldChange.bind(this, 'passwordConf')}
         >
@@ -104,7 +104,7 @@ export default class Login extends React.Component {
           type='text'
           name='register-country'
           id='register-country'
-          className={getClassIfError(this.state.errors, 'country')}
+          classInput={getClassIfError(this.state.errors, 'country')}
           value={this.state.data.country}
           onChange={this.onFieldChange.bind(this, 'country')}
         >
@@ -118,7 +118,7 @@ export default class Login extends React.Component {
           type='text'
           name='register-organization'
           id='register-organization'
-          className={getClassIfError(this.state.errors, 'organization')}
+          classInput={getClassIfError(this.state.errors, 'organization')}
           value={this.state.data.organization}
           onChange={this.onFieldChange.bind(this, 'organization')}
         >
@@ -148,7 +148,7 @@ export default class Login extends React.Component {
               type='text'
               name={`register-contact[${o}][name]`}
               id={`register-contact-name-${o}`}
-              className={getClassIfError(this.state.errors, `contact[${o}].name`)}
+              classInput={getClassIfError(this.state.errors, `contact[${o}].name`)}
               value={this.state.data.contact[o].name}
               onChange={this.onFieldChange.bind(this, `contact[${o}].name`)}
             >
@@ -162,7 +162,7 @@ export default class Login extends React.Component {
               type='text'
               name={`register-contact[${o}][email]`}
               id={`register-contact-email-${o}`}
-              className={getClassIfError(this.state.errors, `contact[${o}].email`)}
+              classInput={getClassIfError(this.state.errors, `contact[${o}].email`)}
               value={this.state.data.contact[o].email}
               onChange={this.onFieldChange.bind(this, `contact[${o}].email`)}
             >
@@ -204,7 +204,7 @@ export default class Login extends React.Component {
                   type='text'
                   name='register-email'
                   id='register-email'
-                  className={getClassIfError(this.state.errors, 'email')}
+                  classInput={getClassIfError(this.state.errors, 'email')}
                   value={this.state.data.email}
                   onChange={this.onFieldChange.bind(this, 'email')}
                   autoFocus

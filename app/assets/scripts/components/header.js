@@ -12,13 +12,13 @@ class Header extends React.Component {
           <div className='page__headline'>
             <h1 className='page__title'>
               <Link to='/' title='Visit page'>
-                <img src='assets/graphics/layout/logo.png' alt='IFRC GO logo'/>
+                <img src='/assets/graphics/layout/logo.png' alt='IFRC GO logo'/>
                 <span>IFRC GO</span>
               </Link>
             </h1>
           </div>
           <nav className='page__meta-nav' role='navigation'>
-            <Link to='/new' className='button button--primary-raised-dark' title='Create Field Report'><span>Create Field Report</span></Link>
+            <Link to='/reports/new' className='button button--primary-raised-dark' title='Create Field Report'><span>Create Field Report</span></Link>
             <UserMenu />
           </nav>
         </div>

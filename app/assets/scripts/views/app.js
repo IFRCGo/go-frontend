@@ -7,6 +7,7 @@ import { environment } from '../config';
 
 import Header from '../components/header';
 import GlobalLoading from '../components/global-loading';
+import SysAlerts from '../components/system-alerts';
 
 class App extends React.Component {
   render () {
@@ -17,6 +18,7 @@ class App extends React.Component {
           {this.props.children}
         </main>
         <GlobalLoading />
+        <SysAlerts />
       </div>
     );
   }
