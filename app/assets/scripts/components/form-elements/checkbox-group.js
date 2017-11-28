@@ -3,6 +3,7 @@ import React from 'react';
 import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 import _cloneDeep from 'lodash.clonedeep';
+import _get from 'lodash.get';
 
 import { FormDescription } from './misc';
 import FormCheckbox from './checkbox';
@@ -10,7 +11,7 @@ import FormCheckbox from './checkbox';
 export default class FormCheckboxGroup extends React.Component {
   onCheckChange (idx) {
     const { values, onChange } = this.props;
-    const prevState = values[idx].checked;
+    const prevState = _get(values, [idx, 'checked'], false);
     let newVals = _cloneDeep(values);
     newVals[idx].checked = !prevState;
 
@@ -46,7 +47,7 @@ export default class FormCheckboxGroup extends React.Component {
                 name={`${name}[]`}
                 id={`${name.replace(/(\[|\])/g, '-')}-${o.value}`}
                 value={o.value}
-                checked={values[idx].checked}
+                checked={_get(values, [idx, 'checked'], false)}
                 onChange={this.onCheckChange.bind(this, idx)}
                 description={o.description} />
             ))}
