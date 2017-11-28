@@ -1269,35 +1269,35 @@ export const event = [
 export const sources = [
   {
     label: 'National Society',
-    name: 'national-society'
+    value: 'national-society'
   },
   {
     label: 'Government',
-    name: 'government'
+    value: 'government'
   },
   {
     label: 'Delegation/Secretariat',
-    name: 'delegation-secretariat'
+    value: 'delegation-secretariat'
   },
   {
     label: 'UN agency',
-    name: 'un-agency'
+    value: 'un-agency'
   },
   {
     label: 'Academia/Research',
-    name: 'academia-research'
+    value: 'academia-research'
   },
   {
     label: 'Press',
-    name: 'press'
+    value: 'press'
   },
   {
     label: 'NGOs',
-    name: 'ngo'
+    value: 'ngo'
   },
   {
     label: 'Other',
-    name: 'other'
+    value: 'other'
   }
 ];
 
@@ -1305,50 +1305,50 @@ export const sources = [
 export const actions = [
   {
     label: 'Damage/Needs Assessment',
-    name: 'damage-needs'
+    value: 'damage-needs'
   },
   {
     label: 'Health',
-    name: 'health'
+    value: 'health'
   },
   {
     label: 'Camp Mangement',
-    name: 'camp-management'
+    value: 'camp-management'
   },
   {
     label: 'Search and Rescue',
-    name: 'search-rescue'
+    value: 'search-rescue'
   },
   {
     label: 'Tracing/RFP',
-    name: 'tracing'
+    value: 'tracing'
   },
   {
     label: 'Psychosocial support services',
-    name: 'psychosocial'
+    value: 'psychosocial'
   },
   {
     label: 'Water and Sanitation',
-    name: 'water-sanitation'
+    value: 'water-sanitation'
   },
   {
     label: 'Shelter',
-    name: 'shelter'
+    value: 'shelter'
   },
   {
     label: 'Evacuation',
-    name: 'evacuation'
+    value: 'evacuation'
   },
   {
     label: 'First Aid',
-    name: 'first-aid'
+    value: 'first-aid'
   },
   {
     label: 'Relief/Supply Distribution',
-    name: 'relief'
+    value: 'relief'
   },
   {
     label: 'Human remains management and identification',
-    name: 'human remains'
+    value: 'human remains'
   }
 ];

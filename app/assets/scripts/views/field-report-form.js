@@ -167,7 +167,7 @@ class FieldReportForm extends React.Component {
         disasterType: undefined,
         event: undefined,
         sources: formData.sources.map(o => ({
-          name: o.name,
+          value: o.value,
           checked: false,
           specification: undefined
         })),
@@ -191,21 +191,21 @@ class FieldReportForm extends React.Component {
         actionsOthers: undefined,
         actionsNatSoc: {
           options: formData.actions.map(o => ({
-            name: o.name,
+            value: o.value,
             checked: false
           })),
           description: undefined
         },
         actionsPns: {
           options: formData.actions.map(o => ({
-            name: o.name,
+            value: o.value,
             checked: false
           })),
           description: undefined
         },
         actionsFederation: {
           options: formData.actions.map(o => ({
-            name: o.name,
+            value: o.value,
             checked: false
           })),
           description: undefined
@@ -1118,6 +1118,7 @@ class ActionsCheckboxes extends React.Component {
   constructor (props) {
     super(props);
     this.onChecksChange = this.onChecksChange.bind(this);
+    this.onDescriptionChange = this.onDescriptionChange.bind(this);
   }
 
   onChecksChange (checkValues) {
@@ -1144,7 +1145,7 @@ class ActionsCheckboxes extends React.Component {
       <FormCheckboxGroup
         label={label}
         description={description}
-        name={name}
+        name={`${name}[options]`}
         classWrapper='action-checkboxes'
         options={options}
         values={values.options}

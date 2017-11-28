@@ -41,11 +41,11 @@ export default class FormCheckboxGroup extends React.Component {
           <div className='form__options-group'>
             {options.map((o, idx) => (
               <FormCheckbox
-                key={o.name}
+                key={o.value}
                 label={o.label}
-                name={`${name}[options][]`}
-                id={`${name}-${o.name}`}
-                value={o.name}
+                name={`${name}[]`}
+                id={`${name.replace(/(\[|\])/g, '-')}-${o.value}`}
+                value={o.value}
                 checked={values[idx].checked}
                 onChange={this.onCheckChange.bind(this, idx)}
                 description={o.description} />
