@@ -1066,188 +1066,104 @@ export const disasterType = [
     value: ''
   },
   {
-    label: 'Air accident',
-    value: '54'
+    value: '66',
+    label: 'Biological Emergency'
   },
   {
-    label: 'Animal attack',
-    value: '55'
+    value: '57',
+    label: 'Chemical Emergency'
   },
   {
-    label: 'Avalanche (Dry)',
-    value: '30'
+    value: '7',
+    label: 'Civil Unrest'
   },
   {
-    label: 'Avalanche (Wet)',
-    value: '76'
+    value: '14',
+    label: 'Cold Wave'
   },
   {
-    label: 'Bush fire',
-    value: '56'
+    value: '6',
+    label: 'Complex Emergency'
   },
   {
-    label: 'Chemical spill',
-    value: '57'
+    value: '4',
+    label: 'Cyclone'
   },
   {
-    label: 'Civil unrest',
-    value: '7'
+    value: '20',
+    label: 'Drought'
   },
   {
-    label: 'Cold wave',
-    value: '14'
+    value: '2',
+    label: 'Earthquake'
   },
   {
-    label: 'Collapse',
-    value: '58'
+    value: '1',
+    label: 'Epidemic'
   },
   {
-    label: 'Complex emergency',
-    value: '6'
+    value: '15',
+    label: 'Fire'
   },
   {
-    label: 'Drought',
-    value: '20'
+    value: '12',
+    label: 'Food'
   },
   {
-    label: 'Earthquake',
-    value: '2'
+    value: '21',
+    label: 'Food Insecurity'
   },
   {
-    label: 'Epidemic',
-    value: '1'
+    value: '19',
+    label: 'Heat Wave'
   },
   {
-    label: 'Explosion',
-    value: '13'
+    value: '62',
+    label: 'Insect Infestation'
   },
   {
-    label: 'Extra tropical cyclone',
-    value: '26'
+    value: '24',
+    label: 'Landslide'
   },
   {
-    label: 'Extreme winter condition',
-    value: '59'
+    value: '29',
+    label: 'Local storm'
   },
   {
-    label: 'Fire',
-    value: '73'
+    value: '13',
+    label: 'Other'
   },
   {
-    label: 'Flash floods',
-    value: '27'
+    value: '27',
+    label: 'Pluvial/Flash Flood'
   },
   {
-    label: 'Floods',
-    value: '12'
+    value: '5',
+    label: 'Population Movement'
   },
   {
-    label: 'Food insecurity',
-    value: '21'
+    value: '67',
+    label: 'Radiological Emergency'
   },
   {
-    label: 'Forest fire',
-    value: '60'
+    value: '23',
+    label: 'Storm Surge'
   },
   {
-    label: 'Gas leak',
-    value: '61'
+    value: '54',
+    label: 'Transport Accident'
   },
   {
-    label: 'Grasshoppers',
-    value: '62'
+    value: '68',
+    label: 'Transport Emergency'
   },
   {
-    label: 'Grassland fire',
-    value: '63'
+    value: '11',
+    label: 'Tsunami'
   },
   {
-    label: 'Heat wave',
-    value: '19'
-  },
-  {
-    label: 'Landslide (Dry)',
-    value: '24'
-  },
-  {
-    label: 'Landslide (Wet)',
-    value: '74'
-  },
-  {
-    label: 'Local storm',
-    value: '29'
-  },
-  {
-    label: 'Locust',
-    value: '64'
-  },
-  {
-    label: 'Meteorite',
-    value: '65'
-  },
-  {
-    label: 'Other',
-    value: '35'
-  },
-  {
-    label: 'Poisoning',
-    value: '66'
-  },
-  {
-    label: 'Population movements',
-    value: '5'
-  },
-  {
-    label: 'Radiation',
-    value: '67'
-  },
-  {
-    label: 'Rail accident',
-    value: '68'
-  },
-  {
-    label: 'Road accident',
-    value: '69'
-  },
-  {
-    label: 'Rockfall (Dry)',
-    value: '70'
-  },
-  {
-    label: 'Rockfall (Wet)',
-    value: '75'
-  },
-  {
-    label: 'Storm surge',
-    value: '23'
-  },
-  {
-    label: 'Subsidence (Dry)',
-    value: '77'
-  },
-  {
-    label: 'Subsidence (Wet)',
-    value: '78'
-  },
-  {
-    label: 'Tropical cyclone',
-    value: '4'
-  },
-  {
-    label: 'Tsunami',
-    value: '11'
-  },
-  {
-    label: 'Urban fire',
-    value: '15'
-  },
-  {
-    label: 'Volcano',
-    value: '8'
-  },
-  {
-    label: 'Water accident',
-    value: '72'
+    value: '8',
+    label: 'Volcanic Eruption'
   }
 ];
 
