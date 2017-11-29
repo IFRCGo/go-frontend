@@ -74,6 +74,7 @@ const dataPathToDisplay = (path) => {
     numPplRdrits: 'RDRT/RITS - Number of people',
     numPplFact: 'FACT - Number of people',
     numPplIfrcStaff: 'IFRC Staff Relocated - Number of people',
+    'eru.units': 'ERU - Units',
 
     // Step 5.
     'contactOriginator.name': 'Originator - Name',
@@ -112,7 +113,7 @@ const prepStateForValidation = (state) => {
     return isNaN(v) ? val : v;
   };
 
-  const convertEstimation = (val) => val.map(o => { o.estimation = toNumIfNum(o.estimation); return o; });
+  const convertProp = (prop) => (val) => val.map(o => { o[prop] = toNumIfNum(o[prop]); return o; });
 
   const formatter = {
     // Step 1.
@@ -120,11 +121,11 @@ const prepStateForValidation = (state) => {
     countries: (val) => val.map(o => o.value),
 
     // Step 2.
-    numInjured: convertEstimation,
-    numDead: convertEstimation,
-    numMissing: convertEstimation,
-    numAffected: convertEstimation,
-    numDisplaced: convertEstimation,
+    numInjured: convertProp('estimation'),
+    numDead: convertProp('estimation'),
+    numMissing: convertProp('estimation'),
+    numAffected: convertProp('estimation'),
+    numDisplaced: convertProp('estimation'),
     numAssistedGov: toNumIfNum,
     numAssistedRedCross: toNumIfNum,
     numLocalStaff: toNumIfNum,
@@ -136,7 +137,8 @@ const prepStateForValidation = (state) => {
     amountEmergencyAppeal: toNumIfNum,
     numPplRdrits: toNumIfNum,
     numPplFact: toNumIfNum,
-    numPplIfrcStaff: toNumIfNum
+    numPplIfrcStaff: toNumIfNum,
+    eru: convertProp('units')
   };
 
   for (let prop in state) {
@@ -161,7 +163,7 @@ class FieldReportForm extends React.Component {
         // Will need to be converted.
         countries: [],
         status: undefined,
-        visibility: 'public',
+        visibility: 'membership',
         disasterType: undefined,
         event: undefined,
         sources: formData.sources.map(o => ({
@@ -220,6 +222,7 @@ class FieldReportForm extends React.Component {
         numPplFact: undefined,
         ifrcStaff: undefined,
         numPplIfrcStaff: undefined,
+        eru: [{ type: undefined, status: undefined, units: undefined }],
 
         // Step 5
         contactOriginator: { name: undefined, func: undefined, email: undefined },
@@ -843,6 +846,14 @@ class FieldReportForm extends React.Component {
               property='numPplIfrcStaff'
             />
           </FormInput>
+
+          <Eru
+            label='ERU'
+            name='eru'
+            values={this.state.data.eru}
+            fieldKey='eru'
+            errors={this.state.errors}
+            onChange={this.onFieldChange.bind(this, 'eru')} />
         </div>
       </Fold>
     );
@@ -1302,6 +1313,137 @@ if (environment !== 'production') {
       func: T.string,
       email: T.string
     }),
+    fieldKey: T.string,
+    errors: T.array,
+    onChange: T.func
+  };
+}
+
+class Eru extends React.Component {
+  onFieldChange (field, e) {
+    const { values, onChange } = this.props;
+    const newVals = _cloneDeep(values);
+    _set(newVals, field, e.target.value);
+    onChange(newVals);
+  }
+
+  onAddSource () {
+    const { values, onChange } = this.props;
+    onChange(values.concat({ type: undefined, status: undefined, units: undefined }));
+  }
+
+  onRemoveSource (idx) {
+    const { values, onChange } = this.props;
+    const newVals = _cloneDeep(values);
+    newVals.splice(idx, 1);
+    onChange(newVals);
+  }
+
+  canAdd () {
+    // It is possible to add ERU until all types are exhausted.
+    return this.props.values.length < formData.eruTypes.length - 1;
+  }
+
+  render () {
+    const {
+      label,
+      name,
+      values,
+      fieldKey,
+      errors
+    } = this.props;
+
+    const usedEruTypes = values.map(o => o.type);
+
+    return (
+      <div className='form__group'>
+        <div className='form__inner-header'>
+          <div className='form__inner-headline'>
+            <label className='form__label'>{label}</label>
+          </div>
+          <div className='form__inner-actions'>
+            <button type='button' className={c('button--add-source', {disabled: !this.canAdd()})} title='Add new ERU' onClick={this.onAddSource.bind(this)}>Add another ERU</button>
+          </div>
+        </div>
+        <div className='form__inner-body'>
+          {values.map((o, idx) => {
+            // Remove eru types already used. Each one can be used only once.
+            const eruTypes = formData.eruTypes.filter(type => o.type === type.value || type.value === ''
+              ? true
+              : usedEruTypes.indexOf(type.value) === -1);
+
+            return (
+              <div key={o.type || `idx-${idx}`} className='eru'>
+                <FormSelect
+                  label='Type'
+                  name={`${name}[${idx}][type]`}
+                  id={`${name}-${idx}-type`}
+                  classLabel='form__label--nested'
+                  classWrapper='eru__item-type'
+                  options={eruTypes}
+                  value={o.type}
+                  onChange={this.onFieldChange.bind(this, `[${idx}].type`)} >
+                  <FormError
+                    errors={errors}
+                    property={`${fieldKey}[${idx}].type`}
+                  />
+                </FormSelect>
+
+                <FormRadioGroup
+                  label='Status'
+                  name={`${name}[${idx}][status]`}
+                  classLabel='form__label--nested'
+                  classWrapper='eru__item-status'
+                  options={[
+                    {
+                      label: 'Planned',
+                      value: 'planned'
+                    },
+                    {
+                      label: 'Requested',
+                      value: 'requested'
+                    },
+                    {
+                      label: 'Deployed',
+                      value: 'deployed'
+                    }
+                  ]}
+                  selectedOption={o.status}
+                  onChange={this.onFieldChange.bind(this, `[${idx}].status`)} />
+
+                <FormInput
+                  label='Units'
+                  type='text'
+                  name={`${name}[${idx}][units]`}
+                  id={`${name}-${idx}-units`}
+                  classLabel='form__label--nested'
+                  classWrapper='eru__item-units'
+                  value={o.units}
+                  onChange={this.onFieldChange.bind(this, `[${idx}].units`)} >
+                  <FormError
+                    errors={errors}
+                    property={`${fieldKey}[${idx}].units`}
+                  />
+                </FormInput>
+
+                <div className='eru__item-actions'>
+                  <button type='button' className={c('button--remove-source', {disabled: values.length <= 1})} title='Delete ERU' onClick={this.onRemoveSource.bind(this, idx)}>Delete ERU</button>
+                </div>
+              </div>
+            );
+          })}
+
+        </div>
+      </div>
+    );
+  }
+}
+
+if (environment !== 'production') {
+  Eru.propTypes = {
+    label: T.string,
+    name: T.string,
+    values: T.array,
     fieldKey: T.string,
     errors: T.array,
     onChange: T.func

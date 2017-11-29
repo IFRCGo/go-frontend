@@ -1287,3 +1287,23 @@ export const actions = [
     value: 'first-aid'
   }
 ];
+
+// Step 4.
+export const eruTypes = [
+  {
+    label: '-- Disaster Type --',
+    value: ''
+  },
+  {
+    value: '1',
+    label: 'Clinic'
+  },
+  {
+    value: '57',
+    label: 'Another unit'
+  },
+  {
+    value: '87',
+    label: 'Yet another'
+  }
+];
