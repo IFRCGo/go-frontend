@@ -1232,16 +1232,24 @@ export const actions = [
     value: 'camp-management'
   },
   {
+    label: 'Evacuation',
+    value: 'evacuation'
+  },
+  {
     label: 'Search and Rescue',
     value: 'search-rescue'
   },
   {
-    label: 'Tracing/RFP',
-    value: 'tracing'
+    label: 'RFL',
+    value: 'rfl'
   },
   {
     label: 'Psychosocial support services',
     value: 'psychosocial'
+  },
+  {
+    label: 'CTP/Basic needs',
+    value: 'basic-needs'
   },
   {
     label: 'Water and Sanitation',
@@ -1252,19 +1260,15 @@ export const actions = [
     value: 'shelter'
   },
   {
-    label: 'Evacuation',
-    value: 'evacuation'
-  },
-  {
-    label: 'First Aid',
-    value: 'first-aid'
+    label: 'Other',
+    value: 'other'
   },
   {
     label: 'Relief/Supply Distribution',
     value: 'relief'
   },
   {
-    label: 'Human remains management and identification',
-    value: 'human remains'
+    label: 'First Aid',
+    value: 'first-aid'
   }
 ];
