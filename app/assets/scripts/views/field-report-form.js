@@ -161,6 +161,7 @@ class FieldReportForm extends React.Component {
         // Will need to be converted.
         countries: [],
         status: undefined,
+        visibility: 'public',
         disasterType: undefined,
         event: undefined,
         sources: formData.sources.map(o => ({
@@ -407,6 +408,18 @@ class FieldReportForm extends React.Component {
           <FormError
             errors={this.state.errors}
             property='status'
+          />
+        </FormRadioGroup>
+
+        <FormRadioGroup
+          label='This field report is visible to'
+          name='visibility'
+          options={formData.visibility}
+          selectedOption={this.state.data.visibility}
+          onChange={this.onFieldChange.bind(this, 'visibility')}>
+          <FormError
+            errors={this.state.errors}
+            property='visibility'
           />
         </FormRadioGroup>
 

@@ -13,6 +13,21 @@ export const status = [
   }
 ];
 
+export const visibility = [
+  {
+    label: 'Membership',
+    value: 'membership'
+  },
+  {
+    label: 'IFRC Secretariat',
+    value: 'secretariat'
+  },
+  {
+    label: 'Public',
+    value: 'public'
+  }
+];
+
 export const countries = [
   {
     label: '',
