@@ -111,7 +111,6 @@
       $bg-color: $color;
       $bg-color-hover: shade($color, 8%);
       $bg-color-active: shade($color, 12%);
-      $shadow-color: rgba($base-color, 0.24);
     }
 
     @else {
@@ -137,13 +136,6 @@
     $bg-color: rgba($color, 0);
     $bg-color-hover: rgba($color, 0.16);
     $bg-color-active: rgba($color, 0.24);
-  }
-
-  @else if $style == "filled" {
-    $text-color: tint($color, 100%);
-    $bg-color: $color;
-    $bg-color-hover: shade($color, 8%);
-    $bg-color-active: shade($color, 12%);
   }
 
   @else {

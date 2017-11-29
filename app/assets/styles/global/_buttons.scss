@@ -73,9 +73,6 @@
 /* Button color modifiers
    ========================================================================== */
 
-.button--primary {
-  @include button-variation($primary-color, "filled", "dark");
-}
 /* Base Raised Light */
 
 .button--base-raised-light {
@@ -91,7 +88,7 @@
 /* Base Plain */
 
 .button--base-plain {
-  @include button-variation($base-color, "plain", "light");
+  @include button-variation($base-color, "plain", null);
 }
 
 /* Primary Raised Light */
@@ -121,7 +118,7 @@
 /* Primary Plain */
 
 .button--primary-plain {
-  @include button-variation($primary-color, "plain", "dark");
+  @include button-variation($primary-color, "plain", null);
 }
 
 /* Danger Raised Light */
@@ -139,7 +136,7 @@
 /* Danger Plain */
 
 .button--danger-plain {
-  @include button-variation($danger-color, "plain", "light");
+  @include button-variation($danger-color, "plain", null);
 }
 
 /* Achromic Plain (white plain) */
