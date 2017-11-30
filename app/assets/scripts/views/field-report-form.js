@@ -374,7 +374,11 @@ class FieldReportForm extends React.Component {
       ['numAssistedGov', 'gov_num_assisted'],
       ['numLocalStaff', 'num_localstaff'],
       ['numVolunteers', 'num_volunteers'],
-      ['numExpats', 'num_expats_delegates']
+      ['numExpats', 'num_expats_delegates'],
+      ['dref', 'DREFRequested'],
+      ['amountDref', 'DREFRequestedAmount'],
+      ['emergencyAppeal', 'EmergencyAppeal'],
+      ['amountEmergencyAppeal', 'EmergencyAppealAmount']
     ];
 
     directMapping.forEach(([src, dest]) => {
