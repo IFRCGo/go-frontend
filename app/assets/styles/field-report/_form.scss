@@ -105,6 +105,45 @@
   }
 }
 
+.eru {
+  @extend .clearfix;
+
+  .eru__item-type,
+  .eru__item-status,
+  .eru__item-units,
+  .eru__item-actions {
+    @include column(12/12);
+  }
+
+  @include media(medium-up) {
+    .eru__item-type,
+    .eru__item-status {
+      @include column(6/12, $cycle: 2);
+    }
+    .eru__item-units {
+      @include column(8/12);
+    }
+    .eru__item-actions {
+      @include column(4/12);
+    }
+  }
+
+  @include media(large-up) {
+    .eru__item-type,
+    .eru__item-status {
+      @include column(4/12, $cycle: 4);
+    }
+    .eru__item-units,
+    .eru__item-actions {
+      @include column(2/12, $cycle: 4);
+    }
+  }
+
+  .eru__item-actions {
+    padding-top: 2rem;
+  }
+}
+
 .form__label--nested {
   font-size: 0.75rem;
   line-height: 1rem;
@@ -256,6 +295,9 @@
     }
   }
 }
+
+
+/* Buttons */
 
 .button--add-source {
   @extend .button, .button--secondary-raised-light;

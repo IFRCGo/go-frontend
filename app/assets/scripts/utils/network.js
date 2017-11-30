@@ -44,31 +44,7 @@ export function makeRequest (path, action, options) {
   options = options || {};
   return function (dispatch) {
     dispatch({ type: inflight(action) });
-    fetch(url.resolve(api, path), options)
-      .then(response => {
-        return response.text()
-          .then(body => {
-            var json;
-            try {
-              json = JSON.parse(body);
-            } catch (error) {
-              console.log('JSON parse error', error, '\n', body);
-              return Promise.reject({
-                message: error.message,
-                body
-              });
-            }
-
-            return response.status >= 400
-              ? Promise.reject(json)
-              : Promise.resolve(json);
-          });
-      }, error => {
-        console.log('JSON fetch error', error);
-        return Promise.reject({
-          message: error.message
-        });
-      })
+    request(url.resolve(api, path), options)
       .then(data => {
         dispatch({ type: success(action), data, receivedAt: Date.now() });
       })
@@ -76,4 +52,32 @@ export function makeRequest (path, action, options) {
         dispatch({ type: failed(action), error });
       });
   };
+}
+
+export function request (url, options) {
+  return fetch(url, options)
+    .then(response => {
+      return response.text()
+        .then(body => {
+          var json;
+          try {
+            json = JSON.parse(body);
+          } catch (error) {
+            console.log('JSON parse error', error, '\n', body);
+            return Promise.reject({
+              message: error.message,
+              body
+            });
+          }
+
+          return response.status >= 400
+            ? Promise.reject(json)
+            : Promise.resolve(json);
+        });
+    }, error => {
+      console.log('JSON fetch error', error);
+      return Promise.reject({
+        message: error.message
+      });
+    });
 }

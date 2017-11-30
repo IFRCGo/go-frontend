@@ -24,8 +24,8 @@ export const step1 = {
       enum: getValidValues(formData.disasterType, 'value')
     },
     event: {
-      type: 'string',
-      enum: getValidValues(formData.event, 'value')
+      type: 'number',
+      minimum: 0
     },
     description: {
       type: 'string'
@@ -117,32 +117,32 @@ export const step4 = {
     dref: {
       type: 'string'
     },
-    amountDref: {
-      type: 'number'
-    },
+    amountDref: { type: 'number', minimum: 0 },
     emergencyAppeal: {
       type: 'string'
     },
-    amountEmergencyAppeal: {
-      type: 'number'
-    },
+    amountEmergencyAppeal: { type: 'number', minimum: 0 },
     rdrtrits: {
       type: 'string'
     },
-    numPplRdrits: {
-      type: 'number'
-    },
+    numPplRdrits: { type: 'number', minimum: 0 },
     fact: {
       type: 'string'
     },
-    numPplFact: {
-      type: 'number'
-    },
+    numPplFact: { type: 'number', minimum: 0 },
     ifrcStaff: {
       type: 'string'
     },
-    numPplIfrcStaff: {
-      type: 'number'
+    numPplIfrcStaff: { type: 'number', minimum: 0 },
+    eru: {
+      type: 'array',
+      items: {
+        properties: {
+          type: { type: 'string' },
+          status: { type: 'string' },
+          units: { type: 'number', minimum: 0 }
+        }
+      }
     }
   }
 };
