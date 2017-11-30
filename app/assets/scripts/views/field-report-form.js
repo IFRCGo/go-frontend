@@ -284,15 +284,105 @@ class FieldReportForm extends React.Component {
   getSubmitPayload () {
     // Prepare the payload for submission.
     // Extract properties that need processing.
-    let {
+    const originalState = _cloneDeep(this.state.data);
+    let state = {};
+    const {
       countries,
-      disasterType,
-      ...state
-    } = _cloneDeep(this.state.data);
+      disasterType
+    } = originalState;
 
     // Process properties.
     state.countries = countries.map(o => ({id: o.value}));
     state.dtype = {id: disasterType};
+
+    const directMapping = [
+      // [source, destination]
+      ['summary', 'summary'],
+      ['description', 'description'],
+      ['event', 'event'],
+      ['status', 'status'],
+      ['assistance', 'request_assistance'],
+      ['numAssistedRedCross', 'num_assisted'],
+      ['numAssistedGov', 'gov_num_assisted'],
+      ['numLocalStaff', 'num_localstaff'],
+      ['numVolunteers', 'num_volunteers'],
+      ['numExpats', 'num_expats_delegates']
+    ];
+
+    directMapping.forEach(([src, dest]) => {
+      state[dest] = originalState[src];
+    });
+
+    // For this properties when the source is the Red Cross use the provided,
+    // when it's Government prepend gov_. This results in:
+    // num_injured | gov_num_injured
+    const sourceEstimationMapping = [
+      ['numInjured', 'num_injured'],
+      ['numDead', 'num_dead'],
+      ['numMissing', 'num_missing'],
+      ['numAffected', 'num_affected'],
+      ['numDisplaced', 'num_displaced']
+    ];
+
+    sourceEstimationMapping.forEach(([src, dest]) => {
+      originalState[src].forEach(o => {
+        if (o.source === 'red-cross') {
+          state[dest] = o.estimation;
+        } else if (o.source === 'government') {
+          state[`gov_${dest}`] = o.estimation;
+        }
+      });
+    });
+
+    // Actions.
+    // In the payload all the action are in the same array.
+    // Convert the state to the correct structure:
+    // [
+    //   { organization: "NATL", actions: [ { id: 1 }, { id: 2 } ], summary: "foo bar baz" },
+    //   { organization: "PNS" ... }
+    // ]
+    const actionsMapping = [
+      // [state var, org name]
+      ['actionsNatSoc', 'NATL'],
+      ['actionsPns', 'PNS'],
+      ['actionsFederation', 'FDRN']
+    ];
+
+    state.actions_taken = actionsMapping.map(([src, orgName]) => {
+      return {
+        organization: orgName,
+        summary: originalState[src].description || '',
+        actions: originalState[src].options.reduce((orgActions, o) => {
+          return o.checked ? orgActions.concat({id: o.value}) : orgActions;
+        }, [])
+      };
+    });
+
+    // Contacts.
+    // In the payload all the contacts are in the same array.
+    // Convert the state to the correct structure:
+    // [
+    //   { ctype: "originator", name: 'John', title: 'Medic', email: 'john@gmail.com' },
+    //   { ctype: "primary" ... }
+    // ]
+    const contatcsMapping = [
+      // [state var, contact type]
+      ['contactOriginator', 'originator'],
+      ['contactPrimary', 'primary'],
+      ['contactNatSoc', 'natl'],
+      ['contactFederation', 'fed'],
+      ['contactMediaNatSoc', 'media-natl'],
+      ['contactMedia', 'media']
+    ];
+
+    state.contacts = contatcsMapping.map(([src, contactType]) => {
+      return {
+        ctype: contactType,
+        name: originalState[src].name || '',
+        title: originalState[src].title || '',
+        email: originalState[src].email || ''
+      };
+    });
 
     // Remove empty fields.
 
