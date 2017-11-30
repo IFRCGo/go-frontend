@@ -1182,21 +1182,6 @@ export const disasterType = [
   }
 ];
 
-export const event = [
-  {
-    value: '',
-    label: '-- Select one --'
-  },
-  {
-    value: 'event1',
-    label: 'Event One'
-  },
-  {
-    value: 'event2',
-    label: 'Event Two'
-  }
-];
-
 export const sources = [
   {
     label: 'National Society',

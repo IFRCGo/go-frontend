@@ -10,7 +10,7 @@ import Select from 'react-select';
 import Ajv from 'ajv';
 import ajvKeywords from 'ajv-keywords';
 
-import { environment } from '../config';
+import { environment, api } from '../config';
 import {
   step1 as schemaStep1,
   step2 as schemaStep2,
@@ -23,6 +23,7 @@ import { showAlert } from '../components/system-alerts';
 import { createFieldReport } from '../actions';
 // import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { hideGlobalLoading } from '../components/global-loading';
+import { request } from '../utils/network';
 
 import App from './app';
 import Fold from '../components/fold';
@@ -119,6 +120,7 @@ const prepStateForValidation = (state) => {
     // Step 1.
     assistance: toBool,
     countries: (val) => val.map(o => o.value),
+    event: (val) => val ? toNumIfNum(val.value) : undefined,
 
     // Step 2.
     numInjured: convertProp('estimation'),
@@ -149,6 +151,27 @@ const prepStateForValidation = (state) => {
 
   return state;
 };
+
+const getEventsFromApi = (input) => {
+  return !input
+    ? Promise.resolve({ options: [] })
+    : request(`${api}/api/v1/es_search/?type=event&keyword=${input}`)
+      .then(data => ({
+        options: data.hits.map(o => ({
+          value: o._source.id,
+          label: o._source.name
+        }))
+      }));
+};
+
+// How to add a new field to the form:
+// - Add the widget to the form.
+//    - If it has options, they should come from utils/form-report-constants.js
+// - Add the correct key and data structure to the state.
+// - Add the conversion (if needed) to prepStateForValidation()
+// - Add the field name (if needed) to dataPathToDisplay() for correct
+//   error display.
+// - Add field to the submission payload in FieldReportForm.getSubmitPayload()
 
 class FieldReportForm extends React.Component {
   constructor (props) {
@@ -288,18 +311,19 @@ class FieldReportForm extends React.Component {
     let state = {};
     const {
       countries,
-      disasterType
+      disasterType,
+      event
     } = originalState;
 
     // Process properties.
     state.countries = countries.map(o => ({id: o.value}));
     state.dtype = {id: disasterType};
+    state.event = {id: event.value};
 
     const directMapping = [
       // [source, destination]
       ['summary', 'summary'],
       ['description', 'description'],
-      ['event', 'event'],
       ['status', 'status'],
       ['assistance', 'request_assistance'],
       ['numAssistedRedCross', 'num_assisted'],
@@ -367,12 +391,12 @@ class FieldReportForm extends React.Component {
     // ]
     const contatcsMapping = [
       // [state var, contact type]
-      ['contactOriginator', 'originator'],
-      ['contactPrimary', 'primary'],
-      ['contactNatSoc', 'natl'],
-      ['contactFederation', 'fed'],
-      ['contactMediaNatSoc', 'media-natl'],
-      ['contactMedia', 'media']
+      ['contactOriginator', 'Originator'],
+      ['contactPrimary', 'Primary'],
+      ['contactNatSoc', 'NationalSociety'],
+      ['contactFederation', 'Federation'],
+      ['contactMediaNatSoc', 'MediaNationalSociety'],
+      ['contactMedia', 'Media']
     ];
 
     state.contacts = contatcsMapping.map(([src, contactType]) => {
@@ -409,8 +433,8 @@ class FieldReportForm extends React.Component {
 
   onFieldChange (field, e) {
     let data = _cloneDeep(this.state.data);
-    let val = e.target ? e.target.value : e;
-    _set(data, field, val === '' ? undefined : val);
+    let val = e && e.target ? e.target.value : e;
+    _set(data, field, val === '' || val === null ? undefined : val);
     this.setState({data});
   }
 
@@ -530,18 +554,18 @@ class FieldReportForm extends React.Component {
             />
           </FormSelect>
 
-          <FormSelect
-            label='Event'
-            name='event'
-            id='event'
-            options={formData.event}
-            value={this.state.data.event}
-            onChange={this.onFieldChange.bind(this, 'event')} >
+          <div className='form__group'>
+            <label className='form__label'>Event</label>
+            <Select.Async
+              value={this.state.data.event}
+              onChange={this.onFieldChange.bind(this, 'event')}
+              loadOptions={getEventsFromApi} />
+
             <FormError
               errors={this.state.errors}
               property='event'
             />
-          </FormSelect>
+          </div>
         </div>
 
         <div className='form__group'>

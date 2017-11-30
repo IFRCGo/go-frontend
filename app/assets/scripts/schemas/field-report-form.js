@@ -24,8 +24,8 @@ export const step1 = {
       enum: getValidValues(formData.disasterType, 'value')
     },
     event: {
-      type: 'string',
-      enum: getValidValues(formData.event, 'value')
+      type: 'number',
+      minimum: 0
     },
     description: {
       type: 'string'
