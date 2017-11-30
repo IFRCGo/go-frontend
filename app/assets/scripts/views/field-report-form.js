@@ -1,3 +1,47 @@
+// TODO on this file:
+// - [] Remove unneeded console.logs
+// - [] Map fields to api:
+//   Step 1
+//   sources: formData.sources.map(o => ({
+//     value: o.value,
+//     checked: false,
+//     specification: undefined
+//   })),
+
+//   // Step 3
+//   bulletin: undefined,
+//   actionsOthers: undefined,
+
+//   // Step 4
+//   dref: undefined,
+//   amountDref: undefined,
+//   emergencyAppeal: undefined,
+//   amountEmergencyAppeal: undefined,
+//   rdrtrits: undefined,
+//   numPplRdrits: undefined,
+//   fact: undefined,
+//   numPplFact: undefined,
+//   ifrcStaff: undefined,
+//   numPplIfrcStaff: undefined,
+//   eru: [{ type: undefined, status: undefined, units: undefined }],
+//
+// - [] Add missing values for selectable options (radios, checkboxes...)
+//   Step 1
+//   sources: Array[checked: boolean, specification: string],
+
+//   Step 3
+//   bulletin: string (radio buttons),
+
+//   Step 4
+//   dref: string (radio buttons),
+//   emergencyAppeal: string (radio buttons),
+//   rdrtrits: string (radio buttons),
+//   fact: string (radio buttons),
+//   ifrcStaff: string (radio buttons),
+//   eru: Array[type: string, status: string(radio buttons), units: number]
+//
+// - [] Submit data
+//
 'use strict';
 import React from 'react';
 import { connect } from 'react-redux';
