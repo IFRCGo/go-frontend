@@ -1235,56 +1235,60 @@ export const sources = [
   // Step 3
 export const actions = [
   {
-    label: 'Damage/Needs Assessment',
-    value: 'damage-needs'
+    label: 'CTP/Basic needs',
+    value: '41'
   },
   {
-    label: 'Health',
-    value: 'health'
+    label: 'Camp management',
+    value: '33'
   },
   {
-    label: 'Camp Mangement',
-    value: 'camp-management'
+    label: 'Damage/Needs assessment',
+    value: '27'
   },
   {
     label: 'Evacuation',
-    value: 'evacuation'
-  },
-  {
-    label: 'Search and Rescue',
-    value: 'search-rescue'
-  },
-  {
-    label: 'RFL',
-    value: 'rfl'
-  },
-  {
-    label: 'Psychosocial support services',
-    value: 'psychosocial'
-  },
-  {
-    label: 'CTP/Basic needs',
-    value: 'basic-needs'
-  },
-  {
-    label: 'Water and Sanitation',
-    value: 'water-sanitation'
-  },
-  {
-    label: 'Shelter',
-    value: 'shelter'
-  },
-  {
-    label: 'Other',
-    value: 'other'
-  },
-  {
-    label: 'Relief/Supply Distribution',
-    value: 'relief'
+    value: '36'
   },
   {
     label: 'First Aid',
-    value: 'first-aid'
+    value: '37'
+  },
+  {
+    label: 'Food aid',
+    value: '30'
+  },
+  {
+    label: 'Health',
+    value: '31'
+  },
+  {
+    label: 'Other',
+    value: '39'
+  },
+  {
+    label: 'Psychosocial support services',
+    value: '34'
+  },
+  {
+    label: 'RFL',
+    value: '35'
+  },
+  {
+    label: 'Relief/Supply distribution',
+    value: '38'
+  },
+  {
+    label: 'Search & Rescue',
+    value: '28'
+  },
+  {
+    label: 'Shelter',
+    value: '32'
+  },
+  {
+    label: 'Water & Sanitation',
+    value: '29'
   }
 ];
 
