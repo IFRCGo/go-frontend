@@ -2,32 +2,117 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
+import Select from 'react-select';
+import _set from 'lodash.set';
+import _cloneDeep from 'lodash.clonedeep';
 
 import { environment } from '../config';
 import { getUserProfile } from '../actions';
+import { countries, disasterType } from '../utils/field-report-constants';
 import { apiPropertyDisplay, apiPropertyValue } from '../utils/format';
+import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
+
+import Fold from '../components/fold';
+import {
+  FormRadioGroup,
+  FormCheckboxGroup
+} from '../components/form-elements/';
 
 import App from './app';
 
+// exclude the first item since it's a dropdown placeholder
+const disasterTypes = disasterType.slice(1);
+
+const systemNotificationTypes = [{
+  label: 'New record',
+  value: 'new'
+}, {
+  label: 'Modified record',
+  value: 'modified'
+}, {
+  label: 'Both',
+  value: 'both'
+}, {
+  label: 'None',
+  value: 'none'
+}];
+
+const regions = [{
+  label: 'Africa',
+  value: 'africa'
+}, {
+  label: 'Asia Pacific',
+  value: 'asia'
+}, {
+  label: 'MENA',
+  value: 'mena'
+}, {
+  label: 'Europe',
+  value: 'europe'
+}, {
+  label: 'Americas',
+  value: 'americas'
+}];
+
 class Account extends React.Component {
-  componentWillMount () {
+  constructor (props) {
+    super(props);
+    this.state = {
+      data: {
+        regions: regions.map(o => ({
+          value: o.value,
+          checked: false
+        })),
+        disasterTypes: disasterTypes.map(o => ({
+          value: o.value,
+          checked: false
+        })),
+        countries: [],
+        emergency: 'none',
+        fieldReport: 'none',
+        appeal: 'none'
+      }
+    };
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  componentDidMount () {
     const { user, _getProfile } = this.props;
     _getProfile(user.username);
+    showGlobalLoading();
+  }
+
+  componentWillReceiveProps (nextProps) {
+    if (this.props.profile.fetching && !nextProps.profile.fetching) {
+      hideGlobalLoading();
+      // TODO update state from user profile data
+    }
+  }
+
+  onFieldChange (field, e) {
+    let data = _cloneDeep(this.state.data);
+    let val = e && e.target ? e.target.value : e;
+    _set(data, field, val === '' || val === null ? undefined : val);
+    this.setState({data});
+  }
+
+  onSubmit () {
+
   }
 
   renderProfileAttributes (profile) {
     if (!profile.data) return null;
     const attributes = [
-      'user.username',
-      'user.email',
-      'user.first_name',
-      'user.last_name',
-      'city',
-      'org',
-      'org_type',
-      'department',
-      'position',
-      'phone_number'
+      'username',
+      'email',
+      'first_name',
+      'last_name',
+      'profile.city',
+      'profile.org',
+      'profile.org_type',
+      'profile.department',
+      'profile.position',
+      'profile.phone_number'
     ];
     const profileData = profile.data.objects[0];
     return attributes.map(a => [
@@ -63,40 +148,65 @@ class Account extends React.Component {
                     </div>
                   </div>
                 </section>
-                <section className='fold'>
-                  <div className='inner'>
-                    <div className='fold__header'>
-                      <h2 className='fold__title'>Subscription Preferences</h2>
-                    </div>
-                    <div className='fold__body'>
-                      <div className='form__group'>
-                        <div className='sources-list'>
-                        </div>
-                      </div>
-                      <div className='form__group'>
-                        <label className='form__label'>Notifications by Continent</label>
-                        <div className='sources-list'>
-                        </div>
-                      </div>
-                      <div className='form__group'>
-                        <label className='form__label'>Notifications by Region</label>
-                        <div className='sources-list'>
-                        </div>
-                      </div>
-                      <div className='form__group'>
-                        <label className='form__label'>Notifications by Country</label>
-                        <div className='sources-list'>
-                        </div>
-                      </div>
-                      <div className='form__group'>
-                        <label className='form__label'>Notifications by Event Type</label>
-                        <div className='sources-list'>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </section>
               </div>
+
+              <form className='form' onSubmit={this.onSubmit}>
+                <Fold title='Subscription Preferences'>
+                  <FormCheckboxGroup
+                    label='Regional Notifications'
+                    description={'Select one or more regions to receive notifications about.'}
+                    name='regions'
+                    classWrapper='action-checkboxes'
+                    options={regions}
+                    values={this.state.data.regions}
+                    onChange={this.onFieldChange.bind(this, 'regions')} />
+
+                  <div className='form__group'>
+                    <label className='form__label'>Country Level Notifications</label>
+                    <p className='form__description'>Select one or more countries to receive notifications about.</p>
+                    <Select
+                      name='countries'
+                      value={this.state.data.countries}
+                      onChange={this.onFieldChange.bind(this, 'countries')}
+                      options={countries}
+                      multi />
+                  </div>
+
+                  <FormCheckboxGroup
+                    label='Disaster Types'
+                    description={'Get notified about new disasters in these categories.'}
+                    name='disasterTypes'
+                    classWrapper='action-checkboxes'
+                    options={disasterTypes}
+                    values={this.state.data.disasterTypes}
+                    onChange={this.onFieldChange.bind(this, 'disasterTypes')} />
+
+                  <FormRadioGroup
+                    label='Emergencies'
+                    name='emergency'
+                    options={systemNotificationTypes}
+                    selectedOption={this.state.data.emergency}
+                    onChange={this.onFieldChange.bind(this, 'emergency')}>
+                  </FormRadioGroup>
+
+                  <FormRadioGroup
+                    label='Field Reports'
+                    name='fieldReport'
+                    options={systemNotificationTypes}
+                    selectedOption={this.state.data.fieldReport}
+                    onChange={this.onFieldChange.bind(this, 'fieldReport')}>
+                  </FormRadioGroup>
+
+                  <FormRadioGroup
+                    label='Appeals'
+                    name='appeal'
+                    options={systemNotificationTypes}
+                    selectedOption={this.state.data.appeal}
+                    onChange={this.onFieldChange.bind(this, 'appeal')}>
+                  </FormRadioGroup>
+
+                </Fold>
+              </form>
             </div>
           </div>
         </section>
