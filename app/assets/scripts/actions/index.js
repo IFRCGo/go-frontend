@@ -8,7 +8,7 @@ export function getAuthToken (username, password) {
 
 export const GET_PROFILE = 'GET_PROFILE';
 export function getUserProfile (username) {
-  return fetchJSON(`api/v1/profile/?user__username=${username}`, GET_PROFILE, withToken());
+  return fetchJSON(`api/v1/user/?username=${username}`, GET_PROFILE, withToken());
 }
 
 export const LOGOUT_USER = 'LOGOUT_USER';
