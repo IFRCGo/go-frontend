@@ -5,6 +5,7 @@ import { PropTypes as T } from 'prop-types';
 import Select from 'react-select';
 import _set from 'lodash.set';
 import _cloneDeep from 'lodash.clonedeep';
+import c from 'classnames';
 
 import { environment } from '../config';
 import { getUserProfile } from '../actions';
@@ -58,6 +59,7 @@ class Account extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
+      isDirty: false,
       data: {
         regions: regions.map(o => ({
           value: o.value,
@@ -93,7 +95,7 @@ class Account extends React.Component {
     let data = _cloneDeep(this.state.data);
     let val = e && e.target ? e.target.value : e;
     _set(data, field, val === '' || val === null ? undefined : val);
-    this.setState({data});
+    this.setState({isDirty: true, data});
   }
 
   onSubmit () {
@@ -151,9 +153,9 @@ class Account extends React.Component {
               </div>
 
               <form className='form' onSubmit={this.onSubmit}>
-                <Fold title='Subscription Preferences'>
+                <Fold title='Subscription preferences'>
                   <FormCheckboxGroup
-                    label='Regional Notifications'
+                    label='Regional notifications'
                     description={'Select one or more regions to receive notifications about.'}
                     name='regions'
                     classWrapper='action-checkboxes'
@@ -162,7 +164,7 @@ class Account extends React.Component {
                     onChange={this.onFieldChange.bind(this, 'regions')} />
 
                   <div className='form__group'>
-                    <label className='form__label'>Country Level Notifications</label>
+                    <label className='form__label'>Country-level notifications</label>
                     <p className='form__description'>Select one or more countries to receive notifications about.</p>
                     <Select
                       name='countries'
@@ -173,7 +175,7 @@ class Account extends React.Component {
                   </div>
 
                   <FormCheckboxGroup
-                    label='Disaster Types'
+                    label='Disaster types'
                     description={'Get notified about new disasters in these categories.'}
                     name='disasterTypes'
                     classWrapper='action-checkboxes'
@@ -204,6 +206,11 @@ class Account extends React.Component {
                     selectedOption={this.state.data.appeal}
                     onChange={this.onFieldChange.bind(this, 'appeal')}>
                   </FormRadioGroup>
+
+                  <button type='submit' className={c('button', {
+                    'button--secondary-raised-dark': this.state.isDirty,
+                    'button--secondary-raised-light': !this.state.isDirty
+                  })} title='Save'>Save</button>
 
                 </Fold>
               </form>
