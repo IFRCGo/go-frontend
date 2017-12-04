@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import UserMenu from './connected/user-menu';
 
-class Header extends React.Component {
+class Header extends React.PureComponent {
   render () {
     return (
       <header className='page__header' role='banner'>
