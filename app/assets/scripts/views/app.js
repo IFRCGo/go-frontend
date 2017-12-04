@@ -6,6 +6,7 @@ import c from 'classnames';
 import { environment } from '../config';
 
 import Header from '../components/header';
+import Footer from '../components/footer';
 import GlobalLoading from '../components/global-loading';
 import SysAlerts from '../components/system-alerts';
 
@@ -19,6 +20,7 @@ class App extends React.Component {
         </main>
         <GlobalLoading />
         <SysAlerts />
+        <Footer/>
       </div>
     );
   }

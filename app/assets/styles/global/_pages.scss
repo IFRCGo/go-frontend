@@ -3,6 +3,10 @@
    ========================================================================== */
 
 .page {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 }
 
 /* Header
@@ -59,6 +63,7 @@
 
 .page__body {
   @extend .clearfix;
+  flex: 1;
 }
 
 
@@ -66,12 +71,11 @@
    ========================================================================== */
 
 .page__footer {
-  background: tint($base-color, 96%);
+  background: $primary-color;
   padding: 2rem 0;
-  text-align: center;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: rgba($base-font-color, 0.64);
+  color: #ffffff;
   
   > .inner {
     @extend .row, .row--centered;
@@ -79,5 +83,51 @@
 
   *:last-child {
     margin-bottom: 0;
+  }
+
+  .footer-nav {
+    @extend .clearfix;
+    
+    &__block {
+      margin-bottom: ($global-spacing * 2);
+      @include column(12/12);
+
+      @include media(small-up) {
+        @include column(4/12, $cycle: 3);
+      }
+
+      @include media(medium-up) {
+        @include column(3/12, $cycle: 4);
+      }
+
+      @include media(large-up) {
+        @include column(2/12, $cycle: none);
+      }
+
+      &--sec {
+        @include media(large-up) {
+          @include move(2/12);
+          text-align: right;
+        }
+      }
+    }
+  }
+
+  .footer-credits {
+    padding: ($global-spacing * 2) 0 0 0;
+    box-shadow: 0 (-$base-border-width) 0 0 rgba(#ffffff, 0.16);
+  }
+}
+
+.footer-menu {
+  list-style: none;
+  margin: 0;
+
+  .footer-menu__item--highlight {
+    font-weight: $base-font-bold;
+  }
+
+  a {
+    color: inherit;
   }
 }
