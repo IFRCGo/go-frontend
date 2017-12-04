@@ -1,3 +1,47 @@
+// TODO on this file:
+// - [] Remove unneeded console.logs
+// - [] Map fields to api:
+//   Step 1
+//   sources: formData.sources.map(o => ({
+//     value: o.value,
+//     checked: false,
+//     specification: undefined
+//   })),
+
+//   // Step 3
+//   bulletin: undefined,
+//   actionsOthers: undefined,
+
+//   // Step 4
+//   dref: undefined,
+//   amountDref: undefined,
+//   emergencyAppeal: undefined,
+//   amountEmergencyAppeal: undefined,
+//   rdrtrits: undefined,
+//   numPplRdrits: undefined,
+//   fact: undefined,
+//   numPplFact: undefined,
+//   ifrcStaff: undefined,
+//   numPplIfrcStaff: undefined,
+//   eru: [{ type: undefined, status: undefined, units: undefined }],
+//
+// - [] Add missing values for selectable options (radios, checkboxes...)
+//   Step 1
+//   sources: Array[checked: boolean, specification: string],
+
+//   Step 3
+//   bulletin: string (radio buttons),
+
+//   Step 4
+//   dref: string (radio buttons),
+//   emergencyAppeal: string (radio buttons),
+//   rdrtrits: string (radio buttons),
+//   fact: string (radio buttons),
+//   ifrcStaff: string (radio buttons),
+//   eru: Array[type: string, status: string(radio buttons), units: number]
+//
+// - [] Submit data
+//
 'use strict';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -10,7 +54,7 @@ import Select from 'react-select';
 import Ajv from 'ajv';
 import ajvKeywords from 'ajv-keywords';
 
-import { environment } from '../config';
+import { environment, api } from '../config';
 import {
   step1 as schemaStep1,
   step2 as schemaStep2,
@@ -23,6 +67,7 @@ import { showAlert } from '../components/system-alerts';
 import { createFieldReport } from '../actions';
 // import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { hideGlobalLoading } from '../components/global-loading';
+import { request } from '../utils/network';
 
 import App from './app';
 import Fold from '../components/fold';
@@ -74,6 +119,7 @@ const dataPathToDisplay = (path) => {
     numPplRdrits: 'RDRT/RITS - Number of people',
     numPplFact: 'FACT - Number of people',
     numPplIfrcStaff: 'IFRC Staff Relocated - Number of people',
+    'eru.units': 'ERU - Units',
 
     // Step 5.
     'contactOriginator.name': 'Originator - Name',
@@ -112,19 +158,20 @@ const prepStateForValidation = (state) => {
     return isNaN(v) ? val : v;
   };
 
-  const convertEstimation = (val) => val.map(o => { o.estimation = toNumIfNum(o.estimation); return o; });
+  const convertProp = (prop) => (val) => val.map(o => { o[prop] = toNumIfNum(o[prop]); return o; });
 
   const formatter = {
     // Step 1.
     assistance: toBool,
     countries: (val) => val.map(o => o.value),
+    event: (val) => val ? toNumIfNum(val.value) : undefined,
 
     // Step 2.
-    numInjured: convertEstimation,
-    numDead: convertEstimation,
-    numMissing: convertEstimation,
-    numAffected: convertEstimation,
-    numDisplaced: convertEstimation,
+    numInjured: convertProp('estimation'),
+    numDead: convertProp('estimation'),
+    numMissing: convertProp('estimation'),
+    numAffected: convertProp('estimation'),
+    numDisplaced: convertProp('estimation'),
     numAssistedGov: toNumIfNum,
     numAssistedRedCross: toNumIfNum,
     numLocalStaff: toNumIfNum,
@@ -136,7 +183,8 @@ const prepStateForValidation = (state) => {
     amountEmergencyAppeal: toNumIfNum,
     numPplRdrits: toNumIfNum,
     numPplFact: toNumIfNum,
-    numPplIfrcStaff: toNumIfNum
+    numPplIfrcStaff: toNumIfNum,
+    eru: convertProp('units')
   };
 
   for (let prop in state) {
@@ -147,6 +195,27 @@ const prepStateForValidation = (state) => {
 
   return state;
 };
+
+const getEventsFromApi = (input) => {
+  return !input
+    ? Promise.resolve({ options: [] })
+    : request(`${api}/api/v1/es_search/?type=event&keyword=${input}`)
+      .then(data => ({
+        options: data.hits.map(o => ({
+          value: o._source.id,
+          label: o._source.name
+        }))
+      }));
+};
+
+// How to add a new field to the form:
+// - Add the widget to the form.
+//    - If it has options, they should come from utils/form-report-constants.js
+// - Add the correct key and data structure to the state.
+// - Add the conversion (if needed) to prepStateForValidation()
+// - Add the field name (if needed) to dataPathToDisplay() for correct
+//   error display.
+// - Add field to the submission payload in FieldReportForm.getSubmitPayload()
 
 class FieldReportForm extends React.Component {
   constructor (props) {
@@ -161,6 +230,7 @@ class FieldReportForm extends React.Component {
         // Will need to be converted.
         countries: [],
         status: undefined,
+        visibility: 'membership',
         disasterType: undefined,
         event: undefined,
         sources: formData.sources.map(o => ({
@@ -219,6 +289,7 @@ class FieldReportForm extends React.Component {
         numPplFact: undefined,
         ifrcStaff: undefined,
         numPplIfrcStaff: undefined,
+        eru: [{ type: undefined, status: undefined, units: undefined }],
 
         // Step 5
         contactOriginator: { name: undefined, func: undefined, email: undefined },
@@ -280,15 +351,110 @@ class FieldReportForm extends React.Component {
   getSubmitPayload () {
     // Prepare the payload for submission.
     // Extract properties that need processing.
-    let {
+    const originalState = _cloneDeep(this.state.data);
+    let state = {};
+    const {
       countries,
       disasterType,
-      ...state
-    } = _cloneDeep(this.state.data);
+      event
+    } = originalState;
 
     // Process properties.
     state.countries = countries.map(o => ({id: o.value}));
     state.dtype = {id: disasterType};
+    state.event = {id: event.value};
+
+    const directMapping = [
+      // [source, destination]
+      ['summary', 'summary'],
+      ['description', 'description'],
+      ['status', 'status'],
+      ['assistance', 'request_assistance'],
+      ['numAssistedRedCross', 'num_assisted'],
+      ['numAssistedGov', 'gov_num_assisted'],
+      ['numLocalStaff', 'num_localstaff'],
+      ['numVolunteers', 'num_volunteers'],
+      ['numExpats', 'num_expats_delegates'],
+      ['dref', 'DREFRequested'],
+      ['amountDref', 'DREFRequestedAmount'],
+      ['emergencyAppeal', 'EmergencyAppeal'],
+      ['amountEmergencyAppeal', 'EmergencyAppealAmount']
+    ];
+
+    directMapping.forEach(([src, dest]) => {
+      state[dest] = originalState[src];
+    });
+
+    // For this properties when the source is the Red Cross use the provided,
+    // when it's Government prepend gov_. This results in:
+    // num_injured | gov_num_injured
+    const sourceEstimationMapping = [
+      ['numInjured', 'num_injured'],
+      ['numDead', 'num_dead'],
+      ['numMissing', 'num_missing'],
+      ['numAffected', 'num_affected'],
+      ['numDisplaced', 'num_displaced']
+    ];
+
+    sourceEstimationMapping.forEach(([src, dest]) => {
+      originalState[src].forEach(o => {
+        if (o.source === 'red-cross') {
+          state[dest] = o.estimation;
+        } else if (o.source === 'government') {
+          state[`gov_${dest}`] = o.estimation;
+        }
+      });
+    });
+
+    // Actions.
+    // In the payload all the action are in the same array.
+    // Convert the state to the correct structure:
+    // [
+    //   { organization: "NATL", actions: [ { id: 1 }, { id: 2 } ], summary: "foo bar baz" },
+    //   { organization: "PNS" ... }
+    // ]
+    const actionsMapping = [
+      // [state var, org name]
+      ['actionsNatSoc', 'NATL'],
+      ['actionsPns', 'PNS'],
+      ['actionsFederation', 'FDRN']
+    ];
+
+    state.actions_taken = actionsMapping.map(([src, orgName]) => {
+      return {
+        organization: orgName,
+        summary: originalState[src].description || '',
+        actions: originalState[src].options.reduce((orgActions, o) => {
+          return o.checked ? orgActions.concat({id: o.value}) : orgActions;
+        }, [])
+      };
+    });
+
+    // Contacts.
+    // In the payload all the contacts are in the same array.
+    // Convert the state to the correct structure:
+    // [
+    //   { ctype: "originator", name: 'John', title: 'Medic', email: 'john@gmail.com' },
+    //   { ctype: "primary" ... }
+    // ]
+    const contatcsMapping = [
+      // [state var, contact type]
+      ['contactOriginator', 'Originator'],
+      ['contactPrimary', 'Primary'],
+      ['contactNatSoc', 'NationalSociety'],
+      ['contactFederation', 'Federation'],
+      ['contactMediaNatSoc', 'MediaNationalSociety'],
+      ['contactMedia', 'Media']
+    ];
+
+    state.contacts = contatcsMapping.map(([src, contactType]) => {
+      return {
+        ctype: contactType,
+        name: originalState[src].name || '',
+        title: originalState[src].title || '',
+        email: originalState[src].email || ''
+      };
+    });
 
     // Remove empty fields.
 
@@ -315,8 +481,8 @@ class FieldReportForm extends React.Component {
 
   onFieldChange (field, e) {
     let data = _cloneDeep(this.state.data);
-    let val = e.target ? e.target.value : e;
-    _set(data, field, val === '' ? undefined : val);
+    let val = e && e.target ? e.target.value : e;
+    _set(data, field, val === '' || val === null ? undefined : val);
     this.setState({data});
   }
 
@@ -410,6 +576,18 @@ class FieldReportForm extends React.Component {
           />
         </FormRadioGroup>
 
+        <FormRadioGroup
+          label='This field report is visible to'
+          name='visibility'
+          options={formData.visibility}
+          selectedOption={this.state.data.visibility}
+          onChange={this.onFieldChange.bind(this, 'visibility')}>
+          <FormError
+            errors={this.state.errors}
+            property='visibility'
+          />
+        </FormRadioGroup>
+
         <div className='form__hascol form__hascol--2'>
           <FormSelect
             label='Disaster Type *'
@@ -424,18 +602,18 @@ class FieldReportForm extends React.Component {
             />
           </FormSelect>
 
-          <FormSelect
-            label='Event'
-            name='event'
-            id='event'
-            options={formData.event}
-            value={this.state.data.event}
-            onChange={this.onFieldChange.bind(this, 'event')} >
+          <div className='form__group'>
+            <label className='form__label'>Event</label>
+            <Select.Async
+              value={this.state.data.event}
+              onChange={this.onFieldChange.bind(this, 'event')}
+              loadOptions={getEventsFromApi} />
+
             <FormError
               errors={this.state.errors}
               property='event'
             />
-          </FormSelect>
+          </div>
         </div>
 
         <div className='form__group'>
@@ -830,6 +1008,14 @@ class FieldReportForm extends React.Component {
               property='numPplIfrcStaff'
             />
           </FormInput>
+
+          <Eru
+            label='ERU'
+            name='eru'
+            values={this.state.data.eru}
+            fieldKey='eru'
+            errors={this.state.errors}
+            onChange={this.onFieldChange.bind(this, 'eru')} />
         </div>
       </Fold>
     );
@@ -1289,6 +1475,137 @@ if (environment !== 'production') {
       func: T.string,
       email: T.string
     }),
+    fieldKey: T.string,
+    errors: T.array,
+    onChange: T.func
+  };
+}
+
+class Eru extends React.Component {
+  onFieldChange (field, e) {
+    const { values, onChange } = this.props;
+    const newVals = _cloneDeep(values);
+    _set(newVals, field, e.target.value);
+    onChange(newVals);
+  }
+
+  onAddSource () {
+    const { values, onChange } = this.props;
+    onChange(values.concat({ type: undefined, status: undefined, units: undefined }));
+  }
+
+  onRemoveSource (idx) {
+    const { values, onChange } = this.props;
+    const newVals = _cloneDeep(values);
+    newVals.splice(idx, 1);
+    onChange(newVals);
+  }
+
+  canAdd () {
+    // It is possible to add ERU until all types are exhausted.
+    return this.props.values.length < formData.eruTypes.length - 1;
+  }
+
+  render () {
+    const {
+      label,
+      name,
+      values,
+      fieldKey,
+      errors
+    } = this.props;
+
+    const usedEruTypes = values.map(o => o.type);
+
+    return (
+      <div className='form__group'>
+        <div className='form__inner-header'>
+          <div className='form__inner-headline'>
+            <label className='form__label'>{label}</label>
+          </div>
+          <div className='form__inner-actions'>
+            <button type='button' className={c('button--add-source', {disabled: !this.canAdd()})} title='Add new ERU' onClick={this.onAddSource.bind(this)}>Add another ERU</button>
+          </div>
+        </div>
+        <div className='form__inner-body'>
+          {values.map((o, idx) => {
+            // Remove eru types already used. Each one can be used only once.
+            const eruTypes = formData.eruTypes.filter(type => o.type === type.value || type.value === ''
+              ? true
+              : usedEruTypes.indexOf(type.value) === -1);
+
+            return (
+              <div key={o.type || `idx-${idx}`} className='eru'>
+                <FormSelect
+                  label='Type'
+                  name={`${name}[${idx}][type]`}
+                  id={`${name}-${idx}-type`}
+                  classLabel='form__label--nested'
+                  classWrapper='eru__item-type'
+                  options={eruTypes}
+                  value={o.type}
+                  onChange={this.onFieldChange.bind(this, `[${idx}].type`)} >
+                  <FormError
+                    errors={errors}
+                    property={`${fieldKey}[${idx}].type`}
+                  />
+                </FormSelect>
+
+                <FormRadioGroup
+                  label='Status'
+                  name={`${name}[${idx}][status]`}
+                  classLabel='form__label--nested'
+                  classWrapper='eru__item-status'
+                  options={[
+                    {
+                      label: 'Planned',
+                      value: 'planned'
+                    },
+                    {
+                      label: 'Requested',
+                      value: 'requested'
+                    },
+                    {
+                      label: 'Deployed',
+                      value: 'deployed'
+                    }
+                  ]}
+                  selectedOption={o.status}
+                  onChange={this.onFieldChange.bind(this, `[${idx}].status`)} />
+
+                <FormInput
+                  label='Units'
+                  type='text'
+                  name={`${name}[${idx}][units]`}
+                  id={`${name}-${idx}-units`}
+                  classLabel='form__label--nested'
+                  classWrapper='eru__item-units'
+                  value={o.units}
+                  onChange={this.onFieldChange.bind(this, `[${idx}].units`)} >
+                  <FormError
+                    errors={errors}
+                    property={`${fieldKey}[${idx}].units`}
+                  />
+                </FormInput>
+
+                <div className='eru__item-actions'>
+                  <button type='button' className={c('button--remove-source', {disabled: values.length <= 1})} title='Delete ERU' onClick={this.onRemoveSource.bind(this, idx)}>Delete ERU</button>
+                </div>
+              </div>
+            );
+          })}
+
+        </div>
+      </div>
+    );
+  }
+}
+
+if (environment !== 'production') {
+  Eru.propTypes = {
+    label: T.string,
+    name: T.string,
+    values: T.array,
     fieldKey: T.string,
     errors: T.array,
     onChange: T.func

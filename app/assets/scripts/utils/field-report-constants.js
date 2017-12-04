@@ -13,6 +13,21 @@ export const status = [
   }
 ];
 
+export const visibility = [
+  {
+    label: 'Membership',
+    value: 'membership'
+  },
+  {
+    label: 'IFRC Secretariat',
+    value: 'secretariat'
+  },
+  {
+    label: 'Public',
+    value: 'public'
+  }
+];
+
 export const countries = [
   {
     label: '',
@@ -1167,21 +1182,6 @@ export const disasterType = [
   }
 ];
 
-export const event = [
-  {
-    value: '',
-    label: '-- Select one --'
-  },
-  {
-    value: 'event1',
-    label: 'Event One'
-  },
-  {
-    value: 'event2',
-    label: 'Event Two'
-  }
-];
-
 export const sources = [
   {
     label: 'National Society',
@@ -1220,51 +1220,79 @@ export const sources = [
   // Step 3
 export const actions = [
   {
-    label: 'Damage/Needs Assessment',
-    value: 'damage-needs'
+    label: 'CTP/Basic needs',
+    value: '41'
   },
   {
-    label: 'Health',
-    value: 'health'
+    label: 'Camp management',
+    value: '33'
   },
   {
-    label: 'Camp Mangement',
-    value: 'camp-management'
-  },
-  {
-    label: 'Search and Rescue',
-    value: 'search-rescue'
-  },
-  {
-    label: 'Tracing/RFP',
-    value: 'tracing'
-  },
-  {
-    label: 'Psychosocial support services',
-    value: 'psychosocial'
-  },
-  {
-    label: 'Water and Sanitation',
-    value: 'water-sanitation'
-  },
-  {
-    label: 'Shelter',
-    value: 'shelter'
+    label: 'Damage/Needs assessment',
+    value: '27'
   },
   {
     label: 'Evacuation',
-    value: 'evacuation'
+    value: '36'
   },
   {
     label: 'First Aid',
-    value: 'first-aid'
+    value: '37'
   },
   {
-    label: 'Relief/Supply Distribution',
-    value: 'relief'
+    label: 'Food aid',
+    value: '30'
   },
   {
-    label: 'Human remains management and identification',
-    value: 'human remains'
+    label: 'Health',
+    value: '31'
+  },
+  {
+    label: 'Other',
+    value: '39'
+  },
+  {
+    label: 'Psychosocial support services',
+    value: '34'
+  },
+  {
+    label: 'RFL',
+    value: '35'
+  },
+  {
+    label: 'Relief/Supply distribution',
+    value: '38'
+  },
+  {
+    label: 'Search & Rescue',
+    value: '28'
+  },
+  {
+    label: 'Shelter',
+    value: '32'
+  },
+  {
+    label: 'Water & Sanitation',
+    value: '29'
+  }
+];
+
+// Step 4.
+export const eruTypes = [
+  {
+    label: '-- Disaster Type --',
+    value: ''
+  },
+  {
+    value: '1',
+    label: 'Clinic'
+  },
+  {
+    value: '57',
+    label: 'Another unit'
+  },
+  {
+    value: '87',
+    label: 'Yet another'
   }
 ];
