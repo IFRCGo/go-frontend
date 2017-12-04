@@ -7,6 +7,7 @@ import _get from 'lodash.get';
 import { environment } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { getFieldReportById } from '../actions';
+import { nope } from '../utils/format';
 
 import App from './app';
 
@@ -39,17 +40,14 @@ class FieldReport extends React.Component {
       return null;
     }
 
-    const {
-      summary,
-      description
-    } = this.props.report.data;
+    const { data } = this.props.report;
 
     return (
       <section className='inpage'>
         <header className='inpage__header'>
           <div className='inner'>
             <div className='inpage__headline'>
-              <h1 className='inpage__title'>{summary}</h1>
+              <h1 className='inpage__title'>{_get(data, 'summary', nope)}</h1>
             </div>
           </div>
         </header>
@@ -57,9 +55,9 @@ class FieldReport extends React.Component {
           <div className='inner'>
             <div className='prose prose--responsive'>
               <h4>Description</h4>
-              <p>{description}</p>
+              <p>{_get(data, 'description', nope)}</p>
 
-              <pre>{JSON.stringify(this.props.report, 'null', '\t')}</pre>
+              <pre>{JSON.stringify(data, 'null', '\t')}</pre>
             </div>
           </div>
         </div>
