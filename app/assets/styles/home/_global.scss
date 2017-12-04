@@ -1,0 +1,35 @@
+/* ==========================================================================
+   Home Page
+   ========================================================================== */
+
+.page--homepage {
+  .inpage__header {
+    @include media(medium-up) {
+      padding: ($global-spacing * 3) 0;
+    }
+
+    @include media(large-up) {
+      padding: ($global-spacing * 5) 0;
+    }
+  }
+
+  .inpage__headline {
+    @include column(12/12);
+    text-align: center;
+  }
+
+  .inpage__introduction {
+    margin: 0 auto;
+  }
+
+  .inpage__title {
+    &::after {
+      content: '';
+      width: 10rem;
+      height: $base-border-width * 2;
+      background: $primary-color;
+      display: block;
+      margin: calc(0.5em - #{$base-border-width}) auto 0 auto;
+    }
+  }
+}
