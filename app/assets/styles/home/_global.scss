@@ -209,3 +209,114 @@
     }
   }
 }
+
+.alerts {
+  list-style: none;
+  margin: 0;
+
+  &__item {
+    margin-bottom: $global-spacing;
+    box-shadow: 0 0 0 1px $base-alpha-color;
+    border-left: 3px solid red;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.responsive-table {
+  th, td  {
+    vertical-align: top;
+    text-align: left;
+  }
+
+  th {
+    padding: $global-spacing ($global-spacing / 2);
+  }
+
+  td {
+    padding: ($global-spacing * 2) ($global-spacing / 2);
+  }
+
+  th:first-child,
+  td:first-child {
+    padding-left: $global-spacing;
+  }
+
+  th:last-child,
+  td:last-child {
+    padding-right: $global-spacing;
+  }
+
+  tbody tr {
+    border-left: 4px solid transparent;
+
+    &:nth-child(odd) {
+      box-shadow: 0 0 2px 0 rgba($base-color, 0.24);
+    }
+
+    &:nth-child(even) {
+      height: $global-spacing;
+      
+      td {
+        padding: 0;
+      }
+    }
+
+    &.status-open {
+      border-color: $primary-color;
+    }
+  }
+
+  @include media(medium-down) {
+    /* Force table to not be like tables anymore */
+    &, thead, tbody, th, td, tr {
+      display: block;
+    }
+
+    /* Hide table headers (but not display: none;, for accessibility) */
+    thead tr {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+    }
+
+    td {
+      /* Behave  like a "row" */
+      border: none;
+      position: relative;
+      padding: 1rem 1rem 0 45%;
+
+      &:first-child {
+        padding-left: 45%;
+      }
+
+      &:last-child {
+        padding-bottom: 1rem;
+      }
+    }
+
+    td:before {
+      /* Now like a table header */
+      position: absolute;
+      /* Top/left values mimic padding */
+      top: 1rem;
+      left: 1rem;
+      width: 40%;
+      padding-right: 1rem;
+      white-space: wrap;
+      font-weight: $base-font-bold;
+      speak: none;
+    }
+
+    /*
+    Label the data
+    */
+    [data-heading] {
+      &:before {
+        content: attr(data-heading);
+      }
+    }
+  }
+}

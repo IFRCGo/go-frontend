@@ -89,7 +89,42 @@ export default class Home extends React.Component {
             </section>
             <div className='inner'>
               <Fold title='Latest Alerts'>
-                Alert!
+                <table className='responsive-table'>
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Operation</th>
+                      <th>Alert Message</th>
+                      <th>Type</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td data-heading='Date'>2017-11-10</td>
+                      <td data-heading='Operation'>Bangladesh, Population Movement</td>
+                      <td data-heading='Alert Message'>1 x Logistics, second rotation. Thanks for stating availability in the next 48 hours and for indicating if you can be deployed for more than one month. Please note that we are also looking for a Cash FACT.</td>
+                      <td data-heading='Type'>n/a</td>
+                    </tr>
+                    <tr role='presentation'>
+                      <td colSpan='4'></td>
+                    </tr>
+                    <tr>
+                      <td data-heading='Date'>2017-11-10</td>
+                      <td data-heading='Operation'>Bangladesh, Population Movement</td>
+                      <td data-heading='Alert Message'>1 x Logistics, second rotation. Thanks for stating availability in the next 48 hours and for indicating if you can be deployed for more than one month. Please note that we are also looking for a Cash FACT.</td>
+                      <td data-heading='Type'>n/a</td>
+                    </tr>
+                    <tr role='presentation'>
+                      <td colSpan='4'></td>
+                    </tr>
+                    <tr>
+                      <td data-heading='Date'>2017-11-10</td>
+                      <td data-heading='Operation'>Bangladesh, Population Movement</td>
+                      <td data-heading='Alert Message'>1 x Logistics, second rotation. Thanks for stating availability in the next 48 hours and for indicating if you can be deployed for more than one month. Please note that we are also looking for a Cash FACT.</td>
+                      <td data-heading='Type'>n/a</td>
+                    </tr>
+                  </tbody>
+                </table>
               </Fold>
             </div>
           </div>
