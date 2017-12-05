@@ -27,7 +27,6 @@ class Header extends React.Component {
             <ul className='nav-global-menu'>
               <li><Link to='/operations' title='Visit operations page'><span>Operations</span></Link></li>
               <li><Link to='/deployments' title='Visit deployments page'><span>Deployments</span></Link></li>
-              <li><Link to='/field-reports' title='Visit field reports page'><span>Field Reports</span></Link></li>
               <li><Link to='/about' title='Visit about page'><span>About</span></Link></li>
             </ul>
             <div className='nav-global-search'>
@@ -42,7 +41,7 @@ class Header extends React.Component {
                     className='form__control'
                   />
                 </div>
-                <button type='submit' className='gsearch__button'><span>Search</span></button>
+                <button type='submit' className='button--primary-raised-light gsearch__button'><span>Search</span></button>
               </form>
             </div>
           </nav>

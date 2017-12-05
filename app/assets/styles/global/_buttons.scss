@@ -121,6 +121,10 @@
   @include button-variation($primary-color, "plain", null);
 }
 
+.button--secondary-plain {
+  @include button-variation($secondary-color, "plain", null);
+}
+
 /* Danger Raised Light */
 
 .button--danger-raised-light {
@@ -148,9 +152,8 @@
 /* Achromic Glass (white ghost-like) */
 
 .button--achromic-glass {
-  @include button-variation(#fff, "glass", null);
+  @include button-variation($secondary-color, "glass", null);
 }
-
 
 /* Button size modifiers
    ========================================================================== */

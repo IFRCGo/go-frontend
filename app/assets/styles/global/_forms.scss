@@ -21,7 +21,7 @@
   padding: 0.25rem 0.5rem;
   font-size: 1rem;
   line-height: 1.5rem;
-  color: $base-font-color;
+  color: $secondary-color;
   background-color: #fff;
   border: 0;
   border-radius: 0;
@@ -45,7 +45,7 @@
   }
 
   &:hover {
-    box-shadow: inset 0 0 0 $base-border-width rgba($base-color, 0.24);
+    box-shadow: inset 0 0 0 $base-border-width $secondary-color;
   }
 
   &:focus,
@@ -53,7 +53,7 @@
   &:active,
   &--active {
     outline: 0;
-    box-shadow: inset 0 0 0 $base-border-width rgba($base-color, 0.32);
+    box-shadow: inset 0 0 0 $base-border-width $secondary-color;
   }
 
   /* Animation */
@@ -256,10 +256,14 @@ textarea.form__control {
 
 .form__group {
   @extend .clearfix;
-  margin-bottom: $global-spacing;
+  margin-bottom: $global-spacing * 4;
 
   > *:last-child {
     margin-bottom: 0;
+  }
+
+  .form__group {
+    margin-bottom: $global-spacing;
   }
 }
 
@@ -479,7 +483,7 @@ label[for] {
   font-weight: $base-font-bold;
   font-size: 1rem;
   line-height: 1.5;
-  margin: 0 0 ($global-spacing / 2) 0;
+  margin: 0 0 ($global-spacing/2) 0;
 
   &:only-of-type {
     display: inline-block;
@@ -520,6 +524,7 @@ label[for] {
     font-style: normal;
     font-size: 0.875rem;
     line-height: 1rem;
+    color: rgba($base-font-color, 0.48);
   }
 }
 
@@ -562,8 +567,8 @@ label[for] {
     margin: 0.125rem 0;
     height: 1.25rem;
     width: 1.25rem;
-    box-shadow: inset 0 0 0 $base-border-width rgba($base-color, 0.12);
-    background: #fff;
+    /*box-shadow: inset 0 0 0 $base-border-width rgba($base-color, 0.12);*/
+    background: $secondary-color-light;
 
     &::before {
       position: absolute;
@@ -581,11 +586,11 @@ label[for] {
 
   input:focus  ~ .form__option__ui,
   &:active .form__option__ui {
-    box-shadow: inset 0 0 0 $base-border-width rgba($base-color, 0.32);
+    box-shadow: inset 0 0 0 ($base-border-width * 2) rgba($base-color, 0.32);
   }
 
   input:checked ~ .form__option__ui {
-    box-shadow: inset 0 0 0 $base-border-width $secondary-color;
+    box-shadow: inset 0 0 0 ($base-border-width * 2) $secondary-color;
 
     &::before {
       opacity: 1;
@@ -717,7 +722,6 @@ label[for] {
 .form__inner-header {
   display: flex;
   width: 100%;
-  margin-bottom: ($global-spacing / 2);
 
   > *:last-child {
     margin-bottom: 0;
@@ -725,9 +729,7 @@ label[for] {
 }
 
 .form__inner-headline {
-  > *:last-child {
-    margin-bottom: 0;
-  }
+  margin-top: ($global-spacing / 2);
 }
 
 .form__inner-actions {
@@ -812,7 +814,7 @@ label[for] {
 
 .form__hascol {
   @extend .clearfix;
-  margin-bottom: $global-spacing;
+  margin-bottom: $global-spacing * 4;
 
   > *:not(.form__option) {
     margin: ($global-spacing) 0 0 0;
@@ -878,7 +880,13 @@ label[for] {
   font-size: 0.875rem;
   line-height: 1.25rem;
   color: rgba($base-font-color, 0.48);
-  margin-top: $global-spacing / 2;
+  margin-bottom: $global-spacing;
+  p {
+    width: 100%;
+    @include media(medium-up) {
+      width: 65%;
+    }
+  }
 }
 
 .form__note {
@@ -898,6 +906,32 @@ label[for] {
 .form__error {
   @extend .form__help, .form__help--danger;
   text-align: left;
+  margin-bottom: $global-spacing * 2;
+  font-weight: $base-font-bold;
+  h3, p {
+    color: $base-color;
+  }
+
+  p {
+    margin-bottom: $global-spacing/2;
+  }
+  
+  ul {
+    margin-left: 0;
+  }
+
+  li {
+    display: inline-block;
+    &:after {
+      content: ",";
+      margin-right: $global-spacing/2;
+    };
+    &:last-child {
+      &:after {
+        content: ""
+      };
+    };
+  }
 }
 
 /* Color modifiers

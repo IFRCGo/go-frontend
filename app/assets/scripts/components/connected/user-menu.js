@@ -39,8 +39,8 @@ class UserMenu extends React.Component {
     }
 
     return [
-      <Link key='login' to='/login' className='button button--primary-raised-light' title='Login'><span>Login</span></Link>,
-      <Link key='register' to='/register' className='button button--primary-plain' title='Register'><span>Register</span></Link>
+      <Link key='login' to='/login' className='button button--small button--primary-raised-light' title='Login'><span>Login</span></Link>,
+      <Link key='register' to='/register' className='button button--small button--primary-raised-light' title='Register'><span>Register</span></Link>
     ];
   }
 }

@@ -1,6 +1,9 @@
 /* ==========================================================================
    Field Report form
    ========================================================================== */
+.form--field-report {
+  margin-bottom: $global-spacing * 4;
+}
 
 .sources-list {
   &__item {
@@ -195,6 +198,10 @@
   }
 }
 
+.form__group .form__group--asymmetric {
+  margin-top: $global-spacing * 4;
+}
+
 .stepper {
   display: flex;
   flex-flow: column wrap;
@@ -296,10 +303,19 @@
   }
 }
 
+.form__actions {
+  margin: ($global-spacing * 4) 0;
+  button {
+    &:first-child {
+      margin-right: $global-spacing/2;
+    };
+  }
+}
 
 /* Buttons */
 
 .button--add-source {
+  margin-top: 2.5rem;
   @extend .button, .button--secondary-raised-light;
 
   &::before {
@@ -307,9 +323,14 @@
   }
 }
 
+.form__inner-actions {
+  .button--add-source {
+    margin-top: 0;
+  }
+}
+
 .button--remove-source {
   @extend .button, .button--base-plain;
-
   &::before {
     @extend %collecticon-trash-bin;
   }
