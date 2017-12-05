@@ -14,6 +14,14 @@ export const commaSeparatedNumber = (x) => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 };
 
+// Ie. given 'MadDogIndustries', return 'Mad Dog Industries'
+export const separateUppercaseWords = (x) => {
+  if (typeof x !== 'string') {
+    return nope;
+  }
+  return x.replace(/([A-Z])/g, ' $1').trim();
+};
+
 // Ie. given 'SCRT', return 'Secretariat'.
 const organizationCodeToDisplay = {
   'NTLS': 'National Society',

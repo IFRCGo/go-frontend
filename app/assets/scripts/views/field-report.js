@@ -8,6 +8,7 @@ import { showGlobalLoading, hideGlobalLoading } from '../components/global-loadi
 import { getFieldReportById } from '../actions';
 import {
   commaSeparatedNumber as n,
+  separateUppercaseWords as separate,
   nope,
   getResponseStatus
 } from '../utils/format';
@@ -48,20 +49,50 @@ class FieldReport extends React.Component {
       ['IFRC Staff', getResponseStatus(data, 'ifrc_staff')]
     ].filter(d => Boolean(d[1]));
 
+    // Every response is either 0 (not planned) or null.
     if (!response.length) {
       return null;
     }
-
     return (
-      <section className='display-section'>
-        <h3>Planned International Response</h3>
+      <DisplaySection title='Planned International Response'>
         <dl className='dl-horizontal numeric-list'>
           {response.map(d => d[1] ? [
             <dt key={`${d[0]}-dt`}>{d[0]}</dt>,
             <dl key={`${d[0]}-dl`}>{d[1]}</dl>
           ] : null)}
         </dl>
-      </section>
+      </DisplaySection>
+    );
+  }
+
+  renderActionsTaken (data, key, orgDisplayName) {
+    const actions = get(data, 'actions_taken', []).find(d => d.organization === key);
+
+    // No actions have been taken
+    if (!actions || !Array.isArray(actions.actions) || !actions.actions.length) {
+      return null;
+    }
+    return (
+      <DisplaySection title={`Actions taken by ${orgDisplayName}`}>
+        <ul>
+          {actions.actions.map(d => <li key={d.id}>{d.name}</li>)}
+        </ul>
+      </DisplaySection>
+    );
+  }
+
+  renderContacts (data) {
+    const contacts = get(data, 'contacts', []);
+    if (!contacts.length) {
+      return null;
+    }
+    return (
+      <DisplaySection title='Contacts'>
+        {contacts.map(d => (
+          <p key={d.resource_uri}><strong>{separate(d.ctype)}</strong>: {d.name}, {d.title}, <a href={`mailto:${d.email}`}>{d.email}</a>
+          </p>
+        ))}
+      </DisplaySection>
     );
   }
 
@@ -71,7 +102,6 @@ class FieldReport extends React.Component {
     }
 
     const { data } = this.props.report;
-    console.log(data, nope);
 
     return (
       <section className='inpage'>
@@ -95,10 +125,8 @@ class FieldReport extends React.Component {
           <div className='inner'>
             <div className='prose fold prose--responsive'>
               <div className='inner'>
-                <section className='display-section'>
-                </section>
-                <section className='display-section'>
-                  <h3>Numeric Details</h3>
+
+                <DisplaySection title='Numeric details'>
                   <dl className='dl-horizontal numeric-list'>
                     <dt>Injured (RC): </dt>
                     <dd>{n(get(data, 'num_injured'))}</dd>
@@ -135,23 +163,14 @@ class FieldReport extends React.Component {
                     <dt>Expats/Delegates: </dt>
                     <dd>{n(get(data, 'num_expats_delegates'))}</dd>
                   </dl>
-                </section>
+                </DisplaySection>
                 {this.renderPlannedResponse(data)}
-                <section className='display-section'>
-                  <h3>Description</h3>
-                  <p>{get(data, 'description', nope)}</p>
-                </section>
-                <section className='display-section'>
-                  <h3>Actions Taken</h3>
-                  {get(data, 'actions_taken', []).map(action => (
-                    <div className='action'>
-                    </div>
-                  ))}
-                </section>
-                <section className='display-section'>
-                  <h3>Contacts</h3>
-                  <p>{get(data, 'Contacts', nope)}</p>
-                </section>
+                <DisplaySection title='Description' inner={get(data, 'description', false)} />
+                {this.renderActionsTaken(data, 'NATL', 'National Society')}
+                {this.renderActionsTaken(data, 'PNS', 'PNS Red Cross')}
+                {this.renderActionsTaken(data, 'FDRN', 'Federation Red Cross')}
+                <DisplaySection title='Actions taken by others' inner={get(data, 'action_others', false)} />
+                {this.renderContacts(data)}
               </div>
             </div>
           </div>
@@ -175,6 +194,28 @@ if (environment !== 'production') {
     _getFieldReportById: T.func,
     match: T.object,
     report: T.object
+  };
+}
+
+class DisplaySection extends React.Component {
+  render () {
+    const { inner, children, title } = this.props;
+    if (!children && !inner) { return null; }
+    const content = children || <p>{inner}</p>;
+    return (
+      <section className='display-section'>
+        <h3>{title}</h3>
+        {content}
+      </section>
+    );
+  }
+}
+
+if (environment !== 'production') {
+  DisplaySection.propTypes = {
+    title: T.string,
+    inner: T.string,
+    children: T.object
   };
 }
 
