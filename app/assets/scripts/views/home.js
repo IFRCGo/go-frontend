@@ -76,7 +76,14 @@ export default class Home extends React.Component {
               </div>
               <div className='stats-chart'>
                 <div className='inner'>
-                  Charts here
+                  <figure className='chart'>
+                    <figcaption>DREFS and Appeals Over the Last Year</figcaption>
+                    <div className='chart__container'>chart</div>
+                  </figure>
+                  <figure className='chart'>
+                    <figcaption>DREFS and Appeals by Year</figcaption>
+                    <div className='chart__container'>chart</div>
+                  </figure>
                 </div>
               </div>
             </section>
