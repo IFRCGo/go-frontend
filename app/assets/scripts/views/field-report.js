@@ -47,20 +47,81 @@ class FieldReport extends React.Component {
         <header className='inpage__header'>
           <div className='inner'>
             <div className='inpage__headline'>
-              <h1 className='inpage__title'>{_get(data, 'summary', nope)}</h1>
+              <div className='inpage__headline-content'>
+                <h1 className='inpage__title'>Kenyan Drought</h1>
+                <div>
+                  <h2 className='inpage__introduction'>{_get(data, 'dtype.name', nope)} | {_get(data, 'countries.name', nope)}</h2>
+                </div>
+              </div>
+              <div className='inpage__headline-actions'>
+                <p className='inpage__note'>Last Updated by User1293 on 8/11/2017</p>
+                <button className='button button--primary-raised-light'>Update</button>
+              </div>
             </div>
           </div>
         </header>
         <div className='inpage__body'>
           <div className='inner'>
-            <div className='prose prose--responsive'>
-              <h4>Description</h4>
-              <p>{_get(data, 'description', nope)}</p>
-
-              <pre>{JSON.stringify(data, 'null', '\t')}</pre>
+            <div className='prose fold prose--responsive'>
+              <div className='inner'>
+                <section className='display-section'>
+                </section>
+                <section className='display-section'>
+                  <h3>Numeric Details</h3>
+                  <dl className='dl-horizontal numeric-list'>
+                    <dt>Injured (RC): </dt>
+                    <dd>{_get(data, 'num_injured', nope)}</dd>
+                    <dt>Missing (RC): </dt>
+                    <dd>{_get(data, 'num_missing', nope)}</dd>
+                    <dt>Dead (RC): </dt>
+                    <dd>{_get(data, 'num_dead', nope)}</dd>
+                    <dt>Displaced (RC): </dt>
+                    <dd>{_get(data, 'num_displaced', nope)}</dd>
+                    <dt>Affected (RC): </dt>
+                    <dd>{_get(data, 'num_displaced', nope)}</dd>
+                    <dt>Assisted (RC): </dt>
+                    <dd>{_get(data, 'num_displaced', nope)}</dd>
+                  </dl>
+                  <dl className='dl-horizontal numeric-list'>
+                    <dt>Injured (Government): </dt>
+                    <dd>{_get(data, 'gov_num_injured', nope)}</dd>
+                    <dt>Missing (Government): </dt>
+                    <dd>{_get(data, 'gov_num_missing', nope)}</dd>
+                    <dt>Dead (Government): </dt>
+                    <dd>{_get(data, 'gov_num_dead', nope)}</dd>
+                    <dt>Displaced (Government): </dt>
+                    <dd>{_get(data, 'gov_num_displaced', nope)}</dd>
+                    <dt>Affected (Government): </dt>
+                    <dd>{_get(data, 'gov_num_affected', nope)}</dd>
+                    <dt>Assisted (Government): </dt>
+                    <dd>{_get(data, 'gov_num_displaced', nope)}</dd>
+                  </dl>
+                  <dl className='dl-horizontal numeric-list'>
+                    <dt>Local Staff: </dt>
+                    <dd>{_get(data, 'num_localstaff', nope)}</dd>
+                    <dt>Volunteers: </dt>
+                    <dd>{_get(data, 'num_volunteers', nope)}</dd>
+                    <dt>Expats/Delegates: </dt>
+                    <dd>{_get(data, 'num_expats_delegates', nope)}</dd>
+                  </dl>
+                </section>
+                <section className='display-section'>
+                  <h3>Description</h3>
+                  <p>{_get(data, 'description', nope)}</p>
+                </section>
+                <section className='display-section'>
+                  <h3>Actions Taken</h3>
+                  <p>{_get(data, 'actions_taken', nope)}</p>
+                </section>
+                <section className='display-section'>
+                  <h3>Contacts</h3>
+                  <p>{_get(data, 'Contacts', nope)}</p>
+                </section>
+              </div>
             </div>
           </div>
         </div>
+        <pre>{JSON.stringify(data, 'null', '\t')}</pre>
       </section>
     );
   }

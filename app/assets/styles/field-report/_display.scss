@@ -1,0 +1,29 @@
+.display-section {
+	@include column(10/12);
+  margin-top: $global-spacing * 2;
+  &:first-child {
+    margin-top: 0;
+  };
+}
+
+.numeric-list {
+  @include column(4/12);
+}
+
+.page--field-report {
+  .inpage__title {
+    @include column(12/12);
+  }
+  .inpage__headline {
+    margin-top: $global-spacing * 2;
+  }
+  .inpage__headline-content {
+     @include column(9/12);
+  }
+  .inpage__headline-actions {
+    @include column(3/12);
+    button {
+      float: right;
+    }
+  }
+}

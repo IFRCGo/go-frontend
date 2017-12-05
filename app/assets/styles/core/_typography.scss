@@ -37,8 +37,8 @@
 }
 
 .prose--responsive {
-  $prose-resp-font-size: 1.25rem;                       // 20px
-  $prose-resp-line-height: 1.6;                         // 32px
+  $prose-resp-font-size: 1rem;                       // 20px
+  $prose-resp-line-height: 1.5;                         // 32px
 
   @include media(medium-up) {
     font-size: $prose-resp-font-size;
