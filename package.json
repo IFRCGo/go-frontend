@@ -105,6 +105,7 @@
     "lodash.get": "^4.4.2",
     "lodash.set": "^4.3.2",
     "lodash.tonumber": "^4.0.3",
+    "mapbox-gl": "^0.42.2",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
