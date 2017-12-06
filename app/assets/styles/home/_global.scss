@@ -43,6 +43,10 @@
     @include media(large-up) {
       margin-bottom: ($global-spacing * 3);
     }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 }
 
