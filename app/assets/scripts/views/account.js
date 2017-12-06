@@ -16,6 +16,7 @@ import {
 import { countries, disasterType } from '../utils/field-report-constants';
 import { apiPropertyDisplay, apiPropertyValue } from '../utils/format';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
+import { showAlert } from '../components/system-alerts';
 
 import Fold from '../components/fold';
 import { FormCheckboxGroup } from '../components/form-elements/';
@@ -92,6 +93,11 @@ class Account extends React.Component {
     }
     if (this.props.profile.updating && !nextProps.profile.updating) {
       hideGlobalLoading();
+      if (nextProps.profile.updateError) {
+        showAlert('danger', <p><strong>Error:</strong> {nextProps.profile.updateError.error_message}</p>, true, 4500);
+      } else {
+        showAlert('success', <p>Subscriptions updated</p>, true, 4500);
+      }
     }
   }
 
