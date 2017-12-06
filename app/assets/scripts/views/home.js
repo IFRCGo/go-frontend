@@ -216,6 +216,17 @@ class Map extends React.Component {
     this.theMap = new mapboxgl.Map({
       container: this.refs.map,
       style: mapStyle,
+      zoom: 1,
+      maxZoom: 3.5,
+      scrollZoom: false,
+      center: [6, 15],
+      pitchWithRotate: false,
+      dragRotate: false,
+      renderWorldCopies: false,
+      maxBounds: [
+        [-220, -70],
+        [220, 70]
+      ],
       attributionControl: false
     });
   }
