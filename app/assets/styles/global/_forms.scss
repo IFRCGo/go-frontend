@@ -263,7 +263,7 @@ textarea.form__control {
   }
 
   .form__group {
-    margin-bottom: $global-spacing;
+    margin-bottom: 0;
   }
 }
 
@@ -729,7 +729,9 @@ label[for] {
 }
 
 .form__inner-headline {
-  margin-top: ($global-spacing / 2);
+  > *:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .form__inner-actions {
