@@ -1046,15 +1046,14 @@ class FieldReportForm extends React.Component {
             <div className='inner'>
               <div className='inpage__headline'>
                 <h1 className='inpage__title'>Create Field Report</h1>
+                {this.renderStepper()}
               </div>
             </div>
           </header>
           <div className='inpage__body'>
             <div className='inner'>
               <form className='form form--field-report' onSubmit={this.onSubmit}>
-                {this.renderStepper()}
                 {this[`renderStep${this.state.step}`]()}
-
                 {this.renderErrorSummary()}
 
                 <div className='form__actions'>

@@ -18,7 +18,7 @@ class Header extends React.Component {
             </h1>
           </div>
           <nav className='page__meta-nav' role='navigation'>
-            <Link to='/reports/new' className='button button--primary-raised-dark' title='Create Field Report'><span>Create Field Report</span></Link>
+            <Link to='/reports/new' className='button button--small button--primary-raised-dark' title='Create Field Report'><span>Create Field Report</span></Link>
             <UserMenu />
           </nav>
         </div>
