@@ -132,11 +132,11 @@ class Account extends React.Component {
   }
 
   syncNotificationState (data) {
-    const subscriptions = _get(data, 'subscription', [])
+    const subscriptions = _get(data, 'subscription', []);
     if (!subscriptions.length) {
       return;
     }
-    let next = Object.assign({}, this.state.data)
+    let next = Object.assign({}, this.state.data);
     subscriptions.forEach(sub => {
       const rtype = rtypes[sub.rtype];
       if (rtype === 'country' && sub.country) {
