@@ -139,9 +139,8 @@ class Account extends React.Component {
     let next = Object.assign({}, this.state.data)
     subscriptions.forEach(sub => {
       const rtype = rtypes[sub.rtype];
-      console.log(sub);
       if (rtype === 'country' && sub.country) {
-        next.countries = next.countries.concat([sub.country.id]);
+        next.countries = next.countries.concat([{label: sub.country.name, value: sub.country.id.toString()}]);
       } else if (rtype === 'region' && sub.region) {
         next.regions = updateChecks(next.regions, sub.region.name.toString());
       } else if (rtype === 'disasterType' && sub.dtype) {
