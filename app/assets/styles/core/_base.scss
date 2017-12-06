@@ -76,6 +76,20 @@ a:focus {
   vertical-align: top;
 }
 
+.link--primary {
+  background-image: linear-gradient(180deg,transparent 65%, $primary-color 0);
+  color: $base-color;
+  font-weight: $base-font-regular;
+  padding-bottom: $global-spacing/4;
+  background-size: 100% 140%;
+  background-repeat: no-repeat;
+  text-decoration: none;
+  transition: background-size .4s ease;
+  &:hover {
+    opacity: 1;
+    background-size: 100% 85%;
+  };
+}
 
 /* Rows
    ========================================================================== */

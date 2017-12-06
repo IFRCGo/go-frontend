@@ -74,7 +74,7 @@ class FieldReport extends React.Component {
     }
     return (
       <DisplaySection title={`Actions taken by ${orgDisplayName}`}>
-        <ul>
+        <ul className='actions-list'>
           {actions.actions.map(d => <li key={d.id}>{d.name}</li>)}
         </ul>
       </DisplaySection>
@@ -89,8 +89,10 @@ class FieldReport extends React.Component {
     return (
       <DisplaySection title='Contacts'>
         {contacts.map(d => (
-          <p key={d.resource_uri}><strong>{separate(d.ctype)}</strong>: {d.name}, {d.title}, <a href={`mailto:${d.email}`}>{d.email}</a>
-          </p>
+          <div className='form__group'>
+            <p className='form__label' key={d.resource_uri}>{separate(d.ctype)}</p>
+            <p><strong>{d.name}</strong>, {d.title}, <a className='link--primary' href={`mailto:${d.email}`}>{d.email}</a></p>
+          </div>
         ))}
       </DisplaySection>
     );
@@ -169,13 +171,12 @@ class FieldReport extends React.Component {
                 {this.renderActionsTaken(data, 'NATL', 'National Society')}
                 {this.renderActionsTaken(data, 'PNS', 'PNS Red Cross')}
                 {this.renderActionsTaken(data, 'FDRN', 'Federation Red Cross')}
-                <DisplaySection title='Actions taken by others' inner={get(data, 'action_others', false)} />
+                <DisplaySection title='Actions taken by others' inner={get(data, 'action_others', nope)} />
                 {this.renderContacts(data)}
               </div>
             </div>
           </div>
         </div>
-        <pre>{JSON.stringify(data, 'null', '\t')}</pre>
       </section>
     );
   }
