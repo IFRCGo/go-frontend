@@ -1,6 +1,9 @@
 /* ==========================================================================
    Field Report form
    ========================================================================== */
+.form--field-report {
+  margin-bottom: $global-spacing * 4;
+}
 
 .sources-list {
   &__item {
@@ -85,6 +88,16 @@
       @include column(5/12);
     }
   }
+
+  .estimation__item--actions {
+    margin-top: 0.6rem;
+  }
+
+  .estimation:first-child {
+    .estimation__item--actions {
+      margin-top: 2.6rem;
+    }
+  }
 }
 
 .action-checkboxes .form__options-group {
@@ -140,7 +153,7 @@
   }
 
   .eru__item-actions {
-    padding-top: 2rem;
+    padding-top: 2.3rem;
   }
 }
 
@@ -193,6 +206,10 @@
       @include column(10/12);
     }
   }
+}
+
+.form__group .form__group--asymmetric {
+  margin-top: $global-spacing * 4;
 }
 
 .stepper {
@@ -296,10 +313,18 @@
   }
 }
 
+.form__actions {
+  margin: ($global-spacing * 4) 0;
+  button {
+    &:first-child {
+      margin-right: $global-spacing/2;
+    };
+  }
+}
 
 /* Buttons */
 
-.button--add-source {
+.button--add-item {
   @extend .button, .button--secondary-raised-light;
 
   &::before {
@@ -309,7 +334,6 @@
 
 .button--remove-source {
   @extend .button, .button--base-plain;
-
   &::before {
     @extend %collecticon-trash-bin;
   }

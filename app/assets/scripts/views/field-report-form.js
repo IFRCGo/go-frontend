@@ -1083,7 +1083,7 @@ class FieldReportForm extends React.Component {
     }
 
     return (
-      <div className='form__errrors'>
+      <div className='validation-result'>
         <h3>Page {this.state.step} of 5 incomplete.</h3>
         <p>To continue please fix:</p>
         <ul>
@@ -1106,14 +1106,14 @@ class FieldReportForm extends React.Component {
           </header>
           <div className='inpage__body'>
             <div className='inner'>
-              <form className='form' onSubmit={this.onSubmit}>
+              <form className='form form--field-report' onSubmit={this.onSubmit}>
                 {this.renderStepper()}
                 {this[`renderStep${this.state.step}`]()}
 
                 {this.renderErrorSummary()}
 
                 <div className='form__actions'>
-                  <button type='button' className={c('button button--base-plain', {disabled: this.state.step <= 1})} title='Go back to previous step' onClick={this.onStepBackClick}>Back</button>
+                  <button type='button' className={c('button button--secondary-plain', {disabled: this.state.step <= 1})} title='Go back to previous step' onClick={this.onStepBackClick}>Back</button>
                   <button type='submit' className='button button--secondary-raised-dark' title='Save and continue'>Save and continue</button>
                 </div>
               </form>
@@ -1304,11 +1304,11 @@ class SourceEstimation extends React.Component {
                 selectedOption={o.source}
                 onChange={this.onSourceChange.bind(this, idx)} />
 
-              <div className='estimation__item'>
+              <div className='estimation__item estimation__item--actions'>
                 {values.length > 1 ? (
                   <button type='button' className='button--remove-source' title='Delete Source' onClick={this.onRemoveSource.bind(this, idx)}>Delete source</button>
                 ) : (
-                  <button type='button' className='button--add-source' title='Add new source' onClick={this.onAddSource.bind(this)}>Add another source</button>
+                  <button type='button' className='button--add-item button--achromic-glass' title='Add new source' onClick={this.onAddSource.bind(this)}>Add another source</button>
                 )}
               </div>
             </div>
@@ -1524,7 +1524,7 @@ class Eru extends React.Component {
             <label className='form__label'>{label}</label>
           </div>
           <div className='form__inner-actions'>
-            <button type='button' className={c('button--add-source', {disabled: !this.canAdd()})} title='Add new ERU' onClick={this.onAddSource.bind(this)}>Add another ERU</button>
+            <button type='button' className={c('button--add-item button--achromic-glass', {disabled: !this.canAdd()})} title='Add new ERU' onClick={this.onAddSource.bind(this)}>Add another ERU</button>
           </div>
         </div>
         <div className='form__inner-body'>
