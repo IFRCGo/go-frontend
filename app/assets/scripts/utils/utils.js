@@ -1,4 +1,16 @@
 'use strict';
+import _get from 'lodash.get';
+
+// lodash.get will only return the defaultValue when
+// the path is undefined. We want to also catch null and ''
+export function get (object, path, defaultValue) {
+  const value = _get(object, path, null);
+  if (value === null || value === '') {
+    return defaultValue || null;
+  } else {
+    return value;
+  }
+}
 
 export function isValidEmail (email) {
   // https://stackoverflow.com/a/1373724

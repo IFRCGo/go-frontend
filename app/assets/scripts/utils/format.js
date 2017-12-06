@@ -1,9 +1,26 @@
 'use strict';
-import get from 'lodash.get';
+import { get } from './utils';
 
 export const nope = '--';
 export const na = 'N/A';
 export const invalid = 'Invalid';
+
+// Ie. given 12345, return '12 345'
+export const commaSeparatedNumber = (x) => {
+  // isNaN(null) === true :*(
+  if (isNaN(x) || (!x && x !== 0)) {
+    return nope;
+  }
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+};
+
+// Ie. given 'MadDogIndustries', return 'Mad Dog Industries'
+export const separateUppercaseWords = (x) => {
+  if (typeof x !== 'string') {
+    return nope;
+  }
+  return x.replace(/([A-Z])/g, ' $1').trim();
+};
 
 // Ie. given 'SCRT', return 'Secretariat'.
 const organizationCodeToDisplay = {
@@ -59,4 +76,46 @@ export const apiPropertyValue = (propOrPath, object) => {
     return value;
   }
   return formatter(value);
+};
+
+export const drefDefinition = {
+  1: 'Requested',
+  2: 'Planned',
+  3: 'Deployed'
+};
+
+export const appealDefinition = {
+  1: 'Requested',
+  2: 'Planned',
+  3: 'Active'
+};
+
+export const bulletinDefinition = {
+  1: 'Requested',
+  2: 'Planned',
+  3: 'Published'
+};
+
+export const deployDefinition = {
+  1: 'Requested',
+  2: 'Planned',
+  3: 'Deployed'
+};
+
+export const getResponseStatus = (data, dataPath) => {
+  const status = get(data, dataPath, null);
+  if (status === null || status === 0) { return null; }
+  switch (getPropertyFromPath(dataPath)) {
+    case 'dref':
+      return drefDefinition[status];
+    case 'appeal':
+      return appealDefinition[status];
+    case 'bulletin':
+      return bulletinDefinition[status];
+    case 'rdrt':
+    case 'fact':
+    case 'ifrc_staff':
+    default:
+      return deployDefinition[status];
+  }
 };

@@ -17,6 +17,7 @@ import Register from './views/register';
 import RecoverAccount from './views/recover-account';
 import UhOh from './views/uhoh';
 import FieldReportForm from './views/field-report-form';
+import FieldReport from './views/field-report';
 
 polyfill();
 
@@ -66,6 +67,7 @@ const Root = () => (
         <AnonymousRoute exact path="/register" component={Register}/>
         <AnonymousRoute exact path="/recover-account" component={RecoverAccount}/>
         <Route exact path="/reports/new" component={FieldReportForm}/>
+        <Route exact path="/reports/:id" component={FieldReport}/>
         <Route component={UhOh}/>
       </Switch>
     </Router>

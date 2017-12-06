@@ -8,7 +8,7 @@
   box-shadow: 0 2px 4px 1px $base-alpha-color;
 
   > .inner {
-    @extend .row, .row--centered;
+    @extend .row-fold, .row--centered;
   }
 
   &,
