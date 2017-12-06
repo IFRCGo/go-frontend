@@ -5,12 +5,15 @@ import { api } from '../config';
 
 export function withToken (options = {}) {
   const user = localStorage.get('user');
-  if (!user) {
-    throw new Error('No login token found');
-  } else if (Date.parse(user.expires) <= Date.now()) {
-    throw new Error('Token is expired');
-  }
   options.headers = options.headers || {};
+
+  if (!user) {
+    console.error('No login token found');
+    return options;
+  } else if (Date.parse(user.expires) <= Date.now()) {
+    console.error('Token is expired');
+    return options;
+  }
   options.headers['Authorization'] = `ApiKey ${user.username}:${user.token}`;
   return options;
 }
