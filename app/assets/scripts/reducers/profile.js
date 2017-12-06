@@ -3,6 +3,8 @@
 const initialState = {
   fetching: false,
   fetched: false,
+  updating: false,
+  updated: false,
   receivedAt: null,
   data: null
 };
@@ -25,6 +27,22 @@ export default function reducer (state = initialState, action) {
         fetched: true,
         receivedAt: action.receivedAt,
         data: action.data
+      });
+      break;
+
+    case 'UPDATE_SUBSCRIPTIONS_INFLIGHT':
+      return Object.assign({}, state, { updateError: null, updating: true, updated: false });
+    case 'UPDATE_SUBSCRIPTIONS_FAILED':
+      state = Object.assign({}, state, {
+        updating: false,
+        updated: true,
+        updateError: action.error
+      });
+      break;
+    case 'UPDATE_SUBSCRIPTIONS_SUCCESS':
+      state = Object.assign({}, state, {
+        updating: false,
+        updated: true
       });
       break;
   }

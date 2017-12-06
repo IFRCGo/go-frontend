@@ -69,13 +69,14 @@ class Account extends React.Component {
         countries: [],
         regions: regions.map(markUnChecked),
         disasterTypes: disasterTypes.map(markUnChecked),
-        emergency: systemNotificationTypes.map(markUnChecked),
+        event: systemNotificationTypes.map(markUnChecked),
         fieldReport: systemNotificationTypes.map(markUnChecked),
         appeal: systemNotificationTypes.map(markUnChecked),
         other: otherNotificationTypes.map(markUnChecked)
       }
     };
     this.onSubmit = this.onSubmit.bind(this);
+    this.renderSubscriptionForm = this.renderSubscriptionForm.bind(this);
   }
 
   componentDidMount () {
@@ -89,6 +90,9 @@ class Account extends React.Component {
       hideGlobalLoading();
       // TODO update state from user profile data
     }
+    if (this.props.profile.updating && !nextProps.profile.updating) {
+      hideGlobalLoading();
+    }
   }
 
   onFieldChange (field, e) {
@@ -101,20 +105,39 @@ class Account extends React.Component {
   onSubmit (e) {
     e.preventDefault();
     const payload = this.serialize(this.state.data);
+    showGlobalLoading();
     this.props._updateSubscriptions(payload);
   }
 
   serialize (data) {
-    const serialized = ['regions', 'disasterTypes', 'appeal', 'emergency', 'fieldreport', 'other']
-      .map(type => ({
-        type,
-        values: _get(data, type, []).filter(d => d.checked).map(d => d.value)
-      }));
-    serialized.push({
+    let serialized = ['regions', 'disasterTypes', 'appeal', 'event', 'fieldReport']
+      .reduce((acc, currentType) => {
+        const flattened = _get(data, currentType, [])
+          .filter(d => d.checked)
+          .map(d => ({
+            type: currentType,
+            value: d.value
+          }));
+        return acc.concat(flattened);
+      }, []);
+
+    let otherNotifications = _get(data, 'other', []).filter(d => d.checked).map(d => ({
+      type: d.value,
+      value: true
+    }));
+    if (otherNotifications.length) {
+      serialized.push.apply(serialized, otherNotifications);
+    }
+
+    let countries = _get(data, 'countries', []).map(d => ({
       type: 'countries',
-      values: _get(data, 'countries', []).map(d => d.value)
-    });
-    return serialized.filter(d => d.values.length);
+      value: d.value
+    }));
+    if (countries.length) {
+      serialized.push.apply(serialized, countries);
+    }
+
+    return serialized;
   }
 
   renderProfileAttributes (profile) {
@@ -136,6 +159,73 @@ class Account extends React.Component {
       <dt key={`dt-${a}`}>{apiPropertyDisplay(a)}</dt>,
       <dd key={`dl-${a}`}>{apiPropertyValue(a, profileData)}</dd>
     ]);
+  }
+
+  renderSubscriptionForm () {
+    return (
+      <form className='form' onSubmit={this.onSubmit}>
+        <Fold title='Subscription preferences'>
+          <FormCheckboxGroup
+            label='Regional notifications'
+            description={'Select one or more regions to receive notifications about.'}
+            name='regions'
+            classWrapper='action-checkboxes'
+            options={regions}
+            values={this.state.data.regions}
+            onChange={this.onFieldChange.bind(this, 'regions')} />
+          <div className='form__group'>
+            <label className='form__label'>Country-level notifications</label>
+            <p className='form__description'>Select one or more countries to receive notifications about.</p>
+            <Select
+              name='countries'
+              value={this.state.data.countries}
+              onChange={this.onFieldChange.bind(this, 'countries')}
+              options={countries}
+              multi />
+          </div>
+          <FormCheckboxGroup
+            label='Disaster types'
+            description={'Get notified about new disasters in these categories.'}
+            name='disasterTypes'
+            classWrapper='action-checkboxes'
+            options={disasterTypes}
+            values={this.state.data.disasterTypes}
+            onChange={this.onFieldChange.bind(this, 'disasterTypes')} />
+          <FormCheckboxGroup
+            label='Emergencies'
+            name='event'
+            classWrapper='action-checkboxes'
+            options={systemNotificationTypes}
+            values={this.state.data.event}
+            onChange={this.onFieldChange.bind(this, 'event')} />
+          <FormCheckboxGroup
+            label='Field Reports'
+            name='fieldReport'
+            classWrapper='action-checkboxes'
+            options={systemNotificationTypes}
+            values={this.state.data.fieldReport}
+            onChange={this.onFieldChange.bind(this, 'fieldReport')} />
+          <FormCheckboxGroup
+            label='Appeals'
+            name='appeal'
+            classWrapper='action-checkboxes'
+            options={systemNotificationTypes}
+            values={this.state.data.appeal}
+            onChange={this.onFieldChange.bind(this, 'appeal')} />
+          <FormCheckboxGroup
+            label='Other Notifications'
+            name='other'
+            classWrapper='action-checkboxes'
+            options={otherNotificationTypes}
+            values={this.state.data.other}
+            onChange={this.onFieldChange.bind(this, 'other')} />
+          <button type='submit' className={c('button', {
+            'button--secondary-raised-dark': this.state.isDirty,
+            'button--secondary-raised-light': !this.state.isDirty
+          })} title='Save'>Save</button>
+        </Fold>
+      </form>
+    );
   }
 
   render () {
@@ -166,77 +256,7 @@ class Account extends React.Component {
                   </div>
                 </section>
               </div>
-
-              <form className='form' onSubmit={this.onSubmit}>
-                <Fold title='Subscription preferences'>
-                  <FormCheckboxGroup
-                    label='Regional notifications'
-                    description={'Select one or more regions to receive notifications about.'}
-                    name='regions'
-                    classWrapper='action-checkboxes'
-                    options={regions}
-                    values={this.state.data.regions}
-                    onChange={this.onFieldChange.bind(this, 'regions')} />
-
-                  <div className='form__group'>
-                    <label className='form__label'>Country-level notifications</label>
-                    <p className='form__description'>Select one or more countries to receive notifications about.</p>
-                    <Select
-                      name='countries'
-                      value={this.state.data.countries}
-                      onChange={this.onFieldChange.bind(this, 'countries')}
-                      options={countries}
-                      multi />
-                  </div>
-
-                  <FormCheckboxGroup
-                    label='Disaster types'
-                    description={'Get notified about new disasters in these categories.'}
-                    name='disasterTypes'
-                    classWrapper='action-checkboxes'
-                    options={disasterTypes}
-                    values={this.state.data.disasterTypes}
-                    onChange={this.onFieldChange.bind(this, 'disasterTypes')} />
-
-                  <FormCheckboxGroup
-                    label='Emergencies'
-                    name='emergency'
-                    classWrapper='action-checkboxes'
-                    options={systemNotificationTypes}
-                    values={this.state.data.emergency}
-                    onChange={this.onFieldChange.bind(this, 'emergency')} />
-
-                  <FormCheckboxGroup
-                    label='Field Reports'
-                    name='fieldReport'
-                    classWrapper='action-checkboxes'
-                    options={systemNotificationTypes}
-                    values={this.state.data.fieldReport}
-                    onChange={this.onFieldChange.bind(this, 'fieldReport')} />
-
-                  <FormCheckboxGroup
-                    label='Appeals'
-                    name='appeal'
-                    classWrapper='action-checkboxes'
-                    options={systemNotificationTypes}
-                    values={this.state.data.appeal}
-                    onChange={this.onFieldChange.bind(this, 'appeal')} />
-
-                  <FormCheckboxGroup
-                    label='Other Notifications'
-                    name='other'
-                    classWrapper='action-checkboxes'
-                    options={otherNotificationTypes}
-                    values={this.state.data.other}
-                    onChange={this.onFieldChange.bind(this, 'other')} />
-
-                  <button type='submit' className={c('button', {
-                    'button--secondary-raised-dark': this.state.isDirty,
-                    'button--secondary-raised-light': !this.state.isDirty
-                  })} title='Save'>Save</button>
-
-                </Fold>
-              </form>
+              {this.props.profile.fetched && !this.props.profile.error ? this.renderSubscriptionForm() : null}
             </div>
           </div>
         </section>
