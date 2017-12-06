@@ -1,5 +1,6 @@
 'use strict';
 import { fetchJSON, postJSON, withToken } from '../utils/network';
+import { stringify as buildAPIQS } from 'qs';
 
 export const TOKEN = 'TOKEN';
 export function getAuthToken (username, password) {
@@ -24,4 +25,13 @@ export function getFieldReportById (id) {
 export const CREATE_FIELD_REPORT = 'CREATE_FIELD_REPORT';
 export function createFieldReport (payload) {
   return postJSON('api/v1/field_report/', CREATE_FIELD_REPORT, payload, withToken());
+}
+
+export const GET_SURGE_ALERTS = 'GET_SURGE_ALERTS';
+export function getSurgeAlerts (page = 1, filters = {}) {
+  filters.limit = filters.limit || 10;
+  filters.offset = filters.limit * (page - 1);
+  let f = buildAPIQS(filters);
+
+  return fetchJSON(`/api/v1/surge_alert/?${f}`, GET_SURGE_ALERTS, withToken());
 }

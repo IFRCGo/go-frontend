@@ -226,6 +226,9 @@
 }
 
 .responsive-table {
+  margin-bottom: $global-spacing * 2;
+  width: 100%;
+
   th, td  {
     vertical-align: top;
     text-align: left;
