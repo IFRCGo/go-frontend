@@ -23,9 +23,10 @@ import { FormCheckboxGroup } from '../components/form-elements/';
 
 import App from './app';
 
-// exclude the first item since it's a dropdown placeholder
+// Exclude the first item since it's a dropdown placeholder
 const disasterTypes = disasterType.slice(1);
 
+// Constants used to create form elements
 const systemNotificationTypes = [{
   label: 'New records',
   value: 'new'
@@ -56,10 +57,34 @@ const regions = [{
   value: '1'
 }];
 
+// constants to translate existing subscriptions from the API
+const rtypes = {
+  0: 'event',
+  1: 'appeal',
+  2: 'fieldReport',
+  3: 'surge',
+  4: 'country',
+  5: 'region',
+  6: 'disasterType'
+};
+
+const stypes = {
+  0: 'new',
+  1: 'modified'
+};
+
+// helper to unmark all checkboxes in initial state
 const markUnChecked = o => ({
   value: o.value,
   checked: false
 });
+
+const updateChecks = (checkboxes, value) => {
+  return checkboxes.map(o => ({
+    value: o.value,
+    checked: o.value === value ? true : o.checked
+  }));
+};
 
 class Account extends React.Component {
   constructor (props) {
@@ -78,6 +103,7 @@ class Account extends React.Component {
     };
     this.onSubmit = this.onSubmit.bind(this);
     this.renderSubscriptionForm = this.renderSubscriptionForm.bind(this);
+    this.syncNotificationState = this.syncNotificationState.bind(this);
   }
 
   componentDidMount () {
@@ -89,7 +115,11 @@ class Account extends React.Component {
   componentWillReceiveProps (nextProps) {
     if (this.props.profile.fetching && !nextProps.profile.fetching) {
       hideGlobalLoading();
-      // TODO update state from user profile data
+      if (nextProps.profile.error) {
+        showAlert('danger', <p><strong>Error:</strong> Could not load user profile</p>, true, 4500);
+      } else {
+        this.syncNotificationState(nextProps.profile.data);
+      }
     }
     if (this.props.profile.updating && !nextProps.profile.updating) {
       hideGlobalLoading();
@@ -99,6 +129,30 @@ class Account extends React.Component {
         showAlert('success', <p>Subscriptions updated</p>, true, 4500);
       }
     }
+  }
+
+  syncNotificationState (data) {
+    const subscriptions = _get(data, 'subscription', [])
+    if (!subscriptions.length) {
+      return;
+    }
+    let next = Object.assign({}, this.state.data)
+    subscriptions.forEach(sub => {
+      const rtype = rtypes[sub.rtype];
+      console.log(sub);
+      if (rtype === 'country' && sub.country) {
+        next.countries = next.countries.concat([sub.country.id]);
+      } else if (rtype === 'region' && sub.region) {
+        next.regions = updateChecks(next.regions, sub.region.name.toString());
+      } else if (rtype === 'disasterType' && sub.dtype) {
+        next.disasterTypes = updateChecks(next.disasterTypes, sub.dtype.id.toString());
+      } else if (rtype === 'appeal' || rtype === 'event' || rtype === 'fieldReport') {
+        next[rtype] = updateChecks(next[rtype], stypes[sub.stype]);
+      } else if (rtype === 'surge') {
+        next.other = updateChecks(next.other, 'surge');
+      }
+    });
+    this.setState({ data: next });
   }
 
   onFieldChange (field, e) {
@@ -160,10 +214,9 @@ class Account extends React.Component {
       'profile.position',
       'profile.phone_number'
     ];
-    const profileData = profile.data.objects[0];
     return attributes.map(a => [
       <dt key={`dt-${a}`}>{apiPropertyDisplay(a)}</dt>,
-      <dd key={`dl-${a}`}>{apiPropertyValue(a, profileData)}</dd>
+      <dd key={`dl-${a}`}>{apiPropertyValue(a, profile.data)}</dd>
     ]);
   }
 
