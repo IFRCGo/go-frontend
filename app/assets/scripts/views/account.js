@@ -14,10 +14,7 @@ import { apiPropertyDisplay, apiPropertyValue } from '../utils/format';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 
 import Fold from '../components/fold';
-import {
-  FormRadioGroup,
-  FormCheckboxGroup
-} from '../components/form-elements/';
+import { FormCheckboxGroup } from '../components/form-elements/';
 
 import App from './app';
 
@@ -25,34 +22,28 @@ import App from './app';
 const disasterTypes = disasterType.slice(1);
 
 const systemNotificationTypes = [{
-  label: 'New record',
+  label: 'New records ',
   value: 'new'
 }, {
-  label: 'Modified record',
+  label: 'Modified records',
   value: 'modified'
-}, {
-  label: 'Both',
-  value: 'both'
-}, {
-  label: 'None',
-  value: 'none'
 }];
 
 const regions = [{
   label: 'Africa',
-  value: 'africa'
+  value: 0
 }, {
   label: 'Asia Pacific',
-  value: 'asia'
+  value: 2
 }, {
   label: 'MENA',
-  value: 'mena'
+  value: 4
 }, {
   label: 'Europe',
-  value: 'europe'
+  value: 3
 }, {
   label: 'Americas',
-  value: 'americas'
+  value: 1
 }];
 
 class Account extends React.Component {
@@ -70,9 +61,18 @@ class Account extends React.Component {
           checked: false
         })),
         countries: [],
-        emergency: 'none',
-        fieldReport: 'none',
-        appeal: 'none'
+        emergency: systemNotificationTypes.map(o => ({
+          value: o.value,
+          checked: false
+        })),
+        fieldReport: systemNotificationTypes.map(o => ({
+          value: o.value,
+          checked: false
+        })),
+        appeal: systemNotificationTypes.map(o => ({
+          value: o.value,
+          checked: false
+        }))
       }
     };
     this.onSubmit = this.onSubmit.bind(this);
@@ -98,8 +98,9 @@ class Account extends React.Component {
     this.setState({isDirty: true, data});
   }
 
-  onSubmit () {
-
+  onSubmit (e) {
+    e.preventDefault();
+    console.log(this.state.data);
   }
 
   renderProfileAttributes (profile) {
@@ -183,29 +184,29 @@ class Account extends React.Component {
                     values={this.state.data.disasterTypes}
                     onChange={this.onFieldChange.bind(this, 'disasterTypes')} />
 
-                  <FormRadioGroup
+                  <FormCheckboxGroup
                     label='Emergencies'
                     name='emergency'
+                    classWrapper='action-checkboxes'
                     options={systemNotificationTypes}
-                    selectedOption={this.state.data.emergency}
-                    onChange={this.onFieldChange.bind(this, 'emergency')}>
-                  </FormRadioGroup>
+                    values={this.state.data.emergency}
+                    onChange={this.onFieldChange.bind(this, 'emergency')} />
 
-                  <FormRadioGroup
+                  <FormCheckboxGroup
                     label='Field Reports'
                     name='fieldReport'
+                    classWrapper='action-checkboxes'
                     options={systemNotificationTypes}
-                    selectedOption={this.state.data.fieldReport}
-                    onChange={this.onFieldChange.bind(this, 'fieldReport')}>
-                  </FormRadioGroup>
+                    values={this.state.data.fieldReport}
+                    onChange={this.onFieldChange.bind(this, 'fieldReport')} />
 
-                  <FormRadioGroup
+                  <FormCheckboxGroup
                     label='Appeals'
                     name='appeal'
+                    classWrapper='action-checkboxes'
                     options={systemNotificationTypes}
-                    selectedOption={this.state.data.appeal}
-                    onChange={this.onFieldChange.bind(this, 'appeal')}>
-                  </FormRadioGroup>
+                    values={this.state.data.appeal}
+                    onChange={this.onFieldChange.bind(this, 'appeal')} />
 
                   <button type='submit' className={c('button', {
                     'button--secondary-raised-dark': this.state.isDirty,
