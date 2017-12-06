@@ -76,7 +76,7 @@
 /* Base Raised Light */
 
 .button--base-raised-light {
-  @include button-variation($base-color, "raised", "light");
+  @include button-variation(rgba($base-color, 0.48), "raised", "light");
 }
 
 /* Base Raised Dark */
