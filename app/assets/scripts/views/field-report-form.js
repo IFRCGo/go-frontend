@@ -1083,7 +1083,7 @@ class FieldReportForm extends React.Component {
     }
 
     return (
-      <div className='form__error'>
+      <div className='validation-result'>
         <h3>Page {this.state.step} of 5 incomplete.</h3>
         <p>To continue please fix:</p>
         <ul>

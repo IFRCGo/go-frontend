@@ -41,7 +41,7 @@ class Header extends React.Component {
                     className='form__control'
                   />
                 </div>
-                <button type='submit' className='button--primary-raised-light gsearch__button'><span>Search</span></button>
+                <button type='submit' className='gsearch__button'><span>Search</span></button>
               </form>
             </div>
           </nav>

@@ -97,6 +97,11 @@
   @include button-variation($primary-color, "raised", "light");
 }
 
+.button--base-raised-light {
+  @include button-variation($base-color, "raised", "light");
+}
+
+
 /* Primary Raised Dark */
 
 .button--primary-raised-dark {

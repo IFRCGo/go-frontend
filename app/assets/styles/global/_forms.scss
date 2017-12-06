@@ -903,11 +903,14 @@ label[for] {
   }
 }
 
-.form__error {
+.form__error, .validation-result {
   @extend .form__help, .form__help--danger;
   text-align: left;
   margin-bottom: $global-spacing * 2;
   font-weight: $base-font-bold;
+}
+
+.validation-result {
   h3, p {
     color: $base-color;
   }
@@ -933,7 +936,6 @@ label[for] {
     };
   }
 }
-
 /* Color modifiers
    ========================================================================== */
 
