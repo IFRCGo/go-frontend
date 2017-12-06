@@ -5,10 +5,14 @@ import { PropTypes as T } from 'prop-types';
 import Select from 'react-select';
 import _set from 'lodash.set';
 import _cloneDeep from 'lodash.clonedeep';
+import _get from 'lodash.get';
 import c from 'classnames';
 
 import { environment } from '../config';
-import { getUserProfile } from '../actions';
+import {
+  getUserProfile,
+  updateSubscriptions
+} from '../actions';
 import { countries, disasterType } from '../utils/field-report-constants';
 import { apiPropertyDisplay, apiPropertyValue } from '../utils/format';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
@@ -22,29 +26,39 @@ import App from './app';
 const disasterTypes = disasterType.slice(1);
 
 const systemNotificationTypes = [{
-  label: 'New records ',
+  label: 'New records',
   value: 'new'
 }, {
   label: 'Modified records',
   value: 'modified'
 }];
 
+const otherNotificationTypes = [{
+  label: 'Surge alerts',
+  value: 'surge'
+}];
+
 const regions = [{
   label: 'Africa',
-  value: 0
+  value: '0'
 }, {
   label: 'Asia Pacific',
-  value: 2
+  value: '2'
 }, {
   label: 'MENA',
-  value: 4
+  value: '4'
 }, {
   label: 'Europe',
-  value: 3
+  value: '3'
 }, {
   label: 'Americas',
-  value: 1
+  value: '1'
 }];
+
+const markUnChecked = o => ({
+  value: o.value,
+  checked: false
+});
 
 class Account extends React.Component {
   constructor (props) {
@@ -52,27 +66,13 @@ class Account extends React.Component {
     this.state = {
       isDirty: false,
       data: {
-        regions: regions.map(o => ({
-          value: o.value,
-          checked: false
-        })),
-        disasterTypes: disasterTypes.map(o => ({
-          value: o.value,
-          checked: false
-        })),
         countries: [],
-        emergency: systemNotificationTypes.map(o => ({
-          value: o.value,
-          checked: false
-        })),
-        fieldReport: systemNotificationTypes.map(o => ({
-          value: o.value,
-          checked: false
-        })),
-        appeal: systemNotificationTypes.map(o => ({
-          value: o.value,
-          checked: false
-        }))
+        regions: regions.map(markUnChecked),
+        disasterTypes: disasterTypes.map(markUnChecked),
+        emergency: systemNotificationTypes.map(markUnChecked),
+        fieldReport: systemNotificationTypes.map(markUnChecked),
+        appeal: systemNotificationTypes.map(markUnChecked),
+        other: otherNotificationTypes.map(markUnChecked)
       }
     };
     this.onSubmit = this.onSubmit.bind(this);
@@ -100,7 +100,21 @@ class Account extends React.Component {
 
   onSubmit (e) {
     e.preventDefault();
-    console.log(this.state.data);
+    const payload = this.serialize(this.state.data);
+    this.props._updateSubscriptions(payload);
+  }
+
+  serialize (data) {
+    const serialized = ['regions', 'disasterTypes', 'appeal', 'emergency', 'fieldreport', 'other']
+      .map(type => ({
+        type,
+        values: _get(data, type, []).filter(d => d.checked).map(d => d.value)
+      }));
+    serialized.push({
+      type: 'countries',
+      values: _get(data, 'countries', []).map(d => d.value)
+    });
+    return serialized.filter(d => d.values.length);
   }
 
   renderProfileAttributes (profile) {
@@ -208,6 +222,14 @@ class Account extends React.Component {
                     values={this.state.data.appeal}
                     onChange={this.onFieldChange.bind(this, 'appeal')} />
 
+                  <FormCheckboxGroup
+                    label='Other Notifications'
+                    name='other'
+                    classWrapper='action-checkboxes'
+                    options={otherNotificationTypes}
+                    values={this.state.data.other}
+                    onChange={this.onFieldChange.bind(this, 'other')} />
+
                   <button type='submit' className={c('button', {
                     'button--secondary-raised-dark': this.state.isDirty,
                     'button--secondary-raised-light': !this.state.isDirty
@@ -227,7 +249,8 @@ if (environment !== 'production') {
   Account.propTypes = {
     user: T.object,
     profile: T.object,
-    _getProfile: T.func
+    _getProfile: T.func,
+    _updateSubscriptions: T.func
   };
 }
 
@@ -240,7 +263,8 @@ const selector = (state) => ({
 });
 
 const dispatcher = {
-  _getProfile: getUserProfile
+  _getProfile: getUserProfile,
+  _updateSubscriptions: updateSubscriptions
 };
 
 export default connect(selector, dispatcher)(Account);

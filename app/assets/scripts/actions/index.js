@@ -25,3 +25,8 @@ export const CREATE_FIELD_REPORT = 'CREATE_FIELD_REPORT';
 export function createFieldReport (payload) {
   return postJSON('api/v1/field_report/', CREATE_FIELD_REPORT, payload, withToken());
 }
+
+export const UPDATE_SUBSCRIPTIONS = 'UPDATE_SUBSCRIPTIONS';
+export function updateSubscriptions (payload) {
+  return postJSON('notifications/', UPDATE_SUBSCRIPTIONS, payload, withToken());
+}
