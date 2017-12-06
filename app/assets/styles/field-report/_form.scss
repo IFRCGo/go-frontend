@@ -71,6 +71,11 @@
 
   .estimation {
     @extend .clearfix;
+    margin-bottom: $global-spacing;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 
   .estimation__item-field {
@@ -89,13 +94,9 @@
     }
   }
 
-  .estimation__item--actions {
-    margin-top: 0.6rem;
-  }
-
   .estimation:first-child {
     .estimation__item--actions {
-      margin-top: 2.6rem;
+      margin-top: 1.8rem;
     }
   }
 }
@@ -153,7 +154,7 @@
   }
 
   .eru__item-actions {
-    padding-top: 2.3rem;
+    padding-top: 1.5rem;
   }
 }
 
@@ -182,10 +183,14 @@
   }
 }
 
-.form__group--asymmetric  {
-  > .form__inner-header {
-    @include column(12/12);
+.plan-response-row  {
+  @include media(medium-up) {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: flex-end
+  }
 
+  > .form__inner-header {
     @include media(medium-up) {
       @include column(3/12);
     }
@@ -196,20 +201,32 @@
   }
 
   > .form__inner-body {
-    @include column(12/12);
-
     @include media(medium-up) {
       @include column(9/12);
+
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: flex-end;
+
+      .form__group {
+        margin-bottom: 0;
+      }
+
+      .form__option {
+        margin-top: 0;
+        vertical-align: top;
+      }
     }
 
     @include media(large-up) {
       @include column(10/12);
     }
-  }
-}
 
-.form__group .form__group--asymmetric {
-  margin-top: $global-spacing * 4;
+  }
+
+  .resp-status {
+    margin-right: 8%;
+  }
 }
 
 .stepper {
@@ -333,7 +350,7 @@
 }
 
 .button--remove-source {
-  @extend .button, .button--base-plain;
+  @extend .button, .button--base-raised-light;
   &::before {
     @extend %collecticon-trash-bin;
   }

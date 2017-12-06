@@ -113,27 +113,30 @@ export const step3 = {
 };
 
 export const step4 = {
+  definitions: {
+    plannedResponse: {
+      properties: {
+        status: { type: 'string' },
+        value: { type: 'number', minimum: 0 }
+      }
+    }
+  },
   properties: {
     dref: {
-      type: 'string'
+      '$ref': '#/definitions/plannedResponse'
     },
-    amountDref: { type: 'number', minimum: 0 },
     emergencyAppeal: {
-      type: 'string'
+      '$ref': '#/definitions/plannedResponse'
     },
-    amountEmergencyAppeal: { type: 'number', minimum: 0 },
     rdrtrits: {
-      type: 'string'
+      '$ref': '#/definitions/plannedResponse'
     },
-    numPplRdrits: { type: 'number', minimum: 0 },
     fact: {
-      type: 'string'
+      '$ref': '#/definitions/plannedResponse'
     },
-    numPplFact: { type: 'number', minimum: 0 },
     ifrcStaff: {
-      type: 'string'
+      '$ref': '#/definitions/plannedResponse'
     },
-    numPplIfrcStaff: { type: 'number', minimum: 0 },
     eru: {
       type: 'array',
       items: {
