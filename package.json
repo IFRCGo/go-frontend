@@ -107,6 +107,7 @@
     "lodash.tonumber": "^4.0.3",
     "mapbox-gl": "^0.42.2",
     "prop-types": "^15.6.0",
+    "qs": "^6.5.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-paginate": "^5.0.0",
