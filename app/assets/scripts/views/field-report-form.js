@@ -1304,11 +1304,11 @@ class SourceEstimation extends React.Component {
                 selectedOption={o.source}
                 onChange={this.onSourceChange.bind(this, idx)} />
 
-              <div className='estimation__item'>
+              <div className='estimation__item estimation__item--actions'>
                 {values.length > 1 ? (
                   <button type='button' className='button--remove-source' title='Delete Source' onClick={this.onRemoveSource.bind(this, idx)}>Delete source</button>
                 ) : (
-                  <button type='button' className='button--add-source button--achromic-glass' title='Add new source' onClick={this.onAddSource.bind(this)}>Add another source</button>
+                  <button type='button' className='button--add-item button--achromic-glass' title='Add new source' onClick={this.onAddSource.bind(this)}>Add another source</button>
                 )}
               </div>
             </div>
@@ -1524,7 +1524,7 @@ class Eru extends React.Component {
             <label className='form__label'>{label}</label>
           </div>
           <div className='form__inner-actions'>
-            <button type='button' className={c('button--add-source button--achromic-glass', {disabled: !this.canAdd()})} title='Add new ERU' onClick={this.onAddSource.bind(this)}>Add another ERU</button>
+            <button type='button' className={c('button--add-item button--achromic-glass', {disabled: !this.canAdd()})} title='Add new ERU' onClick={this.onAddSource.bind(this)}>Add another ERU</button>
           </div>
         </div>
         <div className='form__inner-body'>

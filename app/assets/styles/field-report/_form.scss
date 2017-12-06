@@ -88,6 +88,16 @@
       @include column(5/12);
     }
   }
+
+  .estimation__item--actions {
+    margin-top: 0.6rem;
+  }
+
+  .estimation:first-child {
+    .estimation__item--actions {
+      margin-top: 2.6rem;
+    }
+  }
 }
 
 .action-checkboxes .form__options-group {
@@ -143,7 +153,7 @@
   }
 
   .eru__item-actions {
-    padding-top: 2rem;
+    padding-top: 2.3rem;
   }
 }
 
@@ -314,18 +324,11 @@
 
 /* Buttons */
 
-.button--add-source {
-  margin-top: 2.5rem;
+.button--add-item {
   @extend .button, .button--secondary-raised-light;
 
   &::before {
     @extend %collecticon-sm-plus;
-  }
-}
-
-.form__inner-actions {
-  .button--add-source {
-    margin-top: 0;
   }
 }
 
