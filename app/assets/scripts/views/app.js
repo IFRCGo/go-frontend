@@ -14,11 +14,11 @@ class App extends React.Component {
   render () {
     return (
       <div className={c('page', this.props.className)}>
+        <GlobalLoading />
         <Header />
         <main className='page__body' role='main'>
           {this.props.children}
         </main>
-        <GlobalLoading />
         <SysAlerts />
         <Footer/>
       </div>
