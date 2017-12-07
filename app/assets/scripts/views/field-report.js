@@ -117,8 +117,7 @@ class FieldReport extends React.Component {
                 </div>
               </div>
               <div className='inpage__headline-actions'>
-                <p className='inpage__note'>Last Updated by User1293 on 8/11/2017</p>
-                <button className='button button--primary-raised-light'>Update</button>
+                <button className='button button--primary-plain'>Update</button>
               </div>
             </div>
           </div>
@@ -127,7 +126,7 @@ class FieldReport extends React.Component {
           <div className='inner'>
             <div className='prose fold prose--responsive'>
               <div className='inner'>
-
+                <p className='inpage__note'>Last Updated by User1293 on 8/11/2017</p>
                 <DisplaySection title='Numeric details'>
                   <dl className='dl-horizontal numeric-list'>
                     <dt>Injured (RC): </dt>
