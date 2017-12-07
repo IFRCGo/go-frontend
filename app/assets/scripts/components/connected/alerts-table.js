@@ -2,7 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import { DateTime } from 'luxon';
 
@@ -10,8 +10,16 @@ import { environment } from '../../config';
 import { getSurgeAlerts } from '../../actions';
 
 import Fold from '../fold';
-import Dropdown from '../dropdown';
 import { showGlobalLoading, hideGlobalLoading } from '../global-loading';
+
+const alertTypes = {
+  0: 'FACT',
+  1: 'SIMS',
+  2: 'ERU',
+  3: 'DHEOps',
+  4: 'HEOps',
+  5: 'SURGE'
+};
 
 class AlertsTable extends React.Component {
   constructor (props) {
@@ -53,9 +61,9 @@ class AlertsTable extends React.Component {
       <React.Fragment key={rowData.id}>
         <tr>
           <td data-heading='Date'>{date.toISODate()}</td>
-          <td data-heading='Operation'>{rowData.operation}</td>
+          <td data-heading='Emergency'><Link to='' title='View Emergency page'>{rowData.operation}</Link></td>
           <td data-heading='Alert Message'>{rowData.message}</td>
-          <td data-heading='Type'>{rowData.atype}</td>
+          <td data-heading='Type'>{alertTypes[rowData.atype]}</td>
         </tr>
 
         {!isLast && (
@@ -82,7 +90,7 @@ class AlertsTable extends React.Component {
           <thead>
             <tr>
               <th>Date</th>
-              <th>Operation</th>
+              <th>Emergency</th>
               <th>Alert Message</th>
               <th>Type</th>
             </tr>
@@ -133,4 +141,4 @@ const dispatcher = (dispatch) => ({
   _getSurgeAlerts: (...args) => dispatch(getSurgeAlerts(...args))
 });
 
-export default withRouter(connect(selector, dispatcher)(AlertsTable));
+export default connect(selector, dispatcher)(AlertsTable);
