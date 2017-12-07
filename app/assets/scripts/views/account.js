@@ -23,6 +23,8 @@ import { FormCheckboxGroup } from '../components/form-elements/';
 
 import App from './app';
 
+const Fragment = React.Fragment;
+
 // Exclude the first item since it's a dropdown placeholder
 const disasterTypes = disasterType.slice(1);
 
@@ -214,10 +216,12 @@ class Account extends React.Component {
       'profile.position',
       'profile.phone_number'
     ];
-    return attributes.map(a => [
-      <dt key={`dt-${a}`}>{apiPropertyDisplay(a)}</dt>,
-      <dd key={`dl-${a}`}>{apiPropertyValue(a, profile.data)}</dd>
-    ]);
+    return attributes.map(a => (
+      <Fragment key={a}>
+        <dt>{apiPropertyDisplay(a)}</dt>
+        <dd>{apiPropertyValue(a, profile.data)}</dd>
+      </Fragment>
+    ));
   }
 
   renderSubscriptionForm () {
