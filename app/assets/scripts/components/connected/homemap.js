@@ -6,6 +6,9 @@ import mapboxgl from 'mapbox-gl';
 
 import { environment, mbtoken } from '../../config';
 import { getEmergenciesList } from '../../actions';
+import {
+  FormRadioGroup
+} from '../form-elements/';
 
 import { showGlobalLoading, hideGlobalLoading } from '../global-loading';
 
@@ -71,7 +74,8 @@ class Homemap extends React.Component {
 if (environment !== 'production') {
   Homemap.propTypes = {
     _getEmergenciesList: T.func,
-    emergencies: T.object
+    emergencies: T.object,
+    appealsList: T.object
   };
 }
 
@@ -79,7 +83,8 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state) => ({
-  emergencies: state.overallStats.emergencies
+  emergencies: state.overallStats.emergencies,
+  appealsList: state.overallStats.appealsList
 });
 
 const dispatcher = (dispatch) => ({
@@ -139,6 +144,14 @@ if (environment !== 'production') {
 // ///////////////
 
 class Map extends React.Component {
+  constructor (props) {
+    super(props);
+
+    this.state = {
+      scaleBy: 'amount'
+    };
+  }
+
   componentDidMount () {
     this.setupMap();
   }
@@ -147,6 +160,10 @@ class Map extends React.Component {
     if (this.theMap) {
       this.theMap.remove();
     }
+  }
+
+  onFieldChange (field, e) {
+    this.setState({ [field]: e.target.value });
   }
 
   setupMap () {
@@ -223,8 +240,39 @@ class Map extends React.Component {
 
   render () {
     return (
-      <figure className='vis__media'>
-        <div className='vis__map' ref='map'/>
+      <figure className='map-vis'>
+        <div className='map-vis__holder' ref='map'/>
+        <figcaption className='map-vis__legend map-vis__legend--bottom-right legend'>
+          <dl className='legend__dl legend__dl--colors'>
+            <dt className='color color--red'>Red</dt>
+            <dd>Emergency Appeal</dd>
+            <dt className='color color--yellow'>Yellow</dt>
+            <dd>DREF</dd>
+            <dt className='color color--grey'>Grey</dt>
+            <dd>Movement Response</dd>
+          </dl>
+        </figcaption>
+        <figcaption className='map-vis__legend map-vis__legend--top-right legend'>
+          <form className='form'>
+            <FormRadioGroup
+              label='Scale points by'
+              name='map-scale'
+              classWrapper='map-scale-options'
+              options={[
+                {
+                  label: 'Appeal/DREF amount',
+                  value: 'amount'
+                },
+                {
+                  label: 'Target People',
+                  value: 'population'
+                }
+              ]}
+              inline={false}
+              selectedOption={this.state.scaleBy}
+              onChange={this.onFieldChange.bind(this, 'scaleBy')} />
+          </form>
+        </figcaption>
       </figure>
     );
   }

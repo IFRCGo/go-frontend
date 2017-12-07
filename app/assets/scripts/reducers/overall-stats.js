@@ -1,6 +1,7 @@
 'use strict';
 import { combineReducers } from 'redux';
 import _toNumber from 'lodash.tonumber';
+import _groupBy from 'lodash.groupby';
 
 const appealsListInitialState = {
   fetching: false,
@@ -61,12 +62,37 @@ function appealsList (state = appealsListInitialState, action) {
         return acc;
       }, struct);
 
+      // Features for the map.
+      const geoJSON = {
+        type: 'FeatureCollection',
+        features: objs.reduce((acc, o) => {
+          if (o.country) {
+            return acc.concat({
+              type: 'Feature',
+              properties: {
+                id: o.id,
+                name: o.event.name,
+                atype: o.atype,
+                numBeneficiaries: o.num_beneficiaries,
+                amountRequested: _toNumber(o.amount_requested)
+              },
+              geometry: {
+                type: 'Point',
+                coordinates: [0, 0]
+              }
+            });
+          }
+          return acc;
+        }, [])
+      };
+
       state = Object.assign({}, state, {
         fetching: false,
         fetched: true,
         receivedAt: action.receivedAt,
         data: {
           stats: struct,
+          geoJSON
         }
       });
       break;
@@ -78,7 +104,7 @@ const emergenciesInitialState = {
   fetching: false,
   fetched: false,
   receivedAt: null,
-  data: []
+  data: {}
 };
 
 function emergencies (state = emergenciesInitialState, action) {
@@ -94,11 +120,25 @@ function emergencies (state = emergenciesInitialState, action) {
       });
       break;
     case 'GET_EMERGENCIES_LIST_SUCCESS':
+      const objs = action.data;
+      // Group by type.
+      let emergenciesByType = _groupBy(objs, 'dtype.id');
+      // Convert to array.
+      emergenciesByType = Object.keys(emergenciesByType).map(key => {
+        return {
+          id: key,
+          name: emergenciesByType[key][0].dtype.name,
+          items: emergenciesByType[key]
+        };
+      }).sort((a, b) => a.name > b.name);
+
       state = Object.assign({}, state, {
         fetching: false,
         fetched: true,
         receivedAt: action.receivedAt,
-        data: action.data
+        data: {
+          byType: emergenciesByType
+        }
       });
       break;
   }
