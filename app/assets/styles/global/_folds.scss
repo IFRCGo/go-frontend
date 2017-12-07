@@ -30,6 +30,7 @@
 
 .fold__header {
   margin-bottom: $global-spacing;
+  @include column(12/12);
 
   > *:last-child {
     margin-bottom: 0;
@@ -40,10 +41,29 @@
   }
 }
 
+.fold__actions {
+  @include column(3/12);
+  button {
+    float: right;
+  }
+}
+
 .fold__title {
   @include heading(1.5rem, medium-up);
 }
 
+.fold__description {
+  color: rgba($base-color, 0.58);
+}
+
+.fold__headline {
+  @include column(8/12);
+}
+
+.fold__footer {
+  @include column(12/12);
+  margin-top: $global-spacing;
+}
 
 /* Modifiers
    ========================================================================== */
