@@ -127,6 +127,7 @@ class Account extends React.Component {
         showAlert('danger', <p><strong>Error:</strong> {nextProps.profile.updateError.error_message}</p>, true, 4500);
       } else {
         showAlert('success', <p>Subscriptions updated</p>, true, 4500);
+        this.setState({ isDirty: false });
       }
     }
   }
@@ -277,9 +278,8 @@ class Account extends React.Component {
             options={otherNotificationTypes}
             values={this.state.data.other}
             onChange={this.onFieldChange.bind(this, 'other')} />
-          <button type='submit' className={c('button', {
-            'button--secondary-raised-dark': this.state.isDirty,
-            'button--secondary-raised-light': !this.state.isDirty
+          <button type='submit' className={c('button', 'button--secondary-raised-dark', {
+            'disabled': !this.state.isDirty
           })} title='Save'>Save</button>
         </Fold>
       </form>
