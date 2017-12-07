@@ -74,7 +74,7 @@ export function fetchJSON (path, action, options, extraData) {
  * @param  {number} stopAfter Stops after x requests. DEV parameter. TO REMOVE.
  * @return {func}             Dispatch function.
  */
-export function fetchJSONRecursive (path, action, options, extraData, devStopAfter) {
+export function fetchJSONRecursive (path, action, options, extraData, devStopAfter = Infinity) {
   options = options || {};
   return function (dispatch) {
     dispatch({ type: inflight(action) });
