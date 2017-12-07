@@ -2,18 +2,18 @@
 import { combineReducers } from 'redux';
 import _toNumber from 'lodash.tonumber';
 
-const sumstatsInitialState = {
+const appealsListInitialState = {
   fetching: false,
   fetched: false,
   receivedAt: null,
   data: {}
 };
 
-function sumstats (state = sumstatsInitialState, action) {
+function appealsList (state = appealsListInitialState, action) {
   switch (action.type) {
-    case 'GET_SUMSTATS_INFLIGHT':
+    case 'GET_APPEALS_LIST_INFLIGHT':
       return Object.assign({}, state, { error: null, fetching: true, fetched: false });
-    case 'GET_SUMSTATS_FAILED':
+    case 'GET_APPEALS_LIST_FAILED':
       state = Object.assign({}, state, {
         fetching: false,
         fetched: true,
@@ -21,8 +21,9 @@ function sumstats (state = sumstatsInitialState, action) {
         error: action.error
       });
       break;
-    case 'GET_SUMSTATS_SUCCESS':
-      const objs = action.data.objects;
+    case 'GET_APPEALS_LIST_SUCCESS':
+      // Statistics.
+      const objs = action.data;
       const now = Date.now();
       let struct = {
         activeDrefs: 0,
@@ -64,7 +65,9 @@ function sumstats (state = sumstatsInitialState, action) {
         fetching: false,
         fetched: true,
         receivedAt: action.receivedAt,
-        data: struct
+        data: {
+          stats: struct,
+        }
       });
       break;
   }
@@ -104,6 +107,6 @@ function emergencies (state = emergenciesInitialState, action) {
 
 // Combined export.
 export default combineReducers({
-  sumstats,
+  appealsList,
   emergencies
 });

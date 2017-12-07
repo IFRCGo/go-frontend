@@ -37,19 +37,19 @@ export function getSurgeAlerts (page = 1, filters = {}) {
   return fetchJSON(`/api/v1/surge_alert/?${f}`, GET_SURGE_ALERTS, withToken());
 }
 
-export const GET_SUMSTATS = 'GET_SUMSTATS';
-export function getSumstats () {
+export const GET_APPEALS_LIST = 'GET_APPEALS_LIST';
+export function getAppealsList () {
   const f = buildAPIQS({
     end_date__gt: DateTime.local().toISODate(),
-    limit: 0
+    limit: 100
   });
-  return fetchJSON(`api/v1/appeal/?${f}`, GET_SUMSTATS, withToken());
+  return fetchJSONRecursive(`api/v1/appeal/?${f}`, GET_APPEALS_LIST, withToken(), 3);
 }
 
 export const GET_EMERGENCIES_LIST = 'GET_EMERGENCIES_LIST';
 export function getEmergenciesList () {
   const f = buildAPIQS({
-    limit: 1
+    limit: 10
   });
-  return fetchJSONRecursive(`api/v1/event/?${f}`, GET_EMERGENCIES_LIST, withToken());
+  return fetchJSONRecursive(`api/v1/event/?${f}`, GET_EMERGENCIES_LIST, withToken(), {}, 3);
 }
