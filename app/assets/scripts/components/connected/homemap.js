@@ -11,9 +11,8 @@ import { showGlobalLoading, hideGlobalLoading } from '../global-loading';
 
 class Homemap extends React.Component {
   componentDidMount () {
-    // Taking wayyyyy to long.
-    // showGlobalLoading();
-    // this.props._getEmergenciesList();
+    showGlobalLoading();
+    this.props._getEmergenciesList();
   }
 
   componentWillReceiveProps (nextProps) {
@@ -22,10 +21,29 @@ class Homemap extends React.Component {
     }
   }
 
+  renderEmergencies () {
+    const emerg = this.props.emergencies.data.byType;
+    const max = Math.max.apply(Math, emerg.map(o => o.items.length));
+
+    return (
+      <div className='emergencies'>
+        <h2>Emergencies by Type</h2>
+        <dl className='dl--horizontal'>
+          {emerg.map(o => (
+            <React.Fragment key={o.id}>
+              <dt>{o.name}</dt>
+              <dd><Progress value={o.items.length} max={max}><span>100</span></Progress></dd>
+            </React.Fragment>
+          ))}
+        </dl>
+      </div>
+    );
+  }
+
   render () {
     const {
-      data,
-      fetched
+      fetched,
+      error
     } = this.props.emergencies;
 
     if (!fetched) return null;
@@ -33,25 +51,17 @@ class Homemap extends React.Component {
     return (
       <div className='stats-map'>
         <div className='inner'>
-          <div className='emergencies'>
-            <h2>Emergencies by Type</h2>
-            <dl className='dl--horizontal'>
-              <dt>Hurricane</dt>
-              <dd><Progress value={100} max={100}><span>100</span></Progress></dd>
-              <dt>Flood</dt>
-              <dd><Progress value={80} max={100}><span>80</span></Progress></dd>
-              <dt>Earthquake</dt>
-              <dd><Progress value={60} max={100}><span>60</span></Progress></dd>
-              <dt>Famine</dt>
-              <dd><Progress value={60} max={100}><span>60</span></Progress></dd>
-              <dt>Drought</dt>
-              <dd><Progress value={40} max={100}><span>40</span></Progress></dd>
-            </dl>
-          </div>
-          <div className='map-container'>
-            <h2 className='visually-hidden'>Map</h2>
-            <MapErrorBoundary><Map /></MapErrorBoundary>
-          </div>
+          {!error ? (
+            <React.Fragment>
+              {this.renderEmergencies()}
+              <div className='map-container'>
+                <h2 className='visually-hidden'>Map</h2>
+                <MapErrorBoundary><Map /></MapErrorBoundary>
+              </div>
+            </React.Fragment>
+          ) : (
+            <p>Oh no! An error ocurred getting the data.</p>
+          )}
         </div>
       </div>
     );
