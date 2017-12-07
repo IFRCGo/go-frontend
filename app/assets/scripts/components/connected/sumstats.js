@@ -5,6 +5,7 @@ import { PropTypes as T } from 'prop-types';
 
 import { environment } from '../../config';
 import { getSumstats } from '../../actions';
+import { percent, shortenLargeNumber } from '../../utils/format';
 
 import { showGlobalLoading, hideGlobalLoading } from '../global-loading';
 
@@ -23,7 +24,8 @@ class Sumstats extends React.Component {
   render () {
     const {
       data,
-      fetched
+      fetched,
+      error
     } = this.props.sumstats;
 
     if (!fetched) return null;
@@ -31,28 +33,32 @@ class Sumstats extends React.Component {
     return (
       <div className='stats-overall'>
         <h1 className='visually-hidden'>Overall stats</h1>
-        <ul className='sumstats'>
-          <li className='sumstats__item'>
-            <span className='sumstats__value'>38</span>
-            <span className='sumstats__key'>Active DREF Operations</span>
-          </li>
-          <li className='sumstats__item'>
-            <span className='sumstats__value'>38</span>
-            <span className='sumstats__key'>Active Emergency Appeals</span>
-          </li>
-          <li className='sumstats__item'>
-            <span className='sumstats__value'>69%</span>
-            <span className='sumstats__key'>Emergency Appeals Funded</span>
-          </li>
-          <li className='sumstats__item'>
-            <span className='sumstats__value'>623.8M</span>
-            <span className='sumstats__key'>Budget for DREFs and Appeals</span>
-          </li>
-          <li className='sumstats__item'>
-            <span className='sumstats__value'>19.2M</span>
-            <span className='sumstats__key'>Targeted Population</span>
-          </li>
-        </ul>
+        {error ? (
+          <p>Oh no! An error ocurred getting the stats.</p>
+        ) : (
+          <ul className='sumstats'>
+            <li className='sumstats__item'>
+              <span className='sumstats__value'>{data.activeDrefs}</span>
+              <span className='sumstats__key'>Active DREF Operations</span>
+            </li>
+            <li className='sumstats__item'>
+              <span className='sumstats__value'>{data.activeAppeals}</span>
+              <span className='sumstats__key'>Active Emergency Appeals</span>
+            </li>
+            <li className='sumstats__item'>
+              <span className='sumstats__value'>{percent(data.fundedAppeals, data.totalAppeals, 1)}%</span>
+              <span className='sumstats__key'>Emergency Appeals Funded</span>
+            </li>
+            <li className='sumstats__item'>
+              <span className='sumstats__value'>{shortenLargeNumber(data.budget, 1)}</span>
+              <span className='sumstats__key'>Budget for DREFs and Appeals</span>
+            </li>
+            <li className='sumstats__item'>
+              <span className='sumstats__value'>{shortenLargeNumber(data.targetPop, 1)}</span>
+              <span className='sumstats__key'>Targeted Population</span>
+            </li>
+          </ul>
+        )}
       </div>
     );
   }

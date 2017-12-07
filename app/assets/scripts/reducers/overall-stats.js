@@ -1,5 +1,6 @@
 'use strict';
 import { combineReducers } from 'redux';
+import _toNumber from 'lodash.tonumber';
 
 const sumstatsInitialState = {
   fetching: false,
@@ -21,11 +22,49 @@ function sumstats (state = sumstatsInitialState, action) {
       });
       break;
     case 'GET_SUMSTATS_SUCCESS':
+      const objs = action.data.objects;
+      const now = Date.now();
+      let struct = {
+        activeDrefs: 0,
+        activeAppeals: 0,
+        totalAppeals: 0,
+        fundedAppeals: 0,
+        budget: 0,
+        targetPop: 0
+      };
+
+      struct = objs.reduce((acc, object) => {
+        const endTime = new Date(object.end_date).getTime();
+        const amountRequested = _toNumber(object.amount_requested);
+
+        acc.targetPop += object.num_beneficiaries || 0;
+        acc.budget += amountRequested;
+
+        // Drefs.
+        if (object.atype === 0) {
+          if (endTime > now) {
+            acc.activeDrefs++;
+          }
+
+        // Appeal.
+        } else if (object.atype === 1 || object.atype === 2) {
+          acc.totalAppeals++;
+          if (endTime > now) {
+            acc.activeAppeals++;
+          }
+          const amountFunded = _toNumber(object.amount_funded);
+          if (amountFunded >= amountRequested) {
+            acc.fundedAppeals++;
+          }
+        }
+        return acc;
+      }, struct);
+
       state = Object.assign({}, state, {
         fetching: false,
         fetched: true,
         receivedAt: action.receivedAt,
-        data: action.data
+        data: struct
       });
       break;
   }
