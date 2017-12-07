@@ -7,7 +7,6 @@ import _set from 'lodash.set';
 import _cloneDeep from 'lodash.clonedeep';
 import _get from 'lodash.get';
 import c from 'classnames';
-import createFragment from 'react-addons-create-fragment';
 
 import { environment } from '../config';
 import {
@@ -215,10 +214,10 @@ class Account extends React.Component {
       'profile.position',
       'profile.phone_number'
     ];
-    return attributes.map(a => createFragment({
-      [`dt-${a}`]: <dt>{apiPropertyDisplay(a)}</dt>,
-      [`dl-${a}`]: <dd>{apiPropertyValue(a, profile.data)}</dd>
-    }));
+    return attributes.map(a => [
+      <dt key={`dt-${a}`}>{apiPropertyDisplay(a)}</dt>,
+      <dd key={`dl-${a}`}>{apiPropertyValue(a, profile.data)}</dd>
+    ]);
   }
 
   renderSubscriptionForm () {
