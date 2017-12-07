@@ -13,16 +13,11 @@
 //   actionsOthers: undefined,
 
 //   // Step 4
-//   dref: undefined,
-//   amountDref: undefined,
-//   emergencyAppeal: undefined,
-//   amountEmergencyAppeal: undefined,
-//   rdrtrits: undefined,
-//   numPplRdrits: undefined,
-//   fact: undefined,
-//   numPplFact: undefined,
-//   ifrcStaff: undefined,
-//   numPplIfrcStaff: undefined,
+//   dref: { status: undefined, value: undefined }
+//   emergencyAppeal: { status: undefined, value: undefined }
+//   rdrtrits: { status: undefined, value: undefined }
+//   fact: { status: undefined, value: undefined }
+//   ifrcStaff: { status: undefined, value: undefined }
 //   eru: [{ type: undefined, status: undefined, units: undefined }],
 //
 // - [] Add missing values for selectable options (radios, checkboxes...)
@@ -114,11 +109,11 @@ const dataPathToDisplay = (path) => {
     // No validation for step 3.
 
     // Step 4.
-    amountDref: 'DREF Requested - Amount CHF',
-    amountEmergencyAppeal: 'Emergency Appeal - Amount CHF',
-    numPplRdrits: 'RDRT/RITS - Number of people',
-    numPplFact: 'FACT - Number of people',
-    numPplIfrcStaff: 'IFRC Staff Relocated - Number of people',
+    'dref.value': 'DREF Requested - Amount CHF',
+    'emergencyAppeal.value': 'Emergency Appeal - Amount CHF',
+    'rdrtrits.value': 'RDRT/RITS - Number of people',
+    'fact.value': 'FACT - Number of people',
+    'ifrcStaff.value': 'IFRC Staff Relocated - Number of people',
     'eru.units': 'ERU - Units',
 
     // Step 5.
@@ -158,7 +153,7 @@ const prepStateForValidation = (state) => {
     return isNaN(v) ? val : v;
   };
 
-  const convertProp = (prop) => (val) => val.map(o => { o[prop] = toNumIfNum(o[prop]); return o; });
+  const objPropToNum = (prop) => (val) => { val[prop] = toNumIfNum(val[prop]); return val; };
 
   const formatter = {
     // Step 1.
@@ -167,11 +162,11 @@ const prepStateForValidation = (state) => {
     event: (val) => val ? toNumIfNum(val.value) : undefined,
 
     // Step 2.
-    numInjured: convertProp('estimation'),
-    numDead: convertProp('estimation'),
-    numMissing: convertProp('estimation'),
-    numAffected: convertProp('estimation'),
-    numDisplaced: convertProp('estimation'),
+    numInjured: (val) => val.map(objPropToNum('estimation')),
+    numDead: (val) => val.map(objPropToNum('estimation')),
+    numMissing: (val) => val.map(objPropToNum('estimation')),
+    numAffected: (val) => val.map(objPropToNum('estimation')),
+    numDisplaced: (val) => val.map(objPropToNum('estimation')),
     numAssistedGov: toNumIfNum,
     numAssistedRedCross: toNumIfNum,
     numLocalStaff: toNumIfNum,
@@ -179,12 +174,12 @@ const prepStateForValidation = (state) => {
     numExpats: toNumIfNum,
 
     // Step 4.
-    amountDref: toNumIfNum,
-    amountEmergencyAppeal: toNumIfNum,
-    numPplRdrits: toNumIfNum,
-    numPplFact: toNumIfNum,
-    numPplIfrcStaff: toNumIfNum,
-    eru: convertProp('units')
+    dref: objPropToNum('value'),
+    emergencyAppeal: objPropToNum('value'),
+    rdrtrits: objPropToNum('value'),
+    fact: objPropToNum('value'),
+    ifrcStaff: objPropToNum('value'),
+    eru: (val) => val.map(objPropToNum('units'))
   };
 
   for (let prop in state) {
@@ -279,16 +274,11 @@ class FieldReportForm extends React.Component {
         },
 
         // Step 4
-        dref: undefined,
-        amountDref: undefined,
-        emergencyAppeal: undefined,
-        amountEmergencyAppeal: undefined,
-        rdrtrits: undefined,
-        numPplRdrits: undefined,
-        fact: undefined,
-        numPplFact: undefined,
-        ifrcStaff: undefined,
-        numPplIfrcStaff: undefined,
+        dref: { status: undefined, value: undefined },
+        emergencyAppeal: { status: undefined, value: undefined },
+        rdrtrits: { status: undefined, value: undefined },
+        fact: { status: undefined, value: undefined },
+        ifrcStaff: { status: undefined, value: undefined },
         eru: [{ type: undefined, status: undefined, units: undefined }],
 
         // Step 5
@@ -374,11 +364,7 @@ class FieldReportForm extends React.Component {
       ['numAssistedGov', 'gov_num_assisted'],
       ['numLocalStaff', 'num_localstaff'],
       ['numVolunteers', 'num_volunteers'],
-      ['numExpats', 'num_expats_delegates'],
-      ['dref', 'DREFRequested'],
-      ['amountDref', 'DREFRequestedAmount'],
-      ['emergencyAppeal', 'EmergencyAppeal'],
-      ['amountEmergencyAppeal', 'EmergencyAppealAmount']
+      ['numExpats', 'num_expats_delegates']
     ];
 
     directMapping.forEach(([src, dest]) => {
@@ -428,6 +414,22 @@ class FieldReportForm extends React.Component {
           return o.checked ? orgActions.concat({id: o.value}) : orgActions;
         }, [])
       };
+    });
+
+    // Planned Response Mapping
+    // In the payload the status and value may mean different things.
+    // The `value` for dref refers to Amount. The `value` for FACT refers to
+    // number of people. We need to convert from an object {status, value}
+    // to plain state props.
+    const planResponseMapping = [
+      // [state var, mapping status, mapping value]
+      ['dref', 'DREFRequested', 'DREFRequestedAmount'],
+      ['emergencyAppeal', 'EmergencyAppeal', 'EmergencyAppealAmount']
+    ];
+
+    planResponseMapping.forEach(([src, statusMap, valueMap]) => {
+      state[statusMap] = originalState[src].status;
+      state[valueMap] = originalState[src].value;
     });
 
     // Contacts.
@@ -870,153 +872,96 @@ class FieldReportForm extends React.Component {
 
     return (
       <Fold title='Planned Response'>
-        <div className='form__group'>
-          <label className='form__label'>Planned International Response</label>
-          <div className='form__description'>
-            <p>Indicate the status of the differents international tools: Was DREF requested? How much ? Has it been approved ? How many beneficiaries ? Has the DREF operation been issued?</p>
-            <p>Same for the emergency appeal</p>
-            <p>For RDRT/FACT/ERU, only indicate if used, planned/requested or not used.</p>
-          </div>
-
-          <FormRadioGroup
-            label='DREF Requested'
-            name='dref'
-            options={[
-              {
-                label: 'Planned',
-                value: 'planned'
-              },
-              {
-                label: 'Requested',
-                value: 'requested'
-              },
-              {
-                label: 'Allocated',
-                value: 'allocated'
-              }
-            ]}
-            classWrapper='form__group--asymmetric'
-            selectedOption={this.state.data.dref}
-            onChange={this.onFieldChange.bind(this, 'dref')} />
-
-          <FormInput
-            label='Amount CHF'
-            type='text'
-            name='amount-dref'
-            id='amount-dref'
-            value={this.state.data.amountDref}
-            onChange={this.onFieldChange.bind(this, 'amountDref')} >
-            <FormError
-              errors={this.state.errors}
-              property='amountDref'
-            />
-          </FormInput>
-
-          <FormRadioGroup
-            label='Emergency Appeal'
-            name='emergency-appeal'
-            options={[
-              {
-                label: 'Planned',
-                value: 'planned'
-              },
-              {
-                label: 'Requested',
-                value: 'requested'
-              },
-              {
-                label: 'Launched',
-                value: 'launched'
-              }
-            ]}
-            classWrapper='form__group--asymmetric'
-            selectedOption={this.state.data.emergencyAppeal}
-            onChange={this.onFieldChange.bind(this, 'emergencyAppeal')} />
-
-          <FormInput
-            label='Amount CHF'
-            type='text'
-            name='amount-emergency-appeal'
-            id='amount-emergency-appeal'
-            value={this.state.data.amountEmergencyAppeal}
-            onChange={this.onFieldChange.bind(this, 'amountEmergencyAppeal')} >
-            <FormError
-              errors={this.state.errors}
-              property='amountEmergencyAppeal'
-            />
-          </FormInput>
-
-          <FormRadioGroup
-            label='RDRT/RITS'
-            name='rdrt-rits'
-            options={optsPlanReqDep}
-            classWrapper='form__group--asymmetric'
-            selectedOption={this.state.data.rdrtrits}
-            onChange={this.onFieldChange.bind(this, 'rdrtrits')} />
-
-          <FormInput
-            label='Number of people'
-            type='text'
-            name='num-ppl-rdrt-rits'
-            id='num-ppl-rdrt-rits'
-            value={this.state.data.numPplRdrits}
-            onChange={this.onFieldChange.bind(this, 'numPplRdrits')} >
-            <FormError
-              errors={this.state.errors}
-              property='numPplRdrits'
-            />
-          </FormInput>
-
-          <FormRadioGroup
-            label='FACT'
-            name='fact'
-            options={optsPlanReqDep}
-            classWrapper='form__group--asymmetric'
-            selectedOption={this.state.data.fact}
-            onChange={this.onFieldChange.bind(this, 'fact')} />
-
-          <FormInput
-            label='Number of people'
-            type='text'
-            name='num-fact'
-            id='num-fact'
-            value={this.state.data.numPplFact}
-            onChange={this.onFieldChange.bind(this, 'numPplFact')} >
-            <FormError
-              errors={this.state.errors}
-              property='numPplFact'
-            />
-          </FormInput>
-
-          <FormRadioGroup
-            label='IFRC Staff Relocated'
-            name='ifrc-staff'
-            options={optsPlanReqDep}
-            classWrapper='form__group--asymmetric'
-            selectedOption={this.state.data.ifrcStaff}
-            onChange={this.onFieldChange.bind(this, 'ifrcStaff')} />
-
-          <FormInput
-            label='Number of people'
-            type='text'
-            name='num-ifrc-staff'
-            id='num-ifrc-staff'
-            value={this.state.data.numPplIfrcStaff}
-            onChange={this.onFieldChange.bind(this, 'numPplIfrcStaff')} >
-            <FormError
-              errors={this.state.errors}
-              property='numPplIfrcStaff'
-            />
-          </FormInput>
-
-          <Eru
-            label='ERU'
-            name='eru'
-            values={this.state.data.eru}
-            fieldKey='eru'
-            errors={this.state.errors}
-            onChange={this.onFieldChange.bind(this, 'eru')} />
+        <label className='form__label'>Planned International Response</label>
+        <div className='form__description'>
+          <p>Indicate the status of the differents international tools: Was DREF requested? How much ? Has it been approved ? How many beneficiaries ? Has the DREF operation been issued?</p>
+          <p>Same for the emergency appeal</p>
+          <p>For RDRT/FACT/ERU, only indicate if used, planned/requested or not used.</p>
         </div>
+
+        <PlanResponseRow
+          label='DREF Requested'
+          valueFieldLabel='Amount CHF'
+          name='dref'
+          options={[
+            {
+              label: 'Planned',
+              value: 'planned'
+            },
+            {
+              label: 'Requested',
+              value: 'requested'
+            },
+            {
+              label: 'Allocated',
+              value: 'allocated'
+            }
+          ]}
+          values={this.state.data.dref}
+          errors={this.state.errors}
+          fieldKey='dref'
+          onChange={this.onFieldChange.bind(this, 'dref')} />
+
+        <PlanResponseRow
+          label='Emergency Appeal'
+          valueFieldLabel='Amount CHF'
+          name='emergency-appeal'
+          options={[
+            {
+              label: 'Planned',
+              value: 'planned'
+            },
+            {
+              label: 'Requested',
+              value: 'requested'
+            },
+            {
+              label: 'Launched',
+              value: 'launched'
+            }
+          ]}
+          values={this.state.data.emergencyAppeal}
+          errors={this.state.errors}
+          fieldKey='emergencyAppeal'
+          onChange={this.onFieldChange.bind(this, 'emergencyAppeal')} />
+
+        <PlanResponseRow
+          label='RDRT/RITS'
+          valueFieldLabel='Number of people'
+          name='rdrt-rits'
+          options={optsPlanReqDep}
+          values={this.state.data.rdrtrits}
+          errors={this.state.errors}
+          fieldKey='rdrtrits'
+          onChange={this.onFieldChange.bind(this, 'rdrtrits')} />
+
+        <PlanResponseRow
+          label='FACT'
+          valueFieldLabel='Number of people'
+          name='fact'
+          options={optsPlanReqDep}
+          values={this.state.data.fact}
+          errors={this.state.errors}
+          fieldKey='fact'
+          onChange={this.onFieldChange.bind(this, 'fact')} />
+
+        <PlanResponseRow
+          label='IFRC Staff Relocated'
+          valueFieldLabel='Number of people'
+          name='ifrc-staff'
+          options={optsPlanReqDep}
+          values={this.state.data.ifrcStaff}
+          errors={this.state.errors}
+          fieldKey='ifrcStaff'
+          onChange={this.onFieldChange.bind(this, 'ifrcStaff')} />
+
+        <Eru
+          label='ERU'
+          name='eru'
+          values={this.state.data.eru}
+          fieldKey='eru'
+          errors={this.state.errors}
+          onChange={this.onFieldChange.bind(this, 'eru')} />
       </Fold>
     );
   }
@@ -1083,7 +1028,7 @@ class FieldReportForm extends React.Component {
     }
 
     return (
-      <div className='form__errrors'>
+      <div className='validation-result'>
         <h3>Page {this.state.step} of 5 incomplete.</h3>
         <p>To continue please fix:</p>
         <ul>
@@ -1101,19 +1046,18 @@ class FieldReportForm extends React.Component {
             <div className='inner'>
               <div className='inpage__headline'>
                 <h1 className='inpage__title'>Create Field Report</h1>
+                {this.renderStepper()}
               </div>
             </div>
           </header>
           <div className='inpage__body'>
             <div className='inner'>
-              <form className='form' onSubmit={this.onSubmit}>
-                {this.renderStepper()}
+              <form className='form form--field-report' onSubmit={this.onSubmit}>
                 {this[`renderStep${this.state.step}`]()}
-
                 {this.renderErrorSummary()}
 
                 <div className='form__actions'>
-                  <button type='button' className={c('button button--base-plain', {disabled: this.state.step <= 1})} title='Go back to previous step' onClick={this.onStepBackClick}>Back</button>
+                  <button type='button' className={c('button button--secondary-plain', {disabled: this.state.step <= 1})} title='Go back to previous step' onClick={this.onStepBackClick}>Back</button>
                   <button type='submit' className='button button--secondary-raised-dark' title='Save and continue'>Save and continue</button>
                 </div>
               </form>
@@ -1304,11 +1248,11 @@ class SourceEstimation extends React.Component {
                 selectedOption={o.source}
                 onChange={this.onSourceChange.bind(this, idx)} />
 
-              <div className='estimation__item'>
+              <div className='estimation__item estimation__item--actions'>
                 {values.length > 1 ? (
                   <button type='button' className='button--remove-source' title='Delete Source' onClick={this.onRemoveSource.bind(this, idx)}>Delete source</button>
                 ) : (
-                  <button type='button' className='button--add-source' title='Add new source' onClick={this.onAddSource.bind(this)}>Add another source</button>
+                  <button type='button' className='button--add-item button--achromic-glass' title='Add new source' onClick={this.onAddSource.bind(this)}>Add another source</button>
                 )}
               </div>
             </div>
@@ -1481,6 +1425,78 @@ if (environment !== 'production') {
   };
 }
 
+class PlanResponseRow extends React.Component {
+  onFieldChange (field, e) {
+    const { values, onChange } = this.props;
+    const newVals = Object.assign({}, values, {[field]: e.target.value});
+    onChange(newVals);
+  }
+
+  render () {
+    const {
+      label,
+      name,
+      options,
+      valueFieldLabel,
+      values,
+      errors,
+      fieldKey
+    } = this.props;
+
+    return (
+      <div className='form__group plan-response-row'>
+        <div className='form__inner-header'>
+          <div className='form__inner-headline'>
+            <label className='form__label'>{label}</label>
+          </div>
+        </div>
+        <div className='form__inner-body'>
+          <FormRadioGroup
+            name={`${name}[status]`}
+            id={`${name}-status`}
+            classLabel='visually-hidden'
+            classWrapper='resp-status'
+            label='Status'
+            options={options}
+            selectedOption={values.status}
+            onChange={this.onFieldChange.bind(this, 'status')} />
+
+          <FormInput
+            label={valueFieldLabel}
+            type='text'
+            name={`${name}[value]`}
+            id={`${name}-value`}
+            classLabel='form__label--nested'
+            classWrapper='resp-value'
+            value={values.value}
+            onChange={this.onFieldChange.bind(this, 'value')} >
+            <FormError
+              errors={errors}
+              property={`${fieldKey}.value`}
+            />
+          </FormInput>
+        </div>
+      </div>
+    );
+  }
+}
+
+if (environment !== 'production') {
+  PlanResponseRow.propTypes = {
+    label: T.string,
+    name: T.string,
+    values: T.shape({
+      status: T.string,
+      value: T.string
+    }),
+    options: T.array,
+    valueFieldLabel: T.string,
+    fieldKey: T.string,
+    errors: T.array,
+    onChange: T.func
+  };
+}
+
 class Eru extends React.Component {
   onFieldChange (field, e) {
     const { values, onChange } = this.props;
@@ -1524,7 +1540,7 @@ class Eru extends React.Component {
             <label className='form__label'>{label}</label>
           </div>
           <div className='form__inner-actions'>
-            <button type='button' className={c('button--add-source', {disabled: !this.canAdd()})} title='Add new ERU' onClick={this.onAddSource.bind(this)}>Add another ERU</button>
+            <button type='button' className={c('button--add-item button--achromic-glass', {disabled: !this.canAdd()})} title='Add new ERU' onClick={this.onAddSource.bind(this)}>Add another ERU</button>
           </div>
         </div>
         <div className='form__inner-body'>

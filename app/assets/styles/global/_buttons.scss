@@ -76,7 +76,7 @@
 /* Base Raised Light */
 
 .button--base-raised-light {
-  @include button-variation($base-color, "raised", "light");
+  @include button-variation(rgba($base-color, 0.48), "raised", "light");
 }
 
 /* Base Raised Dark */
@@ -96,6 +96,11 @@
 .button--primary-raised-light {
   @include button-variation($primary-color, "raised", "light");
 }
+
+.button--base-raised-light {
+  @include button-variation($base-color, "raised", "light");
+}
+
 
 /* Primary Raised Dark */
 
@@ -119,6 +124,10 @@
 
 .button--primary-plain {
   @include button-variation($primary-color, "plain", null);
+}
+
+.button--secondary-plain {
+  @include button-variation($secondary-color, "plain", null);
 }
 
 /* Danger Raised Light */
@@ -148,9 +157,8 @@
 /* Achromic Glass (white ghost-like) */
 
 .button--achromic-glass {
-  @include button-variation(#fff, "glass", null);
+  @include button-variation($secondary-color, "glass", null);
 }
-
 
 /* Button size modifiers
    ========================================================================== */
@@ -161,8 +169,8 @@
 .button-group--small .button {
   line-height: 1.25rem;
   font-size: 0.875rem;
-  padding: 0.125rem 0.5rem;
-  min-width: 1.5rem;
+  padding: 0.25rem 1rem;
+  min-width: 2rem;
 }
 
 /* Medium (32px)
@@ -173,8 +181,8 @@
 .button-group--medium .button {
   line-height: 1.5rem;
   font-size: 1rem;
-  padding: 0.25rem 1rem;
-  min-width: 2rem;
+  padding: 0.5rem 1.5rem;
+  min-width: 2.5rem;
 }
 
 /* Large (40px) */
@@ -183,8 +191,8 @@
 .button-group--large .button {
   line-height: 1.5rem;
   font-size: 1rem;
-  padding: 0.5rem 1.5rem;
-  min-width: 2.5rem;
+  padding: 0.5rem 2rem;
+  min-width: 3rem;
 }
 
 /* XLarge (48px) */
@@ -209,10 +217,10 @@
   > *:not([class^="collecticon-"]):not([class*=" collecticon-"]) {
     @extend .visually-hidden;
   }
-  :not(.button-group) & {
+/*  :not(.button-group) & {
     padding-left: 0;
     padding-right: 0;
-  }
+  }*/
 }
 
 

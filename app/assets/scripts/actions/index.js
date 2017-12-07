@@ -20,7 +20,7 @@ export function logoutUser () {
 
 export const GET_FIELD_REPORT = 'GET_FIELD_REPORT';
 export function getFieldReportById (id) {
-  return fetchJSON(`api/v1/field_report/${id}`, GET_FIELD_REPORT, withToken());
+  return fetchJSON(`api/v1/field_report/${id}/`, GET_FIELD_REPORT, withToken(), { id });
 }
 
 export const CREATE_FIELD_REPORT = 'CREATE_FIELD_REPORT';

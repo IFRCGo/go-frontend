@@ -18,7 +18,7 @@ class Header extends React.PureComponent {
             </h1>
           </div>
           <nav className='page__meta-nav' role='navigation'>
-            <Link to='/reports/new' className='button button--primary-raised-dark' title='Create Field Report'><span>Create Field Report</span></Link>
+            <Link to='/reports/new' className='button button--small button--primary-raised-dark' title='Create Field Report'><span>Create Field Report</span></Link>
             <UserMenu />
           </nav>
         </div>
@@ -27,7 +27,6 @@ class Header extends React.PureComponent {
             <ul className='nav-global-menu'>
               <li><Link to='/operations' title='Visit operations page'><span>Operations</span></Link></li>
               <li><Link to='/deployments' title='Visit deployments page'><span>Deployments</span></Link></li>
-              <li><Link to='/field-reports' title='Visit field reports page'><span>Field Reports</span></Link></li>
               <li><Link to='/about' title='Visit about page'><span>About</span></Link></li>
             </ul>
             <div className='nav-global-search'>

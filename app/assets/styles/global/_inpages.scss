@@ -34,7 +34,7 @@
     }
 
     @include media(medium-up) {
-      @include column(8/12);
+      @include column(12/12);
     }
   }
 
@@ -46,8 +46,8 @@
     position: relative;
     @extend .heading-alt;
     color: rgba($base-font-color, 0.64);
-    font-size: 0.875rem;
-    line-height: 1rem;
+    font-size: 1.25rem;
+    line-height: 1.5rem;
     margin: ($global-spacing / 4) 0;
 
     &:first-child {
@@ -68,6 +68,11 @@
     }
   }
 
+  &__note {
+    font-size: 0.875rem;
+    color: rgba($base-font-color, 0.44);
+  }
+
   &__introduction {
     @include column(12/12);
     color: rgba($base-font-color, 0.64);
@@ -79,21 +84,21 @@
     }
 
     @include media(small-up) {
-      @include column(10/12);
+      @include column(10/12)
       @include move(1/12);
     }
 
     @include media(medium-up) {
       @include column(8/12);
       @include move(2/12);
-      font-size: 1.25rem;
-      line-height: 2rem;
+      font-size: 1.5rem;
+      line-height: 2.25rem;
     }
   }
 
   &__body {
     > .inner {
-      @extend .row, .row--centered;
+      @extend .row-fold, .row--centered;
     }
 
     > *:last-child {

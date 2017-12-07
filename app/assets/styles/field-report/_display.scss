@@ -1,0 +1,51 @@
+.display-section {
+	@include column(10/12);
+  margin-top: $global-spacing * 2;
+  &:first-child {
+    margin-top: 0;
+  };
+  .form__group {
+    margin-bottom: $global-spacing * 2;
+  }
+  strong {
+    font-weight: 400;
+  }
+}
+
+.actions-list {
+  list-style: none;
+  li {
+    font-weight: 400;
+  }
+}
+
+.numeric-list {
+  @include column(4/12);
+  dd {
+    font-size: 2rem;
+    line-height: 2.5rem;
+    margin-bottom: $global-spacing;
+  }
+}
+
+.page--field-report {
+  .inpage__title {
+    @include column(12/12);
+    margin-bottom: 0;
+  }
+  .inpage__introduction {
+    font-family: $base-font-family;
+  }
+  .inpage__headline {
+    margin-top: $global-spacing * 2;
+  }
+  .inpage__headline-content {
+     @include column(9/12);
+  }
+  .inpage__headline-actions {
+    @include column(3/12);
+    button {
+      float: right;
+    }
+  }
+}
