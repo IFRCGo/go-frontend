@@ -71,9 +71,10 @@ export function fetchJSON (path, action, options, extraData) {
  * @param  {string} action    Base action to dispatch.
  * @param  {Object} options   Options for the request.
  * @param  {Object} extraData Extra data to pass to the action.
+ * @param  {number} stopAfter Stops after x requests. DEV parameter. TO REMOVE.
  * @return {func}             Dispatch function.
  */
-export function fetchJSONRecursive (path, action, options, extraData) {
+export function fetchJSONRecursive (path, action, options, extraData, devStopAfter) {
   options = options || {};
   return function (dispatch) {
     dispatch({ type: inflight(action) });
@@ -82,7 +83,8 @@ export function fetchJSONRecursive (path, action, options, extraData) {
     const fetcher = (path) => {
       return request(url.resolve(api, path), options)
         .then(res => {
-          if (res.meta.next) {
+          devStopAfter--;
+          if (res.meta.next && devStopAfter > 0) {
             return fetcher(res.meta.next)
               .then(items => res.objects.concat(items));
           }
