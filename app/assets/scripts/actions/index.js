@@ -1,6 +1,7 @@
 'use strict';
-import { fetchJSON, postJSON, withToken } from '../utils/network';
+import { fetchJSON, fetchJSONRecursive, postJSON, withToken } from '../utils/network';
 import { stringify as buildAPIQS } from 'qs';
+import { DateTime } from 'luxon';
 
 export const TOKEN = 'TOKEN';
 export function getAuthToken (username, password) {
@@ -31,7 +32,24 @@ export const GET_SURGE_ALERTS = 'GET_SURGE_ALERTS';
 export function getSurgeAlerts (page = 1, filters = {}) {
   filters.limit = filters.limit || 10;
   filters.offset = filters.limit * (page - 1);
-  let f = buildAPIQS(filters);
+  const f = buildAPIQS(filters);
 
   return fetchJSON(`/api/v1/surge_alert/?${f}`, GET_SURGE_ALERTS, withToken());
+}
+
+export const GET_SUMSTATS = 'GET_SUMSTATS';
+export function getSumstats () {
+  const f = buildAPIQS({
+    end_date__gt: DateTime.local().toISODate(),
+    limit: 0
+  });
+  return fetchJSON(`api/v1/appeal/?${f}`, GET_SUMSTATS, withToken());
+}
+
+export const GET_EMERGENCIES_LIST = 'GET_EMERGENCIES_LIST';
+export function getEmergenciesList () {
+  const f = buildAPIQS({
+    limit: 1
+  });
+  return fetchJSONRecursive(`api/v1/event/?${f}`, GET_EMERGENCIES_LIST, withToken());
 }

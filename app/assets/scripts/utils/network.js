@@ -43,6 +43,33 @@ export function postJSON (path, action, payload, options = {}) {
   return makeRequest(path, action, options);
 }
 
+export function fetchJSONRecursive (path, action, options) {
+  options = options || {};
+  return function (dispatch) {
+    dispatch({ type: inflight(action) });
+
+    // Recursively fetch all items.
+    const fetcher = (path) => {
+      return request(url.resolve(api, path), options)
+        .then(res => {
+          if (res.meta.next) {
+            return fetcher(res.meta.next)
+              .then(items => res.objects.concat(items));
+          }
+          return res.objects;
+        });
+    };
+
+    fetcher(path)
+      .then(items => {
+        dispatch({ type: success(action), data: items, receivedAt: Date.now() });
+      })
+      .catch(error => {
+        dispatch({ type: failed(action), error });
+      });
+  };
+}
+
 export function makeRequest (path, action, options) {
   options = options || {};
   return function (dispatch) {
