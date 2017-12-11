@@ -79,10 +79,27 @@ class AlertsTable extends React.Component {
     const {
       data,
       fetched,
-      receivedAt
+      receivedAt,
+      error
     } = this.props.surgeAlerts;
 
     if (!receivedAt && !fetched) return null;
+
+    if (error) {
+      return (
+        <Fold title='Latest Alerts'>
+          <p>Oh no! An error ocurred getting the stats.</p>
+        </Fold>
+      );
+    }
+
+    if (!data.objects.length) {
+      return (
+        <Fold title='Latest Alerts'>
+          <p>There are no results to show.</p>
+        </Fold>
+      );
+    }
 
     return (
       <Fold title='Latest Alerts'>
