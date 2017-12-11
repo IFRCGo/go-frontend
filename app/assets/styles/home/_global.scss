@@ -401,3 +401,13 @@
     }
   }
 }
+
+.chart {
+  figcaption {
+    margin-bottom: $global-spacing * 2;
+  }
+
+  &__container {
+    height: 15rem;
+  }
+}

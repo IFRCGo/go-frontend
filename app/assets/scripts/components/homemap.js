@@ -1,24 +1,14 @@
 'use strict';
 import React from 'react';
-import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import mapboxgl from 'mapbox-gl';
 
-import { environment, mbtoken } from '../../config';
-import { getEmergenciesList } from '../../actions';
+import { environment, mbtoken } from '../config';
 import {
   FormRadioGroup
-} from '../form-elements/';
+} from './form-elements/';
 
-import { showGlobalLoading, hideGlobalLoading } from '../global-loading';
-
-class Homemap extends React.Component {
-  componentDidMount () {
-  }
-
-  componentWillReceiveProps (nextProps) {
-  }
-
+export default class Homemap extends React.Component {
   renderEmergencies () {
     const emerg = this.props.appealsList.data.emergenciesByType;
     const max = Math.max.apply(Math, emerg.map(o => o.items.length));
@@ -41,7 +31,9 @@ class Homemap extends React.Component {
   render () {
     const {
       fetched,
-      error
+      receivedAt,
+      error,
+      data
     } = this.props.appealsList;
 
     if (!fetched) return null;
@@ -54,7 +46,11 @@ class Homemap extends React.Component {
               {this.renderEmergencies()}
               <div className='map-container'>
                 <h2 className='visually-hidden'>Map</h2>
-                <MapErrorBoundary><Map /></MapErrorBoundary>
+                <MapErrorBoundary>
+                  <Map
+                    geoJSON={data.geoJSON}
+                    receivedAt={receivedAt} />
+                </MapErrorBoundary>
               </div>
             </React.Fragment>
           ) : (
@@ -71,18 +67,6 @@ if (environment !== 'production') {
     appealsList: T.object
   };
 }
-
-// /////////////////////////////////////////////////////////////////// //
-// Connect functions
-
-const selector = (state) => ({
-  appealsList: state.overallStats.appealsList
-});
-
-const dispatcher = (dispatch) => ({
-});
-
-export default connect(selector, dispatcher)(Homemap);
 
 const Progress = ({max, value, children}) => {
   return (
@@ -147,6 +131,21 @@ class Map extends React.Component {
     this.setupMap();
   }
 
+  componentDidUpdate (prevProps, prevState) {
+    if (this.props.receivedAt !== prevProps.receivedAt) {
+      let source = this.theMap.getSource('appeals');
+      if (source) {
+        source.setData(this.props.geoJSON);
+      } else {
+        this.setupData();
+      }
+    }
+
+    if (this.state.scaleBy !== prevState.scaleBy) {
+      this.theMap.setPaintProperty('appeals', 'circle-radius', this.getCircleRadiusPaintProp());
+    }
+  }
+
   componentWillUnmount () {
     if (this.theMap) {
       this.theMap.remove();
@@ -157,7 +156,22 @@ class Map extends React.Component {
     this.setState({ [field]: e.target.value });
   }
 
+  getCircleRadiusPaintProp () {
+    const scaleProp = this.state.scaleBy === 'amount' ? 'amountRequested' : 'numBeneficiaries';
+    const maxScaleValue = Math.max.apply(Math, this.props.geoJSON.features.map(o => o.properties[scaleProp]));
+
+    return {
+      property: scaleProp,
+      stops: [
+        [0, 3],
+        [maxScaleValue, 10]
+      ]
+    };
+  }
+
   setupMap () {
+    this.mapLoaded = false;
+
     mapboxgl.accessToken = mbtoken;
 
     const mapStyle = {
@@ -227,6 +241,42 @@ class Map extends React.Component {
       ],
       attributionControl: false
     });
+
+    this.theMap.on('style.load', () => {
+      this.mapLoaded = true;
+      this.setupData();
+    });
+  }
+
+  setupData () {
+    if (!this.mapLoaded) {
+      return;
+    }
+
+    if (!this.theMap.getSource('appeals')) {
+      this.theMap.addSource('appeals', {
+        type: 'geojson',
+        data: this.props.geoJSON
+      });
+
+      this.theMap.addLayer({
+        'id': 'appeals',
+        'type': 'circle',
+        'source': 'appeals',
+        'paint': {
+          'circle-color': {
+            property: 'atype',
+            type: 'categorical',
+            stops: [
+              [0, '#F39C12'],
+              [1, '#C22A26'],
+              [2, '#CCCCCC']
+            ]
+          },
+          'circle-radius': this.getCircleRadiusPaintProp()
+        }
+      });
+    }
   }
 
   render () {
@@ -267,4 +317,11 @@ class Map extends React.Component {
       </figure>
     );
   }
+}
+
+if (environment !== 'production') {
+  Map.propTypes = {
+    geoJSON: T.object,
+    receivedAt: T.number
+  };
 }

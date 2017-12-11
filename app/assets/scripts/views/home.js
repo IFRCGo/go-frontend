@@ -3,9 +3,7 @@ import React from 'react';
 
 import App from './app';
 import AlertsTable from '../components/connected/alerts-table';
-import Sumstats from '../components/connected/sumstats';
-import Homemap from '../components/connected/homemap';
-import HomeCharts from '../components/connected/homecharts';
+import PresentationDash from '../components/connected/presentation-dash';
 
 export default class Home extends React.Component {
   render () {
@@ -21,18 +19,7 @@ export default class Home extends React.Component {
             </div>
           </header>
           <div className='inpage__body'>
-            <section className='fold--stats'>
-              <h1 className='visually-hidden'>Statistics</h1>
-              <div className='inner'>
-                <Sumstats />
-              </div>
-              <Homemap />
-              <div className='stats-chart'>
-                <div className='inner'>
-                  <HomeCharts />
-                </div>
-              </div>
-            </section>
+            <PresentationDash />
             <div className='inner'>
               <AlertsTable />
             </div>

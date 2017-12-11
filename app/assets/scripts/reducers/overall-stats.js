@@ -3,6 +3,8 @@ import { combineReducers } from 'redux';
 import _toNumber from 'lodash.tonumber';
 import _groupBy from 'lodash.groupby';
 
+import { getCentroid } from '../utils/country-centroids';
+
 const appealsListInitialState = {
   fetching: false,
   fetched: false,
@@ -89,7 +91,7 @@ function appealsList (state = appealsListInitialState, action) {
               },
               geometry: {
                 type: 'Point',
-                coordinates: [0, 0]
+                coordinates: getCentroid(o.country.iso)
               }
             });
           }
@@ -146,7 +148,7 @@ function aggregate (state = aggregateInitialState, action) {
           fetching: false,
           fetched: true,
           receivedAt: action.receivedAt,
-          data: action.data.aggregate
+          data: action.data.aggregate.reverse()
         }
       });
       break;

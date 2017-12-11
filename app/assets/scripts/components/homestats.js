@@ -1,26 +1,11 @@
 'use strict';
 import React from 'react';
-import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 
-import { environment } from '../../config';
-import { getAppealsList } from '../../actions';
-import { percent, shortenLargeNumber } from '../../utils/format';
+import { environment } from '../config';
+import { percent, shortenLargeNumber } from '../utils/format';
 
-import { showGlobalLoading, hideGlobalLoading } from '../global-loading';
-
-class Sumstats extends React.Component {
-  componentDidMount () {
-    showGlobalLoading();
-    this.props._getAppealsList();
-  }
-
-  componentWillReceiveProps (nextProps) {
-    if (this.props.appealsList.fetching && !nextProps.appealsList.fetching) {
-      hideGlobalLoading();
-    }
-  }
-
+export default class Homestats extends React.Component {
   render () {
     const {
       data: { stats },
@@ -65,21 +50,7 @@ class Sumstats extends React.Component {
 }
 
 if (environment !== 'production') {
-  Sumstats.propTypes = {
-    _getAppealsList: T.func,
+  Homestats.propTypes = {
     appealsList: T.object
   };
 }
-
-// /////////////////////////////////////////////////////////////////// //
-// Connect functions
-
-const selector = (state) => ({
-  appealsList: state.overallStats.appealsList
-});
-
-const dispatcher = (dispatch) => ({
-  _getAppealsList: (...args) => dispatch(getAppealsList(...args))
-});
-
-export default connect(selector, dispatcher)(Sumstats);
