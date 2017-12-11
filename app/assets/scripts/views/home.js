@@ -5,6 +5,7 @@ import App from './app';
 import AlertsTable from '../components/connected/alerts-table';
 import Sumstats from '../components/connected/sumstats';
 import Homemap from '../components/connected/homemap';
+import HomeCharts from '../components/connected/homecharts';
 
 export default class Home extends React.Component {
   render () {
@@ -28,14 +29,7 @@ export default class Home extends React.Component {
               <Homemap />
               <div className='stats-chart'>
                 <div className='inner'>
-                  <figure className='chart'>
-                    <figcaption>DREFS and Appeals Over the Last Year</figcaption>
-                    <div className='chart__container'>chart</div>
-                  </figure>
-                  <figure className='chart'>
-                    <figcaption>DREFS and Appeals by Year</figcaption>
-                    <div className='chart__container'>chart</div>
-                  </figure>
+                  <HomeCharts />
                 </div>
               </div>
             </section>

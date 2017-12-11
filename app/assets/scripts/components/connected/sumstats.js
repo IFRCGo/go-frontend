@@ -11,10 +11,8 @@ import { showGlobalLoading, hideGlobalLoading } from '../global-loading';
 
 class Sumstats extends React.Component {
   componentDidMount () {
-    if (!this.props.appealsList.fetched && !this.props.appealsList.fetching) {
-      showGlobalLoading();
-      this.props._getAppealsList();
-    }
+    showGlobalLoading();
+    this.props._getAppealsList();
   }
 
   componentWillReceiveProps (nextProps) {

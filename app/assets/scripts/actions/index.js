@@ -46,10 +46,13 @@ export function getAppealsList () {
   return fetchJSONRecursive(`api/v1/appeal/?${f}`, GET_APPEALS_LIST, withToken(), 3);
 }
 
-export const GET_EMERGENCIES_LIST = 'GET_EMERGENCIES_LIST';
-export function getEmergenciesList () {
+export const GET_AGGREGATE_APPEALS = 'GET_AGGREGATE_APPEALS';
+export function getAggregateAppeals (date, unit) {
   const f = buildAPIQS({
-    limit: 10
+    start_date: date,
+    model_type: 'appeal',
+    unit
   });
-  return fetchJSONRecursive(`api/v1/event/?${f}`, GET_EMERGENCIES_LIST, withToken(), {}, 3);
+
+  return fetchJSON(`api/v1/aggregate/?${f}`, GET_AGGREGATE_APPEALS, withToken(), {aggregationUnit: unit});
 }

@@ -14,18 +14,13 @@ import { showGlobalLoading, hideGlobalLoading } from '../global-loading';
 
 class Homemap extends React.Component {
   componentDidMount () {
-    showGlobalLoading();
-    this.props._getEmergenciesList();
   }
 
   componentWillReceiveProps (nextProps) {
-    if (this.props.emergencies.fetching && !nextProps.emergencies.fetching) {
-      hideGlobalLoading();
-    }
   }
 
   renderEmergencies () {
-    const emerg = this.props.emergencies.data.byType;
+    const emerg = this.props.appealsList.data.emergenciesByType;
     const max = Math.max.apply(Math, emerg.map(o => o.items.length));
 
     return (
@@ -47,7 +42,7 @@ class Homemap extends React.Component {
     const {
       fetched,
       error
-    } = this.props.emergencies;
+    } = this.props.appealsList;
 
     if (!fetched) return null;
 
@@ -73,8 +68,6 @@ class Homemap extends React.Component {
 
 if (environment !== 'production') {
   Homemap.propTypes = {
-    _getEmergenciesList: T.func,
-    emergencies: T.object,
     appealsList: T.object
   };
 }
@@ -83,12 +76,10 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state) => ({
-  emergencies: state.overallStats.emergencies,
   appealsList: state.overallStats.appealsList
 });
 
 const dispatcher = (dispatch) => ({
-  _getEmergenciesList: (...args) => dispatch(getEmergenciesList(...args))
 });
 
 export default connect(selector, dispatcher)(Homemap);

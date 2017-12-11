@@ -62,6 +62,17 @@ function appealsList (state = appealsListInitialState, action) {
         return acc;
       }, struct);
 
+      // Emergencies Types.
+      let emergenciesByType = _groupBy(objs, 'dtype.id');
+      // Convert to array.
+      emergenciesByType = Object.keys(emergenciesByType).map(key => {
+        return {
+          id: key,
+          name: emergenciesByType[key][0].dtype.name,
+          items: emergenciesByType[key]
+        };
+      }).sort((a, b) => a.name > b.name);
+
       // Features for the map.
       const geoJSON = {
         type: 'FeatureCollection',
@@ -92,7 +103,8 @@ function appealsList (state = appealsListInitialState, action) {
         receivedAt: action.receivedAt,
         data: {
           stats: struct,
-          geoJSON
+          geoJSON,
+          emergenciesByType
         }
       });
       break;
@@ -100,44 +112,41 @@ function appealsList (state = appealsListInitialState, action) {
   return state;
 }
 
-const emergenciesInitialState = {
-  fetching: false,
-  fetched: false,
-  receivedAt: null,
-  data: {}
+const aggregateInitialState = {
+  // fetching: false,
+  // fetched: false,
+  // receivedAt: null,
+  // data: {}
 };
 
-function emergencies (state = emergenciesInitialState, action) {
+function aggregate (state = aggregateInitialState, action) {
   switch (action.type) {
-    case 'GET_EMERGENCIES_LIST_INFLIGHT':
-      return Object.assign({}, state, { error: null, fetching: true, fetched: false });
-    case 'GET_EMERGENCIES_LIST_FAILED':
+    case 'GET_AGGREGATE_APPEALS_INFLIGHT':
       state = Object.assign({}, state, {
-        fetching: false,
-        fetched: true,
-        receivedAt: action.receivedAt,
-        error: action.error
+        [action.aggregationUnit]: {
+          error: null,
+          fetching: true,
+          fetched: false
+        }
       });
       break;
-    case 'GET_EMERGENCIES_LIST_SUCCESS':
-      const objs = action.data;
-      // Group by type.
-      let emergenciesByType = _groupBy(objs, 'dtype.id');
-      // Convert to array.
-      emergenciesByType = Object.keys(emergenciesByType).map(key => {
-        return {
-          id: key,
-          name: emergenciesByType[key][0].dtype.name,
-          items: emergenciesByType[key]
-        };
-      }).sort((a, b) => a.name > b.name);
-
+    case 'GET_AGGREGATE_APPEALS_FAILED':
       state = Object.assign({}, state, {
-        fetching: false,
-        fetched: true,
-        receivedAt: action.receivedAt,
-        data: {
-          byType: emergenciesByType
+        [action.aggregationUnit]: {
+          fetching: false,
+          fetched: true,
+          receivedAt: action.receivedAt,
+          error: action.error
+        }
+      });
+      break;
+    case 'GET_AGGREGATE_APPEALS_SUCCESS':
+      state = Object.assign({}, state, {
+        [action.aggregationUnit]: {
+          fetching: false,
+          fetched: true,
+          receivedAt: action.receivedAt,
+          data: action.data.aggregate
         }
       });
       break;
@@ -148,5 +157,5 @@ function emergencies (state = emergenciesInitialState, action) {
 // Combined export.
 export default combineReducers({
   appealsList,
-  emergencies
+  aggregate
 });
