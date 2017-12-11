@@ -76,7 +76,7 @@ a:focus {
   vertical-align: top;
 }
 
-.link--primary {
+a.link--primary {
   background-image: linear-gradient(180deg,transparent 65%, $primary-color 0);
   color: $base-color;
   font-weight: $base-font-regular;
@@ -88,6 +88,20 @@ a:focus {
   &:hover {
     opacity: 1;
     background-size: 100% 85%;
+  };
+}
+
+a.link--secondary {
+  color: $base-color;
+  font-weight: 400;
+  background-image: linear-gradient(180deg, transparent 65%, rgba($base-color, 0.1) 0);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  text-decoration: none;
+  transition: background-size .4s ease;
+  &:hover {
+    opacity: 1;
+    background-size: 100% 140%;
   };
 }
 
