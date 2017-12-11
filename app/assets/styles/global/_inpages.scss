@@ -6,7 +6,7 @@
   &__header {
     position: relative;
     color: $base-font-color;
-    padding: $global-spacing 0;
+    padding: ($global-spacing * 3) 0;
 
     > .inner {
       @extend .row, .row--centered;
@@ -17,11 +17,11 @@
     }
 
     @include media(medium-up) {
-      padding: ($global-spacing * 2) 0;
+      padding: ($global-spacing * 4) 0;
     }
 
     @include media(large-up) {
-      padding: ($global-spacing * 3) 0;
+      padding: ($global-spacing * 5) 0;
     }
   }
 
@@ -37,6 +37,19 @@
       @include column(12/12);
     }
   }
+
+  &__headline-content {
+    @include column(12/12);
+  };
+
+  &__headline-actions {
+    float: left;
+    margin-bottom: $global-spacing;
+    @include media(medium-up) {
+      float: right;
+      margin-bottom: 0;
+    }
+  };
 
   &__title {
     @extend .heading, .heading--xlarge;
@@ -118,32 +131,54 @@
 .stat-group {
   font-family: $base-font-family;
   float: left;
-  border-right: solid 1px rgba($base-color, 0.1);
-  margin-left: $global-spacing * 2;
+  border-bottom: solid 1px rgba($base-color, 0.1);
+  border-right: 0;
+  margin-left: 0;
   &:last-child {
     border: none;
   };
   &:first-child {
-    margin-left: 0
+    margin-left: 0;
+    margin-bottom: $global-spacing * 2;
+    @include media(medium-up) {
+      margin-bottom: 0;
+    }
   };
+  @include media(medium-up) {
+    margin-left: $global-spacing * 2;
+    border-right: solid 1px rgba($base-color, 0.1);
+    border-bottom: 0;
+  }
 
   ul {
     float: left;
-    margin: 0 $global-spacing;
     list-style: none;
+    width: 100%;
+    margin-top: 1rem;
+    margin-left: 0;
+    @include media(medium-up) {
+      margin: 0 $global-spacing;
+      width: auto;
+    }
   }
 
   li {
     display: inline-block;
-    font-size: 2.5rem;
+    font-size: 1.5rem;
     color: $base-color;
     margin: 0 $global-spacing 0 0;
+    @include media(small-up) {
+      font-size: 2.5rem;
+    }
   }
   small {
     display: block;
-    font-size: 1rem;
+    font-size: 0.875rem;
     color: rgba($base-color, 0.48);
     text-transform: uppercase;
+    @include media(small-up) {
+      font-size: 1rem;
+    }
   }
 
 }

@@ -1,5 +1,5 @@
 .page--emergency {
-	.fold {
+  .fold {
     margin-bottom: $global-spacing * 2;
   }
 }
@@ -24,7 +24,7 @@
   font-family: $heading-font-family;
   padding: ($global-spacing * 2) 0 $global-spacing 0;
   > .inner {
-  @extend .row, .row--centered;
+    @extend .row, .row--centered;
   }
 
   ul {
@@ -54,7 +54,7 @@
   @include media(medium-up) {
     display: flex;
     align-items: stretch;
-    ustify-content: space-between;
+    justify-content: space-between;
   }
 
   li {
@@ -98,26 +98,26 @@
 .situation-reports-list {
   list-style: none;
   margin-left: 0;
+  @include column(12/12);
+  margin-bottom: $global-spacing/2;
   li {
     @include media(medium-up) {
       @include column(3/10);
     }
-    @include column(12/12);
-    margin-bottom: $global-spacing/2;
   }
 }
 
 .public-docs-list {
   list-style: none;
   margin-left: 0;
+  @include media(medium-up) {
+    @include column(1/2, $cycle: 2);
+  }
   li {
     @include column(12/12);
     margin-bottom: $global-spacing/2;
     a {
       margin-left: $global-spacing/2;
-    }
-    @include media(medium-up) {
-      @include column(1/2, $cycle: 2);
     }
   }
 }

@@ -12,6 +12,7 @@ export default class Emergency extends React.Component {
             <div className='inner'>
               <div className='inpage__headline'>
                 <div className='inpage__headline-content'>
+                  <div className='inpage__headline-actions'><button className='button button--primary-plain'>Edit Event</button></div>
                   <h1 className='inpage__title'>Kenyan Drought</h1>
                   <div className="inpage__introduction">
                     <ul className='introduction-nav'>
@@ -38,7 +39,6 @@ export default class Emergency extends React.Component {
                     </div>
                   </div>
                 </div>
-                <div className='inpage__headline-actions'><button className='button button--primary-plain'>Edit Event</button></div>
               </div>
             </div>
           </header>
@@ -105,10 +105,10 @@ export default class Emergency extends React.Component {
                 <div className='inner'>
                   <div className='fold__header'>
                     <div className='fold__headline'>
+                      <div className='fold__actions'>
+                        <button className='button button--primary-plain'>Add Situation Report</button>
+                      </div>
                       <h2 className='fold__title'>Situation Reports</h2>
-                    </div>
-                    <div className='fold__actions'>
-                      <button className='button button--primary-plain'>Add Situation Report</button>
                     </div>
                   </div>
                   <div className='fold__body'>
