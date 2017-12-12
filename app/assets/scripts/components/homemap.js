@@ -3,6 +3,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { PropTypes as T } from 'prop-types';
 import mapboxgl from 'mapbox-gl';
+import c from 'classnames';
 
 import { environment, mbtoken } from '../config';
 import {
@@ -11,6 +12,22 @@ import {
 import BlockLoading from './block-loading';
 
 export default class Homemap extends React.Component {
+  constructor (props) {
+    super(props);
+
+    this.state = {
+      selectedEmerType: null
+    };
+  }
+
+  onEmergencyTypeOverOut (what, typeId) {
+    if (what === 'mouseover') {
+      this.setState({ selectedEmerType: typeId });
+    } else {
+      this.setState({ selectedEmerType: null });
+    }
+  }
+
   renderEmergencies () {
     const emerg = this.props.appealsList.data.emergenciesByType;
     const max = Math.max.apply(Math, emerg.map(o => o.items.length));
@@ -20,7 +37,11 @@ export default class Homemap extends React.Component {
         <h2>Emergencies by Type</h2>
         <ul className='emergencies__list'>
           {emerg.map(o => (
-            <li key={o.id} className='emergencies__item'>
+            <li
+              key={o.id}
+              className={c('emergencies__item', {'emergencies__item--selected': this.state.selectedEmerType === o.id})}
+              onMouseOver={this.onEmergencyTypeOverOut.bind(this, 'mouseover', o.id)}
+              onMouseOut={this.onEmergencyTypeOverOut.bind(this, 'mouseout', o.id)} >
               <span className='key'>{o.name}</span>
               <span className='value'><Progress value={o.items.length} max={max}><span>{o.items.length}</span></Progress></span>
             </li>
@@ -59,6 +80,7 @@ export default class Homemap extends React.Component {
           <MapErrorBoundary>
             <Map
               geoJSON={data.geoJSON}
+              dtypeHighlight={this.state.selectedEmerType}
               receivedAt={receivedAt} />
           </MapErrorBoundary>
         </div>
@@ -161,6 +183,10 @@ class Map extends React.Component {
     if (this.state.scaleBy !== prevState.scaleBy) {
       this.theMap.setPaintProperty('appeals', 'circle-radius', this.getCircleRadiusPaintProp());
       this.onPopoverCloseClick();
+    }
+
+    if (this.props.dtypeHighlight !== prevProps.dtypeHighlight) {
+      this.highlightdType(this.props.dtypeHighlight);
     }
   }
 
@@ -280,9 +306,7 @@ class Map extends React.Component {
   }
 
   setupData () {
-    if (!this.mapLoaded) {
-      return;
-    }
+    if (!this.mapLoaded) { return; }
 
     if (!this.theMap.getSource('appeals')) {
       this.theMap.addSource('appeals', {
@@ -290,23 +314,54 @@ class Map extends React.Component {
         data: this.props.geoJSON
       });
 
+      const ccolor = {
+        property: 'atype',
+        type: 'categorical',
+        stops: [
+          [0, '#F39C12'],
+          [1, '#C22A26'],
+          [2, '#CCCCCC']
+        ]
+      };
+
+      const cradius = this.getCircleRadiusPaintProp();
+
       this.theMap.addLayer({
         'id': 'appeals',
         'type': 'circle',
         'source': 'appeals',
+        'filter': ['==', 'dtype', this.props.dtypeHighlight || ''],
         'paint': {
-          'circle-color': {
-            property: 'atype',
-            type: 'categorical',
-            stops: [
-              [0, '#F39C12'],
-              [1, '#C22A26'],
-              [2, '#CCCCCC']
-            ]
-          },
-          'circle-radius': this.getCircleRadiusPaintProp()
+          'circle-color': ccolor,
+          'circle-radius': cradius
         }
       });
+
+      this.theMap.addLayer({
+        'id': 'appeals-faded',
+        'type': 'circle',
+        'source': 'appeals',
+        'filter': ['!=', 'dtype', this.props.dtypeHighlight || ''],
+        'paint': {
+          'circle-color': ccolor,
+          'circle-radius': cradius,
+          'circle-opacity': 0.15
+        }
+      });
+
+      this.highlightdType(this.props.dtypeHighlight);
+    }
+  }
+
+  highlightdType (dtype) {
+    if (!this.mapLoaded) { return; }
+
+    if (dtype) {
+      this.theMap.setFilter('appeals', ['==', 'dtype', dtype]);
+      this.theMap.setFilter('appeals-faded', ['!=', 'dtype', dtype]);
+    } else {
+      this.theMap.setFilter('appeals', ['!=', 'dtype', '']);
+      this.theMap.setFilter('appeals-faded', ['==', 'dtype', '']);
     }
   }
 
@@ -379,7 +434,8 @@ class Map extends React.Component {
 if (environment !== 'production') {
   Map.propTypes = {
     geoJSON: T.object,
-    receivedAt: T.number
+    receivedAt: T.number,
+    dtypeHighlight: T.number
   };
 }
 

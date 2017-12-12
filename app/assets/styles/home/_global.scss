@@ -139,6 +139,11 @@
       display: flex;
       align-items: center;
       margin-bottom: $global-spacing / 2;
+      cursor: pointer;
+
+      &--selected {
+        background: rgba(#fff, 0.1);
+      }
 
       &:last-child {
         margin-bottom: 0;
