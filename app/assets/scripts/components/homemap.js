@@ -302,6 +302,19 @@ class Map extends React.Component {
       this.setupData();
     });
 
+    this.theMap.addControl(new mapboxgl.NavigationControl(), 'top-left');
+
+    // Disable map rotation using right click + drag.
+    this.theMap.dragRotate.disable();
+
+    // Disable map rotation using touch rotation gesture.
+    this.theMap.touchZoomRotate.disableRotation();
+
+    // Remove compass.
+    document.querySelector('.mapboxgl-ctrl .mapboxgl-ctrl-compass').remove();
+
+    // Event listeners.
+
     this.theMap.on('click', 'appeals', e => {
       this.showPopover(e.features[0]);
     });
