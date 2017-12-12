@@ -41,6 +41,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
+import _undefined from 'lodash.isundefined';
 import _set from 'lodash.set';
 import _cloneDeep from 'lodash.clonedeep';
 import _toNumber from 'lodash.tonumber';
@@ -368,6 +369,7 @@ class FieldReportForm extends React.Component {
     ];
 
     directMapping.forEach(([src, dest]) => {
+      if (_undefined(originalState[src])) { return; }
       state[dest] = originalState[src];
     });
 
@@ -384,6 +386,7 @@ class FieldReportForm extends React.Component {
 
     sourceEstimationMapping.forEach(([src, dest]) => {
       originalState[src].forEach(o => {
+        if (_undefined(o.estimation)) { return; }
         if (o.source === 'red-cross') {
           state[dest] = o.estimation;
         } else if (o.source === 'government') {
@@ -414,7 +417,7 @@ class FieldReportForm extends React.Component {
           return o.checked ? orgActions.concat({id: o.value}) : orgActions;
         }, [])
       };
-    });
+    }).filter(o => o.actions.length);
 
     // Planned Response Mapping
     // In the payload the status and value may mean different things.
@@ -423,11 +426,12 @@ class FieldReportForm extends React.Component {
     // to plain state props.
     const planResponseMapping = [
       // [state var, mapping status, mapping value]
-      ['dref', 'DREFRequested', 'DREFRequestedAmount'],
-      ['emergencyAppeal', 'EmergencyAppeal', 'EmergencyAppealAmount']
+      ['dref', 'dref', 'dref_amount'],
+      ['emergencyAppeal', 'appeal', 'appeal_amount']
     ];
 
     planResponseMapping.forEach(([src, statusMap, valueMap]) => {
+      if (_undefined(originalState[src].status)) { return; }
       state[statusMap] = originalState[src].status;
       state[valueMap] = originalState[src].value;
     });
@@ -456,7 +460,7 @@ class FieldReportForm extends React.Component {
         title: originalState[src].title || '',
         email: originalState[src].email || ''
       };
-    });
+    }).filter(o => Boolean(o.name))
 
     // Remove empty fields.
 
