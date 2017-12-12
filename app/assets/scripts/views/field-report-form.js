@@ -1,42 +1,3 @@
-// TODO on this file:
-// - [] Remove unneeded console.logs
-// - [] Map fields to api:
-//   Step 1
-//   sources: formData.sources.map(o => ({
-//     value: o.value,
-//     checked: false,
-//     specification: undefined
-//   })),
-
-//   // Step 3
-//   bulletin: undefined,
-//   actionsOthers: undefined,
-
-//   // Step 4
-//   dref: { status: undefined, value: undefined }
-//   emergencyAppeal: { status: undefined, value: undefined }
-//   rdrtrits: { status: undefined, value: undefined }
-//   fact: { status: undefined, value: undefined }
-//   ifrcStaff: { status: undefined, value: undefined }
-//   eru: [{ type: undefined, status: undefined, units: undefined }],
-//
-// - [] Add missing values for selectable options (radios, checkboxes...)
-//   Step 1
-//   sources: Array[checked: boolean, specification: string],
-
-//   Step 3
-//   bulletin: string (radio buttons),
-
-//   Step 4
-//   dref: string (radio buttons),
-//   emergencyAppeal: string (radio buttons),
-//   rdrtrits: string (radio buttons),
-//   fact: string (radio buttons),
-//   ifrcStaff: string (radio buttons),
-//   eru: Array[type: string, status: string(radio buttons), units: number]
-//
-// - [] Submit data
-//
 'use strict';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -50,8 +11,9 @@ import c from 'classnames';
 import Select from 'react-select';
 import Ajv from 'ajv';
 import ajvKeywords from 'ajv-keywords';
+import * as path from 'path';
 
-import { environment, api } from '../config';
+import { environment, api, siteUrl } from '../config';
 import {
   step1 as schemaStep1,
   step2 as schemaStep2,
@@ -148,7 +110,7 @@ const prepStateForValidation = (state) => {
   state = _cloneDeep(state);
 
   // Conversion functions.
-  const toBool = (val) => val === 'true';
+  const toBool = (val) => Boolean(val === 'true');
   const toNumIfNum = (val) => {
     let v = _toNumber(val);
     return isNaN(v) ? val : v;
@@ -300,6 +262,14 @@ class FieldReportForm extends React.Component {
   componentWillReceiveProps (nextProps) {
     if (this.props.fieldReportForm.fetching && !nextProps.fieldReportForm.fetching) {
       hideGlobalLoading();
+      if (nextProps.fieldReportForm.error) {
+        const message = nextProps.fieldReportForm.error.error_message || 'Could not submit field report';
+        showAlert('danger', <p><strong>Error:</strong> {message}</p>, true, 4500);
+      } else {
+        const uri = _get(nextProps, 'fieldReportForm.data.resource_uri', '');
+        const link = path.join(siteUrl, uri);
+        showAlert('success', <p><a href={link} alt='Field report'>Field report created</a></p>, true, 9000);
+      }
     }
   }
 
@@ -348,9 +318,9 @@ class FieldReportForm extends React.Component {
     } = originalState;
 
     // Process properties.
-    state.countries = countries.map(o => ({id: o.value}));
-    state.dtype = {id: disasterType};
-    state.event = {id: event.value};
+    if (countries.length) { state.countries = countries.map(o => ({pk: o.value})); }
+    if (disasterType) { state.dtype = {pk: disasterType}; }
+    if (event && event.value) { state.event = {pk: event.value}; }
 
     const directMapping = [
       // [source, destination]
@@ -477,7 +447,14 @@ class FieldReportForm extends React.Component {
     const result = this.validate();
     if (result) {
       if (step === 5) {
-        this.props._createFieldReport(this.getSubmitPayload());
+        const payload = this.getSubmitPayload();
+        const userId = _get(this.props.user, 'data.id');
+        if (userId) {
+          payload.user = {pk: userId};
+        } else {
+          console.log('Could not read user ID from state');
+        }
+        this.props._createFieldReport(payload);
         showGlobalLoading();
       } else {
         window.scrollTo(0, 0);
@@ -1046,6 +1023,7 @@ class FieldReportForm extends React.Component {
   }
 
   render () {
+    const userId = _get(this.props.user, 'data');
     return (
       <App className='page--frep-form'>
         <section className='inpage'>
@@ -1079,7 +1057,8 @@ class FieldReportForm extends React.Component {
 if (environment !== 'production') {
   FieldReportForm.propTypes = {
     _createFieldReport: T.func,
-    fieldReportForm: T.object
+    fieldReportForm: T.object,
+    user: T.object
   };
 }
 
@@ -1087,7 +1066,8 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state) => ({
-  fieldReportForm: state.fieldReportForm
+  fieldReportForm: state.fieldReportForm,
+  user: state.user
 });
 
 const dispatcher = (dispatch) => ({
