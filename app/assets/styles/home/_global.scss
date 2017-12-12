@@ -5,11 +5,11 @@
 .page--homepage {
   .inpage__header {
     @include media(medium-up) {
-      padding: ($global-spacing * 3) 0;
+      padding: ($global-spacing * 5) 0;
     }
 
     @include media(large-up) {
-      padding: ($global-spacing * 5) 0;
+      padding: ($global-spacing * 7) 0;
     }
   }
 
@@ -23,6 +23,8 @@
   }
 
   .inpage__title {
+    @include column(12/12);
+    text-align: center;
     &::after {
       content: '';
       width: 10rem;
@@ -109,7 +111,8 @@
   }
 
   &__key {
-    font-weight: $base-font-bold;
+    font-weight: $base-font-regular;
+    line-height: 1.25rem;
   }
 }
 
@@ -120,13 +123,17 @@
     padding: $global-spacing * 2;
   }
 
+  .inner {
+    @extend .row-fold, .row-fold--centered;
+  }
+
   .emergencies {
     @include column(12/12);
     color: #ffffff;
     margin-bottom: ($global-spacing * 2);
 
     @include media(medium-up) {
-      @include column(4/12);
+      @include column(3/12);
       margin-bottom: 0;
     }
 
@@ -147,7 +154,7 @@
     margin-bottom: ($global-spacing * 2);
 
     @include media(medium-up) {
-      @include column(8/12);
+      @include column(9/12);
       margin-bottom: 0;
     }
   }
@@ -182,7 +189,7 @@
 
 .map-vis {
   position: relative;
-  height: 32rem;
+  height: 35rem;
   margin-bottom: 0;
 
   .map-vis__holder {
@@ -196,7 +203,8 @@
   .map-vis__legend {
     position: absolute;
     background: #fff;
-    padding: $global-spacing / 2;
+    padding: $global-spacing/1.5;
+    border-radius: $base-border-radius;
     color: $base-color;
     font-size: 0.75rem;
 
@@ -208,6 +216,18 @@
     &--top-right {
       top: $global-spacing;
       right: $global-spacing;
+    }
+
+    .form__option {
+      font-size: 0.75rem;
+    }
+
+    .form__label {
+      font-size: 0.875rem;
+    }
+
+    .form {
+      margin-bottom: 0;
     }
   }
 }
@@ -269,9 +289,11 @@
 }
 
 .stats-chart {
+  @include column(12/12);
+  margin: ($global-spacing) 0;
   .chart {
+    margin-bottom: 0;
     @include column(12/12);
-    margin-bottom: ($global-spacing * 2);
 
     &:last-child {
       margin-bottom: 0;
@@ -279,7 +301,6 @@
 
     @include media(medium-up) {
       @include column(6/12, $cycle: 2);
-      margin-bottom: 0;
     }
 
     figcaption {
@@ -318,6 +339,10 @@
 
   td {
     padding: ($global-spacing * 2) ($global-spacing / 2);
+    font-weight: $base-font-regular;
+    &:nth-child(3) {
+      font-weight: $base-font-light;
+    }
   }
 
   th:first-child,
@@ -404,10 +429,10 @@
 
 .chart {
   figcaption {
-    margin-bottom: $global-spacing * 2;
+    margin-bottom: $global-spacing;
   }
 
   &__container {
-    height: 15rem;
+    height: 13rem;
   }
 }

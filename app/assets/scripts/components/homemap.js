@@ -374,7 +374,7 @@ class MapPopover extends React.Component {
         <div className='popover__contents'>
           <header className='popover__header'>
             <div className='popover__headline'>
-              <h1 className='popover__title'>{this.props.title}</h1>
+              <a className='link--primary'>{this.props.title}</a>
             </div>
             <div className='popover__actions actions'>
               <ul className='actions__menu'>
@@ -383,13 +383,13 @@ class MapPopover extends React.Component {
             </div>
           </header>
           <div className='popover__body'>
-            <dl className='dl--horizontal'>
-              <dt>People Affected</dt>
+            <dl className='popover__details'>
               <dd>{this.props.numBeneficiaries}</dd>
-              <dt>Amount Requested</dt>
+              <dt>People Affected</dt>
               <dd>{this.props.amountRequested}</dd>
-              <dt>Amount Funded</dt>
+              <dt>Amount Requested</dt>
               <dd>{this.props.amountFunded}</dd>
+              <dt>Amount Funded</dt>
             </dl>
           </div>
         </div>

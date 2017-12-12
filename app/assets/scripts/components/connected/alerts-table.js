@@ -60,7 +60,7 @@ class AlertsTable extends React.Component {
       <React.Fragment key={rowData.id}>
         <tr>
           <td data-heading='Date'>{date.toISODate()}</td>
-          <td data-heading='Emergency'><Link to='' title='View Emergency page'>{rowData.operation}</Link></td>
+          <td data-heading='Emergency'><Link className='link--primary' to='' title='View Emergency page'>{rowData.operation}</Link></td>
           <td data-heading='Alert Message'>{rowData.message}</td>
           <td data-heading='Type'>{alertTypes[rowData.atype]}</td>
         </tr>
