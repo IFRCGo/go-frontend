@@ -31,7 +31,6 @@ class AlertsTable extends React.Component {
   }
 
   componentDidMount () {
-    showGlobalLoading();
     this.requestResults();
   }
 
@@ -42,12 +41,12 @@ class AlertsTable extends React.Component {
   }
 
   requestResults () {
+    showGlobalLoading();
     this.props._getSurgeAlerts(this.state.page);
   }
 
   handlePageChange (page) {
     this.setState({ page: page.selected + 1 }, () => {
-      showGlobalLoading();
       this.requestResults();
     });
   }

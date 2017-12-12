@@ -41,9 +41,9 @@ export const GET_APPEALS_LIST = 'GET_APPEALS_LIST';
 export function getAppealsList () {
   const f = buildAPIQS({
     end_date__gt: DateTime.local().toISODate(),
-    limit: 100
+    limit: 1000
   });
-  return fetchJSONRecursive(`api/v1/appeal/?${f}`, GET_APPEALS_LIST, withToken(), 3);
+  return fetchJSONRecursive(`api/v1/appeal/?${f}`, GET_APPEALS_LIST, withToken());
 }
 
 export const GET_AGGREGATE_APPEALS = 'GET_AGGREGATE_APPEALS';
