@@ -3,12 +3,12 @@
 export const status = [
   {
     label: 'Early Warning',
-    value: 'early-warning',
+    value: '8',
     description: 'Early warning message for an upcoming disaster.'
   },
   {
     label: 'Event',
-    value: 'event',
+    value: '9',
     description: 'First report for this disaster.'
   }
 ];
