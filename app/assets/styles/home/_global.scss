@@ -137,15 +137,33 @@
       margin-bottom: 0;
     }
 
-    h2 {
-      font-size: 1rem;
-      font-weight: $base-font-regular;
-      font-family: $base-font-family;
+    .emergencies__list {
+      list-style: none;
+      margin: 0;
     }
 
-    dd {
-      height: 1.25rem;
-      padding-top: 0.25rem;
+    .emergencies__item {
+      display: flex;
+      align-items: center;
+      margin-bottom: $global-spacing / 2;
+      cursor: pointer;
+
+      &--selected {
+        background: rgba(#fff, 0.1);
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .key {
+        min-width: 6rem;
+        width: 30%;
+        margin-right: $global-spacing;
+      }
+      .value {
+        flex-grow: 1;
+      }
     }
   }
 

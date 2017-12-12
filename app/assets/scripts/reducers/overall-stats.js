@@ -69,7 +69,7 @@ function appealsList (state = appealsListInitialState, action) {
       // Convert to array.
       emergenciesByType = Object.keys(emergenciesByType).map(key => {
         return {
-          id: key,
+          id: _toNumber(key),
           name: emergenciesByType[key][0].dtype.name,
           items: emergenciesByType[key]
         };
@@ -86,6 +86,7 @@ function appealsList (state = appealsListInitialState, action) {
                 id: o.id,
                 name: o.event.name,
                 atype: o.atype,
+                dtype: o.dtype.id,
                 numBeneficiaries: o.num_beneficiaries,
                 amountRequested: _toNumber(o.amount_requested),
                 amountFunded: _toNumber(o.amount_funded)
