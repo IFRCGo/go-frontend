@@ -4,5 +4,6 @@
  */
 module.exports = {
   environment: 'production',
-  api: 'http://dsgoapi.northeurope.cloudapp.azure.com'
+  api: 'http://dsgoapi.northeurope.cloudapp.azure.com',
+  siteUrl: 'https://dsgoproxyapp.azurewebsites.net'
 };
