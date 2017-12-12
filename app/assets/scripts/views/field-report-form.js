@@ -11,9 +11,9 @@ import c from 'classnames';
 import Select from 'react-select';
 import Ajv from 'ajv';
 import ajvKeywords from 'ajv-keywords';
-import * as path from 'path';
+import { Link } from 'react-router-dom';
 
-import { environment, api, siteUrl } from '../config';
+import { environment, api } from '../config';
 import {
   step1 as schemaStep1,
   step2 as schemaStep2,
@@ -266,9 +266,8 @@ class FieldReportForm extends React.Component {
         const message = nextProps.fieldReportForm.error.error_message || 'Could not submit field report';
         showAlert('danger', <p><strong>Error:</strong> {message}</p>, true, 4500);
       } else {
-        const uri = _get(nextProps, 'fieldReportForm.data.resource_uri', '');
-        const link = path.join(siteUrl, uri);
-        showAlert('success', <p><a href={link} alt='Field report'>Field report created</a></p>, true, 9000);
+        const { id } = nextProps.fieldReportForm.data;
+        showAlert('success', <p><Link to={`/reports/${id}`}>Field report created</Link></p>, true, 9000);
       }
     }
   }
@@ -276,7 +275,6 @@ class FieldReportForm extends React.Component {
   validate () {
     const { step, data } = this.state;
     let state = prepStateForValidation(data);
-    console.log('state', state);
 
     let validator;
     switch (step) {
@@ -302,7 +300,6 @@ class FieldReportForm extends React.Component {
     validator(state);
 
     this.setState({ errors: _cloneDeep(validator.errors) });
-    console.log('validator.errors', validator.errors);
     return validator.errors === null;
   }
 
@@ -327,7 +324,6 @@ class FieldReportForm extends React.Component {
       ['summary', 'summary'],
       ['description', 'description'],
       ['status', 'status'],
-      ['assistance', 'request_assistance'],
       ['numAssistedRedCross', 'num_assisted'],
       ['numAssistedGov', 'gov_num_assisted'],
       ['numLocalStaff', 'num_localstaff'],
@@ -339,6 +335,9 @@ class FieldReportForm extends React.Component {
       if (_undefined(originalState[src])) { return; }
       state[dest] = originalState[src];
     });
+
+    // Boolean values
+    state.request_assistance = Boolean(originalState.assistance === 'true');
 
     // For this properties when the source is the Red Cross use the provided,
     // when it's Government prepend gov_. This results in:
@@ -1023,7 +1022,6 @@ class FieldReportForm extends React.Component {
   }
 
   render () {
-    const userId = _get(this.props.user, 'data');
     return (
       <App className='page--frep-form'>
         <section className='inpage'>
