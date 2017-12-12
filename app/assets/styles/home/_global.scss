@@ -115,7 +115,6 @@
 
 .stats-map {
   padding: $global-spacing;
-  color: #ffffff;
 
   @include media(large-up) {
     padding: $global-spacing * 2;
@@ -123,6 +122,7 @@
 
   .emergencies {
     @include column(12/12);
+    color: #ffffff;
     margin-bottom: ($global-spacing * 2);
 
     @include media(medium-up) {

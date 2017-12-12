@@ -1,5 +1,6 @@
 'use strict';
 import React from 'react';
+import { render } from 'react-dom';
 import { PropTypes as T } from 'prop-types';
 import mapboxgl from 'mapbox-gl';
 
@@ -143,6 +144,7 @@ class Map extends React.Component {
 
     if (this.state.scaleBy !== prevState.scaleBy) {
       this.theMap.setPaintProperty('appeals', 'circle-radius', this.getCircleRadiusPaintProp());
+      this.onPopoverCloseClick();
     }
   }
 
@@ -171,6 +173,7 @@ class Map extends React.Component {
 
   setupMap () {
     this.mapLoaded = false;
+    this.popover = null;
 
     mapboxgl.accessToken = mbtoken;
 
@@ -246,6 +249,18 @@ class Map extends React.Component {
       this.mapLoaded = true;
       this.setupData();
     });
+
+    this.theMap.on('click', 'appeals', e => {
+      this.showPopover(e.features[0]);
+    });
+
+    this.theMap.on('mousemove', 'appeals', e => {
+      this.theMap.getCanvas().style.cursor = 'pointer';
+    });
+
+    this.theMap.on('mouseleave', 'appeals', e => {
+      this.theMap.getCanvas().style.cursor = '';
+    });
   }
 
   setupData () {
@@ -277,6 +292,32 @@ class Map extends React.Component {
         }
       });
     }
+  }
+
+  onPopoverCloseClick () {
+    this.popover.remove();
+  }
+
+  showPopover (feature) {
+    let popoverContent = document.createElement('div');
+
+    render(<MapPopover
+      title={feature.properties.name}
+      numBeneficiaries={feature.properties.numBeneficiaries}
+      amountRequested={feature.properties.amountRequested}
+      amountFunded={feature.properties.amountFunded}
+      onCloseClick={this.onPopoverCloseClick.bind(this)} />, popoverContent);
+
+    // Populate the popup and set its coordinates
+    // based on the feature found.
+    if (this.popover != null) {
+      this.popover.remove();
+    }
+
+    this.popover = new mapboxgl.Popup({closeButton: false})
+      .setLngLat(feature.geometry.coordinates)
+      .setDOMContent(popoverContent.children[0])
+      .addTo(this.theMap);
   }
 
   render () {
@@ -323,5 +364,46 @@ if (environment !== 'production') {
   Map.propTypes = {
     geoJSON: T.object,
     receivedAt: T.number
+  };
+}
+
+class MapPopover extends React.Component {
+  render () {
+    return (
+      <article className='popover'>
+        <div className='popover__contents'>
+          <header className='popover__header'>
+            <div className='popover__headline'>
+              <h1 className='popover__title'>{this.props.title}</h1>
+            </div>
+            <div className='popover__actions actions'>
+              <ul className='actions__menu'>
+                <li><button type='button' className='actions__menu-item poa-xmark' title='Close popover' onClick={this.props.onCloseClick}><span>Dismiss</span></button></li>
+              </ul>
+            </div>
+          </header>
+          <div className='popover__body'>
+            <dl className='dl--horizontal'>
+              <dt>People Affected</dt>
+              <dd>{this.props.numBeneficiaries}</dd>
+              <dt>Amount Requested</dt>
+              <dd>{this.props.amountRequested}</dd>
+              <dt>Amount Funded</dt>
+              <dd>{this.props.amountFunded}</dd>
+            </dl>
+          </div>
+        </div>
+      </article>
+    );
+  }
+}
+
+if (environment !== 'production') {
+  MapPopover.propTypes = {
+    onCloseClick: T.func,
+    title: T.string,
+    numBeneficiaries: T.number,
+    amountRequested: T.number,
+    amountFunded: T.number
   };
 }
