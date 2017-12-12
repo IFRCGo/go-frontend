@@ -56,6 +56,15 @@ export function getAggregateAppeals (date, unit) {
   return fetchJSON(`api/v1/aggregate/?${f}`, GET_AGGREGATE_APPEALS, withToken(), {aggregationUnit: unit});
 }
 
+export const GET_DISASTERS_LIST = 'GET_DISASTERS_LIST';
+export function getEmergenciesList () {
+  const f = buildAPIQS({
+    disaster_start_date__gt: DateTime.local().minus({days: 30}).startOf('day').toISODate(),
+    limit: 0
+  });
+  return fetchJSON(`api/v1/event/?${f}`, GET_DISASTERS_LIST, {});
+}
+
 export const GET_AGGREGATE_EMERGENCIES = 'GET_AGGREGATE_EMERGENCIES';
 export function getAggregateEmergencies (date, unit) {
   const f = buildAPIQS({
