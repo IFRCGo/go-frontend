@@ -8,6 +8,7 @@
 .sources-list {
   &__item {
     @include column(12/12);
+    margin-bottom: $global-spacing * 1.5;
 
     @include media(small-up) {
       @include column(6/12, $cycle: 2);
@@ -230,6 +231,7 @@
 }
 
 .stepper {
+  float: left;
   display: flex;
   flex-flow: column wrap;
   list-style: none;
