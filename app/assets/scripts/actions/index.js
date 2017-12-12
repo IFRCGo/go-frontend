@@ -53,8 +53,18 @@ export function getAggregateAppeals (date, unit) {
     model_type: 'appeal',
     unit
   });
-
   return fetchJSON(`api/v1/aggregate/?${f}`, GET_AGGREGATE_APPEALS, withToken(), {aggregationUnit: unit});
+}
+
+export const GET_AGGREGATE_EMERGENCIES = 'GET_AGGREGATE_EMERGENCIES';
+export function getAggregateEmergencies (date, unit) {
+  const f = buildAPIQS({
+    start_date: date,
+    model_type: 'event',
+    unit
+  });
+
+  return fetchJSON(`api/v1/aggregate/?${f}`, GET_AGGREGATE_EMERGENCIES, withToken(), {aggregationUnit: unit});
 }
 
 export const UPDATE_SUBSCRIPTIONS = 'UPDATE_SUBSCRIPTIONS';
