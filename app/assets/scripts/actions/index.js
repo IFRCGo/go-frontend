@@ -10,7 +10,7 @@ export function getAuthToken (username, password) {
 
 export const GET_PROFILE = 'GET_PROFILE';
 export function getUserProfile (username) {
-  return fetchJSON(`api/v1/profile/?user__username=${username}`, GET_PROFILE, withToken());
+  return fetchJSON(`api/v1/user/?username=${username}`, GET_PROFILE, withToken());
 }
 
 export const LOGOUT_USER = 'LOGOUT_USER';
@@ -55,4 +55,9 @@ export function getAggregateAppeals (date, unit) {
   });
 
   return fetchJSON(`api/v1/aggregate/?${f}`, GET_AGGREGATE_APPEALS, withToken(), {aggregationUnit: unit});
+}
+
+export const UPDATE_SUBSCRIPTIONS = 'UPDATE_SUBSCRIPTIONS';
+export function updateSubscriptions (payload) {
+  return postJSON('notifications/', UPDATE_SUBSCRIPTIONS, payload, withToken());
 }

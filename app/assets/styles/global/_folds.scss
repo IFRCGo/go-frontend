@@ -29,6 +29,7 @@
 }
 
 .fold__header {
+  @include column(12/12);
   margin-bottom: $global-spacing;
 
   > *:last-child {
@@ -40,10 +41,33 @@
   }
 }
 
+.fold__actions {
+  float: left;
+  width: 100%;
+  margin-bottom: $global-spacing * 2;
+  @include media(medium-up) {
+    float: right;
+    width: auto;
+    margin-bottom: 0;
+  }
+}
+
 .fold__title {
   @include heading(1.5rem, medium-up);
 }
 
+.fold__description {
+  color: rgba($base-color, 0.58);
+}
+
+.fold__headline {
+  @include column(12/12);
+}
+
+.fold__footer {
+  @include column(12/12);
+  margin-top: $global-spacing;
+}
 
 /* Modifiers
    ========================================================================== */
