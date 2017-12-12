@@ -22,13 +22,17 @@ export default class Emergency extends React.Component {
                     </ul>
                     <div className='header-stats'>
                       <div className='stat-group'>
-                        <img src="/assets/graphics/layout/people.svg" alt="Targeted Benficiaries"/>
+                        <div className='stat-icon'>
+                          <img src="/assets/graphics/layout/people.svg" alt="Targeted Benficiaries"/>
+                        </div>
                         <ul>
                           <li>1,033,300<small>Targeted Benficiaries</small></li>
                         </ul>
                       </div>
                       <div className='stat-group'>
-                        <img src="/assets/graphics/layout/funding.svg" alt="Funding"/>
+                        <div className='stat-icon'>
+                          <img src="/assets/graphics/layout/funding.svg" alt="Funding"/>
+                        </div>
                         <ul>
                           <li>25,062,572<small>Appeal Amount (CHF)</small></li>
                           <li>5,560,132<small>Funding (CHF)</small></li>

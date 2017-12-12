@@ -389,12 +389,12 @@ blockquote,
 
 hr,
 .hr {
+  float: left;
   border: 0;
-  height: ($global-spacing / 2);
+  height: 1px;
   background: none;
-  width: 80%;
-  max-width: 16rem;
-  margin: ($global-spacing / 4) auto;
+  width: 100%;
+  margin: $global-spacing;
   background: transparent linear-gradient(transparent, $base-alpha-color, transparent) 50% / auto $base-border-width repeat-x;
 }
 
