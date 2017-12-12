@@ -62,8 +62,7 @@ import {
 import * as formData from '../utils/field-report-constants';
 import { showAlert } from '../components/system-alerts';
 import { createFieldReport } from '../actions';
-// import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
-import { hideGlobalLoading } from '../components/global-loading';
+import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { request } from '../utils/network';
 
 import App from './app';
@@ -299,11 +298,8 @@ class FieldReportForm extends React.Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (this.fieldReportForm.fetching && !nextProps.fieldReportForm.fetching) {
-      if (!nextProps.fieldReportForm) {
-        console.log('nextProps.fieldReportForm', nextProps.fieldReportForm);
-        hideGlobalLoading();
-      }
+    if (this.props.fieldReportForm.fetching && !nextProps.fieldReportForm.fetching) {
+      hideGlobalLoading();
     }
   }
 
@@ -481,9 +477,8 @@ class FieldReportForm extends React.Component {
     const result = this.validate();
     if (result) {
       if (step === 5) {
-        console.log('Submit data!!!', this.getSubmitPayload());
-        // this.props._createFieldReport(this.getSubmitPayload());
-        // showGlobalLoading();
+        this.props._createFieldReport(this.getSubmitPayload());
+        showGlobalLoading();
       } else {
         window.scrollTo(0, 0);
         this.setState({ step: step + 1 });
