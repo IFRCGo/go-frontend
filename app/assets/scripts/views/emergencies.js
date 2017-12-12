@@ -2,53 +2,15 @@
 import React from 'react';
 
 import App from './app';
+import EmergenciesDash from '../components/connected/emergencies-dash';
 
 export default class Emergencies extends React.Component {
   render () {
     return (
       <App className='page--emergencies'>
         <section className='inpage'>
-          <header className='inpage__header'>
-            <div className='inner'>
-              <div className='inpage__headline'>
-                <div className='inpage__headline-content'>
-                  <h1 className='inpage__title'>Emergencies</h1>
-                  <div className="inpage__introduction--small">
-                    <div className='header-stats'>
-                      <div className='stat-group stats-group--single'>
-                        <div className='stat-icon'>
-                          <img src="/assets/graphics/layout/emergency.svg" alt="Targeted Benficiaries"/>
-                        </div>
-                        <ul>
-                          <li>1,033<small>Emergencies in the last 30 Days</small></li>
-                        </ul>
-                      </div>
-                      <div className='stat-group stats-group--single'>
-                        <div className='stat-icon'>
-                          <img src="/assets/graphics/layout/people.svg" alt="Targeted Benficiaries"/>
-                        </div>
-                        <ul>
-                          <li>1,033,300<small>Affected People in the last 30 days</small></li>
-                        </ul>
-                      </div>
-                      <hr/>
-                      <div className='stat-group'>
-                        <div className='stat-icon'>
-                          <img src="/assets/graphics/layout/funding.svg" alt="Funding"/>
-                        </div>
-                        <ul>
-                          <li>25,062,572<small>Appeal Amount (CHF)</small></li>
-                          <li>5,560,132<small>Funding (CHF)</small></li>
-                        </ul>
-                      </div>
-                    </div>
-                    <div className='funding-chart'>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </header>
+          <EmergenciesDash />
+
           <div className='inpage__body'>
             <div className='map'>
             </div>
