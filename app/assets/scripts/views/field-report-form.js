@@ -829,15 +829,15 @@ class FieldReportForm extends React.Component {
           options={[
             {
               label: 'No',
-              value: 'no'
+              value: '0'
             },
             {
               label: 'Planned',
-              value: 'planned'
+              value: '2'
             },
             {
               label: 'Yes/Published',
-              value: 'published'
+              value: '3'
             }
           ]}
           selectedOption={this.state.data.bulletin}
@@ -858,15 +858,15 @@ class FieldReportForm extends React.Component {
     const optsPlanReqDep = [
       {
         label: 'Planned',
-        value: 'planned'
+        value: '2'
       },
       {
         label: 'Requested',
-        value: 'requested'
+        value: '1'
       },
       {
         label: 'Deployed',
-        value: 'deployed'
+        value: '3'
       }
     ];
 
@@ -886,15 +886,15 @@ class FieldReportForm extends React.Component {
           options={[
             {
               label: 'Planned',
-              value: 'planned'
+              value: '2'
             },
             {
               label: 'Requested',
-              value: 'requested'
+              value: '1'
             },
             {
               label: 'Allocated',
-              value: 'allocated'
+              value: '3'
             }
           ]}
           values={this.state.data.dref}
@@ -909,15 +909,15 @@ class FieldReportForm extends React.Component {
           options={[
             {
               label: 'Planned',
-              value: 'planned'
+              value: '2'
             },
             {
               label: 'Requested',
-              value: 'requested'
+              value: '1'
             },
             {
               label: 'Launched',
-              value: 'launched'
+              value: '3'
             }
           ]}
           values={this.state.data.emergencyAppeal}
@@ -1575,15 +1575,15 @@ class Eru extends React.Component {
                   options={[
                     {
                       label: 'Planned',
-                      value: 'planned'
+                      value: '2'
                     },
                     {
                       label: 'Requested',
-                      value: 'requested'
+                      value: '1'
                     },
                     {
                       label: 'Deployed',
-                      value: 'deployed'
+                      value: '3'
                     }
                   ]}
                   selectedOption={o.status}
