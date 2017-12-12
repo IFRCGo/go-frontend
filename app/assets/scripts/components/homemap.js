@@ -18,14 +18,14 @@ export default class Homemap extends React.Component {
     return (
       <div className='emergencies'>
         <h2>Emergencies by Type</h2>
-        <dl className='dl--horizontal'>
+        <ul className='emergencies__list'>
           {emerg.map(o => (
-            <React.Fragment key={o.id}>
-              <dt>{o.name}</dt>
-              <dd><Progress value={o.items.length} max={max}><span>100</span></Progress></dd>
-            </React.Fragment>
+            <li key={o.id} className='emergencies__item'>
+              <span className='key'>{o.name}</span>
+              <span className='value'><Progress value={o.items.length} max={max}><span>{o.items.length}</span></Progress></span>
+            </li>
           ))}
-        </dl>
+        </ul>
       </div>
     );
   }
