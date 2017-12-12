@@ -6,9 +6,6 @@ import { DateTime } from 'luxon';
 
 import { environment } from '../../config';
 import { getAppealsList, getAggregateAppeals } from '../../actions';
-import { finishedFetch } from '../../utils/utils';
-
-import { showGlobalLoading, hideGlobalLoading } from '../global-loading';
 
 import Homestats from '../homestats';
 import Homemap from '../homemap';
@@ -16,22 +13,12 @@ import HomeCharts from '../homecharts';
 
 class PresentationDash extends React.Component {
   componentDidMount () {
-    showGlobalLoading(3);
     this.props._getAppealsList();
     this.props._getAggregateAppeals(DateTime.local().minus({months: 11}).startOf('day').toISODate(), 'month');
     this.props._getAggregateAppeals('1990-01-01', 'year');
   }
 
   componentWillReceiveProps (nextProps) {
-    if (finishedFetch(this.props, nextProps, 'appealsList')) {
-      hideGlobalLoading();
-    }
-    if (finishedFetch(this.props, nextProps, 'aggregate.month')) {
-      hideGlobalLoading();
-    }
-    if (finishedFetch(this.props, nextProps, 'aggregate.year')) {
-      hideGlobalLoading();
-    }
   }
 
   render () {

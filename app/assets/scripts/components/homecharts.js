@@ -5,6 +5,7 @@ import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from 'rec
 import { DateTime } from 'luxon';
 
 import { environment } from '../config';
+import BlockLoading from './block-loading';
 
 export default class HomeCharts extends React.Component {
   renderChart (data, unit) {
@@ -77,14 +78,34 @@ export default class HomeCharts extends React.Component {
     );
   }
 
+  renderLoading () {
+    if (this.props.aggregate.fetching) {
+      return <BlockLoading/>;
+    }
+  }
+
+  renderError () {
+    if (this.props.aggregate.error) {
+      return <p>Oh no! An error ocurred getting the data.</p>;
+    }
+  }
+
+  renderContent () {
+    return (
+      <div>
+        {this.renderByMonth()}
+        {this.renderByYear()}
+      </div>
+    );
+  }
+
   render () {
     return (
       <div className='stats-chart'>
         <h1 className='visually-hidden'>DREFS and Appeals over time</h1>
-        <div>
-          {this.renderByMonth()}
-          {this.renderByYear()}
-        </div>
+        {this.renderLoading()}
+        {this.renderError()}
+        {this.renderContent()}
       </div>
     );
   }

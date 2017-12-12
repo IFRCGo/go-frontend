@@ -8,6 +8,7 @@ import { environment, mbtoken } from '../config';
 import {
   FormRadioGroup
 } from './form-elements/';
+import BlockLoading from './block-loading';
 
 export default class Homemap extends React.Component {
   renderEmergencies () {
@@ -29,34 +30,49 @@ export default class Homemap extends React.Component {
     );
   }
 
-  render () {
+  renderLoading () {
+    if (this.props.appealsList.fetching) {
+      return <BlockLoading/>;
+    }
+  }
+
+  renderError () {
+    if (this.props.appealsList.error) {
+      return <p>Oh no! An error ocurred getting the data.</p>;
+    }
+  }
+
+  renderContent () {
     const {
+      data,
       fetched,
-      receivedAt,
-      error,
-      data
+      receivedAt
     } = this.props.appealsList;
 
-    if (!fetched) return null;
+    if (!fetched) { return null; }
 
+    return (
+      <React.Fragment>
+        {this.renderEmergencies()}
+        <div className='map-container'>
+          <h2 className='visually-hidden'>Map</h2>
+          <MapErrorBoundary>
+            <Map
+              geoJSON={data.geoJSON}
+              receivedAt={receivedAt} />
+          </MapErrorBoundary>
+        </div>
+      </React.Fragment>
+    );
+  }
+
+  render () {
     return (
       <div className='stats-map'>
         <div className='inner'>
-          {!error ? (
-            <React.Fragment>
-              {this.renderEmergencies()}
-              <div className='map-container'>
-                <h2 className='visually-hidden'>Map</h2>
-                <MapErrorBoundary>
-                  <Map
-                    geoJSON={data.geoJSON}
-                    receivedAt={receivedAt} />
-                </MapErrorBoundary>
-              </div>
-            </React.Fragment>
-          ) : (
-            <p>Oh no! An error ocurred getting the data.</p>
-          )}
+          {this.renderLoading()}
+          {this.renderError()}
+          {this.renderContent()}
         </div>
       </div>
     );
