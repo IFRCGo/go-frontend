@@ -11,6 +11,7 @@ import { finishedFetch } from '../../utils/utils';
 import { showGlobalLoading, hideGlobalLoading } from '../global-loading';
 
 import Stats from '../emergencies/stats';
+import Charts from '../emergencies/charts';
 
 class EmergenciesDash extends React.Component {
   componentDidMount () {
@@ -34,7 +35,6 @@ class EmergenciesDash extends React.Component {
       aggregate
     } = this.props;
 
-    console.log(list);
     return (
       <header className='inpage__header'>
         <div className='inner'>
@@ -43,6 +43,7 @@ class EmergenciesDash extends React.Component {
               <h1 className='inpage__title'>Emergencies</h1>
               <div className="inpage__introduction--small">
                 <Stats list={list} />
+                <Charts aggregate={aggregate} />
               </div>
             </div>
           </div>
