@@ -11,7 +11,7 @@ export const commaSeparatedNumber = (x) => {
   if (isNaN(x) || (!x && x !== 0)) {
     return nope;
   }
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
 export function percent (value, total, decimals = 2) {
