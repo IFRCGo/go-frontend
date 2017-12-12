@@ -10,7 +10,7 @@
 
     > .inner {
       @extend .row, .row--centered;
-     
+
       > *:last-child {
         margin-bottom: 0;
       }
@@ -90,15 +90,21 @@
   &__introduction {
     @include column(12/12);
     color: rgba($base-font-color, 0.64);
-    font-size: 1.25rem;
-    line-height: 2rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
 
     > *:last-child {
       margin-bottom: 0;
     }
 
-    @include media(large-up) {
-      @include column(10/12);
+    @include media(small-up) {
+      @include column(10/12)
+      @include move(1/12);
+    }
+
+    @include media(medium-up) {
+      @include column(8/12);
+      @include move(2/12);
       font-size: 1.5rem;
       line-height: 2.25rem;
     }
@@ -255,7 +261,7 @@
   .inpage__subtitle {
     color: rgba(#fff, 0.48);
   }
-  
+
   .inpage__introduction {
     color: rgba(#fff, 0.64);
   }

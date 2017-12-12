@@ -14,6 +14,24 @@ export const commaSeparatedNumber = (x) => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 };
 
+export function percent (value, total, decimals = 2) {
+  let val = value / total * 100;
+  return round(val, decimals);
+}
+
+export function round (value, decimals = 2) {
+  return Math.round(value * Math.pow(10, decimals)) / Math.pow(10, decimals);
+}
+
+export function shortenLargeNumber (value, decimals = 2) {
+  if (value / 1e9 >= 1) {
+    value = round(value / 1e9, decimals) + 'B';
+  } else if (value / 1e6 >= 1) {
+    value = round(value / 1e6, decimals) + 'M';
+  }
+  return value;
+}
+
 // Ie. given 'MadDogIndustries', return 'Mad Dog Industries'
 export const separateUppercaseWords = (x) => {
   if (typeof x !== 'string') {

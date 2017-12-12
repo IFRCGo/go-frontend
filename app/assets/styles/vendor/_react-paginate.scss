@@ -66,15 +66,14 @@
     .pages__page {
       @extend .button;
       border-radius: 0;
-      background: tint($base-color, 92%);
+      background: none;
+      cursor: auto;
       opacity: 1;
     }
   }
 }
 
 .pagination-wrapper {
-  text-align: center;
-
   .pagination {
     display: inline-block;
     margin-bottom: 0;
