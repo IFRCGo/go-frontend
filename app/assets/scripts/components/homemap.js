@@ -16,15 +16,24 @@ export default class Homemap extends React.Component {
     super(props);
 
     this.state = {
+      hoverEmerType: null,
       selectedEmerType: null
     };
   }
 
   onEmergencyTypeOverOut (what, typeId) {
     if (what === 'mouseover') {
-      this.setState({ selectedEmerType: typeId });
+      this.setState({ hoverEmerType: typeId });
     } else {
+      this.setState({ hoverEmerType: null });
+    }
+  }
+
+  onEmergencyTypeClick (typeId) {
+    if (this.state.selectedEmerType === typeId) {
       this.setState({ selectedEmerType: null });
+    } else {
+      this.setState({ selectedEmerType: typeId });
     }
   }
 
@@ -40,6 +49,7 @@ export default class Homemap extends React.Component {
             <li
               key={o.id}
               className={c('emergencies__item', {'emergencies__item--selected': this.state.selectedEmerType === o.id})}
+              onClick={this.onEmergencyTypeClick.bind(this, o.id)}
               onMouseOver={this.onEmergencyTypeOverOut.bind(this, 'mouseover', o.id)}
               onMouseOut={this.onEmergencyTypeOverOut.bind(this, 'mouseout', o.id)} >
               <span className='key'>{o.name}</span>
@@ -80,7 +90,7 @@ export default class Homemap extends React.Component {
           <MapErrorBoundary>
             <Map
               geoJSON={data.geoJSON}
-              dtypeHighlight={this.state.selectedEmerType}
+              dtypeHighlight={this.state.hoverEmerType || this.state.selectedEmerType}
               receivedAt={receivedAt} />
           </MapErrorBoundary>
         </div>

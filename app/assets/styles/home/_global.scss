@@ -141,8 +141,12 @@
       margin-bottom: $global-spacing / 2;
       cursor: pointer;
 
+      &:hover {
+        background: rgba(#fff, 0.16);
+      }
+
       &--selected {
-        background: rgba(#fff, 0.1);
+        background: rgba(#fff, 0.32);
       }
 
       &:last-child {
