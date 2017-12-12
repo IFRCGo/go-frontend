@@ -366,7 +366,9 @@ class Map extends React.Component {
   }
 
   onPopoverCloseClick () {
-    this.popover.remove();
+    if (this.popover) {
+      this.popover.remove();
+    }
   }
 
   showPopover (feature) {
