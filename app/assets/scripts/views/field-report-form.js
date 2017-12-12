@@ -41,6 +41,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
+import _get from 'lodash.get';
 import _undefined from 'lodash.isundefined';
 import _set from 'lodash.set';
 import _cloneDeep from 'lodash.clonedeep';
@@ -427,7 +428,10 @@ class FieldReportForm extends React.Component {
     const planResponseMapping = [
       // [state var, mapping status, mapping value]
       ['dref', 'dref', 'dref_amount'],
-      ['emergencyAppeal', 'appeal', 'appeal_amount']
+      ['emergencyAppeal', 'appeal', 'appeal_amount'],
+      ['rdrtrits', 'rdrt', 'num_rdrt'],
+      ['fact', 'fact', 'num_fact'],
+      ['ifrcStaff', 'ifrc_staff', 'num_ifrc_staff']
     ];
 
     planResponseMapping.forEach(([src, statusMap, valueMap]) => {
@@ -460,9 +464,13 @@ class FieldReportForm extends React.Component {
         title: originalState[src].title || '',
         email: originalState[src].email || ''
       };
-    }).filter(o => Boolean(o.name))
+    }).filter(o => Boolean(o.name));
 
-    // Remove empty fields.
+    _get(originalState, 'eru', []).forEach(eru => {
+      if (_undefined(eru.type) || _undefined(eru.status) || _undefined(eru.units)) { return; }
+      state[eru.type] = eru.status;
+      state[eru.type + '_units'] = eru.units;
+    });
 
     return state;
   }
