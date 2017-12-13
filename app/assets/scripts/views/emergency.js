@@ -1,10 +1,12 @@
 'use strict';
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 import _toNumber from 'lodash.tonumber';
 import { Sticky, StickyContainer } from 'react-sticky';
+import { DateTime } from 'luxon';
 
 import { environment } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
@@ -107,6 +109,60 @@ class Emergency extends React.Component {
     );
   }
 
+  renderFieldReports () {
+    const { data } = this.props.event;
+    let content;
+
+    if (!this.props.isLogged) {
+      content = (
+        <React.Fragment>
+          <p>Login to view all the field reports</p>
+          <Link key='login' to='/login' className='button button--primary-raised-dark' title='Login'><span>Login</span></Link>
+        </React.Fragment>
+      );
+    } else {
+      if (data.field_reports && data.field_reports.length) {
+        content = (
+          <table className='table table--zebra'>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Name</th>
+                <th>Disaster Type</th>
+                <th>Region</th>
+                <th>Country</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.field_reports.map(o => (
+                <tr key={o.id}>
+                  <td>{DateTime.fromISO(o.created_at).toISODate()}</td>
+                  <td><Link to={`/reports/${o.id}`} className='link--primary' title='View Field Report'>{o.summary}</Link></td>
+                  <td>--</td>
+                  <td><a href=''className='link--primary'>--</a></td>
+                  <td><a href=''className='link--primary'>--</a></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        );
+      } else {
+        content = (
+          <p>There are no field reports to show</p>
+        );
+      }
+    }
+
+    return (
+      <Fold
+        id='field-reports'
+        title='Event Field Reports'
+        wrapperClass='event-field-reports' >
+        {content}
+      </Fold>
+    );
+  }
+
   renderContent () {
     const {
       fetched,
@@ -138,7 +194,7 @@ class Emergency extends React.Component {
                   <ul>
                     <li><a href='#overview' title='Go to Overview section'>Overview</a></li>
                     <li><a href='#graphics' title='Go to Graphics section'>Graphics</a></li>
-                    <li><a href='#file-reports' title='Go to Field Reports section'>Field Reports</a></li>
+                    <li><a href='#field-reports' title='Go to Field Reports section'>Field Reports</a></li>
                     <li><a href='#situation-reports' title='Go to Situation Reports section'>Situation Reports</a></li>
                     <li><a href='#documents' title='Go to Documents section'>Documents</a></li>
                     <li><a href='#contacts' title='Go to Contacts section'>Contacts</a></li>
@@ -185,8 +241,10 @@ class Emergency extends React.Component {
                 </ul>
               </Fold>
 
+              {this.renderFieldReports()}
+
               <Fold
-                id='file-reports'
+                id='situation-reports'
                 wrapperClass='situation-reports'
                 header={() => (
                   <div className='fold__headline'>
@@ -207,76 +265,6 @@ class Emergency extends React.Component {
                   <li><a className='link--secondary' href=''>Situation Report, 6 November 2017</a></li>
                   <li><a className='link--secondary' href=''>Situation Report, 6 November 2017</a></li>
                 </ul>
-              </Fold>
-
-              <Fold
-                id='situation-reports'
-                title='Event Field Reports'
-                wrapperClass='event-field-reports'
-                footer={() => (
-                  <a href='' className='link--primary'>View More</a>
-                )} >
-                {data.field_reports && data.field_reports.length ? (
-                  <table className='table table--zebra'>
-                    <thead>
-                      <tr>
-                        <th>Date</th>
-                        <th>Name</th>
-                        <th>Disaster Type</th>
-                        <th>Region</th>
-                        <th>Country</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {data.contacts.map(o => (
-                        <tr key={o.id}>
-                          <td>07/10/2017</td>
-                          <td><a href=''className='link--primary'>Typhoon Damrery 2017</a></td>
-                          <td>Topical Cyclone</td>
-                          <td><a href=''className='link--primary'>Asia Pacific</a></td>
-                          <td><a href=''className='link--primary'>Viet Nam</a></td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                ) : (
-                  <p>There are no field reports to show</p>
-                )}
-
-                <table className='table table--zebra'>
-                  <thead>
-                    <tr>
-                      <th>Date</th>
-                      <th>Name</th>
-                      <th>Disaster Type</th>
-                      <th>Region</th>
-                      <th>Country</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>07/10/2017</td>
-                      <td><a href=''className='link--primary'>Typhoon Damrery 2017</a></td>
-                      <td>Topical Cyclone</td>
-                      <td><a href=''className='link--primary'>Asia Pacific</a></td>
-                      <td><a href=''className='link--primary'>Viet Nam</a></td>
-                    </tr>
-                    <tr>
-                      <td>07/10/2017</td>
-                      <td><a href=''className='link--primary'>Typhoon Damrery 2017</a></td>
-                      <td>Topical Cyclone</td>
-                      <td><a href=''className='link--primary'>Asia Pacific</a></td>
-                      <td><a href=''className='link--primary'>Viet Nam</a></td>
-                    </tr>
-                    <tr>
-                      <td>07/10/2017</td>
-                      <td><a href=''className='link--primary'>Typhoon Damrery 2017</a></td>
-                      <td>Topical Cyclone</td>
-                      <td><a href=''className='link--primary'>Asia Pacific</a></td>
-                      <td><a href=''className='link--primary'>Viet Nam</a></td>
-                    </tr>
-                  </tbody>
-                </table>
               </Fold>
 
               <Fold
@@ -353,7 +341,8 @@ if (environment !== 'production') {
     _getEventById: T.func,
     match: T.object,
     location: T.object,
-    event: T.object
+    event: T.object,
+    isLogged: T.bool
   };
 }
 
@@ -365,7 +354,8 @@ const selector = (state, ownProps) => ({
     data: {},
     fetching: false,
     fetched: false
-  })
+  }),
+  isLogged: !!state.user.data.token
 });
 
 const dispatcher = (dispatch) => ({
