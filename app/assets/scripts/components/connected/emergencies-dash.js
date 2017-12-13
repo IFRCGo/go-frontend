@@ -43,7 +43,7 @@ class EmergenciesDash extends React.Component {
               <h1 className='inpage__title'>Emergencies</h1>
               <div className="inpage__introduction--small">
                 <Stats list={list} />
-                <Charts aggregate={aggregate} />
+                <Charts list={list} aggregate={aggregate} />
               </div>
             </div>
           </div>

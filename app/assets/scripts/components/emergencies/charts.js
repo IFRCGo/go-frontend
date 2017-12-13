@@ -5,8 +5,30 @@ import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from 'rec
 import { DateTime } from 'luxon';
 
 import { environment } from '../../config';
+import Progress from '../progress';
 
 export default class HomeCharts extends React.Component {
+  renderEmergencies () {
+    const { list } = this.props;
+    if (!list.fetched) return;
+    const emerg = list.data.emergenciesByType;
+    const max = Math.max.apply(Math, emerg.map(o => o.items.length));
+
+    return (
+      <div className='emergencies'>
+        <h2>Emergencies by Type</h2>
+        <dl className='dl--horizontal'>
+          {emerg.map(o => (
+            <React.Fragment key={o.id}>
+              <dt>{o.name}</dt>
+              <dd><Progress value={o.items.length} max={max}><span>100</span></Progress></dd>
+            </React.Fragment>
+          ))}
+        </dl>
+      </div>
+    );
+  }
+
   renderChart (data, unit) {
     const tickFormatter = (date) => DateTime.fromISO(date).toFormat('MMM');
     return (
@@ -45,9 +67,8 @@ export default class HomeCharts extends React.Component {
     return (
       <div className='stats-chart'>
         <h1 className='visually-hidden'>DREFS and Appeals over time</h1>
-        <div>
-          {this.renderByMonth()}
-        </div>
+        {this.renderByMonth()}
+        {this.renderEmergencies()}
       </div>
     );
   }
@@ -55,6 +76,7 @@ export default class HomeCharts extends React.Component {
 
 if (environment !== 'production') {
   HomeCharts.propTypes = {
-    aggregate: T.object
+    aggregate: T.object,
+    list: T.object
   };
 }
