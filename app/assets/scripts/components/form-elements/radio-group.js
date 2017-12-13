@@ -15,6 +15,7 @@ export default function FormRadioGroup (props) {
     selectedOption,
     classWrapper,
     classLabel,
+    inline,
     children,
     onChange
   } = props;
@@ -35,6 +36,7 @@ export default function FormRadioGroup (props) {
             name={name}
             id={`${name}-${o.value}`}
             value={o.value}
+            inline={inline}
             checked={selectedOption === o.value}
             onChange={onChange}
             description={o.description} />
@@ -57,6 +59,7 @@ if (process.env.NODE_ENV !== 'production') {
     selectedOption: T.string,
     classWrapper: T.string,
     classLabel: T.string,
+    inline: T.bool,
     checked: T.bool,
     children: T.node,
     onChange: T.func

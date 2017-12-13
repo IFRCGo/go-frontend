@@ -33,3 +33,7 @@ export function isValidEmail (email) {
 export function isRedCrossEmail (email) {
   return isValidEmail(email) && email.indexOf('@redcross.com') !== -1;
 }
+
+export function finishedFetch (curr, next, prop) {
+  return _get(curr, `${prop}.fetching`, false) && !_get(next, `${prop}.fetching`, false);
+}

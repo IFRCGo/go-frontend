@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import UserMenu from './connected/user-menu';
 
-class Header extends React.Component {
+class Header extends React.PureComponent {
   render () {
     return (
       <header className='page__header' role='banner'>
@@ -18,7 +18,7 @@ class Header extends React.Component {
             </h1>
           </div>
           <nav className='page__meta-nav' role='navigation'>
-            <Link to='/reports/new' className='button button--small button--primary-raised-dark' title='Create Field Report'><span>Create Field Report</span></Link>
+            <Link to='/reports/new' className='button button--small button--primary-filled' title='Create Field Report'><span>Create Field Report</span></Link>
             <UserMenu />
           </nav>
         </div>

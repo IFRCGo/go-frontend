@@ -1,5 +1,7 @@
 'use strict';
-import { fetchJSON, postJSON, withToken } from '../utils/network';
+import { fetchJSON, fetchJSONRecursive, postJSON, withToken } from '../utils/network';
+import { stringify as buildAPIQS } from 'qs';
+import { DateTime } from 'luxon';
 
 export const TOKEN = 'TOKEN';
 export function getAuthToken (username, password) {
@@ -24,6 +26,35 @@ export function getFieldReportById (id) {
 export const CREATE_FIELD_REPORT = 'CREATE_FIELD_REPORT';
 export function createFieldReport (payload) {
   return postJSON('api/v1/field_report/', CREATE_FIELD_REPORT, payload, withToken());
+}
+
+export const GET_SURGE_ALERTS = 'GET_SURGE_ALERTS';
+export function getSurgeAlerts (page = 1, filters = {}) {
+  filters.limit = filters.limit || 10;
+  filters.offset = filters.limit * (page - 1);
+  const f = buildAPIQS(filters);
+
+  return fetchJSON(`/api/v1/surge_alert/?${f}`, GET_SURGE_ALERTS, withToken());
+}
+
+export const GET_APPEALS_LIST = 'GET_APPEALS_LIST';
+export function getAppealsList () {
+  const f = buildAPIQS({
+    end_date__gt: DateTime.local().toISODate(),
+    limit: 1000
+  });
+  return fetchJSONRecursive(`api/v1/appeal/?${f}`, GET_APPEALS_LIST, withToken());
+}
+
+export const GET_AGGREGATE_APPEALS = 'GET_AGGREGATE_APPEALS';
+export function getAggregateAppeals (date, unit) {
+  const f = buildAPIQS({
+    start_date: date,
+    model_type: 'appeal',
+    unit
+  });
+
+  return fetchJSON(`api/v1/aggregate/?${f}`, GET_AGGREGATE_APPEALS, withToken(), {aggregationUnit: unit});
 }
 
 export const UPDATE_SUBSCRIPTIONS = 'UPDATE_SUBSCRIPTIONS';
