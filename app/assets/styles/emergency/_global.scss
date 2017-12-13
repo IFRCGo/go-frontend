@@ -4,6 +4,36 @@
   }
 }
 
+.inpage__headline-stats {
+  @include column(6/12);
+}
+
+.inpage__headline-charts {
+  @include column(5/12);
+  margin-left: $global-spacing * 2;
+  .emergencies {
+    @include column(6/12);
+    h2 {
+      font-size: 1rem;
+      font-family: $base-font-family;
+      font-weight: $base-font-bold;
+    }
+    .progress-bar {
+      background-color: transparent;
+    }
+    .progress-bar__value {
+      background-color: $primary-color;
+    }
+    dt {
+      font-size: 0.875rem;
+      color: rgba($base-color, 0.48);
+    }
+  }
+  .chart {
+    @include column(6/12);
+  }
+}
+
 .introduction-nav {
   list-style: none;
   margin-left: 0;

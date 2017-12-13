@@ -140,7 +140,18 @@
 
 /* Inpage Header
    ========================================================================== */
-.inpage__headline-content {
+.inpage__headline-stats {
+  @include column(6/12);
+}
+
+.inpage__headline-charts {
+  @include column(6/12);
+  .emergencies {
+    @include column(5/12);
+  }
+  .chart {
+    @include column(5/12);
+  }
 }
 
 .header-stats {
