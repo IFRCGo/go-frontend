@@ -1,10 +1,32 @@
 'use strict';
 import React from 'react';
+import { connect } from 'react-redux';
+import { DateTime } from 'luxon';
+import { PropTypes as T } from 'prop-types';
 
 import App from './app';
 import EmergenciesDash from '../components/connected/emergencies-dash';
+import { getEmergenciesList, getAggregateEmergencies } from '../actions';
+import { finishedFetch } from '../utils/utils';
+import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
+import { environment } from '../config';
 
-export default class Emergencies extends React.Component {
+class Emergencies extends React.Component {
+  componentDidMount () {
+    showGlobalLoading(2);
+    this.props._getEmergenciesList();
+    this.props._getAggregateEmergencies(DateTime.local().minus({months: 11}).startOf('day').toISODate(), 'month');
+  }
+
+  componentWillReceiveProps (nextProps) {
+    if (finishedFetch(this.props, nextProps, 'aggregate.month')) {
+      hideGlobalLoading();
+    }
+    if (finishedFetch(this.props, nextProps, 'list')) {
+      hideGlobalLoading();
+    }
+  }
+
   render () {
     return (
       <App className='page--emergencies'>
@@ -15,6 +37,7 @@ export default class Emergencies extends React.Component {
             <div className='map'>
             </div>
             <div className='inner'>
+
               <section className='fold'>
                 <div className='inner'>
                   <div className='fold__header'>
@@ -66,6 +89,7 @@ export default class Emergencies extends React.Component {
                   </div>
                 </div>
               </section>
+
             </div>
           </div>
         </section>
@@ -73,3 +97,27 @@ export default class Emergencies extends React.Component {
     );
   }
 }
+
+if (environment !== 'production') {
+  Emergencies.propTypes = {
+    _getEmergenciesList: T.func,
+    _getAggregateEmergencies: T.func,
+    list: T.object,
+    aggregate: T.object
+  };
+}
+
+// /////////////////////////////////////////////////////////////////// //
+// Connect functions
+
+const selector = (state) => ({
+  list: state.emergencies.list,
+  aggregate: state.emergencies.aggregate
+});
+
+const dispatcher = (dispatch) => ({
+  _getAggregateEmergencies: (...args) => dispatch(getAggregateEmergencies(...args)),
+  _getEmergenciesList: () => dispatch(getEmergenciesList())
+});
+
+export default connect(selector, dispatcher)(Emergencies);
