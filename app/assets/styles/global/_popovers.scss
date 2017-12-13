@@ -136,7 +136,7 @@ a.popover__contents {
 
 [class^="poa-"],
 [class*=" poa-"] {
-  @extend .button, .button--small, .button--primary-plain, .button--text-hidden;
+  @extend .button, .button--small, .button--base-plain, .button--text-hidden;
 }
 
 .poa-xmark::before {

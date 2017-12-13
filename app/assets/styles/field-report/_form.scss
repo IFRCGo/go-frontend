@@ -230,6 +230,7 @@
 }
 
 .stepper {
+  @include column(12/12);
   display: flex;
   flex-flow: column wrap;
   list-style: none;
@@ -342,7 +343,7 @@
 /* Buttons */
 
 .button--add-item {
-  @extend .button, .button--secondary-raised-light;
+  @extend .button, .button--secondary-light;
 
   &::before {
     @extend %collecticon-sm-plus;
@@ -350,7 +351,7 @@
 }
 
 .button--remove-source {
-  @extend .button, .button--base-raised-light;
+  @extend .button, .button--base-glass;
   &::before {
     @extend %collecticon-trash-bin;
   }
