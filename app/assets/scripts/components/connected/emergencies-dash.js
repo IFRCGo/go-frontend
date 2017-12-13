@@ -10,7 +10,7 @@ import Charts from '../emergencies/charts';
 class EmergenciesDash extends React.Component {
   render () {
     const {
-      list,
+      lastMonth,
       aggregate
     } = this.props;
 
@@ -21,8 +21,8 @@ class EmergenciesDash extends React.Component {
             <div className='inpage__headline-content'>
               <h1 className='inpage__title'>Emergencies</h1>
               <div className="inpage__introduction--small">
-                <Stats list={list} />
-                <Charts list={list} aggregate={aggregate} />
+                <Stats lastMonth={lastMonth} />
+                <Charts lastMonth={lastMonth} aggregate={aggregate} />
               </div>
             </div>
           </div>
@@ -34,7 +34,7 @@ class EmergenciesDash extends React.Component {
 
 if (environment !== 'production') {
   EmergenciesDash.propTypes = {
-    list: T.object,
+    lastMonth: T.object,
     aggregate: T.object
   };
 }
@@ -43,7 +43,7 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state) => ({
-  list: state.emergencies.list,
+  lastMonth: state.emergencies.lastMonth,
   aggregate: state.emergencies.aggregate
 });
 

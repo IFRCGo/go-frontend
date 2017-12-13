@@ -10,7 +10,7 @@ export default class Homestats extends React.Component {
     const {
       data,
       fetched
-    } = this.props.list;
+    } = this.props.lastMonth;
 
     if (!fetched) return null;
 
@@ -49,6 +49,6 @@ export default class Homestats extends React.Component {
 
 if (environment !== 'production') {
   Homestats.propTypes = {
-    list: T.object
+    lastMonth: T.object
   };
 }

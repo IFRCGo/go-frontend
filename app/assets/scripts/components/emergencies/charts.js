@@ -9,9 +9,9 @@ import Progress from '../progress';
 
 export default class HomeCharts extends React.Component {
   renderEmergencies () {
-    const { list } = this.props;
-    if (!list.fetched) return;
-    const emerg = list.data.emergenciesByType;
+    const { lastMonth } = this.props;
+    if (!lastMonth.fetched) return;
+    const emerg = lastMonth.data.emergenciesByType;
     const max = Math.max.apply(Math, emerg.map(o => o.items.length));
 
     return (
@@ -77,6 +77,6 @@ export default class HomeCharts extends React.Component {
 if (environment !== 'production') {
   HomeCharts.propTypes = {
     aggregate: T.object,
-    list: T.object
+    lastMonth: T.object
   };
 }

@@ -12,9 +12,9 @@ const listInitialState = {
 
 function list (state = listInitialState, action) {
   switch (action.type) {
-    case 'GET_DISASTERS_LIST_INFLIGHT':
+    case 'GET_EMERGENCIES_LIST_INFLIGHT':
       return Object.assign({}, state, { error: null, fetching: true, fetched: false });
-    case 'GET_DISASTERS_LIST_FAILED':
+    case 'GET_EMERGENCIES_LIST_FAILED':
       state = Object.assign({}, state, {
         fetching: false,
         fetched: true,
@@ -22,7 +22,38 @@ function list (state = listInitialState, action) {
         error: action.error
       });
       break;
-    case 'GET_DISASTERS_LIST_SUCCESS':
+    case 'GET_EMERGENCIES_LIST_SUCCESS':
+      state = Object.assign({}, state, {
+        fetching: false,
+        fetched: true,
+        receivedAt: action.receivedAt,
+        data: action.data
+      });
+      break;
+  }
+  return state;
+}
+
+const lastMonthInitialState = {
+  fetching: false,
+  fetched: false,
+  receivedAt: null,
+  data: {}
+};
+
+function lastMonth (state = lastMonthInitialState, action) {
+  switch (action.type) {
+    case 'GET_LAST_MO_EMERGENCIES_INFLIGHT':
+      return Object.assign({}, state, { error: null, fetching: true, fetched: false });
+    case 'GET_LAST_MO_EMERGENCIES_FAILED':
+      state = Object.assign({}, state, {
+        fetching: false,
+        fetched: true,
+        receivedAt: action.receivedAt,
+        error: action.error
+      });
+      break;
+    case 'GET_LAST_MO_EMERGENCIES_SUCCESS':
       state = Object.assign({}, state, {
         fetching: false,
         fetched: true,
@@ -96,5 +127,6 @@ function aggregate (state = aggregateInitialState, action) {
 
 export default combineReducers({
   list,
+  lastMonth,
   aggregate
 });

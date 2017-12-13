@@ -6,7 +6,7 @@ import { PropTypes as T } from 'prop-types';
 
 import App from './app';
 import EmergenciesDash from '../components/connected/emergencies-dash';
-import { getEmergenciesList, getAggregateEmergencies } from '../actions';
+import { getLastMonthsEmergencies, getAggregateEmergencies } from '../actions';
 import { finishedFetch } from '../utils/utils';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { environment } from '../config';
@@ -14,15 +14,16 @@ import { environment } from '../config';
 class Emergencies extends React.Component {
   componentDidMount () {
     showGlobalLoading(2);
-    this.props._getEmergenciesList();
+    this.props._getLastMonthsEmergencies();
     this.props._getAggregateEmergencies(DateTime.local().minus({months: 11}).startOf('day').toISODate(), 'month');
   }
 
   componentWillReceiveProps (nextProps) {
+    console.log(nextProps.lastMonth);
     if (finishedFetch(this.props, nextProps, 'aggregate.month')) {
       hideGlobalLoading();
     }
-    if (finishedFetch(this.props, nextProps, 'list')) {
+    if (finishedFetch(this.props, nextProps, 'lastMonth')) {
       hideGlobalLoading();
     }
   }
@@ -100,9 +101,9 @@ class Emergencies extends React.Component {
 
 if (environment !== 'production') {
   Emergencies.propTypes = {
-    _getEmergenciesList: T.func,
+    _getLastMonthsEmergencies: T.func,
     _getAggregateEmergencies: T.func,
-    list: T.object,
+    lastMonth: T.object,
     aggregate: T.object
   };
 }
@@ -111,13 +112,13 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state) => ({
-  list: state.emergencies.list,
+  lastMonth: state.emergencies.lastMonth,
   aggregate: state.emergencies.aggregate
 });
 
 const dispatcher = (dispatch) => ({
   _getAggregateEmergencies: (...args) => dispatch(getAggregateEmergencies(...args)),
-  _getEmergenciesList: () => dispatch(getEmergenciesList())
+  _getLastMonthsEmergencies: () => dispatch(getLastMonthsEmergencies())
 });
 
 export default connect(selector, dispatcher)(Emergencies);
