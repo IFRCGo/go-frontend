@@ -82,10 +82,11 @@ class AlertsTable extends React.Component {
   renderContent () {
     const {
       data,
-      fetched
+      fetched,
+      error
     } = this.props.surgeAlerts;
 
-    if (!fetched) { return null; }
+    if (!fetched || error) { return null; }
 
     if (!data.objects.length) {
       return (
