@@ -266,8 +266,10 @@ class FieldReportForm extends React.Component {
         const message = nextProps.fieldReportForm.error.error_message || 'Could not submit field report';
         showAlert('danger', <p><strong>Error:</strong> {message}</p>, true, 4500);
       } else {
+        const { history } = this.props;
         const { id } = nextProps.fieldReportForm.data;
-        showAlert('success', <p><Link to={`/reports/${id}`}>Field report created</Link></p>, true, 9000);
+        showAlert('success', <p>Field report created, redirecting...</p>, true, 2000);
+        setTimeout(() => history.push(`/reports/${id}`), 2000);
       }
     }
   }
