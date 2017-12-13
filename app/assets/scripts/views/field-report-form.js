@@ -11,7 +11,6 @@ import c from 'classnames';
 import Select from 'react-select';
 import Ajv from 'ajv';
 import ajvKeywords from 'ajv-keywords';
-import { Link } from 'react-router-dom';
 
 import { environment, api } from '../config';
 import {
@@ -1058,7 +1057,8 @@ if (environment !== 'production') {
   FieldReportForm.propTypes = {
     _createFieldReport: T.func,
     fieldReportForm: T.object,
-    user: T.object
+    user: T.object,
+    history: T.object
   };
 }
 
