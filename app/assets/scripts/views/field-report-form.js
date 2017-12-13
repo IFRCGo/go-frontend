@@ -1057,8 +1057,8 @@ class FieldReportForm extends React.Component {
                 {this.renderErrorSummary()}
 
                 <div className='form__actions'>
-                  <button type='button' className={c('button button--secondary-plain', {disabled: this.state.step <= 1})} title='Go back to previous step' onClick={this.onStepBackClick}>Back</button>
-                  <button type='submit' className='button button--secondary-raised-dark' title='Save and continue'>Save and continue</button>
+                  <button type='button' className={c('button button--secondary-bounded', {disabled: this.state.step <= 1})} title='Go back to previous step' onClick={this.onStepBackClick}>Back</button>
+                  <button type='submit' className='button button--secondary-filled' title='Save and continue'>Save and continue</button>
                 </div>
               </form>
             </div>
@@ -1252,7 +1252,7 @@ class SourceEstimation extends React.Component {
                 {values.length > 1 ? (
                   <button type='button' className='button--remove-source' title='Delete Source' onClick={this.onRemoveSource.bind(this, idx)}>Delete source</button>
                 ) : (
-                  <button type='button' className='button--add-item button--achromic-glass' title='Add new source' onClick={this.onAddSource.bind(this)}>Add another source</button>
+                  <button type='button' className='button--add-item button--secondary-light' title='Add new source' onClick={this.onAddSource.bind(this)}>Add another source</button>
                 )}
               </div>
             </div>
@@ -1540,7 +1540,7 @@ class Eru extends React.Component {
             <label className='form__label'>{label}</label>
           </div>
           <div className='form__inner-actions'>
-            <button type='button' className={c('button--add-item button--achromic-glass', {disabled: !this.canAdd()})} title='Add new ERU' onClick={this.onAddSource.bind(this)}>Add another ERU</button>
+            <button type='button' className={c('button--add-item button--secondary-light', {disabled: !this.canAdd()})} title='Add new ERU' onClick={this.onAddSource.bind(this)}>Add another ERU</button>
           </div>
         </div>
         <div className='form__inner-body'>
