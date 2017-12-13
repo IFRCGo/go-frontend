@@ -1,8 +1,7 @@
 'use strict';
 import { combineReducers } from 'redux';
 
-import { get } from '../utils/utils';
-import { groupByDisasterType } from '../utils/utils';
+import { get, groupByDisasterType } from '../utils/utils';
 
 const listInitialState = {
   fetching: false,
