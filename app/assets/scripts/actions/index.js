@@ -61,3 +61,8 @@ export const UPDATE_SUBSCRIPTIONS = 'UPDATE_SUBSCRIPTIONS';
 export function updateSubscriptions (payload) {
   return postJSON('notifications/', UPDATE_SUBSCRIPTIONS, payload, withToken());
 }
+
+export const GET_EVENT = 'GET_EVENT';
+export function getEventById (id) {
+  return fetchJSON(`api/v1/event/${id}/`, GET_EVENT, withToken(), { id });
+}
