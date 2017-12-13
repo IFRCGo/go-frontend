@@ -16,15 +16,24 @@ export default class Homemap extends React.Component {
     super(props);
 
     this.state = {
+      hoverEmerType: null,
       selectedEmerType: null
     };
   }
 
   onEmergencyTypeOverOut (what, typeId) {
     if (what === 'mouseover') {
-      this.setState({ selectedEmerType: typeId });
+      this.setState({ hoverEmerType: typeId });
     } else {
+      this.setState({ hoverEmerType: null });
+    }
+  }
+
+  onEmergencyTypeClick (typeId) {
+    if (this.state.selectedEmerType === typeId) {
       this.setState({ selectedEmerType: null });
+    } else {
+      this.setState({ selectedEmerType: typeId });
     }
   }
 
@@ -34,12 +43,13 @@ export default class Homemap extends React.Component {
 
     return (
       <div className='emergencies'>
-        <h2>Emergencies by Type</h2>
+        <h2 className='heading--xsmall'>Emergencies by Type</h2>
         <ul className='emergencies__list'>
           {emerg.map(o => (
             <li
               key={o.id}
               className={c('emergencies__item', {'emergencies__item--selected': this.state.selectedEmerType === o.id})}
+              onClick={this.onEmergencyTypeClick.bind(this, o.id)}
               onMouseOver={this.onEmergencyTypeOverOut.bind(this, 'mouseover', o.id)}
               onMouseOut={this.onEmergencyTypeOverOut.bind(this, 'mouseout', o.id)} >
               <span className='key'>{o.name}</span>
@@ -80,7 +90,7 @@ export default class Homemap extends React.Component {
           <MapErrorBoundary>
             <Map
               geoJSON={data.geoJSON}
-              dtypeHighlight={this.state.selectedEmerType}
+              dtypeHighlight={this.state.hoverEmerType || this.state.selectedEmerType}
               receivedAt={receivedAt} />
           </MapErrorBoundary>
         </div>
@@ -292,6 +302,19 @@ class Map extends React.Component {
       this.setupData();
     });
 
+    this.theMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
+
+    // Disable map rotation using right click + drag.
+    this.theMap.dragRotate.disable();
+
+    // Disable map rotation using touch rotation gesture.
+    this.theMap.touchZoomRotate.disableRotation();
+
+    // Remove compass.
+    document.querySelector('.mapboxgl-ctrl .mapboxgl-ctrl-compass').remove();
+
+    // Event listeners.
+
     this.theMap.on('click', 'appeals', e => {
       this.showPopover(e.features[0]);
     });
@@ -366,7 +389,9 @@ class Map extends React.Component {
   }
 
   onPopoverCloseClick () {
-    this.popover.remove();
+    if (this.popover) {
+      this.popover.remove();
+    }
   }
 
   showPopover (feature) {
@@ -396,16 +421,6 @@ class Map extends React.Component {
       <figure className='map-vis'>
         <div className='map-vis__holder' ref='map'/>
         <figcaption className='map-vis__legend map-vis__legend--bottom-right legend'>
-          <dl className='legend__dl legend__dl--colors'>
-            <dt className='color color--red'>Red</dt>
-            <dd>Emergency Appeal</dd>
-            <dt className='color color--yellow'>Yellow</dt>
-            <dd>DREF</dd>
-            <dt className='color color--grey'>Grey</dt>
-            <dd>Movement Response</dd>
-          </dl>
-        </figcaption>
-        <figcaption className='map-vis__legend map-vis__legend--top-right legend'>
           <form className='form'>
             <FormRadioGroup
               label='Scale points by'
@@ -425,6 +440,17 @@ class Map extends React.Component {
               selectedOption={this.state.scaleBy}
               onChange={this.onFieldChange.bind(this, 'scaleBy')} />
           </form>
+          <div className='key'>
+            <label className='form__label'>Key</label>
+            <dl className='legend__dl legend__dl--colors'>
+              <dt className='color color--red'>Red</dt>
+              <dd>Emergency Appeal</dd>
+              <dt className='color color--yellow'>Yellow</dt>
+              <dd>DREF</dd>
+              <dt className='color color--grey'>Grey</dt>
+              <dd>Movement Response</dd>
+            </dl>
+          </div>
         </figcaption>
       </figure>
     );

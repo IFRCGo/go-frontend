@@ -55,7 +55,7 @@
 
       .pages__page {
         @extend .button, .button--base-plain;
-        border-radius: 0;
+        border-radius: 5px;
       }
     }
   }

@@ -156,3 +156,16 @@ a.popover__contents {
     }
   }
 }
+
+.recharts-tooltip-wrapper {
+  dd {
+    margin-bottom: 0;
+    font-weight: $base-font-regular;
+    font-size: 0.87rem;
+  }
+  dt {
+    margin-bottom: $global-spacing/2;
+    font-weight: $base-font-light;
+    font-size: 1rem;
+  }
+}
