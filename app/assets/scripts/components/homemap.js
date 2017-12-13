@@ -43,7 +43,7 @@ export default class Homemap extends React.Component {
 
     return (
       <div className='emergencies'>
-        <h2>Emergencies by Type</h2>
+        <h2 className='heading--xsmall'>Emergencies by Type</h2>
         <ul className='emergencies__list'>
           {emerg.map(o => (
             <li
@@ -302,7 +302,7 @@ class Map extends React.Component {
       this.setupData();
     });
 
-    this.theMap.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    this.theMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
     // Disable map rotation using right click + drag.
     this.theMap.dragRotate.disable();
@@ -421,16 +421,6 @@ class Map extends React.Component {
       <figure className='map-vis'>
         <div className='map-vis__holder' ref='map'/>
         <figcaption className='map-vis__legend map-vis__legend--bottom-right legend'>
-          <dl className='legend__dl legend__dl--colors'>
-            <dt className='color color--red'>Red</dt>
-            <dd>Emergency Appeal</dd>
-            <dt className='color color--yellow'>Yellow</dt>
-            <dd>DREF</dd>
-            <dt className='color color--grey'>Grey</dt>
-            <dd>Movement Response</dd>
-          </dl>
-        </figcaption>
-        <figcaption className='map-vis__legend map-vis__legend--top-right legend'>
           <form className='form'>
             <FormRadioGroup
               label='Scale points by'
@@ -450,6 +440,17 @@ class Map extends React.Component {
               selectedOption={this.state.scaleBy}
               onChange={this.onFieldChange.bind(this, 'scaleBy')} />
           </form>
+          <div className='key'>
+            <label className='form__label'>Key</label>
+            <dl className='legend__dl legend__dl--colors'>
+              <dt className='color color--red'>Red</dt>
+              <dd>Emergency Appeal</dd>
+              <dt className='color color--yellow'>Yellow</dt>
+              <dd>DREF</dd>
+              <dt className='color color--grey'>Grey</dt>
+              <dd>Movement Response</dd>
+            </dl>
+          </div>
         </figcaption>
       </figure>
     );
@@ -471,7 +472,7 @@ class MapPopover extends React.Component {
         <div className='popover__contents'>
           <header className='popover__header'>
             <div className='popover__headline'>
-              <h1 className='popover__title'>{this.props.title}</h1>
+              <a className='link--primary'>{this.props.title}</a>
             </div>
             <div className='popover__actions actions'>
               <ul className='actions__menu'>
@@ -480,13 +481,13 @@ class MapPopover extends React.Component {
             </div>
           </header>
           <div className='popover__body'>
-            <dl className='dl--horizontal'>
-              <dt>People Affected</dt>
+            <dl className='popover__details'>
               <dd>{this.props.numBeneficiaries}</dd>
-              <dt>Amount Requested</dt>
+              <dt>People Affected</dt>
               <dd>{this.props.amountRequested}</dd>
-              <dt>Amount Funded</dt>
+              <dt>Amount Requested</dt>
               <dd>{this.props.amountFunded}</dd>
+              <dt>Amount Funded</dt>
             </dl>
           </div>
         </div>

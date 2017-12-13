@@ -39,7 +39,6 @@ a.popover__contents {
 .popover__header {
   display: flex;
   width: 100%;
-  margin-bottom: $global-spacing;
 
   > *:last-child {
     margin-bottom: 0;
@@ -89,18 +88,20 @@ a.popover__contents {
 
   dt {
     width: 68%;
+    font-size: 0.875rem;
+    margin-bottom: $global-spacing;
   }
 
   dd {
+    font-size: 1.25rem;
     width: 32%;
-    margin-bottom: $global-spacing / 4;
+    margin-bottom: 0;
   }
   
   dd + dd {
     margin-left: 68%;
   }
 }
-
 
 /* popover footer
    ========================================================================== */
@@ -135,7 +136,7 @@ a.popover__contents {
 
 [class^="poa-"],
 [class*=" poa-"] {
-  @extend .button, .button--small, .button--primary-plain, .button--text-hidden;
+  @extend .button, .button--small, .button--base-plain, .button--text-hidden;
 }
 
 .poa-xmark::before {
@@ -153,5 +154,18 @@ a.popover__contents {
     > *:last-child {
       margin-bottom: 0;
     }
+  }
+}
+
+.recharts-tooltip-wrapper {
+  dd {
+    margin-bottom: 0;
+    font-weight: $base-font-regular;
+    font-size: 0.87rem;
+  }
+  dt {
+    margin-bottom: $global-spacing/2;
+    font-weight: $base-font-light;
+    font-size: 1rem;
   }
 }
