@@ -1,9 +1,9 @@
 'use strict';
 import { combineReducers } from 'redux';
 import _toNumber from 'lodash.tonumber';
-import _groupBy from 'lodash.groupby';
 
 import { getCentroid } from '../utils/country-centroids';
+import { groupByDisasterType } from '../utils/utils';
 
 const appealsListInitialState = {
   fetching: false,
@@ -65,15 +65,7 @@ function appealsList (state = appealsListInitialState, action) {
       }, struct);
 
       // Emergencies Types.
-      let emergenciesByType = _groupBy(objs, 'dtype.id');
-      // Convert to array.
-      emergenciesByType = Object.keys(emergenciesByType).map(key => {
-        return {
-          id: key,
-          name: emergenciesByType[key][0].dtype.name,
-          items: emergenciesByType[key]
-        };
-      }).sort((a, b) => a.name > b.name);
+      const emergenciesByType = groupByDisasterType(objs);
 
       // Features for the map.
       const geoJSON = {

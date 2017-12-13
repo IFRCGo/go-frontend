@@ -1,6 +1,8 @@
 'use strict';
 import { combineReducers } from 'redux';
+
 import { get } from '../utils/utils';
+import { groupByDisasterType } from '../utils/utils';
 
 const listInitialState = {
   fetching: false,
@@ -37,6 +39,7 @@ function createStoreFromRaw (raw) {
   const count = raw.meta.total_count;
   const records = get(raw, 'objects', []);
   const numAffected = records.reduce((acc, next) => acc + get(next, 'num_affected', 0), 0);
+  const emergenciesByType = groupByDisasterType(records);
   let totalAppeals = 0;
   let totalAppealsFunding = 0;
   records.forEach(record => {
@@ -51,6 +54,7 @@ function createStoreFromRaw (raw) {
     totalAppeals,
     totalAppealsFunding,
     count,
+    emergenciesByType,
     records
   };
 }
