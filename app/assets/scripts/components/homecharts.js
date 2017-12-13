@@ -5,19 +5,41 @@ import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from 'rec
 import { DateTime } from 'luxon';
 
 import { environment } from '../config';
+import BlockLoading from './block-loading';
 
 export default class HomeCharts extends React.Component {
   renderChart (data, unit) {
     let tickFormatter;
+    let contentDateFormatter;
 
     switch (unit) {
       case 'month':
         tickFormatter = (date) => DateTime.fromISO(date).toFormat('MMM');
+        contentDateFormatter = (date) => DateTime.fromISO(date).toFormat('MMMM yyyy');
         break;
       case 'year':
         tickFormatter = (date) => DateTime.fromISO(date).toFormat('yyyy');
+        contentDateFormatter = tickFormatter;
         break;
     }
+
+    const contentFormatter = (payload) => {
+      if (!payload.payload[0]) { return null; }
+
+      const item = payload.payload[0].payload;
+      return (
+        <article className='chart-tooltip'>
+          <div className='chart-tooltip__contents'>
+            <dl>
+              <dd>Date</dd>
+              <dt>{contentDateFormatter(item.timespan)}</dt>
+              <dd>Total</dd>
+              <dt>{item.count}</dt>
+            </dl>
+          </div>
+        </article>
+      );
+    };
 
     return (
       <ResponsiveContainer>
@@ -25,7 +47,7 @@ export default class HomeCharts extends React.Component {
           <XAxis tickFormatter={tickFormatter} dataKey='timespan' axisLine={false} padding={{ left: 16 }} />
           <YAxis axisLine={false} tickLine={false} width={32} padding={{ bottom: 16 }} />
           <Line type="monotone" dataKey="count" stroke="#C22A26" />
-          <Tooltip />
+          <Tooltip content={contentFormatter}/>
         </LineChart>
       </ResponsiveContainer>
     );
@@ -77,14 +99,34 @@ export default class HomeCharts extends React.Component {
     );
   }
 
+  renderLoading () {
+    if (this.props.aggregate.fetching) {
+      return <BlockLoading/>;
+    }
+  }
+
+  renderError () {
+    if (this.props.aggregate.error) {
+      return <p>Oh no! An error ocurred getting the data.</p>;
+    }
+  }
+
+  renderContent () {
+    return (
+      <div>
+        {this.renderByMonth()}
+        {this.renderByYear()}
+      </div>
+    );
+  }
+
   render () {
     return (
       <div className='stats-chart'>
         <h1 className='visually-hidden'>DREFS and Appeals over time</h1>
-        <div>
-          {this.renderByMonth()}
-          {this.renderByYear()}
-        </div>
+        {this.renderLoading()}
+        {this.renderError()}
+        {this.renderContent()}
       </div>
     );
   }

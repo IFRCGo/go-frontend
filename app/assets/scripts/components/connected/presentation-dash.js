@@ -3,34 +3,71 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { DateTime } from 'luxon';
+import c from 'classnames';
 
 import { environment } from '../../config';
 import { getAppealsList, getAggregateAppeals } from '../../actions';
-import { finishedFetch } from '../../utils/utils';
-
-import { showGlobalLoading, hideGlobalLoading } from '../global-loading';
 
 import Homestats from '../homestats';
 import Homemap from '../homemap';
 import HomeCharts from '../homecharts';
 
+const enterFullscreen = () => {
+  let i = document.querySelector('#presentation');
+  if (i.requestFullscreen) {
+    i.requestFullscreen();
+  } else if (i.webkitRequestFullscreen) {
+    i.webkitRequestFullscreen();
+  } else if (i.mozRequestFullScreen) {
+    i.mozRequestFullScreen();
+  } else if (i.msRequestFullscreen) {
+    i.msRequestFullscreen();
+  }
+};
+
+const exitFullscreen = () => {
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.webkitExitFullscreen) {
+    document.webkitExitFullscreen();
+  } else if (document.mozCancelFullScreen) {
+    document.mozCancelFullScreen();
+  } else if (document.msExitFullscreen) {
+    document.msExitFullscreen();
+  }
+};
+
+const isFullscreen = () => {
+  return document.fullscreenElement ||
+    document.webkitFullscreenElement ||
+    document.mozFullScreenElement ||
+    document.msFullscreenElement;
+};
+
 class PresentationDash extends React.Component {
+  constructor (props) {
+    super(props);
+
+    this.state = {
+      fullscreen: false
+    };
+
+    this.toggleFullscreen = this.toggleFullscreen.bind(this);
+  }
+
   componentDidMount () {
-    showGlobalLoading(3);
     this.props._getAppealsList();
     this.props._getAggregateAppeals(DateTime.local().minus({months: 11}).startOf('day').toISODate(), 'month');
     this.props._getAggregateAppeals('1990-01-01', 'year');
   }
 
-  componentWillReceiveProps (nextProps) {
-    if (finishedFetch(this.props, nextProps, 'appealsList')) {
-      hideGlobalLoading();
-    }
-    if (finishedFetch(this.props, nextProps, 'aggregate.month')) {
-      hideGlobalLoading();
-    }
-    if (finishedFetch(this.props, nextProps, 'aggregate.year')) {
-      hideGlobalLoading();
+  toggleFullscreen () {
+    if (isFullscreen()) {
+      exitFullscreen();
+      this.setState({fullscreen: false});
+    } else {
+      enterFullscreen();
+      this.setState({fullscreen: true});
     }
   }
 
@@ -41,9 +78,10 @@ class PresentationDash extends React.Component {
     } = this.props;
 
     return (
-      <section className='fold--stats'>
+      <section className={c('fold--stats', {presenting: this.state.fullscreen})} id='presentation'>
         <h1 className='visually-hidden'>Statistics</h1>
         <div className='inner'>
+          <button className='button button--primary-raised-dark' onClick={this.toggleFullscreen}>fullScreen</button>
           <Homestats
             appealsList={appealsList} />
         </div>

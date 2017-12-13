@@ -3,61 +3,109 @@ import React from 'react';
 import { render } from 'react-dom';
 import { PropTypes as T } from 'prop-types';
 import mapboxgl from 'mapbox-gl';
+import c from 'classnames';
 
 import { environment, mbtoken } from '../config';
 import {
   FormRadioGroup
 } from './form-elements/';
 import Progress from './progress';
+import BlockLoading from './block-loading';
 
 export default class Homemap extends React.Component {
+  constructor (props) {
+    super(props);
+
+    this.state = {
+      hoverEmerType: null,
+      selectedEmerType: null
+    };
+  }
+
+  onEmergencyTypeOverOut (what, typeId) {
+    if (what === 'mouseover') {
+      this.setState({ hoverEmerType: typeId });
+    } else {
+      this.setState({ hoverEmerType: null });
+    }
+  }
+
+  onEmergencyTypeClick (typeId) {
+    if (this.state.selectedEmerType === typeId) {
+      this.setState({ selectedEmerType: null });
+    } else {
+      this.setState({ selectedEmerType: typeId });
+    }
+  }
+
   renderEmergencies () {
     const emerg = this.props.appealsList.data.emergenciesByType;
     const max = Math.max.apply(Math, emerg.map(o => o.items.length));
 
     return (
       <div className='emergencies'>
-        <h2>Emergencies by Type</h2>
-        <dl className='dl--horizontal'>
+        <h2 className='heading--xsmall'>Emergencies by Type</h2>
+        <ul className='emergencies__list'>
           {emerg.map(o => (
-            <React.Fragment key={o.id}>
-              <dt>{o.name}</dt>
-              <dd><Progress value={o.items.length} max={max}><span>100</span></Progress></dd>
-            </React.Fragment>
+            <li
+              key={o.id}
+              className={c('emergencies__item', {'emergencies__item--selected': this.state.selectedEmerType === o.id})}
+              onClick={this.onEmergencyTypeClick.bind(this, o.id)}
+              onMouseOver={this.onEmergencyTypeOverOut.bind(this, 'mouseover', o.id)}
+              onMouseOut={this.onEmergencyTypeOverOut.bind(this, 'mouseout', o.id)} >
+              <span className='key'>{o.name}</span>
+              <span className='value'><Progress value={o.items.length} max={max}><span>{o.items.length}</span></Progress></span>
+            </li>
           ))}
-        </dl>
+        </ul>
       </div>
     );
   }
 
-  render () {
+  renderLoading () {
+    if (this.props.appealsList.fetching) {
+      return <BlockLoading/>;
+    }
+  }
+
+  renderError () {
+    if (this.props.appealsList.error) {
+      return <p>Oh no! An error ocurred getting the data.</p>;
+    }
+  }
+
+  renderContent () {
     const {
+      data,
       fetched,
-      receivedAt,
-      error,
-      data
+      receivedAt
     } = this.props.appealsList;
 
-    if (!fetched) return null;
+    if (!fetched) { return null; }
 
+    return (
+      <React.Fragment>
+        {this.renderEmergencies()}
+        <div className='map-container'>
+          <h2 className='visually-hidden'>Map</h2>
+          <MapErrorBoundary>
+            <Map
+              geoJSON={data.geoJSON}
+              dtypeHighlight={this.state.hoverEmerType || this.state.selectedEmerType}
+              receivedAt={receivedAt} />
+          </MapErrorBoundary>
+        </div>
+      </React.Fragment>
+    );
+  }
+
+  render () {
     return (
       <div className='stats-map'>
         <div className='inner'>
-          {!error ? (
-            <React.Fragment>
-              {this.renderEmergencies()}
-              <div className='map-container'>
-                <h2 className='visually-hidden'>Map</h2>
-                <MapErrorBoundary>
-                  <Map
-                    geoJSON={data.geoJSON}
-                    receivedAt={receivedAt} />
-                </MapErrorBoundary>
-              </div>
-            </React.Fragment>
-          ) : (
-            <p>Oh no! An error ocurred getting the data.</p>
-          )}
+          {this.renderLoading()}
+          {this.renderError()}
+          {this.renderContent()}
         </div>
       </div>
     );
@@ -130,6 +178,10 @@ class Map extends React.Component {
     if (this.state.scaleBy !== prevState.scaleBy) {
       this.theMap.setPaintProperty('appeals', 'circle-radius', this.getCircleRadiusPaintProp());
       this.onPopoverCloseClick();
+    }
+
+    if (this.props.dtypeHighlight !== prevProps.dtypeHighlight) {
+      this.highlightdType(this.props.dtypeHighlight);
     }
   }
 
@@ -235,6 +287,19 @@ class Map extends React.Component {
       this.setupData();
     });
 
+    this.theMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
+
+    // Disable map rotation using right click + drag.
+    this.theMap.dragRotate.disable();
+
+    // Disable map rotation using touch rotation gesture.
+    this.theMap.touchZoomRotate.disableRotation();
+
+    // Remove compass.
+    document.querySelector('.mapboxgl-ctrl .mapboxgl-ctrl-compass').remove();
+
+    // Event listeners.
+
     this.theMap.on('click', 'appeals', e => {
       this.showPopover(e.features[0]);
     });
@@ -249,9 +314,7 @@ class Map extends React.Component {
   }
 
   setupData () {
-    if (!this.mapLoaded) {
-      return;
-    }
+    if (!this.mapLoaded) { return; }
 
     if (!this.theMap.getSource('appeals')) {
       this.theMap.addSource('appeals', {
@@ -259,28 +322,61 @@ class Map extends React.Component {
         data: this.props.geoJSON
       });
 
+      const ccolor = {
+        property: 'atype',
+        type: 'categorical',
+        stops: [
+          [0, '#F39C12'],
+          [1, '#C22A26'],
+          [2, '#CCCCCC']
+        ]
+      };
+
+      const cradius = this.getCircleRadiusPaintProp();
+
       this.theMap.addLayer({
         'id': 'appeals',
         'type': 'circle',
         'source': 'appeals',
+        'filter': ['==', 'dtype', this.props.dtypeHighlight || ''],
         'paint': {
-          'circle-color': {
-            property: 'atype',
-            type: 'categorical',
-            stops: [
-              [0, '#F39C12'],
-              [1, '#C22A26'],
-              [2, '#CCCCCC']
-            ]
-          },
-          'circle-radius': this.getCircleRadiusPaintProp()
+          'circle-color': ccolor,
+          'circle-radius': cradius
         }
       });
+
+      this.theMap.addLayer({
+        'id': 'appeals-faded',
+        'type': 'circle',
+        'source': 'appeals',
+        'filter': ['!=', 'dtype', this.props.dtypeHighlight || ''],
+        'paint': {
+          'circle-color': ccolor,
+          'circle-radius': cradius,
+          'circle-opacity': 0.15
+        }
+      });
+
+      this.highlightdType(this.props.dtypeHighlight);
+    }
+  }
+
+  highlightdType (dtype) {
+    if (!this.mapLoaded) { return; }
+
+    if (dtype) {
+      this.theMap.setFilter('appeals', ['==', 'dtype', dtype]);
+      this.theMap.setFilter('appeals-faded', ['!=', 'dtype', dtype]);
+    } else {
+      this.theMap.setFilter('appeals', ['!=', 'dtype', '']);
+      this.theMap.setFilter('appeals-faded', ['==', 'dtype', '']);
     }
   }
 
   onPopoverCloseClick () {
-    this.popover.remove();
+    if (this.popover) {
+      this.popover.remove();
+    }
   }
 
   showPopover (feature) {
@@ -310,16 +406,6 @@ class Map extends React.Component {
       <figure className='map-vis'>
         <div className='map-vis__holder' ref='map'/>
         <figcaption className='map-vis__legend map-vis__legend--bottom-right legend'>
-          <dl className='legend__dl legend__dl--colors'>
-            <dt className='color color--red'>Red</dt>
-            <dd>Emergency Appeal</dd>
-            <dt className='color color--yellow'>Yellow</dt>
-            <dd>DREF</dd>
-            <dt className='color color--grey'>Grey</dt>
-            <dd>Movement Response</dd>
-          </dl>
-        </figcaption>
-        <figcaption className='map-vis__legend map-vis__legend--top-right legend'>
           <form className='form'>
             <FormRadioGroup
               label='Scale points by'
@@ -339,6 +425,17 @@ class Map extends React.Component {
               selectedOption={this.state.scaleBy}
               onChange={this.onFieldChange.bind(this, 'scaleBy')} />
           </form>
+          <div className='key'>
+            <label className='form__label'>Key</label>
+            <dl className='legend__dl legend__dl--colors'>
+              <dt className='color color--red'>Red</dt>
+              <dd>Emergency Appeal</dd>
+              <dt className='color color--yellow'>Yellow</dt>
+              <dd>DREF</dd>
+              <dt className='color color--grey'>Grey</dt>
+              <dd>Movement Response</dd>
+            </dl>
+          </div>
         </figcaption>
       </figure>
     );
@@ -348,7 +445,8 @@ class Map extends React.Component {
 if (environment !== 'production') {
   Map.propTypes = {
     geoJSON: T.object,
-    receivedAt: T.number
+    receivedAt: T.number,
+    dtypeHighlight: T.number
   };
 }
 
@@ -359,7 +457,7 @@ class MapPopover extends React.Component {
         <div className='popover__contents'>
           <header className='popover__header'>
             <div className='popover__headline'>
-              <h1 className='popover__title'>{this.props.title}</h1>
+              <a className='link--primary'>{this.props.title}</a>
             </div>
             <div className='popover__actions actions'>
               <ul className='actions__menu'>
@@ -368,13 +466,13 @@ class MapPopover extends React.Component {
             </div>
           </header>
           <div className='popover__body'>
-            <dl className='dl--horizontal'>
-              <dt>People Affected</dt>
+            <dl className='popover__details'>
               <dd>{this.props.numBeneficiaries}</dd>
-              <dt>Amount Requested</dt>
+              <dt>People Affected</dt>
               <dd>{this.props.amountRequested}</dd>
-              <dt>Amount Funded</dt>
+              <dt>Amount Requested</dt>
               <dd>{this.props.amountFunded}</dd>
+              <dt>Amount Funded</dt>
             </dl>
           </div>
         </div>

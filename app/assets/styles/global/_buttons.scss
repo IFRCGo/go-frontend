@@ -73,54 +73,30 @@
 /* Button color modifiers
    ========================================================================== */
 
-/* Base Raised Light */
-
-.button--base-raised-light {
-  @include button-variation(rgba($base-color, 0.48), "raised", "light");
+.button--primary-filled {
+  @include button-variation($primary-color, "filled", "dark");
 }
 
-/* Base Raised Dark */
-
-.button--base-raised-dark {
-  @include button-variation($base-color, "raised", "dark");
+.button--primary-bounded {
+  @include button-variation($primary-color, "bounded", null);
 }
 
-/* Base Plain */
+.button--secondary-filled {
+  @include button-variation($secondary-color, "filled", "dark");
+}
+
+.button--secondary-bounded {
+  @include button-variation($secondary-color, "bounded", null);
+}
+
+.button--secondary-light {
+  @include button-variation($secondary-color, "filled", "light");
+}
+/* Primary Plain */
 
 .button--base-plain {
   @include button-variation($base-color, "plain", null);
 }
-
-/* Primary Raised Light */
-
-.button--primary-raised-light {
-  @include button-variation($primary-color, "raised", "light");
-}
-
-.button--base-raised-light {
-  @include button-variation($base-color, "raised", "light");
-}
-
-
-/* Primary Raised Dark */
-
-.button--primary-raised-dark {
-  @include button-variation($primary-color, "raised", "dark");
-}
-
-/* Secondary Raised Light */
-
-.button--secondary-raised-light {
-  @include button-variation($secondary-color, "raised", "light");
-}
-
-/* Secondary Raised Dark */
-
-.button--secondary-raised-dark {
-  @include button-variation($secondary-color, "raised", "dark");
-}
-
-/* Primary Plain */
 
 .button--primary-plain {
   @include button-variation($primary-color, "plain", null);
@@ -130,33 +106,18 @@
   @include button-variation($secondary-color, "plain", null);
 }
 
-/* Danger Raised Light */
-
-.button--danger-raised-light {
-  @include button-variation($danger-color, "raised", "light");
-}
-
-/* Danger Raised Dark */
-
-.button--danger-raised-dark {
-  @include button-variation($danger-color, "raised", "dark");
-}
-
-/* Danger Plain */
-
-.button--danger-plain {
-  @include button-variation($danger-color, "plain", null);
-}
-
-/* Achromic Plain (white plain) */
-
-.button--achromic-plain {
-  @include button-variation(#fff, "plain", null);
-}
 
 /* Achromic Glass (white ghost-like) */
 
-.button--achromic-glass {
+.button--base-glass {
+  @include button-variation($base-color, "glass", null);
+}
+
+.button--primary-glass {
+  @include button-variation($primary-color, "glass", null);
+}
+
+.button--secondary-glass {
   @include button-variation($secondary-color, "glass", null);
 }
 
