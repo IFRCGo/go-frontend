@@ -1,0 +1,13 @@
+.inpage__headline-stats {
+  @include column(6/12);
+}
+
+.inpage__headline-charts {
+  @include column(6/12);
+  .emergencies {
+    @include column(6/12);
+  }
+  .chart {
+    @include column(6/12);
+  }
+}
