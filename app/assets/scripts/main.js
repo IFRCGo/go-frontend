@@ -16,7 +16,7 @@ import Login from './views/login';
 import Register from './views/register';
 import RecoverAccount from './views/recover-account';
 import UhOh from './views/uhoh';
-import FieldReportForm from './views/field-report-form';
+import FieldReportForm from './views/field-report-form/';
 import FieldReport from './views/field-report';
 import Emergency from './views/emergency';
 
