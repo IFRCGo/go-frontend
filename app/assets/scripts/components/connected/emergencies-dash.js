@@ -6,6 +6,7 @@ import { PropTypes as T } from 'prop-types';
 import { environment } from '../../config';
 import Stats from '../emergencies/stats';
 import Charts from '../emergencies/charts';
+import Map from '../emergencies/map';
 
 class EmergenciesDash extends React.Component {
   render () {
@@ -26,6 +27,7 @@ class EmergenciesDash extends React.Component {
               <div className='inpage__headline-charts'>
                 <Charts lastMonth={lastMonth} aggregate={aggregate} />
               </div>
+              <Map lastMonth={lastMonth} />
             </div>
           </div>
         </div>

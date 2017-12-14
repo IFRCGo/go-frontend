@@ -11,6 +11,7 @@ import {
 } from './form-elements/';
 import Progress from './progress';
 import BlockLoading from './block-loading';
+import MapErrorBoundary from './map-error-boundary';
 
 export default class Homemap extends React.Component {
   constructor (props) {
@@ -115,35 +116,6 @@ export default class Homemap extends React.Component {
 if (environment !== 'production') {
   Homemap.propTypes = {
     appealsList: T.object
-  };
-}
-
-class MapErrorBoundary extends React.Component {
-  constructor (props) {
-    super(props);
-    this.state = { hasError: false };
-  }
-
-  componentDidCatch (error, info) {
-    this.setState({ hasError: true });
-    console.log('Map error', error, info);
-  }
-
-  render () {
-    if (this.state.hasError) {
-      return (
-        <div className='map-error'>
-          <p>An error ocurred with the map</p>
-        </div>
-      );
-    }
-    return this.props.children;
-  }
-}
-
-if (environment !== 'production') {
-  MapErrorBoundary.propTypes = {
-    children: T.object
   };
 }
 

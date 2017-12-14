@@ -4,10 +4,11 @@ import { render } from 'react-dom';
 import { PropTypes as T } from 'prop-types';
 import mapboxgl from 'mapbox-gl';
 
-import { environment, mbtoken } from '../config';
+import { environment, mbtoken } from '../../config';
 import {
   FormRadioGroup
-} from './form-elements/';
+} from '../form-elements/';
+import MapErrorBoundary from '../map-error-boundary';
 
 export default class EmergenciesMap extends React.Component {
   render () {
@@ -27,9 +28,7 @@ export default class EmergenciesMap extends React.Component {
             <div className='map-container'>
               <h2 className='visually-hidden'>Map</h2>
               <MapErrorBoundary>
-                <Map
-                  geoJSON={data.geoJSON}
-                  receivedAt={receivedAt} />
+                <div/>
               </MapErrorBoundary>
             </div>
           ) : (
