@@ -126,7 +126,7 @@ export default class EmergenciesMap extends React.Component {
     if (!fetched) return null;
 
     return (
-      <div className='stats-map'>
+      <div className='stats-map emergencies-map'>
         <div className='inner'>
           {!error ? (
             <div className='map-container'>
@@ -156,18 +156,18 @@ export default class EmergenciesMap extends React.Component {
                       selectedOption={this.state.scaleBy}
                       onChange={this.onFieldChange} />
                   </form>
+                  <div className='key'>
+                    <label className='form__label'>Key</label>
+                    <dl className='legend__dl legend__dl--colors'>
+                      <dt className='color color--red'>red</dt>
+                      <dd>No International Response</dd>
+                      <dt className='color color--yellow'>yellow</dt>
+                      <dd>Full International Response</dd>
+                      <dt className='color color--purple'>purple</dt>
+                      <dd>Mixed Level of Response</dd>
+                    </dl>
+                  </div>
                 </figcaption>
-                <div className='key'>
-                  <label className='form__label'>key</label>
-                  <dl className='legend__dl legend__dl--colors'>
-                    <dt className='color color--red'>red</dt>
-                    <dd>No International Response</dd>
-                    <dt className='color color--yellow'>yellow</dt>
-                    <dd>Full International Response</dd>
-                    <dt className='color color--purple'>purple</dt>
-                    <dd>Mixed Level of Response</dd>
-                  </dl>
-                </div>
               </MapComponent>
             </div>
           ) : (

@@ -92,7 +92,7 @@
 
   &__introduction {
     @include column(12/12);
-    color: rgba($base-font-color, 0.64);
+    color: $base-font-color;
     font-size: 1rem;
     line-height: 1.5rem;
 
@@ -146,7 +146,6 @@
   @include column(12/12);
   img {
     float: left;
-    margin-top: $global-spacing/2;
   }
   hr {
    opacity: 0;
@@ -188,9 +187,15 @@
     list-style: none;
     margin-left: 0;
     margin-top: $global-spacing;
-    @include media(medium-up) {
+    @include media(sub-small-up) {
+      width: 100%;
+      margin-left: 0;
+      margin-top: $global-spacing;
+    }
+    @include media(sub-medium-up) {
+      width: auto;
+      margin-left: $global-spacing/2;
       margin-top: 0;
-      margin-left: $global-spacing;
     }
     @incluide media(large-up) {
       margin-top: 0;
@@ -221,7 +226,6 @@
     }
     @include media(large-up) {
       font-size: 1rem;
-      line-height: 1.75rem;
     }
   }
 }
@@ -249,6 +253,17 @@
       margin-left: 10%;
     }
   }
+}
+
+.map-section__container {
+  margin-bottom: $global-spacing * 4;
+}
+
+.stats-map {
+  .inner {
+    @extend .row-fold, .row-fold--centered;
+  }
+  background: #23324D;
 }
 
 /* Dark theme modifier

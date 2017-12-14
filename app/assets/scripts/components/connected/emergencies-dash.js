@@ -73,26 +73,32 @@ class EmergenciesDash extends React.Component {
     const { lastMonth } = this.props;
 
     return (
-      <header className='inpage__header'>
-        <div className='inner'>
-          <div className='inpage__headline'>
-            <div className='inpage__headline-content'>
-              <h1 className='inpage__title'>Emergencies</h1>
-              <div className='inpage__headline-stats'>
-                <Stats lastMonth={lastMonth} />
-              </div>
-              <div className='inpage__headline-charts'>
-                <div className='stats-chart'>
-                  <h1 className='visually-hidden'>DREFS and Appeals over time</h1>
-                  {this.renderByMonth()}
-                  {this.renderEmergencies()}
+      <div>
+        <header className='inpage__header'>
+          <div className='inner'>
+            <div className='inpage__headline'>
+              <div className='inpage__headline-content'>
+                <h1 className='inpage__title'>Emergencies</h1>
+                <div className='inpage__introduction'>
+                  <div className='inpage__headline-stats'>
+                    <Stats lastMonth={lastMonth} />
+                  </div>
+                  <div className='inpage__headline-charts'>
+                    <div className='stats-chart'>
+                      <h1 className='visually-hidden'>DREFS and Appeals over time</h1>
+                      {this.renderByMonth()}
+                      {this.renderEmergencies()}
+                    </div>
+                  </div>
                 </div>
               </div>
-              <Map lastMonth={lastMonth} />
             </div>
           </div>
-        </div>
-      </header>
+        </header>
+        <section className='map-section__container'>
+          <Map lastMonth={lastMonth} />
+        </section>
+      </div>
     );
   }
 }
