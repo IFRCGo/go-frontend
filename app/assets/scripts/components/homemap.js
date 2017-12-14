@@ -5,14 +5,15 @@ import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 import mapboxgl from 'mapbox-gl';
 
+import { source } from '../utils/get-new-map';
 import { environment } from '../config';
 import {
   FormRadioGroup
 } from './form-elements/';
-import newMap from '../utils/get-new-map';
 import Progress from './progress';
 import BlockLoading from './block-loading';
 import MapErrorBoundary from './map/error-boundary';
+import MapComponent from './map/map';
 
 export default class Homemap extends React.Component {
   constructor (props) {
@@ -128,50 +129,31 @@ if (environment !== 'production') {
 class Map extends React.Component {
   constructor (props) {
     super(props);
-
+    const scaleBy = 'amount';
+    // scaleBy needs to be set for us to assign layers
     this.state = {
-      scaleBy: 'amount'
+      layers: this.getLayers(scaleBy),
+      filters: this.getFilters(props.dtypeHighlight)
     };
+    this.setupListeners = this.setupListeners.bind(this);
   }
 
-  componentDidMount () {
-    this.setupMap();
-  }
-
-  componentDidUpdate (prevProps, prevState) {
-    if (this.props.receivedAt !== prevProps.receivedAt) {
-      let source = this.theMap.getSource('appeals');
-      if (source) {
-        source.setData(this.props.geoJSON);
-      } else {
-        this.setupData();
-      }
-    }
-
-    if (this.state.scaleBy !== prevState.scaleBy) {
-      this.theMap.setPaintProperty('appeals', 'circle-radius', this.getCircleRadiusPaintProp());
-      this.onPopoverCloseClick();
-    }
-
-    if (this.props.dtypeHighlight !== prevProps.dtypeHighlight) {
-      this.highlightdType(this.props.dtypeHighlight);
-    }
-  }
-
-  componentWillUnmount () {
-    if (this.theMap) {
-      this.theMap.remove();
+  componentWillUpdate (nextProps, nextState) {
+    if (this.props.dtypeHighlight !== nextProps.dtypeHighlight) {
+      this.setState({
+        filters: this.getFilters(nextProps.dtypeHighlight)
+      });
     }
   }
 
   onFieldChange (field, e) {
-    this.setState({ [field]: e.target.value });
+    this.setState({ layers: this.getLayers(e.target.value) });
+    this.onPopoverCloseClick(e.target.value);
   }
 
-  getCircleRadiusPaintProp () {
-    const scaleProp = this.state.scaleBy === 'amount' ? 'amountRequested' : 'numBeneficiaries';
+  getCircleRadiusPaintProp (scaleBy) {
+    const scaleProp = scaleBy === 'amount' ? 'amountRequested' : 'numBeneficiaries';
     const maxScaleValue = Math.max.apply(Math, this.props.geoJSON.features.map(o => o.properties[scaleProp]));
-
     return {
       property: scaleProp,
       stops: [
@@ -181,89 +163,67 @@ class Map extends React.Component {
     };
   }
 
-  setupMap () {
-    this.mapLoaded = false;
-    this.popover = null;
-
-    this.theMap = newMap(this.refs.map);
-
-    this.theMap.on('style.load', () => {
-      this.mapLoaded = true;
-      this.setupData();
-    });
-
+  setupListeners (theMap) {
     // Event listeners.
-    this.theMap.on('click', 'appeals', e => {
-      this.showPopover(e.features[0]);
+    theMap.on('click', 'appeals', e => {
+      this.showPopover(theMap, e.features[0]);
     });
 
-    this.theMap.on('mousemove', 'appeals', e => {
-      this.theMap.getCanvas().style.cursor = 'pointer';
+    theMap.on('mousemove', 'appeals', e => {
+      theMap.getCanvas().style.cursor = 'pointer';
     });
 
-    this.theMap.on('mouseleave', 'appeals', e => {
-      this.theMap.getCanvas().style.cursor = '';
+    theMap.on('mouseleave', 'appeals', e => {
+      theMap.getCanvas().style.cursor = '';
     });
   }
 
-  setupData () {
-    if (!this.mapLoaded) { return; }
-
-    if (!this.theMap.getSource('appeals')) {
-      this.theMap.addSource('appeals', {
-        type: 'geojson',
-        data: this.props.geoJSON
-      });
-
-      const ccolor = {
-        property: 'atype',
-        type: 'categorical',
-        stops: [
-          [0, '#F39C12'],
-          [1, '#C22A26'],
-          [2, '#CCCCCC']
-        ]
-      };
-
-      const cradius = this.getCircleRadiusPaintProp();
-
-      this.theMap.addLayer({
-        'id': 'appeals',
-        'type': 'circle',
-        'source': 'appeals',
-        'filter': ['==', 'dtype', this.props.dtypeHighlight || ''],
-        'paint': {
-          'circle-color': ccolor,
-          'circle-radius': cradius
-        }
-      });
-
-      this.theMap.addLayer({
-        'id': 'appeals-faded',
-        'type': 'circle',
-        'source': 'appeals',
-        'filter': ['!=', 'dtype', this.props.dtypeHighlight || ''],
-        'paint': {
-          'circle-color': ccolor,
-          'circle-radius': cradius,
-          'circle-opacity': 0.15
-        }
-      });
-
-      this.highlightdType(this.props.dtypeHighlight);
-    }
+  getLayers (scaleBy) {
+    const ccolor = {
+      property: 'atype',
+      type: 'categorical',
+      stops: [
+        [0, '#F39C12'],
+        [1, '#C22A26'],
+        [2, '#CCCCCC']
+      ]
+    };
+    const cradius = this.getCircleRadiusPaintProp(scaleBy);
+    const layers = [];
+    layers.push({
+      'id': 'appeals',
+      'type': 'circle',
+      'source': source,
+      'filter': ['==', 'dtype', this.props.dtypeHighlight || ''],
+      'paint': {
+        'circle-color': ccolor,
+        'circle-radius': cradius
+      }
+    });
+    layers.push({
+      'id': 'appeals-faded',
+      'type': 'circle',
+      'source': source,
+      'filter': ['!=', 'dtype', this.props.dtypeHighlight || ''],
+      'paint': {
+        'circle-color': ccolor,
+        'circle-radius': cradius,
+        'circle-opacity': 0.15
+      }
+    });
+    return layers;
   }
 
-  highlightdType (dtype) {
-    if (!this.mapLoaded) { return; }
-
+  getFilters (dtype) {
+    const filters = [];
     if (dtype) {
-      this.theMap.setFilter('appeals', ['==', 'dtype', dtype]);
-      this.theMap.setFilter('appeals-faded', ['!=', 'dtype', dtype]);
+      filters.push({layer: 'appeals', filter: ['==', 'dtype', dtype]});
+      filters.push({layer: 'appeals-faded', filter: ['!=', 'dtype', dtype]});
     } else {
-      this.theMap.setFilter('appeals', ['!=', 'dtype', '']);
-      this.theMap.setFilter('appeals-faded', ['==', 'dtype', '']);
+      filters.push({layer: 'appeals', filter: ['!=', 'dtype', '']});
+      filters.push({layer: 'appeals-faded', filter: ['==', 'dtype', '']});
     }
+    return filters;
   }
 
   onPopoverCloseClick () {
@@ -272,7 +232,7 @@ class Map extends React.Component {
     }
   }
 
-  showPopover (feature) {
+  showPopover (theMap, feature) {
     let popoverContent = document.createElement('div');
 
     render(<MapPopover
@@ -291,13 +251,16 @@ class Map extends React.Component {
     this.popover = new mapboxgl.Popup({closeButton: false})
       .setLngLat(feature.geometry.coordinates)
       .setDOMContent(popoverContent.children[0])
-      .addTo(this.theMap);
+      .addTo(theMap);
   }
 
   render () {
     return (
-      <figure className='map-vis'>
-        <div className='map-vis__holder' ref='map'/>
+      <MapComponent className='map-vis__holder'
+        setupListeners={this.setupListeners}
+        layers={this.state.layers}
+        filters={this.state.filters}
+        geoJSON={this.props.geoJSON}>
         <figcaption className='map-vis__legend map-vis__legend--bottom-right legend'>
           <form className='form'>
             <FormRadioGroup
@@ -330,7 +293,7 @@ class Map extends React.Component {
             </dl>
           </div>
         </figcaption>
-      </figure>
+      </MapComponent>
     );
   }
 }

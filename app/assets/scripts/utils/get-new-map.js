@@ -2,6 +2,8 @@
 import mapboxgl from 'mapbox-gl';
 import { mbtoken } from '../config';
 
+export const source = 'SOURCE';
+
 export const mapStyle = {
   'version': 8,
   'sources': {
