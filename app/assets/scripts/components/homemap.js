@@ -17,145 +17,60 @@ import MapComponent from './map';
 export default class Homemap extends React.Component {
   constructor (props) {
     super(props);
-
-    this.state = {
-      hoverEmerType: null,
-      selectedEmerType: null
-    };
-  }
-
-  onEmergencyTypeOverOut (what, typeId) {
-    if (what === 'mouseover') {
-      this.setState({ hoverEmerType: typeId });
-    } else {
-      this.setState({ hoverEmerType: null });
-    }
-  }
-
-  onEmergencyTypeClick (typeId) {
-    if (this.state.selectedEmerType === typeId) {
-      this.setState({ selectedEmerType: null });
-    } else {
-      this.setState({ selectedEmerType: typeId });
-    }
-  }
-
-  renderEmergencies () {
-    const emerg = this.props.appealsList.data.emergenciesByType;
-    const max = Math.max.apply(Math, emerg.map(o => o.items.length));
-
-    return (
-      <div className='emergencies'>
-        <h2 className='heading--xsmall'>Emergencies by Type</h2>
-        <ul className='emergencies__list'>
-          {emerg.map(o => (
-            <li
-              key={o.id}
-              className={c('emergencies__item', {'emergencies__item--selected': this.state.selectedEmerType === o.id})}
-              onClick={this.onEmergencyTypeClick.bind(this, o.id)}
-              onMouseOver={this.onEmergencyTypeOverOut.bind(this, 'mouseover', o.id)}
-              onMouseOut={this.onEmergencyTypeOverOut.bind(this, 'mouseout', o.id)} >
-              <span className='key'>{o.name}</span>
-              <span className='value'><Progress value={o.items.length} max={max}><span>{o.items.length}</span></Progress></span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
-  }
-
-  renderLoading () {
-    if (this.props.appealsList.fetching) {
-      return <BlockLoading/>;
-    }
-  }
-
-  renderError () {
-    if (this.props.appealsList.error) {
-      return <p>Oh no! An error ocurred getting the data.</p>;
-    }
-  }
-
-  renderContent () {
-    const {
-      data,
-      fetched,
-      receivedAt
-    } = this.props.appealsList;
-
-    if (!fetched) { return null; }
-
-    return (
-      <React.Fragment>
-        {this.renderEmergencies()}
-        <div className='map-container'>
-          <h2 className='visually-hidden'>Map</h2>
-          <Map
-            geoJSON={data.geoJSON}
-            dtypeHighlight={this.state.hoverEmerType || this.state.selectedEmerType}
-            receivedAt={receivedAt} />
-        </div>
-      </React.Fragment>
-    );
-  }
-
-  render () {
-    return (
-      <div className='stats-map'>
-        <div className='inner'>
-          {this.renderLoading()}
-          {this.renderError()}
-          {this.renderContent()}
-        </div>
-      </div>
-    );
-  }
-}
-
-if (environment !== 'production') {
-  Homemap.propTypes = {
-    appealsList: T.object
-  };
-}
-
-// ///////////////
-// ///////////////
-// ///////////////
-// ///////////////
-
-class Map extends React.Component {
-  constructor (props) {
-    super(props);
     const scaleBy = 'amount';
     // scaleBy needs to be set for us to assign layers
     this.state = {
       scaleBy,
-      layers: this.getLayers(scaleBy),
-      filters: this.getFilters(props.dtypeHighlight)
+      layers: [],
+      filters: [],
+      hoverEmerType: null,
+      selectedEmerType: null
     };
     this.configureMap = this.configureMap.bind(this);
   }
 
-  componentWillUpdate (nextProps, nextState) {
-    if (this.props.dtypeHighlight !== nextProps.dtypeHighlight) {
+  componentWillReceiveProps ({appealsList}) {
+    // set initial layers and filters when geojson data is loaded
+    if (!this.props.appealsList.fetched && appealsList.fetched && !appealsList.error) {
       this.setState({
-        filters: this.getFilters(nextProps.dtypeHighlight)
+        layers: this.getLayers(appealsList.data.geoJSON, this.state.scaleBy),
+        filters: this.getFilters(this.getDtypeHighlight())
       });
     }
+  }
+
+  getDtypeHighlight () {
+    return this.state.hoverEmerType || this.state.selectedEmerType || '';
+  }
+
+  onEmergencyTypeOverOut (what, typeId) {
+    const hoverEmerType = what === 'mouseover' ? typeId : null;
+    this.setState({
+      hoverEmerType,
+      filters: this.getFilters(hoverEmerType || this.state.selectedEmerType)
+    });
+  }
+
+  onEmergencyTypeClick (typeId) {
+    const selectedEmerType = this.state.selectedEmerType === typeId ? null : typeId;
+    this.setState({
+      selectedEmerType,
+      filters: this.getFilters(this.state.hoverEmerType || selectedEmerType)
+    });
   }
 
   onFieldChange (e) {
     const scaleBy = e.target.value;
     this.setState({
-      layers: this.getLayers(scaleBy),
+      layers: this.getLayers(this.props.appealsList.data.geoJSON, scaleBy),
       scaleBy
     });
     this.onPopoverCloseClick(scaleBy);
   }
 
-  getCircleRadiusPaintProp (scaleBy) {
+  getCircleRadiusPaintProp (geoJSON, scaleBy) {
     const scaleProp = scaleBy === 'amount' ? 'amountRequested' : 'numBeneficiaries';
-    const maxScaleValue = Math.max.apply(Math, this.props.geoJSON.features.map(o => o.properties[scaleProp]));
+    const maxScaleValue = Math.max.apply(Math, geoJSON.features.map(o => o.properties[scaleProp]));
     return {
       property: scaleProp,
       stops: [
@@ -180,7 +95,7 @@ class Map extends React.Component {
     });
   }
 
-  getLayers (scaleBy) {
+  getLayers (geoJSON, scaleBy) {
     const ccolor = {
       property: 'atype',
       type: 'categorical',
@@ -190,13 +105,13 @@ class Map extends React.Component {
         [2, '#CCCCCC']
       ]
     };
-    const cradius = this.getCircleRadiusPaintProp(scaleBy);
+    const cradius = this.getCircleRadiusPaintProp(geoJSON, scaleBy);
     const layers = [];
     layers.push({
       'id': 'appeals',
       'type': 'circle',
       'source': source,
-      'filter': ['==', 'dtype', this.props.dtypeHighlight || ''],
+      'filter': ['==', 'dtype', this.getDtypeHighlight()],
       'paint': {
         'circle-color': ccolor,
         'circle-radius': cradius
@@ -206,7 +121,7 @@ class Map extends React.Component {
       'id': 'appeals-faded',
       'type': 'circle',
       'source': source,
-      'filter': ['!=', 'dtype', this.props.dtypeHighlight || ''],
+      'filter': ['!=', 'dtype', this.getDtypeHighlight()],
       'paint': {
         'circle-color': ccolor,
         'circle-radius': cradius,
@@ -256,55 +171,116 @@ class Map extends React.Component {
       .addTo(theMap);
   }
 
+  renderEmergencies () {
+    const emerg = this.props.appealsList.data.emergenciesByType;
+    const max = Math.max.apply(Math, emerg.map(o => o.items.length));
+
+    return (
+      <div className='emergencies'>
+        <h2 className='heading--xsmall'>Emergencies by Type</h2>
+        <ul className='emergencies__list'>
+          {emerg.map(o => (
+            <li
+              key={o.id}
+              className={c('emergencies__item', {'emergencies__item--selected': this.state.selectedEmerType === o.id})}
+              onClick={this.onEmergencyTypeClick.bind(this, o.id)}
+              onMouseOver={this.onEmergencyTypeOverOut.bind(this, 'mouseover', o.id)}
+              onMouseOut={this.onEmergencyTypeOverOut.bind(this, 'mouseout', o.id)} >
+              <span className='key'>{o.name}</span>
+              <span className='value'><Progress value={o.items.length} max={max}><span>{o.items.length}</span></Progress></span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  }
+
+  renderLoading () {
+    if (this.props.appealsList.fetching) {
+      return <BlockLoading/>;
+    }
+  }
+
+  renderError () {
+    if (this.props.appealsList.error) {
+      return <p>Oh no! An error ocurred getting the data.</p>;
+    }
+  }
+
+  renderContent () {
+    const {
+      data,
+      fetched
+    } = this.props.appealsList;
+
+    if (!fetched) { return null; }
+
+    return (
+      <React.Fragment>
+        {this.renderEmergencies()}
+        <div className='map-container'>
+          <h2 className='visually-hidden'>Map</h2>
+
+          <MapComponent className='map-vis__holder'
+            configureMap={this.configureMap}
+            layers={this.state.layers}
+            filters={this.state.filters}
+            geoJSON={data.geoJSON}>
+            <figcaption className='map-vis__legend map-vis__legend--bottom-right legend'>
+              <form className='form'>
+                <FormRadioGroup
+                  label='Scale points by'
+                  name='map-scale'
+                  classWrapper='map-scale-options'
+                  options={[
+                    {
+                      label: 'Appeal/DREF amount',
+                      value: 'amount'
+                    },
+                    {
+                      label: 'Target People',
+                      value: 'population'
+                    }
+                  ]}
+                  inline={false}
+                  selectedOption={this.state.scaleBy}
+                  onChange={this.onFieldChange.bind(this)} />
+              </form>
+              <div className='key'>
+                <label className='form__label'>Key</label>
+                <dl className='legend__dl legend__dl--colors'>
+                  <dt className='color color--red'>Red</dt>
+                  <dd>Emergency Appeal</dd>
+                  <dt className='color color--yellow'>Yellow</dt>
+                  <dd>DREF</dd>
+                  <dt className='color color--grey'>Grey</dt>
+                  <dd>Movement Response</dd>
+                </dl>
+              </div>
+            </figcaption>
+          </MapComponent>
+
+        </div>
+      </React.Fragment>
+    );
+  }
+
   render () {
     return (
-      <MapComponent className='map-vis__holder'
-        configureMap={this.configureMap}
-        layers={this.state.layers}
-        filters={this.state.filters}
-        geoJSON={this.props.geoJSON}>
-        <figcaption className='map-vis__legend map-vis__legend--bottom-right legend'>
-          <form className='form'>
-            <FormRadioGroup
-              label='Scale points by'
-              name='map-scale'
-              classWrapper='map-scale-options'
-              options={[
-                {
-                  label: 'Appeal/DREF amount',
-                  value: 'amount'
-                },
-                {
-                  label: 'Target People',
-                  value: 'population'
-                }
-              ]}
-              inline={false}
-              selectedOption={this.state.scaleBy}
-              onChange={this.onFieldChange.bind(this)} />
-          </form>
-          <div className='key'>
-            <label className='form__label'>Key</label>
-            <dl className='legend__dl legend__dl--colors'>
-              <dt className='color color--red'>Red</dt>
-              <dd>Emergency Appeal</dd>
-              <dt className='color color--yellow'>Yellow</dt>
-              <dd>DREF</dd>
-              <dt className='color color--grey'>Grey</dt>
-              <dd>Movement Response</dd>
-            </dl>
-          </div>
-        </figcaption>
-      </MapComponent>
+      <div className='stats-map'>
+        <div className='inner'>
+          {this.renderLoading()}
+          {this.renderError()}
+          {this.renderContent()}
+        </div>
+      </div>
     );
   }
 }
 
 if (environment !== 'production') {
-  Map.propTypes = {
-    geoJSON: T.object,
-    receivedAt: T.number,
-    dtypeHighlight: T.number
+  Homemap.propTypes = {
+    appealsList: T.object
   };
 }
 
