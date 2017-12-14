@@ -8,7 +8,7 @@ import { environment, mbtoken } from '../../config';
 import {
   FormRadioGroup
 } from '../form-elements/';
-import MapErrorBoundary from '../map-error-boundary';
+import MapErrorBoundary from '../map/error-boundary';
 
 export default class EmergenciesMap extends React.Component {
   render () {

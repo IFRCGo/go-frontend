@@ -12,7 +12,7 @@ import {
 import newMap from '../utils/get-new-map';
 import Progress from './progress';
 import BlockLoading from './block-loading';
-import MapErrorBoundary from './map-error-boundary';
+import MapErrorBoundary from './map/error-boundary';
 
 export default class Homemap extends React.Component {
   constructor (props) {

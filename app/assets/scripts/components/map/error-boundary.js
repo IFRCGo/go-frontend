@@ -1,7 +1,7 @@
 'use strict';
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
-import { environment } from '../config';
+import { environment } from '../../config';
 
 export default class MapErrorBoundary extends React.Component {
   constructor (props) {
