@@ -8,7 +8,6 @@ import { environment, mbtoken } from '../../config';
 import {
   FormRadioGroup
 } from '../form-elements/';
-import MapErrorBoundary from '../map/error-boundary';
 
 export default class EmergenciesMap extends React.Component {
   render () {
@@ -27,9 +26,7 @@ export default class EmergenciesMap extends React.Component {
           {!error ? (
             <div className='map-container'>
               <h2 className='visually-hidden'>Map</h2>
-              <MapErrorBoundary>
-                <div/>
-              </MapErrorBoundary>
+              <div/>
             </div>
           ) : (
             <p>Oh no! An error ocurred getting the data.</p>

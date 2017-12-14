@@ -12,8 +12,7 @@ import {
 } from './form-elements/';
 import Progress from './progress';
 import BlockLoading from './block-loading';
-import MapErrorBoundary from './map/error-boundary';
-import MapComponent from './map/map';
+import MapComponent from './map';
 
 export default class Homemap extends React.Component {
   constructor (props) {
@@ -91,12 +90,10 @@ export default class Homemap extends React.Component {
         {this.renderEmergencies()}
         <div className='map-container'>
           <h2 className='visually-hidden'>Map</h2>
-          <MapErrorBoundary>
-            <Map
-              geoJSON={data.geoJSON}
-              dtypeHighlight={this.state.hoverEmerType || this.state.selectedEmerType}
-              receivedAt={receivedAt} />
-          </MapErrorBoundary>
+          <Map
+            geoJSON={data.geoJSON}
+            dtypeHighlight={this.state.hoverEmerType || this.state.selectedEmerType}
+            receivedAt={receivedAt} />
         </div>
       </React.Fragment>
     );
