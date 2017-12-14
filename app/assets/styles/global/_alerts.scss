@@ -81,7 +81,7 @@
    ========================================================================== */
 
 .alert__button-dismiss {
-  @extend .button, .button--small, .button--achromic-plain, .button--text-hidden;
+  @extend .button, .button--small, .button--base-glass, .button--text-hidden;
   position: absolute;
   top: $global-spacing / 2;
   right: $global-spacing / 2;

@@ -394,7 +394,7 @@ hr,
   height: 1px;
   background: none;
   width: 100%;
-  margin: $global-spacing;
+  margin: $global-spacing 0;
   background: transparent linear-gradient(transparent, $base-alpha-color, transparent) 50% / auto $base-border-width repeat-x;
 }
 

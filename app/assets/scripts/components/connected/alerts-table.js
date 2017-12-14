@@ -8,9 +8,9 @@ import { DateTime } from 'luxon';
 
 import { environment } from '../../config';
 import { getSurgeAlerts } from '../../actions';
+import BlockLoading from '../block-loading';
 
 import Fold from '../fold';
-import { showGlobalLoading, hideGlobalLoading } from '../global-loading';
 
 const alertTypes = {
   0: 'FACT',
@@ -34,14 +34,7 @@ class AlertsTable extends React.Component {
     this.requestResults();
   }
 
-  componentWillReceiveProps (nextProps) {
-    if (this.props.surgeAlerts.fetching && !nextProps.surgeAlerts.fetching) {
-      hideGlobalLoading();
-    }
-  }
-
   requestResults () {
-    showGlobalLoading();
     this.props._getSurgeAlerts(this.state.page);
   }
 
@@ -60,7 +53,7 @@ class AlertsTable extends React.Component {
       <React.Fragment key={rowData.id}>
         <tr>
           <td data-heading='Date'>{date.toISODate()}</td>
-          <td data-heading='Emergency'><Link to='' title='View Emergency page'>{rowData.operation}</Link></td>
+          <td data-heading='Emergency'><Link className='link--primary' to='' title='View Emergency page'>{rowData.operation}</Link></td>
           <td data-heading='Alert Message'>{rowData.message}</td>
           <td data-heading='Type'>{alertTypes[rowData.atype]}</td>
         </tr>
@@ -74,34 +67,35 @@ class AlertsTable extends React.Component {
     );
   }
 
-  render () {
+  renderLoading () {
+    if (this.props.surgeAlerts.fetching) {
+      return <BlockLoading/>;
+    }
+  }
+
+  renderError () {
+    if (this.props.surgeAlerts.error) {
+      return <p>Oh no! An error ocurred getting the data.</p>;
+    }
+  }
+
+  renderContent () {
     const {
       data,
       fetched,
-      receivedAt,
       error
     } = this.props.surgeAlerts;
 
-    if (!receivedAt && !fetched) return null;
-
-    if (error) {
-      return (
-        <Fold title='Latest Alerts'>
-          <p>Oh no! An error ocurred getting the stats.</p>
-        </Fold>
-      );
-    }
+    if (!fetched || error) { return null; }
 
     if (!data.objects.length) {
       return (
-        <Fold title='Latest Alerts'>
-          <p>There are no results to show.</p>
-        </Fold>
+        <p>There are no results to show.</p>
       );
     }
 
     return (
-      <Fold title='Latest Alerts'>
+      <React.Fragment>
         <table className='responsive-table'>
           <thead>
             <tr>
@@ -134,6 +128,16 @@ class AlertsTable extends React.Component {
               activeClassName={'active'} />
           </div>
         )}
+      </React.Fragment>
+    );
+  }
+
+  render () {
+    return (
+      <Fold title='Latest Alerts'>
+        {this.renderLoading()}
+        {this.renderError()}
+        {this.renderContent()}
       </Fold>
     );
   }

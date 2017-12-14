@@ -17,14 +17,16 @@ export default class HomeCharts extends React.Component {
     return (
       <div className='emergencies'>
         <h2>Emergencies by Type</h2>
-        <dl className='dl--horizontal'>
-          {emerg.map(o => (
-            <React.Fragment key={o.id}>
-              <dt>{o.name}</dt>
-              <dd><Progress value={o.items.length} max={max}><span>100</span></Progress></dd>
-            </React.Fragment>
-          ))}
-        </dl>
+        <div className='emergencies__container'>
+          <ul className='emergencies__list'>
+            {emerg.map(o => (
+              <li className='emergencies__item' key={o.id}>
+                <span className='key'>{o.name}</span>
+                <span className='value'><Progress value={o.items.length} max={max}><span>100</span></Progress></span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     );
   }

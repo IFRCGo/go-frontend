@@ -20,7 +20,7 @@
 
   .previous a,
   .next a {
-    @extend .button, .button--primary-plain, .button--text-hidden;
+    @extend .button, .button--primary-glass, .button--text-hidden;
     text-decoration: none;
     text-transform: uppercase;
     padding-right: 0;
@@ -28,8 +28,7 @@
   }
 
   .previous a {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+    border-radius: 5px;
 
     &:before {
       @extend %collecticon-chevron-left;
@@ -37,9 +36,7 @@
   }
 
   .next a {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-
+    border-radius: 5px;
     &:before {
       @extend %collecticon-chevron-right;
     }
@@ -52,12 +49,13 @@
       float: left;
 
       &.active .pages__page {
-        @extend .button--primary-plain:active;
+        border-radius: 5px;
+        @extend .button--primary-filled
       }
 
       .pages__page {
-        @extend .button, .button--primary-plain;
-        border-radius: 0;
+        @extend .button, .button--base-plain;
+        border-radius: 5px;
       }
     }
   }

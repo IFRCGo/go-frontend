@@ -20,8 +20,10 @@ class EmergenciesDash extends React.Component {
           <div className='inpage__headline'>
             <div className='inpage__headline-content'>
               <h1 className='inpage__title'>Emergencies</h1>
-              <div className="inpage__introduction--small">
+              <div className='inpage__headline-stats'>
                 <Stats lastMonth={lastMonth} />
+              </div>
+              <div className='inpage__headline-charts'>
                 <Charts lastMonth={lastMonth} aggregate={aggregate} />
               </div>
             </div>

@@ -78,6 +78,7 @@
 @import "global/folds";
 @import "global/page-prime-nav";
 @import "global/popovers";
+@import "global/charts";
 
 
 /* Home
@@ -98,6 +99,11 @@
 @import "field-report/form";
 @import "field-report/global";
 @import "field-report/display";
+
+/* Emergency 
+   ========================================================================== */
+
+@import "emergencies/global";
 
 /* Emergency 
    ========================================================================== */
