@@ -18,7 +18,7 @@ export default class Homestats extends React.Component {
       <div className='header-stats'>
         <div className='stat-group stats-group--single'>
           <div className='stat-icon'>
-            <img src="/assets/graphics/layout/emergency.svg" alt="Targeted Benficiaries"/>
+            <img width="40px" src="/assets/graphics/layout/emergency.svg" alt="Targeted Benficiaries"/>
           </div>
           <ul>
             <li>{n(data.count)}<small>Emergencies in the last 30 Days</small></li>
@@ -26,7 +26,7 @@ export default class Homestats extends React.Component {
         </div>
         <div className='stat-group stats-group--single'>
           <div className='stat-icon'>
-            <img src="/assets/graphics/layout/people.svg" alt="Targeted Benficiaries"/>
+            <img width="45px" src="/assets/graphics/layout/people.svg" alt="Targeted Benficiaries"/>
           </div>
           <ul>
             <li>{n(data.numAffected)}<small>Affected People in the last 30 days</small></li>
@@ -35,7 +35,7 @@ export default class Homestats extends React.Component {
         <hr/>
         <div className='stat-group'>
           <div className='stat-icon'>
-            <img src="/assets/graphics/layout/funding.svg" alt="Funding"/>
+            <img width="45px" src="/assets/graphics/layout/funding.svg" alt="Funding"/>
           </div>
           <ul>
             <li>{n(data.totalAppeals)}<small>Appeal Amount (CHF)</small></li>

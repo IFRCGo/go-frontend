@@ -1,13 +1,38 @@
 .inpage__headline-stats {
-  @include column(6/12);
+  @include column(12/12);
+  @include media (small-up) {
+    @include column(6/12);
+  }
+  small {
+    @include media(medium-up) {
+      font-size: 0.875rem;
+    }
+  }
+
+  hr {
+    width: 95%;
+  }
 }
 
 .inpage__headline-charts {
-  @include column(6/12);
-  .emergencies {
+  @include column(12/12);
+  @include media (small-up) {
     @include column(6/12);
   }
   .chart {
-    @include column(6/12);
+    @include column(12/12);
+    @include media(sub-medium-up) {
+      @include column(6/12);
+    }
   }
+  .emergencies {
+    @include column(12/12);
+    @include media(sub-medium-up) {
+      @include column(6/12);
+    }
+  }
+}
+
+.stats-chart {
+  margin-top: 0;
 }

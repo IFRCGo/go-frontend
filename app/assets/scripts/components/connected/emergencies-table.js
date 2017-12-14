@@ -59,7 +59,7 @@ class EmergenciesTable extends React.Component {
     }, 0);
 
     const countries = get(rowData, 'countries', []).map(c => (
-      <Link key={`c.iso`} to={`/country/${c.id}`}>{c.name}</Link>
+      <Link className='link--primary' key={`c.iso`} to={`/country/${c.id}`}>{c.name}</Link>
     ));
 
     return (
@@ -72,12 +72,6 @@ class EmergenciesTable extends React.Component {
           <td data-heading='Beneficiaries'>{n(beneficiaries)}</td>
           <td data-heading='Countries'>{countries.length ? countries : nope}</td>
         </tr>
-
-        {!isLast && (
-          <tr role='presentation'>
-            <td colSpan='4'></td>
-          </tr>
-        )}
       </React.Fragment>
     );
   }
@@ -111,25 +105,21 @@ class EmergenciesTable extends React.Component {
 
     return (
       <Fold title={`Latest Emergencies (${n(data.meta.total_count)})`}>
-        <div className='table-scroll'>
-          <div className='table-wrap'>
-            <table className='table table--zebra responsive-table'>
-              <thead>
-                <tr>
-                  <th className='fixed-col'>Date</th>
-                  <th>Name</th>
-                  <th>Disaster Type</th>
-                  <th>Total Affected</th>
-                  <th>Benficiaries</th>
-                  <th>Countries</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.objects.map(this.renderRow)}
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <table className='table table--zebra responsive-table'>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Name</th>
+              <th>Disaster Type</th>
+              <th>Total Affected</th>
+              <th>Benficiaries</th>
+              <th>Countries</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.objects.map(this.renderRow)}
+          </tbody>
+        </table>
 
         {data.objects.length !== 0 && (
           <div className='pagination-wrapper'>
