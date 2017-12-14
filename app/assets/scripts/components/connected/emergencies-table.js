@@ -45,8 +45,6 @@ class EmergenciesTable extends React.Component {
   }
 
   renderRow (rowData, idx, all) {
-    const isLast = idx === all.length - 1;
-
     const disasterDate = rowData.disaster_start_date ||
       rowData.start_date ||
       rowData.created_at;

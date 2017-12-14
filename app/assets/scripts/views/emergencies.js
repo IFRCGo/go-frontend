@@ -36,8 +36,6 @@ class Emergencies extends React.Component {
         <section className='inpage'>
           <EmergenciesDash />
           <div className='inpage__body'>
-            <div className='map'>
-            </div>
             <div className='inner'>
               <EmergenciesTable />
             </div>
