@@ -20,7 +20,7 @@ export default class MapComponent extends React.Component {
   }
 
   componentDidMount () {
-    const { setupListeners } = this.props;
+    const { configureMap } = this.props;
     this.mapLoaded = false;
     this.popover = null;
 
@@ -31,8 +31,8 @@ export default class MapComponent extends React.Component {
       this.setupData();
     });
 
-    if (typeof setupListeners === 'function') {
-      setupListeners(this.theMap);
+    if (typeof configureMap === 'function') {
+      configureMap(this.theMap);
     }
   }
 
@@ -43,7 +43,9 @@ export default class MapComponent extends React.Component {
   }
 
   componentWillReceiveProps (nextProps) {
+    // Short-circuit any map-changing actions if the map hasn't finished loading.
     if (!this.mapLoaded) return;
+
     if (this.props.filters !== nextProps.filters || this.props.layers !== nextProps.layers) {
       get(nextProps, 'layers', []).forEach(layer => {
         const existingLayer = this.theMap.getLayer(layer.id);
@@ -77,7 +79,7 @@ if (environment !== 'production') {
     geoJSON: T.object,
     layers: T.array,
     filters: T.array,
-    setupListeners: T.func,
+    configureMap: T.func,
     children: T.node,
     className: T.string
   };

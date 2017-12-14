@@ -133,7 +133,7 @@ class Map extends React.Component {
       layers: this.getLayers(scaleBy),
       filters: this.getFilters(props.dtypeHighlight)
     };
-    this.setupListeners = this.setupListeners.bind(this);
+    this.configureMap = this.configureMap.bind(this);
   }
 
   componentWillUpdate (nextProps, nextState) {
@@ -165,7 +165,7 @@ class Map extends React.Component {
     };
   }
 
-  setupListeners (theMap) {
+  configureMap (theMap) {
     // Event listeners.
     theMap.on('click', 'appeals', e => {
       this.showPopover(theMap, e.features[0]);
@@ -259,7 +259,7 @@ class Map extends React.Component {
   render () {
     return (
       <MapComponent className='map-vis__holder'
-        setupListeners={this.setupListeners}
+        configureMap={this.configureMap}
         layers={this.state.layers}
         filters={this.state.filters}
         geoJSON={this.props.geoJSON}>
