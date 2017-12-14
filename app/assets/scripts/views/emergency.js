@@ -178,7 +178,7 @@ class Emergency extends React.Component {
           <div className='inner'>
             <div className='inpage__headline'>
               <div className='inpage__headline-content'>
-                <div className='inpage__headline-actions'><button className='button button--primary-plain'>Edit Event</button></div>
+                <div className='inpage__headline-actions'><button className='button button--primary-bounded'>Edit Event</button></div>
                 <h1 className='inpage__title'>{data.name}</h1>
                 {this.renderHeaderStats()}
               </div>
@@ -248,10 +248,10 @@ class Emergency extends React.Component {
                 wrapperClass='situation-reports'
                 header={() => (
                   <div className='fold__headline'>
-                    <h2 className='fold__title'>Situation Reports</h2>
                     <div className='fold__actions'>
-                      <button className='button button--primary-plain'>Add Situation Report</button>
+                      <button className='button button--primary-bounded'>Add Situation Report</button>
                     </div>
+                    <h2 className='fold__title'>Situation Reports</h2>
                   </div>
                 )} >
                 <ul className='situation-reports-list'>
@@ -269,7 +269,7 @@ class Emergency extends React.Component {
 
               <Fold
                 id='documents'
-                title='public-docs'
+                title='Public Appeals Documents'
                 wrapperClass='Public Appeals Documents'
                 footer={() => (
                   <a href='' className='link--primary'>View More</a>

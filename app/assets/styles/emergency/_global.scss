@@ -29,7 +29,7 @@
   transition: background 0.2s ease, box-shadow 0.2s ease;
 
   &--sticky {
-    background: #fff;
+    background: #fafafa;
     box-shadow: 0 1px 4px 0 rgba($base-color, 0.1);
   }
 
@@ -48,6 +48,10 @@
   }
 
   li {
+    a {
+      color: $base-color;
+    }
+    color: $base-color;
     display: inline-block;
     flex: 0 1 auto;
     margin-right: $global-spacing * 4;
@@ -114,6 +118,7 @@
   li {
     @include media(medium-up) {
       @include column(3/10);
+      margin-bottom: $global-spacing/2;
     }
   }
 }
@@ -121,11 +126,11 @@
 .public-docs-list {
   list-style: none;
   margin-left: 0;
-  @include media(medium-up) {
-    @include column(1/2, $cycle: 2);
-  }
+  @include column(12/12);
   li {
-    @include column(12/12);
+    @include media(medium-up) {
+      @include column(6/12, $cycle: 2);
+    }
     margin-bottom: $global-spacing/2;
     a {
       margin-left: $global-spacing/2;
@@ -133,10 +138,11 @@
   }
 }
 
-.contacts-list {
-  list-style: none;
-  margin-left: 0;
-  li {
-    margin-bottom: $global-spacing;
+.contacts {
+  td {
+    &:first-child {
+      padding-left: 0;
+      font-weight: $base-font-bold;
+    }
   }
 }
