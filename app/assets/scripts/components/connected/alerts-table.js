@@ -96,7 +96,7 @@ class AlertsTable extends React.Component {
 
     return (
       <React.Fragment>
-        <table className='responsive-table'>
+        <table className='responsive-table alerts-table'>
           <thead>
             <tr>
               <th>Date</th>
