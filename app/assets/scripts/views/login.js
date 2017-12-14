@@ -34,10 +34,9 @@ class Login extends React.Component {
 
   componentWillReceiveProps (nextProps) {
     if (this.props.user.fetching && !nextProps.user.fetching) {
+      hideGlobalLoading();
       if (!nextProps.user.error) {
-        hideGlobalLoading(() => {
-          this.setState({ authenticated: true });
-        });
+        this.setState({ authenticated: true });
       }
     }
   }
