@@ -118,6 +118,13 @@ function createStoreFromRaw (raw) {
         properties.numAffected += Number(get(o, 'num_affected', 0));
       });
 
+      // determine response status
+      const { totalEmergencies, withResponse, withoutResponse } = properties;
+      properties.responseStatus = !totalEmergencies ? null
+        : withResponse === totalEmergencies ? 'total'
+          : withoutResponse === totalEmergencies ? 'none'
+            : 'mixed';
+
       return {
         type: 'Feature',
         properties,

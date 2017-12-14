@@ -27,6 +27,7 @@ export default class Homemap extends React.Component {
       selectedEmerType: null
     };
     this.configureMap = this.configureMap.bind(this);
+    this.onFieldChange = this.onFieldChange.bind(this);
   }
 
   componentWillReceiveProps ({appealsList}) {
@@ -244,7 +245,7 @@ export default class Homemap extends React.Component {
                   ]}
                   inline={false}
                   selectedOption={this.state.scaleBy}
-                  onChange={this.onFieldChange.bind(this)} />
+                  onChange={this.onFieldChange} />
               </form>
               <div className='key'>
                 <label className='form__label'>Key</label>
