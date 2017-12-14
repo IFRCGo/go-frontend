@@ -5,11 +5,12 @@ import { PropTypes as T } from 'prop-types';
 import mapboxgl from 'mapbox-gl';
 
 import { source } from '../../utils/get-new-map';
-import { environment, mbtoken } from '../../config';
+import { environment } from '../../config';
 import {
   FormRadioGroup
 } from '../form-elements/';
 import MapComponent from '../map';
+import { commaSeparatedNumber as n } from '../../utils/format';
 
 export default class EmergenciesMap extends React.Component {
   constructor (props) {
@@ -33,6 +34,9 @@ export default class EmergenciesMap extends React.Component {
   }
 
   configureMap (theMap) {
+    theMap.on('click', 'emergencies', e => {
+      this.showPopover(theMap, e.features[0]);
+    });
     theMap.on('mousemove', 'emergencies', e => {
       theMap.getCanvas().style.cursor = 'pointer';
     });
@@ -54,8 +58,8 @@ export default class EmergenciesMap extends React.Component {
       property: 'responseStatus',
       type: 'categorical',
       stops: [
-        ['total', '#C22A26'],
-        ['none', '#F39C12'],
+        ['total', '#F39C12'],
+        ['none', '#C22A26'],
         ['mixed', '#C689B9']
       ]
     };
@@ -83,10 +87,38 @@ export default class EmergenciesMap extends React.Component {
     return layers;
   }
 
+  onPopoverCloseClick () {
+    if (this.popover) {
+      this.popover.remove();
+    }
+  }
+
+  showPopover (theMap, feature) {
+    let popoverContent = document.createElement('div');
+
+    render(<MapPopover
+      title={feature.properties.name}
+      numAffected={feature.properties.numAffected}
+      totalEmergencies={feature.properties.totalEmergencies}
+      withResponse={feature.properties.withResponse}
+      withoutResponse={feature.properties.withoutResponse}
+      onCloseClick={this.onPopoverCloseClick.bind(this)} />, popoverContent);
+
+    // Populate the popup and set its coordinates
+    // based on the feature found.
+    if (this.popover != null) {
+      this.popover.remove();
+    }
+
+    this.popover = new mapboxgl.Popup({closeButton: false})
+      .setLngLat(feature.geometry.coordinates)
+      .setDOMContent(popoverContent.children[0])
+      .addTo(theMap);
+  }
+
   render () {
     const {
       fetched,
-      receivedAt,
       error,
       data
     } = this.props.lastMonth;
@@ -99,13 +131,11 @@ export default class EmergenciesMap extends React.Component {
           {!error ? (
             <div className='map-container'>
               <h2 className='visually-hidden'>Emergencies by Country</h2>
-
               <MapComponent className='map-vis__holder'
                 configureMap={this.configureMap}
                 layers={this.state.layers}
                 filters={this.state.filters}
                 geoJSON={data.geoJSON}>
-
                 <figcaption className='map-vis__legend map-vis__legend--bottom-right legend'>
                   <form className='form'>
                     <FormRadioGroup
@@ -127,8 +157,6 @@ export default class EmergenciesMap extends React.Component {
                       onChange={this.onFieldChange} />
                   </form>
                 </figcaption>
-
-
               </MapComponent>
             </div>
           ) : (
@@ -143,5 +171,54 @@ export default class EmergenciesMap extends React.Component {
 if (environment !== 'production') {
   EmergenciesMap.propTypes = {
     lastMonth: T.object
+  };
+}
+
+class MapPopover extends React.Component {
+  render () {
+    const {
+      title,
+      numAffected,
+      totalEmergencies,
+      withResponse,
+      withoutResponse
+    } = this.props;
+    return (
+      <article className='popover'>
+        <div className='popover__contents'>
+          <header className='popover__header'>
+            <div className='popover__headline'>
+              <a className='link--primary'>{title}</a>
+            </div>
+            <div className='popover__actions actions'>
+              <ul className='actions__menu'>
+                <li><button type='button' className='actions__menu-item poa-xmark' title='Close popover' onClick={this.props.onCloseClick}><span>Dismiss</span></button></li>
+              </ul>
+            </div>
+          </header>
+          <div className='popover__body'>
+            <p>{n(numAffected)} People Affected</p>
+            <p>{n(totalEmergencies)} {totalEmergencies === 1 ? 'Emergency' : 'Emergencies'}</p>
+            <dl className='popover__details'>
+              <dd>{n(withResponse)}</dd>
+              <dt>With response</dt>
+              <dd>{n(withoutResponse)}</dd>
+              <dt>Without Response</dt>
+            </dl>
+          </div>
+        </div>
+      </article>
+    );
+  }
+}
+
+if (environment !== 'production') {
+  MapPopover.propTypes = {
+    onCloseClick: T.func,
+    title: T.string,
+    numAffected: T.number,
+    totalEmergencies: T.number,
+    withResponse: T.number,
+    withoutResponse: T.number
   };
 }
