@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
 import { DateTime } from 'luxon';
-import c from 'classnames';
 
 import { environment } from '../../config';
 import Stats from '../emergencies/stats';
@@ -12,41 +11,20 @@ import Map from '../emergencies/map';
 import Progress from '../progress';
 
 class EmergenciesDash extends React.Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      hoverEmerType: null,
-      selectedEmerType: null
-    };
-  }
-
-  onEmergencyTypeOverOut (what, typeId) {
-    const hoverEmerType = what === 'mouseover' ? typeId : null;
-    this.setState({ hoverEmerType });
-  }
-
-  onEmergencyTypeClick (typeId) {
-    const selectedEmerType = this.state.selectedEmerType === typeId ? null : typeId;
-    this.setState({ selectedEmerType });
-  }
-
   renderEmergencies () {
     const { lastMonth } = this.props;
     if (!lastMonth.fetched) return;
     const emerg = lastMonth.data.emergenciesByType;
     const max = Math.max.apply(Math, emerg.map(o => o.items.length));
-
+    const sorted = emerg.sort((a, b) => a.items.length > b.items.length ? -1 : 1).slice(0, 6);
     return (
       <div className='emergencies'>
         <h2>Emergencies by Type</h2>
         <div className='emergencies__container'>
           <ul className='emergencies__list'>
-            {emerg.map(o => (
+            {sorted.map(o => (
               <li key={o.id}
-                className={c('emergencies__item', {'emergencies__item--selected': this.state.selectedEmerType === o.id})}
-                onClick={this.onEmergencyTypeClick.bind(this, o.id)}
-                onMouseOver={this.onEmergencyTypeOverOut.bind(this, 'mouseover', o.id)}
-                onMouseOut={this.onEmergencyTypeOverOut.bind(this, 'mouseout', o.id)}>
+                className='emergencies__item'>
                 <span className='key'>{o.name}</span>
                 <span className='value'><Progress value={o.items.length} max={max}><span>100</span></Progress></span>
               </li>
@@ -93,7 +71,6 @@ class EmergenciesDash extends React.Component {
 
   render () {
     const { lastMonth } = this.props;
-    const { hoverEmerType, selectedEmerType } = this.state;
 
     return (
       <header className='inpage__header'>
@@ -111,9 +88,7 @@ class EmergenciesDash extends React.Component {
                   {this.renderEmergencies()}
                 </div>
               </div>
-              <Map lastMonth={lastMonth}
-                focusEmerType={hoverEmerType || selectedEmerType}
-              />
+              <Map lastMonth={lastMonth} />
             </div>
           </div>
         </div>
