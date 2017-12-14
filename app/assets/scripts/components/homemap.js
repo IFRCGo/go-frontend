@@ -132,6 +132,7 @@ class Map extends React.Component {
     const scaleBy = 'amount';
     // scaleBy needs to be set for us to assign layers
     this.state = {
+      scaleBy,
       layers: this.getLayers(scaleBy),
       filters: this.getFilters(props.dtypeHighlight)
     };
@@ -146,9 +147,13 @@ class Map extends React.Component {
     }
   }
 
-  onFieldChange (field, e) {
-    this.setState({ layers: this.getLayers(e.target.value) });
-    this.onPopoverCloseClick(e.target.value);
+  onFieldChange (e) {
+    const scaleBy = e.target.value;
+    this.setState({
+      layers: this.getLayers(scaleBy),
+      scaleBy
+    });
+    this.onPopoverCloseClick(scaleBy);
   }
 
   getCircleRadiusPaintProp (scaleBy) {
@@ -279,7 +284,7 @@ class Map extends React.Component {
               ]}
               inline={false}
               selectedOption={this.state.scaleBy}
-              onChange={this.onFieldChange.bind(this, 'scaleBy')} />
+              onChange={this.onFieldChange.bind(this)} />
           </form>
           <div className='key'>
             <label className='form__label'>Key</label>
