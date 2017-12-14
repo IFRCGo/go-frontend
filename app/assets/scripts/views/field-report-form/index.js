@@ -20,14 +20,15 @@ import {
 } from '../../schemas/field-report-form';
 import * as formData from '../../utils/field-report-constants';
 import { showAlert } from '../../components/system-alerts';
-import { createFieldReport } from '../../actions';
+import { createFieldReport, updateFieldReport, getFieldReportById } from '../../actions';
 import { showGlobalLoading, hideGlobalLoading } from '../../components/global-loading';
 import {
   dataPathToDisplay,
   prepStateForValidation,
   getEventsFromApi,
   getInitialDataState,
-  convertStateToPayload
+  convertStateToPayload,
+  convertFieldReportToState
 } from './data-utils';
 
 import App from '../app';
@@ -81,10 +82,34 @@ class FieldReportForm extends React.Component {
       } else {
         const { history } = this.props;
         const { id } = nextProps.fieldReportForm.data;
-        showAlert('success', <p>Field report created, redirecting...</p>, true, 2000);
+        if (this.props.match.params.id) {
+          showAlert('success', <p>Field report updated, redirecting...</p>, true, 2000);
+        } else {
+          showAlert('success', <p>Field report created, redirecting...</p>, true, 2000);
+        }
         setTimeout(() => history.push(`/reports/${id}`), 2000);
       }
     }
+
+    if (this.props.report.fetching && !nextProps.report.fetching) {
+      hideGlobalLoading();
+      if (!nextProps.report.error) {
+        const prefillState = convertFieldReportToState(nextProps.report.data);
+        this.setState({data: prefillState});
+      }
+    }
+  }
+
+  componentDidMount () {
+    if (this.props.match.params.id) {
+      // Editing the field report.
+      this.getReport(this.props.match.params.id);
+    }
+  }
+
+  getReport (id) {
+    showGlobalLoading();
+    this.props._getFieldReportById(id);
   }
 
   validate () {
@@ -131,7 +156,12 @@ class FieldReportForm extends React.Component {
         } else {
           console.log('Could not read user ID from state');
         }
-        this.props._createFieldReport(payload);
+        // Is creating or updating?
+        if (this.props.match.params.id) {
+          this.props._updateFieldReport(this.props.match.params.id, payload);
+        } else {
+          this.props._createFieldReport(payload);
+        }
         showGlobalLoading();
       } else {
         window.scrollTo(0, 0);
@@ -733,8 +763,12 @@ class FieldReportForm extends React.Component {
 if (environment !== 'production') {
   FieldReportForm.propTypes = {
     _createFieldReport: T.func,
+    _updateFieldReport: T.func,
+    _getFieldReportById: T.func,
     fieldReportForm: T.object,
     user: T.object,
+    report: T.object,
+    match: T.object,
     history: T.object
   };
 }
@@ -742,13 +776,20 @@ if (environment !== 'production') {
 // /////////////////////////////////////////////////////////////////// //
 // Connect functions
 
-const selector = (state) => ({
+const selector = (state, ownProps) => ({
   fieldReportForm: state.fieldReportForm,
-  user: state.user
+  user: state.user,
+  report: _get(state.fieldReport, ownProps.match.params.id, {
+    data: {},
+    fetching: false,
+    fetched: false
+  })
 });
 
 const dispatcher = (dispatch) => ({
-  _createFieldReport: (...args) => dispatch(createFieldReport(...args))
+  _createFieldReport: (...args) => dispatch(createFieldReport(...args)),
+  _updateFieldReport: (...args) => dispatch(updateFieldReport(...args)),
+  _getFieldReportById: (...args) => dispatch(getFieldReportById(...args))
 });
 
 export default connect(selector, dispatcher)(FieldReportForm);

@@ -344,3 +344,181 @@ export function getInitialDataState () {
     contactMedia: { name: undefined, func: undefined, email: undefined }
   };
 }
+
+export function convertFieldReportToState (fieldReport) {
+  let state = _cloneDeep(getInitialDataState());
+
+  // Process properties.
+  state.countries = fieldReport.countries.map(o => ({
+    label: o.name,
+    value: o.id.toString()
+  }));
+  if (fieldReport.dtype) {
+    state.disasterType = fieldReport.dtype.id.toString();
+  }
+
+  if (fieldReport.event) {
+    state.event = {
+      label: fieldReport.event.name,
+      value: fieldReport.event.id
+    };
+  }
+
+  // Everything not an early warning is an event.
+  state.status = fieldReport.status !== parseInt(formData.statusEarlyWarning.value)
+    ? formData.statusEvent.value
+    : formData.statusEarlyWarning.value;
+
+  const directMapping = [
+    // [source, destination]
+    ['summary', 'summary'],
+    ['description', 'description'],
+    ['num_assisted', 'numAssistedRedCross'],
+    ['gov_num_assisted', 'numAssistedGov'],
+    ['num_localstaff', 'numLocalStaff'],
+    ['num_volunteers', 'numVolunteers'],
+    ['num_expats_delegates', 'numExpats'],
+    ['actions_others', 'actionsOthers'],
+    ['bulletin', 'bulletin']
+  ];
+
+  directMapping.forEach(([src, dest]) => {
+    if (fieldReport[src] === null || _undefined(fieldReport[src])) { return; }
+    state[dest] = fieldReport[src].toString();
+  });
+
+  // Boolean values
+  state.assistance = fieldReport.request_assistance !== null ? fieldReport.request_assistance.toString() : state.assistance;
+
+  // For these properties when the source is the Red Cross use the provided,
+  // when it's Government starts with gov_. This results in:
+  // num_injured | gov_num_injured
+  const sourceEstimationMapping = [
+    // [source, destination]
+    ['num_injured', 'numInjured'],
+    ['num_dead', 'numDead'],
+    ['num_missing', 'numMissing'],
+    ['num_affected', 'numAffected'],
+    ['num_displaced', 'numDisplaced']
+  ];
+
+  sourceEstimationMapping.forEach(([src, dest]) => {
+    let sourceEstimation = [];
+
+    if (fieldReport[src] !== null) {
+      sourceEstimation.push({
+        source: 'red-cross',
+        estimation: fieldReport[src].toString()
+      });
+    }
+    if (fieldReport[`gov_${src}`] !== null) {
+      sourceEstimation.push({
+        source: 'government',
+        estimation: fieldReport[`gov_${src}`].toString()
+      });
+    }
+    if (sourceEstimation.length) {
+      state[dest] = sourceEstimation;
+    }
+  });
+
+  // Actions.
+  // In the payload all the action are in the same array.
+  // Separate them into different ones.
+  const actionsMapping = {
+    'NATL': 'actionsNatSoc',
+    'PNS': 'actionsPns',
+    'FDRN': 'actionsFederation'
+  };
+
+  fieldReport.actions_taken.forEach(action => {
+    const dest = actionsMapping[action.organization];
+    if (!dest) return;
+
+    const active = action.actions.map(o => o.id.toString());
+    state[dest].description = action.summary;
+    state[dest].options = state[dest].options.map(option => {
+      if (active.indexOf(option.value) !== -1) {
+        option.checked = true;
+      }
+      return option;
+    });
+  });
+
+  // Planned Response Mapping
+  // In the field report data the variables are not grouped in an object,
+  // and some of them refer to people and others to amount.
+  // Example:
+  // dref and dref_amount
+  //    dref: { status: dref, value: dref_amount }
+  // ifrc_staff and num_ifrc_staff
+  //    ifrcStaff: { status: ifrc_staff, value: num_ifrc_staff }
+  const planResponseMapping = [
+    // [mapping status, mapping value, state var]
+    ['dref', 'dref_amount', 'dref'],
+    ['appeal', 'appeal_amount', 'emergencyAppeal'],
+    ['rdrt', 'num_rdrt', 'rdrtrits'],
+    ['fact', 'num_fact', 'fact'],
+    ['ifrc_staff', 'num_ifrc_staff', 'ifrcStaff']
+  ];
+
+  planResponseMapping.forEach(([statusMap, valueMap, dest]) => {
+    if (fieldReport[statusMap] !== null) {
+      state[dest] = {
+        status: fieldReport[statusMap].toString(),
+        value: fieldReport[valueMap] !== null ? fieldReport[valueMap].toString() : undefined
+      };
+    }
+  });
+
+  // ERU
+  // Get ERU keys:
+  const eruKeys = Object.keys(fieldReport)
+    .filter(o => /^eru_/.test(o) && !/_units$/.test(o))
+    .filter(o => fieldReport[o] !== 0);
+
+  state.eru = eruKeys.map(key => {
+    const unitK = `${key}_units`;
+    return {
+      type: key,
+      status: fieldReport[key].toString(),
+      units: fieldReport[unitK] !== null ? fieldReport[unitK].toString() : undefined
+    };
+  });
+
+  // Contacts.
+  // In the payload all the contacts are in the same array.
+  // Separate them into different ones.
+  const contactsMapping = {
+    // ctype: state var
+    'Originator': 'contactOriginator',
+    'Primary': 'contactPrimary',
+    'NationalSociety': 'contactNatSoc',
+    'Federation': 'contactFederation',
+    'MediaNationalSociety': 'contactMediaNatSoc',
+    'Media': 'contactMedia'
+  };
+
+  fieldReport.contacts.forEach(contact => {
+    const dest = contactsMapping[contact.ctype];
+    if (!dest) return;
+
+    state[dest] = {
+      name: contact.name,
+      func: contact.title,
+      email: contact.email
+    };
+  });
+
+  return state;
+}
+
+/*
+    // Missing mappings;:
+    visibility: 'membership',
+    sources: formData.sources.map(o => ({
+      value: o.value,
+      checked: false,
+      specification: undefined
+    })),
+ */
