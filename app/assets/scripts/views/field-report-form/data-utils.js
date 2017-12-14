@@ -141,11 +141,13 @@ export function convertStateToPayload (originalState) {
     ['summary', 'summary'],
     ['description', 'description'],
     ['status', 'status'],
+    ['bulletin', 'bulletin'],
     ['numAssistedRedCross', 'num_assisted'],
     ['numAssistedGov', 'gov_num_assisted'],
     ['numLocalStaff', 'num_localstaff'],
     ['numVolunteers', 'num_volunteers'],
-    ['numExpats', 'num_expats_delegates']
+    ['numExpats', 'num_expats_delegates'],
+    ['actionsOthers', 'actions_others']
   ];
 
   directMapping.forEach(([src, dest]) => {
@@ -156,7 +158,7 @@ export function convertStateToPayload (originalState) {
   // Boolean values
   state.request_assistance = Boolean(originalState.assistance === 'true');
 
-  // For this properties when the source is the Red Cross use the provided,
+  // For these properties when the source is the Red Cross use the provided,
   // when it's Government prepend gov_. This results in:
   // num_injured | gov_num_injured
   const sourceEstimationMapping = [
@@ -249,7 +251,7 @@ export function convertStateToPayload (originalState) {
   }).filter(o => Boolean(o.name));
 
   _get(originalState, 'eru', []).forEach(eru => {
-    if (_undefined(eru.type) || _undefined(eru.status) || _undefined(eru.units)) { return; }
+    if (_undefined(eru.type) || _undefined(eru.status)) { return; }
     state[eru.type] = eru.status;
     state[eru.type + '_units'] = eru.units;
   });
