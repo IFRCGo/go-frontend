@@ -84,6 +84,14 @@
 @import "global/inpages";
 @import "global/folds";
 @import "global/page-prime-nav";
+@import "global/popovers";
+@import "global/charts";
+
+
+/* Home
+   ========================================================================== */
+
+@import "home/global";
 
 
 /* About
@@ -127,3 +135,4 @@
 
 @import "vendor/react-paginate";
 @import "vendor/react-select";
+@import "vendor/mapbox-gl";

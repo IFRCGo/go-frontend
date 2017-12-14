@@ -214,7 +214,7 @@
 }
 
 .mfa-tick, {
-  @extend .button--primary-raised-dark;
+  @extend .button--primary-filled;
 }
 
 .mfa-tick::before {
@@ -222,7 +222,7 @@
 }
 
 .mfa-xmark, {
-  @extend .button--base-raised-light;
+  @extend .button--base-glass;
 
   &::before {
     @extend %collecticon-sm-xmark;
@@ -239,7 +239,7 @@
 
 [class^="mma-"],
 [class*=" mma-"] {
-  @extend .button, .button--medium, .button--primary-plain, .button--text-hidden;
+  @extend .button, .button--medium, .button--primary-filled, .button--text-hidden;
 }
 
 .mma-xmark {

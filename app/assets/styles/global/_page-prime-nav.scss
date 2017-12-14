@@ -104,7 +104,7 @@
 }
 
 .gsearch__button {
-  @extend .button, .button--text-hidden, .button--primary-raised-light;
+  @extend .button, .button--text-hidden, .button--primary-plain;
   position: absolute;
   top: 0;
   left: 0;
@@ -120,7 +120,7 @@
 /* User menu */
 
 .drop__togle--user {
-  @extend .button, .button--base-raised-light, .button--text-hidden;
+  @extend .button, .button--base-plain, .button--text-hidden;
 
   &::before {
     @extend %collecticon-user;

@@ -10,12 +10,15 @@ import { api } from '../config';
  */
 export function withToken (options = {}) {
   const user = localStorage.get('user');
-  if (!user) {
-    throw new Error('No login token found');
-  } else if (Date.parse(user.expires) <= Date.now()) {
-    throw new Error('Token is expired');
-  }
   options.headers = options.headers || {};
+
+  if (!user) {
+    console.error('No login token found');
+    return options;
+  } else if (Date.parse(user.expires) <= Date.now()) {
+    console.error('Token is expired');
+    return options;
+  }
   options.headers['Authorization'] = `ApiKey ${user.username}:${user.token}`;
   return options;
 }
@@ -58,6 +61,45 @@ function failed (action) {
  */
 export function fetchJSON (path, action, options, extraData) {
   return makeRequest(path, action, options, extraData);
+}
+
+/**
+ * Get all the results of JSON resource.
+ * Will continue to make request as long as there are more results.
+ * @param  {string} path      Relative path to query. Has to be available from
+ *                            the api.
+ * @param  {string} action    Base action to dispatch.
+ * @param  {Object} options   Options for the request.
+ * @param  {Object} extraData Extra data to pass to the action.
+ * @param  {number} stopAfter Stops after x requests. DEV parameter. TO REMOVE.
+ * @return {func}             Dispatch function.
+ */
+export function fetchJSONRecursive (path, action, options, extraData, devStopAfter = Infinity) {
+  options = options || {};
+  return function (dispatch) {
+    dispatch({ type: inflight(action) });
+
+    // Recursively fetch all items.
+    const fetcher = (path) => {
+      return request(url.resolve(api, path), options)
+        .then(res => {
+          devStopAfter--;
+          if (res.meta.next && devStopAfter > 0) {
+            return fetcher(res.meta.next)
+              .then(items => res.objects.concat(items));
+          }
+          return res.objects;
+        });
+    };
+
+    fetcher(path)
+      .then(items => {
+        dispatch({ type: success(action), data: items, receivedAt: Date.now(), ...extraData });
+      })
+      .catch(error => {
+        dispatch({ type: failed(action), error });
+      });
+  };
 }
 
 /**

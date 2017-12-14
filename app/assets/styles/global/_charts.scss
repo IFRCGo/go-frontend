@@ -1,0 +1,20 @@
+.recharts-cartesian-axis {
+	font-size: 0.75rem;
+  .recharts-cartesian-axis-ticks {
+    text {
+      fill: rgba($base-color, 0.68);
+    }
+    &:nth-child(even) {
+      opacity: 0;
+    }
+  }
+  .recharts-cartesian-axis-tick-line {
+    stroke: rgba($base-color, 0.28);
+  }
+}
+
+.chart {
+  figcaption {
+    margin-bottom: $global-spacing/2;
+  }
+}
