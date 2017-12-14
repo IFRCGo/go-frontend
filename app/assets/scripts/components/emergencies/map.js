@@ -157,6 +157,17 @@ export default class EmergenciesMap extends React.Component {
                       onChange={this.onFieldChange} />
                   </form>
                 </figcaption>
+                <div className='key'>
+                  <label className='form__label'>key</label>
+                  <dl className='legend__dl legend__dl--colors'>
+                    <dt className='color color--red'>red</dt>
+                    <dd>No International Response</dd>
+                    <dt className='color color--yellow'>yellow</dt>
+                    <dd>Full International Response</dd>
+                    <dt className='color color--purple'>purple</dt>
+                    <dd>Mixed Level of Response</dd>
+                  </dl>
+                </div>
               </MapComponent>
             </div>
           ) : (
