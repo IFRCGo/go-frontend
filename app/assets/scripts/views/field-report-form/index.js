@@ -662,7 +662,7 @@ class FieldReportForm extends React.Component {
       <Fold title='Contacts'>
         <ContactRow
           label='Originator'
-          description='Your name, function and e-mail.'
+          description='Your name, role and contact.'
           name='contact-originator'
           values={this.state.data.contactOriginator}
           fieldKey='contactOriginator'

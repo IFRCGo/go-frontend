@@ -48,29 +48,29 @@ export default class ContactRow extends React.Component {
             />
           </FormInput>
           <FormInput
-            label='Function'
+            label='Role'
             type='text'
-            name={`${name}[func]`}
-            id={`${name}-func`}
+            name={`${name}[role]`}
+            id={`${name}-role`}
             classLabel='form__label--nested'
-            value={values.func}
-            onChange={this.onFieldChange.bind(this, 'func')} >
+            value={values.role}
+            onChange={this.onFieldChange.bind(this, 'role')} >
             <FormError
               errors={errors}
-              property={`${fieldKey}.func`}
+              property={`${fieldKey}.role`}
             />
           </FormInput>
           <FormInput
-            label='Email'
+            label='Contact'
             type='text'
-            name={`${name}[email]`}
-            id={`${name}-email`}
+            name={`${name}[contact]`}
+            id={`${name}-contact`}
             classLabel='form__label--nested'
-            value={values.email}
-            onChange={this.onFieldChange.bind(this, 'email')} >
+            value={values.contact}
+            onChange={this.onFieldChange.bind(this, 'contact')} >
             <FormError
               errors={errors}
-              property={`${fieldKey}.email`}
+              property={`${fieldKey}.contact`}
             />
           </FormInput>
         </div>
@@ -86,8 +86,8 @@ if (environment !== 'production') {
     description: T.string,
     values: T.shape({
       name: T.string,
-      func: T.string,
-      email: T.string
+      role: T.string,
+      contact: T.string
     }),
     fieldKey: T.string,
     errors: T.array,

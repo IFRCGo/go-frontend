@@ -47,23 +47,23 @@ export function dataPathToDisplay (path) {
 
     // Step 5.
     'contactOriginator.name': 'Originator - Name',
-    'contactOriginator.func': 'Originator - Function',
-    'contactOriginator.email': 'Originator - Email',
+    'contactOriginator.role': 'Originator - Role',
+    'contactOriginator.contact': 'Originator - Contact',
     'contactPrimary.name': 'Primary Contact - Name',
-    'contactPrimary.func': 'Primary Contact - Function',
-    'contactPrimary.email': 'Primary Contact - Email',
+    'contactPrimary.role': 'Primary Contact - Role',
+    'contactPrimary.contact': 'Primary Contact - Contact',
     'contactNatSoc.name': 'National Society Contact - Name',
-    'contactNatSoc.func': 'National Society Contact - Function',
-    'contactNatSoc.email': 'National Society Contact - Email',
+    'contactNatSoc.role': 'National Society Contact - Role',
+    'contactNatSoc.contact': 'National Society Contact - Contact',
     'contactFederation.name': 'Federation Contact - Name',
-    'contactFederation.func': 'Federation Contact - Function',
-    'contactFederation.email': 'Federation Contact - Email',
+    'contactFederation.role': 'Federation Contact - Role',
+    'contactFederation.contact': 'Federation Contact - Contact',
     'contactMediaNatSoc.name': 'Media Contact in the National Society - Name',
-    'contactMediaNatSoc.func': 'Media Contact in the National Society - Function',
-    'contactMediaNatSoc.email': 'Media Contact in the National Society - Email',
+    'contactMediaNatSoc.role': 'Media Contact in the National Society - Role',
+    'contactMediaNatSoc.contact': 'Media Contact in the National Society - Contact',
     'contactMedia.name': 'Media Contact - Name',
-    'contactMedia.func': 'Media Contact - Function',
-    'contactMedia.email': 'Media Contact - Email'
+    'contactMedia.role': 'Media Contact - Role',
+    'contactMedia.contact': 'Media Contact - Contact'
   };
   if (!index[path]) {
     console.warn('No display value found for', path);
@@ -246,7 +246,7 @@ export function convertStateToPayload (originalState) {
       ctype: contactType,
       name: originalState[src].name || '',
       title: originalState[src].title || '',
-      email: originalState[src].email || ''
+      email: originalState[src].contact || ''
     };
   }).filter(o => Boolean(o.name));
 
@@ -336,12 +336,12 @@ export function getInitialDataState () {
     eru: [{ type: undefined, status: undefined, units: undefined }],
 
     // Step 5
-    contactOriginator: { name: undefined, func: undefined, email: undefined },
-    contactPrimary: { name: undefined, func: undefined, email: undefined },
-    contactNatSoc: { name: undefined, func: undefined, email: undefined },
-    contactFederation: { name: undefined, func: undefined, email: undefined },
-    contactMediaNatSoc: { name: undefined, func: undefined, email: undefined },
-    contactMedia: { name: undefined, func: undefined, email: undefined }
+    contactOriginator: { name: undefined, role: undefined, contact: undefined },
+    contactPrimary: { name: undefined, role: undefined, contact: undefined },
+    contactNatSoc: { name: undefined, role: undefined, contact: undefined },
+    contactFederation: { name: undefined, role: undefined, contact: undefined },
+    contactMediaNatSoc: { name: undefined, role: undefined, contact: undefined },
+    contactMedia: { name: undefined, role: undefined, contact: undefined }
   };
 }
 
@@ -505,8 +505,8 @@ export function convertFieldReportToState (fieldReport) {
 
     state[dest] = {
       name: contact.name,
-      func: contact.title,
-      email: contact.email
+      role: contact.title,
+      contact: contact.email
     };
   });
 
