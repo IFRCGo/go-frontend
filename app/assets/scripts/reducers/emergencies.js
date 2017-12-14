@@ -1,6 +1,7 @@
 'use strict';
 import { combineReducers } from 'redux';
 
+import { getCentroid } from '../utils/country-centroids';
 import { get, groupByDisasterType } from '../utils/utils';
 
 const listInitialState = {
@@ -79,13 +80,63 @@ function createStoreFromRaw (raw) {
     });
   });
 
+  // since emergencies can have many countries, group by countries
+  // ie:
+  // emergency1: { countries: [ country1, country2 ] }
+  // >>>
+  // { country1: { records: [ emergency1 ] }, country2: { records: [ emergency1 ] } }
+  const countries = {};
+  records.forEach(record => {
+    get(record, 'countries', []).forEach(c => {
+      countries[c.iso] = countries[c.iso] || { country: c, records: [] };
+      countries[c.iso].records.push(record);
+    });
+  });
+
+  const geoJSON = {
+    type: 'FeatureCollection',
+    features: Object.keys(countries).map(iso => {
+      const { country, records } = countries[iso];
+
+      const properties = {
+        id: country.id,
+        name: country.name,
+
+        totalEmergencies: 0,
+        withResponse: 0,
+        withoutResponse: 0,
+        numAffected: 0
+      };
+
+      records.forEach(o => {
+        if (Array.isArray(o.appeals) && o.appeals.length) {
+          properties.withResponse += 1;
+        } else {
+          properties.withoutResponse += 1;
+        }
+        properties.totalEmergencies += 1;
+        properties.numAffected += Number(get(o, 'num_affected', 0));
+      });
+
+      return {
+        type: 'Feature',
+        properties,
+        geometry: {
+          type: 'Point',
+          coordinates: getCentroid(iso)
+        }
+      };
+    })
+  };
+
   return {
     numAffected,
     totalAppeals,
     totalAppealsFunding,
     count,
     emergenciesByType,
-    records
+    records,
+    geoJSON
   };
 }
 

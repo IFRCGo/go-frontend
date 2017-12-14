@@ -89,7 +89,6 @@ class EmergenciesTable extends React.Component {
       receivedAt,
       error
     } = this.props.list;
-    console.log(data);
 
     if (!receivedAt && !fetched) return null;
 
