@@ -52,8 +52,12 @@ export default class MapComponent extends React.Component {
         }
         this.theMap.addLayer(layer);
       });
+      get(nextProps, 'filters', []).forEach(filter => this.theMap.setFilter(filter.layer, filter.filter));
     }
-    get(nextProps, 'filters', []).forEach(filter => this.theMap.setFilter(filter.layer, filter.filter));
+
+    if (this.props.geoJSON !== nextProps.geoJSON) {
+      this.theMap.getSource(source).setData(nextProps.geoJSON);
+    }
   }
 
   render () {
