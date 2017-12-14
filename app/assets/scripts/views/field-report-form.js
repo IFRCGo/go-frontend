@@ -1,46 +1,9 @@
-// TODO on this file:
-// - [] Remove unneeded console.logs
-// - [] Map fields to api:
-//   Step 1
-//   sources: formData.sources.map(o => ({
-//     value: o.value,
-//     checked: false,
-//     specification: undefined
-//   })),
-
-//   // Step 3
-//   bulletin: undefined,
-//   actionsOthers: undefined,
-
-//   // Step 4
-//   dref: { status: undefined, value: undefined }
-//   emergencyAppeal: { status: undefined, value: undefined }
-//   rdrtrits: { status: undefined, value: undefined }
-//   fact: { status: undefined, value: undefined }
-//   ifrcStaff: { status: undefined, value: undefined }
-//   eru: [{ type: undefined, status: undefined, units: undefined }],
-//
-// - [] Add missing values for selectable options (radios, checkboxes...)
-//   Step 1
-//   sources: Array[checked: boolean, specification: string],
-
-//   Step 3
-//   bulletin: string (radio buttons),
-
-//   Step 4
-//   dref: string (radio buttons),
-//   emergencyAppeal: string (radio buttons),
-//   rdrtrits: string (radio buttons),
-//   fact: string (radio buttons),
-//   ifrcStaff: string (radio buttons),
-//   eru: Array[type: string, status: string(radio buttons), units: number]
-//
-// - [] Submit data
-//
 'use strict';
 import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
+import _get from 'lodash.get';
+import _undefined from 'lodash.isundefined';
 import _set from 'lodash.set';
 import _cloneDeep from 'lodash.clonedeep';
 import _toNumber from 'lodash.tonumber';
@@ -60,8 +23,7 @@ import {
 import * as formData from '../utils/field-report-constants';
 import { showAlert } from '../components/system-alerts';
 import { createFieldReport } from '../actions';
-// import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
-import { hideGlobalLoading } from '../components/global-loading';
+import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { request } from '../utils/network';
 
 import App from './app';
@@ -147,7 +109,7 @@ const prepStateForValidation = (state) => {
   state = _cloneDeep(state);
 
   // Conversion functions.
-  const toBool = (val) => val === 'true';
+  const toBool = (val) => Boolean(val === 'true');
   const toNumIfNum = (val) => {
     let v = _toNumber(val);
     return isNaN(v) ? val : v;
@@ -297,10 +259,16 @@ class FieldReportForm extends React.Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (this.fieldReportForm.fetching && !nextProps.fieldReportForm.fetching) {
-      if (!nextProps.fieldReportForm) {
-        console.log('nextProps.fieldReportForm', nextProps.fieldReportForm);
-        hideGlobalLoading();
+    if (this.props.fieldReportForm.fetching && !nextProps.fieldReportForm.fetching) {
+      hideGlobalLoading();
+      if (nextProps.fieldReportForm.error) {
+        const message = nextProps.fieldReportForm.error.error_message || 'Could not submit field report';
+        showAlert('danger', <p><strong>Error:</strong> {message}</p>, true, 4500);
+      } else {
+        const { history } = this.props;
+        const { id } = nextProps.fieldReportForm.data;
+        showAlert('success', <p>Field report created, redirecting...</p>, true, 2000);
+        setTimeout(() => history.push(`/reports/${id}`), 2000);
       }
     }
   }
@@ -308,7 +276,6 @@ class FieldReportForm extends React.Component {
   validate () {
     const { step, data } = this.state;
     let state = prepStateForValidation(data);
-    console.log('state', state);
 
     let validator;
     switch (step) {
@@ -334,7 +301,6 @@ class FieldReportForm extends React.Component {
     validator(state);
 
     this.setState({ errors: _cloneDeep(validator.errors) });
-    console.log('validator.errors', validator.errors);
     return validator.errors === null;
   }
 
@@ -350,16 +316,15 @@ class FieldReportForm extends React.Component {
     } = originalState;
 
     // Process properties.
-    state.countries = countries.map(o => ({id: o.value}));
-    state.dtype = {id: disasterType};
-    state.event = {id: event.value};
+    if (countries.length) { state.countries = countries.map(o => ({pk: o.value})); }
+    if (disasterType) { state.dtype = {pk: disasterType}; }
+    if (event && event.value) { state.event = {pk: event.value}; }
 
     const directMapping = [
       // [source, destination]
       ['summary', 'summary'],
       ['description', 'description'],
       ['status', 'status'],
-      ['assistance', 'request_assistance'],
       ['numAssistedRedCross', 'num_assisted'],
       ['numAssistedGov', 'gov_num_assisted'],
       ['numLocalStaff', 'num_localstaff'],
@@ -368,8 +333,12 @@ class FieldReportForm extends React.Component {
     ];
 
     directMapping.forEach(([src, dest]) => {
+      if (_undefined(originalState[src])) { return; }
       state[dest] = originalState[src];
     });
+
+    // Boolean values
+    state.request_assistance = Boolean(originalState.assistance === 'true');
 
     // For this properties when the source is the Red Cross use the provided,
     // when it's Government prepend gov_. This results in:
@@ -384,6 +353,7 @@ class FieldReportForm extends React.Component {
 
     sourceEstimationMapping.forEach(([src, dest]) => {
       originalState[src].forEach(o => {
+        if (_undefined(o.estimation)) { return; }
         if (o.source === 'red-cross') {
           state[dest] = o.estimation;
         } else if (o.source === 'government') {
@@ -414,7 +384,7 @@ class FieldReportForm extends React.Component {
           return o.checked ? orgActions.concat({id: o.value}) : orgActions;
         }, [])
       };
-    });
+    }).filter(o => o.actions.length);
 
     // Planned Response Mapping
     // In the payload the status and value may mean different things.
@@ -423,11 +393,15 @@ class FieldReportForm extends React.Component {
     // to plain state props.
     const planResponseMapping = [
       // [state var, mapping status, mapping value]
-      ['dref', 'DREFRequested', 'DREFRequestedAmount'],
-      ['emergencyAppeal', 'EmergencyAppeal', 'EmergencyAppealAmount']
+      ['dref', 'dref', 'dref_amount'],
+      ['emergencyAppeal', 'appeal', 'appeal_amount'],
+      ['rdrtrits', 'rdrt', 'num_rdrt'],
+      ['fact', 'fact', 'num_fact'],
+      ['ifrcStaff', 'ifrc_staff', 'num_ifrc_staff']
     ];
 
     planResponseMapping.forEach(([src, statusMap, valueMap]) => {
+      if (_undefined(originalState[src].status)) { return; }
       state[statusMap] = originalState[src].status;
       state[valueMap] = originalState[src].value;
     });
@@ -456,9 +430,13 @@ class FieldReportForm extends React.Component {
         title: originalState[src].title || '',
         email: originalState[src].email || ''
       };
-    });
+    }).filter(o => Boolean(o.name));
 
-    // Remove empty fields.
+    _get(originalState, 'eru', []).forEach(eru => {
+      if (_undefined(eru.type) || _undefined(eru.status) || _undefined(eru.units)) { return; }
+      state[eru.type] = eru.status;
+      state[eru.type + '_units'] = eru.units;
+    });
 
     return state;
   }
@@ -469,9 +447,15 @@ class FieldReportForm extends React.Component {
     const result = this.validate();
     if (result) {
       if (step === 5) {
-        console.log('Submit data!!!', this.getSubmitPayload());
-        // this.props._createFieldReport(this.getSubmitPayload());
-        // showGlobalLoading();
+        const payload = this.getSubmitPayload();
+        const userId = _get(this.props.user, 'data.id');
+        if (userId) {
+          payload.user = {pk: userId};
+        } else {
+          console.log('Could not read user ID from state');
+        }
+        this.props._createFieldReport(payload);
+        showGlobalLoading();
       } else {
         window.scrollTo(0, 0);
         this.setState({ step: step + 1 });
@@ -829,15 +813,15 @@ class FieldReportForm extends React.Component {
           options={[
             {
               label: 'No',
-              value: 'no'
+              value: '0'
             },
             {
               label: 'Planned',
-              value: 'planned'
+              value: '2'
             },
             {
               label: 'Yes/Published',
-              value: 'published'
+              value: '3'
             }
           ]}
           selectedOption={this.state.data.bulletin}
@@ -858,15 +842,15 @@ class FieldReportForm extends React.Component {
     const optsPlanReqDep = [
       {
         label: 'Planned',
-        value: 'planned'
+        value: '2'
       },
       {
         label: 'Requested',
-        value: 'requested'
+        value: '1'
       },
       {
         label: 'Deployed',
-        value: 'deployed'
+        value: '3'
       }
     ];
 
@@ -886,15 +870,15 @@ class FieldReportForm extends React.Component {
           options={[
             {
               label: 'Planned',
-              value: 'planned'
+              value: '2'
             },
             {
               label: 'Requested',
-              value: 'requested'
+              value: '1'
             },
             {
               label: 'Allocated',
-              value: 'allocated'
+              value: '3'
             }
           ]}
           values={this.state.data.dref}
@@ -909,15 +893,15 @@ class FieldReportForm extends React.Component {
           options={[
             {
               label: 'Planned',
-              value: 'planned'
+              value: '2'
             },
             {
               label: 'Requested',
-              value: 'requested'
+              value: '1'
             },
             {
               label: 'Launched',
-              value: 'launched'
+              value: '3'
             }
           ]}
           values={this.state.data.emergencyAppeal}
@@ -1072,7 +1056,9 @@ class FieldReportForm extends React.Component {
 if (environment !== 'production') {
   FieldReportForm.propTypes = {
     _createFieldReport: T.func,
-    fieldReportForm: T.object
+    fieldReportForm: T.object,
+    user: T.object,
+    history: T.object
   };
 }
 
@@ -1080,7 +1066,8 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state) => ({
-  fieldReportForm: state.fieldReportForm
+  fieldReportForm: state.fieldReportForm,
+  user: state.user
 });
 
 const dispatcher = (dispatch) => ({
@@ -1575,15 +1562,15 @@ class Eru extends React.Component {
                   options={[
                     {
                       label: 'Planned',
-                      value: 'planned'
+                      value: '2'
                     },
                     {
                       label: 'Requested',
-                      value: 'requested'
+                      value: '1'
                     },
                     {
                       label: 'Deployed',
-                      value: 'deployed'
+                      value: '3'
                     }
                   ]}
                   selectedOption={o.status}

@@ -3,12 +3,12 @@
 export const status = [
   {
     label: 'Early Warning',
-    value: 'early-warning',
+    value: '8',
     description: 'Early warning message for an upcoming disaster.'
   },
   {
     label: 'Event',
-    value: 'event',
+    value: '9',
     description: 'First report for this disaster.'
   }
 ];
@@ -1284,15 +1284,43 @@ export const eruTypes = [
     value: ''
   },
   {
-    value: '1',
-    label: 'Clinic'
+    value: 'eru_base_camp',
+    label: 'Base Camp'
   },
   {
-    value: '57',
-    label: 'Another unit'
+    value: 'eru_basic_health_care',
+    label: 'Basic Health Care'
   },
   {
-    value: '87',
-    label: 'Yet another'
+    value: 'eru_it_telecom',
+    label: 'IT & Telecommunications'
+  },
+  {
+    value: 'eru_logistics',
+    label: 'Logistics'
+  },
+  {
+    value: 'eru_deployment_hospital',
+    label: 'Rapid Deployment Hospital'
+  },
+  {
+    value: 'eru_referral_hospital',
+    label: 'Referral Hospital'
+  },
+  {
+    value: 'eru_relief',
+    label: 'Relief'
+  },
+  {
+    value: 'eru_water_sanitation_15',
+    label: 'Water & Sanitation: Module 15'
+  },
+  {
+    value: 'eru_water_sanitation_40',
+    label: 'Water & Sanitation: Module 40'
+  },
+  {
+    value: 'eru_water_sanitation_20',
+    label: 'Water & Sanitation: Module Mass Sanitation 20'
   }
 ];
