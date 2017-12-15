@@ -319,6 +319,10 @@
   .color--grey::before {
     background: tint($base-color, 80%);
   }
+  
+  .color--blue::before {
+    background: #4680F2;
+  }
 }
 
 .stats-chart {

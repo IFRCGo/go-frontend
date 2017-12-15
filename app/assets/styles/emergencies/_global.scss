@@ -53,3 +53,7 @@
     @include column(12/12);
   }
 }
+
+.color--blue::before {
+  background: #4680F2;
+}

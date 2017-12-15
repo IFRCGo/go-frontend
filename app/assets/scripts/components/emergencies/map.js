@@ -60,7 +60,7 @@ export default class EmergenciesMap extends React.Component {
       stops: [
         ['total', '#F39C12'],
         ['none', '#C22A26'],
-        ['mixed', '#C689B9']
+        ['mixed', '#749BE9']
       ]
     };
 
@@ -163,7 +163,7 @@ export default class EmergenciesMap extends React.Component {
                       <dd>No International Response</dd>
                       <dt className='color color--yellow'>yellow</dt>
                       <dd>Full International Response</dd>
-                      <dt className='color color--purple'>purple</dt>
+                      <dt className='color color--blue'>blue</dt>
                       <dd>Mixed Level of Response</dd>
                     </dl>
                   </div>
@@ -208,14 +208,10 @@ class MapPopover extends React.Component {
             </div>
           </header>
           <div className='popover__body'>
-            <p>{n(numAffected)} People Affected</p>
-            <p>{n(totalEmergencies)} {totalEmergencies === 1 ? 'Emergency' : 'Emergencies'}</p>
-            <dl className='popover__details'>
-              <dd>{n(withResponse)}</dd>
-              <dt>With response</dt>
-              <dd>{n(withoutResponse)}</dd>
-              <dt>Without Response</dt>
-            </dl>
+            <p className='popover__stat'>{n(numAffected)} People Affected</p>
+            <p className='popover__stat'>{n(totalEmergencies)} {totalEmergencies === 1 ? 'Emergency' : 'Emergencies'}</p>
+            <p className='popover__stat'>{n(withResponse)} with response</p>
+            <p className='popover__stat'>{n(withoutResponse)} without response</p>
           </div>
         </div>
       </article>

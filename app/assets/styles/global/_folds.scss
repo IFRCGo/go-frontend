@@ -6,6 +6,9 @@
   background: #fff;
   padding: ($global-spacing * 2) 0;
   box-shadow: 0 2px 4px 1px $base-alpha-color;
+  &:last-child {
+    margin-bottom: $global-spacing * 4;
+  };
 
   > .inner {
     @extend .row-fold, .row--centered;
