@@ -2,6 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import { environment } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
@@ -75,7 +76,7 @@ class FieldReport extends React.Component {
     return (
       <DisplaySection title={`Actions taken by ${orgDisplayName}`}>
         <ul className='actions-list'>
-          {actions.actions.map(d => <li key={d.id}>{d.name}</li>)}
+          {actions.actions.map((d, i) => <li key={`d.id-${i}`}>{d.name}</li>)}
         </ul>
       </DisplaySection>
     );
@@ -89,8 +90,8 @@ class FieldReport extends React.Component {
     return (
       <DisplaySection title='Contacts'>
         {contacts.map(d => (
-          <div className='form__group'>
-            <p className='form__label' key={d.resource_uri}>{separate(d.ctype)}</p>
+          <div className='form__group' key={d.resource_uri}>
+            <p className='form__label'>{separate(d.ctype)}</p>
             <p><strong>{d.name}</strong>, {d.title}, <a className='link--primary' href={`mailto:${d.email}`}>{d.email}</a></p>
           </div>
         ))}
@@ -117,7 +118,7 @@ class FieldReport extends React.Component {
                 </div>
               </div>
               <div className='inpage__headline-actions'>
-                <button className='button button--primary-plain'>Update</button>
+                <Link className='button button--primary-plain' to={`/reports/${data.id}/edit`}>Edit</Link>
               </div>
             </div>
           </div>

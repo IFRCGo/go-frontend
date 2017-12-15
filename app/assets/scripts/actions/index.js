@@ -1,5 +1,5 @@
 'use strict';
-import { fetchJSON, fetchJSONRecursive, postJSON, withToken } from '../utils/network';
+import { fetchJSON, fetchJSONRecursive, postJSON, putJSON, withToken } from '../utils/network';
 import { stringify as buildAPIQS } from 'qs';
 import { DateTime } from 'luxon';
 
@@ -26,6 +26,11 @@ export function getFieldReportById (id) {
 export const CREATE_FIELD_REPORT = 'CREATE_FIELD_REPORT';
 export function createFieldReport (payload) {
   return postJSON('api/v1/field_report/', CREATE_FIELD_REPORT, payload, withToken());
+}
+
+export const UPDATE_FIELD_REPORT = 'UPDATE_FIELD_REPORT';
+export function updateFieldReport (id, payload) {
+  return putJSON(`api/v1/field_report/${id}/`, UPDATE_FIELD_REPORT, payload, withToken());
 }
 
 export const GET_SURGE_ALERTS = 'GET_SURGE_ALERTS';
@@ -60,4 +65,9 @@ export function getAggregateAppeals (date, unit) {
 export const UPDATE_SUBSCRIPTIONS = 'UPDATE_SUBSCRIPTIONS';
 export function updateSubscriptions (payload) {
   return postJSON('notifications/', UPDATE_SUBSCRIPTIONS, payload, withToken());
+}
+
+export const GET_EVENT = 'GET_EVENT';
+export function getEventById (id) {
+  return fetchJSON(`api/v1/event/${id}/`, GET_EVENT, withToken(), { id });
 }

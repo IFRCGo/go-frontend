@@ -102,12 +102,11 @@
       }
 
       @include media(large-up) {
-        @include column(2/12, $cycle: 0);
+        @include column(2/12, $cycle: 5);
       }
 
       &--sec {
         @include media(large-up) {
-          @include move(2/12);
           text-align: right;
         }
       }
