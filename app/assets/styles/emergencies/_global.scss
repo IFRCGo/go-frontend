@@ -1,7 +1,10 @@
 .inpage__headline-stats {
-  @include column(12/12);
-  @include media (small-up) {
-    @include column(6/12);
+  @include column(5/12);
+  @include media(small-down) {
+    @include column(12/12);
+  }
+  @include media (large-up) {
+    @include column(12/12);
   }
   small {
     @include media(medium-up) {
@@ -14,48 +17,28 @@
     margin-bottom: $global-spacing * 2;
     margin-top: 0;
   }
-  .stats-group {
-    margin-top: $global-spacing;
-    @include media(medium-down) {
-      width: 100%;
-      ul {
-        width: 100%;
-        margin-left: 0;
-        margin-top: $global-spacing;
-      }
-    }
-  }
-  .stats-group--single {
-    @include media(medium-down) {
-      width: 100%;
-      &:first-child {
-        border-right: 0px;
-        border-bottom: solid 1px rgba($base-color, 0.18);
-        margin-bottom: $global-spacing;
-      };
-      ul {
-        width: 100%;
-        margin-left: 0;
-        margin-top: $global-spacing;
-      }
-    }
-  }
 }
 
 .inpage__headline-charts {
-  @include column(12/12);
-  @include media (small-up) {
-    @include column(6/12);
+  @include column(6/12);
+  @include media(small-down) {
+    @include column(12/12);
+  }
+  @include media (large-up) {
+    @include column(12/12);
+    padding-top: $global-spacing * 2;
+    margin-top: $global-spacing;
+    border-top: solid 1px rgba($base-color, .18);
   }
   .chart {
     @include column(12/12);
-    @include media(sub-medium-up) {
+    @include media(large-up) {
       @include column(6/12);
     }
   }
   .emergencies {
     @include column(12/12);
-    @include media(sub-medium-up) {
+    @include media(large-up) {
       @include column(6/12);
     }
   }

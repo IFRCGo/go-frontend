@@ -21,23 +21,17 @@ export default class Emergency extends React.Component {
                       <li className='introduction-nav-item'><a href=''>Appeal 2</a></li>
                     </ul>
                     <div className='header-stats'>
-                      <div className='stat-group'>
-                        <div className='stat-icon'>
-                          <img width='45px' src="/assets/graphics/layout/people.svg" alt="Targeted Benficiaries"/>
-                        </div>
-                        <ul>
-                          <li>1,033,300<small>Targeted Benficiaries</small></li>
-                        </ul>
-                      </div>
-                      <div className='stat-group'>
-                        <div className='stat-icon'>
-                          <img width='45px' src="/assets/graphics/layout/funding.svg" alt="Funding"/>
-                        </div>
-                        <ul>
-                          <li>25,062,572<small>Appeal Amount (CHF)</small></li>
-                          <li>5,560,132<small>Funding (CHF)</small></li>
-                        </ul>
-                      </div>
+                      <ul className='stats-list'>
+                        <li className='stats-list__item stats-emergencies'>
+                          1,033,300<small>Targeted Benficiaries</small>
+                        </li>
+                        <li className='stats-list__item stats-funding stat-borderless stat-double'>
+                          25,062,572<small>Appeal Amount (CHF)</small>
+                        </li>
+                        <li className='stats-list__item stat-double'>
+                          5,560,132<small>Funding (CHF)</small>
+                        </li>
+                      </ul>
                     </div>
                     <div className='funding-chart'>
                     </div>

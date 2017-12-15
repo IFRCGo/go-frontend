@@ -144,9 +144,6 @@
 
 .header-stats {
   @include column(12/12);
-  img {
-    float: left;
-  }
   hr {
    opacity: 0;
    @include media(medium-up) {
@@ -155,65 +152,47 @@
   }
 }
 
-.stat-group {
-  float: left;
-  font-family: $base-font-family;
-  border-bottom: solid 1px rgba($base-color, 0.1);
-  border-right: 0;
-  margin-left: 0;
-  &:last-child {
-    border: none;
-    margin-left: 0;
-  };
-  &:first-child {
-    margin-left: 0;
-    margin-bottom: $global-spacing * 2;
-    @include media(medium-up) {
-      margin-bottom: 0;
-      margin-right: $global-spacing * 2;
-      border-right: solid 1px rgba($base-color, 0.1);
-    }
-  };
-  @include media(medium-up) {
-    border-bottom: 0;
+.stats-list {
+  list-style: none;
+  @include column(12/12);
+  @include media(large-up) {
+    display: flex;
+    flex-flow: row wrap;
   }
-
-  .stat-icon {
-    float: left;
-  }
-
-  ul {
-    float: left;
-    list-style: none;
-    margin-left: 0;
-    margin-top: $global-spacing;
-    @include media(sub-small-up) {
-      width: 100%;
-      margin-left: 0;
-      margin-top: $global-spacing;
-    }
-    @include media(sub-medium-up) {
-      width: auto;
-      margin-left: $global-spacing/2;
-      margin-top: 0;
-    }
-    @incluide media(large-up) {
-      margin-top: 0;
-      margin-left: 0;
-    }
-  }
-
   li {
-    display: inline-block;
-    font-size: 1.25rem;
-    color: $base-color;
-    margin: 0 $global-spacing 0 0;
-    @include media(medium-up) {
-      font-size: 1.75rem;
+    @include column(12/12);
+    font-size: 2.25rem;
+    line-height: 3rem;
+    padding-bottom: $global-spacing;
+    border-right: 0;
+    padding-left: $global-spacing * 3.5;
+    border-bottom: solid 1px rgba($base-color, 0.18);
+    margin-bottom: $global-spacing;
+    &:last-child {
+      border-right: none;
+      border-bottom: none;
     }
     @include media(large-up) {
-      font-size: 2rem;
+      @include column(3/12);
+      border-right: solid 1px rgba($base-color, 0.18);
+      border-bottom: 0;
+      padding-right: $global-spacing;
+      margin-right: $global-spacing;
+      margin-bottom: 0;
     }
+  }
+  .stat-double {
+    @include media(large-up) {
+      width: auto;
+      & + .stat-double {
+        padding-left: $global-spacing/2;
+      }
+    }
+  }
+  .stat-borderless {
+    border-right: none;
+    border-bottom: 0;
+    padding-bottom: 0;
   }
   small {
     display: block;
@@ -228,6 +207,28 @@
       font-size: 1rem;
     }
   }
+}
+
+
+.stats-emergencies {
+  background-image: url('/assets/graphics/layout/emergency.svg');
+  background-size: 45px;
+  background-repeat: no-repeat;
+  background-position: 0% 10%;
+}
+
+.stats-people {
+  background-image: url('/assets/graphics/layout/people.svg');
+  background-size: 45px;
+  background-repeat: no-repeat;
+  background-position: 0% 10%;
+}
+
+.stats-funding {
+  background-image: url('/assets/graphics/layout/funding.svg');
+  background-size: 45px;
+  background-repeat: no-repeat;
+  background-position: 0% 10%;
 }
 
 .stats-group--single {
