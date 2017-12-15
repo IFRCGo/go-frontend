@@ -155,8 +155,8 @@ export const step5 = {
     contact: {
       properties: {
         name: { type: 'string' },
-        func: { type: 'string' },
-        email: { type: 'string', format: 'email' }
+        role: { type: 'string' },
+        contact: { type: 'string' }
       }
     }
   },
