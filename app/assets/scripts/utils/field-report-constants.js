@@ -1,17 +1,18 @@
 'use strict';
 
-export const status = [
-  {
-    label: 'Early Warning',
-    value: '8',
-    description: 'Early warning message for an upcoming disaster.'
-  },
-  {
-    label: 'Event',
-    value: '9',
-    description: 'First report for this disaster.'
-  }
-];
+export const statusEarlyWarning = {
+  label: 'Early Warning',
+  value: '8',
+  description: 'Early warning message for an upcoming disaster.'
+};
+
+export const statusEvent = {
+  label: 'Event',
+  value: '9',
+  description: 'First report for this disaster.'
+};
+
+export const status = [statusEarlyWarning, statusEvent];
 
 export const visibility = [
   {

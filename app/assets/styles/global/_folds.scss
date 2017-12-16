@@ -17,6 +17,7 @@
   &,
   .fold__header,
   .fold__body {
+    @include column(12/12);
     > *:last-child {
       margin-bottom: 0;
     }

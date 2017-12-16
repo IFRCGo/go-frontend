@@ -9,6 +9,7 @@ import fieldReport from './field-report';
 import surgeAlerts from './surge-alerts';
 import overallStats from './overall-stats';
 import emergencies from './emergencies';
+import event from './event';
 
 export const reducers = {
   user,
@@ -18,7 +19,8 @@ export const reducers = {
   fieldReport,
   surgeAlerts,
   overallStats,
-  emergencies
+  emergencies,
+  event
 };
 
 export default combineReducers(reducers);

@@ -24,6 +24,20 @@ export function withToken (options = {}) {
 }
 
 /**
+ * Adds json content type headers and stringifies the payload.
+ * @param  {payload} payload  Payload to stringify.
+ * @param  {Object} options Additional options for composition
+ * @return {Object}         Options with headers and payload
+ */
+export function withJSONRequest (payload, options = {}) {
+  options.headers = options.headers || {};
+  options.headers['Content-Type'] = 'application/json';
+  options.headers['Accept'] = 'application/json';
+  options.body = JSON.stringify(payload);
+  return options;
+}
+
+/**
  * Create Inflight action
  * @param  {string} action  Base action.
  * @return {string}         Inflight action
@@ -113,12 +127,24 @@ export function fetchJSONRecursive (path, action, options, extraData, devStopAft
  * @return {func}             Dispatch function.
  */
 export function postJSON (path, action, payload, options, extraData) {
-  options = options || {};
-  options.headers = options.headers || {};
-  options.headers['Content-Type'] = 'application/json';
-  options.headers['Accept'] = 'application/json';
+  options = withJSONRequest(payload, options);
   options.method = 'POST';
-  options.body = JSON.stringify(payload);
+  return makeRequest(path, action, options, extraData);
+}
+
+/**
+ * PUT a JSON resource
+ * @param  {string} path      Relative path to query. Has to be available from
+ *                            the api.
+ * @param  {string} action    Base action to dispatch.
+ * @param  {payload} payload  Payload to put.
+ * @param  {Object} options   Options for the request.
+ * @param  {Object} extraData Extra data to pass to the action.
+ * @return {func}             Dispatch function.
+ */
+export function putJSON (path, action, payload, options, extraData) {
+  options = withJSONRequest(payload, options);
+  options.method = 'PUT';
   return makeRequest(path, action, options, extraData);
 }
 
