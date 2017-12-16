@@ -64,7 +64,7 @@ class EmergenciesTable extends React.Component {
       <React.Fragment key={rowData.id}>
         <tr>
           <td data-heading='Date'>{date}</td>
-          <td data-heading='Name'>{get(rowData, 'name', nope)}</td>
+          <td data-heading='Name'><Link className='link--primary' to={`/emergencies/${rowData.id}`}>{get(rowData, 'name', nope)}</Link></td>
           <td data-heading='Disaster Type'>{get(rowData, 'dtype.name', nope)}</td>
           <td data-heading='Total Affected'>{n(get(rowData, 'num_affected'))}</td>
           <td data-heading='Beneficiaries'>{n(beneficiaries)}</td>
