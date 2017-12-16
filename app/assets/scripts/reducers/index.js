@@ -10,6 +10,7 @@ import surgeAlerts from './surge-alerts';
 import overallStats from './overall-stats';
 import emergencies from './emergencies';
 import event from './event';
+import eruOwners from './eru-owners';
 
 export const reducers = {
   user,
@@ -20,7 +21,8 @@ export const reducers = {
   surgeAlerts,
   overallStats,
   emergencies,
-  event
+  event,
+  eruOwners
 };
 
 export default combineReducers(reducers);
