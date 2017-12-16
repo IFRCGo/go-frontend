@@ -61,16 +61,14 @@ class EmergenciesTable extends React.Component {
     ));
 
     return (
-      <React.Fragment key={rowData.id}>
-        <tr>
-          <td data-heading='Date'>{date}</td>
-          <td data-heading='Name'><Link className='link--primary' to={`/emergencies/${rowData.id}`}>{get(rowData, 'name', nope)}</Link></td>
-          <td data-heading='Disaster Type'>{get(rowData, 'dtype.name', nope)}</td>
-          <td data-heading='Total Affected'>{n(get(rowData, 'num_affected'))}</td>
-          <td data-heading='Beneficiaries'>{n(beneficiaries)}</td>
-          <td data-heading='Countries'>{countries.length ? countries : nope}</td>
-        </tr>
-      </React.Fragment>
+      <tr key={rowData.id}>
+        <td data-heading='Date'>{date}</td>
+        <td data-heading='Name'><Link className='link--primary' to={`/emergencies/${rowData.id}`}>{get(rowData, 'name', nope)}</Link></td>
+        <td data-heading='Disaster Type'>{get(rowData, 'dtype.name', nope)}</td>
+        <td data-heading='Total Affected'>{n(get(rowData, 'num_affected'))}</td>
+        <td data-heading='Beneficiaries'>{n(beneficiaries)}</td>
+        <td data-heading='Countries'>{countries.length ? countries : nope}</td>
+      </tr>
     );
   }
 
@@ -86,7 +84,7 @@ class EmergenciesTable extends React.Component {
 
     if (error) {
       return (
-        <Fold title='Latest Alerts'>
+        <Fold title='Latest Emergencies'>
           <p>Oh no! An error ocurred getting the stats.</p>
         </Fold>
       );
@@ -94,7 +92,7 @@ class EmergenciesTable extends React.Component {
 
     if (!data.objects.length) {
       return (
-        <Fold title='Latest Alerts'>
+        <Fold title='Latest Emergencies'>
           <p>There are no results to show.</p>
         </Fold>
       );

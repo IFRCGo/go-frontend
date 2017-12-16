@@ -5,7 +5,7 @@ import { PropTypes as T } from 'prop-types';
 import { environment } from '../../config';
 import { commaSeparatedNumber as n } from '../../utils/format';
 
-export default class Homestats extends React.Component {
+export default class EmergenciesStats extends React.Component {
   render () {
     const {
       data,
@@ -36,7 +36,7 @@ export default class Homestats extends React.Component {
 }
 
 if (environment !== 'production') {
-  Homestats.propTypes = {
+  EmergenciesStats.propTypes = {
     lastMonth: T.object
   };
 }

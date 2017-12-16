@@ -98,7 +98,7 @@ function createStoreFromRaw (raw) {
     features: Object.keys(countries).map(iso => {
       const { country, records } = countries[iso];
 
-      const properties = {
+      var properties = {
         id: country.id,
         name: country.name,
 

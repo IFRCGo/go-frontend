@@ -21,7 +21,6 @@ class Emergencies extends React.Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    console.log(nextProps.lastMonth);
     if (finishedFetch(this.props, nextProps, 'aggregate.month')) {
       hideGlobalLoading();
     }
