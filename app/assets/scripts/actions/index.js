@@ -101,5 +101,5 @@ export function getEventById (id) {
 
 export const GET_ERU_OWNERS = 'GET_ERU_OWNERS';
 export function getEruOwners () {
-  return fetchJSON('api/v1/eru_owner/?limit=0', GET_ERU_OWNERS, withToken())
+  return fetchJSON('api/v1/eru_owner/?limit=0', GET_ERU_OWNERS, withToken());
 }
