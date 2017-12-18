@@ -15,6 +15,7 @@ import App from './app';
 import AlertsTable from '../components/connected/alerts-table';
 import Progress from '../components/progress';
 import Map from '../components/deployments/map';
+import Readiness from '../components/deployments/readiness';
 
 class Deployments extends React.Component {
   componentDidMount () {
@@ -81,7 +82,6 @@ class Deployments extends React.Component {
     } = this.props.eruOwners;
 
     if (!fetched || error) return null;
-    console.log(this.props.eruOwners);
 
     return (
       <section className='inpage'>
@@ -103,6 +103,9 @@ class Deployments extends React.Component {
         </pre>
         <div>
           <AlertsTable />
+        </div>
+        <div>
+          <Readiness eruOwners={this.props.eruOwners} />
         </div>
       </section>
     );
