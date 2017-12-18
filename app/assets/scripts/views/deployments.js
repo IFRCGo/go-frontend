@@ -98,9 +98,6 @@ class Deployments extends React.Component {
         <div>
           <Map eruOwners={this.props.eruOwners} />
         </div>
-        <pre>
-          {JSON.stringify(data, null, 2)}
-        </pre>
         <div>
           <AlertsTable />
         </div>
