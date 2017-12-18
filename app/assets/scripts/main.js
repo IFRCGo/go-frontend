@@ -18,6 +18,7 @@ import RecoverAccount from './views/recover-account';
 import UhOh from './views/uhoh';
 import FieldReportForm from './views/field-report-form/';
 import FieldReport from './views/field-report';
+import Emergencies from './views/emergencies';
 import Emergency from './views/emergency';
 
 polyfill();
@@ -70,6 +71,7 @@ const Root = () => (
         <Route exact path="/reports/new" component={FieldReportForm}/>
         <Route exact path="/reports/:id/edit" component={FieldReportForm}/>
         <Route exact path="/reports/:id" component={FieldReport}/>
+        <Route exact path="/emergencies" component={Emergencies}/>
         <Route exact path="/emergencies/:id" component={Emergency}/>
         <Route component={UhOh}/>
       </Switch>

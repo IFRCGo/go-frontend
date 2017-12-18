@@ -24,6 +24,9 @@
   @if $arg == small-only {
     @media #{$screen} and (min-width: lower-bound($small-range)) and (max-width: upper-bound($small-range)) { @content; }
   }
+  @if $arg == small-down {
+    @media #{$screen} and (max-width: upper-bound($small-range)) { @content; }
+  }
   @if $arg == medium-up {
     @media #{$screen} and (min-width: lower-bound($medium-range)) { @content; }
   }

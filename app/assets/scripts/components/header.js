@@ -25,7 +25,7 @@ class Header extends React.PureComponent {
         <div className='inner'>
           <nav className='page__prime-nav' role='navigation'>
             <ul className='nav-global-menu'>
-              <li><Link to='/operations' title='Visit operations page'><span>Operations</span></Link></li>
+              <li><Link to='/emergencies' title='Visit emergencies page'><span>Emergencies</span></Link></li>
               <li><Link to='/deployments' title='Visit deployments page'><span>Deployments</span></Link></li>
               <li><Link to='/about' title='Visit about page'><span>About</span></Link></li>
             </ul>

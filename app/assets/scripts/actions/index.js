@@ -58,8 +58,35 @@ export function getAggregateAppeals (date, unit) {
     model_type: 'appeal',
     unit
   });
-
   return fetchJSON(`api/v1/aggregate/?${f}`, GET_AGGREGATE_APPEALS, withToken(), {aggregationUnit: unit});
+}
+
+export const GET_EMERGENCIES_LIST = 'GET_EMERGENCIES_LIST';
+export function getEmergenciesList (page = 1, filters = {}) {
+  filters.limit = filters.limit || 10;
+  filters.offset = filters.limit * (page - 1);
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v1/event/?${f}`, GET_EMERGENCIES_LIST, withToken());
+}
+
+export const GET_LAST_MO_EMERGENCIES = 'GET_LAST_MO_EMERGENCIES';
+export function getLastMonthsEmergencies () {
+  const f = buildAPIQS({
+    disaster_start_date__gt: DateTime.local().minus({days: 30}).startOf('day').toISODate(),
+    limit: 0
+  });
+  return fetchJSON(`api/v1/event/?${f}`, GET_LAST_MO_EMERGENCIES, {});
+}
+
+export const GET_AGGREGATE_EMERGENCIES = 'GET_AGGREGATE_EMERGENCIES';
+export function getAggregateEmergencies (date, unit) {
+  const f = buildAPIQS({
+    start_date: date,
+    model_type: 'event',
+    unit
+  });
+
+  return fetchJSON(`api/v1/aggregate/?${f}`, GET_AGGREGATE_EMERGENCIES, withToken(), {aggregationUnit: unit});
 }
 
 export const UPDATE_SUBSCRIPTIONS = 'UPDATE_SUBSCRIPTIONS';
