@@ -211,8 +211,8 @@ export default class Homemap extends React.Component {
   renderContent () {
     const {
       data,
-      error
       fetched,
+      error
     } = this.props.appealsList;
 
     if (!fetched || error) { return null; }

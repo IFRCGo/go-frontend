@@ -3,7 +3,7 @@ import { fetchJSON, fetchJSONRecursive, postJSON, putJSON, withToken } from '../
 import { stringify as buildAPIQS } from 'qs';
 import { DateTime } from 'luxon';
 
-import { regions } from '../utils/region-constants';
+import { regions, countriesByRegion } from '../utils/region-constants';
 
 export const TOKEN = 'TOKEN';
 export function getAuthToken (username, password) {
@@ -147,4 +147,33 @@ export function getRegionFieldReports (regionId, page = 1, filters = {}) {
   const f = buildAPIQS(filters);
 
   return fetchJSON(`/api/v1/field_report/?${f}`, GET_REGION_FIELD_REPORTS, withToken());
+}
+
+export const GET_REGION_APPEALS_STATS = 'GET_REGION_APPEALS_STATS';
+export function getRegionAppealsStats (regionId) {
+  const f = buildAPIQS({
+    end_date__gt: DateTime.local().toISODate(),
+    limit: 1000,
+    region: regionId
+  });
+  return fetchJSONRecursive(`api/v1/appeal/?${f}`, GET_REGION_APPEALS_STATS, withToken());
+}
+
+export const GET_REGION_AGGREGATE_APPEALS = 'GET_REGION_AGGREGATE_APPEALS';
+export function getRegionAggregateAppeals (regionId, date, unit) {
+  const f = buildAPIQS({
+    start_date: date,
+    region: regionId,
+    model_type: 'appeal',
+    unit
+  });
+  return fetchJSON(`api/v1/aggregate/?${f}`, GET_REGION_AGGREGATE_APPEALS, withToken(), {aggregationUnit: unit});
+}
+
+export const GET_REGION_ERU = 'GET_REGION_ERU';
+export function getRegionERU (regionId) {
+  const f = buildAPIQS({
+    countries__in: countriesByRegion[regionId].join(',')
+  });
+  return fetchJSON(`api/v1/eru/?${f}`, GET_REGION_ERU, withToken());
 }
