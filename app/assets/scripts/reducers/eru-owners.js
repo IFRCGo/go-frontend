@@ -107,6 +107,7 @@ function createStoreFromRaw (raw) {
   return Object.assign({}, eruState, {
     geoJSON,
     types,
-    owners
+    owners,
+    records
   });
 }
