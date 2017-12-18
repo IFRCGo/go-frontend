@@ -1,5 +1,7 @@
 'use strict';
 import _get from 'lodash.get';
+import _groupBy from 'lodash.groupby';
+import _toNumber from 'lodash.tonumber';
 
 // lodash.get will only return the defaultValue when
 // the path is undefined. We want to also catch null and ''
@@ -10,6 +12,17 @@ export function get (object, path, defaultValue) {
   } else {
     return value;
   }
+}
+
+export function groupByDisasterType (objs) {
+  const emergenciesByType = _groupBy(objs, 'dtype.id');
+  return Object.keys(emergenciesByType).map(key => {
+    return {
+      id: _toNumber(key),
+      name: emergenciesByType[key][0].dtype.name,
+      items: emergenciesByType[key]
+    };
+  }).sort((a, b) => a.name > b.name);
 }
 
 export function isValidEmail (email) {

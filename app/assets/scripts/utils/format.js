@@ -5,13 +5,13 @@ export const nope = '--';
 export const na = 'N/A';
 export const invalid = 'Invalid';
 
-// Ie. given 12345, return '12 345'
+// Ie. given 12345.99, return '12,346'
 export const commaSeparatedNumber = (x) => {
   // isNaN(null) === true :*(
   if (isNaN(x) || (!x && x !== 0)) {
     return nope;
   }
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  return Math.round(Number(x)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
 export function percent (value, total, decimals = 2) {

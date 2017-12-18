@@ -1,0 +1,59 @@
+.inpage__headline-stats {
+  @include column(5/12);
+  @include media(small-down) {
+    @include column(12/12);
+  }
+  @include media (large-up) {
+    @include column(12/12);
+  }
+  small {
+    @include media(medium-up) {
+      font-size: 0.875rem;
+    }
+  }
+
+  hr {
+    width: 95%;
+    margin-bottom: $global-spacing * 2;
+    margin-top: 0;
+  }
+}
+
+.inpage__headline-charts {
+  @include column(6/12);
+  @include media(small-down) {
+    @include column(12/12);
+  }
+  @include media (large-up) {
+    @include column(12/12);
+    padding-top: $global-spacing * 2;
+    margin-top: $global-spacing;
+    border-top: solid 1px rgba($base-color, .18);
+  }
+  .chart {
+    @include column(12/12);
+    @include media(large-up) {
+      @include column(6/12);
+    }
+  }
+  .emergencies {
+    @include column(12/12);
+    @include media(large-up) {
+      @include column(6/12);
+    }
+  }
+}
+
+.stats-chart {
+  margin-top: 0;
+}
+
+.emergencies-map{
+  .map-container {
+    @include column(12/12);
+  }
+}
+
+.color--blue::before {
+  background: #4680F2;
+}

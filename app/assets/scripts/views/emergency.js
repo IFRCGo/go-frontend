@@ -1,4 +1,5 @@
 'use strict';
+import * as url from 'url';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -8,10 +9,11 @@ import _toNumber from 'lodash.tonumber';
 import { Sticky, StickyContainer } from 'react-sticky';
 import { DateTime } from 'luxon';
 
-import { environment } from '../config';
+import { api, environment } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { getEventById } from '../actions';
 import {
+  commaSeparatedNumber as n,
   separateUppercaseWords as separate,
   nope
 } from '../utils/format';
@@ -89,19 +91,17 @@ class Emergency extends React.Component {
           ))}
         </ul>
         <div className='header-stats'>
-          <div className='stat-group'>
-            <img src="/assets/graphics/layout/people.svg" alt="Targeted Benficiaries"/>
-            <ul>
-              <li>{stats.beneficiaries}<small>Targeted Benficiaries</small></li>
-            </ul>
-          </div>
-          <div className='stat-group'>
-            <img src="/assets/graphics/layout/funding.svg" alt="Funding"/>
-            <ul>
-              <li>{stats.requested}<small>Appeal Amount (CHF)</small></li>
-              <li>{stats.funded}<small>Funding (CHF)</small></li>
-            </ul>
-          </div>
+          <ul className='stats-list'>
+            <li className='stats-list__item stats-emergencies'>
+              {n(stats.beneficiaries)}<small>Targeted Benficiaries</small>
+            </li>
+            <li className='stats-list__item stats-funding stat-borderless stat-double'>
+              {n(stats.requested)}<small>Appeal Amount (CHF)</small>
+            </li>
+            <li className='stats-list__item stat-double'>
+              {n(stats.funded)}<small>Funding (CHF)</small>
+            </li>
+          </ul>
         </div>
         <div className='funding-chart'>
         </div>
@@ -178,7 +178,9 @@ class Emergency extends React.Component {
           <div className='inner'>
             <div className='inpage__headline'>
               <div className='inpage__headline-content'>
-                <div className='inpage__headline-actions'><button className='button button--primary-bounded'>Edit Event</button></div>
+                <div className='inpage__headline-actions'>
+                  <a href={url.resolve(api, `admin/api/event/${data.id}/change/`)}
+                    className='button button--primary-bounded'>Edit Event</a></div>
                 <h1 className='inpage__title'>{data.name}</h1>
                 {this.renderHeaderStats()}
               </div>
