@@ -1,4 +1,6 @@
-const regionalCountries = {
+'use strict';
+
+export const countriesByRegion = {
   '0': [
     '12',
     '13',
@@ -205,4 +207,25 @@ const regionalCountries = {
   ]
 };
 
-export default regionalCountries;
+export const regions = {
+  '0': {
+    id: 0,
+    name: 'Africa'
+  },
+  '1': {
+    id: 1,
+    name: 'Americas'
+  },
+  '2': {
+    id: 2,
+    name: 'Asia Pacific'
+  },
+  '3': {
+    id: 3,
+    name: 'Europe'
+  },
+  '4': {
+    id: 4,
+    name: 'Middle East & North Africa'
+  }
+};

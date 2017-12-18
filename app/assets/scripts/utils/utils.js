@@ -37,3 +37,7 @@ export function isRedCrossEmail (email) {
 export function finishedFetch (curr, next, prop) {
   return _get(curr, `${prop}.fetching`, false) && !_get(next, `${prop}.fetching`, false);
 }
+
+export function objValues (obj) {
+  return Object.keys(obj).map(k => obj[k]);
+}
