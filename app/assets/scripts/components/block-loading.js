@@ -8,7 +8,11 @@ export default class BlockLoading extends React.Component {
   render () {
     return (
       <div className='block-loading'>
-        I'm loading
+        <div className='spinner'>
+          <div className='spinner__bounce'></div>
+          <div className='spinner__bounce'></div>
+          <div className='spinner__bounce'></div>
+        </div>
       </div>
     );
   }

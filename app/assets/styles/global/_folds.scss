@@ -79,3 +79,14 @@
 .fold--filled {
   background: tint($base-color, 92%);
 }
+
+.empty-data__container {
+  background: tint($base-color, 95%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: $global-spacing * 4;
+  p {
+    margin-bottom: 0;
+  }
+}

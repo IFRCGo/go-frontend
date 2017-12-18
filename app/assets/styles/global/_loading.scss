@@ -96,3 +96,22 @@
     visibility: hidden;
   }
 }
+
+
+/* Loading pane react animation
+   ========================================================================== */
+
+.block-loading {
+  margin: $global-spacing * 2;
+  border: dashed 2px rgba($base-color, 0.1);
+  border-radius: 1rem;
+  height: 15rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .spinner {
+    width: 5rem;
+    background: rgba($base-color, 0.25);
+  }
+}
+
