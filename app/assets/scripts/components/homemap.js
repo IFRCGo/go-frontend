@@ -77,10 +77,11 @@ export default class Homemap extends React.Component {
     const {
       data,
       fetched,
-      receivedAt
+      receivedAt,
+      error
     } = this.props.appealsList;
 
-    if (!fetched) { return null; }
+    if (!fetched || error) { return null; }
 
     return (
       <React.Fragment>

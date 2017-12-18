@@ -22,10 +22,11 @@ export default class Homestats extends React.Component {
   renderContent () {
     const {
       data: { stats },
-      fetched
+      fetched,
+      error
     } = this.props.appealsList;
 
-    if (!fetched) { return null; }
+    if (!fetched || error) { return null; }
 
     return (
       <ul className='sumstats'>
