@@ -12,3 +12,7 @@ const eruTypes = {
 };
 
 export default eruTypes;
+
+export function getEruType (id) {
+  return eruTypes[id.toString()];
+}
