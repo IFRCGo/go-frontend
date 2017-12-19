@@ -3,6 +3,7 @@ import _cloneDeep from 'lodash.clonedeep';
 import _toNumber from 'lodash.tonumber';
 import _get from 'lodash.get';
 import _undefined from 'lodash.isundefined';
+import { DateTime } from 'luxon';
 
 import { api } from '../../config';
 import { request } from '../../utils/network';
@@ -266,7 +267,7 @@ export function getEventsFromApi (input) {
       .then(data => ({
         options: data.hits.map(o => ({
           value: o._source.id,
-          label: o._source.name
+          label: `${DateTime.fromISO(o._source.date).toISODate()} ${o._source.name}`
         }))
       }));
 }
