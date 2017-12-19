@@ -142,7 +142,7 @@ class Region extends React.Component {
 
         const rows = data.objects.map(o => ({
           id: o.id,
-          date: DateTime.fromISO(o.created_at).toISODate(),
+          date: DateTime.fromISO(o.end_date).toISODate(),
           name: o.name,
           event: <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link>,
           dtype: o.dtype.name,
@@ -213,7 +213,7 @@ class Region extends React.Component {
 
         const rows = data.objects.map(o => ({
           id: o.id,
-          date: DateTime.fromISO(o.created_at).toISODate(),
+          date: DateTime.fromISO(o.end_date).toISODate(),
           name: o.name,
           event: <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link>,
           dtype: o.dtype.name,

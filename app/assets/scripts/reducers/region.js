@@ -45,7 +45,6 @@ function regionData (state = initialState, action) {
       state = Object.assign({}, state, {
         [action.id]: stateInflight(state, action)
       });
-      state = stateInflight(state, action, action.id);
       break;
     case 'GET_REGION_FAILED':
       state = Object.assign({}, state, {

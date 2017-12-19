@@ -121,7 +121,7 @@ export const GET_REGION_APPEALS = 'GET_REGION_APPEALS';
 export function getRegionAppeals (regionId, page = 1, filters = {}) {
   filters.limit = filters.limit || 10;
   filters.offset = filters.limit * (page - 1);
-  filters.atype = 0;
+  filters.atype = 1;
   filters.region = regionId;
   const f = buildAPIQS(filters);
 
