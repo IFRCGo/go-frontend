@@ -173,7 +173,7 @@ export default class Homemap extends React.Component {
   }
 
   renderEmergencies () {
-    const emerg = this.props.appealsList.data.emergenciesByType;
+    const emerg = this.props.appealsList.data.emergenciesByType.sort((a, b) => a.items.length > b.items.length ? -1 : 1);
     const max = Math.max.apply(Math, emerg.map(o => o.items.length));
 
     return (
