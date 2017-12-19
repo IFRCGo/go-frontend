@@ -267,7 +267,7 @@ export function getEventsFromApi (input) {
       .then(data => ({
         options: data.hits.map(o => ({
           value: o._source.id,
-          label: `${DateTime.fromISO(o._source.date).toISODate()} ${o._source.name}`
+          label: `${o._source.name} (${DateTime.fromISO(o._source.date).toISODate()})`
         }))
       }));
 }
