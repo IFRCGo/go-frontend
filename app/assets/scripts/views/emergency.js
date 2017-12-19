@@ -96,7 +96,7 @@ class Emergency extends React.Component {
               {n(stats.beneficiaries)}<small>Targeted Benficiaries</small>
             </li>
             <li className='stats-list__item stats-funding stat-borderless stat-double'>
-              {n(stats.requested)}<small>Appeal Amount (CHF)</small>
+              {n(stats.requested)}<small>Requested Amount (CHF)</small>
             </li>
             <li className='stats-list__item stat-double'>
               {n(stats.funded)}<small>Funding (CHF)</small>

@@ -24,7 +24,7 @@ export default class EmergenciesStats extends React.Component {
             {n(data.numAffected)}<small>Affected People in the last 30 days</small>
           </li>
           <li className='stats-list__item stats-funding stat-borderless stat-double'>
-            {n(data.totalAppeals)}<small>Appeal Amount (CHF)</small>
+            {n(data.totalAppeals)}<small>Requested Amount (CHF)</small>
           </li>
           <li className='stats-list__item stat-double'>
             {n(data.totalAppealsFunding)}<small>Funding (CHF)</small>
