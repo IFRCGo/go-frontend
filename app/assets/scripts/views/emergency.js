@@ -163,6 +163,31 @@ class Emergency extends React.Component {
     );
   }
 
+  renderAdditionalGraphics () {
+    const { data } = this.props.event;
+    const snippets = get(data, 'snippets');
+    let content;
+    if (!Array.isArray(snippets) || !snippets.length) {
+      content = (
+        <div className='empty-data__container'>
+          <p className='empty-data__note'>There is currently no data available.</p>;
+        </div>
+      );
+    } else {
+      content = (
+        <div className='iframe__container'>
+          {snippets.map(o => <div key={o.id} dangerouslySetInnerHTML={{__html: o.snippet}} />)}
+        </div>
+      );
+    }
+
+    return (
+      <Fold id='graphics' title='Additional Graphics' wrapperClass='additional-graphics' >
+        {content}
+      </Fold>
+    );
+  }
+
   renderKeyFigures () {
     const { data } = this.props.event;
     const kf = get(data, 'key_figures');
@@ -237,14 +262,7 @@ class Emergency extends React.Component {
                 {data.summary || nope}
               </Fold>
 
-              <Fold id='graphics'
-                title='Additional Graphics'
-                wrapperClass='additional-graphics' >
-                <div className='empty-data__container'>
-                  <p className='empty-data__note'>There is currently no data available.</p>
-                </div>
-              </Fold>
-
+              {this.renderAdditionalGraphics()}
               {this.renderKeyFigures()}
               {this.renderFieldReports()}
 
