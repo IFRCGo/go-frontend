@@ -1,10 +1,55 @@
 'use strict';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { PropTypes as T } from 'prop-types';
+import Select from 'react-select';
+import { Link, withRouter } from 'react-router-dom';
+import { DateTime } from 'luxon';
 
+import { get } from '../utils/utils';
+import { api, environment } from '../config';
+import { request } from '../utils/network';
+import { uppercaseFirstLetter as u } from '../utils/format';
 import UserMenu from './connected/user-menu';
 
+const indexTypeToURI = {
+  'event': 'emergencies',
+  'report': 'reports'
+};
+
 class Header extends React.PureComponent {
+  constructor (props) {
+    super(props);
+    this.state = {
+      search: ''
+    };
+    this.onSelect = this.onSelect.bind(this);
+  }
+
+  onSelect ({value}) {
+    this.props.history.push(value);
+  }
+
+  getOptions (input) {
+    return !input
+      ? Promise.resolve({ options: [] })
+      : request(`${api}/api/v1/es_search/?type=*,-page_appeal&keyword=${input}`)
+        .then(data => {
+          const options = data.hits.map(o => {
+            // Index names are all `page_{type}`
+            const type = o._index.slice(5, o._index.length);
+            const uri = get(indexTypeToURI, type);
+            if (!uri) return null;
+            const value = `/${uri}/${o._source.id}`;
+            const label = `${u(type)}: ${o._source.name} (${DateTime.fromISO(o._source.date).toISODate()})`;
+            return {
+              value,
+              label
+            };
+          }).filter(Boolean);
+          return { options };
+        });
+  }
+
   render () {
     return (
       <header className='page__header' role='banner'>
@@ -32,16 +77,12 @@ class Header extends React.PureComponent {
             <div className='nav-global-search'>
               <form className='gsearch'>
                 <div className='form__group'>
-                  <label className='form__label' htmlFor='site-search'>Search</label>
-                  <input
-                    type='text'
-                    id='site-search'
-                    name='site-search'
-                    placeholder="Try 'Vietnam Typhoon'"
-                    className='form__control'
-                  />
+                  <label className='form__label'>Search</label>
+                  <Select.Async
+                    onChange={this.onSelect}
+                    loadOptions={this.getOptions} />
+
                 </div>
-                <button type='submit' className='gsearch__button'><span>Search</span></button>
               </form>
             </div>
           </nav>
@@ -51,4 +92,10 @@ class Header extends React.PureComponent {
   }
 }
 
-export default Header;
+if (environment !== 'production') {
+  Header.propTypes = {
+    history: T.object
+  };
+}
+
+export default withRouter(Header);
