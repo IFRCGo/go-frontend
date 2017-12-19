@@ -49,6 +49,11 @@ const organizationCodeToDisplay = {
 };
 export const organizationType = (code) => organizationCodeToDisplay[code] || invalid;
 
+export const uppercaseFirstLetter = (str) => {
+  const s = str.toString();
+  return s.slice(0, 1).toUpperCase() + s.slice(1, s.length).toLowerCase();
+};
+
 // Ie. given 'user.username', return 'username'.
 export const getPropertyFromPath = (path) => {
   const parts = path.split('.');
