@@ -2,6 +2,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import { regions } from '../utils/region-constants';
+import { objValues } from '../utils/utils';
+
 class Footer extends React.PureComponent {
   render () {
     return (
@@ -11,10 +14,9 @@ class Footer extends React.PureComponent {
             <div className='footer-nav__block'>
               <ul className='footer-menu'>
                 <li className='footer-menu__item--highlight'><Link to='/' title='View Emergencies'>Emergencies</Link></li>
-                <li><Link to='/' title='View Region'>Africa Region</Link></li>
-                <li><Link to='/' title='View Region'>Asia Pacific Region</Link></li>
-                <li><Link to='/' title='View Region'>Americas Region</Link></li>
-                <li><Link to='/' title='View Region'>Europe Region</Link></li>
+                {objValues(regions).map(o => (
+                  <li key={o.id}><Link to={`/regions/${o.id}`} title='View Region'>{o.name} Region</Link></li>
+                ))}
               </ul>
             </div>
             <div className='footer-nav__block'>
