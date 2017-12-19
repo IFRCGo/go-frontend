@@ -3,7 +3,7 @@ import { combineReducers } from 'redux';
 import _toNumber from 'lodash.tonumber';
 
 import { getCentroid } from '../utils/country-centroids';
-import { groupByDisasterType } from '../utils/utils';
+import { get, groupByDisasterType } from '../utils/utils';
 
 const appealsListInitialState = {
   fetching: false,
@@ -76,7 +76,8 @@ function appealsList (state = appealsListInitialState, action) {
               type: 'Feature',
               properties: {
                 id: o.id,
-                name: o.event.name,
+                pageId: get(o, 'event.id'),
+                name: get(o, 'event.name'),
                 atype: o.atype,
                 dtype: o.dtype.id,
                 numBeneficiaries: o.num_beneficiaries,

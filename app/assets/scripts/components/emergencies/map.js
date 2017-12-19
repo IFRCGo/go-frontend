@@ -3,6 +3,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { PropTypes as T } from 'prop-types';
 import mapboxgl from 'mapbox-gl';
+import { withRouter } from 'react-router-dom';
 
 import { source } from '../../utils/get-new-map';
 import { environment } from '../../config';
@@ -12,7 +13,7 @@ import {
 import MapComponent from '../map';
 import { commaSeparatedNumber as n } from '../../utils/format';
 
-export default class EmergenciesMap extends React.Component {
+class EmergenciesMap extends React.Component {
   constructor (props) {
     super(props);
     const scaleBy = 'totalEmergencies';
@@ -23,6 +24,7 @@ export default class EmergenciesMap extends React.Component {
     };
     this.configureMap = this.configureMap.bind(this);
     this.onFieldChange = this.onFieldChange.bind(this);
+    this.navigate = this.navigate.bind(this);
   }
 
   componentWillReceiveProps ({lastMonth}) {
@@ -87,6 +89,12 @@ export default class EmergenciesMap extends React.Component {
     return layers;
   }
 
+  navigate (id) {
+    if (id) {
+      this.props.history.push(`/countries/${id}`);
+    }
+  }
+
   onPopoverCloseClick () {
     if (this.popover) {
       this.popover.remove();
@@ -98,6 +106,8 @@ export default class EmergenciesMap extends React.Component {
 
     render(<MapPopover
       title={feature.properties.name}
+      onTitleClick={this.navigate}
+      uri={feature.properties.id}
       numAffected={feature.properties.numAffected}
       totalEmergencies={feature.properties.totalEmergencies}
       withResponse={feature.properties.withResponse}
@@ -181,9 +191,12 @@ export default class EmergenciesMap extends React.Component {
 
 if (environment !== 'production') {
   EmergenciesMap.propTypes = {
-    lastMonth: T.object
+    lastMonth: T.object,
+    history: T.object
   };
 }
+
+export default withRouter(EmergenciesMap);
 
 class MapPopover extends React.Component {
   render () {
@@ -199,7 +212,7 @@ class MapPopover extends React.Component {
         <div className='popover__contents'>
           <header className='popover__header'>
             <div className='popover__headline'>
-              <a className='link--primary'>{title}</a>
+              <a className='link--primary' onClick={() => this.props.onTitleClick(this.props.uri)}>{title}</a>
             </div>
             <div className='popover__actions actions'>
               <ul className='actions__menu'>
@@ -223,6 +236,8 @@ if (environment !== 'production') {
   MapPopover.propTypes = {
     onCloseClick: T.func,
     title: T.string,
+    uri: T.string,
+    onTitleClick: T.func,
     numAffected: T.number,
     totalEmergencies: T.number,
     withResponse: T.number,
