@@ -13,7 +13,9 @@ import UserMenu from './connected/user-menu';
 
 const indexTypeToURI = {
   'event': 'emergencies',
-  'report': 'reports'
+  'report': 'reports',
+  'country': 'countries',
+  'region': 'regions'
 };
 
 class Header extends React.PureComponent {
@@ -40,7 +42,9 @@ class Header extends React.PureComponent {
             const uri = get(indexTypeToURI, type);
             if (!uri) return null;
             const value = `/${uri}/${o._source.id}`;
-            const label = `${u(type)}: ${o._source.name} (${DateTime.fromISO(o._source.date).toISODate()})`;
+            // country and regions don't have dates.
+            const date = o._source.date ? ` (${DateTime.fromISO(o._source.date).toISODate()})` : '';
+            const label = `${u(type)}: ${o._source.name}${date}`;
             return {
               value,
               label
