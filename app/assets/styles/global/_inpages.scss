@@ -245,7 +245,7 @@
 .header-stats--two-col {
   @include column(12/12);
   @include media(large-up){
-    @include column(6/12);
+    @include column(5/12);
   }
   .stats-list {
     li {
@@ -260,7 +260,7 @@
 .inpage__headline-charts--two-col {
   @include column(12/12);
   @include media(large-up){
-    @include column(6/12);
+    @include column(7/12);
   }
   .stats-chart {
     @include column(12/12);
@@ -269,6 +269,7 @@
     }
   }
 }
+
 
 /* Dark theme modifier
    ========================================================================== */
