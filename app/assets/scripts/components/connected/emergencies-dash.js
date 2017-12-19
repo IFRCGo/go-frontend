@@ -9,11 +9,13 @@ import { environment } from '../../config';
 import Stats from '../emergencies/stats';
 import Map from '../emergencies/map';
 import Progress from '../progress';
+import BlockLoading from '../block-loading';
 
 class EmergenciesDash extends React.Component {
   renderEmergencies () {
     const { lastMonth } = this.props;
-    if (!lastMonth.fetched) return;
+    if (!lastMonth.fetched && !lastMonth.error) return <BlockLoading />;
+    else if (lastMonth.error) return <p>An error occurred</p>;
     const emerg = lastMonth.data.emergenciesByType.slice(0, 6);
     const max = Math.max.apply(Math, emerg.map(o => o.items.length));
     return (

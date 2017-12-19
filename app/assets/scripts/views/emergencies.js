@@ -9,24 +9,12 @@ import EmergenciesDash from '../components/connected/emergencies-dash';
 import EmergenciesTable from '../components/connected/emergencies-table';
 
 import { getLastMonthsEmergencies, getAggregateEmergencies } from '../actions';
-import { finishedFetch } from '../utils/utils';
-import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { environment } from '../config';
 
 class Emergencies extends React.Component {
   componentDidMount () {
-    showGlobalLoading(2);
     this.props._getLastMonthsEmergencies();
     this.props._getAggregateEmergencies(DateTime.local().minus({months: 11}).startOf('day').toISODate(), 'month');
-  }
-
-  componentWillReceiveProps (nextProps) {
-    if (finishedFetch(this.props, nextProps, 'aggregate.month')) {
-      hideGlobalLoading();
-    }
-    if (finishedFetch(this.props, nextProps, 'lastMonth')) {
-      hideGlobalLoading();
-    }
   }
 
   render () {
