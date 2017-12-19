@@ -81,7 +81,6 @@
     width: 100%;
     margin-bottom: $global-spacing;
     @include media(medium-up) {
-      padding: ($global-spacing * 4) ($global-spacing * 2);
       margin-left: $global-spacing * 2;
       margin-bottom: 0;
       &:first-child {
@@ -105,7 +104,7 @@
   margin-bottom: 0;
 }
 
-.key-figure-source { 
+.key-figure-source {
   color: rgba($base-color, 0.48);
   margin-bottom: 0;
 }

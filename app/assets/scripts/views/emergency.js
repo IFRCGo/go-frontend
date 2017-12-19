@@ -163,6 +163,28 @@ class Emergency extends React.Component {
     );
   }
 
+  renderKeyFigures () {
+    const { data } = this.props.event;
+    const kf = get(data, 'key_figures');
+    if (!Array.isArray(kf) || !kf.length) return null;
+
+    return (
+      <Fold
+        title='Key Figures'
+        wrapperClass='key-figures' >
+        <ul className='key-figures-list'>
+          {kf.map(o => (
+            <li key={o.deck}>
+              <h3>{n(o.number)}</h3>
+              <p className='key-figure-label'>{o.deck}</p>
+              <p className='key-figure-source'>Source: {o.source}</p>
+            </li>
+          ))}
+        </ul>
+      </Fold>
+    );
+  }
+
   renderContent () {
     const {
       fetched,
@@ -223,28 +245,7 @@ class Emergency extends React.Component {
                 </div>
               </Fold>
 
-              <Fold
-                title='Key Figures'
-                wrapperClass='key-figures' >
-                <ul className='key-figures-list'>
-                  <li>
-                    <h3>1,700,000</h3>
-                    <p className='key-figure-label'>Food Insecure People</p>
-                    <p className='key-figure-source'>Source: XXX</p>
-                  </li>
-                  <li>
-                    <h3>1,700,000</h3>
-                    <p className='key-figure-label'>Food Insecure People</p>
-                    <p className='key-figure-source'>Source: XXX</p>
-                  </li>
-                  <li>
-                    <h3>1,700,000</h3>
-                    <p className='key-figure-label'>Food Insecure People</p>
-                    <p className='key-figure-source'>Source: XXX</p>
-                  </li>
-                </ul>
-              </Fold>
-
+              {this.renderKeyFigures()}
               {this.renderFieldReports()}
 
               <Fold
