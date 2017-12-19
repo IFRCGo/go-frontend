@@ -54,7 +54,7 @@ class Deployments extends React.Component {
     const { data } = this.props.eruOwners;
     return (
       <div className='inpage__introduction'>
-        <div className='header-stats'>
+        <div className='header-stats--two-col'>
           <ul className='stats-list'>
             <li className='stats-list__item stats-emergencies'>
               {n(data.deployed)}<small>Deployed ERUs</small>
@@ -64,9 +64,11 @@ class Deployments extends React.Component {
             </li>
           </ul>
         </div>
-        <div className='inpage__headline-charts'>
+        <div className='inpage__headline-charts--two-col'>
           <div className='stats-chart'>
             {this.renderHeaderCharts(data.types, 'ERU Deployment Types')}
+          </div>
+          <div className='stats-chart'>
             {this.renderHeaderCharts(data.owners, 'Number of Deployments by NS')}
           </div>
         </div>
@@ -98,11 +100,13 @@ class Deployments extends React.Component {
         <div>
           <Map eruOwners={this.props.eruOwners} />
         </div>
-        <div>
-          <AlertsTable />
-        </div>
-        <div>
-          <Readiness eruOwners={this.props.eruOwners} />
+        <div className='inpage__body'>
+          <div className='inner'>
+            <AlertsTable />
+            <div className='readiness__container'>
+              <Readiness eruOwners={this.props.eruOwners} />
+            </div>
+          </div>
         </div>
       </section>
     );
