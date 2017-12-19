@@ -14,15 +14,14 @@ class EmergenciesDash extends React.Component {
   renderEmergencies () {
     const { lastMonth } = this.props;
     if (!lastMonth.fetched) return;
-    const emerg = lastMonth.data.emergenciesByType;
+    const emerg = lastMonth.data.emergenciesByType.slice(0, 6);
     const max = Math.max.apply(Math, emerg.map(o => o.items.length));
-    const sorted = emerg.sort((a, b) => a.items.length > b.items.length ? -1 : 1).slice(0, 6);
     return (
       <div className='emergencies'>
         <h2>Emergencies by Type</h2>
         <div className='emergencies__container'>
-          <ul className='emergencies__list'>
-            {sorted.map(o => (
+          <ul className='emergencies__list emergenciest__list--static'>
+            {emerg.map(o => (
               <li key={o.id}
                 className='emergencies__item'>
                 <span className='key'>{o.name}</span>

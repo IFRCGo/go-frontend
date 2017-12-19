@@ -22,7 +22,7 @@ export function groupByDisasterType (objs) {
       name: emergenciesByType[key][0].dtype.name,
       items: emergenciesByType[key]
     };
-  }).sort((a, b) => a.name > b.name);
+  }).sort((a, b) => a.items.length < b.items.length);
 }
 
 export function isValidEmail (email) {
