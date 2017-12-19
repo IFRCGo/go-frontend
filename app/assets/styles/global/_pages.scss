@@ -17,7 +17,6 @@
   z-index: 10;
   color: $base-font-color;
   background: #ffffff;
-  overflow: hidden;
 
   > .inner {
     @extend .row, .row--centered;
@@ -77,7 +76,7 @@
   font-size: 0.875rem;
   line-height: 1.25rem;
   color: #ffffff;
-  
+
   > .inner {
     @extend .row, .row--centered;
   }
@@ -88,7 +87,7 @@
 
   .footer-nav {
     @extend .clearfix;
-    
+
     &__block {
       margin-bottom: ($global-spacing * 2);
       @include column(12/12);
