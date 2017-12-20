@@ -79,8 +79,7 @@ class Deployments extends React.Component {
   renderContent () {
     const {
       fetched,
-      error,
-      data
+      error
     } = this.props.eruOwners;
 
     if (!fetched || error) return null;
