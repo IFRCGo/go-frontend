@@ -113,7 +113,7 @@ export default class DeploymentsMap extends React.Component {
     const maxScaleValue = Math.max.apply(Math, data.geoJSON.features.map(o => o.properties.total));
 
     return (
-      <div className='stats-map emergencies-map'>
+      <div className='stats-map deployments-map'>
         <div className='inner'>
           <div className='map-container'>
             <h2 className='visually-hidden'>Deployments by Country</h2>

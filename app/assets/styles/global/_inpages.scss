@@ -231,31 +231,6 @@
   background-position: 0% 10%;
 }
 
-.stats-group--single {
-  width: 100%;
-  @include media(small-up) {
-   width: 80%;
-  }
-  @include media(medium-up) {
-    width: 44%;
-  }
-  .stat-icon {
-    float: left;
-    width: 15%;
-  }
-  ul {
-    width: 100%;
-    margin-left: 0;
-    @include media(medium-up) {
-      width: 60%;
-      margin-left: 20%;
-    }
-    @include media(large-up) {
-      margin-left: 10%;
-    }
-  }
-}
-
 .map-section__container {
   margin-bottom: $global-spacing * 4;
 }
@@ -266,6 +241,35 @@
   }
   background: #23324D;
 }
+
+.header-stats--two-col {
+  @include column(12/12);
+  @include media(large-up){
+    @include column(5/12);
+  }
+  .stats-list {
+    li {
+      @include column(12/12);
+      @include media(small-up){
+        @include column(6/12);
+      }
+    }
+  }
+}
+
+.inpage__headline-charts--two-col {
+  @include column(12/12);
+  @include media(large-up){
+    @include column(7/12);
+  }
+  .stats-chart {
+    @include column(12/12);
+    @include media(small-up){
+      @include column(6/12);
+    }
+  }
+}
+
 
 /* Dark theme modifier
    ========================================================================== */

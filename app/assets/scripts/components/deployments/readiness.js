@@ -54,16 +54,21 @@ class Readiness extends React.Component {
     const owner = eru_set[0].eru_owner;
 
     return (
-      <div key={eruOwner.id}>
-        <h3>{owner.country.society_name}</h3>
-        <span>Last updated {DateTime.fromISO(eruOwner.updated_at).toISOTime()}</span>
-        <p>{n(numReady)} Ready ERU's</p>
-        {readyTypes && <p>{readyTypes}</p>}
-
-        <p>{n(numDeployed)} Deployed ERU's</p>
-        {deployed.map(o => (
-          <p key={o.id}>{getEruType(o.type)} - {o.countries[0].name}</p>
-        ))}
+      <div className='readiness__card' key={eruOwner.id}>
+        <div className='readiness__card-header'>
+          <a className='link--primary'>{owner.country.society_name}</a>
+          <span className='updated'>Last updated {DateTime.fromISO(eruOwner.updated_at).toISOTime()}</span>
+        </div>
+        <div className='card__col'>
+          <p className='card__label card__label--ready'>{n(numReady)} Ready ERU's</p>
+          {readyTypes && <p>{readyTypes}</p>}
+        </div>
+        <div className='card__col'>
+          <p className='card__label'>{n(numDeployed)} Deployed ERU's</p>
+          {deployed.map(o => (
+            <p key={o.id}>{getEruType(o.type)} - <a className='link--primary'>{o.countries[0].name}</a></p>
+          ))}
+        </div>
       </div>
     );
   }
@@ -82,18 +87,19 @@ class Readiness extends React.Component {
       });
     return (
       <div>
-        <CheckboxGroup
-          label={'Ready ERU\'s'}
-          description={null}
-          name={'ready-erus'}
-          classWrapper='action-checkboxes'
-          options={eruOptions}
-          values={this.state.filters}
-          onChange={this.onChange} />
+        <div className='readiness__filters'>
+          <CheckboxGroup
+            label={'Filter Ready ERU\'s'}
+            description={null}
+            name={'ready-erus'}
+            classWrapper=''
+            options={eruOptions}
+            values={this.state.filters}
+            onChange={this.onChange} />
+          <button className='button button--secondary-light' onClick={this.clearFilters}>Reset Filters</button>
+        </div>
 
-        <button onClick={this.clearFilters}>Reset</button>
-
-        <div>
+        <div className='readiness__cards'>
           {filtered.map(this.renderCard)}
         </div>
       </div>
