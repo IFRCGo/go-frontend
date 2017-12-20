@@ -37,7 +37,7 @@ export function updateFieldReport (id, payload) {
 
 export const GET_SURGE_ALERTS = 'GET_SURGE_ALERTS';
 export function getSurgeAlerts (page = 1, filters = {}) {
-  filters.limit = filters.limit || 10;
+  filters.limit = filters.limit || 4;
   filters.offset = filters.limit * (page - 1);
   const f = buildAPIQS(filters);
 
@@ -99,6 +99,11 @@ export function updateSubscriptions (payload) {
 export const GET_EVENT = 'GET_EVENT';
 export function getEventById (id) {
   return fetchJSON(`api/v1/event/${id}/`, GET_EVENT, withToken(), { id });
+}
+
+export const GET_ERU_OWNERS = 'GET_ERU_OWNERS';
+export function getEruOwners () {
+  return fetchJSON('api/v1/eru_owner/?limit=0', GET_ERU_OWNERS, withToken());
 }
 
 export const GET_REGION = 'GET_REGION';

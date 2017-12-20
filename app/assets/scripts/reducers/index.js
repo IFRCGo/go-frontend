@@ -11,6 +11,7 @@ import overallStats from './overall-stats';
 import emergencies from './emergencies';
 import event from './event';
 import region from './region';
+import eruOwners from './eru-owners';
 
 export const reducers = {
   user,
@@ -22,7 +23,8 @@ export const reducers = {
   overallStats,
   emergencies,
   event,
-  region
+  region,
+  eruOwners
 };
 
 export default combineReducers(reducers);

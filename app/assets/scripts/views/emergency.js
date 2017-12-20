@@ -219,9 +219,9 @@ class Emergency extends React.Component {
                 id='graphics'
                 title='Additional Graphics'
                 wrapperClass='additional-graphics' >
-                  <div className='empty-data__container'>
-                    <p className='empty-data__note'>There is currently no data available.</p>
-                  </div>
+                <div className='empty-data__container'>
+                  <p className='empty-data__note'>There is currently no data available.</p>
+                </div>
               </Fold>
 
               <Fold
