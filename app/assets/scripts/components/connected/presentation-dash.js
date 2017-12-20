@@ -53,12 +53,29 @@ class PresentationDash extends React.Component {
     };
 
     this.toggleFullscreen = this.toggleFullscreen.bind(this);
+    this.onFullscreenChange = this.onFullscreenChange.bind(this);
   }
 
   componentDidMount () {
+    document.addEventListener('fullscreenchange', this.onFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', this.onFullscreenChange);
+    document.addEventListener('mozfullscreenchange', this.onFullscreenChange);
+    document.addEventListener('MSFullscreenChange', this.onFullscreenChange);
+
     this.props._getAppealsList();
     this.props._getAggregateAppeals(DateTime.local().minus({months: 11}).startOf('day').toISODate(), 'month');
     this.props._getAggregateAppeals('1990-01-01', 'year');
+  }
+
+  componentWillUnmount () {
+    document.removeEventListener('fullscreenchange', this.onFullscreenChange);
+    document.removeEventListener('webkitfullscreenchange', this.onFullscreenChange);
+    document.removeEventListener('mozfullscreenchange', this.onFullscreenChange);
+    document.removeEventListener('MSFullscreenChange', this.onFullscreenChange);
+  }
+
+  onFullscreenChange () {
+    this.setState({fullscreen: isFullscreen()});
   }
 
   toggleFullscreen () {
@@ -82,7 +99,7 @@ class PresentationDash extends React.Component {
         <h1 className='visually-hidden'>Statistics</h1>
         <div className='inner'>
           <div className='presentation__actions'>
-            <button className='button button--base-plain button--fullscreen' onClick={this.toggleFullscreen}><span>FullScreen</span></button>
+            <button className='button button--base-plain button--fullscreen' onClick={this.toggleFullscreen} title='View in fullscreen'><span>FullScreen</span></button>
           </div>
           <Homestats
             appealsList={appealsList} />
