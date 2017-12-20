@@ -101,6 +101,11 @@ export function getEventById (id) {
   return fetchJSON(`api/v1/event/${id}/`, GET_EVENT, withToken(), { id });
 }
 
+export const GET_ERU_OWNERS = 'GET_ERU_OWNERS';
+export function getEruOwners () {
+  return fetchJSON('api/v1/eru_owner/?limit=0', GET_ERU_OWNERS, withToken());
+}
+
 export const GET_REGION = 'GET_REGION';
 export function getRegionById (id) {
   // Get from static storage.
