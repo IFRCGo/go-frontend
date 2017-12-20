@@ -52,6 +52,26 @@
   }
 }
 
+.presentation__actions {
+  padding: $global-spacing 0;
+}
+
+.button--fullscreen {
+  @extend .button--text-hidden;
+  float: right;
+  position: relative;
+  padding: $global-spacing;
+  border-radius: 5px;
+  &:before {
+    content: url('/assets/graphics/layout/full-screen.svg');
+    position: absolute;
+    margin-right: 6rem;
+    height: 25px;
+    width: 25px;
+    left: 0.22rem;
+    top: 0.22rem;
+  };
+}
 /* Stats */
 
 .fold--stats {

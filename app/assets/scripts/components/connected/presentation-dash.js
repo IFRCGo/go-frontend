@@ -81,7 +81,9 @@ class PresentationDash extends React.Component {
       <section className={c('fold--stats', {presenting: this.state.fullscreen})} id='presentation'>
         <h1 className='visually-hidden'>Statistics</h1>
         <div className='inner'>
-          <button className='button button--primary-raised-dark' onClick={this.toggleFullscreen}>fullScreen</button>
+          <div className='presentation__actions'>
+            <button className='button button--base-plain button--fullscreen' onClick={this.toggleFullscreen}><span>FullScreen</span></button>
+          </div>
           <Homestats
             appealsList={appealsList} />
         </div>

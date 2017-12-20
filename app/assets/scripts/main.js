@@ -20,6 +20,7 @@ import FieldReportForm from './views/field-report-form/';
 import FieldReport from './views/field-report';
 import Emergencies from './views/emergencies';
 import Emergency from './views/emergency';
+import Region from './views/region';
 import Deployments from './views/deployments';
 
 polyfill();
@@ -74,6 +75,7 @@ const Root = () => (
         <Route exact path="/reports/:id" component={FieldReport}/>
         <Route exact path="/emergencies" component={Emergencies}/>
         <Route exact path="/emergencies/:id" component={Emergency}/>
+        <Route exact path="/regions/:id" component={Region}/>
         <Route exact path="/deployments" component={Deployments}/>
         <Route component={UhOh}/>
       </Switch>
