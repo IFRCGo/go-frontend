@@ -83,6 +83,7 @@ class Header extends React.PureComponent {
                 <div className='form__group'>
                   <label className='form__label'>Search</label>
                   <Select.Async
+                    placeholder='Search...'
                     onChange={this.onSelect}
                     loadOptions={this.getOptions} />
 
