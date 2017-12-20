@@ -4,9 +4,17 @@
 }
 
 .readiness__filters {
-  @include column(3/12, $offset: -1/12);
+  @include column(12/12);
+  margin: $global-spacing;
+  @include media(medium-up) {
+    @include column(3/12, $offset: -1/12);
+    margin-bottom: 0;
+  }
   .form__options-group .form__option {
-    @include column(12/12);
+    @include column(6/12, $cycle: 2);
+    @include media(medium-up) {
+      @include column(12/12);
+    }
   }
   .form__group {
     margin-bottom: $global-spacing;
@@ -14,15 +22,21 @@
 }
 
 .readiness__cards {
-  @include column(8/12);
+  @include column(12/12);
+  @include media(medium-up) {
+    @include column(8/12);
+  }
 }
 
 .readiness__card {
   background: #fff;
   padding: ($global-spacing * 2);
   box-shadow: 0 2px 4px 1px $base-alpha-color;
-  @include media(small-up) {
+  @include column(12/12);
+  margin-bottom: $global-spacing;
+  @include media(medium-up) {
     @include column(6/12, $cycle: 2);
+    margin-bottom: 0;
   }
   .updated {
     font-size: 0.75rem;

@@ -239,9 +239,9 @@
 
   .map-vis__holder {
     position: absolute;
-    top: 0;
     width: 100%;
     left: 0;
+    top: 0;
     height: 100%;
   }
 
@@ -254,8 +254,14 @@
     font-size: 0.75rem;
 
     &--bottom-right {
-      bottom: $global-spacing;
-      right: $global-spacing;
+      bottom: -3rem;
+      right: -2rem;
+      left: -2rem;
+      @include media(small-up) {
+        left: auto;
+        bottom: $global-spacing;
+        right: $global-spacing;
+      }
     }
 
     &--top-right {
@@ -273,18 +279,30 @@
 
     .form {
       margin-bottom: 0;
+      margin-left: $global-spacing/2;
       float: left;
       .form__option--custom-radio .form__option__ui {
         height: 1rem;
         width: 1rem;
+      }
+      width: 35%;
+      @include media(small-up) {
+        width: auto;
+        margin-left: 0;
       }
     }
 
     .key {
       float: left;
       border-left: solid 1px rgba($base-color, 0.2);
-      padding-left: $global-spacing;
-      margin-left: $global-spacing;
+      padding-left: $global-spacing/2;
+        margin-left: $global-spacing/2;
+      width: 55%;
+      @include media(small-up) {
+        width: auto;
+        padding-left: $global-spacing;
+        margin-left: $global-spacing;
+      }
     }
   }
 }
@@ -326,9 +344,13 @@
 .legend__dl--colors {
   .color {
     &::before {
-      height: 0.875rem;
-      width: 0.875rem;
+      height: 0.75rem;
+      width: 0.75rem;
       border-radius: $full-border-radius;
+      @include media(small-up) {
+        height: 0.875rem;
+        width: 0.875rem;
+      }
     }
   }
 
