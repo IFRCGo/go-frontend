@@ -135,7 +135,7 @@ class Region extends React.Component {
           { id: 'name', label: 'Name' },
           { id: 'event', label: 'Event' },
           { id: 'dtype', label: 'Disaster Type' },
-          { id: 'requestAmount', label: 'Appeal Amount (CHF)' },
+          { id: 'requestAmount', label: 'Requested Amount (CHF)' },
           { id: 'fundedAmount', label: 'Funding (CHF)' },
           { id: 'active', label: 'Active' }
         ];
@@ -206,7 +206,7 @@ class Region extends React.Component {
           { id: 'name', label: 'Name' },
           { id: 'event', label: 'Event' },
           { id: 'dtype', label: 'Disaster Type' },
-          { id: 'requestAmount', label: 'Appeal Amount (CHF)' },
+          { id: 'requestAmount', label: 'Requested Amount (CHF)' },
           { id: 'fundedAmount', label: 'Funding (CHF)' },
           { id: 'active', label: 'Active' }
         ];
@@ -330,7 +330,7 @@ class Region extends React.Component {
               {n(stats.numBeneficiaries)}<small>Affected People in the last 30 days</small>
             </li>
             <li className='stats-list__item stats-funding stat-borderless stat-double'>
-              {n(stats.amountRequested)}<small>Appeal Amount (CHF)</small>
+              {n(stats.amountRequested)}<small>Requested Amount (CHF)</small>
             </li>
             <li className='stats-list__item stat-double'>
               {n(stats.amountFunded)}<small>Funding (CHF)</small>

@@ -12,7 +12,7 @@ import { nope, commaSeparatedNumber as n } from '../../utils/format';
 import { get } from '../../utils/utils';
 
 import Fold from '../fold';
-import { showGlobalLoading, hideGlobalLoading } from '../global-loading';
+import BlockLoading from '../block-loading';
 
 class EmergenciesTable extends React.Component {
   constructor (props) {
@@ -27,14 +27,7 @@ class EmergenciesTable extends React.Component {
     this.requestResults();
   }
 
-  componentWillReceiveProps (nextProps) {
-    if (this.props.list.fetching && !nextProps.list.fetching) {
-      hideGlobalLoading();
-    }
-  }
-
   requestResults () {
-    showGlobalLoading();
     this.props._getEmergenciesList(this.state.page);
   }
 
@@ -80,7 +73,7 @@ class EmergenciesTable extends React.Component {
       error
     } = this.props.list;
 
-    if (!receivedAt && !fetched) return null;
+    if (!receivedAt && !fetched && !error) return <BlockLoading />;
 
     if (error) {
       return (

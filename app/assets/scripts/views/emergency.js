@@ -96,7 +96,7 @@ class Emergency extends React.Component {
               {n(stats.beneficiaries)}<small>Targeted Benficiaries</small>
             </li>
             <li className='stats-list__item stats-funding stat-borderless stat-double'>
-              {n(stats.requested)}<small>Appeal Amount (CHF)</small>
+              {n(stats.requested)}<small>Requested Amount (CHF)</small>
             </li>
             <li className='stats-list__item stat-double'>
               {n(stats.funded)}<small>Funding (CHF)</small>
@@ -163,6 +163,53 @@ class Emergency extends React.Component {
     );
   }
 
+  renderAdditionalGraphics () {
+    const { data } = this.props.event;
+    const snippets = get(data, 'snippets');
+    let content;
+    if (!Array.isArray(snippets) || !snippets.length) {
+      content = (
+        <div className='empty-data__container'>
+          <p className='empty-data__note'>There is currently no data available.</p>;
+        </div>
+      );
+    } else {
+      content = (
+        <div className='iframe__container'>
+          {snippets.map(o => <div key={o.id} dangerouslySetInnerHTML={{__html: o.snippet}} />)}
+        </div>
+      );
+    }
+
+    return (
+      <Fold id='graphics' title='Additional Graphics' wrapperClass='additional-graphics' >
+        {content}
+      </Fold>
+    );
+  }
+
+  renderKeyFigures () {
+    const { data } = this.props.event;
+    const kf = get(data, 'key_figures');
+    if (!Array.isArray(kf) || !kf.length) return null;
+
+    return (
+      <Fold
+        title='Key Figures'
+        wrapperClass='key-figures' >
+        <ul className='key-figures-list'>
+          {kf.map(o => (
+            <li key={o.deck}>
+              <h3>{n(o.number)}</h3>
+              <p className='key-figure-label'>{o.deck}</p>
+              <p className='key-figure-source'>Source: {o.source}</p>
+            </li>
+          ))}
+        </ul>
+      </Fold>
+    );
+  }
+
   renderContent () {
     const {
       fetched,
@@ -215,37 +262,8 @@ class Emergency extends React.Component {
                 {data.summary || nope}
               </Fold>
 
-              <Fold
-                id='graphics'
-                title='Additional Graphics'
-                wrapperClass='additional-graphics' >
-                <div className='empty-data__container'>
-                  <p className='empty-data__note'>There is currently no data available.</p>
-                </div>
-              </Fold>
-
-              <Fold
-                title='Key Figures'
-                wrapperClass='key-figures' >
-                <ul className='key-figures-list'>
-                  <li>
-                    <h3>1,700,000</h3>
-                    <p className='key-figure-label'>Food Insecure People</p>
-                    <p className='key-figure-source'>Source: XXX</p>
-                  </li>
-                  <li>
-                    <h3>1,700,000</h3>
-                    <p className='key-figure-label'>Food Insecure People</p>
-                    <p className='key-figure-source'>Source: XXX</p>
-                  </li>
-                  <li>
-                    <h3>1,700,000</h3>
-                    <p className='key-figure-label'>Food Insecure People</p>
-                    <p className='key-figure-source'>Source: XXX</p>
-                  </li>
-                </ul>
-              </Fold>
-
+              {this.renderAdditionalGraphics()}
+              {this.renderKeyFigures()}
               {this.renderFieldReports()}
 
               <Fold

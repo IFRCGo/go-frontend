@@ -2,10 +2,12 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { PropTypes as T } from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import c from 'classnames';
 import mapboxgl from 'mapbox-gl';
 
 import { source } from '../utils/get-new-map';
+import { commaSeparatedNumber as n } from '../utils/format';
 import { environment } from '../config';
 import {
   FormRadioGroup
@@ -14,7 +16,7 @@ import Progress from './progress';
 import BlockLoading from './block-loading';
 import MapComponent from './map';
 
-export default class Homemap extends React.Component {
+class Homemap extends React.Component {
   constructor (props) {
     super(props);
     const scaleBy = 'amount';
@@ -28,6 +30,7 @@ export default class Homemap extends React.Component {
     };
     this.configureMap = this.configureMap.bind(this);
     this.onFieldChange = this.onFieldChange.bind(this);
+    this.navigate = this.navigate.bind(this);
   }
 
   componentWillReceiveProps ({appealsList}) {
@@ -144,6 +147,12 @@ export default class Homemap extends React.Component {
     return filters;
   }
 
+  navigate (pageId) {
+    if (pageId) {
+      this.props.history.push(`/emergencies/${pageId}`);
+    }
+  }
+
   onPopoverCloseClick () {
     if (this.popover) {
       this.popover.remove();
@@ -155,6 +164,8 @@ export default class Homemap extends React.Component {
 
     render(<MapPopover
       title={feature.properties.name}
+      onTitleClick={this.navigate}
+      pageId={feature.properties.pageId}
       numBeneficiaries={feature.properties.numBeneficiaries}
       amountRequested={feature.properties.amountRequested}
       amountFunded={feature.properties.amountFunded}
@@ -282,9 +293,12 @@ export default class Homemap extends React.Component {
 
 if (environment !== 'production') {
   Homemap.propTypes = {
-    appealsList: T.object
+    appealsList: T.object,
+    history: T.object
   };
 }
+
+export default withRouter(Homemap);
 
 class MapPopover extends React.Component {
   render () {
@@ -293,7 +307,7 @@ class MapPopover extends React.Component {
         <div className='popover__contents'>
           <header className='popover__header'>
             <div className='popover__headline'>
-              <a className='link--primary'>{this.props.title}</a>
+              <a className='link--primary' onClick={() => this.props.onTitleClick(this.props.pageId)}>{this.props.title}</a>
             </div>
             <div className='popover__actions actions'>
               <ul className='actions__menu'>
@@ -303,11 +317,11 @@ class MapPopover extends React.Component {
           </header>
           <div className='popover__body'>
             <dl className='popover__details'>
-              <dd>{this.props.numBeneficiaries}</dd>
+              <dd>{n(this.props.numBeneficiaries)}</dd>
               <dt>People Affected</dt>
-              <dd>{this.props.amountRequested}</dd>
+              <dd>{n(this.props.amountRequested)}</dd>
               <dt>Amount Requested</dt>
-              <dd>{this.props.amountFunded}</dd>
+              <dd>{n(this.props.amountFunded)}</dd>
               <dt>Amount Funded</dt>
             </dl>
           </div>
@@ -321,8 +335,10 @@ if (environment !== 'production') {
   MapPopover.propTypes = {
     onCloseClick: T.func,
     title: T.string,
+    pageId: T.number,
     numBeneficiaries: T.number,
     amountRequested: T.number,
-    amountFunded: T.number
+    amountFunded: T.number,
+    onTitleClick: T.func
   };
 }

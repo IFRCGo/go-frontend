@@ -37,7 +37,7 @@ export function updateFieldReport (id, payload) {
 
 export const GET_SURGE_ALERTS = 'GET_SURGE_ALERTS';
 export function getSurgeAlerts (page = 1, filters = {}) {
-  filters.limit = filters.limit || 4;
+  filters.limit = filters.limit || 5;
   filters.offset = filters.limit * (page - 1);
   const f = buildAPIQS(filters);
 
@@ -124,7 +124,7 @@ export function getRegionById (id) {
 
 export const GET_REGION_APPEALS = 'GET_REGION_APPEALS';
 export function getRegionAppeals (regionId, page = 1, filters = {}) {
-  filters.limit = filters.limit || 10;
+  filters.limit = filters.limit || 5;
   filters.offset = filters.limit * (page - 1);
   filters.atype = 1;
   filters.region = regionId;
@@ -135,7 +135,7 @@ export function getRegionAppeals (regionId, page = 1, filters = {}) {
 
 export const GET_REGION_DREFS = 'GET_REGION_DREFS';
 export function getRegionDrefs (regionId, page = 1, filters = {}) {
-  filters.limit = filters.limit || 10;
+  filters.limit = filters.limit || 5;
   filters.offset = filters.limit * (page - 1);
   filters.atype = 0;
   filters.region = regionId;
@@ -146,7 +146,7 @@ export function getRegionDrefs (regionId, page = 1, filters = {}) {
 
 export const GET_REGION_FIELD_REPORTS = 'GET_REGION_FIELD_REPORTS';
 export function getRegionFieldReports (regionId, page = 1, filters = {}) {
-  filters.limit = filters.limit || 10;
+  filters.limit = filters.limit || 5;
   filters.offset = filters.limit * (page - 1);
   filters.regions__in = regionId;
   const f = buildAPIQS(filters);

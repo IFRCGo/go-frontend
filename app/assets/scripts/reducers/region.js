@@ -4,7 +4,7 @@ import _toNumber from 'lodash.tonumber';
 import _groupBy from 'lodash.groupby';
 
 import { getCentroid } from '../utils/country-centroids';
-import { groupByDisasterType } from '../utils/utils';
+import { get, groupByDisasterType } from '../utils/utils';
 
 const initialState = {
   fetching: false,
@@ -141,7 +141,8 @@ function appealStats (state = initialState, action) {
               type: 'Feature',
               properties: {
                 id: o.id,
-                name: o.event.name,
+                name: get(o, 'event.name'),
+                pageId: get(o, 'event.id'),
                 atype: o.atype,
                 dtype: o.dtype.id,
                 numBeneficiaries: o.num_beneficiaries,
