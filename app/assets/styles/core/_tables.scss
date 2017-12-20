@@ -53,6 +53,17 @@
       &.table__sort--desc:after {
         @extend %collecticon-sort-desc;
       }
+
+      &.table__filter:after {
+        font-size: 1rem;
+        margin-left: 0.375rem;
+        vertical-align: top;
+        display: inline-block;
+        line-height: inherit !important;
+      }
+      &.table__filter:after {
+        @extend %collecticon-sm-chevron-down;
+      }
     }
 
     a,

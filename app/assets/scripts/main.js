@@ -22,6 +22,7 @@ import Emergencies from './views/emergencies';
 import Emergency from './views/emergency';
 import Region from './views/region';
 import Deployments from './views/deployments';
+import HeOps from './views/heops';
 
 polyfill();
 
@@ -77,6 +78,7 @@ const Root = () => (
         <Route exact path="/emergencies/:id" component={Emergency}/>
         <Route exact path="/regions/:id" component={Region}/>
         <Route exact path="/deployments" component={Deployments}/>
+        <Route exact path="/deployments/heops" component={HeOps}/>
         <Route component={UhOh}/>
       </Switch>
     </Router>
