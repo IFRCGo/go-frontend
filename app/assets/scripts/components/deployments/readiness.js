@@ -98,7 +98,9 @@ class Readiness extends React.Component {
             onChange={this.onChange} />
           <button className='button button--secondary-light' onClick={this.clearFilters}>Reset Filters</button>
         </div>
-
+        <div className='readiness__header'>
+          <h2 className='form__label'>National Societies</h2>
+        </div>
         <div className='readiness__cards'>
           {filtered.map(this.renderCard)}
         </div>

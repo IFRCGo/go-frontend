@@ -1,13 +1,12 @@
 .readiness__container {
   @include column(12/12);
-  margin: ($global-spacing * 4) 0;
+  margin: ($global-spacing * 6) 0 ($global-spacing * 4) 0;
 }
 
 .readiness__filters {
   @include column(12/12);
-  margin: $global-spacing;
   @include media(medium-up) {
-    @include column(3/12, $offset: -1/12);
+    @include column(3/12);
     margin-bottom: 0;
   }
   .form__options-group .form__option {
@@ -19,12 +18,22 @@
   .form__group {
     margin-bottom: $global-spacing;
   }
+  .form__label {
+    font-family: $heading-font-family;
+    font-size: 1.25rem;
+  }
 }
 
 .readiness__cards {
   @include column(12/12);
   @include media(medium-up) {
-    @include column(8/12);
+    @include column(9/12);
+  }
+}
+
+.readiness__header {
+  .form__label {
+    font-size: 1.25rem;
   }
 }
 
