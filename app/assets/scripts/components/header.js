@@ -4,12 +4,16 @@ import { PropTypes as T } from 'prop-types';
 import Select from 'react-select';
 import { Link, withRouter } from 'react-router-dom';
 import { DateTime } from 'luxon';
+import { once } from 'addeventlistener';
 
 import { get } from '../utils/utils';
 import { api, environment } from '../config';
 import { request } from '../utils/network';
 import { uppercaseFirstLetter as u } from '../utils/format';
+import { regions } from '../utils/region-constants';
 import UserMenu from './connected/user-menu';
+
+const regionArray = Object.keys(regions).map(k => regions[k]);
 
 const indexTypeToURI = {
   'event': 'emergencies',
@@ -73,24 +77,26 @@ class Header extends React.PureComponent {
         </div>
         <div className='inner'>
           <nav className='page__prime-nav' role='navigation'>
-            <ul className='nav-global-menu'>
-              <li><Link to='/emergencies' title='Visit emergencies page'><span>Emergencies</span></Link></li>
-              <li><Link to='/deployments' title='Visit deployments page'><span>Deployments</span></Link></li>
-              <li><Link to='/about' title='Visit about page'><span>About</span></Link></li>
-            </ul>
-            <div className='nav-global-search'>
-              <form className='gsearch'>
-                <div className='form__group'>
-                  <label className='form__label'>Search</label>
-                  <Select.Async
-                    placeholder='Search...'
-                    onChange={this.onSelect}
-                    loadOptions={this.getOptions} />
-
-                </div>
-              </form>
+            <div className='nav__prime-nav-item'>
+              <h5><Link className='nav__link' to='/emergencies'>Emergencies</Link></h5>
             </div>
+            <NavDropdown title='Regions' options={regionArray.map(o => ({to: `/regions/${o.id}`, text: o.name}))} />
+            <NavDropdown title='Deployments' options={[
+              {to: '/deployments', text: 'All Deployments'},
+              {to: '/heops', text: 'HeOps'}
+            ]} />
           </nav>
+          <div className='nav-global-search'>
+            <form className='gsearch'>
+              <div className='form__group'>
+                <label className='form__label'>Search</label>
+                <Select.Async
+                  placeholder='Search...'
+                  onChange={this.onSelect}
+                  loadOptions={this.getOptions} />
+              </div>
+            </form>
+          </div>
         </div>
       </header>
     );
@@ -104,3 +110,48 @@ if (environment !== 'production') {
 }
 
 export default withRouter(Header);
+
+class NavDropdown extends React.Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      showOptions: false
+    };
+    this.toggleOptions = this.toggleOptions.bind(this);
+  }
+
+  toggleOptions () {
+    const showOptions = !this.state.showOptions;
+    this.setState({ showOptions });
+    if (showOptions) {
+      setTimeout(() => {
+        once(window, 'click', () => this.setState({ showOptions: false }));
+      }, 0);
+    }
+  }
+
+  render () {
+    const { options, title } = this.props;
+    return (
+      <div className='drop drop--open drop--align-left nav__prime-nav-item' onClick={this.toggleOptions}>
+        <button className='button nav__link drop__toggle drop__toggle--caret'>{title}</button>
+        {this.state.showOptions && (
+          <div className='drop__content'>
+            <ul className='drop__menu'>
+              {options.map(o => (
+                <li key={o.to} className='drop__menu-item'><Link to={o.to}>{o.text}</Link></li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    );
+  }
+}
+
+if (environment !== 'production') {
+  NavDropdown.propTypes = {
+    options: T.array,
+    title: T.text
+  };
+}

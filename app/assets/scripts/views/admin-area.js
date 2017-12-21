@@ -134,7 +134,7 @@ class AdminArea extends React.Component {
         const headings = [
           { id: 'date', label: 'Date' },
           { id: 'name', label: 'Name' },
-          { id: 'event', label: 'Event' },
+          { id: 'event', label: 'Emergency' },
           { id: 'dtype', label: 'Disaster Type' },
           { id: 'requestAmount', label: 'Requested Amount (CHF)' },
           { id: 'fundedAmount', label: 'Funding (CHF)' },
@@ -205,7 +205,7 @@ class AdminArea extends React.Component {
         const headings = [
           { id: 'date', label: 'Date' },
           { id: 'name', label: 'Name' },
-          { id: 'event', label: 'Event' },
+          { id: 'event', label: 'Emergency' },
           { id: 'dtype', label: 'Disaster Type' },
           { id: 'requestAmount', label: 'Requested Amount (CHF)' },
           { id: 'fundedAmount', label: 'Funding (CHF)' },

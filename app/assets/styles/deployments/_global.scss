@@ -1,28 +1,56 @@
 .readiness__container {
   @include column(12/12);
-  margin: ($global-spacing * 4) 0;
+  margin: ($global-spacing * 6) 0 ($global-spacing * 4) 0;
 }
 
 .readiness__filters {
-  @include column(3/12, $offset: -1/12);
+  @include column(12/12);
+  @include media(medium-up) {
+    @include column(3/12);
+    margin-bottom: 0;
+  }
   .form__options-group .form__option {
-    @include column(12/12);
+    @include column(6/12, $cycle: 2);
+    @include media(medium-up) {
+      @include column(12/12);
+    }
   }
   .form__group {
     margin-bottom: $global-spacing;
   }
+  .form__label {
+    font-family: $heading-font-family;
+    font-size: 1.25rem;
+  }
 }
 
 .readiness__cards {
-  @include column(8/12);
+  @include column(12/12);
+  @include media(medium-up) {
+    @include column(9/12);
+  }
+}
+
+.readiness__header {
+  .form__label {
+    font-size: 1.25rem;
+  }
+  float: left;
+  margin-top: $global-spacing * 3;
+  @include media(medium-up) {
+    margin-top: 0
+  }
 }
 
 .readiness__card {
   background: #fff;
   padding: ($global-spacing * 2);
   box-shadow: 0 2px 4px 1px $base-alpha-color;
-  @include media(small-up) {
+  @include column(12/12);
+  margin-bottom: $global-spacing;
+  @include media(medium-up) {
     @include column(6/12, $cycle: 2);
+    min-height: 250px;
   }
   .updated {
     font-size: 0.75rem;
