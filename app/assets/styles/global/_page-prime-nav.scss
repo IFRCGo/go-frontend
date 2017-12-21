@@ -18,8 +18,9 @@
     background: tint($base-color, 92%);
   }
 
-  a, h5 {
+  button, a, h5 {
     font-family: $base-font-family;
+    font-weight: $base-font-regular;
     margin-bottom: 0;
   }
 }

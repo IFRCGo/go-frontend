@@ -127,7 +127,7 @@ class NavDropdown extends React.Component {
     const { options, title } = this.props;
     return (
       <div className='drop drop--open drop--align-left nav__prime-nav-item' onClick={this.toggleOptions}>
-        <h5 className='nav__link drop__toggle drop__toggle--caret'>{title}</h5>
+        <button className='button nav__link drop__toggle drop__toggle--caret'>{title}</button>
         {this.state.showOptions && (
           <div className='drop__content'>
             <ul className='drop__menu'>

@@ -36,7 +36,7 @@
   &,
   &:hover,
   &:visited {
-    color: inherit;
+    color: $base-color;
   }
 
   &--active {
