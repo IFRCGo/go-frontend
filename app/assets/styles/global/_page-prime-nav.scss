@@ -17,6 +17,17 @@
     margin-left: -50vw;
     background: tint($base-color, 92%);
   }
+
+  a, h5 {
+    font-family: $base-font-family;
+    margin-bottom: 0;
+  }
+}
+
+.nav__link {
+  &:first-child {
+    padding-left: 0;
+  };
 }
 
 .page__meta-nav {

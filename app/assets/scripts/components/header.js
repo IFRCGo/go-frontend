@@ -77,27 +77,25 @@ class Header extends React.PureComponent {
         <div className='inner'>
           <nav className='page__prime-nav' role='navigation'>
             <div className='nav__prime-nav-item'>
-              <h5><Link to='/emergencies'>Emergencies</Link></h5>
+              <h5><Link className='nav__link' to='/emergencies'>Emergencies</Link></h5>
             </div>
             <NavDropdown title='Regions' options={regionArray.map(o => ({to: `/regions/${o.id}`, text: o.name}))} />
             <NavDropdown title='Deployments' options={[
               {to: '/deployments', text: 'All Deployments'},
               {to: '/heops', text: 'HeOps'}
             ]} />
-
-            <div className='nav-global-search'>
-              <form className='gsearch'>
-                <div className='form__group'>
-                  <label className='form__label'>Search</label>
-                  <Select.Async
-                    placeholder='Search...'
-                    onChange={this.onSelect}
-                    loadOptions={this.getOptions} />
-
-                </div>
-              </form>
-            </div>
           </nav>
+          <div className='nav-global-search'>
+            <form className='gsearch'>
+              <div className='form__group'>
+                <label className='form__label'>Search</label>
+                <Select.Async
+                  placeholder='Search...'
+                  onChange={this.onSelect}
+                  loadOptions={this.getOptions} />
+              </div>
+            </form>
+          </div>
         </div>
       </header>
     );
@@ -128,14 +126,16 @@ class NavDropdown extends React.Component {
   render () {
     const { options, title } = this.props;
     return (
-      <div className='nav__prime-nav-item' onClick={this.toggleOptions}>
-        <h5>{title}</h5>
+      <div className='drop drop--open drop--align-left nav__prime-nav-item' onClick={this.toggleOptions}>
+        <h5 className='nav__link drop__toggle drop__toggle--caret'>{title}</h5>
         {this.state.showOptions && (
-          <ul>
-            {options.map(o => (
-              <li key={o.to} className='nav__prime-nav-option'><Link to={o.to}>{o.text}</Link></li>
-            ))}
-          </ul>
+          <div className='drop__content'>
+            <ul className='drop__menu'>
+              {options.map(o => (
+                <li key={o.to} className='drop__menu-item'><Link to={o.to}>{o.text}</Link></li>
+              ))}
+            </ul>
+          </div>
         )}
       </div>
     );
