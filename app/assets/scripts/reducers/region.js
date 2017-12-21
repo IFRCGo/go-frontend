@@ -3,6 +3,7 @@ import { combineReducers } from 'redux';
 import _toNumber from 'lodash.tonumber';
 import _groupBy from 'lodash.groupby';
 
+import { stateInflight, stateError, stateSuccess } from '../utils/reducer-utils';
 import { getCentroid } from '../utils/country-centroids';
 import { get, groupByDisasterType } from '../utils/utils';
 
@@ -11,32 +12,6 @@ const initialState = {
   fetched: false,
   receivedAt: null,
   data: {}
-};
-
-const stateInflight = (state, action) => {
-  return Object.assign({}, state, {
-    error: null,
-    fetching: true,
-    fetched: false
-  });
-};
-
-const stateError = (state, action) => {
-  return Object.assign({}, state, {
-    fetching: false,
-    fetched: true,
-    receivedAt: action.receivedAt,
-    error: action.error
-  });
-};
-
-const stateSuccess = (state, action) => {
-  return Object.assign({}, state, {
-    fetching: false,
-    fetched: true,
-    receivedAt: action.receivedAt,
-    data: action.data
-  });
 };
 
 function regionData (state = initialState, action) {
