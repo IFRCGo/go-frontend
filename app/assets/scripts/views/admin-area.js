@@ -23,13 +23,13 @@ import {
   commaSeparatedNumber as n
 } from '../utils/format';
 import {
-  getRegionById,
-  getRegionAppeals,
-  getRegionDrefs,
-  getRegionFieldReports,
-  getRegionAppealsStats,
-  getRegionAggregateAppeals,
-  getRegionERU
+  getAdmAreaById,
+  getAdmAreaAppeals,
+  getAdmAreaDrefs,
+  getAdmAreaFieldReports,
+  getAdmAreaAppealsStats,
+  getAdmAreaAggregateAppeals,
+  getAdmAreaERU
 } from '../actions';
 
 import App from './app';
@@ -37,7 +37,7 @@ import Fold from '../components/fold';
 import Homemap from '../components/homemap';
 import BlockLoading from '../components/block-loading';
 
-class Region extends React.Component {
+class AdminArea extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -51,34 +51,35 @@ class Region extends React.Component {
   componentWillReceiveProps (nextProps) {
     if (this.props.match.params.id !== nextProps.match.params.id) {
       this.getData(nextProps);
-      return this.getRegion(nextProps.match.params.id);
+      return this.getAdmArea(nextProps.type, nextProps.match.params.id);
     }
 
-    if (this.props.region.fetching && !nextProps.region.fetching) {
+    if (this.props.adminArea.fetching && !nextProps.adminArea.fetching) {
       hideGlobalLoading();
-      if (nextProps.region.error) {
+      if (nextProps.adminArea.error) {
         this.props.history.push('/uhoh');
       }
     }
   }
 
   componentDidMount () {
+    console.log('thi', this.props);
     this.getData(this.props);
-    this.getRegion(this.props.match.params.id);
+    this.getAdmArea(this.props.type, this.props.match.params.id);
   }
 
   getData (props) {
-    this.props._getRegionAppeals(props.match.params.id);
-    this.props._getRegionDrefs(props.match.params.id);
-    this.props._getRegionFieldReports(props.match.params.id);
-    this.props._getRegionAppealsStats(props.match.params.id);
-    this.props._getRegionAggregateAppeals(props.match.params.id, DateTime.local().minus({years: 10}).startOf('month').toISODate(), 'year');
-    this.props._getRegionERU(props.match.params.id);
+    this.props._getAdmAreaAppeals(props.type, props.match.params.id);
+    this.props._getAdmAreaDrefs(props.type, props.match.params.id);
+    this.props._getAdmAreaFieldReports(props.type, props.match.params.id);
+    this.props._getAdmAreaAppealsStats(props.type, props.match.params.id);
+    this.props._getAdmAreaAggregateAppeals(props.type, props.match.params.id, DateTime.local().minus({years: 10}).startOf('month').toISODate(), 'year');
+    this.props._getAdmAreaERU(props.type, props.match.params.id);
   }
 
-  getRegion (id) {
+  getAdmArea (type, id) {
     showGlobalLoading();
-    this.props._getRegionById(id);
+    this.props._getAdmAreaById(type, id);
   }
 
   handlePageChange (what, page) {
@@ -87,19 +88,19 @@ class Region extends React.Component {
     switch (what) {
       case 'appeals':
         pageKey = 'pageAppeals';
-        fn = this.props._getRegionAppeals;
+        fn = this.props._getAdmAreaAppeals;
         break;
       case 'drefs':
         pageKey = 'pageDrefs';
-        fn = this.props._getRegionDrefs;
+        fn = this.props._getAdmAreaDrefs;
         break;
       case 'fieldReports':
         pageKey = 'pageReports';
-        fn = this.props._getRegionFieldReports;
+        fn = this.props._getAdmAreaFieldReports;
         break;
     }
     this.setState({ [pageKey]: page.selected + 1 }, () => {
-      fn(this.props.match.params.id, this.state[pageKey]);
+      fn(this.props.type, this.props.match.params.id, this.state[pageKey]);
     });
   }
 
@@ -450,7 +451,7 @@ class Region extends React.Component {
       fetched,
       error,
       data
-    } = this.props.region;
+    } = this.props.adminArea;
 
     if (!fetched || error) return null;
 
@@ -459,7 +460,11 @@ class Region extends React.Component {
         <header className='inpage__header'>
           <div className='inner'>
             <div className='inpage__headline'>
-              <h1 className='inpage__title'>{data.name} Region</h1>
+              {this.props.type === 'region' ? (
+                <h1 className='inpage__title'>{data.name} Region</h1>
+              ) : (
+                <h1 className='inpage__title'>{data.name}</h1>
+              )}
               <div className='inpage__introduction'>
                 {this.renderStats()}
               </div>
@@ -494,17 +499,18 @@ class Region extends React.Component {
 }
 
 if (environment !== 'production') {
-  Region.propTypes = {
-    _getRegionById: T.func,
-    _getRegionAppeals: T.func,
-    _getRegionDrefs: T.func,
-    _getRegionFieldReports: T.func,
-    _getRegionAppealsStats: T.func,
-    _getRegionAggregateAppeals: T.func,
-    _getRegionERU: T.func,
+  AdminArea.propTypes = {
+    _getAdmAreaById: T.func,
+    _getAdmAreaAppeals: T.func,
+    _getAdmAreaDrefs: T.func,
+    _getAdmAreaFieldReports: T.func,
+    _getAdmAreaAppealsStats: T.func,
+    _getAdmAreaAggregateAppeals: T.func,
+    _getAdmAreaERU: T.func,
+    type: T.string,
     match: T.object,
     history: T.object,
-    region: T.object,
+    adminArea: T.object,
     appeals: T.object,
     drefs: T.object,
     fieldReports: T.object,
@@ -518,34 +524,34 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state, ownProps) => ({
-  region: get(state.region.regionData, ownProps.match.params.id, {
+  adminArea: get(state.adminArea.aaData, ownProps.match.params.id, {
     data: {},
     fetching: false,
     fetched: false
   }),
-  appeals: state.region.appeals,
-  drefs: state.region.drefs,
-  fieldReports: state.region.fieldReports,
-  appealStats: state.region.appealStats,
-  aggregateYear: get(state.region.aggregate, 'year', {
+  appeals: state.adminArea.appeals,
+  drefs: state.adminArea.drefs,
+  fieldReports: state.adminArea.fieldReports,
+  appealStats: state.adminArea.appealStats,
+  aggregateYear: get(state.adminArea.aggregate, 'year', {
     data: {},
     fetching: false,
     fetched: false
   }),
-  eru: state.region.eru
+  eru: state.adminArea.eru
 });
 
 const dispatcher = (dispatch) => ({
-  _getRegionById: (...args) => dispatch(getRegionById(...args)),
-  _getRegionAppeals: (...args) => dispatch(getRegionAppeals(...args)),
-  _getRegionDrefs: (...args) => dispatch(getRegionDrefs(...args)),
-  _getRegionFieldReports: (...args) => dispatch(getRegionFieldReports(...args)),
-  _getRegionAppealsStats: (...args) => dispatch(getRegionAppealsStats(...args)),
-  _getRegionAggregateAppeals: (...args) => dispatch(getRegionAggregateAppeals(...args)),
-  _getRegionERU: (...args) => dispatch(getRegionERU(...args))
+  _getAdmAreaById: (...args) => dispatch(getAdmAreaById(...args)),
+  _getAdmAreaAppeals: (...args) => dispatch(getAdmAreaAppeals(...args)),
+  _getAdmAreaDrefs: (...args) => dispatch(getAdmAreaDrefs(...args)),
+  _getAdmAreaFieldReports: (...args) => dispatch(getAdmAreaFieldReports(...args)),
+  _getAdmAreaAppealsStats: (...args) => dispatch(getAdmAreaAppealsStats(...args)),
+  _getAdmAreaAggregateAppeals: (...args) => dispatch(getAdmAreaAggregateAppeals(...args)),
+  _getAdmAreaERU: (...args) => dispatch(getAdmAreaERU(...args))
 });
 
-export default connect(selector, dispatcher)(Region);
+export default connect(selector, dispatcher)(AdminArea);
 
 class DisplayTable extends React.Component {
   render () {

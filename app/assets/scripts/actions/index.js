@@ -106,79 +106,150 @@ export function getEruOwners () {
   return fetchJSON('api/v1/eru_owner/?limit=0', GET_ERU_OWNERS, withToken());
 }
 
-export const GET_REGION = 'GET_REGION';
-export function getRegionById (id) {
-  // Get from static storage.
-  return function (dispatch) {
-    dispatch({ type: 'GET_REGION_INFLIGHT', id });
-    setTimeout(() => {
-      const region = regions[id];
-      if (region) {
-        dispatch({ type: 'GET_REGION_SUCCESS', data: region, receivedAt: Date.now(), id });
-      } else {
-        dispatch({ type: 'GET_REGION_FAILED', error: { message: 'Region not found.' }, id });
-      }
-    }, 1);
-  };
+export const GET_AA = 'GET_AA';
+export function getAdmAreaById (aaType, id) {
+  switch (aaType) {
+    case 'region':
+      // Get from static storage.
+      return function (dispatch) {
+        dispatch({ type: 'GET_AA_INFLIGHT', id });
+        setTimeout(() => {
+          const region = regions[id];
+          if (region) {
+            dispatch({ type: 'GET_AA_SUCCESS', data: region, receivedAt: Date.now(), id });
+          } else {
+            dispatch({ type: 'GET_AA_FAILED', error: { message: 'Region not found.' }, id });
+          }
+        }, 1);
+      };
+    case 'country':
+      return fetchJSON(`/api/v1/country/${id}/`, GET_AA, withToken(), { id });
+    default:
+      throw new Error('Invalid admin area type ' + aaType);
+  }
 }
 
-export const GET_REGION_APPEALS = 'GET_REGION_APPEALS';
-export function getRegionAppeals (regionId, page = 1, filters = {}) {
+export const GET_AA_APPEALS = 'GET_AA_APPEALS';
+export function getAdmAreaAppeals (aaType, aaId, page = 1, filters = {}) {
   filters.limit = filters.limit || 5;
   filters.offset = filters.limit * (page - 1);
   filters.atype = 1;
-  filters.region = regionId;
-  const f = buildAPIQS(filters);
 
-  return fetchJSON(`/api/v1/appeal/?${f}`, GET_REGION_APPEALS, withToken());
+  switch (aaType) {
+    case 'region':
+      filters.region = aaId;
+      break;
+    case 'country':
+      filters.country = aaId;
+      break;
+    default:
+      throw new Error('Invalid admin area type ' + aaType);
+  }
+
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v1/appeal/?${f}`, GET_AA_APPEALS, withToken());
 }
 
-export const GET_REGION_DREFS = 'GET_REGION_DREFS';
-export function getRegionDrefs (regionId, page = 1, filters = {}) {
+export const GET_AA_DREFS = 'GET_AA_DREFS';
+export function getAdmAreaDrefs (aaType, aaId, page = 1, filters = {}) {
   filters.limit = filters.limit || 5;
   filters.offset = filters.limit * (page - 1);
   filters.atype = 0;
-  filters.region = regionId;
-  const f = buildAPIQS(filters);
 
-  return fetchJSON(`/api/v1/appeal/?${f}`, GET_REGION_DREFS, withToken());
+  switch (aaType) {
+    case 'region':
+      filters.region = aaId;
+      break;
+    case 'country':
+      filters.country = aaId;
+      break;
+    default:
+      throw new Error('Invalid admin area type ' + aaType);
+  }
+
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v1/appeal/?${f}`, GET_AA_DREFS, withToken());
 }
 
-export const GET_REGION_FIELD_REPORTS = 'GET_REGION_FIELD_REPORTS';
-export function getRegionFieldReports (regionId, page = 1, filters = {}) {
+export const GET_AA_FIELD_REPORTS = 'GET_AA_FIELD_REPORTS';
+export function getAdmAreaFieldReports (aaType, aaId, page = 1, filters = {}) {
   filters.limit = filters.limit || 5;
   filters.offset = filters.limit * (page - 1);
-  filters.regions__in = regionId;
+
+  switch (aaType) {
+    case 'region':
+      filters.regions__in = aaId;
+      break;
+    case 'country':
+      break;
+    default:
+      throw new Error('Invalid admin area type ' + aaType);
+  }
+
   const f = buildAPIQS(filters);
-
-  return fetchJSON(`/api/v1/field_report/?${f}`, GET_REGION_FIELD_REPORTS, withToken());
+  return fetchJSON(`/api/v1/field_report/?${f}`, GET_AA_FIELD_REPORTS, withToken());
 }
 
-export const GET_REGION_APPEALS_STATS = 'GET_REGION_APPEALS_STATS';
-export function getRegionAppealsStats (regionId) {
-  const f = buildAPIQS({
+export const GET_AA_APPEALS_STATS = 'GET_AA_APPEALS_STATS';
+export function getAdmAreaAppealsStats (aaType, aaId) {
+  let filters = {
     end_date__gt: DateTime.local().toISODate(),
-    limit: 1000,
-    region: regionId
-  });
-  return fetchJSONRecursive(`api/v1/appeal/?${f}`, GET_REGION_APPEALS_STATS, withToken());
+    limit: 1000
+  };
+
+  switch (aaType) {
+    case 'region':
+      filters.region = aaId;
+      break;
+    case 'country':
+      filters.country = aaId;
+      break;
+    default:
+      throw new Error('Invalid admin area type ' + aaType);
+  }
+
+  const f = buildAPIQS(filters);
+  return fetchJSONRecursive(`api/v1/appeal/?${f}`, GET_AA_APPEALS_STATS, withToken());
 }
 
-export const GET_REGION_AGGREGATE_APPEALS = 'GET_REGION_AGGREGATE_APPEALS';
-export function getRegionAggregateAppeals (regionId, date, unit) {
-  const f = buildAPIQS({
+export const GET_AA_AGGREGATE_APPEALS = 'GET_AA_AGGREGATE_APPEALS';
+export function getAdmAreaAggregateAppeals (aaType, aaId, date, unit) {
+  let filters = {
     start_date: date,
-    region: regionId,
     model_type: 'appeal',
     unit
-  });
-  return fetchJSON(`api/v1/aggregate/?${f}`, GET_REGION_AGGREGATE_APPEALS, withToken(), {aggregationUnit: unit});
+  };
+
+  switch (aaType) {
+    case 'region':
+      filters.region = aaId;
+      break;
+    case 'country':
+      filters.country = aaId;
+      break;
+    default:
+      throw new Error('Invalid admin area type ' + aaType);
+  }
+
+  const f = buildAPIQS(filters);
+  return fetchJSON(`api/v1/aggregate/?${f}`, GET_AA_AGGREGATE_APPEALS, withToken(), {aggregationUnit: unit});
 }
 
-export const GET_REGION_ERU = 'GET_REGION_ERU';
-export function getRegionERU (regionId) {
-  const f = buildAPIQS({
-    countries__in: countriesByRegion[regionId].join(',')
-  });
-  return fetchJSON(`api/v1/eru/?${f}`, GET_REGION_ERU, withToken());
+export const GET_AA_ERU = 'GET_AA_ERU';
+export function getAdmAreaERU (aaType, aaId) {
+  let filters = {};
+
+  switch (aaType) {
+    case 'region':
+      filters.countries__in = countriesByRegion[aaId].join(',');
+      break;
+    case 'country':
+      filters.countries__in = aaId;
+      break;
+    default:
+      throw new Error('Invalid admin area type ' + aaType);
+  }
+
+  const f = buildAPIQS(filters);
+  return fetchJSON(`api/v1/eru/?${f}`, GET_AA_ERU, withToken());
 }

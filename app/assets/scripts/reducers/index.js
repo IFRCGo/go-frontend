@@ -10,7 +10,7 @@ import surgeAlerts from './surge-alerts';
 import overallStats from './overall-stats';
 import emergencies from './emergencies';
 import event from './event';
-import region from './region';
+import adminArea from './admin-area';
 import eruOwners from './eru-owners';
 
 export const reducers = {
@@ -23,7 +23,7 @@ export const reducers = {
   overallStats,
   emergencies,
   event,
-  region,
+  adminArea,
   eruOwners
 };
 
