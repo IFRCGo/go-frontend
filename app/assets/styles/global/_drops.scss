@@ -27,7 +27,6 @@
   @extend %drop-skin;
   position: absolute;
   z-index: 1000;
-  width: 100%;
   max-width: 14rem;
   margin: 0;
   padding: $global-spacing;
@@ -291,6 +290,7 @@
     padding: 0.25rem 1rem;
     color: $link-color;
     transition: all 0.16s ease 0s;
+    font-size: 0.875rem;
     
     &:hover,
     &:focus {

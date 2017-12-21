@@ -282,7 +282,7 @@ class Account extends React.Component {
             options={otherNotificationTypes}
             values={this.state.data.other}
             onChange={this.onFieldChange.bind(this, 'other')} />
-          <button type='submit' className={c('button', 'button--secondary-raised-dark', {
+          <button type='submit' className={c('button', 'button--large', 'button--secondary-filled', {
             'disabled': !this.state.isDirty
           })} title='Save'>Save</button>
         </Fold>

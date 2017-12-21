@@ -12,6 +12,10 @@
     padding: $global-spacing;
     vertical-align: top;
     text-align: left;
+    ul {
+      list-style: none;
+      margin: 0;
+    }
   }
 
   th:first-child,

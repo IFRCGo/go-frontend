@@ -17,11 +17,11 @@
 
 .nav__label,
 .nav__link {
-  @extend .heading-alt;
   font-size: 0.875rem;
   line-height: 1rem;
   display: inline-flex;
   padding: $global-spacing;
+  padding-right: $global-spacing * 2;
   margin: 0;
 }
 
@@ -37,7 +37,7 @@
   &,
   &:hover,
   &:visited {
-    color: inherit;
+    color: $base-color;
   }
 
   &--active {

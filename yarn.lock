@@ -102,6 +102,12 @@ acorn@^5.0.0, acorn@^5.0.3, acorn@^5.1.0, acorn@^5.2.1:
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-5.2.1.tgz#317ac7821826c22c702d66189ab8359675f135d7"
 
+addeventlistener@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/addeventlistener/-/addeventlistener-2.0.0.tgz#2c491284485708672d60a36f2b937dfded898d78"
+  dependencies:
+    event-listener-with-options "^1.0.3"
+
 after@0.8.1:
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/after/-/after-0.8.1.tgz#ab5d4fb883f596816d3515f8f791c0af486dd627"
@@ -2614,6 +2620,10 @@ event-emitter@^0.3.5:
   dependencies:
     d "1"
     es5-ext "~0.10.14"
+
+event-listener-with-options@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/event-listener-with-options/-/event-listener-with-options-1.0.3.tgz#e8e80cae4f69ef86c18cdeda2c9f162b680d0577"
 
 event-stream@^3.3.1:
   version "3.3.4"
