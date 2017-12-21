@@ -4,6 +4,7 @@ import { PropTypes as T } from 'prop-types';
 import Select from 'react-select';
 import { Link, withRouter } from 'react-router-dom';
 import { DateTime } from 'luxon';
+import { once } from 'addeventlistener';
 
 import { get } from '../utils/utils';
 import { api, environment } from '../config';
@@ -120,7 +121,13 @@ class NavDropdown extends React.Component {
   }
 
   toggleOptions () {
-    this.setState({ showOptions: !this.state.showOptions });
+    const showOptions = !this.state.showOptions;
+    this.setState({ showOptions });
+    if (showOptions) {
+      setTimeout(() => {
+        once(window, 'click', () => this.setState({ showOptions: false }));
+      }, 0);
+    }
   }
 
   render () {
