@@ -78,7 +78,7 @@ const Root = () => (
         <Route exact path="/emergencies/:id" component={Emergency}/>
         <Route exact path="/regions/:id" component={Region}/>
         <Route exact path="/deployments" component={Deployments}/>
-        <Route exact path="/deployments/heops" component={HeOps}/>
+        <Route exact path="/heops" component={HeOps}/>
         <Route component={UhOh}/>
       </Switch>
     </Router>
