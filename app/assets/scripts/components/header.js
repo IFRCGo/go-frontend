@@ -9,7 +9,10 @@ import { get } from '../utils/utils';
 import { api, environment } from '../config';
 import { request } from '../utils/network';
 import { uppercaseFirstLetter as u } from '../utils/format';
+import { regions } from '../utils/region-constants';
 import UserMenu from './connected/user-menu';
+
+const regionArray = Object.keys(regions).map(k => regions[k]);
 
 const indexTypeToURI = {
   'event': 'emergencies',
@@ -73,11 +76,15 @@ class Header extends React.PureComponent {
         </div>
         <div className='inner'>
           <nav className='page__prime-nav' role='navigation'>
-            <ul className='nav-global-menu'>
-              <li><Link to='/emergencies' title='Visit emergencies page'><span>Emergencies</span></Link></li>
-              <li><Link to='/deployments' title='Visit deployments page'><span>Deployments</span></Link></li>
-              <li><Link to='/about' title='Visit about page'><span>About</span></Link></li>
-            </ul>
+            <div className='nav__prime-nav-item'>
+              <h5><Link to='/emergencies'>Emergencies</Link></h5>
+            </div>
+            <NavDropdown title='Regions' options={regionArray.map(o => ({to: `/regions/${o.id}`, text: o.name}))} />
+            <NavDropdown title='Deployments' options={[
+              {to: '/deployments', text: 'All Deployments'},
+              {to: '/heops', text: 'HeOps'}
+            ]} />
+
             <div className='nav-global-search'>
               <form className='gsearch'>
                 <div className='form__group'>
@@ -104,3 +111,40 @@ if (environment !== 'production') {
 }
 
 export default withRouter(Header);
+
+class NavDropdown extends React.Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      showOptions: false
+    };
+    this.toggleOptions = this.toggleOptions.bind(this);
+  }
+
+  toggleOptions () {
+    this.setState({ showOptions: !this.state.showOptions });
+  }
+
+  render () {
+    const { options, title } = this.props;
+    return (
+      <div className='nav__prime-nav-item' onClick={this.toggleOptions}>
+        <h5>{title}</h5>
+        {this.state.showOptions && (
+          <ul>
+            {options.map(o => (
+              <li key={o.to} className='nav__prime-nav-option'><Link to={o.to}>{o.text}</Link></li>
+            ))}
+          </ul>
+        )}
+      </div>
+    );
+  }
+}
+
+if (environment !== 'production') {
+  NavDropdown.propTypes = {
+    options: T.array,
+    title: T.text
+  };
+}
