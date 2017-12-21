@@ -35,6 +35,11 @@
   .form__label {
     font-size: 1.25rem;
   }
+  float: left;
+  margin-top: $global-spacing * 3;
+  @include media(medium-up) {
+    margin-top: 0
+  }
 }
 
 .readiness__card {
@@ -45,7 +50,7 @@
   margin-bottom: $global-spacing;
   @include media(medium-up) {
     @include column(6/12, $cycle: 2);
-    margin-bottom: 0;
+    min-height: 250px;
   }
   .updated {
     font-size: 0.75rem;
