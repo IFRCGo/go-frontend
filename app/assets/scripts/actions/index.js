@@ -181,6 +181,7 @@ export function getAdmAreaFieldReports (aaType, aaId, page = 1, filters = {}) {
       filters.regions__in = aaId;
       break;
     case 'country':
+      filters.countries__in = aaId;
       break;
     default:
       throw new Error('Invalid admin area type ' + aaType);
