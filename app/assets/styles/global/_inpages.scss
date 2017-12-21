@@ -6,7 +6,10 @@
   &__header {
     position: relative;
     color: $base-font-color;
-    padding: ($global-spacing * 3) 0;
+    padding: ($global-spacing) 0;
+    @include media(small-up) {
+      padding: ($global-spacing * 3) 0;
+    }
 
     > .inner {
       @extend .row, .row--centered;
@@ -263,8 +266,14 @@
   }
   .stats-chart {
     @include column(12/12);
+    &:first-child {
+      margin-bottom: $global-spacing * 2;
+    };
     @include media(small-up){
       @include column(6/12);
+      &:first-child {
+        margin-bottom: 0;
+      };
     }
   }
 }
