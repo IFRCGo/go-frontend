@@ -76,6 +76,7 @@ const Root = () => (
         <Route exact path="/emergencies" component={Emergencies}/>
         <Route exact path="/emergencies/:id" component={Emergency}/>
         <Route exact path="/regions/:id" render={props => <AdminArea {...props} type='region' />} />
+        <Route exact path="/countries/:id" render={props => <AdminArea {...props} type='country' />} />
         <Route exact path="/deployments" component={Deployments}/>
         <Route component={UhOh}/>
       </Switch>
