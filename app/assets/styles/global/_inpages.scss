@@ -57,6 +57,12 @@
     }
   };
 
+  &__title--centered {
+    display: block;
+    max-width: 32rem;
+    margin: 0 auto;
+  }
+
   &__title {
     @extend .heading, .heading--xlarge;
     @include column(10/12);
