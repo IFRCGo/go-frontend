@@ -4,8 +4,10 @@ import { connect } from 'react-redux';
 import { DateTime } from 'luxon';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
+import ReactPaginate from 'react-paginate';
 
 import App from './app';
+import Fold from '../components/fold';
 import BlockLoading from '../components/block-loading';
 
 import { get } from '../utils/utils';
@@ -15,10 +17,24 @@ import { getHeops, getYearlyHeops, getHeopsDtype } from '../actions';
 import { regions } from '../utils/region-constants';
 
 class HeOps extends React.Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      page: 1
+    };
+    this.handlePageChange = this.handlePageChange.bind(this);
+  }
+
   componentWillMount () {
     this.props._getHeops();
     this.props._getYearlyHeops();
     this.props._getHeopsDtype();
+  }
+
+  handlePageChange (page) {
+    this.setState({ page: page.selected + 1 }, () => {
+      this.props._getHeops(this.state.page);
+    });
   }
 
   renderCharts () {
@@ -57,22 +73,43 @@ class HeOps extends React.Component {
     }
 
     return (
-      <table className='table table--zebra responsive-table'>
-        <thead>
-          <tr>
-            <th><a className='table__sort table__sort--none'>Start Date</a></th>
-            <th><a className='table__sort table__sort--none'>End Date</a></th>
-            <th>Emergency Type</th>
-            <th>Country</th>
-            <th><a className='table__filter'>Region</a></th>
-            <th><a className='table__filter'>Name</a></th>
-            <th>Deployed Role</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.objects.map(this.renderTableRow)}
-        </tbody>
-      </table>
+      <Fold title={`HeOps Deployments (${data.meta.total_count})`}>
+        <table className='table table--zebra responsive-table'>
+          <thead>
+            <tr>
+              <th><a className='table__sort table__sort--none'>Start Date</a></th>
+              <th><a className='table__sort table__sort--none'>End Date</a></th>
+              <th>Emergency Type</th>
+              <th>Country</th>
+              <th><a className='table__filter'>Region</a></th>
+              <th><a className='table__filter'>Name</a></th>
+              <th>Deployed Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.objects.map(this.renderTableRow)}
+          </tbody>
+        </table>
+
+        {data.objects.length !== 0 && (
+          <div className='pagination-wrapper'>
+            <ReactPaginate
+              previousLabel={<span>previous</span>}
+              nextLabel={<span>next</span>}
+              breakLabel={<span className='pages__page'>...</span>}
+              pageCount={Math.ceil(data.meta.total_count / data.meta.limit)}
+              forcePage={data.meta.offset / data.meta.limit}
+              marginPagesDisplayed={2}
+              pageRangeDisplayed={5}
+              onPageChange={this.handlePageChange}
+              containerClassName={'pagination'}
+              subContainerClassName={'pages'}
+              pageClassName={'pages__wrapper'}
+              pageLinkClassName={'pages__page'}
+              activeClassName={'active'} />
+          </div>
+        )}
+      </Fold>
     );
   }
 
