@@ -76,7 +76,9 @@ class Login extends React.Component {
           <header className='inpage__header'>
             <div className='inner'>
               <div className='inpage__headline'>
-                <h1 className='inpage__title'>Login</h1>
+                <div className='inpage__title--centered'>
+                  <h1 className='inpage__title'>Login</h1>
+                </div>
               </div>
             </div>
           </header>
@@ -106,11 +108,12 @@ class Login extends React.Component {
                 </FormInput>
 
                 {this.renderError()}
-
-                <button className={c('mfa-tick', { disabled: !this.allowSubmit() })} type='submit' onClick={this.onSubmit}><span>Login</span></button>
-                <p>
-                  Don’t have an account? <Link to='/register' title='Create new account'><span>Sign Up.</span></Link>
-                </p>
+                <div className='form__footer'>
+                  <button className={c('mfa-tick', { disabled: !this.allowSubmit() })} type='submit' onClick={this.onSubmit}><span>Login</span></button>
+                  <p>
+                   Don’t have an account? <Link to='/register' title='Create new account'><span>Sign Up.</span></Link>
+                  </p>
+                </div>
               </form>
             </div>
           </div>

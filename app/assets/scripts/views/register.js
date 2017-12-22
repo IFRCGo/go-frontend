@@ -192,7 +192,9 @@ export default class Login extends React.Component {
           <header className='inpage__header'>
             <div className='inner'>
               <div className='inpage__headline'>
-                <h1 className='inpage__title'>Register</h1>
+                <div className='inpage__title--centered'>
+                  <h1 className='inpage__title'>Register</h1>
+                </div>
               </div>
             </div>
           </header>
@@ -218,12 +220,12 @@ export default class Login extends React.Component {
                 {this.renderPasswordFields()}
                 {this.renderAdditionalInfo()}
                 {this.renderContactRequest()}
-
-                {this.renderSubmitButton()}
-
-                <p>
-                  Already have an account? <Link to='/login' title='Go to login page'><span>Log in.</span></Link>
-                </p>
+                <div className='form__footer'>
+                  {this.renderSubmitButton()}
+                  <p>
+                    Already have an account? <Link to='/login' title='Go to login page'><span>Log in.</span></Link>
+                  </p>
+                </div>
               </form>
             </div>
           </div>

@@ -26,6 +26,10 @@
     display: flex;
     align-items: center;
     flex-flow: row nowrap;
+    border-bottom: solid 1px tint($base-color, 92%);
+    &:last-child{
+      border-bottom: none;
+    }
   }
 }
 
@@ -53,9 +57,6 @@
       @extend .visually-hidden;
     }
   }
-}
-
-.page__headline {
 }
 
 /* Body
@@ -94,15 +95,15 @@
       @include column(12/12);
 
       @include media(small-up) {
-        @include column(4/12, $cycle: 3);
-      }
-
-      @include media(medium-up) {
         @include column(3/12, $cycle: 4);
       }
 
+      @include media(medium-up) {
+        @include column(2/12, $cycle: 6);
+      }
+
       @include media(large-up) {
-        @include column(2/12, $cycle: 5);
+        @include column(2/12, $cycle: 6);
       }
 
       &--sec {

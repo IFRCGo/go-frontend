@@ -4,7 +4,6 @@ import { PropTypes as T } from 'prop-types';
 import Select from 'react-select';
 import { Link, withRouter } from 'react-router-dom';
 import { DateTime } from 'luxon';
-import { once } from 'addeventlistener';
 
 import { get } from '../utils/utils';
 import { api, environment } from '../config';
@@ -12,6 +11,7 @@ import { request } from '../utils/network';
 import { uppercaseFirstLetter as u } from '../utils/format';
 import { regions } from '../utils/region-constants';
 import UserMenu from './connected/user-menu';
+import Dropdown from './dropdown';
 
 const regionArray = Object.keys(regions).map(k => regions[k]);
 
@@ -77,14 +77,14 @@ class Header extends React.PureComponent {
         </div>
         <div className='inner'>
           <nav className='page__prime-nav' role='navigation'>
-            <div className='nav__prime-nav-item'>
-              <h5><Link className='nav__link' to='/emergencies'>Emergencies</Link></h5>
-            </div>
-            <NavDropdown title='Regions' options={regionArray.map(o => ({to: `/regions/${o.id}`, text: o.name}))} />
-            <NavDropdown title='Deployments' options={[
-              {to: '/deployments', text: 'All Deployments'},
-              {to: '/heops', text: 'HeOps'}
-            ]} />
+            <ul className='nav-global-menu'>
+              <li><Link to='/emergencies' title='Visit emergencies page'><span>Emergencies</span></Link></li>
+              <li><NavDropdown id='regions-menu' title='Regions' options={regionArray.map(o => ({to: `/regions/${o.id}`, text: o.name}))} /></li>
+              <li><NavDropdown id='deployments-menu' title='Deployments' options={[
+                {to: '/deployments', text: 'All Deployments'},
+                {to: '/heops', text: 'HeOps'}
+              ]} /></li>
+            </ul>
           </nav>
           <div className='nav-global-search'>
             <form className='gsearch'>
@@ -112,46 +112,32 @@ if (environment !== 'production') {
 export default withRouter(Header);
 
 class NavDropdown extends React.Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      showOptions: false
-    };
-    this.toggleOptions = this.toggleOptions.bind(this);
-  }
-
-  toggleOptions () {
-    const showOptions = !this.state.showOptions;
-    this.setState({ showOptions });
-    if (showOptions) {
-      setTimeout(() => {
-        once(window, 'click', () => this.setState({ showOptions: false }));
-      }, 0);
-    }
-  }
-
   render () {
-    const { options, title } = this.props;
+    const { id, options, title } = this.props;
     return (
-      <div className='drop drop--open drop--align-left nav__prime-nav-item' onClick={this.toggleOptions}>
-        <button className='button nav__link drop__toggle drop__toggle--caret'>{title}</button>
-        {this.state.showOptions && (
-          <div className='drop__content'>
-            <ul className='drop__menu'>
-              {options.map(o => (
-                <li key={o.to} className='drop__menu-item'><Link to={o.to}>{o.text}</Link></li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
+      <Dropdown
+        id={id}
+        triggerClassName='drop__toggle--caret'
+        triggerActiveClassName='active'
+        triggerText={title}
+        triggerTitle={`View ${title}`}
+        triggerElement='a'
+        direction='down'
+        alignment='center' >
+        <ul className='drop__menu' role='menu'>
+          {options.map(o => (
+            <li key={o.to} className='drop__menu-item'><Link to={o.to} title={`View ${o.text}`} data-hook='dropdown:close'>{o.text}</Link></li>
+          ))}
+        </ul>
+      </Dropdown>
     );
   }
 }
 
 if (environment !== 'production') {
   NavDropdown.propTypes = {
+    id: T.string,
     options: T.array,
-    title: T.text
+    title: T.string
   };
 }

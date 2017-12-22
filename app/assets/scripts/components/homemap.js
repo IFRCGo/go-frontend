@@ -33,14 +33,25 @@ class Homemap extends React.Component {
     this.navigate = this.navigate.bind(this);
   }
 
-  componentWillReceiveProps ({appealsList}) {
-    // set initial layers and filters when geojson data is loaded
-    if (!this.props.appealsList.fetched && appealsList.fetched && !appealsList.error) {
-      this.setState({
-        layers: this.getLayers(appealsList.data.geoJSON, this.state.scaleBy),
-        filters: this.getFilters(this.getDtypeHighlight())
-      });
+  componentDidMount () {
+    // Init the map if there's data when the component loads.
+    if (this.props.appealsList.fetched) {
+      this.initMapLayers(this.props);
     }
+  }
+
+  componentWillReceiveProps (nextProps) {
+    // set initial layers and filters when geojson data is loaded
+    if (!this.props.appealsList.fetched && nextProps.appealsList.fetched && !nextProps.appealsList.error) {
+      this.initMapLayers(nextProps);
+    }
+  }
+
+  initMapLayers (props) {
+    this.setState({
+      layers: this.getLayers(props.appealsList.data.geoJSON, this.state.scaleBy),
+      filters: this.getFilters(this.getDtypeHighlight())
+    });
   }
 
   getDtypeHighlight () {
