@@ -95,15 +95,15 @@
       @include column(12/12);
 
       @include media(small-up) {
-        @include column(4/12, $cycle: 3);
-      }
-
-      @include media(medium-up) {
         @include column(3/12, $cycle: 4);
       }
 
+      @include media(medium-up) {
+        @include column(2/12, $cycle: 6);
+      }
+
       @include media(large-up) {
-        @include column(2/12, $cycle: 5);
+        @include column(2/12, $cycle: 6);
       }
 
       &--sec {
