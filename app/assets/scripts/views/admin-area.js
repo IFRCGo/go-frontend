@@ -470,9 +470,9 @@ class AdminArea extends React.Component {
               </div>
             </div>
           </div>
+          <Homemap appealsList={this.props.appealStats} />
         </header>
         <div className='inpage__body'>
-          <Homemap appealsList={this.props.appealStats} />
           <div className='inner'>
             <Fold title='Statistics' headerClass='visually-hidden'>
               <div className='stats-chart'>
@@ -491,7 +491,7 @@ class AdminArea extends React.Component {
 
   render () {
     return (
-      <App className='page--region'>
+      <App className='page--country'>
         {this.renderContent()}
       </App>
     );
