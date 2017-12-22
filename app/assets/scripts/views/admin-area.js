@@ -4,7 +4,6 @@ import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { DateTime } from 'luxon';
-import ReactPaginate from 'react-paginate';
 import {
   ResponsiveContainer,
   LineChart,
@@ -31,19 +30,66 @@ import {
   getAdmAreaAggregateAppeals,
   getAdmAreaERU
 } from '../actions';
+import { disasterType } from '../utils/field-report-constants';
 
 import App from './app';
 import Fold from '../components/fold';
 import Homemap from '../components/homemap';
 import BlockLoading from '../components/block-loading';
+import DisplayTable, { SortHeader, FilterHeader } from '../components/display-table';
+
+// Exclude the first item since it's a dropdown placeholder
+const disasterTypes = disasterType.slice(1);
+
+const dateOptions = [
+  { value: 'all', label: 'Anytime' },
+  { value: 'week', label: 'Last week' },
+  { value: 'month', label: 'Last month' },
+  { value: 'year', label: 'Last year' }
+];
+
+const dTypeOptions = [
+  { value: 'all', label: 'All Types' },
+  ...disasterTypes
+];
 
 class AdminArea extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      pageAppeals: 1,
-      pageDrefs: 1,
-      pageReports: 1
+      appeals: {
+        page: 1,
+        sort: {
+          field: '',
+          direction: 'asc'
+        },
+        filters: {
+          date: 'all',
+          dtype: 'all'
+        }
+      },
+      drefs: {
+        page: 1,
+        sort: {
+          field: '',
+          direction: 'asc'
+        },
+        filters: {
+          date: 'all',
+          dtype: 'all'
+        }
+      },
+      fieldReports: {
+        page: 1,
+        sort: {
+          field: '',
+          direction: 'asc'
+        },
+        filters: {
+          date: 'all',
+          dtype: 'all'
+        }
+      }
     };
     this.handlePageChange = this.handlePageChange.bind(this);
   }
@@ -63,7 +109,6 @@ class AdminArea extends React.Component {
   }
 
   componentDidMount () {
-    console.log('thi', this.props);
     this.getData(this.props);
     this.getAdmArea(this.props.type, this.props.match.params.id);
   }
@@ -82,25 +127,64 @@ class AdminArea extends React.Component {
     this.props._getAdmAreaById(type, id);
   }
 
-  handlePageChange (what, page) {
-    let pageKey;
-    let fn;
+  computeFilters (what) {
+    // Compute date. (last week, month, year).
+    // Add any other filters.
+    // This is based on `what` is being filtered.
+
+    return {};
+  }
+
+  getActionFn (what) {
     switch (what) {
       case 'appeals':
-        pageKey = 'pageAppeals';
-        fn = this.props._getAdmAreaAppeals;
-        break;
+        return this.props._getAdmAreaAppeals;
       case 'drefs':
-        pageKey = 'pageDrefs';
-        fn = this.props._getAdmAreaDrefs;
-        break;
+        return this.props._getAdmAreaDrefs;
       case 'fieldReports':
-        pageKey = 'pageReports';
-        fn = this.props._getAdmAreaFieldReports;
-        break;
+        return this.props._getAdmAreaFieldReports;
     }
-    this.setState({ [pageKey]: page.selected + 1 }, () => {
-      fn(this.props.type, this.props.match.params.id, this.state[pageKey]);
+  }
+
+  handlePageChange (what, page) {
+    let state = this.state[what];
+    state = Object.assign({}, state, { page: page.selected + 1 });
+
+    this.setState({ [what]: state }, () => {
+      this.getActionFn(what)(this.props.type, this.props.match.params.id, this.state[what].page, this.computeFilters(what));
+    });
+  }
+
+  handleFilterChange (what, field, value) {
+    let state = this.state[what];
+    state = {
+      ...state,
+      page: 1,
+      filters: {
+        ...state.filters,
+        [field]: value
+      }
+    };
+    this.setState({ [what]: state }, () => {
+      this.getActionFn(what)(this.props.type, this.props.match.params.id, this.state[what].page, this.computeFilters(what));
+    });
+  }
+
+  handleSortChange (what, field) {
+    let state = this.state[what];
+    state = {
+      ...state,
+      page: 1,
+      sort: {
+        field,
+        direction: state.sort.field === field && state.sort.direction === 'asc'
+          ? 'desc'
+          : 'asc'
+      }
+    };
+
+    this.setState({ [what]: state }, () => {
+      this.getActionFn(what)(this.props.type, this.props.match.params.id, this.state[what].page, this.computeFilters(what));
     });
   }
 
@@ -132,12 +216,24 @@ class AdminArea extends React.Component {
       const now = Date.now();
       if (data && data.objects.length) {
         const headings = [
-          { id: 'date', label: 'Date' },
+          {
+            id: 'date',
+            label: <FilterHeader id='date' title='Date' options={dateOptions} filter={this.state.appeals.filters.date} onSelect={this.handleFilterChange.bind(this, 'appeals', 'date')} />
+          },
           { id: 'name', label: 'Name' },
           { id: 'event', label: 'Emergency' },
-          { id: 'dtype', label: 'Disaster Type' },
-          { id: 'requestAmount', label: 'Requested Amount (CHF)' },
-          { id: 'fundedAmount', label: 'Funding (CHF)' },
+          {
+            id: 'dtype',
+            label: <FilterHeader id='dtype' title='Disaster Type' options={dTypeOptions} filter={this.state.appeals.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'appeals', 'dtype')} />
+          },
+          {
+            id: 'requestAmount',
+            label: <SortHeader id='requestAmount' title='Requested Amount (CHF)' sort={this.state.appeals.sort} onClick={this.handleSortChange.bind(this, 'appeals', 'requestAmount')} />
+          },
+          {
+            id: 'fundedAmount',
+            label: <SortHeader id='fundedAmount' title='Funding (CHF)' sort={this.state.appeals.sort} onClick={this.handleSortChange.bind(this, 'appeals', 'fundedAmount')} />
+          },
           { id: 'active', label: 'Active' }
         ];
 
@@ -203,12 +299,24 @@ class AdminArea extends React.Component {
       const now = Date.now();
       if (data && data.objects.length) {
         const headings = [
-          { id: 'date', label: 'Date' },
+          {
+            id: 'date',
+            label: <FilterHeader id='date' title='Date' options={dateOptions} filter={this.state.drefs.filters.date} onSelect={this.handleFilterChange.bind(this, 'drefs', 'date')} />
+          },
           { id: 'name', label: 'Name' },
           { id: 'event', label: 'Emergency' },
-          { id: 'dtype', label: 'Disaster Type' },
-          { id: 'requestAmount', label: 'Requested Amount (CHF)' },
-          { id: 'fundedAmount', label: 'Funding (CHF)' },
+          {
+            id: 'dtype',
+            label: <FilterHeader id='dtype' title='Disaster Type' options={dTypeOptions} filter={this.state.drefs.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'drefs', 'dtype')} />
+          },
+          {
+            id: 'requestAmount',
+            label: <SortHeader id='requestAmount' title='Requested Amount (CHF)' sort={this.state.drefs.sort} onClick={this.handleSortChange.bind(this, 'drefs', 'requestAmount')} />
+          },
+          {
+            id: 'fundedAmount',
+            label: <SortHeader id='fundedAmount' title='Funding (CHF)' sort={this.state.drefs.sort} onClick={this.handleSortChange.bind(this, 'drefs', 'fundedAmount')} />
+          },
           { id: 'active', label: 'Active' }
         ];
 
@@ -273,10 +381,16 @@ class AdminArea extends React.Component {
     if (fetched) {
       if (data && data.objects.length) {
         const headings = [
-          { id: 'date', label: 'Date' },
+          {
+            id: 'date',
+            label: <FilterHeader id='date' title='Date' options={dateOptions} filter={this.state.fieldReports.filters.date} onSelect={this.handleFilterChange.bind(this, 'fieldReports', 'date')} />
+          },
           { id: 'name', label: 'Name' },
           { id: 'event', label: 'Event' },
-          { id: 'dtype', label: 'Disaster Type' },
+          {
+            id: 'dtype',
+            label: <FilterHeader id='dtype' title='Disaster Type' options={dTypeOptions} filter={this.state.fieldReports.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'fieldReports', 'dtype')} />
+          },
           { id: 'countries', label: 'Countries' }
         ];
 
@@ -552,52 +666,3 @@ const dispatcher = (dispatch) => ({
 });
 
 export default connect(selector, dispatcher)(AdminArea);
-
-class DisplayTable extends React.Component {
-  render () {
-    return (
-      <React.Fragment>
-        <table className='table table--zebra'>
-          <thead>
-            <tr>
-              {this.props.headings.map(h => <th key={h.id}>{h.label}</th>)}
-            </tr>
-          </thead>
-          <tbody>
-            {this.props.rows.map(row => (
-              <tr key={row.id}>
-                {this.props.headings.map(h => <td key={`${row.id}-${h.id}`}>{row[h.id]}</td>)}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <div className='pagination-wrapper'>
-          <ReactPaginate
-            previousLabel={<span>previous</span>}
-            nextLabel={<span>next</span>}
-            breakLabel={<span className='pages__page'>...</span>}
-            pageCount={Math.ceil(this.props.pageCount)}
-            forcePage={this.props.page}
-            marginPagesDisplayed={2}
-            pageRangeDisplayed={5}
-            onPageChange={this.props.onPageChange}
-            containerClassName={'pagination'}
-            subContainerClassName={'pages'}
-            pageClassName={'pages__wrapper'}
-            pageLinkClassName={'pages__page'}
-            activeClassName={'active'} />
-        </div>
-      </React.Fragment>
-    );
-  }
-}
-
-if (environment !== 'production') {
-  DisplayTable.propTypes = {
-    onPageChange: T.func,
-    headings: T.array,
-    rows: T.array,
-    pageCount: T.number,
-    page: T.number
-  };
-}

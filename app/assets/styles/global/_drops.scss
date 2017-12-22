@@ -35,6 +35,8 @@
   color: $base-font-color;
   font-size: 1rem;
   line-height: 1.5;
+  max-height: 16rem;
+  overflow-y: auto;
 
   /* Animation */
 
