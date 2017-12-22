@@ -491,7 +491,7 @@ class AdminArea extends React.Component {
 
   render () {
     return (
-      <App className='page--country'>
+      <App className={`page--${this.props.type}`}>
         {this.renderContent()}
       </App>
     );
