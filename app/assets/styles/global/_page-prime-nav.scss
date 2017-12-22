@@ -18,17 +18,11 @@
     background: tint($base-color, 92%);
   }
 
-  button, a, h5 {
+  button, a {
     font-family: $base-font-family;
     font-weight: $base-font-regular;
     margin-bottom: 0;
   }
-}
-
-.nav__link {
-  &:first-child {
-    padding-left: 0;
-  };
 }
 
 .page__meta-nav {
