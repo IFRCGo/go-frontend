@@ -26,6 +26,10 @@
     display: flex;
     align-items: center;
     flex-flow: row nowrap;
+    border-bottom: solid 1px tint($base-color, 92%);
+    &:last-child{
+      border-bottom: none;
+    }
   }
 }
 
@@ -53,9 +57,6 @@
       @extend .visually-hidden;
     }
   }
-}
-
-.page__headline {
 }
 
 /* Body

@@ -6,8 +6,9 @@
   flex: 1;
   display: flex;
   position: relative;
+  float: left;
 
-  &::before {
+/*  &::before {
     content: '';
     position: absolute;
     top: -$global-spacing;
@@ -16,7 +17,7 @@
     width: 200vw;
     margin-left: -50vw;
     background: tint($base-color, 92%);
-  }
+  }*/
 
   button, a {
     font-family: $base-font-family;

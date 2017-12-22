@@ -27,7 +27,7 @@ class UserMenu extends React.Component {
           triggerTitle={'Access user menu'}
           triggerElement='a'
           direction='down'
-          alignment='center' >
+          alignment='right' >
 
           <h6 className='drop__title'>Hello {this.props.userData.firstName} {this.props.userData.lastName}</h6>
           <ul className='drop__menu' role='menu'>
