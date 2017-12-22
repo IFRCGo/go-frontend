@@ -39,19 +39,19 @@ const stateSuccess = (state, action) => {
   });
 };
 
-function regionData (state = initialState, action) {
+function aaData (state = initialState, action) {
   switch (action.type) {
-    case 'GET_REGION_INFLIGHT':
+    case 'GET_AA_INFLIGHT':
       state = Object.assign({}, state, {
         [action.id]: stateInflight(state, action)
       });
       break;
-    case 'GET_REGION_FAILED':
+    case 'GET_AA_FAILED':
       state = Object.assign({}, state, {
         [action.id]: stateError(state, action)
       });
       break;
-    case 'GET_REGION_SUCCESS':
+    case 'GET_AA_SUCCESS':
       state = Object.assign({}, state, {
         [action.id]: stateSuccess(state, action)
       });
@@ -62,13 +62,13 @@ function regionData (state = initialState, action) {
 
 function appeals (state = initialState, action) {
   switch (action.type) {
-    case 'GET_REGION_APPEALS_INFLIGHT':
+    case 'GET_AA_APPEALS_INFLIGHT':
       state = stateInflight(state, action);
       break;
-    case 'GET_REGION_APPEALS_FAILED':
+    case 'GET_AA_APPEALS_FAILED':
       state = stateError(state, action);
       break;
-    case 'GET_REGION_APPEALS_SUCCESS':
+    case 'GET_AA_APPEALS_SUCCESS':
       state = stateSuccess(state, action);
       break;
   }
@@ -77,13 +77,13 @@ function appeals (state = initialState, action) {
 
 function drefs (state = initialState, action) {
   switch (action.type) {
-    case 'GET_REGION_DREFS_INFLIGHT':
+    case 'GET_AA_DREFS_INFLIGHT':
       state = stateInflight(state, action);
       break;
-    case 'GET_REGION_DREFS_FAILED':
+    case 'GET_AA_DREFS_FAILED':
       state = stateError(state, action);
       break;
-    case 'GET_REGION_DREFS_SUCCESS':
+    case 'GET_AA_DREFS_SUCCESS':
       state = stateSuccess(state, action);
       break;
   }
@@ -92,13 +92,13 @@ function drefs (state = initialState, action) {
 
 function fieldReports (state = initialState, action) {
   switch (action.type) {
-    case 'GET_REGION_FIELD_REPORTS_INFLIGHT':
+    case 'GET_AA_FIELD_REPORTS_INFLIGHT':
       state = stateInflight(state, action);
       break;
-    case 'GET_REGION_FIELD_REPORTS_FAILED':
+    case 'GET_AA_FIELD_REPORTS_FAILED':
       state = stateError(state, action);
       break;
-    case 'GET_REGION_FIELD_REPORTS_SUCCESS':
+    case 'GET_AA_FIELD_REPORTS_SUCCESS':
       state = stateSuccess(state, action);
       break;
   }
@@ -107,13 +107,13 @@ function fieldReports (state = initialState, action) {
 
 function appealStats (state = initialState, action) {
   switch (action.type) {
-    case 'GET_REGION_APPEALS_STATS_INFLIGHT':
+    case 'GET_AA_APPEALS_STATS_INFLIGHT':
       state = stateInflight(state, action);
       break;
-    case 'GET_REGION_APPEALS_STATS_FAILED':
+    case 'GET_AA_APPEALS_STATS_FAILED':
       state = stateError(state, action);
       break;
-    case 'GET_REGION_APPEALS_STATS_SUCCESS':
+    case 'GET_AA_APPEALS_STATS_SUCCESS':
       // Statistics.
       const objs = action.data;
       let struct = {
@@ -176,17 +176,17 @@ function appealStats (state = initialState, action) {
 
 function aggregate (state = {}, action) {
   switch (action.type) {
-    case 'GET_REGION_AGGREGATE_APPEALS_INFLIGHT':
+    case 'GET_AA_AGGREGATE_APPEALS_INFLIGHT':
       state = Object.assign({}, state, {
         [action.aggregationUnit]: stateInflight(state, action)
       });
       break;
-    case 'GET_REGION_AGGREGATE_APPEALS_FAILED':
+    case 'GET_AA_AGGREGATE_APPEALS_FAILED':
       state = Object.assign({}, state, {
         [action.aggregationUnit]: stateError(state, action)
       });
       break;
-    case 'GET_REGION_AGGREGATE_APPEALS_SUCCESS':
+    case 'GET_AA_AGGREGATE_APPEALS_SUCCESS':
       state = Object.assign({}, state, {
         [action.aggregationUnit]: {
           fetching: false,
@@ -202,13 +202,13 @@ function aggregate (state = {}, action) {
 
 function eru (state = {}, action) {
   switch (action.type) {
-    case 'GET_REGION_ERU_INFLIGHT':
+    case 'GET_AA_ERU_INFLIGHT':
       state = stateInflight(state, action);
       break;
-    case 'GET_REGION_ERU_FAILED':
+    case 'GET_AA_ERU_FAILED':
       state = stateError(state, action);
       break;
-    case 'GET_REGION_ERU_SUCCESS':
+    case 'GET_AA_ERU_SUCCESS':
       const objs = action.data.objects;
       let eruBySociety = _groupBy(objs, 'eru_owner.country.society_name');
 
@@ -235,7 +235,7 @@ function eru (state = {}, action) {
 
 // Combined export.
 export default combineReducers({
-  regionData,
+  aaData,
   appeals,
   drefs,
   fieldReports,
