@@ -14,6 +14,11 @@ class Footer extends React.PureComponent {
             <div className='footer-nav__block'>
               <ul className='footer-menu'>
                 <li className='footer-menu__item--highlight'><Link to='/' title='View Emergencies'>Emergencies</Link></li>
+              </ul>
+            </div>
+            <div className='footer-nav__block'>
+              <ul className='footer-menu'>
+                <li className='footer-menu__item--highlight'><Link to='/' title='View Regions'>Regions</Link></li>
                 {objValues(regions).map(o => (
                   <li key={o.id}><Link to={`/regions/${o.id}`} title='View Region'>{o.name} Region</Link></li>
                 ))}
