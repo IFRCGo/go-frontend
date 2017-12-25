@@ -5,6 +5,7 @@ import { DateTime } from 'luxon';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
+import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
 
 import App from './app';
 import Fold from '../components/fold';
@@ -37,7 +38,51 @@ class HeOps extends React.Component {
     });
   }
 
+  renderAnnualChart () {
+    const {
+      data,
+      fetched
+    } = this.props.annual;
+    if (!fetched) return <BlockLoading />;
+    const { aggregate } = data;
+    if (!Array.isArray(aggregate)) return <p>Oh no! Something went wrong rendering the aggregate data.</p>;
+
+    const tickFormatter = (date) => DateTime.fromISO(date).toFormat('yyyy');
+    return (
+      <figure className='chart'>
+        <figcaption>Heops Deployments by Year</figcaption>
+        <div className='chart__container'>
+          <ResponsiveContainer>
+            <LineChart data={aggregate}>
+              <XAxis tickFormatter={tickFormatter} dataKey='timespan' axisLine={false} padding={{ left: 16 }} />
+              <YAxis axisLine={false} tickLine={false} width={32} padding={{ bottom: 16 }} />
+              <Line type="monotone" dataKey="count" stroke="#C22A26" />
+              <Tooltip />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      </figure>
+    );
+  }
+
+  renderDtypeChart () {
+    return (
+      <figure className='chart'>
+        <figcaption>Heops Deployments by Emergency Type</figcaption>
+        <div className='chart__container'>
+        </div>
+      </figure>
+    );
+  }
+
   renderCharts () {
+    return (
+      <div className='inpage__headline-charts'>
+        <h1 className='visually-hidden'>HeOps over time</h1>
+        {this.renderAnnualChart()}
+        {this.renderDtypeChart()}
+      </div>
+    );
   }
 
   renderTableRow (o) {
@@ -121,21 +166,7 @@ class HeOps extends React.Component {
             <div className='inner'>
               <div className='inpage__headline'>
                 <h1 className='inpage__title'>HeOps Deployments</h1>
-                <div className='inpage__headline-charts'>
-                  <h1 className='visually-hidden'>HeOps over time</h1>
-                  <figure className='chart'>
-                    <figcaption>Heops Deployments by Year</figcaption>
-                    <div className='chart__container'>
-
-                    </div>
-                  </figure>
-                  <figure className='chart'>
-                    <figcaption>Heops Deployments by Emergency Type</figcaption>
-                    <div className='chart__container'>
-
-                    </div>
-                  </figure>
-                </div>
+                {this.renderCharts()}
               </div>
             </div>
           </header>
