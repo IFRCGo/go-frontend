@@ -10,7 +10,9 @@ import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from 'rec
 import App from './app';
 import Fold from '../components/fold';
 import BlockLoading from '../components/block-loading';
+import Progress from '../components/progress';
 
+import { disasterType } from '../utils/field-report-constants';
 import { get } from '../utils/utils';
 import { nope } from '../utils/format';
 import { environment } from '../config';
@@ -66,10 +68,37 @@ class HeOps extends React.Component {
   }
 
   renderDtypeChart () {
+    const {
+      data,
+      fetched
+    } = this.props.dtype;
+    if (!fetched) return <BlockLoading />;
+    const { aggregate } = data;
+    if (!Array.isArray(aggregate)) return <p>Oh no! Something went wrong rendering the aggregate data.</p>;
+
+    const dtypes = aggregate.map(o => {
+      let name = disasterType.find(d => d.value === o.dtype.toString());
+      if (!name) return null;
+      return {
+        name: name.label,
+        count: o.count
+      };
+    }).slice(0, 6).filter(Boolean);
+    const max = Math.max.apply(Math, dtypes.map(o => o.count));
+
     return (
       <figure className='chart'>
         <figcaption>Heops Deployments by Emergency Type</figcaption>
         <div className='chart__container'>
+          <ul className='emergencies__list emergenciest__list--static'>
+            {dtypes.map(o => (
+              <li key={o.name}
+                className='emergencies__item'>
+                <span className='key'>{o.name}</span>
+                <span className='value'><Progress value={o.count} max={max}><span>100</span></Progress></span>
+              </li>
+            ))}
+          </ul>
         </div>
       </figure>
     );
@@ -170,7 +199,6 @@ class HeOps extends React.Component {
               </div>
             </div>
           </header>
-
           <div className='inpage__body'>
             <div className='inner'>
               <div className='fold'>
