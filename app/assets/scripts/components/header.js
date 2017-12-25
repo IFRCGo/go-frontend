@@ -126,7 +126,7 @@ class NavDropdown extends React.Component {
         alignment='center' >
         <ul className='drop__menu' role='menu'>
           {options.map(o => (
-            <li key={o.to} className='drop__menu-item'><Link to={o.to} title={`View ${o.text}`} data-hook='dropdown:close'>{o.text}</Link></li>
+            <li key={o.to}><Link to={o.to} className='drop__menu-item' title={`View ${o.text}`} data-hook='dropdown:close'>{o.text}</Link></li>
           ))}
         </ul>
       </Dropdown>
