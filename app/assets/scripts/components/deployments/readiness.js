@@ -39,19 +39,19 @@ class Readiness extends React.Component {
   }
 
   renderCard (eruOwner) {
-    const { eru_set } = eruOwner;
-    if (!eru_set.length) return null;
+    const erus = eruOwner.eru_set;
+    if (!erus.length) return null;
 
     // empty country array means the resource is ready, not deployed
-    const ready = eru_set.filter(o => !o.countries.length);
-    const deployed = eru_set.filter(o => o.countries.length);
+    const ready = erus.filter(o => !o.countries.length);
+    const deployed = erus.filter(o => o.countries.length);
 
     const numReady = ready.reduce((acc, next) => acc + next.units, 0);
     const numDeployed = deployed.reduce((acc, next) => acc + next.units, 0);
 
     const readyTypes = ready.length ? ready.map(o => getEruType(o.type)).join(', ') : '';
 
-    const owner = eru_set[0].eru_owner;
+    const owner = erus[0].eru_owner;
 
     return (
       <div className='readiness__card' key={eruOwner.id}>

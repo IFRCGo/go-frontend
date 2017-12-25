@@ -22,6 +22,7 @@ import Emergencies from './views/emergencies';
 import Emergency from './views/emergency';
 import AdminArea from './views/admin-area';
 import Deployments from './views/deployments';
+import HeOps from './views/heops';
 
 polyfill();
 
@@ -78,6 +79,7 @@ const Root = () => (
         <Route exact path="/regions/:id" render={props => <AdminArea {...props} type='region' />} />
         <Route exact path="/countries/:id" render={props => <AdminArea {...props} type='country' />} />
         <Route exact path="/deployments" component={Deployments}/>
+        <Route exact path="/heops" component={HeOps}/>
         <Route component={UhOh}/>
       </Switch>
     </Router>

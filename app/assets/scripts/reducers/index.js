@@ -12,6 +12,7 @@ import emergencies from './emergencies';
 import event from './event';
 import adminArea from './admin-area';
 import eruOwners from './eru-owners';
+import heops from './heops';
 
 export const reducers = {
   user,
@@ -24,7 +25,8 @@ export const reducers = {
   emergencies,
   event,
   adminArea,
-  eruOwners
+  eruOwners,
+  heops
 };
 
 export default combineReducers(reducers);

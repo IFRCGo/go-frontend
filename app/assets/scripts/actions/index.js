@@ -254,3 +254,29 @@ export function getAdmAreaERU (aaType, aaId) {
   const f = buildAPIQS(filters);
   return fetchJSON(`api/v1/eru/?${f}`, GET_AA_ERU, withToken());
 }
+
+export const GET_HEOPS = 'GET_HEOPS';
+export function getHeops (page = 1, filters = {}) {
+  filters.limit = filters.limit || 5;
+  filters.offset = filters.limit * (page - 1);
+  const f = buildAPIQS(filters);
+
+  return fetchJSON(`/api/v1/heop/?${f}`, GET_HEOPS, withToken());
+}
+
+export const GET_YEARLY_HEOPS = 'GET_YEARLY_HEOPS';
+export function getYearlyHeops () {
+  const f = buildAPIQS({
+    model_type: 'heop',
+    unit: 'year'
+  });
+  return fetchJSON(`api/v1/aggregate/?${f}`, GET_YEARLY_HEOPS, withToken());
+}
+
+export const GET_HEOPS_DTYPE = 'GET_HEOPS_DTYPE';
+export function getHeopsDtype () {
+  const f = buildAPIQS({
+    model_type: 'heop'
+  });
+  return fetchJSON(`api/v1/aggregate_dtype/?${f}`, GET_HEOPS_DTYPE, withToken());
+}
