@@ -5,8 +5,10 @@ import _set from 'lodash.set';
 import _cloneDeep from 'lodash.clonedeep';
 import Ajv from 'ajv';
 import ajvKeywords from 'ajv-keywords';
+import Select from 'react-select';
 
-import { isValidEmail, isRedCrossEmail } from '../utils/utils';
+import { isValidEmail, isRedCrossEmail, get } from '../utils/utils';
+import { countries, orgTypes } from '../utils/field-report-constants';
 
 import App from './app';
 import { FormInput, FormError } from '../components/form-elements/';
@@ -28,11 +30,22 @@ export default class Login extends React.Component {
 
     this.state = {
       data: {
+        username: undefined,
+        firstname: undefined,
+        lastname: undefined,
         email: undefined,
         password: undefined,
         passwordConf: undefined,
-        country: undefined,
+
         organization: undefined,
+        organizationType: undefined,
+
+        country: undefined,
+        city: undefined,
+        department: undefined,
+        position: undefined,
+        phoneNumber: undefined,
+
         contact: [0, 1].map(o => ({ name: undefined, email: undefined }))
       },
       errors: []
@@ -41,8 +54,16 @@ export default class Login extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  prepStateForValidation (state) {
+    let payload = _cloneDeep(state);
+    payload.country = get(state, 'country.value') || undefined;
+    payload.organizationType = get(state, 'organizationType.value') || undefined;
+    return payload;
+  }
+
   onSubmit () {
-    registerValidator(this.state.data);
+    const payload = this.prepStateForValidation(this.state.data);
+    registerValidator(payload);
     this.setState({ errors: _cloneDeep(registerValidator.errors) });
 
     if (registerValidator.errors !== null) {
@@ -52,8 +73,8 @@ export default class Login extends React.Component {
 
   onFieldChange (field, e) {
     let data = _cloneDeep(this.state.data);
-    let val = e.target.value;
-    _set(data, field, val === '' ? undefined : val);
+    let val = e.target ? e.target.value : e;
+    _set(data, field, val === '' || val === null ? undefined : val);
     this.setState({data});
   }
 
@@ -65,7 +86,7 @@ export default class Login extends React.Component {
     return (
       <div className='form__hascol form__hascol--2'>
         <FormInput
-          label='Password'
+          label='Password *'
           type='password'
           name='register-password'
           id='register-password'
@@ -79,7 +100,7 @@ export default class Login extends React.Component {
           />
         </FormInput>
         <FormInput
-          label='Confirm Password'
+          label='Confirm Password *'
           type='password'
           name='register-password-conf'
           id='register-password-conf'
@@ -99,22 +120,40 @@ export default class Login extends React.Component {
   renderAdditionalInfo () {
     return (
       <div className='form__hascol form__hascol--2'>
-        <FormInput
-          label='Country'
-          type='text'
-          name='register-country'
-          id='register-country'
-          classInput={getClassIfError(this.state.errors, 'country')}
-          value={this.state.data.country}
-          onChange={this.onFieldChange.bind(this, 'country')}
-        >
+        <div className='form__group'>
+          <label className='form__label'>Country *</label>
+          <Select
+            name='country'
+            value={this.state.data.country}
+            onChange={this.onFieldChange.bind(this, 'country')}
+            options={countries} />
           <FormError
             errors={this.state.errors}
             property='country'
           />
-        </FormInput>
+        </div>
         <FormInput
-          label='Organization'
+          label='City *'
+          type='text'
+          name='register-city'
+          id='register-city'
+          classInput={getClassIfError(this.state.errors, 'city')}
+          value={this.state.data.city}
+          onChange={this.onFieldChange.bind(this, 'city')} />
+        <div className='form__group'>
+          <label className='form__label'>Organization Type *</label>
+          <Select
+            name='organizationType'
+            value={this.state.data.organizationType}
+            onChange={this.onFieldChange.bind(this, 'organizationType')}
+            options={orgTypes} />
+          <FormError
+            errors={this.state.errors}
+            property='organizationType'
+          />
+        </div>
+        <FormInput
+          label='Organization Name *'
           type='text'
           name='register-organization'
           id='register-organization'
@@ -125,6 +164,48 @@ export default class Login extends React.Component {
           <FormError
             errors={this.state.errors}
             property='organization'
+          />
+        </FormInput>
+        <FormInput
+          label='Department *'
+          type='text'
+          name='register-department'
+          id='register-department'
+          classInput={getClassIfError(this.state.errors, 'department')}
+          value={this.state.data.department}
+          onChange={this.onFieldChange.bind(this, 'department')}
+        >
+          <FormError
+            errors={this.state.errors}
+            property='department'
+          />
+        </FormInput>
+        <FormInput
+          label='Position *'
+          type='text'
+          name='register-position'
+          id='register-position'
+          classInput={getClassIfError(this.state.errors, 'position')}
+          value={this.state.data.position}
+          onChange={this.onFieldChange.bind(this, 'position')}
+        >
+          <FormError
+            errors={this.state.errors}
+            property='position'
+          />
+        </FormInput>
+        <FormInput
+          label='Phone Number'
+          type='text'
+          name='register-phoneNumber'
+          id='register-phoneNumber'
+          classInput={getClassIfError(this.state.errors, 'phoneNumber')}
+          value={this.state.data.phoneNumber}
+          onChange={this.onFieldChange.bind(this, 'phoneNumber')}
+        >
+          <FormError
+            errors={this.state.errors}
+            property='phoneNumber'
           />
         </FormInput>
       </div>
@@ -202,7 +283,7 @@ export default class Login extends React.Component {
             <div className='inner'>
               <form className='form form--centered' onSubmit={this.onSubmit}>
                 <FormInput
-                  label='Email'
+                  label='Email *'
                   type='text'
                   name='register-email'
                   id='register-email'

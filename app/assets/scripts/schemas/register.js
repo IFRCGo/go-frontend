@@ -9,7 +9,19 @@ export default {
     country: {
       type: 'string'
     },
+    city: {
+      type: 'string'
+    },
+    organizationType: {
+      type: 'string'
+    },
     organization: {
+      type: 'string'
+    },
+    department: {
+      type: 'string'
+    },
+    position: {
       type: 'string'
     },
     password: {
@@ -20,8 +32,16 @@ export default {
       const: { '$data': '1/password' }
     }
   },
-  required: ['email', 'organization', 'country', 'password', 'passwordConf'],
-
+  required: [
+    'email',
+    'organizationType',
+    'organization',
+    'department',
+    'position',
+    'country',
+    'password',
+    'passwordConf'
+  ],
   if: {
     properties: {
       email: {
