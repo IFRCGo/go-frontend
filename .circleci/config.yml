@@ -53,7 +53,7 @@ jobs:
           command: |
             if [ "${CIRCLE_BRANCH}" == "${STAGING_BRANCH}" ]; then
               yarn deploy
-            elif [ "${CIRCLE_BRANCH}" == "${STAGING_BRANCH}" ]; then
+            elif [ "${CIRCLE_BRANCH}" == "${PRODUCTION_BRANCH}" ]; then
               yarn deploy-prod
             else
               echo "Skip deploying to Azure Blob Storage"
