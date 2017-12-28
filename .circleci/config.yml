@@ -8,7 +8,8 @@ jobs:
     working_directory: ~/repo
 
     environment:
-      - DEPLOY_BRANCH: develop
+      - STAGING_BRANCH: develop
+      - PRODUCTION_BRANCH: master
       - GH_REF: git@github.com:ifrcgo/go-frontend.git
       - GH_NAME: "Development Seed"
       - GH_EMAIL: "dev@developmentseed.org"
@@ -36,10 +37,12 @@ jobs:
           fingerprints:
             - ""
 
-      - run: 
+      - run:
           name: Building site
           command: |
-            if [ "${CIRCLE_BRANCH}" == "${DEPLOY_BRANCH}" ]; then
+            if [ "${CIRCLE_BRANCH}" == "${STAGING_BRANCH}" ]; then
+              yarn build
+            elif [ "${CIRCLE_BRANCH}" == "${PRODUCTION_BRANCH}" ]; then
               yarn build
             else
               echo "Skip building site"
@@ -48,8 +51,10 @@ jobs:
       - run:
           name: Deploy to Azure Blob Storage
           command: |
-            if [ "${CIRCLE_BRANCH}" == "${DEPLOY_BRANCH}" ]; then
+            if [ "${CIRCLE_BRANCH}" == "${STAGING_BRANCH}" ]; then
               yarn deploy
+            elif [ "${CIRCLE_BRANCH}" == "${STAGING_BRANCH}" ]; then
+              yarn deploy-prod
             else
               echo "Skip deploying to Azure Blob Storage"
             fi
