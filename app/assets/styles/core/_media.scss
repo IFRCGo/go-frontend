@@ -1,0 +1,41 @@
+/* ==========================================================================
+   Media
+   ========================================================================== */
+
+figure,
+.figure {
+  padding: 0;
+  margin: 0 0 $global-spacing 0;
+}
+
+img {
+  vertical-align: middle;
+}
+
+.img--fluid {
+  max-width: 100%;
+  height: auto;
+}
+
+.img--full-width {
+  width: 100%;
+  height: auto;
+}
+
+/* Prose specific */
+
+.prose {
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  > figure figcaption {
+    color: rgba($base-font-color, 0.64);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    padding-top: 1rem;
+    font-weight: $base-font-regular;
+    text-align: center;
+  }
+}

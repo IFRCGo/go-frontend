@@ -1,0 +1,30 @@
+.page--login, .page--register {
+  .inpage__header {
+    padding-bottom: $global-spacing * 2;
+  }
+  .inpage__body {
+    margin-bottom: $global-spacing * 2;
+    .form__group {
+      margin-bottom: $global-spacing * 2;
+      &:last-child {
+        margin-bottom: $global-spacing;
+      }
+    }
+    .form__hascol {
+      margin-bottom: 0;
+    }
+  }
+  .form__footer {
+    button {
+      margin-bottom: $global-spacing;
+    }
+    p {
+      font-size: 0.875rem;
+    }
+  }
+  .form__note {
+    background: rgba($secondary-color, 0.2);
+    color: $secondary-color;
+    margin-bottom: $global-spacing * 2;
+  }
+}

@@ -1,0 +1,92 @@
+/* ==========================================================================
+   Global: Folds
+   ========================================================================== */
+
+.fold {
+  background: #fff;
+  padding: ($global-spacing * 2) 0;
+  box-shadow: 0 2px 4px 1px $base-alpha-color;
+  &:last-child {
+    margin-bottom: $global-spacing * 4;
+  };
+
+  > .inner {
+    @extend .row-fold, .row--centered;
+  }
+
+  &,
+  .fold__header,
+  .fold__body {
+    @include column(12/12);
+    > *:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  @include media(medium-up) {
+    padding: ($global-spacing * 3) 0;
+  }
+
+  @include media(large-up) {
+    padding: ($global-spacing * 4) 0;
+  }
+}
+
+.fold__header {
+  @include column(12/12);
+  margin-bottom: $global-spacing;
+
+  > *:last-child {
+    margin-bottom: 0;
+  }
+
+  @include media(medium-up) {
+    margin-bottom: ($global-spacing * 2)
+  }
+}
+
+.fold__actions {
+  float: left;
+  width: 100%;
+  margin-bottom: $global-spacing * 2;
+  @include media(medium-up) {
+    float: right;
+    width: auto;
+    margin-bottom: 0;
+  }
+}
+
+.fold__title {
+  @include heading(1.5rem, medium-up);
+}
+
+.fold__description {
+  color: rgba($base-color, 0.58);
+}
+
+.fold__headline {
+  @include column(12/12);
+}
+
+.fold__footer {
+  @include column(12/12);
+  margin-top: $global-spacing;
+}
+
+/* Modifiers
+   ========================================================================== */
+
+.fold--filled {
+  background: tint($base-color, 92%);
+}
+
+.empty-data__container {
+  background: tint($base-color, 95%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: $global-spacing * 4;
+  p {
+    margin-bottom: 0;
+  }
+}

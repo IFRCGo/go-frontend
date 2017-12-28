@@ -1,0 +1,26 @@
+/* ==========================================================================
+   Skins
+   ========================================================================== */
+
+%card-skin {
+  background: #fff;
+  border-radius: $base-border-radius;
+  box-shadow: 0 0 0 $base-border-width $base-alpha-color;   // $base-border-width border, no elevation
+}
+
+%panel-skin {
+  background: #fff;
+  box-shadow: 0 0 0 $base-border-width rgba($base-color, 0.08), 0 4px 16px 2px rgba($base-color, 0.08);   // $base-border-width border + projected shadow (elevation index: 2)
+  border-radius: $base-border-radius;
+}
+
+%drop-skin {
+  background: #fff;
+  border-radius: $base-border-radius;
+  box-shadow: 0 0 0 $base-border-width rgba($base-color, 0.08), 0 4px 16px 2px rgba($base-color, 0.08);   // $base-border-width border + projected shadow (elevation index: 2)
+}
+
+%inset-skin {
+  // background: rgba($base-color, 0.04);
+  background: tint($base-color, 96%);
+}

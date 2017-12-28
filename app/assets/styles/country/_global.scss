@@ -1,0 +1,81 @@
+.page--country {
+	.emergencies {
+    display: none;
+  }
+
+  .fold {
+    margin-bottom: $global-spacing * 4;
+  }
+
+  .inpage__header {
+    @include column(12/12);
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-bottom: $global-spacing * 4;
+    border-bottom: solid 1px rgba($base-color, 0.1);
+    > .inner {
+      @include column(12/12);
+      padding-top: $global-spacing * 4;
+      @include media(medium-up) {
+        @include column(6/12);
+      }
+    }
+    .inpage__headline-stats {
+      @include column(12/12);
+    }
+    .stats-list {
+      li {
+        @include column(12/12);
+        font-size: 2.25rem;
+        line-height: 3rem;
+        padding-bottom: $global-spacing;
+        border-right: 0;
+        padding-left: $global-spacing * 3.5;
+        border-bottom: solid 1px rgba($base-color, 0.18);
+        margin-bottom: $global-spacing;
+        &:last-child {
+          border-right: none;
+          border-bottom: none;
+        }
+        &:nth-child(2) {
+          border-bottom: none;
+        };
+      }
+    }
+  }
+
+  .stats-map {
+    @include column(12/12);
+    @include media(medium-up) {
+      @include column(6/12);
+    }
+  }
+
+  .map-vis {
+    height: 25rem;
+    @include media(medium-up) {
+      height: 30rem;
+    }
+  }
+  .map-vis__legend {
+    &--bottom-right {
+      @include media(small-up) {
+        bottom: 1rem;
+        right: 0rem;
+        left: 0rem;
+      }
+    }
+    .form {
+      width: 35%;
+    }
+  }
+
+  .key {
+    float: left;
+    border-left: solid 1px rgba($base-color, 0.2);
+    padding-left: $global-spacing/2;
+    margin-left: $global-spacing/2;
+    width: 55%;
+  }
+
+}

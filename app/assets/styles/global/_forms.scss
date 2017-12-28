@@ -1,0 +1,945 @@
+/* ==========================================================================
+   Forms
+   ========================================================================== */
+
+.form {
+  margin-bottom: $global-spacing;
+
+  > *:last-child {
+    margin-bottom: 0;
+  }
+
+  &--centered {
+    max-width: 32rem;
+    margin: 0 auto;
+  }
+}
+
+.form__control {
+  display: block;
+  width: 100%;
+  padding: 0.25rem 0.5rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  color: $secondary-color;
+  background-color: #fff;
+  border: 0;
+  border-radius: 0;
+  font-family: inherit;
+  box-shadow: inset 0 0 0 $base-border-width $base-alpha-color;
+  border-radius: $base-border-radius;
+
+  /* Placeholder */
+  &::placeholder {
+    opacity: 0.64;
+  }
+
+  /* States */
+  &[disabled] {
+    @extend .disabled;
+  }
+
+  &[readonly] {
+    cursor: text;
+    opacity: 0.64;
+  }
+
+  &:hover {
+    box-shadow: inset 0 0 0 $base-border-width $secondary-color;
+  }
+
+  &:focus,
+  &--focus,
+  &:active,
+  &--active {
+    outline: 0;
+    box-shadow: inset 0 0 0 $base-border-width $secondary-color;
+  }
+
+  /* Animation */
+  transition: all 0.24s ease 0s;
+}
+
+
+/* Select form control
+   ========================================================================== */
+
+select.form__control {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding-right: 2rem;
+  cursor: pointer;
+  background-image: url('data:image/svg+xml;utf8,' + urlencode('<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="512px" height="512px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><polygon fill="#{$secondary-color}" points="256,384 73.373,201.373 118.628,156.118 256,293.49 393.373,156.118 438.627,201.373"/></svg>'));
+  background-position: calc(100% - 0.5rem) center;
+  background-repeat: no-repeat;
+  background-size: 1rem auto;
+
+  /* Size modifiers */
+
+  &.form__control--small,
+  &.form__control--medium {
+    padding-right: 2rem;
+    background-position: calc(100% - 0.5rem) center;
+  }
+
+  &.form__control--large,
+  &.form__control--xlarge {
+    padding-right: 2.25rem;
+    background-position: calc(100% - 0.75rem) center;
+  }
+}
+
+/* IE specific */
+
+select.form__control::-ms-expand {
+  display: none;
+}
+
+/* Firefox specific */
+
+@-moz-document url-prefix() {
+  select.form__control {
+    text-overflow: '';
+    text-indent: -2px;
+  }
+}
+
+select.form__control:-moz-focusring {
+  color: transparent;
+  text-shadow: 0 0 0 $base-font-color;
+}
+
+
+/* Textarea form control
+   ========================================================================== */
+
+textarea.form__control {
+  height: auto;
+  resize: none;
+}
+
+
+/* Form control size modifiers
+   ========================================================================== */
+
+/* Small (24px) */
+
+.form__control--small {
+  padding: 0.125rem 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  height: 1.5rem;
+}
+
+/* Medium (32px)
+   Default
+*/
+
+.form__control--medium {
+  padding: 0.25rem 0.5rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  height: 2rem;
+}
+
+/* Large (40px) */
+
+.form__control--large {
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  height: 2.5rem;
+}
+
+/* XLarge (48px) */
+
+.form__control--xlarge {
+  padding: 0.5rem 0.75rem;
+  font-size: 1.25rem;
+  line-height: 2rem;
+  height: 3rem;
+}
+
+
+/* Form file
+   ========================================================================== */
+
+.form__file {
+  @extend .form__control;
+  position: relative;
+  cursor: pointer;
+  padding-right: 2rem;
+
+  &::before {
+    @extend %collecticon-folder;
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    right: 0.5rem;
+    transform: translate(0, -50%);
+    color: $secondary-color;
+    font-size: 1rem;
+    line-height: 1;
+    width: 1rem;
+    text-align: center;
+  }
+
+  > input {
+    @extend .visually-hidden;
+  }
+
+  &--remove::before {
+    @extend %collecticon-trash-bin;
+    color: $danger-color;
+  }
+}
+
+/* Size modifiers */
+
+.form__file--small {
+  @extend .form__control--small;
+}
+
+.form__file--medium {
+  @extend .form__control--medium;
+}
+
+.form__file--large {
+  @extend .form__control--large;
+}
+
+.form__file--xlarge {
+  @extend .form__control--xlarge;
+}
+
+.form__file--small,
+.form__file--medium {
+  padding-right: 2rem;
+
+  &::before {
+    right: 0.5rem;
+  }
+}
+
+.form__file--large,
+.form__file--xlarge {
+  padding-right: 2.25rem;
+
+  &::before {
+    right: 0.75rem;
+  }
+}
+
+
+/* Color modifiers
+   ========================================================================== */
+
+.form__control--success {
+  box-shadow: inset 0 0 0 $base-border-width $success-color;
+}
+
+.form__control.form__limit--near,
+.form__control--warning {
+  box-shadow: inset 0 0 0 $base-border-width $warning-color;
+}
+
+.form__control.form__limit--reached,
+.form__control--danger {
+  box-shadow: inset 0 0 0 $base-border-width $danger-color;
+  background-color: rgba($danger-color, 0.16);
+}
+
+
+/* Form groups
+   ========================================================================== */
+
+.form__group {
+  @extend .clearfix;
+  margin-bottom: $global-spacing * 4;
+
+  > *:last-child {
+    margin-bottom: 0;
+  }
+
+  .form__group {
+    margin-bottom: 0;
+  }
+}
+
+
+/* Input groups
+   ========================================================================== */
+
+.form__input-group {
+  display: flex;
+  width: 100%;
+  line-height: 0;
+}
+
+.form__input-addon + .form__input-addon,
+.form__input-addon + .button,
+.form__input-addon + .form__control:not(select),
+.form__control:not(select) + .form__input-addon,
+select.form__control + .form__control:not(select)  {
+  margin-left: -$base-border-width;
+}
+
+.form__input-addon,
+.form__input-group > .button {
+  flex: 0 0 auto;
+}
+
+.form__input-group > select.form__control {
+  width: auto;
+}
+
+.form__input-group > .button,
+select.form__control:hover,
+select.form__control:focus {
+  position: relative;
+  z-index: 3;
+}
+
+.form__input-group .form__control:not(select) {
+  position: relative;
+  z-index: 2;
+  flex: 1 1 auto;
+  width: 1%;
+  margin-bottom: 0;
+}
+
+.form__input-addon {
+  line-height: 1.5rem;
+  font-size: 1rem;
+  padding: 0.25rem 0.75rem;
+  min-width: 2rem;
+  text-align: center;
+  background: tint($base-color, 96%);
+  color: rgba($base-font-color, 0.64);
+  border-radius: $base-border-radius;
+  box-shadow: inset 0 0 0 $base-border-width $base-alpha-color;
+  margin-bottom: 0;
+}
+
+.form__input-group > *:not(:first-child) {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.form__input-group > *:not(:last-child) {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+
+
+/* Input group size modifiers
+   ========================================================================== */
+
+/* Small (24px) */
+
+.form__input-group--small .form__input-addon,
+.form__input-addon--small {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  padding: 0.125rem 0.5rem;
+  min-width: 1.75rem;
+}
+
+.form__input-group--small .button {
+  @extend .button--small;
+}
+
+.form__input-group--small .form__control {
+  @extend .form__control--small;
+}
+
+/* Medium (32px)
+   Default
+*/
+
+.form__input-group--medium .form__input-addon,
+.form__input-addon--medium {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  padding: 0.25rem 0.75rem;
+  min-width: 2rem;
+}
+
+.form__input-group--medium .button {
+  @extend .button--medium;
+}
+
+.form__input-group--medium .form__control {
+  @extend .form__control--medium;
+}
+
+/* Large (40px) */
+
+.form__input-group--large .form__input-addon,
+.form__input-addon--large {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  padding: 0.5rem 1rem;
+  min-width: 2.5rem;
+}
+
+.form__input-group--large .button {
+  @extend .button--large;
+}
+
+.form__input-group--large .form__control {
+  @extend .form__control--large;
+}
+
+/* XLarge (48px) */
+
+.form__input-group--xlarge .form__input-addon,
+.form__input-addon--xlarge {
+  font-size: 1.25rem;
+  line-height: 2rem;
+  padding: 0.5rem 1rem;
+  min-width: 3rem;
+}
+
+.form__input-group--xlarge .button {
+  @extend .button--xlarge;
+}
+
+.form__input-group--xlarge .form__control {
+  @extend .form__control--xlarge;
+}
+
+
+/* Form fieldsets
+   ========================================================================== */
+
+.form__fieldset {
+  @extend .clearfix, %inset-skin;
+  position: relative;
+  border: 0;
+  border-radius: $base-border-radius;
+  margin: 0 0 $global-spacing 0;
+  padding: $global-spacing;
+
+  > *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.form__legend {
+  @extend .heading-alt;
+  color: rgba($base-font-color, 0.64);
+  font-size: 0.875rem;
+  line-height: 1rem;
+  border: 0;
+  float: left;
+  width: 100%;
+  margin: 0 0 ($global-spacing / 2) 0;
+  padding: ($global-spacing / 4) 0;
+}
+
+.form__fieldset-header {
+  display: flex;
+  width: 100%;
+  margin-bottom: ($global-spacing / 2);
+
+  > *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.form__fieldset-headline {
+  > *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.form__fieldset-group {
+  flex: 1 1 auto;
+  text-align: right;
+  font-size: 0;
+  white-space: nowrap;
+
+  * {
+    vertical-align: top;
+  }
+
+  > *:last-child {
+    margin-right: -$global-spacing / 4;
+  }
+}
+
+
+/* Form labels
+   ========================================================================== */
+
+label[for] {
+  cursor: pointer;
+}
+
+.form__label {
+  display: block;
+  font-weight: $base-font-bold;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0 0 ($global-spacing/2) 0;
+
+  &:only-of-type {
+    display: inline-block;
+  }
+
+  small {
+    opacity: 0.48;
+  }
+}
+
+
+/* Form options (radios and checkboxes)
+   ========================================================================== */
+
+.form__option {
+  display: flex;
+  align-items: flex-start;
+  font-size: 1rem;
+  line-height: 1.5;
+  cursor: pointer;
+  margin-top: $global-spacing / 2;
+
+  input {
+    flex: none;
+    margin-top: 0.3125rem; // 5pxh
+  }
+}
+
+.form__option__text {
+  padding: 0 0 0 ($global-spacing / 2);
+
+  &:not(:last-child) {
+    padding: 0 ($global-spacing / 2) 0 0;
+  }
+
+  em {
+    display: block;
+    font-style: normal;
+    font-size: 0.875rem;
+    line-height: 1rem;
+    color: rgba($base-font-color, 0.48);
+  }
+}
+
+.form__option__ui {
+  flex: none;
+  position: relative;
+  transition: all 0.16s ease 0s;
+}
+
+/* Form option inline modifier */
+
+.form__option--inline {
+  display: inline-flex;
+}
+
+.form__option--inline + .form__option--inline {
+  margin-left: $global-spacing;
+}
+
+/* Form option text-hidden modifier */
+
+.form__option--text-hidden {
+  .form__option__text {
+    @extend .visually-hidden;
+  }
+}
+
+
+/* Form custom options modifiers (radios and checkboxes)
+   ========================================================================== */
+
+.form__option--custom-radio,
+.form__option--custom-checkbox {
+
+  input {
+    @extend .visually-hidden;
+  }
+
+  .form__option__ui {
+    margin: 0.125rem 0;
+    height: 1.25rem;
+    width: 1.25rem;
+    /*box-shadow: inset 0 0 0 $base-border-width rgba($base-color, 0.12);*/
+    background: $secondary-color-light;
+
+    &::before {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      transition: all 0.24s ease 0s;
+    }
+  }
+
+  &:hover .form__option__ui {
+    box-shadow: inset 0 0 0 $base-border-width rgba($base-color, 0.24);
+  }
+
+  input:focus  ~ .form__option__ui,
+  &:active .form__option__ui {
+    box-shadow: inset 0 0 0 ($base-border-width * 2) rgba($base-color, 0.32);
+  }
+
+  input:checked ~ .form__option__ui {
+    box-shadow: inset 0 0 0 ($base-border-width * 2) $secondary-color;
+
+    &::before {
+      opacity: 1;
+    }
+  }
+}
+
+.form__option--custom-radio {
+  .form__option__ui {
+    &, &::before {
+      border-radius: $full-border-radius;
+    }
+
+    &::before {
+      content: "";
+      height: 0.5rem;
+      width: 0.5rem;
+      background: $secondary-color;
+    }
+  }
+}
+
+.form__option--custom-checkbox {
+  .form__option__ui {
+    &, &:before {
+      border-radius: $base-border-radius;
+    }
+
+    &::before {
+      @extend %collecticon-sm-tick;
+      color: $secondary-color;
+    }
+  }
+}
+
+
+/* Form switch (checkbox)
+   ========================================================================== */
+
+.form__option--switch {
+
+  input {
+    @extend .visually-hidden;
+  }
+
+  .form__option__ui {
+    margin: 0.125rem 0;
+    width: 2.75rem;
+    height: 1.25rem;
+    border-radius: $full-border-radius;
+    background: rgba($base-color, 0.24);
+    box-shadow: inset 0 0 0 $base-border-width $base-alpha-color;
+
+    &::before {
+      @extend .button--secondary-light;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      z-index: 2;
+      content: '';
+      height: 1.25rem;
+      width: 1.25rem;
+      border-radius: $full-border-radius;
+      transform: translate(0, -50%);
+      transition: all 0.24s ease 0s;
+    }
+
+    /* Icon handling */
+    [class^="collecticon-"],
+    [class*=" collecticon-"],
+    &::after {
+      position: absolute;
+      top: 50%;
+      right: 12%;
+      z-index: 1;
+      font-size: 1rem;
+      line-height: 1rem !important;
+      height: 1rem;
+      width: 1rem;
+      text-align: center;
+      color: #fff;
+      transform: translate(0, -50%);
+      transition: all 0.24s ease 0s;
+    }
+  }
+
+  &:hover .form__option__ui {
+    @extend .button--hover;
+  }
+
+  &.form__option--checked .form__option__ui,
+  input:checked ~ .form__option__ui {
+    background: $secondary-color;
+
+    &::before {
+      left: 100%;
+      transform: translate(-100%, -50%);
+    }
+
+    /* Icon handling */
+    [class^="collecticon-"],
+    [class*=" collecticon-"],
+    &::after {
+      right: 88%;
+      transform: translate(100%, -50%);
+    }
+  }
+}
+
+/* Iconified cases */
+
+.form__option.fos-io {
+
+  .form__option__ui::after {
+    @extend %collecticon-sm-xmark;
+    font-size: 0.875rem;
+  }
+
+  &.form__option--checked .form__option__ui::after,
+  input:checked ~ .form__option__ui::after {
+    @extend %collecticon-sm-tick;
+  }
+}
+
+
+/* Form inner actions
+   ========================================================================== */
+
+.form__inner-header {
+  display: flex;
+  width: 100%;
+
+  > *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.form__inner-actions {
+  flex: 1 1 auto;
+  text-align: right;
+  font-size: 0;
+  white-space: nowrap;
+
+  * {
+    vertical-align: top;
+  }
+}
+
+/**
+ * "fia-" prefix stands for "form inner action"
+ * Used in "form__inner-actions"
+ */
+
+[class^="fia-"],
+[class*=" fia-"] {
+  @extend .button, .button--small;
+}
+
+.fia-trash {
+  @extend .button--base-plain, .button--text-hidden;
+
+  &::before {
+    @extend %collecticon-trash-bin;
+  }
+}
+
+.fia-global {
+  @extend .button--primary-plain;
+}
+
+.form__options-menu {
+  display: inline-block;
+  margin: 0 0 ($global-spacing / 2) 0;
+
+  > * {
+    display: inline-block;
+    margin: 0;
+  }
+
+  dt {
+    @extend .heading-alt;
+    font-size: 0.75rem;
+    line-height: 1.5rem;
+    color: rgba($base-font-color, 0.64);
+    margin: 0 ($global-spacing / 2) 0 0;
+  }
+}
+
+
+/* Form extra actions
+   ========================================================================== */
+
+.form__extra-actions {
+  @extend .clearfix;
+  margin-bottom: $global-spacing;
+
+  * {
+    vertical-align: top;
+  }
+
+  > *:first-child {
+    margin-left: -$global-spacing;
+  }
+}
+
+.fea-plus {
+  @extend .button, .button--primary-plain;
+
+  &::before {
+    @extend %collecticon-sm-plus;
+  }
+}
+
+/* Form columns (simple grid system)
+   ========================================================================== */
+
+.form__hascol {
+  @extend .clearfix;
+  margin-bottom: $global-spacing * 4;
+
+  > *:not(.form__option) {
+    margin: ($global-spacing) 0 0 0;
+  }
+}
+
+.form__hascol--2 {
+  > * {
+    $col-group: 2;
+    @include column(6/12, $cycle: $col-group);
+
+    @for $child from 1 through $col-group {
+      &:nth-child(#{$child}) {
+        margin-top: 0;
+      }
+    }
+  }
+}
+
+.form__hascol--3 {
+  > * {
+    $col-group: 3;
+    @include column(4/12, $cycle: $col-group);
+
+    @for $child from 1 through $col-group {
+      &:nth-child(#{$child}) {
+        margin-top: 0;
+      }
+    }
+  }
+}
+
+.form__hascol--4 {
+  > * {
+    $col-group: 4;
+    @include column(3/12, $cycle: $col-group);
+
+    @for $child from 1 through $col-group {
+      &:nth-child(#{$child}) {
+        margin-top: 0;
+      }
+    }
+  }
+}
+
+
+/* Form misc
+   ========================================================================== */
+
+.form__help {
+  text-align: right;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: rgba($base-font-color, 0.48);
+  margin-top: $global-spacing / 2;
+
+  > *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.form__description {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: rgba($base-font-color, 0.48);
+  margin-bottom: $global-spacing;
+  p {
+    width: 100%;
+    @include media(medium-up) {
+      width: 65%;
+    }
+  }
+}
+
+.form__note {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: rgba($base-font-color, 0.64);
+  background: rgba($base-color, 0.04);
+  border-radius: $base-border-radius;
+  padding: $global-spacing;
+  margin-bottom: $global-spacing;
+
+  > *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.form__error, .validation-result {
+  @extend .form__help, .form__help--danger;
+  text-align: left;
+  margin-bottom: $global-spacing * 2;
+  font-weight: $base-font-bold;
+}
+
+.validation-result {
+  h3, p {
+    color: $base-color;
+  }
+
+  p {
+    margin-bottom: $global-spacing/2;
+  }
+  
+  ul {
+    margin-left: 0;
+  }
+
+  li {
+    display: inline-block;
+    &:after {
+      content: ",";
+      margin-right: $global-spacing/2;
+    };
+    &:last-child {
+      &:after {
+        content: ""
+      };
+    };
+  }
+}
+/* Color modifiers
+   ========================================================================== */
+
+.form__help.form__limit--near,
+.form__help--warning {
+  color: $warning-color
+}
+
+.form__help.form__limit--reached,
+.form__help--danger {
+  color: $danger-color
+}

@@ -1,0 +1,170 @@
+/* ==========================================================================
+   Media queries
+   ========================================================================== */
+
+@mixin media($arg) {
+  @if $arg == screen {
+    @media #{$screen} { @content; }
+  }
+  @if $arg == landscape {
+    @media #{$screen} and (orientation: landscape) { @content; }
+  }
+  @if $arg == portrait {
+    @media #{$screen} and (orientation: portrait) { @content; }
+  }
+  @if $arg == xsmall-up {
+    @media #{$screen} and (min-width: lower-bound($xsmall-range)) { @content; }
+  }
+  @if $arg == xsmall-only {
+    @media #{$screen} and (max-width: upper-bound($xsmall-range)) { @content; }
+  }
+  @if $arg == small-up {
+    @media #{$screen} and (min-width: lower-bound($small-range)) { @content; }
+  }
+  @if $arg == small-only {
+    @media #{$screen} and (min-width: lower-bound($small-range)) and (max-width: upper-bound($small-range)) { @content; }
+  }
+  @if $arg == small-down {
+    @media #{$screen} and (max-width: upper-bound($small-range)) { @content; }
+  }
+  @if $arg == medium-up {
+    @media #{$screen} and (min-width: lower-bound($medium-range)) { @content; }
+  }
+  @if $arg == medium-down {
+    @media #{$screen} and (max-width: upper-bound($medium-range)) { @content; }
+  }
+  @if $arg == medium-only {
+    @media #{$screen} and (min-width: lower-bound($medium-range)) and (max-width: upper-bound($medium-range)) { @content; }
+  }
+  @if $arg == large-up {
+    @media #{$screen} and (min-width: lower-bound($large-range)) { @content; }
+  }
+  @if $arg == large-only {
+    @media #{$screen} and (min-width: lower-bound($large-range)) and (max-width: upper-bound($large-range)) { @content; }
+  }
+  @if $arg == xlarge-up {
+    @media #{$screen} and (min-width: lower-bound($xlarge-range)) { @content; }
+  }
+  @if $arg == xlarge-only {
+    @media #{$screen} and (min-width: lower-bound($xlarge-range)) and (max-width: upper-bound($xlarge-range)) { @content; }
+  }
+  @if $arg == xxlarge-up {
+    @media #{$screen} and (min-width: lower-bound($xxlarge-range)) { @content; }
+  }
+}
+
+
+/* ==========================================================================
+   Typography
+   ========================================================================== */
+
+@mixin heading($font-size, $max-media: small-up) {
+  font-size: $font-size;
+  line-height: $font-size + 0.5;
+
+  @if $max-media == medium-up or $max-media == large-up or $max-media == xlarge-up {
+    @include media(medium-up) {
+      $font-size: $font-size + 0.25;
+      font-size: $font-size;
+      line-height: $font-size + 0.5;
+    }
+  }
+
+  @if $max-media == large-up or $max-media == xlarge-up {
+    @include media(large-up) {
+      $font-size: $font-size + 0.25;
+      font-size: $font-size;
+      line-height: $font-size +  0.5;
+    }
+  }
+
+  @if $max-media == xlarge-up {
+    @include media(xlarge-up) {
+      $font-size: $font-size + 0.25;
+      font-size: $font-size;
+      line-height: $font-size + 0.5;
+    }
+  }
+}
+
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+
+@mixin button-variation($color, $style, $brightness) {
+  $text-color: null;
+  $bg-color: null;
+  $bg-color-hover: null;
+  $bg-color-active: null;
+
+  @if $style == "filled" {
+
+    @if $brightness == "light" {
+      $text-color: $color;
+      $bg-color: tint($color, 90%);
+      $bg-color-hover: tint($color, 100%);
+      $bg-color-active: tint($color, 92%);
+    }
+
+    @else if $brightness == "dark" {
+      $text-color: tint($color, 100%);
+      $bg-color: $color;
+      $bg-color-hover: shade($color, 8%);
+      $bg-color-active: shade($color, 12%);
+    }
+
+    @else {
+      @error "Invalid brightness property for button raised.";
+    }
+  }
+
+  @else if $style == "glass" {
+    $text-color: $color;
+    $bg-color: rgba($base-color, 0.08);
+    $bg-color-hover: rgba($color, 0.16);
+    $bg-color-active: rgba($color, 0.24);
+
+    /**
+     * $shadow-color isn't used here to color projected shadows.
+     * For a border-like effect, $color is applied directly in the box-shadow property.
+     */
+  }
+
+  @else if $style == "bounded" {
+    $text-color: $color;
+    $bg-color: rgba($color, 0);
+    $bg-color-hover: rgba($color, 0.16);
+    $bg-color-active: rgba($color, 0.24);
+    box-shadow: inset 0 0 0 ($base-border-width * 2) $color; 
+  }
+
+  @else if $style == "plain" {
+    $text-color: $color;
+    $bg-color: rgba($color, 0);
+    $bg-color-hover: rgba($color, 0.16);
+    $bg-color-active: rgba($color, 0.24);
+  }
+
+  @else {
+    @error "Invalid style property for button.";
+  }
+
+  background-color: $bg-color;
+
+  &, &:visited {
+    color: $text-color;
+  }
+
+  &.button--hover,
+  &:hover {
+    background-color: $bg-color-hover;
+  }
+
+  .drop--open > &,
+  &.button--active,
+  &.button--active:hover,
+  &:active {
+    background-color: $bg-color-active;
+  }
+}

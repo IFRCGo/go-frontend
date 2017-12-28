@@ -1,0 +1,134 @@
+/* ==========================================================================
+   Global: Pages
+   ========================================================================== */
+
+.page {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Header
+   ========================================================================== */
+
+.page__header {
+  position: relative;
+  z-index: 10;
+  color: $base-font-color;
+  background: #ffffff;
+
+  > .inner {
+    @extend .row, .row--centered;
+    padding-top: $global-spacing;
+    padding-bottom: $global-spacing;
+    display: flex;
+    align-items: center;
+    flex-flow: row nowrap;
+    border-bottom: solid 1px tint($base-color, 92%);
+    &:last-child{
+      border-bottom: none;
+    }
+  }
+}
+
+/* Headline */
+.page__title {
+  font-size: 1.25rem;
+  line-height: 3rem;
+  font-weight: $base-font-bold;
+  text-transform: uppercase;
+  margin: 0;
+  display: inline-block;
+
+  a {
+    display: inline-block;
+    vertical-align: top;
+    color: inherit;
+
+    img {
+      vertical-align: top;
+      height: 3rem;
+      width: auto;
+    }
+
+    span {
+      @extend .visually-hidden;
+    }
+  }
+}
+
+/* Body
+   ========================================================================== */
+
+.page__body {
+  @extend .clearfix;
+  flex: 1;
+  margin-bottom: $global-spacing * 3;
+}
+
+
+/* Footer
+   ========================================================================== */
+
+.page__footer {
+  background: $primary-color;
+  padding: 2rem 0;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #ffffff;
+
+  > .inner {
+    @extend .row, .row--centered;
+  }
+
+  *:last-child {
+    margin-bottom: 0;
+  }
+
+  .footer-nav {
+    @extend .clearfix;
+
+    &__block {
+      margin-bottom: ($global-spacing * 2);
+      @include column(12/12);
+
+      @include media(small-up) {
+        @include column(3/12, $cycle: 4);
+      }
+
+      @include media(medium-up) {
+        @include column(2/12, $cycle: 6);
+      }
+
+      @include media(large-up) {
+        @include column(2/12, $cycle: 6);
+      }
+
+      &--sec {
+        @include media(large-up) {
+          text-align: right;
+        }
+      }
+    }
+  }
+
+  .footer-credits {
+    padding: ($global-spacing * 2) 0 0 0;
+    box-shadow: 0 (-$base-border-width) 0 0 rgba(#ffffff, 0.16);
+  }
+}
+
+.footer-menu {
+  list-style: none;
+  margin: 0;
+
+  .footer-menu__item--highlight {
+    font-weight: $base-font-bold;
+  }
+
+  a {
+    color: inherit;
+  }
+}

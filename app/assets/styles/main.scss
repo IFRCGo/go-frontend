@@ -1,0 +1,154 @@
+/* ==========================================================================
+   Main
+   ========================================================================== */
+
+/**
+ * Following Necolas' Principles of writing consistent, idiomatic CSS:
+ * https://github.com/necolas/idiomatic-css
+ */
+
+/* Charset */
+
+@charset "UTF-8";
+
+
+/* Third-party
+   ========================================================================== */
+
+/**
+ * Using Bourbon for extended SASS functionality:
+ * http://bourbon.io/
+ */
+
+@import "bourbon";
+
+/**
+ * Using Jeet, a grid system designed for humans:
+ * http://jeet.gs/
+ */
+
+@import "jeet";
+
+/**
+ * Normalize.css, a modern, HTML5-ready alternative to CSS resets:
+ * http://necolas.github.io/normalize.css/
+ */
+
+@import "vendor/normalize";
+
+
+/* Settings
+   ========================================================================== */
+
+@import "settings/variables";
+@import "settings/functions";
+@import "settings/mixins";
+
+
+/* Core
+   ========================================================================== */
+
+@import "core/base";
+@import "core/collecticons"; // Webfont icon library: Collecticons
+@import "core/typography";
+@import "core/tables";
+@import "core/code";
+@import "core/media";
+@import "core/skins";
+@import "core/animation";
+
+
+/* Global
+   ========================================================================== */
+
+@import "global/buttons";
+@import "global/forms";
+@import "global/labels";
+@import "global/drops";
+@import "global/cards";
+@import "global/panels";
+@import "global/callouts";
+@import "global/alerts";
+@import "global/modals";
+@import "global/frames";
+@import "global/navs";
+@import "global/loading";
+@import "global/pages";
+@import "global/inpages";
+@import "global/folds";
+@import "global/page-prime-nav";
+@import "global/popovers";
+@import "global/charts";
+@import "global/print";
+@import "global/login";
+
+
+/* Home
+   ========================================================================== */
+
+@import "home/global";
+@import "home/presenting";
+
+
+/* About
+   ========================================================================== */
+
+@import "about/global";
+
+/* Deployments
+   ========================================================================== */
+
+@import "deployments/global";
+
+/* country
+   ========================================================================== */
+
+@import "country/global";
+
+
+/* Field Report
+   ========================================================================== */
+
+@import "field-report/form";
+@import "field-report/global";
+@import "field-report/display";
+
+/* Emergency 
+   ========================================================================== */
+
+@import "emergencies/global";
+
+/* Emergency 
+   ========================================================================== */
+
+@import "emergency/global";
+
+/* Region 
+   ========================================================================== */
+
+@import "region/global";
+
+/* UhOh
+   ========================================================================== */
+
+@import "uhoh/global";
+
+
+/* Core (...cont)
+   ========================================================================== */
+
+@import "core/utilities";
+
+
+/* Third Party
+   ========================================================================== */
+
+@import "../../../node_modules/react-select/dist/react-select";
+
+
+/* Vendor
+   ========================================================================== */
+
+@import "vendor/react-paginate";
+@import "vendor/react-select";
+@import "vendor/mapbox-gl";

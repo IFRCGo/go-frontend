@@ -1,0 +1,43 @@
+.presenting {
+	width: 100%;
+  height: 100vh;
+  .inner {
+    max-width: 1600px;
+  }
+  .button--fullscreen {
+    &:before {
+      content: url('/assets/graphics/layout/close-full-screen.svg');
+    }
+  }
+  .stats-overall {
+    height: 11vh;
+    padding: 3vh 0;
+    span.sumstats__key {
+      font-size: 0.875rem;
+      @include media(xlarge-up) {
+        font-size: 1rem;
+      }
+    }
+    span.sumstats__value {
+      font-size: 2.5rem;
+      line-height: 2rem;
+      @include media(xlarge-up) {
+        font-size: 3rem;
+        line-height: 3.5rem;
+      }
+    }
+  }
+  .stats-map {
+    height: 58vh;
+    .map-vis {
+      height: 58vh;
+    }
+  }
+  .stats-chart {
+    height: 21vh;
+    padding: 2vh 0;
+    .chart__container {
+      height: 15vh;
+    }
+  }
+}

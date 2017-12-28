@@ -1,0 +1,34 @@
+/* ==========================================================================
+   Callouts
+   ========================================================================== */
+
+.callout {
+  position: relative;
+  @extend %card-skin, .clearfix;
+  padding: 1rem;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+
+  > *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* Prose specific */
+
+.prose--responsive {
+  > .callout {
+    @include media(small-up) {
+      margin-left: -$global-spacing; 
+      margin-right: -$global-spacing;
+    }
+
+    @include media(medium-up) {
+      padding: $global-spacing * 2;
+      margin-left: -$global-spacing * 2;
+      margin-right: -$global-spacing * 2;
+      font-size: 1.5rem;
+      line-height: 2rem;
+    }
+  }
+}

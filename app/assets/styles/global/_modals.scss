@@ -1,0 +1,267 @@
+/* ==========================================================================
+   Modals
+   ========================================================================== */
+
+/**
+ * This element can be of any width and height
+ * http://css-tricks.com/centering-in-the-unknown/
+ */
+
+.modal {
+  text-align: center;
+  background: #fff;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9996;
+  overflow-y: auto;
+
+  // The ghost, nudged to maintain perfect centering
+  // Only medium-up queries
+  &::before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    width: 1px;
+    margin-right: -6px; // Adjusts for spacing
+  }
+}
+
+/**
+  * The element to be centered, can also be of any width and height
+  */
+
+.modal__inner {
+  @extend .row;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  margin: ($global-spacing * 2) 0;
+  text-align: left;
+  width: 100%;
+  max-width: 48rem;
+
+  > *:last-child {
+    margin-bottom: 0;
+  }
+
+  .modal--prompt & {
+    text-align: center;
+  }
+}
+
+
+/* Modal size modifiers
+   ========================================================================== */
+
+/* Small */
+
+.modal--small .modal__inner {
+  max-width: 32rem;
+}
+
+/* Medium
+   Default
+*/
+
+.modal--medium .modal__inner {
+  max-width: 48rem;
+}
+
+/* Large */
+
+.modal--large .modal__inner {
+  max-width: 64rem;
+}
+
+/* XLarge */
+
+.modal--xlarge .modal__inner {
+  max-width: 80rem;
+}
+
+
+/* Modal animation
+   ========================================================================== */
+
+.modal-enter {
+  transform: translate3d(0, 0, 0);
+  opacity: 0;
+  visibility: hidden;
+
+  &.modal-enter-active {
+    transition: opacity 0.32s ease 0s, visibility 0.32s linear 0s;
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.modal-exit {
+  transition: opacity 0.32s ease 0s, visibility 0.32s linear 0s;
+  opacity: 1;
+  visibility: visible;
+
+  &.modal-exit-active {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+
+/* Modal structure
+   ========================================================================== */
+
+.modal {
+  background: tint($base-color, 92%);
+
+  &__header {
+    margin-bottom: ($global-spacing * 3);
+    position: relative;
+
+    > *:last-child {
+      margin-bottom: 0;
+    }
+
+    &--centered {
+      text-align: center;
+    }
+  }
+
+  &__headline {
+    margin-bottom: $global-spacing;
+
+    > *:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__title {
+    @include heading(1.5rem);
+  }
+
+  &__subtitle {
+    position: relative;
+    @extend .heading-alt;
+    color: rgba($base-font-color, 0.64);
+    font-size: 0.875rem;
+    line-height: 1rem;
+    margin: ($global-spacing / 4) 0;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__introduction {
+    color: rgba($base-font-color, 0.64);
+    font-size: 1rem;
+    line-height: 1.5rem;
+
+    > *:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__body {
+    margin-bottom: ($global-spacing * 3);
+
+    > *:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__footer {
+    // font-size: 0;
+    position: relative;
+
+    &--centered {
+      text-align: center;
+    }
+
+    .button {
+      margin: 0 ($global-spacing / 4);
+
+      &:first-child {
+        margin-left: 0;
+      }
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+
+/* Modal footer actions
+   ========================================================================== */
+
+/**
+ * "mfa-" prefix stands for "modal footer action"
+ */
+
+[class^="mfa-"],
+[class*=" mfa-"] {
+  @extend .button;
+  min-width: 6rem;
+}
+
+.mfa-tick, {
+  @extend .button--primary-filled;
+}
+
+.mfa-tick::before {
+  @extend %collecticon-sm-tick;
+}
+
+.mfa-xmark, {
+  @extend .button--base-glass;
+
+  &::before {
+    @extend %collecticon-sm-xmark;
+  }
+}
+
+
+/* Modal meta actions
+   ========================================================================== */
+
+/**
+ * "mma-" prefix stands for "modal meta action"
+ */
+
+[class^="mma-"],
+[class*=" mma-"] {
+  @extend .button, .button--medium, .button--primary-filled, .button--text-hidden;
+}
+
+.mma-xmark {
+  position: absolute;
+  top: $global-spacing * 2;
+  right: $global-spacing * 2;
+  z-index: 10;
+
+  &::before {
+    @extend %collecticon-xmark;
+    font-size: 1.25rem;
+  }
+}
+
+
+/* Modal helpers
+   ========================================================================== */
+
+.modal__unscrollable-y {
+  overflow-y: hidden;
+}
+
+.modal__unscrollable-x {
+  overflow-x: hidden;
+}

@@ -1,0 +1,178 @@
+/* ==========================================================================
+   Panels
+   ========================================================================== */
+
+.panel {
+  @extend %panel-skin;
+  position: relative;
+  font-size: $base-font-size;
+  line-height: $base-line-height;
+  text-align: initial;
+}
+
+
+/* Panel header
+   ========================================================================== */
+
+.panel__header {
+  position: relative;
+  z-index: 2;
+  padding: $global-spacing;
+  background: #fff;
+  display: flex;
+  width: 100%;
+  border-radius: $base-border-radius $base-border-radius 0 0;
+  box-shadow: 0 $base-border-width 0 0 $base-alpha-color;
+
+  > *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.panel__headline {
+  > *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.panel__title {
+  @include heading(1.25rem);
+  margin: 0;
+
+  a.panel__contents & {
+    color: $link-color;
+  }
+}
+
+.panel__subtitle {
+  position: relative;
+  @extend .heading-alt;
+  color: rgba($base-font-color, 0.64);
+  font-size: 0.875rem;
+  line-height: 1rem;
+  margin: ($global-spacing / 4) 0;
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+
+/* Panel body
+   ========================================================================== */
+
+.panel__body {
+  @extend %inset-skin;
+  position: relative;
+  z-index: 1;
+
+  > *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.panel__body-inner {
+  padding: $global-spacing;
+
+  > *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.panel-blank-message {
+  text-align: center;
+  padding: ($global-spacing * 8) ($global-spacing * 2);
+  color: rgba($base-font-color, 0.64);
+}
+
+
+/* Panel footer
+   ========================================================================== */
+
+.panel__footer {
+  position: relative;
+  z-index: 2;
+  padding: $global-spacing;
+  background: #fff;
+  min-height: 1rem;
+  border-radius: 0 0 $base-border-radius $base-border-radius;
+  box-shadow: 0 (-$base-border-width) 0 0 $base-alpha-color;
+
+  &:empty {
+    padding: 0;
+  }
+
+  > *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+
+/* Panel header actions
+   ========================================================================== */
+
+.panel__h-actions {
+  flex: 1 1 auto;
+  text-align: right;
+  font-size: 0;
+  white-space: nowrap;
+
+  * {
+    vertical-align: top;
+  }
+}
+
+.panel__h-actions__menu {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  box-shadow: inset (-$base-border-width) 0 0 0 $base-alpha-color;
+  padding: 0 ($global-spacing / 2);
+
+  &:last-child {
+    box-shadow: none;
+    padding-right: 0;
+  }
+
+  &, > li {
+    display: inline-block;
+  }
+
+  > li:not(:last-child) {
+    margin-right: $global-spacing / 4;
+  }
+}
+
+
+/**
+ * "pha-" prefix stands for "panel action"
+ */
+
+[class^="pha-"],
+[class*=" pha-"] {
+  @extend .button, .button--small, .button--primary-plain, .button--text-hidden;
+}
+
+.pha-ellipsis::before {
+  @extend %collecticon-ellipsis-vertical;
+}
+
+.pha-download::before {
+  @extend %collecticon-download;
+}
+
+.pha-question::before {
+  @extend %collecticon-circle-question;
+}
+
+.pha-pencil::before {
+  @extend %collecticon-pencil;
+}
+
+.pha-xmark::before {
+  @extend %collecticon-xmark;
+}

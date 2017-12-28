@@ -1,0 +1,80 @@
+/* ==========================================================================
+   Vendor: react-paginate
+   ========================================================================== */
+
+/**
+ * Custom styles for:
+ * https://github.com/AdeleD/react-paginate
+ */
+
+.pagination {
+  @extend .clearfix;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  margin-bottom: $global-spacing * 2;
+
+  > li {
+    float: left;
+  }
+
+  .previous a,
+  .next a {
+    @extend .button, .button--primary-glass, .button--text-hidden;
+    text-decoration: none;
+    text-transform: uppercase;
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .previous a {
+    border-radius: 5px;
+
+    &:before {
+      @extend %collecticon-chevron-left;
+    }
+  }
+
+  .next a {
+    border-radius: 5px;
+    &:before {
+      @extend %collecticon-chevron-right;
+    }
+  }
+
+  .pages {
+    @extend .clearfix;
+
+    &__wrapper {
+      float: left;
+
+      &.active .pages__page {
+        border-radius: 5px;
+        @extend .button--primary-filled
+      }
+
+      .pages__page {
+        @extend .button, .button--base-plain;
+        border-radius: 5px;
+      }
+    }
+  }
+
+  .break {
+    .pages__page {
+      @extend .button;
+      border-radius: 0;
+      background: none;
+      cursor: auto;
+      opacity: 1;
+    }
+  }
+}
+
+.pagination-wrapper {
+  margin-top: $global-spacing * 4;
+  .pagination {
+    display: inline-block;
+    margin-bottom: 0;
+  }
+}
