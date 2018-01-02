@@ -6,10 +6,31 @@ export default {
       type: 'string',
       format: 'email'
     },
+    username: {
+      type: 'string'
+    },
+    firstname: {
+      type: 'string'
+    },
+    lastname: {
+      type: 'string'
+    },
     country: {
       type: 'string'
     },
+    city: {
+      type: 'string'
+    },
+    organizationType: {
+      type: 'string'
+    },
     organization: {
+      type: 'string'
+    },
+    department: {
+      type: 'string'
+    },
+    position: {
       type: 'string'
     },
     password: {
@@ -20,8 +41,17 @@ export default {
       const: { '$data': '1/password' }
     }
   },
-  required: ['email', 'organization', 'country', 'password', 'passwordConf'],
-
+  required: [
+    'email',
+    'username',
+    'organizationType',
+    'organization',
+    'firstname',
+    'lastname',
+    'country',
+    'password',
+    'passwordConf'
+  ],
   if: {
     properties: {
       email: {

@@ -17,7 +17,7 @@ class Login extends React.Component {
 
     this.state = {
       data: {
-        email: '',
+        username: '',
         password: ''
       },
       authenticated: false
@@ -28,7 +28,7 @@ class Login extends React.Component {
 
   onSubmit (e) {
     e.preventDefault();
-    this.props._getAuthToken(this.state.data.email, this.state.data.password);
+    this.props._getAuthToken(this.state.data.username, this.state.data.password);
     showGlobalLoading();
   }
 
@@ -48,7 +48,7 @@ class Login extends React.Component {
 
   allowSubmit () {
     // Do proper validation.
-    return this.state.data.email && this.state.data.password;
+    return this.state.data.username && this.state.data.password;
   }
 
   renderError () {
@@ -86,12 +86,12 @@ class Login extends React.Component {
             <div className='inner'>
               <form className='form form--centered' onSubmit={this.onSubmit}>
                 <FormInput
-                  label='Email'
+                  label='Username'
                   type='text'
-                  name='login-email'
-                  id='login-email'
-                  value={this.state.data.email}
-                  onChange={this.onFieldChange.bind(this, 'email')}
+                  name='login-username'
+                  id='login-username'
+                  value={this.state.data.username}
+                  onChange={this.onFieldChange.bind(this, 'username')}
                   autoFocus
                 />
                 <FormInput
