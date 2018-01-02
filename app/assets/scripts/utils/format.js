@@ -45,7 +45,8 @@ const organizationCodeToDisplay = {
   'NTLS': 'National Society',
   'DLGN': 'Delegation',
   'SCRT': 'Secretariat',
-  'ICRC': 'ICRC'
+  'ICRC': 'ICRC',
+  'OTHR': 'Other'
 };
 export const organizationType = (code) => organizationCodeToDisplay[code] || invalid;
 
