@@ -6,6 +6,15 @@ export default {
       type: 'string',
       format: 'email'
     },
+    username: {
+      type: 'string'
+    },
+    firstname: {
+      type: 'string'
+    },
+    lastname: {
+      type: 'string'
+    },
     country: {
       type: 'string'
     },
@@ -34,10 +43,11 @@ export default {
   },
   required: [
     'email',
+    'username',
     'organizationType',
     'organization',
-    'department',
-    'position',
+    'firstname',
+    'lastname',
     'country',
     'password',
     'passwordConf'
