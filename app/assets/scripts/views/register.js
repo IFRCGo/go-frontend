@@ -1,5 +1,7 @@
 'use strict';
 import React from 'react';
+import { PropTypes as T } from 'prop-types';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import _set from 'lodash.set';
 import _cloneDeep from 'lodash.clonedeep';
@@ -9,9 +11,13 @@ import Select from 'react-select';
 
 import { isValidEmail, isRedCrossEmail, get } from '../utils/utils';
 import { countries, orgTypes } from '../utils/field-report-constants';
+import { registerUser } from '../actions';
+import { environment } from '../config';
 
 import App from './app';
 import { FormInput, FormError } from '../components/form-elements/';
+import { showAlert } from '../components/system-alerts';
+import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import registerSchemaDef from '../schemas/register';
 
 const ajv = new Ajv({ $data: true, allErrors: true, errorDataPath: 'property' });
@@ -24,7 +30,7 @@ const getClassIfError = (errors, prop) => {
   return err ? 'form__control--danger' : '';
 };
 
-export default class Login extends React.Component {
+class Register extends React.Component {
   constructor (props) {
     super(props);
 
@@ -48,10 +54,23 @@ export default class Login extends React.Component {
 
         contact: [0, 1].map(o => ({ name: undefined, email: undefined }))
       },
-      errors: []
+      errors: null
     };
 
     this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  componentWillReceiveProps (nextProps) {
+    if (this.props.registration.fetching && !nextProps.registration.fetchingj) {
+      hideGlobalLoading();
+      if (nextProps.registration.error) {
+        const message = nextProps.registration.error.error_message || 'Could not create user';
+        showAlert('danger', <p><strong>Error:</strong> {message}</p>, true, 4500);
+      } else {
+        showAlert('success', <p>Success! Verification email sent, redirecting...</p>, true, 2000);
+        setTimeout(() => this.props.history.push('/'), 2000);
+      }
+    }
   }
 
   prepStateForValidation (state) {
@@ -65,9 +84,9 @@ export default class Login extends React.Component {
     const payload = this.prepStateForValidation(this.state.data);
     registerValidator(payload);
     this.setState({ errors: _cloneDeep(registerValidator.errors) });
-
-    if (registerValidator.errors !== null) {
-      return null;
+    if (registerValidator.errors === null) {
+      showGlobalLoading();
+      this.props._registerUser(payload);
     }
   }
 
@@ -120,6 +139,34 @@ export default class Login extends React.Component {
   renderAdditionalInfo () {
     return (
       <div className='form__hascol form__hascol--2'>
+        <FormInput
+          label='First Name *'
+          type='text'
+          name='register-firstname'
+          id='register-firstname'
+          classInput={getClassIfError(this.state.errors, 'firstname')}
+          value={this.state.data.firstname}
+          onChange={this.onFieldChange.bind(this, 'firstname')}
+        >
+          <FormError
+            errors={this.state.errors}
+            property='department'
+          />
+        </FormInput>
+        <FormInput
+          label='Last Name *'
+          type='text'
+          name='register-lastname'
+          id='register-lastname'
+          classInput={getClassIfError(this.state.errors, 'lastname')}
+          value={this.state.data.lastname}
+          onChange={this.onFieldChange.bind(this, 'lastname')}
+        >
+          <FormError
+            errors={this.state.errors}
+            property='department'
+          />
+        </FormInput>
         <div className='form__group'>
           <label className='form__label'>Country *</label>
           <Select
@@ -167,7 +214,7 @@ export default class Login extends React.Component {
           />
         </FormInput>
         <FormInput
-          label='Department *'
+          label='Department'
           type='text'
           name='register-department'
           id='register-department'
@@ -181,7 +228,7 @@ export default class Login extends React.Component {
           />
         </FormInput>
         <FormInput
-          label='Position *'
+          label='Position'
           type='text'
           name='register-position'
           id='register-position'
@@ -298,11 +345,28 @@ export default class Login extends React.Component {
                   />
                 </FormInput>
 
+                <FormInput
+                  label='Username *'
+                  type='text'
+                  name='register-username'
+                  id='register-username'
+                  classInput={getClassIfError(this.state.errors, 'username')}
+                  value={this.state.data.username}
+                  onChange={this.onFieldChange.bind(this, 'username')}
+                  autoFocus
+                >
+                  <FormError
+                    errors={this.state.errors}
+                    property='username'
+                  />
+                </FormInput>
+
                 {this.renderPasswordFields()}
                 {this.renderAdditionalInfo()}
                 {this.renderContactRequest()}
                 <div className='form__footer'>
                   {this.renderSubmitButton()}
+                  {this.state.errors ? <p className='form__error'>There are errors in the form. Please correct them before submitting again.</p> : null}
                   <p>
                     Already have an account? <Link to='/login' title='Go to login page'><span>Log in.</span></Link>
                   </p>
@@ -315,3 +379,21 @@ export default class Login extends React.Component {
     );
   }
 }
+
+if (environment !== 'production') {
+  Register.propTypes = {
+    _registerUser: T.func,
+    registration: T.object,
+    history: T.object
+  };
+}
+
+const selector = (state) => ({
+  registration: state.registration
+});
+
+const dispatcher = (dispatch) => ({
+  _registerUser: (payload) => dispatch(registerUser(payload))
+});
+
+export default connect(selector, dispatcher)(Register);
