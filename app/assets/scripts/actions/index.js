@@ -15,6 +15,11 @@ export function getUserProfile (username) {
   return fetchJSON(`api/v1/user/?username=${username}`, GET_PROFILE, withToken());
 }
 
+export const REGISTER_USER = 'REGISTER_USER';
+export function registerUser (payload) {
+  return postJSON('register', REGISTER_USER, payload);
+}
+
 export const LOGOUT_USER = 'LOGOUT_USER';
 export function logoutUser () {
   return { type: LOGOUT_USER };
