@@ -1,5 +1,6 @@
 'use strict';
 import { get } from './utils';
+import { orgTypes } from './field-report-constants';
 
 export const nope = '--';
 export const na = 'N/A';
@@ -41,13 +42,10 @@ export const separateUppercaseWords = (x) => {
 };
 
 // Ie. given 'SCRT', return 'Secretariat'.
-const organizationCodeToDisplay = {
-  'NTLS': 'National Society',
-  'DLGN': 'Delegation',
-  'SCRT': 'Secretariat',
-  'ICRC': 'ICRC',
-  'OTHR': 'Other'
-};
+const organizationCodeToDisplay = {}
+orgTypes.forEach(o => {
+  organizationCodeToDisplay[o.value] = o.label;
+});
 export const organizationType = (code) => organizationCodeToDisplay[code] || invalid;
 
 export const uppercaseFirstLetter = (str) => {
