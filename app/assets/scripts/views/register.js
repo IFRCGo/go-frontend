@@ -139,34 +139,6 @@ class Register extends React.Component {
   renderAdditionalInfo () {
     return (
       <div className='form__hascol form__hascol--2'>
-        <FormInput
-          label='First Name *'
-          type='text'
-          name='register-firstname'
-          id='register-firstname'
-          classInput={getClassIfError(this.state.errors, 'firstname')}
-          value={this.state.data.firstname}
-          onChange={this.onFieldChange.bind(this, 'firstname')}
-        >
-          <FormError
-            errors={this.state.errors}
-            property='department'
-          />
-        </FormInput>
-        <FormInput
-          label='Last Name *'
-          type='text'
-          name='register-lastname'
-          id='register-lastname'
-          classInput={getClassIfError(this.state.errors, 'lastname')}
-          value={this.state.data.lastname}
-          onChange={this.onFieldChange.bind(this, 'lastname')}
-        >
-          <FormError
-            errors={this.state.errors}
-            property='department'
-          />
-        </FormInput>
         <div className='form__group'>
           <label className='form__label'>Country *</label>
           <Select
@@ -329,6 +301,37 @@ class Register extends React.Component {
           <div className='inpage__body'>
             <div className='inner'>
               <form className='form form--centered' onSubmit={this.onSubmit}>
+                <div className='form__hascol form__hascol--2'>
+                  <FormInput
+                    label='First Name *'
+                    type='text'
+                    name='register-firstname'
+                    id='register-firstname'
+                    classInput={getClassIfError(this.state.errors, 'firstname')}
+                    value={this.state.data.firstname}
+                    onChange={this.onFieldChange.bind(this, 'firstname')}
+                    autoFocus
+                  >
+                    <FormError
+                      errors={this.state.errors}
+                      property='department'
+                    />
+                  </FormInput>
+                  <FormInput
+                    label='Last Name *'
+                    type='text'
+                    name='register-lastname'
+                    id='register-lastname'
+                    classInput={getClassIfError(this.state.errors, 'lastname')}
+                    value={this.state.data.lastname}
+                    onChange={this.onFieldChange.bind(this, 'lastname')}
+                  >
+                    <FormError
+                      errors={this.state.errors}
+                      property='department'
+                    />
+                  </FormInput>
+                </div>
                 <FormInput
                   label='Email *'
                   type='text'
@@ -337,7 +340,6 @@ class Register extends React.Component {
                   classInput={getClassIfError(this.state.errors, 'email')}
                   value={this.state.data.email}
                   onChange={this.onFieldChange.bind(this, 'email')}
-                  autoFocus
                 >
                   <FormError
                     errors={this.state.errors}
@@ -359,9 +361,8 @@ class Register extends React.Component {
                     property='username'
                   />
                 </FormInput>
-
-                {this.renderPasswordFields()}
                 {this.renderAdditionalInfo()}
+                {this.renderPasswordFields()}
                 {this.renderContactRequest()}
                 <div className='form__footer'>
                   {this.renderSubmitButton()}
