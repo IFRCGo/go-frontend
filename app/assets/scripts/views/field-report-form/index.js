@@ -748,8 +748,9 @@ class FieldReportForm extends React.Component {
                 {this.renderErrorSummary()}
 
                 <div className='form__actions'>
-                  <button type='button' className={c('button button--secondary-bounded', {disabled: this.state.step <= 1})} title='Go back to previous step' onClick={this.onStepBackClick}>Back</button>
+                  <button type='button' className={c('button button--base-plain', {disabled: this.state.step <= 1})} title='Go back to previous step' onClick={this.onStepBackClick}>Back</button>
                   <button type='submit' className='button button--secondary-filled' title='Save and continue'>Save and continue</button>
+                  <button type='submit' className='button button--secondary-bounded' title='Save and continue'>Save as Draft</button>
                 </div>
               </form>
             </div>

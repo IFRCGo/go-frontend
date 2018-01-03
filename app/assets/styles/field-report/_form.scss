@@ -335,7 +335,9 @@
 .form__actions {
   margin: ($global-spacing * 4) 0;
   button {
+    margin-left: $global-spacing/2;
     &:first-child {
+      margin-left: 0;
       margin-right: $global-spacing/2;
     };
   }
