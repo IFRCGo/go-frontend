@@ -310,6 +310,7 @@ class Register extends React.Component {
                     classInput={getClassIfError(this.state.errors, 'firstname')}
                     value={this.state.data.firstname}
                     onChange={this.onFieldChange.bind(this, 'firstname')}
+                    autoFocus
                   >
                     <FormError
                       errors={this.state.errors}
@@ -339,7 +340,6 @@ class Register extends React.Component {
                   classInput={getClassIfError(this.state.errors, 'email')}
                   value={this.state.data.email}
                   onChange={this.onFieldChange.bind(this, 'email')}
-                  autoFocus
                 >
                   <FormError
                     errors={this.state.errors}
