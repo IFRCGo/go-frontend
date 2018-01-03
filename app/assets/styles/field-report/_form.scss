@@ -1,6 +1,13 @@
 /* ==========================================================================
    Field Report form
    ========================================================================== */
+
+.page--frep-form {
+  .inpage__header {
+    padding-bottom: 0;
+  }
+}
+
 .form--field-report {
   margin-bottom: $global-spacing * 4;
 }
