@@ -25,6 +25,7 @@ import Deployments from './views/deployments';
 import HeOps from './views/heops';
 
 polyfill();
+require('isomorphic-fetch');
 
 // Route available only if the user is not logged in.
 const AnonymousRoute = ({ component: Component, ...rest }) => {
