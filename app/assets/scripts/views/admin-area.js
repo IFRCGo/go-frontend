@@ -48,6 +48,12 @@ const dateOptions = [
   { value: 'year', label: 'Last year' }
 ];
 
+const datesAgo = {
+  week: () => DateTime.local().minus({days: 7}).startOf('day').toISODate(),
+  month: () => DateTime.local().minus({months: 1}).startOf('day').toISODate(),
+  year: () => DateTime.local().minus({years: 1}).startOf('day').toISODate()
+};
+
 const dTypeOptions = [
   { value: 'all', label: 'All Types' },
   ...disasterTypes
@@ -128,11 +134,34 @@ class AdminArea extends React.Component {
   }
 
   computeFilters (what) {
-    // Compute date. (last week, month, year).
-    // Add any other filters.
-    // This is based on `what` is being filtered.
+    let state = this.state[what];
+    let qs = {};
 
-    return {};
+    switch (what) {
+      case 'appeals':
+      case 'drefs':
+        if (state.sort.field) {
+          qs.order_by = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
+        }
+
+        if (state.filters.date !== 'all') {
+          qs.created_at__gte = datesAgo[state.filters.date]();
+        }
+        if (state.filters.dtype !== 'all') {
+          qs.dtype = state.filters.dtype;
+        }
+
+        break;
+      case 'fieldReports':
+        if (state.filters.date !== 'all') {
+          qs.created_at__gte = datesAgo[state.filters.date]();
+        }
+        if (state.filters.dtype !== 'all') {
+          qs.dtype = state.filters.dtype;
+        }
+        break;
+    }
+    return qs;
   }
 
   getActionFn (what) {
@@ -214,58 +243,50 @@ class AdminArea extends React.Component {
 
     if (fetched) {
       const now = Date.now();
-      if (data && data.objects.length) {
-        const headings = [
-          {
-            id: 'date',
-            label: <FilterHeader id='date' title='Date' options={dateOptions} filter={this.state.appeals.filters.date} onSelect={this.handleFilterChange.bind(this, 'appeals', 'date')} />
-          },
-          { id: 'name', label: 'Name' },
-          { id: 'event', label: 'Emergency' },
-          {
-            id: 'dtype',
-            label: <FilterHeader id='dtype' title='Disaster Type' options={dTypeOptions} filter={this.state.appeals.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'appeals', 'dtype')} />
-          },
-          {
-            id: 'requestAmount',
-            label: <SortHeader id='requestAmount' title='Requested Amount (CHF)' sort={this.state.appeals.sort} onClick={this.handleSortChange.bind(this, 'appeals', 'requestAmount')} />
-          },
-          {
-            id: 'fundedAmount',
-            label: <SortHeader id='fundedAmount' title='Funding (CHF)' sort={this.state.appeals.sort} onClick={this.handleSortChange.bind(this, 'appeals', 'fundedAmount')} />
-          },
-          { id: 'active', label: 'Active' }
-        ];
+      const headings = [
+        {
+          id: 'date',
+          label: <FilterHeader id='date' title='Date' options={dateOptions} filter={this.state.appeals.filters.date} onSelect={this.handleFilterChange.bind(this, 'appeals', 'date')} />
+        },
+        { id: 'name', label: 'Name' },
+        { id: 'event', label: 'Emergency' },
+        {
+          id: 'dtype',
+          label: <FilterHeader id='dtype' title='Disaster Type' options={dTypeOptions} filter={this.state.appeals.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'appeals', 'dtype')} />
+        },
+        {
+          id: 'requestAmount',
+          label: <SortHeader id='amount_requested' title='Requested Amount (CHF)' sort={this.state.appeals.sort} onClick={this.handleSortChange.bind(this, 'appeals', 'amount_requested')} />
+        },
+        {
+          id: 'fundedAmount',
+          label: <SortHeader id='amount_funded' title='Funding (CHF)' sort={this.state.appeals.sort} onClick={this.handleSortChange.bind(this, 'appeals', 'amount_funded')} />
+        },
+        { id: 'active', label: 'Active' }
+      ];
 
-        const rows = data.objects.map(o => ({
-          id: o.id,
-          date: DateTime.fromISO(o.end_date).toISODate(),
-          name: o.name,
-          event: <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link>,
-          dtype: o.dtype.name,
-          requestAmount: n(o.amount_requested),
-          fundedAmount: n(o.amount_funded),
-          active: (new Date(o.end_date)).getTime() > now ? 'Active' : 'Inactive'
-        }));
+      const rows = data.objects.map(o => ({
+        id: o.id,
+        date: DateTime.fromISO(o.end_date).toISODate(),
+        name: o.name,
+        event: <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link>,
+        dtype: o.dtype.name,
+        requestAmount: n(o.amount_requested),
+        fundedAmount: n(o.amount_funded),
+        active: (new Date(o.end_date)).getTime() > now ? 'Active' : 'Inactive'
+      }));
 
-        return (
-          <Fold title={`Appeals (${data.meta.total_count})`}>
-            <DisplayTable
-              headings={headings}
-              rows={rows}
-              pageCount={data.meta.total_count / data.meta.limit}
-              page={data.meta.offset / data.meta.limit}
-              onPageChange={this.handlePageChange.bind(this, 'appeals')}
-            />
-          </Fold>
-        );
-      } else {
-        return (
-          <Fold title='Appeals'>
-            <p>There are no Appeals to show</p>
-          </Fold>
-        );
-      }
+      return (
+        <Fold title={`Appeals (${data.meta.total_count})`}>
+          <DisplayTable
+            headings={headings}
+            rows={rows}
+            pageCount={data.meta.total_count / data.meta.limit}
+            page={data.meta.offset / data.meta.limit}
+            onPageChange={this.handlePageChange.bind(this, 'appeals')}
+          />
+        </Fold>
+      );
     }
 
     return null;
@@ -297,58 +318,50 @@ class AdminArea extends React.Component {
 
     if (fetched) {
       const now = Date.now();
-      if (data && data.objects.length) {
-        const headings = [
-          {
-            id: 'date',
-            label: <FilterHeader id='date' title='Date' options={dateOptions} filter={this.state.drefs.filters.date} onSelect={this.handleFilterChange.bind(this, 'drefs', 'date')} />
-          },
-          { id: 'name', label: 'Name' },
-          { id: 'event', label: 'Emergency' },
-          {
-            id: 'dtype',
-            label: <FilterHeader id='dtype' title='Disaster Type' options={dTypeOptions} filter={this.state.drefs.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'drefs', 'dtype')} />
-          },
-          {
-            id: 'requestAmount',
-            label: <SortHeader id='requestAmount' title='Requested Amount (CHF)' sort={this.state.drefs.sort} onClick={this.handleSortChange.bind(this, 'drefs', 'requestAmount')} />
-          },
-          {
-            id: 'fundedAmount',
-            label: <SortHeader id='fundedAmount' title='Funding (CHF)' sort={this.state.drefs.sort} onClick={this.handleSortChange.bind(this, 'drefs', 'fundedAmount')} />
-          },
-          { id: 'active', label: 'Active' }
-        ];
+      const headings = [
+        {
+          id: 'date',
+          label: <FilterHeader id='date' title='Date' options={dateOptions} filter={this.state.drefs.filters.date} onSelect={this.handleFilterChange.bind(this, 'drefs', 'date')} />
+        },
+        { id: 'name', label: 'Name' },
+        { id: 'event', label: 'Emergency' },
+        {
+          id: 'dtype',
+          label: <FilterHeader id='dtype' title='Disaster Type' options={dTypeOptions} filter={this.state.drefs.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'drefs', 'dtype')} />
+        },
+        {
+          id: 'requestAmount',
+          label: <SortHeader id='amount_requested' title='Requested Amount (CHF)' sort={this.state.drefs.sort} onClick={this.handleSortChange.bind(this, 'drefs', 'amount_requested')} />
+        },
+        {
+          id: 'fundedAmount',
+          label: <SortHeader id='amount_funded' title='Funding (CHF)' sort={this.state.drefs.sort} onClick={this.handleSortChange.bind(this, 'drefs', 'amount_funded')} />
+        },
+        { id: 'active', label: 'Active' }
+      ];
 
-        const rows = data.objects.map(o => ({
-          id: o.id,
-          date: DateTime.fromISO(o.end_date).toISODate(),
-          name: o.name,
-          event: <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link>,
-          dtype: o.dtype.name,
-          requestAmount: n(o.amount_requested),
-          fundedAmount: n(o.amount_funded),
-          active: (new Date(o.end_date)).getTime() > now ? 'Active' : 'Inactive'
-        }));
+      const rows = data.objects.map(o => ({
+        id: o.id,
+        date: DateTime.fromISO(o.end_date).toISODate(),
+        name: o.name,
+        event: <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link>,
+        dtype: o.dtype.name,
+        requestAmount: n(o.amount_requested),
+        fundedAmount: n(o.amount_funded),
+        active: (new Date(o.end_date)).getTime() > now ? 'Active' : 'Inactive'
+      }));
 
-        return (
-          <Fold title={`Drefs (${data.meta.total_count})`}>
-            <DisplayTable
-              headings={headings}
-              rows={rows}
-              pageCount={data.meta.total_count / data.meta.limit}
-              page={data.meta.offset / data.meta.limit}
-              onPageChange={this.handlePageChange.bind(this, 'drefs')}
-            />
-          </Fold>
-        );
-      } else {
-        return (
-          <Fold title='Drefs'>
-            <p>There are no Drefs to show</p>
-          </Fold>
-        );
-      }
+      return (
+        <Fold title={`Drefs (${data.meta.total_count})`}>
+          <DisplayTable
+            headings={headings}
+            rows={rows}
+            pageCount={data.meta.total_count / data.meta.limit}
+            page={data.meta.offset / data.meta.limit}
+            onPageChange={this.handlePageChange.bind(this, 'drefs')}
+          />
+        </Fold>
+      );
     }
 
     return null;
@@ -379,48 +392,40 @@ class AdminArea extends React.Component {
     }
 
     if (fetched) {
-      if (data && data.objects.length) {
-        const headings = [
-          {
-            id: 'date',
-            label: <FilterHeader id='date' title='Date' options={dateOptions} filter={this.state.fieldReports.filters.date} onSelect={this.handleFilterChange.bind(this, 'fieldReports', 'date')} />
-          },
-          { id: 'name', label: 'Name' },
-          { id: 'event', label: 'Event' },
-          {
-            id: 'dtype',
-            label: <FilterHeader id='dtype' title='Disaster Type' options={dTypeOptions} filter={this.state.fieldReports.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'fieldReports', 'dtype')} />
-          },
-          { id: 'countries', label: 'Countries' }
-        ];
+      const headings = [
+        {
+          id: 'date',
+          label: <FilterHeader id='date' title='Date' options={dateOptions} filter={this.state.fieldReports.filters.date} onSelect={this.handleFilterChange.bind(this, 'fieldReports', 'date')} />
+        },
+        { id: 'name', label: 'Name' },
+        { id: 'event', label: 'Event' },
+        {
+          id: 'dtype',
+          label: <FilterHeader id='dtype' title='Disaster Type' options={dTypeOptions} filter={this.state.fieldReports.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'fieldReports', 'dtype')} />
+        },
+        { id: 'countries', label: 'Countries' }
+      ];
 
-        const rows = data.objects.map(o => ({
-          id: o.id,
-          date: DateTime.fromISO(o.created_at).toISODate(),
-          name: <Link to={`/reports/${o.id}`} className='link--primary' title='View Field Report'>{o.summary}</Link>,
-          event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : 'n/a',
-          dtype: o.dtype.name,
-          countries: <ul>{o.countries.map(country => <li key={country.id}><Link to={`/countries/${country.id}`} className='link--primary' title='View Country'>{country.name}</Link></li>)}</ul>
-        }));
+      const rows = data.objects.map(o => ({
+        id: o.id,
+        date: DateTime.fromISO(o.created_at).toISODate(),
+        name: <Link to={`/reports/${o.id}`} className='link--primary' title='View Field Report'>{o.summary}</Link>,
+        event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : 'n/a',
+        dtype: o.dtype.name,
+        countries: <ul>{o.countries.map(country => <li key={country.id}><Link to={`/countries/${country.id}`} className='link--primary' title='View Country'>{country.name}</Link></li>)}</ul>
+      }));
 
-        return (
-          <Fold title={`Field Reports (${data.meta.total_count})`}>
-            <DisplayTable
-              headings={headings}
-              rows={rows}
-              pageCount={data.meta.total_count / data.meta.limit}
-              page={data.meta.offset / data.meta.limit}
-              onPageChange={this.handlePageChange.bind(this, 'fieldReports')}
-            />
-          </Fold>
-        );
-      } else {
-        return (
-          <Fold title='Field Reports'>
-            <p>There are no Field Reports to show</p>
-          </Fold>
-        );
-      }
+      return (
+        <Fold title={`Field Reports (${data.meta.total_count})`}>
+          <DisplayTable
+            headings={headings}
+            rows={rows}
+            pageCount={data.meta.total_count / data.meta.limit}
+            page={data.meta.offset / data.meta.limit}
+            onPageChange={this.handlePageChange.bind(this, 'fieldReports')}
+          />
+        </Fold>
+      );
     }
 
     return null;
