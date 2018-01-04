@@ -149,11 +149,11 @@ if (environment !== 'production') {
     title: T.string,
     options: T.arrayOf(
       T.shape({
-        value: T.string,
+        value: T.oneOfType([T.string, T.number]),
         label: T.string
       })
     ),
-    filter: T.string,
+    filter: T.oneOfType([T.string, T.number]),
     onSelect: T.func
   };
 }
