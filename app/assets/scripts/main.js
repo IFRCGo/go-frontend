@@ -1,10 +1,10 @@
 'use strict';
+import 'babel-polyfill';
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
-import { polyfill } from 'es6-promise';
 
 import store from './utils/store';
 
@@ -24,7 +24,6 @@ import AdminArea from './views/admin-area';
 import Deployments from './views/deployments';
 import HeOps from './views/heops';
 
-polyfill();
 require('isomorphic-fetch');
 
 // Route available only if the user is not logged in.
