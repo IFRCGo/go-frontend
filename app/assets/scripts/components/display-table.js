@@ -9,23 +9,25 @@ import { environment } from '../config';
 import Dropdown from './dropdown';
 
 export default class DisplayTable extends React.Component {
-  render () {
-    return (
-      <React.Fragment>
-        <table className='table table--zebra'>
-          <thead>
-            <tr>
-              {this.props.headings.map(h => <th key={h.id}>{h.label}</th>)}
-            </tr>
-          </thead>
-          <tbody>
-            {this.props.rows.map(row => (
-              <tr key={row.id}>
-                {this.props.headings.map(h => <td key={`${row.id}-${h.id}`}>{row[h.id]}</td>)}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+  renderTbody () {
+    if (this.props.rows.length) {
+      return this.props.rows.map(row => (
+        <tr key={row.id}>
+          {this.props.headings.map(h => <td key={`${row.id}-${h.id}`}>{row[h.id]}</td>)}
+        </tr>
+      ));
+    } else {
+      return (
+        <tr>
+          <td colSpan={this.props.headings.length}>{this.props.emptyMessage || 'There is no data to show.'}</td>
+        </tr>
+      );
+    }
+  }
+
+  renderPagination () {
+    if (this.props.rows.length) {
+      return (
         <div className='pagination-wrapper'>
           <ReactPaginate
             previousLabel={<span>previous</span>}
@@ -42,6 +44,26 @@ export default class DisplayTable extends React.Component {
             pageLinkClassName={'pages__page'}
             activeClassName={'active'} />
         </div>
+      );
+    } else {
+      return null;
+    }
+  }
+
+  render () {
+    return (
+      <React.Fragment>
+        <table className='table table--zebra'>
+          <thead>
+            <tr>
+              {this.props.headings.map(h => <th key={h.id}>{h.label}</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {this.renderTbody()}
+          </tbody>
+        </table>
+        {this.renderPagination()}
       </React.Fragment>
     );
   }
@@ -52,6 +74,7 @@ if (environment !== 'production') {
     onPageChange: T.func,
     headings: T.array,
     rows: T.array,
+    emptyMessage: T.string,
     pageCount: T.number,
     page: T.number
   };
