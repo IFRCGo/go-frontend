@@ -96,7 +96,6 @@ class PresentationDash extends React.Component {
 
     return (
       <section className={c('fold--stats', {presenting: this.state.fullscreen})} id='presentation'>
-        <h1 className='visually-hidden'>Statistics</h1>
         <div className='inner'>
           <div className='presentation__actions'>
             <button className='button button--base-plain button--fullscreen' onClick={this.toggleFullscreen} title='View in fullscreen'><span>FullScreen</span></button>
