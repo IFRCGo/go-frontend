@@ -566,7 +566,7 @@ class DisplayTable extends React.Component {
           <tbody>
             {this.props.rows.map(row => (
               <tr key={row.id}>
-                {this.props.headings.map(h => <td key={`${row.id}-${h.id}`}>{row[h.id]}</td>)}
+                {this.props.headings.map(h => <td className={`table__cell--${h.id}`} key={`${row.id}-${h.id}`}>{row[h.id]}</td>)}
               </tr>
             ))}
           </tbody>
