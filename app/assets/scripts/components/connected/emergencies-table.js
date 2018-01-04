@@ -8,19 +8,12 @@ import { DateTime } from 'luxon';
 import { environment } from '../../config';
 import { getEmergenciesList } from '../../actions';
 import { nope, commaSeparatedNumber as n } from '../../utils/format';
-import { get } from '../../utils/utils';
-import { disasterType } from '../../utils/field-report-constants';
+import { get, dTypeOptions } from '../../utils/utils';
 
 import Fold from '../fold';
 import BlockLoading from '../block-loading';
 import DisplayTable, { SortHeader, FilterHeader } from '../display-table';
 import { SFPComponent } from '../../utils/extendables';
-
-const dTypeOptions = [
-  { value: 'all', label: 'All Types' },
-  // Exclude the first item since it's a dropdown placeholder
-  ...disasterType.slice(1)
-];
 
 class EmergenciesTable extends SFPComponent {
   constructor (props) {

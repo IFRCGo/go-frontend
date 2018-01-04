@@ -12,9 +12,10 @@ export default class DisplayTable extends React.Component {
   renderTbody () {
     if (this.props.rows.length) {
       return this.props.rows.map(row => (
-        <tr key={row.id}>
+        // If the raw has a `rowOverride` property that is used as override.
+        row.rowOverride || (<tr key={row.id}>
           {this.props.headings.map(h => <td key={`${row.id}-${h.id}`}>{row[h.id]}</td>)}
-        </tr>
+        </tr>)
       ));
     } else {
       return (
@@ -53,7 +54,7 @@ export default class DisplayTable extends React.Component {
   render () {
     return (
       <React.Fragment>
-        <table className='table table--zebra'>
+        <table className={this.props.className}>
           <thead>
             <tr>
               {this.props.headings.map(h => <th key={h.id}>{h.label}</th>)}
@@ -72,6 +73,7 @@ export default class DisplayTable extends React.Component {
 if (environment !== 'production') {
   DisplayTable.propTypes = {
     onPageChange: T.func,
+    className: T.string,
     headings: T.array,
     rows: T.array,
     emptyMessage: T.string,
@@ -79,6 +81,10 @@ if (environment !== 'production') {
     page: T.number
   };
 }
+
+DisplayTable.defaultProps = {
+  className: 'table table--zebra'
+};
 
 export class SortHeader extends React.PureComponent {
   render () {

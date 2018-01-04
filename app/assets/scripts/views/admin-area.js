@@ -17,7 +17,7 @@ import {
 
 import { environment } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
-import { get } from '../utils/utils/';
+import { get, dateOptions, datesAgo, dTypeOptions } from '../utils/utils/';
 import {
   commaSeparatedNumber as n
 } from '../utils/format';
@@ -30,7 +30,6 @@ import {
   getAdmAreaAggregateAppeals,
   getAdmAreaERU
 } from '../actions';
-import { disasterType } from '../utils/field-report-constants';
 
 import App from './app';
 import Fold from '../components/fold';
@@ -38,27 +37,6 @@ import Homemap from '../components/homemap';
 import BlockLoading from '../components/block-loading';
 import DisplayTable, { SortHeader, FilterHeader } from '../components/display-table';
 import { SFPComponent } from '../utils/extendables';
-
-// Exclude the first item since it's a dropdown placeholder
-const disasterTypes = disasterType.slice(1);
-
-const dateOptions = [
-  { value: 'all', label: 'Anytime' },
-  { value: 'week', label: 'Last week' },
-  { value: 'month', label: 'Last month' },
-  { value: 'year', label: 'Last year' }
-];
-
-const datesAgo = {
-  week: () => DateTime.local().minus({days: 7}).startOf('day').toISODate(),
-  month: () => DateTime.local().minus({months: 1}).startOf('day').toISODate(),
-  year: () => DateTime.local().minus({years: 1}).startOf('day').toISODate()
-};
-
-const dTypeOptions = [
-  { value: 'all', label: 'All Types' },
-  ...disasterTypes
-];
 
 class AdminArea extends SFPComponent {
   constructor (props) {
