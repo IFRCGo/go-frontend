@@ -37,6 +37,7 @@ import Fold from '../components/fold';
 import Homemap from '../components/homemap';
 import BlockLoading from '../components/block-loading';
 import DisplayTable, { SortHeader, FilterHeader } from '../components/display-table';
+import { SFPComponent } from '../utils/extendables';
 
 // Exclude the first item since it's a dropdown placeholder
 const disasterTypes = disasterType.slice(1);
@@ -59,7 +60,7 @@ const dTypeOptions = [
   ...disasterTypes
 ];
 
-class AdminArea extends React.Component {
+class AdminArea extends SFPComponent {
   constructor (props) {
     super(props);
     this.state = {
@@ -145,7 +146,7 @@ class AdminArea extends React.Component {
         }
 
         if (state.filters.date !== 'all') {
-          qs.created_at__gte = datesAgo[state.filters.date]();
+          qs.end_date__gte = datesAgo[state.filters.date]();
         }
         if (state.filters.dtype !== 'all') {
           qs.dtype = state.filters.dtype;
@@ -164,57 +165,21 @@ class AdminArea extends React.Component {
     return qs;
   }
 
-  getActionFn (what) {
+  updateData (what) {
+    let fn;
     switch (what) {
       case 'appeals':
-        return this.props._getAdmAreaAppeals;
+        fn = this.props._getAdmAreaAppeals;
+        break;
       case 'drefs':
-        return this.props._getAdmAreaDrefs;
+        fn = this.props._getAdmAreaDrefs;
+        break;
       case 'fieldReports':
-        return this.props._getAdmAreaFieldReports;
+        fn = this.props._getAdmAreaFieldReports;
+        break;
     }
-  }
 
-  handlePageChange (what, page) {
-    let state = this.state[what];
-    state = Object.assign({}, state, { page: page.selected + 1 });
-
-    this.setState({ [what]: state }, () => {
-      this.getActionFn(what)(this.props.type, this.props.match.params.id, this.state[what].page, this.computeFilters(what));
-    });
-  }
-
-  handleFilterChange (what, field, value) {
-    let state = this.state[what];
-    state = {
-      ...state,
-      page: 1,
-      filters: {
-        ...state.filters,
-        [field]: value
-      }
-    };
-    this.setState({ [what]: state }, () => {
-      this.getActionFn(what)(this.props.type, this.props.match.params.id, this.state[what].page, this.computeFilters(what));
-    });
-  }
-
-  handleSortChange (what, field) {
-    let state = this.state[what];
-    state = {
-      ...state,
-      page: 1,
-      sort: {
-        field,
-        direction: state.sort.field === field && state.sort.direction === 'asc'
-          ? 'desc'
-          : 'asc'
-      }
-    };
-
-    this.setState({ [what]: state }, () => {
-      this.getActionFn(what)(this.props.type, this.props.match.params.id, this.state[what].page, this.computeFilters(what));
-    });
+    fn(this.props.type, this.props.match.params.id, this.state[what].page, this.computeFilters(what));
   }
 
   renderAppeals () {
