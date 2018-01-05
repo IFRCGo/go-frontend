@@ -216,7 +216,7 @@ if (environment !== 'production') {
   DisplaySection.propTypes = {
     title: T.string,
     inner: T.string,
-    children: T.object
+    children: T.node
   };
 }
 
