@@ -209,7 +209,7 @@ class Homemap extends React.Component {
               onClick={this.onEmergencyTypeClick.bind(this, o.id)}
               onMouseOver={this.onEmergencyTypeOverOut.bind(this, 'mouseover', o.id)}
               onMouseOut={this.onEmergencyTypeOverOut.bind(this, 'mouseout', o.id)} >
-              <span className='key'>{o.name}</span>
+              <span className='key'>{o.name} ({o.items.length})</span>
               <span className='value'><Progress value={o.items.length} max={max}><span>{o.items.length}</span></Progress></span>
             </li>
           ))}
