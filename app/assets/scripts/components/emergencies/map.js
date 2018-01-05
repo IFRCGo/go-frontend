@@ -170,9 +170,9 @@ class EmergenciesMap extends React.Component {
                     <label className='form__label'>Key</label>
                     <dl className='legend__dl legend__dl--colors'>
                       <dt className='color color--red'>red</dt>
-                      <dd>without IFRC response</dd>
+                      <dd>Without IFRC response</dd>
                       <dt className='color color--yellow'>yellow</dt>
-                      <dd>with IFRC response</dd>
+                      <dd>With IFRC response</dd>
                       <dt className='color color--blue'>blue</dt>
                       <dd>Mixed Level of Response</dd>
                     </dl>
