@@ -42,7 +42,7 @@ export const separateUppercaseWords = (x) => {
 };
 
 // Ie. given 'SCRT', return 'Secretariat'.
-const organizationCodeToDisplay = {}
+const organizationCodeToDisplay = {};
 orgTypes.forEach(o => {
   organizationCodeToDisplay[o.value] = o.label;
 });
