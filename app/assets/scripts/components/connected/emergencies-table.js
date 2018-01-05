@@ -87,7 +87,10 @@ class EmergenciesTable extends SFPComponent {
           label: 'Date'
           // label: <FilterHeader id='date' title='Date' options={dateOptions} filter={this.state.emerg.filters.date} onSelect={this.handleFilterChange.bind(this, 'emerg', 'date')} />
         },
-        { id: 'name', label: 'Name' },
+        {
+          id: 'name',
+          label: <SortHeader id='name' title='Name' sort={this.state.emerg.sort} onClick={this.handleSortChange.bind(this, 'emerg', 'name')} />
+        },
         {
           id: 'dtype',
           label: <FilterHeader id='dtype' title='Disaster Type' options={dTypeOptions} filter={this.state.emerg.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'emerg', 'dtype')} />

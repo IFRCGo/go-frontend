@@ -191,7 +191,10 @@ class AdminArea extends SFPComponent {
           id: 'date',
           label: <FilterHeader id='date' title='Date' options={dateOptions} filter={this.state.appeals.filters.date} onSelect={this.handleFilterChange.bind(this, 'appeals', 'date')} />
         },
-        { id: 'name', label: 'Name' },
+        {
+          id: 'name',
+          label: <SortHeader id='name' title='Name' sort={this.state.appeals.sort} onClick={this.handleSortChange.bind(this, 'appeals', 'name')} />
+        },
         { id: 'event', label: 'Emergency' },
         {
           id: 'dtype',
@@ -266,7 +269,10 @@ class AdminArea extends SFPComponent {
           id: 'date',
           label: <FilterHeader id='date' title='Date' options={dateOptions} filter={this.state.drefs.filters.date} onSelect={this.handleFilterChange.bind(this, 'drefs', 'date')} />
         },
-        { id: 'name', label: 'Name' },
+        {
+          id: 'name',
+          label: <SortHeader id='name' title='Name' sort={this.state.drefs.sort} onClick={this.handleSortChange.bind(this, 'drefs', 'name')} />
+        },
         { id: 'event', label: 'Emergency' },
         {
           id: 'dtype',
