@@ -85,9 +85,9 @@ const Root = () => (
         <AnonymousRoute exact path="/login" component={Login}/>
         <AnonymousRoute exact path="/register" component={Register}/>
         <AnonymousRoute exact path="/recover-account" component={RecoverAccount}/>
-        <Route exact path="/reports/new" component={FieldReportForm}/>
-        <Route exact path="/reports/:id/edit" component={FieldReportForm}/>
-        <Route exact path="/reports/:id" component={FieldReport}/>
+        <PrivateRoute exact path="/reports/new" component={FieldReportForm}/>
+        <PrivateRoute exact path="/reports/:id/edit" component={FieldReportForm}/>
+        <PrivateRoute exact path="/reports/:id" component={FieldReport}/>
         <Route exact path="/emergencies" component={Emergencies}/>
         <Route exact path="/emergencies/:id" component={Emergency}/>
         <Route exact path="/regions/:id" render={props => <AdminArea {...props} type='region' />} />

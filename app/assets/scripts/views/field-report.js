@@ -100,11 +100,11 @@ class FieldReport extends React.Component {
   }
 
   renderContent () {
-    if (!this.props.report.fetched) {
+    const { data } = this.props.report;
+
+    if (!this.props.report.fetched || !data) {
       return null;
     }
-
-    const { data } = this.props.report;
 
     return (
       <section className='inpage'>
