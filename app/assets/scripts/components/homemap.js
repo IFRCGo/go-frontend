@@ -199,7 +199,8 @@ class Homemap extends React.Component {
     const max = Math.max.apply(Math, emerg.map(o => o.items.length));
 
     return (
-      <div className='emergencies'>
+      <div className='emergencies chart'>
+        <h1>Ongoing Operations</h1>
         <h2 className='heading--xsmall'>Emergencies by Type</h2>
         <ul className='emergencies__list'>
           {emerg.map(o => (
