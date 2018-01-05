@@ -8,7 +8,7 @@ import { DateTime } from 'luxon';
 import { environment } from '../../config';
 import { getEmergenciesList } from '../../actions';
 import { nope, commaSeparatedNumber as n } from '../../utils/format';
-import { get, dTypeOptions } from '../../utils/utils';
+import { get, dTypeOptions, dateOptions, datesAgo } from '../../utils/utils';
 
 import Fold from '../fold';
 import BlockLoading from '../block-loading';
@@ -26,7 +26,7 @@ class EmergenciesTable extends SFPComponent {
           direction: 'asc'
         },
         filters: {
-          // date: 'all',
+          date: 'all',
           dtype: 'all'
         }
       }
@@ -43,6 +43,10 @@ class EmergenciesTable extends SFPComponent {
     let state = this.state.emerg;
     if (state.sort.field) {
       qs.order_by = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
+    }
+
+    if (state.filters.date !== 'all') {
+      qs.disaster_start_date__gte = datesAgo[state.filters.date]();
     }
 
     if (state.filters.dtype !== 'all') {
@@ -84,8 +88,7 @@ class EmergenciesTable extends SFPComponent {
       const headings = [
         {
           id: 'date',
-          label: 'Date'
-          // label: <FilterHeader id='date' title='Date' options={dateOptions} filter={this.state.emerg.filters.date} onSelect={this.handleFilterChange.bind(this, 'emerg', 'date')} />
+          label: <FilterHeader id='date' title='Date' options={dateOptions} filter={this.state.emerg.filters.date} onSelect={this.handleFilterChange.bind(this, 'emerg', 'date')} />
         },
         {
           id: 'name',
@@ -107,12 +110,8 @@ class EmergenciesTable extends SFPComponent {
       ];
 
       const rows = data.objects.map(rowData => {
-        const disasterDate = rowData.disaster_start_date ||
-          rowData.start_date ||
-          rowData.created_at;
-
-        const date = disasterDate
-          ? DateTime.fromISO(disasterDate).toISODate() : nope;
+        const date = rowData.disaster_start_date
+          ? DateTime.fromISO(rowData.disaster_start_date).toISODate() : nope;
 
         const beneficiaries = get(rowData, 'appeals', []).reduce((acc, next) => {
           return acc + next.num_beneficiaries;
