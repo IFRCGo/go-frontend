@@ -54,21 +54,27 @@ class Deployments extends React.Component {
     const { data } = this.props.eruOwners;
     return (
       <div className='inpage__introduction'>
-        <div className='header-stats--two-col'>
+        <div className='header-stats'>
           <ul className='stats-list'>
-            <li className='stats-list__item stats-emergencies'>
-              {n(data.deployed)}<small>Deployed ERUs</small>
+            <li className='stats-list__item stats-eru'>
+              {n(data.deployed)}<small>Deployed ERU Units</small>
             </li>
-            <li className='stats-list__item stats-funding stat-borderless stat-double'>
-              {n(data.ready)}<small>Ready ERUs</small>
+            <li className='stats-list__item stats-fact'>
+              1245<small>Deployed FACTs</small>
+            </li>
+            <li className='stats-list__item stats-people'>
+              1231<small>Deployed RDRTs</small>
+            </li>
+            <li className='stats-list__item stats-heops'>
+              1231<small>Deployed Heops</small>
             </li>
           </ul>
         </div>
-        <div className='inpage__headline-charts--two-col'>
-          <div className='stats-chart'>
+        <div className='inpage__headline-charts'>
+          <div className='chart'>
             {this.renderHeaderCharts(data.types, 'ERU Deployment Types')}
           </div>
-          <div className='stats-chart'>
+          <div className='chart'>
             {this.renderHeaderCharts(data.owners, 'Number of Deployments by NS')}
           </div>
         </div>
@@ -101,7 +107,28 @@ class Deployments extends React.Component {
         </div>
         <div className='inpage__body'>
           <div className='inner'>
-            <AlertsTable />
+            <div className='fold'>
+              <div className='inner'>
+                <div className='fold__header'>
+                  <h2 className='fold__title'>Current Deployments </h2>
+                </div>
+                <div className='fold__body'>
+                  <table className='table table--zebra'>
+                    <thead>
+                      <tr>
+                        <th>Start date</th>
+                        <th>Name</th>
+                        <th>Country</th>
+                        <th>Type</th>
+                        <th>Number of Personnel</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
             <div className='readiness__container'>
               <Readiness eruOwners={this.props.eruOwners} />
             </div>

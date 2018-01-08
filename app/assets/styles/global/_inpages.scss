@@ -239,6 +239,29 @@
   background-position: 0% 10%;
 }
 
+
+.stats-eru {
+  background-image: url('/assets/graphics/layout/eru.svg');
+  background-size: 45px;
+  background-repeat: no-repeat;
+  background-position: 0% 10%;
+}
+
+
+.stats-fact {
+  background-image: url('/assets/graphics/layout/fact.svg');
+  background-size: 35px;
+  background-repeat: no-repeat;
+  background-position: 0% 10%;
+}
+
+.stats-heops {
+  background-image: url('/assets/graphics/layout/heops.svg');
+  background-size: 30px;
+  background-repeat: no-repeat;
+  background-position: 0% 10%;
+}
+
 .map-section__container {
   margin-bottom: $global-spacing * 4;
 }
