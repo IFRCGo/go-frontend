@@ -58,8 +58,8 @@ class EmergenciesTable extends React.Component {
         <td data-heading='Date'>{date}</td>
         <td data-heading='Name'><Link className='link--primary' to={`/emergencies/${rowData.id}`}>{get(rowData, 'name', nope)}</Link></td>
         <td data-heading='Disaster Type'>{get(rowData, 'dtype.name', nope)}</td>
-        <td data-heading='Total Affected'>{n(get(rowData, 'num_affected'))}</td>
-        <td data-heading='Beneficiaries'>{n(beneficiaries)}</td>
+        <td className='right-align' data-heading='Total Affected'>{n(get(rowData, 'num_affected'))}</td>
+        <td className='right-align' data-heading='Beneficiaries'>{n(beneficiaries)}</td>
         <td data-heading='Countries'>{countries.length ? countries : nope}</td>
       </tr>
     );
@@ -99,8 +99,8 @@ class EmergenciesTable extends React.Component {
               <th>Date</th>
               <th>Name</th>
               <th>Disaster Type</th>
-              <th>Total Affected</th>
-              <th>Benficiaries</th>
+              <th className='right-align'>Total Affected</th>
+              <th className='right-align'>Benficiaries</th>
               <th>Countries</th>
             </tr>
           </thead>
