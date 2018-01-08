@@ -26,7 +26,7 @@ class EmergenciesDash extends React.Component {
             {emerg.map(o => (
               <li key={o.id}
                 className='emergencies__item'>
-                <span className='key'>{o.name}</span>
+                <span className='key'>{o.name} ({o.items.length})</span>
                 <span className='value'><Progress value={o.items.length} max={max}><span>100</span></Progress></span>
               </li>
             ))}
