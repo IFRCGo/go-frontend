@@ -560,7 +560,7 @@ class DisplayTable extends React.Component {
         <table className='table table--zebra'>
           <thead>
             <tr>
-              {this.props.headings.map(h => <th key={h.id}>{h.label}</th>)}
+              {this.props.headings.map(h => <th className={`table__header--${h.id}`} key={h.id}>{h.label}</th>)}
             </tr>
           </thead>
           <tbody>
