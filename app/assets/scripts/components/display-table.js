@@ -25,7 +25,7 @@ export default class DisplayTable extends React.Component {
               // be automatically passed to the `td` element
               const key = `${row.id}-${h.id}`;
 
-              if (typeof row[h.id] === 'object') {
+              if (typeof row[h.id] === 'object' && !Array.isArray(row[h.id]) && !React.isValidElement(row[h.id])) {
                 const {className, value, ...rest} = row[h.id];
                 return <td key={key} className={c(`table__cell--${h.id}`, className)} {...rest}>{value}</td>;
               } else {
