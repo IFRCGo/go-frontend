@@ -3,13 +3,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
-import ReactPaginate from 'react-paginate';
 import { DateTime } from 'luxon';
 
 import { environment } from '../../config';
 import { getSurgeAlerts } from '../../actions';
-import BlockLoading from '../block-loading';
+import { dateOptions, datesAgo } from '../../utils/utils/';
 
+import { SFPComponent } from '../../utils/extendables';
+import DisplayTable, { FilterHeader } from '../display-table';
+import BlockLoading from '../block-loading';
 import Fold from '../fold';
 
 const alertTypes = {
@@ -21,11 +23,25 @@ const alertTypes = {
   5: 'SURGE'
 };
 
-class AlertsTable extends React.Component {
+class AlertsTable extends SFPComponent {
+  // Methods form SFPComponent:
+  // handlePageChange (what, page)
+  // handleFilterChange (what, field, value)
+  // handleSortChange (what, field)
+
   constructor (props) {
     super(props);
     this.state = {
-      page: 1
+      alerts: {
+        page: 1,
+        sort: {
+          field: '',
+          direction: 'asc'
+        },
+        filters: {
+          date: 'all'
+        }
+      }
     };
     this.handlePageChange = this.handlePageChange.bind(this);
   }
@@ -35,36 +51,21 @@ class AlertsTable extends React.Component {
   }
 
   requestResults () {
-    this.props._getSurgeAlerts(this.state.page);
+    let qs = {};
+    let state = this.state.alerts;
+    if (state.sort.field) {
+      qs.order_by = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
+    }
+
+    if (state.filters.date !== 'all') {
+      qs.created_at__gte = datesAgo[state.filters.date]();
+    }
+
+    this.props._getSurgeAlerts(this.state.alerts.page, qs);
   }
 
-  handlePageChange (page) {
-    this.setState({ page: page.selected + 1 }, () => {
-      this.requestResults();
-    });
-  }
-
-  renderRow (rowData, idx, all) {
-    const isLast = idx === all.length - 1;
-
-    const date = DateTime.fromISO(rowData.created_at);
-
-    return (
-      <React.Fragment key={rowData.id}>
-        <tr>
-          <td data-heading='Date'>{date.toISODate()}</td>
-          <td data-heading='Emergency'><Link className='link--primary' to='' title='View Emergency page'>{rowData.operation}</Link></td>
-          <td data-heading='Alert Message'>{rowData.message}</td>
-          <td data-heading='Type'>{alertTypes[rowData.atype]}</td>
-        </tr>
-
-        {!isLast && (
-          <tr role='presentation'>
-            <td colSpan='4'></td>
-          </tr>
-        )}
-      </React.Fragment>
-    );
+  updateData (what) {
+    this.requestResults();
   }
 
   renderLoading () {
@@ -83,52 +84,53 @@ class AlertsTable extends React.Component {
     const {
       data,
       fetched,
+      fetching,
       error
     } = this.props.surgeAlerts;
 
-    if (!fetched || error) { return null; }
+    if (!fetched || fetching || error) { return null; }
 
-    if (!data.objects.length) {
-      return (
-        <p>There are no results to show.</p>
-      );
-    }
+    const headings = [
+      {
+        id: 'date',
+        label: <FilterHeader id='date' title='Date' options={dateOptions} filter={this.state.alerts.filters.date} onSelect={this.handleFilterChange.bind(this, 'alerts', 'date')} />
+      },
+      { id: 'emergency', label: 'Emergency' },
+      { id: 'msg', label: 'Alert Message' },
+      { id: 'type', label: 'Type' }
+    ];
+
+    const rows = data.objects.reduce((acc, rowData, idx, all) => {
+      const isLast = idx === all.length - 1;
+
+      const date = DateTime.fromISO(rowData.created_at);
+
+      acc.push({
+        id: rowData.id,
+        date: date.toISODate(),
+        emergency: <Link className='link--primary' to='' title='View Emergency page'>{rowData.operation}</Link>,
+        msg: rowData.message,
+        type: alertTypes[rowData.atype]
+      });
+
+      if (!isLast) {
+        acc.push({
+          rowOverride: <tr role='presentation' key={`${rowData.id}-empty`}><td colSpan='4'></td></tr>
+        });
+      }
+
+      return acc;
+    }, []);
 
     return (
-      <React.Fragment>
-        <table className='responsive-table alerts-table'>
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Emergency</th>
-              <th>Alert Message</th>
-              <th>Type</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.objects.map(this.renderRow)}
-          </tbody>
-        </table>
-
-        {data.objects.length !== 0 && (
-          <div className='pagination-wrapper'>
-            <ReactPaginate
-              previousLabel={<span>previous</span>}
-              nextLabel={<span>next</span>}
-              breakLabel={<span className='pages__page'>...</span>}
-              pageCount={Math.ceil(data.meta.total_count / data.meta.limit)}
-              forcePage={data.meta.offset / data.meta.limit}
-              marginPagesDisplayed={2}
-              pageRangeDisplayed={5}
-              onPageChange={this.handlePageChange}
-              containerClassName={'pagination'}
-              subContainerClassName={'pages'}
-              pageClassName={'pages__wrapper'}
-              pageLinkClassName={'pages__page'}
-              activeClassName={'active'} />
-          </div>
-        )}
-      </React.Fragment>
+      <DisplayTable
+        className='responsive-table alerts-table'
+        headings={headings}
+        rows={rows}
+        pageCount={data.meta.total_count / data.meta.limit}
+        page={data.meta.offset / data.meta.limit}
+        onPageChange={this.handlePageChange.bind(this, 'alerts')}
+      />
     );
   }
 

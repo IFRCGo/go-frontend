@@ -2,6 +2,9 @@
 import _get from 'lodash.get';
 import _groupBy from 'lodash.groupby';
 import _toNumber from 'lodash.tonumber';
+import { DateTime } from 'luxon';
+
+import { disasterType } from './field-report-constants';
 
 // lodash.get will only return the defaultValue when
 // the path is undefined. We want to also catch null and ''
@@ -54,3 +57,22 @@ export function finishedFetch (curr, next, prop) {
 export function objValues (obj) {
   return Object.keys(obj).map(k => obj[k]);
 }
+
+export const dateOptions = [
+  { value: 'all', label: 'Anytime' },
+  { value: 'week', label: 'Last week' },
+  { value: 'month', label: 'Last month' },
+  { value: 'year', label: 'Last year' }
+];
+
+export const datesAgo = {
+  week: () => DateTime.local().minus({days: 7}).startOf('day').toISODate(),
+  month: () => DateTime.local().minus({months: 1}).startOf('day').toISODate(),
+  year: () => DateTime.local().minus({years: 1}).startOf('day').toISODate()
+};
+
+export const dTypeOptions = [
+  { value: 'all', label: 'All Types' },
+  // Exclude the first item since it's a dropdown placeholder
+  ...disasterType.slice(1)
+];
