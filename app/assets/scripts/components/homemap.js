@@ -35,7 +35,7 @@ class Homemap extends React.Component {
 
   componentDidMount () {
     // Init the map if there's data when the component loads.
-    if (this.props.appealsList.fetched) {
+    if (!this.props.appealsList.error && this.props.appealsList.fetched) {
       this.initMapLayers(this.props);
     }
   }

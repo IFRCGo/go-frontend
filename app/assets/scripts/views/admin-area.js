@@ -39,6 +39,11 @@ import DisplayTable, { SortHeader, FilterHeader } from '../components/display-ta
 import { SFPComponent } from '../utils/extendables';
 
 class AdminArea extends SFPComponent {
+  // Methods form SFPComponent:
+  // handlePageChange (what, page)
+  // handleFilterChange (what, field, value)
+  // handleSortChange (what, field)
+
   constructor (props) {
     super(props);
     this.state = {

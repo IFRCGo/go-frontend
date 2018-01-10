@@ -11,12 +11,30 @@ import Dropdown from './dropdown';
 export default class DisplayTable extends React.Component {
   renderTbody () {
     if (this.props.rows.length) {
-      return this.props.rows.map(row => (
+      return this.props.rows.map(row => {
         // If the raw has a `rowOverride` property that is used as override.
-        row.rowOverride || (<tr key={row.id}>
-          {this.props.headings.map(h => <td key={`${row.id}-${h.id}`}>{row[h.id]}</td>)}
-        </tr>)
-      ));
+        if (row.rowOverride) {
+          return row.rowOverride;
+        }
+
+        return (
+          <tr key={row.id}>
+            {this.props.headings.map(h => {
+              // Allow the column to be an object.
+              // When it's an object additional properties, besides value will
+              // be automatically passed to the `td` element
+              const key = `${row.id}-${h.id}`;
+
+              if (typeof row[h.id] === 'object' && !Array.isArray(row[h.id]) && !React.isValidElement(row[h.id])) {
+                const {className, value, ...rest} = row[h.id];
+                return <td key={key} className={c(`table__cell--${h.id}`, className)} {...rest}>{value}</td>;
+              } else {
+                return <td key={key} className={`table__cell--${h.id}`}>{row[h.id]}</td>;
+              }
+            })}
+          </tr>
+        );
+      });
     } else {
       return (
         <tr>
@@ -57,7 +75,10 @@ export default class DisplayTable extends React.Component {
         <table className={this.props.className}>
           <thead>
             <tr>
-              {this.props.headings.map(h => <th key={h.id}>{h.label}</th>)}
+              {this.props.headings.map(h => {
+                const {id, className, label, ...rest} = h;
+                return <th key={id} className={c(`table__header--${id}`, className)} {...rest}>{label}</th>;
+              })}
             </tr>
           </thead>
           <tbody>

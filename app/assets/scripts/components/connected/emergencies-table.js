@@ -16,6 +16,11 @@ import DisplayTable, { SortHeader, FilterHeader } from '../display-table';
 import { SFPComponent } from '../../utils/extendables';
 
 class EmergenciesTable extends SFPComponent {
+  // Methods form SFPComponent:
+  // handlePageChange (what, page)
+  // handleFilterChange (what, field, value)
+  // handleSortChange (what, field)
+
   constructor (props) {
     super(props);
     this.state = {
@@ -100,11 +105,13 @@ class EmergenciesTable extends SFPComponent {
         },
         {
           id: 'totalAffected',
-          label: <SortHeader id='num_affected' title='Requested Amount (CHF)' sort={this.state.emerg.sort} onClick={this.handleSortChange.bind(this, 'emerg', 'num_affected')} />
+          label: <SortHeader id='num_affected' title='Requested Amount (CHF)' sort={this.state.emerg.sort} onClick={this.handleSortChange.bind(this, 'emerg', 'num_affected')} />,
+          className: 'right-align'
         },
         {
           id: 'beneficiaries',
-          label: 'Beneficiaries'
+          label: 'Beneficiaries',
+          className: 'right-align'
         },
         { id: 'countries', label: 'Countries' }
       ];
@@ -126,8 +133,14 @@ class EmergenciesTable extends SFPComponent {
           date: date,
           name: <Link className='link--primary' to={`/emergencies/${rowData.id}`}>{get(rowData, 'name', nope)}</Link>,
           dtype: get(rowData, 'dtype.name', nope),
-          totalAffected: n(get(rowData, 'num_affected')),
-          beneficiaries: n(beneficiaries),
+          totalAffected: {
+            value: n(get(rowData, 'num_affected')),
+            className: 'right-align'
+          },
+          beneficiaries: {
+            value: n(beneficiaries),
+            className: 'right-align'
+          },
           countries: countries.length ? countries : nope
         };
       });

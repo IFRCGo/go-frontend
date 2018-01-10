@@ -108,6 +108,14 @@
   }
 }
 
+td.right-align, th.right-align{
+  text-align: right; 
+}
+
+td.table__cell--requestAmount, td.table__cell--fundedAmount, th.table__header--requestAmount, th.table__header--fundedAmount {
+  text-align: right;
+}
+
 /* Prose specific */
 
 .prose--responsive {
