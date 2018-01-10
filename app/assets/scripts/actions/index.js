@@ -285,3 +285,12 @@ export function getHeopsDtype () {
   });
   return fetchJSON(`api/v1/aggregate_dtype/?${f}`, GET_HEOPS_DTYPE, withToken());
 }
+
+export const GET_APPEALS = 'GET_APPEALS';
+export function getAppeals (page = 1, filters = {}) {
+  filters.limit = filters.limit || 5;
+  filters.offset = filters.limit * (page - 1);
+
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v1/appeal/?${f}`, GET_APPEALS, withToken());
+}

@@ -170,7 +170,7 @@ class Emergency extends React.Component {
     if (!Array.isArray(snippets) || !snippets.length) {
       content = (
         <div className='empty-data__container'>
-          <p className='empty-data__note'>There is currently no data available.</p>;
+          <p className='empty-data__note'>There is currently no data available</p>
         </div>
       );
     } else {

@@ -36,7 +36,6 @@ class EmergenciesTable extends SFPComponent {
         }
       }
     };
-    this.handlePageChange = this.handlePageChange.bind(this);
   }
 
   componentDidMount () {
