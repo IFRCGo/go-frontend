@@ -142,7 +142,7 @@ class Home extends SFPComponent {
       }));
 
       return (
-        <Fold title={`Appeals (${data.meta.total_count})`}>
+        <Fold title={`Ongoing Operations (${data.meta.total_count})`}>
           <DisplayTable
             headings={headings}
             rows={rows}
