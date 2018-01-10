@@ -1,5 +1,11 @@
 'use strict';
-import { fetchJSON, fetchJSONRecursive, postJSON, putJSON, withToken } from '../utils/network';
+import {
+  fetchJSON,
+  fetchJSONRecursive,
+  postJSON,
+  putJSON,
+  withToken
+} from '../utils/network';
 import { stringify as buildAPIQS } from 'qs';
 import { DateTime } from 'luxon';
 
@@ -23,6 +29,11 @@ export function registerUser (payload) {
 export const LOGOUT_USER = 'LOGOUT_USER';
 export function logoutUser () {
   return { type: LOGOUT_USER };
+}
+
+export const CHANGE_PASSWORD = 'CHANGE_PASSWORD';
+export function validateAndUpdatePassword (payload) {
+  return postJSON('change_password', CHANGE_PASSWORD, payload);
 }
 
 export const GET_FIELD_REPORT = 'GET_FIELD_REPORT';
