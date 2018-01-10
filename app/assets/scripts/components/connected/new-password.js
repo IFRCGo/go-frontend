@@ -53,7 +53,8 @@ class NewPassword extends React.Component {
     }
   }
 
-  onSubmit () {
+  onSubmit (e) {
+    e.preventDefault();
     const { data } = this.state;
     validator(data);
     const errors = _cloneDeep(validator.errors);
@@ -78,7 +79,8 @@ class NewPassword extends React.Component {
       payload.username = get(this.props, 'user.data.username');
       payload.password = data.oldPassword;
     } else {
-      // TODO read reset token and username from url path?
+      payload.username = get(this.props, 'match.params.username');
+      payload.token = get(this.props, 'match.params.token');
     }
     payload['new_password'] = data.password;
     this.props._validateAndUpdatePassword(payload);
@@ -113,14 +115,12 @@ class NewPassword extends React.Component {
   render () {
     const { verifyOldPassword } = this.props;
     return (
-      <section className='fold'>
-        <div className='inner'>
-          {verifyOldPassword && this.renderPasswordField('Verify old password', 'oldPassword')}
-          {this.renderPasswordField('New password', 'password')}
-          {this.renderPasswordField('Confirm new password', 'passwordConfirm')}
-          <button className='mfa-tick' type='button' onClick={this.onSubmit}><span>Submit</span></button>
-        </div>
-      </section>
+      <form className='form form--centered' onSubmit={this.onSubmit}>
+        {verifyOldPassword && this.renderPasswordField('Verify old password', 'oldPassword')}
+        {this.renderPasswordField('New password', 'password')}
+        {this.renderPasswordField('Confirm new password', 'passwordConfirm')}
+        <button className='mfa-tick' type='button' onClick={this.onSubmit}><span>Submit</span></button>
+      </form>
     );
   }
 }
@@ -130,6 +130,7 @@ if (environment !== 'production') {
     user: T.object,
     password: T.object,
     history: T.object,
+    match: T.object,
     verifyOldPassword: T.Bool,
     _validateAndUpdatePassword: T.func
   };
