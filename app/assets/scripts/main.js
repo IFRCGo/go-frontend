@@ -87,6 +87,7 @@ const Root = () => (
         <AnonymousRoute exact path="/login" component={Login}/>
         <AnonymousRoute exact path="/register" component={Register}/>
         <AnonymousRoute exact path="/recover-account" component={RecoverAccount}/>
+        <AnonymousRoute exact path="/recover-account/:username/:token" component={RecoverAccount}/>
         <PrivateRoute exact path="/reports/new" component={FieldReportForm}/>
         <PrivateRoute exact path="/reports/:id/edit" component={FieldReportForm}/>
         <PrivateRoute exact path="/reports/:id" component={FieldReport}/>

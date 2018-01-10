@@ -11,23 +11,26 @@ import { recoverPassword } from '../actions';
 import { FormInput, FormError } from '../components/form-elements/';
 import { isValidEmail } from '../utils/utils';
 import { showAlert } from '../components/system-alerts';
+import NewPassword from '../components/connected/new-password';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 
 class RecoverAccount extends React.Component {
   constructor (props) {
     super(props);
-
+    const { params } = this.props.match;
+    const hasTokens = params.username && params.token;
     this.state = {
       data: {
         email: ''
       },
-      errors: null
+      errors: null,
+      hasTokens
     };
-
     this.onSubmit = this.onSubmit.bind(this);
   }
 
   componentWillReceiveProps (nextProps) {
+    if (this.state.hasTokens) { return; }
     if (this.props.password.fetching && !nextProps.password.fetching) {
       hideGlobalLoading();
       if (nextProps.password.error) {
@@ -59,6 +62,31 @@ class RecoverAccount extends React.Component {
     return this.state.data.email;
   }
 
+  renderEmailForm () {
+    return (
+      <form className='form form--centered' onSubmit={this.onSubmit}>
+        <p className='form__note'>
+          Enter the email you used during registration
+        </p>
+        <FormInput
+          label='Email'
+          type='text'
+          name='login-email'
+          id='login-email'
+          value={this.state.data.email}
+          onChange={this.onFieldChange.bind(this, 'email')}
+          autoFocus
+        >
+          <FormError
+            errors={this.state.errors}
+            property='email'
+          />
+        </FormInput>
+        <button className={c('mfa-tick', { disabled: !this.allowSubmit() })} type='button' onClick={this.onSubmit}><span>Recover</span></button>
+      </form>
+    );
+  }
+
   render () {
     return (
       <App className='page--login'>
@@ -72,26 +100,7 @@ class RecoverAccount extends React.Component {
           </header>
           <div className='inpage__body'>
             <div className='inner'>
-              <form className='form form--centered' onSubmit={this.onSubmit}>
-                <p className='form__note'>
-                  Enter the email you used during registration
-                </p>
-                <FormInput
-                  label='Email'
-                  type='text'
-                  name='login-email'
-                  id='login-email'
-                  value={this.state.data.email}
-                  onChange={this.onFieldChange.bind(this, 'email')}
-                  autoFocus
-                >
-                  <FormError
-                    errors={this.state.errors}
-                    property='email'
-                  />
-                </FormInput>
-                <button className={c('mfa-tick', { disabled: !this.allowSubmit() })} type='button' onClick={this.onSubmit}><span>Recover</span></button>
-              </form>
+              {this.state.hasTokens ? <NewPassword verifyOldPassword={false} /> : this.renderEmailForm()}
             </div>
           </div>
         </section>
@@ -102,8 +111,9 @@ class RecoverAccount extends React.Component {
 
 if (environment !== 'production') {
   RecoverAccount.propTypes = {
-    password: T.object,
     history: T.object,
+    match: T.object,
+    password: T.object,
     _recoverPassword: T.func
   };
 }
