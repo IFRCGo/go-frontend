@@ -2,6 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import _set from 'lodash.set';
 import _cloneDeep from 'lodash.clonedeep';
 import Ajv from 'ajv';
@@ -9,8 +10,12 @@ import ajvKeywords from 'ajv-keywords';
 
 import { environment } from '../config';
 
-import { FormInput, FormError } from '../components/form-elements/';
+import { validateAndUpdatePassword } from '../actions';
+import { get } from '../utils/utils';
 import schemaDef from '../schemas/new-password';
+import { FormInput, FormError } from '../components/form-elements/';
+import { showAlert } from '../components/system-alerts';
+import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 
 const ajv = new Ajv({ $data: true, allErrors: true, errorDataPath: 'property' });
 ajvKeywords(ajv);
@@ -36,24 +41,47 @@ class NewPassword extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  componentWillReceiveProps (nextProps) {
+    if (this.props.password.fetching && !nextProps.password.fetching) {
+      hideGlobalLoading();
+      if (nextProps.password.error) {
+        showAlert('danger', <p><strong>Error:</strong> {nextProps.password.error.error_message}</p>, true, 4500);
+      } else {
+        showAlert('success', <p>Success! Password changed, redirecting...</p>, true, 2000);
+        setTimeout(() => this.props.history.push('/account'), 2000);
+      }
+    }
+  }
+
   onSubmit () {
-    const payload = this.state.data;
-    validator(payload);
+    const { data } = this.state;
+    validator(data);
     const errors = _cloneDeep(validator.errors);
 
+    // Selectively apply validation based on whether
+    // we are verifying an existing password, as opposed
+    // to resetting a password.
     const { verifyOldPassword } = this.props;
-    if (verifyOldPassword && !this.state.data.oldPassword) {
+    if (verifyOldPassword && !data.oldPassword) {
       errors.push({
         dataPath: '.oldPassword',
-        keyword: 'required',
+        keyword: 'required'
       });
     }
 
     this.setState({ errors });
-    if (errors !== null) {
-      return;
+    if (errors !== null) { return; }
+
+    showGlobalLoading();
+    let payload = {};
+    if (verifyOldPassword) {
+      payload.username = get(this.props, 'user.data.username');
+      payload.password = data.oldPassword;
+    } else {
+      // TODO read reset token and username from url path?
     }
-      // showGlobalLoading();
+    payload['new_password'] = data.password;
+    this.props._validateAndUpdatePassword(payload);
   }
 
   onFieldChange (field, e) {
@@ -73,7 +101,7 @@ class NewPassword extends React.Component {
         classInput={getClassIfError(this.state.errors, id)}
         value={this.state.data[id]}
         onChange={this.onFieldChange.bind(this, id)}
-        >
+      >
         <FormError
           errors={this.state.errors}
           property={id}
@@ -97,12 +125,23 @@ class NewPassword extends React.Component {
   }
 }
 
-
 if (environment !== 'production') {
-  PasswordChange.propTypes = {
+  NewPassword.propTypes = {
     user: T.object,
-    verifyOldPassword: T.Bool
-  }
+    password: T.object,
+    history: T.object,
+    verifyOldPassword: T.Bool,
+    _validateAndUpdatePassword: T.func
+  };
 }
 
-export default NewPassword;
+const selector = (state) => ({
+  user: state.user,
+  password: state.password
+});
+
+const dispatcher = (dispatch) => ({
+  _validateAndUpdatePassword: (payload) => dispatch(validateAndUpdatePassword(payload))
+});
+
+export default withRouter(connect(selector, dispatcher)(NewPassword));
