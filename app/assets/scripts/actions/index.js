@@ -36,6 +36,11 @@ export function validateAndUpdatePassword (payload) {
   return postJSON('change_password', CHANGE_PASSWORD, payload);
 }
 
+export const RECOVER_PASSWORD = 'RECOVER_PASSWORD';
+export function recoverPassword (email) {
+  return postJSON('recover_password', RECOVER_PASSWORD, { email });
+}
+
 export const GET_FIELD_REPORT = 'GET_FIELD_REPORT';
 export function getFieldReportById (id) {
   return fetchJSON(`api/v1/field_report/${id}/`, GET_FIELD_REPORT, withToken(), { id });

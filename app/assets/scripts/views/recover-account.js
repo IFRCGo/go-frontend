@@ -1,12 +1,19 @@
 'use strict';
 import React from 'react';
 import c from 'classnames';
+import { connect } from 'react-redux';
+import { PropTypes as T } from 'prop-types';
+
+import { environment } from '../config';
 
 import App from './app';
+import { recoverPassword } from '../actions';
 import { FormInput, FormError } from '../components/form-elements/';
 import { isValidEmail } from '../utils/utils';
+import { showAlert } from '../components/system-alerts';
+import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 
-export default class RecoverAccount extends React.Component {
+class RecoverAccount extends React.Component {
   constructor (props) {
     super(props);
 
@@ -20,11 +27,27 @@ export default class RecoverAccount extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  componentWillReceiveProps (nextProps) {
+    if (this.props.password.fetching && !nextProps.password.fetching) {
+      hideGlobalLoading();
+      if (nextProps.password.error) {
+        showAlert('danger', <p><strong>Error:</strong> {nextProps.password.error.error_message}</p>, true, 4500);
+      } else {
+        showAlert('success', <p>Success! Password changed, redirecting...</p>, true, 2000);
+        setTimeout(() => this.props.history.push('/account'), 2000);
+      }
+    }
+  }
+
   onSubmit (e) {
     e.preventDefault();
     const errors = isValidEmail(this.state.data.email) ? null
       : [{ dataPath: '.email', message: 'Please enter a valid email' }];
     this.setState({ errors });
+    if (errors === null) {
+      showGlobalLoading();
+      this.props._recoverPassword(this.state.data.email);
+    }
   }
 
   onFieldChange (field, e) {
@@ -51,7 +74,7 @@ export default class RecoverAccount extends React.Component {
             <div className='inner'>
               <form className='form form--centered' onSubmit={this.onSubmit}>
                 <p className='form__note'>
-                  Insert the email you used during registration
+                  Enter the email you used during registration
                 </p>
                 <FormInput
                   label='Email'
@@ -76,3 +99,20 @@ export default class RecoverAccount extends React.Component {
     );
   }
 }
+
+if (environment !== 'production') {
+  RecoverAccount.propTypes = {
+    password: T.object,
+    history: T.object,
+    _recoverPassword: T.func
+  };
+}
+const selector = (state) => ({
+  password: state.password
+});
+
+const dispatcher = (dispatch) => ({
+  _recoverPassword: (email) => dispatch(recoverPassword(email))
+});
+
+export default connect(selector, dispatcher)(RecoverAccount);
