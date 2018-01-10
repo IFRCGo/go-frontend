@@ -45,7 +45,6 @@ class HeOps extends SFPComponent {
         }
       }
     };
-    this.handlePageChange = this.handlePageChange.bind(this);
   }
 
   componentWillMount () {

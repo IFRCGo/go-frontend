@@ -81,7 +81,6 @@ class AdminArea extends SFPComponent {
         }
       }
     };
-    this.handlePageChange = this.handlePageChange.bind(this);
   }
 
   componentWillReceiveProps (nextProps) {
