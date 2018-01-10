@@ -1,7 +1,7 @@
 'use strict';
 import React from 'react';
 import App from './app';
-import NewPassword from '../components/new-password';
+import NewPassword from '../components/connected/new-password';
 
 class PasswordChange extends React.Component {
   render () {
