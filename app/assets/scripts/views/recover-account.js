@@ -3,7 +3,8 @@ import React from 'react';
 import c from 'classnames';
 
 import App from './app';
-import { FormInput } from '../components/form-elements/';
+import { FormInput, FormError } from '../components/form-elements/';
+import { isValidEmail } from '../utils/utils';
 
 export default class RecoverAccount extends React.Component {
   constructor (props) {
@@ -12,13 +13,18 @@ export default class RecoverAccount extends React.Component {
     this.state = {
       data: {
         email: ''
-      }
+      },
+      errors: null
     };
 
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onSubmit () {
+  onSubmit (e) {
+    e.preventDefault();
+    const errors = isValidEmail(this.state.data.email) ? null
+      : [{ dataPath: '.email', message: 'Please enter a valid email' }];
+    this.setState({ errors });
   }
 
   onFieldChange (field, e) {
@@ -27,7 +33,6 @@ export default class RecoverAccount extends React.Component {
   }
 
   allowSubmit () {
-    // Do proper validation.
     return this.state.data.email;
   }
 
@@ -56,8 +61,12 @@ export default class RecoverAccount extends React.Component {
                   value={this.state.data.email}
                   onChange={this.onFieldChange.bind(this, 'email')}
                   autoFocus
-                />
-
+                >
+                  <FormError
+                    errors={this.state.errors}
+                    property='email'
+                  />
+                </FormInput>
                 <button className={c('mfa-tick', { disabled: !this.allowSubmit() })} type='button' onClick={this.onSubmit}><span>Recover</span></button>
               </form>
             </div>
