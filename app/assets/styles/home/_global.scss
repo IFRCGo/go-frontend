@@ -141,7 +141,16 @@
   
   .emergencies {
     @include column(12/12);
+    @include media(medium-up) {
+      @include column(3/12);
+      margin-bottom: 0;
+    }
     color: #ffffff;
+
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: $global-spacing;
+    }
 
     h2 {
       padding-left: $global-spacing;
@@ -149,10 +158,6 @@
       font-size: 1rem;
     }
 
-    @include media(medium-up) {
-      @include column(3/12);
-      margin-bottom: 0;
-    }
 
     .emergencies__list {
       list-style: none;
