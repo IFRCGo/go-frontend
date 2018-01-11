@@ -4,9 +4,6 @@
   .inner {
     max-width: 1600px;
   }
-  h1 {
-    display: none;
-  }
   .button--fullscreen {
     &:before {
       content: url('/assets/graphics/layout/close-full-screen.svg');

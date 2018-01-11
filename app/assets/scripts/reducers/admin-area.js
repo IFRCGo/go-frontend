@@ -167,7 +167,7 @@ function aggregate (state = {}, action) {
           fetching: false,
           fetched: true,
           receivedAt: action.receivedAt,
-          data: action.data.aggregate.reverse()
+          data: action.data.aggregate
         }
       });
       break;
