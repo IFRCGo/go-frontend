@@ -201,7 +201,7 @@ class Homemap extends React.Component {
     return (
       <div className='emergencies chart'>
         <h1>Ongoing Operations</h1>
-        <h2 className='heading--xsmall'>Emergencies by Type</h2>
+        <h2 className='heading--xsmall'>Operations by Type</h2>
         <ul className='emergencies__list'>
           {emerg.map(o => (
             <li
