@@ -36,7 +36,7 @@ class RecoverAccount extends React.Component {
       if (nextProps.password.error) {
         showAlert('danger', <p><strong>Error:</strong> {nextProps.password.error.error_message}</p>, true, 4500);
       } else {
-        showAlert('success', <p>Success! Password changed, redirecting...</p>, true, 2000);
+        showAlert('success', <p>We've sent an email to your inbox. Redirecting...</p>, true, 2000);
         setTimeout(() => this.props.history.push('/account'), 2000);
       }
     }
