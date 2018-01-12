@@ -24,6 +24,11 @@ const alertTypes = {
 };
 
 class AlertsTable extends SFPComponent {
+  // Methods form SFPComponent:
+  // handlePageChange (what, page)
+  // handleFilterChange (what, field, value)
+  // handleSortChange (what, field)
+
   constructor (props) {
     super(props);
     this.state = {

@@ -35,7 +35,7 @@ class Homemap extends React.Component {
 
   componentDidMount () {
     // Init the map if there's data when the component loads.
-    if (this.props.appealsList.fetched) {
+    if (!this.props.appealsList.error && this.props.appealsList.fetched) {
       this.initMapLayers(this.props);
     }
   }
@@ -201,7 +201,7 @@ class Homemap extends React.Component {
     return (
       <div className='emergencies chart'>
         <h1>Ongoing Operations</h1>
-        <h2 className='heading--xsmall'>Emergencies by Type</h2>
+        <h2 className='heading--xsmall'>Operations by Type</h2>
         <ul className='emergencies__list'>
           {emerg.map(o => (
             <li

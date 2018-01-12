@@ -15,6 +15,7 @@ import eruOwners from './eru-owners';
 import heops from './heops';
 import registration from './registration';
 import password from './password';
+import appeals from './appeals';
 
 export const reducers = {
   user,
@@ -30,7 +31,8 @@ export const reducers = {
   eruOwners,
   heops,
   registration,
-  password
+  password,
+  appeals
 };
 
 export default combineReducers(reducers);

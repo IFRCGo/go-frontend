@@ -141,18 +141,25 @@
   
   .emergencies {
     @include column(12/12);
-    color: #ffffff;
-
-    h2 {
-      padding-left: $global-spacing;
-      font-family: $base-font-family;
-      font-size: 1rem;
-    }
-
     @include media(medium-up) {
       @include column(3/12);
       margin-bottom: 0;
     }
+    color: #ffffff;
+
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: $global-spacing;
+    }
+
+    h2 {
+      padding-left: $global-spacing;
+      font-family: $base-font-family;
+      font-weight: $base-font-bold;
+      font-size: 1rem;
+      margin-bottom: $global-spacing/2;
+    }
+
 
     .emergencies__list {
       list-style: none;
