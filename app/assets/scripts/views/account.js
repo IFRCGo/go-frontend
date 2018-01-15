@@ -7,6 +7,7 @@ import _set from 'lodash.set';
 import _cloneDeep from 'lodash.clonedeep';
 import _get from 'lodash.get';
 import c from 'classnames';
+import { Link } from 'react-router-dom';
 
 import { environment } from '../config';
 import {
@@ -308,12 +309,12 @@ class Account extends React.Component {
                   <div className='inner'>
                     <div className='fold__header'>
                       <h2 className='fold__title'>Account Information</h2>
-                      <button className='button '></button>
                     </div>
                     <div className='fold__body'>
                       <dl className='dl--horizontal'>
                         {this.renderProfileAttributes(this.props.profile)}
                       </dl>
+                      <Link to='/account/password-change'>Change my password</Link>
                     </div>
                   </div>
                 </section>

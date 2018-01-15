@@ -14,6 +14,7 @@ import adminArea from './admin-area';
 import eruOwners from './eru-owners';
 import heops from './heops';
 import registration from './registration';
+import password from './password';
 import appeals from './appeals';
 
 export const reducers = {
@@ -30,6 +31,7 @@ export const reducers = {
   eruOwners,
   heops,
   registration,
+  password,
   appeals
 };
 

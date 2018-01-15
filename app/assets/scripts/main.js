@@ -13,6 +13,7 @@ import { showAlert } from './components/system-alerts';
 import Home from './views/home';
 import About from './views/about';
 import Account from './views/account';
+import PasswordChange from './views/password-change';
 import Login from './views/login';
 import Register from './views/register';
 import RecoverAccount from './views/recover-account';
@@ -82,9 +83,11 @@ const Root = () => (
         <Route exact path="/" component={Home}/>
         <Route exact path="/about" component={About}/>
         <PrivateRoute exact path="/account" component={Account}/>
+        <PrivateRoute exact path="/account/password-change" component={PasswordChange}/>
         <AnonymousRoute exact path="/login" component={Login}/>
         <AnonymousRoute exact path="/register" component={Register}/>
         <AnonymousRoute exact path="/recover-account" component={RecoverAccount}/>
+        <AnonymousRoute exact path="/recover-account/:username/:token" component={RecoverAccount}/>
         <PrivateRoute exact path="/reports/new" component={FieldReportForm}/>
         <PrivateRoute exact path="/reports/:id/edit" component={FieldReportForm}/>
         <PrivateRoute exact path="/reports/:id" component={FieldReport}/>

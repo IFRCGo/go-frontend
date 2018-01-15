@@ -61,7 +61,7 @@ class Register extends React.Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (this.props.registration.fetching && !nextProps.registration.fetchingj) {
+    if (this.props.registration.fetching && !nextProps.registration.fetching) {
       hideGlobalLoading();
       if (nextProps.registration.error) {
         const message = nextProps.registration.error.error_message || 'Could not create user';
