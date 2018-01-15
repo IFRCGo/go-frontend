@@ -156,7 +156,7 @@ class Emergency extends React.Component {
     return (
       <Fold
         id='field-reports'
-        title='Event Field Reports'
+        title='Field Reports'
         wrapperClass='event-field-reports' >
         {content}
       </Fold>
