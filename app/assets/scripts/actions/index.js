@@ -294,3 +294,39 @@ export function getAppeals (page = 1, filters = {}) {
   const f = buildAPIQS(filters);
   return fetchJSON(`/api/v1/appeal/?${f}`, GET_APPEALS, withToken());
 }
+
+export const GET_DEPLOYMENT_ERU = 'GET_DEPLOYMENT_ERU';
+export function getDeploymentERU (page = 1, filters = {}) {
+  filters.limit = filters.limit || 5;
+  filters.offset = filters.limit * (page - 1);
+
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v1/eru/?${f}`, GET_DEPLOYMENT_ERU, withToken());
+}
+
+export const GET_DEPLOYMENT_FACT = 'GET_DEPLOYMENT_FACT';
+export function getDeploymentFACT (page = 1, filters = {}) {
+  filters.limit = filters.limit || 5;
+  filters.offset = filters.limit * (page - 1);
+
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v1/fact/?${f}`, GET_DEPLOYMENT_FACT, withToken());
+}
+
+export const GET_DEPLOYMENT_HEOP = 'GET_DEPLOYMENT_HEOP';
+export function getDeploymentHEOP (page = 1, filters = {}) {
+  filters.limit = filters.limit || 5;
+  filters.offset = filters.limit * (page - 1);
+
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v1/heop/?${f}`, GET_DEPLOYMENT_HEOP, withToken());
+}
+
+export const GET_DEPLOYMENT_RDIT = 'GET_DEPLOYMENT_RDIT';
+export function getDeploymentRDIT (page = 1, filters = {}) {
+  filters.limit = filters.limit || 5;
+  filters.offset = filters.limit * (page - 1);
+
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v1/rdit/?${f}`, GET_DEPLOYMENT_RDIT, withToken());
+}
