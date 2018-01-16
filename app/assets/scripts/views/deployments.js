@@ -10,6 +10,10 @@ import {
   getDeploymentFACT,
   getDeploymentHEOP,
   getDeploymentRDIT,
+  getAllDeploymentERU,
+  getAllDeploymentFACT,
+  getAllDeploymentHEOP,
+  getAllDeploymentRDIT,
   getEruOwners
 } from '../actions';
 import { finishedFetch, get } from '../utils/utils';
@@ -82,6 +86,11 @@ class Deployments extends SFPComponent {
     this.props._getDeploymentFACT();
     this.props._getDeploymentHEOP();
     this.props._getDeploymentRDIT();
+
+    this.props._getAllDeploymentERU();
+    this.props._getAllDeploymentFACT();
+    this.props._getAllDeploymentHEOP();
+    this.props._getAllDeploymentRDIT();
   }
 
   componentWillReceiveProps (nextProps) {
@@ -325,7 +334,7 @@ class Deployments extends SFPComponent {
           </div>
         </header>
         <div>
-          <Map eruOwners={this.props.eruOwners} />
+          <Map data={this.props.deployments.geojson} />
         </div>
         <div className='inpage__body'>
           <div className='inner'>
@@ -377,7 +386,11 @@ const dispatcher = (dispatch) => ({
   _getDeploymentERU: (...args) => dispatch(getDeploymentERU(...args)),
   _getDeploymentFACT: (...args) => dispatch(getDeploymentFACT(...args)),
   _getDeploymentHEOP: (...args) => dispatch(getDeploymentHEOP(...args)),
-  _getDeploymentRDIT: (...args) => dispatch(getDeploymentRDIT(...args))
+  _getDeploymentRDIT: (...args) => dispatch(getDeploymentRDIT(...args)),
+  _getAllDeploymentERU: (...args) => dispatch(getAllDeploymentERU(...args)),
+  _getAllDeploymentFACT: (...args) => dispatch(getAllDeploymentFACT(...args)),
+  _getAllDeploymentHEOP: (...args) => dispatch(getAllDeploymentHEOP(...args)),
+  _getAllDeploymentRDIT: (...args) => dispatch(getAllDeploymentRDIT(...args))
 });
 
 export default connect(selector, dispatcher)(Deployments);
