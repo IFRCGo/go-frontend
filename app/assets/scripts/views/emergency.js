@@ -171,31 +171,37 @@ class Emergency extends React.Component {
   renderSituationReports () {
     const {
       fetched,
+      fetching,
       error,
       data
     } = this.props.situationReports;
 
-    if (!fetched || error) return null;
-
     let content;
-    if (!data.objects.length) {
-      content = (
-        <div className='empty-data__container'>
-          <p className='empty-data__note'>No situation reports available.</p>
-        </div>
-      );
-    } else {
-      content = (
-        <ul className='situation-reports-list'>
-          {data.objects.map(o => {
-            let href = o['document'] || o['document_url'] || null;
-            if (!href) { return null; }
-            return <li key={o.id}>
-              <a className='link--secondary' href={href} target='_blank'>{o.name}, {DateTime.fromISO(o.created_at).toISODate()}</a>
-            </li>;
-          })}
-        </ul>
-      );
+
+    if (fetching) {
+      content = <BlockLoading/>;
+    } else if (error) {
+      content = <p>Oh no! An error ocurred getting the data.</p>;
+    } else if (fetched) {
+      if (!data.objects.length) {
+        content = (
+          <div className='empty-data__container'>
+            <p className='empty-data__note'>No situation reports available.</p>
+          </div>
+        );
+      } else {
+        content = (
+          <ul className='situation-reports-list'>
+            {data.objects.map(o => {
+              let href = o['document'] || o['document_url'] || null;
+              if (!href) { return null; }
+              return <li key={o.id}>
+                <a className='link--secondary' href={href} target='_blank'>{o.name}, {DateTime.fromISO(o.created_at).toISODate()}</a>
+              </li>;
+            })}
+          </ul>
+        );
+      }
     }
 
     const { id } = this.props.match.params;
@@ -212,10 +218,10 @@ class Emergency extends React.Component {
             </div>
             <h2 className='fold__title'>Situation Reports</h2>
           </div>
-          )} >
-          {content}
-        </Fold>
-    )
+        )} >
+        {content}
+      </Fold>
+    );
   }
 
   renderAdditionalGraphics () {
