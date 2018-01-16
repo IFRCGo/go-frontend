@@ -5,6 +5,7 @@ import _toNumber from 'lodash.tonumber';
 import { DateTime } from 'luxon';
 
 import { disasterType } from './field-report-constants';
+import { whitelistDomains } from '../schemas/register';
 
 // lodash.get will only return the defaultValue when
 // the path is undefined. We want to also catch null and ''
@@ -46,8 +47,8 @@ export function isValidEmail (email) {
   return /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/.test(email);
 }
 
-export function isRedCrossEmail (email) {
-  return isValidEmail(email) && email.indexOf('@redcross.com') !== -1;
+export function isWhitelistedEmail (email) {
+  return isValidEmail(email) && whitelistDomains.find(o => email.indexOf(`@${o}`) !== -1);
 }
 
 export function finishedFetch (curr, next, prop) {

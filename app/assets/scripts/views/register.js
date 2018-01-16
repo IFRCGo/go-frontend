@@ -9,7 +9,7 @@ import Ajv from 'ajv';
 import ajvKeywords from 'ajv-keywords';
 import Select from 'react-select';
 
-import { isValidEmail, isRedCrossEmail, get } from '../utils/utils';
+import { isValidEmail, isWhitelistedEmail, get } from '../utils/utils';
 import { countries, orgTypes } from '../utils/field-report-constants';
 import { registerUser } from '../actions';
 import { environment } from '../config';
@@ -98,7 +98,7 @@ class Register extends React.Component {
   }
 
   shouldRequestAccess () {
-    return this.state.data.email && isValidEmail(this.state.data.email) && !isRedCrossEmail(this.state.data.email);
+    return this.state.data.email && isValidEmail(this.state.data.email) && !isWhitelistedEmail(this.state.data.email);
   }
 
   renderPasswordFields () {
