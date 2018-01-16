@@ -79,6 +79,8 @@ export function getAggregateAppeals (date, unit) {
   const f = buildAPIQS({
     start_date: date,
     model_type: 'appeal',
+    sum_beneficiaries: 'num_beneficiaries',
+    sum_amount_funded: 'amount_funded',
     unit
   });
   return fetchJSON(`api/v1/aggregate/?${f}`, GET_AGGREGATE_APPEALS, withToken(), {aggregationUnit: unit});

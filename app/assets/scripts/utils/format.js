@@ -33,6 +33,15 @@ export function shortenLargeNumber (value, decimals = 2) {
   return value;
 }
 
+export function commaSeparatedLargeNumber (value) {
+  if (value / 1e9 >= 1) {
+    return round(value / 1e9, 2) + 'B';
+  } else if (value / 1e6 >= 1) {
+    return round(value / 1e6, 2) + 'M';
+  }
+  return commaSeparatedNumber(value);
+}
+
 // Ie. given 'MadDogIndustries', return 'Mad Dog Industries'
 export const separateUppercaseWords = (x) => {
   if (typeof x !== 'string') {

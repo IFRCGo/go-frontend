@@ -6,6 +6,7 @@ import { DateTime } from 'luxon';
 
 import { environment } from '../config';
 import BlockLoading from './block-loading';
+import { commaSeparatedLargeNumber } from '../utils/format';
 
 export default class HomeCharts extends React.Component {
   renderChart (data, unit) {
@@ -35,6 +36,10 @@ export default class HomeCharts extends React.Component {
               <dt>{contentDateFormatter(item.timespan)}</dt>
               <dd>Total</dd>
               <dt>{item.count}</dt>
+              <dd>Amount Funded</dd>
+              <dt>{commaSeparatedLargeNumber(item.amount_funded)}</dt>
+              <dd>Beneficiaries</dd>
+              <dt>{commaSeparatedLargeNumber(item.beneficiaries)}</dt>
             </dl>
           </div>
         </article>
