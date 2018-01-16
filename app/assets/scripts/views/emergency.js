@@ -11,7 +11,10 @@ import { DateTime } from 'luxon';
 
 import { api, environment } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
-import { getEventById } from '../actions';
+import {
+  getEventById,
+  getSitrepsByEventId
+} from '../actions';
 import {
   commaSeparatedNumber as n,
   separateUppercaseWords as separate,
@@ -21,6 +24,7 @@ import { get } from '../utils/utils/';
 
 import App from './app';
 import Fold from '../components/fold';
+import BlockLoading from '../components/block-loading';
 
 class Emergency extends React.Component {
   constructor (props) {
@@ -53,6 +57,7 @@ class Emergency extends React.Component {
   getEvent (id) {
     showGlobalLoading();
     this.props._getEventById(id);
+    this.props._getSitrepsByEventId(id);
   }
 
   onAppealClick (id, e) {
@@ -163,6 +168,56 @@ class Emergency extends React.Component {
     );
   }
 
+  renderSituationReports () {
+    const {
+      fetched,
+      error,
+      data
+    } = this.props.situationReports;
+
+    if (!fetched || error) return null;
+
+    let content;
+    if (!data.objects.length) {
+      content = (
+        <div className='empty-data__container'>
+          <p className='empty-data__note'>No situation reports available.</p>
+        </div>
+      );
+    } else {
+      content = (
+        <ul className='situation-reports-list'>
+          {data.objects.map(o => {
+            let href = o['document'] || o['document_url'] || null;
+            if (!href) { return null; }
+            return <li key={o.id}>
+              <a className='link--secondary' href={href} target='_blank'>{o.name}, {DateTime.fromISO(o.created_at).toISODate()}</a>
+            </li>;
+          })}
+        </ul>
+      );
+    }
+
+    const { id } = this.props.match.params;
+    const addReportLink = url.resolve(api, `admin/api/event/${id}/change`);
+
+    return (
+      <Fold
+        id='situation-reports'
+        wrapperClass='situation-reports'
+        header={() => (
+          <div className='fold__headline'>
+            <div className='fold__actions'>
+              <a className='button button--primary-bounded' href={addReportLink} target='_blank'>Add Situation Report</a>
+            </div>
+            <h2 className='fold__title'>Situation Reports</h2>
+          </div>
+          )} >
+          {content}
+        </Fold>
+    )
+  }
+
   renderAdditionalGraphics () {
     const { data } = this.props.event;
     const snippets = get(data, 'snippets');
@@ -170,7 +225,7 @@ class Emergency extends React.Component {
     if (!Array.isArray(snippets) || !snippets.length) {
       content = (
         <div className='empty-data__container'>
-          <p className='empty-data__note'>There is currently no data available</p>
+          <p className='empty-data__note'>No additional graphics to show.</p>
         </div>
       );
     } else {
@@ -265,30 +320,7 @@ class Emergency extends React.Component {
               {this.renderAdditionalGraphics()}
               {this.renderKeyFigures()}
               {this.renderFieldReports()}
-
-              <Fold
-                id='situation-reports'
-                wrapperClass='situation-reports'
-                header={() => (
-                  <div className='fold__headline'>
-                    <div className='fold__actions'>
-                      <button className='button button--primary-bounded'>Add Situation Report</button>
-                    </div>
-                    <h2 className='fold__title'>Situation Reports</h2>
-                  </div>
-                )} >
-                <ul className='situation-reports-list'>
-                  <li><a className='link--secondary' href=''>Situation Report, 6 November 2017</a></li>
-                  <li><a className='link--secondary' href=''>Situation Report, 6 November 2017</a></li>
-                  <li><a className='link--secondary' href=''>Situation Report, 6 November 2017</a></li>
-                  <li><a className='link--secondary' href=''>Situation Report, 6 November 2017</a></li>
-                  <li><a className='link--secondary' href=''>Situation Report, 6 November 2017</a></li>
-                  <li><a className='link--secondary' href=''>Situation Report, 6 November 2017</a></li>
-                  <li><a className='link--secondary' href=''>Situation Report, 6 November 2017</a></li>
-                  <li><a className='link--secondary' href=''>Situation Report, 6 November 2017</a></li>
-                  <li><a className='link--secondary' href=''>Situation Report, 6 November 2017</a></li>
-                </ul>
-              </Fold>
+              {this.renderSituationReports()}
 
               <Fold
                 id='documents'
@@ -362,9 +394,11 @@ class Emergency extends React.Component {
 if (environment !== 'production') {
   Emergency.propTypes = {
     _getEventById: T.func,
+    _getSitrepsByEventId: T.func,
     match: T.object,
     location: T.object,
     event: T.object,
+    situationReports: T.object,
     isLogged: T.bool
   };
 }
@@ -378,11 +412,17 @@ const selector = (state, ownProps) => ({
     fetching: false,
     fetched: false
   }),
+  situationReports: get(state.situationReports, ownProps.match.params.id, {
+    data: {},
+    fetching: false,
+    fetched: false
+  }),
   isLogged: !!state.user.data.token
 });
 
 const dispatcher = (dispatch) => ({
-  _getEventById: (...args) => dispatch(getEventById(...args))
+  _getEventById: (...args) => dispatch(getEventById(...args)),
+  _getSitrepsByEventId: (...args) => dispatch(getSitrepsByEventId(...args))
 });
 
 export default connect(selector, dispatcher)(Emergency);
