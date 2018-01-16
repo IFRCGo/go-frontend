@@ -31,21 +31,22 @@ export default class HomeCharts extends React.Component {
       return (
         <article className='chart-tooltip'>
           <div className='chart-tooltip__contents'>
-            <dl>
-              <dd>Date</dd>
-              <dt>{contentDateFormatter(item.timespan)}</dt>
-              <dd>Drefs</dd>
-              <dt>{item.drefs.count}</dt>
+            <p>{contentDateFormatter(item.timespan)}</p>
+            <dl className='tooltip__contents-col appeals-content'>
               <dd>Appeals</dd>
               <dt>{item.appeals.count}</dt>
-              <dd>Amount Funded Drefs</dd>
-              <dt>{commaSeparatedLargeNumber(item.drefs.amount_funded)}</dt>
-              <dd>Beneficiaries Drefs</dd>
-              <dt>{commaSeparatedLargeNumber(item.drefs.beneficiaries)}</dt>
               <dd>Amount Funded Appeals</dd>
               <dt>{commaSeparatedLargeNumber(item.appeals.amount_funded)}</dt>
               <dd>Beneficiaries Appeals</dd>
               <dt>{commaSeparatedLargeNumber(item.appeals.beneficiaries)}</dt>
+            </dl>
+            <dl className='tooltip__contents-col drefs-content'>
+              <dd>Drefs</dd>
+              <dt>{item.drefs.count}</dt>
+              <dd>Amount Funded Drefs</dd>
+              <dt>{commaSeparatedLargeNumber(item.drefs.amount_funded)}</dt>
+              <dd>Beneficiaries Drefs</dd>
+              <dt>{commaSeparatedLargeNumber(item.drefs.beneficiaries)}</dt>
             </dl>
           </div>
         </article>
