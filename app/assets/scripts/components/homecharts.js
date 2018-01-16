@@ -34,12 +34,18 @@ export default class HomeCharts extends React.Component {
             <dl>
               <dd>Date</dd>
               <dt>{contentDateFormatter(item.timespan)}</dt>
-              <dd>Total</dd>
-              <dt>{item.count}</dt>
-              <dd>Amount Funded</dd>
-              <dt>{commaSeparatedLargeNumber(item.amount_funded)}</dt>
-              <dd>Beneficiaries</dd>
-              <dt>{commaSeparatedLargeNumber(item.beneficiaries)}</dt>
+              <dd>Drefs</dd>
+              <dt>{item.drefs.count}</dt>
+              <dd>Appeals</dd>
+              <dt>{item.appeals.count}</dt>
+              <dd>Amount Funded Drefs</dd>
+              <dt>{commaSeparatedLargeNumber(item.drefs.amount_funded)}</dt>
+              <dd>Beneficiaries Drefs</dd>
+              <dt>{commaSeparatedLargeNumber(item.drefs.beneficiaries)}</dt>
+              <dd>Amount Funded Appeals</dd>
+              <dt>{commaSeparatedLargeNumber(item.appeals.amount_funded)}</dt>
+              <dd>Beneficiaries Appeals</dd>
+              <dt>{commaSeparatedLargeNumber(item.appeals.beneficiaries)}</dt>
             </dl>
           </div>
         </article>
@@ -51,7 +57,8 @@ export default class HomeCharts extends React.Component {
         <LineChart data={data}>
           <XAxis tickFormatter={tickFormatter} dataKey='timespan' axisLine={false} padding={{ left: 16 }} />
           <YAxis axisLine={false} tickLine={false} width={32} padding={{ bottom: 16 }} />
-          <Line type="monotone" dataKey="count" stroke="#C22A26" />
+          <Line type='monotone' dataKey='appeals.count' stroke='#C22A26' />
+          <Line type='monotone' dataKey='drefs.count' stroke='#F39C12' />
           <Tooltip content={contentFormatter}/>
         </LineChart>
       </ResponsiveContainer>
@@ -59,19 +66,40 @@ export default class HomeCharts extends React.Component {
   }
 
   renderByMonth () {
-    if (!this.props.aggregate.month) return null;
+    if (!this.props.aggregate['month-drefs'] || !this.props.aggregate['month-appeals']) return null;
 
     const {
-      data,
-      fetched,
-      error
-    } = this.props.aggregate.month;
+      data: dataDrefs,
+      fetched: fetchedDrefs,
+      error: errorDrefs
+    } = this.props.aggregate['month-drefs'];
 
-    if (!fetched) return null;
+    const {
+      data: dataAppeals,
+      fetched: fetchedAppeals,
+      error: errorAppeals
+    } = this.props.aggregate['month-appeals'];
 
-    return error ? (
-      <p>Oh no! An error ocurred getting the stats.</p>
-    ) : (
+    if (!fetchedDrefs || !fetchedAppeals) return null;
+
+    if (errorDrefs || errorAppeals) {
+      return (
+        <p>Oh no! An error ocurred getting the stats.</p>
+      );
+    }
+
+    const data = dataDrefs.map((o, i) => {
+      const {timespan, ...drefData} = o;
+      const {timespan: _, ...appealsData} = dataAppeals[i];
+
+      return {
+        timespan: timespan,
+        drefs: drefData,
+        appeals: appealsData
+      };
+    });
+
+    return (
       <figure className='chart'>
         <figcaption>DREFS and Appeals Over the Last Year</figcaption>
         <div className='chart__container'>
@@ -82,19 +110,40 @@ export default class HomeCharts extends React.Component {
   }
 
   renderByYear () {
-    if (!this.props.aggregate.year) return null;
+    if (!this.props.aggregate['year-drefs'] || !this.props.aggregate['year-appeals']) return null;
 
     const {
-      data,
-      fetched,
-      error
-    } = this.props.aggregate.year;
+      data: dataDrefs,
+      fetched: fetchedDrefs,
+      error: errorDrefs
+    } = this.props.aggregate['year-drefs'];
 
-    if (!fetched) return null;
+    const {
+      data: dataAppeals,
+      fetched: fetchedAppeals,
+      error: errorAppeals
+    } = this.props.aggregate['year-appeals'];
 
-    return error ? (
-      <p>Oh no! An error ocurred getting the stats.</p>
-    ) : (
+    if (!fetchedDrefs || !fetchedAppeals) return null;
+
+    if (errorDrefs || errorAppeals) {
+      return (
+        <p>Oh no! An error ocurred getting the stats.</p>
+      );
+    }
+
+    const data = dataDrefs.map((o, i) => {
+      const {timespan, ...drefData} = o;
+      const {timespan: _, ...appealsData} = dataAppeals[i];
+
+      return {
+        timespan: timespan,
+        drefs: drefData,
+        appeals: appealsData
+      };
+    });
+
+    return (
       <figure className='chart'>
         <figcaption>DREFS and Appeals by Year</figcaption>
         <div className='chart__container'>

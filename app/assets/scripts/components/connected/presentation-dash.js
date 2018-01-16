@@ -35,8 +35,10 @@ class PresentationDash extends React.Component {
     addFullscreenListener(this.onFullscreenChange);
 
     this.props._getAppealsList();
-    this.props._getAggregateAppeals(DateTime.local().minus({months: 11}).startOf('day').toISODate(), 'month');
-    this.props._getAggregateAppeals('1990-01-01', 'year');
+    this.props._getAggregateAppeals(DateTime.local().minus({months: 11}).startOf('day').toISODate(), 'month', 'drefs');
+    this.props._getAggregateAppeals(DateTime.local().minus({months: 11}).startOf('day').toISODate(), 'month', 'appeals');
+    this.props._getAggregateAppeals('1990-01-01', 'year', 'drefs');
+    this.props._getAggregateAppeals('1990-01-01', 'year', 'appeals');
   }
 
   componentWillUnmount () {
