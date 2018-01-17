@@ -95,6 +95,7 @@
     "watchify": "^3.9.0"
   },
   "dependencies": {
+    "@xavescor/react": "16.2.1-path.1",
     "ajv": "^5.3.0",
     "ajv-keywords": "^2.1.1",
     "babel-polyfill": "^6.26.0",
@@ -113,7 +114,6 @@
     "mapbox-gl": "^0.42.2",
     "prop-types": "^15.6.0",
     "qs": "^6.5.1",
-    "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-paginate": "^5.0.0",
     "react-redux": "^5.0.6",
