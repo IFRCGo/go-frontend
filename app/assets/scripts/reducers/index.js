@@ -16,6 +16,7 @@ import heops from './heops';
 import registration from './registration';
 import password from './password';
 import appeals from './appeals';
+import situationReports from './situation-reports';
 
 export const reducers = {
   user,
@@ -32,7 +33,8 @@ export const reducers = {
   heops,
   registration,
   password,
-  appeals
+  appeals,
+  situationReports
 };
 
 export default combineReducers(reducers);

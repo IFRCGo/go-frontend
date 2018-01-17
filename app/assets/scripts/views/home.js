@@ -8,7 +8,7 @@ import { DateTime } from 'luxon';
 import { environment } from '../config';
 import { dateOptions, datesAgo, dTypeOptions } from '../utils/utils/';
 import { getAppeals } from '../actions';
-import { commaSeparatedNumber as n } from '../utils/format';
+import { commaSeparatedNumber as n, nope } from '../utils/format';
 
 import App from './app';
 import Fold from '../components/fold';
@@ -127,7 +127,7 @@ class Home extends SFPComponent {
         id: o.id,
         date: DateTime.fromISO(o.end_date).toISODate(),
         name: o.name,
-        event: <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link>,
+        event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
         dtype: o.dtype.name,
         requestAmount: {
           value: n(o.amount_requested),
