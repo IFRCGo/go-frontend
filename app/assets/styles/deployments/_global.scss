@@ -118,6 +118,13 @@
   }
 }
 
+.deployments-key {
+  padding: $global-spacing;
+  @include media(small-up) {
+    padding: 0;
+  }
+}
+
 .legend__title {
   font-size: 0.875rem;
   margin-bottom: 0;

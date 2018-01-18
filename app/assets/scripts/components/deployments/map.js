@@ -235,24 +235,25 @@ export default class DeploymentsMap extends React.Component {
               geoJSON={data}>
 
               <figcaption className='map-vis__legend map-vis__legend--bottom-right legend'>
-                <div className='key'>
-                  <label className='form__label'>Key</label>
-                  <dl className='legend__dl legend__dl--colors'>
-                    <dt className='color color--blue'>blue</dt>
-                    <dd>Deployed Operations (FACT, RDIT, HeOps)</dd>
-                  </dl>
-                </div>
-
-                <div className='legend__block'>
-                  <h3 className='legend__title'>ERU Units</h3>
-                  <dl className='legend__grandient'>
-                    <dt style={{background: 'linear-gradient(to right, #8A96A7, #E8EAEE)'}}>Scale Gradient</dt>
-                    <dd>
-                      <span>0</span>
-                      <span>to</span>
-                      <span>{maxScaleValue}</span>
-                    </dd>
-                  </dl>
+                <div className='deployments-key'>
+                  <div>
+                    <label className='form__label'>Key</label>
+                    <dl className='legend__dl legend__dl--colors'>
+                      <dt className='color color--blue'>blue</dt>
+                      <dd>Deployed Operations (FACT, RDIT, HeOps)</dd>
+                    </dl>
+                  </div>
+                  <div className='legend__block'>
+                    <h3 className='legend__title'>ERU Units</h3>
+                    <dl className='legend__grandient'>
+                      <dt style={{background: 'linear-gradient(to right, #8A96A7, #E8EAEE)'}}>Scale Gradient</dt>
+                      <dd>
+                        <span>0</span>
+                        <span>to</span>
+                        <span>{maxScaleValue}</span>
+                      </dd>
+                    </dl>
+                  </div>
                 </div>
               </figcaption>
 
