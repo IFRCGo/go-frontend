@@ -167,6 +167,10 @@ a.popover__contents {
   }
 }
 
+.chart-tooltip--transparent {
+  background: rgba(#fff, 0.7);
+}
+
 .recharts-tooltip-wrapper {
   dd {
     margin-bottom: 0;

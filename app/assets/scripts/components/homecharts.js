@@ -29,7 +29,7 @@ export default class HomeCharts extends React.Component {
 
       const item = payload.payload[0].payload;
       return (
-        <article className='chart-tooltip'>
+        <article className='chart-tooltip chart-tooltip--transparent'>
           <div className='chart-tooltip__contents'>
             <p>{contentDateFormatter(item.timespan)}</p>
             <dl className='tooltip__contents-col appeals-content'>
