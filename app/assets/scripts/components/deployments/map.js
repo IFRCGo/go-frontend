@@ -13,7 +13,7 @@ import {
   FormSelect
 } from '../form-elements/';
 
-const countryChromaScale = chroma.scale(['blue', 'white']);
+const countryChromaScale = chroma.scale(['#8A96A7', '#E8EAEE']);
 
 export default class DeploymentsMap extends React.Component {
   constructor (props) {
@@ -140,7 +140,7 @@ export default class DeploymentsMap extends React.Component {
       type: 'circle',
       source,
       paint: {
-        'circle-color': '#F39C12',
+        'circle-color': '#5890FF',
         'circle-radius': 8
       }
     });
@@ -238,7 +238,7 @@ export default class DeploymentsMap extends React.Component {
                 <div className='key'>
                   <label className='form__label'>Key</label>
                   <dl className='legend__dl legend__dl--colors'>
-                    <dt className='color color--yellow'>yellow</dt>
+                    <dt className='color color--blue'>blue</dt>
                     <dd>Deployed Operations (FACT, RDIT, HeOps)</dd>
                   </dl>
                 </div>
@@ -246,7 +246,7 @@ export default class DeploymentsMap extends React.Component {
                 <div className='legend__block'>
                   <h3 className='legend__title'>ERU Units</h3>
                   <dl className='legend__grandient'>
-                    <dt style={{background: 'linear-gradient(to right, blue, white)'}}>Scale Gradient</dt>
+                    <dt style={{background: 'linear-gradient(to right, #8A96A7, #E8EAEE)'}}>Scale Gradient</dt>
                     <dd>
                       <span>0</span>
                       <span>to</span>

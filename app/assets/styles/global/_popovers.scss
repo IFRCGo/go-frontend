@@ -70,6 +70,13 @@ a.popover__contents {
   > *:last-child {
     margin-bottom: 0;
   }
+
+  li {
+    list-style: none;
+  }
+  ul {
+    margin-left: 0;
+  }
 }
 
 .popover__summary {
