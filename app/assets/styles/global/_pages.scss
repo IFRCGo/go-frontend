@@ -64,7 +64,6 @@
 
 .page__body {
   @extend .clearfix;
-  flex: 1;
   margin-bottom: $global-spacing * 3;
 }
 

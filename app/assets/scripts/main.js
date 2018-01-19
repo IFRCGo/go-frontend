@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 
 import store from './utils/store';
 import { showAlert } from './components/system-alerts';
+import { detectIE } from './utils/ie';
 
 // Views.
 import Home from './views/home';
@@ -107,3 +108,32 @@ render(
   <Root store={store} />,
   document.querySelector('#app-container')
 );
+
+// Get IE or Edge browser version
+const version = detectIE();
+const htmlEl = document.querySelector('html');
+if (version === false) {
+  htmlEl.classList.add('non-ie');
+} else if (version >= 12) {
+  htmlEl.classList.add('ie', 'edge');
+} else {
+  htmlEl.classList.add('ie');
+}
+
+// Polyfill for HTML Node remove();
+// https://developer.mozilla.org/en-US/docs/Web/API/ChildNode/remove
+(function (arr) {
+  arr.forEach(function (item) {
+    if (item.hasOwnProperty('remove')) {
+      return;
+    }
+    Object.defineProperty(item, 'remove', {
+      configurable: true,
+      enumerable: true,
+      writable: true,
+      value: function remove () {
+        if (this.parentNode !== null) this.parentNode.removeChild(this);
+      }
+    });
+  });
+})([Element.prototype, CharacterData.prototype, DocumentType.prototype]);
