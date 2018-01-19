@@ -75,13 +75,18 @@ export function getAppealsList () {
 }
 
 export const GET_AGGREGATE_APPEALS = 'GET_AGGREGATE_APPEALS';
-export function getAggregateAppeals (date, unit) {
+export function getAggregateAppeals (date, unit, type) {
+  const typeMapping = { drefs: 0, appeals: 1 };
+
   const f = buildAPIQS({
     start_date: date,
     model_type: 'appeal',
+    sum_beneficiaries: 'num_beneficiaries',
+    sum_amount_funded: 'amount_funded',
+    filter_atype: typeMapping[type],
     unit
   });
-  return fetchJSON(`api/v1/aggregate/?${f}`, GET_AGGREGATE_APPEALS, withToken(), {aggregationUnit: unit});
+  return fetchJSON(`api/v1/aggregate/?${f}`, GET_AGGREGATE_APPEALS, withToken(), {aggregationUnit: unit, aggregationType: type});
 }
 
 export const GET_EMERGENCIES_LIST = 'GET_EMERGENCIES_LIST';
@@ -120,6 +125,11 @@ export function updateSubscriptions (payload) {
 export const GET_EVENT = 'GET_EVENT';
 export function getEventById (id) {
   return fetchJSON(`api/v1/event/${id}/`, GET_EVENT, withToken(), { id });
+}
+
+export const GET_SITREPS = 'GET_SITREPS';
+export function getSitrepsByEventId (id) {
+  return fetchJSON(`api/v1/situation_report/?event=${id}`, GET_SITREPS, withToken(), { id });
 }
 
 export const GET_ERU_OWNERS = 'GET_ERU_OWNERS';

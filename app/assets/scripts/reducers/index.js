@@ -17,6 +17,7 @@ import registration from './registration';
 import password from './password';
 import appeals from './appeals';
 import deployments from './deployments';
+import situationReports from './situation-reports';
 
 export const reducers = {
   user,
@@ -34,7 +35,8 @@ export const reducers = {
   registration,
   appeals,
   password,
-  deployments
+  deployments,
+  situationReports
 };
 
 export default combineReducers(reducers);

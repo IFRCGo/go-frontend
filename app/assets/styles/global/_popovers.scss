@@ -160,6 +160,7 @@ a.popover__contents {
 }
 
 .chart-tooltip {
+  float: left;
   background: #fff;
   box-shadow: 0 4px 16px 2px rgba($base-color, 0.08);   // Elevation Index: 2
   border-radius: $base-border-radius;
@@ -173,15 +174,41 @@ a.popover__contents {
   }
 }
 
+.chart-tooltip--transparent {
+  background: rgba(#fff, 0.7);
+}
+
 .recharts-tooltip-wrapper {
   dd {
     margin-bottom: 0;
     font-weight: $base-font-regular;
-    font-size: 0.87rem;
+    font-size: 0.8rem;
   }
   dt {
     margin-bottom: $global-spacing/2;
     font-weight: $base-font-light;
     font-size: 1rem;
+  }
+  p {
+    font-size: 1rem;
+    font-weight: $base-font-bold;
+    margin-bottom: $global-spacing/2;
+  }
+}
+
+.tooltip__contents-col {
+  float: left;
+  margin-right: $global-spacing;
+}
+
+.appeals-content {
+  dt {
+    color: $primary-color;
+  }
+}
+
+.drefs-content {
+  dt {
+    color: $warning-color;
   }
 }

@@ -120,7 +120,7 @@ function aggregate (state = aggregateInitialState, action) {
   switch (action.type) {
     case 'GET_AGGREGATE_APPEALS_INFLIGHT':
       state = Object.assign({}, state, {
-        [action.aggregationUnit]: {
+        [`${action.aggregationUnit}-${action.aggregationType}`]: {
           error: null,
           fetching: true,
           fetched: false
@@ -129,7 +129,7 @@ function aggregate (state = aggregateInitialState, action) {
       break;
     case 'GET_AGGREGATE_APPEALS_FAILED':
       state = Object.assign({}, state, {
-        [action.aggregationUnit]: {
+        [`${action.aggregationUnit}-${action.aggregationType}`]: {
           fetching: false,
           fetched: true,
           receivedAt: action.receivedAt,
@@ -139,7 +139,7 @@ function aggregate (state = aggregateInitialState, action) {
       break;
     case 'GET_AGGREGATE_APPEALS_SUCCESS':
       state = Object.assign({}, state, {
-        [action.aggregationUnit]: {
+        [`${action.aggregationUnit}-${action.aggregationType}`]: {
           fetching: false,
           fetched: true,
           receivedAt: action.receivedAt,
