@@ -16,13 +16,13 @@ import {
   getAllDeploymentRDIT,
   getEruOwners
 } from '../actions';
-import { finishedFetch, get } from '../utils/utils';
+import { finishedFetch, get, dateOptions, datesAgo } from '../utils/utils';
+import { getEruType } from '../utils/eru-types';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { environment } from '../config';
 import {
   commaSeparatedNumber as n
 } from '../utils/format';
-import { dateOptions, datesAgo } from '../utils/utils/';
 
 import App from './app';
 import Fold from '../components/fold';
@@ -212,6 +212,8 @@ class Deployments extends SFPComponent {
           label: 'Name'
         },
         { id: 'country', label: 'Country' },
+        { id: 'type', label: 'Type' },
+        { id: 'emer', label: 'Emergency' },
         { id: 'personnel', label: 'Number of Personnel', className: 'right-align' }
       ];
 
@@ -219,6 +221,8 @@ class Deployments extends SFPComponent {
         id: o.id,
         name: o.eru_owner.country.society_name,
         country: <ul>{o.countries.map(country => <li key={country.id}><Link to={`/countries/${country.id}`} className='link--primary' title='View Country'>{country.name}</Link></li>)}</ul>,
+        type: getEruType(o.type),
+        emer: 'N/A',
         personnel: {
           value: o.units,
           className: 'right-align'
@@ -241,11 +245,72 @@ class Deployments extends SFPComponent {
     return null;
   }
 
-  // Render for FATC, RDIT, HeOps
+  renderHeopsTable () {
+    const {
+      fetched,
+      fetching,
+      error,
+      data
+    } = this.props.deployments.heop;
+
+    if (fetching) {
+      return (
+        <Fold title='HeOps'>
+          <BlockLoading/>
+        </Fold>
+      );
+    }
+
+    if (error) {
+      return (
+        <Fold title='HeOps'>
+          <p>Oh no! An error ocurred getting the data.</p>
+        </Fold>
+      );
+    }
+
+    if (fetched) {
+      const headings = [
+        {
+          id: 'date',
+          label: <FilterHeader id='date' title='Star Date' options={dateOptions} filter={this.state.heop.filters.date} onSelect={this.handleFilterChange.bind(this, 'heop', 'date')} />
+        },
+        {
+          id: 'name',
+          label: <SortHeader id='name' title='Name' sort={this.state.heop.sort} onClick={this.handleSortChange.bind(this, 'heop', 'name')} />
+        },
+        { id: 'country', label: 'Country' },
+        { id: 'emer', label: 'Emergency' }
+      ];
+
+      const rows = data.objects.map(o => ({
+        id: o.id,
+        date: DateTime.fromISO(o.start_date).toISODate(),
+        name: o.person || 'n/a',
+        country: <Link to={`/countries/${o.country.id}`} className='link--primary' title='View Country'>{o.country.name}</Link>,
+        emer: 'N/A'
+      }));
+
+      return (
+        <Fold title={`HeOps (${data.meta.total_count})`}>
+          <DisplayTable
+            headings={headings}
+            rows={rows}
+            pageCount={data.meta.total_count / data.meta.limit}
+            page={data.meta.offset / data.meta.limit}
+            onPageChange={this.handlePageChange.bind(this, 'heop')}
+          />
+        </Fold>
+      );
+    }
+
+    return null;
+  }
+
+  // Render for FATC, RDIT
   renderDeploymentsTable (what) {
     const title = {
       fact: 'FACT',
-      heop: 'HeOps',
       rdit: 'RDIT'
     };
 
@@ -278,12 +343,8 @@ class Deployments extends SFPComponent {
           id: 'date',
           label: <FilterHeader id='date' title='Star Date' options={dateOptions} filter={this.state[what].filters.date} onSelect={this.handleFilterChange.bind(this, what, 'date')} />
         },
-        {
-          id: 'name',
-          label: <SortHeader id='name' title='Name' sort={this.state[what].sort} onClick={this.handleSortChange.bind(this, what, 'name')} />
-        },
         { id: 'country', label: 'Country' },
-        { id: 'personnel', label: 'Number of Personnel', className: 'right-align' }
+        { id: 'emer', label: 'Emergency' }
       ];
 
       const rows = data.objects.map(o => ({
@@ -291,10 +352,7 @@ class Deployments extends SFPComponent {
         date: DateTime.fromISO(o.start_date).toISODate(),
         name: o.person || 'n/a',
         country: <Link to={`/countries/${o.country.id}`} className='link--primary' title='View Country'>{o.country.name}</Link>,
-        personnel: {
-          value: 'n/a',
-          className: 'right-align'
-        }
+        emer: 'N/A'
       }));
 
       return (
@@ -344,10 +402,10 @@ class Deployments extends SFPComponent {
             {this.renderDeploymentsTable('fact')}
           </div>
           <div className='inner'>
-            {this.renderDeploymentsTable('heop')}
+            {this.renderDeploymentsTable('rdit')}
           </div>
           <div className='inner'>
-            {this.renderDeploymentsTable('rdit')}
+            {this.renderHeopsTable()}
           </div>
           <div className='inner'>
             <div className='readiness__container'>
