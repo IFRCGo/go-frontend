@@ -21,7 +21,7 @@ export default class DeploymentsMap extends React.Component {
     const { fetchedCount, error } = props.data;
     this.state = {
       layers: !fetchedCount || error ? [] : this.getLayers(props.data.data),
-      filters: [],
+      filters: this.getFilters('all'),
       loaded: false,
       mapFilter: {
         deployment: 'all'
@@ -124,7 +124,17 @@ export default class DeploymentsMap extends React.Component {
 
   getFilters (value) {
     if (value === 'all') {
-      return [];
+      return [
+        {
+          layer: 'deployments',
+          filter: [
+            'any',
+            ['>', 'fact', 0],
+            ['>', 'rdit', 0],
+            ['>', 'heop', 0]
+          ]
+        }
+      ];
     }
 
     // Only show layers where field value is above 0.
@@ -135,13 +145,22 @@ export default class DeploymentsMap extends React.Component {
 
   getLayers (geoJSON) {
     const layers = [];
+    const sumProps = ['+', ['get', 'fact'], ['get', 'rdit'], ['get', 'heop']];
+    const maxValue = Math.max(...geoJSON.features.map(({properties: { fact, rdit, heop }}) => fact + rdit + heop));
+
     layers.push({
       id: 'deployments',
       type: 'circle',
       source,
       paint: {
         'circle-color': '#5890FF',
-        'circle-radius': 8
+        'circle-radius': [
+          'interpolate',
+          ['exponential', 1],
+          sumProps,
+          0, 3,
+          maxValue, 10
+        ]
       }
     });
 
