@@ -1,10 +1,23 @@
 'use strict';
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { PropTypes as T } from 'prop-types';
+import { DateTime } from 'luxon';
 
-import { getEruOwners } from '../actions';
-import { finishedFetch } from '../utils/utils';
+import {
+  getDeploymentERU,
+  getDeploymentFACT,
+  getDeploymentHEOP,
+  getDeploymentRDIT,
+  getAllDeploymentERU,
+  getAllDeploymentFACT,
+  getAllDeploymentHEOP,
+  getAllDeploymentRDIT,
+  getEruOwners
+} from '../actions';
+import { finishedFetch, get, dateOptions, datesAgo } from '../utils/utils';
+import { getEruType } from '../utils/eru-types';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { environment } from '../config';
 import {
@@ -12,21 +25,103 @@ import {
 } from '../utils/format';
 
 import App from './app';
-import AlertsTable from '../components/connected/alerts-table';
+import Fold from '../components/fold';
 import Progress from '../components/progress';
+import BlockLoading from '../components/block-loading';
+import { SFPComponent } from '../utils/extendables';
+import DisplayTable, { SortHeader, FilterHeader } from '../components/display-table';
 import Map from '../components/deployments/map';
 import Readiness from '../components/deployments/readiness';
 
-class Deployments extends React.Component {
+class Deployments extends SFPComponent {
+  // Methods form SFPComponent:
+  // handlePageChange (what, page)
+  // handleFilterChange (what, field, value)
+  // handleSortChange (what, field)
+
+  constructor (props) {
+    super(props);
+    this.state = {
+      eru: {
+        page: 1
+      },
+      fact: {
+        page: 1,
+        sort: {
+          field: '',
+          direction: 'asc'
+        },
+        filters: {
+          date: 'all'
+        }
+      },
+      heop: {
+        page: 1,
+        sort: {
+          field: '',
+          direction: 'asc'
+        },
+        filters: {
+          date: 'all'
+        }
+      },
+      rdit: {
+        page: 1,
+        sort: {
+          field: '',
+          direction: 'asc'
+        },
+        filters: {
+          date: 'all'
+        }
+      }
+    };
+  }
+
   componentDidMount () {
     showGlobalLoading();
     this.props._getEruOwners();
+
+    this.props._getDeploymentERU();
+    this.props._getDeploymentFACT();
+    this.props._getDeploymentHEOP();
+    this.props._getDeploymentRDIT();
+
+    this.props._getAllDeploymentERU();
+    this.props._getAllDeploymentFACT();
+    this.props._getAllDeploymentHEOP();
+    this.props._getAllDeploymentRDIT();
   }
 
   componentWillReceiveProps (nextProps) {
     if (finishedFetch(this.props, nextProps, 'eruOwners')) {
       hideGlobalLoading();
     }
+  }
+
+  requestResults (what) {
+    let qs = {};
+    let state = this.state[what];
+    if (state.sort && state.sort.field) {
+      qs.order_by = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
+    }
+
+    if (state.filters && state.filters.date !== 'all') {
+      qs.created_at__gte = datesAgo[state.filters.date]();
+    }
+
+    const fn = {
+      eru: this.props._getDeploymentERU,
+      fact: this.props._getDeploymentFACT,
+      heop: this.props._getDeploymentHEOP,
+      rdit: this.props._getDeploymentRDIT
+    };
+
+    fn[what](state.page, qs);
+  }
+
+  updateData (what) {
+    this.requestResults(what);
   }
 
   renderHeaderCharts (data, title) {
@@ -52,28 +147,228 @@ class Deployments extends React.Component {
 
   renderHeaderStats () {
     const { data } = this.props.eruOwners;
+    const fact = get(this.props.deployments.fact, 'data.meta.total_count', 0);
+    const heop = get(this.props.deployments.heop, 'data.meta.total_count', 0);
+    const rdit = get(this.props.deployments.rdit, 'data.meta.total_count', 0);
+
     return (
       <div className='inpage__introduction'>
-        <div className='header-stats--two-col'>
+        <div className='header-stats'>
           <ul className='stats-list'>
-            <li className='stats-list__item stats-emergencies'>
-              {n(data.deployed)}<small>Deployed ERUs</small>
+            <li className='stats-list__item stats-eru'>
+              {n(data.deployed)}<small>Deployed ERU Units</small>
             </li>
-            <li className='stats-list__item stats-funding stat-borderless stat-double'>
-              {n(data.ready)}<small>Ready ERUs</small>
+            <li className='stats-list__item stats-fact'>
+              {n(fact)}<small>Deployed FACTs</small>
+            </li>
+            <li className='stats-list__item stats-people'>
+              {n(rdit)}<small>Deployed RDRTs</small>
+            </li>
+            <li className='stats-list__item stats-heops'>
+              {n(heop)}<small>Deployed Heops</small>
             </li>
           </ul>
         </div>
-        <div className='inpage__headline-charts--two-col'>
-          <div className='stats-chart'>
+        <div className='inpage__headline-charts'>
+          <div className='chart'>
             {this.renderHeaderCharts(data.types, 'ERU Deployment Types')}
           </div>
-          <div className='stats-chart'>
+          <div className='chart'>
             {this.renderHeaderCharts(data.owners, 'Number of Deployments by NS')}
           </div>
         </div>
       </div>
     );
+  }
+
+  renderERUTable () {
+    const {
+      fetched,
+      fetching,
+      error,
+      data
+    } = this.props.deployments.eru;
+
+    if (fetching) {
+      return (
+        <Fold title='ERU'>
+          <BlockLoading/>
+        </Fold>
+      );
+    }
+
+    if (error) {
+      return (
+        <Fold title='ERU'>
+          <p>Oh no! An error ocurred getting the data.</p>
+        </Fold>
+      );
+    }
+
+    if (fetched) {
+      const headings = [
+        {
+          id: 'name',
+          label: 'Name'
+        },
+        { id: 'country', label: 'Country' },
+        { id: 'type', label: 'Type' },
+        { id: 'emer', label: 'Emergency' },
+        { id: 'personnel', label: 'Number of Personnel', className: 'right-align' }
+      ];
+
+      const rows = data.objects.map(o => ({
+        id: o.id,
+        name: o.eru_owner.country.society_name,
+        country: <ul>{o.countries.map(country => <li key={country.id}><Link to={`/countries/${country.id}`} className='link--primary' title='View Country'>{country.name}</Link></li>)}</ul>,
+        type: getEruType(o.type),
+        emer: 'N/A',
+        personnel: {
+          value: o.units,
+          className: 'right-align'
+        }
+      }));
+
+      return (
+        <Fold title={`ERU (${data.meta.total_count})`}>
+          <DisplayTable
+            headings={headings}
+            rows={rows}
+            pageCount={data.meta.total_count / data.meta.limit}
+            page={data.meta.offset / data.meta.limit}
+            onPageChange={this.handlePageChange.bind(this, 'eru')}
+          />
+        </Fold>
+      );
+    }
+
+    return null;
+  }
+
+  renderHeopsTable () {
+    const {
+      fetched,
+      fetching,
+      error,
+      data
+    } = this.props.deployments.heop;
+
+    if (fetching) {
+      return (
+        <Fold title='HeOps'>
+          <BlockLoading/>
+        </Fold>
+      );
+    }
+
+    if (error) {
+      return (
+        <Fold title='HeOps'>
+          <p>Oh no! An error ocurred getting the data.</p>
+        </Fold>
+      );
+    }
+
+    if (fetched) {
+      const headings = [
+        {
+          id: 'date',
+          label: <FilterHeader id='date' title='Star Date' options={dateOptions} filter={this.state.heop.filters.date} onSelect={this.handleFilterChange.bind(this, 'heop', 'date')} />
+        },
+        {
+          id: 'name',
+          label: <SortHeader id='name' title='Name' sort={this.state.heop.sort} onClick={this.handleSortChange.bind(this, 'heop', 'name')} />
+        },
+        { id: 'country', label: 'Country' },
+        { id: 'emer', label: 'Emergency' }
+      ];
+
+      const rows = data.objects.map(o => ({
+        id: o.id,
+        date: DateTime.fromISO(o.start_date).toISODate(),
+        name: o.person || 'n/a',
+        country: <Link to={`/countries/${o.country.id}`} className='link--primary' title='View Country'>{o.country.name}</Link>,
+        emer: 'N/A'
+      }));
+
+      return (
+        <Fold title={`HeOps (${data.meta.total_count})`}>
+          <DisplayTable
+            headings={headings}
+            rows={rows}
+            pageCount={data.meta.total_count / data.meta.limit}
+            page={data.meta.offset / data.meta.limit}
+            onPageChange={this.handlePageChange.bind(this, 'heop')}
+          />
+        </Fold>
+      );
+    }
+
+    return null;
+  }
+
+  // Render for FATC, RDIT
+  renderDeploymentsTable (what) {
+    const title = {
+      fact: 'FACT',
+      rdit: 'RDIT'
+    };
+
+    const {
+      fetched,
+      fetching,
+      error,
+      data
+    } = this.props.deployments[what];
+
+    if (fetching) {
+      return (
+        <Fold title={title[what]}>
+          <BlockLoading/>
+        </Fold>
+      );
+    }
+
+    if (error) {
+      return (
+        <Fold title={title[what]}>
+          <p>Oh no! An error ocurred getting the data.</p>
+        </Fold>
+      );
+    }
+
+    if (fetched) {
+      const headings = [
+        {
+          id: 'date',
+          label: <FilterHeader id='date' title='Star Date' options={dateOptions} filter={this.state[what].filters.date} onSelect={this.handleFilterChange.bind(this, what, 'date')} />
+        },
+        { id: 'country', label: 'Country' },
+        { id: 'emer', label: 'Emergency' }
+      ];
+
+      const rows = data.objects.map(o => ({
+        id: o.id,
+        date: DateTime.fromISO(o.start_date).toISODate(),
+        name: o.person || 'n/a',
+        country: <Link to={`/countries/${o.country.id}`} className='link--primary' title='View Country'>{o.country.name}</Link>,
+        emer: 'N/A'
+      }));
+
+      return (
+        <Fold title={`${title[what]} (${data.meta.total_count})`}>
+          <DisplayTable
+            headings={headings}
+            rows={rows}
+            pageCount={data.meta.total_count / data.meta.limit}
+            page={data.meta.offset / data.meta.limit}
+            onPageChange={this.handlePageChange.bind(this, what)}
+          />
+        </Fold>
+      );
+    }
+
+    return null;
   }
 
   renderContent () {
@@ -97,11 +392,22 @@ class Deployments extends React.Component {
           </div>
         </header>
         <div>
-          <Map eruOwners={this.props.eruOwners} />
+          <Map data={this.props.deployments.geojson} />
         </div>
         <div className='inpage__body'>
           <div className='inner'>
-            <AlertsTable />
+            {this.renderERUTable()}
+          </div>
+          <div className='inner'>
+            {this.renderDeploymentsTable('fact')}
+          </div>
+          <div className='inner'>
+            {this.renderDeploymentsTable('rdit')}
+          </div>
+          <div className='inner'>
+            {this.renderHeopsTable()}
+          </div>
+          <div className='inner'>
             <div className='readiness__container'>
               <Readiness eruOwners={this.props.eruOwners} />
             </div>
@@ -123,16 +429,26 @@ class Deployments extends React.Component {
 if (environment !== 'production') {
   Deployments.propTypes = {
     _getEruOwners: T.func,
-    eruOwners: T.object
+    eruOwners: T.object,
+    deployments: T.object
   };
 }
 
 const selector = (state) => ({
-  eruOwners: state.eruOwners
+  eruOwners: state.eruOwners,
+  deployments: state.deployments
 });
 
 const dispatcher = (dispatch) => ({
-  _getEruOwners: () => dispatch(getEruOwners())
+  _getEruOwners: () => dispatch(getEruOwners()),
+  _getDeploymentERU: (...args) => dispatch(getDeploymentERU(...args)),
+  _getDeploymentFACT: (...args) => dispatch(getDeploymentFACT(...args)),
+  _getDeploymentHEOP: (...args) => dispatch(getDeploymentHEOP(...args)),
+  _getDeploymentRDIT: (...args) => dispatch(getDeploymentRDIT(...args)),
+  _getAllDeploymentERU: (...args) => dispatch(getAllDeploymentERU(...args)),
+  _getAllDeploymentFACT: (...args) => dispatch(getAllDeploymentFACT(...args)),
+  _getAllDeploymentHEOP: (...args) => dispatch(getAllDeploymentHEOP(...args)),
+  _getAllDeploymentRDIT: (...args) => dispatch(getAllDeploymentRDIT(...args))
 });
 
 export default connect(selector, dispatcher)(Deployments);

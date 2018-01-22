@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="41px" height="51px" viewBox="0 0 41 51" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>Page 1</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="deloyments-page--table" transform="translate(-119.000000, -454.000000)" fill="#000000">
+            <g id="Page-1" transform="translate(119.000000, 454.000000)">
+                <path d="M14.8432813,0 L14.8432813,3.28952227 L10.3595469,3.28952227 L10.3595469,6.46962704 L0,6.46962704 L0,51 L41,51 L41,6.46962704 L30.6410937,6.46962704 L30.6410937,3.28952227 L26.1573594,3.28952227 L26.1573594,0 L14.8432813,0 Z M11.6407969,4.55482101 L16.1251719,4.55482101 L16.1251719,1.27229637 L24.8754688,1.27229637 L24.8754688,4.56118249 L29.3598437,4.55482101 L29.3598437,11.4506673 L11.6407969,11.4506673 L11.6407969,4.55482101 Z M30.6410938,12.7166022 L30.6410938,7.73556193 L39.7193906,7.73556193 L39.7193906,49.7213421 L1.28125,49.7213421 L1.28125,7.73556193 L10.3595469,7.73556193 L10.3595469,12.7166022 L30.6410938,12.7166022 Z" id="Fill-1"></path>
+                <polygon id="Fill-2" points="8 32 34 32 34 31 8 31"></polygon>
+                <polygon id="Fill-3" points="8 23 25 23 25 22 8 22"></polygon>
+                <polygon id="Fill-4" points="8 39 34 39 34 38 8 38"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>
