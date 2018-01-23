@@ -49,7 +49,7 @@
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@mapbox/whoots-js/-/whoots-js-3.0.0.tgz#c1de4293081424da3ac30c23afa850af1019bb54"
 
-"@xavescor/react@^16.2.1-path.1":
+"@xavescor/react@16.2.1-path.1":
   version "16.2.1-path.1"
   resolved "https://registry.yarnpkg.com/@xavescor/react/-/react-16.2.1-path.1.tgz#2bf2608deab5e148b8fad4184dc300baf0a5b9ca"
   dependencies:
