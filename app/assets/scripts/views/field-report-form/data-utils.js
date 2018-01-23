@@ -185,12 +185,12 @@ export function convertStateToPayload (originalState) {
   // In the payload all the action are in the same array.
   // Convert the state to the correct structure:
   // [
-  //   { organization: "NATL", actions: [ { id: 1 }, { id: 2 } ], summary: "foo bar baz" },
+  //   { organization: "NTLS", actions: [ { id: 1 }, { id: 2 } ], summary: "foo bar baz" },
   //   { organization: "PNS" ... }
   // ]
   const actionsMapping = [
     // [state var, org name]
-    ['actionsNatSoc', 'NATL'],
+    ['actionsNatSoc', 'NTLS'],
     ['actionsPns', 'PNS'],
     ['actionsFederation', 'FDRN']
   ];
@@ -427,7 +427,7 @@ export function convertFieldReportToState (fieldReport) {
   // In the payload all the action are in the same array.
   // Separate them into different ones.
   const actionsMapping = {
-    'NATL': 'actionsNatSoc',
+    'NTLS': 'actionsNatSoc',
     'PNS': 'actionsPns',
     'FDRN': 'actionsFederation'
   };

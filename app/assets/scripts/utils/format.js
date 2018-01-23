@@ -92,7 +92,7 @@ export const apiPropertyDisplay = (propOrPath) => {
   return display;
 };
 
-// Ie. given ('org', { org: 'NATL' }) return 'National Society'.
+// Ie. given ('org', { org: 'NTLS' }) return 'National Society'.
 const apiPropertyFormatters = {
   'org_type': organizationType
 };
