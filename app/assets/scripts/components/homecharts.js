@@ -4,6 +4,7 @@ import { PropTypes as T } from 'prop-types';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
 import { DateTime } from 'luxon';
 
+import { get } from '../utils/utils';
 import { environment } from '../config';
 import BlockLoading from './block-loading';
 import { commaSeparatedLargeNumber } from '../utils/format';
@@ -91,7 +92,7 @@ export default class HomeCharts extends React.Component {
 
     const data = dataDrefs.map((o, i) => {
       const {timespan, ...drefData} = o;
-      const {timespan: _, ...appealsData} = dataAppeals[i];
+      const {timespan: _, ...appealsData} = get(dataAppeals, i, {});
 
       return {
         timespan: timespan,
