@@ -48,16 +48,16 @@ export default class ContactRow extends React.Component {
             />
           </FormInput>
           <FormInput
-            label='Role'
+            label='Title'
             type='text'
-            name={`${name}[role]`}
-            id={`${name}-role`}
+            name={`${name}[title]`}
+            id={`${name}-title`}
             classLabel='form__label--nested'
-            value={values.role}
-            onChange={this.onFieldChange.bind(this, 'role')} >
+            value={values.title}
+            onChange={this.onFieldChange.bind(this, 'title')} >
             <FormError
               errors={errors}
-              property={`${fieldKey}.role`}
+              property={`${fieldKey}.title`}
             />
           </FormInput>
           <FormInput
@@ -86,7 +86,7 @@ if (environment !== 'production') {
     description: T.string,
     values: T.shape({
       name: T.string,
-      role: T.string,
+      title: T.string,
       contact: T.string
     }),
     fieldKey: T.string,
