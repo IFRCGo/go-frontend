@@ -214,7 +214,9 @@ class Deployments extends SFPComponent {
         { id: 'country', label: 'Country' },
         { id: 'type', label: 'Type' },
         { id: 'emer', label: 'Emergency' },
-        { id: 'personnel', label: 'Number of Personnel', className: 'right-align' }
+        { id: 'personnel', label: 'Personnel Units' },
+        { id: 'equipment', label: 'Equipment Units' },
+        { id: 'available', label: 'Available', className: 'right-align' }
       ];
 
       const rows = data.objects.map(o => ({
@@ -223,8 +225,10 @@ class Deployments extends SFPComponent {
         country: <ul>{o.countries.map(country => <li key={country.id}><Link to={`/countries/${country.id}`} className='link--primary' title='View Country'>{country.name}</Link></li>)}</ul>,
         type: getEruType(o.type),
         emer: 'N/A',
-        personnel: {
-          value: o.units,
+        personnel: o.units,
+        equipment: o.equipment_units,
+        available: {
+          value: o.available ? 'Yes' : 'No',
           className: 'right-align'
         }
       }));
