@@ -9,11 +9,11 @@ import {
   getDeploymentERU,
   getDeploymentFACT,
   getDeploymentHEOP,
-  getDeploymentRDIT,
+  getDeploymentRDRT,
   getAllDeploymentERU,
   getAllDeploymentFACT,
   getAllDeploymentHEOP,
-  getAllDeploymentRDIT,
+  getAllDeploymentRDRT,
   getEruOwners
 } from '../actions';
 import { finishedFetch, get, dateOptions, datesAgo } from '../utils/utils';
@@ -65,7 +65,7 @@ class Deployments extends SFPComponent {
           date: 'all'
         }
       },
-      rdit: {
+      rdrt: {
         page: 1,
         sort: {
           field: '',
@@ -85,12 +85,12 @@ class Deployments extends SFPComponent {
     this.props._getDeploymentERU();
     this.props._getDeploymentFACT();
     this.props._getDeploymentHEOP();
-    this.props._getDeploymentRDIT();
+    this.props._getDeploymentRDRT();
 
     this.props._getAllDeploymentERU();
     this.props._getAllDeploymentFACT();
     this.props._getAllDeploymentHEOP();
-    this.props._getAllDeploymentRDIT();
+    this.props._getAllDeploymentRDRT();
   }
 
   componentWillReceiveProps (nextProps) {
@@ -114,7 +114,7 @@ class Deployments extends SFPComponent {
       eru: this.props._getDeploymentERU,
       fact: this.props._getDeploymentFACT,
       heop: this.props._getDeploymentHEOP,
-      rdit: this.props._getDeploymentRDIT
+      rdrt: this.props._getDeploymentRDRT
     };
 
     fn[what](state.page, qs);
@@ -149,7 +149,7 @@ class Deployments extends SFPComponent {
     const { data } = this.props.eruOwners;
     const fact = get(this.props.deployments.fact, 'data.meta.total_count', 0);
     const heop = get(this.props.deployments.heop, 'data.meta.total_count', 0);
-    const rdit = get(this.props.deployments.rdit, 'data.meta.total_count', 0);
+    const rdrt = get(this.props.deployments.rdrt, 'data.meta.total_count', 0);
 
     return (
       <div className='inpage__introduction'>
@@ -162,7 +162,7 @@ class Deployments extends SFPComponent {
               {n(fact)}<small>Deployed FACTs</small>
             </li>
             <li className='stats-list__item stats-people'>
-              {n(rdit)}<small>Deployed RDRTs</small>
+              {n(rdrt)}<small>Deployed RDRTs</small>
             </li>
             <li className='stats-list__item stats-heops'>
               {n(heop)}<small>Deployed Heops</small>
@@ -307,11 +307,11 @@ class Deployments extends SFPComponent {
     return null;
   }
 
-  // Render for FATC, RDIT
+  // Render for FATC, RDRT
   renderDeploymentsTable (what) {
     const title = {
       fact: 'FACT',
-      rdit: 'RDIT'
+      rdrt: 'RDRT/RIT'
     };
 
     const {
@@ -402,7 +402,7 @@ class Deployments extends SFPComponent {
             {this.renderDeploymentsTable('fact')}
           </div>
           <div className='inner'>
-            {this.renderDeploymentsTable('rdit')}
+            {this.renderDeploymentsTable('rdrt')}
           </div>
           <div className='inner'>
             {this.renderHeopsTable()}
@@ -444,11 +444,11 @@ const dispatcher = (dispatch) => ({
   _getDeploymentERU: (...args) => dispatch(getDeploymentERU(...args)),
   _getDeploymentFACT: (...args) => dispatch(getDeploymentFACT(...args)),
   _getDeploymentHEOP: (...args) => dispatch(getDeploymentHEOP(...args)),
-  _getDeploymentRDIT: (...args) => dispatch(getDeploymentRDIT(...args)),
+  _getDeploymentRDRT: (...args) => dispatch(getDeploymentRDRT(...args)),
   _getAllDeploymentERU: (...args) => dispatch(getAllDeploymentERU(...args)),
   _getAllDeploymentFACT: (...args) => dispatch(getAllDeploymentFACT(...args)),
   _getAllDeploymentHEOP: (...args) => dispatch(getAllDeploymentHEOP(...args)),
-  _getAllDeploymentRDIT: (...args) => dispatch(getAllDeploymentRDIT(...args))
+  _getAllDeploymentRDRT: (...args) => dispatch(getAllDeploymentRDRT(...args))
 });
 
 export default connect(selector, dispatcher)(Deployments);

@@ -130,7 +130,7 @@ export default class DeploymentsMap extends React.Component {
           filter: [
             'any',
             ['>', 'fact', 0],
-            ['>', 'rdit', 0],
+            ['>', 'rdrt', 0],
             ['>', 'heop', 0]
           ]
         }
@@ -145,8 +145,8 @@ export default class DeploymentsMap extends React.Component {
 
   getLayers (geoJSON) {
     const layers = [];
-    const sumProps = ['+', ['get', 'fact'], ['get', 'rdit'], ['get', 'heop']];
-    const maxValue = Math.max(...geoJSON.features.map(({properties: { fact, rdit, heop }}) => fact + rdit + heop));
+    const sumProps = ['+', ['get', 'fact'], ['get', 'rdrt'], ['get', 'heop']];
+    const maxValue = Math.max(...geoJSON.features.map(({properties: { fact, rdrt, heop }}) => fact + rdrt + heop));
 
     layers.push({
       id: 'deployments',
@@ -182,8 +182,8 @@ export default class DeploymentsMap extends React.Component {
         value: feature.properties.fact
       },
       {
-        label: 'RDIT',
-        value: feature.properties.rdit
+        label: 'RDRT',
+        value: feature.properties.rdrt
       },
       {
         label: 'HeOps',
@@ -233,8 +233,8 @@ export default class DeploymentsMap extends React.Component {
         value: 'fact'
       },
       {
-        label: 'RDIT',
-        value: 'rdit'
+        label: 'RDRT',
+        value: 'rdrt'
       },
       {
         label: 'HeOps',
@@ -259,7 +259,7 @@ export default class DeploymentsMap extends React.Component {
                     <label className='form__label'>Key</label>
                     <dl className='legend__dl legend__dl--colors'>
                       <dt className='color color--blue'>blue</dt>
-                      <dd>Deployed Operations (FACT, RDIT, HeOps)</dd>
+                      <dd>Deployed Operations (FACT, RDRT/RIT, HeOps)</dd>
                     </dl>
                   </div>
                   <div className='legend__block'>

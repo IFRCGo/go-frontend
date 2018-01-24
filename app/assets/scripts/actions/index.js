@@ -348,13 +348,13 @@ export function getDeploymentHEOP (page = 1, filters = {}) {
   return fetchJSON(`/api/v1/heop/?${f}`, GET_DEPLOYMENT_HEOP, withToken());
 }
 
-export const GET_DEPLOYMENT_RDIT = 'GET_DEPLOYMENT_RDIT';
-export function getDeploymentRDIT (page = 1, filters = {}) {
+export const GET_DEPLOYMENT_RDRT = 'GET_DEPLOYMENT_RDRT';
+export function getDeploymentRDRT (page = 1, filters = {}) {
   filters.limit = filters.limit || 5;
   filters.offset = filters.limit * (page - 1);
 
   const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v1/rdit/?${f}`, GET_DEPLOYMENT_RDIT, withToken());
+  return fetchJSON(`/api/v1/rdrt/?${f}`, GET_DEPLOYMENT_RDRT, withToken());
 }
 
 export const GET_ALL_DEPLOYMENT_ERU = 'GET_ALL_DEPLOYMENT_ERU';
@@ -375,8 +375,8 @@ export function getAllDeploymentHEOP (filters = {}) {
   return fetchJSONRecursive(`/api/v1/heop/?${f}`, GET_ALL_DEPLOYMENT_HEOP, withToken());
 }
 
-export const GET_ALL_DEPLOYMENT_RDIT = 'GET_ALL_DEPLOYMENT_RDIT';
-export function getAllDeploymentRDIT (filters = {}) {
+export const GET_ALL_DEPLOYMENT_RDRT = 'GET_ALL_DEPLOYMENT_RDRT';
+export function getAllDeploymentRDRT (filters = {}) {
   const f = buildAPIQS(filters);
-  return fetchJSONRecursive(`/api/v1/rdit/?${f}`, GET_ALL_DEPLOYMENT_RDIT, withToken());
+  return fetchJSONRecursive(`/api/v1/rdrt/?${f}`, GET_ALL_DEPLOYMENT_RDRT, withToken());
 }
