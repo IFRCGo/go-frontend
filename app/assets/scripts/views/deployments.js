@@ -21,7 +21,9 @@ import { getEruType } from '../utils/eru-types';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { environment } from '../config';
 import {
-  commaSeparatedNumber as n
+  commaSeparatedNumber as n,
+  nope,
+  na
 } from '../utils/format';
 
 import App from './app';
@@ -224,7 +226,7 @@ class Deployments extends SFPComponent {
         name: o.eru_owner.country.society_name,
         country: <ul>{o.countries.map(country => <li key={country.id}><Link to={`/countries/${country.id}`} className='link--primary' title='View Country'>{country.name}</Link></li>)}</ul>,
         type: getEruType(o.type),
-        emer: 'N/A',
+        emer: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
         personnel: o.units,
         equipment: o.equipment_units,
         available: {
@@ -277,7 +279,7 @@ class Deployments extends SFPComponent {
       const headings = [
         {
           id: 'date',
-          label: <FilterHeader id='date' title='Star Date' options={dateOptions} filter={this.state.heop.filters.date} onSelect={this.handleFilterChange.bind(this, 'heop', 'date')} />
+          label: <FilterHeader id='date' title='Start Date' options={dateOptions} filter={this.state.heop.filters.date} onSelect={this.handleFilterChange.bind(this, 'heop', 'date')} />
         },
         {
           id: 'name',
@@ -290,9 +292,9 @@ class Deployments extends SFPComponent {
       const rows = data.objects.map(o => ({
         id: o.id,
         date: DateTime.fromISO(o.start_date).toISODate(),
-        name: o.person || 'n/a',
+        name: o.person || na,
         country: <Link to={`/countries/${o.country.id}`} className='link--primary' title='View Country'>{o.country.name}</Link>,
-        emer: 'N/A'
+        emer: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope
       }));
 
       return (
@@ -345,8 +347,9 @@ class Deployments extends SFPComponent {
       const headings = [
         {
           id: 'date',
-          label: <FilterHeader id='date' title='Star Date' options={dateOptions} filter={this.state[what].filters.date} onSelect={this.handleFilterChange.bind(this, what, 'date')} />
+          label: <FilterHeader id='date' title='Start Date' options={dateOptions} filter={this.state[what].filters.date} onSelect={this.handleFilterChange.bind(this, what, 'date')} />
         },
+        { id: 'people', label: 'People' },
         { id: 'country', label: 'Country' },
         { id: 'emer', label: 'Emergency' }
       ];
@@ -354,9 +357,9 @@ class Deployments extends SFPComponent {
       const rows = data.objects.map(o => ({
         id: o.id,
         date: DateTime.fromISO(o.start_date).toISODate(),
-        name: o.person || 'n/a',
+        people: n(o.people.length),
         country: <Link to={`/countries/${o.country.id}`} className='link--primary' title='View Country'>{o.country.name}</Link>,
-        emer: 'N/A'
+        emer: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope
       }));
 
       return (
