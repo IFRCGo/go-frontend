@@ -196,7 +196,7 @@ export default class DeploymentsMap extends React.Component {
     ];
 
     render(<MapPopover
-      title={`Deployments for ${feature.properties.countryName}`}
+      title={`Deployments in ${feature.properties.countryName}`}
       countryId={feature.properties.countryId}
       deployments={deployments}
       onCloseClick={this.onPopoverCloseClick.bind(this)} />, popoverContent);
