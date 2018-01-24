@@ -237,7 +237,7 @@ const centroids = {
   ZA: [ 24.013740105381743, -31.34626594879008 ],
   ZM: [ 28.139395986901523, -14.711384911184556 ],
   ZW: [ 29.12339922810141, -20.63456879280292 ]
-}
+};
 
 export function getCentroid (iso) {
   // Centroid or null island.
