@@ -4,6 +4,7 @@ import _groupBy from 'lodash.groupby';
 import _toNumber from 'lodash.tonumber';
 import { DateTime } from 'luxon';
 
+import { na } from './format';
 import { disasterType } from './field-report-constants';
 import { whitelistDomains } from '../schemas/register';
 
@@ -23,7 +24,7 @@ export function groupByDisasterType (objs) {
   return Object.keys(emergenciesByType).map(key => {
     return {
       id: _toNumber(key),
-      name: emergenciesByType[key][0].dtype.name,
+      name: get(emergenciesByType[key][0], 'dtype.name', na),
       items: emergenciesByType[key]
     };
   }).sort((a, b) => a.items.length < b.items.length);
