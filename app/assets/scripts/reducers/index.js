@@ -18,6 +18,7 @@ import password from './password';
 import appeals from './appeals';
 import deployments from './deployments';
 import situationReports from './situation-reports';
+import appealDocuments from './appeal-documents';
 
 export const reducers = {
   user,
@@ -36,6 +37,7 @@ export const reducers = {
   appeals,
   password,
   deployments,
+  appealDocuments,
   situationReports
 };
 
