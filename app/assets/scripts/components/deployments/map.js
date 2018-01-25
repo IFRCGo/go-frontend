@@ -1,5 +1,6 @@
 'use strict';
 import React from 'react';
+import * as path from 'path';
 import { render } from 'react-dom';
 import { PropTypes as T } from 'prop-types';
 import mapboxgl from 'mapbox-gl';
@@ -302,6 +303,14 @@ if (environment !== 'production') {
   };
 }
 
+const logoPath = '/assets/graphics/content';
+const logoSrc = {
+  fact: 'fact.jpg',
+  eru: 'eru.jpg',
+  heops: 'heops.jpg',
+  rdrt: 'rdrt.jpg'
+};
+
 class MapPopover extends React.Component {
   render () {
     const {
@@ -325,7 +334,8 @@ class MapPopover extends React.Component {
           <div className='popover__body'>
             <ul>
               {deployments.map(dep => (
-                <li key={dep.label}>{dep.value} {dep.label}</li>
+                <li key={dep.label}>
+                  <img src={path.join(logoPath, logoSrc[dep.label.toLowerCase()])} />{dep.value} {dep.label}</li>
               ))}
             </ul>
           </div>
