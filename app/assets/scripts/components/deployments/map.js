@@ -14,7 +14,7 @@ import {
   FormSelect
 } from '../form-elements/';
 
-const countryChromaScale = chroma.scale(['#8A96A7', '#E8EAEE']);
+const countryChromaScale = chroma.scale(['#F0C9E8', '#861A70']);
 
 export default class DeploymentsMap extends React.Component {
   constructor (props) {
@@ -266,7 +266,7 @@ export default class DeploymentsMap extends React.Component {
                   <div className='legend__block'>
                     <h3 className='legend__title'>ERU Units</h3>
                     <dl className='legend__grandient'>
-                      <dt style={{background: 'linear-gradient(to right, #8A96A7, #E8EAEE)'}}>Scale Gradient</dt>
+                      <dt style={{background: 'linear-gradient(to right, #F0C9E8, #861A70)'}}>Scale Gradient</dt>
                       <dd>
                         <span>0</span>
                         <span>to</span>
