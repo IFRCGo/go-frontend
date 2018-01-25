@@ -13,7 +13,8 @@ import { api, environment } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import {
   getEventById,
-  getSitrepsByEventId
+  getSitrepsByEventId,
+  getAppealDocsByAppealIds
 } from '../actions';
 import {
   commaSeparatedNumber as n,
@@ -47,6 +48,7 @@ class Emergency extends React.Component {
 
     if (this.props.event.fetching && !nextProps.event.fetching) {
       hideGlobalLoading();
+      this.getAppealDocuments(nextProps.event);
     }
   }
 
@@ -58,6 +60,11 @@ class Emergency extends React.Component {
     showGlobalLoading();
     this.props._getEventById(id);
     this.props._getSitrepsByEventId(id);
+  }
+
+  getAppealDocuments (event) {
+    const appealIds = get(event, 'data.appeals', []).map(o => o.id);
+    this.props._getAppealDocsByAppealIds(appealIds, event.data.id);
   }
 
   onAppealClick (id, e) {
@@ -153,7 +160,9 @@ class Emergency extends React.Component {
         );
       } else {
         content = (
-          <p>There are no field reports to show</p>
+          <div className='empty-data__container'>
+            <p>No field reports to show</p>
+          </div>
         );
       }
     }
@@ -168,13 +177,13 @@ class Emergency extends React.Component {
     );
   }
 
-  renderSituationReports () {
+  renderDocuments (documents, title, wrapperClass, includeAdminLink) {
     const {
       fetched,
       fetching,
       error,
       data
-    } = this.props.situationReports;
+    } = documents;
 
     let content;
 
@@ -186,12 +195,12 @@ class Emergency extends React.Component {
       if (!data.objects.length) {
         content = (
           <div className='empty-data__container'>
-            <p className='empty-data__note'>No situation reports available.</p>
+            <p className='empty-data__note'>No documents available.</p>
           </div>
         );
       } else {
         content = (
-          <ul className='situation-reports-list'>
+          <ul className={wrapperClass}>
             {data.objects.map(o => {
               let href = o['document'] || o['document_url'] || null;
               if (!href) { return null; }
@@ -213,10 +222,12 @@ class Emergency extends React.Component {
         wrapperClass='situation-reports'
         header={() => (
           <div className='fold__headline'>
-            <div className='fold__actions'>
-              <a className='button button--primary-bounded' href={addReportLink} target='_blank'>Add Situation Report</a>
-            </div>
-            <h2 className='fold__title'>Situation Reports</h2>
+            {includeAdminLink && (
+              <div className='fold__actions'>
+                <a className='button button--primary-bounded' href={addReportLink} target='_blank'>Add a Report</a>
+              </div>
+            )}
+            <h2 className='fold__title'>{title}</h2>
           </div>
         )} >
         {content}
@@ -326,27 +337,8 @@ class Emergency extends React.Component {
               {this.renderAdditionalGraphics()}
               {this.renderKeyFigures()}
               {this.renderFieldReports()}
-              {this.renderSituationReports()}
-
-              <Fold
-                id='documents'
-                title='Public Appeals Documents'
-                wrapperClass='Public Appeals Documents'
-                footer={() => (
-                  <a href='' className='link--primary'>View More</a>
-                )} >
-                <ul className='public-docs-list'>
-                  <li>09/23/17 <a className='link--secondary' href=''>Audited Financial Statement, 01.01.2016 - 31.12.2016</a></li>
-                  <li>09/23/17 <a className='link--secondary' href=''>Audited Financial Statement, 01.01.2016 - 31.12.2016</a></li>
-                  <li>09/23/17 <a className='link--secondary' href=''>Audited Financial Statement, 01.01.2016 - 31.12.2016</a></li>
-                  <li>09/23/17 <a className='link--secondary' href=''>Audited Financial Statement, 01.01.2016 - 31.12.2016</a></li>
-                  <li>09/23/17 <a className='link--secondary' href=''>Audited Financial Statement, 01.01.2016 - 31.12.2016</a></li>
-                  <li>09/23/17 <a className='link--secondary' href=''>Audited Financial Statement, 01.01.2016 - 31.12.2016</a></li>
-                  <li>09/23/17 <a className='link--secondary' href=''>Audited Financial Statement, 01.01.2016 - 31.12.2016</a></li>
-                  <li>09/23/17 <a className='link--secondary' href=''>Audited Financial Statement, 01.01.2016 - 31.12.2016</a></li>
-                  <li>09/23/17 <a className='link--secondary' href=''>Audited Financial Statement, 01.01.2016 - 31.12.2016</a></li>
-                </ul>
-              </Fold>
+              {this.renderDocuments(this.props.situationReports, 'Situation Reports', 'situation-reports-list', true)}
+              {this.renderDocuments(this.props.appealDocuments, 'Appeal Documents', 'public-docs-list')}
 
               <Fold
                 id='contacts'
@@ -378,7 +370,9 @@ class Emergency extends React.Component {
                     </tbody>
                   </table>
                 ) : (
-                  <p>There are no contacts to show</p>
+                  <div className='empty-data__container'>
+                    <p>No contacts to show</p>
+                  </div>
                 )}
               </Fold>
             </div>
@@ -401,10 +395,12 @@ if (environment !== 'production') {
   Emergency.propTypes = {
     _getEventById: T.func,
     _getSitrepsByEventId: T.func,
+    _getAppealDocsByAppealIds: T.func,
     match: T.object,
     location: T.object,
     event: T.object,
     situationReports: T.object,
+    appealDocuments: T.object,
     isLogged: T.bool
   };
 }
@@ -423,12 +419,18 @@ const selector = (state, ownProps) => ({
     fetching: false,
     fetched: false
   }),
+  appealDocuments: get(state.appealDocuments, ownProps.match.params.id, {
+    data: {},
+    fetching: false,
+    fetched: false
+  }),
   isLogged: !!state.user.data.token
 });
 
 const dispatcher = (dispatch) => ({
   _getEventById: (...args) => dispatch(getEventById(...args)),
-  _getSitrepsByEventId: (...args) => dispatch(getSitrepsByEventId(...args))
+  _getSitrepsByEventId: (...args) => dispatch(getSitrepsByEventId(...args)),
+  _getAppealDocsByAppealIds: (...args) => dispatch(getAppealDocsByAppealIds(...args))
 });
 
 export default connect(selector, dispatcher)(Emergency);
