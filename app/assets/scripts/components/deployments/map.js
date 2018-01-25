@@ -1,5 +1,6 @@
 'use strict';
 import React from 'react';
+import * as path from 'path';
 import { render } from 'react-dom';
 import { PropTypes as T } from 'prop-types';
 import mapboxgl from 'mapbox-gl';
@@ -13,7 +14,7 @@ import {
   FormSelect
 } from '../form-elements/';
 
-const countryChromaScale = chroma.scale(['#8A96A7', '#E8EAEE']);
+const countryChromaScale = chroma.scale(['#F0C9E8', '#861A70']);
 
 export default class DeploymentsMap extends React.Component {
   constructor (props) {
@@ -265,7 +266,7 @@ export default class DeploymentsMap extends React.Component {
                   <div className='legend__block'>
                     <h3 className='legend__title'>ERU Units</h3>
                     <dl className='legend__grandient'>
-                      <dt style={{background: 'linear-gradient(to right, #8A96A7, #E8EAEE)'}}>Scale Gradient</dt>
+                      <dt style={{background: 'linear-gradient(to right, #F0C9E8, #861A70)'}}>Scale Gradient</dt>
                       <dd>
                         <span>0</span>
                         <span>to</span>
@@ -302,6 +303,14 @@ if (environment !== 'production') {
   };
 }
 
+const logoPath = '/assets/graphics/content';
+const logoSrc = {
+  fact: 'fact.jpg',
+  eru: 'eru.jpg',
+  heops: 'heops.jpg',
+  rdrt: 'rdrt.jpg'
+};
+
 class MapPopover extends React.Component {
   render () {
     const {
@@ -325,7 +334,8 @@ class MapPopover extends React.Component {
           <div className='popover__body'>
             <ul>
               {deployments.map(dep => (
-                <li key={dep.label}>{dep.value} {dep.label}</li>
+                <li key={dep.label}>
+                  <img src={path.join(logoPath, logoSrc[dep.label.toLowerCase()])} />{dep.value} {dep.label}</li>
               ))}
             </ul>
           </div>
