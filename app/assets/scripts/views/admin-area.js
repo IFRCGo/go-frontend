@@ -19,7 +19,8 @@ import { environment } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { get, dateOptions, datesAgo, dTypeOptions } from '../utils/utils/';
 import {
-  commaSeparatedNumber as n
+  commaSeparatedNumber as n,
+  nope
 } from '../utils/format';
 import {
   getAdmAreaById,
@@ -297,7 +298,7 @@ class AdminArea extends SFPComponent {
         id: o.id,
         date: DateTime.fromISO(o.end_date).toISODate(),
         name: o.name,
-        event: <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link>,
+        event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
         dtype: o.dtype.name,
         requestAmount: n(o.amount_requested),
         fundedAmount: n(o.amount_funded),
@@ -351,7 +352,7 @@ class AdminArea extends SFPComponent {
           label: <FilterHeader id='date' title='Date' options={dateOptions} filter={this.state.fieldReports.filters.date} onSelect={this.handleFilterChange.bind(this, 'fieldReports', 'date')} />
         },
         { id: 'name', label: 'Name' },
-        { id: 'event', label: 'Event' },
+        { id: 'event', label: 'Emergency' },
         {
           id: 'dtype',
           label: <FilterHeader id='dtype' title='Disaster Type' options={dTypeOptions} filter={this.state.fieldReports.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'fieldReports', 'dtype')} />
@@ -363,7 +364,7 @@ class AdminArea extends SFPComponent {
         id: o.id,
         date: DateTime.fromISO(o.created_at).toISODate(),
         name: <Link to={`/reports/${o.id}`} className='link--primary' title='View Field Report'>{o.summary}</Link>,
-        event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : 'n/a',
+        event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
         dtype: o.dtype.name,
         countries: <ul>{o.countries.map(country => <li key={country.id}><Link to={`/countries/${country.id}`} className='link--primary' title='View Country'>{country.name}</Link></li>)}</ul>
       }));

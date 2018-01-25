@@ -296,7 +296,7 @@ class FieldReportForm extends React.Component {
           </FormSelect>
 
           <div className='form__group'>
-            <label className='form__label'>Event</label>
+            <label className='form__label'>Emergency</label>
             <Select.Async
               value={this.state.data.event}
               onChange={this.onFieldChange.bind(this, 'event')}
