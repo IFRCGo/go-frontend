@@ -217,8 +217,7 @@ class Deployments extends SFPComponent {
         { id: 'type', label: 'Type' },
         { id: 'emer', label: 'Emergency' },
         { id: 'personnel', label: 'Personnel Units' },
-        { id: 'equipment', label: 'Equipment Units' },
-        { id: 'available', label: 'Available', className: 'right-align' }
+        { id: 'equipment', label: 'Equipment Units' }
       ];
 
       const rows = data.objects.map(o => ({
@@ -228,11 +227,7 @@ class Deployments extends SFPComponent {
         type: getEruType(o.type),
         emer: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
         personnel: o.units,
-        equipment: o.equipment_units,
-        available: {
-          value: o.available ? 'Yes' : 'No',
-          className: 'right-align'
-        }
+        equipment: o.equipment_units
       }));
 
       return (
