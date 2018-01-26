@@ -321,6 +321,12 @@ export function getAppeals (page = 1, filters = {}) {
   return fetchJSON(`/api/v1/appeal/?${f}`, GET_APPEALS, withToken());
 }
 
+export const GET_APPEAL_DOCS = 'GET_APPEAL_DOCS';
+export function getAppealDocsByAppealIds (appealIds, id) {
+  const ids = (Array.isArray(appealIds) ? appealIds : [appealIds]).join(',');
+  return fetchJSON(`api/v1/appeal_document/?appeal__id__in=${ids}`, GET_APPEAL_DOCS, withToken(), { id });
+}
+
 export const GET_DEPLOYMENT_ERU = 'GET_DEPLOYMENT_ERU';
 export function getDeploymentERU (page = 1, filters = {}) {
   filters.limit = filters.limit || 5;
