@@ -100,11 +100,11 @@ class FieldReport extends React.Component {
   }
 
   renderContent () {
-    if (!this.props.report.fetched) {
+    const { data } = this.props.report;
+
+    if (!this.props.report.fetched || !data) {
       return null;
     }
-
-    const { data } = this.props.report;
 
     return (
       <section className='inpage'>
@@ -168,7 +168,7 @@ class FieldReport extends React.Component {
                 </DisplaySection>
                 {this.renderPlannedResponse(data)}
                 <DisplaySection title='Description' inner={get(data, 'description', false)} />
-                {this.renderActionsTaken(data, 'NATL', 'National Society')}
+                {this.renderActionsTaken(data, 'NTLS', 'National Society')}
                 {this.renderActionsTaken(data, 'PNS', 'PNS Red Cross')}
                 {this.renderActionsTaken(data, 'FDRN', 'Federation Red Cross')}
                 <DisplaySection title='Actions taken by others' inner={get(data, 'action_others', false)} />
@@ -216,7 +216,7 @@ if (environment !== 'production') {
   DisplaySection.propTypes = {
     title: T.string,
     inner: T.string,
-    children: T.object
+    children: T.node
   };
 }
 

@@ -8,15 +8,11 @@
     color: $base-font-color;
     padding: ($global-spacing) 0;
     @include media(small-up) {
-      padding: ($global-spacing * 3) 0;
+      padding: ($global-spacing * 2) 0;
     }
 
     > .inner {
       @extend .row, .row--centered;
-
-      > *:last-child {
-        margin-bottom: 0;
-      }
     }
 
     @include media(medium-up) {
@@ -24,7 +20,7 @@
     }
 
     @include media(large-up) {
-      padding: ($global-spacing * 5) 0;
+      padding: ($global-spacing * 4) 0;
     }
   }
 
@@ -59,7 +55,7 @@
 
   &__title--centered {
     display: block;
-    max-width: 32rem;
+    max-width: 42rem;
     margin: 0 auto;
   }
 
@@ -235,6 +231,29 @@
 .stats-funding {
   background-image: url('/assets/graphics/layout/funding.svg');
   background-size: 45px;
+  background-repeat: no-repeat;
+  background-position: 0% 10%;
+}
+
+
+.stats-eru {
+  background-image: url('/assets/graphics/layout/eru.svg');
+  background-size: 45px;
+  background-repeat: no-repeat;
+  background-position: 0% 10%;
+}
+
+
+.stats-fact {
+  background-image: url('/assets/graphics/layout/fact.svg');
+  background-size: 35px;
+  background-repeat: no-repeat;
+  background-position: 0% 10%;
+}
+
+.stats-heops {
+  background-image: url('/assets/graphics/layout/heops.svg');
+  background-size: 30px;
   background-repeat: no-repeat;
   background-position: 0% 10%;
 }

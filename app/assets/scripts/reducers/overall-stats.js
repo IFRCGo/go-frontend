@@ -32,8 +32,9 @@ function appealsList (state = appealsListInitialState, action) {
         activeDrefs: 0,
         activeAppeals: 0,
         totalAppeals: 0,
-        fundedAppeals: 0,
         budget: 0,
+        appealsBudget: 0,
+        appealsFunding: 0,
         targetPop: 0
       };
 
@@ -57,9 +58,8 @@ function appealsList (state = appealsListInitialState, action) {
             acc.activeAppeals++;
           }
           const amountFunded = _toNumber(object.amount_funded);
-          if (amountFunded >= amountRequested) {
-            acc.fundedAppeals++;
-          }
+          acc.appealsBudget += amountRequested;
+          acc.appealsFunding += amountFunded;
         }
         return acc;
       }, struct);
@@ -120,7 +120,7 @@ function aggregate (state = aggregateInitialState, action) {
   switch (action.type) {
     case 'GET_AGGREGATE_APPEALS_INFLIGHT':
       state = Object.assign({}, state, {
-        [action.aggregationUnit]: {
+        [`${action.aggregationUnit}-${action.aggregationType}`]: {
           error: null,
           fetching: true,
           fetched: false
@@ -129,7 +129,7 @@ function aggregate (state = aggregateInitialState, action) {
       break;
     case 'GET_AGGREGATE_APPEALS_FAILED':
       state = Object.assign({}, state, {
-        [action.aggregationUnit]: {
+        [`${action.aggregationUnit}-${action.aggregationType}`]: {
           fetching: false,
           fetched: true,
           receivedAt: action.receivedAt,
@@ -139,11 +139,11 @@ function aggregate (state = aggregateInitialState, action) {
       break;
     case 'GET_AGGREGATE_APPEALS_SUCCESS':
       state = Object.assign({}, state, {
-        [action.aggregationUnit]: {
+        [`${action.aggregationUnit}-${action.aggregationType}`]: {
           fetching: false,
           fetched: true,
           receivedAt: action.receivedAt,
-          data: action.data.aggregate.reverse()
+          data: action.data.aggregate
         }
       });
       break;

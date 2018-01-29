@@ -55,9 +55,17 @@
   .updated {
     font-size: 0.75rem;
     color: rgba($base-color, 0.48);
-    float: right;
     width: 40%;
-    text-align: right;
+    text-align: left;
+    float: left;
+    width: 100%;
+    margin-top: $global-spacing;
+    @include media(large-up) {
+      text-align: right;
+      float: right;
+      width: 30%;
+      margin-top: 0;
+    }
   }
   .card__col {
     @include column(5.5/12);
@@ -69,6 +77,9 @@
       border-left: solid 1px rgba($base-color, 0.1);
       padding-left: $global-spacing;
     };
+    .link--primary {
+      line-height: 1.5;
+    }
   }
   .card__label {
     font-size: 0.875rem;
@@ -81,6 +92,8 @@
   padding-bottom: $global-spacing;
   margin-bottom: $global-spacing;
   border-bottom: solid 1px rgba($base-color, 0.1);
+  float: left;
+  width: 100%;
 }
 
 .card__label--ready {
@@ -107,5 +120,45 @@
     border-left: none;
     padding-left: 0;
     margin-left: 0;
+  }
+
+  .map-vis__legend--top-left {
+    top: 1rem;
+
+    .form__group {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.deployments-key {
+  padding: $global-spacing;
+  @include media(small-up) {
+    padding: 0;
+  }
+}
+
+.legend__title {
+  font-size: 0.875rem;
+  margin-bottom: 0;
+}
+
+.legend__grandient {
+  margin-bottom: 0;
+
+  dt {
+    box-shadow: inset 0 0 0 1px rgba($base-color, 0.08);
+    font-size: 0;
+    line-height: 0;
+    height: 0.5rem;
+  }
+
+  dd {
+    span:nth-child(2) {
+      @extend .visually-hidden;
+    }
+    span:last-child() {
+      float: right;
+    }
   }
 }

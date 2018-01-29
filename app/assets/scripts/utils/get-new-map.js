@@ -38,19 +38,6 @@ export const mapStyle = {
         'fill-opacity': 1,
         'fill-outline-color': 'hsla(209, 16%, 50%, 0.68)'
       }
-    },
-    {
-      'id': 'population',
-      'type': 'circle',
-      'source': 'ifrc',
-      'source-layer': 'population',
-      'layout': {
-        'visibility': 'visible'
-      },
-      'paint': {
-        'circle-radius': 2,
-        'circle-color': 'hsl(210, 77%, 11%)'
-      }
     }
   ]
 };

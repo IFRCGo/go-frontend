@@ -1,5 +1,11 @@
 'use strict';
-import { fetchJSON, fetchJSONRecursive, postJSON, putJSON, withToken } from '../utils/network';
+import {
+  fetchJSON,
+  fetchJSONRecursive,
+  postJSON,
+  putJSON,
+  withToken
+} from '../utils/network';
 import { stringify as buildAPIQS } from 'qs';
 import { DateTime } from 'luxon';
 
@@ -15,9 +21,24 @@ export function getUserProfile (username) {
   return fetchJSON(`api/v1/user/?username=${username}`, GET_PROFILE, withToken());
 }
 
+export const REGISTER_USER = 'REGISTER_USER';
+export function registerUser (payload) {
+  return postJSON('register', REGISTER_USER, payload);
+}
+
 export const LOGOUT_USER = 'LOGOUT_USER';
 export function logoutUser () {
   return { type: LOGOUT_USER };
+}
+
+export const CHANGE_PASSWORD = 'CHANGE_PASSWORD';
+export function validateAndUpdatePassword (payload) {
+  return postJSON('change_password', CHANGE_PASSWORD, payload);
+}
+
+export const RECOVER_PASSWORD = 'RECOVER_PASSWORD';
+export function recoverPassword (email) {
+  return postJSON('recover_password', RECOVER_PASSWORD, { email });
 }
 
 export const GET_FIELD_REPORT = 'GET_FIELD_REPORT';
@@ -54,13 +75,18 @@ export function getAppealsList () {
 }
 
 export const GET_AGGREGATE_APPEALS = 'GET_AGGREGATE_APPEALS';
-export function getAggregateAppeals (date, unit) {
+export function getAggregateAppeals (date, unit, type) {
+  const typeMapping = { drefs: 0, appeals: 1 };
+
   const f = buildAPIQS({
     start_date: date,
     model_type: 'appeal',
+    sum_beneficiaries: 'num_beneficiaries',
+    sum_amount_funded: 'amount_funded',
+    filter_atype: typeMapping[type],
     unit
   });
-  return fetchJSON(`api/v1/aggregate/?${f}`, GET_AGGREGATE_APPEALS, withToken(), {aggregationUnit: unit});
+  return fetchJSON(`api/v1/aggregate/?${f}`, GET_AGGREGATE_APPEALS, withToken(), {aggregationUnit: unit, aggregationType: type});
 }
 
 export const GET_EMERGENCIES_LIST = 'GET_EMERGENCIES_LIST';
@@ -99,6 +125,11 @@ export function updateSubscriptions (payload) {
 export const GET_EVENT = 'GET_EVENT';
 export function getEventById (id) {
   return fetchJSON(`api/v1/event/${id}/`, GET_EVENT, withToken(), { id });
+}
+
+export const GET_SITREPS = 'GET_SITREPS';
+export function getSitrepsByEventId (id) {
+  return fetchJSON(`api/v1/situation_report/?event=${id}`, GET_SITREPS, withToken(), { id });
 }
 
 export const GET_ERU_OWNERS = 'GET_ERU_OWNERS';
@@ -279,4 +310,81 @@ export function getHeopsDtype () {
     model_type: 'heop'
   });
   return fetchJSON(`api/v1/aggregate_dtype/?${f}`, GET_HEOPS_DTYPE, withToken());
+}
+
+export const GET_APPEALS = 'GET_APPEALS';
+export function getAppeals (page = 1, filters = {}) {
+  filters.limit = filters.limit || 5;
+  filters.offset = filters.limit * (page - 1);
+
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v1/appeal/?${f}`, GET_APPEALS, withToken());
+}
+
+export const GET_APPEAL_DOCS = 'GET_APPEAL_DOCS';
+export function getAppealDocsByAppealIds (appealIds, id) {
+  const ids = (Array.isArray(appealIds) ? appealIds : [appealIds]).join(',');
+  return fetchJSON(`api/v1/appeal_document/?appeal__id__in=${ids}`, GET_APPEAL_DOCS, withToken(), { id });
+}
+
+export const GET_DEPLOYMENT_ERU = 'GET_DEPLOYMENT_ERU';
+export function getDeploymentERU (page = 1, filters = {}) {
+  filters.limit = filters.limit || 5;
+  filters.offset = filters.limit * (page - 1);
+  filters['countries__isnull'] = false;
+
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v1/eru/?${f}`, GET_DEPLOYMENT_ERU, withToken());
+}
+
+export const GET_DEPLOYMENT_FACT = 'GET_DEPLOYMENT_FACT';
+export function getDeploymentFACT (page = 1, filters = {}) {
+  filters.limit = filters.limit || 5;
+  filters.offset = filters.limit * (page - 1);
+
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v1/fact/?${f}`, GET_DEPLOYMENT_FACT, withToken());
+}
+
+export const GET_DEPLOYMENT_HEOP = 'GET_DEPLOYMENT_HEOP';
+export function getDeploymentHEOP (page = 1, filters = {}) {
+  filters.limit = filters.limit || 5;
+  filters.offset = filters.limit * (page - 1);
+
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v1/heop/?${f}`, GET_DEPLOYMENT_HEOP, withToken());
+}
+
+export const GET_DEPLOYMENT_RDRT = 'GET_DEPLOYMENT_RDRT';
+export function getDeploymentRDRT (page = 1, filters = {}) {
+  filters.limit = filters.limit || 5;
+  filters.offset = filters.limit * (page - 1);
+
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v1/rdrt/?${f}`, GET_DEPLOYMENT_RDRT, withToken());
+}
+
+export const GET_ALL_DEPLOYMENT_ERU = 'GET_ALL_DEPLOYMENT_ERU';
+export function getAllDeploymentERU (filters = {}) {
+  filters['countries__isnull'] = false;
+  const f = buildAPIQS(filters);
+  return fetchJSONRecursive(`/api/v1/eru/?${f}`, GET_ALL_DEPLOYMENT_ERU, withToken());
+}
+
+export const GET_ALL_DEPLOYMENT_FACT = 'GET_ALL_DEPLOYMENT_FACT';
+export function getAllDeploymentFACT (filters = {}) {
+  const f = buildAPIQS(filters);
+  return fetchJSONRecursive(`/api/v1/fact/?${f}`, GET_ALL_DEPLOYMENT_FACT, withToken());
+}
+
+export const GET_ALL_DEPLOYMENT_HEOP = 'GET_ALL_DEPLOYMENT_HEOP';
+export function getAllDeploymentHEOP (filters = {}) {
+  const f = buildAPIQS(filters);
+  return fetchJSONRecursive(`/api/v1/heop/?${f}`, GET_ALL_DEPLOYMENT_HEOP, withToken());
+}
+
+export const GET_ALL_DEPLOYMENT_RDRT = 'GET_ALL_DEPLOYMENT_RDRT';
+export function getAllDeploymentRDRT (filters = {}) {
+  const f = buildAPIQS(filters);
+  return fetchJSONRecursive(`/api/v1/rdrt/?${f}`, GET_ALL_DEPLOYMENT_RDRT, withToken());
 }

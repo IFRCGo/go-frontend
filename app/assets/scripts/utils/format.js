@@ -1,5 +1,6 @@
 'use strict';
 import { get } from './utils';
+import { orgTypes } from './field-report-constants';
 
 export const nope = '--';
 export const na = 'N/A';
@@ -32,6 +33,15 @@ export function shortenLargeNumber (value, decimals = 2) {
   return value;
 }
 
+export function commaSeparatedLargeNumber (value) {
+  if (value / 1e9 >= 1) {
+    return round(value / 1e9, 2) + 'B';
+  } else if (value / 1e6 >= 1) {
+    return round(value / 1e6, 2) + 'M';
+  }
+  return commaSeparatedNumber(value);
+}
+
 // Ie. given 'MadDogIndustries', return 'Mad Dog Industries'
 export const separateUppercaseWords = (x) => {
   if (typeof x !== 'string') {
@@ -41,12 +51,10 @@ export const separateUppercaseWords = (x) => {
 };
 
 // Ie. given 'SCRT', return 'Secretariat'.
-const organizationCodeToDisplay = {
-  'NTLS': 'National Society',
-  'DLGN': 'Delegation',
-  'SCRT': 'Secretariat',
-  'ICRC': 'ICRC'
-};
+const organizationCodeToDisplay = {};
+orgTypes.forEach(o => {
+  organizationCodeToDisplay[o.value] = o.label;
+});
 export const organizationType = (code) => organizationCodeToDisplay[code] || invalid;
 
 export const uppercaseFirstLetter = (str) => {
@@ -84,7 +92,7 @@ export const apiPropertyDisplay = (propOrPath) => {
   return display;
 };
 
-// Ie. given ('org', { org: 'NATL' }) return 'National Society'.
+// Ie. given ('org', { org: 'NTLS' }) return 'National Society'.
 const apiPropertyFormatters = {
   'org_type': organizationType
 };

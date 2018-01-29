@@ -1325,3 +1325,26 @@ export const eruTypes = [
     label: 'Water & Sanitation: Module Mass Sanitation 20'
   }
 ];
+
+export const orgTypes = [
+  {
+    label: 'National Society',
+    value: 'NTLS'
+  },
+  {
+    label: 'Delegation',
+    value: 'DLGN'
+  },
+  {
+    label: 'Secretariat',
+    value: 'SCRT'
+  },
+  {
+    label: 'ICRC',
+    value: 'ICRC'
+  },
+  {
+    label: 'Other',
+    value: 'OTHR'
+  }
+];

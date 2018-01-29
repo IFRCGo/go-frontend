@@ -31,14 +31,14 @@ class Footer extends React.PureComponent {
             </div>
             <div className='footer-nav__block'>
               <ul className='footer-menu'>
-                <li className='footer-menu__item--highlight'><Link to='/' title='Deployments'>Deployments</Link></li>
-                <li><Link to='/' title='HeOps'>HeOps</Link></li>
+                <li className='footer-menu__item--highlight'><Link to='/deployments' title='Deployments'>Deployments</Link></li>
+                <li><Link to='/deployments' title='All Deployments'>All Deployments</Link></li>
+                <li><Link to='/heops' title='HeOps'>HeOps</Link></li>
               </ul>
             </div>
             <div className='footer-nav__block'>
               <ul className='footer-menu'>
-                <li className='footer-menu__item--highlight'><Link to='/' title='About'>About</Link></li>
-                <li><Link to='/' title='Resources'>Resources</Link></li>
+                <li className='footer-menu__item--highlight'><Link to='/about' title='About'>About</Link></li>
               </ul>
             </div>
             <div className='footer-nav__block footer-nav__block--sec'>

@@ -7,42 +7,17 @@ import c from 'classnames';
 
 import { environment } from '../../config';
 import { getAppealsList, getAggregateAppeals } from '../../actions';
+import {
+  enterFullscreen,
+  exitFullscreen,
+  isFullscreen,
+  addFullscreenListener,
+  removeFullscreenListener
+} from '../../utils/fullscreen';
 
 import Homestats from '../homestats';
 import Homemap from '../homemap';
 import HomeCharts from '../homecharts';
-
-const enterFullscreen = () => {
-  let i = document.querySelector('#presentation');
-  if (i.requestFullscreen) {
-    i.requestFullscreen();
-  } else if (i.webkitRequestFullscreen) {
-    i.webkitRequestFullscreen();
-  } else if (i.mozRequestFullScreen) {
-    i.mozRequestFullScreen();
-  } else if (i.msRequestFullscreen) {
-    i.msRequestFullscreen();
-  }
-};
-
-const exitFullscreen = () => {
-  if (document.exitFullscreen) {
-    document.exitFullscreen();
-  } else if (document.webkitExitFullscreen) {
-    document.webkitExitFullscreen();
-  } else if (document.mozCancelFullScreen) {
-    document.mozCancelFullScreen();
-  } else if (document.msExitFullscreen) {
-    document.msExitFullscreen();
-  }
-};
-
-const isFullscreen = () => {
-  return document.fullscreenElement ||
-    document.webkitFullscreenElement ||
-    document.mozFullScreenElement ||
-    document.msFullscreenElement;
-};
 
 class PresentationDash extends React.Component {
   constructor (props) {
@@ -57,21 +32,17 @@ class PresentationDash extends React.Component {
   }
 
   componentDidMount () {
-    document.addEventListener('fullscreenchange', this.onFullscreenChange);
-    document.addEventListener('webkitfullscreenchange', this.onFullscreenChange);
-    document.addEventListener('mozfullscreenchange', this.onFullscreenChange);
-    document.addEventListener('MSFullscreenChange', this.onFullscreenChange);
+    addFullscreenListener(this.onFullscreenChange);
 
     this.props._getAppealsList();
-    this.props._getAggregateAppeals(DateTime.local().minus({months: 11}).startOf('day').toISODate(), 'month');
-    this.props._getAggregateAppeals('1990-01-01', 'year');
+    this.props._getAggregateAppeals(DateTime.local().minus({months: 11}).startOf('day').toISODate(), 'month', 'drefs');
+    this.props._getAggregateAppeals(DateTime.local().minus({months: 11}).startOf('day').toISODate(), 'month', 'appeals');
+    this.props._getAggregateAppeals('1990-01-01', 'year', 'drefs');
+    this.props._getAggregateAppeals('1990-01-01', 'year', 'appeals');
   }
 
   componentWillUnmount () {
-    document.removeEventListener('fullscreenchange', this.onFullscreenChange);
-    document.removeEventListener('webkitfullscreenchange', this.onFullscreenChange);
-    document.removeEventListener('mozfullscreenchange', this.onFullscreenChange);
-    document.removeEventListener('MSFullscreenChange', this.onFullscreenChange);
+    removeFullscreenListener(this.onFullscreenChange);
   }
 
   onFullscreenChange () {
@@ -83,7 +54,7 @@ class PresentationDash extends React.Component {
       exitFullscreen();
       this.setState({fullscreen: false});
     } else {
-      enterFullscreen();
+      enterFullscreen(document.querySelector('#presentation'));
       this.setState({fullscreen: true});
     }
   }
@@ -96,7 +67,6 @@ class PresentationDash extends React.Component {
 
     return (
       <section className={c('fold--stats', {presenting: this.state.fullscreen})} id='presentation'>
-        <h1 className='visually-hidden'>Statistics</h1>
         <div className='inner'>
           <div className='presentation__actions'>
             <button className='button button--base-plain button--fullscreen' onClick={this.toggleFullscreen} title='View in fullscreen'><span>FullScreen</span></button>

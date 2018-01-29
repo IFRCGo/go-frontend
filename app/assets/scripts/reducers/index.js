@@ -13,6 +13,12 @@ import event from './event';
 import adminArea from './admin-area';
 import eruOwners from './eru-owners';
 import heops from './heops';
+import registration from './registration';
+import password from './password';
+import appeals from './appeals';
+import deployments from './deployments';
+import situationReports from './situation-reports';
+import appealDocuments from './appeal-documents';
 
 export const reducers = {
   user,
@@ -26,7 +32,13 @@ export const reducers = {
   event,
   adminArea,
   eruOwners,
-  heops
+  heops,
+  registration,
+  appeals,
+  password,
+  deployments,
+  appealDocuments,
+  situationReports
 };
 
 export default combineReducers(reducers);

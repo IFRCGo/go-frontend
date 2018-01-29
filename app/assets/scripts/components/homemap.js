@@ -35,7 +35,7 @@ class Homemap extends React.Component {
 
   componentDidMount () {
     // Init the map if there's data when the component loads.
-    if (this.props.appealsList.fetched) {
+    if (!this.props.appealsList.error && this.props.appealsList.fetched) {
       this.initMapLayers(this.props);
     }
   }
@@ -199,8 +199,9 @@ class Homemap extends React.Component {
     const max = Math.max.apply(Math, emerg.map(o => o.items.length));
 
     return (
-      <div className='emergencies'>
-        <h2 className='heading--xsmall'>Emergencies by Type</h2>
+      <div className='emergencies chart'>
+        <h1>Ongoing Operations</h1>
+        <h2 className='heading--xsmall'>Operations by Type</h2>
         <ul className='emergencies__list'>
           {emerg.map(o => (
             <li
@@ -209,7 +210,7 @@ class Homemap extends React.Component {
               onClick={this.onEmergencyTypeClick.bind(this, o.id)}
               onMouseOver={this.onEmergencyTypeOverOut.bind(this, 'mouseover', o.id)}
               onMouseOut={this.onEmergencyTypeOverOut.bind(this, 'mouseout', o.id)} >
-              <span className='key'>{o.name}</span>
+              <span className='key'>{o.name} ({o.items.length})</span>
               <span className='value'><Progress value={o.items.length} max={max}><span>{o.items.length}</span></Progress></span>
             </li>
           ))}

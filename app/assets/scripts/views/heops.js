@@ -4,28 +4,47 @@ import { connect } from 'react-redux';
 import { DateTime } from 'luxon';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
-import ReactPaginate from 'react-paginate';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
 
 import App from './app';
 import Fold from '../components/fold';
 import BlockLoading from '../components/block-loading';
 import Progress from '../components/progress';
+import DisplayTable, { SortHeader, FilterHeader } from '../components/display-table';
+import { SFPComponent } from '../utils/extendables';
 
 import { disasterType } from '../utils/field-report-constants';
-import { get } from '../utils/utils';
-import { nope } from '../utils/format';
+import { get, objValues } from '../utils/utils';
+import { commaSeparatedNumber as n, nope } from '../utils/format';
 import { environment } from '../config';
 import { getHeops, getYearlyHeops, getHeopsDtype } from '../actions';
 import { regions } from '../utils/region-constants';
 
-class HeOps extends React.Component {
+const regionOptions = [
+  { value: 'all', label: 'All Regions' },
+  ...objValues(regions).map(o => ({ value: o.id, label: o.name }))
+];
+
+class HeOps extends SFPComponent {
+  // Methods form SFPComponent:
+  // handlePageChange (what, page)
+  // handleFilterChange (what, field, value)
+  // handleSortChange (what, field)
+
   constructor (props) {
     super(props);
     this.state = {
-      page: 1
+      heops: {
+        page: 1,
+        sort: {
+          field: '',
+          direction: 'asc'
+        },
+        filters: {
+          region: 'all'
+        }
+      }
     };
-    this.handlePageChange = this.handlePageChange.bind(this);
   }
 
   componentWillMount () {
@@ -34,10 +53,18 @@ class HeOps extends React.Component {
     this.props._getHeopsDtype();
   }
 
-  handlePageChange (page) {
-    this.setState({ page: page.selected + 1 }, () => {
-      this.props._getHeops(this.state.page);
-    });
+  updateData (what) {
+    let qs = {};
+    let state = this.state.heops;
+    if (state.sort.field) {
+      qs.order_by = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
+    }
+
+    if (state.filters.region !== 'all') {
+      qs.region = state.filters.region;
+    }
+
+    this.props._getHeops(this.state.heops.page, qs);
   }
 
   renderAnnualChart () {
@@ -137,54 +164,83 @@ class HeOps extends React.Component {
 
   renderTable () {
     const {
-      error,
+      data,
+      fetching,
       fetched,
-      data
+      error
     } = this.props.list;
 
-    if (!fetched && !error) {
-      return <BlockLoading />;
+    if (fetching) {
+      return (
+        <Fold title='Heops Deployments'>
+          <BlockLoading/>
+        </Fold>
+      );
     }
 
-    return (
-      <Fold title={`HeOps Deployments (${data.meta.total_count})`}>
-        <table className='table table--zebra responsive-table'>
-          <thead>
-            <tr>
-              <th><a className='table__sort table__sort--none'>Start Date</a></th>
-              <th><a className='table__sort table__sort--none'>End Date</a></th>
-              <th>Emergency Type</th>
-              <th>Country</th>
-              <th><a className='table__filter'>Region</a></th>
-              <th><a className='table__filter'>Name</a></th>
-              <th>Deployed Role</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.objects.map(this.renderTableRow)}
-          </tbody>
-        </table>
+    if (error) {
+      return (
+        <Fold title='Heops Deployments'>
+          <p>Oh no! An error ocurred getting the stats.</p>
+        </Fold>
+      );
+    }
 
-        {data.objects.length !== 0 && (
-          <div className='pagination-wrapper'>
-            <ReactPaginate
-              previousLabel={<span>previous</span>}
-              nextLabel={<span>next</span>}
-              breakLabel={<span className='pages__page'>...</span>}
-              pageCount={Math.ceil(data.meta.total_count / data.meta.limit)}
-              forcePage={data.meta.offset / data.meta.limit}
-              marginPagesDisplayed={2}
-              pageRangeDisplayed={5}
-              onPageChange={this.handlePageChange}
-              containerClassName={'pagination'}
-              subContainerClassName={'pages'}
-              pageClassName={'pages__wrapper'}
-              pageLinkClassName={'pages__page'}
-              activeClassName={'active'} />
-          </div>
-        )}
-      </Fold>
-    );
+    if (fetched) {
+      const headings = [
+        {
+          id: 'sdate',
+          label: <SortHeader id='start_date' title='Start Date' sort={this.state.heops.sort} onClick={this.handleSortChange.bind(this, 'heops', 'start_date')} />
+        },
+        {
+          id: 'edate',
+          label: <SortHeader id='end_date' title='End Date' sort={this.state.heops.sort} onClick={this.handleSortChange.bind(this, 'heops', 'end_date')} />
+        },
+        { id: 'emergType', label: 'Emergency Type' },
+        { id: 'country', label: 'Country' },
+        {
+          id: 'region',
+          label: <FilterHeader id='region' title='Region' options={regionOptions} filter={this.state.heops.filters.region} onSelect={this.handleFilterChange.bind(this, 'heops', 'region')} />
+        },
+        { id: 'name', label: 'Name' },
+        { id: 'depRole', label: 'Deployed Role' }
+      ];
+
+      const rows = data.objects.map(rowData => {
+        const {
+          dtype,
+          country,
+          region
+        } = rowData;
+        const person = get(rowData, 'person', nope);
+        const role = get(rowData, 'role', nope);
+
+        return {
+          id: rowData.id,
+          sdate: DateTime.fromISO(rowData.start_date).toISODate(),
+          edate: DateTime.fromISO(rowData.end_date).toISODate(),
+          emergType: dtype ? dtype.name : nope,
+          country: country ? <Link to={`/countries/${country.id}`} className='link--primary'>{country.name}</Link> : nope,
+          region: region ? <Link to={`/regions/${region.id}`} className='link--primary'>{get(regions, [region.id, 'name'], nope)}</Link> : nope,
+          name: person,
+          depRole: role
+        };
+      });
+
+      return (
+        <Fold title={`Heops Deployments (${n(data.meta.total_count)})`}>
+          <DisplayTable
+            headings={headings}
+            rows={rows}
+            pageCount={data.meta.total_count / data.meta.limit}
+            page={data.meta.offset / data.meta.limit}
+            onPageChange={this.handlePageChange.bind(this, 'emerg')}
+          />
+        </Fold>
+      );
+    }
+
+    return null;
   }
 
   render () {
@@ -201,11 +257,7 @@ class HeOps extends React.Component {
           </header>
           <div className='inpage__body'>
             <div className='inner'>
-              <div className='fold'>
-                <div className='inner'>
-                  {this.renderTable()}
-                </div>
-              </div>
+              {this.renderTable()}
             </div>
           </div>
         </section>

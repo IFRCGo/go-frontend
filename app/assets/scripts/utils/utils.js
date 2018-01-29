@@ -2,6 +2,11 @@
 import _get from 'lodash.get';
 import _groupBy from 'lodash.groupby';
 import _toNumber from 'lodash.tonumber';
+import { DateTime } from 'luxon';
+
+import { na } from './format';
+import { disasterType } from './field-report-constants';
+import { whitelistDomains } from '../schemas/register';
 
 // lodash.get will only return the defaultValue when
 // the path is undefined. We want to also catch null and ''
@@ -19,7 +24,7 @@ export function groupByDisasterType (objs) {
   return Object.keys(emergenciesByType).map(key => {
     return {
       id: _toNumber(key),
-      name: emergenciesByType[key][0].dtype.name,
+      name: get(emergenciesByType[key][0], 'dtype.name', na),
       items: emergenciesByType[key]
     };
   }).sort((a, b) => a.items.length < b.items.length);
@@ -43,8 +48,8 @@ export function isValidEmail (email) {
   return /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/.test(email);
 }
 
-export function isRedCrossEmail (email) {
-  return isValidEmail(email) && email.indexOf('@redcross.com') !== -1;
+export function isWhitelistedEmail (email) {
+  return isValidEmail(email) && whitelistDomains.find(o => email.indexOf(`@${o}`) !== -1);
 }
 
 export function finishedFetch (curr, next, prop) {
@@ -54,3 +59,22 @@ export function finishedFetch (curr, next, prop) {
 export function objValues (obj) {
   return Object.keys(obj).map(k => obj[k]);
 }
+
+export const dateOptions = [
+  { value: 'all', label: 'Anytime' },
+  { value: 'week', label: 'Last week' },
+  { value: 'month', label: 'Last month' },
+  { value: 'year', label: 'Last year' }
+];
+
+export const datesAgo = {
+  week: () => DateTime.local().minus({days: 7}).startOf('day').toISODate(),
+  month: () => DateTime.local().minus({months: 1}).startOf('day').toISODate(),
+  year: () => DateTime.local().minus({years: 1}).startOf('day').toISODate()
+};
+
+export const dTypeOptions = [
+  { value: 'all', label: 'All Types' },
+  // Exclude the first item since it's a dropdown placeholder
+  ...disasterType.slice(1)
+];

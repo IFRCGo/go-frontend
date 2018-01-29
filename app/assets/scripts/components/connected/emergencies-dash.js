@@ -26,7 +26,7 @@ class EmergenciesDash extends React.Component {
             {emerg.map(o => (
               <li key={o.id}
                 className='emergencies__item'>
-                <span className='key'>{o.name}</span>
+                <span className='key'>{o.name} ({o.items.length})</span>
                 <span className='value'><Progress value={o.items.length} max={max}><span>100</span></Progress></span>
               </li>
             ))}
@@ -38,13 +38,31 @@ class EmergenciesDash extends React.Component {
 
   renderChart (data, unit) {
     const tickFormatter = (date) => DateTime.fromISO(date).toFormat('MMM');
+    const contentFormatter = (payload) => {
+      if (!payload.payload[0]) { return null; }
+
+      const item = payload.payload[0].payload;
+      return (
+        <article className='chart-tooltip'>
+          <div className='chart-tooltip__contents'>
+            <dl>
+              <dd>Date</dd>
+              <dt>{DateTime.fromISO(item.timespan).toFormat('MMMM yyyy')}</dt>
+              <dd>Total</dd>
+              <dt>{item.count}</dt>
+            </dl>
+          </div>
+        </article>
+      );
+    };
+
     return (
       <ResponsiveContainer>
         <LineChart data={data}>
           <XAxis tickFormatter={tickFormatter} dataKey='timespan' axisLine={false} padding={{ left: 16 }} />
           <YAxis axisLine={false} tickLine={false} width={32} padding={{ bottom: 16 }} />
           <Line type="monotone" dataKey="count" stroke="#C22A26" />
-          <Tooltip />
+          <Tooltip content={contentFormatter}/>
         </LineChart>
       </ResponsiveContainer>
     );

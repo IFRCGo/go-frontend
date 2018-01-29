@@ -6,9 +6,6 @@
     margin-bottom: $global-spacing * 2;
     .form__group {
       margin-bottom: $global-spacing * 2;
-      &:last-child {
-        margin-bottom: $global-spacing;
-      }
     }
     .form__hascol {
       margin-bottom: 0;
