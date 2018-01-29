@@ -32,8 +32,9 @@ function appealsList (state = appealsListInitialState, action) {
         activeDrefs: 0,
         activeAppeals: 0,
         totalAppeals: 0,
-        fundedAppeals: 0,
         budget: 0,
+        appealsBudget: 0,
+        appealsFunding: 0,
         targetPop: 0
       };
 
@@ -57,9 +58,8 @@ function appealsList (state = appealsListInitialState, action) {
             acc.activeAppeals++;
           }
           const amountFunded = _toNumber(object.amount_funded);
-          if (amountFunded >= amountRequested) {
-            acc.fundedAppeals++;
-          }
+          acc.appealsBudget += amountRequested;
+          acc.appealsFunding += amountFunded;
         }
         return acc;
       }, struct);
