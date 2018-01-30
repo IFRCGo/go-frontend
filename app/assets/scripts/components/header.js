@@ -84,10 +84,7 @@ class Header extends React.PureComponent {
               <li><Link to='/' title='Visit Home page'><span>Home</span></Link></li>
               <li><Link to='/emergencies' title='Visit emergencies page'><span>Emergencies</span></Link></li>
               <li><NavDropdown id='regions-menu' title='Regions' options={regionArray.map(o => ({to: `/regions/${o.id}`, text: o.name}))} /></li>
-              <li><NavDropdown id='deployments-menu' title='Deployments' options={[
-                {to: '/deployments', text: 'All Deployments'},
-                {to: '/heops', text: 'HeOps'}
-              ]} /></li>
+              <li><Link to='/deployments' title='Visit Deployments page'><span>Deployments</span></Link></li>
               <li><Link to='/about' title='Visit About page'><span>About</span></Link></li>
             </ul>
           </nav>
