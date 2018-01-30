@@ -85,9 +85,9 @@ class Deployments extends SFPComponent {
     this.props._getEruOwners();
 
     this.props._getDeploymentERU();
-    this.props._getDeploymentFACT();
-    this.props._getDeploymentHEOP();
-    this.props._getDeploymentRDRT();
+    this.props._getDeploymentFACT(1, { order_by: '-start_date' });
+    this.props._getDeploymentHEOP(1, { order_by: '-start_date' });
+    this.props._getDeploymentRDRT(1, { order_by: '-start_date' });
 
     this.props._getAllDeploymentERU();
     this.props._getAllDeploymentFACT();
@@ -106,10 +106,12 @@ class Deployments extends SFPComponent {
     let state = this.state[what];
     if (state.sort && state.sort.field) {
       qs.order_by = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
+    } else {
+      qs.order_by = '-start_date';
     }
 
     if (state.filters && state.filters.date !== 'all') {
-      qs.created_at__gte = datesAgo[state.filters.date]();
+      qs.start_date__gte = datesAgo[state.filters.date]();
     }
 
     const fn = {
