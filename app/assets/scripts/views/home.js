@@ -81,9 +81,11 @@ class Home extends SFPComponent {
       data
     } = this.props.appeals;
 
+    const title = 'Operations Overview';
+
     if (fetching) {
       return (
-        <Fold title='Appeals'>
+        <Fold title={title}>
           <BlockLoading/>
         </Fold>
       );
@@ -91,7 +93,7 @@ class Home extends SFPComponent {
 
     if (error) {
       return (
-        <Fold title='Appeals'>
+        <Fold title={title}>
           <p>Oh no! An error ocurred getting the data.</p>
         </Fold>
       );
@@ -144,7 +146,7 @@ class Home extends SFPComponent {
       }));
 
       return (
-        <Fold title={`Ongoing Operations (${data.meta.total_count})`}>
+        <Fold title={`${title} (${data.meta.total_count})`}>
           <DisplayTable
             headings={headings}
             rows={rows}
