@@ -4,7 +4,15 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { PropTypes as T } from 'prop-types';
 import { DateTime } from 'luxon';
+import c from 'classnames';
 
+import {
+  enterFullscreen,
+  exitFullscreen,
+  isFullscreen,
+  addFullscreenListener,
+  removeFullscreenListener
+} from '../utils/fullscreen';
 import {
   getDeploymentERU,
   getDeploymentFACT,
@@ -44,6 +52,7 @@ class Deployments extends SFPComponent {
   constructor (props) {
     super(props);
     this.state = {
+      fullscreen: false,
       eru: {
         page: 1
       },
@@ -78,9 +87,12 @@ class Deployments extends SFPComponent {
         }
       }
     };
+    this.toggleFullscreen = this.toggleFullscreen.bind(this);
+    this.onFullscreenChange = this.onFullscreenChange.bind(this);
   }
 
   componentDidMount () {
+    addFullscreenListener(this.onFullscreenChange);
     showGlobalLoading();
     this.props._getEruOwners();
 
@@ -98,6 +110,24 @@ class Deployments extends SFPComponent {
   componentWillReceiveProps (nextProps) {
     if (finishedFetch(this.props, nextProps, 'eruOwners')) {
       hideGlobalLoading();
+    }
+  }
+
+  componentWillUnmount () {
+    removeFullscreenListener(this.onFullscreenChange);
+  }
+
+  onFullscreenChange () {
+    this.setState({fullscreen: isFullscreen()});
+  }
+
+  toggleFullscreen () {
+    if (isFullscreen()) {
+      exitFullscreen();
+      this.setState({fullscreen: false});
+    } else {
+      enterFullscreen(document.querySelector('#presentation'));
+      this.setState({fullscreen: true});
     }
   }
 
@@ -392,8 +422,11 @@ class Deployments extends SFPComponent {
     if (!fetched || error) return null;
 
     return (
-      <section className='inpage'>
+      <section className={c('inpage', {presenting: this.state.fullscreen})} id='presentation'>
         <header className='inpage__header'>
+          <div className='presentation__actions'>
+            <button className='button button--base-plain button--fullscreen' onClick={this.toggleFullscreen} title='View in fullscreen'><span>FullScreen</span></button>
+          </div>
           <div className='inner'>
             <div className='inpage__headline'>
               <div className='inpage__headline-content'>
