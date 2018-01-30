@@ -173,6 +173,14 @@ class Deployments extends SFPComponent {
             </li>
           </ul>
         </div>
+      </div>
+    );
+  }
+
+  renderCharts () {
+    const { data } = this.props.eruOwners;
+    return (
+      <div>
         <div className='inpage__headline-charts'>
           <div className='chart'>
             {this.renderHeaderCharts(data.types, 'ERU Deployment Types')}
@@ -399,6 +407,9 @@ class Deployments extends SFPComponent {
           <Map data={this.props.deployments.geojson} />
         </div>
         <div className='inpage__body'>
+          <div className='inner'>
+            {this.renderCharts()}
+          </div>
           <div className='inner'>
             {this.renderERUTable()}
           </div>
