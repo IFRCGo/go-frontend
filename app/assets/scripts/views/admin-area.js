@@ -104,9 +104,9 @@ class AdminArea extends SFPComponent {
   }
 
   getData (props) {
-    this.props._getAdmAreaAppeals(props.type, props.match.params.id);
-    this.props._getAdmAreaDrefs(props.type, props.match.params.id);
-    this.props._getAdmAreaFieldReports(props.type, props.match.params.id);
+    this.props._getAdmAreaAppeals(props.type, props.match.params.id, 1, { order_by: '-start_date' });
+    this.props._getAdmAreaDrefs(props.type, props.match.params.id, 1, { order_by: '-start_date' });
+    this.props._getAdmAreaFieldReports(props.type, props.match.params.id, 1, { order_by: '-created_at' });
     this.props._getAdmAreaAppealsStats(props.type, props.match.params.id);
     this.props._getAdmAreaAggregateAppeals(props.type, props.match.params.id, DateTime.local().minus({years: 10}).startOf('month').toISODate(), 'year');
     this.props._getAdmAreaERU(props.type, props.match.params.id);
@@ -126,10 +126,12 @@ class AdminArea extends SFPComponent {
       case 'drefs':
         if (state.sort.field) {
           qs.order_by = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
+        } else {
+          qs.order_by = '-start_date';
         }
 
         if (state.filters.date !== 'all') {
-          qs.end_date__gte = datesAgo[state.filters.date]();
+          qs.start_date__gte = datesAgo[state.filters.date]();
         }
         if (state.filters.dtype !== 'all') {
           qs.dtype = state.filters.dtype;
@@ -137,6 +139,7 @@ class AdminArea extends SFPComponent {
 
         break;
       case 'fieldReports':
+        qs.order_by = '-created_at';
         if (state.filters.date !== 'all') {
           qs.created_at__gte = datesAgo[state.filters.date]();
         }
@@ -194,7 +197,7 @@ class AdminArea extends SFPComponent {
       const headings = [
         {
           id: 'date',
-          label: <FilterHeader id='date' title='Date' options={dateOptions} filter={this.state.appeals.filters.date} onSelect={this.handleFilterChange.bind(this, 'appeals', 'date')} />
+          label: <FilterHeader id='date' title='Start Date' options={dateOptions} filter={this.state.appeals.filters.date} onSelect={this.handleFilterChange.bind(this, 'appeals', 'date')} />
         },
         {
           id: 'name',
@@ -218,7 +221,7 @@ class AdminArea extends SFPComponent {
 
       const rows = data.objects.map(o => ({
         id: o.id,
-        date: DateTime.fromISO(o.end_date).toISODate(),
+        date: DateTime.fromISO(o.start_date).toISODate(),
         name: o.name,
         event: <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link>,
         dtype: o.dtype.name,
@@ -272,7 +275,7 @@ class AdminArea extends SFPComponent {
       const headings = [
         {
           id: 'date',
-          label: <FilterHeader id='date' title='Date' options={dateOptions} filter={this.state.drefs.filters.date} onSelect={this.handleFilterChange.bind(this, 'drefs', 'date')} />
+          label: <FilterHeader id='date' title='Start Date' options={dateOptions} filter={this.state.drefs.filters.date} onSelect={this.handleFilterChange.bind(this, 'drefs', 'date')} />
         },
         {
           id: 'name',
@@ -296,7 +299,7 @@ class AdminArea extends SFPComponent {
 
       const rows = data.objects.map(o => ({
         id: o.id,
-        date: DateTime.fromISO(o.end_date).toISODate(),
+        date: DateTime.fromISO(o.start_date).toISODate(),
         name: o.name,
         event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
         dtype: o.dtype.name,
@@ -349,7 +352,7 @@ class AdminArea extends SFPComponent {
       const headings = [
         {
           id: 'date',
-          label: <FilterHeader id='date' title='Date' options={dateOptions} filter={this.state.fieldReports.filters.date} onSelect={this.handleFilterChange.bind(this, 'fieldReports', 'date')} />
+          label: <FilterHeader id='date' title='Created At' options={dateOptions} filter={this.state.fieldReports.filters.date} onSelect={this.handleFilterChange.bind(this, 'fieldReports', 'date')} />
         },
         { id: 'name', label: 'Name' },
         { id: 'event', label: 'Emergency' },

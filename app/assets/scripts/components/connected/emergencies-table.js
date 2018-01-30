@@ -47,6 +47,8 @@ class EmergenciesTable extends SFPComponent {
     let state = this.state.emerg;
     if (state.sort.field) {
       qs.order_by = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
+    } else {
+      qs.order_by = '-disaster_start_date';
     }
 
     if (state.filters.date !== 'all') {
@@ -92,7 +94,7 @@ class EmergenciesTable extends SFPComponent {
       const headings = [
         {
           id: 'date',
-          label: <FilterHeader id='date' title='Date' options={dateOptions} filter={this.state.emerg.filters.date} onSelect={this.handleFilterChange.bind(this, 'emerg', 'date')} />
+          label: <FilterHeader id='date' title='Start Date' options={dateOptions} filter={this.state.emerg.filters.date} onSelect={this.handleFilterChange.bind(this, 'emerg', 'date')} />
         },
         {
           id: 'name',
