@@ -76,6 +76,9 @@ class Header extends React.PureComponent {
           </nav>
         </div>
         <div className='inner'>
+          <p>This is the beta version of IFRC GO. For issues and feedback on the platform, contact <a href="mailto:im@ifrc.org">im@ifrc.org</a>.</p>
+        </div>
+        <div className='inner'>
           <nav className='page__prime-nav' role='navigation'>
             <ul className='nav-global-menu'>
               <li><Link to='/' title='Visit Home page'><span>Home</span></Link></li>
