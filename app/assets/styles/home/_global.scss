@@ -95,7 +95,7 @@
   @extend .clearfix;
   list-style: none;
   margin: 0;
-  
+
   &__item {
     @include column(12/12);
     margin-bottom: ($global-spacing * 2);
@@ -141,7 +141,7 @@
     color: #FFF;
     margin: 2rem 1rem;
   }
-  
+
   .emergencies {
     @include column(12/12);
     @include media(medium-up) {
@@ -380,10 +380,17 @@
   .color--grey::before {
     background: tint($base-color, 80%);
   }
-  
+
   .color--blue::before {
     background: #4680F2;
   }
+}
+
+.legend__note {
+  position: absolute;
+  font-size: 0.75rem;
+  bottom: -2.25rem;
+  font-style: italic;
 }
 
 .stats-chart {
