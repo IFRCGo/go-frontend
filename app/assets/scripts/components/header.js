@@ -26,7 +26,8 @@ class Header extends React.PureComponent {
   constructor (props) {
     super(props);
     this.state = {
-      search: ''
+      search: '',
+      showBetaBanner: true
     };
     this.onSelect = this.onSelect.bind(this);
   }
@@ -61,14 +62,16 @@ class Header extends React.PureComponent {
   render () {
     return (
       <div>
-        <div className='beta-note'>
-          <div className='inner'>
-            <p>This is the beta version of IFRC GO. For issues and feedback on the platform, contact <a href="mailto:im@ifrc.org">im@ifrc.org</a>.</p>
-            <div className='beta-note__actions'>
-            <button className='button button--small button--close button--text-hidden'><span>close</span></button>
+        {this.state.showBetaBanner && (
+          <div className='beta-note'>
+            <div className='inner'>
+              <p>This is the beta version of IFRC GO. For issues and feedback on the platform, contact <a href="mailto:im@ifrc.org">im@ifrc.org</a>.</p>
+              <div className='beta-note__actions'>
+                <button className='button button--small button--close button--text-hidden' onClick={() => this.setState({ showBetaBanner: false })}><span>close</span></button>
+              </div>
             </div>
           </div>
-        </div>
+        )}
         <header className='page__header' role='banner'>
           <div className='inner'>
             <div className='page__headline'>
