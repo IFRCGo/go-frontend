@@ -54,6 +54,9 @@
 
 .presentation__actions {
   padding: $global-spacing 0;
+  @include media(medium-down) {
+    display: none;
+  }
 }
 
 .button--fullscreen {

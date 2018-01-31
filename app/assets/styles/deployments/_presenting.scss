@@ -1,0 +1,39 @@
+.presenting {
+  .inpage__header {
+    padding-top: $global-spacing;
+    height: 30vh;
+  }
+  .deployments-map {
+    height: 40vh;
+    margin-bottom: $global-spacing/2;
+  }
+  .deployments-map .map-vis {
+    height: 40vh;
+  }
+  .fold {
+    padding-top: $global-spacing;
+    padding-bottom: $global-spacing;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  .emergencies__item:nth-last-child(-n+3) {
+    visibility: hidden;
+  }
+  @include media(xxlarge-up) {
+    .emergencies__item:nth-last-child(-n+3) {
+      visibility: visible;
+    }
+    .inpage__header {
+      padding-top: $global-spacing;
+      height: 15vh;
+    }
+    .deployments-map {
+      height: 60vh;
+      margin-bottom: $global-spacing/2;
+    }
+    .deployments-map .map-vis {
+      height: 60vh;
+    }
+  }
+}

@@ -210,13 +210,15 @@ class Deployments extends SFPComponent {
   renderCharts () {
     const { data } = this.props.eruOwners;
     return (
-      <div>
-        <div className='inpage__headline-charts'>
-          <div className='chart'>
-            {this.renderHeaderCharts(data.types, 'ERU Deployment Types')}
-          </div>
-          <div className='chart'>
-            {this.renderHeaderCharts(data.owners, 'Number of Deployments by NS')}
+      <div className='fold'>
+        <div className='inner'>
+          <div className='inpage__body-charts'>
+            <div className='chart'>
+              {this.renderHeaderCharts(data.types, 'ERU Deployment Types')}
+            </div>
+            <div className='chart'>
+              {this.renderHeaderCharts(data.owners, 'Number of Deployments by NS')}
+            </div>
           </div>
         </div>
       </div>
@@ -422,27 +424,33 @@ class Deployments extends SFPComponent {
     if (!fetched || error) return null;
 
     return (
-      <section className={c('inpage', {presenting: this.state.fullscreen})} id='presentation'>
-        <header className='inpage__header'>
-          <div className='presentation__actions'>
-            <button className='button button--base-plain button--fullscreen' onClick={this.toggleFullscreen} title='View in fullscreen'><span>FullScreen</span></button>
-          </div>
-          <div className='inner'>
-            <div className='inpage__headline'>
-              <div className='inpage__headline-content'>
-                <h1 className='inpage__title'>Deployments</h1>
-                {this.renderHeaderStats()}
+      <section>
+        <section className={c('inpage', {presenting: this.state.fullscreen})} id='presentation'>
+          <header className='inpage__header'>
+            <div className='inner'>
+              <div className='inpage__headline'>
+                <div className='inpage__headline-content'>
+                  <h1 className='inpage__title'>Deployments</h1>
+                  <div className='presentation__actions'>
+                    <div className='inner'>
+                      <button className='button button--base-plain button--fullscreen' onClick={this.toggleFullscreen} title='View in fullscreen'><span>FullScreen</span></button>
+                    </div>
+                  </div>
+                  {this.renderHeaderStats()}
+                </div>
               </div>
             </div>
+          </header>
+          <div>
+            <Map data={this.props.deployments.geojson} />
           </div>
-        </header>
-        <div>
-          <Map data={this.props.deployments.geojson} />
-        </div>
+          <div className='inpage__body'>
+            <div className='inner'>
+              {this.renderCharts()}
+            </div>
+          </div>
+        </section>
         <div className='inpage__body'>
-          <div className='inner'>
-            {this.renderCharts()}
-          </div>
           <div className='inner'>
             {this.renderERUTable()}
           </div>

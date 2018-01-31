@@ -60,47 +60,54 @@ class Header extends React.PureComponent {
 
   render () {
     return (
-      <header className='page__header' role='banner'>
-        <div className='inner'>
-          <div className='page__headline'>
-            <h1 className='page__title'>
-              <Link to='/' title='Visit page'>
-                <img src='/assets/graphics/layout/logo.png' alt='IFRC GO logo'/>
-                <span>IFRC GO</span>
-              </Link>
-            </h1>
-          </div>
-          <nav className='page__meta-nav' role='navigation'>
-            <Link to='/reports/new' className='button button--small button--primary-filled' title='Create Field Report'><span>Create Field Report</span></Link>
-            <UserMenu />
-          </nav>
-        </div>
-        <div className='inner'>
-          <p>This is the beta version of IFRC GO. For issues and feedback on the platform, contact <a href="mailto:im@ifrc.org">im@ifrc.org</a>.</p>
-        </div>
-        <div className='inner'>
-          <nav className='page__prime-nav' role='navigation'>
-            <ul className='nav-global-menu'>
-              <li><Link to='/' title='Visit Home page'><span>Home</span></Link></li>
-              <li><Link to='/emergencies' title='Visit emergencies page'><span>Emergencies</span></Link></li>
-              <li><NavDropdown id='regions-menu' title='Regions' options={regionArray.map(o => ({to: `/regions/${o.id}`, text: o.name}))} /></li>
-              <li><Link to='/deployments' title='Visit Deployments page'><span>Deployments</span></Link></li>
-              <li><Link to='/about' title='Visit About page'><span>About</span></Link></li>
-            </ul>
-          </nav>
-          <div className='nav-global-search'>
-            <form className='gsearch'>
-              <div className='form__group'>
-                <label className='form__label'>Search</label>
-                <Select.Async
-                  placeholder='Search...'
-                  onChange={this.onSelect}
-                  loadOptions={this.getOptions} />
-              </div>
-            </form>
+      <div>
+        <div className='beta-note'>
+          <div className='inner'>
+            <p>This is the beta version of IFRC GO. For issues and feedback on the platform, contact <a href="mailto:im@ifrc.org">im@ifrc.org</a>.</p>
+            <div className='beta-note__actions'>
+            <button className='button button--small button--close button--text-hidden'><span>close</span></button>
+            </div>
           </div>
         </div>
-      </header>
+        <header className='page__header' role='banner'>
+          <div className='inner'>
+            <div className='page__headline'>
+              <h1 className='page__title'>
+                <Link to='/' title='Visit page'>
+                  <img src='/assets/graphics/layout/logo.png' alt='IFRC GO logo'/>
+                  <span>IFRC GO</span>
+                </Link>
+              </h1>
+            </div>
+            <nav className='page__meta-nav' role='navigation'>
+              <Link to='/reports/new' className='button button--small button--primary-filled' title='Create Field Report'><span>Create Field Report</span></Link>
+              <UserMenu />
+            </nav>
+          </div>
+          <div className='inner'>
+            <nav className='page__prime-nav' role='navigation'>
+              <ul className='nav-global-menu'>
+                <li><Link to='/' title='Visit Home page'><span>Home</span></Link></li>
+                <li><Link to='/emergencies' title='Visit emergencies page'><span>Emergencies</span></Link></li>
+                <li><NavDropdown id='regions-menu' title='Regions' options={regionArray.map(o => ({to: `/regions/${o.id}`, text: o.name}))} /></li>
+                <li><Link to='/deployments' title='Visit Deployments page'><span>Deployments</span></Link></li>
+                <li><Link to='/about' title='Visit About page'><span>About</span></Link></li>
+              </ul>
+            </nav>
+            <div className='nav-global-search'>
+              <form className='gsearch'>
+                <div className='form__group'>
+                  <label className='form__label'>Search</label>
+                  <Select.Async
+                    placeholder='Search...'
+                    onChange={this.onSelect}
+                    loadOptions={this.getOptions} />
+                </div>
+              </form>
+            </div>
+          </div>
+        </header>
+      </div>
     );
   }
 }

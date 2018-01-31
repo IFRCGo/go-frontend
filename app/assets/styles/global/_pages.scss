@@ -33,6 +33,31 @@
   }
 }
 
+.beta-note {
+  font-size: 0.75rem;
+  font-weight: $base-font-regular;
+  background: tint($base-color, 98%);
+  > .inner {
+    @extend .row, .row--centered;
+    padding-top: $global-spacing;
+    padding-bottom: $global-spacing;
+    display: flex;
+    align-items: center;
+    flex-flow: row nowrap;
+    border-bottom: solid 1px tint($base-color, 92%);
+  }
+  p {
+    margin-bottom: 0;
+    float: left;
+    width: 90%;
+  }
+  .beta-note__actions {
+    float: right;
+    text-align: right;
+    width: 10%;
+  }
+}
+
 /* Headline */
 .page__title {
   font-size: 1.25rem;
