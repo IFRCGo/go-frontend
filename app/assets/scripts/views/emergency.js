@@ -128,8 +128,7 @@ class Emergency extends React.Component {
     if (!this.props.isLogged) {
       content = (
         <React.Fragment>
-          <p>Login to view all the field reports</p>
-          <Link key='login' to='/login' className='button button--primary-raised-dark' title='Login'><span>Login</span></Link>
+          <p>You must be logged in to view field reports. <Link key='login' to='/login' className='link--primary' title='Login'>Login</Link></p>
         </React.Fragment>
       );
     } else {

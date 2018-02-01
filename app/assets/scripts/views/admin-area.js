@@ -344,7 +344,7 @@ class AdminArea extends SFPComponent {
     if (error) {
       return (
         <Fold title='Field Reports'>
-          <p>Oh no! An error ocurred getting the data.</p>
+          <p>You must be logged in to view field reports. <Link key='login' to='/login' className='link--primary' title='Login'>Login</Link></p>
         </Fold>
       );
     }
@@ -534,6 +534,7 @@ class AdminArea extends SFPComponent {
 
     const isRegion = this.props.type === 'region';
     const bbox = isRegion ? null : getBoundingBox(data.iso);
+    const mapContainerClass = `${isRegion ? 'region' : 'country'}__map`;
 
     return (
       <section className='inpage'>
@@ -550,7 +551,9 @@ class AdminArea extends SFPComponent {
               </div>
             </div>
           </div>
-          <Homemap appealsList={this.props.appealStats} bbox={bbox} />
+          <div className={mapContainerClass}>
+            <Homemap appealsList={this.props.appealStats} bbox={bbox} />
+          </div>
         </header>
         <div className='inpage__body'>
           <div className='inner'>
