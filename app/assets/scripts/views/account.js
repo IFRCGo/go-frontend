@@ -239,15 +239,28 @@ class Account extends React.Component {
     const data = get(userReports, 'data.objects', []);
     if (!data.length) { return null; }
     return (
-      <Fold title='Submitted Field Reports'>
-        <ul>
-          {data.map(o => (
-            <li key={o.id}>
-              <Link to={`/reports/${o.id}/edit`}>{o.summary} Last Updated: {DateTime.fromISO(o.updated_at).toISODate()}</Link>
-            </li>
-          ))}
-        </ul>
-      </Fold>
+      <div className='prose prose--responsive'>
+        <section className='fold'>
+          <div className='inner'>
+            <div className='fold__header'>
+              <h2 className='fold__title'>Submitted Field Reports</h2>
+            </div>
+            <div className='fold__body'>
+              <ul className='report__list'>
+                {data.map(o => (
+                  <li key={o.id} className='report__list--item'>
+                    <div className='report__list--header'>
+                      <Link className='link--primary' to={`/reports/${o.id}`}>{o.summary}</Link>&nbsp;
+                      <span className='report__list--updated'>Last Updated: {DateTime.fromISO(o.updated_at).toISODate()}</span>
+                    </div>
+                    <p>{o.description}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+      </div>
     );
   }
 
