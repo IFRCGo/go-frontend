@@ -105,7 +105,8 @@ export const GET_LAST_MO_EMERGENCIES = 'GET_LAST_MO_EMERGENCIES';
 export function getLastMonthsEmergencies () {
   const f = buildAPIQS({
     disaster_start_date__gt: DateTime.local().minus({days: 30}).startOf('day').toISODate(),
-    limit: 0
+    limit: 0,
+    order_by: '-disaster_start_date'
   });
   return fetchJSON(`api/v1/event/?${f}`, GET_LAST_MO_EMERGENCIES, {});
 }
@@ -133,7 +134,7 @@ export function getEventById (id) {
 
 export const GET_SITREPS = 'GET_SITREPS';
 export function getSitrepsByEventId (id) {
-  return fetchJSON(`api/v1/situation_report/?event=${id}`, GET_SITREPS, withToken(), { id });
+  return fetchJSON(`api/v1/situation_report/?order_by=-created_at&event=${id}`, GET_SITREPS, withToken(), { id });
 }
 
 export const GET_ERU_OWNERS = 'GET_ERU_OWNERS';
@@ -323,6 +324,12 @@ export function getAppeals (page = 1, filters = {}) {
 
   const f = buildAPIQS(filters);
   return fetchJSON(`/api/v1/appeal/?${f}`, GET_APPEALS, withToken());
+}
+
+export const GET_APPEAL_DOCS = 'GET_APPEAL_DOCS';
+export function getAppealDocsByAppealIds (appealIds, id) {
+  const ids = (Array.isArray(appealIds) ? appealIds : [appealIds]).join(',');
+  return fetchJSON(`api/v1/appeal_document/?order_by=-created_at&appeal__id__in=${ids}`, GET_APPEAL_DOCS, withToken(), { id });
 }
 
 export const GET_DEPLOYMENT_ERU = 'GET_DEPLOYMENT_ERU';

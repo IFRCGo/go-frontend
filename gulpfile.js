@@ -245,7 +245,15 @@ gulp.task('styles', function () {
 
 gulp.task('html', ['styles'], function () {
   return gulp.src('app/*.html')
-    .pipe($.useref({searchPath: ['.tmp', 'app', '.']}))
+    .pipe($.useref({
+      searchPath: ['.tmp', 'app', '.'],
+      transformTargetPath: function (filePath, type) {
+        if (type === 'css' || type === 'js') {
+          return '/' + filePath;
+        }
+        return filePath;
+      }
+    }))
     // Do not compress comparisons, to avoid MapboxGLJS minification issue
     // https://github.com/mapbox/mapbox-gl-js/issues/4359#issuecomment-286277540
     .pipe($.if('*.js', $.uglify({compress: {comparisons: false}})))

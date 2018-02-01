@@ -39,7 +39,7 @@ export default class Homestats extends React.Component {
           <span className='sumstats__key'>Active Emergency Appeals</span>
         </li>
         <li className='sumstats__item'>
-          <span className='sumstats__value'>{percent(stats.fundedAppeals, stats.totalAppeals, 1)}%</span>
+          <span className='sumstats__value'>{percent(stats.appealsFunding, stats.appealsBudget, 1)}%</span>
           <span className='sumstats__key'>Emergency Appeals Funded</span>
         </li>
         <li className='sumstats__item'>

@@ -41,9 +41,9 @@ jobs:
           name: Building site
           command: |
             if [ "${CIRCLE_BRANCH}" == "${STAGING_BRANCH}" ]; then
-              yarn build
+              yarn build-staging
             elif [ "${CIRCLE_BRANCH}" == "${PRODUCTION_BRANCH}" ]; then
-              yarn build
+              yarn build-prod
             else
               echo "Skip building site"
             fi
@@ -52,7 +52,7 @@ jobs:
           name: Deploy to Azure Blob Storage
           command: |
             if [ "${CIRCLE_BRANCH}" == "${STAGING_BRANCH}" ]; then
-              yarn deploy
+              yarn deploy-staging
             elif [ "${CIRCLE_BRANCH}" == "${PRODUCTION_BRANCH}" ]; then
               yarn deploy-prod
             else

@@ -37,15 +37,15 @@ export default class HomeCharts extends React.Component {
               <dt>{item.appeals.count}</dt>
               <dd>Amount Funded Appeals</dd>
               <dt>{commaSeparatedLargeNumber(item.appeals.amount_funded)}</dt>
-              <dd>Beneficiaries Appeals</dd>
+              <dd>People Targeted</dd>
               <dt>{commaSeparatedLargeNumber(item.appeals.beneficiaries)}</dt>
             </dl>
             <dl className='tooltip__contents-col drefs-content'>
-              <dd>Drefs</dd>
+              <dd>DREFs</dd>
               <dt>{item.drefs.count}</dt>
-              <dd>Amount Funded Drefs</dd>
+              <dd>Amount Funded DREFs</dd>
               <dt>{commaSeparatedLargeNumber(item.drefs.amount_funded)}</dt>
-              <dd>Beneficiaries Drefs</dd>
+              <dd>People Targeted</dd>
               <dt>{commaSeparatedLargeNumber(item.drefs.beneficiaries)}</dt>
             </dl>
           </div>
