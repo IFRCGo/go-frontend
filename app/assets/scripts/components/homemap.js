@@ -108,6 +108,10 @@ class Homemap extends React.Component {
     theMap.on('mouseleave', 'appeals', e => {
       theMap.getCanvas().style.cursor = '';
     });
+
+    if (Array.isArray(this.props.bbox)) {
+      theMap.fitBounds(this.props.bbox);
+    }
   }
 
   getLayers (geoJSON, scaleBy) {
@@ -306,7 +310,8 @@ class Homemap extends React.Component {
 if (environment !== 'production') {
   Homemap.propTypes = {
     appealsList: T.object,
-    history: T.object
+    history: T.object,
+    bbox: T.array
   };
 }
 
