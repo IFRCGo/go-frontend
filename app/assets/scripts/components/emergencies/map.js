@@ -170,7 +170,7 @@ class EmergenciesMap extends React.Component {
                     <label className='form__label'>Key</label>
                     <dl className='legend__dl legend__dl--colors'>
                       <dt className='color color--red'>red</dt>
-                      <dd>Without IFRC response</dd>
+                      <dd>Without IFRC response*</dd>
                       <dt className='color color--yellow'>yellow</dt>
                       <dd>With IFRC response</dd>
                       <dt className='color color--blue'>blue</dt>
@@ -179,9 +179,10 @@ class EmergenciesMap extends React.Component {
                   </div>
                 </figcaption>
               </MapComponent>
+              <p className='legend__note'>*IFRC response indicates the existence of appeal(s) and/or DREF(s) for a given emergency.</p>
             </div>
           ) : (
-            <p>Oh no! An error ocurred getting the data.</p>
+            <p>Data not available.</p>
           )}
         </div>
       </div>
@@ -223,8 +224,8 @@ class MapPopover extends React.Component {
           <div className='popover__body'>
             <p className='popover__stat'>{n(numAffected)} People Affected</p>
             <p className='popover__stat'>{n(totalEmergencies)} {totalEmergencies === 1 ? 'Emergency' : 'Emergencies'}</p>
-            <p className='popover__stat'>{n(withResponse)} with response</p>
-            <p className='popover__stat'>{n(withoutResponse)} without response</p>
+            <p className='popover__stat'>{n(withoutResponse)} without IFRC response</p>
+            <p className='popover__stat'>{n(withResponse)} with IFRC response</p>
           </div>
         </div>
       </article>

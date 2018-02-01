@@ -51,6 +51,7 @@
 .emergencies-map{
   .map-container {
     @include column(12/12);
+    position: relative;
   }
 }
 

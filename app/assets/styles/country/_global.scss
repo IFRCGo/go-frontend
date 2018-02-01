@@ -61,8 +61,6 @@
     &--bottom-right {
       @include media(small-up) {
         bottom: 1rem;
-        right: 0rem;
-        left: 0rem;
       }
     }
     .form {
@@ -78,4 +76,16 @@
     width: 55%;
   }
 
+}
+
+.country__map {
+  .inner {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .map-container {
+    width: 100%;
+    margin-bottom: 0;
+  }
 }

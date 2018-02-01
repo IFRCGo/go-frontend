@@ -1,3 +1,26 @@
+.inpage__body-charts {
+  @include column(6/12);
+  @include media(small-down) {
+    @include column(12/12);
+  }
+  @include media (large-up) {
+    @include column(12/12);
+  }
+  .chart {
+    @include column(12/12);
+    @include media(large-up) {
+      @include column(6/12);
+    }
+  }
+  .emergencies {
+    @include column(12/12);
+    @include media(large-up) {
+      @include column(6/12);
+    }
+  }
+}
+
+
 .readiness__container {
   @include column(12/12);
   margin: ($global-spacing * 6) 0 ($global-spacing * 4) 0;

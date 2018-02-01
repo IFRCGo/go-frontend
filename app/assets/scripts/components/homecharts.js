@@ -37,15 +37,15 @@ export default class HomeCharts extends React.Component {
               <dt>{item.appeals.count}</dt>
               <dd>Amount Funded Appeals</dd>
               <dt>{commaSeparatedLargeNumber(item.appeals.amount_funded)}</dt>
-              <dd>Beneficiaries Appeals</dd>
+              <dd>People Targeted</dd>
               <dt>{commaSeparatedLargeNumber(item.appeals.beneficiaries)}</dt>
             </dl>
             <dl className='tooltip__contents-col drefs-content'>
-              <dd>Drefs</dd>
+              <dd>DREFs</dd>
               <dt>{item.drefs.count}</dt>
-              <dd>Amount Funded Drefs</dd>
+              <dd>Amount Funded DREFs</dd>
               <dt>{commaSeparatedLargeNumber(item.drefs.amount_funded)}</dt>
-              <dd>Beneficiaries Drefs</dd>
+              <dd>People Targeted</dd>
               <dt>{commaSeparatedLargeNumber(item.drefs.beneficiaries)}</dt>
             </dl>
           </div>
@@ -85,7 +85,7 @@ export default class HomeCharts extends React.Component {
 
     if (errorDrefs || errorAppeals) {
       return (
-        <p>Oh no! An error ocurred getting the stats.</p>
+        <p>Operations data not available.</p>
       );
     }
 
@@ -129,7 +129,7 @@ export default class HomeCharts extends React.Component {
 
     if (errorDrefs || errorAppeals) {
       return (
-        <p>Oh no! An error ocurred getting the stats.</p>
+        <p>Annual statistics not available.</p>
       );
     }
 
@@ -162,7 +162,7 @@ export default class HomeCharts extends React.Component {
 
   renderError () {
     if (this.props.aggregate.error) {
-      return <p>Oh no! An error ocurred getting the data.</p>;
+      return <p>Aggregate data not available.</p>;
     }
   }
 
