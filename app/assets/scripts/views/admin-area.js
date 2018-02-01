@@ -32,6 +32,7 @@ import {
   getAdmAreaERU
 } from '../actions';
 import { getBoundingBox } from '../utils/country-bounding-box';
+import { getRegionBoundingBox } from '../utils/region-bounding-box';
 
 import App from './app';
 import Fold from '../components/fold';
@@ -533,7 +534,7 @@ class AdminArea extends SFPComponent {
     if (!fetched || error) return null;
 
     const isRegion = this.props.type === 'region';
-    const bbox = isRegion ? null : getBoundingBox(data.iso);
+    const bbox = isRegion ? getRegionBoundingBox(data.id) : getBoundingBox(data.iso);
     const mapContainerClass = `${isRegion ? 'region' : 'country'}__map`;
 
     return (
