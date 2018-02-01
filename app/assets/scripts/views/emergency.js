@@ -189,7 +189,7 @@ class Emergency extends React.Component {
     if (fetching) {
       content = <BlockLoading/>;
     } else if (error) {
-      content = <p>Oh no! An error ocurred getting the data.</p>;
+      content = <p>Documents not available.</p>;
     } else if (fetched) {
       if (!data.objects.length) {
         content = (

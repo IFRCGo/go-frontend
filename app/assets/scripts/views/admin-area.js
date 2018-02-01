@@ -189,7 +189,7 @@ class AdminArea extends SFPComponent {
     if (error) {
       return (
         <Fold title='Appeals'>
-          <p>Oh no! An error ocurred getting the data.</p>
+          <p>Emergency appeals not available.</p>
         </Fold>
       );
     }
@@ -267,7 +267,7 @@ class AdminArea extends SFPComponent {
     if (error) {
       return (
         <Fold title='Drefs'>
-          <p>Oh no! An error ocurred getting the data.</p>
+          <p>DREFs not available.</p>
         </Fold>
       );
     }
@@ -449,7 +449,7 @@ class AdminArea extends SFPComponent {
     };
 
     return error ? (
-      <p>Oh no! An error ocurred getting the stats.</p>
+      <p>Operations data not available.</p>
     ) : (
       <figure className='chart'>
         <figcaption>Operations for the past 10 years</figcaption>
@@ -498,7 +498,7 @@ class AdminArea extends SFPComponent {
     };
 
     return error ? (
-      <p>Oh no! An error ocurred getting the stats.</p>
+      <p>No active deployments to show.</p>
     ) : (
       <figure className='chart'>
         <figcaption>Active Deployments By Support National Societies</figcaption>

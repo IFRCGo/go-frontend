@@ -76,7 +76,7 @@ class AlertsTable extends SFPComponent {
 
   renderError () {
     if (this.props.surgeAlerts.error) {
-      return <p>Oh no! An error ocurred getting the data.</p>;
+      return <p>Surge alerts not available.</p>;
     }
   }
 

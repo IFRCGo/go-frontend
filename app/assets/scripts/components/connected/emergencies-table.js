@@ -85,7 +85,7 @@ class EmergenciesTable extends SFPComponent {
     if (error) {
       return (
         <Fold title='Latest Emergencies'>
-          <p>Oh no! An error ocurred getting the stats.</p>
+          <p>Latest emergencies not available.</p>
         </Fold>
       );
     }

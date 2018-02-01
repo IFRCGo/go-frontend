@@ -94,7 +94,7 @@ class Home extends SFPComponent {
     if (error) {
       return (
         <Fold title={title}>
-          <p>Oh no! An error ocurred getting the data.</p>
+          <p>Operations data not available.</p>
         </Fold>
       );
     }
