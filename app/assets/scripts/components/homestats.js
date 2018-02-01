@@ -15,7 +15,7 @@ export default class Homestats extends React.Component {
 
   renderError () {
     if (this.props.appealsList.error) {
-      return <p>Oh no! An error ocurred getting the data.</p>;
+      return <p>Data not available.</p>;
     }
   }
 

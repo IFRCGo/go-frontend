@@ -74,7 +74,7 @@ class HeOps extends SFPComponent {
     } = this.props.annual;
     if (!fetched) return <BlockLoading />;
     const { aggregate } = data;
-    if (!Array.isArray(aggregate)) return <p>Oh no! Something went wrong rendering the aggregate data.</p>;
+    if (!Array.isArray(aggregate)) return <p>Something went wrong rendering the aggregate data.</p>;
 
     const tickFormatter = (date) => DateTime.fromISO(date).toFormat('yyyy');
     return (
@@ -101,7 +101,7 @@ class HeOps extends SFPComponent {
     } = this.props.dtype;
     if (!fetched) return <BlockLoading />;
     const { aggregate } = data;
-    if (!Array.isArray(aggregate)) return <p>Oh no! Something went wrong rendering the aggregate data.</p>;
+    if (!Array.isArray(aggregate)) return <p>Something went wrong rendering the aggregate data.</p>;
 
     const dtypes = aggregate.map(o => {
       let name = disasterType.find(d => d.value === o.dtype.toString());
@@ -172,7 +172,7 @@ class HeOps extends SFPComponent {
 
     if (fetching) {
       return (
-        <Fold title='Heops Deployments'>
+        <Fold title='HeOps Deployments'>
           <BlockLoading/>
         </Fold>
       );
@@ -180,8 +180,8 @@ class HeOps extends SFPComponent {
 
     if (error) {
       return (
-        <Fold title='Heops Deployments'>
-          <p>Oh no! An error ocurred getting the stats.</p>
+        <Fold title='HeOps Deployments'>
+          <p>HeOps data not available.</p>
         </Fold>
       );
     }

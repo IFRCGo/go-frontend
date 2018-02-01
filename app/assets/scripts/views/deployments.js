@@ -244,7 +244,7 @@ class Deployments extends SFPComponent {
     if (error) {
       return (
         <Fold title='ERU'>
-          <p>Oh no! An error ocurred getting the data.</p>
+          <p>Data on ERUs not available.</p>
         </Fold>
       );
     }
@@ -307,7 +307,7 @@ class Deployments extends SFPComponent {
     if (error) {
       return (
         <Fold title='HeOps'>
-          <p>Oh no! An error ocurred getting the data.</p>
+          <p>Data on HeOps not available.</p>
         </Fold>
       );
     }
@@ -375,7 +375,7 @@ class Deployments extends SFPComponent {
     if (error) {
       return (
         <Fold title={title[what]}>
-          <p>Oh no! An error ocurred getting the data.</p>
+          <p>{title[what]} data not available.</p>
         </Fold>
       );
     }

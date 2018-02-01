@@ -85,7 +85,7 @@ export default class HomeCharts extends React.Component {
 
     if (errorDrefs || errorAppeals) {
       return (
-        <p>Oh no! An error ocurred getting the stats.</p>
+        <p>Operations data not available.</p>
       );
     }
 
@@ -129,7 +129,7 @@ export default class HomeCharts extends React.Component {
 
     if (errorDrefs || errorAppeals) {
       return (
-        <p>Oh no! An error ocurred getting the stats.</p>
+        <p>Annual statistics not available.</p>
       );
     }
 
@@ -162,7 +162,7 @@ export default class HomeCharts extends React.Component {
 
   renderError () {
     if (this.props.aggregate.error) {
-      return <p>Oh no! An error ocurred getting the data.</p>;
+      return <p>Aggregate data not available.</p>;
     }
   }
 

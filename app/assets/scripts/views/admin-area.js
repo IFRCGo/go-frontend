@@ -31,6 +31,8 @@ import {
   getAdmAreaAggregateAppeals,
   getAdmAreaERU
 } from '../actions';
+import { getBoundingBox } from '../utils/country-bounding-box';
+import { getRegionBoundingBox } from '../utils/region-bounding-box';
 
 import App from './app';
 import Fold from '../components/fold';
@@ -187,7 +189,7 @@ class AdminArea extends SFPComponent {
     if (error) {
       return (
         <Fold title='Appeals'>
-          <p>Oh no! An error ocurred getting the data.</p>
+          <p>Emergency appeals not available.</p>
         </Fold>
       );
     }
@@ -265,7 +267,7 @@ class AdminArea extends SFPComponent {
     if (error) {
       return (
         <Fold title='Drefs'>
-          <p>Oh no! An error ocurred getting the data.</p>
+          <p>DREFs not available.</p>
         </Fold>
       );
     }
@@ -343,7 +345,7 @@ class AdminArea extends SFPComponent {
     if (error) {
       return (
         <Fold title='Field Reports'>
-          <p>Oh no! An error ocurred getting the data.</p>
+          <p>You must be logged in to view field reports. <Link key='login' to='/login' className='link--primary' title='Login'>Login</Link></p>
         </Fold>
       );
     }
@@ -447,7 +449,7 @@ class AdminArea extends SFPComponent {
     };
 
     return error ? (
-      <p>Oh no! An error ocurred getting the stats.</p>
+      <p>Operations data not available.</p>
     ) : (
       <figure className='chart'>
         <figcaption>Operations for the past 10 years</figcaption>
@@ -496,7 +498,7 @@ class AdminArea extends SFPComponent {
     };
 
     return error ? (
-      <p>Oh no! An error ocurred getting the stats.</p>
+      <p>No active deployments to show.</p>
     ) : (
       <figure className='chart'>
         <figcaption>Active Deployments By Support National Societies</figcaption>
@@ -531,12 +533,16 @@ class AdminArea extends SFPComponent {
 
     if (!fetched || error) return null;
 
+    const isRegion = this.props.type === 'region';
+    const bbox = isRegion ? getRegionBoundingBox(data.id) : getBoundingBox(data.iso);
+    const mapContainerClass = `${isRegion ? 'region' : 'country'}__map`;
+
     return (
       <section className='inpage'>
         <header className='inpage__header'>
           <div className='inner'>
             <div className='inpage__headline'>
-              {this.props.type === 'region' ? (
+              {isRegion ? (
                 <h1 className='inpage__title'>{data.name} Region</h1>
               ) : (
                 <h1 className='inpage__title'>{data.name}</h1>
@@ -546,7 +552,9 @@ class AdminArea extends SFPComponent {
               </div>
             </div>
           </div>
-          <Homemap appealsList={this.props.appealStats} />
+          <div className={mapContainerClass}>
+            <Homemap appealsList={this.props.appealStats} bbox={bbox} />
+          </div>
         </header>
         <div className='inpage__body'>
           <div className='inner'>

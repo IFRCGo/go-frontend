@@ -182,7 +182,7 @@ class EmergenciesMap extends React.Component {
               <p className='legend__note'>*IFRC response indicates the existence of appeal(s) and/or DREF(s) for a given emergency.</p>
             </div>
           ) : (
-            <p>Oh no! An error ocurred getting the data.</p>
+            <p>Data not available.</p>
           )}
         </div>
       </div>
