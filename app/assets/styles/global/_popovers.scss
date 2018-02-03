@@ -77,6 +77,11 @@ a.popover__contents {
   ul {
     margin-left: 0;
   }
+
+  img {
+    height: 20px;
+    margin-right: $global-spacing;
+  }
 }
 
 .popover__summary {

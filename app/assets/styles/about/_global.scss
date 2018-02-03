@@ -19,6 +19,7 @@
     margin-right: $global-spacing * 3;
     @include column(12/12);
     margin-top: $global-spacing;
+    margin-bottom: $global-spacing;
     @include media(medium-up) {
       @include column(6/12, $cycle: 2);
       margin-top: $global-spacing;

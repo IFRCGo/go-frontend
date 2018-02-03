@@ -18,8 +18,9 @@
   "scripts": {
     "postinstall": "[ -f app/assets/scripts/config/local.js ] || echo 'module.exports = {};' > app/assets/scripts/config/local.js",
     "serve": "DS_ENV=development gulp collecticons && DS_ENV=development gulp serve",
-    "build": "NODE_ENV=production gulp",
-    "deploy": "AZURE_CONNECTIONS_STRING=$staging_connection_string node .build_scripts/az-upload.js ./dist",
+    "build-staging": "DS_ENV=staging gulp",
+    "build-prod": "DS_ENV=production gulp",
+    "deploy-staging": "AZURE_CONNECTIONS_STRING=$staging_connection_string node .build_scripts/az-upload.js ./dist",
     "deploy-prod": "AZURE_CONNECTIONS_STRING=$production_connection_string node .build_scripts/az-upload.js ./dist",
     "lint": "eslint app/assets/scripts/ --ext .js",
     "test": "echo \"No tests\" && exit 0"
@@ -86,6 +87,7 @@
     "gulp-useref": "^3.1.3",
     "gulp-util": "^3.0.8",
     "jeet": "^7.2.0",
+    "mime-types": "^2.1.17",
     "node-bourbon": "^4.2.8",
     "node-notifier": "^5.1.2",
     "node-sass": "^4.6.0",

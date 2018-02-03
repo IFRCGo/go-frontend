@@ -1,5 +1,6 @@
 'use strict';
 import React from 'react';
+import * as path from 'path';
 import { render } from 'react-dom';
 import { PropTypes as T } from 'prop-types';
 import mapboxgl from 'mapbox-gl';
@@ -13,7 +14,7 @@ import {
   FormSelect
 } from '../form-elements/';
 
-const countryChromaScale = chroma.scale(['#8A96A7', '#E8EAEE']);
+const countryChromaScale = chroma.scale(['#F0C9E8', '#861A70']);
 
 export default class DeploymentsMap extends React.Component {
   constructor (props) {
@@ -130,7 +131,7 @@ export default class DeploymentsMap extends React.Component {
           filter: [
             'any',
             ['>', 'fact', 0],
-            ['>', 'rdit', 0],
+            ['>', 'rdrt', 0],
             ['>', 'heop', 0]
           ]
         }
@@ -145,8 +146,8 @@ export default class DeploymentsMap extends React.Component {
 
   getLayers (geoJSON) {
     const layers = [];
-    const sumProps = ['+', ['get', 'fact'], ['get', 'rdit'], ['get', 'heop']];
-    const maxValue = Math.max(...geoJSON.features.map(({properties: { fact, rdit, heop }}) => fact + rdit + heop));
+    const sumProps = ['+', ['get', 'fact'], ['get', 'rdrt'], ['get', 'heop']];
+    const maxValue = Math.max(...geoJSON.features.map(({properties: { fact, rdrt, heop }}) => fact + rdrt + heop));
 
     layers.push({
       id: 'deployments',
@@ -182,8 +183,8 @@ export default class DeploymentsMap extends React.Component {
         value: feature.properties.fact
       },
       {
-        label: 'RDIT',
-        value: feature.properties.rdit
+        label: 'RDRT',
+        value: feature.properties.rdrt
       },
       {
         label: 'HeOps',
@@ -196,7 +197,7 @@ export default class DeploymentsMap extends React.Component {
     ];
 
     render(<MapPopover
-      title={`Deployments for ${feature.properties.countryName}`}
+      title={`Deployments in ${feature.properties.countryName}`}
       countryId={feature.properties.countryId}
       deployments={deployments}
       onCloseClick={this.onPopoverCloseClick.bind(this)} />, popoverContent);
@@ -233,8 +234,8 @@ export default class DeploymentsMap extends React.Component {
         value: 'fact'
       },
       {
-        label: 'RDIT',
-        value: 'rdit'
+        label: 'RDRT',
+        value: 'rdrt'
       },
       {
         label: 'HeOps',
@@ -259,13 +260,13 @@ export default class DeploymentsMap extends React.Component {
                     <label className='form__label'>Key</label>
                     <dl className='legend__dl legend__dl--colors'>
                       <dt className='color color--blue'>blue</dt>
-                      <dd>Deployed Operations (FACT, RDIT, HeOps)</dd>
+                      <dd>Deployed Operations (FACT, RDRT/RIT, HeOps)</dd>
                     </dl>
                   </div>
                   <div className='legend__block'>
                     <h3 className='legend__title'>ERU Units</h3>
                     <dl className='legend__grandient'>
-                      <dt style={{background: 'linear-gradient(to right, #8A96A7, #E8EAEE)'}}>Scale Gradient</dt>
+                      <dt style={{background: 'linear-gradient(to right, #F0C9E8, #861A70)'}}>Scale Gradient</dt>
                       <dd>
                         <span>0</span>
                         <span>to</span>
@@ -302,6 +303,14 @@ if (environment !== 'production') {
   };
 }
 
+const logoPath = '/assets/graphics/content';
+const logoSrc = {
+  fact: 'fact.jpg',
+  eru: 'eru.jpg',
+  heops: 'heops.jpg',
+  rdrt: 'rdrt.jpg'
+};
+
 class MapPopover extends React.Component {
   render () {
     const {
@@ -325,7 +334,8 @@ class MapPopover extends React.Component {
           <div className='popover__body'>
             <ul>
               {deployments.map(dep => (
-                <li key={dep.label}>{dep.value} {dep.label}</li>
+                <li key={dep.label}>
+                  <img src={path.join(logoPath, logoSrc[dep.label.toLowerCase()])} />{dep.value} {dep.label}</li>
               ))}
             </ul>
           </div>

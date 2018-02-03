@@ -2,6 +2,7 @@ var azure = require('azure-storage');
 var Promise = require('bluebird');
 var fs = require('fs');
 var path = require('path');
+var mime = require('mime-types');
 
 var blobSvc = azure.createBlobService(process.env.AZURE_CONNECTIONS_STRING);
 
@@ -50,8 +51,13 @@ function deleteBlobIfExists (container, blob) {
 }
 
 function putBlobFromFile (container, blob, file) {
+  const contentSettings = {
+    contentSettings: {
+      contentType: mime.lookup(file) || 'application/octet-stream'
+    }
+  };
   return new Promise((resolve, reject) => {
-    blobSvc.createBlockBlobFromLocalFile(container, blob, file, (err, res, response) => err ? reject(err) : resolve(res));
+    blobSvc.createBlockBlobFromLocalFile(container, blob, file, contentSettings, (err, res, response) => err ? reject(err) : resolve(res));
   });
 }
 

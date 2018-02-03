@@ -5,15 +5,17 @@ import { PropTypes as T } from 'prop-types';
 import Select from 'react-select';
 import _set from 'lodash.set';
 import _cloneDeep from 'lodash.clonedeep';
-import _get from 'lodash.get';
 import c from 'classnames';
 import { Link } from 'react-router-dom';
+import { DateTime } from 'luxon';
 
 import { environment } from '../config';
 import {
   getUserProfile,
-  updateSubscriptions
+  updateSubscriptions,
+  getFieldReportsByUser
 } from '../actions';
+import { get } from '../utils/utils';
 import { countries, disasterType } from '../utils/field-report-constants';
 import { apiPropertyDisplay, apiPropertyValue } from '../utils/format';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
@@ -110,8 +112,9 @@ class Account extends React.Component {
   }
 
   componentDidMount () {
-    const { user, _getProfile } = this.props;
+    const { user, _getProfile, _getFieldReportsByUser } = this.props;
     _getProfile(user.username);
+    _getFieldReportsByUser(user.id);
     showGlobalLoading();
   }
 
@@ -136,7 +139,7 @@ class Account extends React.Component {
   }
 
   syncNotificationState (data) {
-    const subscriptions = _get(data, 'subscription', []);
+    const subscriptions = get(data, 'subscription', []);
     if (!subscriptions.length) {
       return;
     }
@@ -175,7 +178,7 @@ class Account extends React.Component {
   serialize (data) {
     let serialized = ['regions', 'disasterTypes', 'appeal', 'event', 'fieldReport']
       .reduce((acc, currentType) => {
-        const flattened = _get(data, currentType, [])
+        const flattened = get(data, currentType, [])
           .filter(d => d.checked)
           .map(d => ({
             type: currentType,
@@ -184,7 +187,7 @@ class Account extends React.Component {
         return acc.concat(flattened);
       }, []);
 
-    let otherNotifications = _get(data, 'other', []).filter(d => d.checked).map(d => ({
+    let otherNotifications = get(data, 'other', []).filter(d => d.checked).map(d => ({
       type: d.value,
       value: true
     }));
@@ -192,7 +195,7 @@ class Account extends React.Component {
       serialized.push.apply(serialized, otherNotifications);
     }
 
-    let countries = _get(data, 'countries', []).map(d => ({
+    let countries = get(data, 'countries', []).map(d => ({
       type: 'countries',
       value: d.value
     }));
@@ -223,6 +226,42 @@ class Account extends React.Component {
         <dd>{apiPropertyValue(a, profile.data)}</dd>
       </Fragment>
     ));
+  }
+
+  renderFieldReports () {
+    const { user, fieldReport } = this.props;
+    const userReports = get(fieldReport, `user-${user.id}`, {
+      fetching: false,
+      fetched: false,
+      error: null
+    });
+    if (!userReports.fetched) { return null; }
+    const data = get(userReports, 'data.objects', []);
+    if (!data.length) { return null; }
+    return (
+      <div className='prose prose--responsive'>
+        <section className='fold'>
+          <div className='inner'>
+            <div className='fold__header'>
+              <h2 className='fold__title'>Submitted Field Reports</h2>
+            </div>
+            <div className='fold__body'>
+              <ul className='report__list'>
+                {data.map(o => (
+                  <li key={o.id} className='report__list--item'>
+                    <div className='report__list--header'>
+                      <Link className='link--primary' to={`/reports/${o.id}`}>{o.summary}</Link>&nbsp;
+                      <span className='report__list--updated'>Last Updated: {DateTime.fromISO(o.updated_at).toISODate()}</span>
+                    </div>
+                    <p>{o.description}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+      </div>
+    );
   }
 
   renderSubscriptionForm () {
@@ -319,6 +358,7 @@ class Account extends React.Component {
                   </div>
                 </section>
               </div>
+              {this.renderFieldReports()}
               {this.props.profile.fetched && !this.props.profile.error ? this.renderSubscriptionForm() : null}
             </div>
           </div>
@@ -332,22 +372,26 @@ if (environment !== 'production') {
   Account.propTypes = {
     user: T.object,
     profile: T.object,
+    fieldReport: T.object,
     _getProfile: T.func,
-    _updateSubscriptions: T.func
+    _updateSubscriptions: T.func,
+    _getFieldReportsByUser: T.func
   };
 }
 
 // /////////////////////////////////////////////////////////////////// //
 // Connect functions
 
-const selector = (state) => ({
+const selector = (state, ownProps) => ({
   user: state.user.data,
-  profile: state.profile
+  profile: state.profile,
+  fieldReport: state.fieldReport
 });
 
 const dispatcher = {
   _getProfile: getUserProfile,
-  _updateSubscriptions: updateSubscriptions
+  _updateSubscriptions: updateSubscriptions,
+  _getFieldReportsByUser: getFieldReportsByUser
 };
 
 export default connect(selector, dispatcher)(Account);

@@ -1,3 +1,26 @@
+.inpage__body-charts {
+  @include column(6/12);
+  @include media(small-down) {
+    @include column(12/12);
+  }
+  @include media (large-up) {
+    @include column(12/12);
+  }
+  .chart {
+    @include column(12/12);
+    @include media(large-up) {
+      @include column(6/12);
+    }
+  }
+  .emergencies {
+    @include column(12/12);
+    @include media(large-up) {
+      @include column(6/12);
+    }
+  }
+}
+
+
 .readiness__container {
   @include column(12/12);
   margin: ($global-spacing * 6) 0 ($global-spacing * 4) 0;
@@ -55,9 +78,17 @@
   .updated {
     font-size: 0.75rem;
     color: rgba($base-color, 0.48);
-    float: right;
     width: 40%;
-    text-align: right;
+    text-align: left;
+    float: left;
+    width: 100%;
+    margin-top: $global-spacing;
+    @include media(large-up) {
+      text-align: right;
+      float: right;
+      width: 30%;
+      margin-top: 0;
+    }
   }
   .card__col {
     @include column(5.5/12);
@@ -69,6 +100,9 @@
       border-left: solid 1px rgba($base-color, 0.1);
       padding-left: $global-spacing;
     };
+    .link--primary {
+      line-height: 1.5;
+    }
   }
   .card__label {
     font-size: 0.875rem;
@@ -81,6 +115,8 @@
   padding-bottom: $global-spacing;
   margin-bottom: $global-spacing;
   border-bottom: solid 1px rgba($base-color, 0.1);
+  float: left;
+  width: 100%;
 }
 
 .card__label--ready {

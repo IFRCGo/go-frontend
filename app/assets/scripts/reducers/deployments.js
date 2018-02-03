@@ -58,15 +58,15 @@ function heop (state = initialState, action) {
   return state;
 }
 
-function rdit (state = initialState, action) {
+function rdrt (state = initialState, action) {
   switch (action.type) {
-    case 'GET_DEPLOYMENT_RDIT_INFLIGHT':
+    case 'GET_DEPLOYMENT_RDRT_INFLIGHT':
       state = stateInflight(state, action);
       break;
-    case 'GET_DEPLOYMENT_RDIT_FAILED':
+    case 'GET_DEPLOYMENT_RDRT_FAILED':
       state = stateError(state, action);
       break;
-    case 'GET_DEPLOYMENT_RDIT_SUCCESS':
+    case 'GET_DEPLOYMENT_RDRT_SUCCESS':
       state = stateSuccess(state, action);
       break;
   }
@@ -85,7 +85,7 @@ function geojson (state = geojsonInitialState, action) {
     case 'GET_ALL_DEPLOYMENT_ERU_INFLIGHT':
     case 'GET_ALL_DEPLOYMENT_FACT_INFLIGHT':
     case 'GET_ALL_DEPLOYMENT_HEOP_INFLIGHT':
-    case 'GET_ALL_DEPLOYMENT_RDIT_INFLIGHT':
+    case 'GET_ALL_DEPLOYMENT_RDRT_INFLIGHT':
       state = {
         ...state,
         fetchingCount: state.fetchingCount + 1
@@ -94,7 +94,7 @@ function geojson (state = geojsonInitialState, action) {
     case 'GET_ALL_DEPLOYMENT_ERU_FAILED':
     case 'GET_ALL_DEPLOYMENT_FACT_FAILED':
     case 'GET_ALL_DEPLOYMENT_HEOP_FAILED':
-    case 'GET_ALL_DEPLOYMENT_RDIT_FAILED':
+    case 'GET_ALL_DEPLOYMENT_RDRT_FAILED':
       state = {
         ...state,
         fetchingCount: state.fetchingCount - 1,
@@ -111,8 +111,8 @@ function geojson (state = geojsonInitialState, action) {
     case 'GET_ALL_DEPLOYMENT_HEOP_SUCCESS':
       state = updateGeoState(state, action, 'heop');
       break;
-    case 'GET_ALL_DEPLOYMENT_RDIT_SUCCESS':
-      state = updateGeoState(state, action, 'rdit');
+    case 'GET_ALL_DEPLOYMENT_RDRT_SUCCESS':
+      state = updateGeoState(state, action, 'rdrt');
       break;
   }
   console.log('stat', state);
@@ -144,7 +144,7 @@ function updateGeoState (state, action, type) {
         type: 'Feature',
         properties: {
           fact: 0,
-          rdit: 0,
+          rdrt: 0,
           heop: 0,
           eru: 0,
           countryIso: cIso,
@@ -178,6 +178,6 @@ export default combineReducers({
   eru,
   fact,
   heop,
-  rdit,
+  rdrt,
   geojson
 });

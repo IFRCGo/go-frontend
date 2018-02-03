@@ -55,10 +55,12 @@ class Home extends SFPComponent {
     let state = this.state.appeals;
     if (state.sort.field) {
       qs.order_by = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
+    } else {
+      qs.order_by = '-start_date';
     }
 
     if (state.filters.date !== 'all') {
-      qs.created_at__gte = datesAgo[state.filters.date]();
+      qs.start_date__gte = datesAgo[state.filters.date]();
     }
     if (state.filters.dtype !== 'all') {
       qs.dtype = state.filters.dtype;
@@ -79,9 +81,11 @@ class Home extends SFPComponent {
       data
     } = this.props.appeals;
 
+    const title = 'Operations Overview';
+
     if (fetching) {
       return (
-        <Fold title='Appeals'>
+        <Fold title={title}>
           <BlockLoading/>
         </Fold>
       );
@@ -89,8 +93,8 @@ class Home extends SFPComponent {
 
     if (error) {
       return (
-        <Fold title='Appeals'>
-          <p>Oh no! An error ocurred getting the data.</p>
+        <Fold title={title}>
+          <p>Operations data not available.</p>
         </Fold>
       );
     }
@@ -125,7 +129,7 @@ class Home extends SFPComponent {
 
       const rows = data.objects.map(o => ({
         id: o.id,
-        date: DateTime.fromISO(o.end_date).toISODate(),
+        date: DateTime.fromISO(o.start_date).toISODate(),
         name: o.name,
         event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
         dtype: o.dtype.name,
@@ -142,7 +146,7 @@ class Home extends SFPComponent {
       }));
 
       return (
-        <Fold title={`Ongoing Operations (${data.meta.total_count})`}>
+        <Fold title={`${title} (${data.meta.total_count})`}>
           <DisplayTable
             headings={headings}
             rows={rows}

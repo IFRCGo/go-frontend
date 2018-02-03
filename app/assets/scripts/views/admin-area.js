@@ -19,7 +19,8 @@ import { environment } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { get, dateOptions, datesAgo, dTypeOptions } from '../utils/utils/';
 import {
-  commaSeparatedNumber as n
+  commaSeparatedNumber as n,
+  nope
 } from '../utils/format';
 import {
   getAdmAreaById,
@@ -30,6 +31,8 @@ import {
   getAdmAreaAggregateAppeals,
   getAdmAreaERU
 } from '../actions';
+import { getBoundingBox } from '../utils/country-bounding-box';
+import { getRegionBoundingBox } from '../utils/region-bounding-box';
 
 import App from './app';
 import Fold from '../components/fold';
@@ -103,9 +106,9 @@ class AdminArea extends SFPComponent {
   }
 
   getData (props) {
-    this.props._getAdmAreaAppeals(props.type, props.match.params.id);
-    this.props._getAdmAreaDrefs(props.type, props.match.params.id);
-    this.props._getAdmAreaFieldReports(props.type, props.match.params.id);
+    this.props._getAdmAreaAppeals(props.type, props.match.params.id, 1, { order_by: '-start_date' });
+    this.props._getAdmAreaDrefs(props.type, props.match.params.id, 1, { order_by: '-start_date' });
+    this.props._getAdmAreaFieldReports(props.type, props.match.params.id, 1, { order_by: '-created_at' });
     this.props._getAdmAreaAppealsStats(props.type, props.match.params.id);
     this.props._getAdmAreaAggregateAppeals(props.type, props.match.params.id, DateTime.local().minus({years: 10}).startOf('month').toISODate(), 'year');
     this.props._getAdmAreaERU(props.type, props.match.params.id);
@@ -125,10 +128,12 @@ class AdminArea extends SFPComponent {
       case 'drefs':
         if (state.sort.field) {
           qs.order_by = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
+        } else {
+          qs.order_by = '-start_date';
         }
 
         if (state.filters.date !== 'all') {
-          qs.end_date__gte = datesAgo[state.filters.date]();
+          qs.start_date__gte = datesAgo[state.filters.date]();
         }
         if (state.filters.dtype !== 'all') {
           qs.dtype = state.filters.dtype;
@@ -136,6 +141,7 @@ class AdminArea extends SFPComponent {
 
         break;
       case 'fieldReports':
+        qs.order_by = '-created_at';
         if (state.filters.date !== 'all') {
           qs.created_at__gte = datesAgo[state.filters.date]();
         }
@@ -183,7 +189,7 @@ class AdminArea extends SFPComponent {
     if (error) {
       return (
         <Fold title='Appeals'>
-          <p>Oh no! An error ocurred getting the data.</p>
+          <p>Emergency appeals not available.</p>
         </Fold>
       );
     }
@@ -193,7 +199,7 @@ class AdminArea extends SFPComponent {
       const headings = [
         {
           id: 'date',
-          label: <FilterHeader id='date' title='Date' options={dateOptions} filter={this.state.appeals.filters.date} onSelect={this.handleFilterChange.bind(this, 'appeals', 'date')} />
+          label: <FilterHeader id='date' title='Start Date' options={dateOptions} filter={this.state.appeals.filters.date} onSelect={this.handleFilterChange.bind(this, 'appeals', 'date')} />
         },
         {
           id: 'name',
@@ -217,7 +223,7 @@ class AdminArea extends SFPComponent {
 
       const rows = data.objects.map(o => ({
         id: o.id,
-        date: DateTime.fromISO(o.end_date).toISODate(),
+        date: DateTime.fromISO(o.start_date).toISODate(),
         name: o.name,
         event: <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link>,
         dtype: o.dtype.name,
@@ -261,7 +267,7 @@ class AdminArea extends SFPComponent {
     if (error) {
       return (
         <Fold title='Drefs'>
-          <p>Oh no! An error ocurred getting the data.</p>
+          <p>DREFs not available.</p>
         </Fold>
       );
     }
@@ -271,7 +277,7 @@ class AdminArea extends SFPComponent {
       const headings = [
         {
           id: 'date',
-          label: <FilterHeader id='date' title='Date' options={dateOptions} filter={this.state.drefs.filters.date} onSelect={this.handleFilterChange.bind(this, 'drefs', 'date')} />
+          label: <FilterHeader id='date' title='Start Date' options={dateOptions} filter={this.state.drefs.filters.date} onSelect={this.handleFilterChange.bind(this, 'drefs', 'date')} />
         },
         {
           id: 'name',
@@ -295,9 +301,9 @@ class AdminArea extends SFPComponent {
 
       const rows = data.objects.map(o => ({
         id: o.id,
-        date: DateTime.fromISO(o.end_date).toISODate(),
+        date: DateTime.fromISO(o.start_date).toISODate(),
         name: o.name,
-        event: <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link>,
+        event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
         dtype: o.dtype.name,
         requestAmount: n(o.amount_requested),
         fundedAmount: n(o.amount_funded),
@@ -339,7 +345,7 @@ class AdminArea extends SFPComponent {
     if (error) {
       return (
         <Fold title='Field Reports'>
-          <p>Oh no! An error ocurred getting the data.</p>
+          <p>You must be logged in to view field reports. <Link key='login' to='/login' className='link--primary' title='Login'>Login</Link></p>
         </Fold>
       );
     }
@@ -348,10 +354,10 @@ class AdminArea extends SFPComponent {
       const headings = [
         {
           id: 'date',
-          label: <FilterHeader id='date' title='Date' options={dateOptions} filter={this.state.fieldReports.filters.date} onSelect={this.handleFilterChange.bind(this, 'fieldReports', 'date')} />
+          label: <FilterHeader id='date' title='Created At' options={dateOptions} filter={this.state.fieldReports.filters.date} onSelect={this.handleFilterChange.bind(this, 'fieldReports', 'date')} />
         },
         { id: 'name', label: 'Name' },
-        { id: 'event', label: 'Event' },
+        { id: 'event', label: 'Emergency' },
         {
           id: 'dtype',
           label: <FilterHeader id='dtype' title='Disaster Type' options={dTypeOptions} filter={this.state.fieldReports.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'fieldReports', 'dtype')} />
@@ -363,7 +369,7 @@ class AdminArea extends SFPComponent {
         id: o.id,
         date: DateTime.fromISO(o.created_at).toISODate(),
         name: <Link to={`/reports/${o.id}`} className='link--primary' title='View Field Report'>{o.summary}</Link>,
-        event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : 'n/a',
+        event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
         dtype: o.dtype.name,
         countries: <ul>{o.countries.map(country => <li key={country.id}><Link to={`/countries/${country.id}`} className='link--primary' title='View Country'>{country.name}</Link></li>)}</ul>
       }));
@@ -443,7 +449,7 @@ class AdminArea extends SFPComponent {
     };
 
     return error ? (
-      <p>Oh no! An error ocurred getting the stats.</p>
+      <p>Operations data not available.</p>
     ) : (
       <figure className='chart'>
         <figcaption>Operations for the past 10 years</figcaption>
@@ -492,7 +498,7 @@ class AdminArea extends SFPComponent {
     };
 
     return error ? (
-      <p>Oh no! An error ocurred getting the stats.</p>
+      <p>No active deployments to show.</p>
     ) : (
       <figure className='chart'>
         <figcaption>Active Deployments By Support National Societies</figcaption>
@@ -527,12 +533,16 @@ class AdminArea extends SFPComponent {
 
     if (!fetched || error) return null;
 
+    const isRegion = this.props.type === 'region';
+    const bbox = isRegion ? getRegionBoundingBox(data.id) : getBoundingBox(data.iso);
+    const mapContainerClass = `${isRegion ? 'region' : 'country'}__map`;
+
     return (
       <section className='inpage'>
         <header className='inpage__header'>
           <div className='inner'>
             <div className='inpage__headline'>
-              {this.props.type === 'region' ? (
+              {isRegion ? (
                 <h1 className='inpage__title'>{data.name} Region</h1>
               ) : (
                 <h1 className='inpage__title'>{data.name}</h1>
@@ -542,7 +552,9 @@ class AdminArea extends SFPComponent {
               </div>
             </div>
           </div>
-          <Homemap appealsList={this.props.appealStats} />
+          <div className={mapContainerClass}>
+            <Homemap appealsList={this.props.appealStats} bbox={bbox} />
+          </div>
         </header>
         <div className='inpage__body'>
           <div className='inner'>

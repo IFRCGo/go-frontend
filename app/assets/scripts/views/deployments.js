@@ -4,16 +4,24 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { PropTypes as T } from 'prop-types';
 import { DateTime } from 'luxon';
+import c from 'classnames';
 
+import {
+  enterFullscreen,
+  exitFullscreen,
+  isFullscreen,
+  addFullscreenListener,
+  removeFullscreenListener
+} from '../utils/fullscreen';
 import {
   getDeploymentERU,
   getDeploymentFACT,
   getDeploymentHEOP,
-  getDeploymentRDIT,
+  getDeploymentRDRT,
   getAllDeploymentERU,
   getAllDeploymentFACT,
   getAllDeploymentHEOP,
-  getAllDeploymentRDIT,
+  getAllDeploymentRDRT,
   getEruOwners
 } from '../actions';
 import { finishedFetch, get, dateOptions, datesAgo } from '../utils/utils';
@@ -21,7 +29,9 @@ import { getEruType } from '../utils/eru-types';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { environment } from '../config';
 import {
-  commaSeparatedNumber as n
+  commaSeparatedNumber as n,
+  nope,
+  na
 } from '../utils/format';
 
 import App from './app';
@@ -42,6 +52,7 @@ class Deployments extends SFPComponent {
   constructor (props) {
     super(props);
     this.state = {
+      fullscreen: false,
       eru: {
         page: 1
       },
@@ -65,7 +76,7 @@ class Deployments extends SFPComponent {
           date: 'all'
         }
       },
-      rdit: {
+      rdrt: {
         page: 1,
         sort: {
           field: '',
@@ -76,21 +87,24 @@ class Deployments extends SFPComponent {
         }
       }
     };
+    this.toggleFullscreen = this.toggleFullscreen.bind(this);
+    this.onFullscreenChange = this.onFullscreenChange.bind(this);
   }
 
   componentDidMount () {
+    addFullscreenListener(this.onFullscreenChange);
     showGlobalLoading();
     this.props._getEruOwners();
 
     this.props._getDeploymentERU();
-    this.props._getDeploymentFACT();
-    this.props._getDeploymentHEOP();
-    this.props._getDeploymentRDIT();
+    this.props._getDeploymentFACT(1, { order_by: '-start_date' });
+    this.props._getDeploymentHEOP(1, { order_by: '-start_date' });
+    this.props._getDeploymentRDRT(1, { order_by: '-start_date' });
 
     this.props._getAllDeploymentERU();
     this.props._getAllDeploymentFACT();
     this.props._getAllDeploymentHEOP();
-    this.props._getAllDeploymentRDIT();
+    this.props._getAllDeploymentRDRT();
   }
 
   componentWillReceiveProps (nextProps) {
@@ -99,22 +113,42 @@ class Deployments extends SFPComponent {
     }
   }
 
+  componentWillUnmount () {
+    removeFullscreenListener(this.onFullscreenChange);
+  }
+
+  onFullscreenChange () {
+    this.setState({fullscreen: isFullscreen()});
+  }
+
+  toggleFullscreen () {
+    if (isFullscreen()) {
+      exitFullscreen();
+      this.setState({fullscreen: false});
+    } else {
+      enterFullscreen(document.querySelector('#presentation'));
+      this.setState({fullscreen: true});
+    }
+  }
+
   requestResults (what) {
     let qs = {};
     let state = this.state[what];
     if (state.sort && state.sort.field) {
       qs.order_by = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
+    } else {
+      qs.order_by = '-start_date';
     }
 
     if (state.filters && state.filters.date !== 'all') {
-      qs.created_at__gte = datesAgo[state.filters.date]();
+      qs.start_date__gte = datesAgo[state.filters.date]();
     }
 
     const fn = {
       eru: this.props._getDeploymentERU,
       fact: this.props._getDeploymentFACT,
       heop: this.props._getDeploymentHEOP,
-      rdit: this.props._getDeploymentRDIT
+      rdrt: this.props._getDeploymentRDRT
     };
 
     fn[what](state.page, qs);
@@ -149,7 +183,7 @@ class Deployments extends SFPComponent {
     const { data } = this.props.eruOwners;
     const fact = get(this.props.deployments.fact, 'data.meta.total_count', 0);
     const heop = get(this.props.deployments.heop, 'data.meta.total_count', 0);
-    const rdit = get(this.props.deployments.rdit, 'data.meta.total_count', 0);
+    const rdrt = get(this.props.deployments.rdrt, 'data.meta.total_count', 0);
 
     return (
       <div className='inpage__introduction'>
@@ -162,19 +196,29 @@ class Deployments extends SFPComponent {
               {n(fact)}<small>Deployed FACTs</small>
             </li>
             <li className='stats-list__item stats-people'>
-              {n(rdit)}<small>Deployed RDRTs</small>
+              {n(rdrt)}<small>Deployed RDRTs</small>
             </li>
             <li className='stats-list__item stats-heops'>
               {n(heop)}<small>Deployed Heops</small>
             </li>
           </ul>
         </div>
-        <div className='inpage__headline-charts'>
-          <div className='chart'>
-            {this.renderHeaderCharts(data.types, 'ERU Deployment Types')}
-          </div>
-          <div className='chart'>
-            {this.renderHeaderCharts(data.owners, 'Number of Deployments by NS')}
+      </div>
+    );
+  }
+
+  renderCharts () {
+    const { data } = this.props.eruOwners;
+    return (
+      <div className='fold'>
+        <div className='inner'>
+          <div className='inpage__body-charts'>
+            <div className='chart'>
+              {this.renderHeaderCharts(data.types, 'ERU Deployment Types')}
+            </div>
+            <div className='chart'>
+              {this.renderHeaderCharts(data.owners, 'Number of Deployments by NS')}
+            </div>
           </div>
         </div>
       </div>
@@ -200,7 +244,7 @@ class Deployments extends SFPComponent {
     if (error) {
       return (
         <Fold title='ERU'>
-          <p>Oh no! An error ocurred getting the data.</p>
+          <p>Data on ERUs not available.</p>
         </Fold>
       );
     }
@@ -214,7 +258,8 @@ class Deployments extends SFPComponent {
         { id: 'country', label: 'Country' },
         { id: 'type', label: 'Type' },
         { id: 'emer', label: 'Emergency' },
-        { id: 'personnel', label: 'Number of Personnel', className: 'right-align' }
+        { id: 'personnel', label: 'Personnel Units' },
+        { id: 'equipment', label: 'Equipment Units' }
       ];
 
       const rows = data.objects.map(o => ({
@@ -222,11 +267,9 @@ class Deployments extends SFPComponent {
         name: o.eru_owner.country.society_name,
         country: <ul>{o.countries.map(country => <li key={country.id}><Link to={`/countries/${country.id}`} className='link--primary' title='View Country'>{country.name}</Link></li>)}</ul>,
         type: getEruType(o.type),
-        emer: 'N/A',
-        personnel: {
-          value: o.units,
-          className: 'right-align'
-        }
+        emer: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
+        personnel: o.units,
+        equipment: o.equipment_units
       }));
 
       return (
@@ -264,7 +307,7 @@ class Deployments extends SFPComponent {
     if (error) {
       return (
         <Fold title='HeOps'>
-          <p>Oh no! An error ocurred getting the data.</p>
+          <p>Data on HeOps not available.</p>
         </Fold>
       );
     }
@@ -273,7 +316,7 @@ class Deployments extends SFPComponent {
       const headings = [
         {
           id: 'date',
-          label: <FilterHeader id='date' title='Star Date' options={dateOptions} filter={this.state.heop.filters.date} onSelect={this.handleFilterChange.bind(this, 'heop', 'date')} />
+          label: <FilterHeader id='date' title='Start Date' options={dateOptions} filter={this.state.heop.filters.date} onSelect={this.handleFilterChange.bind(this, 'heop', 'date')} />
         },
         {
           id: 'name',
@@ -286,9 +329,9 @@ class Deployments extends SFPComponent {
       const rows = data.objects.map(o => ({
         id: o.id,
         date: DateTime.fromISO(o.start_date).toISODate(),
-        name: o.person || 'n/a',
+        name: o.person || na,
         country: <Link to={`/countries/${o.country.id}`} className='link--primary' title='View Country'>{o.country.name}</Link>,
-        emer: 'N/A'
+        emer: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope
       }));
 
       return (
@@ -307,11 +350,11 @@ class Deployments extends SFPComponent {
     return null;
   }
 
-  // Render for FATC, RDIT
+  // Render for FATC, RDRT
   renderDeploymentsTable (what) {
     const title = {
       fact: 'FACT',
-      rdit: 'RDIT'
+      rdrt: 'RDRT/RIT'
     };
 
     const {
@@ -332,7 +375,7 @@ class Deployments extends SFPComponent {
     if (error) {
       return (
         <Fold title={title[what]}>
-          <p>Oh no! An error ocurred getting the data.</p>
+          <p>{title[what]} data not available.</p>
         </Fold>
       );
     }
@@ -341,8 +384,9 @@ class Deployments extends SFPComponent {
       const headings = [
         {
           id: 'date',
-          label: <FilterHeader id='date' title='Star Date' options={dateOptions} filter={this.state[what].filters.date} onSelect={this.handleFilterChange.bind(this, what, 'date')} />
+          label: <FilterHeader id='date' title='Start Date' options={dateOptions} filter={this.state[what].filters.date} onSelect={this.handleFilterChange.bind(this, what, 'date')} />
         },
+        { id: 'people', label: 'People' },
         { id: 'country', label: 'Country' },
         { id: 'emer', label: 'Emergency' }
       ];
@@ -350,9 +394,9 @@ class Deployments extends SFPComponent {
       const rows = data.objects.map(o => ({
         id: o.id,
         date: DateTime.fromISO(o.start_date).toISODate(),
-        name: o.person || 'n/a',
+        people: n(o.people.length),
         country: <Link to={`/countries/${o.country.id}`} className='link--primary' title='View Country'>{o.country.name}</Link>,
-        emer: 'N/A'
+        emer: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope
       }));
 
       return (
@@ -380,20 +424,32 @@ class Deployments extends SFPComponent {
     if (!fetched || error) return null;
 
     return (
-      <section className='inpage'>
-        <header className='inpage__header'>
-          <div className='inner'>
-            <div className='inpage__headline'>
-              <div className='inpage__headline-content'>
-                <h1 className='inpage__title'>Deployments</h1>
-                {this.renderHeaderStats()}
+      <section>
+        <section className={c('inpage', {presenting: this.state.fullscreen})} id='presentation'>
+          <header className='inpage__header'>
+            <div className='inner'>
+              <div className='inpage__headline'>
+                <div className='inpage__headline-content'>
+                  <h1 className='inpage__title'>Deployments</h1>
+                  <div className='presentation__actions'>
+                    <div className='inner'>
+                      <button className='button button--base-plain button--fullscreen' onClick={this.toggleFullscreen} title='View in fullscreen'><span>FullScreen</span></button>
+                    </div>
+                  </div>
+                  {this.renderHeaderStats()}
+                </div>
               </div>
             </div>
+          </header>
+          <div>
+            <Map data={this.props.deployments.geojson} />
           </div>
-        </header>
-        <div>
-          <Map data={this.props.deployments.geojson} />
-        </div>
+          <div className='inpage__body'>
+            <div className='inner'>
+              {this.renderCharts()}
+            </div>
+          </div>
+        </section>
         <div className='inpage__body'>
           <div className='inner'>
             {this.renderERUTable()}
@@ -402,7 +458,7 @@ class Deployments extends SFPComponent {
             {this.renderDeploymentsTable('fact')}
           </div>
           <div className='inner'>
-            {this.renderDeploymentsTable('rdit')}
+            {this.renderDeploymentsTable('rdrt')}
           </div>
           <div className='inner'>
             {this.renderHeopsTable()}
@@ -444,11 +500,11 @@ const dispatcher = (dispatch) => ({
   _getDeploymentERU: (...args) => dispatch(getDeploymentERU(...args)),
   _getDeploymentFACT: (...args) => dispatch(getDeploymentFACT(...args)),
   _getDeploymentHEOP: (...args) => dispatch(getDeploymentHEOP(...args)),
-  _getDeploymentRDIT: (...args) => dispatch(getDeploymentRDIT(...args)),
+  _getDeploymentRDRT: (...args) => dispatch(getDeploymentRDRT(...args)),
   _getAllDeploymentERU: (...args) => dispatch(getAllDeploymentERU(...args)),
   _getAllDeploymentFACT: (...args) => dispatch(getAllDeploymentFACT(...args)),
   _getAllDeploymentHEOP: (...args) => dispatch(getAllDeploymentHEOP(...args)),
-  _getAllDeploymentRDIT: (...args) => dispatch(getAllDeploymentRDIT(...args))
+  _getAllDeploymentRDRT: (...args) => dispatch(getAllDeploymentRDRT(...args))
 });
 
 export default connect(selector, dispatcher)(Deployments);
