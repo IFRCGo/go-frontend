@@ -98,7 +98,8 @@ class Register extends React.Component {
   }
 
   shouldRequestAccess () {
-    return this.state.data.email && isValidEmail(this.state.data.email) && !isWhitelistedEmail(this.state.data.email);
+    const { email } = this.state.data;
+    return email && isValidEmail(email.toLowerCase()) && !isWhitelistedEmail(email.toLowerCase());
   }
 
   renderPasswordFields () {
