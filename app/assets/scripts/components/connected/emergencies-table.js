@@ -126,7 +126,7 @@ class EmergenciesTable extends SFPComponent {
         }, 0);
 
         const countries = get(rowData, 'countries', []).map(c => (
-          <Link className='link--primary' key={c.iso} to={`/country/${c.id}`}>{c.name}</Link>
+          <Link className='link--primary' key={c.iso} to={`/countries/${c.id}`}>{c.name}</Link>
         ));
 
         return {
