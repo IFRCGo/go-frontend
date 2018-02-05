@@ -1332,11 +1332,7 @@ export const orgTypes = [
     value: 'NTLS'
   },
   {
-    label: 'Delegation',
-    value: 'DLGN'
-  },
-  {
-    label: 'Secretariat',
+    label: 'IFRC',
     value: 'SCRT'
   },
   {

@@ -5,6 +5,7 @@ import { DateTime } from 'luxon';
 import { PropTypes as T } from 'prop-types';
 
 import App from './app';
+import FieldReportsTable from '../components/connected/field-reports-table';
 import EmergenciesDash from '../components/connected/emergencies-dash';
 import EmergenciesTable from '../components/connected/emergencies-table';
 
@@ -25,6 +26,9 @@ class Emergencies extends React.Component {
           <div className='inpage__body'>
             <div className='inner'>
               <EmergenciesTable />
+            </div>
+            <div className='inner'>
+              <FieldReportsTable />
             </div>
           </div>
         </section>

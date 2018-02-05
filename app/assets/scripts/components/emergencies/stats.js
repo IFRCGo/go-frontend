@@ -18,10 +18,10 @@ export default class EmergenciesStats extends React.Component {
       <div className='header-stats'>
         <ul className='stats-list'>
           <li className='stats-list__item stats-emergencies'>
-            {n(data.count)}<small>Emergencies in the last 30 Days</small>
+            {n(data.count)}<small>Emergencies</small>
           </li>
           <li className='stats-list__item stats-people'>
-            {n(data.numAffected)}<small>Affected People in the last 30 days</small>
+            {n(data.numAffected)}<small>Affected People</small>
           </li>
           <li className='stats-list__item stats-funding stat-borderless stat-double'>
             {n(data.totalAppeals)}<small>Requested Amount (CHF)</small>
