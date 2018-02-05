@@ -60,6 +60,14 @@ export function updateFieldReport (id, payload) {
   return putJSON(`api/v1/field_report/${id}/`, UPDATE_FIELD_REPORT, payload, withToken());
 }
 
+export const GET_FIELD_REPORTS_LIST = 'GET_FIELD_REPORTS_LIST';
+export function getFieldReportsList (page = 1, filters = {}) {
+  filters.limit = filters.limit || 10;
+  filters.offset = filters.limit * (page - 1);
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v1/field_report/?${f}`, GET_FIELD_REPORTS_LIST, withToken());
+}
+
 export const GET_SURGE_ALERTS = 'GET_SURGE_ALERTS';
 export function getSurgeAlerts (page = 1, filters = {}) {
   filters.limit = filters.limit || 5;

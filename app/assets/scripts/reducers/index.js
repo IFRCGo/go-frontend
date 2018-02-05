@@ -6,6 +6,7 @@ import user from './user';
 import profile from './profile';
 import fieldReportForm from './field-report-form';
 import fieldReport from './field-report';
+import fieldReports from './field-reports';
 import surgeAlerts from './surge-alerts';
 import overallStats from './overall-stats';
 import emergencies from './emergencies';
@@ -26,6 +27,7 @@ export const reducers = {
   systemAlertsReducer,
   fieldReportForm,
   fieldReport,
+  fieldReports,
   surgeAlerts,
   overallStats,
   emergencies,
