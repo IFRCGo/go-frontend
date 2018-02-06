@@ -169,7 +169,7 @@ class Deployments extends SFPComponent {
             {items.map(o => (
               <li key={o.name}
                 className='emergencies__item'>
-                <span className='key'>{o.name}</span>
+                <span className='key'>{o.name} ({o.items})</span>
                 <span className='value'><Progress value={o.items} max={max}><span>100</span></Progress></span>
               </li>
             ))}
