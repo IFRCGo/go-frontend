@@ -236,7 +236,7 @@ class Deployments extends SFPComponent {
     if (fetching) {
       return (
         <div className='inner'>
-          <Fold title='ERU'>
+          <Fold title='Deployed ERU'>
             <BlockLoading/>
           </Fold>
         </div>
@@ -272,7 +272,7 @@ class Deployments extends SFPComponent {
 
       return (
         <div className='inner'>
-          <Fold title={`ERU (${data.meta.total_count})`}>
+          <Fold title={`Deployed ERU (${data.meta.total_count})`}>
             <DisplayTable
               headings={headings}
               rows={rows}

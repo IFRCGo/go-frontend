@@ -42,14 +42,16 @@ class Readiness extends React.Component {
     const erus = eruOwner.eru_set;
     if (!erus.length) return null;
 
-    // empty country array means the resource is ready, not deployed
-    const ready = erus.filter(o => !o.countries.length);
+    // Non-empty country array means the resource is deployed.
+    // Available === true means it's ready.
+    // (A resource can be neither deployed nor ready).
+    const ready = erus.filter(o => o.available);
     const deployed = erus.filter(o => o.countries.length);
 
     const numReady = ready.reduce((acc, next) => acc + next.units, 0);
     const numDeployed = deployed.reduce((acc, next) => acc + next.units, 0);
 
-    const readyTypes = ready.length ? ready.map(o => getEruType(o.type)).join(', ') : '';
+    const readyTypes = ready.length ? ready.map(o => `${getEruType(o.type)} (${o.units})`).join(', ') : '';
 
     const owner = erus[0].eru_owner;
 
@@ -82,7 +84,7 @@ class Readiness extends React.Component {
 
     const filtered = !activeFilters.length ? data.records
       : data.records.filter(o => {
-        const activeEruTypes = o.eru_set.map(e => e.type.toString());
+        const activeEruTypes = o.eru_set.filter(e => e.available).map(e => e.type.toString());
         return _intersection(activeEruTypes, activeFilters).length;
       });
     return (
