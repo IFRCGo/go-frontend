@@ -2,6 +2,10 @@
    Global: Pages
    ========================================================================== */
 
+main {
+  min-height: 70vh;
+}
+
 .page {
   position: relative;
   display: flex;

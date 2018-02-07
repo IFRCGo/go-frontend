@@ -1289,10 +1289,6 @@ export const eruTypes = [
     label: 'Base Camp'
   },
   {
-    value: 'eru_basic_health_care',
-    label: 'Basic Health Care'
-  },
-  {
     value: 'eru_it_telecom',
     label: 'IT & Telecommunications'
   },
@@ -1302,11 +1298,11 @@ export const eruTypes = [
   },
   {
     value: 'eru_deployment_hospital',
-    label: 'Rapid Deployment Hospital'
+    label: 'RCRC Emergency Hospital'
   },
   {
     value: 'eru_referral_hospital',
-    label: 'Referral Hospital'
+    label: 'RCRC Emergency Clinic'
   },
   {
     value: 'eru_relief',
@@ -1314,15 +1310,15 @@ export const eruTypes = [
   },
   {
     value: 'eru_water_sanitation_15',
-    label: 'Water & Sanitation: Module 15'
-  },
-  {
-    value: 'eru_water_sanitation_40',
-    label: 'Water & Sanitation: Module 40'
+    label: 'WASH M15'
   },
   {
     value: 'eru_water_sanitation_20',
-    label: 'Water & Sanitation: Module Mass Sanitation 20'
+    label: 'WASH MSM20'
+  },
+  {
+    value: 'eru_water_sanitation_40',
+    label: 'WASH M40'
   }
 ];
 

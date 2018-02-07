@@ -169,7 +169,7 @@ class Deployments extends SFPComponent {
             {items.map(o => (
               <li key={o.name}
                 className='emergencies__item'>
-                <span className='key'>{o.name}</span>
+                <span className='key'>{o.name} ({o.items})</span>
                 <span className='value'><Progress value={o.items} max={max}><span>100</span></Progress></span>
               </li>
             ))}
@@ -235,18 +235,16 @@ class Deployments extends SFPComponent {
 
     if (fetching) {
       return (
-        <Fold title='ERU'>
-          <BlockLoading/>
-        </Fold>
+        <div className='inner'>
+          <Fold title='Deployed ERU'>
+            <BlockLoading/>
+          </Fold>
+        </div>
       );
     }
 
-    if (error) {
-      return (
-        <Fold title='ERU'>
-          <p>Data on ERUs not available.</p>
-        </Fold>
-      );
+    if (error || !get(data, 'objects.length')) {
+      return null;
     }
 
     if (fetched) {
@@ -264,8 +262,8 @@ class Deployments extends SFPComponent {
 
       const rows = data.objects.map(o => ({
         id: o.id,
-        name: o.eru_owner.country.society_name,
-        country: <ul>{o.countries.map(country => <li key={country.id}><Link to={`/countries/${country.id}`} className='link--primary' title='View Country'>{country.name}</Link></li>)}</ul>,
+        name: o.eru_owner.national_society_country.society_name,
+        country: o.deployed_to ? <Link to={`/countries/${o.deployed_to.id}`} className='link--primary' title='View Country'>{o.deployed_to.name}</Link> : nope,
         type: getEruType(o.type),
         emer: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
         personnel: o.units,
@@ -273,15 +271,17 @@ class Deployments extends SFPComponent {
       }));
 
       return (
-        <Fold title={`ERU (${data.meta.total_count})`}>
-          <DisplayTable
-            headings={headings}
-            rows={rows}
-            pageCount={data.meta.total_count / data.meta.limit}
-            page={data.meta.offset / data.meta.limit}
-            onPageChange={this.handlePageChange.bind(this, 'eru')}
-          />
-        </Fold>
+        <div className='inner'>
+          <Fold title={`Deployed ERU (${data.meta.total_count})`}>
+            <DisplayTable
+              headings={headings}
+              rows={rows}
+              pageCount={data.meta.total_count / data.meta.limit}
+              page={data.meta.offset / data.meta.limit}
+              onPageChange={this.handlePageChange.bind(this, 'eru')}
+            />
+          </Fold>
+        </div>
       );
     }
 
@@ -298,18 +298,16 @@ class Deployments extends SFPComponent {
 
     if (fetching) {
       return (
-        <Fold title='HeOps'>
-          <BlockLoading/>
-        </Fold>
+        <div className='inner'>
+          <Fold title='HeOps'>
+            <BlockLoading/>
+          </Fold>
+        </div>
       );
     }
 
-    if (error) {
-      return (
-        <Fold title='HeOps'>
-          <p>Data on HeOps not available.</p>
-        </Fold>
-      );
+    if (error || !get(data, 'objects.length')) {
+      return null;
     }
 
     if (fetched) {
@@ -335,15 +333,17 @@ class Deployments extends SFPComponent {
       }));
 
       return (
-        <Fold title={`HeOps (${data.meta.total_count})`}>
-          <DisplayTable
-            headings={headings}
-            rows={rows}
-            pageCount={data.meta.total_count / data.meta.limit}
-            page={data.meta.offset / data.meta.limit}
-            onPageChange={this.handlePageChange.bind(this, 'heop')}
-          />
-        </Fold>
+        <div className='inner'>
+          <Fold title={`HeOps (${data.meta.total_count})`}>
+            <DisplayTable
+              headings={headings}
+              rows={rows}
+              pageCount={data.meta.total_count / data.meta.limit}
+              page={data.meta.offset / data.meta.limit}
+              onPageChange={this.handlePageChange.bind(this, 'heop')}
+            />
+          </Fold>
+        </div>
       );
     }
 
@@ -366,18 +366,16 @@ class Deployments extends SFPComponent {
 
     if (fetching) {
       return (
-        <Fold title={title[what]}>
-          <BlockLoading/>
-        </Fold>
+        <div className='inner'>
+          <Fold title={title[what]}>
+            <BlockLoading/>
+          </Fold>
+        </div>
       );
     }
 
-    if (error) {
-      return (
-        <Fold title={title[what]}>
-          <p>{title[what]} data not available.</p>
-        </Fold>
-      );
+    if (error || !get(data, 'objects.length')) {
+      return null;
     }
 
     if (fetched) {
@@ -400,15 +398,17 @@ class Deployments extends SFPComponent {
       }));
 
       return (
-        <Fold title={`${title[what]} (${data.meta.total_count})`}>
-          <DisplayTable
-            headings={headings}
-            rows={rows}
-            pageCount={data.meta.total_count / data.meta.limit}
-            page={data.meta.offset / data.meta.limit}
-            onPageChange={this.handlePageChange.bind(this, what)}
-          />
-        </Fold>
+        <div className='inner'>
+          <Fold title={`${title[what]} (${data.meta.total_count})`}>
+            <DisplayTable
+              headings={headings}
+              rows={rows}
+              pageCount={data.meta.total_count / data.meta.limit}
+              page={data.meta.offset / data.meta.limit}
+              onPageChange={this.handlePageChange.bind(this, what)}
+            />
+          </Fold>
+        </div>
       );
     }
 
@@ -451,18 +451,10 @@ class Deployments extends SFPComponent {
           </div>
         </section>
         <div className='inpage__body'>
-          <div className='inner'>
-            {this.renderERUTable()}
-          </div>
-          <div className='inner'>
-            {this.renderDeploymentsTable('fact')}
-          </div>
-          <div className='inner'>
-            {this.renderDeploymentsTable('rdrt')}
-          </div>
-          <div className='inner'>
-            {this.renderHeopsTable()}
-          </div>
+          {this.renderERUTable()}
+          {this.renderDeploymentsTable('fact')}
+          {this.renderDeploymentsTable('rdrt')}
+          {this.renderHeopsTable()}
           <div className='inner'>
             <div className='readiness__container'>
               <Readiness eruOwners={this.props.eruOwners} />
