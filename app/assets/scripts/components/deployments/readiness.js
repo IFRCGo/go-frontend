@@ -46,7 +46,7 @@ class Readiness extends React.Component {
     // Available === true means it's ready.
     // (A resource can be neither deployed nor ready).
     const ready = erus.filter(o => o.available);
-    const deployed = erus.filter(o => o.countries.length);
+    const deployed = erus.filter(o => o.deployed_to);
 
     const numReady = ready.reduce((acc, next) => acc + next.units, 0);
     const numDeployed = deployed.reduce((acc, next) => acc + next.units, 0);
@@ -58,7 +58,7 @@ class Readiness extends React.Component {
     return (
       <div className='readiness__card' key={eruOwner.id}>
         <div className='readiness__card-header'>
-          <a className='link--primary'>{owner.country.society_name}</a>
+          <a className='link--primary'>{owner.national_society_country.society_name}</a>
           <span className='updated'>Last updated {DateTime.fromISO(eruOwner.updated_at).toISOTime()}</span>
         </div>
         <div className='card__col'>
@@ -68,7 +68,7 @@ class Readiness extends React.Component {
         <div className='card__col'>
           <p className='card__label'>{n(numDeployed)} Deployed ERU's</p>
           {deployed.map(o => (
-            <p key={o.id}>{getEruType(o.type)} - <a className='link--primary'>{o.countries[0].name}</a></p>
+            <p key={o.id}>{getEruType(o.type)} - <a className='link--primary'>{o.deployed_to.name}</a></p>
           ))}
         </div>
       </div>

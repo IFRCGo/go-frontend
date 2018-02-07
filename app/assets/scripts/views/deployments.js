@@ -262,8 +262,8 @@ class Deployments extends SFPComponent {
 
       const rows = data.objects.map(o => ({
         id: o.id,
-        name: o.eru_owner.country.society_name,
-        country: <ul>{o.countries.map(country => <li key={country.id}><Link to={`/countries/${country.id}`} className='link--primary' title='View Country'>{country.name}</Link></li>)}</ul>,
+        name: o.eru_owner.national_society_country.society_name,
+        country: o.deployed_to ? <Link to={`/countries/${o.deployed_to.id}`} className='link--primary' title='View Country'>{o.deployed_to.name}</Link> : nope,
         type: getEruType(o.type),
         emer: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
         personnel: o.units,
