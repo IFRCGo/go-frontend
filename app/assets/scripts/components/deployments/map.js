@@ -67,7 +67,14 @@ export default class DeploymentsMap extends React.Component {
         //  // Default
         //  'hsl(213, 38%, 28%)'
         let countryWithEruColor = countryWithEru.reduce((acc, feat) => {
-          acc.push(['==', ['to-string', ['get', 'ISO_A2']], feat.properties.countryIso.toUpperCase()]);
+          const iso = feat.properties.countryIso.toUpperCase();
+          // France and Norway don't have ISO2 codes in tileset
+          if (iso === 'FR' || iso === 'NO') {
+            const nameLong = iso === 'FR' ? 'France' : 'Norway';
+            acc.push(['==', ['to-string', ['get', 'NAME_LONG']], nameLong]);
+          } else {
+            acc.push(['==', ['to-string', ['get', 'ISO_A2']], feat.properties.countryIso.toUpperCase()]);
+          }
           acc.push(countryChromaScale(feat.properties.eru).hex());
           return acc;
         }, ['case']);
