@@ -144,9 +144,9 @@
 
   .emergencies {
     @include column(12/12);
+    margin-bottom: $global-spacing * 2;
     @include media(medium-up) {
-      @include column(3/12);
-      margin-bottom: 0;
+      @include column(3.5/12);
     }
     color: #ffffff;
 
@@ -200,7 +200,7 @@
 
       .key {
         min-width: 6rem;
-        width: 30%;
+        width: 50%;
         margin-right: $global-spacing;
       }
       .value {
@@ -214,7 +214,7 @@
     margin-bottom: ($global-spacing * 2);
 
     @include media(medium-up) {
-      @include column(9/12);
+      @include column(8.5/12);
       margin-bottom: 0;
     }
   }
@@ -249,7 +249,7 @@
 
 .map-vis {
   position: relative;
-  height: 35rem;
+  height: 40rem;
   margin-bottom: 0;
 
   .map-vis__holder {
@@ -386,11 +386,16 @@
   }
 }
 
+.legend__group {
+  @extend .clearfix;
+}
+
 .legend__note {
-  position: absolute;
   font-size: 0.75rem;
-  bottom: -2.25rem;
   font-style: italic;
+  padding-top: $global-spacing/2;
+  margin-bottom: 0;
+  margin-right: 0;
 }
 
 .stats-chart {

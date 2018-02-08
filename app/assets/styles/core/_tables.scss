@@ -12,6 +12,11 @@
     padding: $global-spacing;
     vertical-align: top;
     text-align: left;
+    @include media(small-down) {
+      &:nth-child(n + 4) {
+        visibility: hidden;
+      }
+    }
     ul {
       list-style: none;
       margin: 0;
