@@ -4,11 +4,25 @@
   .inner {
     max-width: 1600px;
   }
+
   .button--fullscreen {
     &:before {
       content: url('/assets/graphics/layout/close-full-screen.svg');
     }
   }
+
+  .stats-map .emergencies .emergencies__item {
+    &:nth-child(n+8) {
+      display: none;
+    }
+
+    @include media(xlarge-up) {
+      &:nth-child(n+8) {
+        display: flex;
+      }
+    }
+  }
+
   .stats-overall {
     height: 11vh;
     padding: 3vh 0;

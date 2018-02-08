@@ -147,39 +147,41 @@ class EmergenciesMap extends React.Component {
                 filters={this.state.filters}
                 geoJSON={data.geoJSON}>
                 <figcaption className='map-vis__legend map-vis__legend--bottom-right legend'>
-                  <form className='form'>
-                    <FormRadioGroup
-                      label='Scale points by'
-                      name='map-scale'
-                      classWrapper='map-scale-options'
-                      options={[
-                        {
-                          label: 'Number of Emergencies',
-                          value: 'totalEmergencies'
-                        },
-                        {
-                          label: 'Number of People Affected',
-                          value: 'numAffected'
-                        }
-                      ]}
-                      inline={false}
-                      selectedOption={this.state.scaleBy}
-                      onChange={this.onFieldChange} />
-                  </form>
-                  <div className='key'>
-                    <label className='form__label'>Key</label>
-                    <dl className='legend__dl legend__dl--colors'>
-                      <dt className='color color--red'>red</dt>
-                      <dd>Without IFRC response*</dd>
-                      <dt className='color color--yellow'>yellow</dt>
-                      <dd>With IFRC response</dd>
-                      <dt className='color color--blue'>blue</dt>
-                      <dd>Mixed Level of Response</dd>
-                    </dl>
+                  <div className='legend__group'>
+                    <form className='form'>
+                      <FormRadioGroup
+                        label='Scale points by'
+                        name='map-scale'
+                        classWrapper='map-scale-options'
+                        options={[
+                          {
+                            label: 'Number of Emergencies',
+                            value: 'totalEmergencies'
+                          },
+                          {
+                            label: 'Number of People Affected',
+                            value: 'numAffected'
+                          }
+                        ]}
+                        inline={false}
+                        selectedOption={this.state.scaleBy}
+                        onChange={this.onFieldChange} />
+                    </form>
+                    <div className='key'>
+                      <label className='form__label'>Key</label>
+                      <dl className='legend__dl legend__dl--colors'>
+                        <dt className='color color--red'>red</dt>
+                        <dd>Without IFRC response*</dd>
+                        <dt className='color color--yellow'>yellow</dt>
+                        <dd>With IFRC response</dd>
+                        <dt className='color color--blue'>blue</dt>
+                        <dd>Mixed Level of Response</dd>
+                      </dl>
+                    </div>
                   </div>
+                  <p className='legend__note'>*IFRC response indicates the existence of appeal(s) and/or DREF(s) for a given emergency.</p>
                 </figcaption>
               </MapComponent>
-              <p className='legend__note'>*IFRC response indicates the existence of appeal(s) and/or DREF(s) for a given emergency.</p>
             </div>
           ) : (
             <p>Data not available.</p>
