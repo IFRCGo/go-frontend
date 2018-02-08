@@ -115,7 +115,6 @@ function geojson (state = geojsonInitialState, action) {
       state = updateGeoState(state, action, 'rdrt');
       break;
   }
-  console.log('stat', state);
   return state;
 }
 
