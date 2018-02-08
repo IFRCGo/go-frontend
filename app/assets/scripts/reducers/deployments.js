@@ -76,7 +76,9 @@ function rdrt (state = initialState, action) {
 const geojsonInitialState = {
   fetchedCount: 0,
   fetchingCount: 0,
-  data: {},
+  data: {
+    features: []
+  },
   error: null
 };
 
