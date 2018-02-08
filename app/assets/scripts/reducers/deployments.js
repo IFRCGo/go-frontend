@@ -125,7 +125,7 @@ function updateGeoState (state, action, type) {
   const groupper = type === 'eru' ? 'deployed_to.iso' : 'country.iso';
   const countryGroup = _groupBy(action.data, groupper);
 
-  Object.keys(countryGroup).forEach(cIso => {
+  Object.keys(countryGroup).filter(Boolean).forEach(cIso => {
     let feat = features.find(f => f.properties.countryIso === cIso);
 
     const setCount = (feat) => {

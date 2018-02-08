@@ -344,7 +344,7 @@ export const GET_DEPLOYMENT_ERU = 'GET_DEPLOYMENT_ERU';
 export function getDeploymentERU (page = 1, filters = {}) {
   filters.limit = filters.limit || 5;
   filters.offset = filters.limit * (page - 1);
-  filters['countries__isnull'] = false;
+  filters['deployed_to__isnull'] = false;
 
   const f = buildAPIQS(filters);
   return fetchJSON(`/api/v1/eru/?${f}`, GET_DEPLOYMENT_ERU, withToken());
@@ -379,7 +379,7 @@ export function getDeploymentRDRT (page = 1, filters = {}) {
 
 export const GET_ALL_DEPLOYMENT_ERU = 'GET_ALL_DEPLOYMENT_ERU';
 export function getAllDeploymentERU (filters = {}) {
-  filters['countries__isnull'] = false;
+  filters['deployed_to__isnull'] = false;
   const f = buildAPIQS(filters);
   return fetchJSONRecursive(`/api/v1/eru/?${f}`, GET_ALL_DEPLOYMENT_ERU, withToken());
 }
