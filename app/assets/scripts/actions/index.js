@@ -286,10 +286,10 @@ export function getAdmAreaERU (aaType, aaId) {
 
   switch (aaType) {
     case 'region':
-      filters.countries__in = countriesByRegion[aaId].join(',');
+      filters.deployed_to__in = countriesByRegion[aaId].join(',');
       break;
     case 'country':
-      filters.countries__in = aaId;
+      filters.deployed_to__in = aaId;
       break;
     default:
       throw new Error('Invalid admin area type ' + aaType);

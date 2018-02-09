@@ -2,6 +2,7 @@
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
 import _intersection from 'lodash.intersection';
+import _cloneDeep from 'lodash.clonedeep';
 import { DateTime } from 'luxon';
 
 import { commaSeparatedNumber as n } from '../../utils/format';
@@ -35,7 +36,8 @@ class Readiness extends React.Component {
   }
 
   clearFilters () {
-    this.setState({ filters: Object.assign({}, initialFilterState) });
+    console.log('setstate');
+    this.setState({ filters: _cloneDeep(initialFilterState) });
   }
 
   renderCard (eruOwner) {
