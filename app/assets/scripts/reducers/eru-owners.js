@@ -61,14 +61,23 @@ function createStoreFromRaw (raw) {
     ready: 0
   });
 
-  const erusByType = _groupBy(erus, 'type');
-  const types = Object.keys(erusByType).map(key => ({
+  // Calculate the types and units of deployed erus.
+  // Also monkey-patch records that don't have a national society.
+  const deployed = erus.filter(o => o.deployed_to).map(o => {
+    const society = get(o, 'eru_owner.national_society_country.society_name',
+      get(o, 'eru_owner.national_society_country.name'));
+    return Object.assign({}, o, {
+      society
+    });
+  });
+  const erusByType = _groupBy(deployed, 'type');
+  const types = Object.keys(erusByType).filter(Boolean).map(key => ({
     name: get(eruTypes, key.toString(), nope),
     items: erusByType[key].reduce((acc, next) => acc + Number(get(next, 'units', 0)), 0)
   })).sort((a, b) => a.items > b.items ? -1 : 1);
 
-  const erusByOwnerNation = _groupBy(erus, 'eru_owner.national_society_country.society_name');
-  const owners = Object.keys(erusByOwnerNation).map(key => ({
+  const erusByOwnerNation = _groupBy(deployed, 'society');
+  const owners = Object.keys(erusByOwnerNation).filter(Boolean).map(key => ({
     name: key,
     items: erusByOwnerNation[key].reduce((acc, next) => acc + Number(get(next, 'units', 0)), 0)
   })).sort((a, b) => a.items > b.items ? -1 : 1);
