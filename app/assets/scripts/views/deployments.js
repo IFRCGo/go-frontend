@@ -136,7 +136,7 @@ class Deployments extends SFPComponent {
     let state = this.state[what];
     if (state.sort && state.sort.field) {
       qs.order_by = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
-    } else {
+    } else if (what !== 'eru') {
       qs.order_by = '-start_date';
     }
 
@@ -262,7 +262,7 @@ class Deployments extends SFPComponent {
 
       const rows = data.objects.map(o => ({
         id: o.id,
-        name: o.eru_owner.national_society_country.society_name,
+        name: get(o, 'eru_owner.national_society_country.society_name') || get(o, 'eru_owner.national_society_country.name', nope),
         country: o.deployed_to ? <Link to={`/countries/${o.deployed_to.id}`} className='link--primary' title='View Country'>{o.deployed_to.name}</Link> : nope,
         type: getEruType(o.type),
         emer: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
