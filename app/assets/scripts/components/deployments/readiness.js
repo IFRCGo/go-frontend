@@ -5,7 +5,8 @@ import _intersection from 'lodash.intersection';
 import _cloneDeep from 'lodash.clonedeep';
 import { DateTime } from 'luxon';
 
-import { commaSeparatedNumber as n } from '../../utils/format';
+import { get } from '../../utils/utils';
+import { commaSeparatedNumber as n, nope } from '../../utils/format';
 import eruTypes, { getEruType } from '../../utils/eru-types';
 import { environment } from '../../config';
 
@@ -60,7 +61,7 @@ class Readiness extends React.Component {
     return (
       <div className='readiness__card' key={eruOwner.id}>
         <div className='readiness__card-header'>
-          <a className='link--primary'>{owner.national_society_country.society_name}</a>
+          <a className='link--primary'>{get(owner, 'national_society_country.society_name') || get(owner, 'national_society_country.name', nope)}</a>
           <span className='updated'>Last updated {DateTime.fromISO(eruOwner.updated_at).toISOTime()}</span>
         </div>
         <div className='card__col'>

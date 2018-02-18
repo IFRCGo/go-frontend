@@ -4,7 +4,6 @@ import { PropTypes as T } from 'prop-types';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
 import { DateTime } from 'luxon';
 
-import { get } from '../utils/utils';
 import { environment } from '../config';
 import BlockLoading from './block-loading';
 import { commaSeparatedLargeNumber } from '../utils/format';
