@@ -91,8 +91,19 @@ export default class DeploymentsMap extends React.Component {
     const getCountryFeat = (e) => {
       const feats = theMap.queryRenderedFeatures(e.point, {layers: ['country']});
       if (feats) {
-        const iso = feats[0].properties.ISO_A2.toLowerCase();
-        return this.props.data.data.features.find(f => f.properties.countryIso === iso);
+        const { properties } = feats[0];
+        const iso = properties.ISO_A2.toLowerCase();
+
+        // Countries that don't have an iso2 code have -99 set for this instead.
+        const noIso = iso === '-99';
+
+        // Norway and France don't have iso2 codes, but should still be included.
+        // Use ISO3 codes instead.
+        if (noIso && properties.ADM0_A3_IS !== 'FRA' && properties.ADM0_A3_IS !== 'NOR') {
+          return null;
+        }
+        const code = noIso ? properties.ADM0_A3_IS.toLowerCase().slice(0, 2) : iso;
+        return this.props.data.data.features.find(f => f.properties.countryIso === code);
       }
       return null;
     };
