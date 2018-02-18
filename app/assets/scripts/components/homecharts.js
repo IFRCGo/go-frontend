@@ -95,7 +95,7 @@ export default class HomeCharts extends React.Component {
       // Sometimes a month or year will have a DREF, but no appeals data yet.
       // The aggregate URL endpoint won't return an empty object for the appeal,
       // so stub it.
-      const {timespan: _, ...appealsData} = get(dataAppeals, i, {count: 0});
+      const {timespan: _, ...appealsData} = dataAppeals.find(o => o.timespan === timespan) || {count: 0};
 
       return {
         timespan: timespan,
@@ -139,7 +139,7 @@ export default class HomeCharts extends React.Component {
 
     const data = dataDrefs.map((o, i) => {
       const {timespan, ...drefData} = o;
-      const {timespan: _, ...appealsData} = dataAppeals[i];
+      const {timespan: _, ...appealsData} = dataAppeals.find(o => o.timespan === timespan) || {count: 0};
 
       return {
         timespan: timespan,
