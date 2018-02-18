@@ -8,6 +8,11 @@ import { get } from '../../utils/utils';
 import { environment } from '../../config';
 
 export default class MapComponent extends React.Component {
+  constructor (props) {
+    super(props);
+    this.safeSetFilter = this.safeSetFilter.bind(this);
+  }
+
   setupData () {
     if (!this.theMap.getSource(source)) {
       this.theMap.addSource(source, {
@@ -16,7 +21,13 @@ export default class MapComponent extends React.Component {
       });
     }
     get(this.props, 'layers', []).forEach(layer => this.theMap.addLayer(layer));
-    get(this.props, 'filters', []).forEach(filter => this.theMap.setFilter(filter.layer, filter.filter));
+    get(this.props, 'filters', []).forEach(this.safeSetFilter);
+  }
+
+  safeSetFilter (filter) {
+    if (this.theMap.getLayer(filter.layer)) {
+      this.theMap.setFilter(filter.layer, filter.filter);
+    }
   }
 
   componentDidMount () {
@@ -54,7 +65,7 @@ export default class MapComponent extends React.Component {
         }
         this.theMap.addLayer(layer);
       });
-      get(nextProps, 'filters', []).forEach(filter => this.theMap.setFilter(filter.layer, filter.filter));
+      get(nextProps, 'filters', []).forEach(this.safeSetFilter);
     }
 
     if (this.props.geoJSON !== nextProps.geoJSON) {
