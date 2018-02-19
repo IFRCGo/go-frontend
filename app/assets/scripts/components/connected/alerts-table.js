@@ -7,7 +7,8 @@ import { DateTime } from 'luxon';
 
 import { environment } from '../../config';
 import { getSurgeAlerts } from '../../actions';
-import { dateOptions, datesAgo } from '../../utils/utils/';
+import { get, dateOptions, datesAgo } from '../../utils/utils/';
+import { nope } from '../../utils/format';
 
 import { SFPComponent } from '../../utils/extendables';
 import DisplayTable, { FilterHeader } from '../display-table';
@@ -102,13 +103,13 @@ class AlertsTable extends SFPComponent {
 
     const rows = data.objects.reduce((acc, rowData, idx, all) => {
       const isLast = idx === all.length - 1;
-
       const date = DateTime.fromISO(rowData.created_at);
-
+      const event = get(rowData, 'event.id');
       acc.push({
         id: rowData.id,
         date: date.toISODate(),
-        emergency: <Link className='link--primary' to='' title='View Emergency page'>{rowData.operation}</Link>,
+        emergency: event ? <Link className='link--primary' to={`/emergencies/${event}`} title='View Emergency page'>{rowData.operation}</Link> : rowData.operation || nope,
+
         msg: rowData.message,
         type: alertTypes[rowData.atype]
       });
