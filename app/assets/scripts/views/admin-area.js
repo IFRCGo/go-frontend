@@ -428,7 +428,8 @@ class AdminArea extends SFPComponent {
       error
     } = this.props.aggregateYear;
 
-    const tickFormatter = (date) => DateTime.fromISO(date).toFormat('yyyy');
+    const zone = 'utc';
+    const tickFormatter = (date) => DateTime.fromISO(date, {zone}).toFormat('yyyy');
 
     const contentFormatter = (payload) => {
       if (!payload.payload || !payload.payload[0]) { return null; }

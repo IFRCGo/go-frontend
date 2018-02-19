@@ -37,7 +37,8 @@ class EmergenciesDash extends React.Component {
   }
 
   renderChart (data, unit) {
-    const tickFormatter = (date) => DateTime.fromISO(date).toFormat('MMM');
+    const zone = 'utc';
+    const tickFormatter = (date) => DateTime.fromISO(date, {zone}).toFormat('MMM');
     const contentFormatter = (payload) => {
       if (!payload.payload[0]) { return null; }
 
@@ -47,7 +48,7 @@ class EmergenciesDash extends React.Component {
           <div className='chart-tooltip__contents'>
             <dl>
               <dd>Date</dd>
-              <dt>{DateTime.fromISO(item.timespan).toFormat('MMMM yyyy')}</dt>
+              <dt>{DateTime.fromISO(item.timespan, {zone}).toFormat('MMMM yyyy')}</dt>
               <dd>Total</dd>
               <dt>{item.count}</dt>
             </dl>
