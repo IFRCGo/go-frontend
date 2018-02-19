@@ -63,7 +63,7 @@ class Deployments extends SFPComponent {
           direction: 'asc'
         },
         filters: {
-          date: 'all'
+          startDate: 'all'
         }
       },
       heop: {
@@ -73,7 +73,7 @@ class Deployments extends SFPComponent {
           direction: 'asc'
         },
         filters: {
-          date: 'all'
+          startDate: 'all'
         }
       },
       rdrt: {
@@ -83,7 +83,7 @@ class Deployments extends SFPComponent {
           direction: 'asc'
         },
         filters: {
-          date: 'all'
+          startDate: 'all'
         }
       }
     };
@@ -140,8 +140,8 @@ class Deployments extends SFPComponent {
       qs.order_by = '-start_date';
     }
 
-    if (state.filters && state.filters.date !== 'all') {
-      qs.start_date__gte = datesAgo[state.filters.date]();
+    if (state.filters && state.filters.startDate !== 'all') {
+      qs.start_date__gte = datesAgo[state.filters.startDate]();
     }
 
     const fn = {
@@ -306,16 +306,17 @@ class Deployments extends SFPComponent {
       );
     }
 
-    if (error || !get(data, 'objects.length')) {
+    if ((error || !get(data, 'objects.length')) && this.state.heop.filters.startDate === 'all') {
       return null;
     }
 
     if (fetched) {
       const headings = [
         {
-          id: 'date',
-          label: <FilterHeader id='date' title='Start Date' options={dateOptions} filter={this.state.heop.filters.date} onSelect={this.handleFilterChange.bind(this, 'heop', 'date')} />
+          id: 'startDate',
+          label: <FilterHeader id='startDate' title='Start Date' options={dateOptions} filter={this.state.heop.filters.startDate} onSelect={this.handleFilterChange.bind(this, 'heop', 'startDate')} />
         },
+        { id: 'endDate', label: 'End Date' },
         {
           id: 'name',
           label: <SortHeader id='name' title='Name' sort={this.state.heop.sort} onClick={this.handleSortChange.bind(this, 'heop', 'name')} />
@@ -326,7 +327,8 @@ class Deployments extends SFPComponent {
 
       const rows = data.objects.map(o => ({
         id: o.id,
-        date: DateTime.fromISO(o.start_date).toISODate(),
+        startDate: DateTime.fromISO(o.start_date).toISODate(),
+        endDate: DateTime.fromISO(o.end_date).toISODate() || nope,
         name: o.person || na,
         country: <Link to={`/countries/${o.country.id}`} className='link--primary' title='View Country'>{o.country.name}</Link>,
         emer: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope
@@ -374,15 +376,15 @@ class Deployments extends SFPComponent {
       );
     }
 
-    if (error || !get(data, 'objects.length')) {
+    if ((error || !get(data, 'objects.length')) && this.state[what].filters.startDate === 'all') {
       return null;
     }
 
     if (fetched) {
       const headings = [
         {
-          id: 'date',
-          label: <FilterHeader id='date' title='Start Date' options={dateOptions} filter={this.state[what].filters.date} onSelect={this.handleFilterChange.bind(this, what, 'date')} />
+          id: 'startDate',
+          label: <FilterHeader id='startDate' title='Start Date' options={dateOptions} filter={this.state[what].filters.startDate} onSelect={this.handleFilterChange.bind(this, what, 'startDate')} />
         },
         { id: 'people', label: 'People' },
         { id: 'country', label: 'Country' },
@@ -391,7 +393,7 @@ class Deployments extends SFPComponent {
 
       const rows = data.objects.map(o => ({
         id: o.id,
-        date: DateTime.fromISO(o.start_date).toISODate(),
+        startDate: DateTime.fromISO(o.start_date).toISODate(),
         people: n(o.people.length),
         country: <Link to={`/countries/${o.country.id}`} className='link--primary' title='View Country'>{o.country.name}</Link>,
         emer: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope
