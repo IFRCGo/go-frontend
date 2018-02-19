@@ -13,13 +13,14 @@ export default class HomeCharts extends React.Component {
     let tickFormatter;
     let contentDateFormatter;
 
+    const zone = 'utc';
     switch (unit) {
       case 'month':
-        tickFormatter = (date) => DateTime.fromISO(date).toFormat('MMM');
-        contentDateFormatter = (date) => DateTime.fromISO(date).toFormat('MMMM yyyy');
+        tickFormatter = (date) => DateTime.fromISO(date, {zone}).toFormat('MMM');
+        contentDateFormatter = (date) => DateTime.fromISO(date, {zone}).toFormat('MMMM yyyy');
         break;
       case 'year':
-        tickFormatter = (date) => DateTime.fromISO(date).toFormat('yyyy');
+        tickFormatter = (date) => DateTime.fromISO(date, {zone}).toFormat('yyyy');
         contentDateFormatter = tickFormatter;
         break;
     }
