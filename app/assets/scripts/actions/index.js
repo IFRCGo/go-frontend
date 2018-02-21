@@ -356,7 +356,7 @@ export function getDeploymentFACT (page = 1, filters = {}) {
   filters.offset = filters.limit * (page - 1);
 
   const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v1/fact/?${f}`, GET_DEPLOYMENT_FACT, withToken());
+  return fetchJSON(`/api/v1/fact_person/?${f}`, GET_DEPLOYMENT_FACT, withToken());
 }
 
 export const GET_DEPLOYMENT_HEOP = 'GET_DEPLOYMENT_HEOP';
@@ -374,7 +374,7 @@ export function getDeploymentRDRT (page = 1, filters = {}) {
   filters.offset = filters.limit * (page - 1);
 
   const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v1/rdrt/?${f}`, GET_DEPLOYMENT_RDRT, withToken());
+  return fetchJSON(`/api/v1/rdrt_person/?${f}`, GET_DEPLOYMENT_RDRT, withToken());
 }
 
 export const GET_ALL_DEPLOYMENT_ERU = 'GET_ALL_DEPLOYMENT_ERU';
