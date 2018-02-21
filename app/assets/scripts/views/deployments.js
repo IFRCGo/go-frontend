@@ -386,17 +386,23 @@ class Deployments extends SFPComponent {
           id: 'startDate',
           label: <FilterHeader id='startDate' title='Start Date' options={dateOptions} filter={this.state[what].filters.startDate} onSelect={this.handleFilterChange.bind(this, what, 'startDate')} />
         },
-        { id: 'people', label: 'People' },
+        { id: 'endDate', label: 'End Date' },
+        { id: 'name', label: 'Name' },
+        { id: 'role', label: 'Role' },
         { id: 'country', label: 'Country' },
-        { id: 'emer', label: 'Emergency' }
+        { id: 'emer', label: 'Emergency' },
+        { id: 'society', label: 'National Society' }
       ];
 
       const rows = data.objects.map(o => ({
         id: o.id,
         startDate: DateTime.fromISO(o.start_date).toISODate(),
-        people: n(o.people.length),
-        country: <Link to={`/countries/${o.country.id}`} className='link--primary' title='View Country'>{o.country.name}</Link>,
-        emer: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope
+        endDate: DateTime.fromISO(o.end_date).toISODate(),
+        name: o.name,
+        role: get(o, 'role', nope),
+        country: o[what].country ? <Link to={`/countries/${o[what].country.id}`} className='link--primary' title='View Country'>{o[what].country.name}</Link> : nope,
+        emer: o[what].event ? <Link to={`/emergencies/${o[what].event.id}`} className='link--primary' title='View Emergency'>{o[what].event.name}</Link> : nope,
+        society: get(o, 'society_deployed_from', nope)
       }));
 
       return (
