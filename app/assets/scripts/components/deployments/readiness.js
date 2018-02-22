@@ -2,9 +2,11 @@
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
 import _intersection from 'lodash.intersection';
+import _cloneDeep from 'lodash.clonedeep';
 import { DateTime } from 'luxon';
 
-import { commaSeparatedNumber as n } from '../../utils/format';
+import { get } from '../../utils/utils';
+import { commaSeparatedNumber as n, nope } from '../../utils/format';
 import eruTypes, { getEruType } from '../../utils/eru-types';
 import { environment } from '../../config';
 
@@ -35,28 +37,31 @@ class Readiness extends React.Component {
   }
 
   clearFilters () {
-    this.setState({ filters: Object.assign({}, initialFilterState) });
+    console.log('setstate');
+    this.setState({ filters: _cloneDeep(initialFilterState) });
   }
 
   renderCard (eruOwner) {
     const erus = eruOwner.eru_set;
     if (!erus.length) return null;
 
-    // empty country array means the resource is ready, not deployed
-    const ready = erus.filter(o => !o.countries.length);
-    const deployed = erus.filter(o => o.countries.length);
+    // Non-empty country array means the resource is deployed.
+    // Available === true means it's ready.
+    // (A resource can be neither deployed nor ready).
+    const ready = erus.filter(o => o.available);
+    const deployed = erus.filter(o => o.deployed_to);
 
     const numReady = ready.reduce((acc, next) => acc + next.units, 0);
     const numDeployed = deployed.reduce((acc, next) => acc + next.units, 0);
 
-    const readyTypes = ready.length ? ready.map(o => getEruType(o.type)).join(', ') : '';
+    const readyTypes = ready.length ? ready.map(o => `${getEruType(o.type)} (${o.units})`).join(', ') : '';
 
     const owner = erus[0].eru_owner;
 
     return (
       <div className='readiness__card' key={eruOwner.id}>
         <div className='readiness__card-header'>
-          <a className='link--primary'>{owner.country.society_name}</a>
+          <a className='link--primary'>{get(owner, 'national_society_country.society_name') || get(owner, 'national_society_country.name', nope)}</a>
           <span className='updated'>Last updated {DateTime.fromISO(eruOwner.updated_at).toISOTime()}</span>
         </div>
         <div className='card__col'>
@@ -66,7 +71,7 @@ class Readiness extends React.Component {
         <div className='card__col'>
           <p className='card__label'>{n(numDeployed)} Deployed ERU's</p>
           {deployed.map(o => (
-            <p key={o.id}>{getEruType(o.type)} - <a className='link--primary'>{o.countries[0].name}</a></p>
+            <p key={o.id}>{getEruType(o.type)} - <a className='link--primary'>{o.deployed_to.name}</a></p>
           ))}
         </div>
       </div>
@@ -82,7 +87,7 @@ class Readiness extends React.Component {
 
     const filtered = !activeFilters.length ? data.records
       : data.records.filter(o => {
-        const activeEruTypes = o.eru_set.map(e => e.type.toString());
+        const activeEruTypes = o.eru_set.filter(e => e.available).map(e => e.type.toString());
         return _intersection(activeEruTypes, activeFilters).length;
       });
     return (

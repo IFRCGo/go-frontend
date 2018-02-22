@@ -13,7 +13,7 @@ function fieldReports (state = initialState, action) {
     case 'GET_FIELD_REPORTS_LIST_INFLIGHT':
       state = stateInflight(state, action);
       break;
-    case 'GET_FIELD_REPORTS_LIST_ERROR':
+    case 'GET_FIELD_REPORTS_LIST_FAILED':
       state = stateError(state, action);
       break;
     case 'GET_FIELD_REPORTS_LIST_SUCCESS':

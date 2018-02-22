@@ -4,7 +4,6 @@ import { PropTypes as T } from 'prop-types';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
 import { DateTime } from 'luxon';
 
-import { get } from '../utils/utils';
 import { environment } from '../config';
 import BlockLoading from './block-loading';
 import { commaSeparatedLargeNumber } from '../utils/format';
@@ -14,13 +13,14 @@ export default class HomeCharts extends React.Component {
     let tickFormatter;
     let contentDateFormatter;
 
+    const zone = 'utc';
     switch (unit) {
       case 'month':
-        tickFormatter = (date) => DateTime.fromISO(date).toFormat('MMM');
-        contentDateFormatter = (date) => DateTime.fromISO(date).toFormat('MMMM yyyy');
+        tickFormatter = (date) => DateTime.fromISO(date, {zone}).toFormat('MMM');
+        contentDateFormatter = (date) => DateTime.fromISO(date, {zone}).toFormat('MMMM yyyy');
         break;
       case 'year':
-        tickFormatter = (date) => DateTime.fromISO(date).toFormat('yyyy');
+        tickFormatter = (date) => DateTime.fromISO(date, {zone}).toFormat('yyyy');
         contentDateFormatter = tickFormatter;
         break;
     }
@@ -95,7 +95,7 @@ export default class HomeCharts extends React.Component {
       // Sometimes a month or year will have a DREF, but no appeals data yet.
       // The aggregate URL endpoint won't return an empty object for the appeal,
       // so stub it.
-      const {timespan: _, ...appealsData} = get(dataAppeals, i, {count: 0});
+      const {timespan: _, ...appealsData} = dataAppeals.find(o => o.timespan === timespan) || {count: 0};
 
       return {
         timespan: timespan,
@@ -139,7 +139,7 @@ export default class HomeCharts extends React.Component {
 
     const data = dataDrefs.map((o, i) => {
       const {timespan, ...drefData} = o;
-      const {timespan: _, ...appealsData} = dataAppeals[i];
+      const {timespan: _, ...appealsData} = dataAppeals.find(o => o.timespan === timespan) || {count: 0};
 
       return {
         timespan: timespan,

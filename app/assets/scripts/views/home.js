@@ -13,6 +13,7 @@ import { commaSeparatedNumber as n, nope } from '../utils/format';
 import App from './app';
 import Fold from '../components/fold';
 import PresentationDash from '../components/connected/presentation-dash';
+import AlertsTable from '../components/connected/alerts-table';
 import BlockLoading from '../components/block-loading';
 import DisplayTable, { SortHeader, FilterHeader } from '../components/display-table';
 import { SFPComponent } from '../utils/extendables';
@@ -177,6 +178,9 @@ class Home extends SFPComponent {
             <PresentationDash />
             <div className='inner'>
               {this.renderAppeals()}
+            </div>
+            <div className='inner'>
+              <AlertsTable />
             </div>
           </div>
         </section>

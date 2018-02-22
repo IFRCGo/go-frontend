@@ -225,7 +225,7 @@ class AdminArea extends SFPComponent {
         id: o.id,
         date: DateTime.fromISO(o.start_date).toISODate(),
         name: o.name,
-        event: <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link>,
+        event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
         dtype: o.dtype.name,
         requestAmount: n(o.amount_requested),
         fundedAmount: n(o.amount_funded),
@@ -428,7 +428,8 @@ class AdminArea extends SFPComponent {
       error
     } = this.props.aggregateYear;
 
-    const tickFormatter = (date) => DateTime.fromISO(date).toFormat('yyyy');
+    const zone = 'utc';
+    const tickFormatter = (date) => DateTime.fromISO(date, {zone}).toFormat('yyyy');
 
     const contentFormatter = (payload) => {
       if (!payload.payload || !payload.payload[0]) { return null; }

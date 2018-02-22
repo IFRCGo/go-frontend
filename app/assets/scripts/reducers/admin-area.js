@@ -185,13 +185,12 @@ function eru (state = {}, action) {
       break;
     case 'GET_AA_ERU_SUCCESS':
       const objs = action.data.objects;
-      let eruBySociety = _groupBy(objs, 'eru_owner.country.society_name');
-
-      eruBySociety = Object.keys(eruBySociety).map(key => {
+      const grouped = _groupBy(objs, 'eru_owner.national_society_country.society_name');
+      const eruBySociety = Object.keys(grouped).filter(Boolean).map(key => {
         return {
-          id: eruBySociety[key][0].eru_owner.country.id,
+          id: grouped[key][0].eru_owner.national_society_country.id,
           name: key,
-          count: eruBySociety[key].reduce((acc, o) => acc + o.units, 0)
+          count: grouped[key].reduce((acc, o) => acc + o.units, 0)
         };
       });
 

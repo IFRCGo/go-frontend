@@ -76,7 +76,9 @@ function rdrt (state = initialState, action) {
 const geojsonInitialState = {
   fetchedCount: 0,
   fetchingCount: 0,
-  data: {},
+  data: {
+    features: []
+  },
   error: null
 };
 
@@ -115,16 +117,15 @@ function geojson (state = geojsonInitialState, action) {
       state = updateGeoState(state, action, 'rdrt');
       break;
   }
-  console.log('stat', state);
   return state;
 }
 
 function updateGeoState (state, action, type) {
   let features = _cloneDeep(state.data.features) || [];
-  const groupper = type === 'eru' ? 'eru_owner.country.iso' : 'country.iso';
+  const groupper = type === 'eru' ? 'deployed_to.iso' : 'country.iso';
   const countryGroup = _groupBy(action.data, groupper);
 
-  Object.keys(countryGroup).forEach(cIso => {
+  Object.keys(countryGroup).filter(Boolean).forEach(cIso => {
     let feat = features.find(f => f.properties.countryIso === cIso);
 
     const setCount = (feat) => {
@@ -139,7 +140,7 @@ function updateGeoState (state, action, type) {
     if (feat) {
       setCount(feat);
     } else {
-      const country = type === 'eru' ? countryGroup[cIso][0].eru_owner.country : countryGroup[cIso][0].country;
+      const country = type === 'eru' ? countryGroup[cIso][0].deployed_to : countryGroup[cIso][0].country;
       feat = {
         type: 'Feature',
         properties: {

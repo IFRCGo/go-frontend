@@ -6,7 +6,7 @@
   &__header {
     position: relative;
     color: $base-font-color;
-    padding: ($global-spacing) 0;
+    padding: ($global-spacing * 2) 0;
     @include media(small-up) {
       padding: ($global-spacing * 2) 0;
     }

@@ -63,7 +63,7 @@ class Deployments extends SFPComponent {
           direction: 'asc'
         },
         filters: {
-          date: 'all'
+          startDate: 'all'
         }
       },
       heop: {
@@ -73,7 +73,7 @@ class Deployments extends SFPComponent {
           direction: 'asc'
         },
         filters: {
-          date: 'all'
+          startDate: 'all'
         }
       },
       rdrt: {
@@ -83,7 +83,7 @@ class Deployments extends SFPComponent {
           direction: 'asc'
         },
         filters: {
-          date: 'all'
+          startDate: 'all'
         }
       }
     };
@@ -136,12 +136,12 @@ class Deployments extends SFPComponent {
     let state = this.state[what];
     if (state.sort && state.sort.field) {
       qs.order_by = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
-    } else {
+    } else if (what !== 'eru') {
       qs.order_by = '-start_date';
     }
 
-    if (state.filters && state.filters.date !== 'all') {
-      qs.start_date__gte = datesAgo[state.filters.date]();
+    if (state.filters && state.filters.startDate !== 'all') {
+      qs.start_date__gte = datesAgo[state.filters.startDate]();
     }
 
     const fn = {
@@ -169,7 +169,7 @@ class Deployments extends SFPComponent {
             {items.map(o => (
               <li key={o.name}
                 className='emergencies__item'>
-                <span className='key'>{o.name}</span>
+                <span className='key'>{o.name} ({o.items})</span>
                 <span className='value'><Progress value={o.items} max={max}><span>100</span></Progress></span>
               </li>
             ))}
@@ -235,18 +235,16 @@ class Deployments extends SFPComponent {
 
     if (fetching) {
       return (
-        <Fold title='ERU'>
-          <BlockLoading/>
-        </Fold>
+        <div className='inner'>
+          <Fold title='Deployed ERU'>
+            <BlockLoading/>
+          </Fold>
+        </div>
       );
     }
 
-    if (error) {
-      return (
-        <Fold title='ERU'>
-          <p>Data on ERUs not available.</p>
-        </Fold>
-      );
+    if (error || !get(data, 'objects.length')) {
+      return null;
     }
 
     if (fetched) {
@@ -264,8 +262,8 @@ class Deployments extends SFPComponent {
 
       const rows = data.objects.map(o => ({
         id: o.id,
-        name: o.eru_owner.country.society_name,
-        country: <ul>{o.countries.map(country => <li key={country.id}><Link to={`/countries/${country.id}`} className='link--primary' title='View Country'>{country.name}</Link></li>)}</ul>,
+        name: get(o, 'eru_owner.national_society_country.society_name') || get(o, 'eru_owner.national_society_country.name', nope),
+        country: o.deployed_to ? <Link to={`/countries/${o.deployed_to.id}`} className='link--primary' title='View Country'>{o.deployed_to.name}</Link> : nope,
         type: getEruType(o.type),
         emer: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
         personnel: o.units,
@@ -273,15 +271,17 @@ class Deployments extends SFPComponent {
       }));
 
       return (
-        <Fold title={`ERU (${data.meta.total_count})`}>
-          <DisplayTable
-            headings={headings}
-            rows={rows}
-            pageCount={data.meta.total_count / data.meta.limit}
-            page={data.meta.offset / data.meta.limit}
-            onPageChange={this.handlePageChange.bind(this, 'eru')}
-          />
-        </Fold>
+        <div className='inner'>
+          <Fold title={`Deployed ERU (${data.meta.total_count})`}>
+            <DisplayTable
+              headings={headings}
+              rows={rows}
+              pageCount={data.meta.total_count / data.meta.limit}
+              page={data.meta.offset / data.meta.limit}
+              onPageChange={this.handlePageChange.bind(this, 'eru')}
+            />
+          </Fold>
+        </div>
       );
     }
 
@@ -298,26 +298,25 @@ class Deployments extends SFPComponent {
 
     if (fetching) {
       return (
-        <Fold title='HeOps'>
-          <BlockLoading/>
-        </Fold>
+        <div className='inner'>
+          <Fold title='HeOps'>
+            <BlockLoading/>
+          </Fold>
+        </div>
       );
     }
 
-    if (error) {
-      return (
-        <Fold title='HeOps'>
-          <p>Data on HeOps not available.</p>
-        </Fold>
-      );
+    if ((error || !get(data, 'objects.length')) && this.state.heop.filters.startDate === 'all') {
+      return null;
     }
 
     if (fetched) {
       const headings = [
         {
-          id: 'date',
-          label: <FilterHeader id='date' title='Start Date' options={dateOptions} filter={this.state.heop.filters.date} onSelect={this.handleFilterChange.bind(this, 'heop', 'date')} />
+          id: 'startDate',
+          label: <FilterHeader id='startDate' title='Start Date' options={dateOptions} filter={this.state.heop.filters.startDate} onSelect={this.handleFilterChange.bind(this, 'heop', 'startDate')} />
         },
+        { id: 'endDate', label: 'End Date' },
         {
           id: 'name',
           label: <SortHeader id='name' title='Name' sort={this.state.heop.sort} onClick={this.handleSortChange.bind(this, 'heop', 'name')} />
@@ -328,22 +327,25 @@ class Deployments extends SFPComponent {
 
       const rows = data.objects.map(o => ({
         id: o.id,
-        date: DateTime.fromISO(o.start_date).toISODate(),
+        startDate: DateTime.fromISO(o.start_date).toISODate(),
+        endDate: DateTime.fromISO(o.end_date).toISODate() || nope,
         name: o.person || na,
         country: <Link to={`/countries/${o.country.id}`} className='link--primary' title='View Country'>{o.country.name}</Link>,
         emer: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope
       }));
 
       return (
-        <Fold title={`HeOps (${data.meta.total_count})`}>
-          <DisplayTable
-            headings={headings}
-            rows={rows}
-            pageCount={data.meta.total_count / data.meta.limit}
-            page={data.meta.offset / data.meta.limit}
-            onPageChange={this.handlePageChange.bind(this, 'heop')}
-          />
-        </Fold>
+        <div className='inner'>
+          <Fold title={`HeOps (${data.meta.total_count})`}>
+            <DisplayTable
+              headings={headings}
+              rows={rows}
+              pageCount={data.meta.total_count / data.meta.limit}
+              page={data.meta.offset / data.meta.limit}
+              onPageChange={this.handlePageChange.bind(this, 'heop')}
+            />
+          </Fold>
+        </div>
       );
     }
 
@@ -366,49 +368,55 @@ class Deployments extends SFPComponent {
 
     if (fetching) {
       return (
-        <Fold title={title[what]}>
-          <BlockLoading/>
-        </Fold>
+        <div className='inner'>
+          <Fold title={title[what]}>
+            <BlockLoading/>
+          </Fold>
+        </div>
       );
     }
 
-    if (error) {
-      return (
-        <Fold title={title[what]}>
-          <p>{title[what]} data not available.</p>
-        </Fold>
-      );
+    if ((error || !get(data, 'objects.length')) && this.state[what].filters.startDate === 'all') {
+      return null;
     }
 
     if (fetched) {
       const headings = [
         {
-          id: 'date',
-          label: <FilterHeader id='date' title='Start Date' options={dateOptions} filter={this.state[what].filters.date} onSelect={this.handleFilterChange.bind(this, what, 'date')} />
+          id: 'startDate',
+          label: <FilterHeader id='startDate' title='Start Date' options={dateOptions} filter={this.state[what].filters.startDate} onSelect={this.handleFilterChange.bind(this, what, 'startDate')} />
         },
-        { id: 'people', label: 'People' },
+        { id: 'endDate', label: 'End Date' },
+        { id: 'name', label: 'Name' },
+        { id: 'role', label: 'Role' },
         { id: 'country', label: 'Country' },
-        { id: 'emer', label: 'Emergency' }
+        { id: 'emer', label: 'Emergency' },
+        { id: 'society', label: 'National Society' }
       ];
 
       const rows = data.objects.map(o => ({
         id: o.id,
-        date: DateTime.fromISO(o.start_date).toISODate(),
-        people: n(o.people.length),
-        country: <Link to={`/countries/${o.country.id}`} className='link--primary' title='View Country'>{o.country.name}</Link>,
-        emer: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope
+        startDate: DateTime.fromISO(o.start_date).toISODate(),
+        endDate: DateTime.fromISO(o.end_date).toISODate(),
+        name: o.name,
+        role: get(o, 'role', nope),
+        country: o[what].country ? <Link to={`/countries/${o[what].country.id}`} className='link--primary' title='View Country'>{o[what].country.name}</Link> : nope,
+        emer: o[what].event ? <Link to={`/emergencies/${o[what].event.id}`} className='link--primary' title='View Emergency'>{o[what].event.name}</Link> : nope,
+        society: get(o, 'society_deployed_from', nope)
       }));
 
       return (
-        <Fold title={`${title[what]} (${data.meta.total_count})`}>
-          <DisplayTable
-            headings={headings}
-            rows={rows}
-            pageCount={data.meta.total_count / data.meta.limit}
-            page={data.meta.offset / data.meta.limit}
-            onPageChange={this.handlePageChange.bind(this, what)}
-          />
-        </Fold>
+        <div className='inner'>
+          <Fold title={`${title[what]} (${data.meta.total_count})`}>
+            <DisplayTable
+              headings={headings}
+              rows={rows}
+              pageCount={data.meta.total_count / data.meta.limit}
+              page={data.meta.offset / data.meta.limit}
+              onPageChange={this.handlePageChange.bind(this, what)}
+            />
+          </Fold>
+        </div>
       );
     }
 
@@ -451,18 +459,10 @@ class Deployments extends SFPComponent {
           </div>
         </section>
         <div className='inpage__body'>
-          <div className='inner'>
-            {this.renderERUTable()}
-          </div>
-          <div className='inner'>
-            {this.renderDeploymentsTable('fact')}
-          </div>
-          <div className='inner'>
-            {this.renderDeploymentsTable('rdrt')}
-          </div>
-          <div className='inner'>
-            {this.renderHeopsTable()}
-          </div>
+          {this.renderERUTable()}
+          {this.renderDeploymentsTable('fact')}
+          {this.renderDeploymentsTable('rdrt')}
+          {this.renderHeopsTable()}
           <div className='inner'>
             <div className='readiness__container'>
               <Readiness eruOwners={this.props.eruOwners} />
