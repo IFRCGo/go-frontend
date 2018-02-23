@@ -24,6 +24,14 @@ const alertTypes = {
   5: 'SURGE'
 };
 
+const alertCategories = {
+  0: 'Info',
+  1: 'Deployment',
+  2: 'Alert',
+  3: 'Shelter',
+  4: 'Stand down'
+};
+
 class AlertsTable extends SFPComponent {
   // Methods form SFPComponent:
   // handlePageChange (what, page)
@@ -96,6 +104,7 @@ class AlertsTable extends SFPComponent {
         id: 'date',
         label: <FilterHeader id='date' title='Date' options={dateOptions} filter={this.state.alerts.filters.date} onSelect={this.handleFilterChange.bind(this, 'alerts', 'date')} />
       },
+      { id: 'category', label: 'Alert Type' },
       { id: 'emergency', label: 'Emergency' },
       { id: 'msg', label: 'Alert Message' },
       { id: 'type', label: 'Type' }
@@ -111,7 +120,8 @@ class AlertsTable extends SFPComponent {
         emergency: event ? <Link className='link--primary' to={`/emergencies/${event}`} title='View Emergency page'>{rowData.operation}</Link> : rowData.operation || nope,
 
         msg: rowData.message,
-        type: alertTypes[rowData.atype]
+        type: alertTypes[rowData.atype],
+        category: alertCategories[rowData.category]
       });
 
       if (!isLast) {
