@@ -27,6 +27,12 @@ import App from './app';
 import Fold from '../components/fold';
 import BlockLoading from '../components/block-loading';
 
+const mustLogin = (
+  <React.Fragment>
+    <p>You must be logged in to view this. <Link key='login' to='/login' className='link--primary' title='Login'>Login</Link></p>
+  </React.Fragment>
+);
+
 class Emergency extends React.Component {
   constructor (props) {
     super(props);
@@ -126,11 +132,7 @@ class Emergency extends React.Component {
     let content;
 
     if (!this.props.isLogged) {
-      content = (
-        <React.Fragment>
-          <p>You must be logged in to view field reports. <Link key='login' to='/login' className='link--primary' title='Login'>Login</Link></p>
-        </React.Fragment>
-      );
+      content = mustLogin;
     } else {
       if (data.field_reports && data.field_reports.length) {
         content = (
@@ -176,7 +178,7 @@ class Emergency extends React.Component {
     );
   }
 
-  renderDocuments (documents, title, wrapperClass, includeAdminLink) {
+  renderDocuments (documents, title, wrapperClass, includeAdminLink, isPublic) {
     const {
       fetched,
       fetching,
@@ -186,7 +188,9 @@ class Emergency extends React.Component {
 
     let content;
 
-    if (fetching) {
+    if (!isPublic && !this.props.isLogged) {
+      content = mustLogin;
+    } else if (fetching) {
       content = <BlockLoading/>;
     } else if (error) {
       content = <p>Documents not available.</p>;
@@ -337,7 +341,7 @@ class Emergency extends React.Component {
               {this.renderKeyFigures()}
               {this.renderFieldReports()}
               {this.renderDocuments(this.props.situationReports, 'Situation Reports', 'situation-reports-list', true)}
-              {this.renderDocuments(this.props.appealDocuments, 'Appeal Documents', 'public-docs-list')}
+              {this.renderDocuments(this.props.appealDocuments, 'Appeal Documents', 'public-docs-list', false, true)}
 
               <Fold
                 id='contacts'
