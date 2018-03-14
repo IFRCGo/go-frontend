@@ -13,12 +13,12 @@ class Footer extends React.PureComponent {
           <nav className='footer-nav' role='navigation'>
             <div className='footer-nav__block'>
               <ul className='footer-menu'>
-                <li className='footer-menu__item--highlight'><Link to='/' title='View Emergencies'>Emergencies</Link></li>
+                <li className='footer-menu__item--highlight'><Link to='/emergencies' title='View Emergencies'>Emergencies</Link></li>
               </ul>
             </div>
             <div className='footer-nav__block'>
               <ul className='footer-menu'>
-                <li className='footer-menu__item--highlight'><Link to='/' title='View Regions'>Regions</Link></li>
+                <li className='footer-menu__item--highlight'>Regions</li>
                 {objValues(regions).map(o => (
                   <li key={o.id}><Link to={`/regions/${o.id}`} title='View Region'>{o.name} Region</Link></li>
                 ))}
@@ -26,7 +26,7 @@ class Footer extends React.PureComponent {
             </div>
             <div className='footer-nav__block'>
               <ul className='footer-menu'>
-                <li className='footer-menu__item--highlight'><Link to='/report/new' title='Create Field Report'>Create Field Report</Link></li>
+                <li className='footer-menu__item--highlight'><Link to='/reports/new' title='Create Field Report'>Create Field Report</Link></li>
               </ul>
             </div>
             <div className='footer-nav__block'>
@@ -41,13 +41,13 @@ class Footer extends React.PureComponent {
             </div>
             <div className='footer-nav__block footer-nav__block--sec'>
               <ul className='footer-menu'>
-                <li><a href='#' title='Open Source Code'>Open Source Code</a></li>
-                <li><a href='#' title='API Documentation'>API Documentation</a></li>
+                <li><a href='https://github.com/ifrcgo/go-frontend' title='Open Source Code'>Open Source Code</a></li>
+                <li><a href='https://github.com/ifrcgo/go-api' title='API Documentation'>API Documentation</a></li>
               </ul>
             </div>
           </nav>
           <div className='footer-credits'>
-            <p>© IFRC 2017</p>
+            <p>© IFRC 2018</p>
           </div>
         </div>
       </footer>
