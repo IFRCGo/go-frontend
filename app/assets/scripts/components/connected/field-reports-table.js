@@ -7,7 +7,7 @@ import { DateTime } from 'luxon';
 
 import { environment } from '../../config';
 import { getFieldReportsList } from '../../actions';
-import { nope } from '../../utils/format';
+import { nope, commaSeparatedNumber as n } from '../../utils/format';
 import { get, dTypeOptions, dateOptions, datesAgo } from '../../utils/utils';
 
 import Fold from '../fold';
@@ -115,7 +115,7 @@ class FieldReportsTable extends SFPComponent {
       }));
 
       return (
-        <Fold title={`Field Reports (${data.meta.total_count})`}>
+        <Fold title={`Field Reports (${n(data.meta.total_count)})`}>
           <DisplayTable
             headings={headings}
             rows={rows}
