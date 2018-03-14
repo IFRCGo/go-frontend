@@ -272,7 +272,7 @@ class Deployments extends SFPComponent {
 
       return (
         <div className='inner'>
-          <Fold title={`Deployed ERU (${data.meta.total_count})`}>
+          <Fold title={`Deployed ERU (${n(data.meta.total_count)})`}>
             <DisplayTable
               headings={headings}
               rows={rows}
@@ -336,7 +336,7 @@ class Deployments extends SFPComponent {
 
       return (
         <div className='inner'>
-          <Fold title={`HeOps (${data.meta.total_count})`}>
+          <Fold title={`HeOps (${n(data.meta.total_count)})`}>
             <DisplayTable
               headings={headings}
               rows={rows}
@@ -407,7 +407,7 @@ class Deployments extends SFPComponent {
 
       return (
         <div className='inner'>
-          <Fold title={`${title[what]} (${data.meta.total_count})`}>
+          <Fold title={`${title[what]} (${n(data.meta.total_count)})`}>
             <DisplayTable
               headings={headings}
               rows={rows}

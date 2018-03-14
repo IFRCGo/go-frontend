@@ -147,7 +147,7 @@ class Home extends SFPComponent {
       }));
 
       return (
-        <Fold title={`${title} (${data.meta.total_count})`}>
+        <Fold title={`${title} (${n(data.meta.total_count)})`}>
           <DisplayTable
             headings={headings}
             rows={rows}

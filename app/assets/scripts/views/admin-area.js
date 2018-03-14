@@ -233,7 +233,7 @@ class AdminArea extends SFPComponent {
       }));
 
       return (
-        <Fold title={`Appeals (${data.meta.total_count})`}>
+        <Fold title={`Appeals (${n(data.meta.total_count)})`}>
           <DisplayTable
             headings={headings}
             rows={rows}
@@ -311,7 +311,7 @@ class AdminArea extends SFPComponent {
       }));
 
       return (
-        <Fold title={`Drefs (${data.meta.total_count})`}>
+        <Fold title={`Drefs (${n(data.meta.total_count)})`}>
           <DisplayTable
             headings={headings}
             rows={rows}
@@ -375,7 +375,7 @@ class AdminArea extends SFPComponent {
       }));
 
       return (
-        <Fold title={`Field Reports (${data.meta.total_count})`}>
+        <Fold title={`Field Reports (${n(data.meta.total_count)})`}>
           <DisplayTable
             headings={headings}
             rows={rows}
