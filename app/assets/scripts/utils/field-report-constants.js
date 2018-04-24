@@ -1123,7 +1123,7 @@ export const disasterType = [
   },
   {
     value: '12',
-    label: 'Food'
+    label: 'Flood'
   },
   {
     value: '21',
@@ -1140,10 +1140,6 @@ export const disasterType = [
   {
     value: '24',
     label: 'Landslide'
-  },
-  {
-    value: '29',
-    label: 'Local storm'
   },
   {
     value: '13',
