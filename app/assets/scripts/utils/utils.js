@@ -68,9 +68,9 @@ export const dateOptions = [
 ];
 
 export const datesAgo = {
-  week: () => DateTime.local().minus({days: 7}).startOf('day').toISODate(),
-  month: () => DateTime.local().minus({months: 1}).startOf('day').toISODate(),
-  year: () => DateTime.local().minus({years: 1}).startOf('day').toISODate()
+  week: () => DateTime.utc().minus({days: 7}).startOf('day').toISO(),
+  month: () => DateTime.utc().minus({months: 1}).startOf('day').toISO(),
+  year: () => DateTime.utc().minus({years: 1}).startOf('day').toISO()
 };
 
 export const dTypeOptions = [

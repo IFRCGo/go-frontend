@@ -331,7 +331,7 @@ export function getAppeals (page = 1, filters = {}) {
   filters.offset = filters.limit * (page - 1);
 
   const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v1/appeal/?${f}`, GET_APPEALS, withToken());
+  return fetchJSON(`/api/v2/appeal/?${f}`, GET_APPEALS, withToken());
 }
 
 export const GET_APPEAL_DOCS = 'GET_APPEAL_DOCS';
