@@ -112,11 +112,11 @@ export function getEmergenciesList (page = 1, filters = {}) {
 export const GET_LAST_MO_EMERGENCIES = 'GET_LAST_MO_EMERGENCIES';
 export function getLastMonthsEmergencies () {
   const f = buildAPIQS({
-    disaster_start_date__gt: DateTime.local().minus({days: 30}).startOf('day').toISODate(),
-    limit: 0,
+    disaster_start_date__gt: DateTime.utc().minus({days: 30}).startOf('day').toISO(),
+    limit: 500,
     order_by: '-disaster_start_date'
   });
-  return fetchJSON(`api/v1/event/?${f}`, GET_LAST_MO_EMERGENCIES, {});
+  return fetchJSON(`api/v2/event/?${f}`, GET_LAST_MO_EMERGENCIES, {});
 }
 
 export const GET_AGGREGATE_EMERGENCIES = 'GET_AGGREGATE_EMERGENCIES';

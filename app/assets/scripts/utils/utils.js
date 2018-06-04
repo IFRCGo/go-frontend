@@ -4,7 +4,6 @@ import _groupBy from 'lodash.groupby';
 import _toNumber from 'lodash.tonumber';
 import { DateTime } from 'luxon';
 
-import { na } from './format';
 import { disasterType } from './field-report-constants';
 import { whitelistDomains } from '../schemas/register';
 
@@ -20,14 +19,16 @@ export function get (object, path, defaultValue) {
 }
 
 export function groupByDisasterType (objs) {
-  const emergenciesByType = _groupBy(objs, 'dtype.id');
+  const emergenciesByType = _groupBy(objs, 'dtype');
   return Object.keys(emergenciesByType).map(key => {
+    let meta = disasterType.find(d => d.value === key.toString());
+    if (!meta) return null;
     return {
       id: _toNumber(key),
-      name: get(emergenciesByType[key][0], 'dtype.name', na),
+      name: meta.label,
       items: emergenciesByType[key]
     };
-  }).sort((a, b) => a.items.length < b.items.length);
+  }).filter(Boolean).sort((a, b) => a.items.length < b.items.length);
 }
 
 export function isValidEmail (email) {

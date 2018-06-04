@@ -30,1050 +30,267 @@ export const visibility = [
 ];
 
 export const countries = [
-  {
-    label: '',
-    value: '-- Country --'
-  },
-  {
-    label: 'Afghanistan',
-    value: '14'
-  },
-  {
-    label: 'Aland Island',
-    value: '277'
-  },
-  {
-    label: 'Albania',
-    value: '15'
-  },
-  {
-    label: 'Algeria',
-    value: '16'
-  },
-  {
-    label: 'American Samoa',
-    value: '229'
-  },
-  {
-    label: 'Andorra',
-    value: '17'
-  },
-  {
-    label: 'Angola',
-    value: '18'
-  },
-  {
-    label: 'Anguilla',
-    value: '217'
-  },
-  {
-    label: 'Antarctica',
-    value: '230'
-  },
-  {
-    label: 'Antigua and Barbuda',
-    value: '19'
-  },
-  {
-    label: 'Argentina',
-    value: '20'
-  },
-  {
-    label: 'Armenia',
-    value: '21'
-  },
-  {
-    label: 'Aruba',
-    value: '231'
-  },
-  {
-    label: 'Australia',
-    value: '22'
-  },
-  {
-    label: 'Austria',
-    value: '23'
-  },
-  {
-    label: 'Azerbaijan',
-    value: '200'
-  },
-  {
-    label: 'Bahamas',
-    value: '25'
-  },
-  {
-    label: 'Bahrain',
-    value: '26'
-  },
-  {
-    label: 'Baker Island',
-    value: '232'
-  },
-  {
-    label: 'Bangladesh',
-    value: '27'
-  },
-  {
-    label: 'Barbados',
-    value: '28'
-  },
-  {
-    label: 'Belarus',
-    value: '29'
-  },
-  {
-    label: 'Belgium',
-    value: '30'
-  },
-  {
-    label: 'Belize',
-    value: '31'
-  },
-  {
-    label: 'Benin',
-    value: '209'
-  },
-  {
-    label: 'Bermuda',
-    value: '233'
-  },
-  {
-    label: 'Bhutan',
-    value: '234'
-  },
-  {
-    label: 'Bolivia',
-    value: '33'
-  },
-  {
-    label: 'Bosnia and Herzegovina',
-    value: '197'
-  },
-  {
-    label: 'Botswana',
-    value: '34'
-  },
-  {
-    label: 'Bouvet Island',
-    value: '278'
-  },
-  {
-    label: 'Brazil',
-    value: '35'
-  },
-  {
-    label: 'British Indian Overseas Territories',
-    value: '215'
-  },
-  {
-    label: 'Brunei Darussalam',
-    value: '36'
-  },
-  {
-    label: 'Bulgaria',
-    value: '37'
-  },
-  {
-    label: 'Burkina Faso',
-    value: '181'
-  },
-  {
-    label: 'Burundi',
-    value: '39'
-  },
-  {
-    label: 'Cambodia',
-    value: '40'
-  },
-  {
-    label: 'Cameroon',
-    value: '41'
-  },
-  {
-    label: 'Canada',
-    value: '42'
-  },
-  {
-    label: 'Cape Verde',
-    value: '43'
-  },
-  {
-    label: 'Cayman Islands',
-    value: '220'
-  },
-  {
-    label: 'Central African Republic',
-    value: '44'
-  },
-  {
-    label: 'Chad',
-    value: '45'
-  },
-  {
-    label: 'Chile',
-    value: '46'
-  },
-  {
-    label: 'China',
-    value: '47'
-  },
-  {
-    label: 'Christmas Island, Territory of',
-    value: '235'
-  },
-  {
-    label: 'Cocos Islands, Territory of',
-    value: '236'
-  },
-  {
-    label: 'Colombia',
-    value: '48'
-  },
-  {
-    label: 'Comoros',
-    value: '186'
-  },
-  {
-    label: 'Congo, Democratic Republic of',
-    value: '187'
-  },
-  {
-    label: 'Congo, Republic of',
-    value: '184'
-  },
-  {
-    label: 'Cook Islands',
-    value: '211'
-  },
-  {
-    label: 'Costa Rica',
-    value: '51'
-  },
-  {
-    label: 'Croatia',
-    value: '53'
-  },
-  {
-    label: 'Cuba',
-    value: '54'
-  },
-  {
-    label: 'Cyprus',
-    value: '228'
-  },
-  {
-    label: 'Czech Republic',
-    value: '55'
-  },
-  {
-    label: 'Côte d\'Ivoire',
-    value: '182'
-  },
-  {
-    label: 'Denmark',
-    value: '56'
-  },
-  {
-    label: 'Djibouti',
-    value: '57'
-  },
-  {
-    label: 'Dominica',
-    value: '58'
-  },
-  {
-    label: 'Dominican Republic',
-    value: '59'
-  },
-  {
-    label: 'Ecuador',
-    value: '60'
-  },
-  {
-    label: 'Egypt',
-    value: '61'
-  },
-  {
-    label: 'El Salvador',
-    value: '62'
-  },
-  {
-    label: 'Equatorial Guinea',
-    value: '63'
-  },
-  {
-    label: 'Eritrea',
-    value: '188'
-  },
-  {
-    label: 'Estonia',
-    value: '64'
-  },
-  {
-    label: 'Ethiopia',
-    value: '65'
-  },
-  {
-    label: 'Falkland Islands (Malvinas)',
-    value: '237'
-  },
-  {
-    label: 'Faroe Islands',
-    value: '238'
-  },
-  {
-    label: 'Fiji',
-    value: '66'
-  },
-  {
-    label: 'Finland',
-    value: '67'
-  },
-  {
-    label: 'France',
-    value: '68'
-  },
-  {
-    label: 'French Guiana',
-    value: '224'
-  },
-  {
-    label: 'French Polynesia',
-    value: '239'
-  },
-  {
-    label: 'French Southern and Antarctic Lands',
-    value: '240'
-  },
-  {
-    label: 'Gabon',
-    value: '69'
-  },
-  {
-    label: 'Gambia',
-    value: '70'
-  },
-  {
-    label: 'Georgia',
-    value: '71'
-  },
-  {
-    label: 'Germany',
-    value: '72'
-  },
-  {
-    label: 'Ghana',
-    value: '73'
-  },
-  {
-    label: 'Gibraltar',
-    value: '241'
-  },
-  {
-    label: 'Greece',
-    value: '74'
-  },
-  {
-    label: 'Greenland',
-    value: '242'
-  },
-  {
-    label: 'Grenada',
-    value: '75'
-  },
-  {
-    label: 'Guadeloupe',
-    value: '225'
-  },
-  {
-    label: 'Guam',
-    value: '243'
-  },
-  {
-    label: 'Guatemala',
-    value: '76'
-  },
-  {
-    label: 'Guernesey',
-    value: '272'
-  },
-  {
-    label: 'Guinea',
-    value: '77'
-  },
-  {
-    label: 'Guinea-Bissau',
-    value: '183'
-  },
-  {
-    label: 'Guyana',
-    value: '79'
-  },
-  {
-    label: 'Haiti',
-    value: '80'
-  },
-  {
-    label: 'Heard I. & McDonald Is.',
-    value: '244'
-  },
-  {
-    label: 'Holy See (Vatican City State)',
-    value: '274'
-  },
-  {
-    label: 'Honduras',
-    value: '81'
-  },
-  {
-    label: 'Hong Kong (China)',
-    value: '275'
-  },
-  {
-    label: 'Howland Island',
-    value: '245'
-  },
-  {
-    label: 'Hungary',
-    value: '82'
-  },
-  {
-    label: 'Iceland',
-    value: '83'
-  },
-  {
-    label: 'India',
-    value: '84'
-  },
-  {
-    label: 'Indonesia',
-    value: '85'
-  },
-  {
-    label: 'Iran, Islamic Republic of',
-    value: '203'
-  },
-  {
-    label: 'Iraq',
-    value: '87'
-  },
-  {
-    label: 'Ireland',
-    value: '88'
-  },
-  {
-    label: 'Isle of Man',
-    value: '276'
-  },
-  {
-    label: 'Israel',
-    value: '222'
-  },
-  {
-    label: 'Italy',
-    value: '89'
-  },
-  {
-    label: 'Jamaica',
-    value: '90'
-  },
-  {
-    label: 'Japan',
-    value: '91'
-  },
-  {
-    label: 'Jarvis Island',
-    value: '247'
-  },
-  {
-    label: 'Jersey',
-    value: '273'
-  },
-  {
-    label: 'Johnston Atoll',
-    value: '248'
-  },
-  {
-    label: 'Jordan',
-    value: '92'
-  },
-  {
-    label: 'Kazakhstan',
-    value: '201'
-  },
-  {
-    label: 'Kenya',
-    value: '93'
-  },
-  {
-    label: 'Kiribati',
-    value: '94'
-  },
-  {
-    label: 'Korea, Democratic People\'s Republic of',
-    value: '193'
-  },
-  {
-    label: 'Korea, Republic of',
-    value: '192'
-  },
-  {
-    label: 'Kuwait',
-    value: '97'
-  },
-  {
-    label: 'Kyrgyzstan',
-    value: '98'
-  },
-  {
-    label: 'Lao People\'s Democratic Republic',
-    value: '99'
-  },
-  {
-    label: 'Latvia',
-    value: '100'
-  },
-  {
-    label: 'Lebanon',
-    value: '101'
-  },
-  {
-    label: 'Lesotho',
-    value: '102'
-  },
-  {
-    label: 'Liberia',
-    value: '103'
-  },
-  {
-    label: 'Libyan Arab Jamahiriya',
-    value: '204'
-  },
-  {
-    label: 'Liechtenstein',
-    value: '105'
-  },
-  {
-    label: 'Lithuania',
-    value: '106'
-  },
-  {
-    label: 'Luxembourg',
-    value: '107'
-  },
-  {
-    label: 'Macao',
-    value: '279'
-  },
-  {
-    label: 'Macedonia, The former Yugoslav Republic of',
-    value: '108'
-  },
-  {
-    label: 'Madagascar',
-    value: '109'
-  },
-  {
-    label: 'Malawi',
-    value: '110'
-  },
-  {
-    label: 'Malaysia',
-    value: '111'
-  },
-  {
-    label: 'Maldives',
-    value: '227'
-  },
-  {
-    label: 'Mali',
-    value: '112'
-  },
-  {
-    label: 'Malta',
-    value: '113'
-  },
-  {
-    label: 'Marshall Islands',
-    value: '212'
-  },
-  {
-    label: 'Martinique',
-    value: '226'
-  },
-  {
-    label: 'Mauritania',
-    value: '114'
-  },
-  {
-    label: 'Mauritius',
-    value: '115'
-  },
-  {
-    label: 'Mayotte',
-    value: '249'
-  },
-  {
-    label: 'Mexico',
-    value: '116'
-  },
-  {
-    label: 'Micronesia, Federated States of',
-    value: '195'
-  },
-  {
-    label: 'Midway Island',
-    value: '250'
-  },
-  {
-    label: 'Moldova',
-    value: '202'
-  },
-  {
-    label: 'Monaco',
-    value: '117'
-  },
-  {
-    label: 'Mongolia',
-    value: '194'
-  },
-  {
-    label: 'Montenegro',
-    value: '270'
-  },
-  {
-    label: 'Montserrat',
-    value: '216'
-  },
-  {
-    label: 'Morocco',
-    value: '119'
-  },
-  {
-    label: 'Mozambique',
-    value: '120'
-  },
-  {
-    label: 'Myanmar',
-    value: '121'
-  },
-  {
-    label: 'Namibia',
-    value: '122'
-  },
-  {
-    label: 'Nauru',
-    value: '251'
-  },
-  {
-    label: 'Nepal',
-    value: '123'
-  },
-  {
-    label: 'Netherlands',
-    value: '124'
-  },
-  {
-    label: 'Netherlands Antilles',
-    value: '223'
-  },
-  {
-    label: 'New Caledonia',
-    value: '252'
-  },
-  {
-    label: 'New Zealand',
-    value: '125'
-  },
-  {
-    label: 'Nicaragua',
-    value: '126'
-  },
-  {
-    label: 'Niger',
-    value: '127'
-  },
-  {
-    label: 'Nigeria',
-    value: '128'
-  },
-  {
-    label: 'Niue',
-    value: '253'
-  },
-  {
-    label: 'Norkolk Island',
-    value: '254'
-  },
-  {
-    label: 'Northern Mariana Island',
-    value: '255'
-  },
-  {
-    label: 'Norway',
-    value: '129'
-  },
-  {
-    label: 'Oman',
-    value: '258'
-  },
-  {
-    label: 'Pakistan',
-    value: '131'
-  },
-  {
-    label: 'Palau',
-    value: '130'
-  },
-  {
-    label: 'Palestine',
-    value: '205'
-  },
-  {
-    label: 'Panama',
-    value: '132'
-  },
-  {
-    label: 'Papua New Guinea',
-    value: '133'
-  },
-  {
-    label: 'Paraguay',
-    value: '134'
-  },
-  {
-    label: 'Peru',
-    value: '135'
-  },
-  {
-    label: 'Philippines',
-    value: '136'
-  },
-  {
-    label: 'Pitcairn',
-    value: '256'
-  },
-  {
-    label: 'Poland',
-    value: '199'
-  },
-  {
-    label: 'Portugal',
-    value: '138'
-  },
-  {
-    label: 'Puerto Rico',
-    value: '257'
-  },
-  {
-    label: 'Qatar',
-    value: '139'
-  },
-  {
-    label: 'Reunion',
-    value: '259'
-  },
-  {
-    label: 'Romania',
-    value: '141'
-  },
-  {
-    label: 'Russian Federation',
-    value: '142'
-  },
-  {
-    label: 'Rwanda',
-    value: '143'
-  },
-  {
-    label: 'Saint Helena',
-    value: '262'
-  },
-  {
-    label: 'Saint Kitts and Nevis',
-    value: '177'
-  },
-  {
-    label: 'Saint Lucia',
-    value: '178'
-  },
-  {
-    label: 'Saint Martin (French part)',
-    value: '280'
-  },
-  {
-    label: 'Saint Pierre et Miquelon',
-    value: '263'
-  },
-  {
-    label: 'Saint Vincent and the Grenadines',
-    value: '179'
-  },
-  {
-    label: 'Samoa',
-    value: '147'
-  },
-  {
-    label: 'San Marino, Republic of',
-    value: '260'
-  },
-  {
-    label: 'Sao Tomé and Principe',
-    value: '185'
-  },
-  {
-    label: 'Saudi Arabia',
-    value: '149'
-  },
-  {
-    label: 'Senegal',
-    value: '150'
-  },
-  {
-    label: 'Serbia',
-    value: '271'
-  },
-  {
-    label: 'Serbia and Montenegro',
-    value: '11'
-  },
-  {
-    label: 'Seychelles',
-    value: '151'
-  },
-  {
-    label: 'Sierra Leone',
-    value: '152'
-  },
-  {
-    label: 'Singapore',
-    value: '153'
-  },
-  {
-    label: 'Slovakia',
-    value: '154'
-  },
-  {
-    label: 'Slovenia',
-    value: '155'
-  },
-  {
-    label: 'Solomon Islands',
-    value: '156'
-  },
-  {
-    label: 'Somalia',
-    value: '157'
-  },
-  {
-    label: 'South Africa',
-    value: '158'
-  },
-  {
-    label: 'South Georgia and the South Sandwich Is.',
-    value: '261'
-  },
-  {
-    label: 'South Sudan, Rep. Of',
-    value: '290'
-  },
-  {
-    label: 'Spain',
-    value: '159'
-  },
-  {
-    label: 'Sri Lanka',
-    value: '160'
-  },
-  {
-    label: 'Sudan',
-    value: '161'
-  },
-  {
-    label: 'Suriname',
-    value: '180'
-  },
-  {
-    label: 'Svalbard and Jan Mayen',
-    value: '264'
-  },
-  {
-    label: 'Swaziland',
-    value: '163'
-  },
-  {
-    label: 'Sweden',
-    value: '164'
-  },
-  {
-    label: 'Switzerland',
-    value: '165'
-  },
-  {
-    label: 'Syria',
-    value: '206'
-  },
-  {
-    label: 'Taiwan Red Cross Organization (TRCO) ',
-    value: '281'
-  },
-  {
-    label: 'Tajikistan',
-    value: '167'
-  },
-  {
-    label: 'Tanzania, United Republic of',
-    value: '189'
-  },
-  {
-    label: 'Thailand',
-    value: '169'
-  },
-  {
-    label: 'Timor-Leste',
-    value: '210'
-  },
-  {
-    label: 'Togo',
-    value: '170'
-  },
-  {
-    label: 'Tokelau',
-    value: '265'
-  },
-  {
-    label: 'Tonga',
-    value: '171'
-  },
-  {
-    label: 'Trinidad and Tobago',
-    value: '172'
-  },
-  {
-    label: 'Tunisia',
-    value: '173'
-  },
-  {
-    label: 'Turkey',
-    value: '174'
-  },
-  {
-    label: 'Turkmenistan',
-    value: '175'
-  },
-  {
-    label: 'Turks and Caicos Islands',
-    value: '219'
-  },
-  {
-    label: 'Tuvalu',
-    value: '213'
-  },
-  {
-    label: 'Uganda',
-    value: '176'
-  },
-  {
-    label: 'Ukraine',
-    value: '1'
-  },
-  {
-    label: 'United Arab Emirates',
-    value: '2'
-  },
-  {
-    label: 'United Kingdom',
-    value: '3'
-  },
-  {
-    label: 'United States',
-    value: '4'
-  },
-  {
-    label: 'Uruguay',
-    value: '5'
-  },
-  {
-    label: 'Uzbekistan',
-    value: '6'
-  },
-  {
-    label: 'Vanuatu',
-    value: '7'
-  },
-  {
-    label: 'Venezuela',
-    value: '8'
-  },
-  {
-    label: 'Viet Nam',
-    value: '191'
-  },
-  {
-    label: 'Virgin Islands, British',
-    value: '218'
-  },
-  {
-    label: 'Virgin Islands, US',
-    value: '266'
-  },
-  {
-    label: 'Wake Island',
-    value: '267'
-  },
-  {
-    label: 'Wallis and Futuna',
-    value: '268'
-  },
-  {
-    label: 'Western Sahara',
-    value: '269'
-  },
-  {
-    label: 'Yemen',
-    value: '10'
-  },
-  {
-    label: 'Zambia',
-    value: '12'
-  },
-  {
-    label: 'Zimbabwe',
-    value: '13'
-  },
-  {
-    label: 'Zone Americas',
-    value: '282'
-  },
-  {
-    label: 'Zone Asia-Pacific',
-    value: '283'
-  },
-  {
-    label: 'Zone Central and West Africa',
-    value: '284'
-  },
-  {
-    label: 'Zone Eastern Africa',
-    value: '285'
-  },
-  {
-    label: 'Zone Europe',
-    value: '286'
-  },
-  {
-    label: 'Zone GLOBAL',
-    value: '289'
-  },
-  {
-    label: 'Zone MENA',
-    value: '287'
-  },
-  {
-    label: 'Zone Southern Africa',
-    value: '288'
-  }
+  {value: '-- Country --', label: ''},
+  {value: '1', label: 'Ukraine', iso: 'ua'},
+  {value: '2', label: 'United Arab Emirates', iso: 'ae'},
+  {value: '3', label: 'United Kingdom', iso: 'gb'},
+  {value: '4', label: 'United States', iso: 'us'},
+  {value: '5', label: 'Uruguay', iso: 'uy'},
+  {value: '6', label: 'Uzbekistan', iso: 'uz'},
+  {value: '7', label: 'Vanuatu', iso: 'vu'},
+  {value: '8', label: 'Venezuela, RB', iso: 've'},
+  {value: '10', label: 'Yemen, Rep.', iso: 'ye'},
+  {value: '11', label: 'Serbia and Montenegro', iso: 'cs'},
+  {value: '12', label: 'Zambia', iso: 'zm'},
+  {value: '13', label: 'Zimbabwe', iso: 'zw'},
+  {value: '14', label: 'Afghanistan', iso: 'af'},
+  {value: '15', label: 'Albania', iso: 'al'},
+  {value: '16', label: 'Algeria', iso: 'dz'},
+  {value: '17', label: 'Andorra', iso: 'ad'},
+  {value: '18', label: 'Angola', iso: 'ao'},
+  {value: '19', label: 'Antigua and Barbuda', iso: 'ag'},
+  {value: '20', label: 'Argentina', iso: 'ar'},
+  {value: '21', label: 'Armenia', iso: 'am'},
+  {value: '22', label: 'Australia', iso: 'au'},
+  {value: '23', label: 'Austria', iso: 'at'},
+  {value: '25', label: 'Bahamas, The', iso: 'bs'},
+  {value: '26', label: 'Bahrain', iso: 'bh'},
+  {value: '27', label: 'Bangladesh', iso: 'bd'},
+  {value: '28', label: 'Barbados', iso: 'bb'},
+  {value: '29', label: 'Belarus', iso: 'by'},
+  {value: '30', label: 'Belgium', iso: 'be'},
+  {value: '31', label: 'Belize', iso: 'bz'},
+  {value: '33', label: 'Bolivia', iso: 'bo'},
+  {value: '34', label: 'Botswana', iso: 'bw'},
+  {value: '35', label: 'Brazil', iso: 'br'},
+  {value: '36', label: 'Brunei Darussalam', iso: 'bn'},
+  {value: '37', label: 'Bulgaria', iso: 'bg'},
+  {value: '39', label: 'Burundi', iso: 'bi'},
+  {value: '40', label: 'Cambodia', iso: 'kh'},
+  {value: '41', label: 'Cameroon', iso: 'cm'},
+  {value: '42', label: 'Canada', iso: 'ca'},
+  {value: '43', label: 'Cape Verde', iso: 'cv'},
+  {value: '44', label: 'Central African Republic', iso: 'cf'},
+  {value: '45', label: 'Chad', iso: 'td'},
+  {value: '46', label: 'Chile', iso: 'cl'},
+  {value: '47', label: 'China', iso: 'cn'},
+  {value: '48', label: 'Colombia', iso: 'co'},
+  {value: '51', label: 'Costa Rica', iso: 'cr'},
+  {value: '53', label: 'Croatia', iso: 'hr'},
+  {value: '54', label: 'Cuba', iso: 'cu'},
+  {value: '55', label: 'Czech Republic', iso: 'cz'},
+  {value: '56', label: 'Denmark', iso: 'dk'},
+  {value: '57', label: 'Djibouti', iso: 'dj'},
+  {value: '58', label: 'Dominica', iso: 'dm'},
+  {value: '59', label: 'Dominican Republic', iso: 'do'},
+  {value: '60', label: 'Ecuador', iso: 'ec'},
+  {value: '61', label: 'Egypt, Arab Rep.', iso: 'eg'},
+  {value: '62', label: 'El Salvador', iso: 'sv'},
+  {value: '63', label: 'Equatorial Guinea', iso: 'gq'},
+  {value: '64', label: 'Estonia', iso: 'ee'},
+  {value: '65', label: 'Ethiopia', iso: 'et'},
+  {value: '66', label: 'Fiji', iso: 'fj'},
+  {value: '67', label: 'Finland', iso: 'fi'},
+  {value: '68', label: 'France', iso: 'fr'},
+  {value: '69', label: 'Gabon', iso: 'ga'},
+  {value: '70', label: 'Gambia, The', iso: 'gm'},
+  {value: '71', label: 'Georgia', iso: 'ge'},
+  {value: '72', label: 'Germany', iso: 'de'},
+  {value: '73', label: 'Ghana', iso: 'gh'},
+  {value: '74', label: 'Greece', iso: 'gr'},
+  {value: '75', label: 'Grenada', iso: 'gd'},
+  {value: '76', label: 'Guatemala', iso: 'gt'},
+  {value: '77', label: 'Guinea', iso: 'gn'},
+  {value: '79', label: 'Guyana', iso: 'gy'},
+  {value: '80', label: 'Haiti', iso: 'ht'},
+  {value: '81', label: 'Honduras', iso: 'hn'},
+  {value: '82', label: 'Hungary', iso: 'hu'},
+  {value: '83', label: 'Iceland', iso: 'is'},
+  {value: '84', label: 'India', iso: 'in'},
+  {value: '85', label: 'Indonesia', iso: 'id'},
+  {value: '87', label: 'Iraq', iso: 'iq'},
+  {value: '88', label: 'Ireland', iso: 'ie'},
+  {value: '89', label: 'Italy', iso: 'it'},
+  {value: '90', label: 'Jamaica', iso: 'jm'},
+  {value: '91', label: 'Japan', iso: 'jp'},
+  {value: '92', label: 'Jordan', iso: 'jo'},
+  {value: '93', label: 'Kenya', iso: 'ke'},
+  {value: '94', label: 'Kiribati', iso: 'ki'},
+  {value: '97', label: 'Kuwait', iso: 'kw'},
+  {value: '98', label: 'Kyrgyz Republic', iso: 'kg'},
+  {value: '99', label: 'Lao PDR', iso: 'la'},
+  {value: '100', label: 'Latvia', iso: 'lv'},
+  {value: '101', label: 'Lebanon', iso: 'lb'},
+  {value: '102', label: 'Lesotho', iso: 'ls'},
+  {value: '103', label: 'Liberia', iso: 'lr'},
+  {value: '105', label: 'Liechtenstein', iso: 'li'},
+  {value: '106', label: 'Lithuania', iso: 'lt'},
+  {value: '107', label: 'Luxembourg', iso: 'lu'},
+  {value: '108', label: 'Macedonia, FYR', iso: 'mk'},
+  {value: '109', label: 'Madagascar', iso: 'mg'},
+  {value: '110', label: 'Malawi', iso: 'mw'},
+  {value: '111', label: 'Malaysia', iso: 'my'},
+  {value: '112', label: 'Mali', iso: 'ml'},
+  {value: '113', label: 'Malta', iso: 'mt'},
+  {value: '114', label: 'Mauritania', iso: 'mr'},
+  {value: '115', label: 'Mauritius', iso: 'mu'},
+  {value: '116', label: 'Mexico', iso: 'mx'},
+  {value: '117', label: 'Monaco', iso: 'mc'},
+  {value: '119', label: 'Morocco', iso: 'ma'},
+  {value: '120', label: 'Mozambique', iso: 'mz'},
+  {value: '121', label: 'Myanmar', iso: 'mm'},
+  {value: '122', label: 'Namibia', iso: 'na'},
+  {value: '123', label: 'Nepal', iso: 'np'},
+  {value: '124', label: 'Netherlands', iso: 'nl'},
+  {value: '125', label: 'New Zealand', iso: 'nz'},
+  {value: '126', label: 'Nicaragua', iso: 'ni'},
+  {value: '127', label: 'Niger', iso: 'ne'},
+  {value: '128', label: 'Nigeria', iso: 'ng'},
+  {value: '129', label: 'Norway', iso: 'no'},
+  {value: '130', label: 'Palau', iso: 'pw'},
+  {value: '131', label: 'Pakistan', iso: 'pk'},
+  {value: '132', label: 'Panama', iso: 'pa'},
+  {value: '133', label: 'Papua New Guinea', iso: 'pg'},
+  {value: '134', label: 'Paraguay', iso: 'py'},
+  {value: '135', label: 'Peru', iso: 'pe'},
+  {value: '136', label: 'Philippines', iso: 'ph'},
+  {value: '138', label: 'Portugal', iso: 'pt'},
+  {value: '139', label: 'Qatar', iso: 'qa'},
+  {value: '141', label: 'Romania', iso: 'ro'},
+  {value: '142', label: 'Russian Federation', iso: 'ru'},
+  {value: '143', label: 'Rwanda', iso: 'rw'},
+  {value: '147', label: 'Samoa', iso: 'ws'},
+  {value: '149', label: 'Saudi Arabia', iso: 'sa'},
+  {value: '150', label: 'Senegal', iso: 'sn'},
+  {value: '151', label: 'Seychelles', iso: 'sc'},
+  {value: '152', label: 'Sierra Leone', iso: 'sl'},
+  {value: '153', label: 'Singapore', iso: 'sg'},
+  {value: '154', label: 'Slovakia', iso: 'sk'},
+  {value: '155', label: 'Slovenia', iso: 'si'},
+  {value: '156', label: 'Solomon Islands', iso: 'sb'},
+  {value: '157', label: 'Somalia', iso: 'so'},
+  {value: '158', label: 'South Africa', iso: 'za'},
+  {value: '159', label: 'Spain', iso: 'es'},
+  {value: '160', label: 'Sri Lanka', iso: 'lk'},
+  {value: '161', label: 'Sudan', iso: 'sd'},
+  {value: '163', label: 'Swaziland', iso: 'sz'},
+  {value: '164', label: 'Sweden', iso: 'se'},
+  {value: '165', label: 'Switzerland', iso: 'ch'},
+  {value: '167', label: 'Tajikistan', iso: 'tj'},
+  {value: '169', label: 'Thailand', iso: 'th'},
+  {value: '170', label: 'Togo', iso: 'tg'},
+  {value: '171', label: 'Tonga', iso: 'to'},
+  {value: '172', label: 'Trinidad and Tobago', iso: 'tt'},
+  {value: '173', label: 'Tunisia', iso: 'tn'},
+  {value: '174', label: 'Turkey', iso: 'tr'},
+  {value: '175', label: 'Turkmenistan', iso: 'tm'},
+  {value: '176', label: 'Uganda', iso: 'ug'},
+  {value: '177', label: 'St. Kitts and Nevis', iso: 'kn'},
+  {value: '178', label: 'St. Lucia', iso: 'lc'},
+  {value: '179', label: 'St. Vincent and the Grenadines', iso: 'vc'},
+  {value: '180', label: 'Suriname', iso: 'sr'},
+  {value: '181', label: 'Burkina Faso', iso: 'bf'},
+  {value: '182', label: 'Côte d\'Ivoire', iso: 'ci'},
+  {value: '183', label: 'Guinea-Bissau', iso: 'gw'},
+  {value: '184', label: 'Congo, Rep.', iso: 'cg'},
+  {value: '185', label: 'Sao Tomé and Principe', iso: 'st'},
+  {value: '186', label: 'Comoros', iso: 'km'},
+  {value: '187', label: 'Congo, Dem. Rep.', iso: 'cd'},
+  {value: '188', label: 'Eritrea', iso: 'er'},
+  {value: '189', label: 'Tanzania, United Republic of', iso: 'tz'},
+  {value: '191', label: 'Viet Nam', iso: 'vn'},
+  {value: '192', label: 'Korea, Rep.', iso: 'kr'},
+  {value: '193', label: 'Korea, Dem. Rep.', iso: 'KP'},
+  {value: '194', label: 'Mongolia', iso: 'mn'},
+  {value: '195', label: 'Micronesia, Fed. Sts.', iso: 'fm'},
+  {value: '197', label: 'Bosnia and Herzegovina', iso: 'ba'},
+  {value: '199', label: 'Poland', iso: 'pl'},
+  {value: '200', label: 'Azerbaijan', iso: 'az'},
+  {value: '201', label: 'Kazakhstan', iso: 'kz'},
+  {value: '202', label: 'Moldova', iso: 'md'},
+  {value: '203', label: 'Iran, Islamic Rep.', iso: 'ir'},
+  {value: '204', label: 'Libyan Arab Jamahiriya', iso: 'ly'},
+  {value: '205', label: 'Palestinian territories', iso: 'ps'},
+  {value: '206', label: 'Syrian Arab Republic', iso: 'sy'},
+  {value: '209', label: 'Benin', iso: 'bj'},
+  {value: '210', label: 'Timor-Leste', iso: 'tl'},
+  {value: '211', label: 'Cook Islands', iso: 'ck'},
+  {value: '212', label: 'Marshall Islands', iso: 'mh'},
+  {value: '213', label: 'Tuvalu', iso: 'tv'},
+  {value: '215', label: 'British Indian Overseas Territories', iso: 'io'},
+  {value: '216', label: 'Montserrat', iso: 'ms'},
+  {value: '217', label: 'Anguilla', iso: 'ai'},
+  {value: '218', label: 'Virgin Islands, British', iso: 'vg'},
+  {value: '219', label: 'Turks and Caicos Islands', iso: 'tc'},
+  {value: '220', label: 'Cayman Islands', iso: 'ky'},
+  {value: '222', label: 'Israel', iso: 'il'},
+  {value: '223', label: 'Netherlands Antilles', iso: 'an'},
+  {value: '224', label: 'French Guiana', iso: 'gf'},
+  {value: '225', label: 'Guadeloupe', iso: 'gp'},
+  {value: '226', label: 'Martinique', iso: 'mq'},
+  {value: '227', label: 'Maldives', iso: 'mv'},
+  {value: '228', label: 'Cyprus', iso: 'CY'},
+  {value: '229', label: 'American Samoa', iso: 'as'},
+  {value: '230', label: 'Antarctica', iso: 'aq'},
+  {value: '231', label: 'Aruba', iso: 'aw'},
+  {value: '232', label: 'Baker Island', iso: 'um'},
+  {value: '233', label: 'Bermuda', iso: 'bm'},
+  {value: '234', label: 'Bhutan', iso: 'bt'},
+  {value: '235', label: 'Christmas Island, Territory of', iso: 'cx'},
+  {value: '236', label: 'Cocos Islands, Territory of', iso: 'cc'},
+  {value: '237', label: 'Falkland Islands (Malvinas)', iso: 'fk'},
+  {value: '238', label: 'Faroe Islands', iso: 'fo'},
+  {value: '239', label: 'French Polynesia', iso: 'pf'},
+  {value: '240', label: 'French Southern and Antarctic Lands', iso: 'tf'},
+  {value: '241', label: 'Gibraltar', iso: 'gi'},
+  {value: '242', label: 'Greenland', iso: 'gl'},
+  {value: '243', label: 'Guam', iso: 'gu'},
+  {value: '244', label: 'Heard I. & McDonald Is.', iso: 'HM'},
+  {value: '245', label: 'Howland Island', iso: 'um'},
+  {value: '247', label: 'Jarvis Island', iso: 'um'},
+  {value: '248', label: 'Johnston Atoll', iso: 'um'},
+  {value: '249', label: 'Mayotte', iso: 'yt'},
+  {value: '250', label: 'Midway Island', iso: 'um'},
+  {value: '251', label: 'Nauru', iso: 'nr'},
+  {value: '252', label: 'New Caledonia', iso: 'nc'},
+  {value: '253', label: 'Niue', iso: 'nu'},
+  {value: '254', label: 'Norkolk Island', iso: 'nf'},
+  {value: '255', label: 'Northern Mariana Island', iso: 'mp'},
+  {value: '256', label: 'Pitcairn', iso: 'pn'},
+  {value: '257', label: 'Puerto Rico', iso: 'pr'},
+  {value: '258', label: 'Oman', iso: 'om'},
+  {value: '259', label: 'Reunion', iso: 're'},
+  {value: '260', label: 'San Marino, Republic of', iso: 'sm'},
+  {value: '261', label: 'South Georgia and the South Sandwich Is.', iso: 'gs'},
+  {value: '262', label: 'Saint Helena', iso: 'sh'},
+  {value: '263', label: 'St. Pierre et Miquelon', iso: 'pm'},
+  {value: '264', label: 'Svalbard and Jan Mayen', iso: 'sj'},
+  {value: '265', label: 'Tokelau', iso: 'tk'},
+  {value: '266', label: 'Virgin Islands, US', iso: 'vi'},
+  {value: '267', label: 'Wake Island', iso: 'um'},
+  {value: '268', label: 'Wallis and Futuna', iso: 'wf'},
+  {value: '269', label: 'Western Sahara', iso: 'eh'},
+  {value: '270', label: 'Montenegro', iso: 'me'},
+  {value: '271', label: 'Serbia', iso: 'rs'},
+  {value: '272', label: 'Guernesey', iso: 'gg'},
+  {value: '273', label: 'Jersey', iso: 'je'},
+  {value: '274', label: 'Holy See (Vatican City State)', iso: 'va'},
+  {value: '275', label: 'Hong Kong (China)', iso: 'hk'},
+  {value: '276', label: 'Isle of Man', iso: 'im'},
+  {value: '277', label: 'Aland Island', iso: 'AX'},
+  {value: '278', label: 'Bouvet Island', iso: 'BV'},
+  {value: '279', label: 'Macao', iso: 'MO'},
+  {value: '280', label: 'St. Martin (French part)', iso: 'MF'},
+  {value: '281', label: 'Republic of China (Taiwan)', iso: 'TW'},
+  {value: '282', label: 'Zone Americas', iso: ''},
+  {value: '283', label: 'Zone Asia-Pacific', iso: ''},
+  {value: '284', label: 'Zone Central and West Africa', iso: ''},
+  {value: '285', label: 'Zone Eastern Africa', iso: ''},
+  {value: '286', label: 'Zone Europe', iso: ''},
+  {value: '287', label: 'Zone MENA', iso: ''},
+  {value: '288', label: 'Zone Southern Africa', iso: ''},
+  {value: '289', label: 'Zone GLOBAL', iso: ''},
+  {value: '290', label: 'South Sudan, Rep. Of', iso: 'ss'}
 ];
 
 export const disasterType = [
