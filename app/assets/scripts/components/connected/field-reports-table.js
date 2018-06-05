@@ -9,6 +9,8 @@ import { environment } from '../../config';
 import { getFieldReportsList } from '../../actions';
 import { nope, commaSeparatedNumber as n } from '../../utils/format';
 import { get, dTypeOptions, dateOptions, datesAgo } from '../../utils/utils';
+import { getDtypeMeta } from '../../utils/get-dtype-meta';
+import { getCountryMeta } from '../../utils/get-country-meta';
 
 import Fold from '../fold';
 import BlockLoading from '../block-loading';
@@ -26,6 +28,7 @@ class FieldReportsTable extends SFPComponent {
     this.state = {
       fieldReports: {
         page: 1,
+        limit: 10,
         sort: {
           field: '',
           direction: 'asc'
@@ -105,22 +108,22 @@ class FieldReportsTable extends SFPComponent {
         { id: 'countries', label: 'Countries' }
       ];
 
-      const rows = data.objects.map(o => ({
+      const rows = data.results.map(o => ({
         id: o.id,
         date: DateTime.fromISO(o.created_at).toISODate(),
         name: <Link to={`/reports/${o.id}`} className='link--primary' title='View Field Report'>{o.summary || nope}</Link>,
         event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
-        dtype: get(o, 'dtype.name', nope),
-        countries: <ul>{o.countries.map(country => <li key={country.id}><Link to={`/countries/${country.id}`} className='link--primary' title='View Country'>{country.name}</Link></li>)}</ul>
+        dtype: get(getDtypeMeta(o.dtype), 'label', nope),
+        countries: <ul>{o.countries.map(getCountryMeta).map(country => <li key={country.value}><Link to={`/countries/${country.value}`} className='link--primary' title='View Country'>{country.label}</Link></li>)}</ul>
       }));
 
       return (
-        <Fold title={`Field Reports (${n(data.meta.total_count)})`}>
+        <Fold title={`Field Reports (${n(data.count)})`}>
           <DisplayTable
             headings={headings}
             rows={rows}
-            pageCount={data.meta.total_count / data.meta.limit}
-            page={data.meta.offset / data.meta.limit}
+            pageCount={data.count / this.state.fieldReports.limit}
+            page={this.state.fieldReports.page}
             onPageChange={this.handlePageChange.bind(this, 'fieldReports')}
           />
         </Fold>

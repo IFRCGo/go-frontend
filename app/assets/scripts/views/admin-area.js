@@ -19,6 +19,7 @@ import { environment } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { get, dateOptions, datesAgo, dTypeOptions } from '../utils/utils/';
 import { getDtypeMeta } from '../utils/get-dtype-meta';
+import { getCountryMeta } from '../utils/get-country-meta';
 import {
   commaSeparatedNumber as n,
   nope
@@ -369,13 +370,13 @@ class AdminArea extends SFPComponent {
         { id: 'countries', label: 'Countries' }
       ];
 
-      const rows = data.objects.map(o => ({
+      const rows = data.results.map(o => ({
         id: o.id,
         date: DateTime.fromISO(o.created_at).toISODate(),
         name: <Link to={`/reports/${o.id}`} className='link--primary' title='View Field Report'>{o.summary}</Link>,
-        event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
+        event: o.event ? <Link to={`/emergencies/${o.event}`} className='link--primary' title='View Emergency'>Link</Link> : nope,
         dtype: get(getDtypeMeta(o.dtype), 'label', nope),
-        countries: <ul>{o.countries.map(country => <li key={country.id}><Link to={`/countries/${country.id}`} className='link--primary' title='View Country'>{country.name}</Link></li>)}</ul>
+        countries: <ul>{o.countries.map(getCountryMeta).map(country => <li key={country.value}><Link to={`/countries/${country.value}`} className='link--primary' title='View Country'>{country.label}</Link></li>)}</ul>
       }));
 
       return (
