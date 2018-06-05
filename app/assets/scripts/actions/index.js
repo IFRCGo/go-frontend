@@ -74,7 +74,7 @@ export function getSurgeAlerts (page = 1, filters = {}) {
   filters.offset = filters.limit * (page - 1);
   const f = buildAPIQS(filters);
 
-  return fetchJSON(`/api/v1/surge_alert/?${f}`, GET_SURGE_ALERTS, withToken());
+  return fetchJSON(`/api/v2/surge_alert/?${f}`, GET_SURGE_ALERTS, withToken());
 }
 
 export const GET_APPEALS_LIST = 'GET_APPEALS_LIST';
@@ -232,7 +232,7 @@ export function getAdmAreaFieldReports (aaType, aaId, page = 1, filters = {}) {
   }
 
   const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v1/field_report/?${f}`, GET_AA_FIELD_REPORTS, withToken());
+  return fetchJSON(`/api/v2/field_report/?${f}`, GET_AA_FIELD_REPORTS, withToken());
 }
 
 export const GET_AA_APPEALS_STATS = 'GET_AA_APPEALS_STATS';
