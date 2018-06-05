@@ -10,6 +10,7 @@ import { getEmergenciesList } from '../../actions';
 import { getCountryMeta } from '../../utils/get-country-meta';
 import { nope, commaSeparatedNumber as n } from '../../utils/format';
 import { get, dTypeOptions, dateOptions, datesAgo } from '../../utils/utils';
+import { getDtypeMeta } from '../../utils/get-dtype-meta';
 
 import Fold from '../fold';
 import BlockLoading from '../block-loading';
@@ -135,7 +136,7 @@ class EmergenciesTable extends SFPComponent {
           id: rowData.id,
           date: date,
           name: <Link className='link--primary' to={`/emergencies/${rowData.id}`}>{get(rowData, 'name', nope)}</Link>,
-          dtype: get(rowData, 'dtype.name', nope),
+          dtype: get(getDtypeMeta(rowData.dtype), 'label', nope),
           totalAffected: {
             value: n(get(rowData, 'num_affected')),
             className: 'right-align'
