@@ -5,6 +5,7 @@ import _toNumber from 'lodash.tonumber';
 import { DateTime } from 'luxon';
 
 import { disasterType } from './field-report-constants';
+import { getDtypeMeta } from './get-dtype-meta';
 import { whitelistDomains } from '../schemas/register';
 
 // lodash.get will only return the defaultValue when
@@ -21,7 +22,7 @@ export function get (object, path, defaultValue) {
 export function groupByDisasterType (objs) {
   const emergenciesByType = _groupBy(objs, 'dtype');
   return Object.keys(emergenciesByType).map(key => {
-    let meta = disasterType.find(d => d.value === key.toString());
+    let meta = getDtypeMeta(key);
     if (!meta) return null;
     return {
       id: _toNumber(key),
