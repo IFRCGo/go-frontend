@@ -65,7 +65,7 @@ export function getFieldReportsList (page = 1, filters = {}) {
   filters.limit = filters.limit || 10;
   filters.offset = filters.limit * (page - 1);
   const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v1/field_report/?${f}`, GET_FIELD_REPORTS_LIST, withToken());
+  return fetchJSON(`/api/v2/field_report/?${f}`, GET_FIELD_REPORTS_LIST, withToken());
 }
 
 export const GET_SURGE_ALERTS = 'GET_SURGE_ALERTS';
@@ -80,10 +80,10 @@ export function getSurgeAlerts (page = 1, filters = {}) {
 export const GET_APPEALS_LIST = 'GET_APPEALS_LIST';
 export function getAppealsList () {
   const f = buildAPIQS({
-    end_date__gt: DateTime.local().toISODate(),
-    limit: 1000
+    end_date__gt: DateTime.utc().toISO(),
+    limit: 0
   });
-  return fetchJSONRecursive(`api/v1/appeal/?${f}`, GET_APPEALS_LIST, withToken());
+  return fetchJSON(`api/v2/appeal/?${f}`, GET_APPEALS_LIST, withToken());
 }
 
 export const GET_AGGREGATE_APPEALS = 'GET_AGGREGATE_APPEALS';
@@ -137,7 +137,7 @@ export function updateSubscriptions (payload) {
 
 export const GET_EVENT = 'GET_EVENT';
 export function getEventById (id) {
-  return fetchJSON(`api/v1/event/${id}/`, GET_EVENT, withToken(), { id });
+  return fetchJSON(`api/v2/event/${id}/`, GET_EVENT, withToken(), { id });
 }
 
 export const GET_SITREPS = 'GET_SITREPS';
