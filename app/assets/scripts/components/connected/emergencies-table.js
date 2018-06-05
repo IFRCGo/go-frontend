@@ -7,6 +7,7 @@ import { DateTime } from 'luxon';
 
 import { environment } from '../../config';
 import { getEmergenciesList } from '../../actions';
+import { getCountryMeta } from '../../utils/get-country-meta';
 import { nope, commaSeparatedNumber as n } from '../../utils/format';
 import { get, dTypeOptions, dateOptions, datesAgo } from '../../utils/utils';
 
@@ -26,6 +27,7 @@ class EmergenciesTable extends SFPComponent {
     this.state = {
       emerg: {
         page: 1,
+        limit: 10,
         sort: {
           field: '',
           direction: 'asc'
@@ -43,7 +45,7 @@ class EmergenciesTable extends SFPComponent {
   }
 
   requestResults () {
-    let qs = {};
+    let qs = { limit: this.state.emerg.limit };
     let state = this.state.emerg;
     if (state.sort.field) {
       qs.order_by = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
@@ -117,7 +119,7 @@ class EmergenciesTable extends SFPComponent {
         { id: 'countries', label: 'Countries' }
       ];
 
-      const rows = data.objects.map(rowData => {
+      const rows = data.results.map(rowData => {
         const date = rowData.disaster_start_date
           ? DateTime.fromISO(rowData.disaster_start_date).toISODate() : nope;
 
@@ -125,8 +127,8 @@ class EmergenciesTable extends SFPComponent {
           return acc + next.num_beneficiaries;
         }, 0);
 
-        const countries = get(rowData, 'countries', []).map(c => (
-          <Link className='link--primary' key={c.iso} to={`/countries/${c.id}`}>{c.name}</Link>
+        const countries = get(rowData, 'countries', []).map(getCountryMeta).map(c => (
+          <Link className='link--primary' key={c.iso} to={`/countries/${c.value}`}>{c.label}</Link>
         ));
 
         return {
@@ -147,12 +149,12 @@ class EmergenciesTable extends SFPComponent {
       });
 
       return (
-        <Fold title={`Latest Emergencies (${n(data.meta.total_count)})`}>
+        <Fold title={`Latest Emergencies (${n(data.count)})`}>
           <DisplayTable
             headings={headings}
             rows={rows}
-            pageCount={data.meta.total_count / data.meta.limit}
-            page={data.meta.offset / data.meta.limit}
+            pageCount={data.count / this.state.emerg.limit}
+            page={this.state.emerg.page - 1}
             onPageChange={this.handlePageChange.bind(this, 'emerg')}
           />
         </Fold>

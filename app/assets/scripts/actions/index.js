@@ -106,7 +106,7 @@ export function getEmergenciesList (page = 1, filters = {}) {
   filters.limit = filters.limit || 10;
   filters.offset = filters.limit * (page - 1);
   const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v1/event/?${f}`, GET_EMERGENCIES_LIST, withToken());
+  return fetchJSON(`/api/v2/event/?${f}`, GET_EMERGENCIES_LIST, withToken());
 }
 
 export const GET_LAST_MO_EMERGENCIES = 'GET_LAST_MO_EMERGENCIES';

@@ -36,6 +36,7 @@ class Home extends SFPComponent {
     this.state = {
       appeals: {
         page: 1,
+        limit: 5,
         sort: {
           field: '',
           direction: 'asc'
@@ -53,7 +54,7 @@ class Home extends SFPComponent {
   }
 
   requestResults () {
-    let qs = {};
+    let qs = { limit: this.state.appeals.limit };
     let state = this.state.appeals;
     if (state.sort.field) {
       qs.ordering = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
@@ -152,7 +153,7 @@ class Home extends SFPComponent {
           <DisplayTable
             headings={headings}
             rows={rows}
-            pageCount={data.count / data.results.length}
+            pageCount={data.count / this.state.appeals.limit}
             page={this.state.appeals.page - 1}
             onPageChange={this.handlePageChange.bind(this, 'appeals')}
           />
