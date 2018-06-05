@@ -9,7 +9,7 @@ import { environment } from '../config';
 import { get, dateOptions, datesAgo, dTypeOptions } from '../utils/utils/';
 import { getAppeals } from '../actions';
 import { commaSeparatedNumber as n, nope } from '../utils/format';
-import { disasterType } from '../utils/field-report-constants';
+import { getDtypeMeta } from '../utils/get-dtype-meta';
 
 import App from './app';
 import Fold from '../components/fold';
@@ -135,7 +135,7 @@ class Home extends SFPComponent {
         date: DateTime.fromISO(o.start_date).toISODate(),
         name: o.name,
         event: o.event ? <Link to={`/emergencies/${o.event}`} className='link--primary' title='View Emergency'>Link</Link> : nope,
-        dtype: get(disasterType.find(d => d.value === o.dtype.toString()), 'label', nope),
+        dtype: get(getDtypeMeta(o.dtype), 'label', nope),
         requestAmount: {
           value: n(o.amount_requested),
           className: 'right-align'

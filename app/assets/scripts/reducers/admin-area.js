@@ -5,6 +5,7 @@ import _groupBy from 'lodash.groupby';
 
 import { stateInflight, stateError, stateSuccess } from '../utils/reducer-utils';
 import { getCentroid } from '../utils/country-centroids';
+import { getCountryMeta } from '../utils/get-country-meta';
 import { get, groupByDisasterType } from '../utils/utils';
 
 const initialState = {
@@ -126,7 +127,7 @@ function appealStats (state = initialState, action) {
               },
               geometry: {
                 type: 'Point',
-                coordinates: getCentroid(o.country.iso)
+                coordinates: getCentroid(getCountryMeta(o.country).iso)
               }
             });
           }

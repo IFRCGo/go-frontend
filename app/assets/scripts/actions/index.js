@@ -167,7 +167,7 @@ export function getAdmAreaById (aaType, id) {
         }, 1);
       };
     case 'country':
-      return fetchJSON(`/api/v1/country/${id}/`, GET_AA, withToken(), { id });
+      return fetchJSON(`/api/v2/country/${id}/`, GET_AA, withToken(), { id });
     default:
       throw new Error('Invalid admin area type ' + aaType);
   }
@@ -191,7 +191,7 @@ export function getAdmAreaAppeals (aaType, aaId, page = 1, filters = {}) {
   }
 
   const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v1/appeal/?${f}`, GET_AA_APPEALS, withToken());
+  return fetchJSON(`/api/v2/appeal/?${f}`, GET_AA_APPEALS, withToken());
 }
 
 export const GET_AA_DREFS = 'GET_AA_DREFS';
@@ -212,7 +212,7 @@ export function getAdmAreaDrefs (aaType, aaId, page = 1, filters = {}) {
   }
 
   const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v1/appeal/?${f}`, GET_AA_DREFS, withToken());
+  return fetchJSON(`/api/v2/appeal/?${f}`, GET_AA_DREFS, withToken());
 }
 
 export const GET_AA_FIELD_REPORTS = 'GET_AA_FIELD_REPORTS';
@@ -238,8 +238,8 @@ export function getAdmAreaFieldReports (aaType, aaId, page = 1, filters = {}) {
 export const GET_AA_APPEALS_STATS = 'GET_AA_APPEALS_STATS';
 export function getAdmAreaAppealsStats (aaType, aaId) {
   let filters = {
-    end_date__gt: DateTime.local().toISODate(),
-    limit: 1000
+    end_date__gt: DateTime.utc().toISO(),
+    limit: 0
   };
 
   switch (aaType) {
@@ -254,7 +254,7 @@ export function getAdmAreaAppealsStats (aaType, aaId) {
   }
 
   const f = buildAPIQS(filters);
-  return fetchJSONRecursive(`api/v1/appeal/?${f}`, GET_AA_APPEALS_STATS, withToken());
+  return fetchJSON(`api/v2/appeal/?${f}`, GET_AA_APPEALS_STATS, withToken());
 }
 
 export const GET_AA_AGGREGATE_APPEALS = 'GET_AA_AGGREGATE_APPEALS';
@@ -296,7 +296,7 @@ export function getAdmAreaERU (aaType, aaId) {
   }
 
   const f = buildAPIQS(filters);
-  return fetchJSON(`api/v1/eru/?${f}`, GET_AA_ERU, withToken());
+  return fetchJSON(`api/v2/eru/?${f}`, GET_AA_ERU, withToken());
 }
 
 export const GET_HEOPS = 'GET_HEOPS';
