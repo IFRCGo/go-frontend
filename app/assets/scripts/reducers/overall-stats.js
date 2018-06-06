@@ -2,7 +2,6 @@
 import { combineReducers } from 'redux';
 import _toNumber from 'lodash.tonumber';
 
-import { getCountryMeta } from '../utils/get-country-meta';
 import { getCentroid } from '../utils/country-centroids';
 import { get, groupByDisasterType } from '../utils/utils';
 
@@ -87,7 +86,7 @@ function appealsList (state = appealsListInitialState, action) {
               },
               geometry: {
                 type: 'Point',
-                coordinates: getCentroid(getCountryMeta(o.country).iso)
+                coordinates: getCentroid(o.country.iso)
               }
             });
           }

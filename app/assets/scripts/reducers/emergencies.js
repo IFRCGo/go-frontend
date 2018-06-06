@@ -1,7 +1,6 @@
 'use strict';
 import { combineReducers } from 'redux';
 
-import { getCountryMeta } from '../utils/get-country-meta';
 import { getCentroid } from '../utils/country-centroids';
 import { get, groupByDisasterType } from '../utils/utils';
 
@@ -89,8 +88,8 @@ function createStoreFromRaw (raw) {
   const countries = {};
   records.forEach(record => {
     get(record, 'countries', []).forEach(c => {
-      countries[c] = countries[c] || { country: c, records: [] };
-      countries[c].records.push(record);
+      countries[c.iso] = countries[c.iso] || { country: c, records: [] };
+      countries[c.iso].records.push(record);
     });
   });
 
@@ -98,12 +97,10 @@ function createStoreFromRaw (raw) {
     type: 'FeatureCollection',
     features: Object.keys(countries).map(iso => {
       const { country, records } = countries[iso];
-      const meta = getCountryMeta(country);
-      if (!meta) return null;
 
       var properties = {
-        id: country,
-        name: meta.label,
+        id: country.id,
+        name: country.name,
         totalEmergencies: 0,
         withResponse: 0,
         withoutResponse: 0,
@@ -132,7 +129,7 @@ function createStoreFromRaw (raw) {
         properties,
         geometry: {
           type: 'Point',
-          coordinates: getCentroid(meta.iso)
+          coordinates: getCentroid(country.iso)
         }
       };
     }).filter(Boolean)

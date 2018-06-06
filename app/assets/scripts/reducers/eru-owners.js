@@ -47,7 +47,14 @@ function createStoreFromRaw (raw) {
   const records = raw || [];
 
   // flatten the data structure
-  const erus = records.reduce((acc, next) => acc.concat(get(next, 'eru_set', [])), []);
+  const erus = records.reduce((acc, next) => {
+    const eruSet = get(next, 'eru_set', []).map(d => {
+      return Object.assign({}, d, {
+        eru_owner: next.national_society_country
+      });
+    });
+    return acc.concat(eruSet);
+  }, []);
   const eruState = erus.reduce((acc, next) => {
     const units = get(next, 'units', 0);
     // countries are listed, which means these resources are deployed
@@ -70,7 +77,7 @@ function createStoreFromRaw (raw) {
     items: erusByType[key].reduce((acc, next) => acc + Number(get(next, 'units', 0)), 0)
   })).sort((a, b) => a.items > b.items ? -1 : 1);
 
-  const erusByOwnerNation = _groupBy(deployed, 'eru_owner');
+  const erusByOwnerNation = _groupBy(deployed, 'eru_owner.id');
   const owners = Object.keys(erusByOwnerNation).filter(Boolean).map(key => ({
     name: getCountryMeta(key).label,
     items: erusByOwnerNation[key].reduce((acc, next) => acc + Number(get(next, 'units', 0)), 0)
@@ -79,10 +86,10 @@ function createStoreFromRaw (raw) {
   // calculate the number of units deployed to each country
   const recipientCountries = {};
   erus.filter(o => o.deployed_to).forEach(o => {
-    const { iso } = getCountryMeta(o.deployed_to);
-    recipientCountries[iso] = recipientCountries[iso] || { meta: getCountryMeta(o.deployed_to), total: 0, units: [] };
+    const { iso } = o.deployed_to;
+    recipientCountries[iso] = recipientCountries[iso] || { meta: o.deployed_to, total: 0, units: [] };
     recipientCountries[iso].total += o.units;
-    recipientCountries[iso].units.push(`${o.units} - ${getCountryMeta(o.eru_owner).label}`);
+    recipientCountries[iso].units.push(`${o.units} - ${o.eru_owner.name}`);
   });
 
   const geoJSON = {

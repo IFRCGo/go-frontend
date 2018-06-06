@@ -7,7 +7,6 @@ import { DateTime } from 'luxon';
 
 import { environment } from '../../config';
 import { getEmergenciesList } from '../../actions';
-import { getCountryMeta } from '../../utils/get-country-meta';
 import { nope, commaSeparatedNumber as n } from '../../utils/format';
 import { get, dTypeOptions, dateOptions, datesAgo } from '../../utils/utils';
 import { getDtypeMeta } from '../../utils/get-dtype-meta';
@@ -128,8 +127,8 @@ class EmergenciesTable extends SFPComponent {
           return acc + next.num_beneficiaries;
         }, 0);
 
-        const countries = get(rowData, 'countries', []).map(getCountryMeta).map(c => (
-          <Link className='link--primary' key={c.iso} to={`/countries/${c.value}`}>{c.label}</Link>
+        const countries = get(rowData, 'countries', []).map(c => (
+          <Link className='link--primary' key={c.iso} to={`/countries/${c.id}`}>{c.name}</Link>
         ));
 
         return {

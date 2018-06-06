@@ -10,7 +10,6 @@ import { getFieldReportsList } from '../../actions';
 import { nope, commaSeparatedNumber as n } from '../../utils/format';
 import { get, dTypeOptions, dateOptions, datesAgo } from '../../utils/utils';
 import { getDtypeMeta } from '../../utils/get-dtype-meta';
-import { getCountryMeta } from '../../utils/get-country-meta';
 
 import Fold from '../fold';
 import BlockLoading from '../block-loading';
@@ -115,7 +114,7 @@ class FieldReportsTable extends SFPComponent {
         name: <Link to={`/reports/${o.id}`} className='link--primary' title='View Field Report'>{o.summary || nope}</Link>,
         event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>Link</Link> : nope,
         dtype: get(getDtypeMeta(o.dtype), 'label', nope),
-        countries: <ul>{o.countries.map(getCountryMeta).map(country => <li key={country.value}><Link to={`/countries/${country.value}`} className='link--primary' title='View Country'>{country.label}</Link></li>)}</ul>
+        countries: <ul>{o.countries.map(country => <li key={country.id}><Link to={`/countries/${country.id}`} className='link--primary' title='View Country'>{country.name}</Link></li>)}</ul>
       }));
 
       return (

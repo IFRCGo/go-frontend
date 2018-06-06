@@ -123,13 +123,12 @@ function geojson (state = geojsonInitialState, action) {
 
 function updateGeoState (state, action, type) {
   let features = _cloneDeep(state.data.features) || [];
-  const groupper = type === 'eru' ? 'deployed_to' : 'country';
+  const groupper = type === 'eru' ? 'deployed_to.id' : 'country.id';
   const countryGroup = _groupBy(action.data, groupper);
 
-  Object.keys(countryGroup).filter(Boolean).forEach(countryId => {
+  Object.keys(countryGroup).forEach(countryId => {
     let country = getCountryMeta(countryId);
-    let { iso } = country;
-    let feat = features.find(f => f.properties.countryIso === iso);
+    let feat = features.find(f => f.properties.countryIso === country.iso);
 
     const setCount = (feat) => {
       if (type === 'eru') {
@@ -150,13 +149,13 @@ function updateGeoState (state, action, type) {
           rdrt: 0,
           heop: 0,
           eru: 0,
-          countryIso: iso,
+          countryIso: country.iso,
           countryId: countryId,
           countryName: country.label
         },
         geometry: {
           type: 'Point',
-          coordinates: getCentroid(iso)
+          coordinates: getCentroid(country.iso)
         }
       };
 

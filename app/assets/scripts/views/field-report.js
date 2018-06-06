@@ -15,7 +15,6 @@ import {
   getResponseStatus
 } from '../utils/format';
 import { get } from '../utils/utils/';
-import { getCountryMeta } from '../utils/get-country-meta';
 
 import App from './app';
 
@@ -40,7 +39,7 @@ class FieldReport extends React.Component {
   }
 
   renderCountries (data) {
-    return get(data, 'countries', []).map(getCountryMeta).map(c => c.label).join(', ');
+    return get(data, 'countries', []).map(c => c.name).join(', ');
   }
 
   renderPlannedResponse (data) {

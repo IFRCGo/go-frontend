@@ -25,7 +25,6 @@ import {
   getEruOwners
 } from '../actions';
 import { finishedFetch, get, dateOptions, datesAgo } from '../utils/utils';
-import { getCountryMeta } from '../utils/get-country-meta';
 import { getEruType } from '../utils/eru-types';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { environment } from '../config';
@@ -269,8 +268,8 @@ class Deployments extends SFPComponent {
         const owner = get(o, 'eru_owner.national_society_country', null);
         return {
           id: o.id,
-          name: owner !== null ? getCountryMeta(owner).label : nope,
-          country: o.deployed_to ? <Link to={`/countries/${o.deployed_to}`} className='link--primary' title='View Country'>{getCountryMeta(o.deployed_to).label}</Link> : nope,
+          name: owner !== null ? owner.name : nope,
+          country: o.deployed_to ? <Link to={`/countries/${o.deployed_to.id}`} className='link--primary' title='View Country'>{o.deployed_to.name}</Link> : nope,
           type: getEruType(o.type),
           emer: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
           personnel: o.units,
@@ -338,7 +337,7 @@ class Deployments extends SFPComponent {
         startDate: DateTime.fromISO(o.start_date).toISODate(),
         endDate: DateTime.fromISO(o.end_date).toISODate() || nope,
         name: o.person || na,
-        country: <Link to={`/countries/${o.country}`} className='link--primary' title='View Country'>{getCountryMeta(o.country).label}</Link>,
+        country: <Link to={`/countries/${o.country}`} className='link--primary' title='View Country'>{o.country.name}</Link>,
         emer: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope
       }));
 
@@ -408,7 +407,7 @@ class Deployments extends SFPComponent {
         endDate: DateTime.fromISO(o.end_date).toISODate(),
         name: o.name,
         role: get(o, 'role', nope),
-        country: o[what].country ? <Link to={`/countries/${o[what].country}`} className='link--primary' title='View Country'>{getCountryMeta(o[what].country).label}</Link> : nope,
+        country: o[what].country ? <Link to={`/countries/${o[what].country}`} className='link--primary' title='View Country'>{o[what].country.name}</Link> : nope,
         emer: o[what].event ? <Link to={`/emergencies/${o[what].event.id}`} className='link--primary' title='View Emergency'>{o[what].event.name}</Link> : nope,
         society: get(o, 'society_deployed_from', nope)
       }));

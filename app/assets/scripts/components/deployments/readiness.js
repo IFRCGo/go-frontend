@@ -6,7 +6,6 @@ import _cloneDeep from 'lodash.clonedeep';
 import { DateTime } from 'luxon';
 import { Link } from 'react-router-dom';
 
-import { getCountryMeta } from '../../utils/get-country-meta';
 import { commaSeparatedNumber as n } from '../../utils/format';
 import eruTypes, { getEruType } from '../../utils/eru-types';
 import { environment } from '../../config';
@@ -55,12 +54,12 @@ class Readiness extends React.Component {
     const numDeployed = deployed.reduce((acc, next) => acc + next.units, 0);
 
     const readyTypes = ready.length ? ready.map(o => `${getEruType(o.type)} (${o.units})`).join(', ') : '';
-    const owner = getCountryMeta(erus[0].eru_owner);
+    const owner = eruOwner.national_society_country;
 
     return (
       <div className='readiness__card' key={eruOwner.id}>
         <div className='readiness__card-header'>
-          <Link className='link--primary' to={`/countries/${owner.value}`}>{owner.label}</Link>
+          <Link className='link--primary' to={`/countries/${owner.id}`}>{owner.society_name}</Link>
           <span className='updated'>Last updated {DateTime.fromISO(eruOwner.updated_at).toISODate()}</span>
         </div>
         <div className='card__col'>
@@ -70,7 +69,7 @@ class Readiness extends React.Component {
         <div className='card__col'>
           <p className='card__label'>{n(numDeployed)} Deployed ERU's</p>
           {deployed.map(o => (
-            <p key={o.id}>{getEruType(o.type)} - <Link className='link--primary' to={`/countries/${o.deployed_to}`}>{getCountryMeta(o.deployed_to).label}</Link></p>
+            <p key={o.id}>{getEruType(o.type)} - <Link className='link--primary' to={`/countries/${o.deployed_to}`}>{o.deployed_to.name}</Link></p>
           ))}
         </div>
       </div>
