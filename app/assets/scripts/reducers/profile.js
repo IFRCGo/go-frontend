@@ -26,7 +26,7 @@ export default function reducer (state = initialState, action) {
         fetching: false,
         fetched: true,
         receivedAt: action.receivedAt,
-        data: action.data.objects[0]
+        data: action.data[0]
       });
       break;
 

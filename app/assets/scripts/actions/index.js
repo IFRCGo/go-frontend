@@ -17,7 +17,7 @@ export function getAuthToken (username, password) {
 
 export const GET_PROFILE = 'GET_PROFILE';
 export function getUserProfile (username) {
-  return fetchJSON(`api/v1/user/?username=${username}`, GET_PROFILE, withToken());
+  return fetchJSON(`api/v2/user/?username=${username}`, GET_PROFILE, withToken());
 }
 
 export const REGISTER_USER = 'REGISTER_USER';
