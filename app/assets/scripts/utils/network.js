@@ -19,7 +19,7 @@ export function withToken (options = {}) {
     console.error('Token is expired');
     return options;
   }
-  options.headers['Authorization'] = `ApiKey ${user.username}:${user.token}`;
+  options.headers['Authorization'] = `Token ${user.token}`;
   return options;
 }
 
