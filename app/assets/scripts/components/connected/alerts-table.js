@@ -7,8 +7,8 @@ import { DateTime } from 'luxon';
 
 import { environment } from '../../config';
 import { getSurgeAlerts } from '../../actions';
-import { get, dateOptions, datesAgo } from '../../utils/utils/';
-import { nope } from '../../utils/format';
+import { get, dateOptions, datesAgo, isLoggedIn } from '../../utils/utils/';
+import { nope, privateSurgeAlert } from '../../utils/format';
 
 import { SFPComponent } from '../../utils/extendables';
 import DisplayTable, { FilterHeader } from '../display-table';
@@ -120,7 +120,7 @@ class AlertsTable extends SFPComponent {
         date: date.toISODate(),
         emergency: event ? <Link className='link--primary' to={`/emergencies/${event}`} title='View Emergency page'>{rowData.operation}</Link> : rowData.operation || nope,
 
-        msg: rowData.message,
+        msg: isLoggedIn(this.props.user) ? rowData.message : privateSurgeAlert,
         type: alertTypes[rowData.atype],
         category: alertCategories[rowData.category]
       });
@@ -168,7 +168,8 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state) => ({
-  surgeAlerts: state.surgeAlerts
+  surgeAlerts: state.surgeAlerts,
+  user: state.user
 });
 
 const dispatcher = (dispatch) => ({

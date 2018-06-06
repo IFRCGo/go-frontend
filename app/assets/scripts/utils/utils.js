@@ -19,6 +19,10 @@ export function get (object, path, defaultValue) {
   }
 }
 
+export function isLoggedIn (userState) {
+  return !!get(userState, 'data.token');
+}
+
 export function groupByDisasterType (objs) {
   const emergenciesByType = _groupBy(objs, 'dtype');
   return Object.keys(emergenciesByType).map(key => {

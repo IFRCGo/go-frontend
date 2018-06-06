@@ -150,3 +150,5 @@ export const getResponseStatus = (data, dataPath) => {
       return deployDefinition[status];
   }
 };
+
+export const privateSurgeAlert = 'This is a private alert. You must be logged in to view it.';
