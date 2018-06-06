@@ -3,6 +3,7 @@ import { combineReducers } from 'redux';
 import _groupBy from 'lodash.groupby';
 import _cloneDeep from 'lodash.clonedeep';
 
+import { getCountryMeta } from '../utils/get-country-meta';
 import { stateInflight, stateError, stateSuccess } from '../utils/reducer-utils';
 import { getCentroid } from '../utils/country-centroids';
 
@@ -122,25 +123,26 @@ function geojson (state = geojsonInitialState, action) {
 
 function updateGeoState (state, action, type) {
   let features = _cloneDeep(state.data.features) || [];
-  const groupper = type === 'eru' ? 'deployed_to.iso' : 'country.iso';
+  const groupper = type === 'eru' ? 'deployed_to' : 'country';
   const countryGroup = _groupBy(action.data, groupper);
 
-  Object.keys(countryGroup).filter(Boolean).forEach(cIso => {
-    let feat = features.find(f => f.properties.countryIso === cIso);
+  Object.keys(countryGroup).filter(Boolean).forEach(countryId => {
+    let country = getCountryMeta(countryId);
+    let { iso } = country;
+    let feat = features.find(f => f.properties.countryIso === iso);
 
     const setCount = (feat) => {
       if (type === 'eru') {
-        feat.properties.eru += countryGroup[cIso].reduce((acc, o) => acc + o.units, 0);
+        feat.properties.eru += countryGroup[countryId].reduce((acc, o) => acc + o.units, 0);
       } else {
         // Each entry is a unit.
-        feat.properties[type] += countryGroup[cIso].length;
+        feat.properties[type] += countryGroup[countryId].length;
       }
     };
 
     if (feat) {
       setCount(feat);
     } else {
-      const country = type === 'eru' ? countryGroup[cIso][0].deployed_to : countryGroup[cIso][0].country;
       feat = {
         type: 'Feature',
         properties: {
@@ -148,13 +150,13 @@ function updateGeoState (state, action, type) {
           rdrt: 0,
           heop: 0,
           eru: 0,
-          countryIso: cIso,
-          countryId: country.id,
-          countryName: country.name
+          countryIso: iso,
+          countryId: countryId,
+          countryName: country.label
         },
         geometry: {
           type: 'Point',
-          coordinates: getCentroid(cIso)
+          coordinates: getCentroid(iso)
         }
       };
 
