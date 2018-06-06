@@ -85,7 +85,8 @@ class FieldReportsTable extends SFPComponent {
       );
     }
 
-    if (error) {
+    const results = get(data, 'results', []);
+    if (error || (fetched && !results.length)) {
       return (
         <Fold title='Field Reports'>
           <p>You must be logged in to view field reports. <Link key='login' to='/login' className='link--primary' title='Login'>Login</Link></p>
@@ -108,11 +109,11 @@ class FieldReportsTable extends SFPComponent {
         { id: 'countries', label: 'Countries' }
       ];
 
-      const rows = data.results.map(o => ({
+      const rows = results.map(o => ({
         id: o.id,
         date: DateTime.fromISO(o.created_at).toISODate(),
         name: <Link to={`/reports/${o.id}`} className='link--primary' title='View Field Report'>{o.summary || nope}</Link>,
-        event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
+        event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>Link</Link> : nope,
         dtype: get(getDtypeMeta(o.dtype), 'label', nope),
         countries: <ul>{o.countries.map(getCountryMeta).map(country => <li key={country.value}><Link to={`/countries/${country.value}`} className='link--primary' title='View Country'>{country.label}</Link></li>)}</ul>
       }));
