@@ -553,12 +553,17 @@ class AdminArea extends SFPComponent {
               </div>
             </div>
           </div>
-          <div className={mapContainerClass}>
-            <Homemap appealsList={this.props.appealStats} bbox={bbox} />
-          </div>
         </header>
         <div className='inpage__body'>
           <div className='inner'>
+            <div className='fold'>
+              <div className= 'inner'>
+                <h2 className='fold__title'>14 Emergencies</h2>
+                <div className={mapContainerClass}>
+                  <Homemap appealsList={this.props.appealStats} bbox={bbox} />
+                </div>
+              </div>
+            </div>
             <Fold title='Statistics' headerClass='visually-hidden'>
               <div className='stats-chart'>
                 {this.renderOperations10Years()}
@@ -568,6 +573,59 @@ class AdminArea extends SFPComponent {
             {this.renderAppeals()}
             {this.renderDrefs()}
             {this.renderFieldReports()}
+            <div className='fold'>
+              <div className='inner'>
+                <div className='fold__header'>
+                  <div className='fold__headline'>
+                    <h2 className='fold__title'>Links</h2>
+                  </div>
+                </div>
+                <div className='fold__body'>
+                  <ul className='links-list'>
+                    <li><a href='' className='link--external'>example external link</a> </li>
+                    <li><a href='' className='link--external'>example external link</a> </li>
+                    <li><a href='' className='link--external'>example external link</a> </li>
+                    <li><a href='' className='link--external'>example external link</a> </li>
+                    <li><a href='' className='link--external'>example external link</a> </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <Fold
+              id='contacts'
+              title='Contacts'
+              wrapperClass='contacts' >
+              {data.contacts && data.contacts.length ? (
+                <table className='table'>
+                  <thead className='visually-hidden'>
+                    <tr>
+                      <th>Name</th>
+                      <th>Title</th>
+                      <th>Type</th>
+                      <th>Contact</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data.contacts.map(o => (
+                      <tr key={o.id}>
+                        <td>{o.name}</td>
+                        <td>{o.title}</td>
+                        <td>{separate(o.ctype)}</td>
+                        <td>
+                          {o.email.indexOf('@') !== -1
+                            ? <a className='link--primary' href={`mailto:${o.email}`} title='Contact'>{o.email}</a>
+                            : <a className='link--primary' href={`tel:${o.email}`} title='Contact'>{o.email}</a>}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <div className='empty-data__container'>
+                  <p>No contacts to show</p>
+                </div>
+              )}
+            </Fold>
           </div>
         </div>
       </section>
