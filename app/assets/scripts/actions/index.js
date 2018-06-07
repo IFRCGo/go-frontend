@@ -3,6 +3,7 @@ import {
   fetchJSON,
   postJSON,
   putJSON,
+  patchJSON,
   withToken
 } from '../utils/network';
 import { stringify as buildAPIQS } from 'qs';
@@ -33,6 +34,11 @@ export function logoutUser () {
 export const CHANGE_PASSWORD = 'CHANGE_PASSWORD';
 export function validateAndUpdatePassword (payload) {
   return postJSON('change_password', CHANGE_PASSWORD, payload);
+}
+
+export const UPDATE_PROFILE = 'UPDATE_PROFILE';
+export function updateProfile (id, payload) {
+  return patchJSON(`api/v2/user/${id}/`, UPDATE_PROFILE, payload, withToken());
 }
 
 export const RECOVER_PASSWORD = 'RECOVER_PASSWORD';

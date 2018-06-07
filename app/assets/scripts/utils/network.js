@@ -149,6 +149,22 @@ export function putJSON (path, action, payload, options, extraData) {
 }
 
 /**
+ * PATCH a JSON resource
+ * @param  {string} path      Relative path to query. Has to be available from
+ *                            the api.
+ * @param  {string} action    Base action to dispatch.
+ * @param  {payload} payload  Payload to put.
+ * @param  {Object} options   Options for the request.
+ * @param  {Object} extraData Extra data to pass to the action.
+ * @return {func}             Dispatch function.
+ */
+export function patchJSON (path, action, payload, options, extraData) {
+  options = withJSONRequest(payload, options);
+  options.method = 'PATCH';
+  return makeRequest(path, action, options, extraData);
+}
+
+/**
  * Make a HTTP request
  * @param  {string} path      Relative path to query. Has to be available from
  *                            the api.
