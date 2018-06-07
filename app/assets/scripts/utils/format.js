@@ -55,7 +55,7 @@ const organizationCodeToDisplay = {};
 orgTypes.forEach(o => {
   organizationCodeToDisplay[o.value] = o.label;
 });
-export const organizationType = (code) => organizationCodeToDisplay[code] || invalid;
+export const organizationType = (code) => organizationCodeToDisplay[code] || nope;
 
 export const uppercaseFirstLetter = (str) => {
   const s = str.toString();
@@ -98,7 +98,7 @@ const apiPropertyFormatters = {
 };
 export const apiPropertyValue = (propOrPath, object) => {
   const value = get(object, propOrPath);
-  if (typeof value === 'undefined') {
+  if (typeof value === 'undefined' || value === null || value === '') {
     return nope;
   }
   const propertyName = getPropertyFromPath(propOrPath);

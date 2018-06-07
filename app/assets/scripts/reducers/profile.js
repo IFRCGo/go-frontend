@@ -30,8 +30,10 @@ export default function reducer (state = initialState, action) {
       });
       break;
 
+    case 'UPDATE_PROFILE_INFLIGHT':
     case 'UPDATE_SUBSCRIPTIONS_INFLIGHT':
       return Object.assign({}, state, { updateError: null, updating: true, updated: false });
+    case 'UPDATE_PROFILE_FAILED':
     case 'UPDATE_SUBSCRIPTIONS_FAILED':
       state = Object.assign({}, state, {
         updating: false,
@@ -39,6 +41,7 @@ export default function reducer (state = initialState, action) {
         updateError: action.error
       });
       break;
+    case 'UPDATE_PROFILE_SUCCESS':
     case 'UPDATE_SUBSCRIPTIONS_SUCCESS':
       state = Object.assign({}, state, {
         updating: false,

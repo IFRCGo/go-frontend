@@ -8,21 +8,26 @@ import _cloneDeep from 'lodash.clonedeep';
 import c from 'classnames';
 import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
+import { set } from 'object-path';
 
 import { environment } from '../config';
 import {
   getUserProfile,
   updateSubscriptions,
-  getFieldReportsByUser
+  getFieldReportsByUser,
+  updateProfile
 } from '../actions';
 import { get } from '../utils/utils';
-import { countries, disasterType } from '../utils/field-report-constants';
+import { countries, disasterType, orgTypes } from '../utils/field-report-constants';
 import { apiPropertyDisplay, apiPropertyValue } from '../utils/format';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { showAlert } from '../components/system-alerts';
 
 import Fold from '../components/fold';
-import { FormCheckboxGroup } from '../components/form-elements/';
+import {
+  FormCheckboxGroup,
+  FormInput
+} from '../components/form-elements/';
 
 import App from './app';
 
@@ -91,12 +96,25 @@ const updateChecks = (checkboxes, value) => {
   }));
 };
 
+const profileAttributes = [
+  ['username'],
+  ['email'],
+  ['first_name', 'firstName'],
+  ['last_name', 'lastName'],
+  ['profile.city', 'city'],
+  ['profile.org', 'org'],
+  ['profile.org_type', 'orgType'],
+  ['profile.department', 'department'],
+  ['profile.position', 'position'],
+  ['profile.phone_number', 'phoneNumber']
+];
+
 class Account extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      isDirty: false,
-      data: {
+      isNotificationsDirty: false,
+      notifications: {
         countries: [],
         regions: regions.map(markUnChecked),
         disasterTypes: disasterTypes.map(markUnChecked),
@@ -104,11 +122,24 @@ class Account extends React.Component {
         fieldReport: systemNotificationTypes.map(markUnChecked),
         appeal: systemNotificationTypes.map(markUnChecked),
         other: otherNotificationTypes.map(markUnChecked)
+      },
+
+      isProfileDirty: false,
+      profileEditMode: false,
+      profile: {
+        firstName: null,
+        lastName: null,
+        city: null,
+        org: null,
+        orgType: null,
+        department: null,
+        position: null,
+        phoneNumber: null
       }
     };
-    this.onSubmit = this.onSubmit.bind(this);
-    this.renderSubscriptionForm = this.renderSubscriptionForm.bind(this);
-    this.syncNotificationState = this.syncNotificationState.bind(this);
+    this.onNotificationSubmit = this.onNotificationSubmit.bind(this);
+    this.onProfileSubmit = this.onProfileSubmit.bind(this);
+    this.toggleEditProfile = this.toggleEditProfile.bind(this);
   }
 
   componentDidMount () {
@@ -124,16 +155,18 @@ class Account extends React.Component {
       if (nextProps.profile.error) {
         showAlert('danger', <p><strong>Error:</strong> Could not load user profile</p>, true, 4500);
       } else {
-        this.syncNotificationState(nextProps.profile.data);
+        this.syncNotificationState(nextProps.profile.notifications);
+        this.syncProfileState(nextProps.profile.data);
       }
     }
     if (this.props.profile.updating && !nextProps.profile.updating) {
       hideGlobalLoading();
       if (nextProps.profile.updateError) {
-        showAlert('danger', <p><strong>Error:</strong> {nextProps.profile.updateError.error_message}</p>, true, 4500);
+        showAlert('danger', <p><strong>Error:</strong> {nextProps.profile.updateError.detail}</p>, true, 4500);
       } else {
-        showAlert('success', <p>Subscriptions updated</p>, true, 4500);
-        this.setState({ isDirty: false });
+        showAlert('success', <p>Profile updated</p>, true, 4500);
+        this.setState({ isNotificationsDirty: false, isProfileDirty: false, profileEditMode: false });
+        this.props._getProfile(this.props.user.username);
       }
     }
   }
@@ -143,7 +176,7 @@ class Account extends React.Component {
     if (!subscriptions.length) {
       return;
     }
-    let next = Object.assign({}, this.state.data);
+    let next = Object.assign({}, this.state.notifications);
     subscriptions.forEach(sub => {
       const rtype = rtypes[sub.rtype];
       if (rtype === 'country' && sub.country) {
@@ -158,27 +191,43 @@ class Account extends React.Component {
         next.other = updateChecks(next.other, 'surge');
       }
     });
-    this.setState({ data: next });
+    this.setState({ notifications: next });
   }
 
-  onFieldChange (field, e) {
-    let data = _cloneDeep(this.state.data);
+  syncProfileState (data) {
+    const profile = get(data, 'profile', {});
+    const next = {
+      firstName: data.first_name || null,
+      lastName: data.last_name || null,
+      city: profile.city || null,
+      org: profile.org || null,
+      orgType: profile.org_type || null,
+      department: profile.department || null,
+      position: profile.position || null,
+      phoneNumber: profile.phone_number || null
+    };
+    this.setState({ profile: next });
+  }
+
+  onFieldChange (stateProperty, field, e) {
+    let state = _cloneDeep(this.state[stateProperty]);
     let val = e && e.target ? e.target.value : e;
-    _set(data, field, val === '' || val === null ? undefined : val);
-    this.setState({isDirty: true, data});
+    _set(state, field, val === '' || val === null ? undefined : val);
+    let dirtyProperty = stateProperty === 'notifications' ? 'isNotificationsDirty' : 'isProfileDirty';
+    this.setState({[dirtyProperty]: true, [stateProperty]: state});
   }
 
-  onSubmit (e) {
+  onNotificationSubmit (e) {
     e.preventDefault();
-    const payload = this.serialize(this.state.data);
+    const payload = this.serializeNotifications(this.state.notifications);
     showGlobalLoading();
     this.props._updateSubscriptions(payload);
   }
 
-  serialize (data) {
+  serializeNotifications (notifications) {
     let serialized = ['regions', 'disasterTypes', 'appeal', 'event', 'fieldReport']
       .reduce((acc, currentType) => {
-        const flattened = get(data, currentType, [])
+        const flattened = get(notifications, currentType, [])
           .filter(d => d.checked)
           .map(d => ({
             type: currentType,
@@ -187,7 +236,7 @@ class Account extends React.Component {
         return acc.concat(flattened);
       }, []);
 
-    let otherNotifications = get(data, 'other', []).filter(d => d.checked).map(d => ({
+    let otherNotifications = get(notifications, 'other', []).filter(d => d.checked).map(d => ({
       type: d.value,
       value: true
     }));
@@ -195,7 +244,7 @@ class Account extends React.Component {
       serialized.push.apply(serialized, otherNotifications);
     }
 
-    let countries = get(data, 'countries', []).map(d => ({
+    let countries = get(notifications, 'countries', []).map(d => ({
       type: 'countries',
       value: d.value
     }));
@@ -206,26 +255,138 @@ class Account extends React.Component {
     return serialized;
   }
 
-  renderProfileAttributes (profile) {
-    if (!profile.data) return null;
-    const attributes = [
-      'username',
-      'email',
-      'first_name',
-      'last_name',
-      'profile.city',
-      'profile.org',
-      'profile.org_type',
-      'profile.department',
-      'profile.position',
-      'profile.phone_number'
-    ];
-    return attributes.map(a => (
-      <Fragment key={a}>
-        <dt>{apiPropertyDisplay(a)}</dt>
-        <dd>{apiPropertyValue(a, profile.data)}</dd>
-      </Fragment>
-    ));
+  onProfileSubmit (e) {
+    e.preventDefault();
+    showGlobalLoading();
+    const id = this.props.profile.data.id;
+    this.props._updateProfile(id, this.serializeProfile(profileAttributes.slice(2, profileAttributes.length)));
+  }
+
+  serializeProfile (attributes) {
+    const serialized = {};
+    attributes.forEach(d => {
+      let nextValue = this.state.profile[d[1]];
+      // check if the value is actually an object, which the dropdowns return.
+      nextValue = nextValue && nextValue.hasOwnProperty('value') ? nextValue.value : nextValue;
+      nextValue && set(serialized, d[0], nextValue);
+    });
+    return serialized;
+  }
+
+  toggleEditProfile () {
+    this.syncProfileState(this.props.profile.data);
+    this.setState({ profileEditMode: !this.state.profileEditMode });
+  }
+
+  renderProfileAttributes () {
+    const { profile } = this.props;
+    return (
+      <div className='inner'>
+        <div className='fold__header'>
+          <h2 className='fold__title'>Account Information <button className='button button--large button--secondary-filled' onClick={this.toggleEditProfile}>Edit Profile</button></h2>
+        </div>
+        <div className='fold__body'>
+          <dl className='dl--horizontal'>
+            {profile.data ? profileAttributes.map(a => (
+              <Fragment key={a[0]}>
+                <dt>{apiPropertyDisplay(a[0])}</dt>
+                <dd>{apiPropertyValue(a[0], profile.data)}</dd>
+              </Fragment>
+            )) : null}
+          </dl>
+          <Link to='/account/password-change'>Change my password</Link>
+        </div>
+      </div>
+    );
+  }
+
+  renderProfileForm () {
+    const { profile } = this.props;
+    return (
+      <div className='inner'>
+        <div className='fold__header'>
+          <h2 className='fold__title'>Edit Profile <button className='button button--large button--secondary-filled' onClick={this.toggleEditProfile}>Cancel</button></h2>
+        </div>
+        <div className='fold__body'>
+          <form className='form' onSubmit={this.onProfileSubmit}>
+            <FormInput
+              label='First Name'
+              type='text'
+              name='first-name'
+              id='first-name'
+              classWrapper='form__group--kv'
+              value={profile.firstName}
+              onChange={this.onFieldChange.bind(this, 'profile', 'firstName')} >
+            </FormInput>
+            <FormInput
+              label='Last Name'
+              type='text'
+              name='last-name'
+              id='last-name'
+              classWrapper='form__group--kv'
+              value={profile.lastName}
+              onChange={this.onFieldChange.bind(this, 'profile', 'lastName')} >
+            </FormInput>
+            <FormInput
+              label='City'
+              type='text'
+              name='city'
+              id='city'
+              classWrapper='form__group--kv'
+              value={profile.city}
+              onChange={this.onFieldChange.bind(this, 'profile', 'city')} >
+            </FormInput>
+            <FormInput
+              label='Organization'
+              type='text'
+              name='organization'
+              id='organization'
+              classWrapper='form__group--kv'
+              value={profile.org}
+              onChange={this.onFieldChange.bind(this, 'profile', 'org')} >
+            </FormInput>
+            <div className='form__group'>
+              <label className='form__label'>Organization Type</label>
+              <Select
+                name='organizationType'
+                value={profile.orgType}
+                onChange={this.onFieldChange.bind(this, 'profile', 'orgType')}
+                options={orgTypes} />
+            </div>
+            <FormInput
+              label='Department'
+              type='text'
+              name='department'
+              id='department'
+              classWrapper='form__group--kv'
+              value={profile.department}
+              onChange={this.onFieldChange.bind(this, 'profile', 'department')} >
+            </FormInput>
+            <FormInput
+              label='Position'
+              type='text'
+              name='position'
+              id='position'
+              classWrapper='form__group--kv'
+              value={profile.position}
+              onChange={this.onFieldChange.bind(this, 'profile', 'position')} >
+            </FormInput>
+            <FormInput
+              label='Phone Number'
+              type='text'
+              name='phone-number'
+              id='phone-number'
+              classWrapper='form__group--kv'
+              value={profile.phoneNumber}
+              onChange={this.onFieldChange.bind(this, 'profile', 'phoneNumber')} >
+            </FormInput>
+            <button type='submit' className={c('button', 'button--large', 'button--secondary-filled', {
+              'disabled': !this.state.isProfileDirty
+            })} title='Save'>Save</button>
+          </form>
+        </div>
+      </div>
+    );
   }
 
   renderFieldReports () {
@@ -236,14 +397,13 @@ class Account extends React.Component {
       error: null
     });
     if (!userReports.fetched) { return null; }
-    const data = get(userReports, 'data.objects', []);
+    const data = get(userReports, 'data', []);
     if (!data.length) { return null; }
     return (
       <div className='prose prose--responsive'>
         <section className='fold'>
           <div className='inner'>
-            <div className='fold__header'>
-              <h2 className='fold__title'>Submitted Field Reports</h2>
+            <div className='fold__header'> <h2 className='fold__title'>Submitted Field Reports</h2>
             </div>
             <div className='fold__body'>
               <ul className='report__list'>
@@ -251,7 +411,7 @@ class Account extends React.Component {
                   <li key={o.id} className='report__list--item'>
                     <div className='report__list--header'>
                       <Link className='link--primary' to={`/reports/${o.id}`}>{o.summary}</Link>&nbsp;
-                      <span className='report__list--updated'>Last Updated: {DateTime.fromISO(o.updated_at).toISODate()}</span>
+                      <span className='report__list--updated'>Last Updated: {DateTime.fromISO(o.updated_at || o.created_at).toISODate()}</span>
                     </div>
                     <p>{o.description}</p>
                   </li>
@@ -266,7 +426,7 @@ class Account extends React.Component {
 
   renderSubscriptionForm () {
     return (
-      <form className='form' onSubmit={this.onSubmit}>
+      <form className='form' onSubmit={this.onNotificationSubmit}>
         <Fold title='Subscription preferences'>
           <FormCheckboxGroup
             label='Regional notifications'
@@ -274,15 +434,15 @@ class Account extends React.Component {
             name='regions'
             classWrapper='action-checkboxes'
             options={regions}
-            values={this.state.data.regions}
-            onChange={this.onFieldChange.bind(this, 'regions')} />
+            values={this.state.notifications.regions}
+            onChange={this.onFieldChange.bind(this, 'notifications', 'regions')} />
           <div className='form__group'>
             <label className='form__label'>Country-level notifications</label>
             <p className='form__description'>Select one or more countries to receive notifications about.</p>
             <Select
               name='countries'
-              value={this.state.data.countries}
-              onChange={this.onFieldChange.bind(this, 'countries')}
+              value={this.state.notifications.countries}
+              onChange={this.onFieldChange.bind(this, 'notifications', 'countries')}
               options={countries}
               multi />
           </div>
@@ -292,38 +452,38 @@ class Account extends React.Component {
             name='disasterTypes'
             classWrapper='action-checkboxes'
             options={disasterTypes}
-            values={this.state.data.disasterTypes}
-            onChange={this.onFieldChange.bind(this, 'disasterTypes')} />
+            values={this.state.notifications.disasterTypes}
+            onChange={this.onFieldChange.bind(this, 'notifications', 'disasterTypes')} />
           <FormCheckboxGroup
             label='Emergencies'
             name='event'
             classWrapper='action-checkboxes'
             options={systemNotificationTypes}
-            values={this.state.data.event}
-            onChange={this.onFieldChange.bind(this, 'event')} />
+            values={this.state.notifications.event}
+            onChange={this.onFieldChange.bind(this, 'notifications', 'event')} />
           <FormCheckboxGroup
             label='Field Reports'
             name='fieldReport'
             classWrapper='action-checkboxes'
             options={systemNotificationTypes}
-            values={this.state.data.fieldReport}
-            onChange={this.onFieldChange.bind(this, 'fieldReport')} />
+            values={this.state.notifications.fieldReport}
+            onChange={this.onFieldChange.bind(this, 'notifications', 'fieldReport')} />
           <FormCheckboxGroup
             label='Appeals'
             name='appeal'
             classWrapper='action-checkboxes'
             options={systemNotificationTypes}
-            values={this.state.data.appeal}
-            onChange={this.onFieldChange.bind(this, 'appeal')} />
+            values={this.state.notifications.appeal}
+            onChange={this.onFieldChange.bind(this, 'notifications', 'appeal')} />
           <FormCheckboxGroup
             label='Other Notifications'
             name='other'
             classWrapper='action-checkboxes'
             options={otherNotificationTypes}
-            values={this.state.data.other}
-            onChange={this.onFieldChange.bind(this, 'other')} />
+            values={this.state.notifications.other}
+            onChange={this.onFieldChange.bind(this, 'notifications', 'other')} />
           <button type='submit' className={c('button', 'button--large', 'button--secondary-filled', {
-            'disabled': !this.state.isDirty
+            'disabled': !this.state.isNotificationsDirty
           })} title='Save'>Save</button>
         </Fold>
       </form>
@@ -345,17 +505,7 @@ class Account extends React.Component {
             <div className='inner'>
               <div className='prose prose--responsive'>
                 <section className='fold'>
-                  <div className='inner'>
-                    <div className='fold__header'>
-                      <h2 className='fold__title'>Account Information</h2>
-                    </div>
-                    <div className='fold__body'>
-                      <dl className='dl--horizontal'>
-                        {this.renderProfileAttributes(this.props.profile)}
-                      </dl>
-                      <Link to='/account/password-change'>Change my password</Link>
-                    </div>
-                  </div>
+                  {this.state.profileEditMode ? this.renderProfileForm() : this.renderProfileAttributes()}
                 </section>
               </div>
               {this.renderFieldReports()}
@@ -375,7 +525,8 @@ if (environment !== 'production') {
     fieldReport: T.object,
     _getProfile: T.func,
     _updateSubscriptions: T.func,
-    _getFieldReportsByUser: T.func
+    _getFieldReportsByUser: T.func,
+    _updateProfile: T.func
   };
 }
 
@@ -391,7 +542,8 @@ const selector = (state, ownProps) => ({
 const dispatcher = {
   _getProfile: getUserProfile,
   _updateSubscriptions: updateSubscriptions,
-  _getFieldReportsByUser: getFieldReportsByUser
+  _getFieldReportsByUser: getFieldReportsByUser,
+  _updateProfile: updateProfile
 };
 
 export default connect(selector, dispatcher)(Account);
