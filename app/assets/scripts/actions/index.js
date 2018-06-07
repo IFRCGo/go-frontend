@@ -136,8 +136,8 @@ export function getAggregateEmergencies (date, unit) {
 }
 
 export const UPDATE_SUBSCRIPTIONS = 'UPDATE_SUBSCRIPTIONS';
-export function updateSubscriptions (payload) {
-  return postJSON('notifications/', UPDATE_SUBSCRIPTIONS, payload, withToken());
+export function updateSubscriptions (id, payload) {
+  return postJSON(`api/v2/update_subscriptions/`, UPDATE_SUBSCRIPTIONS, payload, withToken());
 }
 
 export const GET_EVENT = 'GET_EVENT';

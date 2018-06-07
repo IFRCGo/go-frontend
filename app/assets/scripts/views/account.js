@@ -155,7 +155,7 @@ class Account extends React.Component {
       if (nextProps.profile.error) {
         showAlert('danger', <p><strong>Error:</strong> Could not load user profile</p>, true, 4500);
       } else {
-        this.syncNotificationState(nextProps.profile.notifications);
+        this.syncNotificationState(nextProps.profile.data);
         this.syncProfileState(nextProps.profile.data);
       }
     }
@@ -219,9 +219,10 @@ class Account extends React.Component {
 
   onNotificationSubmit (e) {
     e.preventDefault();
-    const payload = this.serializeNotifications(this.state.notifications);
     showGlobalLoading();
-    this.props._updateSubscriptions(payload);
+    const payload = this.serializeNotifications(this.state.notifications);
+    const id = this.props.profile.data.id;
+    this.props._updateSubscriptions(id, payload);
   }
 
   serializeNotifications (notifications) {
