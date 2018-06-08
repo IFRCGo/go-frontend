@@ -4,8 +4,8 @@ import _groupBy from 'lodash.groupby';
 import _toNumber from 'lodash.tonumber';
 import { DateTime } from 'luxon';
 
-import { na } from './format';
 import { disasterType } from './field-report-constants';
+import { getDtypeMeta } from './get-dtype-meta';
 import { whitelistDomains } from '../schemas/register';
 
 // lodash.get will only return the defaultValue when
@@ -19,15 +19,21 @@ export function get (object, path, defaultValue) {
   }
 }
 
+export function isLoggedIn (userState) {
+  return !!get(userState, 'data.token');
+}
+
 export function groupByDisasterType (objs) {
-  const emergenciesByType = _groupBy(objs, 'dtype.id');
+  const emergenciesByType = _groupBy(objs, 'dtype');
   return Object.keys(emergenciesByType).map(key => {
+    let meta = getDtypeMeta(key);
+    if (!meta) return null;
     return {
       id: _toNumber(key),
-      name: get(emergenciesByType[key][0], 'dtype.name', na),
+      name: meta.label,
       items: emergenciesByType[key]
     };
-  }).sort((a, b) => a.items.length < b.items.length);
+  }).filter(Boolean).sort((a, b) => a.items.length < b.items.length);
 }
 
 export function isValidEmail (email) {
@@ -68,9 +74,9 @@ export const dateOptions = [
 ];
 
 export const datesAgo = {
-  week: () => DateTime.local().minus({days: 7}).startOf('day').toISODate(),
-  month: () => DateTime.local().minus({months: 1}).startOf('day').toISODate(),
-  year: () => DateTime.local().minus({years: 1}).startOf('day').toISODate()
+  week: () => DateTime.utc().minus({days: 7}).startOf('day').toISO(),
+  month: () => DateTime.utc().minus({months: 1}).startOf('day').toISO(),
+  year: () => DateTime.utc().minus({years: 1}).startOf('day').toISO()
 };
 
 export const dTypeOptions = [

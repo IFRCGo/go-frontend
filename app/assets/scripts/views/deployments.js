@@ -54,9 +54,11 @@ class Deployments extends SFPComponent {
     this.state = {
       fullscreen: false,
       eru: {
+        limit: 5,
         page: 1
       },
       fact: {
+        limit: 5,
         page: 1,
         sort: {
           field: '',
@@ -67,6 +69,7 @@ class Deployments extends SFPComponent {
         }
       },
       heop: {
+        limit: 5,
         page: 1,
         sort: {
           field: '',
@@ -77,6 +80,7 @@ class Deployments extends SFPComponent {
         }
       },
       rdrt: {
+        limit: 5,
         page: 1,
         sort: {
           field: '',
@@ -96,10 +100,10 @@ class Deployments extends SFPComponent {
     showGlobalLoading();
     this.props._getEruOwners();
 
-    this.props._getDeploymentERU();
-    this.props._getDeploymentFACT(1, { order_by: '-start_date' });
-    this.props._getDeploymentHEOP(1, { order_by: '-start_date' });
-    this.props._getDeploymentRDRT(1, { order_by: '-start_date' });
+    this.props._getDeploymentERU(1, { limit: this.state.eru.limit });
+    this.props._getDeploymentFACT(1, { limit: this.state.fact.limit, order_by: '-start_date' });
+    this.props._getDeploymentHEOP(1, { limit: this.state.heop.limit, order_by: '-start_date' });
+    this.props._getDeploymentRDRT(1, { limit: this.state.rdrt.limit, order_by: '-start_date' });
 
     this.props._getAllDeploymentERU();
     this.props._getAllDeploymentFACT();
@@ -132,8 +136,8 @@ class Deployments extends SFPComponent {
   }
 
   requestResults (what) {
-    let qs = {};
     let state = this.state[what];
+    let qs = { limit: state.limit };
     if (state.sort && state.sort.field) {
       qs.order_by = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
     } else if (what !== 'eru') {
@@ -181,9 +185,9 @@ class Deployments extends SFPComponent {
 
   renderHeaderStats () {
     const { data } = this.props.eruOwners;
-    const fact = get(this.props.deployments.fact, 'data.meta.total_count', 0);
-    const heop = get(this.props.deployments.heop, 'data.meta.total_count', 0);
-    const rdrt = get(this.props.deployments.rdrt, 'data.meta.total_count', 0);
+    const fact = get(this.props.deployments.fact, 'data.count', 0);
+    const heop = get(this.props.deployments.heop, 'data.count', 0);
+    const rdrt = get(this.props.deployments.rdrt, 'data.count', 0);
 
     return (
       <div className='inpage__introduction'>
@@ -243,7 +247,7 @@ class Deployments extends SFPComponent {
       );
     }
 
-    if (error || !get(data, 'objects.length')) {
+    if (error || !get(data, 'results.length')) {
       return null;
     }
 
@@ -260,24 +264,27 @@ class Deployments extends SFPComponent {
         { id: 'equipment', label: 'Equipment Units' }
       ];
 
-      const rows = data.objects.map(o => ({
-        id: o.id,
-        name: get(o, 'eru_owner.national_society_country.society_name') || get(o, 'eru_owner.national_society_country.name', nope),
-        country: o.deployed_to ? <Link to={`/countries/${o.deployed_to.id}`} className='link--primary' title='View Country'>{o.deployed_to.name}</Link> : nope,
-        type: getEruType(o.type),
-        emer: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
-        personnel: o.units,
-        equipment: o.equipment_units
-      }));
+      const rows = data.results.map(o => {
+        const owner = get(o, 'eru_owner.national_society_country', null);
+        return {
+          id: o.id,
+          name: owner !== null ? owner.name : nope,
+          country: o.deployed_to ? <Link to={`/countries/${o.deployed_to.id}`} className='link--primary' title='View Country'>{o.deployed_to.name}</Link> : nope,
+          type: getEruType(o.type),
+          emer: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
+          personnel: o.units,
+          equipment: o.equipment_units
+        };
+      });
 
       return (
         <div className='inner'>
-          <Fold title={`Deployed ERU (${n(data.meta.total_count)})`}>
+          <Fold title={`Deployed ERU (${n(data.count)})`}>
             <DisplayTable
               headings={headings}
               rows={rows}
-              pageCount={data.meta.total_count / data.meta.limit}
-              page={data.meta.offset / data.meta.limit}
+              pageCount={data.count / this.state.eru.limit}
+              page={this.state.eru.page - 1}
               onPageChange={this.handlePageChange.bind(this, 'eru')}
             />
           </Fold>
@@ -306,7 +313,7 @@ class Deployments extends SFPComponent {
       );
     }
 
-    if ((error || !get(data, 'objects.length')) && this.state.heop.filters.startDate === 'all') {
+    if ((error || !get(data, 'results.length')) && this.state.heop.filters.startDate === 'all') {
       return null;
     }
 
@@ -325,23 +332,23 @@ class Deployments extends SFPComponent {
         { id: 'emer', label: 'Emergency' }
       ];
 
-      const rows = data.objects.map(o => ({
+      const rows = data.results.map(o => ({
         id: o.id,
         startDate: DateTime.fromISO(o.start_date).toISODate(),
         endDate: DateTime.fromISO(o.end_date).toISODate() || nope,
         name: o.person || na,
-        country: <Link to={`/countries/${o.country.id}`} className='link--primary' title='View Country'>{o.country.name}</Link>,
+        country: <Link to={`/countries/${o.country}`} className='link--primary' title='View Country'>{o.country.name}</Link>,
         emer: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope
       }));
 
       return (
         <div className='inner'>
-          <Fold title={`HeOps (${n(data.meta.total_count)})`}>
+          <Fold title={`HeOps (${n(data.count)})`}>
             <DisplayTable
               headings={headings}
               rows={rows}
-              pageCount={data.meta.total_count / data.meta.limit}
-              page={data.meta.offset / data.meta.limit}
+              pageCount={data.count / this.state.heop.limit}
+              page={this.state.heop.page - 1}
               onPageChange={this.handlePageChange.bind(this, 'heop')}
             />
           </Fold>
@@ -376,7 +383,7 @@ class Deployments extends SFPComponent {
       );
     }
 
-    if ((error || !get(data, 'objects.length')) && this.state[what].filters.startDate === 'all') {
+    if ((error || !get(data, 'results.length')) && this.state[what].filters.startDate === 'all') {
       return null;
     }
 
@@ -394,25 +401,25 @@ class Deployments extends SFPComponent {
         { id: 'society', label: 'National Society' }
       ];
 
-      const rows = data.objects.map(o => ({
+      const rows = data.results.map(o => ({
         id: o.id,
         startDate: DateTime.fromISO(o.start_date).toISODate(),
         endDate: DateTime.fromISO(o.end_date).toISODate(),
         name: o.name,
         role: get(o, 'role', nope),
-        country: o[what].country ? <Link to={`/countries/${o[what].country.id}`} className='link--primary' title='View Country'>{o[what].country.name}</Link> : nope,
+        country: o[what].country ? <Link to={`/countries/${o[what].country}`} className='link--primary' title='View Country'>{o[what].country.name}</Link> : nope,
         emer: o[what].event ? <Link to={`/emergencies/${o[what].event.id}`} className='link--primary' title='View Emergency'>{o[what].event.name}</Link> : nope,
         society: get(o, 'society_deployed_from', nope)
       }));
 
       return (
         <div className='inner'>
-          <Fold title={`${title[what]} (${n(data.meta.total_count)})`}>
+          <Fold title={`${title[what]} (${n(data.count)})`}>
             <DisplayTable
               headings={headings}
               rows={rows}
-              pageCount={data.meta.total_count / data.meta.limit}
-              page={data.meta.offset / data.meta.limit}
+              pageCount={data.count / this.state[what].limit}
+              page={this.state[what].page - 1}
               onPageChange={this.handlePageChange.bind(this, what)}
             />
           </Fold>

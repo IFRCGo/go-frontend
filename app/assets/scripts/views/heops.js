@@ -83,7 +83,7 @@ class HeOps extends SFPComponent {
         <div className='chart__container'>
           <ResponsiveContainer>
             <LineChart data={aggregate}>
-              <XAxis tickFormatter={tickFormatter} dataKey='timespan' axisLine={false} padding={{ left: 16 }} />
+              <XAxis tickFormatter={tickFormatter} dataKey='timespan' axisLine={false} padding={{ left: 16, right: 16 }} />
               <YAxis axisLine={false} tickLine={false} width={32} padding={{ bottom: 16 }} />
               <Line type="monotone" dataKey="count" stroke="#C22A26" />
               <Tooltip />

@@ -3,6 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
+import { DateTime } from 'luxon';
 
 import { environment } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
@@ -89,8 +90,8 @@ class FieldReport extends React.Component {
     }
     return (
       <DisplaySection title='Contacts'>
-        {contacts.map(d => (
-          <div className='form__group' key={d.resource_uri}>
+        {contacts.map((d, i) => (
+          <div className='form__group' key={`${d.name} + ${i}`}>
             <p className='form__label'>{separate(d.ctype)}</p>
             <p><strong>{d.name}</strong>, {d.title}, <a className='link--primary' href={`mailto:${d.email}`}>{d.email}</a></p>
           </div>
@@ -105,6 +106,8 @@ class FieldReport extends React.Component {
     if (!this.props.report.fetched || !data) {
       return null;
     }
+
+    const lastTouchedAt = DateTime.fromISO(data.updated_at || data.created_at).toISODate();
 
     return (
       <section className='inpage'>
@@ -127,7 +130,7 @@ class FieldReport extends React.Component {
           <div className='inner'>
             <div className='prose fold prose--responsive'>
               <div className='inner'>
-                <p className='inpage__note'>Last Updated by User1293 on 8/11/2017</p>
+                <p className='inpage__note'>Last updated{data.user ? ` by ${data.user.username}` : null} on {lastTouchedAt}</p>
                 <DisplaySection title='Numeric details'>
                   <dl className='dl-horizontal numeric-list'>
                     <dt>Injured (RC): </dt>

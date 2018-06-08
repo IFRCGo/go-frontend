@@ -19,7 +19,7 @@ export function withToken (options = {}) {
     console.error('Token is expired');
     return options;
   }
-  options.headers['Authorization'] = `ApiKey ${user.username}:${user.token}`;
+  options.headers['Authorization'] = `Token ${user.token}`;
   return options;
 }
 
@@ -145,6 +145,22 @@ export function postJSON (path, action, payload, options, extraData) {
 export function putJSON (path, action, payload, options, extraData) {
   options = withJSONRequest(payload, options);
   options.method = 'PUT';
+  return makeRequest(path, action, options, extraData);
+}
+
+/**
+ * PATCH a JSON resource
+ * @param  {string} path      Relative path to query. Has to be available from
+ *                            the api.
+ * @param  {string} action    Base action to dispatch.
+ * @param  {payload} payload  Payload to put.
+ * @param  {Object} options   Options for the request.
+ * @param  {Object} extraData Extra data to pass to the action.
+ * @return {func}             Dispatch function.
+ */
+export function patchJSON (path, action, payload, options, extraData) {
+  options = withJSONRequest(payload, options);
+  options.method = 'PATCH';
   return makeRequest(path, action, options, extraData);
 }
 
