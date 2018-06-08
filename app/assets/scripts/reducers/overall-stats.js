@@ -76,8 +76,8 @@ function appealsList (state = appealsListInitialState, action) {
               type: 'Feature',
               properties: {
                 id: o.id,
-                pageId: get(o, 'event.id'),
-                name: get(o, 'event.name', get(o, 'name')),
+                pageId: o.event || false,
+                name: o.name,
                 atype: o.atype,
                 dtype: o.dtype.id,
                 numBeneficiaries: o.num_beneficiaries,
