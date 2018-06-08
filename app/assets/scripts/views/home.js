@@ -179,6 +179,46 @@ class Home extends SFPComponent {
           <div className='inpage__body'>
             <PresentationDash />
             <div className='inner'>
+              <div className='fold'>
+                <div className='inner'>
+                  <h2 className='fold__title'>Active Emergencies</h2>
+                  <ul className='key-emergencies-list'>
+                    <li className='key-emergencies-item'>
+                      <a href=''>
+                        <h2 className='card__title'>Papua New Guinea - Volanic Activity</h2>
+                        <p className='card__date'>Start Date: June 8, 2018</p>
+                        <ul className='card__stat-list'>
+                          <li className='card__stat stats-people'>5,544<small>Targeted Ben</small></li>
+                          <li className='card__stat stats-funding'> 52%<small>Funded</small></li>
+                        </ul>
+                      </a>
+                    </li>
+                    <li className='key-emergencies-item'>
+                      <a href=''>
+                        <h2 className='card__title'>Papua New Guinea - Volanic Activity</h2>
+                        <p className='card__date'>Start Date: June 8, 2018</p>
+                        <ul className='card__stat-list'>
+                          <li className='card__stat stats-people'>5,544<small>Targeted Ben</small></li>
+                          <li className='card__stat stats-funding'> 52%<small>Funded</small></li>
+                        </ul>
+                      </a>
+                    </li>
+                    <li className='key-emergencies-item'>
+                      <a href=''>
+                        <h2 className='card__title'>Papua New Guinea - Volanic Activity</h2>
+                        <p className='card__date'>Start Date: June 8, 2018</p>
+                        <ul className='card__stat-list'>
+                          <li className='card__stat stats-people'>5,544<small>Targeted Ben</small></li>
+                          <li className='card__stat stats-funding'> 52%<small>Funded</small></li>
+                        </ul>
+                      </a>
+                    </li>
+                  </ul>
+                  <a href='' className='link--primary'>View All Emergencies</a>
+                </div>
+              </div>
+            </div>
+            <div className='inner'>
               {this.renderAppeals()}
             </div>
             <div className='inner'>
