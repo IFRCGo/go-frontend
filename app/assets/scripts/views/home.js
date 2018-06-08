@@ -6,9 +6,10 @@ import { connect } from 'react-redux';
 import { DateTime } from 'luxon';
 
 import { environment } from '../config';
-import { dateOptions, datesAgo, dTypeOptions } from '../utils/utils/';
+import { get, dateOptions, datesAgo, dTypeOptions } from '../utils/utils/';
 import { getAppeals } from '../actions';
 import { commaSeparatedNumber as n, nope } from '../utils/format';
+import { getDtypeMeta } from '../utils/get-dtype-meta';
 
 import App from './app';
 import Fold from '../components/fold';
@@ -35,6 +36,7 @@ class Home extends SFPComponent {
     this.state = {
       appeals: {
         page: 1,
+        limit: 5,
         sort: {
           field: '',
           direction: 'asc'
@@ -52,12 +54,12 @@ class Home extends SFPComponent {
   }
 
   requestResults () {
-    let qs = {};
+    let qs = { limit: this.state.appeals.limit };
     let state = this.state.appeals;
     if (state.sort.field) {
-      qs.order_by = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
+      qs.ordering = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
     } else {
-      qs.order_by = '-start_date';
+      qs.ordering = '-start_date';
     }
 
     if (state.filters.date !== 'all') {
@@ -128,12 +130,12 @@ class Home extends SFPComponent {
         { id: 'type', label: 'Type' }
       ];
 
-      const rows = data.objects.map(o => ({
+      const rows = data.results.map(o => ({
         id: o.id,
         date: DateTime.fromISO(o.start_date).toISODate(),
         name: o.name,
-        event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
-        dtype: o.dtype.name,
+        event: o.event ? <Link to={`/emergencies/${o.event}`} className='link--primary' title='View Emergency'>Link</Link> : nope,
+        dtype: get(getDtypeMeta(o.dtype), 'label', nope),
         requestAmount: {
           value: n(o.amount_requested),
           className: 'right-align'
@@ -147,12 +149,12 @@ class Home extends SFPComponent {
       }));
 
       return (
-        <Fold title={`${title} (${n(data.meta.total_count)})`}>
+        <Fold title={`${title} (${n(data.count)})`}>
           <DisplayTable
             headings={headings}
             rows={rows}
-            pageCount={data.meta.total_count / data.meta.limit}
-            page={data.meta.offset / data.meta.limit}
+            pageCount={data.count / this.state.appeals.limit}
+            page={this.state.appeals.page - 1}
             onPageChange={this.handlePageChange.bind(this, 'appeals')}
           />
         </Fold>

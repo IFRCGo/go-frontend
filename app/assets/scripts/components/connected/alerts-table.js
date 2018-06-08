@@ -7,8 +7,8 @@ import { DateTime } from 'luxon';
 
 import { environment } from '../../config';
 import { getSurgeAlerts } from '../../actions';
-import { get, dateOptions, datesAgo } from '../../utils/utils/';
-import { nope } from '../../utils/format';
+import { get, dateOptions, datesAgo, isLoggedIn } from '../../utils/utils/';
+import { nope, privateSurgeAlert } from '../../utils/format';
 
 import { SFPComponent } from '../../utils/extendables';
 import DisplayTable, { FilterHeader } from '../display-table';
@@ -43,6 +43,7 @@ class AlertsTable extends SFPComponent {
     this.state = {
       alerts: {
         page: 1,
+        limit: 5,
         sort: {
           field: '',
           direction: 'asc'
@@ -60,7 +61,7 @@ class AlertsTable extends SFPComponent {
   }
 
   requestResults () {
-    let qs = {};
+    let qs = { limit: this.state.alerts.limit };
     let state = this.state.alerts;
     if (state.sort.field) {
       qs.order_by = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
@@ -110,7 +111,7 @@ class AlertsTable extends SFPComponent {
       { id: 'type', label: 'Type' }
     ];
 
-    const rows = data.objects.reduce((acc, rowData, idx, all) => {
+    const rows = data.results.reduce((acc, rowData, idx, all) => {
       const isLast = idx === all.length - 1;
       const date = DateTime.fromISO(rowData.created_at);
       const event = get(rowData, 'event.id');
@@ -119,7 +120,7 @@ class AlertsTable extends SFPComponent {
         date: date.toISODate(),
         emergency: event ? <Link className='link--primary' to={`/emergencies/${event}`} title='View Emergency page'>{rowData.operation}</Link> : rowData.operation || nope,
 
-        msg: rowData.message,
+        msg: isLoggedIn(this.props.user) ? rowData.message : privateSurgeAlert,
         type: alertTypes[rowData.atype],
         category: alertCategories[rowData.category]
       });
@@ -138,8 +139,8 @@ class AlertsTable extends SFPComponent {
         className='responsive-table alerts-table'
         headings={headings}
         rows={rows}
-        pageCount={data.meta.total_count / data.meta.limit}
-        page={data.meta.offset / data.meta.limit}
+        pageCount={data.count / this.state.alerts.limit}
+        page={this.state.alerts.page}
         onPageChange={this.handlePageChange.bind(this, 'alerts')}
       />
     );
@@ -167,7 +168,8 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state) => ({
-  surgeAlerts: state.surgeAlerts
+  surgeAlerts: state.surgeAlerts,
+  user: state.user
 });
 
 const dispatcher = (dispatch) => ({

@@ -115,6 +115,7 @@
     "lodash.tonumber": "^4.0.3",
     "luxon": "^0.2.6",
     "mapbox-gl": "^0.42.2",
+    "object-path": "^0.11.4",
     "prop-types": "^15.6.0",
     "qs": "^6.5.1",
     "react-dom": "^16.2.0",

@@ -1,9 +1,9 @@
 'use strict';
 import {
   fetchJSON,
-  fetchJSONRecursive,
   postJSON,
   putJSON,
+  patchJSON,
   withToken
 } from '../utils/network';
 import { stringify as buildAPIQS } from 'qs';
@@ -18,7 +18,7 @@ export function getAuthToken (username, password) {
 
 export const GET_PROFILE = 'GET_PROFILE';
 export function getUserProfile (username) {
-  return fetchJSON(`api/v1/user/?username=${username}`, GET_PROFILE, withToken());
+  return fetchJSON(`api/v2/user/?username=${username}`, GET_PROFILE, withToken());
 }
 
 export const REGISTER_USER = 'REGISTER_USER';
@@ -36,6 +36,11 @@ export function validateAndUpdatePassword (payload) {
   return postJSON('change_password', CHANGE_PASSWORD, payload);
 }
 
+export const UPDATE_PROFILE = 'UPDATE_PROFILE';
+export function updateProfile (id, payload) {
+  return patchJSON(`api/v2/user/${id}/`, UPDATE_PROFILE, payload, withToken());
+}
+
 export const RECOVER_PASSWORD = 'RECOVER_PASSWORD';
 export function recoverPassword (email) {
   return postJSON('recover_password', RECOVER_PASSWORD, { email });
@@ -43,21 +48,21 @@ export function recoverPassword (email) {
 
 export const GET_FIELD_REPORT = 'GET_FIELD_REPORT';
 export function getFieldReportById (id) {
-  return fetchJSON(`api/v1/field_report/${id}/`, GET_FIELD_REPORT, withToken(), { id });
+  return fetchJSON(`api/v2/field_report/${id}/`, GET_FIELD_REPORT, withToken(), { id });
 }
 
 export function getFieldReportsByUser (userId) {
-  return fetchJSON(`api/v1/field_report/?user=${userId}`, GET_FIELD_REPORT, withToken(), { id: `user-${userId}` });
+  return fetchJSON(`api/v2/field_report/?user=${userId}`, GET_FIELD_REPORT, withToken(), { id: `user-${userId}` });
 }
 
 export const CREATE_FIELD_REPORT = 'CREATE_FIELD_REPORT';
 export function createFieldReport (payload) {
-  return postJSON('api/v1/field_report/', CREATE_FIELD_REPORT, payload, withToken());
+  return postJSON('api/v2/field_report/', CREATE_FIELD_REPORT, payload, withToken());
 }
 
 export const UPDATE_FIELD_REPORT = 'UPDATE_FIELD_REPORT';
 export function updateFieldReport (id, payload) {
-  return putJSON(`api/v1/field_report/${id}/`, UPDATE_FIELD_REPORT, payload, withToken());
+  return putJSON(`api/v2/field_report/${id}/`, UPDATE_FIELD_REPORT, payload, withToken());
 }
 
 export const GET_FIELD_REPORTS_LIST = 'GET_FIELD_REPORTS_LIST';
@@ -65,7 +70,7 @@ export function getFieldReportsList (page = 1, filters = {}) {
   filters.limit = filters.limit || 10;
   filters.offset = filters.limit * (page - 1);
   const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v1/field_report/?${f}`, GET_FIELD_REPORTS_LIST, withToken());
+  return fetchJSON(`/api/v2/field_report/?${f}`, GET_FIELD_REPORTS_LIST, withToken());
 }
 
 export const GET_SURGE_ALERTS = 'GET_SURGE_ALERTS';
@@ -74,16 +79,16 @@ export function getSurgeAlerts (page = 1, filters = {}) {
   filters.offset = filters.limit * (page - 1);
   const f = buildAPIQS(filters);
 
-  return fetchJSON(`/api/v1/surge_alert/?${f}`, GET_SURGE_ALERTS, withToken());
+  return fetchJSON(`/api/v2/surge_alert/?${f}`, GET_SURGE_ALERTS, withToken());
 }
 
 export const GET_APPEALS_LIST = 'GET_APPEALS_LIST';
 export function getAppealsList () {
   const f = buildAPIQS({
-    end_date__gt: DateTime.local().toISODate(),
-    limit: 1000
+    end_date__gt: DateTime.utc().toISO(),
+    limit: 0
   });
-  return fetchJSONRecursive(`api/v1/appeal/?${f}`, GET_APPEALS_LIST, withToken());
+  return fetchJSON(`api/v2/appeal/?${f}`, GET_APPEALS_LIST, withToken());
 }
 
 export const GET_AGGREGATE_APPEALS = 'GET_AGGREGATE_APPEALS';
@@ -106,17 +111,17 @@ export function getEmergenciesList (page = 1, filters = {}) {
   filters.limit = filters.limit || 10;
   filters.offset = filters.limit * (page - 1);
   const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v1/event/?${f}`, GET_EMERGENCIES_LIST, withToken());
+  return fetchJSON(`/api/v2/event/?${f}`, GET_EMERGENCIES_LIST, withToken());
 }
 
 export const GET_LAST_MO_EMERGENCIES = 'GET_LAST_MO_EMERGENCIES';
 export function getLastMonthsEmergencies () {
   const f = buildAPIQS({
-    disaster_start_date__gt: DateTime.local().minus({days: 30}).startOf('day').toISODate(),
-    limit: 0,
+    disaster_start_date__gt: DateTime.utc().minus({days: 30}).startOf('day').toISO(),
+    limit: 500,
     order_by: '-disaster_start_date'
   });
-  return fetchJSON(`api/v1/event/?${f}`, GET_LAST_MO_EMERGENCIES, {});
+  return fetchJSON(`api/v2/event/?${f}`, GET_LAST_MO_EMERGENCIES, {});
 }
 
 export const GET_AGGREGATE_EMERGENCIES = 'GET_AGGREGATE_EMERGENCIES';
@@ -131,23 +136,23 @@ export function getAggregateEmergencies (date, unit) {
 }
 
 export const UPDATE_SUBSCRIPTIONS = 'UPDATE_SUBSCRIPTIONS';
-export function updateSubscriptions (payload) {
-  return postJSON('notifications/', UPDATE_SUBSCRIPTIONS, payload, withToken());
+export function updateSubscriptions (id, payload) {
+  return postJSON(`api/v2/update_subscriptions/`, UPDATE_SUBSCRIPTIONS, payload, withToken());
 }
 
 export const GET_EVENT = 'GET_EVENT';
 export function getEventById (id) {
-  return fetchJSON(`api/v1/event/${id}/`, GET_EVENT, withToken(), { id });
+  return fetchJSON(`api/v2/event/${id}/`, GET_EVENT, withToken(), { id });
 }
 
 export const GET_SITREPS = 'GET_SITREPS';
 export function getSitrepsByEventId (id) {
-  return fetchJSON(`api/v1/situation_report/?order_by=-created_at&event=${id}`, GET_SITREPS, withToken(), { id });
+  return fetchJSON(`api/v2/situation_report/?order_by=-created_at&event=${id}`, GET_SITREPS, withToken(), { id });
 }
 
 export const GET_ERU_OWNERS = 'GET_ERU_OWNERS';
 export function getEruOwners () {
-  return fetchJSON('api/v1/eru_owner/?limit=0', GET_ERU_OWNERS, withToken());
+  return fetchJSON('api/v2/eru_owner/?limit=0', GET_ERU_OWNERS, withToken());
 }
 
 export const GET_AA = 'GET_AA';
@@ -167,7 +172,7 @@ export function getAdmAreaById (aaType, id) {
         }, 1);
       };
     case 'country':
-      return fetchJSON(`/api/v1/country/${id}/`, GET_AA, withToken(), { id });
+      return fetchJSON(`/api/v2/country/${id}/`, GET_AA, withToken(), { id });
     default:
       throw new Error('Invalid admin area type ' + aaType);
   }
@@ -191,7 +196,7 @@ export function getAdmAreaAppeals (aaType, aaId, page = 1, filters = {}) {
   }
 
   const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v1/appeal/?${f}`, GET_AA_APPEALS, withToken());
+  return fetchJSON(`/api/v2/appeal/?${f}`, GET_AA_APPEALS, withToken());
 }
 
 export const GET_AA_DREFS = 'GET_AA_DREFS';
@@ -212,7 +217,7 @@ export function getAdmAreaDrefs (aaType, aaId, page = 1, filters = {}) {
   }
 
   const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v1/appeal/?${f}`, GET_AA_DREFS, withToken());
+  return fetchJSON(`/api/v2/appeal/?${f}`, GET_AA_DREFS, withToken());
 }
 
 export const GET_AA_FIELD_REPORTS = 'GET_AA_FIELD_REPORTS';
@@ -232,14 +237,14 @@ export function getAdmAreaFieldReports (aaType, aaId, page = 1, filters = {}) {
   }
 
   const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v1/field_report/?${f}`, GET_AA_FIELD_REPORTS, withToken());
+  return fetchJSON(`/api/v2/field_report/?${f}`, GET_AA_FIELD_REPORTS, withToken());
 }
 
 export const GET_AA_APPEALS_STATS = 'GET_AA_APPEALS_STATS';
 export function getAdmAreaAppealsStats (aaType, aaId) {
   let filters = {
-    end_date__gt: DateTime.local().toISODate(),
-    limit: 1000
+    end_date__gt: DateTime.utc().toISO(),
+    limit: 0
   };
 
   switch (aaType) {
@@ -254,7 +259,7 @@ export function getAdmAreaAppealsStats (aaType, aaId) {
   }
 
   const f = buildAPIQS(filters);
-  return fetchJSONRecursive(`api/v1/appeal/?${f}`, GET_AA_APPEALS_STATS, withToken());
+  return fetchJSON(`api/v2/appeal/?${f}`, GET_AA_APPEALS_STATS, withToken());
 }
 
 export const GET_AA_AGGREGATE_APPEALS = 'GET_AA_AGGREGATE_APPEALS';
@@ -296,7 +301,7 @@ export function getAdmAreaERU (aaType, aaId) {
   }
 
   const f = buildAPIQS(filters);
-  return fetchJSON(`api/v1/eru/?${f}`, GET_AA_ERU, withToken());
+  return fetchJSON(`api/v2/eru/?${f}`, GET_AA_ERU, withToken());
 }
 
 export const GET_HEOPS = 'GET_HEOPS';
@@ -305,7 +310,7 @@ export function getHeops (page = 1, filters = {}) {
   filters.offset = filters.limit * (page - 1);
   const f = buildAPIQS(filters);
 
-  return fetchJSON(`/api/v1/heop/?${f}`, GET_HEOPS, withToken());
+  return fetchJSON(`/api/v2/heop/?${f}`, GET_HEOPS, withToken());
 }
 
 export const GET_YEARLY_HEOPS = 'GET_YEARLY_HEOPS';
@@ -331,13 +336,13 @@ export function getAppeals (page = 1, filters = {}) {
   filters.offset = filters.limit * (page - 1);
 
   const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v1/appeal/?${f}`, GET_APPEALS, withToken());
+  return fetchJSON(`/api/v2/appeal/?${f}`, GET_APPEALS, withToken());
 }
 
 export const GET_APPEAL_DOCS = 'GET_APPEAL_DOCS';
 export function getAppealDocsByAppealIds (appealIds, id) {
   const ids = (Array.isArray(appealIds) ? appealIds : [appealIds]).join(',');
-  return fetchJSON(`api/v1/appeal_document/?order_by=-created_at&appeal__id__in=${ids}`, GET_APPEAL_DOCS, withToken(), { id });
+  return fetchJSON(`api/v2/appeal_document/?order_by=-created_at&appeal__id__in=${ids}`, GET_APPEAL_DOCS, withToken(), { id });
 }
 
 export const GET_DEPLOYMENT_ERU = 'GET_DEPLOYMENT_ERU';
@@ -347,7 +352,7 @@ export function getDeploymentERU (page = 1, filters = {}) {
   filters['deployed_to__isnull'] = false;
 
   const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v1/eru/?${f}`, GET_DEPLOYMENT_ERU, withToken());
+  return fetchJSON(`/api/v2/eru/?${f}`, GET_DEPLOYMENT_ERU, withToken());
 }
 
 export const GET_DEPLOYMENT_FACT = 'GET_DEPLOYMENT_FACT';
@@ -356,7 +361,7 @@ export function getDeploymentFACT (page = 1, filters = {}) {
   filters.offset = filters.limit * (page - 1);
 
   const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v1/fact_person/?${f}`, GET_DEPLOYMENT_FACT, withToken());
+  return fetchJSON(`/api/v2/fact_person/?${f}`, GET_DEPLOYMENT_FACT, withToken());
 }
 
 export const GET_DEPLOYMENT_HEOP = 'GET_DEPLOYMENT_HEOP';
@@ -365,7 +370,7 @@ export function getDeploymentHEOP (page = 1, filters = {}) {
   filters.offset = filters.limit * (page - 1);
 
   const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v1/heop/?${f}`, GET_DEPLOYMENT_HEOP, withToken());
+  return fetchJSON(`/api/v2/heop/?${f}`, GET_DEPLOYMENT_HEOP, withToken());
 }
 
 export const GET_DEPLOYMENT_RDRT = 'GET_DEPLOYMENT_RDRT';
@@ -374,30 +379,34 @@ export function getDeploymentRDRT (page = 1, filters = {}) {
   filters.offset = filters.limit * (page - 1);
 
   const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v1/rdrt_person/?${f}`, GET_DEPLOYMENT_RDRT, withToken());
+  return fetchJSON(`/api/v2/rdrt_person/?${f}`, GET_DEPLOYMENT_RDRT, withToken());
 }
 
 export const GET_ALL_DEPLOYMENT_ERU = 'GET_ALL_DEPLOYMENT_ERU';
 export function getAllDeploymentERU (filters = {}) {
   filters['deployed_to__isnull'] = false;
+  filters.limit = 0;
   const f = buildAPIQS(filters);
-  return fetchJSONRecursive(`/api/v1/eru/?${f}`, GET_ALL_DEPLOYMENT_ERU, withToken());
+  return fetchJSON(`/api/v2/eru/?${f}`, GET_ALL_DEPLOYMENT_ERU, withToken());
 }
 
 export const GET_ALL_DEPLOYMENT_FACT = 'GET_ALL_DEPLOYMENT_FACT';
 export function getAllDeploymentFACT (filters = {}) {
+  filters.limit = 0;
   const f = buildAPIQS(filters);
-  return fetchJSONRecursive(`/api/v1/fact/?${f}`, GET_ALL_DEPLOYMENT_FACT, withToken());
+  return fetchJSON(`/api/v2/fact/?${f}`, GET_ALL_DEPLOYMENT_FACT, withToken());
 }
 
 export const GET_ALL_DEPLOYMENT_HEOP = 'GET_ALL_DEPLOYMENT_HEOP';
 export function getAllDeploymentHEOP (filters = {}) {
+  filters.limit = 0;
   const f = buildAPIQS(filters);
-  return fetchJSONRecursive(`/api/v1/heop/?${f}`, GET_ALL_DEPLOYMENT_HEOP, withToken());
+  return fetchJSON(`/api/v2/heop/?${f}`, GET_ALL_DEPLOYMENT_HEOP, withToken());
 }
 
 export const GET_ALL_DEPLOYMENT_RDRT = 'GET_ALL_DEPLOYMENT_RDRT';
 export function getAllDeploymentRDRT (filters = {}) {
+  filters.limit = 0;
   const f = buildAPIQS(filters);
-  return fetchJSONRecursive(`/api/v1/rdrt/?${f}`, GET_ALL_DEPLOYMENT_RDRT, withToken());
+  return fetchJSON(`/api/v2/rdrt/?${f}`, GET_ALL_DEPLOYMENT_RDRT, withToken());
 }

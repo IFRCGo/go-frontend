@@ -184,7 +184,7 @@ function eru (state = {}, action) {
       state = stateError(state, action);
       break;
     case 'GET_AA_ERU_SUCCESS':
-      const objs = action.data.objects;
+      const objs = action.data;
       const grouped = _groupBy(objs, 'eru_owner.national_society_country.society_name');
       const eruBySociety = Object.keys(grouped).filter(Boolean).map(key => {
         return {

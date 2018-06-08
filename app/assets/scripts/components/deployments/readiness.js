@@ -4,9 +4,9 @@ import { PropTypes as T } from 'prop-types';
 import _intersection from 'lodash.intersection';
 import _cloneDeep from 'lodash.clonedeep';
 import { DateTime } from 'luxon';
+import { Link } from 'react-router-dom';
 
-import { get } from '../../utils/utils';
-import { commaSeparatedNumber as n, nope } from '../../utils/format';
+import { commaSeparatedNumber as n } from '../../utils/format';
 import eruTypes, { getEruType } from '../../utils/eru-types';
 import { environment } from '../../config';
 
@@ -37,7 +37,6 @@ class Readiness extends React.Component {
   }
 
   clearFilters () {
-    console.log('setstate');
     this.setState({ filters: _cloneDeep(initialFilterState) });
   }
 
@@ -55,14 +54,13 @@ class Readiness extends React.Component {
     const numDeployed = deployed.reduce((acc, next) => acc + next.units, 0);
 
     const readyTypes = ready.length ? ready.map(o => `${getEruType(o.type)} (${o.units})`).join(', ') : '';
-
-    const owner = erus[0].eru_owner;
+    const owner = eruOwner.national_society_country;
 
     return (
       <div className='readiness__card' key={eruOwner.id}>
         <div className='readiness__card-header'>
-          <a className='link--primary'>{get(owner, 'national_society_country.society_name') || get(owner, 'national_society_country.name', nope)}</a>
-          <span className='updated'>Last updated {DateTime.fromISO(eruOwner.updated_at).toISOTime()}</span>
+          <Link className='link--primary' to={`/countries/${owner.id}`}>{owner.society_name}</Link>
+          <span className='updated'>Last updated {DateTime.fromISO(eruOwner.updated_at).toISODate()}</span>
         </div>
         <div className='card__col'>
           <p className='card__label card__label--ready'>{n(numReady)} Ready ERU's</p>
@@ -71,7 +69,7 @@ class Readiness extends React.Component {
         <div className='card__col'>
           <p className='card__label'>{n(numDeployed)} Deployed ERU's</p>
           {deployed.map(o => (
-            <p key={o.id}>{getEruType(o.type)} - <a className='link--primary'>{o.deployed_to.name}</a></p>
+            <p key={o.id}>{getEruType(o.type)} - <Link className='link--primary' to={`/countries/${o.deployed_to}`}>{o.deployed_to.name}</Link></p>
           ))}
         </div>
       </div>
