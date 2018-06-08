@@ -135,7 +135,7 @@ class EmergenciesTable extends SFPComponent {
           id: rowData.id,
           date: date,
           name: <Link className='link--primary' to={`/emergencies/${rowData.id}`}>{get(rowData, 'name', nope)}</Link>,
-          dtype: get(getDtypeMeta(rowData.dtype), 'label', nope),
+          dtype: rowData.dtype ? getDtypeMeta(rowData.dtype).label : nope,
           totalAffected: {
             value: n(get(rowData, 'num_affected')),
             className: 'right-align'
