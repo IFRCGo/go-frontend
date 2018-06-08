@@ -18,8 +18,10 @@ import {
 import { environment } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { get, dateOptions, datesAgo, dTypeOptions } from '../utils/utils/';
+import { getDtypeMeta } from '../utils/get-dtype-meta';
 import {
   commaSeparatedNumber as n,
+  separateUppercaseWords as separate,
   nope
 } from '../utils/format';
 import {
@@ -52,6 +54,7 @@ class AdminArea extends SFPComponent {
     this.state = {
       appeals: {
         page: 1,
+        limit: 5,
         sort: {
           field: '',
           direction: 'asc'
@@ -63,6 +66,7 @@ class AdminArea extends SFPComponent {
       },
       drefs: {
         page: 1,
+        limit: 5,
         sort: {
           field: '',
           direction: 'asc'
@@ -74,6 +78,7 @@ class AdminArea extends SFPComponent {
       },
       fieldReports: {
         page: 1,
+        limit: 5,
         sort: {
           field: '',
           direction: 'asc'
@@ -221,24 +226,24 @@ class AdminArea extends SFPComponent {
         { id: 'active', label: 'Active' }
       ];
 
-      const rows = data.objects.map(o => ({
+      const rows = data.results.map(o => ({
         id: o.id,
         date: DateTime.fromISO(o.start_date).toISODate(),
         name: o.name,
-        event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
-        dtype: o.dtype.name,
+        event: o.event ? <Link to={`/emergencies/${o.event}`} className='link--primary' title='View Emergency'>Link</Link> : nope,
+        dtype: getDtypeMeta(o.dtype).label,
         requestAmount: n(o.amount_requested),
         fundedAmount: n(o.amount_funded),
         active: (new Date(o.end_date)).getTime() > now ? 'Active' : 'Inactive'
       }));
 
       return (
-        <Fold title={`Appeals (${n(data.meta.total_count)})`}>
+        <Fold title={`Appeals (${n(data.count)})`}>
           <DisplayTable
             headings={headings}
             rows={rows}
-            pageCount={data.meta.total_count / data.meta.limit}
-            page={data.meta.offset / data.meta.limit}
+            pageCount={data.count / this.state.appeals.limit}
+            page={this.state.appeals.page}
             onPageChange={this.handlePageChange.bind(this, 'appeals')}
           />
         </Fold>
@@ -299,24 +304,24 @@ class AdminArea extends SFPComponent {
         { id: 'active', label: 'Active' }
       ];
 
-      const rows = data.objects.map(o => ({
+      const rows = data.results.map(o => ({
         id: o.id,
         date: DateTime.fromISO(o.start_date).toISODate(),
         name: o.name,
-        event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
-        dtype: o.dtype.name,
+        event: o.event ? <Link to={`/emergencies/${o.event}`} className='link--primary' title='View Emergency'>Link</Link> : nope,
+        dtype: getDtypeMeta(o.dtype).label,
         requestAmount: n(o.amount_requested),
         fundedAmount: n(o.amount_funded),
         active: (new Date(o.end_date)).getTime() > now ? 'Active' : 'Inactive'
       }));
 
       return (
-        <Fold title={`Drefs (${n(data.meta.total_count)})`}>
+        <Fold title={`Drefs (${n(data.count)})`}>
           <DisplayTable
             headings={headings}
             rows={rows}
-            pageCount={data.meta.total_count / data.meta.limit}
-            page={data.meta.offset / data.meta.limit}
+            pageCount={data.count / this.state.drefs.limit}
+            page={this.state.drefs.page}
             onPageChange={this.handlePageChange.bind(this, 'drefs')}
           />
         </Fold>
@@ -365,22 +370,22 @@ class AdminArea extends SFPComponent {
         { id: 'countries', label: 'Countries' }
       ];
 
-      const rows = data.objects.map(o => ({
+      const rows = data.results.map(o => ({
         id: o.id,
         date: DateTime.fromISO(o.created_at).toISODate(),
         name: <Link to={`/reports/${o.id}`} className='link--primary' title='View Field Report'>{o.summary}</Link>,
-        event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
-        dtype: o.dtype.name,
+        event: o.event ? <Link to={`/emergencies/${o.event}`} className='link--primary' title='View Emergency'>Link</Link> : nope,
+        dtype: getDtypeMeta(o.dtype).label,
         countries: <ul>{o.countries.map(country => <li key={country.id}><Link to={`/countries/${country.id}`} className='link--primary' title='View Country'>{country.name}</Link></li>)}</ul>
       }));
 
       return (
-        <Fold title={`Field Reports (${n(data.meta.total_count)})`}>
+        <Fold title={`Field Reports (${n(data.count)})`}>
           <DisplayTable
             headings={headings}
             rows={rows}
-            pageCount={data.meta.total_count / data.meta.limit}
-            page={data.meta.offset / data.meta.limit}
+            pageCount={data.count / this.state.fieldReports.limit}
+            page={this.state.fieldReports.page}
             onPageChange={this.handlePageChange.bind(this, 'fieldReports')}
           />
         </Fold>
@@ -593,59 +598,58 @@ class AdminArea extends SFPComponent {
             </Fold>
             {this.renderAppeals()}
             {this.renderDrefs()}
-              <div className='fold'>
-                <div className='inner'>
-                  <div className='fold__header'>
-                    <div className='fold__headline'>
-                      <h2 className='fold__title'>Links</h2>
-                    </div>
-                  </div>
-                  <div className='fold__body'>
-                    <ul className='links-list'>
-                      <li><a href='' className='link--external'>example external link</a> </li>
-                      <li><a href='' className='link--external'>example external link</a> </li>
-                      <li><a href='' className='link--external'>example external link</a> </li>
-                      <li><a href='' className='link--external'>example external link</a> </li>
-                      <li><a href='' className='link--external'>example external link</a> </li>
-                    </ul>
+            <div className='fold'>
+              <div className='inner'>
+                <div className='fold__header'>
+                  <div className='fold__headline'>
+                    <h2 className='fold__title'>Links</h2>
                   </div>
                 </div>
+                <div className='fold__body'>
+                  <ul className='links-list'>
+                    <li><a href='' className='link--external'>example external link</a> </li>
+                    <li><a href='' className='link--external'>example external link</a> </li>
+                    <li><a href='' className='link--external'>example external link</a> </li>
+                    <li><a href='' className='link--external'>example external link</a> </li>
+                    <li><a href='' className='link--external'>example external link</a> </li>
+                  </ul>
+                </div>
               </div>
+            </div>
             <Fold
-                id='contacts'
-                title='Contacts'
-                wrapperClass='contacts' >
-                {data.contacts && data.contacts.length ? (
-                  <table className='table'>
-                    <thead className='visually-hidden'>
-                      <tr>
-                        <th>Name</th>
-                        <th>Title</th>
-                        <th>Type</th>
-                        <th>Contact</th>
+              id='contacts'
+              title='Contacts'
+              wrapperClass='contacts' >
+              {data.contacts && data.contacts.length ? (
+                <table className='table'>
+                  <thead className='visually-hidden'>
+                    <tr>
+                      <th>Name</th>
+                      <th>Title</th>
+                      <th>Type</th>
+                      <th>Contact</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data.contacts.map(o => (
+                      <tr key={o.id}>
+                        <td>{o.name}</td>
+                        <td>{o.title}</td>
+                        <td>{separate(o.ctype)}</td>
+                        <td>{o.email.indexOf('@') !== -1
+                          ? <a className='link--primary' href={`mailto:${o.email}`} title='Contact'>{o.email}</a>
+                          : <a className='link--primary' href={`tel:${o.email}`} title='Contact'>{o.email}</a>}
+                        </td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      {data.contacts.map(o => (
-                        <tr key={o.id}>
-                          <td>{o.name}</td>
-                          <td>{o.title}</td>
-                          <td>{separate(o.ctype)}</td>
-                          <td>
-                            {o.email.indexOf('@') !== -1
-                              ? <a className='link--primary' href={`mailto:${o.email}`} title='Contact'>{o.email}</a>
-                              : <a className='link--primary' href={`tel:${o.email}`} title='Contact'>{o.email}</a>}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                ) : (
-                  <div className='empty-data__container'>
-                    <p>No contacts to show</p>
-                  </div>
-                )}
-              </Fold>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <div className='empty-data__container'>
+                  <p>No contacts to show</p>
+                </div>
+              )}
+            </Fold>
           </div>
         </div>
       </section>

@@ -3,7 +3,7 @@ import { combineReducers } from 'redux';
 import _toNumber from 'lodash.tonumber';
 
 import { getCentroid } from '../utils/country-centroids';
-import { get, groupByDisasterType } from '../utils/utils';
+import { groupByDisasterType } from '../utils/utils';
 
 const appealsListInitialState = {
   fetching: false,

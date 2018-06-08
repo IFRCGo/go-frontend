@@ -21,6 +21,7 @@ import { get, dateOptions, datesAgo, dTypeOptions } from '../utils/utils/';
 import { getDtypeMeta } from '../utils/get-dtype-meta';
 import {
   commaSeparatedNumber as n,
+  separateUppercaseWords as separate,
   nope
 } from '../utils/format';
 import {
