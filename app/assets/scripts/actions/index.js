@@ -304,6 +304,22 @@ export function getAdmAreaERU (aaType, aaId) {
   return fetchJSON(`api/v2/eru/?${f}`, GET_AA_ERU, withToken());
 }
 
+export const GET_AA_KEY_FIGURES = 'GET_AA_KEY_FIGURES';
+export function getAdmAreaKeyFigures (aaType, aaId) {
+  const f = buildAPIQS({
+    [aaType === 'region' ? 'region' : 'country']: aaId
+  });
+  return fetchJSON(`api/v2/${aaType === 'region' ? 'region' : 'country'}_key_figure/?${f}`, GET_AA_KEY_FIGURES, withToken());
+}
+
+export const GET_AA_SNIPPETS = 'GET_AA_SNIPPETS';
+export function getAdmAreaSnippets (aaType, aaId) {
+  const f = buildAPIQS({
+    [aaType === 'region' ? 'region' : 'country']: aaId
+  });
+  return fetchJSON(`api/v2/${aaType === 'region' ? 'region' : 'country'}_snippet/?${f}`, GET_AA_SNIPPETS, withToken());
+}
+
 export const GET_HEOPS = 'GET_HEOPS';
 export function getHeops (page = 1, filters = {}) {
   filters.limit = filters.limit || 5;

@@ -207,6 +207,36 @@ function eru (state = {}, action) {
   return state;
 }
 
+function keyFigures (state = initialState, action) {
+  switch (action.type) {
+    case 'GET_AA_KEY_FIGURES_INFLIGHT':
+      state = stateInflight(state, action);
+      break;
+    case 'GET_AA_KEY_FIGURES_FAILED':
+      state = stateError(state, action);
+      break;
+    case 'GET_AA_KEY_FIGURES_SUCCESS':
+      state = stateSuccess(state, action);
+      break;
+  }
+  return state;
+}
+
+function snippets (state = initialState, action) {
+  switch (action.type) {
+    case 'GET_AA_SNIPPETS_INFLIGHT':
+      state = stateInflight(state, action);
+      break;
+    case 'GET_AA_SNIPPETS_FAILED':
+      state = stateError(state, action);
+      break;
+    case 'GET_AA_SNIPPETS_SUCCESS':
+      state = stateSuccess(state, action);
+      break;
+  }
+  return state;
+}
+
 // Combined export.
 export default combineReducers({
   aaData,
@@ -215,5 +245,7 @@ export default combineReducers({
   fieldReports,
   appealStats,
   aggregate,
-  eru
+  eru,
+  keyFigures,
+  snippets
 });
