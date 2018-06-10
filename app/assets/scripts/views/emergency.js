@@ -275,7 +275,7 @@ class Emergency extends React.Component {
         <ul className='key-figures-list'>
           {kf.map(o => (
             <li key={o.deck}>
-              <h3>{n(o.number)}</h3>
+              <h3>{isNaN(o.number) ? o.number : n(o.number)}</h3>
               <p className='key-figure-label'>{o.deck}</p>
               <p className='key-figure-source'>Source: {o.source}</p>
             </li>
