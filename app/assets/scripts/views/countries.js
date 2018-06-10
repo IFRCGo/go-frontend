@@ -31,7 +31,9 @@ import {
   getAdmAreaFieldReports,
   getAdmAreaAppealsStats,
   getAdmAreaAggregateAppeals,
-  getAdmAreaERU
+  getAdmAreaERU,
+  getAdmAreaKeyFigures,
+  getAdmAreaSnippets
 } from '../actions';
 import { getBoundingBox } from '../utils/country-bounding-box';
 import { getRegionBoundingBox } from '../utils/region-bounding-box';
@@ -117,6 +119,8 @@ class AdminArea extends SFPComponent {
     this.props._getAdmAreaAppealsStats(props.type, props.match.params.id);
     this.props._getAdmAreaAggregateAppeals(props.type, props.match.params.id, DateTime.local().minus({years: 10}).startOf('month').toISODate(), 'year');
     this.props._getAdmAreaERU(props.type, props.match.params.id);
+    this.props._getAdmAreaKeyFigures(props.type, props.match.params.id);
+    this.props._getAdmAreaSnippets(props.type, props.match.params.id);
   }
 
   getAdmArea (type, id) {
@@ -530,6 +534,42 @@ class AdminArea extends SFPComponent {
     );
   }
 
+  renderSnippets () {
+    const { fetched, error, data } = this.props.snippets;
+    if (!fetched || error) return null;
+    return (
+      <Fold
+        id='graphics'
+        title='Additional Graphics'
+        wrapper_class='additional-graphics'>
+        <div className='iframe__container'>
+          {data.map(o => <div key={o.id} dangerouslySetInnerHTML={{__html: o.snippet}} />)}
+        </div>
+      </Fold>
+    );
+  }
+
+  renderKeyFigures () {
+    const { fetched, error, data } = this.props.keyFigures;
+    if (!fetched || error) return null;
+    return (
+      <Fold
+        id='key-figures'
+        title='Key Figures'
+        wrapper_class='key-figures'>
+        <ul className='key-figures-list'>
+          {data.map(o => (
+            <li key={o.deck}>
+              <h3>{isNaN(o.figure) ? o.figure : n(o.figure)}</h3>
+              <p className='key-figure-label'>{o.deck}</p>
+              <p className='key-figure-source'>Source: {o.source}</p>
+            </li>
+          ))}
+        </ul>
+      </Fold>
+    );
+  }
+
   renderContent () {
     const {
       fetched,
@@ -590,32 +630,35 @@ class AdminArea extends SFPComponent {
         </header>
         <div className='inpage__body'>
           <div className='inner'>
+
+            {this.renderKeyFigures()}
+
             <Fold title='Statistics' headerClass='visually-hidden'>
               <h2 className='fold__title'>14 Active Operations</h2>
               <div className={mapContainerClass}>
                 <Homemap appealsList={this.props.appealStats} bbox={bbox} />
               </div>
             </Fold>
+
             {this.renderAppeals()}
             {this.renderDrefs()}
-            <div className='fold'>
-              <div className='inner'>
-                <div className='fold__header'>
-                  <div className='fold__headline'>
-                    <h2 className='fold__title'>Links</h2>
-                  </div>
+            {this.renderSnippets()}
+
+            <Fold
+              id='lnks'
+              title='Additional Links'
+              wrapper_class='links'>
+              {data.links && data.links.length ? (
+                <ul className='links-list'>
+                  {data.links.map(o => <li key={o.id}><a href={o.url} className='link--external'>{o.title}</a> </li>)}
+                </ul>
+              ) : (
+                <div className='empty-data__container'>
+                  <p>No contacts to show</p>
                 </div>
-                <div className='fold__body'>
-                  <ul className='links-list'>
-                    <li><a href='' className='link--external'>example external link</a> </li>
-                    <li><a href='' className='link--external'>example external link</a> </li>
-                    <li><a href='' className='link--external'>example external link</a> </li>
-                    <li><a href='' className='link--external'>example external link</a> </li>
-                    <li><a href='' className='link--external'>example external link</a> </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+              )}
+            </Fold>
+
             <Fold
               id='contacts'
               title='Contacts'
@@ -650,6 +693,7 @@ class AdminArea extends SFPComponent {
                 </div>
               )}
             </Fold>
+
           </div>
         </div>
       </section>
@@ -683,7 +727,9 @@ if (environment !== 'production') {
     fieldReports: T.object,
     appealStats: T.object,
     aggregateYear: T.object,
-    eru: T.object
+    eru: T.object,
+    keyFigures: T.object,
+    snippets: T.object
   };
 }
 
@@ -705,7 +751,9 @@ const selector = (state, ownProps) => ({
     fetching: false,
     fetched: false
   }),
-  eru: state.adminArea.eru
+  eru: state.adminArea.eru,
+  keyFigures: state.adminArea.keyFigures,
+  snippets: state.adminArea.snippets
 });
 
 const dispatcher = (dispatch) => ({
@@ -715,7 +763,9 @@ const dispatcher = (dispatch) => ({
   _getAdmAreaFieldReports: (...args) => dispatch(getAdmAreaFieldReports(...args)),
   _getAdmAreaAppealsStats: (...args) => dispatch(getAdmAreaAppealsStats(...args)),
   _getAdmAreaAggregateAppeals: (...args) => dispatch(getAdmAreaAggregateAppeals(...args)),
-  _getAdmAreaERU: (...args) => dispatch(getAdmAreaERU(...args))
+  _getAdmAreaERU: (...args) => dispatch(getAdmAreaERU(...args)),
+  _getAdmAreaKeyFigures: (...args) => dispatch(getAdmAreaKeyFigures(...args)),
+  _getAdmAreaSnippets: (...args) => dispatch(getAdmAreaSnippets(...args))
 });
 
 export default connect(selector, dispatcher)(AdminArea);
