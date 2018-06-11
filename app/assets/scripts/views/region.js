@@ -21,7 +21,6 @@ import { get, dateOptions, datesAgo, dTypeOptions } from '../utils/utils/';
 import { getDtypeMeta } from '../utils/get-dtype-meta';
 import {
   commaSeparatedNumber as n,
-  separateUppercaseWords as separate,
   nope
 } from '../utils/format';
 import {
@@ -31,7 +30,9 @@ import {
   getAdmAreaFieldReports,
   getAdmAreaAppealsStats,
   getAdmAreaAggregateAppeals,
-  getAdmAreaERU
+  getAdmAreaERU,
+  getAdmAreaKeyFigures,
+  getAdmAreaSnippets
 } from '../actions';
 import { getBoundingBox } from '../utils/country-bounding-box';
 import { getRegionBoundingBox } from '../utils/region-bounding-box';
@@ -41,6 +42,12 @@ import Fold from '../components/fold';
 import Homemap from '../components/homemap';
 import BlockLoading from '../components/block-loading';
 import DisplayTable, { SortHeader, FilterHeader } from '../components/display-table';
+import {
+  Snippets,
+  KeyFigures,
+  Contacts,
+  Links
+} from '../components/admin-area-elements';
 import { SFPComponent } from '../utils/extendables';
 
 class AdminArea extends SFPComponent {
@@ -117,6 +124,8 @@ class AdminArea extends SFPComponent {
     this.props._getAdmAreaAppealsStats(props.type, props.match.params.id);
     this.props._getAdmAreaAggregateAppeals(props.type, props.match.params.id, DateTime.local().minus({years: 10}).startOf('month').toISODate(), 'year');
     this.props._getAdmAreaERU(props.type, props.match.params.id);
+    this.props._getAdmAreaKeyFigures(props.type, props.match.params.id);
+    this.props._getAdmAreaSnippets(props.type, props.match.params.id);
   }
 
   getAdmArea (type, id) {
@@ -561,6 +570,7 @@ class AdminArea extends SFPComponent {
         </header>
         <div className='inpage__body'>
           <div className='inner'>
+            <KeyFigures data={this.props.keyFigures} />
             <div className='fold'>
               <div className= 'inner'>
                 <h2 className='fold__title'>14 Emergencies</h2>
@@ -569,68 +579,20 @@ class AdminArea extends SFPComponent {
                 </div>
               </div>
             </div>
+
             <Fold title='Statistics' headerClass='visually-hidden'>
               <div className='stats-chart'>
                 {this.renderOperations10Years()}
                 {this.renderERUBySociety()}
               </div>
+
             </Fold>
             {this.renderAppeals()}
             {this.renderDrefs()}
             {this.renderFieldReports()}
-            <div className='fold'>
-              <div className='inner'>
-                <div className='fold__header'>
-                  <div className='fold__headline'>
-                    <h2 className='fold__title'>Links</h2>
-                  </div>
-                </div>
-                <div className='fold__body'>
-                  <ul className='links-list'>
-                    <li><a href='' className='link--external'>example external link</a> </li>
-                    <li><a href='' className='link--external'>example external link</a> </li>
-                    <li><a href='' className='link--external'>example external link</a> </li>
-                    <li><a href='' className='link--external'>example external link</a> </li>
-                    <li><a href='' className='link--external'>example external link</a> </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <Fold
-              id='contacts'
-              title='Contacts'
-              wrapperClass='contacts' >
-              {data.contacts && data.contacts.length ? (
-                <table className='table'>
-                  <thead className='visually-hidden'>
-                    <tr>
-                      <th>Name</th>
-                      <th>Title</th>
-                      <th>Type</th>
-                      <th>Contact</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {data.contacts.map(o => (
-                      <tr key={o.id}>
-                        <td>{o.name}</td>
-                        <td>{o.title}</td>
-                        <td>{separate(o.ctype)}</td>
-                        <td>
-                          {o.email.indexOf('@') !== -1
-                            ? <a className='link--primary' href={`mailto:${o.email}`} title='Contact'>{o.email}</a>
-                            : <a className='link--primary' href={`tel:${o.email}`} title='Contact'>{o.email}</a>}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              ) : (
-                <div className='empty-data__container'>
-                  <p>No contacts to show</p>
-                </div>
-              )}
-            </Fold>
+            <Snippets data={this.props.snippets} />
+            <Links data={data} />
+            <Contacts data={data} />
           </div>
         </div>
       </section>
@@ -664,7 +626,9 @@ if (environment !== 'production') {
     fieldReports: T.object,
     appealStats: T.object,
     aggregateYear: T.object,
-    eru: T.object
+    eru: T.object,
+    keyFigures: T.object,
+    snippets: T.object
   };
 }
 
@@ -686,7 +650,9 @@ const selector = (state, ownProps) => ({
     fetching: false,
     fetched: false
   }),
-  eru: state.adminArea.eru
+  eru: state.adminArea.eru,
+  keyFigures: state.adminArea.keyFigures,
+  snippets: state.adminArea.snippets
 });
 
 const dispatcher = (dispatch) => ({
@@ -696,7 +662,9 @@ const dispatcher = (dispatch) => ({
   _getAdmAreaFieldReports: (...args) => dispatch(getAdmAreaFieldReports(...args)),
   _getAdmAreaAppealsStats: (...args) => dispatch(getAdmAreaAppealsStats(...args)),
   _getAdmAreaAggregateAppeals: (...args) => dispatch(getAdmAreaAggregateAppeals(...args)),
-  _getAdmAreaERU: (...args) => dispatch(getAdmAreaERU(...args))
+  _getAdmAreaERU: (...args) => dispatch(getAdmAreaERU(...args)),
+  _getAdmAreaKeyFigures: (...args) => dispatch(getAdmAreaKeyFigures(...args)),
+  _getAdmAreaSnippets: (...args) => dispatch(getAdmAreaSnippets(...args))
 });
 
 export default connect(selector, dispatcher)(AdminArea);

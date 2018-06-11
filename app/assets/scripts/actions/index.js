@@ -9,7 +9,7 @@ import {
 import { stringify as buildAPIQS } from 'qs';
 import { DateTime } from 'luxon';
 
-import { regions, countriesByRegion } from '../utils/region-constants';
+import { countriesByRegion } from '../utils/region-constants';
 
 export const TOKEN = 'TOKEN';
 export function getAuthToken (username, password) {
@@ -159,18 +159,7 @@ export const GET_AA = 'GET_AA';
 export function getAdmAreaById (aaType, id) {
   switch (aaType) {
     case 'region':
-      // Get from static storage.
-      return function (dispatch) {
-        dispatch({ type: 'GET_AA_INFLIGHT', id });
-        setTimeout(() => {
-          const region = regions[id];
-          if (region) {
-            dispatch({ type: 'GET_AA_SUCCESS', data: region, receivedAt: Date.now(), id });
-          } else {
-            dispatch({ type: 'GET_AA_FAILED', error: { message: 'Region not found.' }, id });
-          }
-        }, 1);
-      };
+      return fetchJSON(`/api/v2/region/${id}/`, GET_AA, withToken(), { id });
     case 'country':
       return fetchJSON(`/api/v2/country/${id}/`, GET_AA, withToken(), { id });
     default:

@@ -4,16 +4,6 @@ import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { DateTime } from 'luxon';
-import {
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  BarChart,
-  Bar
-} from 'recharts';
 
 import { environment } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
@@ -21,7 +11,6 @@ import { get, dateOptions, datesAgo, dTypeOptions } from '../utils/utils/';
 import { getDtypeMeta } from '../utils/get-dtype-meta';
 import {
   commaSeparatedNumber as n,
-  separateUppercaseWords as separate,
   nope
 } from '../utils/format';
 import {
@@ -36,13 +25,18 @@ import {
   getAdmAreaSnippets
 } from '../actions';
 import { getBoundingBox } from '../utils/country-bounding-box';
-import { getRegionBoundingBox } from '../utils/region-bounding-box';
 
 import App from './app';
 import Fold from '../components/fold';
 import Homemap from '../components/homemap';
 import BlockLoading from '../components/block-loading';
 import DisplayTable, { SortHeader, FilterHeader } from '../components/display-table';
+import {
+  Snippets,
+  KeyFigures,
+  Contacts,
+  Links
+} from '../components/admin-area-elements';
 import { SFPComponent } from '../utils/extendables';
 
 class AdminArea extends SFPComponent {
@@ -335,70 +329,6 @@ class AdminArea extends SFPComponent {
     return null;
   }
 
-  renderFieldReports () {
-    const {
-      fetched,
-      fetching,
-      error,
-      data
-    } = this.props.fieldReports;
-
-    if (fetching) {
-      return (
-        <Fold title='Field Reports'>
-          <BlockLoading/>
-        </Fold>
-      );
-    }
-
-    if (error) {
-      return (
-        <Fold title='Field Reports'>
-          <p>You must be logged in to view field reports. <Link key='login' to='/login' className='link--primary' title='Login'>Login</Link></p>
-        </Fold>
-      );
-    }
-
-    if (fetched) {
-      const headings = [
-        {
-          id: 'date',
-          label: <FilterHeader id='date' title='Created At' options={dateOptions} filter={this.state.fieldReports.filters.date} onSelect={this.handleFilterChange.bind(this, 'fieldReports', 'date')} />
-        },
-        { id: 'name', label: 'Name' },
-        { id: 'event', label: 'Emergency' },
-        {
-          id: 'dtype',
-          label: <FilterHeader id='dtype' title='Disaster Type' options={dTypeOptions} filter={this.state.fieldReports.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'fieldReports', 'dtype')} />
-        },
-        { id: 'countries', label: 'Countries' }
-      ];
-
-      const rows = data.results.map(o => ({
-        id: o.id,
-        date: DateTime.fromISO(o.created_at).toISODate(),
-        name: <Link to={`/reports/${o.id}`} className='link--primary' title='View Field Report'>{o.summary}</Link>,
-        event: o.event ? <Link to={`/emergencies/${o.event}`} className='link--primary' title='View Emergency'>Link</Link> : nope,
-        dtype: getDtypeMeta(o.dtype).label,
-        countries: <ul>{o.countries.map(country => <li key={country.id}><Link to={`/countries/${country.id}`} className='link--primary' title='View Country'>{country.name}</Link></li>)}</ul>
-      }));
-
-      return (
-        <Fold title={`Field Reports (${n(data.count)})`}>
-          <DisplayTable
-            headings={headings}
-            rows={rows}
-            pageCount={data.count / this.state.fieldReports.limit}
-            page={this.state.fieldReports.page}
-            onPageChange={this.handlePageChange.bind(this, 'fieldReports')}
-          />
-        </Fold>
-      );
-    }
-
-    return null;
-  }
-
   renderStats () {
     const {
       fetched,
@@ -429,147 +359,6 @@ class AdminArea extends SFPComponent {
     );
   }
 
-  renderOperations10Years () {
-    const {
-      data,
-      fetched,
-      fetching,
-      error
-    } = this.props.aggregateYear;
-
-    const zone = 'utc';
-    const tickFormatter = (date) => DateTime.fromISO(date, {zone}).toFormat('yyyy');
-
-    const contentFormatter = (payload) => {
-      if (!payload.payload || !payload.payload[0]) { return null; }
-
-      const item = payload.payload[0].payload;
-      return (
-        <article className='chart-tooltip'>
-          <div className='chart-tooltip__contents'>
-            <dl>
-              <dd>Date</dd>
-              <dt>{tickFormatter(item.timespan)}</dt>
-              <dd>Total</dd>
-              <dt>{item.count}</dt>
-            </dl>
-          </div>
-        </article>
-      );
-    };
-
-    return error ? (
-      <p>Operations data not available.</p>
-    ) : (
-      <figure className='chart'>
-        <figcaption>Operations for the past 10 years</figcaption>
-        <div className='chart__container'>
-          {!fetched || fetching ? (
-            <BlockLoading />
-          ) : (
-            <ResponsiveContainer>
-              <LineChart data={data}>
-                <XAxis tickFormatter={tickFormatter} dataKey='timespan' axisLine={false} padding={{ left: 16 }} />
-                <YAxis axisLine={false} tickLine={false} width={32} padding={{ bottom: 16 }} />
-                <Line type='monotone' dataKey='count' stroke='#C22A26' />
-                <Tooltip content={contentFormatter}/>
-              </LineChart>
-            </ResponsiveContainer>
-          )}
-        </div>
-      </figure>
-    );
-  }
-
-  renderERUBySociety () {
-    const {
-      data,
-      fetched,
-      fetching,
-      error
-    } = this.props.eru;
-
-    const contentFormatter = (payload) => {
-      if (!payload.payload || !payload.payload[0]) { return null; }
-
-      const item = payload.payload[0].payload;
-      return (
-        <article className='chart-tooltip'>
-          <div className='chart-tooltip__contents'>
-            <dl>
-              <dd>Society</dd>
-              <dt>{item.name}</dt>
-              <dd>Total</dd>
-              <dt>{item.count}</dt>
-            </dl>
-          </div>
-        </article>
-      );
-    };
-
-    return error ? (
-      <p>No active deployments to show.</p>
-    ) : (
-      <figure className='chart'>
-        <figcaption>Active Deployments By Support National Societies</figcaption>
-        <div className='chart__container'>
-          {!fetched || fetching ? (
-            <BlockLoading />
-          ) : (
-            data.eruBySociety.length ? (
-              <ResponsiveContainer>
-                <BarChart data={data.eruBySociety}>
-                  <XAxis dataKey='name' axisLine={false} padding={{ left: 16 }} />
-                  <YAxis axisLine={false} tickLine={false} width={32} padding={{ bottom: 16 }} />
-                  <Bar dataKey='count' fill='#C22A26' />
-                  <Tooltip content={contentFormatter}/>
-                </BarChart>
-              </ResponsiveContainer>
-            ) : (
-              <p>No data to show.</p>
-            )
-          )}
-        </div>
-      </figure>
-    );
-  }
-
-  renderSnippets () {
-    const { fetched, error, data } = this.props.snippets;
-    if (!fetched || error) return null;
-    return (
-      <Fold
-        id='graphics'
-        title='Additional Graphics'
-        wrapper_class='additional-graphics'>
-        <div className='iframe__container'>
-          {data.map(o => <div key={o.id} dangerouslySetInnerHTML={{__html: o.snippet}} />)}
-        </div>
-      </Fold>
-    );
-  }
-
-  renderKeyFigures () {
-    const { fetched, error, data } = this.props.keyFigures;
-    if (!fetched || error) return null;
-    return (
-      <Fold
-        id='key-figures'
-        title='Key Figures'
-        wrapper_class='key-figures'>
-        <ul className='key-figures-list'>
-          {data.map(o => (
-            <li key={o.deck}>
-              <h3>{isNaN(o.figure) ? o.figure : n(o.figure)}</h3>
-              <p className='key-figure-label'>{o.deck}</p>
-              <p className='key-figure-source'>Source: {o.source}</p>
-            </li>
-          ))}
-        </ul>
-      </Fold>
-    );
-  }
-
   renderContent () {
     const {
       fetched,
@@ -579,20 +368,15 @@ class AdminArea extends SFPComponent {
 
     if (!fetched || error) return null;
 
-    const isRegion = this.props.type === 'region';
-    const bbox = isRegion ? getRegionBoundingBox(data.id) : getBoundingBox(data.iso);
-    const mapContainerClass = `${isRegion ? 'region' : 'country'}__map`;
+    const bbox = getBoundingBox(data.iso);
+    const mapContainerClass = 'country__map';
 
     return (
       <section className='inpage'>
         <header className='inpage__header'>
           <div className='inner'>
             <div className='inpage__headline'>
-              {isRegion ? (
-                <h1 className='inpage__title'>{data.name} Region</h1>
-              ) : (
-                <h1 className='inpage__title'>{data.name}</h1>
-              )}
+              <h1 className='inpage__title'>{data.name}</h1>
               <div className='inpage__meta'>
                 <ul className='inform-list dl--horizontal'>
                   <li>Inform Index: <span className='bold'> High </span></li>
@@ -630,9 +414,7 @@ class AdminArea extends SFPComponent {
         </header>
         <div className='inpage__body'>
           <div className='inner'>
-
-            {this.renderKeyFigures()}
-
+            <KeyFigures data={this.props.keyFigures} />
             <Fold title='Statistics' headerClass='visually-hidden'>
               <h2 className='fold__title'>14 Active Operations</h2>
               <div className={mapContainerClass}>
@@ -642,58 +424,9 @@ class AdminArea extends SFPComponent {
 
             {this.renderAppeals()}
             {this.renderDrefs()}
-            {this.renderSnippets()}
-
-            <Fold
-              id='lnks'
-              title='Additional Links'
-              wrapper_class='links'>
-              {data.links && data.links.length ? (
-                <ul className='links-list'>
-                  {data.links.map(o => <li key={o.id}><a href={o.url} className='link--external'>{o.title}</a> </li>)}
-                </ul>
-              ) : (
-                <div className='empty-data__container'>
-                  <p>No contacts to show</p>
-                </div>
-              )}
-            </Fold>
-
-            <Fold
-              id='contacts'
-              title='Contacts'
-              wrapperClass='contacts' >
-              {data.contacts && data.contacts.length ? (
-                <table className='table'>
-                  <thead className='visually-hidden'>
-                    <tr>
-                      <th>Name</th>
-                      <th>Title</th>
-                      <th>Type</th>
-                      <th>Contact</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {data.contacts.map(o => (
-                      <tr key={o.id}>
-                        <td>{o.name}</td>
-                        <td>{o.title}</td>
-                        <td>{separate(o.ctype)}</td>
-                        <td>{o.email.indexOf('@') !== -1
-                          ? <a className='link--primary' href={`mailto:${o.email}`} title='Contact'>{o.email}</a>
-                          : <a className='link--primary' href={`tel:${o.email}`} title='Contact'>{o.email}</a>}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              ) : (
-                <div className='empty-data__container'>
-                  <p>No contacts to show</p>
-                </div>
-              )}
-            </Fold>
-
+            <Snippets data={this.props.snippets} />
+            <Links data={data} />
+            <Contacts data={data} />
           </div>
         </div>
       </section>
