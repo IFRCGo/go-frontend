@@ -278,7 +278,7 @@ export default class DeploymentsMap extends React.Component {
                     <label className='form__label'>Key</label>
                     <dl className='legend__dl legend__dl--colors'>
                       <dt className='color color--blue'>blue</dt>
-                      <dd>Deployed Operations (FACT, RDRT/RIT, HeOps)</dd>
+                      <dd>HR Personnel (ERU, FACT, RDRT/RIT, HeOps) Deployed</dd>
                     </dl>
                   </div>
                   <div className='legend__block'>
