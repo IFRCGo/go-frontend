@@ -14,6 +14,8 @@ import {
   BarChart,
   Bar
 } from 'recharts';
+import { Sticky, StickyContainer } from 'react-sticky';
+import c from 'classnames';
 
 import { environment } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
@@ -28,18 +30,26 @@ import {
   getAdmAreaAppeals,
   getAdmAreaDrefs,
   getAdmAreaFieldReports,
-  getAdmAreaAppealsStats,
+  getAdmAreaAppealsList,
   getAdmAreaAggregateAppeals,
-  getAdmAreaERU
+  getAdmAreaERU,
+  getAdmAreaKeyFigures,
+  getAdmAreaSnippets
 } from '../actions';
-import { getBoundingBox } from '../utils/country-bounding-box';
 import { getRegionBoundingBox } from '../utils/region-bounding-box';
+import { regions as regionMeta } from '../utils/region-constants';
 
 import App from './app';
 import Fold from '../components/fold';
 import Homemap from '../components/homemap';
 import BlockLoading from '../components/block-loading';
 import DisplayTable, { SortHeader, FilterHeader } from '../components/display-table';
+import {
+  Snippets,
+  KeyFigures,
+  Contacts,
+  Links
+} from '../components/admin-area-elements';
 import { SFPComponent } from '../utils/extendables';
 
 class AdminArea extends SFPComponent {
@@ -110,12 +120,14 @@ class AdminArea extends SFPComponent {
   }
 
   getData (props) {
-    this.props._getAdmAreaAppeals(props.type, props.match.params.id, 1, { order_by: '-start_date' });
-    this.props._getAdmAreaDrefs(props.type, props.match.params.id, 1, { order_by: '-start_date' });
-    this.props._getAdmAreaFieldReports(props.type, props.match.params.id, 1, { order_by: '-created_at' });
-    this.props._getAdmAreaAppealsStats(props.type, props.match.params.id);
+    this.props._getAdmAreaAppeals(props.type, props.match.params.id, 1, { ordering: '-start_date' });
+    this.props._getAdmAreaDrefs(props.type, props.match.params.id, 1, { ordering: '-start_date' });
+    this.props._getAdmAreaFieldReports(props.type, props.match.params.id, 1, { ordering: '-created_at' });
+    this.props._getAdmAreaAppealsList(props.type, props.match.params.id);
     this.props._getAdmAreaAggregateAppeals(props.type, props.match.params.id, DateTime.local().minus({years: 10}).startOf('month').toISODate(), 'year');
     this.props._getAdmAreaERU(props.type, props.match.params.id);
+    this.props._getAdmAreaKeyFigures(props.type, props.match.params.id);
+    this.props._getAdmAreaSnippets(props.type, props.match.params.id);
   }
 
   getAdmArea (type, id) {
@@ -131,9 +143,9 @@ class AdminArea extends SFPComponent {
       case 'appeals':
       case 'drefs':
         if (state.sort.field) {
-          qs.order_by = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
+          qs.ordering = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
         } else {
-          qs.order_by = '-start_date';
+          qs.ordering = '-start_date';
         }
 
         if (state.filters.date !== 'all') {
@@ -145,7 +157,7 @@ class AdminArea extends SFPComponent {
 
         break;
       case 'fieldReports':
-        qs.order_by = '-created_at';
+        qs.ordering = '-created_at';
         if (state.filters.date !== 'all') {
           qs.created_at__gte = datesAgo[state.filters.date]();
         }
@@ -184,7 +196,7 @@ class AdminArea extends SFPComponent {
 
     if (fetching) {
       return (
-        <Fold title='Appeals'>
+        <Fold title='Appeals' id='appeals'>
           <BlockLoading/>
         </Fold>
       );
@@ -192,7 +204,7 @@ class AdminArea extends SFPComponent {
 
     if (error) {
       return (
-        <Fold title='Appeals'>
+        <Fold title='Appeals' id='appeals'>
           <p>Emergency appeals not available.</p>
         </Fold>
       );
@@ -237,7 +249,7 @@ class AdminArea extends SFPComponent {
       }));
 
       return (
-        <Fold title={`Appeals (${n(data.count)})`}>
+        <Fold title={`Appeals (${n(data.count)})`} id='appeals'>
           <DisplayTable
             headings={headings}
             rows={rows}
@@ -262,7 +274,7 @@ class AdminArea extends SFPComponent {
 
     if (fetching) {
       return (
-        <Fold title='Drefs'>
+        <Fold title='Drefs' id='drefs'>
           <BlockLoading/>
         </Fold>
       );
@@ -270,7 +282,7 @@ class AdminArea extends SFPComponent {
 
     if (error) {
       return (
-        <Fold title='Drefs'>
+        <Fold title='Drefs' id='drefs'>
           <p>DREFs not available.</p>
         </Fold>
       );
@@ -315,7 +327,7 @@ class AdminArea extends SFPComponent {
       }));
 
       return (
-        <Fold title={`Drefs (${n(data.count)})`}>
+        <Fold title={`Drefs (${n(data.count)})`} id='drefs'>
           <DisplayTable
             headings={headings}
             rows={rows}
@@ -340,7 +352,7 @@ class AdminArea extends SFPComponent {
 
     if (fetching) {
       return (
-        <Fold title='Field Reports'>
+        <Fold title='Field Reports' id='field-reports'>
           <BlockLoading/>
         </Fold>
       );
@@ -348,7 +360,7 @@ class AdminArea extends SFPComponent {
 
     if (error) {
       return (
-        <Fold title='Field Reports'>
+        <Fold title='Field Reports' id='field-reports'>
           <p>You must be logged in to view field reports. <Link key='login' to='/login' className='link--primary' title='Login'>Login</Link></p>
         </Fold>
       );
@@ -379,7 +391,7 @@ class AdminArea extends SFPComponent {
       }));
 
       return (
-        <Fold title={`Field Reports (${n(data.count)})`}>
+        <Fold title={`Field Reports (${n(data.count)})`} id='field-reports'>
           <DisplayTable
             headings={headings}
             rows={rows}
@@ -538,42 +550,70 @@ class AdminArea extends SFPComponent {
 
     if (!fetched || error) return null;
 
-    const isRegion = this.props.type === 'region';
-    const bbox = isRegion ? getRegionBoundingBox(data.id) : getBoundingBox(data.iso);
-    const mapContainerClass = `${isRegion ? 'region' : 'country'}__map`;
+    const bbox = getRegionBoundingBox(data.id);
+    const mapContainerClass = 'region__map';
+    const regionName = get(regionMeta, [data.id, 'name'], nope);
 
     return (
       <section className='inpage'>
         <header className='inpage__header'>
           <div className='inner'>
             <div className='inpage__headline'>
-              {isRegion ? (
-                <h1 className='inpage__title'>{data.name} Region</h1>
-              ) : (
-                <h1 className='inpage__title'>{data.name}</h1>
-              )}
+              <h1 className='inpage__title'>{regionName}</h1>
               <div className='inpage__introduction'>
                 {this.renderStats()}
               </div>
             </div>
           </div>
-          <div className={mapContainerClass}>
-            <Homemap appealsList={this.props.appealStats} bbox={bbox} />
-          </div>
         </header>
-        <div className='inpage__body'>
-          <div className='inner'>
-            <Fold title='Statistics' headerClass='visually-hidden'>
-              <div className='stats-chart'>
-                {this.renderOperations10Years()}
-                {this.renderERUBySociety()}
+        <StickyContainer>
+          <Sticky>
+            {({ style, isSticky }) => (
+              <div style={style} className={c('inpage__nav', {'inpage__nav--sticky': isSticky})}>
+                <div className='inner'>
+                  <ul>
+                    <li><a href='#key-figures' title='Go to Key Figures section'>Key Figures</a></li>
+                    <li><a href='#operations-map' title='Go to Operations section'>Operations</a></li>
+                    <li><a href='#stats' title='Go to Stats section'>Stats</a></li>
+                    <li><a href='#appeals' title='Go to Appeals section'>Appeals</a></li>
+                    <li><a href='#drefs' title='Go to Drefs section'>Drefs</a></li>
+                    <li><a href='#field-reports' title='Go to Field Reports section'>Field Reports</a></li>
+                    <li><a href='#graphics' title='Go to Graphics section'>Graphics</a></li>
+                    <li><a href='#links' title='Go to Links section'>Links</a></li>
+                    <li><a href='#contacts' title='Go to Contacts section'>Contacts</a></li>
+                  </ul>
+                </div>
               </div>
-            </Fold>
-            {this.renderAppeals()}
-            {this.renderDrefs()}
-            {this.renderFieldReports()}
+            )}
+          </Sticky>
+          <div className='inpage__body'>
+            <div className='inner'>
+              <KeyFigures data={this.props.keyFigures} />
+              <div className='fold' id='operations-map'>
+                <div className= 'inner'>
+                  <h2 className='fold__title'>14 Emergencies</h2>
+                  <div className={mapContainerClass}>
+                    <Homemap appealsList={this.props.appealStats} bbox={bbox} />
+                  </div>
+                </div>
+              </div>
+
+              <Fold title='Statistics' headerClass='visually-hidden' id='stats'>
+                <div className='stats-chart'>
+                  {this.renderOperations10Years()}
+                  {this.renderERUBySociety()}
+                </div>
+
+              </Fold>
+              {this.renderAppeals()}
+              {this.renderDrefs()}
+              {this.renderFieldReports()}
+              <Snippets data={this.props.snippets} />
+              <Links data={data} />
+              <Contacts data={data} />
+            </div>
           </div>
-        </div>
+        </StickyContainer>
       </section>
     );
   }
@@ -593,7 +633,7 @@ if (environment !== 'production') {
     _getAdmAreaAppeals: T.func,
     _getAdmAreaDrefs: T.func,
     _getAdmAreaFieldReports: T.func,
-    _getAdmAreaAppealsStats: T.func,
+    _getAdmAreaAppealsList: T.func,
     _getAdmAreaAggregateAppeals: T.func,
     _getAdmAreaERU: T.func,
     type: T.string,
@@ -605,7 +645,9 @@ if (environment !== 'production') {
     fieldReports: T.object,
     appealStats: T.object,
     aggregateYear: T.object,
-    eru: T.object
+    eru: T.object,
+    keyFigures: T.object,
+    snippets: T.object
   };
 }
 
@@ -627,7 +669,9 @@ const selector = (state, ownProps) => ({
     fetching: false,
     fetched: false
   }),
-  eru: state.adminArea.eru
+  eru: state.adminArea.eru,
+  keyFigures: state.adminArea.keyFigures,
+  snippets: state.adminArea.snippets
 });
 
 const dispatcher = (dispatch) => ({
@@ -635,9 +679,11 @@ const dispatcher = (dispatch) => ({
   _getAdmAreaAppeals: (...args) => dispatch(getAdmAreaAppeals(...args)),
   _getAdmAreaDrefs: (...args) => dispatch(getAdmAreaDrefs(...args)),
   _getAdmAreaFieldReports: (...args) => dispatch(getAdmAreaFieldReports(...args)),
-  _getAdmAreaAppealsStats: (...args) => dispatch(getAdmAreaAppealsStats(...args)),
+  _getAdmAreaAppealsList: (...args) => dispatch(getAdmAreaAppealsList(...args)),
   _getAdmAreaAggregateAppeals: (...args) => dispatch(getAdmAreaAggregateAppeals(...args)),
-  _getAdmAreaERU: (...args) => dispatch(getAdmAreaERU(...args))
+  _getAdmAreaERU: (...args) => dispatch(getAdmAreaERU(...args)),
+  _getAdmAreaKeyFigures: (...args) => dispatch(getAdmAreaKeyFigures(...args)),
+  _getAdmAreaSnippets: (...args) => dispatch(getAdmAreaSnippets(...args))
 });
 
 export default connect(selector, dispatcher)(AdminArea);

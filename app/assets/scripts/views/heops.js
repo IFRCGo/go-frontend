@@ -57,7 +57,7 @@ class HeOps extends SFPComponent {
     let qs = {};
     let state = this.state.heops;
     if (state.sort.field) {
-      qs.order_by = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
+      qs.ordering = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
     }
 
     if (state.filters.region !== 'all') {
