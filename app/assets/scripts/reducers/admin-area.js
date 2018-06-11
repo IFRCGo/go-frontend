@@ -95,7 +95,7 @@ function getAppealsStats (appeals) {
 }
 
 function getAdminGeojson (appeals) {
-  const grouped = _groupBy(appeals, 'country.iso');
+  const grouped = _groupBy(appeals.filter(o => o.country), 'country.iso');
   return {
     type: 'FeatureCollection',
     features: Object.keys(grouped).map(countryIso => {
