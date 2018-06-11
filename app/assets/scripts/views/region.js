@@ -14,6 +14,8 @@ import {
   BarChart,
   Bar
 } from 'recharts';
+import { Sticky, StickyContainer } from 'react-sticky';
+import c from 'classnames';
 
 import { environment } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
@@ -194,7 +196,7 @@ class AdminArea extends SFPComponent {
 
     if (fetching) {
       return (
-        <Fold title='Appeals'>
+        <Fold title='Appeals' id='appeals'>
           <BlockLoading/>
         </Fold>
       );
@@ -202,7 +204,7 @@ class AdminArea extends SFPComponent {
 
     if (error) {
       return (
-        <Fold title='Appeals'>
+        <Fold title='Appeals' id='appeals'>
           <p>Emergency appeals not available.</p>
         </Fold>
       );
@@ -247,7 +249,7 @@ class AdminArea extends SFPComponent {
       }));
 
       return (
-        <Fold title={`Appeals (${n(data.count)})`}>
+        <Fold title={`Appeals (${n(data.count)})`} id='appeals'>
           <DisplayTable
             headings={headings}
             rows={rows}
@@ -272,7 +274,7 @@ class AdminArea extends SFPComponent {
 
     if (fetching) {
       return (
-        <Fold title='Drefs'>
+        <Fold title='Drefs' id='drefs'>
           <BlockLoading/>
         </Fold>
       );
@@ -280,7 +282,7 @@ class AdminArea extends SFPComponent {
 
     if (error) {
       return (
-        <Fold title='Drefs'>
+        <Fold title='Drefs' id='drefs'>
           <p>DREFs not available.</p>
         </Fold>
       );
@@ -325,7 +327,7 @@ class AdminArea extends SFPComponent {
       }));
 
       return (
-        <Fold title={`Drefs (${n(data.count)})`}>
+        <Fold title={`Drefs (${n(data.count)})`} id='drefs'>
           <DisplayTable
             headings={headings}
             rows={rows}
@@ -350,7 +352,7 @@ class AdminArea extends SFPComponent {
 
     if (fetching) {
       return (
-        <Fold title='Field Reports'>
+        <Fold title='Field Reports' id='field-reports'>
           <BlockLoading/>
         </Fold>
       );
@@ -358,7 +360,7 @@ class AdminArea extends SFPComponent {
 
     if (error) {
       return (
-        <Fold title='Field Reports'>
+        <Fold title='Field Reports' id='field-reports'>
           <p>You must be logged in to view field reports. <Link key='login' to='/login' className='link--primary' title='Login'>Login</Link></p>
         </Fold>
       );
@@ -389,7 +391,7 @@ class AdminArea extends SFPComponent {
       }));
 
       return (
-        <Fold title={`Field Reports (${n(data.count)})`}>
+        <Fold title={`Field Reports (${n(data.count)})`} id='field-reports'>
           <DisplayTable
             headings={headings}
             rows={rows}
@@ -564,33 +566,54 @@ class AdminArea extends SFPComponent {
             </div>
           </div>
         </header>
-        <div className='inpage__body'>
-          <div className='inner'>
-            <KeyFigures data={this.props.keyFigures} />
-            <div className='fold'>
-              <div className= 'inner'>
-                <h2 className='fold__title'>14 Emergencies</h2>
-                <div className={mapContainerClass}>
-                  <Homemap appealsList={this.props.appealStats} bbox={bbox} />
+        <StickyContainer>
+          <Sticky>
+            {({ style, isSticky }) => (
+              <div style={style} className={c('inpage__nav', {'inpage__nav--sticky': isSticky})}>
+                <div className='inner'>
+                  <ul>
+                    <li><a href='#key-figures' title='Go to Key Figures section'>Key Figures</a></li>
+                    <li><a href='#operations-map' title='Go to Operations section'>Operations</a></li>
+                    <li><a href='#stats' title='Go to Stats section'>Stats</a></li>
+                    <li><a href='#appeals' title='Go to Appeals section'>Appeals</a></li>
+                    <li><a href='#drefs' title='Go to Drefs section'>Drefs</a></li>
+                    <li><a href='#field-reports' title='Go to Field Reports section'>Field Reports</a></li>
+                    <li><a href='#graphics' title='Go to Graphics section'>Graphics</a></li>
+                    <li><a href='#links' title='Go to Links section'>Links</a></li>
+                    <li><a href='#contacts' title='Go to Contacts section'>Contacts</a></li>
+                  </ul>
                 </div>
               </div>
-            </div>
-
-            <Fold title='Statistics' headerClass='visually-hidden'>
-              <div className='stats-chart'>
-                {this.renderOperations10Years()}
-                {this.renderERUBySociety()}
+            )}
+          </Sticky>
+          <div className='inpage__body'>
+            <div className='inner'>
+              <KeyFigures data={this.props.keyFigures} />
+              <div className='fold' id='operations-map'>
+                <div className= 'inner'>
+                  <h2 className='fold__title'>14 Emergencies</h2>
+                  <div className={mapContainerClass}>
+                    <Homemap appealsList={this.props.appealStats} bbox={bbox} />
+                  </div>
+                </div>
               </div>
 
-            </Fold>
-            {this.renderAppeals()}
-            {this.renderDrefs()}
-            {this.renderFieldReports()}
-            <Snippets data={this.props.snippets} />
-            <Links data={data} />
-            <Contacts data={data} />
+              <Fold title='Statistics' headerClass='visually-hidden' id='stats'>
+                <div className='stats-chart'>
+                  {this.renderOperations10Years()}
+                  {this.renderERUBySociety()}
+                </div>
+
+              </Fold>
+              {this.renderAppeals()}
+              {this.renderDrefs()}
+              {this.renderFieldReports()}
+              <Snippets data={this.props.snippets} />
+              <Links data={data} />
+              <Contacts data={data} />
+            </div>
           </div>
-        </div>
+        </StickyContainer>
       </section>
     );
   }

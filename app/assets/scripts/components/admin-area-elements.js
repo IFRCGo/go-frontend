@@ -95,7 +95,7 @@ class _Links extends React.Component {
     const { data } = this.props;
     return (
       <Fold
-        id='lnks'
+        id='links'
         title='Additional Links'
         wrapper_class='links'>
         {data.links && data.links.length ? (
