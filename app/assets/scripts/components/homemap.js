@@ -207,7 +207,7 @@ class Homemap extends React.Component {
         <h1>Ongoing Operations</h1>
         <h2 className='heading--xsmall'>Operations by Type</h2>
         <ul className='emergencies__list'>
-          {emerg.sort((a, b) => a.items.length < b.items.length ? 1 : -1).map(o => (
+          {emerg.map(o => (
             <li
               key={o.id}
               className={c('emergencies__item', {'emergencies__item--selected': this.state.selectedEmerType === o.id})}
