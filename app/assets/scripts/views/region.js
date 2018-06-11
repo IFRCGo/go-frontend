@@ -553,6 +553,7 @@ class AdminArea extends SFPComponent {
     const bbox = getRegionBoundingBox(data.id);
     const mapContainerClass = 'region__map';
     const regionName = get(regionMeta, [data.id, 'name'], nope);
+    const activeOperations = get(this.props.appealStats, 'data.results.length', false);
 
     return (
       <section className='inpage'>
@@ -591,7 +592,7 @@ class AdminArea extends SFPComponent {
               <KeyFigures data={this.props.keyFigures} />
               <div className='fold' id='operations-map'>
                 <div className= 'inner'>
-                  <h2 className='fold__title'>14 Emergencies</h2>
+                  <h2 className='fold__title'>{isNaN(activeOperations) ? nope : activeOperations + ' Active Operations'}</h2>
                   <div className={mapContainerClass}>
                     <Homemap appealsList={this.props.appealStats} bbox={bbox} />
                   </div>
