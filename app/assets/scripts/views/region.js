@@ -34,8 +34,8 @@ import {
   getAdmAreaKeyFigures,
   getAdmAreaSnippets
 } from '../actions';
-import { getBoundingBox } from '../utils/country-bounding-box';
 import { getRegionBoundingBox } from '../utils/region-bounding-box';
+import { regions as regionMeta } from '../utils/region-constants';
 
 import App from './app';
 import Fold from '../components/fold';
@@ -548,20 +548,16 @@ class AdminArea extends SFPComponent {
 
     if (!fetched || error) return null;
 
-    const isRegion = this.props.type === 'region';
-    const bbox = isRegion ? getRegionBoundingBox(data.id) : getBoundingBox(data.iso);
-    const mapContainerClass = `${isRegion ? 'region' : 'country'}__map`;
+    const bbox = getRegionBoundingBox(data.id);
+    const mapContainerClass = 'region__map';
+    const regionName = get(regionMeta, [data.id, 'name'], nope);
 
     return (
       <section className='inpage'>
         <header className='inpage__header'>
           <div className='inner'>
             <div className='inpage__headline'>
-              {isRegion ? (
-                <h1 className='inpage__title'>{data.name} Region</h1>
-              ) : (
-                <h1 className='inpage__title'>{data.name}</h1>
-              )}
+              <h1 className='inpage__title'>{regionName}</h1>
               <div className='inpage__introduction'>
                 {this.renderStats()}
               </div>

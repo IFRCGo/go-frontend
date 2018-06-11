@@ -195,7 +195,7 @@ class Emergency extends React.Component {
     } else if (error) {
       content = <p>Documents not available.</p>;
     } else if (fetched) {
-      if (!data.objects.length) {
+      if (!data.length) {
         content = (
           <div className='empty-data__container'>
             <p className='empty-data__note'>No documents available.</p>
@@ -204,7 +204,7 @@ class Emergency extends React.Component {
       } else {
         content = (
           <ul className={wrapperClass}>
-            {data.objects.map(o => {
+            {data.map(o => {
               let href = o['document'] || o['document_url'] || null;
               if (!href) { return null; }
               return <li key={o.id}>
