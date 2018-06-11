@@ -95,7 +95,7 @@ function getAppealsStats (appeals) {
 }
 
 function getAdminGeojson (appeals) {
-  const grouped = _groupBy(appeals, 'country.iso');
+  const grouped = _groupBy(appeals.filter(o => o.country), 'country.iso');
   return {
     type: 'FeatureCollection',
     features: Object.keys(grouped).map(countryIso => {
@@ -203,7 +203,7 @@ function eru (state = {}, action) {
         return {
           id: grouped[key][0].eru_owner.national_society_country.id,
           name: key,
-          count: grouped[key].reduce((acc, o) => acc + o.units, 0)
+          count: grouped[key].reduce((acc, o) => acc + o.equipment_units, 0)
         };
       });
 

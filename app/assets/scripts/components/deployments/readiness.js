@@ -50,10 +50,10 @@ class Readiness extends React.Component {
     const ready = erus.filter(o => o.available);
     const deployed = erus.filter(o => o.deployed_to);
 
-    const numReady = ready.reduce((acc, next) => acc + next.units, 0);
-    const numDeployed = deployed.reduce((acc, next) => acc + next.units, 0);
+    const numReady = ready.reduce((acc, next) => acc + next.equipment_units, 0);
+    const numDeployed = deployed.reduce((acc, next) => acc + next.equipment_units, 0);
 
-    const readyTypes = ready.length ? ready.map(o => `${getEruType(o.type)} (${o.units})`).join(', ') : '';
+    const readyTypes = ready.length ? ready.map(o => `${getEruType(o.type)} (${o.equipment_units})`).join(', ') : '';
     const owner = eruOwner.national_society_country;
 
     return (
