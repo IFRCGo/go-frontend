@@ -4,6 +4,8 @@ import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { DateTime } from 'luxon';
+import { Sticky, StickyContainer } from 'react-sticky';
+import c from 'classnames';
 
 import { environment } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
@@ -412,23 +414,42 @@ class AdminArea extends SFPComponent {
             </div>
           </div>
         </header>
-        <div className='inpage__body'>
-          <div className='inner'>
-            <KeyFigures data={this.props.keyFigures} />
-            <Fold title='Statistics' headerClass='visually-hidden'>
-              <h2 className='fold__title'>14 Active Operations</h2>
-              <div className={mapContainerClass}>
-                <Homemap appealsList={this.props.appealStats} bbox={bbox} />
+        <StickyContainer>
+          <Sticky>
+            {({ style, isSticky }) => (
+              <div style={style} className={c('inpage__nav', {'inpage__nav--sticky': isSticky})}>
+                <div className='inner'>
+                  <ul>
+                    <li><a href='#key-figures' title='Go to Key Figures section'>Key Figures</a></li>
+                    <li><a href='#operations-map' title='Go to Operations section'>Operations</a></li>
+                    <li><a href='#appeals' title='Go to Appeals section'>Appeals</a></li>
+                    <li><a href='#drefs' title='Go to Drefs section'>Drefs</a></li>
+                    <li><a href='#graphics' title='Go to Graphics section'>Graphics</a></li>
+                    <li><a href='#links' title='Go to Links section'>Links</a></li>
+                    <li><a href='#contacts' title='Go to Contacts section'>Contacts</a></li>
+                  </ul>
+                </div>
               </div>
-            </Fold>
+            )}
+          </Sticky>
+          <div className='inpage__body'>
+            <div className='inner'>
+              <KeyFigures data={this.props.keyFigures} />
+              <Fold title='Statistics' headerClass='visually-hidden'>
+                <h2 className='fold__title'>14 Active Operations</h2>
+                <div className={mapContainerClass}>
+                  <Homemap appealsList={this.props.appealStats} bbox={bbox} />
+                </div>
+              </Fold>
 
-            {this.renderAppeals()}
-            {this.renderDrefs()}
-            <Snippets data={this.props.snippets} />
-            <Links data={data} />
-            <Contacts data={data} />
+              {this.renderAppeals()}
+              {this.renderDrefs()}
+              <Snippets data={this.props.snippets} />
+              <Links data={data} />
+              <Contacts data={data} />
+            </div>
           </div>
-        </div>
+        </StickyContainer>
       </section>
     );
   }
