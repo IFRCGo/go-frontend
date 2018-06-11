@@ -8,6 +8,7 @@
   font-size: 1rem;
   line-height: 1.5;
   min-width: 16rem;
+  max-width: 20rem;
 }
 
 .popover__contents {
@@ -40,12 +41,6 @@ a.popover__contents {
   display: flex;
   width: 100%;
 
-  > *:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.popover__headline {
   > *:last-child {
     margin-bottom: 0;
   }
@@ -109,7 +104,7 @@ a.popover__contents {
     width: 32%;
     margin-bottom: 0;
   }
-  
+
   dd + dd {
     margin-left: 68%;
   }
