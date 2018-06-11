@@ -30,7 +30,7 @@ import {
   getAdmAreaAppeals,
   getAdmAreaDrefs,
   getAdmAreaFieldReports,
-  getAdmAreaAppealsStats,
+  getAdmAreaAppealsList,
   getAdmAreaAggregateAppeals,
   getAdmAreaERU,
   getAdmAreaKeyFigures,
@@ -120,10 +120,10 @@ class AdminArea extends SFPComponent {
   }
 
   getData (props) {
-    this.props._getAdmAreaAppeals(props.type, props.match.params.id, 1, { order_by: '-start_date' });
-    this.props._getAdmAreaDrefs(props.type, props.match.params.id, 1, { order_by: '-start_date' });
-    this.props._getAdmAreaFieldReports(props.type, props.match.params.id, 1, { order_by: '-created_at' });
-    this.props._getAdmAreaAppealsStats(props.type, props.match.params.id);
+    this.props._getAdmAreaAppeals(props.type, props.match.params.id, 1, { ordering: '-start_date' });
+    this.props._getAdmAreaDrefs(props.type, props.match.params.id, 1, { ordering: '-start_date' });
+    this.props._getAdmAreaFieldReports(props.type, props.match.params.id, 1, { ordering: '-created_at' });
+    this.props._getAdmAreaAppealsList(props.type, props.match.params.id);
     this.props._getAdmAreaAggregateAppeals(props.type, props.match.params.id, DateTime.local().minus({years: 10}).startOf('month').toISODate(), 'year');
     this.props._getAdmAreaERU(props.type, props.match.params.id);
     this.props._getAdmAreaKeyFigures(props.type, props.match.params.id);
@@ -143,9 +143,9 @@ class AdminArea extends SFPComponent {
       case 'appeals':
       case 'drefs':
         if (state.sort.field) {
-          qs.order_by = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
+          qs.ordering = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
         } else {
-          qs.order_by = '-start_date';
+          qs.ordering = '-start_date';
         }
 
         if (state.filters.date !== 'all') {
@@ -157,7 +157,7 @@ class AdminArea extends SFPComponent {
 
         break;
       case 'fieldReports':
-        qs.order_by = '-created_at';
+        qs.ordering = '-created_at';
         if (state.filters.date !== 'all') {
           qs.created_at__gte = datesAgo[state.filters.date]();
         }
@@ -633,7 +633,7 @@ if (environment !== 'production') {
     _getAdmAreaAppeals: T.func,
     _getAdmAreaDrefs: T.func,
     _getAdmAreaFieldReports: T.func,
-    _getAdmAreaAppealsStats: T.func,
+    _getAdmAreaAppealsList: T.func,
     _getAdmAreaAggregateAppeals: T.func,
     _getAdmAreaERU: T.func,
     type: T.string,
@@ -679,7 +679,7 @@ const dispatcher = (dispatch) => ({
   _getAdmAreaAppeals: (...args) => dispatch(getAdmAreaAppeals(...args)),
   _getAdmAreaDrefs: (...args) => dispatch(getAdmAreaDrefs(...args)),
   _getAdmAreaFieldReports: (...args) => dispatch(getAdmAreaFieldReports(...args)),
-  _getAdmAreaAppealsStats: (...args) => dispatch(getAdmAreaAppealsStats(...args)),
+  _getAdmAreaAppealsList: (...args) => dispatch(getAdmAreaAppealsList(...args)),
   _getAdmAreaAggregateAppeals: (...args) => dispatch(getAdmAreaAggregateAppeals(...args)),
   _getAdmAreaERU: (...args) => dispatch(getAdmAreaERU(...args)),
   _getAdmAreaKeyFigures: (...args) => dispatch(getAdmAreaKeyFigures(...args)),

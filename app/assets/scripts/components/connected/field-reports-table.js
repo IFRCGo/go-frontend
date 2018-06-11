@@ -48,9 +48,9 @@ class FieldReportsTable extends SFPComponent {
     let qs = {};
     let state = this.state.fieldReports;
     if (state.sort.field) {
-      qs.order_by = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
+      qs.ordering = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
     } else {
-      qs.order_by = '-created_at';
+      qs.ordering = '-created_at';
     }
 
     if (state.filters.date !== 'all') {
