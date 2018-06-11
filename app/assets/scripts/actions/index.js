@@ -119,7 +119,7 @@ export function getLastMonthsEmergencies () {
   const f = buildAPIQS({
     disaster_start_date__gt: DateTime.utc().minus({days: 30}).startOf('day').toISO(),
     limit: 500,
-    order_by: '-disaster_start_date'
+    ordering: '-disaster_start_date'
   });
   return fetchJSON(`api/v2/event/?${f}`, GET_LAST_MO_EMERGENCIES, {});
 }
@@ -147,7 +147,7 @@ export function getEventById (id) {
 
 export const GET_SITREPS = 'GET_SITREPS';
 export function getSitrepsByEventId (id) {
-  return fetchJSON(`api/v2/situation_report/?order_by=-created_at&event=${id}`, GET_SITREPS, withToken(), { id });
+  return fetchJSON(`api/v2/situation_report/?ordering=-created_at&event=${id}`, GET_SITREPS, withToken(), { id });
 }
 
 export const GET_ERU_OWNERS = 'GET_ERU_OWNERS';
@@ -229,8 +229,8 @@ export function getAdmAreaFieldReports (aaType, aaId, page = 1, filters = {}) {
   return fetchJSON(`/api/v2/field_report/?${f}`, GET_AA_FIELD_REPORTS, withToken());
 }
 
-export const GET_AA_APPEALS_STATS = 'GET_AA_APPEALS_STATS';
-export function getAdmAreaAppealsStats (aaType, aaId) {
+export const GET_AA_APPEALS_LIST = 'GET_AA_APPEALS_LIST';
+export function getAdmAreaAppealsList (aaType, aaId) {
   let filters = {
     end_date__gt: DateTime.utc().toISO(),
     limit: 0
@@ -248,7 +248,17 @@ export function getAdmAreaAppealsStats (aaType, aaId) {
   }
 
   const f = buildAPIQS(filters);
-  return fetchJSON(`api/v2/appeal/?${f}`, GET_AA_APPEALS_STATS, withToken());
+  return fetchJSON(`api/v2/appeal/?${f}`, GET_AA_APPEALS_LIST, withToken());
+}
+
+export const GET_COUNTRY_OPERATIONS = 'GET_COUNTRY_OPERATIONS';
+export function getCountryOperations (aaType, cId, page, filters = {}) {
+  filters.end_date__gt = DateTime.utc().toISO();
+  filters.limit = 0;
+  filters.country = cId;
+  console.log(filters);
+  const f = buildAPIQS(filters);
+  return fetchJSON(`api/v2/appeal/?${f}`, GET_COUNTRY_OPERATIONS, withToken());
 }
 
 export const GET_AA_AGGREGATE_APPEALS = 'GET_AA_AGGREGATE_APPEALS';
@@ -347,7 +357,7 @@ export function getAppeals (page = 1, filters = {}) {
 export const GET_APPEAL_DOCS = 'GET_APPEAL_DOCS';
 export function getAppealDocsByAppealIds (appealIds, id) {
   const ids = (Array.isArray(appealIds) ? appealIds : [appealIds]).join(',');
-  return fetchJSON(`api/v2/appeal_document/?order_by=-created_at&appeal__id__in=${ids}`, GET_APPEAL_DOCS, withToken(), { id });
+  return fetchJSON(`api/v2/appeal_document/?ordering=-created_at&appeal__id__in=${ids}`, GET_APPEAL_DOCS, withToken(), { id });
 }
 
 export const GET_DEPLOYMENT_ERU = 'GET_DEPLOYMENT_ERU';
