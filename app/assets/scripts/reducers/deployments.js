@@ -129,10 +129,9 @@ function updateGeoState (state, action, type) {
   Object.keys(countryGroup).forEach(countryId => {
     let country = getCountryMeta(countryId);
     let feat = features.find(f => f.properties.countryIso === country.iso);
-
     const setCount = (feat) => {
       if (type === 'eru') {
-        feat.properties.eru += countryGroup[countryId].reduce((acc, o) => acc + o.units, 0);
+        feat.properties.eru += countryGroup[countryId].reduce((acc, o) => acc + o.equipment_units, 0);
       } else {
         // Each entry is a unit.
         feat.properties[type] += countryGroup[countryId].length;
@@ -158,7 +157,6 @@ function updateGeoState (state, action, type) {
           coordinates: getCentroid(country.iso)
         }
       };
-
       setCount(feat);
       features.push(feat);
     }
