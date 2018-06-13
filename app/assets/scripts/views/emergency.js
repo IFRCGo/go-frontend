@@ -108,18 +108,39 @@ class Emergency extends React.Component {
             </li>
           ))}
         </ul>
-        <div className='header-stats'>
-          <ul className='stats-list'>
-            <li className='stats-list__item stats-emergencies'>
-              {n(stats.beneficiaries)}<small>Targeted Benficiaries</small>
-            </li>
-            <li className='stats-list__item stats-funding stat-borderless stat-double'>
-              {n(stats.requested)}<small>Requested Amount (CHF)</small>
-            </li>
-            <li className='stats-list__item stat-double'>
-              {n(stats.funded)}<small>Funding (CHF)</small>
-            </li>
-          </ul>
+        <div className='inpage__header-col'>
+          <div className='inpage__headline-stats'>
+            <ul className='stats-list'>
+              <li className='stats-list__item stats-emergencies'>
+                {n(stats.beneficiaries)}<small>Targeted Benficiaries</small>
+              </li>
+              <li className='stats-list__item stats-funding stat-borderless stat-double'>
+                {n(stats.requested)}<small>Requested Amount (CHF)</small>
+              </li>
+              <li className='stats-list__item stat-double'>
+                {n(stats.funded)}<small>Funding (CHF)</small>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div className='inpage__header-col'>
+          <h3>Emergency Overview</h3>
+          <div className='content-list-group'>
+            <ul className='content-list'>
+              <li>Capitol<span className='content-highlight'>Nairobi</span></li>
+              <li>Population<span className='content-highlight'>48.6M</span></li>
+              <li>GDP Per Capita<span className='content-highlight'>$70.53B</span></li>
+              <li>Life Expectancy<span className='content-highlight'>67</span></li>
+              <li>Infant Mortality Rate<span className='content-highlight'>4.9%</span></li>
+            </ul>
+            <ul className='content-list'>
+              <li>Adult Literacy<span className='content-highlight'>4.9%</span></li>
+              <li>Urbanization<span className='content-highlight'>48.6M</span></li>
+              <li>Home Development Index<span className='content-highlight'>$70.53B</span></li>
+              <li>Inequality Adjusted HDI<span className='content-highlight'>67</span></li>
+              <li>Gender Inequality Index<span className='content-highlight'>4.9%</span></li>
+            </ul>
+          </div>
         </div>
         <div className='funding-chart'>
         </div>

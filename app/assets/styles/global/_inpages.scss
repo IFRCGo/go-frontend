@@ -134,6 +134,7 @@
   }
 
   &__body {
+    margin-top: $global-spacing;
     > .inner {
       @extend .row-fold, .row--centered;
     }
