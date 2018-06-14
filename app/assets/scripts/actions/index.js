@@ -256,7 +256,6 @@ export function getCountryOperations (aaType, cId, page, filters = {}) {
   filters.end_date__gt = DateTime.utc().toISO();
   filters.limit = 0;
   filters.country = cId;
-  console.log(filters);
   const f = buildAPIQS(filters);
   return fetchJSON(`api/v2/appeal/?${f}`, GET_COUNTRY_OPERATIONS, withToken());
 }

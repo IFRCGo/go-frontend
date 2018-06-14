@@ -26,7 +26,7 @@ function appealsList (state = appealsListInitialState, action) {
       break;
     case 'GET_APPEALS_LIST_SUCCESS':
       // Statistics.
-      const objs = action.data;
+      const objs = action.data.results;
       const now = Date.now();
       let struct = {
         activeDrefs: 0,
