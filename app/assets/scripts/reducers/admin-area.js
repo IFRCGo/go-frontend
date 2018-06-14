@@ -80,70 +80,83 @@ function fieldReports (state = initialState, action) {
   return state;
 }
 
+function getAppealsStats (appeals) {
+  let struct = {
+    numBeneficiaries: 0,
+    amountRequested: 0,
+    amountFunded: 0
+  };
+  return appeals.reduce((acc, appeal) => {
+    acc.numBeneficiaries += appeal.num_beneficiaries || 0;
+    acc.amountRequested += _toNumber(appeal.amount_requested);
+    acc.amountFunded += _toNumber(appeal.amount_funded);
+    return acc;
+  }, struct);
+}
+
+function getAdminGeojson (appeals) {
+  const grouped = _groupBy(appeals.filter(o => o.country), 'country.iso');
+  return {
+    type: 'FeatureCollection',
+    features: Object.keys(grouped).map(countryIso => {
+      const countryAppeals = grouped[countryIso];
+      const stats = getAppealsStats(countryAppeals);
+      return {
+        type: 'Feature',
+        properties: Object.assign(stats, {
+          id: countryAppeals[0].country.id,
+          name: countryAppeals.map(o => get(o, 'event.name', o.name)).join(', '),
+          // TODO this should have some way of showing multiple types.
+          atype: countryAppeals[0].atype,
+          dtype: countryAppeals[0].dtype
+        }),
+        geometry: {
+          type: 'Point',
+          coordinates: getCentroid(countryIso)
+        }
+      };
+    })
+  };
+}
+
 function appealStats (state = initialState, action) {
   switch (action.type) {
-    case 'GET_AA_APPEALS_STATS_INFLIGHT':
+    case 'GET_AA_APPEALS_LIST_INFLIGHT':
       state = stateInflight(state, action);
       break;
-    case 'GET_AA_APPEALS_STATS_FAILED':
+    case 'GET_AA_APPEALS_LIST_FAILED':
       state = stateError(state, action);
       break;
-    case 'GET_AA_APPEALS_STATS_SUCCESS':
-      // Statistics.
-      const objs = action.data;
-      let struct = {
-        numBeneficiaries: 0,
-        amountRequested: 0,
-        amountFunded: 0
-      };
-
-      struct = objs.reduce((acc, object) => {
-        acc.numBeneficiaries += object.num_beneficiaries || 0;
-        acc.amountRequested += _toNumber(object.amount_requested);
-        acc.amountFunded += _toNumber(object.amount_funded);
-        return acc;
-      }, struct);
-
+    case 'GET_AA_APPEALS_LIST_SUCCESS':
+      const appeals = action.data;
       // Emergencies Types.
-      const emergenciesByType = groupByDisasterType(objs);
-
-      // Features for the map.
-      const geoJSON = {
-        type: 'FeatureCollection',
-        features: objs.reduce((acc, o) => {
-          if (o.country) {
-            return acc.concat({
-              type: 'Feature',
-              properties: {
-                id: o.id,
-                name: get(o, 'event.name'),
-                pageId: get(o, 'event.id'),
-                atype: o.atype,
-                dtype: o.dtype.id,
-                numBeneficiaries: o.num_beneficiaries,
-                amountRequested: _toNumber(o.amount_requested),
-                amountFunded: _toNumber(o.amount_funded)
-              },
-              geometry: {
-                type: 'Point',
-                coordinates: getCentroid(o.country.iso)
-              }
-            });
-          }
-          return acc;
-        }, [])
-      };
-
+      const emergenciesByType = groupByDisasterType(appeals);
       state = Object.assign({}, state, {
         fetching: false,
         fetched: true,
         receivedAt: action.receivedAt,
         data: {
-          stats: struct,
-          geoJSON,
-          emergenciesByType
+          stats: getAppealsStats(appeals),
+          emergenciesByType,
+          geoJSON: getAdminGeojson(appeals),
+          results: appeals
         }
       });
+      break;
+  }
+  return state;
+}
+
+function countryOperations (state = initialState, action) {
+  switch (action.type) {
+    case 'GET_COUNTRY_OPERATIONS_INFLIGHT':
+      state = stateInflight(state, action);
+      break;
+    case 'GET_COUNTRY_OPERATIONS_FAILED':
+      state = stateError(state, action);
+      break;
+    case 'GET_COUNTRY_OPERATIONS_SUCCESS':
+      state = stateSuccess(state, action);
       break;
   }
   return state;
@@ -190,7 +203,7 @@ function eru (state = {}, action) {
         return {
           id: grouped[key][0].eru_owner.national_society_country.id,
           name: key,
-          count: grouped[key].reduce((acc, o) => acc + o.units, 0)
+          count: grouped[key].reduce((acc, o) => acc + o.equipment_units, 0)
         };
       });
 
@@ -207,6 +220,36 @@ function eru (state = {}, action) {
   return state;
 }
 
+function keyFigures (state = initialState, action) {
+  switch (action.type) {
+    case 'GET_AA_KEY_FIGURES_INFLIGHT':
+      state = stateInflight(state, action);
+      break;
+    case 'GET_AA_KEY_FIGURES_FAILED':
+      state = stateError(state, action);
+      break;
+    case 'GET_AA_KEY_FIGURES_SUCCESS':
+      state = stateSuccess(state, action);
+      break;
+  }
+  return state;
+}
+
+function snippets (state = initialState, action) {
+  switch (action.type) {
+    case 'GET_AA_SNIPPETS_INFLIGHT':
+      state = stateInflight(state, action);
+      break;
+    case 'GET_AA_SNIPPETS_FAILED':
+      state = stateError(state, action);
+      break;
+    case 'GET_AA_SNIPPETS_SUCCESS':
+      state = stateSuccess(state, action);
+      break;
+  }
+  return state;
+}
+
 // Combined export.
 export default combineReducers({
   aaData,
@@ -214,6 +257,9 @@ export default combineReducers({
   drefs,
   fieldReports,
   appealStats,
+  countryOperations,
   aggregate,
-  eru
+  eru,
+  keyFigures,
+  snippets
 });

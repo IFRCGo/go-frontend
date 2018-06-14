@@ -23,7 +23,8 @@ import FieldReportForm from './views/field-report-form/';
 import FieldReport from './views/field-report';
 import Emergencies from './views/emergencies';
 import Emergency from './views/emergency';
-import AdminArea from './views/admin-area';
+import Region from './views/region';
+import Country from './views/countries';
 import Deployments from './views/deployments';
 import HeOps from './views/heops';
 
@@ -94,8 +95,8 @@ const Root = () => (
         <PrivateRoute exact path="/reports/:id" component={FieldReport}/>
         <Route exact path="/emergencies" component={Emergencies}/>
         <Route exact path="/emergencies/:id" component={Emergency}/>
-        <Route exact path="/regions/:id" render={props => <AdminArea {...props} type='region' />} />
-        <Route exact path="/countries/:id" render={props => <AdminArea {...props} type='country' />} />
+        <Route exact path="/regions/:id" render={props => <Region {...props} type='region' />} />
+        <Route exact path="/countries/:id" render={props => <Country {...props} type='country' />} />
         <PrivateRoute exact path="/deployments" component={Deployments}/>
         <PrivateRoute exact path="/heops" component={HeOps}/>
         <Route component={UhOh}/>

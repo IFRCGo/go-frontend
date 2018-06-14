@@ -111,7 +111,6 @@ ol {
 ul,
 ol {
   list-style-position: outside;
-  margin-left: $global-spacing;
 }
 
 dt {
@@ -228,6 +227,22 @@ dd {
   }
 }
 
+.content-list {
+  list-style: none;
+  li {
+    font-size: 0.875rem;
+    color: rgba(0, 0, 0, 0.48);
+    text-transform: uppercase;
+    line-height: 2rem;
+    font-weight: $base-font-regular;
+    .content-highlight {
+      font-size: 1.15rem;
+      margin-left: $global-spacing/2;
+      color: rgba(0, 0, 0, 1);
+      text-transform: capitalize;
+    }
+  }
+}
 
 /* Prose specific */
 

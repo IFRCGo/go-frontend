@@ -25,12 +25,13 @@
 
 .inpage__nav {
   font-family: $heading-font-family;
-  padding: ($global-spacing * 2) 0;
+  padding: ($global-spacing * .75) 0;
   transition: background 0.2s ease, box-shadow 0.2s ease;
 
   &--sticky {
     background: #fafafa;
     box-shadow: 0 1px 4px 0 rgba($base-color, 0.1);
+    z-index: 100;
   }
 
   > .inner {

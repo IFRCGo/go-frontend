@@ -195,7 +195,7 @@ class Emergency extends React.Component {
     } else if (error) {
       content = <p>Documents not available.</p>;
     } else if (fetched) {
-      if (!data.objects.length) {
+      if (!data.length) {
         content = (
           <div className='empty-data__container'>
             <p className='empty-data__note'>No documents available.</p>
@@ -204,7 +204,7 @@ class Emergency extends React.Component {
       } else {
         content = (
           <ul className={wrapperClass}>
-            {data.objects.map(o => {
+            {data.map(o => {
               let href = o['document'] || o['document_url'] || null;
               if (!href) { return null; }
               return <li key={o.id}>
@@ -275,7 +275,7 @@ class Emergency extends React.Component {
         <ul className='key-figures-list'>
           {kf.map(o => (
             <li key={o.deck}>
-              <h3>{n(o.number)}</h3>
+              <h3>{isNaN(o.number) ? o.number : n(o.number)}</h3>
               <p className='key-figure-label'>{o.deck}</p>
               <p className='key-figure-source'>Source: {o.source}</p>
             </li>

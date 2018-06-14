@@ -48,9 +48,9 @@ class EmergenciesTable extends SFPComponent {
     let qs = { limit: this.state.emerg.limit };
     let state = this.state.emerg;
     if (state.sort.field) {
-      qs.order_by = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
+      qs.ordering = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
     } else {
-      qs.order_by = '-disaster_start_date';
+      qs.ordering = '-disaster_start_date';
     }
 
     if (state.filters.date !== 'all') {

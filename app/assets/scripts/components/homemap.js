@@ -207,7 +207,7 @@ class Homemap extends React.Component {
         <h1>Ongoing Operations</h1>
         <h2 className='heading--xsmall'>Operations by Type</h2>
         <ul className='emergencies__list'>
-          {emerg.sort((a, b) => a.items.length < b.items.length ? 1 : -1).map(o => (
+          {emerg.map(o => (
             <li
               key={o.id}
               className={c('emergencies__item', {'emergencies__item--selected': this.state.selectedEmerType === o.id})}
@@ -324,7 +324,11 @@ class MapPopover extends React.Component {
         <div className='popover__contents'>
           <header className='popover__header'>
             <div className='popover__headline'>
-              <a className='link--primary' onClick={() => this.props.onTitleClick(this.props.pageId)}>{this.props.title}</a>
+              {this.props.pageId ? (
+                <a className='link--primary' onClick={() => this.props.onTitleClick(this.props.pageId)}>{this.props.title}</a>
+              ) : (
+                <p>{this.props.title}</p>
+              )}
             </div>
             <div className='popover__actions actions'>
               <ul className='actions__menu'>

@@ -90,3 +90,17 @@
     margin-bottom: 0;
   }
 }
+
+.links-list {
+  list-style: none;
+  @include column(12/12);
+  li {
+    @include column(12/12);
+    @include media(small-up) {
+      @include column(6/12);
+    }
+    @include media(medium-up) {
+      @include column(3/12);
+    }
+  }
+}

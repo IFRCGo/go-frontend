@@ -101,9 +101,9 @@ class Deployments extends SFPComponent {
     this.props._getEruOwners();
 
     this.props._getDeploymentERU(1, { limit: this.state.eru.limit });
-    this.props._getDeploymentFACT(1, { limit: this.state.fact.limit, order_by: '-start_date' });
-    this.props._getDeploymentHEOP(1, { limit: this.state.heop.limit, order_by: '-start_date' });
-    this.props._getDeploymentRDRT(1, { limit: this.state.rdrt.limit, order_by: '-start_date' });
+    this.props._getDeploymentFACT(1, { limit: this.state.fact.limit, ordering: '-start_date' });
+    this.props._getDeploymentHEOP(1, { limit: this.state.heop.limit, ordering: '-start_date' });
+    this.props._getDeploymentRDRT(1, { limit: this.state.rdrt.limit, ordering: '-start_date' });
 
     this.props._getAllDeploymentERU();
     this.props._getAllDeploymentFACT();
@@ -139,9 +139,9 @@ class Deployments extends SFPComponent {
     let state = this.state[what];
     let qs = { limit: state.limit };
     if (state.sort && state.sort.field) {
-      qs.order_by = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
+      qs.ordering = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
     } else if (what !== 'eru') {
-      qs.order_by = '-start_date';
+      qs.ordering = '-start_date';
     }
 
     if (state.filters && state.filters.startDate !== 'all') {

@@ -105,6 +105,32 @@ a.link--secondary {
   };
 }
 
+a.link--external {
+  color: $secondary-color;
+  text-decoration: none;
+  position: relative;
+  padding-left: $global-spacing * 1.5;
+  font-weight: $base-font-regular;
+  transition: padding-left .2s ease-in-out;
+  &:before {
+    content: '';
+    position: absolute;
+    height: 2px;
+    width: 1rem;
+    left: 0;
+    top: $global-spacing/2;
+    background-color: $secondary-color;
+    transition: width .2s ease-in-out;
+  };
+  &:hover {
+    opacity: 1;
+    padding-left: $global-spacing * 2;
+    &:before {
+      width: 1.5rem;
+    };
+  };
+}
+
 /* Rows
    ========================================================================== */
 

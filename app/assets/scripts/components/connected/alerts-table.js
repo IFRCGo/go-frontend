@@ -64,7 +64,7 @@ class AlertsTable extends SFPComponent {
     let qs = { limit: this.state.alerts.limit };
     let state = this.state.alerts;
     if (state.sort.field) {
-      qs.order_by = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
+      qs.ordering = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
     }
 
     if (state.filters.date !== 'all') {

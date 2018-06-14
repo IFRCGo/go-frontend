@@ -33,7 +33,7 @@ export function groupByDisasterType (objs) {
       name: meta.label,
       items: emergenciesByType[key]
     };
-  }).filter(Boolean).sort((a, b) => a.items.length < b.items.length);
+  }).filter(Boolean).sort((a, b) => a.items.length < b.items.length ? 1 : -1);
 }
 
 export function isValidEmail (email) {
