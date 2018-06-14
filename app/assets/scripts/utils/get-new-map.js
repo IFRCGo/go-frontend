@@ -5,39 +5,99 @@ import { mbtoken } from '../config';
 export const source = 'SOURCE';
 
 export const mapStyle = {
-  'version': 8,
-  'sources': {
-    'ifrc': {
-      'type': 'vector',
-      'tiles': ['https://dsgofilestorage.blob.core.windows.net/tiles/{z}/{x}/{y}.pbf']
+  version: 8,
+  glyphs: 'mapbox://fonts/mapbox/{fontstack}/{range}.pbf',
+  sources: {
+    ifrc: {
+      type: 'vector',
+      url: 'mapbox://devseed.dg-base-v3'
+    },
+    streets: {
+      type: 'vector',
+      url: 'mapbox://mapbox.mapbox-streets-v7'
     }
   },
-  'layers': [
+  layers: [
     {
-      'id': 'background',
-      'type': 'background',
-      'paint': {
+      id: 'background',
+      type: 'background',
+      paint: {
         'background-color': 'hsl(218, 38%, 22%)'
       }
     },
     {
-      'id': 'country',
-      'type': 'fill',
-      'source': 'ifrc',
+      id: 'country',
+      type: 'fill',
+      source: 'ifrc',
       'source-layer': 'country',
-      'filter': [
-        '!in',
-        'ADMIN',
-        'Antarctica'
-      ],
-      'layout': {
-        'visibility': 'visible'
-      },
-      'paint': {
+      paint: {
         'fill-color': 'hsl(213, 38%, 28%)',
-        'fill-opacity': 1,
-        'fill-outline-color': 'hsla(209, 16%, 50%, 0.68)'
+        'fill-opacity': 1
       }
+    },
+    {
+      id: 'country-boundary',
+      type: 'line',
+      source: 'ifrc',
+      'source-layer': 'country',
+      layout: {
+        'line-cap': 'round'
+      },
+      paint: {
+        'line-color': 'hsla(209, 16%, 50%, 0.8)',
+        'line-width': 0.7
+      }
+    },
+    {
+      id: 'district-boundary',
+      type: 'line',
+      source: 'ifrc',
+      'source-layer': 'adm1',
+      layout: {
+        'line-cap': 'round'
+      },
+      paint: {
+        'line-color': 'hsla(209, 16%, 50%, 0.4)',
+        'line-width': 0.4
+      }
+    },
+    {
+      id: 'country-label',
+      type: 'symbol',
+      source: 'streets',
+      'source-layer': 'country_label',
+      maxzoom: 12,
+      layout: {
+        'text-field': '{name_en}',
+        'text-font': [
+          'Open Sans Regular',
+          'Arial Unicode MS Regular'
+        ],
+        'text-max-width': 10,
+        'text-size': {
+          'stops': [
+            [
+              3,
+              11
+            ],
+            [
+              8,
+              20
+            ]
+          ]
+        }
+      },
+      paint: {
+        'text-color': '#EEE',
+        'text-halo-color': 'rgba(0,0,0,0.75)',
+        'text-halo-width': 0.25,
+        'text-halo-blur': 0
+      },
+      filter: [
+        '==',
+        '$type',
+        'Point'
+      ]
     }
   ]
 };
@@ -48,15 +108,14 @@ export default function newMap (container) {
     container: container,
     style: mapStyle,
     zoom: 1,
-    maxZoom: 3.5,
+    maxZoom: 12,
     scrollZoom: false,
-    center: [6, 15],
     pitchWithRotate: false,
     dragRotate: false,
     renderWorldCopies: false,
     maxBounds: [
-      [-220, -70],
-      [220, 70]
+      [-180, -90],
+      [180, 90]
     ],
     attributionControl: false
   });
