@@ -12,6 +12,7 @@ const appealsListInitialState = {
   data: {}
 };
 
+// Query for all active appeals
 function appealsList (state = appealsListInitialState, action) {
   switch (action.type) {
     case 'GET_APPEALS_LIST_INFLIGHT':
@@ -25,9 +26,11 @@ function appealsList (state = appealsListInitialState, action) {
       });
       break;
     case 'GET_APPEALS_LIST_SUCCESS':
-      // Statistics.
       const objs = action.data.results;
       const now = Date.now();
+
+      // Aggregate number of DREFs, number of Appeals,
+      // percent funding, total budget, and targeted population
       let struct = {
         activeDrefs: 0,
         activeAppeals: 0,
@@ -37,7 +40,6 @@ function appealsList (state = appealsListInitialState, action) {
         appealsFunding: 0,
         targetPop: 0
       };
-
       struct = objs.reduce((acc, object) => {
         const endTime = new Date(object.end_date).getTime();
         const amountRequested = _toNumber(object.amount_requested);
