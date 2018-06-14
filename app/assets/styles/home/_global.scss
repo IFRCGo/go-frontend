@@ -459,6 +459,8 @@
     color: $base-color;
     border: solid 1px rgba($base-color, 0.1);
     border-radius: 5px;
+    width: 100%;
+    display: inline-block;
     &:hover {
       border: solid 1px $primary-color;
       opacity: 1;
@@ -490,7 +492,7 @@
     }
     li.card__stat {
       padding-left: $global-spacing * 3.5;
-      font-size: 1.5rem;    
+      font-size: 1.5rem;
       line-height: 1.25rem;
       display: block;
       margin-left: 0;
