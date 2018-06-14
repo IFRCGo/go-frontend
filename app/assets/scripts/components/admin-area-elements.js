@@ -28,9 +28,9 @@ class _KeyFigures extends React.Component {
             ))}
           </ul>
         ) : (
-        <div className='empty-data__container'>
-          <p>No key figures to show</p>
-        </div>
+          <div className='empty-data__container'>
+            <p>No key figures to show</p>
+          </div>
         )}
       </Fold>
     );
