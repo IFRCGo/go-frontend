@@ -190,7 +190,7 @@ class AdminArea extends SFPComponent {
         { id: 'active', label: 'Active' }
       ];
 
-      const rows = data.map(o => ({
+      const rows = data.results.map(o => ({
         id: o.id,
         date: DateTime.fromISO(o.start_date).toISODate(),
         name: o.name,

@@ -128,7 +128,7 @@ function appealStats (state = initialState, action) {
       state = stateError(state, action);
       break;
     case 'GET_AA_APPEALS_LIST_SUCCESS':
-      const appeals = action.data;
+      const appeals = action.data.results;
       // Emergencies Types.
       const emergenciesByType = groupByDisasterType(appeals);
       state = Object.assign({}, state, {
@@ -197,7 +197,7 @@ function eru (state = {}, action) {
       state = stateError(state, action);
       break;
     case 'GET_AA_ERU_SUCCESS':
-      const objs = action.data;
+      const objs = action.data.results;
       const grouped = _groupBy(objs, 'eru_owner.national_society_country.society_name');
       const eruBySociety = Object.keys(grouped).filter(Boolean).map(key => {
         return {

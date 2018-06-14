@@ -18,7 +18,7 @@ class _KeyFigures extends React.Component {
         title='Key Figures'
         wrapper_class='key-figures'>
         <ul className='key-figures-list'>
-          {data.map(o => (
+          {data.results.map(o => (
             <li key={o.deck}>
               <h3>{isNaN(o.figure) ? o.figure : n(o.figure)}</h3>
               <p className='key-figure-label'>{o.deck}</p>
@@ -41,7 +41,7 @@ class _Snippets extends React.Component {
         title='Additional Graphics'
         wrapper_class='additional-graphics'>
         <div className='iframe__container'>
-          {data.map(o => <div key={o.id} dangerouslySetInnerHTML={{__html: o.snippet}} />)}
+          {data.results.map(o => <div key={o.id} dangerouslySetInnerHTML={{__html: o.snippet}} />)}
         </div>
       </Fold>
     );

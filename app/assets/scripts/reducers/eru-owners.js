@@ -44,7 +44,7 @@ export default function reducer (state = initialState, action) {
 }
 
 function createStoreFromRaw (raw) {
-  const records = raw || [];
+  const records = raw.results || [];
 
   // flatten the data structure
   const erus = records.reduce((acc, next) => {
