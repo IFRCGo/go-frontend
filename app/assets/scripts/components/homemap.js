@@ -32,7 +32,8 @@ class Homemap extends React.Component {
       markerLayers: [],
       markerFilters: [],
       hoverEmerType: null,
-      selectedEmerType: null
+      selectedEmerType: null,
+      mapActions: []
     };
     this.configureMap = this.configureMap.bind(this);
     this.onFieldChange = this.onFieldChange.bind(this);
@@ -82,7 +83,14 @@ class Homemap extends React.Component {
       paint.push(scale(d.deployments.length).hex());
     });
     paint.push('rgba(0, 0, 0, 0)');
-    this.theMap.on('load', () => this.theMap.setPaintProperty('district', 'fill-color', paint));
+    const action = (() => this.theMap.setPaintProperty('district', 'fill-color', paint)).bind(this);
+    if (this.theMap) {
+      this.theMap.on('load', action);
+    } else {
+      this.setState({
+        mapActions: this.state.mapActions.concat(action)
+      });
+    }
   }
 
   onEmergencyTypeOverOut (what, typeId) {
@@ -124,6 +132,10 @@ class Homemap extends React.Component {
 
   configureMap (theMap) {
     // Event listeners.
+    theMap.on('load', () => {
+      this.state.mapActions.forEach(action => action());
+    });
+
     theMap.on('click', 'appeals', e => {
       this.showOperationsPopover(theMap, e.features[0]);
     });
