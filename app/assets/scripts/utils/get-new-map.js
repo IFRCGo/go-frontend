@@ -36,6 +36,15 @@ export const mapStyle = {
       }
     },
     {
+      id: 'district',
+      type: 'fill',
+      source: 'ifrc',
+      'source-layer': 'adm1',
+      paint: {
+        'fill-color': 'rgba(0, 0, 0, 0)'
+      }
+    },
+    {
       id: 'country-boundary',
       type: 'line',
       source: 'ifrc',

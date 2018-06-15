@@ -1023,7 +1023,6 @@ const boundingBoxes = {
      -15.614808044999862 ]
 };
 
-
 export function getBoundingBox (iso) {
   // Centroid or null island.
   return boundingBoxes[iso.toUpperCase()] || [0, 0, 0, 0];
