@@ -38,8 +38,8 @@ export default class MapComponent extends React.Component {
     this.theMap = newMap(this.refs.map);
 
     this.theMap.on('style.load', () => {
-      this.mapLoaded = true;
       this.setupData();
+      this.mapLoaded = true;
     });
 
     if (typeof configureMap === 'function') {

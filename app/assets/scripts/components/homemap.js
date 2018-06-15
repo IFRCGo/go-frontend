@@ -262,7 +262,7 @@ class Homemap extends React.Component {
   }
 
   renderEmergencies () {
-    const emerg = this.props.operations.data.emergenciesByType;
+    const emerg = get(this.props, 'operations.data.emergenciesByType', []);
     const max = Math.max.apply(Math, emerg.map(o => o.items.length));
 
     return (
@@ -304,6 +304,7 @@ class Homemap extends React.Component {
     const geoJSON = get(this.props.operations, 'data.geoJSON');
     const layers = this.state.markerLayers;
     const filters = this.state.markerFilters;
+    if (this.props.operations.fetching) return null;
     return (
       <React.Fragment>
         {this.props.noRenderEmergencies ? null : this.renderEmergencies()}
