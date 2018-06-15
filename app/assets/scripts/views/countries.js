@@ -319,12 +319,11 @@ class AdminArea extends SFPComponent {
           </Sticky>
           <div className='inpage__body'>
             <div className='inner'>
-
               <KeyFigures data={this.props.keyFigures} />
               <Fold title='Statistics' headerClass='visually-hidden' id='operations'>
                 <h2 className='fold__title'>{isNaN(activeOperations) ? nope : activeOperations + ' Active Operations'}</h2>
                 <div className={mapContainerClass}>
-                  <Homemap appealsList={this.props.appealStats} bbox={bbox} />
+                  <Homemap operations={this.props.appealStats} bbox={bbox} deployments={this.props.partnerDeployments} noRenderEmergencies={true} />
                 </div>
                 {this.renderAppeals()}
               </Fold>
@@ -363,7 +362,6 @@ if (environment !== 'production') {
     appeals: T.object,
     fieldReports: T.object,
     appealStats: T.object,
-    countryOperations: T.object,
     aggregateYear: T.object,
     keyFigures: T.object,
     snippets: T.object,
