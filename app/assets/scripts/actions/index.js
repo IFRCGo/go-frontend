@@ -108,7 +108,7 @@ export function getAggregateAppeals (date, unit, type) {
 
 export const GET_FEATURED_EMERGENCIES = 'GET_FEATURED_EMERGENCIES';
 export function getFeaturedEmergencies () {
-  return fetchJSON('/api/v2/event/?is_featured=true', GET_FEATURED_EMERGENCIES, withToken());
+  return fetchJSON('/api/v2/event/?is_featured=1', GET_FEATURED_EMERGENCIES, withToken());
 }
 
 export const GET_EMERGENCIES_LIST = 'GET_EMERGENCIES_LIST';
