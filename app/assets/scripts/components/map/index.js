@@ -14,7 +14,7 @@ export default class MapComponent extends React.Component {
   }
 
   setupData () {
-    if (!this.theMap.getSource(source)) {
+    if (!this.theMap.getSource(source) && this.props.geoJSON) {
       this.theMap.addSource(source, {
         type: 'geojson',
         data: this.props.geoJSON

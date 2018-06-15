@@ -164,12 +164,14 @@ td.table__cell--requestAmount, td.table__cell--fundedAmount, th.table__header--r
     padding: ($global-spacing * 2) ($global-spacing / 2);
     font-weight: $base-font-regular;
     &:nth-child(3) {
-      font-weight: $base-font-light;
-      width: 100%;
+      width: 50%;
       @include media(large-up){
-        width: 50%;
+        width: 25%;
       }
     }
+    &:nth-child(4) {
+      font-weight: $base-font-light;
+    };
   }
 
   th:first-child,

@@ -124,7 +124,7 @@ function geojson (state = geojsonInitialState, action) {
 function updateGeoState (state, action, type) {
   let features = _cloneDeep(state.data.features) || [];
   const groupper = type === 'eru' ? 'deployed_to.id' : 'country.id';
-  const countryGroup = _groupBy(action.data, groupper);
+  const countryGroup = _groupBy(action.data.results, groupper);
 
   Object.keys(countryGroup).forEach(countryId => {
     let country = getCountryMeta(countryId);

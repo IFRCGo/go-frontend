@@ -448,3 +448,64 @@
   color: rgba($base-color, 0.48);
   font-size: 0.75rem;
 }
+
+.key-emergencies-list {
+  list-style: none;
+  margin-left: 0;
+  @include column(12/12);
+  a {
+    float: left;
+    padding: $global-spacing * 1.5;
+    color: $base-color;
+    border: solid 1px rgba($base-color, 0.1);
+    border-radius: 5px;
+    width: 100%;
+    display: inline-block;
+    &:hover {
+      border: solid 1px $primary-color;
+      opacity: 1;
+    };
+  }
+  .key-emergencies-item {
+    @include column(10/12)
+    margin-bottom: $global-spacing;
+    @include media(medium-up) {
+      @include column(6/12)
+    }
+    @include media(medium-up) {
+      @include column(4/12)
+    }
+    &:first-child {
+      margin-left: 0;
+    };
+    .card__title {
+      font-size: 1rem;
+    }
+    .card__date {
+      color: rgba($base-color, 0.6);
+      font-size: 0.875rem;
+    }
+    .card__stat-list {
+      float: left;
+      margin-top: $global-spacing/2;
+      margin-left: 0;
+    }
+    li.card__stat {
+      padding-left: $global-spacing * 3.5;
+      font-size: 1.5rem;
+      line-height: 1.25rem;
+      display: block;
+      margin-left: 0;
+      margin-bottom: $global-spacing;
+      small {
+        display: block;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        color: rgba($base-color, 0.6);
+      }
+      &:last-child {
+        margin-bottom: 0;
+      };
+    }
+  }
+}
