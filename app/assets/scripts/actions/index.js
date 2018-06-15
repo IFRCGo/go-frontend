@@ -307,6 +307,17 @@ export function getAdmAreaERU (aaType, aaId) {
   return fetchJSON(`api/v2/eru/?${f}`, GET_AA_ERU, withToken());
 }
 
+export const GET_PARTNER_DEPLOYMENTS = 'GET_PARTNER_DEPLOYMENTS';
+export function getPartnerDeployments (aaType, id) {
+  aaType = aaType || 'country';
+  let filters = aaType === 'country' ? { country_deployed_to: id }
+    : aaType === 'region' ? { country_deployed_to__in: countriesByRegion[id].join(',') }
+      : { district_deployed_to: id };
+  filters.limit = 0;
+  const f = buildAPIQS(filters);
+  return fetchJSON(`api/v2/partner_deployment/?${f}`, GET_PARTNER_DEPLOYMENTS, withToken(), { id });
+}
+
 export const GET_AA_KEY_FIGURES = 'GET_AA_KEY_FIGURES';
 export function getAdmAreaKeyFigures (aaType, aaId) {
   const f = buildAPIQS({

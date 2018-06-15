@@ -22,7 +22,8 @@ import {
   getAdmAreaAggregateAppeals,
   getAdmAreaKeyFigures,
   getAdmAreaSnippets,
-  getCountryOperations
+  getCountryOperations,
+  getPartnerDeployments
 } from '../actions';
 import { getBoundingBox } from '../utils/country-bounding-box';
 
@@ -94,12 +95,15 @@ class AdminArea extends SFPComponent {
   }
 
   getData (props) {
-    this.props._getAdmAreaFieldReports(props.type, props.match.params.id, 1, { ordering: '-created_at' });
-    this.props._getAdmAreaAppealsList(props.type, props.match.params.id);
-    this.props._getAdmAreaAggregateAppeals(props.type, props.match.params.id, DateTime.local().minus({years: 10}).startOf('month').toISODate(), 'year');
-    this.props._getAdmAreaKeyFigures(props.type, props.match.params.id);
-    this.props._getAdmAreaSnippets(props.type, props.match.params.id);
-    this.props._getCountryOperations(props.type, props.match.params.id);
+    // this.props._getAdmAreaFieldReports(props.type, props.match.params.id, 1, { ordering: '-created_at' });
+    const type = 'country';
+    const id = props.match.params.id;
+    this.props._getAdmAreaAppealsList(type, id);
+    this.props._getAdmAreaAggregateAppeals(type, id, DateTime.local().minus({years: 10}).startOf('month').toISODate(), 'year');
+    this.props._getAdmAreaKeyFigures(type, id);
+    this.props._getAdmAreaSnippets(type, id);
+    this.props._getCountryOperations(type, id);
+    this.props._getPartnerDeployments(type, id);
   }
 
   getAdmArea (type, id) {
@@ -350,6 +354,8 @@ if (environment !== 'production') {
     _getAdmAreaFieldReports: T.func,
     _getAdmAreaAppealsList: T.func,
     _getAdmAreaAggregateAppeals: T.func,
+    _getCountryOperations: T.func,
+    _getPartnerDeployments: T.func,
     type: T.string,
     match: T.object,
     history: T.object,
@@ -360,7 +366,9 @@ if (environment !== 'production') {
     countryOperations: T.object,
     aggregateYear: T.object,
     keyFigures: T.object,
-    snippets: T.object
+    snippets: T.object,
+    countryOperations: T.object,
+    partnerDeployments: T.object
   };
 }
 
@@ -382,7 +390,12 @@ const selector = (state, ownProps) => ({
   }),
   keyFigures: state.adminArea.keyFigures,
   snippets: state.adminArea.snippets,
-  countryOperations: state.adminArea.countryOperations
+  countryOperations: state.adminArea.countryOperations,
+  partnerDeployments: get(state.adminArea.partnerDeployments, ownProps.match.params.id, {
+    data: {},
+    fetching: false,
+    fetched: false
+  })
 });
 
 const dispatcher = (dispatch) => ({
@@ -392,7 +405,8 @@ const dispatcher = (dispatch) => ({
   _getAdmAreaAggregateAppeals: (...args) => dispatch(getAdmAreaAggregateAppeals(...args)),
   _getAdmAreaKeyFigures: (...args) => dispatch(getAdmAreaKeyFigures(...args)),
   _getAdmAreaSnippets: (...args) => dispatch(getAdmAreaSnippets(...args)),
-  _getCountryOperations: (...args) => dispatch(getCountryOperations(...args))
+  _getCountryOperations: (...args) => dispatch(getCountryOperations(...args)),
+  _getPartnerDeployments: (...args) => dispatch(getPartnerDeployments(...args))
 });
 
 export default connect(selector, dispatcher)(AdminArea);
