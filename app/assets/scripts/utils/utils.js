@@ -65,6 +65,30 @@ export function aggregateCountryAppeals (appeals) {
   };
 }
 
+export function aggregatePartnerDeployments (deployments) {
+  try {
+    const grouping = _groupBy(deployments.filter(d => d.district_deployed_to), 'district_deployed_to.id');
+    const areas = Object.keys(grouping).map(d => ({ id: d, deployments: grouping[d] }));
+    const max = Math.max.apply(this, areas.map(d => d.deployments.length));
+    return {
+      areas,
+      max
+    };
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+// normalize ISO from a country vector tile
+export function getCountryIsoFromVt (feature) {
+  const { properties } = feature;
+  const iso = get(feature, 'properties.ISO_A2', '').toLowerCase();
+  if (!iso || (iso === '-99' && properties.ADM0_A3_IS !== 'FRA' && properties.ADM0_A3_IS !== 'NOR')) {
+    return null;
+  }
+  return iso === '-99' ? properties.ADM0_A3_IS.toLowerCase().slice(0, 2) : iso;
+}
+
 export function groupByDisasterType (objs) {
   const emergenciesByType = _groupBy(objs, 'dtype');
   return Object.keys(emergenciesByType).map(key => {

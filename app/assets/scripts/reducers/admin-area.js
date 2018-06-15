@@ -1,13 +1,12 @@
 'use strict';
 import { combineReducers } from 'redux';
-import _toNumber from 'lodash.tonumber';
 import _groupBy from 'lodash.groupby';
 
 import { stateInflight, stateError, stateSuccess } from '../utils/reducer-utils';
 import {
   aggregateAppealStats,
   aggregateCountryAppeals,
-  get,
+  aggregatePartnerDeployments,
   groupByDisasterType
 } from '../utils/utils';
 
@@ -228,9 +227,13 @@ function partnerDeployments (state = {}, action) {
       });
       break;
     case 'GET_PARTNER_DEPLOYMENTS_SUCCESS':
-      console.log(action.data);
       state = Object.assign({}, state, {
-        [action.id]: stateSuccess(state, action)
+        [action.id]: {
+          fetching: false,
+          fetched: true,
+          receivedAt: action.receivedAt,
+          data: aggregatePartnerDeployments(action.data.results)
+        }
       });
       break;
   }
