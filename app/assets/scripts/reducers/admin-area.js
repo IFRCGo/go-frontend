@@ -4,8 +4,12 @@ import _toNumber from 'lodash.tonumber';
 import _groupBy from 'lodash.groupby';
 
 import { stateInflight, stateError, stateSuccess } from '../utils/reducer-utils';
-import { getCentroid } from '../utils/country-centroids';
-import { get, groupByDisasterType } from '../utils/utils';
+import {
+  aggregateAppealStats,
+  aggregateCountryAppeals,
+  get,
+  groupByDisasterType
+} from '../utils/utils';
 
 const initialState = {
   fetching: false,
@@ -80,45 +84,6 @@ function fieldReports (state = initialState, action) {
   return state;
 }
 
-function getAppealsStats (appeals) {
-  let struct = {
-    numBeneficiaries: 0,
-    amountRequested: 0,
-    amountFunded: 0
-  };
-  return appeals.reduce((acc, appeal) => {
-    acc.numBeneficiaries += appeal.num_beneficiaries || 0;
-    acc.amountRequested += _toNumber(appeal.amount_requested);
-    acc.amountFunded += _toNumber(appeal.amount_funded);
-    return acc;
-  }, struct);
-}
-
-function getAdminGeojson (appeals) {
-  const grouped = _groupBy(appeals.filter(o => o.country), 'country.iso');
-  return {
-    type: 'FeatureCollection',
-    features: Object.keys(grouped).map(countryIso => {
-      const countryAppeals = grouped[countryIso];
-      const stats = getAppealsStats(countryAppeals);
-      return {
-        type: 'Feature',
-        properties: Object.assign(stats, {
-          id: countryAppeals[0].country.id,
-          name: countryAppeals.map(o => get(o, 'event.name', o.name)).join(', '),
-          // TODO this should have some way of showing multiple types.
-          atype: countryAppeals[0].atype,
-          dtype: countryAppeals[0].dtype
-        }),
-        geometry: {
-          type: 'Point',
-          coordinates: getCentroid(countryIso)
-        }
-      };
-    })
-  };
-}
-
 function appealStats (state = initialState, action) {
   switch (action.type) {
     case 'GET_AA_APPEALS_LIST_INFLIGHT':
@@ -136,9 +101,9 @@ function appealStats (state = initialState, action) {
         fetched: true,
         receivedAt: action.receivedAt,
         data: {
-          stats: getAppealsStats(appeals),
+          stats: aggregateAppealStats(appeals),
           emergenciesByType,
-          geoJSON: getAdminGeojson(appeals),
+          geoJSON: aggregateCountryAppeals(appeals),
           results: appeals
         }
       });
@@ -250,6 +215,28 @@ function snippets (state = initialState, action) {
   return state;
 }
 
+function partnerDeployments (state = {}, action) {
+  switch (action.type) {
+    case 'GET_PARTNER_DEPLOYMENTS_INFLIGHT':
+      state = Object.assign({}, state, {
+        [action.id]: stateInflight(state, action)
+      });
+      break;
+    case 'GET_PARTNER_DEPLOYMENTS_FAILED':
+      state = Object.assign({}, state, {
+        [action.id]: stateError(state, action)
+      });
+      break;
+    case 'GET_PARTNER_DEPLOYMENTS_SUCCESS':
+      console.log(action.data);
+      state = Object.assign({}, state, {
+        [action.id]: stateSuccess(state, action)
+      });
+      break;
+  }
+  return state;
+}
+
 // Combined export.
 export default combineReducers({
   aaData,
@@ -261,5 +248,6 @@ export default combineReducers({
   aggregate,
   eru,
   keyFigures,
-  snippets
+  snippets,
+  partnerDeployments
 });

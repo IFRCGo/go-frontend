@@ -2,8 +2,10 @@
 import { combineReducers } from 'redux';
 import _toNumber from 'lodash.tonumber';
 
-import { getCentroid } from '../utils/country-centroids';
-import { groupByDisasterType } from '../utils/utils';
+import {
+  groupByDisasterType,
+  aggregateCountryAppeals
+} from '../utils/utils';
 
 const appealsListInitialState = {
   fetching: false,
@@ -70,31 +72,7 @@ function appealsList (state = appealsListInitialState, action) {
       const emergenciesByType = groupByDisasterType(objs);
 
       // Features for the map.
-      const geoJSON = {
-        type: 'FeatureCollection',
-        features: objs.reduce((acc, o) => {
-          if (o.country) {
-            return acc.concat({
-              type: 'Feature',
-              properties: {
-                id: o.id,
-                pageId: o.event || false,
-                name: o.name,
-                atype: o.atype,
-                dtype: o.dtype.id,
-                numBeneficiaries: o.num_beneficiaries,
-                amountRequested: _toNumber(o.amount_requested),
-                amountFunded: _toNumber(o.amount_funded)
-              },
-              geometry: {
-                type: 'Point',
-                coordinates: getCentroid(o.country.iso)
-              }
-            });
-          }
-          return acc;
-        }, [])
-      };
+      const geoJSON = aggregateCountryAppeals(objs);
 
       state = Object.assign({}, state, {
         fetching: false,
