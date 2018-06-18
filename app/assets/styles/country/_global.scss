@@ -117,7 +117,56 @@
 
 }
 
+.operations__container {
+  color: #FFF;
+  background-color: $map-color;
+  float: left;
+  width: 100%;
+  margin-bottom: $global-spacing * 2;
+  list-style: none;
+}
+
+.country__operations {
+  float: left;
+  width: 100%;
+  @include media(medium-up) {
+    width: 40%;
+  }
+  padding: $global-spacing * 2;
+  h3 {
+    margin-bottom: 0;
+  }
+  .activity-list__item, .pns-list__item {
+    margin-bottom: $global-spacing/4;
+  }
+  li {
+    list-style: none;
+    color: rgba(#FFF, 0.7);
+    font-size: 0.875rem;
+  }
+  .list-label {
+    font-size: 1rem;
+  }
+  .list-circle {
+    float: left;
+    li {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background-color: #7e95bb;
+      display: inline-block;
+      margin-right: $global-spacing/2;
+    }
+  }
+}
+
 .country__map {
+  float: right;
+  width: 100%;
+  @include media(medium-up) {
+    width: 60%;
+  }
+
   .inner {
     padding-left: 0;
     padding-right: 0;

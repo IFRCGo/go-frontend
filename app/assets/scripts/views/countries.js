@@ -322,8 +322,43 @@ class AdminArea extends SFPComponent {
               <KeyFigures data={this.props.keyFigures} />
               <Fold title='Statistics' headerClass='visually-hidden' id='operations'>
                 <h2 className='fold__title'>{isNaN(activeOperations) ? nope : activeOperations + ' Active Operations'}</h2>
-                <div className={mapContainerClass}>
-                  <Homemap operations={this.props.appealStats} bbox={bbox} deployments={this.props.partnerDeployments} noRenderEmergencies={true} />
+                <div className='operations__container'>
+                  <div className='country__operations'>
+                    <h2>PNS Activities</h2>
+                    <h3 className='list-label'>Number of Activities by PNS</h3>
+                    <ul className='pns-list'>
+                      <li className='pns-list__item'>
+                        <ul className='list-circle'><li></li><li></li><li></li></ul>
+                        American Redcross
+                      </li>
+                      <li className='pns-list__item'>
+                        <ul className='list-circle'><li></li><li></li><li></li></ul>
+                        American Redcross
+                      </li>
+                      <li className='pns-list__item'>
+                        <ul className='list-circle'><li></li><li></li><li></li></ul>
+                        American Redcross
+                      </li>
+                    </ul>
+                    <h3 className='list-label'>Type of Activities by PNS</h3>
+                    <ul className='activity-list'>
+                      <li className='activity-list__item'>
+                        <ul className='list-circle'><li></li><li></li><li></li></ul>
+                        Health
+                      </li>
+                      <li className='activity-list__item'>
+                        <ul className='list-circle'><li></li><li></li><li></li></ul>
+                        WASH
+                      </li>
+                      <li className='activity-list__item'>
+                        <ul className='list-circle'><li></li><li></li><li></li></ul>
+                        Capacity Building
+                      </li>
+                    </ul>
+                  </div>
+                  <div className={mapContainerClass}>
+                    <Homemap operations={this.props.appealStats} bbox={bbox} deployments={this.props.partnerDeployments} noRenderEmergencies={true} />
+                  </div>
                 </div>
                 {this.renderAppeals()}
               </Fold>
