@@ -1,4 +1,5 @@
 'use strict';
+import { DateTime } from 'luxon';
 import { get } from './utils';
 import { orgTypes } from './field-report-constants';
 
@@ -152,3 +153,8 @@ export const getResponseStatus = (data, dataPath) => {
 };
 
 export const privateSurgeAlert = 'This is a private alert. You must be logged in to view it.';
+
+export function isoDate (d) {
+  const result = DateTime.fromISO(d).toISODate();
+  return result || nope;
+}
