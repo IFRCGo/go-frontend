@@ -13,6 +13,7 @@ import { get, dateOptions, datesAgo, dTypeOptions } from '../utils/utils/';
 import { getDtypeMeta } from '../utils/get-dtype-meta';
 import {
   commaSeparatedNumber as n,
+  days90,
   nope
 } from '../utils/format';
 import {
@@ -22,7 +23,8 @@ import {
   getAdmAreaAggregateAppeals,
   getAdmAreaKeyFigures,
   getAdmAreaSnippets,
-  getCountryOperations
+  getCountryOperations,
+  getPartnerDeployments
 } from '../actions';
 import { getBoundingBox } from '../utils/country-bounding-box';
 
@@ -30,6 +32,7 @@ import App from './app';
 import Fold from '../components/fold';
 import Homemap from '../components/homemap';
 import DisplayTable, { SortHeader, FilterHeader } from '../components/display-table';
+import EmergenciesTable from '../components/connected/emergencies-table';
 import {
   Snippets,
   KeyFigures,
@@ -94,12 +97,15 @@ class AdminArea extends SFPComponent {
   }
 
   getData (props) {
-    this.props._getAdmAreaFieldReports(props.type, props.match.params.id, 1, { ordering: '-created_at' });
-    this.props._getAdmAreaAppealsList(props.type, props.match.params.id);
-    this.props._getAdmAreaAggregateAppeals(props.type, props.match.params.id, DateTime.local().minus({years: 10}).startOf('month').toISODate(), 'year');
-    this.props._getAdmAreaKeyFigures(props.type, props.match.params.id);
-    this.props._getAdmAreaSnippets(props.type, props.match.params.id);
-    this.props._getCountryOperations(props.type, props.match.params.id);
+    // this.props._getAdmAreaFieldReports(props.type, props.match.params.id, 1, { ordering: '-created_at' });
+    const type = 'country';
+    const id = props.match.params.id;
+    this.props._getAdmAreaAppealsList(type, id);
+    this.props._getAdmAreaAggregateAppeals(type, id, DateTime.local().minus({years: 10}).startOf('month').toISODate(), 'year');
+    this.props._getAdmAreaKeyFigures(type, id);
+    this.props._getAdmAreaSnippets(type, id);
+    this.props._getCountryOperations(type, id);
+    this.props._getPartnerDeployments(type, id);
   }
 
   getAdmArea (type, id) {
@@ -157,11 +163,12 @@ class AdminArea extends SFPComponent {
   renderAppeals () {
     const {
       fetched,
+      fetching,
       error,
       data
     } = this.props.countryOperations;
 
-    if (error) return null;
+    if (error || fetching) return null;
 
     if (fetched) {
       const now = Date.now();
@@ -190,7 +197,7 @@ class AdminArea extends SFPComponent {
         { id: 'active', label: 'Active' }
       ];
 
-      const rows = data.map(o => ({
+      const rows = data.results.map(o => ({
         id: o.id,
         date: DateTime.fromISO(o.start_date).toISODate(),
         name: o.name,
@@ -315,16 +322,20 @@ class AdminArea extends SFPComponent {
           </Sticky>
           <div className='inpage__body'>
             <div className='inner'>
-
               <KeyFigures data={this.props.keyFigures} />
               <Fold title='Statistics' headerClass='visually-hidden' id='operations'>
                 <h2 className='fold__title'>{isNaN(activeOperations) ? nope : activeOperations + ' Active Operations'}</h2>
                 <div className={mapContainerClass}>
-                  <Homemap appealsList={this.props.appealStats} bbox={bbox} />
+                  <Homemap operations={this.props.appealStats} bbox={bbox} deployments={this.props.partnerDeployments} noRenderEmergencies={true} />
                 </div>
                 {this.renderAppeals()}
               </Fold>
-
+              <EmergenciesTable
+                title='Emergencies in the past 90 days'
+                limit={5}
+                country={this.props.match.params.id}
+                startDate={days90}
+              />
               <Snippets data={this.props.snippets} />
               <Links data={data} />
               <Contacts data={data} />
@@ -350,6 +361,8 @@ if (environment !== 'production') {
     _getAdmAreaFieldReports: T.func,
     _getAdmAreaAppealsList: T.func,
     _getAdmAreaAggregateAppeals: T.func,
+    _getCountryOperations: T.func,
+    _getPartnerDeployments: T.func,
     type: T.string,
     match: T.object,
     history: T.object,
@@ -357,10 +370,11 @@ if (environment !== 'production') {
     appeals: T.object,
     fieldReports: T.object,
     appealStats: T.object,
-    countryOperations: T.object,
     aggregateYear: T.object,
     keyFigures: T.object,
-    snippets: T.object
+    snippets: T.object,
+    countryOperations: T.object,
+    partnerDeployments: T.object
   };
 }
 
@@ -382,7 +396,12 @@ const selector = (state, ownProps) => ({
   }),
   keyFigures: state.adminArea.keyFigures,
   snippets: state.adminArea.snippets,
-  countryOperations: state.adminArea.countryOperations
+  countryOperations: state.adminArea.countryOperations,
+  partnerDeployments: get(state.adminArea.partnerDeployments, ownProps.match.params.id, {
+    data: {},
+    fetching: false,
+    fetched: false
+  })
 });
 
 const dispatcher = (dispatch) => ({
@@ -392,7 +411,8 @@ const dispatcher = (dispatch) => ({
   _getAdmAreaAggregateAppeals: (...args) => dispatch(getAdmAreaAggregateAppeals(...args)),
   _getAdmAreaKeyFigures: (...args) => dispatch(getAdmAreaKeyFigures(...args)),
   _getAdmAreaSnippets: (...args) => dispatch(getAdmAreaSnippets(...args)),
-  _getCountryOperations: (...args) => dispatch(getCountryOperations(...args))
+  _getCountryOperations: (...args) => dispatch(getCountryOperations(...args)),
+  _getPartnerDeployments: (...args) => dispatch(getPartnerDeployments(...args))
 });
 
 export default connect(selector, dispatcher)(AdminArea);

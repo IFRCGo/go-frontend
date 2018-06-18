@@ -97,6 +97,7 @@
     "watchify": "^3.9.0"
   },
   "dependencies": {
+    "@turf/centroid": "^6.0.2",
     "@xavescor/react": "16.2.1-path.1",
     "ajv": "^5.3.0",
     "ajv-keywords": "^2.1.1",

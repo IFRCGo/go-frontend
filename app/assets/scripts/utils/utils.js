@@ -4,6 +4,7 @@ import _groupBy from 'lodash.groupby';
 import _toNumber from 'lodash.tonumber';
 import { DateTime } from 'luxon';
 
+import { getCentroid } from './country-centroids';
 import { disasterType } from './field-report-constants';
 import { getDtypeMeta } from './get-dtype-meta';
 import { whitelistDomains } from '../schemas/register';
@@ -23,6 +24,71 @@ export function isLoggedIn (userState) {
   return !!get(userState, 'data.token');
 }
 
+// aggregate beneficiaries, requested, and funding for appeals
+export function aggregateAppealStats (appeals) {
+  let struct = {
+    numBeneficiaries: 0,
+    amountRequested: 0,
+    amountFunded: 0
+  };
+  return appeals.reduce((acc, appeal) => {
+    acc.numBeneficiaries += appeal.num_beneficiaries || 0;
+    acc.amountRequested += _toNumber(appeal.amount_requested);
+    acc.amountFunded += _toNumber(appeal.amount_funded);
+    return acc;
+  }, struct);
+}
+
+// returns a GeoJSON representation of a country's operations
+export function aggregateCountryAppeals (appeals) {
+  const grouped = _groupBy(appeals.filter(o => o.country), 'country.iso');
+  return {
+    type: 'FeatureCollection',
+    features: Object.keys(grouped).map(countryIso => {
+      const countryAppeals = grouped[countryIso];
+      const stats = aggregateAppealStats(countryAppeals);
+      return {
+        type: 'Feature',
+        properties: Object.assign(stats, {
+          id: countryAppeals[0].country.id,
+          name: countryAppeals.map(o => get(o, 'event.name', o.name)).join(', '),
+          // TODO this should have some way of showing multiple types.
+          atype: countryAppeals[0].atype,
+          dtype: countryAppeals[0].dtype
+        }),
+        geometry: {
+          type: 'Point',
+          coordinates: getCentroid(countryIso)
+        }
+      };
+    })
+  };
+}
+
+export function aggregatePartnerDeployments (deployments) {
+  try {
+    const grouping = _groupBy(deployments.filter(d => d.district_deployed_to), 'district_deployed_to.id');
+    const areas = Object.keys(grouping).map(d => ({ id: d, deployments: grouping[d] }));
+    const max = Math.max.apply(this, areas.map(d => d.deployments.length));
+    return {
+      areas,
+      max
+    };
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+// normalize ISO from a country vector tile
+export function getCountryIsoFromVt (feature) {
+  const { properties } = feature;
+  const iso = get(feature, 'properties.ISO_A2', '').toLowerCase();
+  if (!iso || (iso === '-99' && properties.ADM0_A3_IS !== 'FRA' && properties.ADM0_A3_IS !== 'NOR')) {
+    return null;
+  }
+  return iso === '-99' ? properties.ADM0_A3_IS.toLowerCase().slice(0, 2) : iso;
+}
+
 export function groupByDisasterType (objs) {
   const emergenciesByType = _groupBy(objs, 'dtype');
   return Object.keys(emergenciesByType).map(key => {
@@ -34,6 +100,11 @@ export function groupByDisasterType (objs) {
       items: emergenciesByType[key]
     };
   }).filter(Boolean).sort((a, b) => a.items.length < b.items.length ? 1 : -1);
+}
+
+export function mostRecentReport (reports) {
+  if (!Array.isArray(reports)) return null;
+  return reports.map(d => Object.assign({}, d, { _date: new Date(d['updated_at']) })).sort((a, b) => a._date < b._date ? -1 : 1)[0];
 }
 
 export function isValidEmail (email) {

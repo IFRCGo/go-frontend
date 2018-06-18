@@ -17,15 +17,21 @@ class _KeyFigures extends React.Component {
         id='key-figures'
         title='Key Figures'
         wrapper_class='key-figures'>
-        <ul className='key-figures-list'>
-          {data.map(o => (
-            <li key={o.deck}>
-              <h3>{isNaN(o.figure) ? o.figure : n(o.figure)}</h3>
-              <p className='key-figure-label'>{o.deck}</p>
-              <p className='key-figure-source'>Source: {o.source}</p>
-            </li>
-          ))}
-        </ul>
+        {data.results.length ? (
+          <ul className='key-figures-list'>
+            {data.results.map(o => (
+              <li key={o.deck}>
+                <h3>{isNaN(o.figure) ? o.figure : n(o.figure)}</h3>
+                <p className='key-figure-label'>{o.deck}</p>
+                <p className='key-figure-source'>Source: {o.source}</p>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div className='empty-data__container'>
+            <p>No key figures to show</p>
+          </div>
+        )}
       </Fold>
     );
   }
@@ -40,9 +46,15 @@ class _Snippets extends React.Component {
         id='graphics'
         title='Additional Graphics'
         wrapper_class='additional-graphics'>
-        <div className='iframe__container'>
-          {data.map(o => <div key={o.id} dangerouslySetInnerHTML={{__html: o.snippet}} />)}
-        </div>
+        {data.results.length ? (
+          <div className='iframe__container'>
+            {data.results.map(o => <div key={o.id} dangerouslySetInnerHTML={{__html: o.snippet}} />)}
+          </div>
+        ) : (
+          <div className='empty-data__container'>
+            <p>No graphics to show</p>
+          </div>
+        )}
       </Fold>
     );
   }

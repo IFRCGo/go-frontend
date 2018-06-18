@@ -14,7 +14,7 @@ export default class MapComponent extends React.Component {
   }
 
   setupData () {
-    if (!this.theMap.getSource(source)) {
+    if (!this.theMap.getSource(source) && this.props.geoJSON) {
       this.theMap.addSource(source, {
         type: 'geojson',
         data: this.props.geoJSON
@@ -38,8 +38,8 @@ export default class MapComponent extends React.Component {
     this.theMap = newMap(this.refs.map);
 
     this.theMap.on('style.load', () => {
-      this.mapLoaded = true;
       this.setupData();
+      this.mapLoaded = true;
     });
 
     if (typeof configureMap === 'function') {

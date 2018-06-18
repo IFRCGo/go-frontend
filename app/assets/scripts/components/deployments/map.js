@@ -7,6 +7,7 @@ import mapboxgl from 'mapbox-gl';
 import chroma from 'chroma-js';
 import _cloneDeep from 'lodash.clonedeep';
 
+import { getCountryIsoFromVt } from '../../utils/utils';
 import { source } from '../../utils/get-new-map';
 import { environment } from '../../config';
 import MapComponent from '../map';
@@ -89,23 +90,8 @@ export default class DeploymentsMap extends React.Component {
     this.theMap = theMap;
 
     const getCountryFeat = (e) => {
-      const feats = theMap.queryRenderedFeatures(e.point, {layers: ['country']});
-      if (feats) {
-        const { properties } = feats[0];
-        const iso = properties.ISO_A2.toLowerCase();
-
-        // Countries that don't have an iso2 code have -99 set for this instead.
-        const noIso = iso === '-99';
-
-        // Norway and France don't have iso2 codes, but should still be included.
-        // Use ISO3 codes instead.
-        if (noIso && properties.ADM0_A3_IS !== 'FRA' && properties.ADM0_A3_IS !== 'NOR') {
-          return null;
-        }
-        const code = noIso ? properties.ADM0_A3_IS.toLowerCase().slice(0, 2) : iso;
-        return this.props.data.data.features.find(f => f.properties.countryIso === code);
-      }
-      return null;
+      const iso = getCountryIsoFromVt(e.features[0]);
+      return iso ? this.props.data.data.features.find(f => f.properties.countryIso === iso) : null;
     };
 
     theMap.on('click', 'deployments', e => {

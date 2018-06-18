@@ -5,6 +5,9 @@ import { PropTypes as T } from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import c from 'classnames';
 import mapboxgl from 'mapbox-gl';
+import chroma from 'chroma-js';
+import calculateCentroid from '@turf/centroid';
+import { DateTime } from 'luxon';
 
 import { source } from '../utils/get-new-map';
 import { commaSeparatedNumber as n } from '../utils/format';
@@ -15,6 +18,9 @@ import {
 import Progress from './progress';
 import BlockLoading from './block-loading';
 import MapComponent from './map';
+import { get } from '../utils/utils';
+
+const scale = chroma.scale(['#F0C9E8', '#861A70']);
 
 class Homemap extends React.Component {
   constructor (props) {
@@ -23,34 +29,43 @@ class Homemap extends React.Component {
     // scaleBy needs to be set for us to assign layers
     this.state = {
       scaleBy,
-      layers: [],
-      filters: [],
+      markerLayers: [],
+      markerFilters: [],
       hoverEmerType: null,
-      selectedEmerType: null
+      selectedEmerType: null,
+      mapActions: []
     };
     this.configureMap = this.configureMap.bind(this);
     this.onFieldChange = this.onFieldChange.bind(this);
-    this.navigate = this.navigate.bind(this);
+    this.navigateToEmergency = this.navigateToEmergency.bind(this);
+    this.showDeploymentsPopover = this.showDeploymentsPopover.bind(this);
   }
 
   componentDidMount () {
+    const { operations, deployments } = this.props;
     // Init the map if there's data when the component loads.
-    if (!this.props.appealsList.error && this.props.appealsList.fetched) {
-      this.initMapLayers(this.props);
+    if (operations && !operations.error && operations.fetched) {
+      this.initMarkerLayers(operations);
+    }
+    if (deployments && !deployments.error && deployments.fetched) {
+      this.initFillLayers(deployments);
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps ({ operations, deployments }) {
     // set initial layers and filters when geojson data is loaded
-    if (!this.props.appealsList.fetched && nextProps.appealsList.fetched && !nextProps.appealsList.error) {
-      this.initMapLayers(nextProps);
+    if (operations && !this.props.operations.fetched && operations.fetched && !operations.error) {
+      this.initMarkerLayers(operations);
+    }
+    if (deployments && !this.props.deployments.fetched && deployments.fetched && !deployments.error) {
+      this.initFillLayers(deployments);
     }
   }
 
-  initMapLayers (props) {
+  initMarkerLayers (operations) {
     this.setState({
-      layers: this.getLayers(props.appealsList.data.geoJSON, this.state.scaleBy),
-      filters: this.getFilters(this.getDtypeHighlight())
+      markerLayers: this.getMarkerLayers(operations.data.geoJSON, this.state.scaleBy),
+      markerFilters: this.getMarkerFilters(this.getDtypeHighlight())
     });
   }
 
@@ -58,11 +73,31 @@ class Homemap extends React.Component {
     return this.state.hoverEmerType || this.state.selectedEmerType || '';
   }
 
+  initFillLayers (deployments) {
+    const { data } = deployments;
+    scale.domain([0, data.max]);
+    // create a data-driven paint property for the district fill color
+    const paint = ['case'];
+    data.areas.forEach(d => {
+      paint.push(['==', ['to-string', ['get', 'OBJECTID']], d.id]);
+      paint.push(scale(d.deployments.length).hex());
+    });
+    paint.push('rgba(0, 0, 0, 0)');
+    const action = (() => this.theMap.setPaintProperty('district', 'fill-color', paint));
+    if (this.theMap) {
+      this.theMap.on('load', action);
+    } else {
+      this.setState({
+        mapActions: this.state.mapActions.concat(action)
+      });
+    }
+  }
+
   onEmergencyTypeOverOut (what, typeId) {
     const hoverEmerType = what === 'mouseover' ? typeId : null;
     this.setState({
       hoverEmerType,
-      filters: this.getFilters(hoverEmerType || this.state.selectedEmerType)
+      markerFilters: this.getMarkerFilters(hoverEmerType || this.state.selectedEmerType)
     });
   }
 
@@ -70,14 +105,14 @@ class Homemap extends React.Component {
     const selectedEmerType = this.state.selectedEmerType === typeId ? null : typeId;
     this.setState({
       selectedEmerType,
-      filters: this.getFilters(this.state.hoverEmerType || selectedEmerType)
+      markerFilters: this.getMarkerFilters(this.state.hoverEmerType || selectedEmerType)
     });
   }
 
   onFieldChange (e) {
     const scaleBy = e.target.value;
     this.setState({
-      layers: this.getLayers(this.props.appealsList.data.geoJSON, scaleBy),
+      markerLayers: this.getMarkerLayers(this.props.operations.data.geoJSON, scaleBy),
       scaleBy
     });
     this.onPopoverCloseClick(scaleBy);
@@ -97,8 +132,16 @@ class Homemap extends React.Component {
 
   configureMap (theMap) {
     // Event listeners.
+    theMap.on('load', () => {
+      this.state.mapActions.forEach(action => action());
+    });
+
     theMap.on('click', 'appeals', e => {
-      this.showPopover(theMap, e.features[0]);
+      this.showOperationsPopover(theMap, e.features[0]);
+    });
+
+    theMap.on('click', 'district', e => {
+      this.showDeploymentsPopover(theMap, e.features[0]);
     });
 
     theMap.on('mousemove', 'appeals', e => {
@@ -109,12 +152,23 @@ class Homemap extends React.Component {
       theMap.getCanvas().style.cursor = '';
     });
 
+    theMap.on('mousemove', 'district', e => {
+      const id = get(e, 'features.0.properties.OBJECTID').toString();
+      if (id && get(this.props, 'deployments.data.areas', []).find(d => d.id === id)) {
+        theMap.getCanvas().style.cursor = 'pointer';
+      } else {
+        theMap.getCanvas().style.cursor = '';
+      }
+    });
+
     if (Array.isArray(this.props.bbox)) {
       theMap.fitBounds(this.props.bbox);
     }
+
+    this.theMap = theMap;
   }
 
-  getLayers (geoJSON, scaleBy) {
+  getMarkerLayers (geoJSON, scaleBy) {
     const ccolor = {
       property: 'atype',
       type: 'categorical',
@@ -150,7 +204,7 @@ class Homemap extends React.Component {
     return layers;
   }
 
-  getFilters (dtype) {
+  getMarkerFilters (dtype) {
     const filters = [];
     if (dtype) {
       filters.push({layer: 'appeals', filter: ['==', 'dtype', dtype]});
@@ -162,7 +216,7 @@ class Homemap extends React.Component {
     return filters;
   }
 
-  navigate (pageId) {
+  navigateToEmergency (pageId) {
     if (pageId) {
       this.props.history.push(`/emergencies/${pageId}`);
     }
@@ -174,12 +228,12 @@ class Homemap extends React.Component {
     }
   }
 
-  showPopover (theMap, feature) {
+  showOperationsPopover (theMap, feature) {
     let popoverContent = document.createElement('div');
 
     render(<MapPopover
       title={feature.properties.name}
-      onTitleClick={this.navigate}
+      onTitleClick={this.navigateToEmergency}
       pageId={feature.properties.pageId}
       numBeneficiaries={feature.properties.numBeneficiaries}
       amountRequested={feature.properties.amountRequested}
@@ -198,8 +252,29 @@ class Homemap extends React.Component {
       .addTo(theMap);
   }
 
+  showDeploymentsPopover (theMap, feature) {
+    const id = get(feature, 'properties.OBJECTID').toString();
+    const deployments = get(this.props, 'deployments.data.areas', []).find(d => d.id === id);
+    if (!deployments) return;
+
+    let popoverContent = document.createElement('div');
+    const numDeployments = deployments.deployments.length;
+    render(<MapPopover
+      title={`${numDeployments} Partner Deployment${numDeployments === 1 ? '' : 's'}`}
+      deployments={deployments.deployments}
+      onCloseClick={this.onPopoverCloseClick.bind(this)} />, popoverContent);
+
+    if (this.popover != null) {
+      this.popover.remove();
+    }
+    this.popover = new mapboxgl.Popup({closeButton: false})
+      .setLngLat(calculateCentroid(feature.geometry).geometry.coordinates)
+      .setDOMContent(popoverContent.children[0])
+      .addTo(theMap);
+  }
+
   renderEmergencies () {
-    const emerg = this.props.appealsList.data.emergenciesByType;
+    const emerg = get(this.props, 'operations.data.emergenciesByType', []);
     const max = Math.max.apply(Math, emerg.map(o => o.items.length));
 
     return (
@@ -224,37 +299,34 @@ class Homemap extends React.Component {
   }
 
   renderLoading () {
-    if (this.props.appealsList.fetching) {
+    const { operations, deployments } = this.props;
+    if (get(operations, 'fetching') && get(deployments, 'fetching')) {
       return <BlockLoading/>;
     }
   }
 
   renderError () {
-    if (this.props.appealsList.error) {
+    const { operations, deployments } = this.props;
+    if (get(operations, 'error') || get(deployments, 'error')) {
       return <p>Data not available.</p>;
     }
   }
 
   renderContent () {
-    const {
-      data,
-      fetched,
-      error
-    } = this.props.appealsList;
-
-    if (!fetched || error) { return null; }
-
+    const geoJSON = get(this.props.operations, 'data.geoJSON');
+    const layers = this.state.markerLayers;
+    const filters = this.state.markerFilters;
+    if (this.props.operations.fetching) return null;
     return (
       <React.Fragment>
-        {this.renderEmergencies()}
+        {this.props.noRenderEmergencies ? null : this.renderEmergencies()}
         <div className='map-container'>
           <h2 className='visually-hidden'>Map</h2>
-
           <MapComponent className='map-vis__holder'
             configureMap={this.configureMap}
-            layers={this.state.layers}
-            filters={this.state.filters}
-            geoJSON={data.geoJSON}>
+            layers={layers}
+            filters={filters}
+            geoJSON={geoJSON}>
             <figcaption className='map-vis__legend map-vis__legend--bottom-right legend'>
               <form className='form'>
                 <FormRadioGroup
@@ -288,7 +360,6 @@ class Homemap extends React.Component {
               </div>
             </figcaption>
           </MapComponent>
-
         </div>
       </React.Fragment>
     );
@@ -309,9 +380,11 @@ class Homemap extends React.Component {
 
 if (environment !== 'production') {
   Homemap.propTypes = {
-    appealsList: T.object,
+    operations: T.object,
+    deployments: T.object,
     history: T.object,
-    bbox: T.array
+    bbox: T.array,
+    noRenderEmergencies: T.bool
   };
 }
 
@@ -338,13 +411,24 @@ class MapPopover extends React.Component {
           </header>
           <div className='popover__body'>
             <dl className='popover__details'>
-              <dd>{n(this.props.numBeneficiaries)}</dd>
-              <dt>People Affected</dt>
-              <dd>{n(this.props.amountRequested)}</dd>
-              <dt>Amount Requested</dt>
-              <dd>{n(this.props.amountFunded)}</dd>
-              <dt>Amount Funded</dt>
+              {typeof this.props.numBeneficiaries === 'undefined' ? null : <React.Fragment>
+                <dd>{n(this.props.numBeneficiaries)}</dd>
+                <dt>People Affected</dt>
+              </React.Fragment>}
+              {typeof this.props.amountRequested === 'undefined' ? null : <React.Fragment>
+                <dd>{n(this.props.amountRequested)}</dd>
+                <dt>Amount Requested</dt>
+              </React.Fragment>}
+              {typeof this.props.amountFunded === 'undefined' ? null : <React.Fragment>
+                <dd>{n(this.props.amountFunded)}</dd>
+                <dt>Amount Funded</dt>
+              </React.Fragment>}
             </dl>
+            {Array.isArray(this.props.deployments) ? this.props.deployments.map(d => (
+              <ul>
+                <li>{d.name}, {d.role} ({DateTime.fromISO(d.start_date).toISODate()} - {DateTime.fromISO(d.end_date).toISODate()})</li>
+              </ul>
+            )) : null}
           </div>
         </div>
       </article>
@@ -360,6 +444,7 @@ if (environment !== 'production') {
     numBeneficiaries: T.number,
     amountRequested: T.number,
     amountFunded: T.number,
+    deployments: T.array,
     onTitleClick: T.func
   };
 }

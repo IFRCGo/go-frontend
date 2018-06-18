@@ -106,6 +106,11 @@ export function getAggregateAppeals (date, unit, type) {
   return fetchJSON(`api/v1/aggregate/?${f}`, GET_AGGREGATE_APPEALS, withToken(), {aggregationUnit: unit, aggregationType: type});
 }
 
+export const GET_FEATURED_EMERGENCIES = 'GET_FEATURED_EMERGENCIES';
+export function getFeaturedEmergencies () {
+  return fetchJSON('/api/v2/event/?is_featured=1', GET_FEATURED_EMERGENCIES, withToken());
+}
+
 export const GET_EMERGENCIES_LIST = 'GET_EMERGENCIES_LIST';
 export function getEmergenciesList (page = 1, filters = {}) {
   filters.limit = filters.limit || 10;
@@ -256,7 +261,6 @@ export function getCountryOperations (aaType, cId, page, filters = {}) {
   filters.end_date__gt = DateTime.utc().toISO();
   filters.limit = 0;
   filters.country = cId;
-  console.log(filters);
   const f = buildAPIQS(filters);
   return fetchJSON(`api/v2/appeal/?${f}`, GET_COUNTRY_OPERATIONS, withToken());
 }
@@ -301,6 +305,17 @@ export function getAdmAreaERU (aaType, aaId) {
 
   const f = buildAPIQS(filters);
   return fetchJSON(`api/v2/eru/?${f}`, GET_AA_ERU, withToken());
+}
+
+export const GET_PARTNER_DEPLOYMENTS = 'GET_PARTNER_DEPLOYMENTS';
+export function getPartnerDeployments (aaType, id) {
+  aaType = aaType || 'country';
+  let filters = aaType === 'country' ? { country_deployed_to: id }
+    : aaType === 'region' ? { country_deployed_to__in: countriesByRegion[id].join(',') }
+      : { district_deployed_to: id };
+  filters.limit = 0;
+  const f = buildAPIQS(filters);
+  return fetchJSON(`api/v2/partner_deployment/?${f}`, GET_PARTNER_DEPLOYMENTS, withToken(), { id });
 }
 
 export const GET_AA_KEY_FIGURES = 'GET_AA_KEY_FIGURES';

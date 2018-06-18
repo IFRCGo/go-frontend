@@ -49,13 +49,13 @@ body {
 
 a {
   cursor: pointer;
-  color: $link-color;
+  color: $base-color;
   text-decoration: none;
   transition: opacity 0.24s ease 0s;
 }
 
 a:visited {
-  color: $link-color;
+  color: $base-color;
 }
 
 a:hover {

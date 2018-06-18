@@ -3,12 +3,21 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
-import { DateTime } from 'luxon';
 
 import { environment } from '../../config';
 import { getEmergenciesList } from '../../actions';
-import { nope, commaSeparatedNumber as n } from '../../utils/format';
-import { get, dTypeOptions, dateOptions, datesAgo } from '../../utils/utils';
+import {
+  nope,
+  commaSeparatedNumber as n,
+  isoDate
+} from '../../utils/format';
+import {
+  get,
+  dTypeOptions,
+  dateOptions,
+  datesAgo,
+  mostRecentReport
+} from '../../utils/utils';
 import { getDtypeMeta } from '../../utils/get-dtype-meta';
 
 import Fold from '../fold';
@@ -27,7 +36,7 @@ class EmergenciesTable extends SFPComponent {
     this.state = {
       emerg: {
         page: 1,
-        limit: 10,
+        limit: isNaN(props.limit) ? 10 : props.limit,
         sort: {
           field: '',
           direction: 'asc'
@@ -59,6 +68,16 @@ class EmergenciesTable extends SFPComponent {
 
     if (state.filters.dtype !== 'all') {
       qs.dtype = state.filters.dtype;
+    }
+
+    if (!isNaN(this.props.country)) {
+      qs.country = this.props.country;
+    } else if (!isNaN(this.props.region)) {
+      qs.region = this.props.region;
+    }
+
+    if (this.props.startDate) {
+      qs.disaster_start_date__gte = this.props.startDate;
     }
 
     this.props._getEmergenciesList(this.state.emerg.page, qs);
@@ -93,7 +112,7 @@ class EmergenciesTable extends SFPComponent {
     }
 
     if (fetched) {
-      const headings = [
+      let headings = [
         {
           id: 'date',
           label: <FilterHeader id='date' title='Start Date' options={dateOptions} filter={this.state.emerg.filters.date} onSelect={this.handleFilterChange.bind(this, 'emerg', 'date')} />
@@ -107,31 +126,31 @@ class EmergenciesTable extends SFPComponent {
           label: <FilterHeader id='dtype' title='Disaster Type' options={dTypeOptions} filter={this.state.emerg.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'emerg', 'dtype')} />
         },
         {
+          id: 'glide',
+          label: 'Glide'
+        },
+        {
           id: 'totalAffected',
           label: <SortHeader id='num_affected' title='Requested Amount (CHF)' sort={this.state.emerg.sort} onClick={this.handleSortChange.bind(this, 'emerg', 'num_affected')} />,
           className: 'right-align'
         },
         {
-          id: 'beneficiaries',
-          label: 'Beneficiaries',
+          id: 'affected',
+          label: '# Affected',
           className: 'right-align'
-        },
-        { id: 'countries', label: 'Countries' }
+        }
       ];
 
+      // If we're showing this on a country-specific page, don't show the country column
+      if (isNaN(this.props.country)) {
+        headings.push({ id: 'countries', label: 'Countries' });
+      }
+
       const rows = data.results.map(rowData => {
-        const date = rowData.disaster_start_date
-          ? DateTime.fromISO(rowData.disaster_start_date).toISODate() : nope;
-
-        const beneficiaries = get(rowData, 'appeals', []).reduce((acc, next) => {
-          return acc + next.num_beneficiaries;
-        }, 0);
-
-        const countries = get(rowData, 'countries', []).map(c => (
-          <Link className='link--primary' key={c.iso} to={`/countries/${c.id}`}>{c.name}</Link>
-        ));
-
-        return {
+        const date = rowData.disaster_start_date ? isoDate(rowData.disaster_start_date) : nope;
+        const report = mostRecentReport(rowData['field_reports']);
+        const affected = get(report, 'num_affected', nope);
+        let row = {
           id: rowData.id,
           date: date,
           name: <Link className='link--primary' to={`/emergencies/${rowData.id}`}>{get(rowData, 'name', nope)}</Link>,
@@ -140,22 +159,37 @@ class EmergenciesTable extends SFPComponent {
             value: n(get(rowData, 'num_affected')),
             className: 'right-align'
           },
-          beneficiaries: {
-            value: n(beneficiaries),
+          affected: {
+            value: n(affected),
             className: 'right-align'
           },
-          countries: countries.length ? countries : nope
+          glide: rowData.glide || nope
         };
+
+        if (isNaN(this.props.country)) {
+          const countries = get(rowData, 'countries', []).map(c => (
+            <Link className='link--primary' key={c.iso} to={`/countries/${c.id}`}>{c.name}</Link>
+          ));
+          row.countries = countries.length ? countries : nope;
+        }
+
+        return row;
       });
 
+      const {
+        title,
+        noPaginate
+      } = this.props;
+
       return (
-        <Fold title={`Latest Emergencies (${n(data.count)})`}>
+        <Fold title={`${title} (${n(data.count)})`}>
           <DisplayTable
             headings={headings}
             rows={rows}
             pageCount={data.count / this.state.emerg.limit}
             page={this.state.emerg.page - 1}
             onPageChange={this.handlePageChange.bind(this, 'emerg')}
+            noPaginate={noPaginate}
           />
         </Fold>
       );
@@ -168,7 +202,13 @@ class EmergenciesTable extends SFPComponent {
 if (environment !== 'production') {
   EmergenciesTable.propTypes = {
     _getEmergenciesList: T.func,
-    list: T.object
+    list: T.object,
+    title: T.string,
+    noPaginate: T.bool,
+    limit: T.number,
+    country: T.number,
+    region: T.number,
+    startDate: T.string
   };
 }
 

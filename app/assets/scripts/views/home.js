@@ -16,6 +16,7 @@ import Fold from '../components/fold';
 import PresentationDash from '../components/connected/presentation-dash';
 import AlertsTable from '../components/connected/alerts-table';
 import BlockLoading from '../components/block-loading';
+import FeaturedEmergencies from '../components/connected/featured-emergencies';
 import DisplayTable, { SortHeader, FilterHeader } from '../components/display-table';
 import { SFPComponent } from '../utils/extendables';
 
@@ -178,6 +179,7 @@ class Home extends SFPComponent {
           </header>
           <div className='inpage__body'>
             <PresentationDash />
+            <FeaturedEmergencies />
             <div className='inner'>
               {this.renderAppeals()}
             </div>
