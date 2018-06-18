@@ -324,6 +324,9 @@ class AdminArea extends SFPComponent {
             <div className='inner'>
               <KeyFigures data={this.props.keyFigures} />
               <Fold title='Statistics' headerClass='visually-hidden' id='operations'>
+                <div className='fold__actions'>
+                  <button className='button button--primary-bounded'>Export Map</button>
+                </div>
                 <h2 className='fold__title'>{isNaN(activeOperations) ? nope : activeOperations + ' Active Operations'}</h2>
                 <div className={mapContainerClass}>
                   <Homemap operations={this.props.appealStats} bbox={bbox} deployments={this.props.partnerDeployments} noRenderEmergencies={true} />
