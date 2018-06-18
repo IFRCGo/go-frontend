@@ -31,6 +31,7 @@ import App from './app';
 import Fold from '../components/fold';
 import Homemap from '../components/homemap';
 import DisplayTable, { SortHeader, FilterHeader } from '../components/display-table';
+import EmergenciesTable from '../components/connected/emergencies-table';
 import {
   Snippets,
   KeyFigures,
@@ -38,6 +39,8 @@ import {
   Links
 } from '../components/admin-area-elements';
 import { SFPComponent } from '../utils/extendables';
+
+const emergencyTableStartDate = DateTime.utc().minus({days: 90}).startOf('day').toISO();
 
 class AdminArea extends SFPComponent {
   // Methods form SFPComponent:
@@ -161,11 +164,12 @@ class AdminArea extends SFPComponent {
   renderAppeals () {
     const {
       fetched,
+      fetching,
       error,
       data
     } = this.props.countryOperations;
 
-    if (error) return null;
+    if (error || fetching) return null;
 
     if (fetched) {
       const now = Date.now();
@@ -327,7 +331,12 @@ class AdminArea extends SFPComponent {
                 </div>
                 {this.renderAppeals()}
               </Fold>
-
+              <EmergenciesTable
+                title='Emergencies in the past 90 days'
+                limit={5}
+                country={this.props.match.params.id}
+                startDate={emergencyTableStartDate}
+              />
               <Snippets data={this.props.snippets} />
               <Links data={data} />
               <Contacts data={data} />
