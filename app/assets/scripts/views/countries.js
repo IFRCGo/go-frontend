@@ -13,6 +13,7 @@ import { get, dateOptions, datesAgo, dTypeOptions } from '../utils/utils/';
 import { getDtypeMeta } from '../utils/get-dtype-meta';
 import {
   commaSeparatedNumber as n,
+  days90,
   nope
 } from '../utils/format';
 import {
@@ -31,6 +32,7 @@ import App from './app';
 import Fold from '../components/fold';
 import Homemap from '../components/homemap';
 import DisplayTable, { SortHeader, FilterHeader } from '../components/display-table';
+import EmergenciesTable from '../components/connected/emergencies-table';
 import {
   Snippets,
   KeyFigures,
@@ -161,11 +163,12 @@ class AdminArea extends SFPComponent {
   renderAppeals () {
     const {
       fetched,
+      fetching,
       error,
       data
     } = this.props.countryOperations;
 
-    if (error) return null;
+    if (error || fetching) return null;
 
     if (fetched) {
       const now = Date.now();
@@ -327,7 +330,12 @@ class AdminArea extends SFPComponent {
                 </div>
                 {this.renderAppeals()}
               </Fold>
-
+              <EmergenciesTable
+                title='Emergencies in the past 90 days'
+                limit={5}
+                country={this.props.match.params.id}
+                startDate={days90}
+              />
               <Snippets data={this.props.snippets} />
               <Links data={data} />
               <Contacts data={data} />

@@ -25,7 +25,7 @@ class Emergencies extends React.Component {
           <EmergenciesDash />
           <div className='inpage__body'>
             <div className='inner'>
-              <EmergenciesTable />
+              <EmergenciesTable title='Latest Emergencies'/>
             </div>
             <div className='inner'>
               <FieldReportsTable />
