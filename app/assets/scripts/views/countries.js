@@ -13,6 +13,7 @@ import { get, dateOptions, datesAgo, dTypeOptions } from '../utils/utils/';
 import { getDtypeMeta } from '../utils/get-dtype-meta';
 import {
   commaSeparatedNumber as n,
+  days90,
   nope
 } from '../utils/format';
 import {
@@ -39,8 +40,6 @@ import {
   Links
 } from '../components/admin-area-elements';
 import { SFPComponent } from '../utils/extendables';
-
-const emergencyTableStartDate = DateTime.utc().minus({days: 90}).startOf('day').toISO();
 
 class AdminArea extends SFPComponent {
   // Methods form SFPComponent:
@@ -335,7 +334,7 @@ class AdminArea extends SFPComponent {
                 title='Emergencies in the past 90 days'
                 limit={5}
                 country={this.props.match.params.id}
-                startDate={emergencyTableStartDate}
+                startDate={days90}
               />
               <Snippets data={this.props.snippets} />
               <Links data={data} />

@@ -138,7 +138,7 @@ class EmergenciesTable extends SFPComponent {
           id: 'affected',
           label: '# Affected',
           className: 'right-align'
-        },
+        }
       ];
 
       // If we're showing this on a country-specific page, don't show the country column
@@ -149,7 +149,7 @@ class EmergenciesTable extends SFPComponent {
       const rows = data.results.map(rowData => {
         const date = rowData.disaster_start_date ? isoDate(rowData.disaster_start_date) : nope;
         const report = mostRecentReport(rowData['field_reports']);
-        const affected = get(mostRecentReport, 'num_affected', nope);
+        const affected = get(report, 'num_affected', nope);
         let row = {
           id: rowData.id,
           date: date,
@@ -170,7 +170,7 @@ class EmergenciesTable extends SFPComponent {
           const countries = get(rowData, 'countries', []).map(c => (
             <Link className='link--primary' key={c.iso} to={`/countries/${c.id}`}>{c.name}</Link>
           ));
-          row.countries = countries.length ? countries : nope
+          row.countries = countries.length ? countries : nope;
         }
 
         return row;

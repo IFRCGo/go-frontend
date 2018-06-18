@@ -158,3 +158,5 @@ export function isoDate (d) {
   const result = DateTime.fromISO(d).toISODate();
   return result || nope;
 }
+
+export const days90 = DateTime.utc().minus({days: 90}).startOf('day').toISO();
