@@ -26,7 +26,6 @@ import Emergency from './views/emergency';
 import Region from './views/region';
 import Country from './views/countries';
 import Deployments from './views/deployments';
-import HeOps from './views/heops';
 
 require('isomorphic-fetch');
 
@@ -98,7 +97,6 @@ const Root = () => (
         <Route exact path="/regions/:id" render={props => <Region {...props} type='region' />} />
         <Route exact path="/countries/:id" render={props => <Country {...props} type='country' />} />
         <PrivateRoute exact path="/deployments" component={Deployments}/>
-        <PrivateRoute exact path="/heops" component={HeOps}/>
         <Route component={UhOh}/>
       </Switch>
     </Router>
