@@ -7,7 +7,6 @@ import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 import _toNumber from 'lodash.tonumber';
 import { Sticky, StickyContainer } from 'react-sticky';
-import { DateTime } from 'luxon';
 
 import { api, environment } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
@@ -19,9 +18,14 @@ import {
 import {
   commaSeparatedNumber as n,
   separateUppercaseWords as separate,
-  nope
+  nope,
+  isoDate,
+  timestamp
 } from '../utils/format';
-import { get } from '../utils/utils/';
+import {
+  get,
+  mostRecentReport
+} from '../utils/utils/';
 
 import App from './app';
 import Fold from '../components/fold';
@@ -78,6 +82,32 @@ class Emergency extends React.Component {
     this.setState({selectedAppeal: id});
   }
 
+  renderFieldReportStats () {
+    const report = mostRecentReport(get(this.props, 'event.data.field_reports'));
+    if (!report) return null;
+    return (
+      <div className='inpage__header-col'>
+        <h3>Emergency Overview</h3>
+        <p>Last Updated: {timestamp(report.updated_at)}</p>
+        <div className='content-list-group'>
+          <ul className='content-list'>
+            <li>Affected<span className='content-highlight'>{get(report, 'num_affected', nope)}</span></li>
+            <li>Injured<span className='content-highlight'>{get(report, 'num_injured', nope)}</span></li>
+            <li>Dead<span className='content-highlight'>{get(report, 'num_dead', nope)}</span></li>
+            <li>Missing<span className='content-highlight'>{get(report, 'num_missing', nope)}</span></li>
+            <li>Displaced<span className='content-highlight'>{get(report, 'num_displaced', nope)}</span></li>
+          </ul>
+          <ul className='content-list'>
+            <li>Assisted<span className='content-highlight'>{get(report, 'num_assisted', nope)}</span></li>
+            <li>Local staff<span className='content-highlight'>{get(report, 'num_localstaff', nope)}</span></li>
+            <li>Volunteers<span className='content-highlight'>{get(report, 'num_volunteers', nope)}</span></li>
+            <li>Expat delegates<span className='content-highlight'>{get(report, 'num_expats_delegates', nope)}</span></li>
+          </ul>
+        </div>
+      </div>
+    );
+  }
+
   renderHeaderStats () {
     const { appeals } = this.props.event.data;
     const selected = this.state.selectedAppeal;
@@ -123,25 +153,7 @@ class Emergency extends React.Component {
             </ul>
           </div>
         </div>
-        <div className='inpage__header-col'>
-          <h3>Emergency Overview</h3>
-          <div className='content-list-group'>
-            <ul className='content-list'>
-              <li>Capitol<span className='content-highlight'>Nairobi</span></li>
-              <li>Population<span className='content-highlight'>48.6M</span></li>
-              <li>GDP Per Capita<span className='content-highlight'>$70.53B</span></li>
-              <li>Life Expectancy<span className='content-highlight'>67</span></li>
-              <li>Infant Mortality Rate<span className='content-highlight'>4.9%</span></li>
-            </ul>
-            <ul className='content-list'>
-              <li>Adult Literacy<span className='content-highlight'>4.9%</span></li>
-              <li>Urbanization<span className='content-highlight'>48.6M</span></li>
-              <li>Home Development Index<span className='content-highlight'>$70.53B</span></li>
-              <li>Inequality Adjusted HDI<span className='content-highlight'>67</span></li>
-              <li>Gender Inequality Index<span className='content-highlight'>4.9%</span></li>
-            </ul>
-          </div>
-        </div>
+        {this.renderFieldReportStats()}
         <div className='funding-chart'>
         </div>
       </div>
@@ -170,7 +182,7 @@ class Emergency extends React.Component {
             <tbody>
               {data.field_reports.map(o => (
                 <tr key={o.id}>
-                  <td>{DateTime.fromISO(o.created_at).toISODate()}</td>
+                  <td>{isoDate(o.created_at)}</td>
                   <td><Link to={`/reports/${o.id}`} className='link--primary' title='View Field Report'>{o.summary}</Link></td>
                   <td>--</td>
                   <td><a href=''className='link--primary'>--</a></td>
@@ -229,7 +241,7 @@ class Emergency extends React.Component {
               let href = o['document'] || o['document_url'] || null;
               if (!href) { return null; }
               return <li key={o.id}>
-                <a className='link--secondary' href={href} target='_blank'>{o.name}, {DateTime.fromISO(o.created_at).toISODate()}</a>
+                <a className='link--secondary' href={href} target='_blank'>{o.name}, {isoDate(o.created_at)}</a>
               </li>;
             })}
           </ul>
