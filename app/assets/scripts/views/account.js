@@ -302,7 +302,7 @@ class Account extends React.Component {
   }
 
   renderProfileForm () {
-    const { profile } = this.props;
+    const { profile } = this.state;
     return (
       <div className='inner'>
         <div className='fold__header'>
