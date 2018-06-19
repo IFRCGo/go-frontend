@@ -159,4 +159,9 @@ export function isoDate (d) {
   return result || nope;
 }
 
+export function timestamp (d) {
+  const result = DateTime.fromISO(d).toLocaleString(DateTime.DATETIME_SHORT);
+  return result || nope;
+}
+
 export const days90 = DateTime.utc().minus({days: 90}).startOf('day').toISO();
