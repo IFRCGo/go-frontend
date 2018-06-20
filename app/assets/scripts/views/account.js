@@ -296,6 +296,8 @@ class Account extends React.Component {
               </Fragment>
             )) : null}
           </dl>
+        </div>
+        <div className='fold__footer'>
           <Link to='/account/password-change'>Change my password</Link>
         </div>
       </div>
@@ -399,7 +401,7 @@ class Account extends React.Component {
       error: null
     });
     if (!userReports.fetched) { return null; }
-    const data = get(userReports, 'data', []);
+    const data = get(userReports, 'data.results', []);
     if (!data.length) { return null; }
     return (
       <div className='prose prose--responsive'>
@@ -419,6 +421,9 @@ class Account extends React.Component {
                   </li>
                 ))}
               </ul>
+            </div>
+            <div className='fold__footer'>
+              <p>To delete a field report, contact <a href='mailto:im@ifrc.org'>the IM team</a>.</p>
             </div>
           </div>
         </section>
