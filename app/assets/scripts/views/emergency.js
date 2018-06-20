@@ -7,6 +7,7 @@ import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 import _toNumber from 'lodash.tonumber';
 import { Sticky, StickyContainer } from 'react-sticky';
+import { Helmet } from 'react-helmet';
 
 import { api, environment } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
@@ -329,6 +330,9 @@ class Emergency extends React.Component {
 
     return (
       <section className='inpage'>
+        <Helmet>
+          <title>IFRC Go - {get(data, 'name', 'Emergency')}</title>
+        </Helmet>
         <header className='inpage__header'>
           <div className='inner'>
             <div className='inpage__headline'>
@@ -421,6 +425,9 @@ class Emergency extends React.Component {
   render () {
     return (
       <App className='page--emergency'>
+        <Helmet>
+          <title>IFRC Go - Emergency</title>
+        </Helmet>
         {this.renderContent()}
       </App>
     );

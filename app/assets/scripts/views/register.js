@@ -8,6 +8,7 @@ import _cloneDeep from 'lodash.clonedeep';
 import Ajv from 'ajv';
 import ajvKeywords from 'ajv-keywords';
 import Select from 'react-select';
+import { Helmet } from 'react-helmet';
 
 import { isValidEmail, isWhitelistedEmail, get } from '../utils/utils';
 import { countries, orgTypes } from '../utils/field-report-constants';
@@ -289,6 +290,9 @@ class Register extends React.Component {
   render () {
     return (
       <App className='page--register'>
+        <Helmet>
+          <title>IFRC Go - Register</title>
+        </Helmet>
         <section className='inpage'>
           <header className='inpage__header'>
             <div className='inner'>

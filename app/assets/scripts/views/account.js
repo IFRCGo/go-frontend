@@ -9,6 +9,7 @@ import c from 'classnames';
 import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import { set } from 'object-path';
+import { Helmet } from 'react-helmet';
 
 import { environment } from '../config';
 import {
@@ -494,6 +495,9 @@ class Account extends React.Component {
   render () {
     return (
       <App className='page--account'>
+        <Helmet>
+          <title>IFRC Go - Account</title>
+        </Helmet>
         <section className='inpage'>
           <header className='inpage__header'>
             <div className='inner'>

@@ -4,6 +4,7 @@ import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { DateTime } from 'luxon';
+import { Helmet } from 'react-helmet';
 
 import { environment } from '../config';
 import { get, dateOptions, datesAgo, dTypeOptions } from '../utils/utils/';
@@ -168,6 +169,9 @@ class Home extends SFPComponent {
   render () {
     return (
       <App className='page--homepage'>
+        <Helmet>
+          <title>IFRC Go - Home</title>
+        </Helmet>
         <section className='inpage'>
           <header className='inpage__header'>
             <div className='inner'>
