@@ -19,6 +19,7 @@ import Progress from './progress';
 import BlockLoading from './block-loading';
 import MapComponent from './map';
 import { get } from '../utils/utils';
+import exportMap from '../utils/export-map';
 
 const scale = chroma.scale(['#F0C9E8', '#861A70']);
 
@@ -40,7 +41,6 @@ class Homemap extends React.Component {
     this.onFieldChange = this.onFieldChange.bind(this);
     this.navigateToEmergency = this.navigateToEmergency.bind(this);
     this.showDeploymentsPopover = this.showDeploymentsPopover.bind(this);
-    this.generateExport = this.generateExport.bind(this);
   }
 
   componentDidMount () {
@@ -219,18 +219,6 @@ class Homemap extends React.Component {
     return filters;
   }
 
-  generateExport () {
-    if (this.theMap) {
-      const uri = this.theMap.getCanvas().toDataURL();
-      var link = document.createElement('a');
-      link.download = 'map.png';
-      link.href = uri;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-  }
-
   navigateToEmergency (pageId) {
     if (pageId) {
       this.props.history.push(`/emergencies/${pageId}`);
@@ -339,7 +327,7 @@ class Homemap extends React.Component {
           <div className='fold__actions'>
             <button className={c('button button--primary-bounded button--export', {
               disabled: !this.state.ready
-            })} onClick={this.generateExport}>Export Map</button>
+            })} onClick={() => exportMap(this.theMap)}>Export Map</button>
           </div>
         )}
         <div className='map-container'>
@@ -406,7 +394,8 @@ if (environment !== 'production') {
     deployments: T.object,
     history: T.object,
     bbox: T.array,
-    noRenderEmergencies: T.bool
+    noRenderEmergencies: T.bool,
+    noExport: T.bool
   };
 }
 
@@ -467,7 +456,6 @@ if (environment !== 'production') {
     amountRequested: T.number,
     amountFunded: T.number,
     deployments: T.array,
-    onTitleClick: T.func,
-    noExport: T.bool
+    onTitleClick: T.func
   };
 }
