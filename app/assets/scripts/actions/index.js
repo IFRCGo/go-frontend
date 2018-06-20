@@ -152,7 +152,7 @@ export function getEventById (id) {
 
 export const GET_SITREPS = 'GET_SITREPS';
 export function getSitrepsByEventId (id) {
-  return fetchJSON(`api/v2/situation_report/?ordering=-created_at&event=${id}`, GET_SITREPS, withToken(), { id });
+  return fetchJSON(`api/v2/situation_report/?ordering=-created_at&event=${id}&limit=100`, GET_SITREPS, withToken(), { id });
 }
 
 export const GET_ERU_OWNERS = 'GET_ERU_OWNERS';
@@ -372,7 +372,7 @@ export function getAppeals (page = 1, filters = {}) {
 export const GET_APPEAL_DOCS = 'GET_APPEAL_DOCS';
 export function getAppealDocsByAppealIds (appealIds, id) {
   const ids = (Array.isArray(appealIds) ? appealIds : [appealIds]).join(',');
-  return fetchJSON(`api/v2/appeal_document/?ordering=-created_at&appeal__id__in=${ids}`, GET_APPEAL_DOCS, withToken(), { id });
+  return fetchJSON(`api/v2/appeal_document/?ordering=-created_at&appeal__in=${ids}&limit=100`, GET_APPEAL_DOCS, withToken(), { id });
 }
 
 export const GET_DEPLOYMENT_ERU = 'GET_DEPLOYMENT_ERU';

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link, Redirect } from 'react-router-dom';
 import c from 'classnames';
+import { Helmet } from 'react-helmet';
 
 import { getAuthToken } from '../actions';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
@@ -72,6 +73,9 @@ class Login extends React.Component {
 
     return (
       <App className='page--login'>
+        <Helmet>
+          <title>IFRC Go - Login</title>
+        </Helmet>
         <section className='inpage'>
           <header className='inpage__header'>
             <div className='inner'>

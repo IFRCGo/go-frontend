@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
+import { Helmet } from 'react-helmet';
 
 import { environment } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
@@ -111,6 +112,9 @@ class FieldReport extends React.Component {
 
     return (
       <section className='inpage'>
+        <Helmet>
+          <title>IFRC Go - {get(data, 'summary', 'Field Report')}</title>
+        </Helmet>
         <header className='inpage__header'>
           <div className='inner'>
             <div className='inpage__headline'>
@@ -187,6 +191,9 @@ class FieldReport extends React.Component {
   render () {
     return (
       <App className='page--field-report'>
+        <Helmet>
+          <title>IFRC Go - Field Report</title>
+        </Helmet>
         {this.renderContent()}
       </App>
     );

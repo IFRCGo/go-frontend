@@ -104,7 +104,7 @@ export function groupByDisasterType (objs) {
 
 export function mostRecentReport (reports) {
   if (!Array.isArray(reports)) return null;
-  return reports.map(d => Object.assign({}, d, { _date: new Date(d['updated_at']) })).sort((a, b) => a._date < b._date ? -1 : 1)[0];
+  return reports.map(d => Object.assign({}, d, { _date: new Date(d['updated_at']) })).sort((a, b) => a._date < b._date ? 1 : -1)[0];
 }
 
 export function isValidEmail (email) {
