@@ -13,7 +13,7 @@ class UserMenu extends React.Component {
   onLogoutClick (e) {
     e.preventDefault();
     this.props._logoutUser();
-    this.props.history.push('/');
+    window.location.reload();
   }
 
   render () {
@@ -39,7 +39,7 @@ class UserMenu extends React.Component {
     }
 
     return [
-      <Link key='login' to='/login' className='button button--small button--primary-raised-light' title='Login'><span>Login</span></Link>,
+      <Link key='login' to={{pathname: '/login', state: {from: this.props.location}}} className='button button--small button--primary-raised-light' title='Login'><span>Login</span></Link>,
       <Link key='register' to='/register' className='button button--small button--primary-raised-light' title='Register'><span>Register</span></Link>
     ];
   }
@@ -49,7 +49,8 @@ if (environment !== 'production') {
   UserMenu.propTypes = {
     _logoutUser: T.func,
     history: T.object,
-    userData: T.object
+    userData: T.object,
+    location: T.object
   };
 }
 

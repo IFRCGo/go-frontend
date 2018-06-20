@@ -2,11 +2,12 @@
 import * as url from 'url';
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 import _toNumber from 'lodash.tonumber';
 import { Sticky, StickyContainer } from 'react-sticky';
+import { Helmet } from 'react-helmet';
 
 import { api, environment } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
@@ -30,12 +31,6 @@ import {
 import App from './app';
 import Fold from '../components/fold';
 import BlockLoading from '../components/block-loading';
-
-const mustLogin = (
-  <React.Fragment>
-    <p>You must be logged in to view this. <Link key='login' to='/login' className='link--primary' title='Login'>Login</Link></p>
-  </React.Fragment>
-);
 
 class Emergency extends React.Component {
   constructor (props) {
@@ -80,6 +75,14 @@ class Emergency extends React.Component {
   onAppealClick (id, e) {
     e.preventDefault();
     this.setState({selectedAppeal: id});
+  }
+
+  renderMustLogin () {
+    return (
+      <React.Fragment>
+        <p>You must be logged in to view this. <Link key='login' to={{pathname: '/login', state: {from: this.props.location}}} className='link--primary' title='Login'>Login</Link></p>
+      </React.Fragment>
+    );
   }
 
   renderFieldReportStats () {
@@ -165,7 +168,7 @@ class Emergency extends React.Component {
     let content;
 
     if (!this.props.isLogged) {
-      content = mustLogin;
+      content = this.renderMustLogin();
     } else {
       if (data.field_reports && data.field_reports.length) {
         content = (
@@ -222,7 +225,7 @@ class Emergency extends React.Component {
     let content;
 
     if (!isPublic && !this.props.isLogged) {
-      content = mustLogin;
+      content = this.renderMustLogin();
     } else if (fetching) {
       content = <BlockLoading/>;
     } else if (error) {
@@ -329,6 +332,9 @@ class Emergency extends React.Component {
 
     return (
       <section className='inpage'>
+        <Helmet>
+          <title>IFRC Go - {get(data, 'name', 'Emergency')}</title>
+        </Helmet>
         <header className='inpage__header'>
           <div className='inner'>
             <div className='inpage__headline'>
@@ -421,6 +427,9 @@ class Emergency extends React.Component {
   render () {
     return (
       <App className='page--emergency'>
+        <Helmet>
+          <title>IFRC Go - Emergency</title>
+        </Helmet>
         {this.renderContent()}
       </App>
     );
@@ -469,4 +478,4 @@ const dispatcher = (dispatch) => ({
   _getAppealDocsByAppealIds: (...args) => dispatch(getAppealDocsByAppealIds(...args))
 });
 
-export default connect(selector, dispatcher)(Emergency);
+export default withRouter(connect(selector, dispatcher)(Emergency));

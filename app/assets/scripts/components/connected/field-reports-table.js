@@ -2,7 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { DateTime } from 'luxon';
 
 import { environment } from '../../config';
@@ -88,7 +88,7 @@ class FieldReportsTable extends SFPComponent {
     if (error || (fetched && !results.length)) {
       return (
         <Fold title='Field Reports'>
-          <p>You must be logged in to view field reports. <Link key='login' to='/login' className='link--primary' title='Login'>Login</Link></p>
+          <p>You must be logged in to view field reports. <Link key='login' to={{pathname: '/login', state: {from: this.props.location}}} className='link--primary' title='Login'>Login</Link></p>
         </Fold>
       );
     }
@@ -152,4 +152,4 @@ const dispatcher = (dispatch) => ({
   _getFieldReportsList: (...args) => dispatch(getFieldReportsList(...args))
 });
 
-export default connect(selector, dispatcher)(FieldReportsTable);
+export default withRouter(connect(selector, dispatcher)(FieldReportsTable));
