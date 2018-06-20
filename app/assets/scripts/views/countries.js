@@ -264,7 +264,6 @@ class AdminArea extends SFPComponent {
     if (!fetched || error) {
       return null;
     }
-    console.log(data);
     const population = get(data, 'Population.value');
     const gdp = get(data, 'GDP.value');
     const gdpCapita = isNaN(population) || isNaN(gdp) || +population === 0 ? null : +gdp / +population;
