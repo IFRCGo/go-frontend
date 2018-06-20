@@ -9,7 +9,7 @@ const initialState = {
   data: {}
 };
 
-function fdrs (state = initialState, action) {
+export default function reducer (state = initialState, action) {
   switch (action.type) {
     case 'GET_FDRS_INFLIGHT':
       state = stateInflight(state, action);
@@ -50,5 +50,3 @@ function processFdrsResponse (resp) {
   });
   return obj;
 }
-
-export default fdrs;
