@@ -2,7 +2,7 @@
 import * as url from 'url';
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 import _toNumber from 'lodash.tonumber';
@@ -31,12 +31,6 @@ import {
 import App from './app';
 import Fold from '../components/fold';
 import BlockLoading from '../components/block-loading';
-
-const mustLogin = (
-  <React.Fragment>
-    <p>You must be logged in to view this. <Link key='login' to='/login' className='link--primary' title='Login'>Login</Link></p>
-  </React.Fragment>
-);
 
 class Emergency extends React.Component {
   constructor (props) {
@@ -81,6 +75,14 @@ class Emergency extends React.Component {
   onAppealClick (id, e) {
     e.preventDefault();
     this.setState({selectedAppeal: id});
+  }
+
+  renderMustLogin () {
+    return (
+      <React.Fragment>
+        <p>You must be logged in to view this. <Link key='login' to={{pathname: '/login', state: {from: this.props.location}}} className='link--primary' title='Login'>Login</Link></p>
+      </React.Fragment>
+    );
   }
 
   renderFieldReportStats () {
@@ -166,7 +168,7 @@ class Emergency extends React.Component {
     let content;
 
     if (!this.props.isLogged) {
-      content = mustLogin;
+      content = this.renderMustLogin();
     } else {
       if (data.field_reports && data.field_reports.length) {
         content = (
@@ -223,7 +225,7 @@ class Emergency extends React.Component {
     let content;
 
     if (!isPublic && !this.props.isLogged) {
-      content = mustLogin;
+      content = this.renderMustLogin();
     } else if (fetching) {
       content = <BlockLoading/>;
     } else if (error) {
@@ -476,4 +478,4 @@ const dispatcher = (dispatch) => ({
   _getAppealDocsByAppealIds: (...args) => dispatch(getAppealDocsByAppealIds(...args))
 });
 
-export default connect(selector, dispatcher)(Emergency);
+export default withRouter(connect(selector, dispatcher)(Emergency));

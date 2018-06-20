@@ -46,7 +46,7 @@ function processFdrsResponse (resp) {
   }).filter(Boolean);
   const obj = {};
   results.forEach(d => {
-    obj[d.id] = d.data
+    obj[d.id] = d.data;
   });
   return obj;
 }
