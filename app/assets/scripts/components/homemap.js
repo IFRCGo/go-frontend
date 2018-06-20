@@ -33,12 +33,14 @@ class Homemap extends React.Component {
       markerFilters: [],
       hoverEmerType: null,
       selectedEmerType: null,
-      mapActions: []
+      mapActions: [],
+      ready: false
     };
     this.configureMap = this.configureMap.bind(this);
     this.onFieldChange = this.onFieldChange.bind(this);
     this.navigateToEmergency = this.navigateToEmergency.bind(this);
     this.showDeploymentsPopover = this.showDeploymentsPopover.bind(this);
+    this.generateExport = this.generateExport.bind(this);
   }
 
   componentDidMount () {
@@ -134,6 +136,7 @@ class Homemap extends React.Component {
     // Event listeners.
     theMap.on('load', () => {
       this.state.mapActions.forEach(action => action());
+      this.setState({ ready: true });
     });
 
     theMap.on('click', 'appeals', e => {
@@ -214,6 +217,18 @@ class Homemap extends React.Component {
       filters.push({layer: 'appeals-faded', filter: ['==', 'dtype', '']});
     }
     return filters;
+  }
+
+  generateExport () {
+    if (this.theMap) {
+      const uri = this.theMap.getCanvas().toDataURL();
+      var link = document.createElement('a');
+      link.download = 'map.png';
+      link.href = uri;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
   }
 
   navigateToEmergency (pageId) {
@@ -320,6 +335,13 @@ class Homemap extends React.Component {
     return (
       <React.Fragment>
         {this.props.noRenderEmergencies ? null : this.renderEmergencies()}
+        {this.props.noExport ? null : (
+          <div className='fold__actions'>
+            <button className={c('button button--primary-bounded button--export', {
+              disabled: !this.state.ready
+            })} onClick={this.generateExport}>Export Map</button>
+          </div>
+        )}
         <div className='map-container'>
           <h2 className='visually-hidden'>Map</h2>
           <MapComponent className='map-vis__holder'
@@ -445,6 +467,7 @@ if (environment !== 'production') {
     amountRequested: T.number,
     amountFunded: T.number,
     deployments: T.array,
-    onTitleClick: T.func
+    onTitleClick: T.func,
+    noExport: T.bool
   };
 }
