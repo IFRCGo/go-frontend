@@ -83,7 +83,7 @@ class Homemap extends React.Component {
       paint.push(scale(d.deployments.length).hex());
     });
     paint.push('rgba(0, 0, 0, 0)');
-    const action = (() => this.theMap.setPaintProperty('district', 'fill-color', paint)).bind(this);
+    const action = () => this.theMap.setPaintProperty('district', 'fill-color', paint);
     if (this.theMap) {
       this.theMap.on('load', action);
     } else {

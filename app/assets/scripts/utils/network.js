@@ -177,7 +177,8 @@ export function makeRequest (path, action, options, extraData = {}) {
   options = options || {};
   return function (dispatch) {
     dispatch({ type: inflight(action), ...extraData });
-    request(url.resolve(api, path), options)
+    const address = /http/.test(path) ? path : url.resolve(api, path);
+    request(address, options)
       .then(data => {
         dispatch({ type: success(action), data, receivedAt: Date.now(), ...extraData });
       })

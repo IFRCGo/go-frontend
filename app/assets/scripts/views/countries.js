@@ -13,6 +13,8 @@ import { get, dateOptions, datesAgo, dTypeOptions } from '../utils/utils/';
 import { getDtypeMeta } from '../utils/get-dtype-meta';
 import {
   commaSeparatedNumber as n,
+  commaSeparatedLargeNumber as bigN,
+  days90,
   nope
 } from '../utils/format';
 import {
@@ -25,12 +27,14 @@ import {
   getCountryOperations,
   getPartnerDeployments
 } from '../actions';
+import { getFdrs } from '../actions/query-external';
 import { getBoundingBox } from '../utils/country-bounding-box';
 
 import App from './app';
 import Fold from '../components/fold';
 import Homemap from '../components/homemap';
 import DisplayTable, { SortHeader, FilterHeader } from '../components/display-table';
+import EmergenciesTable from '../components/connected/emergencies-table';
 import {
   Snippets,
   KeyFigures,
@@ -104,6 +108,7 @@ class AdminArea extends SFPComponent {
     this.props._getAdmAreaSnippets(type, id);
     this.props._getCountryOperations(type, id);
     this.props._getPartnerDeployments(type, id);
+    this.props._getFdrs(id);
   }
 
   getAdmArea (type, id) {
@@ -161,11 +166,12 @@ class AdminArea extends SFPComponent {
   renderAppeals () {
     const {
       fetched,
+      fetching,
       error,
       data
     } = this.props.countryOperations;
 
-    if (error) return null;
+    if (error || fetching) return null;
 
     if (fetched) {
       const now = Date.now();
@@ -247,6 +253,52 @@ class AdminArea extends SFPComponent {
     );
   }
 
+  renderCountryProfile () {
+    const {
+      fetched,
+      error,
+      data
+    } = this.props.fdrs;
+
+    if (!fetched || error) {
+      return null;
+    }
+    console.log(data);
+    const population = get(data, 'Population.value');
+    const gdp = get(data, 'GDP.value');
+    const gdpCapita = isNaN(population) || isNaN(gdp) || +population === 0 ? null : +gdp / +population;
+    const poverty = get(data, 'Poverty.value');
+
+    // get unique years of data
+    let years = {};
+    Object.keys(data).map(d => data[d].year).forEach(year => {
+      if (!years[year]) { years[year] = true; }
+    });
+
+    return (
+      <div className='inpage__header-col'>
+        <h3>Country Profile</h3>
+        <div className='content-list-group'>
+          <ul className='content-list'>
+            <li>Population<span className='content-highlight'>{bigN(population)}</span></li>
+            <li>GDP<span className='content-highlight'>{gdp ? '$' + bigN(gdp) : nope}</span></li>
+            <li>GDP / Capita<span className='content-highlight'>{gdpCapita ? '$' + n(gdpCapita) : nope}</span></li>
+            <li>Poverty (% pop)<span className='content-highlight'>{poverty ? poverty + '%' : nope}</span></li>
+            <li>People reached<span className='content-highlight'>{n(get(data, 'KPI_ReachDRER_D_Tot.value'))}</span></li>
+          </ul>
+          <ul className='content-list'>
+            <li>Income (CHF)<span className='content-highlight'>{bigN(get(data, 'KPI_IncomeLC_CHF.value'))}</span></li>
+            <li>Expenditures (CHF)<span className='content-highlight'>{bigN(get(data, 'KPI_expenditureLC_CHF.value'))}</span></li>
+            <li>Volunteers<span className='content-highlight'>{n(get(data, 'KPI_PeopleVol_Tot.value'))}</span></li>
+            <li>People giving blood<span className='content-highlight'>{n(get(data, 'KPI_DonBlood_Tot.value'))}</span></li>
+            <li>Trained in first aid<span className='content-highlight'>{n(get(data, 'KPI_TrainFA_Tot.value'))}</span></li>
+          </ul>
+        </div>
+        <p>Reporting year(s): {Object.keys(years).sort().join(', ')}</p>
+      </div>
+    );
+  }
+
   renderContent () {
     const {
       fetched,
@@ -266,12 +318,6 @@ class AdminArea extends SFPComponent {
           <div className='inner'>
             <div className='inpage__headline'>
               <h1 className='inpage__title'>{data.name}</h1>
-              <div className='inpage__meta'>
-                <ul className='inform-list dl--horizontal'>
-                  <li>Inform Index: <span className='bold'> High </span></li>
-                  <li>Inform Rank: <span className='bold'>22 </span></li>
-                </ul>
-              </div>
               <div className='inpage__header-actions'>
                 <a href='' className='button button--primary-bounded'>Edit Country</a>
               </div>
@@ -279,26 +325,7 @@ class AdminArea extends SFPComponent {
             <div className='inpage__header-col'>
               {this.renderStats()}
             </div>
-            <div className='inpage__header-col'>
-              <h3>Country Profile</h3>
-              <div className='content-list-group'>
-                <ul className='content-list'>
-                  <li>Capitol<span className='content-highlight'>Nairobi</span></li>
-                  <li>Population<span className='content-highlight'>48.6M</span></li>
-                  <li>GDP Per Capita<span className='content-highlight'>$70.53B</span></li>
-                  <li>Life Expectancy<span className='content-highlight'>67</span></li>
-                  <li>Infant Mortality Rate<span className='content-highlight'>4.9%</span></li>
-                </ul>
-                <ul className='content-list'>
-                  <li>Adult Literacy<span className='content-highlight'>4.9%</span></li>
-                  <li>Urbanization<span className='content-highlight'>48.6M</span></li>
-                  <li>Home Development Index<span className='content-highlight'>$70.53B</span></li>
-                  <li>Inequality Adjusted HDI<span className='content-highlight'>67</span></li>
-                  <li>Gender Inequality Index<span className='content-highlight'>4.9%</span></li>
-                </ul>
-              </div>
-              <a href='' className='link--external'>View Country Profile</a>
-            </div>
+            {this.renderCountryProfile()}
           </div>
         </header>
         <StickyContainer>
@@ -362,7 +389,12 @@ class AdminArea extends SFPComponent {
                 </div>
                 {this.renderAppeals()}
               </Fold>
-
+              <EmergenciesTable
+                title='Emergencies in the past 90 days'
+                limit={5}
+                country={this.props.match.params.id}
+                startDate={days90}
+              />
               <Snippets data={this.props.snippets} />
               <Links data={data} />
               <Contacts data={data} />
@@ -428,7 +460,8 @@ const selector = (state, ownProps) => ({
     data: {},
     fetching: false,
     fetched: false
-  })
+  }),
+  fdrs: state.fdrs
 });
 
 const dispatcher = (dispatch) => ({
@@ -439,7 +472,8 @@ const dispatcher = (dispatch) => ({
   _getAdmAreaKeyFigures: (...args) => dispatch(getAdmAreaKeyFigures(...args)),
   _getAdmAreaSnippets: (...args) => dispatch(getAdmAreaSnippets(...args)),
   _getCountryOperations: (...args) => dispatch(getCountryOperations(...args)),
-  _getPartnerDeployments: (...args) => dispatch(getPartnerDeployments(...args))
+  _getPartnerDeployments: (...args) => dispatch(getPartnerDeployments(...args)),
+  _getFdrs: (...args) => dispatch(getFdrs(...args))
 });
 
 export default connect(selector, dispatcher)(AdminArea);

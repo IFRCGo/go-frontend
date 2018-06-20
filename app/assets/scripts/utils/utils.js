@@ -102,6 +102,11 @@ export function groupByDisasterType (objs) {
   }).filter(Boolean).sort((a, b) => a.items.length < b.items.length ? 1 : -1);
 }
 
+export function mostRecentReport (reports) {
+  if (!Array.isArray(reports)) return null;
+  return reports.map(d => Object.assign({}, d, { _date: new Date(d['updated_at']) })).sort((a, b) => a._date < b._date ? 1 : -1)[0];
+}
+
 export function isValidEmail (email) {
   // https://stackoverflow.com/a/1373724
   // The official standard is known as RFC 2822. It describes the syntax that valid email addresses must adhere to. You can (but you shouldn't — read on) implement it with this regular expression:

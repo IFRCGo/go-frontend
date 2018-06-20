@@ -23,13 +23,13 @@ import { get, dateOptions, datesAgo, dTypeOptions } from '../utils/utils/';
 import { getDtypeMeta } from '../utils/get-dtype-meta';
 import {
   commaSeparatedNumber as n,
+  days90,
   nope
 } from '../utils/format';
 import {
   getAdmAreaById,
   getAdmAreaAppeals,
   getAdmAreaDrefs,
-  getAdmAreaFieldReports,
   getAdmAreaAppealsList,
   getAdmAreaAggregateAppeals,
   getAdmAreaERU,
@@ -44,6 +44,7 @@ import Fold from '../components/fold';
 import Homemap from '../components/homemap';
 import BlockLoading from '../components/block-loading';
 import DisplayTable, { SortHeader, FilterHeader } from '../components/display-table';
+import EmergenciesTable from '../components/connected/emergencies-table';
 import {
   Snippets,
   KeyFigures,
@@ -84,18 +85,6 @@ class AdminArea extends SFPComponent {
           date: 'all',
           dtype: 'all'
         }
-      },
-      fieldReports: {
-        page: 1,
-        limit: 5,
-        sort: {
-          field: '',
-          direction: 'asc'
-        },
-        filters: {
-          date: 'all',
-          dtype: 'all'
-        }
       }
     };
   }
@@ -122,7 +111,6 @@ class AdminArea extends SFPComponent {
   getData (props) {
     this.props._getAdmAreaAppeals(props.type, props.match.params.id, 1, { ordering: '-start_date' });
     this.props._getAdmAreaDrefs(props.type, props.match.params.id, 1, { ordering: '-start_date' });
-    this.props._getAdmAreaFieldReports(props.type, props.match.params.id, 1, { ordering: '-created_at' });
     this.props._getAdmAreaAppealsList(props.type, props.match.params.id);
     this.props._getAdmAreaAggregateAppeals(props.type, props.match.params.id, DateTime.local().minus({years: 10}).startOf('month').toISODate(), 'year');
     this.props._getAdmAreaERU(props.type, props.match.params.id);
@@ -156,15 +144,6 @@ class AdminArea extends SFPComponent {
         }
 
         break;
-      case 'fieldReports':
-        qs.ordering = '-created_at';
-        if (state.filters.date !== 'all') {
-          qs.created_at__gte = datesAgo[state.filters.date]();
-        }
-        if (state.filters.dtype !== 'all') {
-          qs.dtype = state.filters.dtype;
-        }
-        break;
     }
     return qs;
   }
@@ -177,9 +156,6 @@ class AdminArea extends SFPComponent {
         break;
       case 'drefs':
         fn = this.props._getAdmAreaDrefs;
-        break;
-      case 'fieldReports':
-        fn = this.props._getAdmAreaFieldReports;
         break;
     }
 
@@ -334,70 +310,6 @@ class AdminArea extends SFPComponent {
             pageCount={data.count / this.state.drefs.limit}
             page={this.state.drefs.page - 1}
             onPageChange={this.handlePageChange.bind(this, 'drefs')}
-          />
-        </Fold>
-      );
-    }
-
-    return null;
-  }
-
-  renderFieldReports () {
-    const {
-      fetched,
-      fetching,
-      error,
-      data
-    } = this.props.fieldReports;
-
-    if (fetching) {
-      return (
-        <Fold title='Field Reports' id='field-reports'>
-          <BlockLoading/>
-        </Fold>
-      );
-    }
-
-    if (error) {
-      return (
-        <Fold title='Field Reports' id='field-reports'>
-          <p>You must be logged in to view field reports. <Link key='login' to='/login' className='link--primary' title='Login'>Login</Link></p>
-        </Fold>
-      );
-    }
-
-    if (fetched) {
-      const headings = [
-        {
-          id: 'date',
-          label: <FilterHeader id='date' title='Created At' options={dateOptions} filter={this.state.fieldReports.filters.date} onSelect={this.handleFilterChange.bind(this, 'fieldReports', 'date')} />
-        },
-        { id: 'name', label: 'Name' },
-        { id: 'event', label: 'Emergency' },
-        {
-          id: 'dtype',
-          label: <FilterHeader id='dtype' title='Disaster Type' options={dTypeOptions} filter={this.state.fieldReports.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'fieldReports', 'dtype')} />
-        },
-        { id: 'countries', label: 'Countries' }
-      ];
-
-      const rows = data.results.map(o => ({
-        id: o.id,
-        date: DateTime.fromISO(o.created_at).toISODate(),
-        name: <Link to={`/reports/${o.id}`} className='link--primary' title='View Field Report'>{o.summary}</Link>,
-        event: o.event ? <Link to={`/emergencies/${o.event}`} className='link--primary' title='View Emergency'>Link</Link> : nope,
-        dtype: get(getDtypeMeta(o.dtype), 'label', nope),
-        countries: <ul>{o.countries.map(country => <li key={country.id}><Link to={`/countries/${country.id}`} className='link--primary' title='View Country'>{country.name}</Link></li>)}</ul>
-      }));
-
-      return (
-        <Fold title={`Field Reports (${n(data.count)})`} id='field-reports'>
-          <DisplayTable
-            headings={headings}
-            rows={rows}
-            pageCount={data.count / this.state.fieldReports.limit}
-            page={this.state.fieldReports.page}
-            onPageChange={this.handlePageChange.bind(this, 'fieldReports')}
           />
         </Fold>
       );
@@ -594,10 +506,17 @@ class AdminArea extends SFPComponent {
                 <div className= 'inner'>
                   <h2 className='fold__title'>{isNaN(activeOperations) ? nope : activeOperations + ' Active Operations'}</h2>
                   <div className={mapContainerClass}>
-                    <Homemap appealsList={this.props.appealStats} bbox={bbox} />
+                    <Homemap operations={this.props.appealStats} bbox={bbox} />
                   </div>
                 </div>
               </div>
+
+              <EmergenciesTable
+                title='Emergencies in the past 90 days'
+                limit={7}
+                region={this.props.match.params.id}
+                startDate={days90}
+              />
 
               <Fold title='Statistics' headerClass='visually-hidden' id='stats'>
                 <div className='stats-chart'>
@@ -608,7 +527,6 @@ class AdminArea extends SFPComponent {
               </Fold>
               {this.renderAppeals()}
               {this.renderDrefs()}
-              {this.renderFieldReports()}
               <Snippets data={this.props.snippets} />
               <Links data={data} />
               <Contacts data={data} />
@@ -633,7 +551,6 @@ if (environment !== 'production') {
     _getAdmAreaById: T.func,
     _getAdmAreaAppeals: T.func,
     _getAdmAreaDrefs: T.func,
-    _getAdmAreaFieldReports: T.func,
     _getAdmAreaAppealsList: T.func,
     _getAdmAreaAggregateAppeals: T.func,
     _getAdmAreaERU: T.func,
@@ -643,7 +560,6 @@ if (environment !== 'production') {
     adminArea: T.object,
     appeals: T.object,
     drefs: T.object,
-    fieldReports: T.object,
     appealStats: T.object,
     aggregateYear: T.object,
     eru: T.object,
@@ -663,7 +579,6 @@ const selector = (state, ownProps) => ({
   }),
   appeals: state.adminArea.appeals,
   drefs: state.adminArea.drefs,
-  fieldReports: state.adminArea.fieldReports,
   appealStats: state.adminArea.appealStats,
   aggregateYear: get(state.adminArea.aggregate, 'year', {
     data: {},
@@ -679,7 +594,6 @@ const dispatcher = (dispatch) => ({
   _getAdmAreaById: (...args) => dispatch(getAdmAreaById(...args)),
   _getAdmAreaAppeals: (...args) => dispatch(getAdmAreaAppeals(...args)),
   _getAdmAreaDrefs: (...args) => dispatch(getAdmAreaDrefs(...args)),
-  _getAdmAreaFieldReports: (...args) => dispatch(getAdmAreaFieldReports(...args)),
   _getAdmAreaAppealsList: (...args) => dispatch(getAdmAreaAppealsList(...args)),
   _getAdmAreaAggregateAppeals: (...args) => dispatch(getAdmAreaAggregateAppeals(...args)),
   _getAdmAreaERU: (...args) => dispatch(getAdmAreaERU(...args)),
