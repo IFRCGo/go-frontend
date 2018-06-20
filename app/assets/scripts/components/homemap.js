@@ -19,7 +19,6 @@ import Progress from './progress';
 import BlockLoading from './block-loading';
 import MapComponent from './map';
 import { get } from '../utils/utils';
-import exportMap from '../utils/export-map';
 
 const scale = chroma.scale(['#F0C9E8', '#861A70']);
 
@@ -323,16 +322,10 @@ class Homemap extends React.Component {
     return (
       <React.Fragment>
         {this.props.noRenderEmergencies ? null : this.renderEmergencies()}
-        {this.props.noExport ? null : (
-          <div className='fold__actions'>
-            <button className={c('button button--primary-bounded button--export', {
-              disabled: !this.state.ready
-            })} onClick={() => exportMap(this.theMap)}>Export Map</button>
-          </div>
-        )}
         <div className='map-container'>
           <h2 className='visually-hidden'>Map</h2>
           <MapComponent className='map-vis__holder'
+            noExport={this.props.noExport}
             configureMap={this.configureMap}
             layers={layers}
             filters={filters}

@@ -83,11 +83,13 @@ export default class MapComponent extends React.Component {
     const children = this.props.children || null;
     return (
       <figure className='map-vis'>
-        <div className='fold__actions'>
-          <button className={c('button button--primary-bounded button--export', {
-            disabled: !this.state.ready
-          })} onClick={() => exportMap(this.theMap)}>Export Map</button>
-        </div>
+        {this.props.noExport ? null : (
+          <div className='fold__actions'>
+            <button className={c('button button--primary-bounded button--export', {
+              disabled: !this.state.ready
+            })} onClick={() => exportMap(this.theMap)}>Export Map</button>
+          </div>
+        )}
         <div className={className} ref='map'/>
         {children}
       </figure>
