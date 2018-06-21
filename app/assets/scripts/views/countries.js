@@ -36,6 +36,7 @@ import Fold from '../components/fold';
 import Homemap from '../components/homemap';
 import DisplayTable, { SortHeader, FilterHeader } from '../components/display-table';
 import EmergenciesTable from '../components/connected/emergencies-table';
+import BulletTable from '../components/bullet-table';
 import {
   Snippets,
   KeyFigures,
@@ -312,6 +313,12 @@ class AdminArea extends SFPComponent {
     const mapContainerClass = 'country__map';
     const activeOperations = get(this.props.appealStats, 'data.results.length', false);
 
+    const { partnerDeployments } = this.props;
+    const bulletTables = [
+      {title: 'Activities by PNS', rows: get(partnerDeployments, 'data.parentSocieties', [])},
+      {title: 'Type of Activities by PNS', rows: get(partnerDeployments, 'data.activities', [])}
+    ];
+
     return (
       <section className='inpage'>
         <Helmet>
@@ -352,8 +359,11 @@ class AdminArea extends SFPComponent {
               <KeyFigures data={this.props.keyFigures} />
               <Fold title='Statistics' headerClass='visually-hidden' id='operations'>
                 <h2 className='fold__title'>{isNaN(activeOperations) ? nope : activeOperations + ' Active Operations'}</h2>
-                <div className={mapContainerClass}>
-                  <Homemap operations={this.props.appealStats} bbox={bbox} deployments={this.props.partnerDeployments} noRenderEmergencies={true} />
+                <div className='operations__container'>
+                  <BulletTable tables={bulletTables} title='PNS Activities' />
+                  <div className={mapContainerClass}>
+                    <Homemap operations={this.props.appealStats} bbox={bbox} deployments={this.props.partnerDeployments} noRenderEmergencies={true} />
+                  </div>
                 </div>
                 {this.renderAppeals()}
               </Fold>

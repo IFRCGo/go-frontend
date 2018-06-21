@@ -16,7 +16,7 @@ import { commaSeparatedNumber as n } from '../../utils/format';
 class EmergenciesMap extends React.Component {
   constructor (props) {
     super(props);
-    const scaleBy = 'totalEmergencies';
+    const scaleBy = 'numAffected';
     this.state = {
       scaleBy,
       layers: [],
@@ -155,12 +155,12 @@ class EmergenciesMap extends React.Component {
                         classWrapper='map-scale-options'
                         options={[
                           {
-                            label: 'Number of Emergencies',
-                            value: 'totalEmergencies'
-                          },
-                          {
                             label: 'Number of People Affected',
                             value: 'numAffected'
+                          },
+                          {
+                            label: 'Number of Emergencies',
+                            value: 'totalEmergencies'
                           }
                         ]}
                         inline={false}
