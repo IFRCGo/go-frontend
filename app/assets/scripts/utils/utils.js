@@ -8,6 +8,7 @@ import { getCentroid } from './country-centroids';
 import { disasterType } from './field-report-constants';
 import { getDtypeMeta } from './get-dtype-meta';
 import { whitelistDomains } from '../schemas/register';
+import { getCountryMeta } from './get-country-meta';
 
 // lodash.get will only return the defaultValue when
 // the path is undefined. We want to also catch null and ''
@@ -65,18 +66,40 @@ export function aggregateCountryAppeals (appeals) {
   };
 }
 
-export function aggregatePartnerDeployments (deployments) {
-  try {
-    const grouping = _groupBy(deployments.filter(d => d.district_deployed_to), 'district_deployed_to.id');
-    const areas = Object.keys(grouping).map(d => ({ id: d, deployments: grouping[d] }));
-    const max = Math.max.apply(this, areas.map(d => d.deployments.length));
-    return {
-      areas,
-      max
-    };
-  } catch (e) {
-    console.log(e);
-  }
+export function aggregatePartnerDeployments (deploymentGroups) {
+  // flatten
+  const deployments = deploymentGroups.reduce((acc, deployment) => {
+    const results = deployment.district_deployed_to.map(district => ({
+      district,
+      activity: deployment.activity,
+      parent: deployment.parent_society,
+      start: deployment.start_date,
+      end: deployment.end_date
+    }));
+    return acc.concat(results);
+  }, []);
+
+  const grouping = _groupBy(deployments, 'district.id');
+  const areas = Object.keys(grouping).map(d => ({ id: d, deployments: grouping[d] }));
+  const max = Math.max.apply(this, areas.map(d => d.deployments.length));
+
+  const parentSocietyGroupings = _groupBy(deployments, 'parent');
+  const parentSocieties = Object.keys(parentSocietyGroupings)
+    .map(d => ({ label: getCountryMeta(d).label, count: parentSocietyGroupings[d].length }))
+    .sort((a, b) => a.count.length > b.count.length ? -1 : 1);
+
+  const activityGroupings = _groupBy(deployments, 'activity.activity');
+  const activities = Object.keys(activityGroupings)
+    .map(d => ({ label: d, count: activityGroupings[d].length }))
+    .sort((a, b) => a.count.length > b.count.length ? -1 : 1);
+
+  return {
+    areas,
+    max,
+    deployments,
+    parentSocieties,
+    activities
+  };
 }
 
 // normalize ISO from a country vector tile
