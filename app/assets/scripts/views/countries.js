@@ -36,6 +36,7 @@ import Fold from '../components/fold';
 import Homemap from '../components/homemap';
 import DisplayTable, { SortHeader, FilterHeader } from '../components/display-table';
 import EmergenciesTable from '../components/connected/emergencies-table';
+import BulletTable from '../components/bullet-table';
 import {
   Snippets,
   KeyFigures,
@@ -312,6 +313,12 @@ class AdminArea extends SFPComponent {
     const mapContainerClass = 'country__map';
     const activeOperations = get(this.props.appealStats, 'data.results.length', false);
 
+    const { partnerDeployments } = this.props;
+    const bulletTables = [
+      {title: 'Activities by PNS', rows: get(partnerDeployments, 'data.parentSocieties', [])},
+      {title: 'Type of Activities by PNS', rows: get(partnerDeployments, 'data.activities', [])}
+    ];
+
     return (
       <section className='inpage'>
         <Helmet>
@@ -353,39 +360,7 @@ class AdminArea extends SFPComponent {
               <Fold title='Statistics' headerClass='visually-hidden' id='operations'>
                 <h2 className='fold__title'>{isNaN(activeOperations) ? nope : activeOperations + ' Active Operations'}</h2>
                 <div className='operations__container'>
-                  <div className='country__operations'>
-                    <h2>PNS Activities</h2>
-                    <h3 className='list-label'>Number of Activities by PNS</h3>
-                    <ul className='pns-list'>
-                      <li className='pns-list__item'>
-                        <ul className='list-circle'><li></li><li></li><li></li></ul>
-                        American Redcross
-                      </li>
-                      <li className='pns-list__item'>
-                        <ul className='list-circle'><li></li><li></li><li></li></ul>
-                        American Redcross
-                      </li>
-                      <li className='pns-list__item'>
-                        <ul className='list-circle'><li></li><li></li><li></li></ul>
-                        American Redcross
-                      </li>
-                    </ul>
-                    <h3 className='list-label'>Type of Activities by PNS</h3>
-                    <ul className='activity-list'>
-                      <li className='activity-list__item'>
-                        <ul className='list-circle'><li></li><li></li><li></li></ul>
-                        Health
-                      </li>
-                      <li className='activity-list__item'>
-                        <ul className='list-circle'><li></li><li></li><li></li></ul>
-                        WASH
-                      </li>
-                      <li className='activity-list__item'>
-                        <ul className='list-circle'><li></li><li></li><li></li></ul>
-                        Capacity Building
-                      </li>
-                    </ul>
-                  </div>
+                  <BulletTable tables={bulletTables} title='PNS Activities' />
                   <div className={mapContainerClass}>
                     <Homemap operations={this.props.appealStats} bbox={bbox} deployments={this.props.partnerDeployments} noRenderEmergencies={true} />
                   </div>
