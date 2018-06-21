@@ -70,7 +70,7 @@
 
 .fold__footer {
   @include column(12/12);
-  margin-top: $global-spacing;
+  margin-top: $global-spacing * 2;
 }
 
 /* Modifiers

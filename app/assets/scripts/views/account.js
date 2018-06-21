@@ -9,6 +9,7 @@ import c from 'classnames';
 import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import { set } from 'object-path';
+import { Helmet } from 'react-helmet';
 
 import { environment } from '../config';
 import {
@@ -295,6 +296,8 @@ class Account extends React.Component {
               </Fragment>
             )) : null}
           </dl>
+        </div>
+        <div className='fold__footer'>
           <Link to='/account/password-change'>Change my password</Link>
         </div>
       </div>
@@ -302,7 +305,7 @@ class Account extends React.Component {
   }
 
   renderProfileForm () {
-    const { profile } = this.props;
+    const { profile } = this.state;
     return (
       <div className='inner'>
         <div className='fold__header'>
@@ -398,7 +401,7 @@ class Account extends React.Component {
       error: null
     });
     if (!userReports.fetched) { return null; }
-    const data = get(userReports, 'data', []);
+    const data = get(userReports, 'data.results', []);
     if (!data.length) { return null; }
     return (
       <div className='prose prose--responsive'>
@@ -418,6 +421,9 @@ class Account extends React.Component {
                   </li>
                 ))}
               </ul>
+            </div>
+            <div className='fold__footer'>
+              <p>To delete a field report, contact <a href='mailto:im@ifrc.org'>the IM team</a>.</p>
             </div>
           </div>
         </section>
@@ -494,6 +500,9 @@ class Account extends React.Component {
   render () {
     return (
       <App className='page--account'>
+        <Helmet>
+          <title>IFRC Go - Account</title>
+        </Helmet>
         <section className='inpage'>
           <header className='inpage__header'>
             <div className='inner'>

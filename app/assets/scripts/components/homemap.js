@@ -33,7 +33,8 @@ class Homemap extends React.Component {
       markerFilters: [],
       hoverEmerType: null,
       selectedEmerType: null,
-      mapActions: []
+      mapActions: [],
+      ready: false
     };
     this.configureMap = this.configureMap.bind(this);
     this.onFieldChange = this.onFieldChange.bind(this);
@@ -83,7 +84,7 @@ class Homemap extends React.Component {
       paint.push(scale(d.deployments.length).hex());
     });
     paint.push('rgba(0, 0, 0, 0)');
-    const action = (() => this.theMap.setPaintProperty('district', 'fill-color', paint));
+    const action = () => this.theMap.setPaintProperty('district', 'fill-color', paint);
     if (this.theMap) {
       this.theMap.on('load', action);
     } else {
@@ -134,6 +135,7 @@ class Homemap extends React.Component {
     // Event listeners.
     theMap.on('load', () => {
       this.state.mapActions.forEach(action => action());
+      this.setState({ ready: true });
     });
 
     theMap.on('click', 'appeals', e => {
@@ -323,6 +325,7 @@ class Homemap extends React.Component {
         <div className='map-container'>
           <h2 className='visually-hidden'>Map</h2>
           <MapComponent className='map-vis__holder'
+            noExport={this.props.noExport}
             configureMap={this.configureMap}
             layers={layers}
             filters={filters}
@@ -384,7 +387,8 @@ if (environment !== 'production') {
     deployments: T.object,
     history: T.object,
     bbox: T.array,
-    noRenderEmergencies: T.bool
+    noRenderEmergencies: T.bool,
+    noExport: T.bool
   };
 }
 

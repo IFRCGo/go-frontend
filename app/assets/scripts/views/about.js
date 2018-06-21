@@ -1,5 +1,6 @@
 'use strict';
 import React from 'react';
+import { Helmet } from 'react-helmet';
 
 import App from './app';
 
@@ -7,6 +8,9 @@ export default class About extends React.Component {
   render () {
     return (
       <App className='page--about'>
+        <Helmet>
+          <title>IFRC Go - About</title>
+        </Helmet>
         <section className='inpage'>
           <header className='inpage__header'>
             <div className='inner'>

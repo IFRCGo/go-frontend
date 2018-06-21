@@ -2,7 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { DateTime } from 'luxon';
 
 import { environment } from '../../config';
@@ -88,7 +88,7 @@ class FieldReportsTable extends SFPComponent {
     if (error || (fetched && !results.length)) {
       return (
         <Fold title='Field Reports'>
-          <p>You must be logged in to view field reports. <Link key='login' to='/login' className='link--primary' title='Login'>Login</Link></p>
+          <p>You must be logged in to view field reports. <Link key='login' to={{pathname: '/login', state: {from: this.props.location}}} className='link--primary' title='Login'>Login</Link></p>
         </Fold>
       );
     }
@@ -112,7 +112,7 @@ class FieldReportsTable extends SFPComponent {
         id: o.id,
         date: DateTime.fromISO(o.created_at).toISODate(),
         name: <Link to={`/reports/${o.id}`} className='link--primary' title='View Field Report'>{o.summary || nope}</Link>,
-        event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>Link</Link> : nope,
+        event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
         dtype: get(getDtypeMeta(o.dtype), 'label', nope),
         countries: <ul>{o.countries.map(country => <li key={country.id}><Link to={`/countries/${country.id}`} className='link--primary' title='View Country'>{country.name}</Link></li>)}</ul>
       }));
@@ -152,4 +152,4 @@ const dispatcher = (dispatch) => ({
   _getFieldReportsList: (...args) => dispatch(getFieldReportsList(...args))
 });
 
-export default connect(selector, dispatcher)(FieldReportsTable);
+export default withRouter(connect(selector, dispatcher)(FieldReportsTable));

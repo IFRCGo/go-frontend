@@ -2,12 +2,12 @@
 import * as url from 'url';
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 import _toNumber from 'lodash.tonumber';
 import { Sticky, StickyContainer } from 'react-sticky';
-import { DateTime } from 'luxon';
+import { Helmet } from 'react-helmet';
 
 import { api, environment } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
@@ -19,19 +19,18 @@ import {
 import {
   commaSeparatedNumber as n,
   separateUppercaseWords as separate,
-  nope
+  nope,
+  isoDate,
+  timestamp
 } from '../utils/format';
-import { get } from '../utils/utils/';
+import {
+  get,
+  mostRecentReport
+} from '../utils/utils/';
 
 import App from './app';
 import Fold from '../components/fold';
 import BlockLoading from '../components/block-loading';
-
-const mustLogin = (
-  <React.Fragment>
-    <p>You must be logged in to view this. <Link key='login' to='/login' className='link--primary' title='Login'>Login</Link></p>
-  </React.Fragment>
-);
 
 class Emergency extends React.Component {
   constructor (props) {
@@ -78,6 +77,40 @@ class Emergency extends React.Component {
     this.setState({selectedAppeal: id});
   }
 
+  renderMustLogin () {
+    return (
+      <React.Fragment>
+        <p>You must be logged in to view this. <Link key='login' to={{pathname: '/login', state: {from: this.props.location}}} className='link--primary' title='Login'>Login</Link></p>
+      </React.Fragment>
+    );
+  }
+
+  renderFieldReportStats () {
+    const report = mostRecentReport(get(this.props, 'event.data.field_reports'));
+    if (!report) return null;
+    return (
+      <div className='inpage__header-col'>
+        <h3>Emergency Overview</h3>
+        <p>Last Updated: {timestamp(report.updated_at)}</p>
+        <div className='content-list-group'>
+          <ul className='content-list'>
+            <li>Affected<span className='content-highlight'>{get(report, 'num_affected', nope)}</span></li>
+            <li>Injured<span className='content-highlight'>{get(report, 'num_injured', nope)}</span></li>
+            <li>Dead<span className='content-highlight'>{get(report, 'num_dead', nope)}</span></li>
+            <li>Missing<span className='content-highlight'>{get(report, 'num_missing', nope)}</span></li>
+            <li>Displaced<span className='content-highlight'>{get(report, 'num_displaced', nope)}</span></li>
+          </ul>
+          <ul className='content-list'>
+            <li>Assisted<span className='content-highlight'>{get(report, 'num_assisted', nope)}</span></li>
+            <li>Local staff<span className='content-highlight'>{get(report, 'num_localstaff', nope)}</span></li>
+            <li>Volunteers<span className='content-highlight'>{get(report, 'num_volunteers', nope)}</span></li>
+            <li>Expat delegates<span className='content-highlight'>{get(report, 'num_expats_delegates', nope)}</span></li>
+          </ul>
+        </div>
+      </div>
+    );
+  }
+
   renderHeaderStats () {
     const { appeals } = this.props.event.data;
     const selected = this.state.selectedAppeal;
@@ -108,19 +141,22 @@ class Emergency extends React.Component {
             </li>
           ))}
         </ul>
-        <div className='header-stats'>
-          <ul className='stats-list'>
-            <li className='stats-list__item stats-emergencies'>
-              {n(stats.beneficiaries)}<small>Targeted Benficiaries</small>
-            </li>
-            <li className='stats-list__item stats-funding stat-borderless stat-double'>
-              {n(stats.requested)}<small>Requested Amount (CHF)</small>
-            </li>
-            <li className='stats-list__item stat-double'>
-              {n(stats.funded)}<small>Funding (CHF)</small>
-            </li>
-          </ul>
+        <div className='inpage__header-col'>
+          <div className='inpage__headline-stats'>
+            <ul className='stats-list'>
+              <li className='stats-list__item stats-emergencies'>
+                {n(stats.beneficiaries)}<small>Targeted Benficiaries</small>
+              </li>
+              <li className='stats-list__item stats-funding stat-borderless stat-double'>
+                {n(stats.requested)}<small>Requested Amount (CHF)</small>
+              </li>
+              <li className='stats-list__item stat-double'>
+                {n(stats.funded)}<small>Funding (CHF)</small>
+              </li>
+            </ul>
+          </div>
         </div>
+        {this.renderFieldReportStats()}
         <div className='funding-chart'>
         </div>
       </div>
@@ -132,7 +168,7 @@ class Emergency extends React.Component {
     let content;
 
     if (!this.props.isLogged) {
-      content = mustLogin;
+      content = this.renderMustLogin();
     } else {
       if (data.field_reports && data.field_reports.length) {
         content = (
@@ -149,7 +185,7 @@ class Emergency extends React.Component {
             <tbody>
               {data.field_reports.map(o => (
                 <tr key={o.id}>
-                  <td>{DateTime.fromISO(o.created_at).toISODate()}</td>
+                  <td>{isoDate(o.created_at)}</td>
                   <td><Link to={`/reports/${o.id}`} className='link--primary' title='View Field Report'>{o.summary}</Link></td>
                   <td>--</td>
                   <td><a href=''className='link--primary'>--</a></td>
@@ -189,13 +225,13 @@ class Emergency extends React.Component {
     let content;
 
     if (!isPublic && !this.props.isLogged) {
-      content = mustLogin;
+      content = this.renderMustLogin();
     } else if (fetching) {
       content = <BlockLoading/>;
     } else if (error) {
       content = <p>Documents not available.</p>;
     } else if (fetched) {
-      if (!data.length) {
+      if (!data.results.length) {
         content = (
           <div className='empty-data__container'>
             <p className='empty-data__note'>No documents available.</p>
@@ -204,11 +240,11 @@ class Emergency extends React.Component {
       } else {
         content = (
           <ul className={wrapperClass}>
-            {data.map(o => {
+            {data.results.map(o => {
               let href = o['document'] || o['document_url'] || null;
               if (!href) { return null; }
               return <li key={o.id}>
-                <a className='link--secondary' href={href} target='_blank'>{o.name}, {DateTime.fromISO(o.created_at).toISODate()}</a>
+                <a className='link--secondary' href={href} target='_blank'>{o.name}, {isoDate(o.created_at)}</a>
               </li>;
             })}
           </ul>
@@ -296,6 +332,9 @@ class Emergency extends React.Component {
 
     return (
       <section className='inpage'>
+        <Helmet>
+          <title>IFRC Go - {get(data, 'name', 'Emergency')}</title>
+        </Helmet>
         <header className='inpage__header'>
           <div className='inner'>
             <div className='inpage__headline'>
@@ -388,6 +427,9 @@ class Emergency extends React.Component {
   render () {
     return (
       <App className='page--emergency'>
+        <Helmet>
+          <title>IFRC Go - Emergency</title>
+        </Helmet>
         {this.renderContent()}
       </App>
     );
@@ -436,4 +478,4 @@ const dispatcher = (dispatch) => ({
   _getAppealDocsByAppealIds: (...args) => dispatch(getAppealDocsByAppealIds(...args))
 });
 
-export default connect(selector, dispatcher)(Emergency);
+export default withRouter(connect(selector, dispatcher)(Emergency));

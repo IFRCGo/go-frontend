@@ -16,6 +16,7 @@ import {
 } from 'recharts';
 import { Sticky, StickyContainer } from 'react-sticky';
 import c from 'classnames';
+import { Helmet } from 'react-helmet';
 
 import { environment } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
@@ -469,6 +470,9 @@ class AdminArea extends SFPComponent {
 
     return (
       <section className='inpage'>
+        <Helmet>
+          <title>IFRC Go - {regionName}</title>
+        </Helmet>
         <header className='inpage__header'>
           <div className='inner'>
             <div className='inpage__headline'>
@@ -540,6 +544,9 @@ class AdminArea extends SFPComponent {
   render () {
     return (
       <App className={`page--${this.props.type}`}>
+        <Helmet>
+          <title>IFRC Go - Region</title>
+        </Helmet>
         {this.renderContent()}
       </App>
     );
