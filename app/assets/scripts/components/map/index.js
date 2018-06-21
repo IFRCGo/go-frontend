@@ -6,11 +6,15 @@ import c from 'classnames';
 import newMap, { source } from '../../utils/get-new-map';
 import { get } from '../../utils/utils';
 import { environment } from '../../config';
+import exportMap from '../../utils/export-map';
 
 export default class MapComponent extends React.Component {
   constructor (props) {
     super(props);
     this.safeSetFilter = this.safeSetFilter.bind(this);
+    this.state = {
+      ready: false
+    };
   }
 
   setupData () {
@@ -40,6 +44,7 @@ export default class MapComponent extends React.Component {
     this.theMap.on('style.load', () => {
       this.setupData();
       this.mapLoaded = true;
+      this.setState({ ready: true });
     });
 
     if (typeof configureMap === 'function') {
@@ -78,6 +83,13 @@ export default class MapComponent extends React.Component {
     const children = this.props.children || null;
     return (
       <figure className='map-vis'>
+        {this.props.noExport ? null : (
+          <div className='fold__actions'>
+            <button className={c('button button--primary-bounded button--export', {
+              disabled: !this.state.ready
+            })} onClick={() => exportMap(this.theMap)}>Export Map</button>
+          </div>
+        )}
         <div className={className} ref='map'/>
         {children}
       </figure>
@@ -92,6 +104,7 @@ if (environment !== 'production') {
     filters: T.array,
     configureMap: T.func,
     children: T.node,
-    className: T.string
+    className: T.string,
+    noExport: T.bool
   };
 }

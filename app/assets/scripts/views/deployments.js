@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { PropTypes as T } from 'prop-types';
 import { DateTime } from 'luxon';
 import c from 'classnames';
+import { Helmet } from 'react-helmet';
 
 import {
   enterFullscreen,
@@ -483,6 +484,9 @@ class Deployments extends SFPComponent {
   render () {
     return (
       <App className='page--deployments'>
+        <Helmet>
+          <title>IFRC Go - Deployments</title>
+        </Helmet>
         {this.renderContent()}
       </App>
     );

@@ -126,7 +126,8 @@ export default function newMap (container) {
       [-180, -90],
       [180, 90]
     ],
-    attributionControl: false
+    attributionControl: false,
+    preserveDrawingBuffer: true
   });
   map.addControl(new mapboxgl.NavigationControl(), 'top-right');
 

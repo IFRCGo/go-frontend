@@ -3,6 +3,7 @@ import React from 'react';
 import c from 'classnames';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
+import { Helmet } from 'react-helmet';
 
 import { environment } from '../config';
 
@@ -90,6 +91,9 @@ class RecoverAccount extends React.Component {
   render () {
     return (
       <App className='page--login'>
+        <Helmet>
+          <title>IFRC Go - Recover Password</title>
+        </Helmet>
         <section className='inpage'>
           <header className='inpage__header'>
             <div className='inner'>

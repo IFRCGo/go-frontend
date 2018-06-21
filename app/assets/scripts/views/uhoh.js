@@ -1,5 +1,6 @@
 'use strict';
 import React from 'react';
+import { Helmet } from 'react-helmet';
 
 import App from './app';
 
@@ -7,6 +8,9 @@ export default class UhOh extends React.Component {
   render () {
     return (
       <App className='page--uhoh'>
+        <Helmet>
+          <title>IFRC Go - Page not found</title>
+        </Helmet>
         <section className='inpage inpage--uhoh'>
           <header className='inpage__header'>
             <div className='inner'>

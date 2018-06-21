@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
 
 import { nope, percent, commaSeparatedNumber as n } from '../../utils/format';
-import { get } from '../../utils/utils';
+import { get, mostRecentReport } from '../../utils/utils';
 import { environment } from '../../config';
 import { getFeaturedEmergencies } from '../../actions';
 import BlockLoading from '../block-loading';
@@ -22,10 +22,15 @@ class FeaturedEmergencies extends React.Component {
   /* eslint-disable camelcase */
   renderCard (d) {
     const { disaster_start_date, id, name } = d;
+    // get appeals data
     const appeals = get(d, 'appeals', []);
     const beneficiaries = appeals.reduce((acc, curr) => acc + curr.num_beneficiaries, 0);
     const requested = appeals.reduce((acc, curr) => acc + curr.amount_requested, 0);
     const funded = appeals.reduce((acc, curr) => acc + curr.amount_funded, 0);
+
+    // get field report data, in case appeals data is missing
+    const report = mostRecentReport(get(d, 'field_reports'));
+    const affected = report ? report.num_affected : null;
     return (
       <li className='key-emergencies-item' key={id}>
         <Link to={`/emergencies/${id}`}>
@@ -35,6 +40,11 @@ class FeaturedEmergencies extends React.Component {
             <ul className='card__stat-list'>
               <li className='card__stat stats-people'>{n(beneficiaries)}<small>Targeted Beneficiaries</small></li>
               <li className='card__stat stats-funding'>{requested ? percent(funded, requested) + '%' : nope}<small>Funded</small></li>
+            </ul>
+          ) : null}
+          {!appeals.length && affected ? (
+            <ul className='card__stat-list'>
+              <li className='card__stat stats-people'>{n(affected)}<small>People Affected</small></li>
             </ul>
           ) : null}
         </Link>

@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { DateTime } from 'luxon';
 import { Sticky, StickyContainer } from 'react-sticky';
 import c from 'classnames';
+import { Helmet } from 'react-helmet';
 
 import { environment } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
@@ -263,7 +264,6 @@ class AdminArea extends SFPComponent {
     if (!fetched || error) {
       return null;
     }
-    console.log(data);
     const population = get(data, 'Population.value');
     const gdp = get(data, 'GDP.value');
     const gdpCapita = isNaN(population) || isNaN(gdp) || +population === 0 ? null : +gdp / +population;
@@ -314,6 +314,9 @@ class AdminArea extends SFPComponent {
 
     return (
       <section className='inpage'>
+        <Helmet>
+          <title>IFRC Go - {get(data, 'name', 'Country')}</title>
+        </Helmet>
         <header className='inpage__header'>
           <div className='inner'>
             <div className='inpage__headline'>
@@ -408,6 +411,9 @@ class AdminArea extends SFPComponent {
   render () {
     return (
       <App className={`page--${this.props.type}`}>
+        <Helmet>
+          <title>IFRC Go - Country</title>
+        </Helmet>
         {this.renderContent()}
       </App>
     );
