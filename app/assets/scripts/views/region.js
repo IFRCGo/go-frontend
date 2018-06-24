@@ -38,7 +38,8 @@ import {
   getAdmAreaSnippets
 } from '../actions';
 import { getRegionBoundingBox } from '../utils/region-bounding-box';
-import { regions as regionMeta } from '../utils/region-constants';
+import { countriesByRegion, regions as regionMeta } from '../utils/region-constants';
+import { getCountryMeta } from '../utils/get-country-meta';
 
 import App from './app';
 import Fold from '../components/fold';
@@ -88,6 +89,30 @@ class AdminArea extends SFPComponent {
         }
       }
     };
+
+    // Set a mask layer on `this`.
+    // This is a little not kosher, but it's a slightly costly endeavor,
+    // and we can avoid re-creating this layer every render.
+    const regionId = props.match.params.id;
+    const countries = countriesByRegion[regionId.toString()];
+    const isoCodes = countries.map(getCountryMeta)
+      .filter(Boolean)
+      .map(d => d.iso.toUpperCase());
+    const maskLayer = {
+      id: 'country-mask',
+      type: 'fill',
+      source: 'ifrc',
+      'source-layer': 'country',
+      paint: {
+        'fill-color': 'rgba(33, 33, 33, 0.7)'
+      },
+      filter: [
+        '!in',
+        'ISO_A2'
+      ].concat(isoCodes)
+    };
+    console.log(maskLayer);
+    this.maskLayer = maskLayer;
   }
 
   componentWillReceiveProps (nextProps) {
@@ -510,7 +535,7 @@ class AdminArea extends SFPComponent {
                 <div className= 'inner'>
                   <h2 className='fold__title'>{isNaN(activeOperations) ? nope : activeOperations + ' Active Operations'}</h2>
                   <div className={mapContainerClass}>
-                    <Homemap operations={this.props.appealStats} bbox={bbox} />
+                    <Homemap operations={this.props.appealStats} bbox={bbox} layers={[this.maskLayer]}/>
                   </div>
                 </div>
               </div>
