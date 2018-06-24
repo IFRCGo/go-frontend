@@ -3,7 +3,7 @@ import React from 'react';
 import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 
-import newMap, { source } from '../../utils/get-new-map';
+import newMap, { source, countryLabelId } from '../../utils/get-new-map';
 import { get } from '../../utils/utils';
 import { environment } from '../../config';
 import exportMap from '../../utils/export-map';
@@ -24,7 +24,7 @@ export default class MapComponent extends React.Component {
         data: this.props.geoJSON
       });
     }
-    get(this.props, 'layers', []).forEach(layer => this.theMap.addLayer(layer));
+    get(this.props, 'layers', []).forEach(layer => this.theMap.addLayer(layer, countryLabelId));
     get(this.props, 'filters', []).forEach(this.safeSetFilter);
   }
 
@@ -68,7 +68,7 @@ export default class MapComponent extends React.Component {
         if (existingLayer) {
           this.theMap.removeLayer(layer.id);
         }
-        this.theMap.addLayer(layer);
+        this.theMap.addLayer(layer, countryLabelId);
       });
       get(nextProps, 'filters', []).forEach(this.safeSetFilter);
     }

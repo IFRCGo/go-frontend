@@ -316,7 +316,7 @@ class Homemap extends React.Component {
 
   renderContent () {
     const geoJSON = get(this.props.operations, 'data.geoJSON');
-    const layers = this.state.markerLayers;
+    const layers = this.props.layers ? this.state.markerLayers.concat(this.props.layers) : this.state.markerLayers;
     const filters = this.state.markerFilters;
     if (this.props.operations.fetching) return null;
     return (
@@ -388,7 +388,8 @@ if (environment !== 'production') {
     history: T.object,
     bbox: T.array,
     noRenderEmergencies: T.bool,
-    noExport: T.bool
+    noExport: T.bool,
+    layers: T.array
   };
 }
 
