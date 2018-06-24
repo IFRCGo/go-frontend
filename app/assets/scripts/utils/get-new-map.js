@@ -3,6 +3,7 @@ import mapboxgl from 'mapbox-gl';
 import { mbtoken } from '../config';
 
 export const source = 'SOURCE';
+const DISTRICT_MINZOOM = 5;
 
 export const mapStyle = {
   version: 8,
@@ -42,7 +43,8 @@ export const mapStyle = {
       'source-layer': 'adm1',
       paint: {
         'fill-color': 'rgba(0, 0, 0, 0)'
-      }
+      },
+      minzoom: 4
     },
     {
       id: 'country-boundary',
@@ -68,7 +70,8 @@ export const mapStyle = {
       paint: {
         'line-color': 'hsla(209, 16%, 50%, 0.4)',
         'line-width': 0.4
-      }
+      },
+      minzoom: 4
     },
     {
       id: 'country-label',
