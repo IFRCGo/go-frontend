@@ -172,7 +172,7 @@ class AppealsTable extends SFPComponent {
           />
           {this.props.viewAll ? (
             <div className='fold__footer'>
-              <Link className='link--primary export--link' to={this.props.viewAll}>View All Appeals</Link>
+              <Link className='link--primary export--link' to={this.props.viewAll}>{this.props.viewAllText || 'View All Appeals'}</Link>
             </div>
           ) : null}
         </Fold>
@@ -198,6 +198,7 @@ if (environment !== 'production') {
 
     showActive: T.bool,
     viewAll: T.string,
+    viewAllText: T.string,
     id: T.string,
 
     action: T.string,
