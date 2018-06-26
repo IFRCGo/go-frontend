@@ -111,7 +111,6 @@ class AdminArea extends SFPComponent {
         'ISO_A2'
       ].concat(isoCodes)
     };
-    console.log(maskLayer);
     this.maskLayer = maskLayer;
   }
 
