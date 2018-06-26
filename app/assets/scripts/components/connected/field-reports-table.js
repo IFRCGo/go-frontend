@@ -81,7 +81,7 @@ class FieldReportsTable extends SFPComponent {
 
     if (fetching) {
       return (
-        <Fold title={this.props.title}>
+        <Fold title={this.props.title} id={this.props.id}>
           <BlockLoading/>
         </Fold>
       );
@@ -90,7 +90,7 @@ class FieldReportsTable extends SFPComponent {
     const results = get(data, 'results', []);
     if (error || (fetched && !results.length && !this.props.isAuthenticated)) {
       return (
-        <Fold title={this.props.title}>
+        <Fold title={this.props.title} id={this.props.id}>
           <p>You must be logged in to view field reports. <Link key='login' to={{pathname: '/login', state: {from: this.props.location}}} className='link--primary' title='Login'>Login</Link></p>
         </Fold>
       );
@@ -121,7 +121,7 @@ class FieldReportsTable extends SFPComponent {
       }));
 
       return (
-        <Fold title={`${title} (${n(data.count)})`}>
+        <Fold title={`${title} (${n(data.count)})`} id={this.props.id}>
           {this.props.exportLink ? (
             <div className='fold__actions'>
               <a href={this.props.exportLink} className='button button--primary-bounded'>Export Table</a>
@@ -156,7 +156,8 @@ if (environment !== 'production') {
     title: T.string,
     viewAll: T.string,
     isAuthenticated: T.bool,
-    showRecent: T.bool
+    showRecent: T.bool,
+    id: T.string
   };
 }
 

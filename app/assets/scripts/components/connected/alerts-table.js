@@ -90,9 +90,9 @@ class AlertsTable extends SFPComponent {
     const title = this.props.title || 'Latest Alerts';
 
     if (fetching || !fetched) {
-      return <Fold title={title}><BlockLoading/></Fold>;
+      return <Fold title={title} id={this.props.id}><BlockLoading/></Fold>;
     } else if (error) {
-      return <Fold title={title}><p>Surge alerts not available.</p></Fold>;
+      return <Fold title={title} id={this.props.id}><p>Surge alerts not available.</p></Fold>;
     }
 
     const headings = [
@@ -130,7 +130,7 @@ class AlertsTable extends SFPComponent {
     }, []);
 
     return (
-      <Fold title={`${title} (${data.count})`}>
+      <Fold title={`${title} (${data.count})`} id={this.props.id}>
         {this.props.exportLink ? (
           <div className='fold__actions'>
             <a href={this.props.exportLink} className='button button--primary-bounded'>Export Table</a>
@@ -162,7 +162,8 @@ if (environment !== 'production') {
     exportLink: T.string,
     title: T.string,
     showRecent: T.bool,
-    viewAll: T.string
+    viewAll: T.string,
+    id: T.string
   };
 }
 

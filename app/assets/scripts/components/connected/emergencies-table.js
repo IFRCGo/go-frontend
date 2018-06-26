@@ -97,7 +97,7 @@ class EmergenciesTable extends SFPComponent {
 
     if (fetching) {
       return (
-        <Fold title={this.props.title}>
+        <Fold title={this.props.title} id={this.props.id}>
           <BlockLoading/>
         </Fold>
       );
@@ -105,7 +105,7 @@ class EmergenciesTable extends SFPComponent {
 
     if (error) {
       return (
-        <Fold title={this.props.title}>
+        <Fold title={this.props.title} id={this.props.id}>
           <p>Latest emergencies not available.</p>
         </Fold>
       );
@@ -182,7 +182,7 @@ class EmergenciesTable extends SFPComponent {
       } = this.props;
 
       return (
-        <Fold title={`${title} (${n(data.count)})`}>
+        <Fold title={`${title} (${n(data.count)})`} id={this.props.id}>
           {this.props.exportLink ? (
             <div className='fold__actions'>
               <a href={this.props.exportLink} className='button button--primary-bounded'>Export Table</a>
@@ -220,7 +220,8 @@ if (environment !== 'production') {
     region: T.number,
     showRecent: T.bool,
     exportLink: T.string,
-    viewAll: T.string
+    viewAll: T.string,
+    id: T.string
   };
 }
 
