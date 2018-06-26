@@ -331,6 +331,7 @@ class AdminArea extends SFPComponent {
                 action={GET_AA_APPEALS}
                 statePath={'adminArea.appeals'}
                 id={'appeals'}
+                viewAll={'/appeals/all?atype=appeal&region=' + this.props.match.params.id}
               />
               <AppealsTable
                 title={'Active Drefs'}
@@ -340,6 +341,7 @@ class AdminArea extends SFPComponent {
                 action={GET_AA_DREFS}
                 statePath={'adminArea.drefs'}
                 id={'drefs'}
+                viewAll={'/appeals/all?atype=dref&region=' + this.props.match.params.id}
               />
               <Snippets data={this.props.snippets} />
               <Links data={data} />

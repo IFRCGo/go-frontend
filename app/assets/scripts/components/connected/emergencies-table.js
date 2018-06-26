@@ -66,7 +66,6 @@ class EmergenciesTable extends SFPComponent {
     if (state.filters.date !== 'all') {
       qs.disaster_start_date__gte = datesAgo[state.filters.date]();
     } else if (this.props.showRecent) {
-      console.log('setting', recentInterval);
       qs.disaster_start_date__gte = recentInterval;
     }
 
@@ -75,9 +74,9 @@ class EmergenciesTable extends SFPComponent {
     }
 
     if (!isNaN(this.props.country)) {
-      qs.country = this.props.country;
+      qs.countries__in = this.props.country;
     } else if (!isNaN(this.props.region)) {
-      qs.region = this.props.region;
+      qs.regions__in = this.props.region;
     }
 
     this.props._getEmergenciesList(this.state.emerg.page, qs);
