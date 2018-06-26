@@ -213,13 +213,16 @@ if (environment !== 'production') {
   EmergenciesTable.propTypes = {
     _getEmergenciesList: T.func,
     list: T.object,
-    title: T.string,
-    noPaginate: T.bool,
+
     limit: T.number,
     country: T.number,
     region: T.number,
-    showRecent: T.bool,
+
+    noPaginate: T.bool,
     exportLink: T.string,
+    title: T.string,
+
+    showRecent: T.bool,
     viewAll: T.string,
     id: T.string
   };

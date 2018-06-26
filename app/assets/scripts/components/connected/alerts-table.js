@@ -143,6 +143,7 @@ class AlertsTable extends SFPComponent {
           pageCount={data.count / this.state.alerts.limit}
           page={this.state.alerts.page - 1}
           onPageChange={this.handlePageChange.bind(this, 'alerts')}
+          noPaginate={this.props.noPaginate}
         />
         {this.props.viewAll ? (
           <div className='fold__footer'>
@@ -158,9 +159,13 @@ if (environment !== 'production') {
   AlertsTable.propTypes = {
     _getSurgeAlerts: T.func,
     surgeAlerts: T.object,
+
     limit: T.number,
+
+    noPaginate: T.bool,
     exportLink: T.string,
     title: T.string,
+
     showRecent: T.bool,
     viewAll: T.string,
     id: T.string

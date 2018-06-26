@@ -168,6 +168,7 @@ class AppealsTable extends SFPComponent {
             pageCount={data.count / this.state.appeals.limit}
             page={this.state.appeals.page - 1}
             onPageChange={this.handlePageChange.bind(this, 'appeals')}
+            noPaginate={this.props.noPaginate}
           />
           {this.props.viewAll ? (
             <div className='fold__footer'>
@@ -185,17 +186,22 @@ if (environment !== 'production') {
   AppealsTable.propTypes = {
     _getAppeals: T.func,
     appeals: T.object,
+
     limit: T.number,
     country: T.number,
     region: T.number,
     atype: T.string,
+
+    noPaginate: T.bool,
     exportLink: T.string,
     title: T.string,
+
     showActive: T.bool,
     viewAll: T.string,
+    id: T.string,
+
     action: T.string,
-    statePath: T.string,
-    id: T.string
+    statePath: T.string
   };
 }
 

@@ -63,6 +63,12 @@ class FieldReportsTable extends SFPComponent {
       qs.dtype = state.filters.dtype;
     }
 
+    if (!isNaN(this.props.country)) {
+      qs.countries__in = this.props.country;
+    } else if (!isNaN(this.props.region)) {
+      qs.regions__in = this.props.region;
+    }
+
     this.props._getFieldReportsList(this.state.fieldReports.page, qs);
   }
 
@@ -133,6 +139,7 @@ class FieldReportsTable extends SFPComponent {
             pageCount={data.count / this.state.fieldReports.limit}
             page={this.state.fieldReports.page - 1}
             onPageChange={this.handlePageChange.bind(this, 'fieldReports')}
+            noPaginate={this.props.noPaginate}
           />
           {this.props.viewAll ? (
             <div className='fold__footer'>
@@ -151,12 +158,18 @@ if (environment !== 'production') {
   FieldReportsTable.propTypes = {
     _getFieldReportsList: T.func,
     list: T.object,
+    isAuthenticated: T.bool,
+
     limit: T.number,
+    country: T.number,
+    region: T.number,
+
+    noPaginate: T.bool,
     exportLink: T.string,
     title: T.string,
-    viewAll: T.string,
-    isAuthenticated: T.bool,
+
     showRecent: T.bool,
+    viewAll: T.string,
     id: T.string
   };
 }
