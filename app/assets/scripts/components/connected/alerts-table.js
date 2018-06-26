@@ -8,7 +8,7 @@ import { DateTime } from 'luxon';
 import { environment } from '../../config';
 import { getSurgeAlerts } from '../../actions';
 import { get, dateOptions, datesAgo, isLoggedIn } from '../../utils/utils/';
-import { nope, privateSurgeAlert } from '../../utils/format';
+import { nope, privateSurgeAlert, recentInterval } from '../../utils/format';
 
 import { SFPComponent } from '../../utils/extendables';
 import DisplayTable, { FilterHeader } from '../display-table';
@@ -69,8 +69,8 @@ class AlertsTable extends SFPComponent {
     }
     if (state.filters.date !== 'all') {
       qs.created_at__gte = datesAgo[state.filters.date]();
-    } else if (this.props.startDate) {
-      qs.created_at__gte = this.props.startDate;
+    } else if (this.props.showRecent) {
+      qs.created_at__gte = recentInterval;
     }
     this.props._getSurgeAlerts(this.state.alerts.page, qs);
   }
@@ -141,7 +141,7 @@ class AlertsTable extends SFPComponent {
         />
         {this.props.viewAll ? (
           <div className='fold__footer'>
-            <Link className='link--primary export--link' to={this.props.viewAll}>View all</Link>
+            <Link className='link--primary export--link' to={this.props.viewAll}>View All Alerts</Link>
           </div>
         ) : null}
       </Fold>
@@ -156,7 +156,7 @@ if (environment !== 'production') {
     limit: T.number,
     exportLink: T.string,
     title: T.string,
-    startDate: T.string,
+    showRecent: T.bool,
     viewAll: T.string
   };
 }

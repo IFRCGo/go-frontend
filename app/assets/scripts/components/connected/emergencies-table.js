@@ -9,7 +9,8 @@ import { getEmergenciesList } from '../../actions';
 import {
   nope,
   commaSeparatedNumber as n,
-  isoDate
+  isoDate,
+  recentInterval
 } from '../../utils/format';
 import {
   get,
@@ -64,6 +65,9 @@ class EmergenciesTable extends SFPComponent {
 
     if (state.filters.date !== 'all') {
       qs.disaster_start_date__gte = datesAgo[state.filters.date]();
+    } else if (this.props.showRecent) {
+      console.log('setting', recentInterval);
+      qs.disaster_start_date__gte = recentInterval;
     }
 
     if (state.filters.dtype !== 'all') {
@@ -74,10 +78,6 @@ class EmergenciesTable extends SFPComponent {
       qs.country = this.props.country;
     } else if (!isNaN(this.props.region)) {
       qs.region = this.props.region;
-    }
-
-    if (this.props.startDate) {
-      qs.disaster_start_date__gte = this.props.startDate;
     }
 
     this.props._getEmergenciesList(this.state.emerg.page, qs);
@@ -196,6 +196,11 @@ class EmergenciesTable extends SFPComponent {
             onPageChange={this.handlePageChange.bind(this, 'emerg')}
             noPaginate={noPaginate}
           />
+          {this.props.viewAll ? (
+            <div className='fold__footer'>
+              <Link className='link--primary export--link' to={this.props.viewAll}>View All Emergencies</Link>
+            </div>
+          ) : null}
         </Fold>
       );
     }
@@ -213,8 +218,9 @@ if (environment !== 'production') {
     limit: T.number,
     country: T.number,
     region: T.number,
-    startDate: T.string,
-    exportLink: T.string
+    showRecent: T.bool,
+    exportLink: T.string,
+    viewAll: T.string
   };
 }
 

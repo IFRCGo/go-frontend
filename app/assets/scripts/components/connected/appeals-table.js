@@ -61,7 +61,7 @@ class AppealsTable extends SFPComponent {
       qs.dtype = state.filters.dtype;
     }
 
-    if (this.props.activeOnly) {
+    if (this.props.showActive) {
       qs.end_date__gt = DateTime.utc().toISO();
     }
 
@@ -160,7 +160,7 @@ class AppealsTable extends SFPComponent {
           />
           {this.props.viewAll ? (
             <div className='fold__footer'>
-              <Link className='link--primary export--link' to={this.props.viewAll}>View all</Link>
+              <Link className='link--primary export--link' to={this.props.viewAll}>View All Appeals</Link>
             </div>
           ) : null}
         </Fold>
@@ -177,7 +177,8 @@ if (environment !== 'production') {
     limit: T.number,
     exportLink: T.string,
     title: T.string,
-    activeOnly: T.bool
+    showActive: T.bool,
+    viewAll: T.string
   };
 }
 
