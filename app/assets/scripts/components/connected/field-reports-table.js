@@ -7,7 +7,7 @@ import { DateTime } from 'luxon';
 
 import { environment } from '../../config';
 import { getFieldReportsList } from '../../actions';
-import { nope, commaSeparatedNumber as n } from '../../utils/format';
+import { recentInterval, nope, commaSeparatedNumber as n } from '../../utils/format';
 import { get, dTypeOptions, dateOptions, datesAgo } from '../../utils/utils';
 import { getDtypeMeta } from '../../utils/get-dtype-meta';
 
@@ -27,7 +27,7 @@ class FieldReportsTable extends SFPComponent {
     this.state = {
       fieldReports: {
         page: 1,
-        limit: 10,
+        limit: isNaN(props.limit) ? 10 : props.limit,
         sort: {
           field: '',
           direction: 'asc'
@@ -45,8 +45,8 @@ class FieldReportsTable extends SFPComponent {
   }
 
   requestResults () {
-    let qs = {};
     let state = this.state.fieldReports;
+    let qs = { limit: state.limit };
     if (state.sort.field) {
       qs.ordering = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
     } else {
@@ -54,11 +54,19 @@ class FieldReportsTable extends SFPComponent {
     }
 
     if (state.filters.date !== 'all') {
-      qs.disaster_start_date__gte = datesAgo[state.filters.date]();
+      qs.created_at__gte = datesAgo[state.filters.date]();
+    } else if (this.props.showRecent) {
+      qs.created_at__gte = recentInterval;
     }
 
     if (state.filters.dtype !== 'all') {
       qs.dtype = state.filters.dtype;
+    }
+
+    if (!isNaN(this.props.country)) {
+      qs.countries__in = this.props.country;
+    } else if (!isNaN(this.props.region)) {
+      qs.regions__in = this.props.region;
     }
 
     this.props._getFieldReportsList(this.state.fieldReports.page, qs);
@@ -75,19 +83,20 @@ class FieldReportsTable extends SFPComponent {
       error,
       data
     } = this.props.list;
+    const title = this.props.title || 'Field Reports';
 
     if (fetching) {
       return (
-        <Fold title='Field Reports'>
+        <Fold title={this.props.title} id={this.props.id}>
           <BlockLoading/>
         </Fold>
       );
     }
 
     const results = get(data, 'results', []);
-    if (error || (fetched && !results.length)) {
+    if (error || (fetched && !results.length && !this.props.isAuthenticated)) {
       return (
-        <Fold title='Field Reports'>
+        <Fold title={this.props.title} id={this.props.id}>
           <p>You must be logged in to view field reports. <Link key='login' to={{pathname: '/login', state: {from: this.props.location}}} className='link--primary' title='Login'>Login</Link></p>
         </Fold>
       );
@@ -118,14 +127,25 @@ class FieldReportsTable extends SFPComponent {
       }));
 
       return (
-        <Fold title={`Field Reports (${n(data.count)})`}>
+        <Fold title={`${title} (${n(data.count)})`} id={this.props.id}>
+          {this.props.exportLink ? (
+            <div className='fold__actions'>
+              <a href={this.props.exportLink} className='button button--primary-bounded'>Export Table</a>
+            </div>
+          ) : null}
           <DisplayTable
             headings={headings}
             rows={rows}
             pageCount={data.count / this.state.fieldReports.limit}
-            page={this.state.fieldReports.page}
+            page={this.state.fieldReports.page - 1}
             onPageChange={this.handlePageChange.bind(this, 'fieldReports')}
+            noPaginate={this.props.noPaginate}
           />
+          {this.props.viewAll ? (
+            <div className='fold__footer'>
+              <Link className='link--primary export--link' to={this.props.viewAll}>{this.props.viewAllText || 'View All Field Reports'}</Link>
+            </div>
+          ) : null}
         </Fold>
       );
     }
@@ -137,7 +157,21 @@ class FieldReportsTable extends SFPComponent {
 if (environment !== 'production') {
   FieldReportsTable.propTypes = {
     _getFieldReportsList: T.func,
-    list: T.object
+    list: T.object,
+    isAuthenticated: T.bool,
+
+    limit: T.number,
+    country: T.number,
+    region: T.number,
+
+    noPaginate: T.bool,
+    exportLink: T.string,
+    title: T.string,
+
+    showRecent: T.bool,
+    viewAll: T.string,
+    viewAllText: T.string,
+    id: T.string
   };
 }
 
@@ -145,7 +179,8 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state) => ({
-  list: state.fieldReports
+  list: state.fieldReports,
+  isAuthenticated: !!state.user.data.token
 });
 
 const dispatcher = (dispatch) => ({

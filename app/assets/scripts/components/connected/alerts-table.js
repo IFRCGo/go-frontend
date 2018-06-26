@@ -8,12 +8,13 @@ import { DateTime } from 'luxon';
 import { environment } from '../../config';
 import { getSurgeAlerts } from '../../actions';
 import { get, dateOptions, datesAgo, isLoggedIn } from '../../utils/utils/';
-import { nope, privateSurgeAlert } from '../../utils/format';
+import { nope, privateSurgeAlert, recentInterval } from '../../utils/format';
 
 import { SFPComponent } from '../../utils/extendables';
 import DisplayTable, { FilterHeader } from '../display-table';
 import BlockLoading from '../block-loading';
 import Fold from '../fold';
+import Expandable from '../expandable';
 
 const alertTypes = {
   0: 'FACT',
@@ -43,7 +44,7 @@ class AlertsTable extends SFPComponent {
     this.state = {
       alerts: {
         page: 1,
-        limit: 5,
+        limit: isNaN(this.props.limit) ? 5 : this.props.limit,
         sort: {
           field: '',
           direction: 'asc'
@@ -61,16 +62,16 @@ class AlertsTable extends SFPComponent {
   }
 
   requestResults () {
-    let qs = { limit: this.state.alerts.limit };
     let state = this.state.alerts;
+    let qs = { limit: state.limit };
     if (state.sort.field) {
       qs.ordering = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
     }
-
     if (state.filters.date !== 'all') {
       qs.created_at__gte = datesAgo[state.filters.date]();
+    } else if (this.props.showRecent) {
+      qs.created_at__gte = recentInterval;
     }
-
     this.props._getSurgeAlerts(this.state.alerts.page, qs);
   }
 
@@ -78,19 +79,7 @@ class AlertsTable extends SFPComponent {
     this.requestResults();
   }
 
-  renderLoading () {
-    if (this.props.surgeAlerts.fetching) {
-      return <BlockLoading/>;
-    }
-  }
-
-  renderError () {
-    if (this.props.surgeAlerts.error) {
-      return <p>Surge alerts not available.</p>;
-    }
-  }
-
-  renderContent () {
+  render () {
     const {
       data,
       fetched,
@@ -98,7 +87,13 @@ class AlertsTable extends SFPComponent {
       error
     } = this.props.surgeAlerts;
 
-    if (!fetched || fetching || error) { return null; }
+    const title = this.props.title || 'Latest Alerts';
+
+    if (fetching || !fetched) {
+      return <Fold title={title} id={this.props.id}><BlockLoading/></Fold>;
+    } else if (error) {
+      return <Fold title={title} id={this.props.id}><p>Surge alerts not available.</p></Fold>;
+    }
 
     const headings = [
       {
@@ -120,7 +115,7 @@ class AlertsTable extends SFPComponent {
         date: date.toISODate(),
         emergency: event ? <Link className='link--primary' to={`/emergencies/${event}`} title='View Emergency page'>{rowData.operation}</Link> : rowData.operation || nope,
 
-        msg: isLoggedIn(this.props.user) ? rowData.message : privateSurgeAlert,
+        msg: isLoggedIn(this.props.user) ? <Expandable limit={128} text={rowData.message} /> : privateSurgeAlert,
         type: alertTypes[rowData.atype],
         category: alertCategories[rowData.category]
       });
@@ -135,23 +130,26 @@ class AlertsTable extends SFPComponent {
     }, []);
 
     return (
-      <DisplayTable
-        className='responsive-table alerts-table'
-        headings={headings}
-        rows={rows}
-        pageCount={data.count / this.state.alerts.limit}
-        page={this.state.alerts.page}
-        onPageChange={this.handlePageChange.bind(this, 'alerts')}
-      />
-    );
-  }
-
-  render () {
-    return (
-      <Fold title='Latest Alerts'>
-        {this.renderLoading()}
-        {this.renderError()}
-        {this.renderContent()}
+      <Fold title={`${title} (${data.count})`} id={this.props.id}>
+        {this.props.exportLink ? (
+          <div className='fold__actions'>
+            <a href={this.props.exportLink} className='button button--primary-bounded'>Export Table</a>
+          </div>
+        ) : null}
+        <DisplayTable
+          className='responsive-table alerts-table'
+          headings={headings}
+          rows={rows}
+          pageCount={data.count / this.state.alerts.limit}
+          page={this.state.alerts.page - 1}
+          onPageChange={this.handlePageChange.bind(this, 'alerts')}
+          noPaginate={this.props.noPaginate}
+        />
+        {this.props.viewAll ? (
+          <div className='fold__footer'>
+            <Link className='link--primary export--link' to={this.props.viewAll}>{this.props.viewAllText || 'View All Alerts'}</Link>
+          </div>
+        ) : null}
       </Fold>
     );
   }
@@ -160,7 +158,18 @@ class AlertsTable extends SFPComponent {
 if (environment !== 'production') {
   AlertsTable.propTypes = {
     _getSurgeAlerts: T.func,
-    surgeAlerts: T.object
+    surgeAlerts: T.object,
+
+    limit: T.number,
+
+    noPaginate: T.bool,
+    exportLink: T.string,
+    title: T.string,
+
+    showRecent: T.bool,
+    viewAll: T.string,
+    viewAllText: T.string,
+    id: T.string
   };
 }
 

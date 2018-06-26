@@ -9,7 +9,8 @@ import { getEmergenciesList } from '../../actions';
 import {
   nope,
   commaSeparatedNumber as n,
-  isoDate
+  isoDate,
+  recentInterval
 } from '../../utils/format';
 import {
   get,
@@ -64,6 +65,8 @@ class EmergenciesTable extends SFPComponent {
 
     if (state.filters.date !== 'all') {
       qs.disaster_start_date__gte = datesAgo[state.filters.date]();
+    } else if (this.props.showRecent) {
+      qs.disaster_start_date__gte = recentInterval;
     }
 
     if (state.filters.dtype !== 'all') {
@@ -71,13 +74,9 @@ class EmergenciesTable extends SFPComponent {
     }
 
     if (!isNaN(this.props.country)) {
-      qs.country = this.props.country;
+      qs.countries__in = this.props.country;
     } else if (!isNaN(this.props.region)) {
-      qs.region = this.props.region;
-    }
-
-    if (this.props.startDate) {
-      qs.disaster_start_date__gte = this.props.startDate;
+      qs.regions__in = this.props.region;
     }
 
     this.props._getEmergenciesList(this.state.emerg.page, qs);
@@ -97,7 +96,7 @@ class EmergenciesTable extends SFPComponent {
 
     if (fetching) {
       return (
-        <Fold title='Latest Emergencies'>
+        <Fold title={this.props.title} id={this.props.id}>
           <BlockLoading/>
         </Fold>
       );
@@ -105,7 +104,7 @@ class EmergenciesTable extends SFPComponent {
 
     if (error) {
       return (
-        <Fold title='Latest Emergencies'>
+        <Fold title={this.props.title} id={this.props.id}>
           <p>Latest emergencies not available.</p>
         </Fold>
       );
@@ -182,7 +181,12 @@ class EmergenciesTable extends SFPComponent {
       } = this.props;
 
       return (
-        <Fold title={`${title} (${n(data.count)})`}>
+        <Fold title={`${title} (${n(data.count)})`} id={this.props.id}>
+          {this.props.exportLink ? (
+            <div className='fold__actions'>
+              <a href={this.props.exportLink} className='button button--primary-bounded'>Export Table</a>
+            </div>
+          ) : null}
           <DisplayTable
             headings={headings}
             rows={rows}
@@ -191,6 +195,11 @@ class EmergenciesTable extends SFPComponent {
             onPageChange={this.handlePageChange.bind(this, 'emerg')}
             noPaginate={noPaginate}
           />
+          {this.props.viewAll ? (
+            <div className='fold__footer'>
+              <Link className='link--primary export--link' to={this.props.viewAll}>{this.props.viewAllText || 'View All Emergencies'}</Link>
+            </div>
+          ) : null}
         </Fold>
       );
     }
@@ -203,12 +212,19 @@ if (environment !== 'production') {
   EmergenciesTable.propTypes = {
     _getEmergenciesList: T.func,
     list: T.object,
-    title: T.string,
-    noPaginate: T.bool,
+
     limit: T.number,
     country: T.number,
     region: T.number,
-    startDate: T.string
+
+    noPaginate: T.bool,
+    exportLink: T.string,
+    title: T.string,
+
+    showRecent: T.bool,
+    viewAll: T.string,
+    viewAllText: T.string,
+    id: T.string
   };
 }
 
