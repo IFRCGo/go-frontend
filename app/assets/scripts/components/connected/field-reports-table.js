@@ -27,7 +27,7 @@ class FieldReportsTable extends SFPComponent {
     this.state = {
       fieldReports: {
         page: 1,
-        limit: 10,
+        limit: isNaN(props.limit) ? 10 : props.limit,
         sort: {
           field: '',
           direction: 'asc'
@@ -45,8 +45,8 @@ class FieldReportsTable extends SFPComponent {
   }
 
   requestResults () {
-    let qs = {};
     let state = this.state.fieldReports;
+    let qs = { limit: state.limit };
     if (state.sort.field) {
       qs.ordering = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
     } else {
@@ -75,10 +75,11 @@ class FieldReportsTable extends SFPComponent {
       error,
       data
     } = this.props.list;
+    const title = this.props.title || 'Field Reports';
 
     if (fetching) {
       return (
-        <Fold title='Field Reports'>
+        <Fold title={this.props.title}>
           <BlockLoading/>
         </Fold>
       );
@@ -87,7 +88,7 @@ class FieldReportsTable extends SFPComponent {
     const results = get(data, 'results', []);
     if (error || (fetched && !results.length)) {
       return (
-        <Fold title='Field Reports'>
+        <Fold title={this.props.title}>
           <p>You must be logged in to view field reports. <Link key='login' to={{pathname: '/login', state: {from: this.props.location}}} className='link--primary' title='Login'>Login</Link></p>
         </Fold>
       );
@@ -118,7 +119,12 @@ class FieldReportsTable extends SFPComponent {
       }));
 
       return (
-        <Fold title={`Field Reports (${n(data.count)})`}>
+        <Fold title={`${title} (${n(data.count)})`}>
+          {this.props.exportLink ? (
+            <div className='fold__actions'>
+              <a href={this.props.exportLink} className='button button--primary-bounded'>Export Table</a>
+            </div>
+          ) : null}
           <DisplayTable
             headings={headings}
             rows={rows}
@@ -137,7 +143,10 @@ class FieldReportsTable extends SFPComponent {
 if (environment !== 'production') {
   FieldReportsTable.propTypes = {
     _getFieldReportsList: T.func,
-    list: T.object
+    list: T.object,
+    limit: T.number,
+    exportLink: T.string,
+    title: T.string
   };
 }
 

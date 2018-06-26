@@ -28,7 +28,7 @@ class AppealsTable extends SFPComponent {
     this.state = {
       appeals: {
         page: 1,
-        limit: 5,
+        limit: isNaN(props.limit) ? 10 : props.limit,
         sort: {
           field: '',
           direction: 'asc'
@@ -46,8 +46,8 @@ class AppealsTable extends SFPComponent {
   }
 
   requestResults () {
-    let qs = { limit: this.state.appeals.limit };
     let state = this.state.appeals;
+    let qs = { limit: state.limit };
     if (state.sort.field) {
       qs.ordering = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
     } else {
@@ -76,7 +76,7 @@ class AppealsTable extends SFPComponent {
       data
     } = this.props.appeals;
 
-    const title = 'Operations Overview';
+    const title = this.props.title || 'Operations Overview';
 
     if (fetching) {
       return (
@@ -142,6 +142,11 @@ class AppealsTable extends SFPComponent {
 
       return (
         <Fold title={`${title} (${n(data.count)})`}>
+          {this.props.exportLink ? (
+            <div className='fold__actions'>
+              <a href={this.props.exportLink} className='button button--primary-bounded'>Export Table</a>
+            </div>
+          ) : null}
           <DisplayTable
             headings={headings}
             rows={rows}
@@ -159,7 +164,10 @@ class AppealsTable extends SFPComponent {
 if (environment !== 'production') {
   AppealsTable.propTypes = {
     _getAppeals: T.func,
-    appeals: T.object
+    appeals: T.object,
+    limit: T.number,
+    exportLink: T.string,
+    title: T.string
   };
 }
 
