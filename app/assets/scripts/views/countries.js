@@ -15,7 +15,6 @@ import { getDtypeMeta } from '../utils/get-dtype-meta';
 import {
   commaSeparatedNumber as n,
   commaSeparatedLargeNumber as bigN,
-  days90,
   nope
 } from '../utils/format';
 import {
@@ -368,10 +367,10 @@ class AdminArea extends SFPComponent {
                 {this.renderAppeals()}
               </Fold>
               <EmergenciesTable
-                title='Emergencies in the past 90 days'
+                title='Recent Emergencies'
                 limit={5}
                 country={this.props.match.params.id}
-                startDate={days90}
+                showRecent={true}
               />
               <Snippets data={this.props.snippets} />
               <Links data={data} />

@@ -24,7 +24,6 @@ import { get, dateOptions, datesAgo, dTypeOptions } from '../utils/utils/';
 import { getDtypeMeta } from '../utils/get-dtype-meta';
 import {
   commaSeparatedNumber as n,
-  days90,
   nope
 } from '../utils/format';
 import {
@@ -540,10 +539,10 @@ class AdminArea extends SFPComponent {
               </div>
 
               <EmergenciesTable
-                title='Emergencies in the past 90 days'
+                title='Recent Emergencies'
                 limit={7}
                 region={this.props.match.params.id}
-                startDate={days90}
+                showRecent={true}
               />
 
               <Fold title='Statistics' headerClass='visually-hidden' id='stats'>

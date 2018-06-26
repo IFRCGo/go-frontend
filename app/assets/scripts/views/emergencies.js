@@ -29,10 +29,19 @@ class Emergencies extends React.Component {
           <EmergenciesDash />
           <div className='inpage__body'>
             <div className='inner'>
-              <EmergenciesTable title='Latest Emergencies'/>
+              <EmergenciesTable
+                title='Recent Emergencies'
+                limit={10}
+                viewAll={'/emergencies/all'}
+                showRecent={true}
+              />
             </div>
             <div className='inner'>
-              <FieldReportsTable />
+              <FieldReportsTable
+                title='Recent Field Reports'
+                viewAll={'/reports/all'}
+                showRecent={true}
+              />
             </div>
           </div>
         </section>

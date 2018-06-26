@@ -1,7 +1,6 @@
 'use strict';
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { days90 } from '../utils/format';
 import App from './app';
 import PresentationDash from '../components/connected/presentation-dash';
 import AlertsTable from '../components/connected/alerts-table';
@@ -29,7 +28,7 @@ class Home extends React.Component {
             <FeaturedEmergencies />
             <div className='inner'>
               <AppealsTable
-                activeOnly={true}
+                showActive={true}
                 title={'Active Operations'}
                 limit={5}
                 viewAll={'/appeals/all'}
@@ -40,7 +39,7 @@ class Home extends React.Component {
                 title={'Recent Alerts'}
                 limit={5}
                 viewAll={'/alerts/all'}
-                startDate={days90}
+                showRecent={true}
               />
             </div>
           </div>
