@@ -305,7 +305,7 @@ class AdminArea extends SFPComponent {
               <KeyFigures data={this.props.keyFigures} />
               <div className='fold' id='operations-map'>
                 <div className= 'inner'>
-                  <h2 className='fold__title'>{isNaN(activeOperations) ? nope : activeOperations + ' Active Operations'}</h2>
+                  <h2 className='fold__title'>{activeOperations === null || isNaN(activeOperations) ? null : activeOperations + ' Active Operations'}</h2>
                   <div className={mapContainerClass}>
                     <Homemap operations={this.props.appealStats} bbox={bbox} layers={[this.maskLayer]}/>
                   </div>
@@ -316,6 +316,8 @@ class AdminArea extends SFPComponent {
                 limit={5}
                 region={this.props.match.params.id}
                 showRecent={true}
+                viewAll={'/emergencies/all?region=' + data.id}
+                viewAllText={`View All Emergencies For ${regionName} Region`}
               />
               <Fold title='Statistics' headerClass='visually-hidden' id='stats'>
                 <div className='stats-chart'>
@@ -331,7 +333,8 @@ class AdminArea extends SFPComponent {
                 action={GET_AA_APPEALS}
                 statePath={'adminArea.appeals'}
                 id={'appeals'}
-                viewAll={'/appeals/all?atype=appeal&region=' + this.props.match.params.id}
+                viewAll={'/appeals/all?atype=appeal&region=' + data.id}
+                viewAllText={`View All Appeals for ${regionName} Region`}
               />
               <AppealsTable
                 title={'Active Drefs'}
@@ -341,7 +344,8 @@ class AdminArea extends SFPComponent {
                 action={GET_AA_DREFS}
                 statePath={'adminArea.drefs'}
                 id={'drefs'}
-                viewAll={'/appeals/all?atype=dref&region=' + this.props.match.params.id}
+                viewAll={'/appeals/all?atype=dref&region=' + data.id}
+                viewAllText={`View All DREFs for ${regionName} Region`}
               />
               <Snippets data={this.props.snippets} />
               <Links data={data} />

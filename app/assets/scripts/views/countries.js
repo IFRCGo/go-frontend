@@ -139,6 +139,8 @@ class AdminArea extends SFPComponent {
 
     if (error || fetching) return null;
 
+    const { id, name } = this.props.adminArea.data;
+
     if (fetched) {
       const now = Date.now();
       const headings = [
@@ -178,12 +180,17 @@ class AdminArea extends SFPComponent {
       }));
 
       return (
-        <DisplayTable
-          headings={headings}
-          rows={rows}
-          onPageChange={this.handlePageChange.bind(this, 'appeals')}
-          noPaginate={true}
-        />
+        <React.Fragment>
+          <DisplayTable
+            headings={headings}
+            rows={rows}
+            onPageChange={this.handlePageChange.bind(this, 'appeals')}
+            noPaginate={true}
+          />
+          <div className='fold__footer'>
+            <Link className='link--primary export--link' to={'/appeals/all/?country=' + id}>View All Operations For {name}</Link>
+          </div>
+        </React.Fragment>
       );
     }
     return null;
@@ -322,7 +329,7 @@ class AdminArea extends SFPComponent {
             <div className='inner'>
               <KeyFigures data={this.props.keyFigures} />
               <Fold title='Statistics' headerClass='visually-hidden' id='operations'>
-                <h2 className='fold__title'>{isNaN(activeOperations) ? nope : activeOperations + ' Active Operations'}</h2>
+                <h2 className='fold__title'>{activeOperations === null || isNaN(activeOperations) ? null : activeOperations + ' Active Operations'}</h2>
                 <div className='operations__container'>
                   <BulletTable tables={bulletTables} title='PNS Activities' />
                   <div className={mapContainerClass}>
@@ -336,6 +343,8 @@ class AdminArea extends SFPComponent {
                 limit={5}
                 country={this.props.match.params.id}
                 showRecent={true}
+                viewAll={'/emergencies/all?country=' + data.id}
+                viewAllText={`View All Emergencies For ${data.name}`}
               />
               <Snippets data={this.props.snippets} />
               <Links data={data} />
