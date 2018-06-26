@@ -361,12 +361,12 @@ export function getHeopsDtype () {
 }
 
 export const GET_APPEALS = 'GET_APPEALS';
-export function getAppeals (page = 1, filters = {}) {
+export function getAppeals (page = 1, filters = {}, action) {
   filters.limit = filters.limit || 5;
   filters.offset = filters.limit * (page - 1);
 
   const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v2/appeal/?${f}`, GET_APPEALS, withToken());
+  return fetchJSON(`/api/v2/appeal/?${f}`, action || GET_APPEALS, withToken());
 }
 
 export const GET_APPEAL_DOCS = 'GET_APPEAL_DOCS';

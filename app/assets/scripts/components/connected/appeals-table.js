@@ -65,7 +65,18 @@ class AppealsTable extends SFPComponent {
       qs.end_date__gt = DateTime.utc().toISO();
     }
 
-    this.props._getAppeals(this.state.appeals.page, qs);
+    if (!isNaN(this.props.country)) {
+      qs.country = this.props.country;
+    } else if (!isNaN(this.props.region)) {
+      qs.region = this.props.region;
+    }
+
+    if (this.props.atype) {
+      qs.atype = this.props.atype === 'appeal' ? '1'
+        : this.props.atype === 'dref' ? '0' : null;
+    }
+
+    this.props._getAppeals(this.state.appeals.page, qs, this.props.action);
   }
 
   updateData (what) {
@@ -84,7 +95,7 @@ class AppealsTable extends SFPComponent {
 
     if (fetching) {
       return (
-        <Fold title={title}>
+        <Fold title={title} id={this.props.id}>
           <BlockLoading/>
         </Fold>
       );
@@ -92,7 +103,7 @@ class AppealsTable extends SFPComponent {
 
     if (error) {
       return (
-        <Fold title={title}>
+        <Fold title={title} id={this.props.id}>
           <p>Operations data not available.</p>
         </Fold>
       );
@@ -145,7 +156,7 @@ class AppealsTable extends SFPComponent {
       }));
 
       return (
-        <Fold title={`${title} (${n(data.count)})`}>
+        <Fold title={`${title} (${n(data.count)})`} id={this.props.id}>
           {this.props.exportLink ? (
             <div className='fold__actions'>
               <a href={this.props.exportLink} className='button button--primary-bounded'>Export Table</a>
@@ -175,15 +186,21 @@ if (environment !== 'production') {
     _getAppeals: T.func,
     appeals: T.object,
     limit: T.number,
+    country: T.number,
+    region: T.number,
+    atype: T.string,
     exportLink: T.string,
     title: T.string,
     showActive: T.bool,
-    viewAll: T.string
+    viewAll: T.string,
+    action: T.string,
+    statePath: T.string,
+    id: T.string
   };
 }
 
-const selector = (state) => ({
-  appeals: state.appeals
+const selector = (state, props) => ({
+  appeals: props.statePath ? get(state, props.statePath) : state.appeals
 });
 
 const dispatcher = (dispatch) => ({

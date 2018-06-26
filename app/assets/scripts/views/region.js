@@ -1,7 +1,6 @@
 'use strict';
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { DateTime } from 'luxon';
 import {
@@ -20,21 +19,20 @@ import { Helmet } from 'react-helmet';
 
 import { environment } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
-import { get, dateOptions, datesAgo, dTypeOptions } from '../utils/utils/';
-import { getDtypeMeta } from '../utils/get-dtype-meta';
+import { get } from '../utils/utils/';
 import {
   commaSeparatedNumber as n,
   nope
 } from '../utils/format';
 import {
   getAdmAreaById,
-  getAdmAreaAppeals,
-  getAdmAreaDrefs,
   getAdmAreaAppealsList,
   getAdmAreaAggregateAppeals,
   getAdmAreaERU,
   getAdmAreaKeyFigures,
-  getAdmAreaSnippets
+  getAdmAreaSnippets,
+  GET_AA_APPEALS,
+  GET_AA_DREFS
 } from '../actions';
 import { getRegionBoundingBox } from '../utils/region-bounding-box';
 import { countriesByRegion, regions as regionMeta } from '../utils/region-constants';
@@ -44,8 +42,8 @@ import App from './app';
 import Fold from '../components/fold';
 import Homemap from '../components/homemap';
 import BlockLoading from '../components/block-loading';
-import DisplayTable, { SortHeader, FilterHeader } from '../components/display-table';
 import EmergenciesTable from '../components/connected/emergencies-table';
+import AppealsTable from '../components/connected/appeals-table';
 import {
   Snippets,
   KeyFigures,
@@ -62,32 +60,6 @@ class AdminArea extends SFPComponent {
 
   constructor (props) {
     super(props);
-    this.state = {
-      appeals: {
-        page: 1,
-        limit: 5,
-        sort: {
-          field: '',
-          direction: 'asc'
-        },
-        filters: {
-          date: 'all',
-          dtype: 'all'
-        }
-      },
-      drefs: {
-        page: 1,
-        limit: 5,
-        sort: {
-          field: '',
-          direction: 'asc'
-        },
-        filters: {
-          date: 'all',
-          dtype: 'all'
-        }
-      }
-    };
 
     // Set a mask layer on `this`.
     // This is a little not kosher, but it's a slightly costly endeavor,
@@ -133,8 +105,6 @@ class AdminArea extends SFPComponent {
   }
 
   getData (props) {
-    this.props._getAdmAreaAppeals(props.type, props.match.params.id, 1, { ordering: '-start_date' });
-    this.props._getAdmAreaDrefs(props.type, props.match.params.id, 1, { ordering: '-start_date' });
     this.props._getAdmAreaAppealsList(props.type, props.match.params.id);
     this.props._getAdmAreaAggregateAppeals(props.type, props.match.params.id, DateTime.local().minus({years: 10}).startOf('month').toISODate(), 'year');
     this.props._getAdmAreaERU(props.type, props.match.params.id);
@@ -145,201 +115,6 @@ class AdminArea extends SFPComponent {
   getAdmArea (type, id) {
     showGlobalLoading();
     this.props._getAdmAreaById(type, id);
-  }
-
-  computeFilters (what) {
-    let state = this.state[what];
-    let qs = { limit: state.limit };
-
-    switch (what) {
-      case 'appeals':
-      case 'drefs':
-        if (state.sort.field) {
-          qs.ordering = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
-        } else {
-          qs.ordering = '-start_date';
-        }
-
-        if (state.filters.date !== 'all') {
-          qs.start_date__gte = datesAgo[state.filters.date]();
-        }
-        if (state.filters.dtype !== 'all') {
-          qs.dtype = state.filters.dtype;
-        }
-
-        break;
-    }
-    return qs;
-  }
-
-  updateData (what) {
-    let fn;
-    switch (what) {
-      case 'appeals':
-        fn = this.props._getAdmAreaAppeals;
-        break;
-      case 'drefs':
-        fn = this.props._getAdmAreaDrefs;
-        break;
-    }
-
-    fn(this.props.type, this.props.match.params.id, this.state[what].page, this.computeFilters(what));
-  }
-
-  renderAppeals () {
-    const {
-      fetched,
-      fetching,
-      error,
-      data
-    } = this.props.appeals;
-
-    if (fetching) {
-      return (
-        <Fold title='Appeals' id='appeals'>
-          <BlockLoading/>
-        </Fold>
-      );
-    }
-
-    if (error) {
-      return (
-        <Fold title='Appeals' id='appeals'>
-          <p>Emergency appeals not available.</p>
-        </Fold>
-      );
-    }
-
-    if (fetched) {
-      const now = Date.now();
-      const headings = [
-        {
-          id: 'date',
-          label: <FilterHeader id='date' title='Start Date' options={dateOptions} filter={this.state.appeals.filters.date} onSelect={this.handleFilterChange.bind(this, 'appeals', 'date')} />
-        },
-        {
-          id: 'name',
-          label: <SortHeader id='name' title='Name' sort={this.state.appeals.sort} onClick={this.handleSortChange.bind(this, 'appeals', 'name')} />
-        },
-        { id: 'event', label: 'Emergency' },
-        {
-          id: 'dtype',
-          label: <FilterHeader id='dtype' title='Disaster Type' options={dTypeOptions} filter={this.state.appeals.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'appeals', 'dtype')} />
-        },
-        {
-          id: 'requestAmount',
-          label: <SortHeader id='amount_requested' title='Requested Amount (CHF)' sort={this.state.appeals.sort} onClick={this.handleSortChange.bind(this, 'appeals', 'amount_requested')} />
-        },
-        {
-          id: 'fundedAmount',
-          label: <SortHeader id='amount_funded' title='Funding (CHF)' sort={this.state.appeals.sort} onClick={this.handleSortChange.bind(this, 'appeals', 'amount_funded')} />
-        },
-        { id: 'active', label: 'Active' }
-      ];
-
-      const rows = data.results.map(o => ({
-        id: o.id,
-        date: DateTime.fromISO(o.start_date).toISODate(),
-        name: o.name,
-        event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
-        dtype: get(getDtypeMeta(o.dtype), 'label', nope),
-        requestAmount: n(o.amount_requested),
-        fundedAmount: n(o.amount_funded),
-        active: (new Date(o.end_date)).getTime() > now ? 'Active' : 'Inactive'
-      }));
-
-      return (
-        <Fold title={`Appeals (${n(data.count)})`} id='appeals'>
-          <DisplayTable
-            headings={headings}
-            rows={rows}
-            pageCount={data.count / this.state.appeals.limit}
-            page={this.state.appeals.page - 1}
-            onPageChange={this.handlePageChange.bind(this, 'appeals')}
-          />
-        </Fold>
-      );
-    }
-
-    return null;
-  }
-
-  renderDrefs () {
-    const {
-      fetched,
-      fetching,
-      error,
-      data
-    } = this.props.drefs;
-
-    if (fetching) {
-      return (
-        <Fold title='Drefs' id='drefs'>
-          <BlockLoading/>
-        </Fold>
-      );
-    }
-
-    if (error) {
-      return (
-        <Fold title='Drefs' id='drefs'>
-          <p>DREFs not available.</p>
-        </Fold>
-      );
-    }
-
-    if (fetched) {
-      const now = Date.now();
-      const headings = [
-        {
-          id: 'date',
-          label: <FilterHeader id='date' title='Start Date' options={dateOptions} filter={this.state.drefs.filters.date} onSelect={this.handleFilterChange.bind(this, 'drefs', 'date')} />
-        },
-        {
-          id: 'name',
-          label: <SortHeader id='name' title='Name' sort={this.state.drefs.sort} onClick={this.handleSortChange.bind(this, 'drefs', 'name')} />
-        },
-        { id: 'event', label: 'Emergency' },
-        {
-          id: 'dtype',
-          label: <FilterHeader id='dtype' title='Disaster Type' options={dTypeOptions} filter={this.state.drefs.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'drefs', 'dtype')} />
-        },
-        {
-          id: 'requestAmount',
-          label: <SortHeader id='amount_requested' title='Requested Amount (CHF)' sort={this.state.drefs.sort} onClick={this.handleSortChange.bind(this, 'drefs', 'amount_requested')} />
-        },
-        {
-          id: 'fundedAmount',
-          label: <SortHeader id='amount_funded' title='Funding (CHF)' sort={this.state.drefs.sort} onClick={this.handleSortChange.bind(this, 'drefs', 'amount_funded')} />
-        },
-        { id: 'active', label: 'Active' }
-      ];
-
-      const rows = data.results.map(o => ({
-        id: o.id,
-        date: DateTime.fromISO(o.start_date).toISODate(),
-        name: o.name,
-        event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
-        dtype: get(getDtypeMeta(o.dtype), 'label', nope),
-        requestAmount: n(o.amount_requested),
-        fundedAmount: n(o.amount_funded),
-        active: (new Date(o.end_date)).getTime() > now ? 'Active' : 'Inactive'
-      }));
-
-      return (
-        <Fold title={`Drefs (${n(data.count)})`} id='drefs'>
-          <DisplayTable
-            headings={headings}
-            rows={rows}
-            pageCount={data.count / this.state.drefs.limit}
-            page={this.state.drefs.page - 1}
-            onPageChange={this.handlePageChange.bind(this, 'drefs')}
-          />
-        </Fold>
-      );
-    }
-
-    return null;
   }
 
   renderStats () {
@@ -517,7 +292,6 @@ class AdminArea extends SFPComponent {
                     <li><a href='#stats' title='Go to Stats section'>Stats</a></li>
                     <li><a href='#appeals' title='Go to Appeals section'>Appeals</a></li>
                     <li><a href='#drefs' title='Go to Drefs section'>Drefs</a></li>
-                    <li><a href='#field-reports' title='Go to Field Reports section'>Field Reports</a></li>
                     <li><a href='#graphics' title='Go to Graphics section'>Graphics</a></li>
                     <li><a href='#links' title='Go to Links section'>Links</a></li>
                     <li><a href='#contacts' title='Go to Contacts section'>Contacts</a></li>
@@ -537,23 +311,36 @@ class AdminArea extends SFPComponent {
                   </div>
                 </div>
               </div>
-
               <EmergenciesTable
                 title='Recent Emergencies'
-                limit={7}
+                limit={5}
                 region={this.props.match.params.id}
                 showRecent={true}
               />
-
               <Fold title='Statistics' headerClass='visually-hidden' id='stats'>
                 <div className='stats-chart'>
                   {this.renderOperations10Years()}
                   {this.renderERUBySociety()}
                 </div>
-
               </Fold>
-              {this.renderAppeals()}
-              {this.renderDrefs()}
+              <AppealsTable
+                title={'Active Appeals'}
+                region={this.props.match.params.id}
+                atype={'appeal'}
+                showActive={true}
+                action={GET_AA_APPEALS}
+                statePath={'adminArea.appeals'}
+                id={'appeals'}
+              />
+              <AppealsTable
+                title={'Active Drefs'}
+                region={this.props.match.params.id}
+                atype={'dref'}
+                showActive={true}
+                action={GET_AA_DREFS}
+                statePath={'adminArea.drefs'}
+                id={'drefs'}
+              />
               <Snippets data={this.props.snippets} />
               <Links data={data} />
               <Contacts data={data} />
@@ -579,8 +366,6 @@ class AdminArea extends SFPComponent {
 if (environment !== 'production') {
   AdminArea.propTypes = {
     _getAdmAreaById: T.func,
-    _getAdmAreaAppeals: T.func,
-    _getAdmAreaDrefs: T.func,
     _getAdmAreaAppealsList: T.func,
     _getAdmAreaAggregateAppeals: T.func,
     _getAdmAreaERU: T.func,
@@ -588,8 +373,6 @@ if (environment !== 'production') {
     match: T.object,
     history: T.object,
     adminArea: T.object,
-    appeals: T.object,
-    drefs: T.object,
     appealStats: T.object,
     aggregateYear: T.object,
     eru: T.object,
@@ -622,8 +405,6 @@ const selector = (state, ownProps) => ({
 
 const dispatcher = (dispatch) => ({
   _getAdmAreaById: (...args) => dispatch(getAdmAreaById(...args)),
-  _getAdmAreaAppeals: (...args) => dispatch(getAdmAreaAppeals(...args)),
-  _getAdmAreaDrefs: (...args) => dispatch(getAdmAreaDrefs(...args)),
   _getAdmAreaAppealsList: (...args) => dispatch(getAdmAreaAppealsList(...args)),
   _getAdmAreaAggregateAppeals: (...args) => dispatch(getAdmAreaAggregateAppeals(...args)),
   _getAdmAreaERU: (...args) => dispatch(getAdmAreaERU(...args)),
