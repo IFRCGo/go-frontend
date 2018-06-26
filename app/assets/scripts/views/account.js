@@ -310,7 +310,7 @@ class Account extends React.Component {
   renderProfileForm () {
     const { profile } = this.state;
     return (
-      <div className='inner'>
+      <div className='inner profile__form'>
         <div className='fold__header'>
           <div className='fold__actions'>
             <button className='button button--medium button--secondary-bounded' onClick={this.toggleEditProfile}>Cancel</button>
@@ -355,13 +355,17 @@ class Account extends React.Component {
               value={profile.org}
               onChange={this.onFieldChange.bind(this, 'profile', 'org')} >
             </FormInput>
-            <div className='form__group'>
-              <label className='form__label'>Organization Type</label>
-              <Select
-                name='organizationType'
-                value={profile.orgType}
-                onChange={this.onFieldChange.bind(this, 'profile', 'orgType')}
-                options={orgTypes} />
+            <div className='form__group form__group--kv'>
+              <div className='form__inner-header'>
+                <label className='form__label'>Organization Type</label>
+              </div>
+              <div className='form__inner-body'>
+                <Select
+                  name='organizationType'
+                  value={profile.orgType}
+                  onChange={this.onFieldChange.bind(this, 'profile', 'orgType')}
+                  options={orgTypes} />
+              </div>
             </div>
             <FormInput
               label='Department'
