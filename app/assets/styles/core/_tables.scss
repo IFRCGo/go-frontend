@@ -256,9 +256,12 @@ td.table__cell--requestAmount, td.table__cell--fundedAmount, th.table__header--r
   }
 }
 
-.table__container .fold__actions {
-  margin-top: -4em;
-  @include media(small-down) {
-    display: none;
+.table__container {
+  .fold__actions {
+    margin-top: -4em;
+    @include media(small-down) {
+      display: none;
+    }
   }
 }
+
