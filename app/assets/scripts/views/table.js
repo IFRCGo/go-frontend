@@ -10,11 +10,13 @@ import App from './app';
 import EmergenciesTable from '../components/connected/emergencies-table';
 import FieldReportsTable from '../components/connected/field-reports-table';
 import AppealsTable from '../components/connected/appeals-table';
+import AlertsTable from '../components/connected/alerts-table';
 
 const displayTypes = {
   report: 'Field Reports',
   appeal: 'Operations',
-  emergency: 'Emergencies'
+  emergency: 'Emergencies',
+  alert: 'Surge Alerts'
 };
 
 class Table extends React.Component {
@@ -30,6 +32,9 @@ class Table extends React.Component {
       case 'appeal':
         route += 'api/v2/appeal/?limit=100';
         break;
+      case 'alert':
+        route += 'api/v2/surge_alert/?limit=100';
+        break;
     }
     return route;
   }
@@ -42,6 +47,8 @@ class Table extends React.Component {
         return <FieldReportsTable title='All Field Reports' limit={50} exportLink={this.getExportLink()}/>;
       case 'appeal':
         return <AppealsTable title='All Operations' limit={50} exportLink={this.getExportLink()}/>;
+      case 'alert':
+        return <AlertsTable title='All Surge Alerts' limit={50} exportLink={this.getExportLink()}/>
     }
   }
 

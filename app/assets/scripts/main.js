@@ -103,6 +103,7 @@ const Root = () => (
         <Route exact path='/emergencies/:id' component={Emergency}/>
         <Route exact path='/regions/:id' render={props => <Region {...props} type='region' />} />
         <Route exact path='/countries/:id' render={props => <Country {...props} type='country' />} />
+        <Route exact path='/alerts/all' render={props => <Table {...props} type='alert' />} />
         <PrivateRoute exact path='/deployments' component={Deployments}/>
         <Route component={UhOh}/>
       </Switch>

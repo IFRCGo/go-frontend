@@ -131,6 +131,11 @@ class AlertsTable extends SFPComponent {
 
     return (
       <Fold title={`${title} (${data.count})`}>
+        {this.props.exportLink ? (
+          <div className='fold__actions'>
+            <a href={this.props.exportLink} className='button button--primary-bounded'>Export Table</a>
+          </div>
+        ) : null}
         <DisplayTable
           className='responsive-table alerts-table'
           headings={headings}
