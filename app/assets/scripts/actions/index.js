@@ -173,67 +173,8 @@ export function getAdmAreaById (aaType, id) {
 }
 
 export const GET_AA_APPEALS = 'GET_AA_APPEALS';
-export function getAdmAreaAppeals (aaType, aaId, page = 1, filters = {}) {
-  filters.limit = filters.limit || 5;
-  filters.offset = filters.limit * (page - 1);
-  filters.atype = 1;
-
-  switch (aaType) {
-    case 'region':
-      filters.region = aaId;
-      break;
-    case 'country':
-      filters.country = aaId;
-      break;
-    default:
-      throw new Error('Invalid admin area type ' + aaType);
-  }
-
-  const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v2/appeal/?${f}`, GET_AA_APPEALS, withToken());
-}
-
 export const GET_AA_DREFS = 'GET_AA_DREFS';
-export function getAdmAreaDrefs (aaType, aaId, page = 1, filters = {}) {
-  filters.limit = filters.limit || 5;
-  filters.offset = filters.limit * (page - 1);
-  filters.atype = 0;
-
-  switch (aaType) {
-    case 'region':
-      filters.region = aaId;
-      break;
-    case 'country':
-      filters.country = aaId;
-      break;
-    default:
-      throw new Error('Invalid admin area type ' + aaType);
-  }
-
-  const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v2/appeal/?${f}`, GET_AA_DREFS, withToken());
-}
-
 export const GET_AA_FIELD_REPORTS = 'GET_AA_FIELD_REPORTS';
-export function getAdmAreaFieldReports (aaType, aaId, page = 1, filters = {}) {
-  filters.limit = filters.limit || 5;
-  filters.offset = filters.limit * (page - 1);
-
-  switch (aaType) {
-    case 'region':
-      filters.regions__in = aaId;
-      break;
-    case 'country':
-      filters.countries__in = aaId;
-      break;
-    default:
-      throw new Error('Invalid admin area type ' + aaType);
-  }
-
-  const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v2/field_report/?${f}`, GET_AA_FIELD_REPORTS, withToken());
-}
-
 export const GET_AA_APPEALS_LIST = 'GET_AA_APPEALS_LIST';
 export function getAdmAreaAppealsList (aaType, aaId) {
   let filters = {
