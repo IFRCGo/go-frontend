@@ -1,6 +1,7 @@
 'use strict';
 import React from 'react';
 import { Helmet } from 'react-helmet';
+import { days90 } from '../utils/format';
 import App from './app';
 import PresentationDash from '../components/connected/presentation-dash';
 import AlertsTable from '../components/connected/alerts-table';
@@ -35,7 +36,12 @@ class Home extends React.Component {
               />
             </div>
             <div className='inner'>
-              <AlertsTable />
+              <AlertsTable
+                title={'Recent Alerts'}
+                limit={5}
+                viewAll={'/alerts/all'}
+                startDate={days90}
+              />
             </div>
           </div>
         </section>
