@@ -21,7 +21,7 @@ function getUriForType (type, id) {
     case 'event':
       return '/emergencies/' + id;
     case 'appeal':
-      return '/appeals/all';
+      return '/appeals/all?record=' + id;
   }
 }
 

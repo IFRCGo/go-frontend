@@ -98,6 +98,10 @@ class AppealsTable extends SFPComponent {
         : this.props.atype === 'dref' ? '0' : null;
     }
 
+    if (!isNaN(this.props.record)) {
+      qs.id = this.props.record;
+    }
+
     this.props._getAppeals(this.state.appeals.page, qs, this.props.action);
   }
 
@@ -220,6 +224,7 @@ if (environment !== 'production') {
     country: T.number,
     region: T.number,
     atype: T.string,
+    record: T.string,
 
     noPaginate: T.bool,
     exportLink: T.string,
