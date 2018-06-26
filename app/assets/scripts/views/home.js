@@ -27,7 +27,12 @@ class Home extends React.Component {
             <PresentationDash />
             <FeaturedEmergencies />
             <div className='inner'>
-              <AppealsTable />
+              <AppealsTable
+                activeOnly={true}
+                title={'Active Operations'}
+                limit={5}
+                viewAll={'/appeals/all'}
+              />
             </div>
             <div className='inner'>
               <AlertsTable />

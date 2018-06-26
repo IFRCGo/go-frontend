@@ -61,6 +61,10 @@ class AppealsTable extends SFPComponent {
       qs.dtype = state.filters.dtype;
     }
 
+    if (this.props.activeOnly) {
+      qs.end_date__gt = DateTime.utc().toISO();
+    }
+
     this.props._getAppeals(this.state.appeals.page, qs);
   }
 
@@ -154,6 +158,11 @@ class AppealsTable extends SFPComponent {
             page={this.state.appeals.page - 1}
             onPageChange={this.handlePageChange.bind(this, 'appeals')}
           />
+          {this.props.viewAll ? (
+            <div className='fold__footer'>
+              <Link className='link--primary export--link' to={this.props.viewAll}>View all</Link>
+            </div>
+          ) : null}
         </Fold>
       );
     }
@@ -167,7 +176,8 @@ if (environment !== 'production') {
     appeals: T.object,
     limit: T.number,
     exportLink: T.string,
-    title: T.string
+    title: T.string,
+    activeOnly: T.bool
   };
 }
 
