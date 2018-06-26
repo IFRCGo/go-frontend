@@ -33,6 +33,22 @@ class Header extends React.PureComponent {
       showBetaBanner: true
     };
     this.onSelect = this.onSelect.bind(this);
+
+    // Basic function to wait until user stops typing to query ES.
+    let i = 0;
+    this.slowLoad = input => {
+      i += 1;
+      let mirror = i;
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          if (i === mirror) {
+            return resolve(this.getOptions(input));
+          } else {
+            return resolve({ options: [] });
+          }
+        }, 150);
+      });
+    };
   }
 
   onSelect ({value}) {
@@ -106,7 +122,7 @@ class Header extends React.PureComponent {
                     filterOptions={noFilter}
                     autoload={false}
                     cache={false}
-                    loadOptions={this.getOptions} />
+                    loadOptions={this.slowLoad} />
                 </div>
               </form>
             </div>

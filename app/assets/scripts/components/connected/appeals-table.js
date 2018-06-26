@@ -33,7 +33,7 @@ const appealStatus = {
   0: 'Active',
   1: 'Closed',
   3: 'Frozen',
-  3: 'Archived'
+  4: 'Archived'
 };
 
 class AppealsTable extends SFPComponent {
@@ -132,7 +132,6 @@ class AppealsTable extends SFPComponent {
     }
 
     if (fetched) {
-      const now = Date.now();
       const headings = [
         {
           id: 'date',
