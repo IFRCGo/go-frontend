@@ -285,7 +285,10 @@ class Account extends React.Component {
     return (
       <div className='inner'>
         <div className='fold__header'>
-          <h2 className='fold__title'>Account Information <button className='button button--large button--secondary-filled' onClick={this.toggleEditProfile}>Edit Profile</button></h2>
+          <div className='fold__actions'>
+            <button className='button button--medium button--secondary-bounded' onClick={this.toggleEditProfile}>Edit Profile</button>
+          </div>
+          <h2 className='fold__title'>Account Information</h2>
         </div>
         <div className='fold__body'>
           <dl className='dl--horizontal'>
@@ -298,7 +301,7 @@ class Account extends React.Component {
           </dl>
         </div>
         <div className='fold__footer'>
-          <Link to='/account/password-change'>Change my password</Link>
+          <Link className='link--primary' to='/account/password-change'>Change my password</Link>
         </div>
       </div>
     );
@@ -307,9 +310,12 @@ class Account extends React.Component {
   renderProfileForm () {
     const { profile } = this.state;
     return (
-      <div className='inner'>
+      <div className='inner profile__form'>
         <div className='fold__header'>
-          <h2 className='fold__title'>Edit Profile <button className='button button--large button--secondary-filled' onClick={this.toggleEditProfile}>Cancel</button></h2>
+          <div className='fold__actions'>
+            <button className='button button--medium button--secondary-bounded' onClick={this.toggleEditProfile}>Cancel</button>
+          </div>
+          <h2 className='fold__title'>Edit Profile</h2>
         </div>
         <div className='fold__body'>
           <form className='form' onSubmit={this.onProfileSubmit}>
@@ -349,13 +355,17 @@ class Account extends React.Component {
               value={profile.org}
               onChange={this.onFieldChange.bind(this, 'profile', 'org')} >
             </FormInput>
-            <div className='form__group'>
-              <label className='form__label'>Organization Type</label>
-              <Select
-                name='organizationType'
-                value={profile.orgType}
-                onChange={this.onFieldChange.bind(this, 'profile', 'orgType')}
-                options={orgTypes} />
+            <div className='form__group form__group--kv'>
+              <div className='form__inner-header'>
+                <label className='form__label'>Organization Type</label>
+              </div>
+              <div className='form__inner-body'>
+                <Select
+                  name='organizationType'
+                  value={profile.orgType}
+                  onChange={this.onFieldChange.bind(this, 'profile', 'orgType')}
+                  options={orgTypes} />
+              </div>
             </div>
             <FormInput
               label='Department'
