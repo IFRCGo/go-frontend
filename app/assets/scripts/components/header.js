@@ -12,6 +12,7 @@ import UserMenu from './connected/user-menu';
 import Dropdown from './dropdown';
 
 const regionArray = Object.keys(regions).map(k => regions[k]);
+const noFilter = options => options;
 
 function getUriForType (type, id) {
   switch (type) {
@@ -102,6 +103,9 @@ class Header extends React.PureComponent {
                   <Select.Async
                     placeholder='Search...'
                     onChange={this.onSelect}
+                    filterOptions={noFilter}
+                    autoload={false}
+                    cache={false}
                     loadOptions={this.getOptions} />
                 </div>
               </form>
