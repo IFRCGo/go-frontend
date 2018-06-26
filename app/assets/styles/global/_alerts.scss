@@ -7,7 +7,7 @@
   position: relative;
   border-radius: $base-border-radius;
   background: rgba($base-color, 0.92);
-  padding: ($global-spacing / 2) ($global-spacing * 2.5) ($global-spacing / 2) ($global-spacing * 1.75);
+  padding: $global-spacing ($global-spacing * 2.5) $global-spacing ($global-spacing * 1.75);
   color: #fff;
   overflow: hidden;
   font-size: 1rem;
@@ -97,7 +97,7 @@
   position: fixed;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: flex-start;
   z-index: 9996;
   top: 0;
   bottom: 0;
