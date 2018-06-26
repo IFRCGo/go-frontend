@@ -86,7 +86,7 @@ export const GET_APPEALS_LIST = 'GET_APPEALS_LIST';
 export function getAppealsList () {
   const f = buildAPIQS({
     end_date__gt: DateTime.utc().toISO(),
-    limit: 0
+    limit: 1000
   });
   return fetchJSON(`api/v2/appeal/?${f}`, GET_APPEALS_LIST, withToken());
 }
@@ -238,7 +238,7 @@ export const GET_AA_APPEALS_LIST = 'GET_AA_APPEALS_LIST';
 export function getAdmAreaAppealsList (aaType, aaId) {
   let filters = {
     end_date__gt: DateTime.utc().toISO(),
-    limit: 0
+    limit: 1000
   };
 
   switch (aaType) {
@@ -259,7 +259,7 @@ export function getAdmAreaAppealsList (aaType, aaId) {
 export const GET_COUNTRY_OPERATIONS = 'GET_COUNTRY_OPERATIONS';
 export function getCountryOperations (aaType, cId, page, filters = {}) {
   filters.end_date__gt = DateTime.utc().toISO();
-  filters.limit = 0;
+  filters.limit = 1000;
   filters.country = cId;
   const f = buildAPIQS(filters);
   return fetchJSON(`api/v2/appeal/?${f}`, GET_COUNTRY_OPERATIONS, withToken());
@@ -313,7 +313,7 @@ export function getPartnerDeployments (aaType, id) {
   let filters = aaType === 'country' ? { country_deployed_to: id }
     : aaType === 'region' ? { country_deployed_to__in: countriesByRegion[id].join(',') }
       : { district_deployed_to: id };
-  filters.limit = 0;
+  filters.limit = 1000;
   const f = buildAPIQS(filters);
   return fetchJSON(`api/v2/partner_deployment/?${f}`, GET_PARTNER_DEPLOYMENTS, withToken(), { id });
 }
@@ -415,28 +415,28 @@ export function getDeploymentRDRT (page = 1, filters = {}) {
 export const GET_ALL_DEPLOYMENT_ERU = 'GET_ALL_DEPLOYMENT_ERU';
 export function getAllDeploymentERU (filters = {}) {
   filters['deployed_to__isnull'] = false;
-  filters.limit = 0;
+  filters.limit = 1000;
   const f = buildAPIQS(filters);
   return fetchJSON(`/api/v2/eru/?${f}`, GET_ALL_DEPLOYMENT_ERU, withToken());
 }
 
 export const GET_ALL_DEPLOYMENT_FACT = 'GET_ALL_DEPLOYMENT_FACT';
 export function getAllDeploymentFACT (filters = {}) {
-  filters.limit = 0;
+  filters.limit = 1000;
   const f = buildAPIQS(filters);
   return fetchJSON(`/api/v2/fact/?${f}`, GET_ALL_DEPLOYMENT_FACT, withToken());
 }
 
 export const GET_ALL_DEPLOYMENT_HEOP = 'GET_ALL_DEPLOYMENT_HEOP';
 export function getAllDeploymentHEOP (filters = {}) {
-  filters.limit = 0;
+  filters.limit = 1000;
   const f = buildAPIQS(filters);
   return fetchJSON(`/api/v2/heop/?${f}`, GET_ALL_DEPLOYMENT_HEOP, withToken());
 }
 
 export const GET_ALL_DEPLOYMENT_RDRT = 'GET_ALL_DEPLOYMENT_RDRT';
 export function getAllDeploymentRDRT (filters = {}) {
-  filters.limit = 0;
+  filters.limit = 1000;
   const f = buildAPIQS(filters);
   return fetchJSON(`/api/v2/rdrt/?${f}`, GET_ALL_DEPLOYMENT_RDRT, withToken());
 }
