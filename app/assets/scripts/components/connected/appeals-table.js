@@ -9,7 +9,14 @@ import { environment } from '../../config';
 import { getAppeals } from '../../actions';
 import { commaSeparatedNumber as n, nope } from '../../utils/format';
 import { getDtypeMeta } from '../../utils/get-dtype-meta';
-import { get, dateOptions, datesAgo, dTypeOptions } from '../../utils/utils/';
+import {
+  get,
+  dateOptions,
+  datesAgo,
+  dTypeOptions,
+  appealTypeOptions,
+  appealStatusOptions
+} from '../../utils/utils/';
 
 import Fold from '../fold';
 import BlockLoading from '../block-loading';
@@ -20,6 +27,13 @@ const appealsType = {
   0: 'DREF',
   1: 'Appeal',
   2: 'Movement'
+};
+
+const appealStatus = {
+  0: 'Active',
+  1: 'Closed',
+  3: 'Frozen',
+  4: 'Archived'
 };
 
 class AppealsTable extends SFPComponent {
@@ -35,7 +49,9 @@ class AppealsTable extends SFPComponent {
         },
         filters: {
           date: 'all',
-          dtype: 'all'
+          dtype: 'all',
+          status: 'all',
+          atype: 'all'
         }
       }
     };
@@ -60,6 +76,12 @@ class AppealsTable extends SFPComponent {
     if (state.filters.dtype !== 'all') {
       qs.dtype = state.filters.dtype;
     }
+    if (state.filters.status !== 'all') {
+      qs.status = state.filters.status;
+    }
+    if (state.filters.atype !== 'all') {
+      qs.atype = state.filters.atype;
+    }
 
     if (this.props.showActive) {
       qs.end_date__gt = DateTime.utc().toISO();
@@ -74,6 +96,10 @@ class AppealsTable extends SFPComponent {
     if (this.props.atype) {
       qs.atype = this.props.atype === 'appeal' ? '1'
         : this.props.atype === 'dref' ? '0' : null;
+    }
+
+    if (!isNaN(this.props.record)) {
+      qs.id = this.props.record;
     }
 
     this.props._getAppeals(this.state.appeals.page, qs, this.props.action);
@@ -110,12 +136,12 @@ class AppealsTable extends SFPComponent {
     }
 
     if (fetched) {
-      const now = Date.now();
       const headings = [
         {
           id: 'date',
           label: <FilterHeader id='date' title='Start Date' options={dateOptions} filter={this.state.appeals.filters.date} onSelect={this.handleFilterChange.bind(this, 'appeals', 'date')} />
         },
+        { id: 'code', label: 'Code' },
         {
           id: 'name',
           label: <SortHeader id='name' title='Name' sort={this.state.appeals.sort} onClick={this.handleSortChange.bind(this, 'appeals', 'name')} />
@@ -133,13 +159,20 @@ class AppealsTable extends SFPComponent {
           id: 'fundedAmount',
           label: <SortHeader id='amount_funded' title='Funding (CHF)' sort={this.state.appeals.sort} onClick={this.handleSortChange.bind(this, 'appeals', 'amount_funded')} />
         },
-        { id: 'active', label: 'Active' },
-        { id: 'type', label: 'Type' }
+        {
+          id: 'status',
+          label: <FilterHeader id='status' title='Status' options={appealStatusOptions} filter={this.state.appeals.filters.status} onSelect={this.handleFilterChange.bind(this, 'appeals', 'status')} />
+        },
+        {
+          id: 'type',
+          label: <FilterHeader id='type' title='Type' options={appealTypeOptions} filter={this.state.appeals.filters.atype} onSelect={this.handleFilterChange.bind(this, 'appeals', 'atype')} />
+        }
       ];
 
       const rows = data.results.map(o => ({
         id: o.id,
         date: DateTime.fromISO(o.start_date).toISODate(),
+        code: o.code,
         name: o.name,
         event: o.event ? <Link to={`/emergencies/${o.event}`} className='link--primary' title='View Emergency'>Link</Link> : nope,
         dtype: get(getDtypeMeta(o.dtype), 'label', nope),
@@ -151,7 +184,7 @@ class AppealsTable extends SFPComponent {
           value: n(o.amount_funded),
           className: 'right-align'
         },
-        active: (new Date(o.end_date)).getTime() > now ? 'Active' : 'Inactive',
+        status: get(appealStatus, Number(o.status), nope),
         type: appealsType[o.atype]
       }));
 
@@ -191,6 +224,7 @@ if (environment !== 'production') {
     country: T.number,
     region: T.number,
     atype: T.string,
+    record: T.string,
 
     noPaginate: T.bool,
     exportLink: T.string,
