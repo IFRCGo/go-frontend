@@ -102,6 +102,16 @@ class MobileHeader extends React.PureComponent {
             <ul className='nav-block-menu'>
               <li><Link to='/' title='Visit Home page' className={c({'disabled': pathname === '/'})}><span>Home</span></Link></li>
               <li><Link to='/emergencies' title='Visit emergencies page' className={c({'disabled': pathname === '/emergencies'})}><span>Emergencies</span></Link></li>
+              <li>
+                <span>Regions</span>
+                <ul className='nav-block-submenu'>
+                  <li><Link to='/regions/0' title='Visit Africa region page' className={c({'disabled': pathname === 'regions/0'})}><span>Africa</span></Link></li>
+                  <li><Link to='/regions/1' title='Visit Americas region page' className={c({'disabled': pathname === 'regions/1'})}><span>Americas</span></Link></li>
+                  <li><Link to='/regions/2' title='Visit Asia Pacific region page' className={c({'disabled': pathname === 'regions/2'})}><span>Asia Pacific</span></Link></li>
+                  <li><Link to='/regions/3' title='Visit Europe region page' className={c({'disabled': pathname === 'regions/3'})}><span>Europe</span></Link></li>
+                  <li><Link to='/regions/4' title='Visit Middle East & North Africa region page' className={c({'disabled': pathname === 'regions/0'})}><span>Middle East & North Africa</span></Link></li>
+                </ul>
+              </li>
               <li><Link to='/deployments' title='Visit Deployments page' className={c({'disabled': pathname === '/deployments'})}><span>Deployments</span></Link></li>
               <li><Link to='/about' title='Visit About page' className={c({'disabled': pathname === '/about'})}><span>About</span></Link></li>
             </ul>

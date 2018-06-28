@@ -185,6 +185,7 @@
     transition: left 0.2s;
     background-color: #FFF;
     padding-top: $global-spacing;
+    font-weight: $base-font-regular;
     ul {
       list-style: none;
     }
@@ -201,6 +202,15 @@
     }
     &--open {
       left: 0;
+    }
+  }
+
+  .nav-block-submenu {
+    margin-top: $global-spacing;
+    li {
+      font-weight: $base-font-light;
+      margin-left: 0.5rem;
+      font-size: 0.875rem;
     }
   }
   .mobile__actions {
