@@ -66,6 +66,10 @@ class Table extends React.Component {
         : query.atype === 'dref' ? '0' : null;
     }
 
+    if (query.record && !isNaN(query.record)) {
+      q.record = query.record;
+    }
+
     return qs.stringify(q);
   }
 
@@ -91,6 +95,10 @@ class Table extends React.Component {
       titleArea = getCountryMeta(query.country);
       titleArea = titleArea ? titleArea.label : null;
       props.country = titleArea ? query.country : null;
+    }
+
+    if (query.record && !isNaN(query.record)) {
+      props.record = query.record;
     }
 
     if (query.atype && type === 'appeal' && (query.atype.toLowerCase() === 'dref' || query.atype.toLowerCase() === 'appeal')) {

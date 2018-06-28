@@ -12,6 +12,7 @@ import UserMenu from './connected/user-menu';
 import Dropdown from './dropdown';
 
 const regionArray = Object.keys(regions).map(k => regions[k]);
+const noFilter = options => options;
 
 function getUriForType (type, id) {
   switch (type) {
@@ -20,7 +21,7 @@ function getUriForType (type, id) {
     case 'event':
       return '/emergencies/' + id;
     case 'appeal':
-      return '/appeals/all';
+      return '/appeals/all?record=' + id;
   }
 }
 
@@ -32,6 +33,22 @@ class Header extends React.PureComponent {
       showBetaBanner: true
     };
     this.onSelect = this.onSelect.bind(this);
+
+    // Basic function to wait until user stops typing to query ES.
+    let i = 0;
+    this.slowLoad = input => {
+      i += 1;
+      let mirror = i;
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          if (i === mirror) {
+            return resolve(this.getOptions(input));
+          } else {
+            return resolve({ options: [] });
+          }
+        }, 150);
+      });
+    };
   }
 
   onSelect ({value}) {
@@ -41,7 +58,7 @@ class Header extends React.PureComponent {
   getOptions (input) {
     return !input
       ? Promise.resolve({ options: [] })
-      : request(`${api}/api/v1/es_search/?keyword=${input}`)
+      : request(`${api}api/v1/es_search/?keyword=${input}`)
         .then(data => {
           const options = data.hits.map(o => {
             const d = o._source;
@@ -102,7 +119,10 @@ class Header extends React.PureComponent {
                   <Select.Async
                     placeholder='Search...'
                     onChange={this.onSelect}
-                    loadOptions={this.getOptions} />
+                    filterOptions={noFilter}
+                    autoload={false}
+                    cache={false}
+                    loadOptions={this.slowLoad} />
                 </div>
               </form>
             </div>
