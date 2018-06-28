@@ -76,7 +76,7 @@ class Header extends React.PureComponent {
 
   render () {
     return (
-      <div>
+      <div className='desktop__header'>
         {this.state.showBetaBanner && (
           <div className='beta-note'>
             <div className='inner'>
