@@ -14,14 +14,20 @@ import Dropdown from './dropdown';
 const regionArray = Object.keys(regions).map(k => regions[k]);
 const noFilter = options => options;
 
-function getUriForType (type, id) {
+function getUriForType (type, id, data) {
   switch (type) {
+    case 'region':
+      return '/regions/' + id;
+    case 'country':
+      return '/countries/' + id;
     case 'report':
       return '/reports/' + id;
     case 'event':
       return '/emergencies/' + id;
     case 'appeal':
-      return '/appeals/all?record=' + id;
+      return data.event_id ? '/emergencies/' + data.event_id : '/appeals/all?record=' + id;
+    default:
+      return '/uhoh';
   }
 }
 
@@ -62,7 +68,7 @@ class Header extends React.PureComponent {
         .then(data => {
           const options = data.hits.map(o => {
             const d = o._source;
-            const value = getUriForType(d.type, d.id);
+            const value = getUriForType(d.type, d.id, d);
             const date = d.date ? ` (${isoDate(d.date)})` : '';
             const label = `${u(d.type)}: ${d.name}${date}`;
             return {
