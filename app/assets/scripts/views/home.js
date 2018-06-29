@@ -11,10 +11,10 @@ class Home extends React.Component {
   render () {
     return (
       <App className='page--homepage'>
-        <Helmet>
-          <title>IFRC Go - Home</title>
-        </Helmet>
         <section className='inpage'>
+          <Helmet>
+            <title>IFRC Go - Home</title>
+          </Helmet>
           <header className='inpage__header'>
             <div className='inner'>
               <div className='inpage__headline'>
