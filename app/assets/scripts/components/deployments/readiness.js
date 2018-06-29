@@ -69,7 +69,7 @@ class Readiness extends React.Component {
         <div className='card__col'>
           <p className='card__label'>{n(numDeployed)} Deployed ERU's</p>
           {deployed.map(o => (
-            <p key={o.id}>{getEruType(o.type)} - <Link className='link--primary' to={`/countries/${o.deployed_to}`}>{o.deployed_to.name}</Link></p>
+            <p key={o.id}>{getEruType(o.type)} - <Link className='link--primary' to={`/countries/${o.deployed_to.id}`}>{o.deployed_to.name}</Link></p>
           ))}
         </div>
       </div>
