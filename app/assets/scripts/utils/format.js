@@ -6,6 +6,7 @@ import { orgTypes } from './field-report-constants';
 export const nope = '--';
 export const na = 'N/A';
 export const invalid = 'Invalid';
+export const noSummary = 'No summary available';
 
 // Ie. given 12345.99, return '12,346'
 export const commaSeparatedNumber = (x) => {

@@ -37,6 +37,7 @@
 
   .inpage__header {
     @include column(12/12);
+    float: none;
     margin-bottom: $global-spacing * 2;
     border-bottom: solid 1px rgba($base-color, 0.1);
     .inpage__header-col {

@@ -167,7 +167,9 @@ class EmergenciesTable extends SFPComponent {
 
         if (isNaN(this.props.country)) {
           const countries = get(rowData, 'countries', []).map(c => (
-            <Link className='link--primary' key={c.iso} to={`/countries/${c.id}`}>{c.name}</Link>
+            <React.Fragment key={c.iso}>
+              <Link className='link--primary' to={`/countries/${c.id}`}>{c.name}</Link>&nbsp;
+            </React.Fragment>
           ));
           row.countries = countries.length ? countries : nope;
         }

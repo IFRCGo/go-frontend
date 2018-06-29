@@ -31,7 +31,7 @@ class App extends React.Component {
 if (environment !== 'production') {
   App.propTypes = {
     className: T.string,
-    children: T.object
+    children: T.oneOfType([T.object, T.array])
   };
 }
 
