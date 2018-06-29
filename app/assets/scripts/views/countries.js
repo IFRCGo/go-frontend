@@ -250,6 +250,7 @@ class AdminArea extends SFPComponent {
     return (
       <div className='inpage__header-col'>
         <h3>Country Profile</h3>
+        <p>Source: FDRS | Reporting year(s): {Object.keys(years).sort().join(', ')}</p>
         <div className='content-list-group'>
           <ul className='content-list'>
             <li>Population<span className='content-highlight'>{bigN(population)}</span></li>
@@ -266,7 +267,6 @@ class AdminArea extends SFPComponent {
             <li>Trained in first aid<span className='content-highlight'>{n(get(data, 'KPI_TrainFA_Tot.value'))}</span></li>
           </ul>
         </div>
-        <p>Reporting year(s): {Object.keys(years).sort().join(', ')}</p>
       </div>
     );
   }

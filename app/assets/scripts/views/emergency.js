@@ -21,7 +21,8 @@ import {
   separateUppercaseWords as separate,
   nope,
   isoDate,
-  timestamp
+  timestamp,
+  noSummary
 } from '../utils/format';
 import {
   get,
@@ -91,20 +92,20 @@ class Emergency extends React.Component {
     return (
       <div className='inpage__header-col'>
         <h3>Emergency Overview</h3>
-        <p>Last Updated: {timestamp(report.updated_at)}</p>
+        <p>Source: <Link to={`/reports/${report.id}`}>Field Report</Link> | Last Updated: {timestamp(report.updated_at)}</p>
         <div className='content-list-group'>
           <ul className='content-list'>
-            <li>Affected<span className='content-highlight'>{get(report, 'num_affected', nope)}</span></li>
-            <li>Injured<span className='content-highlight'>{get(report, 'num_injured', nope)}</span></li>
-            <li>Dead<span className='content-highlight'>{get(report, 'num_dead', nope)}</span></li>
-            <li>Missing<span className='content-highlight'>{get(report, 'num_missing', nope)}</span></li>
-            <li>Displaced<span className='content-highlight'>{get(report, 'num_displaced', nope)}</span></li>
+            <li>Affected<span className='content-highlight'>{n(get(report, 'num_affected'))}</span></li>
+            <li>Injured<span className='content-highlight'>{n(get(report, 'num_injured'))}</span></li>
+            <li>Dead<span className='content-highlight'>{n(get(report, 'num_dead'))}</span></li>
+            <li>Missing<span className='content-highlight'>{n(get(report, 'num_missing'))}</span></li>
+            <li>Displaced<span className='content-highlight'>{n(get(report, 'num_displaced'))}</span></li>
           </ul>
           <ul className='content-list'>
-            <li>Assisted<span className='content-highlight'>{get(report, 'num_assisted', nope)}</span></li>
-            <li>Local staff<span className='content-highlight'>{get(report, 'num_localstaff', nope)}</span></li>
-            <li>Volunteers<span className='content-highlight'>{get(report, 'num_volunteers', nope)}</span></li>
-            <li>Expat delegates<span className='content-highlight'>{get(report, 'num_expats_delegates', nope)}</span></li>
+            <li>Assisted<span className='content-highlight'>{n(get(report, 'num_assisted'))}</span></li>
+            <li>Local staff<span className='content-highlight'>{n(get(report, 'num_localstaff'))}</span></li>
+            <li>Volunteers<span className='content-highlight'>{n(get(report, 'num_volunteers'))}</span></li>
+            <li>Expat delegates<span className='content-highlight'>{n(get(report, 'num_expats_delegates'))}</span></li>
           </ul>
         </div>
       </div>
@@ -177,19 +178,25 @@ class Emergency extends React.Component {
               <tr>
                 <th>Date</th>
                 <th>Name</th>
-                <th>Disaster Type</th>
-                <th>Region</th>
-                <th>Country</th>
+                <th>Countries</th>
+                <th>Regions</th>
               </tr>
             </thead>
             <tbody>
               {data.field_reports.map(o => (
                 <tr key={o.id}>
                   <td>{isoDate(o.created_at)}</td>
-                  <td><Link to={`/reports/${o.id}`} className='link--primary' title='View Field Report'>{o.summary}</Link></td>
-                  <td>--</td>
-                  <td><a href=''className='link--primary'>--</a></td>
-                  <td><a href=''className='link--primary'>--</a></td>
+                  <td><Link to={`/reports/${o.id}`} className='link--primary' title='View Field Report'>{o.summary || noSummary}</Link></td>
+                  <td>
+                    {Array.isArray(o.countries) ? o.countries.map(c => (
+                      <Link to={`/countries/${c.id}`} key={c.id} className='link--primary'>{c.name} </Link>
+                    )) : nope}
+                  </td>
+                  <td>
+                    {Array.isArray(o.regions) ? o.regions.map(r => (
+                      <Link to={`/regions/${r.id}`} key={r.id} className='link--primary'>{r.name} </Link>
+                    )) : nope}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -329,7 +336,12 @@ class Emergency extends React.Component {
     } = this.props.event;
 
     if (!fetched || error) return null;
-
+    const report = mostRecentReport(get(this.props, 'event.data.field_reports')) || {};
+    const summary = data.summary || report.description || nope;
+    const source = data.summary ? 'Emergency'
+      : report.description ? <Link to={`/reports/${report.id}`}>Field Report</Link> : null;
+    const contacts = Array.isArray(data.contacts) && data.contacts.length ? data.contacts
+      : Array.isArray(report.contacts) && report.contacts.length ? report.contacts : null;
     return (
       <section className='inpage'>
         <Helmet>
@@ -373,7 +385,8 @@ class Emergency extends React.Component {
                 id='overview'
                 title='Situational Overview'
                 wrapperClass='situational-overview' >
-                {data.summary || nope}
+                <p>{summary}</p>
+                {source ? <p>Source: {source}</p> : null}
               </Fold>
 
               {this.renderAdditionalGraphics()}
@@ -386,7 +399,7 @@ class Emergency extends React.Component {
                 id='contacts'
                 title='Contacts'
                 wrapperClass='contacts' >
-                {data.contacts && data.contacts.length ? (
+                {contacts && contacts.length ? (
                   <table className='table'>
                     <thead className='visually-hidden'>
                       <tr>
@@ -397,7 +410,7 @@ class Emergency extends React.Component {
                       </tr>
                     </thead>
                     <tbody>
-                      {data.contacts.map(o => (
+                      {contacts.map(o => (
                         <tr key={o.id}>
                           <td>{o.name}</td>
                           <td>{o.title}</td>
