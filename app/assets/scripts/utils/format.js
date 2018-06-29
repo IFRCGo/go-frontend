@@ -27,7 +27,9 @@ export function round (value, decimals = 2) {
 }
 
 export function shortenLargeNumber (value, decimals = 2) {
-  if (value / 1e9 >= 1) {
+  if (value / 1e12 >= 1) {
+    value = round(value / 1e12, decimals) + 'T';
+  } else if (value / 1e9 >= 1) {
     value = round(value / 1e9, decimals) + 'B';
   } else if (value / 1e6 >= 1) {
     value = round(value / 1e6, decimals) + 'M';
@@ -36,7 +38,9 @@ export function shortenLargeNumber (value, decimals = 2) {
 }
 
 export function commaSeparatedLargeNumber (value) {
-  if (value / 1e9 >= 1) {
+  if (value / 1e12 >= 1) {
+    return round(value / 1e12, 2) + 'T';
+  } else if (value / 1e9 >= 1) {
     return round(value / 1e9, 2) + 'B';
   } else if (value / 1e6 >= 1) {
     return round(value / 1e6, 2) + 'M';
