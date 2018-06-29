@@ -408,7 +408,7 @@ class Deployments extends SFPComponent {
         endDate: DateTime.fromISO(o.end_date).toISODate(),
         name: o.name,
         role: get(o, 'role', nope),
-        country: o[what].country ? <Link to={`/countries/${o[what].country}`} className='link--primary' title='View Country'>{o[what].country.name}</Link> : nope,
+        country: o[what].country ? <Link to={`/countries/${o[what].country.id}`} className='link--primary' title='View Country'>{o[what].country.name}</Link> : nope,
         emer: o[what].event ? <Link to={`/emergencies/${o[what].event.id}`} className='link--primary' title='View Emergency'>{o[what].event.name}</Link> : nope,
         society: get(o, 'society_deployed_from', nope)
       }));
