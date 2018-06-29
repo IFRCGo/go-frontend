@@ -256,13 +256,13 @@ class Deployments extends SFPComponent {
       const headings = [
         {
           id: 'name',
-          label: 'Name'
+          label: 'Owner'
         },
-        { id: 'country', label: 'Country' },
-        { id: 'type', label: 'Type' },
-        { id: 'emer', label: 'Emergency' },
+        { id: 'type', label: 'ERU Type' },
         { id: 'personnel', label: 'Personnel Units' },
-        { id: 'equipment', label: 'Equipment Units' }
+        { id: 'equipment', label: 'Equipment Units' },
+        { id: 'country', label: 'Country Deployed to' },
+        { id: 'emer', label: 'Emergency' }
       ];
 
       const rows = data.results.map(o => {
@@ -307,7 +307,7 @@ class Deployments extends SFPComponent {
     if (fetching) {
       return (
         <div className='inner'>
-          <Fold title='HeOps'>
+          <Fold title='HEOps'>
             <BlockLoading/>
           </Fold>
         </div>
@@ -329,7 +329,7 @@ class Deployments extends SFPComponent {
           id: 'name',
           label: <SortHeader id='name' title='Name' sort={this.state.heop.sort} onClick={this.handleSortChange.bind(this, 'heop', 'name')} />
         },
-        { id: 'country', label: 'Country' },
+        { id: 'country', label: 'Country Deployed to' },
         { id: 'emer', label: 'Emergency' }
       ];
 
@@ -338,7 +338,7 @@ class Deployments extends SFPComponent {
         startDate: DateTime.fromISO(o.start_date).toISODate(),
         endDate: DateTime.fromISO(o.end_date).toISODate() || nope,
         name: o.person || na,
-        country: <Link to={`/countries/${o.country}`} className='link--primary' title='View Country'>{o.country.name}</Link>,
+        country: <Link to={`/countries/${o.country.id}`} className='link--primary' title='View Country'>{o.country.name}</Link>,
         emer: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope
       }));
 
@@ -397,9 +397,9 @@ class Deployments extends SFPComponent {
         { id: 'endDate', label: 'End Date' },
         { id: 'name', label: 'Name' },
         { id: 'role', label: 'Role' },
-        { id: 'country', label: 'Country' },
+        { id: 'country', label: 'Country Deployed to' },
         { id: 'emer', label: 'Emergency' },
-        { id: 'society', label: 'National Society' }
+        { id: 'society', label: 'Parent National Society' }
       ];
 
       const rows = data.results.map(o => ({
