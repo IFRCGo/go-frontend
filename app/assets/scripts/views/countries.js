@@ -282,7 +282,6 @@ class AdminArea extends SFPComponent {
 
     const bbox = getBoundingBox(data.iso);
     const mapContainerClass = 'country__map';
-    const activeOperations = get(this.props.appealStats, 'data.results.length', false);
 
     const { partnerDeployments } = this.props;
     const bulletTables = [
@@ -317,6 +316,7 @@ class AdminArea extends SFPComponent {
                   <ul>
                     <li><a href='#key-figures' title='Go to Key Figures section'>Key Figures</a></li>
                     <li><a href='#operations-map' title='Go to Operations section'>Operations</a></li>
+                    <li><a href='#emergencies' title='Go to Emergencies section'>Emergencies</a></li>
                     <li><a href='#graphics' title='Go to Graphics section'>Graphics</a></li>
                     <li><a href='#links' title='Go to Links section'>Links</a></li>
                     <li><a href='#contacts' title='Go to Contacts section'>Contacts</a></li>
@@ -329,7 +329,6 @@ class AdminArea extends SFPComponent {
             <div className='inner'>
               <KeyFigures data={this.props.keyFigures} />
               <Fold title='Statistics' headerClass='visually-hidden' id='operations'>
-                <h2 className='fold__title'>{activeOperations === null || isNaN(activeOperations) ? null : activeOperations + ' Active Operations'}</h2>
                 <div className='operations__container'>
                   <BulletTable tables={bulletTables} title='PNS Activities' />
                   <div className={mapContainerClass}>
@@ -339,6 +338,7 @@ class AdminArea extends SFPComponent {
                 {this.renderAppeals()}
               </Fold>
               <EmergenciesTable
+                id={'emergencies'}
                 title='Recent Emergencies'
                 limit={5}
                 country={this.props.match.params.id}
