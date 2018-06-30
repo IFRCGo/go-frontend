@@ -67,7 +67,7 @@ class Table extends React.Component {
     }
 
     if (query.record && !isNaN(query.record)) {
-      q.record = query.record;
+      q.id = query.record;
     }
 
     return qs.stringify(q);
