@@ -58,10 +58,22 @@ class AppealsTable extends SFPComponent {
   }
 
   componentDidMount () {
-    this.requestResults();
+    this.requestResults(this.props);
   }
 
-  requestResults () {
+  componentWillReceiveProps (newProps) {
+    let shouldMakeNewRequest = false;
+    ['limit', 'country', 'region', 'atype', 'record'].forEach(prop => {
+      if (newProps[prop] !== this.props[prop]) {
+        shouldMakeNewRequest = true;
+      }
+    });
+    if (shouldMakeNewRequest) {
+      this.requestResults(newProps);
+    }
+  }
+
+  requestResults (props) {
     let state = this.state.appeals;
     let qs = { limit: state.limit };
     if (state.sort.field) {
@@ -83,30 +95,30 @@ class AppealsTable extends SFPComponent {
       qs.atype = state.filters.atype;
     }
 
-    if (this.props.showActive) {
+    if (props.showActive) {
       qs.end_date__gt = DateTime.utc().toISO();
     }
 
-    if (!isNaN(this.props.country)) {
-      qs.country = this.props.country;
-    } else if (!isNaN(this.props.region)) {
-      qs.region = this.props.region;
+    if (!isNaN(props.country)) {
+      qs.country = props.country;
+    } else if (!isNaN(props.region)) {
+      qs.region = props.region;
     }
 
-    if (this.props.atype) {
-      qs.atype = this.props.atype === 'appeal' ? '1'
-        : this.props.atype === 'dref' ? '0' : null;
+    if (props.atype) {
+      qs.atype = props.atype === 'appeal' ? '1'
+        : props.atype === 'dref' ? '0' : null;
     }
 
-    if (!isNaN(this.props.record)) {
-      qs.id = this.props.record;
+    if (!isNaN(props.record)) {
+      qs.id = props.record;
     }
 
-    this.props._getAppeals(this.state.appeals.page, qs, this.props.action);
+    props._getAppeals(this.state.appeals.page, qs, props.action);
   }
 
   updateData (what) {
-    this.requestResults();
+    this.requestResults(this.props);
   }
 
   render () {

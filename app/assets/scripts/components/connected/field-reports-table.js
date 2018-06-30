@@ -41,10 +41,22 @@ class FieldReportsTable extends SFPComponent {
   }
 
   componentDidMount () {
-    this.requestResults();
+    this.requestResults(this.props);
   }
 
-  requestResults () {
+  componentWillReceiveProps (newProps) {
+    let shouldMakeNewRequest = false;
+    ['limit', 'country', 'region'].forEach(prop => {
+      if (newProps[prop] !== this.props[prop]) {
+        shouldMakeNewRequest = true;
+      }
+    });
+    if (shouldMakeNewRequest) {
+      this.requestResults(newProps);
+    }
+  }
+
+  requestResults (props) {
     let state = this.state.fieldReports;
     let qs = { limit: state.limit };
     if (state.sort.field) {
@@ -55,7 +67,7 @@ class FieldReportsTable extends SFPComponent {
 
     if (state.filters.date !== 'all') {
       qs.created_at__gte = datesAgo[state.filters.date]();
-    } else if (this.props.showRecent) {
+    } else if (props.showRecent) {
       qs.created_at__gte = recentInterval;
     }
 
@@ -63,17 +75,17 @@ class FieldReportsTable extends SFPComponent {
       qs.dtype = state.filters.dtype;
     }
 
-    if (!isNaN(this.props.country)) {
-      qs.countries__in = this.props.country;
-    } else if (!isNaN(this.props.region)) {
-      qs.regions__in = this.props.region;
+    if (!isNaN(props.country)) {
+      qs.countries__in = props.country;
+    } else if (!isNaN(props.region)) {
+      qs.regions__in = props.region;
     }
 
-    this.props._getFieldReportsList(this.state.fieldReports.page, qs);
+    props._getFieldReportsList(this.state.fieldReports.page, qs);
   }
 
   updateData (what) {
-    this.requestResults();
+    this.requestResults(this.props);
   }
 
   render () {

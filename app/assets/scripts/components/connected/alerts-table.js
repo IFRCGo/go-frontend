@@ -58,10 +58,16 @@ class AlertsTable extends SFPComponent {
   }
 
   componentDidMount () {
-    this.requestResults();
+    this.requestResults(this.props);
   }
 
-  requestResults () {
+  componentWillReceiveProps (newProps) {
+    if (newProps.limit !== this.props.limit) {
+      this.requestResults(newProps);
+    }
+  }
+
+  requestResults (props) {
     let state = this.state.alerts;
     let qs = { limit: state.limit };
     if (state.sort.field) {
@@ -69,14 +75,14 @@ class AlertsTable extends SFPComponent {
     }
     if (state.filters.date !== 'all') {
       qs.created_at__gte = datesAgo[state.filters.date]();
-    } else if (this.props.showRecent) {
+    } else if (props.showRecent) {
       qs.created_at__gte = recentInterval;
     }
-    this.props._getSurgeAlerts(this.state.alerts.page, qs);
+    props._getSurgeAlerts(this.state.alerts.page, qs);
   }
 
   updateData (what) {
-    this.requestResults();
+    this.requestResults(this.props);
   }
 
   render () {
