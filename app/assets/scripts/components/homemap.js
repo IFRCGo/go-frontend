@@ -175,10 +175,10 @@ class Homemap extends React.Component {
       property: 'atype',
       type: 'categorical',
       stops: [
-        ['0', '#F39C12'],
-        ['1', '#C22A26'],
-        ['2', '#CCCCCC'],
-        ['mixed', '#dddddd']
+        ['DREF', '#F39C12'],
+        ['Appeal', '#C22A26'],
+        ['Movement', '#CCCCCC'],
+        ['Mixed', '#000000']
       ]
     };
     const cradius = this.getCircleRadiusPaintProp(geoJSON, scaleBy);
@@ -256,14 +256,17 @@ class Homemap extends React.Component {
 
   showDeploymentsPopover (theMap, feature) {
     const id = get(feature, 'properties.OBJECTID').toString();
-    const deployments = get(this.props, 'deployments.data.areas', []).find(d => d.id === id);
-    if (!deployments) return;
+    let deployments = get(this.props, 'deployments.data.areas', []).find(d => d.id === id);
+    if (!deployments && !Array.isArray(deployments.deployents)) return;
+    deployments = deployments.deployments;
 
+    const districtName = get(deployments, '0.district.name');
+    const numDeployments = deployments.length;
+    const title = `${districtName} (${numDeployments} Deployment${numDeployments === 1 ? '' : 's'})`;
     let popoverContent = document.createElement('div');
-    const numDeployments = deployments.deployments.length;
     render(<OperationsPopover
-      title={`${numDeployments} Partner Deployment${numDeployments === 1 ? '' : 's'}`}
-      deployments={deployments.deployments}
+      title={title}
+      deployments={deployments}
       onCloseClick={this.onPopoverCloseClick.bind(this)} />, popoverContent);
 
     if (this.popover != null) {
@@ -399,13 +402,14 @@ export default withRouter(Homemap);
 
 class OperationsPopover extends React.Component {
   render () {
-    const { pageId, navigate, title, onCloseClick } = this.props;
+    const { pageId, navigate, title, onCloseClick, operations, deployments } = this.props;
+    console.log(deployments);
     return (
       <article className='popover'>
         <div className='popover__contents'>
           <header className='popover__header'>
             <div className='popover__headline'>
-              <a className='link--primary' onClick={e => { e.preventDefault(); navigate(`/countries/${pageId}`); }}>{title}</a>
+              {deployments ? title : <a className='link--primary' onClick={e => { e.preventDefault(); navigate(`/countries/${pageId}`); }}>{title}</a>}
             </div>
             <div className='popover__actions actions'>
               <ul className='actions__menu'>
@@ -416,7 +420,7 @@ class OperationsPopover extends React.Component {
             </div>
           </header>
           <div className='popover__body'>
-            {Array.isArray(this.props.operations) ? this.props.operations.map(d => (
+            {Array.isArray(operations) ? operations.map(d => (
               <React.Fragment key={d.id}>
                 <h3 className='popover__subtitle'>
                   {d.event ? (
@@ -430,10 +434,15 @@ class OperationsPopover extends React.Component {
                 </ul>
               </React.Fragment>
             )) : null}
-            {Array.isArray(this.props.deployments) ? this.props.deployments.map(d => (
-              <ul>
-                <li>{d.name}, {d.role} ({DateTime.fromISO(d.start_date).toISODate()} - {DateTime.fromISO(d.end_date).toISODate()})</li>
-              </ul>
+            {Array.isArray(deployments) ? deployments.map((d, i) => (
+              <React.Fragment key={i}>
+                <h3 className='popover__subtitle'>{get(d.parent, 'society_name', d.parent.name)}</h3>
+                <ul className='popover__details'>
+                  <li>Activity: {d.activity.activity}</li>
+                  <li>Start: {DateTime.fromISO(d.start).toISODate()}</li>
+                  <li>End: {DateTime.fromISO(d.end).toISODate()}</li>
+                </ul>
+              </React.Fragment>
             )) : null}
           </div>
         </div>
