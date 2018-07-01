@@ -18,7 +18,9 @@
   position: relative;
   z-index: 1;
   padding: $global-spacing;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  max-height: 225px; // Popovers can scroll
 
   > *:last-child {
     margin-bottom: 0;
@@ -144,6 +146,11 @@ a.popover__contents {
   > *:last-child {
     margin-right: -$global-spacing / 4;
   }
+}
+
+.popover__subtitle {
+  font-size: 0.875rem;
+  line-height: 1rem;
 }
 
 /**

@@ -38,7 +38,7 @@ class Homemap extends React.Component {
     };
     this.configureMap = this.configureMap.bind(this);
     this.onFieldChange = this.onFieldChange.bind(this);
-    this.navigateToEmergency = this.navigateToEmergency.bind(this);
+    this.navigate = this.navigate.bind(this);
     this.showDeploymentsPopover = this.showDeploymentsPopover.bind(this);
   }
 
@@ -175,9 +175,10 @@ class Homemap extends React.Component {
       property: 'atype',
       type: 'categorical',
       stops: [
-        [0, '#F39C12'],
-        [1, '#C22A26'],
-        [2, '#CCCCCC']
+        ['0', '#F39C12'],
+        ['1', '#C22A26'],
+        ['2', '#CCCCCC'],
+        ['mixed', '#dddddd']
       ]
     };
     const cradius = this.getCircleRadiusPaintProp(geoJSON, scaleBy);
@@ -218,10 +219,8 @@ class Homemap extends React.Component {
     return filters;
   }
 
-  navigateToEmergency (pageId) {
-    if (pageId) {
-      this.props.history.push(`/emergencies/${pageId}`);
-    }
+  navigate (path) {
+    this.props.history.push(path);
   }
 
   onPopoverCloseClick () {
@@ -232,14 +231,15 @@ class Homemap extends React.Component {
 
   showOperationsPopover (theMap, feature) {
     let popoverContent = document.createElement('div');
+    const { properties, geometry } = feature;
+    const operations = JSON.parse(properties.appeals);
+    const title = `${properties.name}`;
 
-    render(<MapPopover
-      title={feature.properties.name}
-      onTitleClick={this.navigateToEmergency}
-      pageId={feature.properties.pageId}
-      numBeneficiaries={feature.properties.numBeneficiaries}
-      amountRequested={feature.properties.amountRequested}
-      amountFunded={feature.properties.amountFunded}
+    render(<OperationsPopover
+      title={title}
+      navigate={this.navigate}
+      pageId={properties.id}
+      operations={operations}
       onCloseClick={this.onPopoverCloseClick.bind(this)} />, popoverContent);
 
     // Populate the popup and set its coordinates
@@ -249,7 +249,7 @@ class Homemap extends React.Component {
     }
 
     this.popover = new mapboxgl.Popup({closeButton: false})
-      .setLngLat(feature.geometry.coordinates)
+      .setLngLat(geometry.coordinates)
       .setDOMContent(popoverContent.children[0])
       .addTo(theMap);
   }
@@ -261,7 +261,7 @@ class Homemap extends React.Component {
 
     let popoverContent = document.createElement('div');
     const numDeployments = deployments.deployments.length;
-    render(<MapPopover
+    render(<OperationsPopover
       title={`${numDeployments} Partner Deployment${numDeployments === 1 ? '' : 's'}`}
       deployments={deployments.deployments}
       onCloseClick={this.onPopoverCloseClick.bind(this)} />, popoverContent);
@@ -359,6 +359,8 @@ class Homemap extends React.Component {
                   <dd>DREF</dd>
                   <dt className='color color--grey'>Grey</dt>
                   <dd>Movement Response</dd>
+                  <dt className='color color'>Grey</dt>
+                  <dd>Mixed</dd>
                 </dl>
               </div>
             </figcaption>
@@ -395,40 +397,39 @@ if (environment !== 'production') {
 
 export default withRouter(Homemap);
 
-class MapPopover extends React.Component {
+class OperationsPopover extends React.Component {
   render () {
+    const { pageId, navigate, title, onCloseClick } = this.props;
     return (
       <article className='popover'>
         <div className='popover__contents'>
           <header className='popover__header'>
             <div className='popover__headline'>
-              {this.props.pageId ? (
-                <a className='link--primary' onClick={() => this.props.onTitleClick(this.props.pageId)}>{this.props.title}</a>
-              ) : (
-                <p>{this.props.title}</p>
-              )}
+              <a className='link--primary' onClick={e => { e.preventDefault(); navigate(`/countries/${pageId}`); }}>{title}</a>
             </div>
             <div className='popover__actions actions'>
               <ul className='actions__menu'>
-                <li><button type='button' className='actions__menu-item poa-xmark' title='Close popover' onClick={this.props.onCloseClick}><span>Dismiss</span></button></li>
+                <li>
+                  <button type='button' className='actions__menu-item poa-xmark' title='Close popover' onClick={onCloseClick}><span>Dismiss</span></button>
+                </li>
               </ul>
             </div>
           </header>
           <div className='popover__body'>
-            <dl className='popover__details'>
-              {typeof this.props.numBeneficiaries === 'undefined' ? null : <React.Fragment>
-                <dd>{n(this.props.numBeneficiaries)}</dd>
-                <dt>People Affected</dt>
-              </React.Fragment>}
-              {typeof this.props.amountRequested === 'undefined' ? null : <React.Fragment>
-                <dd>{n(this.props.amountRequested)}</dd>
-                <dt>Amount Requested</dt>
-              </React.Fragment>}
-              {typeof this.props.amountFunded === 'undefined' ? null : <React.Fragment>
-                <dd>{n(this.props.amountFunded)}</dd>
-                <dt>Amount Funded</dt>
-              </React.Fragment>}
-            </dl>
+            {Array.isArray(this.props.operations) ? this.props.operations.map(d => (
+              <React.Fragment key={d.id}>
+                <h3 className='popover__subtitle'>
+                  {d.event ? (
+                    <a className='link--primary' onClick={e => { e.preventDefault(); navigate(`/emergencies/${d.event}`); }}>{d.name}</a>
+                  ) : d.name}
+                </h3>
+                <ul className='popover__details'>
+                  <li>{n(d.num_beneficiaries)} People Affected</li>
+                  <li>{n(d.amount_requested)} Amount Requested (CHF)</li>
+                  <li>{n(d.amount_funded)} Amount Funded (CHF)</li>
+                </ul>
+              </React.Fragment>
+            )) : null}
             {Array.isArray(this.props.deployments) ? this.props.deployments.map(d => (
               <ul>
                 <li>{d.name}, {d.role} ({DateTime.fromISO(d.start_date).toISODate()} - {DateTime.fromISO(d.end_date).toISODate()})</li>
@@ -442,14 +443,12 @@ class MapPopover extends React.Component {
 }
 
 if (environment !== 'production') {
-  MapPopover.propTypes = {
+  OperationsPopover.propTypes = {
     onCloseClick: T.func,
     title: T.string,
     pageId: T.number,
-    numBeneficiaries: T.number,
-    amountRequested: T.number,
-    amountFunded: T.number,
+    operations: T.array,
     deployments: T.array,
-    onTitleClick: T.func
+    navigate: T.func
   };
 }

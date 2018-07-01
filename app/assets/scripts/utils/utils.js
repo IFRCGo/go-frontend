@@ -21,6 +21,14 @@ export function get (object, path, defaultValue) {
   }
 }
 
+export function unique (array) {
+  let obj = {};
+  for (let i = 0; i < array.length; ++i) {
+    obj[array[i]] = true;
+  }
+  return Object.keys(array);
+}
+
 export function isLoggedIn (userState) {
   return !!get(userState, 'data.token');
 }
@@ -48,14 +56,15 @@ export function aggregateCountryAppeals (appeals) {
     features: Object.keys(grouped).map(countryIso => {
       const countryAppeals = grouped[countryIso];
       const stats = aggregateAppealStats(countryAppeals);
+      const appealTypes = unique(countryAppeals.map(a => a.atype));
       return {
         type: 'Feature',
         properties: Object.assign(stats, {
           id: countryAppeals[0].country.id,
-          name: countryAppeals.map(o => get(o, 'event.name', o.name)).join(', '),
+          name: countryAppeals[0].country.name,
+          appeals: countryAppeals,
           // TODO this should have some way of showing multiple types.
-          atype: countryAppeals[0].atype,
-          dtype: countryAppeals[0].dtype
+          atype: appealTypes.length === 1 ? appealTypes[0].toString() : 'mixed'
         }),
         geometry: {
           type: 'Point',
