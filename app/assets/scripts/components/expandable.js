@@ -20,7 +20,7 @@ class Expandable extends React.Component {
     const { text, limit } = this.props;
     const { expanded } = this.state;
     const out = expanded ? text
-      : text.length > limit ? text.slice(0, limit) : text;
+      : text && text.length > limit ? text.slice(0, limit) : text;
     const link = expanded ? 'Show less' : 'Show more';
     return <React.Fragment>{out}{this.state.expanded ? null : '...'} <a href='#' onClick={this.toggle}>{link}</a></React.Fragment>;
   }
