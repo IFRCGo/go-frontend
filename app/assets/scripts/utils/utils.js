@@ -72,7 +72,6 @@ export function aggregateCountryAppeals (appeals) {
           id: countryAppeals[0].country.id,
           name: countryAppeals[0].country.name,
           appeals: countryAppeals,
-          // TODO this should have some way of showing multiple types.
           atype: appealTypes.length === 1 ? getAppealString(appealTypes[0]) : 'Mixed'
         }),
         geometry: {
