@@ -133,9 +133,9 @@ export function convertStateToPayload (originalState) {
   } = originalState;
 
   // Process properties.
-  if (countries.length) { state.countries = countries.map(o => ({pk: o.value})); }
-  if (disasterType) { state.dtype = {pk: disasterType}; }
-  if (event && event.value) { state.event = {pk: event.value}; }
+  if (countries.length) { state.countries = countries.map(o => +o.value); }
+  if (disasterType) { state.dtype = +disasterType; }
+  if (event && event.value) { state.event = +event.value; }
 
   const directMapping = [
     // [source, destination]
@@ -143,17 +143,18 @@ export function convertStateToPayload (originalState) {
     ['description', 'description'],
     ['status', 'status'],
     ['bulletin', 'bulletin'],
-    ['numAssistedRedCross', 'num_assisted'],
-    ['numAssistedGov', 'gov_num_assisted'],
-    ['numLocalStaff', 'num_localstaff'],
-    ['numVolunteers', 'num_volunteers'],
-    ['numExpats', 'num_expats_delegates'],
-    ['actionsOthers', 'actions_others']
+    ['numAssistedRedCross', 'num_assisted', Number],
+    ['numAssistedGov', 'gov_num_assisted', Number],
+    ['numLocalStaff', 'num_localstaff', Number],
+    ['numVolunteers', 'num_volunteers', Number],
+    ['numExpats', 'num_expats_delegates', Number],
+    ['actionsOthers', 'actions_others'],
+    ['visibility', 'visibility', Number]
   ];
 
-  directMapping.forEach(([src, dest]) => {
+  directMapping.forEach(([src, dest, fn]) => {
     if (_undefined(originalState[src])) { return; }
-    state[dest] = originalState[src];
+    state[dest] = fn ? fn(originalState[src]) : originalState[src];
   });
 
   // Boolean values
@@ -181,11 +182,21 @@ export function convertStateToPayload (originalState) {
     });
   });
 
+  // Sources.
+  // Sources are checkboxes with a specification, ie the name of the source,
+  // and the type, ie "Government"
+  state.sources = [];
+  _get(originalState, 'sources', []).forEach(source => {
+    if (source.checked) {
+      state.sources.push({ stype: source.name, spec: source.specification });
+    }
+  });
+
   // Actions.
   // In the payload all the action are in the same array.
   // Convert the state to the correct structure:
   // [
-  //   { organization: "NTLS", actions: [ { id: 1 }, { id: 2 } ], summary: "foo bar baz" },
+  //   { organization: "NTLS", actions: [ 1, 2 ], summary: "foo bar baz" },
   //   { organization: "PNS" ... }
   // ]
   const actionsMapping = [
@@ -199,9 +210,7 @@ export function convertStateToPayload (originalState) {
     return {
       organization: orgName,
       summary: originalState[src].description || '',
-      actions: originalState[src].options.reduce((orgActions, o) => {
-        return o.checked ? orgActions.concat({id: o.value}) : orgActions;
-      }, [])
+      actions: originalState[src].options.filter(o => o.checked).map(o => o.value)
     };
   }).filter(o => o.actions.length);
 
@@ -263,7 +272,7 @@ export function convertStateToPayload (originalState) {
 export function getEventsFromApi (input) {
   return !input
     ? Promise.resolve({ options: [] })
-    : request(`${api}/api/v1/es_search/?type=event&keyword=${input}`)
+    : request(`${api}api/v1/es_search/?type=event&keyword=${input}`)
       .then(data => ({
         options: data.hits.map(o => ({
           value: o._source.id,
@@ -280,7 +289,7 @@ export function getInitialDataState () {
     // Will need to be converted.
     countries: [],
     status: undefined,
-    visibility: 'membership',
+    visibility: '1',
     disasterType: undefined,
     event: undefined,
     sources: formData.sources.map(o => ({
@@ -513,13 +522,3 @@ export function convertFieldReportToState (fieldReport) {
 
   return state;
 }
-
-/*
-    // Missing mappings;:
-    visibility: 'membership',
-    sources: formData.sources.map(o => ({
-      value: o.value,
-      checked: false,
-      specification: undefined
-    })),
- */

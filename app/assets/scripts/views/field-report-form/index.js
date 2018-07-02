@@ -152,7 +152,7 @@ class FieldReportForm extends React.Component {
         const payload = convertStateToPayload(this.state.data);
         const userId = _get(this.props.user, 'data.id');
         if (userId) {
-          payload.user = {pk: userId};
+          payload.user = userId;
         } else {
           console.log('Could not read user ID from state');
         }
