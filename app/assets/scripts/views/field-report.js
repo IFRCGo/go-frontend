@@ -78,8 +78,25 @@ class FieldReport extends React.Component {
     return (
       <DisplaySection title={`Actions taken by ${orgDisplayName}`}>
         <ul className='actions-list'>
-          {actions.actions.map((d, i) => <li key={`d.id-${i}`}>{d.name}</li>)}
+          {actions.actions.map((d, i) => <li key={`action-${i}`}>{d}</li>)}
         </ul>
+      </DisplaySection>
+    );
+  }
+
+  renderSources (data) {
+    const sources = get(data, 'sources', []);
+    if (!sources.length) {
+      return null;
+    }
+    return (
+      <DisplaySection title='Sources'>
+        {sources.map((d, i) => (
+          <div className='form__group' key={`${d.id} + ${i}`}>
+            <p className='form__label'>{d.stype}</p>
+            <p>{d.spec}</p>
+          </div>
+        ))}
       </DisplaySection>
     );
   }
@@ -179,6 +196,7 @@ class FieldReport extends React.Component {
                 {this.renderActionsTaken(data, 'PNS', 'PNS Red Cross')}
                 {this.renderActionsTaken(data, 'FDRN', 'Federation Red Cross')}
                 <DisplaySection title='Actions taken by others' inner={get(data, 'action_others', false)} />
+                {this.renderSources(data)}
                 {this.renderContacts(data)}
               </div>
             </div>
