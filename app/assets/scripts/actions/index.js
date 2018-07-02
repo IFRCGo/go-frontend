@@ -57,7 +57,7 @@ export function getFieldReportsByUser (userId) {
 
 export const CREATE_FIELD_REPORT = 'CREATE_FIELD_REPORT';
 export function createFieldReport (payload) {
-  return postJSON('api/v2/field_report/', CREATE_FIELD_REPORT, payload, withToken());
+  return postJSON('api/v2/create_field_report/', CREATE_FIELD_REPORT, payload, withToken());
 }
 
 export const UPDATE_FIELD_REPORT = 'UPDATE_FIELD_REPORT';
