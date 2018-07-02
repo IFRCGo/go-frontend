@@ -51,10 +51,22 @@ class EmergenciesTable extends SFPComponent {
   }
 
   componentDidMount () {
-    this.requestResults();
+    this.requestResults(this.props);
   }
 
-  requestResults () {
+  componentWillReceiveProps (newProps) {
+    let shouldMakeNewRequest = false;
+    ['limit', 'country', 'region'].forEach(prop => {
+      if (newProps[prop] !== this.props[prop]) {
+        shouldMakeNewRequest = true;
+      }
+    });
+    if (shouldMakeNewRequest) {
+      this.requestResults(newProps);
+    }
+  }
+
+  requestResults (props) {
     let qs = { limit: this.state.emerg.limit };
     let state = this.state.emerg;
     if (state.sort.field) {
@@ -65,7 +77,7 @@ class EmergenciesTable extends SFPComponent {
 
     if (state.filters.date !== 'all') {
       qs.disaster_start_date__gte = datesAgo[state.filters.date]();
-    } else if (this.props.showRecent) {
+    } else if (props.showRecent) {
       qs.disaster_start_date__gte = recentInterval;
     }
 
@@ -73,17 +85,17 @@ class EmergenciesTable extends SFPComponent {
       qs.dtype = state.filters.dtype;
     }
 
-    if (!isNaN(this.props.country)) {
-      qs.countries__in = this.props.country;
-    } else if (!isNaN(this.props.region)) {
-      qs.regions__in = this.props.region;
+    if (!isNaN(props.country)) {
+      qs.countries__in = props.country;
+    } else if (!isNaN(props.region)) {
+      qs.regions__in = props.region;
     }
 
-    this.props._getEmergenciesList(this.state.emerg.page, qs);
+    props._getEmergenciesList(this.state.emerg.page, qs);
   }
 
   updateData (what) {
-    this.requestResults();
+    this.requestResults(this.props);
   }
 
   render () {

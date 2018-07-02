@@ -67,7 +67,7 @@ class Table extends React.Component {
     }
 
     if (query.record && !isNaN(query.record)) {
-      q.record = query.record;
+      q.id = query.record;
     }
 
     return qs.stringify(q);
@@ -115,7 +115,8 @@ class Table extends React.Component {
         if (props.atype) {
           noun = props.atype === 'dref' ? 'DREFs' : 'Appeals';
         }
-        return <AppealsTable title={`All ${titleArea}${noun}`} {...props} />;
+        const title = props.hasOwnProperty('record') ? 'Operation without Emergency Page' : `All ${titleArea}${noun}`;
+        return <AppealsTable title={title} {...props} />;
       case 'alert':
         return <AlertsTable title={`All Surge Alerts`} {...props} />;
     }

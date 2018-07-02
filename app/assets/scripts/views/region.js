@@ -53,41 +53,17 @@ import {
 import { SFPComponent } from '../utils/extendables';
 
 class AdminArea extends SFPComponent {
-  // Methods form SFPComponent:
-  // handlePageChange (what, page)
-  // handleFilterChange (what, field, value)
-  // handleSortChange (what, field)
-
   constructor (props) {
     super(props);
-
-    // Set a mask layer on `this`.
-    // This is a little not kosher, but it's a slightly costly endeavor,
-    // and we can avoid re-creating this layer every render.
-    const regionId = props.match.params.id;
-    const countries = countriesByRegion[regionId.toString()];
-    const isoCodes = countries.map(getCountryMeta)
-      .filter(Boolean)
-      .map(d => d.iso.toUpperCase());
-    const maskLayer = {
-      id: 'country-mask',
-      type: 'fill',
-      source: 'ifrc',
-      'source-layer': 'country',
-      paint: {
-        'fill-color': 'rgba(33, 33, 33, 0.7)'
-      },
-      filter: [
-        '!in',
-        'ISO_A2'
-      ].concat(isoCodes)
+    this.state = {
+      maskLayer: this.getMaskLayer(props.match.params.id)
     };
-    this.maskLayer = maskLayer;
   }
 
   componentWillReceiveProps (nextProps) {
     if (this.props.match.params.id !== nextProps.match.params.id) {
       this.getData(nextProps);
+      this.setState({ maskLayer: this.getMaskLayer(nextProps.match.params.id) });
       return this.getAdmArea(nextProps.type, nextProps.match.params.id);
     }
 
@@ -110,6 +86,26 @@ class AdminArea extends SFPComponent {
     this.props._getAdmAreaERU(props.type, props.match.params.id);
     this.props._getAdmAreaKeyFigures(props.type, props.match.params.id);
     this.props._getAdmAreaSnippets(props.type, props.match.params.id);
+  }
+
+  getMaskLayer (regionId) {
+    const countries = countriesByRegion[regionId.toString()];
+    const isoCodes = countries.map(getCountryMeta)
+      .filter(Boolean)
+      .map(d => d.iso.toUpperCase());
+    return {
+      id: 'country-mask',
+      type: 'fill',
+      source: 'ifrc',
+      'source-layer': 'country',
+      paint: {
+        'fill-color': 'rgba(33, 33, 33, 0.7)'
+      },
+      filter: [
+        '!in',
+        'ISO_A2'
+      ].concat(isoCodes)
+    };
   }
 
   getAdmArea (type, id) {
@@ -307,7 +303,7 @@ class AdminArea extends SFPComponent {
                 <div className= 'inner'>
                   <h2 className='fold__title'>{activeOperations === null || isNaN(activeOperations) ? null : activeOperations + ' Active Operations'}</h2>
                   <div className={mapContainerClass}>
-                    <Homemap operations={this.props.appealStats} bbox={bbox} layers={[this.maskLayer]}/>
+                    <Homemap operations={this.props.appealStats} bbox={bbox} layers={[this.state.maskLayer]}/>
                   </div>
                 </div>
               </div>

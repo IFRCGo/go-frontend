@@ -18,7 +18,7 @@ import {
 import Progress from './progress';
 import BlockLoading from './block-loading';
 import MapComponent from './map';
-import { get } from '../utils/utils';
+import { get, aggregateAppealStats } from '../utils/utils';
 
 const scale = chroma.scale(['#F0C9E8', '#861A70']);
 
@@ -30,15 +30,15 @@ class Homemap extends React.Component {
     this.state = {
       scaleBy,
       markerLayers: [],
-      markerFilters: [],
-      hoverEmerType: null,
-      selectedEmerType: null,
+      markerGeoJSON: null,
+      hoverDtype: null,
+      selectedDtype: null,
       mapActions: [],
       ready: false
     };
     this.configureMap = this.configureMap.bind(this);
     this.onFieldChange = this.onFieldChange.bind(this);
-    this.navigateToEmergency = this.navigateToEmergency.bind(this);
+    this.navigate = this.navigate.bind(this);
     this.showDeploymentsPopover = this.showDeploymentsPopover.bind(this);
   }
 
@@ -66,12 +66,12 @@ class Homemap extends React.Component {
   initMarkerLayers (operations) {
     this.setState({
       markerLayers: this.getMarkerLayers(operations.data.geoJSON, this.state.scaleBy),
-      markerFilters: this.getMarkerFilters(this.getDtypeHighlight())
+      markerGeoJSON: this.getMarkerGeoJSON(operations.data.geoJSON, this.getDtypeHighlight())
     });
   }
 
   getDtypeHighlight () {
-    return this.state.hoverEmerType || this.state.selectedEmerType || '';
+    return this.state.hoverDtype || this.state.selectedDtype || '';
   }
 
   initFillLayers (deployments) {
@@ -94,19 +94,19 @@ class Homemap extends React.Component {
     }
   }
 
-  onEmergencyTypeOverOut (what, typeId) {
-    const hoverEmerType = what === 'mouseover' ? typeId : null;
+  onDtypeHover (what, typeId) {
+    const hoverDtype = what === 'mouseover' ? typeId : null;
     this.setState({
-      hoverEmerType,
-      markerFilters: this.getMarkerFilters(hoverEmerType || this.state.selectedEmerType)
+      hoverDtype,
+      markerGeoJSON: this.getMarkerGeoJSON(this.props.operations.data.geoJSON, hoverDtype || this.state.selectedDtype)
     });
   }
 
-  onEmergencyTypeClick (typeId) {
-    const selectedEmerType = this.state.selectedEmerType === typeId ? null : typeId;
+  onDtypeClick (typeId) {
+    const selectedDtype = this.state.selectedDtype === typeId ? null : typeId;
     this.setState({
-      selectedEmerType,
-      markerFilters: this.getMarkerFilters(this.state.hoverEmerType || selectedEmerType)
+      selectedDtype,
+      markerGeoJSON: this.getMarkerGeoJSON(this.props.operations.data.geoJSON, selectedDtype)
     });
   }
 
@@ -175,9 +175,10 @@ class Homemap extends React.Component {
       property: 'atype',
       type: 'categorical',
       stops: [
-        [0, '#F39C12'],
-        [1, '#C22A26'],
-        [2, '#CCCCCC']
+        ['DREF', '#F39C12'],
+        ['Appeal', '#C22A26'],
+        ['Movement', '#CCCCCC'],
+        ['Mixed', '#000000']
       ]
     };
     const cradius = this.getCircleRadiusPaintProp(geoJSON, scaleBy);
@@ -186,42 +187,34 @@ class Homemap extends React.Component {
       'id': 'appeals',
       'type': 'circle',
       'source': source,
-      'filter': ['==', 'dtype', this.getDtypeHighlight()],
       'paint': {
         'circle-color': ccolor,
         'circle-radius': cradius
       }
     });
-    layers.push({
-      'id': 'appeals-faded',
-      'type': 'circle',
-      'source': source,
-      'filter': ['!=', 'dtype', this.getDtypeHighlight()],
-      'paint': {
-        'circle-color': ccolor,
-        'circle-radius': cradius,
-        'circle-opacity': 0.15
-      }
-    });
     return layers;
   }
 
-  getMarkerFilters (dtype) {
-    const filters = [];
-    if (dtype) {
-      filters.push({layer: 'appeals', filter: ['==', 'dtype', dtype]});
-      filters.push({layer: 'appeals-faded', filter: ['!=', 'dtype', dtype]});
-    } else {
-      filters.push({layer: 'appeals', filter: ['!=', 'dtype', '']});
-      filters.push({layer: 'appeals-faded', filter: ['==', 'dtype', '']});
-    }
-    return filters;
+  getMarkerGeoJSON (geoJSON, dtype) {
+    const filterFn = dtype ? d => d.dtype.toString() === dtype.toString() : d => true;
+    const features = geoJSON.features.map(d => {
+      const appeals = d.properties.appeals.filter(filterFn);
+      const properties = Object.assign(aggregateAppealStats(appeals), {
+        atype: d.properties.atype,
+        id: d.properties.id,
+        name: d.properties.name,
+        appeals: d.properties.appeals
+      });
+      return {
+        geometry: d.geometry,
+        properties
+      };
+    });
+    return { type: 'FeatureCollection', features };
   }
 
-  navigateToEmergency (pageId) {
-    if (pageId) {
-      this.props.history.push(`/emergencies/${pageId}`);
-    }
+  navigate (path) {
+    this.props.history.push(path);
   }
 
   onPopoverCloseClick () {
@@ -232,14 +225,15 @@ class Homemap extends React.Component {
 
   showOperationsPopover (theMap, feature) {
     let popoverContent = document.createElement('div');
+    const { properties, geometry } = feature;
+    const operations = properties.appeals ? JSON.parse(properties.appeals) : [];
+    const title = `${properties.name}`;
 
-    render(<MapPopover
-      title={feature.properties.name}
-      onTitleClick={this.navigateToEmergency}
-      pageId={feature.properties.pageId}
-      numBeneficiaries={feature.properties.numBeneficiaries}
-      amountRequested={feature.properties.amountRequested}
-      amountFunded={feature.properties.amountFunded}
+    render(<OperationsPopover
+      title={title}
+      navigate={this.navigate}
+      pageId={properties.id}
+      operations={operations}
       onCloseClick={this.onPopoverCloseClick.bind(this)} />, popoverContent);
 
     // Populate the popup and set its coordinates
@@ -249,21 +243,24 @@ class Homemap extends React.Component {
     }
 
     this.popover = new mapboxgl.Popup({closeButton: false})
-      .setLngLat(feature.geometry.coordinates)
+      .setLngLat(geometry.coordinates)
       .setDOMContent(popoverContent.children[0])
       .addTo(theMap);
   }
 
   showDeploymentsPopover (theMap, feature) {
     const id = get(feature, 'properties.OBJECTID').toString();
-    const deployments = get(this.props, 'deployments.data.areas', []).find(d => d.id === id);
-    if (!deployments) return;
+    let deployments = get(this.props, 'deployments.data.areas', []).find(d => d.id === id);
+    if (!deployments && !Array.isArray(deployments.deployents)) return;
+    deployments = deployments.deployments;
 
+    const districtName = get(deployments, '0.district.name');
+    const numDeployments = deployments.length;
+    const title = `${districtName} (${numDeployments} Deployment${numDeployments === 1 ? '' : 's'})`;
     let popoverContent = document.createElement('div');
-    const numDeployments = deployments.deployments.length;
-    render(<MapPopover
-      title={`${numDeployments} Partner Deployment${numDeployments === 1 ? '' : 's'}`}
-      deployments={deployments.deployments}
+    render(<OperationsPopover
+      title={title}
+      deployments={deployments}
       onCloseClick={this.onPopoverCloseClick.bind(this)} />, popoverContent);
 
     if (this.popover != null) {
@@ -287,10 +284,10 @@ class Homemap extends React.Component {
           {emerg.map(o => (
             <li
               key={o.id}
-              className={c('emergencies__item', {'emergencies__item--selected': this.state.selectedEmerType === o.id})}
-              onClick={this.onEmergencyTypeClick.bind(this, o.id)}
-              onMouseOver={this.onEmergencyTypeOverOut.bind(this, 'mouseover', o.id)}
-              onMouseOut={this.onEmergencyTypeOverOut.bind(this, 'mouseout', o.id)} >
+              className={c('emergencies__item', {'emergencies__item--selected': this.state.selectedDtype === o.id})}
+              onClick={this.onDtypeClick.bind(this, o.id)}
+              onMouseOver={this.onDtypeHover.bind(this, 'mouseover', o.id)}
+              onMouseOut={this.onDtypeHover.bind(this, 'mouseout', o.id)} >
               <span className='key'>{o.name} ({o.items.length})</span>
               <span className='value'><Progress value={o.items.length} max={max}><span>{o.items.length}</span></Progress></span>
             </li>
@@ -315,10 +312,9 @@ class Homemap extends React.Component {
   }
 
   renderContent () {
-    const geoJSON = get(this.props.operations, 'data.geoJSON');
-    const layers = this.props.layers ? this.state.markerLayers.concat(this.props.layers) : this.state.markerLayers;
-    const filters = this.state.markerFilters;
     if (this.props.operations.fetching) return null;
+    const layers = this.props.layers ? this.state.markerLayers.concat(this.props.layers) : this.state.markerLayers;
+    const geoJSON = this.state.markerGeoJSON;
     return (
       <React.Fragment>
         {this.props.noRenderEmergencies ? null : this.renderEmergencies()}
@@ -328,7 +324,6 @@ class Homemap extends React.Component {
             noExport={this.props.noExport}
             configureMap={this.configureMap}
             layers={layers}
-            filters={filters}
             geoJSON={geoJSON}>
             <figcaption className='map-vis__legend map-vis__legend--bottom-right legend'>
               <form className='form'>
@@ -359,6 +354,8 @@ class Homemap extends React.Component {
                   <dd>DREF</dd>
                   <dt className='color color--grey'>Grey</dt>
                   <dd>Movement Response</dd>
+                  <dt className='color color'>Grey</dt>
+                  <dd>Mixed</dd>
                 </dl>
               </div>
             </figcaption>
@@ -395,44 +392,48 @@ if (environment !== 'production') {
 
 export default withRouter(Homemap);
 
-class MapPopover extends React.Component {
+class OperationsPopover extends React.Component {
   render () {
+    const { pageId, navigate, title, onCloseClick, operations, deployments } = this.props;
     return (
       <article className='popover'>
         <div className='popover__contents'>
           <header className='popover__header'>
             <div className='popover__headline'>
-              {this.props.pageId ? (
-                <a className='link--primary' onClick={() => this.props.onTitleClick(this.props.pageId)}>{this.props.title}</a>
-              ) : (
-                <p>{this.props.title}</p>
-              )}
+              {deployments ? title : <a className='link--primary' onClick={e => { e.preventDefault(); navigate(`/countries/${pageId}`); }}>{title}</a>}
             </div>
             <div className='popover__actions actions'>
               <ul className='actions__menu'>
-                <li><button type='button' className='actions__menu-item poa-xmark' title='Close popover' onClick={this.props.onCloseClick}><span>Dismiss</span></button></li>
+                <li>
+                  <button type='button' className='actions__menu-item poa-xmark' title='Close popover' onClick={onCloseClick}><span>Dismiss</span></button>
+                </li>
               </ul>
             </div>
           </header>
           <div className='popover__body'>
-            <dl className='popover__details'>
-              {typeof this.props.numBeneficiaries === 'undefined' ? null : <React.Fragment>
-                <dd>{n(this.props.numBeneficiaries)}</dd>
-                <dt>People Affected</dt>
-              </React.Fragment>}
-              {typeof this.props.amountRequested === 'undefined' ? null : <React.Fragment>
-                <dd>{n(this.props.amountRequested)}</dd>
-                <dt>Amount Requested</dt>
-              </React.Fragment>}
-              {typeof this.props.amountFunded === 'undefined' ? null : <React.Fragment>
-                <dd>{n(this.props.amountFunded)}</dd>
-                <dt>Amount Funded</dt>
-              </React.Fragment>}
-            </dl>
-            {Array.isArray(this.props.deployments) ? this.props.deployments.map(d => (
-              <ul>
-                <li>{d.name}, {d.role} ({DateTime.fromISO(d.start_date).toISODate()} - {DateTime.fromISO(d.end_date).toISODate()})</li>
-              </ul>
+            {Array.isArray(operations) ? operations.map(d => (
+              <React.Fragment key={d.id}>
+                <h3 className='popover__subtitle'>
+                  {d.event ? (
+                    <a className='link--primary' onClick={e => { e.preventDefault(); navigate(`/emergencies/${d.event}`); }}>{d.name}</a>
+                  ) : d.name}
+                </h3>
+                <ul className='popover__details'>
+                  <li>{n(d.num_beneficiaries)} People Affected</li>
+                  <li>{n(d.amount_requested)} Amount Requested (CHF)</li>
+                  <li>{n(d.amount_funded)} Amount Funded (CHF)</li>
+                </ul>
+              </React.Fragment>
+            )) : null}
+            {Array.isArray(deployments) ? deployments.map((d, i) => (
+              <React.Fragment key={i}>
+                <h3 className='popover__subtitle'>{get(d.parent, 'society_name', d.parent.name)}</h3>
+                <ul className='popover__details'>
+                  <li>Activity: {d.activity.activity}</li>
+                  <li>Start: {DateTime.fromISO(d.start).toISODate()}</li>
+                  <li>End: {DateTime.fromISO(d.end).toISODate()}</li>
+                </ul>
+              </React.Fragment>
             )) : null}
           </div>
         </div>
@@ -442,14 +443,12 @@ class MapPopover extends React.Component {
 }
 
 if (environment !== 'production') {
-  MapPopover.propTypes = {
+  OperationsPopover.propTypes = {
     onCloseClick: T.func,
     title: T.string,
     pageId: T.number,
-    numBeneficiaries: T.number,
-    amountRequested: T.number,
-    amountFunded: T.number,
+    operations: T.array,
     deployments: T.array,
-    onTitleClick: T.func
+    navigate: T.func
   };
 }

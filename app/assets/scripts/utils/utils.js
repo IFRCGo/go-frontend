@@ -8,7 +8,6 @@ import { getCentroid } from './country-centroids';
 import { disasterType } from './field-report-constants';
 import { getDtypeMeta } from './get-dtype-meta';
 import { whitelistDomains } from '../schemas/register';
-import { getCountryMeta } from './get-country-meta';
 
 // lodash.get will only return the defaultValue when
 // the path is undefined. We want to also catch null and ''
@@ -19,6 +18,24 @@ export function get (object, path, defaultValue) {
   } else {
     return value;
   }
+}
+
+const appealTypes = {
+  '0': 'DREF',
+  '1': 'Appeal',
+  '2': 'Movement'
+};
+
+export function getAppealString (appealType) {
+  return get(appealTypes, appealType.toString());
+}
+
+export function unique (array) {
+  let obj = {};
+  for (let i = 0; i < array.length; ++i) {
+    obj[array[i]] = true;
+  }
+  return Object.keys(array);
 }
 
 export function isLoggedIn (userState) {
@@ -48,14 +65,14 @@ export function aggregateCountryAppeals (appeals) {
     features: Object.keys(grouped).map(countryIso => {
       const countryAppeals = grouped[countryIso];
       const stats = aggregateAppealStats(countryAppeals);
+      const appealTypes = unique(countryAppeals.map(a => a.atype));
       return {
         type: 'Feature',
         properties: Object.assign(stats, {
           id: countryAppeals[0].country.id,
-          name: countryAppeals.map(o => get(o, 'event.name', o.name)).join(', '),
-          // TODO this should have some way of showing multiple types.
-          atype: countryAppeals[0].atype,
-          dtype: countryAppeals[0].dtype
+          name: countryAppeals[0].country.name,
+          appeals: countryAppeals,
+          atype: appealTypes.length === 1 ? getAppealString(appealTypes[0]) : 'Mixed'
         }),
         geometry: {
           type: 'Point',
@@ -83,9 +100,9 @@ export function aggregatePartnerDeployments (deploymentGroups) {
   const areas = Object.keys(grouping).map(d => ({ id: d, deployments: grouping[d] }));
   const max = Math.max.apply(this, areas.map(d => d.deployments.length));
 
-  const parentSocietyGroupings = _groupBy(deployments, 'parent');
+  const parentSocietyGroupings = _groupBy(deployments, 'parent.iso');
   const parentSocieties = Object.keys(parentSocietyGroupings)
-    .map(d => ({ label: getCountryMeta(d).label, count: parentSocietyGroupings[d].length }))
+    .map(d => ({ label: parentSocietyGroupings[d][0].parent.name, count: parentSocietyGroupings[d].length }))
     .sort((a, b) => a.count.length > b.count.length ? -1 : 1);
 
   const activityGroupings = _groupBy(deployments, 'activity.activity');

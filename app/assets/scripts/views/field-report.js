@@ -125,7 +125,7 @@ class FieldReport extends React.Component {
                 </div>
               </div>
               <div className='inpage__headline-actions'>
-                <Link className='button button--primary-plain' to={`/reports/${data.id}/edit`}>Edit</Link>
+                <Link className='button button--primary-bounded' to={`/reports/${data.id}/edit`}>Edit Report</Link>
               </div>
             </div>
           </div>

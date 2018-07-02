@@ -32,6 +32,7 @@ import {
 import App from './app';
 import Fold from '../components/fold';
 import BlockLoading from '../components/block-loading';
+import Expandable from '../components/expandable';
 
 class Emergency extends React.Component {
   constructor (props) {
@@ -385,7 +386,7 @@ class Emergency extends React.Component {
                 id='overview'
                 title='Situational Overview'
                 wrapperClass='situational-overview' >
-                <p>{summary}</p>
+                <Expandable limit={360} text={summary} />
                 {source ? <p>Source: {source}</p> : null}
               </Fold>
 
