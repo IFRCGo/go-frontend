@@ -7,7 +7,12 @@ import { DateTime } from 'luxon';
 
 import { environment } from '../../config';
 import { getFieldReportsList } from '../../actions';
-import { recentInterval, nope, commaSeparatedNumber as n } from '../../utils/format';
+import {
+  recentInterval,
+  nope,
+  commaSeparatedNumber as n,
+  intersperse
+} from '../../utils/format';
 import { get, dTypeOptions, dateOptions, datesAgo } from '../../utils/utils';
 import { getDtypeMeta } from '../../utils/get-dtype-meta';
 
@@ -135,7 +140,7 @@ class FieldReportsTable extends SFPComponent {
         name: <Link to={`/reports/${o.id}`} className='link--primary' title='View Field Report'>{o.summary || nope}</Link>,
         event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
         dtype: get(getDtypeMeta(o.dtype), 'label', nope),
-        countries: <ul>{o.countries.map(country => <li key={country.id}><Link to={`/countries/${country.id}`} className='link--primary' title='View Country'>{country.name}</Link></li>)}</ul>
+        countries: intersperse(o.countries.map(c => <Link key={c.id} to={`/countries/${c.id}`} className='link--primary' title='View Country'>{c.name}</Link>), ', ')
       }));
 
       return (
