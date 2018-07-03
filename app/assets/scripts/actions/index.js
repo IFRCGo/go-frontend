@@ -150,6 +150,11 @@ export function getEventById (id) {
   return fetchJSON(`api/v2/event/${id}/`, GET_EVENT, withToken(), { id });
 }
 
+export const GET_EVENT_SNIPPETS = 'GET_EVENT_SNIPPETS';
+export function getEventSnippets (eventId) {
+  return fetchJSON(`api/v2/event_snippet/?event=${eventId}`, GET_EVENT_SNIPPETS, withToken(), { id: eventId });
+}
+
 export const GET_SITREPS = 'GET_SITREPS';
 export function getSitrepsByEventId (id) {
   return fetchJSON(`api/v2/situation_report/?ordering=-created_at&event=${id}&limit=100`, GET_SITREPS, withToken(), { id });

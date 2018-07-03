@@ -52,7 +52,7 @@ class _Snippets extends React.Component {
           </div>
         ) : (
           <div className='empty-data__container'>
-            <p>No graphics to show</p>
+            <p className='empty-data__note'>No additional graphics to show.</p>
           </div>
         )}
       </Fold>
