@@ -1,11 +1,11 @@
 'use strict';
 import _cloneDeep from 'lodash.clonedeep';
 import _toNumber from 'lodash.tonumber';
-import _get from 'lodash.get';
 import _undefined from 'lodash.isundefined';
 import { DateTime } from 'luxon';
 
 import { api } from '../../config';
+import { get } from '../../utils/utils';
 import { request } from '../../utils/network';
 import * as formData from '../../utils/field-report-constants';
 
@@ -186,9 +186,9 @@ export function convertStateToPayload (originalState) {
   // Sources are checkboxes with a specification, ie the name of the source,
   // and the type, ie "Government"
   state.sources = [];
-  _get(originalState, 'sources', []).forEach(source => {
+  get(originalState, 'sources', []).forEach(source => {
     if (source.checked) {
-      state.sources.push({ stype: source.name, spec: source.specification });
+      state.sources.push({ stype: source.value, spec: source.specification });
     }
   });
 
@@ -260,7 +260,7 @@ export function convertStateToPayload (originalState) {
     };
   }).filter(o => Boolean(o.name));
 
-  _get(originalState, 'eru', []).forEach(eru => {
+  get(originalState, 'eru', []).forEach(eru => {
     if (_undefined(eru.type) || _undefined(eru.status)) { return; }
     state[eru.type] = eru.status;
     state[eru.type + '_units'] = eru.units;
@@ -389,7 +389,8 @@ export function convertFieldReportToState (fieldReport) {
     ['num_volunteers', 'numVolunteers'],
     ['num_expats_delegates', 'numExpats'],
     ['actions_others', 'actionsOthers'],
-    ['bulletin', 'bulletin']
+    ['bulletin', 'bulletin'],
+    ['visibility', 'visibility']
   ];
 
   directMapping.forEach(([src, dest]) => {
@@ -432,6 +433,17 @@ export function convertFieldReportToState (fieldReport) {
     }
   });
 
+  // Sources.
+  // Determine whether a source is checked, using the source name
+  get(fieldReport, 'sources', []).forEach(source => {
+    state.sources.forEach(stateSource => {
+      if (stateSource.value.toLowerCase() === source.stype.toLowerCase()) {
+        stateSource.checked = true;
+        stateSource.specification = source.spec;
+      }
+    });
+  });
+
   // Actions.
   // In the payload all the action are in the same array.
   // Separate them into different ones.
@@ -441,7 +453,7 @@ export function convertFieldReportToState (fieldReport) {
     'FDRN': 'actionsFederation'
   };
 
-  fieldReport.actions_taken.forEach(action => {
+  get(fieldReport, 'actions_taken', []).forEach(action => {
     const dest = actionsMapping[action.organization];
     if (!dest) return;
 
@@ -509,7 +521,7 @@ export function convertFieldReportToState (fieldReport) {
     'Media': 'contactMedia'
   };
 
-  fieldReport.contacts.forEach(contact => {
+  get(fieldReport, 'contacts', []).forEach(contact => {
     const dest = contactsMapping[contact.ctype];
     if (!dest) return;
 
