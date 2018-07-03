@@ -13,7 +13,8 @@ import {
   commaSeparatedNumber as n,
   separateUppercaseWords as separate,
   nope,
-  getResponseStatus
+  getResponseStatus,
+  intersperse
 } from '../utils/format';
 import { get } from '../utils/utils/';
 
@@ -40,7 +41,14 @@ class FieldReport extends React.Component {
   }
 
   renderCountries (data) {
-    return get(data, 'countries', []).map(c => c.name).join(', ');
+    const els = get(data, 'countries', [])
+      .map(c => <Link key={c.id} className='link--primary' to={'/countries/' + c.id}>{c.name}</Link>);
+    return intersperse(els, ', ');
+  }
+
+  renderEmergencyLink (data) {
+    const { event } = data;
+    return event ? <Link className='link--primary' to={'/emergencies/' + event.id}>{event.name}</Link> : 'No emergency page';
   }
 
   renderPlannedResponse (data) {
@@ -78,8 +86,25 @@ class FieldReport extends React.Component {
     return (
       <DisplaySection title={`Actions taken by ${orgDisplayName}`}>
         <ul className='actions-list'>
-          {actions.actions.map((d, i) => <li key={`d.id-${i}`}>{d.name}</li>)}
+          {actions.actions.map((d, i) => <li key={`action-${i}`}>{d.name}</li>)}
         </ul>
+      </DisplaySection>
+    );
+  }
+
+  renderSources (data) {
+    const sources = get(data, 'sources', []);
+    if (!sources.length) {
+      return null;
+    }
+    return (
+      <DisplaySection title='Sources'>
+        {sources.map((d, i) => (
+          <div className='form__group' key={`${d.id} + ${i}`}>
+            <p className='form__label'>{d.stype}</p>
+            <p>{d.spec}</p>
+          </div>
+        ))}
       </DisplaySection>
     );
   }
@@ -121,7 +146,7 @@ class FieldReport extends React.Component {
               <div className='inpage__headline-content'>
                 <h1 className='inpage__title'>{get(data, 'summary', nope)}</h1>
                 <div>
-                  <h2 className='inpage__introduction'>{get(data, 'dtype.name', nope)} | {this.renderCountries(data)}</h2>
+                  <h2 className='inpage__introduction'>{get(data, 'dtype.name', nope)} | {this.renderCountries(data)} | {this.renderEmergencyLink(data)}</h2>
                 </div>
               </div>
               <div className='inpage__headline-actions'>
@@ -179,6 +204,7 @@ class FieldReport extends React.Component {
                 {this.renderActionsTaken(data, 'PNS', 'PNS Red Cross')}
                 {this.renderActionsTaken(data, 'FDRN', 'Federation Red Cross')}
                 <DisplaySection title='Actions taken by others' inner={get(data, 'action_others', false)} />
+                {this.renderSources(data)}
                 {this.renderContacts(data)}
               </div>
             </div>

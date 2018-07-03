@@ -1,11 +1,11 @@
 'use strict';
 import _cloneDeep from 'lodash.clonedeep';
 import _toNumber from 'lodash.tonumber';
-import _get from 'lodash.get';
 import _undefined from 'lodash.isundefined';
 import { DateTime } from 'luxon';
 
 import { api } from '../../config';
+import { get } from '../../utils/utils';
 import { request } from '../../utils/network';
 import * as formData from '../../utils/field-report-constants';
 
@@ -133,9 +133,9 @@ export function convertStateToPayload (originalState) {
   } = originalState;
 
   // Process properties.
-  if (countries.length) { state.countries = countries.map(o => ({pk: o.value})); }
-  if (disasterType) { state.dtype = {pk: disasterType}; }
-  if (event && event.value) { state.event = {pk: event.value}; }
+  if (countries.length) { state.countries = countries.map(o => +o.value); }
+  if (disasterType) { state.dtype = +disasterType; }
+  if (event && event.value) { state.event = +event.value; }
 
   const directMapping = [
     // [source, destination]
@@ -143,17 +143,18 @@ export function convertStateToPayload (originalState) {
     ['description', 'description'],
     ['status', 'status'],
     ['bulletin', 'bulletin'],
-    ['numAssistedRedCross', 'num_assisted'],
-    ['numAssistedGov', 'gov_num_assisted'],
-    ['numLocalStaff', 'num_localstaff'],
-    ['numVolunteers', 'num_volunteers'],
-    ['numExpats', 'num_expats_delegates'],
-    ['actionsOthers', 'actions_others']
+    ['numAssistedRedCross', 'num_assisted', Number],
+    ['numAssistedGov', 'gov_num_assisted', Number],
+    ['numLocalStaff', 'num_localstaff', Number],
+    ['numVolunteers', 'num_volunteers', Number],
+    ['numExpats', 'num_expats_delegates', Number],
+    ['actionsOthers', 'actions_others'],
+    ['visibility', 'visibility', Number]
   ];
 
-  directMapping.forEach(([src, dest]) => {
+  directMapping.forEach(([src, dest, fn]) => {
     if (_undefined(originalState[src])) { return; }
-    state[dest] = originalState[src];
+    state[dest] = fn ? fn(originalState[src]) : originalState[src];
   });
 
   // Boolean values
@@ -181,11 +182,21 @@ export function convertStateToPayload (originalState) {
     });
   });
 
+  // Sources.
+  // Sources are checkboxes with a specification, ie the name of the source,
+  // and the type, ie "Government"
+  state.sources = [];
+  get(originalState, 'sources', []).forEach(source => {
+    if (source.checked) {
+      state.sources.push({ stype: source.value, spec: source.specification });
+    }
+  });
+
   // Actions.
   // In the payload all the action are in the same array.
   // Convert the state to the correct structure:
   // [
-  //   { organization: "NTLS", actions: [ { id: 1 }, { id: 2 } ], summary: "foo bar baz" },
+  //   { organization: "NTLS", actions: [ 1, 2 ], summary: "foo bar baz" },
   //   { organization: "PNS" ... }
   // ]
   const actionsMapping = [
@@ -199,9 +210,7 @@ export function convertStateToPayload (originalState) {
     return {
       organization: orgName,
       summary: originalState[src].description || '',
-      actions: originalState[src].options.reduce((orgActions, o) => {
-        return o.checked ? orgActions.concat({id: o.value}) : orgActions;
-      }, [])
+      actions: originalState[src].options.filter(o => o.checked).map(o => o.value)
     };
   }).filter(o => o.actions.length);
 
@@ -251,7 +260,7 @@ export function convertStateToPayload (originalState) {
     };
   }).filter(o => Boolean(o.name));
 
-  _get(originalState, 'eru', []).forEach(eru => {
+  get(originalState, 'eru', []).forEach(eru => {
     if (_undefined(eru.type) || _undefined(eru.status)) { return; }
     state[eru.type] = eru.status;
     state[eru.type + '_units'] = eru.units;
@@ -263,7 +272,7 @@ export function convertStateToPayload (originalState) {
 export function getEventsFromApi (input) {
   return !input
     ? Promise.resolve({ options: [] })
-    : request(`${api}/api/v1/es_search/?type=event&keyword=${input}`)
+    : request(`${api}api/v1/es_search/?type=event&keyword=${input}`)
       .then(data => ({
         options: data.hits.map(o => ({
           value: o._source.id,
@@ -280,7 +289,7 @@ export function getInitialDataState () {
     // Will need to be converted.
     countries: [],
     status: undefined,
-    visibility: 'membership',
+    visibility: '1',
     disasterType: undefined,
     event: undefined,
     sources: formData.sources.map(o => ({
@@ -380,7 +389,8 @@ export function convertFieldReportToState (fieldReport) {
     ['num_volunteers', 'numVolunteers'],
     ['num_expats_delegates', 'numExpats'],
     ['actions_others', 'actionsOthers'],
-    ['bulletin', 'bulletin']
+    ['bulletin', 'bulletin'],
+    ['visibility', 'visibility']
   ];
 
   directMapping.forEach(([src, dest]) => {
@@ -423,6 +433,17 @@ export function convertFieldReportToState (fieldReport) {
     }
   });
 
+  // Sources.
+  // Determine whether a source is checked, using the source name
+  get(fieldReport, 'sources', []).forEach(source => {
+    state.sources.forEach(stateSource => {
+      if (stateSource.value.toLowerCase() === source.stype.toLowerCase()) {
+        stateSource.checked = true;
+        stateSource.specification = source.spec;
+      }
+    });
+  });
+
   // Actions.
   // In the payload all the action are in the same array.
   // Separate them into different ones.
@@ -432,7 +453,7 @@ export function convertFieldReportToState (fieldReport) {
     'FDRN': 'actionsFederation'
   };
 
-  fieldReport.actions_taken.forEach(action => {
+  get(fieldReport, 'actions_taken', []).forEach(action => {
     const dest = actionsMapping[action.organization];
     if (!dest) return;
 
@@ -500,7 +521,7 @@ export function convertFieldReportToState (fieldReport) {
     'Media': 'contactMedia'
   };
 
-  fieldReport.contacts.forEach(contact => {
+  get(fieldReport, 'contacts', []).forEach(contact => {
     const dest = contactsMapping[contact.ctype];
     if (!dest) return;
 
@@ -513,13 +534,3 @@ export function convertFieldReportToState (fieldReport) {
 
   return state;
 }
-
-/*
-    // Missing mappings;:
-    visibility: 'membership',
-    sources: formData.sources.map(o => ({
-      value: o.value,
-      checked: false,
-      specification: undefined
-    })),
- */

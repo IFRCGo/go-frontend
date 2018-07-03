@@ -10,7 +10,8 @@ import {
   nope,
   commaSeparatedNumber as n,
   isoDate,
-  recentInterval
+  recentInterval,
+  intersperse
 } from '../../utils/format';
 import {
   get,
@@ -179,11 +180,9 @@ class EmergenciesTable extends SFPComponent {
 
         if (isNaN(this.props.country)) {
           const countries = get(rowData, 'countries', []).map(c => (
-            <React.Fragment key={c.iso}>
-              <Link className='link--primary' to={`/countries/${c.id}`}>{c.name}</Link>&nbsp;
-            </React.Fragment>
+            <Link key={c.id} className='link--primary' to={`/countries/${c.id}`}>{c.name}</Link>
           ));
-          row.countries = countries.length ? countries : nope;
+          row.countries = countries.length ? intersperse(countries, ', ') : nope;
         }
 
         return row;

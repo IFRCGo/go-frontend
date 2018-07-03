@@ -1,4 +1,6 @@
 'use strict';
+import { combineReducers } from 'redux';
+import { stateInflight, stateError } from '../utils/reducer-utils';
 
 const initialState = {
   // fetching: false,
@@ -7,7 +9,7 @@ const initialState = {
   // data: {}
 };
 
-export default function reducer (state = initialState, action) {
+function event (state = initialState, action) {
   switch (action.type) {
     case 'GET_EVENT_INFLIGHT':
       state = Object.assign({}, state, {
@@ -41,3 +43,34 @@ export default function reducer (state = initialState, action) {
   }
   return state;
 }
+
+function snippets (state = initialState, action) {
+  switch (action.type) {
+    case 'GET_EVENT_SNIPPETS_INFLIGHT':
+      state = Object.assign({}, state, {
+        [action.id]: stateInflight(state, action)
+      });
+      break;
+    case 'GET_EVENT_SNIPPETS_FAILED':
+      state = Object.assign({}, state, {
+        [action.id]: stateError(state, action)
+      });
+      break;
+    case 'GET_EVENT_SNIPPETS_SUCCESS':
+      state = Object.assign({}, state, {
+        [action.id]: {
+          fetching: false,
+          fetched: true,
+          receivedAt: action.receivedAt,
+          data: action.data
+        }
+      });
+      break;
+  }
+  return state;
+}
+
+export default combineReducers({
+  event,
+  snippets
+});

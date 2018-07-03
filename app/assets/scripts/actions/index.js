@@ -57,12 +57,12 @@ export function getFieldReportsByUser (userId) {
 
 export const CREATE_FIELD_REPORT = 'CREATE_FIELD_REPORT';
 export function createFieldReport (payload) {
-  return postJSON('api/v2/field_report/', CREATE_FIELD_REPORT, payload, withToken());
+  return postJSON('api/v2/create_field_report/', CREATE_FIELD_REPORT, payload, withToken());
 }
 
 export const UPDATE_FIELD_REPORT = 'UPDATE_FIELD_REPORT';
 export function updateFieldReport (id, payload) {
-  return putJSON(`api/v2/field_report/${id}/`, UPDATE_FIELD_REPORT, payload, withToken());
+  return putJSON(`api/v2/update_field_report/${id}/`, UPDATE_FIELD_REPORT, payload, withToken());
 }
 
 export const GET_FIELD_REPORTS_LIST = 'GET_FIELD_REPORTS_LIST';
@@ -148,6 +148,11 @@ export function updateSubscriptions (id, payload) {
 export const GET_EVENT = 'GET_EVENT';
 export function getEventById (id) {
   return fetchJSON(`api/v2/event/${id}/`, GET_EVENT, withToken(), { id });
+}
+
+export const GET_EVENT_SNIPPETS = 'GET_EVENT_SNIPPETS';
+export function getEventSnippets (eventId) {
+  return fetchJSON(`api/v2/event_snippet/?event=${eventId}`, GET_EVENT_SNIPPETS, withToken(), { id: eventId });
 }
 
 export const GET_SITREPS = 'GET_SITREPS';

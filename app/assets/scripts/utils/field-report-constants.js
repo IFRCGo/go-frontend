@@ -17,15 +17,15 @@ export const status = [statusEarlyWarning, statusEvent];
 export const visibility = [
   {
     label: 'Membership',
-    value: 'membership'
+    value: '1'
   },
   {
     label: 'IFRC Secretariat',
-    value: 'secretariat'
+    value: '2'
   },
   {
     label: 'Public',
-    value: 'public'
+    value: '3'
   }
 ];
 
@@ -399,35 +399,35 @@ export const disasterType = [
 export const sources = [
   {
     label: 'National Society',
-    value: 'national-society'
+    value: 'National Society'
   },
   {
     label: 'Government',
-    value: 'government'
+    value: 'Government'
   },
   {
     label: 'Delegation/Secretariat',
-    value: 'delegation-secretariat'
+    value: 'Delegation/Secretariat'
   },
   {
     label: 'UN agency',
-    value: 'un-agency'
+    value: 'UN'
   },
   {
     label: 'Academia/Research',
-    value: 'academia-research'
+    value: 'Academia/Research'
   },
   {
     label: 'Press',
-    value: 'press'
+    value: 'Local press'
   },
   {
     label: 'NGOs',
-    value: 'ngo'
+    value: 'NGOs'
   },
   {
     label: 'Other',
-    value: 'other'
+    value: 'Others'
   }
 ];
 

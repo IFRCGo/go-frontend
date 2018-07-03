@@ -13,6 +13,7 @@ import { api, environment } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import {
   getEventById,
+  getEventSnippets,
   getSitrepsByEventId,
   getAppealDocsByAppealIds
 } from '../actions';
@@ -33,6 +34,7 @@ import App from './app';
 import Fold from '../components/fold';
 import BlockLoading from '../components/block-loading';
 import Expandable from '../components/expandable';
+import { Snippets } from '../components/admin-area-elements';
 
 class Emergency extends React.Component {
   constructor (props) {
@@ -66,6 +68,7 @@ class Emergency extends React.Component {
   getEvent (id) {
     showGlobalLoading();
     this.props._getEventById(id);
+    this.props._getEventSnippets(id);
     this.props._getSitrepsByEventId(id);
   }
 
@@ -282,31 +285,6 @@ class Emergency extends React.Component {
     );
   }
 
-  renderAdditionalGraphics () {
-    const { data } = this.props.event;
-    const snippets = get(data, 'snippets');
-    let content;
-    if (!Array.isArray(snippets) || !snippets.length) {
-      content = (
-        <div className='empty-data__container'>
-          <p className='empty-data__note'>No additional graphics to show.</p>
-        </div>
-      );
-    } else {
-      content = (
-        <div className='iframe__container'>
-          {snippets.map(o => <div key={o.id} dangerouslySetInnerHTML={{__html: o.snippet}} />)}
-        </div>
-      );
-    }
-
-    return (
-      <Fold id='graphics' title='Additional Graphics' wrapperClass='additional-graphics' >
-        {content}
-      </Fold>
-    );
-  }
-
   renderKeyFigures () {
     const { data } = this.props.event;
     const kf = get(data, 'key_figures');
@@ -390,7 +368,7 @@ class Emergency extends React.Component {
                 {source ? <p>Source: {source}</p> : null}
               </Fold>
 
-              {this.renderAdditionalGraphics()}
+              <Snippets data={this.props.snippets} />
               {this.renderKeyFigures()}
               {this.renderFieldReports()}
               {this.renderDocuments(this.props.situationReports, 'Situation Reports', 'situation-reports-list', true)}
@@ -453,8 +431,10 @@ class Emergency extends React.Component {
 if (environment !== 'production') {
   Emergency.propTypes = {
     _getEventById: T.func,
+    _getEventSnippets: T.func,
     _getSitrepsByEventId: T.func,
     _getAppealDocsByAppealIds: T.func,
+    snippets: T.object,
     match: T.object,
     location: T.object,
     event: T.object,
@@ -468,7 +448,12 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state, ownProps) => ({
-  event: get(state.event, ownProps.match.params.id, {
+  event: get(state.event.event, ownProps.match.params.id, {
+    data: {},
+    fetching: false,
+    fetched: false
+  }),
+  snippets: get(state.event.snippets, ownProps.match.params.id, {
     data: {},
     fetching: false,
     fetched: false
@@ -488,6 +473,7 @@ const selector = (state, ownProps) => ({
 
 const dispatcher = (dispatch) => ({
   _getEventById: (...args) => dispatch(getEventById(...args)),
+  _getEventSnippets: (...args) => dispatch(getEventSnippets(...args)),
   _getSitrepsByEventId: (...args) => dispatch(getSitrepsByEventId(...args)),
   _getAppealDocsByAppealIds: (...args) => dispatch(getAppealDocsByAppealIds(...args))
 });

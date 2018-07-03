@@ -19,7 +19,7 @@ export default class ReportSource extends React.Component {
     const { sourceName, checked, onChange, specificationValue } = this.props;
 
     onChange({
-      name: sourceName,
+      value: sourceName,
       checked: !checked,
       specification: specificationValue
     });
@@ -29,7 +29,7 @@ export default class ReportSource extends React.Component {
     const { sourceName, checked, onChange } = this.props;
 
     onChange({
-      name: sourceName,
+      value: sourceName,
       checked: checked,
       specification: e.target.value
     });

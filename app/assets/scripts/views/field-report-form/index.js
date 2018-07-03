@@ -145,6 +145,9 @@ class FieldReportForm extends React.Component {
 
   onSubmit (e) {
     e.preventDefault();
+    if (this.props.fieldReportForm.fetching) {
+      return;
+    }
     const step = this.state.step;
     const result = this.validate();
     if (result) {
@@ -152,7 +155,7 @@ class FieldReportForm extends React.Component {
         const payload = convertStateToPayload(this.state.data);
         const userId = _get(this.props.user, 'data.id');
         if (userId) {
-          payload.user = {pk: userId};
+          payload.user = userId;
         } else {
           console.log('Could not read user ID from state');
         }
