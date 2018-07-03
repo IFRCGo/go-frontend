@@ -48,7 +48,9 @@ class _Snippets extends React.Component {
         wrapper_class='additional-graphics'>
         {data.results.length ? (
           <div className='iframe__container'>
-            {data.results.map(o => <div key={o.id} dangerouslySetInnerHTML={{__html: o.snippet}} />)}
+            {data.results.map(o => o.snippet ? <div className='snippet__item' key={o.id} dangerouslySetInnerHTML={{__html: o.snippet}} />
+              : o.image ? <div className='snippet__item snippet__image'><img src={o.image}/></div> : null
+            )}
           </div>
         ) : (
           <div className='empty-data__container'>

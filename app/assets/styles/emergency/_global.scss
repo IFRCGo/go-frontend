@@ -203,3 +203,13 @@
     width: 100%;
   }
 }
+
+.snippet__item {
+  padding-bottom: $global-spacing * 2;
+}
+
+.snippet__image {
+  > img {
+    width: 100%;
+  }
+}
