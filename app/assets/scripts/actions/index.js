@@ -62,7 +62,7 @@ export function createFieldReport (payload) {
 
 export const UPDATE_FIELD_REPORT = 'UPDATE_FIELD_REPORT';
 export function updateFieldReport (id, payload) {
-  return putJSON(`api/v2/field_report/${id}/`, UPDATE_FIELD_REPORT, payload, withToken());
+  return putJSON(`api/v2/update_field_report/${id}/`, UPDATE_FIELD_REPORT, payload, withToken());
 }
 
 export const GET_FIELD_REPORTS_LIST = 'GET_FIELD_REPORTS_LIST';
