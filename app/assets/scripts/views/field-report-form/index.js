@@ -145,6 +145,9 @@ class FieldReportForm extends React.Component {
 
   onSubmit (e) {
     e.preventDefault();
+    if (this.props.fieldReportForm.fetching) {
+      return;
+    }
     const step = this.state.step;
     const result = this.validate();
     if (result) {
