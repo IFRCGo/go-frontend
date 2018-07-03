@@ -42,7 +42,7 @@ class FieldReport extends React.Component {
 
   renderCountries (data) {
     const els = get(data, 'countries', [])
-    .map(c => <Link key={c.id} className='link--primary' to={'/countries/' + c.id}>{c.name}</Link>);
+      .map(c => <Link key={c.id} className='link--primary' to={'/countries/' + c.id}>{c.name}</Link>);
     return intersperse(els, ', ');
   }
 
