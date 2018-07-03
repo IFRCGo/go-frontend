@@ -78,7 +78,7 @@ class FieldReport extends React.Component {
     return (
       <DisplaySection title={`Actions taken by ${orgDisplayName}`}>
         <ul className='actions-list'>
-          {actions.actions.map((d, i) => <li key={`action-${i}`}>{d}</li>)}
+          {actions.actions.map((d, i) => <li key={`action-${i}`}>{d.name}</li>)}
         </ul>
       </DisplaySection>
     );
