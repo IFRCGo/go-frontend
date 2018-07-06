@@ -18,7 +18,7 @@ import { getDtypeMeta } from '../../utils/get-dtype-meta';
 
 import Fold from '../fold';
 import BlockLoading from '../block-loading';
-import DisplayTable, { FilterHeader } from '../display-table';
+import DisplayTable, { FilterHeader, SortHeader } from '../display-table';
 import { SFPComponent } from '../../utils/extendables';
 
 class FieldReportsTable extends SFPComponent {
@@ -125,7 +125,10 @@ class FieldReportsTable extends SFPComponent {
           id: 'date',
           label: <FilterHeader id='date' title='Created At' options={dateOptions} filter={this.state.fieldReports.filters.date} onSelect={this.handleFilterChange.bind(this, 'fieldReports', 'date')} />
         },
-        { id: 'name', label: 'Name' },
+        {
+          id: 'name',
+          label: <SortHeader id='name' title='Name' sort={this.state.fieldReports.sort} onClick={this.handleSortChange.bind(this, 'fieldReports', 'summary')} />
+        },
         { id: 'event', label: 'Emergency' },
         {
           id: 'dtype',
