@@ -315,6 +315,45 @@ class AdminArea extends SFPComponent {
                 viewAll={'/emergencies/all?region=' + data.id}
                 viewAllText={`View All Emergencies For ${regionName} Region`}
               />
+              <div className='fold'>
+                <div className='inner'>
+                  <div className='fold__header'>
+                    <h2 className='fold__title'>15 Countries in this Region</h2>
+                  </div>
+                  <div className='fold__body'>
+                    <ul className='region-countries__list'>
+                      <li className='region-countries__item'>
+                        <a href='' className='link--primary'>Ethiopia</a>
+                        <span><strong>3</strong> Active Operations</span>
+                      </li>
+                      <li className='region-countries__item'>
+                        <a href='' className='link--primary'>Ethiopia</a>
+                        <span><strong>3</strong> Active Operations</span>
+                      </li>
+                      <li className='region-countries__item'>
+                        <a href='' className='link--primary'>Ethiopia</a>
+                        <span className='inactive'>0 Active Operations</span>
+                      </li>
+                      <li className='region-countries__item'>
+                        <a href='' className='link--primary'>Ethiopia</a>
+                        <span><strong>3</strong> Active Operations</span>
+                      </li>
+                      <li className='region-countries__item'>
+                        <a href='' className='link--primary'>Ethiopia</a>
+                        <span className='inactive'>0 Active Operations</span>
+                      </li>
+                      <li className='region-countries__item'>
+                        <a href='' className='link--primary'>Ethiopia</a>
+                        <span><strong>3</strong> Active Operations</span>
+                      </li>
+                      <li className='region-countries__item'>
+                        <a href='' className='link--primary'>Ethiopia</a>
+                        <span><strong>3</strong> Active Operations</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
               <Fold title='Statistics' headerClass='visually-hidden' id='stats'>
                 <div className='stats-chart'>
                   {this.renderOperations10Years()}

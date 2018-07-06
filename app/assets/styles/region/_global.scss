@@ -20,4 +20,28 @@
       margin-bottom: 0;
     }
   }
+
+  .region-countries__list {
+    list-style: none;
+  }
+
+  .region-countries__item {
+    @include column(4/12);
+    @include media(medium-up) {
+      @include column(2.5/12);
+    }
+    @include media(small-down){
+      @include column(5.5/12);
+    }
+    margin-bottom: $global-spacing * 1.5;
+    span {
+      font-weight: $base-font-regular;
+      display: block;
+      font-size: 0.875rem;
+      margin-top: $global-spacing/2;
+    }
+    .inactive {
+      color: rgba($base-color, 0.4);
+    }
+  }
 }
