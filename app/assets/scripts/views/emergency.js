@@ -387,8 +387,8 @@ class Emergency extends React.Component {
                     <li><a href='#overview' title='Go to Overview section'>Overview</a></li>
                     <li><a href='#graphics' title='Go to Graphics section'>Graphics</a></li>
                     <li><a href='#field-reports' title='Go to Field Reports section'>Field Reports</a></li>
-                    <li><a href='#response-documents' title='Go to Situation Reports section'>Situation Reports</a></li>
-                    <li><a href='#documents' title='Go to Documents section'>Documents</a></li>
+                    <li><a href='#response-documents' title='Go to Response Documents section'>Response Documents</a></li>
+                    <li><a href='#documents' title='Go to Documents section'>Appeal Documents</a></li>
                     <li><a href='#contacts' title='Go to Contacts section'>Contacts</a></li>
                   </ul>
                 </div>
