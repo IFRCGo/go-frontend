@@ -315,14 +315,14 @@ class AdminArea extends SFPComponent {
               <div style={style} className={c('inpage__nav', {'inpage__nav--sticky': isSticky})}>
                 <div className='inner'>
                   <ul>
-                    <li><a href='#key-figures' title='Go to Key Figures section'>Key Figures</a></li>
+                    {get(this.props.keyFigures, 'data.results.length') ? <li><a href='#key-figures' title='Go to Key Figures section'>Key Figures</a></li> : null}
                     <li><a href='#operations-map' title='Go to Operations section'>Operations</a></li>
                     <li><a href='#stats' title='Go to Stats section'>Stats</a></li>
                     <li><a href='#appeals' title='Go to Appeals section'>Appeals</a></li>
                     <li><a href='#drefs' title='Go to Drefs section'>Drefs</a></li>
-                    <li><a href='#graphics' title='Go to Graphics section'>Graphics</a></li>
-                    <li><a href='#links' title='Go to Links section'>Links</a></li>
-                    <li><a href='#contacts' title='Go to Contacts section'>Contacts</a></li>
+                    {get(this.props.snippets, 'data.results.length') ? <li><a href='#graphics' title='Go to Graphics section'>Graphics</a></li> : null}
+                    {get(data, 'links.length') ? <li><a href='#links' title='Go to Links section'>Links</a></li> : null}
+                    {get(data, 'contacts.length') ? <li><a href='#contacts' title='Go to Contacts section'>Contacts</a></li> : null}
                   </ul>
                 </div>
               </div>
