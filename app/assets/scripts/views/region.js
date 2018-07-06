@@ -2,6 +2,7 @@
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import {
   ResponsiveContainer,
@@ -32,7 +33,8 @@ import {
   getAdmAreaKeyFigures,
   getAdmAreaSnippets,
   GET_AA_APPEALS,
-  GET_AA_DREFS
+  GET_AA_DREFS,
+  getCountries
 } from '../actions';
 import { getRegionBoundingBox } from '../utils/region-bounding-box';
 import { countriesByRegion, regions as regionMeta } from '../utils/region-constants';
@@ -86,6 +88,7 @@ class AdminArea extends SFPComponent {
     this.props._getAdmAreaERU(props.type, props.match.params.id);
     this.props._getAdmAreaKeyFigures(props.type, props.match.params.id);
     this.props._getAdmAreaSnippets(props.type, props.match.params.id);
+    this.props._getCountries(props.match.params.id);
   }
 
   getMaskLayer (regionId) {
@@ -248,6 +251,35 @@ class AdminArea extends SFPComponent {
     );
   }
 
+  renderCountries () {
+    const {
+      fetched,
+      error,
+      data
+    } = this.props.countries;
+    if (!fetched || error) { return null; }
+    let countries = data.results;
+    if (this.props.appealStats.fetched && !this.props.appealStats.error) {
+      const activeOperations = get(this.props.appealStats, 'data.results', []);
+      countries = countries.map(d => {
+        const numOperations = activeOperations.filter(o => o.country && o.country.id === d.id).length;
+        return Object.assign({numOperations}, d);
+      });
+    }
+    return (
+      <Fold title={countries.length + ' Countries in this Region'}>
+        <ul className='region-countries__list'>
+          {countries.map(d => (
+            <li key={d.id} className='region-countries__item'>
+              <Link to={`/countries/${d.id}`} className='link--primary'>{d.name}</Link>
+              {d.numOperations ? <span><strong>{d.numOperations}</strong> Active Operation{d.numOperations > 1 ? 's' : ''}</span> : null}
+            </li>
+          ))}
+        </ul>
+      </Fold>
+    );
+  }
+
   renderContent () {
     const {
       fetched,
@@ -315,45 +347,7 @@ class AdminArea extends SFPComponent {
                 viewAll={'/emergencies/all?region=' + data.id}
                 viewAllText={`View All Emergencies For ${regionName} Region`}
               />
-              <div className='fold'>
-                <div className='inner'>
-                  <div className='fold__header'>
-                    <h2 className='fold__title'>15 Countries in this Region</h2>
-                  </div>
-                  <div className='fold__body'>
-                    <ul className='region-countries__list'>
-                      <li className='region-countries__item'>
-                        <a href='' className='link--primary'>Ethiopia</a>
-                        <span><strong>3</strong> Active Operations</span>
-                      </li>
-                      <li className='region-countries__item'>
-                        <a href='' className='link--primary'>Ethiopia</a>
-                        <span><strong>3</strong> Active Operations</span>
-                      </li>
-                      <li className='region-countries__item'>
-                        <a href='' className='link--primary'>Ethiopia</a>
-                        <span className='inactive'>0 Active Operations</span>
-                      </li>
-                      <li className='region-countries__item'>
-                        <a href='' className='link--primary'>Ethiopia</a>
-                        <span><strong>3</strong> Active Operations</span>
-                      </li>
-                      <li className='region-countries__item'>
-                        <a href='' className='link--primary'>Ethiopia</a>
-                        <span className='inactive'>0 Active Operations</span>
-                      </li>
-                      <li className='region-countries__item'>
-                        <a href='' className='link--primary'>Ethiopia</a>
-                        <span><strong>3</strong> Active Operations</span>
-                      </li>
-                      <li className='region-countries__item'>
-                        <a href='' className='link--primary'>Ethiopia</a>
-                        <span><strong>3</strong> Active Operations</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
+              {this.renderCountries()}
               <Fold title='Statistics' headerClass='visually-hidden' id='stats'>
                 <div className='stats-chart'>
                   {this.renderOperations10Years()}
@@ -410,6 +404,7 @@ if (environment !== 'production') {
     _getAdmAreaAppealsList: T.func,
     _getAdmAreaAggregateAppeals: T.func,
     _getAdmAreaERU: T.func,
+    _getCountries: T.func,
     type: T.string,
     match: T.object,
     history: T.object,
@@ -418,7 +413,8 @@ if (environment !== 'production') {
     aggregateYear: T.object,
     eru: T.object,
     keyFigures: T.object,
-    snippets: T.object
+    snippets: T.object,
+    countries: T.object
   };
 }
 
@@ -441,7 +437,8 @@ const selector = (state, ownProps) => ({
   }),
   eru: state.adminArea.eru,
   keyFigures: state.adminArea.keyFigures,
-  snippets: state.adminArea.snippets
+  snippets: state.adminArea.snippets,
+  countries: state.countries
 });
 
 const dispatcher = (dispatch) => ({
@@ -450,7 +447,8 @@ const dispatcher = (dispatch) => ({
   _getAdmAreaAggregateAppeals: (...args) => dispatch(getAdmAreaAggregateAppeals(...args)),
   _getAdmAreaERU: (...args) => dispatch(getAdmAreaERU(...args)),
   _getAdmAreaKeyFigures: (...args) => dispatch(getAdmAreaKeyFigures(...args)),
-  _getAdmAreaSnippets: (...args) => dispatch(getAdmAreaSnippets(...args))
+  _getAdmAreaSnippets: (...args) => dispatch(getAdmAreaSnippets(...args)),
+  _getCountries: (...args) => dispatch(getCountries(...args))
 });
 
 export default connect(selector, dispatcher)(AdminArea);
