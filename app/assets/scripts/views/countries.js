@@ -238,8 +238,10 @@ class AdminArea extends SFPComponent {
     }
     const population = get(data, 'Population.value');
     const gdp = get(data, 'GDP.value');
-    const gdpCapita = isNaN(population) || isNaN(gdp) || +population === 0 ? null : +gdp / +population;
     const poverty = get(data, 'Poverty.value');
+    const literacy = get(data, 'Literacy.value');
+    const urbanPop = get(data, 'UrbPop.value');
+    console.log(data);
 
     // get unique years of data
     let years = {};
@@ -249,24 +251,32 @@ class AdminArea extends SFPComponent {
 
     return (
       <div className='inpage__header-col'>
-        <h3>Country Profile</h3>
-        <p>Source: FDRS | Reporting year(s): {Object.keys(years).sort().join(', ')}</p>
         <div className='content-list-group'>
-          <ul className='content-list'>
-            <li>Population<span className='content-highlight'>{bigN(population)}</span></li>
-            <li>GDP<span className='content-highlight'>{gdp ? '$' + bigN(gdp) : nope}</span></li>
-            <li>GDP / Capita<span className='content-highlight'>{gdpCapita ? '$' + n(gdpCapita) : nope}</span></li>
-            <li>Poverty (% pop)<span className='content-highlight'>{poverty ? poverty + '%' : nope}</span></li>
-            <li>People reached<span className='content-highlight'>{n(get(data, 'KPI_ReachDRER_D_Tot.value'))}</span></li>
-          </ul>
-          <ul className='content-list'>
-            <li>Income (CHF)<span className='content-highlight'>{bigN(get(data, 'KPI_IncomeLC_CHF.value'))}</span></li>
-            <li>Expenditures (CHF)<span className='content-highlight'>{bigN(get(data, 'KPI_expenditureLC_CHF.value'))}</span></li>
-            <li>Volunteers<span className='content-highlight'>{n(get(data, 'KPI_PeopleVol_Tot.value'))}</span></li>
-            <li>People giving blood<span className='content-highlight'>{n(get(data, 'KPI_DonBlood_Tot.value'))}</span></li>
-            <li>Trained in first aid<span className='content-highlight'>{n(get(data, 'KPI_TrainFA_Tot.value'))}</span></li>
-          </ul>
+          <div className='content-list'>
+            <h3>Country Statistics</h3>
+            <ul>
+              <li>Population<span className='content-highlight'>{bigN(population)}</span></li>
+              <li>Urban Pop <span className='content-highlight'>{urbanPop ? urbanPop + '%' : nope}</span></li>
+              <li>GDP<span className='content-highlight'>{gdp ? '$' + bigN(gdp) : nope}</span></li>
+              <li>GNI / Capita<span className='content-highlight'>{n(get(data, 'GNIPC.value'))}</span></li>
+              <li>Poverty (% pop)<span className='content-highlight'>{poverty ? poverty + '%' : nope}</span></li>
+              <li>Life Expectancy <span className='content-highlight'>{n(get(data, 'LifeExp.value'))}</span></li>
+              <li>Literacy <span className='content-highlight'>{literacy ? literacy + '%' : nope}</span></li>
+            </ul>
+          </div>
+          <div className='content-list'>
+            <h3>Partner Society</h3>
+            <ul>
+              <li>Income (CHF)<span className='content-highlight'>{bigN(get(data, 'KPI_IncomeLC_CHF.value'))}</span></li>
+              <li>Expenditures (CHF)<span className='content-highlight'>{bigN(get(data, 'KPI_expenditureLC_CHF.value'))}</span></li>
+              <li>Volunteers<span className='content-highlight'>{n(get(data, 'KPI_PeopleVol_Tot.value'))}</span></li>
+              <li>People reached<span className='content-highlight'>{n(get(data, 'KPI_ReachDRER_D_Tot.value'))}</span></li>
+              <li>People giving blood<span className='content-highlight'>{n(get(data, 'KPI_DonBlood_Tot.value'))}</span></li>
+              <li>Trained in first aid<span className='content-highlight'>{n(get(data, 'KPI_TrainFA_Tot.value'))}</span></li>
+            </ul>
+          </div>
         </div>
+        <p>Source: FDRS | Reporting year(s): {Object.keys(years).sort().join(', ')}</p>
       </div>
     );
   }
