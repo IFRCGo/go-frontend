@@ -4,6 +4,7 @@ import { combineReducers } from 'redux';
 import { systemAlertsReducer } from '../components/system-alerts';
 import user from './user';
 import profile from './profile';
+import countries from './countries';
 import fieldReportForm from './field-report-form';
 import fieldReport from './field-report';
 import fieldReports from './field-reports';
@@ -25,6 +26,7 @@ import fdrs from './fdrs';
 export const reducers = {
   user,
   profile,
+  countries,
   systemAlertsReducer,
   fieldReportForm,
   fieldReport,

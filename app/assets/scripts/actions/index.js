@@ -46,6 +46,16 @@ export function recoverPassword (email) {
   return postJSON('recover_password', RECOVER_PASSWORD, { email });
 }
 
+export const GET_COUNTRIES = 'GET_COUNTRIES';
+export function getCountries (region) {
+  let filters = {limit: 1000};
+  if (region) {
+    filters.region = region;
+  }
+  const f = buildAPIQS(filters);
+  return fetchJSON(`api/v2/country/?${f}`, GET_COUNTRIES);
+}
+
 export const GET_FIELD_REPORT = 'GET_FIELD_REPORT';
 export function getFieldReportById (id) {
   return fetchJSON(`api/v2/field_report/${id}/`, GET_FIELD_REPORT, withToken(), { id });
