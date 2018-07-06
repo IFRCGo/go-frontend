@@ -35,16 +35,9 @@ import {
 
 import App from './app';
 import Fold from '../components/fold';
-import BlockLoading from '../components/block-loading';
 import Expandable from '../components/expandable';
 import { FilterHeader } from '../components/display-table';
 import { Snippets } from '../components/admin-area-elements';
-
-const noDocs = (
-  <div className='empty-data__container'>
-    <p className='empty-data__note'>No documents available.</p>
-  </div>
-);
 
 class Emergency extends React.Component {
   constructor (props) {
@@ -90,7 +83,9 @@ class Emergency extends React.Component {
 
   getAppealDocuments (event) {
     const appealIds = get(event, 'data.appeals', []).map(o => o.id);
-    this.props._getAppealDocsByAppealIds(appealIds, event.data.id);
+    if (appealIds.length) {
+      this.props._getAppealDocsByAppealIds(appealIds, event.data.id);
+    }
   }
 
   onAppealClick (id, e) {
@@ -203,13 +198,15 @@ class Emergency extends React.Component {
 
   renderFieldReports () {
     const { data } = this.props.event;
-    let content;
-
     if (!this.props.isLogged) {
-      content = this.renderMustLogin();
-    } else {
-      if (data.field_reports && data.field_reports.length) {
-        content = (
+      return (
+        <Fold id='field-reports' title='Field Reports' wrapperClass='event-field-reports' >
+          {this.renderMustLogin()}
+        </Fold>
+      );
+    } else if (data.field_reports && data.field_reports.length) {
+      return (
+        <Fold id='field-reports' title='Field Reports' wrapperClass='event-field-reports' >
           <table className='table table--zebra'>
             <thead>
               <tr>
@@ -238,30 +235,16 @@ class Emergency extends React.Component {
               ))}
             </tbody>
           </table>
-        );
-      } else {
-        content = (
-          <div className='empty-data__container'>
-            <p>No field reports to show</p>
-          </div>
-        );
-      }
+        </Fold>
+      );
     }
-
-    return (
-      <Fold
-        id='field-reports'
-        title='Field Reports'
-        wrapperClass='event-field-reports' >
-        {content}
-      </Fold>
-    );
+    return null;
   }
 
-  renderReports (className, data) {
+  renderReports (className, reports) {
     return (
       <ul className={className}>
-        {data.results.map(o => {
+        {reports.map(o => {
           let href = o['document'] || o['document_url'] || null;
           if (!href) { return null; }
           return <li key={o.id}>
@@ -273,13 +256,8 @@ class Emergency extends React.Component {
   }
 
   renderResponseDocuments () {
-    const { fetched, error, data } = this.props.situationReports;
-    let content = <BlockLoading/>;
-    if (error || (fetched && !data.results.length)) {
-      content = noDocs;
-    } else if (fetched) {
-      content = this.renderReports('situation-reports-list', data);
-    }
+    const data = get(this.props.situationReports, 'data.results', []);
+    if (!data.length) return null;
     const { id } = this.props.match.params;
     const addReportLink = url.resolve(api, `admin/api/event/${id}/change`);
     const types = this.props.situationReportTypes;
@@ -304,23 +282,18 @@ class Emergency extends React.Component {
               filter={this.state.sitrepFilters.type}
               onSelect={this.handleSitrepFilter.bind(this, 'type')} /> : null}
           </div>
-          {content}
+          {this.renderReports('situation-reports-list', data)}
         </div>
       </Fold>
     );
   }
 
   renderAppealDocuments () {
-    const { fetched, error, data } = this.props.appealDocuments;
-    let content = <BlockLoading/>;
-    if (error || (fetched && !data.results.length)) {
-      content = noDocs;
-    } else if (fetched) {
-      content = this.renderReports('public-docs-list', data);
-    }
+    const data = get(this.props.appealDocuments, 'data.results', []);
+    if (!data.length) return null;
     return (
       <Fold id='documents' title='Appeal Documents'>
-        {content}
+        {this.renderReports('public-docs-list', data)}
       </Fold>
     );
   }
@@ -356,7 +329,7 @@ class Emergency extends React.Component {
 
     if (!fetched || error) return null;
     const report = mostRecentReport(get(this.props, 'event.data.field_reports')) || {};
-    const summary = data.summary || report.description || nope;
+    const summary = data.summary || report.description || null;
     const source = data.summary ? 'Emergency'
       : report.description ? <Link to={`/reports/${report.id}`}>Field Report</Link> : null;
     const contacts = Array.isArray(data.contacts) && data.contacts.length ? data.contacts
@@ -386,12 +359,12 @@ class Emergency extends React.Component {
               <div style={style} className={c('inpage__nav', {'inpage__nav--sticky': isSticky})}>
                 <div className='inner'>
                   <ul>
-                    <li><a href='#overview' title='Go to Overview section'>Overview</a></li>
-                    <li><a href='#graphics' title='Go to Graphics section'>Graphics</a></li>
-                    <li><a href='#field-reports' title='Go to Field Reports section'>Field Reports</a></li>
-                    <li><a href='#response-documents' title='Go to Response Documents section'>Response Documents</a></li>
-                    <li><a href='#documents' title='Go to Documents section'>Appeal Documents</a></li>
-                    <li><a href='#contacts' title='Go to Contacts section'>Contacts</a></li>
+                    {summary ? <li><a href='#overview' title='Go to Overview section'>Overview</a></li> : null}
+                    {get(this.props.snippets, 'data.results.length') ? <li><a href='#graphics' title='Go to Graphics section'>Graphics</a></li> : null}
+                    {get(this.props.event, 'data.field_reports.length') ? <li><a href='#field-reports' title='Go to Field Reports section'>Field Reports</a></li> : null}
+                    {get(this.props.situationReports, 'data.results.length') ? <li><a href='#response-documents' title='Go to Response Documents section'>Response Documents</a></li> : null}
+                    {get(this.props.appealDocuments, 'data.results.length') ? <li><a href='#documents' title='Go to Documents section'>Appeal Documents</a></li> : null}
+                    {contacts && contacts.length ? <li><a href='#contacts' title='Go to Contacts section'>Contacts</a></li> : null}
                   </ul>
                 </div>
               </div>
@@ -400,25 +373,22 @@ class Emergency extends React.Component {
 
           <div className='inpage__body'>
             <div className='inner'>
-              <Fold
-                id='overview'
-                title='Situational Overview'
-                wrapperClass='situational-overview' >
-                <Expandable limit={360} text={summary} />
-                {source ? <p>Source: {source}</p> : null}
-              </Fold>
-
+              {summary ? (
+                <Fold id='overview'
+                  title='Situational Overview'
+                  wrapperClass='situational-overview' >
+                  <Expandable limit={360} text={summary} />
+                  {source ? <p>Source: {source}</p> : null}
+                </Fold>
+              ) : null}
               <Snippets data={this.props.snippets} />
               {this.renderKeyFigures()}
               {this.renderFieldReports()}
               {this.renderResponseDocuments()}
               {this.renderAppealDocuments()}
 
-              <Fold
-                id='contacts'
-                title='Contacts'
-                wrapperClass='contacts' >
-                {contacts && contacts.length ? (
+              {contacts && contacts.length ? (
+                <Fold id='contacts' title='Contacts' wrapperClass='contacts'>
                   <table className='table'>
                     <thead className='visually-hidden'>
                       <tr>
@@ -443,12 +413,8 @@ class Emergency extends React.Component {
                       ))}
                     </tbody>
                   </table>
-                ) : (
-                  <div className='empty-data__container'>
-                    <p>No contacts to show</p>
-                  </div>
-                )}
-              </Fold>
+                </Fold>
+              ) : null}
             </div>
           </div>
         </StickyContainer>
