@@ -155,9 +155,18 @@ export function getEventSnippets (eventId) {
   return fetchJSON(`api/v2/event_snippet/?event=${eventId}`, GET_EVENT_SNIPPETS, withToken(), { id: eventId });
 }
 
+export const GET_SITREP_TYPES = 'GET_SITREP_TYPES';
+export function getSitrepTypes (type) {
+  return fetchJSON('api/v2/situation_report_type/', GET_SITREP_TYPES);
+}
+
 export const GET_SITREPS = 'GET_SITREPS';
-export function getSitrepsByEventId (id) {
-  return fetchJSON(`api/v2/situation_report/?ordering=-created_at&event=${id}&limit=100`, GET_SITREPS, withToken(), { id });
+export function getSitrepsByEventId (id, filters = {}) {
+  filters.event = id;
+  filters.ordering = '-created_at';
+  filters.limit = 100;
+  const f = buildAPIQS(filters);
+  return fetchJSON(`api/v2/situation_report/?${f}`, GET_SITREPS, withToken(), { id });
 }
 
 export const GET_ERU_OWNERS = 'GET_ERU_OWNERS';
