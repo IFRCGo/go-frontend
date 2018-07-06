@@ -36,6 +36,12 @@ import BlockLoading from '../components/block-loading';
 import Expandable from '../components/expandable';
 import { Snippets } from '../components/admin-area-elements';
 
+const noDocs = (
+  <div className='empty-data__container'>
+    <p className='empty-data__note'>No documents available.</p>
+  </div>
+);
+
 class Emergency extends React.Component {
   constructor (props) {
     super(props);
@@ -225,61 +231,55 @@ class Emergency extends React.Component {
     );
   }
 
-  renderDocuments (documents, title, wrapperClass, includeAdminLink, isPublic) {
-    const {
-      fetched,
-      fetching,
-      error,
-      data
-    } = documents;
+  renderReports (className, data) {
+    return (
+      <ul className={className}>
+        {data.results.map(o => {
+          let href = o['document'] || o['document_url'] || null;
+          if (!href) { return null; }
+          return <li key={o.id}>
+            <a className='link--secondary' href={href} target='_blank'>{o.name}, {isoDate(o.created_at)}</a>
+          </li>;
+        })}
+      </ul>
+    )
+  }
 
-    let content;
-
-    if (!isPublic && !this.props.isLogged) {
-      content = this.renderMustLogin();
-    } else if (fetching) {
-      content = <BlockLoading/>;
-    } else if (error) {
-      content = <p>Documents not available.</p>;
+  renderSituationReports () {
+    const { fetched, fetching, error, data } = this.props.situationReports;
+    let content = <BlockLoading/>;
+    if (error || (fetched && !data.results.length)) {
+      content = noDocs;
     } else if (fetched) {
-      if (!data.results.length) {
-        content = (
-          <div className='empty-data__container'>
-            <p className='empty-data__note'>No documents available.</p>
-          </div>
-        );
-      } else {
-        content = (
-          <ul className={wrapperClass}>
-            {data.results.map(o => {
-              let href = o['document'] || o['document_url'] || null;
-              if (!href) { return null; }
-              return <li key={o.id}>
-                <a className='link--secondary' href={href} target='_blank'>{o.name}, {isoDate(o.created_at)}</a>
-              </li>;
-            })}
-          </ul>
-        );
-      }
+      content = this.renderReports('situation-reports-list', data);
     }
-
     const { id } = this.props.match.params;
     const addReportLink = url.resolve(api, `admin/api/event/${id}/change`);
-
     return (
-      <Fold
-        id='situation-reports'
-        wrapperClass='situation-reports'
+      <Fold id='situation-reports'
         header={() => (
           <div className='fold__headline'>
-            {includeAdminLink && (
-              <div className='fold__actions'>
-                <a className='button button--primary-bounded' href={addReportLink} target='_blank'>Add a Report</a>
-              </div>
-            )}
-            <h2 className='fold__title'>{title}</h2>
+            <div className='fold__actions'>
+              <a className='button button--primary-bounded' href={addReportLink} target='_blank'>Add a Report</a>
+            </div>
+            <h2 className='fold__title'>Situation Reports</h2>
           </div>
         )} >
+        {content}
+      </Fold>
+    );
+  }
+
+  renderAppealDocuments () {
+    const { fetched, fetching, error, data } = this.props.appealDocuments;
+    let content = <BlockLoading/>;
+    if (error || (fetched && !data.results.length)) {
+      content = noDocs;
+    } else if (fetched) {
+      content = this.renderReports('public-docs-list', data);
+    }
+    return (
+      <Fold id='documents' title='Appeal Documents'>
         {content}
       </Fold>
     );
@@ -371,8 +371,8 @@ class Emergency extends React.Component {
               <Snippets data={this.props.snippets} />
               {this.renderKeyFigures()}
               {this.renderFieldReports()}
-              {this.renderDocuments(this.props.situationReports, 'Situation Reports', 'situation-reports-list', true)}
-              {this.renderDocuments(this.props.appealDocuments, 'Appeal Documents', 'public-docs-list', false, true)}
+              {this.renderSituationReports()}
+              {this.renderAppealDocuments(this.props.appealDocuments, 'Appeal Documents', 'public-docs-list', false, true)}
 
               <Fold
                 id='contacts'
