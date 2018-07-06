@@ -1,4 +1,6 @@
 'use strict';
+import { combineReducers } from 'redux';
+import { stateInflight, stateError, stateSuccess } from '../utils/reducer-utils';
 
 const initialState = {
   // fetching: false,
@@ -7,7 +9,7 @@ const initialState = {
   // data: {}
 };
 
-export default function reducer (state = initialState, action) {
+function reports (state = initialState, action) {
   switch (action.type) {
     case 'GET_SITREPS_INFLIGHT':
       state = Object.assign({}, state, {
@@ -41,3 +43,31 @@ export default function reducer (state = initialState, action) {
   }
   return state;
 }
+
+const initialReportState = {
+  fetching: false,
+  fetched: false,
+  receivedAt: null,
+  data: {}
+};
+
+function types (state = initialReportState, action) {
+  switch (action.type) {
+    case 'GET_SITREP_TYPES_INFLIGHT':
+      state = stateInflight(state, action);
+      break;
+    case 'GET_SITREP_TYPES_FAILED':
+      state = stateError(state, action);
+      break;
+    case 'GET_SITREP_TYPES_SUCCESS':
+      state = stateSuccess(state, action);
+      break;
+  }
+  return state;
+}
+
+// Combined export.
+export default combineReducers({
+  reports,
+  types
+});

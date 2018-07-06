@@ -157,7 +157,7 @@ export class FilterHeader extends React.PureComponent {
         alignment='center' >
         <ul className='drop__menu drop__menu--select' role='menu'>
           {options.map(o => <li key={o.value}>
-            <a href='#' title={`Filter by ${title} - ${o.label}`} className={c('drop__menu-item', {'drop__menu-item--active': filter === o.value})} data-hook='dropdown:close' onClick={onFilterClick.bind(this, o)}>{o.label}</a>
+            <a href='#' title={`Filter by ${title} - ${o.label}`} className={c('drop__menu-item button', {'drop__menu-item--active': filter === o.value})} data-hook='dropdown:close' onClick={onFilterClick.bind(this, o)}>{o.label}</a>
           </li>)}
         </ul>
       </Dropdown>

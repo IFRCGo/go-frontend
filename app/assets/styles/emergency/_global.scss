@@ -57,7 +57,15 @@
 
 }
 
-
+.fold__filters {
+  margin-bottom: $global-spacing * 2;
+  .drop__toggle {
+    color: $primary-color;
+    font-weight: $base-font-bold;
+    margin-right: $global-spacing * 2;
+    font-size: 1rem;
+  }
+}
 
 .introduction-nav {
   list-style: none;
