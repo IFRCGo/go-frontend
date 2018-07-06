@@ -25,6 +25,10 @@ const alertTypes = {
   5: 'SURGE'
 };
 
+const typeOptions = [{value: 'all', label: 'All'}].concat(Object.keys(alertTypes).map(d => ({
+  label: alertTypes[d], value: d.toString()
+})));
+
 const alertCategories = {
   0: 'Info',
   1: 'Deployment',
@@ -32,6 +36,10 @@ const alertCategories = {
   3: 'Shelter',
   4: 'Stand down'
 };
+
+const categoryOptions = [{value: 'all', label: 'All'}].concat(Object.keys(alertCategories).map(d => ({
+  label: alertCategories[d], value: d.toString()
+})));
 
 class AlertsTable extends SFPComponent {
   // Methods form SFPComponent:
@@ -50,7 +58,9 @@ class AlertsTable extends SFPComponent {
           direction: 'asc'
         },
         filters: {
-          date: 'all'
+          date: 'all',
+          type: 'all',
+          category: 'all'
         }
       }
     };
@@ -77,6 +87,13 @@ class AlertsTable extends SFPComponent {
       qs.created_at__gte = datesAgo[state.filters.date]();
     } else if (props.showRecent) {
       qs.created_at__gte = recentInterval;
+    }
+
+    if (state.filters.type !== 'all') {
+      qs.atype = state.filters.type;
+    }
+    if (state.filters.category !== 'all') {
+      qs.category = state.filters.category;
     }
     props._getSurgeAlerts(this.state.alerts.page, qs);
   }
@@ -106,10 +123,16 @@ class AlertsTable extends SFPComponent {
         id: 'date',
         label: <FilterHeader id='date' title='Date' options={dateOptions} filter={this.state.alerts.filters.date} onSelect={this.handleFilterChange.bind(this, 'alerts', 'date')} />
       },
-      { id: 'category', label: 'Alert Type' },
+      {
+        id: 'category',
+        label: <FilterHeader id='category' title='Alert Category' options={categoryOptions} filter={this.state.alerts.filters.category} onSelect={this.handleFilterChange.bind(this, 'alerts', 'category')} />
+      },
       { id: 'emergency', label: 'Emergency' },
       { id: 'msg', label: 'Alert Message' },
-      { id: 'type', label: 'Type' }
+      {
+        id: 'type',
+        label: <FilterHeader id='type' title='Type' options={typeOptions} filter={this.state.alerts.filters.type} onSelect={this.handleFilterChange.bind(this, 'alerts', 'type')} />
+      }
     ];
 
     const rows = data.results.reduce((acc, rowData, idx, all) => {
