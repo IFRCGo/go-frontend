@@ -294,14 +294,16 @@ class Emergency extends React.Component {
           </div>
         )} >
         <div>
-          <FilterHeader id='sitrep-date' title='Created At'
-            options={dateOptions}
-            filter={this.state.sitrepFilters.date}
-            onSelect={this.handleSitrepFilter.bind(this, 'date')} />
-          {types.fetched && !types.error ? <FilterHeader id='sitrep-type' title='Document Type'
-            options={[{value: 'all', label: 'All'}].concat(types.data.results.map(d => ({value: d.id, label: d.type})))}
-            filter={this.state.sitrepFilters.type}
-            onSelect={this.handleSitrepFilter.bind(this, 'type')} /> : null}
+          <div className='fold__filters'>
+            <FilterHeader id='sitrep-date' title='Created At'
+              options={dateOptions}
+              filter={this.state.sitrepFilters.date}
+              onSelect={this.handleSitrepFilter.bind(this, 'date')} />
+            {types.fetched && !types.error ? <FilterHeader id='sitrep-type' title='Document Type'
+              options={[{value: 'all', label: 'All'}].concat(types.data.results.map(d => ({value: d.id, label: d.type})))}
+              filter={this.state.sitrepFilters.type}
+              onSelect={this.handleSitrepFilter.bind(this, 'type')} /> : null}
+          </div>
           {content}
         </div>
       </Fold>
