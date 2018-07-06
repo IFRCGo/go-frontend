@@ -129,7 +129,6 @@ class Emergency extends React.Component {
     return (
       <div className='inpage__header-col'>
         <h3>Emergency Overview</h3>
-        <p>Source: <Link to={`/reports/${report.id}`}>Field Report</Link> | Last Updated: {timestamp(report.updated_at)}</p>
         <div className='content-list-group'>
           <ul className='content-list'>
             <li>Affected<span className='content-highlight'>{n(get(report, 'num_affected'))}</span></li>
@@ -145,6 +144,7 @@ class Emergency extends React.Component {
             <li>Expat delegates<span className='content-highlight'>{n(get(report, 'num_expats_delegates'))}</span></li>
           </ul>
         </div>
+        <p>Source: <Link to={`/reports/${report.id}`}>Field Report</Link> | Last Updated: {timestamp(report.updated_at)}</p>
       </div>
     );
   }
