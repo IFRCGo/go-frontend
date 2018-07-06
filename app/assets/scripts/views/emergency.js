@@ -15,6 +15,7 @@ import {
   getEventById,
   getEventSnippets,
   getSitrepsByEventId,
+  getSitrepTypes,
   getAppealDocsByAppealIds
 } from '../actions';
 import {
@@ -27,13 +28,16 @@ import {
 } from '../utils/format';
 import {
   get,
-  mostRecentReport
+  mostRecentReport,
+  dateOptions,
+  datesAgo
 } from '../utils/utils/';
 
 import App from './app';
 import Fold from '../components/fold';
 import BlockLoading from '../components/block-loading';
 import Expandable from '../components/expandable';
+import { FilterHeader } from '../components/display-table';
 import { Snippets } from '../components/admin-area-elements';
 
 const noDocs = (
@@ -47,8 +51,13 @@ class Emergency extends React.Component {
     super(props);
 
     this.state = {
-      selectedAppeal: null
+      selectedAppeal: null,
+      sitrepFilters: {
+        date: 'all',
+        type: 'all'
+      }
     };
+    this.handleSitrepFilter = this.handleSitrepFilter.bind(this);
   }
 
   componentWillReceiveProps (nextProps) {
@@ -69,6 +78,7 @@ class Emergency extends React.Component {
 
   componentDidMount () {
     this.getEvent(this.props.match.params.id);
+    this.props._getSitrepTypes();
   }
 
   getEvent (id) {
@@ -86,6 +96,23 @@ class Emergency extends React.Component {
   onAppealClick (id, e) {
     e.preventDefault();
     this.setState({selectedAppeal: id});
+  }
+
+  handleSitrepFilter (state, value) {
+    const next = Object.assign({}, this.state.sitrepFilters, {
+      [state]: value
+    });
+
+    const { date, type } = next;
+    let filters = {};
+    if (date !== 'all') {
+      filters.created_at__gte = datesAgo[date]();
+    }
+    if (type !== 'all') {
+      filters.type = type;
+    }
+    this.props._getSitrepsByEventId(this.props.match.params.id, filters);
+    this.setState({sitrepFilters: next});
   }
 
   renderMustLogin () {
@@ -242,11 +269,11 @@ class Emergency extends React.Component {
           </li>;
         })}
       </ul>
-    )
+    );
   }
 
-  renderSituationReports () {
-    const { fetched, fetching, error, data } = this.props.situationReports;
+  renderResponseDocuments () {
+    const { fetched, error, data } = this.props.situationReports;
     let content = <BlockLoading/>;
     if (error || (fetched && !data.results.length)) {
       content = noDocs;
@@ -255,23 +282,34 @@ class Emergency extends React.Component {
     }
     const { id } = this.props.match.params;
     const addReportLink = url.resolve(api, `admin/api/event/${id}/change`);
+    const types = this.props.situationReportTypes;
     return (
-      <Fold id='situation-reports'
+      <Fold id='response-documents'
         header={() => (
           <div className='fold__headline'>
             <div className='fold__actions'>
               <a className='button button--primary-bounded' href={addReportLink} target='_blank'>Add a Report</a>
             </div>
-            <h2 className='fold__title'>Situation Reports</h2>
+            <h2 className='fold__title'>Response Documents</h2>
           </div>
         )} >
-        {content}
+        <div>
+          <FilterHeader id='sitrep-date' title='Created At'
+            options={dateOptions}
+            filter={this.state.sitrepFilters.date}
+            onSelect={this.handleSitrepFilter.bind(this, 'date')} />
+          {types.fetched && !types.error ? <FilterHeader id='sitrep-type' title='Document Type'
+            options={[{value: 'all', label: 'All'}].concat(types.data.results.map(d => ({value: d.id, label: d.type})))}
+            filter={this.state.sitrepFilters.type}
+            onSelect={this.handleSitrepFilter.bind(this, 'type')} /> : null}
+          {content}
+        </div>
       </Fold>
     );
   }
 
   renderAppealDocuments () {
-    const { fetched, fetching, error, data } = this.props.appealDocuments;
+    const { fetched, error, data } = this.props.appealDocuments;
     let content = <BlockLoading/>;
     if (error || (fetched && !data.results.length)) {
       content = noDocs;
@@ -349,7 +387,7 @@ class Emergency extends React.Component {
                     <li><a href='#overview' title='Go to Overview section'>Overview</a></li>
                     <li><a href='#graphics' title='Go to Graphics section'>Graphics</a></li>
                     <li><a href='#field-reports' title='Go to Field Reports section'>Field Reports</a></li>
-                    <li><a href='#situation-reports' title='Go to Situation Reports section'>Situation Reports</a></li>
+                    <li><a href='#response-documents' title='Go to Situation Reports section'>Situation Reports</a></li>
                     <li><a href='#documents' title='Go to Documents section'>Documents</a></li>
                     <li><a href='#contacts' title='Go to Contacts section'>Contacts</a></li>
                   </ul>
@@ -371,8 +409,8 @@ class Emergency extends React.Component {
               <Snippets data={this.props.snippets} />
               {this.renderKeyFigures()}
               {this.renderFieldReports()}
-              {this.renderSituationReports()}
-              {this.renderAppealDocuments(this.props.appealDocuments, 'Appeal Documents', 'public-docs-list', false, true)}
+              {this.renderResponseDocuments()}
+              {this.renderAppealDocuments()}
 
               <Fold
                 id='contacts'
@@ -433,12 +471,14 @@ if (environment !== 'production') {
     _getEventById: T.func,
     _getEventSnippets: T.func,
     _getSitrepsByEventId: T.func,
+    _getSitrepTypes: T.func,
     _getAppealDocsByAppealIds: T.func,
     snippets: T.object,
     match: T.object,
     location: T.object,
     event: T.object,
     situationReports: T.object,
+    situationReportTypes: T.object,
     appealDocuments: T.object,
     isLogged: T.bool
   };
@@ -458,11 +498,12 @@ const selector = (state, ownProps) => ({
     fetching: false,
     fetched: false
   }),
-  situationReports: get(state.situationReports, ownProps.match.params.id, {
+  situationReports: get(state.situationReports, ['reports', ownProps.match.params.id], {
     data: {},
     fetching: false,
     fetched: false
   }),
+  situationReportTypes: state.situationReports.types,
   appealDocuments: get(state.appealDocuments, ownProps.match.params.id, {
     data: {},
     fetching: false,
@@ -475,6 +516,7 @@ const dispatcher = (dispatch) => ({
   _getEventById: (...args) => dispatch(getEventById(...args)),
   _getEventSnippets: (...args) => dispatch(getEventSnippets(...args)),
   _getSitrepsByEventId: (...args) => dispatch(getSitrepsByEventId(...args)),
+  _getSitrepTypes: (...args) => dispatch(getSitrepTypes(...args)),
   _getAppealDocsByAppealIds: (...args) => dispatch(getAppealDocsByAppealIds(...args))
 });
 
