@@ -11,6 +11,12 @@ const fdrsProps = [
   'Population',
   'GDP',
   'Poverty',
+  'GNIPC',
+  'LifeExp',
+  'ChildMortality',
+  'Literacy',
+  'UrbPop',
+  'MaternalMortality',
   'KPI_IncomeLC_CHF', // total income in CHF
   'KPI_expenditureLC_CHF', // total expenditure in CHF
   'KPI_PeopleVol_Tot', // total # volunteers

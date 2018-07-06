@@ -3,7 +3,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
-import { DateTime } from 'luxon';
 
 import { nope, percent, commaSeparatedNumber as n } from '../../utils/format';
 import { get, mostRecentReport } from '../../utils/utils';
@@ -21,7 +20,7 @@ class FeaturedEmergencies extends React.Component {
 
   /* eslint-disable camelcase */
   renderCard (d) {
-    const { disaster_start_date, id, name } = d;
+    const { id, name } = d;
     // get appeals data
     const appeals = get(d, 'appeals', []);
     const beneficiaries = appeals.reduce((acc, curr) => acc + curr.num_beneficiaries, 0);
@@ -35,7 +34,6 @@ class FeaturedEmergencies extends React.Component {
       <li className='key-emergencies-item' key={id}>
         <Link to={`/emergencies/${id}`}>
           <h2 className='card__title'>{name}</h2>
-          <p className='card__date'>Start Date: {disaster_start_date ? DateTime.fromISO(disaster_start_date).toISODate() : nope}</p>
           {appeals.length ? (
             <ul className='card__stat-list'>
               <li className='card__stat stats-people'>{n(beneficiaries)}<small>Targeted Beneficiaries</small></li>

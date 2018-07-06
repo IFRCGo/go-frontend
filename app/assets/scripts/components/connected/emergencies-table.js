@@ -17,8 +17,7 @@ import {
   get,
   dTypeOptions,
   dateOptions,
-  datesAgo,
-  mostRecentReport
+  datesAgo
 } from '../../utils/utils';
 import { getDtypeMeta } from '../../utils/get-dtype-meta';
 
@@ -139,16 +138,16 @@ class EmergenciesTable extends SFPComponent {
         },
         {
           id: 'glide',
-          label: 'Glide'
+          label: <SortHeader id='glide' title='Glide' sort={this.state.emerg.sort} onClick={this.handleSortChange.bind(this, 'emerg', 'glide')} />
         },
         {
           id: 'totalAffected',
-          label: <SortHeader id='num_affected' title='Requested Amount (CHF)' sort={this.state.emerg.sort} onClick={this.handleSortChange.bind(this, 'emerg', 'num_affected')} />,
+          label: <SortHeader id='amount_requested' title='Requested Amount (CHF)' sort={this.state.emerg.sort} onClick={this.handleSortChange.bind(this, 'emerg', 'amount_requested')} />,
           className: 'right-align'
         },
         {
           id: 'affected',
-          label: '# Affected',
+          label: <SortHeader id='num_affected' title='# Affected' sort={this.state.emerg.sort} onClick={this.handleSortChange.bind(this, 'emerg', 'num_affected')} />,
           className: 'right-align'
         }
       ];
@@ -160,8 +159,7 @@ class EmergenciesTable extends SFPComponent {
 
       const rows = data.results.map(rowData => {
         const date = rowData.disaster_start_date ? isoDate(rowData.disaster_start_date) : nope;
-        const report = mostRecentReport(rowData['field_reports']);
-        const affected = get(report, 'num_affected', nope);
+        const affected = rowData.hasOwnProperty('num_affected') ? rowData.num_affected : nope;
         let row = {
           id: rowData.id,
           date: date,
