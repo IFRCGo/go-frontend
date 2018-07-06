@@ -14,8 +14,7 @@ import {
   dateOptions,
   datesAgo,
   dTypeOptions,
-  appealTypeOptions,
-  appealStatusOptions
+  appealTypeOptions
 } from '../../utils/utils/';
 
 import Fold from '../fold';
@@ -27,13 +26,6 @@ const appealsType = {
   0: 'DREF',
   1: 'Appeal',
   2: 'Movement'
-};
-
-const appealStatus = {
-  0: 'Active',
-  1: 'Closed',
-  3: 'Frozen',
-  4: 'Archived'
 };
 
 class AppealsTable extends SFPComponent {
@@ -153,6 +145,10 @@ class AppealsTable extends SFPComponent {
           id: 'date',
           label: <FilterHeader id='date' title='Start Date' options={dateOptions} filter={this.state.appeals.filters.date} onSelect={this.handleFilterChange.bind(this, 'appeals', 'date')} />
         },
+        {
+          id: 'type',
+          label: <FilterHeader id='type' title='Type' options={appealTypeOptions} filter={this.state.appeals.filters.atype} onSelect={this.handleFilterChange.bind(this, 'appeals', 'atype')} />
+        },
         { id: 'code', label: 'Code' },
         {
           id: 'name',
@@ -172,12 +168,8 @@ class AppealsTable extends SFPComponent {
           label: <SortHeader id='amount_funded' title='Funding (CHF)' sort={this.state.appeals.sort} onClick={this.handleSortChange.bind(this, 'appeals', 'amount_funded')} />
         },
         {
-          id: 'status',
-          label: <FilterHeader id='status' title='Status' options={appealStatusOptions} filter={this.state.appeals.filters.status} onSelect={this.handleFilterChange.bind(this, 'appeals', 'status')} />
-        },
-        {
-          id: 'type',
-          label: <FilterHeader id='type' title='Type' options={appealTypeOptions} filter={this.state.appeals.filters.atype} onSelect={this.handleFilterChange.bind(this, 'appeals', 'atype')} />
+          id: 'country',
+          label: 'Country'
         }
       ];
 
@@ -196,8 +188,8 @@ class AppealsTable extends SFPComponent {
           value: n(o.amount_funded),
           className: 'right-align'
         },
-        status: get(appealStatus, Number(o.status), nope),
-        type: appealsType[o.atype]
+        type: appealsType[o.atype],
+        country: o.country ? <Link to={`/countries/${o.country.id}`} className='link--primary' title='View Country'>{o.country.name}</Link> : nope
       }));
 
       return (
