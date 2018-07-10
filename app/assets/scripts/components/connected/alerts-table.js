@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
+import { stringify } from 'qs';
 
-import { environment } from '../../config';
+import { environment, api } from '../../config';
 import { getSurgeAlerts } from '../../actions';
 import { get, dateOptions, datesAgo, isLoggedIn } from '../../utils/utils/';
 import { nope, privateSurgeAlert, recentInterval } from '../../utils/format';
@@ -50,7 +51,7 @@ class AlertsTable extends SFPComponent {
   constructor (props) {
     super(props);
     this.state = {
-      alerts: {
+      table: {
         page: 1,
         limit: isNaN(this.props.limit) ? 5 : this.props.limit,
         sort: {
@@ -78,7 +79,18 @@ class AlertsTable extends SFPComponent {
   }
 
   requestResults (props) {
-    let state = this.state.alerts;
+    props._getSurgeAlerts(this.state.table.page, this.getQs(props));
+  }
+
+  getExportLink () {
+    let qs = this.getQs(this.props);
+    qs.offset = qs.limit * (this.state.table.page - 1);
+    qs.format = 'csv';
+    return api + 'api/v2/surge_alert/?' + stringify(qs);
+  }
+
+  getQs (props) {
+    let state = this.state.table;
     let qs = { limit: state.limit };
     if (state.sort.field) {
       qs.ordering = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
@@ -95,7 +107,7 @@ class AlertsTable extends SFPComponent {
     if (state.filters.category !== 'all') {
       qs.category = state.filters.category;
     }
-    props._getSurgeAlerts(this.state.alerts.page, qs);
+    return qs;
   }
 
   updateData (what) {
@@ -121,17 +133,17 @@ class AlertsTable extends SFPComponent {
     const headings = [
       {
         id: 'date',
-        label: <FilterHeader id='date' title='Date' options={dateOptions} filter={this.state.alerts.filters.date} onSelect={this.handleFilterChange.bind(this, 'alerts', 'date')} />
+        label: <FilterHeader id='date' title='Date' options={dateOptions} filter={this.state.table.filters.date} onSelect={this.handleFilterChange.bind(this, 'table', 'date')} />
       },
       {
         id: 'category',
-        label: <FilterHeader id='category' title='Alert Category' options={categoryOptions} filter={this.state.alerts.filters.category} onSelect={this.handleFilterChange.bind(this, 'alerts', 'category')} />
+        label: <FilterHeader id='category' title='Alert Category' options={categoryOptions} filter={this.state.table.filters.category} onSelect={this.handleFilterChange.bind(this, 'table', 'category')} />
       },
       { id: 'emergency', label: 'Emergency' },
       { id: 'msg', label: 'Alert Message' },
       {
         id: 'type',
-        label: <FilterHeader id='type' title='Type' options={typeOptions} filter={this.state.alerts.filters.type} onSelect={this.handleFilterChange.bind(this, 'alerts', 'type')} />
+        label: <FilterHeader id='type' title='Type' options={typeOptions} filter={this.state.table.filters.type} onSelect={this.handleFilterChange.bind(this, 'table', 'type')} />
       }
     ];
 
@@ -160,18 +172,18 @@ class AlertsTable extends SFPComponent {
 
     return (
       <Fold title={`${title} (${data.count})`} id={this.props.id}>
-        {this.props.exportLink ? (
+        {this.props.showExport ? (
           <div className='fold__actions'>
-            <a href={this.props.exportLink} className='button button--primary-bounded'>Export Table</a>
+            <a href={this.getExportLink()} className='button button--primary-bounded'>Export Table</a>
           </div>
         ) : null}
         <DisplayTable
           className='responsive-table alerts-table'
           headings={headings}
           rows={rows}
-          pageCount={data.count / this.state.alerts.limit}
-          page={this.state.alerts.page - 1}
-          onPageChange={this.handlePageChange.bind(this, 'alerts')}
+          pageCount={data.count / this.state.table.limit}
+          page={this.state.table.page - 1}
+          onPageChange={this.handlePageChange.bind(this, 'table')}
           noPaginate={this.props.noPaginate}
         />
         {this.props.viewAll ? (
@@ -192,7 +204,7 @@ if (environment !== 'production') {
     limit: T.number,
 
     noPaginate: T.bool,
-    exportLink: T.string,
+    showExport: T.bool,
     title: T.string,
 
     showRecent: T.bool,

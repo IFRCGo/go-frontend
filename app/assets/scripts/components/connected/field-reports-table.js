@@ -4,9 +4,13 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { DateTime } from 'luxon';
+import { stringify } from 'qs';
 
-import { environment } from '../../config';
-import { getFieldReportsList } from '../../actions';
+import { environment, api } from '../../config';
+import {
+  getFieldReportsList,
+  getFieldReportsListCsv
+} from '../../actions';
 import {
   recentInterval,
   nope,
@@ -30,7 +34,7 @@ class FieldReportsTable extends SFPComponent {
   constructor (props) {
     super(props);
     this.state = {
-      fieldReports: {
+      table: {
         page: 1,
         limit: isNaN(props.limit) ? 10 : props.limit,
         sort: {
@@ -43,6 +47,7 @@ class FieldReportsTable extends SFPComponent {
         }
       }
     };
+    this.exportAsCsv = this.exportAsCsv.bind(this);
   }
 
   componentDidMount () {
@@ -59,10 +64,36 @@ class FieldReportsTable extends SFPComponent {
     if (shouldMakeNewRequest) {
       this.requestResults(newProps);
     }
+
+    if (this.props.csv.fetching && !newProps.csv.fetching && !newProps.csv.error) {
+      const encodedUri = encodeURI('data:text/csv;charset=utf-8,' + newProps.csv.data);
+      const link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', 'download.csv');
+      link.innerHTML = 'Click';
+      document.body.appendChild(link);
+      link.click();
+    }
   }
 
   requestResults (props) {
-    let state = this.state.fieldReports;
+    props._getFieldReportsList(this.state.table.page, this.getQs(props));
+  }
+
+  exportAsCsv (e) {
+    e.preventDefault();
+    this.props._getFieldReportsListCsv(this.getExportLink());
+  }
+
+  getExportLink () {
+    let qs = this.getQs(this.props);
+    qs.offset = qs.limit * (this.state.table.page - 1);
+    qs.format = 'csv';
+    return api + 'api/v2/field_report/?' + stringify(qs);
+  }
+
+  getQs (props) {
+    let state = this.state.table;
     let qs = { limit: state.limit };
     if (state.sort.field) {
       qs.ordering = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
@@ -85,8 +116,7 @@ class FieldReportsTable extends SFPComponent {
     } else if (!isNaN(props.region)) {
       qs.regions__in = props.region;
     }
-
-    props._getFieldReportsList(this.state.fieldReports.page, qs);
+    return qs;
   }
 
   updateData (what) {
@@ -123,16 +153,16 @@ class FieldReportsTable extends SFPComponent {
       const headings = [
         {
           id: 'date',
-          label: <FilterHeader id='date' title='Created At' options={dateOptions} filter={this.state.fieldReports.filters.date} onSelect={this.handleFilterChange.bind(this, 'fieldReports', 'date')} />
+          label: <FilterHeader id='date' title='Created At' options={dateOptions} filter={this.state.table.filters.date} onSelect={this.handleFilterChange.bind(this, 'table', 'date')} />
         },
         {
           id: 'name',
-          label: <SortHeader id='name' title='Name' sort={this.state.fieldReports.sort} onClick={this.handleSortChange.bind(this, 'fieldReports', 'summary')} />
+          label: <SortHeader id='name' title='Name' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'summary')} />
         },
         { id: 'event', label: 'Emergency' },
         {
           id: 'dtype',
-          label: <FilterHeader id='dtype' title='Disaster Type' options={dTypeOptions} filter={this.state.fieldReports.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'fieldReports', 'dtype')} />
+          label: <FilterHeader id='dtype' title='Disaster Type' options={dTypeOptions} filter={this.state.table.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'table', 'dtype')} />
         },
         { id: 'countries', label: 'Countries' }
       ];
@@ -148,17 +178,17 @@ class FieldReportsTable extends SFPComponent {
 
       return (
         <Fold title={`${title} (${n(data.count)})`} id={this.props.id}>
-          {this.props.exportLink ? (
+          {this.props.showExport ? (
             <div className='fold__actions'>
-              <a href={this.props.exportLink} className='button button--primary-bounded'>Export Table</a>
+              <a href='#' onClick={this.exportAsCsv} className='button button--primary-bounded'>Export Table</a>
             </div>
           ) : null}
           <DisplayTable
             headings={headings}
             rows={rows}
-            pageCount={data.count / this.state.fieldReports.limit}
-            page={this.state.fieldReports.page - 1}
-            onPageChange={this.handlePageChange.bind(this, 'fieldReports')}
+            pageCount={data.count / this.state.table.limit}
+            page={this.state.table.page - 1}
+            onPageChange={this.handlePageChange.bind(this, 'table')}
             noPaginate={this.props.noPaginate}
           />
           {this.props.viewAll ? (
@@ -177,7 +207,9 @@ class FieldReportsTable extends SFPComponent {
 if (environment !== 'production') {
   FieldReportsTable.propTypes = {
     _getFieldReportsList: T.func,
+    _getFieldReportsListCsv: T.func,
     list: T.object,
+    csv: T.object,
     isAuthenticated: T.bool,
 
     limit: T.number,
@@ -185,7 +217,7 @@ if (environment !== 'production') {
     region: T.number,
 
     noPaginate: T.bool,
-    exportLink: T.string,
+    showExport: T.bool,
     title: T.string,
 
     showRecent: T.bool,
@@ -200,11 +232,13 @@ if (environment !== 'production') {
 
 const selector = (state) => ({
   list: state.fieldReports,
+  csv: state.csv.fieldReports,
   isAuthenticated: !!state.user.data.token
 });
 
 const dispatcher = (dispatch) => ({
-  _getFieldReportsList: (...args) => dispatch(getFieldReportsList(...args))
+  _getFieldReportsList: (...args) => dispatch(getFieldReportsList(...args)),
+  _getFieldReportsListCsv: (...args) => dispatch(getFieldReportsListCsv(...args))
 });
 
 export default withRouter(connect(selector, dispatcher)(FieldReportsTable));

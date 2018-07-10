@@ -1,6 +1,7 @@
 'use strict';
 import {
   fetchJSON,
+  fetchCSV,
   postJSON,
   putJSON,
   patchJSON,
@@ -81,6 +82,11 @@ export function getFieldReportsList (page = 1, filters = {}) {
   filters.offset = filters.limit * (page - 1);
   const f = buildAPIQS(filters);
   return fetchJSON(`/api/v2/field_report/?${f}`, GET_FIELD_REPORTS_LIST, withToken());
+}
+
+export const GET_FIELD_REPORTS_LIST_CSV = 'GET_FIELD_REPORTS_LIST_CSV';
+export function getFieldReportsListCsv (url) {
+  return fetchCSV(url, GET_FIELD_REPORTS_LIST_CSV, withToken());
 }
 
 export const GET_SURGE_ALERTS = 'GET_SURGE_ALERTS';

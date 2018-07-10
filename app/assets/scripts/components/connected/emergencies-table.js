@@ -3,8 +3,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
+import { stringify } from 'qs';
 
-import { environment } from '../../config';
+import { environment, api } from '../../config';
 import { getEmergenciesList } from '../../actions';
 import {
   nope,
@@ -35,7 +36,7 @@ class EmergenciesTable extends SFPComponent {
   constructor (props) {
     super(props);
     this.state = {
-      emerg: {
+      table: {
         page: 1,
         limit: isNaN(props.limit) ? 10 : props.limit,
         sort: {
@@ -67,8 +68,19 @@ class EmergenciesTable extends SFPComponent {
   }
 
   requestResults (props) {
-    let qs = { limit: this.state.emerg.limit };
-    let state = this.state.emerg;
+    props._getEmergenciesList(this.state.table.page, this.getQs(props));
+  }
+
+  getExportLink () {
+    let qs = this.getQs(this.props);
+    qs.offset = qs.limit * (this.state.table.page - 1);
+    qs.format = 'csv';
+    return api + 'api/v2/event/?' + stringify(qs);
+  }
+
+  getQs (props) {
+    let qs = { limit: this.state.table.limit };
+    let state = this.state.table;
     if (state.sort.field) {
       qs.ordering = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
     } else {
@@ -90,8 +102,7 @@ class EmergenciesTable extends SFPComponent {
     } else if (!isNaN(props.region)) {
       qs.regions__in = props.region;
     }
-
-    props._getEmergenciesList(this.state.emerg.page, qs);
+    return qs;
   }
 
   updateData (what) {
@@ -126,28 +137,28 @@ class EmergenciesTable extends SFPComponent {
       let headings = [
         {
           id: 'date',
-          label: <FilterHeader id='date' title='Start Date' options={dateOptions} filter={this.state.emerg.filters.date} onSelect={this.handleFilterChange.bind(this, 'emerg', 'date')} />
+          label: <FilterHeader id='date' title='Start Date' options={dateOptions} filter={this.state.table.filters.date} onSelect={this.handleFilterChange.bind(this, 'table', 'date')} />
         },
         {
           id: 'name',
-          label: <SortHeader id='name' title='Name' sort={this.state.emerg.sort} onClick={this.handleSortChange.bind(this, 'emerg', 'name')} />
+          label: <SortHeader id='name' title='Name' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'name')} />
         },
         {
           id: 'dtype',
-          label: <FilterHeader id='dtype' title='Disaster Type' options={dTypeOptions} filter={this.state.emerg.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'emerg', 'dtype')} />
+          label: <FilterHeader id='dtype' title='Disaster Type' options={dTypeOptions} filter={this.state.table.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'table', 'dtype')} />
         },
         {
           id: 'glide',
-          label: <SortHeader id='glide' title='Glide' sort={this.state.emerg.sort} onClick={this.handleSortChange.bind(this, 'emerg', 'glide')} />
+          label: <SortHeader id='glide' title='Glide' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'glide')} />
         },
         {
           id: 'totalAffected',
-          label: <SortHeader id='amount_requested' title='Requested Amount (CHF)' sort={this.state.emerg.sort} onClick={this.handleSortChange.bind(this, 'emerg', 'amount_requested')} />,
+          label: <SortHeader id='amount_requested' title='Requested Amount (CHF)' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'amount_requested')} />,
           className: 'right-align'
         },
         {
           id: 'affected',
-          label: <SortHeader id='num_affected' title='# Affected' sort={this.state.emerg.sort} onClick={this.handleSortChange.bind(this, 'emerg', 'num_affected')} />,
+          label: <SortHeader id='num_affected' title='# Affected' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'num_affected')} />,
           className: 'right-align'
         }
       ];
@@ -193,17 +204,17 @@ class EmergenciesTable extends SFPComponent {
 
       return (
         <Fold title={`${title} (${n(data.count)})`} id={this.props.id}>
-          {this.props.exportLink ? (
+          {this.props.showExport ? (
             <div className='fold__actions'>
-              <a href={this.props.exportLink} className='button button--primary-bounded'>Export Table</a>
+              <a href={this.getExportLink()} className='button button--primary-bounded'>Export Table</a>
             </div>
           ) : null}
           <DisplayTable
             headings={headings}
             rows={rows}
-            pageCount={data.count / this.state.emerg.limit}
-            page={this.state.emerg.page - 1}
-            onPageChange={this.handlePageChange.bind(this, 'emerg')}
+            pageCount={data.count / this.state.table.limit}
+            page={this.state.table.page - 1}
+            onPageChange={this.handlePageChange.bind(this, 'table')}
             noPaginate={noPaginate}
           />
           {this.props.viewAll ? (
@@ -229,7 +240,7 @@ if (environment !== 'production') {
     region: T.number,
 
     noPaginate: T.bool,
-    exportLink: T.string,
+    showExport: T.bool,
     title: T.string,
 
     showRecent: T.bool,
