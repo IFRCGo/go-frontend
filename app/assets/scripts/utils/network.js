@@ -165,6 +165,26 @@ export function patchJSON (path, action, payload, options, extraData) {
 }
 
 /**
+ * Get a CSV resource
+ * @param  {string} path      Relative path to query. Has to be available from
+ *                            the api.
+ * @param  {string} action    Base action to dispatch.
+ * @param  {Object} options   Options for the request.
+ * @return {func}             Dispatch function.
+ */
+export function fetchCSV (path, action, options) {
+  options = options || {};
+  return function (dispatch) {
+    dispatch({ type: inflight(action) });
+    const address = /http/.test(path) ? path : url.resolve(api, path);
+    return fetch(address, options)
+      .then(response => response.text())
+      .then(data => dispatch({ type: success(action), data, receivedAt: Date.now() }))
+      .catch(error => dispatch({ type: failed(action), error }));
+  };
+}
+
+/**
  * Make a HTTP request
  * @param  {string} path      Relative path to query. Has to be available from
  *                            the api.

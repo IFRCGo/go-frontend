@@ -22,6 +22,7 @@ import deployments from './deployments';
 import situationReports from './situation-reports';
 import appealDocuments from './appeal-documents';
 import fdrs from './fdrs';
+import csv from './csv';
 
 export const reducers = {
   user,
@@ -44,7 +45,8 @@ export const reducers = {
   deployments,
   appealDocuments,
   situationReports,
-  fdrs
+  fdrs,
+  csv
 };
 
 export default combineReducers(reducers);
