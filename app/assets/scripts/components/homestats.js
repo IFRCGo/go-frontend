@@ -44,7 +44,7 @@ export default class Homestats extends React.Component {
         </li>
         <li className='sumstats__item'>
           <span className='sumstats__value'>{shortenLargeNumber(stats.budget, 1)}</span>
-          <span className='sumstats__key'>Budget for DREFs and Appeals</span>
+          <span className='sumstats__key'>Budget for DREFs and Appeals (CHF)</span>
         </li>
         <li className='sumstats__item'>
           <span className='sumstats__value'>{shortenLargeNumber(stats.targetPop, 1)}</span>

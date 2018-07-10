@@ -344,7 +344,7 @@ class Deployments extends SFPComponent {
 
       return (
         <div className='inner'>
-          <Fold title={`HeOps (${n(data.count)})`}>
+          <Fold title={`HEOPs (${n(data.count)})`}>
             <DisplayTable
               headings={headings}
               rows={rows}

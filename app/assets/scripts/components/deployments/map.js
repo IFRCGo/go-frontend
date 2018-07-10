@@ -191,7 +191,7 @@ export default class DeploymentsMap extends React.Component {
         value: feature.properties.rdrt
       },
       {
-        label: 'HeOps',
+        label: 'HEOPs',
         value: feature.properties.heop
       },
       {
@@ -242,7 +242,7 @@ export default class DeploymentsMap extends React.Component {
         value: 'rdrt'
       },
       {
-        label: 'HeOps',
+        label: 'HEOPs',
         value: 'heop'
       }
     ];
@@ -264,7 +264,7 @@ export default class DeploymentsMap extends React.Component {
                     <label className='form__label'>Key</label>
                     <dl className='legend__dl legend__dl--colors'>
                       <dt className='color color--blue'>blue</dt>
-                      <dd>HR Personnel (ERU, FACT, RDRT/RIT, HeOps) Deployed</dd>
+                      <dd>HR Personnel (ERU, FACT, RDRT/RIT, HEOPs) Deployed</dd>
                     </dl>
                   </div>
                   <div className='legend__block'>

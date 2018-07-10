@@ -319,7 +319,7 @@ class AdminArea extends SFPComponent {
                     <li><a href='#operations-map' title='Go to Operations section'>Operations</a></li>
                     <li><a href='#stats' title='Go to Stats section'>Stats</a></li>
                     <li><a href='#appeals' title='Go to Appeals section'>Appeals</a></li>
-                    <li><a href='#drefs' title='Go to Drefs section'>Drefs</a></li>
+                    <li><a href='#drefs' title='Go to DREFs section'>DREFs</a></li>
                     {get(this.props.snippets, 'data.results.length') ? <li><a href='#graphics' title='Go to Graphics section'>Graphics</a></li> : null}
                     {get(data, 'links.length') ? <li><a href='#links' title='Go to Links section'>Links</a></li> : null}
                     {get(data, 'contacts.length') ? <li><a href='#contacts' title='Go to Contacts section'>Contacts</a></li> : null}
@@ -366,7 +366,7 @@ class AdminArea extends SFPComponent {
                 viewAllText={`View All Appeals for ${regionName} Region`}
               />
               <AppealsTable
-                title={'Active Drefs'}
+                title={'Active DREFs'}
                 region={this.props.match.params.id}
                 atype={'dref'}
                 showActive={true}

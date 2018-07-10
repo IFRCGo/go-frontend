@@ -202,7 +202,7 @@ class FieldReport extends React.Component {
                 <DisplaySection title='Description' inner={get(data, 'description', false)} />
                 {this.renderActionsTaken(data, 'NTLS', 'National Society')}
                 {this.renderActionsTaken(data, 'PNS', 'PNS Red Cross')}
-                {this.renderActionsTaken(data, 'FDRN', 'Federation Red Cross')}
+                {this.renderActionsTaken(data, 'FDRN', 'IFRC')}
                 <DisplaySection title='Actions taken by others' inner={get(data, 'action_others', false)} />
                 {this.renderSources(data)}
                 {this.renderContacts(data)}
