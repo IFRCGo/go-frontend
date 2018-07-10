@@ -7,7 +7,10 @@ import { DateTime } from 'luxon';
 import { stringify } from 'qs';
 
 import { environment, api } from '../../config';
-import { getFieldReportsList } from '../../actions';
+import {
+  getFieldReportsList,
+  getFieldReportsListCsv
+} from '../../actions';
 import {
   recentInterval,
   nope,
@@ -44,6 +47,7 @@ class FieldReportsTable extends SFPComponent {
         }
       }
     };
+    this.exportAsCsv = this.exportAsCsv.bind(this);
   }
 
   componentDidMount () {
@@ -60,10 +64,25 @@ class FieldReportsTable extends SFPComponent {
     if (shouldMakeNewRequest) {
       this.requestResults(newProps);
     }
+
+    if (this.props.csv.fetching && !newProps.csv.fetching && !newProps.csv.error) {
+      const encodedUri = encodeURI('data:text/csv;charset=utf-8,' + newProps.csv.data);
+      const link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', 'go-field-reports.csv');
+      link.innerHTML = 'Click';
+      document.body.appendChild(link);
+      link.click();
+    }
   }
 
   requestResults (props) {
     props._getFieldReportsList(this.state.table.page, this.getQs(props));
+  }
+
+  exportAsCsv (e) {
+    e.preventDefault();
+    this.props._getFieldReportsListCsv(this.getExportLink());
   }
 
   getExportLink () {
@@ -161,7 +180,7 @@ class FieldReportsTable extends SFPComponent {
         <Fold title={`${title} (${n(data.count)})`} id={this.props.id}>
           {this.props.showExport ? (
             <div className='fold__actions'>
-              <a href={this.getExportLink()} className='button button--primary-bounded'>Export Table</a>
+              <a href='#' onClick={this.exportAsCsv} className='button button--primary-bounded'>Export Table</a>
             </div>
           ) : null}
           <DisplayTable
@@ -188,7 +207,9 @@ class FieldReportsTable extends SFPComponent {
 if (environment !== 'production') {
   FieldReportsTable.propTypes = {
     _getFieldReportsList: T.func,
+    _getFieldReportsListCsv: T.func,
     list: T.object,
+    csv: T.object,
     isAuthenticated: T.bool,
 
     limit: T.number,
@@ -211,11 +232,13 @@ if (environment !== 'production') {
 
 const selector = (state) => ({
   list: state.fieldReports,
+  csv: state.csv.fieldReports,
   isAuthenticated: !!state.user.data.token
 });
 
 const dispatcher = (dispatch) => ({
-  _getFieldReportsList: (...args) => dispatch(getFieldReportsList(...args))
+  _getFieldReportsList: (...args) => dispatch(getFieldReportsList(...args)),
+  _getFieldReportsListCsv: (...args) => dispatch(getFieldReportsListCsv(...args))
 });
 
 export default withRouter(connect(selector, dispatcher)(FieldReportsTable));
