@@ -69,7 +69,7 @@ class FieldReportsTable extends SFPComponent {
       const encodedUri = encodeURI('data:text/csv;charset=utf-8,' + newProps.csv.data);
       const link = document.createElement('a');
       link.setAttribute('href', encodedUri);
-      link.setAttribute('download', 'go-field-reports.csv');
+      link.setAttribute('download', 'download.csv');
       link.innerHTML = 'Click';
       document.body.appendChild(link);
       link.click();
