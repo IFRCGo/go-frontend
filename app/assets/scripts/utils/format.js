@@ -18,6 +18,9 @@ export const commaSeparatedNumber = (x) => {
 };
 
 export function percent (value, total, decimals = 2) {
+  if (isNaN(value) || isNaN(total) || total === 0) {
+    return nope;
+  }
   let val = value / total * 100;
   return round(val, decimals);
 }
