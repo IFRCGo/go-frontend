@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
+import { stringify } from 'qs';
 
-import { environment } from '../../config';
+import { environment, api } from '../../config';
 import { getAppeals } from '../../actions';
 import { commaSeparatedNumber as n, nope } from '../../utils/format';
 import { getDtypeMeta } from '../../utils/get-dtype-meta';
@@ -32,7 +33,7 @@ class AppealsTable extends SFPComponent {
   constructor (props) {
     super(props);
     this.state = {
-      appeals: {
+      table: {
         page: 1,
         limit: isNaN(props.limit) ? 10 : props.limit,
         sort: {
@@ -66,11 +67,18 @@ class AppealsTable extends SFPComponent {
   }
 
   requestResults (props) {
-    props._getAppeals(this.state.appeals.page, this.getQs(props), props.action);
+    props._getAppeals(this.state.table.page, this.getQs(props), props.action);
+  }
+
+  getExportLink () {
+    let qs = this.getQs(this.props);
+    qs.offset = qs.limit * (this.state.table.page - 1);
+    qs.format = 'csv';
+    return api + 'api/v2/appeal/?' + stringify(qs);
   }
 
   getQs (props) {
-    let state = this.state.appeals;
+    let state = this.state.table;
     let qs = { limit: state.limit };
     if (state.sort.field) {
       qs.ordering = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
@@ -146,29 +154,29 @@ class AppealsTable extends SFPComponent {
       const headings = [
         {
           id: 'date',
-          label: <FilterHeader id='date' title='Start Date' options={dateOptions} filter={this.state.appeals.filters.date} onSelect={this.handleFilterChange.bind(this, 'appeals', 'date')} />
+          label: <FilterHeader id='date' title='Start Date' options={dateOptions} filter={this.state.table.filters.date} onSelect={this.handleFilterChange.bind(this, 'table', 'date')} />
         },
         {
           id: 'type',
-          label: <FilterHeader id='type' title='Type' options={appealTypeOptions} filter={this.state.appeals.filters.atype} onSelect={this.handleFilterChange.bind(this, 'appeals', 'atype')} />
+          label: <FilterHeader id='type' title='Type' options={appealTypeOptions} filter={this.state.table.filters.atype} onSelect={this.handleFilterChange.bind(this, 'table', 'atype')} />
         },
         { id: 'code', label: 'Code' },
         {
           id: 'name',
-          label: <SortHeader id='name' title='Name' sort={this.state.appeals.sort} onClick={this.handleSortChange.bind(this, 'appeals', 'name')} />
+          label: <SortHeader id='name' title='Name' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'name')} />
         },
         { id: 'event', label: 'Emergency' },
         {
           id: 'dtype',
-          label: <FilterHeader id='dtype' title='Disaster Type' options={dTypeOptions} filter={this.state.appeals.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'appeals', 'dtype')} />
+          label: <FilterHeader id='dtype' title='Disaster Type' options={dTypeOptions} filter={this.state.table.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'table', 'dtype')} />
         },
         {
           id: 'requestAmount',
-          label: <SortHeader id='amount_requested' title='Requested Amount (CHF)' sort={this.state.appeals.sort} onClick={this.handleSortChange.bind(this, 'appeals', 'amount_requested')} />
+          label: <SortHeader id='amount_requested' title='Requested Amount (CHF)' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'amount_requested')} />
         },
         {
           id: 'fundedAmount',
-          label: <SortHeader id='amount_funded' title='Funding (CHF)' sort={this.state.appeals.sort} onClick={this.handleSortChange.bind(this, 'appeals', 'amount_funded')} />
+          label: <SortHeader id='amount_funded' title='Funding (CHF)' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'amount_funded')} />
         },
         {
           id: 'country',
@@ -197,17 +205,17 @@ class AppealsTable extends SFPComponent {
 
       return (
         <Fold title={`${title} (${n(data.count)})`} id={this.props.id}>
-          {this.props.exportLink ? (
+          {this.props.showExport ? (
             <div className='fold__actions'>
-              <a href={this.props.exportLink} className='button button--primary-bounded'>Export Table</a>
+              <a href={this.getExportLink()} className='button button--primary-bounded'>Export Table</a>
             </div>
           ) : null}
           <DisplayTable
             headings={headings}
             rows={rows}
-            pageCount={data.count / this.state.appeals.limit}
-            page={this.state.appeals.page - 1}
-            onPageChange={this.handlePageChange.bind(this, 'appeals')}
+            pageCount={data.count / this.state.table.limit}
+            page={this.state.table.page - 1}
+            onPageChange={this.handlePageChange.bind(this, 'table')}
             noPaginate={this.props.noPaginate}
           />
           {this.props.viewAll ? (
@@ -234,7 +242,7 @@ if (environment !== 'production') {
     record: T.string,
 
     noPaginate: T.bool,
-    exportLink: T.string,
+    showExport: T.bool,
     title: T.string,
 
     showActive: T.bool,

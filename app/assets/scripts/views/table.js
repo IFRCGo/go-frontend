@@ -34,7 +34,7 @@ class Table extends React.Component {
     const { type } = this.props;
     let props = {
       limit: 50,
-      exportLink: true
+      showExport: true
     };
 
     const query = this.getQueryParams();
