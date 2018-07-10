@@ -19,6 +19,7 @@ import {
   updateProfile
 } from '../actions';
 import { get } from '../utils/utils';
+import { getCountryMeta } from '../utils/get-country-meta';
 import { countries, disasterType, orgTypes } from '../utils/field-report-constants';
 import { apiPropertyDisplay, apiPropertyValue } from '../utils/format';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
@@ -181,11 +182,12 @@ class Account extends React.Component {
     subscriptions.forEach(sub => {
       const rtype = rtypes[sub.rtype];
       if (rtype === 'country' && sub.country) {
-        next.countries = next.countries.concat([{label: sub.country.name, value: sub.country.id.toString()}]);
+        let countryMeta = getCountryMeta(sub.country);
+        next.countries = next.countries.concat([{label: countryMeta.label, value: sub.country.toString()}]);
       } else if (rtype === 'region' && sub.region) {
-        next.regions = updateChecks(next.regions, sub.region.name.toString());
+        next.regions = updateChecks(next.regions, sub.region.toString());
       } else if (rtype === 'disasterType' && sub.dtype) {
-        next.disasterTypes = updateChecks(next.disasterTypes, sub.dtype.id.toString());
+        next.disasterTypes = updateChecks(next.disasterTypes, sub.dtype.toString());
       } else if (rtype === 'appeal' || rtype === 'event' || rtype === 'fieldReport') {
         next[rtype] = updateChecks(next[rtype], stypes[sub.stype]);
       } else if (rtype === 'surge') {
