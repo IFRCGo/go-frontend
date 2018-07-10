@@ -66,6 +66,10 @@ class AppealsTable extends SFPComponent {
   }
 
   requestResults (props) {
+    props._getAppeals(this.state.appeals.page, this.getQs(props), props.action);
+  }
+
+  getQs (props) {
     let state = this.state.appeals;
     let qs = { limit: state.limit };
     if (state.sort.field) {
@@ -105,8 +109,7 @@ class AppealsTable extends SFPComponent {
     if (!isNaN(props.record)) {
       qs.id = props.record;
     }
-
-    props._getAppeals(this.state.appeals.page, qs, props.action);
+    return qs;
   }
 
   updateData (what) {

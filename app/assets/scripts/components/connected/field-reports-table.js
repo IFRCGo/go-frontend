@@ -62,6 +62,10 @@ class FieldReportsTable extends SFPComponent {
   }
 
   requestResults (props) {
+    props._getFieldReportsList(this.state.fieldReports.page, this.getQs(props));
+  }
+
+  getQs (props) {
     let state = this.state.fieldReports;
     let qs = { limit: state.limit };
     if (state.sort.field) {
@@ -85,8 +89,7 @@ class FieldReportsTable extends SFPComponent {
     } else if (!isNaN(props.region)) {
       qs.regions__in = props.region;
     }
-
-    props._getFieldReportsList(this.state.fieldReports.page, qs);
+    return qs;
   }
 
   updateData (what) {

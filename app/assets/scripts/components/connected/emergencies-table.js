@@ -67,6 +67,10 @@ class EmergenciesTable extends SFPComponent {
   }
 
   requestResults (props) {
+    props._getEmergenciesList(this.state.emerg.page, this.getQs(props));
+  }
+
+  getQs (props) {
     let qs = { limit: this.state.emerg.limit };
     let state = this.state.emerg;
     if (state.sort.field) {
@@ -90,8 +94,7 @@ class EmergenciesTable extends SFPComponent {
     } else if (!isNaN(props.region)) {
       qs.regions__in = props.region;
     }
-
-    props._getEmergenciesList(this.state.emerg.page, qs);
+    return qs;
   }
 
   updateData (what) {

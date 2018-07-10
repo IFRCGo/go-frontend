@@ -78,6 +78,10 @@ class AlertsTable extends SFPComponent {
   }
 
   requestResults (props) {
+    props._getSurgeAlerts(this.state.alerts.page, this.getQs(props));
+  }
+
+  getQs (props) {
     let state = this.state.alerts;
     let qs = { limit: state.limit };
     if (state.sort.field) {
@@ -95,7 +99,7 @@ class AlertsTable extends SFPComponent {
     if (state.filters.category !== 'all') {
       qs.category = state.filters.category;
     }
-    props._getSurgeAlerts(this.state.alerts.page, qs);
+    return qs;
   }
 
   updateData (what) {
