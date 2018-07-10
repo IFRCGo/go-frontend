@@ -38,6 +38,7 @@ import Fold from '../components/fold';
 import Expandable from '../components/expandable';
 import { FilterHeader } from '../components/display-table';
 import { Snippets } from '../components/admin-area-elements';
+import SurgeAlertsTable from '../components/connected/alerts-table';
 
 class Emergency extends React.Component {
   constructor (props) {
@@ -206,7 +207,7 @@ class Emergency extends React.Component {
       );
     } else if (data.field_reports && data.field_reports.length) {
       return (
-        <Fold id='field-reports' title='Field Reports' wrapperClass='event-field-reports' >
+        <Fold id='field-reports' title={`Field Reports (${data.field_reports.length})`} wrapperClass='event-field-reports' >
           <table className='table table--zebra'>
             <thead>
               <tr>
@@ -362,6 +363,7 @@ class Emergency extends React.Component {
                     {summary ? <li><a href='#overview' title='Go to Overview section'>Overview</a></li> : null}
                     {get(this.props.snippets, 'data.results.length') ? <li><a href='#graphics' title='Go to Graphics section'>Graphics</a></li> : null}
                     {get(this.props.event, 'data.field_reports.length') ? <li><a href='#field-reports' title='Go to Field Reports section'>Field Reports</a></li> : null}
+                    {get(this.props.surgeAlerts, 'data.results.length') ? <li><a href='#alerts' title='Go to Surge Alerts section'>Alerts</a></li> : null}
                     {get(this.props.situationReports, 'data.results.length') ? <li><a href='#response-documents' title='Go to Response Documents section'>Response Documents</a></li> : null}
                     {get(this.props.appealDocuments, 'data.results.length') ? <li><a href='#documents' title='Go to Documents section'>Appeal Documents</a></li> : null}
                     {contacts && contacts.length ? <li><a href='#contacts' title='Go to Contacts section'>Contacts</a></li> : null}
@@ -384,6 +386,11 @@ class Emergency extends React.Component {
               <Snippets data={this.props.snippets} />
               {this.renderKeyFigures()}
               {this.renderFieldReports()}
+              <SurgeAlertsTable id='alerts'
+                title='Alerts'
+                emergency={this.props.match.params.id}
+                returnNullForEmpty={true}
+              />
               {this.renderResponseDocuments()}
               {this.renderAppealDocuments()}
 
@@ -448,6 +455,7 @@ if (environment !== 'production') {
     situationReports: T.object,
     situationReportTypes: T.object,
     appealDocuments: T.object,
+    surgeAlerts: T.object,
     isLogged: T.bool
   };
 }
@@ -477,6 +485,7 @@ const selector = (state, ownProps) => ({
     fetching: false,
     fetched: false
   }),
+  surgeAlerts: state.surgeAlerts,
   isLogged: !!state.user.data.token
 });
 
