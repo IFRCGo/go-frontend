@@ -101,6 +101,10 @@ class AlertsTable extends SFPComponent {
       qs.created_at__gte = recentInterval;
     }
 
+    if (!isNaN(props.emergency)) {
+      qs.event = props.emergency.toString();
+    }
+
     if (state.filters.type !== 'all') {
       qs.atype = state.filters.type;
     }
@@ -124,7 +128,10 @@ class AlertsTable extends SFPComponent {
 
     const title = this.props.title || 'Latest Alerts';
 
-    if (fetching || !fetched) {
+    if (this.props.returnNullForEmpty &&
+        (error || (fetching && !fetched) || (fetched && !data.results.length))) {
+      return null;
+    } else if (fetching || !fetched) {
       return <Fold title={title} id={this.props.id}><BlockLoading/></Fold>;
     } else if (error) {
       return <Fold title={title} id={this.props.id}><p>Surge alerts not available.</p></Fold>;
@@ -202,6 +209,7 @@ if (environment !== 'production') {
     surgeAlerts: T.object,
 
     limit: T.number,
+    emergency: T.number,
 
     noPaginate: T.bool,
     showExport: T.bool,
@@ -210,6 +218,7 @@ if (environment !== 'production') {
     showRecent: T.bool,
     viewAll: T.string,
     viewAllText: T.string,
+    returnNullForEmpty: T.bool,
     id: T.string
   };
 }
