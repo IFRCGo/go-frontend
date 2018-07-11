@@ -5,27 +5,22 @@ import { environment } from '../config';
 
 class BulletTable extends React.Component {
   render () {
-    const { title, tables } = this.props;
+    const { title, rows } = this.props;
     return (
-      <div className='country__operations'>
-        <h2>{title}</h2>
-        {tables.map(d => (
-          <div key={d.title}>
-            <h3 className='list-label'>{d.title}</h3>
-            <ul className='pns-list'>
-              {d.rows.map(r => (
-                <li key={r.label} className='pns-list__item pns-list__item__canhover'>
-                  <ul className='list-circle'>
-                    {[...Array(r.count).keys()].map(i => (
-                      <li key={i}></li>
-                    ))}
-                  </ul>
-                  {r.label}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+      <div key={title}>
+        <h3 className='list-label'>{title}</h3>
+        <ul className='pns-list'>
+          {rows.map(r => (
+            <li key={r.label} className='pns-list__item pns-list__item__canhover'>
+              <ul className='list-circle'>
+                {[...Array(r.count).keys()].map(i => (
+                  <li key={i}></li>
+                ))}
+              </ul>
+              {r.label}
+            </li>
+          ))}
+        </ul>
       </div>
     );
   }
@@ -34,7 +29,7 @@ class BulletTable extends React.Component {
 if (environment !== 'production') {
   BulletTable.propTypes = {
     title: T.string,
-    tables: T.array
+    rows: T.array
   };
 }
 

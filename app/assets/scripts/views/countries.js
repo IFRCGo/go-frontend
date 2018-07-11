@@ -293,11 +293,6 @@ class AdminArea extends SFPComponent {
     const mapContainerClass = 'country__map';
 
     const { partnerDeployments } = this.props;
-    const bulletTables = [
-      {title: 'Activities by PNS', rows: get(partnerDeployments, 'data.parentSocieties', [])},
-      {title: 'Type of Activities by PNS', rows: get(partnerDeployments, 'data.activities', [])}
-    ];
-
     return (
       <section className='inpage'>
         <Helmet>
@@ -339,7 +334,11 @@ class AdminArea extends SFPComponent {
               <KeyFigures data={this.props.keyFigures} />
               <Fold title='Statistics' headerClass='visually-hidden' id='operations'>
                 <div className='operations__container'>
-                  <BulletTable tables={bulletTables} title='PNS Activities' />
+                  <div className='country__operations'>
+                    <h2>PNS Activities</h2>
+                    <BulletTable rows={get(partnerDeployments, 'data.parentSocieties', [])} title='Activities by PNS' />
+                    <BulletTable rows={get(partnerDeployments, 'data.activities', [])} title='Type of Activities by PNS' />
+                  </div>
                   <div className={mapContainerClass}>
                     <Homemap operations={this.props.appealStats} bbox={bbox} deployments={this.props.partnerDeployments} noRenderEmergencies={true} />
                   </div>
