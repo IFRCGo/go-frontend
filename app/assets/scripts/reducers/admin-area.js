@@ -215,26 +215,35 @@ function snippets (state = initialState, action) {
 }
 
 function partnerDeployments (state = {}, action) {
+  const { id } = action;
+  let next;
   switch (action.type) {
     case 'GET_PARTNER_DEPLOYMENTS_INFLIGHT':
-      state = Object.assign({}, state, {
-        [action.id]: stateInflight(state, action)
-      });
+      next = Object.assign({}, state[id], stateInflight(state, action));
+      state = Object.assign({}, state, { [id]: next });
       break;
     case 'GET_PARTNER_DEPLOYMENTS_FAILED':
-      state = Object.assign({}, state, {
-        [action.id]: stateError(state, action)
-      });
+      next = Object.assign({}, state[id], stateError(state, action));
+      state = Object.assign({}, state, { [id]: next });
       break;
     case 'GET_PARTNER_DEPLOYMENTS_SUCCESS':
-      state = Object.assign({}, state, {
-        [action.id]: {
-          fetching: false,
-          fetched: true,
-          receivedAt: action.receivedAt,
-          data: aggregatePartnerDeployments(action.data.results)
-        }
+      let filters = state[id] ? state[id].filters : null;
+      next = Object.assign({}, state[id], {
+        fetching: false,
+        fetched: true,
+        receivedAt: action.receivedAt,
+        data: aggregatePartnerDeployments(action.data.results, filters),
+        _records: action.data.results
       });
+      state = Object.assign({}, state, { [id]: next });
+      break;
+    case 'SET_PARTNER_DEPLOYMENT_FILTER':
+      // We only need to filter data if there are currently records
+      next = Object.assign({}, state[id], { filters: action.filters });
+      if (Array.isArray(next._records)) {
+        next.data = aggregatePartnerDeployments(next._records, next.filters);
+      }
+      state = Object.assign({}, state, { [id]: next });
       break;
   }
   return state;
