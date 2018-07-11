@@ -90,8 +90,8 @@ export function aggregatePartnerDeployments (deploymentGroups, filters = []) {
       if (_get(obj, filters[i].path) !== filters[i].value) {
         return false;
       }
-      return true;
     }
+    return true;
   } : () => true;
   const deployments = deploymentGroups.reduce((acc, deployment) => {
     const results = deployment.district_deployed_to.map(district => ({
