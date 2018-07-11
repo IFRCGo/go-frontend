@@ -23,7 +23,8 @@ import {
   getAdmAreaKeyFigures,
   getAdmAreaSnippets,
   getCountryOperations,
-  getPartnerDeployments
+  getPartnerDeployments,
+  setPartnerDeploymentFilter
 } from '../actions';
 import { getFdrs } from '../actions/query-external';
 import { getBoundingBox } from '../utils/country-bounding-box';
@@ -41,6 +42,11 @@ import {
   Links
 } from '../components/admin-area-elements';
 import { SFPComponent } from '../utils/extendables';
+
+const filterPaths = {
+  ns: 'parent.name',
+  type: 'activity.activity'
+};
 
 class AdminArea extends SFPComponent {
   // Methods form SFPComponent:
@@ -62,8 +68,13 @@ class AdminArea extends SFPComponent {
           date: 'all',
           dtype: 'all'
         }
-      }
+      },
+      mapFilters: {},
+      persistentMapFilter: {}
     };
+    this.setMapFilter = this.setMapFilter.bind(this);
+    this.setPersistentMapFilter = this.setPersistentMapFilter.bind(this);
+    this.removeMapFilter = this.removeMapFilter.bind(this);
   }
 
   componentWillReceiveProps (nextProps) {
@@ -127,6 +138,38 @@ class AdminArea extends SFPComponent {
 
   updateData (what) {
     this.props._getCountryOperations(this.props.type, this.props.match.params.id, this.state[what].page, this.computeFilters(what));
+  }
+
+  setMapFilter (type, value) {
+    let filters = Object.assign({}, this.state.mapFilters);
+    filters[type] = value;
+    this.setState({ mapFilters: filters }, this.syncMapFilters);
+  }
+
+  setPersistentMapFilter (type, value) {
+    let filter = Object.assign({}, this.state.persistentMapFilter);
+    if (filter.hasOwnProperty(type) && filter[type] === value) {
+      delete filter[type];
+    } else {
+      filter[type] = value;
+    }
+    this.setState({ persistentMapFilter: filter }, this.syncMapFilters);
+  }
+
+  removeMapFilter (type) {
+    let filters = Object.assign({}, this.state.mapFilters);
+    delete filters[type];
+    this.setState({ mapFilters: filters }, this.syncMapFilters);
+  }
+
+  syncMapFilters () {
+    const { mapFilters, persistentMapFilter } = this.state;
+    let filters = Object.assign({}, mapFilters, persistentMapFilter);
+    filters = Object.keys(filters).map(key => {
+      const path = filterPaths[key];
+      return { path, value: filters[key] };
+    });
+    this.props._setPartnerDeploymentFilter(this.props.match.params.id, filters);
   }
 
   renderAppeals () {
@@ -293,11 +336,6 @@ class AdminArea extends SFPComponent {
     const mapContainerClass = 'country__map';
 
     const { partnerDeployments } = this.props;
-    const bulletTables = [
-      {title: 'Activities by PNS', rows: get(partnerDeployments, 'data.parentSocieties', [])},
-      {title: 'Type of Activities by PNS', rows: get(partnerDeployments, 'data.activities', [])}
-    ];
-
     return (
       <section className='inpage'>
         <Helmet>
@@ -339,9 +377,25 @@ class AdminArea extends SFPComponent {
               <KeyFigures data={this.props.keyFigures} />
               <Fold title='Statistics' headerClass='visually-hidden' id='operations'>
                 <div className='operations__container'>
-                  <BulletTable tables={bulletTables} title='PNS Activities' />
+                  <div className='country__operations'>
+                    <h2>PNS Activities</h2>
+                    <BulletTable title='Activities by PNS'
+                      onClick={this.setPersistentMapFilter.bind(this, 'ns')}
+                      onMouseOver={this.setMapFilter.bind(this, 'ns')}
+                      onMouseOut={this.removeMapFilter.bind(this, 'ns')}
+                      rows={get(partnerDeployments, 'data.parentSocieties', [])} />
+                    <BulletTable title='Type of Activities by PNS'
+                      onClick={this.setPersistentMapFilter.bind(this, 'type')}
+                      onMouseOver={this.setMapFilter.bind(this, 'type')}
+                      onMouseOut={this.removeMapFilter.bind(this, 'type')}
+                      rows={get(partnerDeployments, 'data.activities', [])} />
+                  </div>
                   <div className={mapContainerClass}>
-                    <Homemap operations={this.props.appealStats} bbox={bbox} deployments={this.props.partnerDeployments} noRenderEmergencies={true} />
+                    <Homemap operations={this.props.appealStats}
+                      bbox={bbox}
+                      deployments={this.props.partnerDeployments}
+                      noRenderEmergencies={true}
+                    />
                   </div>
                 </div>
                 {this.renderAppeals()}
@@ -423,6 +477,7 @@ const dispatcher = (dispatch) => ({
   _getAdmAreaSnippets: (...args) => dispatch(getAdmAreaSnippets(...args)),
   _getCountryOperations: (...args) => dispatch(getCountryOperations(...args)),
   _getPartnerDeployments: (...args) => dispatch(getPartnerDeployments(...args)),
+  _setPartnerDeploymentFilter: (...args) => dispatch(setPartnerDeploymentFilter(...args)),
   _getFdrs: (...args) => dispatch(getFdrs(...args))
 });
 

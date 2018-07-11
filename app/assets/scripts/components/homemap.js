@@ -46,24 +46,26 @@ class Homemap extends React.Component {
     const { operations, deployments } = this.props;
     // Init the map if there's data when the component loads.
     if (operations && !operations.error && operations.fetched) {
-      this.initMarkerLayers(operations);
+      this.setMarkerLayers(operations);
     }
     if (deployments && !deployments.error && deployments.fetched) {
-      this.initFillLayers(deployments);
+      this.setFillLayers(deployments);
     }
   }
 
   componentWillReceiveProps ({ operations, deployments }) {
     // set initial layers and filters when geojson data is loaded
     if (operations && !this.props.operations.fetched && operations.fetched && !operations.error) {
-      this.initMarkerLayers(operations);
+      this.setMarkerLayers(operations);
     }
-    if (deployments && !this.props.deployments.fetched && deployments.fetched && !deployments.error) {
-      this.initFillLayers(deployments);
+    if (deployments && deployments.fetched && !deployments.error && (
+      !this.props.deployments.fetched || JSON.stringify(deployments.data.areas) !== JSON.stringify(this.props.deployments.data.areas)
+    )) {
+      this.setFillLayers(deployments);
     }
   }
 
-  initMarkerLayers (operations) {
+  setMarkerLayers (operations) {
     this.setState({
       markerLayers: this.getMarkerLayers(operations.data.geoJSON, this.state.scaleBy),
       markerGeoJSON: this.getMarkerGeoJSON(operations.data.geoJSON, this.getDtypeHighlight())
@@ -74,7 +76,7 @@ class Homemap extends React.Component {
     return this.state.hoverDtype || this.state.selectedDtype || '';
   }
 
-  initFillLayers (deployments) {
+  setFillLayers (deployments) {
     const { data } = deployments;
     scale.domain([0, data.max]);
     // create a data-driven paint property for the district fill color
@@ -85,8 +87,8 @@ class Homemap extends React.Component {
     });
     paint.push('rgba(0, 0, 0, 0)');
     const action = () => this.theMap.setPaintProperty('district', 'fill-color', paint);
-    if (this.theMap) {
-      this.theMap.on('load', action);
+    if (this.state.ready) {
+      action();
     } else {
       this.setState({
         mapActions: this.state.mapActions.concat(action)
@@ -355,7 +357,7 @@ class Homemap extends React.Component {
                   <dt className='color color--grey'>Grey</dt>
                   <dd>Movement Response</dd>
                   <dt className='color color'>Grey</dt>
-                  <dd>Mixed</dd>
+                  <dd>Mixed Response</dd>
                 </dl>
               </div>
             </figcaption>

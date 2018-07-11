@@ -278,6 +278,10 @@ export function getAdmAreaERU (aaType, aaId) {
   return fetchJSON(`api/v2/eru/?${f}`, GET_AA_ERU, withToken());
 }
 
+export function setPartnerDeploymentFilter (id, filters) {
+  return {type: 'SET_PARTNER_DEPLOYMENT_FILTER', id, filters};
+}
+
 export const GET_PARTNER_DEPLOYMENTS = 'GET_PARTNER_DEPLOYMENTS';
 export function getPartnerDeployments (aaType, id) {
   aaType = aaType || 'country';

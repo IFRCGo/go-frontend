@@ -83,8 +83,16 @@ export function aggregateCountryAppeals (appeals) {
   };
 }
 
-export function aggregatePartnerDeployments (deploymentGroups) {
+export function aggregatePartnerDeployments (deploymentGroups, filters = []) {
   // flatten
+  const filterFn = filters.length ? obj => {
+    for (let i = 0; i < filters.length; ++i) {
+      if (_get(obj, filters[i].path) !== filters[i].value) {
+        return false;
+      }
+    }
+    return true;
+  } : () => true;
   const deployments = deploymentGroups.reduce((acc, deployment) => {
     const results = deployment.district_deployed_to.map(district => ({
       district,
@@ -96,7 +104,7 @@ export function aggregatePartnerDeployments (deploymentGroups) {
     return acc.concat(results);
   }, []);
 
-  const grouping = _groupBy(deployments, 'district.id');
+  const grouping = _groupBy(deployments.filter(filterFn), 'district.id');
   const areas = Object.keys(grouping).map(d => ({ id: d, deployments: grouping[d] }));
   const max = Math.max.apply(this, areas.map(d => d.deployments.length));
 
