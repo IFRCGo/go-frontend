@@ -58,9 +58,9 @@ class Homemap extends React.Component {
     if (operations && !this.props.operations.fetched && operations.fetched && !operations.error) {
       this.setMarkerLayers(operations);
     }
-    if (deployments && !this.props.deployments.fetched && deployments.fetched && !deployments.error) {
-      this.setFillLayers(deployments);
-    } else if (get(deployments, 'data.areas.length', false) !== get(this.props.deployments, 'data.areas.length', false)) {
+    if (deployments && deployments.fetched && !deployments.error && (
+      !this.props.deployments.fetched || JSON.stringify(deployments.data.areas) !== JSON.stringify(this.props.deployments.data.areas)
+    )) {
       this.setFillLayers(deployments);
     }
   }
@@ -87,7 +87,7 @@ class Homemap extends React.Component {
     });
     paint.push('rgba(0, 0, 0, 0)');
     const action = () => this.theMap.setPaintProperty('district', 'fill-color', paint);
-    if (this.theMap) {
+    if (this.state.ready) {
       action();
     } else {
       this.setState({
