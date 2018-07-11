@@ -22,12 +22,12 @@ class BulletTable extends React.Component {
   }
 
   onMouseOver (e) {
-    if (!this.props.onMouseOver) return;
+    if (!this.props.onMouseOver || this.state.selected) return;
     this.handleMouseInteraction(e, this.props.onMouseOver);
   }
 
   onMouseOut (e) {
-    if (!this.props.onMouseOut) return;
+    if (!this.props.onMouseOut || this.state.selected) return;
     this.handleMouseInteraction(e, this.props.onMouseOut);
   }
 
