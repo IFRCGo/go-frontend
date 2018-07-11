@@ -167,6 +167,9 @@
   font-size: 0.875rem;
   cursor: pointer;
   border-radius: $full-border-radius;
+  > * {
+    pointer-events: none;
+  }
 }
 
 .pns-list__item__canhover {
