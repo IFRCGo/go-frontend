@@ -139,19 +139,12 @@
   h3 {
     margin-bottom: 0;
   }
-  .activity-list__item {
-    margin-bottom: $global-spacing/4;
-  }
   li {
     list-style: none;
-    color: rgba(#FFF, 0.7);
-    font-size: 0.875rem;
-  }
-  .list-label {
-    font-size: 1rem;
   }
   .list-circle {
     display: inline-block;
+    color: rgba(#FFF, 0.7);
     padding: 0 $global-spacing / 2;
     margin-right: $global-spacing / 2;
     border-radius: $full-border-radius;
@@ -170,15 +163,23 @@
   }
 }
 
-.pns-list__item__canhover {
+.pns-list__item {
+  font-size: 0.875rem;
   cursor: pointer;
+  border-radius: $full-border-radius;
+}
+
+.pns-list__item__canhover {
   &:hover {
     font-weight: $base-font-bold;
-    color: #FFFFFF;
-    .list-circle {
-      border: solid 1px #FFF;
-    }
+    .list-circle { border: solid 1px #FFF; }
   }
+}
+
+.pns-list__item__selected {
+  background-color: rgba(255, 255, 255, 0.2);
+  font-weight: $base-font-bold;
+  .list-circle { border: solid 1px #FFF; }
 }
 
 .country__map {

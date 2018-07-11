@@ -357,7 +357,7 @@ class Homemap extends React.Component {
                   <dt className='color color--grey'>Grey</dt>
                   <dd>Movement Response</dd>
                   <dt className='color color'>Grey</dt>
-                  <dd>Mixed</dd>
+                  <dd>Mixed Response</dd>
                 </dl>
               </div>
             </figcaption>
