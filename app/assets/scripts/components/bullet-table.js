@@ -14,7 +14,7 @@ class BulletTable extends React.Component {
             <h3 className='list-label'>{d.title}</h3>
             <ul className='pns-list'>
               {d.rows.map(r => (
-                <li key={r.label} className='pns-list__item'>
+                <li key={r.label} className='pns-list__item pns-list__item__canhover'>
                   <ul className='list-circle'>
                     {[...Array(r.count).keys()].map(i => (
                       <li key={i}></li>
