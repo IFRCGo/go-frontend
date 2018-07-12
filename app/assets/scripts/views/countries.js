@@ -346,7 +346,7 @@ class AdminArea extends SFPComponent {
         <header className='inpage__header'>
           <div className='inner'>
             <div className='inpage__headline'>
-              <h1 className='inpage__title'>{data.name}{!isNaN(data.inform_score) ? <span className='inpage__title--inform'>Inform Score: <span className='inpage__title--inform--score'>{round(data.inform_score, 1)}</span></span> : null}</h1>
+              <h1 className='inpage__title'>{data.name}{data.inform_score ? <span className='inpage__title--inform'>Inform Score: <span className='inpage__title--inform--score'>{round(data.inform_score, 1)}</span></span> : null}</h1>
               <div className='inpage__header-actions'>
                 <a href='' className='button button--primary-bounded'>Edit Country</a>
               </div>
