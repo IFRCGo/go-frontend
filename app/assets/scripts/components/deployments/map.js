@@ -246,6 +246,7 @@ export default class DeploymentsMap extends React.Component {
         value: 'heop'
       }
     ];
+    const activeFilter = filterTypes.find(d => d.value === this.state.mapFilter.deployment).label;
 
     return (
       <div className='stats-map deployments-map'>
@@ -264,7 +265,11 @@ export default class DeploymentsMap extends React.Component {
                     <label className='form__label'>Key</label>
                     <dl className='legend__dl legend__dl--colors'>
                       <dt className='color color--blue'>blue</dt>
-                      <dd>HR Personnel (ERU, FACT, RDRT/RIT, HEOPs) Deployed</dd>
+                      {activeFilter === 'All' ? (
+                        <dd>Deployed FACT, RDRT/RIT, & HEOPs</dd>
+                      ) : (
+                        <dd>Deployed {activeFilter}</dd>
+                      )}
                     </dl>
                   </div>
                   <div className='legend__block'>
