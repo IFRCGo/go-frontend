@@ -1,5 +1,6 @@
 'use strict';
 import React from 'react';
+import ReactMarkdown from 'react-markdown';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -15,7 +16,8 @@ import { getDtypeMeta } from '../utils/get-dtype-meta';
 import {
   commaSeparatedNumber as n,
   commaSeparatedLargeNumber as bigN,
-  nope
+  nope,
+  round
 } from '../utils/format';
 import {
   getAdmAreaById,
@@ -344,7 +346,7 @@ class AdminArea extends SFPComponent {
         <header className='inpage__header'>
           <div className='inner'>
             <div className='inpage__headline'>
-              <h1 className='inpage__title'>{data.name}</h1>
+              <h1 className='inpage__title'>{data.name}{!isNaN(data.inform_score) ? <span className='inpage__title--inform'>Inform Score: <span className='inpage__title--inform--score'>{round(data.inform_score, 1)}</span></span> : null}</h1>
               <div className='inpage__header-actions'>
                 <a href='' className='button button--primary-bounded'>Edit Country</a>
               </div>
@@ -361,6 +363,7 @@ class AdminArea extends SFPComponent {
               <div style={style} className={c('inpage__nav', {'inpage__nav--sticky': isSticky})}>
                 <div className='inner'>
                   <ul>
+                    {data.overview || data.key_priorities ? <li><a href='#overview' title='Go to Overview'>Overview</a></li> : null}
                     {get(this.props.keyFigures, 'data.results.length') ? <li><a href='#key-figures' title='Go to Key Figures section'>Key Figures</a></li> : null}
                     <li><a href='#operations-map' title='Go to Operations section'>Operations</a></li>
                     <li><a href='#emergencies' title='Go to Emergencies section'>Emergencies</a></li>
@@ -374,6 +377,12 @@ class AdminArea extends SFPComponent {
           </Sticky>
           <div className='inpage__body'>
             <div className='inner'>
+              {data.overview || data.key_priorities ? (
+                <Fold title='Overview' id='overview'>
+                  {data.overview ? <ReactMarkdown source={data.overview} /> : null}
+                  {data.key_priorities ? <ReactMarkdown source={data.key_priorities} /> : null}
+                </Fold>
+              ) : null}
               <KeyFigures data={this.props.keyFigures} />
               <Fold title='Statistics' headerClass='visually-hidden' id='operations'>
                 <div className='operations__container'>
