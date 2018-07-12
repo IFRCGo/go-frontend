@@ -1,5 +1,5 @@
 .page--country {
-	.emergencies {
+  .emergencies {
     display: none;
   }
 
@@ -9,6 +9,16 @@
 
   .inpage__title {
     width: auto;
+  }
+
+  .inpage__title--inform {
+    font-size: 1rem;
+    color: rgba($base-color, 0.48);
+    margin-left: $global-spacing;
+  }
+
+  .inpage__title--inform--score {
+    color: $base-color;
   }
 
   .inpage__meta {
