@@ -360,6 +360,19 @@ class Homemap extends React.Component {
                   <dd>Mixed Response</dd>
                 </dl>
               </div>
+              {this.props.deployments ? (
+                <div className='legend__block'>
+                  <h3 className='legend__title'>{this.props.deploymentsKey || 'Deployments'}</h3>
+                  <dl className='legend__grandient'>
+                    <dt style={{background: 'linear-gradient(to right, #F0C9E8, #861A70)'}}>Scale Gradient</dt>
+                    <dd>
+                      <span>0</span>
+                      <span>to</span>
+                      <span>{n(get(this.props.deployments, 'data.max'))}</span>
+                    </dd>
+                  </dl>
+                </div>
+              ) : null}
             </figcaption>
           </MapComponent>
         </div>
@@ -384,6 +397,7 @@ if (environment !== 'production') {
   Homemap.propTypes = {
     operations: T.object,
     deployments: T.object,
+    deploymentsKey: T.string,
     history: T.object,
     bbox: T.array,
     noRenderEmergencies: T.bool,
