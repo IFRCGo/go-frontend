@@ -1,5 +1,6 @@
 'use strict';
 import React from 'react';
+import ReactMarkdown from 'react-markdown';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -361,6 +362,7 @@ class AdminArea extends SFPComponent {
               <div style={style} className={c('inpage__nav', {'inpage__nav--sticky': isSticky})}>
                 <div className='inner'>
                   <ul>
+                    {data.overview || data.key_priorities ? <li><a href='#overview' title='Go to Overview'>Overview</a></li> : null}
                     {get(this.props.keyFigures, 'data.results.length') ? <li><a href='#key-figures' title='Go to Key Figures section'>Key Figures</a></li> : null}
                     <li><a href='#operations-map' title='Go to Operations section'>Operations</a></li>
                     <li><a href='#emergencies' title='Go to Emergencies section'>Emergencies</a></li>
@@ -374,6 +376,12 @@ class AdminArea extends SFPComponent {
           </Sticky>
           <div className='inpage__body'>
             <div className='inner'>
+              {data.overview || data.key_priorities ? (
+                <Fold title='Overview' id='overview'>
+                  {data.overview ? <ReactMarkdown source={data.overview} /> : null}
+                  {data.key_priorities ? <ReactMarkdown source={data.key_priorities} /> : null}
+                </Fold>
+              ) : null}
               <KeyFigures data={this.props.keyFigures} />
               <Fold title='Statistics' headerClass='visually-hidden' id='operations'>
                 <div className='operations__container'>
