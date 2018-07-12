@@ -36,7 +36,7 @@ class _Snippets extends React.Component {
       <Fold id='graphics' title='Additional Graphics' wrapper_class='additional-graphics'>
         <div className='iframe__container'>
           {data.results.map(o => o.snippet ? <div className='snippet__item' key={o.id} dangerouslySetInnerHTML={{__html: o.snippet}} />
-            : o.image ? <div className='snippet__item snippet__image'><img src={o.image}/></div> : null
+            : o.image ? <div key={o.id} className='snippet__item snippet__image'><img src={o.image}/></div> : null
           )}
         </div>
       </Fold>
