@@ -9,6 +9,7 @@ import chroma from 'chroma-js';
 import calculateCentroid from '@turf/centroid';
 import { DateTime } from 'luxon';
 
+import { countries } from '../utils/field-report-constants';
 import { source } from '../utils/get-new-map';
 import { commaSeparatedNumber as n } from '../utils/format';
 import { environment } from '../config';
@@ -40,6 +41,7 @@ class Homemap extends React.Component {
     this.onFieldChange = this.onFieldChange.bind(this);
     this.navigate = this.navigate.bind(this);
     this.showDeploymentsPopover = this.showDeploymentsPopover.bind(this);
+    this.showCountryPopover = this.showCountryPopover.bind(this);
   }
 
   componentDidMount () {
@@ -128,25 +130,23 @@ class Homemap extends React.Component {
       'interpolate',
       ['linear'],
       ['zoom'],
-      3,
-      [
-	'interpolate',
-	['exponential', 1],
-	['number', ['get', scaleProp]],
-	0,
-	5,
-	maxScaleValue,
-	10
+      3, [
+        'interpolate',
+        ['exponential', 1],
+        ['number', ['get', scaleProp]],
+        0,
+        5,
+        maxScaleValue,
+        10
       ],
-      8,
-      [
-	'interpolate',
-	['exponential', 1],
-	['number', ['get', scaleProp]],
-	0,
-	20,
-	maxScaleValue,
-	40
+      8, [
+        'interpolate',
+        ['exponential', 1],
+        ['number', ['get', scaleProp]],
+        0,
+        20,
+        maxScaleValue,
+        40
       ]
     ];
   }
@@ -162,8 +162,8 @@ class Homemap extends React.Component {
       this.showOperationsPopover(theMap, e.features[0]);
     });
 
-    theMap.on('click', 'district', e => {
-      this.showDeploymentsPopover(theMap, e.features[0]);
+    theMap.on('click', 'country', e => {
+      this.showCountryPopover(theMap, e.features[0]);
     });
 
     theMap.on('mousemove', 'appeals', e => {
@@ -171,6 +171,14 @@ class Homemap extends React.Component {
     });
 
     theMap.on('mouseleave', 'appeals', e => {
+      theMap.getCanvas().style.cursor = '';
+    });
+
+    theMap.on('mousemove', 'country', e => {
+      theMap.getCanvas().style.cursor = 'pointer';
+    });
+
+    theMap.on('mouseleave', 'country', e => {
       theMap.getCanvas().style.cursor = '';
     });
 
@@ -246,7 +254,9 @@ class Homemap extends React.Component {
   showOperationsPopover (theMap, feature) {
     let popoverContent = document.createElement('div');
     const { properties, geometry } = feature;
-    const operations = properties.appeals ? JSON.parse(properties.appeals) : [];
+    const operations = !properties.appeals ? []
+      : Array.isArray(properties.appeals) ? properties.appeals
+        : JSON.parse(properties.appeals);
     const title = `${properties.name}`;
 
     render(<OperationsPopover
@@ -266,6 +276,34 @@ class Homemap extends React.Component {
       .setLngLat(geometry.coordinates)
       .setDOMContent(popoverContent.children[0])
       .addTo(theMap);
+  }
+
+  showCountryPopover (theMap, feature) {
+    const name = get(feature, 'properties.NAME');
+    const features = get(this.state, 'markerGeoJSON.features');
+    if (Array.isArray(features)) {
+      const found = features.find(d => d.properties.name === name);
+      if (found) {
+        return this.showOperationsPopover(theMap, found);
+      }
+    }
+    const iso = get(feature, 'properties.ISO_A2', 'not found').toLowerCase();
+    const country = countries.find(d => d.iso === iso);
+    if (country) {
+      let popoverContent = document.createElement('div');
+      render(<OperationsPopover
+        title={name}
+        navigate={this.navigate}
+        pageId={country.value}
+      />, popoverContent);
+      if (this.popover != null) {
+        this.popover.remove();
+      }
+      this.popover = new mapboxgl.Popup({closeButton: false})
+        .setLngLat(calculateCentroid(feature.geometry).geometry.coordinates)
+        .setDOMContent(popoverContent.children[0])
+        .addTo(theMap);
+    }
   }
 
   showDeploymentsPopover (theMap, feature) {
