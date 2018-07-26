@@ -360,31 +360,12 @@ export function getDeploymentERU (page = 1, filters = {}) {
   return fetchJSON(`/api/v2/eru/?${f}`, GET_DEPLOYMENT_ERU, withToken());
 }
 
-export const GET_DEPLOYMENT_FACT = 'GET_DEPLOYMENT_FACT';
-export function getDeploymentFACT (page = 1, filters = {}) {
+export const GET_PERSONNEL = 'GET_PERSONNEL';
+export function getPersonnel (page = 1, filters = {}) {
   filters.limit = filters.limit || 5;
   filters.offset = filters.limit * (page - 1);
-
   const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v2/fact_person/?${f}`, GET_DEPLOYMENT_FACT, withToken());
-}
-
-export const GET_DEPLOYMENT_HEOP = 'GET_DEPLOYMENT_HEOP';
-export function getDeploymentHEOP (page = 1, filters = {}) {
-  filters.limit = filters.limit || 5;
-  filters.offset = filters.limit * (page - 1);
-
-  const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v2/heop/?${f}`, GET_DEPLOYMENT_HEOP, withToken());
-}
-
-export const GET_DEPLOYMENT_RDRT = 'GET_DEPLOYMENT_RDRT';
-export function getDeploymentRDRT (page = 1, filters = {}) {
-  filters.limit = filters.limit || 5;
-  filters.offset = filters.limit * (page - 1);
-
-  const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v2/rdrt_person/?${f}`, GET_DEPLOYMENT_RDRT, withToken());
+  return fetchJSON(`/api/v2/personnel/?${f}`, GET_PERSONNEL, withToken());
 }
 
 export const GET_ALL_DEPLOYMENT_ERU = 'GET_ALL_DEPLOYMENT_ERU';
@@ -400,18 +381,4 @@ export function getAllDeploymentFACT (filters = {}) {
   filters.limit = 1000;
   const f = buildAPIQS(filters);
   return fetchJSON(`/api/v2/fact/?${f}`, GET_ALL_DEPLOYMENT_FACT, withToken());
-}
-
-export const GET_ALL_DEPLOYMENT_HEOP = 'GET_ALL_DEPLOYMENT_HEOP';
-export function getAllDeploymentHEOP (filters = {}) {
-  filters.limit = 1000;
-  const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v2/heop/?${f}`, GET_ALL_DEPLOYMENT_HEOP, withToken());
-}
-
-export const GET_ALL_DEPLOYMENT_RDRT = 'GET_ALL_DEPLOYMENT_RDRT';
-export function getAllDeploymentRDRT (filters = {}) {
-  filters.limit = 1000;
-  const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v2/rdrt/?${f}`, GET_ALL_DEPLOYMENT_RDRT, withToken());
 }
