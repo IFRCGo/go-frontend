@@ -29,51 +29,22 @@ function eru (state = initialState, action) {
   return state;
 }
 
-function fact (state = initialState, action) {
+function personnel (state = initialState, action) {
   switch (action.type) {
-    case 'GET_DEPLOYMENT_FACT_INFLIGHT':
+    case 'GET_PERSONNEL_INFLIGHT':
       state = stateInflight(state, action);
       break;
-    case 'GET_DEPLOYMENT_FACT_FAILED':
+    case 'GET_PERSONNEL_FAILED':
       state = stateError(state, action);
       break;
-    case 'GET_DEPLOYMENT_FACT_SUCCESS':
+    case 'GET_PERSONNEL_SUCCESS':
       state = stateSuccess(state, action);
       break;
   }
   return state;
 }
 
-function heop (state = initialState, action) {
-  switch (action.type) {
-    case 'GET_DEPLOYMENT_HEOP_INFLIGHT':
-      state = stateInflight(state, action);
-      break;
-    case 'GET_DEPLOYMENT_HEOP_FAILED':
-      state = stateError(state, action);
-      break;
-    case 'GET_DEPLOYMENT_HEOP_SUCCESS':
-      state = stateSuccess(state, action);
-      break;
-  }
-  return state;
-}
-
-function rdrt (state = initialState, action) {
-  switch (action.type) {
-    case 'GET_DEPLOYMENT_RDRT_INFLIGHT':
-      state = stateInflight(state, action);
-      break;
-    case 'GET_DEPLOYMENT_RDRT_FAILED':
-      state = stateError(state, action);
-      break;
-    case 'GET_DEPLOYMENT_RDRT_SUCCESS':
-      state = stateSuccess(state, action);
-      break;
-  }
-  return state;
-}
-
+/*
 const geojsonInitialState = {
   fetchedCount: 0,
   fetchingCount: 0,
@@ -172,12 +143,10 @@ function updateGeoState (state, action, type) {
     }
   };
 }
+*/
 
 // Combined export.
 export default combineReducers({
   eru,
-  fact,
-  heop,
-  rdrt,
-  geojson
+  personnel
 });
