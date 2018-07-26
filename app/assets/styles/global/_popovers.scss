@@ -20,7 +20,7 @@
   z-index: 1;
   padding: $global-spacing;
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
   max-height: 225px; // Popovers can scroll
 
   > *:last-child {
