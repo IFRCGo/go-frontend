@@ -124,13 +124,31 @@ class Homemap extends React.Component {
   getCircleRadiusPaintProp (geoJSON, scaleBy) {
     const scaleProp = scaleBy === 'amount' ? 'amountRequested' : 'numBeneficiaries';
     const maxScaleValue = Math.max.apply(Math, geoJSON.features.map(o => o.properties[scaleProp]));
-    return {
-      property: scaleProp,
-      stops: [
-        [0, 3],
-        [maxScaleValue, 10]
+    return [
+      'interpolate',
+      ['linear'],
+      ['zoom'],
+      3,
+      [
+	'interpolate',
+	['exponential', 1],
+	['number', ['get', scaleProp]],
+	0,
+	5,
+	maxScaleValue,
+	10
+      ],
+      8,
+      [
+	'interpolate',
+	['exponential', 1],
+	['number', ['get', scaleProp]],
+	0,
+	20,
+	maxScaleValue,
+	40
       ]
-    };
+    ];
   }
 
   configureMap (theMap) {
