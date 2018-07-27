@@ -39,6 +39,8 @@ import Expandable from '../components/expandable';
 import { FilterHeader } from '../components/display-table';
 import { Snippets } from '../components/admin-area-elements';
 import SurgeAlertsTable from '../components/connected/alerts-table';
+import PersonnelTable from '../components/connected/personnel-table';
+import EruTable from '../components/connected/eru-table';
 
 class Emergency extends React.Component {
   constructor (props) {
@@ -364,6 +366,8 @@ class Emergency extends React.Component {
                     {get(this.props.snippets, 'data.results.length') ? <li><a href='#graphics' title='Go to Graphics section'>Graphics</a></li> : null}
                     {get(this.props.event, 'data.field_reports.length') ? <li><a href='#field-reports' title='Go to Field Reports section'>Field Reports</a></li> : null}
                     {get(this.props.surgeAlerts, 'data.results.length') ? <li><a href='#alerts' title='Go to Surge Alerts section'>Alerts</a></li> : null}
+                    {get(this.props.eru, 'data.results.length') ? <li><a href='#erus' title='Go to ERUs section'>ERUs</a></li> : null}
+                    {get(this.props.personnel, 'data.results.length') ? <li><a href='#personnel' title='Go to Personnel section'>Personnel</a></li> : null}
                     {get(this.props.situationReports, 'data.results.length') ? <li><a href='#response-documents' title='Go to Response Documents section'>Response Documents</a></li> : null}
                     {get(this.props.appealDocuments, 'data.results.length') ? <li><a href='#documents' title='Go to Documents section'>Appeal Documents</a></li> : null}
                     {contacts && contacts.length ? <li><a href='#contacts' title='Go to Contacts section'>Contacts</a></li> : null}
@@ -390,6 +394,12 @@ class Emergency extends React.Component {
                 title='Alerts'
                 emergency={this.props.match.params.id}
                 returnNullForEmpty={true}
+              />
+              <EruTable id='erus'
+                emergency={this.props.match.params.id}
+              />
+              <PersonnelTable id='personnel'
+                emergency={this.props.match.params.id}
               />
               {this.renderResponseDocuments()}
               {this.renderAppealDocuments()}
@@ -456,6 +466,8 @@ if (environment !== 'production') {
     situationReportTypes: T.object,
     appealDocuments: T.object,
     surgeAlerts: T.object,
+    eru: T.object,
+    personnel: T.object,
     isLogged: T.bool
   };
 }
@@ -486,6 +498,8 @@ const selector = (state, ownProps) => ({
     fetched: false
   }),
   surgeAlerts: state.surgeAlerts,
+  eru: state.deployments.eru,
+  personnel: state.deployments.personnel,
   isLogged: !!state.user.data.token
 });
 

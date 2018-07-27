@@ -69,6 +69,10 @@ class EruTable extends SFPComponent {
     if (state.filters.type !== 'all') {
       qs.type = state.filters.type;
     }
+
+    if (!isNaN(props.emergency)) {
+      qs.event = props.emergency;
+    }
     return qs;
   }
 
@@ -141,7 +145,7 @@ class EruTable extends SFPComponent {
 
       return (
         <div className='inner'>
-          <Fold title={`Deployed ERU (${n(data.count)})`}>
+          <Fold title={`Deployed ERU (${n(data.count)})`} id={this.props.id}>
             <DisplayTable
               headings={headings}
               rows={rows}

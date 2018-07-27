@@ -80,6 +80,10 @@ class PersonnelTable extends SFPComponent {
     if (state.filters.type !== 'all') {
       qs.type = state.filters.type;
     }
+
+    if (!isNaN(props.emergency)) {
+      qs.event_deployed_to = props.emergency;
+    }
     return qs;
   }
 
@@ -158,7 +162,7 @@ class PersonnelTable extends SFPComponent {
 
       return (
         <div className='inner'>
-          <Fold title={`${title} (${n(data.count)})`}>
+          <Fold title={`${title} (${n(data.count)})`} id={this.props.id}>
             <DisplayTable
               headings={headings}
               rows={rows}
