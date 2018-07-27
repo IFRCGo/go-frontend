@@ -368,17 +368,18 @@ export function getPersonnel (page = 1, filters = {}) {
   return fetchJSON(`/api/v2/personnel/?${f}`, GET_PERSONNEL, withToken());
 }
 
+export const GET_ACTIVE_PERSONNEL = 'GET_ACTIVE_PERSONNEL';
+export function getActivePersonnel (filters = {}) {
+  filters.limit = 1000;
+  filters.end_date__gt = DateTime.utc().toISO();
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v2/personnel/?${f}`, GET_ACTIVE_PERSONNEL, withToken());
+}
+
 export const GET_ALL_DEPLOYMENT_ERU = 'GET_ALL_DEPLOYMENT_ERU';
 export function getAllDeploymentERU (filters = {}) {
   filters['deployed_to__isnull'] = false;
   filters.limit = 1000;
   const f = buildAPIQS(filters);
   return fetchJSON(`/api/v2/eru/?${f}`, GET_ALL_DEPLOYMENT_ERU, withToken());
-}
-
-export const GET_ALL_DEPLOYMENT_FACT = 'GET_ALL_DEPLOYMENT_FACT';
-export function getAllDeploymentFACT (filters = {}) {
-  filters.limit = 1000;
-  const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v2/fact/?${f}`, GET_ALL_DEPLOYMENT_FACT, withToken());
 }
