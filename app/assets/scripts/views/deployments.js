@@ -1,7 +1,6 @@
 'use strict';
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 import { Helmet } from 'react-helmet';
@@ -14,13 +13,11 @@ import {
   removeFullscreenListener
 } from '../utils/fullscreen';
 import {
-  getDeploymentERU,
   getAllDeploymentERU,
   getActivePersonnel,
   getEruOwners
 } from '../actions';
-import { finishedFetch, get, datesAgo } from '../utils/utils';
-import { getEruType } from '../utils/eru-types';
+import { finishedFetch, datesAgo } from '../utils/utils';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { environment } from '../config';
 import {
@@ -29,12 +26,10 @@ import {
 } from '../utils/format';
 
 import App from './app';
-import Fold from '../components/fold';
 import Progress from '../components/progress';
-import BlockLoading from '../components/block-loading';
 import PersonnelTable from '../components/connected/personnel-table';
+import EruTable from '../components/connected/eru-table';
 import { SFPComponent } from '../utils/extendables';
-import DisplayTable from '../components/display-table';
 import Map from '../components/deployments/map';
 import Readiness from '../components/deployments/readiness';
 
@@ -61,7 +56,6 @@ class Deployments extends SFPComponent {
     addFullscreenListener(this.onFullscreenChange);
     showGlobalLoading();
     this.props._getEruOwners();
-    this.props._getDeploymentERU(1, { limit: this.state.eru.limit });
     this.props._getAllDeploymentERU();
     this.props._getActivePersonnel();
   }
@@ -185,72 +179,6 @@ class Deployments extends SFPComponent {
     );
   }
 
-  renderERUTable () {
-    const {
-      fetched,
-      fetching,
-      error,
-      data
-    } = this.props.eru;
-
-    if (fetching) {
-      return (
-        <div className='inner'>
-          <Fold title='Deployed ERU'>
-            <BlockLoading/>
-          </Fold>
-        </div>
-      );
-    }
-
-    if (error || !get(data, 'results.length')) {
-      return null;
-    }
-
-    if (fetched) {
-      const headings = [
-        {
-          id: 'name',
-          label: 'Owner'
-        },
-        { id: 'type', label: 'ERU Type' },
-        { id: 'personnel', label: 'Personnel Units' },
-        { id: 'equipment', label: 'Equipment Units' },
-        { id: 'country', label: 'Country Deployed to' },
-        { id: 'emer', label: 'Emergency' }
-      ];
-
-      const rows = data.results.map(o => {
-        const owner = get(o, 'eru_owner.national_society_country', null);
-        return {
-          id: o.id,
-          name: owner !== null ? owner.name : nope,
-          country: o.deployed_to ? <Link to={`/countries/${o.deployed_to.id}`} className='link--primary' title='View Country'>{o.deployed_to.name}</Link> : nope,
-          type: getEruType(o.type),
-          emer: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
-          personnel: o.units,
-          equipment: o.equipment_units
-        };
-      });
-
-      return (
-        <div className='inner'>
-          <Fold title={`Deployed ERU (${n(data.count)})`}>
-            <DisplayTable
-              headings={headings}
-              rows={rows}
-              pageCount={data.count / this.state.eru.limit}
-              page={this.state.eru.page - 1}
-              onPageChange={this.handlePageChange.bind(this, 'eru')}
-            />
-          </Fold>
-        </div>
-      );
-    }
-
-    return null;
-  }
-
   renderContent () {
     const {
       fetched,
@@ -287,7 +215,7 @@ class Deployments extends SFPComponent {
           </div>
         </section>
         <div className='inpage__body'>
-          {this.renderERUTable()}
+          <EruTable limit={5} />
           <PersonnelTable limit={20} />
           <div className='inner'>
             <div className='readiness__container'>
@@ -314,7 +242,6 @@ class Deployments extends SFPComponent {
 if (environment !== 'production') {
   Deployments.propTypes = {
     _getEruOwners: T.func,
-    _getDeploymentERU: T.func,
     _getActivePersonnel: T.func,
     _getAllDeploymentERU: T.func,
     eruOwners: T.object,
@@ -326,14 +253,12 @@ if (environment !== 'production') {
 
 const selector = (state) => ({
   eruOwners: state.eruOwners,
-  eru: state.deployments.eru,
   activePersonnel: state.deployments.activePersonnel,
   locations: state.deployments.locations
 });
 
 const dispatcher = (dispatch) => ({
   _getEruOwners: () => dispatch(getEruOwners()),
-  _getDeploymentERU: (...args) => dispatch(getDeploymentERU(...args)),
   _getAllDeploymentERU: (...args) => dispatch(getAllDeploymentERU(...args)),
   _getActivePersonnel: (...args) => dispatch(getActivePersonnel(...args))
 });

@@ -4,9 +4,8 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
-import { stringify } from 'qs';
 
-import { environment, api } from '../../config';
+import { environment } from '../../config';
 import { getPersonnel } from '../../actions';
 import { commaSeparatedNumber as n, nope } from '../../utils/format';
 import {
@@ -52,7 +51,7 @@ class PersonnelTable extends SFPComponent {
 
   componentWillReceiveProps (newProps) {
     let shouldMakeNewRequest = false;
-    ['limit'].forEach(prop => {
+    ['limit', 'emergency'].forEach(prop => {
       if (newProps[prop] !== this.props[prop]) {
         shouldMakeNewRequest = true;
       }
@@ -64,13 +63,6 @@ class PersonnelTable extends SFPComponent {
 
   requestResults (props) {
     props._getPersonnel(this.state.table.page, this.getQs(props));
-  }
-
-  getExportLink () {
-    let qs = this.getQs(this.props);
-    qs.offset = qs.limit * (this.state.table.page - 1);
-    qs.format = 'csv';
-    return api + 'api/v2/personnel/?' + stringify(qs);
   }
 
   getQs (props) {
@@ -187,7 +179,14 @@ class PersonnelTable extends SFPComponent {
 if (environment !== 'production') {
   PersonnelTable.propTypes = {
     _getPersonnel: T.func,
-    personnel: T.object
+    personnel: T.object,
+
+    limit: T.number,
+    emergency: T.number,
+
+    noPaginate: T.bool,
+    id: T.string,
+    title: T.string
   };
 }
 
