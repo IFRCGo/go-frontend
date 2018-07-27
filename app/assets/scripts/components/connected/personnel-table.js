@@ -20,6 +20,13 @@ import BlockLoading from '../block-loading';
 import DisplayTable, { SortHeader, FilterHeader } from '../display-table';
 import { SFPComponent } from '../../utils/extendables';
 
+const typeOptions = [
+  { value: 'all', label: 'All' },
+  { value: 'rdrt', label: 'RDRT/RIT' },
+  { value: 'heop', label: 'HEOP' },
+  { value: 'fact', label: 'FACT' }
+];
+
 class PersonnelTable extends SFPComponent {
   constructor (props) {
     super(props);
@@ -33,7 +40,7 @@ class PersonnelTable extends SFPComponent {
         },
         filters: {
           startDate: 'all',
-          endDate: 'all'
+          type: 'all'
         }
       }
     };
@@ -69,19 +76,18 @@ class PersonnelTable extends SFPComponent {
   getQs (props) {
     let state = this.state.table;
     let qs = { limit: state.limit };
-    /*
     if (state.sort.field) {
       qs.ordering = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
     } else {
-      qs.ordering = '-start_date';
+      qs.ordering = '-end_date';
     }
-    */
 
-    /*
-    if (state.filters.date !== 'all') {
+    if (state.filters.startDate !== 'all') {
       qs.start_date__gte = datesAgo[state.filters.date]();
     }
-    */
+    if (state.filters.type !== 'all') {
+      qs.type = state.filters.type;
+    }
     return qs;
   }
 
@@ -96,7 +102,6 @@ class PersonnelTable extends SFPComponent {
       error,
       data
     } = this.props.personnel;
-    console.log(this.props.personnel);
 
     const title = this.props.title || 'Deployed Personnel';
 
@@ -108,22 +113,44 @@ class PersonnelTable extends SFPComponent {
       );
     }
 
-    if ((error || !get(data, 'results.length')) && this.state.table.filters.startDate === 'all') {
+    if ((error || !get(data, 'results.length')) && this.state.table.filters.startDate === 'all' && this.state.table.filters.type === 'all') {
       return null;
     }
 
     // if (fetched) {
     if (fetched) {
-      const headings = [
-        { id: 'startDate', label: 'Start Date' },
-        { id: 'endDate', label: 'End Date' },
-        { id: 'name', label: 'Name' },
-        { id: 'role', label: 'Role' },
-        { id: 'type', label: 'Type' },
-        { id: 'country', label: 'From' },
-        { id: 'deployed', label: 'Deployed to' },
-        { id: 'emer', label: 'Emergency' }
-      ];
+      const headings = [{
+        id: 'startDate',
+        label: <FilterHeader id='startDate' title='Start Date' options={dateOptions} filter={this.state.table.filters.startDate} onSelect={this.handleFilterChange.bind(this, 'table', 'startDate')} />
+      },
+      {
+        id: 'endDate',
+        label: <SortHeader id='endDate' title='End Date' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'end_date')} />
+      },
+      {
+        id: 'name',
+        label: <SortHeader id='name' title='Name' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'name')} />
+      },
+      {
+        id: 'role',
+        label: <SortHeader id='role' title='Role' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'role')} />
+      },
+      {
+        id: 'type',
+        label: <FilterHeader id='type' title='Type' options={typeOptions} filter={this.state.table.filters.type} onSelect={this.handleFilterChange.bind(this, 'table', 'type')} />
+      },
+      {
+        id: 'country',
+        label: <SortHeader id='country' title='From' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'country_from')} />
+      },
+      {
+        id: 'deployed',
+        label: <SortHeader id='deployed' title='Deployed to' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'deployment')} />
+      },
+      {
+        id: 'emer',
+        label: <SortHeader id='emer' title='Emergency' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'deployment')} />
+      }];
 
       const rows = data.results.map(o => ({
         id: o.id,
