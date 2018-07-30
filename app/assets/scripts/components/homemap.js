@@ -287,7 +287,7 @@ class Homemap extends React.Component {
         return this.showOperationsPopover(theMap, found);
       }
     }
-    const iso = get(feature, 'properties.ISO_A2', 'not found').toLowerCase();
+    const iso = get(feature, 'properties.ISO2', 'not found').toLowerCase();
     const country = countries.find(d => d.iso === iso);
     if (country) {
       let popoverContent = document.createElement('div');

@@ -62,7 +62,7 @@ export default class DeploymentsMap extends React.Component {
         // Data driven case statement:
         // 'case',
         //  // PT
-        //  ['==', ['to-string', ['get', 'ISO_A2']], 'PT'],
+        //  ['==', ['to-string', ['get', 'ISO2']], 'PT'],
         //  'red',
         //  // Default
         //  'hsl(213, 38%, 28%)'
@@ -73,7 +73,7 @@ export default class DeploymentsMap extends React.Component {
             const nameLong = iso === 'FR' ? 'France' : 'Norway';
             acc.push(['==', ['to-string', ['get', 'NAME_LONG']], nameLong]);
           } else {
-            acc.push(['==', ['to-string', ['get', 'ISO_A2']], feat.properties.iso.toUpperCase()]);
+            acc.push(['==', ['to-string', ['get', 'ISO2']], feat.properties.iso.toUpperCase()]);
           }
           acc.push(countryChromaScale(feat.properties.eru).hex());
           return acc;

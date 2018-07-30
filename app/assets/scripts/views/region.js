@@ -106,7 +106,7 @@ class AdminArea extends SFPComponent {
       },
       filter: [
         '!in',
-        'ISO_A2'
+        'ISO2'
       ].concat(isoCodes)
     };
   }
