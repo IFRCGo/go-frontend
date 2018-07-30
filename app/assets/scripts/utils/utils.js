@@ -130,11 +130,11 @@ export function aggregatePartnerDeployments (deploymentGroups, filters = []) {
 // normalize ISO from a country vector tile
 export function getCountryIsoFromVt (feature) {
   const { properties } = feature;
-  const iso = get(feature, 'properties.ISO_A2', '').toLowerCase();
-  if (!iso || (iso === '-99' && properties.ADM0_A3_IS !== 'FRA' && properties.ADM0_A3_IS !== 'NOR')) {
+  const iso = get(feature, 'properties.ISO2', '').toLowerCase();
+  if (!iso || (iso === '-99' && properties.ISO3 !== 'FRA' && properties.ISO3 !== 'NOR')) {
     return null;
   }
-  return iso === '-99' ? properties.ADM0_A3_IS.toLowerCase().slice(0, 2) : iso;
+  return iso === '-99' ? properties.ISO3.toLowerCase().slice(0, 2) : iso;
 }
 
 export function groupByDisasterType (objs) {

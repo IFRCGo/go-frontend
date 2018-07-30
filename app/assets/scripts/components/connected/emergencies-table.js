@@ -18,7 +18,8 @@ import {
   get,
   dTypeOptions,
   dateOptions,
-  datesAgo
+  datesAgo,
+  mostRecentReport
 } from '../../utils/utils';
 import { getDtypeMeta } from '../../utils/get-dtype-meta';
 
@@ -152,7 +153,7 @@ class EmergenciesTable extends SFPComponent {
           label: <SortHeader id='glide' title='Glide' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'glide')} />
         },
         {
-          id: 'totalAffected',
+          id: 'requested',
           label: <SortHeader id='amount_requested' title='Requested Amount (CHF)' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'amount_requested')} />,
           className: 'right-align'
         },
@@ -170,14 +171,14 @@ class EmergenciesTable extends SFPComponent {
 
       const rows = data.results.map(rowData => {
         const date = rowData.disaster_start_date ? isoDate(rowData.disaster_start_date) : nope;
-        const affected = rowData.hasOwnProperty('num_affected') ? rowData.num_affected : nope;
+        const affected = get(rowData, 'num_affected') || get(mostRecentReport(rowData.field_reports), 'num_affected') || nope;
         let row = {
           id: rowData.id,
           date: date,
           name: <Link className='link--primary' to={`/emergencies/${rowData.id}`}>{get(rowData, 'name', nope)}</Link>,
           dtype: rowData.dtype ? getDtypeMeta(rowData.dtype).label : nope,
-          totalAffected: {
-            value: n(get(rowData, 'num_affected')),
+          requested: {
+            value: n(get(rowData, 'appeals.0.amount_requested')),
             className: 'right-align'
           },
           affected: {

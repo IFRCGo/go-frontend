@@ -309,7 +309,7 @@ class AdminArea extends SFPComponent {
             </ul>
           </div>
           <div className='content-list'>
-            <h3>Partner Society</h3>
+            <h3>National Society</h3>
             <ul>
               <li>Income (CHF)<span className='content-highlight'>{bigN(get(data, 'KPI_IncomeLC_CHF.value'))}</span></li>
               <li>Expenditures (CHF)<span className='content-highlight'>{bigN(get(data, 'KPI_expenditureLC_CHF.value'))}</span></li>
@@ -405,6 +405,7 @@ class AdminArea extends SFPComponent {
                       deployments={this.props.partnerDeployments}
                       deploymentsKey='PNS Activities'
                       noRenderEmergencies={true}
+                      noExport={true}
                     />
                   </div>
                 </div>

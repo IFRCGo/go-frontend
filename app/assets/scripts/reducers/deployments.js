@@ -1,9 +1,7 @@
 'use strict';
+import { get } from '../utils/utils';
 import { combineReducers } from 'redux';
 import _groupBy from 'lodash.groupby';
-import _cloneDeep from 'lodash.clonedeep';
-
-import { getCountryMeta } from '../utils/get-country-meta';
 import { stateInflight, stateError, stateSuccess } from '../utils/reducer-utils';
 import { getCentroid } from '../utils/country-centroids';
 
@@ -29,155 +27,110 @@ function eru (state = initialState, action) {
   return state;
 }
 
-function fact (state = initialState, action) {
+function personnel (state = initialState, action) {
   switch (action.type) {
-    case 'GET_DEPLOYMENT_FACT_INFLIGHT':
+    case 'GET_PERSONNEL_INFLIGHT':
       state = stateInflight(state, action);
       break;
-    case 'GET_DEPLOYMENT_FACT_FAILED':
+    case 'GET_PERSONNEL_FAILED':
       state = stateError(state, action);
       break;
-    case 'GET_DEPLOYMENT_FACT_SUCCESS':
+    case 'GET_PERSONNEL_SUCCESS':
       state = stateSuccess(state, action);
       break;
   }
   return state;
 }
 
-function heop (state = initialState, action) {
-  switch (action.type) {
-    case 'GET_DEPLOYMENT_HEOP_INFLIGHT':
-      state = stateInflight(state, action);
-      break;
-    case 'GET_DEPLOYMENT_HEOP_FAILED':
-      state = stateError(state, action);
-      break;
-    case 'GET_DEPLOYMENT_HEOP_SUCCESS':
-      state = stateSuccess(state, action);
-      break;
-  }
-  return state;
-}
-
-function rdrt (state = initialState, action) {
-  switch (action.type) {
-    case 'GET_DEPLOYMENT_RDRT_INFLIGHT':
-      state = stateInflight(state, action);
-      break;
-    case 'GET_DEPLOYMENT_RDRT_FAILED':
-      state = stateError(state, action);
-      break;
-    case 'GET_DEPLOYMENT_RDRT_SUCCESS':
-      state = stateSuccess(state, action);
-      break;
-  }
-  return state;
-}
-
-const geojsonInitialState = {
-  fetchedCount: 0,
-  fetchingCount: 0,
-  data: {
-    features: []
-  },
-  error: null
+const personnelInitialState = {
+  fetching: false,
+  fetched: false,
+  receivedAt: null,
+  data: {},
+  types: {}
 };
 
-function geojson (state = geojsonInitialState, action) {
+function activePersonnel (state = personnelInitialState, action) {
   switch (action.type) {
-    case 'GET_ALL_DEPLOYMENT_ERU_INFLIGHT':
-    case 'GET_ALL_DEPLOYMENT_FACT_INFLIGHT':
-    case 'GET_ALL_DEPLOYMENT_HEOP_INFLIGHT':
-    case 'GET_ALL_DEPLOYMENT_RDRT_INFLIGHT':
-      state = {
-        ...state,
-        fetchingCount: state.fetchingCount + 1
-      };
+    case 'GET_ACTIVE_PERSONNEL_INFLIGHT':
+      state = stateInflight(state, action);
       break;
-    case 'GET_ALL_DEPLOYMENT_ERU_FAILED':
-    case 'GET_ALL_DEPLOYMENT_FACT_FAILED':
-    case 'GET_ALL_DEPLOYMENT_HEOP_FAILED':
-    case 'GET_ALL_DEPLOYMENT_RDRT_FAILED':
-      state = {
-        ...state,
-        fetchingCount: state.fetchingCount - 1,
-        fetchedCount: state.fetchedCount + 1,
-        error: action.error
-      };
+    case 'GET_ACTIVE_PERSONNEL_FAILED':
+      state = stateError(state, action);
       break;
-    case 'GET_ALL_DEPLOYMENT_ERU_SUCCESS':
-      state = updateGeoState(state, action, 'eru');
-      break;
-    case 'GET_ALL_DEPLOYMENT_FACT_SUCCESS':
-      state = updateGeoState(state, action, 'fact');
-      break;
-    case 'GET_ALL_DEPLOYMENT_HEOP_SUCCESS':
-      state = updateGeoState(state, action, 'heop');
-      break;
-    case 'GET_ALL_DEPLOYMENT_RDRT_SUCCESS':
-      state = updateGeoState(state, action, 'rdrt');
+    case 'GET_ACTIVE_PERSONNEL_SUCCESS':
+      state = Object.assign(stateSuccess(state, action), parseActivePersonnel(action));
       break;
   }
   return state;
 }
 
-function updateGeoState (state, action, type) {
-  let features = _cloneDeep(state.data.features) || [];
-  const groupper = type === 'eru' ? 'deployed_to.id' : 'country.id';
-  const countryGroup = _groupBy(action.data.results, groupper);
-
-  Object.keys(countryGroup).forEach(countryId => {
-    let country = getCountryMeta(countryId);
-    let feat = features.find(f => f.properties.countryIso === country.iso);
-    const setCount = (feat) => {
-      if (type === 'eru') {
-        feat.properties.eru += countryGroup[countryId].reduce((acc, o) => acc + o.equipment_units, 0);
-      } else {
-        // Each entry is a unit.
-        feat.properties[type] += countryGroup[countryId].length;
-      }
-    };
-
-    if (feat) {
-      setCount(feat);
-    } else {
-      feat = {
-        type: 'Feature',
-        properties: {
-          fact: 0,
-          rdrt: 0,
-          heop: 0,
-          eru: 0,
-          countryIso: country.iso,
-          countryId: countryId,
-          countryName: country.label
-        },
-        geometry: {
-          type: 'Point',
-          coordinates: getCentroid(country.iso)
-        }
-      };
-      setCount(feat);
-      features.push(feat);
-    }
-  });
-
+function parseActivePersonnel ({data}) {
+  const results = get(data, 'results', []);
+  let types = _groupBy(results, 'type');
+  for (let key in types) {
+    types[key] = types[key].length;
+  }
   return {
-    fetchingCount: state.fetchingCount - 1,
-    fetchedCount: state.fetchedCount + 1,
-    error: null,
-    data: {
-      type: 'FeatureCollection',
-      features
-    }
+    types
   };
 }
 
-// Combined export.
+const locationInitialState = {
+  type: 'FeatureCollection',
+  features: []
+};
+
+function locations (state = locationInitialState, action) {
+  switch (action.type) {
+    case 'GET_ACTIVE_PERSONNEL_SUCCESS':
+    case 'GET_ALL_DEPLOYMENT_ERU_SUCCESS':
+      state = parseLocations(state.features, action);
+      break;
+  }
+  return state;
+}
+
+function parseLocations (existingFeatures, action) {
+  const isEru = action.type === 'GET_ALL_DEPLOYMENT_ERU_SUCCESS';
+  const results = get(action, 'data.results', []);
+  let countryPath = isEru ? 'deployed_to' : 'deployment.country_deployed_to';
+  const countries = _groupBy(results, countryPath + '.id');
+  let features = existingFeatures.slice();
+  for (let id in countries) {
+    let deployments = countries[id];
+    let values = isEru
+      ? deployments.reduce((acc, next) => {
+        acc.eru += next.equipment_units;
+        return acc;
+      }, {eru: 0})
+      : deployments.reduce((acc, next) => {
+        acc[next.type] += 1;
+        return acc;
+      }, {heop: 0, fact: 0, rdrt: 0});
+    let existingFeature = features.find(d => d.properties.id === id);
+    if (existingFeature) {
+      for (let type in values) {
+        existingFeature.properties[type] += values[type];
+      }
+    } else {
+      let country = get(deployments[0], countryPath);
+      features.push({
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: getCentroid(country.iso)
+        },
+        properties: Object.assign({eru: 0, heop: 0, fact: 0, rdrt: 0}, country, values)
+      });
+    }
+  }
+  return { type: 'FeatureCollection', features };
+}
+
 export default combineReducers({
   eru,
-  fact,
-  heop,
-  rdrt,
-  geojson
+  personnel,
+  activePersonnel,
+  locations
 });
