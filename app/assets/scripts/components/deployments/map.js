@@ -251,6 +251,7 @@ export default class DeploymentsMap extends React.Component {
             <h2 className='visually-hidden'>Deployments by Country</h2>
             <MapComponent className='map-vis__holder'
               configureMap={this.configureMap}
+              noExport={true}
               layers={this.state.layers}
               filters={this.state.filters}
               geoJSON={this.props.data}>

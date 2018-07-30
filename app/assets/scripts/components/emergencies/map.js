@@ -143,6 +143,7 @@ class EmergenciesMap extends React.Component {
               <h2 className='visually-hidden'>Emergencies by Country</h2>
               <MapComponent className='map-vis__holder'
                 configureMap={this.configureMap}
+                noExport={true}
                 layers={this.state.layers}
                 filters={this.state.filters}
                 geoJSON={data.geoJSON}>

@@ -405,6 +405,7 @@ class AdminArea extends SFPComponent {
                       deployments={this.props.partnerDeployments}
                       deploymentsKey='PNS Activities'
                       noRenderEmergencies={true}
+                      noExport={true}
                     />
                   </div>
                 </div>

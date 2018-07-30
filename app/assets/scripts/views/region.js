@@ -335,7 +335,7 @@ class AdminArea extends SFPComponent {
                 <div className= 'inner'>
                   <h2 className='fold__title'>{activeOperations === null || isNaN(activeOperations) ? null : activeOperations + ' Active Operations'}</h2>
                   <div className={mapContainerClass}>
-                    <Homemap operations={this.props.appealStats} bbox={bbox} layers={[this.state.maskLayer]}/>
+                    <Homemap operations={this.props.appealStats} bbox={bbox} layers={[this.state.maskLayer]} noExport={true}/>
                   </div>
                 </div>
               </div>
