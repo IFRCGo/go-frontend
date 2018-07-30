@@ -260,7 +260,9 @@ class Emergency extends React.Component {
 
   renderResponseDocuments () {
     const data = get(this.props.situationReports, 'data.results', []);
-    if (!data.length) return null;
+    const { date, type } = this.state.sitrepFilters;
+    // return empty when no data, only on default filters.
+    if (!data.length && date === 'all' && type === 'all') return null;
     const { id } = this.props.match.params;
     const addReportLink = url.resolve(api, `admin/api/event/${id}/change`);
     const types = this.props.situationReportTypes;
@@ -278,11 +280,11 @@ class Emergency extends React.Component {
           <div className='fold__filters'>
             <FilterHeader id='sitrep-date' title='Created At'
               options={dateOptions}
-              filter={this.state.sitrepFilters.date}
+              filter={date}
               onSelect={this.handleSitrepFilter.bind(this, 'date')} />
             {types.fetched && !types.error ? <FilterHeader id='sitrep-type' title='Document Type'
               options={[{value: 'all', label: 'All'}].concat(types.data.results.map(d => ({value: d.id, label: d.type})))}
-              filter={this.state.sitrepFilters.type}
+              filter={type}
               onSelect={this.handleSitrepFilter.bind(this, 'type')} /> : null}
           </div>
           {this.renderReports('situation-reports-list', data)}
