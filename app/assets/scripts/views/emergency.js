@@ -129,7 +129,7 @@ class Emergency extends React.Component {
         <h3>Emergency Overview</h3>
         <div className='content-list-group'>
           <ul className='content-list'>
-            <li>Affected<span className='content-highlight'>{n(get(report, 'num_affected'))}</span></li>
+            <li>Affected<span className='content-highlight'>{n(get(report, 'num_affected', get(this.props.event.data, 'num_affected')))}</span></li>
             <li>Injured<span className='content-highlight'>{n(get(report, 'num_injured'))}</span></li>
             <li>Dead<span className='content-highlight'>{n(get(report, 'num_dead'))}</span></li>
             <li>Missing<span className='content-highlight'>{n(get(report, 'num_missing'))}</span></li>
