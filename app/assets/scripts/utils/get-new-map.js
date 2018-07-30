@@ -12,7 +12,7 @@ export const mapStyle = {
   sources: {
     ifrc: {
       type: 'vector',
-      url: 'mapbox://devseed.dg-base-v3'
+      url: 'mapbox://go-ifrc.go-tiles-v2'
     },
     streets: {
       type: 'vector',
