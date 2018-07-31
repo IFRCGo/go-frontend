@@ -35,7 +35,7 @@ class ExportButton extends React.Component {
   exportAsCsv (e) {
     e.preventDefault();
     if (!this.props.csv.fetching) {
-      this.props._getListAsCsv(this.getExportLink(), this.props.serializer);
+      this.props._getListAsCsv(this.getExportLink());
       showAlert('info', <p><strong>Info:</strong> Exporting...</p>, true);
     }
   }
@@ -43,7 +43,7 @@ class ExportButton extends React.Component {
   getExportLink () {
     let qs = Object.assign({}, this.props.qs, {
       format: 'csv',
-      limit: 1,
+      limit: 99999,
       offset: 0
     });
     return url.resolve(api, this.props.resource) + '/?' + stringify(qs);
@@ -66,7 +66,6 @@ if (environment !== 'production') {
     filename: T.string,
     qs: T.object,
     resource: T.string,
-    serializer: T.object,
     csv: T.object
   };
 }
