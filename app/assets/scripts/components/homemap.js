@@ -26,7 +26,7 @@ const scale = chroma.scale(['#F0C9E8', '#861A70']);
 class Homemap extends React.Component {
   constructor (props) {
     super(props);
-    const scaleBy = 'amount';
+    const scaleBy = 'population';
     // scaleBy needs to be set for us to assign layers
     this.state = {
       scaleBy,
@@ -391,12 +391,12 @@ class Homemap extends React.Component {
                   classWrapper='map-scale-options'
                   options={[
                     {
-                      label: 'Appeal/DREF amount',
-                      value: 'amount'
-                    },
-                    {
                       label: 'Target People',
                       value: 'population'
+                    },
+                    {
+                      label: 'Appeal/DREF amount',
+                      value: 'amount'
                     }
                   ]}
                   inline={false}
@@ -413,7 +413,7 @@ class Homemap extends React.Component {
                   <dt className='color color--grey'>Grey</dt>
                   <dd>Movement Response</dd>
                   <dt className='color color'>Grey</dt>
-                  <dd>Mixed Response</dd>
+                  <dd>Multiple Responses</dd>
                 </dl>
               </div>
               {this.props.deployments ? (
