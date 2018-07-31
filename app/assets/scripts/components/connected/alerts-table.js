@@ -4,13 +4,13 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
-import { stringify } from 'qs';
 
-import { environment, api } from '../../config';
+import { environment } from '../../config';
 import { getSurgeAlerts } from '../../actions';
 import { get, dateOptions, datesAgo, isLoggedIn } from '../../utils/utils/';
 import { nope, privateSurgeAlert, recentInterval } from '../../utils/format';
 
+import ExportButton from '../export-button';
 import { SFPComponent } from '../../utils/extendables';
 import DisplayTable, { FilterHeader } from '../display-table';
 import BlockLoading from '../block-loading';
@@ -80,13 +80,6 @@ class AlertsTable extends SFPComponent {
 
   requestResults (props) {
     props._getSurgeAlerts(this.state.table.page, this.getQs(props));
-  }
-
-  getExportLink () {
-    let qs = this.getQs(this.props);
-    qs.offset = qs.limit * (this.state.table.page - 1);
-    qs.format = 'csv';
-    return api + 'api/v2/surge_alert/?' + stringify(qs);
   }
 
   getQs (props) {
@@ -180,9 +173,10 @@ class AlertsTable extends SFPComponent {
     return (
       <Fold title={`${title} (${data.count})`} id={this.props.id}>
         {this.props.showExport ? (
-          <div className='fold__actions'>
-            <a href={this.getExportLink()} className='button button--primary-bounded'>Export Table</a>
-          </div>
+          <ExportButton filename='surge-alerts'
+            qs={this.getQs(this.props)}
+            resource='api/v2/surge_alert'
+          />
         ) : null}
         <DisplayTable
           className='responsive-table alerts-table'
