@@ -295,6 +295,7 @@ class Homemap extends React.Component {
         title={name}
         navigate={this.navigate}
         pageId={country.value}
+        onCloseClick={this.onPopoverCloseClick.bind(this)}
       />, popoverContent);
       if (this.popover != null) {
         this.popover.remove();
