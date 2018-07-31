@@ -4,13 +4,9 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { DateTime } from 'luxon';
-import { stringify } from 'qs';
 
-import { environment, api } from '../../config';
-import {
-  getFieldReportsList,
-  getFieldReportsListCsv
-} from '../../actions';
+import { environment } from '../../config';
+import { getFieldReportsList } from '../../actions';
 import {
   recentInterval,
   nope,
@@ -20,6 +16,7 @@ import {
 import { get, dTypeOptions, dateOptions, datesAgo } from '../../utils/utils';
 import { getDtypeMeta } from '../../utils/get-dtype-meta';
 
+import ExportButton from '../export-button';
 import Fold from '../fold';
 import BlockLoading from '../block-loading';
 import DisplayTable, { FilterHeader, SortHeader } from '../display-table';
@@ -47,7 +44,6 @@ class FieldReportsTable extends SFPComponent {
         }
       }
     };
-    this.exportAsCsv = this.exportAsCsv.bind(this);
   }
 
   componentDidMount () {
@@ -64,32 +60,10 @@ class FieldReportsTable extends SFPComponent {
     if (shouldMakeNewRequest) {
       this.requestResults(newProps);
     }
-
-    if (this.props.csv.fetching && !newProps.csv.fetching && !newProps.csv.error) {
-      const encodedUri = encodeURI('data:text/csv;charset=utf-8,' + newProps.csv.data);
-      const link = document.createElement('a');
-      link.setAttribute('href', encodedUri);
-      link.setAttribute('download', 'download.csv');
-      link.innerHTML = 'Click';
-      document.body.appendChild(link);
-      link.click();
-    }
   }
 
   requestResults (props) {
     props._getFieldReportsList(this.state.table.page, this.getQs(props));
-  }
-
-  exportAsCsv (e) {
-    e.preventDefault();
-    this.props._getFieldReportsListCsv(this.getExportLink());
-  }
-
-  getExportLink () {
-    let qs = this.getQs(this.props);
-    qs.offset = qs.limit * (this.state.table.page - 1);
-    qs.format = 'csv';
-    return api + 'api/v2/field_report/?' + stringify(qs);
   }
 
   getQs (props) {
@@ -179,9 +153,10 @@ class FieldReportsTable extends SFPComponent {
       return (
         <Fold title={`${title} (${n(data.count)})`} id={this.props.id}>
           {this.props.showExport ? (
-            <div className='fold__actions'>
-              <a href='#' onClick={this.exportAsCsv} className='button button--primary-bounded'>Export Table</a>
-            </div>
+            <ExportButton filename='field-reports'
+              qs={this.getQs(this.props)}
+              resource='api/v2/field_report'
+            />
           ) : null}
           <DisplayTable
             headings={headings}
@@ -207,9 +182,7 @@ class FieldReportsTable extends SFPComponent {
 if (environment !== 'production') {
   FieldReportsTable.propTypes = {
     _getFieldReportsList: T.func,
-    _getFieldReportsListCsv: T.func,
     list: T.object,
-    csv: T.object,
     isAuthenticated: T.bool,
 
     limit: T.number,
@@ -232,13 +205,11 @@ if (environment !== 'production') {
 
 const selector = (state) => ({
   list: state.fieldReports,
-  csv: state.csv.fieldReports,
   isAuthenticated: !!state.user.data.token
 });
 
 const dispatcher = (dispatch) => ({
-  _getFieldReportsList: (...args) => dispatch(getFieldReportsList(...args)),
-  _getFieldReportsListCsv: (...args) => dispatch(getFieldReportsListCsv(...args))
+  _getFieldReportsList: (...args) => dispatch(getFieldReportsList(...args))
 });
 
 export default withRouter(connect(selector, dispatcher)(FieldReportsTable));
