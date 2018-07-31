@@ -4,7 +4,7 @@ import { mbtoken } from '../config';
 
 export const source = 'SOURCE';
 export const countryLabelId = 'country-label';
-const DISTRICT_MINZOOM = 4;
+const DISTRICT_MINZOOM = 5;
 
 export const mapStyle = {
   version: 8,
@@ -12,7 +12,7 @@ export const mapStyle = {
   sources: {
     ifrc: {
       type: 'vector',
-      url: 'mapbox://go-ifrc.go-tiles-v2'
+      url: 'mapbox://go-ifrc.go-tiles-v3'
     },
     streets: {
       type: 'vector',
@@ -51,14 +51,41 @@ export const mapStyle = {
       id: 'country-boundary',
       type: 'line',
       source: 'ifrc',
-      'source-layer': 'country',
+      'source-layer': 'boundary',
       layout: {
         'line-cap': 'round'
       },
       paint: {
         'line-color': 'hsla(209, 16%, 50%, 0.8)',
         'line-width': 0.7
-      }
+      },
+      filter: [
+        'any',
+        ['==', 'TYPE2', 'Administrative Boundaries'],
+        ['==', 'TYPE2', 'Defined Boundaries']
+      ],
+      maxzoom: DISTRICT_MINZOOM - 0.00001
+    },
+    {
+      id: 'country-boundary-disputed',
+      type: 'line',
+      source: 'ifrc',
+      'source-layer': 'boundary',
+      layout: {
+        'line-cap': 'round'
+      },
+      paint: {
+        'line-color': 'hsla(209, 16%, 50%, 0.8)',
+        'line-width': 0.7,
+        'line-dasharray': [1, 3]
+      },
+      filter: [
+        'all',
+        ['!=', 'TYPE2', 'Coast Line'],
+        ['!=', 'TYPE2', 'Administrative Boundaries'],
+        ['!=', 'TYPE2', 'Defined Boundaries']
+      ],
+      maxzoom: DISTRICT_MINZOOM - 0.00001
     },
     {
       id: 'district-boundary',
