@@ -84,11 +84,6 @@ export function getFieldReportsList (page = 1, filters = {}) {
   return fetchJSON(`/api/v2/field_report/?${f}`, GET_FIELD_REPORTS_LIST, withToken());
 }
 
-export const GET_FIELD_REPORTS_LIST_CSV = 'GET_FIELD_REPORTS_LIST_CSV';
-export function getFieldReportsListCsv (url) {
-  return fetchCSV(url, GET_FIELD_REPORTS_LIST_CSV, withToken());
-}
-
 export const GET_SURGE_ALERTS = 'GET_SURGE_ALERTS';
 export function getSurgeAlerts (page = 1, filters = {}) {
   filters.limit = filters.limit || 5;
@@ -382,4 +377,9 @@ export function getAllDeploymentERU (filters = {}) {
   filters.limit = 1000;
   const f = buildAPIQS(filters);
   return fetchJSON(`/api/v2/eru/?${f}`, GET_ALL_DEPLOYMENT_ERU, withToken());
+}
+
+export const GET_LIST_CSV = 'GET_LIST_CSV';
+export function getListAsCsv (url) {
+  return fetchCSV(url, GET_LIST_CSV, withToken());
 }

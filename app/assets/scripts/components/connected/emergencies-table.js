@@ -3,9 +3,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
-import { stringify } from 'qs';
 
-import { environment, api } from '../../config';
+import { environment } from '../../config';
 import { getEmergenciesList } from '../../actions';
 import {
   nope,
@@ -23,6 +22,7 @@ import {
 } from '../../utils/utils';
 import { getDtypeMeta } from '../../utils/get-dtype-meta';
 
+import ExportButton from '../export-button';
 import Fold from '../fold';
 import BlockLoading from '../block-loading';
 import DisplayTable, { SortHeader, FilterHeader } from '../display-table';
@@ -70,13 +70,6 @@ class EmergenciesTable extends SFPComponent {
 
   requestResults (props) {
     props._getEmergenciesList(this.state.table.page, this.getQs(props));
-  }
-
-  getExportLink () {
-    let qs = this.getQs(this.props);
-    qs.offset = qs.limit * (this.state.table.page - 1);
-    qs.format = 'csv';
-    return api + 'api/v2/event/?' + stringify(qs);
   }
 
   getQs (props) {
@@ -206,9 +199,10 @@ class EmergenciesTable extends SFPComponent {
       return (
         <Fold title={`${title} (${n(data.count)})`} id={this.props.id}>
           {this.props.showExport ? (
-            <div className='fold__actions'>
-              <a href={this.getExportLink()} className='button button--primary-bounded'>Export Table</a>
-            </div>
+            <ExportButton filename='emergencies'
+              qs={this.getQs(this.props)}
+              resource='api/v2/event'
+            />
           ) : null}
           <DisplayTable
             headings={headings}

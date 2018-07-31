@@ -4,9 +4,8 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
-import { stringify } from 'qs';
 
-import { environment, api } from '../../config';
+import { environment } from '../../config';
 import { getAppeals } from '../../actions';
 import { commaSeparatedNumber as n, nope } from '../../utils/format';
 import { getDtypeMeta } from '../../utils/get-dtype-meta';
@@ -18,6 +17,7 @@ import {
   appealTypeOptions
 } from '../../utils/utils/';
 
+import ExportButton from '../export-button';
 import Fold from '../fold';
 import BlockLoading from '../block-loading';
 import DisplayTable, { SortHeader, FilterHeader } from '../display-table';
@@ -68,13 +68,6 @@ class AppealsTable extends SFPComponent {
 
   requestResults (props) {
     props._getAppeals(this.state.table.page, this.getQs(props), props.action);
-  }
-
-  getExportLink () {
-    let qs = this.getQs(this.props);
-    qs.offset = qs.limit * (this.state.table.page - 1);
-    qs.format = 'csv';
-    return api + 'api/v2/appeal/?' + stringify(qs);
   }
 
   getQs (props) {
@@ -206,9 +199,10 @@ class AppealsTable extends SFPComponent {
       return (
         <Fold title={`${title} (${n(data.count)})`} id={this.props.id}>
           {this.props.showExport ? (
-            <div className='fold__actions'>
-              <a href={this.getExportLink()} className='button button--primary-bounded'>Export Table</a>
-            </div>
+            <ExportButton filename='appeals'
+              qs={this.getQs(this.props)}
+              resource='api/v2/appeal'
+            />
           ) : null}
           <DisplayTable
             headings={headings}
