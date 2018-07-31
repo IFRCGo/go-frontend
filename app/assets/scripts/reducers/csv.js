@@ -9,15 +9,15 @@ const initialState = {
   data: {}
 };
 
-function fieldReports (state = initialState, action) {
+function list (state = initialState, action) {
   switch (action.type) {
-    case 'GET_FIELD_REPORTS_LIST_CSV_INFLIGHT':
+    case 'GET_LIST_CSV_INFLIGHT':
       state = stateInflight(state, action);
       break;
-    case 'GET_FIELD_REPORTS_LIST_CSV_FAILED':
+    case 'GET_LIST_CSV_FAILED':
       state = stateError(state, action);
       break;
-    case 'GET_FIELD_REPORTS_LIST_CSV_SUCCESS':
+    case 'GET_LIST_CSV_SUCCESS':
       state = stateSuccess(state, action);
       break;
   }
@@ -25,5 +25,5 @@ function fieldReports (state = initialState, action) {
 }
 
 export default combineReducers({
-  fieldReports
+  list
 });
