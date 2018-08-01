@@ -162,12 +162,12 @@ class Homemap extends React.Component {
       this.setState({ ready: true });
     });
 
-    theMap.on('click', 'appeals', e => {
-      this.showOperationsPopover(theMap, e.features[0]);
-    });
-
     theMap.on('click', 'country', e => {
       this.showCountryPopover(theMap, e.features[0]);
+    });
+
+    theMap.on('click', 'appeals', e => {
+      this.showOperationsPopover(theMap, e.features[0]);
     });
 
     theMap.on('mousemove', 'appeals', e => {
@@ -235,6 +235,7 @@ class Homemap extends React.Component {
         atype: d.properties.atype,
         id: d.properties.id,
         name: d.properties.name,
+        iso: d.properties.iso,
         appeals: d.properties.appeals
       });
       return {
@@ -283,15 +284,16 @@ class Homemap extends React.Component {
   }
 
   showCountryPopover (theMap, feature) {
-    const name = get(feature, 'properties.NAME');
+    const iso = get(feature, 'properties.ISO2', 'not found').toLowerCase();
     const features = get(this.state, 'markerGeoJSON.features');
     if (Array.isArray(features)) {
-      const found = features.find(d => d.properties.name === name);
+      const found = features.find(d => d.properties.iso === iso);
       if (found) {
-        return this.showOperationsPopover(theMap, found);
+        this.showOperationsPopover(theMap, found);
+        return;
       }
     }
-    const iso = get(feature, 'properties.ISO2', 'not found').toLowerCase();
+    const name = get(feature, 'properties.NAME');
     const country = countries.find(d => d.iso === iso);
     if (country) {
       let popoverContent = document.createElement('div');

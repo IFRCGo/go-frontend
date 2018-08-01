@@ -71,6 +71,7 @@ export function aggregateCountryAppeals (appeals) {
         properties: Object.assign(stats, {
           id: countryAppeals[0].country.id,
           name: countryAppeals[0].country.name,
+          iso: countryAppeals[0].country.iso,
           appeals: countryAppeals,
           atype: appealTypes.length === 1 ? getAppealString(appealTypes[0]) : 'Mixed'
         }),
