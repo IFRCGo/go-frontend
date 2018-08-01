@@ -210,7 +210,7 @@ class Homemap extends React.Component {
         ['DREF', '#F39C12'],
         ['Appeal', '#C22A26'],
         ['Movement', '#CCCCCC'],
-        ['Mixed', '#000000']
+        ['Mixed', '#4680F2']
       ]
     };
     const cradius = this.getCircleRadiusPaintProp(geoJSON, scaleBy);
@@ -419,7 +419,7 @@ class Homemap extends React.Component {
                   <dd>DREF</dd>
                   <dt className='color color--grey'>Grey</dt>
                   <dd>Movement Response</dd>
-                  <dt className='color color'>Grey</dt>
+                  <dt className='color color--blue'>Grey</dt>
                   <dd>Multiple Responses</dd>
                 </dl>
               </div>
