@@ -11,7 +11,7 @@ import { getFeaturedEmergencies } from '../../actions';
 import BlockLoading from '../block-loading';
 import Fold from '../fold';
 
-const title = 'Active Emergencies';
+const title = 'Highlighted Emergencies';
 
 class FeaturedEmergencies extends React.Component {
   componentWillMount () {

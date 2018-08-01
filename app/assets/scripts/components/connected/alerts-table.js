@@ -137,7 +137,7 @@ class AlertsTable extends SFPComponent {
       },
       {
         id: 'category',
-        label: <FilterHeader id='category' title='Alert Category' options={categoryOptions} filter={this.state.table.filters.category} onSelect={this.handleFilterChange.bind(this, 'table', 'category')} />
+        label: <FilterHeader id='category' title='Category' options={categoryOptions} filter={this.state.table.filters.category} onSelect={this.handleFilterChange.bind(this, 'table', 'category')} />
       },
       { id: 'emergency', label: 'Emergency' },
       { id: 'msg', label: 'Alert Message' },

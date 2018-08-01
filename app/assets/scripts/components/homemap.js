@@ -398,11 +398,11 @@ class Homemap extends React.Component {
                   classWrapper='map-scale-options'
                   options={[
                     {
-                      label: 'Target People',
+                      label: '# of people targeted',
                       value: 'population'
                     },
                     {
-                      label: 'Appeal/DREF amount',
+                      label: 'IFRC operation request',
                       value: 'amount'
                     }
                   ]}
@@ -411,16 +411,16 @@ class Homemap extends React.Component {
                   onChange={this.onFieldChange} />
               </form>
               <div className='key'>
-                <label className='form__label'>Key</label>
+                <label className='form__label'>Type</label>
                 <dl className='legend__dl legend__dl--colors'>
                   <dt className='color color--red'>Red</dt>
-                  <dd>Emergency Appeal</dd>
+                  <dd>Emergency appeal</dd>
                   <dt className='color color--yellow'>Yellow</dt>
                   <dd>DREF</dd>
                   <dt className='color color--grey'>Grey</dt>
-                  <dd>Movement Response</dd>
+                  <dd>Movement response</dd>
                   <dt className='color color--blue'>Grey</dt>
-                  <dd>Multiple Responses</dd>
+                  <dd>Multiple types</dd>
                 </dl>
               </div>
               {this.props.deployments ? (

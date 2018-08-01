@@ -36,7 +36,7 @@ class Home extends React.Component {
             </div>
             <div className='inner'>
               <AlertsTable
-                title={'Recent Alerts'}
+                title={'Surge Notifications'}
                 limit={5}
                 viewAll={'/alerts/all'}
                 showRecent={true}
