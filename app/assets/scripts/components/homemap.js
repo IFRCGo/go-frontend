@@ -135,6 +135,8 @@ class Homemap extends React.Component {
         ['exponential', 1],
         ['number', ['get', scaleProp]],
         0,
+        0,
+        1,
         5,
         maxScaleValue,
         10
@@ -144,6 +146,8 @@ class Homemap extends React.Component {
         ['exponential', 1],
         ['number', ['get', scaleProp]],
         0,
+        0,
+        1,
         20,
         maxScaleValue,
         40
@@ -337,7 +341,7 @@ class Homemap extends React.Component {
 
     return (
       <div className='emergencies chart'>
-        <h1>Ongoing Operations</h1>
+        <h1>IFRC Emergency Operations</h1>
         <h2 className='heading--xsmall'>Operations by Type</h2>
         <ul className='emergencies__list'>
           {emerg.map(o => (
