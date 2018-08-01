@@ -343,8 +343,12 @@ class Homemap extends React.Component {
 
     return (
       <div className='emergencies chart'>
-        <h1>IFRC Emergency Operations</h1>
-        <h2 className='heading--xsmall'>Operations by Type</h2>
+        {this.props.noRenderEmergencyTitle ? <h1>Operations by Type</h1> : (
+          <React.Fragment>
+            <h1>IFRC Emergency Operations</h1>
+            <h2 className='heading--xsmall'>Operations by Type</h2>
+          </React.Fragment>
+        )}
         <ul className='emergencies__list'>
           {emerg.map(o => (
             <li
@@ -464,6 +468,7 @@ if (environment !== 'production') {
     history: T.object,
     bbox: T.array,
     noRenderEmergencies: T.bool,
+    noRenderEmergencyTitle: T.bool,
     noExport: T.bool,
     layers: T.array
   };
