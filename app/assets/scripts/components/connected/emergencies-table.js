@@ -214,7 +214,7 @@ class EmergenciesTable extends SFPComponent {
           />
           {this.props.viewAll ? (
             <div className='fold__footer'>
-              <Link className='link--primary export--link' to={this.props.viewAll}>{this.props.viewAllText || 'View All Emergencies'}</Link>
+              <Link className='link--primary export--link' to={this.props.viewAll}>{this.props.viewAllText || 'View all emergencies'}</Link>
             </div>
           ) : null}
         </Fold>

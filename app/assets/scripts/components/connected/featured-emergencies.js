@@ -61,7 +61,7 @@ class FeaturedEmergencies extends React.Component {
           <ul className='key-emergencies-list'>
             {data.results.map(this.renderCard)}
           </ul>
-          <Link to='/emergencies' className='link--primary'>View All Emergencies</Link>
+          <Link to='/emergencies' className='link--primary'>View all emergencies</Link>
         </Fold>
       </div>
     );
