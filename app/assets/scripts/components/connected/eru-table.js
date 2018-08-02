@@ -136,7 +136,7 @@ class EruTable extends SFPComponent {
         const owner = get(o, 'eru_owner.national_society_country', null);
         return {
           id: o.id,
-          name: owner !== null ? owner.name : nope,
+          name: owner !== null ? (owner.society_name || owner.name) : nope,
           country: o.deployed_to ? <Link to={`/countries/${o.deployed_to.id}`} className='link--primary' title='View Country'>{o.deployed_to.name}</Link> : nope,
           type: getEruType(o.type),
           emer: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
