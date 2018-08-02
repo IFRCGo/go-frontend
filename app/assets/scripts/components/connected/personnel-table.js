@@ -177,6 +177,11 @@ class PersonnelTable extends SFPComponent {
             onPageChange={this.handlePageChange.bind(this, 'table')}
             paginate={this.props.noPaginate}
           />
+          {this.props.viewAll ? (
+            <div className='fold__footer'>
+              <Link className='link--primary export--link' to={this.props.viewAll}>{this.props.viewAllText || 'View all deployed personnel'}</Link>
+            </div>
+          ) : null}
         </Fold>
       );
     }
@@ -196,7 +201,10 @@ if (environment !== 'production') {
     noPaginate: T.bool,
     showExport: T.bool,
     id: T.string,
-    title: T.string
+    title: T.string,
+
+    viewAll: T.string,
+    viewAllText: T.string
   };
 }
 

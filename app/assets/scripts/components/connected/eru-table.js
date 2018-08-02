@@ -88,11 +88,12 @@ class EruTable extends SFPComponent {
       error,
       data
     } = this.props.eru;
+    const title = this.props.title || 'Deployed ERUs';
 
     if (fetching) {
       return (
         <div className='inner'>
-          <Fold title='Deployed ERU'>
+          <Fold title={title}>
             <BlockLoading/>
           </Fold>
         </div>
@@ -145,9 +146,9 @@ class EruTable extends SFPComponent {
       });
 
       return (
-        <Fold title={`Deployed ERU (${n(data.count)})`} id={this.props.id} wrapperClass='table__container'>
+        <Fold title={`${title} (${n(data.count)})`} id={this.props.id} wrapperClass='table__container'>
           {this.props.showExport ? (
-            <ExportButton filename='deployed-eru'
+            <ExportButton filename='deployed-erus'
               qs={this.getQs(this.props)}
               resource='api/v2/eru'
             />
@@ -159,6 +160,11 @@ class EruTable extends SFPComponent {
             page={this.state.table.page - 1}
             onPageChange={this.handlePageChange.bind(this, 'eru')}
           />
+          {this.props.viewAll ? (
+            <div className='fold__footer'>
+              <Link className='link--primary export--link' to={this.props.viewAll}>{this.props.viewAllText || 'View all deployed ERUs'}</Link>
+            </div>
+          ) : null}
         </Fold>
       );
     }
@@ -177,7 +183,10 @@ if (environment !== 'production') {
     noPaginate: T.bool,
     showExport: T.bool,
     id: T.string,
-    title: T.string
+    title: T.string,
+
+    viewAll: T.string,
+    viewAllText: T.string
   };
 }
 
