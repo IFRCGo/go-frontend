@@ -149,7 +149,6 @@ class PersonnelTable extends SFPComponent {
         label: <SortHeader id='emer' title='Emergency' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'deployment')} />
       }];
 
-      console.log(data.results);
       const rows = data.results.map(o => ({
         id: o.id,
         startDate: DateTime.fromISO(o.start_date).toISODate(),
