@@ -315,13 +315,11 @@ class AdminArea extends SFPComponent {
               <li>Income (CHF)<span className='content-highlight'>{bigN(get(data, 'KPI_IncomeLC_CHF.value'))}</span></li>
               <li>Expenditures (CHF)<span className='content-highlight'>{bigN(get(data, 'KPI_expenditureLC_CHF.value'))}</span></li>
               <li>Volunteers<span className='content-highlight'>{n(get(data, 'KPI_PeopleVol_Tot.value'))}</span></li>
-              <li>People reached<span className='content-highlight'>{n(get(data, 'KPI_ReachDRER_D_Tot.value'))}</span></li>
-              <li>People giving blood<span className='content-highlight'>{n(get(data, 'KPI_DonBlood_Tot.value'))}</span></li>
               <li>Trained in first aid<span className='content-highlight'>{n(get(data, 'KPI_TrainFA_Tot.value'))}</span></li>
             </ul>
           </div>
         </div>
-        <p>Source: FDRS | Reporting year(s): {Object.keys(years).sort().join(', ')}</p>
+        <p>Source: <a href='http://data.ifrc.org/fdrs/' target='_blank'>FDRS</a> | Reporting year(s): {Object.keys(years).sort().join(', ')}</p>
       </div>
     );
   }
