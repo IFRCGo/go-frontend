@@ -15,12 +15,16 @@ import EmergenciesTable from '../components/connected/emergencies-table';
 import FieldReportsTable from '../components/connected/field-reports-table';
 import AppealsTable from '../components/connected/appeals-table';
 import AlertsTable from '../components/connected/alerts-table';
+import EruTable from '../components/connected/eru-table';
+import PersonnelTable from '../components/connected/personnel-table';
 
 const displayTypes = {
   report: 'Field Reports',
   appeal: 'Operations',
   emergency: 'Emergencies',
-  alert: 'Surge Alerts'
+  alert: 'Surge Alerts',
+  eru: 'Deployed ERUs',
+  personnel: 'Deployed Personnel'
 };
 
 class Table extends React.Component {
@@ -69,7 +73,11 @@ class Table extends React.Component {
         const title = props.hasOwnProperty('record') ? 'Operation without Emergency Page' : `All ${titleArea}${noun}`;
         return <AppealsTable title={title} {...props} />;
       case 'alert':
-        return <AlertsTable title={`All Surge Alerts`} {...props} />;
+        return <AlertsTable title={'All Surge Alerts'} {...props} />;
+      case 'eru':
+        return <EruTable title={'All Deployed ERUs'} {...props} />;
+      case 'personnel':
+        return <PersonnelTable title={'All Deployed Personnel'} {...props} />;
     }
   }
 

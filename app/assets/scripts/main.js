@@ -105,6 +105,8 @@ const Root = () => (
         <Route exact path='/countries/:id' render={props => <Country {...props} type='country' />} />
         <Route exact path='/alerts/all' render={props => <Table {...props} type='alert' />} />
         <PrivateRoute exact path='/deployments' component={Deployments}/>
+        <PrivateRoute exact path='/deployments/personnel/all' render={props => <Table {...props} type='personnel' />} />
+        <PrivateRoute exact path='/deployments/erus/all' render={props => <Table {...props} type='eru' />} />
         <Route component={UhOh}/>
       </Switch>
     </Router>
