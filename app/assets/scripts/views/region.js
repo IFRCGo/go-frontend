@@ -32,8 +32,6 @@ import {
   getAdmAreaERU,
   getAdmAreaKeyFigures,
   getAdmAreaSnippets,
-  GET_AA_APPEALS,
-  GET_AA_DREFS,
   getCountries
 } from '../actions';
 import { getRegionBoundingBox } from '../utils/region-bounding-box';

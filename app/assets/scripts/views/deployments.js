@@ -144,7 +144,7 @@ class Deployments extends SFPComponent {
         <div className='header-stats'>
           <ul className='stats-list'>
             <li className='stats-list__item stats-eru'>
-              {n(data.deployed)}<small>Deployed ERU Units</small>
+              {n(data.deployed)}<small>Deployed ERUs</small>
             </li>
             <li className='stats-list__item stats-fact'>
               {n(fact)}<small>Deployed FACTs</small>

@@ -128,16 +128,19 @@ export default class DeploymentsMap extends React.Component {
 
   getFilters (value) {
     if (value === 'all') {
+      return [{
+        layer: 'deployments',
+        filter: [
+          'any',
+          ['>', 'fact', 0],
+          ['>', 'rdrt', 0],
+          ['>', 'heop', 0]
+        ]
+      }];
+    }
+    else if (value === 'eru') {
       return [
-        {
-          layer: 'deployments',
-          filter: [
-            'any',
-            ['>', 'fact', 0],
-            ['>', 'rdrt', 0],
-            ['>', 'heop', 0]
-          ]
-        }
+        {layer: 'deployments', filter: ['has', 'nope']}
       ];
     }
 
@@ -240,6 +243,10 @@ export default class DeploymentsMap extends React.Component {
       {
         label: 'HEOPs',
         value: 'heop'
+      },
+      {
+        label: 'ERUs',
+        value: 'eru'
       }
     ];
     const activeFilter = filterTypes.find(d => d.value === this.state.mapFilter.deployment).label;
@@ -270,7 +277,7 @@ export default class DeploymentsMap extends React.Component {
                     </dl>
                   </div>
                   <div className='legend__block'>
-                    <h3 className='legend__title'>ERU Equipment Units</h3>
+                    <h3 className='legend__title'>Emergency Response Units deployed</h3>
                     <dl className='legend__grandient'>
                       <dt style={{background: 'linear-gradient(to right, #F0C9E8, #861A70)'}}>Scale Gradient</dt>
                       <dd>
