@@ -387,13 +387,13 @@ class AdminArea extends SFPComponent {
               <Fold title='Statistics' headerClass='visually-hidden' id='operations'>
                 <div className='operations__container'>
                   <div className='country__operations'>
-                    <h2>PNS Activities</h2>
-                    <BulletTable title='Activities by PNS'
+                    <h2>Movement activities in support of NS</h2>
+                    <BulletTable title='Activities'
                       onClick={this.setPersistentMapFilter.bind(this, 'ns')}
                       onMouseOver={this.setMapFilter.bind(this, 'ns')}
                       onMouseOut={this.removeMapFilter.bind(this, 'ns')}
                       rows={get(partnerDeployments, 'data.parentSocieties', [])} />
-                    <BulletTable title='Type of Activities by PNS'
+                    <BulletTable title='Type'
                       onClick={this.setPersistentMapFilter.bind(this, 'type')}
                       onMouseOver={this.setMapFilter.bind(this, 'type')}
                       onMouseOut={this.removeMapFilter.bind(this, 'type')}
