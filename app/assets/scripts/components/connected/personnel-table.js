@@ -149,6 +149,7 @@ class PersonnelTable extends SFPComponent {
         label: <SortHeader id='emer' title='Emergency' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'deployment')} />
       }];
 
+      console.log(data.results);
       const rows = data.results.map(o => ({
         id: o.id,
         startDate: DateTime.fromISO(o.start_date).toISODate(),
@@ -156,7 +157,7 @@ class PersonnelTable extends SFPComponent {
         name: o.name,
         role: get(o, 'role', nope),
         type: o.type.toUpperCase(),
-        country: o.country_from ? <Link to={`/countries/${o.country_from.id}`} className='link--primary' title='View Country'>{o.country_from.name}</Link> : nope,
+        country: o.country_from ? <Link to={`/countries/${o.country_from.id}`} className='link--primary' title='View Country'>{o.country_from.society_name || o.country_from.name}</Link> : nope,
         deployed: o.deployment && o.deployment.country_deployed_to ? <Link to={`/countries/${o.deployment.country_deployed_to.id}`} className='link--primary' title='View Country'>{o.deployment.country_deployed_to.name}</Link> : nope,
         emer: o.deployment && o.deployment.event_deployed_to ? <Link to={`/emergencies/${o.deployment.event_deployed_to.id}`} className='link--primary' title='View Country'>{o.deployment.event_deployed_to.name}</Link> : nope
       }));
@@ -177,6 +178,11 @@ class PersonnelTable extends SFPComponent {
             onPageChange={this.handlePageChange.bind(this, 'table')}
             paginate={this.props.noPaginate}
           />
+          {this.props.viewAll ? (
+            <div className='fold__footer'>
+              <Link className='link--primary export--link' to={this.props.viewAll}>{this.props.viewAllText || 'View all deployed personnel'}</Link>
+            </div>
+          ) : null}
         </Fold>
       );
     }
@@ -196,7 +202,10 @@ if (environment !== 'production') {
     noPaginate: T.bool,
     showExport: T.bool,
     id: T.string,
-    title: T.string
+    title: T.string,
+
+    viewAll: T.string,
+    viewAllText: T.string
   };
 }
 

@@ -8,8 +8,9 @@ import { DateTime } from 'luxon';
 import { Sticky, StickyContainer } from 'react-sticky';
 import c from 'classnames';
 import { Helmet } from 'react-helmet';
+import url from 'url';
 
-import { environment } from '../config';
+import { environment, api } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { get, dateOptions, datesAgo, dTypeOptions } from '../utils/utils/';
 import { getDtypeMeta } from '../utils/get-dtype-meta';
@@ -314,13 +315,11 @@ class AdminArea extends SFPComponent {
               <li>Income (CHF)<span className='content-highlight'>{bigN(get(data, 'KPI_IncomeLC_CHF.value'))}</span></li>
               <li>Expenditures (CHF)<span className='content-highlight'>{bigN(get(data, 'KPI_expenditureLC_CHF.value'))}</span></li>
               <li>Volunteers<span className='content-highlight'>{n(get(data, 'KPI_PeopleVol_Tot.value'))}</span></li>
-              <li>People reached<span className='content-highlight'>{n(get(data, 'KPI_ReachDRER_D_Tot.value'))}</span></li>
-              <li>People giving blood<span className='content-highlight'>{n(get(data, 'KPI_DonBlood_Tot.value'))}</span></li>
               <li>Trained in first aid<span className='content-highlight'>{n(get(data, 'KPI_TrainFA_Tot.value'))}</span></li>
             </ul>
           </div>
         </div>
-        <p>Source: FDRS | Reporting year(s): {Object.keys(years).sort().join(', ')}</p>
+        <p>Source: <a href='http://data.ifrc.org/fdrs/' target='_blank'>FDRS</a> | Reporting year(s): {Object.keys(years).sort().join(', ')}</p>
       </div>
     );
   }
@@ -348,7 +347,8 @@ class AdminArea extends SFPComponent {
             <div className='inpage__headline'>
               <h1 className='inpage__title'>{data.name}{data.inform_score ? <span className='inpage__title--inform'>Inform Score: <span className='inpage__title--inform--score'>{round(data.inform_score, 1)}</span></span> : null}</h1>
               <div className='inpage__header-actions'>
-                <a href='' className='button button--primary-bounded'>Edit Country</a>
+                <a href={url.resolve(api, `admin/api/country/${data.id}/change/`)}
+                  className='button button--primary-bounded'>Edit Country</a>
               </div>
             </div>
             <div className='inpage__header-col'>
@@ -387,13 +387,13 @@ class AdminArea extends SFPComponent {
               <Fold title='Statistics' headerClass='visually-hidden' id='operations'>
                 <div className='operations__container'>
                   <div className='country__operations'>
-                    <h2>PNS Activities</h2>
-                    <BulletTable title='Activities by PNS'
+                    <h2>Movement activities in support of NS</h2>
+                    <BulletTable title='Activities'
                       onClick={this.setPersistentMapFilter.bind(this, 'ns')}
                       onMouseOver={this.setMapFilter.bind(this, 'ns')}
                       onMouseOut={this.removeMapFilter.bind(this, 'ns')}
                       rows={get(partnerDeployments, 'data.parentSocieties', [])} />
-                    <BulletTable title='Type of Activities by PNS'
+                    <BulletTable title='Type'
                       onClick={this.setPersistentMapFilter.bind(this, 'type')}
                       onMouseOver={this.setMapFilter.bind(this, 'type')}
                       onMouseOut={this.removeMapFilter.bind(this, 'type')}

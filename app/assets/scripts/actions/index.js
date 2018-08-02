@@ -359,6 +359,7 @@ export const GET_PERSONNEL = 'GET_PERSONNEL';
 export function getPersonnel (page = 1, filters = {}) {
   filters.limit = filters.limit || 5;
   filters.offset = filters.limit * (page - 1);
+  filters.end_date__gt = DateTime.utc().toISO();
   const f = buildAPIQS(filters);
   return fetchJSON(`/api/v2/personnel/?${f}`, GET_PERSONNEL, withToken());
 }
