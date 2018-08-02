@@ -8,8 +8,9 @@ import { DateTime } from 'luxon';
 import { Sticky, StickyContainer } from 'react-sticky';
 import c from 'classnames';
 import { Helmet } from 'react-helmet';
+import url from 'url';
 
-import { environment } from '../config';
+import { environment, api } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { get, dateOptions, datesAgo, dTypeOptions } from '../utils/utils/';
 import { getDtypeMeta } from '../utils/get-dtype-meta';
@@ -348,7 +349,8 @@ class AdminArea extends SFPComponent {
             <div className='inpage__headline'>
               <h1 className='inpage__title'>{data.name}{data.inform_score ? <span className='inpage__title--inform'>Inform Score: <span className='inpage__title--inform--score'>{round(data.inform_score, 1)}</span></span> : null}</h1>
               <div className='inpage__header-actions'>
-                <a href='' className='button button--primary-bounded'>Edit Country</a>
+                <a href={url.resolve(api, `admin/api/country/${data.id}/change/`)}
+                  className='button button--primary-bounded'>Edit Country</a>
               </div>
             </div>
             <div className='inpage__header-col'>
