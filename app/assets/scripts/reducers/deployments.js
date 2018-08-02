@@ -108,7 +108,7 @@ function parseLocations (existingFeatures, action) {
         acc[next.type] += 1;
         return acc;
       }, {heop: 0, fact: 0, rdrt: 0});
-    let existingFeature = features.find(d => d.properties.id === id);
+    let existingFeature = features.find(d => d.properties.id.toString() === id);
     if (existingFeature) {
       for (let type in values) {
         existingFeature.properties[type] += values[type];
