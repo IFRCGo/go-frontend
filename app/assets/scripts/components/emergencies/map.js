@@ -156,11 +156,11 @@ class EmergenciesMap extends React.Component {
                         classWrapper='map-scale-options'
                         options={[
                           {
-                            label: 'Number of People Affected',
+                            label: 'Number of people affected',
                             value: 'numAffected'
                           },
                           {
-                            label: 'Number of Emergencies',
+                            label: 'Number of emergencies',
                             value: 'totalEmergencies'
                           }
                         ]}
@@ -176,7 +176,7 @@ class EmergenciesMap extends React.Component {
                         <dt className='color color--yellow'>yellow</dt>
                         <dd>With IFRC response</dd>
                         <dt className='color color--blue'>blue</dt>
-                        <dd>Mixed Level of Response</dd>
+                        <dd>Mixed Level of response</dd>
                       </dl>
                     </div>
                   </div>

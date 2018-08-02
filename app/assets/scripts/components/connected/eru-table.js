@@ -10,6 +10,7 @@ import { getDeploymentERU } from '../../actions';
 import { commaSeparatedNumber as n, nope } from '../../utils/format';
 import { get } from '../../utils/utils';
 
+import ExportButton from '../export-button';
 import Fold from '../fold';
 import BlockLoading from '../block-loading';
 import DisplayTable, { SortHeader, FilterHeader } from '../display-table';
@@ -144,17 +145,21 @@ class EruTable extends SFPComponent {
       });
 
       return (
-        <div className='inner'>
-          <Fold title={`Deployed ERU (${n(data.count)})`} id={this.props.id}>
-            <DisplayTable
-              headings={headings}
-              rows={rows}
-              pageCount={data.count / this.state.table.limit}
-              page={this.state.table.page - 1}
-              onPageChange={this.handlePageChange.bind(this, 'eru')}
+        <Fold title={`Deployed ERU (${n(data.count)})`} id={this.props.id} wrapperClass='table__container'>
+          {this.props.showExport ? (
+            <ExportButton filename='deployed-eru'
+              qs={this.getQs(this.props)}
+              resource='api/v2/eru'
             />
-          </Fold>
-        </div>
+          ) : null}
+          <DisplayTable
+            headings={headings}
+            rows={rows}
+            pageCount={data.count / this.state.table.limit}
+            page={this.state.table.page - 1}
+            onPageChange={this.handlePageChange.bind(this, 'eru')}
+          />
+        </Fold>
       );
     }
     return null;
@@ -170,6 +175,7 @@ if (environment !== 'production') {
     emergency: T.number,
 
     noPaginate: T.bool,
+    showExport: T.bool,
     id: T.string,
     title: T.string
   };

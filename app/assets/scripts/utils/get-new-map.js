@@ -153,10 +153,6 @@ export default function newMap (container) {
     pitchWithRotate: false,
     dragRotate: false,
     renderWorldCopies: false,
-    maxBounds: [
-      [-180, -90],
-      [180, 90]
-    ],
     attributionControl: false,
     preserveDrawingBuffer: true
   });

@@ -135,6 +135,8 @@ class Homemap extends React.Component {
         ['exponential', 1],
         ['number', ['get', scaleProp]],
         0,
+        0,
+        1,
         5,
         maxScaleValue,
         10
@@ -144,6 +146,8 @@ class Homemap extends React.Component {
         ['exponential', 1],
         ['number', ['get', scaleProp]],
         0,
+        0,
+        1,
         20,
         maxScaleValue,
         40
@@ -158,12 +162,12 @@ class Homemap extends React.Component {
       this.setState({ ready: true });
     });
 
-    theMap.on('click', 'appeals', e => {
-      this.showOperationsPopover(theMap, e.features[0]);
-    });
-
     theMap.on('click', 'country', e => {
       this.showCountryPopover(theMap, e.features[0]);
+    });
+
+    theMap.on('click', 'appeals', e => {
+      this.showOperationsPopover(theMap, e.features[0]);
     });
 
     theMap.on('mousemove', 'appeals', e => {
@@ -206,7 +210,7 @@ class Homemap extends React.Component {
         ['DREF', '#F39C12'],
         ['Appeal', '#C22A26'],
         ['Movement', '#CCCCCC'],
-        ['Mixed', '#000000']
+        ['Mixed', '#4680F2']
       ]
     };
     const cradius = this.getCircleRadiusPaintProp(geoJSON, scaleBy);
@@ -231,6 +235,7 @@ class Homemap extends React.Component {
         atype: d.properties.atype,
         id: d.properties.id,
         name: d.properties.name,
+        iso: d.properties.iso,
         appeals: d.properties.appeals
       });
       return {
@@ -279,15 +284,16 @@ class Homemap extends React.Component {
   }
 
   showCountryPopover (theMap, feature) {
-    const name = get(feature, 'properties.NAME');
+    const iso = get(feature, 'properties.ISO2', 'not found').toLowerCase();
     const features = get(this.state, 'markerGeoJSON.features');
     if (Array.isArray(features)) {
-      const found = features.find(d => d.properties.name === name);
+      const found = features.find(d => d.properties.iso === iso);
       if (found) {
-        return this.showOperationsPopover(theMap, found);
+        this.showOperationsPopover(theMap, found);
+        return;
       }
     }
-    const iso = get(feature, 'properties.ISO2', 'not found').toLowerCase();
+    const name = get(feature, 'properties.NAME');
     const country = countries.find(d => d.iso === iso);
     if (country) {
       let popoverContent = document.createElement('div');
@@ -337,8 +343,12 @@ class Homemap extends React.Component {
 
     return (
       <div className='emergencies chart'>
-        <h1>Ongoing Operations</h1>
-        <h2 className='heading--xsmall'>Operations by Type</h2>
+        {this.props.noRenderEmergencyTitle ? <h1>Operations by Type</h1> : (
+          <React.Fragment>
+            <h1>IFRC Emergency Operations</h1>
+            <h2 className='heading--xsmall'>Operations by Type</h2>
+          </React.Fragment>
+        )}
         <ul className='emergencies__list'>
           {emerg.map(o => (
             <li
@@ -392,11 +402,11 @@ class Homemap extends React.Component {
                   classWrapper='map-scale-options'
                   options={[
                     {
-                      label: 'Target People',
+                      label: '# of people targeted',
                       value: 'population'
                     },
                     {
-                      label: 'Appeal/DREF amount',
+                      label: 'IFRC operation request',
                       value: 'amount'
                     }
                   ]}
@@ -405,16 +415,16 @@ class Homemap extends React.Component {
                   onChange={this.onFieldChange} />
               </form>
               <div className='key'>
-                <label className='form__label'>Key</label>
+                <label className='form__label'>Type</label>
                 <dl className='legend__dl legend__dl--colors'>
                   <dt className='color color--red'>Red</dt>
-                  <dd>Emergency Appeal</dd>
+                  <dd>Emergency appeal</dd>
                   <dt className='color color--yellow'>Yellow</dt>
                   <dd>DREF</dd>
                   <dt className='color color--grey'>Grey</dt>
-                  <dd>Movement Response</dd>
-                  <dt className='color color'>Grey</dt>
-                  <dd>Multiple Responses</dd>
+                  <dd>Movement response</dd>
+                  <dt className='color color--blue'>Grey</dt>
+                  <dd>Multiple types</dd>
                 </dl>
               </div>
               {this.props.deployments ? (
@@ -458,6 +468,7 @@ if (environment !== 'production') {
     history: T.object,
     bbox: T.array,
     noRenderEmergencies: T.bool,
+    noRenderEmergencyTitle: T.bool,
     noExport: T.bool,
     layers: T.array
   };

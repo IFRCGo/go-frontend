@@ -32,8 +32,6 @@ import {
   getAdmAreaERU,
   getAdmAreaKeyFigures,
   getAdmAreaSnippets,
-  GET_AA_APPEALS,
-  GET_AA_DREFS,
   getCountries
 } from '../actions';
 import { getRegionBoundingBox } from '../utils/region-bounding-box';
@@ -179,7 +177,7 @@ class AdminArea extends SFPComponent {
       <p>Operations data not available.</p>
     ) : (
       <figure className='chart'>
-        <figcaption>Operations for the past 10 years</figcaption>
+        <figcaption>Operations over the past 10 years</figcaption>
         <div className='chart__container'>
           {!fetched || fetching ? (
             <BlockLoading />
@@ -228,7 +226,7 @@ class AdminArea extends SFPComponent {
       <p>No active deployments to show.</p>
     ) : (
       <figure className='chart'>
-        <figcaption>Active Deployments By Support National Societies</figcaption>
+        <figcaption>Active deployments by participating National Societies</figcaption>
         <div className='chart__container'>
           {!fetched || fetching ? (
             <BlockLoading />
@@ -317,9 +315,8 @@ class AdminArea extends SFPComponent {
                   <ul>
                     {get(this.props.keyFigures, 'data.results.length') ? <li><a href='#key-figures' title='Go to Key Figures section'>Key Figures</a></li> : null}
                     <li><a href='#operations-map' title='Go to Operations section'>Operations</a></li>
-                    <li><a href='#stats' title='Go to Stats section'>Stats</a></li>
+                    <li><a href='#emergencies' title='Go to Emergencies section'>Emergencies</a></li>
                     <li><a href='#appeals' title='Go to Appeals section'>Appeals</a></li>
-                    <li><a href='#drefs' title='Go to DREFs section'>DREFs</a></li>
                     {get(this.props.snippets, 'data.results.length') ? <li><a href='#graphics' title='Go to Graphics section'>Graphics</a></li> : null}
                     {get(data, 'links.length') ? <li><a href='#links' title='Go to Links section'>Links</a></li> : null}
                     {get(data, 'contacts.length') ? <li><a href='#contacts' title='Go to Contacts section'>Contacts</a></li> : null}
@@ -333,19 +330,26 @@ class AdminArea extends SFPComponent {
               <KeyFigures data={this.props.keyFigures} />
               <div className='fold' id='operations-map'>
                 <div className= 'inner'>
-                  <h2 className='fold__title'>{activeOperations === null || isNaN(activeOperations) ? null : activeOperations + ' Active Operations'}</h2>
+                  <h2 className='fold__title'>{activeOperations === null || isNaN(activeOperations) ? null : `Active IFRC Operations (${activeOperations})`}</h2>
                   <div className={mapContainerClass}>
-                    <Homemap operations={this.props.appealStats} bbox={bbox} layers={[this.state.maskLayer]} noExport={true}/>
+                    <Homemap
+                      operations={this.props.appealStats}
+                      bbox={bbox}
+                      layers={[this.state.maskLayer]}
+                      noExport={true}
+                      noRenderEmergencyTitle={true}
+                    />
                   </div>
                 </div>
               </div>
               <EmergenciesTable
+                id='emergencies'
                 title='Recent Emergencies'
                 limit={5}
                 region={this.props.match.params.id}
                 showRecent={true}
                 viewAll={'/emergencies/all?region=' + data.id}
-                viewAllText={`View All Emergencies For ${regionName} Region`}
+                viewAllText={`View all Emergencies for ${regionName} region`}
               />
               {this.renderCountries()}
               <Fold title='Statistics' headerClass='visually-hidden' id='stats'>
@@ -355,26 +359,12 @@ class AdminArea extends SFPComponent {
                 </div>
               </Fold>
               <AppealsTable
-                title={'Active Appeals'}
+                title={'Active IFRC Operations'}
                 region={this.props.match.params.id}
-                atype={'appeal'}
                 showActive={true}
-                action={GET_AA_APPEALS}
-                statePath={'adminArea.appeals'}
                 id={'appeals'}
-                viewAll={'/appeals/all?atype=appeal&region=' + data.id}
-                viewAllText={`View All Appeals for ${regionName} Region`}
-              />
-              <AppealsTable
-                title={'Active DREFs'}
-                region={this.props.match.params.id}
-                atype={'dref'}
-                showActive={true}
-                action={GET_AA_DREFS}
-                statePath={'adminArea.drefs'}
-                id={'drefs'}
-                viewAll={'/appeals/all?atype=dref&region=' + data.id}
-                viewAllText={`View All DREFs for ${regionName} Region`}
+                viewAll={'/appeals/all?region=' + data.id}
+                viewAllText={`View all IFRC operations for ${regionName} region`}
               />
               <Snippets data={this.props.snippets} />
               <Links data={data} />

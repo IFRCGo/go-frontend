@@ -11,7 +11,7 @@ import { getFeaturedEmergencies } from '../../actions';
 import BlockLoading from '../block-loading';
 import Fold from '../fold';
 
-const title = 'Active Emergencies';
+const title = 'Highlighted Emergencies';
 
 class FeaturedEmergencies extends React.Component {
   componentWillMount () {
@@ -61,7 +61,7 @@ class FeaturedEmergencies extends React.Component {
           <ul className='key-emergencies-list'>
             {data.results.map(this.renderCard)}
           </ul>
-          <Link to='/emergencies' className='link--primary'>View All Emergencies</Link>
+          <Link to='/emergencies' className='link--primary'>View all emergencies</Link>
         </Fold>
       </div>
     );

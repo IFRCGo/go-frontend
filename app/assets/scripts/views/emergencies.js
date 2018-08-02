@@ -30,7 +30,7 @@ class Emergencies extends React.Component {
           <div className='inpage__body'>
             <div className='inner'>
               <EmergenciesTable
-                title='Recent Emergencies'
+                title='Emergencies in the last 30 days'
                 limit={10}
                 viewAll={'/emergencies/all'}
                 showRecent={true}
@@ -38,7 +38,7 @@ class Emergencies extends React.Component {
             </div>
             <div className='inner'>
               <FieldReportsTable
-                title='Recent Field Reports'
+                title='Field Reports in the last 30 days'
                 viewAll={'/reports/all'}
                 showRecent={true}
               />

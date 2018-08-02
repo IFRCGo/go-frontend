@@ -14,6 +14,7 @@ import {
   datesAgo
 } from '../../utils/utils';
 
+import ExportButton from '../export-button';
 import Fold from '../fold';
 import BlockLoading from '../block-loading';
 import DisplayTable, { SortHeader, FilterHeader } from '../display-table';
@@ -161,18 +162,22 @@ class PersonnelTable extends SFPComponent {
       }));
 
       return (
-        <div className='inner'>
-          <Fold title={`${title} (${n(data.count)})`} id={this.props.id}>
-            <DisplayTable
-              headings={headings}
-              rows={rows}
-              pageCount={data.count / this.state.table.limit}
-              page={this.state.table.page - 1}
-              onPageChange={this.handlePageChange.bind(this, 'table')}
-              paginate={this.props.noPaginate}
+        <Fold title={`${title} (${n(data.count)})`} id={this.props.id} wrapperClass='table__container'>
+          {this.props.showExport ? (
+            <ExportButton filename='deployed-personnel'
+              qs={this.getQs(this.props)}
+              resource='api/v2/personnel'
             />
-          </Fold>
-        </div>
+          ) : null}
+          <DisplayTable
+            headings={headings}
+            rows={rows}
+            pageCount={data.count / this.state.table.limit}
+            page={this.state.table.page - 1}
+            onPageChange={this.handlePageChange.bind(this, 'table')}
+            paginate={this.props.noPaginate}
+          />
+        </Fold>
       );
     }
 
@@ -189,6 +194,7 @@ if (environment !== 'production') {
     emergency: T.number,
 
     noPaginate: T.bool,
+    showExport: T.bool,
     id: T.string,
     title: T.string
   };

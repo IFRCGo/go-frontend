@@ -172,15 +172,15 @@ export function patchJSON (path, action, payload, options, extraData) {
  * @param  {Object} options   Options for the request.
  * @return {func}             Dispatch function.
  */
-export function fetchCSV (path, action, options) {
+export function fetchCSV (path, action, options, extraData = {}) {
   options = options || {};
   return function (dispatch) {
-    dispatch({ type: inflight(action) });
+    dispatch({ type: inflight(action), ...extraData });
     const address = /http/.test(path) ? path : url.resolve(api, path);
     return fetch(address, options)
       .then(response => response.text())
-      .then(data => dispatch({ type: success(action), data, receivedAt: Date.now() }))
-      .catch(error => dispatch({ type: failed(action), error }));
+      .then(data => dispatch({ type: success(action), data, receivedAt: Date.now(), ...extraData }))
+      .catch(error => dispatch({ type: failed(action), error, ...extraData }));
   };
 }
 
