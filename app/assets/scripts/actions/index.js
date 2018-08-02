@@ -380,6 +380,10 @@ export function getAllDeploymentERU (filters = {}) {
 }
 
 export const GET_LIST_CSV = 'GET_LIST_CSV';
-export function getListAsCsv (url) {
-  return fetchCSV(url, GET_LIST_CSV, withToken());
+export function getListAsCsv (url, id) {
+  return fetchCSV(url, GET_LIST_CSV, withToken(), { id });
+}
+
+export function clearLoadedCsv (id) {
+  return { type: 'CLEAR_LOADED_CSV', id };
 }

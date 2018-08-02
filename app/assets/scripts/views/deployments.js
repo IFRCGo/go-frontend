@@ -215,9 +215,11 @@ class Deployments extends SFPComponent {
           </div>
         </section>
         <div className='inpage__body'>
-          <EruTable limit={5} />
-          <PersonnelTable limit={20} />
           <div className='inner'>
+            <EruTable limit={5} showExport={true} />
+          </div>
+          <div className='inner'>
+            <PersonnelTable limit={20} showExport={true} />
             <div className='readiness__container'>
               <Readiness eruOwners={this.props.eruOwners} />
             </div>

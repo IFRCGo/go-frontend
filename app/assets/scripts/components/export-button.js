@@ -5,9 +5,10 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 import { stringify } from 'qs';
+import { get } from '../utils/utils';
 
 import { environment, api } from '../config';
-import { getListAsCsv } from '../actions';
+import { getListAsCsv, clearLoadedCsv } from '../actions';
 import { showAlert, hideAllAlert } from './system-alerts';
 
 class ExportButton extends React.Component {
@@ -27,6 +28,8 @@ class ExportButton extends React.Component {
       link.click();
       hideAllAlert();
       showAlert('success', <p><strong>Success:</strong> Download completed</p>, true, 1000);
+      // remove the loaded state to free up memory
+      this.props._clearLoadedCsv(this.props.resource);
     } else if (!this.props.csv.error && newProps.csv.error) {
       showAlert('danger', <p><strong>Error:</strong> Could not export data</p>, true, 4500);
     }
@@ -35,7 +38,8 @@ class ExportButton extends React.Component {
   exportAsCsv (e) {
     e.preventDefault();
     if (!this.props.csv.fetching) {
-      this.props._getListAsCsv(this.getExportLink());
+      const id = this.props.resource;
+      this.props._getListAsCsv(this.getExportLink(), id);
       showAlert('info', <p><strong>Info:</strong> Exporting...</p>, true);
     }
   }
@@ -63,6 +67,7 @@ class ExportButton extends React.Component {
 if (environment !== 'production') {
   ExportButton.propTypes = {
     _getListAsCsv: T.func,
+    _clearLoadedCsv: T.func,
     filename: T.string,
     qs: T.object,
     resource: T.string,
@@ -70,12 +75,18 @@ if (environment !== 'production') {
   };
 }
 
-const selector = (state) => ({
-  csv: state.csv.list
+const selector = (state, props) => ({
+  csv: get(state.csv.list, props.resource, {
+    fetching: false,
+    fetched: false,
+    receivedAt: null,
+    data: {}
+  })
 });
 
 const dispatcher = (dispatch) => ({
-  _getListAsCsv: (...args) => dispatch(getListAsCsv(...args))
+  _getListAsCsv: (...args) => dispatch(getListAsCsv(...args)),
+  _clearLoadedCsv: (...args) => dispatch(clearLoadedCsv(...args))
 });
 
 export default connect(selector, dispatcher)(ExportButton);

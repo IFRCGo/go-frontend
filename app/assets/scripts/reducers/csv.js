@@ -2,23 +2,30 @@
 import { stateInflight, stateError, stateSuccess } from '../utils/reducer-utils';
 import { combineReducers } from 'redux';
 
-const initialState = {
-  fetching: false,
-  fetched: false,
-  receivedAt: null,
-  data: {}
-};
+const initialState = {};
 
 function list (state = initialState, action) {
   switch (action.type) {
     case 'GET_LIST_CSV_INFLIGHT':
-      state = stateInflight(state, action);
+      state = Object.assign({}, state, {
+        [action.id]: stateInflight(state, action)
+      });
       break;
     case 'GET_LIST_CSV_FAILED':
-      state = stateError(state, action);
+      state = Object.assign({}, state, {
+        [action.id]: stateError(state, action)
+      });
       break;
     case 'GET_LIST_CSV_SUCCESS':
-      state = stateSuccess(state, action);
+      state = Object.assign({}, state, {
+        [action.id]: stateSuccess(state, action)
+      });
+      break;
+    case 'CLEAR_LOADED_CSV':
+      console.log('clearing', state);
+      state = Object.assign({}, state);
+      console.log(state);
+      delete state[action.id];
       break;
   }
   return state;

@@ -137,8 +137,7 @@ export default class DeploymentsMap extends React.Component {
           ['>', 'heop', 0]
         ]
       }];
-    }
-    else if (value === 'eru') {
+    } else if (value === 'eru') {
       return [
         {layer: 'deployments', filter: ['has', 'nope']}
       ];
