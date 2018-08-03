@@ -306,7 +306,6 @@
       }
       width: 35%;
       @include media(small-up) {
-        width: auto;
         margin-left: 0;
       }
     }
@@ -515,4 +514,17 @@
 
 .profile__form .form__group {
   margin-bottom: $global-spacing;
+}
+
+.stats-map {
+  .mapboxgl-ctrl-bottom-left {
+    bottom: 100px;
+    @include media(small-up) {
+      bottom: 0;
+    }
+  }
+}
+
+.map-vis__legend {
+  z-index: 1000;
 }
