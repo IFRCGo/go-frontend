@@ -5,6 +5,7 @@ import { get } from '../utils/utils';
 import { nope } from '../utils/format';
 import eruTypes from '../utils/eru-types';
 import { getCentroid } from '../utils/country-centroids';
+import { getCountryMeta } from '../utils/get-country-meta';
 
 const initialState = {
   // fetching: false,
@@ -43,12 +44,19 @@ export default function reducer (state = initialState, action) {
 }
 
 function createStoreFromRaw (raw) {
-  const records = get(raw, 'objects', []);
+  const records = raw.results || [];
 
   // flatten the data structure
-  const erus = records.reduce((acc, next) => acc.concat(get(next, 'eru_set', [])), []);
+  const erus = records.reduce((acc, next) => {
+    const eruSet = get(next, 'eru_set', []).map(d => {
+      return Object.assign({}, d, {
+        eru_owner: next.national_society_country
+      });
+    });
+    return acc.concat(eruSet);
+  }, []);
   const eruState = erus.reduce((acc, next) => {
-    const units = get(next, 'units', 0);
+    const units = get(next, 'equipment_units', 0);
     // countries are listed, which means these resources are deployed
     if (next.deployed_to) {
       acc.deployed += units;
@@ -62,24 +70,17 @@ function createStoreFromRaw (raw) {
   });
 
   // Calculate the types and units of deployed erus.
-  // Also monkey-patch records that don't have a national society.
-  const deployed = erus.filter(o => o.deployed_to).map(o => {
-    const society = get(o, 'eru_owner.national_society_country.society_name',
-      get(o, 'eru_owner.national_society_country.name'));
-    return Object.assign({}, o, {
-      society
-    });
-  });
+  const deployed = erus.filter(o => o.deployed_to);
   const erusByType = _groupBy(deployed, 'type');
   const types = Object.keys(erusByType).filter(Boolean).map(key => ({
     name: get(eruTypes, key.toString(), nope),
-    items: erusByType[key].reduce((acc, next) => acc + Number(get(next, 'units', 0)), 0)
+    items: erusByType[key].reduce((acc, next) => acc + Number(get(next, 'equipment_units', 0)), 0)
   })).sort((a, b) => a.items > b.items ? -1 : 1);
 
-  const erusByOwnerNation = _groupBy(deployed, 'society');
+  const erusByOwnerNation = _groupBy(deployed, 'eru_owner.id');
   const owners = Object.keys(erusByOwnerNation).filter(Boolean).map(key => ({
-    name: key,
-    items: erusByOwnerNation[key].reduce((acc, next) => acc + Number(get(next, 'units', 0)), 0)
+    name: getCountryMeta(key).label,
+    items: erusByOwnerNation[key].reduce((acc, next) => acc + Number(get(next, 'equipment_units', 0)), 0)
   })).sort((a, b) => a.items > b.items ? -1 : 1);
 
   // calculate the number of units deployed to each country
@@ -87,8 +88,8 @@ function createStoreFromRaw (raw) {
   erus.filter(o => o.deployed_to).forEach(o => {
     const { iso } = o.deployed_to;
     recipientCountries[iso] = recipientCountries[iso] || { meta: o.deployed_to, total: 0, units: [] };
-    recipientCountries[iso].total += o.units;
-    recipientCountries[iso].units.push(`${o.units} - ${get(o, 'eru_owner.national_society_country.society_name')}`);
+    recipientCountries[iso].total += o.equipment_units;
+    recipientCountries[iso].units.push(`${o.equipment_units} - ${o.eru_owner.name}`);
   });
 
   const geoJSON = {

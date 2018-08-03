@@ -2,8 +2,10 @@
 import { combineReducers } from 'redux';
 import _toNumber from 'lodash.tonumber';
 
-import { getCentroid } from '../utils/country-centroids';
-import { get, groupByDisasterType } from '../utils/utils';
+import {
+  groupByDisasterType,
+  aggregateCountryAppeals
+} from '../utils/utils';
 
 const appealsListInitialState = {
   fetching: false,
@@ -12,6 +14,7 @@ const appealsListInitialState = {
   data: {}
 };
 
+// Query for all active appeals
 function appealsList (state = appealsListInitialState, action) {
   switch (action.type) {
     case 'GET_APPEALS_LIST_INFLIGHT':
@@ -25,9 +28,11 @@ function appealsList (state = appealsListInitialState, action) {
       });
       break;
     case 'GET_APPEALS_LIST_SUCCESS':
-      // Statistics.
-      const objs = action.data;
+      const objs = action.data.results;
       const now = Date.now();
+
+      // Aggregate number of DREFs, number of Appeals,
+      // percent funding, total budget, and targeted population
       let struct = {
         activeDrefs: 0,
         activeAppeals: 0,
@@ -37,7 +42,6 @@ function appealsList (state = appealsListInitialState, action) {
         appealsFunding: 0,
         targetPop: 0
       };
-
       struct = objs.reduce((acc, object) => {
         const endTime = new Date(object.end_date).getTime();
         const amountRequested = _toNumber(object.amount_requested);
@@ -68,31 +72,7 @@ function appealsList (state = appealsListInitialState, action) {
       const emergenciesByType = groupByDisasterType(objs);
 
       // Features for the map.
-      const geoJSON = {
-        type: 'FeatureCollection',
-        features: objs.reduce((acc, o) => {
-          if (o.country) {
-            return acc.concat({
-              type: 'Feature',
-              properties: {
-                id: o.id,
-                pageId: get(o, 'event.id'),
-                name: get(o, 'event.name', get(o, 'name')),
-                atype: o.atype,
-                dtype: o.dtype.id,
-                numBeneficiaries: o.num_beneficiaries,
-                amountRequested: _toNumber(o.amount_requested),
-                amountFunded: _toNumber(o.amount_funded)
-              },
-              geometry: {
-                type: 'Point',
-                coordinates: getCentroid(o.country.iso)
-              }
-            });
-          }
-          return acc;
-        }, [])
-      };
+      const geoJSON = aggregateCountryAppeals(objs);
 
       state = Object.assign({}, state, {
         fetching: false,

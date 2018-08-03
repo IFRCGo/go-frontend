@@ -7,6 +7,7 @@ import mapboxgl from 'mapbox-gl';
 import chroma from 'chroma-js';
 import _cloneDeep from 'lodash.clonedeep';
 
+import { getCountryIsoFromVt } from '../../utils/utils';
 import { source } from '../../utils/get-new-map';
 import { environment } from '../../config';
 import MapComponent from '../map';
@@ -19,9 +20,8 @@ const countryChromaScale = chroma.scale(['#F0C9E8', '#861A70']);
 export default class DeploymentsMap extends React.Component {
   constructor (props) {
     super(props);
-    const { fetchedCount, error } = props.data;
     this.state = {
-      layers: !fetchedCount || error ? [] : this.getLayers(props.data.data),
+      layers: props.data.features.length ? this.getLayers(props.data.features) : [],
       filters: this.getFilters('all'),
       loaded: false,
       mapFilter: {
@@ -33,11 +33,11 @@ export default class DeploymentsMap extends React.Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (this.props.data.fetchedCount !== nextProps.data.fetchedCount && !nextProps.data.error) {
+    if (this.props.data !== nextProps.data) {
       this.setState({
-        layers: this.getLayers(nextProps.data.data)
+        layers: this.getLayers(nextProps.data.features)
       });
-      this.setCountryStyle(nextProps.data);
+      this.setCountryStyle(nextProps.data.features);
     }
   }
 
@@ -49,31 +49,31 @@ export default class DeploymentsMap extends React.Component {
     this.onPopoverCloseClick();
   }
 
-  setCountryStyle (data) {
+  setCountryStyle (features) {
     // Color the countries layer using the source data.
     if (this.theMap && this.state.loaded) {
-      const maxScaleValue = Math.max(...data.data.features.map(o => o.properties.eru));
+      const maxScaleValue = Math.max(...features.map(o => o.properties.eru));
       countryChromaScale.domain([0, maxScaleValue]);
 
-      const countryWithEru = data.data.features
+      const countryWithEru = features
         .filter(feat => feat.properties.eru > 0);
 
       if (countryWithEru.length) {
         // Data driven case statement:
         // 'case',
         //  // PT
-        //  ['==', ['to-string', ['get', 'ISO_A2']], 'PT'],
+        //  ['==', ['to-string', ['get', 'ISO2']], 'PT'],
         //  'red',
         //  // Default
         //  'hsl(213, 38%, 28%)'
         let countryWithEruColor = countryWithEru.reduce((acc, feat) => {
-          const iso = feat.properties.countryIso.toUpperCase();
+          const iso = feat.properties.iso.toUpperCase();
           // France and Norway don't have ISO2 codes in tileset
           if (iso === 'FR' || iso === 'NO') {
             const nameLong = iso === 'FR' ? 'France' : 'Norway';
             acc.push(['==', ['to-string', ['get', 'NAME_LONG']], nameLong]);
           } else {
-            acc.push(['==', ['to-string', ['get', 'ISO_A2']], feat.properties.countryIso.toUpperCase()]);
+            acc.push(['==', ['to-string', ['get', 'ISO2']], feat.properties.iso.toUpperCase()]);
           }
           acc.push(countryChromaScale(feat.properties.eru).hex());
           return acc;
@@ -89,23 +89,8 @@ export default class DeploymentsMap extends React.Component {
     this.theMap = theMap;
 
     const getCountryFeat = (e) => {
-      const feats = theMap.queryRenderedFeatures(e.point, {layers: ['country']});
-      if (feats) {
-        const { properties } = feats[0];
-        const iso = properties.ISO_A2.toLowerCase();
-
-        // Countries that don't have an iso2 code have -99 set for this instead.
-        const noIso = iso === '-99';
-
-        // Norway and France don't have iso2 codes, but should still be included.
-        // Use ISO3 codes instead.
-        if (noIso && properties.ADM0_A3_IS !== 'FRA' && properties.ADM0_A3_IS !== 'NOR') {
-          return null;
-        }
-        const code = noIso ? properties.ADM0_A3_IS.toLowerCase().slice(0, 2) : iso;
-        return this.props.data.data.features.find(f => f.properties.countryIso === code);
-      }
-      return null;
+      const iso = getCountryIsoFromVt(e.features[0]);
+      return iso ? this.props.data.features.find(f => f.properties.iso === iso) : null;
     };
 
     theMap.on('click', 'deployments', e => {
@@ -137,22 +122,24 @@ export default class DeploymentsMap extends React.Component {
 
     theMap.on('style.load', e => {
       this.setState({loaded: true});
-      this.setCountryStyle(this.props.data);
+      this.setCountryStyle(this.props.data.features);
     });
   }
 
   getFilters (value) {
     if (value === 'all') {
+      return [{
+        layer: 'deployments',
+        filter: [
+          'any',
+          ['>', 'fact', 0],
+          ['>', 'rdrt', 0],
+          ['>', 'heop', 0]
+        ]
+      }];
+    } else if (value === 'eru') {
       return [
-        {
-          layer: 'deployments',
-          filter: [
-            'any',
-            ['>', 'fact', 0],
-            ['>', 'rdrt', 0],
-            ['>', 'heop', 0]
-          ]
-        }
+        {layer: 'deployments', filter: ['has', 'nope']}
       ];
     }
 
@@ -162,10 +149,10 @@ export default class DeploymentsMap extends React.Component {
     ];
   }
 
-  getLayers (geoJSON) {
+  getLayers (features) {
     const layers = [];
     const sumProps = ['+', ['get', 'fact'], ['get', 'rdrt'], ['get', 'heop']];
-    const maxValue = Math.max(...geoJSON.features.map(({properties: { fact, rdrt, heop }}) => fact + rdrt + heop));
+    const maxValue = Math.max(...features.map(({properties: { fact, rdrt, heop }}) => fact + rdrt + heop));
 
     layers.push({
       id: 'deployments',
@@ -205,7 +192,7 @@ export default class DeploymentsMap extends React.Component {
         value: feature.properties.rdrt
       },
       {
-        label: 'HeOps',
+        label: 'HEOPs',
         value: feature.properties.heop
       },
       {
@@ -215,8 +202,8 @@ export default class DeploymentsMap extends React.Component {
     ];
 
     render(<MapPopover
-      title={`Deployments in ${feature.properties.countryName}`}
-      countryId={feature.properties.countryId}
+      title={`Deployments in ${feature.properties.name}`}
+      countryId={feature.properties.id}
       deployments={deployments}
       onCloseClick={this.onPopoverCloseClick.bind(this)} />, popoverContent);
 
@@ -234,14 +221,11 @@ export default class DeploymentsMap extends React.Component {
 
   render () {
     const {
-      fetchedCount,
-      data
+      features
     } = this.props.data;
 
-    if (!fetchedCount) return null;
-
-    const maxScaleValue = Math.max(...data.features.map(o => o.properties.eru));
-
+    if (!features.length) return null;
+    const maxScaleValue = Math.max(...features.map(o => o.properties.eru));
     const filterTypes = [
       {
         label: 'All',
@@ -256,10 +240,15 @@ export default class DeploymentsMap extends React.Component {
         value: 'rdrt'
       },
       {
-        label: 'HeOps',
+        label: 'HEOPs',
         value: 'heop'
+      },
+      {
+        label: 'ERUs',
+        value: 'eru'
       }
     ];
+    const activeFilter = filterTypes.find(d => d.value === this.state.mapFilter.deployment).label;
 
     return (
       <div className='stats-map deployments-map'>
@@ -268,9 +257,10 @@ export default class DeploymentsMap extends React.Component {
             <h2 className='visually-hidden'>Deployments by Country</h2>
             <MapComponent className='map-vis__holder'
               configureMap={this.configureMap}
+              noExport={true}
               layers={this.state.layers}
               filters={this.state.filters}
-              geoJSON={data}>
+              geoJSON={this.props.data}>
 
               <figcaption className='map-vis__legend map-vis__legend--bottom-right legend'>
                 <div className='deployments-key'>
@@ -278,11 +268,15 @@ export default class DeploymentsMap extends React.Component {
                     <label className='form__label'>Key</label>
                     <dl className='legend__dl legend__dl--colors'>
                       <dt className='color color--blue'>blue</dt>
-                      <dd>Deployed Operations (FACT, RDRT/RIT, HeOps)</dd>
+                      {activeFilter === 'All' ? (
+                        <dd>Deployed FACT, RDRT/RIT, & HEOPs</dd>
+                      ) : (
+                        <dd>Deployed {activeFilter}</dd>
+                      )}
                     </dl>
                   </div>
                   <div className='legend__block'>
-                    <h3 className='legend__title'>ERU Units</h3>
+                    <h3 className='legend__title'>Emergency Response Units deployed</h3>
                     <dl className='legend__grandient'>
                       <dt style={{background: 'linear-gradient(to right, #F0C9E8, #861A70)'}}>Scale Gradient</dt>
                       <dd>

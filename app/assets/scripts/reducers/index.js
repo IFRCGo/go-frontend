@@ -4,6 +4,7 @@ import { combineReducers } from 'redux';
 import { systemAlertsReducer } from '../components/system-alerts';
 import user from './user';
 import profile from './profile';
+import countries from './countries';
 import fieldReportForm from './field-report-form';
 import fieldReport from './field-report';
 import fieldReports from './field-reports';
@@ -20,10 +21,13 @@ import appeals from './appeals';
 import deployments from './deployments';
 import situationReports from './situation-reports';
 import appealDocuments from './appeal-documents';
+import fdrs from './fdrs';
+import csv from './csv';
 
 export const reducers = {
   user,
   profile,
+  countries,
   systemAlertsReducer,
   fieldReportForm,
   fieldReport,
@@ -40,7 +44,9 @@ export const reducers = {
   password,
   deployments,
   appealDocuments,
-  situationReports
+  situationReports,
+  fdrs,
+  csv
 };
 
 export default combineReducers(reducers);

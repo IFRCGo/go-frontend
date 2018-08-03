@@ -16,7 +16,7 @@ import { commaSeparatedNumber as n } from '../../utils/format';
 class EmergenciesMap extends React.Component {
   constructor (props) {
     super(props);
-    const scaleBy = 'totalEmergencies';
+    const scaleBy = 'numAffected';
     this.state = {
       scaleBy,
       layers: [],
@@ -143,6 +143,7 @@ class EmergenciesMap extends React.Component {
               <h2 className='visually-hidden'>Emergencies by Country</h2>
               <MapComponent className='map-vis__holder'
                 configureMap={this.configureMap}
+                noExport={true}
                 layers={this.state.layers}
                 filters={this.state.filters}
                 geoJSON={data.geoJSON}>
@@ -155,12 +156,12 @@ class EmergenciesMap extends React.Component {
                         classWrapper='map-scale-options'
                         options={[
                           {
-                            label: 'Number of Emergencies',
-                            value: 'totalEmergencies'
+                            label: 'Number of people affected',
+                            value: 'numAffected'
                           },
                           {
-                            label: 'Number of People Affected',
-                            value: 'numAffected'
+                            label: 'Number of emergencies',
+                            value: 'totalEmergencies'
                           }
                         ]}
                         inline={false}
@@ -175,7 +176,7 @@ class EmergenciesMap extends React.Component {
                         <dt className='color color--yellow'>yellow</dt>
                         <dd>With IFRC response</dd>
                         <dt className='color color--blue'>blue</dt>
-                        <dd>Mixed Level of Response</dd>
+                        <dd>Mixed Level of response</dd>
                       </dl>
                     </div>
                   </div>

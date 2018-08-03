@@ -19,7 +19,7 @@ export function withToken (options = {}) {
     console.error('Token is expired');
     return options;
   }
-  options.headers['Authorization'] = `ApiKey ${user.username}:${user.token}`;
+  options.headers['Authorization'] = `Token ${user.token}`;
   return options;
 }
 
@@ -149,6 +149,42 @@ export function putJSON (path, action, payload, options, extraData) {
 }
 
 /**
+ * PATCH a JSON resource
+ * @param  {string} path      Relative path to query. Has to be available from
+ *                            the api.
+ * @param  {string} action    Base action to dispatch.
+ * @param  {payload} payload  Payload to put.
+ * @param  {Object} options   Options for the request.
+ * @param  {Object} extraData Extra data to pass to the action.
+ * @return {func}             Dispatch function.
+ */
+export function patchJSON (path, action, payload, options, extraData) {
+  options = withJSONRequest(payload, options);
+  options.method = 'PATCH';
+  return makeRequest(path, action, options, extraData);
+}
+
+/**
+ * Get a CSV resource
+ * @param  {string} path      Relative path to query. Has to be available from
+ *                            the api.
+ * @param  {string} action    Base action to dispatch.
+ * @param  {Object} options   Options for the request.
+ * @return {func}             Dispatch function.
+ */
+export function fetchCSV (path, action, options, extraData = {}) {
+  options = options || {};
+  return function (dispatch) {
+    dispatch({ type: inflight(action), ...extraData });
+    const address = /http/.test(path) ? path : url.resolve(api, path);
+    return fetch(address, options)
+      .then(response => response.text())
+      .then(data => dispatch({ type: success(action), data, receivedAt: Date.now(), ...extraData }))
+      .catch(error => dispatch({ type: failed(action), error, ...extraData }));
+  };
+}
+
+/**
  * Make a HTTP request
  * @param  {string} path      Relative path to query. Has to be available from
  *                            the api.
@@ -161,7 +197,8 @@ export function makeRequest (path, action, options, extraData = {}) {
   options = options || {};
   return function (dispatch) {
     dispatch({ type: inflight(action), ...extraData });
-    request(url.resolve(api, path), options)
+    const address = /http/.test(path) ? path : url.resolve(api, path);
+    request(address, options)
       .then(data => {
         dispatch({ type: success(action), data, receivedAt: Date.now(), ...extraData });
       })

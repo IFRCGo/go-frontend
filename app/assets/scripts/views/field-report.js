@@ -3,6 +3,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
+import { DateTime } from 'luxon';
+import { Helmet } from 'react-helmet';
 
 import { environment } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
@@ -11,7 +13,8 @@ import {
   commaSeparatedNumber as n,
   separateUppercaseWords as separate,
   nope,
-  getResponseStatus
+  getResponseStatus,
+  intersperse
 } from '../utils/format';
 import { get } from '../utils/utils/';
 
@@ -38,7 +41,14 @@ class FieldReport extends React.Component {
   }
 
   renderCountries (data) {
-    return get(data, 'countries', []).map(c => c.name).join(', ');
+    const els = get(data, 'countries', [])
+      .map(c => <Link key={c.id} className='link--primary' to={'/countries/' + c.id}>{c.name}</Link>);
+    return intersperse(els, ', ');
+  }
+
+  renderEmergencyLink (data) {
+    const { event } = data;
+    return event ? <Link className='link--primary' to={'/emergencies/' + event.id}>{event.name}</Link> : 'No emergency page';
   }
 
   renderPlannedResponse (data) {
@@ -76,8 +86,25 @@ class FieldReport extends React.Component {
     return (
       <DisplaySection title={`Actions taken by ${orgDisplayName}`}>
         <ul className='actions-list'>
-          {actions.actions.map((d, i) => <li key={`d.id-${i}`}>{d.name}</li>)}
+          {actions.actions.map((d, i) => <li key={`action-${i}`}>{d.name}</li>)}
         </ul>
+      </DisplaySection>
+    );
+  }
+
+  renderSources (data) {
+    const sources = get(data, 'sources', []);
+    if (!sources.length) {
+      return null;
+    }
+    return (
+      <DisplaySection title='Sources'>
+        {sources.map((d, i) => (
+          <div className='form__group' key={`${d.id} + ${i}`}>
+            <p className='form__label'>{d.stype}</p>
+            <p>{d.spec}</p>
+          </div>
+        ))}
       </DisplaySection>
     );
   }
@@ -89,8 +116,8 @@ class FieldReport extends React.Component {
     }
     return (
       <DisplaySection title='Contacts'>
-        {contacts.map(d => (
-          <div className='form__group' key={d.resource_uri}>
+        {contacts.map((d, i) => (
+          <div className='form__group' key={`${d.name} + ${i}`}>
             <p className='form__label'>{separate(d.ctype)}</p>
             <p><strong>{d.name}</strong>, {d.title}, <a className='link--primary' href={`mailto:${d.email}`}>{d.email}</a></p>
           </div>
@@ -106,19 +133,24 @@ class FieldReport extends React.Component {
       return null;
     }
 
+    const lastTouchedAt = DateTime.fromISO(data.updated_at || data.created_at).toISODate();
+
     return (
       <section className='inpage'>
+        <Helmet>
+          <title>IFRC Go - {get(data, 'summary', 'Field Report')}</title>
+        </Helmet>
         <header className='inpage__header'>
           <div className='inner'>
             <div className='inpage__headline'>
               <div className='inpage__headline-content'>
                 <h1 className='inpage__title'>{get(data, 'summary', nope)}</h1>
                 <div>
-                  <h2 className='inpage__introduction'>{get(data, 'dtype.name', nope)} | {this.renderCountries(data)}</h2>
+                  <h2 className='inpage__introduction'>{get(data, 'dtype.name', nope)} | {this.renderCountries(data)} | {this.renderEmergencyLink(data)}</h2>
                 </div>
               </div>
               <div className='inpage__headline-actions'>
-                <Link className='button button--primary-plain' to={`/reports/${data.id}/edit`}>Edit</Link>
+                <Link className='button button--primary-bounded' to={`/reports/${data.id}/edit`}>Edit Report</Link>
               </div>
             </div>
           </div>
@@ -127,7 +159,7 @@ class FieldReport extends React.Component {
           <div className='inner'>
             <div className='prose fold prose--responsive'>
               <div className='inner'>
-                <p className='inpage__note'>Last Updated by User1293 on 8/11/2017</p>
+                <p className='inpage__note'>Last updated{data.user ? ` by ${data.user.username}` : null} on {lastTouchedAt}</p>
                 <DisplaySection title='Numeric details'>
                   <dl className='dl-horizontal numeric-list'>
                     <dt>Injured (RC): </dt>
@@ -170,8 +202,9 @@ class FieldReport extends React.Component {
                 <DisplaySection title='Description' inner={get(data, 'description', false)} />
                 {this.renderActionsTaken(data, 'NTLS', 'National Society')}
                 {this.renderActionsTaken(data, 'PNS', 'PNS Red Cross')}
-                {this.renderActionsTaken(data, 'FDRN', 'Federation Red Cross')}
+                {this.renderActionsTaken(data, 'FDRN', 'IFRC')}
                 <DisplaySection title='Actions taken by others' inner={get(data, 'action_others', false)} />
+                {this.renderSources(data)}
                 {this.renderContacts(data)}
               </div>
             </div>
@@ -184,6 +217,9 @@ class FieldReport extends React.Component {
   render () {
     return (
       <App className='page--field-report'>
+        <Helmet>
+          <title>IFRC Go - Field Report</title>
+        </Helmet>
         {this.renderContent()}
       </App>
     );

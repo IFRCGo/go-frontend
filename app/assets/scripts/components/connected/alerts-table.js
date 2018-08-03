@@ -7,13 +7,15 @@ import { DateTime } from 'luxon';
 
 import { environment } from '../../config';
 import { getSurgeAlerts } from '../../actions';
-import { get, dateOptions, datesAgo } from '../../utils/utils/';
-import { nope } from '../../utils/format';
+import { get, dateOptions, datesAgo, isLoggedIn } from '../../utils/utils/';
+import { nope, privateSurgeAlert, recentInterval } from '../../utils/format';
 
+import ExportButton from '../export-button';
 import { SFPComponent } from '../../utils/extendables';
 import DisplayTable, { FilterHeader } from '../display-table';
 import BlockLoading from '../block-loading';
 import Fold from '../fold';
+import Expandable from '../expandable';
 
 const alertTypes = {
   0: 'FACT',
@@ -24,6 +26,10 @@ const alertTypes = {
   5: 'SURGE'
 };
 
+const typeOptions = [{value: 'all', label: 'All'}].concat(Object.keys(alertTypes).map(d => ({
+  label: alertTypes[d], value: d.toString()
+})));
+
 const alertCategories = {
   0: 'Info',
   1: 'Deployment',
@@ -31,6 +37,10 @@ const alertCategories = {
   3: 'Shelter',
   4: 'Stand down'
 };
+
+const categoryOptions = [{value: 'all', label: 'All'}].concat(Object.keys(alertCategories).map(d => ({
+  label: alertCategories[d], value: d.toString()
+})));
 
 class AlertsTable extends SFPComponent {
   // Methods form SFPComponent:
@@ -41,14 +51,17 @@ class AlertsTable extends SFPComponent {
   constructor (props) {
     super(props);
     this.state = {
-      alerts: {
+      table: {
         page: 1,
+        limit: isNaN(this.props.limit) ? 5 : this.props.limit,
         sort: {
           field: '',
           direction: 'asc'
         },
         filters: {
-          date: 'all'
+          date: 'all',
+          type: 'all',
+          category: 'all'
         }
       }
     };
@@ -56,40 +69,49 @@ class AlertsTable extends SFPComponent {
   }
 
   componentDidMount () {
-    this.requestResults();
+    this.requestResults(this.props);
   }
 
-  requestResults () {
-    let qs = {};
-    let state = this.state.alerts;
-    if (state.sort.field) {
-      qs.order_by = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
+  componentWillReceiveProps (newProps) {
+    if (newProps.limit !== this.props.limit) {
+      this.requestResults(newProps);
     }
+  }
 
+  requestResults (props) {
+    props._getSurgeAlerts(this.state.table.page, this.getQs(props));
+  }
+
+  getQs (props) {
+    let state = this.state.table;
+    let qs = { limit: state.limit };
+    if (state.sort.field) {
+      qs.ordering = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
+    }
     if (state.filters.date !== 'all') {
       qs.created_at__gte = datesAgo[state.filters.date]();
+    } else if (props.showRecent) {
+      qs.created_at__gte = recentInterval;
     }
 
-    this.props._getSurgeAlerts(this.state.alerts.page, qs);
+    if (!isNaN(props.emergency)) {
+      qs.event = props.emergency.toString();
+    }
+
+    if (state.filters.type !== 'all') {
+      qs.atype = state.filters.type;
+    }
+    if (state.filters.category !== 'all') {
+      qs.category = state.filters.category;
+    }
+    return qs;
   }
 
   updateData (what) {
-    this.requestResults();
+    this.requestResults(this.props);
   }
 
-  renderLoading () {
-    if (this.props.surgeAlerts.fetching) {
-      return <BlockLoading/>;
-    }
-  }
-
-  renderError () {
-    if (this.props.surgeAlerts.error) {
-      return <p>Surge alerts not available.</p>;
-    }
-  }
-
-  renderContent () {
+  render () {
     const {
       data,
       fetched,
@@ -97,20 +119,35 @@ class AlertsTable extends SFPComponent {
       error
     } = this.props.surgeAlerts;
 
-    if (!fetched || fetching || error) { return null; }
+    const title = this.props.title || 'Latest Alerts';
+
+    if (this.props.returnNullForEmpty &&
+        (error || (fetching && !fetched) || (fetched && !data.results.length))) {
+      return null;
+    } else if (fetching || !fetched) {
+      return <Fold title={title} id={this.props.id}><BlockLoading/></Fold>;
+    } else if (error) {
+      return <Fold title={title} id={this.props.id}><p>Surge alerts not available.</p></Fold>;
+    }
 
     const headings = [
       {
         id: 'date',
-        label: <FilterHeader id='date' title='Date' options={dateOptions} filter={this.state.alerts.filters.date} onSelect={this.handleFilterChange.bind(this, 'alerts', 'date')} />
+        label: <FilterHeader id='date' title='Date' options={dateOptions} filter={this.state.table.filters.date} onSelect={this.handleFilterChange.bind(this, 'table', 'date')} />
       },
-      { id: 'category', label: 'Alert Type' },
+      {
+        id: 'category',
+        label: <FilterHeader id='category' title='Category' options={categoryOptions} filter={this.state.table.filters.category} onSelect={this.handleFilterChange.bind(this, 'table', 'category')} />
+      },
       { id: 'emergency', label: 'Emergency' },
       { id: 'msg', label: 'Alert Message' },
-      { id: 'type', label: 'Type' }
+      {
+        id: 'type',
+        label: <FilterHeader id='type' title='Type' options={typeOptions} filter={this.state.table.filters.type} onSelect={this.handleFilterChange.bind(this, 'table', 'type')} />
+      }
     ];
 
-    const rows = data.objects.reduce((acc, rowData, idx, all) => {
+    const rows = data.results.reduce((acc, rowData, idx, all) => {
       const isLast = idx === all.length - 1;
       const date = DateTime.fromISO(rowData.created_at);
       const event = get(rowData, 'event.id');
@@ -119,7 +156,7 @@ class AlertsTable extends SFPComponent {
         date: date.toISODate(),
         emergency: event ? <Link className='link--primary' to={`/emergencies/${event}`} title='View Emergency page'>{rowData.operation}</Link> : rowData.operation || nope,
 
-        msg: rowData.message,
+        msg: isLoggedIn(this.props.user) ? <Expandable limit={128} text={rowData.message} /> : privateSurgeAlert,
         type: alertTypes[rowData.atype],
         category: alertCategories[rowData.category]
       });
@@ -134,23 +171,27 @@ class AlertsTable extends SFPComponent {
     }, []);
 
     return (
-      <DisplayTable
-        className='responsive-table alerts-table'
-        headings={headings}
-        rows={rows}
-        pageCount={data.meta.total_count / data.meta.limit}
-        page={data.meta.offset / data.meta.limit}
-        onPageChange={this.handlePageChange.bind(this, 'alerts')}
-      />
-    );
-  }
-
-  render () {
-    return (
-      <Fold title='Latest Alerts'>
-        {this.renderLoading()}
-        {this.renderError()}
-        {this.renderContent()}
+      <Fold title={`${title} (${data.count})`} id={this.props.id}>
+        {this.props.showExport ? (
+          <ExportButton filename='surge-alerts'
+            qs={this.getQs(this.props)}
+            resource='api/v2/surge_alert'
+          />
+        ) : null}
+        <DisplayTable
+          className='responsive-table alerts-table'
+          headings={headings}
+          rows={rows}
+          pageCount={data.count / this.state.table.limit}
+          page={this.state.table.page - 1}
+          onPageChange={this.handlePageChange.bind(this, 'table')}
+          noPaginate={this.props.noPaginate}
+        />
+        {this.props.viewAll ? (
+          <div className='fold__footer'>
+            <Link className='link--primary export--link' to={this.props.viewAll}>{this.props.viewAllText || 'View all surge alerts'}</Link>
+          </div>
+        ) : null}
       </Fold>
     );
   }
@@ -159,7 +200,20 @@ class AlertsTable extends SFPComponent {
 if (environment !== 'production') {
   AlertsTable.propTypes = {
     _getSurgeAlerts: T.func,
-    surgeAlerts: T.object
+    surgeAlerts: T.object,
+
+    limit: T.number,
+    emergency: T.number,
+
+    noPaginate: T.bool,
+    showExport: T.bool,
+    title: T.string,
+
+    showRecent: T.bool,
+    viewAll: T.string,
+    viewAllText: T.string,
+    returnNullForEmpty: T.bool,
+    id: T.string
   };
 }
 
@@ -167,7 +221,8 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state) => ({
-  surgeAlerts: state.surgeAlerts
+  surgeAlerts: state.surgeAlerts,
+  user: state.user
 });
 
 const dispatcher = (dispatch) => ({

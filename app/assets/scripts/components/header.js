@@ -3,24 +3,33 @@ import React from 'react';
 import { PropTypes as T } from 'prop-types';
 import Select from 'react-select';
 import { Link, withRouter } from 'react-router-dom';
-import { DateTime } from 'luxon';
 
-import { get } from '../utils/utils';
 import { api, environment } from '../config';
 import { request } from '../utils/network';
-import { uppercaseFirstLetter as u } from '../utils/format';
+import { uppercaseFirstLetter as u, isoDate } from '../utils/format';
 import { regions } from '../utils/region-constants';
 import UserMenu from './connected/user-menu';
 import Dropdown from './dropdown';
 
 const regionArray = Object.keys(regions).map(k => regions[k]);
+const noFilter = options => options;
 
-const indexTypeToURI = {
-  'event': 'emergencies',
-  'report': 'reports',
-  'country': 'countries',
-  'region': 'regions'
-};
+function getUriForType (type, id, data) {
+  switch (type) {
+    case 'region':
+      return '/regions/' + id;
+    case 'country':
+      return '/countries/' + id;
+    case 'report':
+      return '/reports/' + id;
+    case 'event':
+      return '/emergencies/' + id;
+    case 'appeal':
+      return data.event_id ? '/emergencies/' + data.event_id : '/appeals/all?record=' + id;
+    default:
+      return '/uhoh';
+  }
+}
 
 class Header extends React.PureComponent {
   constructor (props) {
@@ -30,6 +39,22 @@ class Header extends React.PureComponent {
       showBetaBanner: true
     };
     this.onSelect = this.onSelect.bind(this);
+
+    // Basic function to wait until user stops typing to query ES.
+    let i = 0;
+    this.slowLoad = input => {
+      i += 1;
+      let mirror = i;
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          if (i === mirror) {
+            return resolve(this.getOptions(input));
+          } else {
+            return resolve({ options: [] });
+          }
+        }, 150);
+      });
+    };
   }
 
   onSelect ({value}) {
@@ -39,17 +64,13 @@ class Header extends React.PureComponent {
   getOptions (input) {
     return !input
       ? Promise.resolve({ options: [] })
-      : request(`${api}/api/v1/es_search/?type=*,-page_appeal&keyword=${input}`)
+      : request(`${api}api/v1/es_search/?keyword=${input}`)
         .then(data => {
           const options = data.hits.map(o => {
-            // Index names are all `page_{type}`
-            const type = o._index.slice(5, o._index.length);
-            const uri = get(indexTypeToURI, type);
-            if (!uri) return null;
-            const value = `/${uri}/${o._source.id}`;
-            // country and regions don't have dates.
-            const date = o._source.date ? ` (${DateTime.fromISO(o._source.date).toISODate()})` : '';
-            const label = `${u(type)}: ${o._source.name}${date}`;
+            const d = o._source;
+            const value = getUriForType(d.type, d.id, d);
+            const date = d.date ? ` (${isoDate(d.date)})` : '';
+            const label = `${u(d.type)}: ${d.name}${date}`;
             return {
               value,
               label
@@ -61,7 +82,7 @@ class Header extends React.PureComponent {
 
   render () {
     return (
-      <div>
+      <div className='desktop__header'>
         {this.state.showBetaBanner && (
           <div className='beta-note'>
             <div className='inner'>
@@ -104,7 +125,10 @@ class Header extends React.PureComponent {
                   <Select.Async
                     placeholder='Search...'
                     onChange={this.onSelect}
-                    loadOptions={this.getOptions} />
+                    filterOptions={noFilter}
+                    autoload={false}
+                    cache={false}
+                    loadOptions={this.slowLoad} />
                 </div>
               </form>
             </div>

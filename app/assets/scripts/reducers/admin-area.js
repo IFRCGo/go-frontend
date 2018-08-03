@@ -1,11 +1,14 @@
 'use strict';
 import { combineReducers } from 'redux';
-import _toNumber from 'lodash.tonumber';
 import _groupBy from 'lodash.groupby';
 
 import { stateInflight, stateError, stateSuccess } from '../utils/reducer-utils';
-import { getCentroid } from '../utils/country-centroids';
-import { get, groupByDisasterType } from '../utils/utils';
+import {
+  aggregateAppealStats,
+  aggregateCountryAppeals,
+  aggregatePartnerDeployments,
+  groupByDisasterType
+} from '../utils/utils';
 
 const initialState = {
   fetching: false,
@@ -82,68 +85,42 @@ function fieldReports (state = initialState, action) {
 
 function appealStats (state = initialState, action) {
   switch (action.type) {
-    case 'GET_AA_APPEALS_STATS_INFLIGHT':
+    case 'GET_AA_APPEALS_LIST_INFLIGHT':
       state = stateInflight(state, action);
       break;
-    case 'GET_AA_APPEALS_STATS_FAILED':
+    case 'GET_AA_APPEALS_LIST_FAILED':
       state = stateError(state, action);
       break;
-    case 'GET_AA_APPEALS_STATS_SUCCESS':
-      // Statistics.
-      const objs = action.data;
-      let struct = {
-        numBeneficiaries: 0,
-        amountRequested: 0,
-        amountFunded: 0
-      };
-
-      struct = objs.reduce((acc, object) => {
-        acc.numBeneficiaries += object.num_beneficiaries || 0;
-        acc.amountRequested += _toNumber(object.amount_requested);
-        acc.amountFunded += _toNumber(object.amount_funded);
-        return acc;
-      }, struct);
-
+    case 'GET_AA_APPEALS_LIST_SUCCESS':
+      const appeals = action.data.results;
       // Emergencies Types.
-      const emergenciesByType = groupByDisasterType(objs);
-
-      // Features for the map.
-      const geoJSON = {
-        type: 'FeatureCollection',
-        features: objs.reduce((acc, o) => {
-          if (o.country) {
-            return acc.concat({
-              type: 'Feature',
-              properties: {
-                id: o.id,
-                name: get(o, 'event.name'),
-                pageId: get(o, 'event.id'),
-                atype: o.atype,
-                dtype: o.dtype.id,
-                numBeneficiaries: o.num_beneficiaries,
-                amountRequested: _toNumber(o.amount_requested),
-                amountFunded: _toNumber(o.amount_funded)
-              },
-              geometry: {
-                type: 'Point',
-                coordinates: getCentroid(o.country.iso)
-              }
-            });
-          }
-          return acc;
-        }, [])
-      };
-
+      const emergenciesByType = groupByDisasterType(appeals);
       state = Object.assign({}, state, {
         fetching: false,
         fetched: true,
         receivedAt: action.receivedAt,
         data: {
-          stats: struct,
-          geoJSON,
-          emergenciesByType
+          stats: aggregateAppealStats(appeals),
+          emergenciesByType,
+          geoJSON: aggregateCountryAppeals(appeals),
+          results: appeals
         }
       });
+      break;
+  }
+  return state;
+}
+
+function countryOperations (state = initialState, action) {
+  switch (action.type) {
+    case 'GET_COUNTRY_OPERATIONS_INFLIGHT':
+      state = stateInflight(state, action);
+      break;
+    case 'GET_COUNTRY_OPERATIONS_FAILED':
+      state = stateError(state, action);
+      break;
+    case 'GET_COUNTRY_OPERATIONS_SUCCESS':
+      state = stateSuccess(state, action);
       break;
   }
   return state;
@@ -184,13 +161,13 @@ function eru (state = {}, action) {
       state = stateError(state, action);
       break;
     case 'GET_AA_ERU_SUCCESS':
-      const objs = action.data.objects;
+      const objs = action.data.results;
       const grouped = _groupBy(objs, 'eru_owner.national_society_country.society_name');
       const eruBySociety = Object.keys(grouped).filter(Boolean).map(key => {
         return {
           id: grouped[key][0].eru_owner.national_society_country.id,
           name: key,
-          count: grouped[key].reduce((acc, o) => acc + o.units, 0)
+          count: grouped[key].reduce((acc, o) => acc + o.equipment_units, 0)
         };
       });
 
@@ -207,6 +184,71 @@ function eru (state = {}, action) {
   return state;
 }
 
+function keyFigures (state = initialState, action) {
+  switch (action.type) {
+    case 'GET_AA_KEY_FIGURES_INFLIGHT':
+      state = stateInflight(state, action);
+      break;
+    case 'GET_AA_KEY_FIGURES_FAILED':
+      state = stateError(state, action);
+      break;
+    case 'GET_AA_KEY_FIGURES_SUCCESS':
+      state = stateSuccess(state, action);
+      break;
+  }
+  return state;
+}
+
+function snippets (state = initialState, action) {
+  switch (action.type) {
+    case 'GET_AA_SNIPPETS_INFLIGHT':
+      state = stateInflight(state, action);
+      break;
+    case 'GET_AA_SNIPPETS_FAILED':
+      state = stateError(state, action);
+      break;
+    case 'GET_AA_SNIPPETS_SUCCESS':
+      state = stateSuccess(state, action);
+      break;
+  }
+  return state;
+}
+
+function partnerDeployments (state = {}, action) {
+  const { id } = action;
+  let next;
+  switch (action.type) {
+    case 'GET_PARTNER_DEPLOYMENTS_INFLIGHT':
+      next = Object.assign({}, state[id], stateInflight(state, action));
+      state = Object.assign({}, state, { [id]: next });
+      break;
+    case 'GET_PARTNER_DEPLOYMENTS_FAILED':
+      next = Object.assign({}, state[id], stateError(state, action));
+      state = Object.assign({}, state, { [id]: next });
+      break;
+    case 'GET_PARTNER_DEPLOYMENTS_SUCCESS':
+      let filters = state[id] ? state[id].filters : null;
+      next = Object.assign({}, state[id], {
+        fetching: false,
+        fetched: true,
+        receivedAt: action.receivedAt,
+        data: aggregatePartnerDeployments(action.data.results, filters),
+        _records: action.data.results
+      });
+      state = Object.assign({}, state, { [id]: next });
+      break;
+    case 'SET_PARTNER_DEPLOYMENT_FILTER':
+      // We only need to filter data if there are currently records
+      next = Object.assign({}, state[id], { filters: action.filters });
+      if (Array.isArray(next._records)) {
+        next.data = aggregatePartnerDeployments(next._records, next.filters);
+      }
+      state = Object.assign({}, state, { [id]: next });
+      break;
+  }
+  return state;
+}
+
 // Combined export.
 export default combineReducers({
   aaData,
@@ -214,6 +256,10 @@ export default combineReducers({
   drefs,
   fieldReports,
   appealStats,
+  countryOperations,
   aggregate,
-  eru
+  eru,
+  keyFigures,
+  snippets,
+  partnerDeployments
 });

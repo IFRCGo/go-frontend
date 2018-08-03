@@ -99,7 +99,7 @@
     &:hover {
       box-shadow: inset 0 0 0 $base-border-width rgba($base-color, 0.48);
     }
-  
+
     &:focus,
     &--focus,
     &:active,
@@ -131,5 +131,92 @@
 
   &::before {
     @extend %collecticon-user;
+  }
+}
+
+.desktop__header {
+  display: none;
+  @include media(medium-up) {
+    display: block;
+  }
+}
+.page__header--mobile {
+  @include media(medium-up) {
+    display: none;
+  }
+  .nav-global-search {
+    min-width: 17rem;
+  }
+  .inner {
+    padding-bottom: $global-spacing/2;
+    padding-top: $global-spacing/2;
+  }
+  .page__headline {
+    width: 100%;
+    img {
+      margin-top: $global-spacing/2;
+      height: 2rem;
+      float: right;
+    }
+  }
+  .page__title {
+    float: right;
+  }
+  .page__menu {
+    float: left;
+    a {
+      position: relative;
+      font-size: 1.5rem;
+      &:before {
+        position: absolute;
+        top: $global-spacing;
+        left: 0;
+        @extend %collecticon-hamburger-menu;
+      }
+    }
+  }
+  .nav__block {
+    position: absolute;
+    z-index: 3;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    left: -100%;
+    transition: left 0.2s;
+    background-color: #FFF;
+    padding-top: $global-spacing;
+    font-weight: $base-font-regular;
+    ul {
+      list-style: none;
+    }
+    li {
+      margin-bottom: $global-spacing;
+    }
+    .nav-block-menu {
+      list-style: none;
+      margin-top: $global-spacing;
+      border-bottom: solid 1px rgba($base-color, 0.2);
+    }
+    > .inner {
+      @extend .row, .row--centered;
+    }
+    &--open {
+      left: 0;
+    }
+  }
+
+  .nav-block-submenu {
+    margin-top: $global-spacing;
+    li {
+      font-weight: $base-font-light;
+      margin-left: 0.5rem;
+      font-size: 0.875rem;
+    }
+  }
+  .mobile__actions {
+    padding: $global-spacing 0;
+    button {
+      float: right;
+    }
   }
 }

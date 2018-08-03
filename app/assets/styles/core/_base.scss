@@ -49,13 +49,13 @@ body {
 
 a {
   cursor: pointer;
-  color: $link-color;
+  color: $base-color;
   text-decoration: none;
   transition: opacity 0.24s ease 0s;
 }
 
 a:visited {
-  color: $link-color;
+  color: $base-color;
 }
 
 a:hover {
@@ -102,6 +102,32 @@ a.link--secondary {
   &:hover {
     opacity: 1;
     background-size: 100% 140%;
+  };
+}
+
+a.link--external {
+  color: $secondary-color;
+  text-decoration: none;
+  position: relative;
+  padding-left: $global-spacing * 1.5;
+  font-weight: $base-font-regular;
+  transition: padding-left .2s ease-in-out;
+  &:before {
+    content: '';
+    position: absolute;
+    height: 2px;
+    width: 1rem;
+    left: 0;
+    top: $global-spacing/2;
+    background-color: $secondary-color;
+    transition: width .2s ease-in-out;
+  };
+  &:hover {
+    opacity: 1;
+    padding-left: $global-spacing * 2;
+    &:before {
+      width: 1.5rem;
+    };
   };
 }
 

@@ -1,10 +1,9 @@
 'use strict';
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { PropTypes as T } from 'prop-types';
-import { DateTime } from 'luxon';
 import c from 'classnames';
+import { Helmet } from 'react-helmet';
 
 import {
   enterFullscreen,
@@ -14,32 +13,23 @@ import {
   removeFullscreenListener
 } from '../utils/fullscreen';
 import {
-  getDeploymentERU,
-  getDeploymentFACT,
-  getDeploymentHEOP,
-  getDeploymentRDRT,
   getAllDeploymentERU,
-  getAllDeploymentFACT,
-  getAllDeploymentHEOP,
-  getAllDeploymentRDRT,
+  getActivePersonnel,
   getEruOwners
 } from '../actions';
-import { finishedFetch, get, dateOptions, datesAgo } from '../utils/utils';
-import { getEruType } from '../utils/eru-types';
+import { finishedFetch, datesAgo } from '../utils/utils';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { environment } from '../config';
 import {
   commaSeparatedNumber as n,
-  nope,
-  na
+  nope
 } from '../utils/format';
 
 import App from './app';
-import Fold from '../components/fold';
 import Progress from '../components/progress';
-import BlockLoading from '../components/block-loading';
+import PersonnelTable from '../components/connected/personnel-table';
+import EruTable from '../components/connected/eru-table';
 import { SFPComponent } from '../utils/extendables';
-import DisplayTable, { SortHeader, FilterHeader } from '../components/display-table';
 import Map from '../components/deployments/map';
 import Readiness from '../components/deployments/readiness';
 
@@ -54,37 +44,8 @@ class Deployments extends SFPComponent {
     this.state = {
       fullscreen: false,
       eru: {
+        limit: 5,
         page: 1
-      },
-      fact: {
-        page: 1,
-        sort: {
-          field: '',
-          direction: 'asc'
-        },
-        filters: {
-          startDate: 'all'
-        }
-      },
-      heop: {
-        page: 1,
-        sort: {
-          field: '',
-          direction: 'asc'
-        },
-        filters: {
-          startDate: 'all'
-        }
-      },
-      rdrt: {
-        page: 1,
-        sort: {
-          field: '',
-          direction: 'asc'
-        },
-        filters: {
-          startDate: 'all'
-        }
       }
     };
     this.toggleFullscreen = this.toggleFullscreen.bind(this);
@@ -95,16 +56,8 @@ class Deployments extends SFPComponent {
     addFullscreenListener(this.onFullscreenChange);
     showGlobalLoading();
     this.props._getEruOwners();
-
-    this.props._getDeploymentERU();
-    this.props._getDeploymentFACT(1, { order_by: '-start_date' });
-    this.props._getDeploymentHEOP(1, { order_by: '-start_date' });
-    this.props._getDeploymentRDRT(1, { order_by: '-start_date' });
-
     this.props._getAllDeploymentERU();
-    this.props._getAllDeploymentFACT();
-    this.props._getAllDeploymentHEOP();
-    this.props._getAllDeploymentRDRT();
+    this.props._getActivePersonnel();
   }
 
   componentWillReceiveProps (nextProps) {
@@ -132,12 +85,12 @@ class Deployments extends SFPComponent {
   }
 
   requestResults (what) {
-    let qs = {};
     let state = this.state[what];
+    let qs = { limit: state.limit };
     if (state.sort && state.sort.field) {
-      qs.order_by = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
+      qs.ordering = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
     } else if (what !== 'eru') {
-      qs.order_by = '-start_date';
+      qs.ordering = '-start_date';
     }
 
     if (state.filters && state.filters.startDate !== 'all') {
@@ -181,16 +134,17 @@ class Deployments extends SFPComponent {
 
   renderHeaderStats () {
     const { data } = this.props.eruOwners;
-    const fact = get(this.props.deployments.fact, 'data.meta.total_count', 0);
-    const heop = get(this.props.deployments.heop, 'data.meta.total_count', 0);
-    const rdrt = get(this.props.deployments.rdrt, 'data.meta.total_count', 0);
+    const { types } = this.props.activePersonnel;
+    const fact = types.fact || nope;
+    const heop = types.heop || nope;
+    const rdrt = types.rdrt || nope;
 
     return (
       <div className='inpage__introduction'>
         <div className='header-stats'>
           <ul className='stats-list'>
             <li className='stats-list__item stats-eru'>
-              {n(data.deployed)}<small>Deployed ERU Units</small>
+              {n(data.deployed)}<small>Deployed ERUs</small>
             </li>
             <li className='stats-list__item stats-fact'>
               {n(fact)}<small>Deployed FACTs</small>
@@ -225,204 +179,6 @@ class Deployments extends SFPComponent {
     );
   }
 
-  renderERUTable () {
-    const {
-      fetched,
-      fetching,
-      error,
-      data
-    } = this.props.deployments.eru;
-
-    if (fetching) {
-      return (
-        <div className='inner'>
-          <Fold title='Deployed ERU'>
-            <BlockLoading/>
-          </Fold>
-        </div>
-      );
-    }
-
-    if (error || !get(data, 'objects.length')) {
-      return null;
-    }
-
-    if (fetched) {
-      const headings = [
-        {
-          id: 'name',
-          label: 'Name'
-        },
-        { id: 'country', label: 'Country' },
-        { id: 'type', label: 'Type' },
-        { id: 'emer', label: 'Emergency' },
-        { id: 'personnel', label: 'Personnel Units' },
-        { id: 'equipment', label: 'Equipment Units' }
-      ];
-
-      const rows = data.objects.map(o => ({
-        id: o.id,
-        name: get(o, 'eru_owner.national_society_country.society_name') || get(o, 'eru_owner.national_society_country.name', nope),
-        country: o.deployed_to ? <Link to={`/countries/${o.deployed_to.id}`} className='link--primary' title='View Country'>{o.deployed_to.name}</Link> : nope,
-        type: getEruType(o.type),
-        emer: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
-        personnel: o.units,
-        equipment: o.equipment_units
-      }));
-
-      return (
-        <div className='inner'>
-          <Fold title={`Deployed ERU (${n(data.meta.total_count)})`}>
-            <DisplayTable
-              headings={headings}
-              rows={rows}
-              pageCount={data.meta.total_count / data.meta.limit}
-              page={data.meta.offset / data.meta.limit}
-              onPageChange={this.handlePageChange.bind(this, 'eru')}
-            />
-          </Fold>
-        </div>
-      );
-    }
-
-    return null;
-  }
-
-  renderHeopsTable () {
-    const {
-      fetched,
-      fetching,
-      error,
-      data
-    } = this.props.deployments.heop;
-
-    if (fetching) {
-      return (
-        <div className='inner'>
-          <Fold title='HeOps'>
-            <BlockLoading/>
-          </Fold>
-        </div>
-      );
-    }
-
-    if ((error || !get(data, 'objects.length')) && this.state.heop.filters.startDate === 'all') {
-      return null;
-    }
-
-    if (fetched) {
-      const headings = [
-        {
-          id: 'startDate',
-          label: <FilterHeader id='startDate' title='Start Date' options={dateOptions} filter={this.state.heop.filters.startDate} onSelect={this.handleFilterChange.bind(this, 'heop', 'startDate')} />
-        },
-        { id: 'endDate', label: 'End Date' },
-        {
-          id: 'name',
-          label: <SortHeader id='name' title='Name' sort={this.state.heop.sort} onClick={this.handleSortChange.bind(this, 'heop', 'name')} />
-        },
-        { id: 'country', label: 'Country' },
-        { id: 'emer', label: 'Emergency' }
-      ];
-
-      const rows = data.objects.map(o => ({
-        id: o.id,
-        startDate: DateTime.fromISO(o.start_date).toISODate(),
-        endDate: DateTime.fromISO(o.end_date).toISODate() || nope,
-        name: o.person || na,
-        country: <Link to={`/countries/${o.country.id}`} className='link--primary' title='View Country'>{o.country.name}</Link>,
-        emer: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope
-      }));
-
-      return (
-        <div className='inner'>
-          <Fold title={`HeOps (${n(data.meta.total_count)})`}>
-            <DisplayTable
-              headings={headings}
-              rows={rows}
-              pageCount={data.meta.total_count / data.meta.limit}
-              page={data.meta.offset / data.meta.limit}
-              onPageChange={this.handlePageChange.bind(this, 'heop')}
-            />
-          </Fold>
-        </div>
-      );
-    }
-
-    return null;
-  }
-
-  // Render for FATC, RDRT
-  renderDeploymentsTable (what) {
-    const title = {
-      fact: 'FACT',
-      rdrt: 'RDRT/RIT'
-    };
-
-    const {
-      fetched,
-      fetching,
-      error,
-      data
-    } = this.props.deployments[what];
-
-    if (fetching) {
-      return (
-        <div className='inner'>
-          <Fold title={title[what]}>
-            <BlockLoading/>
-          </Fold>
-        </div>
-      );
-    }
-
-    if ((error || !get(data, 'objects.length')) && this.state[what].filters.startDate === 'all') {
-      return null;
-    }
-
-    if (fetched) {
-      const headings = [
-        {
-          id: 'startDate',
-          label: <FilterHeader id='startDate' title='Start Date' options={dateOptions} filter={this.state[what].filters.startDate} onSelect={this.handleFilterChange.bind(this, what, 'startDate')} />
-        },
-        { id: 'endDate', label: 'End Date' },
-        { id: 'name', label: 'Name' },
-        { id: 'role', label: 'Role' },
-        { id: 'country', label: 'Country' },
-        { id: 'emer', label: 'Emergency' },
-        { id: 'society', label: 'National Society' }
-      ];
-
-      const rows = data.objects.map(o => ({
-        id: o.id,
-        startDate: DateTime.fromISO(o.start_date).toISODate(),
-        endDate: DateTime.fromISO(o.end_date).toISODate(),
-        name: o.name,
-        role: get(o, 'role', nope),
-        country: o[what].country ? <Link to={`/countries/${o[what].country.id}`} className='link--primary' title='View Country'>{o[what].country.name}</Link> : nope,
-        emer: o[what].event ? <Link to={`/emergencies/${o[what].event.id}`} className='link--primary' title='View Emergency'>{o[what].event.name}</Link> : nope,
-        society: get(o, 'society_deployed_from', nope)
-      }));
-
-      return (
-        <div className='inner'>
-          <Fold title={`${title[what]} (${n(data.meta.total_count)})`}>
-            <DisplayTable
-              headings={headings}
-              rows={rows}
-              pageCount={data.meta.total_count / data.meta.limit}
-              page={data.meta.offset / data.meta.limit}
-              onPageChange={this.handlePageChange.bind(this, what)}
-            />
-          </Fold>
-        </div>
-      );
-    }
-
-    return null;
-  }
-
   renderContent () {
     const {
       fetched,
@@ -450,7 +206,7 @@ class Deployments extends SFPComponent {
             </div>
           </header>
           <div>
-            <Map data={this.props.deployments.geojson} />
+            <Map data={this.props.locations} />
           </div>
           <div className='inpage__body'>
             <div className='inner'>
@@ -459,11 +215,11 @@ class Deployments extends SFPComponent {
           </div>
         </section>
         <div className='inpage__body'>
-          {this.renderERUTable()}
-          {this.renderDeploymentsTable('fact')}
-          {this.renderDeploymentsTable('rdrt')}
-          {this.renderHeopsTable()}
           <div className='inner'>
+            <EruTable limit={5} viewAll={'/deployments/erus/all'} />
+          </div>
+          <div className='inner'>
+            <PersonnelTable limit={20} viewAll={'/deployments/personnel/all'} />
             <div className='readiness__container'>
               <Readiness eruOwners={this.props.eruOwners} />
             </div>
@@ -476,6 +232,9 @@ class Deployments extends SFPComponent {
   render () {
     return (
       <App className='page--deployments'>
+        <Helmet>
+          <title>IFRC Go - Deployments</title>
+        </Helmet>
         {this.renderContent()}
       </App>
     );
@@ -485,26 +244,25 @@ class Deployments extends SFPComponent {
 if (environment !== 'production') {
   Deployments.propTypes = {
     _getEruOwners: T.func,
+    _getActivePersonnel: T.func,
+    _getAllDeploymentERU: T.func,
     eruOwners: T.object,
-    deployments: T.object
+    eru: T.object,
+    activePersonnel: T.object,
+    locations: T.object
   };
 }
 
 const selector = (state) => ({
   eruOwners: state.eruOwners,
-  deployments: state.deployments
+  activePersonnel: state.deployments.activePersonnel,
+  locations: state.deployments.locations
 });
 
 const dispatcher = (dispatch) => ({
   _getEruOwners: () => dispatch(getEruOwners()),
-  _getDeploymentERU: (...args) => dispatch(getDeploymentERU(...args)),
-  _getDeploymentFACT: (...args) => dispatch(getDeploymentFACT(...args)),
-  _getDeploymentHEOP: (...args) => dispatch(getDeploymentHEOP(...args)),
-  _getDeploymentRDRT: (...args) => dispatch(getDeploymentRDRT(...args)),
   _getAllDeploymentERU: (...args) => dispatch(getAllDeploymentERU(...args)),
-  _getAllDeploymentFACT: (...args) => dispatch(getAllDeploymentFACT(...args)),
-  _getAllDeploymentHEOP: (...args) => dispatch(getAllDeploymentHEOP(...args)),
-  _getAllDeploymentRDRT: (...args) => dispatch(getAllDeploymentRDRT(...args))
+  _getActivePersonnel: (...args) => dispatch(getActivePersonnel(...args))
 });
 
 export default connect(selector, dispatcher)(Deployments);

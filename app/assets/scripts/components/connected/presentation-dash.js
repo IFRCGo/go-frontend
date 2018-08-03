@@ -77,8 +77,7 @@ class PresentationDash extends React.Component {
           <Homestats
             appealsList={appealsList} />
         </div>
-        <Homemap
-          appealsList={appealsList} />
+        <Homemap operations={appealsList} noExport={true}/>
         <div className='inner'>
           <HomeCharts
             aggregate={aggregate} />

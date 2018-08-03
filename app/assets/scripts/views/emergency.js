@@ -2,44 +2,58 @@
 import * as url from 'url';
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 import _toNumber from 'lodash.tonumber';
 import { Sticky, StickyContainer } from 'react-sticky';
-import { DateTime } from 'luxon';
+import { Helmet } from 'react-helmet';
 
 import { api, environment } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import {
   getEventById,
+  getEventSnippets,
   getSitrepsByEventId,
+  getSitrepTypes,
   getAppealDocsByAppealIds
 } from '../actions';
 import {
   commaSeparatedNumber as n,
   separateUppercaseWords as separate,
-  nope
+  nope,
+  isoDate,
+  timestamp,
+  noSummary
 } from '../utils/format';
-import { get } from '../utils/utils/';
+import {
+  get,
+  mostRecentReport,
+  dateOptions,
+  datesAgo
+} from '../utils/utils/';
 
 import App from './app';
 import Fold from '../components/fold';
-import BlockLoading from '../components/block-loading';
-
-const mustLogin = (
-  <React.Fragment>
-    <p>You must be logged in to view this. <Link key='login' to='/login' className='link--primary' title='Login'>Login</Link></p>
-  </React.Fragment>
-);
+import Expandable from '../components/expandable';
+import { FilterHeader } from '../components/display-table';
+import { Snippets } from '../components/admin-area-elements';
+import SurgeAlertsTable from '../components/connected/alerts-table';
+import PersonnelTable from '../components/connected/personnel-table';
+import EruTable from '../components/connected/eru-table';
 
 class Emergency extends React.Component {
   constructor (props) {
     super(props);
 
     this.state = {
-      selectedAppeal: null
+      selectedAppeal: null,
+      sitrepFilters: {
+        date: 'all',
+        type: 'all'
+      }
     };
+    this.handleSitrepFilter = this.handleSitrepFilter.bind(this);
   }
 
   componentWillReceiveProps (nextProps) {
@@ -60,22 +74,77 @@ class Emergency extends React.Component {
 
   componentDidMount () {
     this.getEvent(this.props.match.params.id);
+    this.props._getSitrepTypes();
   }
 
   getEvent (id) {
     showGlobalLoading();
     this.props._getEventById(id);
+    this.props._getEventSnippets(id);
     this.props._getSitrepsByEventId(id);
   }
 
   getAppealDocuments (event) {
     const appealIds = get(event, 'data.appeals', []).map(o => o.id);
-    this.props._getAppealDocsByAppealIds(appealIds, event.data.id);
+    if (appealIds.length) {
+      this.props._getAppealDocsByAppealIds(appealIds, event.data.id);
+    }
   }
 
   onAppealClick (id, e) {
     e.preventDefault();
     this.setState({selectedAppeal: id});
+  }
+
+  handleSitrepFilter (state, value) {
+    const next = Object.assign({}, this.state.sitrepFilters, {
+      [state]: value
+    });
+
+    const { date, type } = next;
+    let filters = {};
+    if (date !== 'all') {
+      filters.created_at__gte = datesAgo[date]();
+    }
+    if (type !== 'all') {
+      filters.type = type;
+    }
+    this.props._getSitrepsByEventId(this.props.match.params.id, filters);
+    this.setState({sitrepFilters: next});
+  }
+
+  renderMustLogin () {
+    return (
+      <React.Fragment>
+        <p>You must be logged in to view this. <Link key='login' to={{pathname: '/login', state: {from: this.props.location}}} className='link--primary' title='Login'>Login</Link></p>
+      </React.Fragment>
+    );
+  }
+
+  renderFieldReportStats () {
+    const report = mostRecentReport(get(this.props, 'event.data.field_reports'));
+    if (!report) return null;
+    return (
+      <div className='inpage__header-col'>
+        <h3>Emergency Overview</h3>
+        <div className='content-list-group'>
+          <ul className='content-list'>
+            <li>Affected<span className='content-highlight'>{n(get(report, 'num_affected', get(this.props.event.data, 'num_affected')))}</span></li>
+            <li>Injured<span className='content-highlight'>{n(get(report, 'num_injured'))}</span></li>
+            <li>Dead<span className='content-highlight'>{n(get(report, 'num_dead'))}</span></li>
+            <li>Missing<span className='content-highlight'>{n(get(report, 'num_missing'))}</span></li>
+            <li>Displaced<span className='content-highlight'>{n(get(report, 'num_displaced'))}</span></li>
+          </ul>
+          <ul className='content-list'>
+            <li>Assisted<span className='content-highlight'>{n(get(report, 'num_assisted'))}</span></li>
+            <li>Local staff<span className='content-highlight'>{n(get(report, 'num_localstaff'))}</span></li>
+            <li>Volunteers<span className='content-highlight'>{n(get(report, 'num_volunteers'))}</span></li>
+            <li>Expat delegates<span className='content-highlight'>{n(get(report, 'num_expats_delegates'))}</span></li>
+          </ul>
+        </div>
+        <p>Source: <Link to={`/reports/${report.id}`}>Field Report</Link> | Last Updated: {timestamp(report.updated_at)}</p>
+      </div>
+    );
   }
 
   renderHeaderStats () {
@@ -108,19 +177,22 @@ class Emergency extends React.Component {
             </li>
           ))}
         </ul>
-        <div className='header-stats'>
-          <ul className='stats-list'>
-            <li className='stats-list__item stats-emergencies'>
-              {n(stats.beneficiaries)}<small>Targeted Benficiaries</small>
-            </li>
-            <li className='stats-list__item stats-funding stat-borderless stat-double'>
-              {n(stats.requested)}<small>Requested Amount (CHF)</small>
-            </li>
-            <li className='stats-list__item stat-double'>
-              {n(stats.funded)}<small>Funding (CHF)</small>
-            </li>
-          </ul>
+        <div className='inpage__header-col'>
+          <div className='inpage__headline-stats'>
+            <ul className='stats-list'>
+              <li className='stats-list__item stats-emergencies'>
+                {n(stats.beneficiaries)}<small>Targeted Benficiaries</small>
+              </li>
+              <li className='stats-list__item stats-funding stat-borderless stat-double'>
+                {n(stats.requested)}<small>Requested Amount (CHF)</small>
+              </li>
+              <li className='stats-list__item stat-double'>
+                {n(stats.funded)}<small>Funding (CHF)</small>
+              </li>
+            </ul>
+          </div>
         </div>
+        {this.renderFieldReportStats()}
         <div className='funding-chart'>
         </div>
       </div>
@@ -129,136 +201,104 @@ class Emergency extends React.Component {
 
   renderFieldReports () {
     const { data } = this.props.event;
-    let content;
-
     if (!this.props.isLogged) {
-      content = mustLogin;
-    } else {
-      if (data.field_reports && data.field_reports.length) {
-        content = (
+      return (
+        <Fold id='field-reports' title='Field Reports' wrapperClass='event-field-reports' >
+          {this.renderMustLogin()}
+        </Fold>
+      );
+    } else if (data.field_reports && data.field_reports.length) {
+      return (
+        <Fold id='field-reports' title={`Field Reports (${data.field_reports.length})`} wrapperClass='event-field-reports' >
           <table className='table table--zebra'>
             <thead>
               <tr>
                 <th>Date</th>
                 <th>Name</th>
-                <th>Disaster Type</th>
-                <th>Region</th>
-                <th>Country</th>
+                <th>Countries</th>
+                <th>Regions</th>
               </tr>
             </thead>
             <tbody>
               {data.field_reports.map(o => (
                 <tr key={o.id}>
-                  <td>{DateTime.fromISO(o.created_at).toISODate()}</td>
-                  <td><Link to={`/reports/${o.id}`} className='link--primary' title='View Field Report'>{o.summary}</Link></td>
-                  <td>--</td>
-                  <td><a href=''className='link--primary'>--</a></td>
-                  <td><a href=''className='link--primary'>--</a></td>
+                  <td>{isoDate(o.created_at)}</td>
+                  <td><Link to={`/reports/${o.id}`} className='link--primary' title='View Field Report'>{o.summary || noSummary}</Link></td>
+                  <td>
+                    {Array.isArray(o.countries) ? o.countries.map(c => (
+                      <Link to={`/countries/${c.id}`} key={c.id} className='link--primary'>{c.name} </Link>
+                    )) : nope}
+                  </td>
+                  <td>
+                    {Array.isArray(o.regions) ? o.regions.map(r => (
+                      <Link to={`/regions/${r.id}`} key={r.id} className='link--primary'>{r.name} </Link>
+                    )) : nope}
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
-        );
-      } else {
-        content = (
-          <div className='empty-data__container'>
-            <p>No field reports to show</p>
-          </div>
-        );
-      }
+        </Fold>
+      );
     }
+    return null;
+  }
 
+  renderReports (className, reports) {
     return (
-      <Fold
-        id='field-reports'
-        title='Field Reports'
-        wrapperClass='event-field-reports' >
-        {content}
-      </Fold>
+      <ul className={className}>
+        {reports.map(o => {
+          let href = o['document'] || o['document_url'] || null;
+          if (!href) { return null; }
+          return <li key={o.id}>
+            <a className='link--secondary' href={href} target='_blank'>{o.name}, {isoDate(o.created_at)}</a>
+          </li>;
+        })}
+      </ul>
     );
   }
 
-  renderDocuments (documents, title, wrapperClass, includeAdminLink, isPublic) {
-    const {
-      fetched,
-      fetching,
-      error,
-      data
-    } = documents;
-
-    let content;
-
-    if (!isPublic && !this.props.isLogged) {
-      content = mustLogin;
-    } else if (fetching) {
-      content = <BlockLoading/>;
-    } else if (error) {
-      content = <p>Documents not available.</p>;
-    } else if (fetched) {
-      if (!data.objects.length) {
-        content = (
-          <div className='empty-data__container'>
-            <p className='empty-data__note'>No documents available.</p>
-          </div>
-        );
-      } else {
-        content = (
-          <ul className={wrapperClass}>
-            {data.objects.map(o => {
-              let href = o['document'] || o['document_url'] || null;
-              if (!href) { return null; }
-              return <li key={o.id}>
-                <a className='link--secondary' href={href} target='_blank'>{o.name}, {DateTime.fromISO(o.created_at).toISODate()}</a>
-              </li>;
-            })}
-          </ul>
-        );
-      }
-    }
-
+  renderResponseDocuments () {
+    const data = get(this.props.situationReports, 'data.results', []);
+    const { date, type } = this.state.sitrepFilters;
+    // return empty when no data, only on default filters.
+    if (!data.length && date === 'all' && type === 'all') return null;
     const { id } = this.props.match.params;
     const addReportLink = url.resolve(api, `admin/api/event/${id}/change`);
-
+    const types = this.props.situationReportTypes;
     return (
-      <Fold
-        id='situation-reports'
-        wrapperClass='situation-reports'
+      <Fold id='response-documents'
         header={() => (
           <div className='fold__headline'>
-            {includeAdminLink && (
-              <div className='fold__actions'>
-                <a className='button button--primary-bounded' href={addReportLink} target='_blank'>Add a Report</a>
-              </div>
-            )}
-            <h2 className='fold__title'>{title}</h2>
+            <div className='fold__actions'>
+              <a className='button button--primary-bounded' href={addReportLink} target='_blank'>Add a Report</a>
+            </div>
+            <h2 className='fold__title'>Response Documents</h2>
           </div>
         )} >
-        {content}
+        <div>
+          <div className='fold__filters'>
+            <FilterHeader id='sitrep-date' title='Created At'
+              options={dateOptions}
+              filter={date}
+              onSelect={this.handleSitrepFilter.bind(this, 'date')} />
+            {types.fetched && !types.error ? <FilterHeader id='sitrep-type' title='Document Type'
+              options={[{value: 'all', label: 'All'}].concat(types.data.results.map(d => ({value: d.id, label: d.type})))}
+              filter={type}
+              onSelect={this.handleSitrepFilter.bind(this, 'type')} /> : null}
+          </div>
+          {this.renderReports('situation-reports-list', data)}
+        </div>
       </Fold>
     );
   }
 
-  renderAdditionalGraphics () {
-    const { data } = this.props.event;
-    const snippets = get(data, 'snippets');
-    let content;
-    if (!Array.isArray(snippets) || !snippets.length) {
-      content = (
-        <div className='empty-data__container'>
-          <p className='empty-data__note'>No additional graphics to show.</p>
-        </div>
-      );
-    } else {
-      content = (
-        <div className='iframe__container'>
-          {snippets.map(o => <div key={o.id} dangerouslySetInnerHTML={{__html: o.snippet}} />)}
-        </div>
-      );
-    }
-
+  renderAppealDocuments () {
+    const data = get(this.props.appealDocuments, 'data.results', []);
+    if (!data.length) return null;
     return (
-      <Fold id='graphics' title='Additional Graphics' wrapperClass='additional-graphics' >
-        {content}
+      <Fold id='documents' title='Appeal Documents'>
+        {this.renderReports('public-docs-list', data)}
       </Fold>
     );
   }
@@ -275,7 +315,7 @@ class Emergency extends React.Component {
         <ul className='key-figures-list'>
           {kf.map(o => (
             <li key={o.deck}>
-              <h3>{n(o.number)}</h3>
+              <h3>{isNaN(o.number) ? o.number : n(o.number)}</h3>
               <p className='key-figure-label'>{o.deck}</p>
               <p className='key-figure-source'>Source: {o.source}</p>
             </li>
@@ -293,9 +333,17 @@ class Emergency extends React.Component {
     } = this.props.event;
 
     if (!fetched || error) return null;
-
+    const report = mostRecentReport(get(this.props, 'event.data.field_reports')) || {};
+    const summary = data.summary || report.description || null;
+    const source = data.summary ? 'Emergency'
+      : report.description ? <Link to={`/reports/${report.id}`}>Field Report</Link> : null;
+    const contacts = Array.isArray(data.contacts) && data.contacts.length ? data.contacts
+      : Array.isArray(report.contacts) && report.contacts.length ? report.contacts : null;
     return (
       <section className='inpage'>
+        <Helmet>
+          <title>IFRC Go - {get(data, 'name', 'Emergency')}</title>
+        </Helmet>
         <header className='inpage__header'>
           <div className='inner'>
             <div className='inpage__headline'>
@@ -316,12 +364,15 @@ class Emergency extends React.Component {
               <div style={style} className={c('inpage__nav', {'inpage__nav--sticky': isSticky})}>
                 <div className='inner'>
                   <ul>
-                    <li><a href='#overview' title='Go to Overview section'>Overview</a></li>
-                    <li><a href='#graphics' title='Go to Graphics section'>Graphics</a></li>
-                    <li><a href='#field-reports' title='Go to Field Reports section'>Field Reports</a></li>
-                    <li><a href='#situation-reports' title='Go to Situation Reports section'>Situation Reports</a></li>
-                    <li><a href='#documents' title='Go to Documents section'>Documents</a></li>
-                    <li><a href='#contacts' title='Go to Contacts section'>Contacts</a></li>
+                    {summary ? <li><a href='#overview' title='Go to Overview section'>Overview</a></li> : null}
+                    {get(this.props.snippets, 'data.results.length') ? <li><a href='#graphics' title='Go to Graphics section'>Graphics</a></li> : null}
+                    {get(this.props.event, 'data.field_reports.length') ? <li><a href='#field-reports' title='Go to Field Reports section'>Field Reports</a></li> : null}
+                    {get(this.props.surgeAlerts, 'data.results.length') ? <li><a href='#alerts' title='Go to Surge Alerts section'>Alerts</a></li> : null}
+                    {get(this.props.eru, 'data.results.length') ? <li><a href='#erus' title='Go to ERUs section'>ERUs</a></li> : null}
+                    {get(this.props.personnel, 'data.results.length') ? <li><a href='#personnel' title='Go to Personnel section'>Personnel</a></li> : null}
+                    {get(this.props.situationReports, 'data.results.length') ? <li><a href='#response-documents' title='Go to Response Documents section'>Response Documents</a></li> : null}
+                    {get(this.props.appealDocuments, 'data.results.length') ? <li><a href='#documents' title='Go to Documents section'>Appeal Documents</a></li> : null}
+                    {contacts && contacts.length ? <li><a href='#contacts' title='Go to Contacts section'>Contacts</a></li> : null}
                   </ul>
                 </div>
               </div>
@@ -330,24 +381,33 @@ class Emergency extends React.Component {
 
           <div className='inpage__body'>
             <div className='inner'>
-              <Fold
-                id='overview'
-                title='Situational Overview'
-                wrapperClass='situational-overview' >
-                {data.summary || nope}
-              </Fold>
-
-              {this.renderAdditionalGraphics()}
+              {summary ? (
+                <Fold id='overview'
+                  title='Situational Overview'
+                  wrapperClass='situational-overview' >
+                  <Expandable limit={360} text={summary} />
+                  {source ? <p>Source: {source}</p> : null}
+                </Fold>
+              ) : null}
+              <Snippets data={this.props.snippets} />
               {this.renderKeyFigures()}
               {this.renderFieldReports()}
-              {this.renderDocuments(this.props.situationReports, 'Situation Reports', 'situation-reports-list', true)}
-              {this.renderDocuments(this.props.appealDocuments, 'Appeal Documents', 'public-docs-list', false, true)}
+              <SurgeAlertsTable id='alerts'
+                title='Alerts'
+                emergency={this.props.match.params.id}
+                returnNullForEmpty={true}
+              />
+              <EruTable id='erus'
+                emergency={this.props.match.params.id}
+              />
+              <PersonnelTable id='personnel'
+                emergency={this.props.match.params.id}
+              />
+              {this.renderResponseDocuments()}
+              {this.renderAppealDocuments()}
 
-              <Fold
-                id='contacts'
-                title='Contacts'
-                wrapperClass='contacts' >
-                {data.contacts && data.contacts.length ? (
+              {contacts && contacts.length ? (
+                <Fold id='contacts' title='Contacts' wrapperClass='contacts'>
                   <table className='table'>
                     <thead className='visually-hidden'>
                       <tr>
@@ -358,7 +418,7 @@ class Emergency extends React.Component {
                       </tr>
                     </thead>
                     <tbody>
-                      {data.contacts.map(o => (
+                      {contacts.map(o => (
                         <tr key={o.id}>
                           <td>{o.name}</td>
                           <td>{o.title}</td>
@@ -372,12 +432,8 @@ class Emergency extends React.Component {
                       ))}
                     </tbody>
                   </table>
-                ) : (
-                  <div className='empty-data__container'>
-                    <p>No contacts to show</p>
-                  </div>
-                )}
-              </Fold>
+                </Fold>
+              ) : null}
             </div>
           </div>
         </StickyContainer>
@@ -388,6 +444,9 @@ class Emergency extends React.Component {
   render () {
     return (
       <App className='page--emergency'>
+        <Helmet>
+          <title>IFRC Go - Emergency</title>
+        </Helmet>
         {this.renderContent()}
       </App>
     );
@@ -397,13 +456,20 @@ class Emergency extends React.Component {
 if (environment !== 'production') {
   Emergency.propTypes = {
     _getEventById: T.func,
+    _getEventSnippets: T.func,
     _getSitrepsByEventId: T.func,
+    _getSitrepTypes: T.func,
     _getAppealDocsByAppealIds: T.func,
+    snippets: T.object,
     match: T.object,
     location: T.object,
     event: T.object,
     situationReports: T.object,
+    situationReportTypes: T.object,
     appealDocuments: T.object,
+    surgeAlerts: T.object,
+    eru: T.object,
+    personnel: T.object,
     isLogged: T.bool
   };
 }
@@ -412,28 +478,39 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state, ownProps) => ({
-  event: get(state.event, ownProps.match.params.id, {
+  event: get(state.event.event, ownProps.match.params.id, {
     data: {},
     fetching: false,
     fetched: false
   }),
-  situationReports: get(state.situationReports, ownProps.match.params.id, {
+  snippets: get(state.event.snippets, ownProps.match.params.id, {
     data: {},
     fetching: false,
     fetched: false
   }),
+  situationReports: get(state.situationReports, ['reports', ownProps.match.params.id], {
+    data: {},
+    fetching: false,
+    fetched: false
+  }),
+  situationReportTypes: state.situationReports.types,
   appealDocuments: get(state.appealDocuments, ownProps.match.params.id, {
     data: {},
     fetching: false,
     fetched: false
   }),
+  surgeAlerts: state.surgeAlerts,
+  eru: state.deployments.eru,
+  personnel: state.deployments.personnel,
   isLogged: !!state.user.data.token
 });
 
 const dispatcher = (dispatch) => ({
   _getEventById: (...args) => dispatch(getEventById(...args)),
+  _getEventSnippets: (...args) => dispatch(getEventSnippets(...args)),
   _getSitrepsByEventId: (...args) => dispatch(getSitrepsByEventId(...args)),
+  _getSitrepTypes: (...args) => dispatch(getSitrepTypes(...args)),
   _getAppealDocsByAppealIds: (...args) => dispatch(getAppealDocsByAppealIds(...args))
 });
 
-export default connect(selector, dispatcher)(Emergency);
+export default withRouter(connect(selector, dispatcher)(Emergency));

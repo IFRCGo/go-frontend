@@ -4,7 +4,66 @@
   }
 
   .inpage__header {
-    box-shadow: 0 1px 0 0 rgba($base-color, 0.1);
+    @include column(12/12);
+    float: none;
+    margin-bottom: $global-spacing * 2;
+    border-bottom: solid 1px rgba($base-color, 0.1);
+    .inpage__header-col {
+      @include column(12/12);
+      @include media(medium-up) {
+        @include column(5.5/12);
+      }
+    }
+    .content-list-group {
+      @include column(12/12);
+    }
+    .content-list {
+      float: left;
+      @include column(12/12);
+      margin-left: 0;
+      @include media(medium-up) {
+        @include column(6/12);
+      }
+    }
+    .inpage__headline-stats {
+      @include column(12/12);
+      border-right: solid 1px rgba($base-color, 0.1);
+    }
+    .stats-list {
+      li {
+        @include column(12/12);
+        font-size: 2.25rem;
+        line-height: 3rem;
+        padding-bottom: $global-spacing;
+        border-right: 0;
+        padding-left: $global-spacing * 3.5;
+        border-bottom: solid 1px rgba($base-color, 0.18);
+        margin-bottom: $global-spacing;
+        &:last-child {
+          border-right: none;
+          border-bottom: none;
+        }
+        &:nth-child(2) {
+          border-bottom: none;
+        };
+      }
+    }
+    dl {
+      float: left;
+      width: 50%;
+
+    }
+  }
+
+}
+
+.fold__filters {
+  margin-bottom: $global-spacing * 2;
+  .drop__toggle {
+    color: $primary-color;
+    font-weight: $base-font-bold;
+    margin-right: $global-spacing * 2;
+    font-size: 1rem;
   }
 }
 
@@ -25,12 +84,13 @@
 
 .inpage__nav {
   font-family: $heading-font-family;
-  padding: ($global-spacing * 2) 0;
+  padding: ($global-spacing * .75) 0;
   transition: background 0.2s ease, box-shadow 0.2s ease;
 
   &--sticky {
     background: #fafafa;
     box-shadow: 0 1px 4px 0 rgba($base-color, 0.1);
+    z-index: 100;
   }
 
   > .inner {
@@ -43,7 +103,7 @@
     margin-left: 0;
     display: flex;
     align-items: stretch;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
   }
 
@@ -148,6 +208,16 @@
 
 .iframe__container {
   iframe {
+    width: 100%;
+  }
+}
+
+.snippet__item {
+  padding-bottom: $global-spacing * 2;
+}
+
+.snippet__image {
+  > img {
     width: 100%;
   }
 }

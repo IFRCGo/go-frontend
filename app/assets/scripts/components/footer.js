@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { regions } from '../utils/region-constants';
 import { objValues } from '../utils/utils';
+import { api } from '../config';
 
 class Footer extends React.PureComponent {
   render () {
@@ -42,7 +43,7 @@ class Footer extends React.PureComponent {
             <div className='footer-nav__block footer-nav__block--sec'>
               <ul className='footer-menu'>
                 <li><a href='https://github.com/ifrcgo/go-frontend' title='Open Source Code'>Open Source Code</a></li>
-                <li><a href='https://github.com/ifrcgo/go-api' title='API Documentation'>API Documentation</a></li>
+                <li><a href={`${api}docs`} title='API Documentation'>API Documentation</a></li>
               </ul>
             </div>
           </nav>

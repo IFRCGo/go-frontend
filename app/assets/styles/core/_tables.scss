@@ -114,7 +114,7 @@
 }
 
 td.right-align, th.right-align{
-  text-align: right; 
+  text-align: right;
 }
 
 td.table__cell--requestAmount, td.table__cell--fundedAmount, th.table__header--requestAmount, th.table__header--fundedAmount {
@@ -164,12 +164,14 @@ td.table__cell--requestAmount, td.table__cell--fundedAmount, th.table__header--r
     padding: ($global-spacing * 2) ($global-spacing / 2);
     font-weight: $base-font-regular;
     &:nth-child(3) {
-      font-weight: $base-font-light;
-      width: 100%;
+      width: 50%;
       @include media(large-up){
-        width: 50%;
+        width: 25%;
       }
     }
+    &:nth-child(4) {
+      font-weight: $base-font-light;
+    };
   }
 
   th:first-child,
@@ -191,7 +193,7 @@ td.table__cell--requestAmount, td.table__cell--fundedAmount, th.table__header--r
 
     &:nth-child(even) {
       height: $global-spacing;
-      
+
       td {
         padding: 0;
       }
@@ -253,3 +255,13 @@ td.table__cell--requestAmount, td.table__cell--fundedAmount, th.table__header--r
     }
   }
 }
+
+.table__container {
+  .fold__actions {
+    margin-top: -4em;
+    @include media(small-down) {
+      display: none;
+    }
+  }
+}
+

@@ -25,7 +25,7 @@ export default class DisplayTable extends React.Component {
               // be automatically passed to the `td` element
               const key = `${row.id}-${h.id}`;
 
-              if (typeof row[h.id] === 'object' && !Array.isArray(row[h.id]) && !React.isValidElement(row[h.id])) {
+              if (row[h.id] !== null && typeof row[h.id] === 'object' && !Array.isArray(row[h.id]) && !React.isValidElement(row[h.id])) {
                 const {className, value, ...rest} = row[h.id];
                 return <td key={key} className={c(`table__cell--${h.id}`, className)} {...rest}>{value}</td>;
               } else {
@@ -45,7 +45,7 @@ export default class DisplayTable extends React.Component {
   }
 
   renderPagination () {
-    if (this.props.rows.length) {
+    if (this.props.rows.length && !this.props.noPaginate) {
       return (
         <div className='pagination-wrapper'>
           <ReactPaginate
@@ -99,7 +99,8 @@ if (environment !== 'production') {
     rows: T.array,
     emptyMessage: T.string,
     pageCount: T.number,
-    page: T.number
+    page: T.number,
+    noPaginate: T.bool
   };
 }
 
@@ -156,7 +157,7 @@ export class FilterHeader extends React.PureComponent {
         alignment='center' >
         <ul className='drop__menu drop__menu--select' role='menu'>
           {options.map(o => <li key={o.value}>
-            <a href='#' title={`Filter by ${title} - ${o.label}`} className={c('drop__menu-item', {'drop__menu-item--active': filter === o.value})} data-hook='dropdown:close' onClick={onFilterClick.bind(this, o)}>{o.label}</a>
+            <a href='#' title={`Filter by ${title} - ${o.label}`} className={c('drop__menu-item button', {'drop__menu-item--active': filter === o.value})} data-hook='dropdown:close' onClick={onFilterClick.bind(this, o)}>{o.label}</a>
           </li>)}
         </ul>
       </Dropdown>

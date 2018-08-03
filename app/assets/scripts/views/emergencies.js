@@ -3,6 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { DateTime } from 'luxon';
 import { PropTypes as T } from 'prop-types';
+import { Helmet } from 'react-helmet';
 
 import App from './app';
 import FieldReportsTable from '../components/connected/field-reports-table';
@@ -21,14 +22,26 @@ class Emergencies extends React.Component {
   render () {
     return (
       <App className='page--emergencies'>
+        <Helmet>
+          <title>IFRC Go - Emergencies</title>
+        </Helmet>
         <section className='inpage'>
           <EmergenciesDash />
           <div className='inpage__body'>
             <div className='inner'>
-              <EmergenciesTable />
+              <EmergenciesTable
+                title='Emergencies in the last 30 days'
+                limit={10}
+                viewAll={'/emergencies/all'}
+                showRecent={true}
+              />
             </div>
             <div className='inner'>
-              <FieldReportsTable />
+              <FieldReportsTable
+                title='Field Reports in the last 30 days'
+                viewAll={'/reports/all'}
+                showRecent={true}
+              />
             </div>
           </div>
         </section>

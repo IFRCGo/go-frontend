@@ -2,6 +2,7 @@
 import { combineReducers } from 'redux';
 
 import { getCentroid } from '../utils/country-centroids';
+import { stateInflight, stateError, stateSuccess } from '../utils/reducer-utils';
 import { get, groupByDisasterType } from '../utils/utils';
 
 const listInitialState = {
@@ -14,22 +15,35 @@ const listInitialState = {
 function list (state = listInitialState, action) {
   switch (action.type) {
     case 'GET_EMERGENCIES_LIST_INFLIGHT':
-      return Object.assign({}, state, { error: null, fetching: true, fetched: false });
+      state = stateInflight(state, action);
+      break;
     case 'GET_EMERGENCIES_LIST_FAILED':
-      state = Object.assign({}, state, {
-        fetching: false,
-        fetched: true,
-        receivedAt: action.receivedAt,
-        error: action.error
-      });
+      state = stateError(state, action);
       break;
     case 'GET_EMERGENCIES_LIST_SUCCESS':
-      state = Object.assign({}, state, {
-        fetching: false,
-        fetched: true,
-        receivedAt: action.receivedAt,
-        data: action.data
-      });
+      state = stateSuccess(state, action);
+      break;
+  }
+  return state;
+}
+
+const featuredInitialState = {
+  fetching: false,
+  fetched: false,
+  receivedAt: null,
+  data: {}
+};
+
+function featured (state = featuredInitialState, action) {
+  switch (action.type) {
+    case 'GET_FEATURED_EMERGENCIES_INFLIGHT':
+      state = stateInflight(state, action);
+      break;
+    case 'GET_FEATURED_EMERGENCIES_FAILED':
+      state = stateError(state, action);
+      break;
+    case 'GET_FEATURED_EMERGENCIES_SUCCESS':
+      state = stateSuccess(state, action);
       break;
   }
   return state;
@@ -67,8 +81,8 @@ function lastMonth (state = lastMonthInitialState, action) {
 }
 
 function createStoreFromRaw (raw) {
-  const count = raw.meta.total_count;
-  const records = get(raw, 'objects', []);
+  const count = raw.count;
+  const records = get(raw, 'results', []);
   const numAffected = records.reduce((acc, next) => acc + get(next, 'num_affected', 0), 0);
   const emergenciesByType = groupByDisasterType(records);
   let totalAppeals = 0;
@@ -101,7 +115,6 @@ function createStoreFromRaw (raw) {
       var properties = {
         id: country.id,
         name: country.name,
-
         totalEmergencies: 0,
         withResponse: 0,
         withoutResponse: 0,
@@ -130,10 +143,10 @@ function createStoreFromRaw (raw) {
         properties,
         geometry: {
           type: 'Point',
-          coordinates: getCentroid(iso)
+          coordinates: getCentroid(country.iso)
         }
       };
-    })
+    }).filter(Boolean)
   };
 
   return {
@@ -185,6 +198,7 @@ function aggregate (state = aggregateInitialState, action) {
 
 export default combineReducers({
   list,
+  featured,
   lastMonth,
   aggregate
 });

@@ -70,7 +70,7 @@
 
 .fold__footer {
   @include column(12/12);
-  margin-top: $global-spacing;
+  margin-top: $global-spacing * 2;
 }
 
 /* Modifiers
@@ -88,5 +88,19 @@
   padding: $global-spacing * 4;
   p {
     margin-bottom: 0;
+  }
+}
+
+.links-list {
+  list-style: none;
+  @include column(12/12);
+  li {
+    @include column(12/12);
+    @include media(small-up) {
+      @include column(6/12);
+    }
+    @include media(medium-up) {
+      @include column(3/12);
+    }
   }
 }

@@ -1,10 +1,12 @@
 'use strict';
+import { DateTime } from 'luxon';
 import { get } from './utils';
 import { orgTypes } from './field-report-constants';
 
 export const nope = '--';
 export const na = 'N/A';
 export const invalid = 'Invalid';
+export const noSummary = 'No summary available';
 
 // Ie. given 12345.99, return '12,346'
 export const commaSeparatedNumber = (x) => {
@@ -16,6 +18,9 @@ export const commaSeparatedNumber = (x) => {
 };
 
 export function percent (value, total, decimals = 2) {
+  if (isNaN(value) || isNaN(total) || total === 0) {
+    return nope;
+  }
   let val = value / total * 100;
   return round(val, decimals);
 }
@@ -25,7 +30,9 @@ export function round (value, decimals = 2) {
 }
 
 export function shortenLargeNumber (value, decimals = 2) {
-  if (value / 1e9 >= 1) {
+  if (value / 1e12 >= 1) {
+    value = round(value / 1e12, decimals) + 'T';
+  } else if (value / 1e9 >= 1) {
     value = round(value / 1e9, decimals) + 'B';
   } else if (value / 1e6 >= 1) {
     value = round(value / 1e6, decimals) + 'M';
@@ -34,7 +41,9 @@ export function shortenLargeNumber (value, decimals = 2) {
 }
 
 export function commaSeparatedLargeNumber (value) {
-  if (value / 1e9 >= 1) {
+  if (value / 1e12 >= 1) {
+    return round(value / 1e12, 2) + 'T';
+  } else if (value / 1e9 >= 1) {
     return round(value / 1e9, 2) + 'B';
   } else if (value / 1e6 >= 1) {
     return round(value / 1e6, 2) + 'M';
@@ -55,7 +64,7 @@ const organizationCodeToDisplay = {};
 orgTypes.forEach(o => {
   organizationCodeToDisplay[o.value] = o.label;
 });
-export const organizationType = (code) => organizationCodeToDisplay[code] || invalid;
+export const organizationType = (code) => organizationCodeToDisplay[code] || nope;
 
 export const uppercaseFirstLetter = (str) => {
   const s = str.toString();
@@ -98,7 +107,7 @@ const apiPropertyFormatters = {
 };
 export const apiPropertyValue = (propOrPath, object) => {
   const value = get(object, propOrPath);
-  if (typeof value === 'undefined') {
+  if (typeof value === 'undefined' || value === null || value === '') {
     return nope;
   }
   const propertyName = getPropertyFromPath(propOrPath);
@@ -150,3 +159,27 @@ export const getResponseStatus = (data, dataPath) => {
       return deployDefinition[status];
   }
 };
+
+export const privateSurgeAlert = 'This is a private alert. You must be logged in to view it.';
+
+export function isoDate (d) {
+  const result = DateTime.fromISO(d).toISODate();
+  return result || nope;
+}
+
+export function timestamp (d) {
+  const result = DateTime.fromISO(d).toLocaleString(DateTime.DATETIME_SHORT);
+  return result || nope;
+}
+
+export const days90 = DateTime.utc().minus({days: 90}).endOf('day').toISO();
+export const recentInterval = DateTime.utc().minus({days: 90}).endOf('day').toISO();
+
+export function intersperse (arr, sep) {
+  if (arr.length === 0) {
+    return [];
+  }
+  return arr.slice(1).reduce(function (xs, x, i) {
+    return xs.concat([sep, x]);
+  }, [arr[0]]);
+}
