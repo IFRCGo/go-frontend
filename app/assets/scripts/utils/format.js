@@ -172,8 +172,8 @@ export function timestamp (d) {
   return result || nope;
 }
 
-export const days90 = DateTime.utc().minus({days: 90}).endOf('day').toISO();
-export const recentInterval = DateTime.utc().minus({days: 30}).endOf('day').toISO();
+export const days90 = DateTime.utc().minus({days: 90}).startOf('day').toISO();
+export const recentInterval = DateTime.utc().minus({days: 30}).startOf('day').toISO();
 
 export function intersperse (arr, sep) {
   if (arr.length === 0) {
