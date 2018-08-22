@@ -175,7 +175,7 @@ export const GET_SITREPS = 'GET_SITREPS';
 export function getSitrepsByEventId (id, filters = {}) {
   filters.event = id;
   filters.ordering = '-created_at';
-  filters.limit = 100;
+  filters.limit = 1000;
   const f = buildAPIQS(filters);
   return fetchJSON(`api/v2/situation_report/?${f}`, GET_SITREPS, withToken(), { id });
 }
