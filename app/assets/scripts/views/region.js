@@ -29,7 +29,7 @@ import {
   getAdmAreaById,
   getAdmAreaAppealsList,
   getAdmAreaAggregateAppeals,
-  getAdmAreaERU,
+  getRegionPersonnel,
   getAdmAreaKeyFigures,
   getAdmAreaSnippets,
   getCountries
@@ -83,7 +83,7 @@ class AdminArea extends SFPComponent {
   getData (props) {
     this.props._getAdmAreaAppealsList(props.type, props.match.params.id);
     this.props._getAdmAreaAggregateAppeals(props.type, props.match.params.id, DateTime.local().minus({years: 10}).startOf('month').toISODate(), 'year');
-    this.props._getAdmAreaERU(props.type, props.match.params.id);
+    this.props._getRegionPersonnel(props.match.params.id);
     this.props._getAdmAreaKeyFigures(props.type, props.match.params.id);
     this.props._getAdmAreaSnippets(props.type, props.match.params.id);
     this.props._getCountries(props.match.params.id);
@@ -196,13 +196,13 @@ class AdminArea extends SFPComponent {
     );
   }
 
-  renderERUBySociety () {
+  renderPersonnelBySociety () {
     const {
       data,
       fetched,
       fetching,
       error
-    } = this.props.eru;
+    } = this.props.personnel;
 
     const contentFormatter = (payload) => {
       if (!payload.payload || !payload.payload[0]) { return null; }
@@ -231,9 +231,9 @@ class AdminArea extends SFPComponent {
           {!fetched || fetching ? (
             <BlockLoading />
           ) : (
-            data.eruBySociety.length ? (
+            data.personnelBySociety.length ? (
               <ResponsiveContainer>
-                <BarChart data={data.eruBySociety}>
+                <BarChart data={data.personnelBySociety}>
                   <XAxis dataKey='name' axisLine={false} padding={{ left: 16, right: 16 }} />
                   <YAxis axisLine={false} tickLine={false} width={32} padding={{ bottom: 16 }} />
                   <Bar dataKey='count' fill='#C22A26' />
@@ -355,7 +355,7 @@ class AdminArea extends SFPComponent {
               <Fold title='Statistics' headerClass='visually-hidden' id='stats'>
                 <div className='stats-chart'>
                   {this.renderOperations10Years()}
-                  {this.renderERUBySociety()}
+                  {this.renderPersonnelBySociety()}
                 </div>
               </Fold>
               <AppealsTable
@@ -393,7 +393,7 @@ if (environment !== 'production') {
     _getAdmAreaById: T.func,
     _getAdmAreaAppealsList: T.func,
     _getAdmAreaAggregateAppeals: T.func,
-    _getAdmAreaERU: T.func,
+    _getRegionPersonnel: T.func,
     _getCountries: T.func,
     type: T.string,
     match: T.object,
@@ -401,7 +401,7 @@ if (environment !== 'production') {
     adminArea: T.object,
     appealStats: T.object,
     aggregateYear: T.object,
-    eru: T.object,
+    personnel: T.object,
     keyFigures: T.object,
     snippets: T.object,
     countries: T.object
@@ -425,7 +425,7 @@ const selector = (state, ownProps) => ({
     fetching: false,
     fetched: false
   }),
-  eru: state.adminArea.eru,
+  personnel: state.adminArea.personnel,
   keyFigures: state.adminArea.keyFigures,
   snippets: state.adminArea.snippets,
   countries: state.countries
@@ -435,7 +435,7 @@ const dispatcher = (dispatch) => ({
   _getAdmAreaById: (...args) => dispatch(getAdmAreaById(...args)),
   _getAdmAreaAppealsList: (...args) => dispatch(getAdmAreaAppealsList(...args)),
   _getAdmAreaAggregateAppeals: (...args) => dispatch(getAdmAreaAggregateAppeals(...args)),
-  _getAdmAreaERU: (...args) => dispatch(getAdmAreaERU(...args)),
+  _getRegionPersonnel: (...args) => dispatch(getRegionPersonnel(...args)),
   _getAdmAreaKeyFigures: (...args) => dispatch(getAdmAreaKeyFigures(...args)),
   _getAdmAreaSnippets: (...args) => dispatch(getAdmAreaSnippets(...args)),
   _getCountries: (...args) => dispatch(getCountries(...args))

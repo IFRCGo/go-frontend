@@ -20,6 +20,7 @@ import Progress from './progress';
 import BlockLoading from './block-loading';
 import MapComponent from './map';
 import { get, aggregateAppealStats } from '../utils/utils';
+import { getCentroid } from '../utils/country-centroids';
 
 const scale = chroma.scale(['#F0C9E8', '#861A70']);
 
@@ -306,8 +307,12 @@ class Homemap extends React.Component {
       if (this.popover != null) {
         this.popover.remove();
       }
+      let coordinates = getCentroid(iso);
+      if (!coordinates[0]) {
+        coordinates = calculateCentroid(feature.geometry).geometry.coordinates;
+      }
       this.popover = new mapboxgl.Popup({closeButton: false})
-        .setLngLat(calculateCentroid(feature.geometry).geometry.coordinates)
+        .setLngLat(coordinates)
         .setDOMContent(popoverContent.children[0])
         .addTo(theMap);
     }

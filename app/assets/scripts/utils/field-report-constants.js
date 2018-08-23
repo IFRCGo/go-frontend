@@ -291,7 +291,7 @@ export const countries = [
   {value: '288', label: 'Zone Southern Africa', iso: ''},
   {value: '289', label: 'Zone GLOBAL', iso: ''},
   {value: '290', label: 'South Sudan, Rep. Of', iso: 'ss'}
-];
+].sort((a, b) => a.label < b.label ? -1 : 1);
 
 export const disasterType = [
   {
