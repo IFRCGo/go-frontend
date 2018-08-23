@@ -336,7 +336,7 @@ class FieldReportForm extends React.Component {
         </div>
 
         <FormTextarea
-          label='Brief Description of the Situation'
+          label='Situation report'
           name='description'
           id='description'
           description={'Briefly describe the situation.'}
@@ -432,7 +432,7 @@ class FieldReportForm extends React.Component {
         </FormInput>
 
         <FormInput
-          label='Assisted By Red Cross'
+          label='Assisted by RCRC Movement'
           type='text'
           name='num-assisted-red-cross'
           id='num-assisted-red-cross'
@@ -471,7 +471,7 @@ class FieldReportForm extends React.Component {
           />
         </FormInput>
         <FormInput
-          label='Number of expats/delegates'
+          label='Number of RCRC Movement International Personnel involved'
           type='text'
           name='num-expats'
           id='num-expats'
@@ -494,31 +494,31 @@ class FieldReportForm extends React.Component {
       <Fold title='Actions taken'>
         <ActionsCheckboxes
           label='Actions Taken by National Society Red Cross (if any)'
-          description={'Select the activities taken by the National Society and briefly describe'}
+          description={'Select the activities undertaken by the National Society and briefly describe.'}
           name='actions-nat-soc'
           options={formData.actions}
           values={this.state.data.actionsNatSoc}
           onChange={this.onFieldChange.bind(this, 'actionsNatSoc')} />
 
         <ActionsCheckboxes
-          label='Actions Taken by PNS Red Cross (if any)'
-          description={'Select the activities taken by the foreign National Society and briefly describe'}
-          name='actions-pns'
-          options={formData.actions}
-          values={this.state.data.actionsPns}
-          onChange={this.onFieldChange.bind(this, 'actionsPns')} />
-
-        <ActionsCheckboxes
-          label='Actions Taken by Federation Red Cross (if any)'
-          description={'Select the activities taken by the Federation (could be the Zone office, DMUS, ...) and briefly describe'}
+          label='Actions taken by the IFRC'
+          description={'Select the activities taken by the IFRC (could be the Regional office, cluster office or country office) and briefly describe.'}
           name='actions-federation'
           options={formData.actions}
           values={this.state.data.actionsFederation}
           onChange={this.onFieldChange.bind(this, 'actionsFederation')} />
 
+        <ActionsCheckboxes
+          label='Actions taken by any other RCRC Movement actors'
+          description={'Select the activities undertaken by any other RCRC Movement actor(s) and briefly describe.'}
+          name='actions-pns'
+          options={formData.actions}
+          values={this.state.data.actionsPns}
+          onChange={this.onFieldChange.bind(this, 'actionsPns')} />
+
         <FormRadioGroup
           label='Information Bulletin'
-          description={'About information management, indicate if an Information Bulletin was published, is planned or if no Information Bulletin will be issued for this operation/disaster.'}
+          description={'Indicate if an Information Bulletin was published, is planned or if no Information Bulletin will be issued for this operation/disaster.'}
           name='bulletin'
           options={[
             {
@@ -538,7 +538,7 @@ class FieldReportForm extends React.Component {
           onChange={this.onFieldChange.bind(this, 'bulletin')} />
 
         <FormTextarea
-          label='Actions Taken by Others (Governemnts, UN)'
+          label='Actions Taken by Others (Governments, UN)'
           name='actions-others'
           id='actions-others'
           description={'Who else was involved? UN agencies? NGOs? Government? Describe what other actors did.'}
@@ -568,9 +568,7 @@ class FieldReportForm extends React.Component {
       <Fold title='Planned Response'>
         <label className='form__label'>Planned International Response</label>
         <div className='form__description'>
-          <p>Indicate the status of the differents international tools: Was DREF requested? How much ? Has it been approved ? How many beneficiaries ? Has the DREF operation been issued?</p>
-          <p>Same for the emergency appeal</p>
-          <p>For RDRT/FACT/ERU, only indicate if used, planned/requested or not used.</p>
+          <p>Indicate status of global and regional tools.</p>
         </div>
 
         <PlanResponseRow
@@ -640,7 +638,7 @@ class FieldReportForm extends React.Component {
           onChange={this.onFieldChange.bind(this, 'fact')} />
 
         <PlanResponseRow
-          label='IFRC Staff Relocated'
+          label='IFRC Staff'
           valueFieldLabel='Number of people'
           name='ifrc-staff'
           options={optsPlanReqDep}
@@ -688,8 +686,8 @@ class FieldReportForm extends React.Component {
           errors={this.state.errors}
           onChange={this.onFieldChange.bind(this, 'contactNatSoc')} />
         <ContactRow
-          label='Federation Contact'
-          description='A contact of the Federation (Secretariat/Zone/DMUs) for more information. Select someone who will be available for interview.'
+          label='IFRC Contact'
+          description='A contact of the IFRC (HQ, regional, cluster and country office) for more information. Select someone who will be available for interview.'
           name='contact-federation'
           values={this.state.data.contactFederation}
           fieldKey='contactFederation'
