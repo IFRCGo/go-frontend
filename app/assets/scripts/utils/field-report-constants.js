@@ -192,7 +192,7 @@ export const countries = [
   {value: '181', label: 'Burkina Faso', iso: 'bf'},
   {value: '182', label: 'Côte d\'Ivoire', iso: 'ci'},
   {value: '183', label: 'Guinea-Bissau', iso: 'gw'},
-  {value: '184', label: 'Congo, Rep.', iso: 'cg'},
+  {value: '184', label: 'Congo', iso: 'cg'},
   {value: '185', label: 'Sao Tomé and Principe', iso: 'st'},
   {value: '186', label: 'Comoros', iso: 'km'},
   {value: '187', label: 'Congo, Dem. Rep.', iso: 'cd'},
@@ -202,15 +202,15 @@ export const countries = [
   {value: '192', label: 'Republic of Korea', iso: 'kr'},
   {value: '193', label: 'Democratic People\'s Republic of Korea', iso: 'KP'},
   {value: '194', label: 'Mongolia', iso: 'mn'},
-  {value: '195', label: 'Micronesia, Fed. Sts.', iso: 'fm'},
+  {value: '195', label: 'Micronesia, Federates States of', iso: 'fm'},
   {value: '197', label: 'Bosnia and Herzegovina', iso: 'ba'},
   {value: '199', label: 'Poland', iso: 'pl'},
   {value: '200', label: 'Azerbaijan', iso: 'az'},
   {value: '201', label: 'Kazakhstan', iso: 'kz'},
   {value: '202', label: 'Moldova', iso: 'md'},
-  {value: '203', label: 'Iran, Islamic Rep.', iso: 'ir'},
+  {value: '203', label: 'Iran, Islamic Republic of', iso: 'ir'},
   {value: '204', label: 'Libya', iso: 'ly'},
-  {value: '205', label: 'Palestinian territories', iso: 'ps'},
+  {value: '205', label: 'Palestine', iso: 'ps'},
   {value: '206', label: 'Syrian Arab Republic', iso: 'sy'},
   {value: '209', label: 'Benin', iso: 'bj'},
   {value: '210', label: 'Timor-Leste', iso: 'tl'},
@@ -274,7 +274,7 @@ export const countries = [
   {value: '271', label: 'Serbia', iso: 'rs'},
   {value: '272', label: 'Guernesey', iso: 'gg'},
   {value: '273', label: 'Jersey', iso: 'je'},
-  {value: '274', label: 'Holy See (Vatican City State)', iso: 'va'},
+  {value: '274', label: 'Holy See', iso: 'va'},
   {value: '275', label: 'Hong Kong (China)', iso: 'hk'},
   {value: '276', label: 'Isle of Man', iso: 'im'},
   {value: '277', label: 'Aland Island', iso: 'AX'},
@@ -290,7 +290,7 @@ export const countries = [
   {value: '287', label: 'Zone MENA', iso: ''},
   {value: '288', label: 'Zone Southern Africa', iso: ''},
   {value: '289', label: 'Zone GLOBAL', iso: ''},
-  {value: '290', label: 'South Sudan, Rep. Of', iso: 'ss'}
+  {value: '290', label: 'South Sudan', iso: 'ss'}
 ].sort((a, b) => a.label < b.label ? -1 : 1);
 
 export const disasterType = [
