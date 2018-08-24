@@ -195,7 +195,7 @@ export const countries = [
   {value: '184', label: 'Congo', iso: 'cg'},
   {value: '185', label: 'Sao Tomé and Principe', iso: 'st'},
   {value: '186', label: 'Comoros', iso: 'km'},
-  {value: '187', label: 'Congo, Dem. Rep.', iso: 'cd'},
+  {value: '187', label: 'Democratic Republic of the Congo', iso: 'cd'},
   {value: '188', label: 'Eritrea', iso: 'er'},
   {value: '189', label: 'Tanzania, United Republic of', iso: 'tz'},
   {value: '191', label: 'Viet Nam', iso: 'vn'},
