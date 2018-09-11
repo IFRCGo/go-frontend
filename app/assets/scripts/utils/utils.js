@@ -31,11 +31,7 @@ export function getAppealString (appealType) {
 }
 
 export function unique (array) {
-  let obj = {};
-  for (let i = 0; i < array.length; ++i) {
-    obj[array[i]] = true;
-  }
-  return Object.keys(array);
+  return Array.from(new Set(array));
 }
 
 export function isLoggedIn (userState) {
