@@ -254,23 +254,13 @@ export function getAdmAreaAggregateAppeals (aaType, aaId, date, unit) {
   return fetchJSON(`api/v1/aggregate/?${f}`, GET_AA_AGGREGATE_APPEALS, withToken(), {aggregationUnit: unit});
 }
 
-export const GET_AA_ERU = 'GET_AA_ERU';
-export function getAdmAreaERU (aaType, aaId) {
-  let filters = {};
-
-  switch (aaType) {
-    case 'region':
-      filters.deployed_to__in = countriesByRegion[aaId].join(',');
-      break;
-    case 'country':
-      filters.deployed_to__in = aaId;
-      break;
-    default:
-      throw new Error('Invalid admin area type ' + aaType);
-  }
-
-  const f = buildAPIQS(filters);
-  return fetchJSON(`api/v2/eru/?${f}`, GET_AA_ERU, withToken());
+export const GET_AA_PERSONNEL = 'GET_AA_PERSONNEL';
+export function getRegionPersonnel (region) {
+  const f = buildAPIQS({
+    region_deployed_to: region,
+    end_date__gt: DateTime.utc().toISO()
+  });
+  return fetchJSON(`api/v2/personnel/?${f}`, GET_AA_PERSONNEL, withToken());
 }
 
 export function setPartnerDeploymentFilter (id, filters) {

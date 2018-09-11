@@ -152,32 +152,29 @@ function aggregate (state = {}, action) {
   return state;
 }
 
-function eru (state = {}, action) {
+function personnel (state = {}, action) {
   switch (action.type) {
-    case 'GET_AA_ERU_INFLIGHT':
+    case 'GET_AA_PERSONNEL_INFLIGHT':
       state = stateInflight(state, action);
       break;
-    case 'GET_AA_ERU_FAILED':
+    case 'GET_AA_PERSONNEL_FAILED':
       state = stateError(state, action);
       break;
-    case 'GET_AA_ERU_SUCCESS':
+    case 'GET_AA_PERSONNEL_SUCCESS':
       const objs = action.data.results;
-      const grouped = _groupBy(objs, 'eru_owner.national_society_country.society_name');
-      const eruBySociety = Object.keys(grouped).filter(Boolean).map(key => {
+      const grouped = _groupBy(objs, 'country_from.society_name');
+      const personnelBySociety = Object.keys(grouped).filter(Boolean).map(key => {
         return {
-          id: grouped[key][0].eru_owner.national_society_country.id,
+          id: grouped[key][0].country_from.id,
           name: key,
-          count: grouped[key].reduce((acc, o) => acc + o.equipment_units, 0)
+          count: grouped[key].length
         };
       });
-
       state = Object.assign({}, state, {
         fetching: false,
         fetched: true,
         receivedAt: action.receivedAt,
-        data: {
-          eruBySociety
-        }
+        data: { personnelBySociety }
       });
       break;
   }
@@ -258,7 +255,7 @@ export default combineReducers({
   appealStats,
   countryOperations,
   aggregate,
-  eru,
+  personnel,
   keyFigures,
   snippets,
   partnerDeployments
