@@ -33,11 +33,17 @@ html {
 }
 
 body {
-  background: tint($base-color, 98%);
-  color: $base-font-color;
+  @if $production_environment == true {
+    background: tint($base-color, 98%);
+    color: $base-font-color;
+    font-family: $base-font-family;
+  } @else {
+    background: #88AADD;
+    color: #0000FF;
+    font-family: "Cambria, Georgia, serif";
+  }
   font-size: $base-font-size;
   line-height: $base-line-height;
-  font-family: $base-font-family;
   font-weight: $base-font-weight;
   font-style: $base-font-style;
   min-width: $row-min-width;
