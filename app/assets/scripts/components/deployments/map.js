@@ -52,7 +52,7 @@ export default class DeploymentsMap extends React.Component {
   setCountryStyle (features) {
     // Color the countries layer using the source data.
     if (this.theMap && this.state.loaded) {
-      const maxScaleValue = Math.max(...features.map(o => o.properties.eru));
+      const maxScaleValue = Math.max(...features.map(o => isNaN(o.properties.eru) ? 0 : o.properties.eru));
       countryChromaScale.domain([0, maxScaleValue]);
 
       const countryWithEru = features
