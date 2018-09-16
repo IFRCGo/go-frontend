@@ -466,11 +466,7 @@ abbr[title] {
    ========================================================================== */
 
 .heading, h1, h2, h3, h4, h5, h6 {
-  @if $production_environment == true {
-    font-family: $heading-font-family;
-  } @else {
-    font-family: "Cambria, Georgia, serif";
-  }
+  font-family: $heading-font-family;
   font-weight: $heading-font-weight;
   margin-top: 0;
   margin-bottom: $global-spacing;
