@@ -37,7 +37,7 @@ After installing the projects there will be 3 main files:
   - `production.js`
 
 The `production.js` file serves as base and the other 2 will override it as needed:
-  - `staging.js` will be loaded whenever the env variable `DS_ENV` is set to staging.
+  - `staging.js` will be loaded whenever the env variable `NODE_ENV` is set to staging.
   - `local.js` will be loaded if it exists.
 
 The following options must be set: (The used file will depend on the context):
