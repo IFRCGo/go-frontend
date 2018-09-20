@@ -17,9 +17,9 @@
   "homepage": "",
   "scripts": {
     "postinstall": "[ -f app/assets/scripts/config/local.js ] || echo 'module.exports = {};' > app/assets/scripts/config/local.js",
-    "serve": "DS_ENV=development gulp collecticons && DS_ENV=development gulp serve",
-    "build-staging": "DS_ENV=staging gulp",
-    "build-prod": "DS_ENV=production gulp",
+    "serve": "NODE_ENV=development gulp collecticons && NODE_ENV=development gulp serve",
+    "build-staging": "NODE_ENV=staging gulp",
+    "build-prod": "NODE_ENV=production gulp",
     "deploy-staging": "AZURE_CONNECTIONS_STRING=$staging_connection_string node .build_scripts/az-upload.js ./dist",
     "deploy-prod": "AZURE_CONNECTIONS_STRING=$production_connection_string node .build_scripts/az-upload.js ./dist",
     "lint": "eslint app/assets/scripts/ --ext .js",
