@@ -29,11 +29,11 @@ var pkg;
 
 // Environment
 // Set the correct environment, which controls what happens in config.js
-if (!process.env.DS_ENV) {
+if (!process.env.NODE_ENV) {
   if (!process.env.TRAVIS_BRANCH || process.env.TRAVIS_BRANCH !== process.env.DEPLOY_BRANCH) {
-    process.env.DS_ENV = 'staging';
+    process.env.NODE_ENV = 'staging';
   } else {
-    process.env.DS_ENV = 'production';
+    process.env.NODE_ENV = 'production';
   }
 }
 
