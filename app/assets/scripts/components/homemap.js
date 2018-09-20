@@ -411,7 +411,7 @@ class Homemap extends React.Component {
                       value: 'population'
                     },
                     {
-                      label: 'IFRC operation request',
+                      label: 'IFRC financial requirements',
                       value: 'amount'
                     }
                   ]}
