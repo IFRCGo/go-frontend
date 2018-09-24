@@ -36,7 +36,7 @@ class Header extends React.PureComponent {
     super(props);
     this.state = {
       search: '',
-      showBetaBanner: true
+      showBetaBanner: false
     };
     this.onSelect = this.onSelect.bind(this);
 
