@@ -58,7 +58,7 @@ export default class About extends React.Component {
                         </a>
                       </li>
                       <li className='logo__item'>
-                        <a href='http://www.redcross.org/cruz-roja' target='_blank'>
+                        <a href='https://www.cruzroja.es/' target='_blank'>
                           <img src='/assets/graphics/content/esp_logo.jpg' alt='Visit Spanish Red Cross Page'/>
                         </a>
                       </li>
