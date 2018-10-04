@@ -201,7 +201,7 @@ class AppealsTable extends SFPComponent {
           {this.props.showExport ? (
             <ExportButton filename='appeals'
               qs={this.getQs(this.props)}
-              resource='api/v2/appeal_plus'
+              resource='api/v2/appeal'
             />
           ) : null}
           <DisplayTable
