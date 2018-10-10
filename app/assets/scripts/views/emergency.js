@@ -181,7 +181,7 @@ class Emergency extends React.Component {
           <div className='inpage__headline-stats'>
             <ul className='stats-list'>
               <li className='stats-list__item stats-emergencies'>
-                {n(stats.beneficiaries)}<small>Targeted Benficiaries</small>
+                {n(stats.beneficiaries)}<small>Targeted Beneficiaries</small>
               </li>
               <li className='stats-list__item stats-funding stat-borderless stat-double'>
                 {n(stats.requested)}<small>Requested Amount (CHF)</small>
