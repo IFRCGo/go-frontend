@@ -19,7 +19,13 @@ class ExportButton extends React.Component {
 
   componentWillReceiveProps (newProps) {
     if (this.props.csv.fetching && !newProps.csv.fetching && !newProps.csv.error) {
-      const encodedUri = encodeURI('data:text/csv;charset=utf-8,' + newProps.csv.data);
+      var firstNewLine = newProps.csv.data.indexOf("\n");
+      var firstRow = newProps.csv.data.substring(0, firstNewLine);
+      firstRow = firstRow.replace(/dtype/gi, 'disaster-type');
+      firstRow = firstRow.replace(/atype/gi, 'appeal-type');
+      firstRow = firstRow.replace(/^aid/, 'appeal id');
+      firstRow = firstRow.replace(/\./g, ' ');
+      const encodedUri = encodeURI('data:text/csv;charset=utf-8,' + firstRow + newProps.csv.data.substring(firstNewLine));
       const link = document.createElement('a');
       link.setAttribute('href', encodedUri);
       link.setAttribute('download', newProps.filename + '.csv');

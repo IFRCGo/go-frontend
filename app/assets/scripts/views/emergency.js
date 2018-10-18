@@ -123,7 +123,8 @@ class Emergency extends React.Component {
 
   renderFieldReportStats () {
     const report = mostRecentReport(get(this.props, 'event.data.field_reports'));
-    if (!report) return null;
+    const hide_it = get(this.props, 'event.data.hide_attached_field_reports');
+    if (!report || hide_it) return null;
     return (
       <div className='inpage__header-col'>
         <h3>Emergency Overview</h3>
@@ -181,7 +182,7 @@ class Emergency extends React.Component {
           <div className='inpage__headline-stats'>
             <ul className='stats-list'>
               <li className='stats-list__item stats-emergencies'>
-                {n(stats.beneficiaries)}<small>Targeted Benficiaries</small>
+                {n(stats.beneficiaries)}<small>Targeted Beneficiaries</small>
               </li>
               <li className='stats-list__item stats-funding stat-borderless stat-double'>
                 {n(stats.requested)}<small>Requested Amount (CHF)</small>
