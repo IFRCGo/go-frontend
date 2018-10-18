@@ -219,7 +219,7 @@ class AdminArea extends SFPComponent {
         date: DateTime.fromISO(o.start_date).toISODate(),
         name: o.name,
         event: o.event ? <Link to={`/emergencies/${o.event}`} className='link--primary' title='View Emergency'>Link</Link> : nope,
-        dtype: getDtypeMeta(o.dtype).label,
+        dtype: o.dtype,
         requestAmount: n(o.amount_requested),
         fundedAmount: n(o.amount_funded),
         active: (new Date(o.end_date)).getTime() > now ? 'Active' : 'Inactive'
