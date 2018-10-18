@@ -24,8 +24,8 @@ class FeaturedEmergencies extends React.Component {
     // get appeals data
     const appeals = get(d, 'appeals', []);
     const beneficiaries = appeals.reduce((acc, curr) => acc + curr.num_beneficiaries, 0);
-    const requested = appeals.reduce((acc, curr) => acc + curr.amount_requested, 0);
-    const funded = appeals.reduce((acc, curr) => acc + curr.amount_funded, 0);
+    const requested = appeals.reduce((acc, curr) => acc + Number(curr.amount_requested), 0);
+    const funded = appeals.reduce((acc, curr) => acc + Number(curr.amount_funded), 0);
 
     // get field report data, in case appeals data is missing
     const report = mostRecentReport(get(d, 'field_reports'));
