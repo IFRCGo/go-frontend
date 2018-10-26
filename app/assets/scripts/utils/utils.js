@@ -135,7 +135,7 @@ export function getCountryIsoFromVt (feature) {
 }
 
 export function groupByDisasterType (objs) {
-  const emergenciesByType = _groupBy(objs, 'dtype');
+  const emergenciesByType = _groupBy(objs, 'dtype.id');
   return Object.keys(emergenciesByType).map(key => {
     let meta = getDtypeMeta(key);
     if (!meta) return null;
