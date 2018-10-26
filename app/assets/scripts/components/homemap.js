@@ -348,7 +348,8 @@ class Homemap extends React.Component {
 
     return (
       <div className='emergencies chart'>
-        {this.props.noRenderEmergencyTitle ? <h1>Operations by Type</h1> : (
+//       this.props.noRenderEmergencyTitle
+        {true ? <h1>Operations by Type</h1> : (
           <React.Fragment>
             <h1>IFRC Emergency Operations</h1>
             <h2 className='heading--xsmall'>Operations by Type</h2>
