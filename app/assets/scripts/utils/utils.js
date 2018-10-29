@@ -139,10 +139,14 @@ export function groupByDisasterType (objs) {
   return Object.keys(emergenciesByType).map(key => {
     let meta = getDtypeMeta(key);
     if (!meta) return null;
+    var replacedDType = emergenciesByType[key];
+    replacedDType.forEach(record => {
+        record.dtype = record.dtype.id;
+    });
     return {
       id: _toNumber(key),
       name: meta.label,
-      items: emergenciesByType[key]
+      items: replacedDType
     };
   }).filter(Boolean).sort((a, b) => a.items.length < b.items.length ? 1 : -1);
 }
