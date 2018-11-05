@@ -183,7 +183,7 @@ class AppealsTable extends SFPComponent {
         code: o.code,
         name: o.name,
         event: o.event ? <Link to={`/emergencies/${o.event}`} className='link--primary' title='View Emergency'>Link</Link> : nope,
-        dtype: get(getDtypeMeta(o.dtype), 'label', nope),
+        dtype: get(getDtypeMeta(o.dtype.id), 'label', nope),
         requestAmount: {
           value: n(o.amount_requested),
           className: 'right-align'
