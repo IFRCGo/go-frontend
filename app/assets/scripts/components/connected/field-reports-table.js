@@ -146,7 +146,7 @@ class FieldReportsTable extends SFPComponent {
         date: DateTime.fromISO(o.created_at).toISODate(),
         name: <Link to={`/reports/${o.id}`} className='link--primary' title='View Field Report'>{o.summary || nope}</Link>,
         event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
-        dtype: get(getDtypeMeta(o.dtype), 'label', nope),
+        dtype: get(getDtypeMeta(o.dtype.id), 'label', nope),
         countries: intersperse(o.countries.map(c => <Link key={c.id} to={`/countries/${c.id}`} className='link--primary' title='View Country'>{c.name}</Link>), ', ')
       }));
 
