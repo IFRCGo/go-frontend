@@ -27,7 +27,9 @@ export default function newMap (container) {
   map.touchZoomRotate.disableRotation();
 
   // Remove compass.
-  document.querySelector('.mapboxgl-ctrl .mapboxgl-ctrl-compass').remove();
-
+  var uag = window.navigator.userAgent;
+  if (!uag.indexOf('MSIE ')) { // this line does not work with MSIE:
+    document.querySelector('.mapboxgl-ctrl .mapboxgl-ctrl-compass').remove();
+  }
   return map;
 }
