@@ -23,12 +23,15 @@ export default class About extends React.Component {
             <div className='inner'>
               <div className='fold'>
                 <div className='inner'>
-                  <p>GO is a Red Cross Red Crescent platform to connect information on emergency needs with the right response.</p>
-                  <p>GO platform video: <a href="https://www.youtube.com/watch?v=dwPsQzla9A4">www.youtube.com/watch?v=dwPsQzla9A4</a></p>
-                  <p>User and administrator guides on <a href="https://drive.google.com/open?id=1F3YQ17AKOvCUvvE4EGgy5pZ0L55_xy2d">Google Drive</a>:
-                    &nbsp;<a href="https://drive.google.com/open?id=1C6PU6wd5KRDpwyLoDcb1GFLWFHyf65Xp"><img src="/assets/graphics/content/usr.jpg" alt="user-guide"/></a> 
+                <center>
+                  <p><strong>GO is a Red Cross Red Crescent platform to connect information on emergency needs with the right response.</strong></p>
+                  <iframe width="604" height="340" src="https://www.youtube.com/embed/dwPsQzla9A4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                  <p>&nbsp;</p>
+                  <p>User and administrator <a href="https://drive.google.com/open?id=1F3YQ17AKOvCUvvE4EGgy5pZ0L55_xy2d">guides</a>:
+                    <br/><a href="https://drive.google.com/open?id=1C6PU6wd5KRDpwyLoDcb1GFLWFHyf65Xp"><img src="/assets/graphics/content/usr.jpg" alt="user-guide"/></a>
                     &nbsp;<a href="https://drive.google.com/open?id=1Hm5q6hcudJaCSqSIIf0uaMfTboMJlfkL"><img src="/assets/graphics/content/adm.jpg" alt="admin-guide"/></a> 
                   </p>
+                  <p>&nbsp;</p>
                   <p>For any further information, please contact <a href="mailto:IM@ifrc.org">IM@ifrc.org</a></p>
                   <section className='logo__group'>
                     <p className='logo__title'>Go has received dedicated personnel and funding support from:</p>
@@ -75,6 +78,7 @@ export default class About extends React.Component {
                       </li>
                     </ul>
                   </section>
+                </center>
                 </div>
               </div>
             </div>
