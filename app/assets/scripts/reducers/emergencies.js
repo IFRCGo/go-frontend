@@ -3,7 +3,7 @@ import { combineReducers } from 'redux';
 
 import { getCentroid } from '../utils/country-centroids';
 import { stateInflight, stateError, stateSuccess } from '../utils/reducer-utils';
-import { get, groupByDisasterType } from '../utils/utils';
+import { get, groupByDisasterType, mostRecentReport } from '../utils/utils';
 
 const listInitialState = {
   fetching: false,
@@ -83,15 +83,19 @@ function lastMonth (state = lastMonthInitialState, action) {
 function createStoreFromRaw (raw) {
   const count = raw.count;
   const records = get(raw, 'results', []);
-  const numAffected = records.reduce((acc, next) => acc + get(next, 'num_affected', 0), 0);
   const emergenciesByType = groupByDisasterType(records);
   let totalAppeals = 0;
   let totalAppealsFunding = 0;
+  let numAffected = 0;
   records.forEach(record => {
+    let appealNumAffected = 0;
     get(record, 'appeals', []).forEach(appeal => {
       totalAppeals += Number(get(appeal, 'amount_requested', 0));
       totalAppealsFunding += Number(get(appeal, 'amount_funded', 0));
+      appealNumAffected += Number(get(appeal, 'num_affected', 0));
     });
+    // If there is no (non-zero) num_affected field in appeal, then we check the most recent field_report belonging to it:
+    numAffected += (appealNumAffected > 0 ? appealNumAffected : Number(get(mostRecentReport(record.field_reports), 'num_affected', 0)));
   });
 
   // since emergencies can have many countries, group by countries
