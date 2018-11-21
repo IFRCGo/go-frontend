@@ -86,7 +86,7 @@ function createStoreFromRaw (raw) {
   const emergenciesByType = groupByDisasterType(records);
   let totalAppeals = 0;
   let totalAppealsFunding = 0;
-  let numAffected = 0;
+  let numAffected = records.reduce((acc, next) => acc + get(next, 'num_affected', 0), 0);
   records.forEach(record => {
     let appealNumAffected = 0;
     get(record, 'appeals', []).forEach(appeal => {
