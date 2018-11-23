@@ -403,7 +403,7 @@ class AdminArea extends SFPComponent {
                     <Homemap operations={this.props.appealStats}
                       bbox={bbox}
                       deployments={this.props.partnerDeployments}
-                      deploymentsKey='PNS Activities'
+                      deploymentsKey='Additional Response Activities' // From Elsa instead of 'PNS Activities'
                       noRenderEmergencies={true}
                       noExport={true}
                     />
