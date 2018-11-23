@@ -440,7 +440,7 @@ class Homemap extends React.Component {
                     <dd>
                       <span>0</span>
                       <span>to</span>
-                      <span>{n(get(this.props.deployments, 'data.max'))}</span>
+                      <span>5</span>
                     </dd>
                   </dl>
                 </div>
