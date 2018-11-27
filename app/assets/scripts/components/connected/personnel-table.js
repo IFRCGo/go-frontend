@@ -72,7 +72,7 @@ class PersonnelTable extends SFPComponent {
     if (state.sort.field) {
       qs.ordering = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
     } else {
-      qs.ordering = '-end_date';
+      qs.ordering = '-start_date';
     }
 
     if (state.filters.startDate !== 'all') {
@@ -118,11 +118,11 @@ class PersonnelTable extends SFPComponent {
     if (fetched) {
       const headings = [{
         id: 'startDate',
-        label: <FilterHeader id='startDate' title='Start Date' options={dateOptions} filter={this.state.table.filters.startDate} onSelect={this.handleFilterChange.bind(this, 'table', 'startDate')} />
+        label: <FilterHeader id='start_date' title='Start Date' options={dateOptions} filter={this.state.table.filters.startDate} onSelect={this.handleFilterChange.bind(this, 'table', 'start_date')} />
       },
       {
         id: 'endDate',
-        label: <SortHeader id='endDate' title='End Date' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'end_date')} />
+        label: <SortHeader id='end_date' title='End Date' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'end_date')} />
       },
       {
         id: 'name',
@@ -138,15 +138,15 @@ class PersonnelTable extends SFPComponent {
       },
       {
         id: 'country',
-        label: <SortHeader id='country' title='From' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'country_from')} />
+        label: <SortHeader id='country_from' title='From' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'country_from')} />
       },
       {
         id: 'deployed',
-        label: <SortHeader id='deployed' title='Deployed to' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'deployment')} />
+        label: <SortHeader id='deployment' title='Deployed to' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'deployment')} />
       },
       {
         id: 'emer',
-        label: <SortHeader id='emer' title='Emergency' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'deployment')} />
+        label: <SortHeader id='emer' title='Emergency' sort={this.state.table.sort} onClick={''} /> // for filtering options check .../api/v2/personnel/?limit=2 - the Filters button, Ordering
       }];
 
       const rows = data.results.map(o => ({
