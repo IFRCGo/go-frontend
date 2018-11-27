@@ -39,7 +39,7 @@ class PersonnelTable extends SFPComponent {
           direction: 'asc'
         },
         filters: {
-          startDate: 'all',
+          startDateInterval: 'all',
           type: 'all'
         }
       }
@@ -75,8 +75,8 @@ class PersonnelTable extends SFPComponent {
       qs.ordering = '-start_date';
     }
 
-    if (state.filters.startDate !== 'all') {
-      qs.start_date__gte = datesAgo[state.filters.date]();
+    if (state.filters.startDateInterval !== 'all') {
+      qs.start_date__gte = datesAgo[state.filters.startDateInterval]();
     }
     if (state.filters.type !== 'all') {
       qs.type = state.filters.type;
@@ -110,15 +110,15 @@ class PersonnelTable extends SFPComponent {
       );
     }
 
-    if ((error || !get(data, 'results.length')) && this.state.table.filters.startDate === 'all' && this.state.table.filters.type === 'all') {
+    if ((error || !get(data, 'results.length')) && this.state.table.filters.startDateInterval === 'all' && this.state.table.filters.type === 'all') {
       return null;
     }
 
     // if (fetched) {
     if (fetched) {
       const headings = [{
-        id: 'startDate',
-        label: <FilterHeader id='start_date' title='Start Date' options={dateOptions} filter={this.state.table.filters.startDate} onSelect={this.handleFilterChange.bind(this, 'table', 'start_date')} />
+        id: 'startDateInterval',
+        label: <FilterHeader id='startDateInterval' title='Start Date' options={dateOptions} filter={this.state.table.filters.startDateInterval} onSelect={this.handleFilterChange.bind(this, 'table', 'startDateInterval')} />
       },
       {
         id: 'endDate',
@@ -151,7 +151,7 @@ class PersonnelTable extends SFPComponent {
 
       const rows = data.results.map(o => ({
         id: o.id,
-        startDate: DateTime.fromISO(o.start_date).toISODate(),
+        startDateInterval: DateTime.fromISO(o.start_date).toISODate(),
         endDate: DateTime.fromISO(o.end_date).toISODate(),
         name: o.name,
         role: get(o, 'role', nope),
