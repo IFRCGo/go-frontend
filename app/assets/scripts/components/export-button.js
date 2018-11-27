@@ -27,6 +27,7 @@ class ExportButton extends React.Component {
       firstRow = firstRow.replace(/^aid/, 'appeal_id');
       firstRow = firstRow.replace(/country.society_name/i, 'national_society_name');
       firstRow = firstRow.replace(/\./g, ' ');
+      firstRow = firstRow.replace(/_/g, '-');
 
       const encodedUri = encodeURI('data:text/csv;charset=utf-8,' + firstRow + newProps.csv.data.substring(firstNewLine));
       const link = document.createElement('a');
