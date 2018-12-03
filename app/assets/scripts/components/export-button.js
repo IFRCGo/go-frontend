@@ -32,7 +32,21 @@ class ExportButton extends React.Component {
       const encodedUri = encodeURI('data:text/csv;charset=utf-8,' + firstRow + newProps.csv.data.substring(firstNewLine));
       const link = document.createElement('a');
       link.setAttribute('href', encodedUri);
-      link.setAttribute('download', newProps.filename + '.csv');
+      var postfix = stringify(this.props.qs).slice(-2);
+      if (postfix == '=0') {
+          postfix = '-africa';
+      } else if (postfix == '=1') {
+          postfix = '-america';
+      } else if (postfix == '=2') {
+          postfix = '-asia';
+      } else if (postfix == '=3') {
+          postfix = '-europe';
+      } else if (postfix == '=4') {
+          postfix = '-middle-east';
+      } else {
+          postfix = '';
+      }
+      link.setAttribute('download', newProps.filename + postfix + '.csv');
       link.innerHTML = 'Click';
       document.body.appendChild(link);
       link.click();
@@ -57,7 +71,7 @@ class ExportButton extends React.Component {
   getExportLink () {
     let qs = Object.assign({}, this.props.qs, {
       format: 'csv',
-      limit: 99999,
+      limit: 199999,
       offset: 0
     });
     return url.resolve(api, this.props.resource) + '/?' + stringify(qs);
