@@ -17,6 +17,7 @@ import eruOwners from './eru-owners';
 import heops from './heops';
 import registration from './registration';
 import password from './password';
+import email from './email';
 import appeals from './appeals';
 import deployments from './deployments';
 import situationReports from './situation-reports';
@@ -42,6 +43,7 @@ export const reducers = {
   registration,
   appeals,
   password,
+  email,
   deployments,
   appealDocuments,
   situationReports,

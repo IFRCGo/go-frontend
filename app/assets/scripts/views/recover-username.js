@@ -30,12 +30,8 @@ class RecoverUsername extends React.Component {
   componentWillReceiveProps (nextProps) {
     if (this.props.email.fetching && !nextProps.email.fetching) {
       hideGlobalLoading();
-      if (nextProps.email.error) {
-        showAlert('danger', <p><strong>Error:</strong> {nextProps.email.error.error_message}</p>, true, 4500);
-      } else {
-        showAlert('success', <p>If the given email address exists in our database, you will find an email to your inbox. Redirecting...</p>, true, 2000);
-        setTimeout(() => this.props.history.push('/account'), 2000);
-      }
+      showAlert('success', <p>If the given email address exists here, you will find an email in your mailbox...</p>, true, 3000);
+      setTimeout(() => this.props.history.push('/login'), 3000);
     }
   }
 
@@ -113,6 +109,7 @@ if (environment !== 'production') {
   RecoverUsername.propTypes = {
     history: T.object,
     match: T.object,
+    email: T.object,
     _showUsername: T.func
   };
 }
