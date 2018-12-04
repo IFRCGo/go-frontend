@@ -8,36 +8,32 @@ import { Helmet } from 'react-helmet';
 import { environment } from '../config';
 
 import App from './app';
-import { recoverPassword } from '../actions';
+import { showUsername } from '../actions';
 import { FormInput, FormError } from '../components/form-elements/';
 import { isValidEmail } from '../utils/utils';
 import { showAlert } from '../components/system-alerts';
-import NewPassword from '../components/connected/new-password';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 
 class RecoverUsername extends React.Component {
   constructor (props) {
     super(props);
     const { params } = this.props.match;
-    const hasTokens = params.username && params.token;
     this.state = {
       data: {
         email: ''
       },
-      errors: null,
-      hasTokens
+      errors: null
     };
     this.onSubmit = this.onSubmit.bind(this);
   }
 
   componentWillReceiveProps (nextProps) {
-    if (this.state.hasTokens) { return; }
-    if (this.props.password.fetching && !nextProps.password.fetching) {
+    if (this.props.email.fetching && !nextProps.email.fetching) {
       hideGlobalLoading();
-      if (nextProps.password.error) {
-        showAlert('danger', <p><strong>Error:</strong> {nextProps.password.error.error_message}</p>, true, 4500);
+      if (nextProps.email.error) {
+        showAlert('danger', <p><strong>Error:</strong> {nextProps.email.error.error_message}</p>, true, 4500);
       } else {
-        showAlert('success', <p>We've sent an email to your inbox. Redirecting...</p>, true, 2000);
+        showAlert('success', <p>If the given email address exists in our database, you will find an email to your inbox. Redirecting...</p>, true, 2000);
         setTimeout(() => this.props.history.push('/account'), 2000);
       }
     }
@@ -50,7 +46,7 @@ class RecoverUsername extends React.Component {
     this.setState({ errors });
     if (errors === null) {
       showGlobalLoading();
-      this.props._recoverPassword(this.state.data.email);
+      this.props._showUsername(this.state.data.email);
     }
   }
 
@@ -104,7 +100,7 @@ class RecoverUsername extends React.Component {
           </header>
           <div className='inpage__body'>
             <div className='inner'>
-              {this.state.hasTokens ? <NewPassword verifyOldPassword={false} /> : this.renderEmailForm()}
+              {this.renderEmailForm()}
             </div>
           </div>
         </section>
@@ -117,12 +113,11 @@ if (environment !== 'production') {
   RecoverUsername.propTypes = {
     history: T.object,
     match: T.object,
-    password: T.object,
-    _recoverPassword: T.func
+    _showUsername: T.func
   };
 }
 const selector = (state) => ({
-  password: state.password
+  email: state.email
 });
 
 const dispatcher = (dispatch) => ({
