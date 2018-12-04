@@ -109,7 +109,7 @@ class Login extends React.Component {
                   <p className='form__help'>
                     <Link to='/recover-account' title='Recover password'><span>I forgot my password.</span></Link>
                     <br/>
-                    <Link to='/recover-username' title='Recover password'><span>I forgot my username only.</span></Link>
+                    <Link to='/recover-username' title='Show me my username'><span>I forgot my username only.</span></Link>
                   </p>
                 </FormInput>
 
