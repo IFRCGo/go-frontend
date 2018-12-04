@@ -47,6 +47,11 @@ export function recoverPassword (email) {
   return postJSON('recover_password', RECOVER_PASSWORD, { email });
 }
 
+export const SHOW_USERNAME = 'SHOW_USERNAME';
+export function showUsername (email) {
+  return postJSON('show_username', SHOW_USERNAME, { email });
+}
+
 export const GET_COUNTRIES = 'GET_COUNTRIES';
 export function getCountries (region) {
   let filters = {limit: 1000};

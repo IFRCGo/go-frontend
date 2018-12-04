@@ -18,6 +18,7 @@ import PasswordChange from './views/password-change';
 import Login from './views/login';
 import Register from './views/register';
 import RecoverAccount from './views/recover-account';
+import RecoverUsername from './views/recover-username';
 import UhOh from './views/uhoh';
 import FieldReportForm from './views/field-report-form/';
 import FieldReport from './views/field-report';
@@ -94,6 +95,7 @@ const Root = () => (
         <AnonymousRoute exact path='/register' component={Register}/>
         <AnonymousRoute exact path='/recover-account' component={RecoverAccount}/>
         <AnonymousRoute exact path='/recover-account/:username/:token' component={RecoverAccount}/>
+        <AnonymousRoute exact path='/recover-username' component={RecoverUsername}/>
         <PrivateRoute exact path='/reports/new' component={FieldReportForm}/>
         <PrivateRoute exact path='/reports/all' render={props => <Table {...props} type='report' />} />
         <PrivateRoute exact path='/reports/:id/edit' component={FieldReportForm}/>
