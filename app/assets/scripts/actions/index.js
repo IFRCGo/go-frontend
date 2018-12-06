@@ -136,10 +136,10 @@ export function getEmergenciesList (page = 1, filters = {}) {
 }
 
 export const GET_LAST_MO_EMERGENCIES = 'GET_LAST_MO_EMERGENCIES';
-export function getLastMonthsEmergencies () {
+export function getLast3MonthsEmergencies () {
   const f = buildAPIQS({
-    disaster_start_date__gt: DateTime.utc().minus({days: 30}).startOf('day').toISO(),
-    limit: 500,
+    disaster_start_date__gt: DateTime.utc().minus({days: 90}).startOf('day').toISO(),
+    limit: 600,
     ordering: '-disaster_start_date'
   });
   return fetchJSON(`api/v2/event/?${f}`, GET_LAST_MO_EMERGENCIES, {});
