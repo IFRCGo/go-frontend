@@ -123,8 +123,8 @@ class Emergency extends React.Component {
 
   renderFieldReportStats () {
     const report = mostRecentReport(get(this.props, 'event.data.field_reports'));
-    const hide_it = get(this.props, 'event.data.hide_attached_field_reports');
-    if (!report || hide_it) return null;
+    const hideIt = get(this.props, 'event.data.hide_attached_field_reports');
+    if (!report || hideIt) return null;
     return (
       <div className='inpage__header-col'>
         <h3>Emergency Overview</h3>
