@@ -33,6 +33,8 @@ jobs:
 
       - run: yarn test
 
+      - run: yarn lint
+
       - add_ssh_keys:
           fingerprints:
             - ""

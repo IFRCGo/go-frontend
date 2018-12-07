@@ -19,10 +19,10 @@ class ExportButton extends React.Component {
 
   componentWillReceiveProps (newProps) {
     if (this.props.csv.fetching && !newProps.csv.fetching && !newProps.csv.error) {
-      var firstNewLine = newProps.csv.data.indexOf("\n");
+      var firstNewLine = newProps.csv.data.indexOf('\n');
       var firstRow = newProps.csv.data.substring(0, firstNewLine);
       firstRow = firstRow.replace(/dtype/gi, 'disaster-type');
-      firstRow = firstRow.replace(/\,code\,/i, ',appeal_code,');
+      firstRow = firstRow.replace(/,code,/i, ',appeal_code,');
       firstRow = firstRow.replace(/atype/gi, 'appeal-type');
       firstRow = firstRow.replace(/^aid/, 'appeal_id');
       firstRow = firstRow.replace(/country.society_name/i, 'national_society_name');
@@ -33,18 +33,18 @@ class ExportButton extends React.Component {
       const link = document.createElement('a');
       link.setAttribute('href', encodedUri);
       var postfix = stringify(this.props.qs).slice(-2);
-      if (postfix == '=0') {
-          postfix = '-africa';
-      } else if (postfix == '=1') {
-          postfix = '-america';
-      } else if (postfix == '=2') {
-          postfix = '-asia';
-      } else if (postfix == '=3') {
-          postfix = '-europe';
-      } else if (postfix == '=4') {
-          postfix = '-middle-east';
+      if (postfix === '=0') {
+        postfix = '-africa';
+      } else if (postfix === '=1') {
+        postfix = '-america';
+      } else if (postfix === '=2') {
+        postfix = '-asia';
+      } else if (postfix === '=3') {
+        postfix = '-europe';
+      } else if (postfix === '=4') {
+        postfix = '-middle-east';
       } else {
-          postfix = '';
+        postfix = '';
       }
       link.setAttribute('download', newProps.filename + postfix + '.csv');
       link.innerHTML = 'Click';

@@ -123,8 +123,8 @@ class Emergency extends React.Component {
 
   renderFieldReportStats () {
     const report = mostRecentReport(get(this.props, 'event.data.field_reports'));
-    const hide_it = get(this.props, 'event.data.hide_attached_field_reports');
-    if (!report || hide_it) return null;
+    const hideIt = get(this.props, 'event.data.hide_attached_field_reports');
+    if (!report || hideIt) return null;
     return (
       <div className='inpage__header-col'>
         <h3>Emergency Overview</h3>
@@ -143,7 +143,7 @@ class Emergency extends React.Component {
             <li>Expat delegates<span className='content-highlight'>{n(get(report, 'num_expats_delegates'))}</span></li>
           </ul>
         </div>
-        <p>Source: <Link to={`/reports/${report.id}`}>Field Report</Link> | Last Updated: {timestamp(report.updated_at)}</p>
+        <p className='emergency__source'>Source: <Link to={`/reports/${report.id}`}>{report.summary}, {timestamp(report.updated_at || report.created_at)}</Link></p>
       </div>
     );
   }
@@ -318,7 +318,7 @@ class Emergency extends React.Component {
             <li key={o.deck}>
               <h3>{isNaN(o.number) ? o.number : n(o.number)}</h3>
               <p className='key-figure-label'>{o.deck}</p>
-              <p className='key-figure-source'>Source: {o.source}</p>
+              <p className='key-figure-source emergency__source'>Source: {o.source}</p>
             </li>
           ))}
         </ul>
@@ -336,8 +336,12 @@ class Emergency extends React.Component {
     if (!fetched || error) return null;
     const report = mostRecentReport(get(this.props, 'event.data.field_reports')) || {};
     const summary = data.summary || report.description || null;
-    const source = data.summary ? 'Emergency'
-      : report.description ? <Link to={`/reports/${report.id}`}>Field Report</Link> : null;
+    let source = null;
+    if (data.summary) {
+      source = data.name;
+    } else if (report.description) {
+      source = <Link to={`/reports/${report.id}`}>{report.summary}, {timestamp(report.updated_at || report.created_at)}</Link>;
+    }
     const contacts = Array.isArray(data.contacts) && data.contacts.length ? data.contacts
       : Array.isArray(report.contacts) && report.contacts.length ? report.contacts : null;
     return (
@@ -387,7 +391,7 @@ class Emergency extends React.Component {
                   title='Situational Overview'
                   wrapperClass='situational-overview' >
                   <Expandable limit={360} text={summary} />
-                  {source ? <p>Source: {source}</p> : null}
+                  {source ? <p className='emergency__source'>Source: {source}</p> : null}
                 </Fold>
               ) : null}
               <Snippets data={this.props.snippets} />
