@@ -17,7 +17,6 @@ import { showGlobalLoading, hideGlobalLoading } from '../components/global-loadi
 class RecoverUsername extends React.Component {
   constructor (props) {
     super(props);
-    const { params } = this.props.match;
     this.state = {
       data: {
         email: ''

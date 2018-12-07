@@ -13,7 +13,6 @@ import url from 'url';
 import { environment, api } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { get, dateOptions, datesAgo, dTypeOptions } from '../utils/utils/';
-import { getDtypeMeta } from '../utils/get-dtype-meta';
 import {
   commaSeparatedNumber as n,
   commaSeparatedLargeNumber as bigN,

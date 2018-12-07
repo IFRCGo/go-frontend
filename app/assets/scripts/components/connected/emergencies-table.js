@@ -20,7 +20,6 @@ import {
   datesAgo,
   mostRecentReport
 } from '../../utils/utils';
-import { getDtypeMeta } from '../../utils/get-dtype-meta';
 
 import ExportButton from '../export-button';
 import Fold from '../fold';

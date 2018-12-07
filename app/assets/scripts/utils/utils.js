@@ -141,7 +141,7 @@ export function groupByDisasterType (objs) {
     if (!meta) return null;
     var replacedDType = emergenciesByType[key];
     replacedDType.forEach(record => {
-        record.dtype = record.dtype.id;
+      record.dtype = record.dtype.id;
     });
     return {
       id: _toNumber(key),
