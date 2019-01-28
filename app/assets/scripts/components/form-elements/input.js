@@ -19,7 +19,8 @@ export default function FormInput (props) {
     onChange,
     autoFocus,
     disabled,
-    children
+    children,
+    maxLength
   } = props;
 
   return (
@@ -40,6 +41,7 @@ export default function FormInput (props) {
           onChange={onChange}
           disabled={disabled}
           autoFocus={autoFocus}
+          maxLength={maxLength}
         />
         {children || null}
       </div>
@@ -68,6 +70,7 @@ if (process.env.NODE_ENV !== 'production') {
     onChange: T.func,
     autoFocus: T.bool,
     disabled: T.bool,
-    children: T.node
+    children: T.node,
+    maxLength: T.number
   };
 }
