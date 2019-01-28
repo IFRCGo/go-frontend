@@ -41,7 +41,7 @@ export default function FormInput (props) {
           onChange={onChange}
           disabled={disabled}
           autoFocus={autoFocus}
-          maxlength={maxLength}
+          maxLength={maxLength}
         />
         {children || null}
       </div>
