@@ -231,6 +231,7 @@ class FieldReportForm extends React.Component {
           type='text'
           name='summary'
           id='summary'
+          maxLength={100}
           description={<div className='form__description'><p>Write a short summary of the report's topic. It will be used as the subject of the e-mail notification,
           later as the tittle of the RSS feed and possibly as the text message on mobile phones.</p><em>Example: 250 dead after an earthquake in Indonesia</em></div>}
           value={this.state.data.summary}
