@@ -7,11 +7,9 @@ import { Link, withRouter } from 'react-router-dom';
 import { api, environment } from '../config';
 import { request } from '../utils/network';
 import { uppercaseFirstLetter as u, isoDate } from '../utils/format';
-import { regions } from '../utils/region-constants';
 import UserMenu from './connected/user-menu';
-import Dropdown from './dropdown';
+import HeaderRegionButton from './header-region-button';
 
-const regionArray = Object.keys(regions).map(k => regions[k]);
 const noFilter = options => options;
 
 function getUriForType (type, id, data) {
@@ -113,7 +111,7 @@ class Header extends React.PureComponent {
               <ul className='nav-global-menu'>
                 <li><Link to='/' title='Visit Home page'><span>Home</span></Link></li>
                 <li><Link to='/emergencies' title='Visit emergencies page'><span>Emergencies</span></Link></li>
-                <li><NavDropdown id='regions-menu' title='Regions' options={regionArray.map(o => ({to: `/regions/${o.id}`, text: o.name}))} /></li>
+                <li><HeaderRegionButton id='regions-menu' currentPath={this.props.match} /></li>
                 <li><Link to='/deployments' title='Visit Deployments page'><span>Deployments</span></Link></li>
                 <li><Link to='/about' title='Visit About page'><span>About</span></Link></li>
               </ul>
@@ -141,39 +139,9 @@ class Header extends React.PureComponent {
 
 if (environment !== 'production') {
   Header.propTypes = {
-    history: T.object
+    history: T.object,
+    match: T.object
   };
 }
 
 export default withRouter(Header);
-
-class NavDropdown extends React.Component {
-  render () {
-    const { id, options, title } = this.props;
-    return (
-      <Dropdown
-        id={id}
-        triggerClassName='drop__toggle--caret'
-        triggerActiveClassName='active'
-        triggerText={title}
-        triggerTitle={`View ${title}`}
-        triggerElement='a'
-        direction='down'
-        alignment='center' >
-        <ul className='drop__menu' role='menu'>
-          {options.map(o => (
-            <li key={o.to}><Link to={o.to} className='drop__menu-item' title={`View ${o.text}`} data-hook='dropdown:close'>{o.text}</Link></li>
-          ))}
-        </ul>
-      </Dropdown>
-    );
-  }
-}
-
-if (environment !== 'production') {
-  NavDropdown.propTypes = {
-    id: T.string,
-    options: T.array,
-    title: T.string
-  };
-}

@@ -119,6 +119,7 @@
     "object-path": "^0.11.4",
     "prop-types": "^15.6.0",
     "qs": "^6.5.1",
+    "react": "^16.0.0",
     "react-dom": "^16.2.0",
     "react-helmet": "^5.2.0",
     "react-markdown": "^3.3.4",
