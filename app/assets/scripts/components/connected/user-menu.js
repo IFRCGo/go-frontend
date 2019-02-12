@@ -21,9 +21,9 @@ class UserMenu extends React.Component {
       return (
         <Dropdown
           id='user-menu'
-          triggerClassName='drop__togle--user'
+          triggerClassName='drop__toggle drop__toggle--caret page__meta-nav-elements-borderless'
           triggerActiveClassName='active'
-          triggerText={'User menu'}
+          triggerText={this.props.userData.firstName + " " + this.props.userData.lastName}
           triggerTitle={'Access user menu'}
           triggerElement='a'
           direction='down'
@@ -39,8 +39,8 @@ class UserMenu extends React.Component {
     }
 
     return [
-      <Link key='login' to={{pathname: '/login', state: {from: this.props.location}}} className='button button--small button--primary-raised-light' title='Login'><span>Login</span></Link>,
-      <Link key='register' to='/register' className='button button--small button--primary-raised-light' title='Register'><span>Register</span></Link>
+      <Link key='login' to={{pathname: '/login', state: {from: this.props.location}}} title='Login' className='page__meta-nav-elements'><span>Login</span></Link>,
+      <Link key='register' to='/register' title='Register' className='page__meta-nav-elements-borderless'><span>Register</span></Link>
     ];
   }
 }
