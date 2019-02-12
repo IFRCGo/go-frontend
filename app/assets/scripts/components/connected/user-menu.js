@@ -1,12 +1,11 @@
 'use strict';
+
 import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
-
 import { environment } from '../../config';
 import { logoutUser } from '../../actions';
-
 import Dropdown from '../dropdown';
 
 class UserMenu extends React.Component {
@@ -23,7 +22,7 @@ class UserMenu extends React.Component {
           id='user-menu'
           triggerClassName='drop__toggle drop__toggle--caret page__meta-nav-elements-borderless'
           triggerActiveClassName='active'
-          triggerText={this.props.userData.firstName + " " + this.props.userData.lastName}
+          triggerText={this.props.userData.firstName + ' ' + this.props.userData.lastName}
           triggerTitle={'Access user menu'}
           triggerElement='a'
           direction='down'
