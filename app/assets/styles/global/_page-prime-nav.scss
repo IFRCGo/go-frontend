@@ -33,14 +33,21 @@
   align-items: center;
   padding-left: 1rem;
   position: relative;
+}
 
-  > * {
-    margin-right: 1rem;
+.page__meta-nav-elements {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  border-right: 1px solid black;
+  padding-right:1rem;
+  padding-left:1rem;
+}
 
-    &:last-child {
-      margin-right: 0;
-    }
-  }
+.page__meta-nav-elements-borderless {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  padding-right:1rem;
+  padding-left:1rem;
 }
 
 /* Global menu */

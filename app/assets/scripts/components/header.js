@@ -102,8 +102,9 @@ class Header extends React.PureComponent {
               </h1>
             </div>
             <nav className='page__meta-nav' role='navigation'>
-              <Link to='/reports/new' className='button button--small button--primary-filled' title='Create Field Report'><span>Create Field Report</span></Link>
+              <Link to='/about' title='Visit About page' className='page__meta-nav-elements'><span>About</span></Link>
               <UserMenu />
+              <Link to='/reports/new' className='button button--small button--primary-bounded' title='Create Field Report'><span>Create Field Report</span></Link>
             </nav>
           </div>
           <div className='inner'>
@@ -113,7 +114,6 @@ class Header extends React.PureComponent {
                 <li><HeaderRegionButton id='regions-menu' currentPath={this.props.match} /></li>
                 <li><Link to='/emergencies' title='Visit emergencies page' className={this.props.match.path.includes('/emergencies') ? 'navbar-highlighted' : null}><span>Emergencies</span></Link></li>
                 <li><Link to='/deployments' title='Visit Deployments page' className={this.props.match.path.includes('/deployments') ? 'navbar-highlighted' : null}><span>Deployments</span></Link></li>
-                <li><Link to='/about' title='Visit About page' className={this.props.match.path.includes('/about') ? 'navbar-highlighted' : null}><span>About</span></Link></li>
               </ul>
             </nav>
             <div className='nav-global-search'>
