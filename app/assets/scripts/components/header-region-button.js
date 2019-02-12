@@ -12,6 +12,7 @@ const regionArray = Object.keys(regions).map(k => regions[k]);
 class HeaderRegionButton extends React.Component {
   construct () {
     this.decideTitle = this.decideTitle.bind(this);
+    this.decideTriggerClassName = this.decideTriggerClassName.bind(this);
   }
 
   decideTitle (currentPath) {
@@ -22,15 +23,26 @@ class HeaderRegionButton extends React.Component {
     return 'Regions';
   }
 
+  decideTriggerClassName (currentPath) {
+    let className = 'drop__toggle--caret';
+
+    if (currentPath.path.includes('/region')) {
+      className += ' navbar-highlighted';
+    }
+
+    return className;
+  }
+
   render () {
     const { id, currentPath } = this.props;
     const title = this.decideTitle(currentPath);
     const regions = regionArray.map(o => ({to: `/regions/${o.id}`, text: o.name}));
+    const triggerClassName = this.decideTriggerClassName(currentPath);
 
     return (
       <Dropdown
         id={id}
-        triggerClassName='drop__toggle--caret'
+        triggerClassName={triggerClassName}
         triggerActiveClassName='active'
         triggerText={title}
         triggerTitle={`View ${title}`}

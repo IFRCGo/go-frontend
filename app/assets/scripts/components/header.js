@@ -84,7 +84,7 @@ class Header extends React.PureComponent {
         {this.state.showBetaBanner && (
           <div className='beta-note'>
             <div className='inner'>
-              <p>This is the beta version of IFRC GO. For issues and feedback on the platform, contact <a href="mailto:im@ifrc.org">im@ifrc.org</a>.</p>
+              <p>This is the beta version of IFRC GO. For issues and feedback on the platform, contact <a href='mailto:im@ifrc.org'>im@ifrc.org</a>.</p>
               <div className='beta-note__actions'>
                 <button className='button button--small button--close button--text-hidden' onClick={() => this.setState({ showBetaBanner: false })}><span>close</span></button>
               </div>
@@ -109,11 +109,11 @@ class Header extends React.PureComponent {
           <div className='inner'>
             <nav className='page__prime-nav' role='navigation'>
               <ul className='nav-global-menu'>
-                <li><Link to='/' title='Visit Home page'><span>Home</span></Link></li>
-                <li><Link to='/emergencies' title='Visit emergencies page'><span>Emergencies</span></Link></li>
+                <li><Link to='/' title='Visit Home page' className={this.props.match.path === '/' ? 'navbar-highlighted' : null}><span>Home</span></Link></li>
                 <li><HeaderRegionButton id='regions-menu' currentPath={this.props.match} /></li>
-                <li><Link to='/deployments' title='Visit Deployments page'><span>Deployments</span></Link></li>
-                <li><Link to='/about' title='Visit About page'><span>About</span></Link></li>
+                <li><Link to='/emergencies' title='Visit emergencies page' className={this.props.match.path.includes('/emergencies') ? 'navbar-highlighted' : null}><span>Emergencies</span></Link></li>
+                <li><Link to='/deployments' title='Visit Deployments page' className={this.props.match.path.includes('/deployments') ? 'navbar-highlighted' : null}><span>Deployments</span></Link></li>
+                <li><Link to='/about' title='Visit About page' className={this.props.match.path.includes('/about') ? 'navbar-highlighted' : null}><span>About</span></Link></li>
               </ul>
             </nav>
             <div className='nav-global-search'>
