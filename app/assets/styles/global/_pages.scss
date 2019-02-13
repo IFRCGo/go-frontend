@@ -102,7 +102,7 @@ main {
 
 .page__footer {
   background: $primary-color;
-  padding: 2rem 0;
+  padding: 1rem 0;
   font-size: 0.875rem;
   line-height: 1.25rem;
   color: #ffffff;
@@ -141,11 +141,6 @@ main {
       }
     }
   }
-
-  .footer-credits {
-    padding: ($global-spacing * 2) 0 0 0;
-    box-shadow: 0 (-$base-border-width) 0 0 rgba(#ffffff, 0.16);
-  }
 }
 
 .footer-menu {
@@ -158,5 +153,25 @@ main {
 
   a {
     color: inherit;
+  }
+
+  .footer-left-block {
+    float: left;
+
+    a {
+      padding-right: 10px;
+    }
+
+    a:not(:first-child) {
+      padding-left: 10px;
+    }
+
+    a:not(:last-child) {
+      border-right: 1px solid #fff;
+    }
+  }
+
+  .footer-right-block {
+    float: right;
   }
 }
