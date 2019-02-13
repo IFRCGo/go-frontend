@@ -195,11 +195,25 @@ export function fetchCSV (path, action, options, extraData = {}) {
  */
 export function makeRequest (path, action, options, extraData = {}) {
   options = options || {};
+
+  let convertAuthenticationData = function (data, path) {
+    if (path.includes('get_auth_token')) {
+      data.firstName = data.first;
+      data.lastName = data.last;
+
+      delete data.first;
+      delete data.last;
+    }
+
+    return data;
+  };
+
   return function (dispatch) {
     dispatch({ type: inflight(action), ...extraData });
     const address = /http/.test(path) ? path : url.resolve(api, path);
     request(address, options)
       .then(data => {
+        data = convertAuthenticationData(data, path);
         dispatch({ type: success(action), data, receivedAt: Date.now(), ...extraData });
       })
       .catch(error => {

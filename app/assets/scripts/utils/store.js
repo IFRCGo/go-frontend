@@ -46,8 +46,8 @@ const tokenListener = ({ data }) => {
     username: data.username,
     token: data.token,
     expires: data.expires,
-    firstName: data.first,
-    lastName: data.last,
+    firstName: data.firstName,
+    lastName: data.lastName,
     id: data.id
   });
 };
