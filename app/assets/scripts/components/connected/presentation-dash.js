@@ -15,7 +15,7 @@ import {
   removeFullscreenListener
 } from '../../utils/fullscreen';
 
-import Homestats from '../homestats';
+import Homestats from '../homestats-container';
 import Homemap from '../homemap';
 import HomeCharts from '../homecharts';
 
