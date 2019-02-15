@@ -211,21 +211,11 @@ class EmergenciesTable extends SFPComponent {
             onPageChange={this.handlePageChange.bind(this, 'table')}
             noPaginate={noPaginate}
           />
-          {this.props.viewAll === '/emergencies/all' ? (
-            <div className='fold__footer'>
-              View all emergencies in <Link className='link--primary export--link' to={this.props.viewAll + '?region=0'}>{this.props.viewAllText || ' Africa'}</Link> /&nbsp;
-              <Link className='link--primary export--link' to={this.props.viewAll + '?region=1'}>{this.props.viewAllText || 'America'}</Link> /&nbsp;
-              <Link className='link--primary export--link' to={this.props.viewAll + '?region=2'}>{this.props.viewAllText || 'Asia'}</Link> /&nbsp;
-              <Link className='link--primary export--link' to={this.props.viewAll + '?region=3'}>{this.props.viewAllText || 'Europe'}</Link> /&nbsp;
-              <Link className='link--primary export--link' to={this.props.viewAll + '?region=4'}>{this.props.viewAllText || 'the Middle East'}</Link><br/>
-              <Link className='link--primary export--link' to={this.props.viewAll}>{this.props.viewAllText || 'View all emergencies'}</Link> <i>(Performance problems with Export Table)</i>
-            </div>
-          ) : (
+          {this.props.viewAll ? (
             <div className='fold__footer'>
               <Link className='link--primary export--link' to={this.props.viewAll}>{this.props.viewAllText || 'View all emergencies'}</Link>
             </div>
-          )
-          }
+          ) : null}
         </Fold>
       );
     }
