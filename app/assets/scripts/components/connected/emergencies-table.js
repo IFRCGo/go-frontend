@@ -193,7 +193,7 @@ class EmergenciesTable extends SFPComponent {
       const {
         title,
         noPaginate
-      } = this.props;console.log(this.props);
+      } = this.props;
 
       return (
         <Fold title={`${title} (${n(data.count)})`} id={this.props.id}>
