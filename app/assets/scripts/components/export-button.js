@@ -1,4 +1,5 @@
 'use strict';
+
 import url from 'url';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -6,54 +7,72 @@ import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 import { stringify } from 'qs';
 import { get } from '../utils/utils';
-
+import { startDownload } from '../utils/download-starter';
 import { environment, api } from '../config';
 import { getListAsCsv, clearLoadedCsv } from '../actions';
-import { showAlert, hideAllAlert } from './system-alerts';
+import { showAlert } from './system-alerts';
 
 class ExportButton extends React.Component {
   constructor (props) {
     super(props);
     this.exportAsCsv = this.exportAsCsv.bind(this);
+    this.replaceBodySpecialChars = this.replaceBodySpecialChars.bind(this);
+    this.replaceColumnNames = this.replaceColumnNames.bind(this);
+    this.generateFileName = this.generateFileName.bind(this);
+  }
+
+  replaceBodySpecialChars (text) {
+    let firstNewLine = text.indexOf('\n');
+    text = text.replace(/#/g, "¤");
+
+    return text.substring(firstNewLine)
+  }
+
+  replaceColumnNames (row) {
+    let escapedData = this.replaceBodySpecialChars(row);
+    let firstNewLine = escapedData.indexOf('\n');
+    var firstRow = escapedData.substring(0, firstNewLine);
+
+    firstRow = firstRow.replace(/dtype/gi, 'disaster-type');
+    firstRow = firstRow.replace(/,code,/i, ',appeal_code,');
+    firstRow = firstRow.replace(/atype/gi, 'appeal-type');
+    firstRow = firstRow.replace(/^aid/, 'appeal_id');
+    firstRow = firstRow.replace(/country.society_name/i, 'national_society_name');
+    firstRow = firstRow.replace(/\./g, ' ');
+    firstRow = firstRow.replace(/_/g, '-');
+
+    return firstRow;
+  }
+
+  generateFileName (filename, extension) {
+    var postfix = stringify(this.props.qs).slice(-2);
+
+    if (postfix === '=0') {
+      postfix = '-africa';
+    } else if (postfix === '=1') {
+      postfix = '-america';
+    } else if (postfix === '=2') {
+      postfix = '-asia';
+    } else if (postfix === '=3') {
+      postfix = '-europe';
+    } else if (postfix === '=4') {
+      postfix = '-middle-east';
+    } else {
+      postfix = '';
+    }
+
+    return filename + postfix + extension;
   }
 
   componentWillReceiveProps (newProps) {
     if (this.props.csv.fetching && !newProps.csv.fetching && !newProps.csv.error) {
-      var firstNewLine = newProps.csv.data.indexOf('\n');
-      var firstRow = newProps.csv.data.substring(0, firstNewLine);
-      firstRow = firstRow.replace(/dtype/gi, 'disaster-type');
-      firstRow = firstRow.replace(/,code,/i, ',appeal_code,');
-      firstRow = firstRow.replace(/atype/gi, 'appeal-type');
-      firstRow = firstRow.replace(/^aid/, 'appeal_id');
-      firstRow = firstRow.replace(/country.society_name/i, 'national_society_name');
-      firstRow = firstRow.replace(/\./g, ' ');
-      firstRow = firstRow.replace(/_/g, '-');
+      let firstRow = this.replaceColumnNames(newProps.csv.data);
+      let allOtherRows = this.replaceBodySpecialChars(newProps.csv.data);
+      const dataUri = encodeURI('data:text/csv;charset=utf-8,' + firstRow + allOtherRows);
 
-      const encodedUri = encodeURI('data:text/csv;charset=utf-8,' + firstRow + newProps.csv.data.replace(/#/g, '¤').substring(firstNewLine));
-      const link = document.createElement('a');
-      link.setAttribute('href', encodedUri);
-      var postfix = stringify(this.props.qs).slice(-2);
-      if (postfix === '=0') {
-        postfix = '-africa';
-      } else if (postfix === '=1') {
-        postfix = '-america';
-      } else if (postfix === '=2') {
-        postfix = '-asia';
-      } else if (postfix === '=3') {
-        postfix = '-europe';
-      } else if (postfix === '=4') {
-        postfix = '-middle-east';
-      } else {
-        postfix = '';
-      }
-      link.setAttribute('download', newProps.filename + postfix + '.csv');
-      link.innerHTML = 'Click';
-      document.body.appendChild(link);
-      link.click();
-      hideAllAlert();
-      showAlert('success', <p><strong>Success:</strong> Download completed</p>, true, 1000);
-      // remove the loaded state to free up memory
+      startDownload(dataUri, this.generateFileName(newProps.filename, '.csv'));
       this.props._clearLoadedCsv(this.props.resource);
+
     } else if (!this.props.csv.error && newProps.csv.error) {
       showAlert('danger', <p><strong>Error:</strong> Could not export data</p>, true, 4500);
     }
