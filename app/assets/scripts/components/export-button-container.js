@@ -1,10 +1,10 @@
 'use strict';
 
+import ExportButtonComponent from './export-button-component';
 import url from 'url';
 import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
-import c from 'classnames';
 import { stringify } from 'qs';
 import { get } from '../utils/utils';
 import { startDownload } from '../utils/download-starter';
@@ -23,9 +23,9 @@ class ExportButton extends React.Component {
 
   replaceBodySpecialChars (text) {
     let firstNewLine = text.indexOf('\n');
-    text = text.replace(/#/g, "¤");
+    text = text.replace(/#/g, '¤');
 
-    return text.substring(firstNewLine)
+    return text.substring(firstNewLine);
   }
 
   replaceColumnNames (row) {
@@ -72,7 +72,6 @@ class ExportButton extends React.Component {
 
       startDownload(dataUri, this.generateFileName(newProps.filename, '.csv'));
       this.props._clearLoadedCsv(this.props.resource);
-
     } else if (!this.props.csv.error && newProps.csv.error) {
       showAlert('danger', <p><strong>Error:</strong> Could not export data</p>, true, 4500);
     }
@@ -98,11 +97,7 @@ class ExportButton extends React.Component {
 
   render () {
     return (
-      <div className='fold__actions'>
-        <button onClick={this.exportAsCsv} className={c('button button--primary-bounded', {
-          disabled: this.props.csv.fetching
-        })}>Export Table</button>
-      </div>
+      <ExportButtonComponent exportAsCsv={this.exportAsCsv} csv={this.props.csv} />
     );
   }
 }
