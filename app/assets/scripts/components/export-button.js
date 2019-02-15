@@ -29,7 +29,7 @@ class ExportButton extends React.Component {
       firstRow = firstRow.replace(/\./g, ' ');
       firstRow = firstRow.replace(/_/g, '-');
 
-      const encodedUri = encodeURI('data:text/csv;charset=utf-8,' + firstRow + newProps.csv.data.substring(firstNewLine));
+      const encodedUri = encodeURI('data:text/csv;charset=utf-8,' + firstRow + newProps.csv.data.replace(/#/g, '¤').substring(firstNewLine));
       const link = document.createElement('a');
       link.setAttribute('href', encodedUri);
       var postfix = stringify(this.props.qs).slice(-2);
