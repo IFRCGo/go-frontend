@@ -181,11 +181,13 @@ export default class HomeCharts extends React.Component {
 
   render () {
     return (
-      <div className='stats-chart'>
-        <h1 className='visually-hidden'>DREFS and Appeals over time</h1>
-        {this.renderLoading()}
-        {this.renderError()}
-        {this.renderContent()}
+      <div className='inner'>
+        <div className='stats-chart'>
+          <h1 className='visually-hidden'>DREFS and Appeals over time</h1>
+          {this.renderLoading()}
+          {this.renderError()}
+          {this.renderContent()}
+        </div>
       </div>
     );
   }

@@ -56,11 +56,16 @@ export default class Homestats extends React.Component {
 
   render () {
     return (
-      <div className='stats-overall'>
-        <h1 className='visually-hidden'>Overall stats</h1>
-        {this.renderLoading()}
-        {this.renderError()}
-        {this.renderContent()}
+      <div className='inner'>
+        <div className='presentation__actions'>
+          <button className='button button--base-plain button--fullscreen' onClick={this.props.toggleFullscreen} title='View in fullscreen'><span>FullScreen</span></button>
+        </div>
+        <div className='stats-overall'>
+          <h1 className='visually-hidden'>Overall stats</h1>
+          {this.renderLoading()}
+          {this.renderError()}
+          {this.renderContent()}
+        </div>
       </div>
     );
   }
