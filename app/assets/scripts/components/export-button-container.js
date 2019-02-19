@@ -25,14 +25,14 @@ class ExportButton extends React.Component {
     let firstNewLine = text.indexOf('\n');
     text = text.replace(/#/g, '¤');
 
-    return text.substring(firstNewLine);
+    return text;
   }
 
   replaceColumnNames (row) {
-    let escapedData = this.replaceBodySpecialChars(row);
-    let firstNewLine = escapedData.indexOf('\n');
-    var firstRow = escapedData.substring(0, firstNewLine);
+    let firstNewLine = row.indexOf('\n');
+    let firstRow = row.substring(0, firstNewLine);
 
+    firstRow = this.replaceBodySpecialChars(firstRow);
     firstRow = firstRow.replace(/dtype/gi, 'disaster-type');
     firstRow = firstRow.replace(/,code,/i, ',appeal_code,');
     firstRow = firstRow.replace(/atype/gi, 'appeal-type');
