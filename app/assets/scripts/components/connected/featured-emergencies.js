@@ -3,8 +3,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
+import Progress from './../progress-labeled';
 
-import { nope, percent, commaSeparatedNumber as n } from '../../utils/format';
+import { formatDate, percent, commaSeparatedNumber as n } from '../../utils/format';
 import { get, mostRecentReport } from '../../utils/utils';
 import { environment } from '../../config';
 import { getFeaturedEmergencies } from '../../actions';
@@ -14,8 +15,22 @@ import Fold from '../fold';
 const title = 'Highlighted Emergencies';
 
 class FeaturedEmergencies extends React.Component {
+  constructor (props) {
+    super(props);
+
+    this.renderCard = this.renderCard.bind(this);
+    this.calculateDeployedPersonnel = this.calculateDeployedPersonnel.bind(this);
+  }
+
   componentWillMount () {
     this.props._getFeaturedEmergencies();
+  }
+
+  calculateDeployedPersonnel (report) {
+    if (report instanceof Object) {
+      return 0 + report.num_localstaff + report.num_volunteers;
+    }
+    return 0;
   }
 
   /* eslint-disable camelcase */
@@ -33,17 +48,27 @@ class FeaturedEmergencies extends React.Component {
     return (
       <li className='key-emergencies-item' key={id}>
         <Link to={`/emergencies/${id}`}>
-          <h2 className='card__title'>{name}</h2>
-          {appeals.length ? (
-            <ul className='card__stat-list'>
-              <li className='card__stat stats-people'>{n(beneficiaries)}<small>Targeted Beneficiaries</small></li>
-              <li className='card__stat stats-funding'>{requested ? percent(funded, requested) + '%' : nope}<small>Funded</small></li>
-            </ul>
+          <h2 className='card__title'>{ name.length > 30 ? name.slice(0, 30) + '...' : name }</h2>
+          <small className='last_updated'>Last updated at {formatDate(report.updated_at)}</small>
+
+          {appeals.length && report instanceof Object ? (
+            <div className='card_box_container'>
+              <div className='card_box card_box_left'>
+                {n(beneficiaries)}<br />
+                <small>Affected population</small>
+              </div>
+              <div className='card_box card_box_right'>
+                {this.calculateDeployedPersonnel(report)}<br />
+                <small>Deployed Personnel</small>
+              </div>
+            </div>
           ) : null}
-          {!appeals.length && affected ? (
-            <ul className='card__stat-list'>
-              <li className='card__stat stats-people'>{n(affected)}<small>People Affected</small></li>
-            </ul>
+
+          {appeals.length ? (
+            <div className='card_box_full'>
+              {requested !== null ? n(requested) : 0} CHF
+              <Progress value={requested ? percent(funded, requested) : 0} max={100} />
+            </div>
           ) : null}
         </Link>
       </li>
@@ -61,7 +86,7 @@ class FeaturedEmergencies extends React.Component {
           <ul className='key-emergencies-list'>
             {data.results.map(this.renderCard)}
           </ul>
-          <Link to='/emergencies' className='link--primary'>View all emergencies</Link>
+          <Link to='/emergencies' className='link--primary more_button'>View all emergencies (last 60 days)</Link>
         </Fold>
       </div>
     );
