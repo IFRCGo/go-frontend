@@ -22,10 +22,7 @@ class ExportButton extends React.Component {
   }
 
   replaceBodySpecialChars (text) {
-    let firstNewLine = text.indexOf('\n');
-    text = text.replace(/#/g, '¤');
-
-    return text;
+    return text.replace(/#/g, '¤'); // To be fixed later with CSV-module upgrade. Error description on hup.hu/node/163032
   }
 
   replaceColumnNames (row) {
