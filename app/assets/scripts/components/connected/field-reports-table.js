@@ -16,7 +16,7 @@ import {
 import { get, dTypeOptions, dateOptions, datesAgo } from '../../utils/utils';
 import { getDtypeMeta } from '../../utils/get-dtype-meta';
 
-import ExportButton from '../export-button';
+import ExportButton from '../export-button-container';
 import Fold from '../fold';
 import BlockLoading from '../block-loading';
 import DisplayTable, { FilterHeader, SortHeader } from '../display-table';

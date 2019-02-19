@@ -10,7 +10,7 @@ import { getDeploymentERU } from '../../actions';
 import { commaSeparatedNumber as n, nope } from '../../utils/format';
 import { get } from '../../utils/utils';
 
-import ExportButton from '../export-button';
+import ExportButton from '../export-button-container';
 import Fold from '../fold';
 import BlockLoading from '../block-loading';
 import DisplayTable, { SortHeader, FilterHeader } from '../display-table';

@@ -10,7 +10,7 @@ import { getSurgeAlerts } from '../../actions';
 import { get, dateOptions, datesAgo, isLoggedIn } from '../../utils/utils/';
 import { nope, privateSurgeAlert, recentInterval } from '../../utils/format';
 
-import ExportButton from '../export-button';
+import ExportButton from '../export-button-container';
 import { SFPComponent } from '../../utils/extendables';
 import DisplayTable, { FilterHeader } from '../display-table';
 import BlockLoading from '../block-loading';
