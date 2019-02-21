@@ -469,7 +469,8 @@
     };
   }
   .key-emergencies-item {
-    @include column(10/12)
+    @include column(10/12);
+    margin-right: 2% !important;
     margin-bottom: $global-spacing;
     @include media(medium-up) {
       @include column(6/12)
@@ -489,7 +490,7 @@
     }
     .card__stat-list {
       float: left;
-      margin-top: $global-spacing/2;
+      margin-top: $global-spacing;
       margin-left: 0;
     }
     li.card__stat {

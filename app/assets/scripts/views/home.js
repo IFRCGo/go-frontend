@@ -24,8 +24,8 @@ class Home extends React.Component {
             </div>
           </header>
           <div className='inpage__body'>
-            <PresentationDash />
             <FeaturedEmergencies />
+            <PresentationDash />
             <div className='inner'>
               <AppealsTable
                 showActive={true}
