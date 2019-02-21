@@ -36,19 +36,21 @@ class FeaturedEmergencies extends React.Component {
   /* eslint-disable camelcase */
   renderCard (d) {
     const { id, name } = d;
-    // get appeals data
     const appeals = get(d, 'appeals', []);
     const beneficiaries = appeals.reduce((acc, curr) => acc + curr.num_beneficiaries, 0);
     const requested = appeals.reduce((acc, curr) => acc + Number(curr.amount_requested), 0);
     const funded = appeals.reduce((acc, curr) => acc + Number(curr.amount_funded), 0);
-
-    // get field report data, in case appeals data is missing
     const report = mostRecentReport(get(d, 'field_reports'));
+    const lastUpdated = typeof report !== 'undefined' 
+      && typeof report.updated_at !== 'undefined'
+      && report.updated_at !== null 
+      ? report.updated_at : d.created_at;
+
     return (
       <li className='key-emergencies-item' key={id}>
         <Link to={`/emergencies/${id}`}>
           <h2 className='card__title'>{ name.length > 30 ? name.slice(0, 30) + '...' : name }</h2>
-          <small className='last_updated'>Last updated at {formatDate(report.updated_at)}</small>
+          <small className='last_updated'>Last updated at {formatDate(lastUpdated)}</small>
 
           {appeals.length && report instanceof Object ? (
             <div className='card_box_container'>
