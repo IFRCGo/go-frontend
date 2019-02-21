@@ -41,10 +41,10 @@ class FeaturedEmergencies extends React.Component {
     const requested = appeals.reduce((acc, curr) => acc + Number(curr.amount_requested), 0);
     const funded = appeals.reduce((acc, curr) => acc + Number(curr.amount_funded), 0);
     const report = mostRecentReport(get(d, 'field_reports'));
-    const lastUpdated = typeof report !== 'undefined' 
-      && typeof report.updated_at !== 'undefined'
-      && report.updated_at !== null 
-      ? report.updated_at : d.created_at;
+    const lastUpdated = typeof report !== 'undefined' &&
+      typeof report.updated_at !== 'undefined' &&
+      report.updated_at !== null ?
+      report.updated_at : d.created_at;
 
     return (
       <li className='key-emergencies-item' key={id}>
