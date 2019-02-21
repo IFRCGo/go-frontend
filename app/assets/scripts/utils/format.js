@@ -23,7 +23,7 @@ export const formatDate = (date) => {
     return date.getFullYear() + '-' + month + '-' + day + ' ' + hours + ':' + seconds;
   }
   throw new FormatDateException('The received argument (' + date + ') is not a Date or String instance!');
-}
+};
 
 // Ie. given 12345.99, return '12,346'
 export const commaSeparatedNumber = (x) => {

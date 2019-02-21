@@ -44,7 +44,6 @@ class FeaturedEmergencies extends React.Component {
 
     // get field report data, in case appeals data is missing
     const report = mostRecentReport(get(d, 'field_reports'));
-    const affected = report ? report.num_affected : null;
     return (
       <li className='key-emergencies-item' key={id}>
         <Link to={`/emergencies/${id}`}>
