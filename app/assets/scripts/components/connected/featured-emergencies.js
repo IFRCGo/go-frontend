@@ -52,18 +52,16 @@ class FeaturedEmergencies extends React.Component {
           <h2 className='card__title'>{ name.length > 30 ? name.slice(0, 30) + '...' : name }</h2>
           <small className='last_updated'>Last updated at {formatDate(lastUpdated)}</small>
 
-          {appeals.length && report instanceof Object ? (
-            <div className='card_box_container'>
-              <div className='card_box card_box_left'>
-                {n(beneficiaries)}<br />
-                <small>Affected population</small>
-              </div>
-              <div className='card_box card_box_right'>
-                {this.calculateDeployedPersonnel(report)}<br />
-                <small>Deployed Personnel</small>
-              </div>
+          <div className='card_box_container'>
+            <div className='card_box card_box_left'>
+              {n(beneficiaries)}<br />
+              <small>Affected population</small>
             </div>
-          ) : null}
+            <div className='card_box card_box_right'>
+              {this.calculateDeployedPersonnel(report)}<br />
+              <small>Deployed Personnel</small>
+            </div>
+          </div>
 
           {appeals.length ? (
             <div className='card_box_full'>
