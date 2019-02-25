@@ -11,15 +11,14 @@ import calculateCentroid from '@turf/centroid';
 import { countries } from '../../utils/field-report-constants';
 import { source } from '../../utils/get-new-map';
 import { environment } from '../../config';
-import {
-  FormRadioGroup
-} from '../form-elements';
 import Progress from '../progress';
 import BlockLoading from '../block-loading';
 import MapComponent from '.';
 import OperationsPopover from './operations-popover';
 import { get, aggregateAppealStats } from '../../utils/utils';
 import { getCentroid } from '../../utils/country-centroids';
+import ExplanationBubble from './explanation-bubble';
+import TopDropdown from './top-dropdown';
 
 const scale = chroma.scale(['#F0C9E8', '#861A70']);
 
@@ -107,6 +106,7 @@ class Homemap extends React.Component {
   }
 
   onDtypeClick (typeId) {
+    console.log(typeId);
     const selectedDtype = this.state.selectedDtype === typeId ? null : typeId;
     this.setState({
       selectedDtype,
@@ -388,63 +388,28 @@ class Homemap extends React.Component {
     if (this.props.operations.fetching) return null;
     const layers = this.props.layers ? this.state.markerLayers.concat(this.props.layers) : this.state.markerLayers;
     const geoJSON = this.state.markerGeoJSON;
+    const mapContainerClassName = this.props.noRenderEmergencies ? 'map-container map-container-fullwidth' : 'map-container';
+    const emergenciesByType = get(this.props, 'operations.data.emergenciesByType', []);
+
     return (
       <React.Fragment>
         {this.props.noRenderEmergencies ? null : this.renderEmergencies()}
-        <div className='map-container'>
+        <div className={mapContainerClassName}>
           <h2 className='visually-hidden'>Map</h2>
+
           <MapComponent className='map-vis__holder'
             noExport={this.props.noExport}
             configureMap={this.configureMap}
             layers={layers}
             geoJSON={geoJSON}>
-            <figcaption className='map-vis__legend map-vis__legend--bottom-right legend'>
-              <form className='form'>
-                <FormRadioGroup
-                  label='Scale points by'
-                  name='map-scale'
-                  classWrapper='map-scale-options'
-                  options={[
-                    {
-                      label: '# of people targeted',
-                      value: 'population'
-                    },
-                    {
-                      label: 'IFRC financial requirements',
-                      value: 'amount'
-                    }
-                  ]}
-                  inline={false}
-                  selectedOption={this.state.scaleBy}
-                  onChange={this.onFieldChange} />
-              </form>
-              <div className='key'>
-                <label className='form__label'>Type</label>
-                <dl className='legend__dl legend__dl--colors'>
-                  <dt className='color color--red'>Red</dt>
-                  <dd>Emergency appeal</dd>
-                  <dt className='color color--yellow'>Yellow</dt>
-                  <dd>DREF</dd>
-                  <dt className='color color--grey'>Grey</dt>
-                  <dd>Movement response</dd>
-                  <dt className='color color--blue'>Grey</dt>
-                  <dd>Multiple types</dd>
-                </dl>
-              </div>
-              {this.props.deployments ? (
-                <div className='legend__block'>
-                  <h3 className='legend__title'>{this.props.deploymentsKey || 'Deployments'}</h3>
-                  <dl className='legend__grandient'>
-                    <dt style={{background: 'linear-gradient(to right, #F0C9E8, #861A70)'}}>Scale Gradient</dt>
-                    <dd>
-                      <span>0</span>
-                      <span>to</span>
-                      <span>5</span>
-                    </dd>
-                  </dl>
-                </div>
-              ) : null}
-            </figcaption>
+
+            <ExplanationBubble scaleBy={this.state.scaleBy}
+              onFieldChange={this.onFieldChange}
+              deployments={this.props.deployments}
+              deploymentsKey={this.props.deploymentsKey}/>
+
+            <TopDropdown emergenciesByType={emergenciesByType}
+              onDtypeClick={this.onDtypeClick.bind(this)} />
           </MapComponent>
         </div>
       </React.Fragment>
