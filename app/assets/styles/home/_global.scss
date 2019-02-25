@@ -288,6 +288,11 @@
       right: $global-spacing;
     }
 
+    &--top-left {
+      top: 10px;
+      left: 10px;
+    }
+
     .form__option {
       font-size: 0.75rem;
     }
