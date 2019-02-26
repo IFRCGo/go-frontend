@@ -67,6 +67,7 @@ class FeaturedEmergencies extends React.Component {
             <div className='card_box_full'>
               {requested !== null ? n(requested) : 0} CHF
               <Progress value={requested ? percent(funded, requested) : 0} max={100} />
+              <small>Funding needed</small>
             </div>
           ) : null}
         </Link>
