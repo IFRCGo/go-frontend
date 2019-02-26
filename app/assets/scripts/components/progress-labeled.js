@@ -9,7 +9,7 @@ const Progress = ({max, value, children}) => {
   percent = percent > 100 ? 100 : percent;
 
   return (
-    <div>
+    <div className='progress-bar-container'>
       <div className='progress-bar'>
         <div className='progress-bar__value' style={{width: percent + '%'}}></div>
       </div>
