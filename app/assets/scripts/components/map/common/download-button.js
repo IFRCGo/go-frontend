@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import { startDownload } from '../../utils/download-starter';
+import { startDownload } from '../../../utils/download-starter';
 
 class DownloadButton extends React.Component {
   constructor (props) {

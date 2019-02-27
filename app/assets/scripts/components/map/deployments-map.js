@@ -10,7 +10,7 @@ import _cloneDeep from 'lodash.clonedeep';
 import { getCountryIsoFromVt } from '../../utils/utils';
 import { source } from '../../utils/get-new-map';
 import { environment } from '../../config';
-import MapComponent from './map-component';
+import MapComponent from './common/map-component';
 import {
   FormSelect
 } from '../form-elements';

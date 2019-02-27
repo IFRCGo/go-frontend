@@ -3,7 +3,7 @@
 import React from 'react';
 import {
   FormRadioGroup
-} from '../form-elements';
+} from '../../form-elements';
 
 class ExplanationBubble extends React.Component {
   constructor (props) {

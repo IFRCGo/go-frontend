@@ -13,13 +13,13 @@ import { source } from '../../utils/get-new-map';
 import { environment } from '../../config';
 import Progress from '../progress';
 import BlockLoading from '../block-loading';
-import MapComponent from './map-component';
-import OperationsPopover from './operations-popover';
+import MapComponent from './common/map-component';
+import OperationsPopover from './emergency-map/operations-popover';
 import { get, aggregateAppealStats } from '../../utils/utils';
 import { getCentroid } from '../../utils/country-centroids';
-import ExplanationBubble from './explanation-bubble';
-import TopDropdown from './top-dropdown';
-import DownloadButton from './download-button';
+import ExplanationBubble from './emergency-map/explanation-bubble';
+import TopDropdown from './emergency-map/top-dropdown';
+import DownloadButton from './common/download-button';
 
 const scale = chroma.scale(['#F0C9E8', '#861A70']);
 
