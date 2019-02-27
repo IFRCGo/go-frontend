@@ -42,7 +42,7 @@ export default function HomestatsComponent (props) {
                         className='actions__menu-item poa-xmark'
                         title='Close popover'
                         onClick={props.closeTooltip}>
-                        
+
                         <span>Dismiss</span>
                       </button>
                     </li>
