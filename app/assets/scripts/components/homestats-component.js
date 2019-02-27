@@ -3,10 +3,10 @@
 import React from 'react';
 import { percent, shortenLargeNumber } from '../utils/format';
 import BlockLoading from './block-loading';
-import { Link } from 'react-router-dom';
+import { environment } from '../config';
+import { PropTypes as T } from 'prop-types';
 
 export default function HomestatsComponent (props) {
-
   let renderLoading = (props) => {
     if (props.appealsList.fetching) {
       return <BlockLoading/>;
@@ -21,12 +21,12 @@ export default function HomestatsComponent (props) {
 
   let renderTooltipBox = (props) => {
     return (
-      <div className='mapboxgl-popup mapboxgl-popup-anchor-bottom' 
-        id='budget-tooltip-box' 
+      <div className='mapboxgl-popup mapboxgl-popup-anchor-bottom'
+        id='budget-tooltip-box'
         style={{
-          position: 'absolute', 
-          left: props.data.positionLeft + 'px', 
-          top: props.data.positionTop + 'px', 
+          position: 'absolute',
+          left: props.data.positionLeft + 'px',
+          top: props.data.positionTop + 'px',
           visibility: props.data.showBudgetTooltip ? null : 'hidden'}}>
 
         <div className='mapboxgl-popup-tip'></div>
@@ -38,9 +38,9 @@ export default function HomestatsComponent (props) {
                 <div className='popover__actions actions'>
                   <ul className='actions__menu'>
                     <li>
-                      <button type='button' 
-                        className='actions__menu-item poa-xmark' 
-                        title='Close popover' 
+                      <button type='button'
+                        className='actions__menu-item poa-xmark'
+                        title='Close popover'
                         onClick={props.closeTooltip}>
                         
                         <span>Dismiss</span>
@@ -79,7 +79,7 @@ export default function HomestatsComponent (props) {
           <span className='sumstats__value'>{stats.activeDrefs}</span>
           <span className='sumstats__key'>
             Active DREF Operations<br />
-            (In the last 30 days) 
+            (In the last 30 days)
             <div className='tooltip-button' id='tooltip-button-dref' onClick={props.openTooltip}></div>
           </span>
         </li>
@@ -90,7 +90,7 @@ export default function HomestatsComponent (props) {
         <li className='sumstats__item'>
           <span className='sumstats__value'>{shortenLargeNumber(stats.budget, 1)}</span>
           <span className='sumstats__key'>
-            Budget for DREFs and Appeals (CHF) 
+            Budget for DREFs and Appeals (CHF)
             <div className='tooltip-button' id='tooltip-button-budget' onClick={props.openTooltip}></div>
 
             { renderTooltipBox(props) }
@@ -110,10 +110,19 @@ export default function HomestatsComponent (props) {
 
   return (
     <div className='stats-overall'>
-        <h1 className='visually-hidden'>Overall stats</h1>
-        {renderLoading(props)}
-        {renderError(props)}
-        {renderContent(props)}
-      </div>
+      <h1 className='visually-hidden'>Overall stats</h1>
+      {renderLoading(props)}
+      {renderError(props)}
+      {renderContent(props)}
+    </div>
   );
+}
+
+if (environment !== 'production') {
+  HomestatsComponent.propTypes = {
+    appealsList: T.object,
+    data: T.object,
+    closeTooltip: T.func,
+    openTooltip: T.func
+  };
 }

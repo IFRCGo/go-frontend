@@ -6,20 +6,19 @@ import { environment } from '../config';
 import HomestatsComponent from './homestats-component';
 
 export default class Homestats extends React.Component {
-
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       showBudgetTooltip: false,
       positionTop: 0,
       positionLeft: 0
-    }
+    };
 
     this.openTooltip = this.openTooltip.bind(this);
     this.closeTooltip = this.closeTooltip.bind(this);
   }
 
-  openTooltip(event) {
+  openTooltip (event) {
     const boxWidth = document.getElementById('budget-tooltip-box').offsetWidth;
     const boxHeight = document.getElementById('budget-tooltip-box').offsetHeight;
     const marginTop = document.getElementById(event.target.id)
@@ -34,7 +33,7 @@ export default class Homestats extends React.Component {
     });
   }
 
-  closeTooltip() {
+  closeTooltip () {
     this.setState({
       showBudgetTooltip: false
     });
