@@ -19,6 +19,7 @@ import { get, aggregateAppealStats } from '../../utils/utils';
 import { getCentroid } from '../../utils/country-centroids';
 import ExplanationBubble from './explanation-bubble';
 import TopDropdown from './top-dropdown';
+import DownloadButton from './download-button';
 
 const scale = chroma.scale(['#F0C9E8', '#861A70']);
 
@@ -106,7 +107,6 @@ class Homemap extends React.Component {
   }
 
   onDtypeClick (typeId) {
-    console.log(typeId);
     const selectedDtype = this.state.selectedDtype === typeId ? null : typeId;
     this.setState({
       selectedDtype,
@@ -390,6 +390,7 @@ class Homemap extends React.Component {
     const geoJSON = this.state.markerGeoJSON;
     const mapContainerClassName = this.props.noRenderEmergencies ? 'map-container map-container-fullwidth' : 'map-container';
     const emergenciesByType = get(this.props, 'operations.data.emergenciesByType', []);
+    const canvas = document.getElementsByClassName('mapboxgl-canvas')[0];
 
     return (
       <React.Fragment>
@@ -410,6 +411,8 @@ class Homemap extends React.Component {
 
             <TopDropdown emergenciesByType={emergenciesByType}
               onDtypeClick={this.onDtypeClick.bind(this)} />
+
+            <DownloadButton data={canvas} />
           </MapComponent>
         </div>
       </React.Fragment>
