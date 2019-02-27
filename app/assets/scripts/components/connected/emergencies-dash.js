@@ -7,7 +7,7 @@ import { DateTime } from 'luxon';
 
 import { environment } from '../../config';
 import Stats from '../emergencies/stats';
-import Map from '../emergencies/map';
+import EmergenciesMap from '../map/emergencies-map';
 import Progress from '../progress';
 import BlockLoading from '../block-loading';
 
@@ -116,7 +116,7 @@ class EmergenciesDash extends React.Component {
           </div>
         </header>
         <section className='map-section__container'>
-          <Map lastMonth={lastMonth} />
+          <EmergenciesMap lastMonth={lastMonth} />
         </section>
       </div>
     );

@@ -9,8 +9,8 @@ import { source } from '../../utils/get-new-map';
 import { environment } from '../../config';
 import {
   FormRadioGroup
-} from '../form-elements/';
-import MapComponent from '../map';
+} from '../form-elements';
+import MapComponent from './common/map-component';
 import { commaSeparatedNumber as n } from '../../utils/format';
 
 class EmergenciesMap extends React.Component {
