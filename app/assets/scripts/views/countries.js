@@ -35,7 +35,7 @@ import { getBoundingBox } from '../utils/country-bounding-box';
 
 import App from './app';
 import Fold from '../components/fold';
-import Homemap from '../components/homemap';
+import Homemap from '../components/map/homemap';
 import DisplayTable, { SortHeader, FilterHeader } from '../components/display-table';
 import EmergenciesTable from '../components/connected/emergencies-table';
 import BulletTable from '../components/bullet-table';

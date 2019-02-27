@@ -10,10 +10,10 @@ import _cloneDeep from 'lodash.clonedeep';
 import { getCountryIsoFromVt } from '../../utils/utils';
 import { source } from '../../utils/get-new-map';
 import { environment } from '../../config';
-import MapComponent from '../map';
+import MapComponent from './map-component';
 import {
   FormSelect
-} from '../form-elements/';
+} from '../form-elements';
 
 const countryChromaScale = chroma.scale(['#F0C9E8', '#861A70']);
 

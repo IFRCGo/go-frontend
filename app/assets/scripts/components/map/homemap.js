@@ -13,7 +13,7 @@ import { source } from '../../utils/get-new-map';
 import { environment } from '../../config';
 import Progress from '../progress';
 import BlockLoading from '../block-loading';
-import MapComponent from '.';
+import MapComponent from './map-component';
 import OperationsPopover from './operations-popover';
 import { get, aggregateAppealStats } from '../../utils/utils';
 import { getCentroid } from '../../utils/country-centroids';
