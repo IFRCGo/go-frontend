@@ -1,4 +1,5 @@
 'use strict';
+
 import React from 'react';
 import { render } from 'react-dom';
 import { PropTypes as T } from 'prop-types';
@@ -7,19 +8,20 @@ import c from 'classnames';
 import mapboxgl from 'mapbox-gl';
 import chroma from 'chroma-js';
 import calculateCentroid from '@turf/centroid';
-
 import { countries } from '../../utils/field-report-constants';
 import { source } from '../../utils/get-new-map';
 import { environment } from '../../config';
 import Progress from '../progress';
 import BlockLoading from '../block-loading';
 import MapComponent from './common/map-component';
-import OperationsPopover from './emergency-map/operations-popover';
-import { get, aggregateAppealStats } from '../../utils/utils';
+import OperationsPopover from './home-map/operations-popover';
+import { get } from '../../utils/utils';
 import { getCentroid } from '../../utils/country-centroids';
-import ExplanationBubble from './emergency-map/explanation-bubble';
-import TopDropdown from './emergency-map/top-dropdown';
+import ExplanationBubble from './home-map/explanation-bubble';
+import TopDropdown from './home-map/top-dropdown';
+import AppealTypesDropdown from './home-map/appeal-types-dropdown';
 import DownloadButton from './common/download-button';
+import { filterByEmergencyType } from './filtering/emergency-filtering-by-type'; //haha
 
 const scale = chroma.scale(['#F0C9E8', '#861A70']);
 
@@ -70,7 +72,7 @@ class HomeMap extends React.Component {
   setMarkerLayers (operations) {
     this.setState({
       markerLayers: this.getMarkerLayers(operations.data.geoJSON, this.state.scaleBy),
-      markerGeoJSON: this.getMarkerGeoJSON(operations.data.geoJSON, this.getDtypeHighlight())
+      markerGeoJSON: filterByEmergencyType(operations.data.geoJSON, this.getDtypeHighlight())
     });
   }
 
@@ -102,7 +104,7 @@ class HomeMap extends React.Component {
     const hoverDtype = what === 'mouseover' ? typeId : null;
     this.setState({
       hoverDtype,
-      markerGeoJSON: this.getMarkerGeoJSON(this.props.operations.data.geoJSON, hoverDtype || this.state.selectedDtype)
+      markerGeoJSON: filterByEmergencyType(this.props.operations.data.geoJSON, hoverDtype || this.state.selectedDtype)
     });
   }
 
@@ -110,7 +112,7 @@ class HomeMap extends React.Component {
     const selectedDtype = this.state.selectedDtype === typeId ? null : typeId;
     this.setState({
       selectedDtype,
-      markerGeoJSON: this.getMarkerGeoJSON(this.props.operations.data.geoJSON, selectedDtype)
+      markerGeoJSON: filterByEmergencyType(this.props.operations.data.geoJSON, selectedDtype)
     });
   }
 
@@ -225,25 +227,6 @@ class HomeMap extends React.Component {
       }
     });
     return layers;
-  }
-
-  getMarkerGeoJSON (geoJSON, dtype) {
-    const filterFn = dtype ? d => d.dtype.toString() === dtype.toString() : d => true;
-    const features = geoJSON.features.map(d => {
-      const appeals = d.properties.appeals.filter(filterFn);
-      const properties = Object.assign(aggregateAppealStats(appeals), {
-        atype: d.properties.atype,
-        id: d.properties.id,
-        name: d.properties.name,
-        iso: d.properties.iso,
-        appeals: d.properties.appeals
-      });
-      return {
-        geometry: d.geometry,
-        properties
-      };
-    });
-    return { type: 'FeatureCollection', features };
   }
 
   navigate (path) {
@@ -411,6 +394,8 @@ class HomeMap extends React.Component {
 
             <TopDropdown emergenciesByType={emergenciesByType}
               onDtypeClick={this.onDtypeClick.bind(this)} />
+
+            <AppealTypesDropdown />
 
             <DownloadButton data={canvas} />
           </MapComponent>
