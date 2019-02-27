@@ -23,7 +23,7 @@ import DownloadButton from './common/download-button';
 
 const scale = chroma.scale(['#F0C9E8', '#861A70']);
 
-class Homemap extends React.Component {
+class HomeMap extends React.Component {
   constructor (props) {
     super(props);
     const scaleBy = 'population';
@@ -433,7 +433,7 @@ class Homemap extends React.Component {
 }
 
 if (environment !== 'production') {
-  Homemap.propTypes = {
+  HomeMap.propTypes = {
     operations: T.object,
     deployments: T.object,
     deploymentsKey: T.string,
@@ -446,4 +446,4 @@ if (environment !== 'production') {
   };
 }
 
-export default withRouter(Homemap);
+export default withRouter(HomeMap);
