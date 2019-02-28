@@ -1,19 +1,23 @@
 'use strict';
 
 import React from 'react';
+import { appealTypeOptions } from './../../../utils/appeal-type-constants';
 
 class AppealTypesDropdown extends React.Component {
-  constructor () {
-    super();
+  constructor (props) {
+    super(props);
   }
 
   render () {
-    console.log('gomba');
     return (
       <figcaption className='map-vis__legend map-vis__legend--appeal-dropdown legend'>
         <form>
-          <select>
-            <option value='0'>All Appeal Types</option>
+          <select onChange={this.props.onAppealTypeChange}>
+            {
+              appealTypeOptions.map(appeal => {
+                return (<option key={appeal.value} value={appeal.value}>{appeal.label}</option>);
+              })
+            }
           </select>
         </form>
       </figcaption>

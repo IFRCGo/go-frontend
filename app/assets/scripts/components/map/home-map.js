@@ -21,7 +21,8 @@ import ExplanationBubble from './home-map/explanation-bubble';
 import TopDropdown from './home-map/top-dropdown';
 import AppealTypesDropdown from './home-map/appeal-types-dropdown';
 import DownloadButton from './common/download-button';
-import { filterByEmergencyType } from './filtering/emergency-filtering-by-type'; //haha
+import { filterByEmergencyType } from './filtering/emergency-filtering-by-type';
+import { filterByAppealType } from './filtering/emergency-filtering-by-appeal-type';
 
 const scale = chroma.scale(['#F0C9E8', '#861A70']);
 
@@ -58,7 +59,6 @@ class HomeMap extends React.Component {
   }
 
   componentWillReceiveProps ({ operations, deployments }) {
-    // set initial layers and filters when geojson data is loaded
     if (operations && !this.props.operations.fetched && operations.fetched && !operations.error) {
       this.setMarkerLayers(operations);
     }
@@ -113,6 +113,13 @@ class HomeMap extends React.Component {
     this.setState({
       selectedDtype,
       markerGeoJSON: filterByEmergencyType(this.props.operations.data.geoJSON, selectedDtype)
+    });
+  }
+
+  onAppealTypeChange (typeId) {
+    const myMarkers = filterByAppealType(this.props.operations.data.geoJSON, typeId);
+    this.setState({
+      markerGeoJSON: myMarkers
     });
   }
 
@@ -395,7 +402,7 @@ class HomeMap extends React.Component {
             <TopDropdown emergenciesByType={emergenciesByType}
               onDtypeClick={this.onDtypeClick.bind(this)} />
 
-            <AppealTypesDropdown />
+            <AppealTypesDropdown onAppealTypeChange={this.onAppealTypeChange.bind(this)} />
 
             <DownloadButton data={canvas} />
           </MapComponent>
