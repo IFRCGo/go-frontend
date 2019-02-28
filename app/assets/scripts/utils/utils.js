@@ -207,10 +207,3 @@ export const appealStatusOptions = [
   { value: '2', label: 'Frozen' },
   { value: '3', label: 'Archived' }
 ];
-
-export const appealTypeOptions = [
-  { value: 'all', label: 'All' },
-  { value: '0', label: 'DREF' },
-  { value: '1', label: 'Appeals' },
-  { value: '2', label: 'Movement' }
-];

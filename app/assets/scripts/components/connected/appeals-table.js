@@ -13,16 +13,15 @@ import {
   get,
   dateOptions,
   datesAgo,
-  dTypeOptions,
-  appealTypeOptions
+  dTypeOptions
 } from '../../utils/utils/';
-import { appealsType } from './../../utils/appeal-type-constants';
 
 import ExportButton from '../export-button-container';
 import Fold from '../fold';
 import BlockLoading from '../block-loading';
 import DisplayTable, { SortHeader, FilterHeader } from '../display-table';
 import { SFPComponent } from '../../utils/extendables';
+import { appealTypes as appealsType, appealTypeOptions } from '../../utils/appeal-type-constants';
 
 class AppealsTable extends SFPComponent {
   constructor (props) {
