@@ -16,18 +16,13 @@ import {
   dTypeOptions,
   appealTypeOptions
 } from '../../utils/utils/';
+import { appealsType } from './../../utils/appeal-type-constants';
 
 import ExportButton from '../export-button-container';
 import Fold from '../fold';
 import BlockLoading from '../block-loading';
 import DisplayTable, { SortHeader, FilterHeader } from '../display-table';
 import { SFPComponent } from '../../utils/extendables';
-
-const appealsType = {
-  0: 'DREF',
-  1: 'Appeal',
-  2: 'Movement'
-};
 
 class AppealsTable extends SFPComponent {
   constructor (props) {
