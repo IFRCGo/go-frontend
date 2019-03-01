@@ -4,14 +4,11 @@ import React from 'react';
 import { render } from 'react-dom';
 import { PropTypes as T } from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import c from 'classnames';
 import mapboxgl from 'mapbox-gl';
 import chroma from 'chroma-js';
 import calculateCentroid from '@turf/centroid';
 import { countries } from '../../utils/field-report-constants';
-import { source } from '../../utils/get-new-map';
 import { environment } from '../../config';
-import Progress from '../progress';
 import BlockLoading from '../block-loading';
 import MapComponent from './common/map-component';
 import OperationsPopover from './home-map/operations-popover';
@@ -24,14 +21,17 @@ import DownloadButton from './common/download-button';
 import { filtering } from './home-map/filtering/filtering-processor';
 import { AppealTypeComparator } from './home-map/filtering/comparator/appeal-type-comparator';
 import { EmergencyTypeComparator } from './home-map/filtering/comparator/emergency-type-comparator';
+import EmergenciesLeftMenu from './common/emergencies-left-menu';
+import MarkerLayerStylesheetFactory from './home-map/factory/marker-layer-stylesheet-factory';
 
 const scale = chroma.scale(['#F0C9E8', '#861A70']);
 
 class HomeMap extends React.Component {
   constructor (props) {
     super(props);
-    const scaleBy = 'population';
+
     // scaleBy needs to be set for us to assign layers
+    const scaleBy = 'population';
     this.state = {
       scaleBy,
       markerLayers: [],
@@ -41,6 +41,9 @@ class HomeMap extends React.Component {
       mapActions: [],
       ready: false
     };
+
+    this.markerLayerStylesheetFactory = new MarkerLayerStylesheetFactory();
+
     this.configureMap = this.configureMap.bind(this);
     this.onFieldChange = this.onFieldChange.bind(this);
     this.navigate = this.navigate.bind(this);
@@ -76,13 +79,10 @@ class HomeMap extends React.Component {
     const comparator = EmergencyTypeComparator(this.state.hoverDtype || this.state.selectedDtype || '');
     const markers = filtering(operations.data.geoJSON, comparator);
     this.setState({
-      markerLayers: this.getMarkerLayers(operations.data.geoJSON, this.state.scaleBy),
+      markerLayers: this.markerLayerStylesheetFactory.buildMarkerLayers(
+        operations.data.geoJSON, this.state.scaleBy),
       markerGeoJSON: markers
     });
-  }
-
-  getDtypeHighlight () {
-    return this.state.hoverDtype || this.state.selectedDtype || '';
   }
 
   setFillLayers (deployments) {
@@ -106,13 +106,15 @@ class HomeMap extends React.Component {
   }
 
   onDtypeHover (what, typeId) {
-    const hoverDtype = what === 'mouseover' ? typeId : null;
-    const comparator = EmergencyTypeComparator(hoverDtype);
-    const markers = filtering(this.props.operations.data.geoJSON, comparator);
-    this.setState({
-      hoverDtype,
-      markerGeoJSON: markers
-    });
+    if (this.state.selectedDtype === null) {
+      const hoverDtype = what === 'mouseover' ? typeId : null;
+      const comparator = EmergencyTypeComparator(hoverDtype);
+      const markers = filtering(this.props.operations.data.geoJSON, comparator);
+      this.setState({
+        hoverDtype,
+        markerGeoJSON: markers
+      });
+    }
   }
 
   onDtypeClick (typeId) {
@@ -136,7 +138,7 @@ class HomeMap extends React.Component {
   }
 
   setSelectedDtypeNeutral () {
-    this.setState({selectedDtype: 0});
+    this.setState({selectedDtype: null});
     document.getElementById('top-emergency-dropdown').value = 0;
   }
 
@@ -147,42 +149,11 @@ class HomeMap extends React.Component {
   onFieldChange (e) {
     const scaleBy = e.target.value;
     this.setState({
-      markerLayers: this.getMarkerLayers(this.props.operations.data.geoJSON, scaleBy),
+      markerLayers: this.markerLayerStylesheetFactory.buildMarkerLayers(
+        this.props.operations.data.geoJSON, scaleBy),
       scaleBy
     });
     this.onPopoverCloseClick(scaleBy);
-  }
-
-  getCircleRadiusPaintProp (geoJSON, scaleBy) {
-    const scaleProp = scaleBy === 'amount' ? 'amountRequested' : 'numBeneficiaries';
-    const maxScaleValue = Math.max.apply(Math, geoJSON.features.map(o => o.properties[scaleProp]));
-    return [
-      'interpolate',
-      ['linear'],
-      ['zoom'],
-      3, [
-        'interpolate',
-        ['exponential', 1],
-        ['number', ['get', scaleProp]],
-        0,
-        0,
-        1,
-        5,
-        maxScaleValue,
-        10
-      ],
-      8, [
-        'interpolate',
-        ['exponential', 1],
-        ['number', ['get', scaleProp]],
-        0,
-        0,
-        1,
-        20,
-        maxScaleValue,
-        40
-      ]
-    ];
   }
 
   configureMap (theMap) {
@@ -230,31 +201,6 @@ class HomeMap extends React.Component {
     }
 
     this.theMap = theMap;
-  }
-
-  getMarkerLayers (geoJSON, scaleBy) {
-    const ccolor = {
-      property: 'atype',
-      type: 'categorical',
-      stops: [
-        ['DREF', '#F39C12'],
-        ['Appeal', '#C22A26'],
-        ['Movement', '#CCCCCC'],
-        ['Mixed', '#4680F2']
-      ]
-    };
-    const cradius = this.getCircleRadiusPaintProp(geoJSON, scaleBy);
-    const layers = [];
-    layers.push({
-      'id': 'appeals',
-      'type': 'circle',
-      'source': source,
-      'paint': {
-        'circle-color': ccolor,
-        'circle-radius': cradius
-      }
-    });
-    return layers;
   }
 
   navigate (path) {
@@ -352,35 +298,6 @@ class HomeMap extends React.Component {
       .addTo(theMap);
   }
 
-  renderEmergencies () {
-    const emerg = get(this.props, 'operations.data.emergenciesByType', []);
-    const max = Math.max.apply(Math, emerg.map(o => o.items.length));
-
-    return (
-      <div className='emergencies chart'>
-        {this.props.noRenderEmergencyTitle ? <h1>Operations by Type</h1> : (
-          <React.Fragment>
-            <h1>IFRC Emergency Operations</h1>
-            <h2 className='heading--xsmall'>Operations by Type</h2>
-          </React.Fragment>
-        )}
-        <ul className='emergencies__list'>
-          {emerg.map(o => (
-            <li
-              key={o.id}
-              className={c('emergencies__item', {'emergencies__item--selected': this.state.selectedDtype === o.id})}
-              onClick={this.onDtypeClick.bind(this, o.id)}
-              onMouseOver={this.onDtypeHover.bind(this, 'mouseover', o.id)}
-              onMouseOut={this.onDtypeHover.bind(this, 'mouseout', o.id)} >
-              <span className='key'>{o.name} ({o.items.length})</span>
-              <span className='value'><Progress value={o.items.length} max={max}><span>{o.items.length}</span></Progress></span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
-  }
-
   renderLoading () {
     const { operations, deployments } = this.props;
     if (get(operations, 'fetching') && get(deployments, 'fetching')) {
@@ -405,10 +322,15 @@ class HomeMap extends React.Component {
 
     return (
       <React.Fragment>
-        {this.props.noRenderEmergencies ? null : this.renderEmergencies()}
-        <div className={mapContainerClassName}>
-          <h2 className='visually-hidden'>Map</h2>
+        {this.props.noRenderEmergencies 
+          ? null 
+          : <EmergenciesLeftMenu 
+              data={this.props}
+              selectedDtype={this.state.selectedDtype}
+              onDtypeClick={this.onDtypeClick.bind(this)}
+              onDtypeHover={this.onDtypeHover.bind(this)}/>}
 
+        <div className={mapContainerClassName}>
           <MapComponent className='map-vis__holder'
             noExport={this.props.noExport}
             configureMap={this.configureMap}
