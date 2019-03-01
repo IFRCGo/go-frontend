@@ -5,7 +5,7 @@ export const appealTypes = {
 };
 
 export const appealTypeOptions = [
-  { value: 'all', label: 'All' },
+  { value: 'all', label: 'All Appeal Types' },
   { value: '0', label: 'DREF' },
   { value: '1', label: 'Appeals' },
   { value: '2', label: 'Movement' }

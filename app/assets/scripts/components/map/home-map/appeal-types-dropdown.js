@@ -12,7 +12,7 @@ class AppealTypesDropdown extends React.Component {
     return (
       <figcaption className='map-vis__legend map-vis__legend--appeal-dropdown legend'>
         <form>
-          <select onChange={this.props.onAppealTypeChange}>
+          <select onChange={this.props.onAppealTypeChange} id='top-appeal-dropdown' className='form__control form__control--medium'>
             {
               appealTypeOptions.map(appeal => {
                 return (<option key={appeal.value} value={appeal.value}>{appeal.label}</option>);
