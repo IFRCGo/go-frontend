@@ -1,11 +1,10 @@
 'use strict';
 
-import { aggregateAppealStats } from '../../../utils/utils';
+import { aggregateAppealStats } from './../../../../utils/utils';
 
-export function filterByAppealType (geoJSON, atype) {
-  const filterFn = atype.target.value !== 'all' ? d => d.atype.toString() === atype.target.value.toString() : d => true;
+export function filtering (geoJSON, comparator) {
   const features = geoJSON.features.map(d => {
-    const appeals = d.properties.appeals.filter(filterFn);
+    const appeals = d.properties.appeals.filter(comparator);
     const properties = Object.assign(aggregateAppealStats(appeals), {
       atype: d.properties.atype,
       id: d.properties.id,

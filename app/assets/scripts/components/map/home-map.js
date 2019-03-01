@@ -18,11 +18,12 @@ import OperationsPopover from './home-map/operations-popover';
 import { get } from '../../utils/utils';
 import { getCentroid } from '../../utils/country-centroids';
 import ExplanationBubble from './home-map/explanation-bubble';
-import TopDropdown from './home-map/top-dropdown';
+import EmergencyTypesDropdown from './home-map/emergency-types-dropdown';
 import AppealTypesDropdown from './home-map/appeal-types-dropdown';
 import DownloadButton from './common/download-button';
-import { filterByEmergencyType } from './filtering/emergency-filtering-by-type';
-import { filterByAppealType } from './filtering/emergency-filtering-by-appeal-type';
+import { filtering } from './home-map/filtering/filtering-processor';
+import { AppealTypeComparator } from './home-map/filtering/comparator/appeal-type-comparator';
+import { EmergencyTypeComparator } from './home-map/filtering/comparator/emergency-type-comparator';
 
 const scale = chroma.scale(['#F0C9E8', '#861A70']);
 
@@ -72,9 +73,11 @@ class HomeMap extends React.Component {
   }
 
   setMarkerLayers (operations) {
+    const comparator = EmergencyTypeComparator(this.state.hoverDtype || this.state.selectedDtype || '');
+    const markers = filtering(operations.data.geoJSON, comparator);
     this.setState({
       markerLayers: this.getMarkerLayers(operations.data.geoJSON, this.state.scaleBy),
-      markerGeoJSON: filterByEmergencyType(operations.data.geoJSON, this.getDtypeHighlight())
+      markerGeoJSON: markers
     });
   }
 
@@ -104,25 +107,30 @@ class HomeMap extends React.Component {
 
   onDtypeHover (what, typeId) {
     const hoverDtype = what === 'mouseover' ? typeId : null;
+    const comparator = EmergencyTypeComparator(hoverDtype);
+    const markers = filtering(this.props.operations.data.geoJSON, comparator);
     this.setState({
       hoverDtype,
-      markerGeoJSON: filterByEmergencyType(this.props.operations.data.geoJSON, hoverDtype || this.state.selectedDtype)
+      markerGeoJSON: markers
     });
   }
 
   onDtypeClick (typeId) {
     const selectedDtype = this.state.selectedDtype === typeId ? null : typeId;
+    const comparator = EmergencyTypeComparator(selectedDtype);
+    const markers = filtering(this.props.operations.data.geoJSON, comparator);
     this.setState({
       selectedDtype,
-      markerGeoJSON: filterByEmergencyType(this.props.operations.data.geoJSON, selectedDtype)
+      markerGeoJSON: markers
     });
     this.setSelectedAppealTypeNeutral();
   }
 
   onAppealTypeChange (typeId) {
-    const myMarkers = filterByAppealType(this.props.operations.data.geoJSON, typeId);
+    const comparator = AppealTypeComparator(typeId);
+    const markers = filtering(this.props.operations.data.geoJSON, comparator);
     this.setState({
-      markerGeoJSON: myMarkers
+      markerGeoJSON: markers
     });
     this.setSelectedDtypeNeutral();
   }
@@ -412,7 +420,7 @@ class HomeMap extends React.Component {
               deployments={this.props.deployments}
               deploymentsKey={this.props.deploymentsKey}/>
 
-            <TopDropdown emergenciesByType={emergenciesByType}
+            <EmergencyTypesDropdown emergenciesByType={emergenciesByType}
               onDtypeClick={this.onDtypeClick.bind(this)} />
 
             <AppealTypesDropdown onAppealTypeChange={this.onAppealTypeChange.bind(this)} />
