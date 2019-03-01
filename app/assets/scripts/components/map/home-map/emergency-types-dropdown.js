@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-class TopDropdown extends React.Component {
+class EmergencyTypesDropdown extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -29,7 +29,7 @@ class TopDropdown extends React.Component {
           <select onChange={this.filterByEmergencyType} id='top-emergency-dropdown' className='form__control form__control--medium'>
             <option value='0'>All Emergency Types</option>
             {emergenciesByType.map(emergency => (
-              <option key={emergency.id} value={emergency.id}>{emergency.name}</option>
+              <option key={emergency.id} value={emergency.id}>{emergency.name} ({emergency.items.length})</option>
             ))}
           </select>
         </form>
@@ -38,4 +38,4 @@ class TopDropdown extends React.Component {
   }
 }
 
-export default TopDropdown;
+export default EmergencyTypesDropdown;
