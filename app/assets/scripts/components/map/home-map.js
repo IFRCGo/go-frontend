@@ -45,6 +45,8 @@ class HomeMap extends React.Component {
     this.navigate = this.navigate.bind(this);
     this.showDeploymentsPopover = this.showDeploymentsPopover.bind(this);
     this.showCountryPopover = this.showCountryPopover.bind(this);
+    this.setSelectedAppealTypeNeutral = this.setSelectedAppealTypeNeutral.bind(this);
+    this.setSelectedDtypeNeutral = this.setSelectedDtypeNeutral.bind(this);
   }
 
   componentDidMount () {
@@ -114,6 +116,7 @@ class HomeMap extends React.Component {
       selectedDtype,
       markerGeoJSON: filterByEmergencyType(this.props.operations.data.geoJSON, selectedDtype)
     });
+    this.setSelectedAppealTypeNeutral();
   }
 
   onAppealTypeChange (typeId) {
@@ -121,6 +124,16 @@ class HomeMap extends React.Component {
     this.setState({
       markerGeoJSON: myMarkers
     });
+    this.setSelectedDtypeNeutral();
+  }
+
+  setSelectedDtypeNeutral () {
+    this.setState({selectedDtype: 0});
+    document.getElementById('top-emergency-dropdown').value = 0;
+  }
+
+  setSelectedAppealTypeNeutral () {
+    document.getElementById('top-appeal-dropdown').value = 'all';
   }
 
   onFieldChange (e) {
