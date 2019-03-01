@@ -47,8 +47,6 @@ class HomeMap extends React.Component {
     this.configureMap = this.configureMap.bind(this);
     this.onFieldChange = this.onFieldChange.bind(this);
     this.navigate = this.navigate.bind(this);
-    this.showDeploymentsPopover = this.showDeploymentsPopover.bind(this);
-    this.showCountryPopover = this.showCountryPopover.bind(this);
     this.setSelectedAppealTypeNeutral = this.setSelectedAppealTypeNeutral.bind(this);
     this.setSelectedDtypeNeutral = this.setSelectedDtypeNeutral.bind(this);
   }
@@ -163,10 +161,6 @@ class HomeMap extends React.Component {
       this.setState({ ready: true });
     });
 
-    theMap.on('click', 'country', e => {
-      this.showCountryPopover(theMap, e.features[0]);
-    });
-
     theMap.on('click', 'appeals', e => {
       this.showOperationsPopover(theMap, e.features[0]);
     });
@@ -236,64 +230,6 @@ class HomeMap extends React.Component {
 
     this.popover = new mapboxgl.Popup({closeButton: false})
       .setLngLat(geometry.coordinates)
-      .setDOMContent(popoverContent.children[0])
-      .addTo(theMap);
-  }
-
-  showCountryPopover (theMap, feature) {
-    const iso = get(feature, 'properties.ISO2', 'not found').toLowerCase();
-    const features = get(this.state, 'markerGeoJSON.features');
-    if (Array.isArray(features)) {
-      const found = features.find(d => d.properties.iso === iso);
-      if (found) {
-        this.showOperationsPopover(theMap, found);
-        return;
-      }
-    }
-    const name = get(feature, 'properties.NAME');
-    const country = countries.find(d => d.iso === iso);
-    if (country) {
-      let popoverContent = document.createElement('div');
-      render(<OperationsPopover
-        title={name}
-        navigate={this.navigate}
-        pageId={country.value}
-        onCloseClick={this.onPopoverCloseClick.bind(this)}
-      />, popoverContent);
-      if (this.popover != null) {
-        this.popover.remove();
-      }
-      let coordinates = getCentroid(iso);
-      if (!coordinates[0]) {
-        coordinates = calculateCentroid(feature.geometry).geometry.coordinates;
-      }
-      this.popover = new mapboxgl.Popup({closeButton: false})
-        .setLngLat(coordinates)
-        .setDOMContent(popoverContent.children[0])
-        .addTo(theMap);
-    }
-  }
-
-  showDeploymentsPopover (theMap, feature) {
-    const id = get(feature, 'properties.OBJECTID').toString();
-    let deployments = get(this.props, 'deployments.data.areas', []).find(d => d.id === id);
-    if (!deployments && !Array.isArray(deployments.deployents)) return;
-    deployments = deployments.deployments;
-
-    const districtName = get(deployments, '0.district.name');
-    const numDeployments = deployments.length;
-    const title = `${districtName} (${numDeployments} Deployment${numDeployments === 1 ? '' : 's'})`;
-    let popoverContent = document.createElement('div');
-    render(<OperationsPopover
-      title={title}
-      deployments={deployments}
-      onCloseClick={this.onPopoverCloseClick.bind(this)} />, popoverContent);
-
-    if (this.popover != null) {
-      this.popover.remove();
-    }
-    this.popover = new mapboxgl.Popup({closeButton: false})
-      .setLngLat(calculateCentroid(feature.geometry).geometry.coordinates)
       .setDOMContent(popoverContent.children[0])
       .addTo(theMap);
   }
