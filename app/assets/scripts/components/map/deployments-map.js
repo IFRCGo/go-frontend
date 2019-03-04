@@ -14,6 +14,7 @@ import MapComponent from './common/map-component';
 import {
   FormSelect
 } from '../form-elements';
+import DownloadButton from './common/download-button';
 
 const countryChromaScale = chroma.scale(['#F0C9E8', '#861A70']);
 
@@ -249,6 +250,7 @@ export default class DeploymentsMap extends React.Component {
       }
     ];
     const activeFilter = filterTypes.find(d => d.value === this.state.mapFilter.deployment).label;
+    const canvas = document.getElementsByClassName('mapboxgl-canvas')[0];
 
     return (
       <div className='stats-map deployments-map'>
@@ -300,6 +302,8 @@ export default class DeploymentsMap extends React.Component {
 
                 </FormSelect>
               </figcaption>
+
+              <DownloadButton data={canvas} />
 
             </MapComponent>
           </div>

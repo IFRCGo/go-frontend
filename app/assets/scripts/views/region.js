@@ -44,7 +44,7 @@ import { getCountryMeta } from '../utils/get-country-meta';
 
 import App from './app';
 import Fold from '../components/fold';
-import HomeMap from '../components/map/home-map';
+import RegionMap from '../components/map/region-map';
 import BlockLoading from '../components/block-loading';
 import EmergenciesTable from '../components/connected/emergencies-table';
 import AppealsTable from '../components/connected/appeals-table';
@@ -338,7 +338,7 @@ class AdminArea extends SFPComponent {
                 <div className= 'inner'>
                   <h2 className='fold__title'>{activeOperations === null || isNaN(activeOperations) ? null : `Active IFRC Operations (${activeOperations})`}</h2>
                   <div className={mapContainerClass}>
-                    <HomeMap
+                    <RegionMap
                       operations={this.props.appealStats}
                       bbox={bbox}
                       layers={[this.state.maskLayer]}
