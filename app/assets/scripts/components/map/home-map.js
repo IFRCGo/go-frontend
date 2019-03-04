@@ -6,14 +6,11 @@ import { PropTypes as T } from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import mapboxgl from 'mapbox-gl';
 import chroma from 'chroma-js';
-import calculateCentroid from '@turf/centroid';
-import { countries } from '../../utils/field-report-constants';
 import { environment } from '../../config';
 import BlockLoading from '../block-loading';
 import MapComponent from './common/map-component';
 import OperationsPopover from './home-map/operations-popover';
 import { get } from '../../utils/utils';
-import { getCentroid } from '../../utils/country-centroids';
 import ExplanationBubble from './home-map/explanation-bubble';
 import EmergencyTypesDropdown from './home-map/emergency-types-dropdown';
 import AppealTypesDropdown from './home-map/appeal-types-dropdown';
@@ -258,13 +255,13 @@ class HomeMap extends React.Component {
 
     return (
       <React.Fragment>
-        {this.props.noRenderEmergencies 
-          ? null 
-          : <EmergenciesLeftMenu 
-              data={this.props}
-              selectedDtype={this.state.selectedDtype}
-              onDtypeClick={this.onDtypeClick.bind(this)}
-              onDtypeHover={this.onDtypeHover.bind(this)}/>}
+        {this.props.noRenderEmergencies
+          ? null
+          : <EmergenciesLeftMenu
+            data={this.props}
+            selectedDtype={this.state.selectedDtype}
+            onDtypeClick={this.onDtypeClick.bind(this)}
+            onDtypeHover={this.onDtypeHover.bind(this)}/>}
 
         <div className={mapContainerClassName}>
           <MapComponent className='map-vis__holder'

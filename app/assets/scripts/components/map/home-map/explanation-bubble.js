@@ -4,12 +4,9 @@ import React from 'react';
 import {
   FormRadioGroup
 } from '../../form-elements';
+import { PropTypes as T } from 'prop-types';
 
 class ExplanationBubble extends React.Component {
-  constructor (props) {
-    super(props);
-  }
-
   render () {
     return (
       <figcaption className='map-vis__legend map-vis__legend--bottom-right legend'>
@@ -61,6 +58,15 @@ class ExplanationBubble extends React.Component {
       </figcaption>
     );
   }
+}
+
+if (environment !== 'production') {
+  ExplanationBubble.propTypes = {
+    scaleBy: T.string,
+    onFieldChange: T.func,
+    deployments: T.object,
+    deploymentsKey: T.string
+  };
 }
 
 export default ExplanationBubble;

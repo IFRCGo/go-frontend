@@ -4,6 +4,7 @@ import React from 'react';
 import c from 'classnames';
 import { get } from '../../../utils/utils';
 import Progress from '../../progress';
+import { PropTypes as T } from 'prop-types';
 
 export default class EmergenciesLeftMenu extends React.Component {
   constructor (props) {
@@ -55,4 +56,13 @@ export default class EmergenciesLeftMenu extends React.Component {
       </div>
     );
   }
+}
+
+if (environment !== 'production') {
+  EmergenciesLeftMenu.propTypes = {
+    onDtypeClick: T.func,
+    onDtypeHover: T.func,
+    data: T.func,
+    selectedDtype: T.string
+  };
 }

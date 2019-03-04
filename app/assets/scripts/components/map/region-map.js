@@ -247,18 +247,17 @@ class RegionMap extends React.Component {
     const layers = this.props.layers ? this.state.markerLayers.concat(this.props.layers) : this.state.markerLayers;
     const geoJSON = this.state.markerGeoJSON;
     const mapContainerClassName = this.props.noRenderEmergencies ? 'map-container map-container-fullwidth' : 'map-container';
-    const emergenciesByType = get(this.props, 'operations.data.emergenciesByType', []);
     const canvas = document.getElementsByClassName('mapboxgl-canvas')[0];
 
     return (
       <React.Fragment>
-        {this.props.noRenderEmergencies 
-          ? null 
-          : <EmergenciesLeftMenu 
-              data={this.props}
-              selectedDtype={this.state.selectedDtype}
-              onDtypeClick={this.onDtypeClick.bind(this)}
-              onDtypeHover={this.onDtypeHover.bind(this)}/>}
+        {this.props.noRenderEmergencies
+          ? null
+          : <EmergenciesLeftMenu
+            data={this.props}
+            selectedDtype={this.state.selectedDtype}
+            onDtypeClick={this.onDtypeClick.bind(this)}
+            onDtypeHover={this.onDtypeHover.bind(this)}/>}
 
         <div className={mapContainerClassName}>
           <MapComponent className='map-vis__holder'

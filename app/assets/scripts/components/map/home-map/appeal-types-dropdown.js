@@ -2,12 +2,9 @@
 
 import React from 'react';
 import { appealTypeOptions } from './../../../utils/appeal-type-constants';
+import { PropTypes as T } from 'prop-types';
 
 class AppealTypesDropdown extends React.Component {
-  constructor (props) {
-    super(props);
-  }
-
   render () {
     return (
       <figcaption className='map-vis__legend map-vis__legend--top-left legend'>
@@ -23,6 +20,12 @@ class AppealTypesDropdown extends React.Component {
       </figcaption>
     );
   }
+}
+
+if (environment !== 'production') {
+  AppealTypesDropdown.propTypes = {
+    onAppealTypeChange: T.func
+  };
 }
 
 export default AppealTypesDropdown;

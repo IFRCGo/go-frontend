@@ -1,20 +1,21 @@
 'use strict';
 
 import React from 'react';
+import { PropTypes as T } from 'prop-types';
 
 class EmergencyTypesDropdown extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
       lastEmergencyType: 0
-    }
+    };
     this.filterByEmergencyType = this.filterByEmergencyType.bind(this);
   }
 
   filterByEmergencyType (e) {
-    const emergencyType = e.target.value != 0 ? e.target.value : this.state.lastEmergencyType;
+    const emergencyType = e.target.value !== 0 ? e.target.value : this.state.lastEmergencyType;
 
-    if (e.target.value != 0) {
+    if (e.target.value !== 0) {
       this.setState({lastEmergencyType: e.target.value});
     }
 
@@ -36,6 +37,13 @@ class EmergencyTypesDropdown extends React.Component {
       </figcaption>
     );
   }
+}
+
+if (environment !== 'production') {
+  EmergencyTypesDropdown.propTypes = {
+    onDtypeClick: T.func,
+    emergenciesByType: T.array
+  };
 }
 
 export default EmergencyTypesDropdown;

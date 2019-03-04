@@ -4,6 +4,7 @@ import { environment } from '../../../config';
 import { PropTypes as T } from 'prop-types';
 import { commaSeparatedNumber as n } from '../../../utils/format';
 import { DateTime } from 'luxon';
+import { get } from '../../../utils/utils';
 import React from 'react';
 
 class OperationsPopover extends React.Component {

@@ -12,8 +12,6 @@ import MapComponent from './common/map-component';
 import OperationsPopover from './home-map/operations-popover';
 import { get } from '../../utils/utils';
 import ExplanationBubble from './home-map/explanation-bubble';
-import EmergencyTypesDropdown from './home-map/emergency-types-dropdown';
-import AppealTypesDropdown from './home-map/appeal-types-dropdown';
 import DownloadButton from './common/download-button';
 import { filtering } from './home-map/filtering/filtering-processor';
 import { AppealTypeComparator } from './home-map/filtering/comparator/appeal-type-comparator';
@@ -250,18 +248,17 @@ class CountryMap extends React.Component {
     const layers = this.props.layers ? this.state.markerLayers.concat(this.props.layers) : this.state.markerLayers;
     const geoJSON = this.state.markerGeoJSON;
     const mapContainerClassName = this.props.noRenderEmergencies ? 'map-container map-container-fullwidth' : 'map-container';
-    const emergenciesByType = get(this.props, 'operations.data.emergenciesByType', []);
     const canvas = document.getElementsByClassName('mapboxgl-canvas')[0];
 
     return (
       <React.Fragment>
-        {this.props.noRenderEmergencies 
-          ? null 
-          : <EmergenciesLeftMenu 
-              data={this.props}
-              selectedDtype={this.state.selectedDtype}
-              onDtypeClick={this.onDtypeClick.bind(this)}
-              onDtypeHover={this.onDtypeHover.bind(this)}/>}
+        {this.props.noRenderEmergencies
+          ? null
+          : <EmergenciesLeftMenu
+            data={this.props}
+            selectedDtype={this.state.selectedDtype}
+            onDtypeClick={this.onDtypeClick.bind(this)}
+            onDtypeHover={this.onDtypeHover.bind(this)}/>}
 
         <div className={mapContainerClassName}>
           <MapComponent className='map-vis__holder'
