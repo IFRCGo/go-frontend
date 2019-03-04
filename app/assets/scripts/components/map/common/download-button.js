@@ -3,6 +3,7 @@
 import React from 'react';
 import { startDownload } from '../../../utils/download-starter';
 import { PropTypes as T } from 'prop-types';
+import { environment } from '../../../config';
 
 class DownloadButton extends React.Component {
   constructor (props) {

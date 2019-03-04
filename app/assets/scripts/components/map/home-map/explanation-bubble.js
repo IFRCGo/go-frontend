@@ -5,6 +5,7 @@ import {
   FormRadioGroup
 } from '../../form-elements';
 import { PropTypes as T } from 'prop-types';
+import { environment } from '../../../config';
 
 class ExplanationBubble extends React.Component {
   render () {

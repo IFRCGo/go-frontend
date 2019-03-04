@@ -5,6 +5,7 @@ import c from 'classnames';
 import { get } from '../../../utils/utils';
 import Progress from '../../progress';
 import { PropTypes as T } from 'prop-types';
+import { environment } from '../../../config';
 
 export default class EmergenciesLeftMenu extends React.Component {
   constructor (props) {

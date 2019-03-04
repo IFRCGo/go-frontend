@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
+import { environment } from '../../../config';
 
 class EmergencyTypesDropdown extends React.Component {
   constructor (props) {
