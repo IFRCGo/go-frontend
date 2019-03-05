@@ -126,7 +126,7 @@ export const countries = [
   {value: '105', label: 'Liechtenstein', iso: 'li'},
   {value: '106', label: 'Lithuania', iso: 'lt'},
   {value: '107', label: 'Luxembourg', iso: 'lu'},
-  {value: '108', label: 'The former Yugoslav Republic of Macedonia', iso: 'mk'},
+  {value: '108', label: 'North Macedonia, Republic of', iso: 'mk'},
   {value: '109', label: 'Madagascar', iso: 'mg'},
   {value: '110', label: 'Malawi', iso: 'mw'},
   {value: '111', label: 'Malaysia', iso: 'my'},
