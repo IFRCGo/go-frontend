@@ -1,31 +1,18 @@
 .card_box_container {
-  margin-top: 23px;
-
-  .affected_population_icon {
-    width: 29px;
-    height: 20px;
-    content: url('/assets/graphics/layout/icon-population-blue.svg');
-  }
-
-  .deployed_personnel_icon {
-    width: 28px;
-    height: 21px;
-    content: url('/assets/graphics/layout/icon-personnel.svg');
-  }
+  margin-top: 1rem;
 }
 
 .card_box {
   float: left;
   width: 50%;
-  font-size: 24px;
-  color: $dark-blue;
+  font-size: 1.5rem;
 }
 
 .card_box small {
   display: block;
-  font-size: 10px;
+  font-size: 0.875rem;
   text-transform: uppercase;
-  color: rgba(0, 0, 0, 1);
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .card_box_left {
@@ -39,15 +26,10 @@
 .card_box_full {
   border-top: 1px solid #c0c0c0;
   float: left;
-  margin-top: 22px;
-  padding-top: 9px;
-  padding-bottom: 9px;
+  margin-top: 1rem;
   width: 100%;
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 1.5rem;
   text-align: left;
-  color: $dark-blue;
-  line-height: 24px;
 
   .progress-bar {
     display: inline-block;
@@ -56,25 +38,24 @@
 
   small {
     display: block;
-    font-size: 10px;
+    font-size: 0.875rem;
     text-transform: uppercase;
-    color: rgba(0, 0, 0, 1);;
+    color: rgba(0, 0, 0, 0.6);
   }
 
   .progress-bar-container {
-    margin-top: 0px;
+    margin-top: -10px;
   }
 
   .progress-bar__value {
-    background-color: $dark-blue;
+    background-color: #C22A26;
   }
 
   .progress-bar__key small {
     display: inline-block;
-    font-size: 14px;
+    font-size: 0.875rem;
     text-transform: uppercase;
-    color: $dark-blue;
-    font-weight: bold;
+    color: rgba(0, 0, 0, 0.6);
   }
 
   .progress-bar__key {
@@ -94,72 +75,4 @@
   margin-bottom: 10px;
   color: rgba(0, 0, 0, 0.6);
   font-style: italic;
-}
-
-.key-emergencies-list {
-  list-style: none;
-  margin-left: 0;
-  @include column(12/12);
-  a {
-    float: left;
-    padding-top: 20px;
-    padding-left: 26px;
-    padding-right: 14px;
-    padding-bottom: 0px;
-    color: $base-color;
-    border: solid 1px #c7c7c7;
-    border-radius: 5px;
-    width: 100%;
-    display: inline-block;
-    &:hover {
-      border: solid 1px $dark-blue;
-      opacity: 1;
-    };
-  }
-  .key-emergencies-item {
-    @include column(10/12);
-    margin-right: 2% !important;
-    margin-bottom: $global-spacing;
-    @include media(medium-up) {
-      @include column(6/12)
-    }
-    @include media(medium-up) {
-      @include column(4/12)
-    }
-    &:first-child {
-      margin-left: 0;
-    };
-    .card__title {
-      color: #000;
-      font-size: 14px;
-      line-height: 14px !important;
-      margin-bottom: 3px;
-    }
-    .card__date {
-      color: rgba($base-color, 0.6);
-      font-size: 10px;
-    }
-    .card__stat-list {
-      float: left;
-      margin-top: $global-spacing;
-      margin-left: 0;
-    }
-    li.card__stat {
-      padding-left: $global-spacing * 3.5;
-      font-size: 1.5rem;
-      line-height: 1.25rem;
-      display: block;
-      margin-left: 0;
-      margin-bottom: $global-spacing;
-      small {
-        display: block;
-        font-size: 0.875rem;
-        text-transform: uppercase;
-        color: rgba($base-color, 0.6);
-      }
-      &:last-child {
-        margin-bottom: 0;
-      };
-    }
-  }
 }
