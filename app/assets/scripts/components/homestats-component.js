@@ -52,9 +52,9 @@ export default function HomestatsComponent (props) {
               <div className='popover__body'>
                 <ul className='popover__details'>
                   <br />
-                  <li><span>DREF: </span>The Disaster Relief Emergency Fund ensures rapid and effective response to emergencies and crises. <a className='link--primary' href='https://media.ifrc.org/ifrc/dref' target='_blank'>More info &gt;&gt;</a></li>
+                  <li><span>DREF: </span>The Disaster Relief Emergency Fund (DREF) was established by the International Federation of Red Cross and Red Crescent Societies (IFRC) in 1985 to provide immediate financial support to National Red Cross and Red Crescent Societies, enabling them to carry out their unique role as first responders after a disaster.</li>
                   <br />
-                  <li><span>Appeal: </span>Next phase. The request is usually coming from outside of IFRC.</li>
+                  <li><span>Emergency Appeal: </span>The EA is an international marketing and positioning document to promote an operation to partners / donors and the external audience / public and to generate funding.</li>
                 </ul>
               </div>
             </div>
@@ -102,7 +102,7 @@ export default function HomestatsComponent (props) {
         </li>
         <li className='sumstats__item'>
           <span className='sumstats__value'>{shortenLargeNumber(stats.targetPop, 1)}</span>
-          <span className='sumstats__key'>Affected population</span>
+          <span className='sumstats__key'>Targeted population</span>
         </li>
       </ul>
     );

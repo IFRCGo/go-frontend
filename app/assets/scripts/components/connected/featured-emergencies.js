@@ -54,22 +54,24 @@ class FeaturedEmergencies extends React.Component {
 
           <div className='card_box_container'>
             <div className='card_box card_box_left'>
-              {n(beneficiaries)}<br />
+              <span className='affected_population_icon'></span> {n(beneficiaries)}<br />
               <small>Affected population</small>
             </div>
             <div className='card_box card_box_right'>
-              {this.calculateDeployedPersonnel(report)}<br />
-              <small>Deployed Personnel</small>
+              <span className='deployed_personnel_icon'></span> {this.calculateDeployedPersonnel(report)}<br />
+              <small>Deployed Surge Personnel</small>
             </div>
           </div>
 
-          {appeals.length ? (
-            <div className='card_box_full'>
-              {requested !== null ? n(requested) : 0} CHF
-              <Progress value={requested ? percent(funded, requested) : 0} max={100} />
-              <small>Funding needed</small>
-            </div>
-          ) : null}
+          <div className='card_box_full'>
+            {appeals.length ? (
+              <React.Fragment>
+                <small>Funding needed</small>
+                {requested !== null ? n(requested) : 0} CHF
+                <Progress value={requested ? percent(funded, requested) : 0} max={100} />
+              </React.Fragment>
+            ) : null}
+          </div>
         </Link>
       </li>
     );
