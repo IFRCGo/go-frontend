@@ -102,7 +102,7 @@ export default function HomestatsComponent (props) {
         </li>
         <li className='sumstats__item'>
           <span className='sumstats__value'>{shortenLargeNumber(stats.targetPop, 1)}</span>
-          <span className='sumstats__key'>Affected population</span>
+          <span className='sumstats__key'>Targeted population</span>
         </li>
       </ul>
     );

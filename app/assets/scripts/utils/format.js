@@ -17,10 +17,8 @@ export const formatDate = (date) => {
   if (date instanceof Date) {
     const month = ('0' + (date.getMonth() + 1)).slice(-2);
     const day = ('0' + date.getDay()).slice(-2);
-    const hours = ('0' + date.getHours()).slice(-2);
-    const seconds = ('0' + date.getSeconds()).slice(-2);
 
-    return date.getFullYear() + '-' + month + '-' + day + ' ' + hours + ':' + seconds;
+    return day + '-' + month + '-' + date.getFullYear();
   }
   throw new FormatDateException('The received argument (' + date + ') is not a Date or String instance!');
 };
