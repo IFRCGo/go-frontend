@@ -1,6 +1,7 @@
 'use strict';
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
+import memoize from 'memoize-one';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -10,6 +11,7 @@ import c from 'classnames';
 import { Helmet } from 'react-helmet';
 import url from 'url';
 
+import { countries } from '../utils/field-report-constants';
 import { environment, api } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { get, dateOptions, datesAgo, dTypeOptions } from '../utils/utils/';
@@ -50,6 +52,17 @@ const filterPaths = {
   type: 'activity.activity'
 };
 
+const getCountryId = memoize((idOrName) => {
+  // If country name
+  if (isNaN(idOrName)) {
+    const countryMeta = countries.find(
+      d => d.label.toLowerCase() === decodeURI(idOrName.toLowerCase())
+    );
+    return countryMeta !== undefined ? countryMeta.value : idOrName;
+  }
+  return idOrName;
+});
+
 class AdminArea extends SFPComponent {
   // Methods form SFPComponent:
   // handlePageChange (what, page)
@@ -80,9 +93,9 @@ class AdminArea extends SFPComponent {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (this.props.match.params.id !== nextProps.match.params.id) {
+    if (getCountryId(this.props.match.params.id) !== getCountryId(nextProps.match.params.id)) {
       this.getData(nextProps);
-      return this.getAdmArea(nextProps.type, nextProps.match.params.id);
+      return this.getAdmArea(nextProps.type, getCountryId(nextProps.match.params.id));
     }
 
     if (this.props.adminArea.fetching && !nextProps.adminArea.fetching) {
@@ -95,12 +108,12 @@ class AdminArea extends SFPComponent {
 
   componentDidMount () {
     this.getData(this.props);
-    this.getAdmArea(this.props.type, this.props.match.params.id);
+    this.getAdmArea(this.props.type, getCountryId(this.props.match.params.id));
   }
 
   getData (props) {
     const type = 'country';
-    const id = props.match.params.id;
+    const id = getCountryId(props.match.params.id);
     this.props._getAdmAreaAppealsList(type, id);
     this.props._getAdmAreaKeyFigures(type, id);
     this.props._getAdmAreaSnippets(type, id);
@@ -139,7 +152,11 @@ class AdminArea extends SFPComponent {
   }
 
   updateData (what) {
-    this.props._getCountryOperations(this.props.type, this.props.match.params.id, this.state[what].page, this.computeFilters(what));
+    this.props._getCountryOperations(
+      this.props.type,
+      getCountryId(this.props.match.params.id),
+      this.state[what].page, this.computeFilters(what)
+    );
   }
 
   setMapFilter (type, value) {
@@ -171,7 +188,7 @@ class AdminArea extends SFPComponent {
       const path = filterPaths[key];
       return { path, value: filters[key] };
     });
-    this.props._setPartnerDeploymentFilter(this.props.match.params.id, filters);
+    this.props._setPartnerDeploymentFilter(getCountryId(this.props.match.params.id), filters);
   }
 
   renderAppeals () {
@@ -414,7 +431,7 @@ class AdminArea extends SFPComponent {
                 id={'emergencies'}
                 title='Recent Emergencies'
                 limit={5}
-                country={this.props.match.params.id}
+                country={getCountryId(this.props.match.params.id)}
                 showRecent={true}
                 viewAll={'/emergencies/all?country=' + data.id}
                 viewAllText={`View All Emergencies For ${data.name}`}
@@ -463,7 +480,7 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state, ownProps) => ({
-  adminArea: get(state.adminArea.aaData, ownProps.match.params.id, {
+  adminArea: get(state.adminArea.aaData, getCountryId(ownProps.match.params.id), {
     data: {},
     fetching: false,
     fetched: false
@@ -472,7 +489,7 @@ const selector = (state, ownProps) => ({
   keyFigures: state.adminArea.keyFigures,
   snippets: state.adminArea.snippets,
   countryOperations: state.adminArea.countryOperations,
-  partnerDeployments: get(state.adminArea.partnerDeployments, ownProps.match.params.id, {
+  partnerDeployments: get(state.adminArea.partnerDeployments, getCountryId(ownProps.match.params.id), {
     data: {},
     fetching: false,
     fetched: false

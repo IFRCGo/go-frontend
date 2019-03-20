@@ -237,3 +237,11 @@ export const regionsIdByName = {
   'europe': 3,
   'mena': 4
 };
+
+export const getRegionId = (idOrName) => {
+  // If region name
+  if (isNaN(idOrName)) {
+    return regionsIdByName[idOrName.toLowerCase()];
+  }
+  return idOrName;
+};
