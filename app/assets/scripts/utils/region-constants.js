@@ -229,3 +229,11 @@ export const regions = {
     name: 'Middle East & North Africa'
   }
 };
+
+export const regionsIdByName = {
+  'africa': 0,
+  'americas': 1,
+  'asiapacific': 2,
+  'europe': 3,
+  'mena': 4
+};
