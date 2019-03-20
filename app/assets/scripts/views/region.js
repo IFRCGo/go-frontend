@@ -35,7 +35,11 @@ import {
   getCountries
 } from '../actions';
 import { getRegionBoundingBox } from '../utils/region-bounding-box';
-import { countriesByRegion, regions as regionMeta } from '../utils/region-constants';
+import {
+  countriesByRegion,
+  regionsIdByName,
+  regions as regionMeta
+} from '../utils/region-constants';
 import { getCountryMeta } from '../utils/get-country-meta';
 
 import App from './app';
@@ -55,6 +59,20 @@ import { SFPComponent } from '../utils/extendables';
 class AdminArea extends SFPComponent {
   constructor (props) {
     super(props);
+
+    const {
+      match: {
+        params: {
+          id
+        }
+      }
+    } = this.props;
+
+    // Redirect to url with id
+    if (isNaN(id)) {
+      window.location = `/regions/${regionsIdByName[id.toLowerCase()]}`;
+    }
+
     this.state = {
       maskLayer: this.getMaskLayer(props.match.params.id)
     };
