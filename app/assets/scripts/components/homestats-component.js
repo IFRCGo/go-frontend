@@ -126,6 +126,8 @@ if (environment !== 'production') {
     appealsList: T.object,
     data: T.object,
     closeTooltip: T.func,
-    openTooltip: T.func
+    openTooltip: T.func,
+    chooseContent: T.func,
+    toggleFullscreen: T.func
   };
 }

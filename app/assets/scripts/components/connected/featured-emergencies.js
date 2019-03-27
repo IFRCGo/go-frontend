@@ -29,18 +29,18 @@ class FeaturedEmergencies extends React.Component {
 
   calculateDeployedPersonnel (emergency) {
     let deployedErus = 0;
-    let deployedPersonnel = 0; 
+    let deployedPersonnel = 0;
 
     if (typeof this.props.deployments.data !== 'undefined' && Array.isArray(this.props.deployments.data.results)) {
       this.props.deployments.data.results
         .filter(deployment => deployment.type === 'eru' && deployment.id === emergency.id)
-        .forEach(deployment => deployedErus += deployment.deployments);
+        .forEach(deployment => { deployedErus += deployment.deployments; });
 
       this.props.deployments.data.results
         .filter(deployment => {
           return (deployment.type === 'heop' || deployment.type === 'rdrt') && deployment.id === emergency.id;
         })
-        .forEach(deployment => deployedPersonnel += deployment.deployments);
+        .forEach(deployment => { deployedPersonnel += deployment.deployments; });
     }
 
     return {'deployedEru': deployedErus, 'deployedPersonnel': deployedPersonnel};

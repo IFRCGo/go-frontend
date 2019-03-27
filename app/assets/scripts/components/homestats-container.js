@@ -39,7 +39,7 @@ export default class Homestats extends React.Component {
   chooseContent (props) {
     let title = 'No content';
     let description = 'No content';
-    
+
     if (props.data.tooltipType === 'tooltip-button-appeal') {
       title = 'Emergency Appeal';
       description = 'These are medium to large scale emergency operations funded through a public appeal for funds.';
@@ -48,7 +48,7 @@ export default class Homestats extends React.Component {
       description = 'These are small to medium scale emergency operations funded through the Disaster Relief Emergency Fund (DREF).The DREF provides immediate financial support to National Red Cross and Red Crescent Societies, enabling them to carry out their unique role as first responders after a disaster.';
     }
 
-    return { 'title': title, 'description': description }
+    return { 'title': title, 'description': description };
   }
 
   closeTooltip () {
@@ -72,6 +72,7 @@ export default class Homestats extends React.Component {
 
 if (environment !== 'production') {
   Homestats.propTypes = {
-    appealsList: T.object
+    appealsList: T.object,
+    toggleFullscreen: T.func
   };
 }
