@@ -291,11 +291,9 @@ class AdminArea extends SFPComponent {
   renderCountryProfile () {
     const {
       fetched,
-      error,
       data
     } = this.props.fdrs;
-
-    if (!fetched || error) {
+    if (!fetched) {
       return null;
     }
     const population = get(data, 'Population.value');
