@@ -78,8 +78,7 @@ export default function HomestatsComponent (props) {
         <li className='sumstats__item'>
           <span className='sumstats__value'>{stats.activeDrefs}</span>
           <span className='sumstats__key'>
-            Active DREF Operations<br />
-            (In the last 30 days)
+            Active DREF Operations
             <div className='tooltip-button' id='tooltip-button-dref' onClick={props.openTooltip}></div>
           </span>
         </li>
