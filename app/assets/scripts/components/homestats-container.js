@@ -10,12 +10,14 @@ export default class Homestats extends React.Component {
     super(props);
     this.state = {
       showBudgetTooltip: false,
+      tooltipType: 'none',
       positionTop: 0,
       positionLeft: 0
     };
 
     this.openTooltip = this.openTooltip.bind(this);
     this.closeTooltip = this.closeTooltip.bind(this);
+    this.chooseContent = this.chooseContent.bind(this);
   }
 
   openTooltip (event) {
@@ -28,9 +30,25 @@ export default class Homestats extends React.Component {
 
     this.setState({
       showBudgetTooltip: true,
+      tooltipType: event.target.id,
       positionTop: marginTop,
       positionLeft: marginLeft
     });
+  }
+
+  chooseContent (props) {
+    let title = 'No content';
+    let description = 'No content';
+    
+    if (props.data.tooltipType === 'tooltip-button-appeal') {
+      title = 'Emergency Appeal';
+      description = 'These are medium to large scale emergency operations funded through a public appeal for funds.';
+    } else if (props.data.tooltipType === 'tooltip-button-dref') {
+      title = 'DREF';
+      description = 'These are small to medium scale emergency operations funded through the Disaster Relief Emergency Fund (DREF).The DREF provides immediate financial support to National Red Cross and Red Crescent Societies, enabling them to carry out their unique role as first responders after a disaster.';
+    }
+
+    return { 'title': title, 'description': description }
   }
 
   closeTooltip () {
@@ -45,7 +63,9 @@ export default class Homestats extends React.Component {
         openTooltip={this.openTooltip}
         closeTooltip={this.closeTooltip}
         data={this.state}
-        appealsList={this.props.appealsList} />
+        appealsList={this.props.appealsList}
+        toggleFullscreen={this.props.toggleFullscreen}
+        chooseContent={this.chooseContent}/>
     );
   }
 }
