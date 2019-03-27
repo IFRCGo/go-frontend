@@ -43,7 +43,7 @@ class FeaturedEmergencies extends React.Component {
         .forEach(deployment => { deployedPersonnel += deployment.deployments; });
     }
 
-    return {'deployedEru': deployedErus, 'deployedPersonnel': deployedPersonnel};
+    return {'deployedErus': deployedErus, 'deployedPersonnel': deployedPersonnel};
   }
 
   /* eslint-disable camelcase */
