@@ -81,10 +81,6 @@ class FeaturedEmergencies extends React.Component {
             </div>
           </div>
 
-          <div className='ifrc_supported_badge'>
-            IFRC supported operation
-          </div>
-
           <div className='card_box_full'>
             {appeals.length ? (
               <React.Fragment>
