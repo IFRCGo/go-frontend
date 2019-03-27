@@ -4,27 +4,52 @@
 
 .card_box {
   float: left;
-  width: 50%;
   font-size: 1.5rem;
+  text-align: left;
+  padding-left: 5px;
+  @include media(xsmall-only) {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    width: 100%;
+  }
+  @include media(small-up) {
+    width: 33%;
+  }
 }
 
 .card_box small {
   display: block;
-  font-size: 0.875rem;
   text-transform: uppercase;
   color: rgba(0, 0, 0, 0.6);
+  font-size: 0.82rem;
 }
 
 .card_box_left {
-  border-right: 1px solid #c0c0c0;
+  @include media(xsmall-only) {
+    border-bottom: 1px solid #c0c0c0;
+  }
+  @include media(small-up) {
+    border-right: 1px solid #c0c0c0;
+  }
 }
 
-.card_box_right {
-  padding-left: 1.5rem;
+.ifrc_supported_badge {
+  float: right;
+  width: 100%;
+  margin-top: 1rem;
+  background-color: #fafafa;
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: right;
+  color: #c02c2c;
 }
 
 .card_box_full {
-  border-top: 1px solid #c0c0c0;
   float: left;
   margin-top: 1rem;
   width: 100%;

@@ -20,6 +20,8 @@ export default function HomestatsComponent (props) {
   };
 
   let renderTooltipBox = (props) => {
+    const {title, description} = props.chooseContent(props);
+
     return (
       <div className='mapboxgl-popup mapboxgl-popup-anchor-bottom'
         id='budget-tooltip-box'
@@ -32,9 +34,9 @@ export default function HomestatsComponent (props) {
         <div className='mapboxgl-popup-tip'></div>
         <div className='mapboxgl-popup-content'>
           <article className='popover'>
-            <div className='popover__contents'>
+            <div className='popover__contents__noscroll'>
               <header className='popover__header'>
-                <div className='popover__headline'><a className='link--primary'>Appeal types</a></div>
+                <div className='popover__headline__bold'>{title}</div>
                 <div className='popover__actions actions'>
                   <ul className='actions__menu'>
                     <li>
@@ -52,9 +54,7 @@ export default function HomestatsComponent (props) {
               <div className='popover__body'>
                 <ul className='popover__details'>
                   <br />
-                  <li><span>DREF: </span>The Disaster Relief Emergency Fund (DREF) was established by the International Federation of Red Cross and Red Crescent Societies (IFRC) in 1985 to provide immediate financial support to National Red Cross and Red Crescent Societies, enabling them to carry out their unique role as first responders after a disaster.</li>
-                  <br />
-                  <li><span>Emergency Appeal: </span>The EA is an international marketing and positioning document to promote an operation to partners / donors and the external audience / public and to generate funding.</li>
+                  <li dangerouslySetInnerHTML={{__html: description}} />
                 </ul>
               </div>
             </div>
@@ -90,9 +90,7 @@ export default function HomestatsComponent (props) {
         <li className='sumstats__item'>
           <span className='sumstats__value'>{shortenLargeNumber(stats.budget, 1)}</span>
           <span className='sumstats__key'>
-            Budget for DREFs and Appeals (CHF)
-            <div className='tooltip-button' id='tooltip-button-budget' onClick={props.openTooltip}></div>
-
+            Funding requirements (CHF)
             { renderTooltipBox(props) }
           </span>
         </li>
@@ -109,11 +107,16 @@ export default function HomestatsComponent (props) {
   };
 
   return (
-    <div className='stats-overall'>
-      <h1 className='visually-hidden'>Overall stats</h1>
-      {renderLoading(props)}
-      {renderError(props)}
-      {renderContent(props)}
+    <div className='inner'>
+      <div className='presentation__actions'>
+        <button className='button button--base-plain button--fullscreen' onClick={props.toggleFullscreen} title='View in fullscreen'><span>FullScreen</span></button>
+      </div>
+      <div className='stats-overall'>
+        <h1 className='visually-hidden'>Overall stats</h1>
+        {renderLoading(props)}
+        {renderError(props)}
+        {renderContent(props)}
+      </div>
     </div>
   );
 }
@@ -123,6 +126,8 @@ if (environment !== 'production') {
     appealsList: T.object,
     data: T.object,
     closeTooltip: T.func,
-    openTooltip: T.func
+    openTooltip: T.func,
+    chooseContent: T.func,
+    toggleFullscreen: T.func
   };
 }

@@ -38,7 +38,7 @@ function processFdrsResponse (resp) {
       return null;
     }
     const mostRecentYear = get(data, '0.years', []).map(Number).sort((a, b) => a < b ? 1 : -1)[0];
-    const value = values.find(d => d.year === mostRecentYear.toString()).value;
+    const value = (values.find(d => d.year === mostRecentYear.toString()) || {}).value;
     return {
       id,
       data: { value, year: mostRecentYear }

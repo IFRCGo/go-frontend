@@ -5,14 +5,14 @@ import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import Progress from './../progress-labeled';
 
-import { formatDate, percent, commaSeparatedNumber as n } from '../../utils/format';
+import { formatDate, percent, commaSeparatedNumber as n, shortenLargeNumber } from '../../utils/format';
 import { get, mostRecentReport } from '../../utils/utils';
 import { environment } from '../../config';
-import { getFeaturedEmergencies } from '../../actions';
+import { getFeaturedEmergencies, getFeaturedEmergenciesDeployments } from '../../actions';
 import BlockLoading from '../block-loading';
 import Fold from '../fold';
 
-const title = 'Highlighted Emergencies';
+const title = 'Highlighted Operations';
 
 class FeaturedEmergencies extends React.Component {
   constructor (props) {
@@ -24,13 +24,26 @@ class FeaturedEmergencies extends React.Component {
 
   componentWillMount () {
     this.props._getFeaturedEmergencies();
+    this.props._getFeaturedEmergenciesDeployments();
   }
 
-  calculateDeployedPersonnel (report) {
-    if (report instanceof Object) {
-      return 0 + report.num_localstaff + report.num_volunteers;
+  calculateDeployedPersonnel (emergency) {
+    let deployedErus = 0;
+    let deployedPersonnel = 0;
+
+    if (typeof this.props.deployments.data !== 'undefined' && Array.isArray(this.props.deployments.data.results)) {
+      this.props.deployments.data.results
+        .filter(deployment => deployment.type === 'eru' && deployment.id === emergency.id)
+        .forEach(deployment => { deployedErus += deployment.deployments; });
+
+      this.props.deployments.data.results
+        .filter(deployment => {
+          return (deployment.type === 'heop' || deployment.type === 'rdrt') && deployment.id === emergency.id;
+        })
+        .forEach(deployment => { deployedPersonnel += deployment.deployments; });
     }
-    return 0;
+
+    return {'deployedEru': deployedErus, 'deployedPersonnel': deployedPersonnel};
   }
 
   /* eslint-disable camelcase */
@@ -45,6 +58,7 @@ class FeaturedEmergencies extends React.Component {
       typeof report.updated_at !== 'undefined' &&
       report.updated_at !== null
       ? report.updated_at : d.created_at;
+    const emergencyDeployments = this.calculateDeployedPersonnel(d);
 
     return (
       <li className='key-emergencies-item' key={id}>
@@ -54,19 +68,27 @@ class FeaturedEmergencies extends React.Component {
 
           <div className='card_box_container'>
             <div className='card_box card_box_left'>
-              <span className='affected_population_icon'></span> {n(beneficiaries)}<br />
-              <small>Affected population</small>
+              <span className='affected_population_icon'></span> {shortenLargeNumber(beneficiaries)}<br />
+              <small>Targeted Population</small>
             </div>
-            <div className='card_box card_box_right'>
-              <span className='deployed_personnel_icon'></span> {this.calculateDeployedPersonnel(report)}<br />
+            <div className='card_box card_box_left'>
+              <span className='affected_population_icon'></span> {n(emergencyDeployments.deployedErus)}<br />
+              <small>Deployed ERUs</small>
+            </div>
+            <div className='card_box'>
+              <span className='deployed_personnel_icon'></span> {n(emergencyDeployments.deployedPersonnel)}<br />
               <small>Deployed Surge Personnel</small>
             </div>
+          </div>
+
+          <div className='ifrc_supported_badge'>
+            IFRC supported operation
           </div>
 
           <div className='card_box_full'>
             {appeals.length ? (
               <React.Fragment>
-                <small>Funding needed</small>
+                <small>Funding Requirements</small>
                 {requested !== null ? n(requested) : 0} CHF
                 <Progress value={requested ? percent(funded, requested) : 0} max={100} />
               </React.Fragment>
@@ -98,16 +120,20 @@ class FeaturedEmergencies extends React.Component {
 if (environment !== 'production') {
   FeaturedEmergencies.propTypes = {
     _getFeaturedEmergencies: T.func,
-    featured: T.object
+    _getFeaturedEmergenciesDeployments: T.func,
+    featured: T.object,
+    deployments: T.object
   };
 }
 
 const selector = (state) => ({
-  featured: state.emergencies.featured
+  featured: state.emergencies.featured,
+  deployments: state.emergencies.emergencyDeployments
 });
 
 const dispatcher = (dispatch) => ({
-  _getFeaturedEmergencies: (...args) => dispatch(getFeaturedEmergencies(...args))
+  _getFeaturedEmergencies: (...args) => dispatch(getFeaturedEmergencies(...args)),
+  _getFeaturedEmergenciesDeployments: (...args) => dispatch(getFeaturedEmergenciesDeployments(...args))
 });
 
 export default connect(selector, dispatcher)(FeaturedEmergencies);
