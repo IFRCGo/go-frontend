@@ -6,6 +6,7 @@ import { environment } from '../config';
 import { round } from '../utils/format';
 
 const Progress = ({max, value, children}) => {
+  value = round(value, 2);
   return (
     <div className='progress-bar-container'>
       <div className='progress-bar'>
