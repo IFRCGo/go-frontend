@@ -5,7 +5,7 @@ import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import Progress from './../progress-labeled';
 
-import { formatDate, percent, commaSeparatedNumber as n, shortenLargeNumber } from '../../utils/format';
+import { formatDate, percent, commaSeparatedNumber as n } from '../../utils/format';
 import { get, mostRecentReport } from '../../utils/utils';
 import { environment } from '../../config';
 import { getFeaturedEmergencies, getFeaturedEmergenciesDeployments } from '../../actions';
@@ -33,12 +33,13 @@ class FeaturedEmergencies extends React.Component {
 
     if (typeof this.props.deployments.data !== 'undefined' && Array.isArray(this.props.deployments.data.results)) {
       this.props.deployments.data.results
-        .filter(deployment => deployment.type === 'eru' && deployment.id === emergency.id)
+        .filter(deployment => deployment.type !== '' && deployment.id === emergency.id)
         .forEach(deployment => { deployedErus += deployment.deployments; });
 
       this.props.deployments.data.results
         .filter(deployment => {
-          return (deployment.type === 'heop' || deployment.type === 'rdrt') && deployment.id === emergency.id;
+          return (deployment.type === 'heop' || deployment.type === 'rdrt' || deployment.type === 'fact') &&
+            deployment.id === emergency.id;
         })
         .forEach(deployment => { deployedPersonnel += deployment.deployments; });
     }
@@ -68,7 +69,7 @@ class FeaturedEmergencies extends React.Component {
 
           <div className='card_box_container'>
             <div className='card_box card_box_left'>
-              <span className='affected_population_icon'></span> {shortenLargeNumber(beneficiaries)}<br />
+              <span className='affected_population_icon'></span> {n(beneficiaries)}<br />
               <small>Targeted Population</small>
             </div>
             <div className='card_box card_box_left'>
