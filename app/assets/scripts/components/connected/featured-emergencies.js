@@ -38,7 +38,7 @@ class FeaturedEmergencies extends React.Component {
 
       this.props.deployments.data.results
         .filter(deployment => {
-          return (deployment.type === 'heop' || deployment.type === 'rdrt' || deployment.type === 'fact') && 
+          return (deployment.type === 'heop' || deployment.type === 'rdrt' || deployment.type === 'fact') &&
             deployment.id === emergency.id;
         })
         .forEach(deployment => { deployedPersonnel += deployment.deployments; });
