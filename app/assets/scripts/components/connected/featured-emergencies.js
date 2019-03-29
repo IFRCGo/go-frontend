@@ -8,7 +8,7 @@ import Progress from './../progress-labeled';
 import { formatDate, percent, commaSeparatedNumber as n } from '../../utils/format';
 import { get, mostRecentReport } from '../../utils/utils';
 import { environment } from '../../config';
-import { getFeaturedEmergencies, getFeaturedEmergenciesDeployments } from '../../actions';
+import { getFeaturedEmergencies, getFeaturedEmergenciesDeployments, getDeploymentERU } from '../../actions';
 import BlockLoading from '../block-loading';
 import Fold from '../fold';
 
@@ -20,11 +20,29 @@ class FeaturedEmergencies extends React.Component {
 
     this.renderCard = this.renderCard.bind(this);
     this.calculateDeployedPersonnel = this.calculateDeployedPersonnel.bind(this);
+    this.getDeploymentERU = this.getDeploymentERU.bind(this);
   }
 
   componentWillMount () {
     this.props._getFeaturedEmergencies();
     this.props._getFeaturedEmergenciesDeployments();
+  }
+
+  componentWillReceiveProps () {
+    this.getDeploymentERU();
+  }
+
+  getDeploymentERU () {
+    if (this.props.featured.data.count > 0) {
+      let emergencyIds = '';
+      this.props.featured.data.results.forEach(emergency => {
+        emergencyIds += emergency.id + ',';
+      });
+      emergencyIds = emergencyIds.slice(0, -1);
+      if (!this.props.eru.fetching && !this.props.eru.fetched) {
+        this.props._getDeploymentERU(1, {event__in: emergencyIds});
+      }
+    }
   }
 
   calculateDeployedPersonnel (emergency) {
@@ -33,15 +51,19 @@ class FeaturedEmergencies extends React.Component {
 
     if (typeof this.props.deployments.data !== 'undefined' && Array.isArray(this.props.deployments.data.results)) {
       this.props.deployments.data.results
-        .filter(deployment => deployment.type !== '' && deployment.id === emergency.id)
-        .forEach(deployment => { deployedErus += deployment.deployments; });
-
-      this.props.deployments.data.results
         .filter(deployment => {
           return (deployment.type === 'heop' || deployment.type === 'rdrt' || deployment.type === 'fact') &&
             deployment.id === emergency.id;
         })
         .forEach(deployment => { deployedPersonnel += deployment.deployments; });
+    }
+
+    if (typeof this.props.eru.data !== 'undefined' && Array.isArray(this.props.eru.data.results)) {
+      this.props.eru.data.results
+        .filter(eru => {
+          return (eru.event.id === emergency.id);
+        })
+        .forEach(eru => { deployedErus += eru.units; });
     }
 
     return {'deployedErus': deployedErus, 'deployedPersonnel': deployedPersonnel};
@@ -118,19 +140,23 @@ if (environment !== 'production') {
   FeaturedEmergencies.propTypes = {
     _getFeaturedEmergencies: T.func,
     _getFeaturedEmergenciesDeployments: T.func,
+    _getDeploymentERU: T.func,
     featured: T.object,
-    deployments: T.object
+    deployments: T.object,
+    eru: T.object
   };
 }
 
 const selector = (state) => ({
   featured: state.emergencies.featured,
-  deployments: state.emergencies.emergencyDeployments
+  deployments: state.emergencies.emergencyDeployments,
+  eru: state.deployments.eru
 });
 
 const dispatcher = (dispatch) => ({
   _getFeaturedEmergencies: (...args) => dispatch(getFeaturedEmergencies(...args)),
-  _getFeaturedEmergenciesDeployments: (...args) => dispatch(getFeaturedEmergenciesDeployments(...args))
+  _getFeaturedEmergenciesDeployments: (...args) => dispatch(getFeaturedEmergenciesDeployments(...args)),
+  _getDeploymentERU: (...args) => dispatch(getDeploymentERU(...args))
 });
 
 export default connect(selector, dispatcher)(FeaturedEmergencies);
