@@ -142,7 +142,8 @@ if (environment !== 'production') {
     _getFeaturedEmergenciesDeployments: T.func,
     _getDeploymentERU: T.func,
     featured: T.object,
-    deployments: T.object
+    deployments: T.object,
+    eru: T.object
   };
 }
 
