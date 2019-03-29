@@ -61,7 +61,8 @@ class FeaturedEmergencies extends React.Component {
     if (typeof this.props.eru.data !== 'undefined' && Array.isArray(this.props.eru.data.results)) {
       this.props.eru.data.results
         .filter(eru => {
-          return (eru.event.id === emergency.id);
+          return (typeof eru.event.id !== 'undefined' && typeof eru.event.id !== 'null' &&
+            eru.event.id === emergency.id);
         })
         .forEach(eru => { deployedErus += eru.units; });
     }
