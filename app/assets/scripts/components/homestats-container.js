@@ -74,6 +74,7 @@ export default class Homestats extends React.Component {
 if (environment !== 'production') {
   Homestats.propTypes = {
     appealsList: T.object,
-    toggleFullscreen: T.func
+    toggleFullscreen: T.func,
+    fullscreen: T.boolean
   };
 }
