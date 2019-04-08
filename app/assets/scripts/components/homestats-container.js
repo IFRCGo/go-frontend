@@ -23,9 +23,9 @@ export default class Homestats extends React.Component {
   openTooltip (event) {
     const boxWidth = document.getElementById('budget-tooltip-box').offsetWidth;
     const boxHeight = document.getElementById('budget-tooltip-box').offsetHeight;
-    const marginTop = this.props.fullscreen ?
-      document.getElementById(event.target.id).offsetTop + document.getElementsByClassName('tooltip-button')[0].offsetHeight :
-      document.getElementById(event.target.id).offsetTop - boxHeight;
+    const marginTop = this.props.fullscreen
+      ? document.getElementById(event.target.id).offsetTop + document.getElementsByClassName('tooltip-button')[0].offsetHeight
+      : document.getElementById(event.target.id).offsetTop - boxHeight;
     const marginLeft = document.getElementById(event.target.id).offsetLeft - (boxWidth / 2) + 7;
 
     this.setState({

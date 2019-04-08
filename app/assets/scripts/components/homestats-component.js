@@ -21,9 +21,9 @@ export default function HomestatsComponent (props) {
 
   let renderTooltipBox = (props) => {
     const {title, description} = props.chooseContent(props);
-    const popupType = props.fullscreen ?
-      'mapboxgl-popup mapboxgl-popup-anchor-top' :
-      'mapboxgl-popup mapboxgl-popup-anchor-bottom';
+    const popupType = props.fullscreen
+      ? 'mapboxgl-popup mapboxgl-popup-anchor-top'
+      : 'mapboxgl-popup mapboxgl-popup-anchor-bottom';
 
     return (
       <div className={popupType}
@@ -130,6 +130,7 @@ if (environment !== 'production') {
     closeTooltip: T.func,
     openTooltip: T.func,
     chooseContent: T.func,
-    toggleFullscreen: T.func
+    toggleFullscreen: T.func,
+    fullscreen: T.number
   };
 }
