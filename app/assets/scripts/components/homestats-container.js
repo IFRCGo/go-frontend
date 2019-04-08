@@ -23,10 +23,10 @@ export default class Homestats extends React.Component {
   openTooltip (event) {
     const boxWidth = document.getElementById('budget-tooltip-box').offsetWidth;
     const boxHeight = document.getElementById('budget-tooltip-box').offsetHeight;
-    const marginTop = document.getElementById(event.target.id)
-      .getBoundingClientRect().top + window.scrollY - boxHeight;
-    const marginLeft = document.getElementById(event.target.id)
-      .getBoundingClientRect().left - (boxWidth / 2) + 7;
+    const marginTop = this.props.fullscreen ?
+      document.getElementById(event.target.id).offsetTop + document.getElementsByClassName('tooltip-button')[0].offsetHeight :
+      document.getElementById(event.target.id).offsetTop - boxHeight;
+    const marginLeft = document.getElementById(event.target.id).offsetLeft - (boxWidth / 2) + 7;
 
     this.setState({
       showBudgetTooltip: true,
@@ -65,6 +65,7 @@ export default class Homestats extends React.Component {
         data={this.state}
         appealsList={this.props.appealsList}
         toggleFullscreen={this.props.toggleFullscreen}
+        fullscreen={this.props.fullscreen}
         chooseContent={this.chooseContent}/>
     );
   }
