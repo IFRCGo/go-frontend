@@ -16,7 +16,7 @@ import {
 } from '../../utils/fullscreen';
 
 import Homestats from '../homestats-container';
-import Homemap from '../homemap';
+import HomeMap from '../homemap';
 import HomeCharts from '../homecharts';
 
 class PresentationDash extends React.Component {
@@ -70,8 +70,8 @@ class PresentationDash extends React.Component {
 
     return (
       <section className={c('fold--stats', {presenting: this.state.fullscreen})} id='presentation'>
-        <Homestats appealsList={appealsList} toggleFullscreen={this.toggleFullscreen} />
-        <Homemap operations={appealsList} noExport={true}/>
+        <Homestats appealsList={appealsList} fullscreen={this.state.fullscreen} toggleFullscreen={this.toggleFullscreen} />
+        <HomeMap operations={appealsList} noExport={true} />
         <HomeCharts aggregate={aggregate} />
       </section>
     );

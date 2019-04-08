@@ -21,9 +21,12 @@ export default function HomestatsComponent (props) {
 
   let renderTooltipBox = (props) => {
     const {title, description} = props.chooseContent(props);
+    const popupType = props.fullscreen
+      ? 'mapboxgl-popup mapboxgl-popup-anchor-top'
+      : 'mapboxgl-popup mapboxgl-popup-anchor-bottom';
 
     return (
-      <div className='mapboxgl-popup mapboxgl-popup-anchor-bottom'
+      <div className={popupType}
         id='budget-tooltip-box'
         style={{
           position: 'absolute',
@@ -95,7 +98,7 @@ export default function HomestatsComponent (props) {
         </li>
         <li className='sumstats__item'>
           <span className='sumstats__value'>{percent(stats.appealsFunding, stats.appealsBudget, 1)}%</span>
-          <span className='sumstats__key'>Emergency Appeals Funded</span>
+          <span className='sumstats__key'>Funding coverage</span>
         </li>
         <li className='sumstats__item'>
           <span className='sumstats__value'>{shortenLargeNumber(stats.targetPop, 1)}</span>
@@ -127,6 +130,7 @@ if (environment !== 'production') {
     closeTooltip: T.func,
     openTooltip: T.func,
     chooseContent: T.func,
-    toggleFullscreen: T.func
+    toggleFullscreen: T.func,
+    fullscreen: T.number
   };
 }

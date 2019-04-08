@@ -215,6 +215,7 @@ a.mapboxgl-ctrl-logo {
     margin-left: 2px;
 }
 #budget-tooltip-box {
+    z-index: 1001;
     width: 320px;
     height: 260px;
 }

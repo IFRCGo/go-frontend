@@ -509,8 +509,8 @@ class OperationsPopover extends React.Component {
                 </h3>
                 <ul className='popover__details'>
                   <li>{n(d.num_beneficiaries)} People Targeted</li>
-                  <li>{n(d.amount_requested)} Amount Requested (CHF)</li>
-                  <li>{n(d.amount_funded)} Amount Funded (CHF)</li>
+                  <li>{n(d.amount_requested)} Funding Requirements (CHF)</li>
+                  <li>{n(d.amount_funded)} Funding Coverage (CHF)</li>
                 </ul>
               </React.Fragment>
             )) : null}
