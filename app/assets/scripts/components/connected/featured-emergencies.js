@@ -100,7 +100,7 @@ class FeaturedEmergencies extends React.Component {
             </div>
             <div className='card_box card_box_left'>
               <span className='affected_population_icon'></span> {n(emergencyDeployments.deployedErus)}<br />
-              <small>Deployed ERUs</small>
+              <small>Deployed Emergency Response Units</small>
             </div>
             <div className='card_box'>
               <span className='deployed_personnel_icon'></span> {n(emergencyDeployments.deployedPersonnel)}<br />
