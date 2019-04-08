@@ -46,10 +46,11 @@ class FeaturedEmergencies extends React.Component {
   }
 
   calculateDeployedPersonnel (emergency) {
-    let deployedErus = 0;
-    let deployedPersonnel = 0;
+    let deployedErus = null;
+    let deployedPersonnel = null;
 
     if (typeof this.props.deployments.data !== 'undefined' && Array.isArray(this.props.deployments.data.results)) {
+      deployedPersonnel = 0;
       this.props.deployments.data.results
         .filter(deployment => {
           return (deployment.type === 'heop' || deployment.type === 'rdrt' || deployment.type === 'fact') &&
@@ -59,6 +60,7 @@ class FeaturedEmergencies extends React.Component {
     }
 
     if (typeof this.props.eru.data !== 'undefined' && Array.isArray(this.props.eru.data.results)) {
+      deployedErus = 0;
       this.props.eru.data.results
         .filter(eru => {
           return (typeof eru.event !== 'undefined' && eru.event !== null &&
@@ -98,7 +100,7 @@ class FeaturedEmergencies extends React.Component {
             </div>
             <div className='card_box card_box_left'>
               <span className='affected_population_icon'></span> {n(emergencyDeployments.deployedErus)}<br />
-              <small>Deployed ERUs</small>
+              <small>Deployed Emergency Response Units</small>
             </div>
             <div className='card_box'>
               <span className='deployed_personnel_icon'></span> {n(emergencyDeployments.deployedPersonnel)}<br />
