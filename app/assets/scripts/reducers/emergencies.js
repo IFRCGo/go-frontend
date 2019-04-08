@@ -200,9 +200,25 @@ function aggregate (state = aggregateInitialState, action) {
   return state;
 }
 
+const emergencyDeploymentsInitialState = {};
+function emergencyDeployments (state = emergencyDeploymentsInitialState, action) {
+  switch (action.type) {
+    case 'GET_FEATURED_EMERGENCIES_DEPLOYMENTS_SUCCESS':
+      state = Object.assign({}, state, {
+        fetching: false,
+        fetched: true,
+        receivedAt: action.receivedAt,
+        data: action.data
+      });
+      break;
+  }
+  return state;
+}
+
 export default combineReducers({
   list,
   featured,
+  emergencyDeployments,
   lastMonth,
   aggregate
 });

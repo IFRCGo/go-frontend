@@ -28,6 +28,15 @@
   }
 }
 
+.popover__contents__noscroll {
+  @extend .popover__contents;
+  max-height:fit-content;
+}
+
+.popover__headline__bold {
+  font-weight: bold;
+}
+
 a.popover__contents {
   color: inherit;
 
@@ -110,6 +119,10 @@ a.popover__contents {
 
   dd + dd {
     margin-left: 68%;
+  }
+
+  span {
+    font-weight: bold;
   }
 }
 

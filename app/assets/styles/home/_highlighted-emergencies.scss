@@ -1,0 +1,119 @@
+.card_box_container {
+  margin-top: 1rem;
+}
+
+.card_box {
+  float: left;
+  font-size: 1.5rem;
+  text-align: left;
+  padding-left: 5px;
+  //@include media(xsmall-only) {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  width: 100%;
+  //}
+  // @include media(small-up) {
+  //   width: 33%;
+  // }
+}
+
+.card_box small {
+  display: block;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 0.875rem;
+}
+
+.card_box_left {
+  //@include media(xsmall-only) {
+  border-bottom: 1px solid #c0c0c0;
+  //}
+  // @include media(small-up) {
+  //   border-right: 1px solid #c0c0c0;
+  // }
+}
+
+.ifrc_supported_badge {
+  float: right;
+  width: 100%;
+  margin-top: 1rem;
+  background-color: #fafafa;
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: right;
+  color: #c02c2c;
+}
+
+.card_box_full {
+  float: left;
+  margin-top: 1rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #c0c0c0;
+  width: 100%;
+  font-size: 1.5rem;
+  text-align: left;
+
+  .progress-bar {
+    display: inline-block;
+    width: 80%;
+  }
+
+  small {
+    display: block;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .progress-bar-container {
+    margin-top: -10px;
+  }
+
+  .progress-bar__value {
+    background-color: #C22A26;
+  }
+
+  .progress-bar__key small {
+    display: inline-block;
+    @include media(xsmall-only) {
+      font-size: 0.7rem;    
+    }
+    @include media(small-only) {
+      font-size: 0.875rem;    
+    }
+    @include media(medium-only) {
+      font-size: 0.65rem;    
+    }
+    @include media(large-only) {
+      font-size: 0.835rem;    
+    }
+    @include media(xlarge-only) {
+      font-size: 0.875rem;    
+    }
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .progress-bar__key {
+    display: inline-block;
+    padding-left: 5px;
+    text-align: right;
+    width: 20%;
+    float: right;
+  }
+}
+
+.more_button {
+  float: right;
+}
+
+.last_updated {
+  margin-bottom: 10px;
+  color: rgba(0, 0, 0, 0.6);
+  font-style: italic;
+}

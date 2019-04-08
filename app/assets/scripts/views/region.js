@@ -35,7 +35,11 @@ import {
   getCountries
 } from '../actions';
 import { getRegionBoundingBox } from '../utils/region-bounding-box';
-import { countriesByRegion, regions as regionMeta } from '../utils/region-constants';
+import {
+  countriesByRegion,
+  getRegionId,
+  regions as regionMeta
+} from '../utils/region-constants';
 import { getCountryMeta } from '../utils/get-country-meta';
 
 import App from './app';
@@ -55,16 +59,17 @@ import { SFPComponent } from '../utils/extendables';
 class AdminArea extends SFPComponent {
   constructor (props) {
     super(props);
+
     this.state = {
-      maskLayer: this.getMaskLayer(props.match.params.id)
+      maskLayer: this.getMaskLayer(getRegionId(props.match.params.id))
     };
   }
 
   componentWillReceiveProps (nextProps) {
-    if (this.props.match.params.id !== nextProps.match.params.id) {
+    if (getRegionId(this.props.match.params.id) !== getRegionId(nextProps.match.params.id)) {
       this.getData(nextProps);
-      this.setState({ maskLayer: this.getMaskLayer(nextProps.match.params.id) });
-      return this.getAdmArea(nextProps.type, nextProps.match.params.id);
+      this.setState({ maskLayer: this.getMaskLayer(getRegionId(nextProps.match.params.id)) });
+      return this.getAdmArea(nextProps.type, getRegionId(nextProps.match.params.id));
     }
 
     if (this.props.adminArea.fetching && !nextProps.adminArea.fetching) {
@@ -77,16 +82,17 @@ class AdminArea extends SFPComponent {
 
   componentDidMount () {
     this.getData(this.props);
-    this.getAdmArea(this.props.type, this.props.match.params.id);
+    this.getAdmArea(this.props.type, getRegionId(this.props.match.params.id));
   }
 
   getData (props) {
-    this.props._getAdmAreaAppealsList(props.type, props.match.params.id);
-    this.props._getAdmAreaAggregateAppeals(props.type, props.match.params.id, DateTime.local().minus({years: 10}).startOf('month').toISODate(), 'year');
-    this.props._getRegionPersonnel(props.match.params.id);
-    this.props._getAdmAreaKeyFigures(props.type, props.match.params.id);
-    this.props._getAdmAreaSnippets(props.type, props.match.params.id);
-    this.props._getCountries(props.match.params.id);
+    const id = getRegionId(props.match.params.id);
+    this.props._getAdmAreaAppealsList(props.type, id);
+    this.props._getAdmAreaAggregateAppeals(props.type, id, DateTime.local().minus({years: 10}).startOf('month').toISODate(), 'year');
+    this.props._getRegionPersonnel(id);
+    this.props._getAdmAreaKeyFigures(props.type, id);
+    this.props._getAdmAreaSnippets(props.type, id);
+    this.props._getCountries(id);
   }
 
   getMaskLayer (regionId) {
@@ -346,7 +352,7 @@ class AdminArea extends SFPComponent {
                 id='emergencies'
                 title='Recent Emergencies'
                 limit={5}
-                region={this.props.match.params.id}
+                region={getRegionId(this.props.match.params.id)}
                 showRecent={true}
                 viewAll={'/emergencies/all?region=' + data.id}
                 viewAllText={`View all Emergencies for ${regionName} region`}
@@ -360,7 +366,7 @@ class AdminArea extends SFPComponent {
               </Fold>
               <AppealsTable
                 title={'Active IFRC Operations'}
-                region={this.props.match.params.id}
+                region={getRegionId(this.props.match.params.id)}
                 showActive={true}
                 id={'appeals'}
                 viewAll={'/appeals/all?region=' + data.id}
@@ -412,7 +418,7 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state, ownProps) => ({
-  adminArea: get(state.adminArea.aaData, ownProps.match.params.id, {
+  adminArea: get(state.adminArea.aaData, getRegionId(ownProps.match.params.id), {
     data: {},
     fetching: false,
     fetched: false

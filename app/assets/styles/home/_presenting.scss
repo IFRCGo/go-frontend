@@ -55,3 +55,21 @@
     }
   }
 }
+
+.tooltip-button {
+  content: url('/assets/graphics/layout/circle-information.svg');
+  margin-left: 5px;
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+.tooltip-button:hover {
+  content: url('/assets/graphics/layout/circle-information-hover.svg');
+  margin-left: 5px;
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}

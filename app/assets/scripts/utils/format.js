@@ -1,4 +1,6 @@
 'use strict';
+
+import { FormatDateException } from './exception/FormatDateException';
 import { DateTime } from 'luxon';
 import { get } from './utils';
 import { orgTypes } from './field-report-constants';
@@ -7,6 +9,19 @@ export const nope = '--';
 export const na = 'N/A';
 export const invalid = 'Invalid';
 export const noSummary = 'No summary available';
+
+export const formatDate = (date) => {
+  if (typeof date === 'string' || date instanceof String) {
+    date = new Date(date);
+  }
+  if (date instanceof Date) {
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDay()).slice(-2);
+
+    return day + '-' + month + '-' + date.getFullYear();
+  }
+  throw new FormatDateException('The received argument (' + date + ') is not a Date or String instance!');
+};
 
 // Ie. given 12345.99, return '12,346'
 export const commaSeparatedNumber = (x) => {
@@ -36,6 +51,8 @@ export function shortenLargeNumber (value, decimals = 2) {
     value = round(value / 1e9, decimals) + 'B';
   } else if (value / 1e6 >= 1) {
     value = round(value / 1e6, decimals) + 'M';
+  } else if (value / 1e3 >= 1) {
+    value = round(value / 1e3, 0) + 'K';
   }
   return value;
 }

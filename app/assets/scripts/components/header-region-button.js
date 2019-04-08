@@ -4,7 +4,7 @@ import React from 'react';
 import Dropdown from './dropdown';
 import { Link } from 'react-router-dom';
 import { environment } from '../config';
-import { regions } from '../utils/region-constants';
+import { regions, getRegionId } from '../utils/region-constants';
 import { PropTypes as T } from 'prop-types';
 
 const regionArray = Object.keys(regions).map(k => regions[k]);
@@ -17,7 +17,7 @@ class HeaderRegionButton extends React.Component {
 
   decideTitle (currentPath) {
     if (currentPath.url.includes('/regions')) {
-      return regionArray[currentPath.params['id']].name;
+      return regionArray[getRegionId(currentPath.params['id'])].name;
     }
 
     return 'Regions';
