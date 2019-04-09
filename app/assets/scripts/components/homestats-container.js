@@ -75,6 +75,6 @@ if (environment !== 'production') {
   Homestats.propTypes = {
     appealsList: T.object,
     toggleFullscreen: T.func,
-    fullscreen: T.boolean
+    fullscreen: T.bool
   };
 }
