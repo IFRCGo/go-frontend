@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import Progress from './../progress-labeled';
 
 import { formatDate, percent, commaSeparatedNumber as n } from '../../utils/format';
-import { get, mostRecentReport } from '../../utils/utils';
+import { get } from '../../utils/utils';
 import { environment } from '../../config';
 import { getFeaturedEmergencies, getFeaturedEmergenciesDeployments, getDeploymentERU } from '../../actions';
 import BlockLoading from '../block-loading';
