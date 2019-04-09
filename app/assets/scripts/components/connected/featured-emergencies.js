@@ -80,18 +80,13 @@ class FeaturedEmergencies extends React.Component {
     const beneficiaries = appeals.reduce((acc, curr) => acc + curr.num_beneficiaries, 0);
     const requested = appeals.reduce((acc, curr) => acc + Number(curr.amount_requested), 0);
     const funded = appeals.reduce((acc, curr) => acc + Number(curr.amount_funded), 0);
-    const report = mostRecentReport(get(d, 'field_reports'));
-    const lastUpdated = typeof report !== 'undefined' &&
-      typeof report.updated_at !== 'undefined' &&
-      report.updated_at !== null
-      ? report.updated_at : d.created_at;
     const emergencyDeployments = this.calculateDeployedPersonnel(d);
 
     return (
       <li className='key-emergencies-item' key={id}>
         <Link to={`/emergencies/${id}`}>
           <h2 className='card__title'>{ name.length > 30 ? name.slice(0, 30) + '...' : name }</h2>
-          <small className='last_updated'>Last updated at {formatDate(lastUpdated)}</small>
+          <small className='last_updated'>Last updated: {formatDate(d.updated_at)}</small>
 
           <div className='card_box_container'>
             <div className='card_box card_box_left'>
