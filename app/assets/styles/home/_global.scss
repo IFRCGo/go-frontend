@@ -288,6 +288,23 @@
       right: $global-spacing;
     }
 
+    &--download-btn {
+      top: 80px;
+      right: 10px;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      content: url('/assets/graphics/content/download.svg');
+      padding: 6px !important;
+    }
+
+    &--top-left {
+      position: relative;
+      float: left;
+      margin-top: 10px;
+      margin-left: 10px;
+    }
+
     .form__option {
       font-size: 0.75rem;
     }

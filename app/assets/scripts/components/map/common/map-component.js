@@ -3,10 +3,10 @@ import React from 'react';
 import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 
-import newMap, { source } from '../../utils/get-new-map';
-import { get } from '../../utils/utils';
-import { environment } from '../../config';
-import exportMap from '../../utils/export-map';
+import newMap, { source } from '../../../utils/get-new-map';
+import { get } from '../../../utils/utils';
+import { environment } from '../../../config';
+import exportMap from '../../../utils/export-map';
 
 export default class MapComponent extends React.Component {
   constructor (props) {

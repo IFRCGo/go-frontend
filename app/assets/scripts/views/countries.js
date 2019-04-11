@@ -35,7 +35,7 @@ import { getBoundingBox } from '../utils/country-bounding-box';
 
 import App from './app';
 import Fold from '../components/fold';
-import Homemap from '../components/homemap';
+import CountryMap from '../components/map/country-map';
 import DisplayTable, { SortHeader, FilterHeader } from '../components/display-table';
 import EmergenciesTable from '../components/connected/emergencies-table';
 import BulletTable from '../components/bullet-table';
@@ -414,7 +414,7 @@ class AdminArea extends SFPComponent {
                       rows={get(partnerDeployments, 'data.activities', [])} />
                   </div>
                   <div className={mapContainerClass}>
-                    <Homemap operations={this.props.appealStats}
+                    <CountryMap operations={this.props.appealStats}
                       bbox={bbox}
                       deployments={this.props.partnerDeployments}
                       deploymentsKey='Additional Response Activities' // From Elsa instead of 'PNS Activities'

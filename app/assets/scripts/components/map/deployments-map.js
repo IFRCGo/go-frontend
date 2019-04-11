@@ -10,10 +10,11 @@ import _cloneDeep from 'lodash.clonedeep';
 import { getCountryIsoFromVt } from '../../utils/utils';
 import { source } from '../../utils/get-new-map';
 import { environment } from '../../config';
-import MapComponent from '../map';
+import MapComponent from './common/map-component';
 import {
   FormSelect
-} from '../form-elements/';
+} from '../form-elements';
+import DownloadButton from './common/download-button';
 
 const countryChromaScale = chroma.scale(['#F0C9E8', '#861A70']);
 
@@ -249,6 +250,7 @@ export default class DeploymentsMap extends React.Component {
       }
     ];
     const activeFilter = filterTypes.find(d => d.value === this.state.mapFilter.deployment).label;
+    const canvas = document.getElementsByClassName('mapboxgl-canvas')[0];
 
     return (
       <div className='stats-map deployments-map'>
@@ -300,6 +302,8 @@ export default class DeploymentsMap extends React.Component {
 
                 </FormSelect>
               </figcaption>
+
+              <DownloadButton data={canvas} />
 
             </MapComponent>
           </div>
