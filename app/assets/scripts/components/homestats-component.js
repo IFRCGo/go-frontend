@@ -131,6 +131,6 @@ if (environment !== 'production') {
     openTooltip: T.func,
     chooseContent: T.func,
     toggleFullscreen: T.func,
-    fullscreen: T.number
+    fullscreen: T.bool
   };
 }

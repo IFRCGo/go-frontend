@@ -238,7 +238,7 @@ class DisplaySection extends React.Component {
   render () {
     const { inner, children, title } = this.props;
     if (!children && !inner) { return null; }
-    const content = children || <p>{inner}</p>;
+    const content = children || <p dangerouslySetInnerHTML={{__html: inner}} />;
     return (
       <section className='display-section'>
         <h3>{title}</h3>
