@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import html2canvas from 'html2canvas';
 import { startDownload } from '../../../utils/download-starter';
 import { PropTypes as T } from 'prop-types';
 import { environment } from '../../../config';
@@ -12,11 +13,38 @@ class DownloadButton extends React.Component {
   }
 
   startDownload () {
-    let dataUri = this.props.data.toDataURL('image/jpeg')
-      .replace('image/jpeg', 'image/octet-stream');
-    let timestamp = new Date();
+    const timestamp = new Date();
+    const map = document.querySelector('.map-vis');
+    const downloadButton = map.querySelector('.map-vis__legend--download-btn');
+    const dropdowns = map.querySelectorAll('.map-vis__legend--top-left');
+    const popover = map.querySelector('.popover__contents');
+    const navigationContainer = map.querySelector('.map-vis__holder')
+      .querySelector('.mapboxgl-control-container');
+    const navigation = map.querySelector('.mapboxgl-ctrl-top-right');
 
-    startDownload(dataUri, 'map-' + timestamp.getTime() + '.jpg');
+    map.removeChild(downloadButton);
+    navigationContainer.removeChild(navigation);
+    dropdowns.forEach(dropdown => map.removeChild(dropdown));
+
+    if (popover !== null) {
+      popover.style.height = 'fit-content';
+      popover.style.maxHeight = 'none';
+    }
+
+    html2canvas(map, {useCORS: true}).then((renderedCanvas) => {
+      startDownload(
+        renderedCanvas.toDataURL('image/png'),
+        'map-' + timestamp.getTime() + '.jpg');
+
+      map.appendChild(downloadButton);
+      navigationContainer.appendChild(navigation);
+      dropdowns.forEach(dropdown => map.appendChild(dropdown));
+
+      if (popover !== null) {
+        popover.style.height = 'auto';
+        popover.style.maxHeight = '225px';
+      }
+    });
   }
 
   render () {
