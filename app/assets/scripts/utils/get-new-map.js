@@ -8,7 +8,7 @@ export default function newMap (container) {
   const map = new mapboxgl.Map({
     container: container,
     style: 'mapbox://styles/go-ifrc/cjkdzcum95m7l2sqgo3i7cv4q',
-    zoom: 1.01,
+    zoom: 1.5,
     minZoom: 1,
     maxZoom: 6,
     scrollZoom: false,
