@@ -2,6 +2,12 @@
    Global: Folds
    ========================================================================== */
 
+.fold-container {
+  margin-bottom: 50px !important;
+  float: left;
+  width: 100%;
+}
+
 .fold {
   background: #fff;
   padding: ($global-spacing * 2) 0;
