@@ -43,7 +43,6 @@ class A1PolicyStrategyForm extends React.Component {
       code: 'A1',
       name: 'Nemo',
       language: 1,
-      unique_id: '1aad9295-ceb9-4ad5-9b10-84cc423e93g1',
       data: [
         {id: '1.1', op: q11, nt: 'no ti'},
         {id: '1.2', op: q12, nt: 'no ti'},
