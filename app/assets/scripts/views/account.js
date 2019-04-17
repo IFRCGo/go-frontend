@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import { set } from 'object-path';
 import { Helmet } from 'react-helmet';
+import { Sticky, StickyContainer } from 'react-sticky';
 
 import { environment } from '../config';
 import {
@@ -417,28 +418,30 @@ class Account extends React.Component {
     if (!data.length) { return null; }
     return (
       <div className='prose prose--responsive'>
-        <section className='fold'>
-          <div className='inner'>
-            <div className='fold__header'> <h2 className='fold__title'>Submitted Field Reports</h2>
+        <div className='fold-container'>
+          <section className='fold'>
+            <div className='inner'>
+              <div className='fold__header'> <h2 className='fold__title'>Submitted Field Reports</h2>
+              </div>
+              <div className='fold__body'>
+                <ul className='report__list'>
+                  {data.map(o => (
+                    <li key={o.id} className='report__list--item'>
+                      <div className='report__list--header'>
+                        <Link className='link--primary' to={`/reports/${o.id}`}>{o.summary}</Link>&nbsp;
+                        <span className='report__list--updated'>Last Updated: {DateTime.fromISO(o.updated_at || o.created_at).toISODate()}</span>
+                      </div>
+                      <p>{o.description}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className='fold__footer'>
+                <p>To delete a field report, contact <a href='mailto:im@ifrc.org'>the IM team</a>.</p>
+              </div>
             </div>
-            <div className='fold__body'>
-              <ul className='report__list'>
-                {data.map(o => (
-                  <li key={o.id} className='report__list--item'>
-                    <div className='report__list--header'>
-                      <Link className='link--primary' to={`/reports/${o.id}`}>{o.summary}</Link>&nbsp;
-                      <span className='report__list--updated'>Last Updated: {DateTime.fromISO(o.updated_at || o.created_at).toISODate()}</span>
-                    </div>
-                    <p>{o.description}</p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className='fold__footer'>
-              <p>To delete a field report, contact <a href='mailto:im@ifrc.org'>the IM team</a>.</p>
-            </div>
-          </div>
-        </section>
+          </section>
+        </div>
       </div>
     );
   }
@@ -446,65 +449,67 @@ class Account extends React.Component {
   renderSubscriptionForm () {
     return (
       <form className='form' onSubmit={this.onNotificationSubmit}>
-        <Fold title='Subscription preferences'>
-          <FormCheckboxGroup
-            label='Regional notifications'
-            description={'Select one or more regions to receive notifications about.'}
-            name='regions'
-            classWrapper='action-checkboxes'
-            options={regions}
-            values={this.state.notifications.regions}
-            onChange={this.onFieldChange.bind(this, 'notifications', 'regions')} />
-          <div className='form__group'>
-            <label className='form__label'>Country-level notifications</label>
-            <p className='form__description'>Select one or more countries to receive notifications about.</p>
-            <Select
-              name='countries'
-              value={this.state.notifications.countries}
-              onChange={this.onFieldChange.bind(this, 'notifications', 'countries')}
-              options={countries}
-              multi />
-          </div>
-          <FormCheckboxGroup
-            label='Disaster types'
-            description={'Get notified about new disasters in these categories.'}
-            name='disasterTypes'
-            classWrapper='action-checkboxes'
-            options={disasterTypes}
-            values={this.state.notifications.disasterTypes}
-            onChange={this.onFieldChange.bind(this, 'notifications', 'disasterTypes')} />
-          <FormCheckboxGroup
-            label='Emergencies'
-            name='event'
-            classWrapper='action-checkboxes'
-            options={systemNotificationTypes}
-            values={this.state.notifications.event}
-            onChange={this.onFieldChange.bind(this, 'notifications', 'event')} />
-          <FormCheckboxGroup
-            label='Field Reports'
-            name='fieldReport'
-            classWrapper='action-checkboxes'
-            options={systemNotificationTypes}
-            values={this.state.notifications.fieldReport}
-            onChange={this.onFieldChange.bind(this, 'notifications', 'fieldReport')} />
-          <FormCheckboxGroup
-            label='Appeals'
-            name='appeal'
-            classWrapper='action-checkboxes'
-            options={systemNotificationTypes}
-            values={this.state.notifications.appeal}
-            onChange={this.onFieldChange.bind(this, 'notifications', 'appeal')} />
-          <FormCheckboxGroup
-            label='Other Notifications'
-            name='other'
-            classWrapper='action-checkboxes'
-            options={otherNotificationTypes}
-            values={this.state.notifications.other}
-            onChange={this.onFieldChange.bind(this, 'notifications', 'other')} />
-          <button type='submit' className={c('button', 'button--large', 'button--secondary-filled', {
-            'disabled': !this.state.isNotificationsDirty
-          })} title='Save'>Save</button>
-        </Fold>
+        <div className='fold-container'>
+          <Fold title='Subscription preferences'>
+            <FormCheckboxGroup
+              label='Regional notifications'
+              description={'Select one or more regions to receive notifications about.'}
+              name='regions'
+              classWrapper='action-checkboxes'
+              options={regions}
+              values={this.state.notifications.regions}
+              onChange={this.onFieldChange.bind(this, 'notifications', 'regions')} />
+            <div className='form__group'>
+              <label className='form__label'>Country-level notifications</label>
+              <p className='form__description'>Select one or more countries to receive notifications about.</p>
+              <Select
+                name='countries'
+                value={this.state.notifications.countries}
+                onChange={this.onFieldChange.bind(this, 'notifications', 'countries')}
+                options={countries}
+                multi />
+            </div>
+            <FormCheckboxGroup
+              label='Disaster types'
+              description={'Get notified about new disasters in these categories.'}
+              name='disasterTypes'
+              classWrapper='action-checkboxes'
+              options={disasterTypes}
+              values={this.state.notifications.disasterTypes}
+              onChange={this.onFieldChange.bind(this, 'notifications', 'disasterTypes')} />
+            <FormCheckboxGroup
+              label='Emergencies'
+              name='event'
+              classWrapper='action-checkboxes'
+              options={systemNotificationTypes}
+              values={this.state.notifications.event}
+              onChange={this.onFieldChange.bind(this, 'notifications', 'event')} />
+            <FormCheckboxGroup
+              label='Field Reports'
+              name='fieldReport'
+              classWrapper='action-checkboxes'
+              options={systemNotificationTypes}
+              values={this.state.notifications.fieldReport}
+              onChange={this.onFieldChange.bind(this, 'notifications', 'fieldReport')} />
+            <FormCheckboxGroup
+              label='Appeals'
+              name='appeal'
+              classWrapper='action-checkboxes'
+              options={systemNotificationTypes}
+              values={this.state.notifications.appeal}
+              onChange={this.onFieldChange.bind(this, 'notifications', 'appeal')} />
+            <FormCheckboxGroup
+              label='Other Notifications'
+              name='other'
+              classWrapper='action-checkboxes'
+              options={otherNotificationTypes}
+              values={this.state.notifications.other}
+              onChange={this.onFieldChange.bind(this, 'notifications', 'other')} />
+            <button type='submit' className={c('button', 'button--large', 'button--secondary-filled', {
+              'disabled': !this.state.isNotificationsDirty
+            })} title='Save'>Save</button>
+          </Fold>
+        </div>
       </form>
     );
   }
@@ -523,15 +528,49 @@ class Account extends React.Component {
               </div>
             </div>
           </header>
+          <StickyContainer>
+            <Sticky>
+              {({ style, isSticky }) => (
+                <div style={style} className={c('inpage__nav', {'inpage__nav--sticky': isSticky})}>
+                  <div className='inner'>
+                    <ul>
+                      <li><a href='#account-information' title='Go to Operations section'>Account Information</a></li>
+                      <li><a href='#notifications' title='Go to Emergencies section'>Notifications</a></li>
+                      <li><a href='#per-forms' title='Go to Appeals section'>PER forms</a></li>
+                    </ul>
+                  </div>
+                </div>
+              )}
+            </Sticky>
+          </StickyContainer>
           <div className='inpage__body'>
             <div className='inner'>
               <div className='prose prose--responsive'>
-                <section className='fold'>
-                  {this.state.profileEditMode ? this.renderProfileForm() : this.renderProfileAttributes()}
-                </section>
+                <div className='fold-container'>
+                  <section className='fold' id='account-information'>
+                    {this.state.profileEditMode ? this.renderProfileForm() : this.renderProfileAttributes()}
+                  </section>
+                </div>
               </div>
               {this.renderFieldReports()}
               {this.props.profile.fetched && !this.props.profile.error ? this.renderSubscriptionForm() : null}
+              <div className='fold-container'>
+                <section className='fold' id='notifications'>
+                  <div className='inner'>
+                    <h2 className='fold__title'>Notifications</h2>
+                  </div>
+                </section>
+              </div>
+              <div className='fold-container'>
+                <section className='fold' id='per-forms'>
+                  <div className='inner'>
+                    <h2 className='fold__title'>PER Forms</h2>
+                    Click on the following links to access the PER forms, where you can select individual National Societies.
+                    <hr /><br />
+                    <a href='/per-forms/policy-strategy' className='link--primary'>Area 1: Policy and Standards</a>
+                  </div>
+                </section>
+              </div>
             </div>
           </div>
         </section>
