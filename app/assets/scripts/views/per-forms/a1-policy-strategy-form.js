@@ -280,7 +280,7 @@ class A1PolicyStrategyForm extends React.Component {
           <br /><input type='text' name='' /><br /><br />
 
           <div className='per_form_area'>Component 5: Quality and accountability</div>
-          Describes the essential elements of principled, accountable, and high-quality humanitarian action. 
+          Describes the essential elements of principled, accountable, and high-quality humanitarian action.
           The RCRC Movement provides support to the most vulnerable people in line with the Sphere and CHS standards, Code of Conduct for the RCRC Movement and NGOS in Disaster Relief and the Code for Good Partnership of the RCRC Movement, Gender & Diversity, inclusion and protection, BPI/ Do no harm, context-sensitive analysis, violence prevention, accountability to affected population and disability considerations, Community engagement and accountability (CEA).
           <div className='per_form_ns'>5.1 NS has mechanisms in place to ensure the affected populations are involved in all stages of the response (including decision making) to ensure assistance is appropriate and meets their needs and priorities.</div>
           <div className='per_form_question'>Benchmark status</div>
@@ -297,7 +297,7 @@ class A1PolicyStrategyForm extends React.Component {
           <div className='per_form_question'>Notes related to the benchmark & Means of verification/source</div>
           Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required
           <br /><input type='text' name='' /><br /><br />
-          
+
           <div className='per_form_ns'>5.3 A NS CEA plan is developed and implemented, standard templates are available, and procedures are included in SOPs..</div>
           <div className='per_form_question'>Benchmark status</div>
           <input type='radio' name='q53' value='' /> Yes<br />
