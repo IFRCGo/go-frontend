@@ -1,7 +1,6 @@
 import React from 'react';
 
 class A1PolicyStrategyForm extends React.Component {
-
   constructor (props) {
     super(props);
     this.sendTheFormMate = this.sendTheFormMate.bind(this);
@@ -73,7 +72,7 @@ class A1PolicyStrategyForm extends React.Component {
         {id: '5.7', op: q57, nt: 'no ti'},
         {id: '5.8', op: q58, nt: 'no ti'},
         {id: '5.9', op: q59, nt: 'no ti'},
-        {id: '5', op: q5, nt: 'no ti'},
+        {id: '5', op: q5, nt: 'no ti'}
       ]
     });
 
@@ -81,7 +80,7 @@ class A1PolicyStrategyForm extends React.Component {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
       body: data
     });
@@ -125,7 +124,7 @@ class A1PolicyStrategyForm extends React.Component {
           <div className='per_form_question'>Notes related to the benchmark & Means of verification/source</div>
           Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required
           <br /><input type='text' name='' /><br /><br />
-          
+
           <div className='per_form_ns'>1.4 NS promotes IHL to the public authorities and uses humanitarian diplomacy to promote compliance.</div>
           <div className='per_form_question'>Benchmark status</div>
           <input type='radio' name='q14' value='' /> Yes<br />
@@ -144,7 +143,7 @@ class A1PolicyStrategyForm extends React.Component {
           <input type='radio' name='q1' value='' />High performance
           <div className='per_form_question'>Notes related to the component:</div>
           <br /><input type='text' name='' /><br /><br />
-          
+
           <div className='per_form_area'>Component 2: DRM Strategy</div>
           An outline of the overall goal that the NS seeks to achieve in its disaster and crisis response operations. The goal considers: context analysis, ongoing/regular all-hazards risk assessments: it may define the target proportion of affected population that will be reached, and a definition of the areas/sectors where a NS will usually respond during an emergency.
           <div className='per_form_ns'>2.1 NS DRM strategy reflects the NS mandate, analysis of country context, trends, operational objectives, success indicators.</div>
@@ -162,7 +161,7 @@ class A1PolicyStrategyForm extends React.Component {
           <div className='per_form_question'>Notes related to the benchmark & Means of verification/source</div>
           Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required
           <br /><input type='text' name='' /><br /><br />
-          
+
           <div className='per_form_ns'>2.3 NS DRM strategy includes clear engagement with technical sectors and support services to ensure comprehensive response.</div>
           <div className='per_form_question'>Benchmark status</div>
           <input type='radio' name='q23' value='' /> Yes<br />
@@ -191,7 +190,7 @@ class A1PolicyStrategyForm extends React.Component {
           <div className='per_form_question'>Notes related to the benchmark & Means of verification/source</div>
           Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required
           <br /><input type='text' name='' /><br /><br />
-          
+
           <div className='per_form_ns'>3.2 DRM policy sets out guiding principles and values that guide decision-making on the response approach and actions.</div>
           <div className='per_form_question'>Benchmark status</div>
           <input type='radio' name='q32' value='' /> Yes<br />
@@ -215,7 +214,7 @@ class A1PolicyStrategyForm extends React.Component {
           <div className='per_form_question'>Notes related to the benchmark & Means of verification/source</div>
           Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required
           <br /><input type='text' name='' /><br /><br />
-          
+
           <div className='per_form_ns'>Component 3 performance</div>
           <div className='per_form_question'>Status:</div>
           <input type='radio' name='q3' value='' /> Not Reviewed<br />
@@ -226,7 +225,7 @@ class A1PolicyStrategyForm extends React.Component {
           <input type='radio' name='q3' value='' /> High performance
           <div className='per_form_question'>Notes related to the component:</div>
           <br /><input type='text' name='' /><br /><br />
-          
+
           <div className='per_form_area'>Component 4: DRM Laws, Advocacy and Dissemination</div>
           Designed to support the NS in improving legal preparedness for disasters and crisis and to promote the use of the IDRL Guidelines in order to reduce human vulnerability.
           <div className='per_form_ns'>4.1 NS has an IDRL humanitarian diplomacy plan /actions in place based on IFRC's IDRL Checklist.</div>
@@ -260,7 +259,7 @@ class A1PolicyStrategyForm extends React.Component {
           <div className='per_form_question'>Notes related to the benchmark & Means of verification/source</div>
           Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required
           <br /><input type='text' name='' /><br /><br />
-          
+
           <div className='per_form_ns'>4.5 NS tests and/or tracks IDRL lessons through response operations to guide its future humanitarian diplomacy work.</div>
           <div className='per_form_question'>Benchmark status</div>
           <input type='radio' name='q45' value='' /> Yes<br />
@@ -268,7 +267,7 @@ class A1PolicyStrategyForm extends React.Component {
           <div className='per_form_question'>Notes related to the benchmark & Means of verification/source</div>
           Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required
           <br /><input type='text' name='' /><br /><br />
-          
+
           <div className='per_form_ns'>Component 4 performance</div>
           <div className='per_form_question'>Status:</div>
           <input type='radio' name='q4' value='' /> Not Reviewed<br />
@@ -306,7 +305,7 @@ class A1PolicyStrategyForm extends React.Component {
           <div className='per_form_question'>Notes related to the benchmark & Means of verification/source</div>
           Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required
           <br /><input type='text' name='' /><br /><br />
-          
+
           <div className='per_form_ns'>5.4 Safe and accessible feedback and complaints mechanisms exists to record, refer or respond, and monitor communities' concerns and requests regarding the assistance provided or protection issues (including for sexual exploitation and abuse).</div>
           <div className='per_form_question'>Benchmark status</div>
           <input type='radio' name='q54' value='' /> Yes<br />
@@ -314,7 +313,7 @@ class A1PolicyStrategyForm extends React.Component {
           <div className='per_form_question'>Notes related to the benchmark & Means of verification/source</div>
           Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required
           <br /><input type='text' name='' /><br /><br />
-          
+
           <div className='per_form_ns'>5.5 NS has adopted the Protection for sexual exploitation and abuse policy in line with the International conference resolution on Sexual and Gender Based Violence.</div>
           <div className='per_form_question'>Benchmark status</div>
           <input type='radio' name='q55' value='' /> Yes<br />
@@ -330,7 +329,7 @@ class A1PolicyStrategyForm extends React.Component {
           <div className='per_form_question'>Notes related to the benchmark & Means of verification/source</div>
           Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required
           <br /><input type='text' name='' /><br /><br />
-          
+
           <div className='per_form_ns'>5.7 NS adheres to protection policies to support their protection services (safe spaces for child protection, actions for unaccompanied and separated children, prevention of sexual and gender-based violence, violence prevention, psychosocial support, restoring family links, accessibility of facilities and information) to respond.</div>
           <div className='per_form_question'>Benchmark status</div>
           <input type='radio' name='q57' value='' /> Yes<br />
@@ -338,7 +337,7 @@ class A1PolicyStrategyForm extends React.Component {
           <div className='per_form_question'>Notes related to the benchmark & Means of verification/source</div>
           Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required
           <br /><input type='text' name='' /><br /><br />
-          
+
           <div className='per_form_ns'>5.8 NS plans and procedures actively minimise potential harmful social, economic and environmental impacts of assistance (do no harm principle).</div>
           <div className='per_form_question'>Benchmark status</div>
           <input type='radio' name='q58' value='' /> Yes<br />
@@ -346,7 +345,7 @@ class A1PolicyStrategyForm extends React.Component {
           <div className='per_form_question'>Notes related to the benchmark & Means of verification/source</div>
           Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required
           <br /><input type='text' name='' /><br /><br />
-          
+
           <div className='per_form_ns'>5.9 NS follows the Minimum Standards for Protection, Gender and Inclusion in Emergencies.</div>
           <div className='per_form_question'>Benchmark status</div>
           <input type='radio' name='q59' value='' /> Yes<br />
@@ -354,7 +353,7 @@ class A1PolicyStrategyForm extends React.Component {
           <div className='per_form_question'>Notes related to the benchmark & Means of verification/source</div>
           Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required
           <br /><input type='text' name='' /><br /><br />
-          
+
           <div className='per_form_ns'>Component 5 performance</div>
           <div className='per_form_question'>Status:</div>
           <input type='radio' name='q5' value='' /> Not Reviewed<br />
@@ -371,7 +370,7 @@ class A1PolicyStrategyForm extends React.Component {
 
         </div>
       </div>
-    )
+    );
   }
 }
 

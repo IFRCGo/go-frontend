@@ -6,7 +6,6 @@ import { Helmet } from 'react-helmet';
 import App from './app';
 
 class PerForms extends React.Component {
-
   render () {
     return (
       <App className='page--emergencies'>
@@ -19,7 +18,6 @@ class PerForms extends React.Component {
               <A1PolicyStrategyForm></A1PolicyStrategyForm>
             </div>
           </div>
-          
         </section>
       </App>
     );
