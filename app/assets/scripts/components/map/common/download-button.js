@@ -24,7 +24,9 @@ class DownloadButton extends React.Component {
       const navigationContainer = map.querySelector('.map-vis__holder')
         .querySelector('.mapboxgl-control-container');
       const navigation = map.querySelector('.mapboxgl-ctrl-top-right');
+      const mapLogoHeader = document.getElementById('map-picture-header');
 
+      mapLogoHeader.style.visibility = 'visible';
       map.removeChild(downloadButton);
       navigationContainer.removeChild(navigation);
       dropdowns.forEach(dropdown => map.removeChild(dropdown));
@@ -39,6 +41,7 @@ class DownloadButton extends React.Component {
           renderedCanvas.toDataURL('image/png'),
           'map-' + timestamp.getTime() + '.png');
 
+        mapLogoHeader.style.visibility = 'hidden';
         map.appendChild(downloadButton);
         navigationContainer.appendChild(navigation);
         dropdowns.forEach(dropdown => map.appendChild(dropdown));
