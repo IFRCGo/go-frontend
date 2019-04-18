@@ -7,6 +7,7 @@ import newMap, { source } from '../../../utils/get-new-map';
 import { get } from '../../../utils/utils';
 import { environment } from '../../../config';
 import exportMap from '../../../utils/export-map';
+import DownloadButton from './download-button';
 
 export default class MapComponent extends React.Component {
   constructor (props) {
@@ -15,6 +16,7 @@ export default class MapComponent extends React.Component {
     this.state = {
       ready: false
     };
+    this.setZoomToDefault = this.setZoomToDefault.bind(this);
   }
 
   setupData () {
@@ -32,6 +34,10 @@ export default class MapComponent extends React.Component {
     if (this.theMap.getLayer(filter.layer)) {
       this.theMap.setFilter(filter.layer, filter.filter);
     }
+  }
+
+  setZoomToDefault () {
+    this.theMap.setZoom(1);
   }
 
   componentDidMount () {
@@ -81,6 +87,7 @@ export default class MapComponent extends React.Component {
   render () {
     const className = c(this.props.className);
     const children = this.props.children || null;
+    const canvas = document.getElementsByClassName('mapboxgl-canvas')[0];
     return (
       <figure className='map-vis'>
         {this.props.noExport ? null : (
@@ -92,6 +99,7 @@ export default class MapComponent extends React.Component {
         )}
         <div className={className} ref='map'/>
         {children}
+        {this.props.downloadButton === true ? <DownloadButton data={canvas} setZoomToDefault={this.setZoomToDefault} /> : null}
       </figure>
     );
   }
