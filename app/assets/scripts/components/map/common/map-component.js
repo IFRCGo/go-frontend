@@ -122,6 +122,7 @@ if (environment !== 'production') {
     configureMap: T.func,
     children: T.node,
     className: T.string,
-    noExport: T.bool
+    noExport: T.bool,
+    downloadButton: T.bool
   };
 }

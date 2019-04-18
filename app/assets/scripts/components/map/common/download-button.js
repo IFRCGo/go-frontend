@@ -67,8 +67,7 @@ class DownloadButton extends React.Component {
 if (environment !== 'production') {
   DownloadButton.propTypes = {
     data: T.object,
-    setZoomToDefault: T.func,
-    downloadButton: T.bool
+    setZoomToDefault: T.func
   };
 }
 
