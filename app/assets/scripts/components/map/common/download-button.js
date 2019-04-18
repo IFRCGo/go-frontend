@@ -68,7 +68,7 @@ if (environment !== 'production') {
   DownloadButton.propTypes = {
     data: T.object,
     setZoomToDefault: T.func,
-    download: T.bool
+    downloadButton: T.bool
   };
 }
 
