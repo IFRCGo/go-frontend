@@ -15,7 +15,7 @@ class DownloadButton extends React.Component {
   startDownload () {
     this.props.setZoomToDefault();
 
-    const interval = setInterval(function() {
+    const interval = setInterval(function () {
       const timestamp = new Date();
       const map = document.querySelector('.map-vis');
       const downloadButton = map.querySelector('.map-vis__legend--download-btn');
@@ -66,7 +66,9 @@ class DownloadButton extends React.Component {
 
 if (environment !== 'production') {
   DownloadButton.propTypes = {
-    data: T.object
+    data: T.object,
+    setZoomToDefault: T.func,
+    download: T.bool
   };
 }
 
