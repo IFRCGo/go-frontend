@@ -14,7 +14,6 @@ import { get } from '../../utils/utils';
 import ExplanationBubble from './home-map/explanation-bubble';
 import EmergencyTypesDropdown from './home-map/emergency-types-dropdown';
 import AppealTypesDropdown from './home-map/appeal-types-dropdown';
-import DownloadButton from './common/download-button';
 import { filtering } from './home-map/filtering/filtering-processor';
 import { AppealTypeComparator } from './home-map/filtering/comparator/appeal-type-comparator';
 import { EmergencyTypeComparator } from './home-map/filtering/comparator/emergency-type-comparator';
@@ -251,7 +250,6 @@ class HomeMap extends React.Component {
     const geoJSON = this.state.markerGeoJSON;
     const mapContainerClassName = this.props.noRenderEmergencies ? 'map-container map-container-fullwidth' : 'map-container';
     const emergenciesByType = get(this.props, 'operations.data.emergenciesByType', []);
-    const canvas = document.getElementsByClassName('mapboxgl-canvas')[0];
 
     return (
       <React.Fragment>
@@ -268,7 +266,8 @@ class HomeMap extends React.Component {
             noExport={this.props.noExport}
             configureMap={this.configureMap}
             layers={layers}
-            geoJSON={geoJSON}>
+            geoJSON={geoJSON}
+            downloadButton={true}>
 
             <ExplanationBubble scaleBy={this.state.scaleBy}
               onFieldChange={this.onFieldChange}
@@ -279,8 +278,6 @@ class HomeMap extends React.Component {
               onDtypeClick={this.onDtypeClick.bind(this)} />
 
             <AppealTypesDropdown onAppealTypeChange={this.onAppealTypeChange.bind(this)} />
-
-            <DownloadButton data={canvas} />
           </MapComponent>
         </div>
       </React.Fragment>

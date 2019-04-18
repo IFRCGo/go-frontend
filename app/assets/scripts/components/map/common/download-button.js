@@ -13,38 +13,47 @@ class DownloadButton extends React.Component {
   }
 
   startDownload () {
-    const timestamp = new Date();
-    const map = document.querySelector('.map-vis');
-    const downloadButton = map.querySelector('.map-vis__legend--download-btn');
-    const dropdowns = map.querySelectorAll('.map-vis__legend--top-left');
-    const popover = map.querySelector('.popover__contents');
-    const navigationContainer = map.querySelector('.map-vis__holder')
-      .querySelector('.mapboxgl-control-container');
-    const navigation = map.querySelector('.mapboxgl-ctrl-top-right');
+    this.props.setZoomToDefault();
 
-    map.removeChild(downloadButton);
-    navigationContainer.removeChild(navigation);
-    dropdowns.forEach(dropdown => map.removeChild(dropdown));
+    const interval = setInterval(function () {
+      const timestamp = new Date();
+      const map = document.querySelector('.map-vis');
+      const downloadButton = map.querySelector('.map-vis__legend--download-btn');
+      const dropdowns = map.querySelectorAll('.map-vis__legend--top-left');
+      const popover = map.querySelector('.popover__contents');
+      const navigationContainer = map.querySelector('.map-vis__holder')
+        .querySelector('.mapboxgl-control-container');
+      const navigation = map.querySelector('.mapboxgl-ctrl-top-right');
+      const mapLogoHeader = document.getElementById('map-picture-header');
 
-    if (popover !== null) {
-      popover.style.height = 'fit-content';
-      popover.style.maxHeight = 'none';
-    }
-
-    html2canvas(map, {useCORS: true}).then((renderedCanvas) => {
-      startDownload(
-        renderedCanvas.toDataURL('image/png'),
-        'map-' + timestamp.getTime() + '.jpg');
-
-      map.appendChild(downloadButton);
-      navigationContainer.appendChild(navigation);
-      dropdowns.forEach(dropdown => map.appendChild(dropdown));
+      mapLogoHeader.style.visibility = 'visible';
+      map.removeChild(downloadButton);
+      navigationContainer.removeChild(navigation);
+      dropdowns.forEach(dropdown => map.removeChild(dropdown));
 
       if (popover !== null) {
-        popover.style.height = 'auto';
-        popover.style.maxHeight = '225px';
+        popover.style.height = 'fit-content';
+        popover.style.maxHeight = 'none';
       }
-    });
+
+      html2canvas(map, {useCORS: true}).then((renderedCanvas) => {
+        startDownload(
+          renderedCanvas.toDataURL('image/png'),
+          'map-' + timestamp.getTime() + '.png');
+
+        mapLogoHeader.style.visibility = 'hidden';
+        map.appendChild(downloadButton);
+        navigationContainer.appendChild(navigation);
+        dropdowns.forEach(dropdown => map.appendChild(dropdown));
+
+        if (popover !== null) {
+          popover.style.height = 'auto';
+          popover.style.maxHeight = '225px';
+        }
+
+        clearInterval(interval);
+      });
+    }, 1000);
   }
 
   render () {
@@ -57,7 +66,8 @@ class DownloadButton extends React.Component {
 
 if (environment !== 'production') {
   DownloadButton.propTypes = {
-    data: T.object
+    data: T.object,
+    setZoomToDefault: T.func
   };
 }
 
