@@ -110,6 +110,7 @@ export default function HomestatsComponent (props) {
 
   return (
     <div className='inner'>
+      {props.fullscreen ? (<div style={{width: '375px', height: '56px', position: 'absolute'}}><img src="/assets/graphics/layout/logo.png" alt="IFRC GO logo" style={{width: '375px', height: '56px'}} /></div>) : null}
       <div className='presentation__actions'>
         <button className='button button--base-plain button--fullscreen' onClick={props.toggleFullscreen} title='View in fullscreen'><span>FullScreen</span></button>
       </div>
