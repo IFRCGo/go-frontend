@@ -3,10 +3,10 @@ import React from 'react';
 class A1PolicyStrategyForm extends React.Component {
   constructor (props) {
     super(props);
-    this.sendTheFormMate = this.sendTheFormMate.bind(this);
+    this.sendForm = this.sendForm.bind(this);
   }
 
-  sendTheFormMate () {
+  sendForm () {
     const q11 = document.querySelector('input[name="q11"]:checked') !== null ? document.querySelector('input[name="q11"]:checked').value : 0;
     const q12 = document.querySelector('input[name="q12"]:checked') !== null ? document.querySelector('input[name="q12"]:checked').value : 0;
     const q13 = document.querySelector('input[name="q13"]:checked') !== null ? document.querySelector('input[name="q13"]:checked').value : 0;
@@ -366,7 +366,7 @@ class A1PolicyStrategyForm extends React.Component {
           <br /><input type='text' name='' /><br /><br />
 
           <input type='checkbox' name='' value='' /> Save as Draft<br />
-          <button onClick={this.sendTheFormMate}>Submit</button>
+          <button onClick={this.sendForm}>Submit</button>
 
         </div>
       </div>
