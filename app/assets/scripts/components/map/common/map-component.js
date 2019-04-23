@@ -103,8 +103,8 @@ export default class MapComponent extends React.Component {
         {children}
         {this.props.downloadButton === true ? <DownloadButton data={canvas} setZoomToDefault={this.setZoomToDefault} /> : null}
         <div style={{backgroundColor: '#ffffff', position: 'absolute', width: '100%', borderBottom: '5px #BC2C2A solid', verticalAlign: 'middle', visibility: 'hidden'}} id='map-picture-header'>
-          <span style={{color: '#BC2C2A', fontSize: '30px', fontWeight: 'bold', paddingLeft: '20px'}}>Ongoing Operations</span>
-          <span style={{color: '#BC2C2A', fontSize: '12px', fontWeight: 'bold', paddingLeft: '10px'}}>({formatDate(currentDate)})</span>
+          <span style={{color: '#BC2C2A', fontSize: '30px', paddingLeft: '20px'}}>Ongoing Operations</span>
+          <span style={{color: '#BC2C2A', fontSize: '12px', paddingLeft: '10px'}}>({formatDate(currentDate)})</span>
           <div style={{float: 'right', width: '375px', marginRight: '20px'}}>
             <img src="/assets/graphics/layout/logo.png" alt="IFRC GO logo" style={{width: '375px', height: '56px'}} />
           </div>

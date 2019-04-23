@@ -5,6 +5,7 @@ import html2canvas from 'html2canvas';
 import { startDownload } from '../../../utils/download-starter';
 import { PropTypes as T } from 'prop-types';
 import { environment } from '../../../config';
+import { showAlert } from './../../system-alerts';
 
 class DownloadButton extends React.Component {
   constructor (props) {
@@ -13,47 +14,49 @@ class DownloadButton extends React.Component {
   }
 
   startDownload () {
-    this.props.setZoomToDefault();
+    if (/Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)) {
+      this.props.setZoomToDefault();
 
-    const interval = setInterval(function () {
-      const timestamp = new Date();
-      const map = document.querySelector('.map-vis');
-      const downloadButton = map.querySelector('.map-vis__legend--download-btn');
-      const dropdowns = map.querySelectorAll('.map-vis__legend--top-left');
-      const popover = map.querySelector('.popover__contents');
-      const navigationContainer = map.querySelector('.map-vis__holder')
-        .querySelector('.mapboxgl-control-container');
-      const navigation = map.querySelector('.mapboxgl-ctrl-top-right');
-      const mapLogoHeader = document.getElementById('map-picture-header');
+      const interval = setInterval(function () {
+        const timestamp = new Date();
+        const map = document.getElementsByClassName('map-vis')[0];
+        const downloadButton = document.getElementsByClassName('map-vis__legend--download-btn')[0];
+        const dropdowns = Array.from(document.getElementsByClassName('map-vis__legend--top-left'));
+        const popover = document.getElementsByClassName('popover__contents')[0];
+        const navigation = document.getElementsByClassName('mapboxgl-ctrl-top-right')[0];
+        const mapLogoHeader = document.getElementById('map-picture-header');
 
-      mapLogoHeader.style.visibility = 'visible';
-      map.removeChild(downloadButton);
-      navigationContainer.removeChild(navigation);
-      dropdowns.forEach(dropdown => map.removeChild(dropdown));
+        mapLogoHeader.style.visibility = 'visible';
+        downloadButton.style.visibility = 'hidden';
+        navigation.style.visibility = 'hidden';
+        dropdowns.forEach(dropdown => dropdown.style.visibility = 'hidden');
 
-      if (popover !== null) {
-        popover.style.height = 'fit-content';
-        popover.style.maxHeight = 'none';
-      }
-
-      html2canvas(map, {useCORS: true}).then((renderedCanvas) => {
-        startDownload(
-          renderedCanvas.toDataURL('image/png'),
-          'map-' + timestamp.getTime() + '.png');
-
-        mapLogoHeader.style.visibility = 'hidden';
-        map.appendChild(downloadButton);
-        navigationContainer.appendChild(navigation);
-        dropdowns.forEach(dropdown => map.appendChild(dropdown));
-
-        if (popover !== null) {
-          popover.style.height = 'auto';
-          popover.style.maxHeight = '225px';
+        if (typeof popover !== 'undefined') {
+          popover.style.height = 'fit-content';
+          popover.style.maxHeight = 'none';
         }
 
-        clearInterval(interval);
-      });
-    }, 1000);
+        html2canvas(map, {useCORS: true}).then((renderedCanvas) => {
+          startDownload(
+            renderedCanvas.toDataURL('image/png'),
+            'map-' + timestamp.getTime() + '.png');
+
+          mapLogoHeader.style.visibility = 'hidden';
+          downloadButton.style.visibility = 'visible';
+          navigation.style.visibility = 'visible';
+          dropdowns.forEach(dropdown => dropdown.style.visibility = 'visible');
+
+          if (typeof popover !== 'undefined') {
+            popover.style.height = 'auto';
+            popover.style.maxHeight = '225px';
+          }
+
+          clearInterval(interval);
+        });
+      }, 1000);
+    } else {
+      showAlert('danger', <p><b>Error:</b> Download is only possible from Google Chrome</p>, true, 2000);
+    }
   }
 
   render () {
