@@ -567,7 +567,9 @@ class Account extends React.Component {
                     <h2 className='fold__title'>PER Forms</h2>
                     Click on the following links to access the PER forms, where you can select individual National Societies.
                     <hr /><br />
-                    <a href='/per-forms/policy-strategy' className='link--primary'>Area 1: Policy and Standards</a>
+                    <a href='/per-forms/policy-strategy' className='link--primary'>Area 1: Policy and Standards</a><br/><br/>
+                    <a href='/per-forms/analysis-and-planning' className='link--primary'>Area 2: Analysis and Planning</a><br/><br/>
+                    <a href='/per-forms/operational-capacity' className='link--primary'>Area 3: Operation capacity</a><br/><br/>
                   </div>
                 </section>
               </div>

@@ -111,7 +111,7 @@ const Root = () => (
         <PrivateRoute exact path='/deployments' component={Deployments}/>
         <PrivateRoute exact path='/deployments/personnel/all' render={props => <Table {...props} type='personnel' />} />
         <PrivateRoute exact path='/deployments/erus/all' render={props => <Table {...props} type='eru' />} />
-        <Route exact path='/per-forms/policy-strategy' component={PerForms} />
+        <Route path='/per-forms' component={PerForms} />
         <Route component={UhOh}/>
       </Switch>
     </Router>
