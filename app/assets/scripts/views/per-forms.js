@@ -36,4 +36,16 @@ class PerForms extends React.Component {
   }
 }
 
+if (environment !== 'production') {
+  Account.propTypes = {
+    user: T.object,
+    profile: T.object,
+    fieldReport: T.object,
+    _getProfile: T.func,
+    _updateSubscriptions: T.func,
+    _getFieldReportsByUser: T.func,
+    _updateProfile: T.func
+  };
+}
+
 export default PerForms;
