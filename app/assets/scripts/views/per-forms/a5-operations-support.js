@@ -174,7 +174,7 @@ class A5OperationsSupport extends React.Component {
   }
 }
 
-export default A3OperationCapacity;
+export default A5OperationsSupport;
 
 export const englishForm = {
   title: 'WELCOME TO THE PREPAREDNESS FOR EFFECTIVE RESPONSE TOOL',

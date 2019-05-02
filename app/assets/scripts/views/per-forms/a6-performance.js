@@ -1,6 +1,7 @@
 import React from 'react';
 
-class A3OperationalCapacity extends React.Component {
+// Misnamed! - Operational capacity
+class A6Performance extends React.Component {
   constructor (props) {
     super(props);
     this.sendForm = this.sendForm.bind(this);
@@ -174,7 +175,7 @@ class A3OperationalCapacity extends React.Component {
   }
 }
 
-export default A3OperationalCapacity;
+export default A6Performance;
 
 export const englishForm = {
   title: 'WELCOME TO THE PREPAREDNESS FOR EFFECTIVE RESPONSE TOOL',
@@ -186,11 +187,11 @@ export const englishForm = {
   ],
   components: [
     {
-      componentTitle: 'Component 15: Mapping of NS capacities',
-      componentDescription: 'A list of the NS capacities including HR (staff, response teams and volunteers) and equipment that are available for disaster/crisis response. Teams could include branch and national response teams. This should be defined by technical speciality where relevant.',
+      componentTitle: 'Component 14: NS-specific areas of intervention',
+      componentDescription: 'Sector-specific or services provided by the NS in case of emergencies, it is in line with the NS mandate and legislation in country. It includes Community Based DP/DRR, Evacuation, Health in Emergencies, Epidemic and Pandemic, First aid, WASH, Food security and Livelihoods, Search and rRescue, Shelter, Management of dead bodies, RFL, Transition to recovery, and CBRN preparedness.',
       namespaces: [
         {
-          nsTitle: '15.1 A focal point is identified and available for each NS specific area of intervention and services to provide technical guidance and support.',
+          nsTitle: 'Sub-Component 14.A: COMMUNITY-BASED DP AND DRR',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -200,7 +201,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '15.2 Staff and volunteers are trained and kept up to date in the specific areas of intervention and services.',
+          nsTitle: '14.1 NS ensures the active participation of the local population, including marginalized and excluded groups, in the assessment, design/ planning of community-based activities , ensuring that programmes appropriately reflect community needs and strengthen existing local coping strategies.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -210,7 +211,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '15.3 Response materials and equipment database is up to date and gaps are noted and being addressed.',
+          nsTitle: '14.2 NS conducts regular awareness raising and public education on disaster/crises.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -220,7 +221,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '15.4 Resources (HR and equipment) are available and sufficient to cover the initial response needs.',
+          nsTitle: '14.3 Community based early warning and early action is in place and linked to the local systems.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -230,7 +231,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '15.5 Capacities are mapped in line with the different levels of response (Green - Yellow - Red).',
+          nsTitle: '14.4 CDRTs are trained and equipped to handle local response in partnership with relevant local actors.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -240,7 +241,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '15.6 Mechanisms are in place to share resources amongst branches/regions and with sister NSs.',
+          nsTitle: '14.5 CDRTs have an up-to-date response and contingency plan aligned with relevant local plans and resources.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -250,7 +251,17 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: 'Component 15 performance',
+          nsTitle: '14.6 NS ensures assessment, planning and response is done in an inclusive, gender and diversity and conflict sensitive way.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: 'Component 24 performance',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
@@ -266,11 +277,10 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Component 16: Early Action Mechanisms',
-      componentDescription: 'Designed to translate warnings into anticipatory actions to help reduce the impact of specific disaster or crisis events. They focus on consolidating available forecasting information and putting procedures in place to ensure that a NS can act ahead of any disaster/crisis. Forecast-based financing is included within the scope of this area.',
+      componentTitle: 'Sub-Component 14.B: EVACUATION',
       namespaces: [
         {
-          nsTitle: '16.1 NS\'s early warning early action system - inclusive of Forecast-based Financing and disease surveillance - is an integral and accepted part of the national Early Warning Early Action strategies and preparedness system.',
+          nsTitle: '14.7 Evacuation is part of NS\'s response strategy and is identified in different scenarios.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -280,7 +290,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '16.2 NS has a clear methodology to decide when and where early action should be taken based on a combination of vulnerability, exposure and triggers.',
+          nsTitle: '14.8 NS is part of the mechanism for the evacuation of communities in high-risk areas.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -290,47 +300,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '16.3 NS has mechanisms to anticipate and respond to major hazards in coordination with the national system.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '16.4 NS tests and makes use of new technologies appropriate for the context and audiences for sending alert messages related to early action (e.g: text, twitter, email, sms).',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '16.5 NS has procedures and personnel permanently available to communicate alerts and initiate early action to all levels of the NS: governance, branches, technical units.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '16.6 Branches have functioning local networks to inform communities of potential threats and activate early action (respecting mandates of public authorities).',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: 'Component 16 performance',
+          nsTitle: 'Component 14B performance',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
@@ -346,11 +316,10 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Component 17: Cash Based Intervention (CBI)',
-      componentDescription: 'An effective and flexible way, including all forms of cash and voucher-based assistance, to support people affected by emergencies, maintaining their dignity and choice, while fostering local economies. Cash should also be mainstreamed into other sectors (including Relief, shelter, livelihoods) and services (Logistics, Finance, etc.)',
+      componentTitle: 'Sub-Component 14.C: HEALTH IN EMERGENCIES',
       namespaces: [
         {
-          nsTitle: '17.1 NS has a CBI preparedness plan, properly budgeted and resourced with clear activities and outputs, based on analysis and discussion with key stakeholders.',
+          nsTitle: '14.9 Multi-sectoral response needs are identified for different epidemic scenarios including multi-country outbreaks.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -360,7 +329,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '17.2 CBI preparedness plan is tailored to address NS opportunities and barriers to be ready to provide scalable emergency CBI.',
+          nsTitle: '14.10 NS has procedures, data collection and feedback mechanisms in place to ensure community engagement in prevention and response interventions.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -370,7 +339,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '17.3 NS has an up-to-date database of CBI trained and experienced staff and volunteers at headquarter and branch levels across sectors and support services to implement CBI within the response cycle.',
+          nsTitle: '14.11 NS has a procedure in place to manage and respond to rumours.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -380,7 +349,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '17.4 NS has pre-disaster feasibility cash analysis and baseline about market systems, prices and seasonality, mapping of other actors and coordination structures.',
+          nsTitle: '14.12 NS has safety protocols in place for paid staff and volunteers, for infection prevention and control within epidemics.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -390,7 +359,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '17.5 NS has regularly revised CBI SOPs with clear roles and responsibilities outlined at each stage of the response process, based on lessons learned from previous responses.',
+          nsTitle: '14.13 NS is part of the public authorities\' safe and dignified management of dead bodies and identification system in infectious disease outbreaks.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -400,7 +369,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '17.6 NS has mapped CBI delivery mechanisms, service providers and has in place agreements including activation mechanism with money transfer providers.',
+          nsTitle: '14.14 NS has appropriate personal protection equipment in place with regularly trained staff and volunteers on handling, using and disposing this equipment.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -410,7 +379,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '17.7 NS has an up-to-date, approved CBI toolkit that adapts CiE tools to the NS specific contexts.',
+          nsTitle: '14.15 Community based early warning and early action is in place and linked to the local systems.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -420,7 +389,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '17.8 NS routinely uses the CBI toolkit which is revised and updated based on feedback from preparedness and response actions.',
+          nsTitle: '14.16 NS has clearly identified their role in the case of isolation and quarantine being declared and have established relevant technical support to ensure best practice.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -430,17 +399,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '17.9 NS leads CBI coordination mechanism both internally within the Movement and externally with other CBI actors in the country (public authorities, UN, NGOs, etc...).',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: 'Component 17 performance',
+          nsTitle: 'Summary of sub-component 14C',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
@@ -456,11 +415,10 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Component 18: Emergency Needs Assessment',
-      componentDescription: 'Assess the extent and impact of the damage caused by the disaster/crisis and the degree of vulnerability of the affected population. The first step in any emergency response, such an assessment will identify the needs that require external intervention and the gaps to be filled. It is a vital component of the programme-planning process.',
+      componentTitle: 'Sub-Component 14.D: FIRST AID',
       namespaces: [
         {
-          nsTitle: '18.1 NS has standardised templates used for primary and secondary data collection and reporting.',
+          nsTitle: '14.17 First Aid is part of NS\'s response strategy and is identified in different scenarios.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -470,7 +428,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '18.2 NS has a trained multi-sectorial emergency assessment team available to deploy in a timely manner.',
+          nsTitle: '14.18 NS includes First Aid training as part of its CBDRR strategy.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -480,7 +438,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '18.3 NS emergency plans of actions are based on emergency needs assessment results.',
+          nsTitle: '14.19 NS has trained and equipped teams of First Aid volunteers for quick and effective response.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -490,47 +448,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '18.4 Information is disaggregated according to gender, age groups and others.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '18.5 Emergency needs assessment analyses accessibility, availability, quality, use and awareness of goods and services.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '18.6 Emergency needs assessment takes into consideration existing capacities and analyses the national and international capacities, responses and gaps.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '18.7 Emergency needs assessment should analyse secondary risk, specific needs/concerns of vulnerable people/coping mechanisms/early and self-recovery.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: 'Component 18 performance',
+          nsTitle: 'Component 14D performance',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
@@ -546,11 +464,10 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Component 19: Affected population selection',
-      componentDescription: 'Identification and selection of target Affected population for interventions, using a pre-defined set of criteria based on need and vulnerability. This includes consideration of specific vulnerabilities such as disability, age and gender.',
+      componentTitle: 'Sub-Component 14.E. WATER AND SANITATION',
       namespaces: [
         {
-          nsTitle: '19.1 NS communicates selection criteria to the affected population using preferred communication channels and involves community leaders/representatives.',
+          nsTitle: '14.20 Water and sanitation humanitarian consequences are part of the NS\'s response strategy and identified in different scenarios.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -560,7 +477,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '19.2 NS identifies appropriate selection criteria based on existing vulnerability and taking into consideration gender, diversity, age and disabilities.',
+          nsTitle: '14.21 NS response teams (national and branch) have the appropriate WASH training, skills and equipment.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -570,7 +487,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '19.3 NS protects data collected from affected population.',
+          nsTitle: '14.22 NS has the required equipment to provide quality WASH services or clear SOPs on how to obtain this equipment (in-country or via IFRC).',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -580,7 +497,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '19.4 Responders have been trained in data collection including the standardised templates.',
+          nsTitle: '14.23 WASH technical support in emergencies is available in the NS, through RCRC Movement partners or agreed with relevant WASH authorities/ partners.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -590,7 +507,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '19.5 NS cross-checks affected populations\' lists with community leaders, other agencies, authority, etc… to verify inclusion/exclusion issues (considering protection of sensitive data).',
+          nsTitle: '14.24 NS is engaged and coordinates with other organizations and networks active in WASH in the country.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -600,7 +517,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: 'Component 19 performance',
+          nsTitle: 'Component 14E performance',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
@@ -616,11 +533,11 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Component 20: Emergency Operations Centre (EOC)',
-      componentDescription: 'A central command and control facility responsible for carrying out disaster/crisis management functions at a strategic level in an emergency situation. The common functions are to collect and analyze data; facilitate decision making that protects life and livelihoods; and disseminate those decisions to all concerned agencies and individuals. Generally located at the headquarter level of an organization.',
+      componentTitle: 'Sub-Component 14.F. FOOD SECURITY',
+      componentDescription: 'Mechanism that allows cooperation with private sector that often plays a strong role in response, particularly if there is impact on their staff and businesses. There is often a willingness to donate goods and services. Advance agreements help to expedite response actions.',
       namespaces: [
         {
-          nsTitle: '20.1 NS has a formally appointed focal point for EOC.',
+          nsTitle: '14.25 NS monitors, analyses and documents food security levels in the country, food-security status of the population/most vulnerable, agro-meteorological data, supplies and demand in main food and agricultural markets, food reserves.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -630,7 +547,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '20.2 NS has up-to-date EOC SOPs which are consistent with other NS documents and are followed in a response.',
+          nsTitle: '14.26 NS has identified technical staff for food assistance trained to identify needs and assess situation to make recommendations on assistance needed, transfer modality (cash, food, vouchers) and delivery mechanism, on markets situation.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -640,7 +557,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '20.3 EOC is activated according to defined response levels and activation is communicated.',
+          nsTitle: '14.27 NS is engaged and coordinated with other organizations and networks (clusters) active in food aid distribution (WFP, ICRC…).',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -650,7 +567,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '20.4 Relevant staff and volunteers know their roles and responsibilities and are trained on SOPs.',
+          nsTitle: '14.28 NS has integrated food distribution in its response strategies (main risks, scenarios, response capacity) and adheres to policy and safety standards for food and milk distribution.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -660,7 +577,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '20.5 All technical sectors and support services have procedures that integrate with the EOC SOPs.',
+          nsTitle: '14.29 NS has a specific action plan to procure and distribute food aid at scale: assessment forms SOPs for Affected population identification and selection food ration calculation (based on food access and availability at household level) different types of food distribution system set up of distribution site',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -670,107 +587,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '20.6 EOC has intended space with sufficient equipment to manage information and coordination that does not affect other NS activities.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '20.7 EOC facilities are self-sufficient with at least power, water and telecommunications with functioning back-up means.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '20.8 NS has an alternative location if the EOC space is not accessible.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '20.9 NS has full and updated contact details for relevant personnel.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '20.10 NS has legal access and use of designated emergency frequencies which link with other stakeholders in response.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '20.11 EOC staff manages and displays regular updated information (maps, operational details, etc...).',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '20.12 Strategic decisions are made based on the situational analysis to address operational gaps and needs.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '20.13 Clear levels of authority exist between the strategic and management levels of the EOC.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '20.14 EOC is operational 24/7 however operational period of staff does not exceed 12 hrs/shift.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '20.15 Information is collected, validated and analyzed to provide updated standardized situation reports.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: 'Component 20 performance',
+          nsTitle: 'Summary of sub-component 14F',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
@@ -786,11 +603,10 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Component 21: Information Management (IM)',
-      componentDescription: 'Ability to manage information including requesting, receiving, analyzing and disseminating as per its procedures and partner requirements (IFRC and public authorities in particular). There should be a clear digital/paper trail that documents what, when and how the NS has acted and provides key information for the development of Emergency Plan of Actions. Includes IM between levels, between departments and Situational Reports, mapping, visualisation of data, DMIS/GO platform (IFRC).',
+      componentTitle: 'Sub-Component 14.G. LIVELIHOOD SECURITY AND SAFETY NETS',
       namespaces: [
         {
-          nsTitle: '21.1 Key staff at headquarters and branch level are familiar with IM templates (from NS or IFRC), methodology and procedures.',
+          nsTitle: '14.30 Livelihoods is incorporated into NS DM/DP strategy, plans, systems and procedures.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -800,7 +616,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '21.2 NS has access to equipment to compile, visualise and share information (e.g. printers, cartridges, scanners and battery powered projectors).',
+          nsTitle: '14.31 NS has identified national policies related to safety nets, employment and livelihood/economic/resilience development plans.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -810,7 +626,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '21.3 NS has a system to store and share files with emergency personnel.',
+          nsTitle: '14.32 NS has identified a Livelihood household/FS focal point and other technical staff (emergency response teams) for livelihoods preparedness who are trained on assessment, market analysis, etc.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -820,7 +636,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '21.4 NS has access to updated data on high-risk areas (demographic, socio-economic) disaggregated by age, gender and disability.',
+          nsTitle: '14.33 NS has identified and documented main livelihoods zones and systems (agricultural and non-agricultural), main market systems (food and household livelihood) in disaster-prone areas and a market baseline is developed and updated.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -830,7 +646,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '21.5 Information and specifically decisions are documented and filed.',
+          nsTitle: '14.34 NS has identified risks to community and household productive assets in disaster-prone areas with plans for protection in place.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -840,7 +656,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '21.6 NS has a standardised Situation Report format that includes information on situation, NS response, other actors\' response, challenges, achievements and gaps.',
+          nsTitle: '14.35 NS emergency tools are contextualised and include livelihoods.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -850,7 +666,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '21.7 The Situation Reports are analysed to adapt response plans.',
+          nsTitle: '14.36 NS is engaged and coordinated with other organizations and networks active in livelihoods in the country.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -860,7 +676,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '21.8 NS has mechanisms to share information across levels, sectors and support services.',
+          nsTitle: '14.37 NS staff and volunteers are trained in data collection (for baseline and progress/indicators measurement).',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -870,7 +686,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: 'Component 21 performance',
+          nsTitle: 'Summary of sub-component 14G',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
@@ -886,11 +702,10 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Component 22: Testing and Learning',
-      componentDescription: 'Drills and Simulations allow the organization to test, identify and learn from the results of these type of exercises and incorporate learning into future preparedness and response planning.',
+      componentTitle: 'Sub-Component 14.H. SEARCH AND RESCUE',
       namespaces: [
         {
-          nsTitle: '22.1 NS regularly tests its early action and response system through simulation and drills.',
+          nsTitle: '14.38 Search and rescue is part of the NS\'s response strategy and is identified in different scenarios.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -900,57 +715,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '22.2 Lessons drawn from drills, simulations and responses inform revisions in the emergency procedures.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '22.3 Branches in high-risk areas test their response system, including early action, through drills and simulations.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '22.4 NS includes access, acceptance, security and the practical application of the Fundamental Principles in their simulations and drills.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '22.5 NS conducts cross-border simulations in relevant contexts..',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '22.6 Simulations and drills are conducted with national authorities and other organisations.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: 'Component 22 performance',
+          nsTitle: 'Summary of sub-component 14G',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
@@ -966,11 +731,10 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Component 23: Activation of regional and international support',
-      componentDescription: 'Procedures for requesting and accepting regional and international support in operations, including triggering coordination mechanisms for funding, materials and human resources deployments.',
+      componentTitle: 'Sub-Component 14.I. SHELTER, HOUSEHOLD ITEMS, SETTLEMENTS',
       namespaces: [
         {
-          nsTitle: '23.1 Key staff are familiar with the available IFRC/ICRC support (technical, financial, material and HR).',
+          nsTitle: '14.39 NS has mechanisms for consultation with target population on the most appropriate shelter response solutions.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -980,7 +744,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '23.2 SOPs and contacts to coordinate response with respective IFRC offices are available.',
+          nsTitle: '14.40 Based on the scenario agreed with the public authorities, shelter supplies are pre-positioned in high-risk areas.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -990,7 +754,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '23.3 NS SOPs include procedures to request and incorporate regional and global support/teams into their response system, including prior to imminent crisis/disaster.',
+          nsTitle: '14.41 NS has an agreed standard NFI kit with items prepositioned, and clear SOPs on how to obtain them (in-country or via IFRC).',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -1000,7 +764,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '23.4 NS informs IFRC within 24 hours for which assistance may be required .',
+          nsTitle: '14.42 NS has identified suppliers of shelter items and NFIs with pre-disaster and framework agreements in place.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -1010,7 +774,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '23.5 NS is familiar with the IFRC emergency funding mechanisms (Emergency Appeals, DREF and Forecast-based Financing by DREF), their procedures and required supporting documents (EPoA).',
+          nsTitle: '14.43 NS has standard emergency and temporary shelter designs, following consultation with at risk population and based on available materials and common techniques.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -1020,7 +784,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '23.6 NS request bilateral assistance in accordance with established coordination frameworks.',
+          nsTitle: '14.44 NS volunteers are trained in the use of the prepositioned shelter materials to construct basic shelters (e.g. shelter kit training).',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -1030,7 +794,26 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '23.7 NS has an assigned focal point to act as counterpart to regional/international responders.',
+          nsTitle: 'Summary of sub-component 14G',
+          nsQuestion: 'Status:',
+          nsAnswers: [
+            'Not Reviewed',
+            'Does not exist',
+            'Partially exists',
+            'Need improvements',
+            'Exist, could be strengthened',
+            'High performance'
+          ],
+          feedbackTitle: 'Notes related to the component:',
+          feedbackDescription: ''
+        }
+      ]
+    },
+    {
+      componentTitle: 'Sub-Component 14.J. MANAGEMENT OF DEAD BODIES TO FACILITATE THEIR IDENTIFICATION',
+      namespaces: [
+        {
+          nsTitle: '14.45 NS is part of the public authorities\' management of dead bodies and identification system.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -1040,7 +823,333 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: 'Component 23 performance',
+          nsTitle: '14.46 Management of dead bodies and identification needs are part of the NS\'s response strategy and identified in different scenarios.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: 'Summary of sub-component 14J',
+          nsQuestion: 'Status:',
+          nsAnswers: [
+            'Not Reviewed',
+            'Does not exist',
+            'Partially exists',
+            'Need improvements',
+            'Exist, could be strengthened',
+            'High performance'
+          ],
+          feedbackTitle: 'Notes related to the component:',
+          feedbackDescription: ''
+        }
+      ]
+    },
+    {
+      componentTitle: 'Sub-Component 14.K. RESTORING FAMILY LINKS (RFL)',
+      namespaces: [
+        {
+          nsTitle: '14.47 Staff and volunteers are able to provide quality RFL services.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '14.48 Procedures and agreements with ICRC on RFL are in place.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: 'Summary of sub-component 14K',
+          nsQuestion: 'Status:',
+          nsAnswers: [
+            'Not Reviewed',
+            'Does not exist',
+            'Partially exists',
+            'Need improvements',
+            'Exist, could be strengthened',
+            'High performance'
+          ],
+          feedbackTitle: 'Notes related to the component:',
+          feedbackDescription: ''
+        }
+      ]
+    },
+    {
+      componentTitle: 'Sub-Component 14.L. TRANSITION TO RECOVERY',
+      namespaces: [
+        {
+          nsTitle: '14.49 Key staff are familiar with recovery principles.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '14.50 The NS mandate for recovery is formally agreed with the public authorities.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '14.51 NS has set up enabling systems allowing early recovery of livelihoods to bridge the gap between the relief phase and long-term recovery activities.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '14.52 NS coordinates with public authorities and humanitarian actors participating in the livelihoods response.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '14.53 NS volunteers are trained in the use of the prepositioned shelter materials to construct basic shelters (e.g. shelter kit training).',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '14.54 NS has developed a livelihoods (early) recovery plan of action: background and justification, logical framework and indicators, monitoring and evaluation plan, activity chronogram with responsibilities allocation and milestones, budget (activity level).',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '14.55 NS staff and volunteers are trained in response interventions for rehabilitation of productive assets (small infrastructures, clearance etc.).',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: 'Summary of sub-component 14L',
+          nsQuestion: 'Status:',
+          nsAnswers: [
+            'Not Reviewed',
+            'Does not exist',
+            'Partially exists',
+            'Need improvements',
+            'Exist, could be strengthened',
+            'High performance'
+          ],
+          feedbackTitle: 'Notes related to the component:',
+          feedbackDescription: ''
+        }
+      ]
+    },
+    {
+      componentTitle: 'Sub-Component 14.M. CHEMICAL, BIOLOGICAL, RADIOLOGICAL AND NUCLEAR (CBRN) EMERGENCY PREPAREDNESS',
+      namespaces: [
+        {
+          nsTitle: '14.56 NS has a defined role and allied responsibilities in national, regional and local authorities\' emergency plans related to CBRN hazards.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '14.57 NS has an action plan to respond to a CBRN incident based on its agreed role.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '14.58 NS has SOPs including safety protocols for CBRN related operations.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '14.59 NS has a dedicated focal point for CBRN.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '14.60 NS has, according to its mandate, specifically trained staff and volunteers able to effectively operate in CBRN preparedness and response environments.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '14.61 NS has appropriate CBRN personal protection equipment in place, and regularly trains staff and volunteers on handling and using this equipment.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '14.62 NS has built up a network of expertise with relevant organizations and key experts to receive specialized support for CBRN-related hazards.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '14.63 NS, in line with its mandate, has readily available public key messages for CBRN emergencies, that have been vetted by the relevant civil authorities.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '14.64 NS has engaged with neighboring National Societies in planning for and responding to the cross-border effects of CBRN hazards.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '14.65 The NS is participating in relevant CBRN-related forums (national/regional) for preparedness and response, and has the mechanisms for real-time information sharing.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '14.66 The NS has identified the need for international assistance for CBRN events (if applicable) and has shared this with Movement partners.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: 'Summary of sub-component 14M',
+          nsQuestion: 'Status:',
+          nsAnswers: [
+            'Not Reviewed',
+            'Does not exist',
+            'Partially exists',
+            'Need improvements',
+            'Exist, could be strengthened',
+            'High performance'
+          ],
+          feedbackTitle: 'Notes related to the component:',
+          feedbackDescription: ''
+        }
+      ]
+    },
+    {
+      componentTitle: 'Sub-Component 14.N. COMMUNITY BASED HEALTH & FIRST AID (CBHFA)',
+      namespaces: [
+        {
+          nsTitle: '14.67 Community health volunteers discuss and develop health contingency plans with their communities, and conduct community health and safety assessments, once a year.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '14.68 Every volunteer in every sector is initially trained in Basic First Aid and receives refresher training each year.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '14.69 CBHFA volunteer training includes a session on proper reporting of suspect health events to branch staff and/or the Ministry of Health',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '14.70 CBHFA volunteers are actively engaged in simulation planning, implementation and evaluation to ensure community awareness and involvement, and that information and referral linkages with health facilities are maintained.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: 'Summary of sub-component 14M',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
@@ -1068,11 +1177,14 @@ export const frenchForm = {
   ],
   components: [
     {
-      componentTitle: 'Catégorie 15: Cartographie des capacités de la SN',
-      componentDescription: 'Une liste des capacités de la SN, comprenant les RH (personnel, équipes d\'intervention et bénévoles) et les équipements disponibles pour l\'intervention en cas de catastrophe/crise. Les équipes peuvent inclure les unités d\'intervention nationales et des branches. Ceci doit être défini par spécialités techniques lorsque cela est pertinent.',
+      componentTitle: 'Catégorie 14: Domaines spécifiques d\'intervention de la SN',
+      componentDescription: 'Services fournis par la SN en cas d\'urgence, conformément au mandat de la SN et à la législation nationale. Inclut la RRC et le PC basés sur la communauté, l\'évacuation, la santé d\'urgence, les épidémies et les pandémies, les premiers secours, l\'eau et l\'assainissement, la sécurité alimentaire, la recherche et le sauvetage, les abris, la gestion des dépouilles, la RLF, la transition vers le relèvement, et la préparation NRBC.'
+    },
+    {
+      componentTitle: 'Sous Catégorie 14.A: PC ET RRC A BASE COMMUNAUTAIRE',
       namespaces: [
         {
-          nsTitle: '15.1 Un point focal est identifié et disponible pour chaque domaine d\'intervention de la SN, pour fournir des directives et un soutien technique.',
+          nsTitle: '14.1 La SN garantit la participation active de la population locale, y compris des groupes marginalisés et exclus, dans l\'évaluation, la conception/planification des activités communautaires, pour assurer que les programmes reflètent de manière appropriée les besoins de la communauté et renforcent les stratégies actuelles d\'adaptation.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1082,7 +1194,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises'
         },
         {
-          nsTitle: '15.2 Le personnel et les bénévoles sont formés et mis à jour sur les domaines d\'intervention spécifiques.',
+          nsTitle: '14.2 La SN conduit une sensibilisation et une éducation publique régulière aux catastrophes et aux crises.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1092,7 +1204,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises'
         },
         {
-          nsTitle: '15.3 La base de données recensant les équipements d\'intervention est à jour et les lacunes sont identifiées et comblées.',
+          nsTitle: '14.3 Le système d\'alerte précoce et d\'action précoce basé sur la communauté est en place et en relation avec les systèmes locaux.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1102,7 +1214,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises'
         },
         {
-          nsTitle: '15.4 Des ressources (RH et équipement) sont disponibles et suffisantes pour couvrir les besoins d\'intervention initiaux.',
+          nsTitle: '14.4 Les CDRT sont formés et équipés pour gérer une intervention locale en partenariat avec les acteurs locaux pertinents.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1112,7 +1224,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises'
         },
         {
-          nsTitle: '15.5 Les capacités sont identifiées selon les différents niveaux d\'intervention (vert – jaune – rouge).',
+          nsTitle: '14.5 Les CDRTs disposent d\'un plan d\'intervention et d\'urgence mis à jour, en phase avec les plans et les ressources locales.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1122,7 +1234,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises'
         },
         {
-          nsTitle: '15.6 Des mécanismes sont en place et permettent de partager des ressources entre branches/régions et SN sœurs.',
+          nsTitle: '14.6 La SN assure que l\'évaluation, la planification et l\'intervention soit menée de manière inclusive, en prenant en compte le genre, la diversité et les conflits.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1132,7 +1244,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises'
         },
         {
-          nsTitle: 'Résumé de la catégorie 15',
+          nsTitle: 'Résumé de la sous catégorie 14A',
           nsQuestion: 'Résumé de la catégorie:',
           nsAnswers: [
             'Pas évalué',
@@ -1148,11 +1260,11 @@ export const frenchForm = {
       ]
     },
     {
-      componentTitle: 'Catégorie 16: Mécanismes d\'action précoce',
-      componentDescription: 'Conçus pour traduire les avertissements en actions préventives, de manière à réduire l\'impact des catastrophes ou des crises spécifiques. Ils se concentrent sur la consolidation des informations de prévision disponibles et sur la mise en place de procédures, afin de garantir qu\'une SN puisse agir en amont d\'une catastrophe/crise. Un financement basé sur les prévisions est inclus à ce secteur.',
+      componentTitle: 'Sous Catégorie 14.B: EVACUATION',
+      componentDescription: 'Un mécanisme facilitant la coordination et la coopération avec les autorités locales et nationales. En lien avec le rôle d\'auxiliaire de la SN pour l\'assistance humanitaire.',
       namespaces: [
         {
-          nsTitle: '16.1 Le système d\'alerte précoce de la SN – comprenant le financement basé sur les prévisions et la surveillance des maladies – est en lien direct avec le système national.',
+          nsTitle: '14.7 L\'évacuation fait partie de la stratégie d\'intervention de la SN. Elle est identifiée dans différents scénarios.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1162,7 +1274,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '16.2 La SN dispose de processus permettant de mettre en place des alertes et des actions précoces à l\'aide de déclencheurs.',
+          nsTitle: '4.8 La SN fait partie du mécanisme d\'évacuation des communautés vivant dans des zones à haut risque.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1172,47 +1284,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '16.3 La SN dispose de mécanismes pour répondre à des menaces majeures en coordination avec le système national.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '16.4 La SN utilise les nouvelles technologies adaptées au contexte pour l\'envoi de messages d\'alerte (ex. SMS, Twitter, e-mail, téléphone portable), et les messages sont testés sur plusieurs publics cibles pour garantir leur bonne compréhension.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '16.5 La SN dispose de procédures et de personnel disponibles en permanence pour diffuser les alertes à tous les niveaux de la SN : gouvernance, branches, unités techniques.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '16.6 Les branches disposent de réseaux locaux fonctionnels pour informer les communautés des menaces potentielles (conformément aux mandats des départements du gouvernement).',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: 'Résumé de la catégorie 16',
+          nsTitle: 'Résumé de la sous catégorie 14B',
           nsQuestion: 'Résumé de la catégorie:',
           nsAnswers: [
             'Pas évalué',
@@ -1228,11 +1300,10 @@ export const frenchForm = {
       ]
     },
     {
-      componentTitle: 'Catégorie 17: Programme de transfert monétaire (PTM)',
-      componentDescription: 'Une manière efficace et flexible – incluant toute forme d\'assistance basée sur les transferts monétaires et les coupons – de soutenir les individus affectés par les catastrophes, en maintenant leur dignité et leur pouvoir de décision, tout en stimulant les économies locales. De l\'argent devrait également être injecté dans d\'autres secteurs (dont les secours, les abris, les moyens de subsistance) et services (logistiques, finance, etc.).',
+      componentTitle: 'Sous Catégorie 14.C: LA SANTE EN SITUATION D\'URGENCE',
       namespaces: [
         {
-          nsTitle: '17.1 La SN dispose d\'un plan de préparation pour les PTM, reposant sur un budget et des ressources appropriées, avec des activités et des résultats clairement définis, et basé sur une analyse et des discussions avec les principaux acteurs concernés.',
+          nsTitle: '14.9 Les besoins d\'intervention multisectoriels sont identifiés pour différents scénarios d\'épidémies, et notamment pour des épidémies impliquant plusieurs pays.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1242,7 +1313,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '17.2 Le plan de préparation du PTM doit traiter des opportunités et des obstacles rencontrés par la SN de manière à fournir un PTM d\'urgence de grande ampleur.',
+          nsTitle: '14.10 La SN dispose de procédures, de mécanismes de collecte de données et de rétroaction, afin de garantir l\'implication de la communauté dans la prévention et les interventions.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1252,7 +1323,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '17.3 La SN entretient une base de données mise à jour du personnel et des bénévoles formés aux PTM au niveau du siège et des branches. Les différents secteurs et services support ont la capacité de mettre en œuvre un PTM dans le cycle d\'intervention.',
+          nsTitle: '14.11 La SN a mis en place une procédure pour gérer et répondre aux rumeurs.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1262,7 +1333,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '17.4 Une analyse de faisabilité financière pré-catastrophe sur les systèmes de marché, les prix et la saisonnalité, ainsi qu\'une cartographie des autres acteurs et structures de coordination existent.',
+          nsTitle: '14.12 La SN dispose de protocoles de sécurité destinés au personnel rémunéré et aux bénévoles, pour la prévention des infections et le contrôle des épidémies.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1272,7 +1343,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '17.5 La SN développe, met en place, utilise de manière régulière et révisé les PON concernant les PTM en attribuant des rôles et des responsabilités clairs, définis à chaque étape du processus d\'intervention et basé sur les enseignements tirés des interventions passées.',
+          nsTitle: '14.13 La SN fait partie du système de gestion sûre et digne des cadavres et du système d\'identification lors des épidémies de maladies infectieuses.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1282,7 +1353,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '17.6 Les mécanismes et les fournisseurs de services clés de PTM sont cartographiés, et des accords préalables sont formalisés avec des fournisseurs de services financiers avec un mécanisme d\'activation concerté.',
+          nsTitle: '14.14 La SN dispose d\'équipements de protection individuelle, et forme régulièrement son personnel et ses bénévoles à la manipulation et à l\'utilisation de ces équipements, ainsi qu\'à leur mise au rebut.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1292,7 +1363,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '17.7 La SN développe une boîte à outil de PTM mise à jour et approuvée, à même d\'adapter les outils de transferts monétaires en situation d\'urgence (CiE) aux contextes spécifiques de la SN.',
+          nsTitle: '14.15 La SN a clairement identifié son rôle dans les épidémies, et a établi un support technique pertinent pour garantir les meilleurs pratiques possibles.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1302,7 +1373,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '17.8 La SN développe une boîte à outil de PTM mise à jour et approuvée, à même d\'adapter les outils de transferts monétaires en situation d\'urgence (CiE) aux contextes spécifiques de la SN.',
+          nsTitle: '14.16 La SN a clairement identifié en cas d\'isolation et de quarantaine, et a établi un support technique pertinent pour garantir les meilleurs pratiques possibles.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1312,17 +1383,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '17.9 La SN coordonne les PTM à l\'intérieur du Mouvement et à l\'extérieur auprès d\'autres acteurs de PTM dans le pays (gouvernement, ONU, ONG, etc.).',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: 'Résumé de la catégorie 17',
+          nsTitle: 'Résumé de la catégorie 14C',
           nsQuestion: 'Résumé de la catégorie:',
           nsAnswers: [
             'Pas évalué',
@@ -1338,11 +1399,10 @@ export const frenchForm = {
       ]
     },
     {
-      componentTitle: 'Catégorie 18: Évaluation des besoins d\'urgence',
-      componentDescription: 'Évaluer l\'ampleur et l\'impact des dommages causés par la catastrophe/crise et le degré de vulnérabilité des populations affectées. Première étape de toute intervention d\'urgence, l\'évaluation consiste à identifier les besoins nécessitant une intervention externe ainsi que les lacunes à combler. C\'est un élément vital du processus de programmation et de planification.',
+      componentTitle: 'Sous Catégorie 14.D: PREMIERS SECOURS',
       namespaces: [
         {
-          nsTitle: '18.1 Des modèles sont disponibles pour la collecte de données primaires et secondaires ainsi que pour le signalement.',
+          nsTitle: '14.17 Les premiers secours font partie de la stratégie d\'intervention de la SN et sont identifiés pour différents scénarios.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1352,7 +1412,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '18.2 Une équipe d\'urgence multisectorielle est formée et prête à être déployée de manière rapide.',
+          nsTitle: '14.18 La SN a inclus une formation aux premiers secours dans le cadre de sa stratégie pour la RRC basée sur la communauté.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1362,7 +1422,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '18.3 La méthodologie d\'évaluation d\'urgence inclut des secteurs prioritaires (secours, santé, moyens de subsistance, abris, eau et assainissement, nourriture, protection, autres) et des infrastructures, dont l\'accessibilité et l\'accès.',
+          nsTitle: '14.19 La SN a formé des équipes bénévoles de premiers secours pouvant intervenir rapidement et efficacement en cas de catastrophe.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1372,47 +1432,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '18.4 Les procédures de collecte de données prennent en considération la diversité des sources, et les informations sont désagrégées selon des considérations de genre, de handicap, de protection et de violence.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '18.5 L\'évaluation analyse les risques secondaires, ainsi que l\'impact sur le capital social et économique local.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '18.6 L\'évaluation analyse la capacité des communautés à répondre et à fournir de l\'assistance à ses habitants.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '18.7 L\'évaluation analyse de manière stratégique les actions d\'autres acteurs. La SN participe à des évaluations inter-agences lorsque cela est possible, et partage ses résultats avec d\'autres acteurs.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: 'Résumé de la catégorie 18',
+          nsTitle: 'Résumé de la catégorie 14D',
           nsQuestion: 'Résumé de la catégorie:',
           nsAnswers: [
             'Pas évalué',
@@ -1428,11 +1448,10 @@ export const frenchForm = {
       ]
     },
     {
-      componentTitle: 'Catégorie 19: Sélection des bénéficiaires',
-      componentDescription: 'Identification et sélection de la population cible pour les interventions, selon une série de critères prédéfinis basés sur les besoins et la vulnérabilité. Cela implique de prendre en compte des vulnérabilités spécifiques telles que le handicap, l\'âge et le genre.',
+      componentTitle: 'Sous Catégorie 14.E. EAU ET ASSAINISSEMENT',
       namespaces: [
         {
-          nsTitle: '19.1 La SN communique les critères de sélection à la population affectée en utilisant les canaux de communication privilégiés, et implique les leaders/représentants de la communauté.',
+          nsTitle: '14.20 Les conséquences humanitaires sur l\'eau et l\'assainissement font partie de la stratégie d\'intervention de la SN et sont identifiées dans différents scénarios.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1442,7 +1461,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '19.2 La SN identifie des critères de sélection appropriés en utilisant les vulnérabilités existantes et en prenant en considération le genre, la diversité, l\'âge et les handicaps.',
+          nsTitle: '14.21 Les équipes d\'intervention de la SN (niveau national et branche) disposent des qualifications, des compétences et des équipements adéquats en matière d\'eau et d\'assainissement (WASH).',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1452,7 +1471,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '19.3 La SN protège les données collectées auprès des populations affectées.',
+          nsTitle: '14.22 La SN dispose des équipements nécessaires pour fournir des services de qualité dans le domaine WASH, ou de PON détaillant comment obtenir ces équipements (au niveau national ou par le biais de la FICR).',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1462,7 +1481,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '19.4 Les intervenants sont formés pour la collecte de données, y compris pour l\'utilisation de modèles standardisés.',
+          nsTitle: '14.23 Un support technique WASH d\'urgence est disponible à la SN via les partenaires du Mouvement CRCR, ou est assuré par des partenaires/autorités WASH.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1472,7 +1491,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '19.5 La SN recoupe les listes de bénéficiaires pour éviter les problèmes d\'inclusion/exclusion.',
+          nsTitle: '14.24 La SN s\'engage et se coordonne avec d\'autres organisations et réseaux travaillant dans le domaine WASH dans le pays.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1482,7 +1501,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: 'Résumé de la catégorie 19',
+          nsTitle: 'Résumé de la catégorie 14E',
           nsQuestion: 'Résumé de la catégorie:',
           nsAnswers: [
             'Pas évalué',
@@ -1498,11 +1517,10 @@ export const frenchForm = {
       ]
     },
     {
-      componentTitle: 'Catégorie 20: Centre d\'opérations d\'urgence (COU)',
-      componentDescription: 'Un centre de commande et de contrôle en charge des fonctions de gestion de la catastrophe/crise à un niveau stratégique dans une situation d\'urgence. Les fonctions habituelles consistent à collecter et analyser des données, faciliter le processus de décision protégeant la vie et les moyens de subsistance, et communiquer ces décisions à toutes les agences et individus concernés. Généralement situé au niveau central d\'une organisation.',
+      componentTitle: 'Sous Catégorie 14.F. SECURITE ALIMENTAIRE',
       namespaces: [
         {
-          nsTitle: '20.1 Un point focal est nommé de manière formelle pour le COU.',
+          nsTitle: '14.25 La SN surveille, analyse et documente les niveaux de sécurité alimentaire dans le pays, le statut de la sécurité alimentaire de la population/des plus vulnérables, les données agro-météorologiques, l\'offre et la demande sur les principaux marchés alimentaires et agricoles, et les réserves de nourriture.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1512,7 +1530,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '20.2 NS has up-to-date EOC SOPs which are consistent with other NS documents, including technical sectors and support services.',
+          nsTitle: '14.26 La SN a identifié une équipe technique en charge de l\'assistance alimentaire et l\'a formée à identifier les besoins et à évaluer la situation pour émettre des recommandations, en termes d\'assistance, de modalité de transfert (monétaire, nourriture, coupons) de mécanismes de livraison et de la situation des marchés.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1522,7 +1540,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '20.3 EOC is activated according to defined response levels and activation is communicated.',
+          nsTitle: '14.27 La SN s\'engage et se coordonne avec d\'autres organisations et réseaux (clusters) actifs dans la distribution d\'aide alimentaire (PAM, CICR…).',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1532,7 +1550,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '20.4 Relevant staff and volunteers know their roles and responsibilities and are trained on SOPs.',
+          nsTitle: '14.28 La SN a intégré la distribution alimentaire à ses stratégies d\'intervention (risques principaux, scénarios, capacités d\'intervention) et adhère aux politiques et aux normes de sécurité pour la distribution de nourriture et de lait.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1542,7 +1560,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '20.5 Tous les secteurs techniques et les services d\'appui disposent de procédures intégrant les PON des COU.',
+          nsTitle: '14.29 La SN dispose d\'un plan d\'action spécifique pour se procurer et distribuer une aide alimentaire d\'envergure : formulaires d\'évaluation PON pour l\'identification et la sélection des populations affectées calcul des rations alimentaires (basé sur l\'accès et la disponibilité de la nourriture au niveau du foyer) différents types de systèmes de distribution de nourriture mise en place du lieu de distribution',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1552,107 +1570,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '20.6 Les bénévoles et le personnel connaissent leurs rôles et leurs responsabilités.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '20.7 Le COU fonctionne dans un espace dédié, et son fonctionnement n\'affecte pas les autres activités de la SN.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '20.8 L\'installation abritant le COU est au minimum autonome en électricité, en eau et en télécommunications.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '20.9 La SN dispose d\'un lieu de remplacement si le lieu dédié au COU n\'est pas accessible.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '20.10 L\'espace abriant le COU dispose de suffisamment d\'équipements de base pour la gestion des informations, la prise de décision, et le contrôle des opérations d\'urgence.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '20.11 Le COU dispose de moyens de communication et d\'appareils de remplacement (téléphone/radio ou autres moyens), et est géré par des personnes qualifiées.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '20.12 Le COU et ses équipements sont maintenus en état de marche.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '20.13 La SN dispose des coordonnées actualisées de tous ses intervenants.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '20.14 La SN dispose d\'un accès légal aux fréquences d\'urgence, qui permettent d\'entrer en contact avec d\'autres intervenants d\'urgence.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '20.15 Le personnel du COU gère et diffuse des informations régulièrement mises à jour (cartes).',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: 'Résumé de la catégorie 20',
+          nsTitle: 'Résumé de la catégorie 14F',
           nsQuestion: 'Résumé de la catégorie:',
           nsAnswers: [
             'Pas évalué',
@@ -1668,11 +1586,10 @@ export const frenchForm = {
       ]
     },
     {
-      componentTitle: 'Catégorie 21: Gestion de l\'information (GI)',
-      componentDescription: 'La capacité à gérer des informations, et notamment à les solliciter, recevoir, analyser et diffuser conformément aux procédures et aux exigences des partenaires (la FICR et les autorités publiques en particulier). Une trace écrite/numérique doit exister et indiquer quand et où la SN a fourni des informations clés pour le développement du Plan d\'Urgence. Cela inclut la GI entre les niveaux et entre les départements, des rapports situationnels, des plans, une visualisation des données, une plateforme DMIS/Go (FICR).',
+      componentTitle: 'Sous Catégorie 14.G. SECURITE DES MOYENS DE SUBSISTANCE ET FILETS DE SECURITE',
       namespaces: [
         {
-          nsTitle: '21.1 Le personnel travaillant au siège et dans les branches connaissent les modèles de GI (réalisés par la SN ou la FICR), la méthodologie et les procédures.',
+          nsTitle: '14.30 Les moyens de subsistance sont inclus à la stratégie GC/PC, aux plans, aux systèmes et aux procédures de la SN.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1682,7 +1599,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '21.2 Les points focaux en charge de la GI ont accès aux équipements nécessaires pour compiler, visualiser et partager les informations (imprimantes, cartouches, scanners et projecteurs avec batterie).',
+          nsTitle: '14.31 La SN a identifié des politiques nationales en lien avec les filets de sécurité, l\'emploi et les plans de développement des moyens de subsistance/économiques/de la résilience.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1692,7 +1609,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '21.3 La SN dispose d\'un système (ex. stockage de données) permettant au personnel de l\'intervention d\'urgence de partager des documents tels que des modèles, des rapports de situation ou tout autre type de document.',
+          nsTitle: '14.32 La SN a identifié un point focal chargé des moyens de subsistance / Sécurité alimentaire ainsi que d\'autres membres du personnel (équipes d\'intervention d\'urgence) responsable de la préparation aux moyens de subsistance, formés aux évaluations, aux analyses de marché, etc.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1702,7 +1619,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '21.4 La SN dispose de données de référence disponibles et à jour sur les zones à risque élevé (démographique, socio-économique) ventilées en fonction de l\'âge, du genre et du handicap.',
+          nsTitle: '14.33 Dans les régions les plus exposées aux catastrophes, les principaux systèmes et zones produisant des moyens de subsistance sont documentés (agricoles et non-agricoles), les principaux systèmes de marché sont identifiés (aliments et moyens de subsistance) et une valeur de référence sur le marché est développée et mise à jour.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1712,7 +1629,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '21.5 Les informations et les décisions spécifiques sont documentées et archivées.',
+          nsTitle: '14.34 Dans des régions exposées aux catastrophes, les risques pesant sur la communauté et les moyens de production du foyer sont identifiés et un plan de protection de ces moyens de production est mis en place.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1722,7 +1639,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '21.6 La SN dispose d\'un rapport standardisé (RapSt) qui inclut des informations sur l\'impact, l\'intervention de la SN, l\'intervention d\'autres acteurs, les défis et les lacunes identifiées).',
+          nsTitle: '14.35 Des outils d\'urgence sont adaptés/développés pour inclure les moyens de subsistance, et sont contextualisés.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1732,7 +1649,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '21.7 Le rapport fournit suffisamment d\'analyses pour informer les preneurs de décision.',
+          nsTitle: '14.36 La SN s\'engage et se coordonne avec d\'autres organisations et réseaux actifs dans les moyens de subsistance dans le pays.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1742,7 +1659,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '21.8 La SN dispose de mécanismes de partage de l\'information entre les secteurs et les services support, et entre les régions, les branches et le siège.',
+          nsTitle: '14.37 Le personnel de la SN est formé à la collecte de données (pour mesurer une donnée de référence et des indicateurs de progrès).',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1752,7 +1669,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: 'Résumé de la catégorie 21',
+          nsTitle: 'Résumé de la catégorie 14G',
           nsQuestion: 'Résumé de la catégorie:',
           nsAnswers: [
             'Pas évalué',
@@ -1768,11 +1685,10 @@ export const frenchForm = {
       ]
     },
     {
-      componentTitle: 'Catégorie 22: Test et apprentissage',
-      componentDescription: 'Les exercices et les simulations permettent à l\'organisation de tester, d\'identifier et de tirer des enseignements des résultats de ce type d\'exercices, et d\'intégrer ces enseignements aux futurs plans d\'intervention et de préparation.',
+      componentTitle: 'Sous Catégorie 14.H. RECHERCHE ET SAUVETAGE',
       namespaces: [
         {
-          nsTitle: '22.1 La SN teste régulièrement son système d\'intervention, et notamment ses actions précoces, à travers des simulations et des exercices (exercices annuels et simulations tous les trois ans dans un contexte de faible risque).',
+          nsTitle: '14.38 Les besoins en recherche et sauvetage sont identifiés pour différents scénarios et font partie de la stratégie d\'intervention de la SN.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1782,57 +1698,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '22.2 Les enseignements tirés des exercices, des simulations et des interventions, entraînent la révision des procédures.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '22.3 La SN inclut l\'accès, l\'acceptation et l\'application pratique des Principes Fondamentaux à ses simulations et ses exercices.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '22.4 Les branches localisées dans les régions à haut risque testent leur système d\'intervention, et notamment les actions précoces, à travers des exercices et des simulations.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '22.5 Les tests incluent la problématique d\'accès sécurisé (accès, perception, acceptation et sécurité).',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '22.6 Lorsque le contexte le nécessite, des simulations et des exercices transfrontaliers sont réalisés.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: 'Résumé de la catégorie 22',
+          nsTitle: 'Résumé de la catégorie 14G',
           nsQuestion: 'Résumé de la catégorie:',
           nsAnswers: [
             'Pas évalué',
@@ -1848,11 +1714,10 @@ export const frenchForm = {
       ]
     },
     {
-      componentTitle: 'Catégrie 23: Activation du support régional et international',
-      componentDescription: 'Des procédures visant à solliciter et accepter un appui régional et international lors des opérations, incluant le déclenchement de mécanismes de coordination pour le financement et le déploiement de matériel et de ressources humaines.',
+      componentTitle: 'Sous Catégorie 14.I. ABRIS, ARTICLES MENAGERS, CAMPS',
       namespaces: [
         {
-          nsTitle: '23.1 Le personnel concerné connaît le support disponible auprès de la FICR/CICR (technique, financier, matériel et RH).',
+          nsTitle: '14.39 Des mécanismes de consultation des populations cibles portant sur les solutions d\'abris les plus appropriés sont disponibles.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1862,7 +1727,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '23.2 Des PON et des contacts sont disponibles pour coordonner l\'intervention avec les bureaux respectifs de la FICR.',
+          nsTitle: '14.40 Conformément au scénario établi avec le gouvernement, des abris sont pré-positionnés dans des zones à haut risque.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1872,7 +1737,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '23.3 Les PON de la SN incluent des procédures permettant de solliciter et d\'intégrer un appui/des équipes régionales et internationales (RDRTs, FACT, ERU, DOU) au système d\'intervention, y compris avant une crise/catastrophe imminente.',
+          nsTitle: '14.41 La NS dispose d\'un kit non alimentaire de base approuvé dont les articles sont pré-positionnées, et de PON clairs sur les mécanismes d\'obtention des articles (à l\'échelle nationale ou par le biais de la FICR).',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1882,7 +1747,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '23.4 En cas d\'assistance nécessaire, la SN en informe la FICR dans un délai de 24 heures (DMIS)',
+          nsTitle: '14.42 Les fournisseurs d\'abris et d\'articles non alimentaires sont identifiés par la SN en amont de la catastrophe et des accords-cadres sont en place.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1892,7 +1757,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '23.5 La SN connaît les procédures PAU, les critères du DREF et le processus d\'Appel d\'Urgence, y compris pour une crise/catastrophe imminente.',
+          nsTitle: '14.43 Les plans pour des abris d\'urgence standards et temporaires sont établis suite à une consultation de la population à risque, et sont basés sur les matériaux disponibles et les techniques habituelles.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1902,7 +1767,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '23.6 La SN sollicite une assistance bilatérale conformément aux cadres de coordination établis.',
+          nsTitle: '14.44 Les bénévoles de la SN sont formés à l\'utilisation des matériaux de construction des abris pré-positionnés (ex. formation aux kits d\'abris).',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1912,7 +1777,26 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '23.7 Un point focal nommé par la SN agit en tant qu\'homologue de l\'intervenant régional/international.',
+          nsTitle: 'Résumé de la catégorie 14L',
+          nsQuestion: 'Résumé de la catégorie:',
+          nsAnswers: [
+            'Pas évalué',
+            'N\'existe pas',
+            'Existe partiellement',
+            'Nécessite une amélioration',
+            'Existe, peut être renforcé',
+            'Performance élevée'
+          ],
+          feedbackTitle: 'Notes relatives à la catégorie:',
+          feedbackDescription: ''
+        }
+      ]
+    },
+    {
+      componentTitle: 'Sous Catégorie 14.J. GESTION DES DEPOUILLES POUR FACILITER LEUR IDENTIFICATION',
+      namespaces: [
+        {
+          nsTitle: '14.45 La SN fait partie du système de gestion et d\'identification des dépouilles du gouvernement.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -1922,7 +1806,323 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: 'Résumé de la catégorie 23',
+          nsTitle: '14.46 Les besoins en gestion des dépouilles et en identification sont identifiés pour différents scénarios et font partie de la stratégie d\'intervention de la SN.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: 'Résumé de la catégorie 14G',
+          nsQuestion: 'Résumé de la catégorie:',
+          nsAnswers: [
+            'Pas évalué',
+            'N\'existe pas',
+            'Existe partiellement',
+            'Nécessite une amélioration',
+            'Existe, peut être renforcé',
+            'Performance élevée'
+          ],
+          feedbackTitle: 'Notes relatives à la catégorie:',
+          feedbackDescription: ''
+        }
+      ]
+    },
+    {
+      componentTitle: 'Sous Catégorie 14.K. RESTAURATION DES LIENS FAMILIAUX (RLF)',
+      namespaces: [
+        {
+          nsTitle: '14.47 Le personnel et les bénévoles sont aptes à fournir des services de RLF de qualité.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '14.48 Des procédures et des accords de RLF sont mis en place auprès du CICR.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: 'Résumé de la catégorie 14G',
+          nsQuestion: 'Résumé de la catégorie:',
+          nsAnswers: [
+            'Pas évalué',
+            'N\'existe pas',
+            'Existe partiellement',
+            'Nécessite une amélioration',
+            'Existe, peut être renforcé',
+            'Performance élevée'
+          ],
+          feedbackTitle: 'Notes relatives à la catégorie:',
+          feedbackDescription: ''
+        }
+      ]
+    },
+    {
+      componentTitle: 'Sous Catégorie 14.L. TRANSITION VERS LE RELEVEMENT',
+      namespaces: [
+        {
+          nsTitle: '14.49 Les membres clés du personnel connaissent les principes du relèvement.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '14.50 Le mandat de la SN dans le relèvement est formellement convenu avec le gouvernement.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '14.51 La SN a mis en place des systèmes habilitants permettant le relèvement précoce des moyens de subsistance, de manière à créer un pont entre la phase de secours et les activités de relèvement à long terme.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '14.52 La SN est bien coordonnée avec le Gouvernement et les acteurs humanitaires participant à l\'intervention sur les moyens de subsistance.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '14.53 La SN est formée aux évaluations participatives (dont la collecte de données (Suivi et évaluation)) pour identifier les priorités des communautés et des foyers (identifier les lacunes).',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '14.54 La SN a développé un plan d\'action de relèvement (précoce) des moyens de subsistance : contexte et justification, cadre logique et indicateurs, plan de surveillance et d\'évaluation, chronogramme des activités avec jalons et attribution des responsabilités, budget (niveau d\'activité).',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '14.55 La SN dispose d\'une équipe formée pour mener à bien des interventions de réhabilitation des moyens de production (petites infrastructures, déblaiement…).',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: 'Résumé de la catégorie 14L',
+          nsQuestion: 'Résumé de la catégorie:',
+          nsAnswers: [
+            'Pas évalué',
+            'N\'existe pas',
+            'Existe partiellement',
+            'Nécessite une amélioration',
+            'Existe, peut être renforcé',
+            'Performance élevée'
+          ],
+          feedbackTitle: 'Notes relatives à la catégorie:',
+          feedbackDescription: ''
+        }
+      ]
+    },
+    {
+      componentTitle: 'Sous Catégorie 14.M. PREPARATION AUX RISQUES NUCLEAIRES, RADIOACTIFS, BIOLOGIQUES ET CHIMIQUES (NRBC)',
+      namespaces: [
+        {
+          nsTitle: '14.56 La SN dispose d\'un rôle négocié et défini dans les plans d\'urgence nationaux, régionaux et locaux concernant les aléas NRBC.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '14.57 La SN dispose d\'un plan d\'action pour répondre à un incident NRBC, conformément à son rôle convenu.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '14.58 La NS dispose de PON comprenant des protocoles de sécurité pour les opérations liées aux aléas NRBC.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '14.59 La NS dispose d\'un point focal pour les aléas NRBC.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '14.60 La SN a, conformément à son mandat, formé du personnel et des bénévoles à agir de manière efficace dans l\'intervention et la préparation aux incidents NRBC.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '14.61 La SN dispose d\'équipements de protection NRBC individuels, et forme régulièrement son personnel et ses bénévoles à manipuler et à utiliser ces équipements.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '14.63 La SN, conformément à son mandat, dispose d\'ores et déjà de messages publics clés en cas d\'urgence NRBC, qui ont été validés par les autorités civiles compétentes.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '14.64 La SN s\'est impliquée auprès des Sociétés Nationales des pays voisins pour planifier et répondre aux effets transnationaux des aléas NRBC.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '14.65 La SN participe à des forums NRBC pertinents (nationaux/régionaux) pour la préparation et l\'intervention, et dispose de mécanismes de partage d\'informations en temps réel.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '14.66 La SN a identifié le besoin d\'assistance internationale en cas d\'événement NRBC et l\'a partagé avec les partenaires appropriés du Mouvement.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: 'Résumé de la catégorie 14M',
+          nsQuestion: 'Résumé de la catégorie:',
+          nsAnswers: [
+            'Pas évalué',
+            'N\'existe pas',
+            'Existe partiellement',
+            'Nécessite une amélioration',
+            'Existe, peut être renforcé',
+            'Performance élevée'
+          ],
+          feedbackTitle: 'Notes relatives à la catégorie:',
+          feedbackDescription: ''
+        }
+      ]
+    },
+    {
+      componentTitle: 'Sous Catégorie 14.N. SANTE ET PREMIERS SECOURS BASES SUR LA COMMUNAUTE (SPSBC)',
+      namespaces: [
+        {
+          nsTitle: '14.67 Les bénévoles de santé communautaires discutent et développent des plans d\'urgence avec leurs communautés, et conduisent des évaluations de santé et de sécurité de la communauté une fois par an.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '14.68 Chaque bénévole de chaque secteur est formé aux Premiers Secours et suit un cours de perfectionnement une fois par an.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '14.69 La formation SPSBC destinée aux bénévoles inclut une session sur le signalement adéquat d\'événements de santé suspects au personnel de la branche et/ou au Ministère de la Santé.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '14.70 Les bénévoles SPSBC sont activement impliqués dans la planification, la mise en œuvre et l\'évaluation de simulations, pour garantir la sensibilisation et l\'implication de la communauté, et faire en sorte que les informations et les liaisons avec les structures sanitaires soient maintenues.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: 'Résumé de la catégorie 14N',
           nsQuestion: 'Résumé de la catégorie:',
           nsAnswers: [
             'Pas évalué',
@@ -1950,11 +2150,13 @@ export const spanishForm = {
   ],
   components: [
     {
-      componentTitle: 'Componente 15. Mapeo de las capacidades de la SN',
-      componentDescription: 'Una lista de las capacidades de la SN, incluyendo los RRHH (personal, equipos de respuesta y voluntarios) y el equipo disponible para la respuesta ante desastres / crisis. Los equipos podrían incluir equipos de respuesta nacionales y de las filiales. Cuando sea pertinente, esto deberá definirse por especialidad técnica.',
+      componentTitle: 'Componente 14. Áreas de intervención específicas a la SN',
+      componentDescription: 'Servicios específicos al sector prestados por la SN en caso de emergencias, lo cual está en consonancia con el mandato y la legislación de la SN en el país. Esto incluye PD / RRD Comunitario, Evacuación, Salud en Emergencias, Epidemia y Pandemia, Primeros Auxilios, WASH, Seguridad Alimentaria y Medios de Vida, Búsqueda y Rescate, Alojamiento, Manejo de Cadáveres, RCF, Transición hacia la Recuperación y Preparación CBRN.'
+    },
+    {
       namespaces: [
         {
-          nsTitle: '15.1 Se identifica y se dispone de un punto focal para cada área específica de intervención de la SN para proporcionar orientación y apoyo técnico.',
+          nsTitle: '14.1 La SN se asegura de la participación activa de la población local, incluyendo los grupos marginados y excluidos, en la evaluación, el diseño/planificación de las actividades comunitarias, asegurándose de que los programas reflejen adecuadamente las necesidades de la comunidad y fortalezcan las estrategias locales de afrontamiento existentes.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -1964,7 +2166,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '15.2 El personal y los voluntarios están capacitados y actualizados en las áreas específicas de intervención.',
+          nsTitle: '14.2 La SN realiza actividades periódicas de sensibilización y educación pública en materia de desastres y crisis.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -1974,7 +2176,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '15.3 La base de datos de materiales y equipos de respuesta está actualizada, y las brechas son detectadas y abordadas.',
+          nsTitle: '14.3 Están establecidas la alerta temprana y la acción temprana comunitarias, y están vinculadas a los sistemas locales.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -1984,7 +2186,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '15.4 Se dispone de recursos (humanos y equipo), y estos son suficientes para cubrir las necesidades iniciales de respuesta.',
+          nsTitle: '14.4 Los CDRT están capacitados y equipados para manejar la respuesta local en asociación con los actores locales pertinentes.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -1994,7 +2196,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '15.5 Las capacidades se mapean en línea con los diferentes niveles de respuesta (Verde - Amarillo - Rojo).',
+          nsTitle: '14.5 Los CDRT tienen un plan de respuesta y de contingencia actualizado alineado con los planes y recursos locales pertinentes.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2004,7 +2206,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '15.6 Se encuentran establecidos mecanismos para compartir recursos entre filiales / regiones y con las SN hermanas.',
+          nsTitle: '14.6 La SN se asegura de que la evaluación, la planificación y la respuesta se lleven a cabo de manera inclusiva y sensible a género, diversidad y a los conflictos.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2014,7 +2216,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: 'Resumen del componente 15',
+          nsTitle: 'Resumen del componente 14A',
           nsQuestion: 'Resumen del componente:',
           nsAnswers: [
             'No revisado',
@@ -2030,11 +2232,10 @@ export const spanishForm = {
       ]
     },
     {
-      componentTitle: 'Componente 16. Mecanismos de Acción Temprana',
-      componentDescription: 'Diseñado para traducir las alertas en acciones anticipatorias para ayudar a reducir el impacto de eventos específicos de desastre o crisis. Estos se centran en la consolidación de la información disponible sobre los pronósticos y la puesta en marcha de procedimientos que garanticen que una SN pueda actuar con antelación a cualquier desastre / crisis. El financiamiento basado en pronósticos se incluye dentro del alcance de esta área.',
+      componentTitle: 'Sub Componente: 14.B. EVACUACIÓN',
       namespaces: [
         {
-          nsTitle: '16.1 El sistema de alerta temprana de la SN - incluyendo el Financiamiento basado en Pronósticos y la vigilancia de enfermedades - está formalmente vinculado al sistema nacional.',
+          nsTitle: '14.7 La evacuación es parte de la estrategia de respuesta de la SN, y se identifica en diferentes escenarios.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2044,7 +2245,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '16.2 La SN cuenta con procesos de decisión sobre cuándo se realizarán las alertas y las acciones tempranas, en base a los detonantes.',
+          nsTitle: '14.8 La SN es parte del mecanismo para la evacuación de comunidades en zonas de alto riesgo.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2054,47 +2255,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '16.3 La SN tiene mecanismos para responder a peligros importantes en coordinación con el sistema nacional.',
-          nsQuestion: 'Estado de referencia',
-          nsAnswers: [
-            'Si',
-            'No'
-          ],
-          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
-          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
-        },
-        {
-          nsTitle: '16.4 La SN hace uso de tecnologías nuevas y adecuadas para su contexto para enviar mensajes de alerta (por ejemplo: mensaje de texto, Twitter, correo electrónico, teléfono móvil), y la mensajería se prueba con distintos públicos para garantizar su comprensión.',
-          nsQuestion: 'Estado de referencia',
-          nsAnswers: [
-            'Si',
-            'No'
-          ],
-          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
-          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
-        },
-        {
-          nsTitle: '16.5 La SN cuenta con procedimientos y personal permanentemente disponibles para difundir alertas a todos los niveles de la SN: órganos de gobierno, filiales, unidades técnicas.',
-          nsQuestion: 'Estado de referencia',
-          nsAnswers: [
-            'Si',
-            'No'
-          ],
-          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
-          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
-        },
-        {
-          nsTitle: '16.6 Las filiales tienen redes locales funcionando para notificar a las comunidades sobre posibles peligros (respetando los mandatos de las instancias gubernamentales).',
-          nsQuestion: 'Estado de referencia',
-          nsAnswers: [
-            'Si',
-            'No'
-          ],
-          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
-          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
-        },
-        {
-          nsTitle: 'Resumen del componente 16',
+          nsTitle: 'Resumen del componente 14B',
           nsQuestion: 'Resumen del componente:',
           nsAnswers: [
             'No revisado',
@@ -2110,11 +2271,10 @@ export const spanishForm = {
       ]
     },
     {
-      componentTitle: 'Componente 17. Programación de Transferencia de Efectivo (PTE)',
-      componentDescription: 'Una forma eficaz y flexible, que incluye todas las formas de asistencia mediante transferencia de efectivo y cupones, para apoyar a las personas afectadas por emergencias, manteniendo su dignidad y su poder de elección al tiempo que se fomentan las economías locales. La transferencia de dinero en efectivo también deberá transversalizarse a otros sectores (incluyendo Socorro, Alojamiento, Medios de Vida) y servicios (Logística, Finanzas, etc.)',
+      componentTitle: 'Sub Componente: 14.C. SALUD EN EMERGENCIAS',
       namespaces: [
         {
-          nsTitle: '17.1 La SN cuenta con un plan de preparación para PTE, debidamente presupuestado, dotado de recursos y con actividades y productos claros, basado en análisis y discusiones con los actores clave.',
+          nsTitle: '14.9 Se identifican necesidades de respuesta multisectorial para diferentes escenarios de epidemias, incluyendo brotes en múltiples países.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2124,7 +2284,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '17.2 El plan de preparación para el PTE está adaptado para abordar las oportunidades y las barreras que tiene la SN para poder estar preparada para proporcionar un PTE ampliable durante una emergencia.',
+          nsTitle: '14.10 La SN cuenta con procedimientos y mecanismos de recopilación de datos y de retroalimentación para garantizar la participación de la comunidad en las intervenciones de prevención y respuesta.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2134,7 +2294,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '17.3 La SN tiene una base de datos actualizada de personal y voluntarios capacitados y con experiencia en PTE, a nivel de la sede y de las filiales en todos los sectores y servicios de apoyo, para implementar un PTE dentro del ciclo de respuesta.',
+          nsTitle: '14.11 La SN tiene establecido un procedimiento para manejar y responder a los rumores.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2144,7 +2304,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '17.4 Previo al desastre, la SN ya cuenta con un análisis de la factibilidad del efectivo y una línea de base acerca de los sistemas, precios y estacionalidad del mercado, así como un mapeo de otros actores y estructuras de coordinación.',
+          nsTitle: '14.12 La SN tiene establecidos protocolos de seguridad para el personal remunerado y los voluntarios, para la prevención y control de infecciones en casos de epidemias.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2154,7 +2314,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '17.5 Basándose en las lecciones aprendidas de respuestas anteriores, la SN ha modificado periódicamente los POE del PTE, los cuales tienen funciones y responsabilidades claras descritas para cada etapa del proceso de respuesta.',
+          nsTitle: '14.13 La SN es parte del sistema gubernamental a cargo del manejo seguro y digno de cadáveres y del sistema de identificación en casos de brotes de enfermedades infecciosas.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2164,7 +2324,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '17.6 La SN ha mapeado los mecanismos de entrega y los prestadores de servicios de PTE, y se formalizan los acuerdos con los proveedores de servicios de transferencia de dinero con un mecanismo acordado para la activación.',
+          nsTitle: '14.14 La SN dispone de equipo de protección personal adecuado, y regularmente capacita al personal y a los voluntarios en el manejo, uso y eliminación de este equipo.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2174,7 +2334,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '17.7 La SN tiene una caja de herramientas de PTE, actualizada y aprobada, que adapta las herramientas de CiE al contexto específico de la SN.',
+          nsTitle: '14.15 La SN ha identificado claramente su papel dentro de las epidemias, y ha establecido el apoyo técnico pertinente para garantizar las mejores prácticas.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2184,7 +2344,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '17.8 La SN utiliza rutinariamente la caja de herramientas de PTE, la cual se modifica y actualiza en base a la retroalimentación extraída de las acciones de preparación y respuesta.',
+          nsTitle: '14.16 La SN ha identificado claramente su papel en el caso de declararse aislamientos y cuarentenas, y ha establecido el apoyo técnico pertinente para garantizar las mejores prácticas.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2194,17 +2354,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '17.9 La SN dirige el mecanismo de coordinación del PTE tanto al interno del Movimiento como externamente con otros actores del PTE en el país (gobierno, ONU, ONG, etc.).',
-          nsQuestion: 'Estado de referencia',
-          nsAnswers: [
-            'Si',
-            'No'
-          ],
-          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
-          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
-        },
-        {
-          nsTitle: 'Resumen del componente 17',
+          nsTitle: 'Resumen del componente 14C',
           nsQuestion: 'Resumen del componente:',
           nsAnswers: [
             'No revisado',
@@ -2220,11 +2370,10 @@ export const spanishForm = {
       ]
     },
     {
-      componentTitle: 'Componente 18. Evaluación de Necesidades de Emergencia',
-      componentDescription: 'Evaluar el alcance y el impacto de los daños causados por el desastre / crisis y el grado de vulnerabilidad de la población afectada. Como el primer paso en cualquier respuesta a emergencias, tal evaluación identificará las necesidades que requieren una intervención externa y las brechas a cerrarse. Es un componente vital del proceso de la planificación de programas.',
+      componentTitle: 'Sub Componente: 14.D. PRIMEROS AUXILIOS',
       namespaces: [
         {
-          nsTitle: '18.1 La SN dispone de plantillas estandarizadas para la recopilación de datos primarios y secundarios y para la presentación de informes.',
+          nsTitle: '14.17 Los primeros auxilios forman parte de la estrategia de respuesta de la SN, y se identifican en diferentes escenarios.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2234,7 +2383,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '18.2 La SN tiene un equipo multisectorial de evaluación de emergencia capacitado y disponible para su despliegue de manera oportuna.',
+          nsTitle: '14.18 La SN incluye la capacitación en Primeros Auxilios en su estrategia de reducción de riesgos de desastres basada en la comunidad.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2244,7 +2393,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '18.3 La metodología de evaluación de emergencias incluye sectores prioritarios (socorro, salud, medios de vida, alojamiento, agua y saneamiento, alimentos, protección, otros) e infraestructura, incluyendo la accesibilidad y el acceso.',
+          nsTitle: '14.19 La SN tiene equipos de voluntarios entrenados y equipados para prestar Primeros Auxilios, para una respuesta rápida y eficaz.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2254,47 +2403,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '18.4 Los procedimientos de recopilación de datos reconocen la diversidad de las fuentes, y la información se desglosa según cuestiones de género, discapacidad, protección y violencia.',
-          nsQuestion: 'Estado de referencia',
-          nsAnswers: [
-            'Si',
-            'No'
-          ],
-          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
-          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
-        },
-        {
-          nsTitle: '18.5 La evaluación de emergencia analiza los riesgos secundarios, así como el impacto en el capital social y de mercado local.',
-          nsQuestion: 'Estado de referencia',
-          nsAnswers: [
-            'Si',
-            'No'
-          ],
-          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
-          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
-        },
-        {
-          nsTitle: '18.6 La evaluación de emergencia analiza la capacidad de las comunidades para responder y de proporcionar asistencia ellas mismas.',
-          nsQuestion: 'Estado de referencia',
-          nsAnswers: [
-            'Si',
-            'No'
-          ],
-          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
-          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
-        },
-        {
-          nsTitle: '18.7 La evaluación de emergencia analiza estratégicamente las acciones de otros actores, la SN participa en evaluaciones interinstitucionales, y comparte los resultados de la evaluación con otros actores.',
-          nsQuestion: 'Estado de referencia',
-          nsAnswers: [
-            'Si',
-            'No'
-          ],
-          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
-          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
-        },
-        {
-          nsTitle: 'Resumen del componente 18',
+          nsTitle: 'Resumen del componente 14D',
           nsQuestion: 'Resumen del componente:',
           nsAnswers: [
             'No revisado',
@@ -2310,11 +2419,10 @@ export const spanishForm = {
       ]
     },
     {
-      componentTitle: 'Componente 19. Selección de beneficiarios',
-      componentDescription: 'Identificación y selección de la población afectada objetivo de las intervenciones, utilizando un conjunto predefinido de criterios basados en las necesidades y en la vulnerabilidad. Esto incluye la consideración de vulnerabilidades específicas tales como la discapacidad, la edad y el sexo.',
+      componentTitle: 'Sub Componente: 14.E. AGUA Y SANEAMIENTO',
       namespaces: [
         {
-          nsTitle: '19.1 La SN transmite los criterios de selección a la población afectada usando los canales de comunicación preferidos, e involucra a los líderes / representantes de la comunidad.',
+          nsTitle: '14.20 Las consecuencias humanitarias en cuanto a agua y saneamiento son parte de la estrategia de respuesta de la SN, y se identifican en diferentes escenarios.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2324,7 +2432,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '19.2 La SN identifica los criterios de selección adecuados en base a la vulnerabilidad existente y tomando en cuenta el sexo, la diversidad, la edad y las discapacidades.',
+          nsTitle: '14.21 Los equipos de respuesta de la SN (nacional y de filiales) tienen la capacitación, las habilidades y los equipos adecuados relativos a WASH.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2334,7 +2442,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '19.3 La SN protege los datos recabados de la población afectada.',
+          nsTitle: '14.22 La SN cuenta con el equipamiento necesario para prestar servicios WASH de calidad, o POE claros sobre cómo obtener este equipamiento (en el país o mediante la FICR).',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2344,7 +2452,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '19.4 Los respondedores han sido capacitados en recopilación de datos, incluyendo las plantillas estandarizadas.',
+          nsTitle: '14.23 La SN dispone de apoyo técnico de WASH en emergencias, ya sea mediante socios del Movimiento de la CRMLR o acordado con las autoridades / socios pertinentes en WASH.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2354,7 +2462,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '19.5 La SN coteja las listas de población afectada para verificar cuestiones de inclusión / exclusión.',
+          nsTitle: '14.24 La SN participa y coordina con otras organizaciones y redes activas en WASH en el país.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2364,7 +2472,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: 'Resumen del componente 19',
+          nsTitle: 'Resumen del componente 14E',
           nsQuestion: 'Resumen del componente:',
           nsAnswers: [
             'No revisado',
@@ -2380,11 +2488,10 @@ export const spanishForm = {
       ]
     },
     {
-      componentTitle: 'Componente 20. Centro de Operaciones de Emergencia (COE)',
-      componentDescription: 'Una central de mando y control encargada de llevar a cabo las funciones de gestión de desastres / crisis a nivel estratégico durante una situación de emergencia. Las funciones comunes son recolectar y analizar datos; facilitar la toma de decisiones que protegen las vidas y los medios de vida; y diseminar esas decisiones a todos los organismos e individuos a quienes compete. Generalmente se encuentra ubicado a nivel de la sede de una organización.',
+      componentTitle: 'Sub Componente: 14.F. SEGURIDAD ALIMENTARIA',
       namespaces: [
         {
-          nsTitle: '20.1 La SN ha nombrado formalmente al punto focal para el COE.',
+          nsTitle: '14.25 La SN monitorea, analiza y documenta los niveles de seguridad alimentaria en el país, la situación de seguridad alimentaria de la población / los más vulnerables, los datos agrometeorológicos, la oferta y la demanda en los principales mercados agrícolas y de alimentos, y las reservas de alimentos.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2394,7 +2501,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '20.2 La SN tiene POE actualizados para el COE, los cuales son coherentes con otros documentos de la SN y son seguidos durante una respuesta.',
+          nsTitle: '14.26 La SN ha identificado al personal técnico para la asistencia alimentaria, el cual está capacitado para identificar necesidades y evaluar la situación para hacer recomendaciones sobre la asistencia que se necesita, la modalidad de transferencia (dinero en efectivo, alimentos, cupones) y el mecanismo de entrega, y sobre la situación de los mercados.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2404,7 +2511,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '20.3 El COE es activado según los procedimientos, y tiene mecanismos establecidos para informar al personal pertinente a otros.',
+          nsTitle: '14.27 La SN participa y está coordinada con otras organizaciones y redes (clústeres) activas en la distribución de ayuda alimentaria (PMA, CICR, etc.)',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2414,7 +2521,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '20.4 El personal y los voluntarios pertinentes están capacitados en los POE del COE.',
+          nsTitle: '14.28 La SN ha integrado la distribución de alimentos en sus estrategias de respuesta (principales riesgos, escenarios, capacidad de respuesta), y se adhiere a las normas y políticas de seguridad para la distribución de alimentos y leche.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2424,7 +2531,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '20.5 Todos los sectores técnicos y los servicios de apoyo tienen procedimientos que se integran con los POE del COE.',
+          nsTitle: '14.29 La SN tiene un plan de acción específico para adquirir y distribuir ayuda alimentaria a escala: formularios de evaluación POE para la identificación y selección de población afectada cálculo de raciones de alimentos (en base al acceso a alimentos y la disponibilidad a nivel de hogar) diferentes tipos de sistemas de distribución de alimentos instalación de lugar de distribución',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2434,107 +2541,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '20.6 Los voluntarios y el personal conocen sus funciones y responsabilidades.',
-          nsQuestion: 'Estado de referencia',
-          nsAnswers: [
-            'Si',
-            'No'
-          ],
-          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
-          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
-        },
-        {
-          nsTitle: '20.7 El COE opera en un espacio destinado para este fin, y su uso no afecta a otras actividades importantes de la SN.',
-          nsQuestion: 'Estado de referencia',
-          nsAnswers: [
-            'Si',
-            'No'
-          ],
-          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
-          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
-        },
-        {
-          nsTitle: '20.8 Las instalaciones del COE son autosuficientes al menos en cuanto a suministro de energía eléctrica, agua y telecomunicaciones.',
-          nsQuestion: 'Estado de referencia',
-          nsAnswers: [
-            'Si',
-            'No'
-          ],
-          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
-          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
-        },
-        {
-          nsTitle: '20.9 La SN tiene una ubicación alternativa si el espacio para el COE no estuviese accesible.',
-          nsQuestion: 'Estado de referencia',
-          nsAnswers: [
-            'Si',
-            'No'
-          ],
-          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
-          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
-        },
-        {
-          nsTitle: '20.10 El espacio físico para el COE tiene suficiente equipo básico para la gestión de la información, la toma de decisiones y el control de las operaciones de emergencia.El espacio físico para el COE tiene suficiente equipo básico para la gestión de la información, la toma de decisiones y el control de las operaciones de emergencia.',
-          nsQuestion: 'Estado de referencia',
-          nsAnswers: [
-            'Si',
-            'No'
-          ],
-          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
-          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
-        },
-        {
-          nsTitle: '20.11 El COE cuenta con los medios de comunicación y respaldos (p.ej. teléfono/radio), y son operados por personal o voluntarios calificados.',
-          nsQuestion: 'Estado de referencia',
-          nsAnswers: [
-            'Si',
-            'No'
-          ],
-          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
-          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
-        },
-        {
-          nsTitle: '20.12 El COE y su equipo se mantienen en buenas condiciones de funcionamiento.',
-          nsQuestion: 'Estado de referencia',
-          nsAnswers: [
-            'Si',
-            'No'
-          ],
-          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
-          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
-        },
-        {
-          nsTitle: '20.13 La SN tiene los detalles de contacto completos y actualizados de todos sus respondedores.',
-          nsQuestion: 'Estado de referencia',
-          nsAnswers: [
-            'Si',
-            'No'
-          ],
-          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
-          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
-        },
-        {
-          nsTitle: '20.14 La SN tiene acceso legal y al uso de las frecuencias de emergencia designadas que se vinculan con otros actores participando en la respuesta',
-          nsQuestion: 'Estado de referencia',
-          nsAnswers: [
-            'Si',
-            'No'
-          ],
-          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
-          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
-        },
-        {
-          nsTitle: '20.15 El personal del COE maneja y presenta información actualizada periódicamente (mapas).',
-          nsQuestion: 'Estado de referencia',
-          nsAnswers: [
-            'Si',
-            'No'
-          ],
-          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
-          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
-        },
-        {
-          nsTitle: 'Resumen del componente 20',
+          nsTitle: 'Resumen del componente 14F',
           nsQuestion: 'Resumen del componente:',
           nsAnswers: [
             'No revisado',
@@ -2550,11 +2557,10 @@ export const spanishForm = {
       ]
     },
     {
-      componentTitle: 'Componente 21. Gestión de la Información (IM)',
-      componentDescription: 'Capacidad para gestionar la información, incluyendo la solicitud, recepción, análisis y diseminación de la misma según sus procedimientos y los requisitos de los socios (en particular la FICR y las autoridades públicas). Debe existir un rastro digital / documental claro que documente qué, cuándo y cómo ha actuado la SN, y que proporcione información clave para el desarrollo del Plan de Acción de Emergencia. Esto incluye el MI entre niveles, entre departamentos e Informes Situacionales, mapeos, visualización de datos, plataforma DMIS / GO (FICR).',
+      componentTitle: 'Sub Componente: 14.G. SEGURIDAD DE MEDIOS DE VIDA Y REDES DE SEGURIDAD',
       namespaces: [
         {
-          nsTitle: '21.1 El personal clave en la sede y a nivel de las filiales está familiarizado con las plantillas (ya sea de la SN o de la FICR), metodología y procedimientos de MI.',
+          nsTitle: '14.30 Se incorporan los medios de vida en la estrategia, planes, sistemas y procedimientos de GD / PD de la SN.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2564,7 +2570,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '21.2 Los puntos focales de MI tienen acceso al equipo necesario para compilar, visualizar y compartir información (impresoras, cartuchos, escáneres y proyectores con baterías).',
+          nsTitle: '14.31 La SN ha identificado políticas nacionales relacionadas con las redes de seguridad, el empleo y los planes de desarrollo económico/ de medios de vida / de resiliencia.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2574,7 +2580,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '21.3 La SN tiene un sistema (por ejemplo, almacén de datos) que permite el intercambio de documentos basados en archivos, tales como como plantillas, informes de situación o cualquier otro tipo de documento, entre los miembros del personal de respuesta a emergencias.',
+          nsTitle: '14.32 La SN ha identificado a un punto focal de medios de vida / Seguridad alimentaria y otro personal técnico (equipos de respuesta a emergencias) para la preparación en medios de vida, los cuales están capacitados en evaluación, análisis de mercado, etc.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2584,7 +2590,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '21.4 La SN tiene datos de línea de base disponibles y actualizados sobre las zonas de alto riesgo (demográficos, socioeconómicos), desagregados por edad, sexo y discapacidad.',
+          nsTitle: '14.33 En las zonas propensas a desastres, la SN ha identificado y documentado las principales zonas y sistemas de medios de vida (agrícolas y no agrícolas), los principales sistemas de mercado (alimentos y medios de vida de hogar), y se desarrolla y actualiza una línea de base del mercado',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2594,7 +2600,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '21.5 Se documenta y se archiva la información, específicamente las decisiones.',
+          nsTitle: '14.34 En zonas propensas a desastres, la SN ha identificado los riesgos para los activos productivos de la comunidad y de los hogares, y se establece un plan de protección.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2604,7 +2610,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '21.6 La SN cuenta con un formato estandarizado para los Informes Situacionales (SitRep), que incluye información sobre el impacto, la respuesta de la SN, la respuesta de otros actores, los desafíos y las brechas identificadas.',
+          nsTitle: '14.35 Las herramientas de emergencia de la SN se contextualizan e incluyen los medios de vida.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2614,7 +2620,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '21.7 Los Informes de Situación proporcionan análisis suficiente para mantener informados a los tomadores de decisiones.',
+          nsTitle: '14.36 La SN participa y está coordinada con otras organizaciones y redes activas en medios de vida en el país.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2624,7 +2630,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '21.8 La SN tiene mecanismos para compartir información entre sectores y servicios de apoyo, y entre regiones, filiales y la sede.',
+          nsTitle: '14.37 El personal y los voluntarios de la SN están capacitados en recolección de datos (para la realización de línea de base y la medición de los avances / indicadores).',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2634,7 +2640,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: 'Resumen del componente 21',
+          nsTitle: 'Resumen del componente 14G',
           nsQuestion: 'Resumen del componente:',
           nsAnswers: [
             'No revisado',
@@ -2650,11 +2656,10 @@ export const spanishForm = {
       ]
     },
     {
-      componentTitle: 'Componente 22. Pruebas y Aprendizaje',
-      componentDescription: 'Los ejercicios y los simulacros permiten a la organización probar, identificar y aprender de los resultados de este tipo de ejercicios, e incorporar el aprendizaje en futuras planificaciones de preparación y de respuesta.',
+      componentTitle: 'Sub Componente: 14.H. BÚSQUEDA Y RESCATE',
       namespaces: [
         {
-          nsTitle: '22.1 La SN evalúa regularmente su sistema de respuesta, incluyendo para la acción temprana, a través de simulaciones y simulacros (ejercicios y simulacros anuales, y cada tres años en contextos de bajo riesgo).',
+          nsTitle: '14.38 La búsqueda y rescate forma parte de la estrategia de respuesta de la SN, y se identifica en diferentes escenarios.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2664,57 +2669,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '22.2 Las modificaciones a los procedimientos se basan en las lecciones extraídas de ejercicios, simulacros y respuestas.',
-          nsQuestion: 'Estado de referencia',
-          nsAnswers: [
-            'Si',
-            'No'
-          ],
-          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
-          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
-        },
-        {
-          nsTitle: '22.3 La SN incluye el acceso, la aceptación, la seguridad y la aplicación práctica de los Principios Fundamentales en sus simulaciones y simulacros.',
-          nsQuestion: 'Estado de referencia',
-          nsAnswers: [
-            'Si',
-            'No'
-          ],
-          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
-          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
-        },
-        {
-          nsTitle: '22.4 Las filiales en las zonas de alto riesgo ponen a prueba su sistema de respuesta, incluyendo la acción temprana, a través de simulaciones y simulacros.',
-          nsQuestion: 'Estado de referencia',
-          nsAnswers: [
-            'Si',
-            'No'
-          ],
-          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
-          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
-        },
-        {
-          nsTitle: '22.5 Las pruebas incluyen cuestiones de acceso seguro (acceso, percepción, aceptación y seguridad).',
-          nsQuestion: 'Estado de referencia',
-          nsAnswers: [
-            'Si',
-            'No'
-          ],
-          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
-          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
-        },
-        {
-          nsTitle: '22.6 La SN realiza simulacros transfronterizos en contextos pertinentes.',
-          nsQuestion: 'Estado de referencia',
-          nsAnswers: [
-            'Si',
-            'No'
-          ],
-          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
-          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
-        },
-        {
-          nsTitle: 'Resumen del componente 22',
+          nsTitle: 'Resumen del componente 14H',
           nsQuestion: 'Resumen del componente:',
           nsAnswers: [
             'No revisado',
@@ -2730,11 +2685,10 @@ export const spanishForm = {
       ]
     },
     {
-      componentTitle: 'Componente 23. Activación de apoyo regional e internacional',
-      componentDescription: 'Los procedimientos para solicitar y aceptar apoyo regional e internacional en las operaciones, incluyendo la activación de mecanismos de coordinación para la financiación y el despliegue de recursos materiales y humanos',
+      componentTitle: 'Sub Componente: 14.I. ALOJAMIENTO, ARTÍCULOS PARA EL HOGAR, ASENTAMIENTOS',
       namespaces: [
         {
-          nsTitle: '23.1 El personal clave está familiarizado con el apoyo disponible de parte de la FICR / CICR (técnico, financiero, material y de recursos humanos).',
+          nsTitle: '14.39 La SN dispone de mecanismos para consultar a la población objetivo sobre las soluciones más adecuadas en materia de respuesta de alojamiento.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2744,7 +2698,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '23.2 Se dispone de POE y de contactos para coordinar la respuesta con las respectivas oficinas de la FICR.',
+          nsTitle: '14.40 Los suministros para alojamiento se encuentran pre-posicionados en zonas de alto riesgo en base al escenario acordado con el gobierno.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2754,7 +2708,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '23.3 Los POE de la SN incluyen procedimientos para solicitar e incorporar equipos/apoyos regionales y globales (RDRT, FACT, ERU, HEOps) en su sistema de respuesta, incluso antes de una crisis / desastre inminente.',
+          nsTitle: '14.41 La SN tiene acordado un kit estándar de NFI con artículos preposicionados, así como POE claros sobre cómo obtenerlos (en el país o mediante la FICR).',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2764,7 +2718,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '23.4 La SN informa a la FICR de la posible necesidad de asistencia (DMIS) dentro de un plazo de 24 horas.',
+          nsTitle: '14.42 La SN ha identificado los proveedores de artículos NFI y de alojamiento, y se encuentran establecidos acuerdos predesastre y marco.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2774,7 +2728,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '23.5 La SN está familiarizada con los procedimientos del PdAE, los criterios DREF y el proceso del Llamamiento de Emergencia, incluso para crisis / desastres inminentes.',
+          nsTitle: '14.43 La SN dispone de diseños estándar de alojamientos temporales y de emergencia, previa consulta con la población en riesgo y en base a técnicas comunes y a los materiales disponibles.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2784,7 +2738,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '23.6 La SN solicita asistencia bilateral de acuerdo con los marcos de coordinación establecidos',
+          nsTitle: '14.44 Los voluntarios de la SN están capacitados en el uso de los materiales de alojamiento preposicionados para construir refugios básicos (por ejemplo, capacitación en el kit de alojamiento).',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2794,7 +2748,26 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '23.7 La SN ha asignado un punto focal para fungir como contraparte de los respondedores regionales / internacionales.',
+          nsTitle: 'Resumen del componente 14G',
+          nsQuestion: 'Resumen del componente:',
+          nsAnswers: [
+            'No revisado',
+            'No existe',
+            'Existe parcialmente',
+            'Necesita mejoras',
+            'Existir, se podría fortalecer.',
+            'Alto rendimiento'
+          ],
+          feedbackTitle: 'Notas relacionadas con el componente.',
+          feedbackDescription: ''
+        }
+      ]
+    },
+    {
+      componentTitle: 'Sub Componente: 14.J. GESTIÓN DE CADÁVERES PARA FACILITAR SU IDENTIFICACIÓN',
+      namespaces: [
+        {
+          nsTitle: '14.45 La SN es parte del sistema gubernamental de gestión e identificación de cadáveres.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -2804,7 +2777,333 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: 'Resumen del componente 23',
+          nsTitle: '14.46 La gestión de cadáveres y las necesidades de identificación forman parte de la estrategia de respuesta de la SN, y se identifican en diferentes escenarios.',
+          nsQuestion: 'Estado de referencia',
+          nsAnswers: [
+            'Si',
+            'No'
+          ],
+          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
+          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
+        },
+        {
+          nsTitle: 'Resumen del componente 14J',
+          nsQuestion: 'Resumen del componente:',
+          nsAnswers: [
+            'No revisado',
+            'No existe',
+            'Existe parcialmente',
+            'Necesita mejoras',
+            'Existir, se podría fortalecer.',
+            'Alto rendimiento'
+          ],
+          feedbackTitle: 'Notas relacionadas con el componente.',
+          feedbackDescription: ''
+        }
+      ]
+    },
+    {
+      componentTitle: 'Sub Componente: 14.K. RESTABLECIMIENTO DE CONTACTOS FAMILIARES (RCF)',
+      namespaces: [
+        {
+          nsTitle: '14.47 El personal y los voluntarios son capaces de prestar servicios de RCF de calidad.',
+          nsQuestion: 'Estado de referencia',
+          nsAnswers: [
+            'Si',
+            'No'
+          ],
+          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
+          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
+        },
+        {
+          nsTitle: '14.48 Se encuentran establecidos los procedimientos y los acuerdos en materia de RCF con el CICR.',
+          nsQuestion: 'Estado de referencia',
+          nsAnswers: [
+            'Si',
+            'No'
+          ],
+          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
+          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
+        },
+        {
+          nsTitle: 'Resumen del componente 14K',
+          nsQuestion: 'Resumen del componente:',
+          nsAnswers: [
+            'No revisado',
+            'No existe',
+            'Existe parcialmente',
+            'Necesita mejoras',
+            'Existir, se podría fortalecer.',
+            'Alto rendimiento'
+          ],
+          feedbackTitle: 'Notas relacionadas con el componente.',
+          feedbackDescription: ''
+        }
+      ]
+    },
+    {
+      componentTitle: 'Sub Componente: 14.L. TRANSICIÓN HACIA LA RECUPERACIÓN',
+      namespaces: [
+        {
+          nsTitle: '14.49 El personal clave está familiarizado con los principios de la recuperación.',
+          nsQuestion: 'Estado de referencia',
+          nsAnswers: [
+            'Si',
+            'No'
+          ],
+          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
+          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
+        },
+        {
+          nsTitle: '14.50 El mandato de recuperación de la SN está formalmente acordado con el gobierno.',
+          nsQuestion: 'Estado de referencia',
+          nsAnswers: [
+            'Si',
+            'No'
+          ],
+          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
+          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
+        },
+        {
+          nsTitle: '14.51 La SN ha establecido sistemas que permiten la recuperación temprana de los medios de vida, para cerrar la brecha entre la fase de socorro y las actividades de recuperación a largo plazo.',
+          nsQuestion: 'Estado de referencia',
+          nsAnswers: [
+            'Si',
+            'No'
+          ],
+          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
+          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
+        },
+        {
+          nsTitle: '14.52 La SN coordina con los actores gubernamentales y humanitarios que participan en la respuesta en medios de vida.',
+          nsQuestion: 'Estado de referencia',
+          nsAnswers: [
+            'Si',
+            'No'
+          ],
+          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
+          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
+        },
+        {
+          nsTitle: '14.53 El personal y los voluntarios de la SN están capacitados en evaluación participativa (incluyendo recolección de datos - M&E) para identificar las prioridades y las brechas de las comunidades y los hogares.',
+          nsQuestion: 'Estado de referencia',
+          nsAnswers: [
+            'Si',
+            'No'
+          ],
+          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
+          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
+        },
+        {
+          nsTitle: '14.54 La SN ha desarrollado un plan (temprano) de acción para la recuperación de los medios de vida: antecedentes y justificación, marco lógico e indicadores, plan de M&E, cronograma de actividades con asignación de responsabilidades e hitos, presupuesto (nivel de actividad).',
+          nsQuestion: 'Estado de referencia',
+          nsAnswers: [
+            'Si',
+            'No'
+          ],
+          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
+          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
+        },
+        {
+          nsTitle: '14.55 El personal y los voluntarios de la SN están capacitados en intervenciones de respuesta para la rehabilitación de activos productivos (infraestructura pequeña, limpieza, etc.).',
+          nsQuestion: 'Estado de referencia',
+          nsAnswers: [
+            'Si',
+            'No'
+          ],
+          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
+          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
+        },
+        {
+          nsTitle: 'Resumen del componente 14L',
+          nsQuestion: 'Resumen del componente:',
+          nsAnswers: [
+            'No revisado',
+            'No existe',
+            'Existe parcialmente',
+            'Necesita mejoras',
+            'Existir, se podría fortalecer.',
+            'Alto rendimiento'
+          ],
+          feedbackTitle: 'Notas relacionadas con el componente.',
+          feedbackDescription: ''
+        }
+      ]
+    },
+    {
+      componentTitle: 'Sub Componente: 14.M. PREPARACIÓN ANTE EMERGENCIAS QUÍMICAS, BIOLÓGICAS, RADIOLÓGICAS Y NUCLEARES (CBRN)',
+      namespaces: [
+        {
+          nsTitle: '14.56 La VBC incluye eventos químicos como un indicador específico o como un evento inusual. La SN incluye contactos con autoridades químicas en sus POE para VBC.',
+          nsQuestion: 'Estado de referencia',
+          nsAnswers: [
+            'Si',
+            'No'
+          ],
+          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
+          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
+        },
+        {
+          nsTitle: '14.58 La SN tiene POE que incluyen protocolos de seguridad para operaciones relacionadas con CBRN.',
+          nsQuestion: 'Estado de referencia',
+          nsAnswers: [
+            'Si',
+            'No'
+          ],
+          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
+          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
+        },
+        {
+          nsTitle: '14.58 La SN tiene POE que incluyen protocolos de seguridad para operaciones relacionadas con CBRN.',
+          nsQuestion: 'Estado de referencia',
+          nsAnswers: [
+            'Si',
+            'No'
+          ],
+          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
+          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
+        },
+        {
+          nsTitle: '14.59 La SN tiene un punto focal dedicado para CBRN.',
+          nsQuestion: 'Estado de referencia',
+          nsAnswers: [
+            'Si',
+            'No'
+          ],
+          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
+          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
+        },
+        {
+          nsTitle: '14.60 De acuerdo a su mandato, la SN cuenta con personal y voluntarios específicamente capacitados y capaces de operar eficazmente en contextos de preparación y respuesta ante CBRN.',
+          nsQuestion: 'Estado de referencia',
+          nsAnswers: [
+            'Si',
+            'No'
+          ],
+          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
+          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
+        },
+        {
+          nsTitle: '14.61 La SN dispone de equipo de protección personal adecuado para CBRN, y capacita regularmente al personal y a los voluntarios en el manejo y uso de este equipo.',
+          nsQuestion: 'Estado de referencia',
+          nsAnswers: [
+            'Si',
+            'No'
+          ],
+          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
+          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
+        },
+        {
+          nsTitle: '14.62 La SN ha creado una red de conocimiento especializado con las organizaciones pertinentes y los expertos clave, para recibir apoyo especializado para los peligros relacionados con CBRN.',
+          nsQuestion: 'Estado de referencia',
+          nsAnswers: [
+            'Si',
+            'No'
+          ],
+          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
+          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
+        },
+        {
+          nsTitle: '14.63 De acuerdo con su mandato, la SN tiene mensajes claves de sensibilización pública fácilmente disponibles para las emergencias CBRN, los cuales han sido revisados y aprobados por las autoridades civiles pertinentes.',
+          nsQuestion: 'Estado de referencia',
+          nsAnswers: [
+            'Si',
+            'No'
+          ],
+          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
+          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
+        },
+        {
+          nsTitle: '14.64 La SN ha participado con las Sociedades Nacionales vecinas en la planificación y respuesta a efectos transfronterizos de peligros CBRN.',
+          nsQuestion: 'Estado de referencia',
+          nsAnswers: [
+            'Si',
+            'No'
+          ],
+          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
+          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
+        },
+        {
+          nsTitle: '14.65 La SN está participando en foros pertinentes relacionados con CBRN (nacionales / regionales) para preparación y respuesta, y cuenta con los mecanismos para compartir información en tiempo real.',
+          nsQuestion: 'Estado de referencia',
+          nsAnswers: [
+            'Si',
+            'No'
+          ],
+          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
+          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
+        },
+        {
+          nsTitle: '14.66 La SN ha identificado la necesidad de asistencia internacional para eventos CBRN (de ser aplicable), y ha compartido esto con los socios del Movimiento',
+          nsQuestion: 'Estado de referencia',
+          nsAnswers: [
+            'Si',
+            'No'
+          ],
+          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
+          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
+        },
+        {
+          nsTitle: 'Resumen del componente 14M',
+          nsQuestion: 'Resumen del componente:',
+          nsAnswers: [
+            'No revisado',
+            'No existe',
+            'Existe parcialmente',
+            'Necesita mejoras',
+            'Existir, se podría fortalecer.',
+            'Alto rendimiento'
+          ],
+          feedbackTitle: 'Notas relacionadas con el componente.',
+          feedbackDescription: ''
+        }
+      ]
+    },
+    {
+      componentTitle: 'Sub Componente: 14.N. SALUD Y PRIMEROS AUXILIOS COMUNITARIOS (SPAC)',
+      namespaces: [
+        {
+          nsTitle: '14.67 Los voluntarios comunitarios de salud discuten y desarrollan planes de contingencia de salud con sus comunidades, y realizan evaluaciones de salud y de seguridad comunitaria una vez al año.',
+          nsQuestion: 'Estado de referencia',
+          nsAnswers: [
+            'Si',
+            'No'
+          ],
+          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
+          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
+        },
+        {
+          nsTitle: '14.68 Cada voluntario de cada sector es inicialmente capacitado en Primeros Auxilios Básicos, y recibe capacitación de actualización todos los años',
+          nsQuestion: 'Estado de referencia',
+          nsAnswers: [
+            'Si',
+            'No'
+          ],
+          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
+          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
+        },
+        {
+          nsTitle: '14.69 La capacitación para los voluntarios de SPAC incluye una sesión sobre la forma correcta de reportar eventos de salud sospechosos al personal de la filial y / o al Ministerio de Salud.',
+          nsQuestion: 'Estado de referencia',
+          nsAnswers: [
+            'Si',
+            'No'
+          ],
+          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
+          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
+        },
+        {
+          nsTitle: '14.70 Los voluntarios de SPAC participan activamente en la planificación, implementación y evaluación de simulacros, para garantizar la sensibilización y la participación de la comunidad y que se mantengan los vínculos de información y de remisión con los establecimientos de salud.',
+          nsQuestion: 'Estado de referencia',
+          nsAnswers: [
+            'Si',
+            'No'
+          ],
+          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
+          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
+        },
+        {
+          nsTitle: 'Resumen del componente 14N',
           nsQuestion: 'Resumen del componente:',
           nsAnswers: [
             'No revisado',

@@ -570,6 +570,9 @@ class Account extends React.Component {
                     <a href='/per-forms/policy-strategy' className='link--primary'>Area 1: Policy and Standards</a><br/><br/>
                     <a href='/per-forms/analysis-and-planning' className='link--primary'>Area 2: Analysis and Planning</a><br/><br/>
                     <a href='/per-forms/operational-capacity' className='link--primary'>Area 3: Operation capacity</a><br/><br/>
+                    <a href='/per-forms/coordination' className='link--primary'>Area 4: Coordination</a><br/><br/>
+                    <a href='/per-forms/operations-support' className='link--primary'>Area 5: Operations support</a><br/><br/>
+                    <a href='/per-forms/performance' className='link--primary'>Area 6: Performance</a><br/><br/>
                   </div>
                 </section>
               </div>

@@ -174,7 +174,7 @@ class A4Coordination extends React.Component {
   }
 }
 
-export default A3OperationCapacity;
+export default A4Coordination;
 
 export const englishForm = {
   title: 'WELCOME TO THE PREPAREDNESS FOR EFFECTIVE RESPONSE TOOL',
