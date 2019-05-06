@@ -1,7 +1,6 @@
 import React from 'react';
 
-// Misnamed! - Operational capacity
-class A6Performance extends React.Component {
+class A3OperatinalCapacity2 extends React.Component {
   constructor (props) {
     super(props);
     this.sendForm = this.sendForm.bind(this);
@@ -175,7 +174,7 @@ class A6Performance extends React.Component {
   }
 }
 
-export default A6Performance;
+export default A3OperatinalCapacity2;
 
 export const englishForm = {
   title: 'WELCOME TO THE PREPAREDNESS FOR EFFECTIVE RESPONSE TOOL',
