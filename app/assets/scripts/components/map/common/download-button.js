@@ -29,7 +29,9 @@ class DownloadButton extends React.Component {
         mapLogoHeader.style.visibility = 'visible';
         downloadButton.style.visibility = 'hidden';
         navigation.style.visibility = 'hidden';
-        dropdowns.forEach(dropdown => dropdown.style.visibility = 'hidden');
+        dropdowns.forEach(dropdown => {
+          dropdown.style.visibility = 'hidden';
+        });
 
         if (typeof popover !== 'undefined') {
           popover.style.height = 'fit-content';
@@ -44,7 +46,9 @@ class DownloadButton extends React.Component {
           mapLogoHeader.style.visibility = 'hidden';
           downloadButton.style.visibility = 'visible';
           navigation.style.visibility = 'visible';
-          dropdowns.forEach(dropdown => dropdown.style.visibility = 'visible');
+          dropdowns.forEach(dropdown => {
+            dropdown.style.visibility = 'visible';
+          });
 
           if (typeof popover !== 'undefined') {
             popover.style.height = 'auto';
