@@ -1,5 +1,5 @@
 import React from 'react';
-import RequestFactory from './factory/request-factory'
+import RequestFactory from './factory/request-factory';
 
 export default class PerForm extends React.Component {
   constructor (props) {
@@ -60,14 +60,11 @@ export default class PerForm extends React.Component {
     return answers;
   }
 
-
-
   sendForm () {
     let request = this.requestFactory.newFormRequest();
     request = this.requestFactory.addAreaQuestionData(request);
     request = this.requestFactory.addComponentData(request);
     console.log(request);
-    
     // fetch('https://dsgocdnapi.azureedge.net/sendperform', {
     //   method: 'POST',
     //   headers: {
@@ -99,7 +96,7 @@ export default class PerForm extends React.Component {
 
           {this.composeForms()}
 
-          {/*<input type='checkbox' name='' value='' /> Save as Draft<br />*/}
+          {/* <input type='checkbox' name='' value='' /> Save as Draft<br /> */}
           <button onClick={this.sendForm}>Submit</button>
 
         </div>

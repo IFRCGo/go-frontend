@@ -1,4 +1,4 @@
-import PerForm from './per-form'
+import PerForm from './per-form';
 import { englishForm } from './form-data/a2/english-data';
 import { frenchForm } from './form-data/a2/french-data';
 import { spanishForm } from './form-data/a2/spanish-data';

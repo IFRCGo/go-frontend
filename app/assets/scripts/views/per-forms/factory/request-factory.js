@@ -12,9 +12,12 @@ export default class RequestFactory {
     const formHeadQuestions = document.getElementsByName('a1');
 
     if (formHeadQuestions.length > 0) {
-      document.querySelector('[name=\'a1\']:checked') !== null 
-        ? request.data.push({id: 'a1', op: document.querySelector('[name=\'a1\']:checked').value, nt: 'no ti'}) 
-        : null;
+      if (document.querySelector('[name=\'a1\']:checked') !== null) {
+        request.data.push({
+          id: 'a1',
+          op: document.querySelector('[name=\'a1\']:checked').value,
+          nt: 'no ti'});
+      }
     }
 
     return request;
@@ -24,8 +27,8 @@ export default class RequestFactory {
     let componentIndex = 0;
 
     while (document.getElementsByName('q' + componentIndex + 'f').length > 0) {
-      let answer = document.querySelector('[name=\'q' + componentIndex + 'f\']:checked') !== null 
-        ? document.querySelector('[name=\'q' + componentIndex + 'f\']:checked').value 
+      let answer = document.querySelector('[name=\'q' + componentIndex + 'f\']:checked') !== null
+        ? document.querySelector('[name=\'q' + componentIndex + 'f\']:checked').value
         : null;
 
       request.data.push({id: 'q' + componentIndex + 'f', op: answer, nt: 'no ti'});
