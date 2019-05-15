@@ -42,17 +42,11 @@ export default class RequestFactory {
   }
 
   addComponentQuestions (request, componentIndex) {
-    let questionIndex = 0;
+    let answer = document.querySelector('[name=\'q' + componentIndex + '\']:checked') !== null
+      ? document.querySelector('[name=\'q' + componentIndex + '\']:checked').value
+      : null;
 
-    while (document.getElementsByName('q' + componentIndex + '' + questionIndex).length > 0) {
-      let answer = document.querySelector('[name=\'q' + componentIndex + '' + questionIndex + '\']:checked') !== null
-        ? document.querySelector('[name=\'q' + componentIndex + '' + questionIndex + '\']:checked').value
-        : null;
-
-      request.data.push({id: 'q' + componentIndex + '' + questionIndex, op: answer, nt: 'no ti'});
-
-      questionIndex++;
-    }
+    request.data.push({id: 'q' + componentIndex, op: answer, nt: 'no ti'});
 
     return request;
   }

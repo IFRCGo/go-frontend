@@ -54,13 +54,10 @@ export default class PerForm extends React.Component {
 
   composeAnswers (namespace, namespaceIndex) {
     const answers = [];
-    let answersIndex = 0;
-
     namespace.nsAnswers.forEach(answer => {
       answers.push(<React.Fragment>
-        <input type='radio' name={'q' + namespaceIndex + '' + answersIndex} value={answer} /> {answer}<br />
+        <input type='radio' name={'q' + namespaceIndex} value={answer} /> {answer}<br />
       </React.Fragment>);
-      answersIndex++;
     });
 
     return answers;
@@ -74,8 +71,18 @@ export default class PerForm extends React.Component {
   }
 
   loadDraft () {
-    if (typeof localStorage.getItem('draft' + this.formCode) !== 'undefined') {
-      this.setState(JSON.parse(localStorage.getItem('draft' + this.formCode)));
+    let draft = JSON.parse(localStorage.getItem('draft' + this.formCode));
+    if (draft !== null && typeof draft.data !== 'undefined' && draft.data !== null) {
+      draft.data.forEach(question => {
+        if (question.op !== null && question.id !== null) {
+          let input = document.querySelector('[name=\'' + question.id + '\']');
+          if (input.type === 'radio') {
+            document.querySelector('[name=\'' + question.id + '\'][value=\'' + question.op + '\']').checked = true;
+          } else if (input.type === 'text') {
+            input.value = question.op;
+          }
+        }
+      });
     }
   }
 
