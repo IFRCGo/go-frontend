@@ -347,7 +347,7 @@ export function getAppealDocsByAppealIds (appealIds, id) {
 
 export const GET_DEPLOYMENT_ERU = 'GET_DEPLOYMENT_ERU';
 export function getDeploymentERU (page = 1, filters = {}) {
-  filters.limit = filters.limit || 5;
+  filters.limit = filters.limit || 95;
   filters.offset = filters.limit * (page - 1);
   filters['deployed_to__isnull'] = false;
 
