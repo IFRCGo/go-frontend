@@ -8,7 +8,13 @@ export default class PerForm extends React.Component {
     this.composeNamespaces = this.composeNamespaces.bind(this);
     this.composeAnswers = this.composeAnswers.bind(this);
     this.sendForm = this.sendForm.bind(this);
+    this.saveDraft = this.saveDraft.bind(this);
+    this.loadDraft = this.loadDraft.bind(this);
     this.requestFactory = new RequestFactory();
+  }
+
+  componentDidMount() {
+    this.loadDraft();
   }
 
   composeForms () {
@@ -60,8 +66,22 @@ export default class PerForm extends React.Component {
     return answers;
   }
 
+  saveDraft () {
+    let request = this.requestFactory.newFormRequest(this.formCode, this.formName, this.state.languageCode);
+    request = this.requestFactory.addAreaQuestionData(request);
+    request = this.requestFactory.addComponentData(request);
+    localStorage.setItem('draft' + this.formCode, JSON.stringify(request));
+  }
+
+  loadDraft () {
+    if (typeof localStorage.getItem('draft' + this.formCode) !== 'undefined') {
+      this.setState(JSON.parse(localStorage.getItem('draft' + this.formCode)));
+    }
+  }
+
   sendForm () {
-    let request = this.requestFactory.newFormRequest();
+    this.saveDraft();
+    let request = this.requestFactory.newFormRequest(this.formCode, this.formName, this.state.languageCode);
     request = this.requestFactory.addAreaQuestionData(request);
     request = this.requestFactory.addComponentData(request);
     console.log(request);
@@ -96,7 +116,7 @@ export default class PerForm extends React.Component {
 
           {this.composeForms()}
 
-          {/* <input type='checkbox' name='' value='' /> Save as Draft<br /> */}
+          <input type='checkbox' name='draft' value='yes' /> Save as Draft<br />
           <button onClick={this.sendForm}>Submit</button>
 
         </div>
