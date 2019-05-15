@@ -1,9 +1,9 @@
 export default class RequestFactory {
-  newFormRequest () {
+  newFormRequest (formCode, formName, languageCode) {
     return {
-      code: 'A1',
-      name: 'Nemo',
-      language: 1,
+      code: formCode,
+      name: formName,
+      language: languageCode,
       data: []
     };
   }
