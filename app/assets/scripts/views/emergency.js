@@ -125,6 +125,7 @@ class Emergency extends React.Component {
     const report = mostRecentReport(get(this.props, 'event.data.field_reports'));
     const hideIt = get(this.props, 'event.data.hide_attached_field_reports');
     if (!report || hideIt) return null;
+    const numMissing = parseInt(get(report, 'num_missing')) + parseInt(get(report, 'gov_num_missing'));
     return (
       <div className='inpage__header-col'>
         <h3>Emergency Overview</h3>
@@ -133,7 +134,7 @@ class Emergency extends React.Component {
             <li>Affected<span className='content-highlight'>{n(get(report, 'num_affected', get(this.props.event.data, 'num_affected')))}</span></li>
             <li>Injured<span className='content-highlight'>{n(get(report, 'num_injured'))}</span></li>
             <li>Dead<span className='content-highlight'>{n(get(report, 'num_dead'))}</span></li>
-            <li>Missing<span className='content-highlight'>{n(get(report, 'num_missing'))}</span></li>
+            <li>Missing<span className='content-highlight'>{n(numMissing)}</span></li>
             <li>Displaced<span className='content-highlight'>{n(get(report, 'num_displaced'))}</span></li>
           </ul>
           <ul className='content-list'>
