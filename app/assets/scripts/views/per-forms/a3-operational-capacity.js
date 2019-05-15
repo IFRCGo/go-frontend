@@ -11,6 +11,8 @@ class A3OperationalCapacity extends PerForm {
     this.setLanguageToSpanish = this.setLanguageToSpanish.bind(this);
     this.setLanguageToEnglish = this.setLanguageToEnglish.bind(this);
     this.setLanguageToFrench = this.setLanguageToFrench.bind(this);
+    this.formCode = 'a3';
+    this.formName = 'Operational capacity';
     this.state = englishForm;
   }
 

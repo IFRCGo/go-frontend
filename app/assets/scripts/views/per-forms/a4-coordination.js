@@ -11,6 +11,8 @@ class A4Coordination extends PerForm {
     this.setLanguageToSpanish = this.setLanguageToSpanish.bind(this);
     this.setLanguageToEnglish = this.setLanguageToEnglish.bind(this);
     this.setLanguageToFrench = this.setLanguageToFrench.bind(this);
+    this.formCode = 'a4';
+    this.formName = 'Coordination';
     this.state = englishForm;
   }
 
