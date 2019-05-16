@@ -125,20 +125,25 @@ class Emergency extends React.Component {
     const report = mostRecentReport(get(this.props, 'event.data.field_reports'));
     const hideIt = get(this.props, 'event.data.hide_attached_field_reports');
     if (!report || hideIt) return null;
-    const numMissing = parseInt(get(report, 'num_missing')) + parseInt(get(report, 'gov_num_missing'));
+    const numAffected = parseInt(get(report, 'num_affected')) || parseInt(get(report, 'gov_num_affected'));
+    const numInjured = parseInt(get(report, 'num_injured')) || parseInt(get(report, 'gov_num_injured'));
+    const numDead = parseInt(get(report, 'num_dead')) || parseInt(get(report, 'gov_num_dead'));
+    const numMissing = parseInt(get(report, 'num_missing')) || parseInt(get(report, 'gov_num_missing'));
+    const numDisplaced = parseInt(get(report, 'num_displaced')) || parseInt(get(report, 'gov_num_displaced'));
+    const numAssisted = parseInt(get(report, 'num_assisted')) || parseInt(get(report, 'gov_num_assisted'));
     return (
       <div className='inpage__header-col'>
         <h3>Emergency Overview</h3>
         <div className='content-list-group'>
           <ul className='content-list'>
-            <li>Affected<span className='content-highlight'>{n(get(report, 'num_affected', get(this.props.event.data, 'num_affected')))}</span></li>
-            <li>Injured<span className='content-highlight'>{n(get(report, 'num_injured'))}</span></li>
-            <li>Dead<span className='content-highlight'>{n(get(report, 'num_dead'))}</span></li>
+            <li>Affected<span className='content-highlight'>{n(numAffected)}</span></li>
+            <li>Injured<span className='content-highlight'>{n(numInjured)}</span></li>
+            <li>Dead<span className='content-highlight'>{n(numDead)}</span></li>
             <li>Missing<span className='content-highlight'>{n(numMissing)}</span></li>
-            <li>Displaced<span className='content-highlight'>{n(get(report, 'num_displaced'))}</span></li>
+            <li>Displaced<span className='content-highlight'>{n(numDisplaced)}</span></li>
           </ul>
           <ul className='content-list'>
-            <li>Assisted<span className='content-highlight'>{n(get(report, 'num_assisted'))}</span></li>
+            <li>Assisted<span className='content-highlight'>{n(numAssisted)}</span></li>
             <li>Local staff<span className='content-highlight'>{n(get(report, 'num_localstaff'))}</span></li>
             <li>Volunteers<span className='content-highlight'>{n(get(report, 'num_volunteers'))}</span></li>
             <li>Expat delegates<span className='content-highlight'>{n(get(report, 'num_expats_delegates'))}</span></li>
