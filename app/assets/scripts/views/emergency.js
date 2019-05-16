@@ -47,7 +47,7 @@ import EruTable from '../components/connected/eru-table';
 import EmergencyMap from '../components/map/emergency-map';
 
 class Emergency extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -64,7 +64,7 @@ class Emergency extends React.Component {
     this.isSubscribed = this.isSubscribed.bind(this);
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (this.props.location.hash !== nextProps.location.hash) {
       const top = window.pageYOffset !== undefined ? window.pageYOffset : window.scrollTop;
       window.scrollTo(0, top - 90);
@@ -80,11 +80,11 @@ class Emergency extends React.Component {
     }
 
     if (!this.props.profile.fetched && nextProps.profile.fetched) {
-      this.setState({subscribed: this.isSubscribed(nextProps)});
+      this.setState({ subscribed: this.isSubscribed(nextProps) });
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.getEvent(this.props.match.params.id);
     this.props._getSitrepTypes();
     if (this.props.isLogged) {
@@ -92,26 +92,26 @@ class Emergency extends React.Component {
     }
   }
 
-  getEvent (id) {
+  getEvent(id) {
     showGlobalLoading();
     this.props._getEventById(id);
     this.props._getEventSnippets(id);
     this.props._getSitrepsByEventId(id);
   }
 
-  getAppealDocuments (event) {
+  getAppealDocuments(event) {
     const appealIds = get(event, 'data.appeals', []).map(o => o.id);
     if (appealIds.length) {
       this.props._getAppealDocsByAppealIds(appealIds, event.data.id);
     }
   }
 
-  onAppealClick (id, e) {
+  onAppealClick(id, e) {
     e.preventDefault();
-    this.setState({selectedAppeal: id});
+    this.setState({ selectedAppeal: id });
   }
 
-  handleSitrepFilter (state, value) {
+  handleSitrepFilter(state, value) {
     const next = Object.assign({}, this.state.sitrepFilters, {
       [state]: value
     });
@@ -125,10 +125,10 @@ class Emergency extends React.Component {
       filters.type = type;
     }
     this.props._getSitrepsByEventId(this.props.match.params.id, filters);
-    this.setState({sitrepFilters: next});
+    this.setState({ sitrepFilters: next });
   }
 
-  isSubscribed (nextProps) {
+  isSubscribed(nextProps) {
     if (nextProps.profile.fetched) {
       const filtered = nextProps.profile.data.subscription.filter(subscription => subscription.event === parseInt(this.props.match.params.id));
       if (filtered.length > 0) {
@@ -138,33 +138,24 @@ class Emergency extends React.Component {
     return false;
   }
 
-  renderMustLogin () {
+  renderMustLogin() {
     return (
       <React.Fragment>
-        <p>You must be logged in to view this. <Link key='login' to={{pathname: '/login', state: {from: this.props.location}}} className='link--primary' title='Login'>Login</Link></p>
+        <p>You must be logged in to view this. <Link key='login' to={{ pathname: '/login', state: { from: this.props.location } }} className='link--primary' title='Login'>Login</Link></p>
       </React.Fragment>
     );
   }
 
-  renderFieldReportStats () {
+  renderFieldReportStats() {
     const report = mostRecentReport(get(this.props, 'event.data.field_reports'));
     const hideIt = get(this.props, 'event.data.hide_attached_field_reports');
     if (!report || hideIt) return null;
-<<<<<<< HEAD
     const numAffected = parseInt(get(report, 'num_affected')) || parseInt(get(report, 'gov_num_affected')) || parseInt(get(report, 'other_num_affected'));
     const numInjured = parseInt(get(report, 'num_injured')) || parseInt(get(report, 'gov_num_injured')) || parseInt(get(report, 'other_num_injured'));
     const numDead = parseInt(get(report, 'num_dead')) || parseInt(get(report, 'gov_num_dead')) || parseInt(get(report, 'other_num_dead'));
     const numMissing = parseInt(get(report, 'num_missing')) || parseInt(get(report, 'gov_num_missing')) || parseInt(get(report, 'other_num_missing'));
     const numDisplaced = parseInt(get(report, 'num_displaced')) || parseInt(get(report, 'gov_num_displaced')) || parseInt(get(report, 'other_num_displaced'));
     const numAssisted = parseInt(get(report, 'num_assisted')) || parseInt(get(report, 'gov_num_assisted')) || parseInt(get(report, 'other_num_assisted'));
-=======
-    const numAffected = parseInt(get(report, 'num_affected')) || parseInt(get(report, 'gov_num_affected'));
-    const numInjured = parseInt(get(report, 'num_injured')) || parseInt(get(report, 'gov_num_injured'));
-    const numDead = parseInt(get(report, 'num_dead')) || parseInt(get(report, 'gov_num_dead'));
-    const numMissing = parseInt(get(report, 'num_missing')) || parseInt(get(report, 'gov_num_missing'));
-    const numDisplaced = parseInt(get(report, 'num_displaced')) || parseInt(get(report, 'gov_num_displaced'));
-    const numAssisted = parseInt(get(report, 'num_assisted')) || parseInt(get(report, 'gov_num_assisted'));
->>>>>>> GH618 FIX
     return (
       <div className='inpage__header-col'>
         <h3>Emergency Overview</h3>
@@ -188,7 +179,7 @@ class Emergency extends React.Component {
     );
   }
 
-  renderHeaderStats () {
+  renderHeaderStats() {
     const { appeals } = this.props.event.data;
     const selected = this.state.selectedAppeal;
 
@@ -209,11 +200,11 @@ class Emergency extends React.Component {
     return (
       <div className="inpage__introduction">
         <ul className='introduction-nav'>
-          <li className={c('introduction-nav-item', {'introduction-nav-item--active': selected === null})}>
+          <li className={c('introduction-nav-item', { 'introduction-nav-item--active': selected === null })}>
             <a href='#' title='Show stats for all appeals' onClick={this.onAppealClick.bind(this, null)}>All Appeals</a>
           </li>
           {appeals.map(o => (
-            <li key={o.id} className={c('introduction-nav-item', {'introduction-nav-item--active': o.id === selected})}>
+            <li key={o.id} className={c('introduction-nav-item', { 'introduction-nav-item--active': o.id === selected })}>
               <a href='#' title={`Show stats for appeal ${o.name}`} onClick={this.onAppealClick.bind(this, o.id)}>{o.name}</a>
             </li>
           ))}
@@ -240,7 +231,7 @@ class Emergency extends React.Component {
     );
   }
 
-  renderFieldReports () {
+  renderFieldReports() {
     const { data } = this.props.event;
     if (!this.props.isLogged) {
       return (
@@ -285,7 +276,7 @@ class Emergency extends React.Component {
     return null;
   }
 
-  renderReports (className, reports) {
+  renderReports(className, reports) {
     return (
       <ul className={className}>
         {reports.map(o => {
@@ -299,7 +290,7 @@ class Emergency extends React.Component {
     );
   }
 
-  renderResponseDocuments () {
+  renderResponseDocuments() {
     const data = get(this.props.situationReports, 'data.results', []);
     const { date, type } = this.state.sitrepFilters;
     // return empty when no data, only on default filters.
@@ -324,7 +315,7 @@ class Emergency extends React.Component {
               filter={date}
               onSelect={this.handleSitrepFilter.bind(this, 'date')} />
             {types.fetched && !types.error ? <FilterHeader id='sitrep-type' title='Document Type'
-              options={[{value: 'all', label: 'All'}].concat(types.data.results.map(d => ({value: d.id, label: d.type})))}
+              options={[{ value: 'all', label: 'All' }].concat(types.data.results.map(d => ({ value: d.id, label: d.type })))}
               filter={type}
               onSelect={this.handleSitrepFilter.bind(this, 'type')} /> : null}
           </div>
@@ -334,7 +325,7 @@ class Emergency extends React.Component {
     );
   }
 
-  renderAppealDocuments () {
+  renderAppealDocuments() {
     const data = get(this.props.appealDocuments, 'data.results', []);
     if (!data.length) return null;
     return (
@@ -344,7 +335,7 @@ class Emergency extends React.Component {
     );
   }
 
-  renderKeyFigures () {
+  renderKeyFigures() {
     const { data } = this.props.event;
     const kf = get(data, 'key_figures');
     if (!Array.isArray(kf) || !kf.length) return null;
@@ -366,17 +357,17 @@ class Emergency extends React.Component {
     );
   }
 
-  addSubscription () {
+  addSubscription() {
     this.props._addSubscriptions(this.props.match.params.id);
-    this.setState({subscribed: true});
+    this.setState({ subscribed: true });
   }
 
-  delSubscription () {
+  delSubscription() {
     this.props._delSubscription(this.props.match.params.id);
-    this.setState({subscribed: false});
+    this.setState({ subscribed: false });
   }
 
-  renderContent () {
+  renderContent() {
     const {
       fetched,
       error,
@@ -429,11 +420,11 @@ class Emergency extends React.Component {
             </div>
           </div>
         </header>
-        { showExportMap() }
+        {showExportMap()}
         <StickyContainer>
           <Sticky>
             {({ style, isSticky }) => (
-              <div style={style} className={c('inpage__nav', {'inpage__nav--sticky': isSticky})}>
+              <div style={style} className={c('inpage__nav', { 'inpage__nav--sticky': isSticky })}>
                 <div className='inner'>
                   <ul>
                     {summary ? <li><a href='#overview' title='Go to Overview section'>Overview</a></li> : null}
@@ -513,7 +504,7 @@ class Emergency extends React.Component {
     );
   }
 
-  render () {
+  render() {
     return (
       <App className='page--emergency'>
         <Helmet>
