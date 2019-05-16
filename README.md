@@ -27,6 +27,13 @@ Install Node modules:
 yarn install
 ```
 
+### Windows compatibility
+- To be able to run the app, you have to change the below lines in your `package.json`:
+```
+"postinstall": "echo 'module.exports = {};' > app/assets/scripts/config/local.js",
+"serve": "set NODE_ENV=development && gulp collecticons && set NODE_ENV=development && gulp serve",
+```
+
 ### Usage
 
 #### Config files
