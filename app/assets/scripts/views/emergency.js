@@ -130,7 +130,7 @@ class Emergency extends React.Component {
     const numDead = parseInt(get(report, 'num_dead')) || parseInt(get(report, 'gov_num_dead'));
     const numMissing = parseInt(get(report, 'num_missing')) || parseInt(get(report, 'gov_num_missing'));
     const numDisplaced = parseInt(get(report, 'num_displaced')) || parseInt(get(report, 'gov_num_displaced'));
-    const numAssisted = parseInt(get(report, 'num_assisted')) || parseInt(get(report, 'gov_num_assisted'));
+    const numAssisted = parseInt(get(report, 'num_assisted')) || parseInt(get(report, 'gov_num_assisted'));
     return (
       <div className='inpage__header-col'>
         <h3>Emergency Overview</h3>
