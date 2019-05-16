@@ -150,12 +150,21 @@ class Emergency extends React.Component {
     const report = mostRecentReport(get(this.props, 'event.data.field_reports'));
     const hideIt = get(this.props, 'event.data.hide_attached_field_reports');
     if (!report || hideIt) return null;
+<<<<<<< HEAD
     const numAffected = parseInt(get(report, 'num_affected')) || parseInt(get(report, 'gov_num_affected')) || parseInt(get(report, 'other_num_affected'));
     const numInjured = parseInt(get(report, 'num_injured')) || parseInt(get(report, 'gov_num_injured')) || parseInt(get(report, 'other_num_injured'));
     const numDead = parseInt(get(report, 'num_dead')) || parseInt(get(report, 'gov_num_dead')) || parseInt(get(report, 'other_num_dead'));
     const numMissing = parseInt(get(report, 'num_missing')) || parseInt(get(report, 'gov_num_missing')) || parseInt(get(report, 'other_num_missing'));
     const numDisplaced = parseInt(get(report, 'num_displaced')) || parseInt(get(report, 'gov_num_displaced')) || parseInt(get(report, 'other_num_displaced'));
     const numAssisted = parseInt(get(report, 'num_assisted')) || parseInt(get(report, 'gov_num_assisted')) || parseInt(get(report, 'other_num_assisted'));
+=======
+    const numAffected = parseInt(get(report, 'num_affected')) || parseInt(get(report, 'gov_num_affected'));
+    const numInjured = parseInt(get(report, 'num_injured')) || parseInt(get(report, 'gov_num_injured'));
+    const numDead = parseInt(get(report, 'num_dead')) || parseInt(get(report, 'gov_num_dead'));
+    const numMissing = parseInt(get(report, 'num_missing')) || parseInt(get(report, 'gov_num_missing'));
+    const numDisplaced = parseInt(get(report, 'num_displaced')) || parseInt(get(report, 'gov_num_displaced'));
+    const numAssisted = parseInt(get(report, 'num_assisted')) || parseInt(get(report, 'gov_num_assisted'));
+>>>>>>> GH618 FIX
     return (
       <div className='inpage__header-col'>
         <h3>Emergency Overview</h3>
