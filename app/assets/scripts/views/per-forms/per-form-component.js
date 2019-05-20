@@ -31,7 +31,6 @@ const renderComponents = (props) => {
   const components = [];
   let componentIndex = 0;
 
-  console.log(props);
   props.state.components.forEach(component => {
     components.push(<React.Fragment>
       <div className='per_form_area'>{component.componentTitle}</div>
@@ -57,10 +56,8 @@ const renderQuestions = (component, componentIndex) => {
         <div className='per_form_question'>{namespace.nsQuestion}</div>
 
         {renderAnswers(namespace, componentIndex, questionIndex)}
+        {renderFeedbackBox(namespace, componentIndex, questionIndex)}
 
-        <div className='per_form_question'>{namespace.feedbackTitle}</div>
-        {typeof namespace.feedbackDescription !== 'undefined' && namespace.feedbackDescription !== null && namespace.feedbackDescription.trim() !== '' ? (<React.Fragment>{namespace.feedbackDescription}<br /></React.Fragment>) : null}
-        <input type='text' name={'q' + componentIndex + 'f'} /><br /><br />
       </React.Fragment>);
       questionIndex++;
     });
@@ -79,8 +76,19 @@ const renderAnswers = (namespace, componentIndex, questionIndex) => {
   return answers;
 };
 
+const renderFeedbackBox = (namespace, componentIndex, questionIndex) => {
+  return (
+    <React.Fragment>
+      <div className='per_form_question'>{namespace.feedbackTitle}</div>
+      {typeof namespace.feedbackDescription !== 'undefined' && namespace.feedbackDescription !== null && namespace.feedbackDescription.trim() !== '' ? (<React.Fragment>{namespace.feedbackDescription}<br /></React.Fragment>) : null}
+      <input type='text' name={'q' + componentIndex + '' + questionIndex + 'f'} /><br /><br />
+    </React.Fragment>
+  );
+};
+
 const renderEpiComponent = (props, namespaceIndex) => {
-  if (props.epiComponent === 'yes') {
+  console.log(props);
+  if (props.state.epiComponent === 'yes') {
     return (<React.Fragment>
       <div className='per_form_ns'>Epidemic preparedess</div>
       <div>
@@ -94,7 +102,7 @@ const renderEpiComponent = (props, namespaceIndex) => {
       <input type='radio' name={'q' + namespaceIndex + 'epi'} value='Partially exists' /> Partially exists<br />
       <input type='radio' name={'q' + namespaceIndex + 'epi'} value='Need improvements' /> Need improvements<br />
       <input type='radio' name={'q' + namespaceIndex + 'epi'} value='Exists, could be strengthened' /> Exists, could be strengthened<br />
-      <input type='radio' name={'q' + namespaceIndex + 'epi'} value='High performance' /> High performance<br />
+      <input type='radio' name={'q' + namespaceIndex + 'epi'} value='High performance' /> High performance<br /><br />
     </React.Fragment>);
   }
 };

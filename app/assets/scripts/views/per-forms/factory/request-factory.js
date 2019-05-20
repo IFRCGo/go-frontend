@@ -26,27 +26,38 @@ export default class RequestFactory {
   addComponentData (request) {
     let componentIndex = 0;
 
-    while (document.getElementsByName('q' + componentIndex + 'f').length > 0) {
-      let answer = document.querySelector('[name=\'q' + componentIndex + 'f\']:checked') !== null
-        ? document.querySelector('[name=\'q' + componentIndex + 'f\']:checked').value
-        : null;
+    while (document.getElementsByName('q' + componentIndex + '0f').length > 0) {
+      let questionIndex = 0;
 
-      request.data.push({id: 'q' + componentIndex + 'f', op: answer, nt: 'no ti'});
+      if (document.querySelector('[name=\'q' + componentIndex + 'epi\']') !== null) {
+        let answer = document.querySelector('[name=\'q' + componentIndex + 'epi\']:checked') !== null
+          ? document.querySelector('[name=\'q' + componentIndex + 'epi\']:checked').value
+          : null;
 
-      request = this.addComponentQuestions(request, componentIndex);
+        if (answer !== null) {
+          request.data.push({id: 'q' + componentIndex + 'epi', op: answer, nt: 'no ti'});
+        }
+      }
+
+      while (document.getElementsByName('q' + componentIndex + '' + questionIndex).length > 0) {
+        let answer = document.querySelector('[name=\'q' + componentIndex + '' + questionIndex + '\']:checked') !== null
+          ? document.querySelector('[name=\'q' + componentIndex + '' + questionIndex + '\']:checked').value
+          : null;
+        let questionFeedback = document.querySelector('[name=\'q' + componentIndex + '' + questionIndex + 'f\']').value;
+
+        if (answer !== null) {
+          request.data.push({id: 'q' + componentIndex + '' + questionIndex, op: answer, nt: 'no ti'});
+        }
+
+        if (questionFeedback !== '') {
+          request.data.push({id: 'q' + componentIndex + '' + questionIndex + 'f', op: questionFeedback, nt: 'no ti'});
+        }
+
+        questionIndex++;
+      }
 
       componentIndex++;
     }
-
-    return request;
-  }
-
-  addComponentQuestions (request, componentIndex) {
-    let answer = document.querySelector('[name=\'q' + componentIndex + '\']:checked') !== null
-      ? document.querySelector('[name=\'q' + componentIndex + '\']:checked').value
-      : null;
-
-    request.data.push({id: 'q' + componentIndex, op: answer, nt: 'no ti'});
 
     return request;
   }
