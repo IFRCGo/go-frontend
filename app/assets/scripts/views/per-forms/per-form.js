@@ -10,11 +10,21 @@ export default class PerForm extends React.Component {
     this.saveDraft = this.saveDraft.bind(this);
     this.loadDraft = this.loadDraft.bind(this);
     this.changeEpiComponentState = this.changeEpiComponentState.bind(this);
+    this.changeEpiComponentStateTo = this.changeEpiComponentStateTo.bind(this);
+    this.isEpiComponent = this.isEpiComponent.bind(this);
     this.requestFactory = new RequestFactory();
   }
 
-  componentDidMount() {
-    //this.loadDraft();
+  componentDidMount () {
+    if (this.isEpiComponent()) {
+      this.changeEpiComponentStateTo('yes');
+    } else {
+      this.loadDraft();
+    }
+  }
+
+  componentDidUpdate () {
+    this.loadDraft();
   }
 
   saveDraft () {
@@ -22,6 +32,16 @@ export default class PerForm extends React.Component {
     request = this.requestFactory.addAreaQuestionData(request);
     request = this.requestFactory.addComponentData(request);
     localStorage.setItem('draft' + this.formCode, JSON.stringify(request));
+  }
+
+  isEpiComponent () {
+    let draft = JSON.parse(localStorage.getItem('draft' + this.formCode));
+    let epi = draft.data.filter(question => question.id === 'a1' && question.op === 'yes');
+
+    if (epi.length > 0) {
+      return true;
+    }
+    return false;
   }
 
   loadDraft () {
@@ -57,6 +77,10 @@ export default class PerForm extends React.Component {
 
   changeEpiComponentState (e) {
     this.setState({epiComponent: e.target.value});
+  }
+
+  changeEpiComponentStateTo (value) {
+    this.setState({epiComponent: value});
   }
 
   render () {
