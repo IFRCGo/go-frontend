@@ -20,7 +20,6 @@ export default class PerForm extends React.Component {
   }
 
   componentDidMount () {
-    console.log(this.isEpiComponent());
     if (this.isEpiComponent()) {
       this.changeEpiComponentStateTo('yes');
     } else {
@@ -125,7 +124,6 @@ export default class PerForm extends React.Component {
           } else {
             document.getElementById('container' + componentIndex + 'q' + questionIndex).style.backgroundColor = '#FFFFFF';
           }
-
         }
       }
 
