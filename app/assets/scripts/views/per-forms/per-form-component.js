@@ -31,6 +31,19 @@ const renderFormTitle = (props) => {
   );
 };
 
+if (environment !== 'production') {
+  renderFormTitle.propTypes = {
+    chooseLanguage: T.func,
+    state: T.object,
+    changeEpiComponentState: T.func,
+    sendForm: T.func,
+    _getProfile: T.func,
+    _updateSubscriptions: T.func,
+    _getFieldReportsByUser: T.func,
+    _updateProfile: T.func
+  };
+}
+
 const renderEpidemicsRadioButton = (props) => {
   return (
     <React.Fragment>
@@ -41,6 +54,19 @@ const renderEpidemicsRadioButton = (props) => {
     </React.Fragment>
   );
 };
+
+if (environment !== 'production') {
+  renderEpidemicsRadioButton.propTypes = {
+    chooseLanguage: T.func,
+    state: T.object,
+    changeEpiComponentState: T.func,
+    sendForm: T.func,
+    _getProfile: T.func,
+    _updateSubscriptions: T.func,
+    _getFieldReportsByUser: T.func,
+    _updateProfile: T.func
+  };
+}
 
 const renderComponents = (props) => {
   const components = [];
@@ -59,6 +85,19 @@ const renderComponents = (props) => {
 
   return components;
 };
+
+if (environment !== 'production') {
+  renderComponents.propTypes = {
+    chooseLanguage: T.func,
+    state: T.object,
+    changeEpiComponentState: T.func,
+    sendForm: T.func,
+    _getProfile: T.func,
+    _updateSubscriptions: T.func,
+    _getFieldReportsByUser: T.func,
+    _updateProfile: T.func
+  };
+}
 
 const renderQuestions = (component, componentIndex) => {
   const questions = [];
@@ -120,6 +159,19 @@ const renderEpiComponent = (props, componentIndex) => {
     </div>);
   }
 };
+
+if (environment !== 'production') {
+  renderEpiComponent.propTypes = {
+    chooseLanguage: T.func,
+    state: T.object,
+    changeEpiComponentState: T.func,
+    sendForm: T.func,
+    _getProfile: T.func,
+    _updateSubscriptions: T.func,
+    _getFieldReportsByUser: T.func,
+    _updateProfile: T.func
+  };
+}
 
 const newFormElementKey = () => 'form' + Math.floor(Math.random() * 99999) + Date.now();
 
