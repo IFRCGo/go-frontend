@@ -113,11 +113,10 @@ export default class PerForm extends React.Component {
 
   checkFormFilled () {
     let componentIndex = 0;
-    let questionIndex = 0;
 
     for (let component of this.state.components) {
       if (typeof component.namespaces !== 'undefined' && component.namespaces !== null) {
-        for (let question of component.namespaces) {
+        for (let questionIndex in component.namespaces) {
           if (document.querySelectorAll('[name=\'c' + componentIndex + 'q' + questionIndex + '\']:checked').length < 1) {
             document.getElementById('container' + componentIndex + 'q' + questionIndex).style.backgroundColor = '#FEB8B8';
             let offsetTop = document.getElementById('container' + componentIndex + 'q' + questionIndex).offsetTop;
@@ -127,7 +126,6 @@ export default class PerForm extends React.Component {
             document.getElementById('container' + componentIndex + 'q' + questionIndex).style.backgroundColor = '#FFFFFF';
           }
 
-          questionIndex++;
         }
       }
 
@@ -142,7 +140,6 @@ export default class PerForm extends React.Component {
         }
       }
 
-      questionIndex = 0;
       componentIndex++;
     }
   }

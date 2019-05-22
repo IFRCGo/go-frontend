@@ -1,4 +1,6 @@
 import React from 'react';
+import { environment } from '../../config';
+import { PropTypes as T } from 'prop-types';
 
 const renderLanguageSelectDropdown = (props) => {
   return (<select onChange={props.chooseLanguage}>
@@ -123,3 +125,16 @@ export const PerFormComponent = (props) => {
     </div>
   );
 };
+
+if (environment !== 'production') {
+  PerFormComponent.propTypes = {
+    chooseLanguage: T.func,
+    state: T.object,
+    changeEpiComponentState: T.func,
+    sendForm: T.func,
+    _getProfile: T.func,
+    _updateSubscriptions: T.func,
+    _getFieldReportsByUser: T.func,
+    _updateProfile: T.func
+  };
+}
