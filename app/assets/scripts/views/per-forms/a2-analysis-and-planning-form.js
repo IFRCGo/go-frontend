@@ -11,6 +11,8 @@ class A2AnalysisAndPlanning extends PerForm {
     this.setLanguageToSpanish = this.setLanguageToSpanish.bind(this);
     this.setLanguageToEnglish = this.setLanguageToEnglish.bind(this);
     this.setLanguageToFrench = this.setLanguageToFrench.bind(this);
+    this.formCode = 'a2';
+    this.formName = 'Analysis and planning';
     this.state = englishForm;
   }
 

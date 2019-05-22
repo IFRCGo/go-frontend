@@ -1,4 +1,5 @@
 export const englishForm = {
+  languageCode: 1,
   title: 'WELCOME TO THE PREPAREDNESS FOR EFFECTIVE RESPONSE TOOL',
   areaTitle: 'Area 4: Coordination',
   areaQuestion: 'Do you want to assess the preparedness of your National Society for Epidemics and pandemics?',

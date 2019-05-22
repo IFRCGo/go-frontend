@@ -1,70 +1,93 @@
 import React from 'react';
+import { PerFormComponent } from './per-form-component';
 import RequestFactory from './factory/request-factory';
 
 export default class PerForm extends React.Component {
   constructor (props) {
     super(props);
-    this.composeForms = this.composeForms.bind(this);
-    this.composeNamespaces = this.composeNamespaces.bind(this);
-    this.composeAnswers = this.composeAnswers.bind(this);
+    this.state = {epiComponent: 'no'};
     this.sendForm = this.sendForm.bind(this);
+    this.saveState = this.saveState.bind(this);
+    this.loadState = this.loadState.bind(this);
+    this.changeEpiComponentState = this.changeEpiComponentState.bind(this);
+    this.changeEpiComponentStateTo = this.changeEpiComponentStateTo.bind(this);
+    this.isEpiComponent = this.isEpiComponent.bind(this);
+    this.chooseFormStateSource = this.chooseFormStateSource.bind(this);
+    this.autosave = this.autosave.bind(this);
+    this.checkFormFilled = this.checkFormFilled.bind(this);
+    this.autosaveInterval = setInterval(this.autosave, 5000);
     this.requestFactory = new RequestFactory();
   }
 
-  composeForms () {
-    const forms = [];
-
-    this.state.components.forEach(component => {
-      forms.push(<React.Fragment>
-        <div className='per_form_area'>{component.componentTitle}</div>
-        {component.componentDescription}<br /><br />
-        {this.composeNamespaces(component)}
-      </React.Fragment>);
-    });
-
-    return forms;
+  componentDidMount () {
+    if (this.isEpiComponent()) {
+      this.changeEpiComponentStateTo('yes');
+    } else {
+      this.chooseFormStateSource();
+    }
   }
 
-  composeNamespaces (component) {
-    const namespaces = [];
-    let namespaceIndex = 0;
+  componentDidUpdate () {
+    this.chooseFormStateSource();
+  }
 
-    if (typeof component.namespaces !== 'undefined' && component.namespaces !== null) {
-      component.namespaces.forEach(namespace => {
-        namespaces.push(<React.Fragment>
-          <div className='per_form_ns'>{namespace.nsTitle}</div>
-          <div className='per_form_question'>{namespace.nsQuestion}</div>
-          {this.composeAnswers(namespace, namespaceIndex)}
-          <div className='per_form_question'>{namespace.feedbackTitle}</div>
-          {typeof namespace.feedbackDescription !== 'undefined' && namespace.feedbackDescription !== null && namespace.feedbackDescription.trim() !== '' ? (<React.Fragment>{namespace.feedbackDescription}<br /></React.Fragment>) : null}
-          <input type='text' name={'q' + namespaceIndex + 'f'} /><br /><br />
-        </React.Fragment>);
-        namespaceIndex++;
-      });
+  chooseFormStateSource () {
+    if (localStorage.getItem('autosave' + this.formCode) !== null && localStorage.getItem('finished' + this.formCode) === null) {
+      this.loadState('autosave');
+    } else if (localStorage.getItem('draft' + this.formCode) !== null && localStorage.getItem('finished' + this.formCode) === null) {
+      this.loadState('draft');
+    }
+  }
+
+  saveState (type) {
+    let request = this.requestFactory.newFormRequest(this.formCode, this.formName, this.state.languageCode);
+    request = this.requestFactory.addAreaQuestionData(request);
+    request = this.requestFactory.addComponentData(request);
+    localStorage.setItem(type + '' + this.formCode, JSON.stringify(request));
+  }
+
+  isEpiComponent () {
+    let draft = null;
+
+    if (localStorage.getItem('autosave' + this.formCode) !== null && localStorage.getItem('finished' + this.formCode) === null) {
+      draft = JSON.parse(localStorage.getItem('autosave' + this.formCode));
+    } else if (localStorage.getItem('draft' + this.formCode) !== null && localStorage.getItem('finished' + this.formCode) === null) {
+      draft = JSON.parse(localStorage.getItem('draft' + this.formCode));
     }
 
-    return namespaces;
+    if (draft !== null && draft.data !== null) {
+      let epi = draft.data.filter(question => question.id === 'a1' && question.op === 'yes');
+
+      if (epi.length > 0) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
-  composeAnswers (namespace, namespaceIndex) {
-    const answers = [];
-    let answersIndex = 0;
-
-    namespace.nsAnswers.forEach(answer => {
-      answers.push(<React.Fragment>
-        <input type='radio' name={'q' + namespaceIndex + '' + answersIndex} value={answer} /> {answer}<br />
-      </React.Fragment>);
-      answersIndex++;
-    });
-
-    return answers;
+  loadState (type) {
+    let draft = JSON.parse(localStorage.getItem(type + this.formCode));
+    if (draft !== null && typeof draft.data !== 'undefined' && draft.data !== null) {
+      draft.data.forEach(question => {
+        if (question.op !== null && question.id !== null) {
+          let input = document.querySelector('[name=\'' + question.id + '\']');
+          if (input.type === 'radio') {
+            document.querySelector('[name=\'' + question.id + '\'][value=\'' + question.op + '\']').checked = true;
+          } else if (input.type === 'text') {
+            input.value = question.op;
+          }
+        }
+      });
+    }
   }
 
   sendForm () {
-    let request = this.requestFactory.newFormRequest();
-    request = this.requestFactory.addAreaQuestionData(request);
-    request = this.requestFactory.addComponentData(request);
-    console.log(request);
+    this.checkFormFilled();
+    // this.saveState('draft');
+    // let request = this.requestFactory.newFormRequest(this.formCode, this.formName, this.state.languageCode);
+    // request = this.requestFactory.addAreaQuestionData(request);
+    // request = this.requestFactory.addComponentData(request);
     // fetch('https://dsgocdnapi.azureedge.net/sendperform', {
     //   method: 'POST',
     //   headers: {
@@ -75,32 +98,54 @@ export default class PerForm extends React.Component {
     // });
   }
 
+  changeEpiComponentState (e) {
+    this.setState({epiComponent: e.target.value});
+  }
+
+  changeEpiComponentStateTo (value) {
+    this.setState({epiComponent: value});
+  }
+
+  autosave () {
+    this.saveState('autosave');
+  }
+
+  checkFormFilled () {
+    let componentIndex = 0;
+
+    for (let component of this.state.components) {
+      if (typeof component.namespaces !== 'undefined' && component.namespaces !== null) {
+        for (let questionIndex in component.namespaces) {
+          if (document.querySelectorAll('[name=\'c' + componentIndex + 'q' + questionIndex + '\']:checked').length < 1) {
+            document.getElementById('container' + componentIndex + 'q' + questionIndex).style.backgroundColor = '#FEB8B8';
+            let offsetTop = document.getElementById('container' + componentIndex + 'q' + questionIndex).offsetTop;
+            window.scroll(0, offsetTop);
+            return false;
+          } else {
+            document.getElementById('container' + componentIndex + 'q' + questionIndex).style.backgroundColor = '#FFFFFF';
+          }
+        }
+      }
+
+      if (this.state.epiComponent === 'yes') {
+        if (document.querySelectorAll('[name=\'c' + componentIndex + 'epi\']:checked').length < 1) {
+          document.getElementById('container' + componentIndex + 'epi').style.backgroundColor = '#FEB8B8';
+          let offsetTop = document.getElementById('container' + componentIndex + 'epi').offsetTop;
+          window.scroll(0, offsetTop);
+          return false;
+        } else {
+          document.getElementById('container' + componentIndex + 'epi').style.backgroundColor = '#FFFFFF';
+        }
+      }
+
+      componentIndex++;
+    }
+  }
+
   render () {
-    return (
-      <div className='fold'>
-        <div className='inner'>
-          <select onChange={this.chooseLanguage}>
-            <option value='english'>English</option>
-            <option value='spanish'>Spanish</option>
-            <option value='french'>French</option>
-          </select>
-
-          <div className="fold__header">
-            <h2 className="fold__title">{this.state.title}</h2>
-          </div>
-
-          <div className='per_form_area'>{this.state.areaTitle}</div>
-          <div className='per_form_question'>{this.state.areaQuestion}</div>
-          <input type='radio' name='a1' value={this.state.areaOptions[0]} /> {this.state.areaOptions[0]} <br />
-          <input type='radio' name='a1' value={this.state.areaOptions[1]} /> {this.state.areaOptions[1]}
-
-          {this.composeForms()}
-
-          {/* <input type='checkbox' name='' value='' /> Save as Draft<br /> */}
-          <button onClick={this.sendForm}>Submit</button>
-
-        </div>
-      </div>
-    );
+    return <PerFormComponent chooseLanguage={this.chooseLanguage}
+      changeEpiComponentState={this.changeEpiComponentState}
+      sendForm={this.sendForm}
+      state={this.state} />;
   }
 }

@@ -11,6 +11,8 @@ class A5OperationsSupport extends PerForm {
     this.setLanguageToSpanish = this.setLanguageToSpanish.bind(this);
     this.setLanguageToEnglish = this.setLanguageToEnglish.bind(this);
     this.setLanguageToFrench = this.setLanguageToFrench.bind(this);
+    this.formCode = 'a5';
+    this.formName = 'Operations support';
     this.state = englishForm;
   }
 

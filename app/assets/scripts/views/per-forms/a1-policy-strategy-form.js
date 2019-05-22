@@ -11,6 +11,8 @@ class A1PolicyStrategyForm extends PerForm {
     this.setLanguageToSpanish = this.setLanguageToSpanish.bind(this);
     this.setLanguageToEnglish = this.setLanguageToEnglish.bind(this);
     this.setLanguageToFrench = this.setLanguageToFrench.bind(this);
+    this.formCode = 'a1';
+    this.formName = 'Policy strategy form';
     this.state = englishForm;
   }
 

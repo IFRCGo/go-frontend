@@ -14,7 +14,6 @@ import App from './app';
 
 class PerForms extends React.Component {
   render () {
-    console.log(this.props.location.pathname);
     let form = null;
     if (this.props.location.pathname === '/per-forms/policy-strategy') {
       form = (<A1PolicyStrategyForm />);
