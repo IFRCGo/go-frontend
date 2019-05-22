@@ -10,6 +10,19 @@ const renderLanguageSelectDropdown = (props) => {
   </select>);
 };
 
+if (environment !== 'production') {
+  renderLanguageSelectDropdown.propTypes = {
+    chooseLanguage: T.func,
+    state: T.object,
+    changeEpiComponentState: T.func,
+    sendForm: T.func,
+    _getProfile: T.func,
+    _updateSubscriptions: T.func,
+    _getFieldReportsByUser: T.func,
+    _updateProfile: T.func
+  };
+}
+
 const renderFormTitle = (props) => {
   return (
     <div className="fold__header">
