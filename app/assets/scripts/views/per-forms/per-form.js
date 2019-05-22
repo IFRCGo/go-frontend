@@ -7,45 +7,68 @@ export default class PerForm extends React.Component {
     super(props);
     this.state = {epiComponent: 'no'};
     this.sendForm = this.sendForm.bind(this);
-    this.saveDraft = this.saveDraft.bind(this);
-    this.loadDraft = this.loadDraft.bind(this);
+    this.saveState = this.saveState.bind(this);
+    this.loadState = this.loadState.bind(this);
     this.changeEpiComponentState = this.changeEpiComponentState.bind(this);
     this.changeEpiComponentStateTo = this.changeEpiComponentStateTo.bind(this);
     this.isEpiComponent = this.isEpiComponent.bind(this);
+    this.chooseFormStateSource = this.chooseFormStateSource.bind(this);
+    this.autosave = this.autosave.bind(this);
+    this.checkFormFilled = this.checkFormFilled.bind(this);
+    this.autosaveInterval = setInterval(this.autosave, 5000);
     this.requestFactory = new RequestFactory();
   }
 
   componentDidMount () {
+    console.log(this.isEpiComponent());
     if (this.isEpiComponent()) {
       this.changeEpiComponentStateTo('yes');
     } else {
-      this.loadDraft();
+      this.chooseFormStateSource();
     }
   }
 
   componentDidUpdate () {
-    this.loadDraft();
+    this.chooseFormStateSource();
   }
 
-  saveDraft () {
+  chooseFormStateSource () {
+    if (localStorage.getItem('autosave' + this.formCode) !== null && localStorage.getItem('finished' + this.formCode) === null) {
+      this.loadState('autosave');
+    } else if (localStorage.getItem('draft' + this.formCode) !== null && localStorage.getItem('finished' + this.formCode) === null) {
+      this.loadState('draft');
+    }
+  }
+
+  saveState (type) {
     let request = this.requestFactory.newFormRequest(this.formCode, this.formName, this.state.languageCode);
     request = this.requestFactory.addAreaQuestionData(request);
     request = this.requestFactory.addComponentData(request);
-    localStorage.setItem('draft' + this.formCode, JSON.stringify(request));
+    localStorage.setItem(type + '' + this.formCode, JSON.stringify(request));
   }
 
   isEpiComponent () {
-    let draft = JSON.parse(localStorage.getItem('draft' + this.formCode));
-    let epi = draft.data.filter(question => question.id === 'a1' && question.op === 'yes');
+    let draft = null;
 
-    if (epi.length > 0) {
-      return true;
+    if (localStorage.getItem('autosave' + this.formCode) !== null && localStorage.getItem('finished' + this.formCode) === null) {
+      draft = JSON.parse(localStorage.getItem('autosave' + this.formCode));
+    } else if (localStorage.getItem('draft' + this.formCode) !== null && localStorage.getItem('finished' + this.formCode) === null) {
+      draft = JSON.parse(localStorage.getItem('draft' + this.formCode));
     }
+
+    if (draft !== null && draft.data !== null) {
+      let epi = draft.data.filter(question => question.id === 'a1' && question.op === 'yes');
+
+      if (epi.length > 0) {
+        return true;
+      }
+    }
+
     return false;
   }
 
-  loadDraft () {
-    let draft = JSON.parse(localStorage.getItem('draft' + this.formCode));
+  loadState (type) {
+    let draft = JSON.parse(localStorage.getItem(type + this.formCode));
     if (draft !== null && typeof draft.data !== 'undefined' && draft.data !== null) {
       draft.data.forEach(question => {
         if (question.op !== null && question.id !== null) {
@@ -61,10 +84,11 @@ export default class PerForm extends React.Component {
   }
 
   sendForm () {
-    this.saveDraft();
-    let request = this.requestFactory.newFormRequest(this.formCode, this.formName, this.state.languageCode);
-    request = this.requestFactory.addAreaQuestionData(request);
-    request = this.requestFactory.addComponentData(request);
+    this.checkFormFilled();
+    // this.saveState('draft');
+    // let request = this.requestFactory.newFormRequest(this.formCode, this.formName, this.state.languageCode);
+    // request = this.requestFactory.addAreaQuestionData(request);
+    // request = this.requestFactory.addComponentData(request);
     // fetch('https://dsgocdnapi.azureedge.net/sendperform', {
     //   method: 'POST',
     //   headers: {
@@ -81,6 +105,46 @@ export default class PerForm extends React.Component {
 
   changeEpiComponentStateTo (value) {
     this.setState({epiComponent: value});
+  }
+
+  autosave () {
+    this.saveState('autosave');
+  }
+
+  checkFormFilled () {
+    let componentIndex = 0;
+    let questionIndex = 0;
+
+    for (let component of this.state.components) {
+      if (typeof component.namespaces !== 'undefined' && component.namespaces !== null) {
+        for (let question of component.namespaces) {
+          if (document.querySelectorAll('[name=\'c' + componentIndex + 'q' + questionIndex + '\']:checked').length < 1) {
+            document.getElementById('container' + componentIndex + 'q' + questionIndex).style.backgroundColor = '#FEB8B8';
+            let offsetTop = document.getElementById('container' + componentIndex + 'q' + questionIndex).offsetTop;
+            window.scroll(0, offsetTop);
+            return false;
+          } else {
+            document.getElementById('container' + componentIndex + 'q' + questionIndex).style.backgroundColor = '#FFFFFF';
+          }
+
+          questionIndex++;
+        }
+      }
+
+      if (this.state.epiComponent === 'yes') {
+        if (document.querySelectorAll('[name=\'c' + componentIndex + 'epi\']:checked').length < 1) {
+          document.getElementById('container' + componentIndex + 'epi').style.backgroundColor = '#FEB8B8';
+          let offsetTop = document.getElementById('container' + componentIndex + 'epi').offsetTop;
+          window.scroll(0, offsetTop);
+          return false;
+        } else {
+          document.getElementById('container' + componentIndex + 'epi').style.backgroundColor = '#FFFFFF';
+        }
+      }
+
+      questionIndex = 0;
+      componentIndex++;
+    }
   }
 
   render () {
