@@ -1,6 +1,9 @@
 import React from 'react';
 import { environment } from '../../config';
 import { PropTypes as T } from 'prop-types';
+import RequestFactory from './factory/request-factory';
+
+const requestFactory = new RequestFactory();
 
 const renderLanguageSelectDropdown = (props) => {
   return (<select onChange={props.chooseLanguage}>
@@ -49,8 +52,8 @@ const renderEpidemicsRadioButton = (props) => {
     <React.Fragment>
       <div className='per_form_area'>{props.state.areaTitle}</div>
       <div className='per_form_question'>{props.state.areaQuestion}</div>
-      <input type='radio' name='a1' value={props.state.areaOptions[0]} onClick={props.changeEpiComponentState} /> {props.state.areaOptions[0]} <br />
-      <input type='radio' name='a1' value={props.state.areaOptions[1]} onClick={props.changeEpiComponentState} /> {props.state.areaOptions[1]}
+      <input type='radio' name='a1' value={requestFactory.stringAnswerToNum(props.state.areaOptions[0])} onClick={props.changeEpiComponentState} /> {props.state.areaOptions[0]} <br />
+      <input type='radio' name='a1' value={requestFactory.stringAnswerToNum(props.state.areaOptions[1])} onClick={props.changeEpiComponentState} /> {props.state.areaOptions[1]}
     </React.Fragment>
   );
 };
@@ -74,11 +77,11 @@ const renderComponents = (props) => {
 
   props.state.components.forEach(component => {
     components.push(<React.Fragment key={newFormElementKey()}>
-      <div className='per_form_area'>{component.componentTitle}</div>
+      <div className='per_form_area' id={'c' + componentIndex + 'title'}>{component.componentTitle}</div>
       {component.componentDescription}<br /><br />
 
       {renderQuestions(component, componentIndex)}
-      {renderEpiComponent(props, componentIndex)}
+      {renderEpiComponent(component, props, componentIndex)}
     </React.Fragment>);
     componentIndex++;
   });
@@ -124,7 +127,7 @@ const renderAnswers = (namespace, componentIndex, questionIndex) => {
   const answers = [];
   namespace.nsAnswers.forEach(answer => {
     answers.push(<React.Fragment key={newFormElementKey()}>
-      <input type='radio' name={'c' + componentIndex + 'q' + questionIndex} value={answer} /> {answer}<br />
+      <input type='radio' name={'c' + componentIndex + 'q' + questionIndex} value={requestFactory.stringAnswerToNum(answer)} /> {answer}<br />
     </React.Fragment>);
   });
   return answers;
@@ -140,8 +143,10 @@ const renderFeedbackBox = (namespace, componentIndex, questionIndex) => {
   );
 };
 
-const renderEpiComponent = (props, componentIndex) => {
-  if (props.state.epiComponent === 'yes') {
+const renderEpiComponent = (component, props, componentIndex) => {
+  console.log('EPI');
+  console.log(props);
+  if (props.state.epiComponent === 'yes' && typeof component.namespaces !== 'undefined' && component.namespaces !== null) {
     return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
       <div className='per_form_ns'>Epidemic preparedess</div>
       <div>
@@ -150,12 +155,12 @@ const renderEpiComponent = (props, componentIndex) => {
         - NS Mandate in epidemics is understood by staff.<br />
         - The National Epidemic Strategy/Plan adheres to International Health Regulations.<br /><br />
       </div>
-      <input type='radio' name={'c' + componentIndex + 'epi'} value='Not Reviewed' /> Not Reviewed<br />
-      <input type='radio' name={'c' + componentIndex + 'epi'} value='Does not exist' /> Does not exist<br />
-      <input type='radio' name={'c' + componentIndex + 'epi'} value='Partially exists' /> Partially exists<br />
-      <input type='radio' name={'c' + componentIndex + 'epi'} value='Need improvements' /> Need improvements<br />
-      <input type='radio' name={'c' + componentIndex + 'epi'} value='Exists, could be strengthened' /> Exists, could be strengthened<br />
-      <input type='radio' name={'c' + componentIndex + 'epi'} value='High performance' /> High performance<br /><br />
+      <input type='radio' name={'c' + componentIndex + 'epi'} value='2' /> Not Reviewed<br />
+      <input type='radio' name={'c' + componentIndex + 'epi'} value='3' /> Does not exist<br />
+      <input type='radio' name={'c' + componentIndex + 'epi'} value='4' /> Partially exists<br />
+      <input type='radio' name={'c' + componentIndex + 'epi'} value='5' /> Need improvements<br />
+      <input type='radio' name={'c' + componentIndex + 'epi'} value='6' /> Exists, could be strengthened<br />
+      <input type='radio' name={'c' + componentIndex + 'epi'} value='7' /> High performance<br /><br />
     </div>);
   }
 };

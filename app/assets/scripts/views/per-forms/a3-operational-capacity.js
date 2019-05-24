@@ -2,18 +2,19 @@ import PerForm from './per-form';
 import { englishForm } from './form-data/a3/engish-data';
 import { frenchForm } from './form-data/a3/french-data';
 import { spanishForm } from './form-data/a3/spanish-data';
+import { sendPerForm } from '../../actions';
+import { connect } from 'react-redux';
+import { environment } from '../../config';
+import { PropTypes as T } from 'prop-types';
 
 class A3OperationalCapacity extends PerForm {
   constructor (props) {
-    super(props);
+    super(props, englishForm, 'a3', 'Operation capacity');
     this.sendForm = this.sendForm.bind(this);
     this.chooseLanguage = this.chooseLanguage.bind(this);
     this.setLanguageToSpanish = this.setLanguageToSpanish.bind(this);
     this.setLanguageToEnglish = this.setLanguageToEnglish.bind(this);
     this.setLanguageToFrench = this.setLanguageToFrench.bind(this);
-    this.formCode = 'a3';
-    this.formName = 'Operational capacity';
-    this.state = englishForm;
   }
 
   chooseLanguage (e) {
@@ -39,4 +40,22 @@ class A3OperationalCapacity extends PerForm {
   }
 }
 
-export default A3OperationalCapacity;
+// /////////////////////////////////////////////////////////////////// //
+// Connect functions
+
+if (environment !== 'production') {
+  PerForm.propTypes = {
+    _sendPerForm: T.func,
+    sendPerFormResponse: T.object
+  };
+}
+
+const selector = (state) => ({
+  sendPerForm: state.sendPerForm
+});
+
+const dispatcher = (dispatch) => ({
+  _sendPerForm: (payload) => dispatch(sendPerForm(payload))
+});
+
+export default connect(selector, dispatcher)(A3OperationalCapacity);
