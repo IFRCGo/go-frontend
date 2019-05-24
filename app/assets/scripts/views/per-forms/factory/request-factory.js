@@ -4,8 +4,8 @@ export default class RequestFactory {
       code: formCode,
       name: formName,
       language: 1,
-      started_at: "2019-04-11 11:42:22.278796+00",
-      submitted_at: "2019-04-11 09:42:52.278796+00",
+      started_at: '2019-04-11 11:42:22.278796+00',
+      submitted_at: '2019-04-11 09:42:52.278796+00',
       user_id: 111,
       country_id: 47,
       ns: 'Hungarian Society',
@@ -34,12 +34,12 @@ export default class RequestFactory {
     while (document.querySelectorAll('#c' + componentIndex + 'title').length > 0) {
       let questionIndex = 0;
 
-      if (!!document.querySelector('[name=\'c' + componentIndex + 'epi\']')) {
-        let answer = !!document.querySelector('[name=\'c' + componentIndex + 'epi\']:checked')
+      if (document.querySelectorAll('[name=\'c' + componentIndex + 'epi\']').length > 0) {
+        let answer = document.querySelectorAll('[name=\'c' + componentIndex + 'epi\']:checked').length > 0
           ? document.querySelector('[name=\'c' + componentIndex + 'epi\']:checked').value
           : null;
 
-        if (!!answer) {
+        if (answer !== null) {
           request.data.push({
             id: 'c' + componentIndex + 'epi',
             op: parseInt(answer),

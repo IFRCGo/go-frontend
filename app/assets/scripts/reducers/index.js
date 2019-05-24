@@ -24,7 +24,7 @@ import situationReports from './situation-reports';
 import appealDocuments from './appeal-documents';
 import fdrs from './fdrs';
 import csv from './csv';
-import perForm from './per-form'
+import perForm from './per-form';
 
 export const reducers = {
   user,

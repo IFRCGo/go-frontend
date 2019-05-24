@@ -83,11 +83,11 @@ export default class PerForm extends React.Component {
           const formRadioInput = document.querySelector('[name=\'' + question.id + '\'][value=\'' + question.op + '\']');
           const feedbackInput = document.querySelector('[name=\'' + question.id + 'f\']');
 
-          if (!!formRadioInput) {
+          if (typeof formRadioInput !== 'undefined' && formRadioInput !== null) {
             formRadioInput.checked = true;
           }
 
-          if (!!feedbackInput) {
+          if (typeof feedbackInput !== 'undefined' && formRadioInput !== null) {
             feedbackInput.value = question.nt;
           }
         }
@@ -109,7 +109,6 @@ export default class PerForm extends React.Component {
       localStorage.setItem('finished' + this.formCode, 1);
       this.setState({redirect: true});
     }
-
   }
 
   changeEpiComponentState (e) {
@@ -160,11 +159,18 @@ export default class PerForm extends React.Component {
 
   render () {
     if (this.state.redirect) {
-      return <Redirect to='/account' />
+      return <Redirect to='/account' />;
     }
     return <PerFormComponent chooseLanguage={this.chooseLanguage}
       changeEpiComponentState={this.changeEpiComponentState}
       sendForm={this.sendForm}
       state={this.state} />;
   }
+}
+
+if (environment !== 'production') {
+  PerForm.propTypes = {
+    _sendPerForm: T.func,
+    sendPerFormResponse: T.object
+  };
 }

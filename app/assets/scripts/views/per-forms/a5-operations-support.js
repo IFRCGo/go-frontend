@@ -51,7 +51,7 @@ if (environment !== 'production') {
 }
 
 const selector = (state) => ({
-    sendPerForm: state.perForm.sendPerForm});
+  sendPerForm: state.perForm.sendPerForm});
 
 const dispatcher = (dispatch) => ({
   _sendPerForm: (payload) => dispatch(sendPerForm(payload))});
