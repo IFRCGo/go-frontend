@@ -89,7 +89,7 @@ export default class PerForm extends React.Component {
             formRadioInput.checked = true;
           }
 
-          if (typeof feedbackInput !== 'undefined' && formRadioInput !== null) {
+          if (typeof feedbackInput !== 'undefined' && feedbackInput !== null) {
             feedbackInput.value = question.nt;
           }
         }

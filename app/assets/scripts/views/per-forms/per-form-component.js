@@ -144,8 +144,6 @@ const renderFeedbackBox = (namespace, componentIndex, questionIndex) => {
 };
 
 const renderEpiComponent = (component, props, componentIndex) => {
-  console.log('EPI');
-  console.log(props);
   if (props.state.epiComponent === 'yes' && typeof component.namespaces !== 'undefined' && component.namespaces !== null) {
     return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
       <div className='per_form_ns'>Epidemic preparedess</div>
