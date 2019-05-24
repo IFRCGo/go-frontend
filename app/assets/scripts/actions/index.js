@@ -388,3 +388,8 @@ export function getListAsCsv (url, id) {
 export function clearLoadedCsv (id) {
   return { type: 'CLEAR_LOADED_CSV', id };
 }
+
+export const SEND_PER_FORM = 'SEND_PER_FORM';
+export function sendPerForm (data) {
+  return postJSON('sendperform', SEND_PER_FORM, data);
+}
