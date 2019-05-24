@@ -3,6 +3,8 @@ import { PerFormComponent } from './per-form-component';
 import RequestFactory from './factory/request-factory';
 import { Redirect } from 'react-router-dom';
 import { showAlert } from './../../components/system-alerts';
+import { environment } from './../../config';
+import { PropTypes as T } from 'prop-types';
 
 export default class PerForm extends React.Component {
   constructor (props, defaultLanguage, formCode, formName) {
