@@ -25,6 +25,54 @@ function sendPerForm (state = initialState, action) {
   return state;
 }
 
+function getPerCountries (state = initialState, action) {
+  switch (action.type) {
+    case 'GET_PER_COUNTRIES_INFLIGHT':
+      state = stateInflight(state, action);
+      break;
+    case 'GET_PER_COUNTRIES_FAILED':
+      state = stateError(state, action);
+      break;
+    case 'GET_PER_COUNTRIES_SUCCESS':
+      state = stateSuccess(state, action);
+      break;
+  }
+  return state;
+}
+
+function getPerDocuments (state = initialState, action) {
+  switch (action.type) {
+    case 'GET_PER_DOCUMENTS_INFLIGHT':
+      state = stateInflight(state, action);
+      break;
+    case 'GET_PER_DOCUMENTS_FAILED':
+      state = stateError(state, action);
+      break;
+    case 'GET_PER_DOCUMENTS_SUCCESS':
+      state = stateSuccess(state, action);
+      break;
+  }
+  return state;
+}
+
+function getPerDocument (state = initialState, action) {
+  switch (action.type) {
+    case 'GET_PER_DOCUMENT_INFLIGHT':
+      state = stateInflight(state, action);
+      break;
+    case 'GET_PER_DOCUMENT_FAILED':
+      state = stateError(state, action);
+      break;
+    case 'GET_PER_DOCUMENT_SUCCESS':
+      state = stateSuccess(state, action);
+      break;
+  }
+  return state;
+}
+
 export default combineReducers({
-  sendPerForm
+  sendPerForm,
+  getPerCountries,
+  getPerDocuments,
+  getPerDocument
 });
