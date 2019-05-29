@@ -535,14 +535,16 @@ class Account extends React.Component {
     const groupedDocuments = {};
     if (this.props.perForm.getPerDocuments.fetched) {
       this.props.perForm.getPerDocuments.data.results.forEach(document => {
-        if (!groupedDocuments.hasOwnProperty(document.country.region)) {
-          groupedDocuments[document.country.region] = {[document.country.id]: []};
-          groupedDocuments[document.country.region][document.country.id].push(document);
-        } else {
-          if (!groupedDocuments[document.country.region].hasOwnProperty(document.country.id)) {
-            groupedDocuments[document.country.region][document.country.id] = [];
+        if (document.country !== null) {
+          if (!groupedDocuments.hasOwnProperty(document.country.region)) {
+            groupedDocuments[document.country.region] = {[document.country.id]: []};
+            groupedDocuments[document.country.region][document.country.id].push(document);
+          } else {
+            if (!groupedDocuments[document.country.region].hasOwnProperty(document.country.id)) {
+              groupedDocuments[document.country.region][document.country.id] = [];
+            }
+            groupedDocuments[document.country.region][document.country.id].push(document);
           }
-          groupedDocuments[document.country.region][document.country.id].push(document);
         }
       });
     }
