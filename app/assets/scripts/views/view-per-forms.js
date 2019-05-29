@@ -8,25 +8,25 @@ import A4Coordination from '../components/per-forms/a4-coordination';
 import A5OperationsSupport from '../components/per-forms/a5-operations-support';
 import A3OperationalCapacity2 from '../components/per-forms/a3-operational-capacity-2';
 import { Helmet } from 'react-helmet';
-import { environment } from './../config';
+import { environment } from '../config';
 import { PropTypes as T } from 'prop-types';
 import App from './app';
 
-class PerForms extends React.Component {
+class ViewPerForms extends React.Component {
   render () {
     let form = null;
-    if (this.props.match.params.formName === 'policy-strategy') {
-      form = (<A1PolicyStrategyForm view={false} nationalSociety={this.props.match.params.id} />);
-    } else if (this.props.match.params.formName === 'analysis-and-planning') {
-      form = (<A2AnalysisAndPlanningForm view={false} nationalSociety={this.props.match.params.id} />);
-    } else if (this.props.match.params.formName === 'operational-capacity') {
-      form = (<A3OperationalCapacity view={false} nationalSociety={this.props.match.params.id} />);
-    } else if (this.props.match.params.formName === 'operational-capacity-2') {
-      form = (<A3OperationalCapacity2 view={false} nationalSociety={this.props.match.params.id} />);
-    } else if (this.props.match.params.formName === 'coordination') {
-      form = (<A4Coordination view={false} nationalSociety={this.props.match.params.id} />);
-    } else if (this.props.match.params.formName === 'operations-support') {
-      form = (<A5OperationsSupport view={false} nationalSociety={this.props.match.params.id} />);
+    if (this.props.match.params.formName === 'a1') {
+      form = (<A1PolicyStrategyForm view={true} match={this.props.match} formId={this.props.match.params.id} />);
+    } else if (this.props.match.params.formName === 'a2') {
+      form = (<A2AnalysisAndPlanningForm view={true} match={this.props.match} formId={this.props.match.params.id} />);
+    } else if (this.props.match.params.formName === 'a3') {
+      form = (<A3OperationalCapacity view={true} match={this.props.match} formId={this.props.match.params.id} />);
+    } else if (this.props.match.params.formName === 'a3-2') {
+      form = (<A3OperationalCapacity2 view={true} match={this.props.match} formId={this.props.match.params.id}  />);
+    } else if (this.props.match.params.formName === 'a4') {
+      form = (<A4Coordination view={true} match={this.props.match} formId={this.props.match.params.id} />);
+    } else if (this.props.match.params.formName === 'a5') {
+      form = (<A5OperationsSupport view={true} match={this.props.match} formId={this.props.match.params.id} />);
     }
 
     return (
@@ -47,7 +47,7 @@ class PerForms extends React.Component {
 }
 
 if (environment !== 'production') {
-  PerForms.propTypes = {
+  ViewPerForms.propTypes = {
     user: T.object,
     profile: T.object,
     fieldReport: T.object,
@@ -59,4 +59,4 @@ if (environment !== 'production') {
   };
 }
 
-export default PerForms;
+export default ViewPerForms;
