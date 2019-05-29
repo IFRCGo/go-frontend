@@ -22,7 +22,7 @@ class ViewPerForms extends React.Component {
     } else if (this.props.match.params.formName === 'a3') {
       form = (<A3OperationalCapacity view={true} match={this.props.match} formId={this.props.match.params.id} />);
     } else if (this.props.match.params.formName === 'a3-2') {
-      form = (<A3OperationalCapacity2 view={true} match={this.props.match} formId={this.props.match.params.id}  />);
+      form = (<A3OperationalCapacity2 view={true} match={this.props.match} formId={this.props.match.params.id} />);
     } else if (this.props.match.params.formName === 'a4') {
       form = (<A4Coordination view={true} match={this.props.match} formId={this.props.match.params.id} />);
     } else if (this.props.match.params.formName === 'a5') {
@@ -52,6 +52,7 @@ if (environment !== 'production') {
     profile: T.object,
     fieldReport: T.object,
     location: T.object,
+    match: T.object,
     _getProfile: T.func,
     _updateSubscriptions: T.func,
     _getFieldReportsByUser: T.func,

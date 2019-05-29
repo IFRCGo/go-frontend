@@ -531,11 +531,10 @@ class Account extends React.Component {
     );
   }
 
-  createRegionGroupedDocumentData (documents) {
+  createRegionGroupedDocumentData () {
     const groupedDocuments = {};
-    this.props.perForm.getPerDocuments.fetched
-      ? this.props.perForm.getPerDocuments.data.results.forEach(document => {
-
+    if (this.props.perForm.getPerDocuments.fetched) {
+      this.props.perForm.getPerDocuments.data.results.forEach(document => {
         if (!groupedDocuments.hasOwnProperty(document.country.region)) {
           groupedDocuments[document.country.region] = {[document.country.id]: []};
           groupedDocuments[document.country.region][document.country.id].push(document);
@@ -545,7 +544,8 @@ class Account extends React.Component {
           }
           groupedDocuments[document.country.region][document.country.id].push(document);
         }
-      }) : null;
+      });
+    }
     return groupedDocuments;
   }
 
@@ -558,15 +558,14 @@ class Account extends React.Component {
         let currentCountryName = '';
         documents[regionKey][countryKey].forEach((document) => {
           currentCountryName = document.country.name;
-          perDocuments.push((
-            <React.Fragment key={'documentrow'+document.code + 'id' + document.id}>
-              <div style={{backgroundColor: '#eaeaea', float: 'left', width: '100%', marginBottom: '1rem', padding: '0.25rem 1rem'}} key={'document' + document.id}>
-                {document.code.toUpperCase()} - {document.name} - {document.updated_at.substring(0, 10)}
-                <div style={{float: 'right'}}>
-                  <Link className='button button--small button--secondary-bounded' to={'/view-per-forms/' + document.code + '/' + document.id}>View</Link>
-                </div>
+          perDocuments.push((<React.Fragment key={'documentrow'+document.code + 'id' + document.id}>
+            <div style={{backgroundColor: '#eaeaea', float: 'left', width: '100%', marginBottom: '1rem', padding: '0.25rem 1rem'}} key={'document' + document.id}>
+              {document.code.toUpperCase()} - {document.name} - {document.updated_at.substring(0, 10)}
+              <div style={{float: 'right'}}>
+                <Link className='button button--small button--secondary-bounded' to={'/view-per-forms/' + document.code + '/' + document.id}>View</Link>
               </div>
-            </React.Fragment>));
+            </div>
+          </React.Fragment>));
         });
         countries.push(<div key={'countryDocument' + countryKey}><span style={{fontSize: '1.25rem'}}>{currentCountryName}</span>{perDocuments}<br /></div>);
       });
@@ -577,12 +576,15 @@ class Account extends React.Component {
 
   render () {
     const countryOptions = [];
-    this.props.perForm.getPerCountries.fetched
-      ? this.props.perForm.getPerCountries.data.results.forEach(country => {
-        countryOptions.push(<option value={country.id} key={'persociety' + country.id}>{country.society_name}</option>);
-      }) : null;
     let documents;
-    this.props.perForm.getPerDocuments.fetched ? documents = this.renderPerFormDocuments(this.createRegionGroupedDocumentData(this.props.perForm.getPerDocuments.data.results)) : null;
+    if (this.props.perForm.getPerCountries.fetched) {
+      this.props.perForm.getPerCountries.data.results.forEach(country => {
+        countryOptions.push(<option value={country.id} key={'persociety' + country.id}>{country.society_name}</option>);
+      });
+    }
+    if (this.props.perForm.getPerDocuments.fetched) {
+      documents = this.renderPerFormDocuments(this.createRegionGroupedDocumentData());
+    }
     return (
       <App className='page--account'>
         <Helmet>
@@ -656,6 +658,7 @@ if (environment !== 'production') {
     user: T.object,
     profile: T.object,
     fieldReport: T.object,
+    perForm: T.object,
     _getProfile: T.func,
     _updateSubscriptions: T.func,
     _getFieldReportsByUser: T.func,
@@ -673,7 +676,6 @@ const selector = (state, ownProps) => ({
   profile: state.profile,
   fieldReport: state.fieldReport,
   perForm: state.perForm
-  //documents: state.perForm.getPerDocuments
 });
 
 const dispatcher = {

@@ -7,7 +7,6 @@ export const englishForm = {
     'yes',
     'no'
   ],
-  languageCode: 1,
   components: [
     {
       componentTitle: 'Component 24. Coordination with Movement',

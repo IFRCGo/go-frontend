@@ -49,7 +49,7 @@ export default class PerForm extends React.Component {
   chooseFormStateSource () {
     if (this.props.view && this.props.perDocument.fetched) {
       if (this.state.epiComponent !== 'yes') {
-        this.setState({epiComponent : 'yes'});
+        this.setState({epiComponent: 'yes'});
         return;
       }
       this.loadFromProps();
@@ -96,7 +96,7 @@ export default class PerForm extends React.Component {
     const formId = this.props.match.params.id;
     const formData = this.props.perDocument.data.results;
     const filteredData = formData.filter(question => {
-      return question.question_id === 'a1' && question.selected_option === this.requestFactory.stringAnswerToNum('yes') && question.form == formId;
+      return question.question_id === 'a1' && question.selected_option === this.requestFactory.stringAnswerToNum('yes');
     });
     if (filteredData.length > 0) {
       return true;
@@ -127,21 +127,20 @@ export default class PerForm extends React.Component {
   loadFromProps () {
     const formId = this.props.match.params.id;
     const formData = this.props.perDocument.data.results;
-    formData.filter(document => (formId == document.form))
-      .forEach(question => {
-        if (!isNaN(question.selected_option) && !!question.question_id) {
-          const formRadioInput = document.querySelector('[name=\'' + question.question_id + '\'][value=\'' + question.selected_option + '\']');
-          const feedbackInput = document.querySelector('[name=\'' + question.question_id + 'f\']');
+    formData.forEach(question => {
+      if (!isNaN(question.selected_option) && !!question.question_id) {
+        const formRadioInput = document.querySelector('[name=\'' + question.question_id + '\'][value=\'' + question.selected_option + '\']');
+        const feedbackInput = document.querySelector('[name=\'' + question.question_id + 'f\']');
 
-          if (typeof formRadioInput !== 'undefined' && formRadioInput !== null) {
-            formRadioInput.checked = true;
-          }
-
-          if (typeof feedbackInput !== 'undefined' && feedbackInput !== null) {
-            feedbackInput.value = question.notes;
-          }
+        if (typeof formRadioInput !== 'undefined' && formRadioInput !== null) {
+          formRadioInput.checked = true;
         }
-      });
+
+        if (typeof feedbackInput !== 'undefined' && feedbackInput !== null) {
+          feedbackInput.value = question.notes;
+        }
+      }
+    });
   }
 
   sendForm () {
@@ -224,6 +223,11 @@ export default class PerForm extends React.Component {
 if (environment !== 'production') {
   PerForm.propTypes = {
     _sendPerForm: T.func,
+    _getPerDocument: T.func,
+    nationalSociety: T.number,
+    view: T.bool,
+    match: T.object,
+    perDocument: T.object,
     sendPerFormResponse: T.object
   };
 }

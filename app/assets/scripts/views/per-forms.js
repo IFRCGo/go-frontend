@@ -52,6 +52,7 @@ if (environment !== 'production') {
     profile: T.object,
     fieldReport: T.object,
     location: T.object,
+    match: T.object,
     _getProfile: T.func,
     _updateSubscriptions: T.func,
     _getFieldReportsByUser: T.func,

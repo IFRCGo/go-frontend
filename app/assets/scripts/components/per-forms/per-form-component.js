@@ -21,6 +21,7 @@ if (environment !== 'production') {
     state: T.object,
     changeEpiComponentState: T.func,
     sendForm: T.func,
+    view: T.bool,
     _getProfile: T.func,
     _updateSubscriptions: T.func,
     _getFieldReportsByUser: T.func,
@@ -42,6 +43,7 @@ if (environment !== 'production') {
     state: T.object,
     changeEpiComponentState: T.func,
     sendForm: T.func,
+    view: T.bool,
     _getProfile: T.func,
     _updateSubscriptions: T.func,
     _getFieldReportsByUser: T.func,
@@ -74,6 +76,7 @@ if (environment !== 'production') {
     state: T.object,
     changeEpiComponentState: T.func,
     sendForm: T.func,
+    view: T.bool,
     _getProfile: T.func,
     _updateSubscriptions: T.func,
     _getFieldReportsByUser: T.func,
@@ -105,6 +108,7 @@ if (environment !== 'production') {
     state: T.object,
     changeEpiComponentState: T.func,
     sendForm: T.func,
+    view: T.bool,
     _getProfile: T.func,
     _updateSubscriptions: T.func,
     _getFieldReportsByUser: T.func,
@@ -168,7 +172,7 @@ const renderEpiComponent = (component, props, componentIndex) => {
         - The National Epidemic Strategy/Plan adheres to International Health Regulations.<br /><br />
       </div>
       <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
-        <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' /> 
+        <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
         <span className='form__option__ui'></span>
         <span className='form__option__text'>Not Reviewed</span>
       </label>
@@ -207,6 +211,7 @@ if (environment !== 'production') {
     state: T.object,
     changeEpiComponentState: T.func,
     sendForm: T.func,
+    view: T.bool,
     _getProfile: T.func,
     _updateSubscriptions: T.func,
     _getFieldReportsByUser: T.func,
@@ -227,7 +232,7 @@ export const PerFormComponent = (props) => {
           {renderEpidemicsRadioButton(props)}
           {renderComponents(props)}
 
-          {props.view 
+          {props.view
             ? null
             : (<React.Fragment>
               <label className={c(`form__option form__option--custom-checkbox`, {'form__option--inline': 'inline'})}>
@@ -240,7 +245,6 @@ export const PerFormComponent = (props) => {
         </div>
       </div>
     </React.Fragment>
-    
   );
 };
 
@@ -250,6 +254,7 @@ if (environment !== 'production') {
     state: T.object,
     changeEpiComponentState: T.func,
     sendForm: T.func,
+    view: T.bool,
     _getProfile: T.func,
     _updateSubscriptions: T.func,
     _getFieldReportsByUser: T.func,

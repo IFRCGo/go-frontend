@@ -30,7 +30,7 @@ import Deployments from './views/deployments';
 import Table from './views/table';
 
 import PerForms from './views/per-forms';
-import ViewPerForms from './views/view-per-forms'
+import ViewPerForms from './views/view-per-forms';
 
 require('isomorphic-fetch');
 
