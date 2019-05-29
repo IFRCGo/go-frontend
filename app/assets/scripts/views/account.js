@@ -558,7 +558,7 @@ class Account extends React.Component {
         let currentCountryName = '';
         documents[regionKey][countryKey].forEach((document) => {
           currentCountryName = document.country.name;
-          perDocuments.push((<React.Fragment key={'documentrow'+document.code + 'id' + document.id}>
+          perDocuments.push((<React.Fragment key={'documentrow' + document.code + 'id' + document.id}>
             <div style={{backgroundColor: '#eaeaea', float: 'left', width: '100%', marginBottom: '1rem', padding: '0.25rem 1rem'}} key={'document' + document.id}>
               {document.code.toUpperCase()} - {document.name} - {document.updated_at.substring(0, 10)}
               <div style={{float: 'right'}}>

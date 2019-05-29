@@ -137,6 +137,20 @@ const renderQuestions = (component, componentIndex, props) => {
   return questions;
 };
 
+if (environment !== 'production') {
+  renderQuestions.propTypes = {
+    chooseLanguage: T.func,
+    state: T.object,
+    changeEpiComponentState: T.func,
+    sendForm: T.func,
+    view: T.bool,
+    _getProfile: T.func,
+    _updateSubscriptions: T.func,
+    _getFieldReportsByUser: T.func,
+    _updateProfile: T.func
+  };
+}
+
 const renderAnswers = (namespace, componentIndex, questionIndex, props) => {
   const answers = [];
   namespace.nsAnswers.forEach(answer => {
@@ -151,6 +165,20 @@ const renderAnswers = (namespace, componentIndex, questionIndex, props) => {
   return answers;
 };
 
+if (environment !== 'production') {
+  renderAnswers.propTypes = {
+    chooseLanguage: T.func,
+    state: T.object,
+    changeEpiComponentState: T.func,
+    sendForm: T.func,
+    view: T.bool,
+    _getProfile: T.func,
+    _updateSubscriptions: T.func,
+    _getFieldReportsByUser: T.func,
+    _updateProfile: T.func
+  };
+}
+
 const renderFeedbackBox = (namespace, componentIndex, questionIndex, props) => {
   return (
     <React.Fragment>
@@ -160,6 +188,20 @@ const renderFeedbackBox = (namespace, componentIndex, questionIndex, props) => {
     </React.Fragment>
   );
 };
+
+if (environment !== 'production') {
+  renderFeedbackBox.propTypes = {
+    chooseLanguage: T.func,
+    state: T.object,
+    changeEpiComponentState: T.func,
+    sendForm: T.func,
+    view: T.bool,
+    _getProfile: T.func,
+    _updateSubscriptions: T.func,
+    _getFieldReportsByUser: T.func,
+    _updateProfile: T.func
+  };
+}
 
 const renderEpiComponent = (component, props, componentIndex) => {
   if (props.state.epiComponent === 'yes' && typeof component.namespaces !== 'undefined' && component.namespaces !== null) {

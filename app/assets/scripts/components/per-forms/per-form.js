@@ -93,7 +93,6 @@ export default class PerForm extends React.Component {
   }
 
   isEpiComponentFromProps () {
-    const formId = this.props.match.params.id;
     const formData = this.props.perDocument.data.results;
     const filteredData = formData.filter(question => {
       return question.question_id === 'a1' && question.selected_option === this.requestFactory.stringAnswerToNum('yes');
@@ -125,7 +124,6 @@ export default class PerForm extends React.Component {
   }
 
   loadFromProps () {
-    const formId = this.props.match.params.id;
     const formData = this.props.perDocument.data.results;
     formData.forEach(question => {
       if (!isNaN(question.selected_option) && !!question.question_id) {
