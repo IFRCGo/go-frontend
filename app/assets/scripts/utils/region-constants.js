@@ -245,3 +245,7 @@ export const getRegionId = (idOrName) => {
   }
   return idOrName;
 };
+
+export const getRegionById = (id) => {
+  return regions[id];
+};

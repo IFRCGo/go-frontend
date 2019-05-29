@@ -393,3 +393,21 @@ export const SEND_PER_FORM = 'SEND_PER_FORM';
 export function sendPerForm (data) {
   return postJSON('sendperform', SEND_PER_FORM, data);
 }
+
+export const GET_PER_COUNTRIES = 'GET_PER_COUNTRIES';
+export function getPerCountries () {
+  return fetchJSON(`/api/v2/percountry/`, GET_PER_COUNTRIES, withToken());
+}
+
+export const GET_PER_DOCUMENTS = 'GET_PER_DOCUMENTS';
+export function getPerDocuments () {
+  return fetchJSON(`/api/v2/per/`, GET_PER_DOCUMENTS, withToken());
+}
+
+export const GET_PER_DOCUMENT = 'GET_PER_DOCUMENT';
+export function getPerDocument (id) {
+  const filters = {};
+  filters.limit = 1000;
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v2/perdata/?${f}&form=${id}`, GET_PER_DOCUMENT, withToken());
+}
