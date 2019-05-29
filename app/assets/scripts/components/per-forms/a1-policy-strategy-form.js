@@ -1,16 +1,15 @@
 import PerForm from './per-form';
-import { englishForm } from './form-data/a5/english-data';
-import { frenchForm } from './form-data/a5/french-data';
-import { spanishForm } from './form-data/a5/spanish-data';
-import { sendPerForm } from '../../actions';
+import { englishForm } from './form-data/a1/english-data';
+import { frenchForm } from './form-data/a1/french-data';
+import { spanishForm } from './form-data/a1/spanish-data';
+import { sendPerForm, getPerDocument } from '../../actions';
 import { connect } from 'react-redux';
 import { environment } from '../../config';
 import { PropTypes as T } from 'prop-types';
 
-class A5OperationsSupport extends PerForm {
+class A1PolicyStrategyForm extends PerForm {
   constructor (props) {
-    super(props, englishForm, 'a5', 'Operations support');
-    this.sendForm = this.sendForm.bind(this);
+    super(props, englishForm, 'a1', 'Policy strategy form');
     this.chooseLanguage = this.chooseLanguage.bind(this);
     this.setLanguageToSpanish = this.setLanguageToSpanish.bind(this);
     this.setLanguageToEnglish = this.setLanguageToEnglish.bind(this);
@@ -51,9 +50,12 @@ if (environment !== 'production') {
 }
 
 const selector = (state) => ({
-  sendPerForm: state.perForm.sendPerForm});
+  sendPerForm: state.perForm.sendPerForm,
+  perDocument: state.perForm.getPerDocument
+});
 
 const dispatcher = (dispatch) => ({
-  _sendPerForm: (payload) => dispatch(sendPerForm(payload))});
+  _sendPerForm: (payload) => dispatch(sendPerForm(payload)),
+  _getPerDocument: (...args) => dispatch(getPerDocument(...args))});
 
-export default connect(selector, dispatcher)(A5OperationsSupport);
+export default connect(selector, dispatcher)(A1PolicyStrategyForm);

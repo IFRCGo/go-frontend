@@ -2,7 +2,7 @@ import PerForm from './per-form';
 import { englishForm } from './form-data/a3-2/english-data';
 import { frenchForm } from './form-data/a3-2/french-data';
 import { spanishForm } from './form-data/a3-2/spanish-data';
-import { sendPerForm } from '../../actions';
+import { sendPerForm, getPerDocument } from '../../actions';
 import { connect } from 'react-redux';
 import { environment } from '../../config';
 import { PropTypes as T } from 'prop-types';
@@ -51,11 +51,12 @@ if (environment !== 'production') {
 }
 
 const selector = (state) => ({
-  sendPerForm: state.sendPerForm
+  sendPerForm: state.perForm.sendPerForm,
+  perDocument: state.perForm.getPerDocument
 });
 
 const dispatcher = (dispatch) => ({
-  _sendPerForm: (payload) => dispatch(sendPerForm(payload))
-});
+  _sendPerForm: (payload) => dispatch(sendPerForm(payload)),
+  _getPerDocument: (...args) => dispatch(getPerDocument(...args))});
 
 export default connect(selector, dispatcher)(A3OperatinalCapacity2);

@@ -1,14 +1,15 @@
 export default class RequestFactory {
-  newFormRequest (formCode, formName, languageCode) {
+  newFormRequest (formCode, formName, languageCode, nationalSociety) {
+    const user = JSON.parse(localStorage.getItem('user'));
     return {
       code: formCode,
       name: formName,
-      language: 1,
+      language: languageCode,
       started_at: '2019-04-11 11:42:22.278796+00',
       submitted_at: '2019-04-11 09:42:52.278796+00',
-      user_id: 111,
-      country_id: 47,
-      ns: 'Hungarian Society',
+      user_id: user.id,
+      country_id: nationalSociety,
+      ns: ' - ',
       data: []
     };
   }
