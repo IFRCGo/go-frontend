@@ -17,8 +17,11 @@ import {
   getUserProfile,
   updateSubscriptions,
   getFieldReportsByUser,
-  updateProfile
+  updateProfile,
+  getPerCountries,
+  getPerDocuments
 } from '../actions';
+import { getRegionById } from '../utils/region-constants';
 import { get } from '../utils/utils';
 import { getCountryMeta } from '../utils/get-country-meta';
 import { countries, disasterType, orgTypes } from '../utils/field-report-constants';
@@ -116,6 +119,7 @@ class Account extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
+      chosenCountry: {id: 0, society_name: ''},
       isNotificationsDirty: false,
       notifications: {
         countries: [],
@@ -143,12 +147,17 @@ class Account extends React.Component {
     this.onNotificationSubmit = this.onNotificationSubmit.bind(this);
     this.onProfileSubmit = this.onProfileSubmit.bind(this);
     this.toggleEditProfile = this.toggleEditProfile.bind(this);
+    this.changeChosenCountry = this.changeChosenCountry.bind(this);
+    this.createRegionGroupedDocumentData = this.createRegionGroupedDocumentData.bind(this);
+    this.renderPerFormDocuments = this.renderPerFormDocuments.bind(this);
   }
 
   componentDidMount () {
-    const { user, _getProfile, _getFieldReportsByUser } = this.props;
+    const { user, _getProfile, _getFieldReportsByUser, _getPerCountries, _getPerDocuments } = this.props;
     _getProfile(user.username);
     _getFieldReportsByUser(user.id);
+    _getPerCountries();
+    _getPerDocuments();
     showGlobalLoading();
   }
 
@@ -171,6 +180,9 @@ class Account extends React.Component {
         this.setState({ isNotificationsDirty: false, isProfileDirty: false, profileEditMode: false });
         this.props._getProfile(this.props.user.username);
       }
+    }
+    if (nextProps.perForm.getPerCountries.fetched && nextProps.perForm.getPerCountries.data.count > 0) {
+      this.setState({chosenCountry: {id: nextProps.perForm.getPerCountries.data.results[0].id, society_name: nextProps.perForm.getPerCountries.data.results[0].society_name}});
     }
   }
 
@@ -281,6 +293,11 @@ class Account extends React.Component {
   toggleEditProfile () {
     this.syncProfileState(this.props.profile.data);
     this.setState({ profileEditMode: !this.state.profileEditMode });
+  }
+
+  changeChosenCountry (e) {
+    let filteredCountry = this.props.perForm.getPerCountries.data.results.filter(country => country.id === parseInt(e.target.value));
+    this.setState({chosenCountry: {id: filteredCountry[0].id, society_name: filteredCountry[0].society_name}});
   }
 
   renderProfileAttributes () {
@@ -514,7 +531,58 @@ class Account extends React.Component {
     );
   }
 
+  createRegionGroupedDocumentData (documents) {
+    const groupedDocuments = {};
+    this.props.perForm.getPerDocuments.fetched
+      ? this.props.perForm.getPerDocuments.data.results.forEach(document => {
+
+        if (!groupedDocuments.hasOwnProperty(document.country.region)) {
+          groupedDocuments[document.country.region] = {[document.country.id]: []};
+          groupedDocuments[document.country.region][document.country.id].push(document);
+        } else {
+          if (!groupedDocuments[document.country.region].hasOwnProperty(document.country.id)) {
+            groupedDocuments[document.country.region][document.country.id] = [];
+          }
+          groupedDocuments[document.country.region][document.country.id].push(document);
+        }
+      }) : null;
+    return groupedDocuments;
+  }
+
+  renderPerFormDocuments (documents) {
+    const regions = [];
+    Object.keys(documents).forEach((regionKey, regionIndex) => {
+      const countries = [];
+      Object.keys(documents[regionKey]).forEach((countryKey, countryIndex) => {
+        const perDocuments = [];
+        let currentCountryName = '';
+        documents[regionKey][countryKey].forEach((document) => {
+          currentCountryName = document.country.name;
+          perDocuments.push((
+            <React.Fragment key={'documentrow'+document.code + 'id' + document.id}>
+              <div style={{backgroundColor: '#eaeaea', float: 'left', width: '100%', marginBottom: '1rem', padding: '0.25rem 1rem'}} key={'document' + document.id}>
+                {document.code.toUpperCase()} - {document.name} - {document.updated_at.substring(0, 10)}
+                <div style={{float: 'right'}}>
+                  <Link className='button button--small button--secondary-bounded' to={'/view-per-forms/' + document.code + '/' + document.id}>View</Link>
+                </div>
+              </div>
+            </React.Fragment>));
+        });
+        countries.push(<div key={'countryDocument' + countryKey}><span style={{fontSize: '1.25rem'}}>{currentCountryName}</span>{perDocuments}<br /></div>);
+      });
+      regions.push(<div key={'regionDocument' + regionKey}><span style={{fontSize: '1.5rem'}}>{getRegionById(regionKey).name}</span>{countries}<br /></div>);
+    });
+    return regions;
+  }
+
   render () {
+    const countryOptions = [];
+    this.props.perForm.getPerCountries.fetched
+      ? this.props.perForm.getPerCountries.data.results.forEach(country => {
+        countryOptions.push(<option value={country.id} key={'persociety' + country.id}>{country.society_name}</option>);
+      }) : null;
+    let documents;
+    this.props.perForm.getPerDocuments.fetched ? documents = this.renderPerFormDocuments(this.createRegionGroupedDocumentData(this.props.perForm.getPerDocuments.data.results)) : null;
     return (
       <App className='page--account'>
         <Helmet>
@@ -535,7 +603,6 @@ class Account extends React.Component {
                   <div className='inner'>
                     <ul>
                       <li><a href='#account-information' title='Go to Operations section'>Account Information</a></li>
-                      <li><a href='#notifications' title='Go to Emergencies section'>Notifications</a></li>
                       <li><a href='#per-forms' title='Go to Appeals section'>PER forms</a></li>
                     </ul>
                   </div>
@@ -555,24 +622,24 @@ class Account extends React.Component {
               {this.renderFieldReports()}
               {this.props.profile.fetched && !this.props.profile.error ? this.renderSubscriptionForm() : null}
               <div className='fold-container'>
-                <section className='fold' id='notifications'>
-                  <div className='inner'>
-                    <h2 className='fold__title'>Notifications</h2>
-                  </div>
-                </section>
-              </div>
-              <div className='fold-container'>
                 <section className='fold' id='per-forms'>
                   <div className='inner'>
                     <h2 className='fold__title'>PER Forms</h2>
                     Click on the following links to access the PER forms, where you can select individual National Societies.
                     <hr /><br />
-                    <a href='/per-forms/policy-strategy' className='link--primary'>Area 1: Policy and Standards</a><br/><br/>
-                    <a href='/per-forms/analysis-and-planning' className='link--primary'>Area 2: Analysis and Planning</a><br/><br/>
-                    <a href='/per-forms/operational-capacity' className='link--primary'>Area 3: Operation capacity</a><br/><br/>
-                    <a href='/per-forms/operational-capacity-2' className='link--primary'>Area 3: Operational capacity 2</a><br/><br/>
-                    <a href='/per-forms/coordination' className='link--primary'>Area 4: Coordination</a><br/><br/>
-                    <a href='/per-forms/operations-support' className='link--primary'>Area 5: Operations support</a><br/><br/>
+                    <select onChange={this.changeChosenCountry}>
+                      {countryOptions}
+                    </select><br/><br />
+                    <Link to={'/per-forms/policy-strategy/' + this.state.chosenCountry.id} className='link--primary'>Area 1: Policy and Standards</Link><br/><br/>
+                    <Link to={'/per-forms/analysis-and-planning/' + this.state.chosenCountry.id} className='link--primary'>Area 2: Analysis and Planning</Link><br/><br/>
+                    <Link to={'/per-forms/operational-capacity/' + this.state.chosenCountry.id} className='link--primary'>Area 3: Operation capacity</Link><br/><br/>
+                    <Link to={'/per-forms/operational-capacity-2/' + this.state.chosenCountry.id} className='link--primary'>Area 3: Operational capacity 2</Link><br/><br/>
+                    <Link to={'/per-forms/coordination/' + this.state.chosenCountry.id} className='link--primary'>Area 4: Coordination</Link><br/><br/>
+                    <Link to={'/per-forms/operations-support/' + this.state.chosenCountry.id} className='link--primary'>Area 5: Operations support</Link><br/>
+                    <hr /><br/><br />
+
+                    <h2 className='fold__title'>Active PER Forms</h2>
+                    <span style={{fontWeight: 'bold'}}>{documents}</span>
                   </div>
                 </section>
               </div>
@@ -592,7 +659,9 @@ if (environment !== 'production') {
     _getProfile: T.func,
     _updateSubscriptions: T.func,
     _getFieldReportsByUser: T.func,
-    _updateProfile: T.func
+    _updateProfile: T.func,
+    _getPerCountries: T.func,
+    _getPerDocuments: T.func
   };
 }
 
@@ -602,14 +671,18 @@ if (environment !== 'production') {
 const selector = (state, ownProps) => ({
   user: state.user.data,
   profile: state.profile,
-  fieldReport: state.fieldReport
+  fieldReport: state.fieldReport,
+  perForm: state.perForm
+  //documents: state.perForm.getPerDocuments
 });
 
 const dispatcher = {
   _getProfile: getUserProfile,
   _updateSubscriptions: updateSubscriptions,
   _getFieldReportsByUser: getFieldReportsByUser,
-  _updateProfile: updateProfile
+  _updateProfile: updateProfile,
+  _getPerCountries: getPerCountries,
+  _getPerDocuments: getPerDocuments
 };
 
 export default connect(selector, dispatcher)(Account);
