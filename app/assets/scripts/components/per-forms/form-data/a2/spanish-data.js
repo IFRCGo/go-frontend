@@ -7,6 +7,7 @@ export const spanishForm = {
     'Si',
     'No'
   ],
+  languageCode: 3,
   components: [
     {
       componentTitle: 'Componente 6. Análisis de Peligros, de Contexto y de Riesgos, Monitoreo y Alerta Temprana',

@@ -1,18 +1,19 @@
 export const englishForm = {
   title: 'WELCOME TO THE PREPAREDNESS FOR EFFECTIVE RESPONSE TOOL',
-  areaTitle: 'Area 5: Operations support',
+  areaTitle: 'Area 3: Operational capacity',
   areaQuestion: 'Do you want to assess the preparedness of your National Society for Epidemics and pandemics?',
   areaOptions: [
     'yes',
     'no'
   ],
+  languageCode: 1,
   components: [
     {
-      componentTitle: 'Component 30. Safety and security management',
-      componentDescription: 'Addresses policy and procedures to ensure the safety of staff and volunteers. This include awareness, effective recruitment, training and management processes in place to ensure that personnel are capable of undertaking the roles demanded of them (from NS operational, management and leaders) according to the Stay Safe (IFRC) and Safer Access (ICRC). Based on safer access framework, including concepts of access, perception, identification and acceptance, and protection and violence prevention.',
+      componentTitle: 'Component 15: Mapping of NS capacities',
+      componentDescription: 'A list of the NS capacities including HR (staff, response teams and volunteers) and equipment that are available for disaster/crisis response. Teams could include branch and national response teams. This should be defined by technical speciality where relevant.',
       namespaces: [
         {
-          nsTitle: '30.1 NS implements Safer Access and has appropriate security systems in place to protect staff and volunteers.',
+          nsTitle: '15.1 A focal point is identified and available for each NS specific area of intervention and services to provide technical guidance and support.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -22,7 +23,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '30.2 Trained staff at headquarter and branch are appointed and accountable for safety and security.',
+          nsTitle: '15.2 Staff and volunteers are trained and kept up to date in the specific areas of intervention and services.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -32,7 +33,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '30.3 Context and risk analysis information is provided to responders on an ongoing basis.',
+          nsTitle: '15.3 Response materials and equipment database is up to date and gaps are noted and being addressed.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -42,7 +43,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '30.4 A safety and security policy and a compliance system exist to monitor staff and volunteers.',
+          nsTitle: '15.4 Resources (HR and equipment) are available and sufficient to cover the initial response needs.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -52,7 +53,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '30.5 Responders have been trained in Safer Access, Stay Safe and managers have completed security management training.',
+          nsTitle: '15.5 Capacities are mapped in line with the different levels of response (Green - Yellow - Red).',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -62,7 +63,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '30.6 All staff and volunteers know the NS safety and security rules and procedures and follow them.',
+          nsTitle: '15.6 Mechanisms are in place to share resources amongst branches/regions and with sister NSs.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -72,17 +73,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '30.7 NS has communication mechanisms for staff and volunteers to report safety and security risks and incidents.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: 'Component 30 performance',
+          nsTitle: 'Component 15 performance',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
@@ -98,11 +89,11 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Component: 31. Operations Monitoring, Evaluation, Reporting and Learning',
-      componentDescription: 'The PMERL is designed to implement a results-based planning, monitoring and evaluation system that provides an evidence base of NS performance, including relevance, efficiency, effectiveness, sustainability and impact. A reliable and trusted organization is accountable, providing transparent and timely information and building systems to strengthen data collection and reporting. It is data-driven, analytical and results-based.',
+      componentTitle: 'Component 16: Early Action Mechanisms',
+      componentDescription: 'Designed to translate warnings into anticipatory actions to help reduce the impact of specific disaster or crisis events. They focus on consolidating available forecasting information and putting procedures in place to ensure that a NS can act ahead of any disaster/crisis. Forecast-based financing is included within the scope of this area.',
       namespaces: [
         {
-          nsTitle: '31.1 NS has a dedicated PMER function for emergency operations with adequate human and financial resources.',
+          nsTitle: '16.1 NS\'s early warning early action system - inclusive of Forecast-based Financing and disease surveillance - is an integral and accepted part of the national Early Warning Early Action strategies and preparedness system.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -112,7 +103,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '31.2 NS refers to and uses lessons from previous operations in response planning (e.g. from evaluation, review and operational reports).',
+          nsTitle: '16.2 NS has a clear methodology to decide when and where early action should be taken based on a combination of vulnerability, exposure and triggers.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -122,7 +113,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '31.3 NS has a standardised framework or plan of action for emergency operations which identifies specific results and the indicators to measure them.',
+          nsTitle: '16.3 NS has mechanisms to anticipate and respond to major hazards in coordination with the national system.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -132,7 +123,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '31.4 NS operates an M&E system at the field level to collect, manage and report on data to branch, country and IFRC offices against the set objectives of the operation.',
+          nsTitle: '16.4 NS tests and makes use of new technologies appropriate for the context and audiences for sending alert messages related to early action (e.g: text, twitter, email, sms).',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -142,7 +133,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '31.5 Operational plans are revised and updated based on intended and unintended outcomes of operations.',
+          nsTitle: '16.5 NS has procedures and personnel permanently available to communicate alerts and initiate early action to all levels of the NS: governance, branches, technical units.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -152,7 +143,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '31.6 NS allocates resources to conducts evaluations and/or reviews of the operation to identify and integrate key lessons and recommendations.',
+          nsTitle: '16.6 Branches have functioning local networks to inform communities of potential threats and activate early action (respecting mandates of public authorities).',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -162,27 +153,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '31.7 NS reports in a timely manner using appropriate reporting templates/formats according to agreements with partners.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '31.8 NS effectively leads or cooperates with the IFRC and ICRC on relevant PMER processes, especially the compilation and sharing of Movement-wide contributions to the operation.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: 'Component 31 performance',
+          nsTitle: 'Component 16 performance',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
@@ -198,11 +169,11 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Component 32. Finance and Admin policy and emergency procedures',
-      componentDescription: 'Overall budgeting, accounting, treasury, assets, financial reporting and financial services operations. it also includes the efficient delivery , cost effective and timely services to the NS. Pre-approved, auditable, expedited procedures that allow for flexibility during a disaster/crisis. These must meet transparency, oversight and accountability standards. Procedures may include faster approval processes, fewer signatures, different authority levels. The Emergency Procedures are activated for a specific period of time.',
+      componentTitle: 'Component 17: Cash Based Intervention (CBI)',
+      componentDescription: 'An effective and flexible way, including all forms of cash and voucher-based assistance, to support people affected by emergencies, maintaining their dignity and choice, while fostering local economies. Cash should also be mainstreamed into other sectors (including Relief, shelter, livelihoods) and services (Logistics, Finance, etc.)',
       namespaces: [
         {
-          nsTitle: '32.1 NS has an automated accounting and financial system and procedures to account for and report regularly on funds, expenditures and any in-kind resources received.',
+          nsTitle: '17.1 NS has a CBI preparedness plan, properly budgeted and resourced with clear activities and outputs, based on analysis and discussion with key stakeholders.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -212,7 +183,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '32.2 NS has trained personnel in Finance and Admin emergency support procedures.',
+          nsTitle: '17.2 CBI preparedness plan is tailored to address NS opportunities and barriers to be ready to provide scalable emergency CBI.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -222,7 +193,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '32.3 NS has approved adapted Finance and Admin emergency procedures that comply with national laws and IFRC practices to rapidly support operations.',
+          nsTitle: '17.3 NS has an up-to-date database of CBI trained and experienced staff and volunteers at headquarter and branch levels across sectors and support services to implement CBI within the response cycle.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -232,7 +203,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '32.4 The activation of Finance and Admin emergency procedures is linked to the EOC SOPs.',
+          nsTitle: '17.4 NS has pre-disaster feasibility cash analysis and baseline about market systems, prices and seasonality, mapping of other actors and coordination structures.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -242,7 +213,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '32.5 NS has procedures in place to facilitate transparency.',
+          nsTitle: '17.5 NS has regularly revised CBI SOPs with clear roles and responsibilities outlined at each stage of the response process, based on lessons learned from previous responses.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -252,7 +223,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '32.6 NS has in place systems and procedures for control and oversight to prevent acts of fraud and/or corruption during an emergency.',
+          nsTitle: '17.6 NS has mapped CBI delivery mechanisms, service providers and has in place agreements including activation mechanism with money transfer providers.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -262,7 +233,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '32.7 Relevant admin finance staff and operation managers are familiar with existing emergency related MoUs or agreements for compliance.',
+          nsTitle: '17.7 NS has an up-to-date, approved CBI toolkit that adapts CiE tools to the NS specific contexts.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -272,7 +243,27 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: 'Component 32 performance',
+          nsTitle: '17.8 NS routinely uses the CBI toolkit which is revised and updated based on feedback from preparedness and response actions.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '17.9 NS leads CBI coordination mechanism both internally within the Movement and externally with other CBI actors in the country (public authorities, UN, NGOs, etc...).',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: 'Component 17 performance',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
@@ -288,11 +279,11 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Component 33. Information and Communication Technology (ICT)',
-      componentDescription: 'Refers to technologies that provide access to information through telecommunications. This includes the Internet, wireless networks, mobile phones, radios and other communication mediums.',
+      componentTitle: 'Component 18: Emergency Needs Assessment',
+      componentDescription: 'Assess the extent and impact of the damage caused by the disaster/crisis and the degree of vulnerability of the affected population. The first step in any emergency response, such an assessment will identify the needs that require external intervention and the gaps to be filled. It is a vital component of the programme-planning process.',
       namespaces: [
         {
-          nsTitle: '33.1 All key staff are equipped with functioning mobile phones, SIM cards/load cards are readily available, and a system to ensure recharging is in place while in the field.',
+          nsTitle: '18.1 NS has standardised templates used for primary and secondary data collection and reporting.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -302,7 +293,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '33.2 NS key personnel carry contact lists at all times with critical numbers saved as standard on all mobile phones.',
+          nsTitle: '18.2 NS has a trained multi-sectorial emergency assessment team available to deploy in a timely manner.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -312,7 +303,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '33.3 NS has an up-to-date, approved Emergency Notification Protocol / SOPs followed by all staff and volunteers.',
+          nsTitle: '18.3 NS emergency plans of actions are based on emergency needs assessment results.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -322,7 +313,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '33.4 NS has an agreed social media platform (i.e. WhatsApp, Viber, Line, Facebook etc.) for emergency communications and messaging.',
+          nsTitle: '18.4 Information is disaggregated according to gender, age groups and others.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -332,7 +323,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '33.5 Key headquarter and branch staff in high-risk areas have a functioning radio system (two-way VHF and HF).',
+          nsTitle: '18.5 Emergency needs assessment analyses accessibility, availability, quality, use and awareness of goods and services.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -342,7 +333,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '33.6 Handheld radios are assigned to key staff and NS vehicles are equipped with radios.',
+          nsTitle: '18.6 Emergency needs assessment takes into consideration existing capacities and analyses the national and international capacities, responses and gaps.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -352,7 +343,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '33.7 Frequencies for emergency radio transmission are officially cleared with national authorities.',
+          nsTitle: '18.7 Emergency needs assessment should analyse secondary risk, specific needs/concerns of vulnerable people/coping mechanisms/early and self-recovery.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -362,67 +353,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '33.8 All personnel have received radio training and call signs are assigned accordingly.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '33.9 NS has up-to-date, approved SOPs for mobile and radio communications.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '33.10 NS has assigned satellite phones to key staff (according to context needs) and any country restrictions are known and adhered to.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '33.11 NS has portable generators to ensure continuity of operations at key HQ and branch locations.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '33.12 NS has an internet capable router to provide data connectivity for operational staff and pocket WiFi devices are available for field personnel.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '33.13 NS has trained IT support focal points able to support technical issues and equipment (e.g. computers, software, phones, cameras, GPS) and provide maintenance.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: 'Component 33 performance',
+          nsTitle: 'Component 18 performance',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
@@ -438,14 +369,11 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Component 34. Logistics, procurement and supply chain',
-      componentDescription: 'A clear Logistics function with documented emergency procedures allowing for coordinated support to the response. Planning also needs to have been done with preferred domestic suppliers to facilitate rapid local procurement when necessary and also to identify alternative logistics and transport routes and access in case a disaster/crisis event affects the normal choices.'
-    },
-    {
-      componentTitle: 'Sub Component: LOGISTICS MANAGEMENT',
+      componentTitle: 'Component 19: Affected population selection',
+      componentDescription: 'Identification and selection of target Affected population for interventions, using a pre-defined set of criteria based on need and vulnerability. This includes consideration of specific vulnerabilities such as disability, age and gender.',
       namespaces: [
         {
-          nsTitle: '34.1 NS has a dedicated function/unit to carry out and coordinate all logistics activities, i.e. procurement, stock management and warehousing, transport and fleet.',
+          nsTitle: '19.1 NS communicates selection criteria to the affected population using preferred communication channels and involves community leaders/representatives.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -455,7 +383,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '34.2 All staff involved in logistics have a clearly defined role in their job descriptions and have received training to carry out their tasks.',
+          nsTitle: '19.2 NS identifies appropriate selection criteria based on existing vulnerability and taking into consideration gender, diversity, age and disabilities.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -465,7 +393,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '34.3 Key staff are familiar with IFRC logistics services to support National Society emergency operations.',
+          nsTitle: '19.3 NS protects data collected from affected population.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -475,7 +403,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '34.4 NS has analysed optimal supply chain options (e.g. prepositioned relief items, pre-existing agreements with suppliers, environmental impact) in terms of cost, speed and reliability.',
+          nsTitle: '19.4 Responders have been trained in data collection including the standardised templates.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -485,7 +413,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '34.5 Pre-positioned relief items meet standards and reflect at risk/affected populations needs.',
+          nsTitle: '19.5 NS cross-checks affected populations\' lists with community leaders, other agencies, authority, etc… to verify inclusion/exclusion issues (considering protection of sensitive data).',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -495,27 +423,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '34.6 Pre-positioned relief items are strategically located in the high risk areas.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '34.7 NS has volunteers trained in logistics who can act as surge capacity during an emergency response.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: 'Component 34A performance',
+          nsTitle: 'Component 19 performance',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
@@ -531,10 +439,11 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Sub Component: SUPPLY CHAIN MANAGEMENT',
+      componentTitle: 'Component 20: Emergency Operations Centre (EOC)',
+      componentDescription: 'A central command and control facility responsible for carrying out disaster/crisis management functions at a strategic level in an emergency situation. The common functions are to collect and analyze data; facilitate decision making that protects life and livelihoods; and disseminate those decisions to all concerned agencies and individuals. Generally located at the headquarter level of an organization.',
       namespaces: [
         {
-          nsTitle: '34.8 NS is aware of the existence of any status agreement IFRC has signed with the government and the implications of that agreement on any import duty and tax exemptions.',
+          nsTitle: '20.1 NS has a formally appointed focal point for EOC.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -544,7 +453,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '34.9 NS coordinates their stock and equipment with other key stakeholders in country and adheres to Movement standards (Emergency Items Catalogue).',
+          nsTitle: '20.2 NS has up-to-date EOC SOPs which are consistent with other NS documents and are followed in a response.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -554,7 +463,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '34.10 A documented, expedited procedure exists for branches to request additional relief items and/or equipment for early action and immediate response.',
+          nsTitle: '20.3 EOC is activated according to defined response levels and activation is communicated.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -564,7 +473,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '34.11 NS has SOPs for accepting (or rejecting), storing, disposing and reporting on in-kind donations.',
+          nsTitle: '20.4 Relevant staff and volunteers know their roles and responsibilities and are trained on SOPs.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -574,7 +483,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '34.12 NS has a procedure on the import of goods (regulations to comply, forms to be completed, requirement of import licensed agents, etc.), including import tax/duties exemptions.',
+          nsTitle: '20.5 All technical sectors and support services have procedures that integrate with the EOC SOPs.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -584,7 +493,107 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: 'Component 34B performance',
+          nsTitle: '20.6 EOC has intended space with sufficient equipment to manage information and coordination that does not affect other NS activities.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '20.7 EOC facilities are self-sufficient with at least power, water and telecommunications with functioning back-up means.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '20.8 NS has an alternative location if the EOC space is not accessible.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '20.9 NS has full and updated contact details for relevant personnel.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '20.10 NS has legal access and use of designated emergency frequencies which link with other stakeholders in response.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '20.11 EOC staff manages and displays regular updated information (maps, operational details, etc...).',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '20.12 Strategic decisions are made based on the situational analysis to address operational gaps and needs.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '20.13 Clear levels of authority exist between the strategic and management levels of the EOC.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '20.14 EOC is operational 24/7 however operational period of staff does not exceed 12 hrs/shift.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '20.15 Information is collected, validated and analyzed to provide updated standardized situation reports.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: 'Component 20 performance',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
@@ -600,10 +609,11 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Sub Component: PROCUREMENT',
+      componentTitle: 'Component 21: Information Management (IM)',
+      componentDescription: 'Ability to manage information including requesting, receiving, analyzing and disseminating as per its procedures and partner requirements (IFRC and public authorities in particular). There should be a clear digital/paper trail that documents what, when and how the NS has acted and provides key information for the development of Emergency Plan of Actions. Includes IM between levels, between departments and Situational Reports, mapping, visualisation of data, DMIS/GO platform (IFRC).',
       namespaces: [
         {
-          nsTitle: '34.13 NS has trained personnel for procurement.',
+          nsTitle: '21.1 Key staff at headquarters and branch level are familiar with IM templates (from NS or IFRC), methodology and procedures.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -613,7 +623,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '34.14 NS has a documented and approved emergency procurement procedure, including authorisation levels, standard forms, templates, and relevant staff are familiar with the procedure.',
+          nsTitle: '21.2 NS has access to equipment to compile, visualise and share information (e.g. printers, cartridges, scanners and battery powered projectors).',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -623,7 +633,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '34.15 NS has an up-to-date database of suppliers (who are in compliance with IFRC Code of Conduct) for key items and services.',
+          nsTitle: '21.3 NS has a system to store and share files with emergency personnel.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -633,7 +643,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '34.16 Supplier database includes the option to blacklist suppliers who are in breach of Code of Conduct or are not performing as per agreement.',
+          nsTitle: '21.4 NS has access to updated data on high-risk areas (demographic, socio-economic) disaggregated by age, gender and disability.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -643,7 +653,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '34.17 NS has up-to-date pre-agreements with suppliers to be able to immediately access supplies and/or services necessary for humanitarian response.',
+          nsTitle: '21.5 Information and specifically decisions are documented and filed.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -653,7 +663,37 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: 'Component 34C performance',
+          nsTitle: '21.6 NS has a standardised Situation Report format that includes information on situation, NS response, other actors\' response, challenges, achievements and gaps.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '21.7 The Situation Reports are analysed to adapt response plans.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '21.8 NS has mechanisms to share information across levels, sectors and support services.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: 'Component 21 performance',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
@@ -669,10 +709,11 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Sub Component: FLEET AND TRANSPORTATION MANAGEMENT',
+      componentTitle: 'Component 22: Testing and Learning',
+      componentDescription: 'Drills and Simulations allow the organization to test, identify and learn from the results of these type of exercises and incorporate learning into future preparedness and response planning.',
       namespaces: [
         {
-          nsTitle: '34.18 NS has a fleet manual including road safety and security, vehicle management and maintenance, insurance and registration, and staff are familiar with content.',
+          nsTitle: '22.1 NS regularly tests its early action and response system through simulation and drills.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -682,7 +723,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '34.19 NS vehicles are insured and their use is fully documented through the use of logbooks, maintenance records, fuel checks etc.',
+          nsTitle: '22.2 Lessons drawn from drills, simulations and responses inform revisions in the emergency procedures.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -692,7 +733,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '34.20 NS has sufficient and appropriate vehicles (i.e. 4x4 or trucks), owned or contracted, for disaster response.',
+          nsTitle: '22.3 Branches in high-risk areas test their response system, including early action, through drills and simulations.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -702,7 +743,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '34.21 NS vehicles are fitted with seatbelts, fire extinguishers and first aid kits, and there is a clear and enforced policy on no weapons in vehicles.',
+          nsTitle: '22.4 NS includes access, acceptance, security and the practical application of the Fundamental Principles in their simulations and drills.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -712,7 +753,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '34.22 NS only uses licensed mechanics (or workshops) for its vehicle maintenance.',
+          nsTitle: '22.5 NS conducts cross-border simulations in relevant contexts..',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -722,7 +763,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '34.23 NS has documented procedures for recording and reporting of accidents and insurance claims.',
+          nsTitle: '22.6 Simulations and drills are conducted with national authorities and other organisations.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -732,57 +773,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '34.24 NS has mapped in-country resources to rent or borrow vehicles and/or drivers.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '34.25 NS drivers are regularly tested and have valid licenses for the types of vehicles they are driving.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '34.26 NS drivers are trained in First Aid, defensive driving and Safer Access.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '34.27 NS has documented procedures to induct and test new drivers.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '34.28 NS has emergency procedures to guide the hours for drivers including non-standard hours and compensation.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: 'Component 34D performance',
+          nsTitle: 'Component 22 performance',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
@@ -798,10 +789,11 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Sub Component: WAREHOUSE AND STOCK MANAGEMENT',
+      componentTitle: 'Component 23: Activation of regional and international support',
+      componentDescription: 'Procedures for requesting and accepting regional and international support in operations, including triggering coordination mechanisms for funding, materials and human resources deployments.',
       namespaces: [
         {
-          nsTitle: '34.29 NS has an approved warehouse and stock management manual with standard forms and templates.',
+          nsTitle: '23.1 Key staff are familiar with the available IFRC/ICRC support (technical, financial, material and HR).',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -811,7 +803,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '34.30 Relevant staff and volunteers are trained on the procedures and use of forms.',
+          nsTitle: '23.2 SOPs and contacts to coordinate response with respective IFRC offices are available.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -821,7 +813,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '34.31 NS has a secure, dedicated and appropriate space with 24/7 access to receive, store and dispatch relief supplies and response equipment, sufficient to cover target number of households as per its response plan.',
+          nsTitle: '23.3 NS SOPs include procedures to request and incorporate regional and global support/teams into their response system, including prior to imminent crisis/disaster.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -831,7 +823,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '34.32 NS has storage space (owned, rented or shared with other organisations) near high-risk communities, accessible during disasters.',
+          nsTitle: '23.4 NS informs IFRC within 24 hours for which assistance may be required .',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -841,27 +833,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: 'Component 34E performance',
-          nsQuestion: 'Status:',
-          nsAnswers: [
-            'Not Reviewed',
-            'Does not exist',
-            'Partially exists',
-            'Need improvements',
-            'Exist, could be strengthened',
-            'High performance'
-          ],
-          feedbackTitle: 'Notes related to the component:',
-          feedbackDescription: ''
-        }
-      ]
-    },
-    {
-      componentTitle: 'Component 35. Staff and volunteer management',
-      componentDescription: 'Well-functioning staff and volunteer management systems and practices allow for effective recruitment, supervision, support and encouragement of staff and volunteers.',
-      namespaces: [
-        {
-          nsTitle: '35.1 Responders are deployed and equipped according to ToRs.',
+          nsTitle: '23.5 NS is familiar with the IFRC emergency funding mechanisms (Emergency Appeals, DREF and Forecast-based Financing by DREF), their procedures and required supporting documents (EPoA).',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -871,7 +843,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '35.2 NS has learning paths for responders to obtain required qualifications and skills according to competencies and role profiles.',
+          nsTitle: '23.6 NS request bilateral assistance in accordance with established coordination frameworks.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -881,7 +853,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '35.3 Responders are trained in quality and accountability standards (Sphere, Code of Conduct, etc...) around the protection, sexual abuse, exploitation, child protection, gender-based violence and other forms of abuse.',
+          nsTitle: '23.7 NS has an assigned focal point to act as counterpart to regional/international responders.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -891,247 +863,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '35.4 Responders have official updated ID recognised by authorities and appropriate visibility items.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '35.5 Responders are regularly briefed on safety and security risks and are appropriately insured.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '35.6 Procedures exist to activate, deploy and manage branch and national response teams.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '35.7 NS has an accessible, up-to-date database of responders contacts and capacities at branch and HQ level.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '35.8 NS incorporates response volunteers from relevant sectors to maintain a diverse workforce.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '35.9 NS has expedited procedures to incorporate spontaneous volunteers during emergencies which meet minimum screening procedures and comply with its volunteer in emergency policy.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '35.10 NS has HR procedures to scale-up and down (recruitment, retention), and procedures for appreciation of volunteers during emergencies.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '35.11 NS has a formal personnel rotation and retention strategy for response.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '35.12 For scenarios that entail safety and/or security concerns for staff and volunteers, a specific Safer Access analysis is conducted.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '35.13 Training on self-care, violence and harassment in the workplace is completed regularly, and psychosocial support is available for staff and volunteers during and after emergencies and crises.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '35.14 NS has a policy to cover responders\' expenses incurred during emergencies.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '35.15 The Code of Conduct is signed by all NS staff and volunteers.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: 'Component 35 performance',
-          nsQuestion: 'Status:',
-          nsAnswers: [
-            'Not Reviewed',
-            'Does not exist',
-            'Partially exists',
-            'Need improvements',
-            'Exist, could be strengthened',
-            'High performance'
-          ],
-          feedbackTitle: 'Notes related to the component:',
-          feedbackDescription: ''
-        }
-      ]
-    },
-    {
-      componentTitle: 'Component 36. Communication in emergencies',
-      componentDescription: 'Incorporates a system of public messaging to enable the NS to share timely, accurate information before, during, and after a disaster or crisis.',
-      namespaces: [
-        {
-          nsTitle: '36.1 Communications focal points are identified and trained at headquarters and branch level.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '36.2 An official spokesperson is designated in an emergency.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '36.3 NS uses public and social media to draw attention to unmet needs, and rights of affected people.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '36.4 Standard templates for communication are available.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '36.5 External communication plan is available and implemented, and NS provides information to public on emergency situation within 24 hours.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '36.6 Key messages and public awareness messages in an emergency are developed and shared with staff regularly.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '36.7 NS has capacity to track negative media and social media and react accordingly.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '36.8 NS coordinates with IFRC/ICRC on joint communication (SMCC).',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '36.9 NS has a social networking policy and guidelines to ensure appropriate conduct of staff and volunteers.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '36.10 NS has capacity to generate evidence-based results/messages to advocate to targeted audiences, i.e. decision makers and communities.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: 'Component 36 performance',
+          nsTitle: 'Component 23 performance',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',

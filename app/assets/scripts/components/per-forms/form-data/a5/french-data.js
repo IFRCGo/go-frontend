@@ -6,6 +6,7 @@ export const frenchForm = {
     'Oui',
     'Non'
   ],
+  languageCode: 2,
   components: [
     {
       componentTitle: 'Catégorie 24. Coordination avec le Mouvement',

@@ -1,18 +1,20 @@
 export const englishForm = {
+  languageCode: 1,
   title: 'WELCOME TO THE PREPAREDNESS FOR EFFECTIVE RESPONSE TOOL',
-  areaTitle: 'Area 1: Policy Strategy and Standards',
+  areaTitle: 'Area 4: Coordination',
   areaQuestion: 'Do you want to assess the preparedness of your National Society for Epidemics and pandemics?',
   areaOptions: [
     'yes',
     'no'
   ],
+  languageCode: 1,
   components: [
     {
-      componentTitle: 'Component 1: RC auxiliary role, Mandate and Law',
-      componentDescription: 'A constitutional reference to the role of the NS in responding to disasters and crises, which may be legislated or included/ recognized in the National Response System.',
+      componentTitle: 'Component 24. Coordination with Movement',
+      componentDescription: 'Mechanisms that facilitate the coordination with ICRC, IFRC, and PNS in-country.',
       namespaces: [
         {
-          nsTitle: '1.1 NS establishes its auxiliary role to the public authorities through a clear mandate and roles set out in applicable legislation, policies and plans.',
+          nsTitle: '24.1 All coordination and cooperation adheres to SMCC principles.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -22,7 +24,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '1.2 NS mandate is aligned with RCRC Fundamental Principles.',
+          nsTitle: '24.2 In country coordination mechanisms are established with Movement partners to share information on needs assessment, plan of actions, progress against operations and emerging gaps in resources and operational capacities.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -32,7 +34,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '1.3 NS mandate is reflected in policy, strategy, plans and procedures. The mandate is disseminated and understood by staff and volunteers.',
+          nsTitle: '24.3 NS exchanges information with neighboring NS and coordinates its response activities with them.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -42,7 +44,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '1.4 NS promotes IHL to the public authorities and uses humanitarian diplomacy to promote compliance.',
+          nsTitle: '24.4 When international assistance is accepted the NS establishes a framework to receive, coordinate, account and report on its use in collaboration with IFRC.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -52,7 +54,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: 'Component 1 performance',
+          nsTitle: 'Component 24 performance',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
@@ -68,11 +70,11 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Component 2: DRM Strategy',
-      componentDescription: 'An outline of the overall goal that the NS seeks to achieve in its disaster and crisis response operations. The goal considers: context analysis, ongoing/regular all-hazards risk assessments: it may define the target proportion of affected population that will be reached, and a definition of the areas/sectors where a NS will usually respond during an emergency.',
+      componentTitle: 'Component 25. Coordination with authorities',
+      componentDescription: 'Mechanism that facilitates coordination and cooperation with local and national authorities. It is connected to the NS auxiliary role for humanitarian assistance.',
       namespaces: [
         {
-          nsTitle: '2.1 NS DRM strategy reflects the NS mandate, analysis of country context, trends, operational objectives, success indicators.',
+          nsTitle: '25.1 NS is formally part of the national humanitarian coordination system, participates regularly and informs partners on RCRC Movement capacities in case international support is required.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -82,7 +84,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '2.2 NS DRM strategy is regularly reviewed, reflected in response plan and known by staff and volunteers.',
+          nsTitle: '25.2 NS knows the national authorities\' capacities and identifies areas within a response to fulfill their auxiliary role.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -92,7 +94,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '2.3 NS DRM strategy includes clear engagement with technical sectors and support services to ensure comprehensive response.',
+          nsTitle: '25.3 NS maintains control over assets, resources and use of emblem when working with public authorities and ensures independence.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -102,7 +104,17 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: 'Component 2 performance',
+          nsTitle: '25.4 Each NS area of intervention has an established coordination mechanism with local and national authorities.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: 'Component 25 performance',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
@@ -118,11 +130,11 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Component 3: DRM Policy',
-      componentDescription: 'Reflects the NS mission, RCRC principles and mandate. It acknowledges other relevant NS policies, and aligns with the government policy (where applicable), incorporating the general rules that the NS will obey in order to achieve something (i.e mandate, strategy, etc.)',
+      componentTitle: 'Component 26. Coordination with External Agencies and NGOs',
+      componentDescription: 'Mechanism that facilitates coordination and collaboration with Non-Governmental Organization (NGO), both local and international NGOs, civil society organizations (CSOs) and United Nations agencies in country.',
       namespaces: [
         {
-          nsTitle: '3.1 NS has its own DRM policy or has adopted the IFRC policy.',
+          nsTitle: '26.1 NS is an active member of the humanitarian community (UN, NGO) for coordination and efficiency of response.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -132,7 +144,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '3.2 DRM policy sets out guiding principles and values that guide decision-making on the response approach and actions.',
+          nsTitle: '26.2 The role of the NS as a cluster member is formally agreed and NS provides information to the humanitarian coordination system.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -142,7 +154,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '3.3 DRM policy is inclusive and involves other relevant sectors and services.',
+          nsTitle: '26.3 NS is aware of IFRC\'s role in the shelter cluster coordination.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -152,7 +164,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '3.4 DRM policy is reflected in response plans, procedures and it is adhered to by staff and volunteers.',
+          nsTitle: '26.4 NS is aware of UN-led appeal and strategic processes.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -162,7 +174,17 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: 'Component 3 performance',
+          nsTitle: '26.5 Partnership agreements with key emergency response UN/NGO partners in country are formalized and shared between branches and headquarters.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: 'Component 26 performance',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
@@ -178,11 +200,11 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Component 4: DRM Laws, Advocacy and Dissemination',
-      componentDescription: 'Designed to support the NS in improving legal preparedness for disasters and crisis and to promote the use of the IDRL Guidelines in order to reduce human vulnerability.',
+      componentTitle: 'Component 27. Civil Military Relations',
+      componentDescription: 'Dialogue and interaction with military actors, essential to protect and promote humanitarian principles, avoid competition, minimize inconsistency and, when appropriate, pursue common goals.',
       namespaces: [
         {
-          nsTitle: '4.1 NS has an IDRL humanitarian diplomacy plan /actions in place based on IFRC\'s IDRL Checklist.',
+          nsTitle: '27.1 Coordination arrangements exist with military and adhere to Fundamental Principles, International humanitarian law (IHL), Council of Delegates (CoD) resolutions.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -192,7 +214,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '4.2 NS has identified the relevant legal facilities (i.e. special entitlements and exemptions) in the national legislation.',
+          nsTitle: '27.2 NS applies the Movement guidance document on the Movement and military bodies (2005).',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -202,7 +224,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '4.3 NS has staff trained in IDRL & IHL to act as a focal point in an emergency.',
+          nsTitle: '27.3 NS only uses military assets as a last resort, in coordination with local authorities and informing IFRC.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -212,7 +234,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '4.4 NS is advocating the government to enact legislation in line with the Model Act for the Facilitation and Regulation of International Disaster Relief and Initial Recovery Assistance.',
+          nsTitle: '27.4 NS considers potential impact on security of affected population when coordinating with military forces, and does not use arm protection or armed military transport.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -222,7 +244,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '4.5 NS tests and/or tracks IDRL lessons through response operations to guide its future humanitarian diplomacy work.',
+          nsTitle: '27.5 NS promotes Fundamental Principles and appropriate use of the Movement emblems.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -232,7 +254,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: 'Component 4 performance',
+          nsTitle: 'Component 27 performance',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
@@ -248,11 +270,11 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Component 5: Quality and accountability',
-      componentDescription: 'Describes the essential elements of principled, accountable, and high-quality humanitarian action. The RCRC Movement provides support to the most vulnerable people in line with the Sphere and CHS standards, Code of Conduct for the RCRC Movement and NGOS in Disaster Relief and the Code for Good Partnership of the RCRC Movement, Gender & Diversity, inclusion and protection, BPI/ Do no harm, context-sensitive analysis, violence prevention, accountability to affected population and disability considerations, Community engagement and accountability (CEA).',
+      componentTitle: 'Component 28. Coordination with local community level responders',
+      componentDescription: 'Engagement with Community Disaster Response Teams (CDRTs), through training, coordination, and the development of community disaster preparedness and response plans.',
       namespaces: [
         {
-          nsTitle: '5.1 NS has mechanisms in place to ensure the affected populations are involved in all stages of the response (including decision making) to ensure assistance is appropriate and meets their needs and priorities.',
+          nsTitle: '28.1 NS has procedures to manage information between community to branches and branch to headquarters and vice versa.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -262,7 +284,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '5.2 NS has trained CEA focal points at key branches and headquarters.',
+          nsTitle: '28.2 Information from communities is taken into consideration for decision-making at branches and shared with headquarters.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -272,7 +294,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '5.3 A NS CEA plan is developed and implemented, standard templates are available, and procedures are included in SOPs..',
+          nsTitle: '28.3 Branches have system to communicate and coordinate with CDRTs.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -282,7 +304,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '5.4 Safe and accessible feedback and complaints mechanisms exists to record, refer or respond, and monitor communities\' concerns and requests regarding the assistance provided or protection issues (including for sexual exploitation and abuse).',
+          nsTitle: '28.4 NS supports community level response systems (either within the NS or in coordination with local authorities).',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -292,7 +314,27 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '5.5 NS has adopted the Protection for sexual exploitation and abuse policy in line with the International conference resolution on Sexual and Gender Based Violence.',
+          nsTitle: 'Component 28 performance',
+          nsQuestion: 'Status:',
+          nsAnswers: [
+            'Not Reviewed',
+            'Does not exist',
+            'Partially exists',
+            'Need improvements',
+            'Exist, could be strengthened',
+            'High performance'
+          ],
+          feedbackTitle: 'Notes related to the component:',
+          feedbackDescription: ''
+        }
+      ]
+    },
+    {
+      componentTitle: 'Component 29. Cooperation with private sector',
+      componentDescription: 'Mechanism that allows cooperation with private sector that often plays a strong role in response, particularly if there is impact on their staff and businesses. There is often a willingness to donate goods and services. Advance agreements help to expedite response actions.',
+      namespaces: [
+        {
+          nsTitle: '29.1 NS ensures due diligence when selecting partners and accepting donations to mitigate image or reputational risks.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -302,7 +344,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '5.6 NS adheres to Sphere and the Core Humanitarian Standards (may consider IASC Guidelines for Integrating gender based violence interventions, IASC Guidelines on Including persons with disabilities in humanitarian action) and integrates them into sectorial activities during assessment, planning and response.',
+          nsTitle: '29.2 NS ensures appropriate use of emblem and protect the organization\'s visual identity.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -312,7 +354,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '5.7 NS adheres to protection policies to support their protection services (safe spaces for child protection, actions for unaccompanied and separated children, prevention of sexual and gender-based violence, violence prevention, psychosocial support, restoring family links, accessibility of facilities and information) to respond.',
+          nsTitle: '29.3 NS has mechanisms in place to train and use volunteers from corporate partners.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -322,27 +364,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '5.8 NS plans and procedures actively minimise potential harmful social, economic and environmental impacts of assistance (do no harm principle).',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: '5.9 NS follows the Minimum Standards for Protection, Gender and Inclusion in Emergencies.',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: 'Component 5 performance',
+          nsTitle: 'Component 29 performance',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',

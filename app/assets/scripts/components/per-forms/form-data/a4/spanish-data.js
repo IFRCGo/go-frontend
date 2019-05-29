@@ -6,6 +6,7 @@ export const spanishForm = {
     'Si',
     'No'
   ],
+  languageCode: 3,
   components: [
     {
       componentTitle: 'Componente 24. Coordinación con el Movimiento',

@@ -6,6 +6,7 @@ export const spanishForm = {
     'Si',
     'No'
   ],
+  languageCode: 3,
   components: [
     {
       componentTitle: 'Componente 14. Áreas de intervención específicas a la SN',

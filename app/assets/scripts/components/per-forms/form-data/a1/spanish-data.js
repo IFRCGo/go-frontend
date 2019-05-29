@@ -6,6 +6,7 @@ export const spanishForm = {
     'Si',
     'No'
   ],
+  languageCode: 3,
   components: [
     {
       componentTitle: 'Componente 1. Rol auxiliar, Mandato y Leyes de la CR',

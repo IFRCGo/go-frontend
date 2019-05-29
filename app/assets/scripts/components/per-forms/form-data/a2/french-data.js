@@ -6,6 +6,7 @@ export const frenchForm = {
     'Oui',
     'Non'
   ],
+  languageCode: 2,
   components: [
     {
       componentTitle: 'Catégorie 6: Analyse des aléas, du contexte et des risques, surveillance et alerte précoce',

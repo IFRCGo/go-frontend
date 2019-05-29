@@ -6,16 +6,14 @@ export const frenchForm = {
     'Oui',
     'Non'
   ],
+  languageCode: 2,
   components: [
     {
-      componentTitle: 'Catégorie 14: Domaines spécifiques d\'intervention de la SN',
-      componentDescription: 'Services fournis par la SN en cas d\'urgence, conformément au mandat de la SN et à la législation nationale. Inclut la RRC et le PC basés sur la communauté, l\'évacuation, la santé d\'urgence, les épidémies et les pandémies, les premiers secours, l\'eau et l\'assainissement, la sécurité alimentaire, la recherche et le sauvetage, les abris, la gestion des dépouilles, la RLF, la transition vers le relèvement, et la préparation NRBC.'
-    },
-    {
-      componentTitle: 'Sous Catégorie 14.A: PC ET RRC A BASE COMMUNAUTAIRE',
+      componentTitle: 'Catégorie 15: Cartographie des capacités de la SN',
+      componentDescription: 'Une liste des capacités de la SN, comprenant les RH (personnel, équipes d\'intervention et bénévoles) et les équipements disponibles pour l\'intervention en cas de catastrophe/crise. Les équipes peuvent inclure les unités d\'intervention nationales et des branches. Ceci doit être défini par spécialités techniques lorsque cela est pertinent.',
       namespaces: [
         {
-          nsTitle: '14.1 La SN garantit la participation active de la population locale, y compris des groupes marginalisés et exclus, dans l\'évaluation, la conception/planification des activités communautaires, pour assurer que les programmes reflètent de manière appropriée les besoins de la communauté et renforcent les stratégies actuelles d\'adaptation.',
+          nsTitle: '15.1 Un point focal est identifié et disponible pour chaque domaine d\'intervention de la SN, pour fournir des directives et un soutien technique.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -25,7 +23,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises'
         },
         {
-          nsTitle: '14.2 La SN conduit une sensibilisation et une éducation publique régulière aux catastrophes et aux crises.',
+          nsTitle: '15.2 Le personnel et les bénévoles sont formés et mis à jour sur les domaines d\'intervention spécifiques.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -35,7 +33,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises'
         },
         {
-          nsTitle: '14.3 Le système d\'alerte précoce et d\'action précoce basé sur la communauté est en place et en relation avec les systèmes locaux.',
+          nsTitle: '15.3 La base de données recensant les équipements d\'intervention est à jour et les lacunes sont identifiées et comblées.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -45,7 +43,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises'
         },
         {
-          nsTitle: '14.4 Les CDRT sont formés et équipés pour gérer une intervention locale en partenariat avec les acteurs locaux pertinents.',
+          nsTitle: '15.4 Des ressources (RH et équipement) sont disponibles et suffisantes pour couvrir les besoins d\'intervention initiaux.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -55,7 +53,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises'
         },
         {
-          nsTitle: '14.5 Les CDRTs disposent d\'un plan d\'intervention et d\'urgence mis à jour, en phase avec les plans et les ressources locales.',
+          nsTitle: '15.5 Les capacités sont identifiées selon les différents niveaux d\'intervention (vert – jaune – rouge).',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -65,7 +63,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises'
         },
         {
-          nsTitle: '14.6 La SN assure que l\'évaluation, la planification et l\'intervention soit menée de manière inclusive, en prenant en compte le genre, la diversité et les conflits.',
+          nsTitle: '15.6 Des mécanismes sont en place et permettent de partager des ressources entre branches/régions et SN sœurs.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -75,7 +73,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises'
         },
         {
-          nsTitle: 'Résumé de la sous catégorie 14A',
+          nsTitle: 'Résumé de la catégorie 15',
           nsQuestion: 'Résumé de la catégorie:',
           nsAnswers: [
             'Pas évalué',
@@ -91,11 +89,11 @@ export const frenchForm = {
       ]
     },
     {
-      componentTitle: 'Sous Catégorie 14.B: EVACUATION',
-      componentDescription: 'Un mécanisme facilitant la coordination et la coopération avec les autorités locales et nationales. En lien avec le rôle d\'auxiliaire de la SN pour l\'assistance humanitaire.',
+      componentTitle: 'Catégorie 16: Mécanismes d\'action précoce',
+      componentDescription: 'Conçus pour traduire les avertissements en actions préventives, de manière à réduire l\'impact des catastrophes ou des crises spécifiques. Ils se concentrent sur la consolidation des informations de prévision disponibles et sur la mise en place de procédures, afin de garantir qu\'une SN puisse agir en amont d\'une catastrophe/crise. Un financement basé sur les prévisions est inclus à ce secteur.',
       namespaces: [
         {
-          nsTitle: '14.7 L\'évacuation fait partie de la stratégie d\'intervention de la SN. Elle est identifiée dans différents scénarios.',
+          nsTitle: '16.1 Le système d\'alerte précoce de la SN – comprenant le financement basé sur les prévisions et la surveillance des maladies – est en lien direct avec le système national.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -105,7 +103,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '4.8 La SN fait partie du mécanisme d\'évacuation des communautés vivant dans des zones à haut risque.',
+          nsTitle: '16.2 La SN dispose de processus permettant de mettre en place des alertes et des actions précoces à l\'aide de déclencheurs.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -115,7 +113,47 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: 'Résumé de la sous catégorie 14B',
+          nsTitle: '16.3 La SN dispose de mécanismes pour répondre à des menaces majeures en coordination avec le système national.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '16.4 La SN utilise les nouvelles technologies adaptées au contexte pour l\'envoi de messages d\'alerte (ex. SMS, Twitter, e-mail, téléphone portable), et les messages sont testés sur plusieurs publics cibles pour garantir leur bonne compréhension.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '16.5 La SN dispose de procédures et de personnel disponibles en permanence pour diffuser les alertes à tous les niveaux de la SN : gouvernance, branches, unités techniques.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '16.6 Les branches disposent de réseaux locaux fonctionnels pour informer les communautés des menaces potentielles (conformément aux mandats des départements du gouvernement).',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: 'Résumé de la catégorie 16',
           nsQuestion: 'Résumé de la catégorie:',
           nsAnswers: [
             'Pas évalué',
@@ -131,10 +169,11 @@ export const frenchForm = {
       ]
     },
     {
-      componentTitle: 'Sous Catégorie 14.C: LA SANTE EN SITUATION D\'URGENCE',
+      componentTitle: 'Catégorie 17: Programme de transfert monétaire (PTM)',
+      componentDescription: 'Une manière efficace et flexible – incluant toute forme d\'assistance basée sur les transferts monétaires et les coupons – de soutenir les individus affectés par les catastrophes, en maintenant leur dignité et leur pouvoir de décision, tout en stimulant les économies locales. De l\'argent devrait également être injecté dans d\'autres secteurs (dont les secours, les abris, les moyens de subsistance) et services (logistiques, finance, etc.).',
       namespaces: [
         {
-          nsTitle: '14.9 Les besoins d\'intervention multisectoriels sont identifiés pour différents scénarios d\'épidémies, et notamment pour des épidémies impliquant plusieurs pays.',
+          nsTitle: '17.1 La SN dispose d\'un plan de préparation pour les PTM, reposant sur un budget et des ressources appropriées, avec des activités et des résultats clairement définis, et basé sur une analyse et des discussions avec les principaux acteurs concernés.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -144,7 +183,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.10 La SN dispose de procédures, de mécanismes de collecte de données et de rétroaction, afin de garantir l\'implication de la communauté dans la prévention et les interventions.',
+          nsTitle: '17.2 Le plan de préparation du PTM doit traiter des opportunités et des obstacles rencontrés par la SN de manière à fournir un PTM d\'urgence de grande ampleur.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -154,7 +193,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.11 La SN a mis en place une procédure pour gérer et répondre aux rumeurs.',
+          nsTitle: '17.3 La SN entretient une base de données mise à jour du personnel et des bénévoles formés aux PTM au niveau du siège et des branches. Les différents secteurs et services support ont la capacité de mettre en œuvre un PTM dans le cycle d\'intervention.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -164,7 +203,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.12 La SN dispose de protocoles de sécurité destinés au personnel rémunéré et aux bénévoles, pour la prévention des infections et le contrôle des épidémies.',
+          nsTitle: '17.4 Une analyse de faisabilité financière pré-catastrophe sur les systèmes de marché, les prix et la saisonnalité, ainsi qu\'une cartographie des autres acteurs et structures de coordination existent.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -174,7 +213,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.13 La SN fait partie du système de gestion sûre et digne des cadavres et du système d\'identification lors des épidémies de maladies infectieuses.',
+          nsTitle: '17.5 La SN développe, met en place, utilise de manière régulière et révisé les PON concernant les PTM en attribuant des rôles et des responsabilités clairs, définis à chaque étape du processus d\'intervention et basé sur les enseignements tirés des interventions passées.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -184,7 +223,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.14 La SN dispose d\'équipements de protection individuelle, et forme régulièrement son personnel et ses bénévoles à la manipulation et à l\'utilisation de ces équipements, ainsi qu\'à leur mise au rebut.',
+          nsTitle: '17.6 Les mécanismes et les fournisseurs de services clés de PTM sont cartographiés, et des accords préalables sont formalisés avec des fournisseurs de services financiers avec un mécanisme d\'activation concerté.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -194,7 +233,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.15 La SN a clairement identifié son rôle dans les épidémies, et a établi un support technique pertinent pour garantir les meilleurs pratiques possibles.',
+          nsTitle: '17.7 La SN développe une boîte à outil de PTM mise à jour et approuvée, à même d\'adapter les outils de transferts monétaires en situation d\'urgence (CiE) aux contextes spécifiques de la SN.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -204,7 +243,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.16 La SN a clairement identifié en cas d\'isolation et de quarantaine, et a établi un support technique pertinent pour garantir les meilleurs pratiques possibles.',
+          nsTitle: '17.8 La SN développe une boîte à outil de PTM mise à jour et approuvée, à même d\'adapter les outils de transferts monétaires en situation d\'urgence (CiE) aux contextes spécifiques de la SN.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -214,7 +253,17 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: 'Résumé de la catégorie 14C',
+          nsTitle: '17.9 La SN coordonne les PTM à l\'intérieur du Mouvement et à l\'extérieur auprès d\'autres acteurs de PTM dans le pays (gouvernement, ONU, ONG, etc.).',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: 'Résumé de la catégorie 17',
           nsQuestion: 'Résumé de la catégorie:',
           nsAnswers: [
             'Pas évalué',
@@ -230,10 +279,11 @@ export const frenchForm = {
       ]
     },
     {
-      componentTitle: 'Sous Catégorie 14.D: PREMIERS SECOURS',
+      componentTitle: 'Catégorie 18: Évaluation des besoins d\'urgence',
+      componentDescription: 'Évaluer l\'ampleur et l\'impact des dommages causés par la catastrophe/crise et le degré de vulnérabilité des populations affectées. Première étape de toute intervention d\'urgence, l\'évaluation consiste à identifier les besoins nécessitant une intervention externe ainsi que les lacunes à combler. C\'est un élément vital du processus de programmation et de planification.',
       namespaces: [
         {
-          nsTitle: '14.17 Les premiers secours font partie de la stratégie d\'intervention de la SN et sont identifiés pour différents scénarios.',
+          nsTitle: '18.1 Des modèles sont disponibles pour la collecte de données primaires et secondaires ainsi que pour le signalement.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -243,7 +293,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.18 La SN a inclus une formation aux premiers secours dans le cadre de sa stratégie pour la RRC basée sur la communauté.',
+          nsTitle: '18.2 Une équipe d\'urgence multisectorielle est formée et prête à être déployée de manière rapide.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -253,7 +303,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.19 La SN a formé des équipes bénévoles de premiers secours pouvant intervenir rapidement et efficacement en cas de catastrophe.',
+          nsTitle: '18.3 La méthodologie d\'évaluation d\'urgence inclut des secteurs prioritaires (secours, santé, moyens de subsistance, abris, eau et assainissement, nourriture, protection, autres) et des infrastructures, dont l\'accessibilité et l\'accès.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -263,7 +313,47 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: 'Résumé de la catégorie 14D',
+          nsTitle: '18.4 Les procédures de collecte de données prennent en considération la diversité des sources, et les informations sont désagrégées selon des considérations de genre, de handicap, de protection et de violence.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '18.5 L\'évaluation analyse les risques secondaires, ainsi que l\'impact sur le capital social et économique local.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '18.6 L\'évaluation analyse la capacité des communautés à répondre et à fournir de l\'assistance à ses habitants.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '18.7 L\'évaluation analyse de manière stratégique les actions d\'autres acteurs. La SN participe à des évaluations inter-agences lorsque cela est possible, et partage ses résultats avec d\'autres acteurs.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: 'Résumé de la catégorie 18',
           nsQuestion: 'Résumé de la catégorie:',
           nsAnswers: [
             'Pas évalué',
@@ -279,10 +369,11 @@ export const frenchForm = {
       ]
     },
     {
-      componentTitle: 'Sous Catégorie 14.E. EAU ET ASSAINISSEMENT',
+      componentTitle: 'Catégorie 19: Sélection des bénéficiaires',
+      componentDescription: 'Identification et sélection de la population cible pour les interventions, selon une série de critères prédéfinis basés sur les besoins et la vulnérabilité. Cela implique de prendre en compte des vulnérabilités spécifiques telles que le handicap, l\'âge et le genre.',
       namespaces: [
         {
-          nsTitle: '14.20 Les conséquences humanitaires sur l\'eau et l\'assainissement font partie de la stratégie d\'intervention de la SN et sont identifiées dans différents scénarios.',
+          nsTitle: '19.1 La SN communique les critères de sélection à la population affectée en utilisant les canaux de communication privilégiés, et implique les leaders/représentants de la communauté.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -292,7 +383,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.21 Les équipes d\'intervention de la SN (niveau national et branche) disposent des qualifications, des compétences et des équipements adéquats en matière d\'eau et d\'assainissement (WASH).',
+          nsTitle: '19.2 La SN identifie des critères de sélection appropriés en utilisant les vulnérabilités existantes et en prenant en considération le genre, la diversité, l\'âge et les handicaps.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -302,7 +393,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.22 La SN dispose des équipements nécessaires pour fournir des services de qualité dans le domaine WASH, ou de PON détaillant comment obtenir ces équipements (au niveau national ou par le biais de la FICR).',
+          nsTitle: '19.3 La SN protège les données collectées auprès des populations affectées.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -312,7 +403,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.23 Un support technique WASH d\'urgence est disponible à la SN via les partenaires du Mouvement CRCR, ou est assuré par des partenaires/autorités WASH.',
+          nsTitle: '19.4 Les intervenants sont formés pour la collecte de données, y compris pour l\'utilisation de modèles standardisés.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -322,7 +413,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.24 La SN s\'engage et se coordonne avec d\'autres organisations et réseaux travaillant dans le domaine WASH dans le pays.',
+          nsTitle: '19.5 La SN recoupe les listes de bénéficiaires pour éviter les problèmes d\'inclusion/exclusion.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -332,7 +423,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: 'Résumé de la catégorie 14E',
+          nsTitle: 'Résumé de la catégorie 19',
           nsQuestion: 'Résumé de la catégorie:',
           nsAnswers: [
             'Pas évalué',
@@ -348,10 +439,11 @@ export const frenchForm = {
       ]
     },
     {
-      componentTitle: 'Sous Catégorie 14.F. SECURITE ALIMENTAIRE',
+      componentTitle: 'Catégorie 20: Centre d\'opérations d\'urgence (COU)',
+      componentDescription: 'Un centre de commande et de contrôle en charge des fonctions de gestion de la catastrophe/crise à un niveau stratégique dans une situation d\'urgence. Les fonctions habituelles consistent à collecter et analyser des données, faciliter le processus de décision protégeant la vie et les moyens de subsistance, et communiquer ces décisions à toutes les agences et individus concernés. Généralement situé au niveau central d\'une organisation.',
       namespaces: [
         {
-          nsTitle: '14.25 La SN surveille, analyse et documente les niveaux de sécurité alimentaire dans le pays, le statut de la sécurité alimentaire de la population/des plus vulnérables, les données agro-météorologiques, l\'offre et la demande sur les principaux marchés alimentaires et agricoles, et les réserves de nourriture.',
+          nsTitle: '20.1 Un point focal est nommé de manière formelle pour le COU.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -361,7 +453,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.26 La SN a identifié une équipe technique en charge de l\'assistance alimentaire et l\'a formée à identifier les besoins et à évaluer la situation pour émettre des recommandations, en termes d\'assistance, de modalité de transfert (monétaire, nourriture, coupons) de mécanismes de livraison et de la situation des marchés.',
+          nsTitle: '20.2 NS has up-to-date EOC SOPs which are consistent with other NS documents, including technical sectors and support services.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -371,7 +463,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.27 La SN s\'engage et se coordonne avec d\'autres organisations et réseaux (clusters) actifs dans la distribution d\'aide alimentaire (PAM, CICR…).',
+          nsTitle: '20.3 EOC is activated according to defined response levels and activation is communicated.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -381,7 +473,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.28 La SN a intégré la distribution alimentaire à ses stratégies d\'intervention (risques principaux, scénarios, capacités d\'intervention) et adhère aux politiques et aux normes de sécurité pour la distribution de nourriture et de lait.',
+          nsTitle: '20.4 Relevant staff and volunteers know their roles and responsibilities and are trained on SOPs.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -391,7 +483,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.29 La SN dispose d\'un plan d\'action spécifique pour se procurer et distribuer une aide alimentaire d\'envergure : formulaires d\'évaluation PON pour l\'identification et la sélection des populations affectées calcul des rations alimentaires (basé sur l\'accès et la disponibilité de la nourriture au niveau du foyer) différents types de systèmes de distribution de nourriture mise en place du lieu de distribution',
+          nsTitle: '20.5 Tous les secteurs techniques et les services d\'appui disposent de procédures intégrant les PON des COU.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -401,7 +493,107 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: 'Résumé de la catégorie 14F',
+          nsTitle: '20.6 Les bénévoles et le personnel connaissent leurs rôles et leurs responsabilités.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '20.7 Le COU fonctionne dans un espace dédié, et son fonctionnement n\'affecte pas les autres activités de la SN.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '20.8 L\'installation abritant le COU est au minimum autonome en électricité, en eau et en télécommunications.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '20.9 La SN dispose d\'un lieu de remplacement si le lieu dédié au COU n\'est pas accessible.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '20.10 L\'espace abriant le COU dispose de suffisamment d\'équipements de base pour la gestion des informations, la prise de décision, et le contrôle des opérations d\'urgence.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '20.11 Le COU dispose de moyens de communication et d\'appareils de remplacement (téléphone/radio ou autres moyens), et est géré par des personnes qualifiées.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '20.12 Le COU et ses équipements sont maintenus en état de marche.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '20.13 La SN dispose des coordonnées actualisées de tous ses intervenants.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '20.14 La SN dispose d\'un accès légal aux fréquences d\'urgence, qui permettent d\'entrer en contact avec d\'autres intervenants d\'urgence.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '20.15 Le personnel du COU gère et diffuse des informations régulièrement mises à jour (cartes).',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: 'Résumé de la catégorie 20',
           nsQuestion: 'Résumé de la catégorie:',
           nsAnswers: [
             'Pas évalué',
@@ -417,10 +609,11 @@ export const frenchForm = {
       ]
     },
     {
-      componentTitle: 'Sous Catégorie 14.G. SECURITE DES MOYENS DE SUBSISTANCE ET FILETS DE SECURITE',
+      componentTitle: 'Catégorie 21: Gestion de l\'information (GI)',
+      componentDescription: 'La capacité à gérer des informations, et notamment à les solliciter, recevoir, analyser et diffuser conformément aux procédures et aux exigences des partenaires (la FICR et les autorités publiques en particulier). Une trace écrite/numérique doit exister et indiquer quand et où la SN a fourni des informations clés pour le développement du Plan d\'Urgence. Cela inclut la GI entre les niveaux et entre les départements, des rapports situationnels, des plans, une visualisation des données, une plateforme DMIS/Go (FICR).',
       namespaces: [
         {
-          nsTitle: '14.30 Les moyens de subsistance sont inclus à la stratégie GC/PC, aux plans, aux systèmes et aux procédures de la SN.',
+          nsTitle: '21.1 Le personnel travaillant au siège et dans les branches connaissent les modèles de GI (réalisés par la SN ou la FICR), la méthodologie et les procédures.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -430,7 +623,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.31 La SN a identifié des politiques nationales en lien avec les filets de sécurité, l\'emploi et les plans de développement des moyens de subsistance/économiques/de la résilience.',
+          nsTitle: '21.2 Les points focaux en charge de la GI ont accès aux équipements nécessaires pour compiler, visualiser et partager les informations (imprimantes, cartouches, scanners et projecteurs avec batterie).',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -440,7 +633,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.32 La SN a identifié un point focal chargé des moyens de subsistance / Sécurité alimentaire ainsi que d\'autres membres du personnel (équipes d\'intervention d\'urgence) responsable de la préparation aux moyens de subsistance, formés aux évaluations, aux analyses de marché, etc.',
+          nsTitle: '21.3 La SN dispose d\'un système (ex. stockage de données) permettant au personnel de l\'intervention d\'urgence de partager des documents tels que des modèles, des rapports de situation ou tout autre type de document.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -450,7 +643,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.33 Dans les régions les plus exposées aux catastrophes, les principaux systèmes et zones produisant des moyens de subsistance sont documentés (agricoles et non-agricoles), les principaux systèmes de marché sont identifiés (aliments et moyens de subsistance) et une valeur de référence sur le marché est développée et mise à jour.',
+          nsTitle: '21.4 La SN dispose de données de référence disponibles et à jour sur les zones à risque élevé (démographique, socio-économique) ventilées en fonction de l\'âge, du genre et du handicap.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -460,7 +653,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.34 Dans des régions exposées aux catastrophes, les risques pesant sur la communauté et les moyens de production du foyer sont identifiés et un plan de protection de ces moyens de production est mis en place.',
+          nsTitle: '21.5 Les informations et les décisions spécifiques sont documentées et archivées.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -470,7 +663,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.35 Des outils d\'urgence sont adaptés/développés pour inclure les moyens de subsistance, et sont contextualisés.',
+          nsTitle: '21.6 La SN dispose d\'un rapport standardisé (RapSt) qui inclut des informations sur l\'impact, l\'intervention de la SN, l\'intervention d\'autres acteurs, les défis et les lacunes identifiées).',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -480,7 +673,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.36 La SN s\'engage et se coordonne avec d\'autres organisations et réseaux actifs dans les moyens de subsistance dans le pays.',
+          nsTitle: '21.7 Le rapport fournit suffisamment d\'analyses pour informer les preneurs de décision.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -490,7 +683,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.37 Le personnel de la SN est formé à la collecte de données (pour mesurer une donnée de référence et des indicateurs de progrès).',
+          nsTitle: '21.8 La SN dispose de mécanismes de partage de l\'information entre les secteurs et les services support, et entre les régions, les branches et le siège.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -500,7 +693,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: 'Résumé de la catégorie 14G',
+          nsTitle: 'Résumé de la catégorie 21',
           nsQuestion: 'Résumé de la catégorie:',
           nsAnswers: [
             'Pas évalué',
@@ -516,10 +709,11 @@ export const frenchForm = {
       ]
     },
     {
-      componentTitle: 'Sous Catégorie 14.H. RECHERCHE ET SAUVETAGE',
+      componentTitle: 'Catégorie 22: Test et apprentissage',
+      componentDescription: 'Les exercices et les simulations permettent à l\'organisation de tester, d\'identifier et de tirer des enseignements des résultats de ce type d\'exercices, et d\'intégrer ces enseignements aux futurs plans d\'intervention et de préparation.',
       namespaces: [
         {
-          nsTitle: '14.38 Les besoins en recherche et sauvetage sont identifiés pour différents scénarios et font partie de la stratégie d\'intervention de la SN.',
+          nsTitle: '22.1 La SN teste régulièrement son système d\'intervention, et notamment ses actions précoces, à travers des simulations et des exercices (exercices annuels et simulations tous les trois ans dans un contexte de faible risque).',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -529,7 +723,57 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: 'Résumé de la catégorie 14G',
+          nsTitle: '22.2 Les enseignements tirés des exercices, des simulations et des interventions, entraînent la révision des procédures.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '22.3 La SN inclut l\'accès, l\'acceptation et l\'application pratique des Principes Fondamentaux à ses simulations et ses exercices.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '22.4 Les branches localisées dans les régions à haut risque testent leur système d\'intervention, et notamment les actions précoces, à travers des exercices et des simulations.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '22.5 Les tests incluent la problématique d\'accès sécurisé (accès, perception, acceptation et sécurité).',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '22.6 Lorsque le contexte le nécessite, des simulations et des exercices transfrontaliers sont réalisés.',
+          nsQuestion: 'Statut du jalon',
+          nsAnswers: [
+            'Oui',
+            'Non'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: 'Résumé de la catégorie 22',
           nsQuestion: 'Résumé de la catégorie:',
           nsAnswers: [
             'Pas évalué',
@@ -545,10 +789,11 @@ export const frenchForm = {
       ]
     },
     {
-      componentTitle: 'Sous Catégorie 14.I. ABRIS, ARTICLES MENAGERS, CAMPS',
+      componentTitle: 'Catégrie 23: Activation du support régional et international',
+      componentDescription: 'Des procédures visant à solliciter et accepter un appui régional et international lors des opérations, incluant le déclenchement de mécanismes de coordination pour le financement et le déploiement de matériel et de ressources humaines.',
       namespaces: [
         {
-          nsTitle: '14.39 Des mécanismes de consultation des populations cibles portant sur les solutions d\'abris les plus appropriés sont disponibles.',
+          nsTitle: '23.1 Le personnel concerné connaît le support disponible auprès de la FICR/CICR (technique, financier, matériel et RH).',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -558,7 +803,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.40 Conformément au scénario établi avec le gouvernement, des abris sont pré-positionnés dans des zones à haut risque.',
+          nsTitle: '23.2 Des PON et des contacts sont disponibles pour coordonner l\'intervention avec les bureaux respectifs de la FICR.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -568,7 +813,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.41 La NS dispose d\'un kit non alimentaire de base approuvé dont les articles sont pré-positionnées, et de PON clairs sur les mécanismes d\'obtention des articles (à l\'échelle nationale ou par le biais de la FICR).',
+          nsTitle: '23.3 Les PON de la SN incluent des procédures permettant de solliciter et d\'intégrer un appui/des équipes régionales et internationales (RDRTs, FACT, ERU, DOU) au système d\'intervention, y compris avant une crise/catastrophe imminente.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -578,7 +823,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.42 Les fournisseurs d\'abris et d\'articles non alimentaires sont identifiés par la SN en amont de la catastrophe et des accords-cadres sont en place.',
+          nsTitle: '23.4 En cas d\'assistance nécessaire, la SN en informe la FICR dans un délai de 24 heures (DMIS)',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -588,7 +833,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.43 Les plans pour des abris d\'urgence standards et temporaires sont établis suite à une consultation de la population à risque, et sont basés sur les matériaux disponibles et les techniques habituelles.',
+          nsTitle: '23.5 La SN connaît les procédures PAU, les critères du DREF et le processus d\'Appel d\'Urgence, y compris pour une crise/catastrophe imminente.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -598,7 +843,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.44 Les bénévoles de la SN sont formés à l\'utilisation des matériaux de construction des abris pré-positionnés (ex. formation aux kits d\'abris).',
+          nsTitle: '23.6 La SN sollicite une assistance bilatérale conformément aux cadres de coordination établis.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -608,26 +853,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: 'Résumé de la catégorie 14L',
-          nsQuestion: 'Résumé de la catégorie:',
-          nsAnswers: [
-            'Pas évalué',
-            'N\'existe pas',
-            'Existe partiellement',
-            'Nécessite une amélioration',
-            'Existe, peut être renforcé',
-            'Performance élevée'
-          ],
-          feedbackTitle: 'Notes relatives à la catégorie:',
-          feedbackDescription: ''
-        }
-      ]
-    },
-    {
-      componentTitle: 'Sous Catégorie 14.J. GESTION DES DEPOUILLES POUR FACILITER LEUR IDENTIFICATION',
-      namespaces: [
-        {
-          nsTitle: '14.45 La SN fait partie du système de gestion et d\'identification des dépouilles du gouvernement.',
+          nsTitle: '23.7 Un point focal nommé par la SN agit en tant qu\'homologue de l\'intervenant régional/international.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -637,323 +863,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.46 Les besoins en gestion des dépouilles et en identification sont identifiés pour différents scénarios et font partie de la stratégie d\'intervention de la SN.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: 'Résumé de la catégorie 14G',
-          nsQuestion: 'Résumé de la catégorie:',
-          nsAnswers: [
-            'Pas évalué',
-            'N\'existe pas',
-            'Existe partiellement',
-            'Nécessite une amélioration',
-            'Existe, peut être renforcé',
-            'Performance élevée'
-          ],
-          feedbackTitle: 'Notes relatives à la catégorie:',
-          feedbackDescription: ''
-        }
-      ]
-    },
-    {
-      componentTitle: 'Sous Catégorie 14.K. RESTAURATION DES LIENS FAMILIAUX (RLF)',
-      namespaces: [
-        {
-          nsTitle: '14.47 Le personnel et les bénévoles sont aptes à fournir des services de RLF de qualité.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '14.48 Des procédures et des accords de RLF sont mis en place auprès du CICR.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: 'Résumé de la catégorie 14G',
-          nsQuestion: 'Résumé de la catégorie:',
-          nsAnswers: [
-            'Pas évalué',
-            'N\'existe pas',
-            'Existe partiellement',
-            'Nécessite une amélioration',
-            'Existe, peut être renforcé',
-            'Performance élevée'
-          ],
-          feedbackTitle: 'Notes relatives à la catégorie:',
-          feedbackDescription: ''
-        }
-      ]
-    },
-    {
-      componentTitle: 'Sous Catégorie 14.L. TRANSITION VERS LE RELEVEMENT',
-      namespaces: [
-        {
-          nsTitle: '14.49 Les membres clés du personnel connaissent les principes du relèvement.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '14.50 Le mandat de la SN dans le relèvement est formellement convenu avec le gouvernement.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '14.51 La SN a mis en place des systèmes habilitants permettant le relèvement précoce des moyens de subsistance, de manière à créer un pont entre la phase de secours et les activités de relèvement à long terme.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '14.52 La SN est bien coordonnée avec le Gouvernement et les acteurs humanitaires participant à l\'intervention sur les moyens de subsistance.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '14.53 La SN est formée aux évaluations participatives (dont la collecte de données (Suivi et évaluation)) pour identifier les priorités des communautés et des foyers (identifier les lacunes).',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '14.54 La SN a développé un plan d\'action de relèvement (précoce) des moyens de subsistance : contexte et justification, cadre logique et indicateurs, plan de surveillance et d\'évaluation, chronogramme des activités avec jalons et attribution des responsabilités, budget (niveau d\'activité).',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '14.55 La SN dispose d\'une équipe formée pour mener à bien des interventions de réhabilitation des moyens de production (petites infrastructures, déblaiement…).',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: 'Résumé de la catégorie 14L',
-          nsQuestion: 'Résumé de la catégorie:',
-          nsAnswers: [
-            'Pas évalué',
-            'N\'existe pas',
-            'Existe partiellement',
-            'Nécessite une amélioration',
-            'Existe, peut être renforcé',
-            'Performance élevée'
-          ],
-          feedbackTitle: 'Notes relatives à la catégorie:',
-          feedbackDescription: ''
-        }
-      ]
-    },
-    {
-      componentTitle: 'Sous Catégorie 14.M. PREPARATION AUX RISQUES NUCLEAIRES, RADIOACTIFS, BIOLOGIQUES ET CHIMIQUES (NRBC)',
-      namespaces: [
-        {
-          nsTitle: '14.56 La SN dispose d\'un rôle négocié et défini dans les plans d\'urgence nationaux, régionaux et locaux concernant les aléas NRBC.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '14.57 La SN dispose d\'un plan d\'action pour répondre à un incident NRBC, conformément à son rôle convenu.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '14.58 La NS dispose de PON comprenant des protocoles de sécurité pour les opérations liées aux aléas NRBC.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '14.59 La NS dispose d\'un point focal pour les aléas NRBC.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '14.60 La SN a, conformément à son mandat, formé du personnel et des bénévoles à agir de manière efficace dans l\'intervention et la préparation aux incidents NRBC.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '14.61 La SN dispose d\'équipements de protection NRBC individuels, et forme régulièrement son personnel et ses bénévoles à manipuler et à utiliser ces équipements.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '14.63 La SN, conformément à son mandat, dispose d\'ores et déjà de messages publics clés en cas d\'urgence NRBC, qui ont été validés par les autorités civiles compétentes.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '14.64 La SN s\'est impliquée auprès des Sociétés Nationales des pays voisins pour planifier et répondre aux effets transnationaux des aléas NRBC.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '14.65 La SN participe à des forums NRBC pertinents (nationaux/régionaux) pour la préparation et l\'intervention, et dispose de mécanismes de partage d\'informations en temps réel.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '14.66 La SN a identifié le besoin d\'assistance internationale en cas d\'événement NRBC et l\'a partagé avec les partenaires appropriés du Mouvement.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: 'Résumé de la catégorie 14M',
-          nsQuestion: 'Résumé de la catégorie:',
-          nsAnswers: [
-            'Pas évalué',
-            'N\'existe pas',
-            'Existe partiellement',
-            'Nécessite une amélioration',
-            'Existe, peut être renforcé',
-            'Performance élevée'
-          ],
-          feedbackTitle: 'Notes relatives à la catégorie:',
-          feedbackDescription: ''
-        }
-      ]
-    },
-    {
-      componentTitle: 'Sous Catégorie 14.N. SANTE ET PREMIERS SECOURS BASES SUR LA COMMUNAUTE (SPSBC)',
-      namespaces: [
-        {
-          nsTitle: '14.67 Les bénévoles de santé communautaires discutent et développent des plans d\'urgence avec leurs communautés, et conduisent des évaluations de santé et de sécurité de la communauté une fois par an.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '14.68 Chaque bénévole de chaque secteur est formé aux Premiers Secours et suit un cours de perfectionnement une fois par an.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '14.69 La formation SPSBC destinée aux bénévoles inclut une session sur le signalement adéquat d\'événements de santé suspects au personnel de la branche et/ou au Ministère de la Santé.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: '14.70 Les bénévoles SPSBC sont activement impliqués dans la planification, la mise en œuvre et l\'évaluation de simulations, pour garantir la sensibilisation et l\'implication de la communauté, et faire en sorte que les informations et les liaisons avec les structures sanitaires soient maintenues.',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
-          nsTitle: 'Résumé de la catégorie 14N',
+          nsTitle: 'Résumé de la catégorie 23',
           nsQuestion: 'Résumé de la catégorie:',
           nsAnswers: [
             'Pas évalué',
