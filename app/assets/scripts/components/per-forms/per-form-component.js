@@ -9,11 +9,11 @@ const requestFactory = new RequestFactory();
 
 const renderLanguageSelectDropdown = (props) => {
   return (<div>
-      <span style={{fontWeight: 'bold'}}>Form language:</span>&nbsp; 
-      <select onChange={props.chooseLanguage}>
-        <option value='english'>English</option>
-        <option value='spanish'>Spanish</option>
-        <option value='french'>French</option>
+    <span style={{fontWeight: 'bold'}}>Form language:</span>&nbsp;
+    <select onChange={props.chooseLanguage}>
+      <option value='english'>English</option>
+      <option value='spanish'>Spanish</option>
+      <option value='french'>French</option>
     </select><br /><br />
   </div>);
 };
