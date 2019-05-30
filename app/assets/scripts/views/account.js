@@ -562,7 +562,7 @@ class Account extends React.Component {
           currentCountryName = document.country.name;
           perDocuments.push((<React.Fragment key={'documentrow' + document.code + 'id' + document.id}>
             <div style={{backgroundColor: '#eaeaea', float: 'left', width: '100%', marginBottom: '1rem', padding: '0.25rem 1rem'}} key={'document' + document.id}>
-              {document.code.toUpperCase()} - {document.name} - {document.updated_at.substring(0, 10)}
+              {document.code.toUpperCase()} - {document.name} - {document.updated_at.substring(0, 10)} - {typeof document.user !== 'undefined' ? document.user.username : null}
               <div style={{float: 'right'}}>
                 <Link className='button button--small button--secondary-bounded' to={'/view-per-forms/' + document.code + '/' + document.id}>View</Link>
               </div>
@@ -581,7 +581,8 @@ class Account extends React.Component {
     let documents;
     if (this.props.perForm.getPerCountries.fetched) {
       this.props.perForm.getPerCountries.data.results.forEach(country => {
-        countryOptions.push(<option value={country.id} key={'persociety' + country.id}>{country.society_name}</option>);
+        const societyName = country.society_name !== null && country.society_name.trim() !== '' ? country.society_name : country.name + ' NS';
+        countryOptions.push(<option value={country.id} key={'persociety' + country.id}>{societyName}</option>);
       });
     }
     if (this.props.perForm.getPerDocuments.fetched) {
@@ -628,18 +629,32 @@ class Account extends React.Component {
               <div className='fold-container'>
                 <section className='fold' id='per-forms'>
                   <div className='inner'>
-                    <h2 className='fold__title'>PER Forms</h2>
+                    <h2 className='fold__title'>New PER Forms</h2>
                     Click on the following links to access the PER forms, where you can select individual National Societies.
                     <hr /><br />
+                    Choose National Society:&nbsp;
                     <select onChange={this.changeChosenCountry}>
                       {countryOptions}
                     </select><br/><br />
-                    <Link to={'/per-forms/policy-strategy/' + this.state.chosenCountry.id} className='link--primary'>Area 1: Policy and Standards</Link><br/><br/>
-                    <Link to={'/per-forms/analysis-and-planning/' + this.state.chosenCountry.id} className='link--primary'>Area 2: Analysis and Planning</Link><br/><br/>
-                    <Link to={'/per-forms/operational-capacity/' + this.state.chosenCountry.id} className='link--primary'>Area 3: Operation capacity</Link><br/><br/>
-                    <Link to={'/per-forms/operational-capacity-2/' + this.state.chosenCountry.id} className='link--primary'>Area 3: Operational capacity 2</Link><br/><br/>
-                    <Link to={'/per-forms/coordination/' + this.state.chosenCountry.id} className='link--primary'>Area 4: Coordination</Link><br/><br/>
-                    <Link to={'/per-forms/operations-support/' + this.state.chosenCountry.id} className='link--primary'>Area 5: Operations support</Link><br/>
+                    <div style={{float: 'left', width: '30%', backgroundColor: '#eaeaea', marginRight: '3%', marginBottom: '3%', textAlign: 'center'}}>
+                      <Link to={'/per-forms/policy-strategy/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 1: Policy and Standards</Link><br/>
+                    </div>
+                    <div style={{float: 'left', width: '30%', backgroundColor: '#eaeaea', marginRight: '3%', marginBottom: '3%', textAlign: 'center'}}>
+                      <Link to={'/per-forms/analysis-and-planning/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 2: Analysis and Planning</Link><br/>
+                    </div>
+                    <div style={{float: 'left', width: '30%', backgroundColor: '#eaeaea', marginRight: '3%', marginBottom: '3%', textAlign: 'center'}}>
+                      <Link to={'/per-forms/operational-capacity/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 3: Operation capacity</Link><br/>
+                    </div>
+                    <div style={{float: 'left', width: '30%', backgroundColor: '#eaeaea', marginRight: '3%', marginBottom: '3%', textAlign: 'center'}}>
+                      <Link to={'/per-forms/operational-capacity-2/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 3: Operational capacity 2</Link><br/>
+                    </div>
+                    <div style={{float: 'left', width: '30%', backgroundColor: '#eaeaea', marginRight: '3%', marginBottom: '3%', textAlign: 'center'}}>
+                      <Link to={'/per-forms/coordination/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 4: Coordination</Link><br/>
+                    </div>
+                    <div style={{float: 'left', width: '30%', backgroundColor: '#eaeaea', marginRight: '3%', marginBottom: '3%', textAlign: 'center'}}>
+                      <Link to={'/per-forms/operations-support/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 5: Operations support</Link><br/>
+                    </div>
+                    <div style={{clear: 'both'}}></div>
                     <hr /><br/><br />
 
                     <h2 className='fold__title'>Active PER Forms</h2>

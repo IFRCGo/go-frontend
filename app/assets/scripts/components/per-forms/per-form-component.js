@@ -8,11 +8,14 @@ import RequestFactory from './factory/request-factory';
 const requestFactory = new RequestFactory();
 
 const renderLanguageSelectDropdown = (props) => {
-  return (<select onChange={props.chooseLanguage}>
-    <option value='english'>English</option>
-    <option value='spanish'>Spanish</option>
-    <option value='french'>French</option>
-  </select>);
+  return (<div>
+      <span style={{fontWeight: 'bold'}}>Form language:</span>&nbsp; 
+      <select onChange={props.chooseLanguage}>
+        <option value='english'>English</option>
+        <option value='spanish'>Spanish</option>
+        <option value='french'>French</option>
+    </select><br /><br />
+  </div>);
 };
 
 if (environment !== 'production') {
