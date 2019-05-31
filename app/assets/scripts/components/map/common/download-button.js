@@ -65,9 +65,12 @@ class DownloadButton extends React.Component {
   render () {
     if ((/Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)) || /Trident/.test(navigator.userAgent) || /Edge/.test(navigator.userAgent)) {
       return (
-        <figcaption className='map-vis__legend map-vis__legend--download-btn legend'
+        <figcaption 
+          className='map-vis__legend map-vis__legend--download-btn legend'
           onClick={this.startDownload}>
-            <img src='/assets/graphics/content/download.svg' alt='IFRC GO logo'/></figcaption>
+
+          <img src='/assets/graphics/content/download.svg' alt='IFRC GO logo'/>
+        </figcaption>
       );
     }
     return null;
