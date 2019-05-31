@@ -263,6 +263,7 @@ class CountryMap extends React.Component {
         <div className={mapContainerClassName}>
           <MapComponent className='map-vis__holder'
             noExport={this.props.noExport}
+            downloadButton={true}
             configureMap={this.configureMap}
             layers={layers}
             geoJSON={geoJSON}>
@@ -271,8 +272,6 @@ class CountryMap extends React.Component {
               onFieldChange={this.onFieldChange}
               deployments={this.props.deployments}
               deploymentsKey={this.props.deploymentsKey}/>
-
-            <DownloadButton data={canvas} />
           </MapComponent>
         </div>
       </React.Fragment>

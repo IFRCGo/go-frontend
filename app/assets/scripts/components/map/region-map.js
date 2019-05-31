@@ -264,9 +264,9 @@ class RegionMap extends React.Component {
             noExport={this.props.noExport}
             configureMap={this.configureMap}
             layers={layers}
-            geoJSON={geoJSON}>
+            geoJSON={geoJSON}
+            downloadButton={true}>
 
-            <DownloadButton data={canvas} />
           </MapComponent>
         </div>
       </React.Fragment>

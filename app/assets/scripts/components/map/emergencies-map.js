@@ -144,6 +144,7 @@ class EmergenciesMap extends React.Component {
               <MapComponent className='map-vis__holder'
                 configureMap={this.configureMap}
                 noExport={true}
+                downloadButton={true}
                 layers={this.state.layers}
                 filters={this.state.filters}
                 geoJSON={data.geoJSON}>
