@@ -65,7 +65,7 @@ class DownloadButton extends React.Component {
   render () {
     if ((/Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)) || /Trident/.test(navigator.userAgent) || /Edge/.test(navigator.userAgent)) {
       return (
-        <figcaption 
+        <figcaption
           className='map-vis__legend map-vis__legend--download-btn legend'
           onClick={this.startDownload}>
 
