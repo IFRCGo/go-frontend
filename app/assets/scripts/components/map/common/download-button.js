@@ -14,10 +14,11 @@ class DownloadButton extends React.Component {
   }
 
   startDownload () {
-    if (/Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)) {
+    if ((/Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)) || /Trident/.test(navigator.userAgent) || /Edge/.test(navigator.userAgent)) {
       this.props.setZoomToDefault();
 
       const interval = setInterval(function () {
+        clearInterval(interval);
         const timestamp = new Date();
         const map = document.getElementsByClassName('map-vis')[0];
         const downloadButton = document.getElementsByClassName('map-vis__legend--download-btn')[0];
@@ -40,7 +41,7 @@ class DownloadButton extends React.Component {
 
         html2canvas(map, {useCORS: true}).then((renderedCanvas) => {
           startDownload(
-            renderedCanvas.toDataURL('image/png'),
+            renderedCanvas,
             'map-' + timestamp.getTime() + '.png');
 
           mapLogoHeader.style.visibility = 'hidden';
@@ -54,8 +55,6 @@ class DownloadButton extends React.Component {
             popover.style.height = 'auto';
             popover.style.maxHeight = '225px';
           }
-
-          clearInterval(interval);
         });
       }, 1000);
     } else {
@@ -64,10 +63,14 @@ class DownloadButton extends React.Component {
   }
 
   render () {
-    return (
-      <figcaption className='map-vis__legend map-vis__legend--download-btn legend'
-        onClick={this.startDownload} />
-    );
+    if ((/Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)) || /Trident/.test(navigator.userAgent) || /Edge/.test(navigator.userAgent)) {
+      return (
+        <figcaption className='map-vis__legend map-vis__legend--download-btn legend'
+          onClick={this.startDownload}>
+            <img src='/assets/graphics/content/download.svg' alt='IFRC GO logo'/></figcaption>
+      );
+    }
+    return null;
   }
 }
 
