@@ -1,10 +1,12 @@
 import React from 'react';
 import { showAlert, hideAllAlert } from './../components/system-alerts';
 
-export function startDownload (dataUri, filename) {
+export function startDownload (renderedCanvas, filename) {
   if (window.navigator.msSaveOrOpenBlob) {
-    window.navigator.msSaveBlob(new Blob([dataUri], {type: 'text/csv', charset: 'utf-8'}), filename);
+    let blob = renderedCanvas.msToBlob();
+    window.navigator.msSaveBlob(blob, filename);
   } else {
+    let dataUri = renderedCanvas.toDataURL('image/png');
     const link = document.createElement('a');
 
     link.setAttribute('href', dataUri);

@@ -294,8 +294,12 @@
       width: 30px;
       height: 30px;
       cursor: pointer;
-      content: url('/assets/graphics/content/download.svg');
       padding: 6px !important;
+    }
+
+    &--download-btn img {
+      width: 18px;
+      height: 18px;
     }
 
     &--top-left {
