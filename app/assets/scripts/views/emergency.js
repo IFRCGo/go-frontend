@@ -16,7 +16,8 @@ import {
   getEventSnippets,
   getSitrepsByEventId,
   getSitrepTypes,
-  getAppealDocsByAppealIds
+  getAppealDocsByAppealIds,
+  addSubscriptions
 } from '../actions';
 import {
   commaSeparatedNumber as n,
@@ -51,9 +52,11 @@ class Emergency extends React.Component {
       sitrepFilters: {
         date: 'all',
         type: 'all'
-      }
+      },
+      subscribed: false
     };
     this.handleSitrepFilter = this.handleSitrepFilter.bind(this);
+    this.addSubscription = this.addSubscription.bind(this);
   }
 
   componentWillReceiveProps (nextProps) {
@@ -332,6 +335,11 @@ class Emergency extends React.Component {
     );
   }
 
+  addSubscription () {
+    this.props._addSubscriptions(this.props.match.params.id);
+    this.setState({subscribed: true});
+  }
+
   renderContent () {
     const {
       fetched,
@@ -360,8 +368,15 @@ class Emergency extends React.Component {
             <div className='inpage__headline'>
               <div className='inpage__headline-content'>
                 <div className='inpage__headline-actions'>
+                  {
+                    this.state.subscribed
+                      ? <button className='button button--inactive' onClick={this.addSubscription}>Unsubscribe</button>
+                      : <button className='button button--primary-filled' onClick={this.addSubscription}>Subscribe</button>
+                  }
+                  <br /><br />
                   <a href={url.resolve(api, `admin/api/event/${data.id}/change/`)}
-                    className='button button--primary-bounded'>Edit Event</a></div>
+                    className='button button--primary-bounded'>Edit Event</a><br />
+                </div>
                 <h1 className='inpage__title'>{data.name}</h1>
                 {this.renderHeaderStats()}
               </div>
@@ -521,7 +536,8 @@ const dispatcher = (dispatch) => ({
   _getEventSnippets: (...args) => dispatch(getEventSnippets(...args)),
   _getSitrepsByEventId: (...args) => dispatch(getSitrepsByEventId(...args)),
   _getSitrepTypes: (...args) => dispatch(getSitrepTypes(...args)),
-  _getAppealDocsByAppealIds: (...args) => dispatch(getAppealDocsByAppealIds(...args))
+  _getAppealDocsByAppealIds: (...args) => dispatch(getAppealDocsByAppealIds(...args)),
+  _addSubscriptions: (...args) => dispatch(addSubscriptions(...args))
 });
 
 export default withRouter(connect(selector, dispatcher)(Emergency));
