@@ -114,6 +114,7 @@ class Header extends React.PureComponent {
                 <li><HeaderRegionButton id='regions-menu' currentPath={this.props.match} /></li>
                 <li><Link to='/emergencies' title='Visit emergencies page' className={this.props.match.path.includes('/emergencies') ? 'navbar-highlighted' : null}><span>Emergencies</span></Link></li>
                 <li><Link to='/deployments' title='Visit Deployments page' className={this.props.match.path.includes('/deployments') ? 'navbar-highlighted' : null}><span>Deployments</span></Link></li>
+                {this.props.preparednessModule ? (<li><Link to='/preparedness' title='Visit Preparedness page' className={this.props.match.path.includes('/preparedness') ? 'navbar-highlighted' : null}><span>Preparedness</span></Link></li>) : null}
               </ul>
             </nav>
             <div className='nav-global-search'>
@@ -140,7 +141,8 @@ class Header extends React.PureComponent {
 if (environment !== 'production') {
   Header.propTypes = {
     history: T.object,
-    match: T.object
+    match: T.object,
+    preparednessModule: T.bool
   };
 }
 
