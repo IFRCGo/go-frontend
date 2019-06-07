@@ -166,6 +166,18 @@ export function updateSubscriptions (id, payload) {
   return postJSON(`api/v2/update_subscriptions/`, UPDATE_SUBSCRIPTIONS, payload, withToken());
 }
 
+export const ADD_SUBSCRIPTIONS = 'ADD_SUBSCRIPTIONS';
+export function addSubscriptions (id) {
+  const payload = [{type: 'followedEvent', value: id}];
+  return postJSON(`api/v2/add_subscription/`, ADD_SUBSCRIPTIONS, payload, withToken());
+}
+
+export const DEL_SUBSCRIPTION = 'DEL_SUBSCRIPTION';
+export function delSubscription (id) {
+  const payload = [{value: id}];
+  return postJSON(`api/v2/del_subscription/`, DEL_SUBSCRIPTION, payload, withToken());
+}
+
 export const GET_EVENT = 'GET_EVENT';
 export function getEventById (id) {
   return fetchJSON(`api/v2/event/${id}/`, GET_EVENT, withToken(), { id });

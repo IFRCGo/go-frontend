@@ -25,6 +25,7 @@ import appealDocuments from './appeal-documents';
 import fdrs from './fdrs';
 import csv from './csv';
 import perForm from './per-form';
+import subscriptions from './subscriptions';
 
 export const reducers = {
   user,
@@ -50,7 +51,8 @@ export const reducers = {
   situationReports,
   fdrs,
   csv,
-  perForm
+  perForm,
+  subscriptions
 };
 
 export default combineReducers(reducers);
