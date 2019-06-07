@@ -493,6 +493,8 @@ if (environment !== 'production') {
     _getSitrepsByEventId: T.func,
     _getSitrepTypes: T.func,
     _getAppealDocsByAppealIds: T.func,
+    _addSubscriptions: T.func,
+    _delSubscriptions: T.func,
     snippets: T.object,
     match: T.object,
     location: T.object,

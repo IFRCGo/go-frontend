@@ -168,7 +168,7 @@ export function updateSubscriptions (id, payload) {
 
 export const ADD_SUBSCRIPTIONS = 'ADD_SUBSCRIPTIONS';
 export function addSubscriptions (id) {
-  const payload = [{type:'followedEvent',value: id}];
+  const payload = [{type: 'followedEvent', value: id}];
   return postJSON(`api/v2/add_subscription/`, ADD_SUBSCRIPTIONS, payload, withToken());
 }
 
