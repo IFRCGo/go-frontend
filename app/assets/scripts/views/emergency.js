@@ -17,7 +17,8 @@ import {
   getSitrepsByEventId,
   getSitrepTypes,
   getAppealDocsByAppealIds,
-  addSubscriptions
+  addSubscriptions,
+  delSubscription
 } from '../actions';
 import {
   commaSeparatedNumber as n,
@@ -57,6 +58,7 @@ class Emergency extends React.Component {
     };
     this.handleSitrepFilter = this.handleSitrepFilter.bind(this);
     this.addSubscription = this.addSubscription.bind(this);
+    this.delSubscription = this.delSubscription.bind(this);
   }
 
   componentWillReceiveProps (nextProps) {
@@ -340,6 +342,11 @@ class Emergency extends React.Component {
     this.setState({subscribed: true});
   }
 
+  delSubscription () {
+    this.props._delSubscription(this.props.match.params.id);
+    this.setState({subscribed: false});
+  }
+
   renderContent () {
     const {
       fetched,
@@ -370,7 +377,7 @@ class Emergency extends React.Component {
                 <div className='inpage__headline-actions'>
                   {
                     this.state.subscribed
-                      ? <button className='button button--inactive' onClick={this.addSubscription}>Unsubscribe</button>
+                      ? <button className='button button--primary-filled' onClick={this.delSubscription}>Unsubscribe</button>
                       : <button className='button button--primary-filled' onClick={this.addSubscription}>Subscribe</button>
                   }
                   <br /><br />
@@ -537,7 +544,8 @@ const dispatcher = (dispatch) => ({
   _getSitrepsByEventId: (...args) => dispatch(getSitrepsByEventId(...args)),
   _getSitrepTypes: (...args) => dispatch(getSitrepTypes(...args)),
   _getAppealDocsByAppealIds: (...args) => dispatch(getAppealDocsByAppealIds(...args)),
-  _addSubscriptions: (...args) => dispatch(addSubscriptions(...args))
+  _addSubscriptions: (...args) => dispatch(addSubscriptions(...args)),
+  _delSubscription: (...args) => dispatch(delSubscription(...args))
 });
 
 export default withRouter(connect(selector, dispatcher)(Emergency));
