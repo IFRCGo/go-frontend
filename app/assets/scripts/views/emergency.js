@@ -130,7 +130,7 @@ class Emergency extends React.Component {
   isSubscribed (nextProps) {
     if (nextProps.profile.fetched) {
       const filtered = nextProps.profile.data.subscription.filter(subscription => subscription.event === parseInt(this.props.match.params.id));
-      if (filtered.length > 0){
+      if (filtered.length > 0) {
         return true;
       }
     }
@@ -525,7 +525,9 @@ if (environment !== 'production') {
     surgeAlerts: T.object,
     eru: T.object,
     personnel: T.object,
-    isLogged: T.bool
+    isLogged: T.bool,
+    profile: T.object,
+    user: T.object
   };
 }
 
