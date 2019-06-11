@@ -18,7 +18,8 @@ import {
   getSitrepTypes,
   getAppealDocsByAppealIds,
   addSubscriptions,
-  delSubscription
+  delSubscription,
+  getUserProfile
 } from '../actions';
 import {
   commaSeparatedNumber as n,
@@ -59,6 +60,7 @@ class Emergency extends React.Component {
     this.handleSitrepFilter = this.handleSitrepFilter.bind(this);
     this.addSubscription = this.addSubscription.bind(this);
     this.delSubscription = this.delSubscription.bind(this);
+    this.isSubscribed = this.isSubscribed.bind(this);
   }
 
   componentWillReceiveProps (nextProps) {
@@ -75,11 +77,18 @@ class Emergency extends React.Component {
       hideGlobalLoading();
       this.getAppealDocuments(nextProps.event);
     }
+
+    if (nextProps.profile.fetched) {
+      this.setState({subscribed: this.isSubscribed(nextProps)});
+    }
   }
 
   componentDidMount () {
     this.getEvent(this.props.match.params.id);
     this.props._getSitrepTypes();
+    if (!this.props.profile.fetched && !this.props.profile.fetching && this.props.isLogged) {
+      this.props._getUserProfile(this.props.user.data.username);
+    }
   }
 
   getEvent (id) {
@@ -116,6 +125,16 @@ class Emergency extends React.Component {
     }
     this.props._getSitrepsByEventId(this.props.match.params.id, filters);
     this.setState({sitrepFilters: next});
+  }
+
+  isSubscribed (nextProps) {
+    if (nextProps.profile.fetched) {
+      const filtered = nextProps.profile.data.subscription.filter(subscription => subscription.event === parseInt(this.props.match.params.id));
+      if (filtered.length > 0) {
+        return true;
+      }
+    }
+    return false;
   }
 
   renderMustLogin () {
@@ -365,6 +384,9 @@ class Emergency extends React.Component {
     }
     const contacts = Array.isArray(data.contacts) && data.contacts.length ? data.contacts
       : Array.isArray(report.contacts) && report.contacts.length ? report.contacts : null;
+    const subscribeButton = this.state.subscribed
+      ? (<React.Fragment><button className='button button--primary-filled float-right' onClick={this.delSubscription}>Unsubscribe</button><br /><br /></React.Fragment>)
+      : (<React.Fragment><button className='button button--primary-filled float-right' onClick={this.addSubscription}>Subscribe</button><br /><br /></React.Fragment>);
     return (
       <section className='inpage'>
         <Helmet>
@@ -376,13 +398,10 @@ class Emergency extends React.Component {
               <div className='inpage__headline-content'>
                 <div className='inpage__headline-actions'>
                   {
-                    this.state.subscribed
-                      ? <button className='button button--primary-filled' onClick={this.delSubscription}>Unsubscribe</button>
-                      : <button className='button button--primary-filled' onClick={this.addSubscription}>Subscribe</button>
+                    this.props.isLogged ? subscribeButton : null
                   }
-                  <br /><br />
                   <a href={url.resolve(api, `admin/api/event/${data.id}/change/`)}
-                    className='button button--primary-bounded'>Edit Event</a><br />
+                    className='button button--primary-bounded float-right'>Edit Event</a><br />
                 </div>
                 <h1 className='inpage__title'>{data.name}</h1>
                 {this.renderHeaderStats()}
@@ -495,6 +514,7 @@ if (environment !== 'production') {
     _getAppealDocsByAppealIds: T.func,
     _addSubscriptions: T.func,
     _delSubscription: T.func,
+    _getUserProfile: T.func,
     snippets: T.object,
     match: T.object,
     location: T.object,
@@ -505,7 +525,9 @@ if (environment !== 'production') {
     surgeAlerts: T.object,
     eru: T.object,
     personnel: T.object,
-    isLogged: T.bool
+    isLogged: T.bool,
+    profile: T.object,
+    user: T.object
   };
 }
 
@@ -537,7 +559,9 @@ const selector = (state, ownProps) => ({
   surgeAlerts: state.surgeAlerts,
   eru: state.deployments.eru,
   personnel: state.deployments.personnel,
-  isLogged: !!state.user.data.token
+  isLogged: !!state.user.data.token,
+  user: state.user,
+  profile: state.profile
 });
 
 const dispatcher = (dispatch) => ({
@@ -547,7 +571,8 @@ const dispatcher = (dispatch) => ({
   _getSitrepTypes: (...args) => dispatch(getSitrepTypes(...args)),
   _getAppealDocsByAppealIds: (...args) => dispatch(getAppealDocsByAppealIds(...args)),
   _addSubscriptions: (...args) => dispatch(addSubscriptions(...args)),
-  _delSubscription: (...args) => dispatch(delSubscription(...args))
+  _delSubscription: (...args) => dispatch(delSubscription(...args)),
+  _getUserProfile: (...args) => dispatch(getUserProfile(...args))
 });
 
 export default withRouter(connect(selector, dispatcher)(Emergency));
