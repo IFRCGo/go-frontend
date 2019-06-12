@@ -57,7 +57,8 @@ if (environment !== 'production') {
 const selector = (state) => ({
   sendPerForm: state.perForm.sendPerForm,
   perDocument: state.perForm.getPerDocument,
-  per: state.per,
+  sendPerDraft: state.perForm.sendPerDraft,
+  perForm: state.perForm,
   user: state.user
 });
 
