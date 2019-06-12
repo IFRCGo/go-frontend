@@ -414,10 +414,11 @@ export function getPerDocument (id) {
 
 export const GET_PER_DRAFT_DOCUMENT = 'GET_PER_DRAFT_DOCUMENT';
 export function getPerDraftDocument (user, code) {
-  return fetchJSON(`/api/v2/perdata/?user=${user}&code=${code}`, GET_PER_DRAFT_DOCUMENT, withToken());
+  return fetchJSON(`/api/v2/perdraft/?user=${user}&code=${code}`, GET_PER_DRAFT_DOCUMENT, withToken());
 }
 
 export const SEND_PER_DRAFT_DOCUMENT = 'SEND_PER_DRAFT_DOCUMENT';
 export function sendPerDraft (data) {
+  console.log(data);
   return postJSON('sendperdraft', SEND_PER_DRAFT_DOCUMENT, data);
 }

@@ -35,14 +35,23 @@ export default class PerForm extends React.Component {
     this.changeEpiComponentState = this.changeEpiComponentState.bind(this);
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    console.log(nextProps);
+    console.log(prevState);
+  }
+
   componentDidMount () {
     if (this.props.view) {
       this.props._getPerDocument(this.props.match.params.id);
     }
     this.chooseFormStateSource();
+    const payloadSkeleton = `{'code':'a1', 'user_id': 2653, 'data':'haha'}`;
+    console.log(this.props);
+    this.props._sendPerDraft('{"code":"1","user_id":"2653","data":"haha"}');
   }
 
   componentDidUpdate () {
+    console.log(this.props);
     this.chooseFormStateSource();
   }
 
@@ -56,8 +65,10 @@ export default class PerForm extends React.Component {
     } else if (localStorage.getItem('autosave' + this.formCode) !== null && localStorage.getItem('finished' + this.formCode) === null) {
       this.loadState('autosave');
     } else if (localStorage.getItem('draft' + this.formCode) !== null) {
+      console.log('ittvok');
       localStorage.removeItem('finished' + this.formCode);
-      this.loadState('draft');
+      //this.loadState('draft');
+      this.props._getPerDraftDocument(this.props.user.username, this.formCode);
     }
   }
 
@@ -65,7 +76,12 @@ export default class PerForm extends React.Component {
     let request = this.requestFactory.newFormRequest(this.formCode, this.formName, this.state.languageCode);
     request = this.requestFactory.addAreaQuestionData(request);
     request = this.requestFactory.addComponentData(request);
-    localStorage.setItem(type + '' + this.formCode, JSON.stringify(request));
+
+    if (type === 'autosave') {
+      localStorage.setItem(type + '' + this.formCode, JSON.stringify(request));
+    } else if (type === 'draft') {
+      this.props._getPerDocument();
+    }
   }
 
   isEpiComponent () {
@@ -222,6 +238,8 @@ if (environment !== 'production') {
   PerForm.propTypes = {
     _sendPerForm: T.func,
     _getPerDocument: T.func,
+    _sendPerDraft: T.func,
+    _getPerDraftDocument: T.func,
     nationalSociety: T.number,
     view: T.bool,
     match: T.object,
