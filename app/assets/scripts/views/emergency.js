@@ -78,7 +78,7 @@ class Emergency extends React.Component {
       this.getAppealDocuments(nextProps.event);
     }
 
-    if (nextProps.profile.fetched) {
+    if (!this.props.profile.fetched && nextProps.profile.fetched) {
       this.setState({subscribed: this.isSubscribed(nextProps)});
     }
   }
