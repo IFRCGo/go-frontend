@@ -25,19 +25,10 @@ export default class PerForm extends React.Component {
       this.autosaveInterval = setInterval(this.autosave, 10000);
     }
     this.requestFactory = new RequestFactory();
-    if (this.isEpiComponent()) {
-      defaultLanguage.epiComponent = 'yes';
-    } else {
-      defaultLanguage.epiComponent = 'no';
-    }
+    defaultLanguage.epiComponent = 'no';
     defaultLanguage.redirect = false;
     this.state = defaultLanguage;
     this.changeEpiComponentState = this.changeEpiComponentState.bind(this);
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    console.log(nextProps);
-    console.log(prevState);
   }
 
   componentDidMount () {
@@ -50,7 +41,6 @@ export default class PerForm extends React.Component {
   }
 
   componentDidUpdate () {
-    console.log(this.props);
     this.chooseFormStateSource();
   }
 
@@ -63,11 +53,16 @@ export default class PerForm extends React.Component {
       this.loadFromProps();
     } else if (localStorage.getItem('autosave' + this.formCode) !== null && localStorage.getItem('finished' + this.formCode) === null) {
       this.loadState('autosave');
-    } else if (localStorage.getItem('draft' + this.formCode) !== null) {
-      console.log('ittvok');
+    } else if (!this.props.getPerDraftDocument.fetched
+      && !this.props.getPerDraftDocument.fetching) {
+        this.props._getPerDraftDocument(this.props.user.data.username, this.formCode);
+    } else if (this.props.getPerDraftDocument.fetched && this.props.getPerDraftDocument.data.count > 0) {
       localStorage.removeItem('finished' + this.formCode);
-      //this.loadState('draft');
-      this.props._getPerDraftDocument(this.props.user.username, this.formCode);
+      if (this.isEpiComponent() && this.state.epiComponent !== 'yes') {
+        this.setState({epiComponent: 'yes'});
+        return;
+      }
+      this.loadState('draft');
     }
   }
 
@@ -88,10 +83,16 @@ export default class PerForm extends React.Component {
 
     if (this.props.view && this.props.perDocument.fetched) {
       return this.isEpiComponentFromProps();
+
     } else if (!!localStorage.getItem('autosave' + this.formCode) && !localStorage.getItem('finished' + this.formCode)) {
       draft = JSON.parse(localStorage.getItem('autosave' + this.formCode));
+    
     } else if (localStorage.getItem('draft' + this.formCode) !== null && localStorage.getItem('finished' + this.formCode) === null) {
       draft = JSON.parse(localStorage.getItem('draft' + this.formCode));
+    
+    } else if (this.props.getPerDraftDocument.fetched && this.props.getPerDraftDocument.data.count > 0) {
+      draft = JSON.parse(this.props.getPerDraftDocument.data.results[0].data);
+
     }
 
     if (draft !== null && draft.data !== null) {
@@ -119,7 +120,12 @@ export default class PerForm extends React.Component {
   }
 
   loadState (type) {
-    let draft = JSON.parse(localStorage.getItem(type + this.formCode));
+    let draft = null;
+    if (type === 'autosave') {
+      draft = JSON.parse(localStorage.getItem(type + this.formCode));
+    } else if (type === 'draft') {
+      draft = JSON.parse(this.props.getPerDraftDocument.data.results[0].data);
+    }
     if (draft !== null && typeof draft.data !== 'undefined' && draft.data !== null) {
       draft.data.forEach(question => {
         if (!isNaN(question.op) && !!question.id) {

@@ -58,7 +58,7 @@ const selector = (state) => ({
   sendPerForm: state.perForm.sendPerForm,
   perDocument: state.perForm.getPerDocument,
   sendPerDraft: state.perForm.sendPerDraft,
-  perForm: state.perForm,
+  getPerDraftDocument: state.perForm.getPerDraftDocument,
   user: state.user
 });
 
