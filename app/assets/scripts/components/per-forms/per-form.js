@@ -20,6 +20,7 @@ export default class PerForm extends React.Component {
     this.isEpiComponentFromProps = this.isEpiComponentFromProps.bind(this);
     this.chooseFormStateSource = this.chooseFormStateSource.bind(this);
     this.autosave = this.autosave.bind(this);
+    this.saveDraft = this.saveDraft.bind(this);
     this.checkFormFilled = this.checkFormFilled.bind(this);
     if (!props.view) {
       this.autosaveInterval = setInterval(this.autosave, 10000);
@@ -52,6 +53,10 @@ export default class PerForm extends React.Component {
       }
       this.loadFromProps();
     } else if (localStorage.getItem('autosave' + this.formCode) !== null && localStorage.getItem('finished' + this.formCode) === null) {
+      if (this.isEpiComponent() && this.state.epiComponent !== 'yes') {
+        this.setState({epiComponent: 'yes'});
+        return
+      }
       this.loadState('autosave');
     } else if (!this.props.getPerDraftDocument.fetched
       && !this.props.getPerDraftDocument.fetching) {
@@ -87,12 +92,9 @@ export default class PerForm extends React.Component {
     } else if (!!localStorage.getItem('autosave' + this.formCode) && !localStorage.getItem('finished' + this.formCode)) {
       draft = JSON.parse(localStorage.getItem('autosave' + this.formCode));
     
-    } else if (localStorage.getItem('draft' + this.formCode) !== null && localStorage.getItem('finished' + this.formCode) === null) {
-      draft = JSON.parse(localStorage.getItem('draft' + this.formCode));
-    
     } else if (this.props.getPerDraftDocument.fetched && this.props.getPerDraftDocument.data.count > 0) {
-      draft = JSON.parse(this.props.getPerDraftDocument.data.results[0].data);
-
+      console.log(this.props.getPerDraftDocument);
+      draft = JSON.parse(this.props.getPerDraftDocument.data.results[0].data.replace(/'/g, '"'));
     }
 
     if (draft !== null && draft.data !== null) {
@@ -124,7 +126,7 @@ export default class PerForm extends React.Component {
     if (type === 'autosave') {
       draft = JSON.parse(localStorage.getItem(type + this.formCode));
     } else if (type === 'draft') {
-      draft = JSON.parse(this.props.getPerDraftDocument.data.results[0].data);
+      draft = JSON.parse(this.props.getPerDraftDocument.data.results[0].data.replace(/'/g, '"'));
     }
     if (draft !== null && typeof draft.data !== 'undefined' && draft.data !== null) {
       draft.data.forEach(question => {
@@ -164,9 +166,6 @@ export default class PerForm extends React.Component {
 
   sendForm () {
     if (this.checkFormFilled()) {
-      if (document.querySelectorAll('[name="draft"]:checked').length > 0) {
-        this.saveState('draft');
-      }
       let request = this.requestFactory.newFormRequest(this.formCode, this.formName, this.state.languageCode, this.nationalSociety);
       request = this.requestFactory.addAreaQuestionData(request);
       request = this.requestFactory.addComponentData(request);
@@ -176,6 +175,16 @@ export default class PerForm extends React.Component {
       localStorage.setItem('finished' + this.formCode, 1);
       this.setState({redirect: true});
     }
+  }
+
+  saveDraft () {
+    let request = this.requestFactory.newFormRequest(this.formCode, this.formName, this.state.languageCode, this.nationalSociety);
+    request = this.requestFactory.addAreaQuestionData(request);
+    request = this.requestFactory.addComponentData(request);
+    const finalRequest = {code: this.formCode, user_id: this.props.user.data.id + '', data: request};
+    this.autosave();
+    this.props._sendPerDraft(finalRequest);
+    showAlert('success', <p>PER form has been saved successfully!</p>, true, 2000);
   }
 
   componentWillUnmount () {
@@ -234,6 +243,7 @@ export default class PerForm extends React.Component {
     return <PerFormComponent chooseLanguage={this.chooseLanguage}
       changeEpiComponentState={this.changeEpiComponentState}
       sendForm={this.sendForm}
+      saveDraft={this.saveDraft}
       state={this.state}
       view={this.props.view} />;
   }
