@@ -423,3 +423,14 @@ export function getPerDocument (id) {
   const f = buildAPIQS(filters);
   return fetchJSON(`/api/v2/perdata/?${f}&form=${id}`, GET_PER_DOCUMENT, withToken());
 }
+
+export const GET_PER_DRAFT_DOCUMENT = 'GET_PER_DRAFT_DOCUMENT';
+export function getPerDraftDocument (id, code) {
+  return fetchJSON(`/api/v2/perdraft/?user=${id}&code=${code}`, GET_PER_DRAFT_DOCUMENT, withToken());
+}
+
+export const SEND_PER_DRAFT_DOCUMENT = 'SEND_PER_DRAFT_DOCUMENT';
+export function sendPerDraft (data) {
+  console.log(data);
+  return postJSON('sendperdraft', SEND_PER_DRAFT_DOCUMENT, data);
+}

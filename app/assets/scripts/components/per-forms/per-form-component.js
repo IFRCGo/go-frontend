@@ -280,12 +280,8 @@ export const PerFormComponent = (props) => {
           {props.view
             ? null
             : (<React.Fragment>
-              <label className={c(`form__option form__option--custom-checkbox`, {'form__option--inline': 'inline'})}>
-                <input type='checkbox' name='draft' value='yes' />
-                <span className='form__option__ui'></span>
-                <span className='form__option__text'>Save as Draft</span>
-              </label><br /><br />
-              <button className='button button--medium button--secondary-filled' onClick={props.sendForm}>Submit</button>
+              <button className='button button--medium button--primary-filled' onClick={props.sendForm}>Submit form</button>&nbsp;
+              <button className='button button--medium button--secondary-filled' onClick={props.saveDraft}>Save as draft</button>
             </React.Fragment>)}
         </div>
       </div>
@@ -300,6 +296,7 @@ if (environment !== 'production') {
     changeEpiComponentState: T.func,
     sendForm: T.func,
     view: T.bool,
+    saveDraft: T.func,
     _getProfile: T.func,
     _updateSubscriptions: T.func,
     _getFieldReportsByUser: T.func,

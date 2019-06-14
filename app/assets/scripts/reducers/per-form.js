@@ -70,9 +70,41 @@ function getPerDocument (state = initialState, action) {
   return state;
 }
 
+function getPerDraftDocument (state = initialState, action) {
+  switch (action.type) {
+    case 'GET_PER_DRAFT_DOCUMENT_INFLIGHT':
+      state = stateInflight(state, action);
+      break;
+    case 'GET_PER_DRAFT_DOCUMENT_FAILED':
+      state = stateError(state, action);
+      break;
+    case 'GET_PER_DRAFT_DOCUMENT_SUCCESS':
+      state = stateSuccess(state, action);
+      break;
+  }
+  return state;
+}
+
+function sendPerDraft (state = initialState, action) {
+  switch (action.type) {
+    case 'SEND_PER_DRAFT_DOCUMENT_INFLIGHT':
+      state = stateInflight(state, action);
+      break;
+    case 'SEND_PER_DRAFT_DOCUMENT_FAILED':
+      state = stateError(state, action);
+      break;
+    case 'SEND_PER_DRAFT_DOCUMENT_SUCCESS':
+      state = stateSuccess(state, action);
+      break;
+  }
+  return state;
+}
+
 export default combineReducers({
   sendPerForm,
   getPerCountries,
   getPerDocuments,
-  getPerDocument
+  getPerDocument,
+  getPerDraftDocument,
+  sendPerDraft
 });

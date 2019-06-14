@@ -564,6 +564,7 @@ class Account extends React.Component {
             <div style={{backgroundColor: '#eaeaea', float: 'left', width: '100%', marginBottom: '1rem', padding: '0.25rem 1rem'}} key={'document' + document.id}>
               {document.code.toUpperCase()} - {document.name} - {document.updated_at.substring(0, 10)} - {typeof document.user !== 'undefined' ? document.user.username : null}
               <div style={{float: 'right'}}>
+                <Link className='button button--small button--secondary-bounded' to={'/edit-per-forms/' + document.code + '/' + document.id}>Edit</Link>&nbsp;
                 <Link className='button button--small button--secondary-bounded' to={'/view-per-forms/' + document.code + '/' + document.id}>View</Link>
               </div>
             </div>
