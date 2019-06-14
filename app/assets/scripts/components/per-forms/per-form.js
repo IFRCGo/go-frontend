@@ -250,6 +250,7 @@ if (environment !== 'production') {
     view: T.bool,
     match: T.object,
     perDocument: T.object,
-    sendPerFormResponse: T.object
+    sendPerFormResponse: T.object,
+    mode: T.object
   };
 }
