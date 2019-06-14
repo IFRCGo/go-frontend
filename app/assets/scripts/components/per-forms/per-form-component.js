@@ -296,6 +296,7 @@ if (environment !== 'production') {
     changeEpiComponentState: T.func,
     sendForm: T.func,
     view: T.bool,
+    saveDraft: T.func,
     _getProfile: T.func,
     _updateSubscriptions: T.func,
     _getFieldReportsByUser: T.func,

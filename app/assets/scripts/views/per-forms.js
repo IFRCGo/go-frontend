@@ -17,7 +17,7 @@ class PerForms extends React.Component {
     let form = null;
     if (this.props.match.params.formName === 'policy-strategy') {
       form = (<A1PolicyStrategyForm mode='new'
-        autosaveOn={true} 
+        autosaveOn={true}
         nationalSociety={this.props.match.params.id} />);
     } else if (this.props.match.params.formName === 'analysis-and-planning') {
       form = (<A2AnalysisAndPlanningForm mode='new'
