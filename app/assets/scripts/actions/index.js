@@ -413,8 +413,8 @@ export function getPerDocument (id) {
 }
 
 export const GET_PER_DRAFT_DOCUMENT = 'GET_PER_DRAFT_DOCUMENT';
-export function getPerDraftDocument (username, code) {
-  return fetchJSON(`/api/v2/perdraft/?username=${username}&code=${code}`, GET_PER_DRAFT_DOCUMENT, withToken());
+export function getPerDraftDocument (id, code) {
+  return fetchJSON(`/api/v2/perdraft/?user=${id}&code=${code}`, GET_PER_DRAFT_DOCUMENT, withToken());
 }
 
 export const SEND_PER_DRAFT_DOCUMENT = 'SEND_PER_DRAFT_DOCUMENT';
