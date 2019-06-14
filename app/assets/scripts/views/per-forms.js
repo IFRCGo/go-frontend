@@ -16,17 +16,29 @@ class PerForms extends React.Component {
   render () {
     let form = null;
     if (this.props.match.params.formName === 'policy-strategy') {
-      form = (<A1PolicyStrategyForm view={false} nationalSociety={this.props.match.params.id} />);
+      form = (<A1PolicyStrategyForm mode='new'
+        autosaveOn={true} 
+        nationalSociety={this.props.match.params.id} />);
     } else if (this.props.match.params.formName === 'analysis-and-planning') {
-      form = (<A2AnalysisAndPlanningForm view={false} nationalSociety={this.props.match.params.id} />);
+      form = (<A2AnalysisAndPlanningForm mode='new'
+        autosaveOn={true}
+        nationalSociety={this.props.match.params.id} />);
     } else if (this.props.match.params.formName === 'operational-capacity') {
-      form = (<A3OperationalCapacity view={false} nationalSociety={this.props.match.params.id} />);
+      form = (<A3OperationalCapacity mode='new'
+        autosaveOn={true}
+        nationalSociety={this.props.match.params.id} />);
     } else if (this.props.match.params.formName === 'operational-capacity-2') {
-      form = (<A3OperationalCapacity2 view={false} nationalSociety={this.props.match.params.id} />);
+      form = (<A3OperationalCapacity2 mode='new'
+        autosaveOn={true}
+        nationalSociety={this.props.match.params.id} />);
     } else if (this.props.match.params.formName === 'coordination') {
-      form = (<A4Coordination view={false} nationalSociety={this.props.match.params.id} />);
+      form = (<A4Coordination mode='new'
+        autosaveOn={true}
+        nationalSociety={this.props.match.params.id} />);
     } else if (this.props.match.params.formName === 'operations-support') {
-      form = (<A5OperationsSupport view={false} nationalSociety={this.props.match.params.id} />);
+      form = (<A5OperationsSupport mode='new'
+        autosaveOn={true}
+        nationalSociety={this.props.match.params.id} />);
     }
 
     return (

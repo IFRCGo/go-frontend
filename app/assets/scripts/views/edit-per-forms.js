@@ -12,37 +12,37 @@ import { environment } from '../config';
 import { PropTypes as T } from 'prop-types';
 import App from './app';
 
-class ViewPerForms extends React.Component {
+class EditPerForms extends React.Component {
   render () {
     let form = null;
     if (this.props.match.params.formName === 'a1') {
-      form = (<A1PolicyStrategyForm mode='view'
-        autosaveOn={false}
+      form = (<A1PolicyStrategyForm mode='edit'
+        autosaveOn={true}
         match={this.props.match}
         formId={this.props.match.params.id} />);
     } else if (this.props.match.params.formName === 'a2') {
-      form = (<A2AnalysisAndPlanningForm mode='view'
-        autosaveOn={false}
+      form = (<A2AnalysisAndPlanningForm mode='edit'
+        autosaveOn={true}
         match={this.props.match}
         formId={this.props.match.params.id} />);
     } else if (this.props.match.params.formName === 'a3') {
-      form = (<A3OperationalCapacity mode='view'
-        autosaveOn={false}
+      form = (<A3OperationalCapacity mode='edit'
+        autosaveOn={true}
         match={this.props.match}
         formId={this.props.match.params.id} />);
     } else if (this.props.match.params.formName === 'a3-2') {
-      form = (<A3OperationalCapacity2 mode='view'
-        autosaveOn={false}
+      form = (<A3OperationalCapacity2 mode='edit'
+        autosaveOn={true}
         match={this.props.match}
         formId={this.props.match.params.id} />);
     } else if (this.props.match.params.formName === 'a4') {
-      form = (<A4Coordination mode='view'
-        autosaveOn={false}
+      form = (<A4Coordination mode='edit'
+        autosaveOn={true}
         match={this.props.match}
         formId={this.props.match.params.id} />);
     } else if (this.props.match.params.formName === 'a5') {
-      form = (<A5OperationsSupport mode='view'
-        autosaveOn={false}
+      form = (<A5OperationsSupport mode='edit'
+        autosaveOn={true}
         match={this.props.match}
         formId={this.props.match.params.id} />);
     }
@@ -65,7 +65,7 @@ class ViewPerForms extends React.Component {
 }
 
 if (environment !== 'production') {
-  ViewPerForms.propTypes = {
+  EditPerForms.propTypes = {
     user: T.object,
     profile: T.object,
     fieldReport: T.object,
@@ -78,4 +78,4 @@ if (environment !== 'production') {
   };
 }
 
-export default ViewPerForms;
+export default EditPerForms;
