@@ -22,7 +22,7 @@ export default class PerForm extends React.Component {
     this.autosave = this.autosave.bind(this);
     this.saveDraft = this.saveDraft.bind(this);
     this.checkFormFilled = this.checkFormFilled.bind(this);
-    if (!props.view) {
+    if (props.autosaveOn) {
       this.autosaveInterval = setInterval(this.autosave, 10000);
     }
     this.requestFactory = new RequestFactory();
@@ -33,12 +33,10 @@ export default class PerForm extends React.Component {
   }
 
   componentDidMount () {
-    if (this.props.view) {
+    if (this.props.mode === 'view' || this.props.mode === 'edit') {
       this.props._getPerDocument(this.props.match.params.id);
     }
     this.chooseFormStateSource();
-    //Sending PER DRAFT example
-    //this.props._sendPerDraft({code:"a1",user_id:"2653",data:'{"code":"a1","name":"Policy strategy form","language":1,"started_at":"2019-04-11 11:42:22.278796+00","submitted_at":"2019-04-11 09:42:52.278796+00","user_id":2316,"ns":" - ","data":[{"id":"a1","op":1,"nt":"no ti"},{"id":"c0epi","op":2,"nt":"no ti"},{"id":"c0q0","op":1,"nt":"asdfghj"},{"id":"c0q1","op":0,"nt":"asdfghj"},{"id":"c0q2","op":0,"nt":""},{"id":"c0q3","op":0,"nt":""},{"id":"c0q4","op":3,"nt":""},{"id":"c1epi","op":2,"nt":"no ti"},{"id":"c1q0","op":0,"nt":""},{"id":"c1q1","op":0,"nt":""},{"id":"c1q2","op":0,"nt":""},{"id":"c1q3","op":6,"nt":""},{"id":"c2epi","op":2,"nt":"no ti"},{"id":"c2q0","op":0,"nt":""},{"id":"c2q1","op":0,"nt":""},{"id":"c2q2","op":0,"nt":""},{"id":"c2q3","op":0,"nt":""},{"id":"c2q4","op":6,"nt":""},{"id":"c3epi","op":2,"nt":"no ti"},{"id":"c3q0","op":0,"nt":""},{"id":"c3q1","op":0,"nt":""},{"id":"c3q2","op":0,"nt":""},{"id":"c3q3","op":0,"nt":""},{"id":"c3q4","op":0,"nt":""},{"id":"c3q5","op":3,"nt":""},{"id":"c4epi","op":2,"nt":"no ti"},{"id":"c4q0","op":0,"nt":""},{"id":"c4q1","op":0,"nt":""},{"id":"c4q2","op":0,"nt":""},{"id":"c4q3","op":0,"nt":""},{"id":"c4q4","op":0,"nt":""},{"id":"c4q5","op":1,"nt":""},{"id":"c4q6","op":0,"nt":""},{"id":"c4q7","op":0,"nt":""},{"id":"c4q8","op":0,"nt":""},{"id":"c4q9","op":4,"nt":""}]}'});
   }
 
   componentDidUpdate () {
@@ -46,28 +44,37 @@ export default class PerForm extends React.Component {
   }
 
   chooseFormStateSource () {
-    if (this.props.view && this.props.perDocument.fetched) {
-      if (this.state.epiComponent !== 'yes') {
-        this.setState({epiComponent: 'yes'});
-        return;
-      }
-      this.loadFromProps();
-    } else if (localStorage.getItem('autosave' + this.formCode) !== null && localStorage.getItem('finished' + this.formCode) === null) {
-      if (this.isEpiComponent() && this.state.epiComponent !== 'yes') {
-        this.setState({epiComponent: 'yes'});
-        return
-      }
-      this.loadState('autosave');
-    } else if (!this.props.getPerDraftDocument.fetched
+    if ((this.props.mode === 'view' || this.props.mode === 'edit')
+      && this.props.perDocument.fetched && localStorage.getItem('autosave' + this.props.mode + this.props.match.params.id + this.formCode) === null) {
+        if (this.state.epiComponent !== 'yes') {
+          this.setState({epiComponent: 'yes'});
+          return;
+        }
+        this.loadFromProps();
+
+    } else if (this.props.autosaveOn
+      && localStorage.getItem('autosave' + this.props.mode + this.formCode) !== null
+      && localStorage.getItem('finished' + this.formCode) === null) {
+        if (this.isEpiComponent() && this.state.epiComponent !== 'yes') {
+          this.setState({epiComponent: 'yes'});
+          return
+        }
+        this.loadState('autosave');
+
+    } else if (this.props.mode === 'new'
+      && !this.props.getPerDraftDocument.fetched
       && !this.props.getPerDraftDocument.fetching) {
-        this.props._getPerDraftDocument(this.props.user.data.username, this.formCode);
-    } else if (this.props.getPerDraftDocument.fetched && this.props.getPerDraftDocument.data.count > 0) {
-      localStorage.removeItem('finished' + this.formCode);
-      if (this.isEpiComponent() && this.state.epiComponent !== 'yes') {
-        this.setState({epiComponent: 'yes'});
-        return;
-      }
-      this.loadState('draft');
+        this.props._getPerDraftDocument(this.props.user.data.id, this.formCode);
+
+    } else if (this.props.mode === 'new'
+      && this.props.getPerDraftDocument.fetched
+      && this.props.getPerDraftDocument.data.count > 0) {
+        localStorage.removeItem('finished' + this.formCode);
+        if (this.isEpiComponent() && this.state.epiComponent !== 'yes') {
+          this.setState({epiComponent: 'yes'});
+          return;
+        }
+        this.loadState('draft');
     }
   }
 
@@ -76,10 +83,8 @@ export default class PerForm extends React.Component {
     request = this.requestFactory.addAreaQuestionData(request);
     request = this.requestFactory.addComponentData(request);
 
-    if (type === 'autosave') {
-      localStorage.setItem(type + '' + this.formCode, JSON.stringify(request));
-    } else if (type === 'draft') {
-      this.props._getPerDocument();
+    if (type === 'autosave' && this.props.autosaveOn) {
+      localStorage.setItem(type + this.props.mode + this.formCode, JSON.stringify(request));
     }
   }
 
@@ -89,11 +94,10 @@ export default class PerForm extends React.Component {
     if (this.props.view && this.props.perDocument.fetched) {
       return this.isEpiComponentFromProps();
 
-    } else if (!!localStorage.getItem('autosave' + this.formCode) && !localStorage.getItem('finished' + this.formCode)) {
-      draft = JSON.parse(localStorage.getItem('autosave' + this.formCode));
+    } else if (!!localStorage.getItem('autosave' + this.props.mode + this.formCode) && !localStorage.getItem('finished' + this.formCode)) {
+      draft = JSON.parse(localStorage.getItem('autosave' + this.props.mode + this.formCode));
     
     } else if (this.props.getPerDraftDocument.fetched && this.props.getPerDraftDocument.data.count > 0) {
-      console.log(this.props.getPerDraftDocument);
       draft = JSON.parse(this.props.getPerDraftDocument.data.results[0].data.replace(/'/g, '"'));
     }
 
@@ -123,8 +127,8 @@ export default class PerForm extends React.Component {
 
   loadState (type) {
     let draft = null;
-    if (type === 'autosave') {
-      draft = JSON.parse(localStorage.getItem(type + this.formCode));
+    if (type === 'autosave' && this.props.autosaveOn) {
+      draft = JSON.parse(localStorage.getItem(type + this.props.mode + this.formCode));
     } else if (type === 'draft') {
       draft = JSON.parse(this.props.getPerDraftDocument.data.results[0].data.replace(/'/g, '"'));
     }
@@ -188,7 +192,7 @@ export default class PerForm extends React.Component {
   }
 
   componentWillUnmount () {
-    if (!this.props.view) {
+    if (this.props.view.autosaveOn) {
       clearInterval(this.autosaveInterval);
     }
   }
