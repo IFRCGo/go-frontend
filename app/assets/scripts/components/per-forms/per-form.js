@@ -88,7 +88,7 @@ export default class PerForm extends React.Component {
 
   isEpiComponent () {
     let draft = null;
-    if (this.props.view && this.props.perDocument.fetched) {
+    if (this.props.perDocument.fetched) {
       return this.isEpiComponentFromProps();
     } else if (!!localStorage.getItem('autosave' + this.props.mode + this.formCode) && !localStorage.getItem('finished' + this.formCode)) {
       draft = JSON.parse(localStorage.getItem('autosave' + this.props.mode + this.formCode));
@@ -246,6 +246,10 @@ export default class PerForm extends React.Component {
   }
 
   render () {
+    let view = false;
+    if (this.props.mode === 'view') {
+      view = true;
+    }
     if (this.state.redirect) {
       return <Redirect to='/account#per-forms' />;
     }
@@ -255,7 +259,7 @@ export default class PerForm extends React.Component {
       editForm={this.editForm}
       saveDraft={this.saveDraft}
       state={this.state}
-      view={this.props.view}
+      view={view}
       mode={this.props.mode} />;
   }
 }
