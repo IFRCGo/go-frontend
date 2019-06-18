@@ -270,6 +270,7 @@ if (environment !== 'production') {
     _getPerDocument: T.func,
     _sendPerDraft: T.func,
     _getPerDraftDocument: T.func,
+    _editPerDocument: T.func,
     getPerDraftDocument: T.object,
     user: T.object,
     autosaveOn: T.func,
