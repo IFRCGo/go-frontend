@@ -100,11 +100,27 @@ function sendPerDraft (state = initialState, action) {
   return state;
 }
 
+function editPerDocument (state = initialState, action) {
+  switch (action.type) {
+    case 'EDIT_PER_DOCUMENT_INFLIGHT':
+      state = stateInflight(state, action);
+      break;
+    case 'EDIT_PER_DOCUMENT_FAILED':
+      state = stateError(state, action);
+      break;
+    case 'EDIT_PER_DOCUMENT_SUCCESS':
+      state = stateSuccess(state, action);
+      break;
+  }
+  return state;
+}
+
 export default combineReducers({
   sendPerForm,
   getPerCountries,
   getPerDocuments,
   getPerDocument,
   getPerDraftDocument,
-  sendPerDraft
+  sendPerDraft,
+  editPerDocument
 });
