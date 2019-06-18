@@ -158,7 +158,7 @@ class EruTable extends SFPComponent {
             rows={rows}
             pageCount={data.count / this.state.table.limit}
             page={this.state.table.page - 1}
-            onPageChange={this.handlePageChange.bind(this, 'eru')}
+            onPageChange={this.handlePageChange.bind(this, 'table')}
           />
           {this.props.viewAll ? (
             <div className='fold__footer'>
