@@ -431,6 +431,10 @@ export function getPerDraftDocument (id, code) {
 
 export const SEND_PER_DRAFT_DOCUMENT = 'SEND_PER_DRAFT_DOCUMENT';
 export function sendPerDraft (data) {
-  console.log(data);
   return postJSON('sendperdraft', SEND_PER_DRAFT_DOCUMENT, data);
+}
+
+export const EDIT_PER_DOCUMENT = 'EDIT_PER_DOCUMENT';
+export function editPerDocument (data) {
+  return postJSON('editperform', EDIT_PER_DOCUMENT, data);
 }

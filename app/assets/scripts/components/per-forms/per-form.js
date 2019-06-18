@@ -21,6 +21,7 @@ export default class PerForm extends React.Component {
     this.chooseFormStateSource = this.chooseFormStateSource.bind(this);
     this.autosave = this.autosave.bind(this);
     this.saveDraft = this.saveDraft.bind(this);
+    this.editForm = this.editForm.bind(this);
     this.checkFormFilled = this.checkFormFilled.bind(this);
     if (props.autosaveOn) {
       this.autosaveInterval = setInterval(this.autosave, 10000);
@@ -28,6 +29,7 @@ export default class PerForm extends React.Component {
     this.requestFactory = new RequestFactory();
     defaultLanguage.epiComponent = 'no';
     defaultLanguage.redirect = false;
+    this.loadingFormPropsRunning = false;
     this.state = defaultLanguage;
     this.changeEpiComponentState = this.changeEpiComponentState.bind(this);
   }
@@ -35,20 +37,26 @@ export default class PerForm extends React.Component {
   componentDidMount () {
     if (this.props.mode === 'view' || this.props.mode === 'edit') {
       this.props._getPerDocument(this.props.match.params.id);
+      this.loadingFormPropsRunning = true;
     }
     this.chooseFormStateSource();
   }
 
-  componentDidUpdate () {
-    this.chooseFormStateSource();
+  componentDidUpdate (prevProps) {
+    if ((this.props.perDocument.fetched && !prevProps.perDocument.fetched) || this.loadingFormPropsRunning) {
+      this.chooseFormStateSource(false);
+    } else {
+      this.chooseFormStateSource(true);
+    }
   }
 
-  chooseFormStateSource () {
-    if ((this.props.mode === 'view' || this.props.mode === 'edit') && this.props.perDocument.fetched && localStorage.getItem('autosave' + this.props.mode + this.props.match.params.id + this.formCode) === null) {
+  chooseFormStateSource (refresh = false) {
+    if ((this.props.mode === 'view' || this.props.mode === 'edit') && this.props.perDocument.fetched && (!refresh || this.loadingFormPropsRunning)) {
       if (this.state.epiComponent !== 'yes') {
         this.setState({epiComponent: 'yes'});
         return;
       }
+      this.loadingFormPropsRunning = false;
       this.loadFromProps();
     } else if (this.props.autosaveOn && localStorage.getItem('autosave' + this.props.mode + this.formCode) !== null && localStorage.getItem('finished' + this.formCode) === null) {
       if (this.isEpiComponent() && this.state.epiComponent !== 'yes') {
@@ -80,7 +88,7 @@ export default class PerForm extends React.Component {
 
   isEpiComponent () {
     let draft = null;
-    if (this.props.view && this.props.perDocument.fetched) {
+    if (this.props.perDocument.fetched) {
       return this.isEpiComponentFromProps();
     } else if (!!localStorage.getItem('autosave' + this.props.mode + this.formCode) && !localStorage.getItem('finished' + this.formCode)) {
       draft = JSON.parse(localStorage.getItem('autosave' + this.props.mode + this.formCode));
@@ -165,6 +173,19 @@ export default class PerForm extends React.Component {
     }
   }
 
+  editForm () {
+    if (this.checkFormFilled()) {
+      let request = this.requestFactory.newFormEditRequest(this.props.match.params.id);
+      request = this.requestFactory.addAreaQuestionData(request);
+      request = this.requestFactory.addComponentData(request);
+      this.props._editPerDocument(request);
+      showAlert('success', <p>PER form has been saved successfully!</p>, true, 2000);
+      clearInterval(this.autosaveInterval);
+      localStorage.setItem('finished' + this.formCode, 1);
+      this.setState({redirect: true});
+    }
+  }
+
   saveDraft () {
     let request = this.requestFactory.newFormRequest(this.formCode, this.formName, this.state.languageCode, this.nationalSociety);
     request = this.requestFactory.addAreaQuestionData(request);
@@ -176,7 +197,7 @@ export default class PerForm extends React.Component {
   }
 
   componentWillUnmount () {
-    if (this.props.view.autosaveOn) {
+    if (this.props.autosaveOn) {
       clearInterval(this.autosaveInterval);
     }
   }
@@ -225,15 +246,21 @@ export default class PerForm extends React.Component {
   }
 
   render () {
+    let view = false;
+    if (this.props.mode === 'view') {
+      view = true;
+    }
     if (this.state.redirect) {
-      return <Redirect to='/account' />;
+      return <Redirect to='/account#per-forms' />;
     }
     return <PerFormComponent chooseLanguage={this.chooseLanguage}
       changeEpiComponentState={this.changeEpiComponentState}
       sendForm={this.sendForm}
+      editForm={this.editForm}
       saveDraft={this.saveDraft}
       state={this.state}
-      view={this.props.view} />;
+      view={view}
+      mode={this.props.mode} />;
   }
 }
 
@@ -243,6 +270,7 @@ if (environment !== 'production') {
     _getPerDocument: T.func,
     _sendPerDraft: T.func,
     _getPerDraftDocument: T.func,
+    _editPerDocument: T.func,
     getPerDraftDocument: T.object,
     user: T.object,
     autosaveOn: T.func,

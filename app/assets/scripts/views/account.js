@@ -535,7 +535,7 @@ class Account extends React.Component {
     const groupedDocuments = {};
     if (this.props.perForm.getPerDocuments.fetched) {
       this.props.perForm.getPerDocuments.data.results.forEach(document => {
-        if (document.country !== null) {
+        if (document.country !== null && document.country.region !== null) {
           if (!groupedDocuments.hasOwnProperty(document.country.region)) {
             groupedDocuments[document.country.region] = {[document.country.id]: []};
             groupedDocuments[document.country.region][document.country.id].push(document);

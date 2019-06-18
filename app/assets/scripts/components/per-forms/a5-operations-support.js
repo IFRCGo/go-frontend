@@ -6,7 +6,8 @@ import {
   sendPerForm,
   getPerDocument,
   getPerDraftDocument,
-  sendPerDraft
+  sendPerDraft,
+  editPerDocument
 } from '../../actions';
 import { connect } from 'react-redux';
 import { environment } from '../../config';
@@ -67,7 +68,8 @@ const dispatcher = (dispatch) => ({
   _sendPerForm: (payload) => dispatch(sendPerForm(payload)),
   _getPerDocument: (...args) => dispatch(getPerDocument(...args)),
   _getPerDraftDocument: (...args) => dispatch(getPerDraftDocument(...args)),
-  _sendPerDraft: (payload) => dispatch(sendPerDraft(payload))
+  _sendPerDraft: (payload) => dispatch(sendPerDraft(payload)),
+  _editPerDocument: (payload) => dispatch(editPerDocument(payload))
 });
 
 export default connect(selector, dispatcher)(A5OperationsSupport);
