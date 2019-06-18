@@ -267,6 +267,17 @@ if (environment !== 'production') {
 const newFormElementKey = () => 'form' + Math.floor(Math.random() * 99999) + Date.now();
 
 export const PerFormComponent = (props) => {
+  let button = null;
+  if (props.mode === 'new') {
+    button = (<React.Fragment>
+        <button className='button button--medium button--primary-filled' onClick={props.sendForm}>Submit form</button>&nbsp;
+        <button className='button button--medium button--secondary-filled' onClick={props.saveDraft}>Save as draft</button>
+      </React.Fragment>);
+  } else if (props.mode === 'edit') {
+    button = (<React.Fragment>
+        <button className='button button--medium button--primary-filled' onClick={props.editForm}>Submit edited form</button>
+      </React.Fragment>);
+  }
   return (
     <React.Fragment>
       <Link to='/account' className='button button--medium button--primary-filled' style={{float: 'right', marginBottom: '1rem'}}>Exit form</Link>
@@ -277,12 +288,7 @@ export const PerFormComponent = (props) => {
           {renderEpidemicsRadioButton(props)}
           {renderComponents(props)}
 
-          {props.view
-            ? null
-            : (<React.Fragment>
-              <button className='button button--medium button--primary-filled' onClick={props.sendForm}>Submit form</button>&nbsp;
-              <button className='button button--medium button--secondary-filled' onClick={props.saveDraft}>Save as draft</button>
-            </React.Fragment>)}
+          {button}
         </div>
       </div>
     </React.Fragment>
@@ -295,6 +301,7 @@ if (environment !== 'production') {
     state: T.object,
     changeEpiComponentState: T.func,
     sendForm: T.func,
+    editForm: T.func,
     view: T.bool,
     saveDraft: T.func,
     _getProfile: T.func,
