@@ -14,6 +14,13 @@ export default class RequestFactory {
     };
   }
 
+  newFormEditRequest (formId) {
+    return {
+      id: formId,
+      data: []
+    };
+  }
+
   addAreaQuestionData (request) {
     const formHeadQuestions = document.getElementsByName('a1');
 
