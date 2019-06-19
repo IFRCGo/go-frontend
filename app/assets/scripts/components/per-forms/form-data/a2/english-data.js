@@ -23,7 +23,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '6.2 NS has the capacity to collect and analyse primary and secondary data (including sectorial specific information) on risk factors, emerging political, social and economic trends that could influence humanitarian action.',
+          nsTitle: '6.2 NS has the capacity to collect and analyse primary and secondary data (including sectorial specific information) on emerging political, social and economic trends that could influence humanitarian action.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -123,7 +123,7 @@ export const englishForm = {
       componentDescription: 'A set of practical operation plans that closely mirror the generic disaster or crisis response plan but are tailored to a specific hazard type (e.g. earthquake, dengue epidemic, floods, cyclone) and a specific scenario (i.e. number of people affected, their locations and other important factors).',
       namespaces: [
         {
-          nsTitle: '7.1 Analysis of scenarios is multi-sectoral (e.g. health, livelihood, protection) and includes identification of drivers (root causes of risks) and assumptions to inform potential impact.',
+          nsTitle: '7.1 Analysis of scenarios is multi-sectorial (e.g. health, livelihood, protection) and includes identification of drivers (root causes of risks) and assumptions to inform potential impact.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -333,7 +333,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '9.4 Financial gaps for preparedness and early actions are identified and the NS actively seeks resources and support to address these gaps.',
+          nsTitle: '9.4 Financial gaps for preparedness and early actions are identified and resource mobilisation strategy is in place.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -523,7 +523,7 @@ export const englishForm = {
       componentDescription: 'A documented set of procedures for the disaster/crisis response and recovery process. Including use of local capacities, transition to recovery, type of activities and serivices provided during response and recovery activities and exit strategies, procedures for DREF & EA, and templates for planning, budgeting and accessing funds.',
       namespaces: [
         {
-          nsTitle: '12.1 NS has an up-to-date, approved multi-sectoral response plan for rapid deployment and efficient use of human and material resources.',
+          nsTitle: '12.1 NS has an up-to-date, approved multi-sectorial response plan for rapid deployment and efficient use of human and material resources.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -543,7 +543,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '12.3 The The plan is developed by the NS with the participation of community, staff, volunteers, governance, management and technical inputs from IFRC where relevant.',
+          nsTitle: '12.3 The plan is developed by the NS with the participation of community, staff, volunteers, governance, management and technical inputs from IFRC where relevant.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -603,7 +603,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '12.9 The plan considers how to support self-recovery of affected population with their active participation beyond providing relief (i.e. – considers early recovery needs).',
+          nsTitle: '12.9 NS can manage the transition from relief phase and use of short-term resources and volunteers, to medium-term recovery interventions.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',

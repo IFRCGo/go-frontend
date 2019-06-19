@@ -273,7 +273,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '5.3 A NS CEA plan is developed and implemented, standard templates are available, and procedures are included in SOPs..',
+          nsTitle: '5.3 A NS CEA plan is developed and implemented, standard templates are available, and procedures are included in SOPs.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',

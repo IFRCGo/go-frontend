@@ -153,7 +153,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '31.6 NS allocates resources to conducts evaluations and/or reviews of the operation to identify and integrate key lessons and recommendations.',
+          nsTitle: '31.6 NS allocates resources to conduct evaluations and/or reviews of the operation to identify and integrate key lessons and recommendations.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -1122,7 +1122,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '36.10 NS has capacity to generate evidence-based results/messages to advocate to targeted audiences, i.e. decision makers and communities.',
+          nsTitle: '36.10 NS has capacity to generate evidence-based results/messages to advocate targeted audiences, i.e. decision makers and communities.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -1133,6 +1133,146 @@ export const englishForm = {
         },
         {
           nsTitle: 'Component 36 performance',
+          nsQuestion: 'Status:',
+          nsAnswers: [
+            'Not Reviewed',
+            'Does not exist',
+            'Partially exists',
+            'Need improvements',
+            'Exist, could be strengthened',
+            'High performance'
+          ],
+          feedbackTitle: 'Notes related to the component:',
+          feedbackDescription: ''
+        }
+      ]
+    },
+    {
+      componentTitle: 'Component 37. Resource Mobilisation',
+      componentDescription: 'Incorporates a system of public messaging to enable the NS to share timely, accurate information before, during, and after a disaster or crisis.',
+      namespaces: [
+        {
+          nsTitle: '37.1 Key staff are familiar with resource mobilisation options for humanitarian operations.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '37.2 NS mobilises resources for its preparedness activities.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '37.3 NS has a resource mobilisation strategy based on the response strategy, available funds and the scale of need.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '37.4 NS has agreements and mechanisms for collaboration and fundraising with the private sector.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '37.5 Branches in highly vulnerable areas have a resource mobilisation plan.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '37.6 NS has established a national emergency fund with criteria for proper use.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '37.7 A resource mobilisation focal point is involved in emergency operations coordination.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '37.8 NS resource mobilisation has established pre-disaster agreements with partners and donors.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '37.9 NS has agreed procedures across departments (technical teams and support services) to communicate changes and report on outcomes of resources provided.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '37.10 NS has a platform (phone number, bank account, online, etc.) to accept national and/or international donations within 48 hours of an emergency.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '37.11 NS has a pre-defined list of acceptable in-kind donations and complies in an emergency to mitigate image or reputational risks.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '37.12 NS has a donation tracking system, and works with the IFRC on joint operational shared services platforms (Mob table, etc.).NS has a donation tracking system, and works with the IFRC on joint operational shared services platforms (Mob table, etc.).',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: 'Component 37 performance',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',

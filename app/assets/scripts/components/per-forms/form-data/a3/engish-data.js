@@ -453,7 +453,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '20.2 NS has up-to-date EOC SOPs which are consistent with other NS documents and are followed in a response.',
+          nsTitle: '20.2 NS has up-to-date EOC SOPs which are consistent with other NS documents, including sectors and support services.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
