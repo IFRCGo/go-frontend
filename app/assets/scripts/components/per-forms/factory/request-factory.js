@@ -1,17 +1,32 @@
 export default class RequestFactory {
   newFormRequest (formCode, formName, languageCode, nationalSociety) {
     const user = JSON.parse(localStorage.getItem('user'));
+    const dateNowString = this.buildDateNow();
     return {
       code: formCode,
       name: formName,
       language: languageCode,
-      started_at: '2019-04-11 11:42:22.278796+00',
-      submitted_at: '2019-04-11 09:42:52.278796+00',
+      started_at: dateNowString,
+      submitted_at: dateNowString,
       user_id: user.id,
       country_id: nationalSociety,
       ns: ' - ',
       data: []
     };
+  }
+
+  buildDateNow () {
+    const present = new Date();
+    const year = present.getFullYear();
+    let tempMonth = present.getMonth();
+    const month = ++tempMonth > 9 ? tempMonth : '0' + tempMonth;
+    const day = present.getDate();
+    const hours = present.getHours();
+    const minutes = present.getMinutes();
+    const seconds = present.getSeconds();
+    const milliseconds = present.getMilliseconds();
+
+    return year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds + '.' + milliseconds + '+00';
   }
 
   newFormEditRequest (formId) {
@@ -29,7 +44,7 @@ export default class RequestFactory {
         request.data.push({
           id: 'a1',
           op: parseInt(document.querySelector('[name=\'a1\']:checked').value),
-          nt: 'no ti'});
+          nt: ''});
       }
     }
 
@@ -51,7 +66,7 @@ export default class RequestFactory {
           request.data.push({
             id: 'c' + componentIndex + 'epi',
             op: parseInt(answer),
-            nt: 'no ti'});
+            nt: ''});
         }
       }
 
