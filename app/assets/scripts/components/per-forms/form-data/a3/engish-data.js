@@ -733,7 +733,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '22.3 Branches in high-risk areas test their response system, including early action, through drills and simulations.',
+          nsTitle: '22.3 NS includes access, acceptance, security and the practical application of the Fundamental Principles in their simulations and drills.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -743,7 +743,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '22.4 NS includes access, acceptance, security and the practical application of the Fundamental Principles in their simulations and drills.',
+          nsTitle: '22.4 Branches in high-risk areas test their response system, including early action, through drills and simulations.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -753,7 +753,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '22.5 NS conducts cross-border simulations in relevant contexts..',
+          nsTitle: '22.5 Testing includes issues of safe access (access, perception, acceptance and security).',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -763,7 +763,17 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '22.6 Simulations and drills are conducted with national authorities and other organisations.',
+          nsTitle: '22.6 NS conducts cross-border simulations in relevant contexts.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
+          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
+        },
+        {
+          nsTitle: '22.7 Simulations and drills are conducted with national authorities and other organisations.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
