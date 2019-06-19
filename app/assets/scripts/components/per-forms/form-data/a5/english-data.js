@@ -514,20 +514,6 @@ export const englishForm = {
           ],
           feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: 'Component 34A performance',
-          nsQuestion: 'Status:',
-          nsAnswers: [
-            'Not Reviewed',
-            'Does not exist',
-            'Partially exists',
-            'Need improvements',
-            'Exist, could be strengthened',
-            'High performance'
-          ],
-          feedbackTitle: 'Notes related to the component:',
-          feedbackDescription: ''
         }
       ]
     },
@@ -583,20 +569,6 @@ export const englishForm = {
           ],
           feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: 'Component 34B performance',
-          nsQuestion: 'Status:',
-          nsAnswers: [
-            'Not Reviewed',
-            'Does not exist',
-            'Partially exists',
-            'Need improvements',
-            'Exist, could be strengthened',
-            'High performance'
-          ],
-          feedbackTitle: 'Notes related to the component:',
-          feedbackDescription: ''
         }
       ]
     },
@@ -652,20 +624,6 @@ export const englishForm = {
           ],
           feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: 'Component 34C performance',
-          nsQuestion: 'Status:',
-          nsAnswers: [
-            'Not Reviewed',
-            'Does not exist',
-            'Partially exists',
-            'Need improvements',
-            'Exist, could be strengthened',
-            'High performance'
-          ],
-          feedbackTitle: 'Notes related to the component:',
-          feedbackDescription: ''
         }
       ]
     },
@@ -781,20 +739,6 @@ export const englishForm = {
           ],
           feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: 'Component 34D performance',
-          nsQuestion: 'Status:',
-          nsAnswers: [
-            'Not Reviewed',
-            'Does not exist',
-            'Partially exists',
-            'Need improvements',
-            'Exist, could be strengthened',
-            'High performance'
-          ],
-          feedbackTitle: 'Notes related to the component:',
-          feedbackDescription: ''
         }
       ]
     },
@@ -842,7 +786,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: 'Component 34E performance',
+          nsTitle: 'Component 34 performance',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
