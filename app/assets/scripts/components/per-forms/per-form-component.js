@@ -280,7 +280,7 @@ export const PerFormComponent = (props) => {
   }
   return (
     <React.Fragment>
-      <Link to='/account' className='button button--medium button--primary-filled' style={{float: 'right', marginBottom: '1rem'}}>Exit form</Link>
+      <Link to='/account#per-forms' className='button button--medium button--primary-filled' style={{float: 'right', marginBottom: '1rem'}}>Exit form</Link>
       <div className='fold'>
         <div className='inner'>
           {renderLanguageSelectDropdown(props)}
