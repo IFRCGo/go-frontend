@@ -233,7 +233,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '27.4 NS considers potential impact on security of affected population when coordinating with military forces, and does not use arm protection or armed military transport.',
+          nsTitle: '27.4 NS considers potential impact on security of affected population when coordinating with military forces, and does not use armed protection or armed military transport.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
