@@ -579,7 +579,7 @@ class Account extends React.Component {
     return regions;
   }
 
-  renderPerList () {
+  renderPerFormsComponent () {
     const countryOptions = [];
     if (this.props.perForm.getPerCountries.fetched) {
       this.props.perForm.getPerCountries.data.results.forEach(country => {
@@ -679,7 +679,8 @@ class Account extends React.Component {
                   <div className='inner'>
                     <ul>
                       <li><a href='#account-information' title='Go to Operations section'>Account Information</a></li>
-                      <li><a href='#per-forms' title='Go to Appeals section'>PER forms</a></li>
+                      <li><a href='#notifications' title='Go to notifications section'>Notifications</a></li>
+                      <li><a href='#per-forms' title='Go to per section'>PER forms</a></li>
                     </ul>
                   </div>
                 </div>
@@ -697,7 +698,7 @@ class Account extends React.Component {
               </div>
               {this.renderFieldReports()}
               {this.props.profile.fetched && !this.props.profile.error ? this.renderSubscriptionForm() : null}
-              {this.renderPerList()}
+              {this.renderPerFormsComponent()}
             </div>
           </div>
         </section>
