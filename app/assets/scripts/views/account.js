@@ -20,7 +20,8 @@ import {
   updateProfile,
   getPerCountries,
   getPerDraftDocument,
-  getPerDocuments
+  getPerDocuments,
+  getEventById
 } from '../actions';
 import { getRegionById } from '../utils/region-constants';
 import { get } from '../utils/utils';
@@ -165,6 +166,13 @@ class Account extends React.Component {
   }
 
   componentWillReceiveProps (nextProps) {
+    if (!this.props.profile.fetched && nextProps.profile.fetched) {
+      nextProps.profile.data.subscription.forEach((subscription) => {
+        if (!!subscription.event) {
+          this.props._getEventById(subscription.event);
+        }
+      });
+    }
     if (this.props.profile.fetching && !nextProps.profile.fetching) {
       hideGlobalLoading();
       if (nextProps.profile.error) {
@@ -658,6 +666,44 @@ class Account extends React.Component {
     </React.Fragment>);
   }
 
+  renderAccountInformation () {
+    return (<div className='prose prose--responsive'>
+      <div className='fold-container'>
+        <section className='fold' id='account-information'>
+          {this.state.profileEditMode ? this.renderProfileForm() : this.renderProfileAttributes()}
+        </section>
+      </div>
+    </div>);
+  }
+
+  renderOperationsFollowing () {
+    const events = [];
+    if (Object.keys(this.props.event.event).length > 0) {
+      Object.keys(this.props.event.event).forEach((eventId) => {
+        if (this.props.event.event[eventId].fetched) {
+          events.push(
+            <div key={'operations-component' + eventId} style={{width: '50%', border: '1px solid #000', float: 'left'}}>
+              <div style={{width: '80%', float: 'left'}}>
+                <Link to={'/emergencies/' + eventId}>{this.props.event.event[eventId].data.name}</Link>
+              </div>
+              <div style={{width: '20%', float: 'right'}}>
+                <Link to={''}>Unfollow</Link>
+              </div>
+            </div>
+          );
+        }
+      });
+    }
+    return (<div className='fold-container'>
+      <section className='fold' id='notifications'>
+        <div className='inner'>
+          <h2 className='fold__title'>Operations following</h2>
+          {events}
+        </div>
+      </section>
+    </div>);
+  }
+
   render () {
     return (
       <App className='page--account'>
@@ -689,13 +735,8 @@ class Account extends React.Component {
           </StickyContainer>
           <div className='inpage__body'>
             <div className='inner'>
-              <div className='prose prose--responsive'>
-                <div className='fold-container'>
-                  <section className='fold' id='account-information'>
-                    {this.state.profileEditMode ? this.renderProfileForm() : this.renderProfileAttributes()}
-                  </section>
-                </div>
-              </div>
+              {this.renderOperationsFollowing()}
+              {this.renderAccountInformation()}
               {this.renderFieldReports()}
               {this.props.profile.fetched && !this.props.profile.error ? this.renderSubscriptionForm() : null}
               {this.renderPerFormsComponent()}
@@ -730,7 +771,8 @@ const selector = (state, ownProps) => ({
   user: state.user.data,
   profile: state.profile,
   fieldReport: state.fieldReport,
-  perForm: state.perForm
+  perForm: state.perForm,
+  event: state.event
 });
 
 const dispatcher = {
@@ -740,7 +782,7 @@ const dispatcher = {
   _updateProfile: updateProfile,
   _getPerCountries: getPerCountries,
   _getPerDocuments: getPerDocuments,
-  _getPerDraftDocument: getPerDraftDocument
+  _getEventById: getEventById
 };
 
 export default connect(selector, dispatcher)(Account);
