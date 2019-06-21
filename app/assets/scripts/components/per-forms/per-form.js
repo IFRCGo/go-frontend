@@ -35,6 +35,7 @@ export default class PerForm extends React.Component {
   }
 
   componentDidMount () {
+    window.scrollTo(0, 0);
     if (this.props.mode === 'view' || this.props.mode === 'edit') {
       this.props._getPerDocument(this.props.match.params.id);
       this.loadingFormPropsRunning = true;
@@ -213,15 +214,17 @@ export default class PerForm extends React.Component {
 
   checkFormFilled () {
     let componentIndex = 0;
+    const formError = {filled: true, firstQuestionOffset: 0};
 
     for (let component of this.state.components) {
       if (typeof component.namespaces !== 'undefined' && component.namespaces !== null) {
         for (let questionIndex in component.namespaces) {
           if (document.querySelectorAll('[name=\'c' + componentIndex + 'q' + questionIndex + '\']:checked').length < 1) {
             document.getElementById('container' + componentIndex + 'q' + questionIndex).style.backgroundColor = '#FEB8B8';
-            let offsetTop = document.getElementById('container' + componentIndex + 'q' + questionIndex).offsetTop;
-            window.scroll(0, offsetTop);
-            return false;
+            if (formError.firstQuestionOffset === 0) {
+              formError.firstQuestionOffset = document.getElementById('container' + componentIndex + 'q' + questionIndex).offsetTop;
+            }
+            formError.filled = false;
           } else {
             document.getElementById('container' + componentIndex + 'q' + questionIndex).style.backgroundColor = '#FFFFFF';
           }
@@ -231,9 +234,10 @@ export default class PerForm extends React.Component {
       if (this.state.epiComponent === 'yes' && typeof component.namespaces !== 'undefined' && component.namespaces !== null) {
         if (document.querySelectorAll('[name=\'c' + componentIndex + 'epi\']:checked').length < 1) {
           document.getElementById('container' + componentIndex + 'epi').style.backgroundColor = '#FEB8B8';
-          let offsetTop = document.getElementById('container' + componentIndex + 'epi').offsetTop;
-          window.scroll(0, offsetTop);
-          return false;
+          if (formError.firstQuestionOffset === 0) {
+            formError.firstQuestionOffset = document.getElementById('container' + componentIndex + 'epi').offsetTop;
+          }
+          formError.formFilled = false;
         } else {
           document.getElementById('container' + componentIndex + 'epi').style.backgroundColor = '#FFFFFF';
         }
@@ -242,7 +246,11 @@ export default class PerForm extends React.Component {
       componentIndex++;
     }
 
-    return true;
+    if (formError.firstQuestionOffset !== 0) {
+      window.scroll(0, formError.firstQuestionOffset);
+    }
+
+    return formError.filled;
   }
 
   render () {
