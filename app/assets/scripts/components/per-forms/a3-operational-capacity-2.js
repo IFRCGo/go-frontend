@@ -34,14 +34,17 @@ class A3OperatinalCapacity2 extends PerForm {
   }
 
   setLanguageToEnglish () {
+    this.autosave();
     this.setState(englishForm);
   }
 
   setLanguageToSpanish () {
+    this.autosave();
     this.setState(spanishForm);
   }
 
   setLanguageToFrench () {
+    this.autosave();
     this.setState(frenchForm);
   }
 }

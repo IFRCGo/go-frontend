@@ -33,14 +33,17 @@ class A1PolicyStrategyForm extends PerForm {
   }
 
   setLanguageToEnglish () {
+    this.autosave();
     this.setState(englishForm);
   }
 
   setLanguageToSpanish () {
+    this.autosave();
     this.setState(spanishForm);
   }
 
   setLanguageToFrench () {
+    this.autosave();
     this.setState(frenchForm);
   }
 }
