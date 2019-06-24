@@ -698,7 +698,16 @@ class Account extends React.Component {
       <section className='fold' id='notifications'>
         <div className='inner'>
           <h2 className='fold__title'>Operations following</h2>
-          {events}
+          <div>
+            <div style={{width: '20%', float: 'left', lineHeight: '100%'}}>
+              <div style={{top: '50%', marginTop: '-0.5em'}}>
+                Operations following
+              </div>
+            </div>
+            <div style={{width: '80%', float: 'left'}}>
+              {events}
+            </div>
+          </div>
         </div>
       </section>
     </div>);
