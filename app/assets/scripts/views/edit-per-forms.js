@@ -15,36 +15,42 @@ import App from './app';
 class EditPerForms extends React.Component {
   render () {
     let form = null;
-    if (this.props.match.params.formName === 'a1') {
+    if (this.props.match.params.formCode === 'a1') {
       form = (<A1PolicyStrategyForm mode='edit'
         autosaveOn={true}
         match={this.props.match}
-        formId={this.props.match.params.id} />);
-    } else if (this.props.match.params.formName === 'a2') {
+        formCode={this.props.match.params.formCode}
+        user={this.props.match.params.user} />);
+    } else if (this.props.match.params.formCode === 'a2') {
       form = (<A2AnalysisAndPlanningForm mode='edit'
         autosaveOn={true}
         match={this.props.match}
-        formId={this.props.match.params.id} />);
-    } else if (this.props.match.params.formName === 'a3') {
+        formCode={this.props.match.params.formCode}
+        user={this.props.match.params.user} />);
+    } else if (this.props.match.params.formCode === 'a3') {
       form = (<A3OperationalCapacity mode='edit'
         autosaveOn={true}
         match={this.props.match}
-        formId={this.props.match.params.id} />);
-    } else if (this.props.match.params.formName === 'a3-2') {
+        formCode={this.props.match.params.formCode}
+        user={this.props.match.params.user} />);
+    } else if (this.props.match.params.formCode === 'a3-2') {
       form = (<A3OperationalCapacity2 mode='edit'
         autosaveOn={true}
         match={this.props.match}
-        formId={this.props.match.params.id} />);
-    } else if (this.props.match.params.formName === 'a4') {
+        formCode={this.props.match.params.formCode}
+        user={this.props.match.params.user} />);
+    } else if (this.props.match.params.formCode === 'a4') {
       form = (<A4Coordination mode='edit'
         autosaveOn={true}
         match={this.props.match}
-        formId={this.props.match.params.id} />);
-    } else if (this.props.match.params.formName === 'a5') {
+        formCode={this.props.match.params.formCode}
+        user={this.props.match.params.user} />);
+    } else if (this.props.match.params.formCode === 'a5') {
       form = (<A5OperationsSupport mode='edit'
         autosaveOn={true}
         match={this.props.match}
-        formId={this.props.match.params.id} />);
+        formCode={this.props.match.params.formCode}
+        user={this.props.match.params.user} />);
     }
 
     return (

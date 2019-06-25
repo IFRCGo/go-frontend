@@ -21,7 +21,7 @@ export default class PerForm extends React.Component {
     this.chooseFormStateSource = this.chooseFormStateSource.bind(this);
     this.autosave = this.autosave.bind(this);
     this.saveDraft = this.saveDraft.bind(this);
-    this.editForm = this.editForm.bind(this);
+    this.editDraft = this.editDraft.bind(this);
     this.checkFormFilled = this.checkFormFilled.bind(this);
     if (props.autosaveOn) {
       this.autosaveInterval = setInterval(this.autosave, 10000);
@@ -36,38 +36,46 @@ export default class PerForm extends React.Component {
 
   componentDidMount () {
     window.scrollTo(0, 0);
-    if (this.props.mode === 'view' || this.props.mode === 'edit') {
+    if (this.props.mode === 'view') {
       this.props._getPerDocument(this.props.match.params.id);
       this.loadingFormPropsRunning = true;
+    } else if (this.props.mode === 'edit' || this.props.mode === 'new') {
+      const filters = {};
+      filters.user = this.props.user.data.id;
+      filters.code = this.formCode;
+      this.props._getPerDraftDocument(filters);
     }
-    this.chooseFormStateSource();
   }
 
   componentDidUpdate (prevProps) {
+    let autoSaveShouldLoad = true;
+    if (this.props.mode === 'new' || this.props.mode === 'edit') {
+      if (!prevProps.getPerDraftDocument.fetched && this.props.getPerDraftDocument.fetched && !localStorage.getItem('autosave' + this.props.mode + this.formCode)) {
+        autoSaveShouldLoad = false;
+      }
+    }
     if ((this.props.perDocument.fetched && !prevProps.perDocument.fetched) || this.loadingFormPropsRunning) {
-      this.chooseFormStateSource(false);
+      this.chooseFormStateSource(false, autoSaveShouldLoad);
     } else {
-      this.chooseFormStateSource(true);
+      this.chooseFormStateSource(true, autoSaveShouldLoad);
     }
   }
 
-  chooseFormStateSource (refresh = false) {
-    if ((this.props.mode === 'view' || this.props.mode === 'edit') && this.props.perDocument.fetched && (!refresh || this.loadingFormPropsRunning)) {
-      if (this.state.epiComponent !== 'yes') {
+  chooseFormStateSource (refresh = false, autoSaveShouldLoad) {
+    if (this.props.mode === 'view' && this.props.perDocument.fetched && (!refresh || this.loadingFormPropsRunning)) {
+      if (this.state.epiComponent !== 'yes' && this.isEpiComponent()) {
         this.setState({epiComponent: 'yes'});
         return;
       }
       this.loadingFormPropsRunning = false;
       this.loadFromProps();
-    } else if (this.props.autosaveOn && localStorage.getItem('autosave' + this.props.mode + this.formCode) !== null && localStorage.getItem('finished' + this.formCode) === null) {
+    } else if (autoSaveShouldLoad && this.props.autosaveOn && localStorage.getItem('autosave' + this.props.mode + this.formCode) !== null && localStorage.getItem('finished' + this.formCode) === null) {
       if (this.isEpiComponent() && this.state.epiComponent !== 'yes') {
         this.setState({epiComponent: 'yes'});
         return;
       }
       this.loadState('autosave');
-    } else if (this.props.mode === 'new' && !this.props.getPerDraftDocument.fetched && !this.props.getPerDraftDocument.fetching) {
-      this.props._getPerDraftDocument(this.props.user.data.id, this.formCode);
-    } else if (this.props.mode === 'new' && this.props.getPerDraftDocument.fetched && this.props.getPerDraftDocument.data.count > 0) {
+    } else if ((this.props.mode === 'new' || this.props.mode === 'edit') && this.props.getPerDraftDocument.fetched && this.props.getPerDraftDocument.data.count === 1) {
       localStorage.removeItem('finished' + this.formCode);
       if (this.isEpiComponent() && this.state.epiComponent !== 'yes') {
         this.setState({epiComponent: 'yes'});
@@ -89,11 +97,11 @@ export default class PerForm extends React.Component {
 
   isEpiComponent () {
     let draft = null;
-    if (this.props.perDocument.fetched) {
+    if (this.props.perDocument.fetched && this.props.mode === 'view') {
       return this.isEpiComponentFromProps();
     } else if (!!localStorage.getItem('autosave' + this.props.mode + this.formCode) && !localStorage.getItem('finished' + this.formCode)) {
       draft = JSON.parse(localStorage.getItem('autosave' + this.props.mode + this.formCode));
-    } else if (this.props.getPerDraftDocument.fetched && this.props.getPerDraftDocument.data.count > 0) {
+    } else if (this.props.getPerDraftDocument.fetched && this.props.getPerDraftDocument.data.count === 1) {
       draft = JSON.parse(this.props.getPerDraftDocument.data.results[0].data.replace(/'/g, '"'));
     }
     if (draft !== null && draft.data !== null) {
@@ -174,15 +182,14 @@ export default class PerForm extends React.Component {
     }
   }
 
-  editForm () {
+  editDraft () {
     if (this.checkFormFilled()) {
-      let request = this.requestFactory.newFormEditRequest(this.props.match.params.id);
+      let request = this.requestFactory.newFormRequest(this.formCode, this.formName, this.state.languageCode, this.nationalSociety);
       request = this.requestFactory.addAreaQuestionData(request);
       request = this.requestFactory.addComponentData(request);
-      this.props._editPerDocument(request);
+      const finalRequest = {code: this.formCode, user_id: this.props.user.data.id + '', data: request};
+      this.props._sendPerDraft(finalRequest);
       showAlert('success', <p>PER form has been saved successfully!</p>, true, 2000);
-      clearInterval(this.autosaveInterval);
-      localStorage.setItem('finished' + this.formCode, 1);
       this.setState({redirect: true});
     }
   }
@@ -200,6 +207,9 @@ export default class PerForm extends React.Component {
   componentWillUnmount () {
     if (this.props.autosaveOn) {
       clearInterval(this.autosaveInterval);
+    }
+    if (this.props.mode === 'edit') {
+      localStorage.removeItem('autosave' + this.props.mode + this.formCode);
     }
   }
 
@@ -264,7 +274,7 @@ export default class PerForm extends React.Component {
     return <PerFormComponent chooseLanguage={this.chooseLanguage}
       changeEpiComponentState={this.changeEpiComponentState}
       sendForm={this.sendForm}
-      editForm={this.editForm}
+      editDraft={this.editDraft}
       saveDraft={this.saveDraft}
       state={this.state}
       view={view}

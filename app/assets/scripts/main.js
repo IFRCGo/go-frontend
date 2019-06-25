@@ -115,7 +115,7 @@ const Root = () => (
         <PrivateRoute exact path='/deployments/erus/all' render={props => <Table {...props} type='eru' />} />
         <Route path='/per-forms/:formName/:id' component={PerForms} />
         <Route path='/view-per-forms/:formName/:id' component={ViewPerForms} />
-        <Route path='/edit-per-forms/:formName/:id' component={EditPerForms} />
+        <Route path='/edit-per-forms/:formCode/:user' component={EditPerForms} />
         <Route component={UhOh}/>
       </Switch>
     </Router>
