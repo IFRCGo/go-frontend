@@ -301,7 +301,7 @@ if (environment !== 'production') {
     state: T.object,
     changeEpiComponentState: T.func,
     sendForm: T.func,
-    editForm: T.func,
+    editDraft: T.func,
     view: T.bool,
     mode: T.string,
     saveDraft: T.func,

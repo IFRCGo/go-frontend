@@ -717,7 +717,8 @@ if (environment !== 'production') {
     _getFieldReportsByUser: T.func,
     _updateProfile: T.func,
     _getPerCountries: T.func,
-    _getPerDocuments: T.func
+    _getPerDocuments: T.func,
+    _getPerDraftDocuments: T.func
   };
 }
 
