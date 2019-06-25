@@ -536,7 +536,7 @@ class Account extends React.Component {
 
   createRegionGroupedDocumentData () {
     const groupedDocuments = {};
-    if (this.props.perForm.getPerDocuments.fetched) {
+    if (this.props.perForm.getPerDocuments.fetched && !!this.props.perForm.getPerDocuments.data && !!this.props.perForm.getPerDocuments.data.results) {
       this.props.perForm.getPerDocuments.data.results.forEach(document => {
         if (document.country !== null && document.country.region !== null) {
           if (!groupedDocuments.hasOwnProperty(document.country.region)) {
