@@ -63,7 +63,7 @@ export default class PerForm extends React.Component {
 
   chooseFormStateSource (refresh = false, autoSaveShouldLoad) {
     if (this.props.mode === 'view' && this.props.perDocument.fetched && (!refresh || this.loadingFormPropsRunning)) {
-      if (this.state.epiComponent !== 'yes') {
+      if (this.state.epiComponent !== 'yes' && this.isEpiComponent()) {
         this.setState({epiComponent: 'yes'});
         return;
       }
@@ -97,7 +97,7 @@ export default class PerForm extends React.Component {
 
   isEpiComponent () {
     let draft = null;
-    if (this.props.perDocument.fetched) {
+    if (this.props.perDocument.fetched && this.props.mode === 'view') {
       return this.isEpiComponentFromProps();
     } else if (!!localStorage.getItem('autosave' + this.props.mode + this.formCode) && !localStorage.getItem('finished' + this.formCode)) {
       draft = JSON.parse(localStorage.getItem('autosave' + this.props.mode + this.formCode));
