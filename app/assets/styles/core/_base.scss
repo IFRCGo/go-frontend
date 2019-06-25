@@ -91,6 +91,17 @@ a.link--primary {
   };
 }
 
+.mapboxgl-popup .link--primary {
+  color: $base-color;
+  border-bottom: 1px solid $primary-color;
+  font-weight: $base-font-regular;
+  padding-bottom: $global-spacing/4;
+  background-image: none !important;
+  background-size: auto !important;
+  background-repeat: repeat !important;
+  transition: none !important;
+}
+
 a.link--secondary {
   color: $base-color;
   font-weight: 400;
