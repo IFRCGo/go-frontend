@@ -86,7 +86,7 @@ class Emergency extends React.Component {
   componentDidMount () {
     this.getEvent(this.props.match.params.id);
     this.props._getSitrepTypes();
-    if (!this.props.profile.fetched && !this.props.profile.fetching && this.props.isLogged) {
+    if (this.props.isLogged) {
       this.props._getUserProfile(this.props.user.data.username);
     }
   }
