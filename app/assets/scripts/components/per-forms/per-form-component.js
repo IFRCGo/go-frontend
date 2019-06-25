@@ -275,7 +275,7 @@ export const PerFormComponent = (props) => {
     </React.Fragment>);
   } else if (props.mode === 'edit') {
     button = (<React.Fragment>
-      <button className='button button--medium button--primary-filled' onClick={props.editForm}>Submit edited form</button>
+      <button className='button button--medium button--primary-filled' onClick={props.editDraft}>Save draft</button>
     </React.Fragment>);
   }
   return (
