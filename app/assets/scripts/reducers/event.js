@@ -40,6 +40,10 @@ function event (state = initialState, action) {
         }
       });
       break;
+    case 'CLEAR_EVENTS':
+      console.log('happened');
+      state = {};
+      break;
   }
   return state;
 }

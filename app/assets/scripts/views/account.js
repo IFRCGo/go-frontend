@@ -21,7 +21,9 @@ import {
   getPerCountries,
   getPerDraftDocument,
   getPerDocuments,
-  getEventById
+  getEventById,
+  addSubscriptions,
+  delSubscription
 } from '../actions';
 import { getRegionById } from '../utils/region-constants';
 import { get } from '../utils/utils';
@@ -152,6 +154,7 @@ class Account extends React.Component {
     this.changeChosenCountry = this.changeChosenCountry.bind(this);
     this.createRegionGroupedDocumentData = this.createRegionGroupedDocumentData.bind(this);
     this.renderPerFormDocuments = this.renderPerFormDocuments.bind(this);
+    this.delSubscription = this.delSubscription.bind(this);
   }
 
   componentDidMount () {
@@ -165,8 +168,16 @@ class Account extends React.Component {
     showGlobalLoading();
   }
 
+  componentDidUpdate (prevProps) {
+    if (prevProps.eventDeletion.receivedAt !== this.props.eventDeletion.receivedAt) {
+      this.props._clearEvents();
+      this.props._getProfile(this.props.user.username);
+    }
+  }
+
   componentWillReceiveProps (nextProps) {
-    if (!this.props.profile.fetched && nextProps.profile.fetched) {
+    if (this.props.profile.receivedAt !== nextProps.profile.receivedAt) {
+      console.log(nextProps.profile.data.subscription);
       nextProps.profile.data.subscription.forEach((subscription) => {
         if (!!subscription.event) {
           this.props._getEventById(subscription.event);
@@ -309,6 +320,13 @@ class Account extends React.Component {
   changeChosenCountry (e) {
     let filteredCountry = this.props.perForm.getPerCountries.data.results.filter(country => country.id === parseInt(e.target.value));
     this.setState({chosenCountry: {id: filteredCountry[0].id, society_name: filteredCountry[0].society_name}});
+  }
+
+  delSubscription (event) {
+    let eventId = event.target.id.substring('followedEvent'.length);
+    console.log(eventId);
+    this.props._delSubscription(eventId);
+    //this.setState({subscribed: false});
   }
 
   renderProfileAttributes () {
@@ -679,6 +697,7 @@ class Account extends React.Component {
   renderOperationsFollowing () {
     const events = [];
     if (Object.keys(this.props.event.event).length > 0) {
+      console.log(this.props.event.event);
       Object.keys(this.props.event.event).forEach((eventId) => {
         if (this.props.event.event[eventId].fetched) {
           events.push(
@@ -687,7 +706,7 @@ class Account extends React.Component {
                 <Link to={'/emergencies/' + eventId}>{this.props.event.event[eventId].data.name}</Link>
               </div>
               <div style={{width: '20%', float: 'right'}}>
-                <Link to={''}>Unfollow</Link>
+                <button onClick={this.delSubscription} id={'followedEvent' + eventId}>Unfollow</button>
               </div>
             </div>
           );
@@ -781,18 +800,22 @@ const selector = (state, ownProps) => ({
   profile: state.profile,
   fieldReport: state.fieldReport,
   perForm: state.perForm,
-  event: state.event
+  event: state.event,
+  eventDeletion: state.subscriptions.delSubscriptions
 });
 
-const dispatcher = {
-  _getProfile: getUserProfile,
-  _updateSubscriptions: updateSubscriptions,
-  _getFieldReportsByUser: getFieldReportsByUser,
-  _updateProfile: updateProfile,
-  _getPerCountries: getPerCountries,
-  _getPerDocuments: getPerDocuments,
-  _getEventById: getEventById,
-  _getPerDraftDocument: getPerDraftDocument
-};
+const dispatcher = (dispatch) => ({
+  _getProfile: (...args) => dispatch(getUserProfile(...args)),
+  _updateSubscriptions: (...args) => dispatch(updateSubscriptions(...args)),
+  _getFieldReportsByUser: (...args) => dispatch(getFieldReportsByUser(...args)),
+  _updateProfile: (...args) => dispatch(updateProfile(...args)),
+  _getPerCountries: (...args) => dispatch(getPerCountries(...args)),
+  _getPerDocuments: (...args) => dispatch(getPerDocuments(...args)),
+  _getEventById: (...args) => dispatch(getEventById(...args)),
+  _getPerDraftDocument: (...args) => dispatch(getPerDraftDocument(...args)),
+  _addSubscriptions: (...args) => dispatch(addSubscriptions(...args)),
+  _delSubscription: (...args) => dispatch(delSubscription(...args)),
+  _clearEvents: () => dispatch({type: 'CLEAR_EVENTS'})
+});
 
 export default connect(selector, dispatcher)(Account);
