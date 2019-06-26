@@ -791,7 +791,8 @@ const dispatcher = {
   _updateProfile: updateProfile,
   _getPerCountries: getPerCountries,
   _getPerDocuments: getPerDocuments,
-  _getEventById: getEventById
+  _getEventById: getEventById,
+  _getPerDraftDocument: getPerDraftDocument
 };
 
 export default connect(selector, dispatcher)(Account);
