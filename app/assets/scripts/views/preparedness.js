@@ -16,6 +16,7 @@ class Preparedness extends React.Component {
   }
 
   render () {
+    console.log('PREPAREDNESS');
     console.log(this.props);
     return (
       <App className='page--homepage'>

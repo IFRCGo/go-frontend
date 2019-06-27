@@ -249,7 +249,11 @@ class PerMap extends React.Component {
     const layers = this.props.layers ? this.state.markerLayers.concat(this.props.layers) : this.state.markerLayers;
     const geoJSON = this.state.markerGeoJSON;
     const mapContainerClassName = this.props.noRenderEmergencies ? 'map-container map-container-fullwidth' : 'map-container';
-    const emergenciesByType = get(this.props, 'operations.data.emergenciesByType', []);
+
+    console.log('LAYERS');
+    console.log(layers);
+    console.log('geoJSON');
+    console.log(geoJSON);
 
     return (
       <React.Fragment>
@@ -273,11 +277,6 @@ class PerMap extends React.Component {
               onFieldChange={this.onFieldChange}
               deployments={this.props.deployments}
               deploymentsKey={this.props.deploymentsKey}/>
-
-            <EmergencyTypesDropdown emergenciesByType={emergenciesByType}
-              onDtypeClick={this.onDtypeClick.bind(this)} />
-
-            <AppealTypesDropdown onAppealTypeChange={this.onAppealTypeChange.bind(this)} />
           </MapComponent>
         </div>
       </React.Fragment>

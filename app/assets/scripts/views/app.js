@@ -2,8 +2,6 @@
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
-import { connect } from 'react-redux';
-import { getPerCountries } from '../actions';
 
 import { environment } from '../config';
 
@@ -16,14 +14,13 @@ import SysAlerts from '../components/system-alerts';
 class App extends React.Component {
   constructor (props) {
     super(props);
-    this.state = { preparednessModule: false };
   }
 
   render () {
     return (
       <div className={c('page', this.props.className)}>
         <GlobalLoading />
-        <Header preparednessModule={this.state.preparednessModule} />
+        <Header />
         <MobileHeader />
         <main className='page__body' role='main'>
           {this.props.children}
@@ -32,16 +29,6 @@ class App extends React.Component {
         <Footer/>
       </div>
     );
-  }
-
-  componentDidMount () {
-    this.props._getPerCountries();
-  }
-
-  componentWillReceiveProps (nextProps) {
-    if (nextProps.perForm.getPerCountries.fetched && nextProps.perForm.getPerCountries.data.count > 0 && !this.state.preparednessModule) {
-      this.setState({preparednessModule: true});
-    }
   }
 }
 
@@ -52,12 +39,4 @@ if (environment !== 'production') {
   };
 }
 
-const selector = (state) => ({
-  perForm: state.perForm
-});
-
-const dispatcher = (dispatch) => ({
-  _getPerCountries: (...args) => dispatch(getPerCountries(...args))
-});
-
-export default connect(selector, dispatcher)(App);
+export default App;
