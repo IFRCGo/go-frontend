@@ -168,16 +168,8 @@ class Account extends React.Component {
     showGlobalLoading();
   }
 
-  componentDidUpdate (prevProps) {
-    if (prevProps.eventDeletion.receivedAt !== this.props.eventDeletion.receivedAt) {
-      this.props._clearEvents();
-      this.props._getProfile(this.props.user.username);
-    }
-  }
-
   componentWillReceiveProps (nextProps) {
     if (this.props.profile.receivedAt !== nextProps.profile.receivedAt) {
-      console.log(nextProps.profile.data.subscription);
       nextProps.profile.data.subscription.forEach((subscription) => {
         if (!!subscription.event) {
           this.props._getEventById(subscription.event);
@@ -324,9 +316,9 @@ class Account extends React.Component {
 
   delSubscription (event) {
     let eventId = event.target.id.substring('followedEvent'.length);
-    console.log(eventId);
-    this.props._delSubscription(eventId);
-    //this.setState({subscribed: false});
+    this.props._clearEvents(eventId);
+    // this.props._delSubscription(eventId);
+    this.forceUpdate();
   }
 
   renderProfileAttributes () {
@@ -697,16 +689,15 @@ class Account extends React.Component {
   renderOperationsFollowing () {
     const events = [];
     if (Object.keys(this.props.event.event).length > 0) {
-      console.log(this.props.event.event);
       Object.keys(this.props.event.event).forEach((eventId) => {
         if (this.props.event.event[eventId].fetched) {
           events.push(
-            <div key={'operations-component' + eventId} style={{width: '50%', border: '1px solid #000', float: 'left'}}>
-              <div style={{width: '80%', float: 'left'}}>
-                <Link to={'/emergencies/' + eventId}>{this.props.event.event[eventId].data.name}</Link>
+            <div key={'operations-component' + eventId} style={{width: '50%', float: 'left', marginBottom: '20px'}}>
+              <div style={{width: '70%', float: 'left'}}>
+                <Link className={'link--primary'} to={'/emergencies/' + eventId}>{this.props.event.event[eventId].data.name}</Link>
               </div>
-              <div style={{width: '20%', float: 'right'}}>
-                <button onClick={this.delSubscription} id={'followedEvent' + eventId}>Unfollow</button>
+              <div style={{width: '30%', float: 'right', textAlign: 'center'}}>
+                <button className={'button button--small button--primary-bounded'} onClick={this.delSubscription} id={'followedEvent' + eventId}>Unfollow</button>
               </div>
             </div>
           );
@@ -718,9 +709,9 @@ class Account extends React.Component {
         <div className='inner'>
           <h2 className='fold__title'>Operations following</h2>
           <div>
-            <div style={{width: '20%', float: 'left', lineHeight: '100%'}}>
-              <div style={{top: '50%', marginTop: '-0.5em'}}>
-                Operations following
+            <div style={{width: '20%', float: 'left'}}>
+              <div>
+                Operations currently following
               </div>
             </div>
             <div style={{width: '80%', float: 'left'}}>
@@ -815,7 +806,7 @@ const dispatcher = (dispatch) => ({
   _getPerDraftDocument: (...args) => dispatch(getPerDraftDocument(...args)),
   _addSubscriptions: (...args) => dispatch(addSubscriptions(...args)),
   _delSubscription: (...args) => dispatch(delSubscription(...args)),
-  _clearEvents: () => dispatch({type: 'CLEAR_EVENTS'})
+  _clearEvents: (eventId) => dispatch({type: 'CLEAR_EVENTS', eventId: eventId})
 });
 
 export default connect(selector, dispatcher)(Account);

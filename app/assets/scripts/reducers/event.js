@@ -41,8 +41,7 @@ function event (state = initialState, action) {
       });
       break;
     case 'CLEAR_EVENTS':
-      console.log('happened');
-      state = {};
+      delete state[action.eventId];
       break;
   }
   return state;
