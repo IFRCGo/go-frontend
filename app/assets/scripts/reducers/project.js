@@ -1,10 +1,10 @@
 'use strict';
 
 const initialState = {
-  // fetching: false,
-  // fetched: false,
-  // receivedAt: null,
-  // data: {}
+  fetching: false,
+  fetched: false,
+  receivedAt: null,
+  data: {}
 };
 
 export default function reducer (state = initialState, action) {

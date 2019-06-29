@@ -2,8 +2,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import _get from 'lodash.get';
+import _set from 'lodash.set';
+import _cloneDeep from 'lodash.clonedeep';
 import { PropTypes as T } from 'prop-types';
-import { createProject, updateProject, getProjectById } from '../../actions';
+import * as projectData from '../../utils/project-form-constants';
+import { createProject, updateProject, getProjectById, getUserProfile } from '../../actions';
 import { showGlobalLoading, hideGlobalLoading } from '../../components/global-loading';
 import { environment } from '../../config';
 import {
@@ -19,7 +22,6 @@ import {
 } from '../../components/form-elements/';
 import App from '../app';
 
-
 class ProjectForm extends React.Component {
   constructor (props) {
     super(props);
@@ -34,7 +36,7 @@ class ProjectForm extends React.Component {
       hideGlobalLoading();
       // TODO: process error and success from the API
     }
-    if (this.props.project.fetching && !nextProps.report.fetching) {
+    if (this.props.project.fetching && !nextProps.project.fetching) {
       hideGlobalLoading();
       if (nextProps.project.error) {
         // TODO: render Uh-Oh screen or so if there is an error fetching project
@@ -47,6 +49,9 @@ class ProjectForm extends React.Component {
     if (this.props.match.params.id) {
       // Editing the field report.
       this.getProject(this.props.match.params.id);
+    }
+    if (this.props.isLogged) {
+      this.props._getUserProfile(this.props.user.data.username);
     }
   }
 
@@ -64,10 +69,15 @@ class ProjectForm extends React.Component {
   }
 
   onFieldChange (field, e) {
-
+    let data = _cloneDeep(this.state.data);
+    let val = e && e.target ? e.target.value : e;
+    _set(data, field, val === '' || val === null ? undefined : val);
+    this.setState({data});
   }
 
   render () {
+    console.log('user', this.props.user);
+    console.log('profile', this.props.profile);
     return (
       <App className='page--frep-form'>
         <section className='inpage'>
@@ -100,9 +110,12 @@ if (environment !== 'production') {
     _createProject: T.func,
     _updateProject: T.func,
     _getProjectById: T.func,
+    _getUserProfile: T.func,
+    isLogged: T.boolean,
     projectForm: T.object,
     user: T.object,
-    report: T.object,
+    profile: T.object,
+    project: T.object,
     match: T.object,
     history: T.object
   };
@@ -114,17 +127,20 @@ if (environment !== 'production') {
 const selector = (state, ownProps) => ({
   projectForm: state.projectForm,
   user: state.user,
-  report: _get(state.project, ownProps.match.params.id, {
+  profile: state.profile,
+  project: _get(state.project, ownProps.match.params.id, {
     data: {},
     fetching: false,
     fetched: false
-  })
+  }),
+  isLogged: !!state.user.data.token
 });
 
 const dispatcher = (dispatch) => ({
   _createProject: (...args) => dispatch(createProject(...args)),
   _updateProject: (...args) => dispatch(updateProject(...args)),
-  _getProjectById: (...args) => dispatch(getProjectById(...args))
+  _getProjectById: (...args) => dispatch(getProjectById(...args)),
+  _getUserProfile: (...args) => dispatch(getUserProfile(...args))
 });
 
 export default connect(selector, dispatcher)(ProjectForm);
