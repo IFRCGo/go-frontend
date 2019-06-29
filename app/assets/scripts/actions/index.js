@@ -439,3 +439,18 @@ export const EDIT_PER_DOCUMENT = 'EDIT_PER_DOCUMENT';
 export function editPerDocument (data) {
   return postJSON('editperform', EDIT_PER_DOCUMENT, data);
 }
+
+export const CREATE_PROJECT = 'CREATE_PROJECT';
+export function createProject (data) {
+  return postJSON('/api/v2/create_project', CREATE_PROJECT, data);
+}
+
+export const UPDATE_PROJECT = 'UPDATE_PROJECT';
+export function updateProject (data) {
+  return putJSON('/api/v2/update_project', UPDATE_PROJECT, data);
+}
+
+export const GET_PROJECT = 'GET_PROJECT';
+export function getProjectById (id) {
+  return fetchJSON(`api/v2/project/${id}/`, GET_PROJECT, withToken(), { id });
+}

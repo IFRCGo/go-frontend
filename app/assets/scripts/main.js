@@ -33,6 +33,8 @@ import PerForms from './views/per-forms';
 import ViewPerForms from './views/view-per-forms';
 import EditPerForms from './views/edit-per-forms';
 
+import ProjectForm from './views/project-form/';
+
 require('isomorphic-fetch');
 
 // Route available only if the user is not logged in.
@@ -116,6 +118,8 @@ const Root = () => (
         <Route path='/per-forms/:formName/:id' component={PerForms} />
         <Route path='/view-per-forms/:formName/:id' component={ViewPerForms} />
         <Route path='/edit-per-forms/:formCode/:user' component={EditPerForms} />
+        <Route exact path='/projects/new' component={ProjectForm} />
+        <Route exact path='/projects/:id/edit' component={ProjectForm} />
         <Route component={UhOh}/>
       </Switch>
     </Router>
