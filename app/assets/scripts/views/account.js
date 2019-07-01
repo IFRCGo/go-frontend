@@ -171,7 +171,7 @@ class Account extends React.Component {
   componentWillReceiveProps (nextProps) {
     if (this.props.profile.receivedAt !== nextProps.profile.receivedAt) {
       nextProps.profile.data.subscription.forEach((subscription) => {
-        if (!!subscription.event) {
+        if (typeof subscription.event !== 'undefined' && subscription.event !== null) {
           this.props._getEventById(subscription.event);
         }
       });
@@ -781,7 +781,8 @@ if (environment !== 'production') {
     _getPerCountries: T.func,
     _getPerDocuments: T.func,
     _getPerDraftDocument: T.func,
-    _getEventById: T.func
+    _getEventById: T.func,
+    _clearEvents: T.func
   };
 }
 
