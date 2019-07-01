@@ -12,10 +12,6 @@ import GlobalLoading from '../components/global-loading';
 import SysAlerts from '../components/system-alerts';
 
 class App extends React.Component {
-  constructor (props) {
-    super(props);
-  }
-
   render () {
     return (
       <div className={c('page', this.props.className)}>

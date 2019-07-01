@@ -3,10 +3,6 @@ import React from 'react';
 import Fold from './fold';
 
 class PreparednessHeader extends React.Component {
-  constructor (props) {
-    super(props);
-  }
-
   render () {
     return (
       <div className='inner'>

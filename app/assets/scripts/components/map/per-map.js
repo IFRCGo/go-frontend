@@ -12,8 +12,6 @@ import MapComponent from './common/map-component';
 import OperationsPopover from './home-map/operations-popover';
 import { get } from '../../utils/utils';
 import ExplanationBubble from './home-map/explanation-bubble';
-import EmergencyTypesDropdown from './home-map/emergency-types-dropdown';
-import AppealTypesDropdown from './home-map/appeal-types-dropdown';
 import { filtering } from './home-map/filtering/filtering-processor';
 import { AppealTypeComparator } from './home-map/filtering/comparator/appeal-type-comparator';
 import { EmergencyTypeComparator } from './home-map/filtering/comparator/emergency-type-comparator';

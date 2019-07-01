@@ -7,17 +7,11 @@ import { getAppealsList } from './../actions';
 import { Helmet } from 'react-helmet';
 
 class Preparedness extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount () {
     this.props._getAppealsList();
   }
 
   render () {
-    console.log('PREPAREDNESS');
-    console.log(this.props);
     return (
       <App className='page--homepage'>
         <section className='inpage'>
@@ -44,9 +38,15 @@ class Preparedness extends React.Component {
   }
 }
 
-
 // /////////////////////////////////////////////////////////////////// //
 // Connect functions
+
+if (environment !== 'production') {
+  Preparedness.propTypes = {
+    _getAppealsList: T.func,
+    appealsList: T.obj
+  };
+}
 
 const selector = (state) => ({
   appealsList: state.overallStats.appealsList
