@@ -269,7 +269,7 @@ export default class PerForm extends React.Component {
       view = true;
     }
     if (this.state.redirect) {
-      return <Redirect to='/account#per-forms' />;
+      return <Redirect to='/account' />;
     }
     return <PerFormComponent chooseLanguage={this.chooseLanguage}
       changeEpiComponentState={this.changeEpiComponentState}
