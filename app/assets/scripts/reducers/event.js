@@ -40,6 +40,9 @@ function event (state = initialState, action) {
         }
       });
       break;
+    case 'CLEAR_EVENTS':
+      delete state[action.eventId];
+      break;
   }
   return state;
 }

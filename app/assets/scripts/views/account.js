@@ -20,7 +20,10 @@ import {
   updateProfile,
   getPerCountries,
   getPerDraftDocument,
-  getPerDocuments
+  getPerDocuments,
+  getEventById,
+  addSubscriptions,
+  delSubscription
 } from '../actions';
 import { getRegionById } from '../utils/region-constants';
 import { get } from '../utils/utils';
@@ -151,6 +154,7 @@ class Account extends React.Component {
     this.changeChosenCountry = this.changeChosenCountry.bind(this);
     this.createRegionGroupedDocumentData = this.createRegionGroupedDocumentData.bind(this);
     this.renderPerFormDocuments = this.renderPerFormDocuments.bind(this);
+    this.delSubscription = this.delSubscription.bind(this);
   }
 
   componentDidMount () {
@@ -165,6 +169,13 @@ class Account extends React.Component {
   }
 
   componentWillReceiveProps (nextProps) {
+    if (this.props.profile.receivedAt !== nextProps.profile.receivedAt) {
+      nextProps.profile.data.subscription.forEach((subscription) => {
+        if (typeof subscription.event !== 'undefined' && subscription.event !== null) {
+          this.props._getEventById(subscription.event);
+        }
+      });
+    }
     if (this.props.profile.fetching && !nextProps.profile.fetching) {
       hideGlobalLoading();
       if (nextProps.profile.error) {
@@ -301,6 +312,13 @@ class Account extends React.Component {
   changeChosenCountry (e) {
     let filteredCountry = this.props.perForm.getPerCountries.data.results.filter(country => country.id === parseInt(e.target.value));
     this.setState({chosenCountry: {id: filteredCountry[0].id, society_name: filteredCountry[0].society_name}});
+  }
+
+  delSubscription (event) {
+    let eventId = event.target.id.substring('followedEvent'.length);
+    this.props._clearEvents(eventId);
+    // this.props._delSubscription(eventId);
+    this.forceUpdate();
   }
 
   renderProfileAttributes () {
@@ -579,7 +597,7 @@ class Account extends React.Component {
     return regions;
   }
 
-  renderPerList () {
+  renderPerFormsComponent () {
     const countryOptions = [];
     if (this.props.perForm.getPerCountries.fetched) {
       this.props.perForm.getPerCountries.data.results.forEach(country => {
@@ -658,6 +676,53 @@ class Account extends React.Component {
     </React.Fragment>);
   }
 
+  renderAccountInformation () {
+    return (<div className='prose prose--responsive'>
+      <div className='fold-container'>
+        <section className='fold' id='account-information'>
+          {this.state.profileEditMode ? this.renderProfileForm() : this.renderProfileAttributes()}
+        </section>
+      </div>
+    </div>);
+  }
+
+  renderOperationsFollowing () {
+    const events = [];
+    if (Object.keys(this.props.event.event).length > 0) {
+      Object.keys(this.props.event.event).forEach((eventId) => {
+        if (this.props.event.event[eventId].fetched) {
+          events.push(
+            <div key={'operations-component' + eventId} style={{width: '50%', float: 'left', marginBottom: '20px'}}>
+              <div style={{width: '70%', float: 'left'}}>
+                <Link className={'link--primary'} to={'/emergencies/' + eventId}>{this.props.event.event[eventId].data.name}</Link>
+              </div>
+              <div style={{width: '30%', float: 'right', textAlign: 'center'}}>
+                <button className={'button button--small button--primary-bounded'} onClick={this.delSubscription} id={'followedEvent' + eventId}>Unfollow</button>
+              </div>
+            </div>
+          );
+        }
+      });
+    }
+    return (<div className='fold-container'>
+      <section className='fold' id='notifications'>
+        <div className='inner'>
+          <h2 className='fold__title'>Operations following</h2>
+          <div>
+            <div style={{width: '20%', float: 'left'}}>
+              <div>
+                Operations currently following
+              </div>
+            </div>
+            <div style={{width: '80%', float: 'left'}}>
+              {events}
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>);
+  }
+
   render () {
     return (
       <App className='page--account'>
@@ -679,7 +744,8 @@ class Account extends React.Component {
                   <div className='inner'>
                     <ul>
                       <li><a href='#account-information' title='Go to Operations section'>Account Information</a></li>
-                      <li><a href='#per-forms' title='Go to Appeals section'>PER forms</a></li>
+                      <li><a href='#notifications' title='Go to notifications section'>Notifications</a></li>
+                      <li><a href='#per-forms' title='Go to per section'>PER forms</a></li>
                     </ul>
                   </div>
                 </div>
@@ -688,16 +754,11 @@ class Account extends React.Component {
           </StickyContainer>
           <div className='inpage__body'>
             <div className='inner'>
-              <div className='prose prose--responsive'>
-                <div className='fold-container'>
-                  <section className='fold' id='account-information'>
-                    {this.state.profileEditMode ? this.renderProfileForm() : this.renderProfileAttributes()}
-                  </section>
-                </div>
-              </div>
+              {this.renderOperationsFollowing()}
+              {this.renderAccountInformation()}
               {this.renderFieldReports()}
               {this.props.profile.fetched && !this.props.profile.error ? this.renderSubscriptionForm() : null}
-              {this.renderPerList()}
+              {this.renderPerFormsComponent()}
             </div>
           </div>
         </section>
@@ -712,13 +773,16 @@ if (environment !== 'production') {
     profile: T.object,
     fieldReport: T.object,
     perForm: T.object,
+    event: T.object,
     _getProfile: T.func,
     _updateSubscriptions: T.func,
     _getFieldReportsByUser: T.func,
     _updateProfile: T.func,
     _getPerCountries: T.func,
     _getPerDocuments: T.func,
-    _getPerDraftDocument: T.func
+    _getPerDraftDocument: T.func,
+    _getEventById: T.func,
+    _clearEvents: T.func
   };
 }
 
@@ -729,17 +793,23 @@ const selector = (state, ownProps) => ({
   user: state.user.data,
   profile: state.profile,
   fieldReport: state.fieldReport,
-  perForm: state.perForm
+  perForm: state.perForm,
+  event: state.event,
+  eventDeletion: state.subscriptions.delSubscriptions
 });
 
-const dispatcher = {
-  _getProfile: getUserProfile,
-  _updateSubscriptions: updateSubscriptions,
-  _getFieldReportsByUser: getFieldReportsByUser,
-  _updateProfile: updateProfile,
-  _getPerCountries: getPerCountries,
-  _getPerDocuments: getPerDocuments,
-  _getPerDraftDocument: getPerDraftDocument
-};
+const dispatcher = (dispatch) => ({
+  _getProfile: (...args) => dispatch(getUserProfile(...args)),
+  _updateSubscriptions: (...args) => dispatch(updateSubscriptions(...args)),
+  _getFieldReportsByUser: (...args) => dispatch(getFieldReportsByUser(...args)),
+  _updateProfile: (...args) => dispatch(updateProfile(...args)),
+  _getPerCountries: (...args) => dispatch(getPerCountries(...args)),
+  _getPerDocuments: (...args) => dispatch(getPerDocuments(...args)),
+  _getEventById: (...args) => dispatch(getEventById(...args)),
+  _getPerDraftDocument: (...args) => dispatch(getPerDraftDocument(...args)),
+  _addSubscriptions: (...args) => dispatch(addSubscriptions(...args)),
+  _delSubscription: (...args) => dispatch(delSubscription(...args)),
+  _clearEvents: (eventId) => dispatch({type: 'CLEAR_EVENTS', eventId: eventId})
+});
 
 export default connect(selector, dispatcher)(Account);
