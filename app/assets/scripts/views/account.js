@@ -773,13 +773,15 @@ if (environment !== 'production') {
     profile: T.object,
     fieldReport: T.object,
     perForm: T.object,
+    event: T.object,
     _getProfile: T.func,
     _updateSubscriptions: T.func,
     _getFieldReportsByUser: T.func,
     _updateProfile: T.func,
     _getPerCountries: T.func,
     _getPerDocuments: T.func,
-    _getPerDraftDocument: T.func
+    _getPerDraftDocument: T.func,
+    _getEventById: T.func
   };
 }
 
