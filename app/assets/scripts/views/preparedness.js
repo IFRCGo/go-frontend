@@ -5,6 +5,8 @@ import PerMap from './../components/map/per-map';
 import { connect } from 'react-redux';
 import { getAppealsList } from './../actions';
 import { Helmet } from 'react-helmet';
+import { PropTypes as T } from 'prop-types';
+import { environment } from '../config';
 
 class Preparedness extends React.Component {
   componentDidMount () {
