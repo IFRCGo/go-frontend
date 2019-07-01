@@ -285,6 +285,17 @@ class Account extends React.Component {
       serialized.push.apply(serialized, countries);
     }
 
+    let followedEvents = [];
+    Object.keys(this.props.event.event).forEach(event => {
+      followedEvents.push({
+        type: 'followedEvent',
+        value: event
+      });
+    });
+    if (followedEvents.length) {
+      serialized.push.apply(serialized, followedEvents);
+    }
+
     return serialized;
   }
 
@@ -487,6 +498,11 @@ class Account extends React.Component {
   }
 
   renderSubscriptionForm () {
+    this.props.profile.data.subscription.filter(subscription => subscription.event !== null);
+    const events = [];
+    Object.keys(this.props.event.event).forEach(event => {
+      events.push(<input type='hidden' name='followedEvent' key={'followedEvent' + event} value={event} />);
+    });
     return (
       <form className='form' onSubmit={this.onNotificationSubmit}>
         <div className='fold-container'>
@@ -545,6 +561,7 @@ class Account extends React.Component {
               options={otherNotificationTypes}
               values={this.state.notifications.other}
               onChange={this.onFieldChange.bind(this, 'notifications', 'other')} />
+            {events}
             <button type='submit' className={c('button', 'button--large', 'button--secondary-filled', {
               'disabled': !this.state.isNotificationsDirty
             })} title='Save'>Save</button>
