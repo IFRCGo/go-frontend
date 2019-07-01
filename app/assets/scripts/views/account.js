@@ -170,11 +170,13 @@ class Account extends React.Component {
 
   componentWillReceiveProps (nextProps) {
     if (this.props.profile.receivedAt !== nextProps.profile.receivedAt) {
-      nextProps.profile.data.subscription.forEach((subscription) => {
-        if (typeof subscription.event !== 'undefined' && subscription.event !== null) {
-          this.props._getEventById(subscription.event);
-        }
-      });
+      if (typeof nextProps.profile.data.subscription !== 'undefined' && nextProps.profile.data.subscription !== null) {
+        nextProps.profile.data.subscription.forEach((subscription) => {
+          if (typeof subscription.event !== 'undefined' && subscription.event !== null) {
+            this.props._getEventById(subscription.event);
+          }
+        });
+      }
     }
     if (this.props.profile.fetching && !nextProps.profile.fetching) {
       hideGlobalLoading();
@@ -599,7 +601,7 @@ class Account extends React.Component {
 
   renderPerFormsComponent () {
     const countryOptions = [];
-    if (this.props.perForm.getPerCountries.fetched) {
+    if (this.props.perForm.getPerCountries.fetched && typeof this.props.perForm.getPerCountries.data.results !== 'undefined' && this.props.perForm.getPerCountries.data.results !== null) {
       this.props.perForm.getPerCountries.data.results.forEach(country => {
         const societyName = country.society_name !== null && country.society_name.trim() !== '' ? country.society_name : country.name + ' NS';
         countryOptions.push(<option value={country.id} key={'persociety' + country.id}>{societyName}</option>);
@@ -651,23 +653,25 @@ class Account extends React.Component {
     const draftDocuments = [];
     if (this.props.perForm.getPerDraftDocument.fetched) {
       let index = 0;
-      this.props.perForm.getPerDraftDocument.data.results.forEach((draftDocument) => {
-        let parsedData = null;
-        try {
-          parsedData = JSON.parse(draftDocument.data.replace(/'/g, '"'));
-        } catch (e) {
-          console.log('Draft document (' + draftDocument.data + ') parsing failed!', e);
-          return;
-        }
-        draftDocuments.push(
-          <div style={{backgroundColor: '#eaeaea', float: 'left', width: '100%', marginBottom: '1rem', padding: '0.25rem 1rem', fontWeight: 'bold'}} key={'draftDocument' + index}>
-            {draftDocument.code.toUpperCase()} - {parsedData.name} - {parsedData.submitted_at.substring(0, 10)} - {typeof draftDocument.user !== 'undefined' ? draftDocument.user.username : null}
-            <div style={{float: 'right'}}>
-              <Link className='button button--small button--secondary-bounded' to={'/edit-per-forms/' + draftDocument.code + '/' + draftDocument.user.username}>Edit</Link>
-            </div>
-          </div>);
-        index++;
-      });
+      if (typeof this.props.perForm.getPerDraftDocument.data.results !== 'undefined' && this.props.perForm.getPerDraftDocument.data.results !== null) {
+        this.props.perForm.getPerDraftDocument.data.results.forEach((draftDocument) => {
+          let parsedData = null;
+          try {
+            parsedData = JSON.parse(draftDocument.data.replace(/'/g, '"'));
+          } catch (e) {
+            console.log('Draft document (' + draftDocument.data + ') parsing failed!', e);
+            return;
+          }
+          draftDocuments.push(
+            <div style={{backgroundColor: '#eaeaea', float: 'left', width: '100%', marginBottom: '1rem', padding: '0.25rem 1rem', fontWeight: 'bold'}} key={'draftDocument' + index}>
+              {draftDocument.code.toUpperCase()} - {parsedData.name} - {parsedData.submitted_at.substring(0, 10)} - {typeof draftDocument.user !== 'undefined' ? draftDocument.user.username : null}
+              <div style={{float: 'right'}}>
+                <Link className='button button--small button--secondary-bounded' to={'/edit-per-forms/' + draftDocument.code + '/' + draftDocument.user.username}>Edit</Link>
+              </div>
+            </div>);
+          index++;
+        });
+      }
     }
     return (<React.Fragment>
       <hr /><br/><br />
