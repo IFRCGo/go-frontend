@@ -32,6 +32,7 @@ import Table from './views/table';
 import PerForms from './views/per-forms';
 import ViewPerForms from './views/view-per-forms';
 import EditPerForms from './views/edit-per-forms';
+import Preparedness from './views/preparedness';
 
 require('isomorphic-fetch');
 
@@ -114,6 +115,7 @@ const Root = () => (
         <PrivateRoute exact path='/deployments/personnel/all' render={props => <Table {...props} type='personnel' />} />
         <PrivateRoute exact path='/deployments/erus/all' render={props => <Table {...props} type='eru' />} />
         <Route path='/per-forms/:formName/:id' component={PerForms} />
+        <Route path='/preparedness' component={Preparedness} />
         <Route path='/view-per-forms/:formName/:id' component={ViewPerForms} />
         <Route path='/edit-per-forms/:formCode/:user' component={EditPerForms} />
         <Route component={UhOh}/>
