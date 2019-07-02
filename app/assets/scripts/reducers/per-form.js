@@ -115,6 +115,21 @@ function editPerDocument (state = initialState, action) {
   return state;
 }
 
+function getCollaboratingPerCountry (state = initialState, action) {
+  switch (action.type) {
+    case 'COLLABORATING_PER_COUNTRY_INFLIGHT':
+      state = stateInflight(state, action);
+      break;
+    case 'COLLABORATING_PER_COUNTRY_FAILED':
+      state = stateError(state, action);
+      break;
+    case 'COLLABORATING_PER_COUNTRY_SUCCESS':
+      state = stateSuccess(state, action);
+      break;
+  }
+  return state;
+}
+
 export default combineReducers({
   sendPerForm,
   getPerCountries,
@@ -122,5 +137,6 @@ export default combineReducers({
   getPerDocument,
   getPerDraftDocument,
   sendPerDraft,
-  editPerDocument
+  editPerDocument,
+  getCollaboratingPerCountry
 });

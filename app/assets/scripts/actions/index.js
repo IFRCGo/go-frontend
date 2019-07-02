@@ -439,3 +439,8 @@ export const EDIT_PER_DOCUMENT = 'EDIT_PER_DOCUMENT';
 export function editPerDocument (data) {
   return postJSON('editperform', EDIT_PER_DOCUMENT, data);
 }
+
+export const COLLABORATING_PER_COUNTRY = 'COLLABORATING_PER_COUNTRY';
+export function getCollaboratingPerCountry () {
+  return fetchJSON(`/api/v2/per_country_duedate`, COLLABORATING_PER_COUNTRY, withToken());
+}
