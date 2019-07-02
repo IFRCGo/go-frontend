@@ -10,13 +10,15 @@ class MarkerLayerStylesheetFactory {
 
   buildMarkerLayers (geoJSON, scaleBy) {
     const ccolor = {
-      property: 'atype',
+      property: 'code',
       type: 'categorical',
       stops: [
-        ['DREF', '#F39C12'],
-        ['Appeal', '#C22A26'],
-        ['Movement', '#CCCCCC'],
-        ['Mixed', '#4680F2']
+        ['a1', '#F39C12'],
+        ['a2', '#C22A26'],
+        ['a3', '#CCCCCC'],
+        ['a3-2', '#CCCCCC'],
+        ['a4', '#4680F2'],
+        ['a5', '#000000']
       ]
     };
     const cradius = this.getCircleRadiusPaintProp(geoJSON, scaleBy);
