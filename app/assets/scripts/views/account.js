@@ -330,7 +330,7 @@ class Account extends React.Component {
   delSubscription (event) {
     let eventId = event.target.id.substring('followedEvent'.length);
     this.props._clearEvents(eventId);
-    // this.props._delSubscription(eventId);
+    this.props._delSubscription(eventId);
     this.forceUpdate();
   }
 
