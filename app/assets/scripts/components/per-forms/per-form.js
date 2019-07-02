@@ -226,6 +226,12 @@ export default class PerForm extends React.Component {
     let componentIndex = 0;
     const formError = {filled: true, firstQuestionOffset: 0};
 
+    if (document.querySelectorAll("[name='a1']:checked").length === 0) {
+      document.getElementsByClassName('containera1')[0].style.backgroundColor = '#FEB8B8';
+      formError.filled = false;
+      formError.firstQuestionOffset = document.getElementsByClassName('containera1')[0].offsetTop;
+    }
+
     for (let component of this.state.components) {
       if (typeof component.namespaces !== 'undefined' && component.namespaces !== null) {
         for (let questionIndex in component.namespaces) {

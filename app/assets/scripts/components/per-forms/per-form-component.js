@@ -34,9 +34,12 @@ if (environment !== 'production') {
 
 const renderFormTitle = (props) => {
   return (
-    <div className="fold__header">
-      <h2 className="fold__title">{props.state.title}</h2>
-    </div>
+    <React.Fragment>
+      <div className="fold__header">
+        <h2 className="fold__title">{props.state.title}</h2>
+      </div>
+      <div style={{clear: 'both'}}></div>
+    </React.Fragment>
   );
 };
 
@@ -56,7 +59,7 @@ if (environment !== 'production') {
 
 const renderEpidemicsRadioButton = (props) => {
   return (
-    <React.Fragment>
+    <div className='containera1'>
       <div className='per_form_area'>{props.state.areaTitle}</div>
       <div className='per_form_question'>{props.state.areaQuestion}</div>
       <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
@@ -69,7 +72,7 @@ const renderEpidemicsRadioButton = (props) => {
         <span className='form__option__ui'></span>
         <span className='form__option__text'>{props.state.areaOptions[1]}</span>
       </label>
-    </React.Fragment>
+    </div>
   );
 };
 
