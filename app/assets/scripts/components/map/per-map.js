@@ -254,7 +254,7 @@ class PerMap extends React.Component {
     // console.log('geoJSON');
     if (geoJSON !== null) {
       geoJSON.features.map(feature => {
-        //delete feature.properties;
+        // delete feature.properties;
         return geoJSON;
       });
     }

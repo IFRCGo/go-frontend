@@ -797,6 +797,7 @@ if (environment !== 'production') {
     event: T.object,
     _getProfile: T.func,
     _updateSubscriptions: T.func,
+    _delSubscription: T.func,
     _getFieldReportsByUser: T.func,
     _updateProfile: T.func,
     _getPerCountries: T.func,

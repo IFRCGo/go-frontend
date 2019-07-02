@@ -53,7 +53,7 @@ class Preparedness extends React.Component {
       });
       // console.log(geoJson);
       this.geoJsonFinal = {error: false, fetched: true, fetching: false, receivedAt: false, data: {geoJSON: geoJson}};
-      const grouped = _groupBy(this.props.collaboratingPerCountry.data.results.filter(perForm => perForm.country), 'country.iso');
+      // const grouped = _groupBy(this.props.collaboratingPerCountry.data.results.filter(perForm => perForm.country), 'country.iso');
       // console.log('GROUPED');
       // console.log(grouped);
     }
@@ -95,6 +95,8 @@ class Preparedness extends React.Component {
 if (environment !== 'production') {
   Preparedness.propTypes = {
     _getAppealsList: T.func,
+    _getCollaboratingPerCountry: T.func,
+    collaboratingPerCountry: T.obj,
     appealsList: T.obj
   };
 }
