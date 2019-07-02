@@ -12,7 +12,7 @@ import { PropTypes as T } from 'prop-types';
 import { environment } from '../config';
 import { getCountryMeta } from './../utils/get-country-meta';
 import { getCentroid } from './../utils/country-centroids';
-import _groupBy from 'lodash.groupby';
+// import _groupBy from 'lodash.groupby';
 
 class Preparedness extends React.Component {
   constructor (props) {
