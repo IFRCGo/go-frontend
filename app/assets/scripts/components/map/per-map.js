@@ -68,12 +68,13 @@ class PerMap extends React.Component {
   }
 
   setMarkerLayers (operations) {
-    const comparator = EmergencyTypeComparator(this.state.hoverDtype || this.state.selectedDtype || '');
-    const markers = filtering(operations.data.geoJSON, comparator);
+    console.log(operations.data.geoJSON);
+    // const comparator = EmergencyTypeComparator(this.state.hoverDtype || this.state.selectedDtype || '');
+    // const markers = filtering(operations.data.geoJSON, comparator);
     this.setState({
       markerLayers: this.markerLayerStylesheetFactory.buildMarkerLayers(
         operations.data.geoJSON, this.state.scaleBy),
-      markerGeoJSON: markers
+      markerGeoJSON: operations.data.geoJSON
     });
   }
 
@@ -248,10 +249,16 @@ class PerMap extends React.Component {
     const geoJSON = this.state.markerGeoJSON;
     const mapContainerClassName = this.props.noRenderEmergencies ? 'map-container map-container-fullwidth' : 'map-container';
 
-    console.log('LAYERS');
-    console.log(layers);
-    console.log('geoJSON');
-    console.log(geoJSON);
+    // console.log('LAYERS');
+    // console.log(layers);
+    // console.log('geoJSON');
+    if (geoJSON !== null) {
+      geoJSON.features.map(feature => {
+        //delete feature.properties;
+        return geoJSON;
+      });
+    }
+    // console.log(geoJSON);
 
     return (
       <React.Fragment>
