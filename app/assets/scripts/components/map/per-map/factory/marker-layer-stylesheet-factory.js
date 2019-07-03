@@ -8,21 +8,23 @@ class MarkerLayerStylesheetFactory {
     this.getCircleRadiusPaintProp = this.getCircleRadiusPaintProp.bind(this);
   }
 
-  buildMarkerLayers (geoJSON, scaleBy) {
+  buildMarkerLayers () {
     const ccolor = {
-      property: 'atype',
+      property: 'code',
       type: 'categorical',
       stops: [
-        ['DREF', '#F39C12'],
-        ['Appeal', '#C22A26'],
-        ['Movement', '#CCCCCC'],
-        ['Mixed', '#4680F2']
+        ['a1', '#42c5f5'],
+        ['a2', '#2724ff'],
+        ['a3', '#33ff4b'],
+        ['a3-2', '#00a313'],
+        ['a4', '#e3df00'],
+        ['a5', '#e32d00']
       ]
     };
-    const cradius = this.getCircleRadiusPaintProp(geoJSON, scaleBy);
+    const cradius = this.getCircleRadiusPaintProp();
     const layers = [];
     layers.push({
-      'id': 'appeals',
+      'id': 'mapboxPoint', //appeals
       'type': 'circle',
       'source': source,
       'paint': {
@@ -33,9 +35,7 @@ class MarkerLayerStylesheetFactory {
     return layers;
   }
 
-  getCircleRadiusPaintProp (geoJSON, scaleBy) {
-    const scaleProp = scaleBy === 'amount' ? 'amountRequested' : 'numBeneficiaries';
-    const maxScaleValue = Math.max.apply(Math, geoJSON.features.map(o => o.properties[scaleProp]));
+  getCircleRadiusPaintProp () {
     return [
       'interpolate',
       ['linear'],
@@ -43,23 +43,25 @@ class MarkerLayerStylesheetFactory {
       3, [
         'interpolate',
         ['exponential', 1],
-        ['number', ['get', scaleProp]],
+        ['number', ['get', 'id']], // scaleProp
         0,
         0,
         1,
         5,
-        maxScaleValue,
+        // maxScaleValue,
+        6,
         10
       ],
       8, [
         'interpolate',
         ['exponential', 1],
-        ['number', ['get', scaleProp]],
+        ['number', ['get', 'id']], // scaleProp
         0,
         0,
         1,
         20,
-        maxScaleValue,
+        // maxScaleValue,
+        21,
         40
       ]
     ];
