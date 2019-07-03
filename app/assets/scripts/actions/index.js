@@ -211,6 +211,16 @@ export function getEruOwners () {
   return fetchJSON('api/v2/eru_owner/?limit=0', GET_ERU_OWNERS, withToken());
 }
 
+export const GET_DISTRICTS = 'GET_DISTRICTS';
+export function getDistrictsForCountry (country) {
+  const filters = {
+    country: country.value,
+    limit: 200
+  };
+  const f = buildAPIQS(filters);
+  return fetchJSON(`api/v2/district/?${f}`, GET_DISTRICTS, {}, { country });
+}
+
 export const GET_AA = 'GET_AA';
 export function getAdmAreaById (aaType, id) {
   switch (aaType) {

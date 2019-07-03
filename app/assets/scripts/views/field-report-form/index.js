@@ -20,7 +20,7 @@ import {
 } from '../../schemas/field-report-form';
 import * as formData from '../../utils/field-report-constants';
 import { showAlert } from '../../components/system-alerts';
-import { createFieldReport, updateFieldReport, getFieldReportById } from '../../actions';
+import { createFieldReport, updateFieldReport, getFieldReportById, getDistrictsForCountry } from '../../actions';
 import { showGlobalLoading, hideGlobalLoading } from '../../components/global-loading';
 import {
   dataPathToDisplay,
@@ -175,6 +175,33 @@ class FieldReportForm extends React.Component {
     }
   }
 
+  updateDistricts (e) {
+    this.props._getDistrictsForCountry(e);
+    return true;
+  }
+
+  getDistrictChoices () {
+    const { districts } = this.props;
+    const country = this.state.data.country;
+    if (!country) return [];
+    const countryId = country.value;
+    if (districts.hasOwnProperty(countryId) && districts[countryId].fetched) {
+      return districts[countryId].data.results.map(d => {
+        return {
+          'value': d.id,
+          'label': d.name
+        };
+      });
+    } else {
+      return [];
+    }
+  }
+
+  onCountryChange (e) {
+    this.updateDistricts(e);
+    this.onFieldChange('country', e);
+  }
+
   onFieldChange (field, e) {
     let data = _cloneDeep(this.state.data);
     let val = e && e.target ? e.target.value : e;
@@ -224,6 +251,7 @@ class FieldReportForm extends React.Component {
   }
 
   renderStep1 () {
+    const districtChoices = this.getDistrictChoices() || [];
     return (
       <Fold title='Basic Information'>
         <FormInput
@@ -251,7 +279,7 @@ class FieldReportForm extends React.Component {
           <Select
             name='country'
             value={this.state.data.country}
-            onChange={this.onFieldChange.bind(this, 'country')}
+            onChange={this.onCountryChange.bind(this)}
             options={formData.countries}
           />
 
@@ -261,6 +289,22 @@ class FieldReportForm extends React.Component {
           />
         </div>
 
+        <div className='form__group'>
+          <label className='form__label'>Areas</label>
+          <p className='form__description'>Search for areas within affected country.</p>
+          <Select
+            name='districts'
+            value={this.state.data.districts}
+            onChange={this.onFieldChange.bind(this, 'districts')}
+            options={districtChoices}
+            multi
+          />
+
+          <FormError
+            errors={this.state.errors}
+            property='districts'
+          />
+        </div>
         <FormRadioGroup
           label='Status *'
           name='status'
@@ -767,6 +811,8 @@ if (environment !== 'production') {
     _createFieldReport: T.func,
     _updateFieldReport: T.func,
     _getFieldReportById: T.func,
+    _getDistrictsForCountry: T.func,
+    districts: T.object,
     fieldReportForm: T.object,
     user: T.object,
     report: T.object,
@@ -785,13 +831,15 @@ const selector = (state, ownProps) => ({
     data: {},
     fetching: false,
     fetched: false
-  })
+  }),
+  districts: state.districts
 });
 
 const dispatcher = (dispatch) => ({
   _createFieldReport: (...args) => dispatch(createFieldReport(...args)),
   _updateFieldReport: (...args) => dispatch(updateFieldReport(...args)),
-  _getFieldReportById: (...args) => dispatch(getFieldReportById(...args))
+  _getFieldReportById: (...args) => dispatch(getFieldReportById(...args)),
+  _getDistrictsForCountry: (...args) => dispatch(getDistrictsForCountry(...args))
 });
 
 export default connect(selector, dispatcher)(FieldReportForm);
