@@ -246,18 +246,18 @@ class FieldReportForm extends React.Component {
         </FormInput>
 
         <div className='form__group'>
-          <label className='form__label'>Countries *</label>
-          <p className='form__description'>Seach for the affected country. You can select more than one.</p>
+          <label className='form__label'>Country *</label>
+          <p className='form__description'>Seach for the affected country.</p>
           <Select
-            name='countries'
-            value={this.state.data.countries}
-            onChange={this.onFieldChange.bind(this, 'countries')}
+            name='country'
+            value={this.state.data.country}
+            onChange={this.onFieldChange.bind(this, 'country')}
             options={formData.countries}
-            multi />
+          />
 
           <FormError
             errors={this.state.errors}
-            property='countries'
+            property='country'
           />
         </div>
 

@@ -8,12 +8,16 @@ export const step1 = {
     summary: {
       type: 'string'
     },
-    countries: {
-      type: 'array',
-      minItems: 1,
-      items: {
-        enum: getValidValues(formData.countries, 'value')
-      }
+    // countries: {
+    //   type: 'array',
+    //   minItems: 1,
+    //   items: {
+    //     enum: getValidValues(formData.countries, 'value')
+    //   }
+    // },
+    country: {
+      type: 'string',
+      enum: getValidValues(formData.countries, 'value')
     },
     status: {
       type: 'string',
@@ -34,7 +38,7 @@ export const step1 = {
       type: 'boolean'
     }
   },
-  required: ['summary', 'countries', 'status', 'disasterType']
+  required: ['summary', 'country', 'status', 'disasterType']
 };
 
 export const step2 = {
