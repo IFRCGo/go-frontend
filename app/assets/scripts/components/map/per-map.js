@@ -9,14 +9,14 @@ import chroma from 'chroma-js';
 import { environment } from '../../config';
 import BlockLoading from '../block-loading';
 import MapComponent from './common/map-component';
-import OperationsPopover from './home-map/operations-popover';
+import OperationsPopover from './per-map/operations-popover';
 import { get } from '../../utils/utils';
-import ExplanationBubble from './home-map/explanation-bubble';
-import { filtering } from './home-map/filtering/filtering-processor';
-import { AppealTypeComparator } from './home-map/filtering/comparator/appeal-type-comparator';
-import { EmergencyTypeComparator } from './home-map/filtering/comparator/emergency-type-comparator';
+// import ExplanationBubble from './home-map/explanation-bubble';
+// import { filtering } from './home-map/filtering/filtering-processor';
+// import { AppealTypeComparator } from './home-map/filtering/comparator/appeal-type-comparator';
+// import { EmergencyTypeComparator } from './home-map/filtering/comparator/emergency-type-comparator';
 import EmergenciesLeftMenu from './common/emergencies-left-menu';
-import MarkerLayerStylesheetFactory from './home-map/factory/marker-layer-stylesheet-factory';
+import MarkerLayerStylesheetFactory from './per-map/factory/marker-layer-stylesheet-factory';
 
 const scale = chroma.scale(['#F0C9E8', '#861A70']);
 
@@ -39,115 +39,112 @@ class PerMap extends React.Component {
     this.markerLayerStylesheetFactory = new MarkerLayerStylesheetFactory();
 
     this.configureMap = this.configureMap.bind(this);
-    this.onFieldChange = this.onFieldChange.bind(this);
+   //  this.onFieldChange = this.onFieldChange.bind(this);
     this.navigate = this.navigate.bind(this);
-    this.setSelectedAppealTypeNeutral = this.setSelectedAppealTypeNeutral.bind(this);
-    this.setSelectedDtypeNeutral = this.setSelectedDtypeNeutral.bind(this);
+    // this.setSelectedAppealTypeNeutral = this.setSelectedAppealTypeNeutral.bind(this);
+    // this.setSelectedDtypeNeutral = this.setSelectedDtypeNeutral.bind(this);
   }
 
   componentDidMount () {
-    const { operations, deployments } = this.props;
-    // Init the map if there's data when the component loads.
-    if (operations && !operations.error && operations.fetched) {
-      this.setMarkerLayers(operations);
+    const { data } = this.props;
+    if (data && !data.error && data.fetched) {
+      this.setMarkerLayers(data);
     }
-    if (deployments && !deployments.error && deployments.fetched) {
-      this.setFillLayers(deployments);
-    }
+    // if (deployments && !deployments.error && deployments.fetched) {
+    //   this.setFillLayers(deployments);
+    // }
   }
 
-  componentWillReceiveProps ({ operations, deployments }) {
-    if (operations && !this.props.operations.fetched && operations.fetched && !operations.error) {
-      this.setMarkerLayers(operations);
+  componentWillReceiveProps ({ data }) {
+    if (data && !this.props.data.fetched && data.fetched && !data.error) {
+      this.setMarkerLayers(data);
     }
-    if (deployments && deployments.fetched && !deployments.error && (
-      !this.props.deployments.fetched || JSON.stringify(deployments.data.areas) !== JSON.stringify(this.props.deployments.data.areas)
-    )) {
-      this.setFillLayers(deployments);
-    }
+    // if (deployments && deployments.fetched && !deployments.error && (
+    //   !this.props.deployments.fetched || JSON.stringify(deployments.data.areas) !== JSON.stringify(this.props.deployments.data.areas)
+    // )) {
+    //   this.setFillLayers(deployments);
+    // }
   }
 
-  setMarkerLayers (operations) {
-    console.log(operations.data.geoJSON);
+  setMarkerLayers (data) {
     // const comparator = EmergencyTypeComparator(this.state.hoverDtype || this.state.selectedDtype || '');
     // const markers = filtering(operations.data.geoJSON, comparator);
     this.setState({
-      markerLayers: this.markerLayerStylesheetFactory.buildMarkerLayers(
-        operations.data.geoJSON, this.state.scaleBy),
-      markerGeoJSON: operations.data.geoJSON
+      markerLayers: this.markerLayerStylesheetFactory.buildMarkerLayers(data.data.geoJSON),
+      markerGeoJSON: data.data.geoJSON
     });
   }
 
-  setFillLayers (deployments) {
-    const { data } = deployments;
-    scale.domain([0, data.max]);
-    // create a data-driven paint property for the district fill color
-    const paint = ['case'];
-    data.areas.forEach(d => {
-      paint.push(['==', ['to-string', ['get', 'OBJECTID']], d.id]);
-      paint.push(scale(d.deployments.length).hex());
-    });
-    paint.push('rgba(0, 0, 0, 0)');
-    const action = () => this.theMap.setPaintProperty('district', 'fill-color', paint);
-    if (this.state.ready) {
-      action();
-    } else {
-      this.setState({
-        mapActions: this.state.mapActions.concat(action)
-      });
-    }
-  }
+  // setFillLayers (deployments) {
+  //   const { data } = deployments;
+  //   scale.domain([0, data.max]);
+  //   // create a data-driven paint property for the district fill color
+  //   const paint = ['case'];
+  //   data.areas.forEach(d => {
+  //     paint.push(['==', ['to-string', ['get', 'OBJECTID']], d.id]);
+  //     paint.push(scale(d.deployments.length).hex());
+  //   });
+  //   paint.push('rgba(0, 0, 0, 0)');
+  //   const action = () => this.theMap.setPaintProperty('district', 'fill-color', paint);
+  //   if (this.state.ready) {
+  //     action();
+  //   } else {
+  //     this.setState({
+  //       mapActions: this.state.mapActions.concat(action)
+  //     });
+  //   }
+  // }
 
-  onDtypeHover (what, typeId) {
-    if (this.state.selectedDtype === null) {
-      const hoverDtype = what === 'mouseover' ? typeId : null;
-      const comparator = EmergencyTypeComparator(hoverDtype);
-      const markers = filtering(this.props.operations.data.geoJSON, comparator);
-      this.setState({
-        hoverDtype,
-        markerGeoJSON: markers
-      });
-    }
-  }
+  // onDtypeHover (what, typeId) {
+  //   if (this.state.selectedDtype === null) {
+  //     const hoverDtype = what === 'mouseover' ? typeId : null;
+  //     const comparator = EmergencyTypeComparator(hoverDtype);
+  //     const markers = filtering(this.props.operations.data.geoJSON, comparator);
+  //     this.setState({
+  //       hoverDtype,
+  //       markerGeoJSON: markers
+  //     });
+  //   }
+  // }
 
-  onDtypeClick (typeId) {
-    const selectedDtype = this.state.selectedDtype === typeId ? null : typeId;
-    const comparator = EmergencyTypeComparator(selectedDtype);
-    const markers = filtering(this.props.operations.data.geoJSON, comparator);
-    this.setState({
-      selectedDtype,
-      markerGeoJSON: markers
-    });
-    this.setSelectedAppealTypeNeutral();
-  }
+  // onDtypeClick (typeId) {
+  //   const selectedDtype = this.state.selectedDtype === typeId ? null : typeId;
+  //   const comparator = EmergencyTypeComparator(selectedDtype);
+  //   const markers = filtering(this.props.operations.data.geoJSON, comparator);
+  //   this.setState({
+  //     selectedDtype,
+  //     markerGeoJSON: markers
+  //   });
+  //   this.setSelectedAppealTypeNeutral();
+  // }
 
-  onAppealTypeChange (typeId) {
-    const comparator = AppealTypeComparator(typeId);
-    const markers = filtering(this.props.operations.data.geoJSON, comparator);
-    this.setState({
-      markerGeoJSON: markers
-    });
-    this.setSelectedDtypeNeutral();
-  }
+  // onAppealTypeChange (typeId) {
+  //   const comparator = AppealTypeComparator(typeId);
+  //   const markers = filtering(this.props.operations.data.geoJSON, comparator);
+  //   this.setState({
+  //     markerGeoJSON: markers
+  //   });
+  //   this.setSelectedDtypeNeutral();
+  // }
 
-  setSelectedDtypeNeutral () {
-    this.setState({selectedDtype: null});
-    document.getElementById('top-emergency-dropdown').value = 0;
-  }
+  // setSelectedDtypeNeutral () {
+  //   this.setState({selectedDtype: null});
+  //   document.getElementById('top-emergency-dropdown').value = 0;
+  // }
 
-  setSelectedAppealTypeNeutral () {
-    document.getElementById('top-appeal-dropdown').value = 'all';
-  }
+  // setSelectedAppealTypeNeutral () {
+  //   document.getElementById('top-appeal-dropdown').value = 'all';
+  // }
 
-  onFieldChange (e) {
-    const scaleBy = e.target.value;
-    this.setState({
-      markerLayers: this.markerLayerStylesheetFactory.buildMarkerLayers(
-        this.props.operations.data.geoJSON, scaleBy),
-      scaleBy
-    });
-    this.onPopoverCloseClick(scaleBy);
-  }
+  // onFieldChange (e) {
+  //   const scaleBy = e.target.value;
+  //   this.setState({
+  //     markerLayers: this.markerLayerStylesheetFactory.buildMarkerLayers(
+  //       this.props.operations.data.geoJSON, scaleBy),
+  //     scaleBy
+  //   });
+  //   this.onPopoverCloseClick(scaleBy);
+  // }
 
   configureMap (theMap) {
     // Event listeners.
@@ -156,23 +153,15 @@ class PerMap extends React.Component {
       this.setState({ ready: true });
     });
 
-    theMap.on('click', 'appeals', e => {
+    theMap.on('click', 'mapboxPoint', e => {
       this.showOperationsPopover(theMap, e.features[0]);
     });
 
-    theMap.on('mousemove', 'appeals', e => {
+    theMap.on('mousemove', 'mapboxPoint', e => {
       theMap.getCanvas().style.cursor = 'pointer';
     });
 
-    theMap.on('mouseleave', 'appeals', e => {
-      theMap.getCanvas().style.cursor = '';
-    });
-
-    theMap.on('mousemove', 'country', e => {
-      theMap.getCanvas().style.cursor = 'pointer';
-    });
-
-    theMap.on('mouseleave', 'country', e => {
+    theMap.on('mouseleave', 'mapboxPoint', e => {
       theMap.getCanvas().style.cursor = '';
     });
 
@@ -204,17 +193,12 @@ class PerMap extends React.Component {
 
   showOperationsPopover (theMap, feature) {
     let popoverContent = document.createElement('div');
-    const { properties, geometry } = feature;
-    const operations = !properties.appeals ? []
-      : Array.isArray(properties.appeals) ? properties.appeals
-        : JSON.parse(properties.appeals);
-    const title = `${properties.name}`;
+    const country = JSON.parse(feature.properties.country.replace(/'/g, '"'));
 
     render(<OperationsPopover
-      title={title}
+      title={country.name}
+      pageId={country.id}
       navigate={this.navigate}
-      pageId={properties.id}
-      operations={operations}
       onCloseClick={this.onPopoverCloseClick.bind(this)} />, popoverContent);
 
     // Populate the popup and set its coordinates
@@ -224,41 +208,30 @@ class PerMap extends React.Component {
     }
 
     this.popover = new mapboxgl.Popup({closeButton: false})
-      .setLngLat(geometry.coordinates)
+      .setLngLat(feature.geometry.coordinates)
       .setDOMContent(popoverContent.children[0])
       .addTo(theMap);
   }
 
   renderLoading () {
-    const { operations, deployments } = this.props;
-    if (get(operations, 'fetching') && get(deployments, 'fetching')) {
+    const { data } = this.props;
+    if (get(data, 'fetching')) {
       return <BlockLoading/>;
     }
   }
 
   renderError () {
-    const { operations, deployments } = this.props;
-    if (get(operations, 'error') || get(deployments, 'error')) {
+    const { data } = this.props;
+    if (get(data, 'error')) {
       return <p>Data not available.</p>;
     }
   }
 
   renderContent () {
-    if (this.props.operations.fetching) return null;
+    if (this.props.data.data.fetching) return null;
     const layers = this.props.layers ? this.state.markerLayers.concat(this.props.layers) : this.state.markerLayers;
     const geoJSON = this.state.markerGeoJSON;
     const mapContainerClassName = this.props.noRenderEmergencies ? 'map-container map-container-fullwidth' : 'map-container';
-
-    // console.log('LAYERS');
-    // console.log(layers);
-    // console.log('geoJSON');
-    if (geoJSON !== null) {
-      geoJSON.features.map(feature => {
-        // delete feature.properties;
-        return geoJSON;
-      });
-    }
-    // console.log(geoJSON);
 
     return (
       <React.Fragment>
@@ -278,10 +251,10 @@ class PerMap extends React.Component {
             geoJSON={geoJSON}
             downloadButton={true}>
 
-            <ExplanationBubble scaleBy={this.state.scaleBy}
+            {/* <ExplanationBubble scaleBy={this.state.scaleBy}
               onFieldChange={this.onFieldChange}
               deployments={this.props.deployments}
-              deploymentsKey={this.props.deploymentsKey}/>
+              deploymentsKey={this.props.deploymentsKey}/> */}
           </MapComponent>
         </div>
       </React.Fragment>
@@ -303,7 +276,7 @@ class PerMap extends React.Component {
 
 if (environment !== 'production') {
   PerMap.propTypes = {
-    operations: T.object,
+    data: T.object,
     deployments: T.object,
     deploymentsKey: T.string,
     history: T.object,
