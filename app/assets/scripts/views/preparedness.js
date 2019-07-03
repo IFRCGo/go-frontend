@@ -3,10 +3,7 @@ import App from './app';
 import PreparednessHeader from './../components/preparedness-header';
 import PerMap from './../components/map/per-map';
 import { connect } from 'react-redux';
-import {
-  getAppealsList,
-  getCollaboratingPerCountry
-} from './../actions';
+import { getCollaboratingPerCountry } from './../actions';
 import { Helmet } from 'react-helmet';
 import { PropTypes as T } from 'prop-types';
 import { environment } from '../config';
@@ -21,14 +18,10 @@ class Preparedness extends React.Component {
   }
 
   componentDidMount () {
-    this.props._getAppealsList();
     this.props._getCollaboratingPerCountry();
   }
 
   componentDidUpdate (prevProps) {
-    // console.log('ComponentDidUpdate');
-    // console.log(prevProps);
-    // console.log(this.props);
     if (prevProps.collaboratingPerCountry.receivedAt !== this.props.collaboratingPerCountry.receivedAt) {
       const geoJson = {
         type: 'FeatureCollection',
@@ -51,18 +44,13 @@ class Preparedness extends React.Component {
 
         return perForm;
       });
-      // console.log(geoJson);
       this.geoJsonFinal = {error: false, fetched: true, fetching: false, receivedAt: false, data: {geoJSON: geoJson}};
       // const grouped = _groupBy(this.props.collaboratingPerCountry.data.results.filter(perForm => perForm.country), 'country.iso');
-      // console.log('GROUPED');
-      // console.log(grouped);
+      this.forceUpdate();
     }
   }
 
   render () {
-    console.log('*** RENDER ***');
-    console.log(this.geoJsonFinal);
-    console.log(this.props.appealsList);
     return (
       <App className='page--homepage'>
         <section className='inpage'>
@@ -82,7 +70,7 @@ class Preparedness extends React.Component {
           </header>
           <div className='inpage__body'>
             <PreparednessHeader />
-            { this.geoJsonFinal !== null ? <PerMap operations={this.geoJsonFinal} noExport={true} noRenderEmergencies={true} /> : null }
+            { this.geoJsonFinal !== null ? <PerMap data={this.geoJsonFinal} noExport={true} noRenderEmergencies={true} /> : null }
           </div>
         </section>
       </App>);
@@ -94,20 +82,16 @@ class Preparedness extends React.Component {
 
 if (environment !== 'production') {
   Preparedness.propTypes = {
-    _getAppealsList: T.func,
     _getCollaboratingPerCountry: T.func,
-    collaboratingPerCountry: T.obj,
-    appealsList: T.obj
+    collaboratingPerCountry: T.object
   };
 }
 
 const selector = (state) => ({
-  appealsList: state.overallStats.appealsList,
   collaboratingPerCountry: state.perForm.getCollaboratingPerCountry
 });
 
 const dispatcher = (dispatch) => ({
-  _getAppealsList: (...args) => dispatch(getAppealsList(...args)),
   _getCollaboratingPerCountry: () => dispatch(getCollaboratingPerCountry())
 });
 
