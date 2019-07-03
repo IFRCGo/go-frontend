@@ -19,6 +19,9 @@ export const step1 = {
       type: 'string',
       enum: getValidValues(formData.countries, 'value')
     },
+    districts: {
+      type: 'array'
+    },
     status: {
       type: 'string',
       enum: getValidValues(formData.status, 'value')

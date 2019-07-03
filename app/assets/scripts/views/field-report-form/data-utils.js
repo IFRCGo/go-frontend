@@ -17,6 +17,7 @@ export function dataPathToDisplay (path) {
     summary: 'Summary',
     country: 'Country',
     countries: 'Countries',
+    districts: 'Areas',
     status: 'Status',
     disasterType: 'Disaster Type',
     event: 'Event',
@@ -90,6 +91,7 @@ export function prepStateForValidation (state) {
     // Step 1.
     assistance: toBool,
     country: (val) => val.value,
+    districts: (val) => val.map(o => o.value),
     // countries: (val) => val.value,
     event: (val) => val ? toNumIfNum(val.value) : undefined,
 
@@ -127,17 +129,18 @@ export function convertStateToPayload (originalState) {
   // Prepare the payload for submission.
   // Extract properties that need processing.
   originalState = _cloneDeep(originalState);
-  console.log('original state', originalState);
   let state = {};
   const {
     country,
     disasterType,
+    districts,
     event
   } = originalState;
 
   // Process properties.
   // if (countries.length) { state.countries = countries.map(o => +o.value); }
   if (disasterType) { state.dtype = +disasterType; }
+  if (districts.length) { state.districts = districts.map(o => +o.value); }
   if (event && event.value) { state.event = +event.value; }
   if (country) { state.countries = [country.value]; }
 
@@ -293,6 +296,7 @@ export function getInitialDataState () {
     // Will need to be converted.
     country: undefined,
     // countries: [],
+    districts: [],
     status: undefined,
     visibility: '1',
     disasterType: undefined,
@@ -370,6 +374,10 @@ export function convertFieldReportToState (fieldReport) {
   }));
   state.country = fieldReport.countries.length ? state.countries[0] : null;
 
+  state.districts = fieldReport.districts.map(o => ({
+    label: o.name,
+    value: o.id.toString()
+  }));
   // delete state.countries;
 
   if (fieldReport.dtype) {
