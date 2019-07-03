@@ -5,7 +5,7 @@ import { render } from 'react-dom';
 import { PropTypes as T } from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import mapboxgl from 'mapbox-gl';
-import chroma from 'chroma-js';
+// import chroma from 'chroma-js';
 import { environment } from '../../config';
 import BlockLoading from '../block-loading';
 import MapComponent from './common/map-component';
@@ -18,7 +18,7 @@ import { get } from '../../utils/utils';
 import EmergenciesLeftMenu from './common/emergencies-left-menu';
 import MarkerLayerStylesheetFactory from './per-map/factory/marker-layer-stylesheet-factory';
 
-const scale = chroma.scale(['#F0C9E8', '#861A70']);
+// const scale = chroma.scale(['#F0C9E8', '#861A70']);
 
 class PerMap extends React.Component {
   constructor (props) {
@@ -39,7 +39,7 @@ class PerMap extends React.Component {
     this.markerLayerStylesheetFactory = new MarkerLayerStylesheetFactory();
 
     this.configureMap = this.configureMap.bind(this);
-   //  this.onFieldChange = this.onFieldChange.bind(this);
+    // this.onFieldChange = this.onFieldChange.bind(this);
     this.navigate = this.navigate.bind(this);
     // this.setSelectedAppealTypeNeutral = this.setSelectedAppealTypeNeutral.bind(this);
     // this.setSelectedDtypeNeutral = this.setSelectedDtypeNeutral.bind(this);

@@ -24,7 +24,7 @@ class MarkerLayerStylesheetFactory {
     const cradius = this.getCircleRadiusPaintProp();
     const layers = [];
     layers.push({
-      'id': 'mapboxPoint', //appeals
+      'id': 'mapboxPoint', // appeals
       'type': 'circle',
       'source': source,
       'paint': {
