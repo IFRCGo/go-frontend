@@ -18,11 +18,11 @@ export default class NationalSocietiesEngagedPer extends PureComponent {
     return Math.PI / 180;
   }
 
-  static RENDER_CUSTOMIZED_LABEL ({cx, cy, midAngle, innerRadius, outerRadius, percent, index,}) {
+  static RENDER_CUSTOMIZED_LABEL ({cx, cy, midAngle, innerRadius, outerRadius, percent, index}) {
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
     const x = cx + radius * Math.cos(-midAngle * NationalSocietiesEngagedPer.RADIAN);
     const y = cy + radius * Math.sin(-midAngle * NationalSocietiesEngagedPer.RADIAN);
-  
+
     return (
       <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
         {`${(percent * 100).toFixed(0)}%`}
