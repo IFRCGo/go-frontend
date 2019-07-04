@@ -79,7 +79,7 @@ export default class NationalSocietiesEngagedPer extends PureComponent {
     });
     return (
       <div className='inner'>
-        <Fold title={'National Societies Engaged In Per Process'}>
+        <Fold title={'National Societies engaged in the PER process'}>
           {charts}
         </Fold>
       </div>
