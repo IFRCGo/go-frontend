@@ -96,6 +96,8 @@ class FieldReportForm extends React.Component {
       if (!nextProps.report.error) {
         const prefillState = convertFieldReportToState(nextProps.report.data);
         this.setState({data: prefillState});
+        const country = prefillState.country;
+        if (country) this.updateDistricts(country);
       }
     }
   }
