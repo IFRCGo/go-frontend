@@ -1,6 +1,7 @@
 'use strict';
+
 import React from 'react';
-import Fold from './fold';
+import Fold from './../fold';
 
 class PreparednessHeader extends React.Component {
   render () {
