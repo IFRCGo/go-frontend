@@ -55,9 +55,22 @@ const systemNotificationTypes = [{
   value: 'modified'
 }];
 
-const otherNotificationTypes = [{
+const surgeNotificationTypes = [{
   label: 'Surge alerts',
   value: 'surge'
+},
+{
+  label: 'Deployment Messages',
+  value: 'surgeDM'
+},
+{
+  label: 'Approaching End of Mission',
+  value: 'surgeAEM'
+}];
+
+const perDueDateTypes = [{
+  label: 'PER Due Dates',
+  value: 'perDueDate'
 }];
 
 const regions = [{
@@ -85,7 +98,11 @@ const rtypes = {
   3: 'surge',
   4: 'country',
   5: 'region',
-  6: 'disasterType'
+  6: 'disasterType',
+  7: 'perDueDate',
+  // 8: 'followedEvent' // could be here
+  9: 'surgeDM',
+  10: 'surgeAEM'
 };
 
 const stypes = {
@@ -132,7 +149,8 @@ class Account extends React.Component {
         event: systemNotificationTypes.map(markUnChecked),
         fieldReport: systemNotificationTypes.map(markUnChecked),
         appeal: systemNotificationTypes.map(markUnChecked),
-        other: otherNotificationTypes.map(markUnChecked)
+        surg: surgeNotificationTypes.map(markUnChecked),
+        per: perDueDateTypes.map(markUnChecked)
       },
 
       isProfileDirty: false,
@@ -220,7 +238,13 @@ class Account extends React.Component {
       } else if (rtype === 'appeal' || rtype === 'event' || rtype === 'fieldReport') {
         next[rtype] = updateChecks(next[rtype], stypes[sub.stype]);
       } else if (rtype === 'surge') {
-        next.other = updateChecks(next.other, 'surge');
+        next.surg = updateChecks(next.surg, 'surge');
+      } else if (rtype === 'surgeDM') {
+        next.surg = updateChecks(next.surg, 'surgeDM');
+      } else if (rtype === 'surgeAEM') {
+        next.surg = updateChecks(next.surg, 'surgeAEM');
+      } else if (rtype === 'perDueDate') {
+        next.per = updateChecks(next.per, 'perDueDate');
       }
     });
     this.setState({ notifications: next });
@@ -269,12 +293,20 @@ class Account extends React.Component {
         return acc.concat(flattened);
       }, []);
 
-    let otherNotifications = get(notifications, 'other', []).filter(d => d.checked).map(d => ({
+    let surgeNotifications = get(notifications, 'surg', []).filter(d => d.checked).map(d => ({
       type: d.value,
       value: true
     }));
-    if (otherNotifications.length) {
-      serialized.push.apply(serialized, otherNotifications);
+    if (surgeNotifications.length) {
+      serialized.push.apply(serialized, surgeNotifications);
+    }
+
+    let perDueDates = get(notifications, 'per', []).filter(d => d.checked).map(d => ({
+      type: d.value,
+      value: true
+    }));
+    if (perDueDates.length) {
+      serialized.push.apply(serialized, perDueDates);
     }
 
     let countries = get(notifications, 'countries', []).map(d => ({
@@ -555,12 +587,19 @@ class Account extends React.Component {
               values={this.state.notifications.appeal}
               onChange={this.onFieldChange.bind(this, 'notifications', 'appeal')} />
             <FormCheckboxGroup
-              label='Other Notifications'
-              name='other'
+              label='Surge Notifications'
+              name='surg'
               classWrapper='action-checkboxes'
-              options={otherNotificationTypes}
-              values={this.state.notifications.other}
-              onChange={this.onFieldChange.bind(this, 'notifications', 'other')} />
+              options={surgeNotificationTypes}
+              values={this.state.notifications.surg}
+              onChange={this.onFieldChange.bind(this, 'notifications', 'surg')} />
+            <FormCheckboxGroup
+              label='Other Notifications'
+              name='per'
+              classWrapper='action-checkboxes'
+              options={perDueDateTypes}
+              values={this.state.notifications.per}
+              onChange={this.onFieldChange.bind(this, 'notifications', 'per')} />
             {events}
             <button type='submit' className={c('button', 'button--large', 'button--secondary-filled', {
               'disabled': !this.state.isNotificationsDirty
