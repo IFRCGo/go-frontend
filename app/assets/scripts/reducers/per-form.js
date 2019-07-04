@@ -130,6 +130,21 @@ function getCollaboratingPerCountry (state = initialState, action) {
   return state;
 }
 
+function getPerEngagedNsPercentage (state = initialState, action) {
+  switch (action.type) {
+    case 'PER_ENGAGED_NS_PERCENTAGE_INFLIGHT':
+      state = stateInflight(state, action);
+      break;
+    case 'PER_ENGAGED_NS_PERCENTAGE_FAILED':
+      state = stateError(state, action);
+      break;
+    case 'PER_ENGAGED_NS_PERCENTAGE_SUCCESS':
+      state = stateSuccess(state, action);
+      break;
+  }
+  return state;
+}
+
 export default combineReducers({
   sendPerForm,
   getPerCountries,
@@ -138,5 +153,6 @@ export default combineReducers({
   getPerDraftDocument,
   sendPerDraft,
   editPerDocument,
-  getCollaboratingPerCountry
+  getCollaboratingPerCountry,
+  getPerEngagedNsPercentage
 });

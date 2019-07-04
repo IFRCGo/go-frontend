@@ -444,3 +444,8 @@ export const COLLABORATING_PER_COUNTRY = 'COLLABORATING_PER_COUNTRY';
 export function getCollaboratingPerCountry () {
   return fetchJSON(`/api/v2/per_country_duedate`, COLLABORATING_PER_COUNTRY, withToken());
 }
+
+export const PER_ENGAGED_NS_PERCENTAGE = 'PER_ENGAGED_NS_PERCENTAGE';
+export function getPerEngagedNsPercentage () {
+  return fetchJSON(`api/v2/per_engaged_ns_percentage`, PER_ENGAGED_NS_PERCENTAGE, withToken());
+}
