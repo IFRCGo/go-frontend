@@ -449,3 +449,13 @@ export const PER_ENGAGED_NS_PERCENTAGE = 'PER_ENGAGED_NS_PERCENTAGE';
 export function getPerEngagedNsPercentage () {
   return fetchJSON(`api/v2/per_engaged_ns_percentage`, PER_ENGAGED_NS_PERCENTAGE, withToken());
 }
+
+export const PER_GLOBAL_PREPAREDNESS = 'PER_GLOBAL_PREPAREDNESS';
+export function getPerGlobalPreparedness () {
+  return fetchJSON(`api/v2/per_global_preparedness`, PER_GLOBAL_PREPAREDNESS, withToken());
+}
+
+export const PER_NS_PHASE = 'PER_NS_PHASE';
+export function getPerNsPhase () {
+  return fetchJSON(`api/v2/per_ns_phase`, PER_NS_PHASE, withToken());
+}
