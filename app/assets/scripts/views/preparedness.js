@@ -14,7 +14,6 @@ import { Helmet } from 'react-helmet';
 import { PropTypes as T } from 'prop-types';
 import { environment } from '../config';
 import { getCountryMeta } from './../utils/get-country-meta';
-import { getPerComponent } from './../utils/get-per-components';
 import { getCentroid } from './../utils/country-centroids';
 import NationalSocietiesEngagedPer from '../components/preparedness/national-societies-engaged-per';
 import GlobalPreparednessHighlights from '../components/preparedness/global-preparedness-highlights';
@@ -37,14 +36,14 @@ class Preparedness extends React.Component {
     this.props._getPerNsPhase();
   }
 
-  componentDidUpdate (prevProps) {
-    if (prevProps.collaboratingPerCountry.receivedAt !== this.props.collaboratingPerCountry.receivedAt) {
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.collaboratingPerCountry.receivedAt !== this.props.collaboratingPerCountry.receivedAt) {
       const geoJson = {
         type: 'FeatureCollection',
         features: []
       };
 
-      this.props.collaboratingPerCountry.data.results.map((perForm) => {
+      nextProps.collaboratingPerCountry.data.results.map((perForm) => {
         let countryMeta = getCountryMeta(perForm.country.id);
         perForm.country.iso = countryMeta.iso;
         let countryCentroid = getCentroid(perForm.country.iso);
@@ -60,17 +59,16 @@ class Preparedness extends React.Component {
 
         return perForm;
       });
-      // console.log(geoJson);
       this.setState({geoJsonFinal: {error: false, fetched: true, fetching: false, receivedAt: false, data: {geoJSON: geoJson}}});
       // const grouped = _groupBy(this.props.collaboratingPerCountry.data.results.filter(perForm => perForm.country), 'country.iso');
-      // this.forceUpdate();
     }
-    if (this.props.getPerNsPhase.fetched && this.props.collaboratingPerCountry.fetched && this.geoJsonBuilt === false && this.state.geoJsonFinal !== null) {
+
+    if (nextProps.getPerNsPhase.fetched && nextProps.collaboratingPerCountry.fetched && this.geoJsonBuilt === false && this.state.geoJsonFinal !== null) {
       this.geoJsonBuilt = true;
       const builtGeoJson = this.state.geoJsonFinal;
 
       builtGeoJson.data.geoJSON.features.map((mapObject) => {
-        const phaseObjects = this.props.getPerNsPhase.data.results.filter((phaseObject) => phaseObject.country === mapObject.properties.country.id);
+        const phaseObjects = nextProps.getPerNsPhase.data.results.filter((phaseObject) => phaseObject.country === mapObject.properties.country.id);
         const phaseObject = phaseObjects.length > 0 ? phaseObjects[0] : {id: -1, country: -1, phase: -1, updated_at: -1};
         mapObject.properties.phase = phaseObject;
         return mapObject;
@@ -117,7 +115,10 @@ if (environment !== 'production') {
   Preparedness.propTypes = {
     _getCollaboratingPerCountry: T.func,
     _getPerEngagedNsPercentage: T.func,
+    _getPerGlobalPreparedness: T.func,
+    _getPerNsPhase: T.func,
     getPerEngagedNsPercentage: T.object,
+    getPerNsPhase: T.object,
     collaboratingPerCountry: T.object
   };
 }

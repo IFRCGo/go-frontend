@@ -3,43 +3,49 @@
 import React from 'react';
 import Fold from './../fold';
 import { getPerComponent } from './../../utils/get-per-components';
+import { environment } from './../../config';
+import { PropTypes as T } from 'prop-types';
 
 export default class GlobalPreparednessHighlights extends React.Component {
   constructor (props) {
     super(props);
-    this.state = {
-      highPerformingComponents: []
+    this.highPerformingComponents = [];
+    this.highPerformingComponentsDataBuilt = false;
+  }
+
+  buildHighPerformingComponentsData () {
+    if (!this.highPerformingComponentsDataBuilt) {
+      this.highPerformingComponentsDataBuilt = true;
+      const components = {};
+      const highPerformingComponents = [];
+
+      this.props.data.data.results.forEach(result => {
+        if (typeof components[result.code + '' + result.question_id] === 'undefined') {
+          components[result.code + '' + result.question_id] = {name: getPerComponent(result.code, result.question_id)[0].name, count: 1};
+        } else {
+          components[result.code + '' + result.question_id].count++;
+        }
+      });
+
+      Object.keys(components).sort((componentKeyA, componentKeyB) => {
+        if (components[componentKeyA].count < components[componentKeyB].count) {
+          return -1;
+        } else if (components[componentKeyA].count > components[componentKeyB].count) {
+          return 1;
+        }
+        return 0;
+      }).forEach(sortedComponentKey => {
+        highPerformingComponents.push(components[sortedComponentKey]);
+      });
+
+      this.highPerformingComponents = highPerformingComponents;
     }
   }
 
-  componentDidMount () {
-    const components = {};
-    const highPerformingComponents = [];
-
-    this.props.data.data.results.forEach(result => {
-      if (typeof components[result.code + '' + result.question_id] === 'undefined') {
-        components[result.code + '' + result.question_id] = {name: getPerComponent(result.code, result.question_id)[0].name, count: 1};
-      } else {
-        components[result.code + '' + result.question_id].count++;
-      }
-    });
-
-    Object.keys(components).sort((componentKeyA, componentKeyB) => {
-      if (components[componentKeyA].count < components[componentKeyB].count) {
-        return -1;
-      } else if (components[componentKeyA].count > components[componentKeyB].count) {
-        return 1;
-      }
-      return 0;
-    }).forEach(sortedComponentKey => {
-      highPerformingComponents.push(components[sortedComponentKey]);
-    });
-    this.setState({highPerformingComponents: highPerformingComponents});
-  }
-
   render () {
+    this.buildHighPerformingComponentsData();
     const highPerformingComponents = [];
-    this.state.highPerformingComponents.forEach((component) => {
+    this.highPerformingComponents.forEach((component) => {
       highPerformingComponents.push(<li key={component.name}>{component.name}</li>);
     });
     return (
@@ -62,3 +68,10 @@ export default class GlobalPreparednessHighlights extends React.Component {
     );
   }
 }
+
+if (environment !== 'production') {
+  GlobalPreparednessHighlights.propTypes = {
+    data: T.object
+  };
+}
+

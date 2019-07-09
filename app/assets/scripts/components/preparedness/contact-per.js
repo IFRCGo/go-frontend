@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 export default class ContactPer extends React.Component {
   render () {

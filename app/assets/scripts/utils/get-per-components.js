@@ -66,7 +66,7 @@ const components = {
     {id: 'c11epi', name: 'Communication in emergencies'},
     {id: 'c12epi', name: 'Resource Mobilisation'}
   ]
-}
+};
 
 export function getPerComponent (code, questionId) {
   code = code.replace(/-/g, '_');

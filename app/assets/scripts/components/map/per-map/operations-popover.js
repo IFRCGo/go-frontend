@@ -91,6 +91,7 @@ class OperationsPopover extends React.Component {
 if (environment !== 'production') {
   OperationsPopover.propTypes = {
     onCloseClick: T.func,
+    phase: T.object,
     title: T.string,
     pageId: T.number,
     operations: T.array,
