@@ -145,6 +145,36 @@ function getPerEngagedNsPercentage (state = initialState, action) {
   return state;
 }
 
+export function getPerGlobalPreparedness (state = initialState, action) {
+  switch (action.type) {
+    case 'PER_GLOBAL_PREPAREDNESS_INFLIGHT':
+      state = stateInflight(state, action);
+      break;
+    case 'PER_GLOBAL_PREPAREDNESS_FAILED':
+      state = stateError(state, action);
+      break;
+    case 'PER_GLOBAL_PREPAREDNESS_SUCCESS':
+      state = stateSuccess(state, action);
+      break;
+  }
+  return state;
+}
+
+export function getPerNsPhase (state = initialState, action) {
+  switch (action.type) {
+    case 'PER_NS_PHASE_INFLIGHT':
+      state = stateInflight(state, action);
+      break;
+    case 'PER_NS_PHASE_FAILED':
+      state = stateError(state, action);
+      break;
+    case 'PER_NS_PHASE_SUCCESS':
+      state = stateSuccess(state, action);
+      break;
+  }
+  return state;
+}
+
 export default combineReducers({
   sendPerForm,
   getPerCountries,
@@ -154,5 +184,7 @@ export default combineReducers({
   sendPerDraft,
   editPerDocument,
   getCollaboratingPerCountry,
-  getPerEngagedNsPercentage
+  getPerEngagedNsPercentage,
+  getPerGlobalPreparedness,
+  getPerNsPhase
 });

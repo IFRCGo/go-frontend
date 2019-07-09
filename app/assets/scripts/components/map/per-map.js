@@ -194,11 +194,13 @@ class PerMap extends React.Component {
   showOperationsPopover (theMap, feature) {
     let popoverContent = document.createElement('div');
     const country = JSON.parse(feature.properties.country.replace(/'/g, '"'));
+    const phase = JSON.parse(feature.properties.phase.replace(/'/g, '"'));
 
     render(<OperationsPopover
       title={country.name}
       pageId={country.id}
       navigate={this.navigate}
+      phase={phase}
       onCloseClick={this.onPopoverCloseClick.bind(this)} />, popoverContent);
 
     // Populate the popup and set its coordinates
