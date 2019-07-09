@@ -74,4 +74,3 @@ if (environment !== 'production') {
     data: T.object
   };
 }
-

@@ -119,7 +119,8 @@ if (environment !== 'production') {
     _getPerNsPhase: T.func,
     getPerEngagedNsPercentage: T.object,
     getPerNsPhase: T.object,
-    collaboratingPerCountry: T.object
+    collaboratingPerCountry: T.object,
+    getPerGlobalPreparedness: T.object
   };
 }
 
