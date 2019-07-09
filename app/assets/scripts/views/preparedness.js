@@ -3,24 +3,38 @@ import App from './app';
 import PreparednessHeader from '../components/preparedness/preparedness-header';
 import PerMap from './../components/map/per-map';
 import { connect } from 'react-redux';
-import { getCollaboratingPerCountry, getPerEngagedNsPercentage } from './../actions';
+import {
+  getCollaboratingPerCountry,
+  getPerEngagedNsPercentage,
+  getPerGlobalPreparedness,
+  getPerNsPhase
+} from './../actions';
+import ContactPer from './../components/preparedness/contact-per';
 import { Helmet } from 'react-helmet';
 import { PropTypes as T } from 'prop-types';
 import { environment } from '../config';
 import { getCountryMeta } from './../utils/get-country-meta';
+import { getPerComponent } from './../utils/get-per-components';
 import { getCentroid } from './../utils/country-centroids';
 import NationalSocietiesEngagedPer from '../components/preparedness/national-societies-engaged-per';
+import GlobalPreparednessHighlights from '../components/preparedness/global-preparedness-highlights';
 // import _groupBy from 'lodash.groupby';
 
 class Preparedness extends React.Component {
   constructor (props) {
     super(props);
-    this.geoJsonFinal = null;
+    this.state = {
+      geoJsonFinal: null,
+      preparednessGlobalHighlights: null
+    };
+    this.geoJsonBuilt = false;
   }
 
   componentDidMount () {
     this.props._getCollaboratingPerCountry();
     this.props._getPerEngagedNsPercentage();
+    this.props._getPerGlobalPreparedness();
+    this.props._getPerNsPhase();
   }
 
   componentDidUpdate (prevProps) {
@@ -46,9 +60,23 @@ class Preparedness extends React.Component {
 
         return perForm;
       });
-      this.geoJsonFinal = {error: false, fetched: true, fetching: false, receivedAt: false, data: {geoJSON: geoJson}};
+      // console.log(geoJson);
+      this.setState({geoJsonFinal: {error: false, fetched: true, fetching: false, receivedAt: false, data: {geoJSON: geoJson}}});
       // const grouped = _groupBy(this.props.collaboratingPerCountry.data.results.filter(perForm => perForm.country), 'country.iso');
-      this.forceUpdate();
+      // this.forceUpdate();
+    }
+    if (this.props.getPerNsPhase.fetched && this.props.collaboratingPerCountry.fetched && this.geoJsonBuilt === false && this.state.geoJsonFinal !== null) {
+      this.geoJsonBuilt = true;
+      const builtGeoJson = this.state.geoJsonFinal;
+
+      builtGeoJson.data.geoJSON.features.map((mapObject) => {
+        const phaseObjects = this.props.getPerNsPhase.data.results.filter((phaseObject) => phaseObject.country === mapObject.properties.country.id);
+        const phaseObject = phaseObjects.length > 0 ? phaseObjects[0] : {id: -1, country: -1, phase: -1, updated_at: -1};
+        mapObject.properties.phase = phaseObject;
+        return mapObject;
+      });
+
+      this.setState({geoJsonFinal: builtGeoJson});
     }
   }
 
@@ -72,8 +100,10 @@ class Preparedness extends React.Component {
           </header>
           <div className='inpage__body'>
             <PreparednessHeader />
-            { this.geoJsonFinal !== null ? <PerMap data={this.geoJsonFinal} noExport={true} noRenderEmergencies={true} /> : null }
+            { this.geoJsonBuilt ? <PerMap data={this.state.geoJsonFinal} noExport={true} noRenderEmergencies={true} /> : null }
             { this.props.getPerEngagedNsPercentage.fetched ? <NationalSocietiesEngagedPer data={this.props.getPerEngagedNsPercentage} /> : null }
+            { this.props.getPerGlobalPreparedness.fetched ? <GlobalPreparednessHighlights data={this.props.getPerGlobalPreparedness} /> : null }
+            <ContactPer />
           </div>
         </section>
       </App>);
@@ -94,12 +124,16 @@ if (environment !== 'production') {
 
 const selector = (state) => ({
   collaboratingPerCountry: state.perForm.getCollaboratingPerCountry,
-  getPerEngagedNsPercentage: state.perForm.getPerEngagedNsPercentage
+  getPerEngagedNsPercentage: state.perForm.getPerEngagedNsPercentage,
+  getPerGlobalPreparedness: state.perForm.getPerGlobalPreparedness,
+  getPerNsPhase: state.perForm.getPerNsPhase
 });
 
 const dispatcher = (dispatch) => ({
   _getCollaboratingPerCountry: () => dispatch(getCollaboratingPerCountry()),
-  _getPerEngagedNsPercentage: () => dispatch(getPerEngagedNsPercentage())
+  _getPerEngagedNsPercentage: () => dispatch(getPerEngagedNsPercentage()),
+  _getPerGlobalPreparedness: () => dispatch(getPerGlobalPreparedness()),
+  _getPerNsPhase: () => dispatch(getPerNsPhase())
 });
 
 export default connect(selector, dispatcher)(Preparedness);
