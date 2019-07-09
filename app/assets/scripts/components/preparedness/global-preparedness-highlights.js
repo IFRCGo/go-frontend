@@ -1,0 +1,64 @@
+'use strict';
+
+import React from 'react';
+import Fold from './../fold';
+import { getPerComponent } from './../../utils/get-per-components';
+
+export default class GlobalPreparednessHighlights extends React.Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      highPerformingComponents: []
+    }
+  }
+
+  componentDidMount () {
+    const components = {};
+    const highPerformingComponents = [];
+
+    this.props.data.data.results.forEach(result => {
+      if (typeof components[result.code + '' + result.question_id] === 'undefined') {
+        components[result.code + '' + result.question_id] = {name: getPerComponent(result.code, result.question_id)[0].name, count: 1};
+      } else {
+        components[result.code + '' + result.question_id].count++;
+      }
+    });
+
+    Object.keys(components).sort((componentKeyA, componentKeyB) => {
+      if (components[componentKeyA].count < components[componentKeyB].count) {
+        return -1;
+      } else if (components[componentKeyA].count > components[componentKeyB].count) {
+        return 1;
+      }
+      return 0;
+    }).forEach(sortedComponentKey => {
+      highPerformingComponents.push(components[sortedComponentKey]);
+    });
+    this.setState({highPerformingComponents: highPerformingComponents});
+  }
+
+  render () {
+    const highPerformingComponents = [];
+    this.state.highPerformingComponents.forEach((component) => {
+      highPerformingComponents.push(<li key={component.name}>{component.name}</li>);
+    });
+    return (
+      <div className='inner'>
+        <Fold title={'Global Preparedness Highlights'}>
+          <div style={{width: '50%', float: 'left'}}>
+            <span style={{fontWeight: 'bold'}}>High Performing Components (globally)</span>
+            <ul>
+              {highPerformingComponents}
+            </ul>
+          </div>
+          <div style={{width: '50%', float: 'left'}}>
+            <span style={{fontWeight: 'bold'}}>Top Prioritized Components (globally)</span>
+            <ul>
+              {highPerformingComponents}
+            </ul>
+          </div>
+        </Fold>
+      </div>
+    );
+  }
+}
