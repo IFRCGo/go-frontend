@@ -97,6 +97,7 @@
     "watchify": "^3.11.1"
   },
   "dependencies": {
+    "@turf/bbox": "^6.0.1",
     "@turf/centroid": "^6.0.2",
     "@xavescor/react": "16.2.1-path.1",
     "acorn": "^6.0.0",

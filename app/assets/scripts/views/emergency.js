@@ -44,6 +44,7 @@ import { Snippets } from '../components/admin-area-elements';
 import SurgeAlertsTable from '../components/connected/alerts-table';
 import PersonnelTable from '../components/connected/personnel-table';
 import EruTable from '../components/connected/eru-table';
+import EmergencyMap from '../components/map/emergency-map';
 
 class Emergency extends React.Component {
   constructor (props) {
@@ -409,7 +410,7 @@ class Emergency extends React.Component {
             </div>
           </div>
         </header>
-
+        { data.countries.length > 0 ? (<EmergencyMap countries={data.countries} districts={data.districts} />) : null }
         <StickyContainer>
           <Sticky>
             {({ style, isSticky }) => (
