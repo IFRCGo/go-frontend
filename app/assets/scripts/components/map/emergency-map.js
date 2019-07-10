@@ -3,7 +3,7 @@ import c from 'classnames';
 import turfBbox from '@turf/bbox';
 import newMap from '../../utils/get-new-map';
 import exportMap from '../../utils/export-map';
-import { getCentroid as getCountryCentroid } from '../../utils/country-centroids';
+
 
 class EmergencyMap extends React.Component {
 
@@ -21,7 +21,6 @@ class EmergencyMap extends React.Component {
     } = this.props;
     const theMap = this.theMap;
     const country = countries[0];
-    const countryCentroid = getCountryCentroid(country.iso);
     theMap.setCenter(countryCentroid);
     theMap.setZoom(2);
     const countryFilter = [
@@ -30,6 +29,8 @@ class EmergencyMap extends React.Component {
       country.iso.toUpperCase()
     ];
     console.log('country', country);
+
+    // FIXME: we need a better event than style.load to trigger this
     setTimeout(() => {
       const countryPolys = theMap.queryRenderedFeatures({'layers': ['country_polys'], 'filter': countryFilter});
       const geom = countryPolys[0].geometry;
@@ -41,7 +42,7 @@ class EmergencyMap extends React.Component {
   componentDidMount () {
     this.mapLoaded = false;
     this.theMap = newMap(this.refs.map);
-    this.theMap.on('style.load', () => {
+    this.theMap.on('style.load', () => { // FIXME: not style.load, we need something like data.load ?
       this.setupData();
       this.mapLoaded = true;
       this.setState({ ready: true });
