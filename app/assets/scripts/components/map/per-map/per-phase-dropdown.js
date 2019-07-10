@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react';
-import { appealTypeOptions } from './../../../utils/appeal-type-constants';
 import { PropTypes as T } from 'prop-types';
 import { environment } from '../../../config';
 

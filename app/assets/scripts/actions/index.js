@@ -105,7 +105,7 @@ export function getAppealsList (countryId = null) {
     limit: 1000
   };
   if (countryId !== null) {
-    filters.country = countryId
+    filters.country = countryId;
   }
   const f = buildAPIQS(filters);
   return fetchJSON(`api/v2/appeal/?${f}`, GET_APPEALS_LIST, withToken());
