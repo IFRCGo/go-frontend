@@ -99,11 +99,15 @@ export function getSurgeAlerts (page = 1, filters = {}) {
 }
 
 export const GET_APPEALS_LIST = 'GET_APPEALS_LIST';
-export function getAppealsList () {
-  const f = buildAPIQS({
+export function getAppealsList (countryId = null) {
+  const filters = {
     end_date__gt: DateTime.utc().toISO(),
     limit: 1000
-  });
+  };
+  if (countryId !== null) {
+    filters.country = countryId;
+  }
+  const f = buildAPIQS(filters);
   return fetchJSON(`api/v2/appeal/?${f}`, GET_APPEALS_LIST, withToken());
 }
 
@@ -456,6 +460,7 @@ export function getPerGlobalPreparedness () {
 }
 
 export const PER_NS_PHASE = 'PER_NS_PHASE';
-export function getPerNsPhase () {
-  return fetchJSON(`api/v2/per_ns_phase`, PER_NS_PHASE, withToken());
+export function getPerNsPhase (countryId = null) {
+  const f = buildAPIQS({country: countryId});
+  return fetchJSON(`api/v2/per_ns_phase?${f}`, PER_NS_PHASE, withToken());
 }
