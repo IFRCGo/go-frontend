@@ -28,7 +28,8 @@ import {
   getAdmAreaSnippets,
   getCountryOperations,
   getPartnerDeployments,
-  setPartnerDeploymentFilter
+  setPartnerDeploymentFilter,
+  getAppealsList
 } from '../actions';
 import { getFdrs } from '../actions/query-external';
 import { getBoundingBox } from '../utils/country-bounding-box';
@@ -120,6 +121,7 @@ class AdminArea extends SFPComponent {
     this.props._getCountryOperations(type, id);
     this.props._getPartnerDeployments(type, id);
     this.props._getFdrs(id);
+    this.props._getAppealsList(id);
   }
 
   getAdmArea (type, id) {
@@ -503,7 +505,8 @@ const dispatcher = (dispatch) => ({
   _getCountryOperations: (...args) => dispatch(getCountryOperations(...args)),
   _getPartnerDeployments: (...args) => dispatch(getPartnerDeployments(...args)),
   _setPartnerDeploymentFilter: (...args) => dispatch(setPartnerDeploymentFilter(...args)),
-  _getFdrs: (...args) => dispatch(getFdrs(...args))
+  _getFdrs: (...args) => dispatch(getFdrs(...args)),
+  _getAppealsList: (...args) => dispatch(getAppealsList(...args))
 });
 
 export default connect(selector, dispatcher)(AdminArea);
