@@ -15,7 +15,6 @@ import App from './app';
 
 class PerForms extends React.Component {
   render () {
-    console.log('started');
     let form = null;
     if (this.props.match.params.formName === 'policy-strategy') {
       form = (<A1PolicyStrategyForm mode='new'
@@ -42,9 +41,8 @@ class PerForms extends React.Component {
         autosaveOn={true}
         nationalSociety={this.props.match.params.id} />);
     } else if (this.props.match.params.formName === 'overview') {
-      console.log('begyun');
       form = (<OverviewForm />);
-    } 
+    }
 
     return (
       <App className='page--emergencies'>
