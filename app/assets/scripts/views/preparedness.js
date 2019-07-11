@@ -140,10 +140,13 @@ if (environment !== 'production') {
     _getPerGlobalPreparedness: T.func,
     _getPerNsPhase: T.func,
     _getPerOverviewForm: T.func,
+    _getPerWorkPlan: T.func,
     getPerEngagedNsPercentage: T.object,
     getPerNsPhase: T.object,
     collaboratingPerCountry: T.object,
-    getPerGlobalPreparedness: T.object
+    getPerGlobalPreparedness: T.object,
+    perWorkPlan: T.object,
+    perOverviewForm: T.object
   };
 }
 

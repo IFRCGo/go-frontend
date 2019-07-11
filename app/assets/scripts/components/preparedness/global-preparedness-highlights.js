@@ -54,7 +54,7 @@ export default class GlobalPreparednessHighlights extends React.Component {
     const highPriorityComponents = [];
     if (Object.keys(this.props.prioritizationData).length > 0) {
       Object.keys(this.props.prioritizationData).forEach((key) => {
-        highPriorityComponents.push(<li key={key}>{getShortComponent(key.substring(0, 2), key.substring(2, key.length))[0].name}</li>)
+        highPriorityComponents.push(<li key={key}>{getShortComponent(key.substring(0, 2), key.substring(2, key.length))[0].name}</li>);
       });
     }
     return (
@@ -80,6 +80,7 @@ export default class GlobalPreparednessHighlights extends React.Component {
 
 if (environment !== 'production') {
   GlobalPreparednessHighlights.propTypes = {
-    data: T.object
+    data: T.object,
+    prioritizationData: T.object
   };
 }
