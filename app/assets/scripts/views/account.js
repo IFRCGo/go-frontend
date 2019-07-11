@@ -852,6 +852,7 @@ if (environment !== 'production') {
     fieldReport: T.object,
     perForm: T.object,
     event: T.object,
+    perOverviewForm: T.object,
     _getProfile: T.func,
     _updateSubscriptions: T.func,
     _delSubscription: T.func,

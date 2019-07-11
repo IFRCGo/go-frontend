@@ -16,7 +16,7 @@ import { Link } from 'react-router-dom';
 
 class OverviewForm extends React.Component {
   componentDidMount () {
-    this.props._getPerOverviewForm(null ,this.props.formId);
+    this.props._getPerOverviewForm(null, this.props.formId);
   }
 
   render () {
@@ -157,7 +157,9 @@ if (environment !== 'production') {
     _sendPerForm: T.func,
     _getPerOverviewForm: T.func,
     sendPerFormResponse: T.object,
-    view: T.bool
+    view: T.bool,
+    formId: T.string,
+    perOverviewForm: T.object
   };
 }
 

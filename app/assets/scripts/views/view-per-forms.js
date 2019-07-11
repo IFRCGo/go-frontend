@@ -47,7 +47,7 @@ class ViewPerForms extends React.Component {
         match={this.props.match}
         formId={this.props.match.params.id} />);
     } else if (this.props.match.params.formName === 'overview') {
-      form = (<OverviewForm view={true} 
+      form = (<OverviewForm view={true}
         formId={this.props.match.params.id} />);
     }
 
