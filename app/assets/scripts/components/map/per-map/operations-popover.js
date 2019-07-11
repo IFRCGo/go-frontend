@@ -2,6 +2,7 @@
 
 import { environment } from '../../../config';
 import { PropTypes as T } from 'prop-types';
+import { getPerProcessType } from './../../../utils/get-per-process-type';
 // import { commaSeparatedNumber as n } from '../../../utils/format';
 // import { DateTime } from 'luxon';
 // import { get } from '../../../utils/utils';
@@ -9,7 +10,8 @@ import React from 'react';
 
 class OperationsPopover extends React.Component {
   render () {
-    const { pageId, navigate, title, onCloseClick, deployments, phase } = this.props;
+    const { pageId, navigate, title, onCloseClick, deployments, phase, overviewData } = this.props;
+    const filteredOverviewData = overviewData.data.results.filter(overview => overview.country.id === parseInt(pageId));
     return (
       <article className='popover'>
         <div className='popover__contents'>
@@ -79,7 +81,19 @@ class OperationsPopover extends React.Component {
               </div>
             </div>
             <div style={{width: '50%', float: 'left'}}>
-              *** TYPE ***
+              {
+                !overviewData.fetched || filteredOverviewData.length === 0
+                  ? (<React.Fragment>
+                    <div style={{marginBottom: '10px'}}>No data</div>
+                    <div style={{fontWeight: 'bold', marginBottom: '10px'}}>Date of the assessment</div>
+                    <div>No data</div>
+                  </React.Fragment>)
+                  : (<React.Fragment>
+                    <div style={{marginBottom: '10px'}}>{ getPerProcessType(filteredOverviewData[0].type_of_capacity_assessment) }</div>
+                    <div style={{fontWeight: 'bold', marginBottom: '10px'}}>Date of the assessment</div>
+                    <div>{filteredOverviewData[0].date_of_current_capacity_assessment.substring(0, 10)}</div>
+                  </React.Fragment>)
+              }
             </div>
           </div>
         </div>
@@ -96,7 +110,8 @@ if (environment !== 'production') {
     pageId: T.number,
     operations: T.array,
     deployments: T.array,
-    navigate: T.func
+    navigate: T.func,
+    overviewData: T.object
   };
 }
 

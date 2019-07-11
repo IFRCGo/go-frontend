@@ -180,6 +180,7 @@ class PerMap extends React.Component {
       pageId={country.id}
       navigate={this.navigate}
       phase={phase}
+      overviewData={this.props.overviewData}
       onCloseClick={this.onPopoverCloseClick.bind(this)} />, popoverContent);
 
     // Populate the popup and set its coordinates
@@ -260,6 +261,7 @@ if (environment !== 'production') {
   PerMap.propTypes = {
     data: T.object,
     deployments: T.object,
+    overviewData: T.object,
     deploymentsKey: T.string,
     history: T.object,
     bbox: T.array,

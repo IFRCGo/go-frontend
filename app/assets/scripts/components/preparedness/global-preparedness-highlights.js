@@ -2,7 +2,10 @@
 
 import React from 'react';
 import Fold from './../fold';
-import { getPerComponent } from './../../utils/get-per-components';
+import {
+  getPerComponent,
+  getShortComponent
+} from './../../utils/get-per-components';
 import { environment } from './../../config';
 import { PropTypes as T } from 'prop-types';
 
@@ -48,6 +51,12 @@ export default class GlobalPreparednessHighlights extends React.Component {
     this.highPerformingComponents.forEach((component) => {
       highPerformingComponents.push(<li key={component.name}>{component.name}</li>);
     });
+    const highPriorityComponents = [];
+    if (Object.keys(this.props.prioritizationData).length > 0) {
+      Object.keys(this.props.prioritizationData).forEach((key) => {
+        highPriorityComponents.push(<li key={key}>{getShortComponent(key.substring(0, 2), key.substring(2, key.length))[0].name}</li>);
+      });
+    }
     return (
       <div className='inner'>
         <Fold title={'Global Preparedness Highlights'}>
@@ -60,7 +69,7 @@ export default class GlobalPreparednessHighlights extends React.Component {
           <div style={{width: '50%', float: 'left'}}>
             <span style={{fontWeight: 'bold'}}>Top Prioritized Components (globally)</span>
             <ul>
-              {highPerformingComponents}
+              {highPriorityComponents}
             </ul>
           </div>
         </Fold>
@@ -71,6 +80,7 @@ export default class GlobalPreparednessHighlights extends React.Component {
 
 if (environment !== 'production') {
   GlobalPreparednessHighlights.propTypes = {
-    data: T.object
+    data: T.object,
+    prioritizationData: T.object
   };
 }
