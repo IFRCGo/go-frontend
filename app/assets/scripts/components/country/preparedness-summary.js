@@ -14,8 +14,8 @@ class PreparednessSummary extends React.Component {
           <div style={{ width: '100%', height: '100%', border: '1px solid #000' }}>
 
             <div style={{ height: '28px', borderBottom: '1px solid #000', padding: '5px' }}>
-              <div style={{ width:'18px', height: '18px', float: 'left', marginRight: '5px' }}>
-                <img src='/assets/graphics/layout/card-tick.svg' style={{ width:'18px', height: '18px', float: 'left' }} />
+              <div style={{ width: '18px', height: '18px', float: 'left', marginRight: '5px' }}>
+                <img src='/assets/graphics/layout/card-tick.svg' style={{ width: '18px', height: '18px', float: 'left' }} />
               </div>
               <div style={{ textTransform: 'uppercase', fontFamily: 'Poppins', fontSize: '12px', fontWeight: 600, color: '#24334c' }}>
                 High performance
@@ -32,8 +32,8 @@ class PreparednessSummary extends React.Component {
           <div style={{ width: '100%', height: '100%', border: '1px solid #000' }}>
 
             <div style={{ height: '28px', borderBottom: '1px solid #000', padding: '5px' }}>
-              <div style={{ width:'18px', height: '18px', float: 'left', marginRight: '5px' }}>
-                <img src='/assets/graphics/layout/card-tick.svg' style={{ width:'18px', height: '18px', float: 'left' }} />
+              <div style={{ width: '18px', height: '18px', float: 'left', marginRight: '5px' }}>
+                <img src='/assets/graphics/layout/card-tick.svg' style={{ width: '18px', height: '18px', float: 'left' }} />
               </div>
               <div style={{ textTransform: 'uppercase', fontFamily: 'Poppins', fontSize: '12px', fontWeight: 600, color: '#24334c' }}>
                 Exists
@@ -50,8 +50,8 @@ class PreparednessSummary extends React.Component {
           <div style={{ width: '100%', height: '100%', border: '1px solid #000' }}>
 
             <div style={{ height: '28px', borderBottom: '1px solid #000', padding: '5px' }}>
-              <div style={{ width:'18px', height: '18px', float: 'left', marginRight: '5px' }}>
-                <img src='/assets/graphics/layout/card-mid-line.svg' style={{ width:'18px', height: '18px', float: 'left' }} />
+              <div style={{ width: '18px', height: '18px', float: 'left', marginRight: '5px' }}>
+                <img src='/assets/graphics/layout/card-mid-line.svg' style={{ width: '18px', height: '18px', float: 'left' }} />
               </div>
               <div style={{ textTransform: 'uppercase', fontFamily: 'Poppins', fontSize: '12px', fontWeight: 600, color: '#24334c' }}>
                 Needs improvement
@@ -68,8 +68,8 @@ class PreparednessSummary extends React.Component {
           <div style={{ width: '100%', height: '100%', border: '1px solid #000' }}>
 
             <div style={{ height: '28px', borderBottom: '1px solid #000', padding: '5px' }}>
-              <div style={{ width:'18px', height: '18px', float: 'left', marginRight: '5px' }}>
-                <img src='/assets/graphics/layout/card-mid-line.svg' style={{ width:'18px', height: '18px', float: 'left' }} />
+              <div style={{ width: '18px', height: '18px', float: 'left', marginRight: '5px' }}>
+                <img src='/assets/graphics/layout/card-mid-line.svg' style={{ width: '18px', height: '18px', float: 'left' }} />
               </div>
               <div style={{ textTransform: 'uppercase', fontFamily: 'Poppins', fontSize: '12px', fontWeight: 600, color: '#24334c' }}>
                 Partially exists
@@ -86,8 +86,8 @@ class PreparednessSummary extends React.Component {
           <div style={{ width: '100%', height: '100%', border: '1px solid #000' }}>
 
             <div style={{ height: '28px', borderBottom: '1px solid #000', padding: '5px' }}>
-              <div style={{ width:'18px', height: '18px', float: 'left', marginRight: '5px' }}>
-                <img src='/assets/graphics/layout/card-x.svg' style={{ width:'18px', height: '18px', float: 'left' }} />
+              <div style={{ width: '18px', height: '18px', float: 'left', marginRight: '5px' }}>
+                <img src='/assets/graphics/layout/card-x.svg' style={{ width: '18px', height: '18px', float: 'left' }} />
               </div>
               <div style={{ textTransform: 'uppercase', fontFamily: 'Poppins', fontSize: '12px', fontWeight: 600, color: '#24334c' }}>
                 Does not exist
@@ -104,8 +104,8 @@ class PreparednessSummary extends React.Component {
           <div style={{ width: '100%', height: '100%', border: '1px solid #000' }}>
 
             <div style={{ height: '28px', borderBottom: '1px solid #000', padding: '5px' }}>
-              <div style={{ width:'18px', height: '18px', float: 'left', marginRight: '5px' }}>
-                <img src='/assets/graphics/layout/card-x.svg' style={{ width:'18px', height: '18px', float: 'left' }} />
+              <div style={{ width: '18px', height: '18px', float: 'left', marginRight: '5px' }}>
+                <img src='/assets/graphics/layout/card-x.svg' style={{ width: '18px', height: '18px', float: 'left' }} />
               </div>
               <div style={{ textTransform: 'uppercase', fontFamily: 'Poppins', fontSize: '12px', fontWeight: 600, color: '#24334c' }}>
                 Not previewed
