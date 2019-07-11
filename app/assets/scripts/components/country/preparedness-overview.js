@@ -101,17 +101,11 @@ class PreparednessOverview extends React.Component {
 }
 
 if (environment !== 'production') {
-  PreparednessOverview.propTypes = {
-    _getPerNsPhase: T.func
-  };
+  PreparednessOverview.propTypes = {};
 }
 
-const selector = (state) => ({
-  getPerNsPhase: state.perForm.getPerNsPhase
-});
+const selector = (state) => ({});
 
-const dispatcher = (dispatch) => ({
-  _getPerNsPhase: () => dispatch(getPerNsPhase())
-});
+const dispatcher = (dispatch) => ({});
 
 export default connect(selector, dispatcher)(PreparednessOverview);

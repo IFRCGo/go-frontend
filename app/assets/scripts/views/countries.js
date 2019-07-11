@@ -29,7 +29,7 @@ import {
   getCountryOperations,
   getPartnerDeployments,
   setPartnerDeploymentFilter,
-  getAppealsList,
+  // getAppealsList,
   getPerNsPhase
 } from '../actions';
 import { getFdrs } from '../actions/query-external';

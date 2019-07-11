@@ -129,7 +129,7 @@ class PreparednessWorkPlan extends React.Component {
               <button className='button button--small button--primary-bounded'>Edit</button>
             </div>
           </div>
-          
+
           <div style={Object.assign({}, tableRowStyle, darkBackground)}>
             <div style={tableCellStyle}>
               High
@@ -212,17 +212,11 @@ class PreparednessWorkPlan extends React.Component {
 }
 
 if (environment !== 'production') {
-  PreparednessWorkPlan.propTypes = {
-    _getPerNsPhase: T.func
-  };
+  PreparednessWorkPlan.propTypes = {};
 }
 
-const selector = (state) => ({
-  getPerNsPhase: state.perForm.getPerNsPhase
-});
+const selector = (state) => ({});
 
-const dispatcher = (dispatch) => ({
-  _getPerNsPhase: () => dispatch(getPerNsPhase())
-});
+const dispatcher = (dispatch) => ({});
 
 export default connect(selector, dispatcher)(PreparednessWorkPlan);

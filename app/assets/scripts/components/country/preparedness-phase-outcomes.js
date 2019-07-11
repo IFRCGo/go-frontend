@@ -81,17 +81,11 @@ class PreparednessPhaseOutcomes extends React.Component {
 }
 
 if (environment !== 'production') {
-  PreparednessPhaseOutcomes.propTypes = {
-    _getPerNsPhase: T.func
-  };
+  PreparednessPhaseOutcomes.propTypes = {};
 }
 
-const selector = (state) => ({
-  getPerNsPhase: state.perForm.getPerNsPhase
-});
+const selector = (state) => ({});
 
-const dispatcher = (dispatch) => ({
-  _getPerNsPhase: () => dispatch(getPerNsPhase())
-});
+const dispatcher = (dispatch) => ({});
 
 export default connect(selector, dispatcher)(PreparednessPhaseOutcomes);
