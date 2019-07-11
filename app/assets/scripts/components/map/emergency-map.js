@@ -21,28 +21,39 @@ class EmergencyMap extends React.Component {
     } = this.props;
     const theMap = this.theMap;
     const country = countries[0];
-    theMap.setCenter(countryCentroid);
-    theMap.setZoom(2);
     const countryFilter = [
       '==',
       'ISO2',
       country.iso.toUpperCase()
     ];
+    const districtCodes = districts.map(d => d.code);
     console.log('country', country);
+    const layers = theMap.getStyle().layers;
+    console.log('layers', layers);
+    const countryPolys = theMap.queryRenderedFeatures({'layers': ['country'], 'filter': countryFilter});
+    console.log('country polys', countryPolys);
+    const geom = countryPolys[0].geometry;
+    console.log('geom', JSON.stringify(geom));
+    const bbox = turfBbox(geom);
+    theMap.fitBounds(bbox);
+    console.log('district codes', districtCodes);
+    theMap.setFilter('admin1-selected', [
+      'in',
+      'Admin01Cod',
+      ...districtCodes
+    ]);
+    theMap.setFilter('admin1-country-selected', [
+      '==',
+      'Admin00Nam',
+      country.name
+    ]);
 
-    // FIXME: we need a better event than style.load to trigger this
-    setTimeout(() => {
-      const countryPolys = theMap.queryRenderedFeatures({'layers': ['country_polys'], 'filter': countryFilter});
-      const geom = countryPolys[0].geometry;
-      const bbox = turfBbox(geom);
-      theMap.fitBounds(bbox);
-    }, 2000);
   }
 
   componentDidMount () {
     this.mapLoaded = false;
-    this.theMap = newMap(this.refs.map);
-    this.theMap.on('style.load', () => { // FIXME: not style.load, we need something like data.load ?
+    this.theMap = newMap(this.refs.map, 'mapbox://styles/go-ifrc/cjxyje5jk02p51clksrgqcye4');
+    this.theMap.on('load', () => {
       this.setupData();
       this.mapLoaded = true;
       this.setState({ ready: true });
@@ -62,13 +73,14 @@ class EmergencyMap extends React.Component {
             <h2 className='visually-hidden'>Emergency</h2>
             <figure className='map-vis'>
               <div className='fold__actions'>
-                <button className={c('button button--primary-bounded button--export', {
-                  disabled: !this.state.ready
-                })} onClick={() => exportMap(this.theMap)}>Export Map</button>
+
               </div>
               <div className="map-vis__holder" ref='map'/>
             </figure>
           </div>
+          <button className={c('button button--primary-bounded button--export', {
+                  disabled: !this.state.ready
+                })} onClick={() => exportMap(this.theMap)}>Export Map</button>
         </div>
       </div>
     );
