@@ -29,7 +29,8 @@ import {
   getCountryOperations,
   getPartnerDeployments,
   setPartnerDeploymentFilter,
-  getAppealsList
+  getAppealsList,
+  getPerNsPhase
 } from '../actions';
 import { getFdrs } from '../actions/query-external';
 import { getBoundingBox } from '../utils/country-bounding-box';
@@ -46,6 +47,10 @@ import {
   Contacts,
   Links
 } from '../components/admin-area-elements';
+import PreparednessOverview from './../components/country/preparedness-overview';
+import PreparednessSummary from './../components/country/preparedness-summary';
+import PreparednessWorkPlan from './../components/country/preparedness-work-plan';
+import PreparednessPhaseOutcomes from './../components/country/preparedness-phase-outcomes';
 import { SFPComponent } from '../utils/extendables';
 
 const filterPaths = {
@@ -110,6 +115,7 @@ class AdminArea extends SFPComponent {
   componentDidMount () {
     this.getData(this.props);
     this.getAdmArea(this.props.type, getCountryId(this.props.match.params.id));
+    this.props._getPerNsPhase(getCountryId(this.props.match.params.id));
   }
 
   getData (props) {
@@ -121,7 +127,7 @@ class AdminArea extends SFPComponent {
     this.props._getCountryOperations(type, id);
     this.props._getPartnerDeployments(type, id);
     this.props._getFdrs(id);
-    this.props._getAppealsList(id);
+    // this.props._getAppealsList(id);
   }
 
   getAdmArea (type, id) {
@@ -385,6 +391,7 @@ class AdminArea extends SFPComponent {
                     <li><a href='#emergencies' title='Go to Emergencies section'>Emergencies</a></li>
                     {get(this.props.snippets, 'data.results.length') ? <li><a href='#graphics' title='Go to Graphics section'>Graphics</a></li> : null}
                     {get(data, 'links.length') ? <li><a href='#links' title='Go to Links section'>Links</a></li> : null}
+                    <li><a href='#per' title='Go to Links section'>Preparedness</a></li>
                     {get(data, 'contacts.length') ? <li><a href='#contacts' title='Go to Contacts section'>Contacts</a></li> : null}
                   </ul>
                 </div>
@@ -439,6 +446,10 @@ class AdminArea extends SFPComponent {
               <Snippets data={this.props.snippets} />
               <Links data={data} />
               <Contacts data={data} />
+              <PreparednessOverview />
+              <PreparednessSummary />
+              <PreparednessWorkPlan />
+              <PreparednessPhaseOutcomes />
             </div>
           </div>
         </StickyContainer>
@@ -494,7 +505,8 @@ const selector = (state, ownProps) => ({
     fetching: false,
     fetched: false
   }),
-  fdrs: state.fdrs
+  fdrs: state.fdrs,
+  getPerNsPhase: state.perForm.getPerNsPhase
 });
 
 const dispatcher = (dispatch) => ({
@@ -506,7 +518,7 @@ const dispatcher = (dispatch) => ({
   _getPartnerDeployments: (...args) => dispatch(getPartnerDeployments(...args)),
   _setPartnerDeploymentFilter: (...args) => dispatch(setPartnerDeploymentFilter(...args)),
   _getFdrs: (...args) => dispatch(getFdrs(...args)),
-  _getAppealsList: (...args) => dispatch(getAppealsList(...args))
+  _getPerNsPhase: () => dispatch(getPerNsPhase())
 });
 
 export default connect(selector, dispatcher)(AdminArea);
