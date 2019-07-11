@@ -41,7 +41,7 @@ class PerForms extends React.Component {
         autosaveOn={true}
         nationalSociety={this.props.match.params.id} />);
     } else if (this.props.match.params.formName === 'overview') {
-      form = (<OverviewForm />);
+      form = (<OverviewForm view={false} />);
     }
 
     return (
