@@ -190,6 +190,21 @@ export function getPerOverviewForm (state = initialState, action) {
   return state;
 }
 
+export function getPerWorkPlan (state = initialState, action) {
+  switch (action.type) {
+    case 'PER_WORK_PLAN_INFLIGHT':
+      state = stateInflight(state, action);
+      break;
+    case 'PER_WORK_PLAN_FAILED':
+      state = stateError(state, action);
+      break;
+    case 'PER_WORK_PLAN_SUCCESS':
+      state = stateSuccess(state, action);
+      break;
+  }
+  return state;
+}
+
 export default combineReducers({
   sendPerForm,
   getPerCountries,
@@ -202,5 +217,6 @@ export default combineReducers({
   getPerEngagedNsPercentage,
   getPerGlobalPreparedness,
   getPerNsPhase,
-  getPerOverviewForm
+  getPerOverviewForm,
+  getPerWorkPlan
 });
