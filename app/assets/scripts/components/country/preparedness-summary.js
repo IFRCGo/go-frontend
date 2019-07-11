@@ -124,11 +124,17 @@ class PreparednessSummary extends React.Component {
 }
 
 if (environment !== 'production') {
-  PreparednessSummary.propTypes = {};
+  PreparednessSummary.propTypes = {
+    _getPerNsPhase: T.func
+  };
 }
 
-const selector = (state) => ({});
+const selector = (state) => ({
+  getPerNsPhase: state.perForm.getPerNsPhase
+});
 
-const dispatcher = (dispatch) => ({});
+const dispatcher = (dispatch) => ({
+  _getPerNsPhase: () => dispatch('getPerNsPhase()')
+});
 
 export default connect(selector, dispatcher)(PreparednessSummary);
