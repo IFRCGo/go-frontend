@@ -175,6 +175,21 @@ export function getPerNsPhase (state = initialState, action) {
   return state;
 }
 
+export function getPerOverviewForm (state = initialState, action) {
+  switch (action.type) {
+    case 'PER_OVERVIEW_FORM_INFLIGHT':
+      state = stateInflight(state, action);
+      break;
+    case 'PER_OVERVIEW_FORM_FAILED':
+      state = stateError(state, action);
+      break;
+    case 'PER_OVERVIEW_FORM_SUCCESS':
+      state = stateSuccess(state, action);
+      break;
+  }
+  return state;
+}
+
 export default combineReducers({
   sendPerForm,
   getPerCountries,
@@ -186,5 +201,6 @@ export default combineReducers({
   getCollaboratingPerCountry,
   getPerEngagedNsPercentage,
   getPerGlobalPreparedness,
-  getPerNsPhase
+  getPerNsPhase,
+  getPerOverviewForm
 });
