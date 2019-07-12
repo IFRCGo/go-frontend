@@ -292,8 +292,8 @@ class FieldReportForm extends React.Component {
         </div>
 
         <div className='form__group'>
-          <label className='form__label'>Areas</label>
-          <p className='form__description'>Search for areas within affected country.</p>
+          <label className='form__label'>Regions / Provinces</label>
+          <p className='form__description'>Search for regions within affected country.</p>
           <Select
             name='districts'
             value={this.state.data.districts}
