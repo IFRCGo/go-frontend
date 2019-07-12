@@ -140,7 +140,7 @@ class OverviewForm extends React.Component {
                 Approximate date of next capacity assessment<br />
                 <input type='text' name='date_of_current_assessment' /><br /><br />
 
-                <button className='button button--medium button--primary-filled'>Submit form</button>
+                <Link to='/account' className='button button--medium button--primary-filled'>Submit form</Link>
               </div>
             </div>
           </div>
