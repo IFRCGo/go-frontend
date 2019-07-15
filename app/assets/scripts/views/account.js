@@ -644,7 +644,7 @@ class Account extends React.Component {
             .forEach((perOverviewForm) => {
               perDocuments.push((<React.Fragment key={'documentoverviewrow' + perOverviewForm.id}>
                 <div style={{backgroundColor: '#eaeaea', float: 'left', width: '100%', marginBottom: '1rem', padding: '0.25rem 1rem'}} key={'documentov' + perOverviewForm.id}>
-                  Overview - {perOverviewForm.date_of_current_capacity_assessment.substring(0, 10)} - {typeof perOverviewForm.user !== 'undefined' && perOverviewForm.user !== null ? document.user.username : null}
+                  Overview - {perOverviewForm.date_of_current_capacity_assessment.substring(0, 10)} - {typeof perOverviewForm.user !== 'undefined' && perOverviewForm.user !== null ? perOverviewForm.user.first_name + ' ' + perOverviewForm.user.last_name : null}
                   <div style={{float: 'right'}}>
                     <Link className='button button--small button--secondary-bounded' to={'/view-per-forms/overview/' + perOverviewForm.id}>View</Link>
                   </div>
