@@ -5,7 +5,7 @@
       fill: rgba($base-color, 0.68);
     }
     &:nth-child(even) {
-      opacity: 0;
+      opacity: 1;
     }
   }
   .recharts-cartesian-axis-tick-line {
