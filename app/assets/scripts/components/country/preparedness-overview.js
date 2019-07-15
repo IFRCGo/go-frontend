@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react';
-import { connect } from 'react-redux';
 import { environment } from '../../config';
 import { PropTypes as T } from 'prop-types';
 import { getPerProcessType } from './../../utils/get-per-process-type';
@@ -107,16 +106,8 @@ class PreparednessOverview extends React.Component {
 
 if (environment !== 'production') {
   PreparednessOverview.propTypes = {
-    _getPerNsPhase: T.func
+    getPerNsPhase: T.object,
+    perOverviewForm: T.object
   };
 }
-
-const selector = (state) => ({
-  getPerNsPhase: state.perForm.getPerNsPhase
-});
-
-const dispatcher = (dispatch) => ({
-  _getPerNsPhase: () => dispatch('getPerNsPhase()')
-});
-
-export default connect(selector, dispatcher)(PreparednessOverview);
+export default PreparednessOverview;

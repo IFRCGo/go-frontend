@@ -8,7 +8,7 @@ import { PropTypes as T } from 'prop-types';
 import Fold from './../fold';
 import { getAllComponents, getBenchmarksByComponent } from './../../utils/get-per-components';
 import { withRouter } from 'react-router-dom';
-import { sendPerWorkplan, deletePerWorkplanApi,  } from './../../actions';
+import { sendPerWorkplan, deletePerWorkplanApi } from './../../actions';
 
 const PRIORITIZATION = ['Low', 'Mid', 'High'];
 const STATUS = [
@@ -75,11 +75,10 @@ class PreparednessWorkPlan extends React.Component {
       focal_point: focal.value,
       status: status.value,
       support_required: required.checked,
-
       country_id: this.props.match.params.id,
       code: component.value.substring(0, 2),
-      question_id : component.value.substring(2, component.value.length) + benchmark.value,
-      user_id : this.props.user.id
+      question_id: component.value.substring(2, component.value.length) + benchmark.value,
+      user_id: this.props.user.id
     };
     this.lastPayload = payload;
     this.props._sendPerWorkplan(payload);
@@ -331,7 +330,13 @@ if (environment !== 'production') {
   PreparednessWorkPlan.propTypes = {
     _getPerNsPhase: T.func,
     _sendPerWorkplan: T.func,
-    _deletePerWorkplanApi: T.func
+    _deletePerWorkplanApi: T.func,
+    _addNewWorkPlan: T.func,
+    sendPerWorkplan: T.object,
+    deletePerWorkplanApi: T.object,
+    match: T.object,
+    getPerWorkPlan: T.object,
+    user: T.object
   };
 }
 

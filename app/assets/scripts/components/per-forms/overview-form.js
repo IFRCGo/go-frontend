@@ -31,21 +31,21 @@ class OverviewForm extends React.Component {
 
   submitForm () {
     const builtFormData = {
-      country_id : parseInt(this.props.nationalSociety),
-      user_id : this.props.user.data.id,
-      type_of_capacity_assessment : parseInt(document.getElementsByName('capacity_assessment_type')[0].value),
-      branch_involved : document.getElementsByName('branch_involved')[0].value,
-      focal_point_name : document.getElementsByName('focal_point_name')[0].value,
-      focal_point_email : document.getElementsByName('focal_point_email')[0].value,
-      had_previous_assessment : document.getElementsByName('prev_capacity_assessment')[0].value,
-      focus : document.getElementsByName('focus')[0].value,
-      facilitated_by : document.getElementsByName('facilitated_by')[0].value,
-      facilitator_email : document.getElementsByName('facilitator_email')[0].value,
-      phone_number : document.getElementsByName('facilitator_phone')[0].value,
-      skype_address : document.getElementsByName('facilitator_skype')[0].value,
-      date_of_current_capacity_assessment : document.getElementsByName('date_of_current_assessment_year')[0].value + '-' + document.getElementsByName('date_of_current_assessment_month')[0].value + '-' + document.getElementsByName('date_of_current_assessment_day')[0].value + ' 00:00:00.00+00',
-      date_of_mid_term_review : document.getElementsByName('date_of_mid_review_year')[0].value + '-' + document.getElementsByName('date_of_mid_review_month')[0].value + '-' + document.getElementsByName('date_of_mid_review_day')[0].value + ' 00:00:00.00+00',
-      approximate_date_next_capacity_assmt : document.getElementsByName('date_of_next_assessment_year')[0].value + '-' + document.getElementsByName('date_of_next_assessment_month')[0].value + '-' + document.getElementsByName('date_of_next_assessment_day')[0].value + ' 00:00:00.00+00'
+      country_id: parseInt(this.props.nationalSociety),
+      user_id: this.props.user.data.id,
+      type_of_capacity_assessment: parseInt(document.getElementsByName('capacity_assessment_type')[0].value),
+      branch_involved: document.getElementsByName('branch_involved')[0].value,
+      focal_point_name: document.getElementsByName('focal_point_name')[0].value,
+      focal_point_email: document.getElementsByName('focal_point_email')[0].value,
+      had_previous_assessment: document.getElementsByName('prev_capacity_assessment')[0].value,
+      focus: document.getElementsByName('focus')[0].value,
+      facilitated_by: document.getElementsByName('facilitated_by')[0].value,
+      facilitator_email: document.getElementsByName('facilitator_email')[0].value,
+      phone_number: document.getElementsByName('facilitator_phone')[0].value,
+      skype_address: document.getElementsByName('facilitator_skype')[0].value,
+      date_of_current_capacity_assessment: document.getElementsByName('date_of_current_assessment_year')[0].value + '-' + document.getElementsByName('date_of_current_assessment_month')[0].value + '-' + document.getElementsByName('date_of_current_assessment_day')[0].value + ' 00:00:00.00+00',
+      date_of_mid_term_review: document.getElementsByName('date_of_mid_review_year')[0].value + '-' + document.getElementsByName('date_of_mid_review_month')[0].value + '-' + document.getElementsByName('date_of_mid_review_day')[0].value + ' 00:00:00.00+00',
+      approximate_date_next_capacity_assmt: document.getElementsByName('date_of_next_assessment_year')[0].value + '-' + document.getElementsByName('date_of_next_assessment_month')[0].value + '-' + document.getElementsByName('date_of_next_assessment_day')[0].value + ' 00:00:00.00+00'
     };
 
     this.props._sendPerOverview(builtFormData);
@@ -349,12 +349,14 @@ if (environment !== 'production') {
   OverviewForm.propTypes = {
     _sendPerForm: T.func,
     _getPerOverviewForm: T.func,
+    _sendPerOverview: T.func,
     sendPerFormResponse: T.object,
     view: T.bool,
     formId: T.string,
     perOverviewForm: T.object,
     sendPerWorkPlan: T.func,
-    nationalSociety: T.string
+    nationalSociety: T.string,
+    user: T.object
   };
 }
 
