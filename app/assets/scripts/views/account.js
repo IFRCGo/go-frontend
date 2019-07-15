@@ -48,6 +48,24 @@ const Fragment = React.Fragment;
 const disasterTypes = disasterType.slice(1);
 
 // Constants used to create form elements
+
+const basicTypes = [{
+  label: 'Weekly Digest',
+  value: 'weeklyDigest'
+},
+{
+  label: 'New Disasters',
+  value: 'newDisasters'
+},
+{
+  label: 'New Operations',
+  value: 'newOperations'
+},
+{
+  label: 'General Announcements',
+  value: 'general'
+}];
+
 const systemNotificationTypes = [{
   label: 'New records',
   value: 'new'
@@ -103,7 +121,11 @@ const rtypes = {
   7: 'perDueDate',
   // 8: 'followedEvent' // could be here
   9: 'surgeDM',
-  10: 'surgeAEM'
+  10: 'surgeAEM',
+  11: 'weeklyDigest',
+  12: 'newDisasters',
+  13: 'newOperations',
+  14: 'general'
 };
 
 const stypes = {
@@ -145,6 +167,7 @@ class Account extends React.Component {
       isNotificationsDirty: false,
       notifications: {
         countries: [],
+        basic: basicTypes.map(markUnChecked),
         regions: regions.map(markUnChecked),
         disasterTypes: disasterTypes.map(markUnChecked),
         event: systemNotificationTypes.map(markUnChecked),
@@ -247,6 +270,14 @@ class Account extends React.Component {
         next.surg = updateChecks(next.surg, 'surgeAEM');
       } else if (rtype === 'perDueDate') {
         next.per = updateChecks(next.per, 'perDueDate');
+      } else if (rtype === 'weeklyDigest') {
+        next.basic = updateChecks(next.basic, 'weeklyDigest');
+      } else if (rtype === 'newDisasters') {
+        next.basic = updateChecks(next.basic, 'newDisasters');
+      } else if (rtype === 'newOperations') {
+        next.basic = updateChecks(next.basic, 'newOperations');
+      } else if (rtype === 'general') {
+        next.basic = updateChecks(next.basic, 'general');
       }
     });
     this.setState({ notifications: next });
@@ -284,6 +315,14 @@ class Account extends React.Component {
   }
 
   serializeNotifications (notifications) {
+    let basicNotifications = get(notifications, 'basic', []).filter(d => d.checked).map(d => ({
+      type: d.value,
+      value: true
+    }));
+    if (basicNotifications.length) {
+      serialized.push.apply(serialized, basicNotifications);
+    }
+
     let serialized = ['regions', 'disasterTypes', 'appeal', 'event', 'fieldReport']
       .reduce((acc, currentType) => {
         const flattened = get(notifications, currentType, [])
@@ -541,6 +580,14 @@ class Account extends React.Component {
       <form className='form' onSubmit={this.onNotificationSubmit}>
         <div className='fold-container'>
           <Fold title='Subscription preferences'>
+            <FormCheckboxGroup
+              label='Notification types'
+              description={'Set basic notification types.'}
+              name='basicTypes'
+              classWrapper='action-checkboxes'
+              options={basicTypes}
+              values={this.state.notifications.basicTypes}
+              onChange={this.onFieldChange.bind(this, 'notifications', 'basicTypes')} />
             <FormCheckboxGroup
               label='Regional notifications'
               description={'Select one or more regions to receive notifications about.'}
