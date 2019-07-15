@@ -23,10 +23,11 @@ export default class GlobalPreparednessHighlights extends React.Component {
       const highPerformingComponents = [];
 
       this.props.data.data.results.forEach(result => {
-        if (typeof components[result.code + '' + result.question_id] === 'undefined') {
-          components[result.code + '' + result.question_id] = {name: getPerComponent(result.code, result.question_id)[0].name, count: 1};
+        const correspondingComponent = getPerComponent(result.code, result.question_id)[0];
+        if (typeof components[correspondingComponent.cid] === 'undefined') {
+          components[correspondingComponent.cid] = {name: correspondingComponent.name, count: 1};
         } else {
-          components[result.code + '' + result.question_id].count++;
+          components[correspondingComponent.cid].count++;
         }
       });
 
@@ -48,13 +49,13 @@ export default class GlobalPreparednessHighlights extends React.Component {
   render () {
     this.buildHighPerformingComponentsData();
     const highPerformingComponents = [];
-    this.highPerformingComponents.forEach((component) => {
-      highPerformingComponents.push(<li key={component.name}>{component.name}</li>);
+    this.highPerformingComponents.forEach((component, index) => {
+      highPerformingComponents.push(<li key={component.name + 'highperforming' + index}>{component.name}</li>);
     });
     const highPriorityComponents = [];
     if (Object.keys(this.props.prioritizationData).length > 0) {
-      Object.keys(this.props.prioritizationData).forEach((key) => {
-        highPriorityComponents.push(<li key={key}>{getShortComponent(key.substring(0, 2), key.substring(2, key.length))[0].name}</li>);
+      Object.keys(this.props.prioritizationData).forEach((key, index) => {
+        highPriorityComponents.push(<li key={key + 'highpriority' + index}>{getShortComponent(key.substring(0, 2), key.substring(2, key.length))[0].name}</li>);
       });
     }
     return (
