@@ -8,7 +8,6 @@ import Fold from '../fold';
 
 class PreparednessPhaseOutcomes extends React.Component {
   render () {
-    console.log(this.props);
     const header = {float: 'left', borderBottom: '1px solid #000000', padding: '10px', width: '100%'};
     const body = {float: 'left', padding: '5px', width: '100%'};
     const boxContainer = {float: 'left', padding: '10px', width: '100%'};

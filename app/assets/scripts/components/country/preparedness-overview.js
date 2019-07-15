@@ -9,10 +9,15 @@ import Fold from './../fold';
 class PreparednessOverview extends React.Component {
   render () {
     if (!this.props.getPerNsPhase.fetched || !this.props.perOverviewForm.fetched) return null;
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const phase = {phase: this.props.getPerNsPhase.data.results[0].phase};
     const overviewForm = this.props.perOverviewForm.data.results[0];
-    const dateOfAssessment = new Date(overviewForm.date_of_current_capacity_assessment.substring(0, 10));
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const dateOfAssessment = typeof overviewForm !== 'undefined' ? new Date(overviewForm.date_of_current_capacity_assessment.substring(0, 10)) : null;
+    const dateOfAssessmentString = dateOfAssessment !== null ? months[dateOfAssessment.getMonth()] + ' ' + dateOfAssessment.getFullYear() : 'No data';
+    const perProcessTypeString = typeof overviewForm !== 'undefined' ? getPerProcessType(overviewForm.type_of_capacity_assessment) : 'No data';
+    const focusString = typeof overviewForm !== 'undefined' ? overviewForm.focus : 'No data';
+    const focalPointNameString = typeof overviewForm !== 'undefined' ? overviewForm.focal_point_name : 'No data';
+    const focalPointEmailString = typeof overviewForm !== 'undefined' ? overviewForm.focal_point_email : 'No data';
     return (
       <Fold id='per' title='Preparedness For Effective Response Overview' wrapper_class='preparedness'>
         <div style={{float: 'left', width: '33%'}}>
@@ -77,9 +82,9 @@ class PreparednessOverview extends React.Component {
             <div style={{marginBottom: '5px'}}>Focus</div>
           </div>
           <div style={{width: '50%', float: 'left', textTransform: 'uppercase', fontWeight: 'bold', fontSize: '13px'}}>
-            <div style={{marginBottom: '5px'}}>{months[dateOfAssessment.getMonth()] + ' ' + dateOfAssessment.getFullYear()}</div>
-            <div style={{marginBottom: '5px'}}>{getPerProcessType(overviewForm.type_of_capacity_assessment)}</div>
-            <div style={{marginBottom: '5px'}}>{overviewForm.focus}</div>
+            <div style={{marginBottom: '5px'}}>{dateOfAssessmentString}</div>
+            <div style={{marginBottom: '5px'}}>{perProcessTypeString}</div>
+            <div style={{marginBottom: '5px'}}>{focusString}</div>
           </div>
 
         </div>
@@ -90,8 +95,8 @@ class PreparednessOverview extends React.Component {
             <div style={{marginBottom: '5px'}}>Email</div>
           </div>
           <div style={{width: '50%', float: 'left', textTransform: 'uppercase', fontWeight: 'bold', fontSize: '13px'}}>
-            <div style={{marginBottom: '5px'}}>{overviewForm.focal_point_name}</div>
-            <div style={{marginBottom: '5px'}}>{overviewForm.focal_point_email}</div>
+            <div style={{marginBottom: '5px'}}>{focalPointNameString}</div>
+            <div style={{marginBottom: '5px'}}>{focalPointEmailString}</div>
           </div>
 
         </div>
