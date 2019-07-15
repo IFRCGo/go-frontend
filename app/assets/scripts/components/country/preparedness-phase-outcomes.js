@@ -18,7 +18,7 @@ class PreparednessPhaseOutcomes extends React.Component {
     this.props.getPerUploadedDocuments.data.results.forEach((link) => {
       if (link.visibility === 1) {
         links.push(<p>
-          <a className='link--primary export--link' href={'http://dsgofilestorage.blob.core.windows.net/api/perdocs/' + this.props.countryId + '/23472915_1855956657767025_835097203667582284_n.jpg'}>{link.name}</a>
+          <a className='link--primary export--link' target='_blank' href={'http://dsgofilestorage.blob.core.windows.net/api/perdocs/' + this.props.countryId + '/23472915_1855956657767025_835097203667582284_n.jpg'}>{link.name}</a>
         </p>);
       }
     });
