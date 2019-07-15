@@ -41,7 +41,8 @@ class PerForms extends React.Component {
         autosaveOn={true}
         nationalSociety={this.props.match.params.id} />);
     } else if (this.props.match.params.formName === 'overview') {
-      form = (<OverviewForm view={false} />);
+      form = (<OverviewForm view={false}
+        nationalSociety={this.props.match.params.id} />);
     }
 
     return (
@@ -68,6 +69,7 @@ if (environment !== 'production') {
     fieldReport: T.object,
     location: T.object,
     match: T.object,
+    nationalSociety: T.number,
     _getProfile: T.func,
     _updateSubscriptions: T.func,
     _getFieldReportsByUser: T.func,

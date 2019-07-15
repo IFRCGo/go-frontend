@@ -6,20 +6,57 @@ import {
   getPerDraftDocument,
   sendPerDraft,
   editPerDocument,
-  getPerOverviewForm
+  getPerOverviewForm,
+  sendPerOverview
 } from '../../actions';
 import { connect } from 'react-redux';
 import { environment } from '../../config';
 import { PropTypes as T } from 'prop-types';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import { showAlert } from '../system-alerts';
 
 class OverviewForm extends React.Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      redirect: false
+    };
+  }
+
   componentDidMount () {
     this.props._getPerOverviewForm(null, this.props.formId);
+    this.submitForm = this.submitForm.bind(this);
+  }
+
+  submitForm () {
+    const builtFormData = {
+      country_id: parseInt(this.props.nationalSociety),
+      user_id: this.props.user.data.id,
+      type_of_capacity_assessment: parseInt(document.getElementsByName('capacity_assessment_type')[0].value),
+      branch_involved: document.getElementsByName('branch_involved')[0].value,
+      focal_point_name: document.getElementsByName('focal_point_name')[0].value,
+      focal_point_email: document.getElementsByName('focal_point_email')[0].value,
+      had_previous_assessment: document.getElementsByName('prev_capacity_assessment')[0].value,
+      focus: document.getElementsByName('focus')[0].value,
+      facilitated_by: document.getElementsByName('facilitated_by')[0].value,
+      facilitator_email: document.getElementsByName('facilitator_email')[0].value,
+      phone_number: document.getElementsByName('facilitator_phone')[0].value,
+      skype_address: document.getElementsByName('facilitator_skype')[0].value,
+      date_of_current_capacity_assessment: document.getElementsByName('date_of_current_assessment_year')[0].value + '-' + document.getElementsByName('date_of_current_assessment_month')[0].value + '-' + document.getElementsByName('date_of_current_assessment_day')[0].value + ' 00:00:00.00+00',
+      date_of_mid_term_review: document.getElementsByName('date_of_mid_review_year')[0].value + '-' + document.getElementsByName('date_of_mid_review_month')[0].value + '-' + document.getElementsByName('date_of_mid_review_day')[0].value + ' 00:00:00.00+00',
+      approximate_date_next_capacity_assmt: document.getElementsByName('date_of_next_assessment_year')[0].value + '-' + document.getElementsByName('date_of_next_assessment_month')[0].value + '-' + document.getElementsByName('date_of_next_assessment_day')[0].value + ' 00:00:00.00+00'
+    };
+
+    this.props._sendPerOverview(builtFormData);
+    showAlert('success', <p>Overview form has been saved successfully!</p>, true, 2000);
+    this.setState({redirect: true});
   }
 
   render () {
+    if (this.state.redirect) {
+      return <Redirect to='/account' />;
+    }
     if (this.props.view) {
       if (!this.props.perOverviewForm.fetched) return null;
       return (
@@ -55,6 +92,9 @@ class OverviewForm extends React.Component {
 
                 Have you had a previous capacity assessment?<br />
                 <input type='text' disabled='disabled' value={this.props.perOverviewForm.data.results[0].had_previous_assessment === null ? '' : this.props.perOverviewForm.data.results[0].had_previous_assessment} /><br /><br />
+
+                Focus:<br />
+                <input type='text' disabled='disabled' value={this.props.perOverviewForm.data.results[0].focus === null ? '' : this.props.perOverviewForm.data.results[0].focus} /><br /><br />
 
                 <div className='per_form_ns'>Facilitator information</div>
                 Facilitated by<br />
@@ -92,55 +132,208 @@ class OverviewForm extends React.Component {
 
               <div>
                 <div className='per_form_ns'>General Information</div>
-                National Society:<br />
-                <input type='text' name='national_society' /><br /><br />
-
                 Date of current capacity assessment<br />
-                <input type='text' name='date_of_current_assessment' /><br /><br />
+                <select name='date_of_current_assessment_year'>
+                  <option value='2020'>2020</option>
+                  <option value='2019'>2019</option>
+                  <option value='2018'>2018</option>
+                </select>&nbsp;-&nbsp;
+                <select name='date_of_current_assessment_month'>
+                  <option value='01'>01</option>
+                  <option value='02'>02</option>
+                  <option value='03'>03</option>
+                  <option value='04'>04</option>
+                  <option value='05'>05</option>
+                  <option value='06'>06</option>
+                  <option value='07'>07</option>
+                  <option value='08'>08</option>
+                  <option value='09'>09</option>
+                  <option value='10'>10</option>
+                  <option value='11'>11</option>
+                  <option value='12'>12</option>
+                </select>&nbsp;-&nbsp;
+                <select name='date_of_current_assessment_day'>
+                  <option value='01'>01</option>
+                  <option value='02'>02</option>
+                  <option value='03'>03</option>
+                  <option value='04'>04</option>
+                  <option value='05'>05</option>
+                  <option value='06'>06</option>
+                  <option value='07'>07</option>
+                  <option value='08'>08</option>
+                  <option value='09'>09</option>
+                  <option value='10'>10</option>
+                  <option value='11'>11</option>
+                  <option value='12'>12</option>
+                  <option value='13'>13</option>
+                  <option value='14'>14</option>
+                  <option value='15'>15</option>
+                  <option value='16'>16</option>
+                  <option value='17'>17</option>
+                  <option value='18'>18</option>
+                  <option value='19'>19</option>
+                  <option value='20'>20</option>
+                  <option value='21'>21</option>
+                  <option value='22'>22</option>
+                  <option value='23'>23</option>
+                  <option value='24'>24</option>
+                  <option value='25'>25</option>
+                  <option value='26'>26</option>
+                  <option value='27'>27</option>
+                  <option value='28'>28</option>
+                  <option value='29'>29</option>
+                  <option value='30'>30</option>
+                  <option value='31'>31</option>
+                </select><br /><br />
 
                 Type of capacity assessment<br />
-                <select>
-                  <option>Self assessment</option>
-                  <option>Simulation</option>
-                  <option>Operation</option>
-                  <option>Post operational</option>
+                <select name='capacity_assessment_type'>
+                  <option value='0'>Self assessment</option>
+                  <option value='1'>Simulation</option>
+                  <option value='2'>Operation</option>
+                  <option value='3'>Post operational</option>
                 </select><br /><br />
 
                 Branch involved:<br />
-                <input type='text' name='date_of_current_assessment' /><br /><br />
+                <input type='text' name='branch_involved' /><br /><br />
 
                 Focal point name in the National Society:<br />
-                <input type='text' name='date_of_current_assessment' /><br /><br />
+                <input type='text' name='focal_point_name' /><br /><br />
 
                 Focal point email in the National Society:<br />
-                <input type='text' name='date_of_current_assessment' /><br /><br />
+                <input type='text' name='focal_point_email' /><br /><br />
+
+                Focus:<br />
+                <input type='text' name='focus' /><br /><br />
 
                 Have you had a previous capacity assessment?<br />
-                <select>
-                  <option>Yes</option>
-                  <option>No</option>
+                <select name='prev_capacity_assessment'>
+                  <option value='1'>Yes</option>
+                  <option value='0'>No</option>
                 </select><br /><br />
 
                 <div className='per_form_ns'>Facilitator information</div>
                 Facilitated by<br />
-                <input type='text' name='date_of_current_assessment' /><br /><br />
+                <input type='text' name='facilitated_by' /><br /><br />
 
                 E-mail<br />
-                <input type='text' name='date_of_current_assessment' /><br /><br />
+                <input type='text' name='facilitator_email' /><br /><br />
 
                 Phone number<br />
-                <input type='text' name='date_of_current_assessment' /><br /><br />
+                <input type='text' name='facilitator_phone' /><br /><br />
 
                 Skype address<br />
-                <input type='text' name='date_of_current_assessment' /><br /><br />
+                <input type='text' name='facilitator_skype' /><br /><br />
 
                 Date of mid-term review (approximate date)<br />
-                <input type='text' name='date_of_current_assessment' /><br /><br />
+                <select name='date_of_mid_review_year'>
+                  <option value='2020'>2020</option>
+                  <option value='2019'>2019</option>
+                  <option value='2018'>2018</option>
+                </select>&nbsp;-&nbsp;
+                <select name='date_of_mid_review_month'>
+                  <option value='01'>01</option>
+                  <option value='02'>02</option>
+                  <option value='03'>03</option>
+                  <option value='04'>04</option>
+                  <option value='05'>05</option>
+                  <option value='06'>06</option>
+                  <option value='07'>07</option>
+                  <option value='08'>08</option>
+                  <option value='09'>09</option>
+                  <option value='10'>10</option>
+                  <option value='11'>11</option>
+                  <option value='12'>12</option>
+                </select>&nbsp;-&nbsp;
+                <select name='date_of_mid_review_day'>
+                  <option value='01'>01</option>
+                  <option value='02'>02</option>
+                  <option value='03'>03</option>
+                  <option value='04'>04</option>
+                  <option value='05'>05</option>
+                  <option value='06'>06</option>
+                  <option value='07'>07</option>
+                  <option value='08'>08</option>
+                  <option value='09'>09</option>
+                  <option value='10'>10</option>
+                  <option value='11'>11</option>
+                  <option value='12'>12</option>
+                  <option value='13'>13</option>
+                  <option value='14'>14</option>
+                  <option value='15'>15</option>
+                  <option value='16'>16</option>
+                  <option value='17'>17</option>
+                  <option value='18'>18</option>
+                  <option value='19'>19</option>
+                  <option value='20'>20</option>
+                  <option value='21'>21</option>
+                  <option value='22'>22</option>
+                  <option value='23'>23</option>
+                  <option value='24'>24</option>
+                  <option value='25'>25</option>
+                  <option value='26'>26</option>
+                  <option value='27'>27</option>
+                  <option value='28'>28</option>
+                  <option value='29'>29</option>
+                  <option value='30'>30</option>
+                  <option value='31'>31</option>
+                </select><br /><br />
 
                 Approximate date of next capacity assessment<br />
-                <input type='text' name='date_of_current_assessment' /><br /><br />
+                <select name='date_of_next_assessment_year'>
+                  <option value='2020'>2020</option>
+                  <option value='2019'>2019</option>
+                  <option value='2018'>2018</option>
+                </select>&nbsp;-&nbsp;
+                <select name='date_of_next_assessment_month'>
+                  <option value='01'>01</option>
+                  <option value='02'>02</option>
+                  <option value='03'>03</option>
+                  <option value='04'>04</option>
+                  <option value='05'>05</option>
+                  <option value='06'>06</option>
+                  <option value='07'>07</option>
+                  <option value='08'>08</option>
+                  <option value='09'>09</option>
+                  <option value='10'>10</option>
+                  <option value='11'>11</option>
+                  <option value='12'>12</option>
+                </select>&nbsp;-&nbsp;
+                <select name='date_of_next_assessment_day'>
+                  <option value='01'>01</option>
+                  <option value='02'>02</option>
+                  <option value='03'>03</option>
+                  <option value='04'>04</option>
+                  <option value='05'>05</option>
+                  <option value='06'>06</option>
+                  <option value='07'>07</option>
+                  <option value='08'>08</option>
+                  <option value='09'>09</option>
+                  <option value='10'>10</option>
+                  <option value='11'>11</option>
+                  <option value='12'>12</option>
+                  <option value='13'>13</option>
+                  <option value='14'>14</option>
+                  <option value='15'>15</option>
+                  <option value='16'>16</option>
+                  <option value='17'>17</option>
+                  <option value='18'>18</option>
+                  <option value='19'>19</option>
+                  <option value='20'>20</option>
+                  <option value='21'>21</option>
+                  <option value='22'>22</option>
+                  <option value='23'>23</option>
+                  <option value='24'>24</option>
+                  <option value='25'>25</option>
+                  <option value='26'>26</option>
+                  <option value='27'>27</option>
+                  <option value='28'>28</option>
+                  <option value='29'>29</option>
+                  <option value='30'>30</option>
+                  <option value='31'>31</option>
+                </select><br /><br />
 
-                <Link to='/account' className='button button--medium button--primary-filled'>Submit form</Link>
+                <button className='button button--medium button--primary-filled' onClick={this.submitForm}>Submit form</button>
               </div>
             </div>
           </div>
@@ -156,10 +349,14 @@ if (environment !== 'production') {
   OverviewForm.propTypes = {
     _sendPerForm: T.func,
     _getPerOverviewForm: T.func,
+    _sendPerOverview: T.func,
     sendPerFormResponse: T.object,
     view: T.bool,
     formId: T.string,
-    perOverviewForm: T.object
+    perOverviewForm: T.object,
+    sendPerWorkPlan: T.func,
+    nationalSociety: T.string,
+    user: T.object
   };
 }
 
@@ -169,6 +366,7 @@ const selector = (state) => ({
   sendPerDraft: state.perForm.sendPerDraft,
   getPerDraftDocument: state.perForm.getPerDraftDocument,
   perOverviewForm: state.perForm.getPerOverviewForm,
+  sendPerWorkPlan: state.perForm.sendPerWorkPlan,
   user: state.user
 });
 
@@ -178,7 +376,8 @@ const dispatcher = (dispatch) => ({
   _getPerDraftDocument: (...args) => dispatch(getPerDraftDocument(...args)),
   _sendPerDraft: (payload) => dispatch(sendPerDraft(payload)),
   _editPerDocument: (payload) => dispatch(editPerDocument(payload)),
-  _getPerOverviewForm: (...args) => dispatch(getPerOverviewForm(...args))
+  _getPerOverviewForm: (...args) => dispatch(getPerOverviewForm(...args)),
+  _sendPerOverview: (...args) => dispatch(sendPerOverview(...args))
 });
 
 export default connect(selector, dispatcher)(OverviewForm);

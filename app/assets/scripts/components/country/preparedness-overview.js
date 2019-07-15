@@ -1,14 +1,18 @@
 'use strict';
 
 import React from 'react';
-import { connect } from 'react-redux';
 import { environment } from '../../config';
 import { PropTypes as T } from 'prop-types';
+import { getPerProcessType } from './../../utils/get-per-process-type';
 import Fold from './../fold';
 
 class PreparednessOverview extends React.Component {
   render () {
-    const phase = {phase: 3};
+    if (!this.props.getPerNsPhase.fetched || !this.props.perOverviewForm.fetched) return null;
+    const phase = {phase: this.props.getPerNsPhase.data.results[0].phase};
+    const overviewForm = this.props.perOverviewForm.data.results[0];
+    const dateOfAssessment = new Date(overviewForm.date_of_current_capacity_assessment.substring(0, 10));
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     return (
       <Fold id='per' title='Preparedness For Effective Response Overview' wrapper_class='preparedness'>
         <div style={{float: 'left', width: '33%'}}>
@@ -73,9 +77,9 @@ class PreparednessOverview extends React.Component {
             <div style={{marginBottom: '5px'}}>Focus</div>
           </div>
           <div style={{width: '50%', float: 'left', textTransform: 'uppercase', fontWeight: 'bold', fontSize: '13px'}}>
-            <div style={{marginBottom: '5px'}}>Jan 2019</div>
-            <div style={{marginBottom: '5px'}}>Self-assessment</div>
-            <div style={{marginBottom: '5px'}}>Epi</div>
+            <div style={{marginBottom: '5px'}}>{months[dateOfAssessment.getMonth()] + ' ' + dateOfAssessment.getFullYear()}</div>
+            <div style={{marginBottom: '5px'}}>{getPerProcessType(overviewForm.type_of_capacity_assessment)}</div>
+            <div style={{marginBottom: '5px'}}>{overviewForm.focus}</div>
           </div>
 
         </div>
@@ -86,8 +90,8 @@ class PreparednessOverview extends React.Component {
             <div style={{marginBottom: '5px'}}>Email</div>
           </div>
           <div style={{width: '50%', float: 'left', textTransform: 'uppercase', fontWeight: 'bold', fontSize: '13px'}}>
-            <div style={{marginBottom: '5px'}}>Jane Doe</div>
-            <div style={{marginBottom: '5px'}}>Jane.doe@ifrc.org</div>
+            <div style={{marginBottom: '5px'}}>{overviewForm.focal_point_name}</div>
+            <div style={{marginBottom: '5px'}}>{overviewForm.focal_point_email}</div>
           </div>
 
         </div>
@@ -102,16 +106,8 @@ class PreparednessOverview extends React.Component {
 
 if (environment !== 'production') {
   PreparednessOverview.propTypes = {
-    _getPerNsPhase: T.func
+    getPerNsPhase: T.object,
+    perOverviewForm: T.object
   };
 }
-
-const selector = (state) => ({
-  getPerNsPhase: state.perForm.getPerNsPhase
-});
-
-const dispatcher = (dispatch) => ({
-  _getPerNsPhase: () => dispatch('getPerNsPhase()')
-});
-
-export default connect(selector, dispatcher)(PreparednessOverview);
+export default PreparednessOverview;
