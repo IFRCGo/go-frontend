@@ -476,3 +476,18 @@ export function getPerWorkPlan (countryId = null) {
   const f = buildAPIQS({country: countryId});
   return fetchJSON(`api/v2/perworkplan?${f}`, PER_WORK_PLAN, withToken());
 }
+
+export const PER_SEND_OVERVIEW = 'PER_SEND_OVERVIEW';
+export function sendPerOverview (payload) {
+  return postJSON('sendperoverview', PER_SEND_OVERVIEW, payload);
+}
+
+export const SEND_PER_WORKPLAN = 'SEND_PER_WORKPLAN';
+export function sendPerWorkplan (payload) {
+  return postJSON('sendperworkplan', SEND_PER_WORKPLAN, payload, withToken());
+}
+
+export const DELETE_PER_WORKPLAN_API = 'DELETE_PER_WORKPLAN_API';
+export function deletePerWorkplanApi (payload) {
+  return postJSON('api/v2/del_perworkplan', DELETE_PER_WORKPLAN_API, payload, withToken());
+}
