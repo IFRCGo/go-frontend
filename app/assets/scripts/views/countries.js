@@ -31,7 +31,10 @@ import {
   setPartnerDeploymentFilter,
   getPerNsPhase,
   getPerOverviewForm,
-  getPerWorkPlan
+  getPerWorkPlan,
+  getPerDocument,
+  getPerDocuments,
+  getPerUploadedDocuments
 } from '../actions';
 import { getFdrs } from '../actions/query-external';
 import { getBoundingBox } from '../utils/country-bounding-box';
@@ -52,6 +55,7 @@ import PreparednessOverview from './../components/country/preparedness-overview'
 import PreparednessSummary from './../components/country/preparedness-summary';
 import PreparednessWorkPlan from './../components/country/preparedness-work-plan';
 import PreparednessPhaseOutcomes from './../components/country/preparedness-phase-outcomes';
+import PreparednessColumnBar from './../components/country/preparedness-column-graph';
 import { SFPComponent } from '../utils/extendables';
 
 const filterPaths = {
@@ -119,6 +123,9 @@ class AdminArea extends SFPComponent {
     this.props._getPerNsPhase(this.props.match.params.id);
     this.props._getPerOverviewForm(this.props.match.params.id);
     this.props._getPerWorkPlan(this.props.match.params.id);
+    this.props._getPerDocuments();
+    this.props._getPerDocument(null, this.props.match.params.id);
+    this.props._getPerUploadedDocuments();
   }
 
   getData (props) {
@@ -130,7 +137,6 @@ class AdminArea extends SFPComponent {
     this.props._getCountryOperations(type, id);
     this.props._getPartnerDeployments(type, id);
     this.props._getFdrs(id);
-    // this.props._getAppealsList(id);
   }
 
   getAdmArea (type, id) {
@@ -450,9 +456,10 @@ class AdminArea extends SFPComponent {
               <Links data={data} />
               <Contacts data={data} />
               {this.props.getPerNsPhase.fetched && this.props.perOverviewForm.fetched ? <PreparednessOverview getPerNsPhase={this.props.getPerNsPhase} perOverviewForm={this.props.perOverviewForm} /> : null}
-              <PreparednessSummary />
+              {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? <PreparednessSummary getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} /> : null}
+              {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? <PreparednessColumnBar getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} /> : null}
               {this.props.getPerWorkPlan.fetched ? <PreparednessWorkPlan getPerWorkPlan={this.props.getPerWorkPlan} /> : null}
-              <PreparednessPhaseOutcomes />
+              {this.props.getPerUploadedDocuments.fetched ? <PreparednessPhaseOutcomes getPerUploadedDocuments={this.props.getPerUploadedDocuments} countryId={this.props.match.params.id} /> : null}
             </div>
           </div>
         </StickyContainer>
@@ -478,6 +485,9 @@ if (environment !== 'production') {
     _getAdmAreaAppealsList: T.func,
     _getCountryOperations: T.func,
     _getPartnerDeployments: T.func,
+    _getPerDocument: T.func,
+    _getPerDocuments: T.func,
+    _getPeruploadedDocuments: T.func,
     type: T.string,
     match: T.object,
     history: T.object,
@@ -511,7 +521,10 @@ const selector = (state, ownProps) => ({
   fdrs: state.fdrs,
   getPerNsPhase: state.perForm.getPerNsPhase,
   perOverviewForm: state.perForm.getPerOverviewForm,
-  getPerWorkPlan: state.perForm.getPerWorkPlan
+  getPerWorkPlan: state.perForm.getPerWorkPlan,
+  getPerDocument: state.perForm.getPerDocument,
+  getPerDocuments: state.perForm.getPerDocuments,
+  getPerUploadedDocuments: state.perForm.getPerUploadedDocuments
 });
 
 const dispatcher = (dispatch) => ({
@@ -525,7 +538,10 @@ const dispatcher = (dispatch) => ({
   _getFdrs: (...args) => dispatch(getFdrs(...args)),
   _getPerNsPhase: (...args) => dispatch(getPerNsPhase(...args)),
   _getPerOverviewForm: (...args) => dispatch(getPerOverviewForm(...args)),
-  _getPerWorkPlan: (...args) => dispatch(getPerWorkPlan(...args))
+  _getPerWorkPlan: (...args) => dispatch(getPerWorkPlan(...args)),
+  _getPerDocument: (...args) => dispatch(getPerDocument(...args)),
+  _getPerDocuments: (...args) => dispatch(getPerDocuments(...args)),
+  _getPerUploadedDocuments: (...args) => dispatch(getPerUploadedDocuments(...args))
 });
 
 export default connect(selector, dispatcher)(AdminArea);

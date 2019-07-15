@@ -421,11 +421,17 @@ export function getPerDocuments () {
 }
 
 export const GET_PER_DOCUMENT = 'GET_PER_DOCUMENT';
-export function getPerDocument (id) {
+export function getPerDocument (id = null, countryId = null) {
   const filters = {};
   filters.limit = 1000;
+  if (id !== null) {
+    filters.form = id;
+  }
+  if (countryId !== null) {
+    filters.country = countryId;
+  }
   const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v2/perdata/?${f}&form=${id}`, GET_PER_DOCUMENT, withToken());
+  return fetchJSON(`/api/v2/perdata/?${f}`, GET_PER_DOCUMENT, withToken());
 }
 
 export const GET_PER_DRAFT_DOCUMENT = 'GET_PER_DRAFT_DOCUMENT';
@@ -490,4 +496,10 @@ export function sendPerWorkplan (payload) {
 export const DELETE_PER_WORKPLAN_API = 'DELETE_PER_WORKPLAN_API';
 export function deletePerWorkplanApi (payload) {
   return postJSON('api/v2/del_perworkplan', DELETE_PER_WORKPLAN_API, payload, withToken());
+}
+
+export const GET_PER_UPLOADED_DOCUMENTS = 'GET_PER_UPLOADED_DOCUMENTS';
+export function getPerUploadedDocuments (countryId) {
+  const f = buildAPIQS({country: countryId});
+  return fetchJSON(`api/v2/perdocs?${f}`, GET_PER_UPLOADED_DOCUMENTS, withToken());
 }

@@ -8,70 +8,32 @@ import Fold from '../fold';
 
 class PreparednessPhaseOutcomes extends React.Component {
   render () {
+    console.log(this.props);
     const header = {float: 'left', borderBottom: '1px solid #000000', padding: '10px', width: '100%'};
     const body = {float: 'left', padding: '5px', width: '100%'};
-    const boxContainer = {float: 'left', padding: '10px', width: '33%'};
-    const boxContainerCenter = {float: 'left', padding: '10px', width: '34%'};
+    const boxContainer = {float: 'left', padding: '10px', width: '100%'};
     const boxInner = {float: 'left', width: '100%', height: '100%', border: '1px solid #000', padding: '5px'};
     const title = {fontWeight: 'bold'};
+    const links = [];
+    this.props.getPerUploadedDocuments.data.results.forEach((link) => {
+      if (link.visibility === 1) {
+        links.push(<p>
+          <a className='link--primary export--link' target='_blank' href={'http://dsgofilestorage.blob.core.windows.net/api/perdocs/' + this.props.countryId + '/23472915_1855956657767025_835097203667582284_n.jpg'}>{link.name}</a>
+        </p>);
+      }
+    });
     return (
       <Fold id='per' title='PER Phase Outcomes' wrapper_class='preparedness'>
         <div style={header}>
-          <button className='button button--small button--primary-bounded'>Upload</button>&nbsp;
-          <select>
-            <option>NS Documents</option>
-            <option>PER Process Documents</option>
-            <option>NS Document Type</option>
-          </select>&nbsp;
-          <input type='file' name='uploadfile' id='uploadfile' />
+          <a href='https://dsgocdnapi.azureedge.net/admin/per/nicedocument/' target='_blank' className='button button--small button--primary-bounded'>Upload</a>&nbsp;
         </div>
         <div style={body}>
           <div style={boxContainer}>
             <div style={boxInner}>
               <p>
-                <span style={title}>NS Documents</span>
+                <span style={title}>PER related uploaded documents</span>
               </p>
-              <p>
-                <a className='link--primary export--link' href='/test.pdf'>Test PDF</a>
-              </p>
-              <p>
-                <a className='link--primary export--link' href='/test.pdf'>Serious information PDF</a>
-              </p>
-              <p>
-                <a className='link--primary export--link' href='/test.pdf'>Status report PDF</a>
-              </p>
-            </div>
-          </div>
-          <div style={boxContainerCenter}>
-            <div style={boxInner}>
-              <p>
-                <span style={title}>PER Process Documents</span>
-              </p>
-              <p>
-                <a className='link--primary export--link' href='/test.pdf'>Test PDF</a>
-              </p>
-              <p>
-                <a className='link--primary export--link' href='/test.pdf'>Serious information PDF</a>
-              </p>
-              <p>
-                <a className='link--primary export--link' href='/test.pdf'>Status report PDF</a>
-              </p>
-            </div>
-          </div>
-          <div style={boxContainer}>
-            <div style={boxInner}>
-              <p>
-                <span style={title}>NS Document Type</span>
-              </p>
-              <p>
-                <a className='link--primary export--link' href='/test.pdf'>Test PDF</a>
-              </p>
-              <p>
-                <a className='link--primary export--link' href='/test.pdf'>Serious information PDF</a>
-              </p>
-              <p>
-                <a className='link--primary export--link' href='/test.pdf'>Status report PDF</a>
-              </p>
+              {links}
             </div>
           </div>
         </div>
@@ -82,7 +44,9 @@ class PreparednessPhaseOutcomes extends React.Component {
 
 if (environment !== 'production') {
   PreparednessPhaseOutcomes.propTypes = {
-    _getPerNsPhase: T.func
+    _getPerNsPhase: T.func,
+    getPerUploadedDocuments: T.object,
+    countryId: T.string
   };
 }
 
