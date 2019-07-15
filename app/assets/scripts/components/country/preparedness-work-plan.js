@@ -332,6 +332,7 @@ if (environment !== 'production') {
     _sendPerWorkplan: T.func,
     _deletePerWorkplanApi: T.func,
     _addNewWorkPlan: T.func,
+    _deletePerWorkPlanState: T.func,
     sendPerWorkplan: T.object,
     deletePerWorkplanApi: T.object,
     match: T.object,
