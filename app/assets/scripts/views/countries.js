@@ -29,8 +29,9 @@ import {
   getCountryOperations,
   getPartnerDeployments,
   setPartnerDeploymentFilter,
-  // getAppealsList,
-  getPerNsPhase
+  getPerNsPhase,
+  getPerOverviewForm,
+  getPerWorkPlan
 } from '../actions';
 import { getFdrs } from '../actions/query-external';
 import { getBoundingBox } from '../utils/country-bounding-box';
@@ -115,7 +116,9 @@ class AdminArea extends SFPComponent {
   componentDidMount () {
     this.getData(this.props);
     this.getAdmArea(this.props.type, getCountryId(this.props.match.params.id));
-    this.props._getPerNsPhase(getCountryId(this.props.match.params.id));
+    this.props._getPerNsPhase(this.props.match.params.id);
+    this.props._getPerOverviewForm(this.props.match.params.id);
+    this.props._getPerWorkPlan(this.props.match.params.id);
   }
 
   getData (props) {
@@ -446,9 +449,9 @@ class AdminArea extends SFPComponent {
               <Snippets data={this.props.snippets} />
               <Links data={data} />
               <Contacts data={data} />
-              <PreparednessOverview />
+              {this.props.getPerNsPhase.fetched && this.props.perOverviewForm.fetched ? <PreparednessOverview getPerNsPhase={this.props.getPerNsPhase} perOverviewForm={this.props.perOverviewForm} /> : null}
               <PreparednessSummary />
-              <PreparednessWorkPlan />
+              {this.props.getPerWorkPlan.fetched ? <PreparednessWorkPlan getPerWorkPlan={this.props.getPerWorkPlan} /> : null}
               <PreparednessPhaseOutcomes />
             </div>
           </div>
@@ -506,7 +509,9 @@ const selector = (state, ownProps) => ({
     fetched: false
   }),
   fdrs: state.fdrs,
-  getPerNsPhase: state.perForm.getPerNsPhase
+  getPerNsPhase: state.perForm.getPerNsPhase,
+  perOverviewForm: state.perForm.getPerOverviewForm,
+  getPerWorkPlan: state.perForm.getPerWorkPlan
 });
 
 const dispatcher = (dispatch) => ({
@@ -518,7 +523,9 @@ const dispatcher = (dispatch) => ({
   _getPartnerDeployments: (...args) => dispatch(getPartnerDeployments(...args)),
   _setPartnerDeploymentFilter: (...args) => dispatch(setPartnerDeploymentFilter(...args)),
   _getFdrs: (...args) => dispatch(getFdrs(...args)),
-  _getPerNsPhase: () => dispatch(getPerNsPhase())
+  _getPerNsPhase: (...args) => dispatch(getPerNsPhase(...args)),
+  _getPerOverviewForm: (...args) => dispatch(getPerOverviewForm(...args)),
+  _getPerWorkPlan: (...args) => dispatch(getPerWorkPlan(...args))
 });
 
 export default connect(selector, dispatcher)(AdminArea);
