@@ -125,7 +125,7 @@ class AdminArea extends SFPComponent {
     this.props._getPerWorkPlan(this.props.match.params.id);
     this.props._getPerDocuments();
     this.props._getPerDocument(null, this.props.match.params.id);
-    this.props._getPerUploadedDocuments();//this.props.match.params.id);
+    this.props._getPerUploadedDocuments();
   }
 
   getData (props) {

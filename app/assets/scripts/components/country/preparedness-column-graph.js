@@ -6,7 +6,7 @@ import { PropTypes as T } from 'prop-types';
 import { getPerComponent } from './../../utils/get-per-components';
 import Fold from './../fold';
 import {
-  BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend
 } from 'recharts';
 import RequestFactory from './../per-forms/factory/request-factory';
 
@@ -15,7 +15,6 @@ class PreparednessColumnBar extends React.Component {
     super(props);
     this.formIds = {};
     this.requestFactory = new RequestFactory();
-
   }
 
   buildDataForGraph () {
@@ -68,17 +67,12 @@ class PreparednessColumnBar extends React.Component {
             height={300}
             data={Object.values(groupedData)}
             margin={{
-              top: 5, right: 30, left: 20, bottom: 5,
+              top: 5, right: 30, left: 20, bottom: 5
             }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey='name' hide />
             <YAxis type='number' ticks={[2, 3, 4, 5, 6, 7]} tickFormatter={(number) => this.requestFactory.numAnswerToString(number)} />
-            <Tooltip formatter={(number) => {
-              if (number > 1) {
-                return this.requestFactory.numAnswerToString(number);
-              } else {
-                return 'No data';
-              }}} />
+            <Tooltip formatter={(number) => number > 1 ? this.requestFactory.numAnswerToString(number) : 'No data'} />
             <Legend />
             <Bar dataKey="epi" fill="#8884d8" />
             <Bar dataKey="component" fill="#82ca9d" />
@@ -92,7 +86,9 @@ class PreparednessColumnBar extends React.Component {
 if (environment !== 'production') {
   PreparednessColumnBar.propTypes = {
     getPerNsPhase: T.object,
-    perOverviewForm: T.object
+    perOverviewForm: T.object,
+    getPerDocument: T.object,
+    getPerDocuments: T.object
   };
 }
 

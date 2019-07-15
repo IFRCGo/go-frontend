@@ -44,7 +44,9 @@ class PreparednessPhaseOutcomes extends React.Component {
 
 if (environment !== 'production') {
   PreparednessPhaseOutcomes.propTypes = {
-    _getPerNsPhase: T.func
+    _getPerNsPhase: T.func,
+    getPerUploadedDocuments: T.object,
+    countryId: T.string
   };
 }
 

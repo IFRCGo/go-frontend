@@ -161,7 +161,9 @@ class PreparednessSummary extends React.Component {
 
 if (environment !== 'production') {
   PreparednessSummary.propTypes = {
-    _getPerNsPhase: T.func
+    _getPerNsPhase: T.func,
+    getPerDocuments: T.object,
+    getPerDocument: T.object
   };
 }
 
