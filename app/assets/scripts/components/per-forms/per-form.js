@@ -306,6 +306,7 @@ if (environment !== 'production') {
     match: T.object,
     perDocument: T.object,
     sendPerFormResponse: T.object,
-    mode: T.object
+    mode: T.object,
+    ns: T.string
   };
 }

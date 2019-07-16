@@ -529,13 +529,16 @@ if (environment !== 'production') {
     _sendPerForm: T.func,
     _getPerOverviewForm: T.func,
     _sendPerOverview: T.func,
+    _getPerDraftDocument: T.func,
     sendPerFormResponse: T.object,
     view: T.bool,
     formId: T.string,
     perOverviewForm: T.object,
     sendPerWorkPlan: T.func,
     nationalSociety: T.string,
-    user: T.object
+    user: T.object,
+    getPerDraftDocument: T.object,
+    _sendPerDraft: T.func
   };
 }
 
