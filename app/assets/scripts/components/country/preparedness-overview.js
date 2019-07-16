@@ -3,12 +3,14 @@
 import React from 'react';
 import { environment } from '../../config';
 import { PropTypes as T } from 'prop-types';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { getPerProcessType } from './../../utils/get-per-process-type';
 import Fold from './../fold';
 
 class PreparednessOverview extends React.Component {
   render () {
-    if (!this.props.getPerNsPhase.fetched || !this.props.perOverviewForm.fetched) return null;
+    if (!this.props.getPerNsPhase.fetched || !this.props.perOverviewForm.fetched || !this.props.user.username) return null;
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const phase = {phase: this.props.getPerNsPhase.data.results[0].phase};
     const overviewForm = this.props.perOverviewForm.data.results[0];
@@ -113,7 +115,17 @@ class PreparednessOverview extends React.Component {
 if (environment !== 'production') {
   PreparednessOverview.propTypes = {
     getPerNsPhase: T.object,
-    perOverviewForm: T.object
+    perOverviewForm: T.object,
+    user: T.object
   };
 }
-export default PreparednessOverview;
+
+const selector = (state) => ({
+  user: state.user.data
+});
+
+const dispatcher = (dispatch) => ({
+  _test: (...args) => dispatch('test')
+});
+
+export default withRouter(connect(selector, dispatcher)(PreparednessOverview));

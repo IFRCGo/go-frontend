@@ -101,6 +101,7 @@ class PreparednessWorkPlan extends React.Component {
   }
 
   render () {
+    if (!this.props.user.username) return null;
     const workPlans = [];
     const prioritizationDropdown = [];
     const components = [];

@@ -21,6 +21,7 @@ class PreparednessSummary extends React.Component {
   }
 
   render () {
+    if (!this.props.user.username || typeof this.props.getPerDocuments.data.results === 'undefined') return null;
     this.buildFormCodes();
     const filteredData = this.props.getPerDocument.data.results.filter((component) => {
       return component.selected_option > 1;
@@ -163,12 +164,14 @@ if (environment !== 'production') {
   PreparednessSummary.propTypes = {
     _getPerNsPhase: T.func,
     getPerDocuments: T.object,
-    getPerDocument: T.object
+    getPerDocument: T.object,
+    user: T.object
   };
 }
 
 const selector = (state) => ({
-  getPerNsPhase: state.perForm.getPerNsPhase
+  getPerNsPhase: state.perForm.getPerNsPhase,
+  user: state.user
 });
 
 const dispatcher = (dispatch) => ({

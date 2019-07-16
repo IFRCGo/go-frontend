@@ -8,6 +8,7 @@ import Fold from './../fold';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend
 } from 'recharts';
+import { connect } from 'react-redux';
 import RequestFactory from './../per-forms/factory/request-factory';
 
 class PreparednessColumnBar extends React.Component {
@@ -55,7 +56,7 @@ class PreparednessColumnBar extends React.Component {
   }
 
   render () {
-    if (!this.props.getPerDocument.fetched || !this.props.getPerDocuments.fetched) return null;
+    if (!this.props.getPerDocument.fetched || !this.props.getPerDocuments.fetched || !this.props.user.username || typeof this.props.getPerDocuments.data.results !== 'undefined') return null;
     this.buildFormCodes();
     const tmpData = this.buildDataForGraph();
     const groupedData = this.buildGroupedData(tmpData);
@@ -88,8 +89,17 @@ if (environment !== 'production') {
     getPerNsPhase: T.object,
     perOverviewForm: T.object,
     getPerDocument: T.object,
-    getPerDocuments: T.object
+    getPerDocuments: T.object,
+    user: T.object
   };
 }
 
-export default PreparednessColumnBar;
+const selector = (state) => ({
+  user: state.user.data
+});
+
+const dispatcher = (dispatch) => ({
+  _getPerNsPhase: () => dispatch('getPerNsPhase()')
+});
+
+export default connect(selector, dispatcher)(PreparednessColumnBar);
