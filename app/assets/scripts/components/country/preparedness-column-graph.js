@@ -89,7 +89,8 @@ if (environment !== 'production') {
     getPerNsPhase: T.object,
     perOverviewForm: T.object,
     getPerDocument: T.object,
-    getPerDocuments: T.object
+    getPerDocuments: T.object,
+    user: T.object
   };
 }
 

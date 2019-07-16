@@ -400,7 +400,7 @@ class AdminArea extends SFPComponent {
                     <li><a href='#emergencies' title='Go to Emergencies section'>Emergencies</a></li>
                     {get(this.props.snippets, 'data.results.length') ? <li><a href='#graphics' title='Go to Graphics section'>Graphics</a></li> : null}
                     {get(data, 'links.length') ? <li><a href='#links' title='Go to Links section'>Links</a></li> : null}
-                    {!!this.props.user.username ? <li><a href='#per' title='Go to Links section'>Preparedness</a></li> : null}
+                    {!this.props.user.username ? null : <li><a href='#per' title='Go to Links section'>Preparedness</a></li>}
                     {get(data, 'contacts.length') ? <li><a href='#contacts' title='Go to Contacts section'>Contacts</a></li> : null}
                   </ul>
                 </div>

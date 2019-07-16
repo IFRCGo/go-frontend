@@ -164,7 +164,8 @@ if (environment !== 'production') {
   PreparednessSummary.propTypes = {
     _getPerNsPhase: T.func,
     getPerDocuments: T.object,
-    getPerDocument: T.object
+    getPerDocument: T.object,
+    user: T.object
   };
 }
 

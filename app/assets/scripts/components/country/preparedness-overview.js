@@ -115,7 +115,8 @@ class PreparednessOverview extends React.Component {
 if (environment !== 'production') {
   PreparednessOverview.propTypes = {
     getPerNsPhase: T.object,
-    perOverviewForm: T.object
+    perOverviewForm: T.object,
+    user: T.object
   };
 }
 
