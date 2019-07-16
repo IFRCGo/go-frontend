@@ -73,16 +73,18 @@ class Preparedness extends React.Component {
       const builtGeoJson = this.state.geoJsonFinal;
 
       builtGeoJson.data.geoJSON.features.map((mapObject) => {
-        const phaseObjects = nextProps.getPerNsPhase.data.results.filter((phaseObject) => phaseObject.country === mapObject.properties.country.id);
-        const phaseObject = phaseObjects.length > 0 ? phaseObjects[0] : {id: -1, country: -1, phase: -1, updated_at: -1};
-        mapObject.properties.phase = phaseObject;
+        if (typeof nextProps.getPerNsPhase.data.results !== 'undefined') {
+          const phaseObjects = nextProps.getPerNsPhase.data.results.filter((phaseObject) => phaseObject.country === mapObject.properties.country.id);
+          const phaseObject = phaseObjects.length > 0 ? phaseObjects[0] : {id: -1, country: -1, phase: -1, updated_at: -1};
+          mapObject.properties.phase = phaseObject;
+        }
         return mapObject;
       });
 
       this.setState({geoJsonFinal: builtGeoJson});
     }
 
-    if (!this.props.perWorkPlan.fetched && nextProps.perWorkPlan.fetched) {
+    if (!this.props.perWorkPlan.fetched && nextProps.perWorkPlan.fetched && !(typeof nextProps.perWorkPlan.error !== 'undefined' && nextProps.perWorkPlan.error !== null)) {
       nextProps.perWorkPlan.data.results.forEach((perWorkPlan) => {
         if (perWorkPlan.prioritization === 0) {
           if (typeof this.state.topPrioritizedComponents[perWorkPlan.code + perWorkPlan.question_id] === 'undefined') {
@@ -156,7 +158,8 @@ const selector = (state) => ({
   getPerGlobalPreparedness: state.perForm.getPerGlobalPreparedness,
   getPerNsPhase: state.perForm.getPerNsPhase,
   perOverviewForm: state.perForm.getPerOverviewForm,
-  perWorkPlan: state.perForm.getPerWorkPlan
+  perWorkPlan: state.perForm.getPerWorkPlan,
+  user: state.user
 });
 
 const dispatcher = (dispatch) => ({
