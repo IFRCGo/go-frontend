@@ -407,7 +407,7 @@ export function clearLoadedCsv (id) {
 
 export const SEND_PER_FORM = 'SEND_PER_FORM';
 export function sendPerForm (data) {
-  return postJSON('sendperform', SEND_PER_FORM, data);
+  return postJSON('sendperform', SEND_PER_FORM, data, withToken());
 }
 
 export const GET_PER_COUNTRIES = 'GET_PER_COUNTRIES';
@@ -442,12 +442,12 @@ export function getPerDraftDocument (filters) {
 
 export const SEND_PER_DRAFT_DOCUMENT = 'SEND_PER_DRAFT_DOCUMENT';
 export function sendPerDraft (data) {
-  return postJSON('sendperdraft', SEND_PER_DRAFT_DOCUMENT, data);
+  return postJSON('sendperdraft', SEND_PER_DRAFT_DOCUMENT, data, withToken());
 }
 
 export const EDIT_PER_DOCUMENT = 'EDIT_PER_DOCUMENT';
 export function editPerDocument (data) {
-  return postJSON('editperform', EDIT_PER_DOCUMENT, data);
+  return postJSON('editperform', EDIT_PER_DOCUMENT, data, withToken());
 }
 
 export const COLLABORATING_PER_COUNTRY = 'COLLABORATING_PER_COUNTRY';
@@ -485,7 +485,7 @@ export function getPerWorkPlan (countryId = null) {
 
 export const PER_SEND_OVERVIEW = 'PER_SEND_OVERVIEW';
 export function sendPerOverview (payload) {
-  return postJSON('sendperoverview', PER_SEND_OVERVIEW, payload);
+  return postJSON('sendperoverview', PER_SEND_OVERVIEW, payload, withToken());
 }
 
 export const SEND_PER_WORKPLAN = 'SEND_PER_WORKPLAN';

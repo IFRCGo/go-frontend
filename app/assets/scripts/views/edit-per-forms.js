@@ -20,37 +20,43 @@ class EditPerForms extends React.Component {
         autosaveOn={true}
         match={this.props.match}
         formCode={this.props.match.params.formCode}
-        user={this.props.match.params.user} />);
+        user={this.props.match.params.user}
+        ns={this.props.match.params.ns} />);
     } else if (this.props.match.params.formCode === 'a2') {
       form = (<A2AnalysisAndPlanningForm mode='edit'
         autosaveOn={true}
         match={this.props.match}
         formCode={this.props.match.params.formCode}
-        user={this.props.match.params.user} />);
+        user={this.props.match.params.user}
+        ns={this.props.match.params.ns} />);
     } else if (this.props.match.params.formCode === 'a3') {
       form = (<A3OperationalCapacity mode='edit'
         autosaveOn={true}
         match={this.props.match}
         formCode={this.props.match.params.formCode}
-        user={this.props.match.params.user} />);
+        user={this.props.match.params.user}
+        ns={this.props.match.params.ns} />);
     } else if (this.props.match.params.formCode === 'a3-2') {
       form = (<A3OperationalCapacity2 mode='edit'
         autosaveOn={true}
         match={this.props.match}
         formCode={this.props.match.params.formCode}
-        user={this.props.match.params.user} />);
+        user={this.props.match.params.user}
+        ns={this.props.match.params.ns} />);
     } else if (this.props.match.params.formCode === 'a4') {
       form = (<A4Coordination mode='edit'
         autosaveOn={true}
         match={this.props.match}
         formCode={this.props.match.params.formCode}
-        user={this.props.match.params.user} />);
+        user={this.props.match.params.user}
+        ns={this.props.match.params.ns} />);
     } else if (this.props.match.params.formCode === 'a5') {
       form = (<A5OperationsSupport mode='edit'
         autosaveOn={true}
         match={this.props.match}
         formCode={this.props.match.params.formCode}
-        user={this.props.match.params.user} />);
+        user={this.props.match.params.user}
+        ns={this.props.match.params.ns} />);
     }
 
     return (
