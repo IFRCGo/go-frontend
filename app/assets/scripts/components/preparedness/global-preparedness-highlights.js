@@ -17,7 +17,7 @@ export default class GlobalPreparednessHighlights extends React.Component {
   }
 
   buildHighPerformingComponentsData () {
-    if (!this.highPerformingComponentsDataBuilt) {
+    if (!this.highPerformingComponentsDataBuilt && typeof this.props.data.data.results !== 'undefined') {
       this.highPerformingComponentsDataBuilt = true;
       const components = {};
       const highPerformingComponents = [];
@@ -59,6 +59,7 @@ export default class GlobalPreparednessHighlights extends React.Component {
         highPriorityComponents.push(<li key={key + 'highpriority' + index}>{getShortComponent(key.substring(0, 2), key.substring(2, key.length))[0].name}</li>);
       });
     }
+    if (highPerformingComponents.length === 0 && highPriorityComponents.length === 0) return null;
     return (
       <div className='inner'>
         <Fold title={'Global Preparedness Highlights'}>
