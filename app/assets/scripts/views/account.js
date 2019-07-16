@@ -738,9 +738,13 @@ class Account extends React.Component {
           }
           draftDocuments.push(
             <div style={{backgroundColor: '#eaeaea', float: 'left', width: '100%', marginBottom: '1rem', padding: '0.25rem 1rem', fontWeight: 'bold'}} key={'draftDocument' + index}>
-              {draftDocument.code.toUpperCase()} - {parsedData.name} - {parsedData.submitted_at.substring(0, 10)} - {typeof draftDocument.user !== 'undefined' ? draftDocument.user.username : null}
+              {draftDocument.code.toUpperCase()} - {typeof parsedData.name !== 'undefined' ? parsedData.name : null} - {typeof parsedData.submitted_at !== 'undefined' ? parsedData.submitted_at.substring(0, 10) : null} - {typeof draftDocument.user !== 'undefined' ? draftDocument.user.username : null} - {draftDocument.country.name}
               <div style={{float: 'right'}}>
-                <Link className='button button--small button--secondary-bounded' to={'/edit-per-forms/' + draftDocument.code + '/' + draftDocument.user.username}>Edit</Link>
+                <Link
+                  className='button button--small button--secondary-bounded'
+                  to={draftDocument.code === 'overview' ? '/per-forms/overview/' + draftDocument.country.id : '/edit-per-forms/' + draftDocument.code + '/' + draftDocument.user.username + '/' + draftDocument.country.id}>
+                  Edit
+                </Link>
               </div>
             </div>);
           index++;

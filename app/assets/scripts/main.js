@@ -117,7 +117,7 @@ const Root = () => (
         <Route path='/per-forms/:formName/:id' component={PerForms} />
         <Route path='/preparedness' component={Preparedness} />
         <Route path='/view-per-forms/:formName/:id' component={ViewPerForms} />
-        <Route path='/edit-per-forms/:formCode/:user' component={EditPerForms} />
+        <Route path='/edit-per-forms/:formCode/:user/:ns' component={EditPerForms} />
         <Route component={UhOh}/>
       </Switch>
     </Router>

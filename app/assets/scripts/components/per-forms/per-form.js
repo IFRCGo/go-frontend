@@ -32,10 +32,12 @@ export default class PerForm extends React.Component {
     this.loadingFormPropsRunning = false;
     this.state = defaultLanguage;
     this.changeEpiComponentState = this.changeEpiComponentState.bind(this);
+    this.unifiedNs = 0;
   }
 
   componentDidMount () {
     window.scrollTo(0, 0);
+    this.unifiedNs = this.props.mode === 'edit' ? this.props.ns : this.props.nationalSociety;
     if (this.props.mode === 'view') {
       this.props._getPerDocument(this.props.match.params.id);
       this.loadingFormPropsRunning = true;
@@ -43,6 +45,7 @@ export default class PerForm extends React.Component {
       const filters = {};
       filters.user = this.props.user.data.id;
       filters.code = this.formCode;
+      filters.country = this.props.mode === 'edit' ? this.props.ns : this.props.nationalSociety;
       this.props._getPerDraftDocument(filters);
     }
   }
@@ -50,7 +53,7 @@ export default class PerForm extends React.Component {
   componentDidUpdate (prevProps) {
     let autoSaveShouldLoad = true;
     if (this.props.mode === 'new' || this.props.mode === 'edit') {
-      if (!prevProps.getPerDraftDocument.fetched && this.props.getPerDraftDocument.fetched && !localStorage.getItem('autosave' + this.props.mode + this.formCode)) {
+      if (!prevProps.getPerDraftDocument.fetched && this.props.getPerDraftDocument.fetched && !localStorage.getItem('autosave' + this.props.mode + this.formCode + this.unifiedNs)) {
         autoSaveShouldLoad = false;
       }
     }
@@ -69,7 +72,7 @@ export default class PerForm extends React.Component {
       }
       this.loadingFormPropsRunning = false;
       this.loadFromProps();
-    } else if (autoSaveShouldLoad && this.props.autosaveOn && localStorage.getItem('autosave' + this.props.mode + this.formCode) !== null && localStorage.getItem('finished' + this.formCode) === null) {
+    } else if (autoSaveShouldLoad && this.props.autosaveOn && localStorage.getItem('autosave' + this.props.mode + this.formCode + this.unifiedNs) !== null && localStorage.getItem('finished' + this.formCode) === null) {
       if (this.isEpiComponent() && this.state.epiComponent !== 'yes') {
         this.setState({epiComponent: 'yes'});
         return;
@@ -91,7 +94,7 @@ export default class PerForm extends React.Component {
     request = this.requestFactory.addComponentData(request);
 
     if (type === 'autosave' && this.props.autosaveOn) {
-      localStorage.setItem(type + this.props.mode + this.formCode, JSON.stringify(request));
+      localStorage.setItem(type + this.props.mode + this.formCode + this.unifiedNs, JSON.stringify(request));
     }
   }
 
@@ -99,8 +102,8 @@ export default class PerForm extends React.Component {
     let draft = null;
     if (this.props.perDocument.fetched && this.props.mode === 'view') {
       return this.isEpiComponentFromProps();
-    } else if (!!localStorage.getItem('autosave' + this.props.mode + this.formCode) && !localStorage.getItem('finished' + this.formCode)) {
-      draft = JSON.parse(localStorage.getItem('autosave' + this.props.mode + this.formCode));
+    } else if (!!localStorage.getItem('autosave' + this.props.mode + this.formCode + this.unifiedNs) && !localStorage.getItem('finished' + this.formCode)) {
+      draft = JSON.parse(localStorage.getItem('autosave' + this.props.mode + this.formCode + this.unifiedNs));
     } else if (this.props.getPerDraftDocument.fetched && this.props.getPerDraftDocument.data.count === 1) {
       draft = JSON.parse(this.props.getPerDraftDocument.data.results[0].data.replace(/'/g, '"'));
     }
@@ -129,7 +132,7 @@ export default class PerForm extends React.Component {
   loadState (type) {
     let draft = null;
     if (type === 'autosave' && this.props.autosaveOn) {
-      draft = JSON.parse(localStorage.getItem(type + this.props.mode + this.formCode));
+      draft = JSON.parse(localStorage.getItem(type + this.props.mode + this.formCode + this.unifiedNs));
     } else if (type === 'draft') {
       draft = JSON.parse(this.props.getPerDraftDocument.data.results[0].data.replace(/'/g, '"'));
     }
@@ -187,7 +190,7 @@ export default class PerForm extends React.Component {
       let request = this.requestFactory.newFormRequest(this.formCode, this.formName, this.state.languageCode, this.nationalSociety);
       request = this.requestFactory.addAreaQuestionData(request);
       request = this.requestFactory.addComponentData(request);
-      const finalRequest = {code: this.formCode, user_id: this.props.user.data.id + '', data: request};
+      const finalRequest = {code: this.formCode, user_id: this.props.user.data.id + '', data: request, country_id: this.props.ns};
       this.props._sendPerDraft(finalRequest);
       showAlert('success', <p>PER form has been saved successfully!</p>, true, 2000);
       this.setState({redirect: true});
@@ -198,7 +201,7 @@ export default class PerForm extends React.Component {
     let request = this.requestFactory.newFormRequest(this.formCode, this.formName, this.state.languageCode, this.nationalSociety);
     request = this.requestFactory.addAreaQuestionData(request);
     request = this.requestFactory.addComponentData(request);
-    const finalRequest = {code: this.formCode, user_id: this.props.user.data.id + '', data: request};
+    const finalRequest = {code: this.formCode, user_id: this.props.user.data.id + '', data: request, country_id: this.props.nationalSociety};
     this.autosave();
     this.props._sendPerDraft(finalRequest);
     showAlert('success', <p>PER form has been saved successfully!</p>, true, 2000);
@@ -209,7 +212,7 @@ export default class PerForm extends React.Component {
       clearInterval(this.autosaveInterval);
     }
     if (this.props.mode === 'edit') {
-      localStorage.removeItem('autosave' + this.props.mode + this.formCode);
+      localStorage.removeItem('autosave' + this.props.mode + this.formCode + this.unifiedNs);
     }
   }
 
