@@ -315,14 +315,6 @@ class Account extends React.Component {
   }
 
   serializeNotifications (notifications) {
-    let basicNotifications = get(notifications, 'basic', []).filter(d => d.checked).map(d => ({
-      type: d.value,
-      value: true
-    }));
-    if (basicNotifications.length) {
-      serialized.push.apply(serialized, basicNotifications);
-    }
-
     let serialized = ['regions', 'disasterTypes', 'appeal', 'event', 'fieldReport']
       .reduce((acc, currentType) => {
         const flattened = get(notifications, currentType, [])
@@ -367,6 +359,14 @@ class Account extends React.Component {
     });
     if (followedEvents.length) {
       serialized.push.apply(serialized, followedEvents);
+    }
+
+    let basicNotifications = get(notifications, 'basic', []).filter(d => d.checked).map(d => ({
+      type: d.value,
+      value: true
+    }));
+    if (basicNotifications.length) {
+      serialized.push.apply(serialized, basicNotifications);
     }
 
     return serialized;
@@ -583,11 +583,11 @@ class Account extends React.Component {
             <FormCheckboxGroup
               label='Notification types'
               description={'Set basic notification types.'}
-              name='basicTypes'
+              name='basic'
               classWrapper='action-checkboxes'
               options={basicTypes}
-              values={this.state.notifications.basicTypes}
-              onChange={this.onFieldChange.bind(this, 'notifications', 'basicTypes')} />
+              values={this.state.notifications.basic}
+              onChange={this.onFieldChange.bind(this, 'notifications', 'basic')} />
             <FormCheckboxGroup
               label='Regional notifications'
               description={'Select one or more regions to receive notifications about.'}
