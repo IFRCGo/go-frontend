@@ -9,7 +9,7 @@ export function startDownload (renderedCanvas, filename) {
       window.navigator.msSaveBlob(new Blob([renderedCanvas], {type: 'text/csv', charset: 'utf-8'}), filename);
     } else {
       isChrome = true;
-      dataUri = renderedCanvas
+      dataUri = renderedCanvas;
     }
   } else {
     if (window.navigator.msSaveOrOpenBlob) {
