@@ -34,7 +34,7 @@ class PreparednessOverview extends React.Component {
                 Orientation
               </div>
               <div style={{width: '20%', float: 'left'}}>
-                {phase.phase >= 0 ? <img src='/assets/graphics/layout/tick.png' alt='phase ticked' style={{width: '10px', height: '10px'}} /> : null}
+                {phase.phase > 0 ? <img src='/assets/graphics/layout/tick.png' alt='phase ticked' style={{width: '10px', height: '10px'}} /> : null}
               </div>
             </div>
 
@@ -43,7 +43,7 @@ class PreparednessOverview extends React.Component {
                 Assessment
               </div>
               <div style={{width: '20%', float: 'left'}}>
-                {phase.phase >= 1 ? <img src='/assets/graphics/layout/tick.png' alt='phase ticked' style={{width: '10px', height: '10px'}} /> : null}
+                {phase.phase > 1 ? <img src='/assets/graphics/layout/tick.png' alt='phase ticked' style={{width: '10px', height: '10px'}} /> : null}
               </div>
             </div>
 
@@ -52,7 +52,7 @@ class PreparednessOverview extends React.Component {
                 Prioritization
               </div>
               <div style={{width: '20%', float: 'left'}}>
-                {phase.phase >= 2 ? <img src='/assets/graphics/layout/tick.png' alt='phase ticked' style={{width: '10px', height: '10px'}} /> : null}
+                {phase.phase > 2 ? <img src='/assets/graphics/layout/tick.png' alt='phase ticked' style={{width: '10px', height: '10px'}} /> : null}
               </div>
             </div>
 
@@ -61,7 +61,7 @@ class PreparednessOverview extends React.Component {
                 Plan of action
               </div>
               <div style={{width: '20%', float: 'left'}}>
-                {phase.phase >= 3 ? <img src='/assets/graphics/layout/tick.png' alt='phase ticked' style={{width: '10px', height: '10px'}} /> : null}
+                {phase.phase > 3 ? <img src='/assets/graphics/layout/tick.png' alt='phase ticked' style={{width: '10px', height: '10px'}} /> : null}
               </div>
             </div>
 
@@ -70,7 +70,7 @@ class PreparednessOverview extends React.Component {
                 Action &amp; Accountability
               </div>
               <div style={{width: '20%', float: 'left'}}>
-                {phase.phase >= 4 ? <img src='/assets/graphics/layout/tick.png' alt='phase ticked' style={{width: '10px', height: '10px'}} /> : null}
+                {phase.phase > 4 ? <img src='/assets/graphics/layout/tick.png' alt='phase ticked' style={{width: '10px', height: '10px'}} /> : null}
               </div>
             </div>
           </div>

@@ -23,7 +23,8 @@ class PreparednessSummary extends React.Component {
   render () {
     if (!this.props.user.data.username || typeof this.props.getPerDocuments.data.results === 'undefined') return null;
     this.buildFormCodes();
-    const filteredData = this.props.getPerDocument.data.results.filter((component) => {
+    const resultSetCopy = JSON.parse(JSON.stringify(this.props.getPerDocument.data.results));
+    const filteredData = resultSetCopy.filter((component) => {
       return component.selected_option > 1;
     }).map((component) => {
       component.formCode = this.formIds[component.form].code;
@@ -31,8 +32,8 @@ class PreparednessSummary extends React.Component {
       component.epi = 0;
       component.component = 0;
       component.groupingKeyword = component.question_id.includes('epi')
-        ? component.formCode + component.question_id.split('epi')[0]
-        : component.formCode + component.question_id.split('q')[0];
+        ? component.formCode + component.question_id.split('epi')[0] + 'epi'
+        : component.formCode + component.question_id.split('q')[0] + 'normal';
       this.formComponents[component.groupingKeyword] = 1;
       return component;
     });

@@ -44,7 +44,7 @@ class PreparednessColumnBar extends React.Component {
     const groupedData = {};
     mappedData.forEach((answer) => {
       if (typeof groupedData[answer.groupingKeyword] === 'undefined') {
-        groupedData[answer.groupingKeyword] = answer;
+        groupedData[answer.groupingKeyword] = JSON.parse(JSON.stringify(answer));
       }
       if (answer.question_id.includes('epi')) {
         groupedData[answer.groupingKeyword].epi = answer.selected_option;
