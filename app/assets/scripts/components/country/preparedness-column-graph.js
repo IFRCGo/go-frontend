@@ -56,7 +56,7 @@ class PreparednessColumnBar extends React.Component {
   }
 
   render () {
-    if (!this.props.getPerDocument.fetched || !this.props.getPerDocuments.fetched || !this.props.user.username || typeof this.props.getPerDocuments.data.results !== 'undefined') return null;
+    if (!this.props.getPerDocument.fetched || !this.props.getPerDocuments.fetched || !this.props.user.username || typeof this.props.getPerDocuments.data.results === 'undefined') return null;
     this.buildFormCodes();
     const tmpData = this.buildDataForGraph();
     const groupedData = this.buildGroupedData(tmpData);
