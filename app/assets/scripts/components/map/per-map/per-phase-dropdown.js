@@ -6,11 +6,11 @@ import { environment } from '../../../config';
 
 const perPhases = [
   {id: -1, name: 'All PER Phases'},
-  {id: 0, name: 'Orientation'},
-  {id: 1, name: 'Assessment'},
-  {id: 2, name: 'Prioritization'},
-  {id: 3, name: 'Plan of action'},
-  {id: 4, name: 'Action & accountability'}
+  {id: 1, name: 'Orientation'},
+  {id: 2, name: 'Assessment'},
+  {id: 3, name: 'Prioritization'},
+  {id: 4, name: 'Plan of action'},
+  {id: 5, name: 'Action & accountability'}
 ];
 
 class PerPhaseDropdown extends React.Component {
