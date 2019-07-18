@@ -92,7 +92,7 @@ class OverviewForm extends React.Component {
       country_id: parseInt(this.props.nationalSociety),
       user_id: this.props.user.data.id,
       name: 'overview',
-      submitted_at: '',
+      submitted_at: new Date().toISOString(),
       type_of_capacity_assessment: parseInt(document.getElementsByName('capacity_assessment_type')[0].selectedIndex),
       branch_involved: document.getElementsByName('branch_involved')[0].value,
       focal_point_name: document.getElementsByName('focal_point_name')[0].value,
