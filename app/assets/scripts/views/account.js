@@ -661,9 +661,30 @@ class Account extends React.Component {
 
   createRegionGroupedDocumentData () {
     const groupedDocuments = {};
+    if (this.props.perOverviewForm.fetched) {
+      this.props.perOverviewForm.data.results.forEach((perOverviewForm) => {
+        perOverviewForm.formType = 'overview';
+        if (perOverviewForm.country.region === null || perOverviewForm.country.region === '') {
+          perOverviewForm.country.region = -1;
+        }
+        if (!groupedDocuments.hasOwnProperty(perOverviewForm.country.region)) {
+          groupedDocuments[perOverviewForm.country.region] = {[perOverviewForm.country.id]: []};
+          groupedDocuments[perOverviewForm.country.region][perOverviewForm.country.id].push(perOverviewForm);
+        } else {
+          if (!groupedDocuments[perOverviewForm.country.region].hasOwnProperty(perOverviewForm.country.id)) {
+            groupedDocuments[perOverviewForm.country.region][perOverviewForm.country.id] = [];
+          }
+          groupedDocuments[perOverviewForm.country.region][perOverviewForm.country.id].push(perOverviewForm);
+        }
+      });
+    }
     if (this.props.perForm.getPerDocuments.fetched && !!this.props.perForm.getPerDocuments.data && !!this.props.perForm.getPerDocuments.data.results) {
       this.props.perForm.getPerDocuments.data.results.forEach(document => {
-        if (document.country !== null && document.country.region !== null) {
+        if (document.country !== null) {
+          if (document.country.region === null) {
+            document.country.region = -1;
+          }
+          document.formType = 'per';
           if (!groupedDocuments.hasOwnProperty(document.country.region)) {
             groupedDocuments[document.country.region] = {[document.country.id]: []};
             groupedDocuments[document.country.region][document.country.id].push(document);
@@ -686,29 +707,27 @@ class Account extends React.Component {
       Object.keys(documents[regionKey]).forEach((countryKey, countryIndex) => {
         const perDocuments = [];
         let currentCountryName = '';
-        if (this.props.perOverviewForm.fetched) {
-          this.props.perOverviewForm.data.results.filter(overviewForm => overviewForm.country.id === parseInt(countryKey))
-            .forEach((perOverviewForm) => {
-              perDocuments.push((<React.Fragment key={'documentoverviewrow' + perOverviewForm.id}>
-                <div style={{backgroundColor: '#eaeaea', float: 'left', width: '100%', marginBottom: '1rem', padding: '0.25rem 1rem'}} key={'documentov' + perOverviewForm.id}>
-                  Overview - {perOverviewForm.date_of_current_capacity_assessment.substring(0, 10)} - {typeof perOverviewForm.user !== 'undefined' && perOverviewForm.user !== null ? perOverviewForm.user.first_name + ' ' + perOverviewForm.user.last_name : null}
-                  <div style={{float: 'right'}}>
-                    <Link className='button button--small button--secondary-bounded' to={'/view-per-forms/overview/' + perOverviewForm.id}>View</Link>
-                  </div>
-                </div>
-              </React.Fragment>));
-            });
-        }
         documents[regionKey][countryKey].forEach((document) => {
           currentCountryName = document.country.name;
-          perDocuments.push((<React.Fragment key={'documentrow' + document.code + 'id' + document.id}>
-            <div style={{backgroundColor: '#eaeaea', float: 'left', width: '100%', marginBottom: '1rem', padding: '0.25rem 1rem'}} key={'document' + document.id}>
-              {document.code.toUpperCase()} - {document.name} - {document.updated_at.substring(0, 10)} - {typeof document.user !== 'undefined' ? document.user.username : null}
-              <div style={{float: 'right'}}>
-                <Link className='button button--small button--secondary-bounded' to={'/view-per-forms/' + document.code + '/' + document.id}>View</Link>
+          if (document.formType === 'overview') {
+            perDocuments.push((<React.Fragment key={'documentoverviewrow' + document.id}>
+              <div style={{backgroundColor: '#eaeaea', float: 'left', width: '100%', marginBottom: '1rem', padding: '0.25rem 1rem'}} key={'documentov' + document.id}>
+                Overview - {document.date_of_current_capacity_assessment.substring(0, 10)} - {typeof document.user !== 'undefined' && document.user !== null ? document.user.first_name + ' ' + document.user.last_name : null}
+                <div style={{float: 'right'}}>
+                  <Link className='button button--small button--secondary-bounded' to={'/view-per-forms/overview/' + document.id}>View</Link>
+                </div>
               </div>
-            </div>
-          </React.Fragment>));
+            </React.Fragment>));
+          } else {
+            perDocuments.push((<React.Fragment key={'documentrow' + document.code + 'id' + document.id}>
+              <div style={{backgroundColor: '#eaeaea', float: 'left', width: '100%', marginBottom: '1rem', padding: '0.25rem 1rem'}} key={'document' + document.id}>
+                {document.code.toUpperCase()} - {document.name} - {document.updated_at.substring(0, 10)} - {typeof document.user !== 'undefined' ? document.user.username : null}
+                <div style={{float: 'right'}}>
+                  <Link className='button button--small button--secondary-bounded' to={'/view-per-forms/' + document.code + '/' + document.id}>View</Link>
+                </div>
+              </div>
+            </React.Fragment>));
+          }
         });
         countries.push(<div key={'countryDocument' + countryKey}><span style={{fontSize: '1.25rem'}}>{currentCountryName}</span>{perDocuments}<br /></div>);
       });
@@ -780,12 +799,12 @@ class Account extends React.Component {
           try {
             parsedData = JSON.parse(draftDocument.data.replace(/'/g, '"'));
           } catch (e) {
-            console.log('Draft document (' + draftDocument.data + ') parsing failed!', e);
+            console.warn('API provided invalid data for draft document (' + draftDocument.data + ')! renderDraftDocuments () failed!\n\n', e);
             return;
           }
           draftDocuments.push(
             <div style={{backgroundColor: '#eaeaea', float: 'left', width: '100%', marginBottom: '1rem', padding: '0.25rem 1rem', fontWeight: 'bold'}} key={'draftDocument' + index}>
-              {draftDocument.code.toUpperCase()} - {typeof parsedData.name !== 'undefined' ? parsedData.name : null} - {typeof parsedData.submitted_at !== 'undefined' ? parsedData.submitted_at.substring(0, 10) : null} - {typeof draftDocument.user !== 'undefined' ? draftDocument.user.username : null} - {draftDocument.country.name}
+              {draftDocument.code.toUpperCase()} - {typeof parsedData.submitted_at !== '' ? parsedData.submitted_at.substring(0, 10) + ' - ' : null} {typeof draftDocument.user !== 'undefined' ? draftDocument.user.username + ' - ' : null} {draftDocument.country.name}
               <div style={{float: 'right'}}>
                 <Link
                   className='button button--small button--secondary-bounded'
