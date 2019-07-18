@@ -3,8 +3,7 @@
 import React from 'react';
 import Fold from './../fold';
 import {
-  getPerComponent,
-  getShortComponent
+  getPerComponent
 } from './../../utils/get-per-components';
 import { environment } from './../../config';
 import { PropTypes as T } from 'prop-types';
@@ -84,6 +83,7 @@ export default class GlobalPreparednessHighlights extends React.Component {
 if (environment !== 'production') {
   GlobalPreparednessHighlights.propTypes = {
     data: T.object,
-    prioritizationData: T.object
+    prioritizationData: T.object,
+    isPerPermission: T.func
   };
 }

@@ -104,8 +104,8 @@ class Preparedness extends React.Component {
   }
 
   isPerPermission () {
-    return (typeof this.props.user.username !== 'undefined' && this.props.user.username !== null)
-      && (this.props.getPerMission.fetched && this.props.getPerMission.data.count > 0);
+    return (typeof this.props.user.username !== 'undefined' && this.props.user.username !== null) &&
+      (this.props.getPerMission.fetched && this.props.getPerMission.data.count > 0);
   }
 
   render () {
@@ -155,7 +155,9 @@ if (environment !== 'production') {
     getPerGlobalPreparedness: T.object,
     perWorkPlan: T.object,
     perOverviewForm: T.object,
-    _getPerMission: T.func
+    _getPerMission: T.func,
+    user: T.object,
+    getPerMission: T.object
   };
 }
 
