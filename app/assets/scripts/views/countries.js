@@ -34,7 +34,8 @@ import {
   getPerWorkPlan,
   getPerDocument,
   getPerDocuments,
-  getPerUploadedDocuments
+  getPerUploadedDocuments,
+  getPerMission
 } from '../actions';
 import { getFdrs } from '../actions/query-external';
 import { getBoundingBox } from '../utils/country-bounding-box';
@@ -101,6 +102,7 @@ class AdminArea extends SFPComponent {
     this.setMapFilter = this.setMapFilter.bind(this);
     this.setPersistentMapFilter = this.setPersistentMapFilter.bind(this);
     this.removeMapFilter = this.removeMapFilter.bind(this);
+    this.componentIsLoading = true;
   }
 
   componentWillReceiveProps (nextProps) {
@@ -118,6 +120,7 @@ class AdminArea extends SFPComponent {
   }
 
   componentDidMount () {
+    this.componentIsLoading = true;
     this.getData(this.props);
     this.getAdmArea(this.props.type, getCountryId(this.props.match.params.id));
     this.props._getPerNsPhase(this.props.match.params.id);
@@ -126,6 +129,27 @@ class AdminArea extends SFPComponent {
     this.props._getPerDocuments();
     this.props._getPerDocument(null, this.props.match.params.id);
     this.props._getPerUploadedDocuments(this.props.match.params.id);
+    if (typeof this.props.user.username !== 'undefined' && this.props.user.username !== null) {
+      this.props._getPerMission();
+    }
+  }
+
+  componentDidUpdate () {
+    if (this.componentIsLoading) {
+      if (window.location.href.includes('#')) {
+        const componentToJump = window.location.href.split('#')[1].trim();
+        const component = document.getElementById(componentToJump);
+        if (component !== null) {
+          const componentDistanceFromTop = component.offsetTop;
+          window.scrollTo(0, componentDistanceFromTop);
+          if (this.props.getPerDocument.fetched) {
+            this.componentIsLoading = false;
+          }
+        }
+      } else {
+        this.componentIsLoading = false;
+      }
+    }
   }
 
   getData (props) {
@@ -355,6 +379,11 @@ class AdminArea extends SFPComponent {
     );
   }
 
+  isPerPermission () {
+    return (typeof this.props.user.username !== 'undefined' && this.props.user.username !== null)
+      && (this.props.getPerMission.fetched && this.props.getPerMission.data.count > 0);
+  }
+
   renderContent () {
     const {
       fetched,
@@ -400,7 +429,7 @@ class AdminArea extends SFPComponent {
                     <li><a href='#emergencies' title='Go to Emergencies section'>Emergencies</a></li>
                     {get(this.props.snippets, 'data.results.length') ? <li><a href='#graphics' title='Go to Graphics section'>Graphics</a></li> : null}
                     {get(data, 'links.length') ? <li><a href='#links' title='Go to Links section'>Links</a></li> : null}
-                    {!this.props.user.username ? null : <li><a href='#per' title='Go to Links section'>Preparedness</a></li>}
+                    {this.isPerPermission() ? <li><a href='#per' title='Go to Preparedness section'>Preparedness</a></li> : null}
                     {get(data, 'contacts.length') ? <li><a href='#contacts' title='Go to Contacts section'>Contacts</a></li> : null}
                   </ul>
                 </div>
@@ -455,11 +484,11 @@ class AdminArea extends SFPComponent {
               <Snippets data={this.props.snippets} />
               <Links data={data} />
               <Contacts data={data} />
-              {this.props.getPerNsPhase.fetched && this.props.perOverviewForm.fetched ? <PreparednessOverview getPerNsPhase={this.props.getPerNsPhase} perOverviewForm={this.props.perOverviewForm} /> : null}
-              {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? <PreparednessSummary getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} /> : null}
-              {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? <PreparednessColumnBar getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} /> : null}
-              {this.props.getPerWorkPlan.fetched ? <PreparednessWorkPlan getPerWorkPlan={this.props.getPerWorkPlan} /> : null}
-              {this.props.getPerUploadedDocuments.fetched ? <PreparednessPhaseOutcomes getPerUploadedDocuments={this.props.getPerUploadedDocuments} countryId={this.props.match.params.id} /> : null}
+              {this.isPerPermission() && this.props.getPerNsPhase.fetched && this.props.perOverviewForm.fetched ? <PreparednessOverview getPerNsPhase={this.props.getPerNsPhase} perOverviewForm={this.props.perOverviewForm} /> : null}
+              {this.isPerPermission() && this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? <PreparednessSummary getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} /> : null}
+              {this.isPerPermission() && this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? <PreparednessColumnBar getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} /> : null}
+              {this.isPerPermission() && this.props.getPerWorkPlan.fetched ? <PreparednessWorkPlan getPerWorkPlan={this.props.getPerWorkPlan} /> : null}
+              {this.isPerPermission() && this.props.getPerUploadedDocuments.fetched ? <PreparednessPhaseOutcomes getPerUploadedDocuments={this.props.getPerUploadedDocuments} countryId={this.props.match.params.id} /> : null}
             </div>
           </div>
         </StickyContainer>
@@ -525,6 +554,7 @@ const selector = (state, ownProps) => ({
   getPerDocument: state.perForm.getPerDocument,
   getPerDocuments: state.perForm.getPerDocuments,
   getPerUploadedDocuments: state.perForm.getPerUploadedDocuments,
+  getPerMission: state.perForm.getPerMission,
   user: state.user.data
 });
 
@@ -542,7 +572,8 @@ const dispatcher = (dispatch) => ({
   _getPerWorkPlan: (...args) => dispatch(getPerWorkPlan(...args)),
   _getPerDocument: (...args) => dispatch(getPerDocument(...args)),
   _getPerDocuments: (...args) => dispatch(getPerDocuments(...args)),
-  _getPerUploadedDocuments: (...args) => dispatch(getPerUploadedDocuments(...args))
+  _getPerUploadedDocuments: (...args) => dispatch(getPerUploadedDocuments(...args)),
+  _getPerMission: (...args) => dispatch(getPerMission(...args))
 });
 
 export default connect(selector, dispatcher)(AdminArea);

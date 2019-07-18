@@ -174,7 +174,7 @@ class PreparednessWorkPlan extends React.Component {
       benchmarks.push((<option key={'benchmarkList' + index} value={'q' + component.index}>{component.title}</option>));
     });
     return (
-      <Fold id='per' title='Preparedness work plan' wrapper_class='preparedness'>
+      <Fold id='per-work-plan' title='Preparedness work plan' wrapper_class='preparedness'>
         <div style={{borderBottom: '1px solid #000', paddingBottom: '20px', float: 'left'}}>
           <button className='button button--small button--primary-bounded' onClick={this.showAddModul}>Add</button>
 

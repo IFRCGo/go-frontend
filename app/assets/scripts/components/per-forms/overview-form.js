@@ -36,6 +36,7 @@ class OverviewForm extends React.Component {
   }
 
   componentDidMount () {
+    window.scrollTo(0, 0);
     this.sendInProgress = false;
     if (this.props.view) {
       this.props._getPerOverviewForm(null, this.props.formId);
@@ -183,53 +184,53 @@ class OverviewForm extends React.Component {
               <div>
                 <div className='per_form_ns'>General Information</div>
                 National Society:<br />
-                <input type='text' disabled='disabled' value={this.props.perOverviewForm.data.results[0].country.society_name === null ? '' : this.props.perOverviewForm.data.results[0].country.society_name} /><br /><br />
+                <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].country.society_name === null ? '' : this.props.perOverviewForm.data.results[0].country.society_name} /><br /><br />
 
                 Date of current capacity assessment<br />
-                <input type='text' disabled='disabled' value={this.props.perOverviewForm.data.results[0].date_of_current_capacity_assessment === null ? '' : this.props.perOverviewForm.data.results[0].date_of_current_capacity_assessment} /><br /><br />
+                <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].date_of_current_capacity_assessment === null ? '' : this.props.perOverviewForm.data.results[0].date_of_current_capacity_assessment} /><br /><br />
 
                 Type of capacity assessment<br />
-                <input type='text' disabled='disabled' value={this.props.perOverviewForm.data.results[0].type_of_capacity_assessment === null ? '' : assessmentTypes[this.props.perOverviewForm.data.results[0].type_of_capacity_assessment]} /><br /><br />
+                <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].type_of_capacity_assessment === null ? '' : assessmentTypes[this.props.perOverviewForm.data.results[0].type_of_capacity_assessment]} /><br /><br />
 
                 Branch involved:<br />
-                <input type='text' disabled='disabled' value={this.props.perOverviewForm.data.results[0].branch_involved === null ? '' : this.props.perOverviewForm.data.results[0].branch_involved} /><br /><br />
+                <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].branch_involved === null ? '' : this.props.perOverviewForm.data.results[0].branch_involved} /><br /><br />
 
                 Focal point name in the National Society:<br />
-                <input type='text' disabled='disabled' value={this.props.perOverviewForm.data.results[0].focal_point_name === null ? '' : this.props.perOverviewForm.data.results[0].focal_point_name} /><br /><br />
+                <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].focal_point_name === null ? '' : this.props.perOverviewForm.data.results[0].focal_point_name} /><br /><br />
 
                 Focal point email in the National Society:<br />
-                <input type='text' disabled='disabled' value={this.props.perOverviewForm.data.results[0].focal_point_email === null ? '' : this.props.perOverviewForm.data.results[0].focal_point_email === null} /><br /><br />
+                <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].focal_point_email === null ? '' : this.props.perOverviewForm.data.results[0].focal_point_email === null} /><br /><br />
 
                 Have you had a previous capacity assessment?<br />
-                <input type='text' disabled='disabled' value={this.props.perOverviewForm.data.results[0].had_previous_assessment === null ? '' : this.props.perOverviewForm.data.results[0].had_previous_assessment} /><br /><br />
+                <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].had_previous_assessment === null ? '' : this.props.perOverviewForm.data.results[0].had_previous_assessment} /><br /><br />
 
                 Date of last capacity assessment<br />
-                <input type='text' disabled='disabled' value={this.props.perOverviewForm.data.results[0].date_of_last_capacity_assessment === null ? '' : this.props.perOverviewForm.data.results[0].date_of_last_capacity_assessment} /><br /><br />
+                <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].date_of_last_capacity_assessment === null ? '' : this.props.perOverviewForm.data.results[0].date_of_last_capacity_assessment} /><br /><br />
 
                 Type of last capacity assessment:<br />
-                <input type='text' disabled='disabled' value={this.props.perOverviewForm.data.results[0].type_of_last_capacity_assessment === null ? '' : assessmentTypes[this.props.perOverviewForm.data.results[0].type_of_last_capacity_assessment]} /><br /><br />
+                <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].type_of_last_capacity_assessment === null ? '' : assessmentTypes[this.props.perOverviewForm.data.results[0].type_of_last_capacity_assessment]} /><br /><br />
 
                 Focus:<br />
-                <input type='text' disabled='disabled' value={this.props.perOverviewForm.data.results[0].focus === null ? '' : this.props.perOverviewForm.data.results[0].focus} /><br /><br />
+                <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].focus === null ? '' : this.props.perOverviewForm.data.results[0].focus} /><br /><br />
 
                 <div className='per_form_ns'>Facilitator information</div>
                 Facilitated by<br />
-                <input type='text' disabled='disabled' value={this.props.perOverviewForm.data.results[0].facilitated_by === null ? '' : this.props.perOverviewForm.data.results[0].facilitated_by} /><br /><br />
+                <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].facilitated_by === null ? '' : this.props.perOverviewForm.data.results[0].facilitated_by} /><br /><br />
 
                 E-mail<br />
-                <input type='text' disabled='disabled' value={this.props.perOverviewForm.data.results[0].facilitator_email === null ? '' : this.props.perOverviewForm.data.results[0].facilitator_email} /><br /><br />
+                <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].facilitator_email === null ? '' : this.props.perOverviewForm.data.results[0].facilitator_email} /><br /><br />
 
                 Phone number<br />
-                <input type='text' disabled='disabled' value={this.props.perOverviewForm.data.results[0].phone_number === null ? '' : this.props.perOverviewForm.data.results[0].phone_number} /><br /><br />
+                <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].phone_number === null ? '' : this.props.perOverviewForm.data.results[0].phone_number} /><br /><br />
 
                 Skype address<br />
-                <input type='text' disabled='disabled' value={this.props.perOverviewForm.data.results[0].skype_address === null ? '' : this.props.perOverviewForm.data.results[0].skype_address} /><br /><br />
+                <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].skype_address === null ? '' : this.props.perOverviewForm.data.results[0].skype_address} /><br /><br />
 
                 Date of mid-term review (approximate date)<br />
-                <input type='text' disabled='disabled' value={this.props.perOverviewForm.data.results[0].date_of_mid_term_review === null ? '' : this.props.perOverviewForm.data.results[0].date_of_mid_term_review} /><br /><br />
+                <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].date_of_mid_term_review === null ? '' : this.props.perOverviewForm.data.results[0].date_of_mid_term_review} /><br /><br />
 
                 Approximate date of next capacity assessment<br />
-                <input type='text' disabled='disabled' value={this.props.perOverviewForm.data.results[0].approximate_date_next_capacity_assmt === null ? '' : this.props.perOverviewForm.data.results[0].approximate_date_next_capacity_assmt} /><br /><br />
+                <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].approximate_date_next_capacity_assmt === null ? '' : this.props.perOverviewForm.data.results[0].approximate_date_next_capacity_assmt} /><br /><br />
               </div>
             </div>
           </div>
@@ -311,16 +312,16 @@ class OverviewForm extends React.Component {
                 </select><br /><br />
 
                 Branch involved:<br />
-                <input type='text' name='branch_involved' /><br /><br />
+                <input type='text' className='form__control form__control--medium' name='branch_involved' /><br /><br />
 
                 Focal point name in the National Society:<br />
-                <input type='text' name='focal_point_name' /><br /><br />
+                <input type='text' className='form__control form__control--medium' name='focal_point_name' /><br /><br />
 
                 Focal point email in the National Society:<br />
-                <input type='text' name='focal_point_email' /><br /><br />
+                <input type='text' className='form__control form__control--medium' name='focal_point_email' /><br /><br />
 
                 Focus:<br />
-                <input type='text' name='focus' /><br /><br />
+                <input type='text' className='form__control form__control--medium' name='focus' /><br /><br />
 
                 Have you had a previous capacity assessment?<br />
                 <select name='prev_capacity_assessment'>
@@ -392,16 +393,16 @@ class OverviewForm extends React.Component {
 
                 <div className='per_form_ns'>Facilitator information</div>
                 Facilitated by<br />
-                <input type='text' name='facilitated_by' /><br /><br />
+                <input type='text' className='form__control form__control--medium' name='facilitated_by' /><br /><br />
 
                 E-mail<br />
-                <input type='text' name='facilitator_email' /><br /><br />
+                <input type='text' className='form__control form__control--medium' name='facilitator_email' /><br /><br />
 
                 Phone number<br />
-                <input type='text' name='facilitator_phone' /><br /><br />
+                <input type='text' className='form__control form__control--medium' name='facilitator_phone' /><br /><br />
 
                 Skype address<br />
-                <input type='text' name='facilitator_skype' /><br /><br />
+                <input type='text' className='form__control form__control--medium' name='facilitator_skype' /><br /><br />
 
                 Date of mid-term review (approximate date)<br />
                 <select name='date_of_mid_review_year'>

@@ -104,7 +104,7 @@ class PreparednessOverview extends React.Component {
         </div>
 
         <div style={{float: 'left', width: '100%', textAlign: 'center'}}>
-          <a href='mailto:mankamolnar@gmail.com' className='button button--medium button--primary-filled'>Contact PER team</a><br /><br />
+          <a href='mailto:im@ifrc.com' className='button button--medium button--primary-filled'>Contact PER team</a><br /><br />
           <a href='https://dsgocdnapi.azureedge.net/admin/per/nsphase/' target='_blank' className='button button--medium button--primary-filled'>Set phase</a>
         </div>
       </Fold>

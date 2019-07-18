@@ -24,7 +24,8 @@ import {
   getEventById,
   addSubscriptions,
   delSubscription,
-  getPerOverviewForm
+  getPerOverviewForm,
+  getPerMission
 } from '../actions';
 import { getRegionById } from '../utils/region-constants';
 import { get } from '../utils/utils';
@@ -174,9 +175,11 @@ class Account extends React.Component {
     this.createRegionGroupedDocumentData = this.createRegionGroupedDocumentData.bind(this);
     this.renderPerFormDocuments = this.renderPerFormDocuments.bind(this);
     this.delSubscription = this.delSubscription.bind(this);
+    this.componentIsLoading = true;
   }
 
   componentDidMount () {
+    this.componentIsLoading = true;
     const { user, _getProfile, _getFieldReportsByUser, _getPerCountries, _getPerDocuments, _getPerDraftDocument } = this.props;
     _getProfile(user.username);
     _getFieldReportsByUser(user.id);
@@ -185,7 +188,24 @@ class Account extends React.Component {
     const draftQueryFilters = {user: user.id};
     _getPerDraftDocument(draftQueryFilters);
     this.props._getPerOverviewForm();
+    this.props._getPerMission();
     showGlobalLoading();
+  }
+
+  componentDidUpdate () {
+    if (this.componentIsLoading) {
+      if (window.location.href.includes('#')) {
+        const componentToJump = window.location.href.split('#')[1].trim();
+        const component = document.getElementById(componentToJump);
+        if (component !== null) {
+          const componentDistanceFromTop = component.offsetTop;
+          window.scrollTo(0, componentDistanceFromTop);
+          if (this.props.getPerMission.fetched) {
+            this.componentIsLoading = false;
+          }
+        }
+      }
+    }
   }
 
   componentWillReceiveProps (nextProps) {
@@ -366,6 +386,11 @@ class Account extends React.Component {
     this.props._clearEvents(eventId);
     this.props._delSubscription(eventId);
     this.forceUpdate();
+  }
+
+  isPerPermission () {
+    return (typeof this.props.user.username !== 'undefined' && this.props.user.username !== null)
+      && (this.props.getPerMission.fetched && this.props.getPerMission.data.count > 0);
   }
 
   renderProfileAttributes () {
@@ -846,7 +871,7 @@ class Account extends React.Component {
                     <ul>
                       <li><a href='#account-information' title='Go to Operations section'>Account Information</a></li>
                       <li><a href='#notifications' title='Go to notifications section'>Notifications</a></li>
-                      <li><a href='#per-forms' title='Go to per section'>PER forms</a></li>
+                      {this.isPerPermission() ? <li><a href='#per-forms' title='Go to per section'>PER forms</a></li> : null}
                     </ul>
                   </div>
                 </div>
@@ -859,7 +884,7 @@ class Account extends React.Component {
               {this.renderAccountInformation()}
               {this.renderFieldReports()}
               {this.props.profile.fetched && !this.props.profile.error ? this.renderSubscriptionForm() : null}
-              {this.renderPerFormsComponent()}
+              {this.isPerPermission() ? this.renderPerFormsComponent() : null}
             </div>
           </div>
         </section>
@@ -900,7 +925,8 @@ const selector = (state, ownProps) => ({
   perForm: state.perForm,
   event: state.event,
   eventDeletion: state.subscriptions.delSubscriptions,
-  perOverviewForm: state.perForm.getPerOverviewForm
+  perOverviewForm: state.perForm.getPerOverviewForm,
+  getPerMission: state.perForm.getPerMission
 });
 
 const dispatcher = (dispatch) => ({
@@ -915,7 +941,8 @@ const dispatcher = (dispatch) => ({
   _addSubscriptions: (...args) => dispatch(addSubscriptions(...args)),
   _delSubscription: (...args) => dispatch(delSubscription(...args)),
   _clearEvents: (eventId) => dispatch({type: 'CLEAR_EVENTS', eventId: eventId}),
-  _getPerOverviewForm: (...args) => dispatch(getPerOverviewForm(...args))
+  _getPerOverviewForm: (...args) => dispatch(getPerOverviewForm(...args)),
+  _getPerMission: (...args) => dispatch(getPerMission(...args))
 });
 
 export default connect(selector, dispatcher)(Account);
