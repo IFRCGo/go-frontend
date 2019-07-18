@@ -389,8 +389,8 @@ class Account extends React.Component {
   }
 
   isPerPermission () {
-    return (typeof this.props.user.username !== 'undefined' && this.props.user.username !== null)
-      && (this.props.getPerMission.fetched && this.props.getPerMission.data.count > 0);
+    return (typeof this.props.user.username !== 'undefined' && this.props.user.username !== null) &&
+      (this.props.getPerMission.fetched && this.props.getPerMission.data.count > 0);
   }
 
   renderProfileAttributes () {
@@ -782,7 +782,7 @@ class Account extends React.Component {
           }
           draftDocuments.push(
             <div style={{backgroundColor: '#eaeaea', float: 'left', width: '100%', marginBottom: '1rem', padding: '0.25rem 1rem', fontWeight: 'bold'}} key={'draftDocument' + index}>
-              {draftDocument.code.toUpperCase()} - {typeof parsedData.submitted_at !== '' ? parsedData.submitted_at.substring(0, 10) + ' - ' : null} {typeof draftDocument.user !== 'undefined' ? draftDocument.user.username + ' - ' : null} {draftDocument.country.name}
+              {draftDocument.code.toUpperCase()} - {parsedData.submitted_at !== '' ? parsedData.submitted_at.substring(0, 10) + ' - ' : null} {typeof draftDocument.user !== 'undefined' ? draftDocument.user.username + ' - ' : null} {draftDocument.country.name}
               <div style={{float: 'right'}}>
                 <Link
                   className='button button--small button--secondary-bounded'
@@ -911,7 +911,9 @@ if (environment !== 'production') {
     _getPerDraftDocument: T.func,
     _getEventById: T.func,
     _getPerOverviewForm: T.func,
-    _clearEvents: T.func
+    _clearEvents: T.func,
+    _getPerMission: T.func,
+    getPerMission: T.object
   };
 }
 
