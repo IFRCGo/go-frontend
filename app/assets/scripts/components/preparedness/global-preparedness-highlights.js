@@ -84,6 +84,6 @@ if (environment !== 'production') {
   GlobalPreparednessHighlights.propTypes = {
     data: T.object,
     prioritizationData: T.object,
-    perPermission: T.boolean
+    perPermission: T.bool
   };
 }
