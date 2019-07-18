@@ -250,12 +250,12 @@ class OverviewForm extends React.Component {
               <div>
                 <div className='per_form_ns'>General Information</div>
                 Date of current capacity assessment<br />
-                <select name='date_of_current_assessment_year'>
+                <select className='form__control form__control--medium' style={{width: '100px', display: 'inline-block'}} name='date_of_current_assessment_year'>
                   <option value='2020'>2020</option>
                   <option value='2019'>2019</option>
                   <option value='2018'>2018</option>
                 </select>&nbsp;-&nbsp;
-                <select name='date_of_current_assessment_month'>
+                <select className='form__control form__control--medium' style={{width: '100px', display: 'inline-block'}} name='date_of_current_assessment_month'>
                   <option value='01'>01</option>
                   <option value='02'>02</option>
                   <option value='03'>03</option>
@@ -269,7 +269,7 @@ class OverviewForm extends React.Component {
                   <option value='11'>11</option>
                   <option value='12'>12</option>
                 </select>&nbsp;-&nbsp;
-                <select name='date_of_current_assessment_day'>
+                <select className='form__control form__control--medium' style={{width: '100px', display: 'inline-block'}} name='date_of_current_assessment_day'>
                   <option value='01'>01</option>
                   <option value='02'>02</option>
                   <option value='03'>03</option>
@@ -304,7 +304,7 @@ class OverviewForm extends React.Component {
                 </select><br /><br />
 
                 Type of capacity assessment<br />
-                <select name='capacity_assessment_type'>
+                <select className='form__control form__control--medium' style={{width: '200px', display: 'inline-block'}} name='capacity_assessment_type'>
                   <option value='0'>Self assessment</option>
                   <option value='1'>Simulation</option>
                   <option value='2'>Operation</option>
@@ -324,18 +324,18 @@ class OverviewForm extends React.Component {
                 <input type='text' className='form__control form__control--medium' name='focus' /><br /><br />
 
                 Have you had a previous capacity assessment?<br />
-                <select name='prev_capacity_assessment'>
+                <select className='form__control form__control--medium' name='prev_capacity_assessment' style={{width: '100px', display: 'inline-block'}}>
                   <option value='1'>Yes</option>
                   <option value='0'>No</option>
                 </select><br /><br />
 
                 Date of last capacity assessment<br />
-                <select name='date_of_last_assessment_year'>
+                <select className='form__control form__control--medium' style={{width: '100px', display: 'inline-block'}} name='date_of_last_assessment_year'>
                   <option value='2020'>2020</option>
                   <option value='2019'>2019</option>
                   <option value='2018'>2018</option>
                 </select>&nbsp;-&nbsp;
-                <select name='date_of_last_assessment_month'>
+                <select className='form__control form__control--medium' style={{width: '100px', display: 'inline-block'}} name='date_of_last_assessment_month'>
                   <option value='01'>01</option>
                   <option value='02'>02</option>
                   <option value='03'>03</option>
@@ -349,7 +349,7 @@ class OverviewForm extends React.Component {
                   <option value='11'>11</option>
                   <option value='12'>12</option>
                 </select>&nbsp;-&nbsp;
-                <select name='date_of_last_assessment_day'>
+                <select className='form__control form__control--medium' style={{width: '100px', display: 'inline-block'}} name='date_of_last_assessment_day'>
                   <option value='01'>01</option>
                   <option value='02'>02</option>
                   <option value='03'>03</option>
@@ -384,7 +384,7 @@ class OverviewForm extends React.Component {
                 </select><br /><br />
 
                 Type of last capacity assessment:<br />
-                <select name='type_of_last_assessment'>
+                <select className='form__control form__control--medium' style={{width: '200px', display: 'inline-block'}} name='type_of_last_assessment'>
                   <option value='0'>Self assessment</option>
                   <option value='1'>Simulation</option>
                   <option value='2'>Operation</option>
@@ -405,12 +405,12 @@ class OverviewForm extends React.Component {
                 <input type='text' className='form__control form__control--medium' name='facilitator_skype' /><br /><br />
 
                 Date of mid-term review (approximate date)<br />
-                <select name='date_of_mid_review_year'>
+                <select className='form__control form__control--medium' style={{width: '100px', display: 'inline-block'}} name='date_of_mid_review_year'>
                   <option value='2020'>2020</option>
                   <option value='2019'>2019</option>
                   <option value='2018'>2018</option>
                 </select>&nbsp;-&nbsp;
-                <select name='date_of_mid_review_month'>
+                <select className='form__control form__control--medium' style={{width: '100px', display: 'inline-block'}} name='date_of_mid_review_month'>
                   <option value='01'>01</option>
                   <option value='02'>02</option>
                   <option value='03'>03</option>
@@ -424,7 +424,7 @@ class OverviewForm extends React.Component {
                   <option value='11'>11</option>
                   <option value='12'>12</option>
                 </select>&nbsp;-&nbsp;
-                <select name='date_of_mid_review_day'>
+                <select className='form__control form__control--medium' style={{width: '100px', display: 'inline-block'}} name='date_of_mid_review_day'>
                   <option value='01'>01</option>
                   <option value='02'>02</option>
                   <option value='03'>03</option>
@@ -459,12 +459,12 @@ class OverviewForm extends React.Component {
                 </select><br /><br />
 
                 Approximate date of next capacity assessment<br />
-                <select name='date_of_next_assessment_year'>
+                <select className='form__control form__control--medium' style={{width: '100px', display: 'inline-block'}} name='date_of_next_assessment_year'>
                   <option value='2020'>2020</option>
                   <option value='2019'>2019</option>
                   <option value='2018'>2018</option>
                 </select>&nbsp;-&nbsp;
-                <select name='date_of_next_assessment_month'>
+                <select className='form__control form__control--medium' style={{width: '100px', display: 'inline-block'}} name='date_of_next_assessment_month'>
                   <option value='01'>01</option>
                   <option value='02'>02</option>
                   <option value='03'>03</option>
@@ -478,7 +478,7 @@ class OverviewForm extends React.Component {
                   <option value='11'>11</option>
                   <option value='12'>12</option>
                 </select>&nbsp;-&nbsp;
-                <select name='date_of_next_assessment_day'>
+                <select className='form__control form__control--medium' style={{width: '100px', display: 'inline-block'}} name='date_of_next_assessment_day'>
                   <option value='01'>01</option>
                   <option value='02'>02</option>
                   <option value='03'>03</option>
