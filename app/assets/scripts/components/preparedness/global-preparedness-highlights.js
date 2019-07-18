@@ -56,7 +56,7 @@ export default class GlobalPreparednessHighlights extends React.Component {
     const highPriorityComponents = [];
     if (Object.keys(this.props.prioritizationData).length > 0) {
       Object.keys(this.props.prioritizationData).forEach((key, index) => {
-        highPriorityComponents.push(<li key={key + 'highpriority' + index}>{getShortComponent(key.substring(0, 2), key.substring(2, key.length))[0].name}</li>);
+        highPriorityComponents.push(<li key={key + 'highpriority' + index}>{key.replace(/_/g, ' ')}</li>);
       });
     }
     if (highPerformingComponents.length === 0 && highPriorityComponents.length === 0) return null;
@@ -66,7 +66,7 @@ export default class GlobalPreparednessHighlights extends React.Component {
           <div style={{width: '50%', float: 'left'}}>
             <span style={{fontWeight: 'bold'}}>High Performing Components (globally)</span>
             <ul>
-              {highPerformingComponents}
+              {this.props.isPerPermission ? highPerformingComponents : 'You can only see this data if you have the correct permissions.'}
             </ul>
           </div>
           <div style={{width: '50%', float: 'left'}}>

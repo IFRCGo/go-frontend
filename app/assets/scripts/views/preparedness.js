@@ -9,7 +9,8 @@ import {
   getPerGlobalPreparedness,
   getPerNsPhase,
   getPerOverviewForm,
-  getPerWorkPlan
+  getPerWorkPlan,
+  getPerMission
 } from './../actions';
 import ContactPer from './../components/preparedness/contact-per';
 import { Helmet } from 'react-helmet';
@@ -38,7 +39,8 @@ class Preparedness extends React.Component {
     this.props._getPerGlobalPreparedness();
     this.props._getPerNsPhase();
     this.props._getPerOverviewForm(null, null);
-    this.props._getPerWorkPlan();
+    this.props._getPerWorkPlan(null);
+    this.props._getPerMission(null);
   }
 
   componentWillReceiveProps (nextProps) {
@@ -85,21 +87,25 @@ class Preparedness extends React.Component {
     }
 
     if (!this.props.perWorkPlan.fetched && nextProps.perWorkPlan.fetched && !(typeof nextProps.perWorkPlan.error !== 'undefined' && nextProps.perWorkPlan.error !== null)) {
+      const matchingWorkPlans = {};
       nextProps.perWorkPlan.data.results.forEach((perWorkPlan) => {
-        if (perWorkPlan.prioritization === 0) {
-          if (typeof this.state.topPrioritizedComponents[perWorkPlan.code + perWorkPlan.question_id] === 'undefined') {
-            const perWorkPlanId = perWorkPlan.code + perWorkPlan.question_id;
-            const newWorkPlan = {[perWorkPlanId]: 1};
-            this.setState({topPrioritizedComponents: newWorkPlan});
+        if (perWorkPlan.prioritization === 2) {
+          const perWorkPlanId = perWorkPlan.components.replace(/ /g, '_').replace(/,/g, '');
+          if (typeof matchingWorkPlans[perWorkPlanId] === 'undefined') {
+            matchingWorkPlans[perWorkPlanId] = 1;
           } else {
-            const increasedCounter = this.state.topPrioritizedComponents[perWorkPlan.code + perWorkPlan.question_id] + 1;
-            const perWorkPlanId = perWorkPlan.code + perWorkPlan.question_id;
-            const newWorkPlan = {[perWorkPlanId]: increasedCounter};
-            this.setState({topPrioritizedComponents: newWorkPlan});
+            const increasedCounter = this.state.topPrioritizedComponents[perWorkPlanId] + 1;
+            matchingWorkPlans[perWorkPlanId] = increasedCounter;
           }
         }
+        this.setState({topPrioritizedComponents: matchingWorkPlans});
       });
     }
+  }
+
+  isPerPermission () {
+    return (typeof this.props.user.username !== 'undefined' && this.props.user.username !== null)
+      && (this.props.getPerMission.fetched && this.props.getPerMission.data.count > 0);
   }
 
   render () {
@@ -124,7 +130,7 @@ class Preparedness extends React.Component {
             <PreparednessHeader />
             { this.geoJsonBuilt ? <PerMap data={this.state.geoJsonFinal} noExport={true} noRenderEmergencies={true} overviewData={this.props.perOverviewForm} /> : null }
             { this.props.getPerEngagedNsPercentage.fetched ? <NationalSocietiesEngagedPer data={this.props.getPerEngagedNsPercentage} /> : null }
-            { this.props.getPerGlobalPreparedness.fetched && this.props.perWorkPlan.fetched ? <GlobalPreparednessHighlights data={this.props.getPerGlobalPreparedness} prioritizationData={this.state.topPrioritizedComponents} /> : null }
+            { this.props.getPerGlobalPreparedness.fetched && this.props.perWorkPlan.fetched ? <GlobalPreparednessHighlights data={this.props.getPerGlobalPreparedness} prioritizationData={this.state.topPrioritizedComponents} isPerPermission={this.isPerPermission()} /> : null }
             <ContactPer />
           </div>
         </section>
@@ -148,7 +154,8 @@ if (environment !== 'production') {
     collaboratingPerCountry: T.object,
     getPerGlobalPreparedness: T.object,
     perWorkPlan: T.object,
-    perOverviewForm: T.object
+    perOverviewForm: T.object,
+    _getPerMission: T.func
   };
 }
 
@@ -159,6 +166,7 @@ const selector = (state) => ({
   getPerNsPhase: state.perForm.getPerNsPhase,
   perOverviewForm: state.perForm.getPerOverviewForm,
   perWorkPlan: state.perForm.getPerWorkPlan,
+  getPerMission: state.perForm.getPerMission,
   user: state.user
 });
 
@@ -168,7 +176,8 @@ const dispatcher = (dispatch) => ({
   _getPerGlobalPreparedness: () => dispatch(getPerGlobalPreparedness()),
   _getPerNsPhase: () => dispatch(getPerNsPhase()),
   _getPerOverviewForm: (...args) => dispatch(getPerOverviewForm(...args)),
-  _getPerWorkPlan: (...args) => dispatch(getPerWorkPlan(...args))
+  _getPerWorkPlan: (...args) => dispatch(getPerWorkPlan(...args)),
+  _getPerMission: (...args) => dispatch(getPerMission(...args))
 });
 
 export default connect(selector, dispatcher)(Preparedness);

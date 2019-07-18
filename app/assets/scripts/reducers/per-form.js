@@ -272,6 +272,21 @@ export function getPerUploadedDocuments (state = initialState, action) {
   return state;
 }
 
+export function getPerMission (state = initialState, action) {
+  switch (action.type) {
+    case 'GET_PER_MISSION_INFLIGHT':
+      state = stateInflight(state, action);
+      break;
+    case 'GET_PER_MISSION_FAILED':
+      state = stateError(state, action);
+      break;
+    case 'GET_PER_MISSION_SUCCESS':
+      state = stateSuccess(state, action);
+      break;
+  }
+  return state;
+}
+
 export default combineReducers({
   sendPerForm,
   getPerCountries,
@@ -289,5 +304,6 @@ export default combineReducers({
   sendPerOverview,
   sendPerWorkplan,
   deletePerWorkplanApi,
-  getPerUploadedDocuments
+  getPerUploadedDocuments,
+  getPerMission
 });

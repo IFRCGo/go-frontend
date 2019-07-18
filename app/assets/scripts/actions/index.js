@@ -513,3 +513,8 @@ export function getPerUploadedDocuments (countryId) {
   const f = buildAPIQS({country: countryId});
   return fetchJSON(`api/v2/perdocs?${f}`, GET_PER_UPLOADED_DOCUMENTS, withToken());
 }
+
+export const GET_PER_MISSION = 'GET_PER_MISSION';
+export function getPerMission () {
+  return fetchJSON(`api/v2/per_mission`, GET_PER_MISSION, withToken());
+}

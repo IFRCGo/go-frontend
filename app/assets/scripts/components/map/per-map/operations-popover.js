@@ -14,10 +14,10 @@ class OperationsPopover extends React.Component {
     const filteredOverviewData = overviewData.data.results.filter(overview => overview.country.id === parseInt(pageId));
     return (
       <article className='popover'>
-        <div className='popover__contents'>
+        <div className='popover__contents__preparedness'>
           <header className='popover__header'>
             <div className='popover__headline'>
-              {deployments ? title : <a className='link--primary' onClick={e => { e.preventDefault(); navigate(`/countries/${pageId}`); }}>{title}</a>}
+              {deployments ? title : <a className='link--primary' onClick={e => { e.preventDefault(); navigate(`/countries/${pageId}#per`); }}>{title}</a>}
             </div>
             <div className='popover__actions actions'>
               <ul className='actions__menu'>
@@ -29,54 +29,59 @@ class OperationsPopover extends React.Component {
           </header>
           <div className='popover__body'>
             <div style={{width: '50%', float: 'left', fontWeight: 'bold', marginBottom: '10px'}}>
-              current per process phase
+              Current PER process phase
             </div>
             <div style={{width: '50%', float: 'left', fontWeight: 'bold', marginBottom: '10px'}}>
-              current per process type
+              Current PER process type
             </div>
             <div style={{width: '50%', float: 'left'}}>
               <div style={{marginBottom: '5px', float: 'left', width: '100%'}}>
+                <div style={{width: '20%', float: 'left'}}>
+                  {phase.phase > 0 ? <img src='/assets/graphics/layout/tick.png' alt='phase ticked' /> : null}
+                  &nbsp;
+                </div>
                 <div style={{width: '80%', float: 'left'}}>
                   Orientation
                 </div>
-                <div style={{width: '20%', float: 'left'}}>
-                  {phase.phase > 0 ? <img src='/assets/graphics/layout/tick.png' alt='phase ticked' /> : null}
-                </div>
               </div>
 
               <div style={{marginBottom: '5px', float: 'left', width: '100%'}}>
+                <div style={{width: '20%', float: 'left'}}>
+                  {phase.phase > 1 ? <img src='/assets/graphics/layout/tick.png' alt='phase ticked' /> : null}
+                  &nbsp;
+                </div>
                 <div style={{width: '80%', float: 'left'}}>
                   Assessment
                 </div>
-                <div style={{width: '20%', float: 'left'}}>
-                  {phase.phase > 1 ? <img src='/assets/graphics/layout/tick.png' alt='phase ticked' /> : null}
-                </div>
               </div>
 
               <div style={{marginBottom: '5px', float: 'left', width: '100%'}}>
+                <div style={{width: '20%', float: 'left'}}>
+                  {phase.phase > 2 ? <img src='/assets/graphics/layout/tick.png' alt='phase ticked' /> : null}
+                  &nbsp;
+                </div>
                 <div style={{width: '80%', float: 'left'}}>
                   Prioritization
                 </div>
-                <div style={{width: '20%', float: 'left'}}>
-                  {phase.phase > 2 ? <img src='/assets/graphics/layout/tick.png' alt='phase ticked' /> : null}
-                </div>
               </div>
 
               <div style={{marginBottom: '5px', float: 'left', width: '100%'}}>
+                <div style={{minWidth: '20%', width: '20%', float: 'left'}}>
+                  {phase.phase > 3 ? <img src='/assets/graphics/layout/tick.png' alt='phase ticked' /> : null}
+                  &nbsp;
+                </div>
                 <div style={{width: '80%', float: 'left'}}>
                   Plan of action
                 </div>
-                <div style={{width: '20%', float: 'left'}}>
-                  {phase.phase > 3 ? <img src='/assets/graphics/layout/tick.png' alt='phase ticked' /> : null}
-                </div>
               </div>
 
               <div style={{marginBottom: '5px', float: 'left', width: '100%'}}>
-                <div style={{width: '80%', float: 'left'}}>
-                  Action &amp; Accountability
-                </div>
                 <div style={{width: '20%', float: 'left'}}>
                   {phase.phase > 4 ? <img src='/assets/graphics/layout/tick.png' alt='phase ticked' /> : null}
+                  &nbsp;
+                </div>
+                <div style={{width: '80%', float: 'left'}}>
+                  Action &amp; Accountability
                 </div>
               </div>
             </div>

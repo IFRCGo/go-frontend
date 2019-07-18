@@ -47,7 +47,7 @@ class PreparednessSummary extends React.Component {
     const notReviewed = filteredData.filter(component => component.selected_option === 2).length;
 
     return (
-      <Fold id='per' title='PER Componenets And Sub-Component' wrapper_class='preparedness'>
+      <Fold id='per-summary' title='PER Componenets And Sub-Component' wrapper_class='preparedness'>
         <div style={{ width: '16%', float: 'left', padding: '5px' }}>
           <div style={{ width: '100%', height: '100%', border: '1px solid #000' }}>
 
