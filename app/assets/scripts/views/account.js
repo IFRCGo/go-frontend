@@ -429,7 +429,7 @@ class Account extends React.Component {
 
   isPerPermission () {
     return (typeof this.props.user.username !== 'undefined' && this.props.user.username !== null) &&
-      (this.props.getPerMission.fetched && this.props.getPerMission.data.count > 0);
+      (this.props.getPerMission !== 'undefined' && this.props.getPerMission.fetched && this.props.getPerMission.data.count > 0);
   }
 
   renderProfileAttributes () {

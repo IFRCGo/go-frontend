@@ -381,7 +381,7 @@ class AdminArea extends SFPComponent {
 
   isPerPermission () {
     return (typeof this.props.user.username !== 'undefined' && this.props.user.username !== null) &&
-      (this.props.getPerMission.fetched && this.props.getPerMission.data.count > 0);
+      (typeof this.props.getPerMission !== 'undefined' && this.props.getPerMission.fetched && this.props.getPerMission.data.count > 0);
   }
 
   renderContent () {
@@ -420,7 +420,7 @@ class AdminArea extends SFPComponent {
         <StickyContainer>
           <Sticky>
             {({ style, isSticky }) => (
-              <div style={style} className={c('inpage__nav', {'inpage__nav--sticky': isSticky})}>
+              <div id='navigationbar' style={style} className={c('inpage__nav', {'inpage__nav--sticky': isSticky})}>
                 <div className='inner'>
                   <ul>
                     {data.overview || data.key_priorities ? <li><a href='#overview' title='Go to Overview'>Overview</a></li> : null}

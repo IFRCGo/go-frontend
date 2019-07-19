@@ -175,7 +175,7 @@ class PreparednessWorkPlan extends React.Component {
     });
     return (
       <Fold id='per-work-plan' title='Preparedness work plan' wrapper_class='preparedness'>
-        <div style={{borderBottom: '1px solid #000', paddingBottom: '20px', float: 'left'}}>
+        <div style={{borderBottom: '1px solid #000', paddingBottom: '20px', float: 'left', width: '100%'}}>
           <button className='button button--small button--primary-bounded' onClick={this.showAddModul}>Add</button>
 
           {this.state.showAddModul
@@ -289,7 +289,7 @@ class PreparednessWorkPlan extends React.Component {
               </div>
             ) : null}
 
-          <div style={{paddingTop: '20px', float: 'left'}}>
+          <div style={{paddingTop: '20px', float: 'left', width: '100%'}}>
             <div style={tableTitleCellStyle}>
               Prioritization
             </div>
