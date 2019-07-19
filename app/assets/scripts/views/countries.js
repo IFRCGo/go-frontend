@@ -420,7 +420,7 @@ class AdminArea extends SFPComponent {
         <StickyContainer>
           <Sticky>
             {({ style, isSticky }) => (
-              <div style={style} className={c('inpage__nav', {'inpage__nav--sticky': isSticky})}>
+              <div id='navigationbar' style={style} className={c('inpage__nav', {'inpage__nav--sticky': isSticky})}>
                 <div className='inner'>
                   <ul>
                     {data.overview || data.key_priorities ? <li><a href='#overview' title='Go to Overview'>Overview</a></li> : null}
