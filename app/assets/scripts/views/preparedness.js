@@ -28,7 +28,8 @@ class Preparedness extends React.Component {
     this.state = {
       geoJsonFinal: null,
       preparednessGlobalHighlights: null,
-      topPrioritizedComponents: {}
+      topPrioritizedComponents: {},
+      perPerMission: false
     };
     this.geoJsonBuilt = false;
   }
@@ -101,11 +102,15 @@ class Preparedness extends React.Component {
         this.setState({topPrioritizedComponents: matchingWorkPlans});
       });
     }
+
+    if (this.props.getPerMission.fetched === false && nextProps.getPerMission.fetched === true) {
+      this.setState({perPerMission: this.isPerPermission(nextProps)});
+    }
   }
 
-  isPerPermission () {
-    return (typeof this.props.user.username !== 'undefined' && this.props.user.username !== null) &&
-      (this.props.getPerMission.fetched && this.props.getPerMission.data.count > 0);
+  isPerPermission (props) {
+    return (typeof props.user.data.username !== 'undefined' && props.user.data.username !== null) &&
+      (props.getPerMission.fetched && props.getPerMission.data.count > 0);
   }
 
   render () {
@@ -130,7 +135,7 @@ class Preparedness extends React.Component {
             <PreparednessHeader />
             { this.geoJsonBuilt ? <PerMap data={this.state.geoJsonFinal} noExport={true} noRenderEmergencies={true} overviewData={this.props.perOverviewForm} /> : null }
             { this.props.getPerEngagedNsPercentage.fetched ? <NationalSocietiesEngagedPer data={this.props.getPerEngagedNsPercentage} /> : null }
-            { this.props.getPerGlobalPreparedness.fetched && this.props.perWorkPlan.fetched ? <GlobalPreparednessHighlights data={this.props.getPerGlobalPreparedness} prioritizationData={this.state.topPrioritizedComponents} isPerPermission={this.isPerPermission()} /> : null }
+            { this.props.getPerGlobalPreparedness.fetched && this.props.perWorkPlan.fetched ? <GlobalPreparednessHighlights data={this.props.getPerGlobalPreparedness} prioritizationData={this.state.topPrioritizedComponents} perPermission={this.state.perPerMission} /> : null }
             <ContactPer />
           </div>
         </section>
