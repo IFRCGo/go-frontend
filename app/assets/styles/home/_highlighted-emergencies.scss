@@ -1,9 +1,13 @@
 .card_box_container {
-  margin-top: 1rem;
+  //margin-top: 1rem;
+}
+
+.card_box_container--op {
+  display: flex;
 }
 
 .card_box {
-  float: left;
+  //float: left;
   font-size: 1.5rem;
   text-align: left;
   padding-left: 5px;
@@ -17,11 +21,8 @@
   // }
 }
 
-.card_box small {
-  display: block;
-  text-transform: uppercase;
-  color: rgba(0, 0, 0, 0.6);
-  font-size: 0.875rem;
+.card_box_no {
+  font-weight: $base-font-medium;
 }
 
 .card_box_left {
@@ -50,7 +51,7 @@
 }
 
 .card_box_full {
-  float: left;
+  //float: left;
   margin-top: 1rem;
   padding-top: 0.5rem;
   border-top: 1px solid #c0c0c0;
@@ -59,45 +60,45 @@
   text-align: left;
 
   .progress-bar {
-    display: inline-block;
+    //display: inline-block;
     width: 80%;
   }
 
-  small {
-    display: block;
-    font-size: 0.875rem;
-    text-transform: uppercase;
-    color: rgba(0, 0, 0, 0.6);
-  }
+  //small {
+    //display: block;
+    //font-size: 0.875rem;
+    //text-transform: uppercase;
+    //color: rgba(0, 0, 0, 0.6);
+  //}
 
   .progress-bar-container {
     margin-top: -10px;
   }
 
   .progress-bar__value {
-    background-color: $primary-color;
+    background-color: $secondary-color;
   }
 
-  .progress-bar__key small {
+  //.progress-bar__key small {
     display: inline-block;
-    @include media(xsmall-only) {
-      font-size: 0.7rem;    
-    }
-    @include media(small-only) {
-      font-size: 0.875rem;    
-    }
-    @include media(medium-only) {
-      font-size: 0.65rem;    
-    }
-    @include media(large-only) {
-      font-size: 0.835rem;    
-    }
-    @include media(xlarge-only) {
-      font-size: 0.875rem;    
-    }
-    text-transform: uppercase;
-    color: rgba(0, 0, 0, 0.6);
-  }
+    //@include media(xsmall-only) {
+      //font-size: 0.7rem;    
+    //}
+    //@include media(small-only) {
+      //font-size: 0.875rem;    
+    //}
+    //@include media(medium-only) {
+      //font-size: 0.65rem;    
+    //}
+    //@include media(large-only) {
+      //font-size: 0.835rem;    
+    //}
+    //@include media(xlarge-only) {
+      //font-size: 0.875rem;    
+    //}
+    //text-transform: uppercase;
+    //color: rgba(0, 0, 0, 0.6);
+  //}
 
   .progress-bar__key {
     display: inline-block;
@@ -113,7 +114,12 @@
 }
 
 .last_updated {
+  font-size: $font-size-xs;
   margin-bottom: 10px;
   color: rgba(0, 0, 0, 0.6);
   font-style: italic;
+}
+
+.card_box--op {
+  @include span(6/12, $offset: 0, $cycle: 0);
 }

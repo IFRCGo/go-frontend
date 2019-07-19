@@ -7,9 +7,13 @@
 
 $base-color: #000000;                                   // Dark green
 $primary-color: #C02C2C;                                // Red
-$secondary-color: #41639B;                              // Blue
+$secondary-color: #24334c;                              // Blue // Previously 41639B
 $secondary-color-light: #C9D2E3;
+
 $map-color: #23324D;                       // Blue light
+$map-color: #23324D;                       // Blue light
+$grey-slate: rgba(45, 70, 98, 0.6);
+
 
 /* State colors */
 
@@ -35,6 +39,7 @@ $base-font-family: "Poppins", "Helvetica Neue", Helvetica, Arial, sans-serif;
 $base-font-style: normal;
 $base-font-light: 300;
 $base-font-regular: 400;
+$base-font-medium: 500;
 $base-font-semi-bold: 600;
 $base-font-bold: 700;
 $base-font-weight: $base-font-light;
@@ -42,7 +47,8 @@ $base-font-size: 0.875rem;
 $base-line-height: 1.5;
 
 $base-font-size: 0.875rem;
-$font-size-sm: 90%;
+$font-size-sm: 0.775rem;
+$font-size-xs: 0.695rem;
 $font-size-lg: 110%;
 $font-size-xl: 120%;
 $font-size-xxl: 130%;
@@ -82,6 +88,8 @@ $page-header-y: 0 !default;
 /* Spacing */
 
 $global-spacing: 1rem;
+$global-spacing-2: 1.5rem;
+$global-spacing-3: 2rem;
 
 /* Rows */
 

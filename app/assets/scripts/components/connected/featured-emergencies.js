@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import Progress from './../progress-labeled';
+import { round } from '../../utils/format';
 
 import { formatDate, percent, commaSeparatedNumber as n } from '../../utils/format';
 import { get } from '../../utils/utils';
@@ -85,33 +86,50 @@ class FeaturedEmergencies extends React.Component {
     return (
       <li className='key-emergencies-item' key={id}>
         <Link to={`/emergencies/${id}`}>
-          <h2 className='card__title'>{ name.length > 30 ? name.slice(0, 30) + '...' : name }</h2>
-          <small className='last_updated'>Last updated: {formatDate(d.updated_at)}</small>
+          <div className="card_box card_box_left">
+            <h2 className='card__title'>{ name.length > 30 ? name.slice(0, 30) + '...' : name }</h2>
+            <small className='last_updated'>Last updated: {formatDate(d.updated_at)}</small>
+          </div>
 
-          <div className='card_box_container'>
-            <div className='card_box card_box_left'>
-              <span className='affected_population_icon'></span> {n(beneficiaries)}<br />
-              <small>Targeted Population</small>
+          <div className='card_box_container card_box_container--op'>
+            <div className='card_box card_box_left card_box--op'>
+              <span className='affected_population_icon'></span>
+              <small className='heading-tiny'>Targeted Population</small>
+              <div className="card_box_no">{n(beneficiaries)}</div>
             </div>
-            <div className='card_box card_box_left'>
-              <span className='affected_population_icon'></span> {n(emergencyDeployments.deployedErus)}<br />
-              <small>Deployed Emergency Response Units</small>
-            </div>
-            <div className='card_box'>
-              <span className='deployed_personnel_icon'></span> {n(emergencyDeployments.deployedPersonnel)}<br />
-              <small>Deployed Surge Personnel</small>
+            <div className='card_box card_box_left card_box--op'>
+              <span className='affected_population_icon'></span>
+              <div className="card_box_no">{n(emergencyDeployments.deployedErus)}</div>
+              <small className='heading-tiny'>Deployed Emergency Response Units</small>
             </div>
           </div>
 
-          <div className='card_box_full'>
-            {appeals.length ? (
-              <React.Fragment>
-                <small>Funding Requirements</small>
-                {requested !== null ? n(requested) : 0} CHF
-                <Progress value={requested ? percent(funded, requested) : 0} max={100} />
-              </React.Fragment>
-            ) : null}
+          <div className='card_box_container card_box_container--op'>
+            <div className='card_box card_box--op'>
+              <div className="card_box_no">{requested !== null ? n(requested) : 0} CHF</div>
+              <small className='heading-tiny'>Funding Requirements</small>
+            </div>
+            <div className='card_box card_box--op'>
+              <span className='deployed_personnel_icon'></span>
+              <div className="card_box_no">{n(emergencyDeployments.deployedPersonnel)}</div>
+              <small className='heading-tiny'>Deployed Surge Personnel</small>
+            </div>
           </div>
+
+          <div className='card_box_full card_box_container card_box_container--op'>
+            <div className='card_box card_box_left card_box--op'>
+              <div className="heading-tiny">Funding Coverage</div>
+            </div>
+
+            <div className='card_box card_box_left card_box--op'>
+              {requested ? round(percent(funded, requested)) : 0}%
+            </div>
+          </div>
+          {appeals.length ? (
+            <React.Fragment>
+              <Progress value={requested ? percent(funded, requested) : 0} max={100} />
+            </React.Fragment>
+          ) : null}
         </Link>
       </li>
     );
