@@ -41,7 +41,11 @@ $base-font-weight: $base-font-light;
 $base-font-size: 0.875rem;
 $base-line-height: 1.5;
 
+$base-font-size: 0.875rem;
 $font-size-sm: 90%;
+$font-size-lg: 110%;
+$font-size-xl: 120%;
+$font-size-xxl: 130%;
 
 $code-font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 
@@ -49,7 +53,7 @@ $heading-font-family: "Poppins", "Helvetica Neue", Helvetica, Arial, sans-serif;
 $heading-font-light: 300;
 $heading-font-regular: 500;
 $heading-font-bold: 700;
-$heading-font-weight: $heading-font-regular;
+$heading-font-weight: $base-font-semi-bold;
 
 
 /* Decoration
@@ -62,6 +66,10 @@ $full-border-radius: 100vh;
 
 $base-border-color: rgba(#000, 0.1);
 $base-border-width: 1px;
+
+/* Box shadow */
+
+$base-box-shadow: 1px 2px 6px 1px $base-alpha-color;
 
 
 /* Sizing, spacing and media queries

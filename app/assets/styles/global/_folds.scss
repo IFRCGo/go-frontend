@@ -11,7 +11,7 @@
 .fold {
   background: #fff;
   padding: ($global-spacing * 2) 0;
-  box-shadow: 0 2px 4px 1px $base-alpha-color;
+  box-shadow: $base-box-shadow;
   &:last-child {
     margin-bottom: 0;
   };
@@ -63,7 +63,9 @@
 }
 
 .fold__title {
-  @include heading(1.5rem, medium-up);
+  font-size: $font-size-xxl;
+  text-transform: uppercase;
+  letter-spacing: 1.6px;
 }
 
 .fold__description {

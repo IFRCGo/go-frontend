@@ -88,9 +88,15 @@
   .stats-chart {
     padding: ($global-spacing * 2) 0;
   }
+
+  .sumstats-overall {
+    border-radius: ($base-border-radius * 2);
+  }
 }
 
 .sumstats {
+  box-shadow: $base-box-shadow;
+  border-radius: ($base-border-radius * 2);
   @extend .clearfix;
   list-style: none;
   margin: 0;
