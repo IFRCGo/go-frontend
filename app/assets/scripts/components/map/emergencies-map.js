@@ -61,7 +61,7 @@ class EmergenciesMap extends React.Component {
       type: 'categorical',
       stops: [
         ['total', '#F39C12'],
-        ['none', '#C22A26'],
+        ['none', '#C02C2C'],
         ['mixed', '#749BE9']
       ]
     };

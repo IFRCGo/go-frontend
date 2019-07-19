@@ -85,7 +85,6 @@
     @extend .row, .row--centered;
   }
 
-  .stats-overall,
   .stats-chart {
     padding: ($global-spacing * 2) 0;
   }
@@ -96,24 +95,37 @@
   list-style: none;
   margin: 0;
 
+  @include media(small-up) {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
   &__item {
     @include column(12/12);
+    border: 1px solid $base-border-color;
+    padding: ($global-spacing * 2) $global-spacing;
     margin-bottom: ($global-spacing * 2);
 
-    &:last-child {
-      margin-bottom: 0;
-    }
-
     @include media(small-up) {
-      @include column(6/12, $cycle: 2);
+      @include span(6/12, $offset: 0, $cycle: 0);
+      border-right: 1px solid $base-border-color;
+      border-radius: 0;
+
+      &:first-of-type {
+        border-radius: ($base-border-radius * 2) 0 0 ($base-border-radius * 2);
+      }
+
+      &:last-of-type {
+        border-radius: 0 ($base-border-radius * 2) ($base-border-radius * 2) 0;
+      }
     }
 
     @include media(medium-up) {
-      @include column(4/12, $cycle: 3);
+      @include span(4/12, $cycle: 3);
     }
 
     @include media(large-up) {
-      @include column(2/10, $cycle: 5);
+      @include span(2/10, $cycle: 5);
       margin-bottom: 0;
     }
   }
@@ -125,13 +137,20 @@
 
   &__value {
     color: $primary-color;
-    font-size: 3rem;
+    font-size: 2.4rem;
+    font-weight: $base-font-semi-bold;
     line-height: 3.5rem;
   }
 
   &__key {
-    font-weight: $base-font-regular;
+    font-size: $font-size-sm;
+    font-weight: $base-font-light;
     line-height: 1.25rem;
+    text-transform: uppercase;
+  }
+
+  .tooltip-button {
+    vertical-align: text-top;
   }
 }
 
