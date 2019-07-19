@@ -65,7 +65,7 @@ export default class GlobalPreparednessHighlights extends React.Component {
           <div style={{width: '50%', float: 'left'}}>
             <span style={{fontWeight: 'bold'}}>High Performing Components (globally)</span>
             <ul>
-              {this.props.isPerPermission ? highPerformingComponents : 'You can only see this data if you have the correct permissions.'}
+              {this.props.perPermission ? highPerformingComponents : 'You can only see this data if you have the correct permissions.'}
             </ul>
           </div>
           <div style={{width: '50%', float: 'left'}}>
@@ -84,6 +84,6 @@ if (environment !== 'production') {
   GlobalPreparednessHighlights.propTypes = {
     data: T.object,
     prioritizationData: T.object,
-    isPerPermission: T.func
+    perPermission: T.bool
   };
 }
