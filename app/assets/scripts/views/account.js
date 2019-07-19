@@ -55,8 +55,8 @@ const basicTypes = [{
   value: 'weeklyDigest'
 },
 {
-  label: 'New Disasters',
-  value: 'newDisasters'
+  label: 'New Emergencies',
+  value: 'newEmergencies'
 },
 {
   label: 'New Operations',
@@ -124,7 +124,7 @@ const rtypes = {
   9: 'surgeDM',
   10: 'surgeAEM',
   11: 'weeklyDigest',
-  12: 'newDisasters',
+  12: 'newEmergencies',
   13: 'newOperations',
   14: 'general'
 };
@@ -292,8 +292,8 @@ class Account extends React.Component {
         next.per = updateChecks(next.per, 'perDueDate');
       } else if (rtype === 'weeklyDigest') {
         next.basic = updateChecks(next.basic, 'weeklyDigest');
-      } else if (rtype === 'newDisasters') {
-        next.basic = updateChecks(next.basic, 'newDisasters');
+      } else if (rtype === 'newEmergencies') {
+        next.basic = updateChecks(next.basic, 'newEmergencies');
       } else if (rtype === 'newOperations') {
         next.basic = updateChecks(next.basic, 'newOperations');
       } else if (rtype === 'general') {
@@ -639,6 +639,7 @@ class Account extends React.Component {
               options={disasterTypes}
               values={this.state.notifications.disasterTypes}
               onChange={this.onFieldChange.bind(this, 'notifications', 'disasterTypes')} />
+            {/*
             <FormCheckboxGroup
               label='Emergencies'
               name='event'
@@ -660,6 +661,7 @@ class Account extends React.Component {
               options={systemNotificationTypes}
               values={this.state.notifications.appeal}
               onChange={this.onFieldChange.bind(this, 'notifications', 'appeal')} />
+              */}
             <FormCheckboxGroup
               label='Surge Notifications'
               name='surg'
