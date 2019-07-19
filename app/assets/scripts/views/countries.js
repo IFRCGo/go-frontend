@@ -381,7 +381,7 @@ class AdminArea extends SFPComponent {
 
   isPerPermission () {
     return (typeof this.props.user.username !== 'undefined' && this.props.user.username !== null) &&
-      (this.props.getPerMission.fetched && this.props.getPerMission.data.count > 0);
+      (typeof this.props.getPerMission !== 'undefined' && this.props.getPerMission.fetched && this.props.getPerMission.data.count > 0);
   }
 
   renderContent () {

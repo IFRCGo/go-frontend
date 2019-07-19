@@ -110,7 +110,7 @@ class Preparedness extends React.Component {
 
   isPerPermission (props) {
     return (typeof props.user.data.username !== 'undefined' && props.user.data.username !== null) &&
-      (props.getPerMission.fetched && props.getPerMission.data.count > 0);
+      (typeof props.getPerMission !== 'undefined' && props.getPerMission.fetched && props.getPerMission.data.count > 0);
   }
 
   render () {
