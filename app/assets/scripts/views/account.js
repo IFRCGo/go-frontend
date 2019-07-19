@@ -639,7 +639,7 @@ class Account extends React.Component {
               options={disasterTypes}
               values={this.state.notifications.disasterTypes}
               onChange={this.onFieldChange.bind(this, 'notifications', 'disasterTypes')} />
-              {/*
+            {/*
             <FormCheckboxGroup
               label='Emergencies'
               name='event'
