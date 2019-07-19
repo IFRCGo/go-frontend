@@ -80,7 +80,7 @@ export default function HomestatsComponent (props) {
     return (
       <ul className='sumstats'>
         <li className='sumstats__item'>
-          <span class="collecticon-cash-bag sumstats__icon"></span>
+          <span class="collecticon-rc sumstats__icon"></span>
           <span className='sumstats__value'>{stats.activeDrefs}</span>
           <span className='sumstats__key'>
             Active DREF Operations
@@ -88,9 +88,9 @@ export default function HomestatsComponent (props) {
           </span>
         </li>
         <li className='sumstats__item'>
-          <span class="collecticon-cash-bag sumstats__icon"></span>
+          <span class="collecticon-rc-appeals sumstats__icon"></span>
           <span className='sumstats__value'>{stats.activeAppeals}</span>
-          <span className='sumstats__key'>Active Emergency <br /> Appeals <div className='tooltip-button' id='tooltip-button-appeal' onClick={props.openTooltip}></div></span>
+          <span className='sumstats__key'>Active Emergency Appeals <div className='tooltip-button' id='tooltip-button-appeal' onClick={props.openTooltip}></div></span>
         </li>
         <li className='sumstats__item'>
           <span class="collecticon-cash-notes sumstats__icon"></span>

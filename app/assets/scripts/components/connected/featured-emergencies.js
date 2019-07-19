@@ -93,9 +93,9 @@ class FeaturedEmergencies extends React.Component {
 
           <div className='card_box_container card_box_container--op'>
             <div className='card_box card_box_left card_box--op'>
+              <div className="card_box_no">{n(beneficiaries)}</div>
               <span className='affected_population_icon'></span>
               <small className='heading-tiny'>Targeted Population</small>
-              <div className="card_box_no">{n(beneficiaries)}</div>
             </div>
             <div className='card_box card_box_left card_box--op'>
               <span className='affected_population_icon'></span>
@@ -105,11 +105,11 @@ class FeaturedEmergencies extends React.Component {
           </div>
 
           <div className='card_box_container card_box_container--op'>
-            <div className='card_box card_box--op'>
+            <div className='card_box card_box_left card_box--op'>
               <div className="card_box_no">{requested !== null ? n(requested) : 0} CHF</div>
               <small className='heading-tiny'>Funding Requirements</small>
             </div>
-            <div className='card_box card_box--op'>
+            <div className='card_box card_box_left card_box--op'>
               <span className='deployed_personnel_icon'></span>
               <div className="card_box_no">{n(emergencyDeployments.deployedPersonnel)}</div>
               <small className='heading-tiny'>Deployed Surge Personnel</small>
@@ -122,7 +122,7 @@ class FeaturedEmergencies extends React.Component {
             </div>
 
             <div className='card_box card_box_left card_box--op'>
-              {requested ? round(percent(funded, requested)) : 0}%
+              <div className="card_box_fc">{requested ? round(percent(funded, requested)) : 0}%</div>
             </div>
           </div>
           {appeals.length ? (
