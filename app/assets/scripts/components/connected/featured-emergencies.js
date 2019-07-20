@@ -4,9 +4,8 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import Progress from './../progress-labeled';
-import { round } from '../../utils/format';
 
-import { formatDate, percent, commaSeparatedNumber as n } from '../../utils/format';
+import { formatDate, percent, round, commaSeparatedNumber as n } from '../../utils/format';
 import { get } from '../../utils/utils';
 import { environment } from '../../config';
 import { getFeaturedEmergencies, getFeaturedEmergenciesDeployments, getDeploymentERU } from '../../actions';

@@ -191,8 +191,8 @@ class AppealsTable extends SFPComponent {
       }));
 
       const foldLink = this.props.viewAll ? (
-            <Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || 'View all operations'}</Link>
-          ) : null;
+        <Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || 'View all operations'}</Link>
+      ) : null;
 
       return (
         <Fold title={`${title} (${n(data.count)})`} id={this.props.id} navLink={foldLink}>

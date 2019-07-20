@@ -188,7 +188,7 @@ class AlertsTable extends SFPComponent {
           page={this.state.table.page - 1}
           onPageChange={this.handlePageChange.bind(this, 'table')}
           noPaginate={this.props.noPaginate}
-        />        
+        />
       </Fold>
     );
   }

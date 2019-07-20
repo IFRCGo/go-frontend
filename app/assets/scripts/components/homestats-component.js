@@ -6,7 +6,6 @@ import BlockLoading from './block-loading';
 import { environment } from '../config';
 import { PropTypes as T } from 'prop-types';
 
-
 export default function HomestatsComponent (props) {
   let renderLoading = (props) => {
     if (props.appealsList.fetching) {

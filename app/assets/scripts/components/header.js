@@ -92,7 +92,7 @@ class Header extends React.PureComponent {
           </div>
         )}
         <header className='page__header' role='banner'>
-          <div className='page__header__inner__wrap'>        
+          <div className='page__header__inner__wrap'>
             <div className='inner'>
               <div className='page__headline'>
                 <h1 className='page__title'>
