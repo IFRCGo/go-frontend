@@ -96,9 +96,6 @@
   }
 
   &__introduction {
-    @include column(8/12);
-    text-align: center;
-    float: none;
     color: $base-font-color;
     //font-size: 1rem;
     //line-height: 1.5rem;
