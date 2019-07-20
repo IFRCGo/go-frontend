@@ -170,8 +170,10 @@ class AlertsTable extends SFPComponent {
       return acc;
     }, []);
 
+    const foldLink = this.props.viewAll ? (<Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || 'View all surge alerts'}</Link>) : null;
+
     return (
-      <Fold title={`${title} (${data.count})`} id={this.props.id}>
+      <Fold title={`${title} (${data.count})`} id={this.props.id} navLink={foldLink}>
         {this.props.showExport ? (
           <ExportButton filename='surge-alerts'
             qs={this.getQs(this.props)}
@@ -187,11 +189,6 @@ class AlertsTable extends SFPComponent {
           onPageChange={this.handlePageChange.bind(this, 'table')}
           noPaginate={this.props.noPaginate}
         />
-        {this.props.viewAll ? (
-          <div className='fold__footer'>
-            <Link className='link--primary export--link' to={this.props.viewAll}>{this.props.viewAllText || 'View all surge alerts'}</Link>
-          </div>
-        ) : null}
       </Fold>
     );
   }

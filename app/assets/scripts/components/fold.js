@@ -18,7 +18,10 @@ export default class Fold extends React.Component {
     } else {
       return (
         <div className={c('fold__header', this.props.headerClass)}>
-          <h2 className='fold__title'>{this.props.title}</h2>
+          <div className="fold__header__block">
+            <h2 className='fold__title'>{this.props.title}</h2>
+            {this.props.navLink ? <div className="fold__title__linkwrap">{this.props.navLink} <span className="collecticon-chevron-right"></span> </div> : null}
+          </div>
           {this.props.description && <p className='fold__description'>{this.props.description}</p>}
         </div>
       );
@@ -40,8 +43,9 @@ export default class Fold extends React.Component {
   }
 
   render () {
+    const extraClassName = 'fold--main';
     return (
-      <div className={c('fold', this.props.wrapperClass)} id={this.props.id}>
+      <div className={c('fold', this.props.extraClass ? extraClassName : '', this.props.wrapperClass)} id={this.props.id}>
         <div className='inner'>
           {this.renderHeader()}
           <div className={c('fold__body', this.props.bodyClass)}>
@@ -58,6 +62,8 @@ if (environment !== 'production') {
   Fold.propTypes = {
     id: T.string,
     title: T.string,
+    navLink: T.element,
+    extraClass: T.boolean,
     description: T.string,
     header: T.oneOfType([T.element, T.func]),
     footer: T.oneOfType([T.element, T.func]),
