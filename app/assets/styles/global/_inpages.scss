@@ -339,7 +339,7 @@
     height: $base-border-width * 2;
     background: $primary-color;
     display: block;
-    margin: calc(0.5em - #{$base-border-width}) auto 0 auto;
+    margin: ($global-spacing * 4) auto 0 auto;
 
   }
 }

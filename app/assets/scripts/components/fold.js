@@ -40,8 +40,9 @@ export default class Fold extends React.Component {
   }
 
   render () {
+    const extraClassName = 'fold--main';
     return (
-      <div className={c('fold', this.props.wrapperClass)} id={this.props.id}>
+      <div className={c('fold', this.props.extraClass ? extraClassName : '', this.props.wrapperClass)} id={this.props.id}>
         <div className='inner'>
           {this.renderHeader()}
           <div className={c('fold__body', this.props.bodyClass)}>

@@ -142,7 +142,7 @@ class FeaturedEmergencies extends React.Component {
     else if (!fetched || fetching) return <div className='inner'><Fold title={title}><BlockLoading/></Fold></div>;
     return (
       <div className='inner'>
-        <Fold title={title}>
+        <Fold title={title} extraClass>
           <ul className='key-emergencies-list'>
             {data.results.map(this.renderCard)}
           </ul>

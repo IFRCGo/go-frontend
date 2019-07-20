@@ -85,6 +85,14 @@
 
 .nav-global-search {
   min-width: 20rem;
+
+  .Select-control {
+    border-radius: $input-rounded-radius;
+  }
+
+  .Select-arrow {
+    border-color: $primary-color transparent transparent;
+  }
 }
 
 .gsearch {

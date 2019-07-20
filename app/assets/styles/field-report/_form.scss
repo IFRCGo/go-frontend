@@ -322,14 +322,20 @@
 
   a {
     color: inherit;
+    font-weight: $base-font-medium;
+    text-transform: uppercase;
   }
 
   &--complete, &--current {
-    color: $secondary-color;
+    color: $primary-color;
 
-    &::before, &::after {
-      background: $secondary-color;
-    }
+    //&::before, &::after {
+      //background: $secondary-color;
+    //}
+
+     &::before {
+       background: $primary-color;
+     }
   }
 
   &--complete {
