@@ -3,8 +3,42 @@
    ========================================================================== */
 
 .page--frep-form {
+  background: #fff;
+
   .inpage__header {
     padding-bottom: 0;
+  }
+
+  .form__group {
+    background: $grey-fog;
+    padding: $global-spacing-2;
+    margin-bottom: $global-spacing-2;
+  }
+
+  .form__inner-header {
+    @include media(medium-up) {
+      @include column(3/12);
+    }
+  }
+
+  .form__inner-header {
+    display: block;
+  }
+
+  /*.form__hascol {
+    margin-bottom: 0 !important;
+
+    .form__group {
+      margin-right: 0 !important;
+      margin-left: 0 !important;
+      width: 50% !important;
+    }
+  }*/
+
+  .form__inner-body {
+    @include media(medium-up) {
+      @include column(9/12);
+    }
   }
 }
 
@@ -58,6 +92,12 @@
       }
     }
   }
+}
+
+.form__group__col__6 {
+  @include media(large-up) {
+    @include column(6/12);
+  }  
 }
 
 .estimation-row {

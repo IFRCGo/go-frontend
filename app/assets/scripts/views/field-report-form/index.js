@@ -248,7 +248,7 @@ class FieldReportForm extends React.Component {
   renderStep1 () {
     const districtChoices = this.getDistrictChoices() || [];
     return (
-      <Fold title='Context'>
+      <Fold title='Context' extraClass>
         <FormRadioGroup
           label='Status *'
           name='status'
@@ -278,11 +278,15 @@ class FieldReportForm extends React.Component {
 
         </FormInput>
         <div className='form__group'>
-          <label className='form__label'>Emergency</label>
-          <Select.Async
-            value={this.state.data.event}
-            onChange={this.onFieldChange.bind(this, 'event')}
-            loadOptions={getEventsFromApi} />
+          <div className='form__inner-header'>
+            <label className='form__label'>Emergency</label>
+          </div>
+          <div className='form__inner-body'>
+            <Select.Async
+              value={this.state.data.event}
+              onChange={this.onFieldChange.bind(this, 'event')}
+              loadOptions={getEventsFromApi} />
+          </div>
 
           <FormError
             errors={this.state.errors}
@@ -302,38 +306,41 @@ class FieldReportForm extends React.Component {
           />
         </FormInput>
 
-        <div className='form__hascol form__hascol--2'>
-          <div className='form__group'>
-            <label className='form__label'>Country *</label>
-            <p className='form__description'>Seach for the affected country.</p>
-            <Select
-              name='country'
-              value={this.state.data.country}
-              onChange={this.onCountryChange.bind(this)}
-              options={formData.countries}
-            />
-
-            <FormError
-              errors={this.state.errors}
-              property='country'
-            />
+        <div className='form__group'>
+          <div className='form__inner-header'>
+            <label className='form__label'>Potentially Affected Country and Province Region *</label>
+            <p className='form__description'>Anticipated Affected Country &amp; Province/Region</p>
           </div>
+          <div className="form__inner-body clearfix">
+            <div className="form__group__col__6">
+              <Select
+                placeholder='Select a country'
+                name='country'
+                value={this.state.data.country}
+                onChange={this.onCountryChange.bind(this)}
+                options={formData.countries}
+              />
 
-          <div className='form__group'>
-            <label className='form__label'>Regions / Provinces</label>
-            <p className='form__description'>Search for regions within affected country.</p>
-            <Select
-              name='districts'
-              value={this.state.data.districts}
-              onChange={this.onFieldChange.bind(this, 'districts')}
-              options={districtChoices}
-              multi
-            />
+              <FormError
+                errors={this.state.errors}
+                property='country'
+              />
+            </div>
+            <div className="form__group__col__6">
+              <Select
+                placeholder='Select a Province/Region'
+                name='districts'
+                value={this.state.data.districts}
+                onChange={this.onFieldChange.bind(this, 'districts')}
+                options={districtChoices}
+                multi
+              />
 
-            <FormError
-              errors={this.state.errors}
-              property='districts'
-            />
+              <FormError
+                errors={this.state.errors}
+                property='districts'
+              />
+            </div>
           </div>
         </div>
         <FormSelect
@@ -757,9 +764,9 @@ class FieldReportForm extends React.Component {
                 {this[`renderStep${this.state.step}`]()}
                 {this.renderErrorSummary()}
 
-                <div className='form__actions'>
+                <div className='form__actions text-center'>
                   <button type='button' className={c('button button--secondary-bounded', {disabled: this.state.step <= 1})} title='Go back to previous step' onClick={this.onStepBackClick}>Back</button>
-                  <button type='submit' className='button button--secondary-filled' title='Save and continue'>Save and continue</button>
+                  <button type='submit' className='button button--secondary-filled' title='Save and Continue'>Save and Continue</button>
                 </div>
               </form>
             </div>
