@@ -116,3 +116,40 @@
     }
   }
 }
+
+.fold__header__block {
+  @extend .clearfix;
+  border-bottom: 1px solid $base-border-color;
+  padding-bottom: $global-spacing;
+}
+
+.fold__title {
+
+  @include media(medium-up) {
+   margin-bottom: 0;
+   line-height: 1;
+
+   @include column(8/12);
+  }
+}
+
+.fold__title__linkwrap {  
+  font-size: $font-size-sm;
+  color: $primary-color;
+
+  @include media(medium-up) {
+    text-align: right !important;
+    @include column(4/12);
+  }
+}
+
+.fold__title__link {
+  color: $primary-color;
+  font-weight: $base-font-semi-bold;
+
+  > span {
+    font-size: $font-size-xs;
+    font-weight: $base-font-semi-bold;
+  }
+}
+  

@@ -138,15 +138,15 @@ class FeaturedEmergencies extends React.Component {
 
   render () {
     const { error, fetching, fetched, data } = this.props.featured;
+    const foldLink = (<Link to='/appeals/all' className='fold__title__link'>View all operations</Link>);
     if (fetched && (error || !Array.isArray(data.results) || !data.results.length)) return null;
     else if (!fetched || fetching) return <div className='inner'><Fold title={title}><BlockLoading/></Fold></div>;
     return (
       <div className='inner'>
-        <Fold title={title} extraClass>
+        <Fold title={title} navLink={foldLink} extraClass>
           <ul className='key-emergencies-list'>
             {data.results.map(this.renderCard)}
           </ul>
-          <Link to='/appeals/all' className='link--primary more_button'>View all operations</Link>
         </Fold>
       </div>
     );
