@@ -5,8 +5,16 @@ const getValidValues = (arr, key) => arr.map(o => o[key]).filter(o => o !== '');
 
 export const step1 = {
   properties: {
+    status: {
+      type: 'string',
+      enum: getValidValues(formData.status, 'value')
+    },
     summary: {
       type: 'string'
+    },
+    event: {
+      type: 'number',
+      minimum: 0
     },
     // countries: {
     //   type: 'array',
@@ -22,20 +30,9 @@ export const step1 = {
     districts: {
       type: 'array'
     },
-    status: {
-      type: 'string',
-      enum: getValidValues(formData.status, 'value')
-    },
     disasterType: {
       type: 'string',
       enum: getValidValues(formData.disasterType, 'value')
-    },
-    event: {
-      type: 'number',
-      minimum: 0
-    },
-    description: {
-      type: 'string'
     },
     assistance: {
       type: 'boolean'
@@ -72,11 +69,9 @@ export const step2 = {
     numDisplaced: {
       '$ref': '#/definitions/estimation'
     },
-    numAssistedGov: { type: 'number', minimum: 0 },
-    numAssistedRedCross: { type: 'number', minimum: 0 },
-    numLocalStaff: { type: 'number', minimum: 0 },
-    numVolunteers: { type: 'number', minimum: 0 },
-    numExpats: { type: 'number', minimum: 0 }
+    description: {
+      type: 'string'
+    }
   }
 };
 
@@ -101,6 +96,11 @@ export const step3 = {
     }
   },
   properties: {
+    numAssistedGov: { type: 'number', minimum: 0 },
+    numAssistedRedCross: { type: 'number', minimum: 0 },
+    numLocalStaff: { type: 'number', minimum: 0 },
+    numVolunteers: { type: 'number', minimum: 0 },
+    numExpats: { type: 'number', minimum: 0 },
     actionsNatSoc: {
       '$ref': '#/definitions/actionsCheckboxes'
     },
@@ -126,6 +126,13 @@ export const step4 = {
         status: { type: 'string' },
         value: { type: 'number', minimum: 0 }
       }
+    },
+    contact: {
+      properties: {
+        name: { type: 'string' },
+        role: { type: 'string' },
+        contact: { type: 'string' }
+      }
     }
   },
   properties: {
@@ -144,30 +151,6 @@ export const step4 = {
     ifrcStaff: {
       '$ref': '#/definitions/plannedResponse'
     },
-    eru: {
-      type: 'array',
-      items: {
-        properties: {
-          type: { type: 'string' },
-          status: { type: 'string' },
-          units: { type: 'number', minimum: 0 }
-        }
-      }
-    }
-  }
-};
-
-export const step5 = {
-  definitions: {
-    contact: {
-      properties: {
-        name: { type: 'string' },
-        role: { type: 'string' },
-        contact: { type: 'string' }
-      }
-    }
-  },
-  properties: {
     contactOriginator: {
       '$ref': '#/definitions/contact'
     },

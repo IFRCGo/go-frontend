@@ -15,8 +15,7 @@ import {
   step1 as schemaStep1,
   step2 as schemaStep2,
   step3 as schemaStep3,
-  step4 as schemaStep4,
-  step5 as schemaStep5
+  step4 as schemaStep4
 } from '../../schemas/field-report-form';
 import * as formData from '../../utils/field-report-constants';
 import { showAlert } from '../../components/system-alerts';
@@ -42,9 +41,7 @@ import {
 } from '../../components/form-elements/';
 import ActionsCheckboxes from './cmp-action-checkboxes.js';
 import ContactRow from './cmp-contact-row.js';
-import Eru from './cmp-eru.js';
 import PlanResponseRow from './cmp-planned-response-row.js';
-import ReportSource from './cmp-report-source.js';
 import SourceEstimation from './cmp-source-estimation.js';
 
 const ajv = new Ajv({ $data: true, allErrors: true, errorDataPath: 'property' });
@@ -135,9 +132,6 @@ class FieldReportForm extends React.Component {
       case 4:
         validator = ajv.compile(schemaStep4);
         break;
-      case 5:
-        validator = ajv.compile(schemaStep5);
-        break;
     }
     validator(state);
 
@@ -153,7 +147,7 @@ class FieldReportForm extends React.Component {
     const step = this.state.step;
     const result = this.validate();
     if (result) {
-      if (step === 5) {
+      if (step === 4) {
         const payload = convertStateToPayload(this.state.data);
         const userId = _get(this.props.user, 'data.id');
         if (userId) {
@@ -232,11 +226,10 @@ class FieldReportForm extends React.Component {
   renderStepper () {
     const step = this.state.step;
     const items = [
-      'Basic Information',
-      'Numeric Details',
-      'Actions Taken',
-      'Planned Response',
-      'Contacts'
+      'Context',
+      'Situation',
+      'Actions',
+      'Response'
     ];
     return (
       <ol className='stepper'>
@@ -255,58 +248,7 @@ class FieldReportForm extends React.Component {
   renderStep1 () {
     const districtChoices = this.getDistrictChoices() || [];
     return (
-      <Fold title='Basic Information'>
-        <FormInput
-          label='Summary *'
-          type='text'
-          name='summary'
-          id='summary'
-          maxLength={100}
-          description={<div className='form__description'><p>Write a short summary of the report's topic. It will be used as the subject of the e-mail notification,
-          later as the tittle of the RSS feed and possibly as the text message on mobile phones.</p><em>Example: 250 dead after an earthquake in Indonesia</em></div>}
-          value={this.state.data.summary}
-          onChange={this.onFieldChange.bind(this, 'summary')}
-          autoFocus >
-
-          <FormError
-            errors={this.state.errors}
-            property='summary'
-          />
-
-        </FormInput>
-
-        <div className='form__group'>
-          <label className='form__label'>Country *</label>
-          <p className='form__description'>Seach for the affected country.</p>
-          <Select
-            name='country'
-            value={this.state.data.country}
-            onChange={this.onCountryChange.bind(this)}
-            options={formData.countries}
-          />
-
-          <FormError
-            errors={this.state.errors}
-            property='country'
-          />
-        </div>
-
-        <div className='form__group'>
-          <label className='form__label'>Regions / Provinces</label>
-          <p className='form__description'>Search for regions within affected country.</p>
-          <Select
-            name='districts'
-            value={this.state.data.districts}
-            onChange={this.onFieldChange.bind(this, 'districts')}
-            options={districtChoices}
-            multi
-          />
-
-          <FormError
-            errors={this.state.errors}
-            property='districts'
-          />
-        </div>
+      <Fold title='Context'>
         <FormRadioGroup
           label='Status *'
           name='status'
@@ -318,83 +260,94 @@ class FieldReportForm extends React.Component {
             property='status'
           />
         </FormRadioGroup>
+        <FormInput
+          label='Title *'
+          type='text'
+          name='summary'
+          id='summary'
+          maxLength={100}
+          description={<div className='form__description'><p>Add a new title (Country - Region: Hazard mm/yyyy) or link to an existing emergency.</p><em>Example: 250 dead after an earthquake in Indonesia</em></div>}
+          value={this.state.data.summary}
+          onChange={this.onFieldChange.bind(this, 'summary')}
+          autoFocus >
 
-        <FormRadioGroup
-          label='This field report is visible to'
-          name='visibility'
-          options={formData.visibility}
-          selectedOption={this.state.data.visibility}
-          onChange={this.onFieldChange.bind(this, 'visibility')}>
           <FormError
             errors={this.state.errors}
-            property='visibility'
+            property='summary'
           />
-        </FormRadioGroup>
+
+        </FormInput>
+        <div className='form__group'>
+          <label className='form__label'>Emergency</label>
+          <Select.Async
+            value={this.state.data.event}
+            onChange={this.onFieldChange.bind(this, 'event')}
+            loadOptions={getEventsFromApi} />
+
+          <FormError
+            errors={this.state.errors}
+            property='event'
+          />
+        </div>
+        <FormInput
+          label='Start Date'
+          type='date'
+          name='start_date'
+          id='start_date'
+          description='Start date is when some significant effects are felt or when the first significant impact is felt.'
+        >
+          <FormError
+            errors={this.state.errors}
+            property='start_date'
+          />
+        </FormInput>
 
         <div className='form__hascol form__hascol--2'>
-          <FormSelect
-            label='Disaster Type *'
-            name='disaster-type'
-            id='disaster-type'
-            options={formData.disasterType}
-            value={this.state.data.disasterType}
-            onChange={this.onFieldChange.bind(this, 'disasterType')} >
+          <div className='form__group'>
+            <label className='form__label'>Country *</label>
+            <p className='form__description'>Seach for the affected country.</p>
+            <Select
+              name='country'
+              value={this.state.data.country}
+              onChange={this.onCountryChange.bind(this)}
+              options={formData.countries}
+            />
+
             <FormError
               errors={this.state.errors}
-              property='disasterType'
+              property='country'
             />
-          </FormSelect>
+          </div>
 
           <div className='form__group'>
-            <label className='form__label'>Emergency</label>
-            <Select.Async
-              value={this.state.data.event}
-              onChange={this.onFieldChange.bind(this, 'event')}
-              loadOptions={getEventsFromApi} />
+            <label className='form__label'>Regions / Provinces</label>
+            <p className='form__description'>Search for regions within affected country.</p>
+            <Select
+              name='districts'
+              value={this.state.data.districts}
+              onChange={this.onFieldChange.bind(this, 'districts')}
+              options={districtChoices}
+              multi
+            />
 
             <FormError
               errors={this.state.errors}
-              property='event'
+              property='districts'
             />
           </div>
         </div>
-
-        <div className='form__group'>
-          <label className='form__label'>Sources</label>
-          <div className='form__description'>
-            <p>Check the box next to the source of information and specify:</p>
-            <ul>
-              <li>UN agency - OCHA</li>
-              <li>Academia/Research - Tropical Storm Risk</li>
-            </ul>
-          </div>
-          <div className='sources-list'>
-            {formData.sources.map((source, idx) => (
-              <ReportSource
-                key={source.value}
-                idx={idx}
-                label={source.label}
-                sourceName={source.value}
-                specificationValue={this.state.data.sources[idx].specification}
-                checked={this.state.data.sources[idx].checked}
-                onChange={this.onFieldChange.bind(this, `sources[${idx}]`)} />
-            ))}
-          </div>
-        </div>
-
-        <FormTextarea
-          label='Situation report'
-          name='description'
-          id='description'
-          description={'Briefly describe the situation.'}
-          value={this.state.data.description}
-          onChange={this.onFieldChange.bind(this, 'description')} >
+        <FormSelect
+          label='Disaster Type *'
+          name='disaster-type'
+          id='disaster-type'
+          options={formData.disasterType}
+          value={this.state.data.disasterType}
+          onChange={this.onFieldChange.bind(this, 'disasterType')} >
           <FormError
             errors={this.state.errors}
-            property='description'
+            property='disasterType'
           />
-        </FormTextarea>
-
+        </FormSelect>
         <FormRadioGroup
           label='Government requests international assistance?'
           description={'Indicate if the government requested international assistance.'}
@@ -463,7 +416,27 @@ class FieldReportForm extends React.Component {
           fieldKey='numDisplaced'
           errors={this.state.errors}
           onChange={this.onFieldChange.bind(this, 'numDisplaced')} />
+        <FormTextarea
+          label='Situational Overview'
+          name='description'
+          id='description'
+          description={'Describe the effects of the hazard, the current context, the affected population and how they have been affected.'}
+          value={this.state.data.description}
+          onChange={this.onFieldChange.bind(this, 'description')} >
+          <FormError
+            errors={this.state.errors}
+            property='description'
+          />
+        </FormTextarea>
+      </Fold>
+    );
+  }
 
+  renderStep3 () {
+    // Note: There's no need for validation on this step.
+    // All the fields are optional, and the text fields are just strings.
+    return (
+      <Fold title='Actions taken'>
         <FormInput
           label='Assisted by Government'
           type='text'
@@ -530,15 +503,6 @@ class FieldReportForm extends React.Component {
             property='numExpats'
           />
         </FormInput>
-      </Fold>
-    );
-  }
-
-  renderStep3 () {
-    // Note: There's no need for validation on this step.
-    // All the fields are optional, and the text fields are just strings.
-    return (
-      <Fold title='Actions taken'>
         <ActionsCheckboxes
           label='Actions Taken by National Society Red Cross (if any)'
           description={'Select the activities undertaken by the National Society and briefly describe.'}
@@ -694,20 +658,6 @@ class FieldReportForm extends React.Component {
           fieldKey='ifrcStaff'
           onChange={this.onFieldChange.bind(this, 'ifrcStaff')} />
 
-        <Eru
-          label='ERU'
-          name='eru'
-          values={this.state.data.eru}
-          fieldKey='eru'
-          errors={this.state.errors}
-          onChange={this.onFieldChange.bind(this, 'eru')} />
-      </Fold>
-    );
-  }
-
-  renderStep5 () {
-    return (
-      <Fold title='Contacts'>
         <ContactRow
           label='Originator'
           description='Your name, role and contact.'
@@ -756,6 +706,18 @@ class FieldReportForm extends React.Component {
           fieldKey='contactMedia'
           errors={this.state.errors}
           onChange={this.onFieldChange.bind(this, 'contactMedia')} />
+
+        <FormRadioGroup
+          label='This field report is visible to'
+          name='visibility'
+          options={formData.visibility}
+          selectedOption={this.state.data.visibility}
+          onChange={this.onFieldChange.bind(this, 'visibility')}>
+          <FormError
+            errors={this.state.errors}
+            property='visibility'
+          />
+        </FormRadioGroup>
       </Fold>
     );
   }
