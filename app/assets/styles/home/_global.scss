@@ -19,7 +19,11 @@
   }
 
   .inpage__introduction {
-    margin: 0 auto;
+    @include column(8/12);
+    text-align: center;
+    float: none;
+    margin-left: auto;
+    margin-right: auto !important;
   }
 
   .inpage__title {
