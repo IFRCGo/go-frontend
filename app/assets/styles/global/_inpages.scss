@@ -96,10 +96,12 @@
   }
 
   &__introduction {
-    @include column(12/12);
+    @include column(8/12);
+    text-align: center;
+    float: none;
     color: $base-font-color;
-    font-size: 1rem;
-    line-height: 1.5rem;
+    //font-size: 1rem;
+    //line-height: 1.5rem;
 
     > *:last-child {
       margin-bottom: 0;
@@ -144,6 +146,11 @@
     }
   }
 }
+
+.inpage__body__main {
+  background-color: #fff;  
+}
+
 
 /* Inpage Header
    ========================================================================== */

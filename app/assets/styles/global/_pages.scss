@@ -17,11 +17,15 @@ main {
 /* Header
    ========================================================================== */
 
-.page__header {
-  position: relative;
-  z-index: 10;
+.page__header__inner__wrap {
+  border-bottom: 2px solid $primary-color;
+}
+
+.page__header, .page__header__inner__wrap {
   color: $base-font-color;
   background: #ffffff;
+  position: relative;
+  z-index: 10;
 
   > .inner {
     @extend .row, .row--centered;
@@ -34,6 +38,12 @@ main {
     &:last-child{
       border-bottom: none;
     }
+  }
+}
+
+.page__header {
+  > .inner {
+    border-bottom: solid 1px tint($base-color, 92%);
   }
 }
 

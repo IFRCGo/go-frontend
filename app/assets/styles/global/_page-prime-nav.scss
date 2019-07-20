@@ -162,6 +162,10 @@
   .nav-global-search {
     min-width: 17rem;
   }
+  > .inner:first-of-type {
+    border-bottom: 1px solid $primary-color;
+  }
+
   .inner {
     padding-bottom: $global-spacing/2;
     padding-top: $global-spacing/2;

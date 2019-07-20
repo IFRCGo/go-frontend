@@ -23,7 +23,7 @@ class Home extends React.Component {
               </div>
             </div>
           </header>
-          <div className='inpage__body'>
+          <div className='inpage__body inpage__body__main'>
             <FeaturedEmergencies />
             <PresentationDash />
             <div className='inner'>

@@ -80,7 +80,7 @@ export default function HomestatsComponent (props) {
     return (
       <ul className='sumstats'>
         <li className='sumstats__item'>
-          <span class="collecticon-rc sumstats__icon"></span>
+          <span className='collecticon-rc sumstats__icon'></span>
           <span className='sumstats__value'>{stats.activeDrefs}</span>
           <span className='sumstats__key'>
             Active DREF Operations
@@ -88,12 +88,12 @@ export default function HomestatsComponent (props) {
           </span>
         </li>
         <li className='sumstats__item'>
-          <span class="collecticon-rc-appeals sumstats__icon"></span>
+          <span className='collecticon-rc-appeals sumstats__icon'></span>
           <span className='sumstats__value'>{stats.activeAppeals}</span>
           <span className='sumstats__key'>Active Emergency Appeals <div className='tooltip-button' id='tooltip-button-appeal' onClick={props.openTooltip}></div></span>
         </li>
         <li className='sumstats__item'>
-          <span class="collecticon-cash-notes sumstats__icon"></span>
+          <span className='collecticon-cash-notes sumstats__icon'></span>
           <span className='sumstats__value'>{shortenLargeNumber(stats.budget, 1)}</span>
           <span className='sumstats__key'>
             Funding requirements (CHF)
@@ -101,12 +101,12 @@ export default function HomestatsComponent (props) {
           </span>
         </li>
         <li className='sumstats__item'>
-          <span class="collecticon-cash-bag sumstats__icon"></span>
+          <span className='collecticon-cash-bag sumstats__icon'></span>
           <span className='sumstats__value'>{percent(stats.appealsFunding, stats.appealsBudget, 1)}%</span>
           <span className='sumstats__key'>Funding coverage</span>
         </li>
         <li className='sumstats__item'>
-          <span class="collecticon-people-arrows sumstats__icon"></span>
+          <span className='collecticon-people-arrows sumstats__icon'></span>
           <span className='sumstats__value'>{shortenLargeNumber(stats.targetPop, 1)}</span>
           <span className='sumstats__key'>Targeted population</span>
         </li>
