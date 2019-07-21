@@ -50,7 +50,7 @@ export default class PlanResponseRow extends React.Component {
             type='text'
             name={`${name}[value]`}
             id={`${name}-value`}
-            classLabel='form__label--nested'
+            classLabel='label-secondary'
             classWrapper='resp-value'
             value={values.value}
             onChange={this.onFieldChange.bind(this, 'value')} >

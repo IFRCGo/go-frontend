@@ -29,6 +29,7 @@ export default function FromSelect (props) {
         </div>
       </div>
       <div className='form__inner-body'>
+        {props.labelSecondary ? (<label htmlFor={id} className='label-secondary'>{props.labelSecondary}</label>) : null}      
         <select
           id={id}
           name={name}

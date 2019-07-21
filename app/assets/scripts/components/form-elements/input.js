@@ -8,6 +8,7 @@ import { FormDescription } from './misc';
 export default function FormInput (props) {
   const {
     label,
+    labelSecondary,
     type,
     name,
     description,
@@ -20,18 +21,21 @@ export default function FormInput (props) {
     autoFocus,
     disabled,
     children,
-    maxLength
+    maxLength,
+    formInnerHeaderClass,
+    formInnerBodyClass
   } = props;
 
   return (
     <div className={c('form__group', classWrapper)}>
-      <div className='form__inner-header'>
+      <div className={c('form__inner-header', formInnerHeaderClass)}>
         <div className='form__inner-headline'>
-          <label className={c('form__label', classLabel)} htmlFor={id}>{label}</label>
+          <label className={c('form__label', classLabel)} htmlFor={id} >{label}</label>
           <FormDescription value={description} />
         </div>
       </div>
-      <div className='form__inner-body'>
+      <div className={c('form__inner-body', formInnerBodyClass)}>
+        {labelSecondary ? (<label htmlFor={id} className='label-secondary'>{labelSecondary}</label>) : null}  
         <input
           type={type}
           id={id}

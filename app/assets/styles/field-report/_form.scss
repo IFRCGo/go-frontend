@@ -13,17 +13,27 @@
     background: $grey-fog;
     padding: $global-spacing-2;
     margin-bottom: $global-spacing-2;
-  }
+    > .form__inner-header {
+      display: block;
+      @include media(medium-up) {
+        @include column(3/12);
+      }
+    }
 
-  .form__inner-header {
-    @include media(medium-up) {
-      @include column(3/12);
+    > .form__inner-body {
+      @include media(medium-up) {
+        @include column(9/12);
+      }
     }
   }
 
-  .form__inner-header {
-    display: block;
+  .resp-value {
+    .form__inner-header {
+      width: 100%;
+    }
   }
+
+
 
   /*.form__hascol {
     margin-bottom: 0 !important;
@@ -35,11 +45,6 @@
     }
   }*/
 
-  .form__inner-body {
-    @include media(medium-up) {
-      @include column(9/12);
-    }
-  }
 }
 
 .form--field-report {
@@ -124,13 +129,28 @@
     &:last-child {
       margin-bottom: 0;
     }
+
+    .form__option--inline + .form__option--inline {
+      margin-left: 0;
+    }
+
+    .form__inner-body {
+      width: 100%;
+    }
   }
 
   .estimation__item-field {
     @include column(12/12);
 
     @include media(medium-up) {
-      @include column(2/12);
+      @include column(3/12);
+    }
+  }
+
+  .estimation__item, .estimation__item-field {
+    .form__inner-header {
+      width: 100%;
+      float: none;
     }
   }
 
@@ -138,7 +158,7 @@
     @include column(12/12);
 
     @include media(medium-up) {
-      @include column(5/12);
+      @include column(4/12);
     }
   }
 
@@ -235,7 +255,7 @@
   @include media(medium-up) {
     display: flex;
     flex-flow: row nowrap;
-    align-items: flex-end
+    align-items: flex-start
   }
 
   > .form__inner-header {
@@ -254,7 +274,7 @@
 
       display: flex;
       flex-flow: row nowrap;
-      align-items: flex-end;
+      //align-items: flex-end;
 
       .form__group {
         margin-bottom: 0;
@@ -273,9 +293,21 @@
   }
 
   .resp-status {
+    width: 100%;
     margin-right: 8%;
+
+    .form__inner-body {
+      width: 100%;
+    }
+
+    .form__inner-header {
+      @include media(medium-up) {
+        @include column(7/12);
+      }
+    }
   }
 }
+
 
 .stepper {
   @include column(12/12);
@@ -366,7 +398,7 @@
     text-transform: uppercase;
   }
 
-  &--complete, &--current {
+ &--current {
     color: $primary-color;
 
     //&::before, &::after {
@@ -379,7 +411,9 @@
   }
 
   &--complete {
+    color: $grey-gravel;
     &::before {
+      background-color: $grey-gravel;
       @extend %collecticon-sm-tick;
     }
   }

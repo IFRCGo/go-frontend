@@ -34,6 +34,7 @@ import App from '../app';
 import Fold from '../../components/fold';
 import {
   FormInput,
+  FormInputSelect,
   FormTextarea,
   FormRadioGroup,
   FormSelect,
@@ -260,39 +261,31 @@ class FieldReportForm extends React.Component {
             property='status'
           />
         </FormRadioGroup>
-        <FormInput
+
+
+        <FormInputSelect
           label='Title *'
+          labelSecondary='Add Title'
+          selectLabel='Link to Emergency'
           type='text'
           name='summary'
           id='summary'
           maxLength={100}
           description={<div className='form__description'><p>Add a new title (Country - Region: Hazard mm/yyyy) or link to an existing emergency.</p><em>Example: 250 dead after an earthquake in Indonesia</em></div>}
-          value={this.state.data.summary}
-          onChange={this.onFieldChange.bind(this, 'summary')}
+          inputValue={this.state.data.summary}
+          inputOnChange={this.onFieldChange.bind(this, 'summary')}
+          selectOnChange={this.onFieldChange.bind(this, 'event')}
+          selectValue={this.state.data.event}
+          errors={this.state.errors}
+          selectLoadOptions={getEventsFromApi}
           autoFocus >
 
           <FormError
             errors={this.state.errors}
             property='summary'
           />
+        </FormInputSelect>
 
-        </FormInput>
-        <div className='form__group'>
-          <div className='form__inner-header'>
-            <label className='form__label'>Emergency</label>
-          </div>
-          <div className='form__inner-body'>
-            <Select.Async
-              value={this.state.data.event}
-              onChange={this.onFieldChange.bind(this, 'event')}
-              loadOptions={getEventsFromApi} />
-          </div>
-
-          <FormError
-            errors={this.state.errors}
-            property='event'
-          />
-        </div>
         <FormInput
           label='Start Date'
           type='date'
