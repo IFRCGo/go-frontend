@@ -660,6 +660,8 @@ class FieldReportForm extends React.Component {
           fieldKey='ifrcStaff'
           onChange={this.onFieldChange.bind(this, 'ifrcStaff')} />
 
+        <h2 className='fold__title fold__title--contact'>Contacts</h2>
+        
         <ContactRow
           label='Originator'
           description='Your name, role and contact.'
@@ -714,7 +716,8 @@ class FieldReportForm extends React.Component {
           name='visibility'
           options={formData.visibility}
           selectedOption={this.state.data.visibility}
-          onChange={this.onFieldChange.bind(this, 'visibility')}>
+          onChange={this.onFieldChange.bind(this, 'visibility')}
+          classWrapper='form__group--visible-field-group'>
           <FormError
             errors={this.state.errors}
             property='visibility'

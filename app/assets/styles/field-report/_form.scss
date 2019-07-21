@@ -33,7 +33,6 @@
   }
 
 
-
   .form__hascol {
     margin-bottom: 0 !important;
 
@@ -44,12 +43,18 @@
     }
   }
 
-  .fold__body .form__group--kv-actions {
+  .fold__body .form__group--kv-actions, .fold__body .contact-row {
     margin-bottom: 0;
     padding-bottom: $global-spacing-2;
+  }
 
+  .fold__body .contact-row:last-of-type {
+    margin-bottom: $global-spacing-2;
+  }
+
+  .fold__body .form__group--kv-actions {
     @include media(medium-up) {
-      @include column(6/12, $cycle: 2, $offset: 0);
+      @include column(6/12, $cycle: 2, $offset: 0);      
       
       .form__inner-header {
         @include column(8/12);
@@ -60,6 +65,16 @@
       }  
     }
   }
+
+  .fold__body .plan-response-row, .contact-row {
+    margin-bottom: 0;
+  }
+}
+
+.fold__title--contact {
+  padding: ($global-spacing * 4) 0;
+  clear: both;
+  float: none;
 }
 
 
@@ -87,6 +102,7 @@
 }
 
 .contact-row {
+
   > .form__inner-header {
     @include column(12/12);
 
@@ -155,7 +171,7 @@
     @include column(12/12);
 
     @include media(medium-up) {
-      @include column(3/12);
+      @include column(4/12);
     }
   }
 
@@ -163,7 +179,23 @@
     @include column(12/12);
 
     @include media(medium-up) {
-      @include column(4/12);
+      @include column(5/12);
+    }
+  }
+
+  .estimation__item-field {
+    @include column(12/12);
+
+    @include media(medium-up) {
+      @include column(3/12);
+    }
+  }
+
+  .estimation__item--actions {
+    @include column(12/12);
+
+    @include media(medium-up) {
+      @include column(3/12);
     }
   }
 
@@ -256,11 +288,13 @@
   }
 }
 
+
 .plan-response-row  {
+
   @include media(medium-up) {
     display: flex;
     flex-flow: row nowrap;
-    align-items: flex-start
+    align-items: flex-start;
   }
 
   > .form__inner-header {
@@ -306,6 +340,16 @@
         @include column(7/12);
       }
     }
+  }
+}
+
+.form__group--visible-field-group {
+  margin-top: $global-spacing-2;
+}
+
+.action-checkboxes--textarea {
+  .label-secondary {
+    margin-top: $global-spacing-3;
   }
 }
 
