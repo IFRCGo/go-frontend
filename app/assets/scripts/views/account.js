@@ -23,7 +23,9 @@ import {
   getPerDocuments,
   getEventById,
   addSubscriptions,
-  delSubscription
+  delSubscription,
+  getPerOverviewForm,
+  getPerMission
 } from '../actions';
 import { getRegionById } from '../utils/region-constants';
 import { get } from '../utils/utils';
@@ -47,6 +49,24 @@ const Fragment = React.Fragment;
 const disasterTypes = disasterType.slice(1);
 
 // Constants used to create form elements
+
+const basicTypes = [{
+  label: 'Weekly Digest',
+  value: 'weeklyDigest'
+},
+{
+  label: 'New Emergencies',
+  value: 'newEmergencies'
+},
+{
+  label: 'New Operations',
+  value: 'newOperations'
+},
+{
+  label: 'General Announcements',
+  value: 'general'
+}];
+
 const systemNotificationTypes = [{
   label: 'New records',
   value: 'new'
@@ -102,7 +122,11 @@ const rtypes = {
   7: 'perDueDate',
   // 8: 'followedEvent' // could be here
   9: 'surgeDM',
-  10: 'surgeAEM'
+  10: 'surgeAEM',
+  11: 'weeklyDigest',
+  12: 'newEmergencies',
+  13: 'newOperations',
+  14: 'general'
 };
 
 const stypes = {
@@ -144,6 +168,7 @@ class Account extends React.Component {
       isNotificationsDirty: false,
       notifications: {
         countries: [],
+        basic: basicTypes.map(markUnChecked),
         regions: regions.map(markUnChecked),
         disasterTypes: disasterTypes.map(markUnChecked),
         event: systemNotificationTypes.map(markUnChecked),
@@ -173,9 +198,11 @@ class Account extends React.Component {
     this.createRegionGroupedDocumentData = this.createRegionGroupedDocumentData.bind(this);
     this.renderPerFormDocuments = this.renderPerFormDocuments.bind(this);
     this.delSubscription = this.delSubscription.bind(this);
+    this.componentIsLoading = true;
   }
 
   componentDidMount () {
+    this.componentIsLoading = true;
     const { user, _getProfile, _getFieldReportsByUser, _getPerCountries, _getPerDocuments, _getPerDraftDocument } = this.props;
     _getProfile(user.username);
     _getFieldReportsByUser(user.id);
@@ -183,7 +210,25 @@ class Account extends React.Component {
     _getPerDocuments();
     const draftQueryFilters = {user: user.id};
     _getPerDraftDocument(draftQueryFilters);
+    this.props._getPerOverviewForm();
+    this.props._getPerMission();
     showGlobalLoading();
+  }
+
+  componentDidUpdate () {
+    if (this.componentIsLoading) {
+      if (window.location.href.includes('#')) {
+        const componentToJump = window.location.href.split('#')[1].trim();
+        const component = document.getElementById(componentToJump);
+        if (component !== null) {
+          const componentDistanceFromTop = component.offsetTop;
+          window.scrollTo(0, componentDistanceFromTop);
+          if (this.props.getPerMission.fetched) {
+            this.componentIsLoading = false;
+          }
+        }
+      }
+    }
   }
 
   componentWillReceiveProps (nextProps) {
@@ -245,6 +290,14 @@ class Account extends React.Component {
         next.surg = updateChecks(next.surg, 'surgeAEM');
       } else if (rtype === 'perDueDate') {
         next.per = updateChecks(next.per, 'perDueDate');
+      } else if (rtype === 'weeklyDigest') {
+        next.basic = updateChecks(next.basic, 'weeklyDigest');
+      } else if (rtype === 'newEmergencies') {
+        next.basic = updateChecks(next.basic, 'newEmergencies');
+      } else if (rtype === 'newOperations') {
+        next.basic = updateChecks(next.basic, 'newOperations');
+      } else if (rtype === 'general') {
+        next.basic = updateChecks(next.basic, 'general');
       }
     });
     this.setState({ notifications: next });
@@ -328,6 +381,14 @@ class Account extends React.Component {
       serialized.push.apply(serialized, followedEvents);
     }
 
+    let basicNotifications = get(notifications, 'basic', []).filter(d => d.checked).map(d => ({
+      type: d.value,
+      value: true
+    }));
+    if (basicNotifications.length) {
+      serialized.push.apply(serialized, basicNotifications);
+    }
+
     return serialized;
   }
 
@@ -364,6 +425,11 @@ class Account extends React.Component {
     this.props._clearEvents(eventId);
     this.props._delSubscription(eventId);
     this.forceUpdate();
+  }
+
+  isPerPermission () {
+    return (typeof this.props.user.username !== 'undefined' && this.props.user.username !== null) &&
+      (this.props.getPerMission !== 'undefined' && this.props.getPerMission.fetched && this.props.getPerMission.data.count > 0);
   }
 
   renderProfileAttributes () {
@@ -540,6 +606,14 @@ class Account extends React.Component {
         <div className='fold-container'>
           <Fold title='Subscription preferences'>
             <FormCheckboxGroup
+              label='Notification types'
+              description={'Set basic notification types.'}
+              name='basic'
+              classWrapper='action-checkboxes'
+              options={basicTypes}
+              values={this.state.notifications.basic}
+              onChange={this.onFieldChange.bind(this, 'notifications', 'basic')} />
+            <FormCheckboxGroup
               label='Regional notifications'
               description={'Select one or more regions to receive notifications about.'}
               name='regions'
@@ -565,6 +639,7 @@ class Account extends React.Component {
               options={disasterTypes}
               values={this.state.notifications.disasterTypes}
               onChange={this.onFieldChange.bind(this, 'notifications', 'disasterTypes')} />
+            {/*
             <FormCheckboxGroup
               label='Emergencies'
               name='event'
@@ -586,6 +661,7 @@ class Account extends React.Component {
               options={systemNotificationTypes}
               values={this.state.notifications.appeal}
               onChange={this.onFieldChange.bind(this, 'notifications', 'appeal')} />
+              */}
             <FormCheckboxGroup
               label='Surge Notifications'
               name='surg'
@@ -612,9 +688,30 @@ class Account extends React.Component {
 
   createRegionGroupedDocumentData () {
     const groupedDocuments = {};
+    if (this.props.perOverviewForm.fetched) {
+      this.props.perOverviewForm.data.results.forEach((perOverviewForm) => {
+        perOverviewForm.formType = 'overview';
+        if (perOverviewForm.country.region === null || perOverviewForm.country.region === '') {
+          perOverviewForm.country.region = -1;
+        }
+        if (!groupedDocuments.hasOwnProperty(perOverviewForm.country.region)) {
+          groupedDocuments[perOverviewForm.country.region] = {[perOverviewForm.country.id]: []};
+          groupedDocuments[perOverviewForm.country.region][perOverviewForm.country.id].push(perOverviewForm);
+        } else {
+          if (!groupedDocuments[perOverviewForm.country.region].hasOwnProperty(perOverviewForm.country.id)) {
+            groupedDocuments[perOverviewForm.country.region][perOverviewForm.country.id] = [];
+          }
+          groupedDocuments[perOverviewForm.country.region][perOverviewForm.country.id].push(perOverviewForm);
+        }
+      });
+    }
     if (this.props.perForm.getPerDocuments.fetched && !!this.props.perForm.getPerDocuments.data && !!this.props.perForm.getPerDocuments.data.results) {
       this.props.perForm.getPerDocuments.data.results.forEach(document => {
-        if (document.country !== null && document.country.region !== null) {
+        if (document.country !== null) {
+          if (document.country.region === null) {
+            document.country.region = -1;
+          }
+          document.formType = 'per';
           if (!groupedDocuments.hasOwnProperty(document.country.region)) {
             groupedDocuments[document.country.region] = {[document.country.id]: []};
             groupedDocuments[document.country.region][document.country.id].push(document);
@@ -639,14 +736,25 @@ class Account extends React.Component {
         let currentCountryName = '';
         documents[regionKey][countryKey].forEach((document) => {
           currentCountryName = document.country.name;
-          perDocuments.push((<React.Fragment key={'documentrow' + document.code + 'id' + document.id}>
-            <div style={{backgroundColor: '#eaeaea', float: 'left', width: '100%', marginBottom: '1rem', padding: '0.25rem 1rem'}} key={'document' + document.id}>
-              {document.code.toUpperCase()} - {document.name} - {document.updated_at.substring(0, 10)} - {typeof document.user !== 'undefined' ? document.user.username : null}
-              <div style={{float: 'right'}}>
-                <Link className='button button--small button--secondary-bounded' to={'/view-per-forms/' + document.code + '/' + document.id}>View</Link>
+          if (document.formType === 'overview') {
+            perDocuments.push((<React.Fragment key={'documentoverviewrow' + document.id}>
+              <div style={{backgroundColor: '#eaeaea', float: 'left', width: '100%', marginBottom: '1rem', padding: '0.25rem 1rem'}} key={'documentov' + document.id}>
+                Overview - {document.date_of_current_capacity_assessment.substring(0, 10)} - {typeof document.user !== 'undefined' && document.user !== null ? document.user.first_name + ' ' + document.user.last_name : null}
+                <div style={{float: 'right'}}>
+                  <Link className='button button--small button--secondary-bounded' to={'/view-per-forms/overview/' + document.id}>View</Link>
+                </div>
               </div>
-            </div>
-          </React.Fragment>));
+            </React.Fragment>));
+          } else {
+            perDocuments.push((<React.Fragment key={'documentrow' + document.code + 'id' + document.id}>
+              <div style={{backgroundColor: '#eaeaea', float: 'left', width: '100%', marginBottom: '1rem', padding: '0.25rem 1rem'}} key={'document' + document.id}>
+                {document.code.toUpperCase()} - {document.name} - {document.updated_at.substring(0, 10)} - {typeof document.user !== 'undefined' ? document.user.username : null}
+                <div style={{float: 'right'}}>
+                  <Link className='button button--small button--secondary-bounded' to={'/view-per-forms/' + document.code + '/' + document.id}>View</Link>
+                </div>
+              </div>
+            </React.Fragment>));
+          }
         });
         countries.push(<div key={'countryDocument' + countryKey}><span style={{fontSize: '1.25rem'}}>{currentCountryName}</span>{perDocuments}<br /></div>);
       });
@@ -677,6 +785,9 @@ class Account extends React.Component {
           <select onChange={this.changeChosenCountry}>
             {countryOptions}
           </select><br/><br />
+          <div style={{float: 'left', width: '96%', backgroundColor: '#eaeaea', marginRight: '3%', marginBottom: '3%', textAlign: 'center'}}>
+            <Link to={'/per-forms/overview/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Overview</Link><br/>
+          </div>
           <div style={{float: 'left', width: '30%', backgroundColor: '#eaeaea', marginRight: '3%', marginBottom: '3%', textAlign: 'center'}}>
             <Link to={'/per-forms/policy-strategy/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 1: Policy and Standards</Link><br/>
           </div>
@@ -715,14 +826,18 @@ class Account extends React.Component {
           try {
             parsedData = JSON.parse(draftDocument.data.replace(/'/g, '"'));
           } catch (e) {
-            console.log('Draft document (' + draftDocument.data + ') parsing failed!', e);
+            console.warn('API provided invalid data for draft document (' + draftDocument.data + ')! renderDraftDocuments () failed!\n\n', e);
             return;
           }
           draftDocuments.push(
             <div style={{backgroundColor: '#eaeaea', float: 'left', width: '100%', marginBottom: '1rem', padding: '0.25rem 1rem', fontWeight: 'bold'}} key={'draftDocument' + index}>
-              {draftDocument.code.toUpperCase()} - {parsedData.name} - {parsedData.submitted_at.substring(0, 10)} - {typeof draftDocument.user !== 'undefined' ? draftDocument.user.username : null}
+              {draftDocument.code.toUpperCase()} - {parsedData.submitted_at !== '' ? parsedData.submitted_at.substring(0, 10) + ' - ' : null} {typeof draftDocument.user !== 'undefined' ? draftDocument.user.username + ' - ' : null} {draftDocument.country.name}
               <div style={{float: 'right'}}>
-                <Link className='button button--small button--secondary-bounded' to={'/edit-per-forms/' + draftDocument.code + '/' + draftDocument.user.username}>Edit</Link>
+                <Link
+                  className='button button--small button--secondary-bounded'
+                  to={draftDocument.code === 'overview' ? '/per-forms/overview/' + draftDocument.country.id : '/edit-per-forms/' + draftDocument.code + '/' + draftDocument.user.username + '/' + draftDocument.country.id}>
+                  Edit
+                </Link>
               </div>
             </div>);
           index++;
@@ -805,7 +920,7 @@ class Account extends React.Component {
                     <ul>
                       <li><a href='#account-information' title='Go to Operations section'>Account Information</a></li>
                       <li><a href='#notifications' title='Go to notifications section'>Notifications</a></li>
-                      <li><a href='#per-forms' title='Go to per section'>PER forms</a></li>
+                      {this.isPerPermission() ? <li><a href='#per-forms' title='Go to per section'>PER forms</a></li> : null}
                     </ul>
                   </div>
                 </div>
@@ -818,7 +933,7 @@ class Account extends React.Component {
               {this.renderAccountInformation()}
               {this.renderFieldReports()}
               {this.props.profile.fetched && !this.props.profile.error ? this.renderSubscriptionForm() : null}
-              {this.renderPerFormsComponent()}
+              {this.isPerPermission() ? this.renderPerFormsComponent() : null}
             </div>
           </div>
         </section>
@@ -834,6 +949,7 @@ if (environment !== 'production') {
     fieldReport: T.object,
     perForm: T.object,
     event: T.object,
+    perOverviewForm: T.object,
     _getProfile: T.func,
     _updateSubscriptions: T.func,
     _delSubscription: T.func,
@@ -843,7 +959,10 @@ if (environment !== 'production') {
     _getPerDocuments: T.func,
     _getPerDraftDocument: T.func,
     _getEventById: T.func,
-    _clearEvents: T.func
+    _getPerOverviewForm: T.func,
+    _clearEvents: T.func,
+    _getPerMission: T.func,
+    getPerMission: T.object
   };
 }
 
@@ -856,7 +975,9 @@ const selector = (state, ownProps) => ({
   fieldReport: state.fieldReport,
   perForm: state.perForm,
   event: state.event,
-  eventDeletion: state.subscriptions.delSubscriptions
+  eventDeletion: state.subscriptions.delSubscriptions,
+  perOverviewForm: state.perForm.getPerOverviewForm,
+  getPerMission: state.perForm.getPerMission
 });
 
 const dispatcher = (dispatch) => ({
@@ -870,7 +991,9 @@ const dispatcher = (dispatch) => ({
   _getPerDraftDocument: (...args) => dispatch(getPerDraftDocument(...args)),
   _addSubscriptions: (...args) => dispatch(addSubscriptions(...args)),
   _delSubscription: (...args) => dispatch(delSubscription(...args)),
-  _clearEvents: (eventId) => dispatch({type: 'CLEAR_EVENTS', eventId: eventId})
+  _clearEvents: (eventId) => dispatch({type: 'CLEAR_EVENTS', eventId: eventId}),
+  _getPerOverviewForm: (...args) => dispatch(getPerOverviewForm(...args)),
+  _getPerMission: (...args) => dispatch(getPerMission(...args))
 });
 
 export default connect(selector, dispatcher)(Account);

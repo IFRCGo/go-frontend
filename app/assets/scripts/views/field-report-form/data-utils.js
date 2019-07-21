@@ -15,7 +15,9 @@ export function dataPathToDisplay (path) {
   const index = {
     // Step 1.
     summary: 'Summary',
+    country: 'Country',
     countries: 'Countries',
+    districts: 'Areas',
     status: 'Status',
     disasterType: 'Disaster Type',
     event: 'Event',
@@ -88,7 +90,9 @@ export function prepStateForValidation (state) {
   const formatter = {
     // Step 1.
     assistance: toBool,
-    countries: (val) => val.map(o => o.value),
+    country: (val) => val.value,
+    districts: (val) => val.map(o => o.value),
+    // countries: (val) => val.value,
     event: (val) => val ? toNumIfNum(val.value) : undefined,
 
     // Step 2.
@@ -127,15 +131,18 @@ export function convertStateToPayload (originalState) {
   originalState = _cloneDeep(originalState);
   let state = {};
   const {
-    countries,
+    country,
     disasterType,
+    districts,
     event
   } = originalState;
 
   // Process properties.
-  if (countries.length) { state.countries = countries.map(o => +o.value); }
+  // if (countries.length) { state.countries = countries.map(o => +o.value); }
   if (disasterType) { state.dtype = +disasterType; }
+  if (districts.length) { state.districts = districts.map(o => +o.value); }
   if (event && event.value) { state.event = +event.value; }
+  if (country) { state.countries = [country.value]; }
 
   const directMapping = [
     // [source, destination]
@@ -287,7 +294,9 @@ export function getInitialDataState () {
     summary: undefined,
     // Countries follows the structure defined by react-select.
     // Will need to be converted.
-    countries: [],
+    country: undefined,
+    // countries: [],
+    districts: [],
     status: undefined,
     visibility: '1',
     disasterType: undefined,
@@ -363,6 +372,14 @@ export function convertFieldReportToState (fieldReport) {
     label: o.name,
     value: o.id.toString()
   }));
+  state.country = fieldReport.countries.length ? state.countries[0] : null;
+
+  state.districts = fieldReport.districts.map(o => ({
+    label: o.name,
+    value: o.id.toString()
+  }));
+  // delete state.countries;
+
   if (fieldReport.dtype) {
     state.disasterType = fieldReport.dtype.id.toString();
   }

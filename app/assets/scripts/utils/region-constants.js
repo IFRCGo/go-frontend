@@ -208,6 +208,10 @@ export const countriesByRegion = {
 };
 
 export const regions = {
+  '-1': {
+    id: -1,
+    name: 'Other'
+  },
   '0': {
     id: 0,
     name: 'Africa'
@@ -231,6 +235,7 @@ export const regions = {
 };
 
 export const regionsIdByName = {
+  'other': -1,
   'africa': 0,
   'americas': 1,
   'asiapacific': 2,

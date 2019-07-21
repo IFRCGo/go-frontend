@@ -92,20 +92,22 @@ class Header extends React.PureComponent {
           </div>
         )}
         <header className='page__header' role='banner'>
-          <div className='inner'>
-            <div className='page__headline'>
-              <h1 className='page__title'>
-                <Link to='/' title='Visit page'>
-                  <img src='/assets/graphics/layout/logo.png' alt='IFRC GO logo'/>
-                  <span>IFRC GO</span>
-                </Link>
-              </h1>
+          <div className='page__header__inner__wrap'>
+            <div className='inner'>
+              <div className='page__headline'>
+                <h1 className='page__title'>
+                  <Link to='/' title='Visit page'>
+                    <img src='/assets/graphics/layout/logo.png' alt='IFRC GO logo'/>
+                    <span>IFRC GO</span>
+                  </Link>
+                </h1>
+              </div>
+              <nav className='page__meta-nav' role='navigation'>
+                <Link to='/about' title='Visit About page' className='page__meta-nav-elements'><span>About</span></Link>
+                <UserMenu />
+                <Link to='/reports/new' className='button button--small button--primary-bounded' title='Create Field Report'><span>Create Field Report</span></Link>
+              </nav>
             </div>
-            <nav className='page__meta-nav' role='navigation'>
-              <Link to='/about' title='Visit About page' className='page__meta-nav-elements'><span>About</span></Link>
-              <UserMenu />
-              <Link to='/reports/new' className='button button--small button--primary-bounded' title='Create Field Report'><span>Create Field Report</span></Link>
-            </nav>
           </div>
           <div className='inner'>
             <nav className='page__prime-nav' role='navigation'>

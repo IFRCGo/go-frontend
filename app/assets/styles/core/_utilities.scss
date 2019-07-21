@@ -191,3 +191,81 @@
     clear: both;
   }
 }
+
+
+/* Flexbox
+   ========================================================================== */
+.flex {
+  display: flex;
+}
+
+/* Spacing Utilities
+   ========================================================================== */
+
+$spacing-global: (
+  global-spacing: $global-spacing,
+  global-spacing-2: $global-spacing-2,
+  global-spacing-3: $global-spacing-3,
+);
+
+// Globals: Spacing: Vertical
+
+// Generates placeholders and classes for vertical spacing
+// Uses padding top and bottom
+// E.g. .global-spacing-v, %global-spacing-v, .global-spacing-2-v, %global-spacing-2-v, etc.
+
+@each $name, $value in $spacing-global {
+  .#{$name}-v, %#{$name}-v {
+    padding-top: $value;
+    padding-bottom: $value;
+  }
+}
+
+// Globals: Spacing: Horizontal
+
+// Generates placeholders and classes for horizontal spacing
+// Uses padding left and right
+// E.g. .global-spacing-h, %global-spacing-h, .global-spacing-2-h, %global-spacing-2-h, etc.
+
+@each $name, $value in $spacing-global {
+  .#{$name}-h, %#{$name}-h {
+    padding-left: $value;
+    padding-right: $value;
+  }
+}
+
+// Globals: Spacing: Top
+
+// Generates placeholders and classes for top spacing
+// Uses padding top
+// E.g. .global-spacing-t, %global-spacing-t, .global-spacing-2-t, %global-spacing-3-t, etc.
+
+@each $name, $value in $spacing-global {
+  .#{$name}-t, %#{$name}-t {
+    padding-top: $value;
+  }
+}
+
+// Globals: Spacing: Bottom
+
+// Generates placeholders and classes for top spacing
+// Uses padding bottom
+// E.g. .global-spacing-b, %global-spacing-b, .global-spacing-2-b, %global-spacing-3-b, etc.
+
+@each $name, $value in $spacing-global {
+  .#{$name}-b, %#{$name}-b {
+    padding-bottom: $value;
+  }
+}
+
+// Globals: Spacing
+
+// Generates placeholders and classes for spacing
+// Uses padding on all four sides
+// E.g. .global-spacing, %global-spacing, .global-spacing-2, %global-spacing-2, etc.
+
+@each $name, $value in $spacing-global {
+  .#{$name}, %#{$name} {
+    padding: $value;
+  }
+}

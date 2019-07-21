@@ -508,6 +508,15 @@ abbr[title] {
   }
 }
 
+.heading-tiny {
+  color: #000;
+  font-size: 0.675rem;
+  font-weight: $base-font-regular;
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
 h1 {
   @include heading(1.75rem);   // 28
 }

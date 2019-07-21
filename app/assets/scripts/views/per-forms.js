@@ -7,6 +7,7 @@ import A3OperationalCapacity from '../components/per-forms/a3-operational-capaci
 import A4Coordination from '../components/per-forms/a4-coordination';
 import A5OperationsSupport from '../components/per-forms/a5-operations-support';
 import A3OperationalCapacity2 from '../components/per-forms/a3-operational-capacity-2';
+import OverviewForm from '../components/per-forms/overview-form';
 import { Helmet } from 'react-helmet';
 import { environment } from './../config';
 import { PropTypes as T } from 'prop-types';
@@ -39,6 +40,9 @@ class PerForms extends React.Component {
       form = (<A5OperationsSupport mode='new'
         autosaveOn={true}
         nationalSociety={this.props.match.params.id} />);
+    } else if (this.props.match.params.formName === 'overview') {
+      form = (<OverviewForm view={false}
+        nationalSociety={this.props.match.params.id} />);
     }
 
     return (
@@ -65,6 +69,7 @@ if (environment !== 'production') {
     fieldReport: T.object,
     location: T.object,
     match: T.object,
+    nationalSociety: T.number,
     _getProfile: T.func,
     _updateSubscriptions: T.func,
     _getFieldReportsByUser: T.func,

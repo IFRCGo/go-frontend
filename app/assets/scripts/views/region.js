@@ -192,7 +192,7 @@ class AdminArea extends SFPComponent {
               <LineChart data={data}>
                 <XAxis tickFormatter={tickFormatter} dataKey='timespan' axisLine={false} padding={{ left: 16, right: 16 }} />
                 <YAxis axisLine={false} tickLine={false} width={32} padding={{ bottom: 16 }} />
-                <Line type='monotone' dataKey='count' stroke='#C22A26' />
+                <Line type='monotone' dataKey='count' stroke='#C02C2C' />
                 <Tooltip content={contentFormatter}/>
               </LineChart>
             </ResponsiveContainer>
@@ -242,7 +242,7 @@ class AdminArea extends SFPComponent {
                 <BarChart data={data.personnelBySociety}>
                   <XAxis dataKey='name' axisLine={false} padding={{ left: 16, right: 16 }} />
                   <YAxis axisLine={false} tickLine={false} width={32} padding={{ bottom: 16 }} />
-                  <Bar dataKey='count' fill='#C22A26' />
+                  <Bar dataKey='count' fill='#C02C2C' />
                   <Tooltip content={contentFormatter}/>
                 </BarChart>
               </ResponsiveContainer>

@@ -17,6 +17,7 @@ import { get } from '../../utils/utils';
 // import { EmergencyTypeComparator } from './home-map/filtering/comparator/emergency-type-comparator';
 import EmergenciesLeftMenu from './common/emergencies-left-menu';
 import MarkerLayerStylesheetFactory from './per-map/factory/marker-layer-stylesheet-factory';
+import PerPhaseDropdown from './per-map/per-phase-dropdown';
 
 // const scale = chroma.scale(['#F0C9E8', '#861A70']);
 
@@ -43,6 +44,7 @@ class PerMap extends React.Component {
     this.navigate = this.navigate.bind(this);
     // this.setSelectedAppealTypeNeutral = this.setSelectedAppealTypeNeutral.bind(this);
     // this.setSelectedDtypeNeutral = this.setSelectedDtypeNeutral.bind(this);
+    this.onPerPhaseChange = this.onPerPhaseChange.bind(this);
   }
 
   componentDidMount () {
@@ -50,50 +52,20 @@ class PerMap extends React.Component {
     if (data && !data.error && data.fetched) {
       this.setMarkerLayers(data);
     }
-    // if (deployments && !deployments.error && deployments.fetched) {
-    //   this.setFillLayers(deployments);
-    // }
   }
 
   componentWillReceiveProps ({ data }) {
     if (data && !this.props.data.fetched && data.fetched && !data.error) {
       this.setMarkerLayers(data);
     }
-    // if (deployments && deployments.fetched && !deployments.error && (
-    //   !this.props.deployments.fetched || JSON.stringify(deployments.data.areas) !== JSON.stringify(this.props.deployments.data.areas)
-    // )) {
-    //   this.setFillLayers(deployments);
-    // }
   }
 
   setMarkerLayers (data) {
-    // const comparator = EmergencyTypeComparator(this.state.hoverDtype || this.state.selectedDtype || '');
-    // const markers = filtering(operations.data.geoJSON, comparator);
     this.setState({
       markerLayers: this.markerLayerStylesheetFactory.buildMarkerLayers(data.data.geoJSON),
       markerGeoJSON: data.data.geoJSON
     });
   }
-
-  // setFillLayers (deployments) {
-  //   const { data } = deployments;
-  //   scale.domain([0, data.max]);
-  //   // create a data-driven paint property for the district fill color
-  //   const paint = ['case'];
-  //   data.areas.forEach(d => {
-  //     paint.push(['==', ['to-string', ['get', 'OBJECTID']], d.id]);
-  //     paint.push(scale(d.deployments.length).hex());
-  //   });
-  //   paint.push('rgba(0, 0, 0, 0)');
-  //   const action = () => this.theMap.setPaintProperty('district', 'fill-color', paint);
-  //   if (this.state.ready) {
-  //     action();
-  //   } else {
-  //     this.setState({
-  //       mapActions: this.state.mapActions.concat(action)
-  //     });
-  //   }
-  // }
 
   // onDtypeHover (what, typeId) {
   //   if (this.state.selectedDtype === null) {
@@ -118,14 +90,21 @@ class PerMap extends React.Component {
   //   this.setSelectedAppealTypeNeutral();
   // }
 
-  // onAppealTypeChange (typeId) {
-  //   const comparator = AppealTypeComparator(typeId);
-  //   const markers = filtering(this.props.operations.data.geoJSON, comparator);
-  //   this.setState({
-  //     markerGeoJSON: markers
-  //   });
-  //   this.setSelectedDtypeNeutral();
-  // }
+  onPerPhaseChange (event) {
+    const chosenId = parseInt(event.target.value);
+
+    if (chosenId === -1) {
+      this.setState({
+        markerGeoJSON: this.props.data.data.geoJSON
+      });
+    } else {
+      const data = JSON.parse(JSON.stringify(this.props.data));
+      data.data.geoJSON.features = data.data.geoJSON.features.filter((mapObject) => mapObject.properties.phase.phase === chosenId);
+      this.setState({
+        markerGeoJSON: data.data.geoJSON
+      });
+    }
+  }
 
   // setSelectedDtypeNeutral () {
   //   this.setState({selectedDtype: null});
@@ -201,6 +180,7 @@ class PerMap extends React.Component {
       pageId={country.id}
       navigate={this.navigate}
       phase={phase}
+      overviewData={this.props.overviewData}
       onCloseClick={this.onPopoverCloseClick.bind(this)} />, popoverContent);
 
     // Populate the popup and set its coordinates
@@ -253,6 +233,7 @@ class PerMap extends React.Component {
             geoJSON={geoJSON}
             downloadButton={true}>
 
+            <PerPhaseDropdown onPerPhaseChange={this.onPerPhaseChange} />
             {/* <ExplanationBubble scaleBy={this.state.scaleBy}
               onFieldChange={this.onFieldChange}
               deployments={this.props.deployments}
@@ -280,6 +261,7 @@ if (environment !== 'production') {
   PerMap.propTypes = {
     data: T.object,
     deployments: T.object,
+    overviewData: T.object,
     deploymentsKey: T.string,
     history: T.object,
     bbox: T.array,

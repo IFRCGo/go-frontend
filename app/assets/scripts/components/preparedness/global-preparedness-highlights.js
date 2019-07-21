@@ -2,7 +2,9 @@
 
 import React from 'react';
 import Fold from './../fold';
-import { getPerComponent } from './../../utils/get-per-components';
+import {
+  getPerComponent
+} from './../../utils/get-per-components';
 import { environment } from './../../config';
 import { PropTypes as T } from 'prop-types';
 
@@ -14,16 +16,17 @@ export default class GlobalPreparednessHighlights extends React.Component {
   }
 
   buildHighPerformingComponentsData () {
-    if (!this.highPerformingComponentsDataBuilt) {
+    if (!this.highPerformingComponentsDataBuilt && typeof this.props.data.data.results !== 'undefined') {
       this.highPerformingComponentsDataBuilt = true;
       const components = {};
       const highPerformingComponents = [];
 
       this.props.data.data.results.forEach(result => {
-        if (typeof components[result.code + '' + result.question_id] === 'undefined') {
-          components[result.code + '' + result.question_id] = {name: getPerComponent(result.code, result.question_id)[0].name, count: 1};
+        const correspondingComponent = getPerComponent(result.code, result.question_id)[0];
+        if (typeof components[correspondingComponent.cid] === 'undefined') {
+          components[correspondingComponent.cid] = {name: correspondingComponent.name, count: 1};
         } else {
-          components[result.code + '' + result.question_id].count++;
+          components[correspondingComponent.cid].count++;
         }
       });
 
@@ -43,24 +46,32 @@ export default class GlobalPreparednessHighlights extends React.Component {
   }
 
   render () {
+    if (typeof this.props.prioritizationData === 'undefined') return null;
     this.buildHighPerformingComponentsData();
     const highPerformingComponents = [];
-    this.highPerformingComponents.forEach((component) => {
-      highPerformingComponents.push(<li key={component.name}>{component.name}</li>);
+    this.highPerformingComponents.forEach((component, index) => {
+      highPerformingComponents.push(<li key={component.name + 'highperforming' + index}>{component.name}</li>);
     });
+    const highPriorityComponents = [];
+    if (Object.keys(this.props.prioritizationData).length > 0) {
+      Object.keys(this.props.prioritizationData).forEach((key, index) => {
+        highPriorityComponents.push(<li key={key + 'highpriority' + index}>{key.replace(/_/g, ' ')}</li>);
+      });
+    }
+    if (highPerformingComponents.length === 0 && highPriorityComponents.length === 0) return null;
     return (
       <div className='inner'>
         <Fold title={'Global Preparedness Highlights'}>
           <div style={{width: '50%', float: 'left'}}>
             <span style={{fontWeight: 'bold'}}>High Performing Components (globally)</span>
             <ul>
-              {highPerformingComponents}
+              {this.props.perPermission ? highPerformingComponents : 'You can only see this data if you have the correct permissions.'}
             </ul>
           </div>
           <div style={{width: '50%', float: 'left'}}>
             <span style={{fontWeight: 'bold'}}>Top Prioritized Components (globally)</span>
             <ul>
-              {highPerformingComponents}
+              {highPriorityComponents}
             </ul>
           </div>
         </Fold>
@@ -71,6 +82,8 @@ export default class GlobalPreparednessHighlights extends React.Component {
 
 if (environment !== 'production') {
   GlobalPreparednessHighlights.propTypes = {
-    data: T.object
+    data: T.object,
+    prioritizationData: T.object,
+    perPermission: T.bool
   };
 }

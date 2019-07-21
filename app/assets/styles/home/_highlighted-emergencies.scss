@@ -1,15 +1,18 @@
 .card_box_container {
-  margin-top: 1rem;
+  //margin-top: 1rem;
+}
+
+.card_box_container--op {
+  display: flex;
 }
 
 .card_box {
-  float: left;
-  font-size: 1.5rem;
+  //float: left;
+  //font-size: 1.5rem;
   text-align: left;
-  padding-left: 5px;
+  //padding-left: 5px;
   //@include media(xsmall-only) {
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding: ($global-spacing * 0.8);
   width: 100%;
   //}
   // @include media(small-up) {
@@ -17,19 +20,17 @@
   // }
 }
 
-.card_box small {
-  display: block;
-  text-transform: uppercase;
-  color: rgba(0, 0, 0, 0.6);
-  font-size: 0.875rem;
+.card_box_no {
+  font-weight: $base-font-medium;
+  font-size: 172%;
 }
 
 .card_box_left {
   //@include media(xsmall-only) {
-  border-bottom: 1px solid #c0c0c0;
+  border-bottom: 1px solid $base-border-color;
   //}
   // @include media(small-up) {
-  //   border-right: 1px solid #c0c0c0;
+  //   border-right: 1px solid base-border-color;
   // }
 }
 
@@ -50,54 +51,54 @@
 }
 
 .card_box_full {
-  float: left;
-  margin-top: 1rem;
-  padding-top: 0.5rem;
-  border-top: 1px solid #c0c0c0;
+  //float: left;
+  //margin-top: 1rem;
+  //padding-top: 0.5rem;
+  //border-top: 1px solid base-border-color;
   width: 100%;
-  font-size: 1.5rem;
+  //font-size: 1.5rem;
   text-align: left;
 
   .progress-bar {
-    display: inline-block;
+    //display: inline-block;
     width: 80%;
   }
 
-  small {
-    display: block;
-    font-size: 0.875rem;
-    text-transform: uppercase;
-    color: rgba(0, 0, 0, 0.6);
-  }
+  //small {
+    //display: block;
+    //font-size: 0.875rem;
+    //text-transform: uppercase;
+    //color: rgba(0, 0, 0, 0.6);
+  //}
 
   .progress-bar-container {
     margin-top: -10px;
   }
 
-  .progress-bar__value {
-    background-color: #C22A26;
-  }
+  //.progress-bar__value {
+    //background-color: $secondary-color;
+  //}
 
-  .progress-bar__key small {
-    display: inline-block;
-    @include media(xsmall-only) {
-      font-size: 0.7rem;    
-    }
-    @include media(small-only) {
-      font-size: 0.875rem;    
-    }
-    @include media(medium-only) {
-      font-size: 0.65rem;    
-    }
-    @include media(large-only) {
-      font-size: 0.835rem;    
-    }
-    @include media(xlarge-only) {
-      font-size: 0.875rem;    
-    }
-    text-transform: uppercase;
-    color: rgba(0, 0, 0, 0.6);
-  }
+  //.progress-bar__key small {
+    //display: inline-block;
+    //@include media(xsmall-only) {
+      //font-size: 0.7rem;    
+    //}
+    //@include media(small-only) {
+      //font-size: 0.875rem;    
+    //}
+    //@include media(medium-only) {
+      //font-size: 0.65rem;    
+    //}
+    //@include media(large-only) {
+      //font-size: 0.835rem;    
+    //}
+    //@include media(xlarge-only) {
+      //font-size: 0.875rem;    
+    //}
+    //text-transform: uppercase;
+    //color: rgba(0, 0, 0, 0.6);
+  //}
 
   .progress-bar__key {
     display: inline-block;
@@ -113,7 +114,22 @@
 }
 
 .last_updated {
+  font-size: $font-size-xs;
   margin-bottom: 10px;
   color: rgba(0, 0, 0, 0.6);
   font-style: italic;
+}
+
+.card_box--op {
+  @include span(6/12, $offset: 0, $cycle: 0);
+
+  &:first-of-type {
+    border-right: 1px solid $base-border-color;
+  }
+}
+
+.card_box_fc {
+  color: $secondary-color;
+  text-align: right;
+  font-weight: $base-font-medium;
 }

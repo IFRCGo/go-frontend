@@ -42,7 +42,7 @@ export default class NationalSocietiesEngagedPer extends PureComponent {
   }
 
   render () {
-    if (this.preparedData === null) {
+    if (this.preparedData === null || this.preparedData.length === 0) {
       return null;
     }
     const charts = [];
@@ -59,6 +59,8 @@ export default class NationalSocietiesEngagedPer extends PureComponent {
                 label={NationalSocietiesEngagedPer.RENDER_CUSTOMIZED_LABEL}
                 outerRadius={75}
                 fill="#8884d8"
+                startAngle={90}
+                endAngle={450}
                 dataKey="value">
                 {
                   region.data.map((entry, index) => {

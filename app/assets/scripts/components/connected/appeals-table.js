@@ -190,8 +190,12 @@ class AppealsTable extends SFPComponent {
         country: o.country ? <Link to={`/countries/${o.country.id}`} className='link--primary' title='View Country'>{o.country.name}</Link> : nope
       }));
 
+      const foldLink = this.props.viewAll ? (
+        <Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || 'View all operations'}</Link>
+      ) : null;
+
       return (
-        <Fold title={`${title} (${n(data.count)})`} id={this.props.id}>
+        <Fold title={`${title} (${n(data.count)})`} id={this.props.id} navLink={foldLink}>
           {this.props.showExport ? (
             <ExportButton filename='appeals'
               qs={this.getQs(this.props)}
@@ -206,11 +210,6 @@ class AppealsTable extends SFPComponent {
             onPageChange={this.handlePageChange.bind(this, 'table')}
             noPaginate={this.props.noPaginate}
           />
-          {this.props.viewAll ? (
-            <div className='fold__footer'>
-              <Link className='link--primary export--link' to={this.props.viewAll}>{this.props.viewAllText || 'View all operations'}</Link>
-            </div>
-          ) : null}
         </Fold>
       );
     }
