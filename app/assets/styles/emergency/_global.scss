@@ -3,6 +3,10 @@
     margin-bottom: $global-spacing * 2;
   }
 
+  .introduction-nav {
+    clear: both;
+  }
+
   .inpage__header {
     @include column(12/12);
     float: none;

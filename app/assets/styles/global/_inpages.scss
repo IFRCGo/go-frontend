@@ -24,6 +24,10 @@
     }
   }
 
+  &__nav {
+    font-weight: $base-font-medium;
+  }
+
   &__headline {
     @include column(12/12);
     margin-bottom: $global-spacing;
