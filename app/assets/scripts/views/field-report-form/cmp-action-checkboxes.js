@@ -49,7 +49,7 @@ export default class ActionsCheckboxes extends React.Component {
           label='Description'
           name={`${name}[description]`}
           id={`${name}-description`}
-          classLabel='form__label--nested'
+          classLabel='label-secondary'
           classInput='global-margin-t'
           value={values.description}
           onChange={this.onDescriptionChange} />

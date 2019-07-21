@@ -9,10 +9,11 @@
     padding-bottom: 0;
   }
 
-  .form__group {
+  .fold__body > .form__group {
     background: $grey-fog;
     padding: $global-spacing-2;
     margin-bottom: $global-spacing-2;
+    
     > .form__inner-header {
       display: block;
       @include media(medium-up) {
@@ -28,14 +29,12 @@
   }
 
   .resp-value {
-    .form__inner-header {
-      width: 100%;
-    }
+    padding-top: 0;  
   }
 
 
 
-  /*.form__hascol {
+  .form__hascol {
     margin-bottom: 0 !important;
 
     .form__group {
@@ -43,9 +42,26 @@
       margin-left: 0 !important;
       width: 50% !important;
     }
-  }*/
+  }
 
+  .fold__body .form__group--kv-actions {
+    margin-bottom: 0;
+    padding-bottom: $global-spacing-2;
+
+    @include media(medium-up) {
+      @include column(6/12, $cycle: 2, $offset: 0);
+      
+      .form__inner-header {
+        @include column(8/12);
+      }  
+
+      .form__inner-body {
+        @include column(4/12);
+      }  
+    }
+  }
 }
+
 
 .form--field-report {
   margin-bottom: $global-spacing * 4;
@@ -97,6 +113,10 @@
       }
     }
   }
+
+  .form__group {
+    padding-top: 0;
+  }
 }
 
 .form__group__col__6 {
@@ -129,14 +149,6 @@
     &:last-child {
       margin-bottom: 0;
     }
-
-    .form__option--inline + .form__option--inline {
-      margin-left: 0;
-    }
-
-    .form__inner-body {
-      width: 100%;
-    }
   }
 
   .estimation__item-field {
@@ -144,13 +156,6 @@
 
     @include media(medium-up) {
       @include column(3/12);
-    }
-  }
-
-  .estimation__item, .estimation__item-field {
-    .form__inner-header {
-      width: 100%;
-      float: none;
     }
   }
 
@@ -293,12 +298,8 @@
   }
 
   .resp-status {
-    width: 100%;
     margin-right: 8%;
-
-    .form__inner-body {
-      width: 100%;
-    }
+    padding-top: 0;
 
     .form__inner-header {
       @include media(medium-up) {

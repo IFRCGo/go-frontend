@@ -437,72 +437,74 @@ class FieldReportForm extends React.Component {
     // All the fields are optional, and the text fields are just strings.
     return (
       <Fold title='Actions taken'>
-        <FormInput
-          label='Assisted by Government'
-          type='text'
-          name='num-assisted-gov'
-          id='num-assisted-gov'
-          classWrapper='form__group--kv'
-          value={this.state.data.numAssistedGov}
-          onChange={this.onFieldChange.bind(this, 'numAssistedGov')} >
-          <FormError
-            errors={this.state.errors}
-            property='numAssistedGov'
-          />
-        </FormInput>
+        <div className='form__group'>
+          <FormInput
+            label='Assisted by Government'
+            type='text'
+            name='num-assisted-gov'
+            id='num-assisted-gov'
+            classWrapper='form__group--kv form__group--kv-actions'
+            value={this.state.data.numAssistedGov}
+            onChange={this.onFieldChange.bind(this, 'numAssistedGov')} >
+            <FormError
+              errors={this.state.errors}
+              property='numAssistedGov'
+            />
+          </FormInput>
 
-        <FormInput
-          label='Assisted by RCRC Movement'
-          type='text'
-          name='num-assisted-red-cross'
-          id='num-assisted-red-cross'
-          classWrapper='form__group--kv'
-          value={this.state.data.numAssistedRedCross}
-          onChange={this.onFieldChange.bind(this, 'numAssistedRedCross')} >
-          <FormError
-            errors={this.state.errors}
-            property='numAssistedRedCross'
-          />
-        </FormInput>
-        <FormInput
-          label='Number of local staff involved'
-          type='text'
-          name='num-local-staff'
-          id='num-local-staff'
-          classWrapper='form__group--kv'
-          value={this.state.data.numLocalStaff}
-          onChange={this.onFieldChange.bind(this, 'numLocalStaff')} >
-          <FormError
-            errors={this.state.errors}
-            property='numLocalStaff'
-          />
-        </FormInput>
-        <FormInput
-          label='Number of volunteers involved'
-          type='text'
-          name='num-volunteers'
-          id='num-volunteers'
-          classWrapper='form__group--kv'
-          value={this.state.data.numVolunteers}
-          onChange={this.onFieldChange.bind(this, 'numVolunteers')} >
-          <FormError
-            errors={this.state.errors}
-            property='numVolunteers'
-          />
-        </FormInput>
-        <FormInput
-          label='Number of RCRC Movement International Personnel involved'
-          type='text'
-          name='num-expats'
-          id='num-expats'
-          classWrapper='form__group--kv'
-          value={this.state.data.numExpats}
-          onChange={this.onFieldChange.bind(this, 'numExpats')} >
-          <FormError
-            errors={this.state.errors}
-            property='numExpats'
-          />
-        </FormInput>
+          <FormInput
+            label='Assisted by RCRC Movement'
+            type='text'
+            name='num-assisted-red-cross'
+            id='num-assisted-red-cross'
+            classWrapper='form__group--kv form__group--kv-actions'
+            value={this.state.data.numAssistedRedCross}
+            onChange={this.onFieldChange.bind(this, 'numAssistedRedCross')} >
+            <FormError
+              errors={this.state.errors}
+              property='numAssistedRedCross'
+            />
+          </FormInput>
+          <FormInput
+            label='Number of local staff involved'
+            type='text'
+            name='num-local-staff'
+            id='num-local-staff'
+            classWrapper='form__group--kv form__group--kv-actions'
+            value={this.state.data.numLocalStaff}
+            onChange={this.onFieldChange.bind(this, 'numLocalStaff')} >
+            <FormError
+              errors={this.state.errors}
+              property='numLocalStaff'
+            />
+          </FormInput>
+          <FormInput
+            label='Number of volunteers involved'
+            type='text'
+            name='num-volunteers'
+            id='num-volunteers'
+            classWrapper='form__group--kv form__group--kv-actions'
+            value={this.state.data.numVolunteers}
+            onChange={this.onFieldChange.bind(this, 'numVolunteers')} >
+            <FormError
+              errors={this.state.errors}
+              property='numVolunteers'
+            />
+          </FormInput>
+          <FormInput
+            label='Number of RCRC Movement International Personnel involved'
+            type='text'
+            name='num-expats'
+            id='num-expats'
+            classWrapper='form__group--kv form__group--kv-actions'
+            value={this.state.data.numExpats}
+            onChange={this.onFieldChange.bind(this, 'numExpats')} >
+            <FormError
+              errors={this.state.errors}
+              property='numExpats'
+            />
+          </FormInput>
+        </div>
         <ActionsCheckboxes
           label='Actions Taken by National Society Red Cross (if any)'
           description={'Select the activities undertaken by the National Society and briefly describe.'}
