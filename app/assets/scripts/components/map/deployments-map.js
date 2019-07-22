@@ -14,7 +14,6 @@ import MapComponent from './common/map-component';
 import {
   FormSelect
 } from '../form-elements';
-import DownloadButton from './common/download-button';
 
 const countryChromaScale = chroma.scale(['#F0C9E8', '#861A70']);
 
@@ -261,6 +260,7 @@ export default class DeploymentsMap extends React.Component {
               configureMap={this.configureMap}
               noExport={true}
               downloadButton={true}
+              downloadedHeaderTitle='Deployments'
               layers={this.state.layers}
               filters={this.state.filters}
               geoJSON={this.props.data}>
@@ -304,7 +304,7 @@ export default class DeploymentsMap extends React.Component {
                 </FormSelect>
               </figcaption>
 
-              <DownloadButton data={canvas} />
+              {/* <DownloadButton data={canvas} /> */}
 
             </MapComponent>
           </div>

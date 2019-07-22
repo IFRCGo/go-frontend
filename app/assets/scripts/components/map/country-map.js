@@ -262,6 +262,7 @@ class CountryMap extends React.Component {
           <MapComponent className='map-vis__holder'
             noExport={this.props.noExport}
             downloadButton={true}
+            downloadedHeaderTitle='Movement activities'
             configureMap={this.configureMap}
             layers={layers}
             geoJSON={geoJSON}>
