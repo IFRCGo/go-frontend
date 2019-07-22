@@ -301,8 +301,8 @@ class FieldReportForm extends React.Component {
 
         <div className='form__group'>
           <div className='form__inner-header'>
-            <label className='form__label'>Potentially Affected Country and Province Region *</label>
-            <p className='form__description'>Anticipated Affected Country &amp; Province/Region</p>
+            <label className='form__label'>Affected Country and Province / Region *</label>
+            <p className='form__description'></p>
           </div>
           <div className="form__inner-body clearfix">
             <div className="form__group__col__6">
