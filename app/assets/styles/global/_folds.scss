@@ -123,7 +123,7 @@
   padding-bottom: $global-spacing;
 }
 
-.fold__title {
+.fold__title--inline {
 
   @include media(medium-up) {
    margin-bottom: 0;

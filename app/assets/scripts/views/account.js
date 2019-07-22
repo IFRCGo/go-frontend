@@ -149,15 +149,15 @@ const updateChecks = (checkboxes, value) => {
 
 const profileAttributes = [
   ['username'],
-  ['email'],
   ['first_name', 'firstName'],
   ['last_name', 'lastName'],
+  ['email'],
+  ['profile.phone_number', 'phoneNumber'],
   ['profile.city', 'city'],
   ['profile.org', 'org'],
   ['profile.org_type', 'orgType'],
   ['profile.department', 'department'],
-  ['profile.position', 'position'],
-  ['profile.phone_number', 'phoneNumber']
+  ['profile.position', 'position']
 ];
 
 class Account extends React.Component {
@@ -446,13 +446,13 @@ class Account extends React.Component {
           <dl className='dl--horizontal'>
             {profile.data ? profileAttributes.map(a => (
               <Fragment key={a[0]}>
-                <dt>{apiPropertyDisplay(a[0])}</dt>
+                <dt className='form__label__uppercase'>{apiPropertyDisplay(a[0])}</dt>
                 <dd>{apiPropertyValue(a[0], profile.data)}</dd>
               </Fragment>
             )) : null}
           </dl>
         </div>
-        <div className='fold__footer'>
+        <div className='fold__footer text-right'>
           <Link className='link--primary' to='/account/password-change'>Change my password</Link>
         </div>
       </div>
@@ -488,6 +488,15 @@ class Account extends React.Component {
               classWrapper='form__group--kv'
               value={profile.lastName}
               onChange={this.onFieldChange.bind(this, 'profile', 'lastName')} >
+            </FormInput>
+            <FormInput
+              label='Phone Number'
+              type='text'
+              name='phone-number'
+              id='phone-number'
+              classWrapper='form__group--kv'
+              value={profile.phoneNumber}
+              onChange={this.onFieldChange.bind(this, 'profile', 'phoneNumber')} >
             </FormInput>
             <FormInput
               label='City'
@@ -536,15 +545,6 @@ class Account extends React.Component {
               classWrapper='form__group--kv'
               value={profile.position}
               onChange={this.onFieldChange.bind(this, 'profile', 'position')} >
-            </FormInput>
-            <FormInput
-              label='Phone Number'
-              type='text'
-              name='phone-number'
-              id='phone-number'
-              classWrapper='form__group--kv'
-              value={profile.phoneNumber}
-              onChange={this.onFieldChange.bind(this, 'profile', 'phoneNumber')} >
             </FormInput>
             <button type='submit' className={c('button', 'button--large', 'button--secondary-filled', {
               'disabled': !this.state.isProfileDirty
@@ -785,28 +785,29 @@ class Account extends React.Component {
           <select onChange={this.changeChosenCountry}>
             {countryOptions}
           </select><br/><br />
-          <div style={{float: 'left', width: '96%', backgroundColor: '#eaeaea', marginRight: '3%', marginBottom: '3%', textAlign: 'center'}}>
-            <Link to={'/per-forms/overview/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Overview</Link><br/>
+          <div className='text-center'>
+            <Link to={'/per-forms/overview/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Overview</Link>
           </div>
-          <div style={{float: 'left', width: '30%', backgroundColor: '#eaeaea', marginRight: '3%', marginBottom: '3%', textAlign: 'center'}}>
-            <Link to={'/per-forms/policy-strategy/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 1: Policy and Standards</Link><br/>
+          <div className='clearfix'>
+            <div className='per__form__col'>
+              <Link to={'/per-forms/policy-strategy/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 1: Policy and Standards</Link>
+            </div>
+            <div className='per__form__col'>
+              <Link to={'/per-forms/analysis-and-planning/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 2: Analysis and Planning</Link>
+            </div>
+            <div className='per__form__col'>
+              <Link to={'/per-forms/operational-capacity/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 3: Operation capacity</Link>
+            </div>
+            <div className='per__form__col'>
+              <Link to={'/per-forms/operational-capacity-2/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 3: Operational capacity 2</Link>
+            </div>
+            <div className='per__form__col'>
+              <Link to={'/per-forms/coordination/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 4: Coordination</Link>
+            </div>
+            <div className='per__form__col'>
+              <Link to={'/per-forms/operations-support/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 5: Operations support</Link>
+            </div>
           </div>
-          <div style={{float: 'left', width: '30%', backgroundColor: '#eaeaea', marginRight: '3%', marginBottom: '3%', textAlign: 'center'}}>
-            <Link to={'/per-forms/analysis-and-planning/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 2: Analysis and Planning</Link><br/>
-          </div>
-          <div style={{float: 'left', width: '30%', backgroundColor: '#eaeaea', marginRight: '3%', marginBottom: '3%', textAlign: 'center'}}>
-            <Link to={'/per-forms/operational-capacity/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 3: Operation capacity</Link><br/>
-          </div>
-          <div style={{float: 'left', width: '30%', backgroundColor: '#eaeaea', marginRight: '3%', marginBottom: '3%', textAlign: 'center'}}>
-            <Link to={'/per-forms/operational-capacity-2/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 3: Operational capacity 2</Link><br/>
-          </div>
-          <div style={{float: 'left', width: '30%', backgroundColor: '#eaeaea', marginRight: '3%', marginBottom: '3%', textAlign: 'center'}}>
-            <Link to={'/per-forms/coordination/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 4: Coordination</Link><br/>
-          </div>
-          <div style={{float: 'left', width: '30%', backgroundColor: '#eaeaea', marginRight: '3%', marginBottom: '3%', textAlign: 'center'}}>
-            <Link to={'/per-forms/operations-support/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 5: Operations support</Link><br/>
-          </div>
-          <div style={{clear: 'both'}}></div>
           <hr /><br/><br />
           <h2 className='fold__title'>Active PER Forms</h2>
           <span style={{fontWeight: 'bold'}}>{documents}</span>

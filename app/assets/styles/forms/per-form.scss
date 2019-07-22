@@ -1,3 +1,7 @@
+/* Per Forms
+   ========================================================================== */
+
+
 .per_form_area {
   font-weight: bold;
   font-size: 25px;
@@ -11,4 +15,24 @@
 .per_form_question {
   font-size: 15px;
   text-decoration: underline;
+}
+
+.per__form__col {
+	margin-top: $global-spacing;
+
+	@include media(small-up) {
+		@include column(4/12, $cycle: 3);
+	}
+
+	.button {
+	  width: 100%;
+	}
+}
+
+
+/* Account Forms
+   ========================================================================== */
+
+.form__account__info {
+ @include column(6/12);
 }
