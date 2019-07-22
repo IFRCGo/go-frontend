@@ -249,7 +249,6 @@ export default class DeploymentsMap extends React.Component {
       }
     ];
     const activeFilter = filterTypes.find(d => d.value === this.state.mapFilter.deployment).label;
-    const canvas = document.getElementsByClassName('mapboxgl-canvas')[0];
 
     return (
       <div className='stats-map deployments-map'>
