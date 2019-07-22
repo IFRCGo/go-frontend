@@ -573,7 +573,7 @@ class Account extends React.Component {
           <section className='fold'>
             <div className='inner'>
               <div className='fold__header'> <h2 className='fold__title margin-reset'>Submitted Field Reports</h2>
-              <hr />
+                <hr />
               </div>
               <div className='fold__body'>
                 <ul className='report__list'>
@@ -682,7 +682,7 @@ class Account extends React.Component {
               values={this.state.notifications.per}
               onChange={this.onFieldChange.bind(this, 'notifications', 'per')} />
             {events}
-            <div class="text-center">
+            <div className="text-center">
               <button type='submit' className={c('button', 'button--large', 'button--secondary-filled', {
                 'disabled': !this.state.isNotificationsDirty
               })} title='Save'>Save</button>
@@ -751,7 +751,7 @@ class Account extends React.Component {
                 </div>
                 <div className='list__each__button'>
                   <Link className='button button--small button--secondary-bounded' to={'/view-per-forms/overview/' + document.id}>View</Link>
-              </div>
+                </div>
               </div>
             </React.Fragment>));
           } else {

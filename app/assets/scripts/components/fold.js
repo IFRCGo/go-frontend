@@ -63,6 +63,7 @@ if (environment !== 'production') {
     id: T.string,
     title: T.string,
     navLink: T.element,
+    foldClass: T.string,
     extraClass: T.bool,
     description: T.string,
     header: T.oneOfType([T.element, T.func]),
