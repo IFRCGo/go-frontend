@@ -11,7 +11,7 @@ import * as formData from '../../utils/field-report-constants';
 
 export function dataPathToDisplay (path, keyword) {
   // Remove first . and any array ref.
-  if (keyword === 'oneOf') return ''; // return empty string if error is missing "one of" fields
+  if (keyword === 'anyOf') return ''; // return empty string if error is missing "any of" fields
   path = path.substring(1).replace(/\[[0-9]+\]/g, '');
   const index = {
     // Step 1.

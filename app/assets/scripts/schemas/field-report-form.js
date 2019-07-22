@@ -38,7 +38,7 @@ export const step1 = {
       type: 'boolean'
     }
   },
-  oneOf: [
+  anyOf: [
     {
       required: [
         'summary'
