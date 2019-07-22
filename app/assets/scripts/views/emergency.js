@@ -391,7 +391,7 @@ class Emergency extends React.Component {
 
     const showExportMap = () => {
       // Show the export map if exactly one country is selected, and at least 1 district is selected.
-      if (data.countries.length === 1 && data.districts.length > 0) {
+      if (data.countries.length === 1 && data.countries[0].record_type === 1 && data.districts.length > 0) {
         return (<EmergencyMap countries={data.countries} districts={data.districts} />);
       }
     };
