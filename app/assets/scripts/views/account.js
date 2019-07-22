@@ -738,27 +738,31 @@ class Account extends React.Component {
           currentCountryName = document.country.name;
           if (document.formType === 'overview') {
             perDocuments.push((<React.Fragment key={'documentoverviewrow' + document.id}>
-              <div style={{backgroundColor: '#eaeaea', float: 'left', width: '100%', marginBottom: '1rem', padding: '0.25rem 1rem'}} key={'documentov' + document.id}>
-                Overview - {document.date_of_current_capacity_assessment.substring(0, 10)} - {typeof document.user !== 'undefined' && document.user !== null ? document.user.first_name + ' ' + document.user.last_name : null}
-                <div style={{float: 'right'}}>
-                  <Link className='button button--small button--secondary-bounded' to={'/view-per-forms/overview/' + document.id}>View</Link>
+              <div className='list__each__block flex'>
+                <div key={'documentov' + document.id}>
+                  Overview - {document.date_of_current_capacity_assessment.substring(0, 10)} - {typeof document.user !== 'undefined' && document.user !== null ? document.user.first_name + ' ' + document.user.last_name : null}
                 </div>
+                <div className='list__each__button'>
+                  <Link className='button button--small button--secondary-bounded' to={'/view-per-forms/overview/' + document.id}>View</Link>
+              </div>
               </div>
             </React.Fragment>));
           } else {
             perDocuments.push((<React.Fragment key={'documentrow' + document.code + 'id' + document.id}>
-              <div style={{backgroundColor: '#eaeaea', float: 'left', width: '100%', marginBottom: '1rem', padding: '0.25rem 1rem'}} key={'document' + document.id}>
-                {document.code.toUpperCase()} - {document.name} - {document.updated_at.substring(0, 10)} - {typeof document.user !== 'undefined' ? document.user.username : null}
-                <div style={{float: 'right'}}>
+              <div className='list__each__block flex'>
+                <div key={'document' + document.id}>
+                  {document.code.toUpperCase()} - {document.name} - {document.updated_at.substring(0, 10)} - {typeof document.user !== 'undefined' ? document.user.username : null}
+                </div>
+                <div className='list__each__button'>
                   <Link className='button button--small button--secondary-bounded' to={'/view-per-forms/' + document.code + '/' + document.id}>View</Link>
                 </div>
               </div>
             </React.Fragment>));
           }
         });
-        countries.push(<div key={'countryDocument' + countryKey}><span style={{fontSize: '1.25rem'}}>{currentCountryName}</span>{perDocuments}<br /></div>);
+        countries.push(<div key={'countryDocument' + countryKey}><div className='heading-sub global-spacing-v'>{currentCountryName}</div>{perDocuments}<br /></div>);
       });
-      regions.push(<div key={'regionDocument' + regionKey}><span style={{fontSize: '1.5rem'}}>{getRegionById(regionKey).name}</span>{countries}<br /></div>);
+      regions.push(<div key={'regionDocument' + regionKey}><span className='fold__title'>{getRegionById(regionKey).name}</span>{countries}<br /></div>);
     });
     return regions;
   }
@@ -808,9 +812,10 @@ class Account extends React.Component {
               <Link to={'/per-forms/operations-support/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 5: Operations support</Link>
             </div>
           </div>
-          <hr /><br/><br />
+          <br/><br />
           <h2 className='fold__title'>Active PER Forms</h2>
-          <span style={{fontWeight: 'bold'}}>{documents}</span>
+          <hr />
+          <span className='' style={{fontWeight: 'bold'}}>{documents}</span>
           {this.renderDraftDocuments()}
         </div>
       </section>

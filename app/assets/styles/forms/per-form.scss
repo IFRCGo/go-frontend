@@ -29,6 +29,18 @@
 	}
 }
 
+.list__each__block {
+	font-weight: $base-font-semi-bold; 
+	background-color: $grey-mist;
+	margin: 0 0 $global-spacing 0;
+	padding: $global-spacing;
+}
+
+.list__each__button {
+	margin-left: auto;
+	padding-left: 3%;
+}
+
 
 /* Account Forms
    ========================================================================== */

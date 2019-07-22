@@ -517,6 +517,11 @@ abbr[title] {
   letter-spacing: 0.5px;
 }
 
+.heading-sub {
+  font-weight: $base-font-semi-bold;
+  font-size: 1.2rem;
+}
+
 h1 {
   @include heading(1.75rem);   // 28
 }
