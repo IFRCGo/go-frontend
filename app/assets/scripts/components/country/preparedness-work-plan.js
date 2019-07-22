@@ -171,12 +171,12 @@ class PreparednessWorkPlan extends React.Component {
       components.push((<option key={'componentsList' + index} value={component.formCode + component.id}>{component.name}</option>));
     });
     getBenchmarksByComponent(this.state.chosenForm + this.state.chosenComponent).forEach((component, index) => {
-      benchmarks.push((<option key={'benchmarkList' + index} value={'q' + component.index}>{component.title}</option>));
+      benchmarks.push((<option key={'benchmarkList' + index} value={'q' + component.index}>{component.title.length > 135 ? component.title.substring(0, 135) + '...' : component.title}</option>));
     });
     return (
       <Fold id='per-work-plan' title='Preparedness work plan' wrapper_class='preparedness'>
         <div style={{borderBottom: '1px solid #000', paddingBottom: '20px', float: 'left', width: '100%'}}>
-          <button className='button button--small button--primary-bounded' onClick={this.showAddModul}>Add</button>
+          {!this.state.showAddModul ? <button className='button button--small button--primary-bounded' onClick={this.showAddModul}>Add</button> : null}
 
           {this.state.showAddModul
             ? (
