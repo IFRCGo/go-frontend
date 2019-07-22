@@ -321,7 +321,7 @@ class FieldReportForm extends React.Component {
             </div>
             <div className="form__group__col__6">
               <Select
-                placeholder='Select a Province/Region'
+                placeholder='Select Provinces / Regions'
                 name='districts'
                 value={this.state.data.districts}
                 onChange={this.onFieldChange.bind(this, 'districts')}
@@ -738,7 +738,7 @@ class FieldReportForm extends React.Component {
         <h3>Page {this.state.step} of 5 incomplete.</h3>
         <p>To continue please fix:</p>
         <ul>
-          {errors.map(o => <li key={o.dataPath}>{dataPathToDisplay(o.dataPath)}</li>)}
+          {errors.map(o => <li key={o.dataPath}>{dataPathToDisplay(o.dataPath, o.keyword)}</li>)}
         </ul>
       </div>
     );

@@ -38,7 +38,19 @@ export const step1 = {
       type: 'boolean'
     }
   },
-  required: ['summary', 'country', 'status', 'disasterType']
+  oneOf: [
+    {
+      required: [
+        'summary'
+      ]
+    },
+    {
+      required: [
+        'event'
+      ]
+    }
+  ],
+  required: ['country', 'status', 'disasterType']
 };
 
 export const step2 = {
