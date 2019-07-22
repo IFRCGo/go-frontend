@@ -9,8 +9,9 @@ import { get } from '../../utils/utils';
 import { request } from '../../utils/network';
 import * as formData from '../../utils/field-report-constants';
 
-export function dataPathToDisplay (path) {
+export function dataPathToDisplay (path, keyword) {
   // Remove first . and any array ref.
+  if (keyword === 'anyOf') return ''; // return empty string if error is missing "any of" fields
   path = path.substring(1).replace(/\[[0-9]+\]/g, '');
   const index = {
     // Step 1.
@@ -66,7 +67,10 @@ export function dataPathToDisplay (path) {
     'contactMediaNatSoc.contact': 'Media Contact in the National Society - Contact',
     'contactMedia.name': 'Media Contact - Name',
     'contactMedia.role': 'Media Contact - Role',
-    'contactMedia.contact': 'Media Contact - Contact'
+    'contactMedia.contact': 'Media Contact - Contact',
+
+    // for a oneOf validation error (one of two fields not filled, data path is empty), just show nothing
+    '': ''
   };
   if (!index[path]) {
     console.warn('No display value found for', path);
@@ -90,7 +94,7 @@ export function prepStateForValidation (state) {
   const formatter = {
     // Step 1.
     assistance: toBool,
-    country: (val) => val.value,
+    country: (val) => val ? val.value : undefined,
     districts: (val) => val.map(o => o.value),
     // countries: (val) => val.value,
     event: (val) => val ? toNumIfNum(val.value) : undefined,

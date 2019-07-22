@@ -39,7 +39,7 @@ export default class ContactRow extends React.Component {
             type='text'
             name={`${name}[name]`}
             id={`${name}-name`}
-            classLabel='form__label--nested'
+            classLabel='label-secondary'
             value={values.name}
             onChange={this.onFieldChange.bind(this, 'name')} >
             <FormError
@@ -52,7 +52,7 @@ export default class ContactRow extends React.Component {
             type='text'
             name={`${name}[title]`}
             id={`${name}-title`}
-            classLabel='form__label--nested'
+            classLabel='label-secondary'
             value={values.title}
             onChange={this.onFieldChange.bind(this, 'title')} >
             <FormError
@@ -65,7 +65,7 @@ export default class ContactRow extends React.Component {
             type='text'
             name={`${name}[contact]`}
             id={`${name}-contact`}
-            classLabel='form__label--nested'
+            classLabel='label-secondary'
             value={values.contact}
             onChange={this.onFieldChange.bind(this, 'contact')} >
             <FormError
