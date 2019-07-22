@@ -29,7 +29,7 @@ export default function FromSelect (props) {
         </div>
       </div>
       <div className='form__inner-body'>
-        {props.labelSecondary ? (<label htmlFor={id} className='label-secondary'>{props.labelSecondary}</label>) : null}      
+        {props.labelSecondary ? (<label htmlFor={id} className='label-secondary'>{props.labelSecondary}</label>) : null}
         <select
           id={id}
           name={name}
@@ -49,6 +49,7 @@ export default function FromSelect (props) {
 if (process.env.NODE_ENV !== 'production') {
   FromSelect.propTypes = {
     label: T.string,
+    labelSecondary: T.string,
     name: T.string,
     description: T.oneOfType([
       T.node,

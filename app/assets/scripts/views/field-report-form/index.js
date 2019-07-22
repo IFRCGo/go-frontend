@@ -262,7 +262,6 @@ class FieldReportForm extends React.Component {
           />
         </FormRadioGroup>
 
-
         <FormInputSelect
           label='Title *'
           labelSecondary='Add Title'
@@ -662,7 +661,7 @@ class FieldReportForm extends React.Component {
           onChange={this.onFieldChange.bind(this, 'ifrcStaff')} />
 
         <h2 className='fold__title fold__title--contact'>Contacts</h2>
-        
+
         <ContactRow
           label='Originator'
           description='Your name, role and contact.'

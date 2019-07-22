@@ -35,7 +35,7 @@ export default function FormInput (props) {
         </div>
       </div>
       <div className={c('form__inner-body', formInnerBodyClass)}>
-        {labelSecondary ? (<label htmlFor={id} className='label-secondary'>{labelSecondary}</label>) : null}  
+        {labelSecondary ? (<label htmlFor={id} className='label-secondary'>{labelSecondary}</label>) : null}
         <input
           type={type}
           id={id}
@@ -60,6 +60,7 @@ FormInput.defaultProps = {
 if (process.env.NODE_ENV !== 'production') {
   FormInput.propTypes = {
     label: T.string,
+    labelSecondary: T.string,
     type: T.string,
     name: T.string,
     description: T.oneOfType([
@@ -69,6 +70,8 @@ if (process.env.NODE_ENV !== 'production') {
     classWrapper: T.string,
     classLabel: T.string,
     classInput: T.string,
+    formInnerHeaderClass: T.string,
+    formInnerBodyClass: T.string,
     id: T.string,
     value: T.string,
     onChange: T.func,

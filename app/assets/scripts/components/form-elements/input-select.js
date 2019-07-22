@@ -64,10 +64,10 @@ export default function FormInputSelect (props) {
           onChange={selectOnChange}
           loadOptions={selectLoadOptions} />
 
-          <FormError
-            errors={errors}
-            property='event'
-          />
+        <FormError
+          errors={errors}
+          property='event'
+        />
       </div>
     </div>
   );
@@ -80,6 +80,16 @@ FormInputSelect.defaultProps = {
 if (process.env.NODE_ENV !== 'production') {
   FormInputSelect.propTypes = {
     label: T.string,
+    labelSecondary: T.string,
+    selectLabel: T.string,
+    errors: T.array,
+    inputValue: T.string,
+    inputOnChange: T.func,
+    selectValue: T.string,
+    selectOnChange: T.func,
+    selectLoadOptions: T.array,
+    formInnerHeaderClass: T.string,
+    formInnerBodyClass: T.string,
     type: T.string,
     name: T.string,
     description: T.oneOfType([
