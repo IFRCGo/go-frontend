@@ -70,7 +70,7 @@ export default class SourceEstimation extends React.Component {
                 type='text'
                 name={`${name}[${idx}][estimation]`}
                 id={`${name}-${idx}-estimation`}
-                classLabel={c('form__label--nested', {'visually-hidden': idx > 0})}
+                classLabel={c('label-secondary', {'visually-hidden': idx > 0})}
                 classWrapper='estimation__item-field'
                 value={o.estimation}
                 onChange={this.onEstimationChange.bind(this, idx)} >
@@ -87,7 +87,7 @@ export default class SourceEstimation extends React.Component {
                   {label: 'Red Cross', value: 'red-cross'},
                   {label: 'Government', value: 'government'}
                 ]}
-                classLabel={c('form__label--nested', {'visually-hidden': idx > 0})}
+                classLabel={c('label-secondary', {'visually-hidden': idx > 0})}
                 classWrapper='estimation__item'
                 selectedOption={o.source}
                 onChange={this.onSourceChange.bind(this, idx)} />

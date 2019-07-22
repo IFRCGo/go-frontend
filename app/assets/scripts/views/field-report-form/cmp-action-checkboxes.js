@@ -41,7 +41,7 @@ export default class ActionsCheckboxes extends React.Component {
         label={label}
         description={description}
         name={`${name}[options]`}
-        classWrapper='action-checkboxes'
+        classWrapper='action-checkboxes action-checkboxes--textarea'
         options={options}
         values={values.options}
         onChange={this.onChecksChange} >
@@ -49,7 +49,7 @@ export default class ActionsCheckboxes extends React.Component {
           label='Description'
           name={`${name}[description]`}
           id={`${name}-description`}
-          classLabel='form__label--nested'
+          classLabel='label-secondary'
           value={values.description}
           onChange={this.onDescriptionChange} />
       </FormCheckboxGroup>

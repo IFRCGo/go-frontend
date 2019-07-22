@@ -27,6 +27,14 @@
   background: rgba(#fff, 0.16);
 }
 
+.label-secondary {
+  font-size: $font-size-sm;
+  font-weight: $base-font-regular;
+  text-transform: uppercase;
+  margin-bottom: ($global-spacing / 3);
+  display: block;
+}
+
 
 /* Label context modifiers
    ========================================================================== */

@@ -1,23 +1,29 @@
 'use strict';
 import React from 'react';
+import Select from 'react-select';
 import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
-
+import { FormError } from './';
 import { FormDescription } from './misc';
 
-export default function FormInput (props) {
+export default function FormInputSelect (props) {
   const {
     label,
     labelSecondary,
+    selectLabel,
     type,
     name,
+    errors,
     description,
     classInput,
     classWrapper,
     classLabel,
     id,
-    value,
-    onChange,
+    inputValue,
+    inputOnChange,
+    selectValue,
+    selectOnChange,
+    selectLoadOptions,
     autoFocus,
     disabled,
     children,
@@ -41,26 +47,49 @@ export default function FormInput (props) {
           id={id}
           name={name}
           className={c('form__control form__control--medium', classInput)}
-          value={value || ''}
-          onChange={onChange}
+          value={inputValue || ''}
+          onChange={inputOnChange}
           disabled={disabled}
           autoFocus={autoFocus}
           maxLength={maxLength}
         />
         {children || null}
+
+        <div className="label-secondary global-margin-t">Or</div>
+
+        <label className='label-secondary global-margin-t'>{selectLabel}</label>
+        <Select.Async
+          labelSecondary={selectLabel}
+          value={selectValue}
+          onChange={selectOnChange}
+          loadOptions={selectLoadOptions} />
+
+        <FormError
+          errors={errors}
+          property='event'
+        />
       </div>
     </div>
   );
 }
 
-FormInput.defaultProps = {
+FormInputSelect.defaultProps = {
   autoFocus: false
 };
 
 if (process.env.NODE_ENV !== 'production') {
-  FormInput.propTypes = {
+  FormInputSelect.propTypes = {
     label: T.string,
     labelSecondary: T.string,
+    selectLabel: T.string,
+    errors: T.array,
+    inputValue: T.string,
+    inputOnChange: T.func,
+    selectValue: T.object,
+    selectOnChange: T.func,
+    selectLoadOptions: T.func,
+    formInnerHeaderClass: T.string,
+    formInnerBodyClass: T.string,
     type: T.string,
     name: T.string,
     description: T.oneOfType([
@@ -70,8 +99,6 @@ if (process.env.NODE_ENV !== 'production') {
     classWrapper: T.string,
     classLabel: T.string,
     classInput: T.string,
-    formInnerHeaderClass: T.string,
-    formInnerBodyClass: T.string,
     id: T.string,
     value: T.string,
     onChange: T.func,
