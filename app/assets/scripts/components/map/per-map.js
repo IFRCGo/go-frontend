@@ -6,6 +6,7 @@ import { PropTypes as T } from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import mapboxgl from 'mapbox-gl';
 // import chroma from 'chroma-js';
+import ExplanationBubble from './per-map/explanation-bubble';
 import { environment } from '../../config';
 import BlockLoading from '../block-loading';
 import MapComponent from './common/map-component';
@@ -67,29 +68,6 @@ class PerMap extends React.Component {
     });
   }
 
-  // onDtypeHover (what, typeId) {
-  //   if (this.state.selectedDtype === null) {
-  //     const hoverDtype = what === 'mouseover' ? typeId : null;
-  //     const comparator = EmergencyTypeComparator(hoverDtype);
-  //     const markers = filtering(this.props.operations.data.geoJSON, comparator);
-  //     this.setState({
-  //       hoverDtype,
-  //       markerGeoJSON: markers
-  //     });
-  //   }
-  // }
-
-  // onDtypeClick (typeId) {
-  //   const selectedDtype = this.state.selectedDtype === typeId ? null : typeId;
-  //   const comparator = EmergencyTypeComparator(selectedDtype);
-  //   const markers = filtering(this.props.operations.data.geoJSON, comparator);
-  //   this.setState({
-  //     selectedDtype,
-  //     markerGeoJSON: markers
-  //   });
-  //   this.setSelectedAppealTypeNeutral();
-  // }
-
   onPerPhaseChange (event) {
     const chosenId = parseInt(event.target.value);
 
@@ -105,25 +83,6 @@ class PerMap extends React.Component {
       });
     }
   }
-
-  // setSelectedDtypeNeutral () {
-  //   this.setState({selectedDtype: null});
-  //   document.getElementById('top-emergency-dropdown').value = 0;
-  // }
-
-  // setSelectedAppealTypeNeutral () {
-  //   document.getElementById('top-appeal-dropdown').value = 'all';
-  // }
-
-  // onFieldChange (e) {
-  //   const scaleBy = e.target.value;
-  //   this.setState({
-  //     markerLayers: this.markerLayerStylesheetFactory.buildMarkerLayers(
-  //       this.props.operations.data.geoJSON, scaleBy),
-  //     scaleBy
-  //   });
-  //   this.onPopoverCloseClick(scaleBy);
-  // }
 
   configureMap (theMap) {
     // Event listeners.
@@ -231,13 +190,11 @@ class PerMap extends React.Component {
             configureMap={this.configureMap}
             layers={layers}
             geoJSON={geoJSON}
-            downloadButton={true}>
+            downloadButton={true}
+            downloadedHeaderTitle='Preparedness state'>
 
             <PerPhaseDropdown onPerPhaseChange={this.onPerPhaseChange} />
-            {/* <ExplanationBubble scaleBy={this.state.scaleBy}
-              onFieldChange={this.onFieldChange}
-              deployments={this.props.deployments}
-              deploymentsKey={this.props.deploymentsKey}/> */}
+            <ExplanationBubble />
           </MapComponent>
         </div>
       </React.Fragment>

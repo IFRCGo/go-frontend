@@ -174,30 +174,48 @@ export function getAllComponents () {
 export function getBenchmarksByComponent (componentId) {
   const splittedComponentId = componentId.split('c');
   const formCode = splittedComponentId[0];
-  const componentIndex = parseInt(splittedComponentId[1]);
   const benchmarks = [];
+  let componentIndex = parseInt(splittedComponentId[1]);
 
   if (formCode === 'a1') {
+    if (typeof a1Form.components[componentIndex].namespaces === 'undefined') {
+      componentIndex++;
+    }
     a1Form.components[componentIndex].namespaces.forEach((benchmark, index) => {
       benchmarks.push({title: benchmark.nsTitle, index: index});
     });
   } else if (formCode === 'a2') {
+    if (typeof a2Form.components[componentIndex].namespaces === 'undefined') {
+      componentIndex++;
+    }
     a2Form.components[componentIndex].namespaces.forEach((benchmark, index) => {
       benchmarks.push({title: benchmark.nsTitle, index: index});
     });
   } else if (formCode === 'a3') {
+    if (typeof a3Form.components[componentIndex].namespaces === 'undefined') {
+      componentIndex++;
+    }
     a3Form.components[componentIndex].namespaces.forEach((benchmark, index) => {
       benchmarks.push({title: benchmark.nsTitle, index: index});
     });
   } else if (formCode === 'a3_2') {
+    if (typeof a32Form.components[componentIndex].namespaces === 'undefined') {
+      componentIndex++;
+    }
     a32Form.components[componentIndex].namespaces.forEach((benchmark, index) => {
       benchmarks.push({title: benchmark.nsTitle, index: index});
     });
   } else if (formCode === 'a4') {
+    if (typeof a4Form.components[componentIndex].namespaces === 'undefined') {
+      componentIndex++;
+    }
     a4Form.components[componentIndex].namespaces.forEach((benchmark, index) => {
       benchmarks.push({title: benchmark.nsTitle, index: index});
     });
   } else if (formCode === 'a5') {
+    if (typeof a5Form.components[componentIndex].namespaces === 'undefined') {
+      componentIndex++;
+    }
     a5Form.components[componentIndex].namespaces.forEach((benchmark, index) => {
       benchmarks.push({title: benchmark.nsTitle, index: index});
     });

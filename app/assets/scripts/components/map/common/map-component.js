@@ -38,7 +38,7 @@ export default class MapComponent extends React.Component {
   }
 
   setZoomToDefault () {
-    this.theMap.setZoom(1);
+    this.theMap.flyTo({center: [0, 25], zoom: 1, speed: 1.2});
   }
 
   componentDidMount () {
@@ -103,7 +103,7 @@ export default class MapComponent extends React.Component {
         {children}
         {this.props.downloadButton === true ? <DownloadButton data={canvas} setZoomToDefault={this.setZoomToDefault} /> : null}
         <div style={{backgroundColor: '#ffffff', position: 'absolute', width: '100%', borderBottom: '5px #BC2C2A solid', verticalAlign: 'middle', visibility: 'hidden'}} id='map-picture-header'>
-          <span style={{color: '#BC2C2A', fontSize: '30px', paddingLeft: '20px'}}>Ongoing Operations</span>
+          <span style={{color: '#BC2C2A', fontSize: '30px', paddingLeft: '20px'}}>{this.props.downloadedHeaderTitle}</span>
           <span style={{color: '#BC2C2A', fontSize: '12px', paddingLeft: '10px'}}>({formatDate(currentDate)})</span>
           <div style={{float: 'right', width: '375px', marginRight: '20px'}}>
             <img src="/assets/graphics/layout/logo.png" alt="IFRC GO logo" style={{width: '375px', height: '56px'}} />
@@ -123,6 +123,7 @@ if (environment !== 'production') {
     children: T.node,
     className: T.string,
     noExport: T.bool,
-    downloadButton: T.bool
+    downloadButton: T.bool,
+    downloadedHeaderTitle: T.string
   };
 }
