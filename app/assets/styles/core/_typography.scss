@@ -591,3 +591,14 @@ h4, h5, h6 {
     }
   }
 }
+
+/* Text Styles
+   ========================================================================== */
+
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+.text-semi-bold {
+  font-weight: $base-font-semi-bold;
+}

@@ -546,9 +546,11 @@ class Account extends React.Component {
               value={profile.position}
               onChange={this.onFieldChange.bind(this, 'profile', 'position')} >
             </FormInput>
-            <button type='submit' className={c('button', 'button--large', 'button--secondary-filled', {
-              'disabled': !this.state.isProfileDirty
-            })} title='Save'>Save</button>
+            <div className='text-center'>
+              <button type='submit' className={c('button', 'button--large', 'button--secondary-filled', {
+                'disabled': !this.state.isProfileDirty
+              })} title='Save'>Save</button>
+            </div>
           </form>
         </div>
       </div>
@@ -570,15 +572,18 @@ class Account extends React.Component {
         <div className='fold-container'>
           <section className='fold'>
             <div className='inner'>
-              <div className='fold__header'> <h2 className='fold__title'>Submitted Field Reports</h2>
+              <div className='fold__header'> <h2 className='fold__title margin-reset'>Submitted Field Reports</h2>
+              <hr />
               </div>
               <div className='fold__body'>
                 <ul className='report__list'>
                   {data.map(o => (
                     <li key={o.id} className='report__list--item'>
-                      <div className='report__list--header'>
-                        <Link className='link--primary' to={`/reports/${o.id}`}>{o.summary}</Link>&nbsp;
-                        <span className='report__list--updated'>Last Updated: {DateTime.fromISO(o.updated_at || o.created_at).toISODate()}</span>
+                      <div className='report__list--header list__each__block flex'>
+                        <div>
+                          <Link className='link--primary' to={`/reports/${o.id}`}>{o.summary}</Link>&nbsp;
+                          <div className='report__list--updated global-margin-t'>Last Updated: {DateTime.fromISO(o.updated_at || o.created_at).toISODate()}</div>
+                        </div>
                       </div>
                       <p>{o.description}</p>
                     </li>
@@ -604,7 +609,7 @@ class Account extends React.Component {
     return (
       <form className='form' onSubmit={this.onNotificationSubmit}>
         <div className='fold-container'>
-          <Fold title='Subscription preferences'>
+          <Fold title='Subscription preferences' foldClass='margin-reset'>
             <FormCheckboxGroup
               label='Notification types'
               description={'Set basic notification types.'}
@@ -677,9 +682,11 @@ class Account extends React.Component {
               values={this.state.notifications.per}
               onChange={this.onFieldChange.bind(this, 'notifications', 'per')} />
             {events}
-            <button type='submit' className={c('button', 'button--large', 'button--secondary-filled', {
-              'disabled': !this.state.isNotificationsDirty
-            })} title='Save'>Save</button>
+            <div class="text-center">
+              <button type='submit' className={c('button', 'button--large', 'button--secondary-filled', {
+                'disabled': !this.state.isNotificationsDirty
+              })} title='Save'>Save</button>
+            </div>
           </Fold>
         </div>
       </form>
@@ -782,9 +789,10 @@ class Account extends React.Component {
     return (<div className='fold-container'>
       <section className='fold' id='per-forms'>
         <div className='inner'>
-          <h2 className='fold__title'>New PER Forms</h2>
+          <h2 className='fold__title margin-reset'>New PER Forms</h2>
+          <hr />
           Click on the following links to access the PER forms, where you can select individual National Societies.
-          <hr /><br />
+          <br />
           Choose National Society:&nbsp;
           <select onChange={this.changeChosenCountry}>
             {countryOptions}
@@ -813,9 +821,9 @@ class Account extends React.Component {
             </div>
           </div>
           <br/><br />
-          <h2 className='fold__title'>Active PER Forms</h2>
+          <h2 className='fold__title margin-reset'>Active PER Forms</h2>
           <hr />
-          <span className='' style={{fontWeight: 'bold'}}>{documents}</span>
+          <span className='text-semi-bold'>{documents}</span>
           {this.renderDraftDocuments()}
         </div>
       </section>
@@ -836,9 +844,11 @@ class Account extends React.Component {
             return;
           }
           draftDocuments.push(
-            <div style={{backgroundColor: '#eaeaea', float: 'left', width: '100%', marginBottom: '1rem', padding: '0.25rem 1rem', fontWeight: 'bold'}} key={'draftDocument' + index}>
-              {draftDocument.code.toUpperCase()} - {parsedData.submitted_at !== '' ? parsedData.submitted_at.substring(0, 10) + ' - ' : null} {typeof draftDocument.user !== 'undefined' ? draftDocument.user.username + ' - ' : null} {draftDocument.country.name}
-              <div style={{float: 'right'}}>
+            <div className='list__each__block flex' key={'draftDocument' + index}>
+              <div>
+                {draftDocument.code.toUpperCase()} - {parsedData.submitted_at !== '' ? parsedData.submitted_at.substring(0, 10) + ' - ' : null} {typeof draftDocument.user !== 'undefined' ? draftDocument.user.username + ' - ' : null} {draftDocument.country.name}
+              </div>
+              <div className='list__each__button'>
                 <Link
                   className='button button--small button--secondary-bounded'
                   to={draftDocument.code === 'overview' ? '/per-forms/overview/' + draftDocument.country.id : '/edit-per-forms/' + draftDocument.code + '/' + draftDocument.user.username + '/' + draftDocument.country.id}>
@@ -851,8 +861,9 @@ class Account extends React.Component {
       }
     }
     return (<React.Fragment>
-      <hr /><br/><br />
-      <h2 className='fold__title'>Active drafts</h2>
+      <br/><br />
+      <h2 className='fold__title margin-reset'>Active drafts</h2>
+      <hr />
       {draftDocuments}
     </React.Fragment>);
   }
@@ -873,11 +884,11 @@ class Account extends React.Component {
       Object.keys(this.props.event.event).forEach((eventId) => {
         if (this.props.event.event[eventId].fetched) {
           events.push(
-            <div key={'operations-component' + eventId} style={{width: '50%', float: 'left', marginBottom: '20px'}}>
-              <div style={{width: '70%', float: 'left'}}>
+            <div key={'operations-component' + eventId} className='account__op__block clearfix'>
+              <div className='account__op__each__link'>
                 <Link className={'link--primary'} to={'/emergencies/' + eventId}>{this.props.event.event[eventId].data.name}</Link>
               </div>
-              <div style={{width: '30%', float: 'right', textAlign: 'center'}}>
+              <div className='account__op__each__button'>
                 <button className={'button button--small button--primary-bounded'} onClick={this.delSubscription} id={'followedEvent' + eventId}>Unfollow</button>
               </div>
             </div>
@@ -889,13 +900,13 @@ class Account extends React.Component {
       <section className='fold' id='notifications'>
         <div className='inner'>
           <h2 className='fold__title'>Operations following</h2>
-          <div>
-            <div style={{width: '20%', float: 'left'}}>
-              <div>
+          <div className='clearfix'>
+            <div className='account__op__title'>
+              <div className='text-uppercase'>
                 Operations currently following
               </div>
             </div>
-            <div style={{width: '80%', float: 'left'}}>
+            <div className='account__op__links'>
               {events}
             </div>
           </div>
