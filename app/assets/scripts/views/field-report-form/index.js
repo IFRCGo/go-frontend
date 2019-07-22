@@ -285,7 +285,7 @@ class FieldReportForm extends React.Component {
             property='summary'
           />
         </FormInputSelect>
-
+        {/*
         <FormInput
           label='Start Date'
           type='date'
@@ -298,6 +298,7 @@ class FieldReportForm extends React.Component {
             property='start_date'
           />
         </FormInput>
+        */}
 
         <div className='form__group'>
           <div className='form__inner-header'>
