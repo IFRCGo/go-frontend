@@ -90,7 +90,7 @@ export function prepStateForValidation (state) {
   const formatter = {
     // Step 1.
     assistance: toBool,
-    country: (val) => val.value,
+    country: (val) => val ? val.value : undefined,
     districts: (val) => val.map(o => o.value),
     // countries: (val) => val.value,
     event: (val) => val ? toNumIfNum(val.value) : undefined,
