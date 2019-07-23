@@ -126,7 +126,7 @@
     "prop-types": "^15.6.0",
     "qs": "^6.5.1",
     "react": "^16.0.0",
-    "react-dom": "^16.2.0",
+    "react-dom": "^16.2.1",
     "react-helmet": "^5.2.0",
     "react-markdown": "^3.3.4",
     "react-paginate": "^5.0.0",
