@@ -462,35 +462,35 @@ export function editPerDocument (data) {
 
 export const COLLABORATING_PER_COUNTRY = 'COLLABORATING_PER_COUNTRY';
 export function getCollaboratingPerCountry () {
-  return fetchJSON(`/api/v2/per_country_duedate`, COLLABORATING_PER_COUNTRY, withToken());
+  return fetchJSON(`/api/v2/per_country_duedate/`, COLLABORATING_PER_COUNTRY, withToken());
 }
 
 export const PER_ENGAGED_NS_PERCENTAGE = 'PER_ENGAGED_NS_PERCENTAGE';
 export function getPerEngagedNsPercentage () {
-  return fetchJSON(`api/v2/per_engaged_ns_percentage`, PER_ENGAGED_NS_PERCENTAGE, withToken());
+  return fetchJSON(`api/v2/per_engaged_ns_percentage/`, PER_ENGAGED_NS_PERCENTAGE, withToken());
 }
 
 export const PER_GLOBAL_PREPAREDNESS = 'PER_GLOBAL_PREPAREDNESS';
 export function getPerGlobalPreparedness () {
-  return fetchJSON(`api/v2/per_global_preparedness`, PER_GLOBAL_PREPAREDNESS, withToken());
+  return fetchJSON(`api/v2/per_global_preparedness/`, PER_GLOBAL_PREPAREDNESS, withToken());
 }
 
 export const PER_NS_PHASE = 'PER_NS_PHASE';
 export function getPerNsPhase (countryId = null) {
   const f = buildAPIQS({country: countryId});
-  return fetchJSON(`api/v2/per_ns_phase?${f}`, PER_NS_PHASE, withToken());
+  return fetchJSON(`api/v2/per_ns_phase/?${f}`, PER_NS_PHASE, withToken());
 }
 
 export const PER_OVERVIEW_FORM = 'PER_OVERVIEW_FORM';
 export function getPerOverviewForm (countryId = null, formId = null) {
   const f = buildAPIQS({country: countryId, id: formId});
-  return fetchJSON(`api/v2/peroverview?${f}`, PER_OVERVIEW_FORM, withToken());
+  return fetchJSON(`api/v2/peroverview/?${f}`, PER_OVERVIEW_FORM, withToken());
 }
 
 export const PER_WORK_PLAN = 'PER_WORK_PLAN';
 export function getPerWorkPlan (countryId = null) {
   const f = buildAPIQS({country: countryId});
-  return fetchJSON(`api/v2/perworkplan?${f}`, PER_WORK_PLAN, withToken());
+  return fetchJSON(`api/v2/perworkplan/?${f}`, PER_WORK_PLAN, withToken());
 }
 
 export const PER_SEND_OVERVIEW = 'PER_SEND_OVERVIEW';
@@ -505,16 +505,16 @@ export function sendPerWorkplan (payload) {
 
 export const DELETE_PER_WORKPLAN_API = 'DELETE_PER_WORKPLAN_API';
 export function deletePerWorkplanApi (payload) {
-  return postJSON('api/v2/del_perworkplan', DELETE_PER_WORKPLAN_API, payload, withToken());
+  return postJSON('api/v2/del_perworkplan/', DELETE_PER_WORKPLAN_API, payload, withToken());
 }
 
 export const GET_PER_UPLOADED_DOCUMENTS = 'GET_PER_UPLOADED_DOCUMENTS';
 export function getPerUploadedDocuments (countryId) {
   const f = buildAPIQS({country: countryId});
-  return fetchJSON(`api/v2/perdocs?${f}`, GET_PER_UPLOADED_DOCUMENTS, withToken());
+  return fetchJSON(`api/v2/perdocs/?${f}`, GET_PER_UPLOADED_DOCUMENTS, withToken());
 }
 
 export const GET_PER_MISSION = 'GET_PER_MISSION';
 export function getPerMission () {
-  return fetchJSON(`api/v2/per_mission`, GET_PER_MISSION, withToken());
+  return fetchJSON(`api/v2/per_mission/`, GET_PER_MISSION, withToken());
 }
