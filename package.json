@@ -110,7 +110,7 @@
     "js-yaml": "^3.13.1",
     "local-storage": "^1.4.2",
     "lodash.clonedeep": "^4.5.0",
-    "lodash.defaultsdeep": "^4.6.0",
+    "lodash.defaultsdeep": "^4.6.1",
     "lodash.get": "^4.4.2",
     "lodash.groupby": "^4.6.0",
     "lodash.intersection": "^4.4.0",
