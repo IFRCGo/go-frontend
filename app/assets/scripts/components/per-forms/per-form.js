@@ -287,7 +287,9 @@ export default class PerForm extends React.Component {
       saveDraft={this.saveDraft}
       state={this.state}
       view={view}
-      mode={this.props.mode} />;
+      mode={this.props.mode}
+      ns={parseInt(this.unifiedNs)}
+      formCode={this.formCode} />;
   }
 }
 
