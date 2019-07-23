@@ -62,7 +62,7 @@ export default class HomeCharts extends React.Component {
           <Line type='monotone' dataKey='appeals.count' stroke='#C02C2C' />
           <Line type='monotone' dataKey='drefs.count' stroke='#F39C12' />
           <Tooltip content={contentFormatter}/>
-          <Legend verticalAlign='bottom' iconType='square' iconSize='9' />
+          <Legend verticalAlign='bottom' iconType='circle' iconSize='10' />
         </LineChart>
       </ResponsiveContainer>
     );
