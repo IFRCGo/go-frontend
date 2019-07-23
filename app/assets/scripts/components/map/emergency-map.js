@@ -90,12 +90,29 @@ class EmergencyMap extends React.Component {
               <div className='fold__actions'>
 
               </div>
+              <figcaption className='map-vis__legend map-vis__legend--bottom-right legend'>
+                <div className='deployments-key'>
+                  <div>
+                    <label className='form__label'>Key</label>
+                    <dl className='legend__dl legend__dl--colors'>
+                      <dt className='color color--lightblue'>selected</dt>
+                      <dd>Affected country</dd>
+                      <dt className='color color--maroon'>selected</dt>
+                      <dd>Affected regions</dd>
+                    </dl>
+                    <dl className='legend__dl legend__dl--borders'>
+                      <dt className='border--disputed'>border</dt>
+                      <dd>Disputed borders</dd>
+                    </dl>
+                  </div>
+                </div>
+              </figcaption>
               <div className="map-vis__holder" ref='map'/>
             </figure>
           </div>
           <button className={c('button button--primary-bounded button--export', {
-                  disabled: !this.state.ready
-                })} onClick={() => exportMap(this.theMap)}>Export Map</button>
+            disabled: !this.state.ready
+          })} onClick={() => exportMap(this.theMap)}>Export Map</button>
         </div>
       </div>
     );
