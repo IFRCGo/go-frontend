@@ -37,7 +37,13 @@ class EmergencyMap extends React.Component {
     const bbox = turfBbox(geom);
     theMap.fitBounds(bbox);
     console.log('district codes', districtCodes);
+
     theMap.setFilter('admin1-selected', [
+      'in',
+      'Admin01Cod',
+      ...districtCodes
+    ]);
+    theMap.setFilter('admin1-selected-labels', [
       'in',
       'Admin01Cod',
       ...districtCodes
@@ -47,12 +53,21 @@ class EmergencyMap extends React.Component {
       'Admin00Nam',
       country.name
     ]);
+    theMap.setFilter('admin1-country-selected-boundaries', [
+      '==',
+      'Admin00Nam',
+      country.name
+    ]);
 
+    theMap.setLayoutProperty('admin1-selected', 'visibility', 'visible');
+    theMap.setLayoutProperty('admin1-selected-labels', 'visibility', 'visible');
+    theMap.setLayoutProperty('admin1-country-selected', 'visibility', 'visible');
+    theMap.setLayoutProperty('admin1-country-selected-boundaries', 'visibility', 'visible');
   }
 
   componentDidMount () {
     this.mapLoaded = false;
-    this.theMap = newMap(this.refs.map, 'mapbox://styles/go-ifrc/cjxyje5jk02p51clksrgqcye4');
+    this.theMap = newMap(this.refs.map, 'mapbox://styles/go-ifrc/cjxa3k4cx39a21cqt9qilk9hp');
     this.theMap.on('load', () => {
       this.setupData();
       this.mapLoaded = true;
