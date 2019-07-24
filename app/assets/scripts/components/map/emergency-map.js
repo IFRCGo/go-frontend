@@ -5,6 +5,7 @@ import { PropTypes as T } from 'prop-types';
 import turfBbox from '@turf/bbox';
 import newMap from '../../utils/get-new-map';
 import exportMap from '../../utils/export-map';
+import { DateTime } from 'luxon';
 
 class EmergencyMap extends React.Component {
   constructor (props) {
@@ -19,6 +20,7 @@ class EmergencyMap extends React.Component {
       countries,
       districts
     } = this.props;
+
     const theMap = this.theMap;
     const country = countries[0];
     const countryFilter = [
@@ -71,6 +73,10 @@ class EmergencyMap extends React.Component {
   }
 
   render () {
+    const {
+      name,
+      date
+    } = this.props;
     return (
       <div className='emergency-map'>
         <div className='inner'>
@@ -80,7 +86,9 @@ class EmergencyMap extends React.Component {
             })} onClick={() => exportMap(this.theMap)}>Export Map</button>
           </div>
           <div className='map-container'>
-            <h2 className='visually-hidden'>Emergency</h2>
+            <img src='/assets/graphics/layout/logo.png' alt='IFRC GO logo'/>
+            <h2 className=''>{name}</h2>
+            <h3 className=''>{DateTime.fromISO(date).toLocaleString(DateTime.DATE_FULL)}</h3>
             <figure className='map-vis'>
               <div className='fold__actions'>
 
@@ -104,6 +112,7 @@ class EmergencyMap extends React.Component {
               </figcaption>
               <div className="map-vis__holder" ref='map'/>
             </figure>
+            <p>The maps used do not imply the expresion of any opinion on the part of the International Federation of the Red Cross and Red Crescent Societies or National Societies concerning the legal status of a territory or of its authorities, Map data sources: OCHA, OSM Contributors, ICRC, IFRC. Map design: Netherland Red Cross/IFRC.</p>
           </div>
         </div>
       </div>
@@ -114,7 +123,9 @@ class EmergencyMap extends React.Component {
 if (environment !== 'production') {
   EmergencyMap.propTypes = {
     districts: T.array,
-    countries: T.array
+    countries: T.array,
+    name: T.string,
+    date: T.timestamp
   };
 }
 

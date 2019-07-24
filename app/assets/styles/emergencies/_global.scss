@@ -58,3 +58,11 @@
 .color--blue::before {
   background: #4680F2;
 }
+
+.emergency-map {
+  img {
+    vertical-align: top;
+    height: 3rem;
+    width: auto;
+  }
+}
