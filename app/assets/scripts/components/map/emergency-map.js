@@ -22,11 +22,13 @@ class EmergencyMap extends React.Component {
     this.setState({'isExporting': true});
     const timestamp = new Date();
     const $container = document.getElementById('mapContainer');
+    document.getElementsByClassName('mapboxgl-ctrl-top-right')[0].style.visibility = 'hidden';
     html2canvas($container, {useCORS: true}).then((renderedCanvas) => {
       startDownload(
         renderedCanvas,
         'map-' + timestamp.getTime() + '.png'
       );
+      document.getElementsByClassName('mapboxgl-ctrl-top-right')[0].style.visibility = 'visible';
       this.setState({'isExporting': false});
     });
   }
