@@ -19,6 +19,7 @@ import { get } from '../../utils/utils';
 import EmergenciesLeftMenu from './common/emergencies-left-menu';
 import MarkerLayerStylesheetFactory from './per-map/factory/marker-layer-stylesheet-factory';
 import PerPhaseDropdown from './per-map/per-phase-dropdown';
+import PerTypeDropdown from './per-map/per-type-dropdown';
 
 // const scale = chroma.scale(['#F0C9E8', '#861A70']);
 
@@ -46,6 +47,7 @@ class PerMap extends React.Component {
     // this.setSelectedAppealTypeNeutral = this.setSelectedAppealTypeNeutral.bind(this);
     // this.setSelectedDtypeNeutral = this.setSelectedDtypeNeutral.bind(this);
     this.onPerPhaseChange = this.onPerPhaseChange.bind(this);
+    this.onPerTypeChange = this.onPerTypeChange.bind(this);
   }
 
   componentDidMount () {
@@ -78,6 +80,22 @@ class PerMap extends React.Component {
     } else {
       const data = JSON.parse(JSON.stringify(this.props.data));
       data.data.geoJSON.features = data.data.geoJSON.features.filter((mapObject) => mapObject.properties.phase.phase === chosenId);
+      this.setState({
+        markerGeoJSON: data.data.geoJSON
+      });
+    }
+  }
+
+  onPerTypeChange (event) {
+    const chosenId = parseInt(event.target.value);
+
+    if (chosenId === -1) {
+      this.setState({
+        markerGeoJSON: this.props.data.data.geoJSON
+      });
+    } else {
+      const data = JSON.parse(JSON.stringify(this.props.data));
+      data.data.geoJSON.features = data.data.geoJSON.features.filter((mapObject) => typeof mapObject.properties.overviewData !== 'undefined' && mapObject.properties.overviewData.type_of_capacity_assessment === chosenId);
       this.setState({
         markerGeoJSON: data.data.geoJSON
       });
@@ -194,6 +212,7 @@ class PerMap extends React.Component {
             downloadedHeaderTitle='Preparedness state'>
 
             <PerPhaseDropdown onPerPhaseChange={this.onPerPhaseChange} />
+            <PerTypeDropdown onPerTypeChange={this.onPerTypeChange} />
             <ExplanationBubble />
           </MapComponent>
         </div>
