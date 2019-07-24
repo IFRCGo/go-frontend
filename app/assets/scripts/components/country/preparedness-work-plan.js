@@ -111,8 +111,8 @@ class PreparednessWorkPlan extends React.Component {
     const tableCellStyle = {width: '10%', float: 'left', padding: '5px', overflowWrap: 'break-word'};
     const tableTitleCellStyle = {width: '10%', float: 'left', fontWeight: 'bold', padding: '5px'};
     const tableTitleDoubleCellStyle = {width: '20%', float: 'left', fontWeight: 'bold', padding: '5px'};
-    const lightBackground = {backgroundColor: '#eeeeee'};
-    const darkBackground = {backgroundColor: '#cccccc'};
+    const lightBackground = {backgroundColor: '#fff'};
+    const darkBackground = {backgroundColor: '#fff'};
     const textToCenter = {textAlign: 'center'};
     const inputWidthFitDiv = {width: '100%'};
     this.props.getPerWorkPlan.data.results.forEach((workPlan, index) => {
@@ -174,7 +174,7 @@ class PreparednessWorkPlan extends React.Component {
       benchmarks.push((<option key={'benchmarkList' + index} value={'q' + component.index}>{component.title.length > 135 ? component.title.substring(0, 135) + '...' : component.title}</option>));
     });
     return (
-      <Fold id='per-work-plan' title='Preparedness work plan' wrapper_class='preparedness'>
+      <Fold id='per-work-plan' title='Preparedness work plan' wrapper_class='preparedness' foldClass='margin-reset'>
         <div style={{borderBottom: '1px solid #000', paddingBottom: '20px', float: 'left', width: '100%'}}>
           {!this.state.showAddModul ? <button className='button button--small button--primary-bounded' onClick={this.showAddModul}>Add</button> : null}
 
@@ -289,7 +289,7 @@ class PreparednessWorkPlan extends React.Component {
               </div>
             ) : null}
 
-          <div style={{paddingTop: '20px', float: 'left', width: '100%'}}>
+          <div className='global-margin-2-t'>
             <div style={tableTitleCellStyle}>
               Prioritization
             </div>

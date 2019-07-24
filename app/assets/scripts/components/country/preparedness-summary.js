@@ -47,113 +47,96 @@ class PreparednessSummary extends React.Component {
     const notReviewed = filteredData.filter(component => component.selected_option === 2).length;
 
     return (
-      <Fold id='per-summary' title='PER Componenets And Sub-Component' wrapper_class='preparedness'>
-        <div style={{ width: '16%', float: 'left', padding: '5px' }}>
-          <div style={{ width: '100%', height: '100%', border: '1px solid #000' }}>
-
-            <div style={{ height: '28px', borderBottom: '1px solid #000', padding: '5px' }}>
-              <div style={{ width: '18px', height: '18px', float: 'left', marginRight: '5px' }}>
-                <img src='/assets/graphics/layout/card-tick.svg' style={{ width: '18px', height: '18px', float: 'left' }} />
+      <Fold id='per-summary' title='PER Componenets And Sub-Component' wrapper_class='preparedness' foldClass='margin-reset'>
+        <div className='clearfix'>
+          <div className='component__block__wrap'>
+            <div className='component__block'>
+              <div className='component__block__title__block'>
+                <img src='/assets/graphics/layout/card-tick.svg' className='component__block__icon' />
+                <span className='component__block__title'>
+                  High performance
+                </span>
               </div>
-              <div style={{ textTransform: 'uppercase', fontFamily: 'Poppins', fontSize: '12px', fontWeight: 600, color: '#24334c' }}>
-                High performance
+              <div className='component__block__content'>
+                <span className='component__block__value'>{highPerformance}</span> / {allComponents}<br />
+                COMPONENTS
               </div>
-            </div>
-            <div style={{ width: '100%', textAlign: 'center', fontSize: '12px' }}>
-              <span style={{ fontFamily: 'Poppins', fontSize: '38px', fontWeight: 600, color: '#c02c2c' }}>{highPerformance}</span> of {allComponents}<br />
-              COMPONENTS
-            </div>
 
+            </div>
           </div>
-        </div>
-        <div style={{ width: '16%', float: 'left', padding: '5px' }}>
-          <div style={{ width: '100%', height: '100%', border: '1px solid #000' }}>
-
-            <div style={{ height: '28px', borderBottom: '1px solid #000', padding: '5px' }}>
-              <div style={{ width: '18px', height: '18px', float: 'left', marginRight: '5px' }}>
-                <img src='/assets/graphics/layout/card-tick.svg' style={{ width: '18px', height: '18px', float: 'left' }} />
+          <div className='component__block__wrap'>
+            <div className='component__block'>
+              <div className='component__block__title__block'>
+                <img src='/assets/graphics/layout/card-tick.svg' className='component__block__icon' />
+                <span className='component__block__title'>
+                  Exists
+                </span>
               </div>
-              <div style={{ textTransform: 'uppercase', fontFamily: 'Poppins', fontSize: '12px', fontWeight: 600, color: '#24334c' }}>
-                Exists
+              <div className='component__block__content'>
+                <span className='component__block__value'>{exists}</span> / {allComponents}<br />
+                COMPONENTS
               </div>
-            </div>
-            <div style={{ width: '100%', textAlign: 'center', fontSize: '12px' }}>
-              <span style={{ fontFamily: 'Poppins', fontSize: '38px', fontWeight: 600, color: '#c02c2c' }}>{exists}</span> of {allComponents}<br />
-              COMPONENTS
-            </div>
 
+            </div>
           </div>
-        </div>
-        <div style={{ width: '18%', float: 'left', padding: '5px' }}>
-          <div style={{ width: '100%', height: '100%', border: '1px solid #000' }}>
-
-            <div style={{ height: '28px', borderBottom: '1px solid #000', padding: '5px' }}>
-              <div style={{ width: '18px', height: '18px', float: 'left', marginRight: '5px' }}>
-                <img src='/assets/graphics/layout/card-mid-line.svg' style={{ width: '18px', height: '18px', float: 'left' }} />
+          <div className='component__block__wrap'>
+            <div className='component__block'>
+              <div className='component__block__title__block'>
+                <img src='/assets/graphics/layout/card-mid-line.svg' className='component__block__icon' />
+                <span className='component__block__title'>
+                  Needs improvement
+                </span>
               </div>
-              <div style={{ textTransform: 'uppercase', fontFamily: 'Poppins', fontSize: '12px', fontWeight: 600, color: '#24334c' }}>
-                Needs improvement
+              <div className='component__block__content'>
+                <span className='component__block__value'>{needsImprovement}</span> / {allComponents}<br />
+                COMPONENTS
               </div>
-            </div>
-            <div style={{ width: '100%', textAlign: 'center', fontSize: '12px' }}>
-              <span style={{ fontFamily: 'Poppins', fontSize: '38px', fontWeight: 600, color: '#c02c2c' }}>{needsImprovement}</span> of {allComponents}<br />
-              COMPONENTS
-            </div>
 
+            </div>
           </div>
-        </div>
-        <div style={{ width: '18%', float: 'left', padding: '5px' }}>
-          <div style={{ width: '100%', height: '100%', border: '1px solid #000' }}>
-
-            <div style={{ height: '28px', borderBottom: '1px solid #000', padding: '5px' }}>
-              <div style={{ width: '18px', height: '18px', float: 'left', marginRight: '5px' }}>
-                <img src='/assets/graphics/layout/card-mid-line.svg' style={{ width: '18px', height: '18px', float: 'left' }} />
+          <div className='component__block__wrap'>
+            <div className='component__block'>
+              <div className='component__block__title__block'>
+                <img src='/assets/graphics/layout/card-mid-line.svg' className='component__block__icon' />
+                <span className='component__block__title'>
+                  Partially exists
+                </span>
               </div>
-              <div style={{ textTransform: 'uppercase', fontFamily: 'Poppins', fontSize: '12px', fontWeight: 600, color: '#24334c' }}>
-                Partially exists
+              <div className='component__block__content'>
+                <span className='component__block__value'>{partiallyExists}</span> / {allComponents}<br />
+                COMPONENTS
               </div>
-            </div>
-            <div style={{ width: '100%', textAlign: 'center', fontSize: '12px' }}>
-              <span style={{ fontFamily: 'Poppins', fontSize: '38px', fontWeight: 600, color: '#c02c2c' }}>{partiallyExists}</span> of {allComponents}<br />
-              COMPONENTS
-            </div>
 
+            </div>
           </div>
-        </div>
-        <div style={{ width: '16%', float: 'left', padding: '5px' }}>
-          <div style={{ width: '100%', height: '100%', border: '1px solid #000' }}>
-
-            <div style={{ height: '28px', borderBottom: '1px solid #000', padding: '5px' }}>
-              <div style={{ width: '18px', height: '18px', float: 'left', marginRight: '5px' }}>
-                <img src='/assets/graphics/layout/card-x.svg' style={{ width: '18px', height: '18px', float: 'left' }} />
+          <div className='component__block__wrap'>
+            <div className='component__block'>
+              <div className='component__block__title__block'>
+                <img src='/assets/graphics/layout/card-x.svg' className='component__block__icon' />
+                <span className='component__block__title'>
+                  Does not exist
+                </span>
               </div>
-              <div style={{ textTransform: 'uppercase', fontFamily: 'Poppins', fontSize: '12px', fontWeight: 600, color: '#24334c' }}>
-                Does not exist
+              <div className='component__block__content'>
+                <span className='component__block__value'>{doesNotExist}</span> / {allComponents}<br />
+                COMPONENTS
               </div>
-            </div>
-            <div style={{ width: '100%', textAlign: 'center', fontSize: '12px' }}>
-              <span style={{ fontFamily: 'Poppins', fontSize: '38px', fontWeight: 600, color: '#c02c2c' }}>{doesNotExist}</span> of {allComponents}<br />
-              COMPONENTS
-            </div>
 
+            </div>
           </div>
-        </div>
-        <div style={{ width: '16%', float: 'left', padding: '5px' }}>
-          <div style={{ width: '100%', height: '100%', border: '1px solid #000' }}>
-
-            <div style={{ height: '28px', borderBottom: '1px solid #000', padding: '5px' }}>
-              <div style={{ width: '18px', height: '18px', float: 'left', marginRight: '5px' }}>
-                <img src='/assets/graphics/layout/card-x.svg' style={{ width: '18px', height: '18px', float: 'left' }} />
+          <div className='component__block__wrap'>
+            <div className='component__block'>
+              <div className='component__block__title__block'>
+                <img src='/assets/graphics/layout/card-x.svg' className='component__block__icon' />
+                <span className='component__block__title'>
+                  Not reviewed
+                </span>
               </div>
-              <div style={{ textTransform: 'uppercase', fontFamily: 'Poppins', fontSize: '12px', fontWeight: 600, color: '#24334c' }}>
-                Not reviewed
+              <div className='component__block__content'>
+                <span className='component__block__value'>{notReviewed}</span> / {allComponents}<br />
+                COMPONENTS
               </div>
             </div>
-            <div style={{ width: '100%', textAlign: 'center', fontSize: '12px' }}>
-              <span style={{ fontFamily: 'Poppins', fontSize: '38px', fontWeight: 600, color: '#c02c2c' }}>{notReviewed}</span> of {allComponents}<br />
-              COMPONENTS
-            </div>
-
           </div>
         </div>
       </Fold>

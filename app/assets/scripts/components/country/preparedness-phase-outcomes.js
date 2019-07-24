@@ -9,10 +9,10 @@ import Fold from '../fold';
 class PreparednessPhaseOutcomes extends React.Component {
   render () {
     if (typeof this.props.getPerUploadedDocuments.data.results === 'undefined') return null;
-    const header = {float: 'left', borderBottom: '1px solid #000000', padding: '10px', width: '100%'};
+    const header = {float: 'left', padding: '10px', width: '100%'};
     const body = {float: 'left', padding: '5px', width: '100%'};
     const boxContainer = {float: 'left', padding: '10px', width: '100%'};
-    const boxInner = {float: 'left', width: '100%', height: '100%', border: '1px solid #000', padding: '5px'};
+    const boxInner = {float: 'left', width: '100%', height: '100%', borderBottom: '1px solid rgba(0,0,0,0.1)', padding: '5px'};
     const title = {fontWeight: 'bold'};
     const links = [];
     this.props.getPerUploadedDocuments.data.results.forEach((link, index) => {
@@ -23,7 +23,7 @@ class PreparednessPhaseOutcomes extends React.Component {
       }
     });
     return (
-      <Fold id='per-outcomes' title='PER Phase Outcomes' wrapper_class='preparedness'>
+      <Fold id='per-outcomes' title='PER Phase Outcomes' wrapper_class='preparedness' foldClass='margin-reset'>
         <div style={header}>
           <a href='https://dsgocdnapi.azureedge.net/admin/per/nicedocument/' target='_blank' className='button button--small button--primary-bounded'>Upload</a>&nbsp;
         </div>

@@ -145,8 +145,11 @@ class EruTable extends SFPComponent {
         };
       });
 
+      const foldLink = this.props.viewAll ? (
+        <Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || 'View all deployed ERUs'}</Link>
+      ) : null;
       return (
-        <Fold title={`${title} (${n(data.count)})`} id={this.props.id} wrapperClass='table__container'>
+        <Fold title={`${title} (${n(data.count)})`} id={this.props.id} wrapperClass='table__container' navLink={foldLink} foldClass='fold__title--inline'>
           {this.props.showExport ? (
             <ExportButton filename='deployed-erus'
               qs={this.getQs(this.props)}
@@ -160,11 +163,6 @@ class EruTable extends SFPComponent {
             page={this.state.table.page - 1}
             onPageChange={this.handlePageChange.bind(this, 'table')}
           />
-          {this.props.viewAll ? (
-            <div className='fold__footer'>
-              <Link className='link--primary export--link' to={this.props.viewAll}>{this.props.viewAllText || 'View all deployed ERUs'}</Link>
-            </div>
-          ) : null}
         </Fold>
       );
     }

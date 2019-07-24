@@ -195,8 +195,9 @@ class EmergenciesTable extends SFPComponent {
         noPaginate
       } = this.props;
 
+      const foldLink = this.props.viewAll ? (<Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || 'View all emergencies'}</Link>) : null;
       return (
-        <Fold title={`${title} (${n(data.count)})`} id={this.props.id}>
+        <Fold foldClass='fold__title--inline margin-reset' navLink={foldLink} title={`${title} (${n(data.count)})`} id={this.props.id}>
           {this.props.showExport ? (
             <ExportButton filename='emergencies'
               qs={this.getQs(this.props)}
@@ -211,11 +212,6 @@ class EmergenciesTable extends SFPComponent {
             onPageChange={this.handlePageChange.bind(this, 'table')}
             noPaginate={noPaginate}
           />
-          {this.props.viewAll ? (
-            <div className='fold__footer'>
-              <Link className='link--primary export--link' to={this.props.viewAll}>{this.props.viewAllText || 'View all emergencies'}</Link>
-            </div>
-          ) : null}
         </Fold>
       );
     }
