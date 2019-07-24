@@ -144,10 +144,10 @@ class EruTable extends SFPComponent {
           equipment: o.equipment_units
         };
       });
-      
+
       const foldLink = this.props.viewAll ? (
-              <Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || 'View all deployed ERUs'}</Link>
-          ) : null
+        <Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || 'View all deployed ERUs'}</Link>
+      ) : null;
       return (
         <Fold title={`${title} (${n(data.count)})`} id={this.props.id} wrapperClass='table__container' navLink={foldLink} foldClass='fold__title--inline'>
           {this.props.showExport ? (

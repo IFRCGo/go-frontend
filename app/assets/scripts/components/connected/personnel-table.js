@@ -162,8 +162,8 @@ class PersonnelTable extends SFPComponent {
       }));
 
       const foldLink = this.props.viewAll ? (
-              <Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || 'View all deployed personnel'}</Link>
-          ) : null;
+        <Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || 'View all deployed personnel'}</Link>
+      ) : null;
 
       return (
         <Fold title={`${title} (${n(data.count)})`} navLink={foldLink} id={this.props.id} wrapperClass='table__container' foldClass='fold__title--inline'>
@@ -180,7 +180,7 @@ class PersonnelTable extends SFPComponent {
             page={this.state.table.page - 1}
             onPageChange={this.handlePageChange.bind(this, 'table')}
             paginate={this.props.noPaginate}
-          />          
+          />
         </Fold>
       );
     }
