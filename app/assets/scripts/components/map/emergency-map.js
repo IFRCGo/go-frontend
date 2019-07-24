@@ -4,15 +4,31 @@ import { environment } from '../../config';
 import { PropTypes as T } from 'prop-types';
 import turfBbox from '@turf/bbox';
 import newMap from '../../utils/get-new-map';
-import exportMap from '../../utils/export-map';
+import html2canvas from 'html2canvas';
+import { startDownload } from '../../utils/download-starter';
+// import exportMap from '../../utils/export-map';
 import { DateTime } from 'luxon';
 
 class EmergencyMap extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      ready: false
+      ready: false,
+      isExporting: false
     };
+  }
+
+  exportMap () {
+    this.setState({'isExporting': true});
+    const timestamp = new Date();
+    const $container = document.getElementById('mapContainer');
+    html2canvas($container, {useCORS: true}).then((renderedCanvas) => {
+      startDownload(
+        renderedCanvas,
+        'map-' + timestamp.getTime() + '.png'
+      );
+      this.setState({'isExporting': false});
+    });
   }
 
   setupData () {
@@ -77,18 +93,21 @@ class EmergencyMap extends React.Component {
       name,
       date
     } = this.props;
+    const exportStyle = {
+      display: this.state.isExporting ? 'block' : 'none'
+    };
     return (
       <div className='emergency-map'>
         <div className='inner'>
           <div className='row text-right'>
             <button className={c('button button--primary-bounded button--export global-margin-3-b', {
               disabled: !this.state.ready
-            })} onClick={() => exportMap(this.theMap)}>Export Map</button>
+            })} onClick={this.exportMap.bind(this)}>Export Map</button>
           </div>
-          <div className='map-container'>
-            <img src='/assets/graphics/layout/logo.png' alt='IFRC GO logo'/>
-            <h2 className=''>{name}</h2>
-            <h3 className=''>{DateTime.fromISO(date).toLocaleString(DateTime.DATE_FULL)}</h3>
+          <div className='map-container' id='mapContainer'>
+            <img style={exportStyle} className='' src='/assets/graphics/layout/logo.png' alt='IFRC GO logo'/>
+            <h2 style={exportStyle} className=''>{name}</h2>
+            <h3 style={exportStyle} className=''>{DateTime.fromISO(date).toLocaleString(DateTime.DATE_FULL)}</h3>
             <figure className='map-vis'>
               <div className='fold__actions'>
 
@@ -112,7 +131,7 @@ class EmergencyMap extends React.Component {
               </figcaption>
               <div className="map-vis__holder" ref='map'/>
             </figure>
-            <p>The maps used do not imply the expresion of any opinion on the part of the International Federation of the Red Cross and Red Crescent Societies or National Societies concerning the legal status of a territory or of its authorities, Map data sources: OCHA, OSM Contributors, ICRC, IFRC. Map design: Netherland Red Cross/IFRC.</p>
+            <p style={exportStyle} className=''>The maps used do not imply the expresion of any opinion on the part of the International Federation of the Red Cross and Red Crescent Societies or National Societies concerning the legal status of a territory or of its authorities, Map data sources: OCHA, OSM Contributors, ICRC, IFRC. Map design: Netherland Red Cross/IFRC.</p>
           </div>
         </div>
       </div>
