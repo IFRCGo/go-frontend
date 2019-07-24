@@ -107,10 +107,10 @@ class EmergencyMap extends React.Component {
             })} onClick={this.exportMap.bind(this)}>Export Map</button>
           </div>
           <div className='map-container' id='mapContainer'>
-            <div className='global-margin'>
-              <img style={exportStyle} className='' src='/assets/graphics/layout/logo.png' alt='IFRC GO logo'/>
-              <h2 style={exportStyle} className='map__container__title'>{name}</h2>
-              <div style={exportStyle} className=''>{DateTime.fromISO(date).toLocaleString(DateTime.DATE_FULL)}</div>
+            <div style={exportStyle} className='global-margin'>
+              <img className='' src='/assets/graphics/layout/logo.png' alt='IFRC GO logo'/>
+              <h2 className='map__container__title'>{name}</h2>
+              <div className=''>{DateTime.fromISO(date).toLocaleString(DateTime.DATE_FULL)}</div>
             </div>
             <figure className='map-vis'>
               <div className='fold__actions'>
