@@ -27,6 +27,7 @@ class EmergencyMap extends React.Component {
       country.iso.toUpperCase()
     ];
     const districtCodes = districts.map(d => d.code);
+    const districtIds = districts.map(d => d.id);
     const countryPolys = theMap.queryRenderedFeatures({'layers': ['country'], 'filter': countryFilter});
     const geom = countryPolys[0].geometry;
     const bbox = turfBbox(geom);
@@ -39,8 +40,8 @@ class EmergencyMap extends React.Component {
     ]);
     theMap.setFilter('admin1-selected-labels', [
       'in',
-      'Admin01Cod',
-      ...districtCodes
+      'id',
+      ...districtIds
     ]);
     theMap.setFilter('admin1-country-selected', [
       '==',
