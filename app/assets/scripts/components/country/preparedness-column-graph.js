@@ -61,7 +61,7 @@ class PreparednessColumnBar extends React.Component {
     const tmpData = this.buildDataForGraph();
     const groupedData = this.buildGroupedData(tmpData);
     return (
-      <Fold id='per-column-graph' title='PER components results' wrapper_class='preparedness'>
+      <Fold id='per-column-graph' title='PER components results' wrapper_class='preparedness' foldClass='margin-reset'>
         <div style={{width: 'fit-content', margin: 'auto'}}>
           <BarChart
             width={900}
@@ -74,9 +74,9 @@ class PreparednessColumnBar extends React.Component {
             <XAxis dataKey='name' hide />
             <YAxis type='number' ticks={[2, 3, 4, 5, 6, 7]} tickFormatter={(number) => this.requestFactory.numAnswerToString(number)} />
             <Tooltip formatter={(number) => number > 1 ? this.requestFactory.numAnswerToString(number) : 'No data'} />
-            <Legend />
-            <Bar dataKey="epi" fill="#8884d8" />
-            <Bar dataKey="component" fill="#82ca9d" />
+            <Legend iconType='circle' />
+            <Bar dataKey="epi" fill="#7e95ba" />
+            <Bar dataKey="component" fill="#24334c" />
           </BarChart>
         </div>
       </Fold>

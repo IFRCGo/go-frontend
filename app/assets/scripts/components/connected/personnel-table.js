@@ -161,8 +161,12 @@ class PersonnelTable extends SFPComponent {
         emer: o.deployment && o.deployment.event_deployed_to ? <Link to={`/emergencies/${o.deployment.event_deployed_to.id}`} className='link--primary' title='View Country'>{o.deployment.event_deployed_to.name}</Link> : nope
       }));
 
+      const foldLink = this.props.viewAll ? (
+              <Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || 'View all deployed personnel'}</Link>
+          ) : null;
+
       return (
-        <Fold title={`${title} (${n(data.count)})`} id={this.props.id} wrapperClass='table__container'>
+        <Fold title={`${title} (${n(data.count)})`} navLink={foldLink} id={this.props.id} wrapperClass='table__container' foldClass='fold__title--inline'>
           {this.props.showExport ? (
             <ExportButton filename='deployed-personnel'
               qs={this.getQs(this.props)}
@@ -176,12 +180,7 @@ class PersonnelTable extends SFPComponent {
             page={this.state.table.page - 1}
             onPageChange={this.handlePageChange.bind(this, 'table')}
             paginate={this.props.noPaginate}
-          />
-          {this.props.viewAll ? (
-            <div className='fold__footer'>
-              <Link className='link--primary export--link' to={this.props.viewAll}>{this.props.viewAllText || 'View all deployed personnel'}</Link>
-            </div>
-          ) : null}
+          />          
         </Fold>
       );
     }
