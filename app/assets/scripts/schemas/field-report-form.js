@@ -16,7 +16,7 @@ export const step1 = {
       type: 'number',
       minimum: 0
     },
-    start_date: {
+    startDate: {
       type: 'string'
     },
     country: {

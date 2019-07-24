@@ -287,10 +287,10 @@ class FieldReportForm extends React.Component {
         <FormInput
           label='Start Date'
           type='date'
-          name='start_date'
-          id='start_date'
-          value={this.state.data.start_date}
-          onChange={this.onFieldChange.bind(this, 'start_date')}
+          name='startDate'
+          id='startDate'
+          value={this.state.data.startDate}
+          onChange={this.onFieldChange.bind(this, 'startDate')}
           description='Start date is when some significant effects are felt or when the first significant impact is felt.'
         >
           <FormError

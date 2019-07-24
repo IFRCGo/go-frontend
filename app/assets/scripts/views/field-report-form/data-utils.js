@@ -138,7 +138,8 @@ export function convertStateToPayload (originalState) {
     country,
     disasterType,
     districts,
-    event
+    event,
+    startDate
   } = originalState;
 
   // Process properties.
@@ -148,10 +149,12 @@ export function convertStateToPayload (originalState) {
   if (event && event.value) { state.event = +event.value; }
   if (country) { state.countries = [country.value]; }
 
+  // set start_date to DateTime format
+  if (startDate) { state.start_date = startDate + 'T00:00:00+01:00'; }
+
   const directMapping = [
     // [source, destination]
     ['summary', 'summary'],
-    ['start_date', 'start_date'],
     ['description', 'description'],
     ['status', 'status'],
     ['bulletin', 'bulletin'],
@@ -305,7 +308,7 @@ export function getInitialDataState () {
     // countries: [],
     districts: [],
     status: '9', // default to "Event"
-    start_date: undefined,
+    startDate: undefined,
     visibility: '1',
     disasterType: undefined,
     event: undefined,
@@ -408,7 +411,7 @@ export function convertFieldReportToState (fieldReport) {
     // [source, destination]
     ['summary', 'summary'],
     ['description', 'description'],
-    ['start_date', 'start_date'],
+    ['start_date', 'startDate'],
     ['num_assisted', 'numAssistedRedCross'],
     ['gov_num_assisted', 'numAssistedGov'],
     ['num_localstaff', 'numLocalStaff'],
