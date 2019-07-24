@@ -29,6 +29,7 @@ export function startDownload (renderedCanvas, filename) {
     link.innerHTML = 'Download';
     document.body.appendChild(link);
     link.click();
+    document.body.removeChild(link);
   }
 
   hideAllAlert();
