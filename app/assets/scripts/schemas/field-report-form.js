@@ -16,13 +16,9 @@ export const step1 = {
       type: 'number',
       minimum: 0
     },
-    // countries: {
-    //   type: 'array',
-    //   minItems: 1,
-    //   items: {
-    //     enum: getValidValues(formData.countries, 'value')
-    //   }
-    // },
+    start_date: {
+      type: 'string'
+    },
     country: {
       type: 'string',
       enum: getValidValues(formData.countries, 'value')
@@ -60,7 +56,7 @@ export const step2 = {
       items: {
         properties: {
           estimation: { type: 'number', minimum: 0 },
-          source: {enum: ['red-cross', 'government']}
+          source: {enum: ['red-cross', 'government', 'other']}
         }
       }
     }

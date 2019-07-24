@@ -284,12 +284,13 @@ class FieldReportForm extends React.Component {
             property='summary'
           />
         </FormInputSelect>
-        {/*
         <FormInput
           label='Start Date'
           type='date'
           name='start_date'
           id='start_date'
+          value={this.state.data.start_date}
+          onChange={this.onFieldChange.bind(this, 'start_date')}
           description='Start date is when some significant effects are felt or when the first significant impact is felt.'
         >
           <FormError
@@ -297,7 +298,6 @@ class FieldReportForm extends React.Component {
             property='start_date'
           />
         </FormInput>
-        */}
 
         <div className='form__group'>
           <div className='form__inner-header'>

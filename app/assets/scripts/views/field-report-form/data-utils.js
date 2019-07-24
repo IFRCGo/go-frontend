@@ -151,6 +151,7 @@ export function convertStateToPayload (originalState) {
   const directMapping = [
     // [source, destination]
     ['summary', 'summary'],
+    ['start_date', 'start_date'],
     ['description', 'description'],
     ['status', 'status'],
     ['bulletin', 'bulletin'],
@@ -254,7 +255,7 @@ export function convertStateToPayload (originalState) {
   //   { ctype: "originator", name: 'John', title: 'Medic', email: 'john@gmail.com' },
   //   { ctype: "primary" ... }
   // ]
-  const contatcsMapping = [
+  const contactsMapping = [
     // [state var, contact type]
     ['contactOriginator', 'Originator'],
     ['contactPrimary', 'Primary'],
@@ -264,7 +265,7 @@ export function convertStateToPayload (originalState) {
     ['contactMedia', 'Media']
   ];
 
-  state.contacts = contatcsMapping.map(([src, contactType]) => {
+  state.contacts = contactsMapping.map(([src, contactType]) => {
     return {
       ctype: contactType,
       name: originalState[src].name || '',
@@ -303,7 +304,8 @@ export function getInitialDataState () {
     country: undefined,
     // countries: [],
     districts: [],
-    status: undefined,
+    status: '9', // default to "Event"
+    start_date: undefined,
     visibility: '1',
     disasterType: undefined,
     event: undefined,
@@ -406,6 +408,7 @@ export function convertFieldReportToState (fieldReport) {
     // [source, destination]
     ['summary', 'summary'],
     ['description', 'description'],
+    ['start_date', 'start_date'],
     ['num_assisted', 'numAssistedRedCross'],
     ['gov_num_assisted', 'numAssistedGov'],
     ['num_localstaff', 'numLocalStaff'],
@@ -449,6 +452,12 @@ export function convertFieldReportToState (fieldReport) {
       sourceEstimation.push({
         source: 'government',
         estimation: fieldReport[`gov_${src}`].toString()
+      });
+    }
+    if (fieldReport[`other_${src}`] !== null) {
+      sourceEstimation.push({
+        source: 'other',
+        estimation: fieldReport[`other_${src}`].toString()
       });
     }
     if (sourceEstimation.length) {
