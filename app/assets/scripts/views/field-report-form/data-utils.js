@@ -189,6 +189,8 @@ export function convertStateToPayload (originalState) {
         state[dest] = o.estimation;
       } else if (o.source === 'government') {
         state[`gov_${dest}`] = o.estimation;
+      } else if (o.source === 'other') {
+        state[`other_${dest}`] = o.estimation;
       }
     });
   });
