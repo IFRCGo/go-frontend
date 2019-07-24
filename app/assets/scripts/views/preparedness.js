@@ -32,6 +32,8 @@ class Preparedness extends React.Component {
       perPerMission: false
     };
     this.geoJsonBuilt = false;
+    this.collaboratingPerCountryBuilt = false;
+    this.perNsPhaseBuilt = false;
   }
 
   componentDidMount () {
@@ -45,7 +47,7 @@ class Preparedness extends React.Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (nextProps.collaboratingPerCountry.receivedAt !== this.props.collaboratingPerCountry.receivedAt) {
+    if (nextProps.collaboratingPerCountry.fetched && !this.collaboratingPerCountryBuilt) {
       const geoJson = {
         type: 'FeatureCollection',
         features: []
@@ -68,11 +70,10 @@ class Preparedness extends React.Component {
         return perForm;
       });
       this.setState({geoJsonFinal: {error: false, fetched: true, fetching: false, receivedAt: false, data: {geoJSON: geoJson}}});
-      // const grouped = _groupBy(this.props.collaboratingPerCountry.data.results.filter(perForm => perForm.country), 'country.iso');
+      this.collaboratingPerCountryBuilt = true;
     }
 
-    if (nextProps.getPerNsPhase.fetched && nextProps.collaboratingPerCountry.fetched && this.geoJsonBuilt === false && this.state.geoJsonFinal !== null) {
-      this.geoJsonBuilt = true;
+    if (nextProps.getPerNsPhase.fetched && this.collaboratingPerCountryBuilt && !this.geoJsonBuilt && this.state.geoJsonFinal !== null) {
       const builtGeoJson = this.state.geoJsonFinal;
 
       builtGeoJson.data.geoJSON.features.map((mapObject) => {
@@ -83,8 +84,22 @@ class Preparedness extends React.Component {
         }
         return mapObject;
       });
+      this.perNsPhaseBuilt = true;
+    }
 
+    if (this.collaboratingPerCountryBuilt && this.perNsPhaseBuilt && !this.geoJsonBuilt && nextProps.perOverviewForm.fetched) {
+      const builtGeoJson = JSON.parse(JSON.stringify(this.state.geoJsonFinal));
+      builtGeoJson.data.geoJSON.features.map((dataPoint) => {
+        nextProps.perOverviewForm.data.results.forEach((overviewForm) => {
+          if (dataPoint.properties.country.id === overviewForm.country.id) {
+            dataPoint.properties.overviewData = overviewForm;
+            return false;
+          }
+        });
+        return dataPoint;
+      });
       this.setState({geoJsonFinal: builtGeoJson});
+      this.geoJsonBuilt = true;
     }
 
     if (!this.props.perWorkPlan.fetched && nextProps.perWorkPlan.fetched && !(typeof nextProps.perWorkPlan.error !== 'undefined' && nextProps.perWorkPlan.error !== null)) {
