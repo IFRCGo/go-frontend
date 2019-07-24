@@ -4,14 +4,33 @@ import { environment } from '../../config';
 import { PropTypes as T } from 'prop-types';
 import turfBbox from '@turf/bbox';
 import newMap from '../../utils/get-new-map';
-import exportMap from '../../utils/export-map';
+import html2canvas from 'html2canvas';
+import { startDownload } from '../../utils/download-starter';
+// import exportMap from '../../utils/export-map';
+import { DateTime } from 'luxon';
 
 class EmergencyMap extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      ready: false
+      ready: false,
+      isExporting: false
     };
+  }
+
+  exportMap () {
+    this.setState({'isExporting': true});
+    const timestamp = new Date();
+    const $container = document.getElementById('mapContainer');
+    document.getElementsByClassName('mapboxgl-ctrl-top-right')[0].style.visibility = 'hidden';
+    html2canvas($container, {useCORS: true}).then((renderedCanvas) => {
+      startDownload(
+        renderedCanvas,
+        'map-' + timestamp.getTime() + '.png'
+      );
+      document.getElementsByClassName('mapboxgl-ctrl-top-right')[0].style.visibility = 'visible';
+      this.setState({'isExporting': false});
+    });
   }
 
   setupData () {
@@ -19,6 +38,7 @@ class EmergencyMap extends React.Component {
       countries,
       districts
     } = this.props;
+
     const theMap = this.theMap;
     const country = countries[0];
     const countryFilter = [
@@ -27,6 +47,7 @@ class EmergencyMap extends React.Component {
       country.iso.toUpperCase()
     ];
     const districtCodes = districts.map(d => d.code);
+    const districtIds = districts.map(d => d.id);
     const countryPolys = theMap.queryRenderedFeatures({'layers': ['country'], 'filter': countryFilter});
     const geom = countryPolys[0].geometry;
     const bbox = turfBbox(geom);
@@ -39,8 +60,8 @@ class EmergencyMap extends React.Component {
     ]);
     theMap.setFilter('admin1-selected-labels', [
       'in',
-      'Admin01Cod',
-      ...districtCodes
+      'id',
+      ...districtIds
     ]);
     theMap.setFilter('admin1-country-selected', [
       '==',
@@ -70,16 +91,27 @@ class EmergencyMap extends React.Component {
   }
 
   render () {
+    const {
+      name,
+      date
+    } = this.props;
+    const exportStyle = {
+      display: this.state.isExporting ? 'block' : 'none'
+    };
     return (
       <div className='emergency-map'>
         <div className='inner'>
           <div className='row text-right'>
             <button className={c('button button--primary-bounded button--export global-margin-3-b', {
               disabled: !this.state.ready
-            })} onClick={() => exportMap(this.theMap)}>Export Map</button>
+            })} onClick={this.exportMap.bind(this)}>Export Map</button>
           </div>
-          <div className='map-container'>
-            <h2 className='visually-hidden'>Emergency</h2>
+          <div className='map-container' id='mapContainer'>
+            <div style={exportStyle} className='global-margin'>
+              <img className='' src='/assets/graphics/layout/logo.png' alt='IFRC GO logo'/>
+              <h2 className='map__container__title'>{name}</h2>
+              <div className=''>{DateTime.fromISO(date).toLocaleString(DateTime.DATE_FULL)}</div>
+            </div>
             <figure className='map-vis'>
               <div className='fold__actions'>
 
@@ -103,6 +135,7 @@ class EmergencyMap extends React.Component {
               </figcaption>
               <div className="map-vis__holder" ref='map'/>
             </figure>
+            <p style={exportStyle} className='map__container__disclaimer'>The maps used do not imply the expresion of any opinion on the part of the International Federation of the Red Cross and Red Crescent Societies or National Societies concerning the legal status of a territory or of its authorities, Map data sources: OCHA, OSM Contributors, ICRC, IFRC. Map design: Netherland Red Cross/IFRC.</p>
           </div>
         </div>
       </div>
@@ -113,7 +146,9 @@ class EmergencyMap extends React.Component {
 if (environment !== 'production') {
   EmergencyMap.propTypes = {
     districts: T.array,
-    countries: T.array
+    countries: T.array,
+    name: T.string,
+    date: T.string
   };
 }
 

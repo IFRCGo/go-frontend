@@ -231,3 +231,17 @@
   font-style: italic;
   color: $light-base-color;
 }
+
+.map__container__title {
+  font-weight: $base-font-regular;
+  margin: ($global-spacing/2 0 0 0);
+}
+
+h2.map__container__title {
+  font-size: 150%;
+}
+
+.map__container__disclaimer {
+  font-size: $font-size-xs;
+  padding: $global-spacing ($global-spacing/2);
+}
