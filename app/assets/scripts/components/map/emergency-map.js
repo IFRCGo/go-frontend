@@ -146,7 +146,7 @@ if (environment !== 'production') {
     districts: T.array,
     countries: T.array,
     name: T.string,
-    date: T.timestamp
+    date: T.string
   };
 }
 
