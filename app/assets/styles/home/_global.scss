@@ -455,6 +455,15 @@
   }
 }
 
+.legend__dl--borders {
+  dd {
+    padding-top: 5px;
+  }
+  .border--disputed {
+    border-bottom: 1px dashed #456978;
+  }
+}
+
 .legend__dl--colors {
   .color {
     &::before {
@@ -484,6 +493,13 @@
     background: #4680F2;
   }
 
+  .color--maroon::before {
+    background: #bf2b2b;
+  }
+  .color--lightblue::before {
+    background: #97acb3;
+  }
+  
   .color--a1-form::before {
     background: #42c5f5;
   }

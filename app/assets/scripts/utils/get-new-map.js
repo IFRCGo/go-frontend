@@ -3,11 +3,11 @@ import mapboxgl from 'mapbox-gl';
 import { mbtoken } from '../config';
 
 export const source = 'SOURCE';
-export default function newMap (container) {
+export default function newMap (container, mapStyle = 'mapbox://styles/go-ifrc/cjkdzcum95m7l2sqgo3i7cv4q') {
   mapboxgl.accessToken = mbtoken;
   const map = new mapboxgl.Map({
     container: container,
-    style: 'mapbox://styles/go-ifrc/cjkdzcum95m7l2sqgo3i7cv4q',
+    style: mapStyle,
     zoom: 1.5,
     minZoom: 1,
     maxZoom: 6,
