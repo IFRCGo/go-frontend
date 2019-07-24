@@ -85,7 +85,8 @@ export default class SourceEstimation extends React.Component {
                 name={`${name}[${idx}][source]`}
                 options={[
                   {label: 'Red Cross', value: 'red-cross'},
-                  {label: 'Government', value: 'government'}
+                  {label: 'Government', value: 'government'},
+                  {label: 'Other', value: 'other'}
                 ]}
                 classLabel={c('label-secondary', {'visually-hidden': idx > 0})}
                 classWrapper='estimation__item'
