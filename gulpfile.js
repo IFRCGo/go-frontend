@@ -4,6 +4,7 @@ var fs = require('fs');
 var cp = require('child_process');
 var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
+var uglifyEs = require('gulp-uglify-es').default;
 var del = require('del');
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
@@ -256,7 +257,8 @@ gulp.task('html', ['styles'], function () {
     }))
     // Do not compress comparisons, to avoid MapboxGLJS minification issue
     // https://github.com/mapbox/mapbox-gl-js/issues/4359#issuecomment-286277540
-    .pipe($.if('*.js', $.uglify({compress: {comparisons: false}})))
+    .pipe($.if('*.js', uglifyEs({compress: {comparisons: false}})))
+    .on('error', function (err) { gutil.log(gutil.colors.red('[Error]'), err.toString()); })
     .pipe($.if('*.css', $.csso()))
     .pipe($.if(/\.(css|js)$/, rev()))
     .pipe(revReplace())
