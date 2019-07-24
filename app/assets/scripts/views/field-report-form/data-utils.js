@@ -150,7 +150,7 @@ export function convertStateToPayload (originalState) {
   if (country) { state.countries = [country.value]; }
 
   // set start_date to DateTime format
-  if (startDate) { state.start_date = startDate + 'T00:00:00+01:00'; }
+  if (startDate) { state.start_date = startDate + 'T00:00:00+00:00'; }
 
   const directMapping = [
     // [source, destination]
