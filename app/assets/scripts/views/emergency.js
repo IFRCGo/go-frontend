@@ -388,6 +388,16 @@ class Emergency extends React.Component {
     const subscribeButton = this.state.subscribed
       ? (<React.Fragment><button className='button button--primary-filled float-right' onClick={this.delSubscription}>Unsubscribe</button><br /><br /></React.Fragment>)
       : (<React.Fragment><button className='button button--primary-filled float-right' onClick={this.addSubscription}>Subscribe</button><br /><br /></React.Fragment>);
+
+    const showExportMap = () => {
+      // Show the export map if exactly one country is selected, and at least 1 district is selected.
+      if (data.countries.length === 1 && data.countries[0].record_type === 1 && data.districts.length > 0) {
+        return (<EmergencyMap countries={data.countries} districts={data.districts} />);
+      } else {
+        return null;
+      }
+    };
+
     return (
       <section className='inpage'>
         <Helmet>
@@ -410,7 +420,7 @@ class Emergency extends React.Component {
             </div>
           </div>
         </header>
-        { data.countries.length > 0 ? (<EmergencyMap countries={data.countries} districts={data.districts} />) : null }
+        { showExportMap() }
         <StickyContainer>
           <Sticky>
             {({ style, isSticky }) => (
