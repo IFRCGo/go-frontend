@@ -149,15 +149,15 @@ const updateChecks = (checkboxes, value) => {
 
 const profileAttributes = [
   ['username'],
-  ['email'],
   ['first_name', 'firstName'],
   ['last_name', 'lastName'],
+  ['email'],
+  ['profile.phone_number', 'phoneNumber'],
   ['profile.city', 'city'],
   ['profile.org', 'org'],
   ['profile.org_type', 'orgType'],
   ['profile.department', 'department'],
-  ['profile.position', 'position'],
-  ['profile.phone_number', 'phoneNumber']
+  ['profile.position', 'position']
 ];
 
 class Account extends React.Component {
@@ -446,13 +446,13 @@ class Account extends React.Component {
           <dl className='dl--horizontal'>
             {profile.data ? profileAttributes.map(a => (
               <Fragment key={a[0]}>
-                <dt>{apiPropertyDisplay(a[0])}</dt>
+                <dt className='form__label__uppercase'>{apiPropertyDisplay(a[0])}</dt>
                 <dd>{apiPropertyValue(a[0], profile.data)}</dd>
               </Fragment>
             )) : null}
           </dl>
         </div>
-        <div className='fold__footer'>
+        <div className='fold__footer text-right'>
           <Link className='link--primary' to='/account/password-change'>Change my password</Link>
         </div>
       </div>
@@ -488,6 +488,15 @@ class Account extends React.Component {
               classWrapper='form__group--kv'
               value={profile.lastName}
               onChange={this.onFieldChange.bind(this, 'profile', 'lastName')} >
+            </FormInput>
+            <FormInput
+              label='Phone Number'
+              type='text'
+              name='phone-number'
+              id='phone-number'
+              classWrapper='form__group--kv'
+              value={profile.phoneNumber}
+              onChange={this.onFieldChange.bind(this, 'profile', 'phoneNumber')} >
             </FormInput>
             <FormInput
               label='City'
@@ -537,18 +546,11 @@ class Account extends React.Component {
               value={profile.position}
               onChange={this.onFieldChange.bind(this, 'profile', 'position')} >
             </FormInput>
-            <FormInput
-              label='Phone Number'
-              type='text'
-              name='phone-number'
-              id='phone-number'
-              classWrapper='form__group--kv'
-              value={profile.phoneNumber}
-              onChange={this.onFieldChange.bind(this, 'profile', 'phoneNumber')} >
-            </FormInput>
-            <button type='submit' className={c('button', 'button--large', 'button--secondary-filled', {
-              'disabled': !this.state.isProfileDirty
-            })} title='Save'>Save</button>
+            <div className='text-center'>
+              <button type='submit' className={c('button', 'button--large', 'button--secondary-filled', {
+                'disabled': !this.state.isProfileDirty
+              })} title='Save'>Save</button>
+            </div>
           </form>
         </div>
       </div>
@@ -570,15 +572,18 @@ class Account extends React.Component {
         <div className='fold-container'>
           <section className='fold'>
             <div className='inner'>
-              <div className='fold__header'> <h2 className='fold__title'>Submitted Field Reports</h2>
+              <div className='fold__header'> <h2 className='fold__title margin-reset'>Submitted Field Reports</h2>
+                <hr />
               </div>
               <div className='fold__body'>
                 <ul className='report__list'>
                   {data.map(o => (
                     <li key={o.id} className='report__list--item'>
-                      <div className='report__list--header'>
-                        <Link className='link--primary' to={`/reports/${o.id}`}>{o.summary}</Link>&nbsp;
-                        <span className='report__list--updated'>Last Updated: {DateTime.fromISO(o.updated_at || o.created_at).toISODate()}</span>
+                      <div className='report__list--header list__each__block flex'>
+                        <div>
+                          <Link className='link--primary' to={`/reports/${o.id}`}>{o.summary}</Link>&nbsp;
+                          <div className='report__list--updated global-margin-t'>Last Updated: {DateTime.fromISO(o.updated_at || o.created_at).toISODate()}</div>
+                        </div>
                       </div>
                       <p>{o.description}</p>
                     </li>
@@ -604,7 +609,7 @@ class Account extends React.Component {
     return (
       <form className='form' onSubmit={this.onNotificationSubmit}>
         <div className='fold-container'>
-          <Fold title='Subscription preferences'>
+          <Fold title='Subscription preferences' foldClass='margin-reset'>
             <FormCheckboxGroup
               label='Notification types'
               description={'Set basic notification types.'}
@@ -677,9 +682,11 @@ class Account extends React.Component {
               values={this.state.notifications.per}
               onChange={this.onFieldChange.bind(this, 'notifications', 'per')} />
             {events}
-            <button type='submit' className={c('button', 'button--large', 'button--secondary-filled', {
-              'disabled': !this.state.isNotificationsDirty
-            })} title='Save'>Save</button>
+            <div className="text-center">
+              <button type='submit' className={c('button', 'button--large', 'button--secondary-filled', {
+                'disabled': !this.state.isNotificationsDirty
+              })} title='Save'>Save</button>
+            </div>
           </Fold>
         </div>
       </form>
@@ -738,27 +745,31 @@ class Account extends React.Component {
           currentCountryName = document.country.name;
           if (document.formType === 'overview') {
             perDocuments.push((<React.Fragment key={'documentoverviewrow' + document.id}>
-              <div style={{backgroundColor: '#eaeaea', float: 'left', width: '100%', marginBottom: '1rem', padding: '0.25rem 1rem'}} key={'documentov' + document.id}>
-                Overview - {document.date_of_current_capacity_assessment.substring(0, 10)} - {typeof document.user !== 'undefined' && document.user !== null ? document.user.first_name + ' ' + document.user.last_name : null}
-                <div style={{float: 'right'}}>
+              <div className='list__each__block flex'>
+                <div key={'documentov' + document.id}>
+                  Overview - {document.date_of_current_capacity_assessment.substring(0, 10)} - {typeof document.user !== 'undefined' && document.user !== null ? document.user.first_name + ' ' + document.user.last_name : null}
+                </div>
+                <div className='list__each__button'>
                   <Link className='button button--small button--secondary-bounded' to={'/view-per-forms/overview/' + document.id}>View</Link>
                 </div>
               </div>
             </React.Fragment>));
           } else {
             perDocuments.push((<React.Fragment key={'documentrow' + document.code + 'id' + document.id}>
-              <div style={{backgroundColor: '#eaeaea', float: 'left', width: '100%', marginBottom: '1rem', padding: '0.25rem 1rem'}} key={'document' + document.id}>
-                {document.code.toUpperCase()} - {document.name} - {document.updated_at.substring(0, 10)} - {typeof document.user !== 'undefined' ? document.user.username : null}
-                <div style={{float: 'right'}}>
+              <div className='list__each__block flex'>
+                <div key={'document' + document.id}>
+                  {document.code.toUpperCase()} - {document.name} - {document.updated_at.substring(0, 10)} - {typeof document.user !== 'undefined' ? document.user.username : null}
+                </div>
+                <div className='list__each__button'>
                   <Link className='button button--small button--secondary-bounded' to={'/view-per-forms/' + document.code + '/' + document.id}>View</Link>
                 </div>
               </div>
             </React.Fragment>));
           }
         });
-        countries.push(<div key={'countryDocument' + countryKey}><span style={{fontSize: '1.25rem'}}>{currentCountryName}</span>{perDocuments}<br /></div>);
+        countries.push(<div key={'countryDocument' + countryKey}><div className='heading-sub global-spacing-v'>{currentCountryName}</div>{perDocuments}<br /></div>);
       });
-      regions.push(<div key={'regionDocument' + regionKey}><span style={{fontSize: '1.5rem'}}>{getRegionById(regionKey).name}</span>{countries}<br /></div>);
+      regions.push(<div key={'regionDocument' + regionKey}><span className='fold__title'>{getRegionById(regionKey).name}</span>{countries}<br /></div>);
     });
     return regions;
   }
@@ -778,38 +789,41 @@ class Account extends React.Component {
     return (<div className='fold-container'>
       <section className='fold' id='per-forms'>
         <div className='inner'>
-          <h2 className='fold__title'>New PER Forms</h2>
+          <h2 className='fold__title margin-reset'>New PER Forms</h2>
+          <hr />
           Click on the following links to access the PER forms, where you can select individual National Societies.
-          <hr /><br />
+          <br />
           Choose National Society:&nbsp;
           <select onChange={this.changeChosenCountry}>
             {countryOptions}
           </select><br/><br />
-          <div style={{float: 'left', width: '96%', backgroundColor: '#eaeaea', marginRight: '3%', marginBottom: '3%', textAlign: 'center'}}>
-            <Link to={'/per-forms/overview/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Overview</Link><br/>
+          <div className='text-center'>
+            <Link to={'/per-forms/overview/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Overview</Link>
           </div>
-          <div style={{float: 'left', width: '30%', backgroundColor: '#eaeaea', marginRight: '3%', marginBottom: '3%', textAlign: 'center'}}>
-            <Link to={'/per-forms/policy-strategy/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 1: Policy and Standards</Link><br/>
+          <div className='clearfix'>
+            <div className='per__form__col'>
+              <Link to={'/per-forms/policy-strategy/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 1: Policy and Standards</Link>
+            </div>
+            <div className='per__form__col'>
+              <Link to={'/per-forms/analysis-and-planning/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 2: Analysis and Planning</Link>
+            </div>
+            <div className='per__form__col'>
+              <Link to={'/per-forms/operational-capacity/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 3: Operation capacity</Link>
+            </div>
+            <div className='per__form__col'>
+              <Link to={'/per-forms/operational-capacity-2/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 3: Operational capacity 2</Link>
+            </div>
+            <div className='per__form__col'>
+              <Link to={'/per-forms/coordination/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 4: Coordination</Link>
+            </div>
+            <div className='per__form__col'>
+              <Link to={'/per-forms/operations-support/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 5: Operations support</Link>
+            </div>
           </div>
-          <div style={{float: 'left', width: '30%', backgroundColor: '#eaeaea', marginRight: '3%', marginBottom: '3%', textAlign: 'center'}}>
-            <Link to={'/per-forms/analysis-and-planning/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 2: Analysis and Planning</Link><br/>
-          </div>
-          <div style={{float: 'left', width: '30%', backgroundColor: '#eaeaea', marginRight: '3%', marginBottom: '3%', textAlign: 'center'}}>
-            <Link to={'/per-forms/operational-capacity/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 3: Operation capacity</Link><br/>
-          </div>
-          <div style={{float: 'left', width: '30%', backgroundColor: '#eaeaea', marginRight: '3%', marginBottom: '3%', textAlign: 'center'}}>
-            <Link to={'/per-forms/operational-capacity-2/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 3: Operational capacity 2</Link><br/>
-          </div>
-          <div style={{float: 'left', width: '30%', backgroundColor: '#eaeaea', marginRight: '3%', marginBottom: '3%', textAlign: 'center'}}>
-            <Link to={'/per-forms/coordination/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 4: Coordination</Link><br/>
-          </div>
-          <div style={{float: 'left', width: '30%', backgroundColor: '#eaeaea', marginRight: '3%', marginBottom: '3%', textAlign: 'center'}}>
-            <Link to={'/per-forms/operations-support/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 5: Operations support</Link><br/>
-          </div>
-          <div style={{clear: 'both'}}></div>
-          <hr /><br/><br />
-          <h2 className='fold__title'>Active PER Forms</h2>
-          <span style={{fontWeight: 'bold'}}>{documents}</span>
+          <br/><br />
+          <h2 className='fold__title margin-reset'>Active PER Forms</h2>
+          <hr />
+          <span className='text-semi-bold'>{documents}</span>
           {this.renderDraftDocuments()}
         </div>
       </section>
@@ -830,9 +844,11 @@ class Account extends React.Component {
             return;
           }
           draftDocuments.push(
-            <div style={{backgroundColor: '#eaeaea', float: 'left', width: '100%', marginBottom: '1rem', padding: '0.25rem 1rem', fontWeight: 'bold'}} key={'draftDocument' + index}>
-              {draftDocument.code.toUpperCase()} - {parsedData.submitted_at !== '' ? parsedData.submitted_at.substring(0, 10) + ' - ' : null} {typeof draftDocument.user !== 'undefined' ? draftDocument.user.username + ' - ' : null} {draftDocument.country.name}
-              <div style={{float: 'right'}}>
+            <div className='list__each__block flex' key={'draftDocument' + index}>
+              <div>
+                {draftDocument.code.toUpperCase()} - {parsedData.submitted_at !== '' ? parsedData.submitted_at.substring(0, 10) + ' - ' : null} {typeof draftDocument.user !== 'undefined' ? draftDocument.user.username + ' - ' : null} {draftDocument.country.name}
+              </div>
+              <div className='list__each__button'>
                 <Link
                   className='button button--small button--secondary-bounded'
                   to={draftDocument.code === 'overview' ? '/per-forms/overview/' + draftDocument.country.id : '/edit-per-forms/' + draftDocument.code + '/' + draftDocument.user.username + '/' + draftDocument.country.id}>
@@ -845,8 +861,9 @@ class Account extends React.Component {
       }
     }
     return (<React.Fragment>
-      <hr /><br/><br />
-      <h2 className='fold__title'>Active drafts</h2>
+      <br/><br />
+      <h2 className='fold__title margin-reset'>Active drafts</h2>
+      <hr />
       {draftDocuments}
     </React.Fragment>);
   }
@@ -867,11 +884,11 @@ class Account extends React.Component {
       Object.keys(this.props.event.event).forEach((eventId) => {
         if (this.props.event.event[eventId].fetched) {
           events.push(
-            <div key={'operations-component' + eventId} style={{width: '50%', float: 'left', marginBottom: '20px'}}>
-              <div style={{width: '70%', float: 'left'}}>
+            <div key={'operations-component' + eventId} className='account__op__block clearfix'>
+              <div className='account__op__each__link'>
                 <Link className={'link--primary'} to={'/emergencies/' + eventId}>{this.props.event.event[eventId].data.name}</Link>
               </div>
-              <div style={{width: '30%', float: 'right', textAlign: 'center'}}>
+              <div className='account__op__each__button'>
                 <button className={'button button--small button--primary-bounded'} onClick={this.delSubscription} id={'followedEvent' + eventId}>Unfollow</button>
               </div>
             </div>
@@ -883,13 +900,13 @@ class Account extends React.Component {
       <section className='fold' id='notifications'>
         <div className='inner'>
           <h2 className='fold__title'>Operations following</h2>
-          <div>
-            <div style={{width: '20%', float: 'left'}}>
-              <div>
+          <div className='clearfix'>
+            <div className='account__op__title'>
+              <div className='text-uppercase'>
                 Operations currently following
               </div>
             </div>
-            <div style={{width: '80%', float: 'left'}}>
+            <div className='account__op__links'>
               {events}
             </div>
           </div>

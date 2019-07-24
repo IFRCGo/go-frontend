@@ -494,6 +494,11 @@ label[for] {
   }
 }
 
+.form__label__uppercase {
+  text-transform: uppercase;
+  font-weight: $base-font-light;
+}
+
 
 /* Form options (radios and checkboxes)
    ========================================================================== */

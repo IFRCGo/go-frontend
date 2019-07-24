@@ -145,6 +145,7 @@ class EmergenciesMap extends React.Component {
                 configureMap={this.configureMap}
                 noExport={true}
                 downloadButton={true}
+                downloadedHeaderTitle='Emergencies'
                 layers={this.state.layers}
                 filters={this.state.filters}
                 geoJSON={data.geoJSON}>

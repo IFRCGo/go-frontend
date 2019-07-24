@@ -159,15 +159,15 @@
 }
 
 .text-left {
-  align: left;
+  text-align: left;
 }
 
 .text-right {
-  align: right;
+  text-align: right;
 }
 
 .text-center {
-  align: center;
+  text-align: center;
 }
 
 .block-center {
@@ -175,6 +175,14 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+
+/* Margin Reset
+   ========================================================================== */
+
+.margin-reset {
+  margin: 0;  
+} 
 
 
 /* Clearfix
@@ -199,7 +207,7 @@
   display: flex;
 }
 
-/* Spacing Utilities
+/* Spacing Utilities: Padding
    ========================================================================== */
 
 $spacing-global: (
@@ -267,5 +275,78 @@ $spacing-global: (
 @each $name, $value in $spacing-global {
   .#{$name}, %#{$name} {
     padding: $value;
+  }
+}
+
+
+
+/* Spacing Utilities: Padding
+   ========================================================================== */
+
+$spacing-global: (
+  global-margin: $global-spacing,
+  global-margin-2: $global-spacing-2,
+  global-margin-3: $global-spacing-3,
+);
+
+// Globals: Margins: Vertical
+
+// Generates placeholders and classes for vertical margins
+// Uses margin top and bottom
+// E.g. .global-margin-v, %global-margin-v, .global-margin-2-v, %global-margin-2-v, etc.
+
+@each $name, $value in $spacing-global {
+  .#{$name}-v, %#{$name}-v {
+    margin-top: $value;
+    margin-bottom: $value;
+  }
+}
+
+// Globals: Margins: Horizontal
+
+// Generates placeholders and classes for horizontal margins
+// Uses margin left and right
+// E.g. .global-margin-h, %global-margin-h, .global-margin-2-h, %global-margin-2-h, etc.
+
+@each $name, $value in $spacing-global {
+  .#{$name}-h, %#{$name}-h {
+    margin-left: $value;
+    margin-right: $value;
+  }
+}
+
+// Globals: Spacing: Top
+
+// Generates placeholders and classes for top margin
+// Uses margin top
+// E.g. .global-margin-t, %global-margin-t, .global-margin-2-t, %global-margin-3-t, etc.
+
+@each $name, $value in $spacing-global {
+  .#{$name}-t, %#{$name}-t {
+    margin-top: $value;
+  }
+}
+
+// Globals: Spacing: Bottom
+
+// Generates placeholders and classes for bottom margin
+// Uses margin bottom
+// E.g. .global-margin-b, %global-margin-b, .global-margin-2-b, %global-margin-3-b, etc.
+
+@each $name, $value in $spacing-global {
+  .#{$name}-b, %#{$name}-b {
+    margin-bottom: $value;
+  }
+}
+
+// Globals: Spacing
+
+// Generates placeholders and classes for margins
+// Uses margin on all four sides
+// E.g. .global-margin, %global-margin, .global-margin-2, %global-margin-2, etc.
+
+@each $name, $value in $spacing-global {
+  .#{$name}, %#{$name} {
+    margin: $value;
   }
 }

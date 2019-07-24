@@ -267,7 +267,8 @@ class HomeMap extends React.Component {
             configureMap={this.configureMap}
             layers={layers}
             geoJSON={geoJSON}
-            downloadButton={true}>
+            downloadButton={true}
+            downloadedHeaderTitle='Ongoing operations'>
 
             <ExplanationBubble scaleBy={this.state.scaleBy}
               onFieldChange={this.onFieldChange}
