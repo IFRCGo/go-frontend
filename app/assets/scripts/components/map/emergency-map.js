@@ -1,12 +1,12 @@
 import React from 'react';
 import c from 'classnames';
+import { environment } from '../../config';
+import { PropTypes as T } from 'prop-types';
 import turfBbox from '@turf/bbox';
 import newMap from '../../utils/get-new-map';
 import exportMap from '../../utils/export-map';
 
-
 class EmergencyMap extends React.Component {
-
   constructor (props) {
     super(props);
     this.state = {
@@ -27,16 +27,10 @@ class EmergencyMap extends React.Component {
       country.iso.toUpperCase()
     ];
     const districtCodes = districts.map(d => d.code);
-    console.log('country', country);
-    const layers = theMap.getStyle().layers;
-    console.log('layers', layers);
     const countryPolys = theMap.queryRenderedFeatures({'layers': ['country'], 'filter': countryFilter});
-    console.log('country polys', countryPolys);
     const geom = countryPolys[0].geometry;
-    console.log('geom', JSON.stringify(geom));
     const bbox = turfBbox(geom);
     theMap.fitBounds(bbox);
-    console.log('district codes', districtCodes);
 
     theMap.setFilter('admin1-selected', [
       'in',
@@ -76,11 +70,6 @@ class EmergencyMap extends React.Component {
   }
 
   render () {
-    const {
-      countries,
-      districts
-    } = this.props;
-
     return (
       <div className='emergency-map'>
         <div className='inner'>
@@ -119,6 +108,13 @@ class EmergencyMap extends React.Component {
       </div>
     );
   }
+}
+
+if (environment !== 'production') {
+  EmergencyMap.propTypes = {
+    districts: T.array,
+    countries: T.array
+  };
 }
 
 export default EmergencyMap;
