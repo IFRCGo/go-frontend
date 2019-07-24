@@ -107,9 +107,11 @@ class EmergencyMap extends React.Component {
             })} onClick={this.exportMap.bind(this)}>Export Map</button>
           </div>
           <div className='map-container' id='mapContainer'>
-            <img style={exportStyle} className='' src='/assets/graphics/layout/logo.png' alt='IFRC GO logo'/>
-            <h2 style={exportStyle} className=''>{name}</h2>
-            <h3 style={exportStyle} className=''>{DateTime.fromISO(date).toLocaleString(DateTime.DATE_FULL)}</h3>
+            <div className='global-margin'>
+              <img style={exportStyle} className='' src='/assets/graphics/layout/logo.png' alt='IFRC GO logo'/>
+              <h2 style={exportStyle} className='map__container__title'>{name}</h2>
+              <div style={exportStyle} className=''>{DateTime.fromISO(date).toLocaleString(DateTime.DATE_FULL)}</div>
+            </div>
             <figure className='map-vis'>
               <div className='fold__actions'>
 
@@ -133,7 +135,7 @@ class EmergencyMap extends React.Component {
               </figcaption>
               <div className="map-vis__holder" ref='map'/>
             </figure>
-            <p style={exportStyle} className=''>The maps used do not imply the expresion of any opinion on the part of the International Federation of the Red Cross and Red Crescent Societies or National Societies concerning the legal status of a territory or of its authorities, Map data sources: OCHA, OSM Contributors, ICRC, IFRC. Map design: Netherland Red Cross/IFRC.</p>
+            <p style={exportStyle} className='map__container__disclaimer'>The maps used do not imply the expresion of any opinion on the part of the International Federation of the Red Cross and Red Crescent Societies or National Societies concerning the legal status of a territory or of its authorities, Map data sources: OCHA, OSM Contributors, ICRC, IFRC. Map design: Netherland Red Cross/IFRC.</p>
           </div>
         </div>
       </div>
