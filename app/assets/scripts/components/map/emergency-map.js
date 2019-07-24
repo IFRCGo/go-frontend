@@ -84,6 +84,9 @@ class EmergencyMap extends React.Component {
     return (
       <div className='emergency-map'>
         <div className='inner'>
+          <button className={c('button button--primary-bounded button--export global-margin-2-b', {
+            disabled: !this.state.ready
+          })} onClick={() => exportMap(this.theMap)}>Export Map</button>
           <div className='map-container'>
             <h2 className='visually-hidden'>Emergency</h2>
             <figure className='map-vis'>
@@ -110,9 +113,6 @@ class EmergencyMap extends React.Component {
               <div className="map-vis__holder" ref='map'/>
             </figure>
           </div>
-          <button className={c('button button--primary-bounded button--export', {
-            disabled: !this.state.ready
-          })} onClick={() => exportMap(this.theMap)}>Export Map</button>
         </div>
       </div>
     );
