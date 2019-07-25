@@ -68,7 +68,6 @@ export default class HomeCharts extends React.Component {
     );
   }
 
-
   renderByMonth () {
     if (!this.props.aggregate['month-drefs'] || !this.props.aggregate['month-appeals']) return null;
 
