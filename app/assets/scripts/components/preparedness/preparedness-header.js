@@ -7,7 +7,7 @@ class PreparednessHeader extends React.Component {
   render () {
     return (
       <div className='inner'>
-        <Fold title={'The PER process'} foldClass='margin-reset'>
+        <Fold title={'The PER process'} foldClass='margin-reset' extraClass='fold--main'>
           <div className="key-emergencies-list-wrap clearfix">
             <ul className='key-emergencies-list key-emergencies-list--preparedness'>
               PER follows a cyclical process for a National Society to systematically assess, measure and analyse

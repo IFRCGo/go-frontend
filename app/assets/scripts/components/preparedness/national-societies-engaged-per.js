@@ -24,7 +24,7 @@ export default class NationalSocietiesEngagedPer extends PureComponent {
     const y = cy + radius * Math.sin(-midAngle * NationalSocietiesEngagedPer.RADIAN);
 
     return (
-      <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+      <text x={x} y={y} fill="#24334c" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
         {`${(percent * 100).toFixed(0)}%`}
       </text>
     );
@@ -82,7 +82,7 @@ export default class NationalSocietiesEngagedPer extends PureComponent {
     });
     return (
       <div className='inner'>
-        <Fold title={'National Societies engaged in the PER process'} foldClass='margin-reset'>
+        <Fold title={'National Societies engaged in the PER process'} foldClass='margin-reset' extraClass='fold--main'>
           {charts}
         </Fold>
       </div>

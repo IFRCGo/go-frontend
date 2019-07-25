@@ -94,6 +94,10 @@
   .Select-arrow {
     border-color: $primary-color transparent transparent;
   }
+
+  .Select-menu, .Select-menu-outer {
+    border-radius: 0 0 $input-rounded-radius $input-rounded-radius;
+  }
 }
 
 .gsearch {
