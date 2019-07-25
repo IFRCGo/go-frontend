@@ -129,6 +129,8 @@ class EmergencyMap extends React.Component {
                     <dl className='legend__dl legend__dl--borders'>
                       <dt className='border--disputed'>border</dt>
                       <dd>Disputed borders</dd>
+                      <dt className='border--territory'>territory</dt>
+                      <dd>Disputed territory</dd>
                     </dl>
                   </div>
                 </div>
