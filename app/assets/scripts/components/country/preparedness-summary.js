@@ -12,6 +12,11 @@ class PreparednessSummary extends React.Component {
     super(props);
     this.formIds = {};
     this.formComponents = {};
+    this.filteredData = [];
+    this.listComponents = this.listComponents.bind(this);
+    this.state = {
+      popupComponentList: []
+    };
   }
 
   buildFormCodes () {
@@ -20,11 +25,18 @@ class PreparednessSummary extends React.Component {
     });
   }
 
+  // False = hide
+  listComponents (e) {
+    const selectedOption = parseInt(e.currentTarget.id.split('selectedOption')[1]);
+    this.setState({popupComponentList: this.filteredData.filter((component) => component.selected_option === selectedOption)});
+  }
+
   render () {
+    if (typeof this.props.getPerDocuments.data.count !== 'undefined' && this.props.getPerDocuments.data.count === 0) return null;
     if (!this.props.user.data.username || typeof this.props.getPerDocuments.data.results === 'undefined') return null;
     this.buildFormCodes();
     const resultSetCopy = JSON.parse(JSON.stringify(this.props.getPerDocument.data.results));
-    const filteredData = resultSetCopy.filter((component) => {
+    this.filteredData = resultSetCopy.filter((component) => {
       return component.selected_option > 1;
     }).map((component) => {
       component.formCode = this.formIds[component.form].code;
@@ -39,17 +51,21 @@ class PreparednessSummary extends React.Component {
     });
 
     const allComponents = Object.keys(this.formComponents).length;
-    const highPerformance = filteredData.filter(component => component.selected_option === 7).length;
-    const exists = filteredData.filter(component => component.selected_option === 6).length;
-    const needsImprovement = filteredData.filter(component => component.selected_option === 5).length;
-    const partiallyExists = filteredData.filter(component => component.selected_option === 4).length;
-    const doesNotExist = filteredData.filter(component => component.selected_option === 3).length;
-    const notReviewed = filteredData.filter(component => component.selected_option === 2).length;
+    const highPerformance = this.filteredData.filter(component => component.selected_option === 7).length;
+    const exists = this.filteredData.filter(component => component.selected_option === 6).length;
+    const needsImprovement = this.filteredData.filter(component => component.selected_option === 5).length;
+    const partiallyExists = this.filteredData.filter(component => component.selected_option === 4).length;
+    const doesNotExist = this.filteredData.filter(component => component.selected_option === 3).length;
+    const notReviewed = this.filteredData.filter(component => component.selected_option === 2).length;
 
+    const popupComponentNameList = [];
+    this.state.popupComponentList.forEach((component, componentIndex) => {
+      popupComponentNameList.push(<div key={'componentList' + componentIndex}>{component.name}</div>);
+    });
     return (
-      <Fold id='per-summary' title='PER Componenets And Sub-Component' wrapper_class='preparedness' foldClass='margin-reset'>
+      <Fold id='per-summary' title='PER Components And Sub-Component' wrapper_class='preparedness' foldClass='margin-reset'>
         <div className='clearfix'>
-          <div className='component__block__wrap'>
+          <div className='component__block__wrap' style={{cursor: 'pointer'}} id='selectedOption7' onClick={this.listComponents}>
             <div className='component__block'>
               <div className='component__block__title__block'>
                 <img src='/assets/graphics/layout/card-tick.svg' className='component__block__icon' />
@@ -64,7 +80,7 @@ class PreparednessSummary extends React.Component {
 
             </div>
           </div>
-          <div className='component__block__wrap'>
+          <div className='component__block__wrap' style={{cursor: 'pointer'}} id='selectedOption6' onClick={this.listComponents}>
             <div className='component__block'>
               <div className='component__block__title__block'>
                 <img src='/assets/graphics/layout/card-tick.svg' className='component__block__icon' />
@@ -79,7 +95,7 @@ class PreparednessSummary extends React.Component {
 
             </div>
           </div>
-          <div className='component__block__wrap'>
+          <div className='component__block__wrap' style={{cursor: 'pointer'}} id='selectedOption5' onClick={this.listComponents}>
             <div className='component__block'>
               <div className='component__block__title__block'>
                 <img src='/assets/graphics/layout/card-mid-line.svg' className='component__block__icon' />
@@ -94,7 +110,7 @@ class PreparednessSummary extends React.Component {
 
             </div>
           </div>
-          <div className='component__block__wrap'>
+          <div className='component__block__wrap' style={{cursor: 'pointer'}} id='selectedOption4' onClick={this.listComponents}>
             <div className='component__block'>
               <div className='component__block__title__block'>
                 <img src='/assets/graphics/layout/card-mid-line.svg' className='component__block__icon' />
@@ -109,7 +125,7 @@ class PreparednessSummary extends React.Component {
 
             </div>
           </div>
-          <div className='component__block__wrap'>
+          <div className='component__block__wrap' style={{cursor: 'pointer'}} id='selectedOption3' onClick={this.listComponents}>
             <div className='component__block'>
               <div className='component__block__title__block'>
                 <img src='/assets/graphics/layout/card-x.svg' className='component__block__icon' />
@@ -124,7 +140,7 @@ class PreparednessSummary extends React.Component {
 
             </div>
           </div>
-          <div className='component__block__wrap'>
+          <div className='component__block__wrap' style={{cursor: 'pointer'}} id='selectedOption2' onClick={this.listComponents}>
             <div className='component__block'>
               <div className='component__block__title__block'>
                 <img src='/assets/graphics/layout/card-x.svg' className='component__block__icon' />
@@ -138,6 +154,9 @@ class PreparednessSummary extends React.Component {
               </div>
             </div>
           </div>
+        </div>
+        <div style={{border: '1px solid #000', marginTop: '10px'}}>
+          {popupComponentNameList}
         </div>
       </Fold>
     );
