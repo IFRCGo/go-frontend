@@ -196,6 +196,10 @@ textarea.form__control {
   }
 }
 
+input, select, textarea {
+  max-width: 100%;
+}
+
 /* Size modifiers */
 
 .form__file--small {

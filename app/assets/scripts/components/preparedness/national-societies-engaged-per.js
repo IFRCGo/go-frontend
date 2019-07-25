@@ -11,7 +11,7 @@ import {
 
 export default class NationalSocietiesEngagedPer extends PureComponent {
   static get PIE_COLORS () {
-    return ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+    return ['rgba(36, 51, 76, 0.2)', '#24334c', '#FFBB28', '#FF8042'];
   }
 
   static get RADIAN () {
@@ -24,7 +24,7 @@ export default class NationalSocietiesEngagedPer extends PureComponent {
     const y = cy + radius * Math.sin(-midAngle * NationalSocietiesEngagedPer.RADIAN);
 
     return (
-      <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+      <text x={x} y={y} fill="#24334c" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
         {`${(percent * 100).toFixed(0)}%`}
       </text>
     );
@@ -57,6 +57,7 @@ export default class NationalSocietiesEngagedPer extends PureComponent {
                 cy={80}
                 labelLine={false}
                 label={NationalSocietiesEngagedPer.RENDER_CUSTOMIZED_LABEL}
+                innerRadius={30}
                 outerRadius={75}
                 fill="#8884d8"
                 startAngle={90}
@@ -72,8 +73,8 @@ export default class NationalSocietiesEngagedPer extends PureComponent {
               </Pie>
             </PieChart>
           </div>
-          <div style={{textAlign: 'center', fontWeight: 'bold', marginTop: '10px'}}>{region.region.name}</div>
-          <div style={{textAlign: 'center'}}>
+          <div className='donot__label__preparedness'>{region.region.name}</div>
+          <div className='donot__label__desc'>
             ({region.data[1].value} countries out of {region.data[0].value})
           </div>
         </div>
@@ -81,7 +82,7 @@ export default class NationalSocietiesEngagedPer extends PureComponent {
     });
     return (
       <div className='inner'>
-        <Fold title={'National Societies engaged in the PER process'}>
+        <Fold title={'National Societies engaged in the PER process'} foldClass='margin-reset' extraClass='fold--main'>
           {charts}
         </Fold>
       </div>

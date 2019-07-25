@@ -88,10 +88,15 @@
 
   .Select-control {
     border-radius: $input-rounded-radius;
+    border-color: $grey-cement;
   }
 
   .Select-arrow {
     border-color: $primary-color transparent transparent;
+  }
+
+  .Select-menu, .Select-menu-outer {
+    border-radius: 0 0 $input-rounded-radius $input-rounded-radius;
   }
 }
 

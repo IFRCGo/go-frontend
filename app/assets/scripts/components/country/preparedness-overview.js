@@ -10,6 +10,7 @@ import Fold from './../fold';
 
 class PreparednessOverview extends React.Component {
   render () {
+    const NO_DATA = '--';
     if (!this.props.getPerNsPhase.fetched || !this.props.perOverviewForm.fetched || !this.props.user.username) return null;
     if (typeof this.props.getPerNsPhase.data.results !== 'undefined' && this.props.getPerNsPhase.data.results[0].phase === 0 &&
       typeof this.props.perOverviewForm.data.count !== 'undefined' && this.props.perOverviewForm.data.count === 0) return null;
@@ -17,11 +18,11 @@ class PreparednessOverview extends React.Component {
     const phase = {phase: this.props.getPerNsPhase.data.results[0].phase};
     const overviewForm = this.props.perOverviewForm.data.results[0];
     const dateOfAssessment = typeof overviewForm !== 'undefined' ? new Date(overviewForm.date_of_current_capacity_assessment.substring(0, 10)) : null;
-    const dateOfAssessmentString = dateOfAssessment !== null ? months[dateOfAssessment.getMonth()] + ' ' + dateOfAssessment.getFullYear() : 'No data';
-    const perProcessTypeString = typeof overviewForm !== 'undefined' ? getPerProcessType(overviewForm.type_of_capacity_assessment) : 'No data';
-    const focusString = typeof overviewForm !== 'undefined' ? overviewForm.focus : 'No data';
-    const focalPointNameString = typeof overviewForm !== 'undefined' ? overviewForm.focal_point_name : 'No data';
-    const focalPointEmailString = typeof overviewForm !== 'undefined' ? overviewForm.focal_point_email : 'No data';
+    const dateOfAssessmentString = dateOfAssessment !== null ? months[dateOfAssessment.getMonth()] + ' ' + dateOfAssessment.getFullYear() : NO_DATA;
+    const perProcessTypeString = typeof overviewForm !== 'undefined' ? getPerProcessType(overviewForm.type_of_capacity_assessment) : NO_DATA;
+    const focusString = typeof overviewForm !== 'undefined' ? overviewForm.focus : NO_DATA;
+    const focalPointNameString = typeof overviewForm !== 'undefined' ? overviewForm.focal_point_name : NO_DATA;
+    const focalPointEmailString = typeof overviewForm !== 'undefined' ? overviewForm.focal_point_email : NO_DATA;
     return (
       <Fold id='per' title='Preparedness For Effective Response Overview' wrapper_class='preparedness' foldClass='margin-reset'>
         <div style={{float: 'left', width: '33%'}}>

@@ -23,7 +23,7 @@
   color: $secondary-color;
   font-weight: $base-font-semi-bold;
   text-transform: uppercase;
-  letter-spacing: 0.6px;
+  letter-spacing: $letter-spacing-sm;
 }
 
 .component__block__value {
@@ -43,4 +43,59 @@
   height: 13px;
   margin-right: $global-spacing/2;
   vertical-align: sub;
+}
+
+.key-emergencies-list-wrap {
+  @include media(small-up) {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.key-emergencies-list--preparedness {
+  font-size: 145%;
+  @include column (8/12);
+
+  @include media(small-up) {
+    @include column (8/12);
+  }
+}  
+
+.key-emergencies-list-image {
+  @include column (4/12);
+
+  @include media(small-up) {
+    @include column (3/12);
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+
+    @include media(small-up) {
+      float: right;
+    }
+  }
+}
+
+.donot__label__preparedness {
+  color: $secondary-color;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: $font-size-sm;
+  font-weight: $base-font-semi-bold;
+  letter-spacing: $letter-spacing-sm;
+  margin: $global-spacing 0 0 0;
+}
+
+.donot__label__desc {
+  text-align: center;
+  font-size: $font-size-sm;
+}
+
+.recharts-pie-labels {
+  text {
+    fill: lighten($secondary-color, 35%);
+    font-weight: $base-font-semi-bold;
+  }
 }

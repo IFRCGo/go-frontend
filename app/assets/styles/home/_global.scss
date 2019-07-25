@@ -602,7 +602,7 @@
     width: 100%;
     display: inline-block;
     &:hover {
-      border: solid 1px $primary-color;
+      box-shadow: $base-box-shadow;
       opacity: 1;
     };
   }
@@ -669,4 +669,14 @@
 
 .map-vis__legend {
   z-index: 1000;
+}
+
+.table--active-ops {
+  thead th {
+    font-size: 95%;
+  }
+
+  thead th, tbody td {
+    padding: 0.5rem;
+  }
 }

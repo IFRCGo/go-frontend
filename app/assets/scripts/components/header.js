@@ -124,7 +124,7 @@ class Header extends React.PureComponent {
                 <div className='form__group'>
                   <label className='form__label'>Search</label>
                   <Select.Async
-                    placeholder='Search...'
+                    placeholder='Search'
                     onChange={this.onSelect}
                     filterOptions={noFilter}
                     autoload={false}

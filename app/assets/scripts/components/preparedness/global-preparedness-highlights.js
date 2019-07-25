@@ -63,15 +63,15 @@ export default class GlobalPreparednessHighlights extends React.Component {
     if (highPerformingComponents.length === 0 && highPriorityComponents.length === 0) return null;
     return (
       <div className='inner'>
-        <Fold title={'Global Preparedness Highlights'}>
+        <Fold title={'Global Preparedness Highlights'} foldClass='margin-reset' extraClass='fold--main'>
           <div style={{width: '50%', float: 'left'}}>
-            <span style={{fontWeight: 'bold'}}>High Performing Components (globally)</span>
+            <span style={{fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.6px'}}>High Performing Components (globally)</span>
             <ul>
               {this.props.perPermission ? highPerformingComponents : 'You can only see this data if you have the correct permissions.'}
             </ul>
           </div>
           <div style={{width: '50%', float: 'left'}}>
-            <span style={{fontWeight: 'bold'}}>Top Prioritized Components (globally)</span>
+            <span style={{fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.6px'}}>Top Prioritized Components (globally)</span>
             <ul>
               {highPriorityComponents}
             </ul>
