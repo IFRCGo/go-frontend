@@ -233,7 +233,7 @@ class Account extends React.Component {
 
   componentWillReceiveProps (nextProps) {
     if (this.props.profile.receivedAt !== nextProps.profile.receivedAt) {
-      if (typeof nextProps.profile.data.subscription !== 'undefined' && nextProps.profile.data.subscription !== null) {
+      if (typeof nextProps.profile.data !== 'undefined' && nextProps.profile.data !== null && typeof nextProps.profile.data.subscription !== 'undefined' && nextProps.profile.data.subscription !== null) {
         nextProps.profile.data.subscription.forEach((subscription) => {
           if (typeof subscription.event !== 'undefined' && subscription.event !== null) {
             this.props._getEventById(subscription.event);

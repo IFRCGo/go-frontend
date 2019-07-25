@@ -11,6 +11,8 @@ import Fold from './../fold';
 class PreparednessOverview extends React.Component {
   render () {
     if (!this.props.getPerNsPhase.fetched || !this.props.perOverviewForm.fetched || !this.props.user.username) return null;
+    if (typeof this.props.getPerNsPhase.data.results !== 'undefined' && this.props.getPerNsPhase.data.results[0].phase === 0 &&
+      typeof this.props.perOverviewForm.data.count !== 'undefined' && this.props.perOverviewForm.data.count === 0) return null;
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const phase = {phase: this.props.getPerNsPhase.data.results[0].phase};
     const overviewForm = this.props.perOverviewForm.data.results[0];

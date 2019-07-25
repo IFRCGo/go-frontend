@@ -129,6 +129,9 @@ class Preparedness extends React.Component {
   }
 
   render () {
+    const nsEngagedHasData = this.props.getPerEngagedNsPercentage.fetched && typeof this.props.getPerEngagedNsPercentage.data.results !== 'undefined'
+      ? this.props.getPerEngagedNsPercentage.data.results.filter((engaged) => engaged.forms_sent !== 0).length > 0
+      : false;
     return (
       <App className='page--homepage'>
         <section className='inpage'>
@@ -148,8 +151,8 @@ class Preparedness extends React.Component {
           </header>
           <div className='inpage__body'>
             <PreparednessHeader />
-            { this.geoJsonBuilt ? <PerMap data={this.state.geoJsonFinal} noExport={true} noRenderEmergencies={true} overviewData={this.props.perOverviewForm} /> : null }
-            { this.props.getPerEngagedNsPercentage.fetched ? <NationalSocietiesEngagedPer data={this.props.getPerEngagedNsPercentage} /> : null }
+            { this.geoJsonBuilt && this.state.geoJsonFinal !== null && this.state.geoJsonFinal.data.geoJSON.features.length > 0 ? <PerMap data={this.state.geoJsonFinal} noExport={true} noRenderEmergencies={true} overviewData={this.props.perOverviewForm} /> : null }
+            { this.props.getPerEngagedNsPercentage.fetched && nsEngagedHasData ? <NationalSocietiesEngagedPer data={this.props.getPerEngagedNsPercentage} /> : null }
             { this.props.getPerGlobalPreparedness.fetched && this.props.perWorkPlan.fetched ? <GlobalPreparednessHighlights data={this.props.getPerGlobalPreparedness} prioritizationData={this.state.topPrioritizedComponents} perPermission={this.state.perPerMission} /> : null }
             <ContactPer />
           </div>

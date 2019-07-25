@@ -55,6 +55,10 @@ class PreparednessWorkPlan extends React.Component {
     this.setState({showAddModul: true});
   }
 
+  hideAddModul () {
+    this.setState({showAddModul: false});
+  }
+
   addNewPlan () {
     const prioritization = document.getElementsByName('prioritization')[0];
     const component = document.getElementsByName('components')[0];
@@ -181,6 +185,7 @@ class PreparednessWorkPlan extends React.Component {
           {this.state.showAddModul
             ? (
               <div style={{paddingTop: '20px'}}>
+                <div style={{float: 'right', cursor: 'pointer'}} onClick={this.hideAddModul.bind(this)}><img src="/assets/graphics/layout/card-x.svg" className="component__block__icon" /></div>
                 <div style={Object.assign({}, lightBackground)}>
                   <div>
                     <span style={{fontWeight: 'bold'}}>Prioritization:&nbsp;</span>
