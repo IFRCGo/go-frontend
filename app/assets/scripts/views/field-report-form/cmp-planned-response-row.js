@@ -16,6 +16,27 @@ export default class PlanResponseRow extends React.Component {
     onChange(newVals);
   }
 
+  /*
+    This is a pretty terrible hack, but we need the user to be able to "unset" a selected Radio option here
+    So, if the radio being clicked is the same as the current selected value,
+    we trigger `onFieldChange` to set the value back to `undefined`.
+    FIXME: We should ideally re-think this whole thing a bit.
+  */
+  onRadioClick (e) {
+    const {
+      values
+    } = this.props;
+    const currentInput = e.target;
+    const inputValue = currentInput.value;
+    if (inputValue === values.status) {
+      this.onFieldChange('status', {
+        target: {
+          value: undefined
+        }
+      });
+    }
+  }
+
   render () {
     const {
       label,
@@ -43,7 +64,8 @@ export default class PlanResponseRow extends React.Component {
             label='Status'
             options={options}
             selectedOption={values.status}
-            onChange={this.onFieldChange.bind(this, 'status')} />
+            onChange={this.onFieldChange.bind(this, 'status')}
+            onClick={this.onRadioClick.bind(this)} />
 
           <FormInput
             label={valueFieldLabel}

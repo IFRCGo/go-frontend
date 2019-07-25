@@ -250,18 +250,20 @@ class FieldReportForm extends React.Component {
     const districtChoices = this.getDistrictChoices() || [];
     return (
       <Fold title='Context' extraClass>
-        <FormRadioGroup
-          label='Status *'
-          name='status'
-          options={formData.status}
-          selectedOption={this.state.data.status}
-          onChange={this.onFieldChange.bind(this, 'status')}>
-          <FormError
-            errors={this.state.errors}
-            property='status'
-          />
-        </FormRadioGroup>
-
+        {/* Hide the status radio until we implement the Early Warning changes to the form */}
+        <div style={{display: 'none'}}>
+          <FormRadioGroup
+            label='Status *'
+            name='status'
+            options={formData.status}
+            selectedOption={this.state.data.status}
+            onChange={this.onFieldChange.bind(this, 'status')}>
+            <FormError
+              errors={this.state.errors}
+              property='status'
+            />
+          </FormRadioGroup>
+        </div>
         <FormInputSelect
           label='Title *'
           labelSecondary='Add Title'
