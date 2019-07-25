@@ -47,8 +47,8 @@ export default class GlobalPreparednessHighlights extends React.Component {
 
   render () {
     if (typeof this.props.prioritizationData === 'undefined') return null;
-    if (typeof this.props.data.data !== 'undefined' && typeof this.props.data.data.count !== 'undefined' && this.props.data.data.count === 0
-      && typeof this.props.prioritizationData !== 'undefined' && Object.keys(this.props.prioritizationData).length === 0) return null;
+    if (typeof this.props.data.data !== 'undefined' && typeof this.props.data.data.count !== 'undefined' && this.props.data.data.count === 0 &&
+      typeof this.props.prioritizationData !== 'undefined' && Object.keys(this.props.prioritizationData).length === 0) return null;
     this.buildHighPerformingComponentsData();
     const highPerformingComponents = [];
     this.highPerformingComponents.forEach((component, index) => {
