@@ -406,6 +406,9 @@ export function convertFieldReportToState (fieldReport) {
     };
   }
 
+  if (fieldReport.start_date) {
+    state.startDate = fieldReport.start_date.split('T')[0]; // get just YYYY-MM-DD from the full date timestamp
+  }
   // Everything not an early warning is an event.
   state.status = fieldReport.status !== parseInt(formData.statusEarlyWarning.value)
     ? formData.statusEvent.value
@@ -415,7 +418,6 @@ export function convertFieldReportToState (fieldReport) {
     // [source, destination]
     ['summary', 'summary'],
     ['description', 'description'],
-    ['start_date', 'startDate'],
     ['num_assisted', 'numAssistedRedCross'],
     ['gov_num_assisted', 'numAssistedGov'],
     ['num_localstaff', 'numLocalStaff'],
