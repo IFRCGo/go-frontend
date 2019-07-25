@@ -138,7 +138,8 @@ export function convertStateToPayload (originalState) {
     country,
     disasterType,
     districts,
-    event
+    event,
+    startDate
   } = originalState;
 
   // Process properties.
@@ -147,6 +148,9 @@ export function convertStateToPayload (originalState) {
   if (districts.length) { state.districts = districts.map(o => +o.value); }
   if (event && event.value) { state.event = +event.value; }
   if (country) { state.countries = [country.value]; }
+
+  // set start_date to DateTime format
+  if (startDate) { state.start_date = startDate + 'T00:00:00+00:00'; }
 
   const directMapping = [
     // [source, destination]
@@ -254,7 +258,7 @@ export function convertStateToPayload (originalState) {
   //   { ctype: "originator", name: 'John', title: 'Medic', email: 'john@gmail.com' },
   //   { ctype: "primary" ... }
   // ]
-  const contatcsMapping = [
+  const contactsMapping = [
     // [state var, contact type]
     ['contactOriginator', 'Originator'],
     ['contactPrimary', 'Primary'],
@@ -264,7 +268,7 @@ export function convertStateToPayload (originalState) {
     ['contactMedia', 'Media']
   ];
 
-  state.contacts = contatcsMapping.map(([src, contactType]) => {
+  state.contacts = contactsMapping.map(([src, contactType]) => {
     return {
       ctype: contactType,
       name: originalState[src].name || '',
@@ -303,7 +307,8 @@ export function getInitialDataState () {
     country: undefined,
     // countries: [],
     districts: [],
-    status: undefined,
+    status: '9', // default to "Event"
+    startDate: undefined,
     visibility: '1',
     disasterType: undefined,
     event: undefined,
@@ -406,6 +411,7 @@ export function convertFieldReportToState (fieldReport) {
     // [source, destination]
     ['summary', 'summary'],
     ['description', 'description'],
+    ['start_date', 'startDate'],
     ['num_assisted', 'numAssistedRedCross'],
     ['gov_num_assisted', 'numAssistedGov'],
     ['num_localstaff', 'numLocalStaff'],
@@ -449,6 +455,12 @@ export function convertFieldReportToState (fieldReport) {
       sourceEstimation.push({
         source: 'government',
         estimation: fieldReport[`gov_${src}`].toString()
+      });
+    }
+    if (fieldReport[`other_${src}`] !== null) {
+      sourceEstimation.push({
+        source: 'other',
+        estimation: fieldReport[`other_${src}`].toString()
       });
     }
     if (sourceEstimation.length) {

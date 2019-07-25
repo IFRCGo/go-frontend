@@ -173,6 +173,10 @@
     @include media(medium-up) {
       @include column(4/12);
     }
+
+    @include media(large-up) {
+      @include column(3/12);
+    }
   }
 
   .estimation__item {
@@ -180,6 +184,10 @@
 
     @include media(medium-up) {
       @include column(5/12);
+    }
+
+    @include media(large-up) {
+      @include column(6/12);
     }
   }
 

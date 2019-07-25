@@ -85,7 +85,8 @@ export default class SourceEstimation extends React.Component {
                 name={`${name}[${idx}][source]`}
                 options={[
                   {label: 'Red Cross', value: 'red-cross'},
-                  {label: 'Government', value: 'government'}
+                  {label: 'Government', value: 'government'},
+                  {label: 'Other', value: 'other'}
                 ]}
                 classLabel={c('label-secondary', {'visually-hidden': idx > 0})}
                 classWrapper='estimation__item'
@@ -96,7 +97,7 @@ export default class SourceEstimation extends React.Component {
                 {values.length > 1 ? (
                   <button type='button' className='button--remove-source' title='Delete Source' onClick={this.onRemoveSource.bind(this, idx)}>Delete source</button>
                 ) : (
-                  <button type='button' className='button--add-item button--secondary-light' title='Add new source' onClick={this.onAddSource.bind(this)}>Add another source</button>
+                  <button type='button' className='button--add-item button--secondary-light' title='Add new source' onClick={this.onAddSource.bind(this)}>Add source</button>
                 )}
               </div>
             </div>
