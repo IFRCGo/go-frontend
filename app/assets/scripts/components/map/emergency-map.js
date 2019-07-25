@@ -78,6 +78,11 @@ class EmergencyMap extends React.Component {
     theMap.setLayoutProperty('admin1-selected-labels', 'visibility', 'visible');
     theMap.setLayoutProperty('admin1-country-selected', 'visibility', 'visible');
     theMap.setLayoutProperty('admin1-country-selected-boundaries', 'visibility', 'visible');
+
+    const disputedTerritoriesVisible = this.theMap.queryRenderedFeatures({layers: ['disputed_territories copy']}).length;
+    if (disputedTerritoriesVisible) {
+      this.setState({ disputedTerritoriesVisible: true });
+    }
   }
 
   componentDidMount () {
@@ -98,6 +103,7 @@ class EmergencyMap extends React.Component {
     const exportStyle = {
       display: this.state.isExporting ? 'block' : 'none'
     };
+
     return (
       <div className='emergency-map'>
         <div className='inner'>
@@ -129,9 +135,14 @@ class EmergencyMap extends React.Component {
                     <dl className='legend__dl legend__dl--borders'>
                       <dt className='border--disputed'>border</dt>
                       <dd>Disputed borders</dd>
-                      <dt className='border--territory'>territory</dt>
-                      <dd>Disputed territory</dd>
                     </dl>
+                    {
+                      this.state.disputedTerritoriesVisible
+                        ? <dl className='legend__dl legend__dl--borders'>
+                          <dt className='border--territory'>territory</dt>
+                          <dd>Disputed territory</dd>
+                        </dl> : null
+                    }
                   </div>
                 </div>
               </figcaption>
