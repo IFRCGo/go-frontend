@@ -72,7 +72,7 @@ export default class ContactRow extends React.Component {
                 name={`${name}[email]`}
                 id={`${name}-email`}
                 classLabel='label-secondary'
-                value={values.contact}
+                value={values.email}
                 onChange={this.onFieldChange.bind(this, 'email')} >
                 <FormError
                   errors={errors}
@@ -87,7 +87,7 @@ export default class ContactRow extends React.Component {
                 name={`${name}[phone]`}
                 id={`${name}-phone`}
                 classLabel='label-secondary'
-                value={values.contact}
+                value={values.phone}
                 onChange={this.onFieldChange.bind(this, 'phone')} >
                 <FormError
                   errors={errors}
@@ -110,7 +110,8 @@ if (environment !== 'production') {
     values: T.shape({
       name: T.string,
       title: T.string,
-      contact: T.string
+      email: T.string,
+      phone: T.string
     }),
     fieldKey: T.string,
     errors: T.array,
