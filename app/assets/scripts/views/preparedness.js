@@ -143,7 +143,7 @@ class Preparedness extends React.Component {
               <div className='inpage__headline'>
                 <h1 className='inpage__title'>Preparedness for Effective Response (PER)</h1>
                 <p className='inpage__introduction'>
-                  To enable National Societies to fulfil their auxiliary role, in line with the Red Cross and Red Crescent Fundamental Principles, by strengthening<br />
+                  To enable National Societies to fulfil their auxiliary role, in line with the Red Cross and Red Crescent Fundamental Principles, by strengthening
                   local preparedness capacities to ensure timely and effective humanitarian assistance to prevent and alleviate human suffering.
                 </p>
               </div>

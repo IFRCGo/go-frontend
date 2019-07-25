@@ -63,7 +63,7 @@ export default class GlobalPreparednessHighlights extends React.Component {
     if (highPerformingComponents.length === 0 && highPriorityComponents.length === 0) return null;
     return (
       <div className='inner'>
-        <Fold title={'Global Preparedness Highlights'}>
+        <Fold title={'Global Preparedness Highlights'} foldClass='margin-reset'>
           <div style={{width: '50%', float: 'left'}}>
             <span style={{fontWeight: 'bold'}}>High Performing Components (globally)</span>
             <ul>
