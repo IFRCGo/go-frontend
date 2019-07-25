@@ -180,11 +180,11 @@ class AppealsTable extends SFPComponent {
         dtype: get(getDtypeMeta(o.dtype.id), 'label', nope),
         requestAmount: {
           value: n(o.amount_requested),
-          className: 'right-align'
+          className: ''
         },
         fundedAmount: {
           value: n(o.amount_funded),
-          className: 'right-align'
+          className: ''
         },
         type: appealsType[o.atype],
         country: o.country ? <Link to={`/countries/${o.country.id}`} className='link--primary' title='View Country'>{o.country.name}</Link> : nope
@@ -203,6 +203,7 @@ class AppealsTable extends SFPComponent {
             />
           ) : null}
           <DisplayTable
+            className='table table--zebra table--active-ops'
             headings={headings}
             rows={rows}
             pageCount={data.count / this.state.table.limit}
