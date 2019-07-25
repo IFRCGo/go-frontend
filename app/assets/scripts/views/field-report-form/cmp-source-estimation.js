@@ -84,7 +84,7 @@ export default class SourceEstimation extends React.Component {
                 label='Source'
                 name={`${name}[${idx}][source]`}
                 options={[
-                  {label: 'Red Cross', value: 'red-cross'},
+                  {label: 'RCRC', value: 'red-cross'},
                   {label: 'Government', value: 'government'},
                   {label: 'Other', value: 'other'}
                 ]}
@@ -92,7 +92,10 @@ export default class SourceEstimation extends React.Component {
                 classWrapper='estimation__item'
                 selectedOption={o.source}
                 onChange={this.onSourceChange.bind(this, idx)} />
-
+              {/*
+              We do not want these buttons to Add new sources any more.
+              Leaving commented out for now. When we delete this, we should
+              also remove other bits of code that this feature refers to.
               <div className='estimation__item estimation__item--actions'>
                 {values.length > 1 ? (
                   <button type='button' className='button--remove-source' title='Delete Source' onClick={this.onRemoveSource.bind(this, idx)}>Delete source</button>
@@ -100,6 +103,7 @@ export default class SourceEstimation extends React.Component {
                   <button type='button' className='button--add-item button--secondary-light' title='Add new source' onClick={this.onAddSource.bind(this)}>Add source</button>
                 )}
               </div>
+              */}
             </div>
           ))}
 

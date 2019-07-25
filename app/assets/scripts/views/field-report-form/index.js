@@ -386,7 +386,7 @@ class FieldReportForm extends React.Component {
           onChange={this.onFieldChange.bind(this, 'numInjured')} />
         <SourceEstimation
           label='Dead'
-          description='Number of people confirmed dead and number missing and presumed dead.'
+          description='Number of people confirmed dead and presumed dead.'
           name='num-dead'
           values={this.state.data.numDead}
           fieldKey='numDead'
@@ -394,7 +394,7 @@ class FieldReportForm extends React.Component {
           onChange={this.onFieldChange.bind(this, 'numDead')} />
         <SourceEstimation
           label='Missing'
-          description='Number of people missing and presumed dead.'
+          description='Number of people missing.'
           name='num-missing'
           values={this.state.data.numMissing}
           fieldKey='numMissing'
@@ -410,7 +410,7 @@ class FieldReportForm extends React.Component {
           onChange={this.onFieldChange.bind(this, 'numAffected')} />
         <SourceEstimation
           label='Displaced'
-          description='Number of people temporary displaced.'
+          description='Number of people displaced.'
           name='num-displaced'
           values={this.state.data.numDisplaced}
           fieldKey='numDisplaced'
@@ -466,7 +466,7 @@ class FieldReportForm extends React.Component {
             />
           </FormInput>
           <FormInput
-            label='Number of local staff involved'
+            label='Number of NS Personnel Involved'
             type='text'
             name='num-local-staff'
             id='num-local-staff'
@@ -479,7 +479,7 @@ class FieldReportForm extends React.Component {
             />
           </FormInput>
           <FormInput
-            label='Number of volunteers involved'
+            label='Number of Volunteers Involved'
             type='text'
             name='num-volunteers'
             id='num-volunteers'
@@ -492,7 +492,8 @@ class FieldReportForm extends React.Component {
             />
           </FormInput>
           <FormInput
-            label='Number of RCRC Movement International Personnel involved'
+            label='Number of RCRC Movement Personnel involved'
+            description='Personnel from IFRC, ICRC &amp; PNS'
             type='text'
             name='num-expats'
             id='num-expats'
@@ -630,6 +631,7 @@ class FieldReportForm extends React.Component {
           fieldKey='emergencyAppeal'
           onChange={this.onFieldChange.bind(this, 'emergencyAppeal')} />
 
+        {/*
         <PlanResponseRow
           label='RDRT/RITS'
           valueFieldLabel='Number of people'
@@ -639,9 +641,10 @@ class FieldReportForm extends React.Component {
           errors={this.state.errors}
           fieldKey='rdrtrits'
           onChange={this.onFieldChange.bind(this, 'rdrtrits')} />
+        */}
 
         <PlanResponseRow
-          label='FACT'
+          label='IFRC Surge Personnel'
           valueFieldLabel='Number of people'
           name='fact'
           options={optsPlanReqDep}
@@ -651,8 +654,8 @@ class FieldReportForm extends React.Component {
           onChange={this.onFieldChange.bind(this, 'fact')} />
 
         <PlanResponseRow
-          label='IFRC Staff'
-          valueFieldLabel='Number of people'
+          label='Emergency Response Units'
+          valueFieldLabel='Units'
           name='ifrc-staff'
           options={optsPlanReqDep}
           values={this.state.data.ifrcStaff}
@@ -664,12 +667,13 @@ class FieldReportForm extends React.Component {
 
         <ContactRow
           label='Originator'
-          description='Your name, role and contact.'
+          description='NS or IFRC Staff completing the Field Report.'
           name='contact-originator'
           values={this.state.data.contactOriginator}
           fieldKey='contactOriginator'
           errors={this.state.errors}
           onChange={this.onFieldChange.bind(this, 'contactOriginator')} />
+        {/*
         <ContactRow
           label='Primary Contact'
           description='The person to contact for more information'
@@ -677,23 +681,25 @@ class FieldReportForm extends React.Component {
           values={this.state.data.contactPrimary}
           fieldKey='contactPrimary'
           errors={this.state.errors}
-          onChange={this.onFieldChange.bind(this, 'contactPrimary')} />
+        onChange={this.onFieldChange.bind(this, 'contactPrimary')} />
+        */}
         <ContactRow
           label='National Society Contact'
-          description='A contact in the National Society for more information. Select someone who will be available for interview.'
+          description='The most senior staff in the National Society responsible and knowledgeable about the disaster event.'
           name='contact-nat-soc'
           values={this.state.data.contactNatSoc}
           fieldKey='contactNatSoc'
           errors={this.state.errors}
           onChange={this.onFieldChange.bind(this, 'contactNatSoc')} />
         <ContactRow
-          label='IFRC Contact'
-          description='A contact of the IFRC (HQ, regional, cluster and country office) for more information. Select someone who will be available for interview.'
+          label='IFRC Focal Point for the Emergency'
+          description='IFRC staff who is overall responsible for supporting the NS in its response to the disaster event.'
           name='contact-federation'
           values={this.state.data.contactFederation}
           fieldKey='contactFederation'
           errors={this.state.errors}
           onChange={this.onFieldChange.bind(this, 'contactFederation')} />
+        {/*
         <ContactRow
           label='Media Contact in the National Society'
           description='A media contact in the National Society. This person could be contacted by journalists.'
@@ -702,9 +708,10 @@ class FieldReportForm extends React.Component {
           fieldKey='contactMediaNatSoc'
           errors={this.state.errors}
           onChange={this.onFieldChange.bind(this, 'contactMediaNatSoc')} />
+        */}
         <ContactRow
           label='Media Contact'
-          description='A media contact in the Secretariat/Zone/DMU. This person could be contacted by journalists.'
+          description='An IFRC secretariat media contact in Geneva/Region or Country.'
           name='contact-media'
           values={this.state.data.contactMedia}
           fieldKey='contactMedia'
