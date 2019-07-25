@@ -313,7 +313,7 @@ export function getInitialDataState () {
     districts: [],
     status: '9', // default to "Event"
     startDate: undefined,
-    visibility: '1',
+    visibility: '3',
     disasterType: undefined,
     event: undefined,
     sources: formData.sources.map(o => ({
