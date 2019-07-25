@@ -52,25 +52,28 @@ export function dataPathToDisplay (path, keyword) {
     // Step 5.
     'contactOriginator.name': 'Originator - Name',
     'contactOriginator.role': 'Originator - Role',
-    'contactOriginator.contact': 'Originator - Contact',
+    'contactOriginator.email': 'Originator - Email',
+    'contactOriginator.phone': 'Originator - Phone',
     'contactPrimary.name': 'Primary Contact - Name',
     'contactPrimary.role': 'Primary Contact - Role',
-    'contactPrimary.contact': 'Primary Contact - Contact',
+    'contactPrimary.email': 'Primary Contact - Email',
+    'contactPrimary.phone': 'Primary Contact - Phone',
     'contactNatSoc.name': 'National Society Contact - Name',
     'contactNatSoc.role': 'National Society Contact - Role',
-    'contactNatSoc.contact': 'National Society Contact - Contact',
+    'contactNatSoc.email': 'National Society Contact - Email',
+    'contactNatSoc.phone': 'National Society Contact - Phone',
     'contactFederation.name': 'Federation Contact - Name',
     'contactFederation.role': 'Federation Contact - Role',
-    'contactFederation.contact': 'Federation Contact - Contact',
+    'contactFederation.email': 'Federation Contact - Email',
+    'contactFederation.phone': 'Federation Contact - Phone',
     'contactMediaNatSoc.name': 'Media Contact in the National Society - Name',
     'contactMediaNatSoc.role': 'Media Contact in the National Society - Role',
-    'contactMediaNatSoc.contact': 'Media Contact in the National Society - Contact',
+    'contactMediaNatSoc.email': 'Media Contact in the National Society - Email',
+    'contactMediaNatSoc.phone': 'Media Contact in the National Society - Phone',
     'contactMedia.name': 'Media Contact - Name',
     'contactMedia.role': 'Media Contact - Role',
-    'contactMedia.contact': 'Media Contact - Contact',
-
-    // for a oneOf validation error (one of two fields not filled, data path is empty), just show nothing
-    '': ''
+    'contactMedia.email': 'Media Contact - Email',
+    'contactMedia.phone': 'Media Contact - Phone'
   };
   if (!index[path]) {
     console.warn('No display value found for', path);
@@ -273,7 +276,8 @@ export function convertStateToPayload (originalState) {
       ctype: contactType,
       name: originalState[src].name || '',
       title: originalState[src].title || '',
-      email: originalState[src].contact || ''
+      email: originalState[src].email || '',
+      phone: originalState[src].phone || ''
     };
   }).filter(o => Boolean(o.name));
 
@@ -366,12 +370,12 @@ export function getInitialDataState () {
     eru: [{ type: undefined, status: undefined, units: undefined }],
 
     // Step 5
-    contactOriginator: { name: undefined, role: undefined, contact: undefined },
-    contactPrimary: { name: undefined, role: undefined, contact: undefined },
-    contactNatSoc: { name: undefined, role: undefined, contact: undefined },
-    contactFederation: { name: undefined, role: undefined, contact: undefined },
-    contactMediaNatSoc: { name: undefined, role: undefined, contact: undefined },
-    contactMedia: { name: undefined, role: undefined, contact: undefined }
+    contactOriginator: { name: undefined, role: undefined, email: undefined, phone: undefined },
+    contactPrimary: { name: undefined, role: undefined, email: undefined, phone: undefined },
+    contactNatSoc: { name: undefined, role: undefined, email: undefined, phone: undefined },
+    contactFederation: { name: undefined, role: undefined, email: undefined, phone: undefined },
+    contactMediaNatSoc: { name: undefined, role: undefined, email: undefined, phone: undefined },
+    contactMedia: { name: undefined, role: undefined, email: undefined, phone: undefined }
   };
 }
 
@@ -563,7 +567,8 @@ export function convertFieldReportToState (fieldReport) {
     state[dest] = {
       name: contact.name,
       role: contact.title,
-      contact: contact.email
+      email: contact.email,
+      phone: contact.phone
     };
   });
 

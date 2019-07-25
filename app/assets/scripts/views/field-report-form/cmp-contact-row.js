@@ -61,16 +61,29 @@ export default class ContactRow extends React.Component {
             />
           </FormInput>
           <FormInput
-            label='Contact'
+            label='Email'
             type='text'
-            name={`${name}[contact]`}
-            id={`${name}-contact`}
+            name={`${name}[email]`}
+            id={`${name}-email`}
             classLabel='label-secondary'
             value={values.contact}
-            onChange={this.onFieldChange.bind(this, 'contact')} >
+            onChange={this.onFieldChange.bind(this, 'email')} >
             <FormError
               errors={errors}
-              property={`${fieldKey}.contact`}
+              property={`${fieldKey}.email`}
+            />
+          </FormInput>
+          <FormInput
+            label='Phone'
+            type='text'
+            name={`${name}[phone]`}
+            id={`${name}-phone`}
+            classLabel='label-secondary'
+            value={values.contact}
+            onChange={this.onFieldChange.bind(this, 'phone')} >
+            <FormError
+              errors={errors}
+              property={`${fieldKey}.phone`}
             />
           </FormInput>
         </div>
