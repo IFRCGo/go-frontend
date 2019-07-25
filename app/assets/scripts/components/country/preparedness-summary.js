@@ -25,7 +25,6 @@ class PreparednessSummary extends React.Component {
     });
   }
 
-  // False = hide
   listComponents (e) {
     const selectedOption = parseInt(e.currentTarget.id.split('selectedOption')[1]);
     this.setState({popupComponentList: this.filteredData.filter((component) => component.selected_option === selectedOption)});
