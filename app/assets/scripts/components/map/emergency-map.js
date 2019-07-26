@@ -8,7 +8,8 @@ import html2canvas from 'html2canvas';
 import { startDownload } from '../../utils/download-starter';
 // import exportMap from '../../utils/export-map';
 import { DateTime } from 'luxon';
-
+import { disasterType } from '../../utils/field-report-constants';
+import _find from 'lodash.find';
 class EmergencyMap extends React.Component {
   constructor (props) {
     super(props);
@@ -18,15 +19,14 @@ class EmergencyMap extends React.Component {
     };
   }
 
-  exportMap () {
+  exportMap (country, disasterTypeName) {
     this.setState({'isExporting': true});
-    const timestamp = new Date();
     const $container = document.getElementById('mapContainer');
     document.getElementsByClassName('mapboxgl-ctrl-top-right')[0].style.visibility = 'hidden';
     html2canvas($container, {useCORS: true}).then((renderedCanvas) => {
       startDownload(
         renderedCanvas,
-        'map-' + timestamp.getTime() + '.png'
+        `${DateTime.local().toISODate()}-${disasterTypeName}-${country}.png`
       );
       document.getElementsByClassName('mapboxgl-ctrl-top-right')[0].style.visibility = 'visible';
       this.setState({'isExporting': false});
@@ -98,7 +98,9 @@ class EmergencyMap extends React.Component {
   render () {
     const {
       name,
-      date
+      date,
+      countries,
+      disasterTypeCode
     } = this.props;
     const exportStyle = {
       display: this.state.isExporting ? 'block' : 'none'
@@ -110,7 +112,7 @@ class EmergencyMap extends React.Component {
           <div className='row text-right'>
             <button className={c('button button--primary-bounded button--export global-margin-3-b', {
               disabled: !this.state.ready
-            })} onClick={this.exportMap.bind(this)}>Export Map</button>
+            })} onClick={this.exportMap.bind(this, countries[0].name, _find(disasterType, {value: String(disasterTypeCode)}).label)}>Export Map</button>
           </div>
           <div className='map-container' id='mapContainer'>
             <div style={exportStyle} className='global-margin'>
@@ -161,7 +163,8 @@ if (environment !== 'production') {
     districts: T.array,
     countries: T.array,
     name: T.string,
-    date: T.string
+    date: T.string,
+    disasterTypeCode: T.string
   };
 }
 
