@@ -37,7 +37,6 @@ import {
   FormInputSelect,
   FormTextarea,
   FormRadioGroup,
-  FormSelect,
   FormError
 } from '../../components/form-elements/';
 import ActionsCheckboxes from './cmp-action-checkboxes.js';
@@ -202,6 +201,11 @@ class FieldReportForm extends React.Component {
   onFieldChange (field, e) {
     let data = _cloneDeep(this.state.data);
     let val = e && e.target ? e.target.value : e;
+
+    // FIXME: handle this better. When we change to a react-select, we get a different data structure back from the select onChange
+    if (field === 'disasterType') {
+      val = val.value;
+    }
     _set(data, field, val === '' || val === null ? undefined : val);
     this.setState({data});
   }
@@ -249,7 +253,7 @@ class FieldReportForm extends React.Component {
   renderStep1 () {
     const districtChoices = this.getDistrictChoices() || [];
     return (
-      <Fold title='Context' extraClass>
+      <Fold title='Context' extraClass foldClass='margin-reset'>
         {/* Hide the status radio until we implement the Early Warning changes to the form */}
         <div style={{display: 'none'}}>
           <FormRadioGroup
@@ -338,18 +342,25 @@ class FieldReportForm extends React.Component {
             </div>
           </div>
         </div>
-        <FormSelect
-          label='Disaster Type *'
-          name='disaster-type'
-          id='disaster-type'
-          options={formData.disasterType}
-          value={this.state.data.disasterType}
-          onChange={this.onFieldChange.bind(this, 'disasterType')} >
-          <FormError
-            errors={this.state.errors}
-            property='disasterType'
-          />
-        </FormSelect>
+        <div className='form__group'>
+          <div className='form__inner-header'>
+            <label className='form__label'>Disaster Type *</label>
+          </div>
+          <div className='form__inner-body'>
+            <Select
+              placeholder='-- Disaster Type --'
+              name='disaster-type'
+              id='disaster-type'
+              options={formData.disasterType}
+              value={this.state.data.disasterType}
+              onChange={this.onFieldChange.bind(this, 'disasterType')}
+            />
+            <FormError
+              errors={this.state.errors}
+              property='disasterType'
+            />
+          </div>
+        </div>
         <FormRadioGroup
           label='Government requests international assistance?'
           description={'Indicate if the government requested international assistance.'}
@@ -744,7 +755,7 @@ class FieldReportForm extends React.Component {
 
     return (
       <div className='validation-result'>
-        <h3>Page {this.state.step} of 5 incomplete.</h3>
+        <h3>Page {this.state.step} of 4 incomplete.</h3>
         <p>To continue please fix:</p>
         <ul>
           {errors.map(o => <li key={o.dataPath}>{dataPathToDisplay(o.dataPath, o.keyword)}</li>)}
@@ -754,12 +765,13 @@ class FieldReportForm extends React.Component {
   }
 
   render () {
+    const submitTitle = this.state.step === 4 ? 'Submit' : 'Save and Continue';
     return (
       <App className='page--frep-form'>
         <section className='inpage'>
           <header className='inpage__header'>
             <div className='inner'>
-              <div className='inpage__headline'>
+              <div className='iSave and Continuenpage__headline'>
                 <h1 className='inpage__title'>Create Field Report</h1>
                 {this.renderStepper()}
               </div>
@@ -773,7 +785,7 @@ class FieldReportForm extends React.Component {
 
                 <div className='form__actions text-center'>
                   <button type='button' className={c('button button--secondary-bounded', {disabled: this.state.step <= 1})} title='Go back to previous step' onClick={this.onStepBackClick}>Back</button>
-                  <button type='submit' className='button button--secondary-filled' title='Save and Continue'>Save and Continue</button>
+                  <button type='submit' className='button button--secondary-filled' title={submitTitle}>{submitTitle}</button>
                 </div>
               </form>
             </div>

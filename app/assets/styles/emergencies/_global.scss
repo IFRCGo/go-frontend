@@ -66,3 +66,9 @@
     width: auto;
   }
 }
+
+.page--emergencies {
+  .form__group {
+    @include form__group;
+  }
+}

@@ -52,30 +52,36 @@ export default class GlobalPreparednessHighlights extends React.Component {
     this.buildHighPerformingComponentsData();
     const highPerformingComponents = [];
     this.highPerformingComponents.forEach((component, index) => {
-      highPerformingComponents.push(<li key={component.name + 'highperforming' + index}>{component.name}</li>);
+      highPerformingComponents.push(<div key={component.name + 'highperforming' + index} className='table--border__list'>{component.name}</div>);
     });
     const highPriorityComponents = [];
     if (Object.keys(this.props.prioritizationData).length > 0) {
       Object.keys(this.props.prioritizationData).forEach((key, index) => {
-        highPriorityComponents.push(<li key={key + 'highpriority' + index}>{key.replace(/_/g, ' ')}</li>);
+        highPriorityComponents.push(<div key={key + 'highpriority' + index} className='table--border__list'>{key.replace(/_/g, ' ')}</div>);
       });
     }
     if (highPerformingComponents.length === 0 && highPriorityComponents.length === 0) return null;
     return (
       <div className='inner'>
         <Fold title={'Global Preparedness Highlights'} foldClass='margin-reset' extraClass='fold--main'>
-          <div style={{width: '50%', float: 'left'}}>
-            <span style={{fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.6px'}}>High Performing Components (globally)</span>
-            <ul>
-              {this.props.perPermission ? highPerformingComponents : 'You can only see this data if you have the correct permissions.'}
-            </ul>
-          </div>
-          <div style={{width: '50%', float: 'left'}}>
-            <span style={{fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.6px'}}>Top Prioritized Components (globally)</span>
-            <ul>
-              {highPriorityComponents}
-            </ul>
-          </div>
+          <table className='table table--border'>
+            <thead>
+              <tr>
+                <th><span style={{textTransform: 'uppercase', letterSpacing: '0.6px'}}>High Performing Components (globally)</span></th>
+                <th><span style={{textTransform: 'uppercase', letterSpacing: '0.6px'}}>Top Prioritized Components (globally)</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  {this.props.perPermission ? highPerformingComponents : 'You can only see this data if you have the correct permissions.'}
+                </td>
+                <td>
+                  {highPriorityComponents}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </Fold>
       </div>
     );

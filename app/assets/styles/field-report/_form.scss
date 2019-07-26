@@ -2,6 +2,7 @@
    Field Report form
    ========================================================================== */
 
+
 .page--frep-form {
   background: #fff;
 
@@ -10,9 +11,7 @@
   }
 
   .fold__body > .form__group {
-    background: $grey-fog;
-    padding: $global-spacing-2;
-    margin-bottom: $global-spacing-2;
+    @include form__group;
     
     > .form__inner-header {
       display: block;

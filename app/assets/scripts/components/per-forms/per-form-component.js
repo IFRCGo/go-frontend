@@ -10,6 +10,7 @@ const requestFactory = new RequestFactory();
 const renderLanguageSelectDropdown = (props) => {
   return (<div>
     <span style={{fontWeight: 'bold'}}>Form language:</span>&nbsp;
+
     <select onChange={props.chooseLanguage}>
       <option value='english'>English</option>
       <option value='spanish'>Spanish</option>
@@ -60,18 +61,20 @@ if (environment !== 'production') {
 const renderEpidemicsRadioButton = (props) => {
   return (
     <div className='containera1'>
-      <div className='per_form_area'>{props.state.areaTitle}</div>
-      <div className='per_form_question'>{props.state.areaQuestion}</div>
-      <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
-        <input type='radio' name='a1' disabled={props.view} value={requestFactory.stringAnswerToNum(props.state.areaOptions[0])} onClick={props.changeEpiComponentState} />
-        <span className='form__option__ui'></span>
-        <span className='form__option__text'>{props.state.areaOptions[0]}</span>
-      </label>
-      <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
-        <input type='radio' name='a1' disabled={props.view} value={requestFactory.stringAnswerToNum(props.state.areaOptions[1])} onClick={props.changeEpiComponentState} />
-        <span className='form__option__ui'></span>
-        <span className='form__option__text'>{props.state.areaOptions[1]}</span>
-      </label>
+      <div className='per_form_area'>{props.state.areaTitle}</div><br />
+      <div className='form__group'>
+        <div className='label-secondary'>{props.state.areaQuestion}</div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' name='a1' disabled={props.view} value={requestFactory.stringAnswerToNum(props.state.areaOptions[0])} onClick={props.changeEpiComponentState} />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>{props.state.areaOptions[0]}</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' name='a1' disabled={props.view} value={requestFactory.stringAnswerToNum(props.state.areaOptions[1])} onClick={props.changeEpiComponentState} />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>{props.state.areaOptions[1]}</span>
+        </label>
+      </div>
     </div>
   );
 };
@@ -128,9 +131,10 @@ const renderQuestions = (component, componentIndex, props) => {
 
   if (typeof component.namespaces !== 'undefined' && component.namespaces !== null) {
     component.namespaces.forEach(namespace => {
-      questions.push(<div key={'container' + componentIndex + 'q' + questionIndex} id={'container' + componentIndex + 'q' + questionIndex}>
+      questions.push(<div key={'container' + componentIndex + 'q' + questionIndex} id={'container' + componentIndex + 'q' + questionIndex} className='form__group'>
         <div className='per_form_ns'>{namespace.nsTitle}</div>
-        <div className='per_form_question'>{namespace.nsQuestion}</div>
+        <br />
+        <div className='label-secondary'>{namespace.nsQuestion}</div>
 
         {renderAnswers(namespace, componentIndex, questionIndex, props)}
         {renderFeedbackBox(namespace, componentIndex, questionIndex, props)}
@@ -188,9 +192,11 @@ if (environment !== 'production') {
 const renderFeedbackBox = (namespace, componentIndex, questionIndex, props) => {
   return (
     <React.Fragment>
-      <div className='per_form_question'>{namespace.feedbackTitle}</div>
+      <br /><br />
+      <div className='label-secondary'>{namespace.feedbackTitle}</div>
       {typeof namespace.feedbackDescription !== 'undefined' && namespace.feedbackDescription !== null && namespace.feedbackDescription.trim() !== '' ? (<React.Fragment>{namespace.feedbackDescription}<br /></React.Fragment>) : null}
-      <input type='text' disabled={props.view} name={'c' + componentIndex + 'q' + questionIndex + 'f'} className='form__control form__control--medium' /><br /><br />
+      <br />
+      <input type='text' disabled={props.view} name={'c' + componentIndex + 'q' + questionIndex + 'f'} className='form__control form__control--medium' />
     </React.Fragment>
   );
 };
@@ -277,12 +283,16 @@ export const PerFormComponent = (props) => {
   let button = null;
   if (props.mode === 'new') {
     button = (<React.Fragment>
-      <button className='button button--medium button--primary-filled' onClick={props.sendForm}>Submit form</button>&nbsp;
-      <button className='button button--medium button--secondary-filled' onClick={props.saveDraft}>Save as draft</button>
+      <div className='text-center'>
+        <button className='button button--medium button--primary-filled' onClick={props.sendForm}>Submit form</button>&nbsp;
+        <button className='button button--medium button--secondary-filled' onClick={props.saveDraft}>Save as draft</button>
+      </div>
     </React.Fragment>);
   } else if (props.mode === 'edit') {
     button = (<React.Fragment>
-      <button className='button button--medium button--primary-filled' onClick={props.editDraft}>Save draft</button>
+      <div className='text-center'>
+        <button className='button button--medium button--primary-filled' onClick={props.editDraft}>Save draft</button>
+      </div>
     </React.Fragment>);
   }
   return (
