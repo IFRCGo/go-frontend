@@ -37,7 +37,6 @@ import {
   FormInputSelect,
   FormTextarea,
   FormRadioGroup,
-  FormSelect,
   FormError
 } from '../../components/form-elements/';
 import ActionsCheckboxes from './cmp-action-checkboxes.js';
@@ -203,7 +202,7 @@ class FieldReportForm extends React.Component {
     let data = _cloneDeep(this.state.data);
     let val = e && e.target ? e.target.value : e;
 
-    // FIXME: handle this better. When we change to a react-select, we get a different data structure back from the select onChange 
+    // FIXME: handle this better. When we change to a react-select, we get a different data structure back from the select onChange
     if (field === 'disasterType') {
       val = val.value;
     }

@@ -4,14 +4,13 @@ import c from 'classnames';
 import { environment } from '../../config';
 import { PropTypes as T } from 'prop-types';
 import RequestFactory from './factory/request-factory';
-import Select from 'react-select';
 
 const requestFactory = new RequestFactory();
 
 const renderLanguageSelectDropdown = (props) => {
   return (<div>
     <span style={{fontWeight: 'bold'}}>Form language:</span>&nbsp;
-      
+
     <select onChange={props.chooseLanguage}>
       <option value='english'>English</option>
       <option value='spanish'>Spanish</option>
