@@ -8,7 +8,8 @@ import html2canvas from 'html2canvas';
 import { startDownload } from '../../utils/download-starter';
 // import exportMap from '../../utils/export-map';
 import { DateTime } from 'luxon';
-
+import { disasterType } from '../../utils/field-report-constants';
+import _find from 'lodash.find';
 class EmergencyMap extends React.Component {
   constructor (props) {
     super(props);
@@ -18,15 +19,14 @@ class EmergencyMap extends React.Component {
     };
   }
 
-  exportMap () {
+  exportMap (country, disasterTypeName) {
     this.setState({'isExporting': true});
-    const timestamp = new Date();
     const $container = document.getElementById('mapContainer');
     document.getElementsByClassName('mapboxgl-ctrl-top-right')[0].style.visibility = 'hidden';
     html2canvas($container, {useCORS: true}).then((renderedCanvas) => {
       startDownload(
         renderedCanvas,
-        'map-' + timestamp.getTime() + '.png'
+        `${DateTime.local().toISODate()}-${disasterTypeName}-${country}.png`
       );
       document.getElementsByClassName('mapboxgl-ctrl-top-right')[0].style.visibility = 'visible';
       this.setState({'isExporting': false});
@@ -78,6 +78,11 @@ class EmergencyMap extends React.Component {
     theMap.setLayoutProperty('admin1-selected-labels', 'visibility', 'visible');
     theMap.setLayoutProperty('admin1-country-selected', 'visibility', 'visible');
     theMap.setLayoutProperty('admin1-country-selected-boundaries', 'visibility', 'visible');
+
+    const disputedTerritoriesVisible = this.theMap.queryRenderedFeatures({layers: ['disputed_territories copy']}).length;
+    if (disputedTerritoriesVisible) {
+      this.setState({ disputedTerritoriesVisible: true });
+    }
   }
 
   componentDidMount () {
@@ -93,18 +98,21 @@ class EmergencyMap extends React.Component {
   render () {
     const {
       name,
-      date
+      date,
+      countries,
+      disasterTypeCode
     } = this.props;
     const exportStyle = {
       display: this.state.isExporting ? 'block' : 'none'
     };
+
     return (
       <div className='emergency-map'>
         <div className='inner'>
           <div className='row text-right'>
             <button className={c('button button--primary-bounded button--export global-margin-3-b', {
               disabled: !this.state.ready
-            })} onClick={this.exportMap.bind(this)}>Export Map</button>
+            })} onClick={this.exportMap.bind(this, countries[0].name, _find(disasterType, {value: String(disasterTypeCode)}).label)}>Export Map</button>
           </div>
           <div className='map-container' id='mapContainer'>
             <div style={exportStyle} className='global-margin'>
@@ -130,12 +138,19 @@ class EmergencyMap extends React.Component {
                       <dt className='border--disputed'>border</dt>
                       <dd>Disputed borders</dd>
                     </dl>
+                    {
+                      this.state.disputedTerritoriesVisible
+                        ? <dl className='legend__dl legend__dl--borders'>
+                          <dt className='border--territory'>territory</dt>
+                          <dd>Disputed territory</dd>
+                        </dl> : null
+                    }
                   </div>
                 </div>
               </figcaption>
               <div className="map-vis__holder" ref='map'/>
             </figure>
-            <p style={exportStyle} className='map__container__disclaimer'>The maps used do not imply the expresion of any opinion on the part of the International Federation of the Red Cross and Red Crescent Societies or National Societies concerning the legal status of a territory or of its authorities, Map data sources: OCHA, OSM Contributors, ICRC, IFRC. Map design: Netherland Red Cross/IFRC.</p>
+            <p style={exportStyle} className='map__container__disclaimer'>The maps used do not imply the expresion of any opinion on the part of the International Federation of the Red Cross and Red Crescent Societies or National Societies concerning the legal status of a territory or of its authorities, Map data sources: OCHA, OSM Contributors, Mapbox, ICRC, IFRC. Map design: Netherland Red Cross/IFRC.</p>
           </div>
         </div>
       </div>
@@ -148,7 +163,8 @@ if (environment !== 'production') {
     districts: T.array,
     countries: T.array,
     name: T.string,
-    date: T.string
+    date: T.string,
+    disasterTypeCode: T.string
   };
 }
 
