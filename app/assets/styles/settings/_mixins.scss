@@ -168,3 +168,14 @@
     background-color: $bg-color-active;
   }
 }
+
+
+/* ==========================================================================
+   Forms
+   ========================================================================== */
+
+@mixin form__group {
+  background: $grey-fog;
+  padding: $global-spacing-2;
+  margin-bottom: $global-spacing-2;
+}

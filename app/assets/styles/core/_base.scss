@@ -91,6 +91,14 @@ a.link--primary {
   };
 }
 
+.mapboxgl-popup {
+  z-index: 2;
+}
+
+.map-vis .map-vis__legend {
+  z-index: 1;
+}
+
 .mapboxgl-popup .link--primary {
   color: $base-color;
   border-bottom: 1px solid $primary-color;

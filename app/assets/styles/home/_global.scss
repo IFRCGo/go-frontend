@@ -133,7 +133,7 @@
 
     @include media(small-up) {
       @include span(6/12, $offset: 0, $cycle: 0);
-      border-right: 1px solid $base-border-color;
+      //border-right: 1px solid $base-border-color;
       border-radius: 0;
 
       &:first-of-type {
@@ -142,6 +142,7 @@
 
       &:last-of-type {
         border-radius: 0 ($base-border-radius * 2) ($base-border-radius * 2) 0;
+        border-right: none;
       }
     }
 

@@ -265,3 +265,18 @@ td.right-align, th.right-align{
   }
 }
 
+
+.table--border {
+  thead th {
+    color: $secondary-color;
+    box-shadow: none;
+  }
+
+  th, td {
+    border: 1px solid $base-border-color;
+  }
+}
+
+.table--border__list {
+  padding: $global-spacing 0;
+}
