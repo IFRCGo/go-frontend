@@ -41,6 +41,7 @@ export default class PlanResponseRow extends React.Component {
     const {
       label,
       name,
+      description,
       options,
       valueFieldLabel,
       values,
@@ -53,6 +54,9 @@ export default class PlanResponseRow extends React.Component {
         <div className='form__inner-header'>
           <div className='form__inner-headline'>
             <label className='form__label'>{label}</label>
+            <div className="form__description">
+              {description}
+            </div>
           </div>
         </div>
         <div className='form__inner-body'>
@@ -91,6 +95,7 @@ if (environment !== 'production') {
   PlanResponseRow.propTypes = {
     label: T.string,
     name: T.string,
+    description: T.string,
     values: T.shape({
       status: T.string,
       value: T.string

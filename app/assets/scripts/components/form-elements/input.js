@@ -12,6 +12,7 @@ export default function FormInput (props) {
     type,
     name,
     description,
+    placeholder,
     classInput,
     classWrapper,
     classLabel,
@@ -40,6 +41,7 @@ export default function FormInput (props) {
           type={type}
           id={id}
           name={name}
+          placeholder={placeholder}
           className={c('form__control form__control--medium', classInput)}
           value={value || ''}
           onChange={onChange}
@@ -67,6 +69,7 @@ if (process.env.NODE_ENV !== 'production') {
       T.node,
       T.object
     ]),
+    placeholder: T.string,
     classWrapper: T.string,
     classLabel: T.string,
     classInput: T.string,

@@ -272,6 +272,8 @@ class FieldReportForm extends React.Component {
           label='Title *'
           labelSecondary='Add Title'
           selectLabel='Link to Emergency'
+          inputPlaceholder='Example: Malawi - Central Region: Floods 03/2019'
+          selectPlaceholder='Click here to link to an existing hazard alert (if one exists)'
           type='text'
           name='summary'
           id='summary'
@@ -348,7 +350,7 @@ class FieldReportForm extends React.Component {
           </div>
           <div className='form__inner-body'>
             <Select
-              placeholder='-- Disaster Type --'
+              placeholder='Select a disaster type'
               name='disaster-type'
               id='disaster-type'
               options={formData.disasterType}
@@ -363,7 +365,7 @@ class FieldReportForm extends React.Component {
         </div>
         <FormRadioGroup
           label='Government requests international assistance?'
-          description={'Indicate if the government requested international assistance.'}
+          description='Indicate if the government requested international assistance.'
           name='assistance'
           options={[
             {
@@ -399,7 +401,7 @@ class FieldReportForm extends React.Component {
           onChange={this.onFieldChange.bind(this, 'numInjured')} />
         <SourceEstimation
           label='Dead'
-          description='Number of people confirmed dead and presumed dead.'
+          description='Number of people confirmed dead.'
           name='num-dead'
           values={this.state.data.numDead}
           fieldKey='numDead'
@@ -432,8 +434,9 @@ class FieldReportForm extends React.Component {
         <FormTextarea
           label='Situational Overview'
           name='description'
+          placeholder='Example: According to the local government, the overflow of the Zimbizi river has caused extensive flood water damage to low income housing along the river bank. The majority of the affected households do not have sufficient insurance coverage for their assets. The local branch of the National Society is currently assessing how to best support the most vulnerable families affected by the disaster.'
           id='description'
-          description={'Describe the effects of the hazard, the current context, the affected population and how they have been affected.'}
+          description='Describe the effects of the hazard, the current context, the affected population and how they have been affected.'
           value={this.state.data.description}
           onChange={this.onFieldChange.bind(this, 'description')} >
           <FormError
@@ -521,7 +524,8 @@ class FieldReportForm extends React.Component {
         </div>
         <ActionsCheckboxes
           label='Actions Taken by National Society Red Cross (if any)'
-          description={'Select the activities undertaken by the National Society and briefly describe.'}
+          description='Select the activities undertaken by the National Society and briefly describe.'
+          placeholder='Example: The two local branches of the National Society in the affected districts have provided first aid, psychosocial support and basic relief items to the affected families. An evacuation centre has been set up in a local school to accommodate those unable to return to their homes. Groups of Red Cross volunteers are helping the local search and rescue personnel in cleaning storm debris from houses and streets.'
           name='actions-nat-soc'
           options={formData.actions}
           values={this.state.data.actionsNatSoc}
@@ -529,7 +533,8 @@ class FieldReportForm extends React.Component {
 
         <ActionsCheckboxes
           label='Actions taken by the IFRC'
-          description={'Select the activities taken by the IFRC (could be the Regional office, cluster office or country office) and briefly describe.'}
+          description='Select the activities taken by the IFRC (could be the Regional office, cluster office or country office) and briefly describe.'
+          placeholder='Brief description of the action'
           name='actions-federation'
           options={formData.actions}
           values={this.state.data.actionsFederation}
@@ -537,7 +542,8 @@ class FieldReportForm extends React.Component {
 
         <ActionsCheckboxes
           label='Actions taken by any other RCRC Movement actors'
-          description={'Select the activities undertaken by any other RCRC Movement actor(s) and briefly describe.'}
+          description='Select the activities undertaken by any other RCRC Movement actor(s) and briefly describe.'
+          placeholder='Brief description of the action'
           name='actions-pns'
           options={formData.actions}
           values={this.state.data.actionsPns}
@@ -545,7 +551,7 @@ class FieldReportForm extends React.Component {
 
         <FormRadioGroup
           label='Information Bulletin'
-          description={'Indicate if an Information Bulletin was published, is planned or if no Information Bulletin will be issued for this operation/disaster.'}
+          description='Indicate if an Information Bulletin was published, is planned or if no Information Bulletin will be issued for this operation/disaster.'
           name='bulletin'
           options={[
             {
@@ -568,7 +574,8 @@ class FieldReportForm extends React.Component {
           label='Actions Taken by Others (Governments, UN)'
           name='actions-others'
           id='actions-others'
-          description={'Who else was involved? UN agencies? NGOs? Government? Describe what other actors did.'}
+          description='Who else was involved? UN agencies? NGOs? Government? Describe what other actors did.'
+          placeholder='Brief description of the action'
           value={this.state.data.actionsOthers}
           onChange={this.onFieldChange.bind(this, 'actionsOthers')} />
       </Fold>
@@ -657,7 +664,8 @@ class FieldReportForm extends React.Component {
         */}
 
         <PlanResponseRow
-          label='IFRC Surge Personnel'
+          label='Rapid Response Personnel'
+          description='This is the new name for FACT/RDRT/RIT'
           valueFieldLabel='Number of people'
           name='fact'
           options={optsPlanReqDep}

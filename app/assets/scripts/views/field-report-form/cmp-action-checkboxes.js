@@ -32,6 +32,7 @@ export default class ActionsCheckboxes extends React.Component {
       label,
       name,
       description,
+      placeholder,
       options,
       values
     } = this.props;
@@ -47,6 +48,7 @@ export default class ActionsCheckboxes extends React.Component {
         onChange={this.onChecksChange} >
         <FormTextarea
           label='Description'
+          placeholder={placeholder}
           name={`${name}[description]`}
           id={`${name}-description`}
           classLabel='label-secondary'
@@ -62,6 +64,7 @@ if (environment !== 'production') {
     label: T.string,
     name: T.string,
     description: T.string,
+    placeholder: T.string,
     options: T.array,
     values: T.shape({
       options: T.array,
