@@ -396,7 +396,7 @@ class Account extends React.Component {
     e.preventDefault();
     showGlobalLoading();
     const id = this.props.profile.data.id;
-    this.props._updateProfile(id, this.serializeProfile(profileAttributes.slice(2, profileAttributes.length)));
+    this.props._updateProfile(id, this.serializeProfile(profileAttributes.slice(1, profileAttributes.length)));
   }
 
   serializeProfile (attributes) {
