@@ -249,7 +249,7 @@ class FieldReportForm extends React.Component {
   renderStep1 () {
     const districtChoices = this.getDistrictChoices() || [];
     return (
-      <Fold title='Context' extraClass>
+      <Fold title='Context' extraClass foldClass='margin-reset'>
         {/* Hide the status radio until we implement the Early Warning changes to the form */}
         <div style={{display: 'none'}}>
           <FormRadioGroup
