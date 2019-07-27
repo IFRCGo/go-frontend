@@ -79,7 +79,7 @@ class MobileHeader extends React.PureComponent {
         <div className='inner'>
           <div className='nav-global-search'>
             <form className='gsearch'>
-              <div className='form__group'>
+              <div>
                 <label className='form__label'>Search</label>
                 <Select.Async
                   placeholder='Search...'
