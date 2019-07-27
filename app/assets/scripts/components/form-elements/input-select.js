@@ -89,6 +89,8 @@ if (process.env.NODE_ENV !== 'production') {
     errors: T.array,
     inputValue: T.string,
     inputOnChange: T.func,
+    inputPlaceholder: T.string,
+    selectPlaceholder: T.string,
     selectValue: T.object,
     selectOnChange: T.func,
     selectLoadOptions: T.func,

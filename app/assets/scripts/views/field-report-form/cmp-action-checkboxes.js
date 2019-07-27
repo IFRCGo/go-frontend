@@ -72,6 +72,7 @@ if (environment !== 'production') {
       options: T.array,
       description: T.string
     }),
+    classInput: T.string,
     onChange: T.func
   };
 }

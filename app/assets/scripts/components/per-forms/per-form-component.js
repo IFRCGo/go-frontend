@@ -274,10 +274,10 @@ if (environment !== 'production') {
 }
 
 const newFormElementKey = () => 'form' + Math.floor(Math.random() * 99999) + Date.now();
-const dropAutosaveAndReload = (event) => {
-  localStorage.removeItem(event.target.id);
-  window.location.reload();
-};
+// const dropAutosaveAndReload = (event) => {
+//   localStorage.removeItem(event.target.id);
+//   window.location.reload();
+// };
 
 export const PerFormComponent = (props) => {
   let button = null;
