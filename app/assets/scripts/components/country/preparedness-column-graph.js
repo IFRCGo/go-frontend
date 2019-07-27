@@ -70,7 +70,7 @@ class PreparednessColumnBar extends React.Component {
             height={300}
             data={Object.values(groupedData)}
             margin={{
-              top: 5, right: 30, left: 20, bottom: 5
+              top: 5, right: 40, left: 40, bottom: 5
             }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey='name' hide />
