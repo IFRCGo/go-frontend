@@ -21,8 +21,10 @@ export default function FormInputSelect (props) {
     id,
     inputValue,
     inputOnChange,
+    inputPlaceholder,
     selectValue,
     selectOnChange,
+    selectPlaceholder,
     selectLoadOptions,
     autoFocus,
     disabled,
@@ -46,6 +48,7 @@ export default function FormInputSelect (props) {
           type={type}
           id={id}
           name={name}
+          placeholder={inputPlaceholder}
           className={c('form__control form__control--medium', classInput)}
           value={inputValue || ''}
           onChange={inputOnChange}
@@ -62,6 +65,7 @@ export default function FormInputSelect (props) {
           labelSecondary={selectLabel}
           value={selectValue}
           onChange={selectOnChange}
+          placeholder={selectPlaceholder}
           loadOptions={selectLoadOptions} />
 
         <FormError
@@ -85,6 +89,8 @@ if (process.env.NODE_ENV !== 'production') {
     errors: T.array,
     inputValue: T.string,
     inputOnChange: T.func,
+    inputPlaceholder: T.string,
+    selectPlaceholder: T.string,
     selectValue: T.object,
     selectOnChange: T.func,
     selectLoadOptions: T.func,

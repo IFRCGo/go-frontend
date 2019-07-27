@@ -274,10 +274,10 @@ if (environment !== 'production') {
 }
 
 const newFormElementKey = () => 'form' + Math.floor(Math.random() * 99999) + Date.now();
-const dropAutosaveAndReload = (event) => {
-  localStorage.removeItem(event.target.id);
-  window.location.reload();
-};
+// const dropAutosaveAndReload = (event) => {
+//   localStorage.removeItem(event.target.id);
+//   window.location.reload();
+// };
 
 export const PerFormComponent = (props) => {
   let button = null;
@@ -298,7 +298,8 @@ export const PerFormComponent = (props) => {
   return (
     <React.Fragment>
       <Link to='/account#per-forms' className='button button--medium button--primary-filled' style={{float: 'right', marginBottom: '1rem'}}>Exit form</Link>
-      {props.view ? null : <button className='button button--medium button--secondary-filled' id={'autosave' + props.mode + props.formCode + props.ns} onClick={dropAutosaveAndReload} style={{float: 'right', marginBottom: '1rem', marginRight: '1rem'}}>Drop autosave &amp; reload draft</button>}
+      {/* Commenting out Drop Autosave button because we want to hide it for now, we may move it to somewhere more hidden. */}
+      {/* {props.view ? null : <button className='button button--medium button--secondary-filled' id={'autosave' + props.mode + props.formCode + props.ns} onClick={dropAutosaveAndReload} style={{float: 'right', marginBottom: '1rem', marginRight: '1rem'}}>Drop autosave &amp; reload draft</button>} */}
       <div className='fold'>
         <div className='inner'>
           {renderLanguageSelectDropdown(props)}
