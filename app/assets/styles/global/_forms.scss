@@ -31,7 +31,8 @@
 
   /* Placeholder */
   &::placeholder {
-    opacity: 0.64;
+    opacity: 0.5;
+    font-size: 90%;
   }
 
   /* States */
@@ -118,6 +119,10 @@ select.form__control:-moz-focusring {
 textarea.form__control {
   height: auto;
   resize: none;
+}
+
+.textarea--lg {
+  min-height: 8rem;
 }
 
 

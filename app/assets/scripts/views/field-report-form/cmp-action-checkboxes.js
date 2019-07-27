@@ -34,7 +34,8 @@ export default class ActionsCheckboxes extends React.Component {
       description,
       placeholder,
       options,
-      values
+      values,
+      classInput
     } = this.props;
 
     return (
@@ -48,6 +49,7 @@ export default class ActionsCheckboxes extends React.Component {
         onChange={this.onChecksChange} >
         <FormTextarea
           label='Description'
+          classInput={classInput}
           placeholder={placeholder}
           name={`${name}[description]`}
           id={`${name}-description`}

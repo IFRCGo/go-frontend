@@ -434,6 +434,7 @@ class FieldReportForm extends React.Component {
         <FormTextarea
           label='Situational Overview'
           name='description'
+          classInput='textarea--lg'
           placeholder='Example: According to the local government, the overflow of the Zimbizi river has caused extensive flood water damage to low income housing along the river bank. The majority of the affected households do not have sufficient insurance coverage for their assets. The local branch of the National Society is currently assessing how to best support the most vulnerable families affected by the disaster.'
           id='description'
           description='Describe the effects of the hazard, the current context, the affected population and how they have been affected.'
@@ -527,6 +528,7 @@ class FieldReportForm extends React.Component {
           description='Select the activities undertaken by the National Society and briefly describe.'
           placeholder='Example: The two local branches of the National Society in the affected districts have provided first aid, psychosocial support and basic relief items to the affected families. An evacuation centre has been set up in a local school to accommodate those unable to return to their homes. Groups of Red Cross volunteers are helping the local search and rescue personnel in cleaning storm debris from houses and streets.'
           name='actions-nat-soc'
+          classInput='textarea--lg'
           options={formData.actions}
           values={this.state.data.actionsNatSoc}
           onChange={this.onFieldChange.bind(this, 'actionsNatSoc')} />
