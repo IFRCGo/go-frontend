@@ -184,110 +184,145 @@ class PreparednessWorkPlan extends React.Component {
 
           {this.state.showAddModul
             ? (
-              <div style={{paddingTop: '20px'}}>
-                <div style={{float: 'right', cursor: 'pointer'}} onClick={this.hideAddModul.bind(this)}><img src="/assets/graphics/layout/card-x.svg" className="component__block__icon" /></div>
+              <div className='global-spacing-t'>
+                <div style={{float: 'right', cursor: 'pointer', padding: '5px'}} onClick={this.hideAddModul.bind(this)}><img src="/assets/graphics/layout/card-x.svg" className="component__block__icon" /></div>
                 <div style={Object.assign({}, lightBackground)}>
-                  <div>
-                    <span style={{fontWeight: 'bold'}}>Prioritization:&nbsp;</span>
-                    <select name='prioritization'>
-                      {prioritizationDropdown}
-                    </select>
+                  <div className='form__group'>
+                    <div className='form__inner-header'>
+                      <span className='label-secondary'>Prioritization:&nbsp;</span>
+                    </div>
+                    <div className='form__inner-body'>
+                      <select name='prioritization' className='full-width'>
+                        {prioritizationDropdown}
+                      </select>
+                    </div>
                   </div>
-                  <div>
-                    <span style={{fontWeight: 'bold'}}>Component:&nbsp;</span>
-                    <select name='components' onChange={this.onComponentChange}>
-                      {components}
-                    </select>
+                  <div className='form__group'>
+                    <div className='form__inner-header'>
+                      <span className='label-secondary'>Component:&nbsp;</span>
+                    </div>
+                    <div className='form__inner-body'>
+                      <select name='components' onChange={this.onComponentChange} className='full-width'>
+                        {components}
+                      </select>
+                    </div>
                   </div>
-                  <div>
-                    <span style={{fontWeight: 'bold'}}>Benchmark:&nbsp;</span>
-                    <select name='benchmark'>
-                      {benchmarks}
-                    </select>
+                  <div className='form__group'>
+                    <div className='form__inner-header'>
+                      <span className='label-secondary'>Benchmark:&nbsp;</span>
+                    </div>
+                    <div className='form__inner-body'>
+                      <select name='benchmark' className='full-width'>
+                        {benchmarks}
+                      </select>
+                    </div>
                   </div>
-                  <div>
-                    <span style={{fontWeight: 'bold'}}>Actions:&nbsp;</span>
-                    <input type='text' name='actions' />
+                  <div className='form__group'>
+                    <div className='form__inner-header'>
+                      <span className='label-secondary'>Actions:&nbsp;</span>
+                    </div>
+                    <div className='form__inner-body'>
+                      <input type='text' name='actions' className='form__control form__control--medium' />
+                    </div>
                   </div>
-                  <div>
-                    <span style={{fontWeight: 'bold'}}>Comments:&nbsp;</span>
-                    <input type='text' name='comments' />
+                  <div className='form__group'>
+                    <div className='form__inner-header'>
+                      <span className='label-secondary'>Comments:&nbsp;</span>
+                    </div>
+                    <div className='form__inner-body'>
+                      <input type='text' name='comments' className='form__control form__control--medium' />
+                    </div>
                   </div>
-                  <div>
-                    <span style={{fontWeight: 'bold'}}>Timeline:&nbsp;</span>
-                    <select name='timeline_year'>
-                      <option value='2020'>2020</option>
-                      <option value='2019'>2019</option>
-                      <option value='2018'>2018</option>
-                    </select>&nbsp;-&nbsp;
-                    <select name='timeline_month'>
-                      <option value='01'>01</option>
-                      <option value='02'>02</option>
-                      <option value='03'>03</option>
-                      <option value='04'>04</option>
-                      <option value='05'>05</option>
-                      <option value='06'>06</option>
-                      <option value='07'>07</option>
-                      <option value='08'>08</option>
-                      <option value='09'>09</option>
-                      <option value='10'>10</option>
-                      <option value='11'>11</option>
-                      <option value='12'>12</option>
-                    </select>&nbsp;-&nbsp;
-                    <select name='timeline_day'>
-                      <option value='01'>01</option>
-                      <option value='02'>02</option>
-                      <option value='03'>03</option>
-                      <option value='04'>04</option>
-                      <option value='05'>05</option>
-                      <option value='06'>06</option>
-                      <option value='07'>07</option>
-                      <option value='08'>08</option>
-                      <option value='09'>09</option>
-                      <option value='10'>10</option>
-                      <option value='11'>11</option>
-                      <option value='12'>12</option>
-                      <option value='13'>13</option>
-                      <option value='14'>14</option>
-                      <option value='15'>15</option>
-                      <option value='16'>16</option>
-                      <option value='17'>17</option>
-                      <option value='18'>18</option>
-                      <option value='19'>19</option>
-                      <option value='20'>20</option>
-                      <option value='21'>21</option>
-                      <option value='22'>22</option>
-                      <option value='23'>23</option>
-                      <option value='24'>24</option>
-                      <option value='25'>25</option>
-                      <option value='26'>26</option>
-                      <option value='27'>27</option>
-                      <option value='28'>28</option>
-                      <option value='29'>29</option>
-                      <option value='30'>30</option>
-                      <option value='31'>31</option>
-                    </select>
+                  <div className='form__group'>
+                    <div className='form__inner-header'>
+                      <span className='label-secondary'>Timeline:&nbsp;</span>
+                    </div>
+                    <div className='form__inner-body'>
+                      <select name='timeline_year'>
+                        <option value='2020'>2020</option>
+                        <option value='2019'>2019</option>
+                        <option value='2018'>2018</option>
+                      </select>&nbsp;-&nbsp;
+                      <select name='timeline_month'>
+                        <option value='01'>01</option>
+                        <option value='02'>02</option>
+                        <option value='03'>03</option>
+                        <option value='04'>04</option>
+                        <option value='05'>05</option>
+                        <option value='06'>06</option>
+                        <option value='07'>07</option>
+                        <option value='08'>08</option>
+                        <option value='09'>09</option>
+                        <option value='10'>10</option>
+                        <option value='11'>11</option>
+                        <option value='12'>12</option>
+                      </select>&nbsp;-&nbsp;
+                      <select name='timeline_day'>
+                        <option value='01'>01</option>
+                        <option value='02'>02</option>
+                        <option value='03'>03</option>
+                        <option value='04'>04</option>
+                        <option value='05'>05</option>
+                        <option value='06'>06</option>
+                        <option value='07'>07</option>
+                        <option value='08'>08</option>
+                        <option value='09'>09</option>
+                        <option value='10'>10</option>
+                        <option value='11'>11</option>
+                        <option value='12'>12</option>
+                        <option value='13'>13</option>
+                        <option value='14'>14</option>
+                        <option value='15'>15</option>
+                        <option value='16'>16</option>
+                        <option value='17'>17</option>
+                        <option value='18'>18</option>
+                        <option value='19'>19</option>
+                        <option value='20'>20</option>
+                        <option value='21'>21</option>
+                        <option value='22'>22</option>
+                        <option value='23'>23</option>
+                        <option value='24'>24</option>
+                        <option value='25'>25</option>
+                        <option value='26'>26</option>
+                        <option value='27'>27</option>
+                        <option value='28'>28</option>
+                        <option value='29'>29</option>
+                        <option value='30'>30</option>
+                        <option value='31'>31</option>
+                      </select>
+                    </div>
                   </div>
-                  <div>
-                    <span style={{fontWeight: 'bold'}}>Focal Point:&nbsp;</span>
-                    <input type='text' name='focal' />
+                  <div className='form__group'>
+                    <div className='form__inner-header'>
+                      <span className='label-secondary'>Focal Point:&nbsp;</span>
+                    </div>
+                    <div className='form__inner-body'>
+                      <input type='text' name='focal' className='form__control form__control--medium' />
+                    </div>
                   </div>
-                  <div>
-                    <span style={{fontWeight: 'bold'}}>Status:&nbsp;</span>
-                    <select name='status'>
-                      {statusDropdown}
-                    </select>
+                  <div className='form__group'>
+                    <div className='form__inner-header'>
+                      <span className='label-secondary'>Status:&nbsp;</span>
+                    </div>
+                    <div className='form__inner-body'>
+                      <select name='status' className='full-width'>
+                        {statusDropdown}
+                      </select>
+                    </div>
                   </div>
-                  <div>
 
-                    <span style={{fontWeight: 'bold'}}>Required:&nbsp;</span>
-                    <label className={c(`form__option--custom-checkbox`, {'form__option--inline': 'inline'})}>
-                      <input type='checkbox' name='required' value={'true'} />
-                      <span className='form__option__ui'></span>
-                    </label>
-
+                  <div className='form__group'>
+                    <div className='form__inner-header'>
+                      <span className='label-secondary'>Required:&nbsp;</span>
+                    </div>
+                    <div className='form__inner-body'>
+                      <label className={c(`form__option--custom-checkbox`, {'form__option--inline': 'inline'})}>
+                        <input type='checkbox' name='required' value={'true'} />
+                        <span className='form__option__ui'></span>
+                      </label>
+                    </div>
                   </div>
-                  <div>
+                  <div className='form__group text-center'>
                     <button className='button button--small button--primary-bounded' onClick={this.addNewPlan}>Add</button>
                   </div>
                 </div>

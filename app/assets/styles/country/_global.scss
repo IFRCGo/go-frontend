@@ -212,3 +212,23 @@
     margin-bottom: 0;
   }
 }
+
+#per-work-plan {
+  .form__group {
+    @include form__group;
+    margin-bottom: 0;
+    
+    > .form__inner-header {
+      display: block;
+      @include media(medium-up) {
+        @include column(3/12);
+      }
+    }
+
+    > .form__inner-body {
+      @include media(medium-up) {
+        @include column(9/12);
+      }
+    }
+  }
+}
