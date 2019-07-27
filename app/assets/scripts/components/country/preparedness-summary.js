@@ -154,7 +154,7 @@ class PreparednessSummary extends React.Component {
             </div>
           </div>
         </div>
-        <div style={{border: '1px solid #000', marginTop: '10px'}}>
+        <div className='base-border global-margin-t global-spacing'>
           {popupComponentNameList}
         </div>
       </Fold>
