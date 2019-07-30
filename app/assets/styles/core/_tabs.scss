@@ -2,7 +2,7 @@
   -webkit-tap-highlight-color: transparent;
 
   &__tab-list {
-    border-bottom: 1px solid $base-color;
+    border-bottom: 1px solid $light-base-color;
     margin: 0 0 10px;
     padding: 0;
     display: flex;
@@ -19,12 +19,14 @@
     bottom: -1px;
     position: relative;
     list-style: none;
-    padding: 6px 12px;
+    // padding: 20px 40px;
+    padding: ($global-spacing * 1) ($global-spacing * 2);
+    font-size: large;
     cursor: pointer;
 
     &--selected {
-      border-color: $base-color;
-      font-weight: $base-font-bold;
+      border-color: $light-base-color;
+      font-weight: $base-font-regular;
       color: $base-color;
       border-radius: 5px 5px 0 0;
     }
