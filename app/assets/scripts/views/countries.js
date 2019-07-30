@@ -497,6 +497,10 @@ class AdminArea extends SFPComponent {
     const mapContainerClass = "country__map";
 
     const handleTabChange = index => {
+      console.log(
+        "hash",
+        this.state.tabHashes.indexOf(this.props.location.hash)
+      );
       const url = this.props.location.pathname;
       this.props.history.replace(`${url}${this.state.tabHashes[index]}`);
     };
@@ -537,7 +541,10 @@ class AdminArea extends SFPComponent {
             {this.renderCountryProfile()}
           </div>
         </header>
-        <Tabs defaultIndex={0} onSelect={index => handleTabChange(index)}>
+        <Tabs
+          defaultIndex={this.state.tabHashes.indexOf(this.props.location.hash)}
+          onSelect={index => handleTabChange(index)}
+        >
           <div className="inpage__nav">
             <TabList className="inner">
               <Tab label="overview" param="#overview">
