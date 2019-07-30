@@ -40,6 +40,7 @@ import { getBoundingBox } from "../utils/country-bounding-box";
 
 import App from "./app";
 import Fold from "../components/fold";
+import ErrorPanel from "../components/error-panel";
 import Homemap from "../components/homemap";
 import DisplayTable, {
   SortHeader,
@@ -523,29 +524,31 @@ class AdminArea extends SFPComponent {
           </div>
         </header>
         <Tabs>
-          <TabList classname="inner">
-            <Tab label="overview" param="#overview">
-              Overview
-            </Tab>
-            <Tab label="keyfigures" param="#key-figures">
-              Key Figures
-            </Tab>
-            <Tab label="operationsmap" param="#operations-map">
-              Operations
-            </Tab>
-            <Tab label="emergencies" param="#emergencies">
-              Emergencies
-            </Tab>
-            <Tab label="graphics" param="#graphics">
-              Graphics
-            </Tab>
-            <Tab label="links" param="#links">
-              Links
-            </Tab>
-            <Tab label="contacts" param="#contacts">
-              Contacts
-            </Tab>
-          </TabList>
+          <div className="inpage__nav">
+            <TabList className="inner">
+              <Tab label="overview" param="#overview">
+                Overview
+              </Tab>
+              <Tab label="keyfigures" param="#key-figures">
+                Key Figures
+              </Tab>
+              <Tab label="operationsmap" param="#operations-map">
+                Operations
+              </Tab>
+              <Tab label="emergencies" param="#emergencies">
+                Emergencies
+              </Tab>
+              <Tab label="graphics" param="#graphics">
+                Graphics
+              </Tab>
+              <Tab label="links" param="#links">
+                Links
+              </Tab>
+              <Tab label="contacts" param="#contacts">
+                Contacts
+              </Tab>
+            </TabList>
+          </div>
 
           <div className="inpage__body">
             <div className="inner">
@@ -560,14 +563,20 @@ class AdminArea extends SFPComponent {
                     ) : null}
                   </Fold>
                 ) : (
-                  <span> comming soon</span>
+                  <ErrorPanel
+                    title="Overview"
+                    errorMessage="Overview coming soon"
+                  />
                 )}
               </TabPanel>
               <TabPanel>
                 {get(this.props.keyFigures, "data.results.length") ? (
                   <KeyFigures data={this.props.keyFigures} />
                 ) : (
-                  <span> comming soon </span>
+                  <ErrorPanel
+                    title="Key Figures"
+                    errorMessage="Key figures coming soon"
+                  />
                 )}
               </TabPanel>
               <TabPanel>
@@ -627,21 +636,27 @@ class AdminArea extends SFPComponent {
                 {get(this.props.snippets, "data.results.length") ? (
                   <Snippets data={this.props.snippets} />
                 ) : (
-                  <span>graphics coming soon</span>
+                  <ErrorPanel
+                    title="Graphics"
+                    errorMessage="Graphics coming soon"
+                  />
                 )}
               </TabPanel>
               <TabPanel>
                 {get(data, "links.length") ? (
                   <Links data={data} />
                 ) : (
-                  <span>links coming soon</span>
+                  <ErrorPanel title="Links" errorMessage="Links coming soon" />
                 )}
               </TabPanel>
               <TabPanel>
                 {get(data, "contacts.length") ? (
                   <Contacts data={data} />
                 ) : (
-                  <span>graphics coming soon</span>
+                  <ErrorPanel
+                    title="Contacts"
+                    errorMessage="Contacts coming soon"
+                  />
                 )}
               </TabPanel>
             </div>
