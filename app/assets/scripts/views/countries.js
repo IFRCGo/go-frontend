@@ -522,7 +522,12 @@ class AdminArea extends SFPComponent {
             {this.renderCountryProfile()}
           </div>
         </header>
+        <StickyContainer>
         <Tabs>
+          <Sticky>
+            {({ style, isSticky }) => (
+              <div style={style} className={c('inpage__nav', {'inpage__nav--sticky': isSticky})}>
+                <div className='inner'>
             <Tablist>
               <Tab label="overview" param="#overview">
                 Overview
@@ -546,6 +551,11 @@ class AdminArea extends SFPComponent {
               Contacts
               </Tab>
             </TabList>
+            </div>
+            </div>
+            )}
+          </Sticky>
+
             <TabPanel>1</TabPanel>
             <TabPanel>2</TabPanel>
             <TabPanel>3</TabPanel>
@@ -554,6 +564,7 @@ class AdminArea extends SFPComponent {
             <TabPanel>6</TabPanel>
             <TabPanel>7</TabPanel>
           </Tabs>
+          </StickyContainer>
 
         {/* <Tabs>
             <Tablist>
