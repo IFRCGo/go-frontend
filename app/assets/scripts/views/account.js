@@ -675,14 +675,14 @@ class Account extends React.Component {
               values={this.state.notifications.surg}
               onChange={this.onFieldChange.bind(this, 'notifications', 'surg')} />
             {this.isPerPermission()
-            ? <FormCheckboxGroup
-              label='Other Notifications'
-              name='per'
-              classWrapper='action-checkboxes'
-              options={perDueDateTypes}
-              values={this.state.notifications.per}
-              onChange={this.onFieldChange.bind(this, 'notifications', 'per')} />
-            : null }
+              ? <FormCheckboxGroup
+                label='Other Notifications'
+                name='per'
+                classWrapper='action-checkboxes'
+                options={perDueDateTypes}
+                values={this.state.notifications.per}
+                onChange={this.onFieldChange.bind(this, 'notifications', 'per')} />
+              : null }
             {events}
             <div className="text-center">
               <button type='submit' className={c('button', 'button--large', 'button--secondary-filled', {
