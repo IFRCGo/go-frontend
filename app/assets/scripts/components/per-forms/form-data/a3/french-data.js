@@ -610,7 +610,7 @@ export const frenchForm = {
     },
     {
       componentTitle: 'Catégorie 21: Gestion de l\'information (GI)',
-      componentDescription: 'La capacité à gérer des informations, et notamment à les solliciter, recevoir, analyser et diffuser conformément aux procédures et aux exigences des partenaires (la FICR et les autorités publiques en particulier). Une trace écrite/numérique doit exister et indiquer quand et où la SN a fourni des informations clés pour le développement du Plan d\'Urgence. Cela inclut la GI entre les niveaux et entre les départements, des rapports situationnels, des plans, une visualisation des données, une plateforme DMIS/Go (FICR).',
+      componentDescription: 'La capacité à gérer des informations, et notamment à les solliciter, recevoir, analyser et diffuser conformément aux procédures et aux exigences des partenaires (la FICR et les autorités publiques en particulier). Une trace écrite/numérique doit exister et indiquer quand et où la SN a fourni des informations clés pour le développement du Plan d\'Urgence. Cela inclut la GI entre les niveaux et entre les départements, des rapports situationnels, des plans, une visualisation des données, une plateforme GO (FICR).',
       namespaces: [
         {
           nsTitle: '21.1 Le personnel travaillant au siège et dans les branches connaissent les modèles de GI (réalisés par la SN ou la FICR), la méthodologie et les procédures.',
@@ -823,7 +823,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '23.4 En cas d\'assistance nécessaire, la SN en informe la FICR dans un délai de 24 heures (DMIS)',
+          nsTitle: '23.4 En cas d\'assistance nécessaire, la SN en informe la FICR dans un délai de 24 heures (GO)',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
