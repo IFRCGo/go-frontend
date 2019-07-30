@@ -56,6 +56,16 @@ import {
 } from "../components/admin-area-elements";
 import { SFPComponent } from "../utils/extendables";
 
+const TAB_DETAILS = [
+  { title: "Overview", hash: "#overview" },
+  { title: "Key Figures", hash: "#key-figures" },
+  { title: "Operations", hash: "#operations-map" },
+  { title: "Emergencies", hash: "#emergencies" },
+  { title: "Graphics", hash: "#graphics" },
+  { title: "Links", hash: "#links" },
+  { title: "Contacts", hash: "#contacts" }
+];
+
 const filterPaths = {
   ns: "parent.name",
   type: "activity.activity"
@@ -94,16 +104,7 @@ class AdminArea extends SFPComponent {
         }
       },
       mapFilters: {},
-      persistentMapFilter: {},
-      tabHashes: [
-        "#overview",
-        "#key-figures",
-        "#operations-map",
-        "#emergencies",
-        "#graphics",
-        "#links",
-        "#contacts"
-      ]
+      persistentMapFilter: {}
     };
     this.setMapFilter = this.setMapFilter.bind(this);
     this.setPersistentMapFilter = this.setPersistentMapFilter.bind(this);
