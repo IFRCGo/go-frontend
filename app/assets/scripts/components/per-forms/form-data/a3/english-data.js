@@ -610,7 +610,7 @@ export const englishForm = {
     },
     {
       componentTitle: 'Component 21: Information Management (IM)',
-      componentDescription: 'Ability to manage information including requesting, receiving, analyzing and disseminating as per its procedures and partner requirements (IFRC and public authorities in particular). There should be a clear digital/paper trail that documents what, when and how the NS has acted and provides key information for the development of Emergency Plan of Actions. Includes IM between levels, between departments and Situational Reports, mapping, visualisation of data, DMIS/GO platform (IFRC).',
+      componentDescription: 'Ability to manage information including requesting, receiving, analyzing and disseminating as per its procedures and partner requirements (IFRC and public authorities in particular). There should be a clear digital/paper trail that documents what, when and how the NS has acted and provides key information for the development of Emergency Plan of Actions. Includes IM between levels, between departments and Situational Reports, mapping, visualisation of data, GO platform (IFRC).',
       namespaces: [
         {
           nsTitle: '21.1 Key staff at headquarters and branch level are familiar with IM templates (from NS or IFRC), methodology and procedures.',
