@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { DateTime } from "luxon";
 // import { Sticky, StickyContainer } from "react-sticky";
-import { Tabs, TabList, Tab, TabPanels, TabPanel } from "@reach/tabs";
+import { Tabs, TabList, Tab, TabPanels, TabPanel } from "react-tabs";
 import c from "classnames";
 import { Helmet } from "react-helmet";
 import url from "url";
@@ -32,7 +32,6 @@ import {
   getAdmAreaSnippets,
   getCountryOperations,
   getPartnerDeployments,
-<<<<<<< HEAD
   setPartnerDeploymentFilter,
   getPerNsPhase,
   getPerOverviewForm,
@@ -51,28 +50,11 @@ import CountryMap from '../components/map/country-map';
 import DisplayTable, { SortHeader, FilterHeader } from '../components/display-table';
 import EmergenciesTable from '../components/connected/emergencies-table';
 import BulletTable from '../components/bullet-table';
-=======
-  setPartnerDeploymentFilter
-} from "../actions";
-import { getFdrs } from "../actions/query-external";
-import { getBoundingBox } from "../utils/country-bounding-box";
-
-import App from "./app";
-import Fold from "../components/fold";
-import Homemap from "../components/homemap";
-import DisplayTable, {
-  SortHeader,
-  FilterHeader
-} from "../components/display-table";
-import EmergenciesTable from "../components/connected/emergencies-table";
-import BulletTable from "../components/bullet-table";
->>>>>>> replaces list with tabs
 import {
   Snippets,
   KeyFigures,
   Contacts,
   Links
-<<<<<<< HEAD
 } from '../components/admin-area-elements';
 import PreparednessOverview from './../components/country/preparedness-overview';
 import PreparednessSummary from './../components/country/preparedness-summary';
@@ -80,10 +62,6 @@ import PreparednessWorkPlan from './../components/country/preparedness-work-plan
 import PreparednessPhaseOutcomes from './../components/country/preparedness-phase-outcomes';
 import PreparednessColumnBar from './../components/country/preparedness-column-graph';
 import { SFPComponent } from '../utils/extendables';
-=======
-} from "../components/admin-area-elements";
-import { SFPComponent } from "../utils/extendables";
->>>>>>> replaces list with tabs
 
 const filterPaths = {
   ns: "parent.name",
@@ -151,12 +129,8 @@ class AdminArea extends SFPComponent {
     }
   }
 
-<<<<<<< HEAD
-  componentDidMount () {
-    this.componentIsLoading = true;
-=======
   componentDidMount() {
->>>>>>> replaces list with tabs
+    this.componentIsLoading = true;
     this.getData(this.props);
     this.getAdmArea(this.props.type, getCountryId(this.props.match.params.id));
     this.props._getPerNsPhase(this.props.match.params.id);
@@ -170,7 +144,7 @@ class AdminArea extends SFPComponent {
     }
   }
 
-  componentDidUpdate () {
+  componentDidUpdate() {
     if (this.componentIsLoading) {
       if (window.location.href.includes('#')) {
         const componentToJump = window.location.href.split('#')[1].trim();
@@ -365,8 +339,8 @@ class AdminArea extends SFPComponent {
             Link
           </Link>
         ) : (
-          nope
-        ),
+            nope
+          ),
         dtype: o.dtype,
         requestAmount: n(o.amount_requested),
         fundedAmount: n(o.amount_funded),
@@ -541,22 +515,17 @@ class AdminArea extends SFPComponent {
     );
   }
 
-<<<<<<< HEAD
-  isPerPermission () {
+  isPerPermission() {
     return (typeof this.props.user.username !== 'undefined' && this.props.user.username !== null) &&
       (typeof this.props.getPerMission !== 'undefined' && this.props.getPerMission.fetched && this.props.getPerMission.data.count > 0);
   }
 
-  renderContent () {
+  renderContent() {
     const {
       fetched,
       error,
       data
     } = this.props.adminArea;
-=======
-  renderContent() {
-    const { fetched, error, data } = this.props.adminArea;
->>>>>>> replaces list with tabs
 
     if (!fetched || error) return null;
 
@@ -599,29 +568,6 @@ class AdminArea extends SFPComponent {
             {this.renderCountryProfile()}
           </div>
         </header>
-<<<<<<< HEAD
-        <StickyContainer>
-          <Sticky>
-            {({ style, isSticky }) => (
-              <div id='navigationbar' style={style} className={c('inpage__nav', {'inpage__nav--sticky': isSticky})}>
-                <div className='inner'>
-                  <ul>
-                    {data.overview || data.key_priorities ? <li><a href='#overview' title='Go to Overview'>Overview</a></li> : null}
-                    {get(this.props.keyFigures, 'data.results.length') ? <li><a href='#key-figures' title='Go to Key Figures section'>Key Figures</a></li> : null}
-                    <li><a href='#operations-map' title='Go to Operations section'>Operations</a></li>
-                    <li><a href='#emergencies' title='Go to Emergencies section'>Emergencies</a></li>
-                    {get(this.props.snippets, 'data.results.length') ? <li><a href='#graphics' title='Go to Graphics section'>Graphics</a></li> : null}
-                    {get(data, 'links.length') ? <li><a href='#links' title='Go to Links section'>Links</a></li> : null}
-                    {this.isPerPermission() ? <li><a href='#per' title='Go to Preparedness section'>Preparedness</a></li> : null}
-                    {get(data, 'contacts.length') ? <li><a href='#contacts' title='Go to Contacts section'>Contacts</a></li> : null}
-                  </ul>
-                </div>
-              </div>
-            )}
-          </Sticky>
-          <div className='inpage__body'>
-            <div className='inner'>
-=======
         <Tabs>
           <TabList>
             <Tab label="overview">Overview</Tab>
@@ -637,7 +583,6 @@ class AdminArea extends SFPComponent {
             <div className="inner"> */}
           <TabPanels>
             <TabPanel>
->>>>>>> replaces list with tabs
               {data.overview || data.key_priorities ? (
                 <Fold title="Overview" id="overview">
                   {data.overview ? (
@@ -648,8 +593,8 @@ class AdminArea extends SFPComponent {
                   ) : null}
                 </Fold>
               ) : (
-                <span>comming soon</span>
-              )}
+                  <span>comming soon</span>
+                )}
             </TabPanel>
             <TabPanel>
               <KeyFigures data={this.props.keyFigures} />
@@ -679,12 +624,7 @@ class AdminArea extends SFPComponent {
                     />
                   </div>
                   <div className={mapContainerClass}>
-<<<<<<< HEAD
                     <CountryMap operations={this.props.appealStats}
-=======
-                    <Homemap
-                      operations={this.props.appealStats}
->>>>>>> replaces list with tabs
                       bbox={bbox}
                       deployments={this.props.partnerDeployments}
                       deploymentsKey="Additional Response Activities" // From Elsa instead of 'PNS Activities'
@@ -715,7 +655,6 @@ class AdminArea extends SFPComponent {
             </TabPanel>
             <TabPanel>
               <Contacts data={data} />
-<<<<<<< HEAD
               {this.isPerPermission() && this.props.getPerNsPhase.fetched && this.props.perOverviewForm.fetched ? <PreparednessOverview getPerNsPhase={this.props.getPerNsPhase} perOverviewForm={this.props.perOverviewForm} /> : null}
               {this.isPerPermission() && this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? <PreparednessSummary getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} /> : null}
               {this.isPerPermission() && this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? <PreparednessColumnBar getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} /> : null}
@@ -724,13 +663,6 @@ class AdminArea extends SFPComponent {
             </div>
           </div>
         </StickyContainer>
-=======
-            </TabPanel>
-          </TabPanels>
-          {/* </div>
-          </div> */}
-        </Tabs>
->>>>>>> replaces list with tabs
       </section>
     );
   }
@@ -785,7 +717,6 @@ const selector = (state, ownProps) => ({
   keyFigures: state.adminArea.keyFigures,
   snippets: state.adminArea.snippets,
   countryOperations: state.adminArea.countryOperations,
-<<<<<<< HEAD
   partnerDeployments: get(state.adminArea.partnerDeployments, getCountryId(ownProps.match.params.id), {
     data: {},
     fetching: false,
@@ -800,18 +731,6 @@ const selector = (state, ownProps) => ({
   getPerUploadedDocuments: state.perForm.getPerUploadedDocuments,
   getPerMission: state.perForm.getPerMission,
   user: state.user.data
-=======
-  partnerDeployments: get(
-    state.adminArea.partnerDeployments,
-    getCountryId(ownProps.match.params.id),
-    {
-      data: {},
-      fetching: false,
-      fetched: false
-    }
-  ),
-  fdrs: state.fdrs
->>>>>>> replaces list with tabs
 });
 
 const dispatcher = dispatch => ({
@@ -821,7 +740,6 @@ const dispatcher = dispatch => ({
   _getAdmAreaSnippets: (...args) => dispatch(getAdmAreaSnippets(...args)),
   _getCountryOperations: (...args) => dispatch(getCountryOperations(...args)),
   _getPartnerDeployments: (...args) => dispatch(getPartnerDeployments(...args)),
-<<<<<<< HEAD
   _setPartnerDeploymentFilter: (...args) => dispatch(setPartnerDeploymentFilter(...args)),
   _getFdrs: (...args) => dispatch(getFdrs(...args)),
   _getPerNsPhase: (...args) => dispatch(getPerNsPhase(...args)),
@@ -831,11 +749,6 @@ const dispatcher = dispatch => ({
   _getPerDocuments: (...args) => dispatch(getPerDocuments(...args)),
   _getPerUploadedDocuments: (...args) => dispatch(getPerUploadedDocuments(...args)),
   _getPerMission: (...args) => dispatch(getPerMission(...args))
-=======
-  _setPartnerDeploymentFilter: (...args) =>
-    dispatch(setPartnerDeploymentFilter(...args)),
-  _getFdrs: (...args) => dispatch(getFdrs(...args))
->>>>>>> replaces list with tabs
 });
 
 export default connect(
