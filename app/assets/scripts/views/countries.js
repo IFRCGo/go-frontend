@@ -523,33 +523,66 @@ class AdminArea extends SFPComponent {
           </div>
         </header>
         <Tabs>
-          <Tablist>
-            <Tab label="overview" param="#overview">
-              Overview
-            </Tab>
-            <Tab label="keyfigures" param="#key-figures">
-            Key Figures
-            </Tab>
-            <Tab label="operationsmap" param="#operations-map">
-            Operations
-            </Tab>
-            <Tab label="emergencies" param="#emergencies">
-            Emergencies
-            </Tab>
-            <Tab label="graphics" param="#graphics">
-            Graphics
-            </Tab>
-            <Tab label="links" param="#links">
-            Links
-            </Tab>
-            <Tab label="contacts" param="#contacts">
-            Contacts
-            </Tab>
-          </TabList>
+            <Tablist>
+              <Tab label="overview" param="#overview">
+                Overview
+              </Tab>
+              <Tab label="keyfigures" param="#key-figures">
+              Key Figures
+              </Tab>
+              <Tab label="operationsmap" param="#operations-map">
+              Operations
+              </Tab>
+              <Tab label="emergencies" param="#emergencies">
+              Emergencies
+              </Tab>
+              <Tab label="graphics" param="#graphics">
+              Graphics
+              </Tab>
+              <Tab label="links" param="#links">
+              Links
+              </Tab>
+              <Tab label="contacts" param="#contacts">
+              Contacts
+              </Tab>
+            </TabList>
+            <TabPanel>1</TabPanel>
+            <TabPanel>2</TabPanel>
+            <TabPanel>3</TabPanel>
+            <TabPanel>4</TabPanel>
+            <TabPanel>5</TabPanel>
+            <TabPanel>6</TabPanel>
+            <TabPanel>7</TabPanel>
+          </Tabs>
+
+        {/* <Tabs>
+            <Tablist>
+              <Tab label="overview" param="#overview">
+                Overview
+              </Tab>
+              <Tab label="keyfigures" param="#key-figures">
+              Key Figures
+              </Tab>
+              <Tab label="operationsmap" param="#operations-map">
+              Operations
+              </Tab>
+              <Tab label="emergencies" param="#emergencies">
+              Emergencies
+              </Tab>
+              <Tab label="graphics" param="#graphics">
+              Graphics
+              </Tab>
+              <Tab label="links" param="#links">
+              Links
+              </Tab>
+              <Tab label="contacts" param="#contacts">
+              Contacts
+              </Tab>
+            </TabList>
 
           <div className="inpage__body">
             <div className="inner">
-              {/* {data.overview || data.key_priorities ? (
+              {data.overview || data.key_priorities ? (
                 <Fold title="Overview" id="overview">
                   {data.overview ? (
                     <ReactMarkdown source={data.overview} />
@@ -614,10 +647,10 @@ class AdminArea extends SFPComponent {
               <Links data={data} />
               ) : <span>links coming soon</span> }
               {get(data, "contacts.length") ? (
-              <Contacts data={data} /> ) : <span>graphics coming soon</span> }  */}
+              <Contacts data={data} /> ) : <span>graphics coming soon</span> } 
             </div>
           </div>
-        </Tabs>
+        </Tabs> */}
       </section>
     );
   }
