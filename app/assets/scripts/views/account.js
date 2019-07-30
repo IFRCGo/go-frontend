@@ -681,8 +681,7 @@ class Account extends React.Component {
               classWrapper='action-checkboxes'
               options={perDueDateTypes}
               values={this.state.notifications.per}
-              onChange={this.onFieldChange.bind(this, 'notifications', 'per')} />
-            : null }
+              onChange={this.onFieldChange.bind(this, 'notifications', 'per')} /> : null }
             {events}
             <div className="text-center">
               <button type='submit' className={c('button', 'button--large', 'button--secondary-filled', {
