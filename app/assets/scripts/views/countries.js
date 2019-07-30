@@ -94,7 +94,16 @@ class AdminArea extends SFPComponent {
         }
       },
       mapFilters: {},
-      persistentMapFilter: {}
+      persistentMapFilter: {},
+      tabHashes: [
+        "#overview",
+        "#key-figures",
+        "#operations-map",
+        "#emergencies",
+        "#graphics",
+        "#links",
+        "#contacts"
+      ]
     };
     this.setMapFilter = this.setMapFilter.bind(this);
     this.setPersistentMapFilter = this.setPersistentMapFilter.bind(this);
@@ -487,6 +496,12 @@ class AdminArea extends SFPComponent {
     const bbox = getBoundingBox(data.iso);
     const mapContainerClass = "country__map";
 
+    const handleTabChange = index => {
+      const url = this.props.location.pathname;
+      console.log("new url", `${url}${this.state.tabHashes[index]}`);
+      this.props.history.replace(`${url}${this.state.tabHashes[index]}`);
+    };
+
     const { partnerDeployments } = this.props;
     return (
       <section className="inpage">
@@ -523,7 +538,7 @@ class AdminArea extends SFPComponent {
             {this.renderCountryProfile()}
           </div>
         </header>
-        <Tabs>
+        <Tabs defaultIndex={0} onSelect={index => handleTabChange(index)}>
           <div className="inpage__nav">
             <TabList className="inner">
               <Tab label="overview" param="#overview">
