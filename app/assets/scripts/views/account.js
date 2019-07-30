@@ -674,6 +674,7 @@ class Account extends React.Component {
               options={surgeNotificationTypes}
               values={this.state.notifications.surg}
               onChange={this.onFieldChange.bind(this, 'notifications', 'surg')} />
+            {this.isPerPermission() ?
             <FormCheckboxGroup
               label='Other Notifications'
               name='per'
@@ -681,6 +682,7 @@ class Account extends React.Component {
               options={perDueDateTypes}
               values={this.state.notifications.per}
               onChange={this.onFieldChange.bind(this, 'notifications', 'per')} />
+            : null }
             {events}
             <div className="text-center">
               <button type='submit' className={c('button', 'button--large', 'button--secondary-filled', {
