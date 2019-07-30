@@ -139,9 +139,10 @@ class AdminArea extends SFPComponent {
 
   // Sets default tab if url param is blank or incorrect
   displayTabContent() {
-    if (!this.state.tabHashes.find(hash => hash === this.props.location.hash)) {
+    const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
+    if (!tabHashArray.find(hash => hash === this.props.location.hash)) {
       this.props.history.replace(
-        `${this.props.location.pathname}${this.state.tabHashes[0]}`
+        `${this.props.location.pathname}${tabHashArray[0]}`
       );
     }
   }
@@ -508,11 +509,9 @@ class AdminArea extends SFPComponent {
     const mapContainerClass = "country__map";
 
     const handleTabChange = index => {
-      // TAB_DETAILS.map(({ hash }) => hash).indexOf(
-      //   this.props.location.hash
-      // )
+      const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
       const url = this.props.location.pathname;
-      this.props.history.replace(`${url}${this.state.tabHashes[index]}`);
+      this.props.history.replace(`${url}${tabHashArray[index]}`);
     };
 
     const { partnerDeployments } = this.props;
@@ -552,7 +551,9 @@ class AdminArea extends SFPComponent {
           </div>
         </header>
         <Tabs
-          selectedIndex={this.state.tabHashes.indexOf(this.props.location.hash)}
+          selectedIndex={TAB_DETAILS.map(({ hash }) => hash).indexOf(
+            this.props.location.hash
+          )}
           onSelect={index => handleTabChange(index)}
         >
           <div className="inpage__nav">
