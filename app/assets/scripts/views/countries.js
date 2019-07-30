@@ -6,8 +6,9 @@ import { PropTypes as T } from "prop-types";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { DateTime } from "luxon";
-// import { Sticky, StickyContainer } from "react-sticky";
-import { Tabs, TabList, Tab, TabPanels, TabPanel } from "@reach/tabs";
+import { Sticky, StickyContainer } from "react-sticky";
+import { Tabs, TabList, Tab, TabPanels, TabPanel } from "react-tabs";
+
 import c from "classnames";
 import { Helmet } from "react-helmet";
 import url from "url";
@@ -522,21 +523,33 @@ class AdminArea extends SFPComponent {
           </div>
         </header>
         <Tabs>
-          <TabList>
-            <Tab label="overview">Overview</Tab>
-            <Tab label="keyfigures">Key Figures</Tab>
-            <Tab label="operations">Operations</Tab>
-            <Tab label="emergencies">Emergencies</Tab>
-            <Tab label="graphics">Graphics</Tab>
-            <Tab label="links">Links</Tab>
-            <Tab label="contacts">Contacts</Tab>
+          <Tablist>
+            <Tab label="overview" param="#overview">
+              Overview
+            </Tab>
+            <Tab label="keyfigures" param="#key-figures">
+            Key Figures
+            </Tab>
+            <Tab label="operationsmap" param="#operations-map">
+            Operations
+            </Tab>
+            <Tab label="emergencies" param="#emergencies">
+            Emergencies
+            </Tab>
+            <Tab label="graphics" param="#graphics">
+            Graphics
+            </Tab>
+            <Tab label="links" param="#links">
+            Links
+            </Tab>
+            <Tab label="contacts" param="#contacts">
+            Contacts
+            </Tab>
           </TabList>
 
-          {/* <div className="inpage__body">
-            <div className="inner"> */}
-          <TabPanels>
-            <TabPanel>
-              {data.overview || data.key_priorities ? (
+          <div className="inpage__body">
+            <div className="inner">
+              {/* {data.overview || data.key_priorities ? (
                 <Fold title="Overview" id="overview">
                   {data.overview ? (
                     <ReactMarkdown source={data.overview} />
@@ -545,14 +558,11 @@ class AdminArea extends SFPComponent {
                     <ReactMarkdown source={data.key_priorities} />
                   ) : null}
                 </Fold>
-              ) : (
-                <span>comming soon</span>
-              )}
-            </TabPanel>
-            <TabPanel>
+              ) : <span> comming soon</span>}
+
+{get(this.props.keyFigures, "data.results.length") ? (
               <KeyFigures data={this.props.keyFigures} />
-            </TabPanel>
-            <TabPanel>
+) : <span> comming soon </span>}
               <Fold
                 title="Statistics"
                 headerClass="visually-hidden"
@@ -589,8 +599,6 @@ class AdminArea extends SFPComponent {
                 </div>
                 {this.renderAppeals()}
               </Fold>
-            </TabPanel>
-            <TabPanel>
               <EmergenciesTable
                 id={"emergencies"}
                 title="Recent Emergencies"
@@ -600,19 +608,15 @@ class AdminArea extends SFPComponent {
                 viewAll={"/emergencies/all?country=" + data.id}
                 viewAllText={`View All Emergencies For ${data.name}`}
               />
-            </TabPanel>
-            <TabPanel>
-              <Snippets id="graphics" data={this.props.snippets} />
-            </TabPanel>
-            <TabPanel>
+              {get(this.props.snippets, "data.results.length") ? (
+              <Snippets data={this.props.snippets} /> ) : <span>graphics coming soon</span> }
+              {get(data, "links.length") ? (
               <Links data={data} />
-            </TabPanel>
-            <TabPanel>
-              <Contacts data={data} />
-            </TabPanel>
-          </TabPanels>
-          {/* </div>
-          </div> */}
+              ) : <span>links coming soon</span> }
+              {get(data, "contacts.length") ? (
+              <Contacts data={data} /> ) : <span>graphics coming soon</span> }  */}
+            </div>
+          </div>
         </Tabs>
       </section>
     );
