@@ -133,6 +133,16 @@ class AdminArea extends SFPComponent {
   componentDidMount() {
     this.getData(this.props);
     this.getAdmArea(this.props.type, getCountryId(this.props.match.params.id));
+    this.displayTabContent();
+  }
+
+  // Sets default tab if url param is blank or incorrect
+  displayTabContent() {
+    if (!this.state.tabHashes.find(hash => hash === this.props.location.hash)) {
+      this.props.history.replace(
+        `${this.props.location.pathname}${this.state.tabHashes[0]}`
+      );
+    }
   }
 
   getData(props) {
@@ -546,27 +556,13 @@ class AdminArea extends SFPComponent {
         >
           <div className="inpage__nav">
             <TabList className="inner">
-              <Tab label="overview" param="#overview">
-                Overview
-              </Tab>
-              <Tab label="keyfigures" param="#key-figures">
-                Key Figures
-              </Tab>
-              <Tab label="operationsmap" param="#operations-map">
-                Operations
-              </Tab>
-              <Tab label="emergencies" param="#emergencies">
-                Emergencies
-              </Tab>
-              <Tab label="graphics" param="#graphics">
-                Graphics
-              </Tab>
-              <Tab label="links" param="#links">
-                Links
-              </Tab>
-              <Tab label="contacts" param="#contacts">
-                Contacts
-              </Tab>
+              <Tab label="overview">Overview</Tab>
+              <Tab label="keyfigures">Key Figures</Tab>
+              <Tab label="operationsmap">Operations</Tab>
+              <Tab label="emergencies">Emergencies</Tab>
+              <Tab label="graphics">Graphics</Tab>
+              <Tab label="links">Links</Tab>
+              <Tab label="contacts">Contacts</Tab>
             </TabList>
           </div>
 
