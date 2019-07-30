@@ -63,6 +63,16 @@ import PreparednessPhaseOutcomes from './../components/country/preparedness-phas
 import PreparednessColumnBar from './../components/country/preparedness-column-graph';
 import { SFPComponent } from '../utils/extendables';
 
+const TAB_DETAILS = [
+  { title: "Overview", hash: "#overview" },
+  { title: "Key Figures", hash: "#key-figures" },
+  { title: "Operations", hash: "#operations-map" },
+  { title: "Emergencies", hash: "#emergencies" },
+  { title: "Graphics", hash: "#graphics" },
+  { title: "Links", hash: "#links" },
+  { title: "Contacts", hash: "#contacts" }
+];
+
 const filterPaths = {
   ns: "parent.name",
   type: "activity.activity"
