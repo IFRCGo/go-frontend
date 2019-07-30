@@ -498,7 +498,6 @@ class AdminArea extends SFPComponent {
 
     const handleTabChange = index => {
       const url = this.props.location.pathname;
-      console.log("new url", `${url}${this.state.tabHashes[index]}`);
       this.props.history.replace(`${url}${this.state.tabHashes[index]}`);
     };
 
