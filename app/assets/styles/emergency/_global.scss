@@ -45,16 +45,14 @@
         }
         &:nth-child(2) {
           border-bottom: none;
-        };
+        }
       }
     }
     dl {
       float: left;
       width: 50%;
-
     }
   }
-
 }
 
 .fold__filters {
@@ -84,7 +82,7 @@
 
 .inpage__nav {
   font-family: $heading-font-family;
-  padding: ($global-spacing * .75) 0;
+  padding: ($global-spacing * 0.75) 0;
   transition: background 0.2s ease, box-shadow 0.2s ease;
 
   &--sticky {
@@ -117,7 +115,7 @@
     margin-right: $global-spacing * 4;
     &:last-child {
       margin-right: 0;
-    };
+    }
   }
 }
 
@@ -145,7 +143,7 @@
       margin-bottom: 0;
       &:first-child {
         margin-left: 0;
-      };
+      }
     }
   }
 

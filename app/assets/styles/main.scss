@@ -11,7 +11,6 @@
 
 @charset "UTF-8";
 
-
 /* Third-party
    ========================================================================== */
 
@@ -36,14 +35,12 @@
 
 @import "vendor/normalize";
 
-
 /* Settings
    ========================================================================== */
 
 @import "settings/variables";
 @import "settings/functions";
 @import "settings/mixins";
-
 
 /* Core
    ========================================================================== */
@@ -52,11 +49,11 @@
 @import "core/collecticons"; // Webfont icon library: Collecticons
 @import "core/typography";
 @import "core/tables";
+@import "core/tabs";
 @import "core/code";
 @import "core/media";
 @import "core/skins";
 @import "core/animation";
-
 
 /* Global
    ========================================================================== */
@@ -82,14 +79,12 @@
 @import "global/print";
 @import "global/login";
 
-
 /* Home
    ========================================================================== */
 
 @import "home/global";
 @import "home/presenting";
 @import "home/highlighted-emergencies";
-
 
 /* About
    ========================================================================== */
@@ -106,7 +101,6 @@
    ========================================================================== */
 
 @import "country/global";
-
 
 /* Field Report
    ========================================================================== */
@@ -135,18 +129,15 @@
 
 @import "uhoh/global";
 
-
 /* Core (...cont)
    ========================================================================== */
 
 @import "core/utilities";
 
-
 /* Third Party
    ========================================================================== */
 
 @import "../../../node_modules/react-select/dist/react-select";
-
 
 /* Vendor
    ========================================================================== */
@@ -158,4 +149,4 @@
 /* Header navbar 
    ========================================================================== */
 
-@import "header/navbar.scss"
+@import "header/navbar.scss";

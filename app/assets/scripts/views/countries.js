@@ -556,17 +556,11 @@ class AdminArea extends SFPComponent {
           )}
           onSelect={index => handleTabChange(index)}
         >
-          <div className="inpage__nav">
-            <TabList className="inner">
-              <Tab label="overview">Overview</Tab>
-              <Tab label="keyfigures">Key Figures</Tab>
-              <Tab label="operationsmap">Operations</Tab>
-              <Tab label="emergencies">Emergencies</Tab>
-              <Tab label="graphics">Graphics</Tab>
-              <Tab label="links">Links</Tab>
-              <Tab label="contacts">Contacts</Tab>
-            </TabList>
-          </div>
+          <TabList>
+            {TAB_DETAILS.map(tab => (
+              <Tab key={tab.title}>{tab.title}</Tab>
+            ))}
+          </TabList>
 
           <div className="inpage__body">
             <div className="inner">
