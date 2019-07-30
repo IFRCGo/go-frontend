@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { DateTime } from "luxon";
 import { Sticky, StickyContainer } from "react-sticky";
-import { Tabs, TabList, Tab, TabPanels, TabPanel } from "react-tabs";
+import { Tabs, TabList, Tab, TabPanel } from "react-tabs";
 
 import c from "classnames";
 import { Helmet } from "react-helmet";
@@ -522,146 +522,131 @@ class AdminArea extends SFPComponent {
             {this.renderCountryProfile()}
           </div>
         </header>
-        <StickyContainer>
         <Tabs>
-          <Sticky>
-            {({ style, isSticky }) => (
-              <div style={style} className={c('inpage__nav', {'inpage__nav--sticky': isSticky})}>
-                <div className='inner'>
-            <Tablist>
-              <Tab label="overview" param="#overview">
-                Overview
-              </Tab>
-              <Tab label="keyfigures" param="#key-figures">
+          <TabList classname="inner">
+            <Tab label="overview" param="#overview">
+              Overview
+            </Tab>
+            <Tab label="keyfigures" param="#key-figures">
               Key Figures
-              </Tab>
-              <Tab label="operationsmap" param="#operations-map">
+            </Tab>
+            <Tab label="operationsmap" param="#operations-map">
               Operations
-              </Tab>
-              <Tab label="emergencies" param="#emergencies">
+            </Tab>
+            <Tab label="emergencies" param="#emergencies">
               Emergencies
-              </Tab>
-              <Tab label="graphics" param="#graphics">
+            </Tab>
+            <Tab label="graphics" param="#graphics">
               Graphics
-              </Tab>
-              <Tab label="links" param="#links">
+            </Tab>
+            <Tab label="links" param="#links">
               Links
-              </Tab>
-              <Tab label="contacts" param="#contacts">
+            </Tab>
+            <Tab label="contacts" param="#contacts">
               Contacts
-              </Tab>
-            </TabList>
-            </div>
-            </div>
-            )}
-          </Sticky>
-
-            <TabPanel>1</TabPanel>
-            <TabPanel>2</TabPanel>
-            <TabPanel>3</TabPanel>
-            <TabPanel>4</TabPanel>
-            <TabPanel>5</TabPanel>
-            <TabPanel>6</TabPanel>
-            <TabPanel>7</TabPanel>
-          </Tabs>
-          </StickyContainer>
-
-        {/* <Tabs>
-            <Tablist>
-              <Tab label="overview" param="#overview">
-                Overview
-              </Tab>
-              <Tab label="keyfigures" param="#key-figures">
-              Key Figures
-              </Tab>
-              <Tab label="operationsmap" param="#operations-map">
-              Operations
-              </Tab>
-              <Tab label="emergencies" param="#emergencies">
-              Emergencies
-              </Tab>
-              <Tab label="graphics" param="#graphics">
-              Graphics
-              </Tab>
-              <Tab label="links" param="#links">
-              Links
-              </Tab>
-              <Tab label="contacts" param="#contacts">
-              Contacts
-              </Tab>
-            </TabList>
+            </Tab>
+          </TabList>
 
           <div className="inpage__body">
             <div className="inner">
-              {data.overview || data.key_priorities ? (
-                <Fold title="Overview" id="overview">
-                  {data.overview ? (
-                    <ReactMarkdown source={data.overview} />
-                  ) : null}
-                  {data.key_priorities ? (
-                    <ReactMarkdown source={data.key_priorities} />
-                  ) : null}
+              <TabPanel>
+                {data.overview || data.key_priorities ? (
+                  <Fold title="Overview" id="overview">
+                    {data.overview ? (
+                      <ReactMarkdown source={data.overview} />
+                    ) : null}
+                    {data.key_priorities ? (
+                      <ReactMarkdown source={data.key_priorities} />
+                    ) : null}
+                  </Fold>
+                ) : (
+                  <span> comming soon</span>
+                )}
+              </TabPanel>
+              <TabPanel>
+                {get(this.props.keyFigures, "data.results.length") ? (
+                  <KeyFigures data={this.props.keyFigures} />
+                ) : (
+                  <span> comming soon </span>
+                )}
+              </TabPanel>
+              <TabPanel>
+                <Fold
+                  title="Statistics"
+                  headerClass="visually-hidden"
+                  id="operations"
+                >
+                  <div className="operations__container">
+                    <div className="country__operations">
+                      <h2>Movement activities in support of NS</h2>
+                      <BulletTable
+                        title="Activities"
+                        onClick={this.setPersistentMapFilter.bind(this, "ns")}
+                        onMouseOver={this.setMapFilter.bind(this, "ns")}
+                        onMouseOut={this.removeMapFilter.bind(this, "ns")}
+                        rows={get(
+                          partnerDeployments,
+                          "data.parentSocieties",
+                          []
+                        )}
+                      />
+                      <BulletTable
+                        title="Type"
+                        onClick={this.setPersistentMapFilter.bind(this, "type")}
+                        onMouseOver={this.setMapFilter.bind(this, "type")}
+                        onMouseOut={this.removeMapFilter.bind(this, "type")}
+                        rows={get(partnerDeployments, "data.activities", [])}
+                      />
+                    </div>
+                    <div className={mapContainerClass}>
+                      <Homemap
+                        operations={this.props.appealStats}
+                        bbox={bbox}
+                        deployments={this.props.partnerDeployments}
+                        deploymentsKey="Additional Response Activities" // From Elsa instead of 'PNS Activities'
+                        noRenderEmergencies={true}
+                        noExport={true}
+                      />
+                    </div>
+                  </div>
+                  {this.renderAppeals()}
                 </Fold>
-              ) : <span> comming soon</span>}
-
-{get(this.props.keyFigures, "data.results.length") ? (
-              <KeyFigures data={this.props.keyFigures} />
-) : <span> comming soon </span>}
-              <Fold
-                title="Statistics"
-                headerClass="visually-hidden"
-                id="operations"
-              >
-                <div className="operations__container">
-                  <div className="country__operations">
-                    <h2>Movement activities in support of NS</h2>
-                    <BulletTable
-                      title="Activities"
-                      onClick={this.setPersistentMapFilter.bind(this, "ns")}
-                      onMouseOver={this.setMapFilter.bind(this, "ns")}
-                      onMouseOut={this.removeMapFilter.bind(this, "ns")}
-                      rows={get(partnerDeployments, "data.parentSocieties", [])}
-                    />
-                    <BulletTable
-                      title="Type"
-                      onClick={this.setPersistentMapFilter.bind(this, "type")}
-                      onMouseOver={this.setMapFilter.bind(this, "type")}
-                      onMouseOut={this.removeMapFilter.bind(this, "type")}
-                      rows={get(partnerDeployments, "data.activities", [])}
-                    />
-                  </div>
-                  <div className={mapContainerClass}>
-                    <Homemap
-                      operations={this.props.appealStats}
-                      bbox={bbox}
-                      deployments={this.props.partnerDeployments}
-                      deploymentsKey="Additional Response Activities" // From Elsa instead of 'PNS Activities'
-                      noRenderEmergencies={true}
-                      noExport={true}
-                    />
-                  </div>
-                </div>
-                {this.renderAppeals()}
-              </Fold>
-              <EmergenciesTable
-                id={"emergencies"}
-                title="Recent Emergencies"
-                limit={5}
-                country={getCountryId(this.props.match.params.id)}
-                showRecent={true}
-                viewAll={"/emergencies/all?country=" + data.id}
-                viewAllText={`View All Emergencies For ${data.name}`}
-              />
-              {get(this.props.snippets, "data.results.length") ? (
-              <Snippets data={this.props.snippets} /> ) : <span>graphics coming soon</span> }
-              {get(data, "links.length") ? (
-              <Links data={data} />
-              ) : <span>links coming soon</span> }
-              {get(data, "contacts.length") ? (
-              <Contacts data={data} /> ) : <span>graphics coming soon</span> } 
+              </TabPanel>
+              <TabPanel>
+                <EmergenciesTable
+                  id={"emergencies"}
+                  title="Recent Emergencies"
+                  limit={5}
+                  country={getCountryId(this.props.match.params.id)}
+                  showRecent={true}
+                  viewAll={"/emergencies/all?country=" + data.id}
+                  viewAllText={`View All Emergencies For ${data.name}`}
+                />
+              </TabPanel>
+              <TabPanel>
+                {get(this.props.snippets, "data.results.length") ? (
+                  <Snippets data={this.props.snippets} />
+                ) : (
+                  <span>graphics coming soon</span>
+                )}
+              </TabPanel>
+              <TabPanel>
+                {get(data, "links.length") ? (
+                  <Links data={data} />
+                ) : (
+                  <span>links coming soon</span>
+                )}
+              </TabPanel>
+              <TabPanel>
+                {get(data, "contacts.length") ? (
+                  <Contacts data={data} />
+                ) : (
+                  <span>graphics coming soon</span>
+                )}
+              </TabPanel>
             </div>
           </div>
-        </Tabs> */}
+        </Tabs>
       </section>
     );
   }
