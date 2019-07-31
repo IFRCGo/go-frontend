@@ -73,8 +73,7 @@ class OverviewForm extends React.Component {
 
   allowSubmit () {
     return (this.state.data.facilitator_phone && this.state.data.focus)
-    || (this.props.perOverviewForm.fetched && this.props.perOverviewForm.data.results[0].facilitator_phone && this.props.perOverviewForm.data.results[0].focus)
-    || false; //document.getElementsByName('facilitator_phone')[0] && document.getElementsByName('focus')[0]); // This row concerns to Draft-loaded starting page
+    || (this.loadedDraft && this.loadedDraft.facilitator_phone && this.loadedDraft.focus);
   }
 
   submitForm () {
