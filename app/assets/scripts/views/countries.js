@@ -524,7 +524,8 @@ class AdminArea extends SFPComponent {
                 isError={!data.overview || !data.key_priorities}
                 errorMessage="Overview coming soon"
                 title="Overview"
-              >
+              >{data.overview || !data.key_priorities ? (
+
                 <Fold title="Overview" id="overview">
                   {data.overview ? (
                     <ReactMarkdown source={data.overview} />
@@ -533,6 +534,7 @@ class AdminArea extends SFPComponent {
                     <ReactMarkdown source={data.key_priorities} />
                   ) : null}
                 </Fold>
+              ) : <ErrorPanel title="Overview" errorMessage="Overview coming soon" />}
               </TabPanel>
               <TabPanel>
                 {get(this.props.keyFigures, 'data.results.length') ? (
