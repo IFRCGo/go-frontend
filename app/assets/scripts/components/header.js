@@ -121,7 +121,7 @@ class Header extends React.PureComponent {
             </nav>
             <div className='nav-global-search'>
               <form className='gsearch'>
-                <div className='form__group'>
+                <div>
                   <label className='form__label'>Search</label>
                   <Select.Async
                     placeholder='Search'

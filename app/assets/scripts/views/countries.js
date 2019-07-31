@@ -63,7 +63,8 @@ const TAB_DETAILS = [
   { title: 'Emergencies', hash: '#emergencies' },
   { title: 'Graphics', hash: '#graphics' },
   { title: 'Links', hash: '#links' },
-  { title: 'Contacts', hash: '#contacts' }
+  { title: 'Contacts', hash: '#contacts' },
+  { title: 'Per Overview', hash: '#per' }
 ];
 
 const filterPaths = {
@@ -475,12 +476,6 @@ class AdminArea extends SFPComponent {
     const bbox = getBoundingBox(data.iso);
     const mapContainerClass = 'country__map';
 
-    const handleTabChange = index => {
-      const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
-      const url = this.props.location.pathname;
-      this.props.history.replace(`${url}${tabHashArray[index]}`);
-    };
-
     const { partnerDeployments } = this.props;
 
     const handleTabChange = index => {
@@ -548,24 +543,20 @@ class AdminArea extends SFPComponent {
                   )}
               </TabPanel>
               <TabPanel>
-                <Fold title="Statistics" headerClass="visually-hidden" id="operations">
-                  <div className="operations__container">
-                    <div className="country__operations">
+                <Fold title='Statistics' headerClass='visually-hidden' id='operations'>
+                  <div className='operations__container'>
+                    <div className='country__operations'>
                       <h2>Movement activities in support of NS</h2>
-                      <BulletTable
-                        title="Activities"
+                      <BulletTable title='Activities'
                         onClick={this.setPersistentMapFilter.bind(this, 'ns')}
                         onMouseOver={this.setMapFilter.bind(this, 'ns')}
                         onMouseOut={this.removeMapFilter.bind(this, 'ns')}
-                        rows={get(partnerDeployments, 'data.parentSocieties', [])}
-                      />
-                      <BulletTable
-                        title="Type"
+                        rows={get(partnerDeployments, 'data.parentSocieties', [])} />
+                      <BulletTable title='Type'
                         onClick={this.setPersistentMapFilter.bind(this, 'type')}
                         onMouseOver={this.setMapFilter.bind(this, 'type')}
                         onMouseOut={this.removeMapFilter.bind(this, 'type')}
-                        rows={get(partnerDeployments, 'data.activities', [])}
-                      />
+                        rows={get(partnerDeployments, 'data.activities', [])} />
                     </div>
                     <div className={mapContainerClass}>
                       <CountryMap operations={this.props.appealStats}
@@ -611,6 +602,27 @@ class AdminArea extends SFPComponent {
                 ) : (
                     <ErrorPanel title="Contacts" errorMessage="Contacts coming soon" />
                   )}
+              </TabPanel>
+              <TabPanel>
+                {this.isPerPermission() ? (
+                  <div>
+                    {this.props.getPerNsPhase.fetched && this.props.perOverviewForm.fetched ? (
+                      <PreparednessOverview getPerNsPhase={this.props.getPerNsPhase} perOverviewForm={this.props.perOverviewForm} />
+                    ) : <ErrorPanel title="Preparedness Overview" errorMessage="Preparedness overview coming soon" />}
+                    {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
+                      <PreparednessSummary getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
+                      : <ErrorPanel title="Preparedness Summary" errorMessage="Preparedness summary coming soon" />}
+                    {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
+                      <PreparednessColumnBar getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
+                      : <ErrorPanel title="Preparedness Column Bar" errorMessage="Preparedness column bar summary coming soon" />}
+                    {this.props.getPerWorkPlan.fetched ? (
+                      <PreparednessWorkPlan getPerWorkPlan={this.props.getPerWorkPlan} />)
+                      : <ErrorPanel title="Preparedness Work Plan" errorMessage="Preparedness work plan bar summary coming soon" />}
+                    {this.props.getPerUploadedDocuments.fetched ? (
+                      <PreparednessPhaseOutcomes getPerUploadedDocuments={this.props.getPerUploadedDocuments} countryId={this.props.match.params.id} />)
+                      : <ErrorPanel title="Preparedness Phase Outcomes" errorMessage="Preparedness phase outcomes bar summary coming soon" />}
+                  </div>
+                ) : <ErrorPanel title="Per Overview" errorMessage="Please log in" />}
               </TabPanel>
             </div>
           </div>

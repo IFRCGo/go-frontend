@@ -677,13 +677,15 @@ class Account extends React.Component {
               options={surgeNotificationTypes}
               values={this.state.notifications.surg}
               onChange={this.onFieldChange.bind(this, 'notifications', 'surg')} />
-            <FormCheckboxGroup
-              label='Other Notifications'
-              name='per'
-              classWrapper='action-checkboxes'
-              options={perDueDateTypes}
-              values={this.state.notifications.per}
-              onChange={this.onFieldChange.bind(this, 'notifications', 'per')} />
+            {this.isPerPermission()
+              ? <FormCheckboxGroup
+                label='Other Notifications'
+                name='per'
+                classWrapper='action-checkboxes'
+                options={perDueDateTypes}
+                values={this.state.notifications.per}
+                onChange={this.onFieldChange.bind(this, 'notifications', 'per')} />
+              : null }
             {events}
             <div className="text-center">
               <button type='submit' className={c('button', 'button--large', 'button--secondary-filled', {
@@ -761,7 +763,7 @@ class Account extends React.Component {
             perDocuments.push((<React.Fragment key={'documentrow' + document.code + 'id' + document.id}>
               <div className='list__each__block flex'>
                 <div key={'document' + document.id}>
-                  {document.code.toUpperCase()} - {document.name} - {document.updated_at.substring(0, 10)} - {typeof document.user !== 'undefined' ? document.user.username : null}
+                  {document.code.toUpperCase()} - {document.name} - {document.updated_at.substring(0, 10)} - {typeof document.user !== 'undefined' && document.user !== null ? document.user.username : null}
                 </div>
                 <div className='list__each__button'>
                   <Link className='button button--small button--secondary-bounded' to={'/view-per-forms/' + document.code + '/' + document.id}>View</Link>

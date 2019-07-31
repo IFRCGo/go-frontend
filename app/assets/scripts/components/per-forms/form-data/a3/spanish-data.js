@@ -609,7 +609,7 @@ export const spanishForm = {
     },
     {
       componentTitle: 'Componente 21. Gestión de la Información (IM)',
-      componentDescription: 'Capacidad para gestionar la información, incluyendo la solicitud, recepción, análisis y diseminación de la misma según sus procedimientos y los requisitos de los socios (en particular la FICR y las autoridades públicas). Debe existir un rastro digital / documental claro que documente qué, cuándo y cómo ha actuado la SN, y que proporcione información clave para el desarrollo del Plan de Acción de Emergencia. Esto incluye el MI entre niveles, entre departamentos e Informes Situacionales, mapeos, visualización de datos, plataforma DMIS / GO (FICR).',
+      componentDescription: 'Capacidad para gestionar la información, incluyendo la solicitud, recepción, análisis y diseminación de la misma según sus procedimientos y los requisitos de los socios (en particular la FICR y las autoridades públicas). Debe existir un rastro digital / documental claro que documente qué, cuándo y cómo ha actuado la SN, y que proporcione información clave para el desarrollo del Plan de Acción de Emergencia. Esto incluye el MI entre niveles, entre departamentos e Informes Situacionales, mapeos, visualización de datos, plataforma GO (FICR).',
       namespaces: [
         {
           nsTitle: '21.1 El personal clave en la sede y a nivel de las filiales está familiarizado con las plantillas (ya sea de la SN o de la FICR), metodología y procedimientos de MI.',
@@ -822,7 +822,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '23.4 La SN informa a la FICR de la posible necesidad de asistencia (DMIS) dentro de un plazo de 24 horas.',
+          nsTitle: '23.4 La SN informa a la FICR de la posible necesidad de asistencia (GO) dentro de un plazo de 24 horas.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',

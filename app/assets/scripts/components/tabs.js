@@ -48,7 +48,8 @@ TabPanel.defaultProps = {
 if (environment !== "production") {
     TabList.propTypes = {
         tablist: T.array,
-        rest: T.object
+        rest: T.object,
+        title: T.string
     };
     TabPanel.propTypes = {
         isError: T.boolean,

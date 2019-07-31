@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 import { environment } from '../../config';
 import { PropTypes as T } from 'prop-types';
 import React from 'react';
+import c from 'classnames';
 import { Link, Redirect } from 'react-router-dom';
 import { showAlert } from '../system-alerts';
 
@@ -27,6 +28,10 @@ class OverviewForm extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
+      data: {
+        facilitator_phone: '',
+        focus: ''
+      },
       redirect: false
     };
     this.submitForm = this.submitForm.bind(this);
@@ -59,6 +64,16 @@ class OverviewForm extends React.Component {
     if (this.loadedDraft !== null && !this.sendInProgress) {
       this.loadDraft();
     }
+  }
+
+  onFieldChange (field, e) {
+    let data = Object.assign({}, this.state.data, {[field]: e.target.value});
+    this.setState({data});
+  }
+
+  allowSubmit () {
+    return (this.state.data.facilitator_phone && this.state.data.focus) ||
+    (this.loadedDraft && this.loadedDraft.facilitator_phone && this.loadedDraft.focus);
   }
 
   submitForm () {
@@ -102,7 +117,7 @@ class OverviewForm extends React.Component {
       focus: document.getElementsByName('focus')[0].value,
       facilitated_by: document.getElementsByName('facilitated_by')[0].value,
       facilitator_email: document.getElementsByName('facilitator_email')[0].value,
-      phone_number: document.getElementsByName('facilitator_phone')[0].value,
+      facilitator_phone: document.getElementsByName('facilitator_phone')[0].value,
       skype_address: document.getElementsByName('facilitator_skype')[0].value,
 
       date_of_current_assessment_year: document.getElementsByName('date_of_current_assessment_year')[0].selectedIndex,
@@ -142,7 +157,7 @@ class OverviewForm extends React.Component {
     document.getElementsByName('focus')[0].value = data.focus;
     document.getElementsByName('facilitated_by')[0].value = data.facilitated_by;
     document.getElementsByName('facilitator_email')[0].value = data.facilitator_email;
-    document.getElementsByName('facilitator_phone')[0].value = data.phone_number;
+    document.getElementsByName('facilitator_phone')[0].value = data.facilitator_phone;
     document.getElementsByName('facilitator_skype')[0].value = data.skype_address;
 
     document.getElementsByName('date_of_current_assessment_year')[0].selectedIndex = data.date_of_current_assessment_year;
@@ -211,7 +226,7 @@ class OverviewForm extends React.Component {
                 <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].type_of_last_capacity_assessment === null ? '' : assessmentTypes[this.props.perOverviewForm.data.results[0].type_of_last_capacity_assessment]} /><br /><br />
 
                 Focus:<br />
-                <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].focus === null ? '' : this.props.perOverviewForm.data.results[0].focus} /><br /><br />
+                <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].focus === null ? '' : this.props.perOverviewForm.data.results[0].focus} onChange={this.onFieldChange.bind(this, 'focus')} /><br /><br />
 
                 <div className='per_form_ns'>Facilitator information</div>
                 Facilitated by<br />
@@ -221,7 +236,7 @@ class OverviewForm extends React.Component {
                 <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].facilitator_email === null ? '' : this.props.perOverviewForm.data.results[0].facilitator_email} /><br /><br />
 
                 Phone number<br />
-                <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].phone_number === null ? '' : this.props.perOverviewForm.data.results[0].phone_number} /><br /><br />
+                <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].facilitator_phone === null ? '' : this.props.perOverviewForm.data.results[0].facilitator_phone} onChange={this.onFieldChange.bind(this, 'facilitator_phone')} /><br /><br />
 
                 Skype address<br />
                 <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].skype_address === null ? '' : this.props.perOverviewForm.data.results[0].skype_address} /><br /><br />
@@ -321,7 +336,7 @@ class OverviewForm extends React.Component {
                 <input type='text' className='form__control form__control--medium' name='focal_point_email' /><br /><br />
 
                 Focus:<br />
-                <input type='text' className='form__control form__control--medium' name='focus' /><br /><br />
+                <input type='text' className='form__control form__control--medium' name='focus' value={this.state.data.focus} onChange={this.onFieldChange.bind(this, 'focus')} /><br /><br />
 
                 Have you had a previous capacity assessment?<br />
                 <select className='form__control form__control--medium' name='prev_capacity_assessment' style={{width: '100px', display: 'inline-block'}}>
@@ -399,7 +414,7 @@ class OverviewForm extends React.Component {
                 <input type='text' className='form__control form__control--medium' name='facilitator_email' /><br /><br />
 
                 Phone number<br />
-                <input type='text' className='form__control form__control--medium' name='facilitator_phone' /><br /><br />
+                <input type='text' className='form__control form__control--medium' name='facilitator_phone' value={this.state.data.facilitator_phone} onChange={this.onFieldChange.bind(this, 'facilitator_phone')} /><br /><br />
 
                 Skype address<br />
                 <input type='text' className='form__control form__control--medium' name='facilitator_skype' /><br /><br />
@@ -512,8 +527,9 @@ class OverviewForm extends React.Component {
                   <option value='31'>31</option>
                 </select><br /><br />
 
-                <button className='button button--medium button--primary-filled' onClick={this.submitForm}>Submit form</button>&nbsp;
+                <button className={c('button button--medium button--primary-filled', { disabled: !this.allowSubmit() })} onClick={this.submitForm}>Submit form</button>&nbsp;
                 <button className='button button--medium button--secondary-filled' onClick={this.saveDraft}>Save as draft</button>
+                <p><br />&nbsp;&nbsp;Take care, only <strong>Drafts</strong> can be edited afterwards!</p>
               </div>
             </div>
           </div>
