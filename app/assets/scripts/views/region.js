@@ -14,7 +14,6 @@ import {
   BarChart,
   Bar
 } from 'recharts';
-import { Sticky, StickyContainer } from 'react-sticky';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import c from 'classnames';
@@ -316,75 +315,65 @@ class AdminArea extends SFPComponent {
             </div>
           </div>
         </header>
-        <StickyContainer>
-          <Sticky>
-            {({ style, isSticky }) => (
-              <div style={style} className={c('inpage__nav', { 'inpage__nav--sticky': isSticky })}>
-                <div className='inner'>
-                  <ul>
-                    <li><a href='#key-figures' title='Go to Key Figures section'>Key Figures</a></li>
-                    <li><a href='#operations-map' title='Go to Operations section'>Operations</a></li>
-                    <li><a href='#emergencies' title='Go to Emergencies section'>Emergencies</a></li>
-                    <li><a href='#appeals' title='Go to Appeals section'>Appeals</a></li>
-                    <li><a href='#graphics' title='Go to Graphics section'>Graphics</a></li>
-                    <li><a href='#links' title='Go to Links section'>Links</a></li>
-                    {get(data, 'contacts.length') ? <li><a href='#contacts' title='Go to Contacts section'>Contacts</a></li> : null}
-                  </ul>
+        <ul>
+          <li><a href='#key-figures' title='Go to Key Figures section'>Key Figures</a></li>
+          <li><a href='#operations-map' title='Go to Operations section'>Operations</a></li>
+          <li><a href='#emergencies' title='Go to Emergencies section'>Emergencies</a></li>
+          <li><a href='#appeals' title='Go to Appeals section'>Appeals</a></li>
+          <li><a href='#graphics' title='Go to Graphics section'>Graphics</a></li>
+          <li><a href='#links' title='Go to Links section'>Links</a></li>
+          <li><a href='#contacts' title='Go to Contacts section'>Contacts</a></li>
+        </ul>
+        <div className='inpage__body'>
+          <div className='inner'>
+            {get(this.props.keyFigures, 'data.results.length') ? (
+              <KeyFigures data={this.props.keyFigures} />
+            ) : <ErrorPanel title="Key Figures" errorMessage="Key figures coming soon" />}
+            <div className='fold' id='operations-map'>
+              <div className='inner'>
+                <h2 className='fold__title'>{activeOperations === null || isNaN(activeOperations) ? null : `Active IFRC Operations (${activeOperations})`}</h2>
+                <div className={mapContainerClass}>
+                  <RegionMap
+                    operations={this.props.appealStats}
+                    bbox={bbox}
+                    layers={[this.state.maskLayer]}
+                    noExport={true}
+                    noRenderEmergencyTitle={true}
+                  />
                 </div>
               </div>
-            )}
-          </Sticky>
-          <div className='inpage__body'>
-            <div className='inner'>
-              {get(this.props.keyFigures, 'data.results.length') ? (
-                <KeyFigures data={this.props.keyFigures} />
-              ) : <ErrorPanel title="Key Figures" errorMessage="Key figures coming soon" />}
-              <div className='fold' id='operations-map'>
-                <div className='inner'>
-                  <h2 className='fold__title'>{activeOperations === null || isNaN(activeOperations) ? null : `Active IFRC Operations (${activeOperations})`}</h2>
-                  <div className={mapContainerClass}>
-                    <RegionMap
-                      operations={this.props.appealStats}
-                      bbox={bbox}
-                      layers={[this.state.maskLayer]}
-                      noExport={true}
-                      noRenderEmergencyTitle={true}
-                    />
-                  </div>
-                </div>
-              </div>
-              <EmergenciesTable
-                id='emergencies'
-                title='Recent Emergencies'
-                limit={5}
-                region={getRegionId(this.props.match.params.id)}
-                showRecent={true}
-                viewAll={'/emergencies/all?region=' + data.id}
-                viewAllText={`View all Emergencies for ${regionName} region`}
-              />
-              {this.renderCountries()}
-              <Fold title='Statistics' headerClass='visually-hidden' id='stats'>
-                <div className='stats-chart'>
-                  {this.renderOperations10Years()}
-                  {this.renderPersonnelBySociety()}
-                </div>
-              </Fold>
-              <AppealsTable
-                title={'Active IFRC Operations'}
-                region={getRegionId(this.props.match.params.id)}
-                showActive={true}
-                id={'appeals'}
-                viewAll={'/appeals/all?region=' + data.id}
-                viewAllText={`View all IFRC operations for ${regionName} region`}
-              />
-              {get(this.props.snippets, 'data.results.length') ? (
-                <Snippets data={this.props.snippets} />
-              ) : <ErrorPanel title="Graphics" errorMessage="Graphics coming soon" />}
-              {get(data, 'links.length') ? <Links data={data} /> : <ErrorPanel title="Links" errorMessage="Links coming soon" />}
-              {get(data, 'contacts.length') ? <Contacts data={data} /> : <ErrorPanel title="Contacts" errorMessage="Contacts coming soon" />}
             </div>
+            <EmergenciesTable
+              id='emergencies'
+              title='Recent Emergencies'
+              limit={5}
+              region={getRegionId(this.props.match.params.id)}
+              showRecent={true}
+              viewAll={'/emergencies/all?region=' + data.id}
+              viewAllText={`View all Emergencies for ${regionName} region`}
+            />
+            {this.renderCountries()}
+            <Fold title='Statistics' headerClass='visually-hidden' id='stats'>
+              <div className='stats-chart'>
+                {this.renderOperations10Years()}
+                {this.renderPersonnelBySociety()}
+              </div>
+            </Fold>
+            <AppealsTable
+              title={'Active IFRC Operations'}
+              region={getRegionId(this.props.match.params.id)}
+              showActive={true}
+              id={'appeals'}
+              viewAll={'/appeals/all?region=' + data.id}
+              viewAllText={`View all IFRC operations for ${regionName} region`}
+            />
+            {get(this.props.snippets, 'data.results.length') ? (
+              <Snippets data={this.props.snippets} />
+            ) : <ErrorPanel title="Graphics" errorMessage="Graphics coming soon" />}
+            {get(data, 'links.length') ? <Links data={data} /> : <ErrorPanel title="Links" errorMessage="Links coming soon" />}
+            {get(data, 'contacts.length') ? <Contacts data={data} /> : <ErrorPanel title="Contacts" errorMessage="Contacts coming soon" />}
           </div>
-        </StickyContainer>
+        </div>
       </section>
     );
   }
