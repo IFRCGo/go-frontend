@@ -6,10 +6,10 @@ import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { DateTime } from 'luxon';
-//import { Sticky, StickyContainer } from 'react-sticky';
+// import { Sticky, StickyContainer } from 'react-sticky';
 import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
 
-//import c from 'classnames';
+// import c from 'classnames';
 import { Helmet } from 'react-helmet';
 import url from 'url';
 
