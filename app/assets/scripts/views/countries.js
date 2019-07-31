@@ -6,7 +6,7 @@ import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { DateTime } from 'luxon';
-import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
+import { Tabs, TabList, Tab, TabPanel } from '../components/tabs';
 
 import { Helmet } from 'react-helmet';
 import url from 'url';

@@ -7,7 +7,14 @@ import { environment } from '../config';
 import { Tabs, TabList, Tab as ReactTab, TabPanel } from 'react-tabs';
 
 
-function Tabs = ({ tablist }) => {
+function Tab = ({ tablist }) => {
+    return (
+        {
+            tablist.map(tab => (
+                <ReactTab key={tab.title}>{tab.title}</ReactTab>
+            ))
+        }
+    )
 
 }
 
