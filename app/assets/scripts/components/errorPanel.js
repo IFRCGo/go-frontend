@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
-"use strict";
+'use strict';
 
-import React from "react";
-import { PropTypes as T } from "prop-types";
-import { environment } from "../config";
+import React from 'react';
+import { PropTypes as T } from 'prop-types';
+import { environment } from '../config';
 
-import Fold from "./fold";
+import Fold from './fold';
 
 const ErrorPanel = props => {
   return (
@@ -15,7 +15,7 @@ const ErrorPanel = props => {
   );
 };
 
-if (environment !== "production") {
+if (environment !== 'production') {
   ErrorPanel.propTypes = {
     title: T.string,
     errorMessage: T.string
