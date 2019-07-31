@@ -72,8 +72,8 @@ class OverviewForm extends React.Component {
   }
 
   allowSubmit () {
-    return (this.state.data.facilitator_phone && this.state.data.focus)
-    || (this.loadedDraft && this.loadedDraft.facilitator_phone && this.loadedDraft.focus);
+    return (this.state.data.facilitator_phone && this.state.data.focus) ||
+    (this.loadedDraft && this.loadedDraft.facilitator_phone && this.loadedDraft.focus);
   }
 
   submitForm () {
