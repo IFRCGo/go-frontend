@@ -956,10 +956,10 @@ class Account extends React.Component {
                 </TabPanel>
                 <TabPanel>
                   {this.renderFieldReports()}
-                  {this.props.profile.fetched && !this.props.profile.error ? this.renderSubscriptionForm() : null}
+                  {this.props.profile.fetched && !this.props.profile.error ? this.renderSubscriptionForm() : <ErrorPanel title="Subscriptions" errorMessage="Subscriptions coming soon" />}
                 </TabPanel>
                 <TabPanel>
-                  {this.isPerPermission() ? this.renderPerFormsComponent() : null}
+                  {this.isPerPermission() ? this.renderPerFormsComponent() : <ErrorPanel title="PER Forms" errorMessage="Please login to view content" />}
                 </TabPanel>
               </div>
             </div>
