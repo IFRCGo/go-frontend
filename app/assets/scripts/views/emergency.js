@@ -6,7 +6,6 @@ import { Link, withRouter } from 'react-router-dom';
 import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 import _toNumber from 'lodash.tonumber';
-import { Sticky, StickyContainer } from 'react-sticky';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import { Helmet } from 'react-helmet';
@@ -107,7 +106,7 @@ class Emergency extends React.Component {
     if (this.props.isLogged) {
       this.props._getUserProfile(this.props.user.data.username);
     }
-    this.displayTabContent()
+    this.displayTabContent();
   }
 
   // Sets default tab if url param is blank or incorrect
