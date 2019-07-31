@@ -4,46 +4,46 @@ import { PropTypes as T } from 'prop-types';
 import { environment } from '../config';
 import {
     Tabs,
-    TabList as ReactTabList,
+    TabList as ReachTabList,
     Tab,
-    // TabPanel as ReactTabPanel
-    TabPanel
-} from 'react-tabs';
+    TabPanels,
+    TabPanel as ReachTabPanel
+} from "@reach/tabs";
 import ErrorPanel from './error-panel';
 
 
 function TabList({ tablist, ...rest }) {
     return (
-        <ReactTabList {...rest} >
+        <ReachTabList {...rest} >
             {
                 tablist.map(tab => (
                     <Tab key={tab.title}>{tab.title}</Tab>
                 ))
             }
-        </ReactTabList>
+        </ReachTabList>
     )
 
 }
 
-// function TabPanel({ isError, errorMessage, title, children, ...rest }) {
-//     console.log('isError', isError)
-//     console.log('children', children)
-//     return (
-//         <ReactTabPanel {...rest}>
-//             {isError ? (
-//                 <ErrorPanel title={title} errorMessage={errorMessage} />
-//             ) : (
-//                     children
-//                 )}
-//         </ReactTabPanel>
-//     );
-// }
+function TabPanel({ isError, errorMessage, title, children, ...rest }) {
+    console.log('isError', isError)
+    console.log('children', children)
+    return (
+        <ReachTabPanel {...rest}>
+            {isError ? (
+                <ErrorPanel title={title} errorMessage={errorMessage} />
+            ) : (
+                    children
+                )}
+        </ReachTabPanel>
+    );
+}
 
-// TabPanel.defaultProps = {
-//     isError: false,
-//     errorMessage: "coming soon",
-//     title: "Error"
-// };
+TabPanel.defaultProps = {
+    isError: false,
+    errorMessage: "coming soon",
+    title: "Error"
+};
 
 if (environment !== "production") {
     TabList.propTypes = {
@@ -59,7 +59,7 @@ if (environment !== "production") {
 }
 
 
-export { Tabs, Tab, TabList, TabPanel };
+export { Tabs, Tab, TabList, TabPanels, TabPanel };
 
 
 
