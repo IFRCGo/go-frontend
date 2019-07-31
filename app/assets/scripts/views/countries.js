@@ -38,6 +38,7 @@ import { getBoundingBox } from '../utils/country-bounding-box';
 
 import App from './app';
 import ErrorPanel from '../components/error-panel';
+import TabContent from '../components/tab-content';
 import Fold from '../components/fold';
 import CountryMap from '../components/map/country-map';
 import DisplayTable, { SortHeader, FilterHeader } from '../components/display-table';
@@ -523,106 +524,96 @@ class AdminArea extends SFPComponent {
             ))}
           </TabList>
 
+
           <div className="inpage__body">
             <div className="inner">
-              <TabPanel>
-                {data.overview || data.key_priorities ? (
+              <TabPanel isError={!data.overview || data.key_priorities} errorMessage="Overview coming soon" title="Overview">
+                <TabContent isError={!data.overview || data.key_priorities} errorMessage="Overview coming soon" title="Overview">
                   <Fold title="Overview" id="overview">
                     {data.overview ? <ReactMarkdown source={data.overview} /> : null}
                     {data.key_priorities ? <ReactMarkdown source={data.key_priorities} /> : null}
                   </Fold>
-                ) : (
-                    <ErrorPanel title="Overview" errorMessage="Overview coming soon" />
-                  )}
+                </TabContent>
               </TabPanel>
               <TabPanel>
-                {get(this.props.keyFigures, 'data.results.length') ? (
+                <TabContent isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage="Key figures coming soon" title="Key Figures">
                   <KeyFigures data={this.props.keyFigures} />
-                ) : (
-                    <ErrorPanel title="Key Figures" errorMessage="Key figures coming soon" />
-                  )}
+                </TabContent>
               </TabPanel>
               <TabPanel>
-                <Fold title='Statistics' headerClass='visually-hidden' id='operations'>
-                  <div className='operations__container'>
-                    <div className='country__operations'>
-                      <h2>Movement activities in support of NS</h2>
-                      <BulletTable title='Activities'
-                        onClick={this.setPersistentMapFilter.bind(this, 'ns')}
-                        onMouseOver={this.setMapFilter.bind(this, 'ns')}
-                        onMouseOut={this.removeMapFilter.bind(this, 'ns')}
-                        rows={get(partnerDeployments, 'data.parentSocieties', [])} />
-                      <BulletTable title='Type'
-                        onClick={this.setPersistentMapFilter.bind(this, 'type')}
-                        onMouseOver={this.setMapFilter.bind(this, 'type')}
-                        onMouseOut={this.removeMapFilter.bind(this, 'type')}
-                        rows={get(partnerDeployments, 'data.activities', [])} />
+                <TabContent>
+                  <Fold title='Statistics' headerClass='visually-hidden' id='operations'>
+                    <div className='operations__container'>
+                      <div className='country__operations'>
+                        <h2>Movement activities in support of NS</h2>
+                        <BulletTable title='Activities'
+                          onClick={this.setPersistentMapFilter.bind(this, 'ns')}
+                          onMouseOver={this.setMapFilter.bind(this, 'ns')}
+                          onMouseOut={this.removeMapFilter.bind(this, 'ns')}
+                          rows={get(partnerDeployments, 'data.parentSocieties', [])} />
+                        <BulletTable title='Type'
+                          onClick={this.setPersistentMapFilter.bind(this, 'type')}
+                          onMouseOver={this.setMapFilter.bind(this, 'type')}
+                          onMouseOut={this.removeMapFilter.bind(this, 'type')}
+                          rows={get(partnerDeployments, 'data.activities', [])} />
+                      </div>
+                      <div className={mapContainerClass}>
+                        <CountryMap operations={this.props.appealStats}
+                          bbox={bbox}
+                          deployments={this.props.partnerDeployments}
+                          deploymentsKey='Additional Response Activities' // From Elsa instead of 'PNS Activities'
+                          noRenderEmergencies={true}
+                          noExport={true}
+                        />
+                      </div>
                     </div>
-                    <div className={mapContainerClass}>
-                      <CountryMap operations={this.props.appealStats}
-                        bbox={bbox}
-                        deployments={this.props.partnerDeployments}
-                        deploymentsKey='Additional Response Activities' // From Elsa instead of 'PNS Activities'
-                        noRenderEmergencies={true}
-                        noExport={true}
-                      />
-                    </div>
-                  </div>
-                  {this.renderAppeals()}
-                </Fold>
+                    {this.renderAppeals()}
+                  </Fold>
+                </TabContent>
               </TabPanel>
               <TabPanel>
-                <EmergenciesTable
-                  id={'emergencies'}
-                  title="Recent Emergencies"
-                  limit={5}
-                  country={getCountryId(this.props.match.params.id)}
-                  showRecent={true}
-                  viewAll={'/emergencies/all?country=' + data.id}
-                  viewAllText={`View All Emergencies For ${data.name}`}
-                />
+                <TabContent>
+                  <EmergenciesTable
+                    id={'emergencies'}
+                    title="Recent Emergencies"
+                    limit={5}
+                    country={getCountryId(this.props.match.params.id)}
+                    showRecent={true}
+                    viewAll={'/emergencies/all?country=' + data.id}
+                    viewAllText={`View All Emergencies For ${data.name}`}
+                  />
+                </TabContent>
               </TabPanel>
               <TabPanel>
-                {get(this.props.snippets, 'data.results.length') ? (
+                <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage="Graphics coming soon" title="Graphics">
                   <Snippets data={this.props.snippets} />
-                ) : (
-                    <ErrorPanel title="Graphics" errorMessage="Graphics coming soon" />
-                  )}
+                </TabContent>
               </TabPanel>
               <TabPanel>
-                {get(data, 'links.length') ? (
+                <TabContent isError={!get(data, 'links.length')} errorMessage="Links coming soon" title="Links">
                   <Links data={data} />
-                ) : (
-                    <ErrorPanel title="Links" errorMessage="Links coming soon" />
-                  )}
+                </TabContent>
               </TabPanel>
               <TabPanel>
-                {get(data, 'contacts.length') ? (
+                <TabContent isError={!get(data, 'contacts.length')} errorMessage="No current contacts" title="Contacts">
                   <Contacts data={data} />
-                ) : (
-                    <ErrorPanel title="Contacts" errorMessage="Contacts coming soon" />
-                  )}
+                </TabContent>
               </TabPanel>
               <TabPanel>
-                {this.isPerPermission() ? (
-                  <div>
-                    {this.props.getPerNsPhase.fetched && this.props.perOverviewForm.fetched ? (
-                      <PreparednessOverview getPerNsPhase={this.props.getPerNsPhase} perOverviewForm={this.props.perOverviewForm} />
-                    ) : <ErrorPanel title="Preparedness Overview" errorMessage="Preparedness overview coming soon" />}
-                    {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
-                      <PreparednessSummary getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
-                      : <ErrorPanel title="Preparedness Summary" errorMessage="Preparedness summary coming soon" />}
-                    {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
-                      <PreparednessColumnBar getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
-                      : <ErrorPanel title="Preparedness Column Bar" errorMessage="Preparedness column bar summary coming soon" />}
-                    {this.props.getPerWorkPlan.fetched ? (
-                      <PreparednessWorkPlan getPerWorkPlan={this.props.getPerWorkPlan} />)
-                      : <ErrorPanel title="Preparedness Work Plan" errorMessage="Preparedness work plan bar summary coming soon" />}
-                    {this.props.getPerUploadedDocuments.fetched ? (
-                      <PreparednessPhaseOutcomes getPerUploadedDocuments={this.props.getPerUploadedDocuments} countryId={this.props.match.params.id} />)
-                      : <ErrorPanel title="Preparedness Phase Outcomes" errorMessage="Preparedness phase outcomes bar summary coming soon" />}
-                  </div>
-                ) : <ErrorPanel title="Per Overview" errorMessage="Please log in" />}
+                <TabContent isError={!this.isPerPermission()} errorMessage="Please log in" title="Preparedness">
+                  {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
+                    <PreparednessSummary getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
+                    : <ErrorPanel title="Preparedness Summary" errorMessage="Preparedness summary coming soon" />}
+                  {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
+                    <PreparednessColumnBar getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
+                    : <ErrorPanel title="Preparedness Column Bar" errorMessage="Preparedness column bar summary coming soon" />}
+                  {this.props.getPerWorkPlan.fetched ? (
+                    <PreparednessWorkPlan getPerWorkPlan={this.props.getPerWorkPlan} />)
+                    : <ErrorPanel title="Preparedness Work Plan" errorMessage="Preparedness work plan bar summary coming soon" />}
+                  {this.props.getPerUploadedDocuments.fetched ? (
+                    <PreparednessPhaseOutcomes getPerUploadedDocuments={this.props.getPerUploadedDocuments} countryId={this.props.match.params.id} />)
+                    : <ErrorPanel title="Preparedness Phase Outcomes" errorMessage="Preparedness phase outcomes bar summary coming soon" />}
+                </TabContent>
               </TabPanel>
             </div>
           </div>

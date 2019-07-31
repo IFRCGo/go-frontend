@@ -4,26 +4,26 @@ import { PropTypes as T } from 'prop-types';
 import { environment } from '../config';
 import {
     Tabs,
-    TabList as ReactTabList,
+    TabList,
     Tab,
     TabPanel as ReactTabPanel
 } from 'react-tabs';
 import ErrorPanel from './error-panel';
 
 
-function TabList({ tablist, ...rest }) {
-    console.log('rest', ...rest)
-    return (
-        <ReactTabList {...rest} >
-            {
-                tablist.map(tab => (
-                    <Tab key={tab.title}>{tab.title}</Tab>
-                ))
-            }
-        </ReactTabList>
-    )
+// function TabList({ tablist, ...rest }) {
+//     console.log('rest', ...rest)
+//     return (
+//         <ReactTabList {...rest} >
+//             {
+//                 tablist.map(tab => (
+//                     <Tab key={tab.title}>{tab.title}</Tab>
+//                 ))
+//             }
+//         </ReactTabList>
+//     )
 
-}
+// }
 
 function TabPanel({ isError, errorMessage, title, children, ...rest }) {
     console.log('isError', isError)
@@ -46,11 +46,11 @@ TabPanel.defaultProps = {
 };
 
 if (environment !== "production") {
-    TabList.propTypes = {
-        tablist: T.array,
-        rest: T.object,
-        title: T.string
-    };
+    // TabList.propTypes = {
+    //     tablist: T.array,
+    //     rest: T.object,
+    //     title: T.string
+    // };
     TabPanel.propTypes = {
         isError: T.boolean,
         errorMessage: T.string,

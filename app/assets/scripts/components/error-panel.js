@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 'use strict';
 
 import React from 'react';
