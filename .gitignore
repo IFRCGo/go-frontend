@@ -115,6 +115,7 @@ temp
 tmp
 .tmp
 dist
+.vscode/
 
 ################################################
 # Node Package Manager
