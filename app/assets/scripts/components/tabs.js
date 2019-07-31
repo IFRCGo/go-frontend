@@ -6,8 +6,7 @@ import {
     Tabs,
     TabList as ReactTabList,
     Tab,
-    // TabPanel as ReactTabPanel
-    TabPanel
+    TabPanel as ReactTabPanel
 } from 'react-tabs';
 import ErrorPanel from './error-panel';
 
@@ -26,37 +25,37 @@ function TabList({ tablist, ...rest }) {
 
 }
 
-// function TabPanel({ isError, errorMessage, title, children, ...rest }) {
-//     console.log('isError', isError)
-//     console.log('children', children)
-//     return (
-//         <ReactTabPanel {...rest}>
-//             {isError ? (
-//                 <ErrorPanel title={title} errorMessage={errorMessage} />
-//             ) : (
-//                     children
-//                 )}
-//         </ReactTabPanel>
-//     );
-// }
+function TabPanel({ isError, errorMessage, title, children, ...rest }) {
+    console.log('isError', isError)
+    console.log('children', children)
+    return (
+        <ReactTabPanel {...rest}>
+            {isError ? (
+                <ErrorPanel title={title} errorMessage={errorMessage} />
+            ) : (
+                    children
+                )}
+        </ReactTabPanel>
+    );
+}
 
-// TabPanel.defaultProps = {
-//     isError: false,
-//     errorMessage: "coming soon",
-//     title: "Error"
-// };
+TabPanel.defaultProps = {
+    isError: false,
+    errorMessage: "coming soon",
+    title: "Error"
+};
 
 if (environment !== "production") {
     TabList.propTypes = {
         tablist: T.array,
         rest: T.object
     };
-    // TabPanel.propTypes = {
-    //     isError: T.boolean,
-    //     errorMessage: T.string,
-    //     children: T.object,
-    //     rest: T.object
-    // };
+    TabPanel.propTypes = {
+        isError: T.boolean,
+        errorMessage: T.string,
+        children: T.object,
+        rest: T.object
+    };
 }
 
 
