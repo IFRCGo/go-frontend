@@ -7,8 +7,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { DateTime } from 'luxon';
 // import { Tabs, TabList, Tab, TabPanel } from '../components/tabs';
-import { Tabs, TabList, Tab, TabPanels, TabPanel } from '../components/tabs';
-// import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import { Helmet } from 'react-helmet';
 import url from 'url';
@@ -514,99 +513,103 @@ class AdminArea extends SFPComponent {
           </div>
         </header>
         <Tabs
-          index={TAB_DETAILS.map(({ hash }) => hash).indexOf(this.props.location.hash)}
-          onChange={index => handleTabChange(index)}
+          selectedIndex={TAB_DETAILS.map(({ hash }) => hash).indexOf(this.props.location.hash)}
+          onSelect={index => handleTabChange(index)}
         >
-          <TabList tablist={TAB_DETAILS} />
+          <TabList>
+            {TAB_DETAILS.map(tab => (
+              <Tab>{tab.title}</Tab>
+            ))}
+          </TabList>
 
           <div className="inpage__body">
             <div className="inner">
-              <TabPanels>
-                <TabPanel>{data.overview || !data.key_priorities ? (
-
-                  <Fold title="Overview" id="overview">
-                    {data.overview ? (
-                      <ReactMarkdown source={data.overview} />
-                    ) : null}
-                    {data.key_priorities ? (
-                      <ReactMarkdown source={data.key_priorities} />
-                    ) : null}
-                  </Fold>
-                ) : <ErrorPanel title="Overview" errorMessage="Overview coming soon" />}
-                </TabPanel>
-                <TabPanel>
-                  {get(this.props.keyFigures, 'data.results.length') ? (
-                    <KeyFigures data={this.props.keyFigures} />
-                  ) : (
-                      <ErrorPanel title="Key Figures" errorMessage="Key figures coming soon" />
-                    )}
-                </TabPanel>
-                <TabPanel>
-                  <Fold title="Statistics" headerClass="visually-hidden" id="operations">
-                    <div className="operations__container">
-                      <div className="country__operations">
-                        <h2>Movement activities in support of NS</h2>
-                        <BulletTable
-                          title="Activities"
-                          onClick={this.setPersistentMapFilter.bind(this, 'ns')}
-                          onMouseOver={this.setMapFilter.bind(this, 'ns')}
-                          onMouseOut={this.removeMapFilter.bind(this, 'ns')}
-                          rows={get(partnerDeployments, 'data.parentSocieties', [])}
-                        />
-                        <BulletTable
-                          title="Type"
-                          onClick={this.setPersistentMapFilter.bind(this, 'type')}
-                          onMouseOver={this.setMapFilter.bind(this, 'type')}
-                          onMouseOut={this.removeMapFilter.bind(this, 'type')}
-                          rows={get(partnerDeployments, 'data.activities', [])}
-                        />
-                      </div>
-                      <div className={mapContainerClass}>
-                        <CountryMap operations={this.props.appealStats}
-                          bbox={bbox}
-                          deployments={this.props.partnerDeployments}
-                          deploymentsKey='Additional Response Activities' // From Elsa instead of 'PNS Activities'
-                          noRenderEmergencies={true}
-                          noExport={true}
-                        />
-                      </div>
+              <TabPanel
+                isError={!data.overview || !data.key_priorities}
+                errorMessage="Overview coming soon"
+                title="Overview"
+              >
+                <Fold title="Overview" id="overview">
+                  {data.overview ? (
+                    <ReactMarkdown source={data.overview} />
+                  ) : null}
+                  {data.key_priorities ? (
+                    <ReactMarkdown source={data.key_priorities} />
+                  ) : null}
+                </Fold>
+              </TabPanel>
+              <TabPanel>
+                {get(this.props.keyFigures, 'data.results.length') ? (
+                  <KeyFigures data={this.props.keyFigures} />
+                ) : (
+                    <ErrorPanel title="Key Figures" errorMessage="Key figures coming soon" />
+                  )}
+              </TabPanel>
+              <TabPanel>
+                <Fold title="Statistics" headerClass="visually-hidden" id="operations">
+                  <div className="operations__container">
+                    <div className="country__operations">
+                      <h2>Movement activities in support of NS</h2>
+                      <BulletTable
+                        title="Activities"
+                        onClick={this.setPersistentMapFilter.bind(this, 'ns')}
+                        onMouseOver={this.setMapFilter.bind(this, 'ns')}
+                        onMouseOut={this.removeMapFilter.bind(this, 'ns')}
+                        rows={get(partnerDeployments, 'data.parentSocieties', [])}
+                      />
+                      <BulletTable
+                        title="Type"
+                        onClick={this.setPersistentMapFilter.bind(this, 'type')}
+                        onMouseOver={this.setMapFilter.bind(this, 'type')}
+                        onMouseOut={this.removeMapFilter.bind(this, 'type')}
+                        rows={get(partnerDeployments, 'data.activities', [])}
+                      />
                     </div>
-                    {this.renderAppeals()}
-                  </Fold>
-                </TabPanel>
-                <TabPanel>
-                  <EmergenciesTable
-                    id={'emergencies'}
-                    title="Recent Emergencies"
-                    limit={5}
-                    country={getCountryId(this.props.match.params.id)}
-                    showRecent={true}
-                    viewAll={'/emergencies/all?country=' + data.id}
-                    viewAllText={`View All Emergencies For ${data.name}`}
-                  />
-                </TabPanel>
-                <TabPanel>
-                  {get(this.props.snippets, 'data.results.length') ? (
-                    <Snippets data={this.props.snippets} />
-                  ) : (
-                      <ErrorPanel title="Graphics" errorMessage="Graphics coming soon" />
-                    )}
-                </TabPanel>
-                <TabPanel>
-                  {get(data, 'links.length') ? (
-                    <Links data={data} />
-                  ) : (
-                      <ErrorPanel title="Links" errorMessage="Links coming soon" />
-                    )}
-                </TabPanel>
-                <TabPanel>
-                  {get(data, 'contacts.length') ? (
-                    <Contacts data={data} />
-                  ) : (
-                      <ErrorPanel title="Contacts" errorMessage="Contacts coming soon" />
-                    )}
-                </TabPanel>
-              </TabPanels>
+                    <div className={mapContainerClass}>
+                      <CountryMap operations={this.props.appealStats}
+                        bbox={bbox}
+                        deployments={this.props.partnerDeployments}
+                        deploymentsKey='Additional Response Activities' // From Elsa instead of 'PNS Activities'
+                        noRenderEmergencies={true}
+                        noExport={true}
+                      />
+                    </div>
+                  </div>
+                  {this.renderAppeals()}
+                </Fold>
+              </TabPanel>
+              <TabPanel>
+                <EmergenciesTable
+                  id={'emergencies'}
+                  title="Recent Emergencies"
+                  limit={5}
+                  country={getCountryId(this.props.match.params.id)}
+                  showRecent={true}
+                  viewAll={'/emergencies/all?country=' + data.id}
+                  viewAllText={`View All Emergencies For ${data.name}`}
+                />
+              </TabPanel>
+              <TabPanel>
+                {get(this.props.snippets, 'data.results.length') ? (
+                  <Snippets data={this.props.snippets} />
+                ) : (
+                    <ErrorPanel title="Graphics" errorMessage="Graphics coming soon" />
+                  )}
+              </TabPanel>
+              <TabPanel>
+                {get(data, 'links.length') ? (
+                  <Links data={data} />
+                ) : (
+                    <ErrorPanel title="Links" errorMessage="Links coming soon" />
+                  )}
+              </TabPanel>
+              <TabPanel>
+                {get(data, 'contacts.length') ? (
+                  <Contacts data={data} />
+                ) : (
+                    <ErrorPanel title="Contacts" errorMessage="Contacts coming soon" />
+                  )}
+              </TabPanel>
             </div>
           </div>
         </Tabs>

@@ -4,46 +4,47 @@ import { PropTypes as T } from 'prop-types';
 import { environment } from '../config';
 import {
     Tabs,
-    TabList as ReachTabList,
+    TabList as ReactTabList,
     Tab,
-    TabPanels,
-    TabPanel as ReachTabPanel
-} from "@reach/tabs";
+    // TabPanel as ReactTabPanel
+    TabPanel
+} from 'react-tabs';
 import ErrorPanel from './error-panel';
 
 
 function TabList({ tablist, ...rest }) {
+    console.log('rest', ...rest)
     return (
-        <ReachTabList {...rest} >
+        <ReactTabList {...rest} >
             {
                 tablist.map(tab => (
                     <Tab key={tab.title}>{tab.title}</Tab>
                 ))
             }
-        </ReachTabList>
+        </ReactTabList>
     )
 
 }
 
-function TabPanel({ isError, errorMessage, title, children, ...rest }) {
-    console.log('isError', isError)
-    console.log('children', children)
-    return (
-        <ReachTabPanel {...rest}>
-            {isError ? (
-                <ErrorPanel title={title} errorMessage={errorMessage} />
-            ) : (
-                    children
-                )}
-        </ReachTabPanel>
-    );
-}
+// function TabPanel({ isError, errorMessage, title, children, ...rest }) {
+//     console.log('isError', isError)
+//     console.log('children', children)
+//     return (
+//         <ReactTabPanel {...rest}>
+//             {isError ? (
+//                 <ErrorPanel title={title} errorMessage={errorMessage} />
+//             ) : (
+//                     children
+//                 )}
+//         </ReactTabPanel>
+//     );
+// }
 
-TabPanel.defaultProps = {
-    isError: false,
-    errorMessage: "coming soon",
-    title: "Error"
-};
+// TabPanel.defaultProps = {
+//     isError: false,
+//     errorMessage: "coming soon",
+//     title: "Error"
+// };
 
 if (environment !== "production") {
     TabList.propTypes = {
@@ -59,7 +60,7 @@ if (environment !== "production") {
 }
 
 
-export { Tabs, Tab, TabList, TabPanels, TabPanel };
+export { Tabs, Tab, TabList, TabPanel };
 
 
 
