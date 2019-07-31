@@ -523,13 +523,9 @@ class AdminArea extends SFPComponent {
               onSelect={index => handleTabChange(index)}
             >
               <TabList>
-                <Tab label="overview">Overview</Tab>
-                <Tab label="keyfigures">Key Figures</Tab>
-                <Tab label="operations">Operations</Tab>
-                <Tab label="emergencies">Emergencies</Tab>
-                <Tab label="graphics">Graphics</Tab>
-                <Tab label="links">Links</Tab>
-                <Tab label="contacts">Contacts</Tab>
+                {TAB_DETAILS.map(tab => (
+                  <Tab key={tab.title}>{tab.title}</Tab>
+                ))}
               </TabList>
 
               <div className="inpage__body">
@@ -617,158 +613,94 @@ class AdminArea extends SFPComponent {
                         <ErrorPanel title="Contacts" errorMessage="Contacts coming soon" />
                       )}
                   </TabPanel>
-                  <TabPanel>
-                    <KeyFigures data={this.props.keyFigures} />
-                  </TabPanel>
-                  <TabPanel>
-                    <Fold
-                      title="Statistics"
-                      headerClass="visually-hidden"
-                      id="operations"
-                    >
-                      <div className="operations__container">
-                        <div className="country__operations">
-                          <h2>Movement activities in support of NS</h2>
-                          <BulletTable
-                            title="Activities"
-                            onClick={this.setPersistentMapFilter.bind(this, "ns")}
-                            onMouseOver={this.setMapFilter.bind(this, "ns")}
-                            onMouseOut={this.removeMapFilter.bind(this, "ns")}
-                            rows={get(partnerDeployments, "data.parentSocieties", [])}
-                          />
-                          <BulletTable
-                            title="Type"
-                            onClick={this.setPersistentMapFilter.bind(this, "type")}
-                            onMouseOver={this.setMapFilter.bind(this, "type")}
-                            onMouseOut={this.removeMapFilter.bind(this, "type")}
-                            rows={get(partnerDeployments, "data.activities", [])}
-                          />
-                        </div>
-                        <div className={mapContainerClass}>
-                          <CountryMap operations={this.props.appealStats}
-                            bbox={bbox}
-                            deployments={this.props.partnerDeployments}
-                            deploymentsKey="Additional Response Activities" // From Elsa instead of 'PNS Activities'
-                            noRenderEmergencies={true}
-                            noExport={true}
-                          />
-                        </div>
-                      </div>
-                      {this.renderAppeals()}
-                    </Fold>
-                  </TabPanel>
-                  <TabPanel>
-                    <EmergenciesTable
-                      id={"emergencies"}
-                      title="Recent Emergencies"
-                      limit={5}
-                      country={getCountryId(this.props.match.params.id)}
-                      showRecent={true}
-                      viewAll={"/emergencies/all?country=" + data.id}
-                      viewAllText={`View All Emergencies For ${data.name}`}
-                    />
-                  </TabPanel>
-                  <TabPanel>
-                    <Snippets id="graphics" data={this.props.snippets} />
-                  </TabPanel>
-                  <TabPanel>
-                    <Links data={data} />
-                  </TabPanel>
-                  <TabPanel>
-                    <Contacts data={data} />
-                    {this.isPerPermission() && this.props.getPerNsPhase.fetched && this.props.perOverviewForm.fetched ? <PreparednessOverview getPerNsPhase={this.props.getPerNsPhase} perOverviewForm={this.props.perOverviewForm} /> : null}
-                    {this.isPerPermission() && this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? <PreparednessSummary getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} /> : null}
-                    {this.isPerPermission() && this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? <PreparednessColumnBar getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} /> : null}
-                    {this.isPerPermission() && this.props.getPerWorkPlan.fetched ? <PreparednessWorkPlan getPerWorkPlan={this.props.getPerWorkPlan} /> : null}
-                    {this.isPerPermission() && this.props.getPerUploadedDocuments.fetched ? <PreparednessPhaseOutcomes getPerUploadedDocuments={this.props.getPerUploadedDocuments} countryId={this.props.match.params.id} /> : null}
-            </div>
                 </div>
+              </div>
         </StickyContainer>
-      </section>
-            );
-          }
-        
-  render() {
-    return (
-      <App className={`page--${this.props.type}`}>
-              <Helmet>
-                <title>IFRC Go - Country</title>
-              </Helmet>
-              {this.renderContent()}
-            </App>
-            );
-          }
-        }
-        
-if (environment !== 'production') {
-              AdminArea.propTypes = {
-                _getAdmAreaById: T.func,
-                _getAdmAreaAppealsList: T.func,
-                _getCountryOperations: T.func,
-                _getPartnerDeployments: T.func,
-                _getPerDocument: T.func,
-                _getPerDocuments: T.func,
-                _getPeruploadedDocuments: T.func,
-                type: T.string,
-                match: T.object,
-                history: T.object,
-                adminArea: T.object,
-                appealStats: T.object,
-                keyFigures: T.object,
-                snippets: T.object,
-                countryOperations: T.object,
-                partnerDeployments: T.object
-              };
-            }
-            
-            // /////////////////////////////////////////////////////////////////// //
-            // Connect functions
-            
-const selector = (state, ownProps) => ({
-              adminArea: get(state.adminArea.aaData, getCountryId(ownProps.match.params.id), {
-              data: {},
-            fetching: false,
-            fetched: false
-          }),
-          appealStats: state.adminArea.appealStats,
-          keyFigures: state.adminArea.keyFigures,
-          snippets: state.adminArea.snippets,
-          countryOperations: state.adminArea.countryOperations,
-  partnerDeployments: get(state.adminArea.partnerDeployments, getCountryId(ownProps.match.params.id), {
-              data: {},
-            fetching: false,
-            fetched: false
-          }),
-          fdrs: state.fdrs,
-          getPerNsPhase: state.perForm.getPerNsPhase,
-          perOverviewForm: state.perForm.getPerOverviewForm,
-          getPerWorkPlan: state.perForm.getPerWorkPlan,
-          getPerDocument: state.perForm.getPerDocument,
-          getPerDocuments: state.perForm.getPerDocuments,
-          getPerUploadedDocuments: state.perForm.getPerUploadedDocuments,
-          getPerMission: state.perForm.getPerMission,
-          user: state.user.data
-        });
-        
-const dispatcher = dispatch => ({
-              _getAdmAreaById: (...args) => dispatch(getAdmAreaById(...args)),
-            _getAdmAreaAppealsList: (...args) => dispatch(getAdmAreaAppealsList(...args)),
-            _getAdmAreaKeyFigures: (...args) => dispatch(getAdmAreaKeyFigures(...args)),
-            _getAdmAreaSnippets: (...args) => dispatch(getAdmAreaSnippets(...args)),
-            _getCountryOperations: (...args) => dispatch(getCountryOperations(...args)),
-            _getPartnerDeployments: (...args) => dispatch(getPartnerDeployments(...args)),
-            _setPartnerDeploymentFilter: (...args) => dispatch(setPartnerDeploymentFilter(...args)),
-            _getFdrs: (...args) => dispatch(getFdrs(...args)),
-            _getPerNsPhase: (...args) => dispatch(getPerNsPhase(...args)),
-            _getPerOverviewForm: (...args) => dispatch(getPerOverviewForm(...args)),
-            _getPerWorkPlan: (...args) => dispatch(getPerWorkPlan(...args)),
-            _getPerDocument: (...args) => dispatch(getPerDocument(...args)),
-            _getPerDocuments: (...args) => dispatch(getPerDocuments(...args)),
-            _getPerUploadedDocuments: (...args) => dispatch(getPerUploadedDocuments(...args)),
-            _getPerMission: (...args) => dispatch(getPerMission(...args))
-          });
-          
-          export default connect(
-            selector,
-            dispatcher
-          )(AdminArea);
+          </section>
+        );
+      }
+
+      render() {
+        return (
+          <App className={`page--${this.props.type}`}>
+            <Helmet>
+              <title>IFRC Go - Country</title>
+            </Helmet>
+            {this.renderContent()}
+          </App>
+        );
+      }
+    }
+
+    if (environment !== 'production') {
+      AdminArea.propTypes = {
+        _getAdmAreaById: T.func,
+        _getAdmAreaAppealsList: T.func,
+        _getCountryOperations: T.func,
+        _getPartnerDeployments: T.func,
+        _getPerDocument: T.func,
+        _getPerDocuments: T.func,
+        _getPeruploadedDocuments: T.func,
+        type: T.string,
+        match: T.object,
+        history: T.object,
+        adminArea: T.object,
+        appealStats: T.object,
+        keyFigures: T.object,
+        snippets: T.object,
+        countryOperations: T.object,
+        partnerDeployments: T.object
+      };
+    }
+
+    // /////////////////////////////////////////////////////////////////// //
+    // Connect functions
+
+    const selector = (state, ownProps) => ({
+      adminArea: get(state.adminArea.aaData, getCountryId(ownProps.match.params.id), {
+        data: {},
+        fetching: false,
+        fetched: false
+      }),
+      appealStats: state.adminArea.appealStats,
+      keyFigures: state.adminArea.keyFigures,
+      snippets: state.adminArea.snippets,
+      countryOperations: state.adminArea.countryOperations,
+      partnerDeployments: get(state.adminArea.partnerDeployments, getCountryId(ownProps.match.params.id), {
+        data: {},
+        fetching: false,
+        fetched: false
+      }),
+      fdrs: state.fdrs,
+      getPerNsPhase: state.perForm.getPerNsPhase,
+      perOverviewForm: state.perForm.getPerOverviewForm,
+      getPerWorkPlan: state.perForm.getPerWorkPlan,
+      getPerDocument: state.perForm.getPerDocument,
+      getPerDocuments: state.perForm.getPerDocuments,
+      getPerUploadedDocuments: state.perForm.getPerUploadedDocuments,
+      getPerMission: state.perForm.getPerMission,
+      user: state.user.data
+    });
+
+    const dispatcher = dispatch => ({
+      _getAdmAreaById: (...args) => dispatch(getAdmAreaById(...args)),
+      _getAdmAreaAppealsList: (...args) => dispatch(getAdmAreaAppealsList(...args)),
+      _getAdmAreaKeyFigures: (...args) => dispatch(getAdmAreaKeyFigures(...args)),
+      _getAdmAreaSnippets: (...args) => dispatch(getAdmAreaSnippets(...args)),
+      _getCountryOperations: (...args) => dispatch(getCountryOperations(...args)),
+      _getPartnerDeployments: (...args) => dispatch(getPartnerDeployments(...args)),
+      _setPartnerDeploymentFilter: (...args) => dispatch(setPartnerDeploymentFilter(...args)),
+      _getFdrs: (...args) => dispatch(getFdrs(...args)),
+      _getPerNsPhase: (...args) => dispatch(getPerNsPhase(...args)),
+      _getPerOverviewForm: (...args) => dispatch(getPerOverviewForm(...args)),
+      _getPerWorkPlan: (...args) => dispatch(getPerWorkPlan(...args)),
+      _getPerDocument: (...args) => dispatch(getPerDocument(...args)),
+      _getPerDocuments: (...args) => dispatch(getPerDocuments(...args)),
+      _getPerUploadedDocuments: (...args) => dispatch(getPerUploadedDocuments(...args)),
+      _getPerMission: (...args) => dispatch(getPerMission(...args))
+    });
+
+    export default connect(
+      selector,
+      dispatcher
+    )(AdminArea);
