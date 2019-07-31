@@ -280,8 +280,8 @@ class AdminArea extends SFPComponent {
             Link
           </Link>
         ) : (
-          nope
-        ),
+            nope
+          ),
         dtype: o.dtype,
         requestAmount: n(o.amount_requested),
         fundedAmount: n(o.amount_funded),
@@ -493,15 +493,15 @@ class AdminArea extends SFPComponent {
                     {data.key_priorities ? <ReactMarkdown source={data.key_priorities} /> : null}
                   </Fold>
                 ) : (
-                  <ErrorPanel title="Overview" errorMessage="Overview coming soon" />
-                )}
+                    <ErrorPanel title="Overview" errorMessage="Overview coming soon" />
+                  )}
               </TabPanel>
               <TabPanel>
                 {get(this.props.keyFigures, 'data.results.length') ? (
                   <KeyFigures data={this.props.keyFigures} />
                 ) : (
-                  <ErrorPanel title="Key Figures" errorMessage="Key figures coming soon" />
-                )}
+                    <ErrorPanel title="Key Figures" errorMessage="Key figures coming soon" />
+                  )}
               </TabPanel>
               <TabPanel>
                 <Fold title="Statistics" headerClass="visually-hidden" id="operations">
@@ -552,22 +552,22 @@ class AdminArea extends SFPComponent {
                 {get(this.props.snippets, 'data.results.length') ? (
                   <Snippets data={this.props.snippets} />
                 ) : (
-                  <ErrorPanel title="Graphics" errorMessage="Graphics coming soon" />
-                )}
+                    <ErrorPanel title="Graphics" errorMessage="Graphics coming soon" />
+                  )}
               </TabPanel>
               <TabPanel>
                 {get(data, 'links.length') ? (
                   <Links data={data} />
                 ) : (
-                  <ErrorPanel title="Links" errorMessage="Links coming soon" />
-                )}
+                    <ErrorPanel title="Links" errorMessage="Links coming soon" />
+                  )}
               </TabPanel>
               <TabPanel>
                 {get(data, 'contacts.length') ? (
                   <Contacts data={data} />
                 ) : (
-                  <ErrorPanel title="Contacts" errorMessage="Contacts coming soon" />
-                )}
+                    <ErrorPanel title="Contacts" errorMessage="Contacts coming soon" />
+                  )}
               </TabPanel>
             </div>
           </div>
