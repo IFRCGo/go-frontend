@@ -475,6 +475,12 @@ class AdminArea extends SFPComponent {
     const bbox = getBoundingBox(data.iso);
     const mapContainerClass = 'country__map';
 
+    const handleTabChange = index => {
+      const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
+      const url = this.props.location.pathname;
+      this.props.history.replace(`${url}${tabHashArray[index]}`);
+    };
+
     const { partnerDeployments } = this.props;
 
     const handleTabChange = index => {
@@ -518,27 +524,21 @@ class AdminArea extends SFPComponent {
         >
           <TabList>
             {TAB_DETAILS.map(tab => (
-              <Tab>{tab.title}</Tab>
+              <Tab key={tab.title}>{tab.title}</Tab>
             ))}
           </TabList>
 
           <div className="inpage__body">
             <div className="inner">
-              <TabPanel
-                isError={!data.overview || !data.key_priorities}
-                errorMessage="Overview coming soon"
-                title="Overview"
-              >
-                {data.overview || !data.key_priorities ? (
+              <TabPanel>
+                {data.overview || data.key_priorities ? (
                   <Fold title="Overview" id="overview">
-                    {data.overview ? (
-                      <ReactMarkdown source={data.overview} />
-                    ) : null}
-                    {data.key_priorities ? (
-                      <ReactMarkdown source={data.key_priorities} />
-                    ) : null}
+                    {data.overview ? <ReactMarkdown source={data.overview} /> : null}
+                    {data.key_priorities ? <ReactMarkdown source={data.key_priorities} /> : null}
                   </Fold>
-                ) : <ErrorPanel title="Overview" errorMessage="Overview coming soon" />}
+                ) : (
+                    <ErrorPanel title="Overview" errorMessage="Overview coming soon" />
+                  )}
               </TabPanel>
               <TabPanel>
                 {get(this.props.keyFigures, 'data.results.length') ? (
@@ -615,7 +615,6 @@ class AdminArea extends SFPComponent {
             </div>
           </div>
         </Tabs>
-
       </section>
     );
   }
