@@ -63,11 +63,7 @@
     "connect-history-api-fallback": "^1.5.0",
     "del": "^3.0.0",
     "envify": "^4.1.0",
-<<<<<<< HEAD
     "eslint": "^4.18.2",
-=======
-    "eslint": "^4.10.0",
->>>>>>> reverts eslint update to original version
     "eslint-config-standard": "^10.2.1",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-node": "^5.2.1",
@@ -102,7 +98,6 @@
   },
   "dependencies": {
     "@turf/bbox": "^6.0.1",
-    "@reach/tabs": "^0.1.6",
     "@turf/centroid": "^6.0.2",
     "@xavescor/react": "16.2.1-path.1",
     "acorn": "^6.0.0",
