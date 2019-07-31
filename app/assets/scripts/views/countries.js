@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 import { DateTime } from 'luxon';
 import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
 
-import c from 'classnames';
 import { Helmet } from 'react-helmet';
 import url from 'url';
 
