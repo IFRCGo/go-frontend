@@ -4,16 +4,18 @@ import { PropTypes as T } from 'prop-types';
 import { environment } from '../config';
 
 
-import { Tabs, TabList, Tab as ReactTab, TabPanel } from 'react-tabs';
+import { Tabs, TabList as ReactTabList, Tab, TabPanel } from 'react-tabs';
 
 
-function Tab = ({ tablist }) => {
+function TabList({ tablist, ..rest }) => {
     return (
-        {
-            tablist.map(tab => (
-                <ReactTab key={tab.title}>{tab.title}</ReactTab>
-            ))
-        }
+        <ReactTabList  {...rest}>
+            {
+                tablist.map(tab => (
+                    <Tab key={tab.title}>{tab.title}</Tab>
+                ))
+            }
+        </ReactTabList>
     )
 
 }
@@ -25,3 +27,4 @@ if (environment !== 'production') {
         tablist: T.array
     };
 }
+
