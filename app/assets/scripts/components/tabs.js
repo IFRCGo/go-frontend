@@ -25,10 +25,12 @@ function TabList({ tablist, ...rest }) {
 }
 
 function TabPanel({ isError, errorMessage, title, children, ...rest }) {
+    console.log('isError', isError)
+    console.log('children', children)
     return (
         <ReactTabPanel {...rest}>
             {isError ? (
-                <ErrorPanel title="Overview" errorMessage="Overview coming soon" />
+                <ErrorPanel title={title} errorMessage={errorMessage} />
             ) : (
                     children
                 )}

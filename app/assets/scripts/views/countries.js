@@ -520,10 +520,18 @@ class AdminArea extends SFPComponent {
 
           <div className="inpage__body">
             <div className="inner">
-              <TabPanel isError={!data.overview || data.key_priorities} errorMessage="Overview coming soon" title="Overview">
+              <TabPanel
+                isError={!data.overview || !data.key_priorities}
+                errorMessage="Overview coming soon"
+                title="Overview"
+              >
                 <Fold title="Overview" id="overview">
-                  {data.overview ? <ReactMarkdown source={data.overview} /> : null}
-                  {data.key_priorities ? <ReactMarkdown source={data.key_priorities} /> : null}
+                  {data.overview ? (
+                    <ReactMarkdown source={data.overview} />
+                  ) : null}
+                  {data.key_priorities ? (
+                    <ReactMarkdown source={data.key_priorities} />
+                  ) : null}
                 </Fold>
               </TabPanel>
               <TabPanel>
