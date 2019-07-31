@@ -7,6 +7,8 @@ import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 import _toNumber from 'lodash.tonumber';
 import { Sticky, StickyContainer } from 'react-sticky';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+
 import { Helmet } from 'react-helmet';
 
 import { api, environment } from '../config';
@@ -38,6 +40,9 @@ import {
 
 import App from './app';
 import Fold from '../components/fold';
+import ErrorPanel from '../components/error-panel';
+
+
 import Expandable from '../components/expandable';
 import { FilterHeader } from '../components/display-table';
 import { Snippets } from '../components/admin-area-elements';
@@ -45,6 +50,18 @@ import SurgeAlertsTable from '../components/connected/alerts-table';
 import PersonnelTable from '../components/connected/personnel-table';
 import EruTable from '../components/connected/eru-table';
 import EmergencyMap from '../components/map/emergency-map';
+
+const TAB_DETAILS = [
+  { title: 'Overview', hash: '#overview' },
+  { title: 'Graphics', hash: '#graphics' },
+  { title: 'Field Reports', hash: '#field-reports' },
+  { title: 'Alerts', hash: '#alerts' },
+  { title: 'ERUs', hash: '#erus' },
+  { title: 'Personnel', hash: '#personnel' },
+  { title: 'Response Documents', hash: '#response-documents' },
+  { title: 'Appeal Documents', hash: '#appeal-documents' },
+  { title: 'Contacts', hash: '#contacts' }
+];
 
 class Emergency extends React.Component {
   constructor(props) {
@@ -89,6 +106,15 @@ class Emergency extends React.Component {
     this.props._getSitrepTypes();
     if (this.props.isLogged) {
       this.props._getUserProfile(this.props.user.data.username);
+    }
+    this.displayTabContent()
+  }
+
+  // Sets default tab if url param is blank or incorrect
+  displayTabContent() {
+    const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
+    if (!tabHashArray.find(hash => hash === this.props.location.hash)) {
+      this.props.history.replace(`${this.props.location.pathname}${tabHashArray[0]}`);
     }
   }
 
@@ -398,6 +424,12 @@ class Emergency extends React.Component {
       }
     };
 
+    const handleTabChange = index => {
+      const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
+      const url = this.props.location.pathname;
+      this.props.history.replace(`${url}${tabHashArray[index]}`);
+    };
+
     return (
       <section className='inpage'>
         <Helmet>
@@ -421,85 +453,98 @@ class Emergency extends React.Component {
           </div>
         </header>
         {showExportMap()}
-        <StickyContainer>
-          <Sticky>
-            {({ style, isSticky }) => (
-              <div style={style} className={c('inpage__nav', { 'inpage__nav--sticky': isSticky })}>
-                <div className='inner'>
-                  <ul>
-                    {summary ? <li><a href='#overview' title='Go to Overview section'>Overview</a></li> : null}
-                    {get(this.props.snippets, 'data.results.length') ? <li><a href='#graphics' title='Go to Graphics section'>Graphics</a></li> : null}
-                    {get(this.props.event, 'data.field_reports.length') ? <li><a href='#field-reports' title='Go to Field Reports section'>Field Reports</a></li> : null}
-                    {get(this.props.surgeAlerts, 'data.results.length') ? <li><a href='#alerts' title='Go to Surge Alerts section'>Alerts</a></li> : null}
-                    {get(this.props.eru, 'data.results.length') ? <li><a href='#erus' title='Go to ERUs section'>ERUs</a></li> : null}
-                    {get(this.props.personnel, 'data.results.length') ? <li><a href='#personnel' title='Go to Personnel section'>Personnel</a></li> : null}
-                    {get(this.props.situationReports, 'data.results.length') ? <li><a href='#response-documents' title='Go to Response Documents section'>Response Documents</a></li> : null}
-                    {get(this.props.appealDocuments, 'data.results.length') ? <li><a href='#documents' title='Go to Documents section'>Appeal Documents</a></li> : null}
-                    {contacts && contacts.length ? <li><a href='#contacts' title='Go to Contacts section'>Contacts</a></li> : null}
-                  </ul>
-                </div>
-              </div>
-            )}
-          </Sticky>
+        <Tabs
+          selectedIndex={TAB_DETAILS.map(({ hash }) => hash).indexOf(this.props.location.hash)}
+          onSelect={index => handleTabChange(index)}
+        >
+          <TabList>
+            {TAB_DETAILS.map(tab => (
+              <Tab>{tab.title}</Tab>
+            ))}
+          </TabList>
 
           <div className='inpage__body'>
             <div className='inner'>
-              {summary ? (
-                <Fold id='overview'
-                  title='Situational Overview'
-                  wrapperClass='situational-overview' >
-                  <Expandable limit={360} text={summary} />
-                  {source ? <p className='emergency__source'>Source: {source}</p> : null}
-                </Fold>
-              ) : null}
-              <Snippets data={this.props.snippets} />
-              {this.renderKeyFigures()}
-              {this.renderFieldReports()}
-              <SurgeAlertsTable id='alerts'
-                title='Alerts'
-                emergency={this.props.match.params.id}
-                returnNullForEmpty={true}
-              />
-              <EruTable id='erus'
-                emergency={this.props.match.params.id}
-              />
-              <PersonnelTable id='personnel'
-                emergency={this.props.match.params.id}
-              />
-              {this.renderResponseDocuments()}
-              {this.renderAppealDocuments()}
-
-              {contacts && contacts.length ? (
-                <Fold id='contacts' title='Contacts' wrapperClass='contacts'>
-                  <table className='table'>
-                    <thead className='visually-hidden'>
-                      <tr>
-                        <th>Name</th>
-                        <th>Title</th>
-                        <th>Type</th>
-                        <th>Contact</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {contacts.map(o => (
-                        <tr key={o.id}>
-                          <td>{o.name}</td>
-                          <td>{o.title}</td>
-                          <td>{separate(o.ctype)}</td>
-                          <td>
-                            {o.email.indexOf('@') !== -1
-                              ? <a className='link--primary' href={`mailto:${o.email}`} title='Contact'>{o.email}</a>
-                              : <a className='link--primary' href={`tel:${o.email}`} title='Contact'>{o.email}</a>}
-                          </td>
+              <TabPanel>
+                {summary ? (
+                  <Fold id='overview'
+                    title='Situational Overview'
+                    wrapperClass='situational-overview' >
+                    <Expandable limit={360} text={summary} />
+                    {source ? <p className='emergency__source'>Source: {source}</p> : null}
+                  </Fold>
+                ) : <ErrorPanel title="Overview" errorMessage="Overview coming soon" />}
+              </TabPanel>
+              <TabPanel>
+                {get(this.props.snippets) ? <Snippets data={this.props.snippets} /> : <ErrorPanel title="Graphics" errorMessage="Graphics coming soon" />}
+                {this.renderKeyFigures()}
+              </TabPanel>
+              <TabPanel>
+                {get(this.props.event, 'data.field_reports.length') ? this.renderFieldReports() : <ErrorPanel title="Field Reports" errorMessage="Field reports coming soon" />}
+              </TabPanel>
+              <TabPanel>
+                {get(this.props.surgeAlerts, 'data.results.length') ? (
+                  < SurgeAlertsTable id='alerts'
+                    title='Alerts'
+                    emergency={this.props.match.params.id}
+                    returnNullForEmpty={true}
+                  />) : <ErrorPanel title="Alerts" errorMessage="Alerts coming soon" />}
+              </TabPanel>
+              <TabPanel>
+                {get(this.props.eru, 'data.results.length') ? (<EruTable id='erus'
+                  emergency={this.props.match.params.id}
+                />) : <ErrorPanel title="ERUs" errorMessage="ERUs coming soon" />}
+              </TabPanel>
+              <TabPanel>
+                {get(this.props.personnel, 'data.results.length') ? (
+                  <PersonnelTable id='personnel'
+                    emergency={this.props.match.params.id}
+                  />
+                ) : <ErrorPanel title="Personnel" errorMessage="Personnel coming soon" />}
+              </TabPanel>
+              <TabPanel>
+                {get(this.props.situationReports, 'data.results.length') ? (
+                  this.renderResponseDocuments()
+                ) : <ErrorPanel title="Response Documents" errorMessage="Response documents coming soon" />}
+              </TabPanel>
+              <TabPanel>
+                {get(this.props.appealDocuments, 'data.results.length') ? (
+                  this.renderAppealDocuments()
+                ) : <ErrorPanel title="Appeal Documents" errorMessage="Appeal documents coming soon" />}
+              </TabPanel>
+              <TabPanel>
+                {contacts && contacts.length ? (
+                  <Fold id='contacts' title='Contacts' wrapperClass='contacts'>
+                    <table className='table'>
+                      <thead className='visually-hidden'>
+                        <tr>
+                          <th>Name</th>
+                          <th>Title</th>
+                          <th>Type</th>
+                          <th>Contact</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </Fold>
-              ) : null}
+                      </thead>
+                      <tbody>
+                        {contacts.map(o => (
+                          <tr key={o.id}>
+                            <td>{o.name}</td>
+                            <td>{o.title}</td>
+                            <td>{separate(o.ctype)}</td>
+                            <td>
+                              {o.email.indexOf('@') !== -1
+                                ? <a className='link--primary' href={`mailto:${o.email}`} title='Contact'>{o.email}</a>
+                                : <a className='link--primary' href={`tel:${o.email}`} title='Contact'>{o.email}</a>}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </Fold>
+                ) : <ErrorPanel title="Contacts" errorMessage="No current contacts" />}
+              </TabPanel>
             </div>
           </div>
-        </StickyContainer>
+        </Tabs>
       </section>
     );
   }

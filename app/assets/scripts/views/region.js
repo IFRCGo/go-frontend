@@ -318,6 +318,7 @@ class AdminArea extends SFPComponent {
     const mapContainerClass = 'region__map';
     const regionName = get(regionMeta, [data.id, 'name'], nope);
     const activeOperations = get(this.props.appealStats, 'data.results.length', false);
+
     const handleTabChange = index => {
       const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
       const url = this.props.location.pathname;
@@ -351,7 +352,7 @@ class AdminArea extends SFPComponent {
 
           <div className='inpage__body'>
             <div className='inner'>
-              <TabPanel id="key-figures">
+              <TabPanel>
                 {get(this.props.keyFigures, 'data.results.length') ? (
                   <KeyFigures data={this.props.keyFigures} />
                 ) : <ErrorPanel title="Key Figures" errorMessage="Key figures coming soon" />}
