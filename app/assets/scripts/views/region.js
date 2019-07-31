@@ -95,6 +95,15 @@ class AdminArea extends SFPComponent {
   componentDidMount() {
     this.getData(this.props);
     this.getAdmArea(this.props.type, getRegionId(this.props.match.params.id));
+    this.displayTabContent()
+  }
+
+  // Sets default tab if url param is blank or incorrect
+  displayTabContent() {
+    const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
+    if (!tabHashArray.find(hash => hash === this.props.location.hash)) {
+      this.props.history.replace(`${this.props.location.pathname}${tabHashArray[0]}`);
+    }
   }
 
   getData(props) {
@@ -309,6 +318,11 @@ class AdminArea extends SFPComponent {
     const mapContainerClass = 'region__map';
     const regionName = get(regionMeta, [data.id, 'name'], nope);
     const activeOperations = get(this.props.appealStats, 'data.results.length', false);
+    const handleTabChange = index => {
+      const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
+      const url = this.props.location.pathname;
+      this.props.history.replace(`${url}${tabHashArray[index]}`);
+    };
 
     return (
       <section className='inpage'>
@@ -325,65 +339,83 @@ class AdminArea extends SFPComponent {
             </div>
           </div>
         </header>
-        <ul>
-          <li><a href='#key-figures' title='Go to Key Figures section'>Key Figures</a></li>
-          <li><a href='#operations-map' title='Go to Operations section'>Operations</a></li>
-          <li><a href='#emergencies' title='Go to Emergencies section'>Emergencies</a></li>
-          <li><a href='#appeals' title='Go to Appeals section'>Appeals</a></li>
-          <li><a href='#graphics' title='Go to Graphics section'>Graphics</a></li>
-          <li><a href='#links' title='Go to Links section'>Links</a></li>
-          <li><a href='#contacts' title='Go to Contacts section'>Contacts</a></li>
-        </ul>
-        <div className='inpage__body'>
-          <div className='inner'>
-            {get(this.props.keyFigures, 'data.results.length') ? (
-              <KeyFigures data={this.props.keyFigures} />
-            ) : <ErrorPanel title="Key Figures" errorMessage="Key figures coming soon" />}
-            <div className='fold' id='operations-map'>
-              <div className='inner'>
-                <h2 className='fold__title'>{activeOperations === null || isNaN(activeOperations) ? null : `Active IFRC Operations (${activeOperations})`}</h2>
-                <div className={mapContainerClass}>
-                  <RegionMap
-                    operations={this.props.appealStats}
-                    bbox={bbox}
-                    layers={[this.state.maskLayer]}
-                    noExport={true}
-                    noRenderEmergencyTitle={true}
-                  />
+        <Tabs
+          selectedIndex={TAB_DETAILS.map(({ hash }) => hash).indexOf(this.props.location.hash)}
+          onSelect={index => handleTabChange(index)}
+        >
+          <TabList>
+            {TAB_DETAILS.map(tab => (
+              <Tab>{tab.title}</Tab>
+            ))}
+          </TabList>
+
+          <div className='inpage__body'>
+            <div className='inner'>
+              <TabPanel id="key-figures">
+                {get(this.props.keyFigures, 'data.results.length') ? (
+                  <KeyFigures data={this.props.keyFigures} />
+                ) : <ErrorPanel title="Key Figures" errorMessage="Key figures coming soon" />}
+              </TabPanel>
+              <TabPanel id="operations">
+                <div className='fold' id='operations-map'>
+                  <div className='inner'>
+                    <h2 className='fold__title'>{activeOperations === null || isNaN(activeOperations) ? null : `Active IFRC Operations (${activeOperations})`}</h2>
+                    <div className={mapContainerClass}>
+                      <RegionMap
+                        operations={this.props.appealStats}
+                        bbox={bbox}
+                        layers={[this.state.maskLayer]}
+                        noExport={true}
+                        noRenderEmergencyTitle={true}
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </TabPanel>
+              <TabPanel id="emergency">
+
+                <EmergenciesTable
+                  id='emergencies'
+                  title='Recent Emergencies'
+                  limit={5}
+                  region={getRegionId(this.props.match.params.id)}
+                  showRecent={true}
+                  viewAll={'/emergencies/all?region=' + data.id}
+                  viewAllText={`View all Emergencies for ${regionName} region`}
+                />
+                {this.renderCountries()}
+                <Fold title='Statistics' headerClass='visually-hidden' id='stats'>
+                  <div className='stats-chart'>
+                    {this.renderOperations10Years()}
+                    {this.renderPersonnelBySociety()}
+                  </div>
+                </Fold>
+              </TabPanel>
+              <TabPanel id="appeals">
+
+                <AppealsTable
+                  title={'Active IFRC Operations'}
+                  region={getRegionId(this.props.match.params.id)}
+                  showActive={true}
+                  id={'appeals'}
+                  viewAll={'/appeals/all?region=' + data.id}
+                  viewAllText={`View all IFRC operations for ${regionName} region`}
+                />
+              </TabPanel>
+              <TabPanel id="graphics">
+                {get(this.props.snippets, 'data.results.length') ? (
+                  <Snippets data={this.props.snippets} />
+                ) : <ErrorPanel title="Graphics" errorMessage="Graphics coming soon" />}
+              </TabPanel>
+              <TabPanel id="links">
+                {get(data, 'links.length') ? <Links data={data} /> : <ErrorPanel title="Links" errorMessage="Links coming soon" />}
+              </TabPanel>
+              <TabPanel id="contacts">
+                {get(data, 'contacts.length') ? <Contacts data={data} /> : <ErrorPanel title="Contacts" errorMessage="Contacts coming soon" />}
+              </TabPanel>
             </div>
-            <EmergenciesTable
-              id='emergencies'
-              title='Recent Emergencies'
-              limit={5}
-              region={getRegionId(this.props.match.params.id)}
-              showRecent={true}
-              viewAll={'/emergencies/all?region=' + data.id}
-              viewAllText={`View all Emergencies for ${regionName} region`}
-            />
-            {this.renderCountries()}
-            <Fold title='Statistics' headerClass='visually-hidden' id='stats'>
-              <div className='stats-chart'>
-                {this.renderOperations10Years()}
-                {this.renderPersonnelBySociety()}
-              </div>
-            </Fold>
-            <AppealsTable
-              title={'Active IFRC Operations'}
-              region={getRegionId(this.props.match.params.id)}
-              showActive={true}
-              id={'appeals'}
-              viewAll={'/appeals/all?region=' + data.id}
-              viewAllText={`View all IFRC operations for ${regionName} region`}
-            />
-            {get(this.props.snippets, 'data.results.length') ? (
-              <Snippets data={this.props.snippets} />
-            ) : <ErrorPanel title="Graphics" errorMessage="Graphics coming soon" />}
-            {get(data, 'links.length') ? <Links data={data} /> : <ErrorPanel title="Links" errorMessage="Links coming soon" />}
-            {get(data, 'contacts.length') ? <Contacts data={data} /> : <ErrorPanel title="Contacts" errorMessage="Contacts coming soon" />}
           </div>
-        </div>
+        </Tabs>
       </section>
     );
   }
