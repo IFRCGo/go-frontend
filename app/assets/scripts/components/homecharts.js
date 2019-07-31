@@ -1,7 +1,7 @@
 'use strict';
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
-import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
+import { ResponsiveContainer, LineChart, Line, Legend, XAxis, YAxis, Tooltip } from 'recharts';
 import { DateTime } from 'luxon';
 
 import { environment } from '../config';
@@ -59,9 +59,10 @@ export default class HomeCharts extends React.Component {
         <LineChart data={data}>
           <XAxis tickFormatter={tickFormatter} dataKey='timespan' axisLine={false} padding={{ left: 16, right: 16 }} />
           <YAxis axisLine={false} tickLine={false} width={32} padding={{ bottom: 16 }} />
-          <Line type='monotone' dataKey='appeals.count' stroke='#C22A26' />
-          <Line type='monotone' dataKey='drefs.count' stroke='#F39C12' />
+          <Line name='Appeals' type='monotone' dataKey='appeals.count' stroke='#C02C2C' />
+          <Line name='DREFs' type='monotone' dataKey='drefs.count' stroke='#F39C12' />
           <Tooltip content={contentFormatter}/>
+          <Legend verticalAlign='bottom' iconType='circle' iconSize='10' />
         </LineChart>
       </ResponsiveContainer>
     );

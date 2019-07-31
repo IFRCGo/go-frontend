@@ -28,6 +28,27 @@
   }
 }
 
+.popover__contents__preparedness {
+  background: #fff;
+  box-shadow: 0 4px 16px 2px rgba($base-color, 0.08);   // Elevation Index: 2
+  border-radius: $base-border-radius;
+  position: relative;
+  z-index: 1;
+  padding: $global-spacing;
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: auto;
+  height: fit-content;
+
+  > *:last-child {
+    margin-bottom: 0;
+  }
+
+  img {
+    margin-right: 0px !important;
+  }
+}
+
 .popover__contents__noscroll {
   @extend .popover__contents;
   max-height:fit-content;

@@ -24,6 +24,10 @@
     }
   }
 
+  &__nav {
+    font-weight: $base-font-medium;
+  }
+
   &__headline {
     @include column(12/12);
     margin-bottom: $global-spacing;
@@ -96,10 +100,9 @@
   }
 
   &__introduction {
-    @include column(12/12);
     color: $base-font-color;
-    font-size: 1rem;
-    line-height: 1.5rem;
+    //font-size: 1rem;
+    //line-height: 1.5rem;
 
     > *:last-child {
       margin-bottom: 0;
@@ -144,6 +147,11 @@
     }
   }
 }
+
+.inpage__body__main {
+  background-color: #fff;  
+}
+
 
 /* Inpage Header
    ========================================================================== */
@@ -329,3 +337,18 @@
     }
   }
 }
+
+/* Short Red Line: Decorative element  */
+
+.line-brand-deco {
+    &::after {
+    content: '';
+    width: 10rem;
+    height: $base-border-width * 2;
+    background: $primary-color;
+    display: block;
+    margin: ($global-spacing * 4) auto 0 auto;
+
+  }
+}
+

@@ -1,10 +1,27 @@
 import React from 'react';
 import { showAlert, hideAllAlert } from './../components/system-alerts';
 
-export function startDownload (dataUri, filename) {
-  if (window.navigator.msSaveOrOpenBlob) {
-    window.navigator.msSaveBlob(new Blob([dataUri], {type: 'text/csv', charset: 'utf-8'}), filename);
+export function startDownload (renderedCanvas, filename) {
+  let dataUri = null;
+  let isChrome = false;
+  if (typeof renderedCanvas === 'string') {
+    if (window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveBlob(new Blob([renderedCanvas], {type: 'text/csv', charset: 'utf-8'}), filename);
+    } else {
+      isChrome = true;
+      dataUri = renderedCanvas;
+    }
   } else {
+    if (window.navigator.msSaveOrOpenBlob) {
+      let blob = renderedCanvas.msToBlob();
+      window.navigator.msSaveBlob(blob, filename);
+    } else {
+      isChrome = true;
+      dataUri = renderedCanvas.toDataURL('image/png');
+    }
+  }
+
+  if (isChrome) {
     const link = document.createElement('a');
 
     link.setAttribute('href', dataUri);
@@ -12,6 +29,7 @@ export function startDownload (dataUri, filename) {
     link.innerHTML = 'Download';
     document.body.appendChild(link);
     link.click();
+    document.body.removeChild(link);
   }
 
   hideAllAlert();

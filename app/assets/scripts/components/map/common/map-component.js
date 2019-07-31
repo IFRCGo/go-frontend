@@ -3,10 +3,12 @@ import React from 'react';
 import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 
-import newMap, { source } from '../../utils/get-new-map';
-import { get } from '../../utils/utils';
-import { environment } from '../../config';
-import exportMap from '../../utils/export-map';
+import newMap, { source } from '../../../utils/get-new-map';
+import { get } from '../../../utils/utils';
+import { environment } from '../../../config';
+import exportMap from '../../../utils/export-map';
+import DownloadButton from './download-button';
+import { formatDate } from './../../../utils/format';
 
 export default class MapComponent extends React.Component {
   constructor (props) {
@@ -15,6 +17,7 @@ export default class MapComponent extends React.Component {
     this.state = {
       ready: false
     };
+    this.setZoomToDefault = this.setZoomToDefault.bind(this);
   }
 
   setupData () {
@@ -32,6 +35,10 @@ export default class MapComponent extends React.Component {
     if (this.theMap.getLayer(filter.layer)) {
       this.theMap.setFilter(filter.layer, filter.filter);
     }
+  }
+
+  setZoomToDefault () {
+    this.theMap.flyTo({center: [0, 25], zoom: 1, speed: 1.2});
   }
 
   componentDidMount () {
@@ -81,6 +88,8 @@ export default class MapComponent extends React.Component {
   render () {
     const className = c(this.props.className);
     const children = this.props.children || null;
+    const currentDate = new Date();
+    const canvas = document.getElementsByClassName('mapboxgl-canvas')[0];
     return (
       <figure className='map-vis'>
         {this.props.noExport ? null : (
@@ -92,6 +101,14 @@ export default class MapComponent extends React.Component {
         )}
         <div className={className} ref='map'/>
         {children}
+        {this.props.downloadButton === true ? <DownloadButton data={canvas} setZoomToDefault={this.setZoomToDefault} /> : null}
+        <div style={{backgroundColor: '#ffffff', position: 'absolute', width: '100%', borderBottom: '5px #BC2C2A solid', verticalAlign: 'middle', visibility: 'hidden'}} id='map-picture-header'>
+          <span style={{color: '#BC2C2A', fontSize: '30px', paddingLeft: '20px'}}>{this.props.downloadedHeaderTitle}</span>
+          <span style={{color: '#BC2C2A', fontSize: '12px', paddingLeft: '10px'}}>({formatDate(currentDate)})</span>
+          <div style={{float: 'right', width: '375px', marginRight: '20px'}}>
+            <img src="/assets/graphics/layout/logo.png" alt="IFRC GO logo" style={{width: '375px', height: '56px'}} />
+          </div>
+        </div>
       </figure>
     );
   }
@@ -105,6 +122,8 @@ if (environment !== 'production') {
     configureMap: T.func,
     children: T.node,
     className: T.string,
-    noExport: T.bool
+    noExport: T.bool,
+    downloadButton: T.bool,
+    downloadedHeaderTitle: T.string
   };
 }

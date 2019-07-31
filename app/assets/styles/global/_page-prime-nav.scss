@@ -85,6 +85,23 @@
 
 .nav-global-search {
   min-width: 20rem;
+
+  .Select-control {
+    border-radius: $input-rounded-radius;
+    border-color: $grey-cement;
+  }
+
+  .Select-arrow {
+    border-color: $primary-color transparent transparent;
+  }
+
+  .Select-menu, .Select-menu-outer {
+    border-radius: 0 0 $input-rounded-radius/1.5 $input-rounded-radius/1.5;
+  }
+
+  .Select.is-open > .Select-control {
+    border-radius: $input-rounded-radius/1.5 $input-rounded-radius/1.5 0 0;
+  }
 }
 
 .gsearch {
@@ -154,6 +171,10 @@
   .nav-global-search {
     min-width: 17rem;
   }
+  > .inner:first-of-type {
+    border-bottom: 1px solid $primary-color;
+  }
+
   .inner {
     padding-bottom: $global-spacing/2;
     padding-top: $global-spacing/2;

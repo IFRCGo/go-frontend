@@ -10,10 +10,10 @@ import _cloneDeep from 'lodash.clonedeep';
 import { getCountryIsoFromVt } from '../../utils/utils';
 import { source } from '../../utils/get-new-map';
 import { environment } from '../../config';
-import MapComponent from '../map';
+import MapComponent from './common/map-component';
 import {
   FormSelect
-} from '../form-elements/';
+} from '../form-elements';
 
 const countryChromaScale = chroma.scale(['#F0C9E8', '#861A70']);
 
@@ -258,6 +258,8 @@ export default class DeploymentsMap extends React.Component {
             <MapComponent className='map-vis__holder'
               configureMap={this.configureMap}
               noExport={true}
+              downloadButton={true}
+              downloadedHeaderTitle='Deployments'
               layers={this.state.layers}
               filters={this.state.filters}
               geoJSON={this.props.data}>
@@ -300,6 +302,8 @@ export default class DeploymentsMap extends React.Component {
 
                 </FormSelect>
               </figcaption>
+
+              {/* <DownloadButton data={canvas} /> */}
 
             </MapComponent>
           </div>

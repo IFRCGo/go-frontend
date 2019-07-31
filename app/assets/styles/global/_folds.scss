@@ -2,10 +2,16 @@
    Global: Folds
    ========================================================================== */
 
+.fold-container {
+  margin-bottom: 50px !important;
+  float: left;
+  width: 100%;
+}
+
 .fold {
   background: #fff;
   padding: ($global-spacing * 2) 0;
-  box-shadow: 0 2px 4px 1px $base-alpha-color;
+  box-shadow: $base-box-shadow;
   &:last-child {
     margin-bottom: 0;
   };
@@ -45,6 +51,10 @@
   }
 }
 
+.fold--main {
+  box-shadow: none;  
+}
+
 .fold__actions {
   float: left;
   width: 100%;
@@ -57,7 +67,9 @@
 }
 
 .fold__title {
-  @include heading(1.5rem, medium-up);
+  font-size: 1.14rem;
+  text-transform: uppercase;
+  letter-spacing: 1.6px;
 }
 
 .fold__description {
@@ -104,3 +116,40 @@
     }
   }
 }
+
+.fold__header__block {
+  @extend .clearfix;
+  border-bottom: 1px solid $base-border-color;
+  padding-bottom: $global-spacing;
+}
+
+.fold__title--inline {
+
+  @include media(medium-up) {
+   margin-bottom: 0;
+   line-height: 1;
+
+   @include column(8/12);
+  }
+}
+
+.fold__title__linkwrap {  
+  font-size: $font-size-sm;
+  color: $primary-color;
+
+  @include media(medium-up) {
+    text-align: right !important;
+    @include column(4/12);
+  }
+}
+
+.fold__title__link {
+  color: $primary-color;
+  font-weight: $base-font-semi-bold;
+
+  > span {
+    font-size: $font-size-xs;
+    font-weight: $base-font-semi-bold;
+  }
+}
+  

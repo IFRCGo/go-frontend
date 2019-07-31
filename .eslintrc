@@ -13,6 +13,11 @@
       "jsx": true
     }
   },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }	
+  },
   "rules": {
     "semi": [2, "always"],
     "no-extra-semi": 2,

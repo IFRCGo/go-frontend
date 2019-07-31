@@ -79,6 +79,7 @@ export default function HomestatsComponent (props) {
     return (
       <ul className='sumstats'>
         <li className='sumstats__item'>
+          <span className='collecticon-rc sumstats__icon'></span>
           <span className='sumstats__value'>{stats.activeDrefs}</span>
           <span className='sumstats__key'>
             Active DREF Operations
@@ -86,10 +87,12 @@ export default function HomestatsComponent (props) {
           </span>
         </li>
         <li className='sumstats__item'>
+          <span className='collecticon-rc-appeals sumstats__icon'></span>
           <span className='sumstats__value'>{stats.activeAppeals}</span>
-          <span className='sumstats__key'>Active Emergency <br /> Appeals <div className='tooltip-button' id='tooltip-button-appeal' onClick={props.openTooltip}></div></span>
+          <span className='sumstats__key'>Active Emergency Appeals <div className='tooltip-button' id='tooltip-button-appeal' onClick={props.openTooltip}></div></span>
         </li>
         <li className='sumstats__item'>
+          <span className='collecticon-cash-notes sumstats__icon'></span>
           <span className='sumstats__value'>{shortenLargeNumber(stats.budget, 1)}</span>
           <span className='sumstats__key'>
             Funding requirements (CHF)
@@ -97,10 +100,12 @@ export default function HomestatsComponent (props) {
           </span>
         </li>
         <li className='sumstats__item'>
+          <span className='collecticon-cash-bag sumstats__icon'></span>
           <span className='sumstats__value'>{percent(stats.appealsFunding, stats.appealsBudget, 1)}%</span>
           <span className='sumstats__key'>Funding coverage</span>
         </li>
         <li className='sumstats__item'>
+          <span className='collecticon-people-arrows sumstats__icon'></span>
           <span className='sumstats__value'>{shortenLargeNumber(stats.targetPop, 1)}</span>
           <span className='sumstats__key'>Targeted population</span>
         </li>
@@ -110,6 +115,7 @@ export default function HomestatsComponent (props) {
 
   return (
     <div className='inner'>
+      {props.fullscreen ? (<div style={{width: '375px', height: '56px', position: 'absolute'}}><img src="/assets/graphics/layout/logo.png" alt="IFRC GO logo" style={{width: '375px', height: '56px'}} /></div>) : null}
       <div className='presentation__actions'>
         <button className='button button--base-plain button--fullscreen' onClick={props.toggleFullscreen} title='View in fullscreen'><span>FullScreen</span></button>
       </div>

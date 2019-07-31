@@ -5,36 +5,48 @@ const getValidValues = (arr, key) => arr.map(o => o[key]).filter(o => o !== '');
 
 export const step1 = {
   properties: {
-    summary: {
-      type: 'string'
-    },
-    countries: {
-      type: 'array',
-      minItems: 1,
-      items: {
-        enum: getValidValues(formData.countries, 'value')
-      }
-    },
     status: {
       type: 'string',
       enum: getValidValues(formData.status, 'value')
     },
-    disasterType: {
-      type: 'string',
-      enum: getValidValues(formData.disasterType, 'value')
+    summary: {
+      type: 'string'
     },
     event: {
       type: 'number',
       minimum: 0
     },
-    description: {
+    startDate: {
       type: 'string'
+    },
+    country: {
+      type: 'string',
+      enum: getValidValues(formData.countries, 'value')
+    },
+    districts: {
+      type: 'array'
+    },
+    disasterType: {
+      type: 'string',
+      enum: getValidValues(formData.disasterType, 'value')
     },
     assistance: {
       type: 'boolean'
     }
   },
-  required: ['summary', 'countries', 'status', 'disasterType']
+  anyOf: [
+    {
+      required: [
+        'summary'
+      ]
+    },
+    {
+      required: [
+        'event'
+      ]
+    }
+  ],
+  required: ['country', 'status', 'disasterType']
 };
 
 export const step2 = {
@@ -44,7 +56,7 @@ export const step2 = {
       items: {
         properties: {
           estimation: { type: 'number', minimum: 0 },
-          source: {enum: ['red-cross', 'government']}
+          source: {enum: ['red-cross', 'government', 'other']}
         }
       }
     }
@@ -65,11 +77,9 @@ export const step2 = {
     numDisplaced: {
       '$ref': '#/definitions/estimation'
     },
-    numAssistedGov: { type: 'number', minimum: 0 },
-    numAssistedRedCross: { type: 'number', minimum: 0 },
-    numLocalStaff: { type: 'number', minimum: 0 },
-    numVolunteers: { type: 'number', minimum: 0 },
-    numExpats: { type: 'number', minimum: 0 }
+    description: {
+      type: 'string'
+    }
   }
 };
 
@@ -94,6 +104,11 @@ export const step3 = {
     }
   },
   properties: {
+    numAssistedGov: { type: 'number', minimum: 0 },
+    numAssistedRedCross: { type: 'number', minimum: 0 },
+    numLocalStaff: { type: 'number', minimum: 0 },
+    numVolunteers: { type: 'number', minimum: 0 },
+    numExpats: { type: 'number', minimum: 0 },
     actionsNatSoc: {
       '$ref': '#/definitions/actionsCheckboxes'
     },
@@ -119,6 +134,13 @@ export const step4 = {
         status: { type: 'string' },
         value: { type: 'number', minimum: 0 }
       }
+    },
+    contact: {
+      properties: {
+        name: { type: 'string' },
+        role: { type: 'string' },
+        contact: { type: 'string' }
+      }
     }
   },
   properties: {
@@ -137,30 +159,6 @@ export const step4 = {
     ifrcStaff: {
       '$ref': '#/definitions/plannedResponse'
     },
-    eru: {
-      type: 'array',
-      items: {
-        properties: {
-          type: { type: 'string' },
-          status: { type: 'string' },
-          units: { type: 'number', minimum: 0 }
-        }
-      }
-    }
-  }
-};
-
-export const step5 = {
-  definitions: {
-    contact: {
-      properties: {
-        name: { type: 'string' },
-        role: { type: 'string' },
-        contact: { type: 'string' }
-      }
-    }
-  },
-  properties: {
     contactOriginator: {
       '$ref': '#/definitions/contact'
     },

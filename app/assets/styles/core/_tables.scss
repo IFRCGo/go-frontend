@@ -117,9 +117,9 @@ td.right-align, th.right-align{
   text-align: right;
 }
 
-td.table__cell--requestAmount, td.table__cell--fundedAmount, th.table__header--requestAmount, th.table__header--fundedAmount {
-  text-align: right;
-}
+//td.table__cell--requestAmount, td.table__cell--fundedAmount, th.table__header--requestAmount, th.table__header--fundedAmount {
+  //text-align: right;
+//}
 
 /* Prose specific */
 
@@ -258,10 +258,25 @@ td.table__cell--requestAmount, td.table__cell--fundedAmount, th.table__header--r
 
 .table__container {
   .fold__actions {
-    margin-top: -4em;
+    margin-top: -5.8em;
     @include media(small-down) {
       display: none;
     }
   }
 }
 
+
+.table--border {
+  thead th {
+    color: $secondary-color;
+    box-shadow: none;
+  }
+
+  th, td {
+    border: 1px solid $base-border-color;
+  }
+}
+
+.table--border__list {
+  padding: $global-spacing 0;
+}

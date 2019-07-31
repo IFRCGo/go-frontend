@@ -3,7 +3,12 @@
    ========================================================================== */
 
 .page--frep-form {
+	.inpage__body {
+    margin-top: 0;
+  }
+
   .fold {
+  	padding-top: 0;
     margin-bottom: ($global-spacing * 2);
   }
 }

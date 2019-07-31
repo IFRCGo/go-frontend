@@ -48,7 +48,7 @@
   margin-top: 0;
 }
 
-.emergencies-map{
+.emergencies-map {
   .map-container {
     @include column(12/12);
     position: relative;
@@ -57,4 +57,18 @@
 
 .color--blue::before {
   background: #4680F2;
+}
+
+.emergency-map {
+  img {
+    vertical-align: top;
+    height: 3rem;
+    width: auto;
+  }
+}
+
+.page--emergencies {
+  .form__group {
+    @include form__group;
+  }
 }

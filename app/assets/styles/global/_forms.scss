@@ -31,7 +31,8 @@
 
   /* Placeholder */
   &::placeholder {
-    opacity: 0.64;
+    opacity: 0.5;
+    font-size: 90%;
   }
 
   /* States */
@@ -59,6 +60,7 @@
   /* Animation */
   transition: all 0.24s ease 0s;
 }
+
 
 
 /* Select form control
@@ -117,6 +119,10 @@ select.form__control:-moz-focusring {
 textarea.form__control {
   height: auto;
   resize: none;
+}
+
+.textarea--lg {
+  min-height: 8rem;
 }
 
 
@@ -193,6 +199,10 @@ textarea.form__control {
     @extend %collecticon-trash-bin;
     color: $danger-color;
   }
+}
+
+input, select, textarea {
+  max-width: 100%;
 }
 
 /* Size modifiers */
@@ -491,6 +501,11 @@ label[for] {
   small {
     opacity: 0.48;
   }
+}
+
+.form__label__uppercase {
+  text-transform: uppercase;
+  font-weight: $base-font-light;
 }
 
 

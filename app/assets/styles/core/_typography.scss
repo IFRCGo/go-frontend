@@ -508,6 +508,20 @@ abbr[title] {
   }
 }
 
+.heading-tiny {
+  color: #000;
+  font-size: 0.675rem;
+  font-weight: $base-font-regular;
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.heading-sub {
+  font-weight: $base-font-semi-bold;
+  font-size: 1.2rem;
+}
+
 h1 {
   @include heading(1.75rem);   // 28
 }
@@ -576,4 +590,15 @@ h4, h5, h6 {
       margin-top: $global-spacing * 4;
     }
   }
+}
+
+/* Text Styles
+   ========================================================================== */
+
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+.text-semi-bold {
+  font-weight: $base-font-semi-bold;
 }

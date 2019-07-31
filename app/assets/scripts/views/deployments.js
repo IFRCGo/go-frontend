@@ -30,7 +30,7 @@ import Progress from '../components/progress';
 import PersonnelTable from '../components/connected/personnel-table';
 import EruTable from '../components/connected/eru-table';
 import { SFPComponent } from '../utils/extendables';
-import Map from '../components/deployments/map';
+import DeploymentsMap from '../components/map/deployments-map';
 import Readiness from '../components/deployments/readiness';
 
 class Deployments extends SFPComponent {
@@ -206,7 +206,7 @@ class Deployments extends SFPComponent {
             </div>
           </header>
           <div>
-            <Map data={this.props.locations} />
+            <DeploymentsMap data={this.props.locations} />
           </div>
           <div className='inpage__body'>
             <div className='inner'>
