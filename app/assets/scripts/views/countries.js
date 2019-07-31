@@ -6,8 +6,8 @@ import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { DateTime } from 'luxon';
-// import { Tabs, TabList, Tab, TabPanel } from '../components/tabs';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import { Tabs, TabList, Tab, TabPanel } from '../components/tabs';
+// import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import { Helmet } from 'react-helmet';
 import url from 'url';
@@ -516,23 +516,15 @@ class AdminArea extends SFPComponent {
           selectedIndex={TAB_DETAILS.map(({ hash }) => hash).indexOf(this.props.location.hash)}
           onSelect={index => handleTabChange(index)}
         >
-          <TabList>
-            {TAB_DETAILS.map(tab => (
-              <Tab key={tab.title}>{tab.title}</Tab>
-            ))}
-          </TabList>
+          <TabList tablist={TAB_DETAILS} />
 
           <div className="inpage__body">
             <div className="inner">
-              <TabPanel>
-                {data.overview || data.key_priorities ? (
-                  <Fold title="Overview" id="overview">
-                    {data.overview ? <ReactMarkdown source={data.overview} /> : null}
-                    {data.key_priorities ? <ReactMarkdown source={data.key_priorities} /> : null}
-                  </Fold>
-                ) : (
-                    <ErrorPanel title="Overview" errorMessage="Overview coming soon" />
-                  )}
+              <TabPanel isError={!data.overview || data.key_priorities} errorMessage="Overview coming soon" title="Overview">
+                <Fold title="Overview" id="overview">
+                  {data.overview ? <ReactMarkdown source={data.overview} /> : null}
+                  {data.key_priorities ? <ReactMarkdown source={data.key_priorities} /> : null}
+                </Fold>
               </TabPanel>
               <TabPanel>
                 {get(this.props.keyFigures, 'data.results.length') ? (
