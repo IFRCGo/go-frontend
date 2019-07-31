@@ -58,6 +58,16 @@ import {
 } from '../components/admin-area-elements';
 import { SFPComponent } from '../utils/extendables';
 
+const TAB_DETAILS = [
+  { title: 'Key Figures', hash: '#key-figures' },
+  { title: 'Operations', hash: '#operations-map' },
+  { title: 'Emergencies', hash: '#emergencies' },
+  { title: 'Appeals', hash: '#appeals' },
+  { title: 'Graphics', hash: '#graphics' },
+  { title: 'Links', hash: '#links' },
+  { title: 'Contacts', hash: '#contacts' }
+];
+
 class AdminArea extends SFPComponent {
   constructor(props) {
     super(props);
