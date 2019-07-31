@@ -717,6 +717,8 @@ class AdminArea extends SFPComponent {
                   />
                 )}
               </TabPanel>
+            </div>
+          </div>
         </Tabs>
         <StickyContainer>
           <Sticky>
