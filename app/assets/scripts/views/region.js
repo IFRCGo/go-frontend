@@ -16,7 +16,6 @@ import {
 } from 'recharts';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
-import c from 'classnames';
 import { Helmet } from 'react-helmet';
 
 import { environment } from '../config';
@@ -69,7 +68,7 @@ const TAB_DETAILS = [
 ];
 
 class AdminArea extends SFPComponent {
-  constructor(props) {
+  constructor (props) {
     super(props);
 
     this.state = {
@@ -77,7 +76,7 @@ class AdminArea extends SFPComponent {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     if (getRegionId(this.props.match.params.id) !== getRegionId(nextProps.match.params.id)) {
       this.getData(nextProps);
       this.setState({ maskLayer: this.getMaskLayer(getRegionId(nextProps.match.params.id)) });
@@ -92,21 +91,21 @@ class AdminArea extends SFPComponent {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.getData(this.props);
     this.getAdmArea(this.props.type, getRegionId(this.props.match.params.id));
-    this.displayTabContent()
+    this.displayTabContent();
   }
 
   // Sets default tab if url param is blank or incorrect
-  displayTabContent() {
+  displayTabContent () {
     const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
     if (!tabHashArray.find(hash => hash === this.props.location.hash)) {
       this.props.history.replace(`${this.props.location.pathname}${tabHashArray[0]}`);
     }
   }
 
-  getData(props) {
+  getData (props) {
     const id = getRegionId(props.match.params.id);
     this.props._getAdmAreaAppealsList(props.type, id);
     this.props._getAdmAreaAggregateAppeals(props.type, id, DateTime.local().minus({ years: 10 }).startOf('month').toISODate(), 'year');
@@ -116,7 +115,7 @@ class AdminArea extends SFPComponent {
     this.props._getCountries(id);
   }
 
-  getMaskLayer(regionId) {
+  getMaskLayer (regionId) {
     const countries = countriesByRegion[regionId.toString()];
     const isoCodes = countries.map(getCountryMeta)
       .filter(Boolean)
@@ -136,12 +135,12 @@ class AdminArea extends SFPComponent {
     };
   }
 
-  getAdmArea(type, id) {
+  getAdmArea (type, id) {
     showGlobalLoading();
     this.props._getAdmAreaById(type, id);
   }
 
-  renderStats() {
+  renderStats () {
     const {
       fetched,
       error,
@@ -171,7 +170,7 @@ class AdminArea extends SFPComponent {
     );
   }
 
-  renderOperations10Years() {
+  renderOperations10Years () {
     const {
       data,
       fetched,
@@ -203,27 +202,27 @@ class AdminArea extends SFPComponent {
     return error ? (
       <p>Operations data not available.</p>
     ) : (
-        <figure className='chart'>
-          <figcaption>Operations over the past 10 years</figcaption>
-          <div className='chart__container'>
-            {!fetched || fetching ? (
-              <BlockLoading />
-            ) : (
-                <ResponsiveContainer>
-                  <LineChart data={data}>
-                    <XAxis tickFormatter={tickFormatter} dataKey='timespan' axisLine={false} padding={{ left: 16, right: 16 }} />
-                    <YAxis axisLine={false} tickLine={false} width={32} padding={{ bottom: 16 }} />
-                    <Line type='monotone' dataKey='count' stroke='#C02C2C' />
-                    <Tooltip content={contentFormatter} />
-                  </LineChart>
-                </ResponsiveContainer>
-              )}
-          </div>
-        </figure>
-      );
+      <figure className='chart'>
+        <figcaption>Operations over the past 10 years</figcaption>
+        <div className='chart__container'>
+          {!fetched || fetching ? (
+            <BlockLoading />
+          ) : (
+            <ResponsiveContainer>
+              <LineChart data={data}>
+                <XAxis tickFormatter={tickFormatter} dataKey='timespan' axisLine={false} padding={{ left: 16, right: 16 }} />
+                <YAxis axisLine={false} tickLine={false} width={32} padding={{ bottom: 16 }} />
+                <Line type='monotone' dataKey='count' stroke='#C02C2C' />
+                <Tooltip content={contentFormatter} />
+              </LineChart>
+            </ResponsiveContainer>
+          )}
+        </div>
+      </figure>
+    );
   }
 
-  renderPersonnelBySociety() {
+  renderPersonnelBySociety () {
     const {
       data,
       fetched,
@@ -252,31 +251,31 @@ class AdminArea extends SFPComponent {
     return error ? (
       <p>No active deployments to show.</p>
     ) : (
-        <figure className='chart'>
-          <figcaption>Active deployments by participating National Societies</figcaption>
-          <div className='chart__container'>
-            {!fetched || fetching ? (
-              <BlockLoading />
+      <figure className='chart'>
+        <figcaption>Active deployments by participating National Societies</figcaption>
+        <div className='chart__container'>
+          {!fetched || fetching ? (
+            <BlockLoading />
+          ) : (
+            data.personnelBySociety.length ? (
+              <ResponsiveContainer>
+                <BarChart data={data.personnelBySociety}>
+                  <XAxis dataKey='name' axisLine={false} padding={{ left: 16, right: 16 }} />
+                  <YAxis axisLine={false} tickLine={false} width={32} padding={{ bottom: 16 }} />
+                  <Bar dataKey='count' fill='#C02C2C' />
+                  <Tooltip content={contentFormatter} />
+                </BarChart>
+              </ResponsiveContainer>
             ) : (
-                data.personnelBySociety.length ? (
-                  <ResponsiveContainer>
-                    <BarChart data={data.personnelBySociety}>
-                      <XAxis dataKey='name' axisLine={false} padding={{ left: 16, right: 16 }} />
-                      <YAxis axisLine={false} tickLine={false} width={32} padding={{ bottom: 16 }} />
-                      <Bar dataKey='count' fill='#C02C2C' />
-                      <Tooltip content={contentFormatter} />
-                    </BarChart>
-                  </ResponsiveContainer>
-                ) : (
-                    <p>No data to show.</p>
-                  )
-              )}
-          </div>
-        </figure>
-      );
+              <p>No data to show.</p>
+            )
+          )}
+        </div>
+      </figure>
+    );
   }
 
-  renderCountries() {
+  renderCountries () {
     const {
       fetched,
       error,
@@ -305,7 +304,7 @@ class AdminArea extends SFPComponent {
     );
   }
 
-  renderContent() {
+  renderContent () {
     const {
       fetched,
       error,
@@ -430,7 +429,7 @@ class AdminArea extends SFPComponent {
     );
   }
 
-  render() {
+  render () {
     return (
       <App className={`page--${this.props.type}`}>
         <Helmet>

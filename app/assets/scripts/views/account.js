@@ -11,8 +11,6 @@ import { DateTime } from 'luxon';
 import { set } from 'object-path';
 import { Helmet } from 'react-helmet';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-
-
 import { environment } from '../config';
 import {
   getUserProfile,
@@ -37,9 +35,7 @@ import { showGlobalLoading, hideGlobalLoading } from '../components/global-loadi
 import { showAlert } from '../components/system-alerts';
 
 import Fold from '../components/fold';
-import ErrorPanel from '../components/error-panel';
 import TabContent from '../components/tab-content';
-
 
 import {
   FormCheckboxGroup,
@@ -172,7 +168,7 @@ const profileAttributes = [
 ];
 
 class Account extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       chosenCountry: { id: 0, society_name: '' },
@@ -212,7 +208,7 @@ class Account extends React.Component {
     this.componentIsLoading = true;
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.componentIsLoading = true;
     const { user, _getProfile, _getFieldReportsByUser, _getPerCountries, _getPerDocuments, _getPerDraftDocument } = this.props;
     _getProfile(user.username);
@@ -225,18 +221,17 @@ class Account extends React.Component {
     this.props._getPerMission();
     showGlobalLoading();
     this.displayTabContent();
-
   }
 
   // Sets default tab if url param is blank or incorrect
-  displayTabContent() {
+  displayTabContent () {
     const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
     if (!tabHashArray.find(hash => hash === this.props.location.hash)) {
       this.props.history.replace(`${this.props.location.pathname}${tabHashArray[0]}`);
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     if (this.props.profile.receivedAt !== nextProps.profile.receivedAt) {
       if (typeof nextProps.profile.data !== 'undefined' && nextProps.profile.data !== null && typeof nextProps.profile.data.subscription !== 'undefined' && nextProps.profile.data.subscription !== null) {
         nextProps.profile.data.subscription.forEach((subscription) => {
@@ -270,7 +265,7 @@ class Account extends React.Component {
     }
   }
 
-  syncNotificationState(data) {
+  syncNotificationState (data) {
     const subscriptions = get(data, 'subscription', []);
     if (!subscriptions.length) {
       return;
@@ -308,7 +303,7 @@ class Account extends React.Component {
     this.setState({ notifications: next });
   }
 
-  syncProfileState(data) {
+  syncProfileState (data) {
     const profile = get(data, 'profile', {});
     const next = {
       firstName: data.first_name || null,
@@ -323,7 +318,7 @@ class Account extends React.Component {
     this.setState({ profile: next });
   }
 
-  onFieldChange(stateProperty, field, e) {
+  onFieldChange (stateProperty, field, e) {
     let state = _cloneDeep(this.state[stateProperty]);
     let val = e && e.target ? e.target.value : e;
     _set(state, field, val === '' || val === null ? undefined : val);
@@ -331,7 +326,7 @@ class Account extends React.Component {
     this.setState({ [dirtyProperty]: true, [stateProperty]: state });
   }
 
-  onNotificationSubmit(e) {
+  onNotificationSubmit (e) {
     e.preventDefault();
     showGlobalLoading();
     const payload = this.serializeNotifications(this.state.notifications);
@@ -339,7 +334,7 @@ class Account extends React.Component {
     this.props._updateSubscriptions(id, payload);
   }
 
-  serializeNotifications(notifications) {
+  serializeNotifications (notifications) {
     let serialized = ['regions', 'disasterTypes', 'appeal', 'event', 'fieldReport']
       .reduce((acc, currentType) => {
         const flattened = get(notifications, currentType, [])
@@ -397,14 +392,14 @@ class Account extends React.Component {
     return serialized;
   }
 
-  onProfileSubmit(e) {
+  onProfileSubmit (e) {
     e.preventDefault();
     showGlobalLoading();
     const id = this.props.profile.data.id;
     this.props._updateProfile(id, this.serializeProfile(profileAttributes.slice(1, profileAttributes.length)));
   }
 
-  serializeProfile(attributes) {
+  serializeProfile (attributes) {
     const serialized = {};
     attributes.forEach(d => {
       let nextValue = this.state.profile[d[1]];
@@ -415,29 +410,29 @@ class Account extends React.Component {
     return serialized;
   }
 
-  toggleEditProfile() {
+  toggleEditProfile () {
     this.syncProfileState(this.props.profile.data);
     this.setState({ profileEditMode: !this.state.profileEditMode });
   }
 
-  changeChosenCountry(e) {
+  changeChosenCountry (e) {
     let filteredCountry = this.props.perForm.getPerCountries.data.results.filter(country => country.id === parseInt(e.target.value));
     this.setState({ chosenCountry: { id: filteredCountry[0].id, society_name: filteredCountry[0].society_name } });
   }
 
-  delSubscription(event) {
+  delSubscription (event) {
     let eventId = event.target.id.substring('followedEvent'.length);
     this.props._clearEvents(eventId);
     this.props._delSubscription(eventId);
     this.forceUpdate();
   }
 
-  isPerPermission() {
+  isPerPermission () {
     return (typeof this.props.user.username !== 'undefined' && this.props.user.username !== null) &&
       (this.props.getPerMission !== 'undefined' && this.props.getPerMission.fetched && this.props.getPerMission.data.count > 0);
   }
 
-  renderProfileAttributes() {
+  renderProfileAttributes () {
     const { profile } = this.props;
     return (
       <div className='inner'>
@@ -464,7 +459,7 @@ class Account extends React.Component {
     );
   }
 
-  renderProfileForm() {
+  renderProfileForm () {
     const { profile } = this.state;
     return (
       <div className='inner profile__form'>
@@ -562,7 +557,7 @@ class Account extends React.Component {
     );
   }
 
-  renderFieldReports() {
+  renderFieldReports () {
     const { user, fieldReport } = this.props;
     const userReports = get(fieldReport, `user-${user.id}`, {
       fetching: false,
@@ -605,7 +600,7 @@ class Account extends React.Component {
     );
   }
 
-  renderSubscriptionForm() {
+  renderSubscriptionForm () {
     this.props.profile.data.subscription.filter(subscription => subscription.event !== null);
     const events = [];
     Object.keys(this.props.event.event).forEach(event => {
@@ -700,7 +695,7 @@ class Account extends React.Component {
     );
   }
 
-  createRegionGroupedDocumentData() {
+  createRegionGroupedDocumentData () {
     const groupedDocuments = {};
     if (this.props.perOverviewForm.fetched) {
       this.props.perOverviewForm.data.results.forEach((perOverviewForm) => {
@@ -741,7 +736,7 @@ class Account extends React.Component {
     return groupedDocuments;
   }
 
-  renderPerFormDocuments(documents) {
+  renderPerFormDocuments (documents) {
     const regions = [];
     Object.keys(documents).forEach((regionKey, regionIndex) => {
       const countries = [];
@@ -781,7 +776,7 @@ class Account extends React.Component {
     return regions;
   }
 
-  renderPerFormsComponent() {
+  renderPerFormsComponent () {
     const countryOptions = [];
     if (this.props.perForm.getPerCountries.fetched && typeof this.props.perForm.getPerCountries.data.results !== 'undefined' && this.props.perForm.getPerCountries.data.results !== null) {
       this.props.perForm.getPerCountries.data.results.forEach(country => {
@@ -837,7 +832,7 @@ class Account extends React.Component {
     </div>);
   }
 
-  renderDraftDocuments() {
+  renderDraftDocuments () {
     const draftDocuments = [];
     if (this.props.perForm.getPerDraftDocument.fetched) {
       let index = 0;
@@ -875,7 +870,7 @@ class Account extends React.Component {
     </React.Fragment>);
   }
 
-  renderAccountInformation() {
+  renderAccountInformation () {
     return (<div className='prose prose--responsive'>
       <div className='fold-container'>
         <section className='fold' id='account-information'>
@@ -885,7 +880,7 @@ class Account extends React.Component {
     </div>);
   }
 
-  renderOperationsFollowing() {
+  renderOperationsFollowing () {
     const events = [];
     if (Object.keys(this.props.event.event).length > 0) {
       Object.keys(this.props.event.event).forEach((eventId) => {
@@ -922,13 +917,13 @@ class Account extends React.Component {
     </div>);
   }
 
-  handleTabChange(index) {
+  handleTabChange (index) {
     const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
     const url = this.props.location.pathname;
     this.props.history.replace(`${url}${tabHashArray[index]}`);
-  };
+  }
 
-  render() {
+  render () {
     return (
       <App className='page--account'>
         <Helmet>
@@ -989,6 +984,8 @@ if (environment !== 'production') {
     fieldReport: T.object,
     perForm: T.object,
     event: T.object,
+    history: T.object,
+    location: T.object,
     perOverviewForm: T.object,
     _getProfile: T.func,
     _updateSubscriptions: T.func,

@@ -41,8 +41,6 @@ import App from './app';
 import Fold from '../components/fold';
 import TabContent from '../components/tab-content';
 import ErrorPanel from '../components/error-panel';
-
-
 import Expandable from '../components/expandable';
 import { FilterHeader } from '../components/display-table';
 import { Snippets } from '../components/admin-area-elements';
@@ -64,7 +62,7 @@ const TAB_DETAILS = [
 ];
 
 class Emergency extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
 
     this.state = {
@@ -81,7 +79,7 @@ class Emergency extends React.Component {
     this.isSubscribed = this.isSubscribed.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     if (this.props.location.hash !== nextProps.location.hash) {
       const top = window.pageYOffset !== undefined ? window.pageYOffset : window.scrollTop;
       window.scrollTo(0, top - 90);
@@ -101,7 +99,7 @@ class Emergency extends React.Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.getEvent(this.props.match.params.id);
     this.props._getSitrepTypes();
     if (this.props.isLogged) {
@@ -111,33 +109,33 @@ class Emergency extends React.Component {
   }
 
   // Sets default tab if url param is blank or incorrect
-  displayTabContent() {
+  displayTabContent () {
     const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
     if (!tabHashArray.find(hash => hash === this.props.location.hash)) {
       this.props.history.replace(`${this.props.location.pathname}${tabHashArray[0]}`);
     }
   }
 
-  getEvent(id) {
+  getEvent (id) {
     showGlobalLoading();
     this.props._getEventById(id);
     this.props._getEventSnippets(id);
     this.props._getSitrepsByEventId(id);
   }
 
-  getAppealDocuments(event) {
+  getAppealDocuments (event) {
     const appealIds = get(event, 'data.appeals', []).map(o => o.id);
     if (appealIds.length) {
       this.props._getAppealDocsByAppealIds(appealIds, event.data.id);
     }
   }
 
-  onAppealClick(id, e) {
+  onAppealClick (id, e) {
     e.preventDefault();
     this.setState({ selectedAppeal: id });
   }
 
-  handleSitrepFilter(state, value) {
+  handleSitrepFilter (state, value) {
     const next = Object.assign({}, this.state.sitrepFilters, {
       [state]: value
     });
@@ -154,7 +152,7 @@ class Emergency extends React.Component {
     this.setState({ sitrepFilters: next });
   }
 
-  isSubscribed(nextProps) {
+  isSubscribed (nextProps) {
     if (nextProps.profile.fetched) {
       const filtered = nextProps.profile.data.subscription.filter(subscription => subscription.event === parseInt(this.props.match.params.id));
       if (filtered.length > 0) {
@@ -164,7 +162,7 @@ class Emergency extends React.Component {
     return false;
   }
 
-  renderMustLogin() {
+  renderMustLogin () {
     return (
       <React.Fragment>
         <p>You must be logged in to view this. <Link key='login' to={{ pathname: '/login', state: { from: this.props.location } }} className='link--primary' title='Login'>Login</Link></p>
@@ -172,7 +170,7 @@ class Emergency extends React.Component {
     );
   }
 
-  renderFieldReportStats() {
+  renderFieldReportStats () {
     const report = mostRecentReport(get(this.props, 'event.data.field_reports'));
     const hideIt = get(this.props, 'event.data.hide_attached_field_reports');
     if (!report || hideIt) return null;
@@ -205,7 +203,7 @@ class Emergency extends React.Component {
     );
   }
 
-  renderHeaderStats() {
+  renderHeaderStats () {
     const { appeals } = this.props.event.data;
     const selected = this.state.selectedAppeal;
 
@@ -257,7 +255,7 @@ class Emergency extends React.Component {
     );
   }
 
-  renderFieldReports() {
+  renderFieldReports () {
     const { data } = this.props.event;
     if (!this.props.isLogged) {
       return (
@@ -302,7 +300,7 @@ class Emergency extends React.Component {
     return null;
   }
 
-  renderReports(className, reports) {
+  renderReports (className, reports) {
     return (
       <ul className={className}>
         {reports.map(o => {
@@ -316,7 +314,7 @@ class Emergency extends React.Component {
     );
   }
 
-  renderResponseDocuments() {
+  renderResponseDocuments () {
     const data = get(this.props.situationReports, 'data.results', []);
     const { date, type } = this.state.sitrepFilters;
     // return empty when no data, only on default filters.
@@ -351,7 +349,7 @@ class Emergency extends React.Component {
     );
   }
 
-  renderAppealDocuments() {
+  renderAppealDocuments () {
     const data = get(this.props.appealDocuments, 'data.results', []);
     if (!data.length) return null;
     return (
@@ -361,7 +359,7 @@ class Emergency extends React.Component {
     );
   }
 
-  renderKeyFigures() {
+  renderKeyFigures () {
     const { data } = this.props.event;
     const kf = get(data, 'key_figures');
     if (!Array.isArray(kf) || !kf.length) return null;
@@ -383,17 +381,17 @@ class Emergency extends React.Component {
     );
   }
 
-  addSubscription() {
+  addSubscription () {
     this.props._addSubscriptions(this.props.match.params.id);
     this.setState({ subscribed: true });
   }
 
-  delSubscription() {
+  delSubscription () {
     this.props._delSubscription(this.props.match.params.id);
     this.setState({ subscribed: false });
   }
 
-  renderContent() {
+  renderContent () {
     const {
       fetched,
       error,
@@ -557,7 +555,7 @@ class Emergency extends React.Component {
     );
   }
 
-  render() {
+  render () {
     return (
       <App className='page--emergency'>
         <Helmet>
@@ -582,6 +580,7 @@ if (environment !== 'production') {
     snippets: T.object,
     match: T.object,
     location: T.object,
+    history: T.object,
     event: T.object,
     situationReports: T.object,
     situationReportTypes: T.object,
