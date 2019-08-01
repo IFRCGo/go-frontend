@@ -45,7 +45,7 @@ import { getCountryMeta } from '../utils/get-country-meta';
 
 import App from './app';
 import Fold from '../components/fold';
-import ErrorPanel from '../components/error-panel';
+import TabContent from '../components/tab-content';
 import RegionMap from '../components/map/region-map';
 import BlockLoading from '../components/block-loading';
 import EmergenciesTable from '../components/connected/emergencies-table';
@@ -353,66 +353,75 @@ class AdminArea extends SFPComponent {
           <div className='inpage__body'>
             <div className='inner'>
               <TabPanel>
-                {get(this.props.keyFigures, 'data.results.length') ? (
+                <TabContent isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage="Key figures coming soon" title="Key Figures">
                   <KeyFigures data={this.props.keyFigures} />
-                ) : <ErrorPanel title="Key Figures" errorMessage="Key figures coming soon" />}
+                </TabContent>
               </TabPanel>
-              <TabPanel id="operations">
-                <div className='fold' id='operations-map'>
-                  <div className='inner'>
-                    <h2 className='fold__title'>{activeOperations === null || isNaN(activeOperations) ? null : `Active IFRC Operations (${activeOperations})`}</h2>
-                    <div className={mapContainerClass}>
-                      <RegionMap
-                        operations={this.props.appealStats}
-                        bbox={bbox}
-                        layers={[this.state.maskLayer]}
-                        noExport={true}
-                        noRenderEmergencyTitle={true}
-                      />
+              <TabPanel>
+                <TabContent>
+                  <div className='fold' id='operations-map'>
+                    <div className='inner'>
+                      <h2 className='fold__title'>{activeOperations === null || isNaN(activeOperations) ? null : `Active IFRC Operations (${activeOperations})`}</h2>
+                      <div className={mapContainerClass}>
+                        <RegionMap
+                          operations={this.props.appealStats}
+                          bbox={bbox}
+                          layers={[this.state.maskLayer]}
+                          noExport={true}
+                          noRenderEmergencyTitle={true}
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
+                </TabContent>
               </TabPanel>
-              <TabPanel id="emergency">
+              <TabPanel>
+                <TabContent>
+                  <EmergenciesTable
+                    id='emergencies'
+                    title='Recent Emergencies'
+                    limit={5}
+                    region={getRegionId(this.props.match.params.id)}
+                    showRecent={true}
+                    viewAll={'/emergencies/all?region=' + data.id}
+                    viewAllText={`View all Emergencies for ${regionName} region`}
+                  />
+                  {this.renderCountries()}
 
-                <EmergenciesTable
-                  id='emergencies'
-                  title='Recent Emergencies'
-                  limit={5}
-                  region={getRegionId(this.props.match.params.id)}
-                  showRecent={true}
-                  viewAll={'/emergencies/all?region=' + data.id}
-                  viewAllText={`View all Emergencies for ${regionName} region`}
-                />
-                {this.renderCountries()}
-                <Fold title='Statistics' headerClass='visually-hidden' id='stats'>
-                  <div className='stats-chart'>
-                    {this.renderOperations10Years()}
-                    {this.renderPersonnelBySociety()}
-                  </div>
-                </Fold>
+                  <Fold title='Statistics' headerClass='visually-hidden' id='stats'>
+                    <div className='stats-chart'>
+                      {this.renderOperations10Years()}
+                      {this.renderPersonnelBySociety()}
+                    </div>
+                  </Fold>
+                </TabContent>
               </TabPanel>
-              <TabPanel id="appeals">
-
-                <AppealsTable
-                  title={'Active IFRC Operations'}
-                  region={getRegionId(this.props.match.params.id)}
-                  showActive={true}
-                  id={'appeals'}
-                  viewAll={'/appeals/all?region=' + data.id}
-                  viewAllText={`View all IFRC operations for ${regionName} region`}
-                />
+              <TabPanel>
+                <TabContent>
+                  <AppealsTable
+                    title={'Active IFRC Operations'}
+                    region={getRegionId(this.props.match.params.id)}
+                    showActive={true}
+                    id={'appeals'}
+                    viewAll={'/appeals/all?region=' + data.id}
+                    viewAllText={`View all IFRC operations for ${regionName} region`}
+                  />
+                </TabContent>
               </TabPanel>
-              <TabPanel id="graphics">
-                {get(this.props.snippets, 'data.results.length') ? (
+              <TabPanel>
+                <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage="Graphics coming soon" title="Graphics">
                   <Snippets data={this.props.snippets} />
-                ) : <ErrorPanel title="Graphics" errorMessage="Graphics coming soon" />}
+                </TabContent>
               </TabPanel>
-              <TabPanel id="links">
-                {get(data, 'links.length') ? <Links data={data} /> : <ErrorPanel title="Links" errorMessage="Links coming soon" />}
+              <TabPanel>
+                <TabContent isError={!get(data, 'links.length')} errorMessage="Links coming soon" title="Links">
+                  <Links data={data} />
+                </TabContent>
               </TabPanel>
-              <TabPanel id="contacts">
-                {get(data, 'contacts.length') ? <Contacts data={data} /> : <ErrorPanel title="Contacts" errorMessage="Contacts coming soon" />}
+              <TabPanel>
+                <TabContent isError={!get(data, 'contacts.length')} errorMessage="Contacts coming soon" title="Contacts">
+                  <Contacts data={data} />
+                </TabContent>
               </TabPanel>
             </div>
           </div>
