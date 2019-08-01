@@ -6,7 +6,6 @@ import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { DateTime } from 'luxon';
-// import { Tabs, TabList, Tab, TabPanel } from '../components/tabs';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import { Helmet } from 'react-helmet';
@@ -88,7 +87,7 @@ class AdminArea extends SFPComponent {
   // handleFilterChange (what, field, value)
   // handleSortChange (what, field)
 
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       appeals: {
@@ -112,7 +111,7 @@ class AdminArea extends SFPComponent {
     this.componentIsLoading = true;
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     if (getCountryId(this.props.match.params.id) !== getCountryId(nextProps.match.params.id)) {
       this.getData(nextProps);
       return this.getAdmArea(nextProps.type, getCountryId(nextProps.match.params.id));
@@ -126,9 +125,9 @@ class AdminArea extends SFPComponent {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.componentIsLoading = true;
-    this.displayTabContent()
+    this.displayTabContent();
     this.getData(this.props);
     this.getAdmArea(this.props.type, getCountryId(this.props.match.params.id));
     this.props._getPerNsPhase(this.props.match.params.id);
@@ -142,14 +141,14 @@ class AdminArea extends SFPComponent {
     }
   }
   // Sets default tab if url param is blank or incorrect
-  displayTabContent() {
+  displayTabContent () {
     const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
     if (!tabHashArray.find(hash => hash === this.props.location.hash)) {
       this.props.history.replace(`${this.props.location.pathname}${tabHashArray[0]}`);
     }
   }
 
-  getData(props) {
+  getData (props) {
     const type = 'country';
     const id = getCountryId(props.match.params.id);
     this.props._getAdmAreaAppealsList(type, id);
@@ -160,12 +159,12 @@ class AdminArea extends SFPComponent {
     this.props._getFdrs(id);
   }
 
-  getAdmArea(type, id) {
+  getAdmArea (type, id) {
     showGlobalLoading();
     this.props._getAdmAreaById(type, id);
   }
 
-  computeFilters(what) {
+  computeFilters (what) {
     let state = this.state[what];
     let qs = {};
 
@@ -189,7 +188,7 @@ class AdminArea extends SFPComponent {
     return qs;
   }
 
-  updateData(what) {
+  updateData (what) {
     this.props._getCountryOperations(
       this.props.type,
       getCountryId(this.props.match.params.id),
@@ -198,13 +197,13 @@ class AdminArea extends SFPComponent {
     );
   }
 
-  setMapFilter(type, value) {
+  setMapFilter (type, value) {
     let filters = Object.assign({}, this.state.mapFilters);
     filters[type] = value;
     this.setState({ mapFilters: filters }, this.syncMapFilters);
   }
 
-  setPersistentMapFilter(type, value) {
+  setPersistentMapFilter (type, value) {
     let filter = Object.assign({}, this.state.persistentMapFilter);
     if (filter.hasOwnProperty(type) && filter[type] === value) {
       delete filter[type];
@@ -214,13 +213,13 @@ class AdminArea extends SFPComponent {
     this.setState({ persistentMapFilter: filter }, this.syncMapFilters);
   }
 
-  removeMapFilter(type) {
+  removeMapFilter (type) {
     let filters = Object.assign({}, this.state.mapFilters);
     delete filters[type];
     this.setState({ mapFilters: filters }, this.syncMapFilters);
   }
 
-  syncMapFilters() {
+  syncMapFilters () {
     const { mapFilters, persistentMapFilter } = this.state;
     let filters = Object.assign({}, mapFilters, persistentMapFilter);
     filters = Object.keys(filters).map(key => {
@@ -230,7 +229,7 @@ class AdminArea extends SFPComponent {
     this.props._setPartnerDeploymentFilter(getCountryId(this.props.match.params.id), filters);
   }
 
-  renderAppeals() {
+  renderAppeals () {
     const { fetched, fetching, error, data } = this.props.countryOperations;
 
     if (error || fetching) return null;
@@ -310,8 +309,8 @@ class AdminArea extends SFPComponent {
             Link
           </Link>
         ) : (
-            nope
-          ),
+          nope
+        ),
         dtype: o.dtype,
         requestAmount: n(o.amount_requested),
         fundedAmount: n(o.amount_funded),
@@ -337,7 +336,7 @@ class AdminArea extends SFPComponent {
     return null;
   }
 
-  renderStats() {
+  renderStats () {
     const {
       fetched,
       error,
@@ -370,7 +369,7 @@ class AdminArea extends SFPComponent {
     );
   }
 
-  renderCountryProfile() {
+  renderCountryProfile () {
     const { fetched, data } = this.props.fdrs;
     if (!fetched) {
       return null;
@@ -460,12 +459,12 @@ class AdminArea extends SFPComponent {
     );
   }
 
-  isPerPermission() {
+  isPerPermission () {
     return (typeof this.props.user.username !== 'undefined' && this.props.user.username !== null) &&
       (typeof this.props.getPerMission !== 'undefined' && this.props.getPerMission.fetched && this.props.getPerMission.data.count > 0);
   }
 
-  renderContent() {
+  renderContent () {
     const {
       fetched,
       error,
@@ -523,8 +522,6 @@ class AdminArea extends SFPComponent {
               <Tab key={tab.title}>{tab.title}</Tab>
             ))}
           </TabList>
-
-
           <div className="inpage__body">
             <div className="inner">
               <TabPanel>
@@ -601,6 +598,9 @@ class AdminArea extends SFPComponent {
               </TabPanel>
               <TabPanel>
                 <TabContent isError={!this.isPerPermission()} errorMessage="Please log in" title="Preparedness">
+                  {this.props.getPerNsPhase.fetched && this.props.perOverviewForm.fetched ? (
+                    <PreparednessOverview getPerNsPhase={this.props.getPerNsPhase} perOverviewForm={this.props.perOverviewForm} />)
+                    : <ErrorPanel title="Preparedness Overciew" errorMessage="Preparedness overview coming soon" />}
                   {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
                     <PreparednessSummary getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
                     : <ErrorPanel title="Preparedness Summary" errorMessage="Preparedness summary coming soon" />}
@@ -622,7 +622,7 @@ class AdminArea extends SFPComponent {
     );
   }
 
-  render() {
+  render () {
     return (
       <App className={`page--${this.props.type}`}>
         <Helmet>
