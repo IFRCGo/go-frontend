@@ -14,9 +14,17 @@ import url from 'url';
 
 import { countries } from '../utils/field-report-constants';
 import { environment, api } from '../config';
-import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
+import {
+  showGlobalLoading,
+  hideGlobalLoading
+} from '../components/global-loading';
 import { get, dateOptions, datesAgo, dTypeOptions } from '../utils/utils/';
-import { commaSeparatedNumber as n, commaSeparatedLargeNumber as bigN, nope, round } from '../utils/format';
+import {
+  commaSeparatedNumber as n,
+  commaSeparatedLargeNumber as bigN,
+  nope,
+  round
+} from '../utils/format';
 import {
   getAdmAreaById,
   getAdmAreaAppealsList,
@@ -41,7 +49,10 @@ import ErrorPanel from '../components/error-panel';
 import TabContent from '../components/tab-content';
 import Fold from '../components/fold';
 import CountryMap from '../components/map/country-map';
-import DisplayTable, { SortHeader, FilterHeader } from '../components/display-table';
+import DisplayTable, {
+  SortHeader,
+  FilterHeader
+} from '../components/display-table';
 import EmergenciesTable from '../components/connected/emergencies-table';
 import BulletTable from '../components/bullet-table';
 import {
@@ -76,7 +87,9 @@ const filterPaths = {
 const getCountryId = memoize(idOrName => {
   // If country name
   if (isNaN(idOrName)) {
-    const countryMeta = countries.find(d => d.label.toLowerCase() === decodeURI(idOrName.toLowerCase()));
+    const countryMeta = countries.find(
+      d => d.label.toLowerCase() === decodeURI(idOrName.toLowerCase())
+    );
     return countryMeta !== undefined ? countryMeta.value : idOrName;
   }
   return idOrName;
@@ -88,7 +101,7 @@ class AdminArea extends SFPComponent {
   // handleFilterChange (what, field, value)
   // handleSortChange (what, field)
 
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       appeals: {
@@ -112,10 +125,16 @@ class AdminArea extends SFPComponent {
     this.componentIsLoading = true;
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (getCountryId(this.props.match.params.id) !== getCountryId(nextProps.match.params.id)) {
+  componentWillReceiveProps (nextProps) {
+    if (
+      getCountryId(this.props.match.params.id) !==
+      getCountryId(nextProps.match.params.id)
+    ) {
       this.getData(nextProps);
-      return this.getAdmArea(nextProps.type, getCountryId(nextProps.match.params.id));
+      return this.getAdmArea(
+        nextProps.type,
+        getCountryId(nextProps.match.params.id)
+      );
     }
 
     if (this.props.adminArea.fetching && !nextProps.adminArea.fetching) {
@@ -126,9 +145,9 @@ class AdminArea extends SFPComponent {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.componentIsLoading = true;
-    this.displayTabContent()
+    this.displayTabContent();
     this.getData(this.props);
     this.getAdmArea(this.props.type, getCountryId(this.props.match.params.id));
     this.props._getPerNsPhase(this.props.match.params.id);
@@ -137,19 +156,24 @@ class AdminArea extends SFPComponent {
     this.props._getPerDocuments();
     this.props._getPerDocument(null, this.props.match.params.id);
     this.props._getPerUploadedDocuments(this.props.match.params.id);
-    if (typeof this.props.user.username !== 'undefined' && this.props.user.username !== null) {
+    if (
+      typeof this.props.user.username !== 'undefined' &&
+      this.props.user.username !== null
+    ) {
       this.props._getPerMission();
     }
   }
   // Sets default tab if url param is blank or incorrect
-  displayTabContent() {
+  displayTabContent () {
     const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
     if (!tabHashArray.find(hash => hash === this.props.location.hash)) {
-      this.props.history.replace(`${this.props.location.pathname}${tabHashArray[0]}`);
+      this.props.history.replace(
+        `${this.props.location.pathname}${tabHashArray[0]}`
+      );
     }
   }
 
-  getData(props) {
+  getData (props) {
     const type = 'country';
     const id = getCountryId(props.match.params.id);
     this.props._getAdmAreaAppealsList(type, id);
@@ -160,19 +184,20 @@ class AdminArea extends SFPComponent {
     this.props._getFdrs(id);
   }
 
-  getAdmArea(type, id) {
+  getAdmArea (type, id) {
     showGlobalLoading();
     this.props._getAdmAreaById(type, id);
   }
 
-  computeFilters(what) {
+  computeFilters (what) {
     let state = this.state[what];
     let qs = {};
 
     switch (what) {
       case 'appeals':
         if (state.sort.field) {
-          qs.ordering = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
+          qs.ordering =
+            (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
         } else {
           qs.ordering = '-start_date';
         }
@@ -189,7 +214,7 @@ class AdminArea extends SFPComponent {
     return qs;
   }
 
-  updateData(what) {
+  updateData (what) {
     this.props._getCountryOperations(
       this.props.type,
       getCountryId(this.props.match.params.id),
@@ -198,13 +223,13 @@ class AdminArea extends SFPComponent {
     );
   }
 
-  setMapFilter(type, value) {
+  setMapFilter (type, value) {
     let filters = Object.assign({}, this.state.mapFilters);
     filters[type] = value;
     this.setState({ mapFilters: filters }, this.syncMapFilters);
   }
 
-  setPersistentMapFilter(type, value) {
+  setPersistentMapFilter (type, value) {
     let filter = Object.assign({}, this.state.persistentMapFilter);
     if (filter.hasOwnProperty(type) && filter[type] === value) {
       delete filter[type];
@@ -214,23 +239,26 @@ class AdminArea extends SFPComponent {
     this.setState({ persistentMapFilter: filter }, this.syncMapFilters);
   }
 
-  removeMapFilter(type) {
+  removeMapFilter (type) {
     let filters = Object.assign({}, this.state.mapFilters);
     delete filters[type];
     this.setState({ mapFilters: filters }, this.syncMapFilters);
   }
 
-  syncMapFilters() {
+  syncMapFilters () {
     const { mapFilters, persistentMapFilter } = this.state;
     let filters = Object.assign({}, mapFilters, persistentMapFilter);
     filters = Object.keys(filters).map(key => {
       const path = filterPaths[key];
       return { path, value: filters[key] };
     });
-    this.props._setPartnerDeploymentFilter(getCountryId(this.props.match.params.id), filters);
+    this.props._setPartnerDeploymentFilter(
+      getCountryId(this.props.match.params.id),
+      filters
+    );
   }
 
-  renderAppeals() {
+  renderAppeals () {
     const { fetched, fetching, error, data } = this.props.countryOperations;
 
     if (error || fetching) return null;
@@ -283,7 +311,11 @@ class AdminArea extends SFPComponent {
               id="amount_requested"
               title="Requested Amount (CHF)"
               sort={this.state.appeals.sort}
-              onClick={this.handleSortChange.bind(this, 'appeals', 'amount_requested')}
+              onClick={this.handleSortChange.bind(
+                this,
+                'appeals',
+                'amount_requested'
+              )}
             />
           )
         },
@@ -294,7 +326,11 @@ class AdminArea extends SFPComponent {
               id="amount_funded"
               title="Funding (CHF)"
               sort={this.state.appeals.sort}
-              onClick={this.handleSortChange.bind(this, 'appeals', 'amount_funded')}
+              onClick={this.handleSortChange.bind(
+                this,
+                'appeals',
+                'amount_funded'
+              )}
             />
           )
         },
@@ -306,12 +342,16 @@ class AdminArea extends SFPComponent {
         date: DateTime.fromISO(o.start_date).toISODate(),
         name: o.name,
         event: o.event ? (
-          <Link to={`/emergencies/${o.event}`} className="link--primary" title="View Emergency">
+          <Link
+            to={`/emergencies/${o.event}`}
+            className="link--primary"
+            title="View Emergency"
+          >
             Link
           </Link>
         ) : (
-            nope
-          ),
+          nope
+        ),
         dtype: o.dtype,
         requestAmount: n(o.amount_requested),
         fundedAmount: n(o.amount_funded),
@@ -327,7 +367,10 @@ class AdminArea extends SFPComponent {
             noPaginate={true}
           />
           <div className="fold__footer">
-            <Link className="link--primary export--link" to={'/appeals/all/?country=' + id}>
+            <Link
+              className="link--primary export--link"
+              to={'/appeals/all/?country=' + id}
+            >
               View All Operations For {name}
             </Link>
           </div>
@@ -337,7 +380,7 @@ class AdminArea extends SFPComponent {
     return null;
   }
 
-  renderStats() {
+  renderStats () {
     const {
       fetched,
       error,
@@ -370,7 +413,7 @@ class AdminArea extends SFPComponent {
     );
   }
 
-  renderCountryProfile() {
+  renderCountryProfile () {
     const { fetched, data } = this.props.fdrs;
     if (!fetched) {
       return null;
@@ -402,25 +445,40 @@ class AdminArea extends SFPComponent {
                 <span className="content-highlight">{bigN(population)}</span>
               </li>
               <li>
-                Urban Pop <span className="content-highlight">{urbanPop ? urbanPop + '%' : nope}</span>
+                Urban Pop{' '}
+                <span className="content-highlight">
+                  {urbanPop ? urbanPop + '%' : nope}
+                </span>
               </li>
               <li>
                 GDP
-                <span className="content-highlight">{gdp ? '$' + bigN(gdp) : nope}</span>
+                <span className="content-highlight">
+                  {gdp ? '$' + bigN(gdp) : nope}
+                </span>
               </li>
               <li>
                 GNI / Capita
-                <span className="content-highlight">{n(get(data, 'GNIPC.value'))}</span>
+                <span className="content-highlight">
+                  {n(get(data, 'GNIPC.value'))}
+                </span>
               </li>
               <li>
                 Poverty (% pop)
-                <span className="content-highlight">{poverty ? poverty + '%' : nope}</span>
+                <span className="content-highlight">
+                  {poverty ? poverty + '%' : nope}
+                </span>
               </li>
               <li>
-                Life Expectancy <span className="content-highlight">{n(get(data, 'LifeExp.value'))}</span>
+                Life Expectancy{' '}
+                <span className="content-highlight">
+                  {n(get(data, 'LifeExp.value'))}
+                </span>
               </li>
               <li>
-                Literacy <span className="content-highlight">{literacy ? literacy + '%' : nope}</span>
+                Literacy{' '}
+                <span className="content-highlight">
+                  {literacy ? literacy + '%' : nope}
+                </span>
               </li>
             </ul>
           </div>
@@ -429,19 +487,27 @@ class AdminArea extends SFPComponent {
             <ul>
               <li>
                 Income (CHF)
-                <span className="content-highlight">{bigN(get(data, 'KPI_IncomeLC_CHF.value'))}</span>
+                <span className="content-highlight">
+                  {bigN(get(data, 'KPI_IncomeLC_CHF.value'))}
+                </span>
               </li>
               <li>
                 Expenditures (CHF)
-                <span className="content-highlight">{bigN(get(data, 'KPI_expenditureLC_CHF.value'))}</span>
+                <span className="content-highlight">
+                  {bigN(get(data, 'KPI_expenditureLC_CHF.value'))}
+                </span>
               </li>
               <li>
                 Volunteers
-                <span className="content-highlight">{n(get(data, 'KPI_PeopleVol_Tot.value'))}</span>
+                <span className="content-highlight">
+                  {n(get(data, 'KPI_PeopleVol_Tot.value'))}
+                </span>
               </li>
               <li>
                 Trained in first aid
-                <span className="content-highlight">{n(get(data, 'KPI_TrainFA_Tot.value'))}</span>
+                <span className="content-highlight">
+                  {n(get(data, 'KPI_TrainFA_Tot.value'))}
+                </span>
               </li>
             </ul>
           </div>
@@ -460,17 +526,18 @@ class AdminArea extends SFPComponent {
     );
   }
 
-  isPerPermission() {
-    return (typeof this.props.user.username !== 'undefined' && this.props.user.username !== null) &&
-      (typeof this.props.getPerMission !== 'undefined' && this.props.getPerMission.fetched && this.props.getPerMission.data.count > 0);
+  isPerPermission () {
+    return (
+      typeof this.props.user.username !== 'undefined' &&
+      this.props.user.username !== null &&
+      (typeof this.props.getPerMission !== 'undefined' &&
+        this.props.getPerMission.fetched &&
+        this.props.getPerMission.data.count > 0)
+    );
   }
 
-  renderContent() {
-    const {
-      fetched,
-      error,
-      data
-    } = this.props.adminArea;
+  renderContent () {
+    const { fetched, error, data } = this.props.adminArea;
 
     if (!fetched || error) return null;
 
@@ -497,13 +564,19 @@ class AdminArea extends SFPComponent {
                 {data.name}
                 {data.inform_score ? (
                   <span className="inpage__title--inform">
-                    Inform Score: <span className="inpage__title--inform--score">{round(data.inform_score, 1)}</span>
+                    Inform Score:{' '}
+                    <span className="inpage__title--inform--score">
+                      {round(data.inform_score, 1)}
+                    </span>
                   </span>
                 ) : null}
               </h1>
               <div className="inpage__header-actions">
                 <a
-                  href={url.resolve(api, `admin/api/country/${data.id}/change/`)}
+                  href={url.resolve(
+                    api,
+                    `admin/api/country/${data.id}/change/`
+                  )}
                   className="button button--primary-bounded"
                 >
                   Edit Country
@@ -515,7 +588,9 @@ class AdminArea extends SFPComponent {
           </div>
         </header>
         <Tabs
-          selectedIndex={TAB_DETAILS.map(({ hash }) => hash).indexOf(this.props.location.hash)}
+          selectedIndex={TAB_DETAILS.map(({ hash }) => hash).indexOf(
+            this.props.location.hash
+          )}
           onSelect={index => handleTabChange(index)}
         >
           <TabList>
@@ -524,44 +599,71 @@ class AdminArea extends SFPComponent {
             ))}
           </TabList>
 
-
           <div className="inpage__body">
             <div className="inner">
               <TabPanel>
-                <TabContent isError={!data.overview || data.key_priorities} errorMessage="Overview coming soon" title="Overview">
+                <TabContent
+                  isError={!data.overview || data.key_priorities}
+                  errorMessage="Overview coming soon"
+                  title="Overview"
+                >
                   <Fold title="Overview" id="overview">
-                    {data.overview ? <ReactMarkdown source={data.overview} /> : null}
-                    {data.key_priorities ? <ReactMarkdown source={data.key_priorities} /> : null}
+                    {data.overview ? (
+                      <ReactMarkdown source={data.overview} />
+                    ) : null}
+                    {data.key_priorities ? (
+                      <ReactMarkdown source={data.key_priorities} />
+                    ) : null}
                   </Fold>
                 </TabContent>
               </TabPanel>
               <TabPanel>
-                <TabContent isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage="Key figures coming soon" title="Key Figures">
+                <TabContent
+                  isError={!get(this.props.keyFigures, 'data.results.length')}
+                  errorMessage="Key figures coming soon"
+                  title="Key Figures"
+                >
                   <KeyFigures data={this.props.keyFigures} />
                 </TabContent>
               </TabPanel>
               <TabPanel>
                 <TabContent>
-                  <Fold title='Statistics' headerClass='visually-hidden' id='operations'>
-                    <div className='operations__container'>
-                      <div className='country__operations'>
+                  <Fold
+                    title="Statistics"
+                    headerClass="visually-hidden"
+                    id="operations"
+                  >
+                    <div className="operations__container">
+                      <div className="country__operations">
                         <h2>Movement activities in support of NS</h2>
-                        <BulletTable title='Activities'
+                        <BulletTable
+                          title="Activities"
                           onClick={this.setPersistentMapFilter.bind(this, 'ns')}
                           onMouseOver={this.setMapFilter.bind(this, 'ns')}
                           onMouseOut={this.removeMapFilter.bind(this, 'ns')}
-                          rows={get(partnerDeployments, 'data.parentSocieties', [])} />
-                        <BulletTable title='Type'
-                          onClick={this.setPersistentMapFilter.bind(this, 'type')}
+                          rows={get(
+                            partnerDeployments,
+                            'data.parentSocieties',
+                            []
+                          )}
+                        />
+                        <BulletTable
+                          title="Type"
+                          onClick={this.setPersistentMapFilter.bind(
+                            this,
+                            'type'
+                          )}
                           onMouseOver={this.setMapFilter.bind(this, 'type')}
                           onMouseOut={this.removeMapFilter.bind(this, 'type')}
-                          rows={get(partnerDeployments, 'data.activities', [])} />
+                          rows={get(partnerDeployments, 'data.activities', [])}
+                        />
                       </div>
                       <div className={mapContainerClass}>
-                        <CountryMap operations={this.props.appealStats}
+                        <CountryMap
+                          operations={this.props.appealStats}
                           bbox={bbox}
                           deployments={this.props.partnerDeployments}
-                          deploymentsKey='Additional Response Activities' // From Elsa instead of 'PNS Activities'
+                          deploymentsKey="Additional Response Activities" // From Elsa instead of 'PNS Activities'
                           noRenderEmergencies={true}
                           noExport={true}
                         />
@@ -585,34 +687,98 @@ class AdminArea extends SFPComponent {
                 </TabContent>
               </TabPanel>
               <TabPanel>
-                <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage="Graphics coming soon" title="Graphics">
+                <TabContent
+                  isError={!get(this.props.snippets, 'data.results.length')}
+                  errorMessage="Graphics coming soon"
+                  title="Graphics"
+                >
                   <Snippets data={this.props.snippets} />
                 </TabContent>
               </TabPanel>
               <TabPanel>
-                <TabContent isError={!get(data, 'links.length')} errorMessage="Links coming soon" title="Links">
+                <TabContent
+                  isError={!get(data, 'links.length')}
+                  errorMessage="Links coming soon"
+                  title="Links"
+                >
                   <Links data={data} />
                 </TabContent>
               </TabPanel>
               <TabPanel>
-                <TabContent isError={!get(data, 'contacts.length')} errorMessage="No current contacts" title="Contacts">
+                <TabContent
+                  isError={!get(data, 'contacts.length')}
+                  errorMessage="No current contacts"
+                  title="Contacts"
+                >
                   <Contacts data={data} />
                 </TabContent>
               </TabPanel>
               <TabPanel>
-                <TabContent isError={!this.isPerPermission()} errorMessage="Please log in" title="Preparedness">
-                  {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
-                    <PreparednessSummary getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
-                    : <ErrorPanel title="Preparedness Summary" errorMessage="Preparedness summary coming soon" />}
-                  {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
-                    <PreparednessColumnBar getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
-                    : <ErrorPanel title="Preparedness Column Bar" errorMessage="Preparedness column bar summary coming soon" />}
+                <TabContent
+                  isError={!this.isPerPermission()}
+                  errorMessage="Please log in"
+                  title="Preparedness"
+                >
+                  {this.props.getPerNsPhase.fetched &&
+                   this.props.perOverviewForm.fetched ? (
+                      <PreparednessOverview
+                        getPerNsPhase={this.props.getPerNsPhase}
+                        perOverviewForm={this.props.perOverviewForm}
+                      />
+                    ) : (
+                      <ErrorPanel
+                        title="Preparedness Overview"
+                        errorMessage="Preparedness summary coming soon"
+                      />
+                    )}
+
+                  {this.props.getPerDocument.fetched &&
+                  this.props.getPerDocuments.fetched ? (
+                      <PreparednessSummary
+                        getPerDocument={this.props.getPerDocument}
+                        getPerDocuments={this.props.getPerDocuments}
+                      />
+                    ) : (
+                      <ErrorPanel
+                        title="Preparedness Summary"
+                        errorMessage="Preparedness summary coming soon"
+                      />
+                    )}
+                  {this.props.getPerDocument.fetched &&
+                  this.props.getPerDocuments.fetched ? (
+                      <PreparednessColumnBar
+                        getPerDocument={this.props.getPerDocument}
+                        getPerDocuments={this.props.getPerDocuments}
+                      />
+                    ) : (
+                      <ErrorPanel
+                        title="Preparedness Column Bar"
+                        errorMessage="Preparedness column bar summary coming soon"
+                      />
+                    )}
                   {this.props.getPerWorkPlan.fetched ? (
-                    <PreparednessWorkPlan getPerWorkPlan={this.props.getPerWorkPlan} />)
-                    : <ErrorPanel title="Preparedness Work Plan" errorMessage="Preparedness work plan bar summary coming soon" />}
+                    <PreparednessWorkPlan
+                      getPerWorkPlan={this.props.getPerWorkPlan}
+                    />
+                  ) : (
+                    <ErrorPanel
+                      title="Preparedness Work Plan"
+                      errorMessage="Preparedness work plan bar summary coming soon"
+                    />
+                  )}
                   {this.props.getPerUploadedDocuments.fetched ? (
-                    <PreparednessPhaseOutcomes getPerUploadedDocuments={this.props.getPerUploadedDocuments} countryId={this.props.match.params.id} />)
-                    : <ErrorPanel title="Preparedness Phase Outcomes" errorMessage="Preparedness phase outcomes bar summary coming soon" />}
+                    <PreparednessPhaseOutcomes
+                      getPerUploadedDocuments={
+                        this.props.getPerUploadedDocuments
+                      }
+                      countryId={this.props.match.params.id}
+                    />
+                  ) : (
+                    <ErrorPanel
+                      title="Preparedness Phase Outcomes"
+                      errorMessage="Preparedness phase outcomes bar summary coming soon"
+                    />
+                  )}
                 </TabContent>
               </TabPanel>
             </div>
@@ -622,7 +788,7 @@ class AdminArea extends SFPComponent {
     );
   }
 
-  render() {
+  render () {
     return (
       <App className={`page--${this.props.type}`}>
         <Helmet>
@@ -659,20 +825,28 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state, ownProps) => ({
-  adminArea: get(state.adminArea.aaData, getCountryId(ownProps.match.params.id), {
-    data: {},
-    fetching: false,
-    fetched: false
-  }),
+  adminArea: get(
+    state.adminArea.aaData,
+    getCountryId(ownProps.match.params.id),
+    {
+      data: {},
+      fetching: false,
+      fetched: false
+    }
+  ),
   appealStats: state.adminArea.appealStats,
   keyFigures: state.adminArea.keyFigures,
   snippets: state.adminArea.snippets,
   countryOperations: state.adminArea.countryOperations,
-  partnerDeployments: get(state.adminArea.partnerDeployments, getCountryId(ownProps.match.params.id), {
-    data: {},
-    fetching: false,
-    fetched: false
-  }),
+  partnerDeployments: get(
+    state.adminArea.partnerDeployments,
+    getCountryId(ownProps.match.params.id),
+    {
+      data: {},
+      fetching: false,
+      fetched: false
+    }
+  ),
   fdrs: state.fdrs,
   getPerNsPhase: state.perForm.getPerNsPhase,
   perOverviewForm: state.perForm.getPerOverviewForm,
@@ -691,14 +865,16 @@ const dispatcher = dispatch => ({
   _getAdmAreaSnippets: (...args) => dispatch(getAdmAreaSnippets(...args)),
   _getCountryOperations: (...args) => dispatch(getCountryOperations(...args)),
   _getPartnerDeployments: (...args) => dispatch(getPartnerDeployments(...args)),
-  _setPartnerDeploymentFilter: (...args) => dispatch(setPartnerDeploymentFilter(...args)),
+  _setPartnerDeploymentFilter: (...args) =>
+    dispatch(setPartnerDeploymentFilter(...args)),
   _getFdrs: (...args) => dispatch(getFdrs(...args)),
   _getPerNsPhase: (...args) => dispatch(getPerNsPhase(...args)),
   _getPerOverviewForm: (...args) => dispatch(getPerOverviewForm(...args)),
   _getPerWorkPlan: (...args) => dispatch(getPerWorkPlan(...args)),
   _getPerDocument: (...args) => dispatch(getPerDocument(...args)),
   _getPerDocuments: (...args) => dispatch(getPerDocuments(...args)),
-  _getPerUploadedDocuments: (...args) => dispatch(getPerUploadedDocuments(...args)),
+  _getPerUploadedDocuments: (...args) =>
+    dispatch(getPerUploadedDocuments(...args)),
   _getPerMission: (...args) => dispatch(getPerMission(...args))
 });
 

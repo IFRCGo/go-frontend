@@ -16,16 +16,15 @@ import {
 } from 'recharts';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
-import c from 'classnames';
 import { Helmet } from 'react-helmet';
 
 import { environment } from '../config';
-import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
-import { get } from '../utils/utils/';
 import {
-  commaSeparatedNumber as n,
-  nope
-} from '../utils/format';
+  showGlobalLoading,
+  hideGlobalLoading
+} from '../components/global-loading';
+import { get } from '../utils/utils/';
+import { commaSeparatedNumber as n, nope } from '../utils/format';
 import {
   getAdmAreaById,
   getAdmAreaAppealsList,
@@ -69,7 +68,7 @@ const TAB_DETAILS = [
 ];
 
 class AdminArea extends SFPComponent {
-  constructor(props) {
+  constructor (props) {
     super(props);
 
     this.state = {
@@ -77,11 +76,19 @@ class AdminArea extends SFPComponent {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (getRegionId(this.props.match.params.id) !== getRegionId(nextProps.match.params.id)) {
+  componentWillReceiveProps (nextProps) {
+    if (
+      getRegionId(this.props.match.params.id) !==
+      getRegionId(nextProps.match.params.id)
+    ) {
       this.getData(nextProps);
-      this.setState({ maskLayer: this.getMaskLayer(getRegionId(nextProps.match.params.id)) });
-      return this.getAdmArea(nextProps.type, getRegionId(nextProps.match.params.id));
+      this.setState({
+        maskLayer: this.getMaskLayer(getRegionId(nextProps.match.params.id))
+      });
+      return this.getAdmArea(
+        nextProps.type,
+        getRegionId(nextProps.match.params.id)
+      );
     }
 
     if (this.props.adminArea.fetching && !nextProps.adminArea.fetching) {
@@ -92,33 +99,44 @@ class AdminArea extends SFPComponent {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.getData(this.props);
     this.getAdmArea(this.props.type, getRegionId(this.props.match.params.id));
-    this.displayTabContent()
+    this.displayTabContent();
   }
 
   // Sets default tab if url param is blank or incorrect
-  displayTabContent() {
+  displayTabContent () {
     const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
     if (!tabHashArray.find(hash => hash === this.props.location.hash)) {
-      this.props.history.replace(`${this.props.location.pathname}${tabHashArray[0]}`);
+      this.props.history.replace(
+        `${this.props.location.pathname}${tabHashArray[0]}`
+      );
     }
   }
 
-  getData(props) {
+  getData (props) {
     const id = getRegionId(props.match.params.id);
     this.props._getAdmAreaAppealsList(props.type, id);
-    this.props._getAdmAreaAggregateAppeals(props.type, id, DateTime.local().minus({ years: 10 }).startOf('month').toISODate(), 'year');
+    this.props._getAdmAreaAggregateAppeals(
+      props.type,
+      id,
+      DateTime.local()
+        .minus({ years: 10 })
+        .startOf('month')
+        .toISODate(),
+      'year'
+    );
     this.props._getRegionPersonnel(id);
     this.props._getAdmAreaKeyFigures(props.type, id);
     this.props._getAdmAreaSnippets(props.type, id);
     this.props._getCountries(id);
   }
 
-  getMaskLayer(regionId) {
+  getMaskLayer (regionId) {
     const countries = countriesByRegion[regionId.toString()];
-    const isoCodes = countries.map(getCountryMeta)
+    const isoCodes = countries
+      .map(getCountryMeta)
       .filter(Boolean)
       .map(d => d.iso.toUpperCase());
     return {
@@ -129,19 +147,16 @@ class AdminArea extends SFPComponent {
       paint: {
         'fill-color': 'rgba(33, 33, 33, 0.7)'
       },
-      filter: [
-        '!in',
-        'ISO2'
-      ].concat(isoCodes)
+      filter: ['!in', 'ISO2'].concat(isoCodes)
     };
   }
 
-  getAdmArea(type, id) {
+  getAdmArea (type, id) {
     showGlobalLoading();
     this.props._getAdmAreaById(type, id);
   }
 
-  renderStats() {
+  renderStats () {
     const {
       fetched,
       error,
@@ -153,17 +168,20 @@ class AdminArea extends SFPComponent {
     }
 
     return (
-      <div className='inpage__headline-stats'>
-        <div className='header-stats'>
-          <ul className='stats-list'>
-            <li className='stats-list__item stats-people'>
-              {n(stats.numBeneficiaries)}<small>Affected People in the last 30 days</small>
+      <div className="inpage__headline-stats">
+        <div className="header-stats">
+          <ul className="stats-list">
+            <li className="stats-list__item stats-people">
+              {n(stats.numBeneficiaries)}
+              <small>Affected People in the last 30 days</small>
             </li>
-            <li className='stats-list__item stats-funding stat-borderless stat-double'>
-              {n(stats.amountRequested)}<small>Requested Amount (CHF)</small>
+            <li className="stats-list__item stats-funding stat-borderless stat-double">
+              {n(stats.amountRequested)}
+              <small>Requested Amount (CHF)</small>
             </li>
-            <li className='stats-list__item stat-double'>
-              {n(stats.amountFunded)}<small>Funding (CHF)</small>
+            <li className="stats-list__item stat-double">
+              {n(stats.amountFunded)}
+              <small>Funding (CHF)</small>
             </li>
           </ul>
         </div>
@@ -171,24 +189,22 @@ class AdminArea extends SFPComponent {
     );
   }
 
-  renderOperations10Years() {
-    const {
-      data,
-      fetched,
-      fetching,
-      error
-    } = this.props.aggregateYear;
+  renderOperations10Years () {
+    const { data, fetched, fetching, error } = this.props.aggregateYear;
 
     const zone = 'utc';
-    const tickFormatter = (date) => DateTime.fromISO(date, { zone }).toFormat('yyyy');
+    const tickFormatter = date =>
+      DateTime.fromISO(date, { zone }).toFormat('yyyy');
 
-    const contentFormatter = (payload) => {
-      if (!payload.payload || !payload.payload[0]) { return null; }
+    const contentFormatter = payload => {
+      if (!payload.payload || !payload.payload[0]) {
+        return null;
+      }
 
       const item = payload.payload[0].payload;
       return (
-        <article className='chart-tooltip'>
-          <div className='chart-tooltip__contents'>
+        <article className="chart-tooltip">
+          <div className="chart-tooltip__contents">
             <dl>
               <dd>Date</dd>
               <dt>{tickFormatter(item.timespan)}</dt>
@@ -203,41 +219,48 @@ class AdminArea extends SFPComponent {
     return error ? (
       <p>Operations data not available.</p>
     ) : (
-        <figure className='chart'>
-          <figcaption>Operations over the past 10 years</figcaption>
-          <div className='chart__container'>
-            {!fetched || fetching ? (
-              <BlockLoading />
-            ) : (
-                <ResponsiveContainer>
-                  <LineChart data={data}>
-                    <XAxis tickFormatter={tickFormatter} dataKey='timespan' axisLine={false} padding={{ left: 16, right: 16 }} />
-                    <YAxis axisLine={false} tickLine={false} width={32} padding={{ bottom: 16 }} />
-                    <Line type='monotone' dataKey='count' stroke='#C02C2C' />
-                    <Tooltip content={contentFormatter} />
-                  </LineChart>
-                </ResponsiveContainer>
-              )}
-          </div>
-        </figure>
-      );
+      <figure className="chart">
+        <figcaption>Operations over the past 10 years</figcaption>
+        <div className="chart__container">
+          {!fetched || fetching ? (
+            <BlockLoading />
+          ) : (
+            <ResponsiveContainer>
+              <LineChart data={data}>
+                <XAxis
+                  tickFormatter={tickFormatter}
+                  dataKey="timespan"
+                  axisLine={false}
+                  padding={{ left: 16, right: 16 }}
+                />
+                <YAxis
+                  axisLine={false}
+                  tickLine={false}
+                  width={32}
+                  padding={{ bottom: 16 }}
+                />
+                <Line type="monotone" dataKey="count" stroke="#C02C2C" />
+                <Tooltip content={contentFormatter} />
+              </LineChart>
+            </ResponsiveContainer>
+          )}
+        </div>
+      </figure>
+    );
   }
 
-  renderPersonnelBySociety() {
-    const {
-      data,
-      fetched,
-      fetching,
-      error
-    } = this.props.personnel;
+  renderPersonnelBySociety () {
+    const { data, fetched, fetching, error } = this.props.personnel;
 
-    const contentFormatter = (payload) => {
-      if (!payload.payload || !payload.payload[0]) { return null; }
+    const contentFormatter = payload => {
+      if (!payload.payload || !payload.payload[0]) {
+        return null;
+      }
 
       const item = payload.payload[0].payload;
       return (
-        <article className='chart-tooltip'>
-          <div className='chart-tooltip__contents'>
+        <article className="chart-tooltip">
+          <div className="chart-tooltip__contents">
             <dl>
               <dd>Society</dd>
               <dt>{item.name}</dt>
@@ -252,52 +275,68 @@ class AdminArea extends SFPComponent {
     return error ? (
       <p>No active deployments to show.</p>
     ) : (
-        <figure className='chart'>
-          <figcaption>Active deployments by participating National Societies</figcaption>
-          <div className='chart__container'>
-            {!fetched || fetching ? (
-              <BlockLoading />
-            ) : (
-                data.personnelBySociety.length ? (
-                  <ResponsiveContainer>
-                    <BarChart data={data.personnelBySociety}>
-                      <XAxis dataKey='name' axisLine={false} padding={{ left: 16, right: 16 }} />
-                      <YAxis axisLine={false} tickLine={false} width={32} padding={{ bottom: 16 }} />
-                      <Bar dataKey='count' fill='#C02C2C' />
-                      <Tooltip content={contentFormatter} />
-                    </BarChart>
-                  </ResponsiveContainer>
-                ) : (
-                    <p>No data to show.</p>
-                  )
-              )}
-          </div>
-        </figure>
-      );
+      <figure className="chart">
+        <figcaption>
+          Active deployments by participating National Societies
+        </figcaption>
+        <div className="chart__container">
+          {!fetched || fetching ? (
+            <BlockLoading />
+          ) : data.personnelBySociety.length ? (
+            <ResponsiveContainer>
+              <BarChart data={data.personnelBySociety}>
+                <XAxis
+                  dataKey="name"
+                  axisLine={false}
+                  padding={{ left: 16, right: 16 }}
+                />
+                <YAxis
+                  axisLine={false}
+                  tickLine={false}
+                  width={32}
+                  padding={{ bottom: 16 }}
+                />
+                <Bar dataKey="count" fill="#C02C2C" />
+                <Tooltip content={contentFormatter} />
+              </BarChart>
+            </ResponsiveContainer>
+          ) : (
+            <p>No data to show.</p>
+          )}
+        </div>
+      </figure>
+    );
   }
 
-  renderCountries() {
-    const {
-      fetched,
-      error,
-      data
-    } = this.props.countries;
-    if (!fetched || error) { return null; }
+  renderCountries () {
+    const { fetched, error, data } = this.props.countries;
+    if (!fetched || error) {
+      return null;
+    }
     let countries = data.results;
     if (this.props.appealStats.fetched && !this.props.appealStats.error) {
       const activeOperations = get(this.props.appealStats, 'data.results', []);
       countries = countries.map(d => {
-        const numOperations = activeOperations.filter(o => o.country && o.country.id === d.id).length;
+        const numOperations = activeOperations.filter(
+          o => o.country && o.country.id === d.id
+        ).length;
         return Object.assign({ numOperations }, d);
       });
     }
     return (
       <Fold title={countries.length + ' Countries in this Region'}>
-        <ul className='region-countries__list'>
+        <ul className="region-countries__list">
           {countries.map(d => (
-            <li key={d.id} className='region-countries__item'>
-              <Link to={`/countries/${d.id}`} className='link--primary'>{d.name}</Link>
-              {d.numOperations ? <span><strong>{d.numOperations}</strong> Active Operation{d.numOperations > 1 ? 's' : ''}</span> : null}
+            <li key={d.id} className="region-countries__item">
+              <Link to={`/countries/${d.id}`} className="link--primary">
+                {d.name}
+              </Link>
+              {d.numOperations ? (
+                <span>
+                  <strong>{d.numOperations}</strong> Active Operation
+                  {d.numOperations > 1 ? 's' : ''}
+                </span>
+              ) : null}
             </li>
           ))}
         </ul>
@@ -305,19 +344,19 @@ class AdminArea extends SFPComponent {
     );
   }
 
-  renderContent() {
-    const {
-      fetched,
-      error,
-      data
-    } = this.props.adminArea;
+  renderContent () {
+    const { fetched, error, data } = this.props.adminArea;
 
     if (!fetched || error) return null;
 
     const bbox = getRegionBoundingBox(data.id);
     const mapContainerClass = 'region__map';
     const regionName = get(regionMeta, [data.id, 'name'], nope);
-    const activeOperations = get(this.props.appealStats, 'data.results.length', false);
+    const activeOperations = get(
+      this.props.appealStats,
+      'data.results.length',
+      false
+    );
 
     const handleTabChange = index => {
       const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
@@ -326,22 +365,22 @@ class AdminArea extends SFPComponent {
     };
 
     return (
-      <section className='inpage'>
+      <section className="inpage">
         <Helmet>
           <title>IFRC Go - {regionName}</title>
         </Helmet>
-        <header className='inpage__header'>
-          <div className='inner'>
-            <div className='inpage__headline'>
-              <h1 className='inpage__title'>{regionName}</h1>
-              <div className='inpage__introduction'>
-                {this.renderStats()}
-              </div>
+        <header className="inpage__header">
+          <div className="inner">
+            <div className="inpage__headline">
+              <h1 className="inpage__title">{regionName}</h1>
+              <div className="inpage__introduction">{this.renderStats()}</div>
             </div>
           </div>
         </header>
         <Tabs
-          selectedIndex={TAB_DETAILS.map(({ hash }) => hash).indexOf(this.props.location.hash)}
+          selectedIndex={TAB_DETAILS.map(({ hash }) => hash).indexOf(
+            this.props.location.hash
+          )}
           onSelect={index => handleTabChange(index)}
         >
           <TabList>
@@ -350,18 +389,26 @@ class AdminArea extends SFPComponent {
             ))}
           </TabList>
 
-          <div className='inpage__body'>
-            <div className='inner'>
+          <div className="inpage__body">
+            <div className="inner">
               <TabPanel>
-                <TabContent isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage="Key figures coming soon" title="Key Figures">
+                <TabContent
+                  isError={!get(this.props.keyFigures, 'data.results.length')}
+                  errorMessage="Key figures coming soon"
+                  title="Key Figures"
+                >
                   <KeyFigures data={this.props.keyFigures} />
                 </TabContent>
               </TabPanel>
               <TabPanel>
                 <TabContent>
-                  <div className='fold' id='operations-map'>
-                    <div className='inner'>
-                      <h2 className='fold__title'>{activeOperations === null || isNaN(activeOperations) ? null : `Active IFRC Operations (${activeOperations})`}</h2>
+                  <div className="fold" id="operations-map">
+                    <div className="inner">
+                      <h2 className="fold__title">
+                        {activeOperations === null || isNaN(activeOperations)
+                          ? null
+                          : `Active IFRC Operations (${activeOperations})`}
+                      </h2>
                       <div className={mapContainerClass}>
                         <RegionMap
                           operations={this.props.appealStats}
@@ -378,8 +425,8 @@ class AdminArea extends SFPComponent {
               <TabPanel>
                 <TabContent>
                   <EmergenciesTable
-                    id='emergencies'
-                    title='Recent Emergencies'
+                    id="emergencies"
+                    title="Recent Emergencies"
                     limit={5}
                     region={getRegionId(this.props.match.params.id)}
                     showRecent={true}
@@ -388,8 +435,12 @@ class AdminArea extends SFPComponent {
                   />
                   {this.renderCountries()}
 
-                  <Fold title='Statistics' headerClass='visually-hidden' id='stats'>
-                    <div className='stats-chart'>
+                  <Fold
+                    title="Statistics"
+                    headerClass="visually-hidden"
+                    id="stats"
+                  >
+                    <div className="stats-chart">
                       {this.renderOperations10Years()}
                       {this.renderPersonnelBySociety()}
                     </div>
@@ -409,17 +460,29 @@ class AdminArea extends SFPComponent {
                 </TabContent>
               </TabPanel>
               <TabPanel>
-                <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage="Graphics coming soon" title="Graphics">
+                <TabContent
+                  isError={!get(this.props.snippets, 'data.results.length')}
+                  errorMessage="Graphics coming soon"
+                  title="Graphics"
+                >
                   <Snippets data={this.props.snippets} />
                 </TabContent>
               </TabPanel>
               <TabPanel>
-                <TabContent isError={!get(data, 'links.length')} errorMessage="Links coming soon" title="Links">
+                <TabContent
+                  isError={!get(data, 'links.length')}
+                  errorMessage="Links coming soon"
+                  title="Links"
+                >
                   <Links data={data} />
                 </TabContent>
               </TabPanel>
               <TabPanel>
-                <TabContent isError={!get(data, 'contacts.length')} errorMessage="Contacts coming soon" title="Contacts">
+                <TabContent
+                  isError={!get(data, 'contacts.length')}
+                  errorMessage="Contacts coming soon"
+                  title="Contacts"
+                >
                   <Contacts data={data} />
                 </TabContent>
               </TabPanel>
@@ -430,7 +493,7 @@ class AdminArea extends SFPComponent {
     );
   }
 
-  render() {
+  render () {
     return (
       <App className={`page--${this.props.type}`}>
         <Helmet>
@@ -466,11 +529,15 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state, ownProps) => ({
-  adminArea: get(state.adminArea.aaData, getRegionId(ownProps.match.params.id), {
-    data: {},
-    fetching: false,
-    fetched: false
-  }),
+  adminArea: get(
+    state.adminArea.aaData,
+    getRegionId(ownProps.match.params.id),
+    {
+      data: {},
+      fetching: false,
+      fetched: false
+    }
+  ),
   appeals: state.adminArea.appeals,
   drefs: state.adminArea.drefs,
   appealStats: state.adminArea.appealStats,
@@ -485,14 +552,18 @@ const selector = (state, ownProps) => ({
   countries: state.countries
 });
 
-const dispatcher = (dispatch) => ({
+const dispatcher = dispatch => ({
   _getAdmAreaById: (...args) => dispatch(getAdmAreaById(...args)),
   _getAdmAreaAppealsList: (...args) => dispatch(getAdmAreaAppealsList(...args)),
-  _getAdmAreaAggregateAppeals: (...args) => dispatch(getAdmAreaAggregateAppeals(...args)),
+  _getAdmAreaAggregateAppeals: (...args) =>
+    dispatch(getAdmAreaAggregateAppeals(...args)),
   _getRegionPersonnel: (...args) => dispatch(getRegionPersonnel(...args)),
   _getAdmAreaKeyFigures: (...args) => dispatch(getAdmAreaKeyFigures(...args)),
   _getAdmAreaSnippets: (...args) => dispatch(getAdmAreaSnippets(...args)),
   _getCountries: (...args) => dispatch(getCountries(...args))
 });
 
-export default connect(selector, dispatcher)(AdminArea);
+export default connect(
+  selector,
+  dispatcher
+)(AdminArea);
