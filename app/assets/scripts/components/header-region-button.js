@@ -36,7 +36,7 @@ class HeaderRegionButton extends React.Component {
   render () {
     const { id, currentPath } = this.props;
     const title = this.decideTitle(currentPath);
-    const regions = regionArray.map(o => ({to: `/regions/${o.id}`, text: o.name}));
+    const regions = regionArray.map(o => ({to: `/regions/${o.id}`, text: o.name})).slice(0, 5); // excluding Other from the region dropdown menu
     const triggerClassName = this.decideTriggerClassName(currentPath);
 
     return (
