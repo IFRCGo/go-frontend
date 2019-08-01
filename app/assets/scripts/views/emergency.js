@@ -656,7 +656,7 @@ class Emergency extends React.Component {
         >
           <TabList>
             {TAB_DETAILS.map(tab => (
-              <Tab>{tab.title}</Tab>
+              <Tab key={tab.title}>{tab.title}</Tab>
             ))}
           </TabList>
 
