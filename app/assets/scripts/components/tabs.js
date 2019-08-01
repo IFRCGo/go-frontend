@@ -25,10 +25,10 @@ TabPanel.defaultProps = {
 
 if (environment !== 'production') {
   TabPanel.propTypes = {
-    isError: T.boolean,
+    isError: T.bool,
     title: T.string,
     errorMessage: T.string,
-    children: T.object
+    children: T.node
   };
 }
 
