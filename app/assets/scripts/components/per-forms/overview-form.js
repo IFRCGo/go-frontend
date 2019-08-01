@@ -36,6 +36,7 @@ class OverviewForm extends React.Component {
     };
     this.submitForm = this.submitForm.bind(this);
     this.saveDraft = this.saveDraft.bind(this);
+    this.resetForm = this.resetForm.bind(this);
     this.loadedDraft = null;
     this.sendInProgress = false;
   }
@@ -179,6 +180,29 @@ class OverviewForm extends React.Component {
     document.getElementsByName('type_of_last_assessment')[0].selectedIndex = data.type_of_last_assessment;
   }
 
+  resetForm () {
+    var container, inputs, index;
+    // Get the container element
+    container = document.getElementById('overview__form');
+
+    // Find its child `input` elements
+    inputs = container.getElementsByTagName('input');
+
+    for (index = 0; index < inputs.length; ++index) {
+      inputs[index].value = '';
+    }
+
+    this.loadedDraft = null;
+    this.setState(() => {
+      return {
+        data: {
+          facilitator_phone: '',
+          focus: ''
+        }
+      };
+    });
+  }
+
   render () {
     if (this.state.redirect) {
       return <Redirect to='/account' />;
@@ -254,6 +278,7 @@ class OverviewForm extends React.Component {
       return (
         <React.Fragment>
           <Link to='/account#per-forms' className='button button--medium button--primary-filled' style={{float: 'right', marginBottom: '1rem'}}>Exit form</Link>
+          <button className={c('button button--medium button--secondary-filled')} onClick={this.resetForm} style={{float: 'right', marginBottom: '1rem', marginRight: '4px'}}>Reset Fields</button>
           <div className='fold'>
             <div className='inner'>
 
@@ -262,7 +287,7 @@ class OverviewForm extends React.Component {
               </div>
               <div style={{clear: 'both'}}></div>
 
-              <div>
+              <div id="overview__form">
                 <div className='per_form_ns'>General Information</div>
                 Date of current capacity assessment<br />
                 <select className='form__control form__control--medium' style={{width: '100px', display: 'inline-block'}} name='date_of_current_assessment_year'>
