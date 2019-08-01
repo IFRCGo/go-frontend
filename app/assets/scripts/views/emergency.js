@@ -39,6 +39,7 @@ import {
 
 import App from './app';
 import Fold from '../components/fold';
+import TabContent from '../components/tab-content';
 import ErrorPanel from '../components/error-panel';
 
 
@@ -465,51 +466,59 @@ class Emergency extends React.Component {
           <div className='inpage__body'>
             <div className='inner'>
               <TabPanel>
-                {summary ? (
+                <TabContent isError={!summary} errorMessage="Overview coming soon" title="Overview">
                   <Fold id='overview'
                     title='Situational Overview'
                     wrapperClass='situational-overview' >
                     <Expandable limit={360} text={summary} />
                     {source ? <p className='emergency__source'>Source: {source}</p> : null}
                   </Fold>
-                ) : <ErrorPanel title="Overview" errorMessage="Overview coming soon" />}
+                </TabContent>
               </TabPanel>
               <TabPanel>
-                {get(this.props.snippets) ? <Snippets data={this.props.snippets} /> : <ErrorPanel title="Graphics" errorMessage="Graphics coming soon" />}
-                {this.renderKeyFigures()}
+                <TabContent isError={!get(this.props.snippets)} errorMessage="Graphics coming soon" title="Graphics">
+                  <Snippets data={this.props.snippets} />
+                  {this.renderKeyFigures()}
+                </TabContent>
               </TabPanel>
               <TabPanel>
-                {get(this.props.event, 'data.field_reports.length') ? this.renderFieldReports() : <ErrorPanel title="Field Reports" errorMessage="Field reports coming soon" />}
+                <TabContent isError={!get(this.props.event, 'data.field_reports.length')} errorMessage="Field Reports coming soon" title="Field Reports">
+                  {this.renderFieldReports()}
+                </TabContent>
+
               </TabPanel>
               <TabPanel>
-                {get(this.props.surgeAlerts, 'data.results.length') ? (
+                <TabContent isError={!get(this.props.surgeAlerts, 'data.results.length')} errorMessage="Alerts coming soon" title="Alerts">
                   < SurgeAlertsTable id='alerts'
                     title='Alerts'
                     emergency={this.props.match.params.id}
                     returnNullForEmpty={true}
-                  />) : <ErrorPanel title="Alerts" errorMessage="Alerts coming soon" />}
+                  />)
+                </TabContent>
               </TabPanel>
               <TabPanel>
-                {get(this.props.eru, 'data.results.length') ? (<EruTable id='erus'
-                  emergency={this.props.match.params.id}
-                />) : <ErrorPanel title="ERUs" errorMessage="ERUs coming soon" />}
+                <TabContent isError={!get(this.props.eru, 'data.results.length')} errorMessage="ERUs coming soon" title="ERUs">
+                  <EruTable id='erus'
+                    emergency={this.props.match.params.id}
+                  />
+                </TabContent>
               </TabPanel>
               <TabPanel>
-                {get(this.props.personnel, 'data.results.length') ? (
+                <TabContent isError={!get(this.props.personnel, 'data.results.length')} errorMessage="Personnel coming soon" title="Personnel">
                   <PersonnelTable id='personnel'
                     emergency={this.props.match.params.id}
                   />
-                ) : <ErrorPanel title="Personnel" errorMessage="Personnel coming soon" />}
+                </TabContent>
               </TabPanel>
               <TabPanel>
-                {get(this.props.situationReports, 'data.results.length') ? (
-                  this.renderResponseDocuments()
-                ) : <ErrorPanel title="Response Documents" errorMessage="Response documents coming soon" />}
+                <TabContent isError={!get(this.props.situationReports, 'data.results.length')} errorMessage="Response documents coming soon" title="Response Documents">
+                  {this.renderResponseDocuments()}
+                </TabContent>
               </TabPanel>
               <TabPanel>
-                {get(this.props.appealDocuments, 'data.results.length') ? (
-                  this.renderAppealDocuments()
-                ) : <ErrorPanel title="Appeal Documents" errorMessage="Appeal documents coming soon" />}
+                <TabContent isError={!get(this.props.appealDocuments, 'data.results.length')} errorMessage="Appeal documents coming soon" title="Appeal Documents">
+                  {this.renderAppealDocuments()}
+                </TabContent>
               </TabPanel>
               <TabPanel>
                 {contacts && contacts.length ? (
