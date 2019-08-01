@@ -38,6 +38,8 @@ import { showAlert } from '../components/system-alerts';
 
 import Fold from '../components/fold';
 import ErrorPanel from '../components/error-panel';
+import TabContent from '../components/tab-content';
+
 
 import {
   FormCheckboxGroup,
@@ -685,7 +687,7 @@ class Account extends React.Component {
                 options={perDueDateTypes}
                 values={this.state.notifications.per}
                 onChange={this.onFieldChange.bind(this, 'notifications', 'per')} />
-              : null }
+              : null}
             {events}
             <div className="text-center">
               <button type='submit' className={c('button', 'button--large', 'button--secondary-filled', {
@@ -953,15 +955,23 @@ class Account extends React.Component {
             <div className='inpage__body'>
               <div className='inner'>
                 <TabPanel>
-                  {this.renderOperationsFollowing()}
-                  {this.renderAccountInformation()}
+                  <TabContent>
+                    {this.renderOperationsFollowing()}
+                    {this.renderAccountInformation()}
+                  </TabContent>
                 </TabPanel>
                 <TabPanel>
-                  {this.renderFieldReports()}
-                  {this.props.profile.fetched && !this.props.profile.error ? this.renderSubscriptionForm() : <ErrorPanel title="Subscriptions" errorMessage="Subscriptions coming soon" />}
+                  <TabContent>
+                    {this.renderFieldReports()}
+                  </TabContent>
+                  <TabContent isError={!this.props.profile.fetched && this.props.profile.error} errorMessage="Subscriptions coming soon" title="Subscriptions">
+                    {this.renderSubscriptionForm()}
+                  </TabContent>
                 </TabPanel>
                 <TabPanel>
-                  {this.isPerPermission() ? this.renderPerFormsComponent() : <ErrorPanel title="PER Forms" errorMessage="Please login to view content" />}
+                  <TabContent isError={!this.isPerPermission()} errorMessage="Please login to view content" title="PER Forms">
+                    {this.renderPerFormsComponent()}
+                  </TabContent>
                 </TabPanel>
               </div>
             </div>
