@@ -278,7 +278,7 @@ class OverviewForm extends React.Component {
       return (
         <React.Fragment>
           <Link to='/account#per-forms' className='button button--medium button--primary-filled' style={{float: 'right', marginBottom: '1rem'}}>Exit form</Link>
-          <button className={c('button button--medium button--secondary-filled')} onClick={this.resetForm} style={{float: 'right', marginBottom: '1rem', marginRight: '4px'}}>Reset Fields</button>
+          <button className={c('button button--medium button--secondary-filled')} onClick={this.resetForm} style={{float: 'right', marginBottom: '1rem', marginRight: '4px'}}>Reset fields</button>
           <div className='fold'>
             <div className='inner'>
 
