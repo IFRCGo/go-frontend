@@ -943,7 +943,7 @@ class Account extends React.Component {
           >
             <TabList>
               {TAB_DETAILS.map(tab => (
-                <Tab>{tab.title}</Tab>
+                <Tab key={tab.title}>{tab.title}</Tab>
               ))}
             </TabList>
 
@@ -959,8 +959,8 @@ class Account extends React.Component {
                   <TabContent>
                     {this.renderFieldReports()}
                   </TabContent>
-                  <TabContent isError={!this.props.profile.fetched && this.props.profile.error} errorMessage="Subscriptions coming soon" title="Subscriptions">
-                    {this.renderSubscriptionForm()}
+                  <TabContent isError={this.props.profile.fetched && this.props.profile.error} errorMessage="Subscriptions coming soon" title="Subscriptions">
+                    {this.props.profile.fetched && this.renderSubscriptionForm()}
                   </TabContent>
                 </TabPanel>
                 <TabPanel>

@@ -31,7 +31,6 @@ if (environment !== 'production') {
     isError: T.boolean,
     errorMessage: T.string,
     children: T.object,
-    rest: T.object,
     title: T.string
   };
 }
