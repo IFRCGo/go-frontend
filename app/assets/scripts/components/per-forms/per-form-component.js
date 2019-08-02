@@ -740,6 +740,1938 @@ const renderEpiComponent = (component, props, componentIndex) => {
           <span className='form__option__text'>High performance</span>
         </label><br /><br />
       </div>);
+    } else if (props.formCode === 'a3-2' && componentIndex === 0) { // ============================================= a3-2
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - CBS, detection and control is in place in vulnerable communities and NS has the capacity and materials to inform at-risk communities about the causes and consequences of major epidemic threats and to help them identify key practices for epidemic control.<br />
+          - NS ensures assessment, planning and response include measures to avoid fear and stigma.<br />
+          - CDRT are familiar with the NS epidemic response strategy and its complementarity with the national strategy, are trained and equipped to respond to epidemics and can mobilize local resources.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a3-2' && componentIndex === 1) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - If quarantine communities in high-risk areas is declared,  NS has mechanisms to liaise with MoH to provide support.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a3-2' && componentIndex === 2) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - NS has SoPs and pre-positioned supplies for the management of dead bodies.<br />
+          - Staff and volunteers are regularly trained on the use and disposal of PPE<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a3-2' && componentIndex === 3) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - NS has Infection Prevention and Control policies and procedures to accompany first aid responders in an infectious disease outbreaks. E.g. no-touch policy.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a3-2' && componentIndex === 4) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - NS response strategy includes water, sanitation and hygiene measures in case of epidemics, and response teams are familiar with WASH in infectious settings including environmental sanitation.<br />
+          - Epidemic specific WASH support is available.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a3-2' && componentIndex === 5) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - NS has early warning system for food contamination in epidemics and has SOPs for food distribution in quarantine.<br />
+          - The identified technical staff for food assistance is trained to identify needs and analyse market situation in epidemics in order to make recommendations.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a3-2' && componentIndex === 6) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - Markets as potential sources of transmission are mapped.<br />
+          - In epidemic-prone areas, risks to community and household productive assets are identified and a plan for protecting assets is in place.<br />
+          - NS can support business continuity planning for private sector actors (especially Small and Medium Enterprises).<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a3-2' && componentIndex === 7) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - Scenarios consider epidemic risk and absence of key personnel.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a3-2' && componentIndex === 8) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - Replacement of destroyed or contaminated NFI during epidemic is planned for.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a3-2' && componentIndex === 9) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - NS in countries with epidemic risk for viral hemorrhagic fevers can carry out safe and dignified burials.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a3-2' && componentIndex === 10) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - NS can carry out RFL in epidemics due to separation in isolation.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a3-2' && componentIndex === 11) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - Stigma to reintegrate survivors into communities and other aspects that might be specific to epidemics.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a3-2' && componentIndex === 12) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - Chemical events are included in CBS as a specific indicator or as an unusual event. NS includes contacts to chemical authorities in CBS SOP.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a3-2' && componentIndex === 13) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - NS trains CBHFA volunteers on epidemics simulations, preparedness and response planning and monitoring utilizing the Communicable Disease Prevention module and Epidemic Control for Volunteer toolkit<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a3-2' && componentIndex === 14) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - Capacities are mapped in line with types of epidemic prone diseases and epidemic risks.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a3-2' && componentIndex === 15) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - Early Action mechanism in case of epidemics is formalized with MoH, including triggers<br />
+          - The branches have functioning local networks to inform communities of potential epidemics (respecting mandates of public authorities).<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a3-2' && componentIndex === 16) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - Cash transfer programme is tailored to face the challenges of infectious disease outbreaks.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a3-2' && componentIndex === 17) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - Data collection templates for epidemic needs assessment are available to include CBS, health services etc.<br />
+          - Emergency multi-sectoral assessment team is trained on Infection prevention and control.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a3-2' && componentIndex === 18) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - NS has a policy to share personal data with operational actors (i.e. contact tracing).<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a3-2' && componentIndex === 19) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - EOC structure includes decision-making responsibilities for health staff, and how NS EOC supports the national EOC.<br />
+          - EOC SOPs are adapted to epidemics and involve health staff.<br />
+          - NS EOC is linked to the MOE's EOC.<br />
+          - The roles of health managers within the EOC are clear.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a3-2' && componentIndex === 20) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - Key staff at headquarters and branch level are familiar with IM templates (these may be the NS or IFRC), methodology and procedures specific to epidemics.<br />
+          - Specific SOPs for data sharing in epidemics are available.<br />
+          - Ongoing scenario plans and response options are documented and filed.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a3-2' && componentIndex === 21) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - NS conducts epidemic-specific simulations and drills that cover cross-border dimensions at least once a year and more often in areas at high risk of epidemics.<br />
+          - Testing includes infection prevention and control for staff and volunteers.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a3-2' && componentIndex === 22) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - SOPs for the acceptance of medical personnel, medical equipment and supplies including medication and laboratory supplies<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a3' && componentIndex === 0) { // ============================================= a3
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - Capacities are mapped in line with types of epidemic prone diseases and epidemic risks.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a3' && componentIndex === 1) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - Early Action mechanism in case of epidemics is formalized with MoH, including triggers<br />
+          - The branches have functioning local networks to inform communities of potential epidemics (respecting mandates of public authorities).<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a3' && componentIndex === 2) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - Cash transfer programme is tailored to face the challenges of infectious disease outbreaks.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a3' && componentIndex === 3) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - Data collection templates for epidemic needs assessment are available to include CBS, health services etc.<br />
+          - Emergency multi-sectoral assessment team is trained on Infection prevention and control.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a3' && componentIndex === 4) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - NS has a policy to share personal data with operational actors (i.e. contact tracing).<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a3' && componentIndex === 5) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - EOC structure includes decision-making responsibilities for health staff, and how NS EOC supports the national EOC.<br />
+          - EOC SOPs are adapted to epidemics and involve health staff.<br />
+          - NS EOC is linked to the MOE's EOC.<br />
+          - The roles of health managers within the EOC are clear.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a3' && componentIndex === 6) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - Key staff at headquarters and branch level are familiar with IM templates (these may be the NS or IFRC), methodology and procedures specific to epidemics.<br />
+          - Specific SOPs for data sharing in epidemics are available.<br />
+          - Ongoing scenario plans and response options are documented and filed.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a3' && componentIndex === 7) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - NS conducts epidemic-specific simulations and drills that cover cross-border dimensions at least once a year and more often in areas at high risk of epidemics.<br />
+          - Testing includes infection prevention and control for staff and volunteers.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a3' && componentIndex === 8) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - SOPs for the acceptance of medical personnel, medical equipment and supplies including medication and laboratory supplies.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a4' && componentIndex === 0) { // ============================================= a4
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - Framework for the use and coordination of international assistance includes management of medical teams.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a4' && componentIndex === 1) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - NS knows the national authorities' capacities for epidemic prevention and control and identifies areas within a response to fulfil their auxiliary role.<br />
+          - The use of emblem by medical teams is clearly defined.<br />
+          - NS is part of the National risk communication sub working groups.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a4' && componentIndex === 2) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - Coordination mechanisms specific to epidemic risk management.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a4' && componentIndex === 3) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - Coordination mechanisms specific to epidemic risk management.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a4' && componentIndex === 4) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - Coordination mechanisms specific to epidemic risk management (e.g. with limited number of key available staff and volunteers, security/access limitations).<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a4' && componentIndex === 5) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - Coordination mechanisms specific to epidemic risk management (e.g. partnership with communication or PPE providers, protection of corporate partner volunteers).<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a5' && componentIndex === 0) { // ============================================= a5
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - NS has conducted a protection, gender and inclusion (PGI) analysis to put a gender and culturally appropriate security system in place to protect all staff and volunteers from the risk of epidemics.<br />
+          - All  responders are trained in protection, gender and inclusion (PGI) and are aware of gender specific safety and security requirements during epidemics.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a5' && componentIndex === 1) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - PMER aspects that might be particularly affected during an outbreak (e.g. with limited number of key staff and volunteers available).<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a5' && componentIndex === 2) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - Finance and administration processes that might be particularly affected during epidemics (e.g. with limited number of key staff and volunteers available).<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a5' && componentIndex === 3) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - Information and Communication Technology processes that might be particularly affected during epidemics (e.g. with limited number of key staff and volunteers available, management of rumours), or necessary to carry out Community Based Surveillance (CBS) activities.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a5' && componentIndex === 5) { // !!! increased from 4 to 5, and so later on
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - WHO and MOH have been consulted on specifications of pre-positioned relief items related to epidemics and NS has analysed optimal supply chain options (e.g. prepositioned relief items, pre-existing agreements with suppliers, environmental impact) in terms of cost, speed and reliability.<br />
+          - NS has SOPs for accepting, rejecting, storing, disposing and reporting on in-kind medical donations.<br />
+          - NS has a procedure on the import of vaccines and drugs related to potential epidemics.<br />
+          - There are infection prevention and control measures set for the use of vehicles during epidemics.<br />
+          - Drivers are included in infection prevention and control and psychosocial support training in epidemics.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a5' && componentIndex === 6) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - Supply chain management processes that might be specific to epidemics (e.g. PPE, vaccines).<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a5' && componentIndex === 7) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - Procurement processes that might be specific to epidemics (e.g. PPE).<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a5' && componentIndex === 8) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - Processes that might be specific to epidemics.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a5' && componentIndex === 9) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - Processes that might be specific to epidemics.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a5' && componentIndex === 10) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - NS conducts regular training of key staff on epidemic prevention, surveillance (including zoonoses) and control at all levels (HQ, high-risk branches, volunteers).<br />
+          - NS has appropriate volunteer insurance for epidemics.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a5' && componentIndex === 11) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - Key messages and public awareness messages for specific epidemics are available and shared with staff regularly.<br />
+          - NS has as a rumor management system for epidemics.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
+    } else if (props.formCode === 'a5' && componentIndex === 12) {
+      return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
+        <div className='per_form_ns'>Epidemic preparedness</div>
+        <div>
+          Please take into consideration the following aspects:<br />
+          - Partners and donations that might be specific to epidemics.<br /><br />
+        </div>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='2' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Not Reviewed</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='3' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Does not exist</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='4' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Partially exists</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='5' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Need improvements</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='6' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>Exists, could be strengthened</span>
+        </label>
+        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+          <input type='radio' disabled={props.view} name={'c' + componentIndex + 'epi'} value='7' />
+          <span className='form__option__ui'></span>
+          <span className='form__option__text'>High performance</span>
+        </label><br /><br />
+      </div>);
     } else {
       return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
         <div className='per_form_ns'>Epidemic preparedness</div>
