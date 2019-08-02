@@ -276,7 +276,7 @@ class Account extends React.Component {
       if (rtype === 'country' && sub.country) {
         let countryMeta = getCountryMeta(sub.country);
         next.countries = next.countries.concat([{ label: countryMeta.label, value: sub.country.toString() }]);
-      } else if (rtype === 'region' && sub.region) {
+      } else if (rtype === 'region' && (sub.region || sub.region === 0)) {
         next.regions = updateChecks(next.regions, sub.region.toString());
       } else if (rtype === 'disasterType' && sub.dtype) {
         next.disasterTypes = updateChecks(next.disasterTypes, sub.dtype.toString());
