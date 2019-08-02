@@ -10,8 +10,7 @@ import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import { set } from 'object-path';
 import { Helmet } from 'react-helmet';
-import { Sticky, StickyContainer } from 'react-sticky';
-
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { environment } from '../config';
 import {
   getUserProfile,
@@ -36,6 +35,8 @@ import { showGlobalLoading, hideGlobalLoading } from '../components/global-loadi
 import { showAlert } from '../components/system-alerts';
 
 import Fold from '../components/fold';
+import TabContent from '../components/tab-content';
+
 import {
   FormCheckboxGroup,
   FormInput
@@ -47,6 +48,12 @@ const Fragment = React.Fragment;
 
 // Exclude the first item since it's a dropdown placeholder
 const disasterTypes = disasterType.slice(1);
+
+const TAB_DETAILS = [
+  { title: 'Account Information', hash: '#account-information' },
+  { title: 'Notficications', hash: '#notficications' },
+  { title: 'PER forms', hash: '#per-forms' }
+];
 
 // Constants used to create form elements
 
@@ -164,7 +171,7 @@ class Account extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      chosenCountry: {id: 0, society_name: ''},
+      chosenCountry: { id: 0, society_name: '' },
       isNotificationsDirty: false,
       notifications: {
         countries: [],
@@ -208,26 +215,19 @@ class Account extends React.Component {
     _getFieldReportsByUser(user.id);
     _getPerCountries();
     _getPerDocuments();
-    const draftQueryFilters = {user: user.id};
+    const draftQueryFilters = { user: user.id };
     _getPerDraftDocument(draftQueryFilters);
     this.props._getPerOverviewForm();
     this.props._getPerMission();
     showGlobalLoading();
+    this.displayTabContent();
   }
 
-  componentDidUpdate () {
-    if (this.componentIsLoading) {
-      if (window.location.href.includes('#')) {
-        const componentToJump = window.location.href.split('#')[1].trim();
-        const component = document.getElementById(componentToJump);
-        if (component !== null) {
-          const componentDistanceFromTop = component.offsetTop;
-          window.scrollTo(0, componentDistanceFromTop);
-          if (this.props.getPerMission.fetched) {
-            this.componentIsLoading = false;
-          }
-        }
-      }
+  // Sets default tab if url param is blank or incorrect
+  displayTabContent () {
+    const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
+    if (!tabHashArray.find(hash => hash === this.props.location.hash)) {
+      this.props.history.replace(`${this.props.location.pathname}${tabHashArray[0]}`);
     }
   }
 
@@ -261,7 +261,7 @@ class Account extends React.Component {
       }
     }
     if (nextProps.perForm.getPerCountries.fetched && nextProps.perForm.getPerCountries.data.count > 0) {
-      this.setState({chosenCountry: {id: nextProps.perForm.getPerCountries.data.results[0].id, society_name: nextProps.perForm.getPerCountries.data.results[0].society_name}});
+      this.setState({ chosenCountry: { id: nextProps.perForm.getPerCountries.data.results[0].id, society_name: nextProps.perForm.getPerCountries.data.results[0].society_name } });
     }
   }
 
@@ -275,8 +275,8 @@ class Account extends React.Component {
       const rtype = rtypes[sub.rtype];
       if (rtype === 'country' && sub.country) {
         let countryMeta = getCountryMeta(sub.country);
-        next.countries = next.countries.concat([{label: countryMeta.label, value: sub.country.toString()}]);
-      } else if (rtype === 'region' && (sub.region || sub.region === 0)) {
+        next.countries = next.countries.concat([{ label: countryMeta.label, value: sub.country.toString() }]);
+      } else if (rtype === 'region' && sub.region) {
         next.regions = updateChecks(next.regions, sub.region.toString());
       } else if (rtype === 'disasterType' && sub.dtype) {
         next.disasterTypes = updateChecks(next.disasterTypes, sub.dtype.toString());
@@ -323,7 +323,7 @@ class Account extends React.Component {
     let val = e && e.target ? e.target.value : e;
     _set(state, field, val === '' || val === null ? undefined : val);
     let dirtyProperty = stateProperty === 'notifications' ? 'isNotificationsDirty' : 'isProfileDirty';
-    this.setState({[dirtyProperty]: true, [stateProperty]: state});
+    this.setState({ [dirtyProperty]: true, [stateProperty]: state });
   }
 
   onNotificationSubmit (e) {
@@ -417,7 +417,7 @@ class Account extends React.Component {
 
   changeChosenCountry (e) {
     let filteredCountry = this.props.perForm.getPerCountries.data.results.filter(country => country.id === parseInt(e.target.value));
-    this.setState({chosenCountry: {id: filteredCountry[0].id, society_name: filteredCountry[0].society_name}});
+    this.setState({ chosenCountry: { id: filteredCountry[0].id, society_name: filteredCountry[0].society_name } });
   }
 
   delSubscription (event) {
@@ -682,7 +682,7 @@ class Account extends React.Component {
                 options={perDueDateTypes}
                 values={this.state.notifications.per}
                 onChange={this.onFieldChange.bind(this, 'notifications', 'per')} />
-              : null }
+              : null}
             {events}
             <div className="text-center">
               <button type='submit' className={c('button', 'button--large', 'button--secondary-filled', {
@@ -704,7 +704,7 @@ class Account extends React.Component {
           perOverviewForm.country.region = -1;
         }
         if (!groupedDocuments.hasOwnProperty(perOverviewForm.country.region)) {
-          groupedDocuments[perOverviewForm.country.region] = {[perOverviewForm.country.id]: []};
+          groupedDocuments[perOverviewForm.country.region] = { [perOverviewForm.country.id]: [] };
           groupedDocuments[perOverviewForm.country.region][perOverviewForm.country.id].push(perOverviewForm);
         } else {
           if (!groupedDocuments[perOverviewForm.country.region].hasOwnProperty(perOverviewForm.country.id)) {
@@ -722,7 +722,7 @@ class Account extends React.Component {
           }
           document.formType = 'per';
           if (!groupedDocuments.hasOwnProperty(document.country.region)) {
-            groupedDocuments[document.country.region] = {[document.country.id]: []};
+            groupedDocuments[document.country.region] = { [document.country.id]: [] };
             groupedDocuments[document.country.region][document.country.id].push(document);
           } else {
             if (!groupedDocuments[document.country.region].hasOwnProperty(document.country.id)) {
@@ -798,7 +798,7 @@ class Account extends React.Component {
           Choose National Society:&nbsp;
           <select onChange={this.changeChosenCountry}>
             {countryOptions}
-          </select><br/><br />
+          </select><br /><br />
           <div className='text-center'>
             <Link to={'/per-forms/overview/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Overview</Link>
           </div>
@@ -822,7 +822,7 @@ class Account extends React.Component {
               <Link to={'/per-forms/operations-support/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 5: Operations support</Link>
             </div>
           </div>
-          <br/><br />
+          <br /><br />
           <h2 className='fold__title margin-reset'>Active PER Forms</h2>
           <hr />
           <span className='text-semi-bold'>{documents}</span>
@@ -863,7 +863,7 @@ class Account extends React.Component {
       }
     }
     return (<React.Fragment>
-      <br/><br />
+      <br /><br />
       <h2 className='fold__title margin-reset'>Active drafts</h2>
       <hr />
       {draftDocuments}
@@ -917,6 +917,12 @@ class Account extends React.Component {
     </div>);
   }
 
+  handleTabChange (index) {
+    const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
+    const url = this.props.location.pathname;
+    this.props.history.replace(`${url}${tabHashArray[index]}`);
+  }
+
   render () {
     return (
       <App className='page--account'>
@@ -931,30 +937,40 @@ class Account extends React.Component {
               </div>
             </div>
           </header>
-          <StickyContainer>
-            <Sticky>
-              {({ style, isSticky }) => (
-                <div style={style} className={c('inpage__nav', {'inpage__nav--sticky': isSticky})}>
-                  <div className='inner'>
-                    <ul>
-                      <li><a href='#account-information' title='Go to Operations section'>Account Information</a></li>
-                      <li><a href='#notifications' title='Go to notifications section'>Notifications</a></li>
-                      {this.isPerPermission() ? <li><a href='#per-forms' title='Go to per section'>PER forms</a></li> : null}
-                    </ul>
-                  </div>
-                </div>
-              )}
-            </Sticky>
-          </StickyContainer>
-          <div className='inpage__body'>
-            <div className='inner'>
-              {this.renderOperationsFollowing()}
-              {this.renderAccountInformation()}
-              {this.renderFieldReports()}
-              {this.props.profile.fetched && !this.props.profile.error ? this.renderSubscriptionForm() : null}
-              {this.isPerPermission() ? this.renderPerFormsComponent() : null}
+          <Tabs
+            selectedIndex={TAB_DETAILS.map(({ hash }) => hash).indexOf(this.props.location.hash)}
+            onSelect={index => this.handleTabChange(index)}
+          >
+            <TabList>
+              {TAB_DETAILS.map(tab => (
+                <Tab key={tab.title}>{tab.title}</Tab>
+              ))}
+            </TabList>
+
+            <div className='inpage__body'>
+              <div className='inner'>
+                <TabPanel>
+                  <TabContent>
+                    {this.renderOperationsFollowing()}
+                    {this.renderAccountInformation()}
+                  </TabContent>
+                </TabPanel>
+                <TabPanel>
+                  <TabContent>
+                    {this.renderFieldReports()}
+                  </TabContent>
+                  <TabContent isError={this.props.profile.fetched && this.props.profile.error} errorMessage="Subscriptions coming soon" title="Subscriptions">
+                    {this.props.profile.fetched && this.renderSubscriptionForm()}
+                  </TabContent>
+                </TabPanel>
+                <TabPanel>
+                  <TabContent isError={!this.isPerPermission()} errorMessage="Please login to view content" title="PER Forms">
+                    {this.renderPerFormsComponent()}
+                  </TabContent>
+                </TabPanel>
+              </div>
             </div>
-          </div>
+          </Tabs>
         </section>
       </App>
     );
@@ -968,6 +984,8 @@ if (environment !== 'production') {
     fieldReport: T.object,
     perForm: T.object,
     event: T.object,
+    history: T.object,
+    location: T.object,
     perOverviewForm: T.object,
     _getProfile: T.func,
     _updateSubscriptions: T.func,
@@ -1010,7 +1028,7 @@ const dispatcher = (dispatch) => ({
   _getPerDraftDocument: (...args) => dispatch(getPerDraftDocument(...args)),
   _addSubscriptions: (...args) => dispatch(addSubscriptions(...args)),
   _delSubscription: (...args) => dispatch(delSubscription(...args)),
-  _clearEvents: (eventId) => dispatch({type: 'CLEAR_EVENTS', eventId: eventId}),
+  _clearEvents: (eventId) => dispatch({ type: 'CLEAR_EVENTS', eventId: eventId }),
   _getPerOverviewForm: (...args) => dispatch(getPerOverviewForm(...args)),
   _getPerMission: (...args) => dispatch(getPerMission(...args))
 });
