@@ -215,11 +215,9 @@ if (environment !== 'production') {
   };
 }
 
-//var leading_text = 'Please take into consideration the following aspects:<br />- NS has epidemics preparedness and response mandate reflected in its policy, strategy, plans and procedures.<br />- NS mandate in epidemics is recognized by national public health authorities.<br /><br />';
-
 const renderEpiComponent = (component, props, componentIndex) => {
   if (props.state.epiComponent === 'yes' && typeof component.namespaces !== 'undefined' && component.namespaces !== null) {
-    if (props.formCode == 'a1' && componentIndex == 0) { /////////////////////////// a1
+    if (props.formCode === 'a1' && componentIndex === 0) { // ============================================= a1
       return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
         <div className='per_form_ns'>Epidemic preparedness</div>
         <div>
@@ -258,8 +256,7 @@ const renderEpiComponent = (component, props, componentIndex) => {
           <span className='form__option__text'>High performance</span>
         </label><br /><br />
       </div>);
-    }
-    else if (props.formCode == 'a1' && componentIndex == 1) {
+    } else if (props.formCode === 'a1' && componentIndex === 1) {
       return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
         <div className='per_form_ns'>Epidemic preparedness</div>
         <div>
@@ -297,8 +294,7 @@ const renderEpiComponent = (component, props, componentIndex) => {
           <span className='form__option__text'>High performance</span>
         </label><br /><br />
       </div>);
-    }
-    else if (props.formCode == 'a1' && componentIndex == 2) {
+    } else if (props.formCode === 'a1' && componentIndex === 2) {
       return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
         <div className='per_form_ns'>Epidemic preparedness</div>
         <div>
@@ -336,8 +332,7 @@ const renderEpiComponent = (component, props, componentIndex) => {
           <span className='form__option__text'>High performance</span>
         </label><br /><br />
       </div>);
-    }
-    else if (props.formCode == 'a1' && componentIndex == 3) {
+    } else if (props.formCode === 'a1' && componentIndex === 3) {
       return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
         <div className='per_form_ns'>Epidemic preparedness</div>
         <div>
@@ -376,8 +371,7 @@ const renderEpiComponent = (component, props, componentIndex) => {
           <span className='form__option__text'>High performance</span>
         </label><br /><br />
       </div>);
-    }
-    else if (props.formCode == 'a1' && componentIndex == 4) {
+    } else if (props.formCode === 'a1' && componentIndex === 4) {
       return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
         <div className='per_form_ns'>Epidemic preparedness</div>
         <div>
@@ -417,7 +411,7 @@ const renderEpiComponent = (component, props, componentIndex) => {
         </label><br /><br />
       </div>);
     }
-    if (props.formCode == 'a2' && componentIndex == 0) { /////////////////////////// a2
+    if (props.formCode === 'a2' && componentIndex === 0) { // ============================================= a2
       return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
         <div className='per_form_ns'>Epidemic preparedness</div>
         <div>
@@ -460,8 +454,7 @@ const renderEpiComponent = (component, props, componentIndex) => {
           <span className='form__option__text'>High performance</span>
         </label><br /><br />
       </div>);
-    }
-    else if (props.formCode == 'a2' && componentIndex == 1) {
+    } else if (props.formCode === 'a2' && componentIndex === 1) {
       return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
         <div className='per_form_ns'>Epidemic preparedness</div>
         <div>
@@ -503,8 +496,7 @@ const renderEpiComponent = (component, props, componentIndex) => {
           <span className='form__option__text'>High performance</span>
         </label><br /><br />
       </div>);
-    }
-    else if (props.formCode == 'a2' && componentIndex == 2) {
+    } else if (props.formCode === 'a2' && componentIndex === 2) {
       return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
         <div className='per_form_ns'>Epidemic preparedness</div>
         <div>
@@ -545,8 +537,7 @@ const renderEpiComponent = (component, props, componentIndex) => {
           <span className='form__option__text'>High performance</span>
         </label><br /><br />
       </div>);
-    }
-    else if (props.formCode == 'a2' && componentIndex == 3) {
+    } else if (props.formCode === 'a2' && componentIndex === 3) {
       return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
         <div className='per_form_ns'>Epidemic preparedness</div>
         <div>
@@ -586,8 +577,7 @@ const renderEpiComponent = (component, props, componentIndex) => {
           <span className='form__option__text'>High performance</span>
         </label><br /><br />
       </div>);
-    }
-    else if (props.formCode == 'a2' && componentIndex == 4) {
+    } else if (props.formCode === 'a2' && componentIndex === 4) {
       return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
         <div className='per_form_ns'>Epidemic preparedness</div>
         <div>
@@ -626,8 +616,7 @@ const renderEpiComponent = (component, props, componentIndex) => {
           <span className='form__option__text'>High performance</span>
         </label><br /><br />
       </div>);
-    }
-    else if (props.formCode == 'a2' && componentIndex == 5) {
+    } else if (props.formCode === 'a2' && componentIndex === 5) {
       return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
         <div className='per_form_ns'>Epidemic preparedness</div>
         <div>
@@ -668,8 +657,7 @@ const renderEpiComponent = (component, props, componentIndex) => {
           <span className='form__option__text'>High performance</span>
         </label><br /><br />
       </div>);
-    }
-    else if (props.formCode == 'a2' && componentIndex == 6) {
+    } else if (props.formCode === 'a2' && componentIndex === 6) {
       return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
         <div className='per_form_ns'>Epidemic preparedness</div>
         <div>
@@ -709,8 +697,7 @@ const renderEpiComponent = (component, props, componentIndex) => {
           <span className='form__option__text'>High performance</span>
         </label><br /><br />
       </div>);
-    }
-    else if (props.formCode == 'a2' && componentIndex == 7) {
+    } else if (props.formCode === 'a2' && componentIndex === 7) {
       return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
         <div className='per_form_ns'>Epidemic preparedness</div>
         <div>
@@ -753,8 +740,7 @@ const renderEpiComponent = (component, props, componentIndex) => {
           <span className='form__option__text'>High performance</span>
         </label><br /><br />
       </div>);
-    }
-    else {
+    } else {
       return (<div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'}>
         <div className='per_form_ns'>Epidemic preparedness</div>
         <div>
