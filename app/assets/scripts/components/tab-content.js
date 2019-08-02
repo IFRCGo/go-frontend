@@ -28,9 +28,9 @@ TabContent.defaultProps = {
 
 if (environment !== 'production') {
   TabContent.propTypes = {
-    isError: T.boolean,
+    isError: T.bool,
     errorMessage: T.string,
-    children: T.object,
+    children: T.node,
     title: T.string
   };
 }
