@@ -133,7 +133,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '31.4 NS operates an M&E system at the field level to collect, manage and report on data to branch, country and IFRC offices against the set objectives of the operation.',
+          nsTitle: '31.4 NS operates a M&E system at the field level to collect, manage and report on data to branch, country and IFRC offices against the set objectives of the operation.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',

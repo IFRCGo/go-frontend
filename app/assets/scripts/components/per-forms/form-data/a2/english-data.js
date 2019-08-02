@@ -153,7 +153,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '7.4 A response strategy is available for each scenario and branches are involved in development of the response strategy affecting their area.',
+          nsTitle: '7.4 Scenarios include the identification of challenges to NS acceptance, security and access during humanitarian operations.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -163,7 +163,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '7.5 A response strategy is available for each scenario and branches are involved in development of the response strategy affecting their area.',
+          nsTitle: '7.5 Contingency plans include triggers to activate the plan, especially for protracted and slow onset crises.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -173,7 +173,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '7.6 A response strategy is available for each scenario and branches are involved in development of the response strategy affecting their area.',
+          nsTitle: '7.6 Contingency plans for potential regional crises include coordination mechanisms between neighbouring countries, particularly for potential epidemic and pandemic crises.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -183,7 +183,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '7.7 A response strategy is available for each scenario and branches are involved in development of the response strategy affecting their area.',
+          nsTitle: '7.7 Contingency plans for high risks are developed and reviewed on an annual basis.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -253,7 +253,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '8.5 NS identifies key stakeholders and develops engagement strategies to increase acceptance by them.',
+          nsTitle: '8.5 Systems and procedures are in place to prevent fraud and corruption and reinforce acceptance, security and access.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -263,7 +263,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '8.6 NS identifies key stakeholders and develops engagement strategies to increase acceptance by them.',
+          nsTitle: '8.6 Reputational and integrity risk management is a standing item on the NS\'s Governing Board meetings.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -273,7 +273,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '8.7 NS identifies key stakeholders and develops engagement strategies to increase acceptance by them.',
+          nsTitle: '8.7 NS has a crisis management unit/function to manage critical incidents.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -743,7 +743,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '13.9 Agreements with key suppliers of goods and services are formalized with an agreed mechanism for activation.',
+          nsTitle: '13.9 Agreements with key suppliers of goods and services are formalized and agreed with an agreed mechanism for activation.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',

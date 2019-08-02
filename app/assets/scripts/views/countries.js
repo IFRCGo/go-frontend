@@ -64,7 +64,7 @@ const TAB_DETAILS = [
   { title: 'Graphics', hash: '#graphics' },
   { title: 'Links', hash: '#links' },
   { title: 'Contacts', hash: '#contacts' },
-  { title: 'Per Overview', hash: '#per' }
+  { title: 'PER Overview', hash: '#per' }
 ];
 
 const filterPaths = {

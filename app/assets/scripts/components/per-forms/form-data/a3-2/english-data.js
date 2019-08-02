@@ -13,7 +13,7 @@ export const englishForm = {
       componentDescription: 'Sector-specific or services provided by the NS in case of emergencies, it is in line with the NS mandate and legislation in country. It includes Community Based DP/DRR, Evacuation, Health in Emergencies, Epidemic and Pandemic, First aid, WASH, Food security and Livelihoods, Search and rRescue, Shelter, Management of dead bodies, RFL, Transition to recovery, and CBRN preparedness.',
       namespaces: [
         {
-          nsTitle: 'Sub-Component 14.A: COMMUNITY-BASED DP AND DRR',
+          nsTitle: 'Sub-Component 14A: COMMUNITY-BASED DP AND DRR',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -23,7 +23,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '14.1 NS ensures the active participation of the local population, including marginalized and excluded groups, in the assessment, design/ planning of community-based activities , ensuring that programmes appropriately reflect community needs and strengthen existing local coping strategies.',
+          nsTitle: '14.1 NS ensures the active participation and reflects community needs and strengths of the local population (including marginalized and excluded groups) in the assessment, design, planning of community-based preparedness activities.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -43,7 +43,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '14.3 Community based early warning and early action is in place and linked to the local systems.',
+          nsTitle: '14.3 Community based early warning and early action is in place and linked to the local early warning systems.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -73,7 +73,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '14.6 NS ensures assessment, planning and response is done in an inclusive, gender and diversity and conflict sensitive way.',
+          nsTitle: '14.6 NS ensures community assessment, planning and response is done in an inclusive, gender and diversity and conflict sensitive way.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -83,7 +83,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: 'Component 24 performance',
+          nsTitle: 'Component 14A performance',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
@@ -99,7 +99,7 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Sub-Component 14.B: EVACUATION',
+      componentTitle: 'Sub-Component 14B: EVACUATION',
       namespaces: [
         {
           nsTitle: '14.7 Evacuation is part of NS\'s response strategy and is identified in different scenarios.',
@@ -138,7 +138,7 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Sub-Component 14.C: HEALTH IN EMERGENCIES',
+      componentTitle: 'Sub-Component 14C: HEALTH IN EMERGENCIES',
       namespaces: [
         {
           nsTitle: '14.9 Multi-sectoral response needs are identified for different epidemic scenarios including multi-country outbreaks.',
@@ -201,7 +201,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '14.15 Community based early warning and early action is in place and linked to the local systems.',
+          nsTitle: '14.15 NS has clearly identified their role within epidemics and have established relevant technical support to ensure best practice.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -221,7 +221,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: 'Summary of sub-component 14C',
+          nsTitle: 'Component 14C performance',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
@@ -237,7 +237,7 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Sub-Component 14.D: FIRST AID',
+      componentTitle: 'Sub-Component 14D: FIRST AID',
       namespaces: [
         {
           nsTitle: '14.17 First Aid is part of NS\'s response strategy and is identified in different scenarios.',
@@ -286,7 +286,7 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Sub-Component 14.E. WATER AND SANITATION',
+      componentTitle: 'Sub-Component 14E. WATER AND SANITATION',
       namespaces: [
         {
           nsTitle: '14.20 Water and sanitation humanitarian consequences are part of the NS\'s response strategy and identified in different scenarios.',
@@ -355,7 +355,7 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Sub-Component 14.F. FOOD SECURITY',
+      componentTitle: 'Sub-Component 14F. FOOD SECURITY',
       componentDescription: 'Mechanism that allows cooperation with private sector that often plays a strong role in response, particularly if there is impact on their staff and businesses. There is often a willingness to donate goods and services. Advance agreements help to expedite response actions.',
       namespaces: [
         {
@@ -369,7 +369,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '14.26 NS has identified technical staff for food assistance trained to identify needs and assess situation to make recommendations on assistance needed, transfer modality (cash, food, vouchers) and delivery mechanism, on markets situation.',
+          nsTitle: '14.26 NS has technical staff for food assistance, trained to assess needs and make recommendations on assistance needed, transfer modality (cash, food, vouchers) and delivery mechanism according to markets’ conditions.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -399,7 +399,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '14.29 NS has a specific action plan to procure and distribute food aid at scale: assessment forms SOPs for Affected population identification and selection food ration calculation (based on food access and availability at household level) different types of food distribution system set up of distribution site',
+          nsTitle: '14.29 NS has a specific action plan to procure and distribute food aid at scale including assessment forms, SOPs for Affected population identification and selection, food ration calculation (based on food access and availability at the household level), different types of food distribution system, set up of distribution site.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -409,7 +409,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: 'Summary of sub-component 14F',
+          nsTitle: 'Component 14F performance',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
@@ -425,7 +425,7 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Sub-Component 14.G. LIVELIHOOD SECURITY AND SAFETY NETS',
+      componentTitle: 'Sub-Component 14G. LIVELIHOOD SECURITY AND SAFETY NETS',
       namespaces: [
         {
           nsTitle: '14.30 Livelihoods is incorporated into NS DM/DP strategy, plans, systems and procedures.',
@@ -458,7 +458,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '14.33 NS has identified and documented main livelihoods zones and systems (agricultural and non-agricultural), main market systems (food and household livelihood) in disaster-prone areas and a market baseline is developed and updated.',
+          nsTitle: '14.33 NS has identified and documented main livelihoods zones and systems (agricultural and non-agricultural) and main market systems (food and household livelihood) in disaster-prone areas which are used to develop and update a market baseline.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -468,7 +468,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '14.34 NS has identified risks to community and household productive assets in disaster-prone areas with plans for protection in place.',
+          nsTitle: '14.34 NS has identified risks to community and household productive assets in disaster-prone areas and has plans for protection in place.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -508,7 +508,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: 'Summary of sub-component 14G',
+          nsTitle: 'Component 14G performance',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
@@ -524,7 +524,7 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Sub-Component 14.H. SEARCH AND RESCUE',
+      componentTitle: 'Sub-Component 14H. SEARCH AND RESCUE',
       namespaces: [
         {
           nsTitle: '14.38 Search and rescue is part of the NS\'s response strategy and is identified in different scenarios.',
@@ -537,7 +537,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: 'Summary of sub-component 14G',
+          nsTitle: 'Component 14H performance',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
@@ -553,7 +553,7 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Sub-Component 14.I. SHELTER, HOUSEHOLD ITEMS, SETTLEMENTS',
+      componentTitle: 'Sub-Component 14I. SHELTER, HOUSEHOLD ITEMS, SETTLEMENTS',
       namespaces: [
         {
           nsTitle: '14.39 NS has mechanisms for consultation with target population on the most appropriate shelter response solutions.',
@@ -616,7 +616,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: 'Summary of sub-component 14G',
+          nsTitle: 'Component 14I performance',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
@@ -632,7 +632,7 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Sub-Component 14.J. MANAGEMENT OF DEAD BODIES TO FACILITATE THEIR IDENTIFICATION',
+      componentTitle: 'Sub-Component 14J. MANAGEMENT OF DEAD BODIES TO FACILITATE THEIR IDENTIFICATION',
       namespaces: [
         {
           nsTitle: '14.45 NS is part of the public authorities\' management of dead bodies and identification system.',
@@ -655,7 +655,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: 'Summary of sub-component 14J',
+          nsTitle: 'Component 14J performance',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
@@ -671,7 +671,7 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Sub-Component 14.K. RESTORING FAMILY LINKS (RFL)',
+      componentTitle: 'Sub-Component 14K. RESTORING FAMILY LINKS (RFL)',
       namespaces: [
         {
           nsTitle: '14.47 Staff and volunteers are able to provide quality RFL services.',
@@ -694,7 +694,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: 'Summary of sub-component 14K',
+          nsTitle: 'Component 14K performance',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
@@ -710,10 +710,10 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Sub-Component 14.L. TRANSITION TO RECOVERY',
+      componentTitle: 'Sub-Component 14L. TRANSITION TO RECOVERY',
       namespaces: [
         {
-          nsTitle: '14.49 Key staff are familiar with recovery principles.',
+          nsTitle: '14.49 Key staff are familiar with key recovery principles, such as detailed assessment, community participation, consideration of cross-cutting issues and strengthening resilience through the response.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -733,7 +733,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '14.51 NS has set up enabling systems allowing early recovery of livelihoods to bridge the gap between the relief phase and long-term recovery activities.',
+          nsTitle: '14.51 NS has set up enabling systems which smoothen the transition from relief to longer-term recovery activities, including human resources and support services as well as planning for early recovery interventions.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -743,7 +743,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '14.52 NS coordinates with public authorities and humanitarian actors participating in the livelihoods response.',
+          nsTitle: '14.52 NS coordinates with public authorities and humanitarian actors, participating in joint needs assessment and the national recovery and reconstruction planning.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -763,7 +763,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '14.54 NS has developed a livelihoods (early) recovery plan of action: background and justification, logical framework and indicators, monitoring and evaluation plan, activity chronogram with responsibilities allocation and milestones, budget (activity level).',
+          nsTitle: '14.54 NS has considered the possibility of external partnerships to meet recovery needs, especially in sectors which are not considered strategic.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -773,17 +773,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '14.55 NS staff and volunteers are trained in response interventions for rehabilitation of productive assets (small infrastructures, clearance etc.).',
-          nsQuestion: 'Benchmark status',
-          nsAnswers: [
-            'yes',
-            'no'
-          ],
-          feedbackTitle: 'Notes related to the benchmark & Means of verification/source',
-          feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
-        },
-        {
-          nsTitle: 'Summary of sub-component 14L',
+          nsTitle: 'Component 14L performance',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
@@ -799,10 +789,10 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Sub-Component 14.M. CHEMICAL, BIOLOGICAL, RADIOLOGICAL AND NUCLEAR (CBRN) EMERGENCY PREPAREDNESS',
+      componentTitle: 'Sub-Component 14M. CHEMICAL, BIOLOGICAL, RADIOLOGICAL AND NUCLEAR (CBRN) EMERGENCY PREPAREDNESS',
       namespaces: [
         {
-          nsTitle: '14.56 NS has a defined role and allied responsibilities in national, regional and local authorities\' emergency plans related to CBRN hazards.',
+          nsTitle: '14.55 NS has a defined role and allied responsibilities in national, regional and local authorities\' emergency plans related to CBRN hazards.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -812,7 +802,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '14.57 NS has an action plan to respond to a CBRN incident based on its agreed role.',
+          nsTitle: '14.56 NS has an action plan to respond to a technological and biological incident based on its agreed role.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -822,7 +812,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '14.58 NS has SOPs including safety protocols for CBRN related operations.',
+          nsTitle: '14.57 NS has SOPs including safety protocols for CBRN related operations.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -832,7 +822,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '14.59 NS has a dedicated focal point for CBRN.',
+          nsTitle: '14.58 NS has a dedicated focal point for CBRN.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -842,7 +832,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '14.60 NS has, according to its mandate, specifically trained staff and volunteers able to effectively operate in CBRN preparedness and response environments.',
+          nsTitle: '14.59 NS has, according to its mandate, specifically trained staff and volunteers able to effectively operate in CBRN preparedness and response environments.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -852,7 +842,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '14.61 NS has appropriate CBRN personal protection equipment in place, and regularly trains staff and volunteers on handling and using this equipment.',
+          nsTitle: '14.60 NS has appropriate CBRN personal protection equipment in place, and regularly trains staff and volunteers on handling and using this equipment.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -862,7 +852,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '14.62 NS has built up a network of expertise with relevant organizations and key experts to receive specialized support for CBRN-related hazards.',
+          nsTitle: '14.61 NS has built up a network of expertise with relevant organizations and key experts to receive specialized support for CBRN-related hazards.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -872,7 +862,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '14.63 NS, in line with its mandate, has readily available public key messages for CBRN emergencies, that have been vetted by the relevant civil authorities.',
+          nsTitle: '14.62 NS, in line with its mandate, has readily available public key messages for CBRN emergencies, that have been vetted by the relevant civil authorities.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -882,7 +872,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '14.64 NS has engaged with neighboring National Societies in planning for and responding to the cross-border effects of CBRN hazards.',
+          nsTitle: '14.63 NS has engaged with neighboring National Societies in planning for and responding to the cross-border effects of CBRN hazards.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -892,7 +882,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '14.65 The NS is participating in relevant CBRN-related forums (national/regional) for preparedness and response, and has the mechanisms for real-time information sharing.',
+          nsTitle: '14.64 The NS is participating in relevant CBRN-related forums (national/regional) for preparedness and response, and has the mechanisms for real-time information sharing.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -902,7 +892,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '14.66 The NS has identified the need for international assistance for CBRN events (if applicable) and has shared this with Movement partners.',
+          nsTitle: '14.65 The NS has identified the need for international assistance for CBRN events (if applicable) and has shared this with Movement partners.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -912,7 +902,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: 'Summary of sub-component 14M',
+          nsTitle: 'Component 14M performance',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
@@ -928,10 +918,10 @@ export const englishForm = {
       ]
     },
     {
-      componentTitle: 'Sub-Component 14.N. COMMUNITY BASED HEALTH & FIRST AID (CBHFA)',
+      componentTitle: 'Sub-Component 14N. COMMUNITY BASED HEALTH & FIRST AID (CBHFA)',
       namespaces: [
         {
-          nsTitle: '14.67 Community health volunteers discuss and develop health contingency plans with their communities, and conduct community health and safety assessments, once a year.',
+          nsTitle: '14.66 Community health volunteers discuss and develop health contingency plans with their communities, and conduct community health and safety assessments, once a year.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -941,7 +931,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '14.68 Every volunteer in every sector is initially trained in Basic First Aid and receives refresher training each year.',
+          nsTitle: '14.67 Every volunteer in every sector is initially trained in Basic First Aid and receives refresher training each year.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -951,7 +941,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '14.69 CBHFA volunteer training includes a session on proper reporting of suspect health events to branch staff and/or the Ministry of Health',
+          nsTitle: '14.68 CBHFA volunteer training includes a session on proper reporting of suspect health events to branch staff and/or the Ministry of Health',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -961,7 +951,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '14.70 CBHFA volunteers are actively engaged in simulation planning, implementation and evaluation to ensure community awareness and involvement, and that information and referral linkages with health facilities are maintained.',
+          nsTitle: '14.69 CBHFA volunteers are actively engaged in simulation planning, implementation and evaluation to ensure community awareness and involvement, and that information and referral linkages with health facilities are maintained.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
@@ -971,7 +961,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: 'Summary of sub-component 14M',
+          nsTitle: 'Component 14N performance',
           nsQuestion: 'Status:',
           nsAnswers: [
             'Not Reviewed',
