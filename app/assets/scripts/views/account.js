@@ -276,7 +276,7 @@ class Account extends React.Component {
       if (rtype === 'country' && sub.country) {
         let countryMeta = getCountryMeta(sub.country);
         next.countries = next.countries.concat([{ label: countryMeta.label, value: sub.country.toString() }]);
-      } else if (rtype === 'region' && sub.region) {
+      } else if (rtype === 'region' && (sub.region || sub.region === 0)) {
         next.regions = updateChecks(next.regions, sub.region.toString());
       } else if (rtype === 'disasterType' && sub.dtype) {
         next.disasterTypes = updateChecks(next.disasterTypes, sub.dtype.toString());
@@ -810,10 +810,10 @@ class Account extends React.Component {
               <Link to={'/per-forms/analysis-and-planning/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 2: Analysis and Planning</Link>
             </div>
             <div className='per__form__col'>
-              <Link to={'/per-forms/operational-capacity/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 3: Operation capacity</Link>
+              <Link to={'/per-forms/operational-capacity-2/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 3: Operational capacity</Link>
             </div>
             <div className='per__form__col'>
-              <Link to={'/per-forms/operational-capacity-2/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 3: Operational capacity 2</Link>
+              <Link to={'/per-forms/operational-capacity/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 3: Operational capacity 2</Link>
             </div>
             <div className='per__form__col'>
               <Link to={'/per-forms/coordination/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 4: Coordination</Link>
