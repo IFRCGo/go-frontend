@@ -793,7 +793,7 @@ class Account extends React.Component {
         <div className='inner'>
           <h2 className='fold__title margin-reset'>New PER Forms</h2>
           <hr />
-          Click on the following links to access the PER forms, where you can select individual National Societies.
+          <p>Click on the following links to access the PER forms, where you can select individual National Societies.</p>
           <br />
           Choose National Society:&nbsp;
           <select onChange={this.changeChosenCountry}>
