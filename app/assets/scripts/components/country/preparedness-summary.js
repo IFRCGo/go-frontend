@@ -62,7 +62,7 @@ class PreparednessSummary extends React.Component {
       popupComponentNameList.push(<div key={'componentList' + componentIndex}>{component.name}</div>);
     });
     return (
-      <Fold id='per-summary' title='PER Components And Sub-Component' wrapper_class='preparedness' foldClass='margin-reset'>
+      <Fold id='per-summary' title='PER Components And Sub-Component results' wrapper_class='preparedness' foldClass='margin-reset'>
         <div className='clearfix'>
           <div className='component__block__wrap' style={{cursor: 'pointer'}} id='selectedOption7' onClick={this.listComponents}>
             <div className='component__block'>

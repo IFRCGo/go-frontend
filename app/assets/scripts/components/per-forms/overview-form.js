@@ -225,7 +225,7 @@ class OverviewForm extends React.Component {
                 National Society:<br />
                 <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].country.society_name === null ? '' : this.props.perOverviewForm.data.results[0].country.society_name} /><br /><br />
 
-                Date of current capacity assessment<br />
+                Start date of current capacity assessment<br />
                 <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].date_of_current_capacity_assessment === null ? '' : this.props.perOverviewForm.data.results[0].date_of_current_capacity_assessment} /><br /><br />
 
                 Type of capacity assessment<br />
@@ -240,7 +240,7 @@ class OverviewForm extends React.Component {
                 Focal point email in the National Society:<br />
                 <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].focal_point_email === null ? '' : this.props.perOverviewForm.data.results[0].focal_point_email === null} /><br /><br />
 
-                Have you had a previous capacity assessment?<br />
+                Have you had a previous PER capacity assessment?<br />
                 <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].had_previous_assessment === null ? '' : this.props.perOverviewForm.data.results[0].had_previous_assessment} /><br /><br />
 
                 Date of last capacity assessment<br />
@@ -253,7 +253,7 @@ class OverviewForm extends React.Component {
                 <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].focus === null ? '' : this.props.perOverviewForm.data.results[0].focus} onChange={this.onFieldChange.bind(this, 'focus')} /><br /><br />
 
                 <div className='per_form_ns'>Facilitator information</div>
-                Facilitated by<br />
+                Name of lead facilitator<br />
                 <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].facilitated_by === null ? '' : this.props.perOverviewForm.data.results[0].facilitated_by} /><br /><br />
 
                 E-mail<br />
@@ -289,7 +289,7 @@ class OverviewForm extends React.Component {
 
               <div id="overview__form">
                 <div className='per_form_ns'>General Information</div>
-                Date of current capacity assessment<br />
+                Start date of current capacity assessment<br />
                 <select className='form__control form__control--medium' style={{width: '100px', display: 'inline-block'}} name='date_of_current_assessment_year'>
                   <option value='2020'>2020</option>
                   <option value='2019'>2019</option>
@@ -363,7 +363,7 @@ class OverviewForm extends React.Component {
                 Focus:<br />
                 <input type='text' className='form__control form__control--medium' name='focus' value={this.state.data.focus} onChange={this.onFieldChange.bind(this, 'focus')} /><br /><br />
 
-                Have you had a previous capacity assessment?<br />
+                Have you had a previous PER capacity assessment?<br />
                 <select className='form__control form__control--medium' name='prev_capacity_assessment' style={{width: '100px', display: 'inline-block'}}>
                   <option value='1'>Yes</option>
                   <option value='0'>No</option>
@@ -432,7 +432,7 @@ class OverviewForm extends React.Component {
                 </select><br /><br />
 
                 <div className='per_form_ns'>Facilitator information</div>
-                Facilitated by<br />
+                Name of lead facilitator<br />
                 <input type='text' className='form__control form__control--medium' name='facilitated_by' /><br /><br />
 
                 E-mail<br />

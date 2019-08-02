@@ -27,6 +27,10 @@
     margin-right: auto !important;
   }
 
+  .inpage__introduction__bigger {
+    font-size: 1.2rem
+  }
+
   .inpage__title {
     @include column(12/12);
     text-align: center;
