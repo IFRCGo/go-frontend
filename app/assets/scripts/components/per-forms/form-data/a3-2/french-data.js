@@ -766,16 +766,6 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.55 La SN dispose d\'une équipe formée pour mener à bien des interventions de réhabilitation des moyens de production (petites infrastructures, déblaiement…).',
-          nsQuestion: 'Statut du jalon',
-          nsAnswers: [
-            'Oui',
-            'Non'
-          ],
-          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
-          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
-        },
-        {
           nsTitle: 'Résumé de la catégorie 14L',
           nsQuestion: 'Résumé de la catégorie:',
           nsAnswers: [
@@ -795,7 +785,7 @@ export const frenchForm = {
       componentTitle: 'Sous Catégorie 14.M. PREPARATION AUX RISQUES NUCLEAIRES, RADIOACTIFS, BIOLOGIQUES ET CHIMIQUES (NRBC)',
       namespaces: [
         {
-          nsTitle: '14.56 La SN dispose d\'un rôle négocié et défini dans les plans d\'urgence nationaux, régionaux et locaux concernant les aléas NRBC.',
+          nsTitle: '14.55 La SN dispose d\'un rôle négocié et défini dans les plans d\'urgence nationaux, régionaux et locaux concernant les aléas NRBC.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -805,7 +795,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.57 La SN dispose d\'un plan d\'action pour répondre à un incident NRBC, conformément à son rôle convenu.',
+          nsTitle: '14.56 La SN dispose d\'un plan d\'action pour répondre à un incident NRBC, conformément à son rôle convenu.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -815,7 +805,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.58 La NS dispose de PON comprenant des protocoles de sécurité pour les opérations liées aux aléas NRBC.',
+          nsTitle: '14.57 La NS dispose de PON comprenant des protocoles de sécurité pour les opérations liées aux aléas NRBC.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -825,7 +815,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.59 La NS dispose d\'un point focal pour les aléas NRBC.',
+          nsTitle: '14.58 La NS dispose d\'un point focal pour les aléas NRBC.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -835,7 +825,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.60 La SN a, conformément à son mandat, formé du personnel et des bénévoles à agir de manière efficace dans l\'intervention et la préparation aux incidents NRBC.',
+          nsTitle: '14.59 La SN a, conformément à son mandat, formé du personnel et des bénévoles à agir de manière efficace dans l\'intervention et la préparation aux incidents NRBC.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -845,7 +835,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.61 La SN dispose d\'équipements de protection NRBC individuels, et forme régulièrement son personnel et ses bénévoles à manipuler et à utiliser ces équipements.',
+          nsTitle: '14.60 La SN dispose d\'équipements de protection NRBC individuels, et forme régulièrement son personnel et ses bénévoles à manipuler et à utiliser ces équipements.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -855,7 +845,17 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.63 La SN, conformément à son mandat, dispose d\'ores et déjà de messages publics clés en cas d\'urgence NRBC, qui ont été validés par les autorités civiles compétentes.',
+          nsTitle: '14.61 La SN a développé un réseau de compétences avec des organisations pertinentes et des experts clés afin de recevoir un soutien spécialisé en matière de risques CBRN.',
+          nsQuestion: 'Benchmark status',
+          nsAnswers: [
+            'yes',
+            'no'
+          ],
+          feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
+          feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
+        },
+        {
+          nsTitle: '14.62 La SN, conformément à son mandat, dispose d\'ores et déjà de messages publics clés en cas d\'urgence NRBC, qui ont été validés par les autorités civiles compétentes.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -865,7 +865,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.64 La SN s\'est impliquée auprès des Sociétés Nationales des pays voisins pour planifier et répondre aux effets transnationaux des aléas NRBC.',
+          nsTitle: '14.63 La SN s\'est impliquée auprès des Sociétés Nationales des pays voisins pour planifier et répondre aux effets transnationaux des aléas NRBC.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -875,7 +875,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.65 La SN participe à des forums NRBC pertinents (nationaux/régionaux) pour la préparation et l\'intervention, et dispose de mécanismes de partage d\'informations en temps réel.',
+          nsTitle: '14.64 La SN participe à des forums NRBC pertinents (nationaux/régionaux) pour la préparation et l\'intervention, et dispose de mécanismes de partage d\'informations en temps réel.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -885,7 +885,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.66 La SN a identifié le besoin d\'assistance internationale en cas d\'événement NRBC et l\'a partagé avec les partenaires appropriés du Mouvement.',
+          nsTitle: '14.65 La SN a identifié le besoin d\'assistance internationale en cas d\'événement NRBC et l\'a partagé avec les partenaires appropriés du Mouvement.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -914,7 +914,7 @@ export const frenchForm = {
       componentTitle: 'Sous Catégorie 14.N. SANTE ET PREMIERS SECOURS BASES SUR LA COMMUNAUTE (SPSBC)',
       namespaces: [
         {
-          nsTitle: '14.67 Les bénévoles de santé communautaires discutent et développent des plans d\'urgence avec leurs communautés, et conduisent des évaluations de santé et de sécurité de la communauté une fois par an.',
+          nsTitle: '14.66 Les bénévoles de santé communautaires discutent et développent des plans d\'urgence avec leurs communautés, et conduisent des évaluations de santé et de sécurité de la communauté une fois par an.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -924,7 +924,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.68 Chaque bénévole de chaque secteur est formé aux Premiers Secours et suit un cours de perfectionnement une fois par an.',
+          nsTitle: '14.67 Chaque bénévole de chaque secteur est formé aux Premiers Secours et suit un cours de perfectionnement une fois par an.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -934,7 +934,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.69 La formation SPSBC destinée aux bénévoles inclut une session sur le signalement adéquat d\'événements de santé suspects au personnel de la branche et/ou au Ministère de la Santé.',
+          nsTitle: '14.68 La formation SPSBC destinée aux bénévoles inclut une session sur le signalement adéquat d\'événements de santé suspects au personnel de la branche et/ou au Ministère de la Santé.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
@@ -944,7 +944,7 @@ export const frenchForm = {
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
         {
-          nsTitle: '14.70 Les bénévoles SPSBC sont activement impliqués dans la planification, la mise en œuvre et l\'évaluation de simulations, pour garantir la sensibilisation et l\'implication de la communauté, et faire en sorte que les informations et les liaisons avec les structures sanitaires soient maintenues.',
+          nsTitle: '14.69 Les bénévoles SPSBC sont activement impliqués dans la planification, la mise en œuvre et l\'évaluation de simulations, pour garantir la sensibilisation et l\'implication de la communauté, et faire en sorte que les informations et les liaisons avec les structures sanitaires soient maintenues.',
           nsQuestion: 'Statut du jalon',
           nsAnswers: [
             'Oui',
