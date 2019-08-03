@@ -764,16 +764,6 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '14.55 El personal y los voluntarios de la SN están capacitados en intervenciones de respuesta para la rehabilitación de activos productivos (infraestructura pequeña, limpieza, etc.).',
-          nsQuestion: 'Estado de referencia',
-          nsAnswers: [
-            'Si',
-            'No'
-          ],
-          feedbackTitle: 'Notas relacionadas con el índice de referencia y medios de verificación / fuente',
-          feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
-        },
-        {
           nsTitle: 'Resumen del componente 14L',
           nsQuestion: 'Resumen del componente:',
           nsAnswers: [
@@ -793,7 +783,7 @@ export const spanishForm = {
       componentTitle: 'Sub Componente: 14.M. PREPARACIÓN ANTE EMERGENCIAS QUÍMICAS, BIOLÓGICAS, RADIOLÓGICAS Y NUCLEARES (CBRN)',
       namespaces: [
         {
-          nsTitle: '14.56 La VBC incluye eventos químicos como un indicador específico o como un evento inusual. La SN incluye contactos con autoridades químicas en sus POE para VBC.',
+          nsTitle: '14.55 La VBC incluye eventos químicos como un indicador específico o como un evento inusual. La SN incluye contactos con autoridades químicas en sus POE para VBC.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -803,7 +793,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '14.58 La SN tiene POE que incluyen protocolos de seguridad para operaciones relacionadas con CBRN.',
+          nsTitle: '14.56 La SN tiene POE que incluyen protocolos de seguridad para operaciones relacionadas con CBRN.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -813,7 +803,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '14.58 La SN tiene POE que incluyen protocolos de seguridad para operaciones relacionadas con CBRN.',
+          nsTitle: '14.57 La SN tiene POE que incluyen protocolos de seguridad para operaciones relacionadas con CBRN.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -823,7 +813,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '14.59 La SN tiene un punto focal dedicado para CBRN.',
+          nsTitle: '14.58 La SN tiene un punto focal dedicado para CBRN.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -833,7 +823,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '14.60 De acuerdo a su mandato, la SN cuenta con personal y voluntarios específicamente capacitados y capaces de operar eficazmente en contextos de preparación y respuesta ante CBRN.',
+          nsTitle: '14.59 De acuerdo a su mandato, la SN cuenta con personal y voluntarios específicamente capacitados y capaces de operar eficazmente en contextos de preparación y respuesta ante CBRN.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -843,7 +833,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '14.61 La SN dispone de equipo de protección personal adecuado para CBRN, y capacita regularmente al personal y a los voluntarios en el manejo y uso de este equipo.',
+          nsTitle: '14.60 La SN dispone de equipo de protección personal adecuado para CBRN, y capacita regularmente al personal y a los voluntarios en el manejo y uso de este equipo.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -853,7 +843,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '14.62 La SN ha creado una red de conocimiento especializado con las organizaciones pertinentes y los expertos clave, para recibir apoyo especializado para los peligros relacionados con CBRN.',
+          nsTitle: '14.61 La SN ha creado una red de conocimiento especializado con las organizaciones pertinentes y los expertos clave, para recibir apoyo especializado para los peligros relacionados con CBRN.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -863,7 +853,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '14.63 De acuerdo con su mandato, la SN tiene mensajes claves de sensibilización pública fácilmente disponibles para las emergencias CBRN, los cuales han sido revisados y aprobados por las autoridades civiles pertinentes.',
+          nsTitle: '14.62 De acuerdo con su mandato, la SN tiene mensajes claves de sensibilización pública fácilmente disponibles para las emergencias CBRN, los cuales han sido revisados y aprobados por las autoridades civiles pertinentes.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -873,7 +863,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '14.64 La SN ha participado con las Sociedades Nacionales vecinas en la planificación y respuesta a efectos transfronterizos de peligros CBRN.',
+          nsTitle: '14.63 La SN ha participado con las Sociedades Nacionales vecinas en la planificación y respuesta a efectos transfronterizos de peligros CBRN.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -883,7 +873,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '14.65 La SN está participando en foros pertinentes relacionados con CBRN (nacionales / regionales) para preparación y respuesta, y cuenta con los mecanismos para compartir información en tiempo real.',
+          nsTitle: '14.64 La SN está participando en foros pertinentes relacionados con CBRN (nacionales / regionales) para preparación y respuesta, y cuenta con los mecanismos para compartir información en tiempo real.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -893,7 +883,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '14.66 La SN ha identificado la necesidad de asistencia internacional para eventos CBRN (de ser aplicable), y ha compartido esto con los socios del Movimiento',
+          nsTitle: '14.65 La SN ha identificado la necesidad de asistencia internacional para eventos CBRN (de ser aplicable), y ha compartido esto con los socios del Movimiento',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -922,7 +912,7 @@ export const spanishForm = {
       componentTitle: 'Sub Componente: 14.N. SALUD Y PRIMEROS AUXILIOS COMUNITARIOS (SPAC)',
       namespaces: [
         {
-          nsTitle: '14.67 Los voluntarios comunitarios de salud discuten y desarrollan planes de contingencia de salud con sus comunidades, y realizan evaluaciones de salud y de seguridad comunitaria una vez al año.',
+          nsTitle: '14.66 Los voluntarios comunitarios de salud discuten y desarrollan planes de contingencia de salud con sus comunidades, y realizan evaluaciones de salud y de seguridad comunitaria una vez al año.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -932,7 +922,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '14.68 Cada voluntario de cada sector es inicialmente capacitado en Primeros Auxilios Básicos, y recibe capacitación de actualización todos los años',
+          nsTitle: '14.67 Cada voluntario de cada sector es inicialmente capacitado en Primeros Auxilios Básicos, y recibe capacitación de actualización todos los años',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -942,7 +932,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '14.69 La capacitación para los voluntarios de SPAC incluye una sesión sobre la forma correcta de reportar eventos de salud sospechosos al personal de la filial y / o al Ministerio de Salud.',
+          nsTitle: '14.68 La capacitación para los voluntarios de SPAC incluye una sesión sobre la forma correcta de reportar eventos de salud sospechosos al personal de la filial y / o al Ministerio de Salud.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
@@ -952,7 +942,7 @@ export const spanishForm = {
           feedbackDescription: 'Documente la discusión que respalde el estado seleccionado del índice de referencia, explique la razón y proporcione información adicional sobre la acción de preparación requerida.'
         },
         {
-          nsTitle: '14.70 Los voluntarios de SPAC participan activamente en la planificación, implementación y evaluación de simulacros, para garantizar la sensibilización y la participación de la comunidad y que se mantengan los vínculos de información y de remisión con los establecimientos de salud.',
+          nsTitle: '14.69 Los voluntarios de SPAC participan activamente en la planificación, implementación y evaluación de simulacros, para garantizar la sensibilización y la participación de la comunidad y que se mantengan los vínculos de información y de remisión con los establecimientos de salud.',
           nsQuestion: 'Estado de referencia',
           nsAnswers: [
             'Si',
