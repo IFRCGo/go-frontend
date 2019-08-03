@@ -844,6 +844,7 @@ export const frenchForm = {
           feedbackTitle: 'Notes relatives à la référence et moyens de vérification / source',
           feedbackDescription: 'Documenter la discussion qui prend en charge le statut sélectionné du point de repère, en expliquant la raison et en fournissant des informations supplémentaires sur les mesures de préparation requises.'
         },
+        {
           nsTitle: '14.61 La SN a développé un réseau de compétences avec des organisations pertinentes et des experts clés afin de recevoir un soutien spécialisé en matière de risques CBRN.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
