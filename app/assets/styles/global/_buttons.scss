@@ -73,6 +73,11 @@
 /* Button color modifiers
    ========================================================================== */
 
+.button--inactive {
+  cursor: no-drop !important;
+  @include button-variation($light-base-color, "filled", "dark");
+}
+
 .button--primary-filled {
   @include button-variation($primary-color, "filled", "dark");
 }

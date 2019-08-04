@@ -8,6 +8,7 @@ import { getCentroid } from './country-centroids';
 import { disasterType } from './field-report-constants';
 import { getDtypeMeta } from './get-dtype-meta';
 import { whitelistDomains } from '../schemas/register';
+import { appealTypes } from './../utils/appeal-type-constants';
 
 // lodash.get will only return the defaultValue when
 // the path is undefined. We want to also catch null and ''
@@ -19,12 +20,6 @@ export function get (object, path, defaultValue) {
     return value;
   }
 }
-
-const appealTypes = {
-  '0': 'DREF',
-  '1': 'Appeal',
-  '2': 'Movement'
-};
 
 export function getAppealString (appealType) {
   return get(appealTypes, appealType.toString());
@@ -211,11 +206,4 @@ export const appealStatusOptions = [
   { value: '1', label: 'Closed' },
   { value: '2', label: 'Frozen' },
   { value: '3', label: 'Archived' }
-];
-
-export const appealTypeOptions = [
-  { value: 'all', label: 'All' },
-  { value: '0', label: 'DREF' },
-  { value: '1', label: 'Appeals' },
-  { value: '2', label: 'Movement' }
 ];

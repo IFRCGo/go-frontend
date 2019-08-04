@@ -6,10 +6,16 @@
    ========================================================================== */
 
 $base-color: #000000;                                   // Dark green
-$primary-color: #C22A26;                                // Red
-$secondary-color: #41639B;                              // Blue
+$primary-color: #C02C2C;                                // Red
+$secondary-color: #24334c;                              // Blue // Previously 41639B
 $secondary-color-light: #C9D2E3;
+
 $map-color: #23324D;                       // Blue light
+$grey-slate: rgba(45, 70, 98, 0.6);
+$grey-fog: #f3f2f3;
+$grey-cloud: #c9c3c1;
+$grey-cement: #505050;
+$grey-gravel: #494949;
 
 /* State colors */
 
@@ -31,22 +37,33 @@ $base-alpha-color: rgba($base-color, 0.10);
 $root-font-size: 16px;
 
 $base-font-color: $base-color;
-$base-font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$base-font-family: "Poppins", "Helvetica Neue", Helvetica, Arial, sans-serif;
 $base-font-style: normal;
 $base-font-light: 300;
 $base-font-regular: 400;
+$base-font-medium: 500;
+$base-font-semi-bold: 600;
 $base-font-bold: 700;
 $base-font-weight: $base-font-light;
-$base-font-size: 1rem;
+$base-font-size: 0.875rem;
 $base-line-height: 1.5;
 
+$base-font-size: 0.875rem;
+$font-size-sm: 0.775rem;
+$font-size-xs: 0.695rem;
+$font-size-lg: 110%;
+$font-size-xl: 120%;
+$font-size-xxl: 130%;
+
 $code-font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+
+$letter-spacing-sm: 0.6px;
 
 $heading-font-family: "Poppins", "Helvetica Neue", Helvetica, Arial, sans-serif;
 $heading-font-light: 300;
 $heading-font-regular: 500;
 $heading-font-bold: 700;
-$heading-font-weight: $heading-font-regular;
+$heading-font-weight: $base-font-semi-bold;
 
 
 /* Decoration
@@ -56,8 +73,15 @@ $heading-font-weight: $heading-font-regular;
 
 $base-border-radius: 0.25rem;
 $full-border-radius: 100vh;
+$input-rounded-radius: 1.8rem;
 
+$base-border-color: rgba(#000, 0.1);
 $base-border-width: 1px;
+
+
+/* Box shadow */
+
+$base-box-shadow: 1px 2px 6px 1px $base-alpha-color;
 
 
 /* Sizing, spacing and media queries
@@ -70,6 +94,8 @@ $page-header-y: 0 !default;
 /* Spacing */
 
 $global-spacing: 1rem;
+$global-spacing-2: 1.5rem;
+$global-spacing-3: 2rem;
 
 /* Rows */
 

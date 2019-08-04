@@ -10,6 +10,7 @@ export default function FormTextarea (props) {
     label,
     name,
     description,
+    placeholder,
     classInput,
     classWrapper,
     classLabel,
@@ -33,6 +34,7 @@ export default function FormTextarea (props) {
           id={id}
           name={name}
           className={c('form__control form__control--medium', classInput)}
+          placeholder={placeholder}
           value={value || ''}
           onChange={onChange}
           autoFocus={autoFocus} />
@@ -54,6 +56,7 @@ if (process.env.NODE_ENV !== 'production') {
       T.node,
       T.object
     ]),
+    placeholder: T.string,
     classWrapper: T.string,
     classLabel: T.string,
     classInput: T.string,

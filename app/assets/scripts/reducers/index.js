@@ -5,6 +5,7 @@ import { systemAlertsReducer } from '../components/system-alerts';
 import user from './user';
 import profile from './profile';
 import countries from './countries';
+import districts from './districts';
 import fieldReportForm from './field-report-form';
 import fieldReport from './field-report';
 import fieldReports from './field-reports';
@@ -24,11 +25,14 @@ import situationReports from './situation-reports';
 import appealDocuments from './appeal-documents';
 import fdrs from './fdrs';
 import csv from './csv';
+import perForm from './per-form';
+import subscriptions from './subscriptions';
 
 export const reducers = {
   user,
   profile,
   countries,
+  districts,
   systemAlertsReducer,
   fieldReportForm,
   fieldReport,
@@ -48,7 +52,9 @@ export const reducers = {
   appealDocuments,
   situationReports,
   fdrs,
-  csv
+  csv,
+  perForm,
+  subscriptions
 };
 
 export default combineReducers(reducers);

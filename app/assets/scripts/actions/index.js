@@ -99,11 +99,15 @@ export function getSurgeAlerts (page = 1, filters = {}) {
 }
 
 export const GET_APPEALS_LIST = 'GET_APPEALS_LIST';
-export function getAppealsList () {
-  const f = buildAPIQS({
+export function getAppealsList (countryId = null) {
+  const filters = {
     end_date__gt: DateTime.utc().toISO(),
     limit: 1000
-  });
+  };
+  if (countryId !== null) {
+    filters.country = countryId;
+  }
+  const f = buildAPIQS(filters);
   return fetchJSON(`api/v2/appeal/?${f}`, GET_APPEALS_LIST, withToken());
 }
 
@@ -166,6 +170,18 @@ export function updateSubscriptions (id, payload) {
   return postJSON(`api/v2/update_subscriptions/`, UPDATE_SUBSCRIPTIONS, payload, withToken());
 }
 
+export const ADD_SUBSCRIPTIONS = 'ADD_SUBSCRIPTIONS';
+export function addSubscriptions (id) {
+  const payload = [{type: 'followedEvent', value: id}];
+  return postJSON(`api/v2/add_subscription/`, ADD_SUBSCRIPTIONS, payload, withToken());
+}
+
+export const DEL_SUBSCRIPTION = 'DEL_SUBSCRIPTION';
+export function delSubscription (id) {
+  const payload = [{value: id}];
+  return postJSON(`api/v2/del_subscription/`, DEL_SUBSCRIPTION, payload, withToken());
+}
+
 export const GET_EVENT = 'GET_EVENT';
 export function getEventById (id) {
   return fetchJSON(`api/v2/event/${id}/`, GET_EVENT, withToken(), { id });
@@ -193,6 +209,16 @@ export function getSitrepsByEventId (id, filters = {}) {
 export const GET_ERU_OWNERS = 'GET_ERU_OWNERS';
 export function getEruOwners () {
   return fetchJSON('api/v2/eru_owner/?limit=0', GET_ERU_OWNERS, withToken());
+}
+
+export const GET_DISTRICTS = 'GET_DISTRICTS';
+export function getDistrictsForCountry (country) {
+  const filters = {
+    country: country.value,
+    limit: 200
+  };
+  const f = buildAPIQS(filters);
+  return fetchJSON(`api/v2/district/?${f}`, GET_DISTRICTS, {}, { country });
 }
 
 export const GET_AA = 'GET_AA';
@@ -387,4 +413,108 @@ export function getListAsCsv (url, id) {
 
 export function clearLoadedCsv (id) {
   return { type: 'CLEAR_LOADED_CSV', id };
+}
+
+export const SEND_PER_FORM = 'SEND_PER_FORM';
+export function sendPerForm (data) {
+  return postJSON('sendperform', SEND_PER_FORM, data, withToken());
+}
+
+export const GET_PER_COUNTRIES = 'GET_PER_COUNTRIES';
+export function getPerCountries () {
+  return fetchJSON(`/api/v2/percountry/`, GET_PER_COUNTRIES, withToken());
+}
+
+export const GET_PER_DOCUMENTS = 'GET_PER_DOCUMENTS';
+export function getPerDocuments () {
+  return fetchJSON(`/api/v2/per/`, GET_PER_DOCUMENTS, withToken());
+}
+
+export const GET_PER_DOCUMENT = 'GET_PER_DOCUMENT';
+export function getPerDocument (id = null, countryId = null) {
+  const filters = {};
+  filters.limit = 1000;
+  if (id !== null) {
+    filters.form = id;
+  }
+  if (countryId !== null) {
+    filters.country = countryId;
+  }
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v2/perdata/?${f}`, GET_PER_DOCUMENT, withToken());
+}
+
+export const GET_PER_DRAFT_DOCUMENT = 'GET_PER_DRAFT_DOCUMENT';
+export function getPerDraftDocument (filters) {
+  const filterString = buildAPIQS(filters);
+  return fetchJSON(`/api/v2/perdraft/?${filterString}`, GET_PER_DRAFT_DOCUMENT, withToken());
+}
+
+export const SEND_PER_DRAFT_DOCUMENT = 'SEND_PER_DRAFT_DOCUMENT';
+export function sendPerDraft (data) {
+  return postJSON('sendperdraft', SEND_PER_DRAFT_DOCUMENT, data, withToken());
+}
+
+export const EDIT_PER_DOCUMENT = 'EDIT_PER_DOCUMENT';
+export function editPerDocument (data) {
+  return postJSON('editperform', EDIT_PER_DOCUMENT, data, withToken());
+}
+
+export const COLLABORATING_PER_COUNTRY = 'COLLABORATING_PER_COUNTRY';
+export function getCollaboratingPerCountry () {
+  return fetchJSON(`/api/v2/per_country_duedate/`, COLLABORATING_PER_COUNTRY, withToken());
+}
+
+export const PER_ENGAGED_NS_PERCENTAGE = 'PER_ENGAGED_NS_PERCENTAGE';
+export function getPerEngagedNsPercentage () {
+  return fetchJSON(`api/v2/per_engaged_ns_percentage/`, PER_ENGAGED_NS_PERCENTAGE, withToken());
+}
+
+export const PER_GLOBAL_PREPAREDNESS = 'PER_GLOBAL_PREPAREDNESS';
+export function getPerGlobalPreparedness () {
+  return fetchJSON(`api/v2/per_global_preparedness/`, PER_GLOBAL_PREPAREDNESS, withToken());
+}
+
+export const PER_NS_PHASE = 'PER_NS_PHASE';
+export function getPerNsPhase (countryId = null) {
+  const f = buildAPIQS({country: countryId});
+  return fetchJSON(`api/v2/per_ns_phase/?${f}`, PER_NS_PHASE, withToken());
+}
+
+export const PER_OVERVIEW_FORM = 'PER_OVERVIEW_FORM';
+export function getPerOverviewForm (countryId = null, formId = null) {
+  const f = buildAPIQS({country: countryId, id: formId});
+  return fetchJSON(`api/v2/peroverview/?${f}`, PER_OVERVIEW_FORM, withToken());
+}
+
+export const PER_WORK_PLAN = 'PER_WORK_PLAN';
+export function getPerWorkPlan (countryId = null) {
+  const f = buildAPIQS({country: countryId});
+  return fetchJSON(`api/v2/perworkplan/?${f}`, PER_WORK_PLAN, withToken());
+}
+
+export const PER_SEND_OVERVIEW = 'PER_SEND_OVERVIEW';
+export function sendPerOverview (payload) {
+  return postJSON('sendperoverview', PER_SEND_OVERVIEW, payload, withToken());
+}
+
+export const SEND_PER_WORKPLAN = 'SEND_PER_WORKPLAN';
+export function sendPerWorkplan (payload) {
+  return postJSON('sendperworkplan', SEND_PER_WORKPLAN, payload, withToken());
+}
+
+export const DELETE_PER_WORKPLAN_API = 'DELETE_PER_WORKPLAN_API';
+export function deletePerWorkplanApi (payload) {
+  return postJSON('api/v2/del_perworkplan/', DELETE_PER_WORKPLAN_API, payload, withToken());
+}
+
+export const GET_PER_UPLOADED_DOCUMENTS = 'GET_PER_UPLOADED_DOCUMENTS';
+export function getPerUploadedDocuments (countryId) {
+  const f = buildAPIQS({country: countryId});
+  return fetchJSON(`api/v2/perdocs/?${f}`, GET_PER_UPLOADED_DOCUMENTS, withToken());
+}
+
+export const GET_PER_MISSION = 'GET_PER_MISSION';
+export function getPerMission () {
+  return fetchJSON(`api/v2/per_mission/`, GET_PER_MISSION, withToken());
 }

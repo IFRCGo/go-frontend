@@ -49,7 +49,7 @@ class _Contacts extends React.Component {
     const { data } = this.props;
     if (data.contacts && !data.contacts.length) return null;
     return (
-      <Fold id='contacts' title='Contacts' wrapperClass='contacts'>
+      <Fold id='contacts' title='Contacts' wrapperClass='contacts' foldClass='margin-reset'>
         <table className='table'>
           <thead className='visually-hidden'>
             <tr>
@@ -83,7 +83,7 @@ class _Links extends React.Component {
     const { data } = this.props;
     if (data.links && !data.links.length) return null;
     return (
-      <Fold id='links' title='Additional Links' wrapper_class='links'>
+      <Fold id='links' title='Additional Links' wrapper_class='links' foldClass='margin-reset'>
         <ul className='links-list'>
           {data.links.map(o => <li key={o.id}><a href={o.url} className='link--external'>{o.title}</a> </li>)}
         </ul>

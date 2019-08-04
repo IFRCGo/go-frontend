@@ -34,45 +34,68 @@ export default class ContactRow extends React.Component {
           </div>
         </div>
         <div className='form__inner-body'>
-          <FormInput
-            label='Name'
-            type='text'
-            name={`${name}[name]`}
-            id={`${name}-name`}
-            classLabel='form__label--nested'
-            value={values.name}
-            onChange={this.onFieldChange.bind(this, 'name')} >
-            <FormError
-              errors={errors}
-              property={`${fieldKey}.name`}
-            />
-          </FormInput>
-          <FormInput
-            label='Title'
-            type='text'
-            name={`${name}[title]`}
-            id={`${name}-title`}
-            classLabel='form__label--nested'
-            value={values.title}
-            onChange={this.onFieldChange.bind(this, 'title')} >
-            <FormError
-              errors={errors}
-              property={`${fieldKey}.title`}
-            />
-          </FormInput>
-          <FormInput
-            label='Contact'
-            type='text'
-            name={`${name}[contact]`}
-            id={`${name}-contact`}
-            classLabel='form__label--nested'
-            value={values.contact}
-            onChange={this.onFieldChange.bind(this, 'contact')} >
-            <FormError
-              errors={errors}
-              property={`${fieldKey}.contact`}
-            />
-          </FormInput>
+          <div className='clearfix'>
+            <div className='form__group__col__6'>
+              <FormInput
+                label='Name'
+                type='text'
+                name={`${name}[name]`}
+                id={`${name}-name`}
+                classLabel='label-secondary'
+                value={values.name}
+                onChange={this.onFieldChange.bind(this, 'name')} >
+                <FormError
+                  errors={errors}
+                  property={`${fieldKey}.name`}
+                />
+              </FormInput>
+            </div>
+            <div className='form__group__col__6'>
+              <FormInput
+                label='Title'
+                type='text'
+                name={`${name}[title]`}
+                id={`${name}-title`}
+                classLabel='label-secondary'
+                value={values.title}
+                onChange={this.onFieldChange.bind(this, 'title')} >
+                <FormError
+                  errors={errors}
+                  property={`${fieldKey}.title`}
+                />
+              </FormInput>
+            </div>
+            <div className='form__group__col__6'>
+              <FormInput
+                label='Email'
+                type='text'
+                name={`${name}[email]`}
+                id={`${name}-email`}
+                classLabel='label-secondary'
+                value={values.email}
+                onChange={this.onFieldChange.bind(this, 'email')} >
+                <FormError
+                  errors={errors}
+                  property={`${fieldKey}.email`}
+                />
+              </FormInput>
+            </div>
+            <div className='form__group__col__6'>
+              <FormInput
+                label='Phone'
+                type='text'
+                name={`${name}[phone]`}
+                id={`${name}-phone`}
+                classLabel='label-secondary'
+                value={values.phone}
+                onChange={this.onFieldChange.bind(this, 'phone')} >
+                <FormError
+                  errors={errors}
+                  property={`${fieldKey}.phone`}
+                />
+              </FormInput>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -87,7 +110,8 @@ if (environment !== 'production') {
     values: T.shape({
       name: T.string,
       title: T.string,
-      contact: T.string
+      email: T.string,
+      phone: T.string
     }),
     fieldKey: T.string,
     errors: T.array,

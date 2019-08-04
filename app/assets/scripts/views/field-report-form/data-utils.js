@@ -9,13 +9,16 @@ import { get } from '../../utils/utils';
 import { request } from '../../utils/network';
 import * as formData from '../../utils/field-report-constants';
 
-export function dataPathToDisplay (path) {
+export function dataPathToDisplay (path, keyword) {
   // Remove first . and any array ref.
+  if (keyword === 'anyOf') return ''; // return empty string if error is missing "any of" fields
   path = path.substring(1).replace(/\[[0-9]+\]/g, '');
   const index = {
     // Step 1.
     summary: 'Summary',
+    country: 'Country',
     countries: 'Countries',
+    districts: 'Areas',
     status: 'Status',
     disasterType: 'Disaster Type',
     event: 'Event',
@@ -49,22 +52,28 @@ export function dataPathToDisplay (path) {
     // Step 5.
     'contactOriginator.name': 'Originator - Name',
     'contactOriginator.role': 'Originator - Role',
-    'contactOriginator.contact': 'Originator - Contact',
+    'contactOriginator.email': 'Originator - Email',
+    'contactOriginator.phone': 'Originator - Phone',
     'contactPrimary.name': 'Primary Contact - Name',
     'contactPrimary.role': 'Primary Contact - Role',
-    'contactPrimary.contact': 'Primary Contact - Contact',
+    'contactPrimary.email': 'Primary Contact - Email',
+    'contactPrimary.phone': 'Primary Contact - Phone',
     'contactNatSoc.name': 'National Society Contact - Name',
     'contactNatSoc.role': 'National Society Contact - Role',
-    'contactNatSoc.contact': 'National Society Contact - Contact',
+    'contactNatSoc.email': 'National Society Contact - Email',
+    'contactNatSoc.phone': 'National Society Contact - Phone',
     'contactFederation.name': 'Federation Contact - Name',
     'contactFederation.role': 'Federation Contact - Role',
-    'contactFederation.contact': 'Federation Contact - Contact',
+    'contactFederation.email': 'Federation Contact - Email',
+    'contactFederation.phone': 'Federation Contact - Phone',
     'contactMediaNatSoc.name': 'Media Contact in the National Society - Name',
     'contactMediaNatSoc.role': 'Media Contact in the National Society - Role',
-    'contactMediaNatSoc.contact': 'Media Contact in the National Society - Contact',
+    'contactMediaNatSoc.email': 'Media Contact in the National Society - Email',
+    'contactMediaNatSoc.phone': 'Media Contact in the National Society - Phone',
     'contactMedia.name': 'Media Contact - Name',
     'contactMedia.role': 'Media Contact - Role',
-    'contactMedia.contact': 'Media Contact - Contact'
+    'contactMedia.email': 'Media Contact - Email',
+    'contactMedia.phone': 'Media Contact - Phone'
   };
   if (!index[path]) {
     console.warn('No display value found for', path);
@@ -88,7 +97,9 @@ export function prepStateForValidation (state) {
   const formatter = {
     // Step 1.
     assistance: toBool,
-    countries: (val) => val.map(o => o.value),
+    country: (val) => val ? val.value : undefined,
+    districts: (val) => val.map(o => o.value),
+    // countries: (val) => val.value,
     event: (val) => val ? toNumIfNum(val.value) : undefined,
 
     // Step 2.
@@ -127,15 +138,22 @@ export function convertStateToPayload (originalState) {
   originalState = _cloneDeep(originalState);
   let state = {};
   const {
-    countries,
+    country,
     disasterType,
-    event
+    districts,
+    event,
+    startDate
   } = originalState;
 
   // Process properties.
-  if (countries.length) { state.countries = countries.map(o => +o.value); }
+  // if (countries.length) { state.countries = countries.map(o => +o.value); }
   if (disasterType) { state.dtype = +disasterType; }
+  if (districts.length) { state.districts = districts.map(o => +o.value); }
   if (event && event.value) { state.event = +event.value; }
+  if (country) { state.countries = [country.value]; }
+
+  // set start_date to DateTime format
+  if (startDate) { state.start_date = startDate + 'T00:00:00+00:00'; }
 
   const directMapping = [
     // [source, destination]
@@ -178,6 +196,8 @@ export function convertStateToPayload (originalState) {
         state[dest] = o.estimation;
       } else if (o.source === 'government') {
         state[`gov_${dest}`] = o.estimation;
+      } else if (o.source === 'other') {
+        state[`other_${dest}`] = o.estimation;
       }
     });
   });
@@ -241,7 +261,7 @@ export function convertStateToPayload (originalState) {
   //   { ctype: "originator", name: 'John', title: 'Medic', email: 'john@gmail.com' },
   //   { ctype: "primary" ... }
   // ]
-  const contatcsMapping = [
+  const contactsMapping = [
     // [state var, contact type]
     ['contactOriginator', 'Originator'],
     ['contactPrimary', 'Primary'],
@@ -251,12 +271,13 @@ export function convertStateToPayload (originalState) {
     ['contactMedia', 'Media']
   ];
 
-  state.contacts = contatcsMapping.map(([src, contactType]) => {
+  state.contacts = contactsMapping.map(([src, contactType]) => {
     return {
       ctype: contactType,
       name: originalState[src].name || '',
       title: originalState[src].title || '',
-      email: originalState[src].contact || ''
+      email: originalState[src].email || '',
+      phone: originalState[src].phone || ''
     };
   }).filter(o => Boolean(o.name));
 
@@ -287,9 +308,12 @@ export function getInitialDataState () {
     summary: undefined,
     // Countries follows the structure defined by react-select.
     // Will need to be converted.
-    countries: [],
-    status: undefined,
-    visibility: '1',
+    country: undefined,
+    // countries: [],
+    districts: [],
+    status: '9', // default to "Event"
+    startDate: undefined,
+    visibility: '3',
     disasterType: undefined,
     event: undefined,
     sources: formData.sources.map(o => ({
@@ -346,12 +370,12 @@ export function getInitialDataState () {
     eru: [{ type: undefined, status: undefined, units: undefined }],
 
     // Step 5
-    contactOriginator: { name: undefined, role: undefined, contact: undefined },
-    contactPrimary: { name: undefined, role: undefined, contact: undefined },
-    contactNatSoc: { name: undefined, role: undefined, contact: undefined },
-    contactFederation: { name: undefined, role: undefined, contact: undefined },
-    contactMediaNatSoc: { name: undefined, role: undefined, contact: undefined },
-    contactMedia: { name: undefined, role: undefined, contact: undefined }
+    contactOriginator: { name: undefined, role: undefined, email: undefined, phone: undefined },
+    contactPrimary: { name: undefined, role: undefined, email: undefined, phone: undefined },
+    contactNatSoc: { name: undefined, role: undefined, email: undefined, phone: undefined },
+    contactFederation: { name: undefined, role: undefined, email: undefined, phone: undefined },
+    contactMediaNatSoc: { name: undefined, role: undefined, email: undefined, phone: undefined },
+    contactMedia: { name: undefined, role: undefined, email: undefined, phone: undefined }
   };
 }
 
@@ -363,6 +387,14 @@ export function convertFieldReportToState (fieldReport) {
     label: o.name,
     value: o.id.toString()
   }));
+  state.country = fieldReport.countries.length ? state.countries[0] : null;
+
+  state.districts = fieldReport.districts.map(o => ({
+    label: o.name,
+    value: o.id.toString()
+  }));
+  // delete state.countries;
+
   if (fieldReport.dtype) {
     state.disasterType = fieldReport.dtype.id.toString();
   }
@@ -374,6 +406,9 @@ export function convertFieldReportToState (fieldReport) {
     };
   }
 
+  if (fieldReport.start_date) {
+    state.startDate = fieldReport.start_date.split('T')[0]; // get just YYYY-MM-DD from the full date timestamp
+  }
   // Everything not an early warning is an event.
   state.status = fieldReport.status !== parseInt(formData.statusEarlyWarning.value)
     ? formData.statusEvent.value
@@ -426,6 +461,12 @@ export function convertFieldReportToState (fieldReport) {
       sourceEstimation.push({
         source: 'government',
         estimation: fieldReport[`gov_${src}`].toString()
+      });
+    }
+    if (fieldReport[`other_${src}`] !== null) {
+      sourceEstimation.push({
+        source: 'other',
+        estimation: fieldReport[`other_${src}`].toString()
       });
     }
     if (sourceEstimation.length) {
@@ -528,7 +569,8 @@ export function convertFieldReportToState (fieldReport) {
     state[dest] = {
       name: contact.name,
       role: contact.title,
-      contact: contact.email
+      email: contact.email,
+      phone: contact.phone
     };
   });
 

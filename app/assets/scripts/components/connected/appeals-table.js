@@ -13,8 +13,7 @@ import {
   get,
   dateOptions,
   datesAgo,
-  dTypeOptions,
-  appealTypeOptions
+  dTypeOptions
 } from '../../utils/utils/';
 
 import ExportButton from '../export-button-container';
@@ -22,12 +21,7 @@ import Fold from '../fold';
 import BlockLoading from '../block-loading';
 import DisplayTable, { SortHeader, FilterHeader } from '../display-table';
 import { SFPComponent } from '../../utils/extendables';
-
-const appealsType = {
-  0: 'DREF',
-  1: 'Appeal',
-  2: 'Movement'
-};
+import { appealTypes as appealsType, appealTypeOptions } from '../../utils/appeal-type-constants';
 
 class AppealsTable extends SFPComponent {
   constructor (props) {
@@ -186,18 +180,22 @@ class AppealsTable extends SFPComponent {
         dtype: get(getDtypeMeta(o.dtype.id), 'label', nope),
         requestAmount: {
           value: n(o.amount_requested),
-          className: 'right-align'
+          className: ''
         },
         fundedAmount: {
           value: n(o.amount_funded),
-          className: 'right-align'
+          className: ''
         },
         type: appealsType[o.atype],
         country: o.country ? <Link to={`/countries/${o.country.id}`} className='link--primary' title='View Country'>{o.country.name}</Link> : nope
       }));
 
+      const foldLink = this.props.viewAll ? (
+        <Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || 'View all operations'}</Link>
+      ) : null;
+
       return (
-        <Fold title={`${title} (${n(data.count)})`} id={this.props.id}>
+        <Fold title={`${title} (${n(data.count)})`} id={this.props.id} navLink={foldLink} foldClass='fold__title--inline' extraClass='fold--main'>
           {this.props.showExport ? (
             <ExportButton filename='appeals'
               qs={this.getQs(this.props)}
@@ -205,6 +203,7 @@ class AppealsTable extends SFPComponent {
             />
           ) : null}
           <DisplayTable
+            className='table table--zebra table--active-ops'
             headings={headings}
             rows={rows}
             pageCount={data.count / this.state.table.limit}
@@ -212,11 +211,6 @@ class AppealsTable extends SFPComponent {
             onPageChange={this.handlePageChange.bind(this, 'table')}
             noPaginate={this.props.noPaginate}
           />
-          {this.props.viewAll ? (
-            <div className='fold__footer'>
-              <Link className='link--primary export--link' to={this.props.viewAll}>{this.props.viewAllText || 'View all operations'}</Link>
-            </div>
-          ) : null}
         </Fold>
       );
     }

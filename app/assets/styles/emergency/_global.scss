@@ -3,6 +3,10 @@
     margin-bottom: $global-spacing * 2;
   }
 
+  .introduction-nav {
+    clear: both;
+  }
+
   .inpage__header {
     @include column(12/12);
     float: none;
@@ -45,16 +49,14 @@
         }
         &:nth-child(2) {
           border-bottom: none;
-        };
+        }
       }
     }
     dl {
       float: left;
       width: 50%;
-
     }
   }
-
 }
 
 .fold__filters {
@@ -82,45 +84,6 @@
   font-weight: 600;
 }
 
-.inpage__nav {
-  font-family: $heading-font-family;
-  padding: ($global-spacing * .75) 0;
-  transition: background 0.2s ease, box-shadow 0.2s ease;
-
-  &--sticky {
-    background: #fafafa;
-    box-shadow: 0 1px 4px 0 rgba($base-color, 0.1);
-    z-index: 100;
-  }
-
-  > .inner {
-    @extend .row, .row--centered;
-  }
-
-  ul {
-    list-style: none;
-    margin-bottom: 0;
-    margin-left: 0;
-    display: flex;
-    align-items: stretch;
-    justify-content: center;
-    width: 100%;
-  }
-
-  li {
-    a {
-      color: $base-color;
-    }
-    color: $base-color;
-    display: inline-block;
-    flex: 0 1 auto;
-    margin-right: $global-spacing * 4;
-    &:last-child {
-      margin-right: 0;
-    };
-  }
-}
-
 .key-figures-list {
   list-style: none;
   @include column(12/12);
@@ -145,7 +108,7 @@
       margin-bottom: 0;
       &:first-child {
         margin-left: 0;
-      };
+      }
     }
   }
 
@@ -226,4 +189,18 @@
   margin-top: 1em;
   font-style: italic;
   color: $light-base-color;
+}
+
+.map__container__title {
+  font-weight: $base-font-regular;
+  margin: ($global-spacing/2 0 0 0);
+}
+
+h2.map__container__title {
+  font-size: 150%;
+}
+
+.map__container__disclaimer {
+  font-size: $font-size-xs;
+  padding: $global-spacing ($global-spacing/2);
 }

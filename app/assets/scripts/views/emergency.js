@@ -6,7 +6,8 @@ import { Link, withRouter } from 'react-router-dom';
 import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 import _toNumber from 'lodash.tonumber';
-import { Sticky, StickyContainer } from 'react-sticky';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+
 import { Helmet } from 'react-helmet';
 
 import { api, environment } from '../config';
@@ -16,7 +17,10 @@ import {
   getEventSnippets,
   getSitrepsByEventId,
   getSitrepTypes,
-  getAppealDocsByAppealIds
+  getAppealDocsByAppealIds,
+  addSubscriptions,
+  delSubscription,
+  getUserProfile
 } from '../actions';
 import {
   commaSeparatedNumber as n,
@@ -35,12 +39,27 @@ import {
 
 import App from './app';
 import Fold from '../components/fold';
+import TabContent from '../components/tab-content';
+import ErrorPanel from '../components/error-panel';
 import Expandable from '../components/expandable';
 import { FilterHeader } from '../components/display-table';
 import { Snippets } from '../components/admin-area-elements';
 import SurgeAlertsTable from '../components/connected/alerts-table';
 import PersonnelTable from '../components/connected/personnel-table';
 import EruTable from '../components/connected/eru-table';
+import EmergencyMap from '../components/map/emergency-map';
+
+const TAB_DETAILS = [
+  { title: 'Overview', hash: '#overview' },
+  { title: 'Graphics', hash: '#graphics' },
+  { title: 'Field Reports', hash: '#field-reports' },
+  { title: 'Alerts', hash: '#alerts' },
+  { title: 'ERUs', hash: '#erus' },
+  { title: 'Personnel', hash: '#personnel' },
+  { title: 'Response Documents', hash: '#response-documents' },
+  { title: 'Appeal Documents', hash: '#appeal-documents' },
+  { title: 'Contacts', hash: '#contacts' }
+];
 
 class Emergency extends React.Component {
   constructor (props) {
@@ -51,9 +70,13 @@ class Emergency extends React.Component {
       sitrepFilters: {
         date: 'all',
         type: 'all'
-      }
+      },
+      subscribed: false
     };
     this.handleSitrepFilter = this.handleSitrepFilter.bind(this);
+    this.addSubscription = this.addSubscription.bind(this);
+    this.delSubscription = this.delSubscription.bind(this);
+    this.isSubscribed = this.isSubscribed.bind(this);
   }
 
   componentWillReceiveProps (nextProps) {
@@ -70,11 +93,27 @@ class Emergency extends React.Component {
       hideGlobalLoading();
       this.getAppealDocuments(nextProps.event);
     }
+
+    if (!this.props.profile.fetched && nextProps.profile.fetched) {
+      this.setState({ subscribed: this.isSubscribed(nextProps) });
+    }
   }
 
   componentDidMount () {
     this.getEvent(this.props.match.params.id);
     this.props._getSitrepTypes();
+    if (this.props.isLogged) {
+      this.props._getUserProfile(this.props.user.data.username);
+    }
+    this.displayTabContent();
+  }
+
+  // Sets default tab if url param is blank or incorrect
+  displayTabContent () {
+    const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
+    if (!tabHashArray.find(hash => hash === this.props.location.hash)) {
+      this.props.history.replace(`${this.props.location.pathname}${tabHashArray[0]}`);
+    }
   }
 
   getEvent (id) {
@@ -93,7 +132,7 @@ class Emergency extends React.Component {
 
   onAppealClick (id, e) {
     e.preventDefault();
-    this.setState({selectedAppeal: id});
+    this.setState({ selectedAppeal: id });
   }
 
   handleSitrepFilter (state, value) {
@@ -110,13 +149,23 @@ class Emergency extends React.Component {
       filters.type = type;
     }
     this.props._getSitrepsByEventId(this.props.match.params.id, filters);
-    this.setState({sitrepFilters: next});
+    this.setState({ sitrepFilters: next });
+  }
+
+  isSubscribed (nextProps) {
+    if (nextProps.profile.fetched) {
+      const filtered = nextProps.profile.data.subscription.filter(subscription => subscription.event === parseInt(this.props.match.params.id));
+      if (filtered.length > 0) {
+        return true;
+      }
+    }
+    return false;
   }
 
   renderMustLogin () {
     return (
       <React.Fragment>
-        <p>You must be logged in to view this. <Link key='login' to={{pathname: '/login', state: {from: this.props.location}}} className='link--primary' title='Login'>Login</Link></p>
+        <p>You must be logged in to view this. <Link key='login' to={{ pathname: '/login', state: { from: this.props.location } }} className='link--primary' title='Login'>Login</Link></p>
       </React.Fragment>
     );
   }
@@ -125,12 +174,12 @@ class Emergency extends React.Component {
     const report = mostRecentReport(get(this.props, 'event.data.field_reports'));
     const hideIt = get(this.props, 'event.data.hide_attached_field_reports');
     if (!report || hideIt) return null;
-    const numAffected = parseInt(get(report, 'num_affected')) || parseInt(get(report, 'gov_num_affected'));
-    const numInjured = parseInt(get(report, 'num_injured')) || parseInt(get(report, 'gov_num_injured'));
-    const numDead = parseInt(get(report, 'num_dead')) || parseInt(get(report, 'gov_num_dead'));
-    const numMissing = parseInt(get(report, 'num_missing')) || parseInt(get(report, 'gov_num_missing'));
-    const numDisplaced = parseInt(get(report, 'num_displaced')) || parseInt(get(report, 'gov_num_displaced'));
-    const numAssisted = parseInt(get(report, 'num_assisted')) || parseInt(get(report, 'gov_num_assisted'));
+    const numAffected = parseInt(get(report, 'num_affected')) || parseInt(get(report, 'gov_num_affected')) || parseInt(get(report, 'other_num_affected'));
+    const numInjured = parseInt(get(report, 'num_injured')) || parseInt(get(report, 'gov_num_injured')) || parseInt(get(report, 'other_num_injured'));
+    const numDead = parseInt(get(report, 'num_dead')) || parseInt(get(report, 'gov_num_dead')) || parseInt(get(report, 'other_num_dead'));
+    const numMissing = parseInt(get(report, 'num_missing')) || parseInt(get(report, 'gov_num_missing')) || parseInt(get(report, 'other_num_missing'));
+    const numDisplaced = parseInt(get(report, 'num_displaced')) || parseInt(get(report, 'gov_num_displaced')) || parseInt(get(report, 'other_num_displaced'));
+    const numAssisted = parseInt(get(report, 'num_assisted')) || parseInt(get(report, 'gov_num_assisted')) || parseInt(get(report, 'other_num_assisted'));
     return (
       <div className='inpage__header-col'>
         <h3>Emergency Overview</h3>
@@ -175,11 +224,11 @@ class Emergency extends React.Component {
     return (
       <div className="inpage__introduction">
         <ul className='introduction-nav'>
-          <li className={c('introduction-nav-item', {'introduction-nav-item--active': selected === null})}>
+          <li className={c('introduction-nav-item', { 'introduction-nav-item--active': selected === null })}>
             <a href='#' title='Show stats for all appeals' onClick={this.onAppealClick.bind(this, null)}>All Appeals</a>
           </li>
           {appeals.map(o => (
-            <li key={o.id} className={c('introduction-nav-item', {'introduction-nav-item--active': o.id === selected})}>
+            <li key={o.id} className={c('introduction-nav-item', { 'introduction-nav-item--active': o.id === selected })}>
               <a href='#' title={`Show stats for appeal ${o.name}`} onClick={this.onAppealClick.bind(this, o.id)}>{o.name}</a>
             </li>
           ))}
@@ -290,7 +339,7 @@ class Emergency extends React.Component {
               filter={date}
               onSelect={this.handleSitrepFilter.bind(this, 'date')} />
             {types.fetched && !types.error ? <FilterHeader id='sitrep-type' title='Document Type'
-              options={[{value: 'all', label: 'All'}].concat(types.data.results.map(d => ({value: d.id, label: d.type})))}
+              options={[{ value: 'all', label: 'All' }].concat(types.data.results.map(d => ({ value: d.id, label: d.type })))}
               filter={type}
               onSelect={this.handleSitrepFilter.bind(this, 'type')} /> : null}
           </div>
@@ -332,6 +381,16 @@ class Emergency extends React.Component {
     );
   }
 
+  addSubscription () {
+    this.props._addSubscriptions(this.props.match.params.id);
+    this.setState({ subscribed: true });
+  }
+
+  delSubscription () {
+    this.props._delSubscription(this.props.match.params.id);
+    this.setState({ subscribed: false });
+  }
+
   renderContent () {
     const {
       fetched,
@@ -350,6 +409,25 @@ class Emergency extends React.Component {
     }
     const contacts = Array.isArray(data.contacts) && data.contacts.length ? data.contacts
       : Array.isArray(report.contacts) && report.contacts.length ? report.contacts : null;
+    const subscribeButton = this.state.subscribed
+      ? (<React.Fragment><button className='button button--primary-filled float-right' onClick={this.delSubscription}>Unsubscribe</button><br /><br /></React.Fragment>)
+      : (<React.Fragment><button className='button button--primary-filled float-right' onClick={this.addSubscription}>Subscribe</button><br /><br /></React.Fragment>);
+
+    const showExportMap = () => {
+      // Show the export map if exactly one country is selected, and at least 1 district is selected.
+      if (data.countries.length === 1 && data.countries[0].record_type === 1 && data.districts.length > 0) {
+        return (<EmergencyMap countries={data.countries} districts={data.districts} name={data.name} date={data.updated_at} disasterTypeCode={data.dtype} />);
+      } else {
+        return null;
+      }
+    };
+
+    const handleTabChange = index => {
+      const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
+      const url = this.props.location.pathname;
+      this.props.history.replace(`${url}${tabHashArray[index]}`);
+    };
+
     return (
       <section className='inpage'>
         <Helmet>
@@ -360,94 +438,119 @@ class Emergency extends React.Component {
             <div className='inpage__headline'>
               <div className='inpage__headline-content'>
                 <div className='inpage__headline-actions'>
+                  {
+                    this.props.isLogged ? subscribeButton : null
+                  }
                   <a href={url.resolve(api, `admin/api/event/${data.id}/change/`)}
-                    className='button button--primary-bounded'>Edit Event</a></div>
+                    className='button button--primary-bounded float-right'>Edit Event</a><br />
+                </div>
                 <h1 className='inpage__title'>{data.name}</h1>
                 {this.renderHeaderStats()}
               </div>
             </div>
           </div>
         </header>
-
-        <StickyContainer>
-          <Sticky>
-            {({ style, isSticky }) => (
-              <div style={style} className={c('inpage__nav', {'inpage__nav--sticky': isSticky})}>
-                <div className='inner'>
-                  <ul>
-                    {summary ? <li><a href='#overview' title='Go to Overview section'>Overview</a></li> : null}
-                    {get(this.props.snippets, 'data.results.length') ? <li><a href='#graphics' title='Go to Graphics section'>Graphics</a></li> : null}
-                    {get(this.props.event, 'data.field_reports.length') ? <li><a href='#field-reports' title='Go to Field Reports section'>Field Reports</a></li> : null}
-                    {get(this.props.surgeAlerts, 'data.results.length') ? <li><a href='#alerts' title='Go to Surge Alerts section'>Alerts</a></li> : null}
-                    {get(this.props.eru, 'data.results.length') ? <li><a href='#erus' title='Go to ERUs section'>ERUs</a></li> : null}
-                    {get(this.props.personnel, 'data.results.length') ? <li><a href='#personnel' title='Go to Personnel section'>Personnel</a></li> : null}
-                    {get(this.props.situationReports, 'data.results.length') ? <li><a href='#response-documents' title='Go to Response Documents section'>Response Documents</a></li> : null}
-                    {get(this.props.appealDocuments, 'data.results.length') ? <li><a href='#documents' title='Go to Documents section'>Appeal Documents</a></li> : null}
-                    {contacts && contacts.length ? <li><a href='#contacts' title='Go to Contacts section'>Contacts</a></li> : null}
-                  </ul>
-                </div>
-              </div>
-            )}
-          </Sticky>
+        {showExportMap()}
+        <Tabs
+          selectedIndex={TAB_DETAILS.map(({ hash }) => hash).indexOf(this.props.location.hash)}
+          onSelect={index => handleTabChange(index)}
+        >
+          <TabList>
+            {TAB_DETAILS.map(tab => (
+              <Tab key={tab.title}>{tab.title}</Tab>
+            ))}
+          </TabList>
 
           <div className='inpage__body'>
             <div className='inner'>
-              {summary ? (
-                <Fold id='overview'
-                  title='Situational Overview'
-                  wrapperClass='situational-overview' >
-                  <Expandable limit={360} text={summary} />
-                  {source ? <p className='emergency__source'>Source: {source}</p> : null}
-                </Fold>
-              ) : null}
-              <Snippets data={this.props.snippets} />
-              {this.renderKeyFigures()}
-              {this.renderFieldReports()}
-              <SurgeAlertsTable id='alerts'
-                title='Alerts'
-                emergency={this.props.match.params.id}
-                returnNullForEmpty={true}
-              />
-              <EruTable id='erus'
-                emergency={this.props.match.params.id}
-              />
-              <PersonnelTable id='personnel'
-                emergency={this.props.match.params.id}
-              />
-              {this.renderResponseDocuments()}
-              {this.renderAppealDocuments()}
+              <TabPanel>
+                <TabContent isError={!summary} errorMessage="Overview coming soon" title="Overview">
+                  <Fold id='overview'
+                    title='Situational Overview'
+                    wrapperClass='situational-overview' >
+                    <Expandable limit={360} text={summary} />
+                    {source ? <p className='emergency__source'>Source: {source}</p> : null}
+                  </Fold>
+                </TabContent>
+              </TabPanel>
+              <TabPanel>
+                <TabContent isError={!get(this.props.snippets)} errorMessage="Graphics coming soon" title="Graphics">
+                  <Snippets data={this.props.snippets} />
+                  {this.renderKeyFigures()}
+                </TabContent>
+              </TabPanel>
+              <TabPanel>
+                <TabContent isError={!get(this.props.event, 'data.field_reports.length')} errorMessage="Field Reports coming soon" title="Field Reports">
+                  {this.renderFieldReports()}
+                </TabContent>
 
-              {contacts && contacts.length ? (
-                <Fold id='contacts' title='Contacts' wrapperClass='contacts'>
-                  <table className='table'>
-                    <thead className='visually-hidden'>
-                      <tr>
-                        <th>Name</th>
-                        <th>Title</th>
-                        <th>Type</th>
-                        <th>Contact</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {contacts.map(o => (
-                        <tr key={o.id}>
-                          <td>{o.name}</td>
-                          <td>{o.title}</td>
-                          <td>{separate(o.ctype)}</td>
-                          <td>
-                            {o.email.indexOf('@') !== -1
-                              ? <a className='link--primary' href={`mailto:${o.email}`} title='Contact'>{o.email}</a>
-                              : <a className='link--primary' href={`tel:${o.email}`} title='Contact'>{o.email}</a>}
-                          </td>
+              </TabPanel>
+              <TabPanel>
+                <TabContent isError={!get(this.props.surgeAlerts, 'data.results.length')} errorMessage="Alerts coming soon" title="Alerts">
+                  < SurgeAlertsTable id='alerts'
+                    title='Alerts'
+                    emergency={this.props.match.params.id}
+                    returnNullForEmpty={true}
+                  />)
+                </TabContent>
+              </TabPanel>
+              <TabPanel>
+                <TabContent isError={!get(this.props.eru, 'data.results.length')} errorMessage="ERUs coming soon" title="ERUs">
+                  <EruTable id='erus'
+                    emergency={this.props.match.params.id}
+                  />
+                </TabContent>
+              </TabPanel>
+              <TabPanel>
+                <TabContent isError={!get(this.props.personnel, 'data.results.length')} errorMessage="Personnel coming soon" title="Personnel">
+                  <PersonnelTable id='personnel'
+                    emergency={this.props.match.params.id}
+                  />
+                </TabContent>
+              </TabPanel>
+              <TabPanel>
+                <TabContent isError={!get(this.props.situationReports, 'data.results.length')} errorMessage="Response documents coming soon" title="Response Documents">
+                  {this.renderResponseDocuments()}
+                </TabContent>
+              </TabPanel>
+              <TabPanel>
+                <TabContent isError={!get(this.props.appealDocuments, 'data.results.length')} errorMessage="Appeal documents coming soon" title="Appeal Documents">
+                  {this.renderAppealDocuments()}
+                </TabContent>
+              </TabPanel>
+              <TabPanel>
+                {contacts && contacts.length ? (
+                  <Fold id='contacts' title='Contacts' wrapperClass='contacts'>
+                    <table className='table'>
+                      <thead className='visually-hidden'>
+                        <tr>
+                          <th>Name</th>
+                          <th>Title</th>
+                          <th>Type</th>
+                          <th>Contact</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </Fold>
-              ) : null}
+                      </thead>
+                      <tbody>
+                        {contacts.map(o => (
+                          <tr key={o.id}>
+                            <td>{o.name}</td>
+                            <td>{o.title}</td>
+                            <td>{separate(o.ctype)}</td>
+                            <td>
+                              {o.email.indexOf('@') !== -1
+                                ? <a className='link--primary' href={`mailto:${o.email}`} title='Contact'>{o.email}</a>
+                                : <a className='link--primary' href={`tel:${o.email}`} title='Contact'>{o.email}</a>}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </Fold>
+                ) : <ErrorPanel title="Contacts" errorMessage="No current contacts" />}
+              </TabPanel>
             </div>
           </div>
-        </StickyContainer>
+        </Tabs>
       </section>
     );
   }
@@ -471,9 +574,13 @@ if (environment !== 'production') {
     _getSitrepsByEventId: T.func,
     _getSitrepTypes: T.func,
     _getAppealDocsByAppealIds: T.func,
+    _addSubscriptions: T.func,
+    _delSubscription: T.func,
+    _getUserProfile: T.func,
     snippets: T.object,
     match: T.object,
     location: T.object,
+    history: T.object,
     event: T.object,
     situationReports: T.object,
     situationReportTypes: T.object,
@@ -481,7 +588,9 @@ if (environment !== 'production') {
     surgeAlerts: T.object,
     eru: T.object,
     personnel: T.object,
-    isLogged: T.bool
+    isLogged: T.bool,
+    profile: T.object,
+    user: T.object
   };
 }
 
@@ -513,7 +622,9 @@ const selector = (state, ownProps) => ({
   surgeAlerts: state.surgeAlerts,
   eru: state.deployments.eru,
   personnel: state.deployments.personnel,
-  isLogged: !!state.user.data.token
+  isLogged: !!state.user.data.token,
+  user: state.user,
+  profile: state.profile
 });
 
 const dispatcher = (dispatch) => ({
@@ -521,7 +632,10 @@ const dispatcher = (dispatch) => ({
   _getEventSnippets: (...args) => dispatch(getEventSnippets(...args)),
   _getSitrepsByEventId: (...args) => dispatch(getSitrepsByEventId(...args)),
   _getSitrepTypes: (...args) => dispatch(getSitrepTypes(...args)),
-  _getAppealDocsByAppealIds: (...args) => dispatch(getAppealDocsByAppealIds(...args))
+  _getAppealDocsByAppealIds: (...args) => dispatch(getAppealDocsByAppealIds(...args)),
+  _addSubscriptions: (...args) => dispatch(addSubscriptions(...args)),
+  _delSubscription: (...args) => dispatch(delSubscription(...args)),
+  _getUserProfile: (...args) => dispatch(getUserProfile(...args))
 });
 
 export default withRouter(connect(selector, dispatcher)(Emergency));

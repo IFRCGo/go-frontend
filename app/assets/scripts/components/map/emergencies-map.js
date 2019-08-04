@@ -9,8 +9,8 @@ import { source } from '../../utils/get-new-map';
 import { environment } from '../../config';
 import {
   FormRadioGroup
-} from '../form-elements/';
-import MapComponent from '../map';
+} from '../form-elements';
+import MapComponent from './common/map-component';
 import { commaSeparatedNumber as n } from '../../utils/format';
 
 class EmergenciesMap extends React.Component {
@@ -61,7 +61,7 @@ class EmergenciesMap extends React.Component {
       type: 'categorical',
       stops: [
         ['total', '#F39C12'],
-        ['none', '#C22A26'],
+        ['none', '#C02C2C'],
         ['mixed', '#749BE9']
       ]
     };
@@ -144,6 +144,8 @@ class EmergenciesMap extends React.Component {
               <MapComponent className='map-vis__holder'
                 configureMap={this.configureMap}
                 noExport={true}
+                downloadButton={true}
+                downloadedHeaderTitle='Emergencies'
                 layers={this.state.layers}
                 filters={this.state.filters}
                 geoJSON={data.geoJSON}>

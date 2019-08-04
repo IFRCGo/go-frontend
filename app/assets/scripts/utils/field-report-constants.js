@@ -16,16 +16,16 @@ export const status = [statusEarlyWarning, statusEvent];
 
 export const visibility = [
   {
-    label: 'Membership',
+    label: 'Public',
+    value: '3'
+  },
+  {
+    label: 'RCRC Movement',
     value: '1'
   },
   {
     label: 'IFRC Secretariat',
     value: '2'
-  },
-  {
-    label: 'Public',
-    value: '3'
   }
 ];
 
@@ -434,7 +434,7 @@ export const sources = [
   // Step 3
 export const actions = [
   {
-    label: 'CTP/Basic needs',
+    label: 'Cash and Voucher Assistance/ Basic Needs',
     value: '41'
   },
   {
@@ -454,7 +454,7 @@ export const actions = [
     value: '37'
   },
   {
-    label: 'Food aid',
+    label: 'Food Assistance',
     value: '30'
   },
   {
@@ -470,11 +470,11 @@ export const actions = [
     value: '34'
   },
   {
-    label: 'RFL',
+    label: 'Restoring Family Links',
     value: '35'
   },
   {
-    label: 'Relief/Supply distribution',
+    label: 'Relief/ Distribution',
     value: '38'
   },
   {

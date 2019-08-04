@@ -12,7 +12,6 @@ const Progress = ({max, value, children}) => {
       <div className='progress-bar'>
         <div className='progress-bar__value' style={{width: (value > max ? max : value) + '%'}}></div>
       </div>
-      <div className='progress-bar__key'><small>{value}%<br/>coverage</small></div>
     </div>
   );
 };
