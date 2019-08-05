@@ -474,7 +474,7 @@ class Emergency extends React.Component {
                 </TabContent>
               </TabPanel>
               <TabPanel>
-                <TabContent isError={!get(this.props.snippets)} errorMessage="Graphics coming soon" title="Graphics">
+                <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage="Graphics coming soon" title="Graphics">
                   <Snippets data={this.props.snippets} />
                   {this.renderKeyFigures()}
                 </TabContent>
