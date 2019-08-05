@@ -51,7 +51,7 @@ const disasterTypes = disasterType.slice(1);
 
 const TAB_DETAILS = [
   { title: 'Account Information', hash: '#account-information' },
-  { title: 'Notficications', hash: '#notficications' },
+  { title: 'Notifications', hash: '#notifications' },
   { title: 'PER forms', hash: '#per-forms' }
 ];
 
