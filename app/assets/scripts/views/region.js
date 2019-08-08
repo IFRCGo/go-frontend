@@ -58,13 +58,8 @@ import {
 import { SFPComponent } from '../utils/extendables';
 
 const TAB_DETAILS = [
-  { title: 'Key Figures', hash: '#key-figures' },
-  { title: 'Operations', hash: '#operations-map' },
-  { title: 'Emergencies', hash: '#emergencies' },
-  { title: 'Appeals', hash: '#appeals' },
-  { title: 'Graphics', hash: '#graphics' },
-  { title: 'Links', hash: '#links' },
-  { title: 'Contacts', hash: '#contacts' }
+  { title: 'Operations', hash: '#operations' },
+  { title: 'Additional Information', hash: '#additional-info' }
 ];
 
 class AdminArea extends SFPComponent {
@@ -323,7 +318,8 @@ class AdminArea extends SFPComponent {
       const url = this.props.location.pathname;
       this.props.history.replace(`${url}${tabHashArray[index]}`);
     };
-
+    const hashes = TAB_DETAILS.map(t => t.hash);
+    const selectedIndex = hashes.indexOf(this.props.location.hash) !== -1 ? hashes.indexOf(this.props.location.hash) : 0;
     return (
       <section className='inpage'>
         <Helmet>
@@ -340,7 +336,7 @@ class AdminArea extends SFPComponent {
           </div>
         </header>
         <Tabs
-          selectedIndex={TAB_DETAILS.map(({ hash }) => hash).indexOf(this.props.location.hash)}
+          selectedIndex={ selectedIndex }
           onSelect={index => handleTabChange(index)}
         >
           <TabList>
@@ -352,12 +348,8 @@ class AdminArea extends SFPComponent {
           <div className='inpage__body'>
             <div className='inner'>
               <TabPanel>
-                <TabContent isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage="Key figures coming soon" title="Key Figures">
-                  <KeyFigures data={this.props.keyFigures} />
-                </TabContent>
-              </TabPanel>
-              <TabPanel>
                 <TabContent>
+                  {this.renderCountries()}
                   <div className='fold' id='operations-map'>
                     <div className='inner'>
                       <h2 className='fold__title'>{activeOperations === null || isNaN(activeOperations) ? null : `Active IFRC Operations (${activeOperations})`}</h2>
@@ -372,10 +364,20 @@ class AdminArea extends SFPComponent {
                       </div>
                     </div>
                   </div>
-                </TabContent>
-              </TabPanel>
-              <TabPanel>
-                <TabContent>
+                  <AppealsTable
+                    title={'Active IFRC Operations'}
+                    region={getRegionId(this.props.match.params.id)}
+                    showActive={true}
+                    id={'appeals'}
+                    viewAll={'/appeals/all?region=' + data.id}
+                    viewAllText={`View all IFRC operations for ${regionName} region`}
+                  />
+                  <Fold title='Statistics' headerClass='visually-hidden' id='stats'>
+                    <div className='stats-chart'>
+                      {this.renderOperations10Years()}
+                      {this.renderPersonnelBySociety()}
+                    </div>
+                  </Fold>
                   <EmergenciesTable
                     id='emergencies'
                     title='Recent Emergencies'
@@ -385,40 +387,22 @@ class AdminArea extends SFPComponent {
                     viewAll={'/emergencies/all?region=' + data.id}
                     viewAllText={`View all Emergencies for ${regionName} region`}
                   />
-                  {this.renderCountries()}
+                  
 
-                  <Fold title='Statistics' headerClass='visually-hidden' id='stats'>
-                    <div className='stats-chart'>
-                      {this.renderOperations10Years()}
-                      {this.renderPersonnelBySociety()}
-                    </div>
-                  </Fold>
+
                 </TabContent>
               </TabPanel>
               <TabPanel>
-                <TabContent>
-                  <AppealsTable
-                    title={'Active IFRC Operations'}
-                    region={getRegionId(this.props.match.params.id)}
-                    showActive={true}
-                    id={'appeals'}
-                    viewAll={'/appeals/all?region=' + data.id}
-                    viewAllText={`View all IFRC operations for ${regionName} region`}
-                  />
+                <TabContent isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage="No key figures" title="Key Figures">
+                  <KeyFigures data={this.props.keyFigures} />
                 </TabContent>
-              </TabPanel>
-              <TabPanel>
-                <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage="Graphics coming soon" title="Graphics">
+                <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage="No graphics" title="Graphics">
                   <Snippets data={this.props.snippets} />
                 </TabContent>
-              </TabPanel>
-              <TabPanel>
-                <TabContent isError={!get(data, 'links.length')} errorMessage="Links coming soon" title="Links">
+                <TabContent isError={!get(data, 'links.length')} errorMessage="No links" title="Links">
                   <Links data={data} />
                 </TabContent>
-              </TabPanel>
-              <TabPanel>
-                <TabContent isError={!get(data, 'contacts.length')} errorMessage="Contacts coming soon" title="Contacts">
+                <TabContent isError={!get(data, 'contacts.length')} errorMessage="No contacts" title="Contacts">
                   <Contacts data={data} />
                 </TabContent>
               </TabPanel>
