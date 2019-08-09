@@ -388,8 +388,6 @@ class AdminArea extends SFPComponent {
                     viewAll={'/emergencies/all?region=' + data.id}
                     viewAllText={`View all Emergencies for ${regionName} region`}
                   />
-                  
-
 
                 </TabContent>
               </TabPanel>
