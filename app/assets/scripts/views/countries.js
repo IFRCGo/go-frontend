@@ -55,16 +55,13 @@ import PreparednessWorkPlan from '../components/country/preparedness-work-plan';
 import PreparednessPhaseOutcomes from '../components/country/preparedness-phase-outcomes';
 import PreparednessColumnBar from '../components/country/preparedness-column-graph';
 import { SFPComponent } from '../utils/extendables';
+import { NO_DATA } from '../utils/constants';
 
 const TAB_DETAILS = [
-  { title: 'Overview', hash: '#overview' },
-  { title: 'Key Figures', hash: '#key-figures' },
-  { title: 'Operations', hash: '#operations-map' },
-  { title: 'Emergencies', hash: '#emergencies' },
-  { title: 'Graphics', hash: '#graphics' },
-  { title: 'Links', hash: '#links' },
-  { title: 'Contacts', hash: '#contacts' },
-  { title: 'PER Overview', hash: '#per' }
+  { title: 'Operations', hash: '#operations' },
+  { title: 'Country Overview', hash: '#overview' },
+  { title: 'Preparedness', hash: '#preparedness' },
+  { title: 'Additional Information', hash: '#additional' }
 ];
 
 const filterPaths = {
@@ -525,19 +522,6 @@ class AdminArea extends SFPComponent {
           <div className="inpage__body">
             <div className="inner">
               <TabPanel>
-                <TabContent isError={!data.overview || data.key_priorities} errorMessage="Overview coming soon" title="Overview">
-                  <Fold title="Overview" id="overview">
-                    {data.overview ? <ReactMarkdown source={data.overview} /> : null}
-                    {data.key_priorities ? <ReactMarkdown source={data.key_priorities} /> : null}
-                  </Fold>
-                </TabContent>
-              </TabPanel>
-              <TabPanel>
-                <TabContent isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage="Key figures coming soon" title="Key Figures">
-                  <KeyFigures data={this.props.keyFigures} />
-                </TabContent>
-              </TabPanel>
-              <TabPanel>
                 <TabContent>
                   <Fold title='Statistics' headerClass='visually-hidden' id='operations'>
                     <div className='operations__container'>
@@ -567,8 +551,6 @@ class AdminArea extends SFPComponent {
                     {this.renderAppeals()}
                   </Fold>
                 </TabContent>
-              </TabPanel>
-              <TabPanel>
                 <TabContent>
                   <EmergenciesTable
                     id={'emergencies'}
@@ -582,37 +564,44 @@ class AdminArea extends SFPComponent {
                 </TabContent>
               </TabPanel>
               <TabPanel>
-                <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage="Graphics coming soon" title="Graphics">
-                  <Snippets data={this.props.snippets} />
+                <TabContent isError={!data.overview || data.key_priorities} errorMessage={ NO_DATA } title="Overview">
+                  <Fold title="Overview" id="overview">
+                    {data.overview ? <ReactMarkdown source={data.overview} /> : null}
+                    {data.key_priorities ? <ReactMarkdown source={data.key_priorities} /> : null}
+                  </Fold>
                 </TabContent>
-              </TabPanel>
-              <TabPanel>
-                <TabContent isError={!get(data, 'links.length')} errorMessage="Links coming soon" title="Links">
-                  <Links data={data} />
-                </TabContent>
-              </TabPanel>
-              <TabPanel>
-                <TabContent isError={!get(data, 'contacts.length')} errorMessage="No current contacts" title="Contacts">
-                  <Contacts data={data} />
+                <TabContent isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage={ NO_DATA } title="Key Figures">
+                  <KeyFigures data={this.props.keyFigures} />
                 </TabContent>
               </TabPanel>
               <TabPanel>
                 <TabContent isError={!this.isPerPermission()} errorMessage="Please log in" title="Preparedness">
                   {this.props.getPerNsPhase.fetched && this.props.perOverviewForm.fetched ? (
                     <PreparednessOverview getPerNsPhase={this.props.getPerNsPhase} perOverviewForm={this.props.perOverviewForm} />)
-                    : <ErrorPanel title="Preparedness Overciew" errorMessage="Preparedness overview coming soon" />}
+                    : <ErrorPanel title="Preparedness Overciew" errorMessage={ NO_DATA } />}
                   {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
                     <PreparednessSummary getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
-                    : <ErrorPanel title="Preparedness Summary" errorMessage="Preparedness summary coming soon" />}
+                    : <ErrorPanel title="Preparedness Summary" errorMessage={ NO_DATA } />}
                   {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
                     <PreparednessColumnBar getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
-                    : <ErrorPanel title="Preparedness Column Bar" errorMessage="Preparedness column bar summary coming soon" />}
+                    : <ErrorPanel title="Preparedness Column Bar" errorMessage={ NO_DATA } />}
                   {this.props.getPerWorkPlan.fetched ? (
                     <PreparednessWorkPlan getPerWorkPlan={this.props.getPerWorkPlan} />)
-                    : <ErrorPanel title="Preparedness Work Plan" errorMessage="Preparedness work plan bar summary coming soon" />}
+                    : <ErrorPanel title="Preparedness Work Plan" errorMessage={ NO_DATA } />}
                   {this.props.getPerUploadedDocuments.fetched ? (
                     <PreparednessPhaseOutcomes getPerUploadedDocuments={this.props.getPerUploadedDocuments} countryId={this.props.match.params.id} />)
-                    : <ErrorPanel title="Preparedness Phase Outcomes" errorMessage="Preparedness phase outcomes bar summary coming soon" />}
+                    : <ErrorPanel title="Preparedness Phase Outcomes" errorMessage={ NO_DATA } />}
+                </TabContent>
+              </TabPanel>
+              <TabPanel>
+                <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ NO_DATA } title="Graphics">
+                  <Snippets data={this.props.snippets} />
+                </TabContent>
+                <TabContent isError={!get(data, 'contacts.length')} errorMessage={ NO_DATA } title="Contacts">
+                  <Contacts data={data} />
+                </TabContent>
+                <TabContent isError={!get(data, 'links.length')} errorMessage={ NO_DATA } title="Links">
+                  <Links data={data} />
                 </TabContent>
               </TabPanel>
             </div>

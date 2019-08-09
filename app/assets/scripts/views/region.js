@@ -56,6 +56,7 @@ import {
   Links
 } from '../components/admin-area-elements';
 import { SFPComponent } from '../utils/extendables';
+import { NO_DATA } from '../utils/constants';
 
 const TAB_DETAILS = [
   { title: 'Operations', hash: '#operations' },
@@ -393,16 +394,16 @@ class AdminArea extends SFPComponent {
                 </TabContent>
               </TabPanel>
               <TabPanel>
-                <TabContent isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage="No key figures" title="Key Figures">
+                <TabContent isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage={ NO_DATA } title="Key Figures">
                   <KeyFigures data={this.props.keyFigures} />
                 </TabContent>
-                <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage="No graphics" title="Graphics">
+                <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ NO_DATA } title="Graphics">
                   <Snippets data={this.props.snippets} />
                 </TabContent>
-                <TabContent isError={!get(data, 'links.length')} errorMessage="No links" title="Links">
+                <TabContent isError={!get(data, 'links.length')} errorMessage={ NO_DATA } title="Links">
                   <Links data={data} />
                 </TabContent>
-                <TabContent isError={!get(data, 'contacts.length')} errorMessage="No contacts" title="Contacts">
+                <TabContent isError={!get(data, 'contacts.length')} errorMessage={ NO_DATA } title="Contacts">
                   <Contacts data={data} />
                 </TabContent>
               </TabPanel>
