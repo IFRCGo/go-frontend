@@ -48,17 +48,11 @@ import SurgeAlertsTable from '../components/connected/alerts-table';
 import PersonnelTable from '../components/connected/personnel-table';
 import EruTable from '../components/connected/eru-table';
 import EmergencyMap from '../components/map/emergency-map';
+import { NO_DATA } from '../utils/constants';
 
 const TAB_DETAILS = [
-  { title: 'Overview', hash: '#overview' },
-  { title: 'Graphics', hash: '#graphics' },
-  { title: 'Field Reports', hash: '#field-reports' },
-  { title: 'Alerts', hash: '#alerts' },
-  { title: 'ERUs', hash: '#erus' },
-  { title: 'Personnel', hash: '#personnel' },
-  { title: 'Response Documents', hash: '#response-documents' },
-  { title: 'Appeal Documents', hash: '#appeal-documents' },
-  { title: 'Contacts', hash: '#contacts' }
+  { title: 'Emergency Details', hash: '#details' },
+  { title: 'Additional Information', hash: '#additional-info' }
 ];
 
 class Emergency extends React.Component {
@@ -427,7 +421,8 @@ class Emergency extends React.Component {
       const url = this.props.location.pathname;
       this.props.history.replace(`${url}${tabHashArray[index]}`);
     };
-
+    const hashes = TAB_DETAILS.map(t => t.hash);
+    const selectedIndex = hashes.indexOf(this.props.location.hash) !== -1 ? hashes.indexOf(this.props.location.hash) : 0;
     return (
       <section className='inpage'>
         <Helmet>
@@ -450,9 +445,8 @@ class Emergency extends React.Component {
             </div>
           </div>
         </header>
-        {showExportMap()}
         <Tabs
-          selectedIndex={TAB_DETAILS.map(({ hash }) => hash).indexOf(this.props.location.hash)}
+          selectedIndex={ selectedIndex }
           onSelect={index => handleTabChange(index)}
         >
           <TabList>
@@ -464,7 +458,12 @@ class Emergency extends React.Component {
           <div className='inpage__body'>
             <div className='inner'>
               <TabPanel>
-                <TabContent isError={!summary} errorMessage="Overview coming soon" title="Overview">
+                <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ NO_DATA } title="Key Figures">
+                  <Snippets data={this.props.snippets} />
+                  {this.renderKeyFigures()}
+                </TabContent>
+                {showExportMap()}
+                <TabContent isError={!summary} errorMessage={ NO_DATA } title="Overview">
                   <Fold id='overview'
                     title='Situational Overview'
                     wrapperClass='situational-overview' >
@@ -472,53 +471,19 @@ class Emergency extends React.Component {
                     {source ? <p className='emergency__source'>Source: {source}</p> : null}
                   </Fold>
                 </TabContent>
-              </TabPanel>
-              <TabPanel>
-                <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage="Graphics coming soon" title="Graphics">
-                  <Snippets data={this.props.snippets} />
-                  {this.renderKeyFigures()}
-                </TabContent>
-              </TabPanel>
-              <TabPanel>
-                <TabContent isError={!get(this.props.event, 'data.field_reports.length')} errorMessage="Field Reports coming soon" title="Field Reports">
+                <TabContent isError={!get(this.props.event, 'data.field_reports.length')} errorMessage={ NO_DATA } title="Field Reports">
                   {this.renderFieldReports()}
                 </TabContent>
-
-              </TabPanel>
-              <TabPanel>
-                <TabContent isError={!get(this.props.surgeAlerts, 'data.results.length')} errorMessage="Alerts coming soon" title="Alerts">
-                  < SurgeAlertsTable id='alerts'
+                <TabContent isError={!get(this.props.surgeAlerts, 'data.results.length')} errorMessage={ NO_DATA } title="Alerts">
+                  <SurgeAlertsTable id='alerts'
                     title='Alerts'
                     emergency={this.props.match.params.id}
                     returnNullForEmpty={true}
                   />)
                 </TabContent>
-              </TabPanel>
-              <TabPanel>
-                <TabContent isError={!get(this.props.eru, 'data.results.length')} errorMessage="ERUs coming soon" title="ERUs">
-                  <EruTable id='erus'
-                    emergency={this.props.match.params.id}
-                  />
-                </TabContent>
-              </TabPanel>
-              <TabPanel>
-                <TabContent isError={!get(this.props.personnel, 'data.results.length')} errorMessage="Personnel coming soon" title="Personnel">
-                  <PersonnelTable id='personnel'
-                    emergency={this.props.match.params.id}
-                  />
-                </TabContent>
-              </TabPanel>
-              <TabPanel>
-                <TabContent isError={!get(this.props.situationReports, 'data.results.length')} errorMessage="Response documents coming soon" title="Response Documents">
+                <TabContent isError={!get(this.props.situationReports, 'data.results.length')} errorMessage={ NO_DATA } title="Response Documents">
                   {this.renderResponseDocuments()}
                 </TabContent>
-              </TabPanel>
-              <TabPanel>
-                <TabContent isError={!get(this.props.appealDocuments, 'data.results.length')} errorMessage="Appeal documents coming soon" title="Appeal Documents">
-                  {this.renderAppealDocuments()}
-                </TabContent>
-              </TabPanel>
-              <TabPanel>
                 {contacts && contacts.length ? (
                   <Fold id='contacts' title='Contacts' wrapperClass='contacts'>
                     <table className='table'>
@@ -547,6 +512,22 @@ class Emergency extends React.Component {
                     </table>
                   </Fold>
                 ) : <ErrorPanel title="Contacts" errorMessage="No current contacts" />}
+              </TabPanel>
+
+              <TabPanel>
+                <TabContent isError={!get(this.props.eru, 'data.results.length')} errorMessage={ NO_DATA } title="ERUs">
+                  <EruTable id='erus'
+                    emergency={this.props.match.params.id}
+                  />
+                </TabContent>
+                <TabContent isError={!get(this.props.personnel, 'data.results.length')} errorMessage={ NO_DATA } title="Personnel">
+                  <PersonnelTable id='personnel'
+                    emergency={this.props.match.params.id}
+                  />
+                </TabContent>
+                <TabContent isError={!get(this.props.appealDocuments, 'data.results.length')} errorMessage={ NO_DATA } title="Appeal Documents">
+                  {this.renderAppealDocuments()}
+                </TabContent>
               </TabPanel>
             </div>
           </div>
