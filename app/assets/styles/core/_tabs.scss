@@ -2,7 +2,7 @@
   -webkit-tap-highlight-color: transparent;
 
   &__tab-list {
-    border-bottom: 1px solid $light-base-color;
+    border-bottom: 1px solid $base-border-color;
     margin: 0 0 10px;
     padding: 0;
     display: flex;
@@ -14,19 +14,23 @@
   &__tab {
     display: inline-block;
     font-family: $heading-font-family;
+    text-transform: uppercase;
+    letter-spacing: $letter-spacing-sm;
+    font-weight: $base-font-medium;
     border: 1px solid transparent;
     border-bottom: none;
     bottom: -1px;
     position: relative;
     list-style: none;
     padding: ($global-spacing * 1) ($global-spacing * 2);
-    font-size: large;
+    font-size: 120%;
     cursor: pointer;
 
     &--selected {
-      border-color: $light-base-color;
+      background: #fff;
+      border-color: $base-border-color;
       font-weight: $base-font-bold;
-      color: $base-color;
+      color: $primary-color;
     }
 
     &--disabled {
