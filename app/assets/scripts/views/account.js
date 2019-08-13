@@ -59,15 +59,18 @@ const TAB_DETAILS = [
 
 const basicTypes = [{
   label: 'Weekly Digest',
-  value: 'weeklyDigest'
+  value: 'weeklyDigest',
+  description: 'Select to get a weekly compilation of emergency events based on your preferences.'
 },
 {
   label: 'New Emergencies',
-  value: 'newEmergencies'
+  value: 'newEmergencies',
+  description: 'Select to receive notifications for new emergency events (includes Field Reports, GDACS alerts and WHO Alerts).'
 },
 {
   label: 'New Operations',
-  value: 'newOperations'
+  value: 'newOperations',
+  description: 'Select to receive notifications of new IFRC supported emergency operations.'
 },
 {
   label: 'General Announcements',
