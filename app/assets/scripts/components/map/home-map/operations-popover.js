@@ -15,7 +15,7 @@ class OperationsPopover extends React.Component {
         <div className='popover__contents'>
           <header className='popover__header'>
             <div className='popover__headline'>
-              {deployments ? title : <a className='link--primary' onClick={e => { e.preventDefault(); navigate(`/countries/${pageId}`); }}>{title}</a>}
+              {deployments ? title : <a className='link--primary' onClick={e => { e.preventDefault(); navigate(`/countries/${pageId}`); }}>{title} <span className='popover__headline__icon collecticon-chevron-right'></span></a>}
             </div>
             <div className='popover__actions actions'>
               <ul className='actions__menu'>
@@ -30,7 +30,7 @@ class OperationsPopover extends React.Component {
               <React.Fragment key={d.id}>
                 <h3 className='popover__subtitle'>
                   {d.event ? (
-                    <a className='link--primary' onClick={e => { e.preventDefault(); navigate(`/emergencies/${d.event}`); }}>{d.name}</a>
+                    <a className='' onClick={e => { e.preventDefault(); navigate(`/emergencies/${d.event}`); }}>{d.name}</a>
                   ) : d.name}
                 </h3>
                 <ul className='popover__details'>
