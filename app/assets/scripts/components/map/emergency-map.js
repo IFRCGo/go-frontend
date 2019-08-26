@@ -22,13 +22,18 @@ class EmergencyMap extends React.Component {
   exportMap (country, disasterTypeName) {
     this.setState({'isExporting': true});
     const $container = document.getElementById('mapContainer');
-    document.getElementsByClassName('mapboxgl-ctrl-top-right')[0].style.visibility = 'hidden';
+    const $canvas = document.getElementsByClassName('mapboxgl-canvas')[0];
+    const $expimg = document.getElementById('exportimage');
+    $expimg.src = $canvas.toDataURL('png');
+    $expimg.style.display = 'block';
+    document.getElementsByClassName('mapboxgl-map')[0].style.visibility = 'hidden';
     html2canvas($container, {useCORS: true}).then((renderedCanvas) => {
       startDownload(
         renderedCanvas,
         `${DateTime.local().toISODate()}-${disasterTypeName}-${country}.png`
       );
-      document.getElementsByClassName('mapboxgl-ctrl-top-right')[0].style.visibility = 'visible';
+      $expimg.style.display = 'none';
+      document.getElementsByClassName('mapboxgl-map')[0].style.visibility = 'visible';
       this.setState({'isExporting': false});
     });
   }
@@ -105,6 +110,7 @@ class EmergencyMap extends React.Component {
     const exportStyle = {
       display: this.state.isExporting ? 'block' : 'none'
     };
+    const exportImageStyle = {width: '100%', height: 'auto', display:'none'};
 
     return (
       <div className='emergency-map'>
@@ -149,6 +155,7 @@ class EmergencyMap extends React.Component {
                 </div>
               </figcaption>
               <div className="map-vis__holder" ref='map'/>
+              <img id="exportimage" style={exportImageStyle} src='/assets/graphics/layout/logo.png' />
             </figure>
             <p style={exportStyle} className='map__container__disclaimer'>The maps used do not imply the expresion of any opinion on the part of the International Federation of the Red Cross and Red Crescent Societies or National Societies concerning the legal status of a territory or of its authorities, Map data sources: OCHA, OSM Contributors, Mapbox, ICRC, IFRC. Map design: Netherland Red Cross/IFRC.</p>
           </div>
