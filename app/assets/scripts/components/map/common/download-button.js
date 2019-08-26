@@ -5,7 +5,6 @@ import html2canvas from 'html2canvas';
 import { startDownload } from '../../../utils/download-starter';
 import { PropTypes as T } from 'prop-types';
 import { environment } from '../../../config';
-import { showAlert } from './../../system-alerts';
 
 class DownloadButton extends React.Component {
   constructor (props) {
@@ -14,7 +13,6 @@ class DownloadButton extends React.Component {
   }
 
   startDownload () {
-
     this.props.setZoomToDefault();
     const interval = setInterval(function () {
       clearInterval(interval);
@@ -25,13 +23,13 @@ class DownloadButton extends React.Component {
       const popover = document.getElementsByClassName('popover__contents')[0];
       const navigation = document.getElementsByClassName('mapboxgl-ctrl-top-right')[0];
       const mapLogoHeader = document.getElementById('map-picture-header');
-    
+
       const $canvas = document.getElementsByClassName('mapboxgl-canvas')[0];
       const $expimg = document.getElementById('exportimage');
       $expimg.src = $canvas.toDataURL('png');
       $expimg.style.display = 'block';
       document.getElementsByClassName('mapboxgl-map')[0].style.visibility = 'hidden';
-      
+
       mapLogoHeader.style.visibility = 'visible';
       downloadButton.style.visibility = 'hidden';
       navigation.style.visibility = 'hidden';
@@ -55,7 +53,7 @@ class DownloadButton extends React.Component {
         dropdowns.forEach(dropdown => {
           dropdown.style.visibility = 'visible';
         });
-        
+
         $expimg.style.display = 'none';
         document.getElementsByClassName('mapboxgl-map')[0].style.visibility = 'visible';
 
