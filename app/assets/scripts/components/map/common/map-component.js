@@ -90,6 +90,7 @@ export default class MapComponent extends React.Component {
     const children = this.props.children || null;
     const currentDate = new Date();
     const canvas = document.getElementsByClassName('mapboxgl-canvas')[0];
+    const exportImageStyle = {width: '100%', height: 'auto', display: 'none'};
     return (
       <figure className='map-vis'>
         {this.props.noExport ? null : (
@@ -108,6 +109,7 @@ export default class MapComponent extends React.Component {
           <div style={{float: 'right', width: '375px', marginRight: '20px'}}>
             <img src="/assets/graphics/layout/logo.png" alt="IFRC GO logo" style={{width: '375px', height: '56px'}} />
           </div>
+          <img id="exportimage" style={exportImageStyle} src='/assets/graphics/layout/logo.png' />
         </div>
       </figure>
     );
