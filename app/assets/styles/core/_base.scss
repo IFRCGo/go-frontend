@@ -99,15 +99,49 @@ a.link--primary {
   z-index: 1;
 }
 
+.mapboxgl-popup {
+  font-family: $base-font-family;
+  border-radius: $base-border-radius;
+
+  .popover__subtitle {
+    font-weight: $base-font-medium;
+    text-decoration: underline;
+    margin-bottom: $global-spacing/2.5;
+  }
+  
+  .popover__subtitle, .popover__details {
+    font-size: $font-size-sm;
+  }
+}
+
+.popover__body {
+  font-size: $font-size-sm;
+}
+
+.popover__contents {
+  box-shadow: 1px 0px 4px 2px rgba(0,0,0,0.08);
+}
+
+.popover__actions {
+  .poa-xmark {
+    padding: 0;
+  }
+}
+
 .mapboxgl-popup .link--primary {
-  color: $base-color;
-  border-bottom: 1px solid $primary-color;
-  font-weight: $base-font-regular;
+  color: $primary-color;
+  text-transform: uppercase;
+  //border-bottom: 1px solid $primary-color;
+  font-weight: $base-font-medium;
   padding-bottom: $global-spacing/4;
-  background-image: none !important;
-  background-size: auto !important;
-  background-repeat: repeat !important;
-  transition: none !important;
+  background-image: none;
+  background-size: auto;
+  background-repeat: repeat;
+  transition: none;
+
+  .popover__headline__icon {
+    font-size: $font-size-sm;
+  }
 }
 
 a.link--secondary {
