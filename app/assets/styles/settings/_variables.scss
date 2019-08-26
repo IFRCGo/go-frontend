@@ -100,7 +100,7 @@ $global-spacing-3: 2rem;
 /* Rows */
 
 $row-min-width: 320px;
-$row-max-width: 1280px;
+$row-max-width: 1420px;
 $jeet-max-width: $row-max-width; // reset jeet.gs max width
 
 /* Media queries */
@@ -108,8 +108,8 @@ $jeet-max-width: $row-max-width; // reset jeet.gs max width
 $xsmall-range: (0, 543px);
 $small-range: (544px, 767px);
 $medium-range: (768px, 991px);
-$large-range: (992px, 1300px);
-$xlarge-range: (1301px, 1600px);
+$large-range: (992px, 1419px);
+$xlarge-range: (1420px, 1600px);
 $xxlarge-range: (1601px, 3000px);
 
 $screen: "only screen";
