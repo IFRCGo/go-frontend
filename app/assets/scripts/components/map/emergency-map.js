@@ -110,7 +110,7 @@ class EmergencyMap extends React.Component {
     const exportStyle = {
       display: this.state.isExporting ? 'block' : 'none'
     };
-    const exportImageStyle = {width: '100%', height: 'auto', display:'none'};
+    const exportImageStyle = {width: '100%', height: 'auto', display: 'none'};
 
     return (
       <div className='emergency-map'>
