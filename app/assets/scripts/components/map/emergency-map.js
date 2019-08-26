@@ -157,7 +157,7 @@ class EmergencyMap extends React.Component {
               <div className="map-vis__holder" ref='map'/>
               <img id="exportimage" style={exportImageStyle} src='/assets/graphics/layout/logo.png' />
             </figure>
-            <p style={exportStyle} className='map__container__disclaimer'>The maps used do not imply the expresion of any opinion on the part of the International Federation of the Red Cross and Red Crescent Societies or National Societies concerning the legal status of a territory or of its authorities, Map data sources: OCHA, OSM Contributors, Mapbox, ICRC, IFRC. Map design: Netherland Red Cross/IFRC.</p>
+            <p style={exportStyle} className='map__container__disclaimer'>The maps used do not imply the expresion of any opinion on the part of the International Federation of the Red Cross and Red Crescent Societies or National Societies concerning the legal status of a territory or of its authorities, Data sources: IFRC, OSM contributors, Mapbox.</p>
           </div>
         </div>
       </div>
