@@ -265,12 +265,12 @@ class HomeMap extends React.Component {
           <div className='map-vis__legend__filters'>
             <div className='map-vis__legend__filters-wrap'>
               <EmergencyTypesDropdown emergenciesByType={emergenciesByType}
-              onDtypeClick={this.onDtypeClick.bind(this)} />
-            </div>   
+                onDtypeClick={this.onDtypeClick.bind(this)} />
+            </div>
             <div className='map-vis__legend__filters-wrap'>
               <AppealTypesDropdown onAppealTypeChange={this.onAppealTypeChange.bind(this)} />
-            </div>   
-          </div>        
+            </div>
+          </div>
           <MapComponent className='map-vis__holder'
             noExport={this.props.noExport}
             configureMap={this.configureMap}
