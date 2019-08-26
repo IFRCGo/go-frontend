@@ -426,6 +426,29 @@
   }
 }
 
+.map-vis__legend__filters {
+  display: flex;
+  justify-content: flex-end;
+  padding: $global-spacing 0;
+
+  select.form__control--brand {
+    font-size: $font-size-sm;
+    font-weight: $base-font-medium;
+    display: inline-block;
+    min-width: 220px;
+    width: auto;
+  }
+}
+
+.map-vis__legend__filters-wrap {
+  display: inline-block;
+  margin-right: $global-spacing-2;
+
+  &:last-of-type {
+    margin-right: 0;
+  }
+}
+
 .legend__dl {
   padding: 0;
   margin: 0;

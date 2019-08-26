@@ -92,6 +92,19 @@ select.form__control {
   }
 }
 
+/* Form Control: Brand: with bottom red border */
+.form__control--brand {
+  box-shadow: none;
+  background-color: $grey-mist;
+  border-bottom: 1px solid $primary-color;
+  border-radius: 0;
+
+  &.form__control {
+    background-image: url('data:image/svg+xml;utf8,' + urlencode('<svg width="8" height="6" viewBox="0 0 8 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 6L7.4641 0H0.535898L4 6Z" fill="black"/></svg>'));
+      background-size: auto;
+  }
+}
+
 /* IE specific */
 
 select.form__control::-ms-expand {

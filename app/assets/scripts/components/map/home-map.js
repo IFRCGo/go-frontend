@@ -262,6 +262,15 @@ class HomeMap extends React.Component {
             onDtypeHover={this.onDtypeHover.bind(this)}/>}
 
         <div className={mapContainerClassName}>
+          <div className='map-vis__legend__filters'>
+            <div className='map-vis__legend__filters-wrap'>
+              <EmergencyTypesDropdown emergenciesByType={emergenciesByType}
+                onDtypeClick={this.onDtypeClick.bind(this)} />
+            </div>
+            <div className='map-vis__legend__filters-wrap'>
+              <AppealTypesDropdown onAppealTypeChange={this.onAppealTypeChange.bind(this)} />
+            </div>
+          </div>
           <MapComponent className='map-vis__holder'
             noExport={this.props.noExport}
             configureMap={this.configureMap}
@@ -274,11 +283,6 @@ class HomeMap extends React.Component {
               onFieldChange={this.onFieldChange}
               deployments={this.props.deployments}
               deploymentsKey={this.props.deploymentsKey}/>
-
-            <EmergencyTypesDropdown emergenciesByType={emergenciesByType}
-              onDtypeClick={this.onDtypeClick.bind(this)} />
-
-            <AppealTypesDropdown onAppealTypeChange={this.onAppealTypeChange.bind(this)} />
           </MapComponent>
         </div>
       </React.Fragment>
