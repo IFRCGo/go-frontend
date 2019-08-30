@@ -212,7 +212,10 @@ class AppealsTable extends SFPComponent {
             <HomeMap
               operations={appealsList}
               noExport={true}
-              noRenderEmergencies={true} />
+              noRenderEmergencies={true}
+              fullscreen={this.props.fullscreen}
+              toggleFullscreen={this.props.toggleFullscreen}
+            />
           ) : null}
           <DisplayTable
             className='table table--zebra table--active-ops'
@@ -254,7 +257,10 @@ if (environment !== 'production') {
     id: T.string,
 
     action: T.string,
-    statePath: T.string
+    statePath: T.string,
+
+    fullscreen: T.bool,
+    toggleFullscreen: T.func
   };
 }
 

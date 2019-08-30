@@ -284,6 +284,13 @@ class HomeMap extends React.Component {
               deployments={this.props.deployments}
               deploymentsKey={this.props.deploymentsKey}/>
           </MapComponent>
+          <div className='map-vis__legend--fullscreen-wrap'>
+            <button className='button button--secondary-bounded button--small button--fullscreen'
+              onClick={this.props.toggleFullscreen}
+              title='View in fullscreen'>
+              <span>{this.props.fullscreen ? 'Close the Map' : 'Expand the map'}</span>
+            </button>
+          </div>
         </div>
       </React.Fragment>
     );
@@ -312,7 +319,9 @@ if (environment !== 'production') {
     noRenderEmergencies: T.bool,
     noRenderEmergencyTitle: T.bool,
     noExport: T.bool,
-    layers: T.array
+    layers: T.array,
+    toggleFullscreen: T.func,
+    fullscreen: T.bool
   };
 }
 

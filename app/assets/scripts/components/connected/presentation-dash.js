@@ -79,6 +79,8 @@ class PresentationDash extends React.Component {
             title={'Active Operations'}
             limit={5}
             viewAll={'/appeals/all'}
+            fullscreen={this.state.fullscreen}
+            toggleFullscreen={this.toggleFullscreen}
           />
         </div>
         <HomeCharts aggregate={aggregate} />
