@@ -4,7 +4,6 @@ import { Helmet } from 'react-helmet';
 import App from './app';
 import PresentationDash from '../components/connected/presentation-dash';
 import AlertsTable from '../components/connected/alerts-table';
-import AppealsTable from '../components/connected/appeals-table';
 import FeaturedEmergencies from '../components/connected/featured-emergencies';
 
 class Home extends React.Component {
@@ -26,14 +25,6 @@ class Home extends React.Component {
           <div className='inpage__body inpage__body__main'>
             <FeaturedEmergencies />
             <PresentationDash />
-            <div className='inner'>
-              <AppealsTable
-                showActive={true}
-                title={'Active Operations'}
-                limit={5}
-                viewAll={'/appeals/all'}
-              />
-            </div>
             <div className='inner'>
               <AlertsTable
                 title={'Surge Notifications'}

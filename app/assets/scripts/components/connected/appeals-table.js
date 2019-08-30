@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
 
 import { environment } from '../../config';
-import { getAppeals } from '../../actions';
+import { getAppealsList, getAppeals } from '../../actions';
 import { commaSeparatedNumber as n, nope } from '../../utils/format';
 import { getDtypeMeta } from '../../utils/get-dtype-meta';
 import {
@@ -22,6 +22,7 @@ import BlockLoading from '../block-loading';
 import DisplayTable, { SortHeader, FilterHeader } from '../display-table';
 import { SFPComponent } from '../../utils/extendables';
 import { appealTypes as appealsType, appealTypeOptions } from '../../utils/appeal-type-constants';
+import HomeMap from '../map/home-map';
 
 class AppealsTable extends SFPComponent {
   constructor (props) {
@@ -46,6 +47,7 @@ class AppealsTable extends SFPComponent {
 
   componentDidMount () {
     this.requestResults(this.props);
+    this.props._getAppealsList();
   }
 
   componentWillReceiveProps (newProps) {
@@ -194,6 +196,10 @@ class AppealsTable extends SFPComponent {
         <Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || 'View all operations'}</Link>
       ) : null;
 
+      const {
+        appealsList
+      } = this.props;
+
       return (
         <Fold title={`${title} (${n(data.count)})`} id={this.props.id} navLink={foldLink} foldClass='fold__title--inline' extraClass='fold--main'>
           {this.props.showExport ? (
@@ -201,6 +207,12 @@ class AppealsTable extends SFPComponent {
               qs={this.getQs(this.props)}
               resource='api/v2/appeal'
             />
+          ) : null}
+          {this.props.showMap ? (
+            <HomeMap
+              operations={appealsList}
+              noExport={true}
+              noRenderEmergencies={true} />
           ) : null}
           <DisplayTable
             className='table table--zebra table--active-ops'
@@ -222,6 +234,7 @@ if (environment !== 'production') {
   AppealsTable.propTypes = {
     _getAppeals: T.func,
     appeals: T.object,
+    appealsList: T.func,
 
     limit: T.number,
     country: T.number,
@@ -231,6 +244,8 @@ if (environment !== 'production') {
 
     noPaginate: T.bool,
     showExport: T.bool,
+    showMap: T.bool,
+
     title: T.string,
 
     showActive: T.bool,
@@ -244,11 +259,13 @@ if (environment !== 'production') {
 }
 
 const selector = (state, props) => ({
-  appeals: props.statePath ? get(state, props.statePath) : state.appeals
+  appeals: props.statePath ? get(state, props.statePath) : state.appeals,
+  appealsList: state.overallStats.appealsList
 });
 
 const dispatcher = (dispatch) => ({
-  _getAppeals: (...args) => dispatch(getAppeals(...args))
+  _getAppeals: (...args) => dispatch(getAppeals(...args)),
+  _getAppealsList: (...args) => dispatch(getAppealsList(...args))
 });
 
 export default connect(selector, dispatcher)(AppealsTable);
