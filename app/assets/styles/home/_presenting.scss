@@ -6,8 +6,11 @@
   }
 
   .button--fullscreen {
+    border: none;
+    @extend .button--text-hidden;
+
     &:before {
-      content: url('/assets/graphics/layout/close-full-screen.svg');
+      content: url('/assets/graphics/layout/x-thin.svg');
     }
   }
 

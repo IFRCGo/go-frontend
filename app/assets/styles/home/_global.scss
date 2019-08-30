@@ -61,21 +61,34 @@
 }
 
 .button--fullscreen {
-  @extend .button--text-hidden;
+  //@extend .button--text-hidden;
   float: right;
   position: relative;
-  padding: $global-spacing;
-  border-radius: 5px;
+  padding: ($global-spacing/2) $global-spacing-2;
+  background-color: #fff;
+  border: 1px solid $grey-cloud;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  //border-radius: 5px;
   &:before {
-    content: url('/assets/graphics/layout/full-screen.svg');
-    position: absolute;
-    margin-right: 6rem;
-    height: 25px;
-    width: 25px;
-    left: 0.22rem;
-    top: 0.22rem;
+    content: url('/assets/graphics/layout/fullscreen-square.svg');
+    margin-right: $global-spacing;
+    //position: absolute;
+    //margin-right: 6rem;
+    //height: 25px;
+    //width: 25px;
+    //left: 0.22rem;
+    //top: 0.22rem;
   };
 }
+
+.map-vis__legend--fullscreen-wrap {
+  position: absolute;
+  left: $global-spacing;
+  top: 84px;
+}
+
 /* Stats */
 
 .fold--stats {

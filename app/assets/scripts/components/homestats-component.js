@@ -117,7 +117,7 @@ export default function HomestatsComponent (props) {
     <div className='inner'>
       {props.fullscreen ? (<div style={{width: '375px', height: '56px', position: 'absolute'}}><img src="/assets/graphics/layout/logo.png" alt="IFRC GO logo" style={{width: '375px', height: '56px'}} /></div>) : null}
       <div className='presentation__actions'>
-        <button className='button button--base-plain button--fullscreen' onClick={props.toggleFullscreen} title='View in fullscreen'><span>FullScreen</span></button>
+        
       </div>
       <div className='stats-overall'>
         <h1 className='visually-hidden'>Overall stats</h1>
@@ -136,7 +136,6 @@ if (environment !== 'production') {
     closeTooltip: T.func,
     openTooltip: T.func,
     chooseContent: T.func,
-    toggleFullscreen: T.func,
     fullscreen: T.bool
   };
 }
