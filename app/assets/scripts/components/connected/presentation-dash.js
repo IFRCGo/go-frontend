@@ -83,7 +83,9 @@ class PresentationDash extends React.Component {
             toggleFullscreen={this.toggleFullscreen}
           />
         </div>
-        <HomeCharts aggregate={aggregate} />
+        {this.state.fullscreen ? null : (
+          <HomeCharts aggregate={aggregate} />
+        )}
       </section>
     );
   }

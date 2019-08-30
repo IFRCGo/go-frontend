@@ -217,15 +217,17 @@ class AppealsTable extends SFPComponent {
               toggleFullscreen={this.props.toggleFullscreen}
             />
           ) : null}
-          <DisplayTable
-            className='table table--zebra table--active-ops'
-            headings={headings}
-            rows={rows}
-            pageCount={data.count / this.state.table.limit}
-            page={this.state.table.page - 1}
-            onPageChange={this.handlePageChange.bind(this, 'table')}
-            noPaginate={this.props.noPaginate}
-          />
+          {this.props.fullscreen ? null : (
+            <DisplayTable
+              className='table table--zebra table--active-ops'
+              headings={headings}
+              rows={rows}
+              pageCount={data.count / this.state.table.limit}
+              page={this.state.table.page - 1}
+              onPageChange={this.handlePageChange.bind(this, 'table')}
+              noPaginate={this.props.noPaginate}
+            />
+          )}
         </Fold>
       );
     }
