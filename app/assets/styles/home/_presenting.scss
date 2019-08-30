@@ -5,6 +5,10 @@
     max-width: 1600px;
   }
 
+  .fold__header {
+    margin-bottom: 0;
+  }
+
   .button--fullscreen {
     border: none;
     @extend .button--text-hidden;
@@ -30,7 +34,7 @@
   }
 
   .stats-overall {
-    height: 11vh;
+    height: 15vh;
     padding: 3vh 0;
     span.sumstats__key {
       font-size: 0.875rem;
@@ -78,4 +82,13 @@
   width: 15px;
   height: 15px;
   cursor: pointer;
+}
+
+.page--homepage {
+  .inpage__title--map-fullscreen {
+    padding-left: 430px; // width of logo + some padding
+    margin: ($global-spacing/2) 0 0 0;
+    text-align: left;
+    font-size: 2rem;
+  }
 }

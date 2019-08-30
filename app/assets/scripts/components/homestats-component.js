@@ -115,10 +115,7 @@ export default function HomestatsComponent (props) {
 
   return (
     <div className='inner'>
-      {props.fullscreen ? (<div style={{width: '375px', height: '56px', position: 'absolute'}}><img src="/assets/graphics/layout/logo.png" alt="IFRC GO logo" style={{width: '375px', height: '56px'}} /></div>) : null}
-      <div className='presentation__actions'>
-
-      </div>
+      {props.fullscreen ? (<div className='flex'><div style={{width: '375px', height: '56px', position: 'absolute'}}><img src="/assets/graphics/layout/logo.png" alt="IFRC GO logo" style={{width: '375px', height: '56px'}} /></div><h1 className='inpage__title inpage__title--map-fullscreen'>IFRC Disaster Response and Preparedness</h1></div>) : null}
       <div className='stats-overall'>
         <h1 className='visually-hidden'>Overall stats</h1>
         {renderLoading(props)}
