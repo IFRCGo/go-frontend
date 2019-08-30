@@ -8,6 +8,9 @@
   .button--fullscreen {
     border: none;
     @extend .button--text-hidden;
+    position: fixed;
+    top: $global-spacing/2;
+    right: $global-spacing/2;
 
     &:before {
       content: url('/assets/graphics/layout/x-thin.svg');

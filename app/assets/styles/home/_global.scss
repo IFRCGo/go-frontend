@@ -70,17 +70,17 @@
   box-shadow: none;
   display: flex;
   align-items: center;
-  //border-radius: 5px;
+
   &:before {
     content: url('/assets/graphics/layout/fullscreen-square.svg');
     margin-right: $global-spacing;
-    //position: absolute;
-    //margin-right: 6rem;
-    //height: 25px;
-    //width: 25px;
-    //left: 0.22rem;
-    //top: 0.22rem;
+    position: relative;
+    top: 2px;
   };
+
+  &:hover, &:focus {
+    background: $grey-mist;
+  }
 }
 
 .map-vis__legend--fullscreen-wrap {
