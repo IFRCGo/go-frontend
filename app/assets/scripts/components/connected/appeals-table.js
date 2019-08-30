@@ -197,34 +197,33 @@ class AppealsTable extends SFPComponent {
       ) : null;
 
       const {
-        appealsList,
-        aggregate
+        appealsList
       } = this.props;
 
       return (
-          <Fold title={`${title} (${n(data.count)})`} id={this.props.id} navLink={foldLink} foldClass='fold__title--inline' extraClass='fold--main'>
-            {this.props.showExport ? (
-              <ExportButton filename='appeals'
-                qs={this.getQs(this.props)}
-                resource='api/v2/appeal'
-              />
-            ) : null}
-            {this.props.showMap ? (
-              <HomeMap 
-                operations={appealsList} 
-                noExport={true} 
-                noRenderEmergencies={true} />
-            ) : null}
-            <DisplayTable
-              className='table table--zebra table--active-ops'
-              headings={headings}
-              rows={rows}
-              pageCount={data.count / this.state.table.limit}
-              page={this.state.table.page - 1}
-              onPageChange={this.handlePageChange.bind(this, 'table')}
-              noPaginate={this.props.noPaginate}
+        <Fold title={`${title} (${n(data.count)})`} id={this.props.id} navLink={foldLink} foldClass='fold__title--inline' extraClass='fold--main'>
+          {this.props.showExport ? (
+            <ExportButton filename='appeals'
+              qs={this.getQs(this.props)}
+              resource='api/v2/appeal'
             />
-          </Fold>
+          ) : null}
+          {this.props.showMap ? (
+            <HomeMap
+              operations={appealsList}
+              noExport={true}
+              noRenderEmergencies={true} />
+          ) : null}
+          <DisplayTable
+            className='table table--zebra table--active-ops'
+            headings={headings}
+            rows={rows}
+            pageCount={data.count / this.state.table.limit}
+            page={this.state.table.page - 1}
+            onPageChange={this.handlePageChange.bind(this, 'table')}
+            noPaginate={this.props.noPaginate}
+          />
+        </Fold>
       );
     }
     return null;

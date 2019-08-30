@@ -73,13 +73,13 @@ class PresentationDash extends React.Component {
       <section className={c('fold--stats', {presenting: this.state.fullscreen})} id='presentation'>
         <Homestats appealsList={appealsList} fullscreen={this.state.fullscreen} toggleFullscreen={this.toggleFullscreen} />
         <div className='inner'>
-              <AppealsTable
-                showActive={true}
-                showMap={true}
-                title={'Active Operations'}
-                limit={5}
-                viewAll={'/appeals/all'}
-              />
+          <AppealsTable
+            showActive={true}
+            showMap={true}
+            title={'Active Operations'}
+            limit={5}
+            viewAll={'/appeals/all'}
+          />
         </div>
         <HomeCharts aggregate={aggregate} />
       </section>
@@ -89,6 +89,7 @@ class PresentationDash extends React.Component {
 
 if (environment !== 'production') {
   PresentationDash.propTypes = {
+    _getAppealsList: T.func,
     _getAggregateAppeals: T.func,
     appealsList: T.object,
     aggregate: T.object
