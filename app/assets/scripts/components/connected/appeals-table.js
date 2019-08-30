@@ -214,7 +214,7 @@ class AppealsTable extends SFPComponent {
               noExport={true}
               noRenderEmergencies={true}
               fullscreen={this.props.fullscreen}
-              toggleFullscreen={this.props.toggleFullscreen}  
+              toggleFullscreen={this.props.toggleFullscreen}
             />
           ) : null}
           <DisplayTable

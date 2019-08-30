@@ -286,8 +286,8 @@ class HomeMap extends React.Component {
           </MapComponent>
           <div className='map-vis__legend--fullscreen-wrap'>
             <button className='button button--secondary-bounded button--small button--fullscreen'
-                onClick={this.props.toggleFullscreen}
-                title='View in fullscreen'>
+              onClick={this.props.toggleFullscreen}
+              title='View in fullscreen'>
               <span>{this.props.fullscreen ? 'Close the Map' : 'Expand the map'}</span>
             </button>
           </div>
