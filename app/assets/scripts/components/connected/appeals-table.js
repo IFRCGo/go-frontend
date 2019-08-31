@@ -19,7 +19,7 @@ import {
 import ExportButton from '../export-button-container';
 import Fold from '../fold';
 import BlockLoading from '../block-loading';
-import DisplayTable, { SortHeader, FilterHeader } from '../display-table';
+import DisplayTable, { SortHeader, FilterHeader,  DateFilterHeader} from '../display-table';
 import { SFPComponent } from '../../utils/extendables';
 import { appealTypes as appealsType, appealTypeOptions } from '../../utils/appeal-type-constants';
 import HomeMap from '../map/home-map';
@@ -75,8 +75,12 @@ class AppealsTable extends SFPComponent {
       qs.ordering = '-start_date';
     }
 
-    if (state.filters.date !== 'all') {
-      qs.start_date__gte = datesAgo[state.filters.date]();
+    const {
+      startDate, endDate
+    } = state.filters.date;
+    if (startDate && endDate) {
+      qs.start_date__gte = DateTime.fromISO(startDate).toISO();
+      qs.start_date__lte = DateTime.fromISO(endDate).toISO();
     }
     if (state.filters.dtype !== 'all') {
       qs.dtype = state.filters.dtype;
@@ -143,7 +147,10 @@ class AppealsTable extends SFPComponent {
       const headings = [
         {
           id: 'date',
-          label: <FilterHeader id='date' title='Start Date' options={dateOptions} filter={this.state.table.filters.date} onSelect={this.handleFilterChange.bind(this, 'table', 'date')} />
+          label: <DateFilterHeader id='date' 
+            title='Start Date' options={dateOptions} 
+            filter={this.state.table.filters.date} 
+            onSelect={this.handleFilterChange.bind(this, 'table', 'date')} />
         },
         {
           id: 'type',

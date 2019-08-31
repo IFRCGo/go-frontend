@@ -179,3 +179,81 @@ if (environment !== 'production') {
     onSelect: T.func
   };
 }
+
+export class DateFilterHeader extends React.PureComponent {
+
+  constructor () {
+    super();
+    this.state = {
+      startDate: null,
+      endDate: null
+    } 
+
+  }
+
+  componentDidMount () {
+    this.setState({
+      'startDate': this.props.filter.startDate, 
+      'endDate': this.props.filter.endDate
+    });
+
+  }
+
+  applyPeriodFilter () {
+    //console.log('Apply filter!', this.state.startDate, this.state.endDate);
+    this.props.onSelect({'startDate':this.state.startDate ,'endDate':this.state.endDate });
+  }
+
+  changeStartDate (e) {
+    //console.log(e);
+    this.setState({'startDate': e.target.value});
+  }
+
+  changeEndDate (e) {
+    this.setState({'endDate': e.target.value});
+  }
+
+  render () {
+    const {id, title, options, onSelect, filter} = this.props;
+    const onFilterClick = (option, e) => {
+      e.preventDefault();
+      onSelect(option.value);
+    };
+    return (
+      <Dropdown
+        id={id}
+        triggerClassName='drop__toggle--caret'
+        triggerActiveClassName='active'
+        triggerText={title}
+        triggerTitle={`Filter by ${title}`}
+        triggerElement='a'
+        direction='down'
+        alignment='center' >
+        <ul className='drop__menu drop__menu--select' role='menu'>
+          <li><p><input type="date" name="startdate" value={this.state.startDate}
+            onChange={this.changeStartDate.bind(this)} /></p></li>
+          <li><p><input type="date" name="enddate" value={this.state.endDate}
+            onChange={this.changeEndDate.bind(this)} /></p></li>
+          <li><p><button className="button button--primary-bounded"
+            onClick={this.applyPeriodFilter.bind(this)}
+            >Apply</button></p></li>
+        </ul>
+      </Dropdown>
+    );
+  }
+}
+
+if (environment !== 'production') {
+  DateFilterHeader.propTypes = {
+    id: T.string,
+    title: T.string,
+    options: T.arrayOf(
+      T.shape({
+        value: T.oneOfType([T.string, T.number]),
+        label: T.string
+      })
+    ),
+    filter: T.oneOfType([T.string, T.number]),
+    onSelect: T.func
+  };
+}
