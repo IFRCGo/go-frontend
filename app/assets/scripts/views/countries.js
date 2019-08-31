@@ -43,6 +43,7 @@ import CountryMap from '../components/map/country-map';
 import DisplayTable, { SortHeader, FilterHeader } from '../components/display-table';
 import EmergenciesTable from '../components/connected/emergencies-table';
 import BulletTable from '../components/bullet-table';
+import Pills from '../components/pills';
 import {
   Snippets,
   KeyFigures,
@@ -607,6 +608,11 @@ class AdminArea extends SFPComponent {
             </div>
           </div>
         </Tabs>
+        <div className='inpage__body'>
+          <div className='inner'>
+            <Pills/>
+          </div>
+        </div>
       </section>
     );
   }
