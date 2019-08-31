@@ -77,8 +77,10 @@ class AppealsTable extends SFPComponent {
     const {
       startDate, endDate
     } = state.filters.date;
-    if (startDate && endDate) {
+    if (startDate) {
       qs.start_date__gte = DateTime.fromISO(startDate).toISO();
+    }
+    if (endDate) {
       qs.start_date__lte = DateTime.fromISO(endDate).toISO();
     }
     if (state.filters.dtype !== 'all') {
