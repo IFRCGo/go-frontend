@@ -12,14 +12,13 @@ import { getDtypeMeta } from '../../utils/get-dtype-meta';
 import {
   get,
   dateOptions,
-  datesAgo,
   dTypeOptions
 } from '../../utils/utils/';
 
 import ExportButton from '../export-button-container';
 import Fold from '../fold';
 import BlockLoading from '../block-loading';
-import DisplayTable, { SortHeader, FilterHeader,  DateFilterHeader} from '../display-table';
+import DisplayTable, { SortHeader, FilterHeader, DateFilterHeader} from '../display-table';
 import { SFPComponent } from '../../utils/extendables';
 import { appealTypes as appealsType, appealTypeOptions } from '../../utils/appeal-type-constants';
 import HomeMap from '../map/home-map';
@@ -147,9 +146,9 @@ class AppealsTable extends SFPComponent {
       const headings = [
         {
           id: 'date',
-          label: <DateFilterHeader id='date' 
-            title='Start Date' options={dateOptions} 
-            filter={this.state.table.filters.date} 
+          label: <DateFilterHeader id='date'
+            title='Start Date' options={dateOptions}
+            filter={this.state.table.filters.date}
             onSelect={this.handleFilterChange.bind(this, 'table', 'date')} />
         },
         {

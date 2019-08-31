@@ -181,31 +181,28 @@ if (environment !== 'production') {
 }
 
 export class DateFilterHeader extends React.PureComponent {
-
   constructor () {
     super();
     this.state = {
       startDate: null,
       endDate: null
-    } 
-
+    };
   }
 
-  componentDidMount () {
+  componentWillMount () {
     this.setState({
-      'startDate': this.props.filter.startDate, 
+      'startDate': this.props.filter.startDate,
       'endDate': this.props.filter.endDate
     });
-
   }
 
   applyPeriodFilter () {
-    //console.log('Apply filter!', this.state.startDate, this.state.endDate);
-    this.props.onSelect({'startDate':this.state.startDate ,'endDate':this.state.endDate });
+    // console.log('Apply filter!', this.state.startDate, this.state.endDate);
+    this.props.onSelect({'startDate': this.state.startDate, 'endDate': this.state.endDate});
   }
 
   changeStartDate (e) {
-    //console.log(e);
+    // console.log(e);
     this.setState({'startDate': e.target.value});
   }
 
@@ -214,11 +211,7 @@ export class DateFilterHeader extends React.PureComponent {
   }
 
   render () {
-    const {id, title, options, onSelect, filter} = this.props;
-    const onFilterClick = (option, e) => {
-      e.preventDefault();
-      onSelect(option.value);
-    };
+    const {id, title} = this.props;
     return (
       <Dropdown
         id={id}
@@ -236,7 +229,7 @@ export class DateFilterHeader extends React.PureComponent {
             onChange={this.changeEndDate.bind(this)} /></p></li>
           <li><p><button className="button button--primary-bounded"
             onClick={this.applyPeriodFilter.bind(this)}
-            >Apply</button></p></li>
+          >Apply</button></p></li>
         </ul>
       </Dropdown>
     );
