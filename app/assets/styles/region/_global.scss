@@ -20,28 +20,42 @@
       margin-bottom: 0;
     }
   }
+  
+  .region-countries__letter {
+    color: $primary-color;
+    font-weight: $base-font-bold;
+    font-size: 1.2rem;
+    margin: ($global-spacing * 1.5) 0;
+  }
 
   .region-countries__list {
     list-style: none;
+    @include media(medium-up) {
+      column-count: 3;
+      column-gap: ($global-spacing * 6);
+      column-rule: 1px solid $base-border-color;  
+    }
   }
 
   .region-countries__item {
-    @include column(4/12);
-    @include media(medium-up) {
-      @include column(2.5/12);
-    }
-    @include media(small-down){
-      @include column(5.5/12);
-    }
-    margin-bottom: $global-spacing * 1.5;
-    span {
-      font-weight: $base-font-regular;
-      display: block;
-      font-size: 0.875rem;
-      margin-top: $global-spacing/2;
-    }
+    display: block;
+    margin-bottom: $global-spacing/2;
     .inactive {
       color: rgba($base-color, 0.4);
     }
+  }
+
+  .region-countries__link {
+    font-size: $font-size-xxl;
+    font-weight: $base-font-medium;
+  }
+  
+  .region-countries__linkC {
+    padding: 0 ($global-spacing / 1.5) 0 0;
+  }
+
+  .region-countries__link-op {
+    font-size: 0.875rem;
+    margin-top: $global-spacing/2;
   }
 }
