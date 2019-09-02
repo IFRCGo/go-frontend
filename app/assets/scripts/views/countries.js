@@ -187,7 +187,7 @@ class AdminArea extends SFPComponent {
     if (iso3) {
       const reliefWebLink = {
         'text': `${adminArea.data.name} on reliefweb.int`,
-        'url': `https://reliefweb.int/country/${iso3}` 
+        'url': `https://reliefweb.int/country/${iso3}`
       };
       links.push(reliefWebLink);
     }

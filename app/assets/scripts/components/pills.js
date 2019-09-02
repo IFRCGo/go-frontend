@@ -1,11 +1,10 @@
 'use strict';
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
-import { Link } from 'react-router-dom';
 import { environment } from '../config';
 
 class Pills extends React.Component {
-  render() {
+  render () {
     console.log('links', this.props.links);
     return (
       <div className='clearfix flex country__pill__wrap'>
@@ -27,7 +26,7 @@ class Pills extends React.Component {
 
 if (environment !== 'production') {
   Pills.propTypes = {
-      links: T.array
+    links: T.array
   };
 }
 

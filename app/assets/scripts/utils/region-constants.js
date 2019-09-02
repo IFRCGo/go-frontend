@@ -266,4 +266,4 @@ export const getRegionSlug = (id) => {
     return null;
   }
   return regions[id].slug;
-}
+};
