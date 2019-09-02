@@ -210,27 +210,33 @@ export const countriesByRegion = {
 export const regions = {
   '-1': {
     id: -1,
-    name: 'Other'
+    name: 'Other',
+    slug: null
   },
   '0': {
     id: 0,
-    name: 'Africa'
+    name: 'Africa',
+    slug: 'africa'
   },
   '1': {
     id: 1,
-    name: 'Americas'
+    name: 'Americas',
+    slug: 'americas'
   },
   '2': {
     id: 2,
-    name: 'Asia Pacific'
+    name: 'Asia Pacific',
+    slug: 'asia-pacific'
   },
   '3': {
     id: 3,
-    name: 'Europe'
+    name: 'Europe',
+    slug: 'europe-and-central-asia'
   },
   '4': {
     id: 4,
-    name: 'Middle East & North Africa'
+    name: 'Middle East & North Africa',
+    slug: 'middle-east-and-north-africa'
   }
 };
 
@@ -253,4 +259,11 @@ export const getRegionId = (idOrName) => {
 
 export const getRegionById = (id) => {
   return regions[id];
+};
+
+export const getRegionSlug = (id) => {
+  if (!regions.hasOwnProperty(id)) {
+    return null;
+  }
+  return regions[id].slug;
 };
