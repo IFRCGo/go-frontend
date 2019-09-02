@@ -5,7 +5,6 @@ import { environment } from '../config';
 
 class Pills extends React.Component {
   render () {
-    console.log('links', this.props.links);
     return (
       <div className='clearfix flex country__pill__wrap'>
         {

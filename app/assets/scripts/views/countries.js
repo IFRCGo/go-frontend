@@ -168,7 +168,6 @@ class AdminArea extends SFPComponent {
   getLinks () {
     const { adminArea } = this.props;
     if (!adminArea.fetched) return false;
-    console.log('admin area', adminArea);
     const iso2 = adminArea.data.iso;
     const iso3 = getISO3(iso2);
     const homepage = adminArea.data.society_url;
