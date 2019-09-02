@@ -2,40 +2,33 @@
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
-import Fold from './fold';
+import { environment } from '../config';
 
 class Pills extends React.Component {
   render() {
+    console.log('links', this.props.links);
     return (
       <div className='clearfix flex country__pill__wrap'>
-        <div className='pills__brand__col'>
-          <Link className='pill__brand' to='#'>
-            <div>Phillipines on ifrc.org</div>
-          </Link>
-        </div>
-        <div className='pills__brand__col'>
-          <Link className='pill__brand' to='#'>
-            <div>Phillipines on reliefweb.int</div>
-          </Link>
-        </div>
-        <div className='pills__brand__col'>
-        <Link className='pill__brand' to='#'>
-          <div>Phillipines on DEEP</div>
-        </Link>
-        </div>
-        <div className='pills__brand__col'>
-          <Link className='pill__brand' to='#'>
-            <div>Evaluations IFRC DB</div>
-          </Link>
-        </div>
-        <div className='pills__brand__col'>
-          <Link className='pill__brand' to='#'>
-            <div>Phillipines Homepage</div>
-          </Link>
-        </div>
+        {
+          this.props.links.map(link => {
+            return (
+              <div className='pills__brand__col' key={link.text}>
+                <a className='pill__brand' href={link.url} target='_blank'>
+                  <div>{link.text}</div>
+                </a>
+              </div>
+            );
+          })
+        }
       </div>
     );
   }
+}
+
+if (environment !== 'production') {
+  Pills.propTypes = {
+      links: T.array
+  };
 }
 
 export default Pills;

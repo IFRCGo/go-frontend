@@ -57,6 +57,8 @@ import PreparednessPhaseOutcomes from '../components/country/preparedness-phase-
 import PreparednessColumnBar from '../components/country/preparedness-column-graph';
 import { SFPComponent } from '../utils/extendables';
 import { NO_DATA } from '../utils/constants';
+import { getRegionSlug } from '../utils/region-constants';
+import { getISO3 } from '../utils/country-iso';
 
 const TAB_DETAILS = [
   { title: 'Operations', hash: '#operations' },
@@ -160,6 +162,45 @@ class AdminArea extends SFPComponent {
   getAdmArea (type, id) {
     showGlobalLoading();
     this.props._getAdmAreaById(type, id);
+  }
+
+  // gets links to display in the pills at bottom of the tabs
+  getLinks () {
+    const { adminArea } = this.props;
+    if (!adminArea.fetched) return false;
+    console.log('admin area', adminArea);
+    const iso2 = adminArea.data.iso;
+    const iso3 = getISO3(iso2);
+    const homepage = adminArea.data.society_url;
+    const regionSlug = getRegionSlug(adminArea.data.region);
+    const countryLower = adminArea.data.name.toLowerCase();
+    const links = [];
+
+    if (regionSlug) {
+      const ifrcLink = {
+        'text': `${adminArea.data.name} on IFRC.org`,
+        'url': `https://www.ifrc.org/en/news-and-media/news-stories/${regionSlug}/${countryLower}/`
+      };
+      links.push(ifrcLink);
+    }
+
+    if (iso3) {
+      const reliefWebLink = {
+        'text': `${adminArea.data.name} on reliefweb.int`,
+        'url': `https://reliefweb.int/country/${iso3}` 
+      };
+      links.push(reliefWebLink);
+    }
+
+    if (homepage) {
+      const homepageLink = {
+        'text': `${adminArea.data.name} Homepage`,
+        'url': homepage
+      };
+      links.push(homepageLink);
+    }
+
+    return links;
   }
 
   computeFilters (what) {
@@ -468,7 +509,7 @@ class AdminArea extends SFPComponent {
       error,
       data
     } = this.props.adminArea;
-
+    const countryLinks = this.getLinks();
     if (!fetched || error) return null;
 
     const bbox = getBoundingBox(data.iso);
@@ -610,7 +651,7 @@ class AdminArea extends SFPComponent {
         </Tabs>
         <div className='inpage__body'>
           <div className='inner'>
-            <Pills/>
+            { countryLinks ? <Pills links={countryLinks} /> : null }
           </div>
         </div>
       </section>
