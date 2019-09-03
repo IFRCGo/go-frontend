@@ -226,12 +226,12 @@ export class DateFilterHeader extends React.PureComponent {
           <li className='global-spacing'>
             <label className='form__label form__label--small'>From</label>
             <input type="date" className='form__control form__control--brand' name="startdate" value={this.state.startDate}
-            onChange={this.changeStartDate.bind(this)} />
+              onChange={this.changeStartDate.bind(this)} />
           </li>
           <li className='global-spacing'>
             <label className='form__label form__label--small'>To</label>
             <input type="date" className='form__control form__control--brand' name="enddate" value={this.state.endDate}
-            onChange={this.changeEndDate.bind(this)} />
+              onChange={this.changeEndDate.bind(this)} />
           </li>
           <li className='global-spacing-h'><p className='text-center'><button className="button button--primary-bounded button--small"
             onClick={this.applyPeriodFilter.bind(this)}
