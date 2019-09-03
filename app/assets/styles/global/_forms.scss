@@ -101,7 +101,14 @@ select.form__control {
 
   &.form__control {
     background-image: url('data:image/svg+xml;utf8,' + urlencode('<svg width="8" height="6" viewBox="0 0 8 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 6L7.4641 0H0.535898L4 6Z" fill="black"/></svg>'));
-      background-size: auto;
+    background-size: auto;
+    background-repeat: no-repeat;
+  }
+}
+
+input[type="date"].form__control--brand {
+  &.form__control {
+    background-image: none;
   }
 }
 
@@ -515,6 +522,11 @@ label[for] {
     opacity: 0.48;
   }
 }
+
+.form__label--small {
+  font-size: $font-size-sm;
+}
+
 
 .form__label__uppercase {
   text-transform: uppercase;

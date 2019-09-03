@@ -222,12 +222,18 @@ export class DateFilterHeader extends React.PureComponent {
         triggerElement='a'
         direction='down'
         alignment='center' >
-        <ul className='drop__menu drop__menu--select' role='menu'>
-          <li><p><input type="date" name="startdate" value={this.state.startDate}
-            onChange={this.changeStartDate.bind(this)} /></p></li>
-          <li><p><input type="date" name="enddate" value={this.state.endDate}
-            onChange={this.changeEndDate.bind(this)} /></p></li>
-          <li><p><button className="button button--primary-bounded"
+        <ul className='drop__menu drop__menu--select drop__menu--date' role='menu'>
+          <li className='global-spacing'>
+            <label className='form__label form__label--small'>From</label>
+            <input type="date" className='form__control form__control--brand' name="startdate" value={this.state.startDate}
+            onChange={this.changeStartDate.bind(this)} />
+          </li>
+          <li className='global-spacing'>
+            <label className='form__label form__label--small'>To</label>
+            <input type="date" className='form__control form__control--brand' name="enddate" value={this.state.endDate}
+            onChange={this.changeEndDate.bind(this)} />
+          </li>
+          <li className='global-spacing-h'><p className='text-center'><button className="button button--primary-bounded button--small"
             onClick={this.applyPeriodFilter.bind(this)}
           >Apply</button></p></li>
         </ul>
