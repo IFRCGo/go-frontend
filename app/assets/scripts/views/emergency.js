@@ -484,6 +484,7 @@ class Emergency extends React.Component {
                 <TabContent isError={!get(this.props.situationReports, 'data.results.length')} errorMessage={ NO_DATA } title="Response Documents">
                   {this.renderResponseDocuments()}
                 </TabContent>
+
                 {contacts && contacts.length ? (
                   <Fold id='contacts' title='Contacts' wrapperClass='contacts'>
                     <table className='table'>
@@ -532,6 +533,71 @@ class Emergency extends React.Component {
             </div>
           </div>
         </Tabs>
+
+        <div className='response__doc__block'>
+          <div className='clearfix'>
+            <div className='response__doc__col'>
+              <div className='response__doc__each'>
+                <div className='response__doc__title'>Appeals Revisions</div>
+                <div className='response__doc__inner scrollbar__custom'>
+                  <div className='response__doc__item'>
+                    Emergency Appeal Revision, 2019-03-21
+                    <Link className='collecticon-download response__doc__item__link' to='#d'>
+                    </Link>
+                  </div>  
+                  <div className='response__doc__item'>
+                    Emergency Appeal Revision, 2019-03-21
+                    <Link className='collecticon-download response__doc__item__link' to='#d'>
+                    </Link>
+                  </div>  
+                  <div className='response__doc__item'>
+                    Emergency Appeal Revision, 2019-03-21
+                    <Link className='collecticon-download response__doc__item__link' to='#d'>
+                    </Link>
+                  </div>  
+                  <div className='response__doc__item'>
+                    Emergency Appeal With Very Long Title And So on and So Forth, 2019-03-21
+                    <Link className='collecticon-download response__doc__item__link' to='#d'>
+                    </Link>
+                  </div>  
+                  <div className='response__doc__item'>
+                    Emergency Appeal Revision, 2019-03-21
+                    <Link className='collecticon-download response__doc__item__link' to='#d'>
+                    </Link>
+                  </div>  
+                  <div className='response__doc__item'>
+                    Emergency Appeal Revision, 2019-03-21
+                    <Link className='collecticon-download response__doc__item__link' to='#d'>
+                    </Link>
+                  </div>  
+                  <div className='response__doc__item'>
+                    Emergency Appeal Revision, 2019-03-21
+                    <Link className='collecticon-download response__doc__item__link' to='#d'>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className='response__doc__col'>
+              <div className='response__doc__each'>
+                <div className='response__doc__title'>Appeals Revisions</div>
+                <div className='response__doc__inner'>
+                  <div className='response__doc__item'>
+                    Emergency Appeal Revision, 2019-03-21
+                    <Link className='collecticon-download response__doc__item__link' to='#d'>
+                    </Link>
+                  </div>  
+                  <div className='response__doc__item'>
+                    Emergency Appeal Revision, 2019-03-21
+                    <Link className='collecticon-download response__doc__item__link' to='#d'>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
     );
   }

@@ -204,3 +204,42 @@ h2.map__container__title {
   font-size: $font-size-xs;
   padding: $global-spacing ($global-spacing/2);
 }
+
+.response__doc__col {
+  @include media(medium-up) {
+    @include column(4/12, $cycle: 3)
+  }
+}
+
+.response__doc__each {
+  border: 1px solid $base-border-color;
+  background-color: #fff;
+  padding: $global-spacing-2;
+  margin: $global-spacing 0 0 0;
+}
+
+.response__doc__inner {
+  height: 210px;
+  padding: 0 $global-spacing 0 0;
+  overflow-y: auto;
+}
+
+.response__doc__title {
+  padding: 0 0 ($global-spacing/2) 0;
+}
+
+.response__doc__item {
+  padding: 0 $global-spacing-2 0 0;
+  position: relative;
+  margin: $global-spacing 0 0 0;
+}
+
+.response__doc__item__link {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.response__doc__title {
+  font-weight: $base-font-bold;
+}
