@@ -724,3 +724,9 @@
     padding: 0.5rem;
   }
 }
+
+.drop__menu--date {
+  input[type="date"] {
+    font-size: $font-size-sm;
+  }
+}
