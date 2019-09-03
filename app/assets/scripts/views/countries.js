@@ -33,7 +33,7 @@ import {
   getPerMission
 } from '../actions';
 import { getFdrs } from '../actions/query-external';
-import { getBoundingBox } from '../utils/country-bounding-box';
+// import { getBoundingBox } from '../utils/country-bounding-box';
 
 import App from './app';
 import ErrorPanel from '../components/error-panel';
@@ -41,7 +41,7 @@ import TabContent from '../components/tab-content';
 import Fold from '../components/fold';
 import DisplayTable, { SortHeader, FilterHeader } from '../components/display-table';
 import EmergenciesTable from '../components/connected/emergencies-table';
-import BulletTable from '../components/bullet-table';
+// import BulletTable from '../components/bullet-table';
 import Pills from '../components/pills';
 import {
   Snippets,
@@ -510,10 +510,10 @@ class AdminArea extends SFPComponent {
     const countryLinks = this.getLinks();
     if (!fetched || error) return null;
 
-    const bbox = getBoundingBox(data.iso);
-    const mapContainerClass = 'country__map';
+    // const bbox = getBoundingBox(data.iso);
+    // const mapContainerClass = 'country__map';
 
-    const { partnerDeployments } = this.props;
+    // const { partnerDeployments } = this.props;
 
     const handleTabChange = index => {
       const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
@@ -579,7 +579,7 @@ class AdminArea extends SFPComponent {
                           onMouseOut={this.removeMapFilter.bind(this, 'type')}
                           rows={get(partnerDeployments, 'data.activities', [])} />
                       </div>
-                      
+
                       <div className={mapContainerClass}>
                         <CountryMap operations={this.props.appealStats}
                           bbox={bbox}
