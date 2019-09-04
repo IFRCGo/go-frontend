@@ -177,7 +177,7 @@ class Emergency extends React.Component {
     const numAssisted = parseInt(get(report, 'num_assisted')) || parseInt(get(report, 'gov_num_assisted')) || parseInt(get(report, 'other_num_assisted'));
     return (
       <div className='inpage__header-col'>
-        <h3>Emergency Overview</h3>
+        <h3 className='global-spacing-2-t clear'>Emergency Overview</h3>
         <div className='content-list-group'>
           <ul className='content-list'>
             <li>Affected<span className='content-highlight'>{n(numAffected)}</span></li>
@@ -218,6 +218,7 @@ class Emergency extends React.Component {
 
     return (
       <div className="inpage__introduction">
+        {/*
         <ul className='introduction-nav'>
           <li className={c('introduction-nav-item', { 'introduction-nav-item--active': selected === null })}>
             <a href='#' title='Show stats for all appeals' onClick={this.onAppealClick.bind(this, null)}>All Appeals</a>
@@ -228,17 +229,30 @@ class Emergency extends React.Component {
             </li>
           ))}
         </ul>
+        */}
         <div className='inpage__header-col'>
           <div className='inpage__headline-stats'>
-            <ul className='stats-list'>
-              <li className='stats-list__item stats-emergencies'>
-                {n(stats.beneficiaries)}<small>People Targeted</small>
+            <ul className='sumstats'>
+              <li className='sumstats__item'>
+                <span className='collecticon-people-arrows sumstats__icon'></span>
+                <span className='sumstats__value'>
+                  {n(stats.beneficiaries)}
+                </span>
+                <span className='sumstats__key'>People Targeted</span>
               </li>
-              <li className='stats-list__item stats-funding stat-borderless stat-double'>
-                {n(stats.requested)}<small>Funding Requirements (CHF)</small>
+              <li className='sumstats__item'>
+                <span className='collecticon-cash-notes sumstats__icon'></span>
+                <span className='sumstats__value'>
+                  {n(stats.requested)}
+                </span>
+                <span className='sumstats__key'>Funding Requirements (CHF)</span>
               </li>
-              <li className='stats-list__item stat-double'>
-                {n(stats.funded)}<small>Funding (CHF)</small>
+              <li className='sumstats__item'>
+                <span className='collecticon-cash-bag sumstats__icon'></span>
+                <span className='sumstats__value'>
+                  {n(stats.funded)}
+                </span>
+                <span className='sumstats__key'>Funding (CHF)</span>
               </li>
             </ul>
           </div>
@@ -515,7 +529,7 @@ class Emergency extends React.Component {
                     title='Alerts'
                     emergency={this.props.match.params.id}
                     returnNullForEmpty={true}
-                  />)
+                  />
                 </TabContent>
                 <TabContent isError={!get(this.props.situationReports, 'data.results.length')} errorMessage={ NO_DATA } title="Response Documents">
                   {this.renderResponseDocuments()}
@@ -540,8 +554,8 @@ class Emergency extends React.Component {
                             <td>{separate(o.ctype)}</td>
                             <td>
                               {o.email.indexOf('@') !== -1
-                                ? <a className='link--primary' href={`mailto:${o.email}`} title='Contact'>{o.email}</a>
-                                : <a className='link--primary' href={`tel:${o.email}`} title='Contact'>{o.email}</a>}
+                                ? <a className='button button--small button--grey-cement-bounded' href={`mailto:${o.email}`} title='Contact'>{o.email}</a>
+                                : <a className='button button--small button--grey-cement-bounded' href={`tel:${o.email}`} title='Contact'>{o.email}</a>}
                             </td>
                           </tr>
                         ))}
