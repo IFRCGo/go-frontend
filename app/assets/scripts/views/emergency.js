@@ -365,12 +365,26 @@ class Emergency extends React.Component {
     );
   }
 
+  renderAppealReports (className, reports) {
+    return (
+      <ul className={className}>
+        {reports.map(o => {
+          let href = o['document'] || o['document_url'] || null;
+          if (!href) { return null; }
+          return <li key={o.id}>
+            <a className='link--secondary' href={href} target='_blank'>{o.name}, {isoDate(o.created_at)}</a>
+          </li>;
+        })}
+      </ul>
+    );
+  }
+
   renderAppealDocuments () {
     const data = get(this.props.appealDocuments, 'data.results', []);
     if (!data.length) return null;
     return (
       <Fold id='documents' title='Appeal Documents'>
-        {this.renderReports('public-docs-list', data)}
+        {this.renderAppealReports('public-docs-list', data)}
       </Fold>
     );
   }
