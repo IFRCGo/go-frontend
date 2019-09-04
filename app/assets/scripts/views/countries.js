@@ -192,7 +192,7 @@ class AdminArea extends SFPComponent {
 
     if (homepage) {
       const homepageLink = {
-        'text': `${adminArea.data.name} Homepage`,
+        'text': `${adminArea.data.name} RC Homepage`,
         'url': homepage
       };
       links.push(homepageLink);
