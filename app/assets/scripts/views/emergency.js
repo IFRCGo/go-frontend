@@ -233,27 +233,31 @@ class Emergency extends React.Component {
         <div className='inpage__header-col'>
           <div className='inpage__headline-stats'>
             <ul className='sumstats'>
-              <li className='sumstats__item'>
+              { n(stats.beneficiaries) > 0 ? 
+              (<li className='sumstats__item'>
                 <span className='collecticon-people-arrows sumstats__icon'></span>
                 <span className='sumstats__value'>
                   {n(stats.beneficiaries)}
                 </span>
                 <span className='sumstats__key'>People Targeted</span>
-              </li>
-              <li className='sumstats__item'>
+              </li>) : null }
+              
+              { n(stats.requested) > 0 ? 
+              (<li className='sumstats__item'>
                 <span className='collecticon-cash-notes sumstats__icon'></span>
                 <span className='sumstats__value'>
                   {n(stats.requested)}
                 </span>
                 <span className='sumstats__key'>Funding Requirements (CHF)</span>
-              </li>
-              <li className='sumstats__item'>
+              </li>) : null }
+              { n(stats.funded) > 0 ? 
+              (<li className='sumstats__item'>
                 <span className='collecticon-cash-bag sumstats__icon'></span>
                 <span className='sumstats__value'>
                   {n(stats.funded)}
                 </span>
                 <span className='sumstats__key'>Funding (CHF)</span>
-              </li>
+              </li>) : null }
             </ul>
           </div>
         </div>
