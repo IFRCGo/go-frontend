@@ -302,13 +302,13 @@ class Emergency extends React.Component {
           {
             Object.keys(reportTypes).map(reportTypeId => {
               return (
-                <div className='response__doc__col'>
+                <div className='response__doc__col' key={`response-type-${reportTypeId}`}>
                   <div className='response__doc__each'>
                     <div className='response__doc__title'>{reportTypes[reportTypeId].title}</div>
                     <div className='response__doc__inner scrollbar__custom'>
                       {reportTypes[reportTypeId].hasOwnProperty('items') && reportTypes[reportTypeId].items.length > 0 ? reportTypes[reportTypeId].items.map(item => {
                         return (
-                          <div className='response__doc__item'>
+                          <div className='response__doc__item' key={`item-${item.id}`}>
                             {item.name}
                             <a className='collecticon-download response__doc__item__link' target='_blank' href={item.document}>
                             </a>
@@ -365,12 +365,26 @@ class Emergency extends React.Component {
     );
   }
 
+  renderAppealReports (className, reports) {
+    return (
+      <ul className={className}>
+        {reports.map(o => {
+          let href = o['document'] || o['document_url'] || null;
+          if (!href) { return null; }
+          return <li key={o.id}>
+            <a className='link--secondary' href={href} target='_blank'>{o.name}, {isoDate(o.created_at)}</a>
+          </li>;
+        })}
+      </ul>
+    );
+  }
+
   renderAppealDocuments () {
     const data = get(this.props.appealDocuments, 'data.results', []);
     if (!data.length) return null;
     return (
       <Fold id='documents' title='Appeal Documents'>
-        {this.renderReports('public-docs-list', data)}
+        {this.renderAppealReports('public-docs-list', data)}
       </Fold>
     );
   }
