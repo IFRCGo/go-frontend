@@ -33,8 +33,9 @@ import {
 import {
   get,
   mostRecentReport,
-  dateOptions,
-  datesAgo
+  // dateOptions,
+  datesAgo,
+  getRecordsByType
 } from '../utils/utils/';
 
 import App from './app';
@@ -42,7 +43,7 @@ import Fold from '../components/fold';
 import TabContent from '../components/tab-content';
 import ErrorPanel from '../components/error-panel';
 import Expandable from '../components/expandable';
-import { FilterHeader } from '../components/display-table';
+// import { FilterHeader } from '../components/display-table';
 import { Snippets } from '../components/admin-area-elements';
 import SurgeAlertsTable from '../components/connected/alerts-table';
 import PersonnelTable from '../components/connected/personnel-table';
@@ -294,17 +295,34 @@ class Emergency extends React.Component {
     return null;
   }
 
-  renderReports (className, reports) {
+  renderReports (className, reportTypes) {
     return (
-      <ul className={className}>
-        {reports.map(o => {
-          let href = o['document'] || o['document_url'] || null;
-          if (!href) { return null; }
-          return <li key={o.id}>
-            <a className='link--secondary' href={href} target='_blank'>{o.name}, {isoDate(o.created_at)}</a>
-          </li>;
-        })}
-      </ul>
+      <div className='response__doc__block'>
+        <div className='clearfix'>
+          {
+            Object.keys(reportTypes).map(reportTypeId => {
+              return (
+                <div className='response__doc__col'>
+                  <div className='response__doc__each'>
+                    <div className='response__doc__title'>{reportTypes[reportTypeId].title}</div>
+                    <div className='response__doc__inner scrollbar__custom'>
+                      {reportTypes[reportTypeId].hasOwnProperty('items') && reportTypes[reportTypeId].items.length > 0 ? reportTypes[reportTypeId].items.map(item => {
+                        return (
+                          <div className='response__doc__item'>
+                            {item.name}
+                            <a className='collecticon-download response__doc__item__link' target='_blank' href={item.document}>
+                            </a>
+                          </div>
+                        );
+                      }) : <div className='response__doc__item'>No documents added</div> }
+                    </div>
+                  </div>
+                </div>
+              );
+            })
+          }
+        </div>
+      </div>
     );
   }
 
@@ -316,6 +334,8 @@ class Emergency extends React.Component {
     const { id } = this.props.match.params;
     const addReportLink = url.resolve(api, `admin/api/event/${id}/change`);
     const types = this.props.situationReportTypes;
+    if (!types.fetched) { return null; }
+    const reportsByType = getRecordsByType(types, data);
     return (
       <Fold id='response-documents'
         header={() => (
@@ -327,6 +347,7 @@ class Emergency extends React.Component {
           </div>
         )} >
         <div>
+          {/*
           <div className='fold__filters'>
             <FilterHeader id='sitrep-date' title='Created At'
               options={dateOptions}
@@ -337,7 +358,8 @@ class Emergency extends React.Component {
               filter={type}
               onSelect={this.handleSitrepFilter.bind(this, 'type')} /> : null}
           </div>
-          {this.renderReports('situation-reports-list', data)}
+          */}
+          {this.renderReports('situation-reports-list', reportsByType)}
         </div>
       </Fold>
     );
@@ -484,6 +506,7 @@ class Emergency extends React.Component {
                 <TabContent isError={!get(this.props.situationReports, 'data.results.length')} errorMessage={ NO_DATA } title="Response Documents">
                   {this.renderResponseDocuments()}
                 </TabContent>
+
                 {contacts && contacts.length ? (
                   <Fold id='contacts' title='Contacts' wrapperClass='contacts'>
                     <table className='table'>

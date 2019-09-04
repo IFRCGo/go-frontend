@@ -2,6 +2,7 @@
 import _get from 'lodash.get';
 import _groupBy from 'lodash.groupby';
 import _toNumber from 'lodash.tonumber';
+import _find from 'lodash.find';
 import { DateTime } from 'luxon';
 
 import { getCentroid } from './country-centroids';
@@ -207,3 +208,19 @@ export const appealStatusOptions = [
   { value: '2', label: 'Frozen' },
   { value: '3', label: 'Archived' }
 ];
+
+export function getRecordsByType (types, records) {
+  const typeIds = types.data.results.map(t => t.id.toString());
+  let recordsByType = typeIds.reduce((memo, typeId) => {
+    memo[typeId] = {
+      'title': _find(types.data.results, result => result.id === Number(typeId)).type,
+      'items': []
+    };
+    return memo;
+  }, {});
+  records.forEach(record => {
+    const recordTypeId = record.type.id;
+    recordsByType[recordTypeId].items.push(record);
+  });
+  return recordsByType;
+}

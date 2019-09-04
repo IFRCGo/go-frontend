@@ -38,6 +38,10 @@
   }
 }
 
+.fold--transparent {
+  background: transparent;
+}
+
 .fold__header {
   @include column(12/12);
   margin-bottom: $global-spacing;
