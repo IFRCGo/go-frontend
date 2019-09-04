@@ -33,7 +33,7 @@ import {
 import {
   get,
   mostRecentReport,
-  dateOptions,
+  // dateOptions,
   datesAgo,
   getRecordsByType
 } from '../utils/utils/';
@@ -43,7 +43,7 @@ import Fold from '../components/fold';
 import TabContent from '../components/tab-content';
 import ErrorPanel from '../components/error-panel';
 import Expandable from '../components/expandable';
-import { FilterHeader } from '../components/display-table';
+// import { FilterHeader } from '../components/display-table';
 import { Snippets } from '../components/admin-area-elements';
 import SurgeAlertsTable from '../components/connected/alerts-table';
 import PersonnelTable from '../components/connected/personnel-table';
@@ -296,35 +296,35 @@ class Emergency extends React.Component {
   }
 
   renderReports (className, reportTypes) {
-    Object.keys(reportTypes).map(reportTypeId => console.log(reportTypes[reportTypeId].items));
     return (
       <div className='response__doc__block'>
         <div className='clearfix'>
           {
-            Object.keys(reportTypes).map(reportTypeId => { return (
-              <div className='response__doc__col'>
-                <div className='response__doc__each'>
-                  <div className='response__doc__title'>{reportTypes[reportTypeId].title}</div>
-                  <div className='response__doc__inner scrollbar__custom'>
-                    {reportTypes[reportTypeId].hasOwnProperty('items') && reportTypes[reportTypeId].items.length > 0 ? reportTypes[reportTypeId].items.map(item => {
-                      return (
-                        <div className='response__doc__item'>
-                          {item.name}
-                          <a className='collecticon-download response__doc__item__link' target='_blank' href={item.document}>
-                          </a>
-                        </div>                        
-                      );
-                    }) : <div className='response__doc__item'>No documents added</div> }
+            Object.keys(reportTypes).map(reportTypeId => {
+              return (
+                <div className='response__doc__col'>
+                  <div className='response__doc__each'>
+                    <div className='response__doc__title'>{reportTypes[reportTypeId].title}</div>
+                    <div className='response__doc__inner scrollbar__custom'>
+                      {reportTypes[reportTypeId].hasOwnProperty('items') && reportTypes[reportTypeId].items.length > 0 ? reportTypes[reportTypeId].items.map(item => {
+                        return (
+                          <div className='response__doc__item'>
+                            {item.name}
+                            <a className='collecticon-download response__doc__item__link' target='_blank' href={item.document}>
+                            </a>
+                          </div>
+                        );
+                      }) : <div className='response__doc__item'>No documents added</div> }
+                    </div>
                   </div>
                 </div>
-              </div> 
-            )})
+              );
+            })
           }
         </div>
       </div>
     );
   }
-
 
   renderResponseDocuments () {
     const data = get(this.props.situationReports, 'data.results', []);
@@ -336,7 +336,6 @@ class Emergency extends React.Component {
     const types = this.props.situationReportTypes;
     if (!types.fetched) { return null; }
     const reportsByType = getRecordsByType(types, data);
-    console.log('reports by type', reportsByType);
     return (
       <Fold id='response-documents'
         header={() => (

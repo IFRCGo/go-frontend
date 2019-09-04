@@ -215,7 +215,7 @@ export function getRecordsByType (types, records) {
     memo[typeId] = {
       'title': _find(types.data.results, result => result.id === Number(typeId)).type,
       'items': []
-    }
+    };
     return memo;
   }, {});
   records.forEach(record => {
