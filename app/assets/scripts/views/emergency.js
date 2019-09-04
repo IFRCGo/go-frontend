@@ -34,7 +34,8 @@ import {
   get,
   mostRecentReport,
   dateOptions,
-  datesAgo
+  datesAgo,
+  getRecordsByType
 } from '../utils/utils/';
 
 import App from './app';
@@ -294,19 +295,36 @@ class Emergency extends React.Component {
     return null;
   }
 
-  renderReports (className, reports) {
+  renderReports (className, reportTypes) {
+    Object.keys(reportTypes).map(reportTypeId => console.log(reportTypes[reportTypeId].items));
     return (
-      <ul className={className}>
-        {reports.map(o => {
-          let href = o['document'] || o['document_url'] || null;
-          if (!href) { return null; }
-          return <li key={o.id}>
-            <a className='link--secondary' href={href} target='_blank'>{o.name}, {isoDate(o.created_at)}</a>
-          </li>;
-        })}
-      </ul>
+      <div className='response__doc__block'>
+        <div className='clearfix'>
+          {
+            Object.keys(reportTypes).map(reportTypeId => { return (
+              <div className='response__doc__col'>
+                <div className='response__doc__each'>
+                  <div className='response__doc__title'>{reportTypes[reportTypeId].title}</div>
+                  <div className='response__doc__inner scrollbar__custom'>
+                    {reportTypes[reportTypeId].hasOwnProperty('items') && reportTypes[reportTypeId].items.length > 0 ? reportTypes[reportTypeId].items.map(item => {
+                      return (
+                        <div className='response__doc__item'>
+                          {item.name}
+                          <a className='collecticon-download response__doc__item__link' target='_blank' href={item.document}>
+                          </a>
+                        </div>                        
+                      );
+                    }) : <div className='response__doc__item'>No documents added</div> }
+                  </div>
+                </div>
+              </div> 
+            )})
+          }
+        </div>
+      </div>
     );
   }
+
 
   renderResponseDocuments () {
     const data = get(this.props.situationReports, 'data.results', []);
@@ -316,6 +334,9 @@ class Emergency extends React.Component {
     const { id } = this.props.match.params;
     const addReportLink = url.resolve(api, `admin/api/event/${id}/change`);
     const types = this.props.situationReportTypes;
+    if (!types.fetched) { return null; }
+    const reportsByType = getRecordsByType(types, data);
+    console.log('reports by type', reportsByType);
     return (
       <Fold id='response-documents'
         header={() => (
@@ -327,6 +348,7 @@ class Emergency extends React.Component {
           </div>
         )} >
         <div>
+          {/*
           <div className='fold__filters'>
             <FilterHeader id='sitrep-date' title='Created At'
               options={dateOptions}
@@ -337,7 +359,8 @@ class Emergency extends React.Component {
               filter={type}
               onSelect={this.handleSitrepFilter.bind(this, 'type')} /> : null}
           </div>
-          {this.renderReports('situation-reports-list', data)}
+          */}
+          {this.renderReports('situation-reports-list', reportsByType)}
         </div>
       </Fold>
     );
@@ -533,71 +556,6 @@ class Emergency extends React.Component {
             </div>
           </div>
         </Tabs>
-
-        <div className='response__doc__block'>
-          <div className='clearfix'>
-            <div className='response__doc__col'>
-              <div className='response__doc__each'>
-                <div className='response__doc__title'>Appeals Revisions</div>
-                <div className='response__doc__inner scrollbar__custom'>
-                  <div className='response__doc__item'>
-                    Emergency Appeal Revision, 2019-03-21
-                    <Link className='collecticon-download response__doc__item__link' to='#d'>
-                    </Link>
-                  </div>  
-                  <div className='response__doc__item'>
-                    Emergency Appeal Revision, 2019-03-21
-                    <Link className='collecticon-download response__doc__item__link' to='#d'>
-                    </Link>
-                  </div>  
-                  <div className='response__doc__item'>
-                    Emergency Appeal Revision, 2019-03-21
-                    <Link className='collecticon-download response__doc__item__link' to='#d'>
-                    </Link>
-                  </div>  
-                  <div className='response__doc__item'>
-                    Emergency Appeal With Very Long Title And So on and So Forth, 2019-03-21
-                    <Link className='collecticon-download response__doc__item__link' to='#d'>
-                    </Link>
-                  </div>  
-                  <div className='response__doc__item'>
-                    Emergency Appeal Revision, 2019-03-21
-                    <Link className='collecticon-download response__doc__item__link' to='#d'>
-                    </Link>
-                  </div>  
-                  <div className='response__doc__item'>
-                    Emergency Appeal Revision, 2019-03-21
-                    <Link className='collecticon-download response__doc__item__link' to='#d'>
-                    </Link>
-                  </div>  
-                  <div className='response__doc__item'>
-                    Emergency Appeal Revision, 2019-03-21
-                    <Link className='collecticon-download response__doc__item__link' to='#d'>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className='response__doc__col'>
-              <div className='response__doc__each'>
-                <div className='response__doc__title'>Appeals Revisions</div>
-                <div className='response__doc__inner'>
-                  <div className='response__doc__item'>
-                    Emergency Appeal Revision, 2019-03-21
-                    <Link className='collecticon-download response__doc__item__link' to='#d'>
-                    </Link>
-                  </div>  
-                  <div className='response__doc__item'>
-                    Emergency Appeal Revision, 2019-03-21
-                    <Link className='collecticon-download response__doc__item__link' to='#d'>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </section>
     );
   }
