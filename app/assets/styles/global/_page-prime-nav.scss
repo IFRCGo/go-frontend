@@ -51,6 +51,9 @@
   line-height: 1.25rem;
   padding-right:1rem;
   padding-left:1rem;
+  @include media(small-down) {
+    padding-left: 0;
+  }
 }
 
 /* Global menu */
