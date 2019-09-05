@@ -408,10 +408,20 @@ class Emergency extends React.Component {
     );
   }
 
+  hasKeyFigures () {
+    const { data } = this.props.event;
+    const kf = get(data, 'key_figures');
+    if (!Array.isArray(kf) || !kf.length) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   renderKeyFigures () {
     const { data } = this.props.event;
     const kf = get(data, 'key_figures');
-    if (!Array.isArray(kf) || !kf.length) return null;
+    if (!this.hasKeyFigures()) return null;
 
     return (
       <Fold
@@ -513,8 +523,7 @@ class Emergency extends React.Component {
           <div className='inpage__body'>
             <div className='inner'>
               <TabPanel>
-                <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ NO_DATA } title="Key Figures">
-                  <Snippets data={this.props.snippets} />
+                <TabContent isError={!this.hasKeyFigures()} title="Key Figures">
                   {this.renderKeyFigures()}
                 </TabContent>
                 {showExportMap()}
@@ -522,7 +531,7 @@ class Emergency extends React.Component {
                   <Fold id='overview'
                     title='Situational Overview'
                     wrapperClass='situational-overview' >
-                    <Expandable limit={360} text={summary} />
+                    <Expandable limit={2048} text={summary} />
                     {source ? <p className='emergency__source'>Source: {source}</p> : null}
                   </Fold>
                 </TabContent>
@@ -535,6 +544,19 @@ class Emergency extends React.Component {
                     emergency={this.props.match.params.id}
                     returnNullForEmpty={true}
                   />
+                </TabContent>
+                <TabContent isError={!get(this.props.eru, 'data.results.length')} errorMessage={ NO_DATA } title="ERUs">
+                  <EruTable id='erus'
+                    emergency={this.props.match.params.id}
+                  />
+                </TabContent>
+                <TabContent isError={!get(this.props.personnel, 'data.results.length')} errorMessage={ NO_DATA } title="Personnel">
+                  <PersonnelTable id='personnel'
+                    emergency={this.props.match.params.id}
+                  />
+                </TabContent>
+                <TabContent isError={!get(this.props.appealDocuments, 'data.results.length')} errorMessage={ NO_DATA } title="Appeal Documents">
+                  {this.renderAppealDocuments()}
                 </TabContent>
                 <TabContent isError={!get(this.props.situationReports, 'data.results.length')} errorMessage={ NO_DATA } title="Response Documents">
                   {this.renderResponseDocuments()}
@@ -571,18 +593,8 @@ class Emergency extends React.Component {
               </TabPanel>
 
               <TabPanel>
-                <TabContent isError={!get(this.props.eru, 'data.results.length')} errorMessage={ NO_DATA } title="ERUs">
-                  <EruTable id='erus'
-                    emergency={this.props.match.params.id}
-                  />
-                </TabContent>
-                <TabContent isError={!get(this.props.personnel, 'data.results.length')} errorMessage={ NO_DATA } title="Personnel">
-                  <PersonnelTable id='personnel'
-                    emergency={this.props.match.params.id}
-                  />
-                </TabContent>
-                <TabContent isError={!get(this.props.appealDocuments, 'data.results.length')} errorMessage={ NO_DATA } title="Appeal Documents">
-                  {this.renderAppealDocuments()}
+                <TabContent showError={true} isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ NO_DATA } title="Additional Graphics">
+                  <Snippets data={this.props.snippets} />
                 </TabContent>
               </TabPanel>
             </div>
