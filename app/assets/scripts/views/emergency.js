@@ -215,7 +215,7 @@ class Emergency extends React.Component {
       acc.requested += _toNumber(o.amount_requested);
       return acc;
     }, stats);
-
+    const displayHeadlineStats = stats.beneficiaries || stats.requested || stats.funded;
     return (
       <div className="inpage__introduction">
         {/*
@@ -231,9 +231,10 @@ class Emergency extends React.Component {
         </ul>
         */}
         <div className='inpage__header-col'>
+          { displayHeadlineStats ? (
           <div className='inpage__headline-stats'>
             <ul className='sumstats'>
-              { n(stats.beneficiaries) > 0 ? 
+              { stats.beneficiaries > 0 ? 
               (<li className='sumstats__item'>
                 <span className='collecticon-people-arrows sumstats__icon'></span>
                 <span className='sumstats__value'>
@@ -242,7 +243,7 @@ class Emergency extends React.Component {
                 <span className='sumstats__key'>People Targeted</span>
               </li>) : null }
               
-              { n(stats.requested) > 0 ? 
+              { stats.requested > 0 ? 
               (<li className='sumstats__item'>
                 <span className='collecticon-cash-notes sumstats__icon'></span>
                 <span className='sumstats__value'>
@@ -250,7 +251,7 @@ class Emergency extends React.Component {
                 </span>
                 <span className='sumstats__key'>Funding Requirements (CHF)</span>
               </li>) : null }
-              { n(stats.funded) > 0 ? 
+              { stats.funded > 0 ? 
               (<li className='sumstats__item'>
                 <span className='collecticon-cash-bag sumstats__icon'></span>
                 <span className='sumstats__value'>
@@ -259,7 +260,7 @@ class Emergency extends React.Component {
                 <span className='sumstats__key'>Funding (CHF)</span>
               </li>) : null }
             </ul>
-          </div>
+          </div>) : null}
         </div>
         {this.renderFieldReportStats()}
         <div className='funding-chart'>
