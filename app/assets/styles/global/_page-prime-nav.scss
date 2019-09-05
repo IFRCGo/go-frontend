@@ -41,6 +41,9 @@
   border-right: 1px solid black;
   padding-right:1rem;
   padding-left:1rem;
+  @include media(small-down) {
+    padding-left: 0;
+  }
 }
 
 .page__meta-nav-elements-borderless {
