@@ -39,8 +39,8 @@
   font-size: 0.875rem;
   line-height: 1.25rem;
   border-right: 1px solid black;
-  padding-right:1rem;
-  padding-left:1rem;
+  padding-right: 1rem;
+  padding-left: 1rem;
   @include media(small-down) {
     padding-left: 0;
   }
@@ -49,11 +49,8 @@
 .page__meta-nav-elements-borderless {
   font-size: 0.875rem;
   line-height: 1.25rem;
-  padding-right:1rem;
-  padding-left:1rem;
-  @include media(small-down) {
-    padding-left: 0;
-  }
+  padding-right: 1rem;
+  padding-left: 1rem;
 }
 
 /* Global menu */
