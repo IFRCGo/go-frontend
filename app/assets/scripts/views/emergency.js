@@ -4,7 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { PropTypes as T } from 'prop-types';
-import c from 'classnames';
+// import c from 'classnames';
 import _toNumber from 'lodash.tonumber';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
@@ -232,35 +232,35 @@ class Emergency extends React.Component {
         */}
         <div className='inpage__header-col'>
           { displayHeadlineStats ? (
-          <div className='inpage__headline-stats'>
-            <ul className='sumstats'>
-              { stats.beneficiaries > 0 ? 
-              (<li className='sumstats__item'>
-                <span className='collecticon-people-arrows sumstats__icon'></span>
-                <span className='sumstats__value'>
-                  {n(stats.beneficiaries)}
-                </span>
-                <span className='sumstats__key'>People Targeted</span>
-              </li>) : null }
-              
-              { stats.requested > 0 ? 
-              (<li className='sumstats__item'>
-                <span className='collecticon-cash-notes sumstats__icon'></span>
-                <span className='sumstats__value'>
-                  {n(stats.requested)}
-                </span>
-                <span className='sumstats__key'>Funding Requirements (CHF)</span>
-              </li>) : null }
-              { stats.funded > 0 ? 
-              (<li className='sumstats__item'>
-                <span className='collecticon-cash-bag sumstats__icon'></span>
-                <span className='sumstats__value'>
-                  {n(stats.funded)}
-                </span>
-                <span className='sumstats__key'>Funding (CHF)</span>
-              </li>) : null }
-            </ul>
-          </div>) : null}
+            <div className='inpage__headline-stats'>
+              <ul className='sumstats'>
+                { stats.beneficiaries > 0
+                  ? (<li className='sumstats__item'>
+                    <span className='collecticon-people-arrows sumstats__icon'></span>
+                    <span className='sumstats__value'>
+                      {n(stats.beneficiaries)}
+                    </span>
+                    <span className='sumstats__key'>People Targeted</span>
+                  </li>) : null }
+
+                { stats.requested > 0
+                  ? (<li className='sumstats__item'>
+                    <span className='collecticon-cash-notes sumstats__icon'></span>
+                    <span className='sumstats__value'>
+                      {n(stats.requested)}
+                    </span>
+                    <span className='sumstats__key'>Funding Requirements (CHF)</span>
+                  </li>) : null }
+                { stats.funded > 0
+                  ? (<li className='sumstats__item'>
+                    <span className='collecticon-cash-bag sumstats__icon'></span>
+                    <span className='sumstats__value'>
+                      {n(stats.funded)}
+                    </span>
+                    <span className='sumstats__key'>Funding (CHF)</span>
+                  </li>) : null }
+              </ul>
+            </div>) : null}
         </div>
         {this.renderFieldReportStats()}
         <div className='funding-chart'>

@@ -12,7 +12,7 @@ function TabContent ({ isError, showError, errorMessage, title, children }) {
       {
         isError ? (
           showError ? (
-            <ErrorPanel title={title} errorMessage={errorMessage} />    
+            <ErrorPanel title={title} errorMessage={errorMessage} />
           ) : null
         ) : (
           children
