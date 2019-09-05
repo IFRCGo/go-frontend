@@ -140,6 +140,10 @@
     flex-wrap: wrap;
   }
 
+  @include media(large-up) {
+    flex-wrap: nowrap;
+  }
+
   &__item {
     @include column(12/12);
     border: 1px solid $base-border-color;
@@ -543,7 +547,7 @@
   .color--lightblue::before {
     background: #97acb3;
   }
-  
+
   .color--a1-form::before {
     background: #42c5f5;
   }
@@ -637,7 +641,7 @@
   margin-left: 0;
   @extend .clearfix;
   @include column(12/12);
-  
+
   a {
     //float: left;
     color: $base-color;
