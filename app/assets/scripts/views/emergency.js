@@ -4,7 +4,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { PropTypes as T } from 'prop-types';
-// import c from 'classnames';
 import _toNumber from 'lodash.tonumber';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
@@ -33,7 +32,6 @@ import {
 import {
   get,
   mostRecentReport,
-  // dateOptions,
   datesAgo,
   getRecordsByType
 } from '../utils/utils/';
@@ -43,7 +41,6 @@ import Fold from '../components/fold';
 import TabContent from '../components/tab-content';
 import ErrorPanel from '../components/error-panel';
 import Expandable from '../components/expandable';
-// import { FilterHeader } from '../components/display-table';
 import { Snippets } from '../components/admin-area-elements';
 import SurgeAlertsTable from '../components/connected/alerts-table';
 import PersonnelTable from '../components/connected/personnel-table';
@@ -218,18 +215,6 @@ class Emergency extends React.Component {
     const displayHeadlineStats = stats.beneficiaries || stats.requested || stats.funded;
     return (
       <div className="inpage__introduction">
-        {/*
-        <ul className='introduction-nav'>
-          <li className={c('introduction-nav-item', { 'introduction-nav-item--active': selected === null })}>
-            <a href='#' title='Show stats for all appeals' onClick={this.onAppealClick.bind(this, null)}>All Appeals</a>
-          </li>
-          {appeals.map(o => (
-            <li key={o.id} className={c('introduction-nav-item', { 'introduction-nav-item--active': o.id === selected })}>
-              <a href='#' title={`Show stats for appeal ${o.name}`} onClick={this.onAppealClick.bind(this, o.id)}>{o.name}</a>
-            </li>
-          ))}
-        </ul>
-        */}
         <div className='inpage__header-col'>
           { displayHeadlineStats ? (
             <div className='inpage__headline-stats'>
@@ -366,18 +351,6 @@ class Emergency extends React.Component {
           </div>
         )} >
         <div>
-          {/*
-          <div className='fold__filters'>
-            <FilterHeader id='sitrep-date' title='Created At'
-              options={dateOptions}
-              filter={date}
-              onSelect={this.handleSitrepFilter.bind(this, 'date')} />
-            {types.fetched && !types.error ? <FilterHeader id='sitrep-type' title='Document Type'
-              options={[{ value: 'all', label: 'All' }].concat(types.data.results.map(d => ({ value: d.id, label: d.type })))}
-              filter={type}
-              onSelect={this.handleSitrepFilter.bind(this, 'type')} /> : null}
-          </div>
-          */}
           {this.renderReports('situation-reports-list', reportsByType)}
         </div>
       </Fold>
