@@ -8,6 +8,7 @@ import c from 'classnames';
 import { api, environment } from '../config';
 import { request } from '../utils/network';
 import { uppercaseFirstLetter as u, isoDate } from '../utils/format';
+import UserMenu from './connected/user-menu';
 
 function getUriForType (type, id) {
   switch (type) {
@@ -117,7 +118,7 @@ class MobileHeader extends React.PureComponent {
             </ul>
             <ul className='nav-block-user-menu' role='menu'>
               <li><Link to='/account' title='View user account' className={c('user__menu-item', {'disabled': pathname === '/account'})}>Account</Link></li>
-              <li><a href='#' title='Logout' className='user__menu-item'>Logout</a></li>
+              <UserMenu />
             </ul>
           </div>
         </div>
