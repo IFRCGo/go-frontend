@@ -288,7 +288,7 @@ class HomeMap extends React.Component {
             <button className='button button--secondary-bounded button--small button--fullscreen'
               onClick={this.props.toggleFullscreen}
               title='View in fullscreen'>
-              <span>{this.props.fullscreen ? 'Close the Map' : 'Expand the map'}</span>
+              <span>{this.props.fullscreen ? 'Close the Map' : 'Presentation Mode'}</span>
             </button>
           </div>
         </div>
