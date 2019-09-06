@@ -8,15 +8,11 @@
   }
 
   .inpage__header {
-    @include column(12/12);
     float: none;
     margin-bottom: $global-spacing * 2;
     border-bottom: solid 1px rgba($base-color, 0.1);
     .inpage__header-col {
-      @include column(12/12);
-      @include media(medium-up) {
-        @include column(5.5/12);
-      }
+      float: none;
     }
     .content-list-group {
       @include column(12/12);
@@ -55,6 +51,20 @@
     dl {
       float: left;
       width: 50%;
+    }
+  }
+  
+  .sumstats__item {
+    @include media(small-up) {
+      @include span(4/12, $offset: 0, $cycle: 0);
+    }
+
+    @include media(medium-up) {
+      @include span(4/12, $offset: 0, $cycle: 0);
+    }
+
+    @include media(medium-up) {
+      @include span(4/12, $offset: 0, $cycle: 0);
     }
   }
 }
@@ -161,11 +171,27 @@
 }
 
 .contacts {
+  .table {
+    border-spacing: 0 $global-spacing;
+    border-collapse: initial;
+  }
+
   td {
+    border: 1px solid $base-border-color;
+    border-right-color: transparent;
+    border-left-color: transparent;
+
     &:first-child {
-      padding-left: 0;
       font-weight: $base-font-bold;
     }
+  }
+
+  tr td:first-of-type {
+    border-left-color: $base-border-color; 
+  }
+
+  tr td:last-of-type {
+    border-right-color: $base-border-color; 
   }
 }
 

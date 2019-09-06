@@ -613,12 +613,12 @@ class AdminArea extends SFPComponent {
                     {data.key_priorities ? <ReactMarkdown source={data.key_priorities} /> : null}
                   </Fold>
                 </TabContent>
-                <TabContent isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage={ NO_DATA } title="Key Figures">
+                <TabContent showError={true} isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage={ NO_DATA } title="Key Figures">
                   <KeyFigures data={this.props.keyFigures} />
                 </TabContent>
               </TabPanel>
               <TabPanel>
-                <TabContent isError={!this.isPerPermission()} errorMessage="Please log in" title="Preparedness">
+                <TabContent showError={true} isError={!this.isPerPermission()} errorMessage="Please log in" title="Preparedness">
                   {this.props.getPerNsPhase.fetched && this.props.perOverviewForm.fetched ? (
                     <PreparednessOverview getPerNsPhase={this.props.getPerNsPhase} perOverviewForm={this.props.perOverviewForm} />)
                     : <ErrorPanel title="Preparedness Overciew" errorMessage={ NO_DATA } />}
@@ -640,7 +640,7 @@ class AdminArea extends SFPComponent {
                 <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ NO_DATA } title="Graphics">
                   <Snippets data={this.props.snippets} />
                 </TabContent>
-                <TabContent isError={!get(data, 'contacts.length')} errorMessage={ NO_DATA } title="Contacts">
+                <TabContent showError={true} isError={!get(data, 'contacts.length')} errorMessage={ NO_DATA } title="Contacts">
                   <Contacts data={data} />
                 </TabContent>
                 <TabContent isError={!get(data, 'links.length')} errorMessage={ NO_DATA } title="Links">

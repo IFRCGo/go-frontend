@@ -422,7 +422,7 @@ class AdminArea extends SFPComponent {
                 <TabContent isError={!get(data, 'links.length')} errorMessage={ NO_DATA } title="Links">
                   <Links data={data} />
                 </TabContent>
-                <TabContent isError={!get(data, 'contacts.length')} errorMessage={ NO_DATA } title="Contacts">
+                <TabContent showError={true} isError={!get(data, 'contacts.length')} errorMessage={ NO_DATA } title="Contacts">
                   <Contacts data={data} />
                 </TabContent>
               </TabPanel>

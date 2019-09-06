@@ -200,9 +200,20 @@
   margin: 0;  
 } 
 
+/* Margin Auto
+   ========================================================================== */
+
+.margin-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
 
 /* Clearfix
    ========================================================================== */
+
+.clear {
+  clear: both;
+}
 
 .clearfix {
   &::before,

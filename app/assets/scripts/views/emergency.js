@@ -4,7 +4,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { PropTypes as T } from 'prop-types';
-import c from 'classnames';
 import _toNumber from 'lodash.tonumber';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
@@ -33,7 +32,6 @@ import {
 import {
   get,
   mostRecentReport,
-  // dateOptions,
   datesAgo,
   getRecordsByType
 } from '../utils/utils/';
@@ -43,7 +41,6 @@ import Fold from '../components/fold';
 import TabContent from '../components/tab-content';
 import ErrorPanel from '../components/error-panel';
 import Expandable from '../components/expandable';
-// import { FilterHeader } from '../components/display-table';
 import { Snippets } from '../components/admin-area-elements';
 import SurgeAlertsTable from '../components/connected/alerts-table';
 import PersonnelTable from '../components/connected/personnel-table';
@@ -177,7 +174,7 @@ class Emergency extends React.Component {
     const numAssisted = parseInt(get(report, 'num_assisted')) || parseInt(get(report, 'gov_num_assisted')) || parseInt(get(report, 'other_num_assisted'));
     return (
       <div className='inpage__header-col'>
-        <h3>Emergency Overview</h3>
+        <h3 className='global-spacing-2-t clear'>Emergency Overview</h3>
         <div className='content-list-group'>
           <ul className='content-list'>
             <li>Affected<span className='content-highlight'>{n(numAffected)}</span></li>
@@ -215,33 +212,40 @@ class Emergency extends React.Component {
       acc.requested += _toNumber(o.amount_requested);
       return acc;
     }, stats);
-
+    const displayHeadlineStats = stats.beneficiaries || stats.requested || stats.funded;
     return (
       <div className="inpage__introduction">
-        <ul className='introduction-nav'>
-          <li className={c('introduction-nav-item', { 'introduction-nav-item--active': selected === null })}>
-            <a href='#' title='Show stats for all appeals' onClick={this.onAppealClick.bind(this, null)}>All Appeals</a>
-          </li>
-          {appeals.map(o => (
-            <li key={o.id} className={c('introduction-nav-item', { 'introduction-nav-item--active': o.id === selected })}>
-              <a href='#' title={`Show stats for appeal ${o.name}`} onClick={this.onAppealClick.bind(this, o.id)}>{o.name}</a>
-            </li>
-          ))}
-        </ul>
         <div className='inpage__header-col'>
-          <div className='inpage__headline-stats'>
-            <ul className='stats-list'>
-              <li className='stats-list__item stats-emergencies'>
-                {n(stats.beneficiaries)}<small>People Targeted</small>
-              </li>
-              <li className='stats-list__item stats-funding stat-borderless stat-double'>
-                {n(stats.requested)}<small>Funding Requirements (CHF)</small>
-              </li>
-              <li className='stats-list__item stat-double'>
-                {n(stats.funded)}<small>Funding (CHF)</small>
-              </li>
-            </ul>
-          </div>
+          { displayHeadlineStats ? (
+            <div className='inpage__headline-stats'>
+              <ul className='sumstats'>
+                { stats.beneficiaries > 0
+                  ? (<li className='sumstats__item'>
+                    <span className='collecticon-people-arrows sumstats__icon'></span>
+                    <span className='sumstats__value'>
+                      {n(stats.beneficiaries)}
+                    </span>
+                    <span className='sumstats__key'>People Targeted</span>
+                  </li>) : null }
+
+                { stats.requested > 0
+                  ? (<li className='sumstats__item'>
+                    <span className='collecticon-cash-notes sumstats__icon'></span>
+                    <span className='sumstats__value'>
+                      {n(stats.requested)}
+                    </span>
+                    <span className='sumstats__key'>Funding Requirements (CHF)</span>
+                  </li>) : null }
+                { stats.funded > 0
+                  ? (<li className='sumstats__item'>
+                    <span className='collecticon-cash-bag sumstats__icon'></span>
+                    <span className='sumstats__value'>
+                      {n(stats.funded)}
+                    </span>
+                    <span className='sumstats__key'>Funding (CHF)</span>
+                  </li>) : null }
+              </ul>
+            </div>) : null}
         </div>
         {this.renderFieldReportStats()}
         <div className='funding-chart'>
@@ -347,18 +351,6 @@ class Emergency extends React.Component {
           </div>
         )} >
         <div>
-          {/*
-          <div className='fold__filters'>
-            <FilterHeader id='sitrep-date' title='Created At'
-              options={dateOptions}
-              filter={date}
-              onSelect={this.handleSitrepFilter.bind(this, 'date')} />
-            {types.fetched && !types.error ? <FilterHeader id='sitrep-type' title='Document Type'
-              options={[{ value: 'all', label: 'All' }].concat(types.data.results.map(d => ({ value: d.id, label: d.type })))}
-              filter={type}
-              onSelect={this.handleSitrepFilter.bind(this, 'type')} /> : null}
-          </div>
-          */}
           {this.renderReports('situation-reports-list', reportsByType)}
         </div>
       </Fold>
@@ -389,10 +381,20 @@ class Emergency extends React.Component {
     );
   }
 
+  hasKeyFigures () {
+    const { data } = this.props.event;
+    const kf = get(data, 'key_figures');
+    if (!Array.isArray(kf) || !kf.length) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   renderKeyFigures () {
     const { data } = this.props.event;
     const kf = get(data, 'key_figures');
-    if (!Array.isArray(kf) || !kf.length) return null;
+    if (!this.hasKeyFigures()) return null;
 
     return (
       <Fold
@@ -494,8 +496,7 @@ class Emergency extends React.Component {
           <div className='inpage__body'>
             <div className='inner'>
               <TabPanel>
-                <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ NO_DATA } title="Key Figures">
-                  <Snippets data={this.props.snippets} />
+                <TabContent isError={!this.hasKeyFigures()} title="Key Figures">
                   {this.renderKeyFigures()}
                 </TabContent>
                 {showExportMap()}
@@ -503,7 +504,7 @@ class Emergency extends React.Component {
                   <Fold id='overview'
                     title='Situational Overview'
                     wrapperClass='situational-overview' >
-                    <Expandable limit={360} text={summary} />
+                    <Expandable limit={2048} text={summary} />
                     {source ? <p className='emergency__source'>Source: {source}</p> : null}
                   </Fold>
                 </TabContent>
@@ -515,7 +516,20 @@ class Emergency extends React.Component {
                     title='Alerts'
                     emergency={this.props.match.params.id}
                     returnNullForEmpty={true}
-                  />)
+                  />
+                </TabContent>
+                <TabContent isError={!get(this.props.eru, 'data.results.length')} errorMessage={ NO_DATA } title="ERUs">
+                  <EruTable id='erus'
+                    emergency={this.props.match.params.id}
+                  />
+                </TabContent>
+                <TabContent isError={!get(this.props.personnel, 'data.results.length')} errorMessage={ NO_DATA } title="Personnel">
+                  <PersonnelTable id='personnel'
+                    emergency={this.props.match.params.id}
+                  />
+                </TabContent>
+                <TabContent isError={!get(this.props.appealDocuments, 'data.results.length')} errorMessage={ NO_DATA } title="Appeal Documents">
+                  {this.renderAppealDocuments()}
                 </TabContent>
                 <TabContent isError={!get(this.props.situationReports, 'data.results.length')} errorMessage={ NO_DATA } title="Response Documents">
                   {this.renderResponseDocuments()}
@@ -540,8 +554,8 @@ class Emergency extends React.Component {
                             <td>{separate(o.ctype)}</td>
                             <td>
                               {o.email.indexOf('@') !== -1
-                                ? <a className='link--primary' href={`mailto:${o.email}`} title='Contact'>{o.email}</a>
-                                : <a className='link--primary' href={`tel:${o.email}`} title='Contact'>{o.email}</a>}
+                                ? <a className='button button--small button--grey-cement-bounded' href={`mailto:${o.email}`} title='Contact'>{o.email}</a>
+                                : <a className='button button--small button--grey-cement-bounded' href={`tel:${o.email}`} title='Contact'>{o.email}</a>}
                             </td>
                           </tr>
                         ))}
@@ -552,18 +566,8 @@ class Emergency extends React.Component {
               </TabPanel>
 
               <TabPanel>
-                <TabContent isError={!get(this.props.eru, 'data.results.length')} errorMessage={ NO_DATA } title="ERUs">
-                  <EruTable id='erus'
-                    emergency={this.props.match.params.id}
-                  />
-                </TabContent>
-                <TabContent isError={!get(this.props.personnel, 'data.results.length')} errorMessage={ NO_DATA } title="Personnel">
-                  <PersonnelTable id='personnel'
-                    emergency={this.props.match.params.id}
-                  />
-                </TabContent>
-                <TabContent isError={!get(this.props.appealDocuments, 'data.results.length')} errorMessage={ NO_DATA } title="Appeal Documents">
-                  {this.renderAppealDocuments()}
+                <TabContent showError={true} isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ NO_DATA } title="Additional Graphics">
+                  <Snippets data={this.props.snippets} />
                 </TabContent>
               </TabPanel>
             </div>
