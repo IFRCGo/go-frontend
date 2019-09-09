@@ -222,5 +222,18 @@ export function getRecordsByType (types, records) {
     const recordTypeId = record.type.id;
     recordsByType[recordTypeId].items.push(record);
   });
-  return recordsByType;
+  // Provides sorted list of records to display
+  const orderedTitles = [
+    'Situation Reports',
+    'Key Surge Documents',
+    'Mobilisation Tables',
+    'Maps',
+    'ERU Reports',
+    'Information Products'
+  ];
+  const sortedRecordsByType = Object.values(recordsByType);
+  sortedRecordsByType.sort((a, b) => {
+    return orderedTitles.indexOf(a.title) - orderedTitles.indexOf(b.title);
+  });
+  return sortedRecordsByType;
 }
