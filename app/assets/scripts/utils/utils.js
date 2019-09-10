@@ -214,6 +214,7 @@ export function getRecordsByType (types, records) {
   let recordsByType = typeIds.reduce((memo, typeId) => {
     memo[typeId] = {
       'title': _find(types.data.results, result => result.id === Number(typeId)).type,
+      'typeId': typeId,
       'items': []
     };
     return memo;
@@ -222,18 +223,21 @@ export function getRecordsByType (types, records) {
     const recordTypeId = record.type.id;
     recordsByType[recordTypeId].items.push(record);
   });
+
   // Provides sorted list of records to display
-  const orderedTitles = [
-    'Situation Reports',
-    'Key Surge Documents',
-    'Mobilisation Tables',
-    'Maps',
-    'ERU Reports',
-    'Information Products'
+  // Categories are sorted according to https://github.com/IFRCGo/go-frontend/issues/773#issuecomment-528883564
+  // FIXME: Ideally, we would give the user a way to define this order in the backend and remove this logic.
+  const orderedIds = [
+    "5", // Situation Reports
+    "2", // Key Surge Documents
+    "6", // Mobilisation Tables
+    "7", // Maps
+    "1", // ERU Reports
+    "3" // Information Products
   ];
   const sortedRecordsByType = Object.values(recordsByType);
   sortedRecordsByType.sort((a, b) => {
-    return orderedTitles.indexOf(a.title) - orderedTitles.indexOf(b.title);
+    return orderedIds.indexOf(a.typeId) - orderedIds.indexOf(b.typeId);
   });
   return sortedRecordsByType;
 }
