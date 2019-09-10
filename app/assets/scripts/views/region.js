@@ -371,7 +371,6 @@ class AdminArea extends SFPComponent {
             <div className='inner'>
               <TabPanel>
                 <TabContent>
-                  {this.renderCountries()}
                   <div className='fold' id='operations-map'>
                     <div className='inner'>
                       <h2 className='fold__title'>{activeOperations === null || isNaN(activeOperations) ? null : `Active IFRC Operations (${activeOperations})`}</h2>
@@ -394,6 +393,7 @@ class AdminArea extends SFPComponent {
                     viewAll={'/appeals/all?region=' + data.id}
                     viewAllText={`View all IFRC operations for ${regionName} region`}
                   />
+                  {this.renderCountries()}
                   <Fold title='Statistics' headerClass='visually-hidden' id='stats'>
                     <div className='stats-chart'>
                       {this.renderOperations10Years()}
