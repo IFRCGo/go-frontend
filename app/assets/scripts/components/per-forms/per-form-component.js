@@ -8,6 +8,13 @@ import RequestFactory from './factory/request-factory';
 const requestFactory = new RequestFactory();
 
 const renderLanguageSelectDropdown = (props) => {
+  /*
+  The language selection code is commented out as per
+  https://github.com/IFRCGo/go-frontend/issues/808
+
+  Intentionally leaving this commented out because we will want to
+  bring this functionality back.
+
   return (<div>
     <span style={{fontWeight: 'bold'}}>Form language:</span>&nbsp;
 
@@ -17,6 +24,10 @@ const renderLanguageSelectDropdown = (props) => {
       <option value='french'>French</option>
     </select><br /><br />
   </div>);
+  */
+
+  // Render null for now, see above.
+  return null;
 };
 
 if (environment !== 'production') {
