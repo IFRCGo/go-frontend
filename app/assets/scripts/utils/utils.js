@@ -219,7 +219,13 @@ export function getRecordsByType (types, records) {
     };
     return memo;
   }, {});
-  records.forEach(record => {
+
+  // sort records descending by created_at timestamp
+  const recordsSorted = records.sort((a, b) => {
+    return new Date(b.created_at) - new Date(a.created_at);
+  })
+
+  recordsSorted.forEach(record => {
     const recordTypeId = record.type.id;
     recordsByType[recordTypeId].items.push(record);
   });
