@@ -18,12 +18,12 @@ class UserMenu extends React.Component {
 
   // Adds a listener for window size to determine style for menu content
   componentWillMount () {
-    window.addEventListener('resize', this.handleWindowSizeChange);
+    window.addEventListener('resize', this.handleWindowSizeChange.bind(this));
   }
 
   // Ensures the listener is removed when the component is no longer mounted
   componentWillUnmount () {
-    window.removeEventListener('resize', this.handleWindowSizeChange);
+    window.removeEventListener('resize', this.handleWindowSizeChange.bind(this));
   }
 
   // Updates window width change
