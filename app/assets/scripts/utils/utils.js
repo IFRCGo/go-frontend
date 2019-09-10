@@ -223,7 +223,7 @@ export function getRecordsByType (types, records) {
   // sort records descending by created_at timestamp
   const recordsSorted = records.sort((a, b) => {
     return new Date(b.created_at) - new Date(a.created_at);
-  })
+  });
 
   recordsSorted.forEach(record => {
     const recordTypeId = record.type.id;
@@ -234,12 +234,12 @@ export function getRecordsByType (types, records) {
   // Categories are sorted according to https://github.com/IFRCGo/go-frontend/issues/773#issuecomment-528883564
   // FIXME: Ideally, we would give the user a way to define this order in the backend and remove this logic.
   const orderedIds = [
-    "5", // Situation Reports
-    "2", // Key Surge Documents
-    "6", // Mobilisation Tables
-    "7", // Maps
-    "1", // ERU Reports
-    "3" // Information Products
+    '5', // Situation Reports
+    '2', // Key Surge Documents
+    '6', // Mobilisation Tables
+    '7', // Maps
+    '1', // ERU Reports
+    '3' // Information Products
   ];
   const sortedRecordsByType = Object.values(recordsByType);
   sortedRecordsByType.sort((a, b) => {
