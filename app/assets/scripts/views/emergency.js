@@ -502,9 +502,6 @@ class Emergency extends React.Component {
                     <Expandable limit={2048} text={summary} />
                   </Fold>
                 </TabContent>
-                <TabContent isError={!get(this.props.event, 'data.field_reports.length')} errorMessage={ NO_DATA } title="Field Reports">
-                  {this.renderFieldReports()}
-                </TabContent>
                 <TabContent isError={!get(this.props.surgeAlerts, 'data.results.length')} errorMessage={ NO_DATA } title="Alerts">
                   <SurgeAlertsTable id='alerts'
                     title='Alerts'
@@ -521,6 +518,9 @@ class Emergency extends React.Component {
                   <PersonnelTable id='personnel'
                     emergency={this.props.match.params.id}
                   />
+                </TabContent>
+                <TabContent isError={!get(this.props.event, 'data.field_reports.length')} errorMessage={ NO_DATA } title="Field Reports">
+                  {this.renderFieldReports()}
                 </TabContent>
                 <TabContent isError={!get(this.props.appealDocuments, 'data.results.length')} errorMessage={ NO_DATA } title="Appeal Documents">
                   {this.renderAppealDocuments()}
