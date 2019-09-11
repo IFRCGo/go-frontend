@@ -433,12 +433,7 @@ class Emergency extends React.Component {
     if (!fetched || error) return null;
     const report = mostRecentReport(get(this.props, 'event.data.field_reports')) || {};
     const summary = data.summary || report.description || null;
-    let source = null;
-    if (data.summary) {
-      source = data.name;
-    } else if (report.description) {
-      source = <Link to={`/reports/${report.id}`}>{report.summary}, {timestamp(report.updated_at || report.created_at)}</Link>;
-    }
+
     const contacts = Array.isArray(data.contacts) && data.contacts.length ? data.contacts
       : Array.isArray(report.contacts) && report.contacts.length ? report.contacts : null;
     const subscribeButton = this.state.subscribed
