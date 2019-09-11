@@ -59,8 +59,11 @@ import { NO_DATA } from '../utils/constants';
 import { getRegionSlug } from '../utils/region-constants';
 import { getISO3 } from '../utils/country-iso';
 
+import ThreeWFilter from './three-w-filter';
+
 const TAB_DETAILS = [
   { title: 'Operations', hash: '#operations' },
+  { title: '3w', hash: '#3w' },
   { title: 'Country Overview', hash: '#overview' },
   { title: 'Preparedness', hash: '#preparedness' },
   { title: 'Additional Information', hash: '#additional' }
@@ -604,6 +607,40 @@ class AdminArea extends SFPComponent {
                     viewAll={'/emergencies/all?country=' + data.id}
                     viewAllText={`View All Emergencies For ${data.name}`}
                   />
+                </TabContent>
+              </TabPanel>
+              <TabPanel>
+                <TabContent>
+                  <div className='three-w-container'>
+                    <h2 className='heading'>
+                      Movement activities
+                    </h2>
+                    <div className='content'>
+                      <div className='left'>
+                        <a
+                          href='#3w'
+                          className="add-button button button--secondary-bounded"
+                        >
+                          Add
+                        </a>
+                        <a
+                          href='#3w'
+                          className="edit-button button button--secondary-bounded"
+                        >
+                          Edit
+                        </a>
+                      </div>
+                      <ThreeWFilter
+                        className='three-w-filters'
+                      />
+                      <a
+                        href='#3w'
+                        className="export-button button button--secondary-bounded"
+                      >
+                        Export
+                      </a>
+                    </div>
+                  </div>
                 </TabContent>
               </TabPanel>
               <TabPanel>

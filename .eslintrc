@@ -7,7 +7,9 @@
   "plugins": [
     "react"
   ],
+  "parser": "babel-eslint",
   "parserOptions": {
+    "allowImportExportEverywhere": true
     "ecmaVersion": 6,
     "ecmaFeatures": {
       "jsx": true
@@ -37,5 +39,5 @@
     "react/prop-types": 2,
     "react/react-in-jsx-scope": 2,
     "prefer-promise-reject-errors": 0
-  }
+  },
 }

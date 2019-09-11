@@ -237,3 +237,37 @@
   justify-content: center;
   flex-wrap: wrap;
 }
+
+.three-w-container {
+    .heading {
+        margin: 16px;
+    }
+
+    .content {
+        padding: 16px;
+        display: flex;
+        align-items: baseline;
+        flex-wrap: wrap;
+
+        .left {
+          flex-shrink: 0;
+          padding: 8px;
+
+          .add-button {
+            margin-right: 10px;
+          }
+        }
+
+        .three-w-filters {
+          padding: 8px;
+          display: flex;
+          flex-wrap: wrap;
+          flex-grow: 1;
+        }
+
+        .export-button {
+          flex-shrink: 0;
+          margin: 8px;
+        }
+    }
+}
