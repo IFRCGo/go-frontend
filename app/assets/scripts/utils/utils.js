@@ -224,10 +224,11 @@ export function getRecordsByType (types, records) {
   const recordsSorted = records.sort((a, b) => {
     return new Date(b.created_at) - new Date(a.created_at);
   });
-
   recordsSorted.forEach(record => {
-    const recordTypeId = record.type.id;
-    recordsByType[recordTypeId].items.push(record);
+    if (record.type) {
+      const recordTypeId = record.type.id;
+      recordsByType[recordTypeId].items.push(record);
+    }
   });
 
   // Provides sorted list of records to display
