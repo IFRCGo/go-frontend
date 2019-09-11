@@ -44,10 +44,18 @@ export default class Fold extends React.Component {
 
   render () {
     const extraClassName = 'fold--main';
+
+    // default should be to show the header
+    let showHeader;
+    if (!this.props.hasOwnProperty('showHeader')) {
+      showHeader = true;
+    } else {
+      showHeader = this.props.showHeader;
+    }
     return (
       <div className={c('fold', this.props.extraClass ? extraClassName : '', this.props.wrapperClass)} id={this.props.id}>
         <div className='inner'>
-          {this.renderHeader()}
+          {showHeader ? this.renderHeader() : null}
           <div className={c('fold__body', this.props.bodyClass)}>
             {this.props.children}
           </div>
@@ -66,6 +74,7 @@ if (environment !== 'production') {
     foldClass: T.string,
     extraClass: T.bool,
     description: T.string,
+    showHeader: T.bool,
     header: T.oneOfType([T.element, T.func]),
     footer: T.oneOfType([T.element, T.func]),
     wrapperClass: T.string,
