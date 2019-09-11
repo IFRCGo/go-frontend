@@ -505,7 +505,6 @@ class Emergency extends React.Component {
                     title='Situational Overview'
                     wrapperClass='situational-overview' >
                     <Expandable limit={2048} text={summary} />
-                    {source ? <p className='emergency__source'>Source: {source}</p> : null}
                   </Fold>
                 </TabContent>
                 <TabContent isError={!get(this.props.event, 'data.field_reports.length')} errorMessage={ NO_DATA } title="Field Reports">
