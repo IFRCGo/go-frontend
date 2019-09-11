@@ -112,22 +112,6 @@
   padding-bottom: $global-spacing-3;
 }
 
-.presenting {
-
-  .sumstats__key {
-    font-size: $font-size-sm !important;
-  }
-
-  .sumstats__value {
-    font-size: $font-size-xl !important;
-    line-height: 1 !important;
-  }
-
-  .sumstats__icon {
-    display: none;
-  }
-}
-
 .sumstats {
   border-radius: ($base-border-radius * 2);
   @extend .clearfix;

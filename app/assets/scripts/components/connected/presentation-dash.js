@@ -72,7 +72,7 @@ class PresentationDash extends React.Component {
     return (
       <section className={c('fold--stats', {presenting: this.state.fullscreen})} id='presentation'>
         <Homestats appealsList={appealsList} fullscreen={this.state.fullscreen} toggleFullscreen={this.toggleFullscreen} />
-        <div className='inner'>
+        <div className={c('inner', {'appeals--fullscreen': this.state.fullscreen})}>
           <AppealsTable
             showActive={true}
             showMap={true}
