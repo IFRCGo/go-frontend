@@ -517,7 +517,7 @@ class Emergency extends React.Component {
                     emergency={this.props.match.params.id}
                   />
                 </TabContent>
-                <TabContent isError={!get(this.props.personnel, 'data.results.length')} errorMessage={ NO_DATA } title="Personnel">
+                <TabContent title="Personnel">
                   <PersonnelTable id='personnel'
                     emergency={this.props.match.params.id}
                   />
