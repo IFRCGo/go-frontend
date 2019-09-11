@@ -2,6 +2,7 @@
 import _get from 'lodash.get';
 import _groupBy from 'lodash.groupby';
 import _toNumber from 'lodash.tonumber';
+import _find from 'lodash.find';
 import { DateTime } from 'luxon';
 
 import { getCentroid } from './country-centroids';
@@ -207,3 +208,43 @@ export const appealStatusOptions = [
   { value: '2', label: 'Frozen' },
   { value: '3', label: 'Archived' }
 ];
+
+export function getRecordsByType (types, records) {
+  const typeIds = types.data.results.map(t => t.id.toString());
+  let recordsByType = typeIds.reduce((memo, typeId) => {
+    memo[typeId] = {
+      'title': _find(types.data.results, result => result.id === Number(typeId)).type,
+      'typeId': typeId,
+      'items': []
+    };
+    return memo;
+  }, {});
+
+  // sort records descending by created_at timestamp
+  const recordsSorted = records.sort((a, b) => {
+    return new Date(b.created_at) - new Date(a.created_at);
+  });
+  recordsSorted.forEach(record => {
+    if (record.type) {
+      const recordTypeId = record.type.id;
+      recordsByType[recordTypeId].items.push(record);
+    }
+  });
+
+  // Provides sorted list of records to display
+  // Categories are sorted according to https://github.com/IFRCGo/go-frontend/issues/773#issuecomment-528883564
+  // FIXME: Ideally, we would give the user a way to define this order in the backend and remove this logic.
+  const orderedIds = [
+    '5', // Situation Reports
+    '2', // Key Surge Documents
+    '6', // Mobilisation Tables
+    '7', // Maps
+    '1', // ERU Reports
+    '3' // Information Products
+  ];
+  const sortedRecordsByType = Object.values(recordsByType);
+  sortedRecordsByType.sort((a, b) => {
+    return orderedIds.indexOf(a.typeId) - orderedIds.indexOf(b.typeId);
+  });
+  return sortedRecordsByType;
+}

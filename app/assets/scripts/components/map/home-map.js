@@ -262,6 +262,15 @@ class HomeMap extends React.Component {
             onDtypeHover={this.onDtypeHover.bind(this)}/>}
 
         <div className={mapContainerClassName}>
+          <div className='map-vis__legend__filters'>
+            <div className='map-vis__legend__filters-wrap'>
+              <EmergencyTypesDropdown emergenciesByType={emergenciesByType}
+                onDtypeClick={this.onDtypeClick.bind(this)} />
+            </div>
+            <div className='map-vis__legend__filters-wrap'>
+              <AppealTypesDropdown onAppealTypeChange={this.onAppealTypeChange.bind(this)} />
+            </div>
+          </div>
           <MapComponent className='map-vis__holder'
             noExport={this.props.noExport}
             configureMap={this.configureMap}
@@ -274,12 +283,14 @@ class HomeMap extends React.Component {
               onFieldChange={this.onFieldChange}
               deployments={this.props.deployments}
               deploymentsKey={this.props.deploymentsKey}/>
-
-            <EmergencyTypesDropdown emergenciesByType={emergenciesByType}
-              onDtypeClick={this.onDtypeClick.bind(this)} />
-
-            <AppealTypesDropdown onAppealTypeChange={this.onAppealTypeChange.bind(this)} />
           </MapComponent>
+          <div className='map-vis__legend--fullscreen-wrap'>
+            <button className='button button--secondary-bounded button--small button--fullscreen'
+              onClick={this.props.toggleFullscreen}
+              title='View in fullscreen'>
+              <span>{this.props.fullscreen ? 'Close the Map' : 'Presentation Mode'}</span>
+            </button>
+          </div>
         </div>
       </React.Fragment>
     );
@@ -308,7 +319,9 @@ if (environment !== 'production') {
     noRenderEmergencies: T.bool,
     noRenderEmergencyTitle: T.bool,
     noExport: T.bool,
-    layers: T.array
+    layers: T.array,
+    toggleFullscreen: T.func,
+    fullscreen: T.bool
   };
 }
 

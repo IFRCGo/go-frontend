@@ -61,21 +61,34 @@
 }
 
 .button--fullscreen {
-  @extend .button--text-hidden;
+  //@extend .button--text-hidden;
   float: right;
   position: relative;
-  padding: $global-spacing;
-  border-radius: 5px;
+  padding: ($global-spacing/2) $global-spacing-2;
+  background-color: #fff;
+  border: 1px solid $grey-cloud;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+
   &:before {
-    content: url('/assets/graphics/layout/full-screen.svg');
-    position: absolute;
-    margin-right: 6rem;
-    height: 25px;
-    width: 25px;
-    left: 0.22rem;
-    top: 0.22rem;
+    content: url('/assets/graphics/layout/fullscreen-square.svg');
+    margin-right: $global-spacing;
+    position: relative;
+    top: 2px;
   };
+
+  &:hover, &:focus {
+    background: $grey-mist;
+  }
 }
+
+.map-vis__legend--fullscreen-wrap {
+  position: absolute;
+  left: $global-spacing;
+  top: 84px;
+}
+
 /* Stats */
 
 .fold--stats {
@@ -99,22 +112,6 @@
   padding-bottom: $global-spacing-3;
 }
 
-.presenting {
-
-  .sumstats__key {
-    font-size: $font-size-sm !important;
-  }
-
-  .sumstats__value {
-    font-size: $font-size-xl !important;
-    line-height: 1 !important;
-  }
-
-  .sumstats__icon {
-    display: none;
-  }
-}
-
 .sumstats {
   border-radius: ($base-border-radius * 2);
   @extend .clearfix;
@@ -125,6 +122,10 @@
     box-shadow: $base-box-shadow;
     display: flex;
     flex-wrap: wrap;
+  }
+
+  @include media(large-up) {
+    flex-wrap: nowrap;
   }
 
   &__item {
@@ -426,6 +427,29 @@
   }
 }
 
+.map-vis__legend__filters {
+  display: flex;
+  justify-content: flex-end;
+  padding: $global-spacing 0;
+
+  select.form__control--brand {
+    font-size: $font-size-sm;
+    font-weight: $base-font-medium;
+    display: inline-block;
+    min-width: 220px;
+    width: auto;
+  }
+}
+
+.map-vis__legend__filters-wrap {
+  display: inline-block;
+  margin-right: $global-spacing-2;
+
+  &:last-of-type {
+    margin-right: 0;
+  }
+}
+
 .legend__dl {
   padding: 0;
   margin: 0;
@@ -507,7 +531,7 @@
   .color--lightblue::before {
     background: #97acb3;
   }
-  
+
   .color--a1-form::before {
     background: #42c5f5;
   }
@@ -601,7 +625,7 @@
   margin-left: 0;
   @extend .clearfix;
   @include column(12/12);
-  
+
   a {
     //float: left;
     color: $base-color;
@@ -686,5 +710,11 @@
 
   thead th, tbody td {
     padding: 0.5rem;
+  }
+}
+
+.drop__menu--date {
+  input[type="date"] {
+    font-size: $font-size-sm;
   }
 }

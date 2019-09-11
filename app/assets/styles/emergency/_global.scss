@@ -8,15 +8,11 @@
   }
 
   .inpage__header {
-    @include column(12/12);
     float: none;
     margin-bottom: $global-spacing * 2;
     border-bottom: solid 1px rgba($base-color, 0.1);
     .inpage__header-col {
-      @include column(12/12);
-      @include media(medium-up) {
-        @include column(5.5/12);
-      }
+      float: none;
     }
     .content-list-group {
       @include column(12/12);
@@ -55,6 +51,20 @@
     dl {
       float: left;
       width: 50%;
+    }
+  }
+  
+  .sumstats__item {
+    @include media(small-up) {
+      @include span(4/12, $offset: 0, $cycle: 0);
+    }
+
+    @include media(medium-up) {
+      @include span(4/12, $offset: 0, $cycle: 0);
+    }
+
+    @include media(medium-up) {
+      @include span(4/12, $offset: 0, $cycle: 0);
     }
   }
 }
@@ -161,11 +171,27 @@
 }
 
 .contacts {
+  .table {
+    border-spacing: 0 $global-spacing;
+    border-collapse: initial;
+  }
+
   td {
+    border: 1px solid $base-border-color;
+    border-right-color: transparent;
+    border-left-color: transparent;
+
     &:first-child {
-      padding-left: 0;
       font-weight: $base-font-bold;
     }
+  }
+
+  tr td:first-of-type {
+    border-left-color: $base-border-color; 
+  }
+
+  tr td:last-of-type {
+    border-right-color: $base-border-color; 
   }
 }
 
@@ -203,4 +229,43 @@ h2.map__container__title {
 .map__container__disclaimer {
   font-size: $font-size-xs;
   padding: $global-spacing ($global-spacing/2);
+}
+
+.response__doc__col {
+  @include media(medium-up) {
+    @include column(4/12, $cycle: 3)
+  }
+}
+
+.response__doc__each {
+  border: 1px solid $base-border-color;
+  background-color: #fff;
+  padding: $global-spacing-2;
+  margin: $global-spacing 0 0 0;
+}
+
+.response__doc__inner {
+  height: 210px;
+  padding: 0 $global-spacing 0 0;
+  overflow-y: auto;
+}
+
+.response__doc__title {
+  padding: 0 0 ($global-spacing/2) 0;
+}
+
+.response__doc__item {
+  padding: 0 $global-spacing-2 0 0;
+  position: relative;
+  margin: $global-spacing 0 0 0;
+}
+
+.response__doc__item__link {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.response__doc__title {
+  font-weight: $base-font-bold;
 }

@@ -6,12 +6,14 @@ import { environment } from '../config';
 
 import ErrorPanel from './error-panel';
 
-function TabContent ({ isError, errorMessage, title, children }) {
+function TabContent ({ isError, showError, errorMessage, title, children }) {
   return (
     <div>
       {
         isError ? (
-          <ErrorPanel title={title} errorMessage={errorMessage} />
+          showError ? (
+            <ErrorPanel title={title} errorMessage={errorMessage} />
+          ) : null
         ) : (
           children
         )
@@ -29,6 +31,7 @@ TabContent.defaultProps = {
 if (environment !== 'production') {
   TabContent.propTypes = {
     isError: T.bool,
+    showError: T.bool,
     errorMessage: T.string,
     children: T.node,
     title: T.string

@@ -6,22 +6,22 @@ import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
 
 import { environment } from '../../config';
-import { getAppeals } from '../../actions';
+import { getAppealsList, getAppeals } from '../../actions';
 import { commaSeparatedNumber as n, nope } from '../../utils/format';
 import { getDtypeMeta } from '../../utils/get-dtype-meta';
 import {
   get,
   dateOptions,
-  datesAgo,
   dTypeOptions
 } from '../../utils/utils/';
 
 import ExportButton from '../export-button-container';
 import Fold from '../fold';
 import BlockLoading from '../block-loading';
-import DisplayTable, { SortHeader, FilterHeader } from '../display-table';
+import DisplayTable, { SortHeader, FilterHeader, DateFilterHeader} from '../display-table';
 import { SFPComponent } from '../../utils/extendables';
 import { appealTypes as appealsType, appealTypeOptions } from '../../utils/appeal-type-constants';
+import HomeMap from '../map/home-map';
 
 class AppealsTable extends SFPComponent {
   constructor (props) {
@@ -46,6 +46,7 @@ class AppealsTable extends SFPComponent {
 
   componentDidMount () {
     this.requestResults(this.props);
+    this.props._getAppealsList();
   }
 
   componentWillReceiveProps (newProps) {
@@ -73,8 +74,14 @@ class AppealsTable extends SFPComponent {
       qs.ordering = '-start_date';
     }
 
-    if (state.filters.date !== 'all') {
-      qs.start_date__gte = datesAgo[state.filters.date]();
+    const {
+      startDate, endDate
+    } = state.filters.date;
+    if (startDate) {
+      qs.start_date__gte = DateTime.fromISO(startDate).toISO();
+    }
+    if (endDate) {
+      qs.start_date__lte = DateTime.fromISO(endDate).toISO();
     }
     if (state.filters.dtype !== 'all') {
       qs.dtype = state.filters.dtype;
@@ -141,7 +148,10 @@ class AppealsTable extends SFPComponent {
       const headings = [
         {
           id: 'date',
-          label: <FilterHeader id='date' title='Start Date' options={dateOptions} filter={this.state.table.filters.date} onSelect={this.handleFilterChange.bind(this, 'table', 'date')} />
+          label: <DateFilterHeader id='date'
+            title='Start Date' options={dateOptions}
+            filter={this.state.table.filters.date}
+            onSelect={this.handleFilterChange.bind(this, 'table', 'date')} />
         },
         {
           id: 'type',
@@ -194,23 +204,38 @@ class AppealsTable extends SFPComponent {
         <Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || 'View all operations'}</Link>
       ) : null;
 
+      const {
+        appealsList
+      } = this.props;
+
       return (
-        <Fold title={`${title} (${n(data.count)})`} id={this.props.id} navLink={foldLink} foldClass='fold__title--inline' extraClass='fold--main'>
+        <Fold showHeader={!this.props.fullscreen} title={`${title} (${n(data.count)})`} id={this.props.id} navLink={foldLink} foldClass='fold__title--inline' extraClass='fold--main'>
           {this.props.showExport ? (
             <ExportButton filename='appeals'
               qs={this.getQs(this.props)}
               resource='api/v2/appeal'
             />
           ) : null}
-          <DisplayTable
-            className='table table--zebra table--active-ops'
-            headings={headings}
-            rows={rows}
-            pageCount={data.count / this.state.table.limit}
-            page={this.state.table.page - 1}
-            onPageChange={this.handlePageChange.bind(this, 'table')}
-            noPaginate={this.props.noPaginate}
-          />
+          {this.props.showMap ? (
+            <HomeMap
+              operations={appealsList}
+              noExport={true}
+              noRenderEmergencies={true}
+              fullscreen={this.props.fullscreen}
+              toggleFullscreen={this.props.toggleFullscreen}
+            />
+          ) : null}
+          {this.props.fullscreen ? null : (
+            <DisplayTable
+              className='table table--zebra table--active-ops'
+              headings={headings}
+              rows={rows}
+              pageCount={data.count / this.state.table.limit}
+              page={this.state.table.page - 1}
+              onPageChange={this.handlePageChange.bind(this, 'table')}
+              noPaginate={this.props.noPaginate}
+            />
+          )}
         </Fold>
       );
     }
@@ -222,6 +247,7 @@ if (environment !== 'production') {
   AppealsTable.propTypes = {
     _getAppeals: T.func,
     appeals: T.object,
+    appealsList: T.func,
 
     limit: T.number,
     country: T.number,
@@ -231,6 +257,8 @@ if (environment !== 'production') {
 
     noPaginate: T.bool,
     showExport: T.bool,
+    showMap: T.bool,
+
     title: T.string,
 
     showActive: T.bool,
@@ -239,16 +267,21 @@ if (environment !== 'production') {
     id: T.string,
 
     action: T.string,
-    statePath: T.string
+    statePath: T.string,
+
+    fullscreen: T.bool,
+    toggleFullscreen: T.func
   };
 }
 
 const selector = (state, props) => ({
-  appeals: props.statePath ? get(state, props.statePath) : state.appeals
+  appeals: props.statePath ? get(state, props.statePath) : state.appeals,
+  appealsList: state.overallStats.appealsList
 });
 
 const dispatcher = (dispatch) => ({
-  _getAppeals: (...args) => dispatch(getAppeals(...args))
+  _getAppeals: (...args) => dispatch(getAppeals(...args)),
+  _getAppealsList: (...args) => dispatch(getAppealsList(...args))
 });
 
 export default connect(selector, dispatcher)(AppealsTable);

@@ -97,6 +97,11 @@
 .button--secondary-light {
   @include button-variation($secondary-color, "filled", "light");
 }
+
+.button--grey-cement-bounded {
+  @include button-variation($grey-cement, "bounded", null);
+}
+
 /* Primary Plain */
 
 .button--base-plain {

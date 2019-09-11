@@ -1,0 +1,17 @@
+.scrollbar__custom::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+ 
+.scrollbar__custom::-webkit-scrollbar-track {
+  border-radius: $full-border-radius;
+  background: #fff;
+}
+ 
+.scrollbar__custom::-webkit-scrollbar-thumb {
+  background: $grey-cloud;
+}
+
+.scrollbar__custom::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+}

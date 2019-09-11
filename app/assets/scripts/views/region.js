@@ -286,15 +286,36 @@ class AdminArea extends SFPComponent {
         return Object.assign({ numOperations }, d);
       });
     }
+
+    // Create the <li> elements for the list
+    // This code can probably be improved,
+    // The idea here is to generate an array of <li> elements with
+    // the first letter like 'C', 'D', etc. being array items, with a different class.
+    //  It seemed hard to style a flowing 3-column list if this is broken up into separate <ul>s
+    let countryItems = [];
+    let currLetter = 'A';
+    countryItems.push(
+      <li className='region-countries__letter' key={currLetter}>{currLetter}</li>
+    );
+    countries.forEach((country, idx) => {
+      const name = country.name;
+      if (name[0] !== currLetter) {
+        currLetter = name[0];
+        countryItems.push(
+          <li className='region-countries__letter' key={currLetter}>{currLetter}</li>
+        );
+      }
+      countryItems.push(
+        <li key={country.id} className='region-countries__item'>
+          <Link to={`/countries/${country.id}`} className='region-countries__link'><span className='region-countries__linkC'>{country.name}</span></Link>
+          {country.numOperations ? <span className='region-countries__link-op'>({country.numOperations} Active Operation{country.numOperations > 1 ? 's' : ''})</span> : null}
+        </li>
+      );
+    });
     return (
       <Fold title={countries.length + ' Countries in this Region'}>
         <ul className='region-countries__list'>
-          {countries.map(d => (
-            <li key={d.id} className='region-countries__item'>
-              <Link to={`/countries/${d.id}`} className='link--primary'>{d.name}</Link>
-              {d.numOperations ? <span><strong>{d.numOperations}</strong> Active Operation{d.numOperations > 1 ? 's' : ''}</span> : null}
-            </li>
-          ))}
+          {countryItems}
         </ul>
       </Fold>
     );
@@ -350,7 +371,6 @@ class AdminArea extends SFPComponent {
             <div className='inner'>
               <TabPanel>
                 <TabContent>
-                  {this.renderCountries()}
                   <div className='fold' id='operations-map'>
                     <div className='inner'>
                       <h2 className='fold__title'>{activeOperations === null || isNaN(activeOperations) ? null : `Active IFRC Operations (${activeOperations})`}</h2>
@@ -373,6 +393,7 @@ class AdminArea extends SFPComponent {
                     viewAll={'/appeals/all?region=' + data.id}
                     viewAllText={`View all IFRC operations for ${regionName} region`}
                   />
+                  {this.renderCountries()}
                   <Fold title='Statistics' headerClass='visually-hidden' id='stats'>
                     <div className='stats-chart'>
                       {this.renderOperations10Years()}
@@ -401,7 +422,7 @@ class AdminArea extends SFPComponent {
                 <TabContent isError={!get(data, 'links.length')} errorMessage={ NO_DATA } title="Links">
                   <Links data={data} />
                 </TabContent>
-                <TabContent isError={!get(data, 'contacts.length')} errorMessage={ NO_DATA } title="Contacts">
+                <TabContent showError={true} isError={!get(data, 'contacts.length')} errorMessage={ NO_DATA } title="Contacts">
                   <Contacts data={data} />
                 </TabContent>
               </TabPanel>

@@ -12,6 +12,7 @@ $secondary-color-light: #C9D2E3;
 
 $map-color: #23324D;                       // Blue light
 $grey-slate: rgba(45, 70, 98, 0.6);
+$grey-mist: #fafafa;
 $grey-fog: #f3f2f3;
 $grey-cloud: #c9c3c1;
 $grey-cement: #505050;
@@ -51,9 +52,9 @@ $base-line-height: 1.5;
 $base-font-size: 0.875rem;
 $font-size-sm: 0.775rem;
 $font-size-xs: 0.695rem;
-$font-size-lg: 110%;
-$font-size-xl: 120%;
-$font-size-xxl: 130%;
+$font-size-lg: 0.95;
+$font-size-xl: 1.05rem;
+$font-size-xxl: 1.15rem;
 
 $code-font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 
@@ -100,7 +101,7 @@ $global-spacing-3: 2rem;
 /* Rows */
 
 $row-min-width: 320px;
-$row-max-width: 1280px;
+$row-max-width: 1420px;
 $jeet-max-width: $row-max-width; // reset jeet.gs max width
 
 /* Media queries */
@@ -108,8 +109,8 @@ $jeet-max-width: $row-max-width; // reset jeet.gs max width
 $xsmall-range: (0, 543px);
 $small-range: (544px, 767px);
 $medium-range: (768px, 991px);
-$large-range: (992px, 1300px);
-$xlarge-range: (1301px, 1600px);
+$large-range: (992px, 1419px);
+$xlarge-range: (1420px, 1600px);
 $xxlarge-range: (1601px, 3000px);
 
 $screen: "only screen";

@@ -33,16 +33,16 @@ import {
   getPerMission
 } from '../actions';
 import { getFdrs } from '../actions/query-external';
-import { getBoundingBox } from '../utils/country-bounding-box';
+// import { getBoundingBox } from '../utils/country-bounding-box';
 
 import App from './app';
 import ErrorPanel from '../components/error-panel';
 import TabContent from '../components/tab-content';
 import Fold from '../components/fold';
-import CountryMap from '../components/map/country-map';
 import DisplayTable, { SortHeader, FilterHeader } from '../components/display-table';
 import EmergenciesTable from '../components/connected/emergencies-table';
-import BulletTable from '../components/bullet-table';
+// import BulletTable from '../components/bullet-table';
+import Pills from '../components/pills';
 import {
   Snippets,
   KeyFigures,
@@ -56,6 +56,8 @@ import PreparednessPhaseOutcomes from '../components/country/preparedness-phase-
 import PreparednessColumnBar from '../components/country/preparedness-column-graph';
 import { SFPComponent } from '../utils/extendables';
 import { NO_DATA } from '../utils/constants';
+import { getRegionSlug } from '../utils/region-constants';
+import { getISO3 } from '../utils/country-iso';
 
 const TAB_DETAILS = [
   { title: 'Operations', hash: '#operations' },
@@ -159,6 +161,44 @@ class AdminArea extends SFPComponent {
   getAdmArea (type, id) {
     showGlobalLoading();
     this.props._getAdmAreaById(type, id);
+  }
+
+  // gets links to display in the pills at bottom of the tabs
+  getLinks () {
+    const { adminArea } = this.props;
+    if (!adminArea.fetched) return false;
+    const iso2 = adminArea.data.iso;
+    const iso3 = getISO3(iso2);
+    const homepage = adminArea.data.society_url;
+    const regionSlug = getRegionSlug(adminArea.data.region);
+    const countryLower = adminArea.data.name.toLowerCase();
+    const links = [];
+
+    if (regionSlug) {
+      const ifrcLink = {
+        'text': `${adminArea.data.name} on IFRC.org`,
+        'url': `https://www.ifrc.org/en/news-and-media/news-stories/${regionSlug}/${countryLower}/`
+      };
+      links.push(ifrcLink);
+    }
+
+    if (iso3) {
+      const reliefWebLink = {
+        'text': `${adminArea.data.name} on reliefweb.int`,
+        'url': `https://reliefweb.int/country/${iso3}`
+      };
+      links.push(reliefWebLink);
+    }
+
+    if (homepage) {
+      const homepageLink = {
+        'text': `${adminArea.data.name} RC Homepage`,
+        'url': homepage
+      };
+      links.push(homepageLink);
+    }
+
+    return links;
   }
 
   computeFilters (what) {
@@ -467,13 +507,13 @@ class AdminArea extends SFPComponent {
       error,
       data
     } = this.props.adminArea;
-
+    const countryLinks = this.getLinks();
     if (!fetched || error) return null;
 
-    const bbox = getBoundingBox(data.iso);
-    const mapContainerClass = 'country__map';
+    // const bbox = getBoundingBox(data.iso);
+    // const mapContainerClass = 'country__map';
 
-    const { partnerDeployments } = this.props;
+    // const { partnerDeployments } = this.props;
 
     const handleTabChange = index => {
       const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
@@ -524,6 +564,7 @@ class AdminArea extends SFPComponent {
               <TabPanel>
                 <TabContent>
                   <Fold title='Statistics' headerClass='visually-hidden' id='operations'>
+                    {/*
                     <div className='operations__container'>
                       <div className='country__operations'>
                         <h2>Movement activities in support of NS</h2>
@@ -538,6 +579,7 @@ class AdminArea extends SFPComponent {
                           onMouseOut={this.removeMapFilter.bind(this, 'type')}
                           rows={get(partnerDeployments, 'data.activities', [])} />
                       </div>
+
                       <div className={mapContainerClass}>
                         <CountryMap operations={this.props.appealStats}
                           bbox={bbox}
@@ -548,6 +590,7 @@ class AdminArea extends SFPComponent {
                         />
                       </div>
                     </div>
+                    */}
                     {this.renderAppeals()}
                   </Fold>
                 </TabContent>
@@ -570,12 +613,12 @@ class AdminArea extends SFPComponent {
                     {data.key_priorities ? <ReactMarkdown source={data.key_priorities} /> : null}
                   </Fold>
                 </TabContent>
-                <TabContent isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage={ NO_DATA } title="Key Figures">
+                <TabContent showError={true} isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage={ NO_DATA } title="Key Figures">
                   <KeyFigures data={this.props.keyFigures} />
                 </TabContent>
               </TabPanel>
               <TabPanel>
-                <TabContent isError={!this.isPerPermission()} errorMessage="Please log in" title="Preparedness">
+                <TabContent showError={true} isError={!this.isPerPermission()} errorMessage="Please log in" title="Preparedness">
                   {this.props.getPerNsPhase.fetched && this.props.perOverviewForm.fetched ? (
                     <PreparednessOverview getPerNsPhase={this.props.getPerNsPhase} perOverviewForm={this.props.perOverviewForm} />)
                     : <ErrorPanel title="Preparedness Overciew" errorMessage={ NO_DATA } />}
@@ -597,7 +640,7 @@ class AdminArea extends SFPComponent {
                 <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ NO_DATA } title="Graphics">
                   <Snippets data={this.props.snippets} />
                 </TabContent>
-                <TabContent isError={!get(data, 'contacts.length')} errorMessage={ NO_DATA } title="Contacts">
+                <TabContent showError={true} isError={!get(data, 'contacts.length')} errorMessage={ NO_DATA } title="Contacts">
                   <Contacts data={data} />
                 </TabContent>
                 <TabContent isError={!get(data, 'links.length')} errorMessage={ NO_DATA } title="Links">
@@ -607,6 +650,11 @@ class AdminArea extends SFPComponent {
             </div>
           </div>
         </Tabs>
+        <div className='inpage__body'>
+          <div className='inner'>
+            { countryLinks ? <Pills links={countryLinks} /> : null }
+          </div>
+        </div>
       </section>
     );
   }
