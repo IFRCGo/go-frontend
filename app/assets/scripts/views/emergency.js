@@ -433,12 +433,7 @@ class Emergency extends React.Component {
     if (!fetched || error) return null;
     const report = mostRecentReport(get(this.props, 'event.data.field_reports')) || {};
     const summary = data.summary || report.description || null;
-    let source = null;
-    if (data.summary) {
-      source = data.name;
-    } else if (report.description) {
-      source = <Link to={`/reports/${report.id}`}>{report.summary}, {timestamp(report.updated_at || report.created_at)}</Link>;
-    }
+
     const contacts = Array.isArray(data.contacts) && data.contacts.length ? data.contacts
       : Array.isArray(report.contacts) && report.contacts.length ? report.contacts : null;
     const subscribeButton = this.state.subscribed
@@ -505,7 +500,6 @@ class Emergency extends React.Component {
                     title='Situational Overview'
                     wrapperClass='situational-overview' >
                     <Expandable limit={2048} text={summary} />
-                    {source ? <p className='emergency__source'>Source: {source}</p> : null}
                   </Fold>
                 </TabContent>
                 <TabContent isError={!get(this.props.event, 'data.field_reports.length')} errorMessage={ NO_DATA } title="Field Reports">
