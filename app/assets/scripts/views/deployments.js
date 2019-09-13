@@ -195,11 +195,11 @@ class Deployments extends SFPComponent {
               <div className='inpage__headline'>
                 <div className='inpage__headline-content'>
                   <h1 className='inpage__title'>Deployments</h1>
-                  <div className='presentation__actions'>
+                  { /* <div className='presentation__actions'>
                     <div className='inner'>
                       <button className='button button--base-plain button--fullscreen' onClick={this.toggleFullscreen} title='View in fullscreen'><span>FullScreen</span></button>
                     </div>
-                  </div>
+                  </div> */ }
                   {this.renderHeaderStats()}
                 </div>
               </div>

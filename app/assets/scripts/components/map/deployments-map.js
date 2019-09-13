@@ -11,9 +11,10 @@ import { getCountryIsoFromVt } from '../../utils/utils';
 import { source } from '../../utils/get-new-map';
 import { environment } from '../../config';
 import MapComponent from './common/map-component';
-import {
-  FormSelect
-} from '../form-elements';
+// Commented when temporarily disabled the FormSelect filter, see ¤ below
+// import {
+//   FormSelect
+// } from '../form-elements';
 
 const countryChromaScale = chroma.scale(['#F0C9E8', '#861A70']);
 
@@ -291,7 +292,7 @@ export default class DeploymentsMap extends React.Component {
                 </div>
               </figcaption>
 
-              <figcaption className='map-vis__legend map-vis__legend--top-left legend'>
+              { /* Search for ¤ | <figcaption className='map-vis__legend map-vis__legend--top-left legend'>
                 <FormSelect
                   label='Filter Deployments'
                   name='deployments'
@@ -301,7 +302,7 @@ export default class DeploymentsMap extends React.Component {
                   onChange={this.onMapFilterChange.bind(this, 'deployment')} >
 
                 </FormSelect>
-              </figcaption>
+              </figcaption> */ }
 
               {/* <DownloadButton data={canvas} /> */}
 
