@@ -7,6 +7,7 @@ import {
   patchJSON,
   withToken
 } from '../utils/network';
+import { countryIsoMapById } from '../utils/field-report-constants';
 import { stringify as buildAPIQS } from 'qs';
 import { DateTime } from 'luxon';
 
@@ -50,6 +51,16 @@ export function recoverPassword (email) {
 export const SHOW_USERNAME = 'SHOW_USERNAME';
 export function showUsername (email) {
   return postJSON('show_username', SHOW_USERNAME, { email });
+}
+
+export const GET_PROJECTS = 'GET_PROJECTS';
+export function getProjects (countryId, filterValues) {
+  const filters = {
+    country: countryIsoMapById[countryId],
+    ...filterValues,
+  }
+  const f = buildAPIQS(filters);
+  return fetchJSON(`api/v2/project/?${f}`, GET_PROJECTS, withToken());
 }
 
 export const GET_COUNTRIES = 'GET_COUNTRIES';

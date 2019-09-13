@@ -1,4 +1,5 @@
 'use strict';
+import { listToMap } from '@togglecorp/fujs';
 
 export const statusEarlyWarning = {
   label: 'Early Warning',
@@ -29,8 +30,7 @@ export const visibility = [
   }
 ];
 
-export const countries = [
-  {value: '-- Country --', label: ''},
+const countryList = [
   {value: '1', label: 'Ukraine', iso: 'ua'},
   {value: '2', label: 'United Arab Emirates', iso: 'ae'},
   {value: '3', label: 'United Kingdom', iso: 'gb'},
@@ -291,7 +291,25 @@ export const countries = [
   {value: '288', label: 'Zone Southern Africa', iso: ''},
   {value: '289', label: 'Zone GLOBAL', iso: ''},
   {value: '290', label: 'South Sudan', iso: 'ss'}
+];
+
+export const countries = [
+  {value: '-- Country --', label: ''},
+  ...countryList,
 ].sort((a, b) => a.label < b.label ? -1 : 1);
+
+export const countryIsoMapById = listToMap(
+  countryList,
+  d => d.value,
+  d => d.iso,
+);
+
+export const countryNameMapById = listToMap(
+  countryList,
+  d => d.value,
+  d => d.label,
+);
+
 
 export const disasterType = [
   {

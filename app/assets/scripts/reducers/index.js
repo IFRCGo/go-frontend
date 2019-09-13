@@ -27,6 +27,7 @@ import fdrs from './fdrs';
 import csv from './csv';
 import perForm from './per-form';
 import subscriptions from './subscriptions';
+import projects from './projects.js';
 
 export const reducers = {
   user,
@@ -54,7 +55,8 @@ export const reducers = {
   fdrs,
   csv,
   perForm,
-  subscriptions
+  subscriptions,
+  projects,
 };
 
 export default combineReducers(reducers);

@@ -30,7 +30,8 @@ import {
   getPerDocument,
   getPerDocuments,
   getPerUploadedDocuments,
-  getPerMission
+  getPerMission,
+  getProjects,
 } from '../actions';
 import { getFdrs } from '../actions/query-external';
 // import { getBoundingBox } from '../utils/country-bounding-box';
@@ -59,7 +60,9 @@ import { NO_DATA } from '../utils/constants';
 import { getRegionSlug } from '../utils/region-constants';
 import { getISO3 } from '../utils/country-iso';
 
-import ThreeWFilter from './three-w-filter';
+import ThreeW from './ThreeW';
+
+const emptyList = [];
 
 const TAB_DETAILS = [
   { title: 'Operations', hash: '#operations' },
@@ -138,6 +141,7 @@ class AdminArea extends SFPComponent {
     this.props._getPerDocuments();
     this.props._getPerDocument(null, this.props.match.params.id);
     this.props._getPerUploadedDocuments(this.props.match.params.id);
+    this.props._getProjects(this.props.match.params.id, {});
     if (typeof this.props.user.username !== 'undefined' && this.props.user.username !== null) {
       this.props._getPerMission();
     }
@@ -149,6 +153,19 @@ class AdminArea extends SFPComponent {
       this.props.history.replace(`${this.props.location.pathname}${tabHashArray[0]}`);
     }
   }
+
+  getProjectList = memoize((projects) => {
+    if (!projects || !projects.fetched) {
+      return emptyList;
+    }
+
+    if (!projects.data || !projects.data.results || !projects.data.results.length ) {
+      return emptyList;
+    }
+
+    const projectList = projects.data.results;
+    return projectList;
+  });
 
   getData (props) {
     const type = 'country';
@@ -267,6 +284,10 @@ class AdminArea extends SFPComponent {
       return { path, value: filters[key] };
     });
     this.props._setPartnerDeploymentFilter(getCountryId(this.props.match.params.id), filters);
+  }
+
+  handleThreeWFilterChange = (filterValues) => {
+    this.props._getProjects(this.props.match.params.id, filterValues);
   }
 
   renderAppeals () {
@@ -611,36 +632,11 @@ class AdminArea extends SFPComponent {
               </TabPanel>
               <TabPanel>
                 <TabContent>
-                  <div className='three-w-container'>
-                    <h2 className='heading'>
-                      Movement activities
-                    </h2>
-                    <div className='content'>
-                      <div className='left'>
-                        <a
-                          href='#3w'
-                          className="add-button button button--secondary-bounded"
-                        >
-                          Add
-                        </a>
-                        <a
-                          href='#3w'
-                          className="edit-button button button--secondary-bounded"
-                        >
-                          Edit
-                        </a>
-                      </div>
-                      <ThreeWFilter
-                        className='three-w-filters'
-                      />
-                      <a
-                        href='#3w'
-                        className="export-button button button--secondary-bounded"
-                      >
-                        Export
-                      </a>
-                    </div>
-                  </div>
+                  <ThreeW
+                    projectList={this.getProjectList(this.props.projects)}
+                    countryId={getCountryId(this.props.match.params.id)}
+                    onFilterChange={this.handleThreeWFilterChange}
+                  />
                 </TabContent>
               </TabPanel>
               <TabPanel>
@@ -733,6 +729,8 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state, ownProps) => ({
+  appState: state,
+  projects: state.projects,
   adminArea: get(state.adminArea.aaData, getCountryId(ownProps.match.params.id), {
     data: {},
     fetching: false,
@@ -773,7 +771,8 @@ const dispatcher = dispatch => ({
   _getPerDocument: (...args) => dispatch(getPerDocument(...args)),
   _getPerDocuments: (...args) => dispatch(getPerDocuments(...args)),
   _getPerUploadedDocuments: (...args) => dispatch(getPerUploadedDocuments(...args)),
-  _getPerMission: (...args) => dispatch(getPerMission(...args))
+  _getPerMission: (...args) => dispatch(getPerMission(...args)),
+  _getProjects: (...args) => dispatch(getProjects(...args))
 });
 
 export default connect(
