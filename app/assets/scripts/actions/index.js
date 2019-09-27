@@ -487,6 +487,11 @@ export function getPerOverviewForm (countryId = null, formId = null) {
   return fetchJSON(`api/v2/peroverview/?${f}`, PER_OVERVIEW_FORM, withToken());
 }
 
+export function getPerOverviewFormStrict (countryId = null, formId = null) {
+  const f = buildAPIQS({country: countryId, id: formId});
+  return fetchJSON(`api/v2/peroverviewstrict/?${f}`, PER_OVERVIEW_FORM, withToken());
+}
+
 export const PER_WORK_PLAN = 'PER_WORK_PLAN';
 export function getPerWorkPlan (countryId = null) {
   const f = buildAPIQS({country: countryId});

@@ -23,7 +23,7 @@ import {
   getEventById,
   addSubscriptions,
   delSubscription,
-  getPerOverviewForm,
+  getPerOverviewFormStrict as getPerOverviewForm,
   getPerMission
 } from '../actions';
 import { getRegionById } from '../utils/region-constants';
