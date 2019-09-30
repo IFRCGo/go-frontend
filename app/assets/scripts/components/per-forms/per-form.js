@@ -186,7 +186,7 @@ export default class PerForm extends React.Component {
   }
 
   editDraft () {
-    if (this.checkFormFilled()) {
+    if (true) { // (this.checkFormFilled()) { // No need to check mandatory fields when saving only for draft
       let request = this.requestFactory.newFormRequest(this.formCode, this.formName, this.state.languageCode, this.nationalSociety);
       request = this.requestFactory.addAreaQuestionData(request);
       request = this.requestFactory.addComponentData(request);
@@ -278,7 +278,7 @@ export default class PerForm extends React.Component {
       view = true;
     }
     if (this.state.redirect) {
-      return <Redirect to='/account' />;
+      return <Redirect to='/account#per-forms' />;
     }
     return <PerFormComponent chooseLanguage={this.chooseLanguage}
       changeEpiComponentState={this.changeEpiComponentState}
