@@ -14,7 +14,7 @@ export const englishForm = {
     {
       componentTitle: 'Sub-Component 14A: COMMUNITY-BASED DP AND DRR',
       componentDescription: 'Sector-specific or services provided by the NS in case of emergencies, it is in line with the NS mandate and legislation in country. It includes Community Based DP/DRR, Evacuation, Health in Emergencies, Epidemic and Pandemic, First aid, WASH, Food security and Livelihoods, Search and rRescue, Shelter, Management of dead bodies, RFL, Transition to recovery, and CBRN preparedness.',
-        namespaces: [
+      namespaces: [
         {
           nsTitle: '14.1 NS ensures the active participation and reflects community needs and strengths of the local population (including marginalized and excluded groups) in the assessment, design, planning of community-based preparedness activities.',
           nsQuestion: 'Benchmark status',

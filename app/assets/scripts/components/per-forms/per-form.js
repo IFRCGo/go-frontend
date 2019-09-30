@@ -186,15 +186,15 @@ export default class PerForm extends React.Component {
   }
 
   editDraft () {
-    if (true) { // (this.checkFormFilled()) { // No need to check mandatory fields when saving only for draft
-      let request = this.requestFactory.newFormRequest(this.formCode, this.formName, this.state.languageCode, this.nationalSociety);
-      request = this.requestFactory.addAreaQuestionData(request);
-      request = this.requestFactory.addComponentData(request);
-      const finalRequest = {code: this.formCode, user_id: this.props.user.data.id + '', data: request, country_id: this.props.ns};
-      this.props._sendPerDraft(finalRequest);
-      showAlert('success', <p>PER form has been saved successfully!</p>, true, 2000);
-      this.setState({redirect: true});
-    }
+    // if (this.checkFormFilled()) { No need to check mandatory fields when saving only for draft
+    let request = this.requestFactory.newFormRequest(this.formCode, this.formName, this.state.languageCode, this.nationalSociety);
+    request = this.requestFactory.addAreaQuestionData(request);
+    request = this.requestFactory.addComponentData(request);
+    const finalRequest = {code: this.formCode, user_id: this.props.user.data.id + '', data: request, country_id: this.props.ns};
+    this.props._sendPerDraft(finalRequest);
+    showAlert('success', <p>PER form has been saved successfully!</p>, true, 2000);
+    this.setState({redirect: true});
+    // }
   }
 
   saveDraft () {
