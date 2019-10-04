@@ -38,7 +38,7 @@ export default class DisplayTable extends React.Component {
     } else {
       return (
         <tr>
-          <td colSpan={this.props.headings.length}>{this.props.emptyMessage || 'There is no data to show.'}</td>
+          <td colSpan={this.props.headings.length}>{this.props.emptyMessage || 'No data to display.'}</td>
         </tr>
       );
     }
