@@ -539,7 +539,7 @@ class AdminArea extends SFPComponent {
               </h1>
               <div className="inpage__header-actions">
                 <a
-                  href={url.resolve(api, `admin/api/country/${data.id}/change/`)}
+                  href={url.resolve(api, `api/country/${data.id}/change/`)}
                   className="button button--primary-bounded"
                 >
                   Edit Country

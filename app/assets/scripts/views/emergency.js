@@ -469,7 +469,7 @@ class Emergency extends React.Component {
                   {
                     this.props.isLogged ? subscribeButton : null
                   }
-                  <a href={url.resolve(api, `admin/api/event/${data.id}/change/`)}
+                  <a href={url.resolve(api, `api/event/${data.id}/change/`)}
                     className='button button--primary-bounded float-right'>Edit Event</a><br />
                 </div>
                 <h1 className='inpage__title'>{data.name}</h1>
