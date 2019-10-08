@@ -18,7 +18,8 @@ import {
 import ExportButton from '../export-button-container';
 import Fold from '../fold';
 import BlockLoading from '../block-loading';
-import DisplayTable, { SortHeader, FilterHeader, DateFilterHeader} from '../display-table';
+import DisplayTable, { SortHeader, FilterHeader } from '../display-table';
+import DateFilterHeader from '../common/filters/date-filter-header';
 import { SFPComponent } from '../../utils/extendables';
 import { appealTypes as appealsType, appealTypeOptions } from '../../utils/appeal-type-constants';
 import HomeMap from '../map/home-map';
