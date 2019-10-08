@@ -53,10 +53,10 @@ class FieldReport extends React.Component {
 
   renderPlannedResponse (data) {
     const response = [
-      ['DREF Requested', getResponseStatus(data, 'dref')],
+      ['DREF', getResponseStatus(data, 'dref')],
       ['Emergency Appeal', getResponseStatus(data, 'appeal')],
       ['RDRT/RITS', getResponseStatus(data, 'rdrt')],
-      ['FACT', getResponseStatus(data, 'fact')],
+      ['Rapid Response Personnel', getResponseStatus(data, 'fact')],
       ['IFRC Staff', getResponseStatus(data, 'ifrc_staff')]
     ].filter(d => Boolean(d[1]));
 
