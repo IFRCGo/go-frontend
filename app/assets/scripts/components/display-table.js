@@ -6,7 +6,7 @@ import c from 'classnames';
 
 import { environment } from '../config';
 
-import Dropdown from './dropdown';
+import Dropdown from './common/dropdown';
 
 export default class DisplayTable extends React.Component {
   renderTbody () {

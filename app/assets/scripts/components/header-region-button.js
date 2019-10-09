@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import Dropdown from './dropdown';
+import Dropdown from './common/dropdown';
 import { Link } from 'react-router-dom';
 import { environment } from '../config';
 import { regions, getRegionId } from '../utils/region-constants';

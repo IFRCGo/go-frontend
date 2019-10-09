@@ -6,7 +6,7 @@ import { PropTypes as T } from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { environment } from '../../config';
 import { logoutUser } from '../../actions';
-import Dropdown from '../dropdown';
+import Dropdown from '../common/dropdown';
 
 class UserMenu extends React.Component {
   constructor () {
