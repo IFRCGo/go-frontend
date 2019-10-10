@@ -152,6 +152,7 @@ class AppealsTable extends SFPComponent {
           label: <DateFilterHeader id='date'
             title='Start Date' options={dateOptions}
             filter={this.state.table.filters.date}
+            featureType='table'
             onSelect={this.handleFilterChange.bind(this, 'table', 'date')} />
         },
         {

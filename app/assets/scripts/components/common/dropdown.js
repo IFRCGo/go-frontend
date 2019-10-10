@@ -176,7 +176,10 @@ export default class Dropdown extends React.Component {
   }
 
   render () {
-    let { alignment, direction } = this.props;
+    let { alignment, direction, isClosingDropdown } = this.props;
+    if (isClosingDropdown) {
+      this.close();
+    }
 
     if (direction === 'left' || direction === 'right') {
       if (alignment !== 'center') {
@@ -238,6 +241,7 @@ if (process.env.NODE_ENV !== 'production') {
     triggerActiveClassName: T.string,
     triggerTitle: T.string,
     triggerText: T.string.isRequired,
+    isClosingDropdown: T.bool.isRequired,
 
     direction: T.oneOf(['up', 'down', 'left', 'right']),
     alignment: T.oneOf(['left', 'center', 'right']),

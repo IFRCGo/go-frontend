@@ -10,7 +10,8 @@ export default class DateFilterHeader extends React.PureComponent {
     super();
     this.state = {
       startDate: null,
-      endDate: null
+      endDate: null,
+      isClosingDropdown: false
     };
   }
 
@@ -23,6 +24,7 @@ export default class DateFilterHeader extends React.PureComponent {
 
   applyPeriodFilter () {
     this.props.onSelect({'startDate': this.state.startDate, 'endDate': this.state.endDate});
+    this.setState({ isClosingDropdown: true });
   }
 
   changeStartDate (e) {
@@ -34,17 +36,21 @@ export default class DateFilterHeader extends React.PureComponent {
   }
 
   render () {
-    const {id, title} = this.props;
+    const {id, title, featureType} = this.props;
+    const mapStyle = 'form__control--medium form__control form__control--data_select form__control--brand';
+    const tableStyle = 'drop__toggle--caret';
+
     return (
       <Dropdown
         id={id}
-        triggerClassName='drop__toggle--caret'
+        triggerClassName={featureType === 'map' ? mapStyle : tableStyle}
         triggerActiveClassName='active'
         triggerText={title}
         triggerTitle={`Filter by ${title}`}
         triggerElement='a'
+        isClosingDropdown={this.state.isClosingDropdown}
         direction='down'
-        alignment='center' >
+        alignment='center'>
         <ul className='drop__menu drop__menu--select drop__menu--date' role='menu'>
           <li className='global-spacing'>
             <label className='form__label form__label--small'>From</label>
@@ -56,9 +62,16 @@ export default class DateFilterHeader extends React.PureComponent {
             <input type="date" className='form__control form__control--brand' name="enddate" value={this.state.endDate}
               onChange={this.changeEndDate.bind(this)} />
           </li>
-          <li className='global-spacing-h'><p className='text-center'><button className="button button--primary-bounded button--small"
-            onClick={this.applyPeriodFilter.bind(this)}
-          >Apply</button></p></li>
+          <li className='global-spacing-h'>
+            <p className='text-center'>
+              <button
+                className="button button--primary-bounded button--small"
+                onClick={this.applyPeriodFilter.bind(this)}
+              >
+              Apply
+              </button>
+            </p>
+          </li>
         </ul>
       </Dropdown>
     );
@@ -69,13 +82,8 @@ if (environment !== 'production') {
   DateFilterHeader.propTypes = {
     id: T.string,
     title: T.string,
-    options: T.arrayOf(
-      T.shape({
-        value: T.oneOfType([T.string, T.number]),
-        label: T.string
-      })
-    ),
     filter: T.oneOfType([T.string, T.number]),
-    onSelect: T.func
+    onSelect: T.func,
+    featureType: T.string
   };
 }

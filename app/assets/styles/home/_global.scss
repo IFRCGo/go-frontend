@@ -441,6 +441,16 @@
   }
 }
 
+.form__control--data_select {
+  font-size: $font-size-sm;
+  font-weight: $base-font-medium;
+  display: inline-block;
+  min-width: 220px;
+  width: auto;
+  background-position: right 0.5rem center;
+
+}
+
 .map-vis__legend__filters-wrap {
   display: inline-block;
   margin-right: $global-spacing-2;

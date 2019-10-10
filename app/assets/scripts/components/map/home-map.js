@@ -10,7 +10,7 @@ import { environment } from '../../config';
 import BlockLoading from '../block-loading';
 import MapComponent from './common/map-component';
 import OperationsPopover from './home-map/operations-popover';
-import { get, dateOptions } from '../../utils/utils';
+import { get } from '../../utils/utils';
 import ExplanationBubble from './home-map/explanation-bubble';
 import EmergencyTypesDropdown from './home-map/emergency-types-dropdown';
 import AppealTypesDropdown from './home-map/appeal-types-dropdown';
@@ -280,8 +280,9 @@ class HomeMap extends React.Component {
             <div className='map-vis__legend__filters-wrap'>
               <DateFilterHeader
                 id='date'
-                title='Start Date' options={dateOptions}
+                title='Date'
                 filter={this.state.filters}
+                featureType='map'
                 onSelect={this.handleDateChange.bind(this)} />
             </div>
             <div className='map-vis__legend__filters-wrap'>
