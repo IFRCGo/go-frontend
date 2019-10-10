@@ -14,7 +14,6 @@ export default class DateFilterHeader extends React.PureComponent {
       isClosingDropdown: false
     };
     this.resetDateStatus = this.resetDateStatus.bind(this);
-
   }
 
   componentWillMount () {
