@@ -13,12 +13,20 @@ export default class DateFilterHeader extends React.PureComponent {
       endDate: null,
       isClosingDropdown: false
     };
+    this.resetDateStatus = this.resetDateStatus.bind(this);
+
   }
 
   componentWillMount () {
     this.setState({
-      'startDate': this.props.filter.startDate,
-      'endDate': this.props.filter.endDate
+      startDate: this.props.filter.startDate,
+      endDate: this.props.filter.endDate
+    });
+  }
+
+  resetDateStatus () {
+    this.setState({
+      isClosingDropdown: false
     });
   }
 
@@ -49,6 +57,7 @@ export default class DateFilterHeader extends React.PureComponent {
         triggerTitle={`Filter by ${title}`}
         triggerElement='a'
         isClosingDropdown={this.state.isClosingDropdown}
+        resetDateStatus={this.resetDateStatus}
         direction='down'
         alignment='center'>
         <ul className='drop__menu drop__menu--select drop__menu--date' role='menu'>
