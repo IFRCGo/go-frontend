@@ -5,6 +5,6 @@
  * @param {object} dates Contains a start_date and end_date specified by the user
 */
 export const DateComparator = (dates) => {
-  return dates
+  return dates.startDate && dates.endDate
     ? emergency => emergency.start_date >= dates.startDate && emergency.start_date <= dates.endDate : d => true;
 };
