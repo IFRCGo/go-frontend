@@ -2747,12 +2747,22 @@ const newFormElementKey = () => 'form' + Math.floor(Math.random() * 99999) + Dat
 
 export const PerFormComponent = (props) => {
   let button = null;
-  button = (<React.Fragment>
-    <div className='text-center'>
-      <button className='button button--medium button--primary-filled' onClick={props.sendForm}>Submit form</button>&nbsp;
-      <button className='button button--medium button--secondary-filled' onClick={props.saveDraft}>Save as draft</button>
-    </div>
-  </React.Fragment>);
+  if (props.mode === 'new') {
+    button = (<React.Fragment>
+      <div className='text-center'>
+        <button className='button button--medium button--primary-filled' onClick={props.sendForm}>Submit form</button>&nbsp;
+        <button className='button button--medium button--secondary-filled' onClick={props.saveDraft}>Save as draft</button>
+      </div>
+    </React.Fragment>);
+  } else if (props.mode === 'edit') {
+    button = (<React.Fragment>
+      <div className='text-center'>
+        <button className='button button--medium button--primary-filled' onClick={props.sendForm}>Submit form</button>&nbsp;
+        <button className='button button--medium button--primary-filled' onClick={props.editDraft}>Save draft</button>
+        
+      </div>
+    </React.Fragment>);
+  }
   return (
     <React.Fragment>
       <Link to='/account#per-forms' className='button button--medium button--primary-filled' style={{float: 'right', marginBottom: '1rem'}}>Exit form</Link>
