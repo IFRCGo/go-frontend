@@ -448,6 +448,9 @@
   min-width: 220px;
   width: auto;
   background-position: right 0.5rem center;
+  &:hover {
+    opacity: 1;
+  }
 
 }
 
