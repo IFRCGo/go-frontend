@@ -16,7 +16,9 @@ import EmergencyTypesDropdown from './home-map/emergency-types-dropdown';
 import AppealTypesDropdown from './home-map/appeal-types-dropdown';
 import { filtering } from './home-map/filtering/filtering-processor';
 import { AppealTypeComparator } from './home-map/filtering/comparator/appeal-type-comparator';
+import { DateComparator } from './home-map/filtering/comparator/date-comparator';
 import { EmergencyTypeComparator } from './home-map/filtering/comparator/emergency-type-comparator';
+import DateFilterHeader from '../common/filters/date-filter-header';
 import EmergenciesLeftMenu from './common/emergencies-left-menu';
 import MarkerLayerStylesheetFactory from './home-map/factory/marker-layer-stylesheet-factory';
 
@@ -35,7 +37,11 @@ class HomeMap extends React.Component {
       hoverDtype: null,
       selectedDtype: null,
       mapActions: [],
-      ready: false
+      ready: false,
+      filters: {
+        startDate: '',
+        endDate: ''
+      }
     };
 
     this.markerLayerStylesheetFactory = new MarkerLayerStylesheetFactory();
@@ -129,6 +135,14 @@ class HomeMap extends React.Component {
       markerGeoJSON: markers
     });
     this.setSelectedDtypeNeutral();
+  }
+
+  handleDateChange (dates) {
+    const comparator = DateComparator(dates);
+    const markers = filtering(this.props.operations.data.geoJSON, comparator);
+    this.setState({
+      markerGeoJSON: markers
+    });
   }
 
   setSelectedDtypeNeutral () {
@@ -263,6 +277,14 @@ class HomeMap extends React.Component {
 
         <div className={mapContainerClassName}>
           <div className='map-vis__legend__filters'>
+            <div className='map-vis__legend__filters-wrap'>
+              <DateFilterHeader
+                id='date'
+                title='Date'
+                filter={this.state.filters}
+                featureType='map'
+                onSelect={this.handleDateChange.bind(this)} />
+            </div>
             <div className='map-vis__legend__filters-wrap'>
               <EmergencyTypesDropdown emergenciesByType={emergenciesByType}
                 onDtypeClick={this.onDtypeClick.bind(this)} />

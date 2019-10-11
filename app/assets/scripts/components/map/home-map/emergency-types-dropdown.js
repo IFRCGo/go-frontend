@@ -1,5 +1,3 @@
-'use strict';
-
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
 import { environment } from '../../../config';
@@ -31,7 +29,12 @@ class EmergencyTypesDropdown extends React.Component {
           <select onChange={this.filterByEmergencyType} id='top-emergency-dropdown' className='form__control form__control--medium form__control--brand'>
             <option value='0'>All Emergency Types</option>
             {emergenciesByType.map(emergency => (
-              <option key={emergency.id} value={emergency.id}>{emergency.name} ({emergency.items.length})</option>
+              <option
+                key={emergency.id}
+                value={emergency.id}
+              >
+                {emergency.name} ({emergency.items.length})
+              </option>
             ))}
           </select>
         </form>
