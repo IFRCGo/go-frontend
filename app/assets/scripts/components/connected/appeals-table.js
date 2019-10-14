@@ -22,7 +22,7 @@ import DisplayTable, { SortHeader, FilterHeader } from '../display-table';
 import DateFilterHeader from '../common/filters/date-filter-header';
 import { SFPComponent } from '../../utils/extendables';
 import { appealTypes as appealsType, appealTypeOptions } from '../../utils/appeal-type-constants';
-import HomeMap from '../map/home-map';
+import MainMap from '../map/main-map';
 
 class AppealsTable extends SFPComponent {
   constructor (props) {
@@ -219,7 +219,7 @@ class AppealsTable extends SFPComponent {
             />
           ) : null}
           {this.props.showMap ? (
-            <HomeMap
+            <MainMap
               operations={appealsList}
               noExport={true}
               noRenderEmergencies={true}
