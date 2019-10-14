@@ -198,8 +198,8 @@ class MainMap extends React.Component {
       }
     });
 
-    if (Array.isArray(this.props.bbox)) {
-      theMap.fitBounds(this.props.bbox);
+    if (Array.isArray(this.props.mapBoundingBox)) {
+      theMap.fitBounds(this.props.mapBoundingBox);
     }
 
     this.theMap = theMap;
@@ -335,7 +335,7 @@ if (environment !== 'production') {
     deployments: T.object,
     deploymentsKey: T.string,
     history: T.object,
-    bbox: T.array,
+    mapBoundingBox: T.array,
     noRenderEmergencies: T.bool,
     noRenderEmergencyTitle: T.bool,
     noExport: T.bool,

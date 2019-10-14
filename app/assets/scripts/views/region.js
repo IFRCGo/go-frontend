@@ -45,7 +45,6 @@ import { getCountryMeta } from '../utils/get-country-meta';
 import App from './app';
 import Fold from '../components/fold';
 import TabContent from '../components/tab-content';
-import MainMap from '../components/map/main-map';
 import BlockLoading from '../components/block-loading';
 import EmergenciesTable from '../components/connected/emergencies-table';
 import AppealsTable from '../components/connected/appeals-table';
@@ -330,8 +329,7 @@ class AdminArea extends SFPComponent {
 
     if (!fetched || error) return null;
 
-    const bbox = getRegionBoundingBox(data.id);
-    const mapContainerClass = 'region__map';
+    const mapBoundingBox = getRegionBoundingBox(data.id);
     const regionName = get(regionMeta, [data.id, 'name'], nope);
     const activeOperations = get(this.props.appealStats, 'data.results.length', false);
 
@@ -373,26 +371,20 @@ class AdminArea extends SFPComponent {
                 <TabContent>
                   <div className='fold' id='operations-map'>
                     <div className='inner'>
-                      <h2 className='fold__title'>{activeOperations === null || isNaN(activeOperations) ? null : `Active IFRC Operations (${activeOperations})`}</h2>
-                      <div className={mapContainerClass}>
-                        <MainMap
-                          operations={this.props.appealStats}
-                          bbox={bbox}
-                          layers={[this.state.maskLayer]}
-                          noExport={true}
-                          noRenderEmergencyTitle={true}
-                        />
-                      </div>
+                      <AppealsTable
+                        title={'Active IFRC Operations'}
+                        region={getRegionId(this.props.match.params.id)}
+                        regionOperations={this.props.appealStats}
+                        mapBoundingBox={mapBoundingBox}
+                        mapLayers={[this.state.maskLayer]}
+                        activeOperations={activeOperations}
+                        showActive={true}
+                        id={'appeals'}
+                        viewAll={'/appeals/all?region=' + data.id}
+                        viewAllText={`View all IFRC operations for ${regionName} region`}
+                      />
                     </div>
                   </div>
-                  <AppealsTable
-                    title={'Active IFRC Operations'}
-                    region={getRegionId(this.props.match.params.id)}
-                    showActive={true}
-                    id={'appeals'}
-                    viewAll={'/appeals/all?region=' + data.id}
-                    viewAllText={`View all IFRC operations for ${regionName} region`}
-                  />
                   {this.renderCountries()}
                   <Fold title='Statistics' headerClass='visually-hidden' id='stats'>
                     <div className='stats-chart'>

@@ -75,7 +75,6 @@ class PresentationDash extends React.Component {
         <div className={c('inner', {'appeals--fullscreen': this.state.fullscreen})}>
           <AppealsTable
             showActive={true}
-            showMap={true}
             title={'Active Operations'}
             limit={5}
             viewAll={'/appeals/all'}
