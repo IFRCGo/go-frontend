@@ -173,7 +173,7 @@ export default class PerForm extends React.Component {
   }
 
   // TODO: Probably should have a delete function for drafts as well in the future.
-  
+
   sendForm () {
     if (this.checkFormFilled()) {
       let request = this.requestFactory.newFormRequest(this.formCode, this.formName, this.state.languageCode, this.nationalSociety);
