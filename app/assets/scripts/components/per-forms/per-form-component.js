@@ -2758,8 +2758,7 @@ export const PerFormComponent = (props) => {
     button = (<React.Fragment>
       <div className='text-center'>
         <button className='button button--medium button--primary-filled' onClick={props.sendForm}>Submit form</button>&nbsp;
-        <button className='button button--medium button--primary-filled' onClick={props.editDraft}>Save draft</button>
-        
+        <button className='button button--medium button--secondary-filled' onClick={props.editDraft}>Save draft</button>
       </div>
     </React.Fragment>);
   }

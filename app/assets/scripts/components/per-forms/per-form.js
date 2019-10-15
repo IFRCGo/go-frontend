@@ -172,11 +172,14 @@ export default class PerForm extends React.Component {
     });
   }
 
+  // TODO: Probably should have a delete function for drafts as well in the future.
+  
   sendForm () {
     if (this.checkFormFilled()) {
       let request = this.requestFactory.newFormRequest(this.formCode, this.formName, this.state.languageCode, this.nationalSociety);
       request = this.requestFactory.addAreaQuestionData(request);
       request = this.requestFactory.addComponentData(request);
+      request.country_id = this.country_id === undefined ? this.props.ns : request.country_id; // when submitting a draft it somehow didn't have the country_id anymore
       this.props._sendPerForm(request);
       showAlert('success', <p>PER form has been saved successfully!</p>, true, 2000);
       clearInterval(this.autosaveInterval);
