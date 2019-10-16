@@ -23,6 +23,7 @@ import {
   getEventById,
   addSubscriptions,
   delSubscription,
+  deletePerDraft,
   getPerOverviewFormStrict as getPerOverviewForm,
   getPerMission
 } from '../actions';
@@ -428,6 +429,12 @@ class Account extends React.Component {
     this.props._clearEvents(eventId);
     this.props._delSubscription(eventId);
     this.forceUpdate();
+  }
+
+  delPerDraft (draftId) {
+    this.props._deletePerDraft({ id: draftId });
+    // this.forceUpdate();
+    // TODO: find why the list doesn't get updated after the deletion and it needs a page refresh (probably the list is not even connected to the store)
   }
 
   isPerPermission () {
@@ -859,6 +866,12 @@ class Account extends React.Component {
                   to={draftDocument.code === 'overview' ? '/per-forms/overview/' + draftDocument.country.id : '/edit-per-forms/' + draftDocument.code + '/' + draftDocument.user.username + '/' + draftDocument.country.id}>
                   Edit
                 </Link>
+
+                <button
+                  className='button button--small button--primary-bounded'
+                  onClick={() => this.delPerDraft(draftDocument.id)}>
+                  Delete
+                </button>
               </div>
             </div>);
           index++;
@@ -993,6 +1006,7 @@ if (environment !== 'production') {
     _getProfile: T.func,
     _updateSubscriptions: T.func,
     _delSubscription: T.func,
+    _deletePerDraft: T.func,
     _getFieldReportsByUser: T.func,
     _updateProfile: T.func,
     _getPerCountries: T.func,
@@ -1031,6 +1045,7 @@ const dispatcher = (dispatch) => ({
   _getPerDraftDocument: (...args) => dispatch(getPerDraftDocument(...args)),
   _addSubscriptions: (...args) => dispatch(addSubscriptions(...args)),
   _delSubscription: (...args) => dispatch(delSubscription(...args)),
+  _deletePerDraft: (...args) => dispatch(deletePerDraft(...args)),
   _clearEvents: (eventId) => dispatch({ type: 'CLEAR_EVENTS', eventId: eventId }),
   _getPerOverviewForm: (...args) => dispatch(getPerOverviewForm(...args)),
   _getPerMission: (...args) => dispatch(getPerMission(...args))
