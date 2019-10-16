@@ -869,7 +869,8 @@ class Account extends React.Component {
 
                 <button
                   className='button button--small button--primary-bounded'
-                  onClick={() => this.delPerDraft(draftDocument.id)}>
+                  onClick={() => this.delPerDraft(draftDocument.id)}
+                  style={{ marginLeft: 10 }}>
                   Delete
                 </button>
               </div>
