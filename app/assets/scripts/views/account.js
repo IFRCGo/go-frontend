@@ -267,6 +267,11 @@ class Account extends React.Component {
     if (nextProps.perForm.getPerCountries.fetched && nextProps.perForm.getPerCountries.data.count > 0) {
       this.setState({ chosenCountry: { id: nextProps.perForm.getPerCountries.data.results[0].id, society_name: nextProps.perForm.getPerCountries.data.results[0].society_name } });
     }
+
+    if (this.props.perForm.deletePerDraft.receivedAt !== nextProps.perForm.deletePerDraft.receivedAt) {
+      const draftQueryFilters = { user: this.props.user.id };
+      this.props._getPerDraftDocument(draftQueryFilters);
+    }
   }
 
   syncNotificationState (data) {
@@ -433,8 +438,6 @@ class Account extends React.Component {
 
   delPerDraft (draftId) {
     this.props._deletePerDraft({ id: draftId });
-    // this.forceUpdate();
-    // TODO: find why the list doesn't get updated after the deletion and it needs a page refresh (probably the list is not even connected to the store)
   }
 
   isPerPermission () {
