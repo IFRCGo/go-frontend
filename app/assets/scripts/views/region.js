@@ -412,6 +412,7 @@ class AdminArea extends SFPComponent {
                         activeOperations={activeOperations}
                         showActive={true}
                         id={'appeals'}
+                        showRegionMap={true}
                         viewAll={'/appeals/all?region=' + data.id}
                         viewAllText={`View all IFRC operations for ${regionName} region`}
                         fullscreen={this.state.fullscreen}

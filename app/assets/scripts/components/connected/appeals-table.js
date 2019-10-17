@@ -218,7 +218,7 @@ class AppealsTable extends SFPComponent {
               resource='api/v2/appeal'
             />
           ) : null}
-          {this.props.showMap && this.props.region ? (
+          {this.props.showRegionMap ? (
             <MainMap
               operations={this.props.regionOperations}
               mapBoundingBox={this.props.mapBoundingBox}
@@ -229,7 +229,7 @@ class AppealsTable extends SFPComponent {
               toggleFullscreen={this.props.toggleFullscreen}
             />
           ) : null }
-          {this.props.showMap ? (
+          {this.props.showHomeMap ? (
             <MainMap
               operations={appealsList}
               noExport={true}
