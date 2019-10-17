@@ -218,7 +218,7 @@ class AppealsTable extends SFPComponent {
               resource='api/v2/appeal'
             />
           ) : null}
-          {this.props.region ? (
+          {this.props.showMap && this.props.region ? (
             <MainMap
               operations={this.props.regionOperations}
               mapBoundingBox={this.props.mapBoundingBox}
@@ -227,16 +227,16 @@ class AppealsTable extends SFPComponent {
               noRenderEmergencies={true}
               fullscreen={this.props.fullscreen}
               toggleFullscreen={this.props.toggleFullscreen}
-            />) : (
+            />
+          ) : null }
+          {this.props.showMap ? (
             <MainMap
               operations={appealsList}
               noExport={true}
               noRenderEmergencies={true}
               fullscreen={this.props.fullscreen}
               toggleFullscreen={this.props.toggleFullscreen}
-            />
-          )
-          }
+            />) : null}
           {this.props.fullscreen ? null : (
             <DisplayTable
               className='table table--zebra table--active-ops'
