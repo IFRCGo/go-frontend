@@ -1732,7 +1732,7 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-classnames@^2.2.4, classnames@^2.2.5:
+classnames@^2.2.0, classnames@^2.2.4, classnames@^2.2.5:
   version "2.2.6"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
 
@@ -6722,7 +6722,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.4, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.5.0, prop-types@^15.5.4, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   dependencies:
@@ -6835,7 +6835,7 @@ quote-stream@^1.0.1, quote-stream@~1.0.2:
     minimist "^1.1.3"
     through2 "^2.0.0"
 
-raf@^3.3.0, raf@^3.4.0:
+raf@^3.4.0:
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/raf/-/raf-3.4.1.tgz#0742e99a4a6552f445d73e3ee0328af0ff1ede39"
   dependencies:
@@ -6997,12 +6997,13 @@ react-smooth@^1.0.0:
     raf "^3.4.0"
     react-transition-group "^2.5.0"
 
-react-sticky@^6.0.1:
-  version "6.0.3"
-  resolved "https://registry.yarnpkg.com/react-sticky/-/react-sticky-6.0.3.tgz#7a18b643e1863da113d7f7036118d2a75d9ecde4"
+react-tabs@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/react-tabs/-/react-tabs-3.0.0.tgz#60311a17c755eb6aa9b3310123e67db421605127"
+  integrity sha512-z90cDIb+5V7MzjXFHq1VLxYiMH7dDQWan7mXSw6BWQtw+9pYAnq/fEDvsPaXNyevYitvLetdW87C61uu27JVMA==
   dependencies:
-    prop-types "^15.5.8"
-    raf "^3.3.0"
+    classnames "^2.2.0"
+    prop-types "^15.5.0"
 
 react-tether@^0.6.0:
   version "0.6.1"
@@ -7010,6 +7011,14 @@ react-tether@^0.6.0:
   dependencies:
     prop-types "^15.5.8"
     tether "^1.4.3"
+
+react-tooltip@^3.11.1:
+  version "3.11.1"
+  resolved "https://registry.yarnpkg.com/react-tooltip/-/react-tooltip-3.11.1.tgz#7b4ce48ed26a46e996662b19a2afebbfd483513b"
+  integrity sha512-YCMVlEC2KuHIzOQhPplTK5jmBBwoL+PYJJdJKXj7M/h7oevupd/QSVq6z5U7/ehIGXyHsAqvwpdxexDfyQ0o3A==
+  dependencies:
+    classnames "^2.2.5"
+    prop-types "^15.6.0"
 
 react-transition-group@^2.2.1, react-transition-group@^2.5.0:
   version "2.9.0"

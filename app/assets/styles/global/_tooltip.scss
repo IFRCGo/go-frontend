@@ -1,0 +1,28 @@
+/* ==========================================================================
+   Tooltip
+   ========================================================================== */
+
+.tooltip {
+  color: black !important;
+  background-color: #fff !important;
+  opacity: 1 !important;
+  box-shadow: 0 4px 16px 2px rgba($base-color, 0.08);   // Elevation Index: 2
+  border-radius: $base-border-radius;
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: 400px;
+  max-width: 500px;
+}
+
+.tooltip__header {
+  display: flex;
+  @include heading(1rem);
+  margin: 0;
+  font-weight: bold;
+}
+
+.tooltip__text {
+text-align: left !important;
+box-sizing: initial;
+}
+
