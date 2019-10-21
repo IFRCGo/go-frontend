@@ -5,7 +5,7 @@ const InfoIcon = () => {
       className='icon-tooltip'
       version='1.1'
       xmlns='http://www.w3.org/2000/svg'
-      xmlnsxlink='http://www.w3.org/1999/xlink'
+      xmlnsXlink='http://www.w3.org/1999/xlink'
       width='12'
       height='12'
       viewBox='0 0 16 16'

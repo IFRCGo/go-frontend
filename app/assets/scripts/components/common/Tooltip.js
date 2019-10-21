@@ -1,19 +1,10 @@
 import React from 'react';
+import { environment } from '../../config';
+import { PropTypes as T } from 'prop-types';
 import InfoIcon from '../../../icons/collecticons/circle-information';
 import ReactTooltip from 'react-tooltip';
 
-const toolTipContent = {
-  APPEAL: {
-    title: 'Emergency Appeal',
-    description: 'These are medium to large scale emergency operations funded through a public appeal for funds.'
-  },
-  DREF: {
-    title: 'DREF',
-    description: 'These are small to medium scale emergency operations funded through the Disaster Relief Emergency Fund (DREF).The DREF provides immediate financial support to National Red Cross and Red Crescent Societies, enabling them to carry out their unique role as first responders after a disaster.'
-  }
-};
-
-const Tooltip = props => {
+const Tooltip = ({tooltipData}) => {
   return (
     <React.Fragment>
       <a data-tip data-for='global' data-event='click focus'>
@@ -26,10 +17,10 @@ const Tooltip = props => {
         aria-haspopup='true'
       >
         <header className='tooltip__header' >
-            {toolTipContent.APPEAL.title}
+          {tooltipData.title}
         </header>
         <span className='tooltip__text' >
-            {toolTipContent.APPEAL.description}
+          {tooltipData.description}
         </span>
 
       </ReactTooltip>
@@ -39,4 +30,11 @@ const Tooltip = props => {
 
 export default Tooltip;
 
-
+if (environment !== 'production') {
+  Tooltip.propTypes = {
+    tooltipData: T.shape({
+      title: T.string,
+      description: T.string
+    })
+  };
+}
