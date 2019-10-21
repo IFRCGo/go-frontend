@@ -1,5 +1,3 @@
-'use strict';
-
 import React from 'react';
 import { render } from 'react-dom';
 import { PropTypes as T } from 'prop-types';
@@ -24,7 +22,7 @@ import MarkerLayerStylesheetFactory from './home-map/factory/marker-layer-styles
 
 const scale = chroma.scale(['#F0C9E8', '#861A70']);
 
-class HomeMap extends React.Component {
+class MainMap extends React.Component {
   constructor (props) {
     super(props);
 
@@ -200,8 +198,8 @@ class HomeMap extends React.Component {
       }
     });
 
-    if (Array.isArray(this.props.bbox)) {
-      theMap.fitBounds(this.props.bbox);
+    if (Array.isArray(this.props.mapBoundingBox)) {
+      theMap.fitBounds(this.props.mapBoundingBox);
     }
 
     this.theMap = theMap;
@@ -332,12 +330,12 @@ class HomeMap extends React.Component {
 }
 
 if (environment !== 'production') {
-  HomeMap.propTypes = {
+  MainMap.propTypes = {
     operations: T.object,
     deployments: T.object,
     deploymentsKey: T.string,
     history: T.object,
-    bbox: T.array,
+    mapBoundingBox: T.array,
     noRenderEmergencies: T.bool,
     noRenderEmergencyTitle: T.bool,
     noExport: T.bool,
@@ -347,4 +345,4 @@ if (environment !== 'production') {
   };
 }
 
-export default withRouter(HomeMap);
+export default withRouter(MainMap);

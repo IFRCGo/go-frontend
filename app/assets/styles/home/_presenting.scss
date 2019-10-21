@@ -88,11 +88,9 @@
   cursor: pointer;
 }
 
-.page--homepage {
-  .inpage__title--map-fullscreen {
-    padding-left: 430px; // width of logo + some padding
-    margin: ($global-spacing/2) 0 0 0;
-    text-align: left;
-    font-size: 2rem;
-  }
+.inpage__title--map-fullscreen {
+  padding-left: 430px; // width of logo + some padding
+  margin: ($global-spacing/2) 0 0 0;
+  text-align: left;
+  font-size: 2rem;
 }
