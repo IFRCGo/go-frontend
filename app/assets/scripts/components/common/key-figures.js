@@ -1,117 +1,80 @@
-'use strict';
-
 import React from 'react';
-import { percent, shortenLargeNumber } from '../utils/format';
-import BlockLoading from './block-loading';
-import { environment } from '../config';
+import { percent, shortenLargeNumber } from '../../utils/format';
+import BlockLoading from '../block-loading';
+import { environment } from '../../config';
 import { PropTypes as T } from 'prop-types';
+import Tooltip from './tooltip';
 
-export default function HomestatsComponent (props) {
-  let renderLoading = (props) => {
-    if (props.appealsList.fetching) {
-      return <BlockLoading/>;
+const keyTitle = {
+  activeDrefs: 'Active DREF Operations',
+  activeAppeals: 'Active Emergency Appeals',
+  budget: 'Funding requirements (CHF)',
+  appealsFunding: 'Funding coverage',
+  targetPop: 'Targeted population'
+};
+
+export default function KeyFigures (props) {
+  const {
+    data: { stats },
+    fetched,
+    fetching,
+    error
+  } = props.appealsList;
+
+  console.log('data', props.appealsList);
+
+  if (fetching) {
+    return <BlockLoading/>;
+  }
+
+  if (error) {
+    return <p>Data not available.</p>;
+  }
+
+  if (!fetched || error) { return null; }
+
+  const statsToShorten = ['budget', 'targetPop'];
+  const homeKeyFigures = ['activeDrefs', 'activeAppeals', 'budget', 'appealsFunding', 'targetPop'];
+  // const regionKeyFigures = ['numBeneficiaries', 'amountRequested', 'amountFunded'];
+  let tooltip = {};
+  const selectTooltip = id => {
+    switch (id) {
+      case 'activeDrefs':
+        tooltip = {
+          title: 'DREF',
+          description: 'These are small to medium scale emergency operations funded through the Disaster Relief Emergency Fund (DREF).The DREF provides immediate financial support to National Red Cross and Red Crescent Societies, enabling them to carry out their unique role as first responders after a disaster.'
+        };
+        break;
+      case 'activeAppeals':
+        tooltip = {
+          title: 'Emergency Appeal',
+          description: 'These are medium to large scale emergency operations funded through a public appeal for funds.'
+        };
+        break;
+      default:
+        tooltip = null;
     }
   };
 
-  let renderError = (props) => {
-    if (props.appealsList.error) {
-      return <p>Data not available.</p>;
-    }
-  };
-
-  let renderTooltipBox = (props) => {
-    console.log('props', props)
-    const {title, description} = props.chooseContent(props);
-    const popupType = props.fullscreen
-      ? 'mapboxgl-popup mapboxgl-popup-anchor-top'
-      : 'mapboxgl-popup mapboxgl-popup-anchor-bottom';
-
-    return (
-      <div className={popupType}
-        id='budget-tooltip-box'
-        style={{
-          position: 'absolute',
-          left: props.data.positionLeft + 'px',
-          top: props.data.positionTop + 'px',
-          visibility: props.data.showBudgetTooltip ? null : 'hidden'}}>
-
-        <div className='mapboxgl-popup-tip'></div>
-        <div className='mapboxgl-popup-content'>
-          <article className='popover'>
-            <div className='popover__contents__noscroll'>
-              <header className='popover__header'>
-                <div className='popover__headline__bold'>{title}</div>
-                <div className='popover__actions actions'>
-                  <ul className='actions__menu'>
-                    <li>
-                      <button type='button'
-                        className='actions__menu-item poa-xmark'
-                        title='Close popover'
-                        onClick={props.closeTooltip}>
-
-                        <span>Dismiss</span>
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-              </header>
-              <div className='popover__body'>
-                <ul className='popover__details'>
-                  <br />
-                  <li dangerouslySetInnerHTML={{__html: description}} />
-                </ul>
-              </div>
-            </div>
-          </article>
-        </div>
-      </div>
-    );
-  };
-
-  let renderContent = (props) => {
-    const {
-      data: { stats },
-      fetched,
-      error
-    } = props.appealsList;
-
-    if (!fetched || error) { return null; }
-
-    return (
-      <ul className='sumstats'>
-        <li className='sumstats__item'>
-          <span className='collecticon-rc sumstats__icon'></span>
-          <span className='sumstats__value'>{stats.activeDrefs}</span>
-          <span className='sumstats__key'>
-            Active DREF Operations
-            <div className='tooltip-button' id='tooltip-button-dref' onClick={props.openTooltip}></div>
-          </span>
-        </li>
-        <li className='sumstats__item'>
-          <span className='collecticon-rc-appeals sumstats__icon'></span>
-          <span className='sumstats__value'>{stats.activeAppeals}</span>
-          <span className='sumstats__key'>Active Emergency Appeals <div className='tooltip-button' id='tooltip-button-appeal' onClick={props.openTooltip}></div></span>
-        </li>
-        <li className='sumstats__item'>
-          <span className='collecticon-cash-notes sumstats__icon'></span>
-          <span className='sumstats__value'>{shortenLargeNumber(stats.budget, 1)}</span>
-          <span className='sumstats__key'>
-            Funding requirements (CHF)
-            { renderTooltipBox(props) }
-          </span>
-        </li>
-        <li className='sumstats__item'>
-          <span className='collecticon-cash-bag sumstats__icon'></span>
-          <span className='sumstats__value'>{percent(stats.appealsFunding, stats.appealsBudget, 1)}%</span>
-          <span className='sumstats__key'>Funding coverage</span>
-        </li>
-        <li className='sumstats__item'>
-          <span className='collecticon-people-arrows sumstats__icon'></span>
-          <span className='sumstats__value'>{shortenLargeNumber(stats.targetPop, 1)}</span>
-          <span className='sumstats__key'>Targeted population</span>
-        </li>
-      </ul>
-    );
+  const filteredKeyFigures = () => {
+    const keyFigures = [];
+    Object.keys(stats).map(stat => {
+      selectTooltip(stat);
+      let value = stats[stat];
+      if (statsToShorten.includes(stat)) {
+        value = shortenLargeNumber(value, 1);
+      }
+      if (stat === 'appealsFunding' && stats.appealsBudget) {
+        value = `${percent(stats.appealsFunding, stats.appealsBudget, 1)}%`;
+      }
+      keyFigures.push({
+        id: stat,
+        title: keyTitle[stat],
+        value,
+        tooltip
+      });
+    });
+    return keyFigures.filter(figure => homeKeyFigures.includes(figure.id));
   };
 
   return (
@@ -119,21 +82,27 @@ export default function HomestatsComponent (props) {
       {props.fullscreen ? (<div className='flex'><div style={{width: '375px', height: '56px', position: 'absolute'}}><img src="/assets/graphics/layout/logo.png" alt="IFRC GO logo" style={{width: '375px', height: '56px'}} /></div><h1 className='inpage__title inpage__title--map-fullscreen'>IFRC Disaster Response and Preparedness</h1></div>) : null}
       <div className='stats-overall'>
         <h1 className='visually-hidden'>Overall stats</h1>
-        {renderLoading(props)}
-        {renderError(props)}
-        {renderContent(props)}
+        <ul className='sumstats'>
+          {filteredKeyFigures().map(keyFigure => (
+            <li key={keyFigure.id} className='sumstats__item'>
+              <span className='collecticon-rc sumstats__icon'></span>
+              <span className='sumstats__value'>{keyFigure.value}</span>
+              <span className='sumstats__key'>
+                {keyFigure.title}
+                {keyFigure.tooltip ? <Tooltip tooltipData={keyFigure.tooltip}/> : null}
+              </span>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
 }
 
 if (environment !== 'production') {
-  HomestatsComponent.propTypes = {
+  KeyFigures.propTypes = {
     appealsList: T.object,
     data: T.object,
-    closeTooltip: T.func,
-    openTooltip: T.func,
-    chooseContent: T.func,
     fullscreen: T.bool
   };
 }
