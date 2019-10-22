@@ -10,7 +10,21 @@ const keyTitle = {
   activeAppeals: 'Active Emergency Appeals',
   budget: 'Funding requirements (CHF)',
   appealsFunding: 'Funding coverage',
-  targetPop: 'Targeted population'
+  targetPop: 'Targeted population',
+  numBeneficiaries: 'Affected People (last 30 days)',
+  amountRequested: 'Requested Amount (CHF)',
+  amountFunded: 'Funding (CHF)'
+};
+
+const tooltipOptions = {
+  activeDrefs: {
+    title: 'DREF',
+    description: 'These are small to medium scale emergency operations funded through the Disaster Relief Emergency Fund (DREF).The DREF provides immediate financial support to National Red Cross and Red Crescent Societies, enabling them to carry out their unique role as first responders after a disaster.'
+  },
+  activeAppeals: {
+    title: 'Emergency Appeal',
+    description: 'These are medium to large scale emergency operations funded through a public appeal for funds.'
+  }
 };
 
 export default function KeyFigures (props) {
@@ -33,33 +47,11 @@ export default function KeyFigures (props) {
 
   if (!fetched || error) { return null; }
 
-  const statsToShorten = ['budget', 'targetPop'];
-  const homeKeyFigures = ['activeDrefs', 'activeAppeals', 'budget', 'appealsFunding', 'targetPop'];
+  const statsToShorten = ['budget', 'targetPop', 'amountFunded', 'amountRequested', 'numBeneficiaries'];
   // const regionKeyFigures = ['numBeneficiaries', 'amountRequested', 'amountFunded'];
-  let tooltip = {};
-  const selectTooltip = id => {
-    switch (id) {
-      case 'activeDrefs':
-        tooltip = {
-          title: 'DREF',
-          description: 'These are small to medium scale emergency operations funded through the Disaster Relief Emergency Fund (DREF).The DREF provides immediate financial support to National Red Cross and Red Crescent Societies, enabling them to carry out their unique role as first responders after a disaster.'
-        };
-        break;
-      case 'activeAppeals':
-        tooltip = {
-          title: 'Emergency Appeal',
-          description: 'These are medium to large scale emergency operations funded through a public appeal for funds.'
-        };
-        break;
-      default:
-        tooltip = null;
-    }
-  };
 
   const filteredKeyFigures = () => {
-    const keyFigures = [];
-    Object.keys(stats).map(stat => {
-      selectTooltip(stat);
+    return Object.keys(stats).map(stat => {
       let value = stats[stat];
       if (statsToShorten.includes(stat)) {
         value = shortenLargeNumber(value, 1);
@@ -67,14 +59,13 @@ export default function KeyFigures (props) {
       if (stat === 'appealsFunding' && stats.appealsBudget) {
         value = `${percent(stats.appealsFunding, stats.appealsBudget, 1)}%`;
       }
-      keyFigures.push({
+      return {
         id: stat,
         title: keyTitle[stat],
         value,
-        tooltip
-      });
-    });
-    return keyFigures.filter(figure => homeKeyFigures.includes(figure.id));
+        tooltip: tooltipOptions[stat] || null
+      };
+    }).filter(figure => props.keyFiguresList.includes(figure.id));
   };
 
   return (
@@ -89,7 +80,7 @@ export default function KeyFigures (props) {
               <span className='sumstats__value'>{keyFigure.value}</span>
               <span className='sumstats__key'>
                 {keyFigure.title}
-                {keyFigure.tooltip ? <Tooltip tooltipData={keyFigure.tooltip}/> : null}
+                {keyFigure.tooltip ? <Tooltip title={keyFigure.tooltip.title} description={keyFigure.tooltip.description}/> : null}
               </span>
             </li>
           ))}
@@ -102,6 +93,7 @@ export default function KeyFigures (props) {
 if (environment !== 'production') {
   KeyFigures.propTypes = {
     appealsList: T.object,
+    keyFiguresList: T.array,
     data: T.object,
     fullscreen: T.bool
   };

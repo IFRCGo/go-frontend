@@ -22,10 +22,7 @@ import { environment } from '../config';
 import FullscreenHeader from '../components/common/fullscreen-header';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { get } from '../utils/utils/';
-import {
-  commaSeparatedNumber as n,
-  nope
-} from '../utils/format';
+import { nope } from '../utils/format';
 import {
   enterFullscreen,
   exitFullscreen,
@@ -56,6 +53,7 @@ import TabContent from '../components/tab-content';
 import BlockLoading from '../components/block-loading';
 import EmergenciesTable from '../components/connected/emergencies-table';
 import AppealsTable from '../components/connected/appeals-table';
+import KeyFiguresHeader from '../components/common/key-figures';
 import {
   Snippets,
   KeyFigures,
@@ -166,35 +164,35 @@ class AdminArea extends SFPComponent {
     this.props._getAdmAreaById(type, id);
   }
 
-  renderStats () {
-    const {
-      fetched,
-      error,
-      data: { stats }
-    } = this.props.appealStats;
+  // renderStats () {
+  //   const {
+  //     fetched,
+  //     error,
+  //     data: { stats }
+  //   } = this.props.appealStats;
 
-    if (!fetched || error) {
-      return null;
-    }
+  //   if (!fetched || error) {
+  //     return null;
+  //   }
 
-    return (
-      <div className='inpage__headline-stats'>
-        <div className='header-stats'>
-          <ul className='stats-list'>
-            <li className='stats-list__item stats-people'>
-              {n(stats.numBeneficiaries)}<small>Affected People in the last 30 days</small>
-            </li>
-            <li className='stats-list__item stats-funding stat-borderless stat-double'>
-              {n(stats.amountRequested)}<small>Requested Amount (CHF)</small>
-            </li>
-            <li className='stats-list__item stat-double'>
-              {n(stats.amountFunded)}<small>Funding (CHF)</small>
-            </li>
-          </ul>
-        </div>
-      </div>
-    );
-  }
+  //   return (
+  //     <div className='inpage__headline-stats'>
+  //       <div className='header-stats'>
+  //         <ul className='stats-list'>
+  //           <li className='stats-list__item stats-people'>
+  //             {n(stats.numBeneficiaries)}<small>Affected People in the last 30 days</small>
+  //           </li>
+  //           <li className='stats-list__item stats-funding stat-borderless stat-double'>
+  //             {n(stats.amountRequested)}<small>Requested Amount (CHF)</small>
+  //           </li>
+  //           <li className='stats-list__item stat-double'>
+  //             {n(stats.amountFunded)}<small>Funding (CHF)</small>
+  //           </li>
+  //         </ul>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   renderOperations10Years () {
     const {
@@ -380,11 +378,9 @@ class AdminArea extends SFPComponent {
           <div className='inner'>
             <div className='inpage__headline'>
               <h1 className='inpage__title'>{regionName}</h1>
-              <div className='inpage__introduction'>
-                {this.renderStats()}
-              </div>
             </div>
           </div>
+          <KeyFiguresHeader appealsList={this.props.appealStats} keyFiguresList={['numBeneficiaries', 'amountRequested', 'amountFunded']}/>
         </header>
         <Tabs
           selectedIndex={ selectedIndex }
