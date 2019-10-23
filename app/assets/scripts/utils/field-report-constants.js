@@ -30,7 +30,7 @@ export const visibility = [
   }
 ];
 
-const countryList = [
+export const countryList = [
   {value: '1', label: 'Ukraine', iso: 'ua'},
   {value: '2', label: 'United Arab Emirates', iso: 'ae'},
   {value: '3', label: 'United Kingdom', iso: 'gb'},
@@ -311,11 +311,7 @@ export const countryNameMapById = listToMap(
 );
 
 
-export const disasterType = [
-  {
-    label: '-- Disaster Type --',
-    value: ''
-  },
+export const disasterTypeList = [
   {
     value: '66',
     label: 'Biological Emergency'
@@ -412,6 +408,14 @@ export const disasterType = [
     value: '8',
     label: 'Volcanic Eruption'
   }
+];
+
+export const disasterType = [
+  {
+    label: '-- Disaster Type --',
+    value: ''
+  },
+  ...disasterTypeList,
 ];
 
 export const sources = [

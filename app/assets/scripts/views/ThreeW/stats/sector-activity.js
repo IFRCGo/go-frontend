@@ -32,6 +32,7 @@ export default class SectorActivity extends React.PureComponent {
         </h4>
         <div className='sector-activity-content'>
           <DonutChart
+            className='sector-activity-donut-chart'
             data={renderData}
             keySelector={d => d.key}
             labelSelector={d => d.title}

@@ -1,5 +1,6 @@
 'use strict';
 import React from 'react';
+import _cs from 'classnames';
 
 import Summary from './stats/summary';
 import SectorActivity from './stats/sector-activity';
@@ -15,6 +16,7 @@ export default class ThreeW extends React.PureComponent {
       projectList,
       countryId,
       onFilterChange,
+      disabled,
     } = this.props;
 
     return (
@@ -24,24 +26,30 @@ export default class ThreeW extends React.PureComponent {
         </h2>
         <div className='content'>
           <div className='left'>
-            <a
-              href='#3w'
-              className="add-button button button--secondary-bounded"
+            <button
+              className={
+                _cs(
+                  'add-button button button--secondary-bounded',
+                  disabled && 'disabled',
+                )}
+              onClick={this.props.onAddButtonClick}
+              disabled={disabled}
             >
               Add
-            </a>
+            </button>
           </div>
           <Filter
             projectList={projectList}
             className='three-w-filters'
             onFilterChange={onFilterChange}
           />
-          <a
-            href='#3w'
-            className="export-button button button--secondary-bounded"
+          <button
+            className="export-button button button--secondary-bounded disabled"
+            onClick={() => {}}
+            disabled
           >
             Export
-          </a>
+          </button>
           <div className='three-w-map-container'>
             <Map
               countryId={countryId}

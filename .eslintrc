@@ -9,7 +9,7 @@
   ],
   "parser": "babel-eslint",
   "parserOptions": {
-    "allowImportExportEverywhere": true
+    "allowImportExportEverywhere": true,
     "ecmaVersion": 6,
     "ecmaFeatures": {
       "jsx": true

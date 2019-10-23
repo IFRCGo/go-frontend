@@ -5,7 +5,7 @@ import Faram from '@togglecorp/faram';
 import { unique } from '@togglecorp/fujs';
 import memoize from 'memoize-one';
 
-import Select from '../../components/new/select';
+import SelectInput from '../../components/new/select-input';
 import {
   statusList,
   sectorList,
@@ -84,28 +84,28 @@ export default class ThreeWFilter extends React.PureComponent {
         value={filterValues}
         onChange={this.handleFaramChange}
       >
-        <Select
+        <SelectInput
           faramElementName='reporting_ns'
           label='National societies'
           placeholder='All'
           options={this.getNationalSocietiesOptions(projectList)}
           className='select-input'
         />
-        <Select
+        <SelectInput
           faramElementName='programme_type'
           label='Programme type'
           placeholder='All'
           options={programmeTypeOptions}
           className='select-input'
         />
-        <Select
+        <SelectInput
           faramElementName='primary_sector'
           label='Sectors of Activity'
           placeholder='All'
           options={sectorsOfActivityOptions}
           className='select-input'
         />
-        <Select
+        <SelectInput
           faramElementName='status'
           label='Status'
           placeholder='All'

@@ -1,0 +1,26 @@
+.tc-raw-input {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px;
+
+  .tc-raw-input-label {
+    font-size: 12px;
+
+    &:after {
+      content: ':'
+    }
+  }
+
+  input {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    padding: 6px 10px;
+  }
+
+  .tc-raw-input-error {
+    color: #d32f2f;
+    font-size: 11px;
+  }
+}

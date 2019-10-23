@@ -21,6 +21,8 @@ import {
   statuses,
 } from '../../utils/constants';
 
+import { getBoundingBox } from '../../utils/country-bounding-box';
+
 import newMap from '../../utils/get-new-map';
 
 const ProjectDetailElement = ({
@@ -87,6 +89,7 @@ export default class ThreeWMap extends React.PureComponent {
     super(props);
 
     this.mapContainerRef = React.createRef();
+    this.mapLoaded = false;
   }
 
   componentDidMount() {
@@ -97,38 +100,67 @@ export default class ThreeWMap extends React.PureComponent {
     );
 
     this.map.setMaxZoom(7);
+    this.map.on('load', this.handleMapLoad);
+    this.map.on('click', this.handleMapClick);
+  }
 
-    this.map.on('load', () => {
-      const {
-        countryId,
-        projectList,
-      } = this.props;
+  componentWillReceiveProps(nextProps) {
+    const {
+      countryId: oldCountryId,
+      projectList: oldProjectList,
+    } = this.props;
 
-      const iso2 = countryIsoMapById[countryId].toUpperCase();
-      const projectDistrictList = unique(projectList.map(d => d.project_district));
+    const {
+      countryId,
+      projectList,
+    } = nextProps;
 
-      const currentCountryFeature = this.map.queryRenderedFeatures({
-        layers: ['icrc_admin0'],
-        filter: [
-          '==',
-          'ISO2',
-          iso2,
-        ],
-      })[0];
+    if (countryId !== oldCountryId || projectList !== oldProjectList) {
+      if (this.mapLoaded) {
+        this.fillMap(countryId, projectList);
+      }
+    }
+  }
 
-      if (currentCountryFeature) {
-        const bbox = turfBbox(currentCountryFeature.geometry);
-        this.map.fitBounds(
-          bbox,
-          {
-            padding: {
-              top: 10,
-              right: 90,
-              bottom: 30,
-              left: 10,
-            }
-          });
+  handleMapLoad = () => {
+    this.mapLoaded = true; 
 
+    const {
+      countryId,
+      projectList,
+    } = this.props;
+
+    this.fillMap(countryId, projectList);
+  }
+
+  fillMap = (countryId, projectList) => {
+    const iso2 = countryIsoMapById[countryId].toUpperCase();
+    const projectDistrictList = unique(projectList.map(d => d.project_district));
+
+    const currentCountryFeature = this.map.queryRenderedFeatures({
+      layers: ['icrc_admin0'],
+      filter: [
+        '==',
+        'ISO2',
+        iso2,
+      ],
+    })[0];
+
+    if (currentCountryFeature) {
+      const bbox = getBoundingBox(iso2);
+      this.map.fitBounds(
+        bbox,
+        {
+          padding: {
+            top: 10,
+            right: 90,
+            bottom: 30,
+            left: 10,
+          }
+        }
+      );
+
+      if (projectDistrictList.length > 0) {
         this.map.setPaintProperty(
           'adm1',
           'fill-color',
@@ -140,27 +172,33 @@ export default class ThreeWMap extends React.PureComponent {
             '#ffffff',
           ],
         );
+      } else {
+        this.map.setPaintProperty(
+          'adm1',
+          'fill-color',
+          '#ffffff',
+        );
       }
-    });
+    }
+  }
 
-    this.map.on('click', (e) => {
-      const { projectList } = this.props;
-      const projectDistrictList = projectList.map(d => d.project_district);
+  handleMapClick = (e) => {
+    const { projectList } = this.props;
+    const projectDistrictList = projectList.map(d => d.project_district);
 
-      const features = this.map.queryRenderedFeatures(
-        e.point,
-        {
-          layers: ['adm1'],
-          filter: [
-            'in',
-            'OBJECTID',
-            ...projectDistrictList,
-          ],
-        },
-      );
+    const features = this.map.queryRenderedFeatures(
+      e.point,
+      {
+        layers: ['adm1'],
+        filter: [
+          'in',
+          'OBJECTID',
+          ...projectDistrictList,
+        ],
+      },
+    );
 
-      this.showDistrictDetailPopover(this.map, e.lngLat, features[0]);
-    });
+    this.showDistrictDetailPopover(this.map, e.lngLat, features[0]);
   }
 
   showDistrictDetailPopover = (

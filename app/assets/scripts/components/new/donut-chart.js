@@ -170,7 +170,6 @@ class DonutChart extends React.PureComponent {
       keySelector,
       valueSelector,
       colorSelector,
-      className,
       boundingClientRect: {
         width = 0,
         height = 0,

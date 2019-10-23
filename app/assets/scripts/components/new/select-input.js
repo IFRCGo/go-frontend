@@ -1,14 +1,16 @@
 'use strict';
 import React from 'react';
-import PropTypes from 'prop-types';
 import Select from 'react-select';
-import { _cs } from '@togglecorp/fujs';
+import _cs from 'classnames';
 import { FaramInputElement } from '@togglecorp/faram';
+
+const emptyList = [];
 
 class SelectInput extends React.PureComponent {
   handleChange = (selectedItem) => {
     const {
       onChange,
+      multi,
     } = this.props;
 
     if (!onChange) {
@@ -16,9 +18,13 @@ class SelectInput extends React.PureComponent {
     }
 
     if (selectedItem) {
-      onChange(selectedItem.value);
+      if (multi) {
+        onChange(selectedItem.map(d => d.value));
+      } else {
+        onChange(selectedItem.value);
+      }
     } else {
-      onChange(undefined);
+      onChange(multi ? emptyList : undefined);
     }
   }
 
@@ -27,30 +33,42 @@ class SelectInput extends React.PureComponent {
       label,
       className,
       onChange, // capturing
-      value,
+      value: valueFromProp,
+      options,
+      multi,
+      error,
       ...otherProps
     } = this.props;
+
+    let value = valueFromProp;
+
+    if (multi) {
+      value = options.filter(d => (valueFromProp || []).indexOf(d.value) !== -1);
+    }
+
     return (
       <div className={_cs(className, 'tc-select')}>
-        <div className='tc-select-label'>
-          { label }
-        </div>
+        { label && (
+          <div className='tc-select-label'>
+            { label }
+          </div>
+        )}
         <Select
           {...otherProps}
+          multi={multi}
+          options={options}
           className='tc-select-input'
           value={value}
           onChange={this.handleChange}
         />
+        { error && (
+          <div className='tc-select-input-error'>
+            { error }
+          </div>
+        )}
       </div>
     );
   }
 }
-
-SelectInput.propTypes = {
-  label: PropTypes.string,
-  className: PropTypes.string,
-  onChange: PropTypes.func,
-  value: PropTypes.string
-};
 
 export default FaramInputElement(SelectInput);

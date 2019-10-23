@@ -63,6 +63,11 @@ export function getProjects (countryId, filterValues) {
   return fetchJSON(`api/v2/project/?${f}`, GET_PROJECTS, withToken());
 }
 
+export const POST_PROJECT = 'POST_PROJECT';
+export function postProject(data) {
+  return postJSON('api/v2/project/', POST_PROJECT, data, withToken());
+}
+
 export const GET_COUNTRIES = 'GET_COUNTRIES';
 export function getCountries (region) {
   let filters = {limit: 1000};
@@ -198,6 +203,13 @@ export function getEventById (id) {
   return fetchJSON(`api/v2/event/${id}/`, GET_EVENT, withToken(), { id });
 }
 
+export const GET_EVENT_LIST = 'GET_EVENT_LIST';
+export function getEventList() {
+  const query = { limit: 9999 };
+  const q = buildAPIQS(query);
+  return fetchJSON(`api/v2/event/mini/?${q}`, GET_EVENT_LIST, withToken());
+}
+
 export const GET_EVENT_SNIPPETS = 'GET_EVENT_SNIPPETS';
 export function getEventSnippets (eventId) {
   return fetchJSON(`api/v2/event_snippet/?event=${eventId}`, GET_EVENT_SNIPPETS, withToken(), { id: eventId });
@@ -224,12 +236,20 @@ export function getEruOwners () {
 
 export const GET_DISTRICTS = 'GET_DISTRICTS';
 export function getDistrictsForCountry (country) {
+  // should not be dependent on the country data structure
+  // i.e country should already be country.value here
+
   const filters = {
     country: country.value,
     limit: 200
   };
   const f = buildAPIQS(filters);
   return fetchJSON(`api/v2/district/?${f}`, GET_DISTRICTS, {}, { country });
+}
+
+// PF = project form
+export function getDistrictsForCountryPF (country) {
+  return getDistrictsForCountry({ value: country });
 }
 
 export const GET_AA = 'GET_AA';

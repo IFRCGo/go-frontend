@@ -10,6 +10,7 @@ import {
 const SummaryElement = ({
   value,
   label,
+  fixed,
 }) => {
   const {
     number,
@@ -20,7 +21,7 @@ const SummaryElement = ({
     <div className='summary-element'>
       <div className='summary-element-value'>
         <div className='summary-element-value-number'>
-          { number }
+          { (number && fixed) ? number.toFixed(1) : number }
         </div>
         <div className='summary-element-value-suffix'>
           { normalizeSuffix }
@@ -66,6 +67,7 @@ export default class ProjectSummary extends React.PureComponent {
         <SummaryElement
           label="Total budget"
           value={totalBudget}
+          fixed
         />
       </div>
     );

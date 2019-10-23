@@ -15,19 +15,19 @@ const initialState = {
 export default function reducer (state = initialState, action) {
   let newState = { ...state };
   switch (action.type) {
-    case 'GET_PROJECTS_INFLIGHT':
+    case 'POST_PROJECT_INFLIGHT':
       newState = {
         ...newState,
         ...stateInflight(state, action),
       }
       break;
-    case 'GET_PROJECTS_FAILED':
+    case 'POST_PROJECT_FAILED':
       newState = {
         ...newState,
         ...stateError(state, action),
       }
       break;
-    case 'GET_PROJECTS_SUCCESS':
+    case 'POST_PROJECT_SUCCESS':
       newState = {
         ...newState,
         ...stateSuccess(state, action),
@@ -37,3 +37,4 @@ export default function reducer (state = initialState, action) {
 
   return newState;
 }
+
