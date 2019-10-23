@@ -513,6 +513,11 @@ export function deletePerWorkplanApi (payload) {
   return postJSON('api/v2/del_perworkplan/', DELETE_PER_WORKPLAN_API, payload, withToken());
 }
 
+export const DELETE_PER_DRAFT = 'DELETE_PER_DRAFT';
+export function deletePerDraft (payload) {
+  return postJSON('api/v2/del_perdraft', DELETE_PER_DRAFT, payload, withToken());
+}
+
 export const GET_PER_UPLOADED_DOCUMENTS = 'GET_PER_UPLOADED_DOCUMENTS';
 export function getPerUploadedDocuments (countryId) {
   const f = buildAPIQS({country: countryId});
