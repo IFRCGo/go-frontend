@@ -19,7 +19,7 @@ const ProgressBar = ({
       />
     </div>
   );
-}
+};
 
 const Scale = ({ max }) => {
   const numbers = [];
@@ -32,11 +32,10 @@ const Scale = ({ max }) => {
       { numbers.map(n => <div>{n}</div>) }
     </div>
   );
-}
-
+};
 
 export default class RegionOverview extends React.PureComponent {
-  render() {
+  render () {
     const {
       className,
       projectList,

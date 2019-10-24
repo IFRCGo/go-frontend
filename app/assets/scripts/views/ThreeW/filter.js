@@ -48,7 +48,6 @@ export default class ThreeWFilter extends React.PureComponent {
         status: []
       }
     };
-
   }
 
   getNationalSocietiesOptions = memoize((projectList) => {

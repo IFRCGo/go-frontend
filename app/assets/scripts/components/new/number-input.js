@@ -1,12 +1,11 @@
 'use strict';
 import React from 'react';
-import _cs from 'classnames';
 import { FaramInputElement } from '@togglecorp/faram';
 
 import RawInput from './raw-input';
 
 class TextInput extends React.PureComponent {
-  render() {
+  render () {
     return (
       <RawInput
         {...this.props}
@@ -18,4 +17,3 @@ class TextInput extends React.PureComponent {
 }
 
 export default FaramInputElement(TextInput);
-

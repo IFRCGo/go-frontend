@@ -84,4 +84,3 @@ export const statusList = [
 ];
 
 export const statuses = listToMap(statusList, d => d.key, d => d.title);
-

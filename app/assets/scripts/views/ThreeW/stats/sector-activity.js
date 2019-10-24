@@ -5,8 +5,6 @@ import { _cs } from '@togglecorp/fujs';
 import { sectorList } from '../../../utils/constants';
 import DonutChart from '../../../components/new/donut-chart';
 
-const emptyList = [];
-
 export default class SectorActivity extends React.PureComponent {
   getRenderData = (projectList) => {
     const renderData = sectorList.map((s) => ({
@@ -17,7 +15,7 @@ export default class SectorActivity extends React.PureComponent {
     return renderData;
   }
 
-  render() {
+  render () {
     const {
       className,
       projectList,

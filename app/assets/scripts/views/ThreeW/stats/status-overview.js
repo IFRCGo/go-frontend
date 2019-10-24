@@ -10,7 +10,7 @@ import VerticalBarChart from '../../../components/new/vertical-bar-chart';
 import { statuses } from '../../../utils/constants';
 
 export default class StatusOverview extends React.PureComponent {
-  render() {
+  render () {
     const {
       className,
       projectList,

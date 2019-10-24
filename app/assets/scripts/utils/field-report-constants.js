@@ -310,7 +310,6 @@ export const countryNameMapById = listToMap(
   d => d.label,
 );
 
-
 export const disasterTypeList = [
   {
     value: '66',

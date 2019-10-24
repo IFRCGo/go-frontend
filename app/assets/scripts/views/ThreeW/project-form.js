@@ -7,11 +7,6 @@ import _cs from 'classnames';
 import { connect } from 'react-redux';
 import memoize from 'memoize-one';
 
-import {
-  showGlobalLoading,
-  hideGlobalLoading,
-} from '../../components/global-loading';
-
 import SelectInput from '../../components/new/select-input';
 import TextInput from '../../components/new/text-input';
 import NumberInput from '../../components/new/number-input';
@@ -33,7 +28,6 @@ import {
   sectorList,
   programmeTypeList,
 } from '../../utils/constants';
-
 
 const statusOptions = statusList.map(p => ({
   value: p.title,
@@ -79,7 +73,7 @@ const emptyList = [];
 const emptyObject = [];
 
 class ProjectForm extends React.PureComponent {
-  constructor(props) {
+  constructor (props) {
     super(props);
 
     this.schema = {
@@ -120,7 +114,7 @@ class ProjectForm extends React.PureComponent {
     this.props._getDistricts(props.countryId);
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.props._getCountries();
     this.props._getEventList();
   }
@@ -158,7 +152,7 @@ class ProjectForm extends React.PureComponent {
     return {
       nationalSocietyOptions,
       countryOptions,
-    }
+    };
   }
 
   getDistrictOptions = (districtResponse, countryId) => {
@@ -241,13 +235,13 @@ class ProjectForm extends React.PureComponent {
     }
 
     if (projectStatus === 'Completed') {
-      schema.fields.reached_total = [requiredCondition]
+      schema.fields.reached_total = [requiredCondition];
     }
 
     return schema;
   });
 
-  render() {
+  render () {
     const {
       countries,
       districts,
@@ -278,12 +272,10 @@ class ProjectForm extends React.PureComponent {
     const projectFormPending = projectForm.fetching;
     const shouldDisableSubmitButton = projectFormPending;
 
-    const projectFormError = !projectFormPending && projectForm.error;
-
-    const shouldShowCurrentOperation = faramValues.operation_type === 'Emergency Operation'
-      && faramValues.programme_type === 'Multilateral';
-    const shouldShowDisasterType = faramValues.operation_type === 'Long Term Operation'
-      && !shouldShowCurrentOperation;
+    const shouldShowCurrentOperation = faramValues.operation_type === 'Emergency Operation' &&
+      faramValues.programme_type === 'Multilateral';
+    const shouldShowDisasterType = faramValues.operation_type === 'Long Term Operation' &&
+      !shouldShowCurrentOperation;
 
     const schema = this.getSchema(
       faramValues.operation_type,
@@ -372,7 +364,7 @@ class ProjectForm extends React.PureComponent {
               className='project-form-select'
               options={currentOperationOptions}
               disabled={shouldDisableCurrentOperation}
-            placeholder={fetchingEvents ? 'Fetching events...' : undefined}
+              placeholder={fetchingEvents ? 'Fetching events...' : undefined}
             />
           </InputSection>
         )}
@@ -400,7 +392,7 @@ class ProjectForm extends React.PureComponent {
             className='project-form-select'
             label='Tagging'
             options={sectorOptions}
-            multi 
+            multi
           />
         </InputSection>
 

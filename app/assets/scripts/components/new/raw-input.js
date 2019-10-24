@@ -13,7 +13,7 @@ class RawInput extends React.PureComponent {
     }
   }
 
-  render() {
+  render () {
     const {
       label,
       className,

@@ -13,7 +13,6 @@ const defaultProps = {
   className: '',
 };
 
-
 const resizeHandlers = {};
 
 const handleResize = (entries) => {
@@ -54,7 +53,7 @@ export default (WrappedComponent) => {
     static propTypes = propTypes;
     static defaultProps = defaultProps;
 
-    constructor(props) {
+    constructor (props) {
       super(props);
       this.containerRef = React.createRef();
       this.state = {
@@ -62,11 +61,11 @@ export default (WrappedComponent) => {
       };
     }
 
-    componentDidMount() {
+    componentDidMount () {
       addResizeHandler(this.containerRef.current, this.handleResize);
     }
 
-    componentWillUnmount() {
+    componentWillUnmount () {
       removeResizeHandler(this.containerRef.current);
       clearTimeout(this.timeout);
     }
@@ -79,7 +78,7 @@ export default (WrappedComponent) => {
       }, 200);
     }
 
-    render() {
+    render () {
       const {
         className,
         ...otherProps

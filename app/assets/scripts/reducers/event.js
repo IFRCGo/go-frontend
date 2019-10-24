@@ -9,7 +9,7 @@ const initialState = {
   // data: {}
 };
 
-function eventList(state = initialState, action) {
+function eventList (state = initialState, action) {
   switch (action.type) {
     case 'GET_EVENT_LIST_INFLIGHT':
       state = stateInflight(state, action);

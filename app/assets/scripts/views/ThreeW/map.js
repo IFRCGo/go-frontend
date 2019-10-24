@@ -1,7 +1,6 @@
 'use strict';
 import React from 'react';
 import { render } from 'react-dom';
-import turfBbox from '@turf/bbox';
 import mapboxgl from 'mapbox-gl';
 import {
   unique,
@@ -9,11 +8,7 @@ import {
   addSeparator,
 } from '@togglecorp/fujs';
 
-import {
-  countries,
-  countryIsoMapById,
-  countryNameMapById,
-} from '../../utils/field-report-constants';
+import { countryIsoMapById } from '../../utils/field-report-constants';
 
 import {
   programmeTypes,
@@ -39,7 +34,7 @@ const ProjectDetailElement = ({
       {value}
     </div>
   </div>
-)
+);
 
 const ProjectDetail = ({
   project: {
@@ -85,14 +80,14 @@ const ProjectDetail = ({
 );
 
 export default class ThreeWMap extends React.PureComponent {
-  constructor(props) {
+  constructor (props) {
     super(props);
 
     this.mapContainerRef = React.createRef();
     this.mapLoaded = false;
   }
 
-  componentDidMount() {
+  componentDidMount () {
     const { current: mapContainer } = this.mapContainerRef;
     this.map = newMap(
       mapContainer,
@@ -104,7 +99,7 @@ export default class ThreeWMap extends React.PureComponent {
     this.map.on('click', this.handleMapClick);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     const {
       countryId: oldCountryId,
       projectList: oldProjectList,
@@ -123,7 +118,7 @@ export default class ThreeWMap extends React.PureComponent {
   }
 
   handleMapLoad = () => {
-    this.mapLoaded = true; 
+    this.mapLoaded = true;
 
     const {
       countryId,
@@ -217,7 +212,6 @@ export default class ThreeWMap extends React.PureComponent {
     const popoverContent = document.createElement('div');
     const {
       properties,
-      geometry,
     } = feature;
 
     const {
@@ -228,7 +222,8 @@ export default class ThreeWMap extends React.PureComponent {
     const projectsInCurrentDistrict = projectList.filter(p => p.project_district === districtId);
     const numProjects = projectsInCurrentDistrict.length;
 
-    render((
+    render(
+      (
         <div className='three-w-map-district-detail-popover'>
           <h4 className='detail-popover-title'>
             { title } ({numProjects} { numProjects > 1 ? 'projects' : 'project' })
@@ -256,12 +251,12 @@ export default class ThreeWMap extends React.PureComponent {
       .addTo(map);
   }
 
-  render() {
+  render () {
     return (
       <div
         ref={this.mapContainerRef}
         className='three-w-map'
       />
     );
-}
+  }
 }

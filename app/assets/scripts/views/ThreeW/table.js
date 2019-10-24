@@ -11,12 +11,8 @@ import {
   statuses,
 } from '../../utils/constants';
 
-import { countryNameMapById } from '../../utils/field-report-constants';
-
-const emptyList = [];
-
 export default class ProjectListTable extends React.PureComponent {
-  constructor(props) {
+  constructor (props) {
     super(props);
 
     this.headers = [
@@ -56,7 +52,7 @@ export default class ProjectListTable extends React.PureComponent {
     ];
   }
 
-  render() {
+  render () {
     const {
       className,
       projectList,

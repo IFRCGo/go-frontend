@@ -11,7 +11,7 @@ import Table from './table';
 import Map from './map';
 
 export default class ThreeW extends React.PureComponent {
-  render() {
+  render () {
     const {
       projectList,
       countryId,

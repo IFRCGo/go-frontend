@@ -19,19 +19,19 @@ export default function reducer (state = initialState, action) {
       newState = {
         ...newState,
         ...stateInflight(state, action),
-      }
+      };
       break;
     case 'GET_PROJECTS_FAILED':
       newState = {
         ...newState,
         ...stateError(state, action),
-      }
+      };
       break;
     case 'GET_PROJECTS_SUCCESS':
       newState = {
         ...newState,
         ...stateSuccess(state, action),
-      }
+      };
       break;
   }
 

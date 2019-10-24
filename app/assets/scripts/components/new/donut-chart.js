@@ -9,17 +9,17 @@ import _cs from 'classnames';
 const emptyObject = {};
 
 const polarToCartesian = (
-    centerX,
-    centerY,
-    radius,
-    angleInDegrees,
+  centerX,
+  centerY,
+  radius,
+  angleInDegrees,
 ) => {
-    const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
+  const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
 
-    return {
-        x: centerX + (radius * Math.cos(angleInRadians)),
-        y: centerY + (radius * Math.sin(angleInRadians)),
-    };
+  return {
+    x: centerX + (radius * Math.cos(angleInRadians)),
+    y: centerY + (radius * Math.sin(angleInRadians)),
+  };
 };
 
 const describeArc = (
@@ -44,7 +44,6 @@ const describeArc = (
 
 const Arc = (p) => {
   const {
-    className,
     x,
     y,
     radius,
@@ -162,7 +161,7 @@ class DonutChart extends React.PureComponent {
     };
   }
 
-  render() {
+  render () {
     const {
       className,
       data,

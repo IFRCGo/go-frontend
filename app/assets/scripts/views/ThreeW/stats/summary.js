@@ -2,7 +2,6 @@
 import React from 'react';
 import {
   formattedNormalize,
-  isDefined,
   _cs,
   unique,
 } from '@togglecorp/fujs';
@@ -32,9 +31,7 @@ const SummaryElement = ({
       </div>
     </div>
   );
-}
-
-const emptyObject = {};
+};
 
 export default class ProjectSummary extends React.PureComponent {
   getRenderData = (projectList) => {
@@ -47,7 +44,7 @@ export default class ProjectSummary extends React.PureComponent {
     };
   }
 
-  render() {
+  render () {
     const {
       className,
       projectList,

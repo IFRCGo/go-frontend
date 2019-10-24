@@ -52,6 +52,9 @@ const defaultProps = {
 };
 
 export class NormalList extends React.Component {
+  static propTypes = propTypes;
+  static defaultProps = defaultProps;
+
   renderListItem = (datum, i) => {
     const {
       data,
@@ -112,7 +115,7 @@ export class NormalList extends React.Component {
     );
   }
 
-  render() {
+  render () {
     const {
       data,
       groupKeySelector,

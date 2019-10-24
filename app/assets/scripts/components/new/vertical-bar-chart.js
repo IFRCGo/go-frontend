@@ -8,7 +8,6 @@ import {
 } from 'd3-scale';
 
 import { max } from 'd3-array';
-import PropTypes from 'prop-types';
 import memoize from 'memoize-one';
 import _cs from 'classnames';
 
@@ -40,7 +39,7 @@ class VerticalBarChart extends React.PureComponent {
   getRenderData = memoize((
     data, height, scaleX, scaleY, labelSelector, valueSelector, margins,
   ) => {
-    const { left, top, bottom } = margins;
+    const { left, top } = margins;
     const renderData = data.map((d) => {
       const label = labelSelector(d);
       const value = valueSelector(d);
@@ -96,12 +95,12 @@ class VerticalBarChart extends React.PureComponent {
 
   getScaleX = memoize((data, width, labelSelector, bandPadding) => (
     scaleBand()
-    .range([width, 0])
-    .domain(data.map(labelSelector))
-    .padding(bandPadding)
+      .range([width, 0])
+      .domain(data.map(labelSelector))
+      .padding(bandPadding)
   ))
 
-  render() {
+  render () {
     const {
       className: classNameFromProps,
       data,
@@ -264,7 +263,5 @@ class VerticalBarChart extends React.PureComponent {
     );
   }
 }
-
-
 
 export default Responsive(VerticalBarChart);

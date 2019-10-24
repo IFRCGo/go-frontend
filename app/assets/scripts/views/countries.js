@@ -134,9 +134,9 @@ class AdminArea extends SFPComponent {
       }
     }
 
-    if (this.props.projectForm.fetching === true
-      && nextProps.projectForm.fetching === false
-      && nextProps.projectForm.error === null
+    if (this.props.projectForm.fetching === true &&
+      nextProps.projectForm.fetching === false &&
+      nextProps.projectForm.error === null
     ) {
       // new project was successfully added
       this.props._getProjects(this.props.match.params.id, this.threeWFilters);
@@ -173,7 +173,7 @@ class AdminArea extends SFPComponent {
       return emptyList;
     }
 
-    if (!projects.data || !projects.data.results || !projects.data.results.length ) {
+    if (!projects.data || !projects.data.results || !projects.data.results.length) {
       return emptyList;
     }
 
@@ -205,12 +205,12 @@ class AdminArea extends SFPComponent {
     perForm = emptyObject,
     user = emptyObject,
   ) => {
-    const shouldShowLoadingAnimation = projects.fetching
-      || projectForm.fetching
-      || adminArea.fetching
-      || fdrs.fetching
-      || perForm.fetching
-      || user.fetching;
+    const shouldShowLoadingAnimation = projects.fetching ||
+      projectForm.fetching ||
+      adminArea.fetching ||
+      fdrs.fetching ||
+      perForm.fetching ||
+      user.fetching;
 
     if (shouldShowLoadingAnimation && !this.loading) {
       showGlobalLoading();
@@ -679,7 +679,7 @@ class AdminArea extends SFPComponent {
                     projectList={this.getProjectList(this.props.projects)}
                     countryId={getCountryId(this.props.match.params.id)}
                     onFilterChange={this.handleThreeWFilterChange}
-                    onAddButtonClick={() => { this.setState({ showProjectForm: true }) }}
+                    onAddButtonClick={() => { this.setState({ showProjectForm: true }); }}
                   />
                 </TabContent>
               </TabPanel>

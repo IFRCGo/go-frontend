@@ -57,14 +57,14 @@ export const GET_PROJECTS = 'GET_PROJECTS';
 export function getProjects (countryId, filterValues) {
   const filters = {
     country: countryIsoMapById[countryId],
-    ...filterValues,
-  }
+    ...filterValues
+  };
   const f = buildAPIQS(filters);
   return fetchJSON(`api/v2/project/?${f}`, GET_PROJECTS, withToken());
 }
 
 export const POST_PROJECT = 'POST_PROJECT';
-export function postProject(data) {
+export function postProject (data) {
   return postJSON('api/v2/project/', POST_PROJECT, data, withToken());
 }
 
@@ -204,7 +204,7 @@ export function getEventById (id) {
 }
 
 export const GET_EVENT_LIST = 'GET_EVENT_LIST';
-export function getEventList() {
+export function getEventList () {
   const query = { limit: 9999 };
   const q = buildAPIQS(query);
   return fetchJSON(`api/v2/event/mini/?${q}`, GET_EVENT_LIST, withToken());
