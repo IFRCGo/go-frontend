@@ -257,6 +257,21 @@ export function deletePerWorkplanApi (state = initialState, action) {
   return state;
 }
 
+export function deletePerDraft (state = initialState, action) {
+  switch (action.type) {
+    case 'DELETE_PER_DRAFT_INFLIGHT':
+      state = stateInflight(state, action);
+      break;
+    case 'DELETE_PER_DRAFT_FAILED':
+      state = stateError(state, action);
+      break;
+    case 'DELETE_PER_DRAFT_SUCCESS':
+      state = stateSuccess(state, action);
+      break;
+  }
+  return state;
+}
+
 export function getPerUploadedDocuments (state = initialState, action) {
   switch (action.type) {
     case 'GET_PER_UPLOADED_DOCUMENTS_INFLIGHT':
@@ -304,6 +319,7 @@ export default combineReducers({
   sendPerOverview,
   sendPerWorkplan,
   deletePerWorkplanApi,
+  deletePerDraft,
   getPerUploadedDocuments,
   getPerMission
 });

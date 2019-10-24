@@ -23,6 +23,7 @@ import {
   getEventById,
   addSubscriptions,
   delSubscription,
+  deletePerDraft,
   getPerOverviewFormStrict as getPerOverviewForm,
   getPerMission
 } from '../actions';
@@ -266,6 +267,11 @@ class Account extends React.Component {
     if (nextProps.perForm.getPerCountries.fetched && nextProps.perForm.getPerCountries.data.count > 0) {
       this.setState({ chosenCountry: { id: nextProps.perForm.getPerCountries.data.results[0].id, society_name: nextProps.perForm.getPerCountries.data.results[0].society_name } });
     }
+
+    if (this.props.perForm.deletePerDraft.receivedAt !== nextProps.perForm.deletePerDraft.receivedAt) {
+      const draftQueryFilters = { user: this.props.user.id };
+      this.props._getPerDraftDocument(draftQueryFilters);
+    }
   }
 
   syncNotificationState (data) {
@@ -428,6 +434,10 @@ class Account extends React.Component {
     this.props._clearEvents(eventId);
     this.props._delSubscription(eventId);
     this.forceUpdate();
+  }
+
+  delPerDraft (draftId) {
+    this.props._deletePerDraft({ id: draftId });
   }
 
   isPerPermission () {
@@ -859,6 +869,13 @@ class Account extends React.Component {
                   to={draftDocument.code === 'overview' ? '/per-forms/overview/' + draftDocument.country.id : '/edit-per-forms/' + draftDocument.code + '/' + draftDocument.user.username + '/' + draftDocument.country.id}>
                   Edit
                 </Link>
+
+                <button
+                  className='button button--small button--primary-bounded'
+                  onClick={() => this.delPerDraft(draftDocument.id)}
+                  style={{ marginLeft: 10 }}>
+                  Delete
+                </button>
               </div>
             </div>);
           index++;
@@ -993,6 +1010,7 @@ if (environment !== 'production') {
     _getProfile: T.func,
     _updateSubscriptions: T.func,
     _delSubscription: T.func,
+    _deletePerDraft: T.func,
     _getFieldReportsByUser: T.func,
     _updateProfile: T.func,
     _getPerCountries: T.func,
@@ -1031,6 +1049,7 @@ const dispatcher = (dispatch) => ({
   _getPerDraftDocument: (...args) => dispatch(getPerDraftDocument(...args)),
   _addSubscriptions: (...args) => dispatch(addSubscriptions(...args)),
   _delSubscription: (...args) => dispatch(delSubscription(...args)),
+  _deletePerDraft: (...args) => dispatch(deletePerDraft(...args)),
   _clearEvents: (eventId) => dispatch({ type: 'CLEAR_EVENTS', eventId: eventId }),
   _getPerOverviewForm: (...args) => dispatch(getPerOverviewForm(...args)),
   _getPerMission: (...args) => dispatch(getPerMission(...args))

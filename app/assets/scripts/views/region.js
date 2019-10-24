@@ -1,5 +1,6 @@
 'use strict';
 import React from 'react';
+import c from 'classnames';
 import { PropTypes as T } from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -15,13 +16,20 @@ import {
   Bar
 } from 'recharts';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-
 import { Helmet } from 'react-helmet';
 
 import { environment } from '../config';
+import FullscreenHeader from '../components/common/fullscreen-header';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { get } from '../utils/utils/';
 import { nope } from '../utils/format';
+import {
+  enterFullscreen,
+  exitFullscreen,
+  isFullscreen,
+  addFullscreenListener,
+  removeFullscreenListener
+} from '../utils/fullscreen';
 import {
   getAdmAreaById,
   getAdmAreaAppealsList,
@@ -42,7 +50,6 @@ import { getCountryMeta } from '../utils/get-country-meta';
 import App from './app';
 import Fold from '../components/fold';
 import TabContent from '../components/tab-content';
-import RegionMap from '../components/map/region-map';
 import BlockLoading from '../components/block-loading';
 import EmergenciesTable from '../components/connected/emergencies-table';
 import AppealsTable from '../components/connected/appeals-table';
@@ -66,8 +73,12 @@ class AdminArea extends SFPComponent {
     super(props);
 
     this.state = {
-      maskLayer: this.getMaskLayer(getRegionId(props.match.params.id))
+      maskLayer: this.getMaskLayer(getRegionId(props.match.params.id)),
+      fullscreen: false
     };
+
+    this.toggleFullscreen = this.toggleFullscreen.bind(this);
+    this.onFullscreenChange = this.onFullscreenChange.bind(this);
   }
 
   componentWillReceiveProps (nextProps) {
@@ -89,6 +100,25 @@ class AdminArea extends SFPComponent {
     this.getData(this.props);
     this.getAdmArea(this.props.type, getRegionId(this.props.match.params.id));
     this.displayTabContent();
+    addFullscreenListener(this.onFullscreenChange);
+  }
+
+  componentWillUnmount () {
+    removeFullscreenListener(this.onFullscreenChange);
+  }
+
+  onFullscreenChange () {
+    this.setState({fullscreen: isFullscreen()});
+  }
+
+  toggleFullscreen () {
+    if (isFullscreen()) {
+      exitFullscreen();
+      this.setState({fullscreen: false});
+    } else {
+      enterFullscreen(document.querySelector('#presentation'));
+      this.setState({fullscreen: true});
+    }
   }
 
   // Sets default tab if url param is blank or incorrect
@@ -328,8 +358,7 @@ class AdminArea extends SFPComponent {
 
     if (!fetched || error) return null;
 
-    const bbox = getRegionBoundingBox(data.id);
-    const mapContainerClass = 'region__map';
+    const mapBoundingBox = getRegionBoundingBox(data.id);
     const regionName = get(regionMeta, [data.id, 'name'], nope);
     const activeOperations = get(this.props.appealStats, 'data.results.length', false);
 
@@ -367,28 +396,26 @@ class AdminArea extends SFPComponent {
             <div className='inner'>
               <TabPanel>
                 <TabContent>
-                  <div className='fold' id='operations-map'>
-                    <div className='inner'>
-                      <h2 className='fold__title'>{activeOperations === null || isNaN(activeOperations) ? null : `Active IFRC Operations (${activeOperations})`}</h2>
-                      <div className={mapContainerClass}>
-                        <RegionMap
-                          operations={this.props.appealStats}
-                          bbox={bbox}
-                          layers={[this.state.maskLayer]}
-                          noExport={true}
-                          noRenderEmergencyTitle={true}
-                        />
-                      </div>
+                  <div className={c('fold', {presenting: this.state.fullscreen})} id='presentation'>
+                    {this.state.fullscreen ? (<FullscreenHeader title='IFRC Disaster Response and Preparedness'/>) : null}
+                    <div className={c('inner', {'appeals--fullscreen': this.state.fullscreen})}>
+                      <AppealsTable
+                        title={'Active IFRC Operations'}
+                        region={getRegionId(this.props.match.params.id)}
+                        regionOperations={this.props.appealStats}
+                        mapBoundingBox={mapBoundingBox}
+                        mapLayers={[this.state.maskLayer]}
+                        activeOperations={activeOperations}
+                        showActive={true}
+                        id={'appeals'}
+                        showRegionMap={true}
+                        viewAll={'/appeals/all?region=' + data.id}
+                        viewAllText={`View all IFRC operations for ${regionName} region`}
+                        fullscreen={this.state.fullscreen}
+                        toggleFullscreen={this.toggleFullscreen}
+                      />
                     </div>
                   </div>
-                  <AppealsTable
-                    title={'Active IFRC Operations'}
-                    region={getRegionId(this.props.match.params.id)}
-                    showActive={true}
-                    id={'appeals'}
-                    viewAll={'/appeals/all?region=' + data.id}
-                    viewAllText={`View all IFRC operations for ${regionName} region`}
-                  />
                   {this.renderCountries()}
                   <Fold title='Statistics' headerClass='visually-hidden' id='stats'>
                     <div className='stats-chart'>

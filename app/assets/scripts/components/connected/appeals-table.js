@@ -22,7 +22,7 @@ import DisplayTable, { SortHeader, FilterHeader } from '../display-table';
 import DateFilterHeader from '../common/filters/date-filter-header';
 import { SFPComponent } from '../../utils/extendables';
 import { appealTypes as appealsType, appealTypeOptions } from '../../utils/appeal-type-constants';
-import HomeMap from '../map/home-map';
+import MainMap from '../map/main-map';
 
 class AppealsTable extends SFPComponent {
   constructor (props) {
@@ -218,15 +218,25 @@ class AppealsTable extends SFPComponent {
               resource='api/v2/appeal'
             />
           ) : null}
-          {this.props.showMap ? (
-            <HomeMap
-              operations={appealsList}
+          {this.props.showRegionMap ? (
+            <MainMap
+              operations={this.props.regionOperations}
+              mapBoundingBox={this.props.mapBoundingBox}
+              layers={this.props.maskLayer}
               noExport={true}
               noRenderEmergencies={true}
               fullscreen={this.props.fullscreen}
               toggleFullscreen={this.props.toggleFullscreen}
             />
-          ) : null}
+          ) : null }
+          {this.props.showHomeMap ? (
+            <MainMap
+              operations={appealsList}
+              noExport={true}
+              noRenderEmergencies={true}
+              fullscreen={this.props.fullscreen}
+              toggleFullscreen={this.props.toggleFullscreen}
+            />) : null}
           {this.props.fullscreen ? null : (
             <DisplayTable
               className='table table--zebra table--active-ops'
