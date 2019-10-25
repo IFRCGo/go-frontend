@@ -350,8 +350,8 @@ class AdminArea extends SFPComponent {
               <h1 className='inpage__title'>{regionName}</h1>
             </div>
           </div>
-          <KeyFiguresHeader appealsList={this.props.appealStats} keyFiguresList={['numBeneficiaries', 'amountRequested', 'amountFunded']}/>
         </header>
+        <KeyFiguresHeader appealsList={this.props.appealStats} keyFiguresList={['numBeneficiaries', 'amountRequested', 'amountFunded']}/>
         <Tabs
           selectedIndex={ selectedIndex }
           onSelect={index => handleTabChange(index)}
