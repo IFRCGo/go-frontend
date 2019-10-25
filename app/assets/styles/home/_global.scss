@@ -119,9 +119,13 @@
   margin: 0;
 
   @include media(small-up) {
-    box-shadow: $base-box-shadow;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  @include media(large-up) {
+    justify-content: space-between;
   }
 
   @include media(large-up) {
@@ -132,32 +136,28 @@
     @include column(12/12);
     border: 1px solid $base-border-color;
     padding: ($global-spacing * 2) $global-spacing;
-    margin-bottom: ($global-spacing * 2);
     display: flex;
     flex-direction: column;
 
     @include media(small-up) {
       @include span(6/12, $offset: 0, $cycle: 0);
-      //border-right: 1px solid $base-border-color;
-      border-radius: 0;
-
-      &:first-of-type {
-        border-radius: ($base-border-radius * 2) 0 0 ($base-border-radius * 2);
-      }
+      border: 1px solid $base-border-color;
+      border-radius: ($base-border-radius * 2);
 
       &:last-of-type {
-        border-radius: 0 ($base-border-radius * 2) ($base-border-radius * 2) 0;
-        border-right: none;
+        margin-right: 0;
       }
     }
 
     @include media(medium-up) {
       @include span(4/12, $cycle: 3);
+      margin: 0 ($global-spacing * .5) ($global-spacing * 2) 0;
+
     }
 
     @include media(large-up) {
       @include span(2/10, $cycle: 5);
-      margin-bottom: 0;
+      margin: 0 ($global-spacing * .5);
     }
   }
 
