@@ -15,7 +15,7 @@ import { countries } from '../utils/field-report-constants';
 import { environment, api } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { get, dateOptions, datesAgo, dTypeOptions } from '../utils/utils/';
-import { commaSeparatedNumber as n, commaSeparatedLargeNumber as bigN, nope, round } from '../utils/format';
+import { commaSeparatedNumber as n, nope, round } from '../utils/format';
 import {
   getAdmAreaById,
   getAdmAreaAppealsList,
@@ -54,6 +54,7 @@ import PreparednessSummary from '../components/country/preparedness-summary';
 import PreparednessWorkPlan from '../components/country/preparedness-work-plan';
 import PreparednessPhaseOutcomes from '../components/country/preparedness-phase-outcomes';
 import PreparednessColumnBar from '../components/country/preparedness-column-graph';
+import KeyFiguresHeader from '../components/common/key-figures';
 import { SFPComponent } from '../utils/extendables';
 import { NO_DATA } from '../utils/constants';
 import { getRegionSlug } from '../utils/region-constants';
@@ -373,128 +374,128 @@ class AdminArea extends SFPComponent {
     return null;
   }
 
-  renderStats () {
-    const {
-      fetched,
-      error,
-      data: { stats }
-    } = this.props.appealStats;
+  // renderStats () {
+  //   const {
+  //     fetched,
+  //     error,
+  //     data: { stats }
+  //   } = this.props.appealStats;
 
-    if (!fetched || error) {
-      return null;
-    }
+  //   if (!fetched || error) {
+  //     return null;
+  //   }
 
-    return (
-      <div className="inpage__headline-stats">
-        <div className="header-stats">
-          <ul className="stats-list">
-            <li className="stats-list__item stats-people">
-              {n(stats.numBeneficiaries)}
-              <small>Targeted people in ongoing operations</small>
-            </li>
-            <li className="stats-list__item stats-funding stat-borderless stat-double">
-              {n(stats.amountRequested)}
-              <small>Requested Amount (CHF)</small>
-            </li>
-            <li className="stats-list__item stat-double">
-              {n(stats.amountFunded)}
-              <small>Funding (CHF)</small>
-            </li>
-          </ul>
-        </div>
-      </div>
-    );
-  }
+  //   return (
+  //     <div className="inpage__headline-stats">
+  //       <div className="header-stats">
+  //         <ul className="stats-list">
+  //           <li className="stats-list__item stats-people">
+  //             {n(stats.numBeneficiaries)}
+  //             <small>Targeted people in ongoing operations</small>
+  //           </li>
+  //           <li className="stats-list__item stats-funding stat-borderless stat-double">
+  //             {n(stats.amountRequested)}
+  //             <small>Requested Amount (CHF)</small>
+  //           </li>
+  //           <li className="stats-list__item stat-double">
+  //             {n(stats.amountFunded)}
+  //             <small>Funding (CHF)</small>
+  //           </li>
+  //         </ul>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
-  renderCountryProfile () {
-    const { fetched, data } = this.props.fdrs;
-    if (!fetched) {
-      return null;
-    }
-    const population = get(data, 'Population.value');
-    const gdp = get(data, 'GDP.value');
-    const poverty = get(data, 'Poverty.value');
-    const literacy = get(data, 'Literacy.value');
-    const urbanPop = get(data, 'UrbPop.value');
+  // renderCountryProfile () {
+  //   const { fetched, data } = this.props.fdrs;
+  //   if (!fetched) {
+  //     return null;
+  //   }
+  //   const population = get(data, 'Population.value');
+  //   const gdp = get(data, 'GDP.value');
+  //   const poverty = get(data, 'Poverty.value');
+  //   const literacy = get(data, 'Literacy.value');
+  //   const urbanPop = get(data, 'UrbPop.value');
 
-    // get unique years of data
-    let years = {};
-    Object.keys(data)
-      .map(d => data[d].year)
-      .forEach(year => {
-        if (!years[year]) {
-          years[year] = true;
-        }
-      });
+  //   // get unique years of data
+  //   let years = {};
+  //   Object.keys(data)
+  //     .map(d => data[d].year)
+  //     .forEach(year => {
+  //       if (!years[year]) {
+  //         years[year] = true;
+  //       }
+  //     });
 
-    return (
-      <div className="inpage__header-col">
-        <div className="content-list-group">
-          <div className="content-list">
-            <h3>Country Statistics</h3>
-            <ul>
-              <li>
-                Population
-                <span className="content-highlight">{bigN(population)}</span>
-              </li>
-              <li>
-                Urban Pop <span className="content-highlight">{urbanPop ? urbanPop + '%' : nope}</span>
-              </li>
-              <li>
-                GDP
-                <span className="content-highlight">{gdp ? '$' + bigN(gdp) : nope}</span>
-              </li>
-              <li>
-                GNI / Capita
-                <span className="content-highlight">{n(get(data, 'GNIPC.value'))}</span>
-              </li>
-              <li>
-                Poverty (% pop)
-                <span className="content-highlight">{poverty ? poverty + '%' : nope}</span>
-              </li>
-              <li>
-                Life Expectancy <span className="content-highlight">{n(get(data, 'LifeExp.value'))}</span>
-              </li>
-              <li>
-                Literacy <span className="content-highlight">{literacy ? literacy + '%' : nope}</span>
-              </li>
-            </ul>
-          </div>
-          <div className="content-list">
-            <h3>National Society</h3>
-            <ul>
-              <li>
-                Income (CHF)
-                <span className="content-highlight">{bigN(get(data, 'KPI_IncomeLC_CHF.value'))}</span>
-              </li>
-              <li>
-                Expenditures (CHF)
-                <span className="content-highlight">{bigN(get(data, 'KPI_expenditureLC_CHF.value'))}</span>
-              </li>
-              <li>
-                Volunteers
-                <span className="content-highlight">{n(get(data, 'KPI_PeopleVol_Tot.value'))}</span>
-              </li>
-              <li>
-                Trained in first aid
-                <span className="content-highlight">{n(get(data, 'KPI_TrainFA_Tot.value'))}</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <p>
-          Source:{' '}
-          <a href="http://data.ifrc.org/fdrs/" target="_blank">
-            FDRS
-          </a>{' '}
-          | Reporting year(s):{' '}
-          {Object.keys(years)
-            .sort()
-            .join(', ')}
-        </p>
-      </div>
-    );
-  }
+  //   return (
+  //     <div className="inpage__header-col">
+  //       <div className="content-list-group">
+  //         <div className="content-list">
+  //           <h3>Country Statistics</h3>
+  //           <ul>
+  //             <li>
+  //               Population
+  //               <span className="content-highlight">{bigN(population)}</span>
+  //             </li>
+  //             <li>
+  //               Urban Pop <span className="content-highlight">{urbanPop ? urbanPop + '%' : nope}</span>
+  //             </li>
+  //             <li>
+  //               GDP
+  //               <span className="content-highlight">{gdp ? '$' + bigN(gdp) : nope}</span>
+  //             </li>
+  //             <li>
+  //               GNI / Capita
+  //               <span className="content-highlight">{n(get(data, 'GNIPC.value'))}</span>
+  //             </li>
+  //             <li>
+  //               Poverty (% pop)
+  //               <span className="content-highlight">{poverty ? poverty + '%' : nope}</span>
+  //             </li>
+  //             <li>
+  //               Life Expectancy <span className="content-highlight">{n(get(data, 'LifeExp.value'))}</span>
+  //             </li>
+  //             <li>
+  //               Literacy <span className="content-highlight">{literacy ? literacy + '%' : nope}</span>
+  //             </li>
+  //           </ul>
+  //         </div>
+  //         <div className="content-list">
+  //           <h3>National Society</h3>
+  //           <ul>
+  //             <li>
+  //               Income (CHF)
+  //               <span className="content-highlight">{bigN(get(data, 'KPI_IncomeLC_CHF.value'))}</span>
+  //             </li>
+  //             <li>
+  //               Expenditures (CHF)
+  //               <span className="content-highlight">{bigN(get(data, 'KPI_expenditureLC_CHF.value'))}</span>
+  //             </li>
+  //             <li>
+  //               Volunteers
+  //               <span className="content-highlight">{n(get(data, 'KPI_PeopleVol_Tot.value'))}</span>
+  //             </li>
+  //             <li>
+  //               Trained in first aid
+  //               <span className="content-highlight">{n(get(data, 'KPI_TrainFA_Tot.value'))}</span>
+  //             </li>
+  //           </ul>
+  //         </div>
+  //       </div>
+  //       <p>
+  //         Source:{' '}
+  //         <a href="http://data.ifrc.org/fdrs/" target="_blank">
+  //           FDRS
+  //         </a>{' '}
+  //         | Reporting year(s):{' '}
+  //         {Object.keys(years)
+  //           .sort()
+  //           .join(', ')}
+  //       </p>
+  //     </div>
+  //   );
+  // }
 
   isPerPermission () {
     return (typeof this.props.user.username !== 'undefined' && this.props.user.username !== null) &&
@@ -528,28 +529,25 @@ class AdminArea extends SFPComponent {
         </Helmet>
         <header className="inpage__header">
           <div className="inner">
-            <div className="inpage__headline">
-              <h1 className="inpage__title">
-                {data.name}
-                {data.inform_score ? (
-                  <span className="inpage__title--inform">
+            <h1 className="inpage__title">
+              {data.name}
+              {data.inform_score ? (
+                <span className="inpage__title--inform">
                     Inform Score: <span className="inpage__title--inform--score">{round(data.inform_score, 1)}</span>
-                  </span>
-                ) : null}
-              </h1>
-              <div className="inpage__header-actions">
-                <a
-                  href={url.resolve(api, `api/country/${data.id}/change/`)}
-                  className="button button--primary-bounded"
-                >
+                </span>
+              ) : null}
+            </h1>
+            <div className="inpage__header-actions">
+              <a
+                href={url.resolve(api, `api/country/${data.id}/change/`)}
+                className="button button--primary-bounded"
+              >
                   Edit Country
-                </a>
-              </div>
+              </a>
             </div>
-            <div className="inpage__header-col">{this.renderStats()}</div>
-            {this.renderCountryProfile()}
           </div>
         </header>
+        <KeyFiguresHeader appealsList={this.props.appealStats} keyFiguresList={['numBeneficiaries', 'amountRequested', 'amountFunded']}/>
         <Tabs
           selectedIndex={TAB_DETAILS.map(({ hash }) => hash).indexOf(this.props.location.hash)}
           onSelect={index => handleTabChange(index)}
