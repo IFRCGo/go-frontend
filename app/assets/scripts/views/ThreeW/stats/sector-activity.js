@@ -3,7 +3,7 @@ import React from 'react';
 import { _cs } from '@togglecorp/fujs';
 
 import { sectorList } from '../../../utils/constants';
-import DonutChart from '../../../components/new/donut-chart';
+import DonutChart from '../../../components/donut-chart';
 
 export default class SectorActivity extends React.PureComponent {
   getRenderData = (projectList) => {

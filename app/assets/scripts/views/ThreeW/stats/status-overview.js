@@ -5,7 +5,7 @@ import {
   listToGroupList,
 } from '@togglecorp/fujs';
 
-import VerticalBarChart from '../../../components/new/vertical-bar-chart';
+import VerticalBarChart from '../../../components/vertical-bar-chart';
 
 import { statuses } from '../../../utils/constants';
 

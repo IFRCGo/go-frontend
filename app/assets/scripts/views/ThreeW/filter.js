@@ -5,7 +5,7 @@ import Faram from '@togglecorp/faram';
 import { unique } from '@togglecorp/fujs';
 import memoize from 'memoize-one';
 
-import SelectInput from '../../components/new/select-input';
+import SelectInput from '../../components/form-elements/select-input';
 import {
   statusList,
   sectorList,

@@ -7,10 +7,10 @@ import _cs from 'classnames';
 import { connect } from 'react-redux';
 import memoize from 'memoize-one';
 
-import SelectInput from '../../components/new/select-input';
-import TextInput from '../../components/new/text-input';
-import NumberInput from '../../components/new/number-input';
-import DateInput from '../../components/new/date-input';
+import SelectInput from '../../components/form-elements/select-input';
+import TextInput from '../../components/form-elements/text-input';
+import NumberInput from '../../components/form-elements/number-input';
+import DateInput from '../../components/form-elements/date-input';
 
 import {
   getCountries,
