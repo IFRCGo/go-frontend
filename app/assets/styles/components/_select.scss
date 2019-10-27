@@ -1,0 +1,18 @@
+.tc-select {
+  display: flex;
+  align-items: baseline;
+  padding: 0 4px;
+
+  .tc-select-label {
+    padding: 6px;
+
+    &:after {
+      content: ':';
+    }
+  }
+
+  .tc-select-input {
+    padding: 6px;
+    min-width: 120px;
+  }
+}
