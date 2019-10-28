@@ -135,7 +135,7 @@
   &__item {
     @include column(12/12);
     border: 1px solid $base-border-color;
-    padding: ($global-spacing * 2) $global-spacing;
+    padding: ($global-spacing * 2) ($global-spacing * .5);
     display: flex;
     flex-direction: column;
 
