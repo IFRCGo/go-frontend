@@ -314,7 +314,7 @@ class Emergency extends React.Component {
                         return (
                           <div className='response__doc__item' key={`item-${item.id}`}>
                             {item.name}
-                            <a className='collecticon-download response__doc__item__link' target='_blank' href={item.document}>
+                            <a className='collecticon-download response__doc__item__link' target='_blank' href={item.document || item.document_url}>
                             </a>
                           </div>
                         );
