@@ -46,13 +46,6 @@ var prodBuild = false;
 
 function readPackage () {
   pkg = JSON.parse(fs.readFileSync('package.json'));
-  // Using a custom version of react for IE11 compatibility.
-  // https://github.com/IFRCGo/go-frontend/pull/87
-  // Module is removed from the dependencies, added to the vendor scripts and
-  // exposed as "react", and added as external dependency to the bundle.
-  // To revert back delete lines marked // REACT OVERRIDE
-  // and install the original react.
-  delete pkg.dependencies['@xavescor/react']; // REACT OVERRIDE
 }
 readPackage();
 
@@ -121,7 +114,6 @@ gulp.task('javascript', function () {
   function bundler () {
     if (pkg.dependencies) {
       let keys = Object.keys(pkg.dependencies);
-      keys.push('react'); // REACT OVERRIDE
       watcher.external(keys);
     }
     return watcher.bundle()
@@ -163,7 +155,6 @@ gulp.task('vendorScripts', function () {
     require: pkg.dependencies ? Object.keys(pkg.dependencies) : []
   });
   return vb
-    .require('@xavescor/react', { expose: 'react' }) // REACT OVERRIDE
     .bundle()
     .on('error', gutil.log.bind(gutil, 'Browserify Error'))
     .pipe(source('vendor.js'))
