@@ -31,7 +31,7 @@ const tooltipOptions = {
   }
 };
 
-export default function KeyFiguresHeader (props) {
+export default function KeyFigures (props) {
   const {
     data: { stats },
     fetched,
@@ -96,7 +96,7 @@ export default function KeyFiguresHeader (props) {
 }
 
 if (environment !== 'production') {
-  KeyFiguresHeader.propTypes = {
+  KeyFigures.propTypes = {
     appealsList: T.object,
     keyFiguresList: T.array,
     data: T.object,
