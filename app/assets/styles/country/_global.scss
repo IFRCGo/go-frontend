@@ -1,4 +1,6 @@
 .page--country {
+  position: relative;
+
   .emergencies {
     display: none;
   }
@@ -236,4 +238,332 @@
 .country__pill__wrap {
   justify-content: center;
   flex-wrap: wrap;
+}
+
+.three-w-container {
+  .heading {
+    margin: 16px;
+  }
+
+  .content {
+    padding: 16px;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+
+    .left {
+      flex-shrink: 0;
+      padding: 8px;
+
+      .add-button {
+        margin-right: 10px;
+      }
+    }
+
+    .three-w-filters {
+      padding: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      flex-grow: 1;
+    }
+
+    .export-button {
+      flex-shrink: 0;
+      margin: 8px;
+    }
+
+    .three-w-map-container {
+      position: relative;
+      width: 100%;
+
+      .three-w-map {
+        width: 100%;
+        height: 700px;
+      }
+
+      .three-w-stats-region-overview {
+        width: 280px;
+        background-color: rgba(255, 255, 255, .9);
+        padding: 16px;
+        max-height: 580px;
+        position: absolute;
+        right: 16px;
+        bottom: 16px;
+        overflow: auto;
+      }
+    }
+
+    .three-w-map-bottom-details {
+      display: flex;
+      justify-content: space-around;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+
+      >div {
+        flex-basis: calc(100% / 3);
+        background-color: #fff;
+        padding: 8px 16px;
+        border: 1px solid rgba(0, 0, 0, .1);
+      }
+    }
+
+    .three-w-project-list-table-container {
+      width: 100%;
+      padding: 48px 0;
+    }
+  }
+}
+
+.three-w-stats-summary {
+  display: flex;
+
+  .summary-element {
+    flex-basis: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .summary-element-value {
+      display: flex;
+      font-size: 36px;
+
+      .summary-element-value-suffix {
+        color: $primary-color;
+      }
+    }
+
+    .summary-element-label {
+      text-align: center;
+    }
+  }
+}
+
+.three-w-stats-sector-activity {
+  .sector-activity-heading {
+    text-align: center;
+    padding: 6px;
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  .sector-activity-content {
+    display: flex;
+    align-items: center;
+
+    .sector-activity-donut-chart {
+      align-self: stretch;
+      width: 200px;
+    }
+
+    .sector-activity-legend {
+      flex-grow: 1;
+
+      .sector-activity-legend-item {
+        display: flex;
+        align-items: center;
+
+        .legend-item-block {
+          width: 14px;
+          height: 14px;
+          margin: 0 10px;
+        }
+      }
+    }
+  }
+}
+
+.three-w-stats-status-overview {
+  .status-overview-heading {
+    text-align: center;
+    padding: 6px;
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  .status-overview-bar-chart {
+    width: 100%;
+    height: 200px;
+  }
+
+  .status-bar-chart-labels {
+    padding: 0 32px;
+    display: flex;
+    justify-content: space-around;
+    margin-left: 10px;
+  }
+}
+
+.three-w-project-list-table {
+  width: 100%;
+
+  th {
+    padding: 16px 10px;
+    text-align: left;
+  }
+
+  td {
+    padding: 10px;
+  }
+
+  tbody {
+    tr {
+      &:nth-child(odd) {
+        background-color: #eee;
+      }
+    }
+  }
+}
+
+.three-w-map-district-detail-popover {
+  padding: 10px;
+  width: 340px;
+  max-height: 240px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 3px 1px rgba(0, 0, 0, .3);
+  border-radius: 5px;
+
+  .detail-popover-title {
+    margin: 0;
+    padding: 6px;
+    flex-shrink: 0;
+    color: $primary-color;
+  }
+
+  .detail-popover-content {
+    flex-grow: 1;
+    overflow: auto;
+
+    .popover-project-detail {
+      padding: 6px 0px;
+
+      .popover-project-detail-heading {
+        font-weight: bold;
+        padding: 6px;
+      }
+
+      .popover-project-detail-element {
+        display: flex;
+
+        .popover-project-detail-element-label {
+          padding: 0 6px;
+          color: rgba(0, 0, 0, .6);
+        }
+
+        .popover-project-detail-element-value {
+          padding: 0 6px;
+          color: rgba(0, 0, 0, .9);
+        }
+      }
+
+      .popover-project-detail-last-updated {
+        font-size: 10px;
+        color: rgba(0, 0, 0, .3);
+        margin-bottom: -6px;
+      }
+
+      &:not(:last-child) {
+        border-bottom: 1px solid rgba(0, 0, 0, .1);
+      }
+    }
+  }
+}
+
+.three-w-region-progress-bar {
+  height: 15px;
+  border: 1px solid rgba(0, 0, 0, .1);
+
+  .three-w-region-progress-bar-progress {
+    height: 100%;
+    background-color: rgba(0, 0, 0, .5);
+  }
+}
+
+.three-w-region-district {
+  padding: 10px 0;
+}
+
+.three-w-region-scale {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(0, 0, 0, .1);
+  padding: 6px 0;
+}
+
+.project-form-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 11;
+  background-color: #fff;
+  overflow: auto;
+
+  >header {
+    display: flex;
+    align-items: center;
+
+    >h2 {
+      margin: 0;
+      padding: 24px;
+    }
+  }
+
+}
+
+.project-form {
+  .multi-input-section {
+    .section-content {
+      display: flex;
+    }
+  }
+
+  .project-form-select {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 10px;
+    flex-grow: 1;
+
+    .tc-select-label {
+      padding: 0;
+      font-size: 12px;
+    }
+
+    .tc-select-input {
+      width: 100%;
+      padding: 0;
+    }
+  }
+
+  .budget-input-container {
+    display: flex;
+  }
+
+  > footer {
+    padding: 24px;
+  }
+}
+
+.project-form-input-section {
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+
+  &:nth-child(odd) {
+    background-color: #f5f5f5;
+  }
+
+  .section-title {
+    flex-basis: 30%;
+    font-weight: bold;
+    flex-shrink: 0;
+  }
+
+  .section-content {
+    flex-grow: 1;
+  }
 }
