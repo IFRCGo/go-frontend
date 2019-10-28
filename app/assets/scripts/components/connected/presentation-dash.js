@@ -15,7 +15,7 @@ import {
   removeFullscreenListener
 } from '../../utils/fullscreen';
 
-import KeyFigures from '../../components/common/key-figures';
+import KeyFiguresHeader from '../../components/common/key-figures-header';
 
 import HomeCharts from '../homecharts';
 import AppealsTable from '../../components/connected/appeals-table';
@@ -71,7 +71,7 @@ class PresentationDash extends React.Component {
 
     return (
       <section className={c('fold--stats', {presenting: this.state.fullscreen})} id='presentation'>
-        <KeyFigures
+        <KeyFiguresHeader
           appealsList={appealsList}
           fullscreen={this.state.fullscreen}
           toggleFullscreen={this.toggleFullscreen}
