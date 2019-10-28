@@ -4,6 +4,7 @@ import BlockLoading from '../block-loading';
 import { environment } from '../../config';
 import { PropTypes as T } from 'prop-types';
 import Tooltip from './tooltip';
+import FullscreenHeader from './fullscreen-header';
 
 // Provides titles to associate with incoming stats
 // The explicit reference of these and the tooltip values could
@@ -75,7 +76,9 @@ export default function KeyFiguresHeader (props) {
 
   return (
     <div className='inner'>
-      {props.fullscreen ? (<div className='flex'><div style={{width: '375px', height: '56px', position: 'absolute'}}><img src="/assets/graphics/layout/logo.png" alt="IFRC GO logo" style={{width: '375px', height: '56px'}} /></div><h1 className='inpage__title inpage__title--map-fullscreen'>IFRC Disaster Response and Preparedness</h1></div>) : null}
+      {props.fullscreen ? (
+        <FullscreenHeader title='IFRC Disaster Response and Preparedness'/>
+      ) : null}
       <div className='stats-overall'>
         <h1 className='visually-hidden'>Overall stats</h1>
         <ul className='sumstats'>
