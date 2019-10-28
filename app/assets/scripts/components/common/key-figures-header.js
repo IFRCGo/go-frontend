@@ -7,7 +7,7 @@ import Tooltip from './tooltip';
 
 // Provides titles to associate with incoming stats
 // The explicit reference of these and the tooltip values could
-// be avoided be adding this data as properties on the incoming appealsList
+// be avoided by adding this data as properties on the incoming appealsList
 const keyTitle = {
   activeDrefs: 'Active DREF Operations',
   activeAppeals: 'Active Emergency Appeals',
