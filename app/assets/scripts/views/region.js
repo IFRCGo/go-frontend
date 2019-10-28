@@ -53,7 +53,7 @@ import TabContent from '../components/tab-content';
 import BlockLoading from '../components/block-loading';
 import EmergenciesTable from '../components/connected/emergencies-table';
 import AppealsTable from '../components/connected/appeals-table';
-import KeyFiguresHeader from '../components/common/key-figures';
+import KeyFiguresHeader from '../components/common/key-figures-header';
 import {
   Snippets,
   KeyFigures,

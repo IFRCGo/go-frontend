@@ -5,6 +5,9 @@ import { environment } from '../../config';
 import { PropTypes as T } from 'prop-types';
 import Tooltip from './tooltip';
 
+// Provides titles to associate with incoming stats
+// The explicit reference of these and the tooltip values could
+// be avoided be adding this data as properties on the incoming appealsList
 const keyTitle = {
   activeDrefs: 'Active DREF Operations',
   activeAppeals: 'Active Emergency Appeals',
@@ -16,6 +19,7 @@ const keyTitle = {
   amountFunded: 'Funding (CHF)'
 };
 
+// Lists two tooltip descriptions currently in use.
 const tooltipOptions = {
   activeDrefs: {
     title: 'DREF',
@@ -35,8 +39,6 @@ export default function KeyFigures (props) {
     error
   } = props.appealsList;
 
-  console.log('data', props.appealsList);
-
   if (fetching) {
     return <BlockLoading/>;
   }
@@ -47,15 +49,18 @@ export default function KeyFigures (props) {
 
   if (!fetched || error) { return null; }
 
-  const statsToShorten = ['budget', 'targetPop', 'amountFunded', 'amountRequested', 'numBeneficiaries'];
-  // const regionKeyFigures = ['numBeneficiaries', 'amountRequested', 'amountFunded'];
-
+  /**
+   * @return {Array} of key figures with edited numbers to fit format.
+   */
   const filteredKeyFigures = () => {
     return Object.keys(stats).map(stat => {
       let value = stats[stat];
+      // Applies common util to long numbers
+      const statsToShorten = ['budget', 'targetPop', 'amountFunded', 'amountRequested', 'numBeneficiaries'];
       if (statsToShorten.includes(stat)) {
         value = shortenLargeNumber(value, 1);
       }
+      // Applies common util to create percent
       if (stat === 'appealsFunding' && stats.appealsBudget) {
         value = `${percent(stats.appealsFunding, stats.appealsBudget, 1)}%`;
       }
