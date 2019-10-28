@@ -367,7 +367,9 @@ class AdminArea extends SFPComponent {
               <TabPanel>
                 <TabContent>
                   <div className={c('fold', {presenting: this.state.fullscreen})} id='presentation'>
-                    {this.state.fullscreen ? (<FullscreenHeader title='IFRC Disaster Response and Preparedness'/>) : null}
+                    {this.state.fullscreen ? (
+                      <FullscreenHeader title='IFRC Disaster Response and Preparedness'/>
+                    ) : null}
                     <div className={c('inner', {'appeals--fullscreen': this.state.fullscreen})}>
                       <AppealsTable
                         title={'Active IFRC Operations'}
