@@ -54,7 +54,7 @@ import PreparednessSummary from '../components/country/preparedness-summary';
 import PreparednessWorkPlan from '../components/country/preparedness-work-plan';
 import PreparednessPhaseOutcomes from '../components/country/preparedness-phase-outcomes';
 import PreparednessColumnBar from '../components/country/preparedness-column-graph';
-import KeyFiguresHeader from '../components/common/key-figures';
+import KeyFiguresHeader from '../components/common/key-figures-header';
 import { SFPComponent } from '../utils/extendables';
 import { NO_DATA } from '../utils/constants';
 import { getRegionSlug } from '../utils/region-constants';
