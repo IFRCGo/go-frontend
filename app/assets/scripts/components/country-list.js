@@ -41,7 +41,6 @@ const CountryList = props => {
   );
   countries.forEach((country, idx) => {
     const name = country.name;
-    console.log('name', country)
     if (name[0] !== currLetter) {
       currLetter = name[0];
       countryItems.push(
@@ -55,20 +54,24 @@ const CountryList = props => {
       </li>
     );
     activeCountries = countryItems.filter(item => {
-      const test = typeof item.props.children === 'string' 
-      const test1 = item.props.children[1]
-      return test || test1;
-    })
-    // console.log('countryItems', countryItems)
-    // console.log('activeCountries', activeCountries)
+      const letterHead = typeof item.props.children === 'string';
+      const activeOp = item.props.children[1];
+      return letterHead || activeOp;
+    });
   });
   return (
     <Fold title={countries.length + ' Countries in this Region'}>
-      <span>View only active operations</span>
-      <ToggleButton
-        value={ false }
-        onToggle={toggle}
-      />
+      <div className='button-group--horizontal'>
+        <span>
+          View only active operations
+        </span>
+        <div>
+          <ToggleButton
+            value={ !isFullList || false }
+            onToggle={toggle}
+          />
+        </div>
+      </div>
       <ul className='region-countries__list'>
         {isFullList ? (countryItems) : (activeCountries)}
 
