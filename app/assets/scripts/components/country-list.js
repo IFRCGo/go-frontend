@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import ToggleButton from 'react-toggle-button';
@@ -12,6 +12,12 @@ const CountryList = props => {
     error,
     data
   } = props.countries;
+
+  const [isFullList, toggleList] = useState(true);
+  const toggle = () => {
+    isFullList ? toggleList(false) : toggleList(true);
+  };
+
   if (!fetched || error) { return null; }
   let countries = data.results;
   if (props.appealStats.fetched && !props.appealStats.error) {
@@ -28,12 +34,14 @@ const CountryList = props => {
   // the first letter like 'C', 'D', etc. being array items, with a different class.
   //  It seemed hard to style a flowing 3-column list if this is broken up into separate <ul>s
   let countryItems = [];
+  let activeCountries = [];
   let currLetter = 'A';
   countryItems.push(
     <li className='region-countries__letter' key={currLetter}>{currLetter}</li>
   );
   countries.forEach((country, idx) => {
     const name = country.name;
+    console.log('name', country)
     if (name[0] !== currLetter) {
       currLetter = name[0];
       countryItems.push(
@@ -46,11 +54,24 @@ const CountryList = props => {
         {country.numOperations ? <span className='region-countries__link-op'>({country.numOperations} Active Operation{country.numOperations > 1 ? 's' : ''})</span> : null}
       </li>
     );
+    activeCountries = countryItems.filter(item => {
+      const test = typeof item.props.children === 'string' 
+      const test1 = item.props.children[1]
+      return test || test1;
+    })
+    // console.log('countryItems', countryItems)
+    // console.log('activeCountries', activeCountries)
   });
   return (
     <Fold title={countries.length + ' Countries in this Region'}>
+      <span>View only active operations</span>
+      <ToggleButton
+        value={ false }
+        onToggle={toggle}
+      />
       <ul className='region-countries__list'>
-        {countryItems}
+        {isFullList ? (countryItems) : (activeCountries)}
+
       </ul>
     </Fold>
   );
