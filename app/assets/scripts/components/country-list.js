@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
-import ToggleButton from 'react-toggle-button';
 import { environment } from '../config';
 import { get } from '../utils/utils/';
 import Fold from './fold';
+import ToggleButtonComponent from './common/toggle-button';
 
 const CountryList = props => {
   const {
@@ -28,12 +28,15 @@ const CountryList = props => {
     });
   }
 
+  /**
+   * @type {object} with a key of the letter and value of an array with countries
+   */
   const alphabetizedList = countries.reduce((prev, country) => {
     const letter = country.name[0];
+    // Only adds countries with active operations
     const activeCountries = country.numOperations ? (
       {[letter]: [...(prev[letter] || []), country]}
     ) : ({});
-
     return isFullList ? (
       {...prev, [letter]: [...(prev[letter] || []), country]}
     ) : (
@@ -43,17 +46,11 @@ const CountryList = props => {
 
   return (
     <Fold title={countries.length + ' Countries in this Region'}>
-      <div className='button-group--horizontal'>
-        <span>
-           View only active operations
-        </span>
-        <div>
-          <ToggleButton
-            value={ !isFullList || false }
-            onToggle={toggle}
-          />
-        </div>
-      </div>
+      <ToggleButtonComponent
+        value={ !isFullList || false }
+        toggle={toggle}
+        description='View only active operations'
+      />
       <ul className='region-countries__list'>
         {Object.entries(alphabetizedList).map(([letter, countries]) =>
           <div>
