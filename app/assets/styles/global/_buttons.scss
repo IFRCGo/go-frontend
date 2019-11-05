@@ -297,3 +297,11 @@
     margin-top: -$base-border-width;
   }
 }
+
+.toggle-button-group--horizontal {
+  display: flex;
+}
+
+.toggle-button-description {
+  margin-right: $global-spacing;
+}
