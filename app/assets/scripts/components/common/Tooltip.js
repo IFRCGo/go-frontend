@@ -7,13 +7,13 @@ import ReactTooltip from 'react-tooltip';
 const Tooltip = ({title, description}) => {
   return (
     <React.Fragment>
-      <a data-tip data-for='global' data-event='click focus'>
+      <a data-tip data-for={title} data-event='click focus'>
         <InfoIcon className='tooltip' />
       </a>
       <ReactTooltip
         className='tooltip'
         globalEventOff='click'
-        id='global'
+        id={title}
         aria-haspopup='true'
       >
         <header className='tooltip__header' >
