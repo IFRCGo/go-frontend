@@ -23,7 +23,7 @@ class Home extends React.Component {
             </div>
           </header>
           <div className='inpage__body inpage__body__main'>
-            <HighlightedOperations />
+            <HighlightedOperations opsType='all'/>
             <PresentationDash />
             <div className='inner'>
               <AlertsTable

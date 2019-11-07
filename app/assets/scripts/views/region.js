@@ -55,6 +55,7 @@ import Fold from '../components/fold';
 import TabContent from '../components/tab-content';
 import BlockLoading from '../components/block-loading';
 import EmergenciesTable from '../components/connected/emergencies-table';
+import HighlightedOperations from '../components/highlighted-operations';
 import AppealsTable from '../components/connected/appeals-table';
 import {
   Snippets,
@@ -400,6 +401,7 @@ class AdminArea extends SFPComponent {
             <div className='inner'>
               <TabPanel>
                 <TabContent>
+                  <HighlightedOperations opsType='region' opsId={data.id}/>
                   <div className={c('fold', {presenting: this.state.fullscreen})} id='presentation'>
                     {this.state.fullscreen ? (<FullscreenHeader title='IFRC Disaster Response and Preparedness'/>) : null}
                     <div className={c('inner', {'appeals--fullscreen': this.state.fullscreen})}>

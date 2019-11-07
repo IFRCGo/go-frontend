@@ -4,6 +4,7 @@ import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { environment } from '../../config';
 import { getFeaturedEmergencies, getFeaturedEmergenciesDeployments, getDeploymentERU } from '../../actions';
+import { countriesByRegion } from '../../utils/region-constants';
 import BlockLoading from '../block-loading';
 import Fold from '../fold';
 import OperationCard from './operation-card';
@@ -73,11 +74,19 @@ class HighlightedOperations extends React.Component {
     const foldLink = (<Link to='/appeals/all' className='fold__title__link'>View all operations</Link>);
     if (fetched && (error || !Array.isArray(data.results) || !data.results.length)) return null;
     else if (!fetched || fetching) return <div className='inner'><Fold title={title}><BlockLoading/></Fold></div>;
-    return (
+    let operations = data.results;
+    if (this.props.opsType === 'region') {
+      operations = operations.filter(op => countriesByRegion[this.props.opsId].includes(op.countries[0].id.toString()));
+    }
+    if (this.props.opsType === 'country') {
+      operations = operations.filter(op => op.countries[0].id === this.props.opsId);
+    }
+    return (operations.length ? (
       <div className='inner inner--emergencies'>
         <Fold title={title} navLink={foldLink} extraClass foldClass='fold__title--inline'>
           <ul className='key-emergencies-list'>
-            {data.results.slice(0, 3).map(operation =>
+            {/* displays the first three operations sorted by most recent by default */}
+            {operations.slice(0, 3).map(operation =>
               <OperationCard
                 operation={operation}
                 calculateDeployedPersonnel={this.calculateDeployedPersonnel}
@@ -86,6 +95,7 @@ class HighlightedOperations extends React.Component {
           </ul>
         </Fold>
       </div>
+    ) : null
     );
   }
 }
@@ -97,7 +107,9 @@ if (environment !== 'production') {
     _getDeploymentERU: T.func,
     featured: T.object,
     deployments: T.object,
-    eru: T.object
+    eru: T.object,
+    opsType: T.string,
+    opsId: T.string,
   };
 }
 
