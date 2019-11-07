@@ -3,7 +3,6 @@ import React from 'react';
 import c from 'classnames';
 import { PropTypes as T } from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import {
   ResponsiveContainer,
@@ -17,7 +16,7 @@ import {
 } from 'recharts';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { Helmet } from 'react-helmet';
-
+import CountryList from '../components/country-list';
 import { environment } from '../config';
 import FullscreenHeader from '../components/common/fullscreen-header';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
@@ -301,56 +300,6 @@ class AdminArea extends SFPComponent {
     );
   }
 
-  renderCountries () {
-    const {
-      fetched,
-      error,
-      data
-    } = this.props.countries;
-    if (!fetched || error) { return null; }
-    let countries = data.results;
-    if (this.props.appealStats.fetched && !this.props.appealStats.error) {
-      const activeOperations = get(this.props.appealStats, 'data.results', []);
-      countries = countries.map(d => {
-        const numOperations = activeOperations.filter(o => o.country && o.country.id === d.id).length;
-        return Object.assign({ numOperations }, d);
-      });
-    }
-
-    // Create the <li> elements for the list
-    // This code can probably be improved,
-    // The idea here is to generate an array of <li> elements with
-    // the first letter like 'C', 'D', etc. being array items, with a different class.
-    //  It seemed hard to style a flowing 3-column list if this is broken up into separate <ul>s
-    let countryItems = [];
-    let currLetter = 'A';
-    countryItems.push(
-      <li className='region-countries__letter' key={currLetter}>{currLetter}</li>
-    );
-    countries.forEach((country, idx) => {
-      const name = country.name;
-      if (name[0] !== currLetter) {
-        currLetter = name[0];
-        countryItems.push(
-          <li className='region-countries__letter' key={currLetter}>{currLetter}</li>
-        );
-      }
-      countryItems.push(
-        <li key={country.id} className='region-countries__item'>
-          <Link to={`/countries/${country.id}`} className='region-countries__link'><span className='region-countries__linkC'>{country.name}</span></Link>
-          {country.numOperations ? <span className='region-countries__link-op'>({country.numOperations} Active Operation{country.numOperations > 1 ? 's' : ''})</span> : null}
-        </li>
-      );
-    });
-    return (
-      <Fold title={countries.length + ' Countries in this Region'}>
-        <ul className='region-countries__list'>
-          {countryItems}
-        </ul>
-      </Fold>
-    );
-  }
-
   renderContent () {
     const {
       fetched,
@@ -420,7 +369,10 @@ class AdminArea extends SFPComponent {
                       />
                     </div>
                   </div>
-                  {this.renderCountries()}
+                  <CountryList
+                    countries={this.props.countries}
+                    appealStats={this.props.appealStats}
+                  />
                   <Fold title='Statistics' headerClass='visually-hidden' id='stats'>
                     <div className='stats-chart'>
                       {this.renderOperations10Years()}
