@@ -77,7 +77,7 @@ class HighlightedOperations extends React.Component {
       <div className='inner inner--emergencies'>
         <Fold title={title} navLink={foldLink} extraClass foldClass='fold__title--inline'>
           <ul className='key-emergencies-list'>
-            {data.results.map(operation =>
+            {data.results.slice(0, 3).map(operation =>
               <OperationCard
                 operation={operation}
                 calculateDeployedPersonnel={this.calculateDeployedPersonnel}
