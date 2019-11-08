@@ -48,19 +48,12 @@ const OperationCard = ({operation, calculateDeployedPersonnel}) => {
         </div>
 
         <div className='card_box_full card_box_container card_box_container--op'>
-          <div className='card_box card_box_left card_box--op'>
-            <div className="heading-tiny">Funding Coverage</div>
-          </div>
-
-          <div className='card_box card_box_left card_box--op'>
-            <div className="card_box_fc">{requested ? round(percent(funded, requested)) : 0}%</div>
-          </div>
+          <div className="heading-tiny">Funding Coverage</div>
+          <div className="card_box_fc">{requested ? round(percent(funded, requested)) : 0}%</div>
         </div>
-        {appeals.length ? (
-          <React.Fragment>
-            <Progress value={requested ? percent(funded, requested) : 0} max={100} />
-          </React.Fragment>
-        ) : null}
+        <div className="card_box_footer">
+          <Progress value={requested ? percent(funded, requested) : percent(0.1, 10)} max={100} />
+        </div>
       </Link>
     </li>
   );
