@@ -55,7 +55,7 @@ import TabContent from '../components/tab-content';
 import BlockLoading from '../components/block-loading';
 import EmergenciesTable from '../components/connected/emergencies-table';
 import AppealsTable from '../components/connected/appeals-table';
-import HomeCharts from '../components/homecharts';
+import TimelineCharts from '../components/timeline-charts';
 
 import {
   Snippets,
@@ -377,7 +377,7 @@ class AdminArea extends SFPComponent {
                   />
                   <Fold title='Statistics' headerClass='visually-hidden' id='stats'>
                     <div className='stats-chart'>
-                      <HomeCharts region={data.id} />
+                      <TimelineCharts region={data.id} />
                     </div>
                   </Fold>
                   <EmergenciesTable

@@ -16,7 +16,7 @@ import {
 
 import Homestats from '../homestats-container';
 
-import HomeCharts from '../homecharts';
+import TimelineCharts from '../timeline-charts';
 import AppealsTable from '../../components/connected/appeals-table';
 
 class PresentationDash extends React.Component {
@@ -71,7 +71,7 @@ class PresentationDash extends React.Component {
             toggleFullscreen={this.toggleFullscreen}
           />
         </div>
-        {this.state.fullscreen ? null : <HomeCharts /> }
+        {this.state.fullscreen ? null : <TimelineCharts /> }
       </section>
     );
   }

@@ -9,7 +9,7 @@ import BlockLoading from './block-loading';
 import { commaSeparatedLargeNumber } from '../utils/format';
 import { getAggregateAppeals } from '../actions';
 
-class HomeCharts extends React.Component {
+class TimelineCharts extends React.Component {
   componentDidMount () {
 
     const lastYear = DateTime.local().minus({months: 11}).startOf('day').toISODate();
@@ -207,7 +207,7 @@ class HomeCharts extends React.Component {
 }
 
 if (environment !== 'production') {
-  HomeCharts.propTypes = {
+  TimelineCharts.propTypes = {
     _getAggregateAppeals: T.func,
     aggregate: T.object,
     region: T.string
@@ -224,4 +224,4 @@ const dispatcher = (dispatch) => ({
   _getAggregateAppeals: (...args) => dispatch(getAggregateAppeals(...args))
 });
 
-export default connect(selector, dispatcher)(HomeCharts);
+export default connect(selector, dispatcher)(TimelineCharts);
