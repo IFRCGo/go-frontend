@@ -1,14 +1,26 @@
-'use strict';
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
+import { connect } from 'react-redux';
 import { ResponsiveContainer, LineChart, Line, Legend, XAxis, YAxis, Tooltip } from 'recharts';
 import { DateTime } from 'luxon';
 
 import { environment } from '../config';
 import BlockLoading from './block-loading';
 import { commaSeparatedLargeNumber } from '../utils/format';
+import { getAggregateAppeals } from '../actions';
 
-export default class HomeCharts extends React.Component {
+class HomeCharts extends React.Component {
+  componentDidMount () {
+
+    const lastYear = DateTime.local().minus({months: 11}).startOf('day').toISODate();
+    const lastDecade = DateTime.local().minus({years: 10}).startOf('day').toISODate();
+
+    this.props._getAggregateAppeals(lastYear, 'month', 'drefs', this.props.region);
+    this.props._getAggregateAppeals(lastYear, 'month', 'appeals', this.props.region);
+    this.props._getAggregateAppeals(lastDecade, 'year', 'drefs', this.props.region);
+    this.props._getAggregateAppeals(lastDecade, 'year', 'appeals', this.props.region);
+  }
+
   renderChart (data, unit) {
     let tickFormatter;
     let contentDateFormatter;
@@ -197,6 +209,19 @@ export default class HomeCharts extends React.Component {
 if (environment !== 'production') {
   HomeCharts.propTypes = {
     _getAggregateAppeals: T.func,
-    aggregate: T.object
+    aggregate: T.object,
+    region: T.string
   };
 }
+// /////////////////////////////////////////////////////////////////// //
+// Connect functions
+
+const selector = (state) => ({
+  aggregate: state.overallStats.aggregate
+});
+
+const dispatcher = (dispatch) => ({
+  _getAggregateAppeals: (...args) => dispatch(getAggregateAppeals(...args))
+});
+
+export default connect(selector, dispatcher)(HomeCharts);
