@@ -52,7 +52,6 @@ import { getCountryMeta } from '../utils/get-country-meta';
 import App from './app';
 import Fold from '../components/fold';
 import TabContent from '../components/tab-content';
-import BlockLoading from '../components/block-loading';
 import EmergenciesTable from '../components/connected/emergencies-table';
 import AppealsTable from '../components/connected/appeals-table';
 import TimelineCharts from '../components/timeline-charts';

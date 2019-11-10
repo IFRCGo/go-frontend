@@ -129,7 +129,6 @@ export function getAppealsList (countryId = null) {
 
 export const GET_AGGREGATE_APPEALS = 'GET_AGGREGATE_APPEALS';
 export function getAggregateAppeals (date, unit, type, region = undefined) {
-
   const typeMapping = { drefs: 0, appeals: 1 };
 
   const f = buildAPIQS({

@@ -11,7 +11,6 @@ import { getAggregateAppeals } from '../actions';
 
 class TimelineCharts extends React.Component {
   componentDidMount () {
-
     const lastYear = DateTime.local().minus({months: 11}).startOf('day').toISODate();
     const lastDecade = DateTime.local().minus({years: 10}).startOf('day').toISODate();
 
