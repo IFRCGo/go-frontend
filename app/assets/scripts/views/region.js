@@ -4,16 +4,16 @@ import c from 'classnames';
 import { PropTypes as T } from 'prop-types';
 import { connect } from 'react-redux';
 import { DateTime } from 'luxon';
-import {
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  BarChart,
-  Bar
-} from 'recharts';
+// import {
+//   ResponsiveContainer,
+//   LineChart,
+//   Line,
+//   XAxis,
+//   YAxis,
+//   Tooltip,
+//   BarChart,
+//   Bar
+// } from 'recharts';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { Helmet } from 'react-helmet';
 import CountryList from '../components/country-list';
@@ -55,6 +55,8 @@ import TabContent from '../components/tab-content';
 import BlockLoading from '../components/block-loading';
 import EmergenciesTable from '../components/connected/emergencies-table';
 import AppealsTable from '../components/connected/appeals-table';
+import HomeCharts from '../components/homecharts';
+
 import {
   Snippets,
   KeyFigures,
@@ -195,110 +197,110 @@ class AdminArea extends SFPComponent {
     );
   }
 
-  renderOperations10Years () {
-    const {
-      data,
-      fetched,
-      fetching,
-      error
-    } = this.props.aggregateYear;
+  // renderOperations10Years () {
+  //   const {
+  //     data,
+  //     fetched,
+  //     fetching,
+  //     error
+  //   } = this.props.aggregateYear;
 
-    const zone = 'utc';
-    const tickFormatter = (date) => DateTime.fromISO(date, { zone }).toFormat('yyyy');
+  //   const zone = 'utc';
+  //   const tickFormatter = (date) => DateTime.fromISO(date, { zone }).toFormat('yyyy');
 
-    const contentFormatter = (payload) => {
-      if (!payload.payload || !payload.payload[0]) { return null; }
+  //   const contentFormatter = (payload) => {
+  //     if (!payload.payload || !payload.payload[0]) { return null; }
 
-      const item = payload.payload[0].payload;
-      return (
-        <article className='chart-tooltip'>
-          <div className='chart-tooltip__contents'>
-            <dl>
-              <dd>Date</dd>
-              <dt>{tickFormatter(item.timespan)}</dt>
-              <dd>Total</dd>
-              <dt>{item.count}</dt>
-            </dl>
-          </div>
-        </article>
-      );
-    };
+  //     const item = payload.payload[0].payload;
+  //     return (
+  //       <article className='chart-tooltip'>
+  //         <div className='chart-tooltip__contents'>
+  //           <dl>
+  //             <dd>Date</dd>
+  //             <dt>{tickFormatter(item.timespan)}</dt>
+  //             <dd>Total</dd>
+  //             <dt>{item.count}</dt>
+  //           </dl>
+  //         </div>
+  //       </article>
+  //     );
+  //   };
 
-    return error ? (
-      <p>Operations data not available.</p>
-    ) : (
-      <figure className='chart'>
-        <figcaption>Operations over the past 10 years</figcaption>
-        <div className='chart__container'>
-          {!fetched || fetching ? (
-            <BlockLoading />
-          ) : (
-            <ResponsiveContainer>
-              <LineChart data={data}>
-                <XAxis tickFormatter={tickFormatter} dataKey='timespan' axisLine={false} padding={{ left: 16, right: 16 }} />
-                <YAxis axisLine={false} tickLine={false} width={32} padding={{ bottom: 16 }} />
-                <Line type='monotone' dataKey='count' stroke='#C02C2C' />
-                <Tooltip content={contentFormatter} />
-              </LineChart>
-            </ResponsiveContainer>
-          )}
-        </div>
-      </figure>
-    );
-  }
+  //   return error ? (
+  //     <p>Operations data not available.</p>
+  //   ) : (
+  //     <figure className='chart'>
+  //       <figcaption>Operations over the past 10 years</figcaption>
+  //       <div className='chart__container'>
+  //         {!fetched || fetching ? (
+  //           <BlockLoading />
+  //         ) : (
+  //           <ResponsiveContainer>
+  //             <LineChart data={data}>
+  //               <XAxis tickFormatter={tickFormatter} dataKey='timespan' axisLine={false} padding={{ left: 16, right: 16 }} />
+  //               <YAxis axisLine={false} tickLine={false} width={32} padding={{ bottom: 16 }} />
+  //               <Line type='monotone' dataKey='count' stroke='#C02C2C' />
+  //               <Tooltip content={contentFormatter} />
+  //             </LineChart>
+  //           </ResponsiveContainer>
+  //         )}
+  //       </div>
+  //     </figure>
+  //   );
+  // }
 
-  renderPersonnelBySociety () {
-    const {
-      data,
-      fetched,
-      fetching,
-      error
-    } = this.props.personnel;
+  // renderPersonnelBySociety () {
+  //   const {
+  //     data,
+  //     fetched,
+  //     fetching,
+  //     error
+  //   } = this.props.personnel;
 
-    const contentFormatter = (payload) => {
-      if (!payload.payload || !payload.payload[0]) { return null; }
+  //   const contentFormatter = (payload) => {
+  //     if (!payload.payload || !payload.payload[0]) { return null; }
 
-      const item = payload.payload[0].payload;
-      return (
-        <article className='chart-tooltip'>
-          <div className='chart-tooltip__contents'>
-            <dl>
-              <dd>Society</dd>
-              <dt>{item.name}</dt>
-              <dd>Total</dd>
-              <dt>{item.count}</dt>
-            </dl>
-          </div>
-        </article>
-      );
-    };
+  //     const item = payload.payload[0].payload;
+  //     return (
+  //       <article className='chart-tooltip'>
+  //         <div className='chart-tooltip__contents'>
+  //           <dl>
+  //             <dd>Society</dd>
+  //             <dt>{item.name}</dt>
+  //             <dd>Total</dd>
+  //             <dt>{item.count}</dt>
+  //           </dl>
+  //         </div>
+  //       </article>
+  //     );
+  //   };
 
-    return error ? (
-      <p>No active deployments to show.</p>
-    ) : (
-      <figure className='chart'>
-        <figcaption>Active deployments by participating National Societies</figcaption>
-        <div className='chart__container'>
-          {!fetched || fetching ? (
-            <BlockLoading />
-          ) : (
-            data.personnelBySociety.length ? (
-              <ResponsiveContainer>
-                <BarChart data={data.personnelBySociety}>
-                  <XAxis dataKey='name' axisLine={false} padding={{ left: 16, right: 16 }} />
-                  <YAxis axisLine={false} tickLine={false} width={32} padding={{ bottom: 16 }} />
-                  <Bar dataKey='count' fill='#C02C2C' />
-                  <Tooltip content={contentFormatter} />
-                </BarChart>
-              </ResponsiveContainer>
-            ) : (
-              <p>No data to show.</p>
-            )
-          )}
-        </div>
-      </figure>
-    );
-  }
+  //   return error ? (
+  //     <p>No active deployments to show.</p>
+  //   ) : (
+  //     <figure className='chart'>
+  //       <figcaption>Active deployments by participating National Societies</figcaption>
+  //       <div className='chart__container'>
+  //         {!fetched || fetching ? (
+  //           <BlockLoading />
+  //         ) : (
+  //           data.personnelBySociety.length ? (
+  //             <ResponsiveContainer>
+  //               <BarChart data={data.personnelBySociety}>
+  //                 <XAxis dataKey='name' axisLine={false} padding={{ left: 16, right: 16 }} />
+  //                 <YAxis axisLine={false} tickLine={false} width={32} padding={{ bottom: 16 }} />
+  //                 <Bar dataKey='count' fill='#C02C2C' />
+  //                 <Tooltip content={contentFormatter} />
+  //               </BarChart>
+  //             </ResponsiveContainer>
+  //           ) : (
+  //             <p>No data to show.</p>
+  //           )
+  //         )}
+  //       </div>
+  //     </figure>
+  //   );
+  // }
 
   renderContent () {
     const {
@@ -375,8 +377,7 @@ class AdminArea extends SFPComponent {
                   />
                   <Fold title='Statistics' headerClass='visually-hidden' id='stats'>
                     <div className='stats-chart'>
-                      {this.renderOperations10Years()}
-                      {this.renderPersonnelBySociety()}
+                      <HomeCharts region={data.id} />
                     </div>
                   </Fold>
                   <EmergenciesTable
