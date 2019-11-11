@@ -37,6 +37,7 @@ import { showAlert } from '../components/system-alerts';
 
 import Fold from '../components/fold';
 import TabContent from '../components/tab-content';
+import PerAccountTab from '../components/per/per-account-tab';
 
 import {
   FormCheckboxGroup,
@@ -750,6 +751,7 @@ class Account extends React.Component {
   }
 
   renderPerFormDocuments (documents) {
+    console.log('doc', documents)
     const regions = [];
     Object.keys(documents).forEach((regionKey, regionIndex) => {
       const countries = [];
@@ -985,7 +987,8 @@ class Account extends React.Component {
                 </TabPanel>
                 <TabPanel>
                   <TabContent isError={!this.isPerPermission()} errorMessage="Please login to view content" title="PER Forms">
-                    {this.renderPerFormsComponent()}
+                    {/* {this.renderPerFormsComponent()} */}
+                    <PerAccountTab />
                   </TabContent>
                 </TabPanel>
               </div>
