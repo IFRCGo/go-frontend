@@ -4,16 +4,6 @@ import c from 'classnames';
 import { PropTypes as T } from 'prop-types';
 import { connect } from 'react-redux';
 import { DateTime } from 'luxon';
-// import {
-//   ResponsiveContainer,
-//   LineChart,
-//   Line,
-//   XAxis,
-//   YAxis,
-//   Tooltip,
-//   BarChart,
-//   Bar
-// } from 'recharts';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { Helmet } from 'react-helmet';
 import CountryList from '../components/country-list';
