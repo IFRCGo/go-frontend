@@ -274,23 +274,26 @@ class MainMap extends React.Component {
             onDtypeHover={this.onDtypeHover.bind(this)}/>}
 
         <div className={mapContainerClassName}>
-          <div className='map-vis__legend__filters'>
-            <div className='map-vis__legend__filters-wrap'>
-              <DateFilterHeader
-                id='date'
-                title='Date'
-                filter={this.state.filters}
-                featureType='map'
-                onSelect={this.handleDateChange.bind(this)} />
+          {!this.props.fullscreen ? (
+            <div className='map-vis__legend__filters'>
+              <div className='map-vis__legend__filters-wrap'>
+                <DateFilterHeader
+                  id='date'
+                  title='Date'
+                  filter={this.state.filters}
+                  featureType='map'
+                  onSelect={this.handleDateChange.bind(this)} />
+              </div>
+              <div className='map-vis__legend__filters-wrap'>
+                <EmergencyTypesDropdown emergenciesByType={emergenciesByType}
+                  onDtypeClick={this.onDtypeClick.bind(this)} />
+              </div>
+              <div className='map-vis__legend__filters-wrap'>
+                <AppealTypesDropdown onAppealTypeChange={this.onAppealTypeChange.bind(this)} />
+              </div>
             </div>
-            <div className='map-vis__legend__filters-wrap'>
-              <EmergencyTypesDropdown emergenciesByType={emergenciesByType}
-                onDtypeClick={this.onDtypeClick.bind(this)} />
-            </div>
-            <div className='map-vis__legend__filters-wrap'>
-              <AppealTypesDropdown onAppealTypeChange={this.onAppealTypeChange.bind(this)} />
-            </div>
-          </div>
+          ) : null
+          }
           <MapComponent className='map-vis__holder'
             noExport={this.props.noExport}
             configureMap={this.configureMap}
