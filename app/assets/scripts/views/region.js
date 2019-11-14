@@ -11,10 +11,7 @@ import { environment } from '../config';
 import FullscreenHeader from '../components/common/fullscreen-header';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { get } from '../utils/utils/';
-import {
-  commaSeparatedNumber as n,
-  nope
-} from '../utils/format';
+import { nope } from '../utils/format';
 import {
   enterFullscreen,
   exitFullscreen,
@@ -43,9 +40,10 @@ import App from './app';
 import Fold from '../components/fold';
 import TabContent from '../components/tab-content';
 import EmergenciesTable from '../components/connected/emergencies-table';
+import HighlightedOperations from '../components/highlighted-operations';
 import AppealsTable from '../components/connected/appeals-table';
 import TimelineCharts from '../components/timeline-charts';
-
+import KeyFiguresHeader from '../components/common/key-figures-header';
 import {
   Snippets,
   KeyFigures,
@@ -215,12 +213,10 @@ class AdminArea extends SFPComponent {
           <div className='inner'>
             <div className='inpage__headline'>
               <h1 className='inpage__title'>{regionName}</h1>
-              <div className='inpage__introduction'>
-                {this.renderStats()}
-              </div>
             </div>
           </div>
         </header>
+        <KeyFiguresHeader appealsList={this.props.appealStats} keyFiguresList={['numBeneficiaries', 'amountRequested', 'amountFunded']}/>
         <Tabs
           selectedIndex={ selectedIndex }
           onSelect={index => handleTabChange(index)}
@@ -235,8 +231,11 @@ class AdminArea extends SFPComponent {
             <div className='inner'>
               <TabPanel>
                 <TabContent>
+                  <HighlightedOperations opsType='region' opsId={data.id}/>
                   <div className={c('fold', {presenting: this.state.fullscreen})} id='presentation'>
-                    {this.state.fullscreen ? (<FullscreenHeader title='IFRC Disaster Response and Preparedness'/>) : null}
+                    {this.state.fullscreen ? (
+                      <FullscreenHeader title='IFRC Disaster Response and Preparedness'/>
+                    ) : null}
                     <div className={c('inner', {'appeals--fullscreen': this.state.fullscreen})}>
                       <AppealsTable
                         title={'Active IFRC Operations'}

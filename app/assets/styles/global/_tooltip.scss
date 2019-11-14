@@ -1,0 +1,40 @@
+/* ==========================================================================
+   Tooltip
+   ========================================================================== */
+// Adds custom styles on top of react-tooltip, requiring some overides
+.tooltip {
+  color: black !important;
+  background-color: #fff !important;
+  opacity: 1 !important;
+  box-shadow: 0 4px 16px 2px rgba($base-color, 0.08);   // Elevation Index: 2
+  border-radius: $base-border-radius;
+  &.place-top {
+    &:after {
+    border-top-color: #fff !important;
+    }
+    }
+  &.place-bottom {
+    &:after {
+    border-bottom-color: #fff !important;
+    }
+    }
+  max-width: 350px;
+  padding: 16px;
+}
+
+.tooltip__header {
+  @include heading(1rem);
+  margin: 0 0 16px 0;
+  font-weight: bold;
+  text-align: start;
+}
+
+.tooltip__text {
+  display: block;
+  text-align: start !important;
+}
+
+// centers icon with text
+.icon-tooltip {
+  margin: -2px 3px;
+}
