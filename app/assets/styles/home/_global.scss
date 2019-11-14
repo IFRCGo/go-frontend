@@ -307,12 +307,10 @@
 
 .progress-bar {
   background: $grey-slate;
-  border-radius: $full-border-radius;
   width: 100%;
 
   &__value {
     background: $secondary-color;
-    border-radius: $full-border-radius;
     //height: 0.875rem;
     height: 9px;
 

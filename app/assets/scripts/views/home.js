@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet';
 import App from './app';
 import PresentationDash from '../components/connected/presentation-dash';
 import AlertsTable from '../components/connected/alerts-table';
-import FeaturedEmergencies from '../components/connected/featured-emergencies';
+import HighlightedOperations from '../components/highlighted-operations';
 
 class Home extends React.Component {
   render () {
@@ -23,7 +23,7 @@ class Home extends React.Component {
             </div>
           </header>
           <div className='inpage__body inpage__body__main'>
-            <FeaturedEmergencies />
+            <HighlightedOperations opsType='all'/>
             <PresentationDash />
             <div className='inner'>
               <AlertsTable
