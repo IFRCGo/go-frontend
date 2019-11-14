@@ -20,39 +20,88 @@ const PerAccountTab = props => {
   };
 
   const countryOptions = [];
-  if (props.perForm.getPerCountries.fetched && typeof props.perForm.getPerCountries.data.results !== 'undefined' && props.perForm.getPerCountries.data.results !== null) {
+  if (props.perForm.getPerCountries.data.results) {
     props.perForm.getPerCountries.data.results.forEach(country => {
-      const societyName = country.society_name !== null && country.society_name.trim() !== '' ? country.society_name : country.name + ' NS';
+      const societyName = country.society_name ? country.society_name : country.name + ' NS';
       countryOptions.push(<option value={country.id} key={'persociety' + country.id}>{societyName}</option>);
     });
   }
 
   const formButtons = [
     {
-      link: '/per-forms/policy-strategy/' + chosenCountry.id,
+      link: 'policy-strategy/',
       title: 'Area 1: Policy and Standards'
     },
     {
-      link: '/per-forms/analysis-and-planning/' + chosenCountry.id,
+      link: 'analysis-and-planning',
       title: 'Area 2: Analysis and Planning'
     },
     {
-      link: '/per-forms/operational-capacity/' + chosenCountry.id,
+      link: 'operational-capacity',
       title: 'Area 3: Operational capacity'
     },
     {
-      link: '/per-forms/operational-capacity-2/' + chosenCountry.id,
+      link: 'operational-capacity-2',
       title: 'Area 3: Operational capacity 2'
     },
     {
-      link: '/per-forms/coordination/' + chosenCountry.id,
+      link: 'coordination',
       title: 'Area 4: Coordination'
     },
     {
-      link: '/per-forms/operations-support/' + chosenCountry.id,
+      link: 'operations-support',
       title: 'Area 5: Operations support'
     }
   ];
+
+  const delPerDraft = (draftId) => {
+    props._deletePerDraft({ id: draftId });
+  }
+
+  const createRegionGroupedDocumentData = () => {
+    const groupedDocuments = {};
+    if (props.perOverviewForm.fetched) {
+      console.log('start', props.perOverviewForm.data.results)
+      props.perOverviewForm.data.results.forEach((perOverviewForm) => {
+        perOverviewForm.formType = 'overview';
+        if (perOverviewForm.country.region === null || perOverviewForm.country.region === '') {
+          perOverviewForm.country.region = -1;
+        }
+        if (!groupedDocuments.hasOwnProperty(perOverviewForm.country.region)) {
+          groupedDocuments[perOverviewForm.country.region] = { [perOverviewForm.country.id]: [] };
+          groupedDocuments[perOverviewForm.country.region][perOverviewForm.country.id].push(perOverviewForm);
+        } else {
+          if (!groupedDocuments[perOverviewForm.country.region].hasOwnProperty(perOverviewForm.country.id)) {
+            groupedDocuments[perOverviewForm.country.region][perOverviewForm.country.id] = [];
+          }
+          groupedDocuments[perOverviewForm.country.region][perOverviewForm.country.id].push(perOverviewForm);
+        }
+      });
+    }
+    if (props.perForm.getPerDocuments.fetched && !!props.perForm.getPerDocuments.data && !!props.perForm.getPerDocuments.data.results) {
+      props.perForm.getPerDocuments.data.results.forEach(document => {
+        if (document.country !== null) {
+          if (document.country.region === null) {
+            document.country.region = -1;
+          }
+          document.formType = 'per';
+          if (!groupedDocuments.hasOwnProperty(document.country.region)) {
+            groupedDocuments[document.country.region] = { [document.country.id]: [] };
+            groupedDocuments[document.country.region][document.country.id].push(document);
+          } else {
+            if (!groupedDocuments[document.country.region].hasOwnProperty(document.country.id)) {
+              groupedDocuments[document.country.region][document.country.id] = [];
+            }
+            groupedDocuments[document.country.region][document.country.id].push(document);
+          }
+        }
+      });
+    }
+    return groupedDocuments;
+  }
+
+  // const documents = renderPerFormDocuments(createRegionGroupedDocumentData());
+  console.log('finish', createRegionGroupedDocumentData());
 
   return (
     <div className='fold-container'>
@@ -77,7 +126,7 @@ const PerAccountTab = props => {
             {formButtons.map(button => (
               <div className='per__form__col'>
                 <Link
-                  to={button.link}
+                  to={`/per-forms/${button.link}/${chosenCountry.id}`}
                   className='button button--medium button--secondary-bounded'
                 >
                   {button.title}
