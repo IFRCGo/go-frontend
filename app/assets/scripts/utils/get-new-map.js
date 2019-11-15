@@ -10,7 +10,7 @@ export default function newMap (container, mapStyle = 'mapbox://styles/go-ifrc/c
     style: mapStyle,
     zoom: 1.5,
     minZoom: 1,
-    maxZoom: 6,
+    maxZoom: 8,
     scrollZoom: false,
     pitchWithRotate: false,
     dragRotate: false,
