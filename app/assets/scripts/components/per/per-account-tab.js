@@ -10,6 +10,8 @@ import {
   deletePerDraft,
   getPerOverviewFormStrict as getPerOverviewForm
 } from '../../actions';
+import PerDraftDocuments from './per-drafts';
+import PerDocuments from './per-documents';
 
 const PerAccountTab = props => {
   const [chosenCountry, setChosenCountry] = useState({ id: 0, society_name: '' });
@@ -54,55 +56,6 @@ const PerAccountTab = props => {
     }
   ];
 
-  const delPerDraft = (draftId) => {
-    props._deletePerDraft({ id: draftId });
-  }
-
-  const createRegionGroupedDocumentData = () => {
-    const groupedDocuments = {};
-    if (props.perOverviewForm.fetched) {
-      console.log('start', props.perOverviewForm.data.results)
-      props.perOverviewForm.data.results.forEach((perOverviewForm) => {
-        perOverviewForm.formType = 'overview';
-        if (perOverviewForm.country.region === null || perOverviewForm.country.region === '') {
-          perOverviewForm.country.region = -1;
-        }
-        if (!groupedDocuments.hasOwnProperty(perOverviewForm.country.region)) {
-          groupedDocuments[perOverviewForm.country.region] = { [perOverviewForm.country.id]: [] };
-          groupedDocuments[perOverviewForm.country.region][perOverviewForm.country.id].push(perOverviewForm);
-        } else {
-          if (!groupedDocuments[perOverviewForm.country.region].hasOwnProperty(perOverviewForm.country.id)) {
-            groupedDocuments[perOverviewForm.country.region][perOverviewForm.country.id] = [];
-          }
-          groupedDocuments[perOverviewForm.country.region][perOverviewForm.country.id].push(perOverviewForm);
-        }
-      });
-    }
-    if (props.perForm.getPerDocuments.fetched && !!props.perForm.getPerDocuments.data && !!props.perForm.getPerDocuments.data.results) {
-      props.perForm.getPerDocuments.data.results.forEach(document => {
-        if (document.country !== null) {
-          if (document.country.region === null) {
-            document.country.region = -1;
-          }
-          document.formType = 'per';
-          if (!groupedDocuments.hasOwnProperty(document.country.region)) {
-            groupedDocuments[document.country.region] = { [document.country.id]: [] };
-            groupedDocuments[document.country.region][document.country.id].push(document);
-          } else {
-            if (!groupedDocuments[document.country.region].hasOwnProperty(document.country.id)) {
-              groupedDocuments[document.country.region][document.country.id] = [];
-            }
-            groupedDocuments[document.country.region][document.country.id].push(document);
-          }
-        }
-      });
-    }
-    return groupedDocuments;
-  }
-
-  // const documents = renderPerFormDocuments(createRegionGroupedDocumentData());
-  console.log('finish', createRegionGroupedDocumentData());
-
   return (
     <div className='fold-container'>
       <section className='fold' id='per-forms'>
@@ -124,7 +77,7 @@ const PerAccountTab = props => {
           </div>
           <div className='clearfix'>
             {formButtons.map(button => (
-              <div className='per__form__col'>
+              <div key={button.title} className='per__form__col'>
                 <Link
                   to={`/per-forms/${button.link}/${chosenCountry.id}`}
                   className='button button--medium button--secondary-bounded'
@@ -137,8 +90,11 @@ const PerAccountTab = props => {
           <br /><br />
           <h2 className='fold__title margin-reset'>Active PER Forms</h2>
           <hr />
-          {/* <span className='text-semi-bold'>{documents}</span>
-          {this.renderDraftDocuments()} */}
+          <PerDocuments perForm={props.perForm} perOverviewForm={props.perOverviewForm}/>
+          <PerDraftDocuments
+            perForm={props.perForm}
+            deletePerDraft={props._deletePerDraft}
+          />
         </div>
       </section>
     </div>
