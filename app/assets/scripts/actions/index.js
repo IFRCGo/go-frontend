@@ -65,6 +65,15 @@ export function getProjects (countryId, filterValues) {
 
 export const POST_PROJECT = 'POST_PROJECT';
 export function postProject (data) {
+  const {
+    id,
+    ...otherData
+  } = data;
+
+  if (id) {
+    return postJSON(`api/v2/project/${id}/`, POST_PROJECT, otherData, withToken());
+  }
+
   return postJSON('api/v2/project/', POST_PROJECT, data, withToken());
 }
 
