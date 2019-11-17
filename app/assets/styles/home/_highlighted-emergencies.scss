@@ -51,54 +51,15 @@
 }
 
 .card_box_full {
-  //float: left;
-  //margin-top: 1rem;
-  //padding-top: 0.5rem;
-  //border-top: 1px solid base-border-color;
   width: 100%;
-  //font-size: 1.5rem;
   text-align: left;
+  padding: $global-spacing $global-spacing ($global-spacing / 2) $global-spacing;
+  justify-content: space-between;
+  align-items: baseline;
 
   .progress-bar {
-    //display: inline-block;
     width: 80%;
   }
-
-  //small {
-    //display: block;
-    //font-size: 0.875rem;
-    //text-transform: uppercase;
-    //color: rgba(0, 0, 0, 0.6);
-  //}
-
-  .progress-bar-container {
-    margin-top: -10px;
-  }
-
-  //.progress-bar__value {
-    //background-color: $secondary-color;
-  //}
-
-  //.progress-bar__key small {
-    //display: inline-block;
-    //@include media(xsmall-only) {
-      //font-size: 0.7rem;    
-    //}
-    //@include media(small-only) {
-      //font-size: 0.875rem;    
-    //}
-    //@include media(medium-only) {
-      //font-size: 0.65rem;    
-    //}
-    //@include media(large-only) {
-      //font-size: 0.835rem;    
-    //}
-    //@include media(xlarge-only) {
-      //font-size: 0.875rem;    
-    //}
-    //text-transform: uppercase;
-    //color: rgba(0, 0, 0, 0.6);
-  //}
 
   .progress-bar__key {
     display: inline-block;
@@ -107,6 +68,10 @@
     width: 20%;
     float: right;
   }
+}
+
+.card_box_footer {
+  margin-bottom: ($global-spacing / 2);
 }
 
 .more_button {

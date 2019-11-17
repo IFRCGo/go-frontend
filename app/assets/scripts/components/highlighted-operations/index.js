@@ -1,34 +1,30 @@
-'use strict';
 import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
-import Progress from './../progress-labeled';
-
-import { formatDate, percent, round, commaSeparatedNumber as n } from '../../utils/format';
-import { get } from '../../utils/utils';
 import { environment } from '../../config';
 import { getFeaturedEmergencies, getFeaturedEmergenciesDeployments, getDeploymentERU } from '../../actions';
+import { countriesByRegion } from '../../utils/region-constants';
 import BlockLoading from '../block-loading';
 import Fold from '../fold';
+import OperationCard from './operation-card';
 
 const title = 'Highlighted Operations';
 
-class FeaturedEmergencies extends React.Component {
+class HighlightedOperations extends React.Component {
   constructor (props) {
     super(props);
 
-    this.renderCard = this.renderCard.bind(this);
     this.calculateDeployedPersonnel = this.calculateDeployedPersonnel.bind(this);
     this.getDeploymentERU = this.getDeploymentERU.bind(this);
   }
 
-  componentWillMount () {
+  componentDidMount () {
     this.props._getFeaturedEmergencies();
     this.props._getFeaturedEmergenciesDeployments();
   }
 
-  componentWillReceiveProps () {
+  componentDidUpdate () {
     this.getDeploymentERU();
   }
 
@@ -73,93 +69,47 @@ class FeaturedEmergencies extends React.Component {
     return {'deployedErus': deployedErus, 'deployedPersonnel': deployedPersonnel};
   }
 
-  /* eslint-disable camelcase */
-  renderCard (d) {
-    const { id, name } = d;
-    const appeals = get(d, 'appeals', []);
-    const beneficiaries = appeals.reduce((acc, curr) => acc + curr.num_beneficiaries, 0);
-    const requested = appeals.reduce((acc, curr) => acc + Number(curr.amount_requested), 0);
-    const funded = appeals.reduce((acc, curr) => acc + Number(curr.amount_funded), 0);
-    const emergencyDeployments = this.calculateDeployedPersonnel(d);
-
-    return (
-      <li className='key-emergencies-item' key={id}>
-        <Link to={`/emergencies/${id}`}>
-          <div className="card_box card_box_left">
-            <h2 className='card__title'>{ name.length > 30 ? name.slice(0, 30) + '...' : name }</h2>
-            <small className='last_updated'>Last updated: {formatDate(d.updated_at)}</small>
-          </div>
-
-          <div className='card_box_container card_box_container--op'>
-            <div className='card_box card_box_left card_box--op'>
-              <div className="card_box_no">{n(beneficiaries)}</div>
-              <span className='affected_population_icon'></span>
-              <small className='heading-tiny'>Targeted Population</small>
-            </div>
-            <div className='card_box card_box_left card_box--op'>
-              <span className='affected_population_icon'></span>
-              <div className="card_box_no">{n(emergencyDeployments.deployedErus)}</div>
-              <small className='heading-tiny'>Deployed Emergency Response Units</small>
-            </div>
-          </div>
-
-          <div className='card_box_container card_box_container--op'>
-            <div className='card_box card_box_left card_box--op'>
-              <div className="card_box_no">{requested !== null ? n(requested) : 0} CHF</div>
-              <small className='heading-tiny'>Funding Requirements</small>
-            </div>
-            <div className='card_box card_box_left card_box--op'>
-              <span className='deployed_personnel_icon'></span>
-              <div className="card_box_no">{n(emergencyDeployments.deployedPersonnel)}</div>
-              <small className='heading-tiny'>Deployed Surge Personnel</small>
-            </div>
-          </div>
-
-          <div className='card_box_full card_box_container card_box_container--op'>
-            <div className='card_box card_box_left card_box--op'>
-              <div className="heading-tiny">Funding Coverage</div>
-            </div>
-
-            <div className='card_box card_box_left card_box--op'>
-              <div className="card_box_fc">{requested ? round(percent(funded, requested)) : 0}%</div>
-            </div>
-          </div>
-          {appeals.length ? (
-            <React.Fragment>
-              <Progress value={requested ? percent(funded, requested) : 0} max={100} />
-            </React.Fragment>
-          ) : null}
-        </Link>
-      </li>
-    );
-  }
-  /* eslint-enable camelcase */
-
   render () {
     const { error, fetching, fetched, data } = this.props.featured;
     const foldLink = (<Link to='/appeals/all' className='fold__title__link'>View all operations</Link>);
     if (fetched && (error || !Array.isArray(data.results) || !data.results.length)) return null;
     else if (!fetched || fetching) return <div className='inner'><Fold title={title}><BlockLoading/></Fold></div>;
-    return (
+    let operations = data.results;
+    if (this.props.opsType === 'region') {
+      operations = operations.filter(op => countriesByRegion[this.props.opsId].includes(op.countries[0].id.toString()));
+    }
+    if (this.props.opsType === 'country') {
+      operations = operations.filter(op => op.countries[0].id === this.props.opsId);
+    }
+    return (operations.length ? (
       <div className='inner inner--emergencies'>
         <Fold title={title} navLink={foldLink} extraClass foldClass='fold__title--inline'>
           <ul className='key-emergencies-list'>
-            {data.results.map(this.renderCard)}
+            {/* displays the first three operations sorted by most recent by default */}
+            {operations.slice(0, 3).map(operation =>
+              <OperationCard
+                operation={operation}
+                calculateDeployedPersonnel={this.calculateDeployedPersonnel}
+              />
+            )}
           </ul>
         </Fold>
       </div>
+    ) : null
     );
   }
 }
 
 if (environment !== 'production') {
-  FeaturedEmergencies.propTypes = {
+  HighlightedOperations.propTypes = {
     _getFeaturedEmergencies: T.func,
     _getFeaturedEmergenciesDeployments: T.func,
     _getDeploymentERU: T.func,
     featured: T.object,
     deployments: T.object,
-    eru: T.object
+    eru: T.object,
+    opsType: T.string,
+    opsId: T.string,
   };
 }
 
@@ -175,4 +125,4 @@ const dispatcher = (dispatch) => ({
   _getDeploymentERU: (...args) => dispatch(getDeploymentERU(...args))
 });
 
-export default connect(selector, dispatcher)(FeaturedEmergencies);
+export default connect(selector, dispatcher)(HighlightedOperations);
