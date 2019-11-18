@@ -268,11 +268,6 @@ class Account extends React.Component {
     if (nextProps.perForm.getPerCountries.fetched && nextProps.perForm.getPerCountries.data.count > 0) {
       this.setState({ chosenCountry: { id: nextProps.perForm.getPerCountries.data.results[0].id, society_name: nextProps.perForm.getPerCountries.data.results[0].society_name } });
     }
-
-    if (this.props.perForm.deletePerDraft.receivedAt !== nextProps.perForm.deletePerDraft.receivedAt) {
-      const draftQueryFilters = { user: this.props.user.id };
-      this.props._getPerDraftDocument(draftQueryFilters);
-    }
   }
 
   syncNotificationState (data) {
@@ -983,7 +978,7 @@ class Account extends React.Component {
                 <TabPanel>
                   <TabContent isError={!this.isPerPermission()} errorMessage="Please login to view content" title="PER Forms">
                     {/* {this.renderPerFormsComponent()} */}
-                    <PerAccountTab />
+                    <PerAccountTab user={this.props.user}/>
                   </TabContent>
                 </TabPanel>
               </div>

@@ -29,6 +29,13 @@ const PerAccountTab = props => {
     });
   }
 
+  const setDeletePerDraft = () => {
+    // delete draft promise
+    // successful completion - do the following
+    const draftQueryFilters = { user: props.user.id };
+    props._getPerDraftDocument(draftQueryFilters);
+  }
+
   const formButtons = [
     {
       link: 'policy-strategy/',
