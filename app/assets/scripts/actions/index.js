@@ -71,7 +71,7 @@ export function postProject (data) {
   } = data;
 
   if (id) {
-    return postJSON(`api/v2/project/${id}/`, POST_PROJECT, otherData, withToken());
+    return putJSON(`api/v2/project/${id}/`, POST_PROJECT, otherData, withToken());
   }
 
   return postJSON('api/v2/project/', POST_PROJECT, data, withToken());
