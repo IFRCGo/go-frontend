@@ -154,36 +154,6 @@ class AdminArea extends SFPComponent {
     this.props._getAdmAreaById(type, id);
   }
 
-  renderStats () {
-    const {
-      fetched,
-      error,
-      data: { stats }
-    } = this.props.appealStats;
-
-    if (!fetched || error) {
-      return null;
-    }
-
-    return (
-      <div className='inpage__headline-stats'>
-        <div className='header-stats'>
-          <ul className='stats-list'>
-            <li className='stats-list__item stats-people'>
-              {n(stats.numBeneficiaries)}<small>Affected People in the last 30 days</small>
-            </li>
-            <li className='stats-list__item stats-funding stat-borderless stat-double'>
-              {n(stats.amountRequested)}<small>Requested Amount (CHF)</small>
-            </li>
-            <li className='stats-list__item stat-double'>
-              {n(stats.amountFunded)}<small>Funding (CHF)</small>
-            </li>
-          </ul>
-        </div>
-      </div>
-    );
-  }
-
   renderContent () {
     const {
       fetched,
