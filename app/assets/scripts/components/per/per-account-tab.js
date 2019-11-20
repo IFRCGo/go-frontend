@@ -29,19 +29,6 @@ const PerAccountTab = props => {
     });
   }
 
-  const setDeletePerDraft = draftId => {
-    console.log('click', draftId, props.user.id)
-    // delete draft promise
-    // successful completion - do the following
-    props._deletePerDraft({ id: draftId })
-    const draftQueryFilters = { user: props.user.id };
-    props._getPerDraftDocument(draftQueryFilters);
-  }
-
-  // delPerDraft (draftId) {
-  //   this.props._deletePerDraft({ id: draftId });
-  // }
-
   const formButtons = [
     {
       link: 'policy-strategy/',
@@ -106,7 +93,7 @@ const PerAccountTab = props => {
           <PerDocuments perForm={props.perForm} perOverviewForm={props.perOverviewForm}/>
           <PerDraftDocuments
             perForm={props.perForm}
-            deletePerDraft={setDeletePerDraft}
+            deletePerDraft={props._deletePerDraft}
           />
         </div>
       </section>

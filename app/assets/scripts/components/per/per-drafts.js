@@ -31,7 +31,7 @@ const PerDraftDocuments = ({ perForm, deletePerDraft }) => {
 
               <button
                 className='button button--small button--primary-bounded'
-                onClick={() => deletePerDraft(draftDocument.id)}
+                onClick={() => deletePerDraft({id: draftDocument.id})}
                 style={{ marginLeft: 10 }}>
                   Delete
               </button>
