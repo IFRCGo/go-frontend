@@ -29,12 +29,18 @@ const PerAccountTab = props => {
     });
   }
 
-  const setDeletePerDraft = () => {
+  const setDeletePerDraft = draftId => {
+    console.log('click', draftId, props.user.id)
     // delete draft promise
     // successful completion - do the following
+    props._deletePerDraft({ id: draftId })
     const draftQueryFilters = { user: props.user.id };
     props._getPerDraftDocument(draftQueryFilters);
   }
+
+  // delPerDraft (draftId) {
+  //   this.props._deletePerDraft({ id: draftId });
+  // }
 
   const formButtons = [
     {
