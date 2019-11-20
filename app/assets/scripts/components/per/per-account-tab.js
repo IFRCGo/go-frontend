@@ -100,7 +100,7 @@ const PerAccountTab = props => {
           <PerDocuments perForm={props.perForm} perOverviewForm={props.perOverviewForm}/>
           <PerDraftDocuments
             perForm={props.perForm}
-            deletePerDraft={props._deletePerDraft}
+            deletePerDraft={setDeletePerDraft}
           />
         </div>
       </section>
