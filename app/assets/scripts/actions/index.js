@@ -128,7 +128,7 @@ export function getAppealsList (countryId = null) {
 }
 
 export const GET_AGGREGATE_APPEALS = 'GET_AGGREGATE_APPEALS';
-export function getAggregateAppeals (date, unit, type) {
+export function getAggregateAppeals (date, unit, type, region = undefined) {
   const typeMapping = { drefs: 0, appeals: 1 };
 
   const f = buildAPIQS({
@@ -137,6 +137,7 @@ export function getAggregateAppeals (date, unit, type) {
     sum_beneficiaries: 'num_beneficiaries',
     sum_amount_funded: 'amount_funded',
     filter_atype: typeMapping[type],
+    region,
     unit
   });
   return fetchJSON(`api/v1/aggregate/?${f}`, GET_AGGREGATE_APPEALS, withToken(), {aggregationUnit: unit, aggregationType: type});
