@@ -224,15 +224,15 @@ class AdminArea extends SFPComponent {
                       />
                     </div>
                   </div>
-                  <CountryList
-                    countries={this.props.countries}
-                    appealStats={this.props.appealStats}
-                  />
                   <Fold title='Statistics' headerClass='visually-hidden' id='stats'>
                     <div className='stats-chart'>
                       <TimelineCharts region={data.id} />
                     </div>
                   </Fold>
+                  <CountryList
+                    countries={this.props.countries}
+                    appealStats={this.props.appealStats}
+                  />
                   <EmergenciesTable
                     id='emergencies'
                     title='Recent Emergencies'
