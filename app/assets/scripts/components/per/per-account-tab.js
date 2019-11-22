@@ -18,7 +18,7 @@ const PerAccountTab = props => {
 
   const changeChosenCountry = e => {
     let filteredCountry = props.perForm.getPerCountries.data.results.filter(country => country.id === parseInt(e.target.value));
-    setChosenCountry({ chosenCountry: { id: filteredCountry[0].id, society_name: filteredCountry[0].society_name } });
+    setChosenCountry({ id: filteredCountry[0].id, society_name: filteredCountry[0].society_name });
   };
 
   const countryOptions = [];
@@ -70,7 +70,7 @@ const PerAccountTab = props => {
           </select><br /><br />
           <div className='text-center'>
             <Link
-              to={'/per-forms/overview/' + chosenCountry.id}
+              to={`/per-forms/overview/${chosenCountry.id}`}
               className='button button--medium button--secondary-bounded'>
               Overview
             </Link>

@@ -175,7 +175,6 @@ class Account extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      chosenCountry: { id: 0, society_name: '' },
       isNotificationsDirty: false,
       notifications: {
         countries: [],
@@ -205,9 +204,6 @@ class Account extends React.Component {
     this.onNotificationSubmit = this.onNotificationSubmit.bind(this);
     this.onProfileSubmit = this.onProfileSubmit.bind(this);
     this.toggleEditProfile = this.toggleEditProfile.bind(this);
-    this.changeChosenCountry = this.changeChosenCountry.bind(this);
-    // this.createRegionGroupedDocumentData = this.createRegionGroupedDocumentData.bind(this);
-    // this.renderPerFormDocuments = this.renderPerFormDocuments.bind(this);
     this.delSubscription = this.delSubscription.bind(this);
     this.componentIsLoading = true;
   }
@@ -263,9 +259,6 @@ class Account extends React.Component {
         this.setState({ isNotificationsDirty: false, isProfileDirty: false, profileEditMode: false });
         this.props._getProfile(this.props.user.username);
       }
-    }
-    if (nextProps.perForm.getPerCountries.fetched && nextProps.perForm.getPerCountries.data.count > 0) {
-      this.setState({ chosenCountry: { id: nextProps.perForm.getPerCountries.data.results[0].id, society_name: nextProps.perForm.getPerCountries.data.results[0].society_name } });
     }
     if (this.props.perForm.deletePerDraft.receivedAt !== nextProps.perForm.deletePerDraft.receivedAt) {
       const draftQueryFilters = { user: this.props.user.id };
@@ -421,11 +414,6 @@ class Account extends React.Component {
   toggleEditProfile () {
     this.syncProfileState(this.props.profile.data);
     this.setState({ profileEditMode: !this.state.profileEditMode });
-  }
-
-  changeChosenCountry (e) {
-    let filteredCountry = this.props.perForm.getPerCountries.data.results.filter(country => country.id === parseInt(e.target.value));
-    this.setState({ chosenCountry: { id: filteredCountry[0].id, society_name: filteredCountry[0].society_name } });
   }
 
   delSubscription (event) {
@@ -798,7 +786,7 @@ class Account extends React.Component {
                 </TabPanel>
                 <TabPanel>
                   <TabContent isError={!this.isPerPermission()} errorMessage="Please login to view content" title="PER Forms">
-                    <PerAccountTab user={this.props.user}/>
+                    <PerAccountTab user={this.props.user} />
                   </TabContent>
                 </TabPanel>
               </div>
