@@ -798,7 +798,6 @@ class Account extends React.Component {
                 </TabPanel>
                 <TabPanel>
                   <TabContent isError={!this.isPerPermission()} errorMessage="Please login to view content" title="PER Forms">
-                    {/* {this.renderPerFormsComponent()} */}
                     <PerAccountTab user={this.props.user}/>
                   </TabContent>
                 </TabPanel>
