@@ -1,5 +1,6 @@
 export const englishForm = {
   title: 'WELCOME TO THE PREPAREDNESS FOR EFFECTIVE RESPONSE TOOL',
+  areaType: '2',
   areaTitle: 'Area 2: Analysis and planning',
   areaQuestion: 'Do you want to assess the preparedness of your National Society for Epidemics and pandemics?',
   areaOptions: [
@@ -10,6 +11,7 @@ export const englishForm = {
   components: [
     {
       componentTitle: 'Component 6: Hazard, Context and Risk Analysis, Monitoring and Early Warning',
+      componentNumber: '6',
       componentDescription: 'Describes how the NS monitors and maps past, present and potential hazards, disasters and crises (e.g. hazard, vulnerability assessments, gathering information from communities and government authorities) and systematically evaluates the damage that could be caused by a potential disaster/crisis, the frequency, severity of the impact, and the alert the relevant areas to scale the preparedness actions to reduce population vulnerability.',
       namespaces: [
         {
@@ -105,6 +107,14 @@ export const englishForm = {
         {
           nsTitle: 'Component 6 performance',
           nsQuestion: 'Status:',
+          nsConsiderationHeader: 'Please take into consideration the following aspects',
+          nsConsiderationList: [
+            'NS Community Based Surveillance (CBS) is established with indicators and thresholds for epidemics and zoonoses.',
+            'CBS is coordinated with MoH Epidemics detection system and Emergency Operations Centre (including for zoonoses indicators).',
+            'NS has the capacity to collect and analyze data derived from VCAs and epidemic risk assessments on health hazards (including zoonoses) and health system access.',
+            'The NS has updated maps of health facilities, which are shared with branches every year.',
+            'For cross-border high risk areas, NSs coordinate risk monitoring, are familiar with each other&apos;s capacities and procedures, and have a mechanism in place to share information.'
+          ],
           nsAnswers: [
             'Not Reviewed',
             'Does not exist',
@@ -120,6 +130,7 @@ export const englishForm = {
     },
     {
       componentTitle: 'Component 7: Scenario planning',
+      componentNumber: '7',
       componentDescription: 'A set of practical operation plans that closely mirror the generic disaster or crisis response plan but are tailored to a specific hazard type (e.g. earthquake, dengue epidemic, floods, cyclone) and a specific scenario (i.e. number of people affected, their locations and other important factors).',
       namespaces: [
         {
@@ -210,6 +221,7 @@ export const englishForm = {
     },
     {
       componentTitle: 'Component 8: Risk management',
+      componentNumber: '8',
       componentDescription: 'A mapping of the potential risks in every area, along with its related mitigation measures. Including financial, reputational, organizational risks etc.',
       namespaces: [
         {
@@ -300,6 +312,7 @@ export const englishForm = {
     },
     {
       componentTitle: 'Component 9: Preparedness plans and budgets',
+      componentNumber: '9',
       componentDescription: 'Plans identifying organisational resources, determining roles and responsibilities, and developing policies, procedures and activities in order to reach a level of preparedness to be able to respond effectively to a disaster or crisis. Budgets ensure that the necessary financial support is secured to allow capacities to be built and readiness maintained.',
       namespaces: [
         {
@@ -380,6 +393,7 @@ export const englishForm = {
     },
     {
       componentTitle: 'Component 10: Business continuity',
+      componentNumber: '10',
       componentDescription: 'A strategy to counter any potential or anticipated obstacles to effective functioning of the NS, with an eye to ensuring that personnel and assets are protected and able to function in the event of a disaster/crisis.',
       namespaces: [
         {
@@ -420,6 +434,7 @@ export const englishForm = {
     },
     {
       componentTitle: 'Component 11: Emergency Response Procedures (SOPs)',
+      componentNumber: '11',
       componentDescription: 'Written guidelines that describe duties and rights of personnel, command structures, coordination with other organizations, and reporting requirements, etc. Includes detailed organogram, decision-making flow chart, and defined roles and responsibilities.',
       namespaces: [
         {
@@ -520,6 +535,7 @@ export const englishForm = {
     },
     {
       componentTitle: 'Component 12: Response and recovery planning',
+      componentNumber: '12',
       componentDescription: 'A documented set of procedures for the disaster/crisis response and recovery process. Including use of local capacities, transition to recovery, type of activities and serivices provided during response and recovery activities and exit strategies, procedures for DREF & EA, and templates for planning, budgeting and accessing funds.',
       namespaces: [
         {
@@ -660,6 +676,7 @@ export const englishForm = {
     },
     {
       componentTitle: 'Component 13: Pre-disaster meetings and agreements',
+      componentNumber: '13',
       componentDescription: 'A commitment to arrange meetings and agreements with Movement stakeholders and external actors to identify, plan for and address gaps for any upcoming disaster season (e.g. monsoon, floods or cyclones, or for any generic disaster/crisis event (e.g Epidemic, pandemic, confilict situations). Pre-disaster agreements should set out each partner\'s role in the event of a disaster/crisis.',
       namespaces: [
         {
