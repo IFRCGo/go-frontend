@@ -589,7 +589,7 @@ export const fieldsStep1 = {
   'startDate': {
     'EVT': {
       label: 'Start Date',
-      desc: 'Start date is when some significant effects are felt or when the first significant impact is felt.'  
+      desc: 'Start date is when some significant effects are felt or when the first significant impact is felt.'
     },
     'EW': {
       label: 'Predicted Date of Impact',
@@ -623,7 +623,7 @@ export const fieldsStep1 = {
     },
     'EW': {
       label: 'Government requests international assistance?',
-      desc: 'Indicate if the government requested international assistance.'      
+      desc: 'Indicate if the government requested international assistance.'
     }
   }
 };
@@ -667,21 +667,20 @@ export const fieldsStep2 = {
         'name': 'num-potentially-affected',
         'key': 'numPotentiallyAffected',
         'label': 'Potentially Affected',
-        'desc': '' // FIXME: Get desc
+        'desc': 'Number of people that are located in the geographic area where the hazard is likely to impact'
       },
       {
         'name': 'num-highest-risk',
         'key': 'numHighestRisk',
         'label': 'People at Highest Risk',
-        'desc': '' // FIXME: get desc
+        'desc': 'Number of people that are located in the geographic area where the hazard\'s impact is likely to be the highest'
       },
-      //WARNING: this is the only field that required a non-numeric response
+      // WARNING: this is the only field that requires a non-numeric response
       {
         'name': 'affected-pop-centres',
         'key': 'affectedPopCentres',
         'label': 'Largest Population Centres Likely to be Affected',
-        'desc': '' // FIXME: get desc
-      }
+        'desc': 'Names of large cities or towns which are most at risk' }
     ]
   },
   'description': {
@@ -696,7 +695,7 @@ export const fieldsStep2 = {
       'placeholder': '' // FIXME: do we need a separate placeholder for EW?
     }
   }
-}
+};
 
 export const fieldsStep3 = {
   'num-assisted-gov': {
@@ -782,8 +781,7 @@ export const fieldsStep3 = {
       'desc': 'List the early action activities undertaken by other actors and give a brief description.'
     }
   }
-}
-
+};
 
 const defaultFieldOptions = [
   {
@@ -800,18 +798,18 @@ const defaultFieldOptions = [
   }
 ];
 
-const drefOptions = defaultFieldOptions.slice(0, -1)
+const drefOptions = defaultFieldOptions.slice(0, -1);
 
 drefOptions.push({
   'label': 'Allocated',
-  'value': '3'  
-})
+  'value': '3'
+});
 
-const emergencyOptions = defaultFieldOptions.slice(0, -1)
+const emergencyOptions = defaultFieldOptions.slice(0, -1);
 emergencyOptions.push({
   'label': 'Launched',
   'value': '3'
-})
+});
 
 export const fieldsStep4 = {
   'plannedResponseRows': [
@@ -918,4 +916,4 @@ export const fieldsStep4 = {
       }
     }
   ]
-}
+};
