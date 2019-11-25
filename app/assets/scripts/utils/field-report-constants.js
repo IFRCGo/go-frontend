@@ -667,21 +667,20 @@ export const fieldsStep2 = {
         'name': 'num-potentially-affected',
         'key': 'numPotentiallyAffected',
         'label': 'Potentially Affected',
-        'desc': '' // FIXME: Get desc
+        'desc': 'Number of people that are located in the geographic area where the hazard is likely to impact'
       },
       {
         'name': 'num-highest-risk',
         'key': 'numHighestRisk',
         'label': 'People at Highest Risk',
-        'desc': '' // FIXME: get desc
+        'desc': 'Number of people that are located in the geographic area where the hazard\'s impact is likely to be the highest'
       },
-      //WARNING: this is the only field that required a non-numeric response
+      //WARNING: this is the only field that requires a non-numeric response
       {
         'name': 'affected-pop-centres',
         'key': 'affectedPopCentres',
         'label': 'Largest Population Centres Likely to be Affected',
-        'desc': '' // FIXME: get desc
-      }
+        'desc': 'Names of large cities or towns which are most at risk'     }
     ]
   },
   'description': {
