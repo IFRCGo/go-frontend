@@ -114,6 +114,11 @@ export function getFieldReportsList (page = 1, filters = {}) {
   return fetchJSON(`/api/v2/field_report/?${f}`, GET_FIELD_REPORTS_LIST, withToken());
 }
 
+export const GET_ACTIONS = 'GET_ACTIONS';
+export function getActions () {
+  return fetchJSON('/api/v2/action', GET_ACTIONS)
+}
+
 export const GET_SURGE_ALERTS = 'GET_SURGE_ALERTS';
 export function getSurgeAlerts (page = 1, filters = {}) {
   filters.limit = filters.limit || 5;
