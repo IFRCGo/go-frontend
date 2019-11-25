@@ -25,8 +25,11 @@ import {
 
 import {
   statusList,
+  statuses,
   sectorList,
+  sectors,
   programmeTypeList,
+  programmeTypes,
 } from '../../utils/constants';
 
 const statusOptions = statusList.map(p => ({
@@ -53,6 +56,11 @@ const operationTypeOptions = [
   { value: 'Long Term Operation', label: 'Long term operation' },
   { value: 'Emergency Operation', label: 'Emergency operation' },
 ];
+
+const operationTypes = {
+  0: 'Long Term Operation',
+  1: 'Emergency Operation',
+};
 
 const InputSection = ({
   className,
@@ -103,10 +111,33 @@ class ProjectForm extends React.PureComponent {
       },
     };
 
+    // console.warn(props.projectData);
+    const { projectData = {} } = props;
+
     this.state = {
       faramValues: {
-        secondary_sectors: [],
+        budget_amount: projectData.budget_amount,
         country: props.countryId,
+        event: projectData.event,
+        dtype: projectData.dtype,
+        project_district: projectData.project_district,
+        name: projectData.name,
+        operation_type: operationTypes[projectData.operation_type],
+        primary_sector: sectors[projectData.primary_sector],
+        programme_type: programmeTypes[projectData.programme_type],
+        end_date: projectData.end_date,
+        start_date: projectData.start_date,
+        reached_children: projectData.reached_children || undefined,
+        reached_female: projectData.reached_female || undefined,
+        reached_male: projectData.reached_male || undefined,
+        reached_total: projectData.reached_total || undefined,
+        reporting_ns: projectData.reporting_ns,
+        secondary_sectors: projectData.secondary_sectors ? projectData.secondary_sectors.map(d => sectors[d]) : [],
+        status: statuses[projectData.status],
+        target_children: projectData.target_children || undefined,
+        target_female: projectData.target_female || undefined,
+        target_male: projectData.target_male || undefined,
+        target_total: projectData.target_total || undefined,
       },
       faramErrors: {},
     };
@@ -212,7 +243,14 @@ class ProjectForm extends React.PureComponent {
   }
 
   handleFaramValidationSuccess = (faramValues) => {
-    this.props._postProject(faramValues);
+    if (this.props.projectData) {
+      this.props._postProject({
+        id: this.props.projectData.id,
+        ...faramValues,
+      });
+    } else {
+      this.props._postProject(faramValues);
+    }
   }
 
   handleFaramValidationFailure = (faramErrors) => {
@@ -263,7 +301,7 @@ class ProjectForm extends React.PureComponent {
     const currentOperationOptions = this.getCurrentOperationOptions(eventList);
 
     const fetchingCountries = countries && countries.fetching;
-    const shouldDisableCountryInput = fetchingCountries;
+    const shouldDisableCountryInput = fetchingCountries || true;
     const fetchingDistricts = districts && districts[faramValues.country] && districts[faramValues.country].fetching;
     const shouldDisableDistrictInput = fetchingCountries || fetchingDistricts;
     const fetchingEvents = eventList && eventList.fetching;

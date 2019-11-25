@@ -334,6 +334,21 @@ class AdminArea extends SFPComponent {
     this.props._getProjects(this.props.match.params.id, filterValues);
   }
 
+  handleProjectAddButtonClick = () => {
+    this.setState({
+      showProjectForm: true,
+      projectToEdit: undefined,
+    });
+  }
+
+  handleProjectEditButtonClick = (project) => {
+    this.setState({
+      showProjectForm: true,
+      projectToEdit: project,
+    });
+    // console.warn(project);
+  }
+
   renderAppeals () {
     const { fetched, fetching, error, data } = this.props.countryOperations;
 
@@ -556,7 +571,9 @@ class AdminArea extends SFPComponent {
                     projectList={this.getProjectList(this.props.projects)}
                     countryId={getCountryId(this.props.match.params.id)}
                     onFilterChange={this.handleThreeWFilterChange}
-                    onAddButtonClick={() => { this.setState({ showProjectForm: true }); }}
+                    onAddButtonClick={this.handleProjectAddButtonClick}
+                    user={this.props.user}
+                    onEditButtonClick={this.handleProjectEditButtonClick}
                   />
                 </TabContent>
               </TabPanel>
@@ -650,7 +667,7 @@ class AdminArea extends SFPComponent {
         <Helmet>
           <title>IFRC Go - Country</title>
         </Helmet>
-        {this.renderContent()}
+        { this.renderContent() }
         { showProjectForm && (
           <div className='project-form-modal'>
             <header>
@@ -673,6 +690,7 @@ class AdminArea extends SFPComponent {
               </button>
             </header>
             <ProjectForm
+              projectData={this.state.projectToEdit}
               countryId={getCountryId(this.props.match.params.id)}
             />
           </div>

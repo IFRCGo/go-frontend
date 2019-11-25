@@ -17,6 +17,7 @@ export default class ThreeW extends React.PureComponent {
       countryId,
       onFilterChange,
       disabled,
+      user = {},
     } = this.props;
 
     return (
@@ -26,17 +27,19 @@ export default class ThreeW extends React.PureComponent {
         </h2>
         <div className='content'>
           <div className='left'>
-            <button
-              className={
-                _cs(
-                  'add-button button button--secondary-bounded',
-                  disabled && 'disabled',
-                )}
-              onClick={this.props.onAddButtonClick}
-              disabled={disabled}
-            >
-              Add
-            </button>
+            { user.id && (
+              <button
+                className={
+                  _cs(
+                    'add-button button button--secondary-bounded',
+                    disabled && 'disabled',
+                  )}
+                onClick={this.props.onAddButtonClick}
+                disabled={disabled}
+              >
+                Add
+              </button>
+            )}
           </div>
           <Filter
             projectList={projectList}
@@ -72,7 +75,9 @@ export default class ThreeW extends React.PureComponent {
           </div>
           <div className='three-w-project-list-table-container'>
             <Table
+              user={user}
               projectList={projectList}
+              onEditButtonClick={this.props.onEditButtonClick}
             />
           </div>
         </div>

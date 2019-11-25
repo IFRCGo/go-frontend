@@ -49,6 +49,22 @@ export default class ProjectListTable extends React.PureComponent {
         label: 'Status',
         modifier: d => statuses[d.status],
       },
+      {
+        key: 'actions',
+        label: 'Actions',
+        modifier: (d) => (
+          (this.props.user && this.props.user.id)
+            ? (
+              <button
+                className='button button--secondary-bounded'
+                onClick={() => this.props.onEditButtonClick(d)}
+              >
+                Edit
+              </button>
+            )
+            : null
+        ),
+      },
     ];
   }
 
