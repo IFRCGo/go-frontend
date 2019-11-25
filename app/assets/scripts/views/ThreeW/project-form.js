@@ -510,6 +510,11 @@ class ProjectForm extends React.PureComponent {
 
         <footer>
           <button
+            className='three-w-hidden-submit-button'
+            type="submit"
+            disabled
+          />
+          <button
             className='button button--primary-bounded'
             type="submit"
             disabled={shouldDisableSubmitButton}
