@@ -60,12 +60,12 @@ const disasterTypeOptions = disasterTypeList.map(d => ({
 }));
 
 const operationTypeOptions = [
-  { value: 'Long Term Operation', label: 'Long term operation' },
+  { value: 'Programme', label: 'Programme' },
   { value: 'Emergency Operation', label: 'Emergency operation' },
 ];
 
 const operationTypes = {
-  0: 'Long Term Operation',
+  0: 'Programme',
   1: 'Emergency Operation',
 };
 

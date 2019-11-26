@@ -3,7 +3,6 @@ import React from 'react';
 import { render } from 'react-dom';
 import mapboxgl from 'mapbox-gl';
 import {
-  unique,
   _cs,
   addSeparator,
   listToGroupList,
