@@ -530,21 +530,11 @@ class FieldReportForm extends React.Component {
   }
 
   renderStep4 () {
-    const optsPlanReqDep = [
-      {
-        label: 'Planned',
-        value: '2'
-      },
-      {
-        label: 'Requested',
-        value: '1'
-      },
-      {
-        label: 'Deployed',
-        value: '3'
-      }
-    ];
-
+    const fields = formData.fieldsStep4;
+    const status = this.getStatus();
+    const plannedResponseRows = fields.plannedResponseRows.filter(row => {
+      return !!row.label[status];
+    })
     return (
       <Fold title='Planned Response'>
         <label className='form__label'>Planned International Response</label>
@@ -552,139 +542,47 @@ class FieldReportForm extends React.Component {
           <p>Indicate status of global and regional tools.</p>
         </div>
 
-        <PlanResponseRow
-          label='DREF Requested'
-          valueFieldLabel='Amount CHF'
-          name='dref'
-          options={[
-            {
-              label: 'Planned',
-              value: '2'
-            },
-            {
-              label: 'Requested',
-              value: '1'
-            },
-            {
-              label: 'Allocated',
-              value: '3'
-            }
-          ]}
-          values={this.state.data.dref}
-          errors={this.state.errors}
-          fieldKey='dref'
-          onChange={this.onFieldChange.bind(this, 'dref')} />
+        <React.Fragment>
+          {
+            plannedResponseRows.map(row => {
+              return (
+                <PlanResponseRow
+                  label={row.label[status]}
+                  key={row.key}
+                  valueFieldLabel={row.valueFieldLabel}
+                  name={row.name}
+                  options={row.options}
+                  values={this.state.data[row.key]}
+                  errors={this.state.errors}
+                  fieldKey={row.key}
+                  onChange={this.onFieldChange.bind(this, row.key)}
+                />                
+              )
+            })
+          }
 
-        <PlanResponseRow
-          label='Emergency Appeal'
-          valueFieldLabel='Amount CHF'
-          name='emergency-appeal'
-          options={[
-            {
-              label: 'Planned',
-              value: '2'
-            },
-            {
-              label: 'Requested',
-              value: '1'
-            },
-            {
-              label: 'Launched',
-              value: '3'
-            }
-          ]}
-          values={this.state.data.emergencyAppeal}
-          errors={this.state.errors}
-          fieldKey='emergencyAppeal'
-          onChange={this.onFieldChange.bind(this, 'emergencyAppeal')} />
-
-        {/*
-        <PlanResponseRow
-          label='RDRT/RITS'
-          valueFieldLabel='Number of people'
-          name='rdrt-rits'
-          options={optsPlanReqDep}
-          values={this.state.data.rdrtrits}
-          errors={this.state.errors}
-          fieldKey='rdrtrits'
-          onChange={this.onFieldChange.bind(this, 'rdrtrits')} />
-        */}
-
-        <PlanResponseRow
-          label='Rapid Response Personnel'
-          description='This is the new name for FACT/RDRT/RIT'
-          valueFieldLabel='Number of people'
-          name='fact'
-          options={optsPlanReqDep}
-          values={this.state.data.fact}
-          errors={this.state.errors}
-          fieldKey='fact'
-          onChange={this.onFieldChange.bind(this, 'fact')} />
-
-        <PlanResponseRow
-          label='Emergency Response Units'
-          valueFieldLabel='Units'
-          name='ifrc-staff'
-          options={optsPlanReqDep}
-          values={this.state.data.ifrcStaff}
-          errors={this.state.errors}
-          fieldKey='ifrcStaff'
-          onChange={this.onFieldChange.bind(this, 'ifrcStaff')} />
+        </React.Fragment>
 
         <h2 className='fold__title fold__title--contact'>Contacts</h2>
 
-        <ContactRow
-          label='Originator'
-          description='NS or IFRC Staff completing the Field Report.'
-          name='contact-originator'
-          values={this.state.data.contactOriginator}
-          fieldKey='contactOriginator'
-          errors={this.state.errors}
-          onChange={this.onFieldChange.bind(this, 'contactOriginator')} />
-        {/*
-        <ContactRow
-          label='Primary Contact'
-          description='The person to contact for more information'
-          name='contact-primary'
-          values={this.state.data.contactPrimary}
-          fieldKey='contactPrimary'
-          errors={this.state.errors}
-        onChange={this.onFieldChange.bind(this, 'contactPrimary')} />
-        */}
-        <ContactRow
-          label='National Society Contact'
-          description='The most senior staff in the National Society responsible and knowledgeable about the disaster event.'
-          name='contact-nat-soc'
-          values={this.state.data.contactNatSoc}
-          fieldKey='contactNatSoc'
-          errors={this.state.errors}
-          onChange={this.onFieldChange.bind(this, 'contactNatSoc')} />
-        <ContactRow
-          label='IFRC Focal Point for the Emergency'
-          description='IFRC staff who is overall responsible for supporting the NS in its response to the disaster event.'
-          name='contact-federation'
-          values={this.state.data.contactFederation}
-          fieldKey='contactFederation'
-          errors={this.state.errors}
-          onChange={this.onFieldChange.bind(this, 'contactFederation')} />
-        {/*
-        <ContactRow
-          label='Media Contact in the National Society'
-          description='A media contact in the National Society. This person could be contacted by journalists.'
-          name='contact-media-nat-soc'
-          values={this.state.data.contactMediaNatSoc}
-          fieldKey='contactMediaNatSoc'
-          errors={this.state.errors}
-          onChange={this.onFieldChange.bind(this, 'contactMediaNatSoc')} />
-        */}
-        <ContactRow
-          label='Media Contact'
-          description='An IFRC secretariat media contact in Geneva/Region or Country.'
-          name='contact-media'
-          values={this.state.data.contactMedia}
-          fieldKey='contactMedia'
-          errors={this.state.errors}
-          onChange={this.onFieldChange.bind(this, 'contactMedia')} />
+        <React.Fragment>
+          {
+            fields.contactRows.map(row => {
+              return (
+                <ContactRow
+                  label={row.label}
+                  description={row.desc[status]}
+                  name={row.name}
+                  key={row.key}
+                  values={this.state.data[row.key]}
+                  fieldKey={row.key}
+                  errors={this.state.errors}
+                  onChange={this.onFieldChange.bind(this, row.key)}
+                />
+              )
+            })
+          }
+        </React.Fragment>
 
         <FormRadioGroup
           label='This field report is visible to'

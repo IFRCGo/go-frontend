@@ -834,7 +834,7 @@ export const fieldsStep4 = {
       'name': 'dref',
       'valueFieldLabel': 'Amount CHF',
       'options': drefOptions,
-      'fieldKey': 'dref',
+      'key': 'dref',
       'label': {
         'EVT': 'DREF Requested',
         'EW': 'DREF'
@@ -844,7 +844,7 @@ export const fieldsStep4 = {
       'name': 'emergency-appeal',
       'valueFieldLabel': 'Amount CHF',
       'options': emergencyOptions,
-      'fieldKey': 'emergencyAppeal',
+      'key': 'emergencyAppeal',
       'label': {
         'EVT': 'Emergency Appeal',
         'EW': 'Emergency Appeal'
@@ -854,7 +854,7 @@ export const fieldsStep4 = {
       'name': 'fact',
       'valueFieldLabel': 'Number of people',
       'options': defaultFieldOptions,
-      'fieldKey': 'fact',
+      'key': 'fact',
       'label': {
         'EVT': 'Rapid Response Personnel',
         'EW': 'Rapid Response Personnel'
@@ -865,7 +865,7 @@ export const fieldsStep4 = {
       'name': 'ifrc-staff',
       'valueFieldLabel': 'Units',
       'options': defaultFieldOptions,
-      'fieldKey': 'ifrcStaff',
+      'key': 'ifrcStaff',
       'label': {
         'EVT': 'Emergency Response Units',
         'EW': 'Emergency Response Units'
@@ -878,7 +878,7 @@ export const fieldsStep4 = {
       'name': 'imminent-drf',
       'valueFieldLabel': 'Amount CHF',
       'options': drefOptions,
-      'fieldKey': 'imminentDrf',
+      'key': 'imminentDrf',
       'label': {
         'EVT': null,
         'EW': 'FbA by the DREF or Imminent DREF'
@@ -888,7 +888,7 @@ export const fieldsStep4 = {
       'name': 'forecast-based-action',
       'valueFieldLabel': 'Amount CHF',
       'options': drefOptions,
-      'fieldKey': 'forecastBasedAction',
+      'key': 'forecastBasedAction',
       'label': {
         'EVT': null,
         'EW': 'Forecast Based Action'
@@ -898,36 +898,36 @@ export const fieldsStep4 = {
   'contactRows': [
     {
       'name': 'contact-originator',
-      'fieldKey': 'contactOriginator',
+      'key': 'contactOriginator',
       'label': 'Originator',
-      'description': {
+      'desc': {
         'EVT': 'NS or IFRC Staff completing the Field Report.',
         'EW': 'NS or IFRC Staff completing the Field Report.'
       }
     },
     {
       'name': 'contact-nat-soc',
-      'fieldKey': 'contactNatSoc',
+      'key': 'contactNatSoc',
       'label': 'National Society Contact',
-      'description': {
+      'desc': {
         'EVT': 'The most senior staff in the National Society responsible and knowledgeable about the disaster event.',
         'EW': 'The most senior staff in the NS responsible and knowledgeable about the risk.'
       }
     },
     {
       'name': 'contact-federation',
-      'fieldKey': 'contactFederation',
+      'key': 'contactFederation',
       'label': 'IFRC Focal Point for the Emergency',
-      'description': {
+      'desc': {
         'EVT': 'IFRC staff who is overall responsible for supporting the NS in its response to the disaster event.',
         'EW': 'IFRC staff who is overall responsible for supporting the NS in its response to the anticipated disaster event'
       }
     },
     {
       'name': 'contact-media',
-      'fieldKey': 'contactMedia',
+      'key': 'contactMedia',
       'label': 'Media Contact',
-      'description': {
+      'desc': {
         'EVT': 'An IFRC secretariat media contact in Geneva/Region or Country.',
         'EW': 'An IFRC secretariat media contact in Geneva/Region or Country.'
       }

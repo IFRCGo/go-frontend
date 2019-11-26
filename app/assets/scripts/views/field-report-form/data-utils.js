@@ -50,6 +50,8 @@ export function dataPathToDisplay (path, keyword) {
     'rdrtrits.value': 'RDRT/RITS - Number of people',
     'fact.value': 'FACT - Number of people',
     'ifrcStaff.value': 'IFRC Staff Relocated - Number of people',
+    'imminentDrf.value': 'Imminent DRF - Amount CHF',
+    'forecastBasedAction.value': 'Forecast Based Action - Amount CHF',
     'eru.units': 'ERU - Units',
 
     // Step 5.
@@ -127,6 +129,8 @@ export function prepStateForValidation (state) {
     rdrtrits: objPropToNum('value'),
     fact: objPropToNum('value'),
     ifrcStaff: objPropToNum('value'),
+    imminentDrf: objPropToNum('value'),
+    forecastBasedAction: objPropToNum('value'),
     eru: (val) => val.map(objPropToNum('units'))
   };
 
@@ -255,7 +259,9 @@ export function convertStateToPayload (originalState) {
     ['emergencyAppeal', 'appeal', 'appeal_amount'],
     ['rdrtrits', 'rdrt', 'num_rdrt'],
     ['fact', 'fact', 'num_fact'],
-    ['ifrcStaff', 'ifrc_staff', 'num_ifrc_staff']
+    ['ifrcStaff', 'ifrc_staff', 'num_ifrc_staff'],
+    ['imminentDrf', 'imminent_drf', 'imminent_drf_amount'],
+    ['forecastBasedAction', 'forecast_based_action', 'forecast_based_action_amount']
   ];
 
   planResponseMapping.forEach(([src, statusMap, valueMap]) => {
@@ -380,6 +386,8 @@ export function getInitialDataState () {
     rdrtrits: { status: undefined, value: undefined },
     fact: { status: undefined, value: undefined },
     ifrcStaff: { status: undefined, value: undefined },
+    imminentDrf: { status: undefined, value: undefined },
+    forecastBasedAction: { status: undefined, value: undefined },
     eru: [{ type: undefined, status: undefined, units: undefined }],
 
     // Step 5
@@ -538,7 +546,9 @@ export function convertFieldReportToState (fieldReport) {
     ['appeal', 'appeal_amount', 'emergencyAppeal'],
     ['rdrt', 'num_rdrt', 'rdrtrits'],
     ['fact', 'num_fact', 'fact'],
-    ['ifrc_staff', 'num_ifrc_staff', 'ifrcStaff']
+    ['ifrc_staff', 'num_ifrc_staff', 'ifrcStaff'],
+    ['imminent_drf', 'imminent_drf_amount', 'imminentDrf'],
+    ['forecast_based_action', 'forecast_based_action_amount', 'forecastBasedAction']
   ];
 
   planResponseMapping.forEach(([statusMap, valueMap, dest]) => {
