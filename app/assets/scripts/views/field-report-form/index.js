@@ -450,21 +450,21 @@ class FieldReportForm extends React.Component {
               }
               return (
                 <FormInput
-                label={field.label[status]}
-                type='text'
-                description={field.description ? field.description[status] : undefined}
-                key={field.key}
-                name={field.name}
-                id={field.name}
-                classWrapper='form__group--kv form__group--kv-actions'
-                value={this.state.data[field.key]}
-                onChange={this.onFieldChange.bind(this, field.key)} >
+                  label={field.label[status]}
+                  type='text'
+                  description={field.description ? field.description[status] : undefined}
+                  key={field.key}
+                  name={field.name}
+                  id={field.name}
+                  classWrapper='form__group--kv form__group--kv-actions'
+                  value={this.state.data[field.key]}
+                  onChange={this.onFieldChange.bind(this, field.key)} >
                   <FormError
                     errors={this.state.errors}
                     property={field.key}
                   />
-                </FormInput>                
-              )
+                </FormInput>
+              );
             })
           }
         </div>
@@ -534,7 +534,7 @@ class FieldReportForm extends React.Component {
     const status = this.getStatus();
     const plannedResponseRows = fields.plannedResponseRows.filter(row => {
       return !!row.label[status];
-    })
+    });
     return (
       <Fold title='Planned Response'>
         <label className='form__label'>Planned International Response</label>
@@ -556,8 +556,8 @@ class FieldReportForm extends React.Component {
                   errors={this.state.errors}
                   fieldKey={row.key}
                   onChange={this.onFieldChange.bind(this, row.key)}
-                />                
-              )
+                />
+              );
             })
           }
 
@@ -579,7 +579,7 @@ class FieldReportForm extends React.Component {
                   errors={this.state.errors}
                   onChange={this.onFieldChange.bind(this, row.key)}
                 />
-              )
+              );
             })
           }
         </React.Fragment>
