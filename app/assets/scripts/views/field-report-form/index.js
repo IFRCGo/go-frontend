@@ -5,10 +5,9 @@ import _get from 'lodash.get';
 import _set from 'lodash.set';
 import _cloneDeep from 'lodash.clonedeep';
 import c from 'classnames';
-import Select from 'react-select';
+// import Select from 'react-select';
 import Ajv from 'ajv';
 import ajvKeywords from 'ajv-keywords';
-
 import { environment } from '../../config';
 import {
   step1 as schemaStep1,
@@ -16,6 +15,8 @@ import {
   step3 as schemaStep3,
   step4 as schemaStep4
 } from '../../schemas/field-report-form';
+import Step1 from './steps/step1';
+import Step2 from './steps/step2';
 import * as formData from '../../utils/field-report-constants';
 import { showAlert } from '../../components/system-alerts';
 import { createFieldReport, updateFieldReport, getFieldReportById, getDistrictsForCountry } from '../../actions';
@@ -23,7 +24,7 @@ import { showGlobalLoading, hideGlobalLoading } from '../../components/global-lo
 import {
   dataPathToDisplay,
   prepStateForValidation,
-  getEventsFromApi,
+  // getEventsFromApi,
   getInitialDataState,
   convertStateToPayload,
   convertFieldReportToState
@@ -33,7 +34,7 @@ import App from '../app';
 import Fold from '../../components/fold';
 import {
   FormInput,
-  FormInputSelect,
+  // FormInputSelect,
   FormTextarea,
   FormRadioGroup,
   FormError
@@ -41,7 +42,7 @@ import {
 import ActionsCheckboxes from './cmp-action-checkboxes.js';
 import ContactRow from './cmp-contact-row.js';
 import PlanResponseRow from './cmp-planned-response-row.js';
-import SourceEstimation from './cmp-source-estimation.js';
+// import SourceEstimation from './cmp-source-estimation.js';
 
 const ajv = new Ajv({ $data: true, allErrors: true, errorDataPath: 'property' });
 ajvKeywords(ajv);
@@ -176,6 +177,7 @@ class FieldReportForm extends React.Component {
   }
 
   getDistrictChoices () {
+    console.log('props', this.props);
     const { districts } = this.props;
     const country = this.state.data.country;
     if (!country) return [];
@@ -198,6 +200,7 @@ class FieldReportForm extends React.Component {
   }
 
   onFieldChange (field, e) {
+    console.log('here', field, e)
     let data = _cloneDeep(this.state.data);
     let val = e && e.target ? e.target.value : e;
 
@@ -249,204 +252,204 @@ class FieldReportForm extends React.Component {
     );
   }
 
-  renderStep1 () {
-    const districtChoices = this.getDistrictChoices() || [];
-    return (
-      <Fold title='Context' extraClass foldClass='margin-reset'>
-        {/* Hide the status radio until we implement the Early Warning changes to the form */}
-        <div style={{display: 'none'}}>
-          <FormRadioGroup
-            label='Status *'
-            name='status'
-            options={formData.status}
-            selectedOption={this.state.data.status}
-            onChange={this.onFieldChange.bind(this, 'status')}>
-            <FormError
-              errors={this.state.errors}
-              property='status'
-            />
-          </FormRadioGroup>
-        </div>
-        <FormInputSelect
-          label='Title *'
-          labelSecondary='Add Title'
-          selectLabel='Link to Emergency'
-          inputPlaceholder='Example: Malawi - Central Region: Floods 03/2019'
-          selectPlaceholder='Click here to link to an existing hazard alert (if one exists)'
-          type='text'
-          name='summary'
-          id='summary'
-          maxLength={100}
-          description={<div className='form__description'><p>Add a new title (Country - Region: Hazard mm/yyyy) or link to an existing emergency.</p><em>Example: 250 dead after an earthquake in Indonesia</em></div>}
-          inputValue={this.state.data.summary}
-          inputOnChange={this.onFieldChange.bind(this, 'summary')}
-          selectOnChange={this.onFieldChange.bind(this, 'event')}
-          selectValue={this.state.data.event}
-          errors={this.state.errors}
-          selectLoadOptions={getEventsFromApi}
-          autoFocus >
+  // renderStep1 () {
+  //   const districtChoices = this.getDistrictChoices() || [];
+  //   return (
+  //     <Fold title='Context' extraClass foldClass='margin-reset'>
+  //       {/* Hide the status radio until we implement the Early Warning changes to the form */}
+  //       <div style={{display: 'none'}}>
+  //         <FormRadioGroup
+  //           label='Status *'
+  //           name='status'
+  //           options={formData.status}
+  //           selectedOption={this.state.data.status}
+  //           onChange={this.onFieldChange.bind(this, 'status')}>
+  //           <FormError
+  //             errors={this.state.errors}
+  //             property='status'
+  //           />
+  //         </FormRadioGroup>
+  //       </div>
+  //       <FormInputSelect
+  //         label='Title *'
+  //         labelSecondary='Add Title'
+  //         selectLabel='Link to Emergency'
+  //         inputPlaceholder='Example: Malawi - Central Region: Floods 03/2019'
+  //         selectPlaceholder='Click here to link to an existing hazard alert (if one exists)'
+  //         type='text'
+  //         name='summary'
+  //         id='summary'
+  //         maxLength={100}
+  //         description={<div className='form__description'><p>Add a new title (Country - Region: Hazard mm/yyyy) or link to an existing emergency.</p><em>Example: 250 dead after an earthquake in Indonesia</em></div>}
+  //         inputValue={this.state.data.summary}
+  //         inputOnChange={this.onFieldChange.bind(this, 'summary')}
+  //         selectOnChange={this.onFieldChange.bind(this, 'event')}
+  //         selectValue={this.state.data.event}
+  //         errors={this.state.errors}
+  //         selectLoadOptions={getEventsFromApi}
+  //         autoFocus >
 
-          <FormError
-            errors={this.state.errors}
-            property='summary'
-          />
-        </FormInputSelect>
-        <FormInput
-          label='Start Date'
-          type='date'
-          name='startDate'
-          id='startDate'
-          value={this.state.data.startDate}
-          onChange={this.onFieldChange.bind(this, 'startDate')}
-          description='Start date is when some significant effects are felt or when the first significant impact is felt.'
-        >
-          <FormError
-            errors={this.state.errors}
-            property='start_date'
-          />
-        </FormInput>
+  //         <FormError
+  //           errors={this.state.errors}
+  //           property='summary'
+  //         />
+  //       </FormInputSelect>
+  //       <FormInput
+  //         label='Start Date'
+  //         type='date'
+  //         name='startDate'
+  //         id='startDate'
+  //         value={this.state.data.startDate}
+  //         onChange={this.onFieldChange.bind(this, 'startDate')}
+  //         description='Start date is when some significant effects are felt or when the first significant impact is felt.'
+  //       >
+  //         <FormError
+  //           errors={this.state.errors}
+  //           property='start_date'
+  //         />
+  //       </FormInput>
 
-        <div className='form__group'>
-          <div className='form__inner-header'>
-            <label className='form__label'>Affected Country and Province / Region *</label>
-            <p className='form__description'></p>
-          </div>
-          <div className="form__inner-body clearfix">
-            <div className="form__group__col__6">
-              <Select
-                placeholder='Select a country'
-                name='country'
-                value={this.state.data.country}
-                onChange={this.onCountryChange.bind(this)}
-                options={formData.countries}
-              />
+  //       <div className='form__group'>
+  //         <div className='form__inner-header'>
+  //           <label className='form__label'>Affected Country and Province / Region *</label>
+  //           <p className='form__description'></p>
+  //         </div>
+  //         <div className="form__inner-body clearfix">
+  //           <div className="form__group__col__6">
+  //             <Select
+  //               placeholder='Select a country'
+  //               name='country'
+  //               value={this.state.data.country}
+  //               onChange={this.onCountryChange.bind(this)}
+  //               options={formData.countries}
+  //             />
 
-              <FormError
-                errors={this.state.errors}
-                property='country'
-              />
-            </div>
-            <div className="form__group__col__6">
-              <Select
-                placeholder='Select Provinces / Regions'
-                name='districts'
-                value={this.state.data.districts}
-                onChange={this.onFieldChange.bind(this, 'districts')}
-                options={districtChoices}
-                multi
-              />
+  //             <FormError
+  //               errors={this.state.errors}
+  //               property='country'
+  //             />
+  //           </div>
+  //           <div className="form__group__col__6">
+  //             <Select
+  //               placeholder='Select Provinces / Regions'
+  //               name='districts'
+  //               value={this.state.data.districts}
+  //               onChange={this.onFieldChange.bind(this, 'districts')}
+  //               options={districtChoices}
+  //               multi
+  //             />
 
-              <FormError
-                errors={this.state.errors}
-                property='districts'
-              />
-            </div>
-          </div>
-        </div>
-        <div className='form__group'>
-          <div className='form__inner-header'>
-            <label className='form__label'>Disaster Type *</label>
-          </div>
-          <div className='form__inner-body'>
-            <Select
-              placeholder='Select a disaster type'
-              name='disaster-type'
-              id='disaster-type'
-              options={formData.disasterType}
-              value={this.state.data.disasterType}
-              onChange={this.onFieldChange.bind(this, 'disasterType')}
-            />
-            <FormError
-              errors={this.state.errors}
-              property='disasterType'
-            />
-          </div>
-        </div>
-        <FormRadioGroup
-          label='Government requests international assistance?'
-          description='Indicate if the government requested international assistance.'
-          name='assistance'
-          options={[
-            {
-              label: 'Yes',
-              value: 'true'
-            },
-            {
-              label: 'No',
-              value: 'false'
-            }
-          ]}
-          selectedOption={this.state.data.assistance}
-          onChange={this.onFieldChange.bind(this, 'assistance')} >
-          <FormError
-            errors={this.state.errors}
-            property='assistance'
-          />
-        </FormRadioGroup>
-      </Fold>
-    );
-  }
+  //             <FormError
+  //               errors={this.state.errors}
+  //               property='districts'
+  //             />
+  //           </div>
+  //         </div>
+  //       </div>
+  //       <div className='form__group'>
+  //         <div className='form__inner-header'>
+  //           <label className='form__label'>Disaster Type *</label>
+  //         </div>
+  //         <div className='form__inner-body'>
+  //           <Select
+  //             placeholder='Select a disaster type'
+  //             name='disaster-type'
+  //             id='disaster-type'
+  //             options={formData.disasterType}
+  //             value={this.state.data.disasterType}
+  //             onChange={this.onFieldChange.bind(this, 'disasterType')}
+  //           />
+  //           <FormError
+  //             errors={this.state.errors}
+  //             property='disasterType'
+  //           />
+  //         </div>
+  //       </div>
+  //       <FormRadioGroup
+  //         label='Government requests international assistance?'
+  //         description='Indicate if the government requested international assistance.'
+  //         name='assistance'
+  //         options={[
+  //           {
+  //             label: 'Yes',
+  //             value: 'true'
+  //           },
+  //           {
+  //             label: 'No',
+  //             value: 'false'
+  //           }
+  //         ]}
+  //         selectedOption={this.state.data.assistance}
+  //         onChange={this.onFieldChange.bind(this, 'assistance')} >
+  //         <FormError
+  //           errors={this.state.errors}
+  //           property='assistance'
+  //         />
+  //       </FormRadioGroup>
+  //     </Fold>
+  //   );
+  // }
 
-  renderStep2 () {
-    return (
-      <Fold title='Numeric Details (People)'>
-        <SourceEstimation
-          label='Injured'
-          description='Number of people suffering from physical injuries, trauma or an illness requiring immediate medical treatment as a direct result of a disaster.'
-          name='num-injured'
-          values={this.state.data.numInjured}
-          fieldKey='numInjured'
-          errors={this.state.errors}
-          onChange={this.onFieldChange.bind(this, 'numInjured')} />
-        <SourceEstimation
-          label='Dead'
-          description='Number of people confirmed dead.'
-          name='num-dead'
-          values={this.state.data.numDead}
-          fieldKey='numDead'
-          errors={this.state.errors}
-          onChange={this.onFieldChange.bind(this, 'numDead')} />
-        <SourceEstimation
-          label='Missing'
-          description='Number of people missing.'
-          name='num-missing'
-          values={this.state.data.numMissing}
-          fieldKey='numMissing'
-          errors={this.state.errors}
-          onChange={this.onFieldChange.bind(this, 'numMissing')} />
-        <SourceEstimation
-          label='Affected'
-          description='Number of people requiring immediate assistance during a period of emergency; this may include displaced or evacuated people.'
-          name='num-affected'
-          values={this.state.data.numAffected}
-          fieldKey='numAffected'
-          errors={this.state.errors}
-          onChange={this.onFieldChange.bind(this, 'numAffected')} />
-        <SourceEstimation
-          label='Displaced'
-          description='Number of people displaced.'
-          name='num-displaced'
-          values={this.state.data.numDisplaced}
-          fieldKey='numDisplaced'
-          errors={this.state.errors}
-          onChange={this.onFieldChange.bind(this, 'numDisplaced')} />
-        <FormTextarea
-          label='Situational Overview'
-          name='description'
-          classInput='textarea--lg'
-          placeholder='Example: According to the local government, the overflow of the Zimbizi river has caused extensive flood water damage to low income housing along the river bank. The majority of the affected households do not have sufficient insurance coverage for their assets. The local branch of the National Society is currently assessing how to best support the most vulnerable families affected by the disaster.'
-          id='description'
-          description='Describe the effects of the hazard, the current context, the affected population and how they have been affected.'
-          value={this.state.data.description}
-          onChange={this.onFieldChange.bind(this, 'description')} >
-          <FormError
-            errors={this.state.errors}
-            property='description'
-          />
-        </FormTextarea>
-      </Fold>
-    );
-  }
+  // renderStep2 () {
+  //   return (
+  //     <Fold title='Numeric Details (People)'>
+  //       <SourceEstimation
+  //         label='Injured'
+  //         description='Number of people suffering from physical injuries, trauma or an illness requiring immediate medical treatment as a direct result of a disaster.'
+  //         name='num-injured'
+  //         values={this.state.data.numInjured}
+  //         fieldKey='numInjured'
+  //         errors={this.state.errors}
+  //         onChange={this.onFieldChange.bind(this, 'numInjured')} />
+  //       <SourceEstimation
+  //         label='Dead'
+  //         description='Number of people confirmed dead.'
+  //         name='num-dead'
+  //         values={this.state.data.numDead}
+  //         fieldKey='numDead'
+  //         errors={this.state.errors}
+  //         onChange={this.onFieldChange.bind(this, 'numDead')} />
+  //       <SourceEstimation
+  //         label='Missing'
+  //         description='Number of people missing.'
+  //         name='num-missing'
+  //         values={this.state.data.numMissing}
+  //         fieldKey='numMissing'
+  //         errors={this.state.errors}
+  //         onChange={this.onFieldChange.bind(this, 'numMissing')} />
+  //       <SourceEstimation
+  //         label='Affected'
+  //         description='Number of people requiring immediate assistance during a period of emergency; this may include displaced or evacuated people.'
+  //         name='num-affected'
+  //         values={this.state.data.numAffected}
+  //         fieldKey='numAffected'
+  //         errors={this.state.errors}
+  //         onChange={this.onFieldChange.bind(this, 'numAffected')} />
+  //       <SourceEstimation
+  //         label='Displaced'
+  //         description='Number of people displaced.'
+  //         name='num-displaced'
+  //         values={this.state.data.numDisplaced}
+  //         fieldKey='numDisplaced'
+  //         errors={this.state.errors}
+  //         onChange={this.onFieldChange.bind(this, 'numDisplaced')} />
+  //       <FormTextarea
+  //         label='Situational Overview'
+  //         name='description'
+  //         classInput='textarea--lg'
+  //         placeholder='Example: According to the local government, the overflow of the Zimbizi river has caused extensive flood water damage to low income housing along the river bank. The majority of the affected households do not have sufficient insurance coverage for their assets. The local branch of the National Society is currently assessing how to best support the most vulnerable families affected by the disaster.'
+  //         id='description'
+  //         description='Describe the effects of the hazard, the current context, the affected population and how they have been affected.'
+  //         value={this.state.data.description}
+  //         onChange={this.onFieldChange.bind(this, 'description')} >
+  //         <FormError
+  //           errors={this.state.errors}
+  //           property='description'
+  //         />
+  //       </FormTextarea>
+  //     </Fold>
+  //   );
+  // }
 
   renderStep3 () {
     // Note: There's no need for validation on this step.
@@ -773,8 +776,15 @@ class FieldReportForm extends React.Component {
     );
   }
 
+  steps = {
+    1: Step1,
+    2: Step2,
+  }
+
   render () {
+    console.log('props', this.props, this.state)
     const submitTitle = this.state.step === 4 ? 'Submit' : 'Save and Continue';
+    const CurrentStep = this.steps[ this.state.step || 1 ];
     return (
       <App className='page--frep-form'>
         <section className='inpage'>
@@ -789,7 +799,15 @@ class FieldReportForm extends React.Component {
           <div className='inpage__body'>
             <div className='inner'>
               <form className='form form--field-report' onSubmit={this.onSubmit}>
-                {this[`renderStep${this.state.step}`]()}
+                {/* {this[`renderStep${this.state.step}`]()} */}
+                <CurrentStep
+                  formData={formData}
+                  onFieldChange={this.onFieldChange}
+                  getDistrictChoices={this.getDistrictChoices}
+                  onCountryChange={this.onCountryChange}
+                  selection={this.state.data}
+                  errors={this.state.errors}
+                />
                 {this.renderErrorSummary()}
 
                 <div className='form__actions text-center'>
