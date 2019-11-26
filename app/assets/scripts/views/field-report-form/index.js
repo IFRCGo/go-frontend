@@ -407,6 +407,7 @@ class FieldReportForm extends React.Component {
                   name={field.name}
                   values={this.state.data[field.key]}
                   fieldKey={field.key}
+                  key={field.key}
                   errors={this.state.errors}
                   onChange={this.onFieldChange.bind(this, field.key)}
                 />
