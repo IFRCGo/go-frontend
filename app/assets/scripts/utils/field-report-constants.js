@@ -871,10 +871,10 @@ export const fieldsStep4 = {
       'name': 'forecast-based-action',
       'valueFieldLabel': 'Amount CHF',
       'options': drefOptions,
-      'fieldKey': 'forecaseBasedAction',
+      'fieldKey': 'forecastBasedAction',
       'label': {
         'EVT': null,
-        'EW': 'Forecase Based Action'
+        'EW': 'Forecast Based Action'
       }
     }
   ],
