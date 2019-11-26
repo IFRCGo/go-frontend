@@ -698,41 +698,58 @@ export const fieldsStep2 = {
 };
 
 export const fieldsStep3 = {
-  'num-assisted-gov': {
-    'EVT': {
-      'label': 'Assisted by Government'
+  'section1fields': [
+    {
+      'name': 'num-assisted-gov',
+      'key': 'numAssistedGov',
+      'EVT': true,
+      'EW': true,
+      'label': {
+        'EVT': 'Assisted by Government',
+        'EW': 'Number of People Assisted by Government - Early Action'
+      }
     },
-    'EW': {
-      'label': 'Number of People Assisted by Government - Early Action'
+    {
+      'name': 'num-assisted-red-cross',
+      'key': 'numAssistedRedCross',
+      'EVT': true,
+      'EW': true,
+      'label': {
+        'EVT': 'Assisted by RCRC Movement',
+        'EW': 'Number of People Assisted by RCRC Movement - Early Action'
+      }
+    },
+    {
+      'name': 'num-local-staff',
+      'key': 'numLocalStaff',
+      'EVT': true,
+      'EW': false,
+      'label': {
+        'EVT': 'Number of NS Personnel Involved'
+      }
+    },
+    {
+      'name': 'num-volunteers',
+      'key': 'numVolunteers',
+      'EVT': true,
+      'EW': false,
+      'label': {
+        'EVT': 'Number of Volunteers Involved'
+      }
+    },
+    {
+      'name': 'num-expats',
+      'key': 'numExpats',
+      'EVT': true,
+      'EW': false,
+      'label': {
+        'EVT': 'Number of RCRC Movement Personnel involved'
+      },
+      'description': {
+        'EVT': 'Personnel from IFRC, ICRC &amp; PNS'
+      }
     }
-  },
-  'num-assisted-red-cross': {
-    'EVT': {
-      'label': 'Assisted by RCRC Movement'
-    },
-    'EW': {
-      'label': 'Number of People Assisted by RCRC Movement - Early Action'
-    }
-  },
-  'num-local-staff': {
-    'EVT': {
-      'label': 'Number of NS Personnel Involved'
-    },
-    'EW': null
-  },
-  'num-volunteers': {
-    'EVT': {
-      'label': 'Number of Volunteers Involved'
-    },
-    'EW': null
-  },
-  'num-expats': {
-    'EVT': {
-      'label': 'Number of RCRC Movement Personnel involved',
-      'description': 'Personnel from IFRC, ICRC &amp; PNS'
-    },
-    'EW': null
-  },
+  ],
   'actionsSections': {
     'actions-nat-soc': {
       'EVT': {
