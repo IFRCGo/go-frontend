@@ -27,6 +27,8 @@ import {
   statusList,
   statuses,
   sectorList,
+  secondarySectors,
+  secondarySectorList,
   sectors,
   programmeTypeList,
   programmeTypes,
@@ -38,6 +40,11 @@ const statusOptions = statusList.map(p => ({
 }));
 
 const sectorOptions = sectorList.map(p => ({
+  value: p.inputValue,
+  label: p.title,
+}));
+
+const secondarySectorOptions = secondarySectorList.map(p => ({
   value: p.inputValue,
   label: p.title,
 }));
@@ -132,7 +139,7 @@ class ProjectForm extends React.PureComponent {
         reached_male: projectData.reached_male || undefined,
         reached_total: projectData.reached_total || undefined,
         reporting_ns: projectData.reporting_ns,
-        secondary_sectors: projectData.secondary_sectors ? projectData.secondary_sectors.map(d => sectors[d]) : [],
+        secondary_sectors: projectData.secondary_sectors ? projectData.secondary_sectors.map(d => secondarySectors[d]) : [],
         status: statuses[projectData.status],
         target_children: projectData.target_children || undefined,
         target_female: projectData.target_female || undefined,
@@ -429,7 +436,7 @@ class ProjectForm extends React.PureComponent {
             faramElementName='secondary_sectors'
             className='project-form-select'
             label='Tagging'
-            options={sectorOptions}
+            options={secondarySectorOptions}
             multi
           />
         </InputSection>
