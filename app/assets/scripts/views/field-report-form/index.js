@@ -393,62 +393,43 @@ class FieldReportForm extends React.Component {
   }
 
   renderStep2 () {
+    const fields = formData.fieldsStep2;
+    const status = this.getStatus()
     return (
       <Fold title='Numeric Details (People)'>
-        <SourceEstimation
-          label='Injured'
-          description='Number of people suffering from physical injuries, trauma or an illness requiring immediate medical treatment as a direct result of a disaster.'
-          name='num-injured'
-          values={this.state.data.numInjured}
-          fieldKey='numInjured'
-          errors={this.state.errors}
-          onChange={this.onFieldChange.bind(this, 'numInjured')} />
-        <SourceEstimation
-          label='Dead'
-          description='Number of people confirmed dead.'
-          name='num-dead'
-          values={this.state.data.numDead}
-          fieldKey='numDead'
-          errors={this.state.errors}
-          onChange={this.onFieldChange.bind(this, 'numDead')} />
-        <SourceEstimation
-          label='Missing'
-          description='Number of people missing.'
-          name='num-missing'
-          values={this.state.data.numMissing}
-          fieldKey='numMissing'
-          errors={this.state.errors}
-          onChange={this.onFieldChange.bind(this, 'numMissing')} />
-        <SourceEstimation
-          label='Affected'
-          description='Number of people requiring immediate assistance during a period of emergency; this may include displaced or evacuated people.'
-          name='num-affected'
-          values={this.state.data.numAffected}
-          fieldKey='numAffected'
-          errors={this.state.errors}
-          onChange={this.onFieldChange.bind(this, 'numAffected')} />
-        <SourceEstimation
-          label='Displaced'
-          description='Number of people displaced.'
-          name='num-displaced'
-          values={this.state.data.numDisplaced}
-          fieldKey='numDisplaced'
-          errors={this.state.errors}
-          onChange={this.onFieldChange.bind(this, 'numDisplaced')} />
-        <FormTextarea
-          label='Situational Overview'
-          name='description'
-          classInput='textarea--lg'
-          placeholder='Example: According to the local government, the overflow of the Zimbizi river has caused extensive flood water damage to low income housing along the river bank. The majority of the affected households do not have sufficient insurance coverage for their assets. The local branch of the National Society is currently assessing how to best support the most vulnerable families affected by the disaster.'
-          id='description'
-          description='Describe the effects of the hazard, the current context, the affected population and how they have been affected.'
-          value={this.state.data.description}
-          onChange={this.onFieldChange.bind(this, 'description')} >
-          <FormError
-            errors={this.state.errors}
-            property='description'
-          />
-        </FormTextarea>
+        <React.Fragment>
+          {
+            fields.situationFields[status].map(field => {
+              return (
+                <SourceEstimation
+                  label={field.label}
+                  description={field.desc}
+                  name={field.name}
+                  values={this.state.data[field.key]}
+                  fieldKey={field.key}
+                  errors={this.state.errors}
+                  onChange={this.onFieldChange.bind(this, field.key)}
+                />
+              )
+            })
+          }
+        </React.Fragment>
+        <React.Fragment>
+          <FormTextarea
+            label={fields.description[status].label}
+            name='description'
+            classInput='textarea--lg'
+            placeholder='Example: According to the local government, the overflow of the Zimbizi river has caused extensive flood water damage to low income housing along the river bank. The majority of the affected households do not have sufficient insurance coverage for their assets. The local branch of the National Society is currently assessing how to best support the most vulnerable families affected by the disaster.'
+            id='description'
+            description={fields.description[status].desc}
+            value={this.state.data.description}
+            onChange={this.onFieldChange.bind(this, 'description')} >
+            <FormError
+              errors={this.state.errors}
+              property='description'
+            />
+          </FormTextarea>
+        </React.Fragment>
       </Fold>
     );
   }

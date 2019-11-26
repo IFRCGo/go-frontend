@@ -32,6 +32,9 @@ export function dataPathToDisplay (path, keyword) {
     'numMissing.estimation': 'Estimation Missing',
     'numAffected.estimation': 'Estimation Affected',
     'numDisplaced.estimation': 'Estimation Displaced',
+    'numPotentiallyAffected': 'Estimation Potentially Affected',
+    'numHighestRisk': 'Estimation Highest Risk',
+    'affectedPopCentres': 'Affected Pop Centres',
     numAssistedGov: 'Assisted by Government',
     numAssistedRedCross: 'Assisted By Red Cross',
     numLocalStaff: 'Number of local staff involved',
@@ -93,6 +96,7 @@ export function prepStateForValidation (state) {
   };
 
   const objPropToNum = (prop) => (val) => { val[prop] = toNumIfNum(val[prop]); return val; };
+  const objPropToStr = (prop) => (val) => { val[prop] = val[prop] ? val[prop] : ''; return val; };
 
   const formatter = {
     // Step 1.
@@ -108,6 +112,9 @@ export function prepStateForValidation (state) {
     numMissing: (val) => val.map(objPropToNum('estimation')),
     numAffected: (val) => val.map(objPropToNum('estimation')),
     numDisplaced: (val) => val.map(objPropToNum('estimation')),
+    numPotentiallyAffected: (val) => val.map(objPropToNum('estimation')),
+    numHighestRisk: (val) => val.map(objPropToNum('estimation')),
+    affectedPopCentres: (val) => val.map(objPropToStr('estimation')),
     numAssistedGov: toNumIfNum,
     numAssistedRedCross: toNumIfNum,
     numLocalStaff: toNumIfNum,
@@ -186,7 +193,10 @@ export function convertStateToPayload (originalState) {
     ['numDead', 'num_dead'],
     ['numMissing', 'num_missing'],
     ['numAffected', 'num_affected'],
-    ['numDisplaced', 'num_displaced']
+    ['numDisplaced', 'num_displaced'],
+    ['numPotentiallyAffected', 'num_potentially_affected'],
+    ['numHighestRisk', 'num_highest_risk'],
+    ['affectedPopCentres', 'affected_pop_centres']
   ];
 
   sourceEstimationMapping.forEach(([src, dest]) => {
@@ -330,6 +340,9 @@ export function getInitialDataState () {
     numMissing: [{ estimation: undefined, source: undefined }],
     numAffected: [{ estimation: undefined, source: undefined }],
     numDisplaced: [{ estimation: undefined, source: undefined }],
+    numPotentiallyAffected: [{ estimation: undefined, source: undefined}],
+    numHighestRisk: [{ estimation: undefined, source: undefined}],
+    affectedPopCentres: [{ estimation: undefined, source: undefined}],
     numAssistedGov: undefined,
     numAssistedRedCross: undefined,
     numLocalStaff: undefined,
@@ -445,7 +458,10 @@ export function convertFieldReportToState (fieldReport) {
     ['num_dead', 'numDead'],
     ['num_missing', 'numMissing'],
     ['num_affected', 'numAffected'],
-    ['num_displaced', 'numDisplaced']
+    ['num_displaced', 'numDisplaced'],
+    ['num_potentially_affected', 'numPotentiallyAffected'],
+    ['num_highest_risk', 'numHighestRisk'],
+    ['affected_pop_centres', 'affectedPopCentres']
   ];
 
   sourceEstimationMapping.forEach(([src, dest]) => {
