@@ -251,14 +251,14 @@ class FieldReportForm extends React.Component {
   }
 
   getStatus () {
-    const status = this.state.data.status
-    return status === formData.statusEarlyWarning.value ? 'EW' : 'EVT'
+    const status = this.state.data.status;
+    return status === formData.statusEarlyWarning.value ? 'EW' : 'EVT';
   }
 
   renderStep1 () {
     const districtChoices = this.getDistrictChoices() || [];
     const fields = formData.fieldsStep1;
-    const status = this.getStatus()
+    const status = this.getStatus();
     return (
       <Fold title='Context' extraClass foldClass='margin-reset'>
         <FormRadioGroup
@@ -394,7 +394,7 @@ class FieldReportForm extends React.Component {
 
   renderStep2 () {
     const fields = formData.fieldsStep2;
-    const status = this.getStatus()
+    const status = this.getStatus();
     return (
       <Fold title='Numeric Details (People)'>
         <React.Fragment>
@@ -411,7 +411,7 @@ class FieldReportForm extends React.Component {
                   errors={this.state.errors}
                   onChange={this.onFieldChange.bind(this, field.key)}
                 />
-              )
+              );
             })
           }
         </React.Fragment>

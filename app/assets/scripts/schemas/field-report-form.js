@@ -67,7 +67,7 @@ export const step2 = {
           estimation: { type: 'string' },
           source: {enum: ['red-cross', 'government', 'other']}
         }
-      }      
+      }
     }
   },
   properties: {
