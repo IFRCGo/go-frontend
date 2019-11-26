@@ -578,41 +578,41 @@ export const orgTypes = [
 export const fieldsStep1 = {
   'summary': {
     'EVT': {
-      label: 'Title',
+      label: 'Title *',
       desc: 'Add a new title (Country - Region: Hazard mm/yy) or link to an existing emergency'
     },
     'EW': {
-      label: 'Title',
+      label: 'Title *',
       desc: 'Add a new title (Country - Region: Hazard mm/yy) or link to an existing emergency'
     }
   },
   'startDate': {
     'EVT': {
-      label: 'Start Date',
+      label: 'Start Date *',
       desc: 'Start date is when some significant effects are felt or when the first significant impact is felt.'
     },
     'EW': {
-      label: 'Predicted Date of Impact',
+      label: 'Predicted Date of Impact *',
       desc: 'Date at which significant impacts are predicted to occur.'
     }
   },
   'country': {
     'EVT': {
-      label: 'Affected Country and Province / Region',
+      label: 'Affected Country and Province / Region *',
       desc: ''
     },
     'EW': {
-      label: 'Potentially Affected Country and Province / Region',
+      label: 'Potentially Affected Country and Province / Region *',
       desc: 'Anticipated Affected Country and Province / Region'
     }
   },
   'disaster-type': {
     'EVT': {
-      label: 'Disaster Type',
+      label: 'Disaster Type *',
       desc: ''
     },
     'EW': {
-      label: 'Hazard Type',
+      label: 'Hazard Type *',
       desc: ''
     }
   },

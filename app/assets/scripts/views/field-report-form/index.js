@@ -250,26 +250,30 @@ class FieldReportForm extends React.Component {
     );
   }
 
+  getStatus () {
+    const status = this.state.data.status
+    return status === formData.statusEarlyWarning.value ? 'EW' : 'EVT'
+  }
+
   renderStep1 () {
     const districtChoices = this.getDistrictChoices() || [];
+    const fields = formData.fieldsStep1;
+    const status = this.getStatus()
     return (
       <Fold title='Context' extraClass foldClass='margin-reset'>
-        {/* Hide the status radio until we implement the Early Warning changes to the form */}
-        <div style={{display: 'none'}}>
-          <FormRadioGroup
-            label='Status *'
-            name='status'
-            options={formData.status}
-            selectedOption={this.state.data.status}
-            onChange={this.onFieldChange.bind(this, 'status')}>
-            <FormError
-              errors={this.state.errors}
-              property='status'
-            />
-          </FormRadioGroup>
-        </div>
+        <FormRadioGroup
+          label='Status *'
+          name='status'
+          options={formData.status}
+          selectedOption={this.state.data.status}
+          onChange={this.onFieldChange.bind(this, 'status')}>
+          <FormError
+            errors={this.state.errors}
+            property='status'
+          />
+        </FormRadioGroup>
         <FormInputSelect
-          label='Title *'
+          label={fields.summary[status].label}
           labelSecondary='Add Title'
           selectLabel='Link to Emergency'
           inputPlaceholder='Example: Malawi - Central Region: Floods 03/2019'
@@ -278,7 +282,7 @@ class FieldReportForm extends React.Component {
           name='summary'
           id='summary'
           maxLength={100}
-          description={<div className='form__description'><p>Add a new title (Country - Region: Hazard mm/yyyy) or link to an existing emergency.</p><em>Example: 250 dead after an earthquake in Indonesia</em></div>}
+          description={<div className='form__description'><p>{fields.summary[status].desc}</p><em>Example: 250 dead after an earthquake in Indonesia</em></div>}
           inputValue={this.state.data.summary}
           inputOnChange={this.onFieldChange.bind(this, 'summary')}
           selectOnChange={this.onFieldChange.bind(this, 'event')}
@@ -293,13 +297,13 @@ class FieldReportForm extends React.Component {
           />
         </FormInputSelect>
         <FormInput
-          label='Start Date'
+          label={fields.startDate[status].label}
           type='date'
           name='startDate'
           id='startDate'
           value={this.state.data.startDate}
           onChange={this.onFieldChange.bind(this, 'startDate')}
-          description='Start date is when some significant effects are felt or when the first significant impact is felt.'
+          description={fields.startDate[status].desc}
         >
           <FormError
             errors={this.state.errors}
@@ -309,8 +313,8 @@ class FieldReportForm extends React.Component {
 
         <div className='form__group'>
           <div className='form__inner-header'>
-            <label className='form__label'>Affected Country and Province / Region *</label>
-            <p className='form__description'></p>
+            <label className='form__label'>{fields.country[status].label}</label>
+            <p className='form__description'>{fields.country[status].desc}</p>
           </div>
           <div className="form__inner-body clearfix">
             <div className="form__group__col__6">
@@ -346,7 +350,7 @@ class FieldReportForm extends React.Component {
         </div>
         <div className='form__group'>
           <div className='form__inner-header'>
-            <label className='form__label'>Disaster Type *</label>
+            <label className='form__label'>{fields['disaster-type'][status].label}</label>
           </div>
           <div className='form__inner-body'>
             <Select
@@ -364,8 +368,8 @@ class FieldReportForm extends React.Component {
           </div>
         </div>
         <FormRadioGroup
-          label='Government requests international assistance?'
-          description='Indicate if the government requested international assistance.'
+          label={fields.assistance[status].label}
+          description={fields.assistance[status].desc}
           name='assistance'
           options={[
             {
