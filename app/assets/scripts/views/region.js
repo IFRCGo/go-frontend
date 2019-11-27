@@ -204,7 +204,10 @@ class AdminArea extends SFPComponent {
                   <HighlightedOperations opsType='region' opsId={data.id}/>
                   <div className={c('fold', {presenting: this.state.fullscreen})} id='presentation'>
                     {this.state.fullscreen ? (
-                      <FullscreenHeader title='IFRC Disaster Response and Preparedness'/>
+                      <React.Fragment>
+                        <FullscreenHeader title='IFRC Disaster Response and Preparedness'/>
+                        <KeyFiguresHeader appealsList={this.props.appealStats} keyFiguresList={['numBeneficiaries', 'amountRequested', 'amountFunded']}/>
+                      </React.Fragment>
                     ) : null}
                     <div className={c('inner', {'appeals--fullscreen': this.state.fullscreen})}>
                       <AppealsTable
