@@ -1,4 +1,6 @@
 import React from 'react';
+import { environment } from '../../config';
+import { PropTypes as T } from 'prop-types';
 
 const BasicTable = ({tableContents, tableTitle}) => {
   return (
@@ -19,3 +21,9 @@ const BasicTable = ({tableContents, tableTitle}) => {
 };
 
 export default BasicTable;
+if (environment !== 'production') {
+  BasicTable.propTypes = {
+    tableContents: T.array,
+    tableTitle: T.string,
+  };
+}
