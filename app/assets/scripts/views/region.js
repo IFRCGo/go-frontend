@@ -25,7 +25,8 @@ import {
   getRegionPersonnel,
   getAdmAreaKeyFigures,
   getAdmAreaSnippets,
-  getCountries
+  getCountries,
+  getAppealsList
 } from '../actions';
 import { getRegionBoundingBox } from '../utils/region-bounding-box';
 import {
@@ -87,9 +88,11 @@ class AdminArea extends SFPComponent {
 
   componentDidMount () {
     this.getData(this.props);
-    this.getAdmArea(this.props.type, getRegionId(this.props.match.params.id));
+    const id = getRegionId(this.props.match.params.id);
+    this.getAdmArea(this.props.type, id);
     this.displayTabContent();
     addFullscreenListener(this.onFullscreenChange);
+    this.props._getAppealsList({regionId: id});
   }
 
   componentWillUnmount () {
@@ -190,7 +193,11 @@ class AdminArea extends SFPComponent {
             </div>
           </div>
         </header>
-        <KeyFiguresHeader appealsList={this.props.appealStats} keyFiguresList={['numBeneficiaries', 'amountRequested', 'amountFunded']}/>
+        <section className='inpage__body'>
+          <div className='inner'>
+            <KeyFiguresHeader appealsList={this.props.appealsList} keyFiguresList={['activeDrefs', 'activeAppeals', 'budget', 'appealsFunding', 'targetPop']}/>
+          </div>
+        </section>
         <Tabs
           selectedIndex={ selectedIndex }
           onSelect={index => handleTabChange(index)}
@@ -289,6 +296,7 @@ if (environment !== 'production') {
     _getAdmAreaAggregateAppeals: T.func,
     _getRegionPersonnel: T.func,
     _getCountries: T.func,
+    _getAppealsList: T.func,
     type: T.string,
     match: T.object,
     history: T.object,
@@ -322,7 +330,8 @@ const selector = (state, ownProps) => ({
   personnel: state.adminArea.personnel,
   keyFigures: state.adminArea.keyFigures,
   snippets: state.adminArea.snippets,
-  countries: state.countries
+  countries: state.countries,
+  appealsList: state.overallStats.appealsList
 });
 
 const dispatcher = (dispatch) => ({
@@ -332,7 +341,8 @@ const dispatcher = (dispatch) => ({
   _getRegionPersonnel: (...args) => dispatch(getRegionPersonnel(...args)),
   _getAdmAreaKeyFigures: (...args) => dispatch(getAdmAreaKeyFigures(...args)),
   _getAdmAreaSnippets: (...args) => dispatch(getAdmAreaSnippets(...args)),
-  _getCountries: (...args) => dispatch(getCountries(...args))
+  _getCountries: (...args) => dispatch(getCountries(...args)),
+  _getAppealsList: (...args) => dispatch(getAppealsList(...args)),
 });
 
 export default connect(selector, dispatcher)(AdminArea);

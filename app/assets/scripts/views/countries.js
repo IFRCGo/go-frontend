@@ -192,7 +192,7 @@ class AdminArea extends SFPComponent {
     this.props._getCountryOperations(type, id);
     this.props._getPartnerDeployments(type, id);
     this.props._getFdrs(id);
-    this.props._getAppealsList(id);
+    this.props._getAppealsList({countryId: id});
   }
 
   getAdmArea (type, id) {
