@@ -603,13 +603,13 @@ export function convertFieldReportToState (fieldReport) {
   return state;
 }
 
-export function filterActions(actions, actionType, status) {
+export function filterActions (actions, actionType, status) {
   return actions.filter(action => {
     return action.organizations.includes(actionType) && action.field_report_types.includes(status);
   }).map(action => {
     return {
       value: action.id,
       label: action.name
-    }
-  })
+    };
+  });
 }

@@ -446,16 +446,15 @@ class FieldReportForm extends React.Component {
 
     // ideally, this should never happen, but handle it.
     if (!actions.fetched) {
-      if (!actions.fetching) this.props._getActions()
+      if (!actions.fetching) this.props._getActions();
       return (
         <div>
           Loading Actions Data...
         </div>
-      )
+      );
     }
 
     const actionsData = actions.data.results;
-
 
     // Note: There's no need for validation on this step.
     // All the fields are optional, and the text fields are just strings.
@@ -490,7 +489,6 @@ class FieldReportForm extends React.Component {
         <React.Fragment>
           {
             fields.checkboxSections.map(section => {
-
               return (
                 <ActionsCheckboxes
                   label={section.label[status]}
@@ -503,7 +501,7 @@ class FieldReportForm extends React.Component {
                   values={this.state.data[section.key]}
                   onChange={this.onFieldChange.bind(this, section.key)}
                 />
-              )
+              );
             })
           }
         </React.Fragment>

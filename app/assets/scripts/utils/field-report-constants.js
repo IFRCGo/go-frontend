@@ -802,7 +802,7 @@ export const fieldsStep3 = {
         'EW': 'Brief description of the action'
       }
     }
-  ], 
+  ],
   'actionsOthers': {
     'label': {
       'EVT': 'Actions Taken by Others (Governments, UN)',
