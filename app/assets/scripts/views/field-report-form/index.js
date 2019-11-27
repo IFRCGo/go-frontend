@@ -19,7 +19,7 @@ import {
 } from '../../schemas/field-report-form';
 import * as formData from '../../utils/field-report-constants';
 import { showAlert } from '../../components/system-alerts';
-import { createFieldReport, updateFieldReport, getFieldReportById, getDistrictsForCountry } from '../../actions';
+import { createFieldReport, updateFieldReport, getFieldReportById, getDistrictsForCountry, getActions } from '../../actions';
 import { showGlobalLoading, hideGlobalLoading } from '../../components/global-loading';
 import {
   dataPathToDisplay,
@@ -27,7 +27,8 @@ import {
   getEventsFromApi,
   getInitialDataState,
   convertStateToPayload,
-  convertFieldReportToState
+  convertFieldReportToState,
+  filterActions
 } from './data-utils';
 
 import App from '../app';
@@ -104,6 +105,9 @@ class FieldReportForm extends React.Component {
       // Editing the field report.
       this.getReport(this.props.match.params.id);
     }
+
+    // fetch actions data from backend
+    this.props._getActions();
   }
 
   getReport (id) {
@@ -438,6 +442,21 @@ class FieldReportForm extends React.Component {
   renderStep3 () {
     const fields = formData.fieldsStep3;
     const status = this.getStatus();
+    const { actions } = this.props;
+
+    // ideally, this should never happen, but handle it.
+    if (!actions.fetched) {
+      if (!actions.fetching) this.props._getActions()
+      return (
+        <div>
+          Loading Actions Data...
+        </div>
+      )
+    }
+
+    const actionsData = actions.data.results;
+
+
     // Note: There's no need for validation on this step.
     // All the fields are optional, and the text fields are just strings.
     return (
@@ -468,34 +487,26 @@ class FieldReportForm extends React.Component {
             })
           }
         </div>
-        <ActionsCheckboxes
-          label='Actions Taken by National Society Red Cross (if any)'
-          description='Select the activities undertaken by the National Society and briefly describe.'
-          placeholder='Example: The two local branches of the National Society in the affected districts have provided first aid, psychosocial support and basic relief items to the affected families. An evacuation centre has been set up in a local school to accommodate those unable to return to their homes. Groups of Red Cross volunteers are helping the local search and rescue personnel in cleaning storm debris from houses and streets.'
-          name='actions-nat-soc'
-          classInput='textarea--lg'
-          options={formData.actions}
-          values={this.state.data.actionsNatSoc}
-          onChange={this.onFieldChange.bind(this, 'actionsNatSoc')} />
+        <React.Fragment>
+          {
+            fields.checkboxSections.map(section => {
 
-        <ActionsCheckboxes
-          label='Actions taken by the IFRC'
-          description='Select the activities taken by the IFRC (could be the Regional office, cluster office or country office) and briefly describe.'
-          placeholder='Brief description of the action'
-          name='actions-federation'
-          options={formData.actions}
-          values={this.state.data.actionsFederation}
-          onChange={this.onFieldChange.bind(this, 'actionsFederation')} />
-
-        <ActionsCheckboxes
-          label='Actions taken by any other RCRC Movement actors'
-          description='Select the activities undertaken by any other RCRC Movement actor(s) and briefly describe.'
-          placeholder='Brief description of the action'
-          name='actions-pns'
-          options={formData.actions}
-          values={this.state.data.actionsPns}
-          onChange={this.onFieldChange.bind(this, 'actionsPns')} />
-
+              return (
+                <ActionsCheckboxes
+                  label={section.label[status]}
+                  description={section.desc[status]}
+                  placeholder={section.placeholder[status]}
+                  name={section.name}
+                  key={section.key}
+                  classInput='textarea-lg'
+                  options={filterActions(actionsData, section.action_type, status)}
+                  values={this.state.data[section.key]}
+                  onChange={this.onFieldChange.bind(this, section.key)}
+                />
+              )
+            })
+          }
+        </React.Fragment>
         <FormRadioGroup
           label='Information Bulletin'
           description='Indicate if an Information Bulletin was published, is planned or if no Information Bulletin will be issued for this operation/disaster.'
@@ -518,10 +529,10 @@ class FieldReportForm extends React.Component {
           onChange={this.onFieldChange.bind(this, 'bulletin')} />
 
         <FormTextarea
-          label='Actions Taken by Others (Governments, UN)'
+          label={fields.actionsOthers.label[status]}
           name='actions-others'
           id='actions-others'
-          description='Who else was involved? UN agencies? NGOs? Government? Describe what other actors did.'
+          description={fields.actionsOthers.desc[status]}
           placeholder='Brief description of the action'
           value={this.state.data.actionsOthers}
           onChange={this.onFieldChange.bind(this, 'actionsOthers')} />
@@ -669,6 +680,7 @@ if (environment !== 'production') {
 
 const selector = (state, ownProps) => ({
   fieldReportForm: state.fieldReportForm,
+  actions: state.actions,
   user: state.user,
   report: _get(state.fieldReport, ownProps.match.params.id, {
     data: {},
@@ -682,7 +694,8 @@ const dispatcher = (dispatch) => ({
   _createFieldReport: (...args) => dispatch(createFieldReport(...args)),
   _updateFieldReport: (...args) => dispatch(updateFieldReport(...args)),
   _getFieldReportById: (...args) => dispatch(getFieldReportById(...args)),
-  _getDistrictsForCountry: (...args) => dispatch(getDistrictsForCountry(...args))
+  _getDistrictsForCountry: (...args) => dispatch(getDistrictsForCountry(...args)),
+  _getActions: (...args) => dispatch(getActions(...args))
 });
 
 export default connect(selector, dispatcher)(FieldReportForm);

@@ -750,52 +750,67 @@ export const fieldsStep3 = {
       }
     }
   ],
-  'actionsSections': {
-    'actions-nat-soc': {
-      'EVT': {
-        'label': 'Actions Taken by National Society Red Cross (if any)',
-        'desc': 'Select the activities undertaken by the National Society and briefly describe.',
-        'placeholder': 'Example: The two local branches of the National Society in the affected districts have provided first aid, psychosocial support and basic relief items to the affected families. An evacuation centre has been set up in a local school to accommodate those unable to return to their homes. Groups of Red Cross volunteers are helping the local search and rescue personnel in cleaning storm debris from houses and streets.'
+  'checkboxSections': [
+    {
+      'name': 'actions-nat-soc',
+      'key': 'actionsNatSoc',
+      'action_type': 'NTLS',
+      'label': {
+        'EVT': 'Actions Taken by National Society Red Cross (if any)',
+        'EW': 'Early Actions Taken by NS'
       },
-      'EW': {
-        'label': 'Early Actions Taken by NS',
-        'desc': 'Select the early action activities undertaken by the National Society and give a brief description',
-        'placeholder': 'Brief description of the action'
+      'desc': {
+        'EVT': 'Select the activities undertaken by the National Society and briefly describe.',
+        'EW': 'Select the early action activities undertaken by the National Society and give a brief description'
+      },
+      'placeholder': {
+        'EVT': 'Example: The two local branches of the National Society in the affected districts have provided first aid, psychosocial support and basic relief items to the affected families. An evacuation centre has been set up in a local school to accommodate those unable to return to their homes. Groups of Red Cross volunteers are helping the local search and rescue personnel in cleaning storm debris from houses and streets.',
+        'EW': 'Brief description of the action'
       }
     },
-    'actions-federation': {
-      'EVT': {
-        'label': 'Actions taken by the IFRC',
-        'desc': 'Select the activities taken by the IFRC (could be the Regional office, cluster office or country office) and briefly describe.',
-        'placeholder': 'Brief description of the action'
+    {
+      'name': 'actions-federation',
+      'key': 'actionsFederation',
+      'action_type': 'FDRN',
+      'label': {
+        'EVT': 'Actions taken by the IFRC',
+        'EW': 'Early Actions Taken by IFRC'
       },
-      'EW': {
-        'label': 'Early Actions Taken by IFRC',
-        'desc': 'Select the early action activities undertaken by the IFRC and give a brief description',
-        'placeholder': 'Brief description of the action'
+      'desc': {
+        'EVT': 'Select the activities taken by the IFRC (could be the Regional office, cluster office or country office) and briefly describe.',
+        'EW': 'Select the early action activities undertaken by the IFRC and give a brief description'
+      },
+      'placeholder': {
+        'EVT': 'Brief description of the action',
+        'EW': 'Brief description of the action'
       }
     },
-    'actions-pns': {
-      'EVT': {
-        'label': 'Actions taken by any other RCRC Movement actors',
-        'desc': 'Select the activities undertaken by any other RCRC Movement actor(s) and briefly describe.',
-        'placeholder': 'Brief description of the action'
+    {
+      'name': 'actions-pns',
+      'key': 'actionsPns',
+      'action_type': 'PNS',
+      'label': {
+        'EVT': 'Actions taken by any other RCRC Movement actors',
+        'EW': 'Early Action Taken by other RCRC Movement'
       },
-      'EW': {
-        'label': 'Early Action Taken by other RCRC Movement',
-        'desc': 'Select the early action activities undertaken by the RCRC Movement and give a brief description.',
-        'placeholder': 'Brief description of the action'
+      'desc': {
+        'EVT': 'Select the activities undertaken by any other RCRC Movement actor(s) and briefly describe.',
+        'EW': 'Select the early action activities undertaken by the RCRC Movement and give a brief description.'
+      },
+      'placeholder': {
+        'EVT': 'Brief description of the action',
+        'EW': 'Brief description of the action'
       }
     }
-  },
-  'actions-others': {
-    'EVT': {
-      'label': 'Actions Taken by Others (Governments, UN)',
-      'desc': 'Who else was involved? UN agencies? NGOs? Government? Describe what other actors did.'
+  ], 
+  'actionsOthers': {
+    'label': {
+      'EVT': 'Actions Taken by Others (Governments, UN)',
+      'EW': 'Early Actions Taken by Others (Governments, UN)'
     },
-    'EW': {
-      'label': 'Early Actions Taken by Others (Governments, UN)',
-      'desc': 'List the early action activities undertaken by other actors and give a brief description.'
+    'desc': {
+      'EVT': 'Who else was involved? UN agencies? NGOs? Government? Describe what other actors did.',
+      'EW': 'List the early action activities undertaken by other actors and give a brief description.'
     }
   }
 };
