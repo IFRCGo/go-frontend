@@ -105,6 +105,40 @@
   }
 }
 
+.table__basic-grid {
+  display: grid;
+  grid-gap: 4rem;
+  grid-template-columns: 1fr 1fr;
+}
+
+.table__basic--header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: ($global-spacing * 2);
+  font-weight: bold;
+}
+
+.table__basic {
+  display: flex;
+  justify-content: center;
+  .table__basic--title {
+    width: ($global-spacing * 10);
+  }
+  .table__basic--value {
+    font-weight: bold;
+  }
+}
+
+.table__basic-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: ($global-spacing * 2);
+}
+
+.table__basic-footer-line {
+  margin-left: 4px; 
+}
+
 /* Warapped in a scrollable-x element (optimized for narrow screens) */
 
 .scrollable-x {

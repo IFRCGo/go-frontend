@@ -1,6 +1,5 @@
 'use strict';
 import React from 'react';
-import ReactMarkdown from 'react-markdown';
 import memoize from 'memoize-one';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -15,8 +14,9 @@ import url from 'url';
 import { countries } from '../utils/field-report-constants';
 import { environment, api } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
+import BasicTable from '../components/common/table-basic';
 import { get, dateOptions, datesAgo, dTypeOptions } from '../utils/utils/';
-import { commaSeparatedNumber as n, nope, round } from '../utils/format';
+import { commaSeparatedNumber as n, commaSeparatedLargeNumber as bigN, nope, round } from '../utils/format';
 import {
   getAdmAreaById,
   getAdmAreaAppealsList,
@@ -461,6 +461,86 @@ class AdminArea extends SFPComponent {
       (typeof this.props.getPerMission !== 'undefined' && this.props.getPerMission.fetched && this.props.getPerMission.data.count > 0);
   }
 
+  renderCountryProfile () {
+    const { fetched, data } = this.props.fdrs;
+    if (!fetched) {
+      return null;
+    }
+    const population = get(data, 'Population.value');
+    const gdp = get(data, 'GDP.value');
+    const poverty = get(data, 'Poverty.value');
+    const literacy = get(data, 'Literacy.value');
+    const urbanPop = get(data, 'UrbPop.value');
+
+    // get unique years of data
+    let years = {};
+    Object.keys(data)
+      .map(d => data[d].year)
+      .forEach(year => {
+        if (!years[year]) {
+          years[year] = true;
+        }
+      });
+
+    const statistics = {
+      countryStatistics: [
+        {
+          title: 'Population',
+          value: bigN(population)
+        },
+        {
+          title: 'Urban Pop',
+          value: urbanPop ? urbanPop + '%' : nope
+        },
+        {
+          title: 'GDP',
+          value: gdp ? '$' + bigN(gdp) : nope
+        },
+        {
+          title: 'GNI / Capita',
+          value: n(get(data, 'GNIPC.value'))
+        },
+        {
+          title: 'Poverty (% pop)',
+          value: poverty ? poverty + '%' : nope
+        },
+        {
+          title: 'Life Expectancy',
+          value: n(get(data, 'LifeExp.value'))
+        },
+        {
+          title: 'Literacy',
+          value: literacy ? literacy + '%' : nope
+        }
+      ],
+      nationalSociety: [
+        {
+          title: 'Income (CHF)',
+          value: bigN(get(data, 'KPI_IncomeLC_CHF.value'))
+        },
+        {
+          title: 'Expenditures (CHF)',
+          value: bigN(get(data, 'KPI_expenditureLC_CHF.value'))
+        },
+        {
+          title: 'Volunteers',
+          value: n(get(data, 'KPI_PeopleVol_Tot.value'))
+        },
+        {
+          title: 'Trained in first aid',
+          value: n(get(data, 'KPI_TrainFA_Tot.value'))
+        }
+      ],
+      source: {
+        url: 'http://data.ifrc.org/fdrs/',
+        title: 'FDRS',
+        reportingYears: years
+      }
+    };
+
+    return statistics;
+  }
+
   renderContent () {
     const {
       fetched,
@@ -578,10 +658,22 @@ class AdminArea extends SFPComponent {
                 </TabContent>
               </TabPanel>
               <TabPanel>
-                <TabContent isError={!data.overview || data.key_priorities} errorMessage={ NO_DATA } title="Overview">
+                <TabContent title="Overview">
                   <Fold title="Overview" id="overview">
-                    {data.overview ? <ReactMarkdown source={data.overview} /> : null}
-                    {data.key_priorities ? <ReactMarkdown source={data.key_priorities} /> : null}
+                    <div className='table__basic-grid'>
+                      <BasicTable tableContents={this.renderCountryProfile().countryStatistics} tableTitle='Country Statistics' />
+                      <BasicTable tableContents={this.renderCountryProfile().nationalSociety} tableTitle='National Society' />
+                    </div>
+                    <div className='table__basic-footer'>
+                      <p>
+                        <a href="http://data.ifrc.org/fdrs/" target="_blank">
+                      Source: {this.renderCountryProfile().source.title}
+                        </a>
+                      </p>
+                      <p className='table__basic-footer-line'>
+                       | Reporting year(s): {Object.keys(this.renderCountryProfile().source.reportingYears).sort().join(', ') || 'N/A'}
+                      </p>
+                    </div>
                   </Fold>
                 </TabContent>
                 <TabContent showError={true} isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage={ NO_DATA } title="Key Figures">
