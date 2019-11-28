@@ -471,10 +471,9 @@ export function convertFieldReportToState (fieldReport) {
     ['num_highest_risk', 'numHighestRisk'],
     ['affected_pop_centres', 'affectedPopCentres']
   ];
-  console.log('field report', fieldReport);
+
   sourceEstimationMapping.forEach(([src, dest]) => {
     let sourceEstimation = [];
-    console.log('src', src);
     if (fieldReport[src] !== null) {
       sourceEstimation.push({
         source: 'red-cross',
