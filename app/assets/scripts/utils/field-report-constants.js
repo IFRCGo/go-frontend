@@ -452,66 +452,6 @@ export const sources = [
   }
 ];
 
-  // Step 3
-export const actions = [
-  {
-    label: 'Cash and Voucher Assistance/ Basic Needs',
-    value: '41'
-  },
-  {
-    label: 'Camp management',
-    value: '33'
-  },
-  {
-    label: 'Damage/Needs assessment',
-    value: '27'
-  },
-  {
-    label: 'Evacuation',
-    value: '36'
-  },
-  {
-    label: 'First Aid',
-    value: '37'
-  },
-  {
-    label: 'Food Assistance',
-    value: '30'
-  },
-  {
-    label: 'Health',
-    value: '31'
-  },
-  {
-    label: 'Other',
-    value: '39'
-  },
-  {
-    label: 'Psychosocial support services',
-    value: '34'
-  },
-  {
-    label: 'Restoring Family Links',
-    value: '35'
-  },
-  {
-    label: 'Relief/ Distribution',
-    value: '38'
-  },
-  {
-    label: 'Search & Rescue',
-    value: '28'
-  },
-  {
-    label: 'Shelter',
-    value: '32'
-  },
-  {
-    label: 'Water & Sanitation',
-    value: '29'
-  }
-];
-
 // Step 4.
 export const eruTypes = [
   {
