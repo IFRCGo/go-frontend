@@ -72,15 +72,9 @@ export const sectorList = [
   },
   {
     key: '9',
-    title: 'Livelihoods',
+    title: 'Livelihoods and basic needs',
     color: '#b3b3b3',
-    inputValue: 'Livelihoods',
-  },
-  {
-    key: '10',
-    title: 'Basic needs',
-    color: '#b3b3b3',
-    inputValue: 'Basic Needs',
+    inputValue: 'Livelihoods And Basic Needs',
   },
 ];
 
@@ -141,24 +135,18 @@ export const secondarySectorList = [
   },
   {
     key: '9',
-    title: 'Livelihoods',
+    title: 'Livelihoods and basic needs',
     color: '#b3b3b3',
-    inputValue: 'Livelihoods',
+    inputValue: 'Livelihoods And Basic Needs',
   },
   {
     key: '10',
-    title: 'Basic needs',
-    color: '#b3b3b3',
-    inputValue: 'Basic Needs',
-  },
-  {
-    key: '11',
     title: 'Recovery',
     color: '#b3b3b3',
     inputValue: 'Recovery',
   },
   {
-    key: '12',
+    key: '11',
     title: 'Internal displacement',
     color: '#b3b3b3',
     inputValue: 'Internal Displacement',
@@ -166,8 +154,10 @@ export const secondarySectorList = [
 ];
 
 export const sectors = listToMap(sectorList, d => d.key, d => d.title);
+export const sectorInputValues = listToMap(sectorList, d => d.key, d => d.inputValue);
 
 export const secondarySectors = listToMap(secondarySectorList, d => d.key, d => d.title);
+export const secondarySectorInputValues = listToMap(secondarySectorList, d => d.key, d => d.inputValue);
 
 export const statusList = [
   {

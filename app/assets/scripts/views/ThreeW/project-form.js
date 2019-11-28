@@ -27,9 +27,9 @@ import {
   statusList,
   statuses,
   sectorList,
-  secondarySectors,
+  secondarySectorInputValues,
   secondarySectorList,
-  sectors,
+  sectorInputValues,
   programmeTypeList,
   programmeTypes,
 } from '../../utils/constants';
@@ -130,7 +130,7 @@ class ProjectForm extends React.PureComponent {
         project_district: projectData.project_district,
         name: projectData.name,
         operation_type: operationTypes[projectData.operation_type],
-        primary_sector: sectors[projectData.primary_sector],
+        primary_sector: sectorInputValues[projectData.primary_sector],
         programme_type: programmeTypes[projectData.programme_type],
         end_date: projectData.end_date,
         start_date: projectData.start_date,
@@ -139,7 +139,7 @@ class ProjectForm extends React.PureComponent {
         reached_male: projectData.reached_male || undefined,
         reached_total: projectData.reached_total || undefined,
         reporting_ns: projectData.reporting_ns,
-        secondary_sectors: projectData.secondary_sectors ? projectData.secondary_sectors.map(d => secondarySectors[d]) : [],
+        secondary_sectors: projectData.secondary_sectors ? projectData.secondary_sectors.map(d => secondarySectorInputValues[d]) : [],
         status: statuses[projectData.status],
         target_children: projectData.target_children || undefined,
         target_female: projectData.target_female || undefined,
@@ -271,7 +271,7 @@ class ProjectForm extends React.PureComponent {
       fields: { ...this.schema.fields }
     };
 
-    if (operationType === 'Long Term Operation') {
+    if (operationType === 'Programme') {
       schema.fields.dtype = [requiredCondition];
     }
 
@@ -319,7 +319,7 @@ class ProjectForm extends React.PureComponent {
 
     const shouldShowCurrentOperation = faramValues.operation_type === 'Emergency Operation' &&
       faramValues.programme_type === 'Multilateral';
-    const shouldShowDisasterType = faramValues.operation_type === 'Long Term Operation' &&
+    const shouldShowDisasterType = faramValues.operation_type === 'Programme' &&
       !shouldShowCurrentOperation;
 
     const schema = this.getSchema(
@@ -402,7 +402,7 @@ class ProjectForm extends React.PureComponent {
 
         { shouldShowCurrentOperation && (
           <InputSection
-            title='Current operation'
+            title='Current IFRC operation'
           >
             <SelectInput
               faramElementName='event'
@@ -516,6 +516,10 @@ class ProjectForm extends React.PureComponent {
         </InputSection>
 
         <footer>
+          {/*
+            The first hidden and disabled submit button is to disable form submission on enter
+            more details on: https://www.w3.org/TR/2018/SPSD-html5-20180327/forms.html#implicit-submission
+          */}
           <button
             className='three-w-hidden-submit-button'
             type="submit"
