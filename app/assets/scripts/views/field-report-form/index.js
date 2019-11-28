@@ -28,7 +28,8 @@ import {
   getInitialDataState,
   convertStateToPayload,
   convertFieldReportToState,
-  filterActions
+  filterActions,
+  checkFalse
 } from './data-utils';
 
 import App from '../app';
@@ -89,6 +90,20 @@ class FieldReportForm extends React.Component {
       }
     }
 
+    if (this.props.actions.fetching && !nextProps.actions.fetching) {
+      if (nextProps.actions.error) {
+        showAlert('danger', <p><strong>Error:</strong>Failed to load Form Data</p>, true, 4500);
+      } else {
+        this.setActions(nextProps.actions.data.results);
+
+        // only attempt to load existing report once we have actions in the State
+        if (this.props.match.params.id) {
+          // Editing the field report.
+          this.getReport(this.props.match.params.id);
+        }
+      }
+    }
+
     if (this.props.report.fetching && !nextProps.report.fetching) {
       hideGlobalLoading();
       if (!nextProps.report.error) {
@@ -101,11 +116,6 @@ class FieldReportForm extends React.Component {
   }
 
   componentDidMount () {
-    if (this.props.match.params.id) {
-      // Editing the field report.
-      this.getReport(this.props.match.params.id);
-    }
-
     // fetch actions data from backend
     this.props._getActions();
   }
@@ -270,6 +280,31 @@ class FieldReportForm extends React.Component {
   getStatus () {
     const status = this.state.data.status;
     return status === formData.statusEarlyWarning.value ? 'EW' : 'EVT';
+  }
+
+  /**
+   * Modifies state.data to incorporate actions received from the API
+   */
+  setActions (actions) {
+    const actionsNatSocOpts = checkFalse(filterActions(actions, 'NTLS'));
+    const actionsPnsOpts = checkFalse(filterActions(actions, 'PNS'));
+    const actionsFederationOpts = checkFalse(filterActions(actions, 'FDRN'));
+    const newData = {
+      ...this.state.data,
+      actionsNatSoc: {
+        ...this.state.data.actionsNatSoc,
+        options: actionsNatSocOpts
+      },
+      actionsFederation: {
+        ...this.state.data.actionsFederation,
+        options: actionsFederationOpts
+      },
+      actionsPns: {
+        ...this.state.data.actionsPns,
+        options: actionsPnsOpts
+      }
+    };
+    this.setState({'data': newData});
   }
 
   renderStep1 () {

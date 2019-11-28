@@ -605,11 +605,24 @@ export function convertFieldReportToState (fieldReport) {
 
 export function filterActions (actions, actionType, status) {
   return actions.filter(action => {
-    return action.organizations.includes(actionType) && action.field_report_types.includes(status);
+    if (status) {
+      return action.organizations.includes(actionType) && action.field_report_types.includes(status);
+    } else {
+      return action.organizations.includes(actionType)
+    }
   }).map(action => {
     return {
       value: action.id,
       label: action.name
     };
   });
+}
+
+export function checkFalse (actions) {
+  return actions.map(action => {
+    return {
+      value: action.value,
+      checked: false
+    }
+  })
 }
