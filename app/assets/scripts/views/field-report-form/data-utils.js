@@ -50,7 +50,7 @@ export function dataPathToDisplay (path, keyword) {
     'rdrtrits.value': 'RDRT/RITS - Number of people',
     'fact.value': 'FACT - Number of people',
     'ifrcStaff.value': 'IFRC Staff Relocated - Number of people',
-    'imminentDrf.value': 'Imminent DRF - Amount CHF',
+    'imminentDref.value': 'Imminent DRF - Amount CHF',
     'forecastBasedAction.value': 'Forecast Based Action - Amount CHF',
     'eru.units': 'ERU - Units',
 
@@ -129,7 +129,7 @@ export function prepStateForValidation (state) {
     rdrtrits: objPropToNum('value'),
     fact: objPropToNum('value'),
     ifrcStaff: objPropToNum('value'),
-    imminentDrf: objPropToNum('value'),
+    imminentDref: objPropToNum('value'),
     forecastBasedAction: objPropToNum('value'),
     eru: (val) => val.map(objPropToNum('units'))
   };
@@ -260,7 +260,7 @@ export function convertStateToPayload (originalState) {
     ['rdrtrits', 'rdrt', 'num_rdrt'],
     ['fact', 'fact', 'num_fact'],
     ['ifrcStaff', 'ifrc_staff', 'num_ifrc_staff'],
-    ['imminentDrf', 'imminent_drf', 'imminent_drf_amount'],
+    ['imminentDref', 'imminent_dref', 'imminent_dref_amount'],
     ['forecastBasedAction', 'forecast_based_action', 'forecast_based_action_amount']
   ];
 
@@ -386,7 +386,7 @@ export function getInitialDataState () {
     rdrtrits: { status: undefined, value: undefined },
     fact: { status: undefined, value: undefined },
     ifrcStaff: { status: undefined, value: undefined },
-    imminentDrf: { status: undefined, value: undefined },
+    imminentDref: { status: undefined, value: undefined },
     forecastBasedAction: { status: undefined, value: undefined },
     eru: [{ type: undefined, status: undefined, units: undefined }],
 
@@ -471,10 +471,10 @@ export function convertFieldReportToState (fieldReport) {
     ['num_highest_risk', 'numHighestRisk'],
     ['affected_pop_centres', 'affectedPopCentres']
   ];
-
+  console.log('field report', fieldReport);
   sourceEstimationMapping.forEach(([src, dest]) => {
     let sourceEstimation = [];
-
+    console.log('src', src);
     if (fieldReport[src] !== null) {
       sourceEstimation.push({
         source: 'red-cross',
@@ -547,11 +547,13 @@ export function convertFieldReportToState (fieldReport) {
     ['rdrt', 'num_rdrt', 'rdrtrits'],
     ['fact', 'num_fact', 'fact'],
     ['ifrc_staff', 'num_ifrc_staff', 'ifrcStaff'],
-    ['imminent_drf', 'imminent_drf_amount', 'imminentDrf'],
+    ['imminent_dref', 'imminent_dref_amount', 'imminentDref'],
     ['forecast_based_action', 'forecast_based_action_amount', 'forecastBasedAction']
   ];
 
+  console.log('field report', fieldReport);
   planResponseMapping.forEach(([statusMap, valueMap, dest]) => {
+    console.log('statusMap', statusMap);
     if (fieldReport[statusMap] !== null) {
       state[dest] = {
         status: fieldReport[statusMap].toString(),

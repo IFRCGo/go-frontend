@@ -890,10 +890,10 @@ export const fieldsStep4 = {
     // WARNING: Next two are new fields in the database. Label set to `null` for EVT signifies
     // that they are not to appear if form_type === 'EVT'
     {
-      'name': 'imminent-drf',
+      'name': 'imminent-dref',
       'valueFieldLabel': 'Amount CHF',
       'options': drefOptions,
-      'key': 'imminentDrf',
+      'key': 'imminentDref',
       'label': {
         'EVT': null,
         'EW': 'FbA by the DREF or Imminent DREF'
