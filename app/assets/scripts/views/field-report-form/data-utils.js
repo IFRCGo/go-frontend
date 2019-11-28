@@ -608,7 +608,7 @@ export function filterActions (actions, actionType, status) {
     if (status) {
       return action.organizations.includes(actionType) && action.field_report_types.includes(status);
     } else {
-      return action.organizations.includes(actionType)
+      return action.organizations.includes(actionType);
     }
   }).map(action => {
     return {
@@ -623,6 +623,6 @@ export function checkFalse (actions) {
     return {
       value: action.value,
       checked: false
-    }
-  })
+    };
+  });
 }

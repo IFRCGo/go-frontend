@@ -243,7 +243,7 @@ class FieldReportForm extends React.Component {
   }
 
   renderStepper () {
-    const status = this.getStatus()
+    const status = this.getStatus();
     const step = this.state.step;
     const items = [
       {
