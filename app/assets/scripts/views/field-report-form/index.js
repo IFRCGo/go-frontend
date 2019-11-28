@@ -233,12 +233,25 @@ class FieldReportForm extends React.Component {
   }
 
   renderStepper () {
+    const status = this.getStatus()
     const step = this.state.step;
     const items = [
-      'Context',
-      'Situation',
-      'Actions',
-      'Response'
+      {
+        'EVT': 'Context',
+        'EW': 'Context'
+      },
+      {
+        'EVT': 'Situation',
+        'EW': 'Risk'
+      },
+      {
+        'EVT': 'Actions',
+        'EW': 'Early Actions'
+      },
+      {
+        'EVT': 'Response',
+        'EW': 'Response'
+      }
     ];
     return (
       <ol className='stepper'>
@@ -248,7 +261,7 @@ class FieldReportForm extends React.Component {
             'stepper__item--complete': step > stepNum,
             'stepper__item--current': step === stepNum
           });
-          return <li key={o} className={classes}><a href='#' onClick={this.onStepperClick.bind(this, stepNum)}><span>{o}</span></a></li>;
+          return <li key={o[status]} className={classes}><a href='#' onClick={this.onStepperClick.bind(this, stepNum)}><span>{o[status]}</span></a></li>;
         })}
       </ol>
     );
