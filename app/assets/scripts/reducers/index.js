@@ -30,6 +30,7 @@ import perForm from './per-form';
 import subscriptions from './subscriptions';
 import projects from './projects.js';
 import projectForm from './project-form.js';
+import countryOverview from './country-overview.js';
 
 export const reducers = {
   user,
@@ -61,6 +62,7 @@ export const reducers = {
   subscriptions,
   projects,
   projectForm,
+  countryOverview,
 };
 
 export default combineReducers(reducers);

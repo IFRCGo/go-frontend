@@ -304,6 +304,12 @@ export const countryIsoMapById = listToMap(
   d => d.iso,
 );
 
+export const countryIsoMapByName = listToMap(
+  countryList,
+  d => window.decodeURI(d.name),
+  d => d.iso,
+);
+
 export const countryNameMapById = listToMap(
   countryList,
   d => d.value,
