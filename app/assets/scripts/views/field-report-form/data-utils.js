@@ -32,6 +32,9 @@ export function dataPathToDisplay (path, keyword) {
     'numMissing.estimation': 'Estimation Missing',
     'numAffected.estimation': 'Estimation Affected',
     'numDisplaced.estimation': 'Estimation Displaced',
+    'numPotentiallyAffected': 'Estimation Potentially Affected',
+    'numHighestRisk': 'Estimation Highest Risk',
+    'affectedPopCentres': 'Affected Pop Centres',
     numAssistedGov: 'Assisted by Government',
     numAssistedRedCross: 'Assisted By Red Cross',
     numLocalStaff: 'Number of local staff involved',
@@ -47,6 +50,8 @@ export function dataPathToDisplay (path, keyword) {
     'rdrtrits.value': 'RDRT/RITS - Number of people',
     'fact.value': 'FACT - Number of people',
     'ifrcStaff.value': 'IFRC Staff Relocated - Number of people',
+    'imminentDref.value': 'Imminent DRF - Amount CHF',
+    'forecastBasedAction.value': 'Forecast Based Action - Amount CHF',
     'eru.units': 'ERU - Units',
 
     // Step 5.
@@ -93,6 +98,7 @@ export function prepStateForValidation (state) {
   };
 
   const objPropToNum = (prop) => (val) => { val[prop] = toNumIfNum(val[prop]); return val; };
+  const objPropToStr = (prop) => (val) => { val[prop] = val[prop] ? val[prop] : ''; return val; };
 
   const formatter = {
     // Step 1.
@@ -108,6 +114,9 @@ export function prepStateForValidation (state) {
     numMissing: (val) => val.map(objPropToNum('estimation')),
     numAffected: (val) => val.map(objPropToNum('estimation')),
     numDisplaced: (val) => val.map(objPropToNum('estimation')),
+    numPotentiallyAffected: (val) => val.map(objPropToNum('estimation')),
+    numHighestRisk: (val) => val.map(objPropToNum('estimation')),
+    affectedPopCentres: (val) => val.map(objPropToStr('estimation')),
     numAssistedGov: toNumIfNum,
     numAssistedRedCross: toNumIfNum,
     numLocalStaff: toNumIfNum,
@@ -120,6 +129,8 @@ export function prepStateForValidation (state) {
     rdrtrits: objPropToNum('value'),
     fact: objPropToNum('value'),
     ifrcStaff: objPropToNum('value'),
+    imminentDref: objPropToNum('value'),
+    forecastBasedAction: objPropToNum('value'),
     eru: (val) => val.map(objPropToNum('units'))
   };
 
@@ -186,7 +197,10 @@ export function convertStateToPayload (originalState) {
     ['numDead', 'num_dead'],
     ['numMissing', 'num_missing'],
     ['numAffected', 'num_affected'],
-    ['numDisplaced', 'num_displaced']
+    ['numDisplaced', 'num_displaced'],
+    ['numPotentiallyAffected', 'num_potentially_affected'],
+    ['numHighestRisk', 'num_highest_risk'],
+    ['affectedPopCentres', 'affected_pop_centres']
   ];
 
   sourceEstimationMapping.forEach(([src, dest]) => {
@@ -245,7 +259,9 @@ export function convertStateToPayload (originalState) {
     ['emergencyAppeal', 'appeal', 'appeal_amount'],
     ['rdrtrits', 'rdrt', 'num_rdrt'],
     ['fact', 'fact', 'num_fact'],
-    ['ifrcStaff', 'ifrc_staff', 'num_ifrc_staff']
+    ['ifrcStaff', 'ifrc_staff', 'num_ifrc_staff'],
+    ['imminentDref', 'imminent_dref', 'imminent_dref_amount'],
+    ['forecastBasedAction', 'forecast_based_action', 'forecast_based_action_amount']
   ];
 
   planResponseMapping.forEach(([src, statusMap, valueMap]) => {
@@ -330,6 +346,9 @@ export function getInitialDataState () {
     numMissing: [{ estimation: undefined, source: undefined }],
     numAffected: [{ estimation: undefined, source: undefined }],
     numDisplaced: [{ estimation: undefined, source: undefined }],
+    numPotentiallyAffected: [{ estimation: undefined, source: undefined }],
+    numHighestRisk: [{ estimation: undefined, source: undefined }],
+    affectedPopCentres: [{ estimation: undefined, source: undefined }],
     numAssistedGov: undefined,
     numAssistedRedCross: undefined,
     numLocalStaff: undefined,
@@ -367,6 +386,8 @@ export function getInitialDataState () {
     rdrtrits: { status: undefined, value: undefined },
     fact: { status: undefined, value: undefined },
     ifrcStaff: { status: undefined, value: undefined },
+    imminentDref: { status: undefined, value: undefined },
+    forecastBasedAction: { status: undefined, value: undefined },
     eru: [{ type: undefined, status: undefined, units: undefined }],
 
     // Step 5
@@ -445,12 +466,14 @@ export function convertFieldReportToState (fieldReport) {
     ['num_dead', 'numDead'],
     ['num_missing', 'numMissing'],
     ['num_affected', 'numAffected'],
-    ['num_displaced', 'numDisplaced']
+    ['num_displaced', 'numDisplaced'],
+    ['num_potentially_affected', 'numPotentiallyAffected'],
+    ['num_highest_risk', 'numHighestRisk'],
+    ['affected_pop_centres', 'affectedPopCentres']
   ];
 
   sourceEstimationMapping.forEach(([src, dest]) => {
     let sourceEstimation = [];
-
     if (fieldReport[src] !== null) {
       sourceEstimation.push({
         source: 'red-cross',
@@ -522,10 +545,14 @@ export function convertFieldReportToState (fieldReport) {
     ['appeal', 'appeal_amount', 'emergencyAppeal'],
     ['rdrt', 'num_rdrt', 'rdrtrits'],
     ['fact', 'num_fact', 'fact'],
-    ['ifrc_staff', 'num_ifrc_staff', 'ifrcStaff']
+    ['ifrc_staff', 'num_ifrc_staff', 'ifrcStaff'],
+    ['imminent_dref', 'imminent_dref_amount', 'imminentDref'],
+    ['forecast_based_action', 'forecast_based_action_amount', 'forecastBasedAction']
   ];
 
+  console.log('field report', fieldReport);
   planResponseMapping.forEach(([statusMap, valueMap, dest]) => {
+    console.log('statusMap', statusMap);
     if (fieldReport[statusMap] !== null) {
       state[dest] = {
         status: fieldReport[statusMap].toString(),
@@ -575,4 +602,28 @@ export function convertFieldReportToState (fieldReport) {
   });
 
   return state;
+}
+
+export function filterActions (actions, actionType, status) {
+  return actions.filter(action => {
+    if (status) {
+      return action.organizations.includes(actionType) && action.field_report_types.includes(status);
+    } else {
+      return action.organizations.includes(actionType);
+    }
+  }).map(action => {
+    return {
+      value: action.id,
+      label: action.name
+    };
+  });
+}
+
+export function checkFalse (actions) {
+  return actions.map(action => {
+    return {
+      value: action.value,
+      checked: false
+    };
+  });
 }

@@ -6,6 +6,7 @@ import user from './user';
 import profile from './profile';
 import countries from './countries';
 import districts from './districts';
+import actions from './actions';
 import fieldReportForm from './field-report-form';
 import fieldReport from './field-report';
 import fieldReports from './field-reports';
@@ -36,6 +37,7 @@ export const reducers = {
   countries,
   districts,
   systemAlertsReducer,
+  actions,
   fieldReportForm,
   fieldReport,
   fieldReports,

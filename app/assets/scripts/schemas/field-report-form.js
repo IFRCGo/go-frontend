@@ -59,6 +59,15 @@ export const step2 = {
           source: {enum: ['red-cross', 'government', 'other']}
         }
       }
+    },
+    estimationString: {
+      type: 'array',
+      items: {
+        properties: {
+          estimation: { type: 'string' },
+          source: {enum: ['red-cross', 'government', 'other']}
+        }
+      }
     }
   },
   properties: {
@@ -76,6 +85,15 @@ export const step2 = {
     },
     numDisplaced: {
       '$ref': '#/definitions/estimation'
+    },
+    numPotentiallyAffected: {
+      '$ref': '#/definitions/estimation'
+    },
+    numHighestRisk: {
+      '$ref': '#/definitions/estimation'
+    },
+    affectedPopCentres: {
+      '$ref': '#/definitions/estimationString'
     },
     description: {
       type: 'string'
