@@ -545,6 +545,10 @@
 
   > footer {
     padding: 24px;
+
+    .three-w-hidden-submit-button {
+      display: none;
+    }
   }
 }
 
