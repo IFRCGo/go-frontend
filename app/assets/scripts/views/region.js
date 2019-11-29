@@ -8,7 +8,6 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { Helmet } from 'react-helmet';
 import CountryList from '../components/country-list';
 import { environment } from '../config';
-import FullscreenHeader from '../components/common/fullscreen-header';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { get } from '../utils/utils/';
 import { nope } from '../utils/format';
@@ -163,6 +162,11 @@ class AdminArea extends SFPComponent {
 
     if (!fetched || error) return null;
 
+    const presentationClass = c({
+      'presenting fold--stats': this.state.fullscreen,
+      'fold': !this.state.fullscreen
+    });
+
     const mapBoundingBox = getRegionBoundingBox(data.id);
     const regionName = get(regionMeta, [data.id, 'name'], nope);
     const activeOperations = get(this.props.appealStats, 'data.results.length', false);
@@ -202,9 +206,9 @@ class AdminArea extends SFPComponent {
               <TabPanel>
                 <TabContent>
                   <HighlightedOperations opsType='region' opsId={data.id}/>
-                  <div className={c('fold', {presenting: this.state.fullscreen})} id='presentation'>
+                  <section className={presentationClass} id='presentation'>
                     {this.state.fullscreen ? (
-                      <FullscreenHeader title='IFRC Disaster Response and Preparedness'/>
+                      <KeyFiguresHeader fullscreen={this.state.fullscreen} appealsList={this.props.appealStats} keyFiguresList={['numBeneficiaries', 'amountRequested', 'amountFunded']}/>
                     ) : null}
                     <div className={c('inner', {'appeals--fullscreen': this.state.fullscreen})}>
                       <AppealsTable
@@ -223,7 +227,7 @@ class AdminArea extends SFPComponent {
                         toggleFullscreen={this.toggleFullscreen}
                       />
                     </div>
-                  </div>
+                  </section>
                   <Fold title='Statistics' headerClass='visually-hidden' id='stats'>
                     <div className='stats-chart'>
                       <TimelineCharts region={data.id} />
