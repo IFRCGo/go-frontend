@@ -359,24 +359,15 @@ export function getInitialDataState () {
     bulletin: undefined,
     actionsOthers: undefined,
     actionsNatSoc: {
-      options: formData.actions.map(o => ({
-        value: o.value,
-        checked: false
-      })),
+      options: [],
       description: undefined
     },
     actionsPns: {
-      options: formData.actions.map(o => ({
-        value: o.value,
-        checked: false
-      })),
+      options: [],
       description: undefined
     },
     actionsFederation: {
-      options: formData.actions.map(o => ({
-        value: o.value,
-        checked: false
-      })),
+      options: [],
       description: undefined
     },
 
