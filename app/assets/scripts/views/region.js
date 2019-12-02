@@ -169,8 +169,6 @@ class AdminArea extends SFPComponent {
       'fold': !this.state.fullscreen
     });
 
-    console.log('appeals stats here', this.props);
-
     const mapBoundingBox = getRegionBoundingBox(data.id);
     const regionName = get(regionMeta, [data.id, 'name'], nope);
     const activeOperations = get(this.props.appealStats, 'data.results.length', false);
