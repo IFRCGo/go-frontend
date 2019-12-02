@@ -177,6 +177,12 @@ export const step4 = {
     ifrcStaff: {
       '$ref': '#/definitions/plannedResponse'
     },
+    imminentDref: {
+      '$ref': '#/definitions/plannedResponse'
+    },
+    forecastBasedAction: {
+      '$ref': '#/definitions/plannedResponse'
+    },
     contactOriginator: {
       '$ref': '#/definitions/contact'
     },
