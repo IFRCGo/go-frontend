@@ -124,9 +124,17 @@ export function getSurgeAlerts (page = 1, filters = {}) {
 }
 
 export const GET_APPEALS_LIST = 'GET_APPEALS_LIST';
-export function getAppealsList ({countryId = null, regionId = null} = {}) {
-  console.log('countryId', countryId)
-  console.log('regionId', regionId)
+export function getAppealsList () {
+  const filters = {
+    end_date__gt: DateTime.utc().toISO(),
+    limit: 1000
+  };
+  const f = buildAPIQS(filters);
+  return fetchJSON(`api/v2/appeal/?${f}`, GET_APPEALS_LIST, withToken());
+}
+
+export const GET_APPEALS_LIST_STATS = 'GET_APPEALS_LIST_STATS';
+export function getAppealsListStats ({countryId = null, regionId = null} = {}) {
   const filters = {
     end_date__gt: DateTime.utc().toISO(),
     limit: 1000
@@ -138,7 +146,7 @@ export function getAppealsList ({countryId = null, regionId = null} = {}) {
     filters.region = regionId;
   }
   const f = buildAPIQS(filters);
-  return fetchJSON(`api/v2/appeal/?${f}`, GET_APPEALS_LIST, withToken());
+  return fetchJSON(`api/v2/appeal/?${f}`, GET_APPEALS_LIST_STATS, withToken());
 }
 
 export const GET_AGGREGATE_APPEALS = 'GET_AGGREGATE_APPEALS';
