@@ -163,12 +163,7 @@ function appealsListStats (state = appealsListStatsInitialState, action) {
   return state;
 }
 
-const appealsListStatsInitialState = {
-  // fetching: false,
-  // fetched: false,
-  // receivedAt: null,
-  // data: {}
-};
+const appealsListStatsInitialState = {};
 
 function aggregate (state = aggregateInitialState, action) {
   switch (action.type) {
