@@ -32,7 +32,7 @@ import {
   getPerUploadedDocuments,
   getPerMission,
   getProjects,
-  getAppealsList
+  getAppealsListStats
 } from '../actions';
 import { getFdrs } from '../actions/query-external';
 // import { getBoundingBox } from '../utils/country-bounding-box';
@@ -192,7 +192,7 @@ class AdminArea extends SFPComponent {
     this.props._getCountryOperations(type, id);
     this.props._getPartnerDeployments(type, id);
     this.props._getFdrs(id);
-    this.props._getAppealsList({countryId: id});
+    this.props._getAppealsListStats({countryId: id});
   }
 
   getAdmArea (type, id) {
@@ -589,7 +589,7 @@ class AdminArea extends SFPComponent {
         </header>
         <section className='inpage__body'>
           <div className='inner'>
-            <KeyFiguresHeader appealsList={this.props.appealsList} keyFiguresList={['activeDrefs', 'activeAppeals', 'budget', 'appealsFunding', 'targetPop']}/>
+            <KeyFiguresHeader appealsList={this.props.appealsListStats} keyFiguresList={['activeDrefs', 'activeAppeals', 'budget', 'appealsFunding', 'targetPop']}/>
           </div>
         </section>
         <Tabs
@@ -806,7 +806,7 @@ if (environment !== 'production') {
     _getPerDocument: T.func,
     _getPerDocuments: T.func,
     _getPeruploadedDocuments: T.func,
-    _getAppealsList: T.func,
+    _getAppealsListStats: T.func,
     type: T.string,
     match: T.object,
     history: T.object,
@@ -848,7 +848,7 @@ const selector = (state, ownProps) => ({
   getPerUploadedDocuments: state.perForm.getPerUploadedDocuments,
   getPerMission: state.perForm.getPerMission,
   user: state.user.data,
-  appealsList: state.overallStats.appealsList
+  appealsListStats: state.overallStats.appealsListStats
 });
 
 const dispatcher = dispatch => ({
@@ -868,7 +868,7 @@ const dispatcher = dispatch => ({
   _getPerUploadedDocuments: (...args) => dispatch(getPerUploadedDocuments(...args)),
   _getPerMission: (...args) => dispatch(getPerMission(...args)),
   _getProjects: (...args) => dispatch(getProjects(...args)),
-  _getAppealsList: (...args) => dispatch(getAppealsList(...args)),
+  _getAppealsListStats: (...args) => dispatch(getAppealsListStats(...args)),
 });
 
 export default connect(
