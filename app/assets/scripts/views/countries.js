@@ -589,7 +589,7 @@ class AdminArea extends SFPComponent {
         </header>
         <section className='inpage__body'>
           <div className='inner'>
-            <KeyFiguresHeader appealsList={this.props.appealsListStats} keyFiguresList={['activeDrefs', 'activeAppeals', 'budget', 'appealsFunding', 'targetPop']}/>
+            <KeyFiguresHeader appealsListStats={this.props.appealsListStats}/>
           </div>
         </section>
         <Tabs

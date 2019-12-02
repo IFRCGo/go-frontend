@@ -197,7 +197,7 @@ class AdminArea extends SFPComponent {
         </header>
         <section className='inpage__body'>
           <div className='inner'>
-            <KeyFiguresHeader appealsList={this.props.appealsListStats} keyFiguresList={['activeDrefs', 'activeAppeals', 'budget', 'appealsFunding', 'targetPop']}/>
+            <KeyFiguresHeader appealsListStats={this.props.appealsListStats} />
           </div>
         </section>
         <Tabs
@@ -217,7 +217,7 @@ class AdminArea extends SFPComponent {
                   <HighlightedOperations opsType='region' opsId={data.id}/>
                   <section className={presentationClass} id='presentation'>
                     {this.state.fullscreen ? (
-                      <KeyFiguresHeader fullscreen={this.state.fullscreen} appealsList={this.props.appealStats} keyFiguresList={['numBeneficiaries', 'amountRequested', 'amountFunded']}/>
+                      <KeyFiguresHeader fullscreen={this.state.fullscreen} appealsListStats={this.props.appealsListStats} />
                     ) : null}
                     <div className={c('inner', {'appeals--fullscreen': this.state.fullscreen})}>
                       <AppealsTable

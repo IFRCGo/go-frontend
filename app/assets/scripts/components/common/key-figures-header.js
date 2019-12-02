@@ -15,21 +15,17 @@ const keyTitle = {
   activeAppeals: 'Active Emergency Appeals',
   budget: 'Funding requirements (CHF)',
   appealsFunding: 'Funding coverage',
-  targetPop: 'Targeted population',
-  numBeneficiaries: 'Affected People (last 30 days)',
-  amountRequested: 'Requested Amount (CHF)',
-  amountFunded: 'Funding (CHF)'
+  targetPop: 'Targeted population'
 };
+
+const keyFiguresList = ['activeDrefs', 'activeAppeals', 'budget', 'appealsFunding', 'targetPop'];
 
 const keyIcon = {
   activeDrefs: 'collecticon-rc',
   activeAppeals: 'collecticon-rc-appeals',
   budget: 'collecticon-cash-notes',
   appealsFunding: 'collecticon-cash-bag',
-  targetPop: 'collecticon-people-arrows',
-  numBeneficiaries: 'collecticon-people-arrows',
-  amountRequested: 'collecticon-cash-notes',
-  amountFunded: 'collecticon-cash-bag'
+  targetPop: 'collecticon-people-arrows'
 };
 // Lists two tooltip descriptions currently in use.
 const tooltipOptions = {
@@ -49,7 +45,7 @@ export default function KeyFiguresHeader (props) {
     fetched,
     fetching,
     error
-  } = props.appealsList;
+  } = props.appealsListStats;
 
   if (fetching) {
     return <BlockLoading/>;
@@ -68,7 +64,7 @@ export default function KeyFiguresHeader (props) {
     return Object.keys(stats).map(stat => {
       let value = stats[stat];
       // Applies common util to long numbers
-      const statsToShorten = ['budget', 'targetPop', 'amountFunded', 'amountRequested', 'numBeneficiaries'];
+      const statsToShorten = ['budget', 'targetPop', 'amountFunded', 'amountRequested', ''];
       if (statsToShorten.includes(stat)) {
         value = shortenLargeNumber(value, 1);
       }
@@ -83,7 +79,7 @@ export default function KeyFiguresHeader (props) {
         icon: keyIcon[stat],
         tooltip: tooltipOptions[stat] || null
       };
-    }).filter(figure => props.keyFiguresList.includes(figure.id));
+    }).filter(figure => keyFiguresList.includes(figure.id));
   };
 
   return (
@@ -112,8 +108,7 @@ export default function KeyFiguresHeader (props) {
 
 if (environment !== 'production') {
   KeyFiguresHeader.propTypes = {
-    appealsList: T.object,
-    keyFiguresList: T.array,
+    appealsListStats: T.object,
     data: T.object,
     fullscreen: T.bool
   };

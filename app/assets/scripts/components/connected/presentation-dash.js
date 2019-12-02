@@ -60,10 +60,9 @@ class PresentationDash extends React.Component {
     return (
       <section className={c('fold--stats', {presenting: this.state.fullscreen})} id='presentation'>
         <KeyFiguresHeader
-          appealsList={appealsList}
+          appealsListStats={appealsList}
           fullscreen={this.state.fullscreen}
           toggleFullscreen={this.toggleFullscreen}
-          keyFiguresList={['activeDrefs', 'activeAppeals', 'budget', 'appealsFunding', 'targetPop']}
         />
         <div className={c('inner', {'appeals--fullscreen': this.state.fullscreen})}>
           <AppealsTable
