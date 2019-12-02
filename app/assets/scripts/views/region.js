@@ -128,7 +128,6 @@ class AdminArea extends SFPComponent {
     this.props._getAdmAreaSnippets(props.type, id);
     this.props._getCountries(id);
     this.props._getAppealsListStats({regionId: id});
-
   }
 
   getMaskLayer (regionId) {
