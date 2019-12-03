@@ -631,8 +631,21 @@
   font-size: 0.75rem;
 }
 
+.key-emergencies-list-long {
+  flex-wrap: wrap;
+  justify-content: center;
+  .key-emergencies-item {
+    margin-right: 2% !important;
+  }
+}
+
+.key-emergencies-list-short {
+  justify-content: space-between;
+  flex-wrap: nowrap;
+}
+
 .key-emergencies-list {
-  list-style: none;
+  display: flex;
   margin-left: 0;
   @extend .clearfix;
   @include column(12/12);
@@ -652,8 +665,6 @@
 
   .key-emergencies-item {
     //@include column(10/12);
-    //margin-right: 2% !important;
-    display: block;
     margin-bottom: $global-spacing;
     @include media(medium-up) {
       @include column(6/12)

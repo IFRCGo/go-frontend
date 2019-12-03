@@ -3,9 +3,10 @@ import React from 'react';
 import { render } from 'react-dom';
 import mapboxgl from 'mapbox-gl';
 import {
-  unique,
   _cs,
   addSeparator,
+  listToGroupList,
+  mapToList,
 } from '@togglecorp/fujs';
 
 import { countryIsoMapById } from '../../utils/field-report-constants';
@@ -130,51 +131,58 @@ export default class ThreeWMap extends React.PureComponent {
 
   fillMap = (countryId, projectList) => {
     const iso2 = countryIsoMapById[countryId].toUpperCase();
-    const projectDistrictList = unique(projectList.map(d => d.project_district));
-
-    const currentCountryFeature = this.map.queryRenderedFeatures({
-      layers: ['icrc_admin0'],
-      filter: [
-        '==',
-        'ISO2',
-        iso2,
-      ],
-    })[0];
-
-    if (currentCountryFeature) {
-      const bbox = getBoundingBox(iso2);
-      this.map.fitBounds(
-        bbox,
-        {
-          padding: {
-            top: 10,
-            right: 90,
-            bottom: 30,
-            left: 10,
-          }
+    const bbox = getBoundingBox(iso2);
+    this.map.fitBounds(
+      bbox,
+      {
+        padding: {
+          top: 10,
+          right: 90,
+          bottom: 30,
+          left: 10,
         }
-      );
-
-      if (projectDistrictList.length > 0) {
-        this.map.setPaintProperty(
-          'adm1',
-          'fill-color',
-          [
-            'match',
-            ['get', 'OBJECTID'],
-            projectDistrictList,
-            '#aaaaaa',
-            '#ffffff',
-          ],
-        );
-      } else {
-        this.map.setPaintProperty(
-          'adm1',
-          'fill-color',
-          '#ffffff',
-        );
       }
+    );
+
+    const groupedProjects = listToGroupList(
+      projectList,
+      project => project.project_district,
+      project => project,
+    );
+
+    const state = mapToList(
+      groupedProjects,
+      (item, key) => ({
+        id: +key,
+        count: item.length,
+      }),
+    );
+    const maxProjects = Math.max(0, ...state.map(item => item.count));
+    let opacityProperty;
+
+    const upperShift = 0.3;
+    const lowerShift = 0.1;
+
+    if (state.length > 0) {
+      opacityProperty = [
+        'match',
+        ['get', 'OBJECTID'],
+
+        ...state.map(district => [
+          district.id,
+          lowerShift + (district.count / maxProjects) * (1 - upperShift - lowerShift),
+        ]).flat(),
+
+        0,
+      ];
+    } else {
+      opacityProperty = 0;
     }
+    this.map.setPaintProperty(
+      'adm1',
+      'fill-opacity',
+      opacityProperty,
+    );
   }
 
   handleMapClick = (e) => {
@@ -205,10 +213,7 @@ export default class ThreeWMap extends React.PureComponent {
       return;
     }
 
-    const {
-      projectList,
-    } = this.props;
-
+    const { projectList } = this.props;
     const popoverContent = document.createElement('div');
     const {
       properties,

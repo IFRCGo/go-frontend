@@ -81,18 +81,22 @@ class HighlightedOperations extends React.Component {
     if (this.props.opsType === 'country') {
       operations = operations.filter(op => op.countries[0].id === this.props.opsId);
     }
+    const listStyle = operations.length <= 4 ? (
+      'key-emergencies-list key-emergencies-list-short'
+    ) : (
+      'key-emergencies-list key-emergencies-list-long'
+    );
     return (operations.length ? (
       <div className='inner inner--emergencies'>
         <Fold title={title} navLink={foldLink} extraClass foldClass='fold__title--inline'>
-          <ul className='key-emergencies-list'>
-            {/* displays the first three operations sorted by most recent by default */}
-            {operations.slice(0, 3).map(operation =>
+          <div className={listStyle}>
+            {operations.slice(0, 6).map(operation =>
               <OperationCard
                 operation={operation}
                 calculateDeployedPersonnel={this.calculateDeployedPersonnel}
               />
             )}
-          </ul>
+          </div>
         </Fold>
       </div>
     ) : null
