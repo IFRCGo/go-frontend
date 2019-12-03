@@ -541,9 +541,7 @@ export function convertFieldReportToState (fieldReport) {
     ['forecast_based_action', 'forecast_based_action_amount', 'forecastBasedAction']
   ];
 
-  console.log('field report', fieldReport);
   planResponseMapping.forEach(([statusMap, valueMap, dest]) => {
-    console.log('statusMap', statusMap);
     if (fieldReport[statusMap] !== null) {
       state[dest] = {
         status: fieldReport[statusMap].toString(),
