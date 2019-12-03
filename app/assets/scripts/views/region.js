@@ -7,6 +7,7 @@ import { DateTime } from 'luxon';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { Helmet } from 'react-helmet';
 import CountryList from '../components/country-list';
+import BlockLoading from '../components/block-loading';
 import { environment } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { get } from '../utils/utils/';
@@ -168,7 +169,7 @@ class AdminArea extends SFPComponent {
       'presenting fold--stats': this.state.fullscreen,
       'fold': !this.state.fullscreen
     });
-
+console.log('props', this.props.appealsListStats)
     const mapBoundingBox = getRegionBoundingBox(data.id);
     const regionName = get(regionMeta, [data.id, 'name'], nope);
     const activeOperations = get(this.props.appealStats, 'data.results.length', false);
@@ -194,7 +195,9 @@ class AdminArea extends SFPComponent {
         </header>
         <section className='inpage__body'>
           <div className='inner'>
-            <KeyFiguresHeader appealsListStats={this.props.appealsListStats} />
+            {this.props.appealsListStats.data ? (
+              <KeyFiguresHeader appealsListStats={this.props.appealsListStats} />
+            ): <BlockLoading/>}
           </div>
         </section>
         <Tabs
