@@ -84,7 +84,7 @@ export default class SourceEstimation extends React.Component {
                 label='Source'
                 name={`${name}[${idx}][source]`}
                 options={[
-                  {label: 'RCRC', value: 'red-cross'},
+                  {label: 'Red Cross / Red Crescent', value: 'red-cross'},
                   {label: 'Government', value: 'government'},
                   {label: 'Other', value: 'other'}
                 ]}

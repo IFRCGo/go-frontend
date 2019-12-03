@@ -565,6 +565,16 @@ export const fieldsStep1 = {
       label: 'Government requests international assistance?',
       desc: 'Indicate if the government requested international assistance.'
     }
+  },
+  'ns-assistance': {
+    'EVT': {
+      label: 'National Society requests international assistance?',
+      desc: 'Indicate if the National Society requested international assistance'
+    },
+    'EW': {
+      label: 'National Society requests international assistance?',
+      desc: 'Indicate if the National Society requested international assistance'
+    }
   }
 };
 
@@ -749,8 +759,8 @@ export const fieldsStep3 = {
       'EW': 'Early Actions Taken by Others (Governments, UN)'
     },
     'desc': {
-      'EVT': 'Who else was involved? UN agencies? NGOs? Government? Describe what other actors did.',
-      'EW': 'List the early action activities undertaken by other actors and give a brief description.'
+      'EVT': 'Who else was involved? UN agencies? NGOs? Government? Describe what other actors did. Also mention who the other actors are.',
+      'EW': 'List the early action activities undertaken by other actors, mention who the other actors are, and give a brief description.'
     }
   }
 };
