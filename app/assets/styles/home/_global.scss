@@ -634,10 +634,14 @@
 .key-emergencies-list-long {
   flex-wrap: wrap;
   justify-content: center;
+  .key-emergencies-item {
+    margin-right: 2% !important;
+  }
 }
 
 .key-emergencies-list-short {
   justify-content: space-between;
+  flex-wrap: nowrap;
 }
 
 .key-emergencies-list {
@@ -661,7 +665,6 @@
 
   .key-emergencies-item {
     //@include column(10/12);
-    margin-right: 2% !important;
     margin-bottom: $global-spacing;
     @include media(medium-up) {
       @include column(6/12)

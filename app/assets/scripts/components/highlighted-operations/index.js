@@ -86,8 +86,6 @@ class HighlightedOperations extends React.Component {
     ) : (
       'key-emergencies-list key-emergencies-list-long'
     );
-    operations.push(operations[0])
-    console.log('operations', operations)
     return (operations.length ? (
       <div className='inner inner--emergencies'>
         <Fold title={title} navLink={foldLink} extraClass foldClass='fold__title--inline'>
