@@ -462,7 +462,7 @@ class AdminArea extends SFPComponent {
       (typeof this.props.getPerMission !== 'undefined' && this.props.getPerMission.fetched && this.props.getPerMission.data.count > 0);
   }
 
-  renderCountryProfile () {
+  getCountryProfileData = () => {
     const { fetched, data } = this.props.fdrs;
     if (!fetched) {
       return null;
@@ -540,6 +540,33 @@ class AdminArea extends SFPComponent {
     };
 
     return statistics;
+  }
+
+  renderCountryProfile = () => {
+    const data = this.getCountryProfileData();
+
+    if (!data) {
+      return null;
+    }
+
+    return (
+      <React.Fragment>
+        <div className='table__basic-grid'>
+          <BasicTable tableContents={data.countryStatistics} tableTitle='Country Statistics' />
+          <BasicTable tableContents={data.nationalSociety} tableTitle='National Society' />
+        </div>
+        <div className='table__basic-footer'>
+          <p>
+            <a href='http://data.ifrc.org/fdrs/' target='_blank'>
+              Source: {data.source ? data.source.title : '-'}
+            </a>
+          </p>
+          <p className='table__basic-footer-line'>
+           | Reporting year(s): {Object.keys((data.source || {}).reportingYears || []).sort().join(', ') || 'N/A'}
+          </p>
+        </div>
+      </React.Fragment>
+    );
   }
 
   renderContent () {
@@ -664,20 +691,7 @@ class AdminArea extends SFPComponent {
               <TabPanel>
                 <TabContent title='Overview'>
                   <Fold title='Overview' id='overview'>
-                    <div className='table__basic-grid'>
-                      <BasicTable tableContents={this.renderCountryProfile().countryStatistics} tableTitle='Country Statistics' />
-                      <BasicTable tableContents={this.renderCountryProfile().nationalSociety} tableTitle='National Society' />
-                    </div>
-                    <div className='table__basic-footer'>
-                      <p>
-                        <a href='http://data.ifrc.org/fdrs/' target='_blank'>
-                      Source: {this.renderCountryProfile().source.title}
-                        </a>
-                      </p>
-                      <p className='table__basic-footer-line'>
-                       | Reporting year(s): {Object.keys(this.renderCountryProfile().source.reportingYears).sort().join(', ') || 'N/A'}
-                      </p>
-                    </div>
+                    { this.renderCountryProfile() }
                   </Fold>
                 </TabContent>
                 <TabContent showError={true} isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage={ NO_DATA } title='Key Figures'>
