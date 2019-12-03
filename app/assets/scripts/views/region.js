@@ -169,7 +169,7 @@ class AdminArea extends SFPComponent {
       'presenting fold--stats': this.state.fullscreen,
       'fold': !this.state.fullscreen
     });
-console.log('props', this.props.appealsListStats)
+
     const mapBoundingBox = getRegionBoundingBox(data.id);
     const regionName = get(regionMeta, [data.id, 'name'], nope);
     const activeOperations = get(this.props.appealStats, 'data.results.length', false);
@@ -197,7 +197,7 @@ console.log('props', this.props.appealsListStats)
           <div className='inner'>
             {this.props.appealsListStats.data ? (
               <KeyFiguresHeader appealsListStats={this.props.appealsListStats} />
-            ): <BlockLoading/>}
+            ) : <BlockLoading/>}
           </div>
         </section>
         <Tabs
