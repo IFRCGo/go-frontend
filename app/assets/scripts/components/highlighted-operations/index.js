@@ -4,7 +4,6 @@ import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { environment } from '../../config';
 import { getFeaturedEmergencies, getFeaturedEmergenciesForRegion, getFeaturedEmergenciesDeployments, getDeploymentERU } from '../../actions';
-import { countriesByRegion } from '../../utils/region-constants';
 import BlockLoading from '../block-loading';
 import Fold from '../fold';
 import OperationCard from './operation-card';
@@ -79,12 +78,6 @@ class HighlightedOperations extends React.Component {
     if (fetched && (error || !Array.isArray(data.results) || !data.results.length)) return null;
     else if (!fetched || fetching) return <div className='inner'><Fold title={title}><BlockLoading/></Fold></div>;
     let operations = data.results;
-    // if (this.props.opsType === 'region') {
-    //   operations = operations.filter(op => countriesByRegion[this.props.opsId].includes(op.countries[0].id.toString()));
-    // }
-    // if (this.props.opsType === 'country') {
-    //   operations = operations.filter(op => op.countries[0].id === this.props.opsId);
-    // }
     const listStyle = operations.length <= 4 ? (
       'key-emergencies-list key-emergencies-list-short'
     ) : (
