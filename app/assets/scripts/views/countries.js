@@ -43,7 +43,7 @@ import TabContent from '../components/tab-content';
 import Fold from '../components/fold';
 import DisplayTable, { SortHeader, FilterHeader } from '../components/display-table';
 import EmergenciesTable from '../components/connected/emergencies-table';
-import HighlightedOperations from '../components/highlighted-operations';
+
 // import BulletTable from '../components/bullet-table';
 import Pills from '../components/pills';
 import {
@@ -637,7 +637,6 @@ class AdminArea extends SFPComponent {
                   </Fold>
                 </TabContent>
                 <TabContent>
-                  <HighlightedOperations opsType='country' opsId={data.id}/>
                   <EmergenciesTable
                     id={'emergencies'}
                     title='Recent Emergencies'

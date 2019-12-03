@@ -175,6 +175,10 @@ export function getFeaturedEmergencies () {
   return fetchJSON('/api/v2/event/?is_featured=1', GET_FEATURED_EMERGENCIES, withToken());
 }
 
+export function getFeaturedEmergenciesForRegion (regionId) {
+  return fetchJSON(`/api/v2/event/?is_featured_region=1&regions__in=${regionId}`, GET_FEATURED_EMERGENCIES, withToken());
+}
+
 export const GET_FEATURED_EMERGENCIES_DEPLOYMENTS = 'GET_FEATURED_EMERGENCIES_DEPLOYMENTS';
 export function getFeaturedEmergenciesDeployments () {
   return fetchJSON('/api/v2/featured_event_deployments', GET_FEATURED_EMERGENCIES_DEPLOYMENTS, withToken());
