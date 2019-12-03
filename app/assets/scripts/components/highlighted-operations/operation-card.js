@@ -15,7 +15,7 @@ const OperationCard = ({operation, calculateDeployedPersonnel}) => {
   const emergencyDeployments = calculateDeployedPersonnel(operation);
 
   return (
-    <li className='key-emergencies-item' key={id}>
+    <div className='key-emergencies-item' key={id}>
       <Link to={`/emergencies/${id}`}>
         <div className="card_box card_box_left">
           <h2 className='card__title'>{ name.length > 30 ? name.slice(0, 30) + '...' : name }</h2>
@@ -55,7 +55,7 @@ const OperationCard = ({operation, calculateDeployedPersonnel}) => {
           <Progress value={requested ? percent(funded, requested) : percent(0.1, 10)} max={100} />
         </div>
       </Link>
-    </li>
+    </div>
   );
 };
 
