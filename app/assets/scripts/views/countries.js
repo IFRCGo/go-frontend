@@ -552,7 +552,7 @@ class AdminArea extends SFPComponent {
                   </Fold>
                 </TabContent>
                 <TabContent>
-                  <HighlightedOperations opsType='country' opsId={data.id}/>
+                  {/* <HighlightedOperations opsType='country' opsId={data.id}/> */ }
                   <EmergenciesTable
                     id={'emergencies'}
                     title="Recent Emergencies"
