@@ -24,7 +24,9 @@ export function dataPathToDisplay (path, keyword) {
     event: 'Event',
     sources: 'Sources',
     description: 'Brief Description of the Situation',
+    otherSources: 'Details of Other Sources',
     assistance: 'Government requests international assistance?',
+    nsAssistance: 'National Society requests international assistance?',
 
     // Step 2.
     'numInjured.estimation': 'Estimation Injured',
@@ -103,6 +105,7 @@ export function prepStateForValidation (state) {
   const formatter = {
     // Step 1.
     assistance: toBool,
+    nsAssistance: toBool,
     country: (val) => val ? val.value : undefined,
     districts: (val) => val.map(o => o.value),
     // countries: (val) => val.value,
@@ -170,6 +173,7 @@ export function convertStateToPayload (originalState) {
     // [source, destination]
     ['summary', 'summary'],
     ['description', 'description'],
+    ['otherSources', 'other_sources'],
     ['status', 'status'],
     ['bulletin', 'bulletin'],
     ['numAssistedRedCross', 'num_assisted', Number],
@@ -188,7 +192,7 @@ export function convertStateToPayload (originalState) {
 
   // Boolean values
   state.request_assistance = Boolean(originalState.assistance === 'true');
-
+  state.ns_request_assistance = Boolean(originalState.nsAssistance === 'true');
   // For these properties when the source is the Red Cross use the provided,
   // when it's Government prepend gov_. This results in:
   // num_injured | gov_num_injured
@@ -338,7 +342,9 @@ export function getInitialDataState () {
       specification: undefined
     })),
     description: undefined,
+    otherSources: undefined,
     assistance: undefined,
+    nsAssistance: undefined,
 
     // Step 2
     numInjured: [{ estimation: undefined, source: undefined }],
@@ -430,6 +436,7 @@ export function convertFieldReportToState (fieldReport) {
     // [source, destination]
     ['summary', 'summary'],
     ['description', 'description'],
+    ['other_sources', 'otherSources'],
     ['num_assisted', 'numAssistedRedCross'],
     ['gov_num_assisted', 'numAssistedGov'],
     ['num_localstaff', 'numLocalStaff'],
@@ -447,6 +454,7 @@ export function convertFieldReportToState (fieldReport) {
 
   // Boolean values
   state.assistance = fieldReport.request_assistance !== null ? fieldReport.request_assistance.toString() : state.assistance;
+  state.nsAssistance = fieldReport.ns_request_assistance !== null ? fieldReport.ns_request_assistance.toString() : state.nsAssistance;
 
   // For these properties when the source is the Red Cross use the provided,
   // when it's Government starts with gov_. This results in:

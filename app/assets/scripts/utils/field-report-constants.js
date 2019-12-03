@@ -565,6 +565,16 @@ export const fieldsStep1 = {
       label: 'Government requests international assistance?',
       desc: 'Indicate if the government requested international assistance.'
     }
+  },
+  'ns-assistance': {
+    'EVT': {
+      label: 'National Society requests international assistance?',
+      desc: 'Indicate if the National Society requested international assistance'
+    },
+    'EW': {
+      label: 'National Society requests international assistance?',
+      desc: 'Indicate if the National Society requested international assistance'
+    }
   }
 };
 

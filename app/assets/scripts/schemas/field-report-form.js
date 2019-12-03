@@ -32,6 +32,9 @@ export const step1 = {
     },
     assistance: {
       type: 'boolean'
+    },
+    nsAssistance: {
+      type: 'boolean'
     }
   },
   anyOf: [
@@ -96,6 +99,9 @@ export const step2 = {
       '$ref': '#/definitions/estimationString'
     },
     description: {
+      type: 'string'
+    },
+    otherSources: {
       type: 'string'
     }
   }
