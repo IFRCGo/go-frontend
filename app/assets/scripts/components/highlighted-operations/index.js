@@ -21,7 +21,7 @@ class HighlightedOperations extends React.Component {
 
   componentDidMount () {
     if (this.props.opsType === 'region') {
-      this.props._getFeaturedEmergenciesForRegion(this.props.opsId)
+      this.props._getFeaturedEmergenciesForRegion(this.props.opsId);
     } else {
       this.props._getFeaturedEmergencies();
     }
