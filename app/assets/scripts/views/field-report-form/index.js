@@ -502,7 +502,7 @@ class FieldReportForm extends React.Component {
               errors={this.state.errors}
               property='otherSources'
             />
-          </FormTextarea>          
+          </FormTextarea>
         </React.Fragment>
         <React.Fragment>
           <FormTextarea
