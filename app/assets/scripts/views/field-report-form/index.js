@@ -252,7 +252,7 @@ class FieldReportForm extends React.Component {
       },
       {
         'EVT': 'Situation',
-        'EW': 'Risk'
+        'EW': 'Risk Analysis'
       },
       {
         'EVT': 'Actions',
