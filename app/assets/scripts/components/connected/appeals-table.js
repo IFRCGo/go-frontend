@@ -128,7 +128,6 @@ class AppealsTable extends SFPComponent {
     } = this.props.appeals;
 
     const title = this.props.title || 'Operations Overview';
-
     if (fetching) {
       return (
         <Fold title={title} id={this.props.id}>
@@ -173,7 +172,7 @@ class AppealsTable extends SFPComponent {
             id='name'
             title='Name'
             sort={this.state.table.sort}
-            isInactive={!this.state.table.sort.field}
+            isInactive={this.state.table.sort.field !== 'name'}
             onClick={this.handleSortChange.bind(this, 'table', 'name')} />
         },
         { id: 'event', label: 'Emergency' },
@@ -192,7 +191,7 @@ class AppealsTable extends SFPComponent {
             id='amount_requested'
             title='Requested Amount (CHF)'
             sort={this.state.table.sort}
-            isInactive={!this.state.table.sort.field}
+            isInactive={this.state.table.sort.field !== 'amount_requested'}
             onClick={this.handleSortChange.bind(this, 'table', 'amount_requested')} />
         },
         {
@@ -201,7 +200,7 @@ class AppealsTable extends SFPComponent {
             id='amount_funded'
             title='Funding (CHF)'
             sort={this.state.table.sort}
-            isInactive={!this.state.table.sort.field}
+            isInactive={this.state.table.sort.field !== 'amount_funded'}
             onClick={this.handleSortChange.bind(this, 'table', 'amount_funded')} />
         },
         {
