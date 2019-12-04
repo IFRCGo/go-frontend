@@ -37,7 +37,7 @@ export default class DateFilterHeader extends React.PureComponent {
       this.setState({ setDate: `${this.state.startDate} - ${this.state.endDate}` })
     ) : (
       this.setState({ setDate: null })
-    )
+    );
   }
 
   changeStartDate (e) {
