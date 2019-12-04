@@ -11,6 +11,7 @@ export default class DateFilterHeader extends React.PureComponent {
     this.state = {
       startDate: null,
       endDate: null,
+      setDate: null,
       isClosingDropdown: false
     };
     this.resetDateStatus = this.resetDateStatus.bind(this);
@@ -32,6 +33,11 @@ export default class DateFilterHeader extends React.PureComponent {
   applyPeriodFilter () {
     this.props.onSelect({'startDate': this.state.startDate, 'endDate': this.state.endDate});
     this.setState({ isClosingDropdown: true });
+    this.state.startDate && this.state.endDate ? (
+      this.setState({ setDate: `${this.state.startDate} - ${this.state.endDate}` })
+    ) : (
+      this.setState({ setDate: null })
+    )
   }
 
   changeStartDate (e) {
@@ -52,7 +58,7 @@ export default class DateFilterHeader extends React.PureComponent {
         id={id}
         triggerClassName={featureType === 'map' ? mapStyle : tableStyle}
         triggerActiveClassName='active'
-        triggerText={title}
+        triggerText={this.state.setDate || title}
         triggerTitle={`Filter by ${title}`}
         triggerElement='a'
         isClosingDropdown={this.state.isClosingDropdown}
