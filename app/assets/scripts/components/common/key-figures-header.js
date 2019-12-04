@@ -41,7 +41,9 @@ const tooltipOptions = {
 
 export default function KeyFiguresHeader (props) {
   const {
-    data: { stats },
+    data: {
+      stats
+    } = {},
     fetched,
     fetching,
     error
