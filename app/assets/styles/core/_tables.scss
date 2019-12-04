@@ -33,6 +33,10 @@
     padding-right: $global-spacing;
   }
 
+  .table__header--inactive {
+    color: rgba($base-font-color, 0.48);
+  }
+
   thead th {
     color: $base-color;
     font-size: 1rem;
@@ -150,6 +154,7 @@
 td.right-align, th.right-align{
   text-align: right;
 }
+
 
 //td.table__cell--requestAmount, td.table__cell--fundedAmount, th.table__header--requestAmount, th.table__header--fundedAmount {
   //text-align: right;
