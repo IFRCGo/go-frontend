@@ -151,7 +151,7 @@ class AppealsTable extends SFPComponent {
           label: <DateFilterHeader id='date'
             title='Start Date' options={dateOptions}
             filter={this.state.table.filters.date}
-            isInactive={this.state.table.filters.date === 'all'}
+            isActive={this.state.table.filters.date !== 'all'}
             featureType='table'
             onSelect={this.handleFilterChange.bind(this, 'table', 'date')} />
         },
@@ -162,7 +162,7 @@ class AppealsTable extends SFPComponent {
             title='Type'
             options={appealTypeOptions}
             filter={this.state.table.filters.atype}
-            isInactive={this.state.table.filters.atype === 'all'}
+            isActive={this.state.table.filters.atype !== 'all'}
             onSelect={this.handleFilterChange.bind(this, 'table', 'atype')} />
         },
         { id: 'code', label: 'Code' },
@@ -172,7 +172,7 @@ class AppealsTable extends SFPComponent {
             id='name'
             title='Name'
             sort={this.state.table.sort}
-            isInactive={this.state.table.sort.field !== 'name'}
+            isActive={this.state.table.sort.field === 'name'}
             onClick={this.handleSortChange.bind(this, 'table', 'name')} />
         },
         { id: 'event', label: 'Emergency' },
@@ -182,7 +182,7 @@ class AppealsTable extends SFPComponent {
             id='dtype'
             title='Disaster Type'
             options={dTypeOptions} filter={this.state.table.filters.dtype}
-            isInactive={this.state.table.filters.dtype === 'all'}
+            isActive={this.state.table.filters.dtype !== 'all'}
             onSelect={this.handleFilterChange.bind(this, 'table', 'dtype')} />
         },
         {
@@ -191,7 +191,7 @@ class AppealsTable extends SFPComponent {
             id='amount_requested'
             title='Requested Amount (CHF)'
             sort={this.state.table.sort}
-            isInactive={this.state.table.sort.field !== 'amount_requested'}
+            isActive={this.state.table.sort.field === 'amount_requested'}
             onClick={this.handleSortChange.bind(this, 'table', 'amount_requested')} />
         },
         {
@@ -200,7 +200,7 @@ class AppealsTable extends SFPComponent {
             id='amount_funded'
             title='Funding (CHF)'
             sort={this.state.table.sort}
-            isInactive={this.state.table.sort.field !== 'amount_funded'}
+            isActive={this.state.table.sort.field === 'amount_funded'}
             onClick={this.handleSortChange.bind(this, 'table', 'amount_funded')} />
         },
         {

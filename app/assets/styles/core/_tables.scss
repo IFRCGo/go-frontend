@@ -33,9 +33,10 @@
     padding-right: $global-spacing;
   }
 
-  .table__header--inactive {
-    color: rgba($base-font-color, 0.48);
+  .table__header--active {
+    color: $primary-color;
   }
+
 
   thead th {
     color: $base-color;
