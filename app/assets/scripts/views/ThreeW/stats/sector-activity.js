@@ -39,20 +39,24 @@ export default class SectorActivity extends React.PureComponent {
           />
           <div className='sector-activity-legend'>
             { renderData.map(d => (
-              <div
-                key={d.key}
-                className='sector-activity-legend-item'
-              >
+              d.value ? (
                 <div
-                  style={{
-                    backgroundColor: d.color,
-                  }}
-                  className='legend-item-block'
-                />
-                <div className='legend-item-title'>
-                  [{d.value}] { d.title }
+                  key={d.key}
+                  className='sector-activity-legend-item'
+                >
+                  <div
+                    style={{
+                      backgroundColor: d.color,
+                    }}
+                    className='legend-item-block'
+                  />
+                  <div className='legend-item-title'>
+                    [{d.value}] { d.title }
+                  </div>
                 </div>
-              </div>
+              ) : (
+                null
+              )
             ))}
           </div>
         </div>

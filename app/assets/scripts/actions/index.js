@@ -65,6 +65,15 @@ export function getProjects (countryId, filterValues) {
 
 export const POST_PROJECT = 'POST_PROJECT';
 export function postProject (data) {
+  const {
+    id,
+    ...otherData
+  } = data;
+
+  if (id) {
+    return putJSON(`api/v2/project/${id}/`, POST_PROJECT, otherData, withToken());
+  }
+
   return postJSON('api/v2/project/', POST_PROJECT, data, withToken());
 }
 
@@ -105,6 +114,11 @@ export function getFieldReportsList (page = 1, filters = {}) {
   return fetchJSON(`/api/v2/field_report/?${f}`, GET_FIELD_REPORTS_LIST, withToken());
 }
 
+export const GET_ACTIONS = 'GET_ACTIONS';
+export function getActions () {
+  return fetchJSON('/api/v2/action', GET_ACTIONS);
+}
+
 export const GET_SURGE_ALERTS = 'GET_SURGE_ALERTS';
 export function getSurgeAlerts (page = 1, filters = {}) {
   filters.limit = filters.limit || 5;
@@ -115,16 +129,29 @@ export function getSurgeAlerts (page = 1, filters = {}) {
 }
 
 export const GET_APPEALS_LIST = 'GET_APPEALS_LIST';
-export function getAppealsList (countryId = null) {
+export function getAppealsList () {
   const filters = {
     end_date__gt: DateTime.utc().toISO(),
     limit: 1000
   };
-  if (countryId !== null) {
-    filters.country = countryId;
-  }
   const f = buildAPIQS(filters);
   return fetchJSON(`api/v2/appeal/?${f}`, GET_APPEALS_LIST, withToken());
+}
+
+export const GET_APPEALS_LIST_STATS = 'GET_APPEALS_LIST_STATS';
+export function getAppealsListStats ({countryId = null, regionId = null} = {}) {
+  const filters = {
+    end_date__gt: DateTime.utc().toISO(),
+    limit: 1000
+  };
+  if (countryId) {
+    filters.country = countryId;
+  }
+  if (regionId) {
+    filters.region = regionId;
+  }
+  const f = buildAPIQS(filters);
+  return fetchJSON(`api/v2/appeal/?${f}`, GET_APPEALS_LIST_STATS, withToken());
 }
 
 export const GET_AGGREGATE_APPEALS = 'GET_AGGREGATE_APPEALS';
@@ -146,6 +173,10 @@ export function getAggregateAppeals (date, unit, type, region = undefined) {
 export const GET_FEATURED_EMERGENCIES = 'GET_FEATURED_EMERGENCIES';
 export function getFeaturedEmergencies () {
   return fetchJSON('/api/v2/event/?is_featured=1', GET_FEATURED_EMERGENCIES, withToken());
+}
+
+export function getFeaturedEmergenciesForRegion (regionId) {
+  return fetchJSON(`/api/v2/event/?is_featured_region=1&regions__in=${regionId}`, GET_FEATURED_EMERGENCIES, withToken());
 }
 
 export const GET_FEATURED_EMERGENCIES_DEPLOYMENTS = 'GET_FEATURED_EMERGENCIES_DEPLOYMENTS';

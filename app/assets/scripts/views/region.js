@@ -7,8 +7,8 @@ import { DateTime } from 'luxon';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { Helmet } from 'react-helmet';
 import CountryList from '../components/country-list';
+import BlockLoading from '../components/block-loading';
 import { environment } from '../config';
-import FullscreenHeader from '../components/common/fullscreen-header';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { get } from '../utils/utils/';
 import { nope } from '../utils/format';
@@ -26,7 +26,8 @@ import {
   getRegionPersonnel,
   getAdmAreaKeyFigures,
   getAdmAreaSnippets,
-  getCountries
+  getCountries,
+  getAppealsListStats
 } from '../actions';
 import { getRegionBoundingBox } from '../utils/region-bounding-box';
 import {
@@ -127,6 +128,7 @@ class AdminArea extends SFPComponent {
     this.props._getAdmAreaKeyFigures(props.type, id);
     this.props._getAdmAreaSnippets(props.type, id);
     this.props._getCountries(id);
+    this.props._getAppealsListStats({regionId: id});
   }
 
   getMaskLayer (regionId) {
@@ -163,6 +165,11 @@ class AdminArea extends SFPComponent {
 
     if (!fetched || error) return null;
 
+    const presentationClass = c({
+      'presenting fold--stats': this.state.fullscreen,
+      'fold': !this.state.fullscreen
+    });
+
     const mapBoundingBox = getRegionBoundingBox(data.id);
     const regionName = get(regionMeta, [data.id, 'name'], nope);
     const activeOperations = get(this.props.appealStats, 'data.results.length', false);
@@ -186,7 +193,13 @@ class AdminArea extends SFPComponent {
             </div>
           </div>
         </header>
-        <KeyFiguresHeader appealsList={this.props.appealStats} keyFiguresList={['numBeneficiaries', 'amountRequested', 'amountFunded']}/>
+        <section className='inpage__body'>
+          <div className='inner'>
+            {this.props.appealsListStats.data ? (
+              <KeyFiguresHeader appealsListStats={this.props.appealsListStats} />
+            ) : <BlockLoading/>}
+          </div>
+        </section>
         <Tabs
           selectedIndex={ selectedIndex }
           onSelect={index => handleTabChange(index)}
@@ -202,9 +215,9 @@ class AdminArea extends SFPComponent {
               <TabPanel>
                 <TabContent>
                   <HighlightedOperations opsType='region' opsId={data.id}/>
-                  <div className={c('fold', {presenting: this.state.fullscreen})} id='presentation'>
+                  <section className={presentationClass} id='presentation'>
                     {this.state.fullscreen ? (
-                      <FullscreenHeader title='IFRC Disaster Response and Preparedness'/>
+                      <KeyFiguresHeader fullscreen={this.state.fullscreen} appealsListStats={this.props.appealsListStats} />
                     ) : null}
                     <div className={c('inner', {'appeals--fullscreen': this.state.fullscreen})}>
                       <AppealsTable
@@ -223,16 +236,16 @@ class AdminArea extends SFPComponent {
                         toggleFullscreen={this.toggleFullscreen}
                       />
                     </div>
-                  </div>
-                  <CountryList
-                    countries={this.props.countries}
-                    appealStats={this.props.appealStats}
-                  />
+                  </section>
                   <Fold title='Statistics' headerClass='visually-hidden' id='stats'>
                     <div className='stats-chart'>
                       <TimelineCharts region={data.id} />
                     </div>
                   </Fold>
+                  <CountryList
+                    countries={this.props.countries}
+                    appealStats={this.props.appealStats}
+                  />
                   <EmergenciesTable
                     id='emergencies'
                     title='Recent Emergencies'
@@ -285,6 +298,7 @@ if (environment !== 'production') {
     _getAdmAreaAggregateAppeals: T.func,
     _getRegionPersonnel: T.func,
     _getCountries: T.func,
+    _getAppealsListStats: T.func,
     type: T.string,
     match: T.object,
     history: T.object,
@@ -318,7 +332,8 @@ const selector = (state, ownProps) => ({
   personnel: state.adminArea.personnel,
   keyFigures: state.adminArea.keyFigures,
   snippets: state.adminArea.snippets,
-  countries: state.countries
+  countries: state.countries,
+  appealsListStats: state.overallStats.appealsListStats
 });
 
 const dispatcher = (dispatch) => ({
@@ -328,7 +343,8 @@ const dispatcher = (dispatch) => ({
   _getRegionPersonnel: (...args) => dispatch(getRegionPersonnel(...args)),
   _getAdmAreaKeyFigures: (...args) => dispatch(getAdmAreaKeyFigures(...args)),
   _getAdmAreaSnippets: (...args) => dispatch(getAdmAreaSnippets(...args)),
-  _getCountries: (...args) => dispatch(getCountries(...args))
+  _getCountries: (...args) => dispatch(getCountries(...args)),
+  _getAppealsListStats: (...args) => dispatch(getAppealsListStats(...args)),
 });
 
 export default connect(selector, dispatcher)(AdminArea);

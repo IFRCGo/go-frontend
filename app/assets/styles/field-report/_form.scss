@@ -188,6 +188,11 @@
     @include media(large-up) {
       @include column(6/12);
     }
+
+    .form__option--inline {
+      margin-left: 0;
+      display: flex;
+    }
   }
 
   .estimation__item-field {

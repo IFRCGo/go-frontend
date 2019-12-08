@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { environment } from '../../config';
-import { getFeaturedEmergencies, getFeaturedEmergenciesDeployments, getDeploymentERU } from '../../actions';
-import { countriesByRegion } from '../../utils/region-constants';
+import { getFeaturedEmergencies, getFeaturedEmergenciesForRegion, getFeaturedEmergenciesDeployments, getDeploymentERU } from '../../actions';
 import BlockLoading from '../block-loading';
 import Fold from '../fold';
 import OperationCard from './operation-card';
@@ -20,7 +19,11 @@ class HighlightedOperations extends React.Component {
   }
 
   componentDidMount () {
-    this.props._getFeaturedEmergencies();
+    if (this.props.opsType === 'region') {
+      this.props._getFeaturedEmergenciesForRegion(this.props.opsId);
+    } else {
+      this.props._getFeaturedEmergencies();
+    }
     this.props._getFeaturedEmergenciesDeployments();
   }
 
@@ -75,24 +78,22 @@ class HighlightedOperations extends React.Component {
     if (fetched && (error || !Array.isArray(data.results) || !data.results.length)) return null;
     else if (!fetched || fetching) return <div className='inner'><Fold title={title}><BlockLoading/></Fold></div>;
     let operations = data.results;
-    if (this.props.opsType === 'region') {
-      operations = operations.filter(op => countriesByRegion[this.props.opsId].includes(op.countries[0].id.toString()));
-    }
-    if (this.props.opsType === 'country') {
-      operations = operations.filter(op => op.countries[0].id === this.props.opsId);
-    }
+    const listStyle = operations.length <= 4 ? (
+      'key-emergencies-list key-emergencies-list-short'
+    ) : (
+      'key-emergencies-list key-emergencies-list-long'
+    );
     return (operations.length ? (
       <div className='inner inner--emergencies'>
         <Fold title={title} navLink={foldLink} extraClass foldClass='fold__title--inline'>
-          <ul className='key-emergencies-list'>
-            {/* displays the first three operations sorted by most recent by default */}
-            {operations.slice(0, 3).map(operation =>
+          <div className={listStyle}>
+            {operations.slice(0, 6).map(operation =>
               <OperationCard
                 operation={operation}
                 calculateDeployedPersonnel={this.calculateDeployedPersonnel}
               />
             )}
-          </ul>
+          </div>
         </Fold>
       </div>
     ) : null
@@ -103,13 +104,14 @@ class HighlightedOperations extends React.Component {
 if (environment !== 'production') {
   HighlightedOperations.propTypes = {
     _getFeaturedEmergencies: T.func,
+    _getFeaturedEmergenciesForRegion: T.func,
     _getFeaturedEmergenciesDeployments: T.func,
     _getDeploymentERU: T.func,
     featured: T.object,
     deployments: T.object,
     eru: T.object,
     opsType: T.string,
-    opsId: T.string,
+    opsId: T.string
   };
 }
 
@@ -121,6 +123,7 @@ const selector = (state) => ({
 
 const dispatcher = (dispatch) => ({
   _getFeaturedEmergencies: (...args) => dispatch(getFeaturedEmergencies(...args)),
+  _getFeaturedEmergenciesForRegion: (...args) => dispatch(getFeaturedEmergenciesForRegion(...args)),
   _getFeaturedEmergenciesDeployments: (...args) => dispatch(getFeaturedEmergenciesDeployments(...args)),
   _getDeploymentERU: (...args) => dispatch(getDeploymentERU(...args))
 });

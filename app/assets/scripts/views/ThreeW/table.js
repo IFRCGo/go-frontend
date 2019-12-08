@@ -45,9 +45,33 @@ export default class ProjectListTable extends React.PureComponent {
         modifier: d => programmeTypes[d.programme_type],
       },
       {
+        key: 'target_total',
+        label: 'People targeted',
+      },
+      {
+        key: 'reached_total',
+        label: 'People reached',
+      },
+      {
         key: 'status',
         label: 'Status',
         modifier: d => statuses[d.status],
+      },
+      {
+        key: 'actions',
+        label: 'Actions',
+        modifier: (d) => (
+          (this.props.user && this.props.user.id)
+            ? (
+              <button
+                className='button button--secondary-bounded'
+                onClick={() => this.props.onEditButtonClick(d)}
+              >
+                Edit
+              </button>
+            )
+            : null
+        ),
       },
     ];
   }
@@ -74,7 +98,7 @@ export default class ProjectListTable extends React.PureComponent {
             <tr key={p.id}>
               { this.headers.map(h => (
                 <td key={h.key}>
-                  { h.modifier ? h.modifier(p) : p[h.key] }
+                  { h.modifier ? h.modifier(p) : (p[h.key] || '-') }
                 </td>
               ))}
             </tr>

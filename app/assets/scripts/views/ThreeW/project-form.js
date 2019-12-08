@@ -25,8 +25,13 @@ import {
 
 import {
   statusList,
+  statuses,
   sectorList,
+  secondarySectorInputValues,
+  secondarySectorList,
+  sectorInputValues,
   programmeTypeList,
+  programmeTypes,
 } from '../../utils/constants';
 
 const statusOptions = statusList.map(p => ({
@@ -35,6 +40,11 @@ const statusOptions = statusList.map(p => ({
 }));
 
 const sectorOptions = sectorList.map(p => ({
+  value: p.inputValue,
+  label: p.title,
+}));
+
+const secondarySectorOptions = secondarySectorList.map(p => ({
   value: p.inputValue,
   label: p.title,
 }));
@@ -50,9 +60,14 @@ const disasterTypeOptions = disasterTypeList.map(d => ({
 }));
 
 const operationTypeOptions = [
-  { value: 'Long Term Operation', label: 'Long term operation' },
+  { value: 'Programme', label: 'Programme' },
   { value: 'Emergency Operation', label: 'Emergency operation' },
 ];
+
+const operationTypes = {
+  0: 'Programme',
+  1: 'Emergency Operation',
+};
 
 const InputSection = ({
   className,
@@ -103,10 +118,33 @@ class ProjectForm extends React.PureComponent {
       },
     };
 
+    // console.warn(props.projectData);
+    const { projectData = {} } = props;
+
     this.state = {
       faramValues: {
-        secondary_sectors: [],
+        budget_amount: projectData.budget_amount,
         country: props.countryId,
+        event: projectData.event,
+        dtype: projectData.dtype,
+        project_district: projectData.project_district,
+        name: projectData.name,
+        operation_type: operationTypes[projectData.operation_type],
+        primary_sector: sectorInputValues[projectData.primary_sector],
+        programme_type: programmeTypes[projectData.programme_type],
+        end_date: projectData.end_date,
+        start_date: projectData.start_date,
+        reached_children: projectData.reached_children || undefined,
+        reached_female: projectData.reached_female || undefined,
+        reached_male: projectData.reached_male || undefined,
+        reached_total: projectData.reached_total || undefined,
+        reporting_ns: projectData.reporting_ns,
+        secondary_sectors: projectData.secondary_sectors ? projectData.secondary_sectors.map(d => secondarySectorInputValues[d]) : [],
+        status: statuses[projectData.status],
+        target_children: projectData.target_children || undefined,
+        target_female: projectData.target_female || undefined,
+        target_male: projectData.target_male || undefined,
+        target_total: projectData.target_total || undefined,
       },
       faramErrors: {},
     };
@@ -212,7 +250,14 @@ class ProjectForm extends React.PureComponent {
   }
 
   handleFaramValidationSuccess = (faramValues) => {
-    this.props._postProject(faramValues);
+    if (this.props.projectData) {
+      this.props._postProject({
+        id: this.props.projectData.id,
+        ...faramValues,
+      });
+    } else {
+      this.props._postProject(faramValues);
+    }
   }
 
   handleFaramValidationFailure = (faramErrors) => {
@@ -226,7 +271,7 @@ class ProjectForm extends React.PureComponent {
       fields: { ...this.schema.fields }
     };
 
-    if (operationType === 'Long Term Operation') {
+    if (operationType === 'Programme') {
       schema.fields.dtype = [requiredCondition];
     }
 
@@ -263,7 +308,7 @@ class ProjectForm extends React.PureComponent {
     const currentOperationOptions = this.getCurrentOperationOptions(eventList);
 
     const fetchingCountries = countries && countries.fetching;
-    const shouldDisableCountryInput = fetchingCountries;
+    const shouldDisableCountryInput = fetchingCountries || true;
     const fetchingDistricts = districts && districts[faramValues.country] && districts[faramValues.country].fetching;
     const shouldDisableDistrictInput = fetchingCountries || fetchingDistricts;
     const fetchingEvents = eventList && eventList.fetching;
@@ -274,7 +319,7 @@ class ProjectForm extends React.PureComponent {
 
     const shouldShowCurrentOperation = faramValues.operation_type === 'Emergency Operation' &&
       faramValues.programme_type === 'Multilateral';
-    const shouldShowDisasterType = faramValues.operation_type === 'Long Term Operation' &&
+    const shouldShowDisasterType = faramValues.operation_type === 'Programme' &&
       !shouldShowCurrentOperation;
 
     const schema = this.getSchema(
@@ -357,7 +402,7 @@ class ProjectForm extends React.PureComponent {
 
         { shouldShowCurrentOperation && (
           <InputSection
-            title='Current operation'
+            title='Current IFRC operation'
           >
             <SelectInput
               faramElementName='event'
@@ -391,7 +436,7 @@ class ProjectForm extends React.PureComponent {
             faramElementName='secondary_sectors'
             className='project-form-select'
             label='Tagging'
-            options={sectorOptions}
+            options={secondarySectorOptions}
             multi
           />
         </InputSection>
@@ -471,6 +516,15 @@ class ProjectForm extends React.PureComponent {
         </InputSection>
 
         <footer>
+          {/*
+            The first hidden and disabled submit button is to disable form submission on enter
+            more details on: https://www.w3.org/TR/2018/SPSD-html5-20180327/forms.html#implicit-submission
+          */}
+          <button
+            className='three-w-hidden-submit-button'
+            type="submit"
+            disabled
+          />
           <button
             className='button button--primary-bounded'
             type="submit"

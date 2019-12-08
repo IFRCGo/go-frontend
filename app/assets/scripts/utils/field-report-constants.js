@@ -452,66 +452,6 @@ export const sources = [
   }
 ];
 
-  // Step 3
-export const actions = [
-  {
-    label: 'Cash and Voucher Assistance/ Basic Needs',
-    value: '41'
-  },
-  {
-    label: 'Camp management',
-    value: '33'
-  },
-  {
-    label: 'Damage/Needs assessment',
-    value: '27'
-  },
-  {
-    label: 'Evacuation',
-    value: '36'
-  },
-  {
-    label: 'First Aid',
-    value: '37'
-  },
-  {
-    label: 'Food Assistance',
-    value: '30'
-  },
-  {
-    label: 'Health',
-    value: '31'
-  },
-  {
-    label: 'Other',
-    value: '39'
-  },
-  {
-    label: 'Psychosocial support services',
-    value: '34'
-  },
-  {
-    label: 'Restoring Family Links',
-    value: '35'
-  },
-  {
-    label: 'Relief/ Distribution',
-    value: '38'
-  },
-  {
-    label: 'Search & Rescue',
-    value: '28'
-  },
-  {
-    label: 'Shelter',
-    value: '32'
-  },
-  {
-    label: 'Water & Sanitation',
-    value: '29'
-  }
-];
-
 // Step 4.
 export const eruTypes = [
   {
@@ -574,3 +514,388 @@ export const orgTypes = [
     value: 'OTHR'
   }
 ];
+
+export const fieldsStep1 = {
+  'summary': {
+    'EVT': {
+      label: 'Title *',
+      desc: 'Add a new title (Country - Region: Hazard mm/yy) or link to an existing emergency'
+    },
+    'EW': {
+      label: 'Title *',
+      desc: 'Add a new title (Country - Region: Hazard mm/yy) or link to an existing emergency'
+    }
+  },
+  'startDate': {
+    'EVT': {
+      label: 'Start Date *',
+      desc: 'Start date is when some significant effects are felt or when the first significant impact is felt.'
+    },
+    'EW': {
+      label: 'Predicted Date of Impact *',
+      desc: 'Date at which significant impacts are predicted to occur.'
+    }
+  },
+  'country': {
+    'EVT': {
+      label: 'Affected Country and Province / Region *',
+      desc: ''
+    },
+    'EW': {
+      label: 'Potentially Affected Country and Province / Region *',
+      desc: 'Anticipated Affected Country and Province / Region'
+    }
+  },
+  'disaster-type': {
+    'EVT': {
+      label: 'Disaster Type *',
+      desc: ''
+    },
+    'EW': {
+      label: 'Hazard Type *',
+      desc: ''
+    }
+  },
+  'assistance': {
+    'EVT': {
+      label: 'Government requests international assistance?',
+      desc: 'Indicate if the government requested international assistance.'
+    },
+    'EW': {
+      label: 'Government requests international assistance?',
+      desc: 'Indicate if the government requested international assistance.'
+    }
+  },
+  'ns-assistance': {
+    'EVT': {
+      label: 'National Society requests international assistance?',
+      desc: 'Indicate if the National Society requested international assistance'
+    },
+    'EW': {
+      label: 'National Society requests international assistance?',
+      desc: 'Indicate if the National Society requested international assistance'
+    }
+  }
+};
+
+export const fieldsStep2 = {
+  'situationFields': {
+    'EVT': [
+      {
+        'name': 'num-injured',
+        'key': 'numInjured',
+        'label': 'Injured',
+        'desc': 'Number of people suffering from physical injuries, trauma or an illness requiring immediate medical treatment as a direct result of a disaster.'
+      },
+      {
+        'name': 'num-dead',
+        'key': 'numDead',
+        'label': 'Dead',
+        'desc': 'Number of people confirmed dead.'
+      },
+      {
+        'name': 'num-missing',
+        'key': 'numMissing',
+        'label': 'Missing',
+        'desc': 'Number of people missing.'
+      },
+      {
+        'name': 'num-affected',
+        'key': 'numAffected',
+        'label': 'Affected',
+        'desc': 'Number of people requiring immediate assistance during a period of emergency; this may include displaced or evacuated people.'
+      },
+      {
+        'name': 'num-displaced',
+        'key': 'numDisplaced',
+        'label': 'Displaced',
+        'desc': 'Number of people displaced.'
+      }
+    ],
+    'EW': [
+      {
+        'name': 'num-potentially-affected',
+        'key': 'numPotentiallyAffected',
+        'label': 'Potentially Affected',
+        'desc': 'Number of people that are located in the geographic area where the hazard is likely to impact'
+      },
+      {
+        'name': 'num-highest-risk',
+        'key': 'numHighestRisk',
+        'label': 'People at Highest Risk',
+        'desc': 'Number of people that are located in the geographic area where the hazard\'s impact is likely to be the highest'
+      },
+      // WARNING: this is the only field that requires a non-numeric response
+      {
+        'name': 'affected-pop-centres',
+        'key': 'affectedPopCentres',
+        'label': 'Largest Population Centres Likely to be Affected',
+        'desc': 'Names of large cities or towns which are most at risk' }
+    ]
+  },
+  'description': {
+    'EVT': {
+      'label': 'Situational Overview',
+      'desc': 'Describe the effects of the hazard, the current context, the affected population and how they have been affected.',
+      'placeholder': 'Example: According to the local government, the overflow of the Zimbizi river has caused extensive flood water damage to low income housing along the river bank. The majority of the affected households do not have sufficient insurance coverage for their assets. The local branch of the National Society is currently assessing how to best support the most vulnerable families affected by the disaster.'
+    },
+    'EW': {
+      'label': 'Risk Analysis',
+      'desc': 'Brief overview of the potential disaster and projected impacts',
+      'placeholder': '' // FIXME: do we need a separate placeholder for EW?
+    }
+  }
+};
+
+export const fieldsStep3 = {
+  'section1fields': [
+    {
+      'name': 'num-assisted-gov',
+      'key': 'numAssistedGov',
+      'EVT': true,
+      'EW': true,
+      'label': {
+        'EVT': 'Assisted by Government',
+        'EW': 'Number of People Assisted by Government - Early Action'
+      }
+    },
+    {
+      'name': 'num-assisted-red-cross',
+      'key': 'numAssistedRedCross',
+      'EVT': true,
+      'EW': true,
+      'label': {
+        'EVT': 'Assisted by RCRC Movement',
+        'EW': 'Number of People Assisted by RCRC Movement - Early Action'
+      }
+    },
+    {
+      'name': 'num-local-staff',
+      'key': 'numLocalStaff',
+      'EVT': true,
+      'EW': false,
+      'label': {
+        'EVT': 'Number of NS Personnel Involved'
+      }
+    },
+    {
+      'name': 'num-volunteers',
+      'key': 'numVolunteers',
+      'EVT': true,
+      'EW': false,
+      'label': {
+        'EVT': 'Number of Volunteers Involved'
+      }
+    },
+    {
+      'name': 'num-expats',
+      'key': 'numExpats',
+      'EVT': true,
+      'EW': false,
+      'label': {
+        'EVT': 'Number of RCRC Movement Personnel involved'
+      },
+      'description': {
+        'EVT': 'Personnel from IFRC, ICRC &amp; PNS'
+      }
+    }
+  ],
+  'checkboxSections': [
+    {
+      'name': 'actions-nat-soc',
+      'key': 'actionsNatSoc',
+      'action_type': 'NTLS',
+      'label': {
+        'EVT': 'Actions Taken by National Society Red Cross (if any)',
+        'EW': 'Early Actions Taken by NS'
+      },
+      'desc': {
+        'EVT': 'Select the activities undertaken by the National Society and briefly describe.',
+        'EW': 'Select the early action activities undertaken by the National Society and give a brief description'
+      },
+      'placeholder': {
+        'EVT': 'Example: The two local branches of the National Society in the affected districts have provided first aid, psychosocial support and basic relief items to the affected families. An evacuation centre has been set up in a local school to accommodate those unable to return to their homes. Groups of Red Cross volunteers are helping the local search and rescue personnel in cleaning storm debris from houses and streets.',
+        'EW': 'Brief description of the action'
+      }
+    },
+    {
+      'name': 'actions-federation',
+      'key': 'actionsFederation',
+      'action_type': 'FDRN',
+      'label': {
+        'EVT': 'Actions taken by the IFRC',
+        'EW': 'Early Actions Taken by IFRC'
+      },
+      'desc': {
+        'EVT': 'Select the activities taken by the IFRC (could be the Regional office, cluster office or country office) and briefly describe.',
+        'EW': 'Select the early action activities undertaken by the IFRC and give a brief description'
+      },
+      'placeholder': {
+        'EVT': 'Brief description of the action',
+        'EW': 'Brief description of the action'
+      }
+    },
+    {
+      'name': 'actions-pns',
+      'key': 'actionsPns',
+      'action_type': 'PNS',
+      'label': {
+        'EVT': 'Actions taken by any other RCRC Movement actors',
+        'EW': 'Early Action Taken by other RCRC Movement'
+      },
+      'desc': {
+        'EVT': 'Select the activities undertaken by any other RCRC Movement actor(s) and briefly describe.',
+        'EW': 'Select the early action activities undertaken by the RCRC Movement and give a brief description.'
+      },
+      'placeholder': {
+        'EVT': 'Brief description of the action',
+        'EW': 'Brief description of the action'
+      }
+    }
+  ],
+  'actionsOthers': {
+    'label': {
+      'EVT': 'Actions Taken by Others (Governments, UN)',
+      'EW': 'Early Actions Taken by Others (Governments, UN)'
+    },
+    'desc': {
+      'EVT': 'Who else was involved? UN agencies? NGOs? Government? Describe what other actors did. Also mention who the other actors are.',
+      'EW': 'List the early action activities undertaken by other actors, mention who the other actors are, and give a brief description.'
+    }
+  }
+};
+
+const defaultFieldOptions = [
+  {
+    'label': 'Planned',
+    'value': '2'
+  },
+  {
+    'label': 'Requested',
+    'value': '1',
+  },
+  {
+    'label': 'Deployed',
+    'value': '3'
+  }
+];
+
+const drefOptions = defaultFieldOptions.slice(0, -1);
+
+drefOptions.push({
+  'label': 'Allocated',
+  'value': '3'
+});
+
+const emergencyOptions = defaultFieldOptions.slice(0, -1);
+emergencyOptions.push({
+  'label': 'Launched',
+  'value': '3'
+});
+
+export const fieldsStep4 = {
+  'plannedResponseRows': [
+    {
+      'name': 'dref',
+      'valueFieldLabel': 'Amount CHF',
+      'options': drefOptions,
+      'key': 'dref',
+      'label': {
+        'EVT': 'DREF Requested',
+        'EW': 'DREF'
+      }
+    },
+    {
+      'name': 'emergency-appeal',
+      'valueFieldLabel': 'Amount CHF',
+      'options': emergencyOptions,
+      'key': 'emergencyAppeal',
+      'label': {
+        'EVT': 'Emergency Appeal',
+        'EW': 'Emergency Appeal'
+      }
+    },
+    {
+      'name': 'fact',
+      'valueFieldLabel': 'Number of people',
+      'options': defaultFieldOptions,
+      'key': 'fact',
+      'label': {
+        'EVT': 'Rapid Response Personnel',
+        'EW': 'Rapid Response Personnel'
+      },
+      'description': 'This is the new name for FACT/RDRT/RIT' // WARNING: This is the only row with a description.
+    },
+    {
+      'name': 'ifrc-staff',
+      'valueFieldLabel': 'Units',
+      'options': defaultFieldOptions,
+      'key': 'ifrcStaff',
+      'label': {
+        'EVT': 'Emergency Response Units',
+        'EW': 'Emergency Response Units'
+      }
+    },
+
+    // WARNING: Next two are new fields in the database. Label set to `null` for EVT signifies
+    // that they are not to appear if form_type === 'EVT'
+    {
+      'name': 'imminent-dref',
+      'valueFieldLabel': 'Amount CHF',
+      'options': drefOptions,
+      'key': 'imminentDref',
+      'label': {
+        'EVT': null,
+        'EW': 'FbA by the DREF or Imminent DREF'
+      }
+    },
+    {
+      'name': 'forecast-based-action',
+      'valueFieldLabel': 'Amount CHF',
+      'options': drefOptions,
+      'key': 'forecastBasedAction',
+      'label': {
+        'EVT': null,
+        'EW': 'Forecast Based Action'
+      }
+    }
+  ],
+  'contactRows': [
+    {
+      'name': 'contact-originator',
+      'key': 'contactOriginator',
+      'label': 'Originator',
+      'desc': {
+        'EVT': 'NS or IFRC Staff completing the Field Report.',
+        'EW': 'NS or IFRC Staff completing the Field Report.'
+      }
+    },
+    {
+      'name': 'contact-nat-soc',
+      'key': 'contactNatSoc',
+      'label': 'National Society Contact',
+      'desc': {
+        'EVT': 'The most senior staff in the National Society responsible and knowledgeable about the disaster event.',
+        'EW': 'The most senior staff in the NS responsible and knowledgeable about the risk.'
+      }
+    },
+    {
+      'name': 'contact-federation',
+      'key': 'contactFederation',
+      'label': 'IFRC Focal Point for the Emergency',
+      'desc': {
+        'EVT': 'IFRC staff who is overall responsible for supporting the NS in its response to the disaster event.',
+        'EW': 'IFRC staff who is overall responsible for supporting the NS in its response to the anticipated disaster event'
+      }
+    },
+    {
+      'name': 'contact-media',
+      'key': 'contactMedia',
+      'label': 'Media Contact',
+      'desc': {
+        'EVT': 'An IFRC secretariat media contact in Geneva/Region or Country.',
+        'EW': 'An IFRC secretariat media contact in Geneva/Region or Country.'
+      }
+    }
+  ]
+};
