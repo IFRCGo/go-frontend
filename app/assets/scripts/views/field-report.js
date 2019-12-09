@@ -190,6 +190,21 @@ class FieldReport extends React.Component {
                     <dd>{n(get(data, 'gov_num_assisted'))}</dd>
                   </dl>
                   <dl className='dl-horizontal numeric-list'>
+                    <dt>Injured (Other): </dt>
+                    <dd>{n(get(data, 'other_num_injured'))}</dd>
+                    <dt>Missing (Other): </dt>
+                    <dd>{n(get(data, 'other_num_missing'))}</dd>
+                    <dt>Dead (Other): </dt>
+                    <dd>{n(get(data, 'other_num_dead'))}</dd>
+                    <dt>Displaced (Other): </dt>
+                    <dd>{n(get(data, 'other_num_displaced'))}</dd>
+                    <dt>Affected (Other): </dt>
+                    <dd>{n(get(data, 'other_num_affected'))}</dd>
+                    <dt>Assisted (Other): </dt>
+                    <dd>{n(get(data, 'other_num_assisted'))}</dd>
+                  </dl>
+
+                  <dl className='dl-horizontal numeric-list'>
                     <dt>Local Staff: </dt>
                     <dd>{n(get(data, 'num_localstaff'))}</dd>
                     <dt>Volunteers: </dt>
