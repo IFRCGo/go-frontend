@@ -327,14 +327,14 @@ class FieldReportForm extends React.Component {
         <FormInputSelect
           label={fields.summary[status].label}
           labelSecondary='Add Title'
-          selectLabel='Link to Emergency'
+          selectLabel='Please check for, and link to an existing emergency if available'
           inputPlaceholder='Example: Malawi - Central Region: Floods 03/2019'
           selectPlaceholder='Click here to link to an existing hazard alert (if one exists)'
           type='text'
           name='summary'
           id='summary'
           maxLength={100}
-          description={<div className='form__description'><p>{fields.summary[status].desc}</p><em>Example: 250 dead after an earthquake in Indonesia</em></div>}
+          description={<div className='form__description'><p>{fields.summary[status].desc}</p><em>Example: GDACS Orange: Albania EQ Magnitude 5.4, Depth:10km(2019-11-30)</em></div>}
           inputValue={this.state.data.summary}
           inputOnChange={this.onFieldChange.bind(this, 'summary')}
           selectOnChange={this.onFieldChange.bind(this, 'event')}
