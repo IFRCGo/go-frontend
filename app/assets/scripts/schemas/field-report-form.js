@@ -32,6 +32,9 @@ export const step1 = {
     },
     assistance: {
       type: 'boolean'
+    },
+    nsAssistance: {
+      type: 'boolean'
     }
   },
   anyOf: [
@@ -96,6 +99,9 @@ export const step2 = {
       '$ref': '#/definitions/estimationString'
     },
     description: {
+      type: 'string'
+    },
+    otherSources: {
       type: 'string'
     }
   }
@@ -175,6 +181,12 @@ export const step4 = {
       '$ref': '#/definitions/plannedResponse'
     },
     ifrcStaff: {
+      '$ref': '#/definitions/plannedResponse'
+    },
+    imminentDref: {
+      '$ref': '#/definitions/plannedResponse'
+    },
+    forecastBasedAction: {
       '$ref': '#/definitions/plannedResponse'
     },
     contactOriginator: {

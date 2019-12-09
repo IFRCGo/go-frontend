@@ -252,7 +252,7 @@ class FieldReportForm extends React.Component {
       },
       {
         'EVT': 'Situation',
-        'EW': 'Risk'
+        'EW': 'Risk Analysis'
       },
       {
         'EVT': 'Actions',
@@ -348,6 +348,25 @@ class FieldReportForm extends React.Component {
             property='summary'
           />
         </FormInputSelect>
+        <div className='form__group'>
+          <div className='form__inner-header'>
+            <label className='form__label'>{fields['disaster-type'][status].label}</label>
+          </div>
+          <div className='form__inner-body'>
+            <Select
+              placeholder='Select a disaster type'
+              name='disaster-type'
+              id='disaster-type'
+              options={formData.disasterType}
+              value={this.state.data.disasterType}
+              onChange={this.onFieldChange.bind(this, 'disasterType')}
+            />
+            <FormError
+              errors={this.state.errors}
+              property='disasterType'
+            />
+          </div>
+        </div>
         <FormInput
           label={fields.startDate[status].label}
           type='date'
@@ -400,25 +419,6 @@ class FieldReportForm extends React.Component {
             </div>
           </div>
         </div>
-        <div className='form__group'>
-          <div className='form__inner-header'>
-            <label className='form__label'>{fields['disaster-type'][status].label}</label>
-          </div>
-          <div className='form__inner-body'>
-            <Select
-              placeholder='Select a disaster type'
-              name='disaster-type'
-              id='disaster-type'
-              options={formData.disasterType}
-              value={this.state.data.disasterType}
-              onChange={this.onFieldChange.bind(this, 'disasterType')}
-            />
-            <FormError
-              errors={this.state.errors}
-              property='disasterType'
-            />
-          </div>
-        </div>
         <FormRadioGroup
           label={fields.assistance[status].label}
           description={fields.assistance[status].desc}
@@ -440,6 +440,27 @@ class FieldReportForm extends React.Component {
             property='assistance'
           />
         </FormRadioGroup>
+        <FormRadioGroup
+          label={fields['ns-assistance'][status].label}
+          description={fields['ns-assistance'][status].desc}
+          name='ns-assistance'
+          options={[
+            {
+              label: 'Yes',
+              value: 'true'
+            },
+            {
+              label: 'No',
+              value: 'false'
+            }
+          ]}
+          selectedOption={this.state.data.nsAssistance}
+          onChange={this.onFieldChange.bind(this, 'nsAssistance')} >
+          <FormError
+            errors={this.state.errors}
+            property='nsAssistance'
+          />
+        </FormRadioGroup>
       </Fold>
     );
   }
@@ -454,6 +475,7 @@ class FieldReportForm extends React.Component {
             fields.situationFields[status].map(field => {
               return (
                 <SourceEstimation
+                  estimationLabel={field.estimationLabel}
                   label={field.label}
                   description={field.desc}
                   name={field.name}
@@ -466,6 +488,22 @@ class FieldReportForm extends React.Component {
               );
             })
           }
+        </React.Fragment>
+        <React.Fragment>
+          <FormTextarea
+            label='Source Details'
+            name='other-sources'
+            classInput='textarea--lg'
+            placeholder='Add details for data with sources marked as Other above.'
+            id='other-sources'
+            description='Add details for sources above (if applicable)'
+            value={this.state.data.otherSources}
+            onChange={this.onFieldChange.bind(this, 'otherSources')} >
+            <FormError
+              errors={this.state.errors}
+              property='otherSources'
+            />
+          </FormTextarea>
         </React.Fragment>
         <React.Fragment>
           <FormTextarea
@@ -555,7 +593,7 @@ class FieldReportForm extends React.Component {
         </React.Fragment>
         <FormRadioGroup
           label='Information Bulletin'
-          description='Indicate if an Information Bulletin was published, is planned or if no Information Bulletin will be issued for this operation/disaster.'
+          description='Indicate if an Information Bulletin was published, is planned or if no Information Bulletin will be issued for this operation/disaster/hazard.'
           name='bulletin'
           options={[
             {
