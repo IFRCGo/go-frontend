@@ -2,7 +2,7 @@
 import { listToMap } from '@togglecorp/fujs';
 
 export const statusEarlyWarning = {
-  label: 'Early Warning',
+  label: 'Early Warning / Early Action',
   value: '8',
   description: 'First report for this hazard.'
 };
