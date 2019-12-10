@@ -14,7 +14,8 @@ import {
   separateUppercaseWords as separate,
   nope,
   getResponseStatus,
-  intersperse
+  intersperse,
+  yesno
 } from '../utils/format';
 import { get } from '../utils/utils/';
 
@@ -192,7 +193,7 @@ class FieldReport extends React.Component {
           <dd>{n(get(data, 'num_localstaff'))}</dd>
           <dt>Volunteers: </dt>
           <dd>{n(get(data, 'num_volunteers'))}</dd>
-          <dt>Expats/Delegates: </dt>
+          <dt>Delegates: </dt>
           <dd>{n(get(data, 'num_expats_delegates'))}</dd>
         </dl>
       </React.Fragment>
@@ -281,6 +282,16 @@ class FieldReport extends React.Component {
                 {this.renderNumericDetails(data)}
                 {this.renderPlannedResponse(data)}
                 <DisplaySection title='Description' inner={get(data, 'description', false)} />
+                <DisplaySection title='Requests for Assistance'>
+                  <p>
+                    <span>Government Requests International Assistance: </span>
+                    <span>{yesno(get(data, 'request_assistance'))}</span>
+                  </p>
+                  <p>
+                    <span>NS Requests International Assistance:</span>
+                    <span>{yesno(get(data, 'ns_request_assistance'))}</span>
+                  </p>
+                </DisplaySection>
                 {this.renderActionsTaken(data, 'NTLS', 'National Society')}
                 {this.renderActionsTaken(data, 'FDRN', 'IFRC')}
                 {this.renderActionsTaken(data, 'PNS', 'any other RCRC Movement actors') /* instead of PNS Red Cross, go-frontend/issues/822 */ }
