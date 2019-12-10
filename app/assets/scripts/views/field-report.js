@@ -248,7 +248,6 @@ class FieldReport extends React.Component {
 
   renderContent () {
     const { data } = this.props.report;
-    console.log('fr data', data);
     if (!this.props.report.fetched || !data) {
       return null;
     }
