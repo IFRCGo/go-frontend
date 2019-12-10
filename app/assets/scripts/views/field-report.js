@@ -231,14 +231,14 @@ class FieldReport extends React.Component {
           <dd>{n(get(data, 'num_assisted'))}</dd>
         </dl>
       </React.Fragment>
-    )
+    );
     return (
       <React.Fragment>
         <DisplaySection title='Numeric details'>
           { status === 'EVT' ? evtHtml : ewHtml }
         </DisplaySection>
         <DisplaySection
-          title='Other Sources'
+          title='Sources for data marked as Other'
           inner={get(data, 'other_sources', false)}
         />
       </React.Fragment>
