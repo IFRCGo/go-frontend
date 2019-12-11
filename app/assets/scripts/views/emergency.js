@@ -162,10 +162,30 @@ class Emergency extends React.Component {
     );
   }
 
-  renderFieldReportStats () {
-    const report = mostRecentReport(get(this.props, 'event.data.field_reports'));
-    const hideIt = get(this.props, 'event.data.hide_attached_field_reports');
-    if (!report || hideIt) return null;
+  renderFieldReportStatsEW (report) {
+    const numPotentiallyAffected = parseInt(get(report, 'num_potentially_affected')) || parseInt(get(report, 'gov_num_potentially_affected')) || parseInt(get(report, 'other_num_potentially_affected'));
+    const numHighestRisk = parseInt(get(report, 'num_highest_risk')) || parseInt(get(report, 'gov_num_highest_risk')) || parseInt(get(report, 'other_num_highest_risk'));
+    const affectedPopCentres = get(report, 'affected_pop_centres') || get(report, 'gov_affected_pop_centres') || get(report, 'other_affected_pop_centres');
+    return (
+      <div className='inpage__header-col'>
+        <h3 className='global-spacing-2-t clear'>Emergency Overview</h3>
+        <div className='content-list-group'>
+          <ul className='content-list'>
+            <li>Potentially Affected<span className='content-highlight'>{n(numPotentiallyAffected)}</span></li>
+            <li>Highest Risk<span className='content-highlight'>{n(numHighestRisk)}</span></li>
+            <li>Affected Population Centres<span className='content-highlight'>{affectedPopCentres}</span></li>
+          </ul>
+          <ul className='content-list'>
+            <li>Number of People Assisted by Government - Early Action<span className='content-highlight'>{n(get(report, 'gov_num_assisted'))}</span></li>
+            <li>Number of People Assisted by RCRC Movement - Early Action<span className='content-highlight'>{n(get(report, 'num_assisted'))}</span></li>
+          </ul>
+        </div>
+        <p className='emergency__source'>Source: <Link to={`/reports/${report.id}`}>{report.summary}, {timestamp(report.updated_at || report.created_at)}</Link></p>
+      </div>
+    );
+  }
+
+  renderFieldReportStatsEvent (report) {
     const numAffected = parseInt(get(report, 'num_affected')) || parseInt(get(report, 'gov_num_affected')) || parseInt(get(report, 'other_num_affected'));
     const numInjured = parseInt(get(report, 'num_injured')) || parseInt(get(report, 'gov_num_injured')) || parseInt(get(report, 'other_num_injured'));
     const numDead = parseInt(get(report, 'num_dead')) || parseInt(get(report, 'gov_num_dead')) || parseInt(get(report, 'other_num_dead'));
@@ -193,6 +213,18 @@ class Emergency extends React.Component {
         <p className='emergency__source'>Source: <Link to={`/reports/${report.id}`}>{report.summary}, {timestamp(report.updated_at || report.created_at)}</Link></p>
       </div>
     );
+  }
+
+  renderFieldReportStats () {
+    const report = mostRecentReport(get(this.props, 'event.data.field_reports'));
+    const hideIt = get(this.props, 'event.data.hide_attached_field_reports');
+    if (!report || hideIt) return null;
+    const status = report.status === 8 ? 'EW' : 'EVT';
+    if (status === 'EW') {
+      return this.renderFieldReportStatsEW(report);
+    } else {
+      return this.renderFieldReportStatsEvent(report);
+    }
   }
 
   renderHeaderStats () {
