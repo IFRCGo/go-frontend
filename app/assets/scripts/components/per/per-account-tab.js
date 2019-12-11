@@ -31,7 +31,7 @@ const PerAccountTab = props => {
 
   const formButtons = [
     {
-      link: 'policy-strategy/',
+      link: 'policy-strategy',
       title: 'Area 1: Policy and Standards'
     },
     {
