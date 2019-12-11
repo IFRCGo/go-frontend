@@ -4,7 +4,6 @@ import { environment } from '../../config';
 import { PropTypes as T } from 'prop-types';
 
 const PerDraftDocuments = ({ perForm, deletePerDraft }) => {
-
   const draftDocuments = [];
   if (perForm.getPerDraftDocument.fetched) {
     let index = 0;
