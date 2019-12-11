@@ -7,6 +7,7 @@ import {
   patchJSON,
   withToken
 } from '../utils/network';
+import { countryIsoMapById } from '../utils/field-report-constants';
 import { stringify as buildAPIQS } from 'qs';
 import { DateTime } from 'luxon';
 
@@ -52,6 +53,30 @@ export function showUsername (email) {
   return postJSON('show_username', SHOW_USERNAME, { email });
 }
 
+export const GET_PROJECTS = 'GET_PROJECTS';
+export function getProjects (countryId, filterValues) {
+  const filters = {
+    country: countryIsoMapById[countryId],
+    ...filterValues
+  };
+  const f = buildAPIQS(filters);
+  return fetchJSON(`api/v2/project/?${f}`, GET_PROJECTS, withToken());
+}
+
+export const POST_PROJECT = 'POST_PROJECT';
+export function postProject (data) {
+  const {
+    id,
+    ...otherData
+  } = data;
+
+  if (id) {
+    return putJSON(`api/v2/project/${id}/`, POST_PROJECT, otherData, withToken());
+  }
+
+  return postJSON('api/v2/project/', POST_PROJECT, data, withToken());
+}
+
 export const GET_COUNTRIES = 'GET_COUNTRIES';
 export function getCountries (region) {
   let filters = {limit: 1000};
@@ -89,6 +114,11 @@ export function getFieldReportsList (page = 1, filters = {}) {
   return fetchJSON(`/api/v2/field_report/?${f}`, GET_FIELD_REPORTS_LIST, withToken());
 }
 
+export const GET_ACTIONS = 'GET_ACTIONS';
+export function getActions () {
+  return fetchJSON('/api/v2/action', GET_ACTIONS);
+}
+
 export const GET_SURGE_ALERTS = 'GET_SURGE_ALERTS';
 export function getSurgeAlerts (page = 1, filters = {}) {
   filters.limit = filters.limit || 5;
@@ -99,20 +129,33 @@ export function getSurgeAlerts (page = 1, filters = {}) {
 }
 
 export const GET_APPEALS_LIST = 'GET_APPEALS_LIST';
-export function getAppealsList (countryId = null) {
+export function getAppealsList () {
   const filters = {
     end_date__gt: DateTime.utc().toISO(),
     limit: 1000
   };
-  if (countryId !== null) {
-    filters.country = countryId;
-  }
   const f = buildAPIQS(filters);
   return fetchJSON(`api/v2/appeal/?${f}`, GET_APPEALS_LIST, withToken());
 }
 
+export const GET_APPEALS_LIST_STATS = 'GET_APPEALS_LIST_STATS';
+export function getAppealsListStats ({countryId = null, regionId = null} = {}) {
+  const filters = {
+    end_date__gt: DateTime.utc().toISO(),
+    limit: 1000
+  };
+  if (countryId) {
+    filters.country = countryId;
+  }
+  if (regionId) {
+    filters.region = regionId;
+  }
+  const f = buildAPIQS(filters);
+  return fetchJSON(`api/v2/appeal/?${f}`, GET_APPEALS_LIST_STATS, withToken());
+}
+
 export const GET_AGGREGATE_APPEALS = 'GET_AGGREGATE_APPEALS';
-export function getAggregateAppeals (date, unit, type) {
+export function getAggregateAppeals (date, unit, type, region = undefined) {
   const typeMapping = { drefs: 0, appeals: 1 };
 
   const f = buildAPIQS({
@@ -121,6 +164,7 @@ export function getAggregateAppeals (date, unit, type) {
     sum_beneficiaries: 'num_beneficiaries',
     sum_amount_funded: 'amount_funded',
     filter_atype: typeMapping[type],
+    region,
     unit
   });
   return fetchJSON(`api/v1/aggregate/?${f}`, GET_AGGREGATE_APPEALS, withToken(), {aggregationUnit: unit, aggregationType: type});
@@ -129,6 +173,10 @@ export function getAggregateAppeals (date, unit, type) {
 export const GET_FEATURED_EMERGENCIES = 'GET_FEATURED_EMERGENCIES';
 export function getFeaturedEmergencies () {
   return fetchJSON('/api/v2/event/?is_featured=1', GET_FEATURED_EMERGENCIES, withToken());
+}
+
+export function getFeaturedEmergenciesForRegion (regionId) {
+  return fetchJSON(`/api/v2/event/?is_featured_region=1&regions__in=${regionId}`, GET_FEATURED_EMERGENCIES, withToken());
 }
 
 export const GET_FEATURED_EMERGENCIES_DEPLOYMENTS = 'GET_FEATURED_EMERGENCIES_DEPLOYMENTS';
@@ -187,6 +235,13 @@ export function getEventById (id) {
   return fetchJSON(`api/v2/event/${id}/`, GET_EVENT, withToken(), { id });
 }
 
+export const GET_EVENT_LIST = 'GET_EVENT_LIST';
+export function getEventList () {
+  const query = { limit: 9999 };
+  const q = buildAPIQS(query);
+  return fetchJSON(`api/v2/event/mini/?${q}`, GET_EVENT_LIST, withToken());
+}
+
 export const GET_EVENT_SNIPPETS = 'GET_EVENT_SNIPPETS';
 export function getEventSnippets (eventId) {
   return fetchJSON(`api/v2/event_snippet/?event=${eventId}`, GET_EVENT_SNIPPETS, withToken(), { id: eventId });
@@ -213,12 +268,20 @@ export function getEruOwners () {
 
 export const GET_DISTRICTS = 'GET_DISTRICTS';
 export function getDistrictsForCountry (country) {
+  // should not be dependent on the country data structure
+  // i.e country should already be country.value here
+
   const filters = {
     country: country.value,
     limit: 200
   };
   const f = buildAPIQS(filters);
   return fetchJSON(`api/v2/district/?${f}`, GET_DISTRICTS, {}, { country });
+}
+
+// PF = project form
+export function getDistrictsForCountryPF (country) {
+  return getDistrictsForCountry({ value: country });
 }
 
 export const GET_AA = 'GET_AA';
@@ -487,6 +550,11 @@ export function getPerOverviewForm (countryId = null, formId = null) {
   return fetchJSON(`api/v2/peroverview/?${f}`, PER_OVERVIEW_FORM, withToken());
 }
 
+export function getPerOverviewFormStrict (countryId = null, formId = null) {
+  const f = buildAPIQS({country: countryId, id: formId});
+  return fetchJSON(`api/v2/peroverviewstrict/?${f}`, PER_OVERVIEW_FORM, withToken());
+}
+
 export const PER_WORK_PLAN = 'PER_WORK_PLAN';
 export function getPerWorkPlan (countryId = null) {
   const f = buildAPIQS({country: countryId});
@@ -506,6 +574,11 @@ export function sendPerWorkplan (payload) {
 export const DELETE_PER_WORKPLAN_API = 'DELETE_PER_WORKPLAN_API';
 export function deletePerWorkplanApi (payload) {
   return postJSON('api/v2/del_perworkplan/', DELETE_PER_WORKPLAN_API, payload, withToken());
+}
+
+export const DELETE_PER_DRAFT = 'DELETE_PER_DRAFT';
+export function deletePerDraft (payload) {
+  return postJSON('api/v2/del_perdraft', DELETE_PER_DRAFT, payload, withToken());
 }
 
 export const GET_PER_UPLOADED_DOCUMENTS = 'GET_PER_UPLOADED_DOCUMENTS';

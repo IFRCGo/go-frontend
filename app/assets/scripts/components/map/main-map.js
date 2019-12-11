@@ -1,5 +1,3 @@
-'use strict';
-
 import React from 'react';
 import { render } from 'react-dom';
 import { PropTypes as T } from 'prop-types';
@@ -16,13 +14,15 @@ import EmergencyTypesDropdown from './home-map/emergency-types-dropdown';
 import AppealTypesDropdown from './home-map/appeal-types-dropdown';
 import { filtering } from './home-map/filtering/filtering-processor';
 import { AppealTypeComparator } from './home-map/filtering/comparator/appeal-type-comparator';
+import { DateComparator } from './home-map/filtering/comparator/date-comparator';
 import { EmergencyTypeComparator } from './home-map/filtering/comparator/emergency-type-comparator';
+import DateFilterHeader from '../common/filters/date-filter-header';
 import EmergenciesLeftMenu from './common/emergencies-left-menu';
 import MarkerLayerStylesheetFactory from './home-map/factory/marker-layer-stylesheet-factory';
 
 const scale = chroma.scale(['#F0C9E8', '#861A70']);
 
-class HomeMap extends React.Component {
+class MainMap extends React.Component {
   constructor (props) {
     super(props);
 
@@ -35,7 +35,11 @@ class HomeMap extends React.Component {
       hoverDtype: null,
       selectedDtype: null,
       mapActions: [],
-      ready: false
+      ready: false,
+      filters: {
+        startDate: '',
+        endDate: ''
+      }
     };
 
     this.markerLayerStylesheetFactory = new MarkerLayerStylesheetFactory();
@@ -131,6 +135,14 @@ class HomeMap extends React.Component {
     this.setSelectedDtypeNeutral();
   }
 
+  handleDateChange (dates) {
+    const comparator = DateComparator(dates);
+    const markers = filtering(this.props.operations.data.geoJSON, comparator);
+    this.setState({
+      markerGeoJSON: markers
+    });
+  }
+
   setSelectedDtypeNeutral () {
     this.setState({selectedDtype: null});
     document.getElementById('top-emergency-dropdown').value = 0;
@@ -186,8 +198,8 @@ class HomeMap extends React.Component {
       }
     });
 
-    if (Array.isArray(this.props.bbox)) {
-      theMap.fitBounds(this.props.bbox);
+    if (Array.isArray(this.props.mapBoundingBox)) {
+      theMap.fitBounds(this.props.mapBoundingBox);
     }
 
     this.theMap = theMap;
@@ -262,15 +274,26 @@ class HomeMap extends React.Component {
             onDtypeHover={this.onDtypeHover.bind(this)}/>}
 
         <div className={mapContainerClassName}>
-          <div className='map-vis__legend__filters'>
-            <div className='map-vis__legend__filters-wrap'>
-              <EmergencyTypesDropdown emergenciesByType={emergenciesByType}
-                onDtypeClick={this.onDtypeClick.bind(this)} />
+          {!this.props.fullscreen ? (
+            <div className='map-vis__legend__filters'>
+              <div className='map-vis__legend__filters-wrap'>
+                <DateFilterHeader
+                  id='date'
+                  title='Date'
+                  filter={this.state.filters}
+                  featureType='map'
+                  onSelect={this.handleDateChange.bind(this)} />
+              </div>
+              <div className='map-vis__legend__filters-wrap'>
+                <EmergencyTypesDropdown emergenciesByType={emergenciesByType}
+                  onDtypeClick={this.onDtypeClick.bind(this)} />
+              </div>
+              <div className='map-vis__legend__filters-wrap'>
+                <AppealTypesDropdown onAppealTypeChange={this.onAppealTypeChange.bind(this)} />
+              </div>
             </div>
-            <div className='map-vis__legend__filters-wrap'>
-              <AppealTypesDropdown onAppealTypeChange={this.onAppealTypeChange.bind(this)} />
-            </div>
-          </div>
+          ) : null
+          }
           <MapComponent className='map-vis__holder'
             noExport={this.props.noExport}
             configureMap={this.configureMap}
@@ -310,12 +333,12 @@ class HomeMap extends React.Component {
 }
 
 if (environment !== 'production') {
-  HomeMap.propTypes = {
+  MainMap.propTypes = {
     operations: T.object,
     deployments: T.object,
     deploymentsKey: T.string,
     history: T.object,
-    bbox: T.array,
+    mapBoundingBox: T.array,
     noRenderEmergencies: T.bool,
     noRenderEmergencyTitle: T.bool,
     noExport: T.bool,
@@ -325,4 +348,4 @@ if (environment !== 'production') {
   };
 }
 
-export default withRouter(HomeMap);
+export default withRouter(MainMap);

@@ -3,6 +3,7 @@
   height: 100vh;
   .inner {
     max-width: 1600px;
+    margin-top: $global-spacing * 2;
   }
 
   .fold__header {
@@ -22,7 +23,7 @@
   }
 
   .appeals--fullscreen {
-    margin-top: 80px;
+    margin-top: $global-spacing * 2;
   }
 
   .stats-map .emergencies .emergencies__item {
@@ -88,11 +89,10 @@
   cursor: pointer;
 }
 
-.page--homepage {
-  .inpage__title--map-fullscreen {
-    padding-left: 430px; // width of logo + some padding
-    margin: ($global-spacing/2) 0 0 0;
-    text-align: left;
-    font-size: 2rem;
-  }
+.inpage__title--map-fullscreen {
+  padding-left: 400px; // width of logo + some padding
+  margin: ($global-spacing/2) 0 0 0;
+  text-align: center;
+  font-size: 2rem;
+  width: 100%;
 }

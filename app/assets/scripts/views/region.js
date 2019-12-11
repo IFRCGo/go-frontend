@@ -1,30 +1,24 @@
 'use strict';
 import React from 'react';
+import c from 'classnames';
 import { PropTypes as T } from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
-import {
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  BarChart,
-  Bar
-} from 'recharts';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-
 import { Helmet } from 'react-helmet';
-
+import CountryList from '../components/country-list';
+import BlockLoading from '../components/block-loading';
 import { environment } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { get } from '../utils/utils/';
+import { nope } from '../utils/format';
 import {
-  commaSeparatedNumber as n,
-  nope
-} from '../utils/format';
+  enterFullscreen,
+  exitFullscreen,
+  isFullscreen,
+  addFullscreenListener,
+  removeFullscreenListener
+} from '../utils/fullscreen';
 import {
   getAdmAreaById,
   getAdmAreaAppealsList,
@@ -32,7 +26,8 @@ import {
   getRegionPersonnel,
   getAdmAreaKeyFigures,
   getAdmAreaSnippets,
-  getCountries
+  getCountries,
+  getAppealsListStats
 } from '../actions';
 import { getRegionBoundingBox } from '../utils/region-bounding-box';
 import {
@@ -45,10 +40,11 @@ import { getCountryMeta } from '../utils/get-country-meta';
 import App from './app';
 import Fold from '../components/fold';
 import TabContent from '../components/tab-content';
-import RegionMap from '../components/map/region-map';
-import BlockLoading from '../components/block-loading';
 import EmergenciesTable from '../components/connected/emergencies-table';
+import HighlightedOperations from '../components/highlighted-operations';
 import AppealsTable from '../components/connected/appeals-table';
+import TimelineCharts from '../components/timeline-charts';
+import KeyFiguresHeader from '../components/common/key-figures-header';
 import {
   Snippets,
   KeyFigures,
@@ -68,8 +64,12 @@ class AdminArea extends SFPComponent {
     super(props);
 
     this.state = {
-      maskLayer: this.getMaskLayer(getRegionId(props.match.params.id))
+      maskLayer: this.getMaskLayer(getRegionId(props.match.params.id)),
+      fullscreen: false
     };
+
+    this.toggleFullscreen = this.toggleFullscreen.bind(this);
+    this.onFullscreenChange = this.onFullscreenChange.bind(this);
   }
 
   componentWillReceiveProps (nextProps) {
@@ -91,6 +91,25 @@ class AdminArea extends SFPComponent {
     this.getData(this.props);
     this.getAdmArea(this.props.type, getRegionId(this.props.match.params.id));
     this.displayTabContent();
+    addFullscreenListener(this.onFullscreenChange);
+  }
+
+  componentWillUnmount () {
+    removeFullscreenListener(this.onFullscreenChange);
+  }
+
+  onFullscreenChange () {
+    this.setState({fullscreen: isFullscreen()});
+  }
+
+  toggleFullscreen () {
+    if (isFullscreen()) {
+      exitFullscreen();
+      this.setState({fullscreen: false});
+    } else {
+      enterFullscreen(document.querySelector('#presentation'));
+      this.setState({fullscreen: true});
+    }
   }
 
   // Sets default tab if url param is blank or incorrect
@@ -109,6 +128,7 @@ class AdminArea extends SFPComponent {
     this.props._getAdmAreaKeyFigures(props.type, id);
     this.props._getAdmAreaSnippets(props.type, id);
     this.props._getCountries(id);
+    this.props._getAppealsListStats({regionId: id});
   }
 
   getMaskLayer (regionId) {
@@ -136,191 +156,6 @@ class AdminArea extends SFPComponent {
     this.props._getAdmAreaById(type, id);
   }
 
-  renderStats () {
-    const {
-      fetched,
-      error,
-      data: { stats }
-    } = this.props.appealStats;
-
-    if (!fetched || error) {
-      return null;
-    }
-
-    return (
-      <div className='inpage__headline-stats'>
-        <div className='header-stats'>
-          <ul className='stats-list'>
-            <li className='stats-list__item stats-people'>
-              {n(stats.numBeneficiaries)}<small>Affected People in the last 30 days</small>
-            </li>
-            <li className='stats-list__item stats-funding stat-borderless stat-double'>
-              {n(stats.amountRequested)}<small>Requested Amount (CHF)</small>
-            </li>
-            <li className='stats-list__item stat-double'>
-              {n(stats.amountFunded)}<small>Funding (CHF)</small>
-            </li>
-          </ul>
-        </div>
-      </div>
-    );
-  }
-
-  renderOperations10Years () {
-    const {
-      data,
-      fetched,
-      fetching,
-      error
-    } = this.props.aggregateYear;
-
-    const zone = 'utc';
-    const tickFormatter = (date) => DateTime.fromISO(date, { zone }).toFormat('yyyy');
-
-    const contentFormatter = (payload) => {
-      if (!payload.payload || !payload.payload[0]) { return null; }
-
-      const item = payload.payload[0].payload;
-      return (
-        <article className='chart-tooltip'>
-          <div className='chart-tooltip__contents'>
-            <dl>
-              <dd>Date</dd>
-              <dt>{tickFormatter(item.timespan)}</dt>
-              <dd>Total</dd>
-              <dt>{item.count}</dt>
-            </dl>
-          </div>
-        </article>
-      );
-    };
-
-    return error ? (
-      <p>Operations data not available.</p>
-    ) : (
-      <figure className='chart'>
-        <figcaption>Operations over the past 10 years</figcaption>
-        <div className='chart__container'>
-          {!fetched || fetching ? (
-            <BlockLoading />
-          ) : (
-            <ResponsiveContainer>
-              <LineChart data={data}>
-                <XAxis tickFormatter={tickFormatter} dataKey='timespan' axisLine={false} padding={{ left: 16, right: 16 }} />
-                <YAxis axisLine={false} tickLine={false} width={32} padding={{ bottom: 16 }} />
-                <Line type='monotone' dataKey='count' stroke='#C02C2C' />
-                <Tooltip content={contentFormatter} />
-              </LineChart>
-            </ResponsiveContainer>
-          )}
-        </div>
-      </figure>
-    );
-  }
-
-  renderPersonnelBySociety () {
-    const {
-      data,
-      fetched,
-      fetching,
-      error
-    } = this.props.personnel;
-
-    const contentFormatter = (payload) => {
-      if (!payload.payload || !payload.payload[0]) { return null; }
-
-      const item = payload.payload[0].payload;
-      return (
-        <article className='chart-tooltip'>
-          <div className='chart-tooltip__contents'>
-            <dl>
-              <dd>Society</dd>
-              <dt>{item.name}</dt>
-              <dd>Total</dd>
-              <dt>{item.count}</dt>
-            </dl>
-          </div>
-        </article>
-      );
-    };
-
-    return error ? (
-      <p>No active deployments to show.</p>
-    ) : (
-      <figure className='chart'>
-        <figcaption>Active deployments by participating National Societies</figcaption>
-        <div className='chart__container'>
-          {!fetched || fetching ? (
-            <BlockLoading />
-          ) : (
-            data.personnelBySociety.length ? (
-              <ResponsiveContainer>
-                <BarChart data={data.personnelBySociety}>
-                  <XAxis dataKey='name' axisLine={false} padding={{ left: 16, right: 16 }} />
-                  <YAxis axisLine={false} tickLine={false} width={32} padding={{ bottom: 16 }} />
-                  <Bar dataKey='count' fill='#C02C2C' />
-                  <Tooltip content={contentFormatter} />
-                </BarChart>
-              </ResponsiveContainer>
-            ) : (
-              <p>No data to show.</p>
-            )
-          )}
-        </div>
-      </figure>
-    );
-  }
-
-  renderCountries () {
-    const {
-      fetched,
-      error,
-      data
-    } = this.props.countries;
-    if (!fetched || error) { return null; }
-    let countries = data.results;
-    if (this.props.appealStats.fetched && !this.props.appealStats.error) {
-      const activeOperations = get(this.props.appealStats, 'data.results', []);
-      countries = countries.map(d => {
-        const numOperations = activeOperations.filter(o => o.country && o.country.id === d.id).length;
-        return Object.assign({ numOperations }, d);
-      });
-    }
-
-    // Create the <li> elements for the list
-    // This code can probably be improved,
-    // The idea here is to generate an array of <li> elements with
-    // the first letter like 'C', 'D', etc. being array items, with a different class.
-    //  It seemed hard to style a flowing 3-column list if this is broken up into separate <ul>s
-    let countryItems = [];
-    let currLetter = 'A';
-    countryItems.push(
-      <li className='region-countries__letter' key={currLetter}>{currLetter}</li>
-    );
-    countries.forEach((country, idx) => {
-      const name = country.name;
-      if (name[0] !== currLetter) {
-        currLetter = name[0];
-        countryItems.push(
-          <li className='region-countries__letter' key={currLetter}>{currLetter}</li>
-        );
-      }
-      countryItems.push(
-        <li key={country.id} className='region-countries__item'>
-          <Link to={`/countries/${country.id}`} className='region-countries__link'><span className='region-countries__linkC'>{country.name}</span></Link>
-          {country.numOperations ? <span className='region-countries__link-op'>({country.numOperations} Active Operation{country.numOperations > 1 ? 's' : ''})</span> : null}
-        </li>
-      );
-    });
-    return (
-      <Fold title={countries.length + ' Countries in this Region'}>
-        <ul className='region-countries__list'>
-          {countryItems}
-        </ul>
-      </Fold>
-    );
-  }
-
   renderContent () {
     const {
       fetched,
@@ -330,8 +165,12 @@ class AdminArea extends SFPComponent {
 
     if (!fetched || error) return null;
 
-    const bbox = getRegionBoundingBox(data.id);
-    const mapContainerClass = 'region__map';
+    const presentationClass = c({
+      'presenting fold--stats': this.state.fullscreen,
+      'fold': !this.state.fullscreen
+    });
+
+    const mapBoundingBox = getRegionBoundingBox(data.id);
     const regionName = get(regionMeta, [data.id, 'name'], nope);
     const activeOperations = get(this.props.appealStats, 'data.results.length', false);
 
@@ -351,12 +190,16 @@ class AdminArea extends SFPComponent {
           <div className='inner'>
             <div className='inpage__headline'>
               <h1 className='inpage__title'>{regionName}</h1>
-              <div className='inpage__introduction'>
-                {this.renderStats()}
-              </div>
             </div>
           </div>
         </header>
+        <section className='inpage__body'>
+          <div className='inner'>
+            {this.props.appealsListStats.data ? (
+              <KeyFiguresHeader appealsListStats={this.props.appealsListStats} />
+            ) : <BlockLoading/>}
+          </div>
+        </section>
         <Tabs
           selectedIndex={ selectedIndex }
           onSelect={index => handleTabChange(index)}
@@ -371,35 +214,38 @@ class AdminArea extends SFPComponent {
             <div className='inner'>
               <TabPanel>
                 <TabContent>
-                  <div className='fold' id='operations-map'>
-                    <div className='inner'>
-                      <h2 className='fold__title'>{activeOperations === null || isNaN(activeOperations) ? null : `Active IFRC Operations (${activeOperations})`}</h2>
-                      <div className={mapContainerClass}>
-                        <RegionMap
-                          operations={this.props.appealStats}
-                          bbox={bbox}
-                          layers={[this.state.maskLayer]}
-                          noExport={true}
-                          noRenderEmergencyTitle={true}
-                        />
-                      </div>
+                  <HighlightedOperations opsType='region' opsId={data.id}/>
+                  <section className={presentationClass} id='presentation'>
+                    {this.state.fullscreen ? (
+                      <KeyFiguresHeader fullscreen={this.state.fullscreen} appealsListStats={this.props.appealsListStats} />
+                    ) : null}
+                    <div className={c('inner', {'appeals--fullscreen': this.state.fullscreen})}>
+                      <AppealsTable
+                        title={'Active IFRC Operations'}
+                        region={getRegionId(this.props.match.params.id)}
+                        regionOperations={this.props.appealStats}
+                        mapBoundingBox={mapBoundingBox}
+                        mapLayers={[this.state.maskLayer]}
+                        activeOperations={activeOperations}
+                        showActive={true}
+                        id={'appeals'}
+                        showRegionMap={true}
+                        viewAll={'/appeals/all?region=' + data.id}
+                        viewAllText={`View all IFRC operations for ${regionName} region`}
+                        fullscreen={this.state.fullscreen}
+                        toggleFullscreen={this.toggleFullscreen}
+                      />
                     </div>
-                  </div>
-                  <AppealsTable
-                    title={'Active IFRC Operations'}
-                    region={getRegionId(this.props.match.params.id)}
-                    showActive={true}
-                    id={'appeals'}
-                    viewAll={'/appeals/all?region=' + data.id}
-                    viewAllText={`View all IFRC operations for ${regionName} region`}
-                  />
-                  {this.renderCountries()}
+                  </section>
                   <Fold title='Statistics' headerClass='visually-hidden' id='stats'>
                     <div className='stats-chart'>
-                      {this.renderOperations10Years()}
-                      {this.renderPersonnelBySociety()}
+                      <TimelineCharts region={data.id} />
                     </div>
                   </Fold>
+                  <CountryList
+                    countries={this.props.countries}
+                    appealStats={this.props.appealStats}
+                  />
                   <EmergenciesTable
                     id='emergencies'
                     title='Recent Emergencies'
@@ -452,6 +298,7 @@ if (environment !== 'production') {
     _getAdmAreaAggregateAppeals: T.func,
     _getRegionPersonnel: T.func,
     _getCountries: T.func,
+    _getAppealsListStats: T.func,
     type: T.string,
     match: T.object,
     history: T.object,
@@ -485,7 +332,8 @@ const selector = (state, ownProps) => ({
   personnel: state.adminArea.personnel,
   keyFigures: state.adminArea.keyFigures,
   snippets: state.adminArea.snippets,
-  countries: state.countries
+  countries: state.countries,
+  appealsListStats: state.overallStats.appealsListStats
 });
 
 const dispatcher = (dispatch) => ({
@@ -495,7 +343,8 @@ const dispatcher = (dispatch) => ({
   _getRegionPersonnel: (...args) => dispatch(getRegionPersonnel(...args)),
   _getAdmAreaKeyFigures: (...args) => dispatch(getAdmAreaKeyFigures(...args)),
   _getAdmAreaSnippets: (...args) => dispatch(getAdmAreaSnippets(...args)),
-  _getCountries: (...args) => dispatch(getCountries(...args))
+  _getCountries: (...args) => dispatch(getCountries(...args)),
+  _getAppealsListStats: (...args) => dispatch(getAppealsListStats(...args)),
 });
 
 export default connect(selector, dispatcher)(AdminArea);

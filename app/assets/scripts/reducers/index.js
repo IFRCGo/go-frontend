@@ -6,6 +6,7 @@ import user from './user';
 import profile from './profile';
 import countries from './countries';
 import districts from './districts';
+import actions from './actions';
 import fieldReportForm from './field-report-form';
 import fieldReport from './field-report';
 import fieldReports from './field-reports';
@@ -27,6 +28,8 @@ import fdrs from './fdrs';
 import csv from './csv';
 import perForm from './per-form';
 import subscriptions from './subscriptions';
+import projects from './projects.js';
+import projectForm from './project-form.js';
 
 export const reducers = {
   user,
@@ -34,6 +37,7 @@ export const reducers = {
   countries,
   districts,
   systemAlertsReducer,
+  actions,
   fieldReportForm,
   fieldReport,
   fieldReports,
@@ -54,7 +58,9 @@ export const reducers = {
   fdrs,
   csv,
   perForm,
-  subscriptions
+  subscriptions,
+  projects,
+  projectForm,
 };
 
 export default combineReducers(reducers);

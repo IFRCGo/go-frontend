@@ -1,0 +1,43 @@
+.vertical-bar-chart {
+  overflow: hidden;
+
+  .vertical-bar-chart-svg {
+    .vertical-bar-chart-grid {
+      line {
+        stroke: rgba(0, 0, 0, .1);
+      }
+    }
+
+    .vertical-bar-chart-bars {
+      rect {
+        fill: $primary-color;
+      }
+
+      text {
+        text-anchor: middle;
+      }
+    }
+
+    .vertical-bar-chart-x-axis {
+      line {
+        stroke: rgba(0, 0, 0, .1);
+      }
+    }
+
+    .vertical-bar-chart-y-axis {
+      >line {
+        stroke: rgba(0, 0, 0, .1);
+      }
+
+      .vertical-bar-chart-y-axis-ticks {
+        >line {
+          stroke: rgba(0, 0, 0, .1);
+        }
+
+        text {
+          text-anchor: end;
+        }
+      }
+    }
+  }
+}

@@ -10,7 +10,7 @@ export default function newMap (container, mapStyle = 'mapbox://styles/go-ifrc/c
     style: mapStyle,
     zoom: 1.5,
     minZoom: 1,
-    maxZoom: 6,
+    maxZoom: 8,
     scrollZoom: false,
     pitchWithRotate: false,
     dragRotate: false,
@@ -29,6 +29,10 @@ export default function newMap (container, mapStyle = 'mapbox://styles/go-ifrc/c
   // Remove compass.
   var child = document.querySelector('.mapboxgl-ctrl .mapboxgl-ctrl-compass');
   child.parentNode.removeChild(child);
+
+  map.on('styledata', (e) => {
+    console.warn('styledata', e);
+  });
 
   return map;
 }

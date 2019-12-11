@@ -200,3 +200,7 @@ export function intersperse (arr, sep) {
     return xs.concat([sep, x]);
   }, [arr[0]]);
 }
+
+export function yesno (bool) {
+  return bool ? 'Yes' : 'No';
+}

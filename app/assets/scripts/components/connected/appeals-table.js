@@ -18,10 +18,11 @@ import {
 import ExportButton from '../export-button-container';
 import Fold from '../fold';
 import BlockLoading from '../block-loading';
-import DisplayTable, { SortHeader, FilterHeader, DateFilterHeader} from '../display-table';
+import DisplayTable, { SortHeader, FilterHeader } from '../display-table';
+import DateFilterHeader from '../common/filters/date-filter-header';
 import { SFPComponent } from '../../utils/extendables';
 import { appealTypes as appealsType, appealTypeOptions } from '../../utils/appeal-type-constants';
-import HomeMap from '../map/home-map';
+import MainMap from '../map/main-map';
 
 class AppealsTable extends SFPComponent {
   constructor (props) {
@@ -127,7 +128,6 @@ class AppealsTable extends SFPComponent {
     } = this.props.appeals;
 
     const title = this.props.title || 'Operations Overview';
-
     if (fetching) {
       return (
         <Fold title={title} id={this.props.id}>
@@ -151,29 +151,57 @@ class AppealsTable extends SFPComponent {
           label: <DateFilterHeader id='date'
             title='Start Date' options={dateOptions}
             filter={this.state.table.filters.date}
+            isActive={this.state.table.filters.date !== 'all'}
+            featureType='table'
             onSelect={this.handleFilterChange.bind(this, 'table', 'date')} />
         },
         {
           id: 'type',
-          label: <FilterHeader id='type' title='Type' options={appealTypeOptions} filter={this.state.table.filters.atype} onSelect={this.handleFilterChange.bind(this, 'table', 'atype')} />
+          label: <FilterHeader
+            id='type'
+            title='Type'
+            options={appealTypeOptions}
+            filter={this.state.table.filters.atype}
+            isActive={this.state.table.filters.atype !== 'all'}
+            onSelect={this.handleFilterChange.bind(this, 'table', 'atype')} />
         },
         { id: 'code', label: 'Code' },
         {
           id: 'name',
-          label: <SortHeader id='name' title='Name' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'name')} />
+          label: <SortHeader
+            id='name'
+            title='Name'
+            sort={this.state.table.sort}
+            isActive={this.state.table.sort.field === 'name'}
+            onClick={this.handleSortChange.bind(this, 'table', 'name')} />
         },
         { id: 'event', label: 'Emergency' },
         {
           id: 'dtype',
-          label: <FilterHeader id='dtype' title='Disaster Type' options={dTypeOptions} filter={this.state.table.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'table', 'dtype')} />
+          label: <FilterHeader
+            id='dtype'
+            title='Disaster Type'
+            options={dTypeOptions} filter={this.state.table.filters.dtype}
+            isActive={this.state.table.filters.dtype !== 'all'}
+            onSelect={this.handleFilterChange.bind(this, 'table', 'dtype')} />
         },
         {
           id: 'requestAmount',
-          label: <SortHeader id='amount_requested' title='Requested Amount (CHF)' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'amount_requested')} />
+          label: <SortHeader
+            id='amount_requested'
+            title='Requested Amount (CHF)'
+            sort={this.state.table.sort}
+            isActive={this.state.table.sort.field === 'amount_requested'}
+            onClick={this.handleSortChange.bind(this, 'table', 'amount_requested')} />
         },
         {
           id: 'fundedAmount',
-          label: <SortHeader id='amount_funded' title='Funding (CHF)' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'amount_funded')} />
+          label: <SortHeader
+            id='amount_funded'
+            title='Funding (CHF)'
+            sort={this.state.table.sort}
+            isActive={this.state.table.sort.field === 'amount_funded'}
+            onClick={this.handleSortChange.bind(this, 'table', 'amount_funded')} />
         },
         {
           id: 'country',
@@ -216,15 +244,25 @@ class AppealsTable extends SFPComponent {
               resource='api/v2/appeal'
             />
           ) : null}
-          {this.props.showMap ? (
-            <HomeMap
-              operations={appealsList}
+          {this.props.showRegionMap ? (
+            <MainMap
+              operations={this.props.regionOperations}
+              mapBoundingBox={this.props.mapBoundingBox}
+              layers={this.props.maskLayer}
               noExport={true}
               noRenderEmergencies={true}
               fullscreen={this.props.fullscreen}
               toggleFullscreen={this.props.toggleFullscreen}
             />
-          ) : null}
+          ) : null }
+          {this.props.showHomeMap ? (
+            <MainMap
+              operations={appealsList}
+              noExport={true}
+              noRenderEmergencies={true}
+              fullscreen={this.props.fullscreen}
+              toggleFullscreen={this.props.toggleFullscreen}
+            />) : null}
           {this.props.fullscreen ? null : (
             <DisplayTable
               className='table table--zebra table--active-ops'

@@ -2,11 +2,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
-import { DateTime } from 'luxon';
 import c from 'classnames';
 
 import { environment } from '../../config';
-import { getAppealsList, getAggregateAppeals } from '../../actions';
+import { getAppealsList } from '../../actions';
 import {
   enterFullscreen,
   exitFullscreen,
@@ -15,9 +14,9 @@ import {
   removeFullscreenListener
 } from '../../utils/fullscreen';
 
-import Homestats from '../homestats-container';
+import KeyFiguresHeader from '../../components/common/key-figures-header';
 
-import HomeCharts from '../homecharts';
+import TimelineCharts from '../timeline-charts';
 import AppealsTable from '../../components/connected/appeals-table';
 
 class PresentationDash extends React.Component {
@@ -36,13 +35,6 @@ class PresentationDash extends React.Component {
     addFullscreenListener(this.onFullscreenChange);
 
     this.props._getAppealsList();
-    const lastYear = DateTime.local().minus({months: 11}).startOf('day').toISODate();
-    const lastDecade = DateTime.local().minus({years: 10}).startOf('day').toISODate();
-
-    this.props._getAggregateAppeals(lastYear, 'month', 'drefs');
-    this.props._getAggregateAppeals(lastYear, 'month', 'appeals');
-    this.props._getAggregateAppeals(lastDecade, 'year', 'drefs');
-    this.props._getAggregateAppeals(lastDecade, 'year', 'appeals');
   }
 
   componentWillUnmount () {
@@ -64,18 +56,18 @@ class PresentationDash extends React.Component {
   }
 
   render () {
-    const {
-      appealsList,
-      aggregate
-    } = this.props;
-
+    const { appealsList } = this.props;
     return (
       <section className={c('fold--stats', {presenting: this.state.fullscreen})} id='presentation'>
-        <Homestats appealsList={appealsList} fullscreen={this.state.fullscreen} toggleFullscreen={this.toggleFullscreen} />
+        <KeyFiguresHeader
+          appealsListStats={appealsList}
+          fullscreen={this.state.fullscreen}
+          toggleFullscreen={this.toggleFullscreen}
+        />
         <div className={c('inner', {'appeals--fullscreen': this.state.fullscreen})}>
           <AppealsTable
             showActive={true}
-            showMap={true}
+            showHomeMap={true}
             title={'Active Operations'}
             limit={5}
             viewAll={'/appeals/all'}
@@ -83,9 +75,7 @@ class PresentationDash extends React.Component {
             toggleFullscreen={this.toggleFullscreen}
           />
         </div>
-        {this.state.fullscreen ? null : (
-          <HomeCharts aggregate={aggregate} />
-        )}
+        {this.state.fullscreen ? null : <TimelineCharts /> }
       </section>
     );
   }
@@ -94,7 +84,6 @@ class PresentationDash extends React.Component {
 if (environment !== 'production') {
   PresentationDash.propTypes = {
     _getAppealsList: T.func,
-    _getAggregateAppeals: T.func,
     appealsList: T.object,
     aggregate: T.object
   };
@@ -110,7 +99,6 @@ const selector = (state) => ({
 
 const dispatcher = (dispatch) => ({
   _getAppealsList: (...args) => dispatch(getAppealsList(...args)),
-  _getAggregateAppeals: (...args) => dispatch(getAggregateAppeals(...args))
 });
 
 export default connect(selector, dispatcher)(PresentationDash);

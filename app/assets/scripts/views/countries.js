@@ -1,6 +1,4 @@
-'use strict';
 import React from 'react';
-import ReactMarkdown from 'react-markdown';
 import memoize from 'memoize-one';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -9,11 +7,13 @@ import { DateTime } from 'luxon';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import { Helmet } from 'react-helmet';
+// import _cs from 'classnames';
 import url from 'url';
 
 import { countries } from '../utils/field-report-constants';
 import { environment, api } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
+import BasicTable from '../components/common/table-basic';
 import { get, dateOptions, datesAgo, dTypeOptions } from '../utils/utils/';
 import { commaSeparatedNumber as n, commaSeparatedLargeNumber as bigN, nope, round } from '../utils/format';
 import {
@@ -30,7 +30,9 @@ import {
   getPerDocument,
   getPerDocuments,
   getPerUploadedDocuments,
-  getPerMission
+  getPerMission,
+  // getProjects,
+  getAppealsListStats
 } from '../actions';
 import { getFdrs } from '../actions/query-external';
 // import { getBoundingBox } from '../utils/country-bounding-box';
@@ -41,6 +43,7 @@ import TabContent from '../components/tab-content';
 import Fold from '../components/fold';
 import DisplayTable, { SortHeader, FilterHeader } from '../components/display-table';
 import EmergenciesTable from '../components/connected/emergencies-table';
+
 // import BulletTable from '../components/bullet-table';
 import Pills from '../components/pills';
 import {
@@ -54,13 +57,21 @@ import PreparednessSummary from '../components/country/preparedness-summary';
 import PreparednessWorkPlan from '../components/country/preparedness-work-plan';
 import PreparednessPhaseOutcomes from '../components/country/preparedness-phase-outcomes';
 import PreparednessColumnBar from '../components/country/preparedness-column-graph';
+import KeyFiguresHeader from '../components/common/key-figures-header';
 import { SFPComponent } from '../utils/extendables';
 import { NO_DATA } from '../utils/constants';
 import { getRegionSlug } from '../utils/region-constants';
 import { getISO3 } from '../utils/country-iso';
 
+// import ThreeW from './ThreeW';
+// import ProjectForm from './ThreeW/project-form';
+
+const emptyList = [];
+const emptyObject = {};
+
 const TAB_DETAILS = [
   { title: 'Operations', hash: '#operations' },
+  // { title: '3w', hash: '#3w' },
   { title: 'Country Overview', hash: '#overview' },
   { title: 'Preparedness', hash: '#preparedness' },
   { title: 'Additional Information', hash: '#additional' }
@@ -102,12 +113,14 @@ class AdminArea extends SFPComponent {
         }
       },
       mapFilters: {},
-      persistentMapFilter: {}
+      persistentMapFilter: {},
+      showProjectForm: false,
     };
     this.setMapFilter = this.setMapFilter.bind(this);
     this.setPersistentMapFilter = this.setPersistentMapFilter.bind(this);
     this.removeMapFilter = this.removeMapFilter.bind(this);
     this.componentIsLoading = true;
+    this.threeWFilters = {};
   }
 
   componentWillReceiveProps (nextProps) {
@@ -119,9 +132,22 @@ class AdminArea extends SFPComponent {
     if (this.props.adminArea.fetching && !nextProps.adminArea.fetching) {
       hideGlobalLoading();
       if (nextProps.adminArea.error) {
+        // Why 404 ?
+        // TODO: handle this error more gracefully
         this.props.history.push('/uhoh');
       }
     }
+
+    /*
+    if (this.props.projectForm.fetching === true &&
+      nextProps.projectForm.fetching === false &&
+      nextProps.projectForm.error === null
+    ) {
+      // new project was successfully added
+      this.props._getProjects(this.props.match.params.id, this.threeWFilters);
+      this.setState({ showProjectForm: false });
+    }
+    */
   }
 
   componentDidMount () {
@@ -135,6 +161,7 @@ class AdminArea extends SFPComponent {
     this.props._getPerDocuments();
     this.props._getPerDocument(null, this.props.match.params.id);
     this.props._getPerUploadedDocuments(this.props.match.params.id);
+    // this.props._getProjects(this.props.match.params.id, this.threeWFilters);
     if (typeof this.props.user.username !== 'undefined' && this.props.user.username !== null) {
       this.props._getPerMission();
     }
@@ -147,6 +174,19 @@ class AdminArea extends SFPComponent {
     }
   }
 
+  getProjectList = memoize((projects) => {
+    if (!projects || !projects.fetched) {
+      return emptyList;
+    }
+
+    if (!projects.data || !projects.data.results || !projects.data.results.length) {
+      return emptyList;
+    }
+
+    const projectList = projects.data.results;
+    return projectList;
+  });
+
   getData (props) {
     const type = 'country';
     const id = getCountryId(props.match.params.id);
@@ -156,12 +196,40 @@ class AdminArea extends SFPComponent {
     this.props._getCountryOperations(type, id);
     this.props._getPartnerDeployments(type, id);
     this.props._getFdrs(id);
+    this.props._getAppealsListStats({countryId: id});
   }
 
   getAdmArea (type, id) {
-    showGlobalLoading();
+    // showGlobalLoading();
     this.props._getAdmAreaById(type, id);
   }
+
+  syncLoadingAnimation = memoize((
+    projects = emptyObject,
+    projectForm = emptyObject,
+    adminArea = emptyObject,
+    fdrs = emptyObject,
+    perForm = emptyObject,
+    user = emptyObject,
+  ) => {
+    const shouldShowLoadingAnimation = projects.fetching ||
+      projectForm.fetching ||
+      adminArea.fetching ||
+      fdrs.fetching ||
+      perForm.fetching ||
+      user.fetching;
+
+    if (shouldShowLoadingAnimation && !this.loading) {
+      showGlobalLoading();
+      this.loading = true;
+    } else {
+      if (this.loading) {
+        hideGlobalLoading();
+      }
+
+      this.loading = false;
+    }
+  })
 
   // gets links to display in the pills at bottom of the tabs
   getLinks () {
@@ -266,6 +334,28 @@ class AdminArea extends SFPComponent {
     this.props._setPartnerDeploymentFilter(getCountryId(this.props.match.params.id), filters);
   }
 
+  /*
+  handleThreeWFilterChange = (filterValues) => {
+    this.threeWFilters = filterValues;
+    this.props._getProjects(this.props.match.params.id, filterValues);
+  }
+  */
+
+  handleProjectAddButtonClick = () => {
+    this.setState({
+      showProjectForm: true,
+      projectToEdit: undefined,
+    });
+  }
+
+  handleProjectEditButtonClick = (project) => {
+    this.setState({
+      showProjectForm: true,
+      projectToEdit: project,
+    });
+    // console.warn(project);
+  }
+
   renderAppeals () {
     const { fetched, fetching, error, data } = this.props.countryOperations;
 
@@ -280,8 +370,8 @@ class AdminArea extends SFPComponent {
           id: 'date',
           label: (
             <FilterHeader
-              id="date"
-              title="Start Date"
+              id='date'
+              title='Start Date'
               options={dateOptions}
               filter={this.state.appeals.filters.date}
               onSelect={this.handleFilterChange.bind(this, 'appeals', 'date')}
@@ -292,8 +382,8 @@ class AdminArea extends SFPComponent {
           id: 'name',
           label: (
             <SortHeader
-              id="name"
-              title="Name"
+              id='name'
+              title='Name'
               sort={this.state.appeals.sort}
               onClick={this.handleSortChange.bind(this, 'appeals', 'name')}
             />
@@ -304,8 +394,8 @@ class AdminArea extends SFPComponent {
           id: 'dtype',
           label: (
             <FilterHeader
-              id="dtype"
-              title="Disaster Type"
+              id='dtype'
+              title='Disaster Type'
               options={dTypeOptions}
               filter={this.state.appeals.filters.dtype}
               onSelect={this.handleFilterChange.bind(this, 'appeals', 'dtype')}
@@ -316,8 +406,8 @@ class AdminArea extends SFPComponent {
           id: 'requestAmount',
           label: (
             <SortHeader
-              id="amount_requested"
-              title="Requested Amount (CHF)"
+              id='amount_requested'
+              title='Requested Amount (CHF)'
               sort={this.state.appeals.sort}
               onClick={this.handleSortChange.bind(this, 'appeals', 'amount_requested')}
             />
@@ -327,8 +417,8 @@ class AdminArea extends SFPComponent {
           id: 'fundedAmount',
           label: (
             <SortHeader
-              id="amount_funded"
-              title="Funding (CHF)"
+              id='amount_funded'
+              title='Funding (CHF)'
               sort={this.state.appeals.sort}
               onClick={this.handleSortChange.bind(this, 'appeals', 'amount_funded')}
             />
@@ -342,7 +432,7 @@ class AdminArea extends SFPComponent {
         date: DateTime.fromISO(o.start_date).toISODate(),
         name: o.name,
         event: o.event ? (
-          <Link to={`/emergencies/${o.event}`} className="link--primary" title="View Emergency">
+          <Link to={`/emergencies/${o.event}`} className='link--primary' title='View Emergency'>
             Link
           </Link>
         ) : (
@@ -362,8 +452,8 @@ class AdminArea extends SFPComponent {
             onPageChange={this.handlePageChange.bind(this, 'appeals')}
             noPaginate={true}
           />
-          <div className="fold__footer">
-            <Link className="link--primary export--link" to={'/appeals/all/?country=' + id}>
+          <div className='fold__footer'>
+            <Link className='link--primary export--link' to={'/appeals/all/?country=' + id}>
               View All Operations For {name}
             </Link>
           </div>
@@ -373,40 +463,12 @@ class AdminArea extends SFPComponent {
     return null;
   }
 
-  renderStats () {
-    const {
-      fetched,
-      error,
-      data: { stats }
-    } = this.props.appealStats;
-
-    if (!fetched || error) {
-      return null;
-    }
-
-    return (
-      <div className="inpage__headline-stats">
-        <div className="header-stats">
-          <ul className="stats-list">
-            <li className="stats-list__item stats-people">
-              {n(stats.numBeneficiaries)}
-              <small>Targeted people in ongoing operations</small>
-            </li>
-            <li className="stats-list__item stats-funding stat-borderless stat-double">
-              {n(stats.amountRequested)}
-              <small>Requested Amount (CHF)</small>
-            </li>
-            <li className="stats-list__item stat-double">
-              {n(stats.amountFunded)}
-              <small>Funding (CHF)</small>
-            </li>
-          </ul>
-        </div>
-      </div>
-    );
+  isPerPermission () {
+    return (typeof this.props.user.username !== 'undefined' && this.props.user.username !== null) &&
+      (typeof this.props.getPerMission !== 'undefined' && this.props.getPerMission.fetched && this.props.getPerMission.data.count > 0);
   }
 
-  renderCountryProfile () {
+  getCountryProfileData = () => {
     const { fetched, data } = this.props.fdrs;
     if (!fetched) {
       return null;
@@ -427,78 +489,90 @@ class AdminArea extends SFPComponent {
         }
       });
 
-    return (
-      <div className="inpage__header-col">
-        <div className="content-list-group">
-          <div className="content-list">
-            <h3>Country Statistics</h3>
-            <ul>
-              <li>
-                Population
-                <span className="content-highlight">{bigN(population)}</span>
-              </li>
-              <li>
-                Urban Pop <span className="content-highlight">{urbanPop ? urbanPop + '%' : nope}</span>
-              </li>
-              <li>
-                GDP
-                <span className="content-highlight">{gdp ? '$' + bigN(gdp) : nope}</span>
-              </li>
-              <li>
-                GNI / Capita
-                <span className="content-highlight">{n(get(data, 'GNIPC.value'))}</span>
-              </li>
-              <li>
-                Poverty (% pop)
-                <span className="content-highlight">{poverty ? poverty + '%' : nope}</span>
-              </li>
-              <li>
-                Life Expectancy <span className="content-highlight">{n(get(data, 'LifeExp.value'))}</span>
-              </li>
-              <li>
-                Literacy <span className="content-highlight">{literacy ? literacy + '%' : nope}</span>
-              </li>
-            </ul>
-          </div>
-          <div className="content-list">
-            <h3>National Society</h3>
-            <ul>
-              <li>
-                Income (CHF)
-                <span className="content-highlight">{bigN(get(data, 'KPI_IncomeLC_CHF.value'))}</span>
-              </li>
-              <li>
-                Expenditures (CHF)
-                <span className="content-highlight">{bigN(get(data, 'KPI_expenditureLC_CHF.value'))}</span>
-              </li>
-              <li>
-                Volunteers
-                <span className="content-highlight">{n(get(data, 'KPI_PeopleVol_Tot.value'))}</span>
-              </li>
-              <li>
-                Trained in first aid
-                <span className="content-highlight">{n(get(data, 'KPI_TrainFA_Tot.value'))}</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <p>
-          Source:{' '}
-          <a href="http://data.ifrc.org/fdrs/" target="_blank">
-            FDRS
-          </a>{' '}
-          | Reporting year(s):{' '}
-          {Object.keys(years)
-            .sort()
-            .join(', ')}
-        </p>
-      </div>
-    );
+    const statistics = {
+      countryStatistics: [
+        {
+          title: 'Population',
+          value: bigN(population)
+        },
+        {
+          title: 'Urban Pop',
+          value: urbanPop ? urbanPop + '%' : nope
+        },
+        {
+          title: 'GDP',
+          value: gdp ? '$' + bigN(gdp) : nope
+        },
+        {
+          title: 'GNI / Capita',
+          value: n(get(data, 'GNIPC.value'))
+        },
+        {
+          title: 'Poverty (% pop)',
+          value: poverty ? poverty + '%' : nope
+        },
+        {
+          title: 'Life Expectancy',
+          value: n(get(data, 'LifeExp.value'))
+        },
+        {
+          title: 'Literacy',
+          value: literacy ? literacy + '%' : nope
+        }
+      ],
+      nationalSociety: [
+        {
+          title: 'Income (CHF)',
+          value: bigN(get(data, 'KPI_IncomeLC_CHF.value'))
+        },
+        {
+          title: 'Expenditures (CHF)',
+          value: bigN(get(data, 'KPI_expenditureLC_CHF.value'))
+        },
+        {
+          title: 'Volunteers',
+          value: n(get(data, 'KPI_PeopleVol_Tot.value'))
+        },
+        {
+          title: 'Trained in first aid',
+          value: n(get(data, 'KPI_TrainFA_Tot.value'))
+        }
+      ],
+      source: {
+        url: 'http://data.ifrc.org/fdrs/',
+        title: 'FDRS',
+        reportingYears: years
+      }
+    };
+
+    return statistics;
   }
 
-  isPerPermission () {
-    return (typeof this.props.user.username !== 'undefined' && this.props.user.username !== null) &&
-      (typeof this.props.getPerMission !== 'undefined' && this.props.getPerMission.fetched && this.props.getPerMission.data.count > 0);
+  renderCountryProfile = () => {
+    const data = this.getCountryProfileData();
+
+    if (!data) {
+      return null;
+    }
+
+    return (
+      <React.Fragment>
+        <div className='table__basic-grid'>
+          <BasicTable tableContents={data.countryStatistics} tableTitle='Country Statistics' />
+          <BasicTable tableContents={data.nationalSociety} tableTitle='National Society' />
+        </div>
+        <div className='table__basic-footer'>
+          <p>
+            <a href='http://data.ifrc.org/fdrs/' target='_blank'>
+              Source: {data.source ? data.source.title : '-'}
+            </a>
+          </p>
+          <p className='table__basic-footer-line'>
+           | Reporting year(s): {Object.keys((data.source || {}).reportingYears || []).sort().join(', ') || 'N/A'}
+          </p>
+        </div>
+      </React.Fragment>
+    );
   }
 
   renderContent () {
@@ -522,34 +596,35 @@ class AdminArea extends SFPComponent {
     };
 
     return (
-      <section className="inpage">
+      <section className='inpage'>
         <Helmet>
           <title>IFRC Go - {get(data, 'name', 'Country')}</title>
         </Helmet>
-        <header className="inpage__header">
-          <div className="inner">
-            <div className="inpage__headline">
-              <h1 className="inpage__title">
-                {data.name}
-                {data.inform_score ? (
-                  <span className="inpage__title--inform">
-                    Inform Score: <span className="inpage__title--inform--score">{round(data.inform_score, 1)}</span>
-                  </span>
-                ) : null}
-              </h1>
-              <div className="inpage__header-actions">
-                <a
-                  href={url.resolve(api, `admin/api/country/${data.id}/change/`)}
-                  className="button button--primary-bounded"
-                >
+        <header className='inpage__header'>
+          <div className='inner'>
+            <h1 className='inpage__title'>
+              {data.name}
+              {data.inform_score ? (
+                <span className='inpage__title--inform'>
+                    Inform Score: <span className='inpage__title--inform--score'>{round(data.inform_score, 1)}</span>
+                </span>
+              ) : null}
+            </h1>
+            <div className='inpage__header-actions'>
+              <a
+                href={url.resolve(api, `api/country/${data.id}/change/`)}
+                className='button button--primary-bounded'
+              >
                   Edit Country
-                </a>
-              </div>
+              </a>
             </div>
-            <div className="inpage__header-col">{this.renderStats()}</div>
-            {this.renderCountryProfile()}
           </div>
         </header>
+        <section className='inpage__body'>
+          <div className='inner'>
+            <KeyFiguresHeader appealsListStats={this.props.appealsListStats}/>
+          </div>
+        </section>
         <Tabs
           selectedIndex={TAB_DETAILS.map(({ hash }) => hash).indexOf(this.props.location.hash)}
           onSelect={index => handleTabChange(index)}
@@ -559,8 +634,8 @@ class AdminArea extends SFPComponent {
               <Tab key={tab.title}>{tab.title}</Tab>
             ))}
           </TabList>
-          <div className="inpage__body">
-            <div className="inner">
+          <div className='inpage__body'>
+            <div className='inner'>
               <TabPanel>
                 <TabContent>
                   <Fold title='Statistics' headerClass='visually-hidden' id='operations'>
@@ -597,7 +672,7 @@ class AdminArea extends SFPComponent {
                 <TabContent>
                   <EmergenciesTable
                     id={'emergencies'}
-                    title="Recent Emergencies"
+                    title='Recent Emergencies'
                     limit={5}
                     country={getCountryId(this.props.match.params.id)}
                     showRecent={true}
@@ -606,44 +681,58 @@ class AdminArea extends SFPComponent {
                   />
                 </TabContent>
               </TabPanel>
+              {/*
               <TabPanel>
-                <TabContent isError={!data.overview || data.key_priorities} errorMessage={ NO_DATA } title="Overview">
-                  <Fold title="Overview" id="overview">
-                    {data.overview ? <ReactMarkdown source={data.overview} /> : null}
-                    {data.key_priorities ? <ReactMarkdown source={data.key_priorities} /> : null}
+                <TabContent>
+                  <ThreeW
+                    disabled={this.loading}
+                    projectList={this.getProjectList(this.props.projects)}
+                    countryId={getCountryId(this.props.match.params.id)}
+                    onFilterChange={this.handleThreeWFilterChange}
+                    onAddButtonClick={this.handleProjectAddButtonClick}
+                    user={this.props.user}
+                    onEditButtonClick={this.handleProjectEditButtonClick}
+                  />
+                </TabContent>
+              </TabPanel>
+              */}
+              <TabPanel>
+                <TabContent title='Overview'>
+                  <Fold title='Overview' id='overview'>
+                    { this.renderCountryProfile() }
                   </Fold>
                 </TabContent>
-                <TabContent showError={true} isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage={ NO_DATA } title="Key Figures">
+                <TabContent showError={true} isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage={ NO_DATA } title='Key Figures'>
                   <KeyFigures data={this.props.keyFigures} />
                 </TabContent>
               </TabPanel>
               <TabPanel>
-                <TabContent showError={true} isError={!this.isPerPermission()} errorMessage="Please log in" title="Preparedness">
+                <TabContent showError={true} isError={!this.isPerPermission()} errorMessage='Please log in' title='Preparedness'>
                   {this.props.getPerNsPhase.fetched && this.props.perOverviewForm.fetched ? (
                     <PreparednessOverview getPerNsPhase={this.props.getPerNsPhase} perOverviewForm={this.props.perOverviewForm} />)
-                    : <ErrorPanel title="Preparedness Overciew" errorMessage={ NO_DATA } />}
+                    : <ErrorPanel title='Preparedness Overciew' errorMessage={ NO_DATA } />}
                   {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
                     <PreparednessSummary getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
-                    : <ErrorPanel title="Preparedness Summary" errorMessage={ NO_DATA } />}
+                    : <ErrorPanel title='Preparedness Summary' errorMessage={ NO_DATA } />}
                   {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
                     <PreparednessColumnBar getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
-                    : <ErrorPanel title="Preparedness Column Bar" errorMessage={ NO_DATA } />}
+                    : <ErrorPanel title='Preparedness Column Bar' errorMessage={ NO_DATA } />}
                   {this.props.getPerWorkPlan.fetched ? (
                     <PreparednessWorkPlan getPerWorkPlan={this.props.getPerWorkPlan} />)
-                    : <ErrorPanel title="Preparedness Work Plan" errorMessage={ NO_DATA } />}
+                    : <ErrorPanel title='Preparedness Work Plan' errorMessage={ NO_DATA } />}
                   {this.props.getPerUploadedDocuments.fetched ? (
                     <PreparednessPhaseOutcomes getPerUploadedDocuments={this.props.getPerUploadedDocuments} countryId={this.props.match.params.id} />)
-                    : <ErrorPanel title="Preparedness Phase Outcomes" errorMessage={ NO_DATA } />}
+                    : <ErrorPanel title='Preparedness Phase Outcomes' errorMessage={ NO_DATA } />}
                 </TabContent>
               </TabPanel>
               <TabPanel>
-                <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ NO_DATA } title="Graphics">
+                <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ NO_DATA } title='Graphics'>
                   <Snippets data={this.props.snippets} />
                 </TabContent>
-                <TabContent showError={true} isError={!get(data, 'contacts.length')} errorMessage={ NO_DATA } title="Contacts">
+                <TabContent showError={true} isError={!get(data, 'contacts.length')} errorMessage={ NO_DATA } title='Contacts'>
                   <Contacts data={data} />
                 </TabContent>
-                <TabContent isError={!get(data, 'links.length')} errorMessage={ NO_DATA } title="Links">
+                <TabContent isError={!get(data, 'links.length')} errorMessage={ NO_DATA } title='Links'>
                   <Links data={data} />
                 </TabContent>
               </TabPanel>
@@ -659,13 +748,73 @@ class AdminArea extends SFPComponent {
     );
   }
 
+  syncBodyOverflow = (shouldOverflow) => {
+    if (shouldOverflow) {
+      document.getElementsByTagName('html')[0].style.overflow = 'hidden';
+    } else {
+      document.getElementsByTagName('html')[0].style.overflow = 'auto';
+    }
+  }
+
   render () {
+    /*
+    const {
+      showProjectForm,
+    } = this.state;
+    */
+
+    const {
+      projects,
+      projectForm,
+      adminArea,
+      fdrs,
+      perForm,
+      user,
+    } = this.props;
+
+    // this.syncBodyOverflow(showProjectForm);
+    this.syncLoadingAnimation(
+      projects,
+      projectForm,
+      adminArea,
+      fdrs,
+      perForm,
+      user,
+    );
+
     return (
       <App className={`page--${this.props.type}`}>
         <Helmet>
           <title>IFRC Go - Country</title>
         </Helmet>
-        {this.renderContent()}
+        { this.renderContent() }
+        {/* showProjectForm && (
+          <div className='project-form-modal'>
+            <header>
+              <h2>
+                Movement activities in support of NS
+              </h2>
+              <button
+                className={
+                  _cs(
+                    'button button--secondary-bounded',
+                    this.loading && 'disabled',
+                  )
+                }
+                onClick={() => {
+                  this.setState({ showProjectForm: false });
+                }}
+                disabled={this.loading}
+              >
+                Close
+              </button>
+            </header>
+            <ProjectForm
+              projectData={this.state.projectToEdit}
+              countryId={getCountryId(this.props.match.params.id)}
+            />
+          </div>
+        ) */}
       </App>
     );
   }
@@ -680,6 +829,7 @@ if (environment !== 'production') {
     _getPerDocument: T.func,
     _getPerDocuments: T.func,
     _getPeruploadedDocuments: T.func,
+    _getAppealsListStats: T.func,
     type: T.string,
     match: T.object,
     history: T.object,
@@ -696,6 +846,8 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state, ownProps) => ({
+  projects: state.projects,
+  projectForm: state.projectForm,
   adminArea: get(state.adminArea.aaData, getCountryId(ownProps.match.params.id), {
     data: {},
     fetching: false,
@@ -718,7 +870,8 @@ const selector = (state, ownProps) => ({
   getPerDocuments: state.perForm.getPerDocuments,
   getPerUploadedDocuments: state.perForm.getPerUploadedDocuments,
   getPerMission: state.perForm.getPerMission,
-  user: state.user.data
+  user: state.user.data,
+  appealsListStats: state.overallStats.appealsListStats
 });
 
 const dispatcher = dispatch => ({
@@ -736,7 +889,9 @@ const dispatcher = dispatch => ({
   _getPerDocument: (...args) => dispatch(getPerDocument(...args)),
   _getPerDocuments: (...args) => dispatch(getPerDocuments(...args)),
   _getPerUploadedDocuments: (...args) => dispatch(getPerUploadedDocuments(...args)),
-  _getPerMission: (...args) => dispatch(getPerMission(...args))
+  _getPerMission: (...args) => dispatch(getPerMission(...args)),
+  // _getProjects: (...args) => dispatch(getProjects(...args)),
+  _getAppealsListStats: (...args) => dispatch(getAppealsListStats(...args)),
 });
 
 export default connect(
