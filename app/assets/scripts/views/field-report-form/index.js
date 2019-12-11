@@ -630,8 +630,9 @@ class FieldReportForm extends React.Component {
     const plannedResponseRows = fields.plannedResponseRows.filter(row => {
       return !!row.label[status];
     });
+    const responseTitle = status === 'EVT' ? 'Planned Response' : 'Planned Interventions';
     return (
-      <Fold title='Planned Response'>
+      <Fold title={responseTitle}>
         <label className='form__label'>Planned International Response</label>
         <div className='form__description'>
           <p>Indicate status of global and regional tools.</p>
