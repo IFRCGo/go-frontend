@@ -1,5 +1,7 @@
 import React from 'react';
 import c from 'classnames';
+import { environment } from '../../config';
+import { PropTypes as T } from 'prop-types';
 
 const Status = ({view, componentIndex}) => {
   return (
@@ -45,3 +47,10 @@ const Status = ({view, componentIndex}) => {
 };
 
 export default Status;
+
+if (environment !== 'production') {
+  Status.propTypes = {
+    view: T.boolean,
+    componentIndex: T.string
+  };
+}

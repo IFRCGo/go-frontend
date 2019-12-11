@@ -81,7 +81,7 @@ const PerDocuments = ({perOverviewForm, perForm}) => {
       regions.push(<div key={'regionDocument' + regionKey}><span className='fold__title'>{getRegionById(regionKey).name}</span>{countries}<br /></div>);
     });
     return regions;
-  }
+  };
 
   return (<React.Fragment>
     <span className='text-semi-bold'>{renderPerFormDocuments(groupedDocuments)}</span>
@@ -91,7 +91,7 @@ const PerDocuments = ({perOverviewForm, perForm}) => {
 if (environment !== 'production') {
   PerDocuments.propTypes = {
     perForm: T.object,
-    deletePerDraft: T.func
+    perOverviewForm: T.object
   };
 }
 
