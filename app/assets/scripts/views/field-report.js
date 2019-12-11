@@ -135,11 +135,11 @@ class FieldReport extends React.Component {
   getStatus () {
     const { data } = this.props.report;
     const status = data.status;
-    if (status === '8') {
-      return 'EVT';
-    }
-    if (status === '9') {
+    if (status === 8) {
       return 'EW';
+    }
+    if (status === 9) {
+      return 'EVT';
     }
     return 'EVT';
   }
@@ -207,7 +207,7 @@ class FieldReport extends React.Component {
           <dt>People at Highest Risk (RC): </dt>
           <dd>{n(get(data, 'num_highest_risk'))}</dd>
           <dt>Affected Pop Centres (RC): </dt>
-          <dd>{get(data, 'affected_pop_centres')}</dd>
+          <dd>{get(data, 'affected_pop_centres') || '--'}</dd>
         </dl>
         <dl className='dl-horizontal numeric-list'>
           <dt>Potentially Affected (Government): </dt>
@@ -215,7 +215,7 @@ class FieldReport extends React.Component {
           <dt>People at Highest Risk (Government): </dt>
           <dd>{n(get(data, 'gov_num_highest_risk'))}</dd>
           <dt>Affected Pop Centres (Government): </dt>
-          <dd>{get(data, 'gov_affected_pop_centres')}</dd>
+          <dd>{get(data, 'gov_affected_pop_centres') || '--'}</dd>
         </dl>
         <dl className='dl-horizontal numeric-list'>
           <dt>Potentially Affected (Other): </dt>
@@ -223,7 +223,7 @@ class FieldReport extends React.Component {
           <dt>People at Highest Risk (Other): </dt>
           <dd>{n(get(data, 'other_num_highest_risk'))}</dd>
           <dt>Affected Pop Centres (Other): </dt>
-          <dd>{get(data, 'other_affected_pop_centres')}</dd>
+          <dd>{get(data, 'other_affected_pop_centres') || '--'}</dd>
         </dl>
         <dl className='dl-horizontal numeric-list'>
           <dt>Assisted by Government:</dt>
