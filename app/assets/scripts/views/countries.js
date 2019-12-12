@@ -7,7 +7,7 @@ import { DateTime } from 'luxon';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import { Helmet } from 'react-helmet';
-// import _cs from 'classnames';
+import _cs from 'classnames';
 import url from 'url';
 
 import { countries } from '../utils/field-report-constants';
@@ -31,7 +31,7 @@ import {
   getPerDocuments,
   getPerUploadedDocuments,
   getPerMission,
-  // getProjects,
+  getProjects,
   getAppealsListStats
 } from '../actions';
 import { getFdrs } from '../actions/query-external';
@@ -63,15 +63,15 @@ import { NO_DATA } from '../utils/constants';
 import { getRegionSlug } from '../utils/region-constants';
 import { getISO3 } from '../utils/country-iso';
 
-// import ThreeW from './ThreeW';
-// import ProjectForm from './ThreeW/project-form';
+import ThreeW from './ThreeW';
+import ProjectForm from './ThreeW/project-form';
 
 const emptyList = [];
 const emptyObject = {};
 
 const TAB_DETAILS = [
   { title: 'Operations', hash: '#operations' },
-  // { title: '3w', hash: '#3w' },
+  { title: '3w', hash: '#3w' },
   { title: 'Country Overview', hash: '#overview' },
   { title: 'Preparedness', hash: '#preparedness' },
   { title: 'Additional Information', hash: '#additional' }
@@ -132,13 +132,10 @@ class AdminArea extends SFPComponent {
     if (this.props.adminArea.fetching && !nextProps.adminArea.fetching) {
       hideGlobalLoading();
       if (nextProps.adminArea.error) {
-        // Why 404 ?
-        // TODO: handle this error more gracefully
         this.props.history.push('/uhoh');
       }
     }
 
-    /*
     if (this.props.projectForm.fetching === true &&
       nextProps.projectForm.fetching === false &&
       nextProps.projectForm.error === null
@@ -147,7 +144,6 @@ class AdminArea extends SFPComponent {
       this.props._getProjects(this.props.match.params.id, this.threeWFilters);
       this.setState({ showProjectForm: false });
     }
-    */
   }
 
   componentDidMount () {
@@ -161,7 +157,7 @@ class AdminArea extends SFPComponent {
     this.props._getPerDocuments();
     this.props._getPerDocument(null, this.props.match.params.id);
     this.props._getPerUploadedDocuments(this.props.match.params.id);
-    // this.props._getProjects(this.props.match.params.id, this.threeWFilters);
+    this.props._getProjects(this.props.match.params.id, this.threeWFilters);
     if (typeof this.props.user.username !== 'undefined' && this.props.user.username !== null) {
       this.props._getPerMission();
     }
@@ -334,12 +330,10 @@ class AdminArea extends SFPComponent {
     this.props._setPartnerDeploymentFilter(getCountryId(this.props.match.params.id), filters);
   }
 
-  /*
   handleThreeWFilterChange = (filterValues) => {
     this.threeWFilters = filterValues;
     this.props._getProjects(this.props.match.params.id, filterValues);
   }
-  */
 
   handleProjectAddButtonClick = () => {
     this.setState({
@@ -681,7 +675,6 @@ class AdminArea extends SFPComponent {
                   />
                 </TabContent>
               </TabPanel>
-              {/*
               <TabPanel>
                 <TabContent>
                   <ThreeW
@@ -695,7 +688,6 @@ class AdminArea extends SFPComponent {
                   />
                 </TabContent>
               </TabPanel>
-              */}
               <TabPanel>
                 <TabContent title='Overview'>
                   <Fold title='Overview' id='overview'>
@@ -757,11 +749,9 @@ class AdminArea extends SFPComponent {
   }
 
   render () {
-    /*
     const {
       showProjectForm,
     } = this.state;
-    */
 
     const {
       projects,
@@ -772,7 +762,7 @@ class AdminArea extends SFPComponent {
       user,
     } = this.props;
 
-    // this.syncBodyOverflow(showProjectForm);
+    this.syncBodyOverflow(showProjectForm);
     this.syncLoadingAnimation(
       projects,
       projectForm,
@@ -788,7 +778,7 @@ class AdminArea extends SFPComponent {
           <title>IFRC Go - Country</title>
         </Helmet>
         { this.renderContent() }
-        {/* showProjectForm && (
+        { showProjectForm && (
           <div className='project-form-modal'>
             <header>
               <h2>
@@ -814,7 +804,7 @@ class AdminArea extends SFPComponent {
               countryId={getCountryId(this.props.match.params.id)}
             />
           </div>
-        ) */}
+        )}
       </App>
     );
   }
@@ -890,7 +880,7 @@ const dispatcher = dispatch => ({
   _getPerDocuments: (...args) => dispatch(getPerDocuments(...args)),
   _getPerUploadedDocuments: (...args) => dispatch(getPerUploadedDocuments(...args)),
   _getPerMission: (...args) => dispatch(getPerMission(...args)),
-  // _getProjects: (...args) => dispatch(getProjects(...args)),
+  _getProjects: (...args) => dispatch(getProjects(...args)),
   _getAppealsListStats: (...args) => dispatch(getAppealsListStats(...args)),
 });
 
