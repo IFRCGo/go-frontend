@@ -4,6 +4,7 @@ import c from 'classnames';
 import { environment } from '../../config';
 import { PropTypes as T } from 'prop-types';
 import RequestFactory from './factory/request-factory';
+import EpiSelector from '../per/forms/epi-selector';
 
 const requestFactory = new RequestFactory();
 
@@ -69,26 +70,26 @@ if (environment !== 'production') {
   };
 }
 
-const renderEpidemicsRadioButton = (props) => {
-  return (
-    <div className='containera1'>
-      <div className='per_form_area'>{props.state.areaTitle}</div><br />
-      <div className='form__group'>
-        <div className='label-secondary'>{props.state.areaQuestion}</div>
-        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
-          <input type='radio' name='a1' disabled={props.view} value={requestFactory.stringAnswerToNum(props.state.areaOptions[0])} onClick={props.changeEpiComponentState} />
-          <span className='form__option__ui'></span>
-          <span className='form__option__text'>{props.state.areaOptions[0]}</span>
-        </label>
-        <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
-          <input type='radio' name='a1' disabled={props.view} value={requestFactory.stringAnswerToNum(props.state.areaOptions[1])} onClick={props.changeEpiComponentState} />
-          <span className='form__option__ui'></span>
-          <span className='form__option__text'>{props.state.areaOptions[1]}</span>
-        </label>
-      </div>
-    </div>
-  );
-};
+// const renderEpidemicsRadioButton = (props) => {
+//   return (
+//     <div className='containera1'>
+//       <div className='per_form_area'>{props.state.areaTitle}</div><br />
+//       <div className='form__group'>
+//         <div className='label-secondary'>{props.state.areaQuestion}</div>
+//         <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+//           <input type='radio' name='a1' disabled={props.view} value={requestFactory.stringAnswerToNum(props.state.areaOptions[0])} onClick={props.changeEpiComponentState} />
+//           <span className='form__option__ui'></span>
+//           <span className='form__option__text'>{props.state.areaOptions[0]}</span>
+//         </label>
+//         <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
+//           <input type='radio' name='a1' disabled={props.view} value={requestFactory.stringAnswerToNum(props.state.areaOptions[1])} onClick={props.changeEpiComponentState} />
+//           <span className='form__option__ui'></span>
+//           <span className='form__option__text'>{props.state.areaOptions[1]}</span>
+//         </label>
+//       </div>
+//     </div>
+//   );
+// };
 
 if (environment !== 'production') {
   renderEpidemicsRadioButton.propTypes = {
@@ -2773,7 +2774,13 @@ export const PerFormComponent = (props) => {
         <div className='inner'>
           {renderLanguageSelectDropdown(props)}
           {renderFormTitle(props)}
-          {renderEpidemicsRadioButton(props)}
+          <EpiSelector
+          areaTitle
+          areaQuestion
+          view={props.view}
+          areaOptions
+          changeEpiComponentState={changeEpiComponentState}
+          />
           {renderComponents(props)}
 
           {button}
