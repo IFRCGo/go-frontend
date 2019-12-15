@@ -58,7 +58,7 @@ export default function FormInputSelect (props) {
         />
         {children || null}
 
-        <div className="label-secondary global-margin-t">Or</div>
+        {/* <div className="label-secondary global-margin-t">Or</div> */}
 
         <label className='label-secondary global-margin-t'>{selectLabel}</label>
         <Select.Async

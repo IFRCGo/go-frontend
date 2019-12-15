@@ -2,9 +2,9 @@
 import { listToMap } from '@togglecorp/fujs';
 
 export const statusEarlyWarning = {
-  label: 'Early Warning',
+  label: 'Early Warning / Early Action',
   value: '8',
-  description: 'Early warning message for an upcoming disaster.'
+  description: 'First report for this hazard.'
 };
 
 export const statusEvent = {
@@ -526,14 +526,24 @@ export const fieldsStep1 = {
       desc: 'Add a new title (Country - Region: Hazard mm/yy) or link to an existing emergency'
     }
   },
+  'disaster-type': {
+    'EVT': {
+      label: 'Disaster Type *',
+      desc: ''
+    },
+    'EW': {
+      label: 'Hazard Type *',
+      desc: ''
+    }
+  },
   'startDate': {
     'EVT': {
       label: 'Start Date *',
       desc: 'Start date is when some significant effects are felt or when the first significant impact is felt.'
     },
     'EW': {
-      label: 'Predicted Date of Impact *',
-      desc: 'Date at which significant impacts are predicted to occur.'
+      label: 'Forecasted Date of Impact *',
+      desc: 'Date at which significant impacts are forecasted to occur.'
     }
   },
   'country': {
@@ -544,16 +554,6 @@ export const fieldsStep1 = {
     'EW': {
       label: 'Potentially Affected Country and Province / Region *',
       desc: 'Anticipated Affected Country and Province / Region'
-    }
-  },
-  'disaster-type': {
-    'EVT': {
-      label: 'Disaster Type *',
-      desc: ''
-    },
-    'EW': {
-      label: 'Hazard Type *',
-      desc: ''
     }
   },
   'assistance': {
@@ -585,30 +585,35 @@ export const fieldsStep2 = {
         'name': 'num-injured',
         'key': 'numInjured',
         'label': 'Injured',
+        'estimationLabel': 'Estimation',
         'desc': 'Number of people suffering from physical injuries, trauma or an illness requiring immediate medical treatment as a direct result of a disaster.'
       },
       {
         'name': 'num-dead',
         'key': 'numDead',
         'label': 'Dead',
+        'estimationLabel': 'Estimation',
         'desc': 'Number of people confirmed dead.'
       },
       {
         'name': 'num-missing',
         'key': 'numMissing',
         'label': 'Missing',
+        'estimationLabel': 'Estimation',
         'desc': 'Number of people missing.'
       },
       {
         'name': 'num-affected',
         'key': 'numAffected',
         'label': 'Affected',
+        'estimationLabel': 'Estimation',
         'desc': 'Number of people requiring immediate assistance during a period of emergency; this may include displaced or evacuated people.'
       },
       {
         'name': 'num-displaced',
         'key': 'numDisplaced',
         'label': 'Displaced',
+        'estimationLabel': 'Estimation',
         'desc': 'Number of people displaced.'
       }
     ],
@@ -617,12 +622,14 @@ export const fieldsStep2 = {
         'name': 'num-potentially-affected',
         'key': 'numPotentiallyAffected',
         'label': 'Potentially Affected',
+        'estimationLabel': 'Estimation',
         'desc': 'Number of people that are located in the geographic area where the hazard is likely to impact'
       },
       {
         'name': 'num-highest-risk',
         'key': 'numHighestRisk',
         'label': 'People at Highest Risk',
+        'estimationLabel': 'Estimation',
         'desc': 'Number of people that are located in the geographic area where the hazard\'s impact is likely to be the highest'
       },
       // WARNING: this is the only field that requires a non-numeric response
@@ -630,7 +637,9 @@ export const fieldsStep2 = {
         'name': 'affected-pop-centres',
         'key': 'affectedPopCentres',
         'label': 'Largest Population Centres Likely to be Affected',
-        'desc': 'Names of large cities or towns which are most at risk' }
+        'estimationLabel': 'Names',
+        'desc': 'Names of large cities or towns which are most at risk'
+      }
     ]
   },
   'description': {
@@ -642,7 +651,7 @@ export const fieldsStep2 = {
     'EW': {
       'label': 'Risk Analysis',
       'desc': 'Brief overview of the potential disaster and projected impacts',
-      'placeholder': '' // FIXME: do we need a separate placeholder for EW?
+      'placeholder': 'Hurricane Sirius is expected to hit the Whinging region early Tuesday morning. The system currently has sustained core wind speeds of 140km/h and gusts up to 170 km/h. The local government has started evacuating thousands of people. The Red Cross branch in Whinging has deployed staff and volunteers to communities at risk to support evacuation and to assist the population in protecting themselves and their livelihoods from the impacts of Sirius.'
     }
   }
 };
@@ -834,19 +843,6 @@ export const fieldsStep4 = {
       'label': {
         'EVT': 'Emergency Response Units',
         'EW': 'Emergency Response Units'
-      }
-    },
-
-    // WARNING: Next two are new fields in the database. Label set to `null` for EVT signifies
-    // that they are not to appear if form_type === 'EVT'
-    {
-      'name': 'imminent-dref',
-      'valueFieldLabel': 'Amount CHF',
-      'options': drefOptions,
-      'key': 'imminentDref',
-      'label': {
-        'EVT': null,
-        'EW': 'FbA by the DREF or Imminent DREF'
       }
     },
     {

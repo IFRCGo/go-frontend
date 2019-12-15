@@ -327,14 +327,14 @@ class FieldReportForm extends React.Component {
         <FormInputSelect
           label={fields.summary[status].label}
           labelSecondary='Add Title'
-          selectLabel='Link to Emergency'
+          selectLabel='Please check for, and link to an existing emergency if available'
           inputPlaceholder='Example: Malawi - Central Region: Floods 03/2019'
           selectPlaceholder='Click here to link to an existing hazard alert (if one exists)'
           type='text'
           name='summary'
           id='summary'
           maxLength={100}
-          description={<div className='form__description'><p>{fields.summary[status].desc}</p><em>Example: 250 dead after an earthquake in Indonesia</em></div>}
+          description={<div className='form__description'><p>{fields.summary[status].desc}</p><em>Example: GDACS Orange: Albania EQ Magnitude 5.4, Depth:10km(2019-11-30)</em></div>}
           inputValue={this.state.data.summary}
           inputOnChange={this.onFieldChange.bind(this, 'summary')}
           selectOnChange={this.onFieldChange.bind(this, 'event')}
@@ -348,6 +348,25 @@ class FieldReportForm extends React.Component {
             property='summary'
           />
         </FormInputSelect>
+        <div className='form__group'>
+          <div className='form__inner-header'>
+            <label className='form__label'>{fields['disaster-type'][status].label}</label>
+          </div>
+          <div className='form__inner-body'>
+            <Select
+              placeholder='Select a disaster type'
+              name='disaster-type'
+              id='disaster-type'
+              options={formData.disasterType}
+              value={this.state.data.disasterType}
+              onChange={this.onFieldChange.bind(this, 'disasterType')}
+            />
+            <FormError
+              errors={this.state.errors}
+              property='disasterType'
+            />
+          </div>
+        </div>
         <FormInput
           label={fields.startDate[status].label}
           type='date'
@@ -398,25 +417,6 @@ class FieldReportForm extends React.Component {
                 property='districts'
               />
             </div>
-          </div>
-        </div>
-        <div className='form__group'>
-          <div className='form__inner-header'>
-            <label className='form__label'>{fields['disaster-type'][status].label}</label>
-          </div>
-          <div className='form__inner-body'>
-            <Select
-              placeholder='Select a disaster type'
-              name='disaster-type'
-              id='disaster-type'
-              options={formData.disasterType}
-              value={this.state.data.disasterType}
-              onChange={this.onFieldChange.bind(this, 'disasterType')}
-            />
-            <FormError
-              errors={this.state.errors}
-              property='disasterType'
-            />
           </div>
         </div>
         <FormRadioGroup
@@ -475,6 +475,7 @@ class FieldReportForm extends React.Component {
             fields.situationFields[status].map(field => {
               return (
                 <SourceEstimation
+                  estimationLabel={field.estimationLabel}
                   label={field.label}
                   description={field.desc}
                   name={field.name}
@@ -592,7 +593,7 @@ class FieldReportForm extends React.Component {
         </React.Fragment>
         <FormRadioGroup
           label='Information Bulletin'
-          description='Indicate if an Information Bulletin was published, is planned or if no Information Bulletin will be issued for this operation/disaster.'
+          description='Indicate if an Information Bulletin was published, is planned or if no Information Bulletin will be issued for this operation/disaster/hazard.'
           name='bulletin'
           options={[
             {
@@ -629,8 +630,9 @@ class FieldReportForm extends React.Component {
     const plannedResponseRows = fields.plannedResponseRows.filter(row => {
       return !!row.label[status];
     });
+    const responseTitle = status === 'EVT' ? 'Planned Response' : 'Planned Interventions';
     return (
-      <Fold title='Planned Response'>
+      <Fold title={responseTitle}>
         <label className='form__label'>Planned International Response</label>
         <div className='form__description'>
           <p>Indicate status of global and regional tools.</p>

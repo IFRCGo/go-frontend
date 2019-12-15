@@ -47,6 +47,7 @@ export default class SourceEstimation extends React.Component {
   render () {
     const {
       label,
+      estimationLabel,
       name,
       description,
       values,
@@ -66,7 +67,7 @@ export default class SourceEstimation extends React.Component {
           {values.map((o, idx) => (
             <div key={o.source || idx} className='estimation'>
               <FormInput
-                label='Estimation'
+                label={estimationLabel}
                 type='text'
                 name={`${name}[${idx}][estimation]`}
                 id={`${name}-${idx}-estimation`}
