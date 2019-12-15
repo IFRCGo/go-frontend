@@ -70,41 +70,6 @@ if (environment !== 'production') {
   };
 }
 
-// const renderEpidemicsRadioButton = (props) => {
-//   return (
-//     <div className='containera1'>
-//       <div className='per_form_area'>{props.state.areaTitle}</div><br />
-//       <div className='form__group'>
-//         <div className='label-secondary'>{props.state.areaQuestion}</div>
-//         <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
-//           <input type='radio' name='a1' disabled={props.view} value={requestFactory.stringAnswerToNum(props.state.areaOptions[0])} onClick={props.changeEpiComponentState} />
-//           <span className='form__option__ui'></span>
-//           <span className='form__option__text'>{props.state.areaOptions[0]}</span>
-//         </label>
-//         <label className={c(`form__option form__option--custom-radio`, {'form__option--inline': 'inline'})}>
-//           <input type='radio' name='a1' disabled={props.view} value={requestFactory.stringAnswerToNum(props.state.areaOptions[1])} onClick={props.changeEpiComponentState} />
-//           <span className='form__option__ui'></span>
-//           <span className='form__option__text'>{props.state.areaOptions[1]}</span>
-//         </label>
-//       </div>
-//     </div>
-//   );
-// };
-
-if (environment !== 'production') {
-  renderEpidemicsRadioButton.propTypes = {
-    chooseLanguage: T.func,
-    state: T.object,
-    changeEpiComponentState: T.func,
-    sendForm: T.func,
-    view: T.bool,
-    _getProfile: T.func,
-    _updateSubscriptions: T.func,
-    _getFieldReportsByUser: T.func,
-    _updateProfile: T.func
-  };
-}
-
 const renderComponents = (props) => {
   const components = [];
   let componentIndex = 0;
@@ -2775,11 +2740,11 @@ export const PerFormComponent = (props) => {
           {renderLanguageSelectDropdown(props)}
           {renderFormTitle(props)}
           <EpiSelector
-          areaTitle
-          areaQuestion
-          view={props.view}
-          areaOptions
-          changeEpiComponentState={changeEpiComponentState}
+            areaTitle={props.state.areaTitle}
+            areaQuestion={props.state.areaQuestion}
+            view={props.view}
+            areaOptions={props.state.areaOptions}
+            changeEpiComponentState={props.changeEpiComponentState}
           />
           {renderComponents(props)}
 
