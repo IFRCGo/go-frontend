@@ -4,7 +4,7 @@ import c from 'classnames';
 import { environment } from '../../config';
 import { PropTypes as T } from 'prop-types';
 import RequestFactory from './factory/request-factory';
-import EpiSelector from '../per/forms/epi-selector';
+import EpiSelector from './epi-selector';
 
 const requestFactory = new RequestFactory();
 

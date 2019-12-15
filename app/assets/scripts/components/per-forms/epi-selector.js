@@ -1,9 +1,9 @@
 
 import React from 'react';
 import c from 'classnames';
-import { environment } from '../../../config';
+import { environment } from '../../config';
 import { PropTypes as T } from 'prop-types';
-import RequestFactory from '../../per-forms/factory/request-factory';
+import RequestFactory from './factory/request-factory';
 const requestFactory = new RequestFactory();
 
 const EpiSelector = ({areaTitle, areaQuestion, view, areaOptions, changeEpiComponentState}) => {
