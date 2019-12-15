@@ -80,7 +80,16 @@ const renderComponents = (props) => {
       {component.componentDescription}<br /><br />
 
       {renderQuestions(component, componentIndex, props)}
-      {renderEpiComponent(component, props, componentIndex)}
+      {/* {renderEpiComponent(component, props, componentIndex)} */}
+      {/* {(props.state.epiComponent === 'yes' && typeof component.namespaces !== 'undefined' && component.namespaces !== null) ? (
+        <EpiStatus
+          options={component.epiComponent.nsAnswers}
+          considerationHeader={component.epiComponent.nsConsiderationHeader}
+          considerations={component.epiComponent.nsConsiderationList}
+          title={component.epiComponent.nsTitle}
+          view={props.view}
+        />
+      ) : null} */}
     </React.Fragment>);
     componentIndex++;
   });
