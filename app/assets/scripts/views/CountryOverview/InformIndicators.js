@@ -11,71 +11,53 @@ import {
 } from 'recharts';
 
 const chartMargin = {
-  top: 24,
+  top: 0,
   right: 0,
   bottom: 0,
   left: 0,
 };
 
-const AxisTick = (p) => {
-  const {
-    x,
-    y,
-    payload,
-    width,
-    height,
-    fill,
-    visibleTicksCount,
-  } = p;
-
-  const tickWidth = width / visibleTicksCount;
-  const fontSizeRatio = payload.value ? 1 / Math.sqrt(payload.value.length) : 0;
-  const fontSize = Math.max(Math.min(14, Math.round(24 * fontSizeRatio)), 8);
-
-  return (
-    <g transform={`translate(${x},${y - height})`}>
-      <foreignObject x={-tickWidth / 2} y="0" width={tickWidth} height={height}>
-        <div
-          xmlns="http://www.w3.org/1999/xhtml"
-          style={{
-            width: '100%',
-            height: '100%',
-            display: 'flex',
-            alignItems: 'flex-end',
-            justifyContent: 'center',
-            wordBreak: 'break-words',
-            fontSize,
-            color: fill,
-            textAlign: 'center',
-            overflow: 'hidden',
-          }}
-        >
-          {payload.value}
-        </div>
-      </foreignObject>
-      {/*
-      <text
-        width={width}
-        height="auto"
-        textAnchor="middle"
-        fill={fill}
-        fontSize={10}
-      >
-        {tspans}
-      </text>
-      */}
-    </g>
-  );
+const indicatorClassNameMap = {
+  VU: 'inform-indicator-vulnerability',
+  HA: 'inform-indicator-hazard-and-exposure',
+  CC: 'inform-indicator-lack-of-coping-capacity',
 };
 
 class InformIndicators extends React.PureComponent {
+  renderLabel = (p) => {
+    const {
+      x,
+      y,
+      value,
+      height,
+    } = p;
+
+    // console.warn(p);
+
+    return (
+      <text
+        x={x + 10}
+        y={y + height / 2}
+        fontSize={11}
+        fontWeight='bold'
+        alignmentBaseline='middle'
+      >
+        { value }
+      </text>
+    );
+  }
+
   render () {
     const {
       className,
       data,
     } = this.props;
 
-    const groupedDataMap = listToGroupList(data, d => d.indicator_display);
+    const groupedDataMap = listToGroupList(
+      data.filter(d => d.indicator),
+      d => d.indicator,
+    );
+
     const indicators = Object.keys(groupedDataMap);
 
     return (
@@ -87,30 +69,35 @@ class InformIndicators extends React.PureComponent {
           { indicators.map(indicator => (
             <div
               key={indicator}
-              className='inform-indicator-element'
+              className={_cs('inform-indicator-element', indicatorClassNameMap[indicator])}
             >
               <h4 className='tc-heading'>
-                { indicator }
+                { groupedDataMap[indicator][0].indicator_display }
               </h4>
               <div className='tc-content'>
                 <ResponsiveContainer>
                   <BarChart
                     data={groupedDataMap[indicator]}
                     margin={chartMargin}
+                    layout='vertical'
                   >
-                    <YAxis reversed />
                     <XAxis
-                      dataKey='dimension_display'
-                      orientation='top'
-                      tick={<AxisTick />}
-                      height={28}
-                      interval={0}
+                      dataKey='score'
+                      type='number'
+                    />
+                    <YAxis
+                      dataKey='score'
+                      type='category'
                     />
                     <Bar
-                      fill='#24334c'
+                      fill='#c1cdd1'
                       dataKey='score'
                     >
-                      <LabelList dataKey='score' position='top' />
+                      <LabelList
+                        dataKey='dimension_display'
+                        position='insideStart'
+                        content={this.renderLabel}
+                      />
                     </Bar>
                   </BarChart>
                 </ResponsiveContainer>

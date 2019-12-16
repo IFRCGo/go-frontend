@@ -6,7 +6,7 @@ import { addSeparator } from '@togglecorp/fujs';
 const IndicatorOutput = ({
   className,
   label,
-  value = '-',
+  value,
   addSeparatorToValue
 }) => (
   <div className={_cs('key-indicator-text-output', className)}>
@@ -14,7 +14,7 @@ const IndicatorOutput = ({
       {label}
     </div>
     <div className='tc-value'>
-      {addSeparatorToValue ? addSeparator(value) : value}
+      {addSeparatorToValue ? addSeparator(value) : (value || '-')}
     </div>
   </div>
 );

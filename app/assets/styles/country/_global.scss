@@ -687,6 +687,11 @@
 
 .overview-past-crises-events {
   @extend %tc-block;
+
+  .tc-content {
+    max-height: 160px;
+    overflow: auto;
+  }
 }
 
 .overview-past-epidemics {
@@ -695,6 +700,18 @@
 
 .overview-population-map {
   @extend %tc-block;
+  display: flex;
+  flex-direction: column;
+
+  .tc-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    .overview-map-container {
+      flex-grow: 1;
+    }
+  }
 }
 
 .overview-past-operations {
@@ -902,17 +919,33 @@
   @extend %tc-block;
 
   >.tc-content {
-    display: flex;
-
     .inform-indicator-element {
-      flex-basis: calc(100% / 3);
+      padding: 10px 0;
 
       >.tc-heading {
-        text-align: center;
+        padding: 16px 10px;
       }
 
       >.tc-content {
-        height: 300px;
+        height: 400px;
+      }
+
+      &.inform-indicator-hazard-and-exposure {
+        >.tc-content {
+          height: 600px;
+        }
+      }
+
+      &.inform-indicator-vulnerability {
+        >.tc-content {
+          height: 400px;
+        }
+      }
+
+      &.inform-indicator-lack-of-coping-capacity {
+        >.tc-content {
+          height: 240px;
+        }
       }
     }
   }

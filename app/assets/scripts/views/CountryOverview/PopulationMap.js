@@ -1,10 +1,13 @@
 import React from 'react';
 import _cs from 'classnames';
 
+import Map from './Map';
+
 class PopulationMap extends React.PureComponent {
   render () {
     const {
       className,
+      countryId,
     } = this.props;
 
     return (
@@ -13,7 +16,7 @@ class PopulationMap extends React.PureComponent {
           Population map
         </h3>
         <div className='tc-content'>
-          population map
+          <Map className='overview-map-container' countryId={countryId} />
         </div>
       </div>
     );

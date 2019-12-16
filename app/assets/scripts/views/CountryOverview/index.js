@@ -37,6 +37,7 @@ class CountryOverview extends React.PureComponent {
   render () {
     const {
       countryOverview,
+      countryId,
     } = this.props;
 
     const {
@@ -71,6 +72,7 @@ class CountryOverview extends React.PureComponent {
         </div>
         <div className='population-and-climate-section'>
           <PopulationMap
+            countryId={countryId}
             className='population-map'
           />
           <ClimateChart
