@@ -22,18 +22,24 @@ class NSIndicators extends React.PureComponent {
           <IndicatorOutput
             label="Income (CHF)"
             value={income}
+            normalizeValue
+            fixedTo={1}
           />
           <IndicatorOutput
             label="Expenditures (CHF)"
             value={expenditures}
+            normalizeValue
+            fixedTo={1}
           />
           <IndicatorOutput
             label="Volunteers"
             value={volunteers}
+            addSeparatorToValue
           />
           <IndicatorOutput
             label="Trained in first aid"
             value={trainedInFirstAid}
+            addSeparatorToValue
           />
         </div>
       </div>

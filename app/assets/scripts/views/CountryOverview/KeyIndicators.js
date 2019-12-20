@@ -29,13 +29,14 @@ class KeyIndicators extends React.PureComponent {
               addSeparatorToValue
             />
             <IndicatorOutput
-              label="Urban pop"
+              label="Urban pop (% pop)"
               value={urbanPopulation}
             />
             <IndicatorOutput
               label="GDP"
               value={gdp}
-              addSeparatorToValue
+              normalizeValue
+              fixedTo={1}
             />
             <IndicatorOutput
               label="GNI / capita"

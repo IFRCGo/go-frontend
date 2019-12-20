@@ -48,7 +48,7 @@ import EmergenciesTable from '../components/connected/emergencies-table';
 import Pills from '../components/pills';
 import {
   Snippets,
-  KeyFigures,
+  // KeyFigures,
   Contacts,
   Links
 } from '../components/admin-area-elements';

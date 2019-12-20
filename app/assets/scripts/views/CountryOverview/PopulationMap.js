@@ -8,6 +8,7 @@ class PopulationMap extends React.PureComponent {
     const {
       className,
       countryId,
+      data,
     } = this.props;
 
     return (
@@ -16,7 +17,11 @@ class PopulationMap extends React.PureComponent {
           Population map
         </h3>
         <div className='tc-content'>
-          <Map className='overview-map-container' countryId={countryId} />
+          <Map
+            className='overview-map-container'
+            countryId={countryId}
+            districtList={data.districts}
+          />
         </div>
       </div>
     );

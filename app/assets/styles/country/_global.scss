@@ -587,6 +587,7 @@
   .top-section {
     display: flex;
     border: 1px solid rgba(0, 0, 0, .1);
+    flex-wrap: wrap;
 
     .key-indicators {
       flex-basis: 50%;
@@ -594,6 +595,25 @@
 
     .ns-indicators {
       flex-basis: 50%;
+    }
+
+    .tc-data-source {
+      display: flex;
+      flex-basis: 100%;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: rgba(0, 0, 0, .3);
+      font-weight: bold;
+      padding: 10px 0;
+      
+      .tc-label {
+        padding: 3px;
+      }
+
+      .tc-value {
+        padding: 3px;
+      }
     }
   }
 
@@ -683,6 +703,11 @@
 
 .overview-social-events {
   @extend %tc-block;
+
+  .tc-content {
+    max-height: 160px;
+    overflow: auto;
+  }
 }
 
 .overview-past-crises-events {
@@ -696,6 +721,11 @@
 
 .overview-past-epidemics {
   @extend %tc-block;
+
+  .tc-content {
+    max-height: 160px;
+    overflow: auto;
+  }
 }
 
 .overview-population-map {
@@ -910,6 +940,10 @@
             }
           }
         }
+
+        .calendar-bubble-chart {
+          height: 80px;
+        }
       }
     }
   }
@@ -919,7 +953,14 @@
   @extend %tc-block;
 
   >.tc-content {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    max-height: 900px;
+
     .inform-indicator-element {
+      min-width: 400px;
+      flex-basis: calc(100% / 3);
       padding: 10px 0;
 
       >.tc-heading {
@@ -931,20 +972,26 @@
       }
 
       &.inform-indicator-hazard-and-exposure {
+        order: 3;
+
         >.tc-content {
-          height: 600px;
+          height: 692px;
         }
       }
 
       &.inform-indicator-vulnerability {
+        order: 2;
+
         >.tc-content {
           height: 400px;
         }
       }
 
       &.inform-indicator-lack-of-coping-capacity {
+        order: 1;
+
         >.tc-content {
-          height: 240px;
+          height: 200px;
         }
       }
     }

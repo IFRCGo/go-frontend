@@ -1,5 +1,6 @@
 import React from 'react';
 import _cs from 'classnames';
+import memoize from 'memoize-one';
 import { addSeparator } from '@togglecorp/fujs';
 import {
   ResponsiveContainer,
@@ -110,6 +111,16 @@ class PastOperations extends React.PureComponent {
     );
   }
 
+  getChartData = memoize((data) => {
+    const chartData = data.map(d => ({
+      ...d,
+      amount_requested: +d.amount_requested,
+      amount_funded: +d.amount_funded,
+    }));
+
+    return chartData;
+  })
+
   render () {
     const {
       data,
@@ -117,17 +128,8 @@ class PastOperations extends React.PureComponent {
     } = this.props;
 
     const { chartMode } = this.state;
-
-    // TODO: memoize
-    const chartData = data.map(d => ({
-      ...d,
-      amount_requested: +d.amount_requested,
-      amount_funded: +d.amount_funded,
-    }));
-
-    // chartData.sort((a, b) => b.start_date - a.start_date);
-
     const EventDetailTooltip = this.renderEventDetailTooltip;
+    const chartData = this.getChartData(data);
 
     return (
       <div className={_cs(className, 'overview-past-operations')}>
@@ -157,10 +159,14 @@ class PastOperations extends React.PureComponent {
             <LineChart data={chartData}>
               <XAxis
                 dataKey='start_date'
-                tickFormatter={d => (new Date(d)).getFullYear()}
+                tickFormatter={d => +(new Date(d)).getFullYear()}
                 reversed
               />
-              <YAxis dataKey={chartMode} />
+              <YAxis
+                tickFormatter={d => addSeparator(d)}
+                type='number'
+                dataKey={chartMode}
+              />
               <CartesianGrid vertical={false} />
               <Line
                 type="monotone"

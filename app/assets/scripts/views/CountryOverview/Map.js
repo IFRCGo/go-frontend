@@ -23,17 +23,67 @@ export default class ThreeWMap extends React.PureComponent {
 
     this.map.setMaxZoom(7);
     this.map.on('load', this.handleMapLoad);
-    this.map.on('click', this.handleMapClick);
+  }
+
+  componentWillReceiveProps (nextProps) {
+    const {
+      countryId: oldCountryId,
+      districtList: oldDistrictList,
+    } = this.props;
+
+    const {
+      countryId,
+      districtList,
+    } = nextProps;
+
+    if (countryId !== oldCountryId || districtList !== oldDistrictList) {
+      if (this.mapLoaded) {
+        this.fillMap(countryId, districtList);
+      }
+    }
   }
 
   handleMapLoad = () => {
     this.mapLoaded = true;
 
-    const { countryId } = this.props;
+    const {
+      countryId,
+      districtList,
+    } = this.props;
 
+    this.fillMap(countryId, districtList);
+  }
+
+  fillMap = (countryId, districtList) => {
     const iso2 = countryIsoMapById[countryId].toUpperCase();
     const bbox = getBoundingBox(iso2);
     this.map.fitBounds(bbox);
+
+    const maxPopulation = Math.max(0, ...districtList.map(district => district.population));
+    let opacityProperty;
+
+    const upperShift = 0.3;
+    const lowerShift = 0.1;
+
+    if (districtList.length > 0) {
+      opacityProperty = [
+        'match',
+        ['get', 'OBJECTID'],
+        ...districtList.map(district => [
+          district.id,
+          lowerShift + (district.population / maxPopulation) * (1 - upperShift - lowerShift),
+        ]).flat(),
+        0,
+      ];
+    } else {
+      opacityProperty = 0;
+    }
+
+    this.map.setPaintProperty(
+      'adm1',
+      'fill-opacity',
+      opacityProperty,
+    );
   }
 
   render () {

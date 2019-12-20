@@ -53,9 +53,13 @@ class InformIndicators extends React.PureComponent {
       data,
     } = this.props;
 
+    if (!data) {
+      return null;
+    }
+
     const groupedDataMap = listToGroupList(
-      data.filter(d => d.indicator),
-      d => d.indicator,
+      data.filter(d => d.group),
+      d => d.group,
     );
 
     const indicators = Object.keys(groupedDataMap);
@@ -72,7 +76,7 @@ class InformIndicators extends React.PureComponent {
               className={_cs('inform-indicator-element', indicatorClassNameMap[indicator])}
             >
               <h4 className='tc-heading'>
-                { groupedDataMap[indicator][0].indicator_display }
+                { groupedDataMap[indicator][0].group_display}
               </h4>
               <div className='tc-content'>
                 <ResponsiveContainer>
@@ -94,7 +98,7 @@ class InformIndicators extends React.PureComponent {
                       dataKey='score'
                     >
                       <LabelList
-                        dataKey='dimension_display'
+                        dataKey='indicator_display'
                         position='insideStart'
                         content={this.renderLabel}
                       />

@@ -69,11 +69,20 @@ class CountryOverview extends React.PureComponent {
             volunteers={data.volunteers}
             trainedInFirstAid={data.trained_in_first_aid}
           />
+          <div className='tc-data-source'>
+            <div className='tc-label'>
+              Source:
+            </div>
+            <div className='tc-value'>
+              FDRS
+            </div>
+          </div>
         </div>
         <div className='population-and-climate-section'>
           <PopulationMap
             countryId={countryId}
             className='population-map'
+            data={data.wb_population}
           />
           <ClimateChart
             className='climate-chart'
@@ -86,11 +95,7 @@ class CountryOverview extends React.PureComponent {
         <div className='middle-section'>
           <SocialEvents
             className='social-events'
-            schoolStatus={data.school_status_display}
-            holidayStartDate={data.holiday_date_start}
-            holidayEndDate={data.holiday_date_end}
-            electionDate={data.election_date}
-            ramadanDate={data.ramadan_date}
+            data={data.social_events}
           />
           <PastCrisesEvents
             conflictEventCount={data.past_crises_events_count}
@@ -104,16 +109,20 @@ class CountryOverview extends React.PureComponent {
         </div>
         <PastOperation
           countryId={data.country}
+          appeals={data.appeals}
+          ftsData={data.fts_data}
+          startNetworkData={data.start_network_data}
           data={data.appeals}
           className='past-operations'
         />
         <SeasonalCalendar
           className='seasonal-calender'
+          appeals={data.appeals}
           data={data.seasonal_calender}
         />
         <InformIndicators
           className='inform-indicators'
-          data={data.inform_indicator}
+          data={data.inform_indicators}
         />
       </div>
     );

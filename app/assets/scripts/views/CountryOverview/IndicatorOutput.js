@@ -1,20 +1,27 @@
 import React from 'react';
 import _cs from 'classnames';
 
-import { addSeparator } from '@togglecorp/fujs';
+import FormattedNumber from '../../components/formatted-number';
 
 const IndicatorOutput = ({
   className,
   label,
   value,
-  addSeparatorToValue
+  addSeparatorToValue,
+  normalizeValue,
+  fixedTo,
 }) => (
   <div className={_cs('key-indicator-text-output', className)}>
     <div className='tc-label'>
       {label}
     </div>
     <div className='tc-value'>
-      {addSeparatorToValue ? addSeparator(value) : (value || '-')}
+      <FormattedNumber
+        value={value}
+        addSeparator={addSeparatorToValue}
+        fixedTo={fixedTo}
+        normalize={normalizeValue}
+      />
     </div>
   </div>
 );
