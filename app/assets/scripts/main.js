@@ -1,5 +1,4 @@
 'use strict';
-import 'babel-polyfill';
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
 import { render } from 'react-dom';
