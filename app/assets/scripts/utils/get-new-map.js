@@ -30,9 +30,11 @@ export default function newMap (container, mapStyle = 'mapbox://styles/go-ifrc/c
   var child = document.querySelector('.mapboxgl-ctrl .mapboxgl-ctrl-compass');
   child.parentNode.removeChild(child);
 
+  /*
   map.on('styledata', (e) => {
     console.warn('styledata', e);
   });
+  */
 
   return map;
 }

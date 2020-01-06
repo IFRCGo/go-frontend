@@ -240,6 +240,9 @@
   flex-wrap: wrap;
 }
 
+// ---------------------------
+// Three W and components
+// ---------------------------
 .three-w-container {
   .heading {
     margin: 16px;
@@ -570,5 +573,427 @@
 
   .section-content {
     flex-grow: 1;
+  }
+}
+
+
+// ---------------------------
+// Country overview and components
+// ---------------------------
+.country-overview {
+  // background-color: #fff;
+  // box-shadow: 0 0 3px -1px rgba(0, 0, 0, .3);
+
+  .top-section {
+    display: flex;
+    border: 1px solid rgba(0, 0, 0, .1);
+    flex-wrap: wrap;
+
+    .key-indicators {
+      flex-basis: 50%;
+    }
+
+    .ns-indicators {
+      flex-basis: 50%;
+    }
+
+    .tc-data-source {
+      display: flex;
+      flex-basis: 100%;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: rgba(0, 0, 0, .3);
+      font-weight: bold;
+      padding: 10px 0;
+      
+      .tc-label {
+        padding: 3px;
+      }
+
+      .tc-value {
+        padding: 3px;
+      }
+    }
+  }
+
+  .population-and-climate-section {
+    display: flex;
+
+    .population-map {
+      flex-basis: 45%;
+    }
+
+    .climate-chart {
+      flex-basis: 55%;
+    }
+  }
+
+  .middle-section {
+    border: 1px solid rgba(0, 0, 0, .1);
+    display: flex;
+
+    .social-events {
+      flex-basis: calc(100% / 3);
+    }
+
+    .past-crises-events {
+      flex-basis: calc(100% / 3);
+    }
+
+    .past-epidemics {
+      flex-basis: calc(100% / 3);
+    }
+  }
+}
+
+.key-indicator-text-output {
+  display: table-row;
+
+  .tc-label {
+    display: table-cell;
+    padding: 5px 10px;
+  }
+
+  .tc-value {
+    display: table-cell;
+    padding: 5px 10px;
+    font-weight: bold;
+  }
+}
+
+%tc-block {
+  padding: 16px 16px;
+
+  >.tc-heading {
+    padding: 16px 10px;
+    margin: 0;
+    margin-bottom: 24px;
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
+  }
+
+  .tc-heading {
+    text-transform: uppercase;
+  }
+
+  >.tc-content {
+    padding: 10px 0;
+  }
+}
+
+.overview-key-indicators {
+  @extend %tc-block;
+
+  .tc-content {
+    display: flex;
+
+    .tc-left {
+      flex-basis: 50%;
+    }
+
+    .tc-right {
+      flex-basis: 50%;
+    }
+  }
+}
+
+.overview-ns-indicators {
+  @extend %tc-block;
+}
+
+.overview-social-events {
+  @extend %tc-block;
+
+  .tc-content {
+    max-height: 160px;
+    overflow: auto;
+  }
+}
+
+.overview-past-crises-events {
+  @extend %tc-block;
+
+  .tc-content {
+    max-height: 160px;
+    overflow: auto;
+  }
+}
+
+.overview-past-epidemics {
+  @extend %tc-block;
+
+  .tc-content {
+    max-height: 160px;
+    overflow: auto;
+  }
+}
+
+.overview-population-map {
+  @extend %tc-block;
+  display: flex;
+  flex-direction: column;
+
+  .tc-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    .overview-map-container {
+      flex-grow: 1;
+    }
+  }
+}
+
+.overview-past-operations {
+  @extend %tc-block;
+
+  .tc-content {
+    margin: 12px 0;
+    height: 300px;
+  }
+
+  .past-operations-filter {
+    .chart-mode-input {
+      padding: 12px 0;
+
+      .chart-mode-button {
+        &:not(:last-child) {
+          border-right: 1px solid rgba(0, 0, 0, .3);
+        }
+      }
+    }
+  }
+}
+
+.event-detail-element {
+  display: flex;
+  align-items: baseline;
+  padding: 0 10px;
+
+  .tc-value {
+    padding: 2px 6px;
+    font-weight: bold;
+  }
+
+  .tc-label {
+    padding: 2px 6px;
+  }
+}
+
+.event-detail-tooltip {
+    background-color: #fff;
+    box-shadow: 0 0 3px 1px rgba(0, 0, 0, .3);
+    padding: 10px 0;
+
+    .basic-detail {
+      display: flex;
+      align-items: baseline;
+      padding: 0 10px;
+      font-size: 18px;
+      font-weight: bold;
+      color: $primary-color;
+
+      .event-country-name {
+        padding: 4px 6px;
+      }
+
+      .separator {
+        padding: 4px 6px;
+      }
+
+      .disaster-title {
+        padding: 4px 6px;
+      }
+    }
+
+    .event-start-date {
+      padding: 0 16px;
+    }
+
+    .other-details {
+      padding: 6px 0;
+    }
+}
+
+.tc-segment-button {
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
+  color: rgba(0, 0, 0, .5);
+  padding: 2px 10px;
+  outline: none;
+
+  &:hover {
+    color: rgba(0, 0, 0, .8);
+  }
+
+  &.tc-active {
+    color: $primary-color;
+  }
+}
+
+.country-climate-chart {
+  @extend %tc-block;
+
+  >.tc-content {
+    display: flex;
+    align-items: flex-start;
+
+    .tc-charts {
+      flex-basis: 70%;
+      .precipitation-chart,
+      .temperature-chart {
+        height: 200px;
+      }
+    }
+
+    .tc-key-info {
+      flex-basis: 30%;
+      padding: 14px 10px;
+      border: 1px solid rgba(0, 0, 0, .06);
+
+      .tc-heading {
+        padding: 4px 10px;
+        text-align: center;
+      }
+
+      .tc-content {
+        .climate-key-event {
+          display: table-row;
+
+          .tc-label {
+            display: table-cell;
+            padding: 4px 10px;
+          }
+
+          .tc-value {
+            display: table-cell;
+            font-weight: bold;
+            padding: 4px 10px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.country-seasonal-calendar {
+  @extend %tc-block;
+
+  >.tc-content {
+    .calendar-chart {
+      display: table;
+      width: 100%;
+
+      .calendar-chart-row {
+        display: table-row;
+
+        .calendar-chart-sector-cell {
+          display: table-cell;
+          border-right: 1px solid rgba(0, 0, 0, .1);
+          vertical-align: middle;
+          text-align: right;
+          padding: 2px 6px;
+        }
+
+        .calendar-chart-title-list-cell {
+          width: 88%;
+          display: table-cell;
+
+          .calendar-chart-title-list {
+            width: 100%;
+
+            .calendar-chart-title {
+              float: left;
+              flex-shrink: 0;
+              background-color: #eee;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              padding: 6px;
+              margin: 2px;
+              overflow: hidden;
+            }
+
+            .calendar-chart-month-title {
+              border-top: 1px solid rgba(0, 0, 0, .1);
+
+              flex-shrink: 0;
+              flex-basis: calc(100% / 12);
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
+          }
+
+          .calendar-chart-month-title-list {
+            display: flex;
+
+            .calendar-chart-month-title {
+              border-top: 1px solid rgba(0, 0, 0, .1);
+
+              flex-shrink: 0;
+              flex-basis: calc(100% / 12);
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
+          }
+        }
+
+        .calendar-bubble-chart {
+          height: 80px;
+        }
+      }
+    }
+  }
+}
+
+.country-inform-indicators {
+  @extend %tc-block;
+
+  >.tc-content {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    max-height: 900px;
+
+    .inform-indicator-element {
+      min-width: 400px;
+      flex-basis: calc(100% / 3);
+      padding: 10px 0;
+
+      >.tc-heading {
+        padding: 16px 10px;
+      }
+
+      >.tc-content {
+        height: 400px;
+      }
+
+      &.inform-indicator-hazard-and-exposure {
+        order: 3;
+
+        >.tc-content {
+          height: 692px;
+        }
+      }
+
+      &.inform-indicator-vulnerability {
+        order: 2;
+
+        >.tc-content {
+          height: 400px;
+        }
+      }
+
+      &.inform-indicator-lack-of-coping-capacity {
+        order: 1;
+
+        >.tc-content {
+          height: 200px;
+        }
+      }
+    }
   }
 }
