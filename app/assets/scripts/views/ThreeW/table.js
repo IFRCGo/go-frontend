@@ -4,6 +4,7 @@ import {
   _cs,
   addSeparator,
 } from '@togglecorp/fujs';
+import memoize from 'memoize-one';
 
 import {
   programmeTypes,
@@ -61,20 +62,37 @@ export default class ProjectListTable extends React.PureComponent {
         key: 'actions',
         label: 'Actions',
         modifier: (d) => (
-          (this.props.user && this.props.user.id)
-            ? (
-              <button
-                className='button button--secondary-bounded'
-                onClick={() => this.props.onEditButtonClick(d)}
-              >
-                Edit
-              </button>
-            )
+          this.props.isCountryAdmin ? (
+            <button
+              className='button button--secondary-bounded'
+              onClick={() => this.props.onEditButtonClick(d)}
+            >
+              Edit
+            </button>
+          )
             : null
         ),
       },
     ];
   }
+
+  getShouldShowAddButton = memoize((user, countryId) => {
+    if (!user || !user.id || !countryId) {
+      return false;
+    }
+
+    if (!user.is_admin_for_countries || user.is_admin_for_countries.length === 0) {
+      return false;
+    }
+
+    const countryIdIndex = user.is_admin_for_countries.findIndex(d => String(d) === String(countryId));
+
+    if (countryIdIndex !== -1) {
+      return true;
+    }
+
+    return false;
+  })
 
   render () {
     const {

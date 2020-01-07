@@ -1,6 +1,9 @@
 'use strict';
 import React from 'react';
 import _cs from 'classnames';
+import memoize from 'memoize-one';
+
+import { getDataFromResponse } from '../../utils/request';
 
 import Summary from './stats/summary';
 import SectorActivity from './stats/sector-activity';
@@ -11,6 +14,24 @@ import Table from './table';
 import Map from './map';
 
 export default class ThreeW extends React.PureComponent {
+  getIsCountryAdmin = memoize((user, countryId) => {
+    if (!user || !user.id || !countryId) {
+      return false;
+    }
+
+    if (!user.is_admin_for_countries || user.is_admin_for_countries.length === 0) {
+      return false;
+    }
+
+    const countryIdIndex = user.is_admin_for_countries.findIndex(d => String(d) === String(countryId));
+
+    if (countryIdIndex !== -1) {
+      return true;
+    }
+
+    return false;
+  })
+
   render () {
     const {
       projectList,
@@ -20,6 +41,9 @@ export default class ThreeW extends React.PureComponent {
       user = {},
     } = this.props;
 
+    const currentUserDetail = getDataFromResponse(user);
+    const isCountryAdmin = this.getIsCountryAdmin(currentUserDetail, countryId);
+
     return (
       <div className='three-w-container'>
         <h2 className='heading'>
@@ -27,7 +51,7 @@ export default class ThreeW extends React.PureComponent {
         </h2>
         <div className='content'>
           <div className='left'>
-            { user.id && (
+            { isCountryAdmin && (
               <button
                 className={
                   _cs(
@@ -46,13 +70,6 @@ export default class ThreeW extends React.PureComponent {
             className='three-w-filters'
             onFilterChange={onFilterChange}
           />
-          <button
-            className="export-button button button--secondary-bounded disabled"
-            onClick={() => {}}
-            disabled
-          >
-            Export
-          </button>
           <div className='three-w-map-container'>
             <Map
               countryId={countryId}
@@ -78,6 +95,7 @@ export default class ThreeW extends React.PureComponent {
               user={user}
               projectList={projectList}
               onEditButtonClick={this.props.onEditButtonClick}
+              isCountryAdmin={isCountryAdmin}
             />
           </div>
         </div>

@@ -53,6 +53,11 @@ export function showUsername (email) {
   return postJSON('show_username', SHOW_USERNAME, { email });
 }
 
+export const GET_ME = 'GET_ME';
+export const getMe = () => (
+  fetchJSON('api/v2/user/me/', GET_ME, withToken())
+);
+
 export const GET_PROJECTS = 'GET_PROJECTS';
 export function getProjects (countryId, filterValues) {
   const filters = {

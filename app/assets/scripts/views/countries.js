@@ -32,8 +32,13 @@ import {
   getPerUploadedDocuments,
   getPerMission,
   getProjects,
-  getAppealsListStats
+  getAppealsListStats,
+  getMe,
 } from '../actions';
+import {
+  meSelector,
+} from '../selectors';
+
 import { getFdrs } from '../actions/query-external';
 // import { getBoundingBox } from '../utils/country-bounding-box';
 
@@ -159,6 +164,7 @@ class AdminArea extends SFPComponent {
     this.props._getPerDocument(null, this.props.match.params.id);
     this.props._getPerUploadedDocuments(this.props.match.params.id);
     this.props._getProjects(this.props.match.params.id, this.threeWFilters);
+    this.props._getMe();
 
     if (typeof this.props.user.username !== 'undefined' && this.props.user.username !== null) {
       this.props._getPerMission();
@@ -685,14 +691,17 @@ class AdminArea extends SFPComponent {
                     countryId={getCountryId(this.props.match.params.id)}
                     onFilterChange={this.handleThreeWFilterChange}
                     onAddButtonClick={this.handleProjectAddButtonClick}
-                    user={this.props.user}
+                    user={this.props.me}
                     onEditButtonClick={this.handleProjectEditButtonClick}
                   />
                 </TabContent>
               </TabPanel>
               <TabPanel>
                 <TabContent title='Overview'>
-                  <CountryOverview countryId={getCountryId(this.props.match.params.id)} />
+                  <CountryOverview
+                    countryId={getCountryId(this.props.match.params.id)}
+                    user={this.props.me}
+                  />
                   {/*
                   <Fold title='Overview' id='overview'>
                     { this.renderCountryProfile() }
@@ -849,6 +858,7 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state, ownProps) => ({
+  me: meSelector(state),
   projects: state.projects,
   projectForm: state.projectForm,
   adminArea: get(state.adminArea.aaData, getCountryId(ownProps.match.params.id), {
@@ -878,6 +888,7 @@ const selector = (state, ownProps) => ({
 });
 
 const dispatcher = dispatch => ({
+  _getMe: () => dispatch(getMe()),
   _getAdmAreaById: (...args) => dispatch(getAdmAreaById(...args)),
   _getAdmAreaAppealsList: (...args) => dispatch(getAdmAreaAppealsList(...args)),
   _getAdmAreaKeyFigures: (...args) => dispatch(getAdmAreaKeyFigures(...args)),
