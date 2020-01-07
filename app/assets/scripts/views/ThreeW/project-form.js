@@ -104,14 +104,14 @@ class ProjectForm extends React.PureComponent {
         programme_type: [requiredCondition],
         end_date: [requiredCondition],
         start_date: [requiredCondition],
-        reached_children: [],
+        reached_other: [],
         reached_female: [],
         reached_male: [],
         reached_total: [],
         reporting_ns: [requiredCondition],
         secondary_sectors: [],
         status: [requiredCondition],
-        target_children: [],
+        target_other: [],
         target_female: [],
         target_male: [],
         target_total: [requiredCondition],
@@ -133,14 +133,14 @@ class ProjectForm extends React.PureComponent {
         programme_type: programmeTypes[projectData.programme_type],
         end_date: projectData.end_date,
         start_date: projectData.start_date,
-        reached_children: projectData.reached_children || undefined,
+        reached_other: projectData.reached_other || undefined,
         reached_female: projectData.reached_female || undefined,
         reached_male: projectData.reached_male || undefined,
         reached_total: projectData.reached_total || undefined,
         reporting_ns: projectData.reporting_ns,
         secondary_sectors: projectData.secondary_sectors ? projectData.secondary_sectors.map(d => secondarySectorInputValues[d]) : [],
         status: statuses[projectData.status],
-        target_children: projectData.target_children || undefined,
+        target_other: projectData.target_other || undefined,
         target_female: projectData.target_female || undefined,
         target_male: projectData.target_male || undefined,
         target_total: projectData.target_total || undefined,
@@ -340,7 +340,7 @@ class ProjectForm extends React.PureComponent {
         onValidationFailure={this.handleFaramValidationFailure}
       >
         <InputSection
-          title='Reporting national society'
+          title='Reporting national society *'
         >
           <SelectInput
             faramElementName='reporting_ns'
@@ -351,7 +351,7 @@ class ProjectForm extends React.PureComponent {
 
         <InputSection
           className='multi-input-section'
-          title='Country and region / province'
+          title='Country and region / province* '
         >
           <SelectInput
             faramElementName='country'
@@ -373,7 +373,7 @@ class ProjectForm extends React.PureComponent {
 
         <InputSection
           className='multi-input-section'
-          title='Type of operation and programme'
+          title='Type of operation and programme*'
         >
           <SelectInput
             faramElementName='operation_type'
@@ -391,7 +391,7 @@ class ProjectForm extends React.PureComponent {
 
         { shouldShowDisasterType && (
           <InputSection
-            title='Disaster type'
+            title='Disaster type*'
           >
             <SelectInput
               faramElementName='dtype'
@@ -403,7 +403,7 @@ class ProjectForm extends React.PureComponent {
 
         { shouldShowCurrentOperation && (
           <InputSection
-            title='Current IFRC operation'
+            title='Current IFRC operation*'
           >
             <SelectInput
               faramElementName='event'
@@ -416,7 +416,7 @@ class ProjectForm extends React.PureComponent {
         )}
 
         <InputSection
-          title='Project name'
+          title='Project name*'
         >
           <TextInput
             faramElementName='name'
@@ -430,7 +430,7 @@ class ProjectForm extends React.PureComponent {
           <SelectInput
             faramElementName='primary_sector'
             className='project-form-select'
-            label='Primary sector'
+            label='Primary sector* '
             options={sectorOptions}
           />
           <SelectInput
@@ -444,7 +444,7 @@ class ProjectForm extends React.PureComponent {
 
         <InputSection
           className='multi-input-section'
-          title='Start and end dates'
+          title='Start and end dates* '
         >
           <DateInput
             faramElementName='start_date'
@@ -458,10 +458,10 @@ class ProjectForm extends React.PureComponent {
 
         <InputSection
           className='multi-input-section'
-          title='Budget and status'
+          title='Budget and status*'
         >
           <NumberInput
-            label='Project budget'
+            label='Project budget (CHF)'
             faramElementName='budget_amount'
           />
           <SelectInput
@@ -485,12 +485,12 @@ class ProjectForm extends React.PureComponent {
             label='Female'
           />
           <NumberInput
-            faramElementName='target_children'
-            label='Children'
+            faramElementName='target_other'
+            label='Other'
           />
           <NumberInput
             faramElementName='target_total'
-            label='Total'
+            label='Total* '
           />
         </InputSection>
 
@@ -507,12 +507,12 @@ class ProjectForm extends React.PureComponent {
             label='Female'
           />
           <NumberInput
-            faramElementName='reached_children'
-            label='Children'
+            faramElementName='reached_other'
+            label='Other'
           />
           <NumberInput
             faramElementName='reached_total'
-            label='Total'
+            label={faramValues.status === 'Completed' ? 'Total* ' : 'Total'}
           />
         </InputSection>
 
