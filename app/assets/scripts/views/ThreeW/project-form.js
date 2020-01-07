@@ -373,7 +373,7 @@ class ProjectForm extends React.PureComponent {
 
         <InputSection
           className='multi-input-section'
-          title='Type of operation and programme*'
+          title='Type of operation / programme*'
         >
           <SelectInput
             faramElementName='operation_type'
