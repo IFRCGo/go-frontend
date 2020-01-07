@@ -32,8 +32,6 @@ class InformIndicators extends React.PureComponent {
       height,
     } = p;
 
-    // console.warn(p);
-
     return (
       <text
         x={x + 10}

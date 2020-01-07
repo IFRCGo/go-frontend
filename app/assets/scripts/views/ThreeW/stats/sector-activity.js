@@ -14,7 +14,6 @@ import {
 } from 'recharts';
 
 import { sectorList } from '../../../utils/constants';
-import DonutChart from '../../../components/donut-chart';
 
 const propTypes = {
   className: PropTypes.string,
@@ -75,40 +74,6 @@ export default class SectorActivity extends React.PureComponent {
             </BarChart>
           </ResponsiveContainer>
         </div>
-        {/*
-        <div className='sector-activity-content'>
-          <DonutChart
-            className='sector-activity-donut-chart'
-            data={chartData}
-            keySelector={d => d.key}
-            labelSelector={d => d.title}
-            valueSelector={d => d.value}
-            colorSelector={d => d.color}
-          />
-          <div className='sector-activity-legend'>
-            { chartData.map(d => (
-              d.value ? (
-                <div
-                  key={d.key}
-                  className='sector-activity-legend-item'
-                >
-                  <div
-                    style={{
-                      backgroundColor: d.color,
-                    }}
-                    className='legend-item-block'
-                  />
-                  <div className='legend-item-title'>
-                    [{d.value}] { d.title }
-                  </div>
-                </div>
-              ) : (
-                null
-              )
-            ))}
-          </div>
-        </div>
-        */}
       </div>
     );
   }
