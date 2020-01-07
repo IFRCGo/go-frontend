@@ -153,7 +153,7 @@ class ProjectForm extends React.PureComponent {
 
   componentDidMount () {
     this.props._getCountries();
-    this.props._getEventList();
+    this.props._getEventList(this.props.countryId);
   }
 
   getResultsFromResponse = (response, defaultValue = emptyList) => {
