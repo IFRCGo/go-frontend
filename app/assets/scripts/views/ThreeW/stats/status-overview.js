@@ -1,21 +1,37 @@
 'use strict';
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   _cs,
   listToGroupList,
 } from '@togglecorp/fujs';
+import memoize from 'memoize-one';
 
-import VerticalBarChart from '../../../components/vertical-bar-chart';
+import {
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+} from 'recharts';
 
 import { statuses } from '../../../utils/constants';
 
-export default class StatusOverview extends React.PureComponent {
-  render () {
-    const {
-      className,
-      projectList,
-    } = this.props;
+const propTypes = {
+  className: PropTypes.string,
+  projectList: PropTypes.array,
+};
 
+const defaultProps = {
+  className: undefined,
+  projectList: [],
+};
+
+export default class StatusOverview extends React.PureComponent {
+  static propTypes = propTypes;
+  static defaultProps = defaultProps;
+
+  getChartData = memoize((projectList) => {
     const statusMap = listToGroupList(projectList, d => d.status, d => d);
     const statusMapKeys = Object.keys(statusMap);
 
@@ -24,19 +40,43 @@ export default class StatusOverview extends React.PureComponent {
       value: statusMap[d].length,
     }));
 
+    return data;
+  });
+
+  render () {
+    const {
+      className,
+      projectList,
+    } = this.props;
+
+    const chartData = this.getChartData(projectList);
+
     return (
       <div className={_cs(className, 'three-w-stats-status-overview')}>
-        <h4 className='status-overview-heading'>
+        <h4 className='tc-heading'>
           Project status overview
         </h4>
-        <VerticalBarChart
-          className='status-overview-bar-chart'
-          data={data}
-          labelSelector={d => d.label}
-          valueSelector={d => d.value}
-          showTicks
-          showGrids
-        />
+        <div className='tc-content'>
+          <ResponsiveContainer>
+            <BarChart
+              data={chartData}
+            >
+              <XAxis
+                dataKey='label'
+                type='category'
+              />
+              <YAxis
+                dataKey='value'
+                type='number'
+                allowDecimals={false}
+              />
+              <Bar
+                fill='#c1cdd1'
+                dataKey='value'
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
       </div>
     );
   }

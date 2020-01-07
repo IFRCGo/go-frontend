@@ -344,58 +344,30 @@
 }
 
 .three-w-stats-sector-activity {
-  .sector-activity-heading {
+  .tc-heading {
     text-align: center;
     padding: 6px;
     margin: 0;
     text-transform: uppercase;
   }
 
-  .sector-activity-content {
-    display: flex;
-    align-items: center;
-
-    .sector-activity-donut-chart {
-      align-self: stretch;
-      width: 200px;
-      height: 200px;
-    }
-
-    .sector-activity-legend {
-      flex-grow: 1;
-
-      .sector-activity-legend-item {
-        display: flex;
-        align-items: center;
-
-        .legend-item-block {
-          width: 14px;
-          height: 14px;
-          margin: 0 10px;
-        }
-      }
-    }
+  .tc-content {
+    width: 100%;
+    height: 200px;
   }
 }
 
 .three-w-stats-status-overview {
-  .status-overview-heading {
+  .tc-heading {
     text-align: center;
     padding: 6px;
     margin: 0;
     text-transform: uppercase;
   }
 
-  .status-overview-bar-chart {
+  .tc-content {
     width: 100%;
     height: 200px;
-  }
-
-  .status-bar-chart-labels {
-    padding: 0 32px;
-    display: flex;
-    justify-content: space-around;
-    margin-left: 10px;
   }
 }
 
