@@ -26,6 +26,10 @@ export default class ProjectListTable extends React.PureComponent {
         label: 'End date',
       },
       {
+        key: 'name',
+        label: 'Project name',
+      },
+      {
         key: 'reporting_ns',
         label: 'Supporting NS',
         modifier: d => d.reporting_ns_detail.society_name,
