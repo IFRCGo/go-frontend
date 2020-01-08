@@ -55,7 +55,7 @@ export default class ThreeW extends React.PureComponent {
               <button
                 className={
                   _cs(
-                    'add-button button button--secondary-bounded',
+                    'add-button button button--primary-bounded',
                     disabled && 'disabled',
                   )}
                 onClick={this.props.onAddButtonClick}
@@ -95,6 +95,7 @@ export default class ThreeW extends React.PureComponent {
               user={user}
               projectList={projectList}
               onEditButtonClick={this.props.onEditButtonClick}
+              onDetailsButtonClick={this.props.onDetailsButtonClick}
               isCountryAdmin={isCountryAdmin}
             />
           </div>

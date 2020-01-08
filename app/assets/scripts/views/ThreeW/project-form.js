@@ -32,6 +32,8 @@ import {
   sectorInputValues,
   programmeTypeList,
   programmeTypes,
+  operationTypeList,
+  operationTypes,
 } from '../../utils/constants';
 
 const statusOptions = statusList.map(p => ({
@@ -59,15 +61,7 @@ const disasterTypeOptions = disasterTypeList.map(d => ({
   label: d.label,
 }));
 
-const operationTypeOptions = [
-  { value: 'Programme', label: 'Programme' },
-  { value: 'Emergency Operation', label: 'Emergency operation' },
-];
-
-const operationTypes = {
-  0: 'Programme',
-  1: 'Emergency Operation',
-};
+const operationTypeOptions = operationTypeList;
 
 const InputSection = ({
   className,
@@ -126,7 +120,7 @@ class ProjectForm extends React.PureComponent {
         country: props.countryId,
         event: projectData.event,
         dtype: projectData.dtype,
-        project_district: projectData.project_district,
+        project_district: projectData.project_district ? projectData.project_district : 'all',
         name: projectData.name,
         operation_type: operationTypes[projectData.operation_type],
         primary_sector: sectorInputValues[projectData.primary_sector],
@@ -207,10 +201,17 @@ class ProjectForm extends React.PureComponent {
       return emptyList;
     }
 
-    return districtList.map(d => ({
+    const mappedDistrictList = districtList.map(d => ({
       value: d.id,
       label: d.name,
     }));
+
+    mappedDistrictList.push({
+      value: 'all',
+      label: 'Countrywide',
+    });
+
+    return mappedDistrictList;
   }
 
   getCurrentOperationOptions = (response) => {
@@ -253,6 +254,7 @@ class ProjectForm extends React.PureComponent {
       this.props._postProject({
         id: this.props.projectData.id,
         ...faramValues,
+        project_district: faramValues.project_district === 'all' ? undefined : faramValues.project_district,
       });
     } else {
       this.props._postProject(faramValues);

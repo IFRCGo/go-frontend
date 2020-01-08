@@ -12,6 +12,8 @@ import {
   statuses,
 } from '../../utils/constants';
 
+import FormattedDate from '../../components/formatted-date';
+
 export default class ProjectListTable extends React.PureComponent {
   constructor (props) {
     super(props);
@@ -63,18 +65,30 @@ export default class ProjectListTable extends React.PureComponent {
         modifier: d => statuses[d.status],
       },
       {
+        key: 'modified_at',
+        label: 'Last updated',
+        modifier: d => <FormattedDate value={d['modified_at']} />,
+      },
+      {
         key: 'actions',
         label: 'Actions',
         modifier: (d) => (
-          this.props.isCountryAdmin ? (
+          <React.Fragment>
+            { this.props.isCountryAdmin && (
+              <button
+                className='button button--primary-bounded'
+                onClick={() => this.props.onEditButtonClick(d)}
+              >
+                Edit
+              </button>
+            )}
             <button
               className='button button--secondary-bounded'
-              onClick={() => this.props.onEditButtonClick(d)}
+              onClick={() => this.props.onDetailsButtonClick(d)}
             >
-              Edit
+              Details
             </button>
-          )
-            : null
+          </React.Fragment>
         ),
       },
     ];

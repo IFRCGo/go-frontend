@@ -175,3 +175,13 @@ export const statusList = [
 ];
 
 export const statuses = listToMap(statusList, d => d.key, d => d.title);
+
+export const operationTypeList = [
+  { value: 'Programme', label: 'Programme' },
+  { value: 'Emergency Operation', label: 'Emergency operation' },
+];
+
+export const operationTypes = {
+  0: 'Programme',
+  1: 'Emergency Operation',
+};

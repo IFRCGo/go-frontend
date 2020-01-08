@@ -314,6 +314,10 @@
     .three-w-project-list-table-container {
       width: 100%;
       padding: 48px 0;
+
+      button {
+        margin: 1px;
+      }
     }
   }
 }
@@ -966,6 +970,51 @@
           height: 200px;
         }
       }
+    }
+  }
+}
+
+.tc-project-details {
+  .tc-project-name {
+    padding: 0 10px;
+    flex-direction: column;
+
+    .tc-label {
+      padding-bottom: 0;
+    }
+
+    .tc-value {
+      padding-top: 0;
+      font-size: 32px;
+    }
+  }
+
+  .tc-section {
+    padding: 10px;
+
+    >.tc-text-output {
+      padding: 0 10px;
+    }
+
+    .tc-section-title {
+      padding: 0 14px;
+      color: $primary-color;
+    }
+
+    .tc-section-content {
+      display: flex;
+
+      .tc-text-output {
+        padding: 0 10px;
+      }
+    }
+  }
+
+  .tc-date-section {
+    display: flex;
+
+    .tc-text-output {
+      padding: 0 10px;
     }
   }
 }

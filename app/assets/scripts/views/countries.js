@@ -13,9 +13,14 @@ import url from 'url';
 import { countries } from '../utils/field-report-constants';
 import { environment, api } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
-import BasicTable from '../components/common/table-basic';
+// import BasicTable from '../components/common/table-basic';
 import { get, dateOptions, datesAgo, dTypeOptions } from '../utils/utils/';
-import { commaSeparatedNumber as n, commaSeparatedLargeNumber as bigN, nope, round } from '../utils/format';
+import {
+  commaSeparatedNumber as n,
+  // commaSeparatedLargeNumber as bigN,
+  nope,
+  round,
+} from '../utils/format';
 import {
   getAdmAreaById,
   getAdmAreaAppealsList,
@@ -71,6 +76,7 @@ import { getISO3 } from '../utils/country-iso';
 import ThreeW from './ThreeW';
 import CountryOverview from './CountryOverview';
 import ProjectForm from './ThreeW/project-form';
+import ProjectDetails from './ThreeW/project-details';
 
 const emptyList = [];
 const emptyObject = {};
@@ -121,6 +127,9 @@ class AdminArea extends SFPComponent {
       mapFilters: {},
       persistentMapFilter: {},
       showProjectForm: false,
+      showProjectDetails: false,
+      projectToEdit: undefined,
+      projectToShowDetails: undefined,
     };
     this.setMapFilter = this.setMapFilter.bind(this);
     this.setPersistentMapFilter = this.setPersistentMapFilter.bind(this);
@@ -355,7 +364,13 @@ class AdminArea extends SFPComponent {
       showProjectForm: true,
       projectToEdit: project,
     });
-    // console.warn(project);
+  }
+
+  handleProjectDetailsButtonClick = (project) => {
+    this.setState({
+      showProjectDetails: true,
+      projectToShowDetails: project,
+    });
   }
 
   renderAppeals () {
@@ -470,6 +485,7 @@ class AdminArea extends SFPComponent {
       (typeof this.props.getPerMission !== 'undefined' && this.props.getPerMission.fetched && this.props.getPerMission.data.count > 0);
   }
 
+  /*
   getCountryProfileData = () => {
     const { fetched, data } = this.props.fdrs;
     if (!fetched) {
@@ -576,6 +592,7 @@ class AdminArea extends SFPComponent {
       </React.Fragment>
     );
   }
+  */
 
   renderContent () {
     const {
@@ -693,6 +710,7 @@ class AdminArea extends SFPComponent {
                     onAddButtonClick={this.handleProjectAddButtonClick}
                     user={this.props.me}
                     onEditButtonClick={this.handleProjectEditButtonClick}
+                    onDetailsButtonClick={this.handleProjectDetailsButtonClick}
                   />
                 </TabContent>
               </TabPanel>
@@ -773,6 +791,9 @@ class AdminArea extends SFPComponent {
   render () {
     const {
       showProjectForm,
+      showProjectDetails,
+      projectToShowDetails,
+      projectToEdit,
     } = this.state;
 
     const {
@@ -784,7 +805,7 @@ class AdminArea extends SFPComponent {
       user,
     } = this.props;
 
-    this.syncBodyOverflow(showProjectForm);
+    this.syncBodyOverflow(showProjectForm || showProjectDetails);
     this.syncLoadingAnimation(
       projects,
       projectForm,
@@ -822,8 +843,34 @@ class AdminArea extends SFPComponent {
               </button>
             </header>
             <ProjectForm
-              projectData={this.state.projectToEdit}
+              projectData={projectToEdit}
               countryId={getCountryId(this.props.match.params.id)}
+            />
+          </div>
+        )}
+        { showProjectDetails && (
+          <div className='project-form-modal'>
+            <header>
+              <h2>
+                Movement activities in support of NS
+              </h2>
+              <button
+                className={
+                  _cs(
+                    'button button--secondary-bounded',
+                    this.loading && 'disabled',
+                  )
+                }
+                onClick={() => {
+                  this.setState({ showProjectDetails: false });
+                }}
+                disabled={this.loading}
+              >
+                Close
+              </button>
+            </header>
+            <ProjectDetails
+              data={projectToShowDetails}
             />
           </div>
         )}
