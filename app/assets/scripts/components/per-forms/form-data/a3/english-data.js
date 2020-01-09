@@ -86,7 +86,23 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 15 Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'Capacities are mapped in line with types of epidemic prone diseases and epidemic risks.'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Component 16: Early Action Mechanisms',
@@ -166,7 +182,24 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 16 Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'Early Action mechanism in case of epidemics is formalized with MoH, including triggers.',
+          'The branches have functioning local networks to inform communities of potential epidemics (respecting mandates of public authorities).'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Component 17: Cash Based Intervention (CBI)',
@@ -276,7 +309,23 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 17 Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'Cash transfer programme is tailored to face the challenges of infectious disease outbreaks.'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Component 18: Emergency Needs Assessment',
@@ -366,7 +415,24 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 18 Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'Data collection templates for epidemic needs assessment are available to include CBS, health services etc.',
+          'Emergency multi-sectoral assessment team is trained on Infection prevention and control.'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Component 19: Affected population selection',
@@ -436,7 +502,23 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 19 Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'NS has a policy to share personal data with operational actors (i.e. contact tracing)'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Component 20: Emergency Operations Centre (EOC)',
@@ -606,7 +688,26 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 20 Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'EOC structure includes decision-making responsibilities for health staff, and how NS EOC supports the national EOC.',
+          'EOC SOPs are adapted to epidemics and involve health staff.',
+          'NS EOC is linked to the MOE\'s EOC.',
+          'The roles of health managers within the EOC are clear.'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Component 21: Information Management (IM)',
@@ -706,7 +807,25 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 21 Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'Key staff at headquarters and branch level are familiar with IM templates (these may be the NS or IFRC), methodology and procedures specific to epidemics.',
+          'Specific SOPs for data sharing in epidemics are available',
+          'Ongoing scenario plans and response options are documented and filed.'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Component 22: Testing and Learning',
@@ -796,7 +915,24 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 22 Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'NS conducts epidemic-specific simulations and drills that cover cross-border dimensions at least once a year and more often in areas at high risk of epidemics.',
+          'Testing includes infection prevention and control for staff and volunteers.'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Component 23: Activation of regional and international support',
@@ -886,7 +1022,23 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 23 Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'SOPs for the acceptance of medical personnel, medical equipment and supplies including medication and laboratory supplies.'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     }
   ]
 };
