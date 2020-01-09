@@ -1202,4 +1202,3 @@ export const englishForm = {
     }
   ]
 };
-

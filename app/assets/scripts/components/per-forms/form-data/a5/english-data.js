@@ -1350,4 +1350,3 @@ export const englishForm = {
     }
   ]
 };
-
