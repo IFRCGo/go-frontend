@@ -200,7 +200,7 @@ const renderEpiComponent = (component, props, componentIndex) => {
         <div className='per_form_ns'>{nsTitle}</div>
         <br />
         <div className='label-secondary'>{nsConsiderationHeader}</div>
-        <ul className='form__group'>
+        <ul className='label-secondary-list'>
           {nsConsiderationList.map(consideration => (
             <li key={consideration} >{consideration}</li>
           ))}
