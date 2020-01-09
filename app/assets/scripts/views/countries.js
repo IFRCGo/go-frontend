@@ -48,7 +48,7 @@ import EmergenciesTable from '../components/connected/emergencies-table';
 import Pills from '../components/pills';
 import {
   Snippets,
-  KeyFigures,
+  // KeyFigures,
   Contacts,
   Links
 } from '../components/admin-area-elements';
@@ -64,6 +64,7 @@ import { getRegionSlug } from '../utils/region-constants';
 import { getISO3 } from '../utils/country-iso';
 
 import ThreeW from './ThreeW';
+import CountryOverview from './CountryOverview';
 import ProjectForm from './ThreeW/project-form';
 
 const emptyList = [];
@@ -690,13 +691,24 @@ class AdminArea extends SFPComponent {
               </TabPanel>
               <TabPanel>
                 <TabContent title='Overview'>
+                  <CountryOverview countryId={getCountryId(this.props.match.params.id)} />
+                  {/*
                   <Fold title='Overview' id='overview'>
                     { this.renderCountryProfile() }
+                  </Fold>
+                  */}
+                </TabContent>
+                {/*
+                <TabContent isError={!data.overview || data.key_priorities} errorMessage={ NO_DATA } title="Overview">
+                  <Fold title="Overview" id="overview">
+                    {data.overview ? <ReactMarkdown source={data.overview} /> : null}
+                    {data.key_priorities ? <ReactMarkdown source={data.key_priorities} /> : null}
                   </Fold>
                 </TabContent>
                 <TabContent showError={true} isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage={ NO_DATA } title='Key Figures'>
                   <KeyFigures data={this.props.keyFigures} />
                 </TabContent>
+                */}
               </TabPanel>
               <TabPanel>
                 <TabContent showError={true} isError={!this.isPerPermission()} errorMessage='Please log in' title='Preparedness'>

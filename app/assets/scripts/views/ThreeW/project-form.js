@@ -118,7 +118,6 @@ class ProjectForm extends React.PureComponent {
       },
     };
 
-    // console.warn(props.projectData);
     const { projectData = {} } = props;
 
     this.state = {
