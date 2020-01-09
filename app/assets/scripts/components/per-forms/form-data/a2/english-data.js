@@ -116,7 +116,28 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 6 Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'NS Community Based Surveillance (CBS) is established with indicators and thresholds for epidemics and zoonoses.',
+          'CBS is coordinated with MoH Epidemics detection system and Emergency Operations Centre (including for zoonoses indicators).',
+          'NS has the capacity to collect and analyze data derived from VCAs and epidemic risk assessments on health hazards (including zoonoses) and health system access.',
+          'NS epidemic risk analysis, risk assessment, scenario and response strategy use Sex Age Disabilities Disaggreated Data to understand gender and diversity specific needs and issues of acceptance and security during epidemics.',
+          'The NS has updated maps of health facilities, which are shared with branches every year.',
+          'For cross-border high risk areas, NSs coordinate risk monitoring, are familiar with each other&apos;s capacities and procedures, and have a mechanism in place to share information.'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Component 7: Scenario planning',
@@ -206,7 +227,27 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 7 Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'Scenarios and Response options take into account key practices (e.g. hygiene, open defecation, slaughtering, respiratory etiquette), access to clean water, availability of soap, oral rehydration supplements, access to health care, vaccination level and adequate nutrition, as well as migration patterns.',
+          'NS has developed specific scenarios that are aligned with Government\'s scenarios for epidemics including zoonoses and risk of infectious diseases and safety of first responders.',
+          'Alert thresholds are in alignment with the MoH, and are specific to different types of epidemic-prone diseases.',
+          'A response strategy for epidemic outbreaks is available and  details NS\'s contribution to the national response plan and the MoH EOC.',
+          'Epidemic-specific scenarios, response strategies and SOPs are agreed with bordering NS\'s.'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Component 8: Risk management',
@@ -296,7 +337,26 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 8 Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'NS ensures protection of first responders including contractors (capacities, inputs), taking into account the impact of fear, stigma and diseases-specific precautions.',
+          'NS has identified trusted sources of communication to ensure community engagement and public health messaging.',
+          'NS has policies and procedures to manage infected staff and volunteers.',
+          'Systems and procedures are in place to prevent fraud and corruption and reinforce acceptance, security and access.'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Component 9: Preparedness plans and budgets',
@@ -376,7 +436,25 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 9 Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'Disaster Preparedness for Epidemics is well coordinated between DM and Health teams.',
+          'Epidemic Preparedness gaps are identified based on risk analysis, response strategy and take into account the strengthening of support units.',
+          'Financial gaps for Epidemic Preparedness or early actions are identified. The NS actively seeks resources and support.'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Component 10: Business continuity',
@@ -416,7 +494,24 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 10 Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'NS Business Continuity plan includes epidemics among major risks.',
+          'Agreements with donors are in place to repurpose funds for epidemic control and management including early action'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Component 11: Emergency Response Procedures (SOPs)',
@@ -516,7 +611,26 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 11 Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'Roles and responsibilities for epidemic response strategy take into consideration NS support to the MoH including active participation in the MoH EOC, in addition to alternates and backups for emergency operations.',
+          'Specific SOPs for epidemic response are available, include all response phases (early warning, early action, emergency assessment, response planning, etc.) and standardized templates.',
+          'Branches have epidemic response SOPs agreed with local authorities and partners.',
+          'An up to date response organigram with contact details exists, is shared and aligns with SOPs. It includes links between disaster management personnel and health personnel.'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Component 12: Response and recovery planning',
@@ -656,7 +770,25 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 12 Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'Community response plans for epidemics are available.',
+          'The NS adapts its epidemic response plan to changing contexts and emerging needs.',
+          'NS has a policy for donation of medical items.'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Component 13: Pre-disaster meetings and agreements',
@@ -786,7 +918,28 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 13 Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ],
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'Coordination and management arrangements with MOH at national, district and local levels are formalised.',
+          'A mapping of capacities of Movement partners is available, it includes the capacity to respond to different epidemic-prone diseases.',
+          'Agreements with contractors include insurance and protection for contactors (infection prevention and control).',
+          'NS has agreements with public authorities for the facilitation of imports of medication such as vaccines and medical equipment and supplies including consumables and non- consumables such as PPEs and laboratory supplies.',
+          'Agreements with key suppliers of medical consumable and nonconsumable such as PPEs and lab supplies and medication/vaccines are formalized with an agreed mechanism for activation.',
+          'Regular community discussions on epidemics include health officials and other public sector officials in charge of the community.'
+        ]
+      }
     }
   ]
 };
