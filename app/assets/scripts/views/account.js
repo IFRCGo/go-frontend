@@ -36,7 +36,7 @@ import { showAlert } from '../components/system-alerts';
 
 import Fold from '../components/fold';
 import TabContent from '../components/tab-content';
-import PerAccountTab from '../components/per/per-account-tab';
+import PerAccountTab from '../components/per-forms/per-account-tab';
 
 import {
   FormCheckboxGroup,
