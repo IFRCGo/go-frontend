@@ -85,11 +85,17 @@ class FieldReport extends React.Component {
     if (!actions || !Array.isArray(actions.actions) || !actions.actions.length) {
       return null;
     }
+
     return (
       <DisplaySection title={`Actions taken by ${orgDisplayName}`}>
         <ul className='actions-list'>
           {actions.actions.map((d, i) => <li key={`action-${i}`}>{d.name}</li>)}
         </ul>
+
+        <div className='form__group'>
+          <p className='form__label'>Summary</p>
+          <p>{actions.summary}</p>
+        </div>
       </DisplaySection>
     );
   }
