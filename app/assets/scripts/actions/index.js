@@ -490,7 +490,10 @@ export function sendPerForm (data) {
 
 export const GET_PER_COUNTRIES = 'GET_PER_COUNTRIES';
 export function getPerCountries () {
-  return fetchJSON(`/api/v2/percountry/`, GET_PER_COUNTRIES, withToken());
+  const filters = {};
+  filters.limit = 1000;
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v2/percountry/?${f}`, GET_PER_COUNTRIES, withToken());
 }
 
 export const GET_PER_DOCUMENTS = 'GET_PER_DOCUMENTS';

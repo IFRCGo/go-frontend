@@ -89,7 +89,25 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 14A Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'CBS, detection and control is in place in vulnerable communities and NS has the capacity and materials to inform at-risk communities about the causes and consequences of major epidemic threats and to help them identify key practices for epidemic control.',
+          'NS ensures assessment, planning and response include measures to avoid fear and stigma.',
+          'CDRT are familiar with the NS epidemic response strategy and its complementarity with the national strategy, are trained and equipped to respond to epidemics and can mobilize local resources.'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Sub-Component 14B: EVACUATION',
@@ -128,7 +146,23 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 14B Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'If quarantine communities in high-risk areas is declared,  NS has mechanisms to liaise with MoH to provide support.'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Sub-Component 14C: HEALTH IN EMERGENCIES',
@@ -227,7 +261,24 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 14C Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'NS has SoPs and pre-positioned supplies for the management of dead bodies.',
+          'Staff and volunteers are regularly trained on the use and disposal of PPE'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Sub-Component 14D: FIRST AID',
@@ -276,7 +327,23 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 14D Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'NS has Infection Prevention and Control policies and procedures to accompany first aid responders in an infectious disease outbreaks. E.g. no-touch policy.'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Sub-Component 14E. WATER AND SANITATION',
@@ -345,7 +412,24 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 14E Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'NS response strategy includes water, sanitation and hygiene measures in case of epidemics, and response teams are familiar with WASH in infectious settings including environmental sanitation.',
+          'Epidemic specific WASH support is available.'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Sub-Component 14F. FOOD SECURITY',
@@ -415,7 +499,24 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 14F Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'NS has early warning system for food contamination in epidemics and has SOPs for food distribution in quarantine.',
+          'The identified technical staff for food assistance is trained to identify needs and analyse market situation in epidemics in order to make recommendations.'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Sub-Component 14G. LIVELIHOOD SECURITY AND SAFETY NETS',
@@ -514,7 +615,25 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 14G Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'Markets as potential sources of transmission are mapped.',
+          'In epidemic-prone areas, risks to community and household productive assets are identified and a plan for protecting assets is in place.',
+          'NS can support business continuity planning for private sector actors (especially Small and Medium Enterprises).'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Sub-Component 14H. SEARCH AND RESCUE',
@@ -543,7 +662,23 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 14H Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'Scenarios consider epidemic risk and absence of key personnel.'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Sub-Component 14I. SHELTER, HOUSEHOLD ITEMS, SETTLEMENTS',
@@ -622,7 +757,23 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 14I Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'Replacement of destroyed or contaminated NFI during epidemic is planned for.'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Sub-Component 14J. MANAGEMENT OF DEAD BODIES TO FACILITATE THEIR IDENTIFICATION',
@@ -661,7 +812,23 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 14J Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'NS in countries with epidemic risk for viral hemorrhagic fevers can carry out safe and dignified burials.'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Sub-Component 14K. RESTORING FAMILY LINKS (RFL)',
@@ -700,7 +867,23 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 14K Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'NS can carry out RFL in epidemics due to separation in isolation.'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Sub-Component 14L. TRANSITION TO RECOVERY',
@@ -779,7 +962,23 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 14L Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'Stigma to reintegrate survivors into communities and other aspects that might be specific to epidemics.'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Sub-Component 14M. CHEMICAL, BIOLOGICAL, RADIOLOGICAL AND NUCLEAR (CBRN) EMERGENCY PREPAREDNESS',
@@ -908,7 +1107,23 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 14M Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'Chemical events are included in CBS as a specific indicator or as an unusual event. NS includes contacts to chemical authorities in CBS SOP.'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Sub-Component 14N. COMMUNITY BASED HEALTH & FIRST AID (CBHFA)',
@@ -967,7 +1182,23 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 14N Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'NS trains CBHFA volunteers on epidemics simulations, preparedness and response planning and monitoring utilizing the Communicable Disease Prevention module and Epidemic Control for Volunteer toolkit.'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     }
   ]
 };

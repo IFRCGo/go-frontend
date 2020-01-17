@@ -96,7 +96,24 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 30 Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'NS has conducted a protection, gender and inclusion (PGI) analysis to put a gender and culturally appropriate security system in place to protect all staff and volunteers from the risk of epidemics.',
+          'All  responders are trained in protection, gender and inclusion (PGI) and are aware of gender specific safety and security requirements during epidemics.'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Component: 31. Operations Monitoring, Evaluation, Reporting and Learning',
@@ -196,7 +213,23 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 31 Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'PMER aspects that might be particularly affected during an outbreak (e.g. with limited number of key staff and volunteers available).'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Component 32. Finance and Admin policy and emergency procedures',
@@ -286,7 +319,23 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 32 Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'Finance and administration processes that might be particularly affected during epidemics (e.g. with limited number of key staff and volunteers available).'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Component 33. Information and Communication Technology (ICT)',
@@ -436,7 +485,23 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 33 Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'Information and Communication Technology processes that might be particularly affected during epidemics (e.g. with limited number of key staff and volunteers available, management of rumours), or necessary to carry out Community Based Surveillance (CBS) activities.'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Component 34. Logistics, procurement and supply chain',
@@ -969,7 +1034,27 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 35 Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'WHO and MOH have been consulted on specifications of pre-positioned relief items related to epidemics and NS has analysed optimal supply chain options (e.g. prepositioned relief items, pre-existing agreements with suppliers, environmental impact) in terms of cost, speed and reliability.',
+          'NS has SOPs for accepting, rejecting, storing, disposing and reporting on in-kind medical donations.',
+          'NS has a procedure on the import of vaccines and drugs related to potential epidemics.',
+          'There are infection prevention and control measures set for the use of vehicles during epidemics.',
+          'Drivers are included in infection prevention and control and psychosocial support training in epidemics.'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Component 36. Communication in emergencies',
@@ -1089,7 +1174,23 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 36 Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'Supply chain management processes that might be specific to epidemics (e.g. PPE, vaccines)'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Component 37. Resource Mobilisation',
@@ -1229,7 +1330,23 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 37 Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'Procurement processes that might be specific to epidemics (e.g. PPE)'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     }
   ]
 };
