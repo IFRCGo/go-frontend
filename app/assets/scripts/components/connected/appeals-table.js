@@ -285,7 +285,7 @@ if (environment !== 'production') {
   AppealsTable.propTypes = {
     _getAppeals: T.func,
     appeals: T.object,
-    appealsList: T.func,
+    appealsList: T.object,
 
     limit: T.number,
     country: T.number,
