@@ -59,7 +59,7 @@ export default OperationCard;
 
 if (environment !== 'production') {
   OperationCard.propTypes = {
-    operationId: PropTypes.number,
+    operationId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     operationName: PropTypes.string,
     emergencyDeployments: PropTypes.shape({
       deployedErus: PropTypes.number,

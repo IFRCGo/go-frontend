@@ -97,7 +97,7 @@ if (environment !== 'production') {
   DateFilterHeader.propTypes = {
     id: T.string,
     title: T.string,
-    filter: T.oneOfType([T.string, T.number]),
+    filter: T.oneOfType([T.string, T.object]),
     onSelect: T.func,
     featureType: T.string
   };
