@@ -100,7 +100,7 @@ export default class ThreeWMap extends React.PureComponent {
     this.map.on('click', this.handleMapClick);
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     const {
       countryId: oldCountryId,
       projectList: oldProjectList,

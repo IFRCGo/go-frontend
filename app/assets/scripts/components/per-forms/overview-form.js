@@ -55,7 +55,7 @@ class OverviewForm extends React.Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     if (this.props.getPerDraftDocument.fetched !== nextProps.getPerDraftDocument.fetched && nextProps.getPerDraftDocument.data.count === 1) {
       this.loadedDraft = JSON.parse(nextProps.getPerDraftDocument.data.results[0].data.replace(/'/g, '"'));
     }

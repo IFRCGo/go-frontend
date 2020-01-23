@@ -33,7 +33,7 @@ class Login extends React.Component {
     showGlobalLoading();
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     if (this.props.user.fetching && !nextProps.user.fetching) {
       hideGlobalLoading();
       if (!nextProps.user.error) {

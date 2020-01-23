@@ -61,7 +61,7 @@ class Register extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     if (this.props.registration.fetching && !nextProps.registration.fetching) {
       hideGlobalLoading();
       if (nextProps.registration.error) {

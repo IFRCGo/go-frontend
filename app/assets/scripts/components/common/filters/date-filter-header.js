@@ -17,7 +17,7 @@ export default class DateFilterHeader extends React.PureComponent {
     this.resetDateStatus = this.resetDateStatus.bind(this);
   }
 
-  componentWillMount () {
+  UNSAFE_componentWillMount () {
     this.setState({
       startDate: this.props.filter.startDate,
       endDate: this.props.filter.endDate

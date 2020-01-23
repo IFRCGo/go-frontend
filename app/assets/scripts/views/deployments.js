@@ -60,7 +60,7 @@ class Deployments extends SFPComponent {
     this.props._getActivePersonnel();
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     if (finishedFetch(this.props, nextProps, 'eruOwners')) {
       hideGlobalLoading();
     }

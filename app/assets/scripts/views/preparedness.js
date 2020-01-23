@@ -46,7 +46,7 @@ class Preparedness extends React.Component {
     this.props._getPerMission(null);
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     if (nextProps.collaboratingPerCountry.fetched && !this.collaboratingPerCountryBuilt) {
       const geoJson = {
         type: 'FeatureCollection',

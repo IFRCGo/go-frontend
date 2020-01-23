@@ -17,7 +17,7 @@ class UserMenu extends React.Component {
   }
 
   // Adds a listener for window size to determine style for menu content
-  componentWillMount () {
+  UNSAFE_componentWillMount () {
     window.addEventListener('resize', this.handleWindowSizeChange.bind(this));
   }
 

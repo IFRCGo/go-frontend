@@ -22,7 +22,7 @@ import { get } from '../utils/utils/';
 import App from './app';
 
 class FieldReport extends React.Component {
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     if (this.props.match.params.id !== nextProps.match.params.id) {
       return this.getReport(nextProps.match.params.id);
     }

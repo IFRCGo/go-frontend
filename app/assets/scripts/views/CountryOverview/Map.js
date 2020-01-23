@@ -25,7 +25,7 @@ export default class ThreeWMap extends React.PureComponent {
     this.map.on('load', this.handleMapLoad);
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     const {
       countryId: oldCountryId,
       districtList: oldDistrictList,

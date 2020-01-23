@@ -231,7 +231,7 @@ class Account extends React.Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     if (this.props.profile.receivedAt !== nextProps.profile.receivedAt) {
       if (typeof nextProps.profile.data !== 'undefined' && nextProps.profile.data !== null && typeof nextProps.profile.data.subscription !== 'undefined' && nextProps.profile.data.subscription !== null) {
         nextProps.profile.data.subscription.forEach((subscription) => {

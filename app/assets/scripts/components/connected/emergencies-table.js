@@ -55,7 +55,7 @@ class EmergenciesTable extends SFPComponent {
     this.requestResults(this.props);
   }
 
-  componentWillReceiveProps (newProps) {
+  UNSAFE_componentWillReceiveProps (newProps) {
     let shouldMakeNewRequest = false;
     ['limit', 'country', 'region'].forEach(prop => {
       if (newProps[prop] !== this.props[prop]) {

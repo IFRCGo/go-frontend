@@ -65,7 +65,7 @@ export default class MapComponent extends React.Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     // Short-circuit any map-changing actions if the map hasn't finished loading.
     if (!this.mapLoaded) return;
 

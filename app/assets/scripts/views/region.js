@@ -72,7 +72,7 @@ class AdminArea extends SFPComponent {
     this.onFullscreenChange = this.onFullscreenChange.bind(this);
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     if (getRegionId(this.props.match.params.id) !== getRegionId(nextProps.match.params.id)) {
       this.getData(nextProps);
       this.setState({ maskLayer: this.getMaskLayer(getRegionId(nextProps.match.params.id)) });

@@ -30,7 +30,7 @@ class RecoverAccount extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     if (this.state.hasTokens) { return; }
     if (this.props.password.fetching && !nextProps.password.fetching) {
       hideGlobalLoading();

@@ -72,7 +72,7 @@ class FieldReportForm extends React.Component {
     this.onStepBackClick = this.onStepBackClick.bind(this);
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     if (this.props.fieldReportForm.fetching && !nextProps.fieldReportForm.fetching) {
       hideGlobalLoading();
       if (nextProps.fieldReportForm.error) {

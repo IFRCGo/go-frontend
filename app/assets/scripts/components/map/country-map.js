@@ -56,7 +56,7 @@ class CountryMap extends React.Component {
     }
   }
 
-  componentWillReceiveProps ({ operations, deployments }) {
+  UNSAFE_componentWillReceiveProps ({ operations, deployments }) {
     if (operations && !this.props.operations.fetched && operations.fetched && !operations.error) {
       this.setMarkerLayers(operations);
     }

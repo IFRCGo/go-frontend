@@ -50,7 +50,7 @@ class AppealsTable extends SFPComponent {
     this.props._getAppealsList();
   }
 
-  componentWillReceiveProps (newProps) {
+  UNSAFE_componentWillReceiveProps (newProps) {
     let shouldMakeNewRequest = false;
     ['limit', 'country', 'region', 'atype', 'record'].forEach(prop => {
       if (newProps[prop] !== this.props[prop]) {
