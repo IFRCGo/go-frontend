@@ -27,6 +27,7 @@ class EmergenciesMap extends React.Component {
     this.navigate = this.navigate.bind(this);
   }
 
+  // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps ({lastMonth}) {
     if (!this.props.lastMonth.fetched && lastMonth.fetched && !lastMonth.error) {
       this.setState({

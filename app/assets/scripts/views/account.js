@@ -231,6 +231,7 @@ class Account extends React.Component {
     }
   }
 
+  // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps (nextProps) {
     if (this.props.profile.receivedAt !== nextProps.profile.receivedAt) {
       if (typeof nextProps.profile.data !== 'undefined' && nextProps.profile.data !== null && typeof nextProps.profile.data.subscription !== 'undefined' && nextProps.profile.data.subscription !== null) {

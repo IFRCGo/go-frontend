@@ -38,6 +38,7 @@ class PreparednessWorkPlan extends React.Component {
     this.lastPayload = {};
   }
 
+  // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps (nextProps) {
     if (this.props.sendPerWorkplan.receivedAt !== nextProps.sendPerWorkplan.receivedAt) {
       if (typeof nextProps.sendPerWorkplan.data.status !== 'undefined' && nextProps.sendPerWorkplan.data.status !== null) {

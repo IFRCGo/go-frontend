@@ -25,6 +25,7 @@ export default class ThreeWMap extends React.PureComponent {
     this.map.on('load', this.handleMapLoad);
   }
 
+  // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps (nextProps) {
     const {
       countryId: oldCountryId,

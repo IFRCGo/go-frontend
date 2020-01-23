@@ -138,6 +138,7 @@ class AdminArea extends SFPComponent {
     this.threeWFilters = {};
   }
 
+  // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps (nextProps) {
     if (getCountryId(this.props.match.params.id) !== getCountryId(nextProps.match.params.id)) {
       this.getData(nextProps);

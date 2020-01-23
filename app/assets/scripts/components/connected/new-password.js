@@ -41,6 +41,7 @@ class NewPassword extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps (nextProps) {
     if (this.props.password.fetching && !nextProps.password.fetching) {
       hideGlobalLoading();

@@ -71,6 +71,7 @@ class Emergency extends React.Component {
     this.isSubscribed = this.isSubscribed.bind(this);
   }
 
+  // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps (nextProps) {
     if (this.props.location.hash !== nextProps.location.hash) {
       const top = window.pageYOffset !== undefined ? window.pageYOffset : window.scrollTop;

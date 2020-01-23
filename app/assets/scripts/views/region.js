@@ -72,6 +72,7 @@ class AdminArea extends SFPComponent {
     this.onFullscreenChange = this.onFullscreenChange.bind(this);
   }
 
+  // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps (nextProps) {
     if (getRegionId(this.props.match.params.id) !== getRegionId(nextProps.match.params.id)) {
       this.getData(nextProps);

@@ -33,6 +33,7 @@ export default class DeploymentsMap extends React.Component {
     this.configureMap = this.configureMap.bind(this);
   }
 
+  // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps (nextProps) {
     if (this.props.data !== nextProps.data) {
       this.setState({
