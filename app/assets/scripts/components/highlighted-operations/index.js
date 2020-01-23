@@ -89,6 +89,7 @@ class HighlightedOperations extends React.Component {
           <div className={listStyle}>
             {operations.slice(0, 6).map(operation =>
               <OperationCard
+                key={operation}
                 operation={operation}
                 calculateDeployedPersonnel={this.calculateDeployedPersonnel}
               />
