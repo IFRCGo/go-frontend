@@ -17,6 +17,7 @@ export default class DateFilterHeader extends React.PureComponent {
     this.resetDateStatus = this.resetDateStatus.bind(this);
   }
 
+  // eslint-disable-next-line camelcase
   UNSAFE_componentWillMount () {
     this.setState({
       startDate: this.props.filter.startDate,

@@ -50,6 +50,7 @@ class AppealsTable extends SFPComponent {
     this.props._getAppealsList();
   }
 
+  // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps (newProps) {
     let shouldMakeNewRequest = false;
     ['limit', 'country', 'region', 'atype', 'record'].forEach(prop => {
