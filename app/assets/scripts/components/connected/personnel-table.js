@@ -56,6 +56,7 @@ class PersonnelTable extends SFPComponent {
     this.requestResults(this.props);
   }
 
+  // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps (newProps) {
     let shouldMakeNewRequest = false;
     ['limit', 'emergency'].forEach(prop => {
@@ -152,7 +153,7 @@ class PersonnelTable extends SFPComponent {
       },
       {
         id: 'emer',
-        label: <SortHeader id='emer' title='Emergency' sort={this.state.table.sort} onClick={''} /> // for filtering options check .../api/v2/personnel/?limit=2 - the Filters button, Ordering
+        label: <SortHeader id='emer' title='Emergency' sort={this.state.table.sort} onClick={() => {}} /> // for filtering options check .../api/v2/personnel/?limit=2 - the Filters button, Ordering
       }];
 
       const rows = data.results.map(o => ({

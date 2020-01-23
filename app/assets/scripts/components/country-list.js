@@ -53,7 +53,7 @@ const CountryList = props => {
       />
       <ul className='region-countries__list'>
         {Object.entries(alphabetizedList).map(([letter, countries]) =>
-          <div>
+          <div key={letter}>
             <li className='region-countries__letter' key={letter}>{letter}</li>
             <ul>
               {countries.map(country =>

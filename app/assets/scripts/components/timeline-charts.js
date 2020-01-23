@@ -209,7 +209,7 @@ if (environment !== 'production') {
   TimelineCharts.propTypes = {
     _getAggregateAppeals: T.func,
     aggregate: T.object,
-    region: T.string
+    region: T.number
   };
 }
 // /////////////////////////////////////////////////////////////////// //

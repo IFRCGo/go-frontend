@@ -55,6 +55,7 @@ class EmergenciesTable extends SFPComponent {
     this.requestResults(this.props);
   }
 
+  // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps (newProps) {
     let shouldMakeNewRequest = false;
     ['limit', 'country', 'region'].forEach(prop => {
@@ -226,8 +227,8 @@ if (environment !== 'production') {
     list: T.object,
 
     limit: T.number,
-    country: T.number,
-    region: T.number,
+    country: T.string,
+    region: T.string,
 
     noPaginate: T.bool,
     showExport: T.bool,
