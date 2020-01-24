@@ -54,18 +54,20 @@ class Preparedness extends React.Component {
       };
 
       nextProps.collaboratingPerCountry.data.results.map((perForm) => {
-        let countryMeta = getCountryMeta(perForm.country.id);
-        perForm.country.iso = countryMeta.iso;
-        let countryCentroid = getCentroid(perForm.country.iso);
-        perForm.country.centroid = countryCentroid;
+        if (perForm.country) {
+          let countryMeta = getCountryMeta(perForm.country.id);
+          perForm.country.iso = countryMeta.iso;
+          let countryCentroid = getCentroid(perForm.country.iso);
+          perForm.country.centroid = countryCentroid;
 
-        geoJson.features.push({
-          geometry: {
-            type: 'Point',
-            coordinates: countryCentroid
-          },
-          properties: perForm
-        });
+          geoJson.features.push({
+            geometry: {
+              type: 'Point',
+              coordinates: countryCentroid
+            },
+            properties: perForm
+          });
+        }
 
         return perForm;
       });
