@@ -22,7 +22,7 @@ assignees: ''
 *Please cross-reference the build item to which this relates, if known*
 
 ## Criticality/Urgency
-*Is it critical that this ticket is resolved urgently?  What is the impact if no change is made?
+*Is it critical that this ticket is resolved urgently?  What is the impact if no change is made?*
 
 ## Related feature
 *Please cross-reference the build item to which this relates, if known*
