@@ -64,9 +64,14 @@ class PerMap extends React.Component {
   }
 
   setMarkerLayers (data) {
+    const geoJSON = data.data.geoJSON;
+    geoJSON.features.map(feature => {
+      feature.properties.phaseCode = feature.properties.phase.phase.toString();
+      return feature;
+    });
     this.setState({
-      markerLayers: this.markerLayerStylesheetFactory.buildMarkerLayers(data.data.geoJSON),
-      markerGeoJSON: data.data.geoJSON
+      markerLayers: this.markerLayerStylesheetFactory.buildMarkerLayers(geoJSON),
+      markerGeoJSON: geoJSON
     });
   }
 
