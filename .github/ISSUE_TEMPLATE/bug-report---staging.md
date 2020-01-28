@@ -1,5 +1,5 @@
 ---
-name: Bug report - staging
+name: Bug report - Staging
 about: Create a report for issues found in staging/test
 title: "[Staging] "
 labels: ''
@@ -22,7 +22,4 @@ assignees: ''
 *Please cross-reference the build item to which this relates, if known*
 
 ## Criticality/Urgency
-*Is it critical that this ticket is resolved urgently?  What is the impact if no change is made?*
-
-## Related feature
-*Please cross-reference the build item to which this relates, if known*
+*Is it critical that this ticket is resolved urgently (e.g. is it a Blocker)?  What is the impact if no change is made?*
