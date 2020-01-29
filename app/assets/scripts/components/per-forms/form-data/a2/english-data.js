@@ -717,7 +717,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '12.9 NS can manage the transition from relief phase and use of short-term resources and volunteers, to medium-term recovery interventions.',
+          nsTitle: '12.9 The plan considers how to support self-recovery of affected population with their active participation beyond providing relief.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',

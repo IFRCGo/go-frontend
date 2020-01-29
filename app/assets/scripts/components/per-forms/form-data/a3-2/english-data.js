@@ -929,7 +929,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '14.53 NS volunteers are trained in the use of the prepositioned shelter materials to construct basic shelters (e.g. shelter kit training).',
+          nsTitle: '14.53 NS has considered how to integrate sector interventions to have the maximum impact on affected communities.',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',

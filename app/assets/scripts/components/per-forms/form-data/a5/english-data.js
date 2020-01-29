@@ -1307,7 +1307,7 @@ export const englishForm = {
           feedbackDescription: 'Document discussion that supports the selected status of the benchmark, explaining the reason and providing additional information on the preparedness action required'
         },
         {
-          nsTitle: '37.12 NS has a donation tracking system, and works with the IFRC on joint operational shared services platforms (Mob table, etc.).NS has a donation tracking system, and works with the IFRC on joint operational shared services platforms (Mob table, etc.).',
+          nsTitle: '37.12 NS has a donation tracking system, and works with the IFRC on joint operational shared services platforms (Mob table, etc.).',
           nsQuestion: 'Benchmark status',
           nsAnswers: [
             'yes',
