@@ -13,6 +13,14 @@ import {
 import PerDraftDocuments from './per-drafts';
 import PerDocuments from './per-documents';
 
+const RESULT_TYPES = {
+  COUNTRY: 1,
+  CLUSTER: 2,
+  REGION: 3,
+  COUNTRY_OFFICE: 4,
+  REPRESENTATIVE_OFFICE: 5
+};
+
 const PerAccountTab = props => {
   const [chosenCountry, setChosenCountry] = useState({ id: 0, society_name: '' });
 
@@ -22,11 +30,14 @@ const PerAccountTab = props => {
   };
 
   const countryOptions = [];
-  if (props.perForm.getPerCountries.data.results) {
-    props.perForm.getPerCountries.data.results.forEach(country => {
-      const societyName = country.society_name ? country.society_name : country.name + ' NS';
-      countryOptions.push(<option value={country.id} key={'persociety' + country.id}>{societyName}</option>);
-    });
+  const { results } = props.perForm.getPerCountries.data;
+  if (results) {
+    results
+      .filter(country => country.record_type === RESULT_TYPES.COUNTRY)
+      .forEach(country => {
+        const societyName = country.society_name ? country.society_name : country.name + ' NS';
+        countryOptions.push(<option value={country.id} key={'persociety' + country.id}>{societyName}</option>);
+      });
   }
 
   const formButtons = [
