@@ -5,6 +5,8 @@ import { englishForm as a32Form } from './../components/per-forms/form-data/a3-2
 import { englishForm as a4Form } from './../components/per-forms/form-data/a4/english-data';
 import { englishForm as a5Form } from './../components/per-forms/form-data/a5/english-data';
 
+const defaultComponent = [{id: '', name: '', cid: 0}];
+
 const components = {
   a1: [
     {id: 'c0epi', name: 'RC auxiliary role, Mandate and Law', cid: 0},
@@ -157,7 +159,12 @@ export function getPerComponent (code, questionId) {
 export function getShortComponent (code, questionId) {
   code = code.replace(/-/g, '_');
   questionId = questionId.split('q')[0];
-  return shortComponents[code].filter(question => question.id === questionId);
+  let selectedShortComponent = shortComponents[code].filter(question => question.id === questionId);
+  if (!selectedShortComponent.length) {
+    console.error(`Missing PER details for component ${code}, question ${questionId}`);
+    selectedShortComponent = defaultComponent;
+  }
+  return selectedShortComponent;
 }
 
 export function getAllComponents () {
