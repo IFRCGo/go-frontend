@@ -11,7 +11,7 @@ class ExplanationBubble extends React.Component {
         <div>
           <label className='form__label'>Last submitted phase</label>
           <dl className='legend__dl legend__dl--colors'>
-            <dt className='color color--orientation'>Green</dt>ß
+            <dt className='color color--orientation'>Green</dt>
             <dd>Orientation</dd>
             <dt className='color color--assessment'>Red</dt>
             <dd>Assessment</dd>
