@@ -48,8 +48,8 @@ export default class NationalSocietiesEngagedPer extends PureComponent {
     const charts = [];
 
     // Filters out data where 'region' is undefined.
-    this.preparedData = this.preparedData.filter(d => d.region)
-    
+    this.preparedData = this.preparedData.filter(d => d.region);
+
     this.preparedData.forEach((region) => {
       charts.push(
         <div key={'regionChart' + region.region.id} style={{float: 'left', width: '20%'}}>
