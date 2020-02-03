@@ -37,6 +37,7 @@ import {
 } from '../utils/utils/';
 
 import App from './app';
+import Breadcrumb from '../components/breadcrumb';
 import Fold from '../components/fold';
 import TabContent from '../components/tab-content';
 import ErrorPanel from '../components/error-panel';
@@ -455,6 +456,22 @@ class Emergency extends React.Component {
     this.setState({ subscribed: false });
   }
 
+  getBreadcrumbs () {
+    return [
+      {
+        'link': '/',
+        'title': 'Home'
+      },
+      {
+        'link': '/emergencies',
+        'title': 'Emergencies'
+      },
+      {
+        'title': get(this.props.event.data, 'name', 'Emergency')
+      }
+    ]
+  }
+
   renderContent () {
     const {
       fetched,
@@ -490,6 +507,7 @@ class Emergency extends React.Component {
     const selectedIndex = hashes.indexOf(this.props.location.hash) !== -1 ? hashes.indexOf(this.props.location.hash) : 0;
     return (
       <section className='inpage'>
+        <Breadcrumb crumbs={this.getBreadcrumbs()} />
         <Helmet>
           <title>IFRC Go - {get(data, 'name', 'Emergency')}</title>
         </Helmet>

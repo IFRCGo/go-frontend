@@ -1,0 +1,32 @@
+.breadcrumb-block {
+    .breadcrumb {
+      
+        &:first-child {
+          padding-left: 0;
+        }
+      
+        &:last-child {
+          padding-right: 0;
+        }
+
+        &:after {
+            content: '>';
+            padding: 0 0 0 ($global-spacing/2);
+        }
+
+        &:last-child:after {
+            content: '';
+        }
+    }          
+}
+
+.breadcrumb {
+  font-size: $font-size-sm;
+  padding: ($global-spacing/4);
+  margin: 0 0 ($global-spacing/4) 0;
+  display: inline-block;
+}
+
+span.breadcrumb {
+  font-weight: $base-font-bold;
+}
