@@ -9,7 +9,7 @@ class ExplanationBubble extends React.Component {
     return (
       <figcaption className='map-vis__legend map-vis__legend--bottom-right legend'>
         <div>
-          <label className='form__label'>Last submitted phase</label>
+          <label className='form__label'>Current PER phase</label>
           <dl className='legend__dl legend__dl--colors'>
             <dt className='color color--orientation'>Green</dt>
             <dd>Orientation</dd>
