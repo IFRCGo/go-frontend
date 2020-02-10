@@ -52,7 +52,7 @@ class HighlightedOperations extends React.Component {
       deployedPersonnel = 0;
       this.props.deployments.data.results
         .filter(deployment => {
-          return (deployment.type === 'heop' || deployment.type === 'rdrt' || deployment.type === 'fact') &&
+          return (deployment.type === 'heop' || deployment.type === 'rdrt' || deployment.type === 'fact' || deployment.type === 'rr') &&
             deployment.id === emergency.id;
         })
         .forEach(deployment => { deployedPersonnel += deployment.deployments; });
