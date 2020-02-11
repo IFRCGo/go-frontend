@@ -27,6 +27,12 @@ const typeOptions = [
   { value: 'fact', label: 'FACT' }
 ];
 
+// Should add the other types if needed
+// These types reference types defined in the backend models here: https://github.com/IFRCGo/go-api/blob/e92b0ceadd70297a574fe4410d76eb7bf8614411/deployments/models.py#L98-L106
+const typeLongNames = {
+  'rr': 'Rapid Response'
+};
+
 class PersonnelTable extends SFPComponent {
   constructor (props) {
     super(props);
@@ -155,7 +161,7 @@ class PersonnelTable extends SFPComponent {
         endDate: DateTime.fromISO(o.end_date).toISODate(),
         name: o.name,
         role: get(o, 'role', nope),
-        type: o.type.toUpperCase(),
+        type: o.type === 'rr' ? typeLongNames[o.type] : o.type.toUpperCase(),
         country: o.country_from ? <Link to={`/countries/${o.country_from.id}`} className='link--primary' title='View Country'>{o.country_from.society_name || o.country_from.name}</Link> : nope,
         deployed: o.deployment && o.deployment.country_deployed_to ? <Link to={`/countries/${o.deployment.country_deployed_to.id}`} className='link--primary' title='View Country'>{o.deployment.country_deployed_to.name}</Link> : nope,
         emer: o.deployment && o.deployment.event_deployed_to ? <Link to={`/emergencies/${o.deployment.event_deployed_to.id}`} className='link--primary' title='View Country'>{o.deployment.event_deployed_to.name}</Link> : nope
