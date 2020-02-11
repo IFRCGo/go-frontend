@@ -27,6 +27,12 @@ const typeOptions = [
   { value: 'fact', label: 'FACT' }
 ];
 
+// Should add the other types if needed
+// These types reference types defined in the backend models here: https://github.com/IFRCGo/go-api/blob/e92b0ceadd70297a574fe4410d76eb7bf8614411/deployments/models.py#L98-L106
+const typeLongNames = {
+  'rr': 'Rapid Response'
+};
+
 class PersonnelTable extends SFPComponent {
   constructor (props) {
     super(props);
@@ -148,11 +154,6 @@ class PersonnelTable extends SFPComponent {
         id: 'emer',
         label: <SortHeader id='emer' title='Emergency' sort={this.state.table.sort} onClick={''} /> // for filtering options check .../api/v2/personnel/?limit=2 - the Filters button, Ordering
       }];
-
-      // Should add the other types if needed
-      const typeLongNames = {
-        'rr': 'Rapid Response'
-      };
 
       const rows = data.results.map(o => ({
         id: o.id,
