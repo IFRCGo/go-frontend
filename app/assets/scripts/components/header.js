@@ -12,7 +12,7 @@ import HeaderRegionButton from './header-region-button';
 
 const noFilter = options => options;
 
-function getUriForType (type, id, data) {
+function getUriForType(type, id, data) {
   switch (type) {
     case 'region':
       return '/regions/' + id;
@@ -30,7 +30,7 @@ function getUriForType (type, id, data) {
 }
 
 class Header extends React.PureComponent {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       search: '',
@@ -55,11 +55,11 @@ class Header extends React.PureComponent {
     };
   }
 
-  onSelect ({value}) {
+  onSelect({ value }) {
     this.props.history.push(value);
   }
 
-  getOptions (input) {
+  getOptions(input) {
     return !input
       ? Promise.resolve({ options: [] })
       : request(`${api}api/v1/es_search/?keyword=${input}`)
@@ -78,7 +78,7 @@ class Header extends React.PureComponent {
         });
   }
 
-  render () {
+  render() {
     return (
       <div className='desktop__header'>
         {this.state.showBetaBanner && (
@@ -97,7 +97,7 @@ class Header extends React.PureComponent {
               <div className='page__headline'>
                 <h1 className='page__title'>
                   <Link to='/' title='Visit page'>
-                    <img src='/assets/graphics/layout/logo.png' alt='IFRC GO logo'/>
+                    <img src='/assets/graphics/layout/ifrc_logo_2020.svg' alt='IFRC GO logo' className="logo-main" />
                     <span>IFRC GO</span>
                   </Link>
                 </h1>

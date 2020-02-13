@@ -11,7 +11,7 @@ import { DateTime } from 'luxon';
 import { disasterType } from '../../utils/field-report-constants';
 import _find from 'lodash.find';
 class EmergencyMap extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       ready: false,
@@ -19,26 +19,26 @@ class EmergencyMap extends React.Component {
     };
   }
 
-  exportMap (country, disasterTypeName) {
-    this.setState({'isExporting': true});
+  exportMap(country, disasterTypeName) {
+    this.setState({ 'isExporting': true });
     const $container = document.getElementById('mapContainer');
     const $canvas = document.getElementsByClassName('mapboxgl-canvas')[0];
     const $expimg = document.getElementById('exportimage');
     $expimg.src = $canvas.toDataURL('png');
     $expimg.style.display = 'block';
     document.getElementsByClassName('mapboxgl-map')[0].style.visibility = 'hidden';
-    html2canvas($container, {useCORS: true}).then((renderedCanvas) => {
+    html2canvas($container, { useCORS: true }).then((renderedCanvas) => {
       startDownload(
         renderedCanvas,
         `${DateTime.local().toISODate()}-${disasterTypeName}-${country}.png`
       );
       $expimg.style.display = 'none';
       document.getElementsByClassName('mapboxgl-map')[0].style.visibility = 'visible';
-      this.setState({'isExporting': false});
+      this.setState({ 'isExporting': false });
     });
   }
 
-  setupData () {
+  setupData() {
     const {
       countries,
       districts
@@ -53,7 +53,7 @@ class EmergencyMap extends React.Component {
     ];
     const districtCodes = districts.map(d => d.code);
     const districtIds = districts.map(d => d.id);
-    const countryPolys = theMap.queryRenderedFeatures({'layers': ['country'], 'filter': countryFilter});
+    const countryPolys = theMap.queryRenderedFeatures({ 'layers': ['country'], 'filter': countryFilter });
     const geom = countryPolys[0].geometry;
     const bbox = turfBbox(geom);
     theMap.fitBounds(bbox);
@@ -84,13 +84,13 @@ class EmergencyMap extends React.Component {
     theMap.setLayoutProperty('admin1-country-selected', 'visibility', 'visible');
     theMap.setLayoutProperty('admin1-country-selected-boundaries', 'visibility', 'visible');
 
-    const disputedTerritoriesVisible = this.theMap.queryRenderedFeatures({layers: ['disputed_territories copy']}).length;
+    const disputedTerritoriesVisible = this.theMap.queryRenderedFeatures({ layers: ['disputed_territories copy'] }).length;
     if (disputedTerritoriesVisible) {
       this.setState({ disputedTerritoriesVisible: true });
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.mapLoaded = false;
     this.theMap = newMap(this.refs.map, 'mapbox://styles/go-ifrc/cjxa3k4cx39a21cqt9qilk9hp');
     this.theMap.on('load', () => {
@@ -100,7 +100,7 @@ class EmergencyMap extends React.Component {
     });
   }
 
-  render () {
+  render() {
     const {
       name,
       date,
@@ -110,7 +110,7 @@ class EmergencyMap extends React.Component {
     const exportStyle = {
       display: this.state.isExporting ? 'block' : 'none'
     };
-    const exportImageStyle = {width: '100%', height: 'auto', display: 'none'};
+    const exportImageStyle = { width: '100%', height: 'auto', display: 'none' };
 
     return (
       <div className='emergency-map'>
@@ -118,11 +118,11 @@ class EmergencyMap extends React.Component {
           <div className='row text-right'>
             <button className={c('button button--primary-bounded button--export global-margin-3-b', {
               disabled: !this.state.ready
-            })} onClick={this.exportMap.bind(this, countries[0].name, _find(disasterType, {value: String(disasterTypeCode)}).label)}>Export Map</button>
+            })} onClick={this.exportMap.bind(this, countries[0].name, _find(disasterType, { value: String(disasterTypeCode) }).label)}>Export Map</button>
           </div>
           <div className='map-container' id='mapContainer'>
             <div style={exportStyle} className='global-margin'>
-              <img className='' src='/assets/graphics/layout/logo.png' alt='IFRC GO logo'/>
+              <img className='' src='/assets/graphics/layout/ifrc_logo_2020.svg' alt='IFRC GO logo' />
               <h2 className='map__container__title'>{name}</h2>
               <div className=''>{DateTime.fromISO(date).toLocaleString(DateTime.DATE_FULL)}</div>
             </div>
@@ -154,8 +154,8 @@ class EmergencyMap extends React.Component {
                   </div>
                 </div>
               </figcaption>
-              <div className="map-vis__holder" ref='map'/>
-              <img id="exportimage" style={exportImageStyle} src='/assets/graphics/layout/logo.png' />
+              <div className="map-vis__holder" ref='map' />
+              <img id="exportimage" style={exportImageStyle} src='/assets/graphics/layout/ifrc_logo_2020.svg' />
             </figure>
             <p style={exportStyle} className='map__container__disclaimer'>The maps used do not imply the expresion of any opinion on the part of the International Federation of the Red Cross and Red Crescent Societies or National Societies concerning the legal status of a territory or of its authorities, Data sources: IFRC, OSM contributors, Mapbox.</p>
           </div>
