@@ -45,7 +45,7 @@ export default class PerForm extends React.Component {
       const filters = {};
       filters.user = this.props.user.data.id;
       filters.code = this.formCode;
-      filters.country = this.props.mode === 'edit' ? this.props.ns : this.props.nationalSociety;
+      filters.country = this.unifiedNs;
       this.props._getPerDraftDocument(filters);
     }
   }
@@ -179,7 +179,7 @@ export default class PerForm extends React.Component {
       let request = this.requestFactory.newFormRequest(this.formCode, this.formName, this.state.languageCode, this.nationalSociety);
       request = this.requestFactory.addAreaQuestionData(request);
       request = this.requestFactory.addComponentData(request);
-      request.country_id = this.country_id === undefined ? this.props.ns : request.country_id; // when submitting a draft it somehow didn't have the country_id anymore
+      request.country_id = this.country_id === undefined ? this.unifiedNs : request.country_id; // when submitting a draft it somehow didn't have the country_id anymore
       this.props._sendPerForm(request);
       showAlert('success', <p>PER form has been saved successfully!</p>, true, 2000);
       clearInterval(this.autosaveInterval);

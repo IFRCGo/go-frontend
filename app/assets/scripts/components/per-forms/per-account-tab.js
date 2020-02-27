@@ -32,12 +32,16 @@ const PerAccountTab = props => {
   const countryOptions = [];
   const { results } = props.perForm.getPerCountries.data;
   if (results) {
-    results
+    const filteredResults = results
       .filter(country => country.record_type === RESULT_TYPES.COUNTRY)
+    filteredResults
       .forEach(country => {
         const societyName = country.society_name ? country.society_name : country.name + ' NS';
         countryOptions.push(<option value={country.id} key={'persociety' + country.id}>{societyName}</option>);
       });
+    if (chosenCountry.id === 0) {
+      setChosenCountry({id: filteredResults[0].id, society_name: filteredResults[0].society_name})
+    }
   }
 
   const formButtons = [
