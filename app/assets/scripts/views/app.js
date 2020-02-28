@@ -1,6 +1,7 @@
 'use strict';
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
+import { ThroughProvider } from 'react-through';
 import c from 'classnames';
 
 import { environment } from '../config';
@@ -14,16 +15,18 @@ import SysAlerts from '../components/system-alerts';
 class App extends React.Component {
   render () {
     return (
-      <div className={c('page', this.props.className)}>
-        <GlobalLoading />
-        <Header />
-        <MobileHeader />
-        <main className='page__body' role='main'>
-          {this.props.children}
-        </main>
-        <SysAlerts />
-        <Footer/>
-      </div>
+      <ThroughProvider>
+        <div className={c('page', this.props.className)}>
+          <GlobalLoading />
+          <Header />
+          <MobileHeader />
+          <main className='page__body' role='main'>
+            {this.props.children}
+          </main>
+          <SysAlerts />
+          <Footer/>
+        </div>
+      </ThroughProvider>
     );
   }
 }

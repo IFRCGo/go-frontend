@@ -1,34 +1,20 @@
-import { Link } from 'react-router-dom';
 import React from 'react';
+import { BreadcrumbsItem } from 'react-breadcrumbs-dynamic';
+import { Route } from 'react-router-dom';
 
-/**
- * Renders the breadcrumb component
- * @param {Object} props
- * @param {Array<Object>} props.crumbs
- * @param {String} props.crumbs[].title - Title for breadcrumb 
- * @param {String} props.crumbs[].link? - (Optional) Link for breadcrumb
- */
-export default function Breadcrumb(props) {
-  const { crumbs } = props;
-  return (
-    <div className='breadcrumb-block row row--centered'>
-      { crumbs.map(renderCrumb) }
-    </div>
-  )
-}
+export const HomeBreadcrumb = (props) => (
+  <div>
+    <BreadcrumbsItem to='/'>Main Page</BreadcrumbsItem>
+    {props.children}
+    <Route exact path="/emergencies" component={Emergencies} />
+  </div>
 
-function renderCrumb(crumb) {
-  if (crumb.link) {
-    return (
-      <Link to={crumb.link} className='breadcrumb'>
-        { crumb.title }
-      </Link>
-    );
-  } else {
-    return (
-      <span className='breadcrumb'>
-        { crumb.title }
-      </span>      
-    );
-  }
-}
+);
+
+export const EmergencyBreadcrumb = (props) => (
+  <BreadcrumbsItem to='/emergencies'>Emergencies</BreadcrumbsItem>
+);
+
+export const AllEmergenciesBreadcrumb = (props) => (
+  <BreadcrumbsItem to='/emergencies/all'>Emergencies List</BreadcrumbsItem>
+);

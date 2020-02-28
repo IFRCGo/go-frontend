@@ -2,7 +2,8 @@
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
 import Select from 'react-select';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, withRouter, NavLink } from 'react-router-dom';
+import { Breadcrumbs } from 'react-breadcrumbs-dynamic';
 
 import { api, environment } from '../config';
 import { request } from '../utils/network';
@@ -98,7 +99,7 @@ class Header extends React.PureComponent {
                 <h1 className='page__title'>
                   <Link to='/' title='Visit page'>
                     <img src='/assets/graphics/layout/logo.png' alt='IFRC GO logo'/>
-                    <span>IFRC GO</span>
+                    <span>IFRC GO?>?></span>
                   </Link>
                 </h1>
               </div>
@@ -134,6 +135,14 @@ class Header extends React.PureComponent {
               </form>
             </div>
           </div>
+          <Breadcrumbs
+            separator={<b> / </b>}
+            item={NavLink}
+            finalItem={'b'}
+            finalProps={{
+              style: {color: 'red'}
+            }}
+          />
         </header>
       </div>
     );
