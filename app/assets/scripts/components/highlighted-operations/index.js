@@ -49,7 +49,7 @@ class HighlightedOperations extends React.Component {
     let deployedPersonnel = null;
 
     if (typeof this.props.deployments.data !== 'undefined' && Array.isArray(this.props.deployments.data.results)) {
-      deployedPersonnel = 0;
+      // deployedPersonnel = 0;
       this.props.deployments.data.results
         .filter(deployment => {
           return (deployment.type === 'heop' || deployment.type === 'rdrt' || deployment.type === 'fact' || deployment.type === 'rr') &&
@@ -59,7 +59,7 @@ class HighlightedOperations extends React.Component {
     }
 
     if (typeof this.props.eru.data !== 'undefined' && Array.isArray(this.props.eru.data.results)) {
-      deployedErus = 0;
+      // deployedErus = 0;
       this.props.eru.data.results
         .filter(eru => {
           return (typeof eru.event !== 'undefined' && eru.event !== null &&
