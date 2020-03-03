@@ -13,6 +13,7 @@ class MarkerLayerStylesheetFactory {
       property: 'phaseCode',
       type: 'categorical',
       stops: [
+        ['0', '#CCCCCC'],
         ['1', '#00845F'],
         ['2', '#BD001C'],
         ['3', '#2D5086'],
