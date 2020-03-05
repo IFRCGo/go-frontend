@@ -107,7 +107,7 @@ class FieldReportForm extends React.Component {
     if (this.props.report.fetching && !nextProps.report.fetching) {
       hideGlobalLoading();
       if (!nextProps.report.error) {
-        const prefillState = convertFieldReportToState(nextProps.report.data);
+        const prefillState = convertFieldReportToState(nextProps.report.data, this.state.data);
         this.setState({data: prefillState});
         const country = prefillState.country;
         if (country) this.updateDistricts(country);

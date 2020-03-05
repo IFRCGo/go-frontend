@@ -397,9 +397,11 @@ export function getInitialDataState () {
   };
 }
 
-export function convertFieldReportToState (fieldReport) {
+export function convertFieldReportToState (fieldReport, stateData) {
   let state = _cloneDeep(getInitialDataState());
-
+  state.actionsNatSoc = stateData.actionsNatSoc;
+  state.actionsFederation = stateData.actionsFederation;
+  state.actionsPns = stateData.actionsPns;
   // Process properties.
   state.countries = fieldReport.countries.map(o => ({
     label: o.name,
@@ -519,8 +521,7 @@ export function convertFieldReportToState (fieldReport) {
   get(fieldReport, 'actions_taken', []).forEach(action => {
     const dest = actionsMapping[action.organization];
     if (!dest) return;
-
-    const active = action.actions.map(o => o.id.toString());
+    const active = action.actions.map(o => Number(o.id));
     state[dest].description = action.summary;
     state[dest].options = state[dest].options.map(option => {
       if (active.indexOf(option.value) !== -1) {
