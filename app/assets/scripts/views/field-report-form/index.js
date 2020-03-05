@@ -575,7 +575,6 @@ class FieldReportForm extends React.Component {
         <React.Fragment>
           {
             fields.checkboxSections.map(section => {
-
               // We need the number of values to match the number of options
               // We filter out values so that values corresponds exactly to options
               // FIXME: perhaps this can be handled cleaner / somewhere else?
@@ -585,7 +584,7 @@ class FieldReportForm extends React.Component {
                 return {
                   value: o.value,
                   checked: values.options.find(v => v.value === o.value).checked
-                }
+                };
               });
               values.options = sectionValues;
 
