@@ -58,8 +58,9 @@ class FieldReport extends React.Component {
       ['Emergency Appeal', getResponseStatus(data, 'appeal')],
       ['RDRT/RITS', getResponseStatus(data, 'rdrt')],
       ['Rapid Response Personnel', getResponseStatus(data, 'fact')],
-      ['IFRC Staff', getResponseStatus(data, 'ifrc_staff')],
+      ['Emergency Response Units', getResponseStatus(data, 'ifrc_staff')],
       ['Forecast Based Response', getResponseStatus(data, 'forecast_based_response')]
+      ['Forecast Based Action', getResponseStatus(data, 'forecast_based_action')]
     ].filter(d => Boolean(d[1]));
 
     // Every response is either 0 (not planned) or null.
