@@ -295,7 +295,7 @@ class FieldReport extends React.Component {
                 <p className='inpage__note'>Last updated{data.user ? ` by ${data.user.username}` : null} on {lastTouchedAt}</p>
                 {this.renderNumericDetails(data)}
                 {this.renderPlannedResponse(data)}
-                <DisplaySection title='Description' inner={get(data, 'description', false)} />
+                <DisplaySection title={ status === 'EW' ? 'Risk Analysis' : 'Description' } inner={get(data, 'description', false)} />
                 <DisplaySection title={ status === 'EW' ? 'Potential Date of Impact' : 'Start Date' } inner={startDate} />
                 <DisplaySection title='Requests for Assistance'>
                   <p>
