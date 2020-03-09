@@ -144,7 +144,7 @@ export const drefDefinition = {
 export const appealDefinition = {
   1: 'Requested',
   2: 'Planned',
-  3: 'Active'
+  3: 'Launched'
 };
 
 export const bulletinDefinition = {

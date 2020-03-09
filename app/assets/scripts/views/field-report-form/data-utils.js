@@ -58,27 +58,27 @@ export function dataPathToDisplay (path, keyword) {
 
     // Step 5.
     'contactOriginator.name': 'Originator - Name',
-    'contactOriginator.role': 'Originator - Role',
+    'contactOriginator.title': 'Originator - Title',
     'contactOriginator.email': 'Originator - Email',
     'contactOriginator.phone': 'Originator - Phone',
     'contactPrimary.name': 'Primary Contact - Name',
-    'contactPrimary.role': 'Primary Contact - Role',
+    'contactPrimary.title': 'Primary Contact - Title',
     'contactPrimary.email': 'Primary Contact - Email',
     'contactPrimary.phone': 'Primary Contact - Phone',
     'contactNatSoc.name': 'National Society Contact - Name',
-    'contactNatSoc.role': 'National Society Contact - Role',
+    'contactNatSoc.title': 'National Society Contact - Title',
     'contactNatSoc.email': 'National Society Contact - Email',
     'contactNatSoc.phone': 'National Society Contact - Phone',
     'contactFederation.name': 'Federation Contact - Name',
-    'contactFederation.role': 'Federation Contact - Role',
+    'contactFederation.title': 'Federation Contact - Title',
     'contactFederation.email': 'Federation Contact - Email',
     'contactFederation.phone': 'Federation Contact - Phone',
     'contactMediaNatSoc.name': 'Media Contact in the National Society - Name',
-    'contactMediaNatSoc.role': 'Media Contact in the National Society - Role',
+    'contactMediaNatSoc.title': 'Media Contact in the National Society - Title',
     'contactMediaNatSoc.email': 'Media Contact in the National Society - Email',
     'contactMediaNatSoc.phone': 'Media Contact in the National Society - Phone',
     'contactMedia.name': 'Media Contact - Name',
-    'contactMedia.role': 'Media Contact - Role',
+    'contactMedia.title': 'Media Contact - Title',
     'contactMedia.email': 'Media Contact - Email',
     'contactMedia.phone': 'Media Contact - Phone'
   };
@@ -388,12 +388,12 @@ export function getInitialDataState () {
     eru: [{ type: undefined, status: undefined, units: undefined }],
 
     // Step 5
-    contactOriginator: { name: undefined, role: undefined, email: undefined, phone: undefined },
-    contactPrimary: { name: undefined, role: undefined, email: undefined, phone: undefined },
-    contactNatSoc: { name: undefined, role: undefined, email: undefined, phone: undefined },
-    contactFederation: { name: undefined, role: undefined, email: undefined, phone: undefined },
-    contactMediaNatSoc: { name: undefined, role: undefined, email: undefined, phone: undefined },
-    contactMedia: { name: undefined, role: undefined, email: undefined, phone: undefined }
+    contactOriginator: { name: undefined, title: undefined, email: undefined, phone: undefined },
+    contactPrimary: { name: undefined, title: undefined, email: undefined, phone: undefined },
+    contactNatSoc: { name: undefined, title: undefined, email: undefined, phone: undefined },
+    contactFederation: { name: undefined, title: undefined, email: undefined, phone: undefined },
+    contactMediaNatSoc: { name: undefined, title: undefined, email: undefined, phone: undefined },
+    contactMedia: { name: undefined, title: undefined, email: undefined, phone: undefined }
   };
 }
 
@@ -593,7 +593,7 @@ export function convertFieldReportToState (fieldReport, stateData) {
 
     state[dest] = {
       name: contact.name,
-      role: contact.title,
+      title: contact.title,
       email: contact.email,
       phone: contact.phone
     };
