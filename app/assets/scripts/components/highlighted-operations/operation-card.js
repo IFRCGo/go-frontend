@@ -24,7 +24,7 @@ const OperationCard = ({operation, calculateDeployedPersonnel}) => {
 
         <div className='card_box_container card_box_container--op'>
           <div className='card_box card_box_left card_box--op'>
-            <div className="card_box_no">{n(beneficiaries)}</div>
+            <div className="card_box_no">{beneficiaries && beneficiaries !== 0 ? n(beneficiaries) : '--'}</div>
             <span className='affected_population_icon'></span>
             <small className='heading-tiny'>Targeted Population</small>
           </div>
@@ -37,7 +37,7 @@ const OperationCard = ({operation, calculateDeployedPersonnel}) => {
 
         <div className='card_box_container card_box_container--op'>
           <div className='card_box card_box_left card_box--op'>
-            <div className="card_box_no">{requested !== null ? n(requested) : 0} CHF</div>
+            <div className="card_box_no">{requested && requested !== 0 ? `${n(requested)} CHF` : '--'}</div>
             <small className='heading-tiny'>Funding Requirements</small>
           </div>
           <div className='card_box card_box_left card_box--op'>
