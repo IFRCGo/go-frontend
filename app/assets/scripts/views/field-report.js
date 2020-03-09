@@ -59,7 +59,7 @@ class FieldReport extends React.Component {
       ['RDRT/RITS', getResponseStatus(data, 'rdrt')],
       ['Rapid Response Personnel', getResponseStatus(data, 'fact')],
       ['Emergency Response Units', getResponseStatus(data, 'ifrc_staff')],
-      ['Forecast Based Response', getResponseStatus(data, 'forecast_based_response')]
+      ['Forecast Based Response', getResponseStatus(data, 'forecast_based_response')],
       ['Forecast Based Action', getResponseStatus(data, 'forecast_based_action')]
     ].filter(d => Boolean(d[1]));
 
@@ -67,6 +67,7 @@ class FieldReport extends React.Component {
     if (!response.length) {
       return null;
     }
+
     return (
       <DisplaySection title='Planned International Response'>
         <dl className='dl-horizontal numeric-list'>
@@ -258,9 +259,15 @@ class FieldReport extends React.Component {
     if (!this.props.report.fetched || !data) {
       return null;
     }
-
+    const infoBulletinOptions = {
+      '0': 'No',
+      '1': 'Planned',
+      '2': 'Yes'
+    };
+    const infoBulletin = infoBulletinOptions[data.bulletin];
     const lastTouchedAt = DateTime.fromISO(data.updated_at || data.created_at).toISODate();
-
+    const status = this.getStatus();
+    const startDate = DateTime.fromISO(data.start_date).toISODate()
     return (
       <section className='inpage'>
         <Helmet>
@@ -289,6 +296,7 @@ class FieldReport extends React.Component {
                 {this.renderNumericDetails(data)}
                 {this.renderPlannedResponse(data)}
                 <DisplaySection title='Description' inner={get(data, 'description', false)} />
+                <DisplaySection title={ status === 'EW' ? 'Potential Date of Impact' : 'Start Date' } inner={startDate} />
                 <DisplaySection title='Requests for Assistance'>
                   <p>
                     <span>Government Requests International Assistance: </span>
@@ -299,6 +307,7 @@ class FieldReport extends React.Component {
                     <span>{yesno(get(data, 'ns_request_assistance'))}</span>
                   </p>
                 </DisplaySection>
+                <DisplaySection title='Information Bulletin Published' inner={ infoBulletin } />
                 {this.renderActionsTaken(data, 'NTLS', 'National Society')}
                 {this.renderActionsTaken(data, 'FDRN', 'IFRC')}
                 {this.renderActionsTaken(data, 'PNS', 'any other RCRC Movement actors') /* instead of PNS Red Cross, go-frontend/issues/822 */ }
