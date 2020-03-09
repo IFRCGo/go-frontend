@@ -267,7 +267,7 @@ class FieldReport extends React.Component {
     const infoBulletin = infoBulletinOptions[data.bulletin];
     const lastTouchedAt = DateTime.fromISO(data.updated_at || data.created_at).toISODate();
     const status = this.getStatus();
-    const startDate = DateTime.fromISO(data.start_date).toISODate()
+    const startDate = DateTime.fromISO(data.start_date).toISODate();
     return (
       <section className='inpage'>
         <Helmet>
