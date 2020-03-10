@@ -253,7 +253,7 @@ export default class PerForm extends React.Component {
         }
       }
 
-      if (this.state.epiComponent === 'yes' && typeof component.namespaces !== 'undefined' && component.namespaces !== null) {
+      if (this.state.epiComponent === 'yes' && typeof component.namespaces !== 'undefined' && component.namespaces !== null && component.epiComponent) {
         if (document.querySelectorAll('[name=\'c' + componentIndex + 'epi\']:checked').length < 1) {
           document.getElementById('container' + componentIndex + 'epi').style.backgroundColor = '#FEB8B8';
           if (formError.firstQuestionOffset === 0) {
