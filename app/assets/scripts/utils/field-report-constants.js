@@ -423,6 +423,8 @@ export const disasterType = [
   ...disasterTypeList,
 ];
 
+export const disasterTypes = listToMap(disasterTypeList, d => d.value, d => d.label);
+
 export const sources = [
   {
     label: 'National Society',
