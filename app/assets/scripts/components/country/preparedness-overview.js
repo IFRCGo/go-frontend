@@ -99,7 +99,7 @@ class PreparednessOverview extends React.Component {
             <div style={{marginBottom: '5px'}}>Focal point</div>
             <div style={{marginBottom: '5px'}}>Email</div>
           </div>
-          <div style={{width: '50%', float: 'left', textTransform: 'uppercase', fontWeight: 'bold', fontSize: '13px'}}>
+          <div style={{width: '50%', float: 'left', textTransform: 'uppercase', fontWeight: 'bold', fontSize: '13px', overflowWrap: 'break-word'}}>
             <div style={{marginBottom: '5px'}}>{focalPointNameString}</div>
             <div style={{marginBottom: '5px'}}>{focalPointEmailString}</div>
           </div>
