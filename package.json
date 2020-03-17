@@ -159,6 +159,7 @@
     "prop-types": "^15.6.0",
     "qs": "^6.5.1",
     "react": "^16.9.0",
+    "react-device-detect": "^1.11.14",
     "react-dom": "^16.9.0",
     "react-helmet": "^5.2.0",
     "react-markdown": "^3.3.4",

@@ -17,7 +17,8 @@ export default class DateFilterHeader extends React.PureComponent {
     this.resetDateStatus = this.resetDateStatus.bind(this);
   }
 
-  componentWillMount () {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount () {
     this.setState({
       startDate: this.props.filter.startDate,
       endDate: this.props.filter.endDate
@@ -96,7 +97,7 @@ if (environment !== 'production') {
   DateFilterHeader.propTypes = {
     id: T.string,
     title: T.string,
-    filter: T.oneOfType([T.string, T.number]),
+    filter: T.oneOfType([T.string, T.object]),
     onSelect: T.func,
     featureType: T.string
   };

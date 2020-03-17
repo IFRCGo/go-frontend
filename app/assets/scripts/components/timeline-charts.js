@@ -73,7 +73,7 @@ class TimelineCharts extends React.Component {
           <Line name='Appeals' type='monotone' dataKey='appeals.count' stroke='#C02C2C' />
           <Line name='DREFs' type='monotone' dataKey='drefs.count' stroke='#F39C12' />
           <Tooltip content={contentFormatter}/>
-          <Legend verticalAlign='bottom' iconType='circle' iconSize='10' />
+          <Legend verticalAlign='bottom' iconType='circle' iconSize={10} />
         </LineChart>
       </ResponsiveContainer>
     );
@@ -209,7 +209,7 @@ if (environment !== 'production') {
   TimelineCharts.propTypes = {
     _getAggregateAppeals: T.func,
     aggregate: T.object,
-    region: T.string
+    region: T.number
   };
 }
 // /////////////////////////////////////////////////////////////////// //

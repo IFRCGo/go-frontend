@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { environment } from '../../config';
+import { get } from '../../utils/utils';
 import { getFeaturedEmergencies, getFeaturedEmergenciesForRegion, getFeaturedEmergenciesDeployments, getDeploymentERU } from '../../actions';
 import BlockLoading from '../block-loading';
 import Fold from '../fold';
@@ -89,8 +90,12 @@ class HighlightedOperations extends React.Component {
           <div className={listStyle}>
             {operations.slice(0, 6).map(operation =>
               <OperationCard
-                operation={operation}
-                calculateDeployedPersonnel={this.calculateDeployedPersonnel}
+                key={operation.id}
+                operationId={operation.id}
+                operationName={operation.name}
+                emergencyDeployments={this.calculateDeployedPersonnel(operation)}
+                appeals={get(operation, 'appeals', [])}
+                lastUpdate={operation.updated_at}
               />
             )}
           </div>
@@ -111,7 +116,7 @@ if (environment !== 'production') {
     deployments: T.object,
     eru: T.object,
     opsType: T.string,
-    opsId: T.string
+    opsId: T.number
   };
 }
 
