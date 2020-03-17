@@ -135,14 +135,6 @@ class Header extends React.PureComponent {
               </form>
             </div>
           </div>
-          <Breadcrumbs
-            separator={<b> / </b>}
-            item={NavLink}
-            finalItem={'b'}
-            finalProps={{
-              style: {color: 'red'}
-            }}
-          />
         </header>
       </div>
     );

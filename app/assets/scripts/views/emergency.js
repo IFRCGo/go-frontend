@@ -6,6 +6,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { PropTypes as T } from 'prop-types';
 import _toNumber from 'lodash.tonumber';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import BreadCrumb from '../components/breadcrumb';
 
 import { Helmet } from 'react-helmet';
 
@@ -456,22 +457,6 @@ class Emergency extends React.Component {
     this.setState({ subscribed: false });
   }
 
-  getBreadcrumbs () {
-    return [
-      {
-        'link': '/',
-        'title': 'Home'
-      },
-      {
-        'link': '/emergencies',
-        'title': 'Emergencies'
-      },
-      {
-        'title': get(this.props.event.data, 'name', 'Emergency')
-      }
-    ]
-  }
-
   renderContent () {
     const {
       fetched,
@@ -510,6 +495,12 @@ class Emergency extends React.Component {
         <Helmet>
           <title>IFRC Go - {get(data, 'name', 'Emergency')}</title>
         </Helmet>
+        <BreadCrumb crumbs={[
+          {link: `/emergency/${get(this.props.event.data)}`, name: `${get(data, 'name', 'Emergency')}`},
+          {link: '/emergencies', name: 'Emergencies'},
+          {link: '/', name: 'Home'}
+        ]} />
+
         <header className='inpage__header'>
           <div className='inner'>
             <div className='inpage__headline'>

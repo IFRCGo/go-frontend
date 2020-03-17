@@ -1,7 +1,6 @@
 'use strict';
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { HomeBreadcrumb } from '../components/breadcrumb';
 import App from './app';
 import PresentationDash from '../components/connected/presentation-dash';
 import AlertsTable from '../components/connected/alerts-table';
@@ -12,7 +11,6 @@ class Home extends React.Component {
     return (
       <App className='page--homepage'>
         <section className='inpage'>
-          <HomeBreadcrumb />
           <Helmet>
             <title>IFRC Go - Home</title>
           </Helmet>
