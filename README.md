@@ -70,12 +70,13 @@ The site will automatically refresh since it is bundled with livereload.
 
 ## Deploy a branch to surge.sh for testing and preview
 We use surge.sh to deploy directly from a branch to test new features and fixes. To do this:
-* Install surge `npm install --global surge`
 * Build `yarn build-staging`. You'll need to login to a surge account if this is the first you are running. You can create an account from the CLI.
 * Deploy `yarn deploy-staging`
 
 Once the testing is over, remember to teardown:
 * `yarn teardown-surge`
+
+If it says you don't have permissions to deploy, it likely means someone has deployed this branch already. You can chose to create another URL, or create a new branch, or get in touch with that person.
 
 ## Prepare to deploy for production
 To prepare the app for deployment run:
