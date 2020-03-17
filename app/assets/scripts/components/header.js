@@ -99,7 +99,7 @@ class Header extends React.PureComponent {
                 <h1 className='page__title'>
                   <Link to='/' title='Visit page'>
                     <img src='/assets/graphics/layout/logo.png' alt='IFRC GO logo'/>
-                    <span>IFRC GO?>?></span>
+                    <span>IFRC GO</span>
                   </Link>
                 </h1>
               </div>

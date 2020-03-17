@@ -3,7 +3,6 @@ import * as url from 'url';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
-import { BreadcrumbsItem } from 'react-breadcrumbs-dynamic';
 import { PropTypes as T } from 'prop-types';
 import _toNumber from 'lodash.tonumber';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -38,7 +37,6 @@ import {
 } from '../utils/utils/';
 
 import App from './app';
-import Breadcrumb from '../components/breadcrumb';
 import Fold from '../components/fold';
 import TabContent from '../components/tab-content';
 import ErrorPanel from '../components/error-panel';
@@ -508,7 +506,6 @@ class Emergency extends React.Component {
     const selectedIndex = hashes.indexOf(this.props.location.hash) !== -1 ? hashes.indexOf(this.props.location.hash) : 0;
     return (
       <section className='inpage'>
-        <BreadcrumbsItem to='/emergencies'>Emergencies</BreadcrumbsItem>
         <Helmet>
           <title>IFRC Go - {get(data, 'name', 'Emergency')}</title>
         </Helmet>
