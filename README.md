@@ -67,6 +67,17 @@ The system will watch files and execute tasks whenever one of them changes.
 The site will automatically refresh since it is bundled with livereload.
 
 # Deployment
+
+## Deploy a branch to surge.sh for testing and preview
+We use surge.sh to deploy directly from a branch to test new features and fixes. To do this:
+* Install surge `npm install --global surge`
+* Build `yarn build-staging`. You'll need to login to a surge account if this is the first you are running. You can create an account from the CLI.
+* Deploy `yarn deploy-staging`
+
+Once the testing is over, remember to teardown:
+* `yarn teardown-surge`
+
+## Prepare to deploy for production
 To prepare the app for deployment run:
 
 ```
