@@ -61,7 +61,8 @@ class ExportButton extends React.Component {
     return filename + postfix + extension;
   }
 
-  componentWillReceiveProps (newProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps (newProps) {
     if (this.props.csv.fetching && !newProps.csv.fetching && !newProps.csv.error) {
       let firstNewLine = newProps.csv.data.indexOf('\n');
       let firstRow = this.replaceColumnNames(newProps.csv.data);

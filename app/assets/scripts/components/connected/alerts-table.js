@@ -72,7 +72,8 @@ class AlertsTable extends SFPComponent {
     this.requestResults(this.props);
   }
 
-  componentWillReceiveProps (newProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps (newProps) {
     if (newProps.limit !== this.props.limit) {
       this.requestResults(newProps);
     }

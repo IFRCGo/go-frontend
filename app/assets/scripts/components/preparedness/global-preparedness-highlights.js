@@ -22,7 +22,7 @@ export default class GlobalPreparednessHighlights extends React.Component {
       const highPerformingComponents = [];
 
       this.props.data.data.results.forEach(result => {
-        const correspondingComponent = getPerComponent(result.code, result.question_id)[0];
+        const correspondingComponent = getPerComponent(result.code, result.question_id);
         if (typeof components[correspondingComponent.cid] === 'undefined') {
           components[correspondingComponent.cid] = {name: correspondingComponent.name, count: 1};
         } else {

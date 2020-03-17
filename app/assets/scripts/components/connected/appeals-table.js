@@ -50,7 +50,8 @@ class AppealsTable extends SFPComponent {
     this.props._getAppealsList();
   }
 
-  componentWillReceiveProps (newProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps (newProps) {
     let shouldMakeNewRequest = false;
     ['limit', 'country', 'region', 'atype', 'record'].forEach(prop => {
       if (newProps[prop] !== this.props[prop]) {
@@ -285,11 +286,11 @@ if (environment !== 'production') {
   AppealsTable.propTypes = {
     _getAppeals: T.func,
     appeals: T.object,
-    appealsList: T.func,
+    appealsList: T.object,
 
     limit: T.number,
     country: T.number,
-    region: T.number,
+    region: T.string,
     atype: T.string,
     record: T.string,
 

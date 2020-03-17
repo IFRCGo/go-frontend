@@ -193,7 +193,7 @@ if (environment !== 'production') {
 }
 
 const renderEpiComponent = (component, props, componentIndex) => {
-  if (props.state.epiComponent === 'yes' && typeof component.namespaces !== 'undefined' && component.namespaces !== null) {
+  if (props.state.epiComponent === 'yes' && typeof component.namespaces !== 'undefined' && component.namespaces !== null && component.epiComponent) {
     const {nsConsiderationHeader, nsConsiderationList, nsTitle, nsAnswers} = component.epiComponent;
     return (
       <div key={'container' + componentIndex + 'epi'} id={'container' + componentIndex + 'epi'} className='form__group'>
