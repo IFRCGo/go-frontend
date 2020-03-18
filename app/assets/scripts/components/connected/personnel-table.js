@@ -24,7 +24,8 @@ const typeOptions = [
   { value: 'all', label: 'All' },
   { value: 'rdrt', label: 'RDRT/RIT' },
   { value: 'heop', label: 'HEOP' },
-  { value: 'fact', label: 'FACT' }
+  { value: 'fact', label: 'FACT' },
+  { value: 'rr', label: 'Rapid Response' }
 ];
 
 // Should add the other types if needed
