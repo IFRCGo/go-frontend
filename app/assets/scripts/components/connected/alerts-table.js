@@ -23,7 +23,8 @@ const alertTypes = {
   2: 'ERU',
   3: 'DHEOps',
   4: 'HEOps',
-  5: 'SURGE'
+  5: 'SURGE',
+  6: 'Rapid Response'
 };
 
 const typeOptions = [{value: 'all', label: 'All'}].concat(Object.keys(alertTypes).map(d => ({
