@@ -20,6 +20,8 @@
     "serve": "NODE_ENV=development gulp collecticons && NODE_ENV=development gulp serve",
     "build-staging": "NODE_ENV=staging gulp",
     "build-prod": "NODE_ENV=production gulp",
+    "deploy-surge": "branch=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD); surge -p dist/ -d https://ifrc-go-${branch////-}.surge.sh",
+    "teardown-surge": "branch=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD); surge teardown https://ifrc-go-${branch////-}.surge.sh",
     "deploy-staging": "AZURE_CONNECTIONS_STRING=$staging_connection_string node .build_scripts/az-upload.js ./dist",
     "deploy-prod": "AZURE_CONNECTIONS_STRING=$production_connection_string node .build_scripts/az-upload.js ./dist",
     "lint": "eslint app/assets/scripts/ --ext .js",
@@ -119,6 +121,7 @@
     "node-sass": "^4.6.0",
     "postcss-modules": "^1.4.1",
     "require-globify": "^1.4.1",
+    "surge": "^0.21.3",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.11.1"
