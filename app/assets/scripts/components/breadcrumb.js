@@ -1,4 +1,5 @@
 import React from 'react';
+import { PropTypes as T } from 'prop-types';
 import { BreadcrumbsItem, Breadcrumbs } from 'react-breadcrumbs-dynamic';
 import { NavLink } from 'react-router-dom';
 
@@ -19,3 +20,7 @@ export default function BreadCrumb ({crumbs}) {
     </React.Fragment>
   );
 }
+
+BreadCrumb.propTypes = {
+  crumbs: T.array
+};

@@ -2,8 +2,7 @@
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
 import Select from 'react-select';
-import { Link, withRouter, NavLink } from 'react-router-dom';
-import { Breadcrumbs } from 'react-breadcrumbs-dynamic';
+import { Link, withRouter } from 'react-router-dom';
 
 import { api, environment } from '../config';
 import { request } from '../utils/network';
