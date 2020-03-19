@@ -10,12 +10,12 @@ import FieldReportsTable from '../components/connected/field-reports-table';
 import EmergenciesDash from '../components/connected/emergencies-dash';
 import EmergenciesTable from '../components/connected/emergencies-table';
 
-import { getLast3MonthsEmergencies, getAggregateEmergencies } from '../actions';
+import { getLastMonthsEmergencies, getAggregateEmergencies } from '../actions';
 import { environment } from '../config';
 
 class Emergencies extends React.Component {
   componentDidMount () {
-    this.props._getLast3MonthsEmergencies();
+    this.props._getLastMonthsEmergencies();
     this.props._getAggregateEmergencies(DateTime.local().minus({months: 11}).startOf('day').toISODate(), 'month');
   }
 
@@ -52,7 +52,7 @@ class Emergencies extends React.Component {
 
 if (environment !== 'production') {
   Emergencies.propTypes = {
-    _getLast3MonthsEmergencies: T.func,
+    _getLastMonthsEmergencies: T.func,
     _getAggregateEmergencies: T.func,
     lastMonth: T.object,
     aggregate: T.object
@@ -69,7 +69,7 @@ const selector = (state) => ({
 
 const dispatcher = (dispatch) => ({
   _getAggregateEmergencies: (...args) => dispatch(getAggregateEmergencies(...args)),
-  _getLast3MonthsEmergencies: () => dispatch(getLast3MonthsEmergencies())
+  _getLastMonthsEmergencies: () => dispatch(getLastMonthsEmergencies())
 });
 
 export default connect(selector, dispatcher)(Emergencies);
