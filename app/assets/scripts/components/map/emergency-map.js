@@ -122,7 +122,7 @@ class EmergencyMap extends React.Component {
           </div>
           <div className='map-container' id='mapContainer'>
             <div style={exportStyle} className='global-margin'>
-              <img className='' src='/assets/graphics/layout/ifrc_logo_2020.svg' alt='IFRC GO logo'/>
+              <img className='' src='/assets/graphics/layout/logo_2020.png' alt='IFRC GO logo'/>
               <h2 className='map__container__title'>{name}</h2>
               <div className=''>{DateTime.fromISO(date).toLocaleString(DateTime.DATE_FULL)}</div>
             </div>
@@ -155,7 +155,7 @@ class EmergencyMap extends React.Component {
                 </div>
               </figcaption>
               <div className="map-vis__holder" ref='map'/>
-              <img id="exportimage" style={exportImageStyle} src='/assets/graphics/layout/ifrc_logo_2020.svg'/>
+              <img id="exportimage" style={exportImageStyle} src='/assets/graphics/layout/logo_2020.png'/>
             </figure>
             <p style={exportStyle} className='map__container__disclaimer'>The maps used do not imply the expresion of any opinion on the part of the International Federation of the Red Cross and Red Crescent Societies or National Societies concerning the legal status of a territory or of its authorities, Data sources: IFRC, OSM contributors, Mapbox.</p>
           </div>

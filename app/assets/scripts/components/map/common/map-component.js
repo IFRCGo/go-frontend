@@ -108,9 +108,9 @@ export default class MapComponent extends React.Component {
           <span style={{color: '#BC2C2A', fontSize: '30px', paddingLeft: '20px'}}>{this.props.downloadedHeaderTitle}</span>
           <span style={{color: '#BC2C2A', fontSize: '12px', paddingLeft: '10px'}}>({formatDate(currentDate)})</span>
           <div style={{float: 'right', width: '375px', marginRight: '20px'}}>
-            <img src="/assets/graphics/layout/ifrc_logo_2020.svg" alt="IFRC GO logo" style={{width: '375px', height: '56px'}} />
+            <img src="/assets/graphics/layout/logo_2020.png" alt="IFRC GO logo" style={{width: '375px', height: '56px'}} />
           </div>
-          <img id="exportimage" style={exportImageStyle} src='/assets/graphics/layout/ifrc_logo_2020.svg' />
+          <img id="exportimage" style={exportImageStyle} src='/assets/graphics/layout/logo_2020.png' />
         </div>
       </figure>
     );
