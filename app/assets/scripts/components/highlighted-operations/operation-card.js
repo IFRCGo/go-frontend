@@ -1,30 +1,26 @@
 import React from 'react';
-import { get } from '../../utils/utils';
 import { Link } from 'react-router-dom';
 import { environment } from '../../config';
 import { PropTypes } from 'prop-types';
 import { formatDate, percent, round, commaSeparatedNumber as n } from '../../utils/format';
 import Progress from './../progress-labeled';
 
-const OperationCard = ({operation, calculateDeployedPersonnel}) => {
-  const { id, name } = operation;
-  const appeals = get(operation, 'appeals', []);
+const OperationCard = ({operationId, operationName, emergencyDeployments, appeals, lastUpdate}) => {
   const beneficiaries = appeals.reduce((acc, curr) => acc + curr.num_beneficiaries, 0);
   const requested = appeals.reduce((acc, curr) => acc + Number(curr.amount_requested), 0);
   const funded = appeals.reduce((acc, curr) => acc + Number(curr.amount_funded), 0);
-  const emergencyDeployments = calculateDeployedPersonnel(operation);
 
   return (
-    <div className='key-emergencies-item' key={id}>
-      <Link to={`/emergencies/${id}`}>
+    <div className='key-emergencies-item' key={operationId}>
+      <Link to={`/emergencies/${operationId}`}>
         <div className="card_box card_box_left">
-          <h2 className='card__title'>{ name.length > 30 ? name.slice(0, 30) + '...' : name }</h2>
-          <small className='last_updated'>Last updated: {formatDate(operation.updated_at)}</small>
+          <h2 className='card__title'>{ operationName.length > 30 ? operationName.slice(0, 30) + '...' : operationName }</h2>
+          <small className='last_updated'>Last updated: {formatDate(lastUpdate)}</small>
         </div>
 
         <div className='card_box_container card_box_container--op'>
           <div className='card_box card_box_left card_box--op'>
-            <div className="card_box_no">{n(beneficiaries)}</div>
+            <div className="card_box_no">{beneficiaries && beneficiaries !== 0 ? n(beneficiaries) : '--'}</div>
             <span className='affected_population_icon'></span>
             <small className='heading-tiny'>Targeted Population</small>
           </div>
@@ -37,7 +33,7 @@ const OperationCard = ({operation, calculateDeployedPersonnel}) => {
 
         <div className='card_box_container card_box_container--op'>
           <div className='card_box card_box_left card_box--op'>
-            <div className="card_box_no">{requested !== null ? n(requested) : 0} CHF</div>
+            <div className="card_box_no">{requested && requested !== 0 ? `${n(requested)} CHF` : '--'}</div>
             <small className='heading-tiny'>Funding Requirements</small>
           </div>
           <div className='card_box card_box_left card_box--op'>
@@ -63,7 +59,14 @@ export default OperationCard;
 
 if (environment !== 'production') {
   OperationCard.propTypes = {
-    operation: PropTypes.object,
-    calculateDeployedPersonnel: PropTypes.func
+    operationId: PropTypes.number,
+    operationName: PropTypes.string,
+    emergencyDeployments: PropTypes.shape({
+      deployedErus: PropTypes.number,
+      deployedPersonnel: PropTypes.number,
+    }),
+    lastUpdate: PropTypes.string,
+    appeals: PropTypes.array,
+
   };
 }

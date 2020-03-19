@@ -56,7 +56,8 @@ class CountryMap extends React.Component {
     }
   }
 
-  componentWillReceiveProps ({ operations, deployments }) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps ({ operations, deployments }) {
     if (operations && !this.props.operations.fetched && operations.fetched && !operations.error) {
       this.setMarkerLayers(operations);
     }

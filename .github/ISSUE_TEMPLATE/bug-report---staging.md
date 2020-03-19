@@ -13,7 +13,7 @@ assignees: ''
 ## Steps to reproduce
 *If you can reliably reproduce the issue, please list the steps taken to do so. (Go to this URL..., click on..., Scroll down to..., See error)*
 
-*If applicable, add screenshots to help explain your problem.
+*If applicable, add screenshots to help explain your problem.*
 
 ## Expected behaviour
 *Please describe how this feature should be working.*

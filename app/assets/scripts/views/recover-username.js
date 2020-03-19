@@ -26,7 +26,8 @@ class RecoverUsername extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps (nextProps) {
     if (this.props.email.fetching && !nextProps.email.fetching) {
       hideGlobalLoading();
       showAlert('success', <p>If the given email address exists here, you will find an email in your mailbox...</p>, true, 3000);

@@ -4,12 +4,15 @@ import {
   _cs,
   addSeparator,
 } from '@togglecorp/fujs';
+import memoize from 'memoize-one';
 
 import {
   programmeTypes,
   sectors,
   statuses,
 } from '../../utils/constants';
+
+import FormattedDate from '../../components/formatted-date';
 
 export default class ProjectListTable extends React.PureComponent {
   constructor (props) {
@@ -23,6 +26,10 @@ export default class ProjectListTable extends React.PureComponent {
       {
         key: 'end_date',
         label: 'End date',
+      },
+      {
+        key: 'name',
+        label: 'Project name',
       },
       {
         key: 'reporting_ns',
@@ -58,23 +65,52 @@ export default class ProjectListTable extends React.PureComponent {
         modifier: d => statuses[d.status],
       },
       {
+        key: 'modified_at',
+        label: 'Last updated',
+        modifier: d => <FormattedDate value={d['modified_at']} />,
+      },
+      {
         key: 'actions',
         label: 'Actions',
         modifier: (d) => (
-          (this.props.user && this.props.user.id)
-            ? (
+          <React.Fragment>
+            { this.props.isCountryAdmin && (
               <button
-                className='button button--secondary-bounded'
+                className='button button--primary-bounded'
                 onClick={() => this.props.onEditButtonClick(d)}
               >
                 Edit
               </button>
-            )
-            : null
+            )}
+            <button
+              className='button button--secondary-bounded'
+              onClick={() => this.props.onDetailsButtonClick(d)}
+            >
+              Details
+            </button>
+          </React.Fragment>
         ),
       },
     ];
   }
+
+  getShouldShowAddButton = memoize((user, countryId) => {
+    if (!user || !user.id || !countryId) {
+      return false;
+    }
+
+    if (!user.is_admin_for_countries || user.is_admin_for_countries.length === 0) {
+      return false;
+    }
+
+    const countryIdIndex = user.is_admin_for_countries.findIndex(d => String(d) === String(countryId));
+
+    if (countryIdIndex !== -1) {
+      return true;
+    }
+
+    return false;
+  })
 
   render () {
     const {

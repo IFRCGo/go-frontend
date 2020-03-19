@@ -53,6 +53,11 @@ export function showUsername (email) {
   return postJSON('show_username', SHOW_USERNAME, { email });
 }
 
+export const GET_ME = 'GET_ME';
+export const getMe = () => (
+  fetchJSON('api/v2/user/me/', GET_ME, withToken())
+);
+
 export const GET_PROJECTS = 'GET_PROJECTS';
 export function getProjects (countryId, filterValues) {
   const filters = {
@@ -241,8 +246,11 @@ export function getEventById (id) {
 }
 
 export const GET_EVENT_LIST = 'GET_EVENT_LIST';
-export function getEventList () {
-  const query = { limit: 9999 };
+export function getEventList (countryId) {
+  const query = {
+    countries__in: countryId,
+    limit: 9999,
+  };
   const q = buildAPIQS(query);
   return fetchJSON(`api/v2/event/mini/?${q}`, GET_EVENT_LIST, withToken());
 }

@@ -33,7 +33,8 @@ class Login extends React.Component {
     showGlobalLoading();
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps (nextProps) {
     if (this.props.user.fetching && !nextProps.user.fetching) {
       hideGlobalLoading();
       if (!nextProps.user.error) {

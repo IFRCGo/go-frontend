@@ -9,7 +9,11 @@ class RawInput extends React.PureComponent {
     const { onChange } = this.props;
 
     if (onChange) {
-      onChange(value);
+      if (value === '') {
+        onChange(undefined);
+      } else {
+        onChange(value);
+      }
     }
   }
 

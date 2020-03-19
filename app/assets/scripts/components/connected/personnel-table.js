@@ -24,7 +24,8 @@ const typeOptions = [
   { value: 'all', label: 'All' },
   { value: 'rdrt', label: 'RDRT/RIT' },
   { value: 'heop', label: 'HEOP' },
-  { value: 'fact', label: 'FACT' }
+  { value: 'fact', label: 'FACT' },
+  { value: 'rr', label: 'Rapid Response' }
 ];
 
 // Should add the other types if needed
@@ -56,7 +57,8 @@ class PersonnelTable extends SFPComponent {
     this.requestResults(this.props);
   }
 
-  componentWillReceiveProps (newProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps (newProps) {
     let shouldMakeNewRequest = false;
     ['limit', 'emergency'].forEach(prop => {
       if (newProps[prop] !== this.props[prop]) {
@@ -152,7 +154,7 @@ class PersonnelTable extends SFPComponent {
       },
       {
         id: 'emer',
-        label: <SortHeader id='emer' title='Emergency' sort={this.state.table.sort} onClick={''} /> // for filtering options check .../api/v2/personnel/?limit=2 - the Filters button, Ordering
+        label: <SortHeader id='emer' title='Emergency' sort={this.state.table.sort} onClick={() => {}} /> // for filtering options check .../api/v2/personnel/?limit=2 - the Filters button, Ordering
       }];
 
       const rows = data.results.map(o => ({

@@ -25,7 +25,7 @@ assignees: ''
 *How many users does this incident/problem affect?  e.g. all users; a majority of users; those submitting field reports; anyone looking at the xxx page, individual user*
 
 ## Severity
-*To what extent is this problem affecting the business process/work of those impacted?  e.g. it prevents those impacted from using the system at all, there is a functional impact to a field operation; minimal impact as it is a cosmetic issue.
+*To what extent is this problem affecting the business process/work of those impacted?  e.g. it prevents those impacted from using the system at all, there is a functional impact to a field operation; minimal impact as it is a cosmetic issue.*
 
 ## Is there a workaround?
 *e.g. Users can contact IM for a manual update*
