@@ -30,6 +30,7 @@ import perForm from './per-form';
 import subscriptions from './subscriptions';
 import projects from './projects.js';
 import projectForm from './project-form.js';
+import projectDelete from './project-delete.js';
 import countryOverview from './country-overview.js';
 import me from './me.js';
 
@@ -63,6 +64,7 @@ export const reducers = {
   subscriptions,
   projects,
   projectForm,
+  projectDelete,
   countryOverview,
   me,
 };
