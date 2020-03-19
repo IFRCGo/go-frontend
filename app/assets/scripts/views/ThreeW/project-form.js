@@ -88,7 +88,7 @@ class ProjectForm extends React.PureComponent {
     this.schema = {
       fields: {
         budget_amount: [requiredCondition],
-        country: [],
+        project_country: [],
         event: [],
         dtype: [],
         project_district: [requiredCondition],
@@ -117,7 +117,7 @@ class ProjectForm extends React.PureComponent {
     this.state = {
       faramValues: {
         budget_amount: projectData.budget_amount,
-        country: props.countryId,
+        project_country: props.countryId,
         event: projectData.event,
         dtype: projectData.dtype,
         project_district: projectData.project_district ? projectData.project_district : 'all',
@@ -232,12 +232,12 @@ class ProjectForm extends React.PureComponent {
       faramValues: oldFaramValues,
     } = this.state;
 
-    if (oldFaramValues.country !== faramValues.country) {
-      this.props._getDistricts(faramValues.country);
+    if (oldFaramValues.project_country !== faramValues.project_country) {
+      this.props._getDistricts(faramValues.project_country);
       this.setState({
         faramValues: {
           ...faramValues,
-          project_district: undefined,
+          project_district: 'all',
         },
         faramErrors,
       });
@@ -254,10 +254,13 @@ class ProjectForm extends React.PureComponent {
       this.props._postProject({
         id: this.props.projectData.id,
         ...faramValues,
-        project_district: faramValues.project_district === 'all' ? undefined : faramValues.project_district,
+        project_district: faramValues.project_district === 'all' ? null : faramValues.project_district,
       });
     } else {
-      this.props._postProject(faramValues);
+      this.props._postProject({
+        ...faramValues,
+        project_district: faramValues.project_district === 'all' ? null : faramValues.project_district,
+      });
     }
   }
 
@@ -307,12 +310,12 @@ class ProjectForm extends React.PureComponent {
       faramErrors,
     } = this.state;
 
-    const districtOptions = this.getDistrictOptions(districts, faramValues.country);
+    const districtOptions = this.getDistrictOptions(districts, faramValues.project_country);
     const currentOperationOptions = this.getCurrentOperationOptions(eventList);
 
     const fetchingCountries = countries && countries.fetching;
     const shouldDisableCountryInput = fetchingCountries || true;
-    const fetchingDistricts = districts && districts[faramValues.country] && districts[faramValues.country].fetching;
+    const fetchingDistricts = districts && districts[faramValues.project_country] && districts[faramValues.project_country].fetching;
     const shouldDisableDistrictInput = fetchingCountries || fetchingDistricts;
     const fetchingEvents = eventList && eventList.fetching;
     const shouldDisableCurrentOperation = fetchingEvents;
@@ -356,7 +359,7 @@ class ProjectForm extends React.PureComponent {
           title='Country and region / province* '
         >
           <SelectInput
-            faramElementName='country'
+            faramElementName='project_country'
             label='Country'
             className='project-form-select'
             options={countryOptions}

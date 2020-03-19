@@ -786,6 +786,13 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
+"@babel/runtime@^7.7.7":
+  version "7.8.7"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.8.7.tgz#8fefce9802db54881ba59f90bb28719b4996324d"
+  integrity sha512-+AATMUFppJDw6aiR5NVPHqIQBlV/Pj8wY/EZH+lmvRdUo9xBaz/rF3alAwFJQavvKfeOlPE7oaaDHVbcySbCsg==
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
 "@babel/template@^7.7.4":
   version "7.7.4"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.7.4.tgz#428a7d9eecffe27deac0a98e23bf8e3675d2a77b"
@@ -913,15 +920,17 @@
     memoize-one "^5.0.5"
     prop-types "^15.7.2"
 
-"@togglecorp/fujs@1.8.1-beta.0":
-  version "1.8.1-beta.0"
-  resolved "https://registry.yarnpkg.com/@togglecorp/fujs/-/fujs-1.8.1-beta.0.tgz#9e4f65671e8bedc809d9e6546c839a20832859fa"
-  integrity sha512-klwYnU5iDr3H253C61rMq1lEHLnequOKRojtwSi35Ulf8FT7x35RTcCYhrlECbl6HBVcQNUQtlg9COsjejDW/w==
-
 "@togglecorp/fujs@^1.8.0":
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/@togglecorp/fujs/-/fujs-1.8.1.tgz#5a2933a45b07fc2c9587111ef6e81e1bad3a1ac4"
   integrity sha512-Iy4+8QjhTfwz6p8lTAaA0dBEDRm6umW4EgeiMiRg/fKLfgwNdiJBGn4hp77sRBqxE9OZWusNDumLLo2DOlQGEQ==
+
+"@togglecorp/fujs@^1.9.0":
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/@togglecorp/fujs/-/fujs-1.9.0.tgz#4eaa76021a150c651c580562ff8cf09aed89b558"
+  integrity sha512-4DmIMMK+W/rxzAm+IQvdo2MGKQsj/8ViaT9K6UIpkHdullu5EINZuDkttLMvopeV6YyDj1YseOz8BLw/3Nte2A==
+  dependencies:
+    "@babel/runtime" "^7.7.7"
 
 "@turf/bbox@^6.0.1":
   version "6.0.1"
@@ -9251,6 +9260,11 @@ regenerator-runtime@^0.13.2:
   version "0.13.3"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.3.tgz#7cf6a77d8f5c6f60eb73c5fc1955b2ceb01e6bf5"
   integrity sha512-naKIZz2GQ8JWh///G7L3X6LaQUAMp2lvb1rvwwsURe/VXwD6VMfr+/1NuNw3ag8v2kY1aQ/go5SNn79O9JU7yw==
+
+regenerator-runtime@^0.13.4:
+  version "0.13.5"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.5.tgz#d878a1d094b4306d10b9096484b33ebd55e26697"
+  integrity sha512-ZS5w8CpKFinUzOwW3c83oPeVXoNsrLsaCoLtJvAClH135j/R77RuymhiSErhm2lKcwSCIpmvIWSbDkIfAqKQlA==
 
 regenerator-transform@^0.14.0:
   version "0.14.1"
