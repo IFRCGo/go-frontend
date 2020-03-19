@@ -96,6 +96,7 @@ export default class ThreeW extends React.PureComponent {
               projectList={projectList}
               onEditButtonClick={this.props.onEditButtonClick}
               onDetailsButtonClick={this.props.onDetailsButtonClick}
+              onDeleteButtonClick={this.props.onDeleteButtonClick}
               isCountryAdmin={isCountryAdmin}
             />
           </div>

@@ -7,7 +7,7 @@ import { DateTime } from 'luxon';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import { Helmet } from 'react-helmet';
-// import _cs from 'classnames';
+import _cs from 'classnames';
 import url from 'url';
 
 import { countries } from '../utils/field-report-constants';
@@ -38,7 +38,8 @@ import {
   getPerMission,
   getProjects,
   getAppealsListStats,
-  getMe,
+  // getMe,
+  deleteProject,
 } from '../actions';
 // import { meSelector } from '../selectors';
 
@@ -71,18 +72,18 @@ import { NO_DATA } from '../utils/constants';
 // import { getRegionSlug } from '../utils/region-constants';
 import { getISO3 } from '../utils/country-iso';
 
-// import ThreeW from './ThreeW';
-// import CountryOverview from './CountryOverview';
-// import ProjectForm from './ThreeW/project-form';
-// import ProjectDetails from './ThreeW/project-details';
+import ThreeW from './ThreeW';
+import CountryOverview from './CountryOverview';
+import ProjectForm from './ThreeW/project-form';
+import ProjectDetails from './ThreeW/project-details';
 
 const emptyList = [];
 const emptyObject = {};
 
 const TAB_DETAILS = [
   { title: 'Operations', hash: '#operations' },
-  // { title: '3w', hash: '#3w' },
-  // { title: 'Country Overview', hash: '#overview' },
+  { title: '3w', hash: '#3w' },
+  { title: 'Country Overview', hash: '#overview' },
   { title: 'Preparedness', hash: '#preparedness' },
   { title: 'Additional Information', hash: '#additional' }
 ];
@@ -150,16 +151,17 @@ class AdminArea extends SFPComponent {
       }
     }
 
-    /*
-    if (this.props.projectForm.fetching === true &&
+    const newProjectAdded = this.props.projectForm.fetching === true &&
       nextProps.projectForm.fetching === false &&
-      nextProps.projectForm.error === null
-    ) {
-      // new project was successfully added
+      nextProps.projectForm.error === null;
+    const projectDeleted = this.props.deleteProjectRequest.fetching === true &&
+      nextProps.deleteProjectRequest.fetching === false &&
+      nextProps.deleteProjectRequest.error === null;
+
+    if (newProjectAdded || projectDeleted) {
       this.props._getProjects(this.props.match.params.id, this.threeWFilters);
       this.setState({ showProjectForm: false });
     }
-    */
   }
 
   componentDidMount () {
@@ -173,7 +175,7 @@ class AdminArea extends SFPComponent {
     this.props._getPerDocuments();
     this.props._getPerDocument(null, this.props.match.params.id);
     this.props._getPerUploadedDocuments(this.props.match.params.id);
-    // this.props._getProjects(this.props.match.params.id, this.threeWFilters);
+    this.props._getProjects(this.props.match.params.id, this.threeWFilters);
     // this.props._getMe();
 
     if (typeof this.props.user.username !== 'undefined' && this.props.user.username !== null) {
@@ -221,6 +223,7 @@ class AdminArea extends SFPComponent {
   syncLoadingAnimation = memoize((
     projects = emptyObject,
     projectForm = emptyObject,
+    deleteProject = emptyObject,
     adminArea = emptyObject,
     fdrs = emptyObject,
     perForm = emptyObject,
@@ -228,6 +231,7 @@ class AdminArea extends SFPComponent {
   ) => {
     const shouldShowLoadingAnimation = projects.fetching ||
       projectForm.fetching ||
+      deleteProject.fetching ||
       adminArea.fetching ||
       fdrs.fetching ||
       perForm.fetching ||
@@ -382,6 +386,12 @@ class AdminArea extends SFPComponent {
       showProjectDetails: true,
       projectToShowDetails: project,
     });
+  }
+
+  handleProjectDeleteButtonClick = (project) => {
+    if (window.confirm('Are you sure you want to delete the project?')) {
+      this.props._deleteProject(project.id);
+    }
   }
 
   renderAppeals () {
@@ -711,7 +721,6 @@ class AdminArea extends SFPComponent {
                   />
                 </TabContent>
               </TabPanel>
-              {/*
               <TabPanel>
                 <TabContent>
                   <ThreeW
@@ -723,6 +732,7 @@ class AdminArea extends SFPComponent {
                     user={this.props.me}
                     onEditButtonClick={this.handleProjectEditButtonClick}
                     onDetailsButtonClick={this.handleProjectDetailsButtonClick}
+                    onDeleteButtonClick={this.handleProjectDeleteButtonClick}
                   />
                 </TabContent>
               </TabPanel>
@@ -734,7 +744,6 @@ class AdminArea extends SFPComponent {
                   />
                 </TabContent>
               </TabPanel>
-              */}
               <TabPanel>
                 <TabContent showError={true} isError={!this.isPerPermission()} errorMessage='Please log in' title='Preparedness'>
                   {this.props.getPerNsPhase.fetched && this.props.perOverviewForm.fetched ? (
@@ -789,8 +798,8 @@ class AdminArea extends SFPComponent {
     const {
       showProjectForm,
       showProjectDetails,
-      // projectToShowDetails,
-      // projectToEdit,
+      projectToShowDetails,
+      projectToEdit,
     } = this.state;
 
     const {
@@ -800,12 +809,14 @@ class AdminArea extends SFPComponent {
       fdrs,
       perForm,
       user,
+      deleteProjectRequest,
     } = this.props;
 
     this.syncBodyOverflow(showProjectForm || showProjectDetails);
     this.syncLoadingAnimation(
       projects,
       projectForm,
+      deleteProjectRequest,
       adminArea,
       fdrs,
       perForm,
@@ -818,7 +829,7 @@ class AdminArea extends SFPComponent {
           <title>IFRC Go - Country</title>
         </Helmet>
         { this.renderContent() }
-        {/* showProjectForm && (
+        { showProjectForm && (
           <div className='project-form-modal'>
             <header>
               <h2>
@@ -870,7 +881,7 @@ class AdminArea extends SFPComponent {
               data={projectToShowDetails}
             />
           </div>
-        ) */}
+        )}
       </App>
     );
   }
@@ -903,8 +914,10 @@ if (environment !== 'production') {
 
 const selector = (state, ownProps) => ({
   // me: meSelector(state),
-  // projects: state.projects,
-  // projectForm: state.projectForm,
+  deleteProjectRequest: state.projectDelete,
+  projects: state.projects,
+  projectForm: state.projectForm,
+
   adminArea: get(state.adminArea.aaData, getCountryId(ownProps.match.params.id), {
     data: {},
     fetching: false,
@@ -932,7 +945,8 @@ const selector = (state, ownProps) => ({
 });
 
 const dispatcher = dispatch => ({
-  _getMe: () => dispatch(getMe()),
+  _deleteProject: (...args) => dispatch(deleteProject(...args)),
+  // _getMe: () => dispatch(getMe()),
   _getAdmAreaById: (...args) => dispatch(getAdmAreaById(...args)),
   _getAdmAreaAppealsList: (...args) => dispatch(getAdmAreaAppealsList(...args)),
   _getAdmAreaKeyFigures: (...args) => dispatch(getAdmAreaKeyFigures(...args)),
