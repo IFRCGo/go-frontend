@@ -10,15 +10,16 @@ class MarkerLayerStylesheetFactory {
 
   buildMarkerLayers () {
     const ccolor = {
-      property: 'code',
+      property: 'phaseCode',
       type: 'categorical',
       stops: [
-        ['a1', '#42c5f5'],
-        ['a2', '#2724ff'],
-        ['a3', '#33ff4b'],
-        ['a3-2', '#00a313'],
-        ['a4', '#e3df00'],
-        ['a5', '#e32d00']
+        ['0', '#CCCCCC'],
+        ['1', '#00845F'],
+        ['2', '#BD001C'],
+        ['3', '#2D5086'],
+        ['4', '#740544'],
+        ['5', '#CC700E'],
+        ['-1', '#CCCCCC']
       ]
     };
     const cradius = this.getCircleRadiusPaintProp();

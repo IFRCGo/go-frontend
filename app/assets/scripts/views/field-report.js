@@ -22,7 +22,8 @@ import { get } from '../utils/utils/';
 import App from './app';
 
 class FieldReport extends React.Component {
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps (nextProps) {
     if (this.props.match.params.id !== nextProps.match.params.id) {
       return this.getReport(nextProps.match.params.id);
     }
@@ -58,14 +59,16 @@ class FieldReport extends React.Component {
       ['Emergency Appeal', getResponseStatus(data, 'appeal')],
       ['RDRT/RITS', getResponseStatus(data, 'rdrt')],
       ['Rapid Response Personnel', getResponseStatus(data, 'fact')],
-      ['IFRC Staff', getResponseStatus(data, 'ifrc_staff')],
-      ['Forecast Based Response', getResponseStatus(data, 'forecast_based_response')]
+      ['Emergency Response Units', getResponseStatus(data, 'ifrc_staff')],
+      ['Forecast Based Response', getResponseStatus(data, 'forecast_based_response')],
+      ['Forecast Based Action', getResponseStatus(data, 'forecast_based_action')]
     ].filter(d => Boolean(d[1]));
 
     // Every response is either 0 (not planned) or null.
     if (!response.length) {
       return null;
     }
+
     return (
       <DisplaySection title='Planned International Response'>
         <dl className='dl-horizontal numeric-list'>
@@ -85,11 +88,17 @@ class FieldReport extends React.Component {
     if (!actions || !Array.isArray(actions.actions) || !actions.actions.length) {
       return null;
     }
+
     return (
       <DisplaySection title={`Actions taken by ${orgDisplayName}`}>
         <ul className='actions-list'>
           {actions.actions.map((d, i) => <li key={`action-${i}`}>{d.name}</li>)}
         </ul>
+
+        <div className='form__group'>
+          <p className='form__label'>Summary</p>
+          <p>{actions.summary}</p>
+        </div>
       </DisplaySection>
     );
   }
@@ -251,9 +260,15 @@ class FieldReport extends React.Component {
     if (!this.props.report.fetched || !data) {
       return null;
     }
-
+    const infoBulletinOptions = {
+      '0': 'No',
+      '2': 'Planned',
+      '3': 'Yes'
+    };
+    const infoBulletin = infoBulletinOptions[data.bulletin];
     const lastTouchedAt = DateTime.fromISO(data.updated_at || data.created_at).toISODate();
-
+    const status = this.getStatus();
+    const startDate = DateTime.fromISO(data.start_date).toISODate();
     return (
       <section className='inpage'>
         <Helmet>
@@ -281,7 +296,8 @@ class FieldReport extends React.Component {
                 <p className='inpage__note'>Last updated{data.user ? ` by ${data.user.username}` : null} on {lastTouchedAt}</p>
                 {this.renderNumericDetails(data)}
                 {this.renderPlannedResponse(data)}
-                <DisplaySection title='Description' inner={get(data, 'description', false)} />
+                <DisplaySection title={ status === 'EW' ? 'Risk Analysis' : 'Description' } inner={get(data, 'description', false)} />
+                <DisplaySection title={ status === 'EW' ? 'Forecasted Date of Impact' : 'Start Date' } inner={startDate} />
                 <DisplaySection title='Requests for Assistance'>
                   <p>
                     <span>Government Requests International Assistance: </span>
@@ -292,6 +308,7 @@ class FieldReport extends React.Component {
                     <span>{yesno(get(data, 'ns_request_assistance'))}</span>
                   </p>
                 </DisplaySection>
+                <DisplaySection title='Information Bulletin Published' inner={ infoBulletin } />
                 {this.renderActionsTaken(data, 'NTLS', 'National Society')}
                 {this.renderActionsTaken(data, 'FDRN', 'IFRC')}
                 {this.renderActionsTaken(data, 'PNS', 'any other RCRC Movement actors') /* instead of PNS Red Cross, go-frontend/issues/822 */ }

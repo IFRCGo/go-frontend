@@ -42,7 +42,8 @@ class EruTable extends SFPComponent {
     this.requestResults(this.props);
   }
 
-  componentWillReceiveProps (newProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps (newProps) {
     let shouldMakeNewRequest = false;
     ['limit', 'emergency'].forEach(prop => {
       if (newProps[prop] !== this.props[prop]) {

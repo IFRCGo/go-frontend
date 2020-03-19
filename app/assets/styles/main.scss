@@ -81,11 +81,9 @@
 @import "global/print";
 @import "global/login";
 @import "global/tooltip";
-@import "global/donut-chart";
-@import "global/vertical-bar-chart";
-@import "global/responsive";
 @import "global/faram-inputs/raw-input";
 @import "global/faram-inputs/select-input";
+@import "global/text-output";
 @import "global/tooltip";
 
 /* Home
@@ -149,6 +147,7 @@
    ========================================================================== */
 
 @import "components/select";
+@import "components/formatted-number";
 
 /* Core (...cont)
    ========================================================================== */

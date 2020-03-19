@@ -100,7 +100,8 @@ export default class ThreeWMap extends React.PureComponent {
     this.map.on('click', this.handleMapClick);
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps (nextProps) {
     const {
       countryId: oldCountryId,
       projectList: oldProjectList,
@@ -160,7 +161,7 @@ export default class ThreeWMap extends React.PureComponent {
     const maxProjects = Math.max(0, ...state.map(item => item.count));
     let opacityProperty;
 
-    const upperShift = 0.3;
+    const upperShift = 0.6;
     const lowerShift = 0.1;
 
     if (state.length > 0) {

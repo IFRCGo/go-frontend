@@ -4,33 +4,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
+import { isMobileOnly } from 'react-device-detect';
 import { environment } from '../../config';
 import { logoutUser } from '../../actions';
 import Dropdown from '../common/dropdown';
 
 class UserMenu extends React.Component {
-  constructor () {
-    super();
-    this.state = {
-      width: window.innerWidth
-    };
-  }
-
-  // Adds a listener for window size to determine style for menu content
-  componentWillMount () {
-    window.addEventListener('resize', this.handleWindowSizeChange.bind(this));
-  }
-
-  // Ensures the listener is removed when the component is no longer mounted
-  componentWillUnmount () {
-    window.removeEventListener('resize', this.handleWindowSizeChange.bind(this));
-  }
-
-  // Updates window width change
-  handleWindowSizeChange () {
-    this.setState({ width: window.innerWidth });
-  }
-
   onLogoutClick (e) {
     e.preventDefault();
     this.props._logoutUser();
@@ -38,11 +17,8 @@ class UserMenu extends React.Component {
   }
 
   render () {
-    const { width } = this.state;
-    const isMobile = width <= 767;
-
     // Displays dropdown menu on non-mobile screens and a single logout button for the mobile menu
-    if (this.props.userData.username && !isMobile) {
+    if (this.props.userData.username && !isMobileOnly) {
       return (
         <Dropdown
           id='user-menu'
@@ -61,7 +37,7 @@ class UserMenu extends React.Component {
           </ul>
         </Dropdown>
       );
-    } else if (this.props.userData.username && isMobile) {
+    } else if (this.props.userData.username && isMobileOnly) {
       return (
         <ul className='drop__menu' role='menu'>
           <li><a href='#' title='Logout' className='drop__menu-item' data-hook='dropdown:close' onClick={this.onLogoutClick.bind(this)}>Logout</a></li>

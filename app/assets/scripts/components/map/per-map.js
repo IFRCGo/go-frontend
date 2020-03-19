@@ -57,16 +57,22 @@ class PerMap extends React.Component {
     }
   }
 
-  componentWillReceiveProps ({ data }) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps ({ data }) {
     if (data && !this.props.data.fetched && data.fetched && !data.error) {
       this.setMarkerLayers(data);
     }
   }
 
   setMarkerLayers (data) {
+    const geoJSON = data.data.geoJSON;
+    geoJSON.features.map(feature => {
+      feature.properties.phaseCode = feature.properties.phase.phase.toString();
+      return feature;
+    });
     this.setState({
-      markerLayers: this.markerLayerStylesheetFactory.buildMarkerLayers(data.data.geoJSON),
-      markerGeoJSON: data.data.geoJSON
+      markerLayers: this.markerLayerStylesheetFactory.buildMarkerLayers(geoJSON),
+      markerGeoJSON: geoJSON
     });
   }
 

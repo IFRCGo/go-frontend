@@ -46,7 +46,8 @@ class Preparedness extends React.Component {
     this.props._getPerMission(null);
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps (nextProps) {
     if (nextProps.collaboratingPerCountry.fetched && !this.collaboratingPerCountryBuilt) {
       const geoJson = {
         type: 'FeatureCollection',
@@ -54,18 +55,22 @@ class Preparedness extends React.Component {
       };
 
       nextProps.collaboratingPerCountry.data.results.map((perForm) => {
-        let countryMeta = getCountryMeta(perForm.country.id);
-        perForm.country.iso = countryMeta.iso;
-        let countryCentroid = getCentroid(perForm.country.iso);
-        perForm.country.centroid = countryCentroid;
+        if (perForm.country) {
+          let countryMeta = getCountryMeta(perForm.country.id);
+          perForm.country.iso = countryMeta.iso;
+          let countryCentroid = getCentroid(perForm.country.iso);
+          perForm.country.centroid = countryCentroid;
 
-        geoJson.features.push({
-          geometry: {
-            type: 'Point',
-            coordinates: countryCentroid
-          },
-          properties: perForm
-        });
+          geoJson.features.push({
+            geometry: {
+              type: 'Point',
+              coordinates: countryCentroid
+            },
+            properties: perForm
+          });
+        } else {
+          console.error('Country details are missing for perform');
+        }
 
         return perForm;
       });

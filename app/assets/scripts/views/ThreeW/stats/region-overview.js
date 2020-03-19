@@ -29,7 +29,7 @@ const Scale = ({ max }) => {
 
   return (
     <div className='three-w-region-scale'>
-      { numbers.map(n => <div>{n}</div>) }
+      { numbers.map(n => <div key={n}>{n}</div>) }
     </div>
   );
 };

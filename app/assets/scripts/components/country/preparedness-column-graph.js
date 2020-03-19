@@ -23,7 +23,8 @@ class PreparednessColumnBar extends React.Component {
       return component.selected_option > 1;
     }).map((component) => {
       component.formCode = this.formIds[component.form].code;
-      component.name = getPerComponent(component.formCode, component.question_id)[0].name;
+      const perComponent = getPerComponent(component.formCode, component.question_id);
+      component.name = perComponent ? perComponent.name : 'n/a';
       component.epi = 0;
       component.component = 0;
       component.groupingKeyword = component.question_id.includes('epi')

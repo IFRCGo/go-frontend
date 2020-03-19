@@ -66,7 +66,23 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 24 Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'Framework for the use and coordination of international assistance includes management of medical teams.'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Component 25. Coordination with authorities',
@@ -126,7 +142,25 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 25 Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'NS knows the national authorities\' capacities for epidemic prevention and control and identifies areas within a response to fulfil their auxiliary role.',
+          'The use of emblem by medical teams is clearly defined.',
+          'NS is part of the National risk communication sub working groups.'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Component 26. Coordination with External Agencies and NGOs',
@@ -196,7 +230,23 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 26 Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'Coordination mechanisms specific to epidemic risk management.'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Component 27. Civil Military Relations',
@@ -266,7 +316,23 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 27 Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'Coordination mechanisms specific to epidemic risk management.'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Component 28. Coordination with local community level responders',
@@ -326,7 +392,23 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 28 Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'Coordination mechanisms specific to epidemic risk management (e.g. with limited number of key available staff and volunteers, security/access limitations).'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     },
     {
       componentTitle: 'Component 29. Cooperation with private sector',
@@ -376,7 +458,23 @@ export const englishForm = {
           feedbackTitle: 'Notes related to the component:',
           feedbackDescription: ''
         }
-      ]
+      ],
+      epiComponent: {
+        nsTitle: 'Component 29 Epidemic Preparedness',
+        nsQuestion: 'Status:',
+        nsConsiderationHeader: 'Please take into consideration the following aspects',
+        nsConsiderationList: [
+          'Coordination mechanisms specific to epidemic risk management (e.g. partnership with communication or PPE providers, protection of corporate partner volunteers).'
+        ],
+        nsAnswers: [
+          'Not Reviewed',
+          'Does not exist',
+          'Partially exists',
+          'Need improvements',
+          'Exist, could be strengthened',
+          'High performance'
+        ]
+      }
     }
   ]
 };

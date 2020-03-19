@@ -53,6 +53,11 @@ export function showUsername (email) {
   return postJSON('show_username', SHOW_USERNAME, { email });
 }
 
+export const GET_ME = 'GET_ME';
+export const getMe = () => (
+  fetchJSON('api/v2/user/me/', GET_ME, withToken())
+);
+
 export const GET_PROJECTS = 'GET_PROJECTS';
 export function getProjects (countryId, filterValues) {
   const filters = {
@@ -76,6 +81,11 @@ export function postProject (data) {
 
   return postJSON('api/v2/project/', POST_PROJECT, data, withToken());
 }
+
+export const GET_COUNTRY_OVERVIEW = 'GET_COUNTRY_OVERVIEW';
+export const getCountryOverview = (countryIso) => {
+  return fetchJSON(`api/v2/data-bank/country-overview/${countryIso}`, GET_COUNTRY_OVERVIEW, withToken());
+};
 
 export const GET_COUNTRIES = 'GET_COUNTRIES';
 export function getCountries (region) {
@@ -236,8 +246,11 @@ export function getEventById (id) {
 }
 
 export const GET_EVENT_LIST = 'GET_EVENT_LIST';
-export function getEventList () {
-  const query = { limit: 9999 };
+export function getEventList (countryId) {
+  const query = {
+    countries__in: countryId,
+    limit: 9999,
+  };
   const q = buildAPIQS(query);
   return fetchJSON(`api/v2/event/mini/?${q}`, GET_EVENT_LIST, withToken());
 }
@@ -485,7 +498,10 @@ export function sendPerForm (data) {
 
 export const GET_PER_COUNTRIES = 'GET_PER_COUNTRIES';
 export function getPerCountries () {
-  return fetchJSON(`/api/v2/percountry/`, GET_PER_COUNTRIES, withToken());
+  const filters = {};
+  filters.limit = 1000;
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v2/percountry/?${f}`, GET_PER_COUNTRIES, withToken());
 }
 
 export const GET_PER_DOCUMENTS = 'GET_PER_DOCUMENTS';

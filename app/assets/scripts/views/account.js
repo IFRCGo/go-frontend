@@ -27,7 +27,6 @@ import {
   getPerOverviewFormStrict as getPerOverviewForm,
   getPerMission
 } from '../actions';
-import { getRegionById } from '../utils/region-constants';
 import { get } from '../utils/utils';
 import { getCountryMeta } from '../utils/get-country-meta';
 import { countries, disasterType, orgTypes } from '../utils/field-report-constants';
@@ -37,6 +36,7 @@ import { showAlert } from '../components/system-alerts';
 
 import Fold from '../components/fold';
 import TabContent from '../components/tab-content';
+import PerAccountTab from '../components/per-forms/per-account-tab';
 
 import {
   FormCheckboxGroup,
@@ -175,7 +175,6 @@ class Account extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      chosenCountry: { id: 0, society_name: '' },
       isNotificationsDirty: false,
       notifications: {
         countries: [],
@@ -205,9 +204,6 @@ class Account extends React.Component {
     this.onNotificationSubmit = this.onNotificationSubmit.bind(this);
     this.onProfileSubmit = this.onProfileSubmit.bind(this);
     this.toggleEditProfile = this.toggleEditProfile.bind(this);
-    this.changeChosenCountry = this.changeChosenCountry.bind(this);
-    this.createRegionGroupedDocumentData = this.createRegionGroupedDocumentData.bind(this);
-    this.renderPerFormDocuments = this.renderPerFormDocuments.bind(this);
     this.delSubscription = this.delSubscription.bind(this);
     this.componentIsLoading = true;
   }
@@ -235,7 +231,8 @@ class Account extends React.Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps (nextProps) {
     if (this.props.profile.receivedAt !== nextProps.profile.receivedAt) {
       if (typeof nextProps.profile.data !== 'undefined' && nextProps.profile.data !== null && typeof nextProps.profile.data.subscription !== 'undefined' && nextProps.profile.data.subscription !== null) {
         nextProps.profile.data.subscription.forEach((subscription) => {
@@ -264,10 +261,6 @@ class Account extends React.Component {
         this.props._getProfile(this.props.user.username);
       }
     }
-    if (nextProps.perForm.getPerCountries.fetched && nextProps.perForm.getPerCountries.data.count > 0) {
-      this.setState({ chosenCountry: { id: nextProps.perForm.getPerCountries.data.results[0].id, society_name: nextProps.perForm.getPerCountries.data.results[0].society_name } });
-    }
-
     if (this.props.perForm.deletePerDraft.receivedAt !== nextProps.perForm.deletePerDraft.receivedAt) {
       const draftQueryFilters = { user: this.props.user.id };
       this.props._getPerDraftDocument(draftQueryFilters);
@@ -424,20 +417,11 @@ class Account extends React.Component {
     this.setState({ profileEditMode: !this.state.profileEditMode });
   }
 
-  changeChosenCountry (e) {
-    let filteredCountry = this.props.perForm.getPerCountries.data.results.filter(country => country.id === parseInt(e.target.value));
-    this.setState({ chosenCountry: { id: filteredCountry[0].id, society_name: filteredCountry[0].society_name } });
-  }
-
   delSubscription (event) {
     let eventId = event.target.id.substring('followedEvent'.length);
     this.props._clearEvents(eventId);
     this.props._delSubscription(eventId);
     this.forceUpdate();
-  }
-
-  delPerDraft (draftId) {
-    this.props._deletePerDraft({ id: draftId });
   }
 
   isPerPermission () {
@@ -708,188 +692,6 @@ class Account extends React.Component {
     );
   }
 
-  createRegionGroupedDocumentData () {
-    const groupedDocuments = {};
-    if (this.props.perOverviewForm.fetched) {
-      this.props.perOverviewForm.data.results.forEach((perOverviewForm) => {
-        perOverviewForm.formType = 'overview';
-        if (perOverviewForm.country.region === null || perOverviewForm.country.region === '') {
-          perOverviewForm.country.region = -1;
-        }
-        if (!groupedDocuments.hasOwnProperty(perOverviewForm.country.region)) {
-          groupedDocuments[perOverviewForm.country.region] = { [perOverviewForm.country.id]: [] };
-          groupedDocuments[perOverviewForm.country.region][perOverviewForm.country.id].push(perOverviewForm);
-        } else {
-          if (!groupedDocuments[perOverviewForm.country.region].hasOwnProperty(perOverviewForm.country.id)) {
-            groupedDocuments[perOverviewForm.country.region][perOverviewForm.country.id] = [];
-          }
-          groupedDocuments[perOverviewForm.country.region][perOverviewForm.country.id].push(perOverviewForm);
-        }
-      });
-    }
-    if (this.props.perForm.getPerDocuments.fetched && !!this.props.perForm.getPerDocuments.data && !!this.props.perForm.getPerDocuments.data.results) {
-      this.props.perForm.getPerDocuments.data.results.forEach(document => {
-        if (document.country !== null) {
-          if (document.country.region === null) {
-            document.country.region = -1;
-          }
-          document.formType = 'per';
-          if (!groupedDocuments.hasOwnProperty(document.country.region)) {
-            groupedDocuments[document.country.region] = { [document.country.id]: [] };
-            groupedDocuments[document.country.region][document.country.id].push(document);
-          } else {
-            if (!groupedDocuments[document.country.region].hasOwnProperty(document.country.id)) {
-              groupedDocuments[document.country.region][document.country.id] = [];
-            }
-            groupedDocuments[document.country.region][document.country.id].push(document);
-          }
-        }
-      });
-    }
-    return groupedDocuments;
-  }
-
-  renderPerFormDocuments (documents) {
-    const regions = [];
-    Object.keys(documents).forEach((regionKey, regionIndex) => {
-      const countries = [];
-      Object.keys(documents[regionKey]).forEach((countryKey, countryIndex) => {
-        const perDocuments = [];
-        let currentCountryName = '';
-        documents[regionKey][countryKey].forEach((document) => {
-          currentCountryName = document.country.name;
-          if (document.formType === 'overview') {
-            perDocuments.push((<React.Fragment key={'documentoverviewrow' + document.id}>
-              <div className='list__each__block flex'>
-                <div key={'documentov' + document.id}>
-                  Overview - {document.date_of_current_capacity_assessment.substring(0, 10)} - {typeof document.user !== 'undefined' && document.user !== null ? document.user.first_name + ' ' + document.user.last_name : null}
-                </div>
-                <div className='list__each__button'>
-                  <Link className='button button--small button--secondary-bounded' to={'/view-per-forms/overview/' + document.id}>View</Link>
-                </div>
-              </div>
-            </React.Fragment>));
-          } else {
-            perDocuments.push((<React.Fragment key={'documentrow' + document.code + 'id' + document.id}>
-              <div className='list__each__block flex'>
-                <div key={'document' + document.id}>
-                  {document.code.toUpperCase()} - {document.name} - {document.updated_at.substring(0, 10)} - {typeof document.user !== 'undefined' && document.user !== null ? document.user.username : null}
-                </div>
-                <div className='list__each__button'>
-                  <Link className='button button--small button--secondary-bounded' to={'/view-per-forms/' + document.code + '/' + document.id}>View</Link>
-                </div>
-              </div>
-            </React.Fragment>));
-          }
-        });
-        countries.push(<div key={'countryDocument' + countryKey}><div className='heading-sub global-spacing-v'>{currentCountryName}</div>{perDocuments}<br /></div>);
-      });
-      regions.push(<div key={'regionDocument' + regionKey}><span className='fold__title'>{getRegionById(regionKey).name}</span>{countries}<br /></div>);
-    });
-    return regions;
-  }
-
-  renderPerFormsComponent () {
-    const countryOptions = [];
-    if (this.props.perForm.getPerCountries.fetched && typeof this.props.perForm.getPerCountries.data.results !== 'undefined' && this.props.perForm.getPerCountries.data.results !== null) {
-      this.props.perForm.getPerCountries.data.results.forEach(country => {
-        const societyName = country.society_name !== null && country.society_name.trim() !== '' ? country.society_name : country.name + ' NS';
-        countryOptions.push(<option value={country.id} key={'persociety' + country.id}>{societyName}</option>);
-      });
-    }
-    let documents;
-    if (this.props.perForm.getPerDocuments.fetched) {
-      documents = this.renderPerFormDocuments(this.createRegionGroupedDocumentData());
-    }
-    return (<div className='fold-container'>
-      <section className='fold' id='per-forms'>
-        <div className='inner'>
-          <h2 className='fold__title margin-reset'>New PER Forms</h2>
-          <hr />
-          <p>Click on the following links to access the PER forms, where you can select individual National Societies.</p>
-          <br />
-          Choose National Society:&nbsp;
-          <select onChange={this.changeChosenCountry}>
-            {countryOptions}
-          </select><br /><br />
-          <div className='text-center'>
-            <Link to={'/per-forms/overview/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Overview</Link>
-          </div>
-          <div className='clearfix'>
-            <div className='per__form__col'>
-              <Link to={'/per-forms/policy-strategy/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 1: Policy and Standards</Link>
-            </div>
-            <div className='per__form__col'>
-              <Link to={'/per-forms/analysis-and-planning/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 2: Analysis and Planning</Link>
-            </div>
-            <div className='per__form__col'>
-              <Link to={'/per-forms/operational-capacity-2/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 3: Operational capacity</Link>
-            </div>
-            <div className='per__form__col'>
-              <Link to={'/per-forms/operational-capacity/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 3: Operational capacity 2</Link>
-            </div>
-            <div className='per__form__col'>
-              <Link to={'/per-forms/coordination/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 4: Coordination</Link>
-            </div>
-            <div className='per__form__col'>
-              <Link to={'/per-forms/operations-support/' + this.state.chosenCountry.id} className='button button--medium button--secondary-bounded'>Area 5: Operations support</Link>
-            </div>
-          </div>
-          <br /><br />
-          <h2 className='fold__title margin-reset'>Active PER Forms</h2>
-          <hr />
-          <span className='text-semi-bold'>{documents}</span>
-          {this.renderDraftDocuments()}
-        </div>
-      </section>
-    </div>);
-  }
-
-  renderDraftDocuments () {
-    const draftDocuments = [];
-    if (this.props.perForm.getPerDraftDocument.fetched) {
-      let index = 0;
-      if (typeof this.props.perForm.getPerDraftDocument.data.results !== 'undefined' && this.props.perForm.getPerDraftDocument.data.results !== null) {
-        this.props.perForm.getPerDraftDocument.data.results.forEach((draftDocument) => {
-          let parsedData = null;
-          try {
-            parsedData = JSON.parse(draftDocument.data.replace(/'/g, '"'));
-          } catch (e) {
-            console.warn('API provided invalid data for draft document (' + draftDocument.data + ')! renderDraftDocuments () failed!\n\n', e);
-            return;
-          }
-          draftDocuments.push(
-            <div className='list__each__block flex' key={'draftDocument' + index}>
-              <div>
-                {draftDocument.code.toUpperCase()} - {parsedData.submitted_at !== '' ? parsedData.submitted_at.substring(0, 10) + ' - ' : null} {typeof draftDocument.user !== 'undefined' ? draftDocument.user.username + ' - ' : null} {draftDocument.country.name}
-              </div>
-              <div className='list__each__button'>
-                <Link
-                  className='button button--small button--secondary-bounded'
-                  to={draftDocument.code === 'overview' ? '/per-forms/overview/' + draftDocument.country.id : '/edit-per-forms/' + draftDocument.code + '/' + draftDocument.user.username + '/' + draftDocument.country.id}>
-                  Edit
-                </Link>
-
-                <button
-                  className='button button--small button--primary-bounded'
-                  onClick={() => this.delPerDraft(draftDocument.id)}
-                  style={{ marginLeft: 10 }}>
-                  Delete
-                </button>
-              </div>
-            </div>);
-          index++;
-        });
-      }
-    }
-    return (<React.Fragment>
-      <br /><br />
-      <h2 className='fold__title margin-reset'>Active drafts</h2>
-      <hr />
-      {draftDocuments}
-    </React.Fragment>);
-  }
-
   renderAccountInformation () {
     return (<div className='prose prose--responsive'>
       <div className='fold-container'>
@@ -985,7 +787,7 @@ class Account extends React.Component {
                 </TabPanel>
                 <TabPanel>
                   <TabContent isError={!this.isPerPermission()} errorMessage="Please login to view content" title="PER Forms">
-                    {this.renderPerFormsComponent()}
+                    <PerAccountTab user={this.props.user} />
                   </TabContent>
                 </TabPanel>
               </div>

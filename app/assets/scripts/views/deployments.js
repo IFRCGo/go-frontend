@@ -60,7 +60,8 @@ class Deployments extends SFPComponent {
     this.props._getActivePersonnel();
   }
 
-  componentWillReceiveProps (nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps (nextProps) {
     if (finishedFetch(this.props, nextProps, 'eruOwners')) {
       hideGlobalLoading();
     }
@@ -135,22 +136,18 @@ class Deployments extends SFPComponent {
   renderHeaderStats () {
     const { data } = this.props.eruOwners;
     const { types } = this.props.activePersonnel;
-    const fact = types.fact || nope;
+    const fact = types.fact + types.rr + types.rdrt || nope;
     const heop = types.heop || nope;
-    const rdrt = types.rdrt || nope;
 
     return (
       <div className='inpage__introduction'>
         <div className='header-stats'>
-          <ul className='stats-list'>
+          <ul className='stats-list-deployments'>
             <li className='stats-list__item stats-eru'>
               {n(data.deployed)}<small>Deployed ERUs</small>
             </li>
             <li className='stats-list__item stats-fact'>
-              {n(fact)}<small>Deployed FACTs</small>
-            </li>
-            <li className='stats-list__item stats-people'>
-              {n(rdrt)}<small>Deployed RDRTs</small>
+              {n(fact)}<small>Deployed Rapid Response</small>
             </li>
             <li className='stats-list__item stats-heops'>
               {n(heop)}<small>Deployed Heops</small>

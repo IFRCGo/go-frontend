@@ -304,6 +304,12 @@ export const countryIsoMapById = listToMap(
   d => d.iso,
 );
 
+export const countryIsoMapByName = listToMap(
+  countryList,
+  d => window.decodeURI(d.name),
+  d => d.iso,
+);
+
 export const countryNameMapById = listToMap(
   countryList,
   d => d.value,
@@ -416,6 +422,8 @@ export const disasterType = [
   },
   ...disasterTypeList,
 ];
+
+export const disasterTypes = listToMap(disasterTypeList, d => d.value, d => d.label);
 
 export const sources = [
   {
