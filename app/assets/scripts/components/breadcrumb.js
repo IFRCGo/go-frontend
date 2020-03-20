@@ -5,19 +5,19 @@ import { NavLink } from 'react-router-dom';
 
 export default function BreadCrumb ({crumbs}) {
   return (
-    <React.Fragment>
+    <div className='breadcrumb__block'>
       {crumbs.map(crumb => (
-        <BreadcrumbsItem to={crumb.link}>{crumb.name}</BreadcrumbsItem>
+        <BreadcrumbsItem to={crumb.link} className='breadcrumb'>{crumb.name}</BreadcrumbsItem>
       ))}
       <Breadcrumbs
-        separator={<span> / </span>}
+        separator={<span className="breadcrumb__next"> > </span>}
         item={NavLink}
         finalItem={'b'}
         finalProps={{
           style: {color: '#C02C2C'}
         }}
       />
-    </React.Fragment>
+    </div>
   );
 }
 
