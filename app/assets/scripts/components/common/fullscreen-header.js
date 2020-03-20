@@ -6,7 +6,7 @@ const FullScreenHeader = ({ title }) => (
   <div className='flex'>
     <div style={{width: '375px', height: '56px', position: 'absolute'}}>
       <img
-        src="/assets/graphics/layout/logo_2020.png"
+        src="/assets/graphics/layout/go-logo-2020.svg"
         alt="IFRC GO logo"
         style={{width: '375px', height: '56px'}}
       />
