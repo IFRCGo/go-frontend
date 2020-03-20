@@ -456,7 +456,7 @@ class AdminArea extends SFPComponent {
         ) : (
           nope
         ),
-        dtype: o.dtype,
+        dtype: o.dtype.name,
         requestAmount: n(o.amount_requested),
         fundedAmount: n(o.amount_funded),
         active: new Date(o.end_date).getTime() > now ? 'Active' : 'Inactive'

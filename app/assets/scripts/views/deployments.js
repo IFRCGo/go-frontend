@@ -136,7 +136,10 @@ class Deployments extends SFPComponent {
   renderHeaderStats () {
     const { data } = this.props.eruOwners;
     const { types } = this.props.activePersonnel;
-    const fact = types.fact + types.rr + types.rdrt || nope;
+    let fact = nope;
+    if (types.fact || types.rr || types.rdrt) {
+      fact = (types.fact || 0) + (types.rr || 0) + (types.rdrt || 0);
+    }
     const heop = types.heop || nope;
 
     return (
