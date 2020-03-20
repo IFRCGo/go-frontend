@@ -78,6 +78,11 @@ Once the testing is over, remember to teardown:
 
 If it says you don't have permissions to deploy, it likely means someone has deployed this branch already. You can chose to create another URL, or create a new branch, or get in touch with that person.
 
+### Possible error(s)
+* `yarn deploy-surge` could result in the following error: `/bin/sh: 1: Bad substitution ...`
+  * Solution: `yarn config set script-shell /bin/bash`
+
+
 ## Prepare to deploy for production
 To prepare the app for deployment run:
 
