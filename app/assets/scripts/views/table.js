@@ -105,7 +105,6 @@ class Table extends React.Component {
 if (environment !== 'production') {
   Table.propTypes = {
     type: T.string,
-    crumbs: T.array,
     location: T.object
   };
 }
