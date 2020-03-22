@@ -8,6 +8,7 @@ import { Helmet } from 'react-helmet';
 
 import { environment } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
+import BreadCrumb from '../components/breadcrumb';
 import { getFieldReportById } from '../actions';
 import {
   commaSeparatedNumber as n,
@@ -274,6 +275,11 @@ class FieldReport extends React.Component {
         <Helmet>
           <title>IFRC Go - {get(data, 'summary', 'Field Report')}</title>
         </Helmet>
+        <BreadCrumb crumbs={[
+          {link: `/reports/${data.id}`, name: get(data, 'summary', 'Field Report')},
+          {link: '/account#notifications', name: 'Reports'},
+          {link: '/', name: 'Home'}
+        ]} />
         <header className='inpage__header'>
           <div className='inner'>
             <div className='inpage__headline'>

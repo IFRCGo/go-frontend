@@ -7,7 +7,7 @@ export default function BreadCrumb ({crumbs}) {
   return (
     <div className='breadcrumb__block'>
       {crumbs.map(crumb => (
-        <BreadcrumbsItem to={crumb.link} className='breadcrumb'>{crumb.name}</BreadcrumbsItem>
+        <BreadcrumbsItem key={crumb.name} to={crumb.link} className='breadcrumb'>{crumb.name}</BreadcrumbsItem>
       ))}
       <Breadcrumbs
         separator={<span className="breadcrumb__next"> > </span>}

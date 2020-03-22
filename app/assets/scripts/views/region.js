@@ -8,6 +8,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { Helmet } from 'react-helmet';
 import CountryList from '../components/country-list';
 import BlockLoading from '../components/block-loading';
+import BreadCrumb from '../components/breadcrumb';
 import { environment } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import { get } from '../utils/utils/';
@@ -187,6 +188,10 @@ class AdminArea extends SFPComponent {
         <Helmet>
           <title>IFRC Go - {regionName}</title>
         </Helmet>
+        <BreadCrumb crumbs={[
+          {link: this.props.location.pathname, name: regionName},
+          {link: '/', name: 'Home'}
+        ]} />
         <header className='inpage__header'>
           <div className='inner'>
             <div className='inpage__headline'>

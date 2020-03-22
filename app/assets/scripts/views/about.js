@@ -1,6 +1,7 @@
 'use strict';
 import React from 'react';
 import { Helmet } from 'react-helmet';
+import BreadCrumb from '../components/breadcrumb';
 
 import App from './app';
 
@@ -11,6 +12,10 @@ export default class About extends React.Component {
         <Helmet>
           <title>IFRC Go - About</title>
         </Helmet>
+        <BreadCrumb crumbs={[
+          {link: '/about', name: 'About'},
+          {link: '/', name: 'Home'}
+        ]} />
         <section className='inpage'>
           <header className='inpage__header'>
             <div className='inner'>

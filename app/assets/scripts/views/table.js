@@ -17,6 +17,7 @@ import AppealsTable from '../components/connected/appeals-table';
 import AlertsTable from '../components/connected/alerts-table';
 import EruTable from '../components/connected/eru-table';
 import PersonnelTable from '../components/connected/personnel-table';
+import BreadCrumb from '../components/breadcrumb';
 
 const displayTypes = {
   report: 'Field Reports',
@@ -87,6 +88,10 @@ class Table extends React.Component {
         <Helmet>
           <title>IFRC Go - {displayTypes[this.props.type]}</title>
         </Helmet>
+        <BreadCrumb crumbs={[
+          { link: this.props.location.pathname, name: displayTypes[this.props.type] },
+          { link: '/', name: 'Home' }
+        ]} />
         <div className='inpage__body'>
           <div className='inner table__container'>
             {this.renderContent()}
@@ -100,6 +105,7 @@ class Table extends React.Component {
 if (environment !== 'production') {
   Table.propTypes = {
     type: T.string,
+    crumbs: T.array,
     location: T.object
   };
 }

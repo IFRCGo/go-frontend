@@ -51,6 +51,7 @@ import App from './app';
 import ErrorPanel from '../components/error-panel';
 import TabContent from '../components/tab-content';
 import Fold from '../components/fold';
+import BreadCrumb from '../components/breadcrumb';
 import DisplayTable, { SortHeader, FilterHeader } from '../components/display-table';
 import EmergenciesTable from '../components/connected/emergencies-table';
 
@@ -70,7 +71,7 @@ import PreparednessColumnBar from '../components/country/preparedness-column-gra
 import KeyFiguresHeader from '../components/common/key-figures-header';
 import { SFPComponent } from '../utils/extendables';
 import { NO_DATA } from '../utils/constants';
-import { getRegionSlug } from '../utils/region-constants';
+import { getRegionSlug, getRegionById } from '../utils/region-constants';
 import { getISO3 } from '../utils/country-iso';
 
 import ThreeW from './ThreeW';
@@ -620,6 +621,11 @@ class AdminArea extends SFPComponent {
         <Helmet>
           <title>IFRC Go - {get(data, 'name', 'Country')}</title>
         </Helmet>
+        <BreadCrumb crumbs={[
+          {link: this.props.location.pathname, name: get(data, 'name', 'Country')},
+          {link: `/regions/${data.region}`, name: getRegionById(data.region).name},
+          {link: '/', name: 'Home'}
+        ]} />
         <header className='inpage__header'>
           <div className='inner'>
             <h1 className='inpage__title'>

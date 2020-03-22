@@ -37,6 +37,7 @@ import { showAlert } from '../components/system-alerts';
 import Fold from '../components/fold';
 import TabContent from '../components/tab-content';
 import PerAccountTab from '../components/per-forms/per-account-tab';
+import BreadCrumb from '../components/breadcrumb';
 
 import {
   FormCheckboxGroup,
@@ -751,6 +752,10 @@ class Account extends React.Component {
         <Helmet>
           <title>IFRC Go - Account</title>
         </Helmet>
+        <BreadCrumb crumbs={[
+          {link: '/account', name: 'Account'},
+          {link: '/', name: 'Home'}
+        ]} />
         <section className='inpage'>
           <header className='inpage__header'>
             <div className='inner'>
