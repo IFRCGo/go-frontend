@@ -7,7 +7,7 @@ import { DateTime } from 'luxon';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import { Helmet } from 'react-helmet';
-import _cs from 'classnames';
+// import _cs from 'classnames';
 import url from 'url';
 
 import { countries } from '../utils/field-report-constants';
@@ -40,9 +40,7 @@ import {
   getAppealsListStats,
   getMe,
 } from '../actions';
-import {
-  meSelector,
-} from '../selectors';
+// import { meSelector } from '../selectors';
 
 import { getFdrs } from '../actions/query-external';
 // import { getBoundingBox } from '../utils/country-bounding-box';
@@ -74,18 +72,18 @@ import { NO_DATA } from '../utils/constants';
 import { getRegionSlug, getRegionById } from '../utils/region-constants';
 import { getISO3 } from '../utils/country-iso';
 
-import ThreeW from './ThreeW';
-import CountryOverview from './CountryOverview';
-import ProjectForm from './ThreeW/project-form';
-import ProjectDetails from './ThreeW/project-details';
+// import ThreeW from './ThreeW';
+// import CountryOverview from './CountryOverview';
+// import ProjectForm from './ThreeW/project-form';
+// import ProjectDetails from './ThreeW/project-details';
 
 const emptyList = [];
 const emptyObject = {};
 
 const TAB_DETAILS = [
   { title: 'Operations', hash: '#operations' },
-  { title: '3w', hash: '#3w' },
-  { title: 'Country Overview', hash: '#overview' },
+  // { title: '3w', hash: '#3w' },
+  // { title: 'Country Overview', hash: '#overview' },
   { title: 'Preparedness', hash: '#preparedness' },
   { title: 'Additional Information', hash: '#additional' }
 ];
@@ -153,6 +151,7 @@ class AdminArea extends SFPComponent {
       }
     }
 
+    /*
     if (this.props.projectForm.fetching === true &&
       nextProps.projectForm.fetching === false &&
       nextProps.projectForm.error === null
@@ -161,6 +160,7 @@ class AdminArea extends SFPComponent {
       this.props._getProjects(this.props.match.params.id, this.threeWFilters);
       this.setState({ showProjectForm: false });
     }
+    */
   }
 
   componentDidMount () {
@@ -174,8 +174,8 @@ class AdminArea extends SFPComponent {
     this.props._getPerDocuments();
     this.props._getPerDocument(null, this.props.match.params.id);
     this.props._getPerUploadedDocuments(this.props.match.params.id);
-    this.props._getProjects(this.props.match.params.id, this.threeWFilters);
-    this.props._getMe();
+    // this.props._getProjects(this.props.match.params.id, this.threeWFilters);
+    // this.props._getMe();
 
     if (typeof this.props.user.username !== 'undefined' && this.props.user.username !== null) {
       this.props._getPerMission();
@@ -457,7 +457,7 @@ class AdminArea extends SFPComponent {
         ) : (
           nope
         ),
-        dtype: o.dtype,
+        dtype: o.dtype.name,
         requestAmount: n(o.amount_requested),
         fundedAmount: n(o.amount_funded),
         active: new Date(o.end_date).getTime() > now ? 'Active' : 'Inactive'
@@ -707,6 +707,7 @@ class AdminArea extends SFPComponent {
                   />
                 </TabContent>
               </TabPanel>
+              {/*
               <TabPanel>
                 <TabContent>
                   <ThreeW
@@ -727,24 +728,9 @@ class AdminArea extends SFPComponent {
                     countryId={getCountryId(this.props.match.params.id)}
                     user={this.props.me}
                   />
-                  {/*
-                  <Fold title='Overview' id='overview'>
-                    { this.renderCountryProfile() }
-                  </Fold>
-                  */}
                 </TabContent>
-                {/*
-                <TabContent isError={!data.overview || data.key_priorities} errorMessage={ NO_DATA } title="Overview">
-                  <Fold title="Overview" id="overview">
-                    {data.overview ? <ReactMarkdown source={data.overview} /> : null}
-                    {data.key_priorities ? <ReactMarkdown source={data.key_priorities} /> : null}
-                  </Fold>
-                </TabContent>
-                <TabContent showError={true} isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage={ NO_DATA } title='Key Figures'>
-                  <KeyFigures data={this.props.keyFigures} />
-                </TabContent>
-                */}
               </TabPanel>
+              */}
               <TabPanel>
                 <TabContent showError={true} isError={!this.isPerPermission()} errorMessage='Please log in' title='Preparedness'>
                   {this.props.getPerNsPhase.fetched && this.props.perOverviewForm.fetched ? (
@@ -799,8 +785,8 @@ class AdminArea extends SFPComponent {
     const {
       showProjectForm,
       showProjectDetails,
-      projectToShowDetails,
-      projectToEdit,
+      // projectToShowDetails,
+      // projectToEdit,
     } = this.state;
 
     const {
@@ -828,7 +814,7 @@ class AdminArea extends SFPComponent {
           <title>IFRC Go - Country</title>
         </Helmet>
         { this.renderContent() }
-        { showProjectForm && (
+        {/* showProjectForm && (
           <div className='project-form-modal'>
             <header>
               <h2>
@@ -880,7 +866,7 @@ class AdminArea extends SFPComponent {
               data={projectToShowDetails}
             />
           </div>
-        )}
+        ) */}
       </App>
     );
   }
@@ -912,9 +898,9 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state, ownProps) => ({
-  me: meSelector(state),
-  projects: state.projects,
-  projectForm: state.projectForm,
+  // me: meSelector(state),
+  // projects: state.projects,
+  // projectForm: state.projectForm,
   adminArea: get(state.adminArea.aaData, getCountryId(ownProps.match.params.id), {
     data: {},
     fetching: false,

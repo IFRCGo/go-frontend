@@ -263,8 +263,8 @@ class FieldReport extends React.Component {
     }
     const infoBulletinOptions = {
       '0': 'No',
-      '1': 'Planned',
-      '2': 'Yes'
+      '2': 'Planned',
+      '3': 'Yes'
     };
     const infoBulletin = infoBulletinOptions[data.bulletin];
     const lastTouchedAt = DateTime.fromISO(data.updated_at || data.created_at).toISODate();
@@ -303,7 +303,7 @@ class FieldReport extends React.Component {
                 {this.renderNumericDetails(data)}
                 {this.renderPlannedResponse(data)}
                 <DisplaySection title={ status === 'EW' ? 'Risk Analysis' : 'Description' } inner={get(data, 'description', false)} />
-                <DisplaySection title={ status === 'EW' ? 'Potential Date of Impact' : 'Start Date' } inner={startDate} />
+                <DisplaySection title={ status === 'EW' ? 'Forecasted Date of Impact' : 'Start Date' } inner={startDate} />
                 <DisplaySection title='Requests for Assistance'>
                   <p>
                     <span>Government Requests International Assistance: </span>
