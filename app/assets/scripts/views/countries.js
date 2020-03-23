@@ -735,7 +735,7 @@ class AdminArea extends SFPComponent {
                 <TabContent title='Overview'>
                   <CountryOverview
                     countryId={getCountryId(this.props.match.params.id)}
-                    user={this.props.me}
+                    user={this.props.user}
                   />
                 </TabContent>
               </TabPanel>
