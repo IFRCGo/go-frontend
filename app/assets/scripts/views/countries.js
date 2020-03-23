@@ -38,10 +38,10 @@ import {
   getPerMission,
   getProjects,
   getAppealsListStats,
-  // getMe,
+  getMe,
   deleteProject,
 } from '../actions';
-// import { meSelector } from '../selectors';
+import { meSelector } from '../selectors';
 
 import { getFdrs } from '../actions/query-external';
 // import { getBoundingBox } from '../utils/country-bounding-box';
@@ -176,7 +176,7 @@ class AdminArea extends SFPComponent {
     this.props._getPerDocument(null, this.props.match.params.id);
     this.props._getPerUploadedDocuments(this.props.match.params.id);
     this.props._getProjects(this.props.match.params.id, this.threeWFilters);
-    // this.props._getMe();
+    this.props._getMe();
 
     if (typeof this.props.user.username !== 'undefined' && this.props.user.username !== null) {
       this.props._getPerMission();
@@ -730,7 +730,7 @@ class AdminArea extends SFPComponent {
                 <TabContent title='Overview'>
                   <CountryOverview
                     countryId={getCountryId(this.props.match.params.id)}
-                    user={this.props.me}
+                    user={this.props.user}
                   />
                 </TabContent>
               </TabPanel>
@@ -903,7 +903,7 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state, ownProps) => ({
-  // me: meSelector(state),
+  me: meSelector(state),
   deleteProjectRequest: state.projectDelete,
   projects: state.projects,
   projectForm: state.projectForm,
@@ -936,7 +936,7 @@ const selector = (state, ownProps) => ({
 
 const dispatcher = dispatch => ({
   _deleteProject: (...args) => dispatch(deleteProject(...args)),
-  // _getMe: () => dispatch(getMe()),
+  _getMe: () => dispatch(getMe()),
   _getAdmAreaById: (...args) => dispatch(getAdmAreaById(...args)),
   _getAdmAreaAppealsList: (...args) => dispatch(getAdmAreaAppealsList(...args)),
   _getAdmAreaKeyFigures: (...args) => dispatch(getAdmAreaKeyFigures(...args)),
