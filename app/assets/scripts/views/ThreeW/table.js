@@ -74,20 +74,30 @@ export default class ProjectListTable extends React.PureComponent {
         label: 'Actions',
         modifier: (d) => (
           <React.Fragment>
-            { this.props.isCountryAdmin && (
-              <button
-                className='button button--primary-bounded'
-                onClick={() => this.props.onEditButtonClick(d)}
-              >
-                Edit
-              </button>
-            )}
             <button
-              className='button button--secondary-bounded'
+              className='button button--primary-bounded'
               onClick={() => this.props.onDetailsButtonClick(d)}
             >
-              Details
+              Show details
             </button>
+            <br />
+            { this.props.isCountryAdmin && (
+              <React.Fragment>
+                <button
+                  className='button button--secondary-bounded'
+                  onClick={() => this.props.onEditButtonClick(d)}
+                >
+                  Edit
+                </button>
+                <br />
+                <button
+                  className='button button--secondary-bounded'
+                  onClick={() => this.props.onDeleteButtonClick(d)}
+                >
+                  Delete
+                </button>
+              </React.Fragment>
+            )}
           </React.Fragment>
         ),
       },
