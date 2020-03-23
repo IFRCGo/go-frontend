@@ -15,6 +15,12 @@ import Map from './map';
 
 export default class ThreeW extends React.PureComponent {
   getIsCountryAdmin = memoize((user, countryId) => {
+    // User is logged in
+    if (user && user.id) {
+      return true;
+    }
+
+    /*
     if (!user || !user.id || !countryId) {
       return false;
     }
@@ -28,6 +34,7 @@ export default class ThreeW extends React.PureComponent {
     if (countryIdIndex !== -1) {
       return true;
     }
+    */
 
     return false;
   })
