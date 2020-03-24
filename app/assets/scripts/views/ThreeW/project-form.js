@@ -80,10 +80,15 @@ const InputSection = ({
   className,
   title,
   children,
+  tooltip,
 }) => (
   <div className={_cs(className, 'project-form-input-section')}>
-    <div className='section-title'>
+    <div
+      className='section-title'
+      title={tooltip}
+    >
       { title }
+      { tooltip && <div className='input-section-tooltip-icon ion-information-circled' /> }
     </div>
     <div className='section-content'>
       { children }
@@ -550,6 +555,7 @@ class ProjectForm extends React.PureComponent {
         <InputSection
           className='multi-input-section'
           title='People targeted'
+          tooltip="The “other” category can include data such as “other sex/gender”, “undisclosed”, “unknown”, etc."
         >
           <NumberInput
             faramElementName='target_male'
@@ -572,6 +578,7 @@ class ProjectForm extends React.PureComponent {
         <InputSection
           className='multi-input-section'
           title='People reached'
+          tooltip="People Reached are people who receive (from the reporting National Society in the Reporting Year) tangible goods and/or any of a range of activities offering protection and assistance, including a positive change or support in knowledge, skills, awareness, attitudes, behaviour, and physical and psychosocial well-being and who can be counted or at least estimated with some degree of reliability."
         >
           <NumberInput
             faramElementName='reached_male'
