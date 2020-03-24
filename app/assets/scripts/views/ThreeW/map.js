@@ -18,6 +18,8 @@ import {
 } from '../../utils/constants';
 
 import { getBoundingBox } from '../../utils/country-bounding-box';
+import DownloadButton from '../../components/map/common/download-button';
+import MapHeader from '../../components/map/common/map-header';
 
 import newMap from '../../utils/get-new-map';
 
@@ -130,7 +132,7 @@ export default class ThreeWMap extends React.PureComponent {
     this.fillMap(countryId, projectList);
   }
 
-  fillMap = (countryId, projectList) => {
+  resetBounds = (countryId) => {
     const iso2 = countryIsoMapById[countryId].toUpperCase();
     const bbox = getBoundingBox(iso2);
     this.map.fitBounds(
@@ -144,7 +146,10 @@ export default class ThreeWMap extends React.PureComponent {
         }
       }
     );
+  }
 
+  fillMap = (countryId, projectList) => {
+    this.resetBounds(countryId);
     const groupedProjects = listToGroupList(
       projectList.filter(d => d.project_district),
       project => project.project_district,
@@ -259,10 +264,16 @@ export default class ThreeWMap extends React.PureComponent {
 
   render () {
     return (
-      <div
-        ref={this.mapContainerRef}
-        className='three-w-map'
-      />
+      <div className='three-w-map-wrapper map-vis'>
+        <MapHeader downloadedHeaderTitle="3W Projects" />
+        <div
+          ref={this.mapContainerRef}
+          className='three-w-map'
+        />
+        <DownloadButton
+          setZoomToDefault={() => this.resetBounds(this.props.countryId)}
+        />
+      </div>
     );
   }
 }
