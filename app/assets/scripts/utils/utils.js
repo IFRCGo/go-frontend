@@ -215,6 +215,7 @@ export function getRecordsByType (types, records) {
     memo[typeId] = {
       'title': _find(types.data.results, result => result.id === Number(typeId)).type,
       'typeId': typeId,
+      'is_primary': _find(types.data.results, result => result.id === Number(typeId)).is_primary,
       'items': []
     };
     return memo;
@@ -242,9 +243,17 @@ export function getRecordsByType (types, records) {
     '1', // ERU Reports
     '3' // Information Products
   ];
-  const sortedRecordsByType = Object.values(recordsByType);
-  sortedRecordsByType.sort((a, b) => {
+
+  // group records based on primary and others.
+  const recordsByPriority = _groupBy(Object.values(recordsByType), 'is_primary');
+
+  // sort the primary records based on the order defined above.
+  recordsByPriority['true'].sort((a, b) => {
     return orderedIds.indexOf(a.typeId) - orderedIds.indexOf(b.typeId);
   });
+
+  // append the non primary records
+  const sortedRecordsByType = recordsByPriority['true'].concat(recordsByPriority['false']);
+
   return sortedRecordsByType;
 }
