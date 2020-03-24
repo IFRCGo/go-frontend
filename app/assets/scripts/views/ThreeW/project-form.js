@@ -6,6 +6,11 @@ import Faram, {
 import _cs from 'classnames';
 import { connect } from 'react-redux';
 import memoize from 'memoize-one';
+import {
+    isFalsy,
+    isDefined,
+    isInteger,
+} from '@togglecorp/fujs';
 
 import SelectInput from '../../components/form-elements/select-input';
 import TextInput from '../../components/form-elements/text-input';
@@ -35,6 +40,14 @@ import {
   operationTypeList,
   operationTypes,
 } from '../../utils/constants';
+
+const positiveIntegerCondition = (value) => {
+  const ok = !Number.isNaN(value) && (isFalsy(value) || isInteger(+value)) && (+value > 0);
+  return {
+    ok,
+    message: 'Value must be a positive integer',
+  };
+};
 
 const statusOptions = statusList.map(p => ({
   value: p.title,
@@ -81,13 +94,31 @@ const InputSection = ({
 const emptyList = [];
 const emptyObject = [];
 
+const invalidEndDateError = {
+  end_date: 'End date must be greater than start date',
+};
+const validateDate = (start, end) => {
+  if (!start || !end) {
+    return emptyObject;
+  }
+
+  const startDate = new Date(start);
+  const endDate = new Date(end);
+
+  if (startDate.getTime() >= endDate.getTime()) {
+    return invalidEndDateError;
+  }
+
+  return emptyObject;
+};
+
 class ProjectForm extends React.PureComponent {
   constructor (props) {
     super(props);
 
     this.schema = {
       fields: {
-        budget_amount: [requiredCondition],
+        budget_amount: [requiredCondition, positiveIntegerCondition],
         project_country: [],
         event: [],
         dtype: [],
@@ -232,6 +263,8 @@ class ProjectForm extends React.PureComponent {
       faramValues: oldFaramValues,
     } = this.state;
 
+    const extraFaramErrors = validateDate(faramValues.start_date, faramValues.end_date);
+
     if (oldFaramValues.project_country !== faramValues.project_country) {
       this.props._getDistricts(faramValues.project_country);
       this.setState({
@@ -239,12 +272,18 @@ class ProjectForm extends React.PureComponent {
           ...faramValues,
           project_district: 'all',
         },
-        faramErrors,
+        faramErrors: {
+          ...extraFaramErrors,
+          ...faramErrors,
+        },
       });
     } else {
       this.setState({
         faramValues,
-        faramErrors,
+        faramErrors: {
+          ...extraFaramErrors,
+          ...faramErrors,
+        },
       });
     }
   }
@@ -314,14 +353,14 @@ class ProjectForm extends React.PureComponent {
     const currentOperationOptions = this.getCurrentOperationOptions(eventList);
 
     const fetchingCountries = countries && countries.fetching;
-    const shouldDisableCountryInput = fetchingCountries || true;
+    const shouldDisableCountryInput = fetchingCountries;
     const fetchingDistricts = districts && districts[faramValues.project_country] && districts[faramValues.project_country].fetching;
     const shouldDisableDistrictInput = fetchingCountries || fetchingDistricts;
     const fetchingEvents = eventList && eventList.fetching;
     const shouldDisableCurrentOperation = fetchingEvents;
 
     const projectFormPending = projectForm.fetching;
-    const shouldDisableSubmitButton = projectFormPending;
+    const shouldDisableSubmitButton = projectFormPending || fetchingCountries || fetchingDistricts;
 
     const shouldShowCurrentOperation = faramValues.operation_type === 'Emergency Operation' &&
       faramValues.programme_type === 'Multilateral';
