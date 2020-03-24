@@ -7,15 +7,15 @@ import _cs from 'classnames';
 import { connect } from 'react-redux';
 import memoize from 'memoize-one';
 import {
-    isFalsy,
-    isDefined,
-    isInteger,
+  isFalsy,
+  isInteger,
 } from '@togglecorp/fujs';
 
 import SelectInput from '../../components/form-elements/select-input';
 import TextInput from '../../components/form-elements/text-input';
 import NumberInput from '../../components/form-elements/number-input';
 import DateInput from '../../components/form-elements/date-input';
+import Checkbox from '../../components/form-elements/faram-checkbox';
 
 import {
   getCountries,
@@ -118,6 +118,7 @@ class ProjectForm extends React.PureComponent {
 
     this.schema = {
       fields: {
+        is_project_completed: [],
         budget_amount: [requiredCondition, positiveIntegerCondition],
         project_country: [],
         event: [],
@@ -164,6 +165,7 @@ class ProjectForm extends React.PureComponent {
         reached_total: projectData.reached_total || undefined,
         reporting_ns: projectData.reporting_ns,
         secondary_sectors: projectData.secondary_sectors ? projectData.secondary_sectors.map(d => secondarySectorInputValues[d]) : [],
+        is_project_completed: projectData.status === 2,
         status: statuses[projectData.status],
         target_other: projectData.target_other || undefined,
         target_female: projectData.target_female || undefined,
@@ -258,12 +260,32 @@ class ProjectForm extends React.PureComponent {
     }));
   }
 
+  getProjectStatusFaramValue = memoize((start, isCompleted) => {
+    if (isCompleted) {
+      return { status: 'Completed' };
+    }
+
+    if (!start) {
+      return { status: 'Planned' };
+    }
+
+    const startDate = new Date(start);
+    const today = new Date();
+
+    if (startDate.getTime() <= today.getTime()) {
+      return { status: 'Ongoing' };
+    }
+
+    return { status: 'Planned' };
+  })
+
   handleFaramChange = (faramValues, faramErrors) => {
     const {
       faramValues: oldFaramValues,
     } = this.state;
 
     const extraFaramErrors = validateDate(faramValues.start_date, faramValues.end_date);
+    const extraFaramValues = this.getProjectStatusFaramValue(faramValues.start_date, faramValues.is_project_completed);
 
     if (oldFaramValues.project_country !== faramValues.project_country) {
       this.props._getDistricts(faramValues.project_country);
@@ -271,6 +293,7 @@ class ProjectForm extends React.PureComponent {
         faramValues: {
           ...faramValues,
           project_district: 'all',
+          ...extraFaramValues,
         },
         faramErrors: {
           ...extraFaramErrors,
@@ -279,7 +302,10 @@ class ProjectForm extends React.PureComponent {
       });
     } else {
       this.setState({
-        faramValues,
+        faramValues: {
+          ...faramValues,
+          ...extraFaramValues,
+        },
         faramErrors: {
           ...extraFaramErrors,
           ...faramErrors,
@@ -508,7 +534,12 @@ class ProjectForm extends React.PureComponent {
             label='Project budget (CHF)'
             faramElementName='budget_amount'
           />
+          <Checkbox
+            label="Completed"
+            faramElementName="is_project_completed"
+          />
           <SelectInput
+            disabled
             faramElementName='status'
             className='project-form-select'
             label='Project status'
