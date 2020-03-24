@@ -228,7 +228,11 @@ export function getRecordsByType (types, records) {
   recordsSorted.forEach(record => {
     if (record.type) {
       const recordTypeId = record.type.id;
-      recordsByType[recordTypeId].items.push(record);
+      if (record.is_pinned) {
+        recordsByType[recordTypeId].items.splice(0, 0, record);
+      } else {
+        recordsByType[recordTypeId].items.push(record);
+      }
     }
   });
 
