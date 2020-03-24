@@ -9,13 +9,17 @@ import { environment } from '../../../config';
 class DownloadButton extends React.Component {
   constructor (props) {
     super(props);
-    this.startDownload = this.startDownload.bind(this);
+    this.handleDownloadButtonClick = this.handleDownloadButtonClick.bind(this);
   }
 
-  startDownload () {
+  componentWillUnmount () {
+    window.clearTimeout(this.timeout);
+  }
+
+  handleDownloadButtonClick () {
     this.props.setZoomToDefault();
-    const interval = setInterval(function () {
-      clearInterval(interval);
+
+    this.timeout = window.setTimeout(function () {
       const timestamp = new Date();
       const map = document.getElementsByClassName('map-vis')[0];
       const downloadButton = document.getElementsByClassName('map-vis__legend--download-btn')[0];
@@ -28,7 +32,7 @@ class DownloadButton extends React.Component {
       const $expimg = document.getElementById('exportimage');
       $expimg.src = $canvas.toDataURL('png');
       $expimg.style.display = 'block';
-      document.getElementsByClassName('mapboxgl-map')[0].style.visibility = 'hidden';
+      // document.getElementsByClassName('mapboxgl-map')[0].style.visibility = 'hidden';
 
       mapLogoHeader.style.visibility = 'visible';
       downloadButton.style.visibility = 'hidden';
@@ -55,7 +59,7 @@ class DownloadButton extends React.Component {
         });
 
         $expimg.style.display = 'none';
-        document.getElementsByClassName('mapboxgl-map')[0].style.visibility = 'visible';
+        // document.getElementsByClassName('mapboxgl-map')[0].style.visibility = 'visible';
 
         if (typeof popover !== 'undefined') {
           popover.style.height = 'auto';
@@ -69,7 +73,7 @@ class DownloadButton extends React.Component {
     return (
       <figcaption
         className='map-vis__legend map-vis__legend--download-btn legend'
-        onClick={this.startDownload}>
+        onClick={this.handleDownloadButtonClick}>
         <img src='/assets/graphics/content/download.svg' alt='IFRC GO logo'/>
       </figcaption>
     );
