@@ -143,10 +143,10 @@ function appealsListStats (state = appealsListStatsInitialState, action) {
           if (endTime > now) {
             acc.activeAppeals++;
           }
-          const amountFunded = _toNumber(object.amount_funded);
-          acc.appealsBudget += amountRequested;
-          acc.appealsFunding += amountFunded;
         }
+        const amountFunded = _toNumber(object.amount_funded);
+        acc.appealsBudget += amountRequested;
+        acc.appealsFunding += amountFunded;
         return acc;
       }, struct);
 
