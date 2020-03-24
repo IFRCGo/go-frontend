@@ -6,11 +6,16 @@ import Faram, {
 import _cs from 'classnames';
 import { connect } from 'react-redux';
 import memoize from 'memoize-one';
+import {
+  isFalsy,
+  isInteger,
+} from '@togglecorp/fujs';
 
 import SelectInput from '../../components/form-elements/select-input';
 import TextInput from '../../components/form-elements/text-input';
 import NumberInput from '../../components/form-elements/number-input';
 import DateInput from '../../components/form-elements/date-input';
+import Checkbox from '../../components/form-elements/faram-checkbox';
 
 import {
   getCountries,
@@ -35,6 +40,14 @@ import {
   operationTypeList,
   operationTypes,
 } from '../../utils/constants';
+
+const positiveIntegerCondition = (value) => {
+  const ok = !Number.isNaN(value) && (isFalsy(value) || isInteger(+value)) && (+value > 0);
+  return {
+    ok,
+    message: 'Value must be a positive integer',
+  };
+};
 
 const statusOptions = statusList.map(p => ({
   value: p.title,
@@ -67,10 +80,15 @@ const InputSection = ({
   className,
   title,
   children,
+  tooltip,
 }) => (
   <div className={_cs(className, 'project-form-input-section')}>
-    <div className='section-title'>
+    <div
+      className='section-title'
+      title={tooltip}
+    >
       { title }
+      { tooltip && <div className='input-section-tooltip-icon ion-information-circled' /> }
     </div>
     <div className='section-content'>
       { children }
@@ -81,13 +99,32 @@ const InputSection = ({
 const emptyList = [];
 const emptyObject = [];
 
+const invalidEndDateError = {
+  end_date: 'End date must be greater than start date',
+};
+const validateDate = (start, end) => {
+  if (!start || !end) {
+    return emptyObject;
+  }
+
+  const startDate = new Date(start);
+  const endDate = new Date(end);
+
+  if (startDate.getTime() >= endDate.getTime()) {
+    return invalidEndDateError;
+  }
+
+  return emptyObject;
+};
+
 class ProjectForm extends React.PureComponent {
   constructor (props) {
     super(props);
 
     this.schema = {
       fields: {
-        budget_amount: [requiredCondition],
+        is_project_completed: [],
+        budget_amount: [requiredCondition, positiveIntegerCondition],
         project_country: [],
         event: [],
         dtype: [],
@@ -133,6 +170,7 @@ class ProjectForm extends React.PureComponent {
         reached_total: projectData.reached_total || undefined,
         reporting_ns: projectData.reporting_ns,
         secondary_sectors: projectData.secondary_sectors ? projectData.secondary_sectors.map(d => secondarySectorInputValues[d]) : [],
+        is_project_completed: projectData.status === 2,
         status: statuses[projectData.status],
         target_other: projectData.target_other || undefined,
         target_female: projectData.target_female || undefined,
@@ -227,10 +265,32 @@ class ProjectForm extends React.PureComponent {
     }));
   }
 
+  getProjectStatusFaramValue = memoize((start, isCompleted) => {
+    if (isCompleted) {
+      return { status: 'Completed' };
+    }
+
+    if (!start) {
+      return { status: 'Planned' };
+    }
+
+    const startDate = new Date(start);
+    const today = new Date();
+
+    if (startDate.getTime() <= today.getTime()) {
+      return { status: 'Ongoing' };
+    }
+
+    return { status: 'Planned' };
+  })
+
   handleFaramChange = (faramValues, faramErrors) => {
     const {
       faramValues: oldFaramValues,
     } = this.state;
+
+    const extraFaramErrors = validateDate(faramValues.start_date, faramValues.end_date);
+    const extraFaramValues = this.getProjectStatusFaramValue(faramValues.start_date, faramValues.is_project_completed);
 
     if (oldFaramValues.project_country !== faramValues.project_country) {
       this.props._getDistricts(faramValues.project_country);
@@ -238,13 +298,23 @@ class ProjectForm extends React.PureComponent {
         faramValues: {
           ...faramValues,
           project_district: 'all',
+          ...extraFaramValues,
         },
-        faramErrors,
+        faramErrors: {
+          ...extraFaramErrors,
+          ...faramErrors,
+        },
       });
     } else {
       this.setState({
-        faramValues,
-        faramErrors,
+        faramValues: {
+          ...faramValues,
+          ...extraFaramValues,
+        },
+        faramErrors: {
+          ...extraFaramErrors,
+          ...faramErrors,
+        },
       });
     }
   }
@@ -314,14 +384,14 @@ class ProjectForm extends React.PureComponent {
     const currentOperationOptions = this.getCurrentOperationOptions(eventList);
 
     const fetchingCountries = countries && countries.fetching;
-    const shouldDisableCountryInput = fetchingCountries || true;
+    const shouldDisableCountryInput = fetchingCountries;
     const fetchingDistricts = districts && districts[faramValues.project_country] && districts[faramValues.project_country].fetching;
     const shouldDisableDistrictInput = fetchingCountries || fetchingDistricts;
     const fetchingEvents = eventList && eventList.fetching;
     const shouldDisableCurrentOperation = fetchingEvents;
 
     const projectFormPending = projectForm.fetching;
-    const shouldDisableSubmitButton = projectFormPending;
+    const shouldDisableSubmitButton = projectFormPending || fetchingCountries || fetchingDistricts;
 
     const shouldShowCurrentOperation = faramValues.operation_type === 'Emergency Operation' &&
       faramValues.programme_type === 'Multilateral';
@@ -469,7 +539,12 @@ class ProjectForm extends React.PureComponent {
             label='Project budget (CHF)'
             faramElementName='budget_amount'
           />
+          <Checkbox
+            label="Completed"
+            faramElementName="is_project_completed"
+          />
           <SelectInput
+            disabled
             faramElementName='status'
             className='project-form-select'
             label='Project status'
@@ -480,6 +555,7 @@ class ProjectForm extends React.PureComponent {
         <InputSection
           className='multi-input-section'
           title='People targeted'
+          tooltip="The “other” category can include data such as “other sex/gender”, “undisclosed”, “unknown”, etc."
         >
           <NumberInput
             faramElementName='target_male'
@@ -502,6 +578,7 @@ class ProjectForm extends React.PureComponent {
         <InputSection
           className='multi-input-section'
           title='People reached'
+          tooltip="People Reached are people who receive (from the reporting National Society in the Reporting Year) tangible goods and/or any of a range of activities offering protection and assistance, including a positive change or support in knowledge, skills, awareness, attitudes, behaviour, and physical and psychosocial well-being and who can be counted or at least estimated with some degree of reliability."
         >
           <NumberInput
             faramElementName='reached_male'

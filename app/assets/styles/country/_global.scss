@@ -502,6 +502,10 @@
     }
   }
 
+  .tc-faram-checkbox {
+    margin: 0 10px;
+  }
+
   .project-form-select {
     display: flex;
     flex-direction: column;
@@ -545,6 +549,14 @@
     flex-basis: 30%;
     font-weight: bold;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+
+    .input-section-tooltip-icon {
+      margin-left: 10px;
+      font-size: 1.4em;
+      color: $primary-color;
+    }
   }
 
   .section-content {
