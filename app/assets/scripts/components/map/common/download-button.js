@@ -27,13 +27,11 @@ class DownloadButton extends React.Component {
       const popover = document.getElementsByClassName('popover__contents')[0];
       const navigation = document.getElementsByClassName('mapboxgl-ctrl-top-right')[0];
       const mapLogoHeader = document.getElementById('map-picture-header');
+      const mapFooter = document.getElementById('map-export-footer');
 
-      const $canvas = document.getElementsByClassName('mapboxgl-canvas')[0];
-      const $expimg = document.getElementById('exportimage');
-      $expimg.src = $canvas.toDataURL('png');
-      $expimg.style.display = 'block';
-      // document.getElementsByClassName('mapboxgl-map')[0].style.visibility = 'hidden';
-
+      if (mapFooter) {
+        mapFooter.style.visibility = 'visible';
+      }
       mapLogoHeader.style.visibility = 'visible';
       downloadButton.style.visibility = 'hidden';
       navigation.style.visibility = 'hidden';
@@ -51,15 +49,15 @@ class DownloadButton extends React.Component {
           renderedCanvas,
           'map-' + timestamp.getTime() + '.png');
 
+        if (mapFooter) {
+          mapFooter.style.visibility = 'hidden';
+        }
         mapLogoHeader.style.visibility = 'hidden';
         downloadButton.style.visibility = 'visible';
         navigation.style.visibility = 'visible';
         dropdowns.forEach(dropdown => {
           dropdown.style.visibility = 'visible';
         });
-
-        $expimg.style.display = 'none';
-        // document.getElementsByClassName('mapboxgl-map')[0].style.visibility = 'visible';
 
         if (typeof popover !== 'undefined') {
           popover.style.height = 'auto';
