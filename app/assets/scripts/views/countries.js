@@ -252,17 +252,27 @@ class AdminArea extends SFPComponent {
     const iso2 = adminArea.data.iso;
     const iso3 = getISO3(iso2);
     const homepage = adminArea.data.society_url;
-    const regionSlug = getRegionSlug(adminArea.data.region);
-    const countryLower = adminArea.data.name.toLowerCase();
+    const homepageIfrc = adminArea.data.url_ifrc;
+    // const regionSlug = getRegionSlug(adminArea.data.region);
+    // const countryLower = adminArea.data.name.toLowerCase();
     const links = [];
 
-    if (regionSlug) {
+    if (homepageIfrc) {
       const ifrcLink = {
         'text': `${adminArea.data.name} on IFRC.org`,
-        'url': `https://www.ifrc.org/en/news-and-media/news-stories/${regionSlug}/${countryLower}/`
+        'url': homepageIfrc
       };
       links.push(ifrcLink);
     }
+
+    // TODO: check if those constants with the slugs are really needed for anything else
+    // if (regionSlug) {
+    //   const ifrcLink = {
+    //     'text': `${adminArea.data.name} on IFRC.org`,
+    //     'url': `https://www.ifrc.org/en/news-and-media/news-stories/${regionSlug}/${countryLower}/`
+    //   };
+    //   links.push(ifrcLink);
+    // }
 
     if (iso3) {
       const reliefWebLink = {
