@@ -42,7 +42,7 @@ import {
 } from '../../utils/constants';
 
 const positiveIntegerCondition = (value) => {
-  const ok = !Number.isNaN(value) && (isFalsy(value) || isInteger(+value)) && (+value > 0);
+  const ok = (value === undefined || value === '') || ((!Number.isNaN(value)) && (isFalsy(value) || isInteger(+value)) && (+value > 0));
   return {
     ok,
     message: 'Value must be a positive integer',
@@ -135,17 +135,17 @@ class ProjectForm extends React.PureComponent {
         programme_type: [requiredCondition],
         end_date: [requiredCondition],
         start_date: [requiredCondition],
-        reached_other: [],
-        reached_female: [],
-        reached_male: [],
-        reached_total: [],
+        reached_other: [positiveIntegerCondition],
+        reached_female: [positiveIntegerCondition],
+        reached_male: [positiveIntegerCondition],
+        reached_total: [positiveIntegerCondition],
         reporting_ns: [requiredCondition],
         secondary_sectors: [],
         status: [requiredCondition],
-        target_other: [],
-        target_female: [],
-        target_male: [],
-        target_total: [requiredCondition],
+        target_other: [positiveIntegerCondition],
+        target_female: [positiveIntegerCondition],
+        target_male: [positiveIntegerCondition],
+        target_total: [requiredCondition, positiveIntegerCondition],
       },
     };
 
@@ -356,7 +356,7 @@ class ProjectForm extends React.PureComponent {
     }
 
     if (projectStatus === 'Completed') {
-      schema.fields.reached_total = [requiredCondition];
+      schema.fields.reached_total = [requiredCondition, positiveIntegerCondition];
     }
 
     return schema;

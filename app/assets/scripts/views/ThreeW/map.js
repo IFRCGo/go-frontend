@@ -20,6 +20,7 @@ import {
 import { getBoundingBox } from '../../utils/country-bounding-box';
 import DownloadButton from '../../components/map/common/download-button';
 import MapHeader from '../../components/map/common/map-header';
+import MapFooter from '../../components/map/common/map-footer';
 
 import newMap from '../../utils/get-new-map';
 
@@ -273,6 +274,7 @@ export default class ThreeWMap extends React.PureComponent {
         <DownloadButton
           setZoomToDefault={() => this.resetBounds(this.props.countryId)}
         />
+        <MapFooter />
       </div>
     );
   }
