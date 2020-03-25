@@ -54,17 +54,18 @@ function appealsList (state = appealsListInitialState, action) {
           if (endTime > now) {
             acc.activeDrefs++;
           }
+        }
 
         // Appeal.
-        } else if (object.atype === 1 || object.atype === 2) {
+        if (object.atype === 1 || object.atype === 2) {
           acc.totalAppeals++;
           if (endTime > now) {
             acc.activeAppeals++;
           }
-          const amountFunded = _toNumber(object.amount_funded);
-          acc.appealsBudget += amountRequested;
-          acc.appealsFunding += amountFunded;
         }
+        const amountFunded = _toNumber(object.amount_funded);
+        acc.appealsBudget += amountRequested;
+        acc.appealsFunding += amountFunded;
         return acc;
       }, struct);
 
