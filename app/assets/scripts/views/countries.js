@@ -68,7 +68,7 @@ import PreparednessColumnBar from '../components/country/preparedness-column-gra
 import KeyFiguresHeader from '../components/common/key-figures-header';
 import { SFPComponent } from '../utils/extendables';
 import { NO_DATA } from '../utils/constants';
-import { getRegionSlug } from '../utils/region-constants';
+// import { getRegionSlug } from '../utils/region-constants';
 import { getISO3 } from '../utils/country-iso';
 
 // import ThreeW from './ThreeW';
