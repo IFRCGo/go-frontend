@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 500 500" style="enable-background:new 0 0 500 500;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#F5333F;}
+	.st1{fill:none;stroke:#011E41;stroke-width:16;stroke-miterlimit:10;}
+	.st2{display:none;}
+	.st3{display:inline;}
+	.st4{fill:none;stroke:#D1D3D4;stroke-width:2;stroke-miterlimit:10;}
+	.st5{display:inline;fill:none;stroke:#BCBEC0;stroke-width:4;stroke-miterlimit:10;}
+	.st6{fill:none;stroke:#BCBEC0;stroke-width:4;stroke-miterlimit:10;}
+	.st7{display:inline;fill:none;stroke:#D1D3D4;stroke-width:2;stroke-miterlimit:10;}
+	.st8{display:none;opacity:0.35;fill:none;stroke:#000000;stroke-width:16;stroke-miterlimit:10;}
+	.st9{fill:none;stroke:#011E41;stroke-width:16;stroke-linejoin:bevel;stroke-miterlimit:10;}
+	.st10{fill:none;stroke:#F5333F;stroke-width:16;stroke-miterlimit:10;}
+	.st11{fill:#011E41;}
+	.st12{fill:none;stroke:#011E41;stroke-width:16;stroke-linecap:square;stroke-miterlimit:10;}
+	.st13{fill:none;stroke:#011E41;stroke-width:16;stroke-linecap:round;stroke-miterlimit:10;}
+	.st14{fill:none;stroke:#EF3741;stroke-width:16;stroke-miterlimit:10;}
+	.st15{fill:#F5333F;stroke:#011E41;stroke-width:16;stroke-miterlimit:10;}
+	.st16{fill:#F9F9F9;}
+	.st17{fill:#EF3741;}
+	.st18{fill:none;stroke:#011E41;stroke-width:8;stroke-miterlimit:10;}
+	.st19{font-family:'Montserrat-Bold';}
+	.st20{font-size:63.083px;}
+</style>
+<g id="Icons">
+	<path class="st0" d="M394.02,251.94c-2.11-25.18-11.72-48.82-27.76-68.29l-3.43-3.83c-7.7-8.61-16.43-16.28-26.18-22.47
+		c-9.57-6.07-19.89-10.75-30.7-13.97l-0.17-27.27c15.64-2.59,27.56-16.17,27.56-32.54l-1.83-34.99c-11.5-11.5-115.55-11.5-127.06,0
+		l0.52,34.99c0,16.35,11.9,29.92,27.51,32.53v27.28c-10.82,3.22-21.14,7.91-30.7,13.97c-9.76,6.18-18.48,13.86-26.18,22.47
+		l-3.43,3.83c-15.61,18.96-25.13,41.86-27.57,66.29c-0.41,2.21-0.63,4.53-0.63,6.97v5.61v69.87v45.06
+		c0,20.93,16.96,37.89,37.89,37.89h47.89h78.93h47.89c20.93,0,37.89-16.96,37.89-37.89v-45.06v-69.87v-5.61
+		C394.47,255.17,394.3,253.52,394.02,251.94z"/>
+	<g>
+		<rect x="213.26" y="135.56" class="st1" width="73.35" height="23.7"/>
+		<path class="st1" d="M344.91,189.81l0.02-0.1c-18.81-18.81-44.8-30.44-73.5-30.44h-0.12h-42.61h-0.12
+			c-28.7,0-54.69,11.63-73.5,30.44l0.02,0.1c-18.75,18.8-30.35,44.75-30.35,73.4v120.96c0,27.71,22.46,50.17,50.17,50.17h35.61
+			h78.93h35.61c27.71,0,50.17-22.46,50.17-50.17V263.2C375.25,234.55,363.66,208.61,344.91,189.81z"/>
+		<g>
+			<path class="st1" d="M236.91,135.56c-7.69,0-13.93-12.49-13.93-27.89l-0.22-29.58"/>
+			<path class="st1" d="M276.41,78.08l0.77,29.58c0,15.41-6.24,27.89-13.93,27.89"/>
+		</g>
+		<g>
+			<path class="st1" d="M185.23,67.57c11.5-11.5,115.55-11.5,127.06,0l1.83,34.99c0,18.22-14.77,33-33,33h-62.38
+				c-18.22,0-33-14.77-33-33L185.23,67.57z"/>
+		</g>
+	</g>
+</g>
+<g id="Text">
+	<text transform="matrix(1 0 0 1 156.3801 326.1562)" class="st11 st19 st20">DREF</text>
+</g>
+</svg>

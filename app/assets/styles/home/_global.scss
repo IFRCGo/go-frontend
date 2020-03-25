@@ -186,6 +186,16 @@
     }
   }
 
+  &__icon_wrapper {
+    text-align: center;
+  }
+
+  &__icon_2020 {
+    height: 5rem;
+    padding-bottom: ($global-spacing /2);
+    margin-bottom: auto;
+  }
+
   &__value, &__key {
     text-align: center;
     display: block;

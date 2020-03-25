@@ -70,7 +70,7 @@ class TimelineCharts extends React.Component {
         <LineChart data={data}>
           <XAxis tickFormatter={tickFormatter} dataKey='timespan' axisLine={false} padding={{ left: 16, right: 16 }} />
           <YAxis axisLine={false} tickLine={false} width={32} padding={{ bottom: 16 }} />
-          <Line name='Appeals' type='monotone' dataKey='appeals.count' stroke='#C02C2C' />
+          <Line name='Appeals' type='monotone' dataKey='appeals.count' stroke='#f5333f' />
           <Line name='DREFs' type='monotone' dataKey='drefs.count' stroke='#F39C12' />
           <Tooltip content={contentFormatter}/>
           <Legend verticalAlign='bottom' iconType='circle' iconSize={10} />

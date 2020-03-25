@@ -20,12 +20,12 @@ const keyTitle = {
 
 const keyFiguresList = ['activeDrefs', 'activeAppeals', 'budget', 'appealsFunding', 'targetPop'];
 
-const keyIcon = {
-  activeDrefs: 'collecticon-rc',
-  activeAppeals: 'collecticon-rc-appeals',
-  budget: 'collecticon-cash-notes',
-  appealsFunding: 'collecticon-cash-bag',
-  targetPop: 'collecticon-people-arrows'
+const keyIconSrc = {
+  activeDrefs: '/assets/graphics/content/2020/IFRC-icons-colour_DREF.svg',
+  activeAppeals: '/assets/graphics/content/2020/IFRC-icons-colour_Emergency-appeal.svg',
+  budget: '/assets/graphics/content/2020/IFRC-icons-colour_Appeal-budget-Funding-Requirements.svg',
+  appealsFunding: '/assets/graphics/content/2020/IFRC-icons-colour_Funding-Coverage.svg',
+  targetPop: '/assets/graphics/content/2020/IFRC-icons-colour_Affected-people.svg'
 };
 // Lists two tooltip descriptions currently in use.
 const tooltipOptions = {
@@ -78,7 +78,7 @@ export default function KeyFiguresHeader (props) {
         id: stat,
         title: keyTitle[stat],
         value,
-        icon: keyIcon[stat],
+        icon: keyIconSrc[stat],
         tooltip: tooltipOptions[stat] || null
       };
     }).filter(figure => keyFiguresList.includes(figure.id));
@@ -94,7 +94,9 @@ export default function KeyFiguresHeader (props) {
         <ul className='sumstats'>
           {filteredKeyFigures().map(keyFigure => (
             <li key={keyFigure.id} className='sumstats__item'>
-              <span className={c(`${keyFigure.icon}`, 'sumstats__icon')}></span>
+              <span className='sumstats__icon_wrapper'>
+                <img className='sumstats__icon_2020' src={keyFigure.icon} />
+              </span>
               <span className='sumstats__value'>{keyFigure.value}</span>
               <span className='sumstats__key'>
                 {keyFigure.title}
