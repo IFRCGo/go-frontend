@@ -54,7 +54,7 @@ export default class ThreeW extends React.PureComponent {
     return (
       <div className='three-w-container'>
         <h2 className='heading'>
-          Movement activities
+          Movement activities in support of NS
         </h2>
         <div className='content'>
           <div className='left'>
