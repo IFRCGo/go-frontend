@@ -728,7 +728,7 @@ class FieldReportForm extends React.Component {
   }
 
   render () {
-    const submitTitle = this.state.step === 4 ? 'Submit' : 'Save and Continue';
+    const submitTitle = this.state.step === 4 ? 'Submit' : 'Continue';
     return (
       <App className='page--frep-form'>
         <section className='inpage'>
