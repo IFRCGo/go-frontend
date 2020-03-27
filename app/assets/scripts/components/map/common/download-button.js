@@ -17,11 +17,14 @@ class DownloadButton extends React.Component {
   }
 
   handleDownloadButtonClick () {
+    const {
+      mapContainerClassName = 'map-vis',
+    } = this.props;
     this.props.setZoomToDefault();
 
     this.timeout = window.setTimeout(function () {
       const timestamp = new Date();
-      const map = document.getElementsByClassName('map-vis')[0];
+      const map = document.getElementsByClassName(mapContainerClassName)[0];
       const downloadButton = document.getElementsByClassName('map-vis__legend--download-btn')[0];
       const dropdowns = Array.from(document.getElementsByClassName('map-vis__legend--top-left'));
       const popover = document.getElementsByClassName('popover__contents')[0];
@@ -70,7 +73,7 @@ class DownloadButton extends React.Component {
   render () {
     return (
       <figcaption
-        className='map-vis__legend map-vis__legend--download-btn legend'
+        className='map-vis__legend map-vis__legend--download-btn legend map-download-btn'
         onClick={this.handleDownloadButtonClick}>
         <img src='/assets/graphics/content/download.svg' alt='IFRC GO logo'/>
       </figcaption>

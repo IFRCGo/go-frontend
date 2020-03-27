@@ -42,39 +42,41 @@ import {
 } from '../../utils/constants';
 
 const positiveIntegerCondition = (value) => {
-  const ok = (value === undefined || value === '') || ((!Number.isNaN(value)) && (isFalsy(value) || isInteger(+value)) && (+value > 0));
+  const ok = (value === undefined || value === '') || ((!Number.isNaN(value)) && (isFalsy(value) || isInteger(+value)) && (+value >= 0));
   return {
     ok,
     message: 'Value must be a positive integer',
   };
 };
 
+const compareString = (a, b) => a.label.localeCompare(b.label);
+
 const statusOptions = statusList.map(p => ({
   value: p.title,
   label: p.title,
-}));
+})).sort(compareString);
 
 const sectorOptions = sectorList.map(p => ({
   value: p.inputValue,
   label: p.title,
-}));
+})).sort(compareString);
 
 const secondarySectorOptions = secondarySectorList.map(p => ({
   value: p.inputValue,
   label: p.title,
-}));
+})).sort(compareString);
 
 const programmeTypeOptions = programmeTypeList.map(p => ({
   value: p.title,
   label: p.title,
-}));
+})).sort(compareString);
 
 const disasterTypeOptions = disasterTypeList.map(d => ({
   value: d.value,
   label: d.label,
-}));
+})).sort(compareString);
 
-const operationTypeOptions = operationTypeList;
+const operationTypeOptions = [...operationTypeList].sort(compareString);
 
 const InputSection = ({
   className,
@@ -209,14 +211,14 @@ class ProjectForm extends React.PureComponent {
       .map(d => ({
         value: d.id,
         label: d.society_name,
-      }));
+      })).sort(compareString);
 
     const countryOptions = countryList
       .filter(d => d.iso)
       .map(d => ({
         value: d.id,
         label: d.name,
-      }));
+      })).sort(compareString);
 
     return {
       nationalSocietyOptions,
@@ -242,9 +244,9 @@ class ProjectForm extends React.PureComponent {
     const mappedDistrictList = districtList.map(d => ({
       value: d.id,
       label: d.name,
-    }));
+    })).sort(compareString);
 
-    mappedDistrictList.push({
+    mappedDistrictList.unshift({
       value: 'all',
       label: 'Countrywide',
     });

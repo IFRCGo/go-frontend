@@ -275,6 +275,11 @@
       margin: 8px;
     }
 
+    .three-w-map-vis {
+      position: relative;
+      width: 100%;
+    }
+
     .three-w-map-container {
       position: relative;
       width: 100%;
@@ -297,7 +302,7 @@
         max-height: 580px;
         position: absolute;
         right: 16px;
-        bottom: 16px;
+        bottom: 56px;
         overflow: auto;
       }
     }
@@ -485,7 +490,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 11;
+  z-index: 1111;
   background-color: #fff;
   overflow: auto;
 
@@ -993,6 +998,8 @@
 }
 
 .tc-project-details {
+  z-index: 1;
+
   .tc-project-name {
     padding: 0 10px;
     flex-direction: column;

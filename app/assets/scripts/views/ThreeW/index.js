@@ -21,26 +21,19 @@ const convertJsonToCsv = (data, columnDelimiter = ',', lineDelimiter = '\n', emp
     return undefined;
   }
 
-  // TODO: get exhaustive keys
-  const keys = Object.keys(data[0]);
+  let result = '';
 
-  let result = keys.join(columnDelimiter);
-  result += lineDelimiter;
-
-  data.forEach((item) => {
-    result += keys
-      .map(key => item[key])
-      .map((str) => {
-        if (isNotDefined(str)) {
-          return emptyValue;
-        }
-        const val = String(str);
-        if (val.includes(columnDelimiter)) {
-          return `"${val}"`;
-        }
-        return val;
-      })
-      .join(columnDelimiter);
+  data.forEach((items) => {
+    result += items.map((str) => {
+      if (isNotDefined(str)) {
+        return emptyValue;
+      }
+      const val = String(str);
+      if (val.includes(columnDelimiter)) {
+        return `"${val}"`;
+      }
+      return val;
+    }).join(columnDelimiter);
     result += lineDelimiter;
   });
 
@@ -152,25 +145,27 @@ export default class ThreeW extends React.PureComponent {
             className='three-w-filters'
             onFilterChange={onFilterChange}
           />
-          <div className='three-w-map-container'>
-            <Map
-              countryId={countryId}
-              projectList={projectList}
-            />
-            <RegionOverview
-              projectList={projectList}
-            />
-          </div>
-          <div className='three-w-map-bottom-details'>
-            <Summary
-              projectList={projectList}
-            />
-            <SectorActivity
-              projectList={projectList}
-            />
-            <StatusOverview
-              projectList={projectList}
-            />
+          <div className="three-w-map-vis">
+            <div className='three-w-map-container'>
+              <Map
+                countryId={countryId}
+                projectList={projectList}
+              />
+              <RegionOverview
+                projectList={projectList}
+              />
+            </div>
+            <div className='three-w-map-bottom-details'>
+              <Summary
+                projectList={projectList}
+              />
+              <SectorActivity
+                projectList={projectList}
+              />
+              <StatusOverview
+                projectList={projectList}
+              />
+            </div>
           </div>
           <div className='three-w-project-list-table-container'>
             <Table
