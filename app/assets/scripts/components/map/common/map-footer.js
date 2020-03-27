@@ -12,6 +12,8 @@ const MapFooter = (props) => (
       visibility: 'hidden',
       zIndex: 3,
       pointerEvents: 'none',
+      padding: '10px',
+      fontSize: '9px',
     }}
     id='map-export-footer'
   >

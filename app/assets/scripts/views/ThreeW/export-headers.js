@@ -15,7 +15,12 @@ const exportHeaders = [
   {
     title: 'Region',
     key: 'project_district',
-    modifier: r => r.project_district_detail ? r.project_district_detail.name : '',
+    modifier: r => r.project_district_detail ? r.project_district_detail.name : 'Countrywide',
+  },
+  {
+    title: 'Supporting NS',
+    key: 'reporting_ns',
+    modifier: r => r.reporting_ns_detail ? r.reporting_ns_detail.name : '',
   },
   {
     title: 'Operation type',
@@ -68,7 +73,7 @@ const exportHeaders = [
   },
   {
     title: 'Targeted Others',
-    key: 'target_others',
+    key: 'target_other',
   },
   {
     title: 'Targeted Total',
@@ -84,10 +89,10 @@ const exportHeaders = [
   },
   {
     title: 'Reached Others',
-    key: 'reached_others',
+    key: 'reached_other',
   },
   {
-    title: 'Reached Others',
+    title: 'Reached Total',
     key: 'reached_total',
   },
 ];
