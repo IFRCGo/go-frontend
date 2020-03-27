@@ -1,15 +1,16 @@
 'use strict';
 import React from 'react';
 import { render } from 'react-dom';
+import { connect } from 'react-redux';
 import mapboxgl from 'mapbox-gl';
 import {
   _cs,
   addSeparator,
   listToGroupList,
-  mapToList,
 } from '@togglecorp/fujs';
 
 import { countryIsoMapById } from '../../utils/field-report-constants';
+import { getDistrictsForCountryPF } from '../../actions';
 
 import {
   programmeTypes,
@@ -23,6 +24,22 @@ import MapHeader from '../../components/map/common/map-header';
 import MapFooter from '../../components/map/common/map-footer';
 
 import newMap from '../../utils/get-new-map';
+
+const emptyList = [];
+const emptyObject = {};
+
+const getResultsFromResponse = (response, defaultValue = emptyList) => {
+  const {
+    fetched,
+    data
+  } = response || emptyObject;
+
+  if (!fetched || !data || !data.results || !data.results.length) {
+    return defaultValue;
+  }
+
+  return response.data.results;
+};
 
 const ProjectDetailElement = ({
   label,
@@ -83,7 +100,7 @@ const ProjectDetail = ({
   </div>
 );
 
-export default class ThreeWMap extends React.PureComponent {
+class ThreeWMap extends React.PureComponent {
   constructor (props) {
     super(props);
 
@@ -93,6 +110,7 @@ export default class ThreeWMap extends React.PureComponent {
 
   componentDidMount () {
     const { current: mapContainer } = this.mapContainerRef;
+    this.props._getDistricts(this.props.countryId);
     this.map = newMap(
       mapContainer,
       'mapbox://styles/go-ifrc/ck1izjgrs016k1cmxwekow9m0',
@@ -108,16 +126,22 @@ export default class ThreeWMap extends React.PureComponent {
     const {
       countryId: oldCountryId,
       projectList: oldProjectList,
+      districtsResponse: oldDistrictsResponse,
     } = this.props;
 
     const {
       countryId,
       projectList,
+      districtsResponse,
     } = nextProps;
 
-    if (countryId !== oldCountryId || projectList !== oldProjectList) {
+    if (countryId !== oldCountryId) {
+      this.props._getDistricts(this.props.countryId);
+    }
+
+    if (countryId !== oldCountryId || projectList !== oldProjectList || oldDistrictsResponse !== districtsResponse) {
       if (this.mapLoaded) {
-        this.fillMap(countryId, projectList);
+        this.fillMap(countryId, projectList, districtsResponse);
       }
     }
   }
@@ -128,9 +152,10 @@ export default class ThreeWMap extends React.PureComponent {
     const {
       countryId,
       projectList,
+      districtsResponse,
     } = this.props;
 
-    this.fillMap(countryId, projectList);
+    this.fillMap(countryId, projectList, districtsResponse);
   }
 
   resetBounds = (countryId) => {
@@ -149,25 +174,34 @@ export default class ThreeWMap extends React.PureComponent {
     );
   }
 
-  fillMap = (countryId, projectList) => {
+  fillMap = (countryId, projectList, districtsResponse) => {
+    const districtList = getResultsFromResponse(districtsResponse[countryId], emptyList);
+
     this.resetBounds(countryId);
     const groupedProjects = listToGroupList(
-      projectList.filter(d => d.project_district),
+      projectList,
       project => project.project_district,
       project => project,
     );
 
-    const state = mapToList(
-      groupedProjects,
-      (item, key) => ({
-        id: +key,
-        count: item.length,
-      }),
-    );
+    const state = districtList.map(d => ({ id: d.id, count: 0 }));
+
+    if (state.length > 0) {
+      const groupedProjectKeyList = Object.keys(groupedProjects);
+      groupedProjectKeyList.forEach(k => {
+        if (k && k !== 'null') {
+          const district = state.find(d => String(d.id) === String(k));
+          district.count += 1;
+        } else {
+          state.forEach(d => { d.count += 1; });
+        }
+      });
+    }
+
     const maxProjects = Math.max(0, ...state.map(item => item.count));
     let opacityProperty;
 
-    const upperShift = 0.6;
+    const upperShift = 0.4;
     const lowerShift = 0.1;
 
     if (state.length > 0) {
@@ -175,16 +209,23 @@ export default class ThreeWMap extends React.PureComponent {
         'match',
         ['get', 'OBJECTID'],
 
-        ...state.map(district => [
-          district.id,
-          lowerShift + (district.count / maxProjects) * (1 - upperShift - lowerShift),
-        ]).flat(),
+        ...state.map(district => {
+          const value = (maxProjects !== 0)
+            ? (lowerShift + (district.count / maxProjects) * (1 - upperShift - lowerShift))
+            : lowerShift;
+
+          return [
+            district.id,
+            value,
+          ];
+        }).flat(),
 
         0,
       ];
     } else {
       opacityProperty = 0;
     }
+
     this.map.setPaintProperty(
       'adm1',
       'fill-opacity',
@@ -279,3 +320,16 @@ export default class ThreeWMap extends React.PureComponent {
     );
   }
 }
+
+const selector = (state, ownProps) => ({
+  districtsResponse: state.districts,
+});
+
+const dispatcher = dispatch => ({
+  _getDistricts: (...args) => dispatch(getDistrictsForCountryPF(...args)),
+});
+
+export default connect(
+  selector,
+  dispatcher
+)(ThreeWMap);
