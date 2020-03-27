@@ -284,13 +284,35 @@ class ProjectForm extends React.PureComponent {
     return { status: 'Planned' };
   })
 
+  getTargetedTotalFaramValue = memoize((male, female, other) => {
+    if (isFalsy(male) && isFalsy(female) && isFalsy(other)) {
+      return {};
+    }
+
+    return {
+      target_total: (+male || 0) + (+female || 0) + (+other || 0),
+    };
+  })
+
+  getReachedTotalFaramValue = memoize((male, female, other) => {
+    if (isFalsy(male) && isFalsy(female) && isFalsy(other)) {
+      return {};
+    }
+
+    return {
+      reached_total: (+male || 0) + (+female || 0) + (+other || 0),
+    };
+  })
+
   handleFaramChange = (faramValues, faramErrors) => {
     const {
       faramValues: oldFaramValues,
     } = this.state;
 
     const extraFaramErrors = validateDate(faramValues.start_date, faramValues.end_date);
-    const extraFaramValues = this.getProjectStatusFaramValue(faramValues.start_date, faramValues.is_project_completed);
+    const autoProjectStatus = this.getProjectStatusFaramValue(faramValues.start_date, faramValues.is_project_completed);
+    const autoTargetedTotal = this.getTargetedTotalFaramValue(faramValues.target_male, faramValues.target_female, faramValues.target_other);
+    const autoReachedTotal = this.getReachedTotalFaramValue(faramValues.reached_male, faramValues.reached_female, faramValues.reached_other);
 
     if (oldFaramValues.project_country !== faramValues.project_country) {
       this.props._getDistricts(faramValues.project_country);
@@ -298,7 +320,9 @@ class ProjectForm extends React.PureComponent {
         faramValues: {
           ...faramValues,
           project_district: 'all',
-          ...extraFaramValues,
+          ...autoProjectStatus,
+          ...autoTargetedTotal,
+          ...autoReachedTotal,
         },
         faramErrors: {
           ...extraFaramErrors,
@@ -309,7 +333,9 @@ class ProjectForm extends React.PureComponent {
       this.setState({
         faramValues: {
           ...faramValues,
-          ...extraFaramValues,
+          ...autoProjectStatus,
+          ...autoTargetedTotal,
+          ...autoReachedTotal,
         },
         faramErrors: {
           ...extraFaramErrors,
@@ -403,6 +429,9 @@ class ProjectForm extends React.PureComponent {
       faramValues.programme_type,
       faramValues.status
     );
+
+    const shouldDisableTotalTarget = !isFalsy(faramValues.target_male) || !isFalsy(faramValues.target_female) || !isFalsy(faramValues.target_other);
+    const shouldDisableTotalReached = !isFalsy(faramValues.reached_male) || !isFalsy(faramValues.reached_female) || !isFalsy(faramValues.reached_other);
 
     return (
       <Faram
@@ -570,6 +599,7 @@ class ProjectForm extends React.PureComponent {
             label='Other'
           />
           <NumberInput
+            disabled={shouldDisableTotalTarget}
             faramElementName='target_total'
             label='Total* '
           />
@@ -593,6 +623,7 @@ class ProjectForm extends React.PureComponent {
             label='Other'
           />
           <NumberInput
+            disabled={shouldDisableTotalReached}
             faramElementName='reached_total'
             label={faramValues.status === 'Completed' ? 'Total* ' : 'Total'}
           />
