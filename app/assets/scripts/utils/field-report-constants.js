@@ -713,7 +713,7 @@ export const fieldsStep3 = {
         'EVT': 'Number of RCRC Movement Personnel involved'
       },
       'description': {
-        'EVT': 'Personnel from IFRC, ICRC &amp; PNS'
+        'EVT': 'Personnel from IFRC, ICRC & PNS'
       }
     }
   ],
