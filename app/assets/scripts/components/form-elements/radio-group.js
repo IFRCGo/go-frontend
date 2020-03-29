@@ -41,7 +41,8 @@ export default function FormRadioGroup (props) {
             checked={selectedOption === o.value}
             onChange={onChange}
             onClick={onClick}
-            description={o.description} />
+            description={o.description} 
+            disabled={o.disabled} />
         ))}
         {children || null}
       </div>

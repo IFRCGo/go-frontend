@@ -1,20 +1,6 @@
 'use strict';
 import { listToMap } from '@togglecorp/fujs';
 
-export const statusEarlyWarning = {
-  label: 'Early Warning / Early Action',
-  value: '8',
-  description: 'First report for this hazard.'
-};
-
-export const statusEvent = {
-  label: 'Event',
-  value: '9',
-  description: 'First report for this disaster.'
-};
-
-export const status = [statusEarlyWarning, statusEvent];
-
 export const visibility = [
   {
     label: 'Public',
@@ -781,6 +767,7 @@ export const fieldsStep3 = {
     }
   }
 };
+
 
 const defaultFieldOptions = [
   {
