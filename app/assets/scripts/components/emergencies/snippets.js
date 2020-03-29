@@ -7,10 +7,7 @@ import Fold from '../fold';
 import TabContent from '../tab-content';
 import { NO_DATA } from '../../utils/constants';
 
-import {
-  getEventSnippets,
-//   getSitrepsByEventId,
-} from '../../actions/';
+import { getEventSnippets } from '../../actions/';
 
 class Snippets extends Component {
   componentDidMount () {
@@ -37,7 +34,6 @@ Snippets.propTypes = {
   _getEventSnippets: PropTypes.func,
   eventId: PropTypes.string,
   snippets: PropTypes.object
-  // _getSitrepsByEventId: T.func,
 };
 
 // /////////////////////////////////////////////////////////////////// //
@@ -50,17 +46,11 @@ const selector = (state, ownProps) => ({
     },
     fetching: false,
     fetched: false
-  }),
-//   situationReports: get(state.situationReports, ['reports', ownProps.eventId], {
-//     data: {},
-//     fetching: false,
-//     fetched: false
-//   })
+  })
 });
 
 const dispatcher = (dispatch) => ({
   _getEventSnippets: (...args) => dispatch(getEventSnippets(...args))
-//   _getSitrepsByEventId: (...args) => dispatch(getSitrepsByEventId(...args)),
 });
 
 export default withRouter(connect(selector, dispatcher)(Snippets));
