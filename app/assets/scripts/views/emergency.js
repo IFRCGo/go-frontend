@@ -32,7 +32,6 @@ import {
 import {
   get,
   mostRecentReport,
-  datesAgo,
   getRecordsByType
 } from '../utils/utils/';
 
@@ -41,7 +40,7 @@ import Fold from '../components/fold';
 import TabContent from '../components/tab-content';
 import ErrorPanel from '../components/error-panel';
 import Expandable from '../components/expandable';
-import { Snippets } from '../components/admin-area-elements';
+import Snippets from '../components/emergencies/snippets';
 import SurgeAlertsTable from '../components/connected/alerts-table';
 import PersonnelTable from '../components/connected/personnel-table';
 import EruTable from '../components/connected/eru-table';
@@ -65,7 +64,6 @@ class Emergency extends React.Component {
       },
       subscribed: false
     };
-    this.handleSitrepFilter = this.handleSitrepFilter.bind(this);
     this.addSubscription = this.addSubscription.bind(this);
     this.delSubscription = this.delSubscription.bind(this);
     this.isSubscribed = this.isSubscribed.bind(this);
@@ -112,8 +110,6 @@ class Emergency extends React.Component {
   getEvent (id) {
     showGlobalLoading();
     this.props._getEventById(id);
-    this.props._getEventSnippets(id);
-    this.props._getSitrepsByEventId(id);
   }
 
   getAppealDocuments (event) {
@@ -126,23 +122,6 @@ class Emergency extends React.Component {
   onAppealClick (id, e) {
     e.preventDefault();
     this.setState({ selectedAppeal: id });
-  }
-
-  handleSitrepFilter (state, value) {
-    const next = Object.assign({}, this.state.sitrepFilters, {
-      [state]: value
-    });
-
-    const { date, type } = next;
-    let filters = {};
-    if (date !== 'all') {
-      filters.created_at__gte = datesAgo[date]();
-    }
-    if (type !== 'all') {
-      filters.type = type;
-    }
-    this.props._getSitrepsByEventId(this.props.match.params.id, filters);
-    this.setState({ sitrepFilters: next });
   }
 
   isSubscribed (nextProps) {
@@ -593,9 +572,7 @@ class Emergency extends React.Component {
               </TabPanel>
 
               <TabPanel>
-                <TabContent showError={true} isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ NO_DATA } title="Additional Graphics">
-                  <Snippets data={this.props.snippets} />
-                </TabContent>
+                <Snippets eventId={get(this.props.event, 'data.id')} />
               </TabPanel>
             </div>
           </div>
