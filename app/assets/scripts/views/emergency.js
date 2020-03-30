@@ -32,7 +32,6 @@ import {
 import {
   get,
   mostRecentReport,
-  datesAgo,
   getRecordsByType
 } from '../utils/utils/';
 
