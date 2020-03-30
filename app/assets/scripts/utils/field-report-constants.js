@@ -429,7 +429,6 @@ export const disasterType = [
 export const getIsEpidemicDisasterTypeByValue = value => 
   value === '1'
 
-
 export const disasterTypes = listToMap(disasterTypeList, d => d.value, d => d.label);
 
 export const sources = [
@@ -543,7 +542,7 @@ export const fieldsStep1 = {
     'EW': {
       label: 'Title *',
       desc: 'Add a new title (Country - Region: Hazard mm/yy) or link to an existing emergency'
-    },
+    }
   },
   'disaster-type': {
     'EVT': {
@@ -708,7 +707,7 @@ export const fieldsStep2 = {
         'label': 'Largest Population Centres Likely to be Affected',
         'estimationLabel': 'Names',
         'desc': 'Names of large cities or towns which are most at risk'
-      },
+      }
     ],
   },
   'description': {
