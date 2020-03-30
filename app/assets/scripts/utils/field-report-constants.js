@@ -1,6 +1,23 @@
 'use strict';
 import { listToMap } from '@togglecorp/fujs';
 
+export const statusEarlyWarning = {
+  label: 'Early Warning / Early Action',
+  value: '8',
+  description: 'First report for this hazard.'
+};
+
+export const statusEvent = {
+  label: 'Event',
+  value: '9',
+  description: 'First report for this disaster.'
+};
+
+export const getIsStatusEventByValue = value => 
+  value === statusEvent.value
+
+export const status = [statusEarlyWarning, statusEvent];
+
 export const visibility = [
   {
     label: 'Public',
@@ -409,6 +426,10 @@ export const disasterType = [
   ...disasterTypeList,
 ];
 
+export const getIsEpidemicDisasterTypeByValue = value => 
+  value === '1'
+
+
 export const disasterTypes = listToMap(disasterTypeList, d => d.value, d => d.label);
 
 export const sources = [
@@ -515,13 +536,21 @@ export const fieldsStep1 = {
       label: 'Title *',
       desc: 'Add a new title (Country - Region: Hazard mm/yy) or link to an existing emergency'
     },
+    'EPI': {
+      label: 'Title *',
+      desc: 'Add a new title (Country - Region: Hazard mm/yy) or link to an existing emergency'
+    },
     'EW': {
       label: 'Title *',
       desc: 'Add a new title (Country - Region: Hazard mm/yy) or link to an existing emergency'
-    }
+    },
   },
   'disaster-type': {
     'EVT': {
+      label: 'Disaster Type *',
+      desc: ''
+    },
+    'EPI': {
       label: 'Disaster Type *',
       desc: ''
     },
@@ -535,6 +564,10 @@ export const fieldsStep1 = {
       label: 'Start Date *',
       desc: 'Start date is when some significant effects are felt or when the first significant impact is felt.'
     },
+    'EPI': {
+      label: 'Start Date *',
+      desc: 'The date when the first case is confirmed.'
+    },
     'EW': {
       label: 'Forecasted Date of Impact *',
       desc: 'Date at which significant impacts are forecasted to occur.'
@@ -542,6 +575,10 @@ export const fieldsStep1 = {
   },
   'country': {
     'EVT': {
+      label: 'Affected Country and Province / Region *',
+      desc: ''
+    },
+    'EPI': {
       label: 'Affected Country and Province / Region *',
       desc: ''
     },
@@ -555,6 +592,10 @@ export const fieldsStep1 = {
       label: 'Government requests international assistance?',
       desc: 'Indicate if the government requested international assistance.'
     },
+    'EPI': {
+      label: 'Government requests international assistance?',
+      desc: 'Indicate if the government requested international assistance.'
+    },
     'EW': {
       label: 'Government requests international assistance?',
       desc: 'Indicate if the government requested international assistance.'
@@ -562,6 +603,10 @@ export const fieldsStep1 = {
   },
   'ns-assistance': {
     'EVT': {
+      label: 'National Society requests international assistance?',
+      desc: 'Indicate if the National Society requested international assistance'
+    },
+    'EPI': {
       label: 'National Society requests international assistance?',
       desc: 'Indicate if the National Society requested international assistance'
     },
@@ -633,6 +678,11 @@ export const fieldsStep2 = {
         'label': 'Largest Population Centres Likely to be Affected',
         'estimationLabel': 'Names',
         'desc': 'Names of large cities or towns which are most at risk'
+      },
+    ],
+    'EPI': [
+      {
+
       }
     ]
   },

@@ -19,7 +19,12 @@ export default function FormCheckable (props) {
   } = props;
 
   return (
-    <label className={c(`form__option form__option--custom-${type}`, {'form__option--inline': inline})}>
+    <label 
+      className={c(
+        `form__option form__option--custom-${type}`, 
+        {'form__option--inline': inline}, 
+        {'disabled': disabled})}
+    >
       <input 
         name={name} 
         id={id} 
@@ -28,7 +33,8 @@ export default function FormCheckable (props) {
         onClick={onClick} 
         onChange={onChange} 
         checked={checked} 
-        type={type} />
+        type={type} 
+      />
       <span className='form__option__ui'></span>
       <span className='form__option__text'>{label} {description && <em>{description}</em>}</span>
     </label>

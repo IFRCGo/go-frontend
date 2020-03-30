@@ -217,6 +217,13 @@ class FieldReportForm extends React.Component {
     let data = _cloneDeep(this.state.data);
     let val = e && e.target ? e.target.value : e;
 
+    // if disaster type is epidemic, status must be 'Event'
+    if (field === 'disasterType' && 
+      formData.getIsEpidemicDisasterTypeByValue(val)
+    ) {
+      _set(data, 'status', formData.statusEvent.value);
+    }
+
     _set(data, field, val === '' || val === null ? undefined : val);
     this.setState({data});
   }
@@ -275,8 +282,15 @@ class FieldReportForm extends React.Component {
   }
 
   getStatus () {
-    const status = this.state.data.status;
-    return status === formData.statusEarlyWarning.value ? 'EW' : 'EVT';
+    const { status, disasterType } = this.state.data;
+
+    if (status === formData.statusEarlyWarning.value) {
+      return "EW"
+    } else if (formData.getIsEpidemicDisasterTypeByValue(disasterType)) {
+      return 'EPI';
+    } 
+
+    return 'EVT';
   }
 
   /**
@@ -313,17 +327,15 @@ class FieldReportForm extends React.Component {
         <FormRadioGroup
           label='Status *'
           name='status'
-          options={[{
-            label: 'Early Warning / Early Action',
-            value: '8',
-            description: 'First report for this hazard.',
-            disabled: true
-          }, {
-            label: 'Event',
-            value: '9',
-            description: 'First report for this disaster.',
-            disabled: true
-          }]}
+          options={formData.status.map(status => ({ 
+            ...status,
+            // If Epidemic, only 'Event' can be selected
+            ...(
+              !formData.getIsStatusEventByValue(status.value) 
+              && formData.getIsEpidemicDisasterTypeByValue(this.state.data.disasterType)
+              && {disabled: true}
+            )
+          }))}
           selectedOption={this.state.data.status}
           onChange={this.onFieldChange.bind(this, 'status')}>
           <FormError
