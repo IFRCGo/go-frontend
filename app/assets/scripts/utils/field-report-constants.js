@@ -656,6 +656,36 @@ export const fieldsStep2 = {
         'desc': 'Number of people displaced.'
       }
     ],
+    'EPI': [
+      {
+        'name': 'cases',
+        'key': 'cases',
+        'label': 'Cases',
+        'estimationLabel': 'Estimation',
+        'desc': 'Number of registered cases.'
+      },
+      {
+        'name': 'suspected-cases',
+        'key': 'suspectedCases',
+        'label': 'Suspected Cases',
+        'estimationLabel': 'Estimation',
+        'desc': 'Number of suspected cases.'
+      },
+      {
+        'name': 'probable-cases',
+        'key': 'probableCases',
+        'label': 'Probable Cases',
+        'estimationLabel': 'Estimation',
+        'desc': 'Probable Cases.'
+      },
+      {
+        'name': 'confirmed-cases',
+        'key': 'confirmedCases',
+        'label': 'Confirmed Cases',
+        'estimationLabel': 'Estimation',
+        'desc': 'Confirmed Cases.'
+      },
+    ],
     'EW': [
       {
         'name': 'num-potentially-affected',
@@ -680,17 +710,17 @@ export const fieldsStep2 = {
         'desc': 'Names of large cities or towns which are most at risk'
       },
     ],
-    'EPI': [
-      {
-
-      }
-    ]
   },
   'description': {
     'EVT': {
       'label': 'Situational Overview',
       'desc': 'Describe the effects of the hazard, the current context, the affected population and how they have been affected.',
       'placeholder': 'Example: According to the local government, the overflow of the Zimbizi river has caused extensive flood water damage to low income housing along the river bank. The majority of the affected households do not have sufficient insurance coverage for their assets. The local branch of the National Society is currently assessing how to best support the most vulnerable families affected by the disaster.'
+    },
+    'EPI': {
+      'label': 'Risk Analysis',
+      'desc': 'Brief overview of the potential disaster and projected impacts',
+      'placeholder': 'Hurricane Sirius is expected to hit the Whinging region early Tuesday morning. The system currently has sustained core wind speeds of 140km/h and gusts up to 170 km/h. The local government has started evacuating thousands of people. The Red Cross branch in Whinging has deployed staff and volunteers to communities at risk to support evacuation and to assist the population in protecting themselves and their livelihoods from the impacts of Sirius.'
     },
     'EW': {
       'label': 'Risk Analysis',
@@ -706,6 +736,7 @@ export const fieldsStep3 = {
       'name': 'num-assisted-gov',
       'key': 'numAssistedGov',
       'EVT': true,
+      'EPI': true,
       'EW': true,
       'label': {
         'EVT': 'Assisted by Government',
@@ -716,6 +747,7 @@ export const fieldsStep3 = {
       'name': 'num-assisted-red-cross',
       'key': 'numAssistedRedCross',
       'EVT': true,
+      'EPI': true,
       'EW': true,
       'label': {
         'EVT': 'Assisted by RCRC Movement',
@@ -726,6 +758,7 @@ export const fieldsStep3 = {
       'name': 'num-local-staff',
       'key': 'numLocalStaff',
       'EVT': true,
+      'EPI': true,
       'EW': false,
       'label': {
         'EVT': 'Number of NS Personnel Involved'
@@ -735,6 +768,7 @@ export const fieldsStep3 = {
       'name': 'num-volunteers',
       'key': 'numVolunteers',
       'EVT': true,
+      'EPI': true,
       'EW': false,
       'label': {
         'EVT': 'Number of Volunteers Involved'
@@ -744,6 +778,7 @@ export const fieldsStep3 = {
       'name': 'num-expats',
       'key': 'numExpats',
       'EVT': true,
+      'EPI': true,
       'EW': false,
       'label': {
         'EVT': 'Number of RCRC Movement Personnel involved'
@@ -760,14 +795,17 @@ export const fieldsStep3 = {
       'action_type': 'NTLS',
       'label': {
         'EVT': 'Actions Taken by National Society Red Cross (if any)',
+        'EPI': 'Actions Taken by National Society Red Cross (if any)',
         'EW': 'Early Actions Taken by NS'
       },
       'desc': {
         'EVT': 'Select the activities undertaken by the National Society and briefly describe.',
+        'EPI': 'Select the activities undertaken by the National Society and briefly describe.',
         'EW': 'Select the early action activities undertaken by the National Society and give a brief description'
       },
       'placeholder': {
         'EVT': 'Example: The two local branches of the National Society in the affected districts have provided first aid, psychosocial support and basic relief items to the affected families. An evacuation centre has been set up in a local school to accommodate those unable to return to their homes. Groups of Red Cross volunteers are helping the local search and rescue personnel in cleaning storm debris from houses and streets.',
+        'EPI': 'Brief description of the action',
         'EW': 'Brief description of the action'
       }
     },
@@ -777,14 +815,17 @@ export const fieldsStep3 = {
       'action_type': 'FDRN',
       'label': {
         'EVT': 'Actions taken by the IFRC',
+        'EPI': 'Actions taken by the IFRC',
         'EW': 'Early Actions Taken by IFRC'
       },
       'desc': {
         'EVT': 'Select the activities taken by the IFRC (could be the Regional office, cluster office or country office) and briefly describe.',
+        'EPI': 'Select the activities taken by the IFRC (could be the Regional office, cluster office or country office) and briefly describe.',
         'EW': 'Select the early action activities undertaken by the IFRC and give a brief description'
       },
       'placeholder': {
         'EVT': 'Brief description of the action',
+        'EPI': 'Brief description of the action',
         'EW': 'Brief description of the action'
       }
     },
@@ -794,14 +835,17 @@ export const fieldsStep3 = {
       'action_type': 'PNS',
       'label': {
         'EVT': 'Actions taken by any other RCRC Movement actors',
+        'EPI': 'Early Action Taken by other RCRC Movement',
         'EW': 'Early Action Taken by other RCRC Movement'
       },
       'desc': {
         'EVT': 'Select the activities undertaken by any other RCRC Movement actor(s) and briefly describe.',
+        'EPI': 'Select the activities undertaken by any other RCRC Movement actor(s) and briefly describe.',
         'EW': 'Select the early action activities undertaken by the RCRC Movement and give a brief description.'
       },
       'placeholder': {
         'EVT': 'Brief description of the action',
+        'EPI': 'Brief description of the action',
         'EW': 'Brief description of the action'
       }
     }
@@ -809,9 +853,11 @@ export const fieldsStep3 = {
   'actionsOthers': {
     'label': {
       'EVT': 'Actions Taken by Others (Governments, UN)',
+      'EPI': 'Actions Taken by Others (Governments, UN)',
       'EW': 'Early Actions Taken by Others (Governments, UN)'
     },
     'desc': {
+      'EVT': 'Who else was involved? UN agencies? NGOs? Government? Describe what other actors did. Also mention who the other actors are.',
       'EVT': 'Who else was involved? UN agencies? NGOs? Government? Describe what other actors did. Also mention who the other actors are.',
       'EW': 'List the early action activities undertaken by other actors, mention who the other actors are, and give a brief description.'
     }
@@ -855,6 +901,7 @@ export const fieldsStep4 = {
       'key': 'dref',
       'label': {
         'EVT': 'DREF Requested',
+        'EPI': 'DREF Requested',
         'EW': 'DREF'
       }
     },
@@ -865,6 +912,7 @@ export const fieldsStep4 = {
       'key': 'emergencyAppeal',
       'label': {
         'EVT': 'Emergency Appeal',
+        'EPI': 'Emergency Appeal',
         'EW': 'Emergency Appeal'
       }
     },
@@ -875,6 +923,7 @@ export const fieldsStep4 = {
       'key': 'fact',
       'label': {
         'EVT': 'Rapid Response Personnel',
+        'EPI': 'Rapid Response Personnel',
         'EW': 'Rapid Response Personnel'
       },
       'description': 'This is the new name for FACT/RDRT/RIT' // WARNING: This is the only row with a description.
@@ -886,6 +935,7 @@ export const fieldsStep4 = {
       'key': 'ifrcStaff',
       'label': {
         'EVT': 'Emergency Response Units',
+        'EPI': 'Emergency Response Units',
         'EW': 'Emergency Response Units'
       }
     },
@@ -896,6 +946,7 @@ export const fieldsStep4 = {
       'key': 'forecastBasedAction',
       'label': {
         'EVT': null,
+        'EPI': null,
         'EW': 'Forecast Based Action'
       }
     }
@@ -907,6 +958,7 @@ export const fieldsStep4 = {
       'label': 'Originator',
       'desc': {
         'EVT': 'NS or IFRC Staff completing the Field Report.',
+        'EPI': 'NS or IFRC Staff completing the Field Report.',
         'EW': 'NS or IFRC Staff completing the Field Report.'
       }
     },
@@ -916,6 +968,7 @@ export const fieldsStep4 = {
       'label': 'National Society Contact',
       'desc': {
         'EVT': 'The most senior staff in the National Society responsible and knowledgeable about the disaster event.',
+        'EPI': 'The most senior staff in the National Society responsible and knowledgeable about the disaster event.',
         'EW': 'The most senior staff in the NS responsible and knowledgeable about the risk.'
       }
     },
@@ -925,6 +978,7 @@ export const fieldsStep4 = {
       'label': 'IFRC Focal Point for the Emergency',
       'desc': {
         'EVT': 'IFRC staff who is overall responsible for supporting the NS in its response to the disaster event.',
+        'EPI': 'IFRC staff who is overall responsible for supporting the NS in its response to the disaster event.',
         'EW': 'IFRC staff who is overall responsible for supporting the NS in its response to the anticipated disaster event'
       }
     },
@@ -934,6 +988,7 @@ export const fieldsStep4 = {
       'label': 'Media Contact',
       'desc': {
         'EVT': 'An IFRC secretariat media contact in Geneva/Region or Country.',
+        'EPI': 'An IFRC secretariat media contact in Geneva/Region or Country.',
         'EW': 'An IFRC secretariat media contact in Geneva/Region or Country.'
       }
     }

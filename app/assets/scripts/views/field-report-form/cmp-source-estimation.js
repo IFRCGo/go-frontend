@@ -64,6 +64,7 @@ export default class SourceEstimation extends React.Component {
           </div>
         </div>
         <div className='form__inner-body'>
+          {console.log('values', values)}
           {values.map((o, idx) => (
             <div key={o.source || idx} className='estimation'>
               <FormInput

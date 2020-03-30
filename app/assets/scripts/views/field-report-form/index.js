@@ -251,19 +251,23 @@ class FieldReportForm extends React.Component {
     const step = this.state.step;
     const items = [
       {
+        'EPI': 'Context',
         'EVT': 'Context',
         'EW': 'Context'
       },
       {
         'EVT': 'Situation',
+        'EPI': 'Situation',
         'EW': 'Risk Analysis'
       },
       {
         'EVT': 'Actions',
+        'EPI': 'Actions',
         'EW': 'Early Actions'
       },
       {
         'EVT': 'Response',
+        'EPI': 'Response',
         'EW': 'Response'
       }
     ];
@@ -492,6 +496,10 @@ class FieldReportForm extends React.Component {
         <React.Fragment>
           {
             fields.situationFields[status].map(field => {
+              console.log('data', this.state.data)
+              console.log('data', field.key)
+              // fix field keys and their relationship to data
+              console.log('TODO', this.state.data[field.key])
               return (
                 <SourceEstimation
                   estimationLabel={field.estimationLabel}
