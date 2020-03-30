@@ -768,7 +768,6 @@ export const fieldsStep3 = {
   }
 };
 
-
 const defaultFieldOptions = [
   {
     'label': 'Planned',

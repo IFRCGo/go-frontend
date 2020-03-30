@@ -214,7 +214,6 @@ class FieldReportForm extends React.Component {
   }
 
   onFieldChange = (field, e) => {
-
     let data = _cloneDeep(this.state.data);
     let val = e && e.target ? e.target.value : e;
 
@@ -276,7 +275,6 @@ class FieldReportForm extends React.Component {
   }
 
   getStatus () {
-    console.log('FORM DATA', formData)
     const status = this.state.data.status;
     return status === formData.statusEarlyWarning.value ? 'EW' : 'EVT';
   }
@@ -312,6 +310,27 @@ class FieldReportForm extends React.Component {
     const status = this.getStatus();
     return (
       <Fold title='Context' extraClass foldClass='margin-reset'>
+        <FormRadioGroup
+          label='Status *'
+          name='status'
+          options={[{
+            label: 'Early Warning / Early Action',
+            value: '8',
+            description: 'First report for this hazard.',
+            disabled: true
+          }, {
+            label: 'Event',
+            value: '9',
+            description: 'First report for this disaster.',
+            disabled: true
+          }]}
+          selectedOption={this.state.data.status}
+          onChange={this.onFieldChange.bind(this, 'status')}>
+          <FormError
+            errors={this.state.errors}
+            property='status'
+          />
+        </FormRadioGroup>
         <FormInputSelect
           label={fields.summary[status].label}
           labelSecondary='Add Title'
@@ -355,28 +374,6 @@ class FieldReportForm extends React.Component {
             />
           </div>
         </div>
-        {console.log('form data', formData)}
-        <FormRadioGroup
-          label='Status *'
-          name='status'
-          options={[{
-            label: 'Early Warning / Early Action',
-            value: '8',
-            description: 'First report for this hazard.',
-            disabled: true
-          }, {
-            label: 'Event',
-            value: '9',
-            description: 'First report for this disaster.',
-            disabled: true
-          }]}
-          selectedOption={this.state.data.status}
-          onChange={this.onFieldChange.bind(this, 'status')}>
-          <FormError
-            errors={this.state.errors}
-            property='status'
-          />
-        </FormRadioGroup>
         <FormInput
           label={fields.startDate[status].label}
           type='date'
@@ -610,7 +607,6 @@ class FieldReportForm extends React.Component {
                   values={this.state.data[section.key]}
                   onChange={this.onFieldChange.bind(this, section.key)}
                 />
-
               );
             })
           }
