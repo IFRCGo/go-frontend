@@ -13,9 +13,6 @@ export default function BreadCrumb ({crumbs}) {
         separator={<span className="breadcrumb__next"> > </span>}
         item={NavLink}
         finalItem={'b'}
-        finalProps={{
-          style: {color: '#C02C2C'}
-        }}
       />
     </div>
   );

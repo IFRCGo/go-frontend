@@ -1,6 +1,5 @@
 .breadcrumb__block {
     margin: 0 ($global-spacing * 3);
-    background-color: tint($base-color, 92%);       
 }
 
 .breadcrumb {
@@ -11,5 +10,6 @@
 
 .breadcrumb__next {
   vertical-align: middle;
+  font-size: 8px;
 }
 
