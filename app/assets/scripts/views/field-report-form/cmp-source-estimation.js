@@ -47,6 +47,7 @@ export default class SourceEstimation extends React.Component {
   render () {
     const {
       label,
+      status,
       estimationLabel,
       name,
       description,
@@ -64,7 +65,6 @@ export default class SourceEstimation extends React.Component {
           </div>
         </div>
         <div className='form__inner-body'>
-          {console.log('values', values)}
           {values.map((o, idx) => (
             <div key={o.source || idx} className='estimation'>
               <FormInput
@@ -85,7 +85,12 @@ export default class SourceEstimation extends React.Component {
               <FormRadioGroup
                 label='Source'
                 name={`${name}[${idx}][source]`}
-                options={[
+                options={status === "EPI" ? 
+                [
+                  {label: 'Ministry of Health', value: 'ministry-of-health'},
+                  {label: 'World Health Organization', value: 'world-health-organization'},
+                  {label: 'Other', value: 'other'}
+                ] : [
                   {label: 'Red Cross / Red Crescent', value: 'red-cross'},
                   {label: 'Government', value: 'government'},
                   {label: 'Other', value: 'other'}

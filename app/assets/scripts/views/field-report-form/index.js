@@ -289,7 +289,7 @@ class FieldReportForm extends React.Component {
     const { status, disasterType } = this.state.data;
 
     if (status === formData.statusEarlyWarning.value) {
-      return "EW"
+      return 'EW'
     } else if (formData.getIsEpidemicDisasterTypeByValue(disasterType)) {
       return 'EPI';
     } 
@@ -496,12 +496,9 @@ class FieldReportForm extends React.Component {
         <React.Fragment>
           {
             fields.situationFields[status].map(field => {
-              console.log('data', this.state.data)
-              console.log('data', field.key)
-              // fix field keys and their relationship to data
-              console.log('TODO', this.state.data[field.key])
               return (
                 <SourceEstimation
+                  status={status}
                   estimationLabel={field.estimationLabel}
                   label={field.label}
                   description={field.desc}
