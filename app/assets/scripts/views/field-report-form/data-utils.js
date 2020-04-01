@@ -355,6 +355,12 @@ export function getInitialDataState () {
     numPotentiallyAffected: [{ estimation: undefined, source: undefined }],
     numHighestRisk: [{ estimation: undefined, source: undefined }],
     affectedPopCentres: [{ estimation: undefined, source: undefined }],
+
+    cases: [{ estimation: undefined, source: undefined }],
+    suspectedCases: [{ estimation: undefined, source: undefined }],
+    probableCases: [{ estimation: undefined, source: undefined }],
+    confirmedCases: [{ estimation: undefined, source: undefined }],
+
     numAssistedGov: undefined,
     numAssistedRedCross: undefined,
     numLocalStaff: undefined,

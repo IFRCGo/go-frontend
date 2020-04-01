@@ -213,14 +213,17 @@ class FieldReportForm extends React.Component {
     this.onFieldChange('country', e);
   }
 
-  onFieldChange (field, e) {
+  onFieldChange = (field, e) => {
     let data = _cloneDeep(this.state.data);
     let val = e && e.target ? e.target.value : e;
 
-    // FIXME: handle this better. When we change to a react-select, we get a different data structure back from the select onChange
-    if (field === 'disasterType') {
-      val = val.value;
+    // if disaster type is epidemic, status must be 'Event'
+    if (field === 'disasterType' && 
+      formData.getIsEpidemicDisasterTypeByValue(val)
+    ) {
+      _set(data, 'status', formData.statusEvent.value);
     }
+
     _set(data, field, val === '' || val === null ? undefined : val);
     this.setState({data});
   }
@@ -248,19 +251,23 @@ class FieldReportForm extends React.Component {
     const step = this.state.step;
     const items = [
       {
+        'EPI': 'Context',
         'EVT': 'Context',
         'EW': 'Context'
       },
       {
         'EVT': 'Situation',
+        'EPI': 'Situation',
         'EW': 'Risk Analysis'
       },
       {
         'EVT': 'Actions',
+        'EPI': 'Actions',
         'EW': 'Early Actions'
       },
       {
         'EVT': 'Response',
+        'EPI': 'Response',
         'EW': 'Response'
       }
     ];
@@ -279,8 +286,15 @@ class FieldReportForm extends React.Component {
   }
 
   getStatus () {
-    const status = this.state.data.status;
-    return status === formData.statusEarlyWarning.value ? 'EW' : 'EVT';
+    const { status, disasterType } = this.state.data;
+
+    if (status === formData.statusEarlyWarning.value) {
+      return 'EW'
+    } else if (formData.getIsEpidemicDisasterTypeByValue(disasterType)) {
+      return 'EPI';
+    } 
+
+    return 'EVT';
   }
 
   /**
@@ -317,7 +331,15 @@ class FieldReportForm extends React.Component {
         <FormRadioGroup
           label='Status *'
           name='status'
-          options={formData.status}
+          options={formData.status.map(status => ({ 
+            ...status,
+            // If Epidemic, only 'Event' can be selected
+            ...(
+              !formData.getIsStatusEventByValue(status.value) 
+              && formData.getIsEpidemicDisasterTypeByValue(this.state.data.disasterType)
+              && {disabled: true}
+            )
+          }))}
           selectedOption={this.state.data.status}
           onChange={this.onFieldChange.bind(this, 'status')}>
           <FormError
@@ -360,7 +382,7 @@ class FieldReportForm extends React.Component {
               id='disaster-type'
               options={formData.disasterType}
               value={this.state.data.disasterType}
-              onChange={this.onFieldChange.bind(this, 'disasterType')}
+              onChange={({value}) => this.onFieldChange('disasterType', value)}
             />
             <FormError
               errors={this.state.errors}
@@ -476,6 +498,7 @@ class FieldReportForm extends React.Component {
             fields.situationFields[status].map(field => {
               return (
                 <SourceEstimation
+                  status={status}
                   estimationLabel={field.estimationLabel}
                   label={field.label}
                   description={field.desc}
