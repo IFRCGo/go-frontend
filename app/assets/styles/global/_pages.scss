@@ -185,3 +185,16 @@ main {
     float: right;
   }
 }
+
+.staging-footer {
+  background-color: #f4a100;
+  color: white;
+  font-weight: 800;
+  height: 28px;
+  padding: 4px;
+  position: fixed;
+  text-align: center;
+  width: 100%;
+  z-index: 1001;
+  bottom: 0;
+}
