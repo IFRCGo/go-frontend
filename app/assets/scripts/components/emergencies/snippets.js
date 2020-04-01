@@ -32,22 +32,31 @@ class Snippets extends Component {
 
 Snippets.propTypes = {
   _getEventSnippets: PropTypes.func,
-  eventId: PropTypes.string,
+  eventId: PropTypes.number,
   snippets: PropTypes.object
 };
 
 // /////////////////////////////////////////////////////////////////// //
 // Connect functions
 
-const selector = (state, ownProps) => ({
-  snippets: get(state.event.snippets, ownProps.eventId, {
-    data: {
-      results: []
-    },
-    fetching: false,
-    fetched: false
-  })
-});
+const selector = (state, ownProps) => {
+  const snippets = {
+    snippets: get(state.event.snippets, ownProps.eventId, {
+      data: {
+        results: []
+      },
+      fetching: false,
+      fetched: false
+    })
+  };
+
+  // filter for snippets of the current tab
+  snippets.snippets.data.results = snippets.snippets.data.results.filter(s => {
+    return s.tab === ownProps.tab;
+  });
+
+  return snippets;
+};
 
 const dispatcher = (dispatch) => ({
   _getEventSnippets: (...args) => dispatch(getEventSnippets(...args))
