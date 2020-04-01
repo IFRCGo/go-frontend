@@ -7,7 +7,7 @@ class Footer extends React.PureComponent {
   render () {
     const stagingBanner = process.env.NODE_ENV === 'staging'
       ? (
-        <div className='staging-footer'>
+        <div className='sticky-banner staging-footer'>
           STAGING SITE
         </div>
       )

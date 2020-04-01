@@ -186,15 +186,18 @@ main {
   }
 }
 
-.staging-footer {
-  background-color: #f4a100;
-  color: white;
-  font-weight: 800;
+.sticky-banner {
   height: 28px;
   padding: 4px;
   position: fixed;
-  text-align: center;
   width: 100%;
   z-index: 1001;
+}
+
+.staging-footer {
+  background-color: #f4a100;
   bottom: 0;
+  color: white;
+  font-weight: 800;
+  text-align: center;
 }
