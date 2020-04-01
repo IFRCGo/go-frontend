@@ -511,7 +511,7 @@ class Emergency extends React.Component {
                   <Fold id='overview'
                     title='Situational Overview'
                     wrapperClass='situational-overview' >
-                    <Expandable limit={2048} text={summary} />
+                    <Expandable sectionClass='rich-text-section' limit={2048} text={summary} />
                   </Fold>
                 </TabContent>
                 <TabContent isError={!get(this.props.surgeAlerts, 'data.results.length')} errorMessage={ NO_DATA } title="Alerts">

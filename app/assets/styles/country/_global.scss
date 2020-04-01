@@ -1018,3 +1018,8 @@
     }
   }
 }
+
+.rich-text-section ul, ol {
+  padding: revert;
+  list-style-type: revert;
+}
