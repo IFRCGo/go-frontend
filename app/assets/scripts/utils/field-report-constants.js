@@ -746,6 +746,7 @@ export const fieldsStep3 = {
       'EW': true,
       'label': {
         'EVT': 'Assisted by Government',
+        'EPI': 'Assisted by Government',
         'EW': 'Number of People Assisted by Government - Early Action'
       }
     },
@@ -757,6 +758,7 @@ export const fieldsStep3 = {
       'EW': true,
       'label': {
         'EVT': 'Assisted by RCRC Movement',
+        'EPI': 'Assisted by RCRC Movement',
         'EW': 'Number of People Assisted by RCRC Movement - Early Action'
       }
     },
@@ -767,7 +769,8 @@ export const fieldsStep3 = {
       'EPI': true,
       'EW': false,
       'label': {
-        'EVT': 'Number of NS Personnel Involved'
+        'EVT': 'Number of NS Personnel Involved',
+        'EPI': 'Number of NS Personnel Involved'
       }
     },
     {
@@ -777,7 +780,8 @@ export const fieldsStep3 = {
       'EPI': true,
       'EW': false,
       'label': {
-        'EVT': 'Number of Volunteers Involved'
+        'EVT': 'Number of Volunteers Involved',
+        'EPI': 'Number of Volunteers Involved'
       }
     },
     {
@@ -787,10 +791,12 @@ export const fieldsStep3 = {
       'EPI': true,
       'EW': false,
       'label': {
-        'EVT': 'Number of RCRC Movement Personnel involved'
+        'EVT': 'Number of RCRC Movement Personnel involved',
+        'EPI': 'Number of RCRC Movement Personnel involved'
       },
       'description': {
-        'EVT': 'Personnel from IFRC, ICRC & PNS'
+        'EVT': 'Personnel from IFRC, ICRC & PNS',
+        'EPI': 'Personnel from IFRC, ICRC & PNS'
       }
     }
   ],
