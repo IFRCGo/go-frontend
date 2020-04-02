@@ -38,8 +38,14 @@ export function dataPathToDisplay (path, keyword) {
     'numPotentiallyAffected': 'Estimation Potentially Affected',
     'numHighestRisk': 'Estimation Highest Risk',
     'affectedPopCentres': 'Affected Pop Centres',
+    'cases': 'Cases',
+    'suspectedCases': 'Suspected Cases',
+    'probableCases': 'Probable Cases',
+    'confirmedCases': 'Confirmed Cases',
     numAssistedGov: 'Assisted by Government',
+    numAssistedMinistryOfHealth: 'Assisted by Ministry of Health',
     numAssistedRedCross: 'Assisted By Red Cross',
+    numAssistedWHO: 'Assisted By the World Health Organization',
     numLocalStaff: 'Number of local staff involved',
     numVolunteers: 'Number of volunteers involved',
     numExpats: 'Number of expats/delegates',
@@ -121,8 +127,14 @@ export function prepStateForValidation (state) {
     numPotentiallyAffected: (val) => val.map(objPropToNum('estimation')),
     numHighestRisk: (val) => val.map(objPropToNum('estimation')),
     affectedPopCentres: (val) => val.map(objPropToStr('estimation')),
+    cases: (val) => val.map(objPropToNum('estimation')),
+    suspectedCases: (val) => val.map(objPropToNum('estimation')),
+    probableCases: (val) => val.map(objPropToNum('estimation')),
+    confirmedCases: (val) => val.map(objPropToNum('estimation')),
     numAssistedGov: toNumIfNum,
+    numAssistedMinistryOfHealth: toNumIfNum,
     numAssistedRedCross: toNumIfNum,
+    numAssistedWHO: toNumIfNum,
     numLocalStaff: toNumIfNum,
     numVolunteers: toNumIfNum,
     numExpats: toNumIfNum,
@@ -179,6 +191,8 @@ export function convertStateToPayload (originalState) {
     ['bulletin', 'bulletin'],
     ['numAssistedRedCross', 'num_assisted', Number],
     ['numAssistedGov', 'gov_num_assisted', Number],
+    ['numAssistedWHO', 'who_num_assisted', Number],
+    ['numAssistedMinistryOfHealth', 'health_min_num_assisted', Number],
     ['numLocalStaff', 'num_localstaff', Number],
     ['numVolunteers', 'num_volunteers', Number],
     ['numExpats', 'num_expats_delegates', Number],
@@ -205,7 +219,11 @@ export function convertStateToPayload (originalState) {
     ['numDisplaced', 'num_displaced'],
     ['numPotentiallyAffected', 'num_potentially_affected'],
     ['numHighestRisk', 'num_highest_risk'],
-    ['affectedPopCentres', 'affected_pop_centres']
+    ['affectedPopCentres', 'affected_pop_centres'],
+    ['cases', 'cases'],
+    ['suspectedCases', 'suspected_cases'],
+    ['probableCases', 'probable_cases'],
+    ['confirmedCases', 'confirmed_cases']
   ];
 
   sourceEstimationMapping.forEach(([src, dest]) => {
@@ -366,6 +384,8 @@ export function getInitialDataState () {
 
     numAssistedGov: undefined,
     numAssistedRedCross: undefined,
+    numAssistedWHO: undefined,
+    numAssistedMinistryOfHealth: undefined,
     numLocalStaff: undefined,
     numVolunteers: undefined,
     numExpats: undefined,
@@ -449,6 +469,8 @@ export function convertFieldReportToState (fieldReport, stateData) {
     ['description', 'description'],
     ['other_sources', 'otherSources'],
     ['num_assisted', 'numAssistedRedCross'],
+    ['who_num_assisted', 'numAssistedWHO'],
+    ['health_min_num_assisted', 'numAssistedMinistryOfHealth'],
     ['gov_num_assisted', 'numAssistedGov'],
     ['num_localstaff', 'numLocalStaff'],
     ['num_volunteers', 'numVolunteers'],
@@ -479,7 +501,11 @@ export function convertFieldReportToState (fieldReport, stateData) {
     ['num_displaced', 'numDisplaced'],
     ['num_potentially_affected', 'numPotentiallyAffected'],
     ['num_highest_risk', 'numHighestRisk'],
-    ['affected_pop_centres', 'affectedPopCentres']
+    ['affected_pop_centres', 'affectedPopCentres'],
+    ['cases', 'cases'],
+    ['suspected_cases', 'suspectedCases'],
+    ['probable_cases', 'probableCases'],
+    ['confirmed_cases', 'confirmedCases']
   ];
 
   sourceEstimationMapping.forEach(([src, dest]) => {

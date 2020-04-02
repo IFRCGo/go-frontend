@@ -617,6 +617,18 @@ export const fieldsStep1 = {
 };
 
 export const fieldsStep2 = {
+  'organizations': {
+    'EVT': [
+      {'label': 'Red Cross / Red Crescent', 'value': 'red-cross'},
+      {'label': 'Government', 'value': 'government'},
+      {'label': 'Other', 'value': 'other'}
+    ],
+    'EPI': [
+      {'label': 'Ministry of Health', 'value': 'ministry-of-health'},
+      {'label': 'World Health Organization', 'value': 'world-health-organization'},
+      {'label': 'Other', 'value': 'other'},
+    ],
+  },
   'situationFields': {
     'EVT': [
       {
