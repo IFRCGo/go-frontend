@@ -106,7 +106,7 @@ class Emergency extends React.Component {
       this.setState({ tabs: tabs });
       setTimeout(() => {
         this.displayTabContent();
-      }, 40);
+      }, 0);
     }
 
     if (!this.props.profile.fetched && nextProps.profile.fetched) {
