@@ -513,20 +513,22 @@ class FieldReportForm extends React.Component {
             })
           }
         </React.Fragment>
-        <FormInput
-          label={fields.situationFieldsDate[status].label}
-          type='date'
-          name={fields.situationFieldsDate[status].name}
-          id={fields.situationFieldsDate[status].key}
-          value={this.state.data[fields.situationFieldsDate[status].key]}
-          onChange={this.onFieldChange.bind(this, `${fields.situationFieldsDate[status].key}`)}
-          description={fields.situationFieldsDate[status].desc}
-        >
-          <FormError
-            errors={this.state.errors}
-            property={fields.situationFieldsDate[status].key}
-          />
-        </FormInput>
+        {fields.situationFieldsDate[status] &&
+          <FormInput
+            label={fields.situationFieldsDate[status].label}
+            type='date'
+            name={fields.situationFieldsDate[status].name}
+            id={fields.situationFieldsDate[status].key}
+            value={this.state.data[fields.situationFieldsDate[status].key]}
+            onChange={this.onFieldChange.bind(this, `${fields.situationFieldsDate[status].key}`)}
+            description={fields.situationFieldsDate[status].desc}
+          >
+            <FormError
+              errors={this.state.errors}
+              property={fields.situationFieldsDate[status].key}
+            />
+          </FormInput>
+        }
         {/* TODO: Neco update this to be a file upload */}
         <React.Fragment>
           <FormTextarea
@@ -613,7 +615,6 @@ class FieldReportForm extends React.Component {
           }
         </div>
         <React.Fragment>
-          {console.log('checkbox sections', fields.checkboxSections)}
           {
             fields.checkboxSections.map(section => {
               // We need the number of values to match the number of options
