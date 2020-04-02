@@ -21,6 +21,7 @@ export function dataPathToDisplay (path, keyword) {
     districts: 'Areas',
     status: 'Status',
     disasterType: 'Disaster Type',
+    startDate: 'Start Date',
     event: 'Event',
     sources: 'Sources',
     description: 'Brief Description of the Situation',

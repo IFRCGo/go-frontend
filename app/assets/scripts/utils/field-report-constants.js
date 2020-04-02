@@ -13,8 +13,8 @@ export const statusEvent = {
   description: 'First report for this disaster.'
 };
 
-export const getIsStatusEventByValue = value => 
-  value === statusEvent.value
+export const getIsStatusEventByValue = value =>
+  value === statusEvent.value;
 
 export const status = [statusEarlyWarning, statusEvent];
 
@@ -426,8 +426,8 @@ export const disasterType = [
   ...disasterTypeList,
 ];
 
-export const getIsEpidemicDisasterTypeByValue = value => 
-  value === '1'
+export const getIsEpidemicDisasterTypeByValue = value =>
+  value === '1';
 
 export const disasterTypes = listToMap(disasterTypeList, d => d.value, d => d.label);
 

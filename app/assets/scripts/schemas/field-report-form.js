@@ -49,7 +49,7 @@ export const step1 = {
       ]
     }
   ],
-  required: ['country', 'status', 'disasterType']
+  required: ['country', 'status', 'startDate', 'disasterType']
 };
 
 export const step2 = {
