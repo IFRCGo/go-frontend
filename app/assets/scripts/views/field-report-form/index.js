@@ -622,8 +622,6 @@ class FieldReportForm extends React.Component {
               // FIXME: perhaps this can be handled cleaner / somewhere else?
               const options = filterActions(actionsData, section.action_type, status);
               const values = this.state.data[section.key];
-              console.log('options', options)
-              console.log('values', values)
               const sectionValues = options.map(o => {
                 return {
                   value: o.value,
@@ -639,7 +637,7 @@ class FieldReportForm extends React.Component {
                   placeholder={section.placeholder[status]}
                   name={section.name}
                   key={section.key}
-                  classInput='textarea-lg'
+                  classInput='textarea--lg'
                   options={filterActions(actionsData, section.action_type, status)}
                   values={this.state.data[section.key]}
                   onChange={this.onFieldChange.bind(this, section.key)}
@@ -673,6 +671,7 @@ class FieldReportForm extends React.Component {
           label={fields.actionsOthers.label[status]}
           name='actions-others'
           id='actions-others'
+          classInput='textarea--lg'
           description={fields.actionsOthers.desc[status]}
           placeholder='Brief description of the action'
           value={this.state.data.actionsOthers}
