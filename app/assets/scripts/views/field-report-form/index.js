@@ -218,7 +218,7 @@ class FieldReportForm extends React.Component {
     let val = e && e.target ? e.target.value : e;
 
     // if disaster type is epidemic, status must be 'Event'
-    if (field === 'disasterType' && 
+    if (field === 'disasterType' &&
       formData.getIsEpidemicDisasterTypeByValue(val)
     ) {
       _set(data, 'status', formData.statusEvent.value);
@@ -289,10 +289,10 @@ class FieldReportForm extends React.Component {
     const { status, disasterType } = this.state.data;
 
     if (status === formData.statusEarlyWarning.value) {
-      return 'EW'
+      return 'EW';
     } else if (formData.getIsEpidemicDisasterTypeByValue(disasterType)) {
       return 'EPI';
-    } 
+    }
 
     return 'EVT';
   }
@@ -331,13 +331,13 @@ class FieldReportForm extends React.Component {
         <FormRadioGroup
           label='Status *'
           name='status'
-          options={formData.status.map(status => ({ 
+          options={formData.status.map(status => ({
             ...status,
             // If Epidemic, only 'Event' can be selected
             ...(
-              !formData.getIsStatusEventByValue(status.value) 
-              && formData.getIsEpidemicDisasterTypeByValue(this.state.data.disasterType)
-              && {disabled: true}
+              !formData.getIsStatusEventByValue(status.value) &&
+              formData.getIsEpidemicDisasterTypeByValue(this.state.data.disasterType) &&
+              {disabled: true}
             )
           }))}
           selectedOption={this.state.data.status}
@@ -513,6 +513,21 @@ class FieldReportForm extends React.Component {
             })
           }
         </React.Fragment>
+        <FormInput
+          label={fields.situationFieldsDate[status].label}
+          type='date'
+          name={fields.situationFieldsDate[status].name}
+          id={fields.situationFieldsDate[status].key}
+          value={this.state.data[fields.situationFieldsDate[status].key]}
+          onChange={this.onFieldChange.bind(this, `${fields.situationFieldsDate[status].key}`)}
+          description={fields.situationFieldsDate[status].desc}
+        >
+          <FormError
+            errors={this.state.errors}
+            property={fields.situationFieldsDate[status].key}
+          />
+        </FormInput>
+        {/* TODO: Neco update this to be a file upload */}
         <React.Fragment>
           <FormTextarea
             label='Source Details'
@@ -534,7 +549,7 @@ class FieldReportForm extends React.Component {
             label={fields.description[status].label}
             name='description'
             classInput='textarea--lg'
-            placeholder='Example: According to the local government, the overflow of the Zimbizi river has caused extensive flood water damage to low income housing along the river bank. The majority of the affected households do not have sufficient insurance coverage for their assets. The local branch of the National Society is currently assessing how to best support the most vulnerable families affected by the disaster.'
+            placeholder={fields.description[status].placeholder}
             id='description'
             description={fields.description[status].desc}
             value={this.state.data.description}
@@ -573,6 +588,7 @@ class FieldReportForm extends React.Component {
         <div className='form__group'>
           {
             fields.section1fields.map(field => {
+              console.log('field', field, status)
               if (!field[status]) {
                 return null;
               }
@@ -597,6 +613,7 @@ class FieldReportForm extends React.Component {
           }
         </div>
         <React.Fragment>
+          {console.log('checkbox sections', fields.checkboxSections)}
           {
             fields.checkboxSections.map(section => {
               // We need the number of values to match the number of options
@@ -604,6 +621,8 @@ class FieldReportForm extends React.Component {
               // FIXME: perhaps this can be handled cleaner / somewhere else?
               const options = filterActions(actionsData, section.action_type, status);
               const values = this.state.data[section.key];
+              console.log('options', options)
+              console.log('values', values)
               const sectionValues = options.map(o => {
                 return {
                   value: o.value,

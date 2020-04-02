@@ -85,16 +85,16 @@ export default class SourceEstimation extends React.Component {
               <FormRadioGroup
                 label='Source'
                 name={`${name}[${idx}][source]`}
-                options={status === "EPI" ? 
-                [
-                  {label: 'Ministry of Health', value: 'ministry-of-health'},
-                  {label: 'World Health Organization', value: 'world-health-organization'},
-                  {label: 'Other', value: 'other'}
-                ] : [
-                  {label: 'Red Cross / Red Crescent', value: 'red-cross'},
-                  {label: 'Government', value: 'government'},
-                  {label: 'Other', value: 'other'}
-                ]}
+                options={status === 'EPI'
+                  ? [
+                    {label: 'Ministry of Health', value: 'ministry-of-health'},
+                    {label: 'World Health Organization', value: 'world-health-organization'},
+                    {label: 'Other', value: 'other'}
+                  ] : [
+                    {label: 'Red Cross / Red Crescent', value: 'red-cross'},
+                    {label: 'Government', value: 'government'},
+                    {label: 'Other', value: 'other'}
+                  ]}
                 classLabel={c('label-secondary', {'visually-hidden': idx > 0})}
                 classWrapper='estimation__item'
                 selectedOption={o.source}

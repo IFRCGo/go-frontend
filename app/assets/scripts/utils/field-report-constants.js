@@ -717,6 +717,15 @@ export const fieldsStep2 = {
       }
     ],
   },
+  'situationFieldsDate': {
+    'EPI': {
+      'name': 'situation-fields-date',
+      'key': 'situationFieldsDate',
+      'label': 'Date of Data *',
+      'estimationLabel': 'The key figures above are reported as of this date',
+      'desc': 'Date of figures reported.'
+    },
+  },
   'description': {
     'EVT': {
       'label': 'Situational Overview',
@@ -724,9 +733,9 @@ export const fieldsStep2 = {
       'placeholder': 'Example: According to the local government, the overflow of the Zimbizi river has caused extensive flood water damage to low income housing along the river bank. The majority of the affected households do not have sufficient insurance coverage for their assets. The local branch of the National Society is currently assessing how to best support the most vulnerable families affected by the disaster.'
     },
     'EPI': {
-      'label': 'Risk Analysis',
-      'desc': 'Brief overview of the potential disaster and projected impacts',
-      'placeholder': 'Hurricane Sirius is expected to hit the Whinging region early Tuesday morning. The system currently has sustained core wind speeds of 140km/h and gusts up to 170 km/h. The local government has started evacuating thousands of people. The Red Cross branch in Whinging has deployed staff and volunteers to communities at risk to support evacuation and to assist the population in protecting themselves and their livelihoods from the impacts of Sirius.'
+      'label': 'Situational Overview',
+      'desc': 'Describe the primary and secondary effects on the health system and affected population.',
+      'placeholder': 'Description of the epidemic'
     },
     'EW': {
       'label': 'Risk Analysis',
@@ -870,7 +879,7 @@ export const fieldsStep3 = {
     },
     'desc': {
       'EVT': 'Who else was involved? UN agencies? NGOs? Government? Describe what other actors did. Also mention who the other actors are.',
-      'EVT': 'Who else was involved? UN agencies? NGOs? Government? Describe what other actors did. Also mention who the other actors are.',
+      'EPI': 'Who else was involved? UN agencies? NGOs? Government? Describe what other actors did. Also mention who the other actors are.',
       'EW': 'List the early action activities undertaken by other actors, mention who the other actors are, and give a brief description.'
     }
   }

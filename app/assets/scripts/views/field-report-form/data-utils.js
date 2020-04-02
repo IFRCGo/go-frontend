@@ -361,6 +361,8 @@ export function getInitialDataState () {
     probableCases: [{ estimation: undefined, source: undefined }],
     confirmedCases: [{ estimation: undefined, source: undefined }],
 
+    situationFieldsDate: undefined,
+
     numAssistedGov: undefined,
     numAssistedRedCross: undefined,
     numLocalStaff: undefined,
