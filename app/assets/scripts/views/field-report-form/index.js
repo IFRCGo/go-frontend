@@ -535,7 +535,7 @@ class FieldReportForm extends React.Component {
             label='Source Details'
             name='other-sources'
             classInput='textarea--lg'
-            placeholder='Add details for data with sources marked as Other above.'
+            placeholder={status === 'EPI' ? 'Add resource url for situation report' : 'Add details for data with sources marked as Other above.'}
             id='other-sources'
             description='Add details for sources above (if applicable)'
             value={this.state.data.otherSources}
@@ -590,7 +590,6 @@ class FieldReportForm extends React.Component {
         <div className='form__group'>
           {
             fields.section1fields.map(field => {
-              console.log('field', field, status)
               if (!field[status]) {
                 return null;
               }
