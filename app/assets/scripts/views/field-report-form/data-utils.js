@@ -160,7 +160,6 @@ export function convertStateToPayload (originalState) {
   // Prepare the payload for submission.
   // Extract properties that need processing.
   originalState = _cloneDeep(originalState);
-  console.log('originalState start', originalState)
   let state = {};
   const {
     country,
@@ -289,7 +288,6 @@ export function convertStateToPayload (originalState) {
     ['imminentDref', 'imminent_dref', 'imminent_dref_amount'],
     ['forecastBasedAction', 'forecast_based_action', 'forecast_based_action_amount']
   ];
-  console.log('state checking', state)
 
   planResponseMapping.forEach(([src, statusMap, valueMap]) => {
     if (_undefined(originalState[src].status)) { return; }
@@ -329,7 +327,6 @@ export function convertStateToPayload (originalState) {
     state[eru.type] = eru.status;
     state[eru.type + '_units'] = eru.units;
   });
-  console.log('state ready', state)
   return state;
 }
 
@@ -515,7 +512,6 @@ export function convertFieldReportToState (fieldReport, stateData) {
 
   sourceEstimationMapping.forEach(([src, dest]) => {
     let sourceEstimation = [];
-    console.log('fieldReport', fieldReport)
     if (fieldReport[src] !== null) {
       sourceEstimation.push({
         source: 'red-cross',

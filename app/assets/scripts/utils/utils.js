@@ -224,12 +224,32 @@ export function getRecordsByType (types, records) {
   const recordsSorted = records.sort((a, b) => {
     return new Date(b.created_at) - new Date(a.created_at);
   });
+
+  const pinnedRecordsByType = {};
   recordsSorted.forEach(record => {
     if (record.type) {
       const recordTypeId = record.type.id;
-      recordsByType[recordTypeId].items.push(record);
+      if (record.is_pinned) {
+        if (!pinnedRecordsByType.hasOwnProperty(recordTypeId)) {
+          pinnedRecordsByType[recordTypeId] = [];
+        }
+        pinnedRecordsByType[recordTypeId].push(record);
+      } else {
+        recordsByType[recordTypeId].items.push(record);
+      }
     }
   });
+
+  // sort the pinned records descending by created_at timestamp
+  const pinnedRecordTypeIds = Object.keys(pinnedRecordsByType);
+  if (pinnedRecordTypeIds) {
+    pinnedRecordTypeIds.forEach(recordTypeId => {
+      let pinnedItems = pinnedRecordsByType[recordTypeId].sort((a, b) => {
+        return new Date(b.created_at) - new Date(a.created_at);
+      });
+      recordsByType[recordTypeId].items = pinnedItems.concat(recordsByType[recordTypeId].items);
+    });
+  }
 
   // Provides sorted list of records to display
   // Categories are sorted according to https://github.com/IFRCGo/go-frontend/issues/773#issuecomment-528883564
