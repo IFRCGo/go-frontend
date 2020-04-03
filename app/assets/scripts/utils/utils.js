@@ -243,12 +243,15 @@ export function getRecordsByType (types, records) {
   });
 
   // sort the pinned records descending by created_at timestamp
-  Object.keys(pinnedRecordsByType).forEach(recordTypeId => {
-    let pinnedItems = pinnedRecordsByType[recordTypeId].sort((a, b) => {
-      return new Date(b.created_at) - new Date(a.created_at);
+  const pinnedRecordTypeIds = Object.keys(pinnedRecordsByType);
+  if (pinnedRecordTypeIds) {
+    pinnedRecordTypeIds.forEach(recordTypeId => {
+      let pinnedItems = pinnedRecordsByType[recordTypeId].sort((a, b) => {
+        return new Date(b.created_at) - new Date(a.created_at);
+      });
+      recordsByType[recordTypeId].items = pinnedItems.concat(recordsByType[recordTypeId].items);
     });
-    recordsByType[recordTypeId].items = pinnedItems.concat(recordsByType[recordTypeId].items);
-  });
+  }
 
   // Provides sorted list of records to display
   // Categories are sorted according to https://github.com/IFRCGo/go-frontend/issues/773#issuecomment-528883564
