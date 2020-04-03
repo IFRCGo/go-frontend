@@ -226,15 +226,28 @@ export function getRecordsByType (types, records) {
   const recordsSorted = records.sort((a, b) => {
     return new Date(b.created_at) - new Date(a.created_at);
   });
+
+  const pinnedRecordsByType = {};
   recordsSorted.forEach(record => {
     if (record.type) {
       const recordTypeId = record.type.id;
       if (record.is_pinned) {
-        recordsByType[recordTypeId].items.splice(0, 0, record);
+        if (!pinnedRecordsByType.hasOwnProperty(recordTypeId)) {
+          pinnedRecordsByType[recordTypeId] = [];
+        }
+        pinnedRecordsByType[recordTypeId].push(record);
       } else {
         recordsByType[recordTypeId].items.push(record);
       }
     }
+  });
+
+  // sort the pinned records descending by created_at timestamp
+  Object.keys(pinnedRecordsByType).forEach(recordTypeId => {
+    let pinnedItems = pinnedRecordsByType[recordTypeId].sort((a, b) => {
+      return new Date(b.created_at) - new Date(a.created_at);
+    });
+    recordsByType[recordTypeId].items = pinnedItems.concat(recordsByType[recordTypeId].items);
   });
 
   // Provides sorted list of records to display
