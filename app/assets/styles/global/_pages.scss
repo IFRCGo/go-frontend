@@ -185,3 +185,20 @@ main {
     float: right;
   }
 }
+
+.sticky-banner {
+  height: 32px;
+  font-size: 1rem;
+  padding: 4px;
+  position: fixed;
+  width: 100%;
+  z-index: 1001;
+}
+
+.staging-footer {
+  background-color: #f4a100;
+  bottom: 0;
+  color: white;
+  font-weight: 800;
+  text-align: center;
+}
