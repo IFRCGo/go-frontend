@@ -43,12 +43,11 @@ export function dataPathToDisplay (path, keyword) {
     'probableCases': 'Probable Cases',
     'confirmedCases': 'Confirmed Cases',
     numAssistedGov: 'Assisted by Government',
-    numAssistedMinistryOfHealth: 'Assisted by Ministry of Health',
     numAssistedRedCross: 'Assisted By Red Cross',
-    numAssistedWHO: 'Assisted By the World Health Organization',
     numLocalStaff: 'Number of local staff involved',
     numVolunteers: 'Number of volunteers involved',
     numExpats: 'Number of expats/delegates',
+    situationFieldsDate: 'Data of Data',
 
     // Step 3.
     // No validation for step 3.
@@ -132,9 +131,7 @@ export function prepStateForValidation (state) {
     probableCases: (val) => val.map(objPropToNum('estimation')),
     confirmedCases: (val) => val.map(objPropToNum('estimation')),
     numAssistedGov: toNumIfNum,
-    numAssistedMinistryOfHealth: toNumIfNum,
     numAssistedRedCross: toNumIfNum,
-    numAssistedWHO: toNumIfNum,
     numLocalStaff: toNumIfNum,
     numVolunteers: toNumIfNum,
     numExpats: toNumIfNum,
@@ -163,13 +160,15 @@ export function convertStateToPayload (originalState) {
   // Prepare the payload for submission.
   // Extract properties that need processing.
   originalState = _cloneDeep(originalState);
+  console.log('originalState start', originalState)
   let state = {};
   const {
     country,
     disasterType,
     districts,
     event,
-    startDate
+    startDate,
+    situationFieldsDate
   } = originalState;
 
   // Process properties.
@@ -179,8 +178,9 @@ export function convertStateToPayload (originalState) {
   if (event && event.value) { state.event = +event.value; }
   if (country) { state.countries = [country.value]; }
 
-  // set start_date to DateTime format
+  // set date inputs to DateTime format
   if (startDate) { state.start_date = startDate + 'T00:00:00+00:00'; }
+  if (situationFieldsDate) { state.sit_fields_date = situationFieldsDate + 'T00:00:00+00:00'; }
 
   const directMapping = [
     // [source, destination]
@@ -191,7 +191,6 @@ export function convertStateToPayload (originalState) {
     ['bulletin', 'bulletin'],
     ['numAssistedRedCross', 'num_assisted', Number],
     ['numAssistedGov', 'gov_num_assisted', Number],
-    ['numAssistedWHO', 'who_num_assisted', Number],
     ['numAssistedMinistryOfHealth', 'health_min_num_assisted', Number],
     ['numLocalStaff', 'num_localstaff', Number],
     ['numVolunteers', 'num_volunteers', Number],
@@ -227,13 +226,16 @@ export function convertStateToPayload (originalState) {
   ];
 
   sourceEstimationMapping.forEach(([src, dest]) => {
-    console.log('??', src, dest)
     originalState[src].forEach(o => {
       if (_undefined(o.estimation)) { return; }
       if (o.source === 'red-cross') {
         state[dest] = o.estimation;
       } else if (o.source === 'government') {
         state[`gov_${dest}`] = o.estimation;
+      } else if (o.source === 'ministry-of-health') {
+        state[`health_min_${dest}`] = o.estimation;
+      } else if (o.source === 'world-health-organization') {
+        state[`who_${dest}`] = o.estimation;
       } else if (o.source === 'other') {
         state[`other_${dest}`] = o.estimation;
       }
@@ -287,6 +289,7 @@ export function convertStateToPayload (originalState) {
     ['imminentDref', 'imminent_dref', 'imminent_dref_amount'],
     ['forecastBasedAction', 'forecast_based_action', 'forecast_based_action_amount']
   ];
+  console.log('state checking', state)
 
   planResponseMapping.forEach(([src, statusMap, valueMap]) => {
     if (_undefined(originalState[src].status)) { return; }
@@ -326,7 +329,7 @@ export function convertStateToPayload (originalState) {
     state[eru.type] = eru.status;
     state[eru.type + '_units'] = eru.units;
   });
-
+  console.log('state ready', state)
   return state;
 }
 
@@ -385,8 +388,6 @@ export function getInitialDataState () {
 
     numAssistedGov: undefined,
     numAssistedRedCross: undefined,
-    numAssistedWHO: undefined,
-    numAssistedMinistryOfHealth: undefined,
     numLocalStaff: undefined,
     numVolunteers: undefined,
     numExpats: undefined,
@@ -456,8 +457,12 @@ export function convertFieldReportToState (fieldReport, stateData) {
     };
   }
 
+  // get just YYYY-MM-DD from the full date timestamp
   if (fieldReport.start_date) {
-    state.startDate = fieldReport.start_date.split('T')[0]; // get just YYYY-MM-DD from the full date timestamp
+    state.startDate = fieldReport.start_date.split('T')[0];
+  }
+  if (fieldReport.sit_fields_date) {
+    state.situationFieldsDate = fieldReport.sit_fields_date.split('T')[0];
   }
   // Everything not an early warning is an event.
   state.status = fieldReport.status !== parseInt(formData.statusEarlyWarning.value)
@@ -470,7 +475,6 @@ export function convertFieldReportToState (fieldReport, stateData) {
     ['description', 'description'],
     ['other_sources', 'otherSources'],
     ['num_assisted', 'numAssistedRedCross'],
-    ['who_num_assisted', 'numAssistedWHO'],
     ['health_min_num_assisted', 'numAssistedMinistryOfHealth'],
     ['gov_num_assisted', 'numAssistedGov'],
     ['num_localstaff', 'numLocalStaff'],
@@ -511,6 +515,7 @@ export function convertFieldReportToState (fieldReport, stateData) {
 
   sourceEstimationMapping.forEach(([src, dest]) => {
     let sourceEstimation = [];
+    console.log('fieldReport', fieldReport)
     if (fieldReport[src] !== null) {
       sourceEstimation.push({
         source: 'red-cross',
@@ -527,6 +532,18 @@ export function convertFieldReportToState (fieldReport, stateData) {
       sourceEstimation.push({
         source: 'other',
         estimation: fieldReport[`other_${src}`].toString()
+      });
+    }
+    if (fieldReport[`health_min_${src}`] && fieldReport[`health_min_${src}`] !== null) {
+      sourceEstimation.push({
+        source: 'ministry-of-health',
+        estimation: fieldReport[`health_min_${src}`].toString()
+      });
+    }
+    if (fieldReport[`who_${src}`] && fieldReport[`who_${src}`] !== null) {
+      sourceEstimation.push({
+        source: 'world-health-organization',
+        estimation: fieldReport[`who_${src}`].toString()
       });
     }
     if (sourceEstimation.length) {

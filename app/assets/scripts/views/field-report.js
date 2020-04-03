@@ -150,11 +150,49 @@ class FieldReport extends React.Component {
     if (status === 9) {
       return 'EVT';
     }
+    if (data.dtype.id === 1) {
+      return 'EPI';
+    }
     return 'EVT';
   }
 
   renderNumericDetails (data) {
     const status = this.getStatus();
+    // TODO: plug into the right spot
+    // const epiHTML = (
+    //   <React.Fragment>
+    //     <dl className='dl-horizontal numeric-list'>
+    //       <dt>Cases (WHO): </dt>
+    //       <dd>{n(get(data, 'who_cases'))}</dd>
+    //       <dt>Suspected Cases (WHO): </dt>
+    //       <dd>{n(get(data, 'who_suspected_cases'))}</dd>
+    //       <dt>Probable Cases (WHO): </dt>
+    //       <dd>{n(get(data, 'who_probable_cases'))}</dd>
+    //       <dt>Confirmed Cases (WHO): </dt>
+    //       <dd>{n(get(data, 'who_confirmed_cases'))}</dd>
+    //     </dl>
+    //     <dl className='dl-horizontal numeric-list'>
+    //       <dt>Cases (Ministry of Health): </dt>
+    //       <dd>{n(get(data, 'health_min_cases'))}</dd>
+    //       <dt>Suspected Cases (Ministry of Health): </dt>
+    //       <dd>{n(get(data, 'health_min_suspected_cases'))}</dd>
+    //       <dt>Probable Cases (Ministry of Health): </dt>
+    //       <dd>{n(get(data, 'health_min_probable_cases'))}</dd>
+    //       <dt>Confirmed Cases (Ministry of Health): </dt>
+    //       <dd>{n(get(data, 'health_min_confirmed_cases'))}</dd>
+    //     </dl>
+    //     <dl className='dl-horizontal numeric-list'>
+    //       <dt>Cases (Other): </dt>
+    //       <dd>{n(get(data, 'other_cases'))}</dd>
+    //       <dt>Suspected Cases (Other): </dt>
+    //       <dd>{n(get(data, 'other_suspected_cases'))}</dd>
+    //       <dt>Probable Cases (Other): </dt>
+    //       <dd>{n(get(data, 'other_probable_cases'))}</dd>
+    //       <dt>Confirmed Cases (Other): </dt>
+    //       <dd>{n(get(data, 'other_confirmed_cases'))}</dd>
+    //     </dl>
+    //   </React.Fragment>
+    // );
     const evtHtml = (
       <React.Fragment>
         <dl className='dl-horizontal numeric-list'>
