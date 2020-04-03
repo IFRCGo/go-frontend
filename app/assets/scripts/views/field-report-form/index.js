@@ -163,6 +163,7 @@ class FieldReportForm extends React.Component {
     const result = this.validate();
     if (result) {
       if (step === 4) {
+        console.log('data to payload', this.state.data)
         const payload = convertStateToPayload(this.state.data);
         const userId = _get(this.props.user, 'data.id');
         if (userId) {

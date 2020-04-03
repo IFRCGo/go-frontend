@@ -227,6 +227,7 @@ export function convertStateToPayload (originalState) {
   ];
 
   sourceEstimationMapping.forEach(([src, dest]) => {
+    console.log('??', src, dest)
     originalState[src].forEach(o => {
       if (_undefined(o.estimation)) { return; }
       if (o.source === 'red-cross') {
