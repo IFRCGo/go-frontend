@@ -82,6 +82,12 @@ class Emergency extends React.Component {
 
     if (this.props.event.fetching && !nextProps.event.fetching) {
       hideGlobalLoading();
+
+      // Redirect if it's a merged Emergency
+      if (nextProps.event.fetched && nextProps.event.data.parent_event) {
+        this.props.history.push(`/emergencies/${nextProps.event.data.parent_event}#details`);
+      }
+
       this.getAppealDocuments(nextProps.event);
     }
 
