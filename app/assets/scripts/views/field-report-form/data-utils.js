@@ -47,7 +47,7 @@ export function dataPathToDisplay (path, keyword) {
     numLocalStaff: 'Number of local staff involved',
     numVolunteers: 'Number of volunteers involved',
     numExpats: 'Number of expats/delegates',
-    reportDate: 'Data of Data',
+    sitFieldsDate: 'Data of Data',
 
     // Step 3.
     // No validation for step 3.
@@ -167,7 +167,7 @@ export function convertStateToPayload (originalState) {
     districts,
     event,
     startDate,
-    reportDate
+    sitFieldsDate
   } = originalState;
 
   // Process properties.
@@ -179,7 +179,7 @@ export function convertStateToPayload (originalState) {
 
   // set date inputs to DateTime format
   if (startDate) { state.start_date = startDate + 'T00:00:00+00:00'; }
-  if (reportDate) { state.report_date = reportDate + 'T00:00:00+00:00'; }
+  if (sitFieldsDate) { state.report_date = sitFieldsDate + 'T00:00:00+00:00'; }
 
   const directMapping = [
     // [source, destination]
@@ -381,7 +381,7 @@ export function getInitialDataState () {
     probableCases: [{ estimation: undefined, source: undefined }],
     confirmedCases: [{ estimation: undefined, source: undefined }],
 
-    reportDate: undefined,
+    sitFieldsDate: undefined,
 
     numAssistedGov: undefined,
     numAssistedRedCross: undefined,
@@ -461,8 +461,8 @@ export function convertFieldReportToState (fieldReport, stateData) {
   if (fieldReport.start_date) {
     state.startDate = fieldReport.start_date.split('T')[0];
   }
-  if (fieldReport.report_date) {
-    state.reportDate = fieldReport.report_date.split('T')[0];
+  if (fieldReport.sit_fields_date) {
+    state.sitFieldsDate = fieldReport.sit_fields_date.split('T')[0];
   }
   // Everything not an early warning is an event.
   state.status = fieldReport.status !== parseInt(formData.statusEarlyWarning.value)
@@ -521,25 +521,25 @@ export function convertFieldReportToState (fieldReport, stateData) {
         estimation: fieldReport[src].toString()
       });
     }
-    if (fieldReport[`gov_${src}`] !== null) {
+    if (fieldReport[`gov_${src}`]) {
       sourceEstimation.push({
         source: 'government',
         estimation: fieldReport[`gov_${src}`].toString()
       });
     }
-    if (fieldReport[`other_${src}`] !== null) {
+    if (fieldReport[`other_${src}`]) {
       sourceEstimation.push({
         source: 'other',
         estimation: fieldReport[`other_${src}`].toString()
       });
     }
-    if (fieldReport[`health_min_${src}`] !== null) {
+    if (fieldReport[`health_min_${src}`]) {
       sourceEstimation.push({
         source: 'ministry-of-health',
         estimation: fieldReport[`health_min_${src}`].toString()
       });
     }
-    if (fieldReport[`who_${src}`] && fieldReport[`who_${src}`] !== null) {
+    if (fieldReport[`who_${src}`]) {
       sourceEstimation.push({
         source: 'world-health-organization',
         estimation: fieldReport[`who_${src}`].toString()
