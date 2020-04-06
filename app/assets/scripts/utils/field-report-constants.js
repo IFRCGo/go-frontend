@@ -734,10 +734,10 @@ export const fieldsStep2 = {
       }
     ],
   },
-  'situationFieldsDate': {
+  'reportDate': {
     'EPI': {
       'name': 'situation-fields-date',
-      'key': 'situationFieldsDate',
+      'key': 'reportDate',
       'label': 'Date of Data *',
       'estimationLabel': 'The key figures above are reported as of this date',
       'desc': 'Date of figures reported.'

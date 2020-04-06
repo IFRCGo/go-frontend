@@ -514,19 +514,19 @@ class FieldReportForm extends React.Component {
             })
           }
         </React.Fragment>
-        {fields.situationFieldsDate[status] &&
+        {fields.reportDate[status] &&
           <FormInput
-            label={fields.situationFieldsDate[status].label}
+            label={fields.reportDate[status].label}
             type='date'
-            name={fields.situationFieldsDate[status].name}
-            id={fields.situationFieldsDate[status].key}
-            value={this.state.data[fields.situationFieldsDate[status].key]}
-            onChange={this.onFieldChange.bind(this, `${fields.situationFieldsDate[status].key}`)}
-            description={fields.situationFieldsDate[status].desc}
+            name={fields.reportDate[status].name}
+            id={fields.reportDate[status].key}
+            value={this.state.data[fields.reportDate[status].key]}
+            onChange={this.onFieldChange.bind(this, `${fields.reportDate[status].key}`)}
+            description={fields.reportDate[status].desc}
           >
             <FormError
               errors={this.state.errors}
-              property={fields.situationFieldsDate[status].key}
+              property={fields.reportDate[status].key}
             />
           </FormInput>
         }

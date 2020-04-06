@@ -47,7 +47,7 @@ export function dataPathToDisplay (path, keyword) {
     numLocalStaff: 'Number of local staff involved',
     numVolunteers: 'Number of volunteers involved',
     numExpats: 'Number of expats/delegates',
-    situationFieldsDate: 'Data of Data',
+    reportDate: 'Data of Data',
 
     // Step 3.
     // No validation for step 3.
@@ -167,7 +167,7 @@ export function convertStateToPayload (originalState) {
     districts,
     event,
     startDate,
-    situationFieldsDate
+    reportDate
   } = originalState;
 
   // Process properties.
@@ -179,7 +179,7 @@ export function convertStateToPayload (originalState) {
 
   // set date inputs to DateTime format
   if (startDate) { state.start_date = startDate + 'T00:00:00+00:00'; }
-  if (situationFieldsDate) { state.sit_fields_date = situationFieldsDate + 'T00:00:00+00:00'; }
+  if (reportDate) { state.report_date = reportDate + 'T00:00:00+00:00'; }
 
   const directMapping = [
     // [source, destination]
@@ -381,7 +381,7 @@ export function getInitialDataState () {
     probableCases: [{ estimation: undefined, source: undefined }],
     confirmedCases: [{ estimation: undefined, source: undefined }],
 
-    situationFieldsDate: undefined,
+    reportDate: undefined,
 
     numAssistedGov: undefined,
     numAssistedRedCross: undefined,
@@ -426,6 +426,9 @@ export function getInitialDataState () {
 }
 
 export function convertFieldReportToState (fieldReport, stateData) {
+  console.log('fieldReport', fieldReport);
+  console.log('stateData', stateData);
+
   let state = _cloneDeep(getInitialDataState());
   state.actionsNatSoc = stateData.actionsNatSoc;
   state.actionsFederation = stateData.actionsFederation;
@@ -458,8 +461,8 @@ export function convertFieldReportToState (fieldReport, stateData) {
   if (fieldReport.start_date) {
     state.startDate = fieldReport.start_date.split('T')[0];
   }
-  if (fieldReport.sit_fields_date) {
-    state.situationFieldsDate = fieldReport.sit_fields_date.split('T')[0];
+  if (fieldReport.report_date) {
+    state.reportDate = fieldReport.report_date.split('T')[0];
   }
   // Everything not an early warning is an event.
   state.status = fieldReport.status !== parseInt(formData.statusEarlyWarning.value)
@@ -530,7 +533,7 @@ export function convertFieldReportToState (fieldReport, stateData) {
         estimation: fieldReport[`other_${src}`].toString()
       });
     }
-    if (fieldReport[`health_min_${src}`] && fieldReport[`health_min_${src}`] !== null) {
+    if (fieldReport[`health_min_${src}`] !== null) {
       sourceEstimation.push({
         source: 'ministry-of-health',
         estimation: fieldReport[`health_min_${src}`].toString()

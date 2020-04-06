@@ -110,7 +110,7 @@ export const step2 = {
     confirmedCases: {
       '$ref': '#/definitions/estimation'
     },
-    situationFieldsDate: {
+    reportDate: {
       type: 'string'
     },
     description: {
