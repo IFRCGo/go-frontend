@@ -661,7 +661,8 @@ export function filterActions (actions, actionType, status) {
   }).map(action => {
     return {
       value: action.id,
-      label: action.name
+      label: action.name,
+      category: action.category,
     };
   });
 }
