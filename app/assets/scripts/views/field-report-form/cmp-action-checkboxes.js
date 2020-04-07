@@ -27,6 +27,11 @@ export default class ActionsCheckboxes extends React.Component {
     onChange(newVals);
   }
 
+  // TODO (sanjay): 
+  //   - add options as checkboxGroup [{label: 'general', boxes: options}, {label: 'health', boxes: epiOptions}] 
+  //   - add group headers
+  //   - create groups according to status type. 
+  //   - If the length of array is 1, don't show the group header
   render () {
     const {
       label,

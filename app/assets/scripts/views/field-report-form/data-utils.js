@@ -426,9 +426,6 @@ export function getInitialDataState () {
 }
 
 export function convertFieldReportToState (fieldReport, stateData) {
-  console.log('fieldReport', fieldReport);
-  console.log('stateData', stateData);
-
   let state = _cloneDeep(getInitialDataState());
   state.actionsNatSoc = stateData.actionsNatSoc;
   state.actionsFederation = stateData.actionsFederation;
