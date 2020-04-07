@@ -20,7 +20,7 @@
     "serve": "NODE_ENV=development gulp collecticons && NODE_ENV=development gulp serve",
     "build-staging": "NODE_ENV=staging gulp",
     "build-prod": "NODE_ENV=production gulp",
-    "deploy-surge": "branch=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD); surge -p dist/ -d https://ifrc-go-${branch////-}.surge.sh",
+    "deploy-surge": "branch=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD); cp dist/index.html dist/200.html; surge -p dist/ -d https://ifrc-go-${branch////-}.surge.sh",
     "teardown-surge": "branch=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD); surge teardown https://ifrc-go-${branch////-}.surge.sh",
     "deploy-staging": "AZURE_CONNECTIONS_STRING=$staging_connection_string node .build_scripts/az-upload.js ./dist",
     "deploy-prod": "AZURE_CONNECTIONS_STRING=$production_connection_string node .build_scripts/az-upload.js ./dist",
