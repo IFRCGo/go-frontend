@@ -111,7 +111,7 @@ export default class ThreeW extends React.PureComponent {
     return (
       <div className='three-w-container'>
         <h2 className='heading'>
-          Movement activities in support of NS
+          Red Cross / Red Crescent activities
         </h2>
         <div className='content'>
           <div className='left'>

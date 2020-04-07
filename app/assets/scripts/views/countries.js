@@ -846,7 +846,7 @@ class AdminArea extends SFPComponent {
           <div className='project-form-modal'>
             <header>
               <h2>
-                Movement activities in support of NS
+                Red Cross / Red Crescent activities
               </h2>
               <button
                 className={
@@ -873,7 +873,7 @@ class AdminArea extends SFPComponent {
           <div className='project-form-modal'>
             <header>
               <h2>
-                Movement activities in support of NS
+                Red Cross / Red Crescent activities
               </h2>
               <button
                 className={
