@@ -156,15 +156,9 @@ export default class ThreeW extends React.PureComponent {
               />
             </div>
             <div className='three-w-map-bottom-details'>
-              <Summary
-                projectList={projectList}
-              />
-              <SectorActivity
-                projectList={projectList}
-              />
-              <StatusOverview
-                projectList={projectList}
-              />
+              <Summary projectList={projectList} />
+              <SectorActivity projectList={projectList} />
+              <StatusOverview projectList={projectList} />
             </div>
           </div>
           <div className='three-w-project-list-table-container'>
@@ -172,6 +166,7 @@ export default class ThreeW extends React.PureComponent {
               user={user}
               projectList={projectList}
               onEditButtonClick={this.props.onEditButtonClick}
+              onCloneButtonClick={this.props.onCloneButtonClick}
               onDetailsButtonClick={this.props.onDetailsButtonClick}
               onDeleteButtonClick={this.props.onDeleteButtonClick}
               isCountryAdmin={isCountryAdmin}

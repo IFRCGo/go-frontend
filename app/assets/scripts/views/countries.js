@@ -376,6 +376,18 @@ class AdminArea extends SFPComponent {
     });
   }
 
+  handleProjectCloneButtonClick = (project) => {
+    const {
+      id,
+      ...otherDetails
+    } = project;
+
+    this.setState({
+      showProjectForm: true,
+      projectToEdit: {...otherDetails},
+    });
+  }
+
   handleProjectDetailsButtonClick = (project) => {
     this.setState({
       showProjectDetails: true,
@@ -726,6 +738,7 @@ class AdminArea extends SFPComponent {
                     onAddButtonClick={this.handleProjectAddButtonClick}
                     user={this.props.me}
                     onEditButtonClick={this.handleProjectEditButtonClick}
+                    onCloneButtonClick={this.handleProjectCloneButtonClick}
                     onDetailsButtonClick={this.handleProjectDetailsButtonClick}
                     onDeleteButtonClick={this.handleProjectDeleteButtonClick}
                   />

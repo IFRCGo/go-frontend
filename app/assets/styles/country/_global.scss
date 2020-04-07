@@ -407,6 +407,39 @@
   }
 }
 
+.more-actions-dropdown-menu.tc-dropdown-menu {
+  font-size: 24px;
+  margin: 0;
+}
+
+.more-actions-dropdown-container {
+  .button {
+    width: 100%;
+    text-align: left;
+    display: flex;
+    padding: 0;
+
+    .tc-icon {
+      padding: 3px 6px;
+      display: block;
+      width: 32px;
+    }
+
+    .tc-label {
+      display: block;
+      padding: 3px 6px;
+    }
+  }
+
+  .delete-button {
+    color: $primary-color;
+  }
+
+  hr {
+    margin: 6px 0;
+  }
+}
+
 .three-w-map-district-detail-popover {
   padding: 10px;
   width: 340px;
