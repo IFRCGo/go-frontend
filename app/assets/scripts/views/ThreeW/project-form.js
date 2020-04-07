@@ -348,7 +348,7 @@ class ProjectForm extends React.PureComponent {
   }
 
   handleFaramValidationSuccess = (faramValues) => {
-    if (this.props.projectData) {
+    if (this.props.projectData && this.props.projectData.id) {
       this.props._postProject({
         id: this.props.projectData.id,
         ...faramValues,

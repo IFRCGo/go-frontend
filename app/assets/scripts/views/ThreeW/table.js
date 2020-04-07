@@ -13,6 +13,7 @@ import {
 } from '../../utils/constants';
 
 import FormattedDate from '../../components/formatted-date';
+import DropdownMenu from '../../components/dropdown-menu';
 
 export default class ProjectListTable extends React.PureComponent {
   constructor (props) {
@@ -22,10 +23,12 @@ export default class ProjectListTable extends React.PureComponent {
       {
         key: 'start_date',
         label: 'Start date',
+        modifier: d => <FormattedDate value={d['start_date']} />,
       },
       {
         key: 'end_date',
         label: 'End date',
+        modifier: d => <FormattedDate value={d['end_date']} />,
       },
       {
         key: 'name',
@@ -54,10 +57,12 @@ export default class ProjectListTable extends React.PureComponent {
       {
         key: 'target_total',
         label: 'People targeted',
+        modifier: d => addSeparator(d.target_total),
       },
       {
         key: 'reached_total',
         label: 'People reached',
+        modifier: d => addSeparator(d.reached_total),
       },
       {
         key: 'status',
@@ -71,34 +76,55 @@ export default class ProjectListTable extends React.PureComponent {
       },
       {
         key: 'actions',
-        label: 'Actions',
+        label: '',
         modifier: (d) => (
-          <React.Fragment>
+          <DropdownMenu
+            className='more-actions-dropdown-menu'
+            dropdownContainerClassName='more-actions-dropdown-container'
+            label={<div className='ion-android-more-horizontal' />}
+          >
             <button
-              className='button button--primary-bounded'
+              className='button'
               onClick={() => this.props.onDetailsButtonClick(d)}
             >
-              Show details
+              <div className='tc-icon ion-android-search' />
+              <div className='tc-label'>
+                View details
+              </div>
             </button>
-            <br />
             { this.props.isCountryAdmin && (
               <React.Fragment>
                 <button
-                  className='button button--secondary-bounded'
+                  className='button'
                   onClick={() => this.props.onEditButtonClick(d)}
                 >
-                  Edit
+                  <div className='tc-icon ion-edit' />
+                  <div className='tc-label'>
+                    Edit
+                  </div>
                 </button>
-                <br />
                 <button
-                  className='button button--secondary-bounded'
+                  className='button'
+                  onClick={() => this.props.onCloneButtonClick(d)}
+                >
+                  <div className='tc-icon ion-ios-browsers-outline' />
+                  <div className='tc-label'>
+                    Duplicate
+                  </div>
+                </button>
+                <hr />
+                <button
+                  className='button delete-button'
                   onClick={() => this.props.onDeleteButtonClick(d)}
                 >
-                  Delete
+                  <div className='tc-icon ion-ios-trash-outline' />
+                  <div className='tc-label'>
+                    Delete
+                  </div>
                 </button>
               </React.Fragment>
             )}
-          </React.Fragment>
+          </DropdownMenu>
         ),
       },
     ];
