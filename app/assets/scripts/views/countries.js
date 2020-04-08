@@ -1,13 +1,11 @@
 import React from 'react';
-import memoize from 'memoize-one';
-import { PropTypes as T } from 'prop-types';
+import memoize from 'memoize-one'; import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { DateTime } from 'luxon';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import { Helmet } from 'react-helmet';
-import _cs from 'classnames';
 import url from 'url';
 
 import { countries } from '../utils/field-report-constants';
@@ -74,7 +72,7 @@ import { getISO3 } from '../utils/country-iso';
 
 import ThreeW from './ThreeW';
 import CountryOverview from './CountryOverview';
-import ProjectForm from './ThreeW/project-form';
+import ProjectFormModal from './ThreeW/project-form-modal';
 import ProjectDetails from './ThreeW/project-details';
 
 const emptyList = [];
@@ -729,7 +727,7 @@ class AdminArea extends SFPComponent {
                 </TabContent>
               </TabPanel>
               <TabPanel>
-                <TabContent>
+                <TabContent title="3W">
                   <ThreeW
                     disabled={this.loading}
                     projectList={this.getProjectList(this.props.projects)}
@@ -794,14 +792,6 @@ class AdminArea extends SFPComponent {
     );
   }
 
-  syncBodyOverflow = (shouldOverflow) => {
-    if (shouldOverflow) {
-      document.getElementsByTagName('html')[0].style.overflow = 'hidden';
-    } else {
-      document.getElementsByTagName('html')[0].style.overflow = 'auto';
-    }
-  }
-
   render () {
     const {
       showProjectForm,
@@ -820,7 +810,6 @@ class AdminArea extends SFPComponent {
       deleteProjectRequest,
     } = this.props;
 
-    this.syncBodyOverflow(showProjectForm || showProjectDetails);
     this.syncLoadingAnimation(
       projects,
       projectForm,
@@ -838,57 +827,20 @@ class AdminArea extends SFPComponent {
         </Helmet>
         { this.renderContent() }
         { showProjectForm && (
-          <div className='project-form-modal'>
-            <header>
-              <h2>
-                Red Cross / Red Crescent activities
-              </h2>
-              <button
-                className={
-                  _cs(
-                    'button button--secondary-bounded',
-                    this.loading && 'disabled',
-                  )
-                }
-                onClick={() => {
-                  this.setState({ showProjectForm: false });
-                }}
-                disabled={this.loading}
-              >
-                Close
-              </button>
-            </header>
-            <ProjectForm
-              projectData={projectToEdit}
-              countryId={getCountryId(this.props.match.params.id)}
-            />
-          </div>
+          <ProjectFormModal
+            countryId={getCountryId(this.props.match.params.id)}
+            projectData={projectToEdit}
+            pending={this.loading}
+            onCloseButtonClick={() => { this.setState({ showProjectForm: false }); }}
+          />
         )}
         { showProjectDetails && (
-          <div className='project-form-modal'>
-            <header>
-              <h2>
-                Red Cross / Red Crescent activities
-              </h2>
-              <button
-                className={
-                  _cs(
-                    'button button--secondary-bounded',
-                    this.loading && 'disabled',
-                  )
-                }
-                onClick={() => {
-                  this.setState({ showProjectDetails: false });
-                }}
-                disabled={this.loading}
-              >
-                Close
-              </button>
-            </header>
-            <ProjectDetails
-              data={projectToShowDetails}
-            />
-          </div>
+          <ProjectDetails
+            onCloseButtonClick={() => {
+              this.setState({ showProjectDetails: false });
+            }}
+            data={projectToShowDetails}
+          />
         )}
       </App>
     );

@@ -518,12 +518,8 @@
 }
 
 .project-form-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 1111;
+  width: 100%;
+  height: 100%;
   background-color: #fff;
   overflow: auto;
 
@@ -536,7 +532,67 @@
       padding: 24px;
     }
   }
+}
 
+.tc-project-details-modal {
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  overflow: auto;
+
+  >header {
+    display: flex;
+    align-items: center;
+
+    >h2 {
+      margin: 0;
+      padding: 24px;
+    }
+  }
+  .tc-project-details {
+    .tc-project-name {
+      padding: 0 10px;
+      flex-direction: column;
+
+      .tc-label {
+        padding-bottom: 0;
+      }
+
+      .tc-value {
+        padding-top: 0;
+        font-size: 32px;
+      }
+    }
+
+    .tc-section {
+      padding: 10px;
+
+      >.tc-text-output {
+        padding: 0 10px;
+      }
+
+      .tc-section-title {
+        padding: 0 14px;
+        color: $primary-color;
+      }
+
+      .tc-section-content {
+        display: flex;
+
+        .tc-text-output {
+          padding: 0 10px;
+        }
+      }
+    }
+
+    .tc-date-section {
+      display: flex;
+
+      .tc-text-output {
+        padding: 0 10px;
+      }
+    }
+  }
 }
 
 .project-form {
@@ -813,38 +869,38 @@
 }
 
 .event-detail-tooltip {
-    background-color: #fff;
-    box-shadow: 0 0 3px 1px rgba(0, 0, 0, .3);
-    padding: 10px 0;
+  background-color: #fff;
+  box-shadow: 0 0 3px 1px rgba(0, 0, 0, .3);
+  padding: 10px 0;
 
-    .basic-detail {
-      display: flex;
-      align-items: baseline;
-      padding: 0 10px;
-      font-size: 18px;
-      font-weight: bold;
-      color: $primary-color;
+  .basic-detail {
+    display: flex;
+    align-items: baseline;
+    padding: 0 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: $primary-color;
 
-      .event-country-name {
-        padding: 4px 6px;
-      }
-
-      .separator {
-        padding: 4px 6px;
-      }
-
-      .disaster-title {
-        padding: 4px 6px;
-      }
+    .event-country-name {
+      padding: 4px 6px;
     }
 
-    .event-start-date {
-      padding: 0 16px;
+    .separator {
+      padding: 4px 6px;
     }
 
-    .other-details {
-      padding: 6px 0;
+    .disaster-title {
+      padding: 4px 6px;
     }
+  }
+
+  .event-start-date {
+    padding: 0 16px;
+  }
+
+  .other-details {
+    padding: 6px 0;
+  }
 }
 
 .tc-segment-button {

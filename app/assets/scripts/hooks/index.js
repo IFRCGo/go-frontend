@@ -57,7 +57,7 @@ export const useFloatPlacement = (parentRef /* React.RefObject<HTMLElement> */) 
       const verticalPosition = (cY - parentBCR.y) > 0 ? 'bottom' : 'top';
 
       if (horizontalPosition === 'left') {
-        newPlacement.right = `${window.innerWidth - x - width}px`;
+        newPlacement.right = `${document.body.clientWidth - x - width}px`;
       } else if (horizontalPosition === 'right') {
         newPlacement.left = `${x}px`;
       }

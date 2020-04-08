@@ -187,7 +187,10 @@ class ProjectForm extends React.PureComponent {
 
   componentDidMount () {
     this.props._getCountries();
-    this.props._getEventList(this.props.countryId);
+
+    if (this.props.countryId) {
+      this.props._getEventList(this.props.countryId);
+    }
   }
 
   getResultsFromResponse = (response, defaultValue = emptyList) => {
@@ -261,10 +264,22 @@ class ProjectForm extends React.PureComponent {
       return emptyList;
     }
 
-    return currentOperationList.map(d => ({
+    const currentOperationOptions = currentOperationList.map(d => ({
       value: d.id,
       label: d.name,
     }));
+
+    const currentEmergencyOperationOptions = currentOperationList
+      .filter(d => d.auto_generated_source === 'New field report')
+      .map(d => ({
+        value: d.id,
+        label: d.name,
+      }));
+
+    return {
+      currentOperationOptions,
+      currentEmergencyOperationOptions,
+    };
   }
 
   getProjectStatusFaramValue = memoize((start, isCompleted) => {
@@ -318,10 +333,12 @@ class ProjectForm extends React.PureComponent {
 
     if (oldFaramValues.project_country !== faramValues.project_country) {
       this.props._getDistricts(faramValues.project_country);
+      this.props._getEventList(faramValues.project_country);
       this.setState({
         faramValues: {
           ...faramValues,
           project_district: 'all',
+          event: undefined,
           ...autoProjectStatus,
           ...autoTargetedTotal,
           ...autoReachedTotal,
@@ -379,7 +396,7 @@ class ProjectForm extends React.PureComponent {
     }
     */
 
-    if (operationType === 'Emergency Operation' && programmeType === 'Multilateral') {
+    if (operationType === 'Emergency Operation' && (programmeType === 'Multilateral' || programmeType === 'Domestic')) {
       schema.fields.event = [requiredCondition];
     }
 
@@ -409,7 +426,10 @@ class ProjectForm extends React.PureComponent {
     } = this.state;
 
     const districtOptions = this.getDistrictOptions(districts, faramValues.project_country);
-    const currentOperationOptions = this.getCurrentOperationOptions(eventList);
+    const {
+      currentOperationOptions,
+      currentEmergencyOperationOptions,
+    } = this.getCurrentOperationOptions(eventList);
 
     const fetchingCountries = countries && countries.fetching;
     const shouldDisableCountryInput = fetchingCountries;
@@ -417,10 +437,14 @@ class ProjectForm extends React.PureComponent {
     const shouldDisableDistrictInput = fetchingCountries || fetchingDistricts;
     const fetchingEvents = eventList && eventList.fetching;
     const shouldDisableCurrentOperation = fetchingEvents;
+    const fetchingNationalSocieties = fetchingCountries;
+    const shouldDisableNationalSocietyInput = fetchingNationalSocieties;
 
     const projectFormPending = projectForm.fetching;
     const shouldDisableSubmitButton = projectFormPending || fetchingCountries || fetchingDistricts;
 
+    const shouldShowCurrentEmergencyOperation = faramValues.operation_type === 'Emergency Operation' &&
+      faramValues.programme_type === 'Domestic';
     const shouldShowCurrentOperation = faramValues.operation_type === 'Emergency Operation' &&
       faramValues.programme_type === 'Multilateral';
     const shouldShowDisasterType = faramValues.operation_type === 'Programme' &&
@@ -452,6 +476,8 @@ class ProjectForm extends React.PureComponent {
             faramElementName='reporting_ns'
             className='project-form-select'
             options={nationalSocietyOptions}
+            placeholder={fetchingNationalSocieties ? 'Fetching national societies...' : undefined}
+            disabled={shouldDisableNationalSocietyInput}
           />
         </InputSection>
 
@@ -466,6 +492,7 @@ class ProjectForm extends React.PureComponent {
             options={countryOptions}
             clearable={false}
             disabled={shouldDisableCountryInput}
+            placeholder={fetchingCountries ? 'Fetching countries...' : undefined}
           />
           <SelectInput
             faramElementName='project_district'
@@ -515,6 +542,21 @@ class ProjectForm extends React.PureComponent {
               faramElementName='event'
               className='project-form-select'
               options={currentOperationOptions}
+              disabled={shouldDisableCurrentOperation}
+              placeholder={fetchingEvents ? 'Fetching events...' : undefined}
+            />
+          </InputSection>
+        )}
+
+        { shouldShowCurrentEmergencyOperation && (
+          <InputSection
+            title='Current emergency operation*'
+            tooltip='The list is populated from current emergency operations related to the selected country. If necessary, create the related emergency through a field report'
+          >
+            <SelectInput
+              faramElementName='event'
+              className='project-form-select'
+              options={currentEmergencyOperationOptions}
               disabled={shouldDisableCurrentOperation}
               placeholder={fetchingEvents ? 'Fetching events...' : undefined}
             />

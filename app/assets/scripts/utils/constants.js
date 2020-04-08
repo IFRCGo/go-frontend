@@ -10,6 +10,10 @@ export const programmeTypeList = [
   {
     key: '1',
     title: 'Multilateral'
+  },
+  {
+    key: '2',
+    title: 'Domestic',
   }
 ];
 
