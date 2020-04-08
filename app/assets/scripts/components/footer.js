@@ -5,6 +5,13 @@ import { api } from '../config';
 
 class Footer extends React.PureComponent {
   render () {
+    const stagingBanner = process.env.NODE_ENV !== 'production'
+      ? (
+        <div className='sticky-banner staging-footer'>
+          {process.env.NODE_ENV === 'staging' ? 'STAGING' : 'TESTING (SURGE)'} SITE
+        </div>
+      )
+      : null;
     return (
       <footer className='page__footer' role='contentinfo'>
         <div className='inner'>
