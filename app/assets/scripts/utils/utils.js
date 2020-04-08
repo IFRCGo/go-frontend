@@ -3,6 +3,7 @@ import _get from 'lodash.get';
 import _groupBy from 'lodash.groupby';
 import _toNumber from 'lodash.tonumber';
 import _find from 'lodash.find';
+import _filter from 'lodash.filter';
 import { DateTime } from 'luxon';
 
 import { getCentroid } from './country-centroids';
@@ -215,6 +216,7 @@ export function getRecordsByType (types, records) {
     memo[typeId] = {
       'title': _find(types.data.results, result => result.id === Number(typeId)).type,
       'typeId': typeId,
+      'is_primary': _find(types.data.results, result => result.id === Number(typeId)).is_primary,
       'items': []
     };
     return memo;
@@ -224,12 +226,32 @@ export function getRecordsByType (types, records) {
   const recordsSorted = records.sort((a, b) => {
     return new Date(b.created_at) - new Date(a.created_at);
   });
+
+  const pinnedRecordsByType = {};
   recordsSorted.forEach(record => {
     if (record.type) {
       const recordTypeId = record.type.id;
-      recordsByType[recordTypeId].items.push(record);
+      if (record.is_pinned) {
+        if (!pinnedRecordsByType.hasOwnProperty(recordTypeId)) {
+          pinnedRecordsByType[recordTypeId] = [];
+        }
+        pinnedRecordsByType[recordTypeId].push(record);
+      } else {
+        recordsByType[recordTypeId].items.push(record);
+      }
     }
   });
+
+  // sort the pinned records descending by created_at timestamp
+  const pinnedRecordTypeIds = Object.keys(pinnedRecordsByType);
+  if (pinnedRecordTypeIds) {
+    pinnedRecordTypeIds.forEach(recordTypeId => {
+      let pinnedItems = pinnedRecordsByType[recordTypeId].sort((a, b) => {
+        return new Date(b.created_at) - new Date(a.created_at);
+      });
+      recordsByType[recordTypeId].items = pinnedItems.concat(recordsByType[recordTypeId].items);
+    });
+  }
 
   // Provides sorted list of records to display
   // Categories are sorted according to https://github.com/IFRCGo/go-frontend/issues/773#issuecomment-528883564
@@ -242,9 +264,33 @@ export function getRecordsByType (types, records) {
     '1', // ERU Reports
     '3' // Information Products
   ];
-  const sortedRecordsByType = Object.values(recordsByType);
-  sortedRecordsByType.sort((a, b) => {
-    return orderedIds.indexOf(a.typeId) - orderedIds.indexOf(b.typeId);
+
+  // group records based on primary and others.
+  const recordsByPriority = _groupBy(Object.values(recordsByType), 'is_primary');
+
+  // sort the primary records based on the order defined above.
+  recordsByPriority['true'].sort((a, b) => {
+    const aIndex = orderedIds.indexOf(a.typeId);
+    const bIndex = orderedIds.indexOf(b.typeId);
+    if (aIndex >= 0 && bIndex >= 0) {
+      return orderedIds.indexOf(a.typeId) - orderedIds.indexOf(b.typeId);
+    }
   });
+
+  // // Filter out non-primary types that doesn't have any records
+  recordsByPriority['false'] = _filter(recordsByPriority['false'], (records) => {
+    if (records.items.length) {
+      return records;
+    }
+  });
+
+  // append the non primary records
+  let sortedRecordsByType;
+  if (recordsByPriority['false']) {
+    sortedRecordsByType = recordsByPriority['true'].concat(recordsByPriority['false']);
+  } else {
+    sortedRecordsByType = recordsByPriority['true'];
+  }
+
   return sortedRecordsByType;
 }
