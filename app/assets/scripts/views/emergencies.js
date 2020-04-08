@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { DateTime } from 'luxon';
 import { PropTypes as T } from 'prop-types';
 import { Helmet } from 'react-helmet';
-import _cs from 'classnames';
 
 import App from './app';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
@@ -13,7 +12,7 @@ import FieldReportsTable from '../components/connected/field-reports-table';
 import EmergenciesDash from '../components/connected/emergencies-dash';
 import EmergenciesTable from '../components/connected/emergencies-table';
 
-import ProjectForm from './ThreeW/project-form';
+import ProjectFormModal from './ThreeW/project-form-modal';
 import { getLastMonthsEmergencies, getAggregateEmergencies } from '../actions';
 import { environment } from '../config';
 
@@ -38,14 +37,6 @@ class Emergencies extends React.Component {
     }
   }
 
-  syncBodyOverflow = (shouldOverflow) => {
-    if (shouldOverflow) {
-      document.getElementsByTagName('html')[0].style.overflow = 'hidden';
-    } else {
-      document.getElementsByTagName('html')[0].style.overflow = 'auto';
-    }
-  }
-
   syncLoadingAnimation = memoize((
     projectForm = {},
   ) => {
@@ -63,7 +54,6 @@ class Emergencies extends React.Component {
   })
 
   render () {
-    this.syncBodyOverflow(this.state.showProjectForm);
     this.syncLoadingAnimation(this.props.projectForm);
 
     return (
@@ -104,28 +94,11 @@ class Emergencies extends React.Component {
           </div>
         </section>
         { this.state.showProjectForm && (
-          <div className='project-form-modal'>
-            <header>
-              <h2>
-                Red Cross / Red Crescent activities
-              </h2>
-              <button
-                className={
-                  _cs(
-                    'button button--secondary-bounded',
-                    this.loading && 'disabled',
-                  )
-                }
-                onClick={() => {
-                  this.setState({ showProjectForm: false });
-                }}
-                disabled={this.loading}
-              >
-                Close
-              </button>
-            </header>
-            <ProjectForm />
-          </div>
+          <ProjectFormModal
+            onCloseButtonClick={() => {
+              this.setState({ showProjectForm: false });
+            }}
+          />
         )}
       </App>
     );

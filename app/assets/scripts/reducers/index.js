@@ -28,10 +28,10 @@ import fdrs from './fdrs';
 import csv from './csv';
 import perForm from './per-form';
 import subscriptions from './subscriptions';
-import projects from './projects.js';
-import projectForm from './project-form.js';
-import projectDelete from './project-delete.js';
-import countryOverview from './country-overview.js';
+import projects from './projects';
+import projectForm from './project-form';
+import projectDelete from './project-delete';
+import countryOverview from './country-overview';
 import me from './me.js';
 
 export const reducers = {
