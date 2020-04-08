@@ -14,8 +14,9 @@ class Snippets extends Component {
     this.props._getEventSnippets(this.props.eventId);
   }
   render () {
-    const { fetching, fetched, error, data } = this.props.snippets;
-    if (fetching || error || (fetched && !data.results.length)) return null;
+    const { fetching, error, data } = this.props.snippets;
+    if (fetching || error) return null;
+
     return (
       <TabContent showError={true} isError={!get(data, 'results.length')} errorMessage={ NO_DATA } title="Additional Graphics">
         <Fold id='graphics' title='Additional Graphics' wrapper_class='additional-graphics'>
@@ -32,7 +33,7 @@ class Snippets extends Component {
 
 Snippets.propTypes = {
   _getEventSnippets: PropTypes.func,
-  eventId: PropTypes.string,
+  eventId: PropTypes.number,
   snippets: PropTypes.object
 };
 
