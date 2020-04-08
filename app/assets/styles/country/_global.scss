@@ -582,10 +582,87 @@
       padding: 24px;
     }
   }
+}
 
+.tc-project-details-modal {
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  overflow: auto;
+
+  >header {
+    display: flex;
+    align-items: center;
+
+    >h2 {
+      margin: 0;
+      padding: 24px;
+    }
+  }
   .tc-project-details {
     max-width: 1420px;
     width: 100%;
+
+    .tc-project-name {
+      padding: 0 10px;
+      flex-direction: column;
+
+      .tc-label {
+        padding-bottom: 0;
+      }
+
+      .tc-value {
+        padding-top: 0;
+        font-size: 32px;
+      }
+    }
+
+    .tc-section {
+      padding: 10px;
+
+      >.tc-text-output {
+        padding: 0 10px;
+      }
+
+      .tc-section-title {
+        padding: 0 14px;
+        color: $primary-color;
+      }
+
+      .tc-section-content {
+        display: flex;
+
+        .tc-text-output {
+          padding: 0 10px;
+        }
+      }
+    }
+
+    .tc-date-section {
+      display: flex;
+
+      .tc-text-output {
+        padding: 0 10px;
+      }
+    }
+  }
+}
+
+.project-form {
+  .multi-input-section {
+    .section-content {
+      display: flex;
+    }
+  }
+
+  .tc-faram-checkbox {
+    margin: 0 10px;
+  }
+
+  .project-form-select {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 10px;
     flex-grow: 1;
     overflow: auto;
 

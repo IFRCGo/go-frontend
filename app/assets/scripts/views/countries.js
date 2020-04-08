@@ -73,7 +73,6 @@ import { getISO3 } from '../utils/country-iso';
 import ThreeW from './ThreeW';
 // import CountryOverview from './CountryOverview';
 import ProjectFormModal from './ThreeW/project-form-modal';
-// import ProjectForm from './ThreeW/project-form';
 import ProjectDetails from './ThreeW/project-details';
 
 const emptyList = [];

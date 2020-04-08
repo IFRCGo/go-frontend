@@ -133,12 +133,8 @@ class ProjectForm extends React.PureComponent {
 
     this.schema = {
       fields: {
-<<<<<<< HEAD
         is_project_completed: [],
         budget_amount: [requiredCondition, positiveIntegerCondition],
-=======
-        budget_amount: [requiredCondition],
->>>>>>> 5073fcd4... Add project deletion feature
         project_country: [],
         event: [],
         dtype: [],
@@ -355,7 +351,6 @@ class ProjectForm extends React.PureComponent {
       ...autoReachedTotal,
     };
 
-<<<<<<< HEAD
     let newFaramErrors = {
       ...extraFaramErrors,
       ...faramErrors,
@@ -369,22 +364,6 @@ class ProjectForm extends React.PureComponent {
         ...newFaramValues,
         dtype,
       };
-=======
-    if (oldFaramValues.project_country !== faramValues.project_country) {
-      this.props._getDistricts(faramValues.project_country);
-      this.setState({
-        faramValues: {
-          ...faramValues,
-          project_district: 'all',
-        },
-        faramErrors,
-      });
-    } else {
-      this.setState({
-        faramValues,
-        faramErrors,
-      });
->>>>>>> 5073fcd4... Add project deletion feature
     }
 
     if (oldFaramValues.project_country !== faramValues.project_country) {
@@ -466,7 +445,6 @@ class ProjectForm extends React.PureComponent {
     } = this.state;
 
     const districtOptions = this.getDistrictOptions(districts, faramValues.project_country);
-<<<<<<< HEAD
     const {
       currentOperationOptions,
       currentEmergencyOperationOptions,
@@ -474,12 +452,7 @@ class ProjectForm extends React.PureComponent {
 
     const fetchingCountries = countries && countries.fetching;
     const shouldDisableCountryInput = fetchingCountries;
-=======
-    const currentOperationOptions = this.getCurrentOperationOptions(eventList);
 
-    const fetchingCountries = countries && countries.fetching;
-    const shouldDisableCountryInput = fetchingCountries || true;
->>>>>>> 5073fcd4... Add project deletion feature
     const fetchingDistricts = districts && districts[faramValues.project_country] && districts[faramValues.project_country].fetching;
     const shouldDisableDistrictInput = fetchingCountries || fetchingDistricts;
     const fetchingEvents = eventList && eventList.fetching;
@@ -609,6 +582,20 @@ class ProjectForm extends React.PureComponent {
               options={disasterTypeOptions}
               disabled={shouldDisableDisasterType}
               placeholder={shouldDisableDisasterType ? 'Select an operation to view its disaster type' : ''}
+            />
+          </InputSection>
+        )}
+        { shouldShowCurrentEmergencyOperation && (
+          <InputSection
+            title='Current emergency operation*'
+            tooltip='The list is populated from current emergency operations related to the selected country. If necessary, create the related emergency through a field report'
+          >
+            <SelectInput
+              faramElementName='event'
+              className='project-form-select'
+              options={currentEmergencyOperationOptions}
+              disabled={shouldDisableCurrentOperation}
+              placeholder={fetchingEvents ? 'Fetching events...' : undefined}
             />
           </InputSection>
         )}
