@@ -11,7 +11,8 @@ import FormCheckbox from './checkbox';
 export default class FormCheckboxGroup extends React.Component {
   onCheckChange (opValue) {
     const { values, onChange } = this.props;
-    const prevState = _get(values, [opValue, 'checked'], false);
+    const valueObject = values.find(obj => obj.value === opValue);
+    const prevState = _get(values, [values.indexOf(valueObject), 'checked'], false);
     let newVals = _cloneDeep(values);
 
     newVals.map(val => ((val.value === opValue) ? (val.checked = !prevState) : null));
@@ -42,7 +43,7 @@ export default class FormCheckboxGroup extends React.Component {
           {options.map(optionGroup => (
             <React.Fragment>
               {options.length > 1 ? (
-                <label className={c('form__label', classLabel)}>{optionGroup.label}</label>
+                <label key={optionGroup.label} className={c('form__label', classLabel)}>{optionGroup.label}</label>
               ) : null}
               <div className='form__options-group'>
                 {optionGroup.options.map(option => {
@@ -53,7 +54,7 @@ export default class FormCheckboxGroup extends React.Component {
                       name={`${name}[]`}
                       id={`${name.replace(/(\[|\])/g, '-')}-${option.value}`}
                       value={option.value}
-                      checked={(values.find(({value}) => value === option.value) || {}).checked === true}
+                      checked={(values.find(({value}) => value === option.value) || {}).checked}
                       onChange={this.onCheckChange.bind(this, option.value)}
                       description={option.description} />
                   );

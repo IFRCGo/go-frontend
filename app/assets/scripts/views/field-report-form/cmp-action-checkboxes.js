@@ -51,6 +51,7 @@ export default class ActionsCheckboxes extends React.Component {
     return (
       <FormCheckboxGroup
         label={label}
+        key={label}
         description={description}
         name={`${name}[options]`}
         classWrapper='action-checkboxes action-checkboxes--textarea'
