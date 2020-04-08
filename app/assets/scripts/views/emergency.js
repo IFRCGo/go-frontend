@@ -84,7 +84,7 @@ class Emergency extends React.Component {
       hideGlobalLoading();
 
       // Redirect if it's a merged Emergency
-      if (nextProps.event.fetched && nextProps.event.data.parent_event) {
+      if (nextProps.event.fetched && nextProps.event.data && nextProps.event.data.parent_event) {
         this.props.history.push(`/emergencies/${nextProps.event.data.parent_event}#details`);
       }
 
@@ -132,7 +132,7 @@ class Emergency extends React.Component {
   }
 
   isSubscribed (nextProps) {
-    if (nextProps.profile.fetched) {
+    if (nextProps.profile.fetched && !nextProps.profile.error) {
       const filtered = nextProps.profile.data.subscription.filter(subscription => subscription.event === parseInt(this.props.match.params.id));
       if (filtered.length > 0) {
         return true;
