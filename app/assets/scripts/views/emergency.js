@@ -32,7 +32,6 @@ import {
 import {
   get,
   mostRecentReport,
-  datesAgo,
   getRecordsByType
 } from '../utils/utils/';
 
@@ -41,7 +40,7 @@ import Fold from '../components/fold';
 import TabContent from '../components/tab-content';
 import ErrorPanel from '../components/error-panel';
 import Expandable from '../components/expandable';
-import { Snippets } from '../components/admin-area-elements';
+import Snippets from '../components/emergencies/snippets';
 import SurgeAlertsTable from '../components/connected/alerts-table';
 import PersonnelTable from '../components/connected/personnel-table';
 import EruTable from '../components/connected/eru-table';
@@ -65,7 +64,6 @@ class Emergency extends React.Component {
       },
       subscribed: false
     };
-    this.handleSitrepFilter = this.handleSitrepFilter.bind(this);
     this.addSubscription = this.addSubscription.bind(this);
     this.delSubscription = this.delSubscription.bind(this);
     this.isSubscribed = this.isSubscribed.bind(this);
@@ -84,6 +82,12 @@ class Emergency extends React.Component {
 
     if (this.props.event.fetching && !nextProps.event.fetching) {
       hideGlobalLoading();
+
+      // Redirect if it's a merged Emergency
+      if (nextProps.event.fetched && nextProps.event.data && nextProps.event.data.parent_event) {
+        this.props.history.push(`/emergencies/${nextProps.event.data.parent_event}#details`);
+      }
+
       this.getAppealDocuments(nextProps.event);
     }
 
@@ -112,7 +116,6 @@ class Emergency extends React.Component {
   getEvent (id) {
     showGlobalLoading();
     this.props._getEventById(id);
-    this.props._getEventSnippets(id);
     this.props._getSitrepsByEventId(id);
   }
 
@@ -128,25 +131,8 @@ class Emergency extends React.Component {
     this.setState({ selectedAppeal: id });
   }
 
-  handleSitrepFilter (state, value) {
-    const next = Object.assign({}, this.state.sitrepFilters, {
-      [state]: value
-    });
-
-    const { date, type } = next;
-    let filters = {};
-    if (date !== 'all') {
-      filters.created_at__gte = datesAgo[date]();
-    }
-    if (type !== 'all') {
-      filters.type = type;
-    }
-    this.props._getSitrepsByEventId(this.props.match.params.id, filters);
-    this.setState({ sitrepFilters: next });
-  }
-
   isSubscribed (nextProps) {
-    if (nextProps.profile.fetched) {
+    if (nextProps.profile.fetched && !nextProps.profile.error) {
       const filtered = nextProps.profile.data.subscription.filter(subscription => subscription.event === parseInt(this.props.match.params.id));
       if (filtered.length > 0) {
         return true;
@@ -593,9 +579,7 @@ class Emergency extends React.Component {
               </TabPanel>
 
               <TabPanel>
-                <TabContent showError={true} isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ NO_DATA } title="Additional Graphics">
-                  <Snippets data={this.props.snippets} />
-                </TabContent>
+                <Snippets eventId={get(this.props.event, 'data.id')} />
               </TabPanel>
             </div>
           </div>
