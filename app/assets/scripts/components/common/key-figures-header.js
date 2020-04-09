@@ -29,11 +29,11 @@ const keyFiguresList = ['activeDrefs', 'activeAppeals', 'budget', 'appealsFundin
 // };
 
 const keyIconSrc = {
-  activeDrefs: '/assets/icons/logo-dref.svg',
-  activeAppeals: '/assets/icons/logo-appeals.svg',
-  budget: '/assets/icons/funding-requirements.svg',
-  appealsFunding: '/assets/icons/funding-coverage.svg',
-  targetPop: '/assets/icons/targeted-population.svg'
+  activeDrefs: '/assets/graphics/layout/logo-dref.svg',
+  activeAppeals: '/assets/graphics/layout/logo-appeals.svg',
+  budget: '/assets/graphics/layout/funding-requirements.svg',
+  appealsFunding: '/assets/graphics/layout/funding-coverage.svg',
+  targetPop: '/assets/graphics/layout/targeted-population.svg'
 };
 
 // Lists two tooltip descriptions currently in use.
