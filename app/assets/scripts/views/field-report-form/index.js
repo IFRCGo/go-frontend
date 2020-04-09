@@ -373,40 +373,6 @@ class FieldReportForm extends React.Component {
         </FormInputSelect>
         <div className='form__group'>
           <div className='form__inner-header'>
-            <label className='form__label'>{fields['disaster-type'][status].label}</label>
-          </div>
-          <div className='form__inner-body'>
-            <Select
-              placeholder='Select a disaster type'
-              name='disaster-type'
-              id='disaster-type'
-              options={formData.disasterType}
-              value={this.state.data.disasterType}
-              onChange={({value}) => this.onFieldChange('disasterType', value)}
-            />
-            <FormError
-              errors={this.state.errors}
-              property='disasterType'
-            />
-          </div>
-        </div>
-        <FormInput
-          label={fields.startDate[status].label}
-          type='date'
-          name='startDate'
-          id='startDate'
-          value={this.state.data.startDate}
-          onChange={this.onFieldChange.bind(this, 'startDate')}
-          description={fields.startDate[status].desc}
-        >
-          <FormError
-            errors={this.state.errors}
-            property='start_date'
-          />
-        </FormInput>
-
-        <div className='form__group'>
-          <div className='form__inner-header'>
             <label className='form__label'>{fields.country[status].label}</label>
             <p className='form__description'>{fields.country[status].desc}</p>
           </div>
@@ -442,6 +408,39 @@ class FieldReportForm extends React.Component {
             </div>
           </div>
         </div>
+        <div className='form__group'>
+          <div className='form__inner-header'>
+            <label className='form__label'>{fields['disaster-type'][status].label}</label>
+          </div>
+          <div className='form__inner-body'>
+            <Select
+              placeholder='Select a disaster type'
+              name='disaster-type'
+              id='disaster-type'
+              options={formData.disasterType}
+              value={this.state.data.disasterType}
+              onChange={({value}) => this.onFieldChange('disasterType', value)}
+            />
+            <FormError
+              errors={this.state.errors}
+              property='disasterType'
+            />
+          </div>
+        </div>
+        <FormInput
+          label={fields.startDate[status].label}
+          type='date'
+          name='startDate'
+          id='startDate'
+          value={this.state.data.startDate}
+          onChange={this.onFieldChange.bind(this, 'startDate')}
+          description={fields.startDate[status].desc}
+        >
+          <FormError
+            errors={this.state.errors}
+            property='start_date'
+          />
+        </FormInput>
         <FormRadioGroup
           label={fields.assistance[status].label}
           description={fields.assistance[status].desc}
