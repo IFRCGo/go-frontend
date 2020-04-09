@@ -2,6 +2,7 @@
 import * as url from 'url';
 import React from 'react';
 import { connect } from 'react-redux';
+import memoize from 'memoize-one';
 import { Link, withRouter } from 'react-router-dom';
 import { PropTypes as T } from 'prop-types';
 import _toNumber from 'lodash.tonumber';
@@ -46,12 +47,14 @@ import PersonnelTable from '../components/connected/personnel-table';
 import EruTable from '../components/connected/eru-table';
 import EmergencyMap from '../components/map/emergency-map';
 import { NO_DATA } from '../utils/constants';
+import ProjectFormModal from './ThreeW/project-form-modal';
 
 class Emergency extends React.Component {
   constructor (props) {
     super(props);
 
     this.state = {
+      showProjectForm: false,
       selectedAppeal: null,
       sitrepFilters: {
         date: 'all',
@@ -111,6 +114,14 @@ class Emergency extends React.Component {
 
     if (!this.props.profile.fetched && nextProps.profile.fetched) {
       this.setState({ subscribed: this.isSubscribed(nextProps) });
+    }
+
+    const newProjectAdded = this.props.projectForm.fetching === true &&
+      nextProps.projectForm.fetching === false &&
+      nextProps.projectForm.error === null;
+
+    if (newProjectAdded) {
+      this.setState({ showProjectForm: false });
     }
   }
 
@@ -477,6 +488,22 @@ class Emergency extends React.Component {
     }
   }
 
+  syncLoadingAnimation = memoize((
+    projectForm = {},
+  ) => {
+    const shouldShowLoadingAnimation = projectForm.fetching;
+
+    if (shouldShowLoadingAnimation) {
+      this.loading = true;
+      showGlobalLoading();
+    } else {
+      if (this.loading) {
+        hideGlobalLoading();
+        this.loading = false;
+      }
+    }
+  })
+
   renderContent () {
     const {
       fetched,
@@ -490,7 +517,7 @@ class Emergency extends React.Component {
 
     const contacts = Array.isArray(data.contacts) && data.contacts.length ? data.contacts
       : Array.isArray(report.contacts) && report.contacts.length ? report.contacts : null;
-    const subscribeButton = this.state.subscribed
+    const subscribeButton = () => this.state.subscribed
       ? (<React.Fragment><button className='button button--primary-filled float-right' onClick={this.delSubscription}>Unsubscribe</button><br /><br /></React.Fragment>)
       : (<React.Fragment><button className='button button--primary-filled float-right' onClick={this.addSubscription}>Subscribe</button><br /><br /></React.Fragment>);
 
@@ -515,16 +542,32 @@ class Emergency extends React.Component {
         <Helmet>
           <title>IFRC Go - {get(data, 'name', 'Emergency')}</title>
         </Helmet>
+        { this.state.showProjectForm && (
+          <ProjectFormModal
+            onCloseButtonClick={() => {
+              this.setState({ showProjectForm: false });
+            }}
+          />
+        )}
         <header className='inpage__header'>
           <div className='inner'>
             <div className='inpage__headline'>
               <div className='inpage__headline-content'>
                 <div className='inpage__headline-actions'>
                   {
-                    this.props.isLogged ? subscribeButton : null
+                    this.props.isLogged ? subscribeButton() : null
                   }
                   <a href={url.resolve(api, `api/event/${data.id}/change/`)}
                     className='button button--primary-bounded float-right'>Edit Event</a><br />
+                  <br />
+                  { this.props.isLogged && (
+                    <button
+                      onClick={() => { this.setState({ showProjectForm: true }); }}
+                      className='button button--primary-bounded float-right'
+                    >
+                      Create 3W activity
+                    </button>
+                  )}
                 </div>
                 <h1 className='inpage__title'>{data.name}</h1>
                 {this.renderHeaderStats()}
@@ -622,6 +665,8 @@ class Emergency extends React.Component {
   }
 
   render () {
+    this.syncLoadingAnimation(this.props.projectForm);
+
     return (
       <App className='page--emergency'>
         <Helmet>
@@ -664,6 +709,7 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state, ownProps) => ({
+  projectForm: state.projectForm,
   event: get(state.event.event, ownProps.match.params.id, {
     data: {},
     fetching: false,

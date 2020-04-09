@@ -5,12 +5,14 @@ import {
   addSeparator,
 } from '@togglecorp/fujs';
 import memoize from 'memoize-one';
+import url from 'url';
 
 import {
   programmeTypes,
   sectors,
   statuses,
 } from '../../utils/constants';
+import { api } from '../../config';
 
 import FormattedDate from '../../components/formatted-date';
 import DropdownMenu from '../../components/dropdown-menu';
@@ -112,6 +114,15 @@ export default class ProjectListTable extends React.PureComponent {
                     Duplicate
                   </div>
                 </button>
+                <a
+                  className='button'
+                  href={url.resolve(api, `deployments/project/${d.id}/history/`)}
+                >
+                  <div className='tc-icon ion-android-time' />
+                  <div className='tc-label'>
+                    History
+                  </div>
+                </a>
                 <hr />
                 <button
                   className='button delete-button'
