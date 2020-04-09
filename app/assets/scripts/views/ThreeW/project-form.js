@@ -39,6 +39,7 @@ import {
   programmeTypes,
   operationTypeList,
   operationTypes,
+  projectVisibilityList,
 } from '../../utils/constants';
 
 const positiveIntegerCondition = (value) => {
@@ -77,6 +78,7 @@ const disasterTypeOptions = disasterTypeList.map(d => ({
 })).sort(compareString);
 
 const operationTypeOptions = [...operationTypeList].sort(compareString);
+const projectVisibilityOptions = [...projectVisibilityList].sort(compareString);
 
 const InputSection = ({
   className,
@@ -148,6 +150,7 @@ class ProjectForm extends React.PureComponent {
         target_female: [positiveIntegerCondition],
         target_male: [positiveIntegerCondition],
         target_total: [requiredCondition, positiveIntegerCondition],
+        visibility: [requiredCondition],
       },
     };
 
@@ -178,6 +181,7 @@ class ProjectForm extends React.PureComponent {
         target_female: projectData.target_female || undefined,
         target_male: projectData.target_male || undefined,
         target_total: projectData.target_total || undefined,
+        visibility: projectData.visibility || 'public',
       },
       faramErrors: {},
     };
@@ -575,7 +579,6 @@ class ProjectForm extends React.PureComponent {
           </InputSection>
         )}
 
-
         <InputSection
           title='Project name*'
         >
@@ -683,6 +686,16 @@ class ProjectForm extends React.PureComponent {
             disabled={shouldDisableTotalReached}
             faramElementName='reached_total'
             label={faramValues.status === 'Completed' ? 'Total* ' : 'Total'}
+          />
+        </InputSection>
+        <InputSection
+          title='Project visibility*'
+        >
+          <SelectInput
+            faramElementName='visibility'
+            className='project-form-select'
+            options={projectVisibilityOptions}
+            clearable={false}
           />
         </InputSection>
 

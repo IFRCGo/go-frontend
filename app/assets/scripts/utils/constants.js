@@ -189,3 +189,9 @@ export const operationTypes = {
   0: 'Programme',
   1: 'Emergency Operation',
 };
+
+export const projectVisibilityList = [
+  { value: 'public', label: 'Public' },
+  { value: 'logged_in_user', label: 'Logged in user' },
+  { value: 'ifrc_only', label: 'IFRC only' },
+];
