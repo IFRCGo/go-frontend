@@ -269,6 +269,9 @@ class ProjectForm extends React.PureComponent {
       label: d.name,
     }));
 
+    const operationToDisasterMap = {};
+    currentOperationList.forEach(d => { operationToDisasterMap[d.id] = d.dtype.id; });
+
     const currentEmergencyOperationOptions = currentOperationList
       .filter(d => d.auto_generated_source === 'New field report')
       .map(d => ({
@@ -279,6 +282,7 @@ class ProjectForm extends React.PureComponent {
     return {
       currentOperationOptions,
       currentEmergencyOperationOptions,
+      operationToDisasterMap,
     };
   }
 
@@ -322,46 +326,51 @@ class ProjectForm extends React.PureComponent {
   })
 
   handleFaramChange = (faramValues, faramErrors) => {
-    const {
-      faramValues: oldFaramValues,
-    } = this.state;
+    const { faramValues: oldFaramValues } = this.state;
+    const { eventList } = this.props;
 
     const extraFaramErrors = validateDate(faramValues.start_date, faramValues.end_date);
     const autoProjectStatus = this.getProjectStatusFaramValue(faramValues.start_date, faramValues.is_project_completed);
     const autoTargetedTotal = this.getTargetedTotalFaramValue(faramValues.target_male, faramValues.target_female, faramValues.target_other);
     const autoReachedTotal = this.getReachedTotalFaramValue(faramValues.reached_male, faramValues.reached_female, faramValues.reached_other);
 
+    let newFaramValues = {
+      ...faramValues,
+      ...autoProjectStatus,
+      ...autoTargetedTotal,
+      ...autoReachedTotal,
+    };
+
+    let newFaramErrors = {
+      ...extraFaramErrors,
+      ...faramErrors,
+    };
+
+    if (oldFaramValues.event !== faramValues.event) {
+      const { operationToDisasterMap } = this.getCurrentOperationOptions(eventList);
+      const dtype = operationToDisasterMap[faramValues.event];
+
+      newFaramValues = {
+        ...newFaramValues,
+        dtype,
+      };
+    }
+
     if (oldFaramValues.project_country !== faramValues.project_country) {
       this.props._getDistricts(faramValues.project_country);
       this.props._getEventList(faramValues.project_country);
-      this.setState({
-        faramValues: {
-          ...faramValues,
-          project_district: 'all',
-          event: undefined,
-          ...autoProjectStatus,
-          ...autoTargetedTotal,
-          ...autoReachedTotal,
-        },
-        faramErrors: {
-          ...extraFaramErrors,
-          ...faramErrors,
-        },
-      });
-    } else {
-      this.setState({
-        faramValues: {
-          ...faramValues,
-          ...autoProjectStatus,
-          ...autoTargetedTotal,
-          ...autoReachedTotal,
-        },
-        faramErrors: {
-          ...extraFaramErrors,
-          ...faramErrors,
-        },
-      });
+
+      newFaramValues = {
+        ...newFaramValues,
+        project_district: 'all',
+        event: undefined,
+      };
     }
+
+    this.setState({
+      faramValues: newFaramValues,
+      faramErrors: newFaramErrors,
+    });
   }
 
   handleFaramValidationSuccess = (faramValues) => {
@@ -447,8 +456,9 @@ class ProjectForm extends React.PureComponent {
       faramValues.programme_type === 'Domestic';
     const shouldShowCurrentOperation = faramValues.operation_type === 'Emergency Operation' &&
       faramValues.programme_type === 'Multilateral';
-    const shouldShowDisasterType = faramValues.operation_type === 'Programme' &&
-      !shouldShowCurrentOperation;
+
+    const shouldShowDisasterType = faramValues.operation_type === 'Programme' || shouldShowCurrentOperation || shouldShowCurrentEmergencyOperation;
+    const shouldDisableDisasterType = faramValues.operation_type === 'Emergency Operation';
 
     const schema = this.getSchema(
       faramValues.operation_type,
@@ -522,18 +532,6 @@ class ProjectForm extends React.PureComponent {
           />
         </InputSection>
 
-        { shouldShowDisasterType && (
-          <InputSection
-            title='Disaster type*'
-          >
-            <SelectInput
-              faramElementName='dtype'
-              className='project-form-select'
-              options={disasterTypeOptions}
-            />
-          </InputSection>
-        )}
-
         { shouldShowCurrentOperation && (
           <InputSection
             title='Current IFRC operation*'
@@ -562,6 +560,21 @@ class ProjectForm extends React.PureComponent {
             />
           </InputSection>
         )}
+
+        { shouldShowDisasterType && (
+          <InputSection
+            title='Disaster type*'
+          >
+            <SelectInput
+              faramElementName='dtype'
+              className='project-form-select'
+              options={disasterTypeOptions}
+              disabled={shouldDisableDisasterType}
+              placeholder={shouldDisableDisasterType ? 'Select an operation to view its disaster' : ''}
+            />
+          </InputSection>
+        )}
+
 
         <InputSection
           title='Project name*'
