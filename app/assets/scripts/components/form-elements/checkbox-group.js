@@ -46,7 +46,7 @@ export default class FormCheckboxGroup extends React.Component {
                 <label key={optionGroup.label} className={c('form__label', classLabel)}>{optionGroup.label}</label>
               ) : null}
               <div className='form__options-group'>
-                {optionGroup.options.map(option => {
+                {(optionGroup.options || options).map(option => {
                   return (
                     <FormCheckbox
                       key={option.value}
