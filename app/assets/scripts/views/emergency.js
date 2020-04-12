@@ -116,7 +116,6 @@ class Emergency extends React.Component {
   getEvent (id) {
     showGlobalLoading();
     this.props._getEventById(id);
-    this.props._getSitrepsByEventId(id);
   }
 
   getAppealDocuments (event) {

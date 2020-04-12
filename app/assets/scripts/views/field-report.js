@@ -153,8 +153,13 @@ class FieldReport extends React.Component {
     return 'EVT';
   }
 
+  getEpiStatus () {
+    return this.props.report.data.dtype.id === 1 ? 'EPI' : '';
+  }
+
   renderNumericDetails (data) {
     const status = this.getStatus();
+    const epiStatus = this.getEpiStatus();
     const evtHtml = (
       <React.Fragment>
         <dl className='dl-horizontal numeric-list'>
@@ -205,6 +210,40 @@ class FieldReport extends React.Component {
           <dt>Delegates: </dt>
           <dd>{n(get(data, 'num_expats_delegates'))}</dd>
         </dl>
+        {epiStatus === 'EPI' ? (
+          <React.Fragment>
+            <dl className='dl-horizontal numeric-list'>
+              <dt>Cases (WHO): </dt>
+              <dd>{n(get(data, 'who_cases'))}</dd>
+              <dt>Suspected Cases (WHO): </dt>
+              <dd>{n(get(data, 'who_suspected_cases'))}</dd>
+              <dt>Probable Cases (WHO): </dt>
+              <dd>{n(get(data, 'who_probable_cases'))}</dd>
+              <dt>Confirmed Cases (WHO): </dt>
+              <dd>{n(get(data, 'who_confirmed_cases'))}</dd>
+            </dl>
+            <dl className='dl-horizontal numeric-list'>
+              <dt>Cases (Ministry of Health): </dt>
+              <dd>{n(get(data, 'health_min_cases'))}</dd>
+              <dt>Suspected Cases (Ministry of Health): </dt>
+              <dd>{n(get(data, 'health_min_suspected_cases'))}</dd>
+              <dt>Probable Cases (Ministry of Health): </dt>
+              <dd>{n(get(data, 'health_min_probable_cases'))}</dd>
+              <dt>Confirmed Cases (Ministry of Health): </dt>
+              <dd>{n(get(data, 'health_min_confirmed_cases'))}</dd>
+            </dl>
+            <dl className='dl-horizontal numeric-list'>
+              <dt>Cases (Other): </dt>
+              <dd>{n(get(data, 'other_cases'))}</dd>
+              <dt>Suspected Cases (Other): </dt>
+              <dd>{n(get(data, 'other_suspected_cases'))}</dd>
+              <dt>Probable Cases (Other): </dt>
+              <dd>{n(get(data, 'other_probable_cases'))}</dd>
+              <dt>Confirmed Cases (Other): </dt>
+              <dd>{n(get(data, 'other_confirmed_cases'))}</dd>
+            </dl>
+          </React.Fragment>
+        ) : null}
       </React.Fragment>
     );
 
@@ -268,7 +307,9 @@ class FieldReport extends React.Component {
     const infoBulletin = infoBulletinOptions[data.bulletin];
     const lastTouchedAt = DateTime.fromISO(data.updated_at || data.created_at).toISODate();
     const status = this.getStatus();
+    const epiStatus = this.getEpiStatus();
     const startDate = DateTime.fromISO(data.start_date).toISODate();
+    const sitFieldsDate = DateTime.fromISO(data.sit_fields_date).toISODate();
     return (
       <section className='inpage'>
         <Helmet>
@@ -298,6 +339,7 @@ class FieldReport extends React.Component {
                 {this.renderPlannedResponse(data)}
                 <DisplaySection sectionClass='rich-text-section' title={ status === 'EW' ? 'Risk Analysis' : 'Description' } inner={get(data, 'description', false)} />
                 <DisplaySection title={ status === 'EW' ? 'Forecasted Date of Impact' : 'Start Date' } inner={startDate} />
+                { epiStatus === 'EPI' ? <DisplaySection title='Date of Data' inner={sitFieldsDate} /> : null }
                 <DisplaySection title='Requests for Assistance'>
                   <p>
                     <span>Government Requests International Assistance: </span>

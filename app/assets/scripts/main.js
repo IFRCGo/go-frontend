@@ -156,3 +156,8 @@ if (version === false) {
     });
   });
 })([Element.prototype, CharacterData.prototype, DocumentType.prototype]);
+
+if (process.env.NODE_ENV === 'staging') {
+  document.body.style.backgroundColor = 'grey';
+  document.getElementById('app-container').style.color = 'purple';
+}

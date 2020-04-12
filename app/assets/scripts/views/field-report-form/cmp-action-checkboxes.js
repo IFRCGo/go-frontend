@@ -38,13 +38,24 @@ export default class ActionsCheckboxes extends React.Component {
       classInput
     } = this.props;
 
+    const groupedOptions = options
+      .reduce(
+        (prev, {category}) =>
+          prev.includes(category) ? prev : prev.concat(category)
+        , [])
+      .map(category => ({
+        label: category,
+        options: options.filter(filteredOption => filteredOption.category === category)
+      }));
+
     return (
       <FormCheckboxGroup
         label={label}
+        key={label}
         description={description}
         name={`${name}[options]`}
         classWrapper='action-checkboxes action-checkboxes--textarea'
-        options={options}
+        options={groupedOptions}
         values={values.options}
         onChange={this.onChecksChange} >
         <FormTextarea

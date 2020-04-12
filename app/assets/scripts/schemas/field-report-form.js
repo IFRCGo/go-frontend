@@ -49,7 +49,7 @@ export const step1 = {
       ]
     }
   ],
-  required: ['country', 'status', 'disasterType']
+  required: ['country', 'status', 'startDate', 'disasterType']
 };
 
 export const step2 = {
@@ -59,7 +59,7 @@ export const step2 = {
       items: {
         properties: {
           estimation: { type: 'number', minimum: 0 },
-          source: {enum: ['red-cross', 'government', 'other']}
+          source: {enum: ['red-cross', 'government', 'world-health-organization', 'ministry-of-health', 'other']}
         }
       }
     },
@@ -68,7 +68,7 @@ export const step2 = {
       items: {
         properties: {
           estimation: { type: 'string' },
-          source: {enum: ['red-cross', 'government', 'other']}
+          source: {enum: ['red-cross', 'government', 'world-health-organization', 'ministry-of-health', 'other']}
         }
       }
     }
@@ -97,6 +97,21 @@ export const step2 = {
     },
     affectedPopCentres: {
       '$ref': '#/definitions/estimationString'
+    },
+    cases: {
+      '$ref': '#/definitions/estimation'
+    },
+    suspectedCases: {
+      '$ref': '#/definitions/estimation'
+    },
+    probableCases: {
+      '$ref': '#/definitions/estimation'
+    },
+    confirmedCases: {
+      '$ref': '#/definitions/estimation'
+    },
+    sitFieldsDate: {
+      type: 'string'
     },
     description: {
       type: 'string'

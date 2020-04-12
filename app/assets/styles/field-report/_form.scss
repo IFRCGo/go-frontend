@@ -219,6 +219,8 @@
 }
 
 .action-checkboxes .form__options-group {
+  display: flex;
+  flex-wrap: wrap;
   .form__option {
     @include column(12/12);
 
