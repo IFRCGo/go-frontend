@@ -296,7 +296,7 @@ class FieldReport extends React.Component {
                 <p className='inpage__note'>Last updated{data.user ? ` by ${data.user.username}` : null} on {lastTouchedAt}</p>
                 {this.renderNumericDetails(data)}
                 {this.renderPlannedResponse(data)}
-                <DisplaySection title={ status === 'EW' ? 'Risk Analysis' : 'Description' } inner={get(data, 'description', false)} />
+                <DisplaySection sectionClass='rich-text-section' title={ status === 'EW' ? 'Risk Analysis' : 'Description' } inner={get(data, 'description', false)} />
                 <DisplaySection title={ status === 'EW' ? 'Forecasted Date of Impact' : 'Start Date' } inner={startDate} />
                 <DisplaySection title='Requests for Assistance'>
                   <p>
@@ -345,11 +345,11 @@ if (environment !== 'production') {
 
 class DisplaySection extends React.Component {
   render () {
-    const { inner, children, title } = this.props;
+    const { inner, children, title, sectionClass } = this.props;
     if (!children && !inner) { return null; }
     const content = children || <p dangerouslySetInnerHTML={{__html: inner}} />;
     return (
-      <section className='display-section'>
+      <section className={`display-section${sectionClass ? ' ' + sectionClass : ''}`}>
         <h3>{title}</h3>
         {content}
       </section>
