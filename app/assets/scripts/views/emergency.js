@@ -521,7 +521,7 @@ class Emergency extends React.Component {
                     <Expandable limit={2048} text={summary} />
                   </Fold>
                 </TabContent>
-                <TabContent isError={!get(this.props.surgeAlerts, 'data.results.length')} errorMessage={ NO_DATA } title="Alerts">
+                <TabContent title="Alerts">
                   <SurgeAlertsTable id='alerts'
                     title='Alerts'
                     emergency={this.props.match.params.id}
