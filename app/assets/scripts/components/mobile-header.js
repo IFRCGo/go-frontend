@@ -71,7 +71,7 @@ class MobileHeader extends React.PureComponent {
             </div>
             <h1 className='page__title'>
               <Link to='/' title='Visit page'>
-                <img src='/assets/graphics/layout/go-mobile-logo.png' alt='IFRC GO logo'/>
+                <img src='/assets/graphics/layout/go-logo-2020.svg' alt='IFRC GO logo'/>
                 <span>IFRC GO</span>
               </Link>
             </h1>

@@ -14,7 +14,7 @@ const ToggleButtonComponent = ({ description, value, toggle }) => (
       aria-label='Toggle display of only active operations'
       colors={{
         activeThumb: {
-          base: '#C02C2C',
+          base: '#f5333f',
         },
         active: {
           base: '#666666'
