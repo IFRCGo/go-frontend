@@ -89,11 +89,27 @@ class FieldReport extends React.Component {
       return null;
     }
 
+    // Split actions by category
+    const groupedActions = actions.actions
+      .reduce(
+        (prev, {category}) =>
+          prev.includes(category) ? prev : prev.concat(category)
+        , [])
+      .map(category => ({
+        label: category,
+        options: actions.actions.filter(filteredOption => filteredOption.category === category)
+      }));
+
     return (
       <DisplaySection title={`Actions taken by ${orgDisplayName}`}>
-        <ul className='actions-list'>
-          {actions.actions.map((d, i) => <li key={`action-${i}`}>{d.name}</li>)}
-        </ul>
+        {groupedActions.map(category => (
+          <React.Fragment key={category.label}>
+            {groupedActions.length > 1 ? <p className='form__label'>{category.label}</p> : null}
+            <ul className='actions-list'>
+              {category.options.map((d, i) => <li key={`action-${i}`}>{d.name}</li>)}
+            </ul>
+          </React.Fragment>
+        ))}
 
         <div className='form__group'>
           <p className='form__label'>Summary</p>
@@ -162,54 +178,6 @@ class FieldReport extends React.Component {
     const epiStatus = this.getEpiStatus();
     const evtHtml = (
       <React.Fragment>
-        <dl className='dl-horizontal numeric-list'>
-          <dt>Injured (RC): </dt>
-          <dd>{n(get(data, 'num_injured'))}</dd>
-          <dt>Missing (RC): </dt>
-          <dd>{n(get(data, 'num_missing'))}</dd>
-          <dt>Dead (RC): </dt>
-          <dd>{n(get(data, 'num_dead'))}</dd>
-          <dt>Displaced (RC): </dt>
-          <dd>{n(get(data, 'num_displaced'))}</dd>
-          <dt>Affected (RC): </dt>
-          <dd>{n(get(data, 'num_affected'))}</dd>
-        </dl>
-        <dl className='dl-horizontal numeric-list'>
-          <dt>Injured (Government): </dt>
-          <dd>{n(get(data, 'gov_num_injured'))}</dd>
-          <dt>Missing (Government): </dt>
-          <dd>{n(get(data, 'gov_num_missing'))}</dd>
-          <dt>Dead (Government): </dt>
-          <dd>{n(get(data, 'gov_num_dead'))}</dd>
-          <dt>Displaced (Government): </dt>
-          <dd>{n(get(data, 'gov_num_displaced'))}</dd>
-          <dt>Affected (Government): </dt>
-          <dd>{n(get(data, 'gov_num_affected'))}</dd>
-        </dl>
-        <dl className='dl-horizontal numeric-list'>
-          <dt>Injured (Other): </dt>
-          <dd>{n(get(data, 'other_num_injured'))}</dd>
-          <dt>Missing (Other): </dt>
-          <dd>{n(get(data, 'other_num_missing'))}</dd>
-          <dt>Dead (Other): </dt>
-          <dd>{n(get(data, 'other_num_dead'))}</dd>
-          <dt>Displaced (Other): </dt>
-          <dd>{n(get(data, 'other_num_displaced'))}</dd>
-          <dt>Affected (Other): </dt>
-          <dd>{n(get(data, 'other_num_affected'))}</dd>
-        </dl>
-        <dl className='dl-horizontal numeric-list'>
-          <dt>Assisted by Government:</dt>
-          <dd>{n(get(data, 'gov_num_assisted'))}</dd>
-          <dt>Assisted by RCRC Movement:</dt>
-          <dd>{n(get(data, 'num_assisted'))}</dd>
-          <dt>Local Staff: </dt>
-          <dd>{n(get(data, 'num_localstaff'))}</dd>
-          <dt>Volunteers: </dt>
-          <dd>{n(get(data, 'num_volunteers'))}</dd>
-          <dt>Delegates: </dt>
-          <dd>{n(get(data, 'num_expats_delegates'))}</dd>
-        </dl>
         {epiStatus === 'EPI' ? (
           <React.Fragment>
             <dl className='dl-horizontal numeric-list'>
@@ -243,7 +211,58 @@ class FieldReport extends React.Component {
               <dd>{n(get(data, 'other_confirmed_cases'))}</dd>
             </dl>
           </React.Fragment>
-        ) : null}
+        ) : (
+          <React.Fragment>
+            <dl className='dl-horizontal numeric-list'>
+              <dt>Injured (RC): </dt>
+              <dd>{n(get(data, 'num_injured'))}</dd>
+              <dt>Missing (RC): </dt>
+              <dd>{n(get(data, 'num_missing'))}</dd>
+              <dt>Dead (RC): </dt>
+              <dd>{n(get(data, 'num_dead'))}</dd>
+              <dt>Displaced (RC): </dt>
+              <dd>{n(get(data, 'num_displaced'))}</dd>
+              <dt>Affected (RC): </dt>
+              <dd>{n(get(data, 'num_affected'))}</dd>
+            </dl>
+            <dl className='dl-horizontal numeric-list'>
+              <dt>Injured (Government): </dt>
+              <dd>{n(get(data, 'gov_num_injured'))}</dd>
+              <dt>Missing (Government): </dt>
+              <dd>{n(get(data, 'gov_num_missing'))}</dd>
+              <dt>Dead (Government): </dt>
+              <dd>{n(get(data, 'gov_num_dead'))}</dd>
+              <dt>Displaced (Government): </dt>
+              <dd>{n(get(data, 'gov_num_displaced'))}</dd>
+              <dt>Affected (Government): </dt>
+              <dd>{n(get(data, 'gov_num_affected'))}</dd>
+            </dl>
+            <dl className='dl-horizontal numeric-list'>
+              <dt>Injured (Other): </dt>
+              <dd>{n(get(data, 'other_num_injured'))}</dd>
+              <dt>Missing (Other): </dt>
+              <dd>{n(get(data, 'other_num_missing'))}</dd>
+              <dt>Dead (Other): </dt>
+              <dd>{n(get(data, 'other_num_dead'))}</dd>
+              <dt>Displaced (Other): </dt>
+              <dd>{n(get(data, 'other_num_displaced'))}</dd>
+              <dt>Affected (Other): </dt>
+              <dd>{n(get(data, 'other_num_affected'))}</dd>
+            </dl>
+            <dl className='dl-horizontal numeric-list'>
+              <dt>Assisted by Government:</dt>
+              <dd>{n(get(data, 'gov_num_assisted'))}</dd>
+              <dt>Assisted by RCRC Movement:</dt>
+              <dd>{n(get(data, 'num_assisted'))}</dd>
+              <dt>Local Staff: </dt>
+              <dd>{n(get(data, 'num_localstaff'))}</dd>
+              <dt>Volunteers: </dt>
+              <dd>{n(get(data, 'num_volunteers'))}</dd>
+              <dt>Delegates: </dt>
+              <dd>{n(get(data, 'num_expats_delegates'))}</dd>
+            </dl>
+          </React.Fragment>
+        )}
       </React.Fragment>
     );
 
@@ -336,10 +355,10 @@ class FieldReport extends React.Component {
               <div className='inner'>
                 <p className='inpage__note'>Last updated{data.user ? ` by ${data.user.username}` : null} on {lastTouchedAt}</p>
                 {this.renderNumericDetails(data)}
+                { epiStatus === 'EPI' ? <DisplaySection title='Date of Data' inner={sitFieldsDate} /> : null }
                 {this.renderPlannedResponse(data)}
                 <DisplaySection sectionClass='rich-text-section' title={ status === 'EW' ? 'Risk Analysis' : 'Description' } inner={get(data, 'description', false)} />
                 <DisplaySection title={ status === 'EW' ? 'Forecasted Date of Impact' : 'Start Date' } inner={startDate} />
-                { epiStatus === 'EPI' ? <DisplaySection title='Date of Data' inner={sitFieldsDate} /> : null }
                 <DisplaySection title='Requests for Assistance'>
                   <p>
                     <span>Government Requests International Assistance: </span>
