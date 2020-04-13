@@ -47,11 +47,6 @@ import EruTable from '../components/connected/eru-table';
 import EmergencyMap from '../components/map/emergency-map';
 import { NO_DATA } from '../utils/constants';
 
-const TAB_DETAILS = [
-  { title: 'Emergency Details', hash: '#details' },
-  { title: 'Additional Information', hash: '#additional-info' }
-];
-
 class Emergency extends React.Component {
   constructor (props) {
     super(props);
@@ -62,7 +57,10 @@ class Emergency extends React.Component {
         date: 'all',
         type: 'all'
       },
-      subscribed: false
+      subscribed: false,
+      tabs: [
+        { title: 'Emergency Details', hash: '#details' }
+      ]
     };
     this.addSubscription = this.addSubscription.bind(this);
     this.delSubscription = this.delSubscription.bind(this);
@@ -89,6 +87,26 @@ class Emergency extends React.Component {
       }
 
       this.getAppealDocuments(nextProps.event);
+
+      // setup tabs
+      const { data } = nextProps.event;
+      // check if there are additional tabs
+      let tabs = [...this.state.tabs];
+      const tabLabels = ['tab_one_title', 'tab_two_title', 'tab_three_title'];
+      tabLabels.forEach(key => {
+        if (data[key]) {
+          const title = data[key];
+          const hash = `#${title.toLowerCase().split(' ').join('-')}`;
+          tabs.push({
+            title: title,
+            hash: hash
+          });
+        }
+      });
+      this.setState({ tabs: tabs });
+      setTimeout(() => {
+        this.displayTabContent();
+      }, 0);
     }
 
     if (!this.props.profile.fetched && nextProps.profile.fetched) {
@@ -102,12 +120,14 @@ class Emergency extends React.Component {
     if (this.props.isLogged) {
       this.props._getUserProfile(this.props.user.data.username);
     }
-    this.displayTabContent();
+
+    // FIXME - we might need a different strategy for this
+    // this.displayTabContent();
   }
 
   // Sets default tab if url param is blank or incorrect
   displayTabContent () {
-    const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
+    const tabHashArray = this.state.tabs.map(({ hash }) => hash);
     if (!tabHashArray.find(hash => hash === this.props.location.hash)) {
       this.props.history.replace(`${this.props.location.pathname}${tabHashArray[0]}`);
     }
@@ -441,6 +461,21 @@ class Emergency extends React.Component {
     this.setState({ subscribed: false });
   }
 
+  renderAdditionalTabPanels () {
+    const additionalTabs = this.state.tabs.slice(1);
+    if (additionalTabs.length) {
+      return (
+        <React.Fragment>
+          {additionalTabs.map((tab, index) => {
+            return <TabPanel key={tab.title}>
+              <Snippets eventId={get(this.props.event, 'data.id')} tab={index + 1} />
+            </TabPanel>;
+          })}
+        </React.Fragment>
+      );
+    }
+  }
+
   renderContent () {
     const {
       fetched,
@@ -468,11 +503,11 @@ class Emergency extends React.Component {
     };
 
     const handleTabChange = index => {
-      const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
+      const tabHashArray = this.state.tabs.map(({ hash }) => hash);
       const url = this.props.location.pathname;
       this.props.history.replace(`${url}${tabHashArray[index]}`);
     };
-    const hashes = TAB_DETAILS.map(t => t.hash);
+    const hashes = this.state.tabs.map(t => t.hash);
     const selectedIndex = hashes.indexOf(this.props.location.hash) !== -1 ? hashes.indexOf(this.props.location.hash) : 0;
     return (
       <section className='inpage'>
@@ -501,7 +536,7 @@ class Emergency extends React.Component {
           onSelect={index => handleTabChange(index)}
         >
           <TabList>
-            {TAB_DETAILS.map(tab => (
+            {this.state.tabs.map(tab => (
               <Tab key={tab.title}>{tab.title}</Tab>
             ))}
           </TabList>
@@ -577,9 +612,7 @@ class Emergency extends React.Component {
                 ) : <ErrorPanel title="Contacts" errorMessage="No current contacts" />}
               </TabPanel>
 
-              <TabPanel>
-                <Snippets eventId={get(this.props.event, 'data.id')} />
-              </TabPanel>
+              {this.renderAdditionalTabPanels()}
             </div>
           </div>
         </Tabs>
