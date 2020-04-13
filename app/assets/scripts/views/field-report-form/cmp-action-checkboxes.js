@@ -38,6 +38,7 @@ export default class ActionsCheckboxes extends React.Component {
       classInput
     } = this.props;
 
+    // Split actions by category
     const groupedOptions = options
       .reduce(
         (prev, {category}) =>
