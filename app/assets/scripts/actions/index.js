@@ -126,7 +126,9 @@ export function getFieldReportsList (page = 1, filters = {}) {
 
 export const GET_ACTIONS = 'GET_ACTIONS';
 export function getActions () {
-  return fetchJSON('/api/v2/action', GET_ACTIONS);
+  let filters = {limit: 500};
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v2/action/?${f}`, GET_ACTIONS);
 }
 
 export const GET_SURGE_ALERTS = 'GET_SURGE_ALERTS';
