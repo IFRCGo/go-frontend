@@ -68,7 +68,7 @@ import PreparednessColumnBar from '../components/country/preparedness-column-gra
 import KeyFiguresHeader from '../components/common/key-figures-header';
 import { SFPComponent } from '../utils/extendables';
 import { NO_DATA } from '../utils/constants';
-import { getRegionSlug } from '../utils/region-constants';
+// import { getRegionSlug } from '../utils/region-constants';
 import { getISO3 } from '../utils/country-iso';
 
 // import ThreeW from './ThreeW';
@@ -252,14 +252,15 @@ class AdminArea extends SFPComponent {
     const iso2 = adminArea.data.iso;
     const iso3 = getISO3(iso2);
     const homepage = adminArea.data.society_url;
-    const regionSlug = getRegionSlug(adminArea.data.region);
-    const countryLower = adminArea.data.name.toLowerCase();
+    const homepageIfrc = adminArea.data.url_ifrc;
+    // const regionSlug = getRegionSlug(adminArea.data.region);
+    // const countryLower = adminArea.data.name.toLowerCase();
     const links = [];
 
-    if (regionSlug) {
+    if (homepageIfrc) {
       const ifrcLink = {
         'text': `${adminArea.data.name} on IFRC.org`,
-        'url': `https://www.ifrc.org/en/news-and-media/news-stories/${regionSlug}/${countryLower}/`
+        'url': homepageIfrc
       };
       links.push(ifrcLink);
     }
