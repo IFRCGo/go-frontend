@@ -1,3 +1,29 @@
+### Release 4.2.0
+
+Frontend:
+
+ - Fix links on Country pages: https://github.com/IFRCGo/go-frontend/issues/922
+ - Remove `Save and Continue` button from Field Report: https://github.com/IFRCGo/go-frontend/issues/1056
+ - Improved staging deployment process and styling: https://github.com/IFRCGo/go-frontend/issues/888
+ - Implement Response Document additional categories and "pinning": https://github.com/IFRCGo/go-frontend/issues/1008
+ - Implement "Merge Emergencies" feature: https://github.com/IFRCGo/go-frontend/issues/1010
+ - Fix display styling for existing Rich Text Editor fields: https://github.com/IFRCGo/go-frontend/issues/1011
+ - Fix surge alerts not showing on Emergency Page when navigated to directly: https://github.com/IFRCGo/go-frontend/issues/1081
+ - Implement Epidemic Field Report: https://github.com/IFRCGo/go-frontend/issues/1004
+ - Improve Field Report API Response: https://github.com/IFRCGo/go-frontend/issues/1072
+ - Change IFRC Logo: https://github.com/IFRCGo/go-frontend/pull/972
+ - Allow user to organize snippets into tabs and rename tabs: https://github.com/IFRCGo/go-frontend/pull/1071
+
+API:
+
+ - Audit Trail Implementation: https://github.com/IFRCGo/go-api/issues/572
+ - <html> tag added to notification mails, reducing their spam score for the API: https://github.com/IFRCGo/go-api/commit/5d270c824255321f9b69ae1dbc0720cd36952bd3
+ - New field for ifrc.org link of Countries: https://github.com/IFRCGo/go-frontend/issues/922
+ - New field (parent_event) for "merging" Emergencies for superusers, with redirect on the frontend: https://github.com/IFRCGo/go-frontend/issues/1010
+ - Added German Red Cross domain to whitelist: https://github.com/IFRCGo/go-api/commit/db15bb4ee8784911d9a4613ade8a512a8a808a19
+ - Error handling for Create Field Report: https://github.com/IFRCGo/go-frontend/issues/1077
+
+
 ### Release 4.1.2
 
 Fixes:
