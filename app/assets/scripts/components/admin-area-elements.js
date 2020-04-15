@@ -62,6 +62,22 @@ class _Contacts extends React.Component {
   }
 }
 
+class _Snippets extends React.Component {
+  render () {
+    const { fetching, fetched, error, data } = this.props.data;
+    if (fetching || error || (fetched && !data.results.length)) return null;
+    return (
+      <Fold id='graphics' title='Additional Graphics' wrapper_class='additional-graphics'>
+        <div className='iframe__container'>
+          {data.results.map(o => o.snippet ? <div className='snippet__item' key={o.id} dangerouslySetInnerHTML={{__html: o.snippet}} />
+            : o.image ? <div key={o.id} className='snippet__item snippet__image'><img src={o.image}/></div> : null
+          )}
+        </div>
+      </Fold>
+    );
+  }
+}
+
 class _Links extends React.Component {
   render () {
     const { data } = this.props;
@@ -80,8 +96,10 @@ if (environment !== 'production') {
   _KeyFigures.propTypes = { data: T.object };
   _Contacts.propTypes = { data: T.object };
   _Links.propTypes = { data: T.object };
+  _Snippets.propTypes = { data: T.object };
 }
 
 export const KeyFigures = _KeyFigures;
 export const Contacts = _Contacts;
 export const Links = _Links;
+export const Snippets = _Snippets;
