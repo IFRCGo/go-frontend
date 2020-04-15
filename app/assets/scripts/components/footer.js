@@ -24,7 +24,7 @@ class Footer extends React.PureComponent {
               </div>
 
               <div className="footer-right-block">
-              © IFRC 2019
+              © IFRC 2020
               </div>
             </div>
           </div>
