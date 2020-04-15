@@ -17,14 +17,14 @@ class Expandable extends React.Component {
   }
 
   render () {
-    const { text, limit } = this.props;
+    const { text, limit, sectionClass } = this.props;
     const { expanded } = this.state;
     const out = expanded ? text
       : text && text.length > limit ? text.slice(0, limit) : text;
     const link = expanded ? 'Show less' : 'Show more';
     return (
       <React.Fragment>
-        <span dangerouslySetInnerHTML={{__html: out}} />
+        <span className={sectionClass || ''} dangerouslySetInnerHTML={{__html: out}} />
         {this.state.expanded ? null : '...'} <a href='#' onClick={this.toggle}>{link}</a>
       </React.Fragment>
     );

@@ -10,6 +10,9 @@ assignees: ''
 ## Issue
 *Please describe your issue clearly and concisely. If possible, include when you first encountered the issue, who it affects, a link to a relevant page, and any other information that might be helpful in diagnosing its cause.*
 
+## URL
+*e.g. `https://dsgoproxyapp.azurewebsites.net/emergencies/3892#additional-info` or `https://tc-ifrc-go.surge.sh/emergencies`*
+
 ## Steps to reproduce
 *If you can reliably reproduce the issue, please list the steps taken to do so. (Go to this URL..., click on..., Scroll down to..., See error)*
 

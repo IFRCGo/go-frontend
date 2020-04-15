@@ -105,12 +105,12 @@ export default class MapComponent extends React.Component {
         {children}
         {this.props.downloadButton === true ? <DownloadButton data={canvas} setZoomToDefault={this.setZoomToDefault} /> : null}
         <div style={{backgroundColor: '#ffffff', position: 'absolute', width: '100%', borderBottom: '5px #BC2C2A solid', verticalAlign: 'middle', visibility: 'hidden'}} id='map-picture-header'>
-          <span style={{color: '#BC2C2A', fontSize: '30px', paddingLeft: '20px'}}>{this.props.downloadedHeaderTitle}</span>
-          <span style={{color: '#BC2C2A', fontSize: '12px', paddingLeft: '10px'}}>({formatDate(currentDate)})</span>
-          <div style={{float: 'right', width: '375px', marginRight: '20px'}}>
-            <img src="/assets/graphics/layout/logo.png" alt="IFRC GO logo" style={{width: '375px', height: '56px'}} />
+          <span style={{color: '#f5333f', fontSize: '30px', paddingLeft: '20px'}}>{this.props.downloadedHeaderTitle}</span>
+          <span style={{color: '#f5333f', fontSize: '12px', paddingLeft: '10px'}}>({formatDate(currentDate)})</span>
+          <div style={{float: 'right', right: '0', marginRight: '20px'}}>
+            <img src="/assets/graphics/layout/go-logo-2020.svg" alt="IFRC GO logo" style={{height: '40px'}} />
           </div>
-          <img id="exportimage" style={exportImageStyle} src='/assets/graphics/layout/logo.png' />
+          <img id="exportimage" style={exportImageStyle} src='/assets/graphics/layout/go-logo-2020.svg' />
         </div>
       </figure>
     );

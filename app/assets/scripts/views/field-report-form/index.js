@@ -77,7 +77,7 @@ class FieldReportForm extends React.Component {
     if (this.props.fieldReportForm.fetching && !nextProps.fieldReportForm.fetching) {
       hideGlobalLoading();
       if (nextProps.fieldReportForm.error) {
-        const message = nextProps.fieldReportForm.error.error_message || 'Could not submit field report';
+        const message = nextProps.fieldReportForm.error.error_message || nextProps.fieldReportForm.error.detail || 'Could not submit field report';
         showAlert('danger', <p><strong>Error:</strong> {message}</p>, true, 4500);
       } else {
         const { history } = this.props;
@@ -213,14 +213,17 @@ class FieldReportForm extends React.Component {
     this.onFieldChange('country', e);
   }
 
-  onFieldChange (field, e) {
+  onFieldChange = (field, e) => {
     let data = _cloneDeep(this.state.data);
     let val = e && e.target ? e.target.value : e;
 
-    // FIXME: handle this better. When we change to a react-select, we get a different data structure back from the select onChange
-    if (field === 'disasterType') {
-      val = val.value;
+    // if disaster type is epidemic, status must be 'Event'
+    if (field === 'disasterType' &&
+      formData.getIsEpidemicDisasterTypeByValue(val)
+    ) {
+      _set(data, 'status', formData.statusEvent.value);
     }
+
     _set(data, field, val === '' || val === null ? undefined : val);
     this.setState({data});
   }
@@ -248,19 +251,23 @@ class FieldReportForm extends React.Component {
     const step = this.state.step;
     const items = [
       {
+        'EPI': 'Context',
         'EVT': 'Context',
         'EW': 'Context'
       },
       {
         'EVT': 'Situation',
+        'EPI': 'Situation',
         'EW': 'Risk Analysis'
       },
       {
         'EVT': 'Actions',
+        'EPI': 'Actions',
         'EW': 'Early Actions'
       },
       {
         'EVT': 'Response',
+        'EPI': 'Response',
         'EW': 'Response'
       }
     ];
@@ -279,8 +286,15 @@ class FieldReportForm extends React.Component {
   }
 
   getStatus () {
-    const status = this.state.data.status;
-    return status === formData.statusEarlyWarning.value ? 'EW' : 'EVT';
+    const { status, disasterType } = this.state.data;
+
+    if (status === formData.statusEarlyWarning.value) {
+      return 'EW';
+    } else if (formData.getIsEpidemicDisasterTypeByValue(disasterType)) {
+      return 'EPI';
+    }
+
+    return 'EVT';
   }
 
   /**
@@ -317,7 +331,15 @@ class FieldReportForm extends React.Component {
         <FormRadioGroup
           label='Status *'
           name='status'
-          options={formData.status}
+          options={formData.status.map(status => ({
+            ...status,
+            // If Epidemic, only 'Event' can be selected
+            ...(
+              !formData.getIsStatusEventByValue(status.value) &&
+              formData.getIsEpidemicDisasterTypeByValue(this.state.data.disasterType) &&
+              {disabled: true}
+            )
+          }))}
           selectedOption={this.state.data.status}
           onChange={this.onFieldChange.bind(this, 'status')}>
           <FormError
@@ -349,40 +371,6 @@ class FieldReportForm extends React.Component {
             property='summary'
           />
         </FormInputSelect>
-        <div className='form__group'>
-          <div className='form__inner-header'>
-            <label className='form__label'>{fields['disaster-type'][status].label}</label>
-          </div>
-          <div className='form__inner-body'>
-            <Select
-              placeholder='Select a disaster type'
-              name='disaster-type'
-              id='disaster-type'
-              options={formData.disasterType}
-              value={this.state.data.disasterType}
-              onChange={this.onFieldChange.bind(this, 'disasterType')}
-            />
-            <FormError
-              errors={this.state.errors}
-              property='disasterType'
-            />
-          </div>
-        </div>
-        <FormInput
-          label={fields.startDate[status].label}
-          type='date'
-          name='startDate'
-          id='startDate'
-          value={this.state.data.startDate}
-          onChange={this.onFieldChange.bind(this, 'startDate')}
-          description={fields.startDate[status].desc}
-        >
-          <FormError
-            errors={this.state.errors}
-            property='start_date'
-          />
-        </FormInput>
-
         <div className='form__group'>
           <div className='form__inner-header'>
             <label className='form__label'>{fields.country[status].label}</label>
@@ -420,6 +408,39 @@ class FieldReportForm extends React.Component {
             </div>
           </div>
         </div>
+        <div className='form__group'>
+          <div className='form__inner-header'>
+            <label className='form__label'>{fields['disaster-type'][status].label}</label>
+          </div>
+          <div className='form__inner-body'>
+            <Select
+              placeholder='Select a disaster type'
+              name='disaster-type'
+              id='disaster-type'
+              options={formData.disasterType}
+              value={this.state.data.disasterType}
+              onChange={({value}) => this.onFieldChange('disasterType', value)}
+            />
+            <FormError
+              errors={this.state.errors}
+              property='disasterType'
+            />
+          </div>
+        </div>
+        <FormInput
+          label={fields.startDate[status].label}
+          type='date'
+          name='startDate'
+          id='startDate'
+          value={this.state.data.startDate}
+          onChange={this.onFieldChange.bind(this, 'startDate')}
+          description={fields.startDate[status].desc}
+        >
+          <FormError
+            errors={this.state.errors}
+            property='start_date'
+          />
+        </FormInput>
         <FormRadioGroup
           label={fields.assistance[status].label}
           description={fields.assistance[status].desc}
@@ -476,6 +497,7 @@ class FieldReportForm extends React.Component {
             fields.situationFields[status].map(field => {
               return (
                 <SourceEstimation
+                  status={status}
                   estimationLabel={field.estimationLabel}
                   label={field.label}
                   description={field.desc}
@@ -490,12 +512,29 @@ class FieldReportForm extends React.Component {
             })
           }
         </React.Fragment>
+        {fields.sitFieldsDate[status] &&
+          <FormInput
+            label={fields.sitFieldsDate[status].label}
+            type='date'
+            name={fields.sitFieldsDate[status].name}
+            id={fields.sitFieldsDate[status].key}
+            value={this.state.data[fields.sitFieldsDate[status].key]}
+            onChange={this.onFieldChange.bind(this, `${fields.sitFieldsDate[status].key}`)}
+            description={fields.sitFieldsDate[status].desc}
+          >
+            <FormError
+              errors={this.state.errors}
+              property={fields.sitFieldsDate[status].key}
+            />
+          </FormInput>
+        }
+        {/* TODO: update this to be a file upload */}
         <React.Fragment>
           <FormTextarea
             label='Source Details'
             name='other-sources'
             classInput='textarea--lg'
-            placeholder='Add details for data with sources marked as Other above.'
+            placeholder={status === 'EPI' ? 'Add resource url for situation report' : 'Add details for data with sources marked as Other above.'}
             id='other-sources'
             description='Add details for sources above (if applicable)'
             value={this.state.data.otherSources}
@@ -511,7 +550,7 @@ class FieldReportForm extends React.Component {
             label={fields.description[status].label}
             name='description'
             classInput='textarea--lg'
-            placeholder='Example: According to the local government, the overflow of the Zimbizi river has caused extensive flood water damage to low income housing along the river bank. The majority of the affected households do not have sufficient insurance coverage for their assets. The local branch of the National Society is currently assessing how to best support the most vulnerable families affected by the disaster.'
+            placeholder={fields.description[status].placeholder}
             id='description'
             description={fields.description[status].desc}
             value={this.state.data.description}
@@ -596,7 +635,7 @@ class FieldReportForm extends React.Component {
                   placeholder={section.placeholder[status]}
                   name={section.name}
                   key={section.key}
-                  classInput='textarea-lg'
+                  classInput='textarea--lg'
                   options={filterActions(actionsData, section.action_type, status)}
                   values={this.state.data[section.key]}
                   onChange={this.onFieldChange.bind(this, section.key)}
@@ -630,6 +669,7 @@ class FieldReportForm extends React.Component {
           label={fields.actionsOthers.label[status]}
           name='actions-others'
           id='actions-others'
+          classInput='textarea--lg'
           description={fields.actionsOthers.desc[status]}
           placeholder='Brief description of the action'
           value={this.state.data.actionsOthers}
@@ -728,7 +768,7 @@ class FieldReportForm extends React.Component {
   }
 
   render () {
-    const submitTitle = this.state.step === 4 ? 'Submit' : 'Save and Continue';
+    const submitTitle = this.state.step === 4 ? 'Submit' : 'Continue';
     return (
       <App className='page--frep-form'>
         <section className='inpage'>

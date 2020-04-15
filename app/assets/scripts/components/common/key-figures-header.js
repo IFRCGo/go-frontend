@@ -1,5 +1,5 @@
 import React from 'react';
-import c from 'classnames';
+// import c from 'classnames';
 import { percent, shortenLargeNumber } from '../../utils/format';
 import BlockLoading from '../block-loading';
 import { environment } from '../../config';
@@ -20,13 +20,22 @@ const keyTitle = {
 
 const keyFiguresList = ['activeDrefs', 'activeAppeals', 'budget', 'appealsFunding', 'targetPop'];
 
-const keyIcon = {
-  activeDrefs: 'collecticon-rc',
-  activeAppeals: 'collecticon-rc-appeals',
-  budget: 'collecticon-cash-notes',
-  appealsFunding: 'collecticon-cash-bag',
-  targetPop: 'collecticon-people-arrows'
+// const keyIcon = {
+//   activeDrefs: 'collecticon-rc',
+//   activeAppeals: 'collecticon-rc-appeals',
+//   budget: 'collecticon-cash-notes',
+//   appealsFunding: 'collecticon-cash-bag',
+//   targetPop: 'collecticon-people-arrows'
+// };
+
+const keyIconSrc = {
+  activeDrefs: '/assets/graphics/layout/logo-dref.svg',
+  activeAppeals: '/assets/graphics/layout/logo-appeals.svg',
+  budget: '/assets/graphics/layout/funding-requirements.svg',
+  appealsFunding: '/assets/graphics/layout/funding-coverage.svg',
+  targetPop: '/assets/graphics/layout/targeted-population.svg'
 };
+
 // Lists two tooltip descriptions currently in use.
 const tooltipOptions = {
   activeDrefs: {
@@ -78,7 +87,8 @@ export default function KeyFiguresHeader (props) {
         id: stat,
         title: keyTitle[stat],
         value,
-        icon: keyIcon[stat],
+        icon: keyIconSrc[stat],
+        // icon: keyIcon[stat],
         tooltip: tooltipOptions[stat] || null
       };
     }).filter(figure => keyFiguresList.includes(figure.id));
@@ -94,7 +104,10 @@ export default function KeyFiguresHeader (props) {
         <ul className='sumstats'>
           {filteredKeyFigures().map(keyFigure => (
             <li key={keyFigure.id} className='sumstats__item'>
-              <span className={c(`${keyFigure.icon}`, 'sumstats__icon')}></span>
+              {/* <span className={c(`${keyFigure.icon}`, 'sumstats__icon')}></span> */}
+              <span className='sumstats__icon_wrapper'>
+                <img className='sumstats__icon_2020' src={keyFigure.icon} />
+              </span>
               <span className='sumstats__value'>{keyFigure.value}</span>
               <span className='sumstats__key'>
                 {keyFigure.title}

@@ -172,7 +172,7 @@ class PastOperations extends React.PureComponent {
                 type="monotone"
                 name='Event'
                 dataKey={chartMode}
-                stroke='#C02C2C'
+                stroke='#f5333f'
               />
               <Tooltip content={<EventDetailTooltip />}/>
             </LineChart>

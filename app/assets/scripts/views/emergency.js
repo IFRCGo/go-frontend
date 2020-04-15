@@ -32,7 +32,6 @@ import {
 import {
   get,
   mostRecentReport,
-  datesAgo,
   getRecordsByType
 } from '../utils/utils/';
 
@@ -41,17 +40,12 @@ import Fold from '../components/fold';
 import TabContent from '../components/tab-content';
 import ErrorPanel from '../components/error-panel';
 import Expandable from '../components/expandable';
-import { Snippets } from '../components/admin-area-elements';
+import Snippets from '../components/emergencies/snippets';
 import SurgeAlertsTable from '../components/connected/alerts-table';
 import PersonnelTable from '../components/connected/personnel-table';
 import EruTable from '../components/connected/eru-table';
 import EmergencyMap from '../components/map/emergency-map';
 import { NO_DATA } from '../utils/constants';
-
-const TAB_DETAILS = [
-  { title: 'Emergency Details', hash: '#details' },
-  { title: 'Additional Information', hash: '#additional-info' }
-];
 
 class Emergency extends React.Component {
   constructor (props) {
@@ -63,9 +57,11 @@ class Emergency extends React.Component {
         date: 'all',
         type: 'all'
       },
-      subscribed: false
+      subscribed: false,
+      tabs: [
+        { title: 'Emergency Details', hash: '#details' }
+      ]
     };
-    this.handleSitrepFilter = this.handleSitrepFilter.bind(this);
     this.addSubscription = this.addSubscription.bind(this);
     this.delSubscription = this.delSubscription.bind(this);
     this.isSubscribed = this.isSubscribed.bind(this);
@@ -84,7 +80,33 @@ class Emergency extends React.Component {
 
     if (this.props.event.fetching && !nextProps.event.fetching) {
       hideGlobalLoading();
+
+      // Redirect if it's a merged Emergency
+      if (nextProps.event.fetched && nextProps.event.data && nextProps.event.data.parent_event) {
+        this.props.history.push(`/emergencies/${nextProps.event.data.parent_event}#details`);
+      }
+
       this.getAppealDocuments(nextProps.event);
+
+      // setup tabs
+      const { data } = nextProps.event;
+      // check if there are additional tabs
+      let tabs = [...this.state.tabs];
+      const tabLabels = ['tab_one_title', 'tab_two_title', 'tab_three_title'];
+      tabLabels.forEach(key => {
+        if (data[key]) {
+          const title = data[key];
+          const hash = `#${title.toLowerCase().split(' ').join('-')}`;
+          tabs.push({
+            title: title,
+            hash: hash
+          });
+        }
+      });
+      this.setState({ tabs: tabs });
+      setTimeout(() => {
+        this.displayTabContent();
+      }, 0);
     }
 
     if (!this.props.profile.fetched && nextProps.profile.fetched) {
@@ -98,12 +120,14 @@ class Emergency extends React.Component {
     if (this.props.isLogged) {
       this.props._getUserProfile(this.props.user.data.username);
     }
-    this.displayTabContent();
+
+    // FIXME - we might need a different strategy for this
+    // this.displayTabContent();
   }
 
   // Sets default tab if url param is blank or incorrect
   displayTabContent () {
-    const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
+    const tabHashArray = this.state.tabs.map(({ hash }) => hash);
     if (!tabHashArray.find(hash => hash === this.props.location.hash)) {
       this.props.history.replace(`${this.props.location.pathname}${tabHashArray[0]}`);
     }
@@ -112,7 +136,6 @@ class Emergency extends React.Component {
   getEvent (id) {
     showGlobalLoading();
     this.props._getEventById(id);
-    this.props._getEventSnippets(id);
     this.props._getSitrepsByEventId(id);
   }
 
@@ -128,25 +151,8 @@ class Emergency extends React.Component {
     this.setState({ selectedAppeal: id });
   }
 
-  handleSitrepFilter (state, value) {
-    const next = Object.assign({}, this.state.sitrepFilters, {
-      [state]: value
-    });
-
-    const { date, type } = next;
-    let filters = {};
-    if (date !== 'all') {
-      filters.created_at__gte = datesAgo[date]();
-    }
-    if (type !== 'all') {
-      filters.type = type;
-    }
-    this.props._getSitrepsByEventId(this.props.match.params.id, filters);
-    this.setState({ sitrepFilters: next });
-  }
-
   isSubscribed (nextProps) {
-    if (nextProps.profile.fetched) {
+    if (nextProps.profile.fetched && !nextProps.profile.error) {
       const filtered = nextProps.profile.data.subscription.filter(subscription => subscription.event === parseInt(this.props.match.params.id));
       if (filtered.length > 0) {
         return true;
@@ -456,6 +462,21 @@ class Emergency extends React.Component {
     this.setState({ subscribed: false });
   }
 
+  renderAdditionalTabPanels () {
+    const additionalTabs = this.state.tabs.slice(1);
+    if (additionalTabs.length) {
+      return (
+        <React.Fragment>
+          {additionalTabs.map((tab, index) => {
+            return <TabPanel key={tab.title}>
+              <Snippets eventId={get(this.props.event, 'data.id')} tab={index + 1} />
+            </TabPanel>;
+          })}
+        </React.Fragment>
+      );
+    }
+  }
+
   renderContent () {
     const {
       fetched,
@@ -483,11 +504,11 @@ class Emergency extends React.Component {
     };
 
     const handleTabChange = index => {
-      const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
+      const tabHashArray = this.state.tabs.map(({ hash }) => hash);
       const url = this.props.location.pathname;
       this.props.history.replace(`${url}${tabHashArray[index]}`);
     };
-    const hashes = TAB_DETAILS.map(t => t.hash);
+    const hashes = this.state.tabs.map(t => t.hash);
     const selectedIndex = hashes.indexOf(this.props.location.hash) !== -1 ? hashes.indexOf(this.props.location.hash) : 0;
     return (
       <section className='inpage'>
@@ -516,7 +537,7 @@ class Emergency extends React.Component {
           onSelect={index => handleTabChange(index)}
         >
           <TabList>
-            {TAB_DETAILS.map(tab => (
+            {this.state.tabs.map(tab => (
               <Tab key={tab.title}>{tab.title}</Tab>
             ))}
           </TabList>
@@ -532,10 +553,10 @@ class Emergency extends React.Component {
                   <Fold id='overview'
                     title='Situational Overview'
                     wrapperClass='situational-overview' >
-                    <Expandable limit={2048} text={summary} />
+                    <Expandable sectionClass='rich-text-section' limit={2048} text={summary} />
                   </Fold>
                 </TabContent>
-                <TabContent isError={!get(this.props.surgeAlerts, 'data.results.length')} errorMessage={ NO_DATA } title="Alerts">
+                <TabContent title="Alerts">
                   <SurgeAlertsTable id='alerts'
                     title='Alerts'
                     emergency={this.props.match.params.id}
@@ -592,11 +613,7 @@ class Emergency extends React.Component {
                 ) : <ErrorPanel title="Contacts" errorMessage="No current contacts" />}
               </TabPanel>
 
-              <TabPanel>
-                <TabContent showError={true} isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ NO_DATA } title="Additional Graphics">
-                  <Snippets data={this.props.snippets} />
-                </TabContent>
-              </TabPanel>
+              {this.renderAdditionalTabPanels()}
             </div>
           </div>
         </Tabs>

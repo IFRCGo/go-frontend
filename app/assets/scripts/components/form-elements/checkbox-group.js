@@ -9,12 +9,13 @@ import { FormDescription } from './misc';
 import FormCheckbox from './checkbox';
 
 export default class FormCheckboxGroup extends React.Component {
-  onCheckChange (idx) {
+  onCheckChange (opValue) {
     const { values, onChange } = this.props;
-    const prevState = _get(values, [idx, 'checked'], false);
+    const valueObject = values.find(obj => obj.value === opValue);
+    const prevState = _get(values, [values.indexOf(valueObject), 'checked'], false);
     let newVals = _cloneDeep(values);
-    newVals[idx].checked = !prevState;
 
+    newVals.map(val => ((val.value === opValue) ? (val.checked = !prevState) : null));
     onChange(newVals);
   }
 
@@ -39,19 +40,28 @@ export default class FormCheckboxGroup extends React.Component {
           </div>
         </div>
         <div className='form__inner-body'>
-          <div className='form__options-group'>
-            {options.map((o, idx) => (
-              <FormCheckbox
-                key={o.value}
-                label={o.label}
-                name={`${name}[]`}
-                id={`${name.replace(/(\[|\])/g, '-')}-${o.value}`}
-                value={o.value}
-                checked={_get(values, [idx, 'checked'], false)}
-                onChange={this.onCheckChange.bind(this, idx)}
-                description={o.description} />
-            ))}
-          </div>
+          {options.map(optionGroup => (
+            <React.Fragment>
+              {options.length > 1 ? (
+                <label key={optionGroup.label} className={c('form__label', classLabel)}>{optionGroup.label}</label>
+              ) : null}
+              <div className='form__options-group'>
+                {(optionGroup.options || options).map(option => {
+                  return (
+                    <FormCheckbox
+                      key={option.value}
+                      label={option.label}
+                      name={`${name}[]`}
+                      id={`${name.replace(/(\[|\])/g, '-')}-${option.value}`}
+                      value={option.value}
+                      checked={(values.find(({value}) => value === option.value) || {}).checked}
+                      onChange={this.onCheckChange.bind(this, option.value)}
+                      description={option.description} />
+                  );
+                })}
+              </div>
+            </React.Fragment>
+          ))}
           {children || null}
         </div>
       </div>
