@@ -52,9 +52,12 @@ const selector = (state, ownProps) => {
   };
 
   // filter for snippets of the current tab
-  snippets.snippets.data.results = snippets.snippets.data.results.filter(s => {
-    return s.tab === ownProps.tab;
-  });
+  if (snippets.snippets.data && snippets.snippets.data.results.length) {
+    snippets.snippets.data.results = snippets.snippets.data.results.filter(s => {
+      console.log(s);
+      return s.tab === ownProps.tab;
+    });
+  }
 
   return snippets;
 };
