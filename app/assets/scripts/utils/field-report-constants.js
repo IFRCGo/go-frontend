@@ -873,7 +873,7 @@ export const fieldsStep3 = {
       'action_type': 'PNS',
       'label': {
         'EVT': 'Actions taken by any other RCRC Movement actors',
-        'EPI': 'Early Action Taken by other RCRC Movement',
+        'EPI': 'Actions taken by other RCRC Movement',
         'EW': 'Early Action Taken by other RCRC Movement'
       },
       'desc': {

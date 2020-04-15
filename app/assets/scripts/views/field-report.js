@@ -189,6 +189,8 @@ class FieldReport extends React.Component {
               <dd>{n(get(data, 'who_probable_cases'))}</dd>
               <dt>Confirmed Cases (WHO): </dt>
               <dd>{n(get(data, 'who_confirmed_cases'))}</dd>
+              <dt>Dead (WHO): </dt>
+              <dd>{n(get(data, 'who_num_dead'))}</dd>
             </dl>
             <dl className='dl-horizontal numeric-list'>
               <dt>Cases (Ministry of Health): </dt>
@@ -199,6 +201,8 @@ class FieldReport extends React.Component {
               <dd>{n(get(data, 'health_min_probable_cases'))}</dd>
               <dt>Confirmed Cases (Ministry of Health): </dt>
               <dd>{n(get(data, 'health_min_confirmed_cases'))}</dd>
+              <dt>Dead (Ministry of Health): </dt>
+              <dd>{n(get(data, 'health_min_num_dead'))}</dd>
             </dl>
             <dl className='dl-horizontal numeric-list'>
               <dt>Cases (Other): </dt>
@@ -209,6 +213,8 @@ class FieldReport extends React.Component {
               <dd>{n(get(data, 'other_probable_cases'))}</dd>
               <dt>Confirmed Cases (Other): </dt>
               <dd>{n(get(data, 'other_confirmed_cases'))}</dd>
+              <dt>Dead (Other): </dt>
+              <dd>{n(get(data, 'other_num_dead'))}</dd>
             </dl>
           </React.Fragment>
         ) : (
