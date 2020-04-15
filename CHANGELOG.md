@@ -1,3 +1,7 @@
+### Release 4.2.1
+
+ - Hotfix release to fix broken snippets on country and region pages: https://github.com/IFRCGo/go-frontend/pull/1114
+
 ### Release 4.2.0
 
 Frontend:
