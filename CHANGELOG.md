@@ -18,7 +18,7 @@ It also includes some fixes to the existing PER functionality:
  - Fix text issues in forms: https://github.com/IFRCGo/go-frontend/issues/947
  - Show PER Phase instead of PER forms in Preparedness frontend: https://github.com/IFRCGo/go-frontend/issues/844
  - Fix few bugs that were causing page crashes on PER: #946 #943 
- - Fix styling of email address in PER: #834 @GregoryHorvath  
+ - Fix styling of email address in PER: #834
 
 Some fixes to the Field Report page and forms:
 
