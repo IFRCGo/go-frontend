@@ -4,11 +4,11 @@ import { environment } from '../../config';
 
 const FullScreenHeader = ({ title }) => (
   <div className='flex'>
-    <div style={{width: '375px', height: '56px', position: 'absolute'}}>
+    <div style={{height: '40px', position: 'absolute'}}>
       <img
         src="/assets/graphics/layout/go-logo-2020.svg"
         alt="IFRC GO logo"
-        style={{width: '375px', height: '56px'}}
+        style={{height: '40px'}}
       />
     </div>
     <h1 className='inpage__title inpage__title--map-fullscreen'>
