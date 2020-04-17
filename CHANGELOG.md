@@ -1,3 +1,7 @@
+### Release 4.2.2
+
+ - Minor hotfix: add domains to whitelist on frontend - https://github.com/IFRCGo/go-frontend/pull/1120
+
 ### Release 4.2.1
 
  - Hotfix release to fix broken snippets on country and region pages: https://github.com/IFRCGo/go-frontend/pull/1114
