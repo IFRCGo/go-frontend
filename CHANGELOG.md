@@ -1,6 +1,7 @@
 ### Release 4.2.2
 
  - Minor hotfix: add domains to whitelist on frontend - https://github.com/IFRCGo/go-frontend/pull/1120
+ - Fix links on About page: https://github.com/IFRCGo/go-frontend/issues/1069
 
 ### Release 4.2.1
 
