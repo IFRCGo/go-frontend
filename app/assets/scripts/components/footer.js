@@ -19,7 +19,7 @@ class Footer extends React.PureComponent {
             <div className='footer-menu'>
               <div className="footer-left-block">
                 <a href='https://github.com/ifrcgo/go-frontend' title='Open Source Code'>Open Source Code</a>
-                <a href={`${api}docs`} title='API Documentation'>API Documentation</a>
+                <a href={`${process.env.NODE_ENV === 'production' ? 'https://goadmin.ifrc.org/' : api}docs`} title='API Documentation'>API Documentation</a>
                 <a href='mailto:im@ifrc.org'>Contact Us</a>
               </div>
 
