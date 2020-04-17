@@ -29,9 +29,9 @@ export default class About extends React.Component {
                     <iframe width="604" height="340" src="https://www.youtube.com/embed/dwPsQzla9A4" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
                     <p>&nbsp;</p>
                     <p>User and administrator <a href="https://drive.google.com/open?id=1F3YQ17AKOvCUvvE4EGgy5pZ0L55_xy2d">guides</a>:</p>
-                    <p><a href="https://drive.google.com/open?id=1C6PU6wd5KRDpwyLoDcb1GFLWFHyf65Xp"><img src="/assets/graphics/content/usr.jpg" alt="user-guide"/></a>
+                    <p><a href="https://github.com/IFRCGo/go-frontend/files/4415370/GoUserGuide_MediumRes.pdf"><img src="/assets/graphics/content/usr.jpg" alt="user-guide"/></a>
                       &nbsp;&nbsp;
-                      <a href="https://drive.google.com/open?id=1Hm5q6hcudJaCSqSIIf0uaMfTboMJlfkL"><img src="/assets/graphics/content/adm.jpg" alt="admin-guide"/></a>
+                      <a href="https://github.com/IFRCGo/go-frontend/files/4415371/GoAdminGuide_MediumRes.pdf"><img src="/assets/graphics/content/adm.jpg" alt="admin-guide"/></a>
                     </p>
                     <p>&nbsp;</p>
                     <p>For any further information, please contact <a href="mailto:IM@ifrc.org">IM@ifrc.org</a></p>
