@@ -110,11 +110,11 @@ export default class ThreeW extends React.PureComponent {
 
     return (
       <div className='three-w-container'>
-        <h2 className='heading'>
-          Red Cross / Red Crescent activities
-        </h2>
-        <div className='content'>
-          <div className='left'>
+        <header className='tc-header'>
+          <h2 className='tc-heading'>
+            Red Cross / Red Crescent activities
+          </h2>
+          <div className='tc-actions'>
             { isCountryAdmin && (
               <button
                 className={
@@ -140,6 +140,8 @@ export default class ThreeW extends React.PureComponent {
               Export
             </button>
           </div>
+        </header>
+        <div className='content'>
           <Filter
             projectList={projectList}
             className='three-w-filters'

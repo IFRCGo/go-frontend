@@ -699,7 +699,7 @@ class ProjectForm extends React.PureComponent {
           />
         </InputSection>
 
-        <footer>
+        <footer className='tc-footer'>
           {/*
             The first hidden and disabled submit button is to disable form submission on enter
             more details on: https://www.w3.org/TR/2018/SPSD-html5-20180327/forms.html#implicit-submission

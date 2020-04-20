@@ -5,7 +5,6 @@ export function useBlurEffect (
   callback, // (clickedInside: boolean, e: MouseEvent) => void,
   elementRef, // React.RefObject<HTMLElement>,
   parentRef, // React.RefObject<HTMLElement>,
-  deps, // React.DependencyList,
 ) {
   React.useEffect(() => {
     const handleDocumentClick = (e) => {
@@ -30,7 +29,7 @@ export function useBlurEffect (
     }
 
     return () => { document.removeEventListener('click', handleDocumentClick); };
-  }, deps);
+  }, [shouldWatch]);
 }
 
 const defaultPlacement = {
@@ -43,7 +42,7 @@ const defaultPlacement = {
 export const useFloatPlacement = (parentRef /* React.RefObject<HTMLElement> */) => {
   const [placement, setPlacement] = React.useState(defaultPlacement);
 
-  const handleScroll = React.useCallback(() => {
+  const calculatePlacement = React.useCallback(() => {
     const newPlacement = {...defaultPlacement};
 
     if (parentRef.current) {
@@ -73,13 +72,19 @@ export const useFloatPlacement = (parentRef /* React.RefObject<HTMLElement> */) 
   }, [setPlacement]);
 
   React.useEffect(() => {
-    handleScroll();
+    calculatePlacement();
+    // TODO: throttle and debounce callbacks
+    const handleScroll = calculatePlacement;
+    const handleResize = calculatePlacement;
+
     window.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleResize);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
     };
-  }, [handleScroll]);
+  }, [calculatePlacement]);
 
   return placement;
 };
