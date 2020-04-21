@@ -84,15 +84,21 @@ const InputSection = ({
   className,
   title,
   children,
-  tooltip,
+  helpText,
 }) => (
   <div className={_cs(className, 'project-form-input-section')}>
     <div
       className='section-title'
-      title={tooltip}
+      title={helpText}
     >
-      { title }
-      { tooltip && <div className='input-section-tooltip-icon ion-information-circled' /> }
+      <div className='tc-title'>
+        { title }
+      </div>
+      { helpText && (
+        <div className='tc-help-text'>
+          { helpText }
+        </div>
+      )}
     </div>
     <div className='section-content'>
       { children }
@@ -553,7 +559,7 @@ class ProjectForm extends React.PureComponent {
         { shouldShowCurrentEmergencyOperation && (
           <InputSection
             title='Current emergency operation*'
-            tooltip='The list is populated from current emergency operations related to the selected country. If necessary, create the related emergency through a field report'
+            helpText='The list is populated from current emergency operations related to the selected country. If necessary, create the related emergency through a field report'
           >
             <SelectInput
               faramElementName='event'
@@ -644,7 +650,7 @@ class ProjectForm extends React.PureComponent {
         <InputSection
           className='multi-input-section'
           title='People targeted'
-          tooltip="The “other” category can include data such as “other sex/gender”, “undisclosed”, “unknown”, etc."
+          helpText="The “other” category can include data such as “other sex/gender”, “undisclosed”, “unknown”, etc."
         >
           <NumberInput
             faramElementName='target_male'
@@ -668,7 +674,7 @@ class ProjectForm extends React.PureComponent {
         <InputSection
           className='multi-input-section'
           title='People reached'
-          tooltip="People Reached are people who receive (from the reporting National Society in the Reporting Year) tangible goods and/or any of a range of activities offering protection and assistance, including a positive change or support in knowledge, skills, awareness, attitudes, behaviour, and physical and psychosocial well-being and who can be counted or at least estimated with some degree of reliability."
+          helpText="People Reached are people who receive (from the reporting National Society in the Reporting Year) tangible goods and/or any of a range of activities offering protection and assistance, including a positive change or support in knowledge, skills, awareness, attitudes, behaviour, and physical and psychosocial well-being and who can be counted or at least estimated with some degree of reliability."
         >
           <NumberInput
             faramElementName='reached_male'

@@ -78,23 +78,25 @@
   display: flex;
   align-items: center;
   padding: 1.5rem;
-  margin: 1.5rem 0;
+  margin: 1.2rem 0;
   background-color: #f3f2f3;
 
 
   .section-title {
     flex-basis: 27%;
     min-width: 300px;
-    font-weight: bold;
     flex-shrink: 0;
-    display: flex;
-    align-items: center;
     padding-right: 24px;
 
-    .input-section-tooltip-icon {
-      margin-left: 10px;
-      font-size: 1.4em;
-      color: $primary-color;
+    .tc-title {
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
+    .tc-help-text {
+      color: rgba(0, 0, 0, .48);
+      font-size: 0.7rem;
+      margin-top: 1rem;
     }
   }
 
