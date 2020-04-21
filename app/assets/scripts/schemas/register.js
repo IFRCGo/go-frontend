@@ -145,6 +145,7 @@ export const whitelistDomains = [
   'redcrosseth.org',
   'redcrossmuseum.ch',
   'redcrossug.org',
+  'redcrossvanuatu.com',
   'redcrosszim.org.zw',
   'rks.si',
   'rmiredcross.org',
@@ -176,7 +177,6 @@ export const whitelistDomains = [
   'trcs.or.tz',
   'ttrcs.org',
   'vanuaturedcross.org',
-  'redcrossvanuatu.com',
   'voroskereszt.hu'
 ];
 
