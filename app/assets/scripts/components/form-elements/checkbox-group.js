@@ -11,11 +11,10 @@ import FormCheckbox from './checkbox';
 export default class FormCheckboxGroup extends React.Component {
   onCheckChange (opValue) {
     const { values, onChange } = this.props;
-    const valueObject = values.find(obj => obj.value === opValue);
-    const prevState = _get(values, [values.indexOf(valueObject), 'checked'], false);
+    const prevState = _get(values, [opValue, 'checked'], false);
     let newVals = _cloneDeep(values);
 
-    newVals.map(val => ((val.value === opValue) ? (val.checked = !prevState) : null));
+    newVals[opValue].checked = !prevState;
     onChange(newVals);
   }
 
@@ -40,28 +39,19 @@ export default class FormCheckboxGroup extends React.Component {
           </div>
         </div>
         <div className='form__inner-body'>
-          {options.map(optionGroup => (
-            <React.Fragment>
-              {options.length > 1 ? (
-                <label key={optionGroup.label} className={c('form__label', classLabel)}>{optionGroup.label}</label>
-              ) : null}
-              <div className='form__options-group'>
-                {(optionGroup.options || options).map(option => {
-                  return (
-                    <FormCheckbox
-                      key={option.value}
-                      label={option.label}
-                      name={`${name}[]`}
-                      id={`${name.replace(/(\[|\])/g, '-')}-${option.value}`}
-                      value={option.value}
-                      checked={(values.find(({value}) => value === option.value) || {}).checked}
-                      onChange={this.onCheckChange.bind(this, option.value)}
-                      description={option.description} />
-                  );
-                })}
-              </div>
-            </React.Fragment>
-          ))}
+          <div className='form__options-group'>
+            {options.map((o, opValue) => (
+              <FormCheckbox
+                key={o.value}
+                label={o.label}
+                name={`${name}[]`}
+                id={`${name.replace(/(\[|\])/g, '-')}-${o.value}`}
+                value={o.value}
+                checked={_get(values, [opValue, 'checked'], false)}
+                onChange={this.onCheckChange.bind(this, opValue)}
+                description={o.description} />
+            ))}
+          </div>
           {children || null}
         </div>
       </div>

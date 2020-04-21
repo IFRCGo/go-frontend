@@ -6,7 +6,7 @@ import { environment } from '../../config';
 
 import {
   FormTextarea,
-  FormCheckboxGroup
+  FormCheckboxGroupActions
 } from '../../components/form-elements/';
 
 export default class ActionsCheckboxes extends React.Component {
@@ -50,7 +50,7 @@ export default class ActionsCheckboxes extends React.Component {
       }));
 
     return (
-      <FormCheckboxGroup
+      <FormCheckboxGroupActions
         label={label}
         key={label}
         description={description}
@@ -68,7 +68,7 @@ export default class ActionsCheckboxes extends React.Component {
           classLabel='label-secondary'
           value={values.description}
           onChange={this.onDescriptionChange} />
-      </FormCheckboxGroup>
+      </FormCheckboxGroupActions>
     );
   }
 }
