@@ -71,7 +71,7 @@ import { NO_DATA } from '../utils/constants';
 import { getISO3 } from '../utils/country-iso';
 
 import ThreeW from './ThreeW';
-import CountryOverview from './CountryOverview';
+// import CountryOverview from './CountryOverview';
 import ProjectFormModal from './ThreeW/project-form-modal';
 import ProjectDetails from './ThreeW/project-details';
 
@@ -81,7 +81,7 @@ const emptyObject = {};
 const TAB_DETAILS = [
   { title: 'Operations', hash: '#operations' },
   { title: '3w', hash: '#3w' },
-  { title: 'Country Overview', hash: '#overview' },
+  // { title: 'Country Overview', hash: '#overview' },
   { title: 'Preparedness', hash: '#preparedness' },
   { title: 'Additional Information', hash: '#additional' }
 ];
@@ -742,6 +742,7 @@ class AdminArea extends SFPComponent {
                   />
                 </TabContent>
               </TabPanel>
+              {/*
               <TabPanel>
                 <TabContent title='Overview'>
                   <CountryOverview
@@ -750,6 +751,7 @@ class AdminArea extends SFPComponent {
                   />
                 </TabContent>
               </TabPanel>
+              */}
               <TabPanel>
                 <TabContent showError={true} isError={!this.isPerPermission()} errorMessage='Please log in' title='Preparedness'>
                   {this.props.getPerNsPhase.fetched && this.props.perOverviewForm.fetched ? (
