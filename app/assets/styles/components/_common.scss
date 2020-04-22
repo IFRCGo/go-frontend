@@ -44,7 +44,7 @@
   .project-form-select {
     display: flex;
     flex-direction: column;
-    padding: 20px 10px;
+    padding: 10px;
     flex-grow: 1;
 
     .tc-select-label {
@@ -101,6 +101,13 @@
   }
 
   .section-content {
+    display: flex;
     flex-grow: 1;
+    align-items: flex-start;
+
+    >* {
+      flex-basis: 0;
+      flex-grow: 1;
+    }
   }
 }

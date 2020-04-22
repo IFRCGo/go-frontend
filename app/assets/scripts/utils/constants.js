@@ -46,9 +46,9 @@ export const sectorList = [
   },
   {
     key: '4',
-    title: 'Health',
+    title: 'Health (public)',
     color: '#a6d854',
-    inputValue: 'Health',
+    inputValue: 'Health (public)',
   },
   {
     key: '5',
@@ -80,6 +80,12 @@ export const sectorList = [
     color: '#b3b3b3',
     inputValue: 'Livelihoods And Basic Needs',
   },
+  {
+    key: '10',
+    title: 'Health (clinical)',
+    color: '#a6d854',
+    inputValue: 'Health (clinical)',
+  },
 ];
 
 export const secondarySectorList = [
@@ -109,9 +115,9 @@ export const secondarySectorList = [
   },
   {
     key: '4',
-    title: 'Health',
+    title: 'Health (public)',
     color: '#a6d854',
-    inputValue: 'Health',
+    inputValue: 'Health (public)',
   },
   {
     key: '5',
@@ -154,6 +160,12 @@ export const secondarySectorList = [
     title: 'Internal displacement',
     color: '#b3b3b3',
     inputValue: 'Internal Displacement',
+  },
+  {
+    key: '12',
+    title: 'Health (clinical)',
+    color: '#a6d854',
+    inputValue: 'Health (clinical)',
   },
 ];
 

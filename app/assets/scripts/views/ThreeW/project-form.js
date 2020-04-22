@@ -580,7 +580,7 @@ class ProjectForm extends React.PureComponent {
               className='project-form-select'
               options={disasterTypeOptions}
               disabled={shouldDisableDisasterType}
-              placeholder={shouldDisableDisasterType ? 'Select an operation to view its disaster' : ''}
+              placeholder={shouldDisableDisasterType ? 'Select an operation to view its disaster type' : ''}
             />
           </InputSection>
         )}
@@ -629,22 +629,25 @@ class ProjectForm extends React.PureComponent {
         <InputSection
           className='multi-input-section'
           title='Budget and status*'
+          helpText='"Project status" is automatically calculated based on the values from "Start and end dates" above and can be marked as complete from the "Completed" checkbox.'
         >
           <NumberInput
             label='Project budget (CHF)'
             faramElementName='budget_amount'
           />
-          <Checkbox
-            label="Completed"
-            faramElementName="is_project_completed"
-          />
-          <SelectInput
-            disabled
-            faramElementName='status'
-            className='project-form-select'
-            label='Project status'
-            options={statusOptions}
-          />
+          <div>
+            <SelectInput
+              disabled
+              faramElementName='status'
+              className='project-form-select'
+              label='Project status'
+              options={statusOptions}
+            />
+            <Checkbox
+              label="Completed"
+              faramElementName="is_project_completed"
+            />
+          </div>
         </InputSection>
 
         <InputSection
