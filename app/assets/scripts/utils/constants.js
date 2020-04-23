@@ -48,7 +48,7 @@ export const sectorList = [
     key: '4',
     title: 'Health (public)',
     color: '#a6d854',
-    inputValue: 'Health (public)',
+    inputValue: 'Health Public',
   },
   {
     key: '5',
@@ -84,7 +84,7 @@ export const sectorList = [
     key: '10',
     title: 'Health (clinical)',
     color: '#a6d854',
-    inputValue: 'Health (clinical)',
+    inputValue: 'Health Clinical',
   },
 ];
 
@@ -117,7 +117,7 @@ export const secondarySectorList = [
     key: '4',
     title: 'Health (public)',
     color: '#a6d854',
-    inputValue: 'Health (public)',
+    inputValue: 'Health Public',
   },
   {
     key: '5',
@@ -165,7 +165,7 @@ export const secondarySectorList = [
     key: '12',
     title: 'Health (clinical)',
     color: '#a6d854',
-    inputValue: 'Health (clinical)',
+    inputValue: 'Health Clinical',
   },
 ];
 
