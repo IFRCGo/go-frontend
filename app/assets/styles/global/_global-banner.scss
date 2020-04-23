@@ -1,0 +1,19 @@
+/* ==========================================================================
+   Global: Banners
+   ========================================================================== */
+
+.global__banner {
+  color: #fff;
+  font-size: $font-size-sm;
+  font-weight: $base-font-medium;
+  padding: ($global-spacing / 1.5);
+
+  a {
+    color: currentColor;
+    border-bottom: 1px solid #fff;
+  }
+}
+
+.global__banner--danger {
+  background-color: $primary-color;
+}
