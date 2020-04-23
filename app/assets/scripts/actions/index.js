@@ -59,6 +59,16 @@ export const getMe = () => (
   fetchJSON('api/v2/user/me/', GET_ME, withToken())
 );
 
+export const GET_REGIONAL_PROJECTS_OVERVIEW = 'GET_REGIONAL_PROJECTS_OVERVIEW';
+export function getRegionalProjectsOverview (regionId) {
+  return fetchJSON(`api/v2/region-project/${regionId}/overview/`, GET_REGIONAL_PROJECTS_OVERVIEW, withToken());
+}
+
+export const GET_REGIONAL_MOVEMENT_ACTIVITIES = 'GET_REGIONAL_MOVEMENT_ACTIVITIES';
+export function getRegionalMovementActivities (regionId) {
+  return fetchJSON(`api/v2/region-project/${regionId}/movement-activities/`, GET_REGIONAL_MOVEMENT_ACTIVITIES, withToken());
+}
+
 export const GET_PROJECTS = 'GET_PROJECTS';
 export function getProjects (countryId, filterValues) {
   const filters = {

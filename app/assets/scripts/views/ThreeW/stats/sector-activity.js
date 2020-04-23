@@ -11,6 +11,7 @@ import {
   Bar,
   XAxis,
   YAxis,
+  Tooltip,
 } from 'recharts';
 
 import { sectorList } from '../../../utils/constants';
@@ -72,6 +73,7 @@ export default class SectorActivity extends React.PureComponent {
                 fill='#c1cdd1'
                 dataKey='value'
               />
+              <Tooltip cursor={{ fill: 'transparent' }} />
             </BarChart>
           </ResponsiveContainer>
         </div>

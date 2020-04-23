@@ -1,4 +1,6 @@
 'use strict';
+import { countryIsoMapById } from './field-report-constants';
+
 const centroids = {
   AD: [1.6261, 42.54203],
   AE: [54.33582, 23.89438],
@@ -201,6 +203,11 @@ const centroids = {
 export function getCentroid (iso) {
   // Centroid or null island.
   return centroids[iso.toUpperCase()] || [0, 0];
+}
+
+export function getCentroidByCountryId (id) {
+  const iso2 = countryIsoMapById[id] || '';
+  return getCentroid(iso2);
 }
 
 export default centroids;

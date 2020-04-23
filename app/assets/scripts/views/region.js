@@ -53,9 +53,11 @@ import {
 } from '../components/admin-area-elements';
 import { SFPComponent } from '../utils/extendables';
 import { NO_DATA } from '../utils/constants';
+import RegionalThreeW from './RegionalThreeW';
 
 const TAB_DETAILS = [
   { title: 'Operations', hash: '#operations' },
+  { title: '3w', hash: '#3w' },
   { title: 'Additional Information', hash: '#additional-info' }
 ];
 
@@ -257,6 +259,14 @@ class AdminArea extends SFPComponent {
                     viewAllText={`View all Emergencies for ${regionName} region`}
                   />
 
+                </TabContent>
+              </TabPanel>
+              <TabPanel>
+                <TabContent title="3W">
+                  <RegionalThreeW
+                    disabled={this.loading}
+                    regionId={getRegionId(this.props.match.params.id)}
+                  />
                 </TabContent>
               </TabPanel>
               <TabPanel>
