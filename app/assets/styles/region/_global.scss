@@ -161,6 +161,93 @@
 
       .regional-threew-map {
         height: 700px;
+
+        .regional-map-threew-activity-details {
+          padding: 10px!important;
+          max-height: 300px;
+          width: 300px;
+          overflow: auto;
+          display: flex;
+          flex-direction: column;
+
+          >.tc-heading {
+            flex-shrink: 0;
+            padding: 3px 6px;
+            margin: 0;
+            color: $primary-color;
+          }
+
+          >.tc-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: auto;
+
+            .status-counts {
+              display: flex;
+              padding: 3px 0;
+              flex-shrink: 0;
+
+              .tc-text-output {
+                padding: 0 5px;
+
+                .tc-label {
+                  padding: 3px;
+                }
+
+                .tc-value {
+                  padding: 3px;
+                }
+              }
+            }
+
+            .active-ns-count {
+              padding: 3px 0;
+              border-top: 1px solid rgba(0, 0, 0, .1);
+              flex-shrink: 0;
+            }
+
+            .ns-sector-details {
+              flex-grow: 1;
+              overflow: auto;
+
+              .block-loading {
+                height: 5rem;
+                margin: 1rem;
+
+                .spinner {
+                  display: flex;
+                }
+              }
+
+              .ns-details {
+                padding: 3px 3px;
+
+                .tc-heading {
+                  margin: 0;
+                  font-size: 0.8rem;
+                  padding: 0 3px;
+                }
+
+                .tc-content {
+                  display: flex;
+                  flex-wrap: wrap;
+
+                  .tc-sector {
+                    padding: 0 3px;
+                    color: rgba(0, 0, 0, .7);
+
+                    &:not(:last-child) {
+                      &:after {
+                        content: ', ';
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
 
@@ -225,6 +312,18 @@
               color: $primary-color;
             }
           }
+        }
+      }
+    }
+
+    .ns-sankey-container {
+      height: 90vh;
+
+      .sankey-link {
+        fill: rgba(0, 0, 0, .1);
+
+        &:hover {
+          fill: $primary-color;
         }
       }
     }

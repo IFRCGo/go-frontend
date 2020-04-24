@@ -69,6 +69,11 @@ export function getRegionalMovementActivities (regionId) {
   return fetchJSON(`api/v2/region-project/${regionId}/movement-activities/`, GET_REGIONAL_MOVEMENT_ACTIVITIES, withToken());
 }
 
+export const GET_NATIONAL_SOCIETY_ACTIVITIES = 'GET_NATIONAL_SOCIETY_ACTIVITIES';
+export function getNationalSocietyActivities (regionId) {
+  return fetchJSON(`api/v2/region-project/${regionId}/national-society-activities/`, GET_NATIONAL_SOCIETY_ACTIVITIES, withToken());
+}
+
 export const GET_PROJECTS = 'GET_PROJECTS';
 export function getProjects (countryId, filterValues) {
   const filters = {
@@ -76,7 +81,7 @@ export function getProjects (countryId, filterValues) {
     ...filterValues
   };
   const f = buildAPIQS(filters);
-  return fetchJSON(`api/v2/project/?${f}`, GET_PROJECTS, withToken());
+  return fetchJSON(`api/v2/project/?${f}`, GET_PROJECTS, withToken(), { countryId });
 }
 
 export const POST_PROJECT = 'POST_PROJECT';

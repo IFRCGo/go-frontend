@@ -12,8 +12,13 @@ const TextOutput = ({
   normalizeValue,
   fixedTo,
   type = 'string',
+  reverseOrder
 }) => (
-  <div className={_cs('tc-text-output', className)}>
+  <div className={_cs(
+    'tc-text-output',
+    reverseOrder && 'tc-text-output-reversed',
+    className,
+  )}>
     <div className='tc-label'>
       {label}
     </div>

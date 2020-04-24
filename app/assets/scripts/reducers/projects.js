@@ -5,31 +5,26 @@ import {
   stateSuccess,
 } from '../utils/reducer-utils';
 
-const initialState = {
-  fetching: false,
-  fetched: false,
-  receivedAt: null,
-  data: {}
-};
+const initialState = {};
 
 export default function reducer (state = initialState, action) {
   let newState = { ...state };
   switch (action.type) {
     case 'GET_PROJECTS_INFLIGHT':
-      newState = {
-        ...newState,
+      newState[action.countryId] = {
+        ...newState[action.countryId],
         ...stateInflight(state, action),
       };
       break;
     case 'GET_PROJECTS_FAILED':
-      newState = {
-        ...newState,
+      newState[action.countryId] = {
+        ...newState[action.countryId],
         ...stateError(state, action),
       };
       break;
     case 'GET_PROJECTS_SUCCESS':
-      newState = {
-        ...newState,
+      newState[action.countryId] = {
+        ...newState[action.countryId],
         ...stateSuccess(state, action),
       };
       break;

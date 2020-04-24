@@ -1,11 +1,37 @@
 import React from 'react';
+import { Provider } from 'react-redux';
 import { render } from 'react-dom';
-import { connect } from 'react-redux';
 import mapboxgl from 'mapbox-gl';
 
+import store from '../../utils/store';
 import newMap from '../../utils/get-new-map';
 import { getRegionBoundingBox } from '../../utils/region-bounding-box';
 import { getCentroidByCountryId } from '../../utils/country-centroids';
+
+import ActivityDetails from './activity-details';
+
+const emptyList = [];
+
+function getGeojsonFromMovementActivities (movementActivities = emptyList) {
+  const geojson = {
+    type: 'geojson',
+    data: {
+      type: 'FeatureCollection',
+      features: movementActivities.map(d => ({
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: getCentroidByCountryId(d.id),
+        },
+        properties: {
+          ...d,
+        }
+      })),
+    }
+  };
+
+  return geojson;
+}
 
 function Map (props) {
   const {
@@ -14,30 +40,23 @@ function Map (props) {
   } = props;
 
   const ref = React.useRef();
+  const [map, setMap] = React.useState();
+
   React.useEffect(() => {
     const { current: mapContainer } = ref;
-    const map = newMap(mapContainer);
+    setMap(newMap(mapContainer));
+  }, [setMap]);
+
+  React.useEffect(() => {
+    if (!map) {
+      return;
+    }
 
     map.on('load', () => {
       const bbox = getRegionBoundingBox(regionId);
       map.fitBounds(bbox);
 
-      const geojson = {
-        type: 'geojson',
-        data: {
-          type: 'FeatureCollection',
-          features: data.map(d => ({
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: getCentroidByCountryId(d.id),
-            },
-            properties: {
-              ...d,
-            }
-          })),
-        }
-      };
+      const geojson = getGeojsonFromMovementActivities(data);
 
       map.addSource('movement-activity-markers', geojson);
       map.addLayer({
@@ -53,23 +72,13 @@ function Map (props) {
 
       map.on('click', 'movement-activity-circles', (e) => {
         const properties = e.features[0].properties;
-        console.warn(properties);
         const popoverContent = document.createElement('div');
+
         render(
           (
-            <div>
-              <div>
-                { properties.name }
-              </div>
-              <div>
-                <div>
-                  Projects
-                </div>
-                <div>
-                  { properties.projects_count }
-                </div>
-              </div>
-            </div>
+            <Provider store={store}>
+              <ActivityDetails data={properties} />
+            </Provider>
           ),
           popoverContent,
         );
@@ -80,7 +89,7 @@ function Map (props) {
           .addTo(map);
       });
     });
-  }, [regionId, data]);
+  }, [map, regionId, data]);
 
   return (
     <div className='regional-threew-map-wrapper'>

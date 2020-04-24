@@ -877,7 +877,7 @@ if (environment !== 'production') {
 const selector = (state, ownProps) => ({
   me: meSelector(state),
   deleteProjectRequest: state.projectDelete,
-  projects: state.projects,
+  projects: state.projects[ownProps.match.params.id],
   projectForm: state.projectForm,
 
   adminArea: get(state.adminArea.aaData, getCountryId(ownProps.match.params.id), {
