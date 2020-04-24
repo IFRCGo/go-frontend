@@ -217,6 +217,31 @@ class Emergency extends React.Component {
             <li>Expat delegates<span className='content-highlight'>{n(get(report, 'num_expats_delegates'))}</span></li>
           </ul>
         </div>
+
+        <h4 className='global-spacing-2-t clear'>Epidemic figures</h4>
+        <div className='content-list-group'>
+          <ul className='content-list-third'>
+            <li>Cases (WHO)<span className='content-highlight'>{n(get(report, 'who_cases'))}</span></li>
+            <li>Suspected Cases (WHO)<span className='content-highlight'>{n(get(report, 'who_suspected_cases'))}</span></li>
+            <li>Probable Cases (WHO)<span className='content-highlight'>{n(get(report, 'who_probable_cases'))}</span></li>
+            <li>Confirmed Cases (WHO)<span className='content-highlight'>{n(get(report, 'who_confirmed_cases'))}</span></li>
+            <li>Dead (WHO)<span className='content-highlight'>{n(get(report, 'who_num_dead'))}</span></li>
+          </ul>
+          <ul className='content-list-third'>
+            <li>Cases (Ministry of Health)<span className='content-highlight'>{n(get(report, 'health_min_cases'))}</span></li>
+            <li>Suspected Cases (Ministry of Health)<span className='content-highlight'>{n(get(report, 'health_min_suspected_cases'))}</span></li>
+            <li>Probable Cases (Ministry of Health)<span className='content-highlight'>{n(get(report, 'health_min_probable_cases'))}</span></li>
+            <li>Confirmed Cases (Ministry of Health)<span className='content-highlight'>{n(get(report, 'health_min_confirmed_cases'))}</span></li>
+            <li>Dead (Ministry of Health)<span className='content-highlight'>{n(get(report, 'health_min_num_dead'))}</span></li>
+          </ul>
+          <ul className='content-list-third'>
+            <li>Cases (Other)<span className='content-highlight'>{n(get(report, 'other_cases'))}</span></li>
+            <li>Suspected Cases (Other)<span className='content-highlight'>{n(get(report, 'other_suspected_cases'))}</span></li>
+            <li>Probable Cases (Other)<span className='content-highlight'>{n(get(report, 'other_probable_cases'))}</span></li>
+            <li>Confirmed Cases (Other)<span className='content-highlight'>{n(get(report, 'other_confirmed_cases'))}</span></li>
+            <li>Dead (Other)<span className='content-highlight'>{n(get(report, 'other_num_dead'))}</span></li>
+          </ul>
+        </div>
         <p className='emergency__source'>Source: <Link to={`/reports/${report.id}`}>{report.summary}, {timestamp(report.updated_at || report.created_at)}</Link></p>
       </div>
     );
