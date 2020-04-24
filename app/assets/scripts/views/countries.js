@@ -184,7 +184,6 @@ class AdminArea extends SFPComponent {
 
     // this.props._getProjects(this.props.match.params.id, this.threeWFilters);
     // this.props._getMe();
-
   }
   // Sets default tab if url param is blank or incorrect
   displayTabContent () {
