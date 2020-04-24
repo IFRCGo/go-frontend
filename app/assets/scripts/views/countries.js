@@ -140,7 +140,7 @@ class AdminArea extends SFPComponent {
   UNSAFE_componentWillReceiveProps (nextProps) {
     if (getCountryId(this.props.match.params.id) !== getCountryId(nextProps.match.params.id)) {
       // this.getData(nextProps);
-      this.loadCountry(nextProps, getCountryId(this.props.match.params.id));
+      this.loadCountry(nextProps, getCountryId(nextProps.match.params.id));
     }
 
     if (this.props.adminArea.fetching && !nextProps.adminArea.fetching) {
@@ -163,7 +163,6 @@ class AdminArea extends SFPComponent {
   }
 
   loadCountry (props, countryId) {
-    this.displayTabContent();
     this.getData(props);
     this.getAdmArea(props.type, getCountryId(countryId));
     this.props._getPerNsPhase(countryId);
@@ -172,10 +171,11 @@ class AdminArea extends SFPComponent {
     this.props._getPerDocuments();
     this.props._getPerDocument(null, countryId);
     this.props._getPerUploadedDocuments(countryId);
-    if (typeof this.props.user.username !== 'undefined' && this.props.user.username !== null) {
+    if (typeof props.user.username !== 'undefined' && props.user.username !== null) {
       this.props._getPerMission();
     }
-
+    // setting the default tab needs to happen in the "next tick"
+    setTimeout(() => { this.displayTabContent(); }, 0);
   }
 
   componentDidMount () {
