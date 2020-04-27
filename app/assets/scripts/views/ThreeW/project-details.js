@@ -165,18 +165,26 @@ class ProjectDetails extends React.PureComponent {
                 <TextOutput
                   label='Male'
                   value={target_male}
+                  type='number'
+                  addSeparatorToValue
                 />
                 <TextOutput
                   label='Female'
                   value={target_female}
+                  type='number'
+                  addSeparatorToValue
                 />
                 <TextOutput
                   label='Other'
                   value={target_other}
+                  type='number'
+                  addSeparatorToValue
                 />
                 <TextOutput
-                  label='Other'
+                  label='Total'
                   value={target_total}
+                  type='number'
+                  addSeparatorToValue
                 />
               </div>
             </div>
@@ -188,18 +196,26 @@ class ProjectDetails extends React.PureComponent {
                 <TextOutput
                   label='Male'
                   value={reached_male}
+                  type='number'
+                  addSeparatorToValue
                 />
                 <TextOutput
                   label='Female'
                   value={reached_female}
+                  type='number'
+                  addSeparatorToValue
                 />
                 <TextOutput
                   label='Other'
                   value={reached_other}
+                  type='number'
+                  addSeparatorToValue
                 />
                 <TextOutput
-                  label='Other'
+                  label='Total'
                   value={reached_total}
+                  type='number'
+                  addSeparatorToValue
                 />
               </div>
             </div>

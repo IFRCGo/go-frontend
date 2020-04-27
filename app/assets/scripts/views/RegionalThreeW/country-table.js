@@ -2,6 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { addSeparator } from '@togglecorp/fujs';
 import _cs from 'classnames';
+import {
+  MdChevronRight,
+  MdExpandLess,
+} from 'react-icons/md';
 
 import BlockLoading from '../../components/block-loading';
 import {
@@ -93,7 +97,11 @@ function CountryTable (p) {
         <div className='tc-label'>
           { data.name } ({ data.projects_count })
         </div>
-        <div className={_cs('tc-icon', isActive ? 'ion-chevron-up' : 'ion-chevron-right')} />
+        { isActive ? (
+          <MdExpandLess className='tc-icon' />
+        ) : (
+          <MdChevronRight className='tc-icon' />
+        )}
       </button>
       { isActive && (
         <div className='tc-content'>
