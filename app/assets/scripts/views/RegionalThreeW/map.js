@@ -33,6 +33,42 @@ function getGeojsonFromMovementActivities (movementActivities = emptyList) {
   return geojson;
 }
 
+function ProgressBar (p) {
+  const {
+    value,
+    max,
+  } = p;
+  const width = 100 * value / max;
+
+  return (
+    <div className='three-w-region-progress-bar'>
+      <div
+        className='three-w-region-progress-bar-progress'
+        style={{ width: `${width}%` }}
+      />
+    </div>
+  );
+}
+
+const MAX_SCALE_STOPS = 6;
+
+function Scale (p) {
+  const { max } = p;
+  const numbers = [];
+
+  const diff = max / MAX_SCALE_STOPS;
+
+  for (let i = 0; i <= max; i += diff) {
+    numbers.push(i);
+  }
+
+  return (
+    <div className='three-w-region-scale'>
+      { numbers.map(n => <div key={n}>{n}</div>) }
+    </div>
+  );
+}
+
 function Map (props) {
   const {
     regionId,
@@ -73,6 +109,7 @@ function Map (props) {
       }
       map.removeSource('movement-activity-markers');
     } catch (err) {
+      // pass
     }
 
     map.addSource('movement-activity-markers', geojson);
@@ -107,9 +144,41 @@ function Map (props) {
     });
   }, [map, regionId, data, mapLoaded]);
 
+  const [supportingNSList, maxProjects] = React.useMemo(() => {
+    const maxProjects = Math.max(...data.map(d => d.projects_count));
+    const numBuckets = Math.ceil(maxProjects / MAX_SCALE_STOPS);
+    const max = numBuckets * MAX_SCALE_STOPS;
+
+    return [
+      data.map(d => ({
+        name: d.name,
+        value: d.projects_count,
+      })),
+      max,
+    ];
+  }, [data]);
+
   return (
     <div className='regional-threew-map-wrapper'>
       <div className='regional-threew-map' ref={ref} />
+      <div className='supporting-ns-list'>
+        <Scale
+          max={maxProjects}
+        />
+        <div className='supporting-ns-container'>
+          { supportingNSList.map(d => (
+            <div className='supporting-ns'>
+              <div>
+                { d.name } ({d.value} projects)
+              </div>
+              <ProgressBar
+                value={d.value}
+                max={maxProjects}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

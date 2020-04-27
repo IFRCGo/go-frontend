@@ -543,25 +543,8 @@
   }
 }
 
-.three-w-region-progress-bar {
-  height: 15px;
-  border: 1px solid rgba(0, 0, 0, .1);
-
-  .three-w-region-progress-bar-progress {
-    height: 100%;
-    background-color: rgba(0, 0, 0, .5);
-  }
-}
-
 .three-w-region-district {
   padding: 10px 0;
-}
-
-.three-w-region-scale {
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
-  padding: 6px 0;
 }
 
 .tc-project-details-modal {

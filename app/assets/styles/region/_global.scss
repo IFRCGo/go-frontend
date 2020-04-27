@@ -220,9 +220,11 @@
       >.tc-content {
         .regional-threew-map-wrapper {
           padding: 20px;
+          display: flex;
 
           .regional-threew-map {
             height: 700px;
+            flex-grow: 1;
 
             .regional-map-threew-activity-details {
               padding: 10px!important;
@@ -309,6 +311,30 @@
                   }
                 }
               }
+            }
+          }
+
+          .supporting-ns-list {
+            height: 700px;
+            flex-shrink: 0;
+            overflow: auto;
+            width: 300px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+
+            .three-w-region-scale {
+              flex-shrink: 0;
+              padding: 0 6px;
+            }
+
+            .supporting-ns-container {
+              flex-grow: 1;
+              overflow: auto;
+            }
+
+            .supporting-ns {
+              padding: 10px 0;
             }
           }
         }
