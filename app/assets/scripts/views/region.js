@@ -85,7 +85,9 @@ class AdminArea extends SFPComponent {
     if (this.props.adminArea.fetching && !nextProps.adminArea.fetching) {
       hideGlobalLoading();
       if (nextProps.adminArea.error) {
-        this.props.history.push('/uhoh');
+        console.error(nextProps.adminArea.error);
+        // removed because redirect is highly misleading
+        // this.props.history.push('/uhoh');
       }
     }
   }

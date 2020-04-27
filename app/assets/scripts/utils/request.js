@@ -1,7 +1,7 @@
 const emptyObject = {};
 const emptyList = [];
 
-export const getDataFromResponse = (response, defaultValue = emptyObject) => {
+export const getDataFromResponse = (response = emptyObject, defaultValue = emptyObject) => {
   if (!response) {
     return defaultValue;
   }
@@ -15,7 +15,7 @@ export const getDataFromResponse = (response, defaultValue = emptyObject) => {
 
 export const getResultsFromResponse = (response, defaultValue = emptyList) => {
   const data = getDataFromResponse(response);
-  const { results = emptyList } = data;
+  const { results = defaultValue } = data || emptyObject;
 
   return results;
 };

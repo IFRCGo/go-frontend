@@ -65,13 +65,21 @@ export function getRegionalProjectsOverview (regionId) {
 }
 
 export const GET_REGIONAL_MOVEMENT_ACTIVITIES = 'GET_REGIONAL_MOVEMENT_ACTIVITIES';
-export function getRegionalMovementActivities (regionId) {
-  return fetchJSON(`api/v2/region-project/${regionId}/movement-activities/`, GET_REGIONAL_MOVEMENT_ACTIVITIES, withToken());
+export function getRegionalMovementActivities (regionId, filters) {
+  const query = buildAPIQS(filters, { indices: false });
+  return fetchJSON(`api/v2/region-project/${regionId}/movement-activities/?${query}`, GET_REGIONAL_MOVEMENT_ACTIVITIES, withToken());
 }
 
 export const GET_NATIONAL_SOCIETY_ACTIVITIES = 'GET_NATIONAL_SOCIETY_ACTIVITIES';
-export function getNationalSocietyActivities (regionId) {
-  return fetchJSON(`api/v2/region-project/${regionId}/national-society-activities/`, GET_NATIONAL_SOCIETY_ACTIVITIES, withToken());
+export function getNationalSocietyActivities (regionId, filters) {
+  const query = buildAPIQS(filters, { indices: false });
+
+  return fetchJSON(`api/v2/region-project/${regionId}/national-society-activities/?${query}`, GET_NATIONAL_SOCIETY_ACTIVITIES, withToken());
+}
+
+export const GET_NATIONAL_SOCIETY_ACTIVITIES_WO_FILTERS = 'GET_NATIONAL_SOCIETY_ACTIVITIES_WO_FILTERS';
+export function getNationalSocietyActivitiesWoFilters (regionId) {
+  return fetchJSON(`api/v2/region-project/${regionId}/national-society-activities/`, GET_NATIONAL_SOCIETY_ACTIVITIES_WO_FILTERS, withToken());
 }
 
 export const GET_PROJECTS = 'GET_PROJECTS';

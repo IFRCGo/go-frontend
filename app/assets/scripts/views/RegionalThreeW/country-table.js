@@ -53,20 +53,21 @@ const tableHeaders = [
 
 const emptyList = [];
 
-function CountryTable (props) {
+function CountryTable (p) {
   const {
     data,
     isActive,
     onHeaderClick,
     projectsResponse,
     getProjects,
-  } = props;
+    filters,
+  } = p;
 
   React.useEffect(() => {
     if (isActive && data.id) {
-      getProjects(data.id);
+      getProjects(data.id, filters);
     }
-  }, [data.id, isActive]);
+  }, [data.id, isActive, filters]);
 
   const [projectList, pending] = React.useMemo(() => ([
     getResultsFromResponse(projectsResponse),

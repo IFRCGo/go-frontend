@@ -2,10 +2,12 @@ import React from 'react';
 import _cs from 'classnames';
 import FormattedNumber from '../../components/formatted-number';
 
-function TextOutput ({
-  label,
-  value = 0,
-}) {
+function TextOutput (p) {
+  const {
+    label,
+    value = 0,
+  } = p;
+
   return (
     <div className='bo-text-output'>
       <FormattedNumber
@@ -21,12 +23,12 @@ function TextOutput ({
   );
 }
 
-function BudgetOverview (props) {
+function BudgetOverview (p) {
   const {
     totalBudget,
     nsCountWithOngoingActivity,
     className,
-  } = props;
+  } = p;
 
   return (
     <div className={_cs(className, 'budget-overview')}>
