@@ -1,3 +1,22 @@
+### Release 4.2.3
+
+Frontend:
+
+ - Improve field report frontend page: https://github.com/IFRCGo/go-frontend/pull/1144
+ - Fix bug of loading default tab on country page: https://github.com/IFRCGo/go-frontend/pull/1143
+ - Fix description text on field report form: https://github.com/IFRCGo/go-frontend/pull/1140
+ - Add global header banner for COVID-19: https://github.com/IFRCGo/go-frontend/pull/1139
+ - Fix bug of duplicated actions: https://github.com/IFRCGo/go-frontend/pull/1136
+ - Add case count, etc. to Emergency Pages: https://github.com/IFRCGo/go-api/pull/680
+
+API:
+
+ - Fix timeout error while fetching Field Report CSV: https://github.com/IFRCGo/go-api/pull/681
+ - Included EPI data for Field Report in the notifications https://github.com/IFRCGo/go-frontend/issues/1119
+ - Add missing domains to whitelist: https://github.com/IFRCGo/go-api/commit/bceac3e5dfd907221eeb8db05d3c37c63b9f9718
+ - Visual fix for Parent Events on Admin: https://github.com/IFRCGo/go-api/commit/bceac3e5dfd907221eeb8db05d3c37c63b9f9718
+ - Fix PER bug with component order: https://github.com/IFRCGo/go-frontend/issues/1137
+
 ### Release 4.2.2
 
  - Minor hotfix: add domains to whitelist on frontend - https://github.com/IFRCGo/go-frontend/pull/1120
