@@ -5,6 +5,7 @@ import _toNumber from 'lodash.tonumber';
 import _find from 'lodash.find';
 import _filter from 'lodash.filter';
 import { DateTime } from 'luxon';
+import { isNotDefined } from '@togglecorp/fujs';
 
 import { getCentroid } from './country-centroids';
 import { disasterType } from './field-report-constants';
@@ -294,3 +295,27 @@ export function getRecordsByType (types, records) {
 
   return sortedRecordsByType;
 }
+
+export const convertJsonToCsv = (data, columnDelimiter = ',', lineDelimiter = '\n', emptyValue = '') => {
+  if (!data || data.length <= 0) {
+    return undefined;
+  }
+
+  let result = '';
+
+  data.forEach((items) => {
+    result += items.map((str) => {
+      if (isNotDefined(str)) {
+        return emptyValue;
+      }
+      const val = String(str);
+      if (val.includes(columnDelimiter)) {
+        return `"${val}"`;
+      }
+      return val;
+    }).join(columnDelimiter);
+    result += lineDelimiter;
+  });
+
+  return result;
+};

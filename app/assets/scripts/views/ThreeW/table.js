@@ -12,6 +12,7 @@ import {
   MdEdit,
   MdDeleteForever,
   MdHistory,
+  MdMoreHoriz,
 } from 'react-icons/md';
 
 import {
@@ -90,7 +91,7 @@ export default class ProjectListTable extends React.PureComponent {
           <DropdownMenu
             className='more-actions-dropdown-menu'
             dropdownContainerClassName='more-actions-dropdown-container'
-            label={<div className='ion-android-more-horizontal' />}
+            label={<MdMoreHoriz className='tc-icon' />}
           >
             <button
               className='button'

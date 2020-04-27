@@ -176,20 +176,41 @@
 
       >.tc-header {
         margin-top: 5rem;
+        padding: 0 10px;
 
-        .tc-heading {
-          padding: 0 10px;
-          margin: 0;
-          text-transform: uppercase;
+        .tc-top {
+          display: flex;
+          align-items: center;
+
+          .tc-heading {
+            flex-grow: 1;
+            padding: 0 10px;
+            margin: 0;
+            text-transform: uppercase;
+            padding: 10px;
+          }
+
+          .regional-export-button {
+            margin: 10px;
+            flex-shrink: 0;
+          }
         }
 
         .regional-movement-activity-filter {
           display: flex;
 
           >* {
+            flex-basis: 0;
             flex-grow: 1;
+            flex-direction: column;
+
+            .tc-select-label {
+              font-size: 0.7rem;
+              padding-bottom: 0;
+            }
 
             .tc-select-input {
+              align-self: stretch;
               flex-grow: 1;
             }
           }
@@ -367,7 +388,7 @@
         margin-top: 5rem;
 
         .tc-heading {
-          padding: 0 10px;
+          padding: 10px;
           margin: 0;
           text-transform: uppercase;
         }
@@ -380,6 +401,11 @@
           flex-basis: 0;
           flex-grow: 1;
           flex-direction: column;
+
+          .tc-select-label {
+            font-size: 0.7rem;
+            padding-bottom: 0;
+          }
 
           .tc-select-input {
             align-self: stretch;

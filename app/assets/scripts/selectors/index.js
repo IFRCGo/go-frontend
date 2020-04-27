@@ -32,3 +32,7 @@ export const nationalSocietyActivitiesSelector = (state) => (
 export const nationalSocietyActivitiesWoFiltersSelector = (state) => (
   state.nationalSocietyActivitiesWoFilters
 );
+
+export const regionalProjectsSelector = (state) => (
+  state.regionalProjects
+);

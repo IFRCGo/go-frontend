@@ -3,9 +3,9 @@ import React from 'react';
 import _cs from 'classnames';
 import memoize from 'memoize-one';
 import { saveAs } from 'file-saver';
-import { isNotDefined } from '@togglecorp/fujs';
 
 import { getDataFromResponse } from '../../utils/request';
+import { convertJsonToCsv } from '../../utils/utils';
 
 import Summary from './stats/summary';
 import SectorActivity from './stats/sector-activity';
@@ -16,29 +16,6 @@ import Table from './table';
 import Map from './map';
 
 import exportHeaders from './export-headers';
-const convertJsonToCsv = (data, columnDelimiter = ',', lineDelimiter = '\n', emptyValue = '') => {
-  if (!data || data.length <= 0) {
-    return undefined;
-  }
-
-  let result = '';
-
-  data.forEach((items) => {
-    result += items.map((str) => {
-      if (isNotDefined(str)) {
-        return emptyValue;
-      }
-      const val = String(str);
-      if (val.includes(columnDelimiter)) {
-        return `"${val}"`;
-      }
-      return val;
-    }).join(columnDelimiter);
-    result += lineDelimiter;
-  });
-
-  return result;
-};
 
 export default class ThreeW extends React.PureComponent {
   getIsCountryAdmin = memoize((user, countryId) => {

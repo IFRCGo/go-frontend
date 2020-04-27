@@ -32,7 +32,7 @@ function TextOutput (p) {
           {label}
         </div>
         <div className='tc-value'>
-          { type === 'string' && (value || '-') }
+          { type === 'string' && value }
           { type === 'number' && (
             <FormattedNumber
               value={value}

@@ -72,6 +72,7 @@ export const reducers = {
   regionalMovementActivities: createReducer('GET_REGIONAL_MOVEMENT_ACTIVITIES'),
   nationalSocietyActivities: createReducer('GET_NATIONAL_SOCIETY_ACTIVITIES'),
   nationalSocietyActivitiesWoFilters: createReducer('GET_NATIONAL_SOCIETY_ACTIVITIES_WO_FILTERS'),
+  regionalProjects: createReducer('GET_REGIONAL_PROJECTS'),
   me,
 };
 

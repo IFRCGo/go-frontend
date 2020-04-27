@@ -33,6 +33,7 @@ import CountryTable from './country-table';
 import PeopleOverview from './people-overview';
 import MovementActivitiesFilters from './movement-activities-filters';
 import NSActivitiesFilters from './ns-activities-filters';
+import ExportButton from './export-button';
 import Map from './map';
 
 const emptyList = [];
@@ -211,9 +212,15 @@ function RegionalThreeW (p) {
       <div className='regional-movement-activities'>
         { movementActivityListPending && <BlockLoading /> }
         <div className='tc-header'>
-          <h2 className='tc-heading'>
-            Movement activities
-          </h2>
+          <div className='tc-top'>
+            <h2 className='tc-heading'>
+              Movement activities
+            </h2>
+            <ExportButton
+              regionId={regionId}
+              filters={movementActivityFilters}
+            />
+          </div>
           <MovementActivitiesFilters
             value={movementActivityFilters}
             onChange={setMovementActivityFilters}

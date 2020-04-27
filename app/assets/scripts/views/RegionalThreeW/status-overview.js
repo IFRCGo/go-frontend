@@ -7,16 +7,17 @@ import {
   Bar,
   XAxis,
   YAxis,
+  Tooltip,
 } from 'recharts';
 
 import FormattedNumber from '../../components/formatted-number';
 
-function StatusOverview (props) {
+function StatusOverview (p) {
   const {
     data,
     total,
     className,
-  } = props;
+  } = p;
 
   return (
     <div className={_cs('sector-activity', className)}>
@@ -53,6 +54,7 @@ function StatusOverview (props) {
                 fill='#c1cdd1'
                 dataKey='value'
               />
+              <Tooltip cursor={{ fill: 'transparent' }} />
             </BarChart>
           </ResponsiveContainer>
         </div>
