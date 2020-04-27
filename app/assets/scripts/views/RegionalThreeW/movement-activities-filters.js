@@ -10,25 +10,27 @@ import {
   operationTypeList,
 } from '../../utils/constants';
 
+const compareString = (a, b) => a.label.localeCompare(b.label);
+
 const programmeTypeOptions = programmeTypeList.map(p => ({
   value: p.key,
   label: p.title,
-}));
+})).sort(compareString);
 
 const sectorsOfActivityOptions = sectorList.map(p => ({
   value: p.inputValue,
   label: p.title,
-}));
+})).sort(compareString);
 
 const statusOptions = statusList.map(p => ({
   value: p.key,
   label: p.title,
-}));
+})).sort(compareString);
 
 const operationTypeOptions = operationTypeList.map(o => ({
   value: o.value,
   label: o.label,
-}));
+})).sort(compareString);
 
 const filterSchema = {
   fields: {

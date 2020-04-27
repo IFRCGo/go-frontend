@@ -8,6 +8,7 @@ import {
   Label,
   Rectangle,
 } from 'recharts';
+import _cs from 'classnames';
 
 import BlockLoading from '../../components/block-loading';
 import {
@@ -44,7 +45,7 @@ function SankeyNode (p) {
     return null;
   }
 
-  const isOut = x + width > window.innerWidth / 2;
+  const isOut = (x + width) > window.innerWidth / 2;
 
   return (
     <Layer key={`sankey-node-${index}`}>
@@ -83,10 +84,12 @@ function SankeyLink (p) {
     index,
   } = p;
 
+  const isLeft = targetX < window.innerWidth / 2;
+
   return (
     <Layer key={`CustomLink${index}`}>
       <path
-        className='sankey-link'
+        className={_cs('sankey-link', isLeft && 'sankey-link-left')}
         d={`
             M${sourceX},${sourceY + linkWidth / 2}
             C${sourceControlX},${sourceY + linkWidth / 2}
@@ -127,7 +130,7 @@ function RegionalThreeW (p) {
   const [nsActivityFilters, setNSActivityFilters] = React.useState({
     reporting_ns: [],
     primary_sector: [],
-    country: [],
+    project_country: [],
   });
 
   React.useEffect(() => {
@@ -186,7 +189,7 @@ function RegionalThreeW (p) {
   const sectorActivityData = React.useMemo(() => (
     (projectsOverview.projects_by_status || emptyList).map(
       d => ({ label: statuses[d.status], value: d.count }),
-    )
+    ).sort((a, b) => a.label.localeCompare(b.label))
   ), [projectsOverview]);
 
   return (

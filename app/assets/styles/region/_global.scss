@@ -79,7 +79,13 @@
         background-color: #f3f3f3;
       }
 
-      .sector-activity {
+      .status-activity {
+        .tc-heading {
+          font-weight: $base-font-light;
+          text-transform: uppercase;
+          font-size: $font-size-sm;
+        }
+
         .tc-content {
           display: flex;
 
@@ -91,10 +97,13 @@
 
             .tc-value {
               font-size: 2rem;
+              color: $secondary-color;
+              font-weight: $base-font-bold;
             }
 
             .tc-label {
               text-align: center;
+              text-transform: uppercase;
             }
           }
 
@@ -106,11 +115,19 @@
       }
 
       .people-overview {
+        .tc-heading {
+          font-weight: $base-font-light;
+          text-transform: uppercase;
+          font-size: $font-size-sm;
+        }
+
         .reached-people-count {
           font-size: 2rem;
           display: flex;
           justify-content: center;
           padding: 10px;
+          font-weight: $base-font-bold;
+          color: $secondary-color;
         }
 
         .targeted-people {
@@ -119,10 +136,13 @@
 
           .tc-label {
             padding: 3px 5px;
+            text-transform: uppercase;
           }
 
           .targeted-people-count {
             padding: 3px 5px;
+            font-weight: $base-font-semi-bold;
+            color: $secondary-color;
           }
         }
 
@@ -130,10 +150,12 @@
           height: 10px;
           background-color: rgba(0, 0, 0, .1);
           overflow: hidden;
+          border-radius: 5px;
 
           .tc-progress {
-            background-color: $primary-color;
+            background-color: $secondary-color;
             height: 100%;
+            border-radius: 5px;
           }
         }
       }
@@ -144,6 +166,8 @@
         align-items: center;
 
         .bo-text-output {
+          flex-basis: 0;
+          flex-grow: 1;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -151,10 +175,13 @@
 
           .tc-value {
             font-size: 2rem;
+            color: $secondary-color;
+            font-weight: $base-font-bold;
           }
 
           .tc-label {
             text-align: center;
+            text-transform: uppercase;
           }
         }
       }
@@ -318,14 +345,14 @@
             height: 700px;
             flex-shrink: 0;
             overflow: auto;
-            width: 300px;
+            width: 320px;
             padding: 10px;
             display: flex;
             flex-direction: column;
 
             .three-w-region-scale {
               flex-shrink: 0;
-              padding: 0 6px;
+              padding: 0 9px;
             }
 
             .supporting-ns-container {
@@ -334,7 +361,24 @@
             }
 
             .supporting-ns {
-              padding: 10px 0;
+              padding: 10px 3px;
+              border-bottom: 1px solid rgba(0, 0, 0, .1);
+
+              .tc-label {
+                font-size: $font-size-sm;
+                display: flex;
+
+                .tc-name {
+                  flex-grow: 1;
+                  padding: 0 3px;
+                  overflow: hidden;
+                }
+
+                .tc-value {
+                  flex-shrink: 0;
+                  padding: 0 3px;
+                }
+              }
             }
           }
         }
@@ -463,10 +507,15 @@
         }
 
         .sankey-link {
-          fill: rgba(0, 0, 0, .1);
+          fill: $secondary-color;
+          fill-opacity: 0.1;
+
+          &.sankey-link-left {
+            fill: $primary-color;
+          }
 
           &:hover {
-            fill: $primary-color;
+            fill-opacity: 0.4;
           }
         }
       }

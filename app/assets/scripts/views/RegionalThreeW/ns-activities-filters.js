@@ -6,7 +6,7 @@ import SelectInput from '../../components/form-elements/select-input';
 const filterSchema = {
   fields: {
     reporting_ns: [],
-    country: [],
+    project_country: [],
     primary_sector: [],
   }
 };
@@ -22,6 +22,8 @@ function toLabelValue (d) {
   };
 }
 
+const compareString = (a, b) => a.label.localeCompare(b.label);
+
 function NSActivitiesFilters (p) {
   const {
     value,
@@ -34,12 +36,9 @@ function NSActivitiesFilters (p) {
     activityOptions,
     receivingNSOptions,
   ] = React.useMemo(() => [
-    (data.nodes || []).filter(d => d.type === 'supporting_ns').map(toLabelValue),
-    (data.nodes || []).filter(d => d.type === 'sector').map(toLabelValue),
-    (data.nodes || []).filter(d => d.type === 'receiving_ns').map(d => ({
-      label: d.name,
-      value: d.iso,
-    })),
+    (data.nodes || []).filter(d => d.type === 'supporting_ns').map(toLabelValue).sort(compareString),
+    (data.nodes || []).filter(d => d.type === 'sector').map(toLabelValue).sort(compareString),
+    (data.nodes || []).filter(d => d.type === 'receiving_ns').map(toLabelValue).sort(compareString),
   ], [data]);
 
   return (
@@ -66,7 +65,7 @@ function NSActivitiesFilters (p) {
         multi
       />
       <SelectInput
-        faramElementName='country'
+        faramElementName='project_country'
         label='Receiving NS'
         placeholder='All'
         options={receivingNSOptions}

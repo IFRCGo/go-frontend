@@ -33,12 +33,12 @@ function BudgetOverview (p) {
   return (
     <div className={_cs(className, 'budget-overview')}>
       <TextOutput
-        label="Total budget"
-        value={totalBudget}
-      />
-      <TextOutput
         label="NS with ongoing activities"
         value={nsCountWithOngoingActivity}
+      />
+      <TextOutput
+        label="Total budget"
+        value={totalBudget}
       />
     </div>
   );

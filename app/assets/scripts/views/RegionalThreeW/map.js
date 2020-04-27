@@ -167,9 +167,14 @@ function Map (props) {
         />
         <div className='supporting-ns-container'>
           { supportingNSList.map(d => (
-            <div className='supporting-ns'>
-              <div>
-                { d.name } ({d.value} projects)
+            <div className='supporting-ns' key={d.name}>
+              <div className='tc-label'>
+                <div className='tc-name'>
+                  { d.name }
+                </div>
+                <div className='tc-value'>
+                  {d.value} projects
+                </div>
               </div>
               <ProgressBar
                 value={d.value}

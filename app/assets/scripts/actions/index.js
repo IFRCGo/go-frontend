@@ -66,7 +66,7 @@ export const getRegionalProjects = (regionId, filterValues) => {
     limit: 9999,
     ...filterValues
   };
-  const query = buildAPIQS(filters, { indices: false });
+  const query = buildAPIQS(filters, { arrayFormat: 'comma' });
   return fetchJSON(`api/v2/project/?${query}`, GET_REGIONAL_PROJECTS, withToken());
 };
 
@@ -77,13 +77,13 @@ export function getRegionalProjectsOverview (regionId) {
 
 export const GET_REGIONAL_MOVEMENT_ACTIVITIES = 'GET_REGIONAL_MOVEMENT_ACTIVITIES';
 export function getRegionalMovementActivities (regionId, filters) {
-  const query = buildAPIQS(filters, { indices: false });
+  const query = buildAPIQS(filters, { arrayFormat: 'comma' });
   return fetchJSON(`api/v2/region-project/${regionId}/movement-activities/?${query}`, GET_REGIONAL_MOVEMENT_ACTIVITIES, withToken());
 }
 
 export const GET_NATIONAL_SOCIETY_ACTIVITIES = 'GET_NATIONAL_SOCIETY_ACTIVITIES';
 export function getNationalSocietyActivities (regionId, filters) {
-  const query = buildAPIQS(filters, { indices: false });
+  const query = buildAPIQS(filters, { arrayFormat: 'comma' });
 
   return fetchJSON(`api/v2/region-project/${regionId}/national-society-activities/?${query}`, GET_NATIONAL_SOCIETY_ACTIVITIES, withToken());
 }

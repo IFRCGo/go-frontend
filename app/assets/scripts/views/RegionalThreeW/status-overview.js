@@ -3,14 +3,20 @@ import _cs from 'classnames';
 
 import {
   ResponsiveContainer,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
+  PieChart,
+  Pie,
+  Legend,
   Tooltip,
+  Cell,
 } from 'recharts';
 
 import FormattedNumber from '../../components/formatted-number';
+
+const colors = {
+  'Completed': '#f5333f',
+  'Ongoing': '#f7969c',
+  'Planned': '#f9e5e6',
+};
 
 function StatusOverview (p) {
   const {
@@ -20,9 +26,9 @@ function StatusOverview (p) {
   } = p;
 
   return (
-    <div className={_cs('sector-activity', className)}>
+    <div className={_cs('status-activity', className)}>
       <h4 className='tc-heading'>
-        Projects by sector of activity
+        Total activities by status
       </h4>
       <div className='tc-content'>
         <div className='total-activity'>
@@ -38,24 +44,30 @@ function StatusOverview (p) {
         </div>
         <div className='tc-chart-container'>
           <ResponsiveContainer>
-            <BarChart data={data}>
-              <XAxis
-                dataKey='label'
-                type='category'
-                height={16}
-              />
-              <YAxis
+            <PieChart>
+              <Pie
+                data={data}
                 dataKey='value'
-                type='number'
-                allowDecimals={false}
-                width={26}
-              />
-              <Bar
-                fill='#c1cdd1'
-                dataKey='value'
-              />
+                nameKey='label'
+                legendType='circle'
+              >
+                { data.map((entry, index) => {
+                  return (
+                    <Cell
+                      key={entry.label}
+                      fill={colors[entry.label]}
+                    />
+                  );
+                })}
+              </Pie>
               <Tooltip cursor={{ fill: 'transparent' }} />
-            </BarChart>
+              <Legend
+                align='right'
+                iconSize={8}
+                layout='vertical'
+                verticalAlign='middle'
+              />
+            </PieChart>
           </ResponsiveContainer>
         </div>
       </div>
