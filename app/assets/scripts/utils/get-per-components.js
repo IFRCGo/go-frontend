@@ -96,17 +96,6 @@ const shortComponents = {
     {id: 'c7', name: 'Pre-disaster meetings and agreements', cid: 12}
   ],
   a3: [
-    {id: 'c0', name: 'Mapping of NS capacities', cid: 13},
-    {id: 'c1', name: 'Early Action Mechanisms', cid: 14},
-    {id: 'c2', name: 'Cash Based Intervention (CBI)', cid: 15},
-    {id: 'c3', name: 'Emergency Needs Assessment', cid: 16},
-    {id: 'c4', name: 'Affected population selection', cid: 17},
-    {id: 'c5', name: 'Emergency Operations Centre (EOC)', cid: 18},
-    {id: 'c6', name: 'Information Management (IM)', cid: 19},
-    {id: 'c7', name: 'Testing and Learning', cid: 20},
-    {id: 'c8', name: 'Activation of regional and international support', cid: 21}
-  ],
-  a3_2: [
     {id: 'c0', name: 'COMMUNITY-BASED DP AND DRR', cid: 22},
     {id: 'c1', name: 'EVACUATION', cid: 23},
     {id: 'c2', name: 'HEALTH IN EMERGENCIES', cid: 24},
@@ -121,6 +110,17 @@ const shortComponents = {
     {id: 'c11', name: 'TRANSITION TO RECOVERY', cid: 33},
     {id: 'c12', name: 'CHEMICAL, BIOLOGICAL, RADIOLOGICAL AND NUCLEAR (CBRN) EMERGENCY PREPAREDNESS', cid: 34},
     {id: 'c13', name: 'COMMUNITY BASED HEALTH & FIRST AID (CBHFA)', cid: 35}
+  ],
+  a3_2: [
+    {id: 'c0', name: 'Mapping of NS capacities', cid: 13},
+    {id: 'c1', name: 'Early Action Mechanisms', cid: 14},
+    {id: 'c2', name: 'Cash Based Intervention (CBI)', cid: 15},
+    {id: 'c3', name: 'Emergency Needs Assessment', cid: 16},
+    {id: 'c4', name: 'Affected population selection', cid: 17},
+    {id: 'c5', name: 'Emergency Operations Centre (EOC)', cid: 18},
+    {id: 'c6', name: 'Information Management (IM)', cid: 19},
+    {id: 'c7', name: 'Testing and Learning', cid: 20},
+    {id: 'c8', name: 'Activation of regional and international support', cid: 21}
   ],
   a4: [
     {id: 'c0', name: 'Coordination with Movement', cid: 36},

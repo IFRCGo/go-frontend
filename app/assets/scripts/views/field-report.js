@@ -362,7 +362,6 @@ class FieldReport extends React.Component {
                 <p className='inpage__note'>Last updated{data.user ? ` by ${data.user.username}` : null} on {lastTouchedAt}</p>
                 {this.renderNumericDetails(data)}
                 { epiStatus === 'EPI' ? <DisplaySection title='Date of Data' inner={sitFieldsDate} /> : null }
-                {this.renderPlannedResponse(data)}
                 <DisplaySection sectionClass='rich-text-section' title={ status === 'EW' ? 'Risk Analysis' : 'Description' } inner={get(data, 'description', false)} />
                 <DisplaySection title={ status === 'EW' ? 'Forecasted Date of Impact' : 'Start Date' } inner={startDate} />
                 <DisplaySection title='Requests for Assistance'>
@@ -380,6 +379,7 @@ class FieldReport extends React.Component {
                 {this.renderActionsTaken(data, 'FDRN', 'IFRC')}
                 {this.renderActionsTaken(data, 'PNS', 'any other RCRC Movement actors') /* instead of PNS Red Cross, go-frontend/issues/822 */ }
                 <DisplaySection title='Actions taken by others' inner={get(data, 'actions_others', false)} />
+                {this.renderPlannedResponse(data)}
                 {this.renderSources(data)}
                 {this.renderContacts(data)}
               </div>
