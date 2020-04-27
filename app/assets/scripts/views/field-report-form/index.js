@@ -357,7 +357,12 @@ class FieldReportForm extends React.Component {
           name='summary'
           id='summary'
           maxLength={100}
-          description={<div className='form__description'><p>{fields.summary[status].desc}</p><em>Example: GDACS Orange: Albania EQ Magnitude 5.4, Depth:10km(2019-11-30)</em></div>}
+          description={
+            <div className='form__description'>
+              <p>{fields.summary[status].desc}</p>
+              {/* <em>Example: GDACS Orange: Albania EQ Magnitude 5.4, Depth:10km(2019-11-30)</em> */}
+            </div>
+          }
           inputValue={this.state.data.summary}
           inputOnChange={this.onFieldChange.bind(this, 'summary')}
           selectOnChange={this.onFieldChange.bind(this, 'event')}
@@ -411,6 +416,7 @@ class FieldReportForm extends React.Component {
         <div className='form__group'>
           <div className='form__inner-header'>
             <label className='form__label'>{fields['disaster-type'][status].label}</label>
+            <p className='form__description'>{fields['disaster-type'][status].desc}</p>
           </div>
           <div className='form__inner-body'>
             <Select

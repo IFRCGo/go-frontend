@@ -533,29 +533,29 @@ export const fieldsStep1 = {
   'summary': {
     'EVT': {
       label: 'Title *',
-      desc: 'Add a new title (Country - Region: Hazard mm/yy) or link to an existing emergency'
+      desc: 'For Covid-19 Field Reports, please link to the country specific emergency page if one already exists. Please do not link to the Global emergency page.'
     },
     'EPI': {
       label: 'Title *',
-      desc: 'Add a new title (Country - Region: Hazard mm/yy) or link to an existing emergency'
+      desc: 'For Covid-19 Field Reports, please link to the country specific emergency page if one already exists. Please do not link to the Global emergency page.'
     },
     'EW': {
       label: 'Title *',
-      desc: 'Add a new title (Country - Region: Hazard mm/yy) or link to an existing emergency'
+      desc: 'For Covid-19 Field Reports, please link to the country specific emergency page if one already exists. Please do not link to the Global emergency page.'
     }
   },
   'disaster-type': {
     'EVT': {
       label: 'Disaster Type *',
-      desc: ''
+      desc: 'If Covid-19 select “Epidemic” as the disaster type'
     },
     'EPI': {
       label: 'Disaster Type *',
-      desc: ''
+      desc: 'If Covid-19 select “Epidemic” as the disaster type'
     },
     'EW': {
       label: 'Hazard Type *',
-      desc: ''
+      desc: 'If Covid-19 select “Epidemic” as the disaster type'
     }
   },
   'startDate': {
