@@ -42,8 +42,8 @@ export default class About extends React.Component {
                       <div className='box__global__wrap__about clearfix'>
                         <div className='box__global box__global--about-guides'>
                           <div className='box__global__heading'>
-                           <div className='base-font-semi-bold'>GO User and Administrative Guides</div>
-                           <p className='font-size-sm margin-reset'>User guides help to explain the different functions and features of GO. Administrator guides include also back-end functions aimed at people who are helping to manage the site.</p>
+                            <div className='base-font-semi-bold'>GO User and Administrative Guides</div>
+                            <p className='font-size-sm margin-reset'>User guides help to explain the different functions and features of GO. Administrator guides include also back-end functions aimed at people who are helping to manage the site.</p>
                           </div>
                           <div className='box__global__content'>
                             <div className='clearfix'>
@@ -116,43 +116,43 @@ export default class About extends React.Component {
 
                         <div className='box__global box__global--about-ref'>
                           <div className='box__global__heading'>
-                           <div className='base-font-semi-bold'>GO Reference Materials</div>
-                           <p className='font-size-sm margin-reset'>These materials provide more information on how and why GO does what it does.</p>
+                            <div className='base-font-semi-bold'>GO Reference Materials</div>
+                            <p className='font-size-sm margin-reset'>These materials provide more information on how and why GO does what it does.</p>
                           </div>
                           <div className='box__global__content'>
                             <div className='box__global__content--ref clearfix'>
                               <Link to='#' className='box__global__content--ref__link'>
                                 GO Visual Guidelines
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </Link>                            
+                              </Link>
                               <Link to='#' className='box__global__content--ref__link'>
                                 GO Visual Guidelines
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </Link>                            
+                              </Link>
                               <Link to='#' className='box__global__content--ref__link'>
                                 GO User Studies
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </Link>                            
+                              </Link>
                               <Link to='#' className='box__global__content--ref__link'>
                                 GO User Studies
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </Link>                            
+                              </Link>
                               <Link to='#' className='box__global__content--ref__link'>
                                 Reference Materials
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </Link>                            
+                              </Link>
                               <Link to='#' className='box__global__content--ref__link'>
                                 Reference Materials
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </Link>                            
+                              </Link>
                               <Link to='#' className='box__global__content--ref__link'>
                                 3W Lessons Learned
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </Link>                            
+                              </Link>
                               <Link to='#' className='box__global__content--ref__link'>
                                 3W Lessons Learned
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </Link>                            
+                              </Link>
                             </div>
                           </div>
                         </div>
@@ -171,25 +171,25 @@ export default class About extends React.Component {
 
               <div className='fold fold__about__video__carousel'>
                 <div className='row-fold row--centered'>
-                  <div className='about__video__carousel__each'>                    
-                    <div className='iframe__embed'>                  
-                      <iframe width="560" height="315" className='iframe__embed__video' src="https://www.youtube.com/embed/5QSFGJN5Tpo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                  <div className='about__video__carousel__each'>
+                    <div className='iframe__embed'>
+                      <iframe width="560" height="315" className='iframe__embed__video' src="https://www.youtube.com/embed/5QSFGJN5Tpo" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
                     </div>
                     <div className='about__video__carousel__each__heading'>How to Create Field Reports</div>
                     <div className='about__video__carousel__each__subheading'>Description of the Video</div>
                   </div>
 
-                 <div className='about__video__carousel__each'>                    
-                    <div className='iframe__embed'>                  
-                      <iframe width="560" height="315" className='iframe__embed__video' src="https://www.youtube.com/embed/5QSFGJN5Tpo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                  <div className='about__video__carousel__each'>
+                    <div className='iframe__embed'>
+                      <iframe width="560" height="315" className='iframe__embed__video' src="https://www.youtube.com/embed/5QSFGJN5Tpo" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
                     </div>
                     <div className='about__video__carousel__each__heading'>How to Create Field Reports</div>
                     <div className='about__video__carousel__each__subheading'>Description of the Video</div>
                   </div>
 
-                 <div className='about__video__carousel__each'>                    
-                    <div className='iframe__embed'>                  
-                      <iframe width="560" height="315" className='iframe__embed__video' src="https://www.youtube.com/embed/5QSFGJN5Tpo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                  <div className='about__video__carousel__each'>
+                    <div className='iframe__embed'>
+                      <iframe width="560" height="315" className='iframe__embed__video' src="https://www.youtube.com/embed/5QSFGJN5Tpo" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
                     </div>
                     <div className='about__video__carousel__each__heading'>How to Create Field Reports</div>
                     <div className='about__video__carousel__each__subheading'>Description of the Video</div>
