@@ -11,7 +11,7 @@ import { Helmet } from 'react-helmet';
 
 import { isValidEmail, isWhitelistedEmail, get } from '../utils/utils';
 import { countries, orgTypes } from '../utils/field-report-constants';
-import { registerUser } from '../actions';
+import { registerUser, getDomainWhitelist } from '../actions';
 import { environment } from '../config';
 
 import App from './app';
@@ -388,17 +388,20 @@ class Register extends React.Component {
 if (environment !== 'production') {
   Register.propTypes = {
     _registerUser: T.func,
+    _getDomainWhitelist: T.func,
     registration: T.object,
     history: T.object
   };
 }
 
 const selector = (state) => ({
-  registration: state.registration
+  registration: state.registration,
+  domainWhitelist: state.domainWhitelist
 });
 
 const dispatcher = (dispatch) => ({
-  _registerUser: (payload) => dispatch(registerUser(payload))
+  _registerUser: (payload) => dispatch(registerUser(payload)),
+  _getDomainWhitelist: () => dispatch(getDomainWhitelist())
 });
 
 export default connect(selector, dispatcher)(Register);

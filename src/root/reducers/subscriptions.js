@@ -1,4 +1,3 @@
-
 import { stateInflight, stateError, stateSuccess } from '../utils/reducer-utils';
 import { combineReducers } from 'redux';
 import { DEL_SUBSCRIPTION } from './../actions';
