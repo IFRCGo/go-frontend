@@ -139,8 +139,8 @@ class AdminArea extends SFPComponent {
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps (nextProps) {
     if (getCountryId(this.props.match.params.id) !== getCountryId(nextProps.match.params.id)) {
-      this.getData(nextProps);
-      return this.getAdmArea(nextProps.type, getCountryId(nextProps.match.params.id));
+      // this.getData(nextProps);
+      this.loadCountry(nextProps, getCountryId(nextProps.match.params.id));
     }
 
     if (this.props.adminArea.fetching && !nextProps.adminArea.fetching) {
@@ -162,23 +162,28 @@ class AdminArea extends SFPComponent {
     */
   }
 
-  componentDidMount () {
-    this.componentIsLoading = true;
-    this.displayTabContent();
-    this.getData(this.props);
-    this.getAdmArea(this.props.type, getCountryId(this.props.match.params.id));
-    this.props._getPerNsPhase(this.props.match.params.id);
-    this.props._getPerOverviewForm(this.props.match.params.id);
-    this.props._getPerWorkPlan(this.props.match.params.id);
+  loadCountry (props, countryId) {
+    this.getData(props);
+    this.getAdmArea(props.type, getCountryId(countryId));
+    this.props._getPerNsPhase(countryId);
+    this.props._getPerOverviewForm(countryId);
+    this.props._getPerWorkPlan(countryId);
     this.props._getPerDocuments();
-    this.props._getPerDocument(null, this.props.match.params.id);
-    this.props._getPerUploadedDocuments(this.props.match.params.id);
-    // this.props._getProjects(this.props.match.params.id, this.threeWFilters);
-    // this.props._getMe();
-
-    if (typeof this.props.user.username !== 'undefined' && this.props.user.username !== null) {
+    this.props._getPerDocument(null, countryId);
+    this.props._getPerUploadedDocuments(countryId);
+    if (typeof props.user.username !== 'undefined' && props.user.username !== null) {
       this.props._getPerMission();
     }
+    // setting the default tab needs to happen in the "next tick"
+    setTimeout(() => { this.displayTabContent(); }, 0);
+  }
+
+  componentDidMount () {
+    this.componentIsLoading = true;
+    this.loadCountry(this.props, getCountryId(this.props.match.params.id));
+
+    // this.props._getProjects(this.props.match.params.id, this.threeWFilters);
+    // this.props._getMe();
   }
   // Sets default tab if url param is blank or incorrect
   displayTabContent () {
