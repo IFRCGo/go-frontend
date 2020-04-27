@@ -218,7 +218,7 @@ class Emergency extends React.Component {
           </ul>
         </div>
 
-        { isEPI
+        {/* { isEPI
           ? (
             <React.Fragment>
               <h4 className='global-spacing-2-t clear'>Epidemic figures</h4>
@@ -247,7 +247,7 @@ class Emergency extends React.Component {
               </div>
             </React.Fragment>
           ) : null
-        }
+        } */}
         <p className='emergency__source'>Source: <Link to={`/reports/${report.id}`}>{report.summary}, {timestamp(report.updated_at || report.created_at)}</Link></p>
       </div>
     );
