@@ -5,7 +5,8 @@ import { api } from '../config';
 
 class Footer extends React.PureComponent {
   render () {
-    const stagingBanner = process.env.NODE_ENV !== 'production'
+    const { NODE_ENV: currentEnv } = process.env;
+    const stagingBanner = currentEnv !== 'production' && currentEnv !== 'development'
       ? (
         <div className='sticky-banner staging-footer'>
           {process.env.NODE_ENV === 'staging' ? 'STAGING' : 'TESTING (SURGE)'} SITE

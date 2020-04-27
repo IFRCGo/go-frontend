@@ -1,3 +1,13 @@
+.action-header {
+  padding-top: 1.5rem;
+  padding-bottom: 0;
+
+  .action-button-container {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
 .inpage__headline-stats {
   @include column(5/12);
   @include media(small-down) {

@@ -729,7 +729,7 @@
 }
 
 .map-vis__legend {
-  z-index: 1000;
+  z-index: 1;
 }
 
 .table--active-ops {
@@ -756,4 +756,25 @@
 
 .page__headline {
   z-index: 1000;
+}
+
+.map-download-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 80px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  padding: 6px!important;
+  background-color: #fff;
+  border: 2px solid rgba(0, 0, 0, .1);
+  border-radius: 5px;
+
+  img {
+    width: 16px;
+    height: 16px;
+  }
 }

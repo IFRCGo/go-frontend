@@ -66,6 +66,7 @@ export default class SectorActivity extends React.PureComponent {
                 dataKey='value'
                 type='number'
                 allowDecimals={false}
+                width={26}
               />
               <Bar
                 fill='#c1cdd1'

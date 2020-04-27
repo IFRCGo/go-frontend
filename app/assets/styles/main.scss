@@ -84,6 +84,7 @@
 @import "global/tooltip";
 @import "global/faram-inputs/raw-input";
 @import "global/faram-inputs/select-input";
+@import "global/faram-inputs/faram-checkbox";
 @import "global/text-output";
 @import "global/tooltip";
 
@@ -149,6 +150,10 @@
 
 @import "components/select";
 @import "components/formatted-number";
+@import "components/formatted-date";
+@import "components/dropdown-menu";
+@import "components/backdrop";
+@import "components/common";
 
 /* Core (...cont)
    ========================================================================== */

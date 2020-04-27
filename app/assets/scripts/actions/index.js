@@ -5,6 +5,7 @@ import {
   postJSON,
   putJSON,
   patchJSON,
+  deleteJSON,
   withToken
 } from '../utils/network';
 import { countryIsoMapById } from '../utils/field-report-constants';
@@ -80,6 +81,11 @@ export function postProject (data) {
   }
 
   return postJSON('api/v2/project/', POST_PROJECT, data, withToken());
+}
+
+export const DELETE_PROJECT = 'DELETE_PROJECT';
+export function deleteProject (projectId) {
+  return deleteJSON(`api/v2/project/${projectId}/`, DELETE_PROJECT, withToken());
 }
 
 export const GET_COUNTRY_OVERVIEW = 'GET_COUNTRY_OVERVIEW';

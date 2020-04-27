@@ -64,7 +64,7 @@ if (environment !== 'production') {
 
 const selector = (state) => ({
   lastMonth: state.emergencies.lastMonth,
-  aggregate: state.emergencies.aggregate
+  aggregate: state.emergencies.aggregate,
 });
 
 const dispatcher = (dispatch) => ({

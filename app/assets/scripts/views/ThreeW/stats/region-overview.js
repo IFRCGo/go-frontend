@@ -61,6 +61,7 @@ export default class RegionOverview extends React.PureComponent {
         <div>
           { projectDistrictList.map(d => {
             const p = groupedProjectList[d];
+            const regionName = p[0].project_district_detail ? p[0].project_district_detail.name : 'Countrywide';
 
             return (
               <div
@@ -68,7 +69,7 @@ export default class RegionOverview extends React.PureComponent {
                 className='three-w-region-district'
               >
                 <div>
-                  {p[0].project_district_detail.name} ({p.length} projects)
+                  {regionName} ({p.length} projects)
                 </div>
                 <ProgressBar
                   value={p.length}

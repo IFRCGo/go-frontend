@@ -10,6 +10,10 @@ export const programmeTypeList = [
   {
     key: '1',
     title: 'Multilateral'
+  },
+  {
+    key: '2',
+    title: 'Domestic',
   }
 ];
 
@@ -42,9 +46,9 @@ export const sectorList = [
   },
   {
     key: '4',
-    title: 'Health',
+    title: 'Health (public)',
     color: '#a6d854',
-    inputValue: 'Health',
+    inputValue: 'Health Public',
   },
   {
     key: '5',
@@ -76,6 +80,12 @@ export const sectorList = [
     color: '#b3b3b3',
     inputValue: 'Livelihoods And Basic Needs',
   },
+  {
+    key: '10',
+    title: 'Health (clinical)',
+    color: '#a6d854',
+    inputValue: 'Health Clinical',
+  },
 ];
 
 export const secondarySectorList = [
@@ -105,9 +115,9 @@ export const secondarySectorList = [
   },
   {
     key: '4',
-    title: 'Health',
+    title: 'Health (public)',
     color: '#a6d854',
-    inputValue: 'Health',
+    inputValue: 'Health Public',
   },
   {
     key: '5',
@@ -151,6 +161,12 @@ export const secondarySectorList = [
     color: '#b3b3b3',
     inputValue: 'Internal Displacement',
   },
+  {
+    key: '12',
+    title: 'Health (clinical)',
+    color: '#a6d854',
+    inputValue: 'Health Clinical',
+  },
 ];
 
 export const sectors = listToMap(sectorList, d => d.key, d => d.title);
@@ -185,3 +201,9 @@ export const operationTypes = {
   0: 'Programme',
   1: 'Emergency Operation',
 };
+
+export const projectVisibilityList = [
+  { value: 'public', label: 'Public' },
+  { value: 'logged_in_user', label: 'Logged in user' },
+  { value: 'ifrc_only', label: 'IFRC only' },
+];
