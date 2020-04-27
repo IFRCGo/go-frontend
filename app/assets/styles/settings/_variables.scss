@@ -12,7 +12,8 @@ $secondary-color-light: #C9D2E3;
 
 $map-color: #23324D;                       // Blue light
 $grey-slate: rgba(45, 70, 98, 0.6);
-$grey-mist: #fafafa;
+$grey-mist: #faf9f9; 									                  // Previously fafafa;
+$grey-pearl: #d2d2d2;
 $grey-fog: #f3f2f3;
 $grey-cloud: #c9c3c1;
 $grey-cement: #505050;
@@ -46,12 +47,12 @@ $base-font-medium: 500;
 $base-font-semi-bold: 600;
 $base-font-bold: 700;
 $base-font-weight: $base-font-light;
-$base-font-size: 0.875rem;
 $base-line-height: 1.5;
 
 $base-font-size: 0.875rem;
-$font-size-sm: 0.775rem;
+$font-size-xxs: 0.6rem;
 $font-size-xs: 0.695rem;
+$font-size-sm: 0.775rem;
 $font-size-lg: 0.95;
 $font-size-xl: 1.05rem;
 $font-size-xxl: 1.15rem;
@@ -114,3 +115,7 @@ $xlarge-range: (1420px, 1600px);
 $xxlarge-range: (1601px, 3000px);
 
 $screen: "only screen";
+
+$media-xsmall: 544px;
+$media-small: 768px;
+$media-medium: 992px;
