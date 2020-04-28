@@ -60,6 +60,10 @@ class Register extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  componentDidMount () {
+    this.props._getDomainWhitelist();
+  }
+
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps (nextProps) {
     if (this.props.registration.fetching && !nextProps.registration.fetching) {
