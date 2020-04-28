@@ -29,8 +29,9 @@ import fdrs from './fdrs';
 import csv from './csv';
 import perForm from './per-form';
 import subscriptions from './subscriptions';
-import projects from './projects';
-import countryOverview from './country-overview';
+import projects from './projects.js';
+import countryOverview from './country-overview.js';
+import domainWhitelist from './domain-whitelist';
 
 export const reducers = {
   user,
