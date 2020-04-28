@@ -104,7 +104,11 @@ class Register extends React.Component {
 
   shouldRequestAccess () {
     const { email } = this.state.data;
-    return email && isValidEmail(email.toLowerCase()) && !isWhitelistedEmail(email.toLowerCase());
+    const whitelistedDomains = this.props.domainWhitelist.fetched === true
+      ? this.props.domainWhitelist.data.results.map(domObj => domObj.domain_name)
+      : null;
+
+    return email && isValidEmail(email.toLowerCase()) && !isWhitelistedEmail(email.toLowerCase(), whitelistedDomains);
   }
 
   renderPasswordFields () {
