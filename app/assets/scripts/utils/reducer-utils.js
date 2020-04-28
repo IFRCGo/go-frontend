@@ -37,26 +37,17 @@ export function createReducer (actionName) {
   const success = `${actionName}_SUCCESS`;
 
   return (state = initialState, action) => {
-    let newState = { ...state };
+    let newState = state;
 
     switch (action.type) {
       case inflight:
-        newState = {
-          ...newState,
-          ...stateInflight(state, action),
-        };
+        newState = stateInflight(state, action);
         break;
       case failed:
-        newState = {
-          ...newState,
-          ...stateError(state, action),
-        };
+        newState = stateError(state, action);
         break;
       case success:
-        newState = {
-          ...newState,
-          ...stateSuccess(state, action),
-        };
+        newState = stateSuccess(state, action);
         break;
     }
 

@@ -1,9 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import {
   listToGroupList as listToGroupMap,
   mapToMap,
 } from '@togglecorp/fujs';
+import { MdChevronRight } from 'react-icons/md';
 
 import TextOutput from '../../components/text-output';
 import BlockLoading from '../../components/block-loading';
@@ -87,7 +89,9 @@ function ActivityDetails (props) {
   return (
     <div className='regional-map-threew-activity-details'>
       <h4 className='tc-heading'>
-        { name }
+        <Link to={`/countries/${countryId}`}>
+          { name } <MdChevronRight className='tc-icon' />
+        </Link>
       </h4>
       <div className='tc-content'>
         <div className='status-counts'>
@@ -139,4 +143,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ActivityDetails);
+)(React.memo(ActivityDetails));

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { render } from 'react-dom';
+import { BrowserRouter, Link } from 'react-router-dom';
 import mapboxgl from 'mapbox-gl';
 
 import store from '../../utils/store';
@@ -131,7 +132,9 @@ function Map (props) {
       render(
         (
           <Provider store={store}>
-            <ActivityDetails data={properties} />
+            <BrowserRouter>
+              <ActivityDetails data={properties} />
+            </BrowserRouter>
           </Provider>
         ),
         popoverContent,
@@ -151,6 +154,7 @@ function Map (props) {
 
     return [
       data.map(d => ({
+        id: d.id,
         name: d.name,
         value: d.projects_count,
       })),
@@ -170,7 +174,9 @@ function Map (props) {
             <div className='supporting-ns' key={d.name}>
               <div className='tc-label'>
                 <div className='tc-name'>
-                  { d.name }
+                  <Link to={`/countries/${d.id}`}>
+                    { d.name }
+                  </Link>
                 </div>
                 <div className='tc-value'>
                   {d.value} projects
@@ -188,4 +194,4 @@ function Map (props) {
   );
 }
 
-export default Map;
+export default React.memo(Map);

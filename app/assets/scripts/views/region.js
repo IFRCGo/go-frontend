@@ -4,6 +4,7 @@ import c from 'classnames';
 import { PropTypes as T } from 'prop-types';
 import { connect } from 'react-redux';
 import { DateTime } from 'luxon';
+import memoize from 'memoize-one';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { Helmet } from 'react-helmet';
 import CountryList from '../components/country-list';
@@ -161,6 +162,10 @@ class AdminArea extends SFPComponent {
     this.props._getAdmAreaById(type, id);
   }
 
+  getRegionId = memoize((regionIdFromProps) => {
+    return getRegionId(regionIdFromProps);
+  })
+
   renderContent () {
     const {
       fetched,
@@ -267,7 +272,7 @@ class AdminArea extends SFPComponent {
                 <TabContent title="3W">
                   <RegionalThreeW
                     disabled={this.loading}
-                    regionId={getRegionId(this.props.match.params.id)}
+                    regionId={this.getRegionId(this.props.match.params.id)}
                   />
                 </TabContent>
               </TabPanel>

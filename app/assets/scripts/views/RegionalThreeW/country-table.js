@@ -95,7 +95,12 @@ function CountryTable (p) {
         disabled={count === 0}
       >
         <div className='tc-label'>
-          { data.name } ({ data.projects_count })
+          <div className='tc-name'>
+            { data.name }
+          </div>
+          <div className='tc-project-count'>
+            { data.projects_count } projects
+          </div>
         </div>
         { isActive ? (
           <MdExpandLess className='tc-icon' />

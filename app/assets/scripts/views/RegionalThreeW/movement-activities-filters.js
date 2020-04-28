@@ -58,28 +58,28 @@ function MovementActivitiesFilters (p) {
       <SelectInput
         faramElementName='operation_type'
         label='Operation type'
-        placeholder='All'
+        placeholder='All operation types'
         options={operationTypeOptions}
         className='select-input'
       />
       <SelectInput
         faramElementName='programme_type'
         label='Programme type'
-        placeholder='All'
+        placeholder='All programme types'
         options={programmeTypeOptions}
         className='select-input'
       />
       <SelectInput
         faramElementName='primary_sector'
         label='Sectors of Activity'
-        placeholder='All'
+        placeholder='All sectors'
         options={sectorsOfActivityOptions}
         className='select-input'
       />
       <SelectInput
         faramElementName='status'
         label='Status'
-        placeholder='All'
+        placeholder='All status'
         options={statusOptions}
         className='select-input'
       />

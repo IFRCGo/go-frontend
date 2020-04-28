@@ -66,17 +66,78 @@
 
     .Select-menu-outer {
       z-index: 11;
+      left: 5px;
+      width: calc(100% - 10px);
+    }
+
+    .tc-select {
+      .tc-select-label {
+        display: none;
+      }
+
+      .tc-select-input {
+        .Select-control {
+          border: 0;
+          border-radius: 0;
+          background-color: $grey-mist;
+          border-bottom: 1px solid $primary-color;
+          font-size: $font-size-sm;
+        }
+
+        .Select-placeholder {
+          padding: 0 16px;
+          color: $base-color;
+          font-weight: $base-font-medium;
+        }
+
+        &:focus-within {
+          .Select-placeholder {
+            color: rgba($base-color, 0.3);
+          }
+        }
+
+        .Select-input {
+          height: auto;
+
+          input {
+            padding: 0;
+          }
+        }
+
+        .Select-multi-value-wrapper {
+          padding: 6px;
+        }
+
+        .Select-value {
+          background-color: $grey-cloud;
+          border-radius: 0;
+          margin: 1px;
+          vertical-align: middle;
+          font-size: $font-size-sm;
+
+          .Select-value-icon {
+            padding: 2px 3px;
+            font-size: $font-size-lg;
+          }
+
+          .Select-value-label {
+            padding: 2px 3px;
+            font-weight: $base-font-medium;
+          }
+        }
+      }
     }
 
     .regional-threew-overview {
       display: flex;
+      padding: 10px;
 
       >* {
         flex-basis: 0;
         flex-grow: 1;
         padding: 10px 20px;
         margin: 10px;
-        background-color: #f3f3f3;
+        background-color: $grey-fog;
       }
 
       .status-activity {
@@ -225,6 +286,7 @@
 
         .regional-movement-activity-filter {
           display: flex;
+          align-items: flex-start;
 
           >* {
             flex-basis: 0;
@@ -249,14 +311,19 @@
           padding: 20px;
           display: flex;
 
+          $height-map: 500px;
+          $width-country-details: 360px;
+          $width-popup: 360px;
+          $height-popup: 240px;
+
           .regional-threew-map {
-            height: 700px;
+            height: $height-map;
             flex-grow: 1;
 
             .regional-map-threew-activity-details {
               padding: 10px!important;
-              max-height: 300px;
-              width: 300px;
+              height: $height-popup;
+              width: $width-popup;
               overflow: auto;
               display: flex;
               flex-direction: column;
@@ -266,6 +333,18 @@
                 padding: 3px 6px;
                 margin: 0;
                 color: $primary-color;
+
+                a {
+                  color: inherit;
+                  display: flex;
+                  align-items: center;
+                }
+
+                .tc-icon {
+                  color: inherit;
+                  font-size: $font-size-xxl;
+                  margin-left: 3px;
+                }
               }
 
               >.tc-content {
@@ -297,6 +376,22 @@
                   border-top: 1px solid rgba(0, 0, 0, .1);
                   flex-shrink: 0;
                 }
+
+                ::-webkit-scrollbar-track {
+                  background-color: #eee;
+                }
+
+                ::-webkit-scrollbar {
+                  background-color: #fff;
+                  width: 6px;
+                  height: 6px;
+                }
+
+                ::-webkit-scrollbar-thumb {
+                  border-radius: 3px;
+                  background-color: #aaa;
+                }
+
 
                 .ns-sector-details {
                   flex-grow: 1;
@@ -342,26 +437,43 @@
           }
 
           .supporting-ns-list {
-            height: 700px;
+            height: $height-map;
             flex-shrink: 0;
             overflow: auto;
-            width: 320px;
-            padding: 10px;
+            width: $width-country-details;
             display: flex;
             flex-direction: column;
 
             .three-w-region-scale {
               flex-shrink: 0;
-              padding: 0 9px;
+              padding: 0;
+              margin: 0 16px 0 10px;
             }
 
             .supporting-ns-container {
               flex-grow: 1;
               overflow: auto;
+              overflow-y: scroll;
+            }
+
+            ::-webkit-scrollbar-track {
+              background-color: #eee;
+            }
+
+            ::-webkit-scrollbar {
+              background-color: #fff;
+              width: 6px;
+              height: 6px;
+            }
+
+            ::-webkit-scrollbar-thumb {
+              border-radius: 3px;
+              background-color: #aaa;
             }
 
             .supporting-ns {
-              padding: 10px 3px;
+              padding: 10px 0;
+              margin: 0 10px;
               border-bottom: 1px solid rgba(0, 0, 0, .1);
 
               .tc-label {
@@ -392,7 +504,7 @@
             .tc-header-button {
               display: flex;
               width: 100%;
-              background-color: #eee;
+              background-color: $grey-fog;
               border: 0;
               padding: 10px;
               text-align: left;
@@ -401,7 +513,14 @@
               font-weight: bold;
 
               .tc-label {
+                display: flex;
                 flex-grow: 1;
+
+                .tc-project-count {
+                  font-weight: $base-font-light;
+                  margin-left: 10px;
+                  color: $grey-cement;
+                }
               }
 
               .tc-icon {
@@ -432,7 +551,7 @@
                 tbody {
                   tr {
                     &:nth-child(odd) {
-                      background-color: #fafafa;
+                      background-color: $grey-mist;
                     }
                   }
                 }
@@ -466,6 +585,7 @@
 
       .regional-ns-activity-filter {
         display: flex;
+        align-items: flex-start;
 
         >* {
           flex-basis: 0;
@@ -473,7 +593,7 @@
           flex-direction: column;
 
           .tc-select-label {
-            font-size: 0.7rem;
+            font-size: $font-size-sm;
             padding-bottom: 0;
           }
 
@@ -522,3 +642,4 @@
     }
   }
 }
+
