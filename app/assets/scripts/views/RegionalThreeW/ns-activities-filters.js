@@ -22,7 +22,7 @@ function toLabelValue (d) {
   };
 }
 
-const compareString = (a, b) => a.label.localeCompare(b.label);
+const compareString = (a, b) => (a.label || '').localeCompare(b.label);
 
 function NSActivitiesFilters (p) {
   const {

@@ -415,11 +415,11 @@ class ProjectForm extends React.PureComponent {
     }
     */
 
-    if (operationType === 'Emergency Operation' && (programmeType === 'Multilateral' || programmeType === 'Domestic')) {
+    if (String(operationType) === '1' && (String(programmeType) === '1' || String(programmeType) === '2')) {
       schema.fields.event = [requiredCondition];
     }
 
-    if (projectStatus === 'Completed') {
+    if (String(projectStatus) === '2') {
       schema.fields.reached_total = [requiredCondition, positiveIntegerCondition];
     }
 
@@ -463,13 +463,13 @@ class ProjectForm extends React.PureComponent {
     const projectFormPending = projectForm.fetching;
     const shouldDisableSubmitButton = projectFormPending || fetchingCountries || fetchingDistricts;
 
-    const shouldShowCurrentEmergencyOperation = faramValues.operation_type === 'Emergency Operation' &&
-      faramValues.programme_type === 'Domestic';
-    const shouldShowCurrentOperation = faramValues.operation_type === 'Emergency Operation' &&
-      faramValues.programme_type === 'Multilateral';
+    const shouldShowCurrentEmergencyOperation = String(faramValues.operation_type) === '1' &&
+      String(faramValues.programme_type) === '2';
+    const shouldShowCurrentOperation = String(faramValues.operation_type) === '1' &&
+      String(faramValues.programme_type) === '1';
 
-    const shouldShowDisasterType = faramValues.operation_type === 'Programme' || shouldShowCurrentOperation || shouldShowCurrentEmergencyOperation;
-    const shouldDisableDisasterType = faramValues.operation_type === 'Emergency Operation';
+    const shouldShowDisasterType = String(faramValues.operation_type) === '0' || shouldShowCurrentOperation || shouldShowCurrentEmergencyOperation;
+    const shouldDisableDisasterType = String(faramValues.operation_type) === '1';
 
     const schema = this.getSchema(
       faramValues.operation_type,
