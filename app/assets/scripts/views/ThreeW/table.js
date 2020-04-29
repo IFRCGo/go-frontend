@@ -42,7 +42,7 @@ export default class ProjectListTable extends React.PureComponent {
       },
       {
         key: 'name',
-        label: 'Project name',
+        label: 'Activity name',
       },
       {
         key: 'reporting_ns',
