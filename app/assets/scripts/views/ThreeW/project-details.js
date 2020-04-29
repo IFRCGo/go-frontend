@@ -137,10 +137,12 @@ class ProjectDetails extends React.PureComponent {
               <TextOutput
                 label='Current IFRC operation'
                 value={currentEventDetails.name}
+                hideEmptyValue
               />
               <TextOutput
                 label='Disaster type'
                 value={dtype ? disasterTypes[dtype] : undefined}
+                hideEmptyValue
               />
             </div>
             <div className='tc-section'>
@@ -152,10 +154,13 @@ class ProjectDetails extends React.PureComponent {
                 label='Primary sector'
                 value={sectors[primary_sector]}
               />
-              <TextOutput
-                label='Tagging'
-                value={(secondary_sectors.map(d => secondarySectors[d])).join(', ')}
-              />
+              {secondary_sectors.length > 0 && (
+                <TextOutput
+                  label='Tagging'
+                  value={(secondary_sectors.map(d => secondarySectors[d])).join(', ')}
+                  hideEmptyValue
+                />
+              )}
             </div>
             <div className='tc-section'>
               <div className='tc-section-title'>
