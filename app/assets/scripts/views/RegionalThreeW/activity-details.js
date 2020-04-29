@@ -17,11 +17,11 @@ import { sectors } from '../../utils/constants';
 
 const emptyObject = {};
 
-function NSDetails (props) {
+function NSDetails (p) {
   const {
     sectorList,
     nsDetails,
-  } = props.data;
+  } = p.data;
 
   return (
     <div className='ns-details'>
@@ -39,12 +39,12 @@ function NSDetails (props) {
   );
 }
 
-function ActivityDetails (props) {
+function ActivityDetails (p) {
   const {
     data,
     projectsResponse,
     getProjects,
-  } = props;
+  } = p;
 
   const {
     completed_projects_count: completed,
@@ -89,7 +89,7 @@ function ActivityDetails (props) {
   return (
     <div className='regional-map-threew-activity-details'>
       <h4 className='tc-heading'>
-        <Link to={`/countries/${countryId}`}>
+        <Link to={`/countries/${countryId}#3w`}>
           { name } <MdChevronRight className='tc-icon' />
         </Link>
       </h4>
