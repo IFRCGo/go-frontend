@@ -585,20 +585,6 @@ class ProjectForm extends React.PureComponent {
             />
           </InputSection>
         )}
-        { shouldShowCurrentEmergencyOperation && (
-          <InputSection
-            title='Current emergency operation*'
-            tooltip='The list is populated from current emergency operations related to the selected country. If necessary, create the related emergency through a field report'
-          >
-            <SelectInput
-              faramElementName='event'
-              className='project-form-select'
-              options={currentEmergencyOperationOptions}
-              disabled={shouldDisableCurrentOperation}
-              placeholder={fetchingEvents ? 'Fetching events...' : undefined}
-            />
-          </InputSection>
-        )}
 
         <InputSection
           title='Activity name*'
