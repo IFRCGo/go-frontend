@@ -168,7 +168,7 @@ class ProjectForm extends React.PureComponent {
         project_country: props.countryId,
         event: projectData.event,
         dtype: projectData.dtype,
-        project_district: projectData.project_district ? projectData.project_district : 'all',
+        project_district: projectData.project_district ? projectData.project_district : undefined,
         name: projectData.name,
         operation_type: projectData.operation_type,
         primary_sector: projectData.primary_sector,
@@ -302,7 +302,7 @@ class ProjectForm extends React.PureComponent {
     }
 
     if (!start) {
-      return { status: '0' };
+      return { status: undefined };
     }
 
     const startDate = new Date(start);
@@ -426,6 +426,10 @@ class ProjectForm extends React.PureComponent {
     return schema;
   });
 
+  getFilteredSecondarySectorOptions = memoize((sector) => (
+    secondarySectorOptions.filter(d => d.value !== sector)
+  ))
+
   render () {
     const {
       countries,
@@ -479,6 +483,7 @@ class ProjectForm extends React.PureComponent {
 
     const shouldDisableTotalTarget = !isFalsy(faramValues.target_male) || !isFalsy(faramValues.target_female) || !isFalsy(faramValues.target_other);
     const shouldDisableTotalReached = !isFalsy(faramValues.reached_male) || !isFalsy(faramValues.reached_female) || !isFalsy(faramValues.reached_other);
+    const filteredSecondarySectorOptions = this.getFilteredSecondarySectorOptions(faramValues.sector);
 
     return (
       <Faram
@@ -491,7 +496,7 @@ class ProjectForm extends React.PureComponent {
         onValidationFailure={this.handleFaramValidationFailure}
       >
         <InputSection
-          title='Reporting national society *'
+          title='Reporting National Society *'
         >
           <SelectInput
             faramElementName='reporting_ns'
@@ -608,7 +613,7 @@ class ProjectForm extends React.PureComponent {
             faramElementName='secondary_sectors'
             className='project-form-select'
             label='Tagging'
-            options={secondarySectorOptions}
+            options={filteredSecondarySectorOptions}
             multi
           />
         </InputSection>
