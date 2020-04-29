@@ -167,6 +167,12 @@ export const secondarySectorList = [
     color: '#a6d854',
     inputValue: '12',
   },
+  {
+    key: '13',
+    title: 'COVID',
+    color: '#a6d854',
+    inputValue: '13',
+  },
 ];
 
 export const sectors = listToMap(sectorList, d => d.key, d => d.title);
