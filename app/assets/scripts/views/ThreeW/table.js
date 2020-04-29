@@ -6,6 +6,14 @@ import {
 } from '@togglecorp/fujs';
 import memoize from 'memoize-one';
 import url from 'url';
+import {
+  MdContentCopy,
+  MdSearch,
+  MdEdit,
+  MdDeleteForever,
+  MdHistory,
+  MdMoreHoriz,
+} from 'react-icons/md';
 
 import {
   programmeTypes,
@@ -34,7 +42,7 @@ export default class ProjectListTable extends React.PureComponent {
       },
       {
         key: 'name',
-        label: 'Project name',
+        label: 'Activity name',
       },
       {
         key: 'reporting_ns',
@@ -83,13 +91,13 @@ export default class ProjectListTable extends React.PureComponent {
           <DropdownMenu
             className='more-actions-dropdown-menu'
             dropdownContainerClassName='more-actions-dropdown-container'
-            label={<div className='ion-android-more-horizontal' />}
+            label={<MdMoreHoriz className='tc-icon' />}
           >
             <button
               className='button'
               onClick={() => this.props.onDetailsButtonClick(d)}
             >
-              <div className='tc-icon ion-android-search' />
+              <MdSearch className='tc-icon' />
               <div className='tc-label'>
                 View details
               </div>
@@ -100,7 +108,7 @@ export default class ProjectListTable extends React.PureComponent {
                   className='button'
                   onClick={() => this.props.onEditButtonClick(d)}
                 >
-                  <div className='tc-icon ion-edit' />
+                  <MdEdit className='tc-icon' />
                   <div className='tc-label'>
                     Edit
                   </div>
@@ -109,7 +117,7 @@ export default class ProjectListTable extends React.PureComponent {
                   className='button'
                   onClick={() => this.props.onCloneButtonClick(d)}
                 >
-                  <div className='tc-icon ion-ios-browsers-outline' />
+                  <MdContentCopy className='tc-icon' />
                   <div className='tc-label'>
                     Duplicate
                   </div>
@@ -118,7 +126,7 @@ export default class ProjectListTable extends React.PureComponent {
                   className='button'
                   href={url.resolve(api, `deployments/project/${d.id}/history/`)}
                 >
-                  <div className='tc-icon ion-android-time' />
+                  <MdHistory className='tc-icon' />
                   <div className='tc-label'>
                     History
                   </div>
@@ -128,7 +136,7 @@ export default class ProjectListTable extends React.PureComponent {
                   className='button delete-button'
                   onClick={() => this.props.onDeleteButtonClick(d)}
                 >
-                  <div className='tc-icon ion-ios-trash-outline' />
+                  <MdDeleteForever className='tc-icon' />
                   <div className='tc-label'>
                     Delete
                   </div>

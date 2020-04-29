@@ -28,12 +28,12 @@ const exportHeaders = [
     modifier: r => operationTypes[r.operation_type],
   },
   {
-    title: 'Programme Type',
+    title: 'Programme type',
     key: 'programme_type',
     modifier: r => programmeTypes[r.programme_type],
   },
   {
-    title: 'Project Name',
+    title: 'Activity name',
     key: 'name',
   },
   {

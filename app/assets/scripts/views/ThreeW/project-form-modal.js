@@ -4,13 +4,13 @@ import _cs from 'classnames';
 
 import ProjectForm from './project-form';
 
-function ProjectFormModal (props) {
+function ProjectFormModal (p) {
   const {
     projectData,
     countryId,
     onCloseButtonClick,
     pending,
-  } = props;
+  } = p;
 
   return (
     <Backdrop>

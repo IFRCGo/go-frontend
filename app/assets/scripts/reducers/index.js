@@ -2,6 +2,8 @@
 import { combineReducers } from 'redux';
 
 import { systemAlertsReducer } from '../components/system-alerts';
+import { createReducer } from '../utils/reducer-utils';
+
 import user from './user';
 import profile from './profile';
 import countries from './countries';
@@ -66,6 +68,11 @@ export const reducers = {
   projectForm,
   projectDelete,
   countryOverview,
+  regionalProjectsOverview: createReducer('GET_REGIONAL_PROJECTS_OVERVIEW'),
+  regionalMovementActivities: createReducer('GET_REGIONAL_MOVEMENT_ACTIVITIES'),
+  nationalSocietyActivities: createReducer('GET_NATIONAL_SOCIETY_ACTIVITIES'),
+  nationalSocietyActivitiesWoFilters: createReducer('GET_NATIONAL_SOCIETY_ACTIVITIES_WO_FILTERS'),
+  regionalProjects: createReducer('GET_REGIONAL_PROJECTS'),
   me,
 };
 

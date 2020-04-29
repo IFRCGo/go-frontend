@@ -145,7 +145,9 @@ class AdminArea extends SFPComponent {
     if (this.props.adminArea.fetching && !nextProps.adminArea.fetching) {
       hideGlobalLoading();
       if (nextProps.adminArea.error) {
-        this.props.history.push('/uhoh');
+        console.error(nextProps.adminArea.error);
+        // removed because redirect is highly misleading
+        // this.props.history.push('/uhoh');
       }
     }
 
@@ -875,9 +877,10 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state, ownProps) => ({
+  appState: state,
   me: meSelector(state),
   deleteProjectRequest: state.projectDelete,
-  projects: state.projects,
+  projects: state.projects[ownProps.match.params.id],
   projectForm: state.projectForm,
 
   adminArea: get(state.adminArea.aaData, getCountryId(ownProps.match.params.id), {

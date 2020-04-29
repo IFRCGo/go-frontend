@@ -93,7 +93,7 @@ class ProjectDetails extends React.PureComponent {
             <div className='tc-section'>
               <TextOutput
                 className='tc-project-name'
-                label='Project name'
+                label='Activity name'
                 value={name}
               />
             </div>
@@ -109,7 +109,7 @@ class ProjectDetails extends React.PureComponent {
             </div>
             <div className='tc-section'>
               <TextOutput
-                label='Project district'
+                label='Activity district'
                 value={project_district ? project_district_detail.name : 'Countrywide' }
               />
             </div>
@@ -137,10 +137,12 @@ class ProjectDetails extends React.PureComponent {
               <TextOutput
                 label='Current IFRC operation'
                 value={currentEventDetails.name}
+                hideEmptyValue
               />
               <TextOutput
                 label='Disaster type'
                 value={dtype ? disasterTypes[dtype] : undefined}
+                hideEmptyValue
               />
             </div>
             <div className='tc-section'>
@@ -152,10 +154,13 @@ class ProjectDetails extends React.PureComponent {
                 label='Primary sector'
                 value={sectors[primary_sector]}
               />
-              <TextOutput
-                label='Tagging'
-                value={(secondary_sectors.map(d => secondarySectors[d])).join(', ')}
-              />
+              {secondary_sectors.length > 0 && (
+                <TextOutput
+                  label='Tagging'
+                  value={(secondary_sectors.map(d => secondarySectors[d])).join(', ')}
+                  hideEmptyValue
+                />
+              )}
             </div>
             <div className='tc-section'>
               <div className='tc-section-title'>
@@ -165,18 +170,26 @@ class ProjectDetails extends React.PureComponent {
                 <TextOutput
                   label='Male'
                   value={target_male}
+                  type='number'
+                  addSeparatorToValue
                 />
                 <TextOutput
                   label='Female'
                   value={target_female}
+                  type='number'
+                  addSeparatorToValue
                 />
                 <TextOutput
                   label='Other'
                   value={target_other}
+                  type='number'
+                  addSeparatorToValue
                 />
                 <TextOutput
-                  label='Other'
+                  label='Total'
                   value={target_total}
+                  type='number'
+                  addSeparatorToValue
                 />
               </div>
             </div>
@@ -188,18 +201,26 @@ class ProjectDetails extends React.PureComponent {
                 <TextOutput
                   label='Male'
                   value={reached_male}
+                  type='number'
+                  addSeparatorToValue
                 />
                 <TextOutput
                   label='Female'
                   value={reached_female}
+                  type='number'
+                  addSeparatorToValue
                 />
                 <TextOutput
                   label='Other'
                   value={reached_other}
+                  type='number'
+                  addSeparatorToValue
                 />
                 <TextOutput
-                  label='Other'
+                  label='Total'
                   value={reached_total}
+                  type='number'
+                  addSeparatorToValue
                 />
               </div>
             </div>

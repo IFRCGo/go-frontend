@@ -461,17 +461,20 @@
     width: 100%;
     text-align: left;
     display: flex;
-    padding: 0;
+    align-items: center;
+    padding: 5px 0;
+    border-radius: 0;
 
     .tc-icon {
-      padding: 3px 6px;
+      padding: 0 6px;
       display: block;
+      font-size: 1.5rem;
       width: 32px;
     }
 
     .tc-label {
       display: block;
-      padding: 3px 6px;
+      padding: 0 6px;
     }
   }
 
@@ -540,25 +543,8 @@
   }
 }
 
-.three-w-region-progress-bar {
-  height: 15px;
-  border: 1px solid rgba(0, 0, 0, .1);
-
-  .three-w-region-progress-bar-progress {
-    height: 100%;
-    background-color: rgba(0, 0, 0, .5);
-  }
-}
-
 .three-w-region-district {
   padding: 10px 0;
-}
-
-.three-w-region-scale {
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
-  padding: 6px 0;
 }
 
 .tc-project-details-modal {
@@ -582,12 +568,26 @@
       padding: 24px;
     }
   }
+}
 
+.tc-project-details-modal {
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  overflow: auto;
+
+  >header {
+    display: flex;
+    align-items: center;
+
+    >h2 {
+      margin: 0;
+      padding: 24px;
+    }
+  }
   .tc-project-details {
     max-width: 1420px;
     width: 100%;
-    flex-grow: 1;
-    overflow: auto;
 
     .tc-project-name {
       padding: 0 10px;

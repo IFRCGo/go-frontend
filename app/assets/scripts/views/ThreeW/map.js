@@ -179,7 +179,7 @@ class ThreeWMap extends React.PureComponent {
 
     this.resetBounds(countryId);
     const groupedProjects = listToGroupList(
-      projectList,
+      projectList.filter(d => d.project_district),
       project => project.project_district,
       project => project,
     );

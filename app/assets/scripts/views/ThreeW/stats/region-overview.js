@@ -5,10 +5,11 @@ import {
   listToGroupList,
 } from '@togglecorp/fujs';
 
-const ProgressBar = ({
-  value,
-  max,
-}) => {
+const ProgressBar = (p) => {
+  const {
+    value,
+    max,
+  } = p;
   const width = 100 * value / max;
 
   return (
@@ -21,9 +22,15 @@ const ProgressBar = ({
   );
 };
 
-const Scale = ({ max }) => {
+const MAX_SCALE_STOPS = 5;
+
+function Scale (p) {
+  const { max } = p;
   const numbers = [];
-  for (let i = 0; i <= max; i++) {
+
+  const diff = max / MAX_SCALE_STOPS;
+
+  for (let i = 0; i <= max; i += diff) {
     numbers.push(i);
   }
 
@@ -32,7 +39,7 @@ const Scale = ({ max }) => {
       { numbers.map(n => <div key={n}>{n}</div>) }
     </div>
   );
-};
+}
 
 export default class RegionOverview extends React.PureComponent {
   render () {
@@ -49,6 +56,8 @@ export default class RegionOverview extends React.PureComponent {
 
     const projectDistrictList = Object.keys(groupedProjectList);
     const maxProjects = Math.max(...projectDistrictList.map(d => groupedProjectList[d].length));
+    const numBuckets = Math.ceil(maxProjects / MAX_SCALE_STOPS);
+    const max = numBuckets * MAX_SCALE_STOPS;
 
     return (
       <div className={_cs(className, 'three-w-stats-region-overview')}>
@@ -56,7 +65,7 @@ export default class RegionOverview extends React.PureComponent {
           Regions
         </h4>
         <Scale
-          max={maxProjects}
+          max={max}
         />
         <div>
           { projectDistrictList.map(d => {
@@ -69,11 +78,11 @@ export default class RegionOverview extends React.PureComponent {
                 className='three-w-region-district'
               >
                 <div>
-                  {regionName} ({p.length} projects)
+                  {regionName} ({p.length} activities)
                 </div>
                 <ProgressBar
                   value={p.length}
-                  max={maxProjects}
+                  max={max}
                 />
               </div>
             );

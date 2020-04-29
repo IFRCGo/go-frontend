@@ -54,7 +54,7 @@ export default class StatusOverview extends React.PureComponent {
     return (
       <div className={_cs(className, 'three-w-stats-status-overview')}>
         <h4 className='tc-heading'>
-          Project status overview
+          Activity status overview
         </h4>
         <div className='tc-content'>
           <ResponsiveContainer>

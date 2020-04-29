@@ -13,4 +13,18 @@
     padding: 3px 6px;
     font-weight: bold;
   }
+
+  &.tc-text-output-reversed {
+    .tc-label {
+      order: 2;
+
+      &:after {
+        content: unset;
+      }
+    }
+
+    .tc-value {
+      order: 1;
+    }
+  }
 }

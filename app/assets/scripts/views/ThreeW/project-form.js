@@ -16,6 +16,7 @@ import TextInput from '../../components/form-elements/text-input';
 import NumberInput from '../../components/form-elements/number-input';
 import DateInput from '../../components/form-elements/date-input';
 import Checkbox from '../../components/form-elements/faram-checkbox';
+import TextOutput from '../../components/text-output';
 
 import {
   getCountries,
@@ -29,16 +30,13 @@ import {
 } from '../../utils/field-report-constants';
 
 import {
-  statusList,
+  // statusList,
   statuses,
   sectorList,
   secondarySectorInputValues,
   secondarySectorList,
-  sectorInputValues,
   programmeTypeList,
-  programmeTypes,
   operationTypeList,
-  operationTypes,
   projectVisibilityList,
 } from '../../utils/constants';
 
@@ -52,10 +50,12 @@ const positiveIntegerCondition = (value) => {
 
 const compareString = (a, b) => a.label.localeCompare(b.label);
 
+/*
 const statusOptions = statusList.map(p => ({
-  value: p.title,
+  value: p.key,
   label: p.title,
 })).sort(compareString);
+*/
 
 const sectorOptions = sectorList.map(p => ({
   value: p.inputValue,
@@ -68,7 +68,7 @@ const secondarySectorOptions = secondarySectorList.map(p => ({
 })).sort(compareString);
 
 const programmeTypeOptions = programmeTypeList.map(p => ({
-  value: p.title,
+  value: p.key,
   label: p.title,
 })).sort(compareString);
 
@@ -170,9 +170,9 @@ class ProjectForm extends React.PureComponent {
         dtype: projectData.dtype,
         project_district: projectData.project_district ? projectData.project_district : 'all',
         name: projectData.name,
-        operation_type: operationTypes[projectData.operation_type],
-        primary_sector: sectorInputValues[projectData.primary_sector],
-        programme_type: programmeTypes[projectData.programme_type],
+        operation_type: projectData.operation_type,
+        primary_sector: projectData.primary_sector,
+        programme_type: projectData.programme_type,
         end_date: projectData.end_date,
         start_date: projectData.start_date,
         reached_other: projectData.reached_other || undefined,
@@ -182,7 +182,7 @@ class ProjectForm extends React.PureComponent {
         reporting_ns: projectData.reporting_ns,
         secondary_sectors: projectData.secondary_sectors ? projectData.secondary_sectors.map(d => secondarySectorInputValues[d]) : [],
         is_project_completed: projectData.status === 2,
-        status: statuses[projectData.status],
+        status: projectData.status,
         target_other: projectData.target_other || undefined,
         target_female: projectData.target_female || undefined,
         target_male: projectData.target_male || undefined,
@@ -280,7 +280,7 @@ class ProjectForm extends React.PureComponent {
     }));
 
     const operationToDisasterMap = {};
-    currentOperationList.forEach(d => { operationToDisasterMap[d.id] = d.dtype.id; });
+    currentOperationList.forEach(d => { operationToDisasterMap[d.id] = (d.dtype || {}).id; });
 
     const currentEmergencyOperationOptions = currentOperationList
       .filter(d => d.auto_generated_source === 'New field report')
@@ -298,21 +298,21 @@ class ProjectForm extends React.PureComponent {
 
   getProjectStatusFaramValue = memoize((start, isCompleted) => {
     if (isCompleted) {
-      return { status: 'Completed' };
+      return { status: '2' };
     }
 
     if (!start) {
-      return { status: 'Planned' };
+      return { status: '0' };
     }
 
     const startDate = new Date(start);
     const today = new Date();
 
     if (startDate.getTime() <= today.getTime()) {
-      return { status: 'Ongoing' };
+      return { status: '1' };
     }
 
-    return { status: 'Planned' };
+    return { status: '0' };
   })
 
   getTargetedTotalFaramValue = memoize((male, female, other) => {
@@ -452,6 +452,7 @@ class ProjectForm extends React.PureComponent {
 
     const fetchingCountries = countries && countries.fetching;
     const shouldDisableCountryInput = fetchingCountries;
+
     const fetchingDistricts = districts && districts[faramValues.project_country] && districts[faramValues.project_country].fetching;
     const shouldDisableDistrictInput = fetchingCountries || fetchingDistricts;
     const fetchingEvents = eventList && eventList.fetching;
@@ -584,9 +585,23 @@ class ProjectForm extends React.PureComponent {
             />
           </InputSection>
         )}
+        { shouldShowCurrentEmergencyOperation && (
+          <InputSection
+            title='Current emergency operation*'
+            tooltip='The list is populated from current emergency operations related to the selected country. If necessary, create the related emergency through a field report'
+          >
+            <SelectInput
+              faramElementName='event'
+              className='project-form-select'
+              options={currentEmergencyOperationOptions}
+              disabled={shouldDisableCurrentOperation}
+              placeholder={fetchingEvents ? 'Fetching events...' : undefined}
+            />
+          </InputSection>
+        )}
 
         <InputSection
-          title='Project name*'
+          title='Activity name*'
         >
           <TextInput
             faramElementName='name'
@@ -629,23 +644,20 @@ class ProjectForm extends React.PureComponent {
         <InputSection
           className='multi-input-section'
           title='Budget and status*'
-          helpText='"Project status" is automatically calculated based on the values from "Start and end dates" above and can be marked as complete from the "Completed" checkbox.'
+          helpText='"Activity status" is automatically calculated based on the values from "Start and end dates" above and can be marked as complete from the "Completed" checkbox.'
         >
           <NumberInput
-            label='Project budget (CHF)'
+            label='Activity budget (CHF)'
             faramElementName='budget_amount'
           />
           <div>
-            <SelectInput
-              disabled
-              faramElementName='status'
-              className='project-form-select'
-              label='Project status'
-              options={statusOptions}
-            />
             <Checkbox
               label="Completed"
               faramElementName="is_project_completed"
+            />
+            <TextOutput
+              label='Activity status'
+              value={statuses[faramValues.status]}
             />
           </div>
         </InputSection>
@@ -698,7 +710,7 @@ class ProjectForm extends React.PureComponent {
           />
         </InputSection>
         <InputSection
-          title='Project visibility*'
+          title='Activity visibility*'
         >
           <SelectInput
             faramElementName='visibility'
