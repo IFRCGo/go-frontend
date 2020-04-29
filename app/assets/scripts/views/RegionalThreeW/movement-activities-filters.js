@@ -6,6 +6,7 @@ import SelectInput from '../../components/form-elements/select-input';
 import {
   statusList,
   sectorList,
+  secondarySectorList,
   programmeTypeList,
   operationTypeList,
 } from '../../utils/constants';
@@ -18,6 +19,11 @@ const programmeTypeOptions = programmeTypeList.map(p => ({
 })).sort(compareString);
 
 const sectorsOfActivityOptions = sectorList.map(p => ({
+  value: p.inputValue,
+  label: p.title,
+})).sort(compareString);
+
+const tagOptions = secondarySectorList.map(p => ({
   value: p.inputValue,
   label: p.title,
 })).sort(compareString);
@@ -58,28 +64,35 @@ function MovementActivitiesFilters (p) {
       <SelectInput
         faramElementName='operation_type'
         label='Operation type'
-        placeholder='All operation types'
+        placeholder='All Operation Types'
         options={operationTypeOptions}
         className='select-input'
       />
       <SelectInput
         faramElementName='programme_type'
         label='Programme type'
-        placeholder='All programme types'
+        placeholder='All Programme Types'
         options={programmeTypeOptions}
         className='select-input'
       />
       <SelectInput
         faramElementName='primary_sector'
         label='Sectors of Activity'
-        placeholder='All sectors'
+        placeholder='All Sectors'
         options={sectorsOfActivityOptions}
+        className='select-input'
+      />
+      <SelectInput
+        faramElementName='primary_sector'
+        label='Tag'
+        placeholder='All Tags'
+        options={tagOptions}
         className='select-input'
       />
       <SelectInput
         faramElementName='status'
         label='Status'
-        placeholder='All status'
+        placeholder='All-Status'
         options={statusOptions}
         className='select-input'
       />

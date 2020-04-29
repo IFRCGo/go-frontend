@@ -169,7 +169,7 @@ export const secondarySectorList = [
   },
   {
     key: '13',
-    title: 'COVID',
+    title: 'COVID-19',
     color: '#a6d854',
     inputValue: '13',
   },

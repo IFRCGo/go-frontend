@@ -235,7 +235,9 @@ class ThreeWMap extends React.PureComponent {
 
   handleMapClick = (e) => {
     const { projectList } = this.props;
-    const projectDistrictList = projectList.map(d => d.project_district);
+    const projectDistrictList = projectList
+      .filter(d => d.project_district)
+      .map(d => d.project_district);
 
     const features = this.map.queryRenderedFeatures(
       e.point,
