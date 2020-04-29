@@ -91,14 +91,14 @@ const filterPaths = {
   type: 'activity.activity'
 };
 
-const getCountryId = memoize(idOrName => {
+const getCountryId = idOrName => {
   // If country name
   if (isNaN(idOrName)) {
     const countryMeta = countries.find(d => d.label.toLowerCase() === decodeURI(idOrName.toLowerCase()));
     return countryMeta !== undefined ? countryMeta.value : idOrName;
   }
   return idOrName;
-});
+};
 
 class AdminArea extends SFPComponent {
   // Methods form SFPComponent:
@@ -137,9 +137,12 @@ class AdminArea extends SFPComponent {
 
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps (nextProps) {
-    if (getCountryId(this.props.match.params.id) !== getCountryId(nextProps.match.params.id)) {
+    const newCountryId = getCountryId(nextProps.match.params.id);
+    const oldCountryId = getCountryId(this.props.match.params.id);
+    if (oldCountryId !== newCountryId) {
       // this.getData(nextProps);
-      this.loadCountry(nextProps, getCountryId(nextProps.match.params.id));
+      this.loadCountry(nextProps, newCountryId);
+      this.props._getProjects(newCountryId, this.threeWFilters);
     }
 
     if (this.props.adminArea.fetching && !nextProps.adminArea.fetching) {
@@ -159,7 +162,7 @@ class AdminArea extends SFPComponent {
       nextProps.deleteProjectRequest.error === null;
 
     if (newProjectAdded || projectDeleted) {
-      this.props._getProjects(this.props.match.params.id, this.threeWFilters);
+      this.props._getProjects(newCountryId, this.threeWFilters);
       this.setState({ showProjectForm: false });
     }
   }
@@ -182,8 +185,9 @@ class AdminArea extends SFPComponent {
 
   componentDidMount () {
     this.componentIsLoading = true;
-    this.loadCountry(this.props, getCountryId(this.props.match.params.id));
-    this.props._getProjects(this.props.match.params.id, this.threeWFilters);
+    const countryId = getCountryId(this.props.match.params.id);
+    this.loadCountry(this.props, countryId);
+    this.props._getProjects(countryId, this.threeWFilters);
     this.props._getMe();
   }
   // Sets default tab if url param is blank or incorrect
@@ -359,7 +363,7 @@ class AdminArea extends SFPComponent {
 
   handleThreeWFilterChange = (filterValues) => {
     this.threeWFilters = filterValues;
-    this.props._getProjects(this.props.match.params.id, filterValues);
+    this.props._getProjects(getCountryId(this.props.match.params.id), filterValues);
   }
 
   handleProjectAddButtonClick = () => {
@@ -769,7 +773,7 @@ class AdminArea extends SFPComponent {
                     <PreparednessWorkPlan getPerWorkPlan={this.props.getPerWorkPlan} />)
                     : <ErrorPanel title='Preparedness Work Plan' errorMessage={ NO_DATA } />}
                   {this.props.getPerUploadedDocuments.fetched ? (
-                    <PreparednessPhaseOutcomes getPerUploadedDocuments={this.props.getPerUploadedDocuments} countryId={this.props.match.params.id} />)
+                    <PreparednessPhaseOutcomes getPerUploadedDocuments={this.props.getPerUploadedDocuments} countryId={getCountryId(this.props.match.params.id)} />)
                     : <ErrorPanel title='Preparedness Phase Outcomes' errorMessage={ NO_DATA } />}
                 </TabContent>
               </TabPanel>
@@ -880,7 +884,7 @@ const selector = (state, ownProps) => ({
   appState: state,
   me: meSelector(state),
   deleteProjectRequest: state.projectDelete,
-  projects: state.projects[ownProps.match.params.id],
+  projects: state.projects[getCountryId(ownProps.match.params.id)],
   projectForm: state.projectForm,
 
   adminArea: get(state.adminArea.aaData, getCountryId(ownProps.match.params.id), {

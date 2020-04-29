@@ -51,7 +51,7 @@ function NSActivitiesFilters (p) {
       <SelectInput
         faramElementName='reporting_ns'
         label='Supporting NS'
-        placeholder='Select supporting NS'
+        placeholder='Select Who (Reporting NS)'
         options={supportingNSOptions}
         className='select-input'
         multi
@@ -59,7 +59,7 @@ function NSActivitiesFilters (p) {
       <SelectInput
         faramElementName='primary_sector'
         label='Activity'
-        placeholder='Select activity'
+        placeholder='Select What (Sectors)'
         options={activityOptions}
         className='select-input'
         multi
@@ -67,7 +67,7 @@ function NSActivitiesFilters (p) {
       <SelectInput
         faramElementName='project_country'
         label='Receiving NS'
-        placeholder='Select receiving NS'
+        placeholder='Select Where (Country)'
         options={receivingNSOptions}
         className='select-input'
         multi
