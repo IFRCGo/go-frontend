@@ -52,7 +52,7 @@ export default class SectorActivity extends React.PureComponent {
     return (
       <div className={_cs(className, 'three-w-stats-sector-activity')}>
         <h4 className='tc-heading'>
-          Projects by sector of activity
+          Activities by sector
         </h4>
         <div className='tc-content'>
           <ResponsiveContainer>

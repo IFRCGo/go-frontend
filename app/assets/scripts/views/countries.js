@@ -877,6 +877,7 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state, ownProps) => ({
+  appState: state,
   me: meSelector(state),
   deleteProjectRequest: state.projectDelete,
   projects: state.projects[ownProps.match.params.id],

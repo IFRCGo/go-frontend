@@ -11,22 +11,13 @@ export default function reducer (state = initialState, action) {
   let newState = { ...state };
   switch (action.type) {
     case 'GET_PROJECTS_INFLIGHT':
-      newState[action.countryId] = {
-        ...newState[action.countryId],
-        ...stateInflight(state, action),
-      };
+      newState[action.countryId] = stateInflight(state, action);
       break;
     case 'GET_PROJECTS_FAILED':
-      newState[action.countryId] = {
-        ...newState[action.countryId],
-        ...stateError(state, action),
-      };
+      newState[action.countryId] = stateError(state, action);
       break;
     case 'GET_PROJECTS_SUCCESS':
-      newState[action.countryId] = {
-        ...newState[action.countryId],
-        ...stateSuccess(state, action),
-      };
+      newState[action.countryId] = stateSuccess(state, action);
       break;
   }
 

@@ -1,10 +1,12 @@
 import React from 'react';
 import _cs from 'classnames';
 
-import { isDefined } from '@togglecorp/fujs';
-
 import FormattedNumber from './formatted-number';
 import FormattedDate from './formatted-date';
+
+const isValueEmpty = (value) => (
+  value === null || value === '' || value === undefined
+);
 
 function TextOutput (p) {
   const {
@@ -20,7 +22,7 @@ function TextOutput (p) {
   } = p;
 
   return (
-    (!isDefined(value) && hideEmptyValue) ? (
+    (hideEmptyValue && isValueEmpty(value)) ? (
       null
     ) : (
       <div className={_cs(

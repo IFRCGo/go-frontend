@@ -53,7 +53,7 @@ const positiveIntegerCondition = (value) => {
 const compareString = (a, b) => a.label.localeCompare(b.label);
 
 const statusOptions = statusList.map(p => ({
-  value: p.title,
+  value: p.key,
   label: p.title,
 })).sort(compareString);
 
@@ -68,7 +68,7 @@ const secondarySectorOptions = secondarySectorList.map(p => ({
 })).sort(compareString);
 
 const programmeTypeOptions = programmeTypeList.map(p => ({
-  value: p.title,
+  value: p.key,
   label: p.title,
 })).sort(compareString);
 
@@ -280,7 +280,7 @@ class ProjectForm extends React.PureComponent {
     }));
 
     const operationToDisasterMap = {};
-    currentOperationList.forEach(d => { operationToDisasterMap[d.id] = d.dtype.id; });
+    currentOperationList.forEach(d => { operationToDisasterMap[d.id] = (d.dtype || {}).id; });
 
     const currentEmergencyOperationOptions = currentOperationList
       .filter(d => d.auto_generated_source === 'New field report')
@@ -298,21 +298,21 @@ class ProjectForm extends React.PureComponent {
 
   getProjectStatusFaramValue = memoize((start, isCompleted) => {
     if (isCompleted) {
-      return { status: 'Completed' };
+      return { status: '2' };
     }
 
     if (!start) {
-      return { status: 'Planned' };
+      return { status: '0' };
     }
 
     const startDate = new Date(start);
     const today = new Date();
 
     if (startDate.getTime() <= today.getTime()) {
-      return { status: 'Ongoing' };
+      return { status: '1' };
     }
 
-    return { status: 'Planned' };
+    return { status: '0' };
   })
 
   getTargetedTotalFaramValue = memoize((male, female, other) => {
