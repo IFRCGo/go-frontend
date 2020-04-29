@@ -7,6 +7,10 @@
     background: none;
   }
 
+  .page__body {
+    margin-bottom: 0;
+  }
+
   .inpage__body {
   	//p {
   		//width: 80%;
@@ -72,6 +76,7 @@
 }
 
 .fold--about-iframe-video {
+  box-shadow: none;
   margin-bottom: $global-spacing-3;
   padding-bottom: $global-spacing-2;
 }
@@ -167,7 +172,7 @@
 }
 
 .about__video__carousel__each__subheading {
-  font-size: $font-size-xs;  
+  font-size: $font-size-sm;  
 }
 
 .about__resources__block {
