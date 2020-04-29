@@ -174,7 +174,7 @@ function Map (props) {
             <div className='supporting-ns' key={d.name}>
               <div className='tc-label'>
                 <div className='tc-name'>
-                  <Link to={`/countries/${d.id}`}>
+                  <Link to={`/countries/${d.id}#3w`}>
                     { d.name }
                   </Link>
                 </div>
