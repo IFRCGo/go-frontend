@@ -59,7 +59,7 @@ function NSActivitiesFilters (p) {
       <SelectInput
         faramElementName='primary_sector'
         label='Activity'
-        placeholder='Select What (Sectors)'
+        placeholder='Select What (Sector)'
         options={activityOptions}
         className='select-input'
         multi
