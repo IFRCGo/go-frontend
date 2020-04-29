@@ -21,6 +21,7 @@ export function dataPathToDisplay (path, keyword) {
     districts: 'Areas',
     status: 'Status',
     disasterType: 'Disaster Type',
+    startDate: 'Start Date',
     event: 'Event',
     sources: 'Sources',
     description: 'Brief Description of the Situation',
@@ -37,11 +38,16 @@ export function dataPathToDisplay (path, keyword) {
     'numPotentiallyAffected': 'Estimation Potentially Affected',
     'numHighestRisk': 'Estimation Highest Risk',
     'affectedPopCentres': 'Affected Pop Centres',
+    'cases': 'Cases',
+    'suspectedCases': 'Suspected Cases',
+    'probableCases': 'Probable Cases',
+    'confirmedCases': 'Confirmed Cases',
     numAssistedGov: 'Assisted by Government',
     numAssistedRedCross: 'Assisted By Red Cross',
     numLocalStaff: 'Number of local staff involved',
     numVolunteers: 'Number of volunteers involved',
     numExpats: 'Number of expats/delegates',
+    sitFieldsDate: 'Data of Data',
 
     // Step 3.
     // No validation for step 3.
@@ -120,6 +126,10 @@ export function prepStateForValidation (state) {
     numPotentiallyAffected: (val) => val.map(objPropToNum('estimation')),
     numHighestRisk: (val) => val.map(objPropToNum('estimation')),
     affectedPopCentres: (val) => val.map(objPropToStr('estimation')),
+    cases: (val) => val.map(objPropToNum('estimation')),
+    suspectedCases: (val) => val.map(objPropToNum('estimation')),
+    probableCases: (val) => val.map(objPropToNum('estimation')),
+    confirmedCases: (val) => val.map(objPropToNum('estimation')),
     numAssistedGov: toNumIfNum,
     numAssistedRedCross: toNumIfNum,
     numLocalStaff: toNumIfNum,
@@ -156,7 +166,8 @@ export function convertStateToPayload (originalState) {
     disasterType,
     districts,
     event,
-    startDate
+    startDate,
+    sitFieldsDate
   } = originalState;
 
   // Process properties.
@@ -166,8 +177,9 @@ export function convertStateToPayload (originalState) {
   if (event && event.value) { state.event = +event.value; }
   if (country) { state.countries = [country.value]; }
 
-  // set start_date to DateTime format
+  // set date inputs to DateTime format
   if (startDate) { state.start_date = startDate + 'T00:00:00+00:00'; }
+  if (sitFieldsDate) { state.sit_fields_date = sitFieldsDate + 'T00:00:00+00:00'; }
 
   const directMapping = [
     // [source, destination]
@@ -178,6 +190,7 @@ export function convertStateToPayload (originalState) {
     ['bulletin', 'bulletin'],
     ['numAssistedRedCross', 'num_assisted', Number],
     ['numAssistedGov', 'gov_num_assisted', Number],
+    ['numAssistedMinistryOfHealth', 'health_min_num_assisted', Number],
     ['numLocalStaff', 'num_localstaff', Number],
     ['numVolunteers', 'num_volunteers', Number],
     ['numExpats', 'num_expats_delegates', Number],
@@ -204,7 +217,11 @@ export function convertStateToPayload (originalState) {
     ['numDisplaced', 'num_displaced'],
     ['numPotentiallyAffected', 'num_potentially_affected'],
     ['numHighestRisk', 'num_highest_risk'],
-    ['affectedPopCentres', 'affected_pop_centres']
+    ['affectedPopCentres', 'affected_pop_centres'],
+    ['cases', 'cases'],
+    ['suspectedCases', 'suspected_cases'],
+    ['probableCases', 'probable_cases'],
+    ['confirmedCases', 'confirmed_cases']
   ];
 
   sourceEstimationMapping.forEach(([src, dest]) => {
@@ -214,6 +231,10 @@ export function convertStateToPayload (originalState) {
         state[dest] = o.estimation;
       } else if (o.source === 'government') {
         state[`gov_${dest}`] = o.estimation;
+      } else if (o.source === 'ministry-of-health') {
+        state[`health_min_${dest}`] = o.estimation;
+      } else if (o.source === 'world-health-organization') {
+        state[`who_${dest}`] = o.estimation;
       } else if (o.source === 'other') {
         state[`other_${dest}`] = o.estimation;
       }
@@ -306,7 +327,6 @@ export function convertStateToPayload (originalState) {
     state[eru.type] = eru.status;
     state[eru.type + '_units'] = eru.units;
   });
-
   return state;
 }
 
@@ -355,6 +375,14 @@ export function getInitialDataState () {
     numPotentiallyAffected: [{ estimation: undefined, source: undefined }],
     numHighestRisk: [{ estimation: undefined, source: undefined }],
     affectedPopCentres: [{ estimation: undefined, source: undefined }],
+
+    cases: [{ estimation: undefined, source: undefined }],
+    suspectedCases: [{ estimation: undefined, source: undefined }],
+    probableCases: [{ estimation: undefined, source: undefined }],
+    confirmedCases: [{ estimation: undefined, source: undefined }],
+
+    sitFieldsDate: undefined,
+
     numAssistedGov: undefined,
     numAssistedRedCross: undefined,
     numLocalStaff: undefined,
@@ -426,8 +454,12 @@ export function convertFieldReportToState (fieldReport, stateData) {
     };
   }
 
+  // get just YYYY-MM-DD from the full date timestamp
   if (fieldReport.start_date) {
-    state.startDate = fieldReport.start_date.split('T')[0]; // get just YYYY-MM-DD from the full date timestamp
+    state.startDate = fieldReport.start_date.split('T')[0];
+  }
+  if (fieldReport.sit_fields_date) {
+    state.sitFieldsDate = fieldReport.sit_fields_date.split('T')[0];
   }
   // Everything not an early warning is an event.
   state.status = fieldReport.status !== parseInt(formData.statusEarlyWarning.value)
@@ -440,6 +472,7 @@ export function convertFieldReportToState (fieldReport, stateData) {
     ['description', 'description'],
     ['other_sources', 'otherSources'],
     ['num_assisted', 'numAssistedRedCross'],
+    ['health_min_num_assisted', 'numAssistedMinistryOfHealth'],
     ['gov_num_assisted', 'numAssistedGov'],
     ['num_localstaff', 'numLocalStaff'],
     ['num_volunteers', 'numVolunteers'],
@@ -470,7 +503,11 @@ export function convertFieldReportToState (fieldReport, stateData) {
     ['num_displaced', 'numDisplaced'],
     ['num_potentially_affected', 'numPotentiallyAffected'],
     ['num_highest_risk', 'numHighestRisk'],
-    ['affected_pop_centres', 'affectedPopCentres']
+    ['affected_pop_centres', 'affectedPopCentres'],
+    ['cases', 'cases'],
+    ['suspected_cases', 'suspectedCases'],
+    ['probable_cases', 'probableCases'],
+    ['confirmed_cases', 'confirmedCases']
   ];
 
   sourceEstimationMapping.forEach(([src, dest]) => {
@@ -481,16 +518,28 @@ export function convertFieldReportToState (fieldReport, stateData) {
         estimation: fieldReport[src].toString()
       });
     }
-    if (fieldReport[`gov_${src}`] !== null) {
+    if (fieldReport[`gov_${src}`]) {
       sourceEstimation.push({
         source: 'government',
         estimation: fieldReport[`gov_${src}`].toString()
       });
     }
-    if (fieldReport[`other_${src}`] !== null) {
+    if (fieldReport[`other_${src}`]) {
       sourceEstimation.push({
         source: 'other',
         estimation: fieldReport[`other_${src}`].toString()
+      });
+    }
+    if (fieldReport[`health_min_${src}`]) {
+      sourceEstimation.push({
+        source: 'ministry-of-health',
+        estimation: fieldReport[`health_min_${src}`].toString()
+      });
+    }
+    if (fieldReport[`who_${src}`]) {
+      sourceEstimation.push({
+        source: 'world-health-organization',
+        estimation: fieldReport[`who_${src}`].toString()
       });
     }
     if (sourceEstimation.length) {
@@ -612,7 +661,8 @@ export function filterActions (actions, actionType, status) {
   }).map(action => {
     return {
       value: action.id,
-      label: action.name
+      label: action.name,
+      category: action.category,
     };
   });
 }

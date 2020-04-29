@@ -1,6 +1,6 @@
 {
   "name": "go-frontend",
-  "version": "4.1.2",
+  "version": "4.2.3",
   "description": "",
   "repository": {
     "type": "git",
@@ -20,7 +20,7 @@
     "serve": "NODE_ENV=development gulp collecticons && NODE_ENV=development gulp serve",
     "build-staging": "NODE_ENV=staging gulp",
     "build-prod": "NODE_ENV=production gulp",
-    "deploy-surge": "branch=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD); surge -p dist/ -d https://ifrc-go-${branch////-}.surge.sh",
+    "deploy-surge": "branch=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD); cp dist/index.html dist/200.html; surge -p dist/ -d https://ifrc-go-${branch////-}.surge.sh",
     "teardown-surge": "branch=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD); surge teardown https://ifrc-go-${branch////-}.surge.sh",
     "deploy-staging": "AZURE_CONNECTIONS_STRING=$staging_connection_string node .build_scripts/az-upload.js ./dist",
     "deploy-prod": "AZURE_CONNECTIONS_STRING=$production_connection_string node .build_scripts/az-upload.js ./dist",
@@ -128,7 +128,7 @@
   },
   "dependencies": {
     "@togglecorp/faram": "^1.2.1",
-    "@togglecorp/fujs": "1.8.1-beta.0",
+    "@togglecorp/fujs": "^1.9.0",
     "@turf/bbox": "^6.0.1",
     "@turf/centroid": "^6.0.2",
     "acorn": "^6.0.0",
@@ -136,6 +136,7 @@
     "ajv-keywords": "^2.1.1",
     "chroma-js": "^1.3.5",
     "classnames": "^2.2.5",
+    "file-saver": "^2.0.2",
     "gulp-uglify-es": "^1.0.4",
     "hoist-non-react-statics": "^3.3.0",
     "html2canvas": "1.0.0-rc.1",
@@ -167,6 +168,7 @@
     "react-device-detect": "^1.11.14",
     "react-dom": "^16.9.0",
     "react-helmet": "^5.2.0",
+    "react-icons": "^3.10.0",
     "react-markdown": "^3.3.4",
     "react-paginate": "^5.0.0",
     "react-redux": "^5.0.6",

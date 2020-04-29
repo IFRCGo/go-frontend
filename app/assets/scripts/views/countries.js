@@ -1,13 +1,11 @@
 import React from 'react';
-import memoize from 'memoize-one';
-import { PropTypes as T } from 'prop-types';
+import memoize from 'memoize-one'; import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { DateTime } from 'luxon';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import { Helmet } from 'react-helmet';
-// import _cs from 'classnames';
 import url from 'url';
 
 import { countries } from '../utils/field-report-constants';
@@ -39,8 +37,9 @@ import {
   getProjects,
   getAppealsListStats,
   getMe,
+  deleteProject,
 } from '../actions';
-// import { meSelector } from '../selectors';
+import { meSelector } from '../selectors';
 
 import { getFdrs } from '../actions/query-external';
 // import { getBoundingBox } from '../utils/country-bounding-box';
@@ -73,17 +72,17 @@ import { getRegionById } from '../utils/region-constants';
 // import { getRegionSlug } from '../utils/region-constants';
 import { getISO3 } from '../utils/country-iso';
 
-// import ThreeW from './ThreeW';
+import ThreeW from './ThreeW';
 // import CountryOverview from './CountryOverview';
-// import ProjectForm from './ThreeW/project-form';
-// import ProjectDetails from './ThreeW/project-details';
+import ProjectFormModal from './ThreeW/project-form-modal';
+import ProjectDetails from './ThreeW/project-details';
 
 const emptyList = [];
 const emptyObject = {};
 
 const TAB_DETAILS = [
   { title: 'Operations', hash: '#operations' },
-  // { title: '3w', hash: '#3w' },
+  { title: '3w', hash: '#3w' },
   // { title: 'Country Overview', hash: '#overview' },
   { title: 'Preparedness', hash: '#preparedness' },
   { title: 'Additional Information', hash: '#additional' }
@@ -141,46 +140,53 @@ class AdminArea extends SFPComponent {
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps (nextProps) {
     if (getCountryId(this.props.match.params.id) !== getCountryId(nextProps.match.params.id)) {
-      this.getData(nextProps);
-      return this.getAdmArea(nextProps.type, getCountryId(nextProps.match.params.id));
+      // this.getData(nextProps);
+      this.loadCountry(nextProps, getCountryId(nextProps.match.params.id));
     }
 
     if (this.props.adminArea.fetching && !nextProps.adminArea.fetching) {
       hideGlobalLoading();
       if (nextProps.adminArea.error) {
-        this.props.history.push('/uhoh');
+        console.error(nextProps.adminArea.error);
+        // removed because redirect is highly misleading
+        // this.props.history.push('/uhoh');
       }
     }
 
-    /*
-    if (this.props.projectForm.fetching === true &&
+    const newProjectAdded = this.props.projectForm.fetching === true &&
       nextProps.projectForm.fetching === false &&
-      nextProps.projectForm.error === null
-    ) {
-      // new project was successfully added
+      nextProps.projectForm.error === null;
+    const projectDeleted = this.props.deleteProjectRequest.fetching === true &&
+      nextProps.deleteProjectRequest.fetching === false &&
+      nextProps.deleteProjectRequest.error === null;
+
+    if (newProjectAdded || projectDeleted) {
       this.props._getProjects(this.props.match.params.id, this.threeWFilters);
       this.setState({ showProjectForm: false });
     }
-    */
+  }
+
+  loadCountry (props, countryId) {
+    this.getData(props);
+    this.getAdmArea(props.type, getCountryId(countryId));
+    this.props._getPerNsPhase(countryId);
+    this.props._getPerOverviewForm(countryId);
+    this.props._getPerWorkPlan(countryId);
+    this.props._getPerDocuments();
+    this.props._getPerDocument(null, countryId);
+    this.props._getPerUploadedDocuments(countryId);
+    if (typeof props.user.username !== 'undefined' && props.user.username !== null) {
+      this.props._getPerMission();
+    }
+    // setting the default tab needs to happen in the "next tick"
+    setTimeout(() => { this.displayTabContent(); }, 0);
   }
 
   componentDidMount () {
     this.componentIsLoading = true;
-    this.displayTabContent();
-    this.getData(this.props);
-    this.getAdmArea(this.props.type, getCountryId(this.props.match.params.id));
-    this.props._getPerNsPhase(this.props.match.params.id);
-    this.props._getPerOverviewForm(this.props.match.params.id);
-    this.props._getPerWorkPlan(this.props.match.params.id);
-    this.props._getPerDocuments();
-    this.props._getPerDocument(null, this.props.match.params.id);
-    this.props._getPerUploadedDocuments(this.props.match.params.id);
-    // this.props._getProjects(this.props.match.params.id, this.threeWFilters);
-    // this.props._getMe();
-
-    if (typeof this.props.user.username !== 'undefined' && this.props.user.username !== null) {
-      this.props._getPerMission();
-    }
+    this.loadCountry(this.props, getCountryId(this.props.match.params.id));
+    this.props._getProjects(this.props.match.params.id, this.threeWFilters);
+    this.props._getMe();
   }
   // Sets default tab if url param is blank or incorrect
   displayTabContent () {
@@ -223,6 +229,7 @@ class AdminArea extends SFPComponent {
   syncLoadingAnimation = memoize((
     projects = emptyObject,
     projectForm = emptyObject,
+    deleteProject = emptyObject,
     adminArea = emptyObject,
     fdrs = emptyObject,
     perForm = emptyObject,
@@ -230,6 +237,7 @@ class AdminArea extends SFPComponent {
   ) => {
     const shouldShowLoadingAnimation = projects.fetching ||
       projectForm.fetching ||
+      deleteProject.fetching ||
       adminArea.fetching ||
       fdrs.fetching ||
       perForm.fetching ||
@@ -266,15 +274,6 @@ class AdminArea extends SFPComponent {
       };
       links.push(ifrcLink);
     }
-
-    // TODO: check if those constants with the slugs are really needed for anything else
-    // if (regionSlug) {
-    //   const ifrcLink = {
-    //     'text': `${adminArea.data.name} on IFRC.org`,
-    //     'url': `https://www.ifrc.org/en/news-and-media/news-stories/${regionSlug}/${countryLower}/`
-    //   };
-    //   links.push(ifrcLink);
-    // }
 
     if (iso3) {
       const reliefWebLink = {
@@ -379,11 +378,29 @@ class AdminArea extends SFPComponent {
     });
   }
 
+  handleProjectCloneButtonClick = (project) => {
+    const {
+      id,
+      ...otherDetails
+    } = project;
+
+    this.setState({
+      showProjectForm: true,
+      projectToEdit: {...otherDetails},
+    });
+  }
+
   handleProjectDetailsButtonClick = (project) => {
     this.setState({
       showProjectDetails: true,
       projectToShowDetails: project,
     });
+  }
+
+  handleProjectDeleteButtonClick = (project) => {
+    if (window.confirm('Are you sure you want to delete the project?')) {
+      this.props._deleteProject(project.id);
+    }
   }
 
   renderAppeals () {
@@ -718,9 +735,8 @@ class AdminArea extends SFPComponent {
                   />
                 </TabContent>
               </TabPanel>
-              {/*
               <TabPanel>
-                <TabContent>
+                <TabContent title="3W">
                   <ThreeW
                     disabled={this.loading}
                     projectList={this.getProjectList(this.props.projects)}
@@ -729,15 +745,18 @@ class AdminArea extends SFPComponent {
                     onAddButtonClick={this.handleProjectAddButtonClick}
                     user={this.props.me}
                     onEditButtonClick={this.handleProjectEditButtonClick}
+                    onCloneButtonClick={this.handleProjectCloneButtonClick}
                     onDetailsButtonClick={this.handleProjectDetailsButtonClick}
+                    onDeleteButtonClick={this.handleProjectDeleteButtonClick}
                   />
                 </TabContent>
               </TabPanel>
+              {/*
               <TabPanel>
                 <TabContent title='Overview'>
                   <CountryOverview
                     countryId={getCountryId(this.props.match.params.id)}
-                    user={this.props.me}
+                    user={this.props.user}
                   />
                 </TabContent>
               </TabPanel>
@@ -784,20 +803,12 @@ class AdminArea extends SFPComponent {
     );
   }
 
-  syncBodyOverflow = (shouldOverflow) => {
-    if (shouldOverflow) {
-      document.getElementsByTagName('html')[0].style.overflow = 'hidden';
-    } else {
-      document.getElementsByTagName('html')[0].style.overflow = 'auto';
-    }
-  }
-
   render () {
     const {
       showProjectForm,
       showProjectDetails,
-      // projectToShowDetails,
-      // projectToEdit,
+      projectToShowDetails,
+      projectToEdit,
     } = this.state;
 
     const {
@@ -807,12 +818,13 @@ class AdminArea extends SFPComponent {
       fdrs,
       perForm,
       user,
+      deleteProjectRequest,
     } = this.props;
 
-    this.syncBodyOverflow(showProjectForm || showProjectDetails);
     this.syncLoadingAnimation(
       projects,
       projectForm,
+      deleteProjectRequest,
       adminArea,
       fdrs,
       perForm,
@@ -825,59 +837,22 @@ class AdminArea extends SFPComponent {
           <title>IFRC Go - Country</title>
         </Helmet>
         { this.renderContent() }
-        {/* showProjectForm && (
-          <div className='project-form-modal'>
-            <header>
-              <h2>
-                Movement activities in support of NS
-              </h2>
-              <button
-                className={
-                  _cs(
-                    'button button--secondary-bounded',
-                    this.loading && 'disabled',
-                  )
-                }
-                onClick={() => {
-                  this.setState({ showProjectForm: false });
-                }}
-                disabled={this.loading}
-              >
-                Close
-              </button>
-            </header>
-            <ProjectForm
-              projectData={projectToEdit}
-              countryId={getCountryId(this.props.match.params.id)}
-            />
-          </div>
+        { showProjectForm && (
+          <ProjectFormModal
+            countryId={getCountryId(this.props.match.params.id)}
+            projectData={projectToEdit}
+            pending={this.loading}
+            onCloseButtonClick={() => { this.setState({ showProjectForm: false }); }}
+          />
         )}
         { showProjectDetails && (
-          <div className='project-form-modal'>
-            <header>
-              <h2>
-                Movement activities in support of NS
-              </h2>
-              <button
-                className={
-                  _cs(
-                    'button button--secondary-bounded',
-                    this.loading && 'disabled',
-                  )
-                }
-                onClick={() => {
-                  this.setState({ showProjectDetails: false });
-                }}
-                disabled={this.loading}
-              >
-                Close
-              </button>
-            </header>
-            <ProjectDetails
-              data={projectToShowDetails}
-            />
-          </div>
-        ) */}
+          <ProjectDetails
+            onCloseButtonClick={() => {
+              this.setState({ showProjectDetails: false });
+            }}
+            data={projectToShowDetails}
+          />
+        )}
       </App>
     );
   }
@@ -909,9 +884,12 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state, ownProps) => ({
-  // me: meSelector(state),
-  // projects: state.projects,
-  // projectForm: state.projectForm,
+  appState: state,
+  me: meSelector(state),
+  deleteProjectRequest: state.projectDelete,
+  projects: state.projects[ownProps.match.params.id],
+  projectForm: state.projectForm,
+
   adminArea: get(state.adminArea.aaData, getCountryId(ownProps.match.params.id), {
     data: {},
     fetching: false,
@@ -939,6 +917,7 @@ const selector = (state, ownProps) => ({
 });
 
 const dispatcher = dispatch => ({
+  _deleteProject: (...args) => dispatch(deleteProject(...args)),
   _getMe: () => dispatch(getMe()),
   _getAdmAreaById: (...args) => dispatch(getAdmAreaById(...args)),
   _getAdmAreaAppealsList: (...args) => dispatch(getAdmAreaAppealsList(...args)),

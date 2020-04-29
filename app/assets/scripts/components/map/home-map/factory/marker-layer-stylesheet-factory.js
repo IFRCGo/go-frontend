@@ -14,7 +14,7 @@ class MarkerLayerStylesheetFactory {
       type: 'categorical',
       stops: [
         ['DREF', '#F39C12'],
-        ['Appeal', '#C02C2C'],
+        ['Appeal', '#f5333f'],
         ['Movement', '#CCCCCC'],
         ['Mixed', '#4680F2']
       ]

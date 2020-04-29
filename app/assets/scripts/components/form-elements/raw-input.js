@@ -25,10 +25,11 @@ class RawInput extends React.PureComponent {
       value = '',
       type,
       error,
+      disabled,
     } = this.props;
 
     return (
-      <div className={_cs(className, 'tc-raw-input')}>
+      <div className={_cs(className, 'tc-raw-input', disabled && 'tc-raw-input-disabled')}>
         { label && (
           <div className='tc-raw-input-label'>
             { label }
@@ -39,6 +40,7 @@ class RawInput extends React.PureComponent {
           onChange={this.handleChange}
           placeholder={placeholder || 'Enter text'}
           value={value}
+          disabled={disabled}
         />
         { error && (
           <div className='tc-raw-input-error'>

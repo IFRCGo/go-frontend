@@ -29,7 +29,8 @@ const FormattedNumber = ({
     if (addSeparator) {
       displayNumber = addCommaSeparator(displayNumber);
     } else if (fixedTo) {
-      displayNumber = Number.parseFloat(displayNumber).toFixed(fixedTo);
+      const shouldFix = (displayNumber - Math.floor(displayNumber)) !== 0;
+      displayNumber = Number.parseFloat(displayNumber).toFixed(shouldFix ? fixedTo : 0);
     }
   }
 

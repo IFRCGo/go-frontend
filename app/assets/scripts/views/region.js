@@ -4,6 +4,7 @@ import c from 'classnames';
 import { PropTypes as T } from 'prop-types';
 import { connect } from 'react-redux';
 import { DateTime } from 'luxon';
+import memoize from 'memoize-one';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { Helmet } from 'react-helmet';
 import CountryList from '../components/country-list';
@@ -54,9 +55,11 @@ import {
 } from '../components/admin-area-elements';
 import { SFPComponent } from '../utils/extendables';
 import { NO_DATA } from '../utils/constants';
+import RegionalThreeW from './RegionalThreeW';
 
 const TAB_DETAILS = [
   { title: 'Operations', hash: '#operations' },
+  { title: '3w', hash: '#3w' },
   { title: 'Additional Information', hash: '#additional-info' }
 ];
 
@@ -84,7 +87,9 @@ class AdminArea extends SFPComponent {
     if (this.props.adminArea.fetching && !nextProps.adminArea.fetching) {
       hideGlobalLoading();
       if (nextProps.adminArea.error) {
-        this.props.history.push('/uhoh');
+        console.error(nextProps.adminArea.error);
+        // removed because redirect is highly misleading
+        // this.props.history.push('/uhoh');
       }
     }
   }
@@ -157,6 +162,10 @@ class AdminArea extends SFPComponent {
     showGlobalLoading();
     this.props._getAdmAreaById(type, id);
   }
+
+  getRegionId = memoize((regionIdFromProps) => {
+    return getRegionId(regionIdFromProps);
+  })
 
   renderContent () {
     const {
@@ -262,6 +271,14 @@ class AdminArea extends SFPComponent {
                     viewAllText={`View all Emergencies for ${regionName} region`}
                   />
 
+                </TabContent>
+              </TabPanel>
+              <TabPanel>
+                <TabContent title="3W">
+                  <RegionalThreeW
+                    disabled={this.loading}
+                    regionId={this.getRegionId(this.props.match.params.id)}
+                  />
                 </TabContent>
               </TabPanel>
               <TabPanel>

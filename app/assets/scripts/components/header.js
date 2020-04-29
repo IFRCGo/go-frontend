@@ -97,7 +97,7 @@ class Header extends React.PureComponent {
               <div className='page__headline'>
                 <h1 className='page__title'>
                   <Link to='/' title='Visit page'>
-                    <img src='/assets/graphics/layout/logo.png' alt='IFRC GO logo'/>
+                    <img src='/assets/graphics/layout/go-logo-2020.svg' alt='IFRC GO logo' className="logo-main" />
                     <span>IFRC GO</span>
                   </Link>
                 </h1>

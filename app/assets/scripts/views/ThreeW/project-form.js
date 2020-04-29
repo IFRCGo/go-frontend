@@ -6,11 +6,17 @@ import Faram, {
 import _cs from 'classnames';
 import { connect } from 'react-redux';
 import memoize from 'memoize-one';
+import {
+  isFalsy,
+  isInteger,
+} from '@togglecorp/fujs';
 
 import SelectInput from '../../components/form-elements/select-input';
 import TextInput from '../../components/form-elements/text-input';
 import NumberInput from '../../components/form-elements/number-input';
 import DateInput from '../../components/form-elements/date-input';
+import Checkbox from '../../components/form-elements/faram-checkbox';
+import TextOutput from '../../components/text-output';
 
 import {
   getCountries,
@@ -24,53 +30,75 @@ import {
 } from '../../utils/field-report-constants';
 
 import {
-  statusList,
+  // statusList,
   statuses,
   sectorList,
   secondarySectorInputValues,
   secondarySectorList,
-  sectorInputValues,
   programmeTypeList,
-  programmeTypes,
   operationTypeList,
-  operationTypes,
+  projectVisibilityList,
 } from '../../utils/constants';
 
+const positiveIntegerCondition = (value) => {
+  const ok = (value === undefined || value === '') || ((!Number.isNaN(value)) && (isFalsy(value) || isInteger(+value)) && (+value >= 0));
+  return {
+    ok,
+    message: 'Value must be a positive integer',
+  };
+};
+
+const compareString = (a, b) => a.label.localeCompare(b.label);
+
+/*
 const statusOptions = statusList.map(p => ({
-  value: p.title,
+  value: p.key,
   label: p.title,
-}));
+})).sort(compareString);
+*/
 
 const sectorOptions = sectorList.map(p => ({
   value: p.inputValue,
   label: p.title,
-}));
+})).sort(compareString);
 
 const secondarySectorOptions = secondarySectorList.map(p => ({
   value: p.inputValue,
   label: p.title,
-}));
+})).sort(compareString);
 
 const programmeTypeOptions = programmeTypeList.map(p => ({
-  value: p.title,
+  value: p.key,
   label: p.title,
-}));
+})).sort(compareString);
 
 const disasterTypeOptions = disasterTypeList.map(d => ({
   value: d.value,
   label: d.label,
-}));
+})).sort(compareString);
 
-const operationTypeOptions = operationTypeList;
+const operationTypeOptions = [...operationTypeList].sort(compareString);
+const projectVisibilityOptions = [...projectVisibilityList].sort(compareString);
 
 const InputSection = ({
   className,
   title,
   children,
+  helpText,
 }) => (
   <div className={_cs(className, 'project-form-input-section')}>
-    <div className='section-title'>
-      { title }
+    <div
+      className='section-title'
+      title={helpText}
+    >
+      <div className='tc-title'>
+        { title }
+      </div>
+      { helpText && (
+        <div className='tc-help-text'>
+          { helpText }
+        </div>
+      )}
     </div>
     <div className='section-content'>
       { children }
@@ -81,14 +109,33 @@ const InputSection = ({
 const emptyList = [];
 const emptyObject = [];
 
+const invalidEndDateError = {
+  end_date: 'End date must be greater than start date',
+};
+const validateDate = (start, end) => {
+  if (!start || !end) {
+    return emptyObject;
+  }
+
+  const startDate = new Date(start);
+  const endDate = new Date(end);
+
+  if (startDate.getTime() >= endDate.getTime()) {
+    return invalidEndDateError;
+  }
+
+  return emptyObject;
+};
+
 class ProjectForm extends React.PureComponent {
   constructor (props) {
     super(props);
 
     this.schema = {
       fields: {
-        budget_amount: [requiredCondition],
-        country: [],
+        is_project_completed: [],
+        budget_amount: [requiredCondition, positiveIntegerCondition],
+        project_country: [],
         event: [],
         dtype: [],
         project_district: [requiredCondition],
@@ -98,17 +145,18 @@ class ProjectForm extends React.PureComponent {
         programme_type: [requiredCondition],
         end_date: [requiredCondition],
         start_date: [requiredCondition],
-        reached_other: [],
-        reached_female: [],
-        reached_male: [],
-        reached_total: [],
+        reached_other: [positiveIntegerCondition],
+        reached_female: [positiveIntegerCondition],
+        reached_male: [positiveIntegerCondition],
+        reached_total: [positiveIntegerCondition],
         reporting_ns: [requiredCondition],
         secondary_sectors: [],
         status: [requiredCondition],
-        target_other: [],
-        target_female: [],
-        target_male: [],
-        target_total: [requiredCondition],
+        target_other: [positiveIntegerCondition],
+        target_female: [positiveIntegerCondition],
+        target_male: [positiveIntegerCondition],
+        target_total: [requiredCondition, positiveIntegerCondition],
+        visibility: [requiredCondition],
       },
     };
 
@@ -117,14 +165,14 @@ class ProjectForm extends React.PureComponent {
     this.state = {
       faramValues: {
         budget_amount: projectData.budget_amount,
-        country: props.countryId,
+        project_country: props.countryId,
         event: projectData.event,
         dtype: projectData.dtype,
-        project_district: projectData.project_district ? projectData.project_district : 'all',
+        project_district: projectData.project_district ? projectData.project_district : undefined,
         name: projectData.name,
-        operation_type: operationTypes[projectData.operation_type],
-        primary_sector: sectorInputValues[projectData.primary_sector],
-        programme_type: programmeTypes[projectData.programme_type],
+        operation_type: projectData.operation_type,
+        primary_sector: projectData.primary_sector,
+        programme_type: projectData.programme_type,
         end_date: projectData.end_date,
         start_date: projectData.start_date,
         reached_other: projectData.reached_other || undefined,
@@ -133,11 +181,13 @@ class ProjectForm extends React.PureComponent {
         reached_total: projectData.reached_total || undefined,
         reporting_ns: projectData.reporting_ns,
         secondary_sectors: projectData.secondary_sectors ? projectData.secondary_sectors.map(d => secondarySectorInputValues[d]) : [],
-        status: statuses[projectData.status],
+        is_project_completed: projectData.status === 2,
+        status: projectData.status,
         target_other: projectData.target_other || undefined,
         target_female: projectData.target_female || undefined,
         target_male: projectData.target_male || undefined,
         target_total: projectData.target_total || undefined,
+        visibility: projectData.visibility || 'public',
       },
       faramErrors: {},
     };
@@ -147,7 +197,10 @@ class ProjectForm extends React.PureComponent {
 
   componentDidMount () {
     this.props._getCountries();
-    this.props._getEventList(this.props.countryId);
+
+    if (this.props.countryId) {
+      this.props._getEventList(this.props.countryId);
+    }
   }
 
   getResultsFromResponse = (response, defaultValue = emptyList) => {
@@ -171,14 +224,14 @@ class ProjectForm extends React.PureComponent {
       .map(d => ({
         value: d.id,
         label: d.society_name,
-      }));
+      })).sort(compareString);
 
     const countryOptions = countryList
       .filter(d => d.iso)
       .map(d => ({
         value: d.id,
         label: d.name,
-      }));
+      })).sort(compareString);
 
     return {
       nationalSocietyOptions,
@@ -204,9 +257,9 @@ class ProjectForm extends React.PureComponent {
     const mappedDistrictList = districtList.map(d => ({
       value: d.id,
       label: d.name,
-    }));
+    })).sort(compareString);
 
-    mappedDistrictList.push({
+    mappedDistrictList.unshift({
       value: 'all',
       label: 'Countrywide',
     });
@@ -221,43 +274,127 @@ class ProjectForm extends React.PureComponent {
       return emptyList;
     }
 
-    return currentOperationList.map(d => ({
+    const currentOperationOptions = currentOperationList.map(d => ({
       value: d.id,
       label: d.name,
     }));
+
+    const operationToDisasterMap = {};
+    currentOperationList.forEach(d => { operationToDisasterMap[d.id] = (d.dtype || {}).id; });
+
+    const currentEmergencyOperationOptions = currentOperationList
+      .filter(d => d.auto_generated_source === 'New field report')
+      .map(d => ({
+        value: d.id,
+        label: d.name,
+      }));
+
+    return {
+      currentOperationOptions,
+      currentEmergencyOperationOptions,
+      operationToDisasterMap,
+    };
   }
 
-  handleFaramChange = (faramValues, faramErrors) => {
-    const {
-      faramValues: oldFaramValues,
-    } = this.state;
-
-    if (oldFaramValues.country !== faramValues.country) {
-      this.props._getDistricts(faramValues.country);
-      this.setState({
-        faramValues: {
-          ...faramValues,
-          project_district: undefined,
-        },
-        faramErrors,
-      });
-    } else {
-      this.setState({
-        faramValues,
-        faramErrors,
-      });
+  getProjectStatusFaramValue = memoize((start, isCompleted) => {
+    if (isCompleted) {
+      return { status: '2' };
     }
+
+    if (!start) {
+      return { status: undefined };
+    }
+
+    const startDate = new Date(start);
+    const today = new Date();
+
+    if (startDate.getTime() <= today.getTime()) {
+      return { status: '1' };
+    }
+
+    return { status: '0' };
+  })
+
+  getTargetedTotalFaramValue = memoize((male, female, other) => {
+    if (isFalsy(male) && isFalsy(female) && isFalsy(other)) {
+      return {};
+    }
+
+    return {
+      target_total: (+male || 0) + (+female || 0) + (+other || 0),
+    };
+  })
+
+  getReachedTotalFaramValue = memoize((male, female, other) => {
+    if (isFalsy(male) && isFalsy(female) && isFalsy(other)) {
+      return {};
+    }
+
+    return {
+      reached_total: (+male || 0) + (+female || 0) + (+other || 0),
+    };
+  })
+
+  handleFaramChange = (faramValues, faramErrors) => {
+    const { faramValues: oldFaramValues } = this.state;
+    const { eventList } = this.props;
+
+    const extraFaramErrors = validateDate(faramValues.start_date, faramValues.end_date);
+    const autoProjectStatus = this.getProjectStatusFaramValue(faramValues.start_date, faramValues.is_project_completed);
+    const autoTargetedTotal = this.getTargetedTotalFaramValue(faramValues.target_male, faramValues.target_female, faramValues.target_other);
+    const autoReachedTotal = this.getReachedTotalFaramValue(faramValues.reached_male, faramValues.reached_female, faramValues.reached_other);
+
+    let newFaramValues = {
+      ...faramValues,
+      ...autoProjectStatus,
+      ...autoTargetedTotal,
+      ...autoReachedTotal,
+    };
+
+    let newFaramErrors = {
+      ...extraFaramErrors,
+      ...faramErrors,
+    };
+
+    if (oldFaramValues.event !== faramValues.event) {
+      const { operationToDisasterMap } = this.getCurrentOperationOptions(eventList);
+      const dtype = operationToDisasterMap[faramValues.event];
+
+      newFaramValues = {
+        ...newFaramValues,
+        dtype,
+      };
+    }
+
+    if (oldFaramValues.project_country !== faramValues.project_country) {
+      this.props._getDistricts(faramValues.project_country);
+      this.props._getEventList(faramValues.project_country);
+
+      newFaramValues = {
+        ...newFaramValues,
+        project_district: 'all',
+        event: undefined,
+      };
+    }
+
+    this.setState({
+      faramValues: newFaramValues,
+      faramErrors: newFaramErrors,
+    });
   }
 
   handleFaramValidationSuccess = (faramValues) => {
-    if (this.props.projectData) {
+    if (this.props.projectData && this.props.projectData.id) {
       this.props._postProject({
         id: this.props.projectData.id,
         ...faramValues,
-        project_district: faramValues.project_district === 'all' ? undefined : faramValues.project_district,
+        project_district: faramValues.project_district === 'all' ? null : faramValues.project_district,
       });
     } else {
-      this.props._postProject(faramValues);
+      this.props._postProject({
+        ...faramValues,
+        project_district: faramValues.project_district === 'all' ? null : faramValues.project_district,
+      });
     }
   }
 
@@ -278,16 +415,20 @@ class ProjectForm extends React.PureComponent {
     }
     */
 
-    if (operationType === 'Emergency Operation' && programmeType === 'Multilateral') {
+    if (String(operationType) === '1' && (String(programmeType) === '1' || String(programmeType) === '2')) {
       schema.fields.event = [requiredCondition];
     }
 
-    if (projectStatus === 'Completed') {
-      schema.fields.reached_total = [requiredCondition];
+    if (String(projectStatus) === '2') {
+      schema.fields.reached_total = [requiredCondition, positiveIntegerCondition];
     }
 
     return schema;
   });
+
+  getFilteredSecondarySectorOptions = memoize((sector) => (
+    secondarySectorOptions.filter(d => d.value !== sector)
+  ))
 
   render () {
     const {
@@ -307,29 +448,42 @@ class ProjectForm extends React.PureComponent {
       faramErrors,
     } = this.state;
 
-    const districtOptions = this.getDistrictOptions(districts, faramValues.country);
-    const currentOperationOptions = this.getCurrentOperationOptions(eventList);
+    const districtOptions = this.getDistrictOptions(districts, faramValues.project_country);
+    const {
+      currentOperationOptions,
+      currentEmergencyOperationOptions,
+    } = this.getCurrentOperationOptions(eventList);
 
     const fetchingCountries = countries && countries.fetching;
-    const shouldDisableCountryInput = fetchingCountries || true;
-    const fetchingDistricts = districts && districts[faramValues.country] && districts[faramValues.country].fetching;
+    const shouldDisableCountryInput = fetchingCountries;
+
+    const fetchingDistricts = districts && districts[faramValues.project_country] && districts[faramValues.project_country].fetching;
     const shouldDisableDistrictInput = fetchingCountries || fetchingDistricts;
     const fetchingEvents = eventList && eventList.fetching;
     const shouldDisableCurrentOperation = fetchingEvents;
+    const fetchingNationalSocieties = fetchingCountries;
+    const shouldDisableNationalSocietyInput = fetchingNationalSocieties;
 
     const projectFormPending = projectForm.fetching;
-    const shouldDisableSubmitButton = projectFormPending;
+    const shouldDisableSubmitButton = projectFormPending || fetchingCountries || fetchingDistricts;
 
-    const shouldShowCurrentOperation = faramValues.operation_type === 'Emergency Operation' &&
-      faramValues.programme_type === 'Multilateral';
-    const shouldShowDisasterType = faramValues.operation_type === 'Programme' &&
-      !shouldShowCurrentOperation;
+    const shouldShowCurrentEmergencyOperation = String(faramValues.operation_type) === '1' &&
+      String(faramValues.programme_type) === '2';
+    const shouldShowCurrentOperation = String(faramValues.operation_type) === '1' &&
+      String(faramValues.programme_type) === '1';
+
+    const shouldShowDisasterType = String(faramValues.operation_type) === '0' || shouldShowCurrentOperation || shouldShowCurrentEmergencyOperation;
+    const shouldDisableDisasterType = String(faramValues.operation_type) === '1';
 
     const schema = this.getSchema(
       faramValues.operation_type,
       faramValues.programme_type,
       faramValues.status
     );
+
+    const shouldDisableTotalTarget = !isFalsy(faramValues.target_male) || !isFalsy(faramValues.target_female) || !isFalsy(faramValues.target_other);
+    const shouldDisableTotalReached = !isFalsy(faramValues.reached_male) || !isFalsy(faramValues.reached_female) || !isFalsy(faramValues.reached_other);
+    const filteredSecondarySectorOptions = this.getFilteredSecondarySectorOptions(faramValues.sector);
 
     return (
       <Faram
@@ -342,12 +496,14 @@ class ProjectForm extends React.PureComponent {
         onValidationFailure={this.handleFaramValidationFailure}
       >
         <InputSection
-          title='Reporting national society *'
+          title='Reporting National Society *'
         >
           <SelectInput
             faramElementName='reporting_ns'
             className='project-form-select'
             options={nationalSocietyOptions}
+            placeholder={fetchingNationalSocieties ? 'Fetching national societies...' : undefined}
+            disabled={shouldDisableNationalSocietyInput}
           />
         </InputSection>
 
@@ -356,12 +512,13 @@ class ProjectForm extends React.PureComponent {
           title='Country and region / province* '
         >
           <SelectInput
-            faramElementName='country'
+            faramElementName='project_country'
             label='Country'
             className='project-form-select'
             options={countryOptions}
             clearable={false}
             disabled={shouldDisableCountryInput}
+            placeholder={fetchingCountries ? 'Fetching countries...' : undefined}
           />
           <SelectInput
             faramElementName='project_district'
@@ -391,18 +548,6 @@ class ProjectForm extends React.PureComponent {
           />
         </InputSection>
 
-        { shouldShowDisasterType && (
-          <InputSection
-            title='Disaster type*'
-          >
-            <SelectInput
-              faramElementName='dtype'
-              className='project-form-select'
-              options={disasterTypeOptions}
-            />
-          </InputSection>
-        )}
-
         { shouldShowCurrentOperation && (
           <InputSection
             title='Current IFRC operation*'
@@ -417,8 +562,37 @@ class ProjectForm extends React.PureComponent {
           </InputSection>
         )}
 
+        { shouldShowCurrentEmergencyOperation && (
+          <InputSection
+            title='Current emergency operation*'
+            helpText='The list is populated from current emergency operations related to the selected country. If necessary, create the related emergency through a field report'
+          >
+            <SelectInput
+              faramElementName='event'
+              className='project-form-select'
+              options={currentEmergencyOperationOptions}
+              disabled={shouldDisableCurrentOperation}
+              placeholder={fetchingEvents ? 'Fetching events...' : undefined}
+            />
+          </InputSection>
+        )}
+
+        { shouldShowDisasterType && (
+          <InputSection
+            title='Disaster type*'
+          >
+            <SelectInput
+              faramElementName='dtype'
+              className='project-form-select'
+              options={disasterTypeOptions}
+              disabled={shouldDisableDisasterType}
+              placeholder={shouldDisableDisasterType ? 'Select an operation to view its disaster type' : ''}
+            />
+          </InputSection>
+        )}
+
         <InputSection
-          title='Project name*'
+          title='Activity name*'
         >
           <TextInput
             faramElementName='name'
@@ -439,7 +613,7 @@ class ProjectForm extends React.PureComponent {
             faramElementName='secondary_sectors'
             className='project-form-select'
             label='Tagging'
-            options={secondarySectorOptions}
+            options={filteredSecondarySectorOptions}
             multi
           />
         </InputSection>
@@ -461,22 +635,28 @@ class ProjectForm extends React.PureComponent {
         <InputSection
           className='multi-input-section'
           title='Budget and status*'
+          helpText='"Activity status" is automatically calculated based on the values from "Start and end dates" above and can be marked as complete from the "Completed" checkbox.'
         >
           <NumberInput
-            label='Project budget (CHF)'
+            label='Activity budget (CHF)'
             faramElementName='budget_amount'
           />
-          <SelectInput
-            faramElementName='status'
-            className='project-form-select'
-            label='Project status'
-            options={statusOptions}
-          />
+          <div>
+            <Checkbox
+              label="Completed"
+              faramElementName="is_project_completed"
+            />
+            <TextOutput
+              label='Activity status'
+              value={statuses[faramValues.status]}
+            />
+          </div>
         </InputSection>
 
         <InputSection
           className='multi-input-section'
           title='People targeted'
+          helpText="The “other” category can include data such as “other sex/gender”, “undisclosed”, “unknown”, etc."
         >
           <NumberInput
             faramElementName='target_male'
@@ -491,6 +671,7 @@ class ProjectForm extends React.PureComponent {
             label='Other'
           />
           <NumberInput
+            disabled={shouldDisableTotalTarget}
             faramElementName='target_total'
             label='Total* '
           />
@@ -499,6 +680,7 @@ class ProjectForm extends React.PureComponent {
         <InputSection
           className='multi-input-section'
           title='People reached'
+          helpText="People Reached are people who receive (from the reporting National Society in the Reporting Year) tangible goods and/or any of a range of activities offering protection and assistance, including a positive change or support in knowledge, skills, awareness, attitudes, behaviour, and physical and psychosocial well-being and who can be counted or at least estimated with some degree of reliability."
         >
           <NumberInput
             faramElementName='reached_male'
@@ -513,12 +695,23 @@ class ProjectForm extends React.PureComponent {
             label='Other'
           />
           <NumberInput
+            disabled={shouldDisableTotalReached}
             faramElementName='reached_total'
             label={faramValues.status === 'Completed' ? 'Total* ' : 'Total'}
           />
         </InputSection>
+        <InputSection
+          title='Activity visibility*'
+        >
+          <SelectInput
+            faramElementName='visibility'
+            className='project-form-select'
+            options={projectVisibilityOptions}
+            clearable={false}
+          />
+        </InputSection>
 
-        <footer>
+        <footer className='tc-footer'>
           {/*
             The first hidden and disabled submit button is to disable form submission on enter
             more details on: https://www.w3.org/TR/2018/SPSD-html5-20180327/forms.html#implicit-submission

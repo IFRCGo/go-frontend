@@ -5,6 +5,7 @@ import _toNumber from 'lodash.tonumber';
 import _find from 'lodash.find';
 import _filter from 'lodash.filter';
 import { DateTime } from 'luxon';
+import { isNotDefined } from '@togglecorp/fujs';
 
 import { getCentroid } from './country-centroids';
 import { disasterType } from './field-report-constants';
@@ -226,16 +227,32 @@ export function getRecordsByType (types, records) {
   const recordsSorted = records.sort((a, b) => {
     return new Date(b.created_at) - new Date(a.created_at);
   });
+
+  const pinnedRecordsByType = {};
   recordsSorted.forEach(record => {
     if (record.type) {
       const recordTypeId = record.type.id;
       if (record.is_pinned) {
-        recordsByType[recordTypeId].items.splice(0, 0, record);
+        if (!pinnedRecordsByType.hasOwnProperty(recordTypeId)) {
+          pinnedRecordsByType[recordTypeId] = [];
+        }
+        pinnedRecordsByType[recordTypeId].push(record);
       } else {
         recordsByType[recordTypeId].items.push(record);
       }
     }
   });
+
+  // sort the pinned records descending by created_at timestamp
+  const pinnedRecordTypeIds = Object.keys(pinnedRecordsByType);
+  if (pinnedRecordTypeIds) {
+    pinnedRecordTypeIds.forEach(recordTypeId => {
+      let pinnedItems = pinnedRecordsByType[recordTypeId].sort((a, b) => {
+        return new Date(b.created_at) - new Date(a.created_at);
+      });
+      recordsByType[recordTypeId].items = pinnedItems.concat(recordsByType[recordTypeId].items);
+    });
+  }
 
   // Provides sorted list of records to display
   // Categories are sorted according to https://github.com/IFRCGo/go-frontend/issues/773#issuecomment-528883564
@@ -278,3 +295,27 @@ export function getRecordsByType (types, records) {
 
   return sortedRecordsByType;
 }
+
+export const convertJsonToCsv = (data, columnDelimiter = ',', lineDelimiter = '\n', emptyValue = '') => {
+  if (!data || data.length <= 0) {
+    return undefined;
+  }
+
+  let result = '';
+
+  data.forEach((items) => {
+    result += items.map((str) => {
+      if (isNotDefined(str)) {
+        return emptyValue;
+      }
+      const val = String(str);
+      if (val.includes(columnDelimiter)) {
+        return `"${val}"`;
+      }
+      return val;
+    }).join(columnDelimiter);
+    result += lineDelimiter;
+  });
+
+  return result;
+};

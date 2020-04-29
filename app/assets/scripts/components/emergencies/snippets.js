@@ -14,8 +14,9 @@ class Snippets extends Component {
     this.props._getEventSnippets(this.props.eventId);
   }
   render () {
-    const { fetching, fetched, error, data } = this.props.snippets;
-    if (fetching || error || (fetched && !data.results.length)) return null;
+    const { fetching, error, data } = this.props.snippets;
+    if (fetching || error) return null;
+
     return (
       <TabContent showError={true} isError={!get(data, 'results.length')} errorMessage={ NO_DATA } title="Additional Graphics">
         <Fold id='graphics' title='Additional Graphics' wrapper_class='additional-graphics'>
@@ -32,22 +33,33 @@ class Snippets extends Component {
 
 Snippets.propTypes = {
   _getEventSnippets: PropTypes.func,
-  eventId: PropTypes.string,
+  eventId: PropTypes.number,
   snippets: PropTypes.object
 };
 
 // /////////////////////////////////////////////////////////////////// //
 // Connect functions
 
-const selector = (state, ownProps) => ({
-  snippets: get(state.event.snippets, ownProps.eventId, {
-    data: {
-      results: []
-    },
-    fetching: false,
-    fetched: false
-  })
-});
+const selector = (state, ownProps) => {
+  const snippets = {
+    snippets: get(state.event.snippets, ownProps.eventId, {
+      data: {
+        results: []
+      },
+      fetching: false,
+      fetched: false
+    })
+  };
+
+  // filter for snippets of the current tab
+  if (snippets.snippets.data && snippets.snippets.data.results.length) {
+    snippets.snippets.data.results = snippets.snippets.data.results.filter(s => {
+      return s.tab === ownProps.tab;
+    });
+  }
+
+  return snippets;
+};
 
 const dispatcher = (dispatch) => ({
   _getEventSnippets: (...args) => dispatch(getEventSnippets(...args))

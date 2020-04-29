@@ -8,7 +8,7 @@ import { get } from '../../../utils/utils';
 import { environment } from '../../../config';
 import exportMap from '../../../utils/export-map';
 import DownloadButton from './download-button';
-import { formatDate } from './../../../utils/format';
+import MapHeader from './map-header';
 
 export default class MapComponent extends React.Component {
   constructor (props) {
@@ -89,9 +89,7 @@ export default class MapComponent extends React.Component {
   render () {
     const className = c(this.props.className);
     const children = this.props.children || null;
-    const currentDate = new Date();
-    const canvas = document.getElementsByClassName('mapboxgl-canvas')[0];
-    const exportImageStyle = {width: '100%', height: 'auto', display: 'none'};
+    // const canvas = document.getElementsByClassName('mapboxgl-canvas')[0];
     return (
       <figure className='map-vis'>
         {this.props.noExport ? null : (
@@ -103,15 +101,10 @@ export default class MapComponent extends React.Component {
         )}
         <div className={className} ref='map'/>
         {children}
-        {this.props.downloadButton === true ? <DownloadButton data={canvas} setZoomToDefault={this.setZoomToDefault} /> : null}
-        <div style={{backgroundColor: '#ffffff', position: 'absolute', width: '100%', borderBottom: '5px #BC2C2A solid', verticalAlign: 'middle', visibility: 'hidden'}} id='map-picture-header'>
-          <span style={{color: '#BC2C2A', fontSize: '30px', paddingLeft: '20px'}}>{this.props.downloadedHeaderTitle}</span>
-          <span style={{color: '#BC2C2A', fontSize: '12px', paddingLeft: '10px'}}>({formatDate(currentDate)})</span>
-          <div style={{float: 'right', width: '375px', marginRight: '20px'}}>
-            <img src="/assets/graphics/layout/logo.png" alt="IFRC GO logo" style={{width: '375px', height: '56px'}} />
-          </div>
-          <img id="exportimage" style={exportImageStyle} src='/assets/graphics/layout/logo.png' />
-        </div>
+        {this.props.downloadButton && <DownloadButton setZoomToDefault={this.setZoomToDefault} />}
+        <MapHeader
+          downloadedHeaderTitle={this.props.downloadedHeaderTitle}
+        />
       </figure>
     );
   }

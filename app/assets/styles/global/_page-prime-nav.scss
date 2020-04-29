@@ -36,9 +36,9 @@
 }
 
 .page__meta-nav-elements {
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   line-height: 1.25rem;
-  border-right: 1px solid black;
+  border-right: 1px solid #c9c3c1;
   padding-right: 1rem;
   padding-left: 1rem;
   @include media(small-down) {
@@ -47,7 +47,7 @@
 }
 
 .page__meta-nav-elements-borderless {
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   line-height: 1.25rem;
   padding-right: 1rem;
   padding-left: 1rem;

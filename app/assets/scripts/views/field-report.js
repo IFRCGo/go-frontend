@@ -90,11 +90,27 @@ class FieldReport extends React.Component {
       return null;
     }
 
+    // Split actions by category
+    const groupedActions = actions.actions
+      .reduce(
+        (prev, {category}) =>
+          prev.includes(category) ? prev : prev.concat(category)
+        , [])
+      .map(category => ({
+        label: category,
+        options: actions.actions.filter(filteredOption => filteredOption.category === category)
+      }));
+
     return (
       <DisplaySection title={`Actions taken by ${orgDisplayName}`}>
-        <ul className='actions-list'>
-          {actions.actions.map((d, i) => <li key={`action-${i}`}>{d.name}</li>)}
-        </ul>
+        {groupedActions.map(category => (
+          <React.Fragment key={category.label}>
+            {groupedActions.length > 1 ? <p className='form__label'>{category.label}</p> : null}
+            <ul className='actions-list'>
+              {category.options.map((d, i) => <li key={`action-${i}`}>{d.name}</li>)}
+            </ul>
+          </React.Fragment>
+        ))}
 
         <div className='form__group'>
           <p className='form__label'>Summary</p>
@@ -154,58 +170,106 @@ class FieldReport extends React.Component {
     return 'EVT';
   }
 
+  getEpiStatus () {
+    return this.props.report.data.dtype.id === 1 ? 'EPI' : '';
+  }
+
   renderNumericDetails (data) {
     const status = this.getStatus();
+    const epiStatus = this.getEpiStatus();
     const evtHtml = (
       <React.Fragment>
-        <dl className='dl-horizontal numeric-list'>
-          <dt>Injured (RC): </dt>
-          <dd>{n(get(data, 'num_injured'))}</dd>
-          <dt>Missing (RC): </dt>
-          <dd>{n(get(data, 'num_missing'))}</dd>
-          <dt>Dead (RC): </dt>
-          <dd>{n(get(data, 'num_dead'))}</dd>
-          <dt>Displaced (RC): </dt>
-          <dd>{n(get(data, 'num_displaced'))}</dd>
-          <dt>Affected (RC): </dt>
-          <dd>{n(get(data, 'num_affected'))}</dd>
-        </dl>
-        <dl className='dl-horizontal numeric-list'>
-          <dt>Injured (Government): </dt>
-          <dd>{n(get(data, 'gov_num_injured'))}</dd>
-          <dt>Missing (Government): </dt>
-          <dd>{n(get(data, 'gov_num_missing'))}</dd>
-          <dt>Dead (Government): </dt>
-          <dd>{n(get(data, 'gov_num_dead'))}</dd>
-          <dt>Displaced (Government): </dt>
-          <dd>{n(get(data, 'gov_num_displaced'))}</dd>
-          <dt>Affected (Government): </dt>
-          <dd>{n(get(data, 'gov_num_affected'))}</dd>
-        </dl>
-        <dl className='dl-horizontal numeric-list'>
-          <dt>Injured (Other): </dt>
-          <dd>{n(get(data, 'other_num_injured'))}</dd>
-          <dt>Missing (Other): </dt>
-          <dd>{n(get(data, 'other_num_missing'))}</dd>
-          <dt>Dead (Other): </dt>
-          <dd>{n(get(data, 'other_num_dead'))}</dd>
-          <dt>Displaced (Other): </dt>
-          <dd>{n(get(data, 'other_num_displaced'))}</dd>
-          <dt>Affected (Other): </dt>
-          <dd>{n(get(data, 'other_num_affected'))}</dd>
-        </dl>
-        <dl className='dl-horizontal numeric-list'>
-          <dt>Assisted by Government:</dt>
-          <dd>{n(get(data, 'gov_num_assisted'))}</dd>
-          <dt>Assisted by RCRC Movement:</dt>
-          <dd>{n(get(data, 'num_assisted'))}</dd>
-          <dt>Local Staff: </dt>
-          <dd>{n(get(data, 'num_localstaff'))}</dd>
-          <dt>Volunteers: </dt>
-          <dd>{n(get(data, 'num_volunteers'))}</dd>
-          <dt>Delegates: </dt>
-          <dd>{n(get(data, 'num_expats_delegates'))}</dd>
-        </dl>
+        {epiStatus === 'EPI' ? (
+          <React.Fragment>
+            <dl className='dl-horizontal numeric-list'>
+              <dt>Cases (WHO): </dt>
+              <dd>{n(get(data, 'who_cases'))}</dd>
+              <dt>Suspected Cases (WHO): </dt>
+              <dd>{n(get(data, 'who_suspected_cases'))}</dd>
+              <dt>Probable Cases (WHO): </dt>
+              <dd>{n(get(data, 'who_probable_cases'))}</dd>
+              <dt>Confirmed Cases (WHO): </dt>
+              <dd>{n(get(data, 'who_confirmed_cases'))}</dd>
+              <dt>Dead (WHO): </dt>
+              <dd>{n(get(data, 'who_num_dead'))}</dd>
+            </dl>
+            <dl className='dl-horizontal numeric-list'>
+              <dt>Cases (Ministry of Health): </dt>
+              <dd>{n(get(data, 'health_min_cases'))}</dd>
+              <dt>Suspected Cases (Ministry of Health): </dt>
+              <dd>{n(get(data, 'health_min_suspected_cases'))}</dd>
+              <dt>Probable Cases (Ministry of Health): </dt>
+              <dd>{n(get(data, 'health_min_probable_cases'))}</dd>
+              <dt>Confirmed Cases (Ministry of Health): </dt>
+              <dd>{n(get(data, 'health_min_confirmed_cases'))}</dd>
+              <dt>Dead (Ministry of Health): </dt>
+              <dd>{n(get(data, 'health_min_num_dead'))}</dd>
+            </dl>
+            <dl className='dl-horizontal numeric-list'>
+              <dt>Cases (Other): </dt>
+              <dd>{n(get(data, 'other_cases'))}</dd>
+              <dt>Suspected Cases (Other): </dt>
+              <dd>{n(get(data, 'other_suspected_cases'))}</dd>
+              <dt>Probable Cases (Other): </dt>
+              <dd>{n(get(data, 'other_probable_cases'))}</dd>
+              <dt>Confirmed Cases (Other): </dt>
+              <dd>{n(get(data, 'other_confirmed_cases'))}</dd>
+              <dt>Dead (Other): </dt>
+              <dd>{n(get(data, 'other_num_dead'))}</dd>
+            </dl>
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <dl className='dl-horizontal numeric-list'>
+              <dt>Injured (RC): </dt>
+              <dd>{n(get(data, 'num_injured'))}</dd>
+              <dt>Missing (RC): </dt>
+              <dd>{n(get(data, 'num_missing'))}</dd>
+              <dt>Dead (RC): </dt>
+              <dd>{n(get(data, 'num_dead'))}</dd>
+              <dt>Displaced (RC): </dt>
+              <dd>{n(get(data, 'num_displaced'))}</dd>
+              <dt>Affected (RC): </dt>
+              <dd>{n(get(data, 'num_affected'))}</dd>
+            </dl>
+            <dl className='dl-horizontal numeric-list'>
+              <dt>Injured (Government): </dt>
+              <dd>{n(get(data, 'gov_num_injured'))}</dd>
+              <dt>Missing (Government): </dt>
+              <dd>{n(get(data, 'gov_num_missing'))}</dd>
+              <dt>Dead (Government): </dt>
+              <dd>{n(get(data, 'gov_num_dead'))}</dd>
+              <dt>Displaced (Government): </dt>
+              <dd>{n(get(data, 'gov_num_displaced'))}</dd>
+              <dt>Affected (Government): </dt>
+              <dd>{n(get(data, 'gov_num_affected'))}</dd>
+            </dl>
+            <dl className='dl-horizontal numeric-list'>
+              <dt>Injured (Other): </dt>
+              <dd>{n(get(data, 'other_num_injured'))}</dd>
+              <dt>Missing (Other): </dt>
+              <dd>{n(get(data, 'other_num_missing'))}</dd>
+              <dt>Dead (Other): </dt>
+              <dd>{n(get(data, 'other_num_dead'))}</dd>
+              <dt>Displaced (Other): </dt>
+              <dd>{n(get(data, 'other_num_displaced'))}</dd>
+              <dt>Affected (Other): </dt>
+              <dd>{n(get(data, 'other_num_affected'))}</dd>
+            </dl>
+            <dl className='dl-horizontal numeric-list'>
+              <dt>Assisted by Government:</dt>
+              <dd>{n(get(data, 'gov_num_assisted'))}</dd>
+              <dt>Assisted by RCRC Movement:</dt>
+              <dd>{n(get(data, 'num_assisted'))}</dd>
+              <dt>Local Staff: </dt>
+              <dd>{n(get(data, 'num_localstaff'))}</dd>
+              <dt>Volunteers: </dt>
+              <dd>{n(get(data, 'num_volunteers'))}</dd>
+              <dt>Delegates: </dt>
+              <dd>{n(get(data, 'num_expats_delegates'))}</dd>
+            </dl>
+          </React.Fragment>
+        )}
       </React.Fragment>
     );
 
@@ -269,7 +333,9 @@ class FieldReport extends React.Component {
     const infoBulletin = infoBulletinOptions[data.bulletin];
     const lastTouchedAt = DateTime.fromISO(data.updated_at || data.created_at).toISODate();
     const status = this.getStatus();
+    const epiStatus = this.getEpiStatus();
     const startDate = DateTime.fromISO(data.start_date).toISODate();
+    const sitFieldsDate = DateTime.fromISO(data.sit_fields_date).toISODate();
     return (
       <section className='inpage'>
         <Helmet>
@@ -301,8 +367,8 @@ class FieldReport extends React.Component {
               <div className='inner'>
                 <p className='inpage__note'>Last updated{data.user ? ` by ${data.user.username}` : null} on {lastTouchedAt}</p>
                 {this.renderNumericDetails(data)}
-                {this.renderPlannedResponse(data)}
-                <DisplaySection title={ status === 'EW' ? 'Risk Analysis' : 'Description' } inner={get(data, 'description', false)} />
+                { epiStatus === 'EPI' ? <DisplaySection title='Date of Data' inner={sitFieldsDate} /> : null }
+                <DisplaySection sectionClass='rich-text-section' title={ status === 'EW' ? 'Risk Analysis' : 'Description' } inner={get(data, 'description', false)} />
                 <DisplaySection title={ status === 'EW' ? 'Forecasted Date of Impact' : 'Start Date' } inner={startDate} />
                 <DisplaySection title='Requests for Assistance'>
                   <p>
@@ -319,6 +385,7 @@ class FieldReport extends React.Component {
                 {this.renderActionsTaken(data, 'FDRN', 'IFRC')}
                 {this.renderActionsTaken(data, 'PNS', 'any other RCRC Movement actors') /* instead of PNS Red Cross, go-frontend/issues/822 */ }
                 <DisplaySection title='Actions taken by others' inner={get(data, 'actions_others', false)} />
+                {this.renderPlannedResponse(data)}
                 {this.renderSources(data)}
                 {this.renderContacts(data)}
               </div>
@@ -351,11 +418,11 @@ if (environment !== 'production') {
 
 class DisplaySection extends React.Component {
   render () {
-    const { inner, children, title } = this.props;
+    const { inner, children, title, sectionClass } = this.props;
     if (!children && !inner) { return null; }
     const content = children || <p dangerouslySetInnerHTML={{__html: inner}} />;
     return (
-      <section className='display-section'>
+      <section className={`display-section${sectionClass ? ' ' + sectionClass : ''}`}>
         <h3>{title}</h3>
         {content}
       </section>

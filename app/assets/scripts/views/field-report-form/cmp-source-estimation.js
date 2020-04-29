@@ -5,6 +5,7 @@ import _cloneDeep from 'lodash.clonedeep';
 import c from 'classnames';
 
 import { environment } from '../../config';
+import * as formData from '../../utils/field-report-constants';
 import {
   FormInput,
   FormRadioGroup,
@@ -47,6 +48,7 @@ export default class SourceEstimation extends React.Component {
   render () {
     const {
       label,
+      status,
       estimationLabel,
       name,
       description,
@@ -84,11 +86,7 @@ export default class SourceEstimation extends React.Component {
               <FormRadioGroup
                 label='Source'
                 name={`${name}[${idx}][source]`}
-                options={[
-                  {label: 'Red Cross / Red Crescent', value: 'red-cross'},
-                  {label: 'Government', value: 'government'},
-                  {label: 'Other', value: 'other'}
-                ]}
+                options={formData.fieldsStep2.organizations[status]}
                 classLabel={c('label-secondary', {'visually-hidden': idx > 0})}
                 classWrapper='estimation__item'
                 selectedOption={o.source}

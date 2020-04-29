@@ -3,6 +3,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import TextOutput from '../../components/text-output';
+import Backdrop from '../../components/backdrop';
 
 import {
   statuses,
@@ -43,6 +44,7 @@ class ProjectDetails extends React.PureComponent {
     const {
       data = {},
       eventDetails,
+      onCloseButtonClick,
     } = this.props;
 
     const {
@@ -74,121 +76,157 @@ class ProjectDetails extends React.PureComponent {
     const currentEventDetails = this.getCurrentEventDetails(eventDetails, event);
 
     return (
-      <div className='tc-project-details'>
-        <div className='tc-section'>
-          <TextOutput
-            className='tc-project-name'
-            label='Project name'
-            value={name}
-          />
-        </div>
-        <div className='tc-section tc-date-section'>
-          <TextOutput
-            label='Start date'
-            value={start_date}
-          />
-          <TextOutput
-            label='End date'
-            value={end_date}
-          />
-        </div>
-        <div className='tc-section'>
-          <TextOutput
-            label='Project district'
-            value={project_district ? project_district_detail.name : 'Countrywide' }
-          />
-        </div>
-        <div className='tc-section'>
-          <TextOutput
-            label='Reporting national society'
-            value={reporting_ns ? reporting_ns_detail.society_name : undefined}
-          />
-          <TextOutput
-            label='Budget amount (CHF)'
-            value={budget_amount}
-            type='number'
-            addSeparatorToValue
-          />
-          <TextOutput
-            label='Programme type'
-            value={programmeTypes[programme_type]}
-          />
-          <TextOutput
-            label='Status'
-            value={statuses[status]}
-          />
-        </div>
-        <div className='tc-section'>
-          <TextOutput
-            label='Current IFRC operation'
-            value={currentEventDetails.name}
-          />
-          <TextOutput
-            label='Disaster type'
-            value={dtype ? disasterTypes[dtype] : undefined}
-          />
-        </div>
-        <div className='tc-section'>
-          <TextOutput
-            label='Operation type'
-            value={operationTypes[operation_type]}
-          />
-          <TextOutput
-            label='Primary sector'
-            value={sectors[primary_sector]}
-          />
-          <TextOutput
-            label='Tagging'
-            value={(secondary_sectors.map(d => secondarySectors[d])).join(', ')}
-          />
-        </div>
-        <div className='tc-section'>
-          <div className='tc-section-title'>
-            Targeted
+      <Backdrop>
+        <div className='tc-project-details-modal'>
+          <header>
+            <h2>
+              Red Cross / Red Crescent activities
+            </h2>
+            <button
+              className='button button--secondary-bounded'
+              onClick={onCloseButtonClick}
+            >
+              Close
+            </button>
+          </header>
+          <div className='tc-project-details'>
+            <div className='tc-section'>
+              <TextOutput
+                className='tc-project-name'
+                label='Activity name'
+                value={name}
+              />
+            </div>
+            <div className='tc-section tc-date-section'>
+              <TextOutput
+                label='Start date'
+                value={start_date}
+              />
+              <TextOutput
+                label='End date'
+                value={end_date}
+              />
+            </div>
+            <div className='tc-section'>
+              <TextOutput
+                label='Activity district'
+                value={project_district ? project_district_detail.name : 'Countrywide' }
+              />
+            </div>
+            <div className='tc-section'>
+              <TextOutput
+                label='Reporting national society'
+                value={reporting_ns ? reporting_ns_detail.society_name : undefined}
+              />
+              <TextOutput
+                label='Budget amount (CHF)'
+                value={budget_amount}
+                type='number'
+                addSeparatorToValue
+              />
+              <TextOutput
+                label='Programme type'
+                value={programmeTypes[programme_type]}
+              />
+              <TextOutput
+                label='Status'
+                value={statuses[status]}
+              />
+            </div>
+            <div className='tc-section'>
+              <TextOutput
+                label='Current IFRC operation'
+                value={currentEventDetails.name}
+                hideEmptyValue
+              />
+              <TextOutput
+                label='Disaster type'
+                value={dtype ? disasterTypes[dtype] : undefined}
+                hideEmptyValue
+              />
+            </div>
+            <div className='tc-section'>
+              <TextOutput
+                label='Operation type'
+                value={operationTypes[operation_type]}
+              />
+              <TextOutput
+                label='Primary sector'
+                value={sectors[primary_sector]}
+              />
+              {secondary_sectors.length > 0 && (
+                <TextOutput
+                  label='Tagging'
+                  value={(secondary_sectors.map(d => secondarySectors[d])).join(', ')}
+                  hideEmptyValue
+                />
+              )}
+            </div>
+            <div className='tc-section'>
+              <div className='tc-section-title'>
+                Targeted
+              </div>
+              <div className='tc-section-content'>
+                <TextOutput
+                  label='Male'
+                  value={target_male}
+                  type='number'
+                  addSeparatorToValue
+                />
+                <TextOutput
+                  label='Female'
+                  value={target_female}
+                  type='number'
+                  addSeparatorToValue
+                />
+                <TextOutput
+                  label='Other'
+                  value={target_other}
+                  type='number'
+                  addSeparatorToValue
+                />
+                <TextOutput
+                  label='Total'
+                  value={target_total}
+                  type='number'
+                  addSeparatorToValue
+                />
+              </div>
+            </div>
+            <div className='tc-section'>
+              <div className='tc-section-title'>
+                Reached
+              </div>
+              <div className='tc-section-content'>
+                <TextOutput
+                  label='Male'
+                  value={reached_male}
+                  type='number'
+                  addSeparatorToValue
+                />
+                <TextOutput
+                  label='Female'
+                  value={reached_female}
+                  type='number'
+                  addSeparatorToValue
+                />
+                <TextOutput
+                  label='Other'
+                  value={reached_other}
+                  type='number'
+                  addSeparatorToValue
+                />
+                <TextOutput
+                  label='Total'
+                  value={reached_total}
+                  type='number'
+                  addSeparatorToValue
+                />
+              </div>
+            </div>
           </div>
-          <div className='tc-section-content'>
-            <TextOutput
-              label='Male'
-              value={target_male}
-            />
-            <TextOutput
-              label='Female'
-              value={target_female}
-            />
-            <TextOutput
-              label='Other'
-              value={target_other}
-            />
-            <TextOutput
-              label='Other'
-              value={target_total}
-            />
-          </div>
         </div>
-        <div className='tc-section'>
-          <div className='tc-section-title'>
-            Reached
-          </div>
-          <div className='tc-section-content'>
-            <TextOutput
-              label='Male'
-              value={reached_male}
-            />
-            <TextOutput
-              label='Female'
-              value={reached_female}
-            />
-            <TextOutput
-              label='Other'
-              value={reached_other}
-            />
-            <TextOutput
-              label='Other'
-              value={reached_total}
-            />
-          </div>
-        </div>
-      </div>
+      </Backdrop>
     );
   }
 }

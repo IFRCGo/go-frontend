@@ -9,12 +9,12 @@ import { FormDescription } from './misc';
 import FormCheckbox from './checkbox';
 
 export default class FormCheckboxGroup extends React.Component {
-  onCheckChange (idx) {
+  onCheckChange (opValue) {
     const { values, onChange } = this.props;
-    const prevState = _get(values, [idx, 'checked'], false);
+    const prevState = _get(values, [opValue, 'checked'], false);
     let newVals = _cloneDeep(values);
-    newVals[idx].checked = !prevState;
 
+    newVals[opValue].checked = !prevState;
     onChange(newVals);
   }
 
@@ -40,15 +40,15 @@ export default class FormCheckboxGroup extends React.Component {
         </div>
         <div className='form__inner-body'>
           <div className='form__options-group'>
-            {options.map((o, idx) => (
+            {options.map((o, opValue) => (
               <FormCheckbox
                 key={o.value}
                 label={o.label}
                 name={`${name}[]`}
                 id={`${name.replace(/(\[|\])/g, '-')}-${o.value}`}
                 value={o.value}
-                checked={_get(values, [idx, 'checked'], false)}
-                onChange={this.onCheckChange.bind(this, idx)}
+                checked={_get(values, [opValue, 'checked'], false)}
+                onChange={this.onCheckChange.bind(this, opValue)}
                 description={o.description} />
             ))}
           </div>

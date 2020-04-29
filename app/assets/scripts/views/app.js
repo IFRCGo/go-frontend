@@ -10,6 +10,7 @@ import Header from '../components/header';
 import MobileHeader from '../components/mobile-header';
 import Footer from '../components/footer';
 import GlobalLoading from '../components/global-loading';
+import GlobalHeaderBanner from '../components/global-header-banner';
 import SysAlerts from '../components/system-alerts';
 
 class App extends React.Component {
@@ -17,6 +18,7 @@ class App extends React.Component {
     return (
       <ThroughProvider>
         <div className={c('page', this.props.className)}>
+          <GlobalHeaderBanner />
           <GlobalLoading />
           <Header />
           <MobileHeader />

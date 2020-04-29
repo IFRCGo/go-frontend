@@ -12,20 +12,22 @@ import {
   programmeTypeList,
 } from '../../utils/constants';
 
+const compareString = (a, b) => a.label.localeCompare(b.label);
+
 const programmeTypeOptions = programmeTypeList.map(p => ({
   value: p.title,
   label: p.title,
-}));
+})).sort(compareString);
 
 const sectorsOfActivityOptions = sectorList.map(p => ({
   value: p.inputValue,
   label: p.title,
-}));
+})).sort(compareString);
 
 const statusOptions = statusList.map(p => ({
   value: p.title,
   label: p.title,
-}));
+})).sort(compareString);
 
 export default class ThreeWFilter extends React.PureComponent {
   constructor (props) {

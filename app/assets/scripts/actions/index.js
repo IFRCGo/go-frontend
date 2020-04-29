@@ -5,6 +5,7 @@ import {
   postJSON,
   putJSON,
   patchJSON,
+  deleteJSON,
   withToken
 } from '../utils/network';
 import { countryIsoMapById } from '../utils/field-report-constants';
@@ -58,6 +59,40 @@ export const getMe = () => (
   fetchJSON('api/v2/user/me/', GET_ME, withToken())
 );
 
+export const GET_REGIONAL_PROJECTS = 'GET_REGIONAL_PROJECTS';
+export const getRegionalProjects = (regionId, filterValues) => {
+  const filters = {
+    region: regionId,
+    limit: 9999,
+    ...filterValues
+  };
+  const query = buildAPIQS(filters, { arrayFormat: 'comma' });
+  return fetchJSON(`api/v2/project/?${query}`, GET_REGIONAL_PROJECTS, withToken());
+};
+
+export const GET_REGIONAL_PROJECTS_OVERVIEW = 'GET_REGIONAL_PROJECTS_OVERVIEW';
+export function getRegionalProjectsOverview (regionId) {
+  return fetchJSON(`api/v2/region-project/${regionId}/overview/`, GET_REGIONAL_PROJECTS_OVERVIEW, withToken());
+}
+
+export const GET_REGIONAL_MOVEMENT_ACTIVITIES = 'GET_REGIONAL_MOVEMENT_ACTIVITIES';
+export function getRegionalMovementActivities (regionId, filters) {
+  const query = buildAPIQS(filters, { arrayFormat: 'comma' });
+  return fetchJSON(`api/v2/region-project/${regionId}/movement-activities/?${query}`, GET_REGIONAL_MOVEMENT_ACTIVITIES, withToken());
+}
+
+export const GET_NATIONAL_SOCIETY_ACTIVITIES = 'GET_NATIONAL_SOCIETY_ACTIVITIES';
+export function getNationalSocietyActivities (regionId, filters) {
+  const query = buildAPIQS(filters, { arrayFormat: 'comma' });
+
+  return fetchJSON(`api/v2/region-project/${regionId}/national-society-activities/?${query}`, GET_NATIONAL_SOCIETY_ACTIVITIES, withToken());
+}
+
+export const GET_NATIONAL_SOCIETY_ACTIVITIES_WO_FILTERS = 'GET_NATIONAL_SOCIETY_ACTIVITIES_WO_FILTERS';
+export function getNationalSocietyActivitiesWoFilters (regionId) {
+  return fetchJSON(`api/v2/region-project/${regionId}/national-society-activities/`, GET_NATIONAL_SOCIETY_ACTIVITIES_WO_FILTERS, withToken());
+}
+
 export const GET_PROJECTS = 'GET_PROJECTS';
 export function getProjects (countryId, filterValues) {
   const filters = {
@@ -65,7 +100,7 @@ export function getProjects (countryId, filterValues) {
     ...filterValues
   };
   const f = buildAPIQS(filters);
-  return fetchJSON(`api/v2/project/?${f}`, GET_PROJECTS, withToken());
+  return fetchJSON(`api/v2/project/?${f}`, GET_PROJECTS, withToken(), { countryId });
 }
 
 export const POST_PROJECT = 'POST_PROJECT';
@@ -80,6 +115,11 @@ export function postProject (data) {
   }
 
   return postJSON('api/v2/project/', POST_PROJECT, data, withToken());
+}
+
+export const DELETE_PROJECT = 'DELETE_PROJECT';
+export function deleteProject (projectId) {
+  return deleteJSON(`api/v2/project/${projectId}/`, DELETE_PROJECT, withToken());
 }
 
 export const GET_COUNTRY_OVERVIEW = 'GET_COUNTRY_OVERVIEW';
@@ -126,7 +166,9 @@ export function getFieldReportsList (page = 1, filters = {}) {
 
 export const GET_ACTIONS = 'GET_ACTIONS';
 export function getActions () {
-  return fetchJSON('/api/v2/action', GET_ACTIONS);
+  let filters = {limit: 500};
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v2/action/?${f}`, GET_ACTIONS);
 }
 
 export const GET_SURGE_ALERTS = 'GET_SURGE_ALERTS';
