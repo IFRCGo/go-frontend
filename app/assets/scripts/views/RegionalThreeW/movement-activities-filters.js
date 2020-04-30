@@ -83,11 +83,12 @@ function MovementActivitiesFilters (p) {
         className='select-input'
       />
       <SelectInput
-        faramElementName='primary_sector'
+        faramElementName='secondary_sectors'
         label='Tag'
         placeholder='All Tags'
         options={tagOptions}
         className='select-input'
+
       />
       <SelectInput
         faramElementName='status'
