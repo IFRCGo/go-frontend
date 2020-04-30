@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import {
   listToGroupList as listToGroupMap,
   mapToMap,
@@ -89,9 +88,9 @@ function ActivityDetails (p) {
   return (
     <div className='regional-map-threew-activity-details'>
       <h4 className='tc-heading'>
-        <Link to={`/countries/${countryId}#3w`}>
+        <a href={`/countries/${countryId}#3w`}>
           { name } <MdChevronRight className='tc-icon' />
-        </Link>
+        </a>
       </h4>
       <div className='tc-content'>
         <div className='status-counts'>
