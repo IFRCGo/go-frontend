@@ -93,7 +93,7 @@ class ProjectDetails extends React.PureComponent {
             <div className='tc-section'>
               <TextOutput
                 className='tc-project-name'
-                label='Activity name'
+                label='Project name'
                 value={name}
               />
             </div>
@@ -109,7 +109,7 @@ class ProjectDetails extends React.PureComponent {
             </div>
             <div className='tc-section'>
               <TextOutput
-                label='Activity district'
+                label='Project district'
                 value={project_district ? project_district_detail.name : 'Countrywide' }
               />
             </div>

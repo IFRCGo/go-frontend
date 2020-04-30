@@ -1,11 +1,3 @@
-import {
-  statuses,
-  secondarySectors,
-  sectors,
-  programmeTypes,
-  operationTypes,
-} from '../../utils/constants';
-
 const exportHeaders = [
   {
     title: 'Country',
@@ -31,7 +23,7 @@ const exportHeaders = [
     key: 'programme_type_display',
   },
   {
-    title: 'Activity name',
+    title: 'Project name',
     key: 'name',
   },
   {

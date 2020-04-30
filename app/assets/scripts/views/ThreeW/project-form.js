@@ -604,7 +604,7 @@ class ProjectForm extends React.PureComponent {
         )}
 
         <InputSection
-          title='Activity name*'
+          title='Project name*'
           helpText='Enter a name that differentiates your activity or project from other initiatives taking place in the response.'
           tooltip='The 3w system does allow for duplicate activities projects with the same name, but please choose a descriptive and original title.'
         >
@@ -675,7 +675,7 @@ class ProjectForm extends React.PureComponent {
           tooltip='The budget includes the total costs for the listed activity or project. &#13;The project can be marked completed, which makes the people reached a required value.'
         >
           <NumberInput
-            label='Activity budget (CHF)'
+            label='Project budget (CHF)'
             faramElementName='budget_amount'
           />
           <div>
@@ -684,7 +684,7 @@ class ProjectForm extends React.PureComponent {
               faramElementName="is_project_completed"
             />
             <TextOutput
-              label='Activity status'
+              label='Project status'
               value={statuses[faramValues.status]}
             />
           </div>
@@ -740,7 +740,7 @@ class ProjectForm extends React.PureComponent {
           />
         </InputSection>
         <InputSection
-          title='Activity visibility*'
+          title='Project visibility*'
         >
           <SelectInput
             faramElementName='visibility'

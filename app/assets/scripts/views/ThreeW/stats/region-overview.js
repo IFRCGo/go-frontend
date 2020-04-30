@@ -78,7 +78,7 @@ export default class RegionOverview extends React.PureComponent {
                 className='three-w-region-district'
               >
                 <div>
-                  {regionName} ({p.length} activities)
+                  {regionName} ({p.length} projects)
                 </div>
                 <ProgressBar
                   value={p.length}
