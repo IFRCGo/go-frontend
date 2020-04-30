@@ -116,6 +116,17 @@ export function fetchJSONRecursive (path, action, options, extraData, devStopAft
   };
 }
 
+// Sends a delete request
+export function deleteJSON (path, action, options, extraData) {
+  const deleteOptions = {...options};
+
+  deleteOptions.headers['Content-Type'] = 'application/json';
+  deleteOptions.headers['Accept'] = 'application/json';
+  deleteOptions.method = 'DELETE';
+
+  return makeRequest(path, action, deleteOptions, extraData);
+}
+
 /**
  * Post a JSON resource
  * @param  {string} path      Relative path to query. Has to be available from
@@ -228,14 +239,16 @@ export function request (url, options) {
       return response.text()
         .then(body => {
           var json;
-          try {
-            json = JSON.parse(body);
-          } catch (error) {
-            console.log('JSON parse error', error, '\n', body);
-            return Promise.reject({
-              message: error.message,
-              body
-            });
+          if (body) {
+            try {
+              json = JSON.parse(body);
+            } catch (error) {
+              console.log('JSON parse error', error, '\n', body);
+              return Promise.reject({
+                message: error.message,
+                body
+              });
+            }
           }
 
           return response.status >= 400

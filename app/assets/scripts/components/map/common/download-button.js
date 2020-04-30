@@ -6,30 +6,43 @@ import { startDownload } from '../../../utils/download-starter';
 import { PropTypes as T } from 'prop-types';
 import { environment } from '../../../config';
 
+function svgToCanvas (targetElem) {
+  const svgElem = targetElem.getElementsByTagName('svg');
+  for (const node of svgElem) {
+    node.setAttribute('font-family', window.getComputedStyle(node, null).getPropertyValue('font-family'));
+    node.replaceWith(node);
+  }
+}
+
 class DownloadButton extends React.Component {
   constructor (props) {
     super(props);
-    this.startDownload = this.startDownload.bind(this);
+    this.handleDownloadButtonClick = this.handleDownloadButtonClick.bind(this);
   }
 
-  startDownload () {
+  componentWillUnmount () {
+    window.clearTimeout(this.timeout);
+  }
+
+  handleDownloadButtonClick () {
+    const {
+      mapContainerClassName = 'map-vis',
+    } = this.props;
     this.props.setZoomToDefault();
-    const interval = setInterval(function () {
-      clearInterval(interval);
+
+    this.timeout = window.setTimeout(function () {
       const timestamp = new Date();
-      const map = document.getElementsByClassName('map-vis')[0];
+      const map = document.getElementsByClassName(mapContainerClassName)[0];
       const downloadButton = document.getElementsByClassName('map-vis__legend--download-btn')[0];
       const dropdowns = Array.from(document.getElementsByClassName('map-vis__legend--top-left'));
       const popover = document.getElementsByClassName('popover__contents')[0];
       const navigation = document.getElementsByClassName('mapboxgl-ctrl-top-right')[0];
       const mapLogoHeader = document.getElementById('map-picture-header');
+      const mapFooter = document.getElementById('map-export-footer');
 
-      const $canvas = document.getElementsByClassName('mapboxgl-canvas')[0];
-      const $expimg = document.getElementById('exportimage');
-      $expimg.src = $canvas.toDataURL('png');
-      $expimg.style.display = 'block';
-      document.getElementsByClassName('mapboxgl-map')[0].style.visibility = 'hidden';
-
+      if (mapFooter) {
+        mapFooter.style.visibility = 'visible';
+      }
       mapLogoHeader.style.visibility = 'visible';
       downloadButton.style.visibility = 'hidden';
       navigation.style.visibility = 'hidden';
@@ -42,20 +55,21 @@ class DownloadButton extends React.Component {
         popover.style.maxHeight = 'none';
       }
 
+      svgToCanvas(map);
       html2canvas(map, {useCORS: true}).then((renderedCanvas) => {
         startDownload(
           renderedCanvas,
           'map-' + timestamp.getTime() + '.png');
 
+        if (mapFooter) {
+          mapFooter.style.visibility = 'hidden';
+        }
         mapLogoHeader.style.visibility = 'hidden';
         downloadButton.style.visibility = 'visible';
         navigation.style.visibility = 'visible';
         dropdowns.forEach(dropdown => {
           dropdown.style.visibility = 'visible';
         });
-
-        $expimg.style.display = 'none';
-        document.getElementsByClassName('mapboxgl-map')[0].style.visibility = 'visible';
 
         if (typeof popover !== 'undefined') {
           popover.style.height = 'auto';
@@ -68,8 +82,8 @@ class DownloadButton extends React.Component {
   render () {
     return (
       <figcaption
-        className='map-vis__legend map-vis__legend--download-btn legend'
-        onClick={this.startDownload}>
+        className='map-vis__legend map-vis__legend--download-btn legend map-download-btn'
+        onClick={this.handleDownloadButtonClick}>
         <img src='/assets/graphics/content/download.svg' alt='IFRC GO logo'/>
       </figcaption>
     );

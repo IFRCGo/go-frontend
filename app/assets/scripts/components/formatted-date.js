@@ -1,7 +1,7 @@
 import React from 'react';
 import _cs from 'classnames';
 
-import { padStart } from '@togglecorp/fujs';
+import { padStart as p } from '@togglecorp/fujs';
 
 const FormattedDate = ({
   value,
@@ -13,7 +13,10 @@ const FormattedDate = ({
     const date = new Date(value);
 
     if (date && !(isNaN(date.getTime()))) {
-      dateString = `${date.getFullYear()}-${padStart(date.getMonth() + 1, 2)}-${padStart(date.getDay(), 2)}`;
+      const mm = p(date.getMonth() + 1, 2);
+      const dd = p(date.getDate(), 2);
+      const yyyy = date.getFullYear();
+      dateString = `${yyyy}-${mm}-${dd}`;
     }
   }
 

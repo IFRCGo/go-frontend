@@ -10,6 +10,10 @@ export const programmeTypeList = [
   {
     key: '1',
     title: 'Multilateral'
+  },
+  {
+    key: '2',
+    title: 'Domestic',
   }
 ];
 
@@ -20,61 +24,67 @@ export const sectorList = [
     key: '0',
     title: 'WASH',
     color: '#66c2a5',
-    inputValue: 'Wash',
+    inputValue: '0',
   },
   {
     key: '1',
     title: 'PGI',
     color: '#fc8d62',
-    inputValue: 'Pgi',
+    inputValue: '1',
   },
   {
     key: '2',
     title: 'CEA',
     color: '#8da0cb',
-    inputValue: 'Cea',
+    inputValue: '2',
   },
   {
     key: '3',
     title: 'Migration',
     color: '#e78ac3',
-    inputValue: 'Migration',
+    inputValue: '3',
   },
   {
     key: '4',
-    title: 'Health',
+    title: 'Health (public)',
     color: '#a6d854',
-    inputValue: 'Health',
+    inputValue: '4',
   },
   {
     key: '5',
     title: 'DRR',
     color: '#ffd92f',
-    inputValue: 'Drr',
+    inputValue: '5',
   },
   {
     key: '6',
     title: 'Shelter',
     color: '#e5c494',
-    inputValue: 'Shelter',
+    inputValue: '6',
   },
   {
     key: '7',
     title: 'NS Strengthening',
     color: '#b3b3b3',
-    inputValue: 'NS Strengthening',
+    inputValue: '7',
   },
   {
     key: '8',
     title: 'Education',
     color: '#b3b3b3',
-    inputValue: 'Education',
+    inputValue: '8',
   },
   {
     key: '9',
     title: 'Livelihoods and basic needs',
     color: '#b3b3b3',
-    inputValue: 'Livelihoods And Basic Needs',
+    inputValue: '9',
+  },
+  {
+    key: '10',
+    title: 'Health (clinical)',
+    color: '#a6d854',
+    inputValue: '10',
   },
 ];
 
@@ -83,73 +93,85 @@ export const secondarySectorList = [
     key: '0',
     title: 'WASH',
     color: '#66c2a5',
-    inputValue: 'Wash',
+    inputValue: '0',
   },
   {
     key: '1',
     title: 'PGI',
     color: '#fc8d62',
-    inputValue: 'Pgi',
+    inputValue: '1',
   },
   {
     key: '2',
     title: 'CEA',
     color: '#8da0cb',
-    inputValue: 'Cea',
+    inputValue: '2',
   },
   {
     key: '3',
     title: 'Migration',
     color: '#e78ac3',
-    inputValue: 'Migration',
+    inputValue: '3',
   },
   {
     key: '4',
-    title: 'Health',
+    title: 'Health (public)',
     color: '#a6d854',
-    inputValue: 'Health',
+    inputValue: '4',
   },
   {
     key: '5',
     title: 'DRR',
     color: '#ffd92f',
-    inputValue: 'Drr',
+    inputValue: '5',
   },
   {
     key: '6',
     title: 'Shelter',
     color: '#e5c494',
-    inputValue: 'Shelter',
+    inputValue: '6',
   },
   {
     key: '7',
     title: 'NS Strengthening',
     color: '#b3b3b3',
-    inputValue: 'NS Strengthening',
+    inputValue: '7',
   },
   {
     key: '8',
     title: 'Education',
     color: '#b3b3b3',
-    inputValue: 'Education',
+    inputValue: '8',
   },
   {
     key: '9',
     title: 'Livelihoods and basic needs',
     color: '#b3b3b3',
-    inputValue: 'Livelihoods And Basic Needs',
+    inputValue: '9',
   },
   {
     key: '10',
     title: 'Recovery',
     color: '#b3b3b3',
-    inputValue: 'Recovery',
+    inputValue: '10',
   },
   {
     key: '11',
     title: 'Internal displacement',
     color: '#b3b3b3',
-    inputValue: 'Internal Displacement',
+    inputValue: '11',
+  },
+  {
+    key: '12',
+    title: 'Health (clinical)',
+    color: '#a6d854',
+    inputValue: '12',
+  },
+  {
+    key: '13',
+    title: 'COVID-19',
+    color: '#a6d854',
+    inputValue: '13',
   },
 ];
 
@@ -177,11 +199,17 @@ export const statusList = [
 export const statuses = listToMap(statusList, d => d.key, d => d.title);
 
 export const operationTypeList = [
-  { value: 'Programme', label: 'Programme' },
-  { value: 'Emergency Operation', label: 'Emergency operation' },
+  { value: '0', label: 'Programme' },
+  { value: '1', label: 'Emergency operation' },
 ];
 
 export const operationTypes = {
   0: 'Programme',
   1: 'Emergency Operation',
 };
+
+export const projectVisibilityList = [
+  { value: 'public', label: 'Public' },
+  { value: 'logged_in_user', label: 'Logged in user' },
+  { value: 'ifrc_only', label: 'IFRC only' },
+];
