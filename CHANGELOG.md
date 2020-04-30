@@ -1,3 +1,43 @@
+### Release 4.3.0
+
+Frontend:
+
+- Add **3w** tab to **Country** page ([#641](https://github.com/IFRCGo/go-frontend/issues/641))
+	- Create a 3w view with a map, some basic overview charts and the projects table
+	- Add basic filters to the view
+	- Add ability to add / edit 3w project for logged in user
+	- Add ability to export the all the 3w data
+- Add 3w project form ([#640](https://github.com/IFRCGo/go-frontend/issues/640))
+	- Create a form to add a 3w project
+	- Create dynamic fields according to the values of `Operation type` and `Programme type`. The fields `Current IFRC Operation`, `Current Emergency Operation` and `Disaster type` will be conditionally displayed accordingly.
+	- Create dynamic schema and required conditions for different field (eg: People reached > Total is required only if project is marked as Completed)
+	- Add a separate tag for COVID-19 specifc project / activity
+- Add **3w** tab to **Region** page ([#1019](https://github.com/IFRCGo/go-frontend/issues/1019))
+	- Create the view with 3w overview, movement activities and national society activities for all the countries in the region
+	- Add map to show the movement activities in the countries of the selected region
+	- Add ability to view projects within the countries of selected region
+	- Add sankey diagram to view the national society activities
+- Add ability to add the 3w project from **Emergency** page ([#1066](https://github.com/IFRCGo/go-frontend/issues/1066))
+- Add [`react-icons`](https://react-icons.netlify.com/#/) for easy usage of icons
+- Add [`@togglecorp/fujs`](https://github.com/toggle-corp/fujs/) for a lot of utils
+- Add [`@togglecorp/faram`](https://github.com/toggle-corp/fujs/) to implement dynamic forms
+- Add some faram compatible wrapped inputs (`TextInput`, `SelectInput`, `FaramCheckbox`, `DateInput`, `NumberInput`) with existing input elements
+- Add some components that use [Hooks](https://reactjs.org/docs/hooks-intro.html). Custom hooks are added to `/hooks/` directory
+- Add selectors for common selection approach for the redux. Selectors are added to `/selectors/` directory
+- Refactor map download code (break down into components and remove unnecessary codes).
+
+API:
+ - Fetch FTS HPC Data using google sheet.
+ - Add visibility support for project. (Public, Login required, IFRC Only)
+ - New Programme Type `Domestic`
+ - Add Bulk Project Import in Admin Panel.
+ - Enable history for Project changes.
+ - Add Sector/SectorTag `Health (private)` and `COVID-19`.
+ - Add API for Project for region.
+ - Add Multiselect filters for Project API enumfields.
+ - Change Sector/SectorTag `Health` to `Health (public)`.
+
+
 ### Release 4.2.3
 
 Frontend:
