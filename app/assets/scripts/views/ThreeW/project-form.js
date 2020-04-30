@@ -85,11 +85,12 @@ const InputSection = ({
   title,
   children,
   helpText,
+  tooltip,
 }) => (
   <div className={_cs(className, 'project-form-input-section')}>
     <div
       className='section-title'
-      title={helpText}
+      title={tooltip}
     >
       <div className='tc-title'>
         { title }
@@ -474,6 +475,7 @@ class ProjectForm extends React.PureComponent {
 
     const shouldShowDisasterType = String(faramValues.operation_type) === '0' || shouldShowCurrentOperation || shouldShowCurrentEmergencyOperation;
     const shouldDisableDisasterType = String(faramValues.operation_type) === '1';
+    const isReachedTotalRequired = String(faramValues.status) === '2';
 
     const schema = this.getSchema(
       faramValues.operation_type,
@@ -497,6 +499,8 @@ class ProjectForm extends React.PureComponent {
       >
         <InputSection
           title='Reporting National Society *'
+          helpText='Select National Society that is carrying out the activity.'
+          tooltip='It can be either the National Society where the disaster has taken place or a different National Society that is carrying out an activity in support of the response.'
         >
           <SelectInput
             faramElementName='reporting_ns'
@@ -510,6 +514,8 @@ class ProjectForm extends React.PureComponent {
         <InputSection
           className='multi-input-section'
           title='Country and region / province* '
+          helpText='Select the country and region where the disaster is taking place.'
+          tooltip='The region can be referred to as states, provinces, or Admin Level 1. Choose countrywide for activities that are not limited to specific places. If the project takes place on multiple regions please submit each region separately using the clone-function on the country view table'
         >
           <SelectInput
             faramElementName='project_country'
@@ -533,6 +539,12 @@ class ProjectForm extends React.PureComponent {
         <InputSection
           className='multi-input-section'
           title='Type of operation / programme*'
+          tooltip='The operation type can be either an Emergency Operation or a Programme. Emergency Operations are new efforts linked to a specific emergency. Programs are ongoing work linked to a disaster. &#13;&#13;If you choose Domestic, Bilateral, or Multilateral Programme, select Disaster Type that best fits the situation. Disasters are often multifactorial. Please choose the type that makes the most sense, recognizing that disasters are often the result of many complex factors. &#13;If you choose Bilateral Emergency Operation, then no additional info is required. &#13;If you choose Multilateral Emergency Operation, then please identify linked IFRC Emergency Operation.'
+          helpText={
+            <React.Fragment>
+              <b>Programme Type:</b> Select the Programme Type. Choose from the options of Domestic, Bilateral, Multilateral. If you choose Domestic Emergency Operation, then identify linked Ongoing Emergency.
+            </React.Fragment>
+          }
         >
           <SelectInput
             faramElementName='operation_type'
@@ -579,20 +591,22 @@ class ProjectForm extends React.PureComponent {
 
         { shouldShowDisasterType && (
           <InputSection
-            title='Disaster type*'
+            title='Disaster type'
           >
             <SelectInput
               faramElementName='dtype'
               className='project-form-select'
               options={disasterTypeOptions}
               disabled={shouldDisableDisasterType}
-              placeholder={shouldDisableDisasterType ? 'Select an operation to view its disaster type' : ''}
+              placeholder={shouldDisableDisasterType ? 'Select an operation to view its disaster type' : undefined}
             />
           </InputSection>
         )}
 
         <InputSection
-          title='Activity name*'
+          title='Project name*'
+          helpText='Enter a name that differentiates your activity or project from other initiatives taking place in the response.'
+          tooltip='The 3w system does allow for duplicate activities projects with the same name, but please choose a descriptive and original title.'
         >
           <TextInput
             faramElementName='name'
@@ -602,6 +616,17 @@ class ProjectForm extends React.PureComponent {
         <InputSection
           className='multi-input-section'
           title='Sector and tagging'
+          helpText={
+            <React.Fragment>
+              <div>
+                <b>Primary Sector:</b> Choose the sector that best represents the activity or project.
+              </div>
+              <div>
+                <b>Tagging:</b> Projects are often multi-sector. After choosing the primary sector, feel free to add additional sector ‘tags’.
+              </div>
+            </React.Fragment>
+          }
+          tooltip='CEA - Community engagement and accountability is a set of communication and participation activities that help put communities at the centre of the response. &#13; &#13;DRR - Disaster risk reduction is the concept and practice of reducing disaster risks through systemic efforts. It encompasses a broad range of activities – from ensuring that legislative and policy approaches reflect known hazards, to community-based initiatives and technical solutions such as early warning systems. &#13; &#13;Education - Educational programming for people affected by disasters. &#13; &#13;Health - Immediate assistance for disaster-affected people and longer-term activities that save lives and improve health outcomes. Separated into clinical and public health. &#13; &#13;Livelihood and basic needs - Livelihoods are the capabilities, assets and activities required for generating income and securing a basic means of living. &#13; &#13;Migration - Aid and protection for migrants and displaced people, in countries of origin, transit and destination, whatever their legal status. &#13;&#13;NS Strengthening - Support to the auxiliary role, strategy, governance and accountability; strengthening areas such as financial management, communications, fundraising; increase volunteer engagement; improve external relations; or ramp up their preparedness for responding to emergencies or improve the planning and execution of programmes and services they provide. &#13; &#13;PGI - Protection, gender and inclusion (PGI) in emergencies including sexual and gender-based violence and disability inclusion. &#13; &#13;Shelter - Immediate and long term shelter assistance.  &#13;&#13;WASH - Water, sanitation and hygiene support. &#13; &#13; &#13;It is possible to add none, one or many tags using the definitions listed above. For COVID-19 related projects please add the COVID-19 tag'
         >
           <SelectInput
             faramElementName='primary_sector'
@@ -621,6 +646,8 @@ class ProjectForm extends React.PureComponent {
         <InputSection
           className='multi-input-section'
           title='Start and end dates* '
+          helpText='Choose the date when the work on the activity or project begins'
+          tooltip='Choose the date when the project is likely to end. Remember, you can easily return and edit this data if plans evolve.'
         >
           <DateInput
             faramElementName='start_date'
@@ -635,10 +662,20 @@ class ProjectForm extends React.PureComponent {
         <InputSection
           className='multi-input-section'
           title='Budget and status*'
-          helpText='"Activity status" is automatically calculated based on the values from "Start and end dates" above and can be marked as complete from the "Completed" checkbox.'
+          helpText={
+            <React.Fragment>
+              <div>
+                <b>Budget:</b> Enter the budget for the activity or project.
+              </div>
+              <div>
+                <b>Project status:</b> The project status (planned and ongoing) is automatically defined by the current date and the submitted project timeline.
+              </div>
+            </React.Fragment>
+          }
+          tooltip='The budget includes the total costs for the listed activity or project. &#13;The project can be marked completed, which makes the people reached a required value.'
         >
           <NumberInput
-            label='Activity budget (CHF)'
+            label='Project budget (CHF)'
             faramElementName='budget_amount'
           />
           <div>
@@ -647,7 +684,7 @@ class ProjectForm extends React.PureComponent {
               faramElementName="is_project_completed"
             />
             <TextOutput
-              label='Activity status'
+              label='Project status'
               value={statuses[faramValues.status]}
             />
           </div>
@@ -656,7 +693,8 @@ class ProjectForm extends React.PureComponent {
         <InputSection
           className='multi-input-section'
           title='People targeted'
-          helpText="The “other” category can include data such as “other sex/gender”, “undisclosed”, “unknown”, etc."
+          helpText='Enter the number of people that the project plans to reach through the work.'
+          tooltip='The options are: &#13;Male - People who identify as having the male gender &#13;Female - People who identify as having the female gender &#13;Other - Other can include data such as “other sex/gender”, “undisclosed”, “unknown”, etc &#13;Total - The total number of people included in the subcategories above'
         >
           <NumberInput
             faramElementName='target_male'
@@ -680,7 +718,8 @@ class ProjectForm extends React.PureComponent {
         <InputSection
           className='multi-input-section'
           title='People reached'
-          helpText="People Reached are people who receive (from the reporting National Society in the Reporting Year) tangible goods and/or any of a range of activities offering protection and assistance, including a positive change or support in knowledge, skills, awareness, attitudes, behaviour, and physical and psychosocial well-being and who can be counted or at least estimated with some degree of reliability."
+          helpText='Enter the total number of people reached already with (TOTAL, male, female, other) according to the definitions above.'
+          tooltip='lease follow the Counting People Reached guidelines as establishing the Federation-wide Databank and Reporting System.'
         >
           <NumberInput
             faramElementName='reached_male'
@@ -697,16 +736,18 @@ class ProjectForm extends React.PureComponent {
           <NumberInput
             disabled={shouldDisableTotalReached}
             faramElementName='reached_total'
-            label={faramValues.status === 'Completed' ? 'Total* ' : 'Total'}
+            label={isReachedTotalRequired ? 'Total* ' : 'Total'}
           />
         </InputSection>
         <InputSection
-          title='Activity visibility*'
+          title='Project visibility*'
         >
           <SelectInput
             faramElementName='visibility'
             className='project-form-select'
             options={projectVisibilityOptions}
+            helpText='Enter the desired visibility of the project'
+            tooltip='The IFRC Only option limits viewing to only those vetted IFRC members who are logged into the GO platform and have the required permissions to view the data. Most programs should be in public mode, and we should only use the IFRC Only option in limited sensitive contexts where issues such as protection concerns are present. As with the wider GO Platform, there is no place for Personal or Community Identifiable data on this type of coordination platform. Sensitive data or information that could jeopardize the safety of staff or project participants should not be shared.'
             clearable={false}
           />
         </InputSection>

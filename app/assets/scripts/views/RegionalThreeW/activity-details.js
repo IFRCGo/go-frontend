@@ -113,7 +113,7 @@ function ActivityDetails (p) {
         </div>
         <div className='active-ns-count'>
           <TextOutput
-            label="Active national societies"
+            label="Active National Societies"
             value={nsSectorList.length}
             reverseOrder
           />

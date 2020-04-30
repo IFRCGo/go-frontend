@@ -6,6 +6,14 @@ import { startDownload } from '../../../utils/download-starter';
 import { PropTypes as T } from 'prop-types';
 import { environment } from '../../../config';
 
+function svgToCanvas (targetElem) {
+  const svgElem = targetElem.getElementsByTagName('svg');
+  for (const node of svgElem) {
+    node.setAttribute('font-family', window.getComputedStyle(node, null).getPropertyValue('font-family'));
+    node.replaceWith(node);
+  }
+}
+
 class DownloadButton extends React.Component {
   constructor (props) {
     super(props);
@@ -47,6 +55,7 @@ class DownloadButton extends React.Component {
         popover.style.maxHeight = 'none';
       }
 
+      svgToCanvas(map);
       html2canvas(map, {useCORS: true}).then((renderedCanvas) => {
         startDownload(
           renderedCanvas,

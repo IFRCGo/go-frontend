@@ -1,11 +1,3 @@
-import {
-  statuses,
-  secondarySectors,
-  sectors,
-  programmeTypes,
-  operationTypes,
-} from '../../utils/constants';
-
 const exportHeaders = [
   {
     title: 'Country',
@@ -24,27 +16,24 @@ const exportHeaders = [
   },
   {
     title: 'Operation type',
-    key: 'operation_type',
-    modifier: r => operationTypes[r.operation_type],
+    key: 'operation_type_display',
   },
   {
     title: 'Programme type',
-    key: 'programme_type',
-    modifier: r => programmeTypes[r.programme_type],
+    key: 'programme_type_display',
   },
   {
-    title: 'Activity name',
+    title: 'Project name',
     key: 'name',
   },
   {
     title: 'Primary Sector',
-    key: 'primary_sector',
-    modifier: r => sectors[r.primary_sector],
+    key: 'primary_sector_display',
   },
   {
     title: 'Tags',
     key: 'secondary_sectors',
-    modifier: r => r.secondary_sectors.map(d => secondarySectors[d]).join(', '),
+    modifier: r => r.secondary_sectors_display.join(', '),
   },
   {
     title: 'Start Date',
@@ -60,8 +49,7 @@ const exportHeaders = [
   },
   {
     title: 'Status',
-    key: 'status',
-    modifier: r => statuses[r.status],
+    key: 'status_display',
   },
   {
     title: 'Targeted Males',

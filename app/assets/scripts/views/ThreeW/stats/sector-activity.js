@@ -72,6 +72,7 @@ export default class SectorActivity extends React.PureComponent {
               <Bar
                 fill='#c1cdd1'
                 dataKey='value'
+                name="Activities"
               />
               <Tooltip cursor={{ fill: 'transparent' }} />
             </BarChart>
