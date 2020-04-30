@@ -475,6 +475,7 @@ class ProjectForm extends React.PureComponent {
 
     const shouldShowDisasterType = String(faramValues.operation_type) === '0' || shouldShowCurrentOperation || shouldShowCurrentEmergencyOperation;
     const shouldDisableDisasterType = String(faramValues.operation_type) === '1';
+    const isReachedTotalRequired = String(faramValues.status) === '2';
 
     const schema = this.getSchema(
       faramValues.operation_type,
@@ -735,7 +736,7 @@ class ProjectForm extends React.PureComponent {
           <NumberInput
             disabled={shouldDisableTotalReached}
             faramElementName='reached_total'
-            label={faramValues.status === 'Completed' ? 'Total* ' : 'Total'}
+            label={isReachedTotalRequired ? 'Total* ' : 'Total'}
           />
         </InputSection>
         <InputSection
