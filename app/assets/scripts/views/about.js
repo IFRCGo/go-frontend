@@ -2,8 +2,8 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-
 import App from './app';
+import VideoCarousel from '../components/about/video-carousel';
 
 export default class About extends React.Component {
   render () {
@@ -171,29 +171,7 @@ export default class About extends React.Component {
 
               <div className='fold fold__about__video__carousel'>
                 <div className='row row--centered'>
-                  <div className='about__video__carousel__each'>
-                    <div className='iframe__embed'>
-                      <iframe width="560" height="315" className='iframe__embed__video' src="https://www.youtube.com/embed/5QSFGJN5Tpo" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-                    </div>
-                    <div className='about__video__carousel__each__heading'>How to Create Field Reports</div>
-                    <div className='about__video__carousel__each__subheading'>Description of the Video</div>
-                  </div>
-
-                  <div className='about__video__carousel__each'>
-                    <div className='iframe__embed'>
-                      <iframe width="560" height="315" className='iframe__embed__video' src="https://www.youtube.com/embed/5QSFGJN5Tpo" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-                    </div>
-                    <div className='about__video__carousel__each__heading'>How to Create Field Reports</div>
-                    <div className='about__video__carousel__each__subheading'>Description of the Video</div>
-                  </div>
-
-                  <div className='about__video__carousel__each'>
-                    <div className='iframe__embed'>
-                      <iframe width="560" height="315" className='iframe__embed__video' src="https://www.youtube.com/embed/5QSFGJN5Tpo" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-                    </div>
-                    <div className='about__video__carousel__each__heading'>How to Create Field Reports</div>
-                    <div className='about__video__carousel__each__subheading'>Description of the Video</div>
-                  </div>
+                  <VideoCarousel />
                 </div>
               </div>
               <section className='about__resources__block'>

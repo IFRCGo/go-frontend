@@ -162,6 +162,59 @@
   margin: $global-spacing 0 0 0;
 }
 
+.about__video__carousel {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  overflow: initial !important;
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .BrainhubCarouselItem {
+    margin: $global-spacing;
+
+    > div {
+      width: 100%;
+    }
+  }
+
+  .BrainhubCarousel__arrows {
+    position: absolute;
+    z-index: 1;
+  }
+
+  .BrainhubCarousel__arrowLeft {
+    left: -40px;
+  }
+
+  .BrainhubCarousel__arrowRight {
+    right: -40px;
+  }
+
+  .BrainhubCarousel__arrows, .BrainhubCarousel__arrows:hover, .BrainhubCarousel__arrows:hover:enabled, .BrainhubCarousel__arrows:disabled {
+    background: transparent;
+  }
+
+  .BrainhubCarousel__arrows {
+    span {
+      border-width: 5px 5px 0 0;
+      border-color: $grey-pearl;
+    }
+
+    &:hover span, &:hover:enabled span {
+      border-width: 5px 5px 0 0;
+      border-color: $grey-cement;
+    }
+
+    &:disabled span {
+      border-color: $grey-fog;
+    }
+  }
+}
+
 .about__video__carousel__each {
   @include column(1/3);
 }

@@ -127,6 +127,7 @@
     "watchify": "^3.11.1"
   },
   "dependencies": {
+    "@brainhubeu/react-carousel": "^1.13.40",
     "@togglecorp/faram": "^1.2.1",
     "@togglecorp/fujs": "1.8.1-beta.0",
     "@turf/bbox": "^6.0.1",
@@ -183,6 +184,7 @@
     "redux-thunk": "^2.2.0",
     "resize-observer-polyfill": "^1.5.1",
     "set-value": "^2.0.1",
+    "swiper": "^5.3.8",
     "tar": "^2.2.2",
     "url": "^0.11.0"
   }
