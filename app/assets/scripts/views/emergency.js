@@ -35,6 +35,7 @@ import {
   noSummary,
 } from '../utils/format';
 import { get, mostRecentReport, getRecordsByType } from '../utils/utils/';
+import { getRegionById, getRegionId } from '../utils/region-constants';
 
 import App from './app';
 import Fold from '../components/fold';
@@ -146,6 +147,7 @@ class Emergency extends React.Component {
 
   // Sets default tab if url param is blank or incorrect
   displayTabContent () {
+    console.log('props', this.props.event.data.countries)
     const tabHashArray = this.state.tabs.map(({ hash }) => hash);
     if (!tabHashArray.find((hash) => hash === this.props.location.hash)) {
       this.props.history.replace(
@@ -497,7 +499,10 @@ class Emergency extends React.Component {
                   <td>{isoDate(o.created_at)}</td>
                   <td>
                     <Link
-                      to={`/reports/${o.id}`}
+                      to={{
+                        pathname: `/reports/${o.id}`,
+                        state: this.props.location.pathname
+                      }}
                       className="link--primary"
                       title="View Field Report"
                     >
@@ -807,8 +812,10 @@ class Emergency extends React.Component {
           crumbs={[
             {
               link: `/emergency/${get(this.props.event.data)}`,
-              name: `${get(data, 'name', 'Emergency')}`,
+              name: 'Emergency',
             },
+            { link: `/countries/${this.props.event.data.countries[0].id}`, name: `${data.countries[0].name}` },
+            // {link: `/regions/${data.region}`, name: getRegionById(data.region).name},
             { link: '/emergencies', name: 'Emergencies' },
             { link: '/', name: 'Home' },
           ]}

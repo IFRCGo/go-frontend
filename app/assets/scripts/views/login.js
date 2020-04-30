@@ -7,6 +7,7 @@ import c from 'classnames';
 import { Helmet } from 'react-helmet';
 
 import { getAuthToken } from '../actions';
+import BreadCrumb from '../components/breadcrumb';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 
 import App from './app';
@@ -77,6 +78,10 @@ class Login extends React.Component {
         <Helmet>
           <title>IFRC Go - Login</title>
         </Helmet>
+        <BreadCrumb crumbs={[
+          {link: '/login', name: 'Login'},
+          {link: '/', name: 'Home'}
+        ]} />
         <section className='inpage'>
           <header className='inpage__header'>
             <div className='inner'>

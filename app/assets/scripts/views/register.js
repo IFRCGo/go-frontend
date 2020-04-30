@@ -17,6 +17,7 @@ import { environment } from '../config';
 
 import App from './app';
 import { FormInput, FormError } from '../components/form-elements/';
+import BreadCrumb from '../components/breadcrumb';
 import { showAlert } from '../components/system-alerts';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 import registerSchemaDef from '../schemas/register';
@@ -294,6 +295,10 @@ class Register extends React.Component {
         <Helmet>
           <title>IFRC Go - Register</title>
         </Helmet>
+        <BreadCrumb crumbs={[
+          {link: '/register', name: 'Register'},
+          {link: '/', name: 'Home'}
+        ]} />
         <section className='inpage'>
           <header className='inpage__header'>
             <div className='inner'>
