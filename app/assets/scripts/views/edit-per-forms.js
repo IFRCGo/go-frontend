@@ -59,7 +59,7 @@ class EditPerForms extends React.Component {
         formCode={this.props.match.params.formCode}
         user={this.props.match.params.user}
         ns={this.props.match.params.ns} />);
-    }   
+    }
     return (
       <App className='page--emergencies'>
         <Helmet>
