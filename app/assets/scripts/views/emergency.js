@@ -35,7 +35,6 @@ import {
   noSummary,
 } from '../utils/format';
 import { get, mostRecentReport, getRecordsByType } from '../utils/utils/';
-import { getRegionById, getRegionId } from '../utils/region-constants';
 
 import App from './app';
 import Fold from '../components/fold';
@@ -147,7 +146,6 @@ class Emergency extends React.Component {
 
   // Sets default tab if url param is blank or incorrect
   displayTabContent () {
-    console.log('props', this.props.event.data.countries)
     const tabHashArray = this.state.tabs.map(({ hash }) => hash);
     if (!tabHashArray.find((hash) => hash === this.props.location.hash)) {
       this.props.history.replace(
