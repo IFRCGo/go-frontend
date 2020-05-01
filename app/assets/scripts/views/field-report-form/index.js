@@ -232,7 +232,7 @@ class FieldReportForm extends React.Component {
     if (field === 'isCovidReport' && val) {
       _set(data, 'status', formData.statusEvent.value);
       _set(data, 'disasterType', '1');
-    } 
+    }
 
     _set(data, field, val === '' || val === null ? undefined : val);
     this.setState({data});
@@ -380,7 +380,7 @@ class FieldReportForm extends React.Component {
               property='is_covid_report'
             />
           </div>
-        </div>        
+        </div>
         <FormInputSelect
           label={fields.summary[status].label}
           labelSecondary='Add Title'
@@ -734,7 +734,7 @@ class FieldReportForm extends React.Component {
 
     // We hide the entire Planned International Response section for COVID reports
     const isCovidReport = this.state.data.isCovidReport;
-    if (isCovidReport ) {
+    if (isCovidReport) {
       responseTitle = '';
     }
     return (
@@ -766,7 +766,7 @@ class FieldReportForm extends React.Component {
               }
 
             </React.Fragment>
-          </React.Fragment>        
+          </React.Fragment>
         )}
 
         <h2 className='fold__title fold__title--contact'>Contacts</h2>
