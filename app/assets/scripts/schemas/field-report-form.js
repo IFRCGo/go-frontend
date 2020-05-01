@@ -9,6 +9,9 @@ export const step1 = {
       type: 'string',
       enum: getValidValues(formData.status, 'value')
     },
+    isCovidReport: {
+      type: 'boolean'
+    },
     summary: {
       type: 'string'
     },

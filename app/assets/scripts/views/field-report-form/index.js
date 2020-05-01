@@ -9,6 +9,7 @@ import c from 'classnames';
 import Select from 'react-select';
 import Ajv from 'ajv';
 import ajvKeywords from 'ajv-keywords';
+import ToggleButton from 'react-toggle-button';
 
 import { environment } from '../../config';
 import {
@@ -213,6 +214,10 @@ class FieldReportForm extends React.Component {
     this.onFieldChange('country', e);
   }
 
+  toggleCovidReport (isCovidReport) {
+    this.onFieldChange('isCovidReport', !isCovidReport);
+  }
+
   onFieldChange = (field, e) => {
     let data = _cloneDeep(this.state.data);
     let val = e && e.target ? e.target.value : e;
@@ -223,6 +228,11 @@ class FieldReportForm extends React.Component {
     ) {
       _set(data, 'status', formData.statusEvent.value);
     }
+
+    if (field === 'isCovidReport' && val) {
+      _set(data, 'status', formData.statusEvent.value);
+      _set(data, 'disasterType', '1');
+    } 
 
     _set(data, field, val === '' || val === null ? undefined : val);
     this.setState({data});
@@ -347,6 +357,30 @@ class FieldReportForm extends React.Component {
             property='status'
           />
         </FormRadioGroup>
+        <div className='form__group'>
+          <div className='form__inner-header'>
+            <label className='form__label'>COVID-19 Related Event</label>
+          </div>
+          <div className='form__inner-body'>
+            <ToggleButton
+              value={this.state.data.isCovidReport || false}
+              onToggle={this.toggleCovidReport.bind(this)}
+              aria-label='Is this a COVID-19 Field Report?'
+              colors={{
+                activeThumb: {
+                  base: '#f5333f',
+                },
+                active: {
+                  base: '#666666'
+                }
+              }}
+            />
+            <FormError
+              errors={this.state.errors}
+              property='is_covid_report'
+            />
+          </div>
+        </div>        
         <FormInputSelect
           label={fields.summary[status].label}
           labelSecondary='Add Title'
@@ -423,6 +457,7 @@ class FieldReportForm extends React.Component {
               placeholder='Select a disaster type'
               name='disaster-type'
               id='disaster-type'
+              disabled={ this.state.data.isCovidReport }
               options={formData.disasterType}
               value={this.state.data.disasterType}
               onChange={({value}) => this.onFieldChange('disasterType', value)}
