@@ -360,6 +360,7 @@ class FieldReport extends React.Component {
             <div className='prose fold prose--responsive'>
               <div className='inner'>
                 <p className='inpage__note'>Last updated{data.user ? ` by ${data.user.username}` : null} on {lastTouchedAt}</p>
+                { data.is_covid_report ? (<h2>This is a COVID-19 Related Report.</h2>) : null }
                 {this.renderNumericDetails(data)}
                 { epiStatus === 'EPI' ? <DisplaySection title='Date of Data' inner={sitFieldsDate} /> : null }
                 <DisplaySection sectionClass='rich-text-section' title={ status === 'EW' ? 'Risk Analysis' : 'Description' } inner={get(data, 'description', false)} />
@@ -379,7 +380,7 @@ class FieldReport extends React.Component {
                 {this.renderActionsTaken(data, 'FDRN', 'IFRC')}
                 {this.renderActionsTaken(data, 'PNS', 'any other RCRC Movement actors') /* instead of PNS Red Cross, go-frontend/issues/822 */ }
                 <DisplaySection title='Actions taken by others' inner={get(data, 'actions_others', false)} />
-                {this.renderPlannedResponse(data)}
+                {data.is_covid_report && this.renderPlannedResponse(data)}
                 {this.renderSources(data)}
                 {this.renderContacts(data)}
               </div>
