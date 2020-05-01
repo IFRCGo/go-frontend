@@ -609,6 +609,11 @@ class FieldReportForm extends React.Component {
   renderStep3 () {
     const fields = formData.fieldsStep3;
     const status = this.getStatus();
+
+    // only for filtering the list of actions, we use the COVID type,
+    // all other elements will follow the same as the EPI status.
+    const actionsStatus = this.state.data.isCovidReport ? 'COVID' : status;
+
     const { actions } = this.props;
 
     // ideally, this should never happen, but handle it.
@@ -677,7 +682,7 @@ class FieldReportForm extends React.Component {
                   name={section.name}
                   key={section.key}
                   classInput='textarea--lg'
-                  options={filterActions(actionsData, section.action_type, status)}
+                  options={filterActions(actionsData, section.action_type, actionsStatus)}
                   values={this.state.data[section.key]}
                   onChange={this.onFieldChange.bind(this, section.key)}
                 />
