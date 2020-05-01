@@ -725,34 +725,44 @@ class FieldReportForm extends React.Component {
     const plannedResponseRows = fields.plannedResponseRows.filter(row => {
       return !!row.label[status];
     });
-    const responseTitle = status === 'EVT' ? 'Planned Response' : 'Planned Interventions';
+    let responseTitle = status === 'EVT' ? 'Planned Response' : 'Planned Interventions';
+
+    // We hide the entire Planned International Response section for COVID reports
+    const isCovidReport = this.state.data.isCovidReport;
+    if (isCovidReport ) {
+      responseTitle = '';
+    }
     return (
       <Fold title={responseTitle}>
-        <label className='form__label'>Planned International Response</label>
-        <div className='form__description'>
-          <p>Indicate status of global and regional tools.</p>
-        </div>
+        { this.state.data.isCovidReport ? null : (
+          <React.Fragment>
+            <label className='form__label'>Planned International Response</label>
+            <div className='form__description'>
+              <p>Indicate status of global and regional tools.</p>
+            </div>
 
-        <React.Fragment>
-          {
-            plannedResponseRows.map(row => {
-              return (
-                <PlanResponseRow
-                  label={row.label[status]}
-                  key={row.key}
-                  valueFieldLabel={row.valueFieldLabel}
-                  name={row.name}
-                  options={row.options}
-                  values={this.state.data[row.key]}
-                  errors={this.state.errors}
-                  fieldKey={row.key}
-                  onChange={this.onFieldChange.bind(this, row.key)}
-                />
-              );
-            })
-          }
+            <React.Fragment>
+              {
+                plannedResponseRows.map(row => {
+                  return (
+                    <PlanResponseRow
+                      label={row.label[status]}
+                      key={row.key}
+                      valueFieldLabel={row.valueFieldLabel}
+                      name={row.name}
+                      options={row.options}
+                      values={this.state.data[row.key]}
+                      errors={this.state.errors}
+                      fieldKey={row.key}
+                      onChange={this.onFieldChange.bind(this, row.key)}
+                    />
+                  );
+                })
+              }
 
-        </React.Fragment>
+            </React.Fragment>
+          </React.Fragment>        
+        )}
 
         <h2 className='fold__title fold__title--contact'>Contacts</h2>
 
