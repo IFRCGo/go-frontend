@@ -121,38 +121,30 @@ export default class About extends React.Component {
                           </div>
                           <div className='box__global__content'>
                             <div className='box__global__content--ref clearfix'>
-                              <Link to='#' className='box__global__content--ref__link'>
-                                GO Visual Guidelines
+                              <a href='https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/EX2saJXpnKRNtez_YFsTyAABZkv63odVuBlH7XLYtxgEgQ?e=lTm6ID' target='_blank' className='box__global__content--ref__link'>
+                                Visual Guidelines
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </Link>
-                              <Link to='#' className='box__global__content--ref__link'>
-                                GO Visual Guidelines
+                              </a>
+                              <a href='https://company-190156.frontify.com/d/zFf8DVC7Q8Uq/go-visual-identity' target='_blank' className='box__global__content--ref__link'>
+                                Visual Identity
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </Link>
-                              <Link to='#' className='box__global__content--ref__link'>
-                                GO User Studies
+                              </a>
+                              <a href='https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/EQQ_GpyIsVdGjW83fzKqkZgBHVd7PEY2ls24hYcl9Orbtg?e=ftTyYh' target='_blank' className='box__global__content--ref__link'>
+                                User Studies
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </Link>
-                              <Link to='#' className='box__global__content--ref__link'>
-                                GO User Studies
+                              </a>
+                              <a href='https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/ESX7S_-kp-FAuPP_yXIcLQkBhYbUQdAAEEr6_fY5siz53w?e=Pgux7M' target='_blank' className='box__global__content--ref__link'>
+                                Information Architecture
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </Link>
-                              <Link to='#' className='box__global__content--ref__link'>
-                                Reference Materials
+                              </a>
+                              <a href='https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/Eaje4wKVk5pFlqfNSv9HTSMBz-wABgwmlDraa3CtN8I33g?e=zlCAfG' target='_blank' className='box__global__content--ref__link'>
+                                3w guidance
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </Link>
-                              <Link to='#' className='box__global__content--ref__link'>
-                                Reference Materials
+                              </a>
+                              <a href='https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/EUqbJHWGW8xLjFJgwG-x4GABZRiqT4YQ2lKsL5ACccTN3Q?e=k6WTzJ' target='_blank' className='box__global__content--ref__link'>
+                                3w lessons learned
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </Link>
-                              <Link to='#' className='box__global__content--ref__link'>
-                                3W Lessons Learned
-                                <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </Link>
-                              <Link to='#' className='box__global__content--ref__link'>
-                                3W Lessons Learned
-                                <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </Link>
+                              </a>
                             </div>
                           </div>
                         </div>
