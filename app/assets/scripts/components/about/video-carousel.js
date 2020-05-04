@@ -8,6 +8,7 @@ export default class VideoCarousel2 extends React.Component {
     return (
       <Carousel
         arrows
+        offset={30}
         slidesPerPage={3}
         slidesPerScroll={3}
         centered={false}
