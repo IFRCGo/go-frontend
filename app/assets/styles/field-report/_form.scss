@@ -27,11 +27,9 @@
     }
   }
 
-  .form__group action-checkboxes {
-    .form__inner-body {
-      .form__label:not(:first-of-type), .form__label:not(.label-secondary) {
-        padding-top: $global-spacing-2;
-      }
+  .form__group.action-checkboxes {
+    .form__options-group + .form__label {
+      padding-top: $global-spacing-2;
     }
   }
 
