@@ -365,7 +365,7 @@ class FieldReportForm extends React.Component {
             <ToggleButton
               inactiveLabel={false}
               activeLabel={false}
-              thumbStyle={{'box-shadow': 'rgba(0, 0, 0, 0.1) 0px 0px 0px 1px'}}
+              thumbStyle={{'boxShadow': 'rgba(0, 0, 0, 0.1) 0px 0px 0px 1px'}}
               value={this.state.data.isCovidReport || false}
               onToggle={this.toggleCovidReport.bind(this)}
               aria-label='Is this a COVID-19 Field Report?'
