@@ -185,7 +185,7 @@ export default class About extends React.Component {
                   <div className='about__resources'>
                     <div className='about__resources__row clearfix'>
                       <div className='box__global box__global--resources'>
-                        {/*<span className='collecticon-circle-information icon__about__resources'></span>*/}
+                        {/* <span className='collecticon-circle-information icon__about__resources'></span> */}
                         <div className='box__global__heading'>
                           <div className='base-font-semi-bold'>IFRC Surge Services</div>
                         </div>
@@ -208,7 +208,7 @@ export default class About extends React.Component {
                       </div>
 
                       <div className='box__global box__global--resources'>
-                        {/*<span className='collecticon-circle-information icon__about__resources'></span>*/}
+                        {/* <span className='collecticon-circle-information icon__about__resources'></span> */}
                         <div className='box__global__heading'>
                           <div className='base-font-semi-bold'>IFRC Guidance Material</div>
                         </div>
@@ -231,7 +231,7 @@ export default class About extends React.Component {
                       </div>
 
                       <div className='box__global box__global--resources'>
-                        {/*<span className='collecticon-circle-information icon__about__resources'></span>*/}
+                        {/* <span className='collecticon-circle-information icon__about__resources'></span> */}
                         <div className='box__global__heading'>
                           <div className='base-font-semi-bold'>Other IFRC Resources</div>
                         </div>
