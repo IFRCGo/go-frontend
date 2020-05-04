@@ -205,7 +205,7 @@
     }
 
     &:enabled span {
-      border-color: $primary-color;
+      border-color: $grey-silver;
     }
 
     &:hover span, &:hover:enabled span {
@@ -213,9 +213,12 @@
       border-color: $primary-color;
     }
 
-    &:disabled span {
-      border-color: $grey-pearl;
+    &:disabled {
       cursor: default;
+
+      span {
+        border-color: $grey-titanium;
+      }
     }
   }
 }

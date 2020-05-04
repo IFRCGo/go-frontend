@@ -1,7 +1,6 @@
 'use strict';
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Link } from 'react-router-dom';
 import App from './app';
 import VideoCarousel from '../components/about/video-carousel';
 
@@ -121,38 +120,38 @@ export default class About extends React.Component {
                           </div>
                           <div className='box__global__content'>
                             <div className='box__global__content--ref clearfix'>
-                              <Link to='#' className='box__global__content--ref__link'>
-                                GO Visual Guidelines
+                              <a href='https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/EX2saJXpnKRNtez_YFsTyAABZkv63odVuBlH7XLYtxgEgQ?e=lTm6ID' target='_blank' className='box__global__content--ref__link'>
+                                Visual Guidelines
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </Link>
-                              <Link to='#' className='box__global__content--ref__link'>
-                                GO Visual Guidelines
+                              </a>
+                              <a href='https://company-190156.frontify.com/d/zFf8DVC7Q8Uq/go-visual-identity' target='_blank' className='box__global__content--ref__link'>
+                                Visual Identity
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </Link>
-                              <Link to='#' className='box__global__content--ref__link'>
-                                GO User Studies
+                              </a>
+                              <a href='https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/EUV7xJOyEZtDmecIH6uS9SIBwl3gv1cbxVjwS6m79gx7TQ?e=b2AgU3' target='_blank' className='box__global__content--ref__link'>
+                                User Studies
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </Link>
-                              <Link to='#' className='box__global__content--ref__link'>
-                                GO User Studies
+                              </a>
+                              <a href='https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/ESX7S_-kp-FAuPP_yXIcLQkB6zE6t2hVhKxGgWbSXZXOFg?e=RsWNSa' target='_blank' className='box__global__content--ref__link'>
+                                Information Architecture
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </Link>
-                              <Link to='#' className='box__global__content--ref__link'>
-                                Reference Materials
+                              </a>
+                              <a href='https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/Eaje4wKVk5pFlqfNSv9HTSMBz-wABgwmlDraa3CtN8I33g?e=zlCAfG' target='_blank' className='box__global__content--ref__link'>
+                                3w guidance
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </Link>
-                              <Link to='#' className='box__global__content--ref__link'>
-                                Reference Materials
+                              </a>
+                              <a href='https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/EUqbJHWGW8xLjFJgwG-x4GABfUD5UCS3DS6uwW74tufs9Q?e=pHcyLH' target='_blank' className='box__global__content--ref__link'>
+                                3w lessons learned
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </Link>
-                              <Link to='#' className='box__global__content--ref__link'>
-                                3W Lessons Learned
+                              </a>
+                              <a href='#' target='_blank' className='box__global__content--ref__link'>
+                                GO presentation materials
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </Link>
-                              <Link to='#' className='box__global__content--ref__link'>
-                                3W Lessons Learned
+                              </a>
+                              <a href='#' target='_blank' className='box__global__content--ref__link'>
+                                IFRC IM strategy
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </Link>
+                              </a>
                             </div>
                           </div>
                         </div>
