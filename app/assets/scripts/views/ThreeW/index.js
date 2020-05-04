@@ -3,6 +3,7 @@ import React from 'react';
 import _cs from 'classnames';
 import memoize from 'memoize-one';
 import { saveAs } from 'file-saver';
+import PropTypes from 'prop-types';
 
 import { getDataFromResponse } from '../../utils/request';
 import { convertJsonToCsv } from '../../utils/utils';
@@ -18,27 +19,24 @@ import Map from './map';
 import exportHeaders from './export-headers';
 
 export default class ThreeW extends React.PureComponent {
+  static propTypes = {
+    projectList: PropTypes.array,
+    countryId: PropTypes.string,
+    onFilterChange: PropTypes.func,
+    disabled: PropTypes.bool,
+    user: PropTypes.object,
+    onAddButtonClick: PropTypes.func,
+    onEditButtonClick: PropTypes.func,
+    onCloneButtonClick: PropTypes.func,
+    onDetailsButtonClick: PropTypes.func,
+    onDeleteButtonClick: PropTypes.func,
+  }
+
   getIsCountryAdmin = memoize((user, countryId) => {
     // User is logged in
     if (user && user.id) {
       return true;
     }
-
-    /*
-    if (!user || !user.id || !countryId) {
-      return false;
-    }
-
-    if (!user.is_admin_for_countries || user.is_admin_for_countries.length === 0) {
-      return false;
-    }
-
-    const countryIdIndex = user.is_admin_for_countries.findIndex(d => String(d) === String(countryId));
-
-    if (countryIdIndex !== -1) {
-      return true;
-    }
-    */
 
     return false;
   })

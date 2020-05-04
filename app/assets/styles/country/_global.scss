@@ -283,30 +283,76 @@
     align-items: baseline;
     flex-wrap: wrap;
 
-    .left {
-      flex-shrink: 0;
-      padding: 8px;
-
-      .add-button {
-        margin-right: 10px;
-      }
-    }
-
     .three-w-filters {
-      padding: 8px;
       display: flex;
       flex-wrap: wrap;
       flex-grow: 1;
 
+      .Select-menu-outer {
+        z-index: 11;
+        left: 5px;
+        width: calc(100% - 10px);
+      }
+
       .tc-select {
         flex-grow: 1;
 
-        .tc-select-input {
-          flex-grow: 1;
+        .tc-select-label {
+          display: none;
         }
 
-        .Select-menu-outer {
-          z-index: 11;
+        .tc-select-input {
+          flex-grow: 1;
+
+          .Select-control {
+            border: 0;
+            border-radius: 0;
+            background-color: $grey-mist;
+            border-bottom: 1px solid $primary-color;
+            font-size: $font-size-sm;
+          }
+
+          .Select-placeholder {
+            padding: 0 16px;
+            color: $base-color;
+            font-weight: $base-font-medium;
+          }
+
+          &:focus-within {
+            .Select-placeholder {
+              color: rgba($base-color, 0.3);
+            }
+          }
+
+          .Select-input {
+            height: auto;
+
+            input {
+              padding: 0;
+            }
+          }
+
+          .Select-multi-value-wrapper {
+            padding: 6px;
+          }
+
+          .Select-value {
+            background-color: $grey-cloud;
+            border-radius: 0;
+            margin: 1px;
+            vertical-align: middle;
+            font-size: $font-size-sm;
+
+            .Select-value-icon {
+              padding: 2px 3px;
+              font-size: $font-size-lg;
+            }
+
+            .Select-value-label {
+              padding: 2px 3px;
+              font-weight: $base-font-medium;
+            }
+          }
         }
       }
     }
