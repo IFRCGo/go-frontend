@@ -185,6 +185,30 @@ class FieldReport extends React.Component {
         {epiStatus === 'EPI' ? (
           <React.Fragment>
             <dl className='dl-horizontal numeric-list'>
+              <dt>Cases: </dt>
+              <dd>{n(get(data, 'epi_cases'))}</dd>
+              <dt>Suspected Cases: </dt>
+              <dd>{n(get(data, 'epi_suspected_cases'))}</dd>
+              <dt>Probable Cases: </dt>
+              <dd>{n(get(data, 'epi_probable_cases'))}</dd>
+              <dt>Confirmed Cases: </dt>
+              <dd>{n(get(data, 'epi_confirmed_cases'))}</dd>
+              <dt>Dead: </dt>
+              <dd>{n(get(data, 'epi_num_dead'))}</dd>
+            </dl>
+            <dl className='dl-horizontal numeric-list'>
+              <dt>Assisted by Government:</dt>
+              <dd>{n(get(data, 'gov_num_assisted'))}</dd>
+              <dt>Assisted by RCRC Movement:</dt>
+              <dd>{n(get(data, 'num_assisted'))}</dd>
+              <dt>Local Staff: </dt>
+              <dd>{n(get(data, 'num_localstaff'))}</dd>
+              <dt>Volunteers: </dt>
+              <dd>{n(get(data, 'num_volunteers'))}</dd>
+              <dt>Delegates: </dt>
+              <dd>{n(get(data, 'num_expats_delegates'))}</dd>
+            </dl>
+            {/* <dl className='dl-horizontal numeric-list'>
               <dt>Cases (WHO): </dt>
               <dd>{n(get(data, 'who_cases'))}</dd>
               <dt>Suspected Cases (WHO): </dt>
@@ -219,7 +243,7 @@ class FieldReport extends React.Component {
               <dd>{n(get(data, 'other_confirmed_cases'))}</dd>
               <dt>Dead (Other): </dt>
               <dd>{n(get(data, 'other_num_dead'))}</dd>
-            </dl>
+            </dl> */}
           </React.Fragment>
         ) : (
           <React.Fragment>
