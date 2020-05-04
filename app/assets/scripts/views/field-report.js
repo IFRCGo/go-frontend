@@ -84,8 +84,13 @@ class FieldReport extends React.Component {
   renderActionsTaken (data, key, orgDisplayName) {
     const actions = get(data, 'actions_taken', []).find(d => d.organization === key);
 
-    // No actions have been taken
-    if (!actions || !Array.isArray(actions.actions) || !actions.actions.length) {
+    // If actions is undefined or not an array, return null
+    // FIXME: Not entirely sure why this is needed
+    if (!actions || !Array.isArray(actions.actions)) { return null; }
+
+    // if there are neither actions nor a summary, return null.
+    // FIXME: Ideally, this would never occur
+    if (actions.actions.length === 0 && actions.summary === '') {
       return null;
     }
 
@@ -360,7 +365,6 @@ class FieldReport extends React.Component {
             <div className='prose fold prose--responsive'>
               <div className='inner'>
                 <p className='inpage__note'>Last updated{data.user ? ` by ${data.user.username}` : null} on {lastTouchedAt}</p>
-                { data.is_covid_report ? (<h2>This is a COVID-19 Related Report.</h2>) : null }
                 {this.renderNumericDetails(data)}
                 { epiStatus === 'EPI' ? <DisplaySection title='Date of Data' inner={sitFieldsDate} /> : null }
                 <DisplaySection sectionClass='rich-text-section' title={ status === 'EW' ? 'Risk Analysis' : 'Description' } inner={get(data, 'description', false)} />

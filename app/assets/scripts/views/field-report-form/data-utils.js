@@ -273,7 +273,7 @@ export function convertStateToPayload (originalState) {
       summary: originalState[src].description || '',
       actions: originalState[src].options.filter(o => o.checked).map(o => o.value)
     };
-  }).filter(o => o.actions.length);
+  }).filter(o => o.actions.length || o.summary !== '');
 
   // Planned Response Mapping
   // In the payload the status and value may mean different things.
