@@ -62,21 +62,21 @@ export default class About extends React.Component {
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
                               </a>
 
-                              <a href='#' className='box__global__content--ref__link'>
+                              <div className='box__global__content--ref__link'>
                                 <span className='icon__circle'>
                                   <span className='icon__circle__content'>FR</span>
                                 </span>
                                 <span>Guides d'Utilisation</span>
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </a>
+                              </div>
 
-                              <a href='#' target='_blank' className='box__global__content--ref__link'>
+                              <div className='box__global__content--ref__link'>
                                 <span className='icon__circle'>
                                   <span className='icon__circle__content'>FR</span>
                                 </span>
                                 <span>Guides Administratifs</span>
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </a>
+                              </div>
 
                               <a href='https://drive.google.com/file/d/1FnmBm_8K52eTKWa8xWK52eebhgOz60SO/view' target='_blank' className='box__global__content--ref__link'>
                                 <span className='icon__circle'>
@@ -86,29 +86,29 @@ export default class About extends React.Component {
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
                               </a>
 
-                              <a href='' target='_blank' className='box__global__content--ref__link'>
+                              <div className='box__global__content--ref__link'>
                                 <span className='icon__circle'>
                                   <span className='icon__circle__content'>ES</span>
                                 </span>
                                 <span>Guías Administrativas</span>
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </a>
+                              </div>
 
-                              <a href='#' className='box__global__content--ref__link'>
+                              <div className='box__global__content--ref__link'>
                                 <span className='icon__circle'>
                                   <span className='icon__circle__content'>AR</span>
                                 </span>
                                 <span>أدلة المستخدم</span>
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </a>
+                              </div>
 
-                              <a href='#' target='_blank' className='box__global__content--ref__link'>
+                              <div className='box__global__content--ref__link'>
                                 <span className='icon__circle'>
                                   <span className='icon__circle__content'>AR</span>
                                 </span>
                                 <span>أدلة إدارية</span>
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </a>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -144,14 +144,14 @@ export default class About extends React.Component {
                                 3w lessons learned
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
                               </a>
-                              <a href='#' target='_blank' className='box__global__content--ref__link'>
+                              <div className='box__global__content--ref__link'>
                                 GO presentation materials
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </a>
-                              <a href='#' target='_blank' className='box__global__content--ref__link'>
+                              </div>
+                              <div className='box__global__content--ref__link'>
                                 IFRC IM strategy
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </a>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -200,7 +200,7 @@ export default class About extends React.Component {
                           </a>
 
                           <a href='https://www.cbsrc.org/' target='_blank' className='box__global__content--ref__link'>
-                            <span>Nyss - RC/RC Community Based Surveillance tool</span>
+                            <span>Community Based Surveillance</span>
                             <span className='collecticon-chevron-right icon-about-ref'></span>
                           </a>
                         </div>
@@ -213,7 +213,7 @@ export default class About extends React.Component {
                         </div>
                         <div className='box__global__content'>
                           <a href='https://www.cash-hub.org/' target='_blank' className='box__global__content--ref__link'>
-                            <span>Cash Hub &amp; Remote Helpdesk</span>
+                            <span>Cash Hub</span>
                             <span className='collecticon-chevron-right icon-about-ref'></span>
                           </a>
 
@@ -240,13 +240,18 @@ export default class About extends React.Component {
                           <div className='base-font-semi-bold'>Other IFRC Resources</div>
                         </div>
                         <div className='box__global__content'>
+                          <a href='https://media.ifrc.org/ifrc/what-we-do/reference-centres/' target='_blank' className='box__global__content--ref__link'>
+                            <span>Reference Centres</span>
+                            <span className='collecticon-chevron-right icon-about-ref'></span>
+                          </a>
+
                           <a href='https://www.missingmaps.org/' target='_blank' className='box__global__content--ref__link'>
                             <span>Missing Maps</span>
                             <span className='collecticon-chevron-right icon-about-ref'></span>
                           </a>
 
                           <a href='https://data.ifrc.org/fdrs/' target='_blank' className='box__global__content--ref__link'>
-                            <span>Federation-wide Databank and Reporting System</span>
+                            <span>Fed-wide Data and Reporting System</span>
                             <span className='collecticon-chevron-right icon-about-ref'></span>
                           </a>
 

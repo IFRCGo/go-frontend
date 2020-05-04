@@ -126,7 +126,7 @@
     @include media(small-up) {
       @include column(1/2, $cycle: 2);
 
-      &:last-of-type, &:nth-last-of-type(2) {
+      &:last-of-type { //, &:nth-last-of-type(2) {
         margin: 0;
       }
     }
