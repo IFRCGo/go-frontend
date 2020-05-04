@@ -330,6 +330,7 @@
   color: $primary-color;
   font-weight: $base-font-medium;
   margin-bottom: $global-spacing-2;
+  display: block;
 
   @include media(medium-up) {
     margin-bottom: $global-spacing;  
