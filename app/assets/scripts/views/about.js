@@ -47,69 +47,69 @@ export default class About extends React.Component {
                           </div>
                           <div className='box__global__content'>
                             <div className='clearfix'>
-                              <Link to='#' className='box__global__content--ref__link'>
+                              <a href='https://github.com/IFRCGo/go-frontend/files/4415370/GoUserGuide_MediumRes.pdf' className='box__global__content--ref__link'>
                                 <span className='icon__circle'>
                                   <span className='icon__circle__content'>EN</span>
                                 </span>
                                 <span>GO user guide</span>
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </Link>
+                              </a>
 
-                              <Link to='#' className='box__global__content--ref__link'>
-                                <span className='icon__circle'>
-                                  <span className='icon__circle__content'>FR</span>
-                                </span>
-                                <span>Guides d'Utilisation</span>
-                                <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </Link>
-
-                              <Link to='#' className='box__global__content--ref__link'>
-                                <span className='icon__circle'>
-                                  <span className='icon__circle__content'>SP</span>
-                                </span>
-                                <span>Guías de Usuario</span>
-                                <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </Link>
-
-                              <Link to='#' className='box__global__content--ref__link'>
-                                <span className='icon__circle'>
-                                  <span className='icon__circle__content'>AR</span>
-                                </span>
-                                <span>Text in Arabic</span>
-                                <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </Link>
-
-                              <Link to='#' className='box__global__content--ref__link'>
+                              <a href='https://github.com/IFRCGo/go-frontend/files/4415371/GoAdminGuide_MediumRes.pdf' className='box__global__content--ref__link'>
                                 <span className='icon__circle'>
                                   <span className='icon__circle__content'>EN</span>
                                 </span>
                                 <span>Administrative Guides</span>
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </Link>
+                              </a>
 
-                              <Link to='#' className='box__global__content--ref__link'>
+                              <a href='#' className='box__global__content--ref__link'>
+                                <span className='icon__circle'>
+                                  <span className='icon__circle__content'>FR</span>
+                                </span>
+                                <span>Guides d'Utilisation</span>
+                                <span className='collecticon-chevron-right icon-about-ref'></span>
+                              </a>
+
+                              <a href='#' target='_blank' className='box__global__content--ref__link'>
                                 <span className='icon__circle'>
                                   <span className='icon__circle__content'>FR</span>
                                 </span>
                                 <span>Guides Administratifs</span>
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </Link>
+                              </a>
 
-                              <Link to='#' className='box__global__content--ref__link'>
+                              <a href='https://drive.google.com/file/d/1FnmBm_8K52eTKWa8xWK52eebhgOz60SO/view' target='_blank' className='box__global__content--ref__link'>
                                 <span className='icon__circle'>
-                                  <span className='icon__circle__content'>SP</span>
+                                  <span className='icon__circle__content'>ES</span>
+                                </span>
+                                <span>Guías de Usuario</span>
+                                <span className='collecticon-chevron-right icon-about-ref'></span>
+                              </a>
+
+                              <a href='' target='_blank' className='box__global__content--ref__link'>
+                                <span className='icon__circle'>
+                                  <span className='icon__circle__content'>ES</span>
                                 </span>
                                 <span>Guías Administrativas</span>
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </Link>
+                              </a>
 
-                              <Link to='#' className='box__global__content--ref__link'>
+                              <a href='#' className='box__global__content--ref__link'>
                                 <span className='icon__circle'>
                                   <span className='icon__circle__content'>AR</span>
                                 </span>
-                                <span>Text in Arabic</span>
+                                <span>أدلة المستخدم</span>
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </Link>
+                              </a>
+
+                              <a href='#' target='_blank' className='box__global__content--ref__link'>
+                                <span className='icon__circle'>
+                                  <span className='icon__circle__content'>AR</span>
+                                </span>
+                                <span>أدلة إدارية</span>
+                                <span className='collecticon-chevron-right icon-about-ref'></span>
+                              </a>
                             </div>
                           </div>
                         </div>
@@ -190,20 +190,20 @@ export default class About extends React.Component {
                           <div className='base-font-semi-bold'>IFRC Surge Services</div>
                         </div>
                         <div className='box__global__content'>
-                          <Link to='#' className='box__global__content--ref__link'>
+                          <a href='https://ifrcgo.org/global-services/' target='_blank' className='box__global__content--ref__link'>
                             <span>Catalogue of surge services</span>
                             <span className='collecticon-chevron-right icon-about-ref'></span>
-                          </Link>
+                          </a>
 
-                          <Link to='#' className='box__global__content--ref__link'>
-                            <span>Catalogue of surge services</span>
+                          <a href='http://rcrcsims.org/' target='_blank' className='box__global__content--ref__link'>
+                            <span>Surge IM network</span>
                             <span className='collecticon-chevron-right icon-about-ref'></span>
-                          </Link>
+                          </a>
 
-                          <Link to='#' className='box__global__content--ref__link'>
-                            <span>Catalogue of surge services</span>
+                          <a href='https://www.cbsrc.org/' target='_blank' className='box__global__content--ref__link'>
+                            <span>Nyss - RC/RC Community Based Surveillance tool</span>
                             <span className='collecticon-chevron-right icon-about-ref'></span>
-                          </Link>
+                          </a>
                         </div>
                       </div>
 
@@ -213,20 +213,25 @@ export default class About extends React.Component {
                           <div className='base-font-semi-bold'>IFRC Guidance Material</div>
                         </div>
                         <div className='box__global__content'>
-                          <Link to='#' className='box__global__content--ref__link'>
-                            <span>Cash Hub</span>
+                          <a href='https://www.cash-hub.org/' target='_blank' className='box__global__content--ref__link'>
+                            <span>Cash Hub &amp; Remote Helpdesk</span>
                             <span className='collecticon-chevron-right icon-about-ref'></span>
-                          </Link>
+                          </a>
 
-                          <Link to='#' className='box__global__content--ref__link'>
-                            <span>CEA hub</span>
+                          <a href='https://www.communityengagementhub.org/' target='_blank' className='box__global__content--ref__link'>
+                            <span>Community Engagement Hub</span>
                             <span className='collecticon-chevron-right icon-about-ref'></span>
-                          </Link>
+                          </a>
 
-                          <Link to='#' className='box__global__content--ref__link'>
-                            <span>PrepareCentre</span>
+                          <a href='https://www.preparecenter.org/' target='_blank' className='box__global__content--ref__link'>
+                            <span>Global Disaster Preparedness Centre</span>
                             <span className='collecticon-chevron-right icon-about-ref'></span>
-                          </Link>
+                          </a>
+
+                          <a href='https://www.preparecenter.org/toolkit/data-playbook-toolkit/' target='_blank' className='box__global__content--ref__link'>
+                            <span>Data Playbook</span>
+                            <span className='collecticon-chevron-right icon-about-ref'></span>
+                          </a>
                         </div>
                       </div>
 
@@ -236,25 +241,20 @@ export default class About extends React.Component {
                           <div className='base-font-semi-bold'>Other IFRC Resources</div>
                         </div>
                         <div className='box__global__content'>
-                          <Link to='#' className='box__global__content--ref__link'>
+                          <a href='https://www.missingmaps.org/' target='_blank' className='box__global__content--ref__link'>
                             <span>Missing Maps</span>
                             <span className='collecticon-chevron-right icon-about-ref'></span>
-                          </Link>
+                          </a>
 
-                          <Link to='#' className='box__global__content--ref__link'>
-                            <span>FDRS</span>
+                          <a href='https://data.ifrc.org/fdrs/' target='_blank' className='box__global__content--ref__link'>
+                            <span>Federation-wide Databank and Reporting System</span>
                             <span className='collecticon-chevron-right icon-about-ref'></span>
-                          </Link>
+                          </a>
 
-                          <Link to='#' className='box__global__content--ref__link'>
+                          <a href='https://ifrc.csod.com/client/ifrc/default.aspx' target='_blank' className='box__global__content--ref__link'>
                             <span>Learning Platform</span>
                             <span className='collecticon-chevron-right icon-about-ref'></span>
-                          </Link>
-
-                          <Link to='#' className='box__global__content--ref__link'>
-                            <span>Forecasts in Context</span>
-                            <span className='collecticon-chevron-right icon-about-ref'></span>
-                          </Link>
+                          </a>
                         </div>
                       </div>
                     </div>
@@ -278,20 +278,20 @@ export default class About extends React.Component {
                   </p>
                   <div className='clearfix'>
                     <div className='about__contact__col about__contact__region'>Africa Region</div>
-                    <div className='about__contact__col about__contact__name'>Ted Bolton</div>
-                    <a href='mailto:RRIM.Africa@ifrc.org' className='about__contact__col about__contact__email'>RRIM.Africa@ifrc.org</a>
+                    <div className='about__contact__col about__contact__name'>Ted BOLTON</div>
+                    <a href='mailto:rrim.africa@ifrc.org' className='about__contact__col about__contact__email'>rrim.africa@ifrc.org</a>
                     <div className='about__contact__col about__contact__region'>Americas Region</div>
-                    <div className='about__contact__col about__contact__name'>Luis Fanovich</div>
-                    <a href='mailto:Luis.FANOVICH@ifrc.org' className='about__contact__col about__contact__email'>Luis.FANOVICH@ifrc.org</a>
+                    <div className='about__contact__col about__contact__name'>Luis FANOVICH</div>
+                    <a href='mailto:luis.fanovich@ifrc.org' className='about__contact__col about__contact__email'>luis.fanovich@ifrc.org</a>
                     <div className='about__contact__col about__contact__region'>Asia Pacific Region</div>
-                    <div className='about__contact__col about__contact__name'>Dedi Junadi</div>
-                    <a href='mailto:Dedi.JUNADI@ifrc.org' className='about__contact__col about__contact__email'>Dedi.JUNADI@ifrc.org</a>
+                    <div className='about__contact__col about__contact__name'>Dedi JUNADI</div>
+                    <a href='mailto:dedi.junadi@ifrc.org' className='about__contact__col about__contact__email'>dedi.junadi@ifrc.org</a>
                     <div className='about__contact__col about__contact__region'>Europe Region</div>
-                    <div className='about__contact__col about__contact__name'>Anssi Anonen</div>
-                    <a href='mailto:Anssi.ANONEN@ifrc.org' className='about__contact__col about__contact__email'>Anssi.ANONEN@ifrc.org</a>
+                    <div className='about__contact__col about__contact__name'>Anssi ANONEN</div>
+                    <a href='mailto:anssi.anonen@ifrc.org' className='about__contact__col about__contact__email'>anssi.anonen@ifrc.org</a>
                     <div className='about__contact__col about__contact__region'>MENA Region</div>
-                    <div className='about__contact__col about__contact__name'>Ahmad Al Jamal</div>
-                    <a href='mailto:Ahmad.ALJAMAL@ifrc.org' className='about__contact__col about__contact__email'>Ahmad.ALJAMAL@ifrc.org</a>
+                    <div className='about__contact__col about__contact__name'>Ahmad AL JAMAL</div>
+                    <a href='mailto:ahmad.aljamal@ifrc.org' className='about__contact__col about__contact__email'>ahmad.aljamal@ifrc.org</a>
                   </div>
                 </div>
               </section>
