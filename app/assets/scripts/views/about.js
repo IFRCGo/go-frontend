@@ -273,25 +273,25 @@ export default class About extends React.Component {
                   <p className='about__contact__info__block clearfix'>
                     <span className='about__contact__info'><strong>For any further information, please contact</strong></span>
                     <span className='about__contact__link'>
-                      <Link to='im@ifrc.org' className='button button--primary-filled button--small'>im@ifrc.org</Link>
+                      <a href='mailto:im@ifrc.org' className='button button--primary-filled button--small'>im@ifrc.org</a>
                     </span>
                   </p>
                   <div className='clearfix'>
                     <div className='about__contact__col about__contact__region'>Africa Region</div>
-                    <div className='about__contact__col about__contact__name'>Name Lastname</div>
-                    <div className='about__contact__col about__contact__email'>name.lastname@ifrc.org</div>
+                    <div className='about__contact__col about__contact__name'>Ted Bolton</div>
+                    <a href='mailto:RRIM.Africa@ifrc.org' className='about__contact__col about__contact__email'>RRIM.Africa@ifrc.org</a>
                     <div className='about__contact__col about__contact__region'>Americas Region</div>
-                    <div className='about__contact__col about__contact__name'>Name Lastname</div>
-                    <div className='about__contact__col about__contact__email'>name.lastname@ifrc.org</div>
+                    <div className='about__contact__col about__contact__name'>Luis Fanovich</div>
+                    <a href='mailto:Luis.FANOVICH@ifrc.org' className='about__contact__col about__contact__email'>Luis.FANOVICH@ifrc.org</a>
                     <div className='about__contact__col about__contact__region'>Asia Pacific Region</div>
-                    <div className='about__contact__col about__contact__name'>Name Lastname</div>
-                    <div className='about__contact__col about__contact__email'>name.lastname@ifrc.org</div>
+                    <div className='about__contact__col about__contact__name'>Dedi Junadi</div>
+                    <a href='mailto:Dedi.JUNADI@ifrc.org' className='about__contact__col about__contact__email'>Dedi.JUNADI@ifrc.org</a>
                     <div className='about__contact__col about__contact__region'>Europe Region</div>
-                    <div className='about__contact__col about__contact__name'>Name Lastname</div>
-                    <div className='about__contact__col about__contact__email'>name.lastname@ifrc.org</div>
+                    <div className='about__contact__col about__contact__name'>Anssi Anonen</div>
+                    <a href='mailto:Anssi.ANONEN@ifrc.org' className='about__contact__col about__contact__email'>Anssi.ANONEN@ifrc.org</a>
                     <div className='about__contact__col about__contact__region'>MENA Region</div>
-                    <div className='about__contact__col about__contact__name'>Name Lastname</div>
-                    <div className='about__contact__col about__contact__email'>name.lastname@ifrc.org</div>
+                    <div className='about__contact__col about__contact__name'>Ahmad Al Jamal</div>
+                    <a href='mailto:Ahmad.ALJAMAL@ifrc.org' className='about__contact__col about__contact__email'>Ahmad.ALJAMAL@ifrc.org</a>
                   </div>
                 </div>
               </section>
