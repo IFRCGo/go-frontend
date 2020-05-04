@@ -34,12 +34,8 @@ import {
   getPerDocuments,
   getPerUploadedDocuments,
   getPerMission,
-  getProjects,
   getAppealsListStats,
-  getMe,
-  deleteProject,
 } from '../actions';
-import { meSelector } from '../selectors';
 
 import { getFdrs } from '../actions/query-external';
 // import { getBoundingBox } from '../utils/country-bounding-box';
@@ -72,10 +68,7 @@ import { getISO3 } from '../utils/country-iso';
 
 import ThreeW from './ThreeW';
 // import CountryOverview from './CountryOverview';
-import ProjectFormModal from './ThreeW/project-form-modal';
-import ProjectDetails from './ThreeW/project-details';
 
-const emptyList = [];
 const emptyObject = {};
 
 const TAB_DETAILS = [
@@ -123,8 +116,6 @@ class AdminArea extends SFPComponent {
       },
       mapFilters: {},
       persistentMapFilter: {},
-      showProjectForm: false,
-      showProjectDetails: false,
       projectToEdit: undefined,
       projectToShowDetails: undefined,
     };
@@ -132,7 +123,6 @@ class AdminArea extends SFPComponent {
     this.setPersistentMapFilter = this.setPersistentMapFilter.bind(this);
     this.removeMapFilter = this.removeMapFilter.bind(this);
     this.componentIsLoading = true;
-    this.threeWFilters = {};
   }
 
   // eslint-disable-next-line camelcase
@@ -142,7 +132,6 @@ class AdminArea extends SFPComponent {
     if (oldCountryId !== newCountryId) {
       // this.getData(nextProps);
       this.loadCountry(nextProps, newCountryId);
-      this.props._getProjects(newCountryId, this.threeWFilters);
     }
 
     if (this.props.adminArea.fetching && !nextProps.adminArea.fetching) {
@@ -152,18 +141,6 @@ class AdminArea extends SFPComponent {
         // removed because redirect is highly misleading
         // this.props.history.push('/uhoh');
       }
-    }
-
-    const newProjectAdded = this.props.projectForm.fetching === true &&
-      nextProps.projectForm.fetching === false &&
-      nextProps.projectForm.error === null;
-    const projectDeleted = this.props.deleteProjectRequest.fetching === true &&
-      nextProps.deleteProjectRequest.fetching === false &&
-      nextProps.deleteProjectRequest.error === null;
-
-    if (newProjectAdded || projectDeleted) {
-      this.props._getProjects(newCountryId, this.threeWFilters);
-      this.setState({ showProjectForm: false });
     }
   }
 
@@ -187,8 +164,6 @@ class AdminArea extends SFPComponent {
     this.componentIsLoading = true;
     const countryId = getCountryId(this.props.match.params.id);
     this.loadCountry(this.props, countryId);
-    this.props._getProjects(countryId, this.threeWFilters);
-    this.props._getMe();
   }
   // Sets default tab if url param is blank or incorrect
   displayTabContent () {
@@ -197,19 +172,6 @@ class AdminArea extends SFPComponent {
       this.props.history.replace(`${this.props.location.pathname}${tabHashArray[0]}`);
     }
   }
-
-  getProjectList = memoize((projects) => {
-    if (!projects || !projects.fetched) {
-      return emptyList;
-    }
-
-    if (!projects.data || !projects.data.results || !projects.data.results.length) {
-      return emptyList;
-    }
-
-    const projectList = projects.data.results;
-    return projectList;
-  });
 
   getData (props) {
     const type = 'country';
@@ -229,18 +191,12 @@ class AdminArea extends SFPComponent {
   }
 
   syncLoadingAnimation = memoize((
-    projects = emptyObject,
-    projectForm = emptyObject,
-    deleteProject = emptyObject,
     adminArea = emptyObject,
     fdrs = emptyObject,
     perForm = emptyObject,
     user = emptyObject,
   ) => {
-    const shouldShowLoadingAnimation = projects.fetching ||
-      projectForm.fetching ||
-      deleteProject.fetching ||
-      adminArea.fetching ||
+    const shouldShowLoadingAnimation = adminArea.fetching ||
       fdrs.fetching ||
       perForm.fetching ||
       user.fetching;
@@ -359,50 +315,6 @@ class AdminArea extends SFPComponent {
       return { path, value: filters[key] };
     });
     this.props._setPartnerDeploymentFilter(getCountryId(this.props.match.params.id), filters);
-  }
-
-  handleThreeWFilterChange = (filterValues) => {
-    this.threeWFilters = filterValues;
-    this.props._getProjects(getCountryId(this.props.match.params.id), filterValues);
-  }
-
-  handleProjectAddButtonClick = () => {
-    this.setState({
-      showProjectForm: true,
-      projectToEdit: undefined,
-    });
-  }
-
-  handleProjectEditButtonClick = (project) => {
-    this.setState({
-      showProjectForm: true,
-      projectToEdit: project,
-    });
-  }
-
-  handleProjectCloneButtonClick = (project) => {
-    const {
-      id,
-      ...otherDetails
-    } = project;
-
-    this.setState({
-      showProjectForm: true,
-      projectToEdit: {...otherDetails},
-    });
-  }
-
-  handleProjectDetailsButtonClick = (project) => {
-    this.setState({
-      showProjectDetails: true,
-      projectToShowDetails: project,
-    });
-  }
-
-  handleProjectDeleteButtonClick = (project) => {
-    if (window.confirm('Are you sure you want to delete the project?')) {
-      this.props._deleteProject(project.id);
-    }
   }
 
   renderAppeals () {
@@ -734,18 +646,7 @@ class AdminArea extends SFPComponent {
               </TabPanel>
               <TabPanel>
                 <TabContent title="3W">
-                  <ThreeW
-                    disabled={this.loading}
-                    projectList={this.getProjectList(this.props.projects)}
-                    countryId={getCountryId(this.props.match.params.id)}
-                    onFilterChange={this.handleThreeWFilterChange}
-                    onAddButtonClick={this.handleProjectAddButtonClick}
-                    user={this.props.me}
-                    onEditButtonClick={this.handleProjectEditButtonClick}
-                    onCloneButtonClick={this.handleProjectCloneButtonClick}
-                    onDetailsButtonClick={this.handleProjectDetailsButtonClick}
-                    onDeleteButtonClick={this.handleProjectDeleteButtonClick}
-                  />
+                  <ThreeW countryId={getCountryId(this.props.match.params.id)} />
                 </TabContent>
               </TabPanel>
               {/*
@@ -802,26 +703,13 @@ class AdminArea extends SFPComponent {
 
   render () {
     const {
-      showProjectForm,
-      showProjectDetails,
-      projectToShowDetails,
-      projectToEdit,
-    } = this.state;
-
-    const {
-      projects,
-      projectForm,
       adminArea,
       fdrs,
       perForm,
       user,
-      deleteProjectRequest,
     } = this.props;
 
     this.syncLoadingAnimation(
-      projects,
-      projectForm,
-      deleteProjectRequest,
       adminArea,
       fdrs,
       perForm,
@@ -834,22 +722,6 @@ class AdminArea extends SFPComponent {
           <title>IFRC Go - Country</title>
         </Helmet>
         { this.renderContent() }
-        { showProjectForm && (
-          <ProjectFormModal
-            countryId={getCountryId(this.props.match.params.id)}
-            projectData={projectToEdit}
-            pending={this.loading}
-            onCloseButtonClick={() => { this.setState({ showProjectForm: false }); }}
-          />
-        )}
-        { showProjectDetails && (
-          <ProjectDetails
-            onCloseButtonClick={() => {
-              this.setState({ showProjectDetails: false });
-            }}
-            data={projectToShowDetails}
-          />
-        )}
       </App>
     );
   }
@@ -881,12 +753,6 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state, ownProps) => ({
-  appState: state,
-  me: meSelector(state),
-  deleteProjectRequest: state.projectDelete,
-  projects: state.projects[getCountryId(ownProps.match.params.id)],
-  projectForm: state.projectForm,
-
   adminArea: get(state.adminArea.aaData, getCountryId(ownProps.match.params.id), {
     data: {},
     fetching: false,
@@ -914,8 +780,6 @@ const selector = (state, ownProps) => ({
 });
 
 const dispatcher = dispatch => ({
-  _deleteProject: (...args) => dispatch(deleteProject(...args)),
-  _getMe: () => dispatch(getMe()),
   _getAdmAreaById: (...args) => dispatch(getAdmAreaById(...args)),
   _getAdmAreaAppealsList: (...args) => dispatch(getAdmAreaAppealsList(...args)),
   _getAdmAreaKeyFigures: (...args) => dispatch(getAdmAreaKeyFigures(...args)),
@@ -931,7 +795,6 @@ const dispatcher = dispatch => ({
   _getPerDocuments: (...args) => dispatch(getPerDocuments(...args)),
   _getPerUploadedDocuments: (...args) => dispatch(getPerUploadedDocuments(...args)),
   _getPerMission: (...args) => dispatch(getPerMission(...args)),
-  _getProjects: (...args) => dispatch(getProjects(...args)),
   _getAppealsListStats: (...args) => dispatch(getAppealsListStats(...args)),
 });
 

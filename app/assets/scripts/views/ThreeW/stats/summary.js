@@ -1,31 +1,26 @@
 'use strict';
 import React from 'react';
 import {
-  formattedNormalize,
   _cs,
   unique,
 } from '@togglecorp/fujs';
 
-const SummaryElement = ({
-  value,
-  label,
-  fixed,
-}) => {
+import FormattedNumber from '../../../components/formatted-number';
+
+const SummaryElement = (p) => {
   const {
-    number,
-    normalizeSuffix,
-  } = formattedNormalize(value, 'en');
+    value,
+    label,
+  } = p;
 
   return (
     <div className='summary-element'>
-      <div className='summary-element-value'>
-        <div className='summary-element-value-number'>
-          { (number && fixed) ? number.toFixed(1) : number }
-        </div>
-        <div className='summary-element-value-suffix'>
-          { normalizeSuffix }
-        </div>
-      </div>
+      <FormattedNumber
+        className='summary-element-value'
+        value={value}
+        normalize
+        fixedTo={1}
+      />
       <div className='summary-element-label'>
         { label }
       </div>
@@ -33,40 +28,37 @@ const SummaryElement = ({
   );
 };
 
-export default class ProjectSummary extends React.PureComponent {
-  getRenderData = (projectList) => {
+function ProjectSummary (p) {
+  const {
+    className,
+    projectList,
+  } = p;
+
+  const [
+    activeNationalSocietyCount,
+    totalBudget,
+  ] = React.useMemo(() => {
     const activeNationalSocietyCount = unique(projectList.map(d => d.reporting_ns)).length;
     const totalBudget = projectList.reduce((a, b) => a + b.budget_amount, 0);
 
-    return {
+    return [
       activeNationalSocietyCount,
       totalBudget,
-    };
-  }
+    ];
+  }, [projectList]);
 
-  render () {
-    const {
-      className,
-      projectList,
-    } = this.props;
-
-    const {
-      activeNationalSocietyCount,
-      totalBudget,
-    } = this.getRenderData(projectList);
-
-    return (
-      <div className={_cs(className, 'three-w-stats-summary')}>
-        <SummaryElement
-          label="Active national societies"
-          value={activeNationalSocietyCount}
-        />
-        <SummaryElement
-          label="Total budget"
-          value={totalBudget}
-          fixed
-        />
-      </div>
-    );
-  }
+  return (
+    <div className={_cs(className, 'three-w-stats-summary')}>
+      <SummaryElement
+        label="Active National societies"
+        value={activeNationalSocietyCount}
+      />
+      <SummaryElement
+        label="Total budget"
+        value={totalBudget}
+      />
+    </div>
+  );
 }
+
+export default ProjectSummary;
