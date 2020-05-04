@@ -204,13 +204,18 @@
       border-color: $grey-pearl;
     }
 
+    &:enabled span {
+      border-color: $primary-color;
+    }
+
     &:hover span, &:hover:enabled span {
       border-width: 5px 5px 0 0;
-      border-color: $grey-cement;
+      border-color: $primary-color;
     }
 
     &:disabled span {
-      border-color: $grey-fog;
+      border-color: $grey-pearl;
+      cursor: default;
     }
   }
 }
