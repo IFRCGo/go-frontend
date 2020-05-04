@@ -114,7 +114,7 @@ class MobileHeader extends React.PureComponent {
                 </ul>
               </li>
               <li><Link to='/deployments' title='Visit Deployments page' className={c({'disabled': pathname === '/deployments'})}><span>Deployments</span></Link></li>
-              <li><Link to='/about' title='Visit About page' className={c({'disabled': pathname === '/about'})}><span>About</span></Link></li>
+              <li><Link to='/about' title='Visit Resources page' className={c({'disabled': pathname === '/about'})}><span>Resources</span></Link></li>
             </ul>
             <ul className='nav-block-user-menu' role='menu'>
               <li><Link to='/account' title='View user account' className={c('user__menu-item', {'disabled': pathname === '/account'})}>Account</Link></li>

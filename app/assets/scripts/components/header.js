@@ -103,7 +103,7 @@ class Header extends React.PureComponent {
                 </h1>
               </div>
               <nav className='page__meta-nav' role='navigation'>
-                <Link to='/about' title='Visit About page' className='page__meta-nav-elements'><span>About</span></Link>
+                <Link to='/about' title='Visit Resources page' className='page__meta-nav-elements'><span>Resources</span></Link>
                 <UserMenu />
                 <Link to='/reports/new' className='button button--small button--primary-bounded' title='Create Field Report'><span>Create Field Report</span></Link>
               </nav>
