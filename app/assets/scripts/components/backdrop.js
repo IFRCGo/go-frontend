@@ -2,7 +2,7 @@ import React from 'react';
 import Portal from './portal';
 import _cs from 'classnames';
 
-function Backdrop (props) {
+function Backdrop (p) {
   React.useEffect(() => {
     const html = document.getElementsByTagName('html')[0];
     const prevValue = html.style.overflow;
@@ -15,8 +15,8 @@ function Backdrop (props) {
 
   return (
     <Portal>
-      <div className={_cs(props.className, 'tc-backdrop')}>
-        { props.children }
+      <div className={_cs(p.className, 'tc-backdrop')}>
+        { p.children }
       </div>
     </Portal>
   );

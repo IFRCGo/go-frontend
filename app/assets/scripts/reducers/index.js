@@ -31,10 +31,7 @@ import csv from './csv';
 import perForm from './per-form';
 import subscriptions from './subscriptions';
 import projects from './projects';
-import projectForm from './project-form';
-import projectDelete from './project-delete';
 import countryOverview from './country-overview';
-import me from './me.js';
 
 export const reducers = {
   user,
@@ -65,15 +62,15 @@ export const reducers = {
   perForm,
   subscriptions,
   projects,
-  projectForm,
-  projectDelete,
+  projectForm: createReducer('POST_PROJECT'),
+  projectDelete: createReducer('DELETE_PROJECT'),
   countryOverview,
   regionalProjectsOverview: createReducer('GET_REGIONAL_PROJECTS_OVERVIEW'),
   regionalMovementActivities: createReducer('GET_REGIONAL_MOVEMENT_ACTIVITIES'),
   nationalSocietyActivities: createReducer('GET_NATIONAL_SOCIETY_ACTIVITIES'),
   nationalSocietyActivitiesWoFilters: createReducer('GET_NATIONAL_SOCIETY_ACTIVITIES_WO_FILTERS'),
   regionalProjects: createReducer('GET_REGIONAL_PROJECTS'),
-  me,
+  me: createReducer('GET_ME'),
 };
 
 export default combineReducers(reducers);

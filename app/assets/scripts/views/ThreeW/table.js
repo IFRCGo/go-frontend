@@ -4,7 +4,6 @@ import {
   _cs,
   addSeparator,
 } from '@togglecorp/fujs';
-import memoize from 'memoize-one';
 import url from 'url';
 import {
   MdContentCopy,
@@ -148,24 +147,6 @@ export default class ProjectListTable extends React.PureComponent {
       },
     ];
   }
-
-  getShouldShowAddButton = memoize((user, countryId) => {
-    if (!user || !user.id || !countryId) {
-      return false;
-    }
-
-    if (!user.is_admin_for_countries || user.is_admin_for_countries.length === 0) {
-      return false;
-    }
-
-    const countryIdIndex = user.is_admin_for_countries.findIndex(d => String(d) === String(countryId));
-
-    if (countryIdIndex !== -1) {
-      return true;
-    }
-
-    return false;
-  })
 
   render () {
     const {

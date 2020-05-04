@@ -36,3 +36,11 @@ export const nationalSocietyActivitiesWoFiltersSelector = (state) => (
 export const regionalProjectsSelector = (state) => (
   state.regionalProjects
 );
+
+export const projectDeleteSelector = (state) => (
+  state.projectDelete
+);
+
+export const projectFormSelector = (state) => (
+  state.projectForm
+);
