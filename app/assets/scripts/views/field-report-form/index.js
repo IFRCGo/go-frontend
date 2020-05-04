@@ -667,7 +667,7 @@ class FieldReportForm extends React.Component {
               // We need the number of values to match the number of options
               // We filter out values so that values corresponds exactly to options
               // FIXME: perhaps this can be handled cleaner / somewhere else?
-              const options = filterActions(actionsData, section.action_type, status);
+              const options = filterActions(actionsData, section.action_type, actionsStatus);
               const values = this.state.data[section.key];
               const sectionValues = options.map(o => {
                 return {
