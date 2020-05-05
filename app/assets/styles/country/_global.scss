@@ -255,16 +255,30 @@
 // Three W and components
 // ---------------------------
 .three-w-container {
+  width: 100%;
   background-color: #fff;
-  box-shadow: 1px 2px 6px 1px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  box-shadow: $base-box-shadow;
+  position: relative;
+  overflow-x: auto;
+  padding: 2rem;
 
-  .tc-header {
+  .block-loading {
+    position: absolute;
+    border-radius: 0;
+    z-index: 11;
+    width: calc(100% - 2 * 2rem);
+    margin: 0;
+    background-color: rgba(255, 255, 255, .7);
+    height: 100%;
+  }
+
+  >.tc-header {
     display: flex;
 
     .tc-heading {
       flex-grow: 1;
       margin: 16px;
+      font-weight: $heading-font-weight;
     }
 
     .tc-actions {
@@ -283,30 +297,76 @@
     align-items: baseline;
     flex-wrap: wrap;
 
-    .left {
-      flex-shrink: 0;
-      padding: 8px;
-
-      .add-button {
-        margin-right: 10px;
-      }
-    }
-
     .three-w-filters {
-      padding: 8px;
       display: flex;
       flex-wrap: wrap;
       flex-grow: 1;
 
+      .Select-menu-outer {
+        z-index: 11;
+        left: 5px;
+        width: calc(100% - 10px);
+      }
+
       .tc-select {
         flex-grow: 1;
 
-        .tc-select-input {
-          flex-grow: 1;
+        .tc-select-label {
+          display: none;
         }
 
-        .Select-menu-outer {
-          z-index: 11;
+        .tc-select-input {
+          flex-grow: 1;
+
+          .Select-control {
+            border: 0;
+            border-radius: 0;
+            background-color: $grey-mist;
+            border-bottom: 1px solid $primary-color;
+            font-size: $font-size-sm;
+          }
+
+          .Select-placeholder {
+            padding: 0 16px;
+            color: $base-color;
+            font-weight: $base-font-medium;
+          }
+
+          &:focus-within {
+            .Select-placeholder {
+              color: rgba($base-color, 0.3);
+            }
+          }
+
+          .Select-input {
+            height: auto;
+
+            input {
+              padding: 0;
+            }
+          }
+
+          .Select-multi-value-wrapper {
+            padding: 6px;
+          }
+
+          .Select-value {
+            background-color: $grey-cloud;
+            border-radius: 0;
+            margin: 1px;
+            vertical-align: middle;
+            font-size: $font-size-sm;
+
+            .Select-value-icon {
+              padding: 2px 3px;
+              font-size: $font-size-lg;
+            }
+
+            .Select-value-label {
+              padding: 2px 3px;
+              font-weight: $base-font-medium;
+            }
+          }
         }
       }
     }
@@ -328,7 +388,7 @@
       .three-w-map-wrapper {
         position: relative;
         width: 100%;
-        height: 700px;
+        height: 560px;
 
         .three-w-map {
           width: 100%;
@@ -340,9 +400,9 @@
         width: 280px;
         background-color: rgba(255, 255, 255, .9);
         padding: 16px;
-        max-height: 580px;
+        max-height: 380px;
         position: absolute;
-        right: 16px;
+        right: 10px;
         bottom: 56px;
         overflow: auto;
       }
@@ -356,13 +416,10 @@
       width: 100%;
 
       >div {
-        flex-basis: calc(100% / 3);
-        background-color: #fff;
-        padding: 8px 16px;
-
-        * {
-          font-family: "Poppins", "Helvetica Neue", Helvetica, Arial, sans-serif;
-        }
+        flex-basis: 0;
+        flex-grow: 1;
+        background-color: $grey-fog;
+        margin: 10px;
       }
     }
 
@@ -381,23 +438,23 @@
   display: flex;
 
   .summary-element {
-    flex-basis: 50%;
+    flex-basis: 0;
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 6px 12px;
 
     .summary-element-value {
-      display: flex;
-      font-size: 36px;
-
-      .summary-element-value-suffix {
-        color: $primary-color;
-      }
+      font-size: 2rem;
+      color: $secondary-color;
+      font-weight: $base-font-bold;
     }
 
     .summary-element-label {
       text-align: center;
+      text-transform: uppercase;
     }
   }
 }
@@ -405,33 +462,34 @@
 .three-w-stats-sector-activity {
   .tc-heading {
     text-align: center;
-    padding: 24px;
+    padding: 16px;
     margin: 0;
     text-transform: uppercase;
   }
 
   .tc-content {
     width: 100%;
-    height: 200px;
+    height: 140px;
   }
 }
 
 .three-w-stats-status-overview {
   .tc-heading {
     text-align: center;
-    padding: 24px;
+    padding: 16px;
     margin: 0;
     text-transform: uppercase;
   }
 
   .tc-content {
     width: 100%;
-    height: 200px;
+    height: 140px;
   }
 }
 
 .three-w-project-list-table {
   width: 100%;
+  overflow-x: scroll;
 
   th {
     padding: 16px 10px;
@@ -445,7 +503,7 @@
   tbody {
     tr {
       &:nth-child(odd) {
-        background-color: #eee;
+        background-color: $grey-fog;
       }
     }
   }
@@ -889,8 +947,6 @@
     color: $primary-color;
   }
 }
-
-// 1420
 
 .country-climate-chart {
   @extend %tc-block;

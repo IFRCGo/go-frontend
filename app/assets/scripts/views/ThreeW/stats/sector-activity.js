@@ -12,6 +12,7 @@ import {
   XAxis,
   YAxis,
   Tooltip,
+  Text
 } from 'recharts';
 
 import { sectorList } from '../../../utils/constants';
@@ -26,6 +27,23 @@ const defaultProps = {
   projectList: [],
 };
 
+const CustomTick = (p) => {
+  const { payload, x, y, width, visibleTicksCount } = p;
+
+  return (
+    <Text
+      x={x}
+      y={y}
+      textAnchor='middle'
+      verticalAnchor='start'
+      width={width / visibleTicksCount}
+      fontSize={10}
+    >
+      { payload.value }
+    </Text>
+  );
+};
+
 export default class SectorActivity extends React.PureComponent {
   static propTypes = propTypes;
   static defaultProps = defaultProps;
@@ -36,7 +54,9 @@ export default class SectorActivity extends React.PureComponent {
       value: projectList.filter(p => String(p.primary_sector) === String(s.key)).length,
     }));
 
-    return chartData.filter(d => d.value);
+    return chartData
+      .filter(d => d.value)
+      .sort((a, b) => ((a.title || '').localeCompare(b.title)));
 
     // return chartData;
   })
@@ -62,6 +82,8 @@ export default class SectorActivity extends React.PureComponent {
               <XAxis
                 dataKey='title'
                 type='category'
+                tick={CustomTick}
+                interval={0}
               />
               <YAxis
                 dataKey='value'

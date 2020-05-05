@@ -1,10 +1,28 @@
 'use strict';
 import React from 'react';
 import _cs from 'classnames';
-import memoize from 'memoize-one';
 import { saveAs } from 'file-saver';
+import { connect } from 'react-redux';
 
-import { getDataFromResponse } from '../../utils/request';
+import {
+  deleteProject as deleteProjectAction,
+  getMe as getMeAction,
+  getProjects as getProjectsAction,
+} from '../../actions';
+
+import {
+  countryProjectSelector,
+  meSelector,
+  projectFormSelector,
+  projectDeleteSelector,
+} from '../../selectors';
+
+import ConfirmModal from '../../components/confirm-modal';
+import BlockLoading from '../../components/block-loading';
+import {
+  getResultsFromResponse,
+  getDataFromResponse,
+} from '../../utils/request';
 import { convertJsonToCsv } from '../../utils/utils';
 
 import Summary from './stats/summary';
@@ -15,144 +33,263 @@ import Filter from './filter';
 import Table from './table';
 import Map from './map';
 
+import ProjectFormModal from './project-form-modal';
+import ProjectDetails from './project-details';
+
 import exportHeaders from './export-headers';
 
-export default class ThreeW extends React.PureComponent {
-  getIsCountryAdmin = memoize((user, countryId) => {
-    // User is logged in
-    if (user && user.id) {
-      return true;
+const exportProjects = (projectList) => {
+  const resolveToValues = (headers, data) => {
+    const resolvedValues = [];
+    headers.forEach(header => {
+      const el = header.modifier ? header.modifier(data) || '' : data[header.key] || '';
+      resolvedValues.push(el);
+    });
+    return resolvedValues;
+  };
+
+  const csvHeaders = exportHeaders.map(d => d.title);
+  const resolvedValueList = projectList.map(project => (
+    resolveToValues(exportHeaders, project)
+  ));
+
+  const csv = convertJsonToCsv([
+    csvHeaders,
+    ...resolvedValueList,
+  ]);
+
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const timestamp = (new Date()).getTime();
+  const fileName = `projects-export-${timestamp}.csv`;
+
+  saveAs(blob, fileName);
+};
+
+function ThreeW (p) {
+  const {
+    countryId,
+    projectListResponse,
+    meResponse,
+    projectFormResponse,
+    deleteProjectResponse,
+    getProjects,
+    getMe,
+    deleteProject,
+  } = p;
+
+  const prevProjectFormResponse = React.useRef(projectFormResponse);
+  const prevDeleteProjectResponse = React.useRef(deleteProjectResponse);
+
+  const pending = projectListResponse.fetching ||
+    projectFormResponse.fetching ||
+    deleteProjectResponse.fetching ||
+    meResponse.fetching;
+
+  const projectList = React.useMemo(() => (
+    getResultsFromResponse(projectListResponse)
+  ), [projectListResponse]);
+
+  const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = React.useState(false);
+  const [filters, setFilters] = React.useState({});
+  const [showProjectFormModal, setShowProjectFormModal] = React.useState(false);
+  const [showProjectDetailsModal, setShowProjectDetailsModal] = React.useState(false);
+  const [projectToEdit, setProjectToEdit] = React.useState(undefined);
+  const [projectToShowDetails, setProjectToShowDetails] = React.useState(undefined);
+  const [projectToDelete, setProjectToDelete] = React.useState(undefined);
+  const [shouldRefetch, setShouldRefetch] = React.useState(false);
+
+  React.useEffect(() => {
+    const { fetching, error } = projectFormResponse;
+    const { current: prevFetching } = prevProjectFormResponse;
+    const projectFormRequestSuccess = (prevFetching && !fetching) && !error;
+
+    if (projectFormRequestSuccess) {
+      setShowProjectFormModal(false);
+      setShouldRefetch(true);
     }
+    prevProjectFormResponse.current = projectFormResponse;
+  }, [projectFormResponse, setShowProjectFormModal, setShouldRefetch]);
 
-    /*
-    if (!user || !user.id || !countryId) {
-      return false;
+  React.useEffect(() => {
+    const { fetching, error } = deleteProjectResponse;
+    const { current: prevFetching } = prevDeleteProjectResponse;
+    const deleteProjectRequestSuccess = (prevFetching && !fetching) && !error;
+
+    if (deleteProjectRequestSuccess) {
+      setShouldRefetch(true);
     }
+    prevDeleteProjectResponse.current = deleteProjectResponse;
+  }, [deleteProjectResponse, setShowProjectFormModal, setShouldRefetch]);
 
-    if (!user.is_admin_for_countries || user.is_admin_for_countries.length === 0) {
-      return false;
+  React.useEffect(() => {
+    getMe();
+  }, [getMe]);
+
+  React.useEffect(() => {
+    getProjects(countryId, filters);
+  }, [countryId, getProjects, filters]);
+
+  React.useEffect(() => {
+    if (shouldRefetch) {
+      getProjects(countryId, filters);
+      setShouldRefetch(false);
     }
+  }, [countryId, getProjects, filters, shouldRefetch, setShouldRefetch]);
 
-    const countryIdIndex = user.is_admin_for_countries.findIndex(d => String(d) === String(countryId));
+  const isCountryAdmin = React.useMemo(() => {
+    const userDetails = getDataFromResponse(meResponse);
+    return userDetails && userDetails.id;
+  }, [meResponse]);
 
-    if (countryIdIndex !== -1) {
-      return true;
-    }
-    */
+  const handleExportButtonClick = React.useCallback(() => {
+    exportProjects(projectList);
+  }, [projectList]);
 
-    return false;
-  })
+  const handleEditButtonClick = React.useCallback((project) => {
+    setShowProjectFormModal(true);
+    setProjectToEdit(project);
+  }, [setShowProjectFormModal, setProjectToEdit]);
 
-  handleExportButtonClick = () => {
-    const { projectList } = this.props;
-
-    const resolveToValues = (headers, data) => {
-      const resolvedValues = [];
-      headers.forEach(header => {
-        const el = header.modifier ? header.modifier(data) || '' : data[header.key] || '';
-        resolvedValues.push(el);
-      });
-      return resolvedValues;
-    };
-
-    const csvHeaders = exportHeaders.map(d => d.title);
-    const resolvedValueList = projectList.map(project => (
-      resolveToValues(exportHeaders, project)
-    ));
-
-    const csv = convertJsonToCsv([
-      csvHeaders,
-      ...resolvedValueList,
-    ]);
-
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const timestamp = (new Date()).getTime();
-    const fileName = `projects-export-${timestamp}.csv`;
-
-    saveAs(blob, fileName);
-  }
-
-  render () {
+  const handleCloneButtonClick = React.useCallback((project) => {
     const {
-      projectList,
-      countryId,
-      onFilterChange,
-      disabled,
-      user = {},
-    } = this.props;
+      id,
+      ...otherDetails
+    } = project;
 
-    const currentUserDetail = getDataFromResponse(user);
-    const isCountryAdmin = this.getIsCountryAdmin(currentUserDetail, countryId);
-    const shouldDisableExportButton = disabled || !projectList || projectList.length === 0;
+    setShowProjectFormModal(true);
+    setProjectToEdit({ ...otherDetails });
+  }, [setShowProjectFormModal, setProjectToEdit]);
 
-    return (
-      <div className='three-w-container'>
-        <header className='tc-header'>
-          <h2 className='tc-heading'>
-            Red Cross / Red Crescent activities
-          </h2>
-          <div className='tc-actions'>
-            { isCountryAdmin && (
-              <button
-                className={
-                  _cs(
-                    'add-button button button--primary-bounded',
-                    disabled && 'disabled',
-                  )}
-                onClick={this.props.onAddButtonClick}
-                disabled={disabled}
-              >
-                Add
-              </button>
-            )}
+  const handleDetailsButtonClick = React.useCallback((project) => {
+    setShowProjectDetailsModal(true);
+    setProjectToShowDetails(project);
+  }, [setShowProjectDetailsModal, setProjectToShowDetails]);
+
+  const handleDeleteButtonClick = React.useCallback((project) => {
+    setShowDeleteConfirmationModal(true);
+    setProjectToDelete(project);
+  });
+
+  const handleDeleteProjectConfirmModalClose = React.useCallback((isOk) => {
+    if (isOk && projectToDelete) {
+      deleteProject(projectToDelete.id);
+    }
+
+    setShowDeleteConfirmationModal(false);
+  }, [projectToDelete]);
+
+  const handleAddButtonClick = React.useCallback(() => {
+    setShowProjectFormModal(true);
+  }, [setShowProjectFormModal]);
+
+  const disabled = pending;
+  const shouldDisableExportButton = disabled || !projectList || projectList.length === 0;
+
+  return (
+    <div className='three-w-container'>
+      { pending && (
+        <BlockLoading />
+      )}
+      <header className='tc-header'>
+        <h2 className='tc-heading'>
+          Red Cross / Red Crescent activities
+        </h2>
+        <div className='tc-actions'>
+          { isCountryAdmin && (
             <button
-              className={
-                _cs(
-                  'export-button button button--secondary-bounded',
-                  shouldDisableExportButton && 'disabled',
-                )}
-              onClick={this.handleExportButtonClick}
-              disabled={shouldDisableExportButton}
+              className={_cs(
+                'add-button button button--primary-bounded',
+                disabled && 'disabled',
+              )}
+              onClick={handleAddButtonClick}
+              disabled={disabled}
             >
-              Export
+              Add
             </button>
-          </div>
-        </header>
-        <div className='content'>
-          <Filter
-            projectList={projectList}
-            className='three-w-filters'
-            onFilterChange={onFilterChange}
-          />
-          <div className="three-w-map-vis">
-            <div className='three-w-map-container'>
-              <Map
-                countryId={countryId}
-                projectList={projectList}
-              />
-              <RegionOverview
-                projectList={projectList}
-              />
-            </div>
-            <div className='three-w-map-bottom-details'>
-              <Summary projectList={projectList} />
-              <SectorActivity projectList={projectList} />
-              <StatusOverview projectList={projectList} />
-            </div>
-          </div>
-          <div className='three-w-project-list-table-container'>
-            <Table
-              user={user}
+          )}
+          <button
+            className={_cs(
+              'export-button button button--secondary-bounded',
+              shouldDisableExportButton && 'disabled',
+            )}
+            onClick={handleExportButtonClick}
+            disabled={shouldDisableExportButton}
+          >
+            Export
+          </button>
+        </div>
+      </header>
+      <div className='content'>
+        <Filter
+          projectList={projectList}
+          className='three-w-filters'
+          onFilterChange={setFilters}
+        />
+        <div className="three-w-map-vis">
+          <div className='three-w-map-container'>
+            <Map
+              countryId={countryId}
               projectList={projectList}
-              onEditButtonClick={this.props.onEditButtonClick}
-              onCloneButtonClick={this.props.onCloneButtonClick}
-              onDetailsButtonClick={this.props.onDetailsButtonClick}
-              onDeleteButtonClick={this.props.onDeleteButtonClick}
-              isCountryAdmin={isCountryAdmin}
+            />
+            <RegionOverview
+              projectList={projectList}
             />
           </div>
+          <div className='three-w-map-bottom-details'>
+            <Summary projectList={projectList} />
+            <SectorActivity projectList={projectList} />
+            <StatusOverview projectList={projectList} />
+          </div>
+        </div>
+        <div className='three-w-project-list-table-container'>
+          <Table
+            projectList={projectList}
+            onEditButtonClick={handleEditButtonClick}
+            onCloneButtonClick={handleCloneButtonClick}
+            onDetailsButtonClick={handleDetailsButtonClick}
+            onDeleteButtonClick={handleDeleteButtonClick}
+            isCountryAdmin={isCountryAdmin}
+          />
         </div>
       </div>
-    );
-  }
+      { showDeleteConfirmationModal && (
+        <ConfirmModal
+          title="Delete project"
+          message="Are you sure you want to delete the project?"
+          onClose={handleDeleteProjectConfirmModalClose}
+        />
+      )}
+      { showProjectFormModal && (
+        <ProjectFormModal
+          countryId={countryId}
+          projectData={projectToEdit}
+          onCloseButtonClick={() => { setShowProjectFormModal(false); }}
+        />
+      )}
+      { showProjectDetailsModal && (
+        <ProjectDetails
+          onCloseButtonClick={() => { setShowProjectDetailsModal(false); }}
+          data={projectToShowDetails}
+        />
+      )}
+    </div>
+  );
 }
+
+const mapStateToProps = (state, props) => ({
+  projectListResponse: countryProjectSelector(state, props.countryId),
+  meResponse: meSelector(state),
+  deleteProjectResponse: projectDeleteSelector(state),
+  projectFormResponse: projectFormSelector(state),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getProjects: (...args) => dispatch(getProjectsAction(...args)),
+  getMe: (...args) => dispatch(getMeAction(...args)),
+  deleteProject: (...args) => dispatch(deleteProjectAction(...args)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(React.memo(ThreeW));

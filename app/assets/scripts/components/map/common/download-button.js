@@ -9,7 +9,12 @@ import { environment } from '../../../config';
 function svgToCanvas (targetElem) {
   const svgElem = targetElem.getElementsByTagName('svg');
   for (const node of svgElem) {
-    node.setAttribute('font-family', window.getComputedStyle(node, null).getPropertyValue('font-family'));
+    node
+      .setAttribute('font-family', window.getComputedStyle(node, null)
+        .getPropertyValue('font-family'));
+    node
+      .setAttribute('font-size', window.getComputedStyle(node, null)
+        .getPropertyValue('font-size'));
     node.replaceWith(node);
   }
 }
@@ -93,7 +98,8 @@ class DownloadButton extends React.Component {
 if (environment !== 'production') {
   DownloadButton.propTypes = {
     data: T.object,
-    setZoomToDefault: T.func
+    setZoomToDefault: T.func,
+    mapContainerClassName: T.string,
   };
 }
 
