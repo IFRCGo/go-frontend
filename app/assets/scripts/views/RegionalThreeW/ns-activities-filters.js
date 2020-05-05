@@ -2,6 +2,7 @@ import React from 'react';
 import Faram from '@togglecorp/faram';
 
 import SelectInput from '../../components/form-elements/select-input';
+import { countryNameMapByIso } from '../../utils/field-report-constants';
 
 const filterSchema = {
   fields: {
@@ -36,7 +37,11 @@ function NSActivitiesFilters (p) {
     activityOptions,
     receivingNSOptions,
   ] = React.useMemo(() => [
-    (data.nodes || []).filter(d => d.type === 'supporting_ns').map(toLabelValue).sort(compareString),
+    (data.nodes || []).filter(d => d.type === 'supporting_ns').map(d => ({
+      label: d.name,
+      value: d.id,
+      countryName: countryNameMapByIso[d.iso] || '',
+    })).sort((a, b) => a.countryName.localeCompare(b.countryName)),
     (data.nodes || []).filter(d => d.type === 'sector').map(toLabelValue).sort(compareString),
     (data.nodes || []).filter(d => d.type === 'receiving_ns').map(toLabelValue).sort(compareString),
   ], [data]);

@@ -319,6 +319,12 @@ export const countryNameMapById = listToMap(
   d => d.label,
 );
 
+export const countryNameMapByIso = listToMap(
+  countryList,
+  d => d.iso,
+  d => d.label,
+);
+
 export const disasterTypeList = [
   {
     value: '66',
