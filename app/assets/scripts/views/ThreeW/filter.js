@@ -16,7 +16,7 @@ import {
 const compareString = (a, b) => a.label.localeCompare(b.label);
 
 const programmeTypeOptions = programmeTypeList.map(p => ({
-  value: p.title,
+  value: p.key,
   label: p.title,
 })).sort(compareString);
 
@@ -31,7 +31,7 @@ const tagOptions = secondarySectorList.map(p => ({
 })).sort(compareString);
 
 const statusOptions = statusList.map(p => ({
-  value: p.title,
+  value: p.key,
   label: p.title,
 })).sort(compareString);
 
