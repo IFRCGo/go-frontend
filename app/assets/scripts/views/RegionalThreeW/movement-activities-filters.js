@@ -93,7 +93,7 @@ function MovementActivitiesFilters (p) {
       <SelectInput
         faramElementName='status'
         label='Status'
-        placeholder='All-Status'
+        placeholder='All - Status'
         options={statusOptions}
         className='select-input'
       />

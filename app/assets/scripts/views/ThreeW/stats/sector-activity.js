@@ -36,7 +36,9 @@ export default class SectorActivity extends React.PureComponent {
       value: projectList.filter(p => String(p.primary_sector) === String(s.key)).length,
     }));
 
-    return chartData.filter(d => d.value);
+    return chartData
+      .filter(d => d.value)
+      .sort((a, b) => ((a.title || '').localeCompare(b.title)));
 
     // return chartData;
   })
