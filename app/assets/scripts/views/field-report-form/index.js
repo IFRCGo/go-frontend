@@ -9,6 +9,7 @@ import c from 'classnames';
 import Select from 'react-select';
 import Ajv from 'ajv';
 import ajvKeywords from 'ajv-keywords';
+import ToggleButton from 'react-toggle-button';
 
 import { environment } from '../../config';
 import {
@@ -213,6 +214,10 @@ class FieldReportForm extends React.Component {
     this.onFieldChange('country', e);
   }
 
+  toggleCovidReport (isCovidReport) {
+    this.onFieldChange('isCovidReport', !isCovidReport);
+  }
+
   onFieldChange = (field, e) => {
     let data = _cloneDeep(this.state.data);
     let val = e && e.target ? e.target.value : e;
@@ -222,6 +227,11 @@ class FieldReportForm extends React.Component {
       formData.getIsEpidemicDisasterTypeByValue(val)
     ) {
       _set(data, 'status', formData.statusEvent.value);
+    }
+
+    if (field === 'isCovidReport' && val) {
+      _set(data, 'status', formData.statusEvent.value);
+      _set(data, 'disasterType', '1');
     }
 
     _set(data, field, val === '' || val === null ? undefined : val);
@@ -347,6 +357,33 @@ class FieldReportForm extends React.Component {
             property='status'
           />
         </FormRadioGroup>
+        <div className='form__group'>
+          <div className='form__inner-header'>
+            <label className='form__label'>COVID-19 Related Event</label>
+          </div>
+          <div className='form__inner-body'>
+            <ToggleButton
+              inactiveLabel={false}
+              activeLabel={false}
+              thumbStyle={{'boxShadow': 'rgba(0, 0, 0, 0.1) 0px 0px 0px 1px'}}
+              value={this.state.data.isCovidReport || false}
+              onToggle={this.toggleCovidReport.bind(this)}
+              aria-label='Is this a COVID-19 Field Report?'
+              colors={{
+                active: {
+                  base: '#f5333f'
+                },
+                inactive: {
+                  base: '#d1d1d1',
+                },
+              }}
+            />
+            <FormError
+              errors={this.state.errors}
+              property='is_covid_report'
+            />
+          </div>
+        </div>
         <FormInputSelect
           label={fields.summary[status].label}
           labelSecondary='Add Title'
@@ -423,6 +460,7 @@ class FieldReportForm extends React.Component {
               placeholder='Select a disaster type'
               name='disaster-type'
               id='disaster-type'
+              disabled={ this.state.data.isCovidReport }
               options={formData.disasterType}
               value={this.state.data.disasterType}
               onChange={({value}) => this.onFieldChange('disasterType', value)}
@@ -574,6 +612,11 @@ class FieldReportForm extends React.Component {
   renderStep3 () {
     const fields = formData.fieldsStep3;
     const status = this.getStatus();
+
+    // only for filtering the list of actions, we use the COVID type,
+    // all other elements will follow the same as the EPI status.
+    const actionsStatus = this.state.data.isCovidReport ? 'COVID' : status;
+
     const { actions } = this.props;
 
     // ideally, this should never happen, but handle it.
@@ -624,7 +667,7 @@ class FieldReportForm extends React.Component {
               // We need the number of values to match the number of options
               // We filter out values so that values corresponds exactly to options
               // FIXME: perhaps this can be handled cleaner / somewhere else?
-              const options = filterActions(actionsData, section.action_type, status);
+              const options = filterActions(actionsData, section.action_type, actionsStatus);
               const values = this.state.data[section.key];
               const sectionValues = options.map(o => {
                 return {
@@ -642,7 +685,7 @@ class FieldReportForm extends React.Component {
                   name={section.name}
                   key={section.key}
                   classInput='textarea--lg'
-                  options={filterActions(actionsData, section.action_type, status)}
+                  options={filterActions(actionsData, section.action_type, actionsStatus)}
                   values={this.state.data[section.key]}
                   onChange={this.onFieldChange.bind(this, section.key)}
                 />
@@ -690,34 +733,44 @@ class FieldReportForm extends React.Component {
     const plannedResponseRows = fields.plannedResponseRows.filter(row => {
       return !!row.label[status];
     });
-    const responseTitle = status === 'EVT' ? 'Planned Response' : 'Planned Interventions';
+    let responseTitle = status === 'EVT' ? 'Planned Response' : 'Planned Interventions';
+
+    // We hide the entire Planned International Response section for COVID reports
+    const isCovidReport = this.state.data.isCovidReport;
+    if (isCovidReport) {
+      responseTitle = '';
+    }
     return (
       <Fold title={responseTitle}>
-        <label className='form__label'>Planned International Response</label>
-        <div className='form__description'>
-          <p>Indicate status of global and regional tools.</p>
-        </div>
+        { this.state.data.isCovidReport ? null : (
+          <React.Fragment>
+            <label className='form__label'>Planned International Response</label>
+            <div className='form__description'>
+              <p>Indicate status of global and regional tools.</p>
+            </div>
 
-        <React.Fragment>
-          {
-            plannedResponseRows.map(row => {
-              return (
-                <PlanResponseRow
-                  label={row.label[status]}
-                  key={row.key}
-                  valueFieldLabel={row.valueFieldLabel}
-                  name={row.name}
-                  options={row.options}
-                  values={this.state.data[row.key]}
-                  errors={this.state.errors}
-                  fieldKey={row.key}
-                  onChange={this.onFieldChange.bind(this, row.key)}
-                />
-              );
-            })
-          }
+            <React.Fragment>
+              {
+                plannedResponseRows.map(row => {
+                  return (
+                    <PlanResponseRow
+                      label={row.label[status]}
+                      key={row.key}
+                      valueFieldLabel={row.valueFieldLabel}
+                      name={row.name}
+                      options={row.options}
+                      values={this.state.data[row.key]}
+                      errors={this.state.errors}
+                      fieldKey={row.key}
+                      onChange={this.onFieldChange.bind(this, row.key)}
+                    />
+                  );
+                })
+              }
 
-        </React.Fragment>
+            </React.Fragment>
+          </React.Fragment>
+        )}
 
         <h2 className='fold__title fold__title--contact'>Contacts</h2>
 

@@ -394,15 +394,31 @@
 
 /* Short Red Line: Decorative element  */
 
+@mixin line-brand-deco {
+  content: '';
+  height: $base-border-width * 2;
+  background: $primary-color;
+}
+
 .line-brand-deco {
-    &::after {
-    content: '';
+  &::after {
+    @include line-brand-deco;
     width: 10rem;
-    height: $base-border-width * 2;
-    background: $primary-color;
     display: block;
     margin: ($global-spacing * 4) auto 0 auto;
 
   }
 }
 
+// Use for top fluid red border to match width of text content below it
+.line-brand-deco-border-top-wrap {
+  display: inline-block;
+}
+
+.line-brand-deco-border-top {
+  &::after {
+    @include line-brand-deco;
+    margin: 0 0 ($global-spacing / 2) 0;
+    display: block;
+  }
+}

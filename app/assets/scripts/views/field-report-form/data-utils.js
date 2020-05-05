@@ -112,6 +112,7 @@ export function prepStateForValidation (state) {
     // Step 1.
     assistance: toBool,
     nsAssistance: toBool,
+    isCovidReport: toBool,
     country: (val) => val ? val.value : undefined,
     districts: (val) => val.map(o => o.value),
     // countries: (val) => val.value,
@@ -184,6 +185,7 @@ export function convertStateToPayload (originalState) {
   const directMapping = [
     // [source, destination]
     ['summary', 'summary'],
+    ['isCovidReport', 'is_covid_report'],
     ['description', 'description'],
     ['otherSources', 'other_sources'],
     ['status', 'status'],
@@ -271,7 +273,7 @@ export function convertStateToPayload (originalState) {
       summary: originalState[src].description || '',
       actions: originalState[src].options.filter(o => o.checked).map(o => o.value)
     };
-  }).filter(o => o.actions.length);
+  }).filter(o => o.actions.length || o.summary !== '');
 
   // Planned Response Mapping
   // In the payload the status and value may mean different things.
@@ -346,6 +348,7 @@ export function getInitialDataState () {
   return {
     // Step 1
     summary: undefined,
+    isCovidReport: false,
     // Countries follows the structure defined by react-select.
     // Will need to be converted.
     country: undefined,
@@ -427,6 +430,7 @@ export function getInitialDataState () {
 
 export function convertFieldReportToState (fieldReport, stateData) {
   let state = _cloneDeep(getInitialDataState());
+  state.isCovidReport = fieldReport.is_covid_report;
   state.actionsNatSoc = stateData.actionsNatSoc;
   state.actionsFederation = stateData.actionsFederation;
   state.actionsPns = stateData.actionsPns;

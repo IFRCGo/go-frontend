@@ -1,3 +1,15 @@
+### Release 4.3.1
+
+Frontend:
+
+ - Add COVID-19 specific options for Field Report - #1160
+ - Implement redesign of About / Resources page - #1094
+
+Backend:
+
+ - Refactor / fix issues with ElasticSearch indexing
+ - Add is_disabled option to Actions to allow deprecation of actions: https://github.com/IFRCGo/go-frontend/issues/1101
+
 ### Release 4.3.0
 
 Frontend:

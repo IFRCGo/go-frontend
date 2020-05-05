@@ -84,8 +84,13 @@ class FieldReport extends React.Component {
   renderActionsTaken (data, key, orgDisplayName) {
     const actions = get(data, 'actions_taken', []).find(d => d.organization === key);
 
-    // No actions have been taken
-    if (!actions || !Array.isArray(actions.actions) || !actions.actions.length) {
+    // If actions is undefined or not an array, return null
+    // FIXME: Not entirely sure why this is needed
+    if (!actions || !Array.isArray(actions.actions)) { return null; }
+
+    // if there are neither actions nor a summary, return null.
+    // FIXME: Ideally, this would never occur
+    if (actions.actions.length === 0 && actions.summary === '') {
       return null;
     }
 
@@ -364,6 +369,9 @@ class FieldReport extends React.Component {
                 { epiStatus === 'EPI' ? <DisplaySection title='Date of Data' inner={sitFieldsDate} /> : null }
                 <DisplaySection sectionClass='rich-text-section' title={ status === 'EW' ? 'Risk Analysis' : 'Description' } inner={get(data, 'description', false)} />
                 <DisplaySection title={ status === 'EW' ? 'Forecasted Date of Impact' : 'Start Date' } inner={startDate} />
+                { data.is_covid_report ? (
+                  <DisplaySection title='COVID-19 Field Report' inner='Yes' />
+                ) : null }
                 <DisplaySection title='Requests for Assistance'>
                   <p>
                     <span>Government Requests International Assistance: </span>
@@ -379,7 +387,7 @@ class FieldReport extends React.Component {
                 {this.renderActionsTaken(data, 'FDRN', 'IFRC')}
                 {this.renderActionsTaken(data, 'PNS', 'any other RCRC Movement actors') /* instead of PNS Red Cross, go-frontend/issues/822 */ }
                 <DisplaySection title='Actions taken by others' inner={get(data, 'actions_others', false)} />
-                {this.renderPlannedResponse(data)}
+                {data.is_covid_report && this.renderPlannedResponse(data)}
                 {this.renderSources(data)}
                 {this.renderContacts(data)}
               </div>

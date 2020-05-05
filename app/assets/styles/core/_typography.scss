@@ -432,25 +432,6 @@ hr,
 }
 
 
-/* Font Weights
-   ========================================================================== */
-
-.font-size-sm {
-  font-size: $font-size-sm;
-}
-
-.font-size-xs {
-  font-size: $font-size-xs;
-}
-
-/* Font Weights
-   ========================================================================== */
-
-.font-light {
-  font-weight: $base-font-light;
-}
-
-
 /* Emphasis
    ========================================================================== */
 
@@ -575,6 +556,53 @@ h4, h5, h6 {
   > h4 + h5:not(:first-child),
   > h5 + h6:not(:first-child) {
     margin-top: 0;
+  }
+}
+
+
+/* Font Weights
+   ========================================================================== */
+
+// Generates classes for font weights
+// E.g. .base-font-light, .base-font-regular, .base-font-medium, etc.
+
+$font-weights: (
+  base-font-light: $base-font-light,
+  base-font-regular: $base-font-regular,
+  base-font-medium: $base-font-medium,
+  base-font-semi-bold: $base-font-semi-bold,
+  base-font-bold: $base-font-bold,
+);
+
+// Generates classes for font weights
+
+@each $name, $value in $font-weights {
+  .#{$name} {
+    font-weight: $value;
+  }
+}
+
+
+/* Font Sizes
+   ========================================================================== */
+
+// Generates classes for font sizes
+// E.g. .font-size-xs, .font-size-sm, .font-size-lg, .font-size-xl, .font-size-xxl, etc.
+
+$font-sizes: (
+  font-size-xxs: $font-size-xxs,
+  font-size-xs: $font-size-xs,
+  font-size-sm: $font-size-sm,
+  font-size-lg: $font-size-lg,
+  font-size-xl: $font-size-xl,
+  font-size-xxl: $font-size-xxl,
+);
+
+// Generates classes for font sizes
+
+@each $name, $value in $font-sizes {
+  .#{$name} {
+    font-size: $value;
   }
 }
 

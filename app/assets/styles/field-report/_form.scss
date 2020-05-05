@@ -27,6 +27,12 @@
     }
   }
 
+  .form__group.action-checkboxes {
+    .form__options-group + .form__label {
+      padding-top: $global-spacing-2;
+    }
+  }
+
   .resp-value {
     padding-top: 0;  
   }
