@@ -17,6 +17,7 @@ import {
   yesno
 } from '../utils/format';
 import { get } from '../utils/utils';
+import { epiSources } from '../utils/field-report-constants';
 
 import App from './app';
 
@@ -180,6 +181,7 @@ class FieldReport extends React.Component {
   renderNumericDetails (data) {
     const status = this.getStatus();
     const epiStatus = this.getEpiStatus();
+    const epiFiguresSource = epiSources.find(source => source.value === `${data.epi_figures_source}`);
     const evtHtml = (
       <React.Fragment>
         {epiStatus === 'EPI' ? (
@@ -208,42 +210,15 @@ class FieldReport extends React.Component {
               <dt>Delegates: </dt>
               <dd>{n(get(data, 'num_expats_delegates'))}</dd>
             </dl>
-            {/* <dl className='dl-horizontal numeric-list'>
-              <dt>Cases (WHO): </dt>
-              <dd>{n(get(data, 'who_cases'))}</dd>
-              <dt>Suspected Cases (WHO): </dt>
-              <dd>{n(get(data, 'who_suspected_cases'))}</dd>
-              <dt>Probable Cases (WHO): </dt>
-              <dd>{n(get(data, 'who_probable_cases'))}</dd>
-              <dt>Confirmed Cases (WHO): </dt>
-              <dd>{n(get(data, 'who_confirmed_cases'))}</dd>
-              <dt>Dead (WHO): </dt>
-              <dd>{n(get(data, 'who_num_dead'))}</dd>
-            </dl>
-            <dl className='dl-horizontal numeric-list'>
-              <dt>Cases (Ministry of Health): </dt>
-              <dd>{n(get(data, 'health_min_cases'))}</dd>
-              <dt>Suspected Cases (Ministry of Health): </dt>
-              <dd>{n(get(data, 'health_min_suspected_cases'))}</dd>
-              <dt>Probable Cases (Ministry of Health): </dt>
-              <dd>{n(get(data, 'health_min_probable_cases'))}</dd>
-              <dt>Confirmed Cases (Ministry of Health): </dt>
-              <dd>{n(get(data, 'health_min_confirmed_cases'))}</dd>
-              <dt>Dead (Ministry of Health): </dt>
-              <dd>{n(get(data, 'health_min_num_dead'))}</dd>
-            </dl>
-            <dl className='dl-horizontal numeric-list'>
-              <dt>Cases (Other): </dt>
-              <dd>{n(get(data, 'other_cases'))}</dd>
-              <dt>Suspected Cases (Other): </dt>
-              <dd>{n(get(data, 'other_suspected_cases'))}</dd>
-              <dt>Probable Cases (Other): </dt>
-              <dd>{n(get(data, 'other_probable_cases'))}</dd>
-              <dt>Confirmed Cases (Other): </dt>
-              <dd>{n(get(data, 'other_confirmed_cases'))}</dd>
-              <dt>Dead (Other): </dt>
-              <dd>{n(get(data, 'other_num_dead'))}</dd>
-            </dl> */}
+
+            { data.dtype.id === 1
+              ? (
+                <p className='epi-figures-source'>
+                  <span className='text-semi-bold'>Source</span>: { epiFiguresSource ? epiFiguresSource.label : '--' }
+                </p>
+              )
+              : null
+            }
           </React.Fragment>
         ) : (
           <React.Fragment>
