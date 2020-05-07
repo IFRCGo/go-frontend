@@ -37,16 +37,17 @@ export function dataPathToDisplay (path, keyword) {
     'numPotentiallyAffected': 'Estimation Potentially Affected',
     'numHighestRisk': 'Estimation Highest Risk',
     'affectedPopCentres': 'Affected Pop Centres',
-    'cases': 'Cases',
-    'suspectedCases': 'Suspected Cases',
-    'probableCases': 'Probable Cases',
-    'confirmedCases': 'Confirmed Cases',
+    epiCases: 'Cases',
+    epiSuspectedCases: 'Suspected Cases',
+    epiProbableCases: 'Probable Cases',
+    epiConfirmedCases: 'Confirmed Cases',
+    epiFiguresSource: 'Source of figures',
     numAssistedGov: 'Assisted by Government',
     numAssistedRedCross: 'Assisted By Red Cross',
     numLocalStaff: 'Number of local staff involved',
     numVolunteers: 'Number of volunteers involved',
     numExpats: 'Number of expats/delegates',
-    sitFieldsDate: 'Data of Data',
+    sitFieldsDate: 'Date of Data',
 
     // Step 3.
     // No validation for step 3.
@@ -126,10 +127,11 @@ export function prepStateForValidation (state) {
     numPotentiallyAffected: (val) => val.map(objPropToNum('estimation')),
     numHighestRisk: (val) => val.map(objPropToNum('estimation')),
     affectedPopCentres: (val) => val.map(objPropToStr('estimation')),
-    cases: (val) => val.map(objPropToNum('estimation')),
-    suspectedCases: (val) => val.map(objPropToNum('estimation')),
-    probableCases: (val) => val.map(objPropToNum('estimation')),
-    confirmedCases: (val) => val.map(objPropToNum('estimation')),
+    epiCases: toNumIfNum,
+    epiSuspectedCases: toNumIfNum,
+    epiProbableCases: toNumIfNum,
+    epiConfirmedCases: toNumIfNum,
+    epiFiguresSource: (val) => val ? val.value : undefined,
     numAssistedGov: toNumIfNum,
     numAssistedRedCross: toNumIfNum,
     numLocalStaff: toNumIfNum,
@@ -165,6 +167,7 @@ export function convertStateToPayload (originalState) {
     country,
     disasterType,
     districts,
+    epiFiguresSource,
     event,
     startDate,
     sitFieldsDate
@@ -180,6 +183,7 @@ export function convertStateToPayload (originalState) {
   // set date inputs to DateTime format
   if (startDate) { state.start_date = startDate + 'T00:00:00+00:00'; }
   if (sitFieldsDate) { state.sit_fields_date = sitFieldsDate + 'T00:00:00+00:00'; }
+  state.epi_figures_source = epiFiguresSource || undefined;
 
   const directMapping = [
     // [source, destination]
@@ -196,7 +200,12 @@ export function convertStateToPayload (originalState) {
     ['numVolunteers', 'num_volunteers', Number],
     ['numExpats', 'num_expats_delegates', Number],
     ['actionsOthers', 'actions_others'],
-    ['visibility', 'visibility', Number]
+    ['visibility', 'visibility', Number],
+    ['epiCases', 'epi_cases', Number],
+    ['epiSuspectedCases', 'epi_suspected_cases', Number],
+    ['epiProbableCases', 'epi_probable_cases', Number],
+    ['epiConfirmedCases', 'epi_confirmed_cases', Number],
+    ['epiNumDead', 'epi_num_dead', Number],
   ];
 
   directMapping.forEach(([src, dest, fn]) => {
@@ -218,11 +227,7 @@ export function convertStateToPayload (originalState) {
     ['numDisplaced', 'num_displaced'],
     ['numPotentiallyAffected', 'num_potentially_affected'],
     ['numHighestRisk', 'num_highest_risk'],
-    ['affectedPopCentres', 'affected_pop_centres'],
-    ['cases', 'cases'],
-    ['suspectedCases', 'suspected_cases'],
-    ['probableCases', 'probable_cases'],
-    ['confirmedCases', 'confirmed_cases']
+    ['affectedPopCentres', 'affected_pop_centres']
   ];
 
   sourceEstimationMapping.forEach(([src, dest]) => {
@@ -232,10 +237,6 @@ export function convertStateToPayload (originalState) {
         state[dest] = o.estimation;
       } else if (o.source === 'government') {
         state[`gov_${dest}`] = o.estimation;
-      } else if (o.source === 'ministry-of-health') {
-        state[`health_min_${dest}`] = o.estimation;
-      } else if (o.source === 'world-health-organization') {
-        state[`who_${dest}`] = o.estimation;
       } else if (o.source === 'other') {
         state[`other_${dest}`] = o.estimation;
       }
@@ -378,10 +379,11 @@ export function getInitialDataState () {
     numHighestRisk: [{ estimation: undefined, source: undefined }],
     affectedPopCentres: [{ estimation: undefined, source: undefined }],
 
-    cases: [{ estimation: undefined, source: undefined }],
-    suspectedCases: [{ estimation: undefined, source: undefined }],
-    probableCases: [{ estimation: undefined, source: undefined }],
-    confirmedCases: [{ estimation: undefined, source: undefined }],
+    epiCases: undefined,
+    epiSuspectedCases: undefined,
+    epiProbableCases: undefined,
+    epiConfirmedCases: undefined,
+    epiFiguresSource: undefined,
 
     sitFieldsDate: undefined,
 
@@ -482,7 +484,13 @@ export function convertFieldReportToState (fieldReport, stateData) {
     ['num_expats_delegates', 'numExpats'],
     ['actions_others', 'actionsOthers'],
     ['bulletin', 'bulletin'],
-    ['visibility', 'visibility']
+    ['visibility', 'visibility'],
+    ['epi_cases', 'epiCases'],
+    ['epi_suspected_cases', 'epiSuspectedCases'],
+    ['epi_probable_cases', 'epiProbableCases'],
+    ['epi_confirmed_cases', 'epiConfirmedCases'],
+    ['epi_num_dead', 'epiNumDead'],
+    ['epi_figures_source', 'epiFiguresSource']
   ];
 
   directMapping.forEach(([src, dest]) => {
@@ -506,11 +514,7 @@ export function convertFieldReportToState (fieldReport, stateData) {
     ['num_displaced', 'numDisplaced'],
     ['num_potentially_affected', 'numPotentiallyAffected'],
     ['num_highest_risk', 'numHighestRisk'],
-    ['affected_pop_centres', 'affectedPopCentres'],
-    ['cases', 'cases'],
-    ['suspected_cases', 'suspectedCases'],
-    ['probable_cases', 'probableCases'],
-    ['confirmed_cases', 'confirmedCases']
+    ['affected_pop_centres', 'affectedPopCentres']
   ];
 
   sourceEstimationMapping.forEach(([src, dest]) => {
@@ -531,18 +535,6 @@ export function convertFieldReportToState (fieldReport, stateData) {
       sourceEstimation.push({
         source: 'other',
         estimation: fieldReport[`other_${src}`].toString()
-      });
-    }
-    if (fieldReport[`health_min_${src}`]) {
-      sourceEstimation.push({
-        source: 'ministry-of-health',
-        estimation: fieldReport[`health_min_${src}`].toString()
-      });
-    }
-    if (fieldReport[`who_${src}`]) {
-      sourceEstimation.push({
-        source: 'world-health-organization',
-        estimation: fieldReport[`who_${src}`].toString()
       });
     }
     if (sourceEstimation.length) {

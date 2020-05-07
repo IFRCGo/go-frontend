@@ -45,6 +45,7 @@ import ActionsCheckboxes from './cmp-action-checkboxes.js';
 import ContactRow from './cmp-contact-row.js';
 import PlanResponseRow from './cmp-planned-response-row.js';
 import SourceEstimation from './cmp-source-estimation.js';
+import EPISourceEstimation from './cmp-source-epi';
 
 const ajv = new Ajv({ $data: true, allErrors: true, errorDataPath: 'property' });
 ajvKeywords(ajv);
@@ -536,25 +537,70 @@ class FieldReportForm extends React.Component {
     return (
       <Fold title='Numeric Details (People)'>
         <React.Fragment>
+          { status === 'EPI'
+            ? (
+              <div className='form__group'>
+                <div className='form__inner-header'>
+                  <div className='form__inner-headline'>
+                    <label className='form__label'>Source (of figures)</label>
+                    <p className='form__description'>description</p>
+                  </div>
+                </div>
+                <div className='form__inner-body'>
+                  <div key='epi-figures-source' className='estimation'>
+                    <Select
+                      placeholder='Source (of figures)'
+                      name='epi-figures-source'
+                      value={this.state.data.epiFiguresSource}
+                      onChange={({value}) => this.onFieldChange('epiFiguresSource', value)}
+                      options={formData.epiSources}
+                    />
+                    <FormError
+                      errors={this.state.errors}
+                      property='country'
+                    />
+                  </div>
+                </div>
+              </div>
+            )
+            : null
+          }
+
           {
             fields.situationFields[status].map(field => {
-              return (
-                <SourceEstimation
-                  status={status}
-                  estimationLabel={field.estimationLabel}
-                  label={field.label}
-                  description={field.desc}
-                  name={field.name}
-                  values={this.state.data[field.key]}
-                  fieldKey={field.key}
-                  key={field.key}
-                  errors={this.state.errors}
-                  onChange={this.onFieldChange.bind(this, field.key)}
-                />
-              );
+              return status !== 'EPI'
+                ? (
+                  <SourceEstimation
+                    status={status}
+                    estimationLabel={field.estimationLabel}
+                    label={field.label}
+                    description={field.desc}
+                    name={field.name}
+                    values={this.state.data[field.key]}
+                    fieldKey={field.key}
+                    key={field.key}
+                    errors={this.state.errors}
+                    onChange={this.onFieldChange.bind(this, field.key)}
+                  />
+                )
+                : (
+                  <EPISourceEstimation
+                    status={status}
+                    estimationLabel={field.estimationLabel}
+                    label={field.label}
+                    description={field.desc}
+                    name={field.name}
+                    values={this.state.data[field.key]}
+                    fieldKey={field.key}
+                    key={field.key}
+                    errors={this.state.errors}
+                    onChange={this.onFieldChange.bind(this, field.key)}
+                  />
+                );
             })
           }
         </React.Fragment>
+
         {fields.sitFieldsDate[status] &&
           <FormInput
             label={fields.sitFieldsDate[status].label}

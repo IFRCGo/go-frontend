@@ -61,7 +61,7 @@ export const step2 = {
       items: {
         properties: {
           estimation: { type: 'number', minimum: 0 },
-          source: {enum: ['red-cross', 'government', 'world-health-organization', 'ministry-of-health', 'other']}
+          source: {enum: ['red-cross', 'government', 'other']}
         }
       }
     },
@@ -70,7 +70,7 @@ export const step2 = {
       items: {
         properties: {
           estimation: { type: 'string' },
-          source: {enum: ['red-cross', 'government', 'world-health-organization', 'ministry-of-health', 'other']}
+          source: {enum: ['red-cross', 'government', 'other']}
         }
       }
     }
@@ -100,17 +100,21 @@ export const step2 = {
     affectedPopCentres: {
       '$ref': '#/definitions/estimationString'
     },
-    cases: {
-      '$ref': '#/definitions/estimation'
+    epiCases: {
+      type: 'number'
     },
-    suspectedCases: {
-      '$ref': '#/definitions/estimation'
+    epiSuspectedCases: {
+      type: 'number'
     },
-    probableCases: {
-      '$ref': '#/definitions/estimation'
+    epiProbableCases: {
+      type: 'number'
     },
-    confirmedCases: {
-      '$ref': '#/definitions/estimation'
+    epiConfirmedCases: {
+      type: 'number'
+    },
+    epiFiguresSource: {
+      type: 'number',
+      enum: getValidValues(formData.epiSources, 'value')
     },
     sitFieldsDate: {
       type: 'string'
