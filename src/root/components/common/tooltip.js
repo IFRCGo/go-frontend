@@ -1,7 +1,7 @@
 import React from 'react';
 import { environment } from '../../config';
 import { PropTypes as T } from 'prop-types';
-import InfoIcon from '../../../icons/collecticons/circle-information';
+import InfoIcon from './info-icon';
 import ReactTooltip from 'react-tooltip';
 
 const Tooltip = ({title, description}) => {

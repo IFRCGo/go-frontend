@@ -11,7 +11,7 @@ import CountryList from '../components/country-list';
 import BlockLoading from '../components/block-loading';
 import { environment } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
-import { get } from '../utils/utils/';
+import { get } from '../utils/utils';
 import { nope } from '../utils/format';
 import {
   enterFullscreen,

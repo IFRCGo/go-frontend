@@ -12,7 +12,7 @@ import { countries } from '../utils/field-report-constants';
 import { environment, api } from '../config';
 import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
 // import BasicTable from '../components/common/table-basic';
-import { get, dateOptions, datesAgo, dTypeOptions } from '../utils/utils/';
+import { get, dateOptions, datesAgo, dTypeOptions } from '../utils/utils';
 import {
   commaSeparatedNumber as n,
   // commaSeparatedLargeNumber as bigN,

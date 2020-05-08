@@ -13,7 +13,7 @@ import {
   get,
   dateOptions,
   dTypeOptions
-} from '../../utils/utils/';
+} from '../../utils/utils';
 
 import ExportButton from '../export-button-container';
 import Fold from '../fold';

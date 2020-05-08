@@ -34,7 +34,7 @@ import {
   get,
   mostRecentReport,
   getRecordsByType
-} from '../utils/utils/';
+} from '../utils/utils';
 
 import App from './app';
 import Fold from '../components/fold';

@@ -17,6 +17,7 @@
     "babel-preset-react-app": "^9.1.2",
     "camelcase": "^5.3.1",
     "case-sensitive-paths-webpack-plugin": "2.3.0",
+    "copy-webpack-plugin": "^5.1.1",
     "css-loader": "3.4.2",
     "dotenv": "8.2.0",
     "dotenv-expand": "5.1.0",
@@ -27,7 +28,9 @@
     "eslint-plugin-import": "2.20.1",
     "eslint-plugin-jsx-a11y": "6.2.3",
     "eslint-plugin-react": "7.19.0",
+    "eslint-plugin-react-app": "^6.2.2",
     "eslint-plugin-react-hooks": "^1.6.1",
+    "eslint_d": "^8.1.1",
     "file-loader": "4.3.0",
     "fs-extra": "^8.1.0",
     "html-webpack-plugin": "4.0.0-beta.11",
@@ -129,7 +132,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "test" : "echo 'No tests' && exit 0",
+    "lint" : "eslint src/ --ext .js"
   },
   "eslintConfig": {
     "extends": "react-app"
