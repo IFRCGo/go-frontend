@@ -132,7 +132,7 @@ if (environment !== 'production') {
     password: T.object,
     history: T.object,
     match: T.object,
-    verifyOldPassword: T.Bool,
+    verifyOldPassword: T.bool,
     _validateAndUpdatePassword: T.func
   };
 }

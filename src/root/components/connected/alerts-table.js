@@ -7,7 +7,7 @@ import { DateTime } from 'luxon';
 
 import { environment } from '../../config';
 import { getSurgeAlerts } from '../../actions';
-import { get, dateOptions, datesAgo, isLoggedIn } from '../../utils/utils/';
+import { get, dateOptions, datesAgo, isLoggedIn } from '../../utils/utils';
 import { nope, privateSurgeAlert, recentInterval } from '../../utils/format';
 
 import ExportButton from '../export-button-container';

@@ -17,7 +17,7 @@ import {
   intersperse,
   yesno
 } from '../utils/format';
-import { get } from '../utils/utils/';
+import { get } from '../utils/utils';
 
 import App from './app';
 
