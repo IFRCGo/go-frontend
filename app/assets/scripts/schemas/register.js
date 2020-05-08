@@ -144,6 +144,7 @@ export const whitelistDomains = [
   'redcrossghana.org',
   'redcrosseth.org',
   'redcrossmuseum.ch',
+  'redcrossnigeria.org',
   'redcrossseychelles.sc',
   'redcrossug.org',
   'redcrossvanuatu.com',
