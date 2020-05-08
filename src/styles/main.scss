@@ -19,14 +19,14 @@
  * http://bourbon.io/
  */
 
-@import "bourbon";
+@import "../../node_modules/bourbon/app/assets/stylesheets/bourbon";
 
 /**
  * Using Jeet, a grid system designed for humans:
  * http://jeet.gs/
  */
 
-@import "jeet";
+@import "../../node_modules/jeet/scss/index";
 
 /**
  * Normalize.css, a modern, HTML5-ready alternative to CSS resets:
@@ -166,7 +166,7 @@
 /* Third Party
    ========================================================================== */
 
-@import "../../../node_modules/react-select/dist/react-select";
+@import "../../node_modules/react-select/dist/react-select";
 
 /* Vendor
    ========================================================================== */
