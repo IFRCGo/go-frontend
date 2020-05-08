@@ -123,10 +123,7 @@ const Root = () => (
   </Provider>
 );
 
-render(
-  <Root store={store} />,
-  document.querySelector('#app-container')
-);
+export default Root;
 
 // Get IE or Edge browser version
 const version = detectIE();
