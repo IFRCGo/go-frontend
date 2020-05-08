@@ -70,6 +70,7 @@ export const reducers = {
   nationalSocietyActivitiesWoFilters: createReducer('GET_NATIONAL_SOCIETY_ACTIVITIES_WO_FILTERS'),
   regionalProjects: createReducer('GET_REGIONAL_PROJECTS'),
   me: createReducer('GET_ME'),
+  domainWhitelist
 };
 
 export default combineReducers(reducers);
