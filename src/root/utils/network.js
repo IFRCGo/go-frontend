@@ -1,4 +1,3 @@
-'use strict';
 import * as url from 'url';
 import * as localStorage from 'local-storage';
 import { api } from '../config';

@@ -57,7 +57,7 @@ function ActivityDetails (p) {
     if (countryId) {
       getProjects(countryId);
     }
-  }, [countryId]);
+  }, [countryId, getProjects]);
 
   const [projectList, pending] = React.useMemo(() => ([
     getResultsFromResponse(projectsResponse),

@@ -1,7 +1,5 @@
-'use strict';
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
-import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 

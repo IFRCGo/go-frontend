@@ -1,4 +1,3 @@
-'use strict';
 import { combineReducers } from 'redux';
 import _toNumber from 'lodash.tonumber';
 

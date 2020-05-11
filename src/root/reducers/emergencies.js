@@ -1,4 +1,3 @@
-'use strict';
 import { combineReducers } from 'redux';
 
 import { getCentroid } from '../utils/country-centroids';

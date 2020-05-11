@@ -1,4 +1,3 @@
-'use strict';
 
 import React from 'react';
 import A1PolicyStrategyForm from '../components/per-forms/a1-policy-strategy-form';

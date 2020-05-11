@@ -25,7 +25,7 @@ function ExportButton (p) {
       getRegionalProjects(regionId, filters);
       setShouldStartRequest(false);
     }
-  }, [shouldStartRequest, regionId, filters]);
+  }, [shouldStartRequest, regionId, filters, getRegionalProjects]);
 
   const [
     pending,

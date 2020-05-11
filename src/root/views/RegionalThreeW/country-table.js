@@ -71,7 +71,7 @@ function CountryTable (p) {
     if (isActive && data.id) {
       getProjects(data.id, filters);
     }
-  }, [data.id, isActive, filters]);
+  }, [data.id, isActive, filters, getProjects]);
 
   const [projectList, pending] = React.useMemo(() => ([
     getResultsFromResponse(projectsResponse),

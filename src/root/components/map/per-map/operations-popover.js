@@ -1,4 +1,3 @@
-'use strict';
 
 import { environment } from '../../../config';
 import { PropTypes as T } from 'prop-types';

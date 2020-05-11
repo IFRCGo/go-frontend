@@ -1,4 +1,3 @@
-'use strict';
 
 export const EmergencyTypeComparator = (emergencyTypeId) => {
   return emergencyTypeId > 0

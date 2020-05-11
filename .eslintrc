@@ -36,9 +36,19 @@
     "react/no-direct-mutation-state": 2,
     "react/no-is-mounted": 2,
     "react/no-unknown-property": 2,
-    "react/prop-types": 1,
+    // "react/prop-types": 1,
     "react/react-in-jsx-scope": 2,
     "prefer-promise-reject-errors": 0,
     "comma-dangle": 0,
+
+    // NOTE: following is temporarily disabled due to too many warnings
+    // and should be fixed eventually
+    "default-case": 0,
+    "jsx-a11y/alt-text": 0,
+    "jsx-a11y/anchor-is-valid": 0,
+    "jsx-a11y/iframe-has-title": 0,
+    "jsx-a11y/anchor-has-content": 0,
+    "react/jsx-no-target-blank": 0
+    "react/prop-types": 0,
   },
 }

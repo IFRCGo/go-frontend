@@ -1,4 +1,3 @@
-'use strict';
 import { combineReducers } from 'redux';
 import { stateInflight, stateError, stateSuccess } from '../utils/reducer-utils';
 

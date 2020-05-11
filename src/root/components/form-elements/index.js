@@ -1,4 +1,3 @@
-'use strict';
 
 import FormInput from './input';
 import FormInputSelect from './input-select';

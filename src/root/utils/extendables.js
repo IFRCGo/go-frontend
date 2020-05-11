@@ -1,4 +1,3 @@
-'use strict';
 import React from 'react';
 
 // Extendable components to add common functionalities.

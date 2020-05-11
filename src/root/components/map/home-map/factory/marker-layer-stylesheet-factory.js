@@ -1,4 +1,3 @@
-'use strict';
 
 import { source } from './../../../../utils/get-new-map';
 

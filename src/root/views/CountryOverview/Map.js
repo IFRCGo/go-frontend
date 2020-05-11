@@ -1,4 +1,3 @@
-'use strict';
 import React from 'react';
 
 import { countryIsoMapById } from '../../utils/field-report-constants';

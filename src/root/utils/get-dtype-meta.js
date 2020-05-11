@@ -1,4 +1,3 @@
-'use strict';
 import { disasterType } from './field-report-constants';
 export function getDtypeMeta (dtypeId) {
   const searchTerm = dtypeId.toString();

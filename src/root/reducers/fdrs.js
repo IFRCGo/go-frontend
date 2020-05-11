@@ -1,4 +1,3 @@
-'use strict';
 import { get } from '../utils/utils';
 import { stateInflight, stateError } from '../utils/reducer-utils';
 

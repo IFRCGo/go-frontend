@@ -1,4 +1,3 @@
-'use strict';
 export default function exportMap (mapInstance) {
   if (mapInstance) {
     const uri = mapInstance.getCanvas().toDataURL();

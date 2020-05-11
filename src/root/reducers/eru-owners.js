@@ -1,4 +1,3 @@
-'use strict';
 import _groupBy from 'lodash.groupby';
 
 import { get } from '../utils/utils';
