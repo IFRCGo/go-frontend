@@ -15,25 +15,25 @@ export default class VideoCarousel2 extends React.Component {
       {
         'id': 2,
         'embedID': 'https://www.youtube.com/embed/QiDwKVr5pxg',
-        'heading': 'GO Platform Training Series: 3W Instructional',
+        'heading': '3W Instructional',
         'subHeading': 'View this video tutorial on how to manage the 3W tool data  (Who, What, Where) and generate useful and visually pleasant information products on the GO Platform - International Federation of Red Cross Red Crescent (IFRC).',
       },
       {
         'id': 3,
         'embedID': 'https://www.youtube.com/embed/adBR-U26XZs',
-        'heading': 'GO Platform Training Series: Field Report COVID-19',
+        'heading': 'Field Report COVID-19',
         'subHeading': 'View this video tutorial on how to create a "Field Report" COVID-19 on the GO Platform - International Federation of Red Cross Red Crescent (IFRC).',
       },
       {
         'id': 4,
         'embedID': 'https://www.youtube.com/embed/JAQ_yixX57A',
-        'heading': 'GO Platform Training Series: Preparedness for Effective Response Module',
+        'heading': 'Preparedness for Effective Response Module',
         'subHeading': 'View this video tutorial on how to navigate on the Preparedness for Effective Response (PER) module on the GO Platform - International Federation of Red Cross Red Crescent (IFRC).',
       },
       {
         'id': 5,
         'embedID': 'https://www.youtube.com/embed/wEz70tcwWx8',
-        'heading': 'GO Platform Training Series: Subscriptions to User Notifications',
+        'heading': 'Subscriptions to User Notifications',
         'subHeading': 'View this video tutorial on how to "Subscribe to User Notifications" on the GO Platform - International Federation of Red Cross Red Crescent (IFRC).',
       },
     ];
