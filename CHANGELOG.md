@@ -1,3 +1,7 @@
+### Release 4.3.2
+
+Minor hotfix release, adds a video to the Resources page.
+
 ### Release 4.3.1
 
 Frontend:
