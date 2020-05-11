@@ -181,6 +181,10 @@
     }
   }
 
+  .BrainhubCarousel__trackContainer .BrainhubCarousel__track {
+    align-items: flex-start;
+  }
+
   .BrainhubCarousel__arrows {
     position: absolute;
     z-index: 1;
