@@ -1,4 +1,3 @@
-'use strict';
 
 export const AppealTypeComparator = (atype) => {
   return atype.target.value !== 'all'

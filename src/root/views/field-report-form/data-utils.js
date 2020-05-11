@@ -1,4 +1,3 @@
-'use strict';
 import _cloneDeep from 'lodash.clonedeep';
 import _toNumber from 'lodash.tonumber';
 import _undefined from 'lodash.isundefined';

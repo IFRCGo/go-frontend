@@ -1,4 +1,3 @@
-'use strict';
 import mapboxgl from 'mapbox-gl';
 import { mbtoken } from '../config';
 

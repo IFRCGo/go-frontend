@@ -1,4 +1,3 @@
-'use strict';
 
 import { FormatDateException } from './exception/FormatDateException';
 import { DateTime } from 'luxon';

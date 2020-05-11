@@ -1,4 +1,3 @@
-'use strict';
 import React from 'react';
 import { render } from 'react-dom';
 import { PropTypes as T } from 'prop-types';

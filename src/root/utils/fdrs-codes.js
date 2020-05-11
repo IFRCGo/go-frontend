@@ -1,4 +1,3 @@
-'use strict';
 export const codes = [
   {iso: 'AF', kpiDon: 'DAF001'},
   {iso: 'AL', kpiDon: 'DAL001'},

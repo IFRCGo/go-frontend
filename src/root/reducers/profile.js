@@ -1,4 +1,3 @@
-'use strict';
 
 const initialState = {
   fetching: false,

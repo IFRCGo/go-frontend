@@ -1,4 +1,3 @@
-'use strict';
 import { fetchJSON } from '../utils/network';
 import { stringify as buildAPIQS } from 'qs';
 

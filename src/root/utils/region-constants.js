@@ -1,4 +1,3 @@
-'use strict';
 
 export const countriesByRegion = {
   '0': [

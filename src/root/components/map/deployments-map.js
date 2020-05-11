@@ -1,4 +1,3 @@
-'use strict';
 import React from 'react';
 import * as path from 'path';
 import { render } from 'react-dom';

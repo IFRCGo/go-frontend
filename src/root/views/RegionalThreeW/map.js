@@ -95,7 +95,7 @@ function Map (props) {
       map.fitBounds(bbox);
       setMapLoaded(true);
     });
-  }, [map, setMapLoaded]);
+  }, [map, setMapLoaded, regionId]);
 
   React.useEffect(() => {
     if (!map || !mapLoaded) {

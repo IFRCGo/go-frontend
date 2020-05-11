@@ -1,4 +1,3 @@
-'use strict';
 import * as url from 'url';
 import React from 'react';
 import { connect } from 'react-redux';

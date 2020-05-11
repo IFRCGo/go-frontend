@@ -29,7 +29,7 @@ export function useBlurEffect (
     }
 
     return () => { document.removeEventListener('click', handleDocumentClick); };
-  }, [shouldWatch]);
+  }, [shouldWatch, callback, elementRef, parentRef]);
 }
 
 const defaultPlacement = {
@@ -69,7 +69,7 @@ export const useFloatPlacement = (parentRef /* React.RefObject<HTMLElement> */) 
     }
 
     setPlacement(newPlacement);
-  }, [setPlacement]);
+  }, [setPlacement, parentRef]);
 
   React.useEffect(() => {
     calculatePlacement();

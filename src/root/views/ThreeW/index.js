@@ -1,4 +1,3 @@
-'use strict';
 import React from 'react';
 import _cs from 'classnames';
 import { saveAs } from 'file-saver';
@@ -168,7 +167,7 @@ function ThreeW (p) {
   const handleDeleteButtonClick = React.useCallback((project) => {
     setShowDeleteConfirmationModal(true);
     setProjectToDelete(project);
-  });
+  }, [setShowDeleteConfirmationModal, setProjectToDelete]);
 
   const handleDeleteProjectConfirmModalClose = React.useCallback((isOk) => {
     if (isOk && projectToDelete) {
@@ -176,7 +175,7 @@ function ThreeW (p) {
     }
 
     setShowDeleteConfirmationModal(false);
-  }, [projectToDelete]);
+  }, [projectToDelete, deleteProject]);
 
   const handleAddButtonClick = React.useCallback(() => {
     setShowProjectFormModal(true);

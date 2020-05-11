@@ -1,4 +1,3 @@
-'use strict';
 
 import { stateInflight, stateError } from '../utils/reducer-utils';
 

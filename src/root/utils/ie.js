@@ -1,4 +1,3 @@
-'use strict';
 
 export function detectIE () {
   const ua = window.navigator.userAgent;

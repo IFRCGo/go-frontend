@@ -1,4 +1,3 @@
-'use strict';
 import { listToMap } from '@togglecorp/fujs';
 
 export const statusEarlyWarning = {

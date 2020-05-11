@@ -1,4 +1,3 @@
-'use strict';
 
 import { getRegionById } from './../../../utils/region-constants';
 

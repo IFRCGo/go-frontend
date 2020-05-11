@@ -1,4 +1,3 @@
-'use strict';
 import _get from 'lodash.get';
 import _groupBy from 'lodash.groupby';
 import _toNumber from 'lodash.tonumber';

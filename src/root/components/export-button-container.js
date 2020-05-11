@@ -1,4 +1,3 @@
-'use strict';
 
 import ExportButtonComponent from './export-button-component';
 import url from 'url';

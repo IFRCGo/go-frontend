@@ -1,4 +1,3 @@
-'use strict';
 import { countryIsoMapById } from './field-report-constants';
 
 const centroids = {
