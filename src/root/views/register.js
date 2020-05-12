@@ -54,7 +54,7 @@ class Register extends React.Component {
 
         contact: [0, 1].map(o => ({ name: undefined, email: undefined }))
       },
-      whitelist: null,
+      whitelist: [],
       errors: null
     };
 
@@ -79,9 +79,15 @@ class Register extends React.Component {
     }
 
     if (nextProps.domainWhitelist.fetched) {
-      this.setState({ whitelist: nextProps.domainWhitelist.data.results.map((dom) => dom.domain_name) });
+      const domList = nextProps.domainWhitelist.data.results.map((dom) => dom.domain_name);
+      // Always include 'ifrc.org'
+      if (!domList.includes('ifrc.org')) {
+        domList.push('ifrc.org');
+      }
+
+      this.setState({ whitelist: domList });
       // Override the registerSchema validation
-      registerSchemaDef.if.properties.email.not = { pattern: nextProps.domainWhitelist.data.results.map((dom) => `@${dom.domain_name}`).join('|') };
+      registerSchemaDef.if.properties.email.not = { pattern: domList.map((dom) => `@${dom}`).join('|') };
       registerValidator = ajv.compile(registerSchemaDef);
     }
   }
