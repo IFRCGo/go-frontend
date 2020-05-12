@@ -22,7 +22,7 @@ import registerSchemaDef from '../schemas/register';
 
 const ajv = new Ajv({ $data: true, allErrors: true, errorDataPath: 'property' });
 ajvKeywords(ajv);
-const registerValidator = ajv.compile(registerSchemaDef);
+let registerValidator = ajv.compile(registerSchemaDef);
 
 const getClassIfError = (errors, prop) => {
   if (!errors) return '';
@@ -54,6 +54,7 @@ class Register extends React.Component {
 
         contact: [0, 1].map(o => ({ name: undefined, email: undefined }))
       },
+      whitelist: null,
       errors: null
     };
 
@@ -75,6 +76,13 @@ class Register extends React.Component {
         showAlert('success', <p>Success! Verification email sent, redirecting...</p>, true, 2000);
         setTimeout(() => this.props.history.push('/'), 2000);
       }
+    }
+
+    if (nextProps.domainWhitelist.fetched) {
+      this.setState({ whitelist: nextProps.domainWhitelist.data.results.map((dom) => dom.domain_name) });
+      // Override the registerSchema validation
+      registerSchemaDef.if.properties.email.not = { pattern: nextProps.domainWhitelist.data.results.map((dom) => `@${dom.domain_name}`).join('|') };
+      registerValidator = ajv.compile(registerSchemaDef);
     }
   }
 
@@ -104,9 +112,7 @@ class Register extends React.Component {
 
   shouldRequestAccess () {
     const { email } = this.state.data;
-    const whitelistedDomains = this.props.domainWhitelist.fetched === true
-      ? this.props.domainWhitelist.data.results.map(domObj => domObj.domain_name)
-      : null;
+    const whitelistedDomains = this.state.whitelist;
 
     return email && isValidEmail(email.toLowerCase()) && !isWhitelistedEmail(email.toLowerCase(), whitelistedDomains);
   }
