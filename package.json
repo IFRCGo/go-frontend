@@ -1,6 +1,6 @@
 {
   "name": "go-frontend",
-  "version": "4.3.1",
+  "version": "4.3.2",
   "private": true,
   "devDependencies": {
     "@babel/core": "7.9.0",
@@ -132,13 +132,24 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
+    "build-staging": "NODE_ENV=staging node scripts/build.js",
+    "build-prod": "NODE_ENV=production node scripts/build.js",
     "test" : "echo 'No tests' && exit 0",
-    "lint" : "eslint src/ --ext .js"
+    "lint" : "eslint src/ --ext .js",
+    "deploy-surge": "branch=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD); cp build/index.html build/200.html; surge -p build/ -d https://ifrc-go-${branch////-}.surge.sh",
+    "teardown-surge": "branch=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD); surge teardown https://ifrc-go-${branch////-}.surge.sh",
+    "deploy-staging": "AZURE_CONNECTIONS_STRING=$staging_connection_string node .build_scripts/az-upload.js ./build",
+    "deploy-prod": "AZURE_CONNECTIONS_STRING=$production_connection_string node .build_scripts/az-upload.js ./build"
   },
   "eslintConfig": {
     "extends": "react-app"
   },
   "browserslist": {
+    "staging": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
     "production": [
       ">0.2%",
       "not dead",
