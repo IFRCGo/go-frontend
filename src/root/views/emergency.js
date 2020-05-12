@@ -210,7 +210,6 @@ class Emergency extends React.Component {
     const numMissing = parseInt(get(report, 'num_missing')) || parseInt(get(report, 'gov_num_missing')) || parseInt(get(report, 'other_num_missing'));
     const numDisplaced = parseInt(get(report, 'num_displaced')) || parseInt(get(report, 'gov_num_displaced')) || parseInt(get(report, 'other_num_displaced'));
     const numAssisted = parseInt(get(report, 'num_assisted')) || parseInt(get(report, 'gov_num_assisted')) || parseInt(get(report, 'other_num_assisted'));
-    console.log(report);
     const epiFiguresSource = epiSources.find(source => source.value === `${report.epi_figures_source}`);
     return (
       <div className='inpage__header-col'>
