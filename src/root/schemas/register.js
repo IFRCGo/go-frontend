@@ -1,7 +1,5 @@
 
-// TODO: alter this to somehow use the list from ../views/register.js:108 OR remove it
-// completely, though it is used at ../views/register.js:26 and :91
-// right now it doesn't seem to affect much but there could be "unfound" issues
+// Keeping this as a backup if the API call fails somehow
 export const whitelistDomains = [
   'ifrc.org',
   'apdisasterresilience.org',
