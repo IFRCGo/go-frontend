@@ -275,6 +275,7 @@ export function getRecordsByType (types, records) {
     if (aIndex >= 0 && bIndex >= 0) {
       return orderedIds.indexOf(a.typeId) - orderedIds.indexOf(b.typeId);
     }
+    return 0;
   });
 
   // // Filter out non-primary types that doesn't have any records
