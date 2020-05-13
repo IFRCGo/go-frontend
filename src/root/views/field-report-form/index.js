@@ -740,6 +740,7 @@ class FieldReportForm extends React.Component {
           label='Information Bulletin'
           description='Indicate if an Information Bulletin was published, is planned or if no Information Bulletin will be issued for this operation/disaster/hazard.'
           name='bulletin'
+          classWrapper={this.state.data.isCovidReport ? 'hidden' : null}
           options={[
             {
               label: 'No',
