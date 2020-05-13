@@ -8,6 +8,7 @@ import memoize from 'memoize-one';
 import {
   isFalsy,
   isInteger,
+  isDefined,
 } from '@togglecorp/fujs';
 
 import BlockLoading from '../../components/block-loading';
@@ -167,6 +168,17 @@ class ProjectForm extends React.PureComponent {
     };
 
     const { projectData = {} } = props;
+    const getDefaultDistrictValue = (district) => {
+      if (Array.isArray(district)) {
+        return district;
+      }
+
+      if (isDefined(district)) {
+        return [district];
+      }
+
+      return [];
+    };
 
     this.state = {
       faramValues: {
@@ -174,7 +186,7 @@ class ProjectForm extends React.PureComponent {
         project_country: props.countryId,
         event: projectData.event,
         dtype: projectData.dtype,
-        project_district: projectData.project_district === null ? 'all' : projectData.project_district,
+        project_district: getDefaultDistrictValue(projectData.project_district),
         name: projectData.name,
         operation_type: projectData.operation_type,
         primary_sector: projectData.primary_sector,
@@ -265,10 +277,12 @@ class ProjectForm extends React.PureComponent {
       label: d.name,
     })).sort(compareString);
 
+    /*
     mappedDistrictList.unshift({
       value: 'all',
       label: 'Countrywide',
     });
+    */
 
     return mappedDistrictList;
   }
@@ -378,7 +392,7 @@ class ProjectForm extends React.PureComponent {
 
       newFaramValues = {
         ...newFaramValues,
-        project_district: 'all',
+        project_district: [],
         event: undefined,
       };
     }
@@ -400,9 +414,11 @@ class ProjectForm extends React.PureComponent {
       data['id'] = projectData.id;
     }
 
+    /*
     if (faramValues.project_district === 'all') {
       data.project_district = null;
     }
+    */
 
     _postProject(data);
   }
@@ -433,6 +449,29 @@ class ProjectForm extends React.PureComponent {
   getFilteredSecondarySectorOptions = memoize((sector) => (
     secondarySectorOptions.filter(d => d.value !== sector)
   ))
+
+  handleSelectAllDistrictButtonClick = () => {
+    const { districts } = this.props;
+    const {
+      faramValues,
+      faramErrors,
+    } = this.state;
+
+    const districtOptions = this.getDistrictOptions(districts, faramValues.project_country);
+    const newFaramValues = {
+      ...faramValues,
+      project_district: districtOptions.map(d => d.value),
+    };
+    const newFaramErrors = {
+      ...faramErrors,
+      project_district: undefined,
+    };
+
+    this.setState({
+      faramValues: newFaramValues,
+      faramErrors: newFaramErrors,
+    });
+  }
 
   render () {
     const {
@@ -536,14 +575,25 @@ class ProjectForm extends React.PureComponent {
               disabled={shouldDisableCountryInput}
               placeholder={fetchingCountries ? 'Fetching countries...' : undefined}
             />
-            <SelectInput
-              faramElementName='project_district'
-              label='Region / province'
-              className='project-form-select'
-              options={districtOptions}
-              disabled={shouldDisableDistrictInput}
-              placeholder={fetchingDistricts ? 'Fetching districts...' : undefined}
-            />
+            <div className="district-select-container">
+              <SelectInput
+                faramElementName='project_district'
+                label='Region / province'
+                className='project-form-select'
+                options={districtOptions}
+                disabled={shouldDisableDistrictInput}
+                placeholder={fetchingDistricts ? 'Fetching regions...' : 'Select regions' }
+                multi
+              />
+              <button
+                type="button"
+                className={_cs('button button--secondary-bounded', shouldDisableDistrictInput && 'disabled')}
+                disabled={shouldDisableDistrictInput}
+                onClick={this.handleSelectAllDistrictButtonClick}
+              >
+                All
+              </button>
+            </div>
           </InputSection>
 
           <InputSection
@@ -763,7 +813,7 @@ class ProjectForm extends React.PureComponent {
           </InputSection>
           { hasNonFieldErrors && (
             <div className='tc-non-field-errors'>
-              There was an error submitting the request
+              There was an error submitting the request!
             </div>
           )}
 
