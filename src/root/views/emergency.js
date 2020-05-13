@@ -222,9 +222,9 @@ class Emergency extends React.Component {
                 { !isCOVID
                   ? (
                     <React.Fragment>
-                      <li>Suspected Cases<span className='content-highlight'>{n(get(report, 'epi_suspected_cases'))}</span></li>
-                      <li>Probable Cases<span className='content-highlight'>{n(get(report, 'epi_probable_cases'))}</span></li>
-                      <li>Confirmed Cases<span className='content-highlight'>{n(get(report, 'epi_confirmed_cases'))}</span></li>
+                      <li className='pl-small'>Suspected Cases<span className='content-highlight'>{n(get(report, 'epi_suspected_cases'))}</span></li>
+                      <li className='pl-small'>Probable Cases<span className='content-highlight'>{n(get(report, 'epi_probable_cases'))}</span></li>
+                      <li className='pl-small'>Confirmed Cases<span className='content-highlight'>{n(get(report, 'epi_confirmed_cases'))}</span></li>
                     </React.Fragment>
                   )
                   : null
