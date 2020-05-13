@@ -797,6 +797,7 @@ export const fieldsStep3 = {
       'key': 'numAssistedGov',
       'EVT': true,
       'EPI': true,
+      'EPI-COV': true,
       'EW': true,
       'label': {
         'EVT': 'Assisted by Government',
@@ -809,6 +810,7 @@ export const fieldsStep3 = {
       'key': 'numAssistedRedCross',
       'EVT': true,
       'EPI': true,
+      'EPI-COV': true,
       'EW': true,
       'label': {
         'EVT': 'Assisted by RCRC Movement',
@@ -821,6 +823,7 @@ export const fieldsStep3 = {
       'key': 'numLocalStaff',
       'EVT': true,
       'EPI': true,
+      'EPI-COV': true,
       'EW': false,
       'label': {
         'EVT': 'Number of NS Personnel Involved',
@@ -832,6 +835,7 @@ export const fieldsStep3 = {
       'key': 'numVolunteers',
       'EVT': true,
       'EPI': true,
+      'EPI-COV': true,
       'EW': false,
       'label': {
         'EVT': 'Number of Volunteers Involved',
@@ -843,10 +847,11 @@ export const fieldsStep3 = {
       'key': 'numExpats',
       'EVT': true,
       'EPI': true,
+      'EPI-COV': false,
       'EW': false,
       'label': {
-        'EVT': 'Number of RCRC Movement Personnel involved',
-        'EPI': 'Number of RCRC Movement Personnel involved'
+        'EVT': 'Number of RCRC Partner Personnel Involved',
+        'EPI': 'Number of RCRC Partner Personnel Involved'
       },
       'description': {
         'EVT': 'Personnel from IFRC, ICRC & PNS',
