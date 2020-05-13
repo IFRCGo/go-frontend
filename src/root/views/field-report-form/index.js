@@ -684,6 +684,9 @@ class FieldReportForm extends React.Component {
               if (!field[status]) {
                 return null;
               }
+              if (this.state.data.isCovidReport && !field[status + '-COV']) {
+                return null;
+              }
               return (
                 <FormInput
                   label={field.label[status]}
