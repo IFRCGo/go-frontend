@@ -203,7 +203,7 @@ class Emergency extends React.Component {
     );
   }
 
-  renderFieldReportStatsEvent (report, isEPI) {
+  renderFieldReportStatsEvent (report, isEPI, isCOVID) {
     const numAffected = parseInt(get(report, 'num_affected')) || parseInt(get(report, 'gov_num_affected')) || parseInt(get(report, 'other_num_affected'));
     const numInjured = parseInt(get(report, 'num_injured')) || parseInt(get(report, 'gov_num_injured')) || parseInt(get(report, 'other_num_injured'));
     const numDead = parseInt(get(report, 'num_dead')) || parseInt(get(report, 'gov_num_dead')) || parseInt(get(report, 'other_num_dead'));
@@ -219,10 +219,31 @@ class Emergency extends React.Component {
             ? (
               <ul className='content-list'>
                 <li>Cases<span className='content-highlight'>{n(get(report, 'epi_cases'))}</span></li>
-                <li>Suspected Cases<span className='content-highlight'>{n(get(report, 'epi_suspected_cases'))}</span></li>
-                <li>Probable Cases<span className='content-highlight'>{n(get(report, 'epi_probable_cases'))}</span></li>
-                <li>Confirmed Cases<span className='content-highlight'>{n(get(report, 'epi_confirmed_cases'))}</span></li>
+                { !isCOVID
+                  ? (
+                    <React.Fragment>
+                      <li>Suspected Cases<span className='content-highlight'>{n(get(report, 'epi_suspected_cases'))}</span></li>
+                      <li>Probable Cases<span className='content-highlight'>{n(get(report, 'epi_probable_cases'))}</span></li>
+                      <li>Confirmed Cases<span className='content-highlight'>{n(get(report, 'epi_confirmed_cases'))}</span></li>
+                    </React.Fragment>
+                  )
+                  : null
+                }
                 <li>Dead<span className='content-highlight'>{n(get(report, 'epi_num_dead'))}</span></li>
+                <li>
+                  <p className='emergency__source'>Source:
+                    { isEPI
+                      ? (
+                        <React.Fragment>
+                          <strong>{epiFiguresSource ? ` ${epiFiguresSource.label}` : ' --' }</strong>
+                        </React.Fragment>
+                      )
+                      : (
+                        <Link to={`/reports/${report.id}`}>{report.summary}, {timestamp(report.updated_at || report.created_at)}</Link>
+                      )
+                    }
+                  </p>
+                </li>
               </ul>
             )
             : (
@@ -242,18 +263,6 @@ class Emergency extends React.Component {
             <li>Expat delegates<span className='content-highlight'>{n(get(report, 'num_expats_delegates'))}</span></li>
           </ul>
         </div>
-        <p className='emergency__source'>Source:
-          { isEPI
-            ? (
-              <React.Fragment>
-                <strong>{epiFiguresSource ? ` ${epiFiguresSource.label}` : ' --' }</strong>
-              </React.Fragment>
-            )
-            : (
-              <Link to={`/reports/${report.id}`}>{report.summary}, {timestamp(report.updated_at || report.created_at)}</Link>
-            )
-          }
-        </p>
       </div>
     );
   }
@@ -264,10 +273,11 @@ class Emergency extends React.Component {
     if (!report || hideIt) return null;
     const status = report.status === 8 ? 'EW' : 'EVT';
     const isEPI = get(this.props, 'event.data.dtype') === 1;
+    const isCOVID = report.is_covid_report;
     if (status === 'EW') {
       return this.renderFieldReportStatsEW(report);
     } else {
-      return this.renderFieldReportStatsEvent(report, isEPI);
+      return this.renderFieldReportStatsEvent(report, isEPI, isCOVID);
     }
   }
 
