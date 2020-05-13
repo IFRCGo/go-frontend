@@ -192,12 +192,12 @@ class FieldReport extends React.Component {
               { !data.is_covid_report
                 ? (
                   <React.Fragment>
-                    <dt>Suspected Cases: </dt>
-                    <dd>{n(get(data, 'epi_suspected_cases'))}</dd>
-                    <dt>Probable Cases: </dt>
-                    <dd>{n(get(data, 'epi_probable_cases'))}</dd>
-                    <dt>Confirmed Cases: </dt>
-                    <dd>{n(get(data, 'epi_confirmed_cases'))}</dd>
+                    <dt className='pl-small'>Suspected Cases: </dt>
+                    <dd className='pl-small'>{n(get(data, 'epi_suspected_cases'))}</dd>
+                    <dt className='pl-small'>Probable Cases: </dt>
+                    <dd className='pl-small'>{n(get(data, 'epi_probable_cases'))}</dd>
+                    <dt className='pl-small'>Confirmed Cases: </dt>
+                    <dd className='pl-small'>{n(get(data, 'epi_confirmed_cases'))}</dd>
                   </React.Fragment>
                 )
                 : null
