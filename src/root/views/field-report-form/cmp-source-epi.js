@@ -65,7 +65,7 @@ if (environment !== 'production') {
     label: T.string,
     name: T.string,
     description: T.string,
-    values: T.number,
+    values: T.string,
     fieldKey: T.string,
     errors: T.array,
     onChange: T.func

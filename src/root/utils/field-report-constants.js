@@ -719,7 +719,23 @@ export const fieldsStep2 = {
         'label': 'Dead',
         'estimationLabel': 'Estimation',
         'desc': 'Number of people confirmed dead.'
+      }
+    ],
+    'EPI-COV': [
+      {
+        'name': 'epi-cases',
+        'key': 'epiCases',
+        'label': 'Cases',
+        'estimationLabel': 'Estimation',
+        'desc': 'Number of registered cases.'
       },
+      {
+        'name': 'epi-num-dead',
+        'key': 'epiNumDead',
+        'label': 'Dead',
+        'estimationLabel': 'Estimation',
+        'desc': 'Number of people confirmed dead.'
+      }
     ],
     'EW': [
       {
