@@ -534,72 +534,70 @@ class FieldReportForm extends React.Component {
   renderStep2 () {
     const fields = formData.fieldsStep2;
     const status = this.getStatus();
+    const covidTag = this.state.data.isCovidReport ? '-COV' : '';
     return (
       <Fold title='Numeric Details (People)'>
-        <React.Fragment>
-          { status === 'EPI'
-            ? (
-              <div className='form__group'>
-                <div className='form__inner-header'>
-                  <div className='form__inner-headline'>
-                    <label className='form__label'>Source (of figures)</label>
-                    <p className='form__description'>description</p>
-                  </div>
-                </div>
-                <div className='form__inner-body'>
-                  <div key='epi-figures-source' className='estimation'>
-                    <Select
-                      placeholder='Source (of figures)'
-                      name='epi-figures-source'
-                      value={this.state.data.epiFiguresSource}
-                      onChange={({value}) => this.onFieldChange('epiFiguresSource', value)}
-                      options={formData.epiSources}
-                    />
-                    <FormError
-                      errors={this.state.errors}
-                      property='country'
-                    />
-                  </div>
+        {
+          fields.situationFields[status + covidTag].map(field => {
+            return status !== 'EPI'
+              ? (
+                <SourceEstimation
+                  status={status}
+                  estimationLabel={field.estimationLabel}
+                  label={field.label}
+                  description={field.desc}
+                  name={field.name}
+                  values={this.state.data[field.key]}
+                  fieldKey={field.key}
+                  key={field.key}
+                  errors={this.state.errors}
+                  onChange={this.onFieldChange.bind(this, field.key)}
+                />
+              )
+              : (
+                <EPISourceEstimation
+                  estimationLabel={field.estimationLabel}
+                  label={field.label}
+                  description={field.desc}
+                  name={field.name}
+                  values={this.state.data[field.key]}
+                  fieldKey={field.key}
+                  key={field.key}
+                  errors={this.state.errors}
+                  onChange={this.onFieldChange.bind(this, field.key)}
+                />
+              );
+          })
+        }
+
+        { status === 'EPI'
+          ? (
+            <div className='form__group'>
+              <div className='form__inner-header'>
+                <div className='form__inner-headline'>
+                  <label className='form__label'>Source (of figures)</label>
+                  <p className='form__description'>description</p>
                 </div>
               </div>
-            )
-            : null
-          }
-
-          {
-            fields.situationFields[status].map(field => {
-              return status !== 'EPI'
-                ? (
-                  <SourceEstimation
-                    status={status}
-                    estimationLabel={field.estimationLabel}
-                    label={field.label}
-                    description={field.desc}
-                    name={field.name}
-                    values={this.state.data[field.key]}
-                    fieldKey={field.key}
-                    key={field.key}
-                    errors={this.state.errors}
-                    onChange={this.onFieldChange.bind(this, field.key)}
+              <div className='form__inner-body'>
+                <div key='epi-figures-source' className='estimation'>
+                  <Select
+                    placeholder='Source (of figures)'
+                    name='epi-figures-source'
+                    value={this.state.data.epiFiguresSource}
+                    onChange={({value}) => this.onFieldChange('epiFiguresSource', value)}
+                    options={formData.epiSources}
                   />
-                )
-                : (
-                  <EPISourceEstimation
-                    status={status}
-                    estimationLabel={field.estimationLabel}
-                    label={field.label}
-                    description={field.desc}
-                    name={field.name}
-                    values={this.state.data[field.key]}
-                    fieldKey={field.key}
-                    key={field.key}
+                  <FormError
                     errors={this.state.errors}
-                    onChange={this.onFieldChange.bind(this, field.key)}
+                    property='country'
                   />
-                );
-            })
-          }
-        </React.Fragment>
+                </div>
+              </div>
+            </div>
+          )
+          : null
+        }
 
         {fields.sitFieldsDate[status] &&
           <FormInput
