@@ -29,9 +29,18 @@ export default class EPISourceEstimation extends React.Component {
       errors
     } = this.props;
 
+    // class for label indentation
+    let labelClass = 'form__inner-header';
+    if (name === 'epi-suspected-cases'
+      || name === 'epi-probable-cases'
+      || name === 'epi-confirmed-cases'
+    ) {
+      labelClass = 'form__inner-header epi-label-indent';
+    }
+
     return (
       <div className={ name === 'epi-num-dead' ? 'form__group estimation-row' : 'form__group estimation-row epi-form-group' }>
-        <div className='form__inner-header'>
+        <div className={labelClass}>
           <div className='form__inner-headline'>
             <label className='form__label'>{label}</label>
             <p className='form__description'>{description}</p>
