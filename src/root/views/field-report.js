@@ -344,6 +344,7 @@ class FieldReport extends React.Component {
     const epiStatus = this.getEpiStatus();
     const startDate = DateTime.fromISO(data.start_date).toISODate();
     const sitFieldsDate = DateTime.fromISO(data.sit_fields_date).toISODate();
+    const isCOVID = data.is_covid_report;
     return (
       <section className='inpage'>
         <Helmet>
@@ -386,7 +387,10 @@ class FieldReport extends React.Component {
                     <span>{yesno(get(data, 'ns_request_assistance'))}</span>
                   </p>
                 </DisplaySection>
-                <DisplaySection title='Information Bulletin Published' inner={ infoBulletin } />
+                { !isCOVID
+                  ? <DisplaySection title='Information Bulletin Published' inner={ infoBulletin } />
+                  : null
+                }
                 {this.renderActionsTaken(data, 'NTLS', 'National Society')}
                 {this.renderActionsTaken(data, 'FDRN', 'IFRC')}
                 {this.renderActionsTaken(data, 'PNS', 'any other RCRC Movement actors') /* instead of PNS Red Cross, go-frontend/issues/822 */ }
