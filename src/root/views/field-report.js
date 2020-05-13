@@ -189,14 +189,29 @@ class FieldReport extends React.Component {
             <dl className='dl-horizontal numeric-list'>
               <dt>Cases: </dt>
               <dd>{n(get(data, 'epi_cases'))}</dd>
-              <dt>Suspected Cases: </dt>
-              <dd>{n(get(data, 'epi_suspected_cases'))}</dd>
-              <dt>Probable Cases: </dt>
-              <dd>{n(get(data, 'epi_probable_cases'))}</dd>
-              <dt>Confirmed Cases: </dt>
-              <dd>{n(get(data, 'epi_confirmed_cases'))}</dd>
+              { !data.is_covid_report
+                ? (
+                  <React.Fragment>
+                    <dt>Suspected Cases: </dt>
+                    <dd>{n(get(data, 'epi_suspected_cases'))}</dd>
+                    <dt>Probable Cases: </dt>
+                    <dd>{n(get(data, 'epi_probable_cases'))}</dd>
+                    <dt>Confirmed Cases: </dt>
+                    <dd>{n(get(data, 'epi_confirmed_cases'))}</dd>
+                  </React.Fragment>
+                )
+                : null
+              }
               <dt>Dead: </dt>
               <dd>{n(get(data, 'epi_num_dead'))}</dd>
+              { data.dtype.id === 1
+                ? (
+                  <p className='epi-figures-source'>
+                    <span className='text-semi-bold'>Source</span>: { epiFiguresSource ? epiFiguresSource.label : '--' }
+                  </p>
+                )
+                : null
+              }
             </dl>
             <dl className='dl-horizontal numeric-list'>
               <dt>Assisted by Government:</dt>
@@ -210,15 +225,6 @@ class FieldReport extends React.Component {
               <dt>Delegates: </dt>
               <dd>{n(get(data, 'num_expats_delegates'))}</dd>
             </dl>
-
-            { data.dtype.id === 1
-              ? (
-                <p className='epi-figures-source'>
-                  <span className='text-semi-bold'>Source</span>: { epiFiguresSource ? epiFiguresSource.label : '--' }
-                </p>
-              )
-              : null
-            }
           </React.Fragment>
         ) : (
           <React.Fragment>
