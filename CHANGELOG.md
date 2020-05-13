@@ -1,3 +1,10 @@
+### Release 4.3.3
+Frontend:
+- Add new tag "RCCE" for the projects ([#1227](https://github.com/IFRCGo/go-frontend/issues/1227))
+
+Backend:
+- Add new option "RCCE" for the secondary sectors in projects ([#1227](https://github.com/IFRCGo/go-frontend/issues/1227))
+
 ### Release 4.3.2
 
 Minor hotfix release, adds a video to the Resources page.
