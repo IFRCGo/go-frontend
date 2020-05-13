@@ -173,6 +173,12 @@ export const secondarySectorList = [
     color: '#a6d854',
     inputValue: '13',
   },
+  {
+    key: '14',
+    title: 'RCCE',
+    color: '#a6d854',
+    inputValue: '14',
+  },
 ];
 
 export const sectors = listToMap(sectorList, d => d.key, d => d.title);
