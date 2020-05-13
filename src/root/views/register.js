@@ -79,7 +79,11 @@ class Register extends React.Component {
     }
 
     if (nextProps.domainWhitelist.fetched) {
-      const domList = nextProps.domainWhitelist.data.results.map((dom) => dom.domain_name);
+      let domList = [];
+      if (nextProps.domainWhitelist.data.results) {
+        domList = nextProps.domainWhitelist.data.results.map((dom) => dom.domain_name);
+      }
+      
       // Always include 'ifrc.org'
       if (!domList.includes('ifrc.org')) {
         domList.push('ifrc.org');
