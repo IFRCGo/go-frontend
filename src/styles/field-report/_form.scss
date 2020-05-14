@@ -509,3 +509,21 @@
     @extend %collecticon-trash-bin;
   }
 }
+
+.epi-figures-source {
+  float: left;
+  width: 100%;
+}
+
+.epi-form-group {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.epi-label-indent {
+  padding-left: 3rem;
+}
+
+.pl-small {
+  padding-left: 1.5rem;
+}

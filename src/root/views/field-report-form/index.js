@@ -45,6 +45,7 @@ import ActionsCheckboxes from './cmp-action-checkboxes.js';
 import ContactRow from './cmp-contact-row.js';
 import PlanResponseRow from './cmp-planned-response-row.js';
 import SourceEstimation from './cmp-source-estimation.js';
+import EPISourceEstimation from './cmp-source-epi';
 
 const ajv = new Ajv({ $data: true, allErrors: true, errorDataPath: 'property' });
 ajvKeywords(ajv);
@@ -533,12 +534,13 @@ class FieldReportForm extends React.Component {
   renderStep2 () {
     const fields = formData.fieldsStep2;
     const status = this.getStatus();
+    const covidTag = this.state.data.isCovidReport ? '-COV' : '';
     return (
       <Fold title='Numeric Details (People)'>
-        <React.Fragment>
-          {
-            fields.situationFields[status].map(field => {
-              return (
+        {
+          fields.situationFields[status + covidTag].map(field => {
+            return status !== 'EPI'
+              ? (
                 <SourceEstimation
                   status={status}
                   estimationLabel={field.estimationLabel}
@@ -551,10 +553,52 @@ class FieldReportForm extends React.Component {
                   errors={this.state.errors}
                   onChange={this.onFieldChange.bind(this, field.key)}
                 />
+              )
+              : (
+                <EPISourceEstimation
+                  estimationLabel={field.estimationLabel}
+                  label={field.label}
+                  description={field.desc}
+                  name={field.name}
+                  values={this.state.data[field.key]}
+                  fieldKey={field.key}
+                  key={field.key}
+                  errors={this.state.errors}
+                  onChange={this.onFieldChange.bind(this, field.key)}
+                />
               );
-            })
-          }
-        </React.Fragment>
+          })
+        }
+
+        { status === 'EPI'
+          ? (
+            <div className='form__group'>
+              <div className='form__inner-header'>
+                <div className='form__inner-headline'>
+                  <label className='form__label'>Source (of figures)</label>
+                  <p className='form__description'>description</p>
+                </div>
+              </div>
+              <div className='form__inner-body'>
+                <div key='epi-figures-source' className='estimation'>
+                  <Select
+                    placeholder='Source (of figures)'
+                    name='epi-figures-source'
+                    value={this.state.data.epiFiguresSource}
+                    onChange={({value}) => this.onFieldChange('epiFiguresSource', value)}
+                    options={formData.epiSources}
+                  />
+                  <FormError
+                    errors={this.state.errors}
+                    property='country'
+                  />
+                </div>
+              </div>
+            </div>
+          )
+          : null
+        }
+
         {fields.sitFieldsDate[status] &&
           <FormInput
             label={fields.sitFieldsDate[status].label}
@@ -640,6 +684,9 @@ class FieldReportForm extends React.Component {
               if (!field[status]) {
                 return null;
               }
+              if (this.state.data.isCovidReport && !field[status + '-COV']) {
+                return null;
+              }
               return (
                 <FormInput
                   label={field.label[status]}
@@ -696,6 +743,7 @@ class FieldReportForm extends React.Component {
           label='Information Bulletin'
           description='Indicate if an Information Bulletin was published, is planned or if no Information Bulletin will be issued for this operation/disaster/hazard.'
           name='bulletin'
+          classWrapper={this.state.data.isCovidReport ? 'hidden' : null}
           options={[
             {
               label: 'No',

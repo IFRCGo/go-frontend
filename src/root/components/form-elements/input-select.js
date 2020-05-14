@@ -42,7 +42,15 @@ export default function FormInputSelect (props) {
         </div>
       </div>
       <div className={c('form__inner-body', formInnerBodyClass)}>
-        {labelSecondary ? (<label htmlFor={id} className='label-secondary'>{labelSecondary}</label>) : null}
+        <label className='label-secondary'>{selectLabel}</label>
+        <Select.Async
+          labelSecondary={selectLabel}
+          value={selectValue}
+          onChange={selectOnChange}
+          placeholder={selectPlaceholder}
+          loadOptions={selectLoadOptions} />
+
+        {labelSecondary ? (<label htmlFor={id} className='label-secondary global-margin-t'>{labelSecondary}</label>) : null}
         <input
           type={type}
           id={id}
@@ -58,14 +66,6 @@ export default function FormInputSelect (props) {
         {children || null}
 
         {/* <div className="label-secondary global-margin-t">Or</div> */}
-
-        <label className='label-secondary global-margin-t'>{selectLabel}</label>
-        <Select.Async
-          labelSecondary={selectLabel}
-          value={selectValue}
-          onChange={selectOnChange}
-          placeholder={selectPlaceholder}
-          loadOptions={selectLoadOptions} />
 
         <FormError
           errors={errors}

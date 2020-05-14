@@ -621,6 +621,13 @@ export const fieldsStep1 = {
   }
 };
 
+export const epiSources = [
+  { value: '', label: '-- Source --' },
+  { value: '0', label: 'Ministry of Health' },
+  { value: '1', label: 'World Health Organization' },
+  { value: '2', label: 'Other' }
+];
+
 export const fieldsStep2 = {
   'organizations': {
     'EVT': [
@@ -679,40 +686,56 @@ export const fieldsStep2 = {
     ],
     'EPI': [
       {
-        'name': 'cases',
-        'key': 'cases',
+        'name': 'epi-cases',
+        'key': 'epiCases',
         'label': 'Cases',
         'estimationLabel': 'Estimation',
         'desc': 'Number of registered cases.'
       },
       {
-        'name': 'suspected-cases',
-        'key': 'suspectedCases',
+        'name': 'epi-suspected-cases',
+        'key': 'epiSuspectedCases',
         'label': 'Suspected Cases',
         'estimationLabel': 'Estimation',
         'desc': 'Number of suspected cases.'
       },
       {
-        'name': 'probable-cases',
-        'key': 'probableCases',
+        'name': 'epi-probable-cases',
+        'key': 'epiProbableCases',
         'label': 'Probable Cases',
         'estimationLabel': 'Estimation',
         'desc': 'Probable Cases.'
       },
       {
-        'name': 'confirmed-cases',
-        'key': 'confirmedCases',
+        'name': 'epi-confirmed-cases',
+        'key': 'epiConfirmedCases',
         'label': 'Confirmed Cases',
         'estimationLabel': 'Estimation',
         'desc': 'Confirmed Cases.'
       },
       {
-        'name': 'num-dead',
-        'key': 'numDead',
+        'name': 'epi-num-dead',
+        'key': 'epiNumDead',
         'label': 'Dead',
         'estimationLabel': 'Estimation',
         'desc': 'Number of people confirmed dead.'
+      }
+    ],
+    'EPI-COV': [
+      {
+        'name': 'epi-cases',
+        'key': 'epiCases',
+        'label': 'Cases',
+        'estimationLabel': 'Estimation',
+        'desc': 'Number of registered cases.'
       },
+      {
+        'name': 'epi-num-dead',
+        'key': 'epiNumDead',
+        'label': 'Dead',
+        'estimationLabel': 'Estimation',
+        'desc': 'Number of people confirmed dead.'
+      }
     ],
     'EW': [
       {
@@ -774,6 +797,7 @@ export const fieldsStep3 = {
       'key': 'numAssistedGov',
       'EVT': true,
       'EPI': true,
+      'EPI-COV': true,
       'EW': true,
       'label': {
         'EVT': 'Assisted by Government',
@@ -786,6 +810,7 @@ export const fieldsStep3 = {
       'key': 'numAssistedRedCross',
       'EVT': true,
       'EPI': true,
+      'EPI-COV': true,
       'EW': true,
       'label': {
         'EVT': 'Assisted by RCRC Movement',
@@ -798,6 +823,7 @@ export const fieldsStep3 = {
       'key': 'numLocalStaff',
       'EVT': true,
       'EPI': true,
+      'EPI-COV': true,
       'EW': false,
       'label': {
         'EVT': 'Number of NS Personnel Involved',
@@ -809,6 +835,7 @@ export const fieldsStep3 = {
       'key': 'numVolunteers',
       'EVT': true,
       'EPI': true,
+      'EPI-COV': true,
       'EW': false,
       'label': {
         'EVT': 'Number of Volunteers Involved',
@@ -820,10 +847,11 @@ export const fieldsStep3 = {
       'key': 'numExpats',
       'EVT': true,
       'EPI': true,
+      'EPI-COV': false,
       'EW': false,
       'label': {
-        'EVT': 'Number of RCRC Movement Personnel involved',
-        'EPI': 'Number of RCRC Movement Personnel involved'
+        'EVT': 'Number of RCRC Partner Personnel Involved',
+        'EPI': 'Number of RCRC Partner Personnel Involved'
       },
       'description': {
         'EVT': 'Personnel from IFRC, ICRC & PNS',

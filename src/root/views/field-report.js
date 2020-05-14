@@ -17,6 +17,7 @@ import {
   yesno
 } from '../utils/format';
 import { get } from '../utils/utils';
+import { epiSources } from '../utils/field-report-constants';
 
 import App from './app';
 
@@ -180,45 +181,49 @@ class FieldReport extends React.Component {
   renderNumericDetails (data) {
     const status = this.getStatus();
     const epiStatus = this.getEpiStatus();
+    const epiFiguresSource = epiSources.find(source => source.value === `${data.epi_figures_source}`);
     const evtHtml = (
       <React.Fragment>
         {epiStatus === 'EPI' ? (
           <React.Fragment>
             <dl className='dl-horizontal numeric-list'>
-              <dt>Cases (WHO): </dt>
-              <dd>{n(get(data, 'who_cases'))}</dd>
-              <dt>Suspected Cases (WHO): </dt>
-              <dd>{n(get(data, 'who_suspected_cases'))}</dd>
-              <dt>Probable Cases (WHO): </dt>
-              <dd>{n(get(data, 'who_probable_cases'))}</dd>
-              <dt>Confirmed Cases (WHO): </dt>
-              <dd>{n(get(data, 'who_confirmed_cases'))}</dd>
-              <dt>Dead (WHO): </dt>
-              <dd>{n(get(data, 'who_num_dead'))}</dd>
+              <dt>Cases: </dt>
+              <dd>{n(get(data, 'epi_cases'))}</dd>
+              { !data.is_covid_report
+                ? (
+                  <React.Fragment>
+                    <dt className='pl-small'>Suspected Cases: </dt>
+                    <dd className='pl-small'>{n(get(data, 'epi_suspected_cases'))}</dd>
+                    <dt className='pl-small'>Probable Cases: </dt>
+                    <dd className='pl-small'>{n(get(data, 'epi_probable_cases'))}</dd>
+                    <dt className='pl-small'>Confirmed Cases: </dt>
+                    <dd className='pl-small'>{n(get(data, 'epi_confirmed_cases'))}</dd>
+                  </React.Fragment>
+                )
+                : null
+              }
+              <dt>Dead: </dt>
+              <dd>{n(get(data, 'epi_num_dead'))}</dd>
+              { data.dtype.id === 1
+                ? (
+                  <p className='epi-figures-source'>
+                    <span className='text-semi-bold'>Source</span>: { epiFiguresSource ? epiFiguresSource.label : '--' }
+                  </p>
+                )
+                : null
+              }
             </dl>
             <dl className='dl-horizontal numeric-list'>
-              <dt>Cases (Ministry of Health): </dt>
-              <dd>{n(get(data, 'health_min_cases'))}</dd>
-              <dt>Suspected Cases (Ministry of Health): </dt>
-              <dd>{n(get(data, 'health_min_suspected_cases'))}</dd>
-              <dt>Probable Cases (Ministry of Health): </dt>
-              <dd>{n(get(data, 'health_min_probable_cases'))}</dd>
-              <dt>Confirmed Cases (Ministry of Health): </dt>
-              <dd>{n(get(data, 'health_min_confirmed_cases'))}</dd>
-              <dt>Dead (Ministry of Health): </dt>
-              <dd>{n(get(data, 'health_min_num_dead'))}</dd>
-            </dl>
-            <dl className='dl-horizontal numeric-list'>
-              <dt>Cases (Other): </dt>
-              <dd>{n(get(data, 'other_cases'))}</dd>
-              <dt>Suspected Cases (Other): </dt>
-              <dd>{n(get(data, 'other_suspected_cases'))}</dd>
-              <dt>Probable Cases (Other): </dt>
-              <dd>{n(get(data, 'other_probable_cases'))}</dd>
-              <dt>Confirmed Cases (Other): </dt>
-              <dd>{n(get(data, 'other_confirmed_cases'))}</dd>
-              <dt>Dead (Other): </dt>
-              <dd>{n(get(data, 'other_num_dead'))}</dd>
+              <dt>Assisted by Government:</dt>
+              <dd>{n(get(data, 'gov_num_assisted'))}</dd>
+              <dt>Assisted by RCRC Movement:</dt>
+              <dd>{n(get(data, 'num_assisted'))}</dd>
+              <dt>Local Staff: </dt>
+              <dd>{n(get(data, 'num_localstaff'))}</dd>
+              <dt>Volunteers: </dt>
+              <dd>{n(get(data, 'num_volunteers'))}</dd>
+              <dt>Delegates: </dt>
+              <dd>{n(get(data, 'num_expats_delegates'))}</dd>
             </dl>
           </React.Fragment>
         ) : (
@@ -339,6 +344,7 @@ class FieldReport extends React.Component {
     const epiStatus = this.getEpiStatus();
     const startDate = DateTime.fromISO(data.start_date).toISODate();
     const sitFieldsDate = DateTime.fromISO(data.sit_fields_date).toISODate();
+    const isCOVID = data.is_covid_report;
     return (
       <section className='inpage'>
         <Helmet>
@@ -381,7 +387,10 @@ class FieldReport extends React.Component {
                     <span>{yesno(get(data, 'ns_request_assistance'))}</span>
                   </p>
                 </DisplaySection>
-                <DisplaySection title='Information Bulletin Published' inner={ infoBulletin } />
+                { !isCOVID
+                  ? <DisplaySection title='Information Bulletin Published' inner={ infoBulletin } />
+                  : null
+                }
                 {this.renderActionsTaken(data, 'NTLS', 'National Society')}
                 {this.renderActionsTaken(data, 'FDRN', 'IFRC')}
                 {this.renderActionsTaken(data, 'PNS', 'any other RCRC Movement actors') /* instead of PNS Red Cross, go-frontend/issues/822 */ }
