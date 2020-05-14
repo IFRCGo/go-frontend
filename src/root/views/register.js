@@ -11,7 +11,7 @@ import { Helmet } from 'react-helmet';
 
 import { isValidEmail, isWhitelistedEmail, get } from '../utils/utils';
 import { countries, orgTypes } from '../utils/field-report-constants';
-import { registerUser } from '../actions';
+import { registerUser, getDomainWhitelist } from '../actions';
 import { environment } from '../config';
 
 import App from './app';
@@ -22,7 +22,7 @@ import registerSchemaDef from '../schemas/register';
 
 const ajv = new Ajv({ $data: true, allErrors: true, errorDataPath: 'property' });
 ajvKeywords(ajv);
-const registerValidator = ajv.compile(registerSchemaDef);
+let registerValidator = ajv.compile(registerSchemaDef);
 
 const getClassIfError = (errors, prop) => {
   if (!errors) return '';
@@ -54,10 +54,15 @@ class Register extends React.Component {
 
         contact: [0, 1].map(o => ({ name: undefined, email: undefined }))
       },
+      whitelist: [],
       errors: null
     };
 
     this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  componentDidMount () {
+    this.props._getDomainWhitelist();
   }
 
   // eslint-disable-next-line camelcase
@@ -71,6 +76,23 @@ class Register extends React.Component {
         showAlert('success', <p>Success! Verification email sent, redirecting...</p>, true, 2000);
         setTimeout(() => this.props.history.push('/'), 2000);
       }
+    }
+
+    if (nextProps.domainWhitelist.fetched) {
+      let domList = [];
+      if (nextProps.domainWhitelist.data.results) {
+        domList = nextProps.domainWhitelist.data.results.map((dom) => dom.domain_name);
+      }
+      
+      // Always include 'ifrc.org'
+      if (!domList.includes('ifrc.org')) {
+        domList.push('ifrc.org');
+      }
+
+      this.setState({ whitelist: domList });
+      // Override the registerSchema validation
+      registerSchemaDef.if.properties.email.not = { pattern: domList.map((dom) => `@${dom}`).join('|') };
+      registerValidator = ajv.compile(registerSchemaDef);
     }
   }
 
@@ -100,7 +122,9 @@ class Register extends React.Component {
 
   shouldRequestAccess () {
     const { email } = this.state.data;
-    return email && isValidEmail(email.toLowerCase()) && !isWhitelistedEmail(email.toLowerCase());
+    const whitelistedDomains = this.state.whitelist;
+
+    return email && isValidEmail(email.toLowerCase()) && !isWhitelistedEmail(email.toLowerCase(), whitelistedDomains);
   }
 
   renderPasswordFields () {
@@ -388,17 +412,20 @@ class Register extends React.Component {
 if (environment !== 'production') {
   Register.propTypes = {
     _registerUser: T.func,
+    _getDomainWhitelist: T.func,
     registration: T.object,
     history: T.object
   };
 }
 
 const selector = (state) => ({
-  registration: state.registration
+  registration: state.registration,
+  domainWhitelist: state.domainWhitelist
 });
 
 const dispatcher = (dispatch) => ({
-  _registerUser: (payload) => dispatch(registerUser(payload))
+  _registerUser: (payload) => dispatch(registerUser(payload)),
+  _getDomainWhitelist: () => dispatch(getDomainWhitelist())
 });
 
 export default connect(selector, dispatcher)(Register);

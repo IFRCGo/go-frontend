@@ -1,4 +1,5 @@
 
+// Keeping this as a backup if the API call fails somehow
 export const whitelistDomains = [
   'ifrc.org',
   'apdisasterresilience.org',

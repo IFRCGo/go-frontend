@@ -648,3 +648,8 @@ export const GET_PER_MISSION = 'GET_PER_MISSION';
 export function getPerMission () {
   return fetchJSON(`api/v2/per_mission/`, GET_PER_MISSION, withToken());
 }
+
+export const GET_DOMAIN_WHITELIST = 'GET_DOMAIN_WHITELIST';
+export function getDomainWhitelist () {
+  return fetchJSON('/api/v2/domainwhitelist/', GET_DOMAIN_WHITELIST, withToken());
+}
