@@ -326,7 +326,36 @@ class FieldReport extends React.Component {
   renderContent () {
     const { data } = this.props.report;
     if (!this.props.report.fetched || !data) {
-      return null;
+      // If the error is a 404, then either the report doesn't exist
+      // or the user is not authorized to see the resource
+      if (this.props.report.error && this.props.report.error.detail === "Not found.") {
+        return (
+          <section className='inpage'>
+            <header className='inpage__header'>
+              <div className='inner'>
+                <div className='inpage__headline-content'>
+                  <h1 className='inpage__title'>Resource Not Found!</h1>
+              </div>
+            </div>
+            </header>
+            <div className='inpage__body'>
+              <div className='inner'>
+                <div className='prose fold prose--responsive'>
+                  <div className='inner'>
+                    <p className='inpage_note'>The resource doesn't exist or you are not authorized to access this resource.</p>
+                    {
+                      (!this.props.user) ? <Link className='button button--medium button--primary-filled' to='/login' title='Go to login page'><span>Go to login</span></Link> 
+                        : <React.Fragment />
+                    }
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      } else {
+        return null;
+      }
     }
     const infoBulletinOptions = {
       '0': 'No',
@@ -447,7 +476,8 @@ const selector = (state, ownProps) => ({
     data: {},
     fetching: false,
     fetched: false
-  })
+  }),
+  user: get(state.user)
 });
 
 const dispatcher = (dispatch) => ({
