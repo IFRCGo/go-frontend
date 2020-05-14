@@ -1,3 +1,4 @@
+'use strict';
 import { stateInflight, stateError, stateSuccess } from '../utils/reducer-utils';
 
 const initialState = {
@@ -7,19 +8,19 @@ const initialState = {
   data: {}
 };
 
-function registration (state = initialState, action) {
+function domainWhitelist (state = initialState, action) {
   switch (action.type) {
-    case 'REGISTER_USER_INFLIGHT':
+    case 'GET_DOMAIN_WHITELIST_INFLIGHT':
       state = stateInflight(state, action);
       break;
-    case 'REGISTER_USER_FAILED':
+    case 'GET_DOMAIN_WHITELIST_FAILED':
       state = stateError(state, action);
       break;
-    case 'REGISTER_USER_SUCCESS':
+    case 'GET_DOMAIN_WHITELIST_SUCCESS':
       state = stateSuccess(state, action);
       break;
   }
   return state;
 }
 
-export default registration;
+export default domainWhitelist;

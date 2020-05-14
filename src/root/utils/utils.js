@@ -9,7 +9,6 @@ import { isNotDefined } from '@togglecorp/fujs';
 import { getCentroid } from './country-centroids';
 import { disasterType } from './field-report-constants';
 import { getDtypeMeta } from './get-dtype-meta';
-import { whitelistDomains } from '../schemas/register';
 import { appealTypes } from './../utils/appeal-type-constants';
 
 // lodash.get will only return the defaultValue when
@@ -171,8 +170,8 @@ export function isValidEmail (email) {
   return /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/.test(email);
 }
 
-export function isWhitelistedEmail (email) {
-  return isValidEmail(email) && whitelistDomains.find(o => email.indexOf(`@${o}`) !== -1);
+export function isWhitelistedEmail (email, whitelistedDomains) {
+  return isValidEmail(email) && whitelistedDomains.find(o => email.indexOf(`@${o}`) !== -1);
 }
 
 export function finishedFetch (curr, next, prop) {
