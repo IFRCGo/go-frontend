@@ -9,7 +9,7 @@ import {
   nope,
   commaSeparatedNumber as n,
   isoDate,
-  recentInterval,
+  // recentInterval,
   intersperse
 } from '../../utils/format';
 import {
