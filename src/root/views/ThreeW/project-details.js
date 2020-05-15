@@ -51,8 +51,7 @@ class ProjectDetails extends React.PureComponent {
       budget_amount,
       event,
       dtype,
-      project_district,
-      project_district_detail,
+      project_districts_detail,
       reporting_ns_detail,
       name,
       operation_type,
@@ -93,39 +92,39 @@ class ProjectDetails extends React.PureComponent {
             <div className='tc-section'>
               <TextOutput
                 className='tc-project-name'
-                label='Project name'
+                label='Project Name'
                 value={name}
               />
             </div>
             <div className='tc-section tc-date-section'>
               <TextOutput
-                label='Start date'
+                label='Start Date'
                 value={start_date}
               />
               <TextOutput
-                label='End date'
+                label='End Date'
                 value={end_date}
               />
             </div>
             <div className='tc-section'>
               <TextOutput
-                label='Project district'
-                value={project_district ? project_district_detail.name : 'Countrywide' }
+                label='Project Districts'
+                value={project_districts_detail ? (project_districts_detail.map(d => d.name).join(', ')) : ''}
               />
             </div>
             <div className='tc-section'>
               <TextOutput
-                label='Reporting national society'
+                label='Reporting National Society'
                 value={reporting_ns ? reporting_ns_detail.society_name : undefined}
               />
               <TextOutput
-                label='Budget amount (CHF)'
+                label='Budget Amount (CHF)'
                 value={budget_amount}
                 type='number'
                 addSeparatorToValue
               />
               <TextOutput
-                label='Programme type'
+                label='Programme Type'
                 value={programmeTypes[programme_type]}
               />
               <TextOutput
@@ -135,23 +134,23 @@ class ProjectDetails extends React.PureComponent {
             </div>
             <div className='tc-section'>
               <TextOutput
-                label='Current IFRC operation'
+                label='Current IFRC Operation'
                 value={currentEventDetails.name}
                 hideEmptyValue
               />
               <TextOutput
-                label='Disaster type'
+                label='Disaster Type'
                 value={dtype ? disasterTypes[dtype] : undefined}
                 hideEmptyValue
               />
             </div>
             <div className='tc-section'>
               <TextOutput
-                label='Operation type'
+                label='Operation Type'
                 value={operationTypes[operation_type]}
               />
               <TextOutput
-                label='Primary sector'
+                label='Primary Sector'
                 value={sectors[primary_sector]}
               />
               {secondary_sectors.length > 0 && (
