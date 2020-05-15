@@ -265,7 +265,7 @@ class Register extends React.Component {
     return (
       <div>
         <p className='form__note'>
-          It appears you do not have an official Red Cross email, we will need to verify your status. Please provide the names and email address of two Red Cross members for us to contact.
+          It appears you do not have an official Red Cross Red Crescent email, we will need to verify your status. Please provide the names and email addresses of two RCRC members with existing GO accounts for us to contact.
         </p>
         {[0, 1].map(o => (
           <div key={o} className='form__hascol form__hascol--2'>
