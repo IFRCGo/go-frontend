@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  _cs,
-  listToGroupList,
-} from '@togglecorp/fujs';
+import { _cs } from '@togglecorp/fujs';
 
 const ProgressBar = (p) => {
   const {
@@ -47,16 +44,19 @@ export default class RegionOverview extends React.PureComponent {
       projectList,
     } = this.props;
 
-    const groupedProjectList = listToGroupList(
-      projectList,
-      d => d.project_district,
-      d => d,
-    );
+    const allDistrictList = projectList.map(d => d.project_districts_detail).flat();
+    const allDistricts = allDistrictList.reduce((acc, val) => {
+      if (!acc[val.name]) {
+        acc[val.name] = 0;
+      }
+      ++acc[val.name];
+      return acc;
+    }, {});
 
-    const projectDistrictList = Object.keys(groupedProjectList);
-    const maxProjects = Math.max(...projectDistrictList.map(d => groupedProjectList[d].length));
+    const maxProjects = Math.max(...Object.values(allDistricts));
     const numBuckets = Math.ceil(maxProjects / MAX_SCALE_STOPS);
     const max = numBuckets * MAX_SCALE_STOPS;
+    const projectDistrictList = Object.keys(allDistricts);
 
     return (
       <div className={_cs(className, 'three-w-stats-region-overview')}>
@@ -67,20 +67,19 @@ export default class RegionOverview extends React.PureComponent {
           max={max}
         />
         <div>
-          { projectDistrictList.map(d => {
-            const p = groupedProjectList[d];
-            const regionName = p[0].project_district_detail ? p[0].project_district_detail.name : 'Countrywide';
+          { projectDistrictList.map(regionName => {
+            const projectCount = allDistricts[regionName];
 
             return (
               <div
-                key={d}
+                key={regionName}
                 className='three-w-region-district'
               >
                 <div>
-                  {regionName} ({p.length} projects)
+                  {regionName} ({projectCount} projects)
                 </div>
                 <ProgressBar
-                  value={p.length}
+                  value={projectCount}
                   max={max}
                 />
               </div>
