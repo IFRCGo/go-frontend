@@ -262,6 +262,10 @@
   overflow-x: auto;
   padding: 2rem;
 
+  * {
+    box-sizing: border-box;
+  }
+
   .block-loading {
     position: absolute;
     border-radius: 0;
@@ -293,9 +297,7 @@
 
   .content {
     padding: 16px;
-    display: flex;
-    align-items: baseline;
-    flex-wrap: wrap;
+    overflow-x: auto;
 
     .three-w-filters {
       display: flex;
@@ -397,6 +399,8 @@
       }
 
       .three-w-stats-region-overview {
+        display: flex;
+        flex-direction: column;
         width: 280px;
         background-color: rgba(255, 255, 255, .9);
         padding: 16px;
@@ -405,6 +409,20 @@
         right: 10px;
         bottom: 56px;
         overflow: auto;
+
+        .tc-header {
+          flex-shrink: 0;
+
+          .three-w-region-scale {
+            margin-right: 10px;
+          }
+        }
+
+        .tc-content {
+          flex-grow: 1;
+          overflow: auto;
+          font-size: $font-size-sm;
+        }
       }
     }
 
@@ -426,6 +444,7 @@
     .three-w-project-list-table-container {
       width: 100%;
       padding: 48px 0;
+      overflow-x: auto;
 
       button {
         margin: 1px;

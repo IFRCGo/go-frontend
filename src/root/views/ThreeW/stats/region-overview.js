@@ -60,13 +60,15 @@ export default class RegionOverview extends React.PureComponent {
 
     return (
       <div className={_cs(className, 'three-w-stats-region-overview')}>
-        <h4>
-          Regions
-        </h4>
-        <Scale
-          max={max}
-        />
-        <div>
+        <div className='tc-header'>
+          <h4>
+            Regions
+          </h4>
+          <Scale
+            max={max}
+          />
+        </div>
+        <div className='tc-content'>
           { projectDistrictList.map(regionName => {
             const projectCount = allDistricts[regionName];
 
