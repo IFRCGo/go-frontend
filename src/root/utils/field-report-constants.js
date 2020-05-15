@@ -743,7 +743,7 @@ export const fieldsStep2 = {
     'EPI': {
       'name': 'situation-fields-date',
       'key': 'sitFieldsDate',
-      'label': 'Date of Data *',
+      'label': 'Date of Data',
       'estimationLabel': 'The key figures above are reported as of this date',
       'desc': 'Date of figures reported.'
     },
