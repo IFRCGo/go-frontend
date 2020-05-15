@@ -196,10 +196,10 @@ class ThreeWMap extends React.PureComponent {
       count: allDistricts[d.id] || 0,
     }));
 
-    const maxProjects = Math.max(0, ...state.map(item => item.count));
+    const maxProjects = Math.max(0, ...Object.values(allDistricts));
     let opacityProperty;
 
-    const upperShift = 0.4;
+    const upperShift = 0.2;
     const lowerShift = 0.1;
 
     if (state.length > 0) {
