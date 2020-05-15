@@ -1,3 +1,4 @@
+const multiValueDelimiter = ', ';
 const exportHeaders = [
   {
     title: 'Country',
@@ -7,23 +8,27 @@ const exportHeaders = [
   {
     title: 'Region',
     key: 'project_district',
-    modifier: r => r.project_district_detail ? r.project_district_detail.name : 'Countrywide',
+    modifier: r => (r.project_districts_detail || []).map(d => d.name).join(multiValueDelimiter),
   },
   {
-    title: 'Supporting NS',
+    title: 'Reporting NS',
     key: 'reporting_ns',
     modifier: r => r.reporting_ns_detail ? r.reporting_ns_detail.name : '',
   },
   {
-    title: 'Operation type',
+    title: 'Operation Type',
     key: 'operation_type_display',
   },
   {
-    title: 'Programme type',
+    title: 'Programme Type',
     key: 'programme_type_display',
   },
   {
-    title: 'Project name',
+    title: 'Disaster Type',
+    key: 'dtype_display',
+  },
+  {
+    title: 'Project Name',
     key: 'name',
   },
   {
@@ -33,7 +38,7 @@ const exportHeaders = [
   {
     title: 'Tags',
     key: 'secondary_sectors',
-    modifier: r => r.secondary_sectors_display.join(', '),
+    modifier: r => r.secondary_sectors_display.join(multiValueDelimiter),
   },
   {
     title: 'Start Date',
