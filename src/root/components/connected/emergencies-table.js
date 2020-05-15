@@ -83,7 +83,7 @@ class EmergenciesTable extends SFPComponent {
     if (state.filters.date !== 'all') {
       qs.disaster_start_date__gte = datesAgo[state.filters.date]();
     } else if (props.showRecent) {
-      qs.disaster_start_date__gte = recentInterval;
+      qs.disaster_start_date__gte = datesAgo['year']();
     }
 
     if (state.filters.dtype !== 'all') {
