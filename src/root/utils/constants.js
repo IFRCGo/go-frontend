@@ -46,7 +46,7 @@ export const sectorList = [
   },
   {
     key: '4',
-    title: 'Health (public)',
+    title: 'Health',
     color: '#a6d854',
     inputValue: '4',
   },
@@ -79,12 +79,6 @@ export const sectorList = [
     title: 'Livelihoods and basic needs',
     color: '#b3b3b3',
     inputValue: '9',
-  },
-  {
-    key: '10',
-    title: 'Health (clinical)',
-    color: '#a6d854',
-    inputValue: '10',
   },
 ];
 

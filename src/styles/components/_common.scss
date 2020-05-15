@@ -85,6 +85,16 @@
     padding: 3px;
   }
 
+  .district-select-container {
+    display: flex;
+    align-items: flex-start;
+
+    button {
+      margin-top: calc(1rem + 12px);
+      flex-shrink: 0;
+    }
+  }
+
   .budget-input-container {
     display: flex;
   }

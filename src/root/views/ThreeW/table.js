@@ -30,17 +30,17 @@ export default class ProjectListTable extends React.PureComponent {
     this.headers = [
       {
         key: 'start_date',
-        label: 'Start date',
+        label: 'Start Date',
         modifier: d => <FormattedDate value={d['start_date']} />,
       },
       {
         key: 'end_date',
-        label: 'End date',
+        label: 'End Date',
         modifier: d => <FormattedDate value={d['end_date']} />,
       },
       {
         key: 'name',
-        label: 'Project name',
+        label: 'Project Name',
       },
       {
         key: 'reporting_ns',
@@ -49,27 +49,32 @@ export default class ProjectListTable extends React.PureComponent {
       },
       {
         key: 'primary_sector',
-        label: 'Sector of activity',
+        label: 'Sector of Activity',
         modifier: d => sectors[d.primary_sector],
       },
       {
         key: 'budget_amount',
-        label: 'Budget',
+        label: 'Budget (CHF)',
         modifier: d => addSeparator(d.budget_amount),
       },
       {
         key: 'programme_type',
-        label: 'Type',
+        label: 'Programme Type',
         modifier: d => programmeTypes[d.programme_type],
       },
       {
+        key: 'dtype_detail',
+        label: 'Disaster Type',
+        modifier: r => r.dtype_detail ? r.dtype_detail.name : '',
+      },
+      {
         key: 'target_total',
-        label: 'People targeted',
+        label: 'People Targeted',
         modifier: d => addSeparator(d.target_total),
       },
       {
         key: 'reached_total',
-        label: 'People reached',
+        label: 'People Reached',
         modifier: d => addSeparator(d.reached_total),
       },
       {
@@ -79,7 +84,7 @@ export default class ProjectListTable extends React.PureComponent {
       },
       {
         key: 'modified_at',
-        label: 'Last updated',
+        label: 'Last Updated',
         modifier: d => <FormattedDate value={d['modified_at']} />,
       },
       {

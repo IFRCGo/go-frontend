@@ -5,17 +5,10 @@ import mapboxgl from 'mapbox-gl';
 import {
   _cs,
   addSeparator,
-  listToGroupList,
 } from '@togglecorp/fujs';
 
 import { countryIsoMapById } from '../../utils/field-report-constants';
 import { getDistrictsForCountryPF } from '../../actions';
-
-import {
-  programmeTypes,
-  sectors,
-  statuses,
-} from '../../utils/constants';
 
 import { getBoundingBox } from '../../utils/country-bounding-box';
 import DownloadButton from '../../components/map/common/download-button';
@@ -56,48 +49,59 @@ const ProjectDetailElement = ({
   </div>
 );
 
-const ProjectDetail = ({
-  project: {
-    name: projectName,
-    reporting_ns_detail: {
-      society_name: reportingNationalSocietyName,
+const ProjectDetail = (p) => {
+  const {
+    project: {
+      name: projectName,
+      reporting_ns_detail: {
+        society_name: reportingNationalSocietyName,
+      },
+      start_date: startDate,
+      end_date: endDate,
+      budget_amount: budget,
+      status_display,
+      programme_type_display,
+      primary_sector_display,
+      modified_at: modifiedAt = '-',
+      project_districts_detail: districts,
     },
-    start_date: startDate,
-    end_date: endDate,
-    budget_amount: budget,
-    status: statusId,
-    programme_type: programmeTypeId,
-    primary_sector: sectorId,
-    modified_at: modifiedAt = '-',
-  },
-}) => (
-  <div className='popover-project-detail'>
-    <ProjectDetailElement
-      className='popover-project-detail-last-updated'
-      label='Last update'
-      value={modifiedAt.substring(0, 10)}
-    />
-    <div className='popover-project-detail-heading'>
-      { reportingNationalSocietyName } : { projectName }
+  } = p;
+
+  return (
+    <div className='popover-project-detail'>
+      <ProjectDetailElement
+        className='popover-project-detail-last-updated'
+        label='Last update'
+        value={modifiedAt.substring(0, 10)}
+      />
+      <div className='popover-project-detail-heading'>
+        { reportingNationalSocietyName } : { projectName }
+      </div>
+      <ProjectDetailElement
+        label='Status'
+        value={`${status_display} (${startDate} to ${endDate})`}
+      />
+      <ProjectDetailElement
+        label='Sector'
+        value={primary_sector_display}
+      />
+      { districts && districts.length > 0 && (
+        <ProjectDetailElement
+          label='Regions'
+          value={districts.map(d => d.name).join(', ')}
+        />
+      )}
+      <ProjectDetailElement
+        label='Programme type'
+        value={programme_type_display}
+      />
+      <ProjectDetailElement
+        label='Budget'
+        value={addSeparator(budget)}
+      />
     </div>
-    <ProjectDetailElement
-      label='Status'
-      value={`${statuses[statusId]} (${startDate} to ${endDate})`}
-    />
-    <ProjectDetailElement
-      label='Sector'
-      value={sectors[sectorId]}
-    />
-    <ProjectDetailElement
-      label='Programme type'
-      value={programmeTypes[programmeTypeId]}
-    />
-    <ProjectDetailElement
-      label='Budget'
-      value={addSeparator(budget)}
-    />
-  </div>
-);
+  );
+};
 
 class ThreeWMap extends React.PureComponent {
   constructor (props) {
@@ -177,30 +181,25 @@ class ThreeWMap extends React.PureComponent {
     const districtList = getResultsFromResponse(districtsResponse[countryId], emptyList);
 
     this.resetBounds(countryId);
-    const groupedProjects = listToGroupList(
-      projectList.filter(d => d.project_district),
-      project => project.project_district,
-      project => project,
-    );
 
-    const state = districtList.map(d => ({ id: d.id, count: 0 }));
+    const allDistrictList = projectList.map(d => d.project_districts).flat();
+    const allDistricts = allDistrictList.reduce((acc, val) => {
+      if (!acc[val]) {
+        acc[val] = 0;
+      }
+      ++acc[val];
+      return acc;
+    }, {});
 
-    if (state.length > 0) {
-      const groupedProjectKeyList = Object.keys(groupedProjects);
-      groupedProjectKeyList.forEach(k => {
-        if (k && k !== 'null') {
-          const district = state.find(d => String(d.id) === String(k));
-          district.count += 1;
-        } else {
-          state.forEach(d => { d.count += 1; });
-        }
-      });
-    }
+    const state = districtList.map(d => ({
+      id: d.id,
+      count: allDistricts[d.id] || 0,
+    }));
 
-    const maxProjects = Math.max(0, ...state.map(item => item.count));
+    const maxProjects = Math.max(0, ...Object.values(allDistricts));
     let opacityProperty;
 
-    const upperShift = 0.4;
+    const upperShift = 0.2;
     const lowerShift = 0.1;
 
     if (state.length > 0) {
@@ -234,9 +233,7 @@ class ThreeWMap extends React.PureComponent {
 
   handleMapClick = (e) => {
     const { projectList } = this.props;
-    const projectDistrictList = projectList
-      .filter(d => d.project_district)
-      .map(d => d.project_district);
+    const projectDistrictList = [...new Set(projectList.map(d => d.project_districts).flat())];
 
     const features = this.map.queryRenderedFeatures(
       e.point,
@@ -273,7 +270,10 @@ class ThreeWMap extends React.PureComponent {
       Admin01Nam: title,
     } = properties;
 
-    const projectsInCurrentDistrict = projectList.filter(p => p.project_district === districtId);
+    const projectsInCurrentDistrict = projectList
+      .filter(p => p.project_districts && p.project_districts.length > 0)
+      .filter(p => p.project_districts.findIndex(d => d === districtId) !== -1);
+
     const numProjects = projectsInCurrentDistrict.length;
 
     render(
