@@ -95,6 +95,7 @@ export function getNationalSocietyActivitiesWoFilters (regionId) {
 export const GET_PROJECTS = 'GET_PROJECTS';
 export function getProjects (countryId, filterValues) {
   const filters = {
+    limit: 9999,
     country: countryIsoMapById[countryId],
     ...filterValues
   };

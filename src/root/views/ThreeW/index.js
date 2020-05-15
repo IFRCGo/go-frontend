@@ -88,8 +88,6 @@ function ThreeW (p) {
     getResultsFromResponse(projectListResponse)
   ), [projectListResponse]);
 
-  console.warn(projectList);
-
   const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = React.useState(false);
   const [filters, setFilters] = React.useState({});
   const [showProjectFormModal, setShowProjectFormModal] = React.useState(false);
