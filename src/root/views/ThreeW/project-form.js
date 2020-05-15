@@ -556,7 +556,7 @@ class ProjectForm extends React.PureComponent {
 
           <InputSection
             className='multi-input-section'
-            title='Country and region / province* '
+            title='Country and Region / Province* '
             helpText='Select the country and region where the disaster is taking place.'
             tooltip='The region can be referred to as states, provinces, or Admin Level 1. Choose countrywide for activities that are not limited to specific places. If the project takes place on multiple regions please submit each region separately using the clone-function on the country view table'
           >
@@ -572,7 +572,7 @@ class ProjectForm extends React.PureComponent {
             <div className="district-select-container">
               <SelectInput
                 faramElementName='project_districts'
-                label='Region / province'
+                label='Region / Province'
                 className='project-form-select'
                 options={districtOptions}
                 disabled={shouldDisableDistrictInput}
@@ -592,7 +592,7 @@ class ProjectForm extends React.PureComponent {
 
           <InputSection
             className='multi-input-section'
-            title='Type of operation / programme*'
+            title='Type of Operation / Programme*'
             tooltip='The operation type can be either an Emergency Operation or a Programme. Emergency Operations are new efforts linked to a specific emergency. Programs are ongoing work linked to a disaster. &#13;&#13;If you choose Domestic, Bilateral, or Multilateral Programme, select Disaster Type that best fits the situation. Disasters are often multifactorial. Please choose the type that makes the most sense, recognizing that disasters are often the result of many complex factors. &#13;If you choose Bilateral Emergency Operation, then no additional info is required. &#13;If you choose Multilateral Emergency Operation, then please identify linked IFRC Emergency Operation.'
             helpText={
               <React.Fragment>
@@ -602,13 +602,13 @@ class ProjectForm extends React.PureComponent {
           >
             <SelectInput
               faramElementName='operation_type'
-              label='Operation type'
+              label='Operation Type'
               className='project-form-select'
               options={operationTypeOptions}
             />
             <SelectInput
               faramElementName='programme_type'
-              label='Programme type'
+              label='Programme Type'
               className='project-form-select'
               options={programmeTypeOptions}
             />
@@ -616,7 +616,7 @@ class ProjectForm extends React.PureComponent {
 
           { shouldShowCurrentOperation && (
             <InputSection
-              title='Current IFRC operation*'
+              title='Current IFRC Operation*'
             >
               <SelectInput
                 faramElementName='event'
@@ -630,7 +630,7 @@ class ProjectForm extends React.PureComponent {
 
           { shouldShowCurrentEmergencyOperation && (
             <InputSection
-              title='Current emergency operation*'
+              title='Current Emergency Operation*'
               helpText='The list is populated from current emergency operations related to the selected country. If necessary, create the related emergency through a field report'
             >
               <SelectInput
@@ -645,7 +645,7 @@ class ProjectForm extends React.PureComponent {
 
           { shouldShowDisasterType && (
             <InputSection
-              title='Disaster type'
+              title='Disaster Type'
             >
               <SelectInput
                 faramElementName='dtype'
@@ -658,7 +658,7 @@ class ProjectForm extends React.PureComponent {
           )}
 
           <InputSection
-            title='Project name*'
+            title='Project Name*'
             helpText='Enter a name that differentiates your activity or project from other initiatives taking place in the response.'
             tooltip='The 3w system does allow for duplicate activities projects with the same name, but please choose a descriptive and original title.'
           >
@@ -669,7 +669,7 @@ class ProjectForm extends React.PureComponent {
 
           <InputSection
             className='multi-input-section'
-            title='Sector and tagging'
+            title='Sector and Tagging'
             helpText={
               <React.Fragment>
                 <div>
@@ -685,7 +685,7 @@ class ProjectForm extends React.PureComponent {
             <SelectInput
               faramElementName='primary_sector'
               className='project-form-select'
-              label='Primary sector* '
+              label='Primary Sector* '
               options={sectorOptions}
             />
             <SelectInput
@@ -699,23 +699,23 @@ class ProjectForm extends React.PureComponent {
 
           <InputSection
             className='multi-input-section'
-            title='Start and end dates* '
+            title='Start and End Dates* '
             helpText='Choose the date when the work on the activity or project begins'
             tooltip='Choose the date when the project is likely to end. Remember, you can easily return and edit this data if plans evolve.'
           >
             <DateInput
               faramElementName='start_date'
-              label='Start date'
+              label='Start Date'
             />
             <DateInput
               faramElementName='end_date'
-              label='End date'
+              label='End Date'
             />
           </InputSection>
 
           <InputSection
             className='multi-input-section'
-            title='Budget and status*'
+            title='Budget and Status*'
             helpText={
               <React.Fragment>
                 <div>
@@ -729,7 +729,7 @@ class ProjectForm extends React.PureComponent {
             tooltip='The budget includes the total costs for the listed activity or project. &#13;The project can be marked completed, which makes the people reached a required value.'
           >
             <NumberInput
-              label='Project budget (CHF)'
+              label='Project Budget (CHF)'
               faramElementName='budget_amount'
             />
             <div>
@@ -738,7 +738,7 @@ class ProjectForm extends React.PureComponent {
                 faramElementName="is_project_completed"
               />
               <TextOutput
-                label='Project status'
+                label='Project Status'
                 value={statuses[faramValues.status]}
               />
             </div>
@@ -746,7 +746,7 @@ class ProjectForm extends React.PureComponent {
 
           <InputSection
             className='multi-input-section'
-            title='People targeted'
+            title='People Targeted'
             helpText='Enter the number of people that the project plans to reach through the work.'
             tooltip='The options are: &#13;Male - People who identify as having the male gender &#13;Female - People who identify as having the female gender &#13;Other - Other can include data such as “other sex/gender”, “undisclosed”, “unknown”, etc &#13;Total - The total number of people included in the subcategories above'
           >
@@ -771,7 +771,7 @@ class ProjectForm extends React.PureComponent {
 
           <InputSection
             className='multi-input-section'
-            title='People reached'
+            title='People Reached'
             helpText='Enter the total number of people reached already with (TOTAL, male, female, other) according to the definitions above.'
             tooltip='lease follow the Counting People Reached guidelines as establishing the Federation-wide Databank and Reporting System.'
           >
