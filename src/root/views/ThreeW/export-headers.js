@@ -25,7 +25,8 @@ const exportHeaders = [
   },
   {
     title: 'Disaster Type',
-    key: 'dtype_display',
+    key: 'dtype_detail',
+    modifier: r => r.dtype_detail ? r.dtype_detail.name : '',
   },
   {
     title: 'Project Name',
