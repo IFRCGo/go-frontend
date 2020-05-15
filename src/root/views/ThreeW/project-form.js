@@ -145,7 +145,7 @@ class ProjectForm extends React.PureComponent {
         project_country: [],
         event: [],
         dtype: [],
-        project_district: [requiredCondition],
+        project_districts: [requiredCondition],
         name: [requiredCondition],
         operation_type: [requiredCondition],
         primary_sector: [requiredCondition],
@@ -186,7 +186,7 @@ class ProjectForm extends React.PureComponent {
         project_country: props.countryId,
         event: projectData.event,
         dtype: projectData.dtype,
-        project_district: getDefaultDistrictValue(projectData.project_district),
+        project_districts: getDefaultDistrictValue(projectData.project_districts),
         name: projectData.name,
         operation_type: projectData.operation_type,
         primary_sector: projectData.primary_sector,
@@ -392,7 +392,7 @@ class ProjectForm extends React.PureComponent {
 
       newFaramValues = {
         ...newFaramValues,
-        project_district: [],
+        project_districts: [],
         event: undefined,
       };
     }
@@ -413,12 +413,6 @@ class ProjectForm extends React.PureComponent {
     if (projectData && projectData.id) {
       data['id'] = projectData.id;
     }
-
-    /*
-    if (faramValues.project_district === 'all') {
-      data.project_district = null;
-    }
-    */
 
     _postProject(data);
   }
@@ -460,11 +454,11 @@ class ProjectForm extends React.PureComponent {
     const districtOptions = this.getDistrictOptions(districts, faramValues.project_country);
     const newFaramValues = {
       ...faramValues,
-      project_district: districtOptions.map(d => d.value),
+      project_districts: districtOptions.map(d => d.value),
     };
     const newFaramErrors = {
       ...faramErrors,
-      project_district: undefined,
+      project_districts: undefined,
     };
 
     this.setState({
@@ -577,7 +571,7 @@ class ProjectForm extends React.PureComponent {
             />
             <div className="district-select-container">
               <SelectInput
-                faramElementName='project_district'
+                faramElementName='project_districts'
                 label='Region / province'
                 className='project-form-select'
                 options={districtOptions}
