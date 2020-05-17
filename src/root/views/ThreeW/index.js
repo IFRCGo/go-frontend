@@ -16,6 +16,7 @@ import {
   projectDeleteSelector,
 } from '#selectors';
 
+import Translate from '#components/Translate';
 import ConfirmModal from '#components/confirm-modal';
 import BlockLoading from '#components/block-loading';
 import {
@@ -191,7 +192,9 @@ function ThreeW (p) {
       )}
       <header className='tc-header'>
         <h2 className='tc-heading'>
-          Red Cross / Red Crescent activities
+          <Translate
+            stringId="rcActivities"
+          />
         </h2>
         <div className='tc-actions'>
           { isCountryAdmin && (
