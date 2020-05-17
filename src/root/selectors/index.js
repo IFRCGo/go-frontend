@@ -1,3 +1,6 @@
+// import { getResponseFromRequest } from '#utils/request';
+import lang from '#lang';
+
 const initialState = {
   fetching: false,
   fetched: false,
@@ -44,3 +47,20 @@ export const projectDeleteSelector = (state) => (
 export const projectFormSelector = (state) => (
   state.projectForm
 );
+
+export const languageSelector = (state) => (
+  state.lang || {}
+);
+
+export const currentLangugageSelector = (state) => (
+  languageSelector(state).current || 'en'
+);
+
+export const languageStringsSelector = (state) => (
+  languageSelector(state).strings || { en: lang }
+);
+
+export const currentLanguageStringsSelector = (state) => (
+  languageStringsSelector(state)[currentLangugageSelector(state)] || lang
+);
+
