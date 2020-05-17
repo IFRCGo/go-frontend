@@ -64,3 +64,7 @@ export const currentLanguageStringsSelector = languageStringsSelector;
 export const languageBulkResponseSelector = (state) => (
   state.postLanguageBulk
 );
+
+export const currentLangugageSelector = (state) => (
+  languageSelector(state).current || 'en'
+);

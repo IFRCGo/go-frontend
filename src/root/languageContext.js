@@ -28,4 +28,3 @@ export function withLanguage(Component) {
 
   return EnhancedComponent;
 }
-
