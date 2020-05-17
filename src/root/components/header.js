@@ -6,6 +6,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { api, environment } from '#config';
 import { request } from '#utils/network';
 import { uppercaseFirstLetter as u, isoDate } from '#utils/format';
+import LanguageSelect from '#components/LanguageSelect';
 import UserMenu from './connected/user-menu';
 import HeaderRegionButton from './header-region-button';
 
@@ -105,6 +106,7 @@ class Header extends React.PureComponent {
                 <Link to='/about' title='Visit Resources page' className='page__meta-nav-elements'><span>Resources</span></Link>
                 <UserMenu />
                 <Link to='/reports/new' className='button button--small button--primary-bounded' title='Create Field Report'><span>Create Field Report</span></Link>
+                <LanguageSelect />
               </nav>
             </div>
           </div>
