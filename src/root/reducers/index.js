@@ -29,9 +29,10 @@ import fdrs from './fdrs';
 import csv from './csv';
 import perForm from './per-form';
 import subscriptions from './subscriptions';
-import projects from './projects.js';
-import countryOverview from './country-overview.js';
+import projects from './projects';
+import countryOverview from './country-overview';
 import domainWhitelist from './domain-whitelist';
+import lang from './lang';
 
 export const reducers = {
   user,
@@ -71,7 +72,8 @@ export const reducers = {
   nationalSocietyActivitiesWoFilters: createReducer('GET_NATIONAL_SOCIETY_ACTIVITIES_WO_FILTERS'),
   regionalProjects: createReducer('GET_REGIONAL_PROJECTS'),
   me: createReducer('GET_ME'),
-  domainWhitelist
+  domainWhitelist,
+  lang,
 };
 
 export default combineReducers(reducers);
