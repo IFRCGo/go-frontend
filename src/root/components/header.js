@@ -3,6 +3,7 @@ import { PropTypes as T } from 'prop-types';
 import Select from 'react-select';
 import { Link, withRouter } from 'react-router-dom';
 
+import LanguageSelect from '#components/LanguageSelect';
 import { api, environment } from '../config';
 import { request } from '../utils/network';
 import { uppercaseFirstLetter as u, isoDate } from '../utils/format';
@@ -105,6 +106,7 @@ class Header extends React.PureComponent {
                 <Link to='/about' title='Visit Resources page' className='page__meta-nav-elements'><span>Resources</span></Link>
                 <UserMenu />
                 <Link to='/reports/new' className='button button--small button--primary-bounded' title='Create Field Report'><span>Create Field Report</span></Link>
+                <LanguageSelect />
               </nav>
             </div>
           </div>
