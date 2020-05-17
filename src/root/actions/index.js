@@ -667,3 +667,9 @@ export function getDomainWhitelist () {
   });
   return fetchJSON(`/api/v2/domainwhitelist/?${f}`, GET_DOMAIN_WHITELIST, withToken());
 }
+
+export const SET_CURRENT_LANGUAGE = 'SET_CURRENT_LANGUAGE';
+export const setCurrentLanguageAction = (currentLanguage) => ({
+    type: SET_CURRENT_LANGUAGE,
+    language: currentLanguage,
+});
