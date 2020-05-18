@@ -48,7 +48,8 @@ export default function FormInputSelect (props) {
           value={selectValue}
           onChange={selectOnChange}
           placeholder={selectPlaceholder}
-          loadOptions={selectLoadOptions} />
+          loadOptions={selectLoadOptions}
+          disabled={disabled} />
 
         {labelSecondary ? (<label htmlFor={id} className='label-secondary global-margin-t'>{labelSecondary}</label>) : null}
         <input

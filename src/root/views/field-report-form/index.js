@@ -8,7 +8,6 @@ import c from 'classnames';
 import Select from 'react-select';
 import Ajv from 'ajv';
 import ajvKeywords from 'ajv-keywords';
-import ToggleButton from 'react-toggle-button';
 
 import { environment } from '../../config';
 import {
@@ -214,10 +213,6 @@ class FieldReportForm extends React.Component {
     this.onFieldChange('country', e);
   }
 
-  toggleCovidReport (isCovidReport) {
-    this.onFieldChange('isCovidReport', !isCovidReport);
-  }
-
   onFieldChange = (field, e) => {
     let data = _cloneDeep(this.state.data);
     let val = e && e.target ? e.target.value : e;
@@ -229,7 +224,7 @@ class FieldReportForm extends React.Component {
       _set(data, 'status', formData.statusEvent.value);
     }
 
-    if (field === 'isCovidReport' && val) {
+    if (field === 'isCovidReport' && val && val === 'true') {
       _set(data, 'status', formData.statusEvent.value);
       _set(data, 'disasterType', '1');
     }
@@ -357,33 +352,25 @@ class FieldReportForm extends React.Component {
             property='status'
           />
         </FormRadioGroup>
-        <div className='form__group'>
-          <div className='form__inner-header'>
-            <label className='form__label'>COVID-19 Related Event</label>
-          </div>
-          <div className='form__inner-body'>
-            <ToggleButton
-              inactiveLabel={false}
-              activeLabel={false}
-              thumbStyle={{'boxShadow': 'rgba(0, 0, 0, 0.1) 0px 0px 0px 1px'}}
-              value={this.state.data.isCovidReport || false}
-              onToggle={this.toggleCovidReport.bind(this)}
-              aria-label='Is this a COVID-19 Field Report?'
-              colors={{
-                active: {
-                  base: '#f5333f'
-                },
-                inactive: {
-                  base: '#d1d1d1',
-                },
-              }}
-            />
-            <FormError
-              errors={this.state.errors}
-              property='is_covid_report'
-            />
-          </div>
-        </div>
+        <FormRadioGroup
+          label='COVID-19 Related Event *'
+          name='is-covid-report'
+          // description='Is this a COVID-19 Field Report?'
+          options={[{
+            value: 'true',
+            label: 'Yes'
+          }, {
+            value: 'false',
+            label: 'No'
+          }]}
+          selectedOption={this.state.data.isCovidReport}
+          onChange={this.onFieldChange.bind(this, 'isCovidReport')} >
+
+          <FormError
+            errors={this.state.errors}
+            property='is_covid_report'
+          />
+        </FormRadioGroup>
         <FormInputSelect
           label={fields.summary[status].label}
           labelSecondary='Add Title'
@@ -406,6 +393,7 @@ class FieldReportForm extends React.Component {
           selectValue={this.state.data.event}
           errors={this.state.errors}
           selectLoadOptions={getEventsFromApi}
+          disabled={!this.state.data.isCovidReport}
           autoFocus >
 
           <FormError
@@ -426,6 +414,7 @@ class FieldReportForm extends React.Component {
                 value={this.state.data.country}
                 onChange={this.onCountryChange.bind(this)}
                 options={formData.countries}
+                disabled={!this.state.data.isCovidReport}
               />
 
               <FormError
@@ -440,6 +429,7 @@ class FieldReportForm extends React.Component {
                 value={this.state.data.districts}
                 onChange={this.onFieldChange.bind(this, 'districts')}
                 options={districtChoices}
+                disabled={!this.state.data.isCovidReport}
                 multi
               />
 
@@ -460,7 +450,7 @@ class FieldReportForm extends React.Component {
               placeholder='Select a disaster type'
               name='disaster-type'
               id='disaster-type'
-              disabled={ this.state.data.isCovidReport }
+              disabled={ this.state.data.isCovidReport === 'true' }
               options={formData.disasterType}
               value={this.state.data.disasterType}
               onChange={({value}) => this.onFieldChange('disasterType', value)}
@@ -479,7 +469,8 @@ class FieldReportForm extends React.Component {
           value={this.state.data.startDate}
           onChange={this.onFieldChange.bind(this, 'startDate')}
           description={fields.startDate[status].desc}
-        >
+          disabled={!this.state.data.isCovidReport} >
+
           <FormError
             errors={this.state.errors}
             property='start_date'
@@ -492,11 +483,13 @@ class FieldReportForm extends React.Component {
           options={[
             {
               label: 'Yes',
-              value: 'true'
+              value: 'true',
+              disabled: !this.state.data.isCovidReport
             },
             {
               label: 'No',
-              value: 'false'
+              value: 'false',
+              disabled: !this.state.data.isCovidReport
             }
           ]}
           selectedOption={this.state.data.assistance}
@@ -513,11 +506,13 @@ class FieldReportForm extends React.Component {
           options={[
             {
               label: 'Yes',
-              value: 'true'
+              value: 'true',
+              disabled: !this.state.data.isCovidReport
             },
             {
               label: 'No',
-              value: 'false'
+              value: 'false',
+              disabled: !this.state.data.isCovidReport
             }
           ]}
           selectedOption={this.state.data.nsAssistance}
@@ -534,7 +529,7 @@ class FieldReportForm extends React.Component {
   renderStep2 () {
     const fields = formData.fieldsStep2;
     const status = this.getStatus();
-    const covidTag = this.state.data.isCovidReport ? '-COV' : '';
+    const covidTag = this.state.data.isCovidReport === 'true' ? '-COV' : '';
     return (
       <Fold title='Numeric Details (People)'>
         {
@@ -658,7 +653,7 @@ class FieldReportForm extends React.Component {
 
     // only for filtering the list of actions, we use the COVID type,
     // all other elements will follow the same as the EPI status.
-    const actionsStatus = this.state.data.isCovidReport ? 'COVID' : status;
+    const actionsStatus = this.state.data.isCovidReport === 'true' ? 'COVID' : status;
 
     const { actions } = this.props;
 
@@ -684,7 +679,7 @@ class FieldReportForm extends React.Component {
               if (!field[status]) {
                 return null;
               }
-              if (this.state.data.isCovidReport && !field[status + '-COV']) {
+              if (this.state.data.isCovidReport === 'true' && !field[status + '-COV']) {
                 return null;
               }
               return (
@@ -743,7 +738,7 @@ class FieldReportForm extends React.Component {
           label='Information Bulletin'
           description='Indicate if an Information Bulletin was published, is planned or if no Information Bulletin will be issued for this operation/disaster/hazard.'
           name='bulletin'
-          classWrapper={this.state.data.isCovidReport ? 'hidden' : null}
+          classWrapper={this.state.data.isCovidReport === 'true' ? 'hidden' : null}
           options={[
             {
               label: 'No',
@@ -784,12 +779,12 @@ class FieldReportForm extends React.Component {
 
     // We hide the entire Planned International Response section for COVID reports
     const isCovidReport = this.state.data.isCovidReport;
-    if (isCovidReport) {
+    if (isCovidReport === 'true') {
       responseTitle = '';
     }
     return (
       <Fold title={responseTitle}>
-        { this.state.data.isCovidReport ? null : (
+        { this.state.data.isCovidReport === 'true' ? null : (
           <React.Fragment>
             <label className='form__label'>Planned International Response</label>
             <div className='form__description'>
