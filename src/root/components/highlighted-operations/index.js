@@ -4,7 +4,7 @@ import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { environment } from '#config';
 import { get } from '#utils/utils';
-import { getFeaturedEmergencies, getFeaturedEmergenciesForRegion, getFeaturedEmergenciesDeployments, getDeploymentERU } from '../../actions';
+import { getFeaturedEmergencies, getFeaturedEmergenciesForRegion, getFeaturedEmergenciesDeployments, getDeploymentERU } from '#actions';
 import BlockLoading from '../block-loading';
 import Fold from '../fold';
 import OperationCard from './operation-card';
