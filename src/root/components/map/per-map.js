@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 import mapboxgl from 'mapbox-gl';
 // import chroma from 'chroma-js';
 import ExplanationBubble from './per-map/explanation-bubble';
-import { environment } from '../../config';
+import { environment } from '#root/config';
 import BlockLoading from '../block-loading';
 import MapComponent from './common/map-component';
 import OperationsPopover from './per-map/operations-popover';

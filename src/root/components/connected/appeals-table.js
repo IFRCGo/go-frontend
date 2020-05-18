@@ -4,24 +4,24 @@ import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
 
-import { environment } from '../../config';
-import { getAppealsList, getAppeals } from '../../actions';
-import { commaSeparatedNumber as n, nope } from '../../utils/format';
-import { getDtypeMeta } from '../../utils/get-dtype-meta';
+import { environment } from '#root/config';
+import { getAppealsList, getAppeals } from '#actions';
+import { commaSeparatedNumber as n, nope } from '#utils/format';
+import { getDtypeMeta } from '#utils/get-dtype-meta';
 import {
   get,
   dateOptions,
   dTypeOptions
-} from '../../utils/utils';
+} from '#utils/utils';
 
-import ExportButton from '../export-button-container';
-import Fold from '../fold';
-import BlockLoading from '../block-loading';
-import DisplayTable, { SortHeader, FilterHeader } from '../display-table';
-import DateFilterHeader from '../common/filters/date-filter-header';
-import { SFPComponent } from '../../utils/extendables';
-import { appealTypes as appealsType, appealTypeOptions } from '../../utils/appeal-type-constants';
-import MainMap from '../map/main-map';
+import ExportButton from '#components/export-button-container';
+import Fold from '#components/fold';
+import BlockLoading from '#components/block-loading';
+import DisplayTable, { SortHeader, FilterHeader } from '#components/display-table';
+import DateFilterHeader from '#components/common/filters/date-filter-header';
+import { SFPComponent } from '#utils/extendables';
+import { appealTypes as appealsType, appealTypeOptions } from '#utils/appeal-type-constants';
+import MainMap from '#components/map/main-map';
 
 class AppealsTable extends SFPComponent {
   constructor (props) {

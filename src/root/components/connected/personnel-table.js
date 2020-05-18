@@ -4,20 +4,20 @@ import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
 
-import { environment } from '../../config';
-import { getPersonnel } from '../../actions';
-import { commaSeparatedNumber as n, nope } from '../../utils/format';
+import { environment } from '#root/config';
+import { getPersonnel } from '#actions';
+import { commaSeparatedNumber as n, nope } from '#utils/format';
 import {
   get,
   dateOptions,
   datesAgo
-} from '../../utils/utils';
+} from '#utils/utils';
 
-import ExportButton from '../export-button-container';
-import Fold from '../fold';
-import BlockLoading from '../block-loading';
-import DisplayTable, { SortHeader, FilterHeader } from '../display-table';
-import { SFPComponent } from '../../utils/extendables';
+import ExportButton from '#components/export-button-container';
+import Fold from '#components/fold';
+import BlockLoading from '#components/block-loading';
+import DisplayTable, { SortHeader, FilterHeader } from '#components/display-table';
+import { SFPComponent } from '#utils/extendables';
 
 const typeOptions = [
   { value: 'all', label: 'All' },

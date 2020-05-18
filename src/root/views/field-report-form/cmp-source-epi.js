@@ -3,7 +3,7 @@ import { PropTypes as T } from 'prop-types';
 // import _cloneDeep from 'lodash.clonedeep';
 import c from 'classnames';
 
-import { environment } from '../../config';
+import { environment } from '#root/config';
 // import * as formData from '../../utils/field-report-constants';
 import {
   FormInput,

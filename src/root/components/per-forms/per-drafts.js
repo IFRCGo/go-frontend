@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { environment } from '../../config';
+import { environment } from '#root/config';
 import { PropTypes as T } from 'prop-types';
 
 const PerDraftDocuments = ({ perForm, deletePerDraft }) => {
