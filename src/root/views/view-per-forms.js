@@ -1,14 +1,14 @@
 
 import React from 'react';
-import A1PolicyStrategyForm from '../components/per-forms/a1-policy-strategy-form';
-import A2AnalysisAndPlanningForm from '../components/per-forms/a2-analysis-and-planning-form';
-import A3OperationalCapacity from '../components/per-forms/a3-operational-capacity';
-import A4Coordination from '../components/per-forms/a4-coordination';
-import A5OperationsSupport from '../components/per-forms/a5-operations-support';
-import A3OperationalCapacity2 from '../components/per-forms/a3-operational-capacity-2';
-import OverviewForm from '../components/per-forms/overview-form';
+import A1PolicyStrategyForm from '#components/per-forms/a1-policy-strategy-form';
+import A2AnalysisAndPlanningForm from '#components/per-forms/a2-analysis-and-planning-form';
+import A3OperationalCapacity from '#components/per-forms/a3-operational-capacity';
+import A4Coordination from '#components/per-forms/a4-coordination';
+import A5OperationsSupport from '#components/per-forms/a5-operations-support';
+import A3OperationalCapacity2 from '#components/per-forms/a3-operational-capacity-2';
+import OverviewForm from '#components/per-forms/overview-form';
 import { Helmet } from 'react-helmet';
-import { environment } from '../config';
+import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 import App from './app';
 

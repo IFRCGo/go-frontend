@@ -1,7 +1,7 @@
 import React from 'react';
 // import { PropTypes as T } from 'prop-types';
 
-import { environment } from '../config';
+import { environment } from '#config';
 
 export default class BlockLoading extends React.Component {
   render () {

@@ -4,11 +4,11 @@ import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 
 import { environment } from '#root/config';
-// import * as formData from '../../utils/field-report-constants';
+// import * as formData from '#utils/field-report-constants';
 import {
   FormInput,
   FormError
-} from '../../components/form-elements';
+} from '#components/form-elements';
 
 export default class EPISourceEstimation extends React.Component {
   // Is this even necessary or could be handled elsewhere?

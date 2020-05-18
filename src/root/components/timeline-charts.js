@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import { ResponsiveContainer, LineChart, Line, Legend, XAxis, YAxis, Tooltip } from 'recharts';
 import { DateTime } from 'luxon';
 
-import { environment } from '../config';
+import { environment } from '#config';
 import BlockLoading from './block-loading';
-import { commaSeparatedLargeNumber } from '../utils/format';
-import { getAggregateAppeals } from '../actions';
+import { commaSeparatedLargeNumber } from '#utils/format';
+import { getAggregateAppeals } from '#actions';
 
 class TimelineCharts extends React.Component {
   componentDidMount () {

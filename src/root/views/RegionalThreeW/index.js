@@ -10,23 +10,23 @@ import {
 } from 'recharts';
 import _cs from 'classnames';
 
-import BlockLoading from '../../components/block-loading';
+import BlockLoading from '#components/block-loading';
 import {
   getRegionalMovementActivities as getRegionalMovementActivitiesAction,
   getRegionalProjectsOverview as getRegionalProjectsOverviewAction,
   getNationalSocietyActivities as getNationalSocietyActivitiesAction,
   getNationalSocietyActivitiesWoFilters as getNationalSocietyActivitiesWoFiltersAction,
-} from '../../actions';
+} from '#actions';
 
 import {
   regionalMovementActivitiesSelector,
   regionalProjectsOverviewSelector,
   nationalSocietyActivitiesSelector,
   nationalSocietyActivitiesWoFiltersSelector,
-} from '../../selectors';
+} from '#selectors';
 
-import { statuses } from '../../utils/constants';
-import { getDataFromResponse } from '../../utils/request';
+import { statuses } from '#utils/constants';
+import { getDataFromResponse } from '#utils/request';
 
 import StatusOverview from './status-overview';
 import BudgetOverview from './budget-overview';

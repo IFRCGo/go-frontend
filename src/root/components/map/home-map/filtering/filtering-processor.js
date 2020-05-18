@@ -1,5 +1,5 @@
 
-import { aggregateAppealStats } from './../../../../utils/utils';
+import { aggregateAppealStats } from '#utils/utils';
 
 export function filtering (geoJSON, comparator) {
   const features = geoJSON.features.map(d => {

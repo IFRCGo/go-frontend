@@ -10,27 +10,27 @@ import {
   isFullscreen,
   addFullscreenListener,
   removeFullscreenListener
-} from '../utils/fullscreen';
+} from '#utils/fullscreen';
 import {
   getAllDeploymentERU,
   getActivePersonnel,
   getEruOwners
-} from '../actions';
-import { finishedFetch, datesAgo } from '../utils/utils';
-import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
-import { environment } from '../config';
+} from '#actions';
+import { finishedFetch, datesAgo } from '#utils/utils';
+import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
+import { environment } from '#config';
 import {
   commaSeparatedNumber as n,
   nope
-} from '../utils/format';
+} from '#utils/format';
 
 import App from './app';
-import Progress from '../components/progress';
-import PersonnelTable from '../components/connected/personnel-table';
-import EruTable from '../components/connected/eru-table';
-import { SFPComponent } from '../utils/extendables';
-import DeploymentsMap from '../components/map/deployments-map';
-import Readiness from '../components/deployments/readiness';
+import Progress from '#components/progress';
+import PersonnelTable from '#components/connected/personnel-table';
+import EruTable from '#components/connected/eru-table';
+import { SFPComponent } from '#utils/extendables';
+import DeploymentsMap from '#components/map/deployments-map';
+import Readiness from '#components/deployments/readiness';
 
 class Deployments extends SFPComponent {
   // Methods form SFPComponent:

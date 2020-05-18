@@ -2,7 +2,7 @@ import React from 'react';
 import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 
-import { environment } from '../config';
+import { environment } from '#config';
 
 export default class Alert extends React.Component {
   constructor (props) {

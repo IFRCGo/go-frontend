@@ -5,10 +5,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { stringify } from 'qs';
-import { get } from '../utils/utils';
-import { startDownload } from '../utils/download-starter';
-import { environment, api } from '../config';
-import { getListAsCsv, clearLoadedCsv } from '../actions';
+import { get } from '#utils/utils';
+import { startDownload } from '#utils/download-starter';
+import { environment, api } from '#config';
+import { getListAsCsv, clearLoadedCsv } from '#actions';
 import { showAlert } from './system-alerts';
 
 class ExportButton extends React.Component {

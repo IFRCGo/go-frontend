@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Root from './root';
+import Root from '#root';
 
 import './styles/main.scss';
 

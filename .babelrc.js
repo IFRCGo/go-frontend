@@ -9,7 +9,7 @@ module.exports = {
         "alias": {
           "#actions": "./src/root/actions",
           "#components": "./src/root/components",
-          "#config": "./src/config",
+          "#config": "./src/root/config",
           "#hooks": "./src/root/hooks",
           "#lang": "./src/lang",
           "#root": "./src/root",

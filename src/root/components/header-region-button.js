@@ -2,8 +2,8 @@
 import React from 'react';
 import Dropdown from './common/dropdown';
 import { Link } from 'react-router-dom';
-import { environment } from '../config';
-import { regions, getRegionId } from '../utils/region-constants';
+import { environment } from '#config';
+import { regions, getRegionId } from '#utils/region-constants';
 import { PropTypes as T } from 'prop-types';
 
 const regionArray = Object.keys(regions).map(k => regions[k]);

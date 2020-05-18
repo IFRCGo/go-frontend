@@ -3,9 +3,9 @@ import { PropTypes as T } from 'prop-types';
 import Select from 'react-select';
 import { Link, withRouter } from 'react-router-dom';
 
-import { api, environment } from '../config';
-import { request } from '../utils/network';
-import { uppercaseFirstLetter as u, isoDate } from '../utils/format';
+import { api, environment } from '#config';
+import { request } from '#utils/network';
+import { uppercaseFirstLetter as u, isoDate } from '#utils/format';
 import UserMenu from './connected/user-menu';
 import HeaderRegionButton from './header-region-button';
 

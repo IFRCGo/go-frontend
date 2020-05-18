@@ -12,7 +12,7 @@ import {
   Tooltip,
 } from 'recharts';
 
-import { countryNameMapById } from '../../utils/field-report-constants';
+import { countryNameMapById } from '#utils/field-report-constants';
 
 const DetailElement = ({
   value,

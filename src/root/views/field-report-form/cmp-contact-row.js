@@ -5,7 +5,7 @@ import { environment } from '#root/config';
 import {
   FormInput,
   FormError
-} from '../../components/form-elements/';
+} from '#components/form-elements/';
 
 export default class ContactRow extends React.Component {
   onFieldChange (field, e) {

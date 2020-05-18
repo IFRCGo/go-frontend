@@ -2,7 +2,7 @@
 import React from 'react';
 import { environment } from '#root/config';
 import { PropTypes as T } from 'prop-types';
-import { getPerComponent } from './../../utils/get-per-components';
+import { getPerComponent } from '#utils/get-per-components';
 import Fold from './../fold';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend

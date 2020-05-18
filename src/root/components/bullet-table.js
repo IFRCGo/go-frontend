@@ -1,6 +1,6 @@
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
-import { environment } from '../config';
+import { environment } from '#config';
 import c from 'classnames';
 
 class BulletTable extends React.Component {

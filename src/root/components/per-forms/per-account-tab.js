@@ -9,7 +9,7 @@ import {
   getPerDocuments,
   deletePerDraft,
   getPerOverviewFormStrict as getPerOverviewForm
-} from '../../actions';
+} from '#actions';
 import PerDraftDocuments from './per-drafts';
 import PerDocuments from './per-documents';
 

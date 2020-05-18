@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import TextOutput from '../../components/text-output';
-import Backdrop from '../../components/backdrop';
+import TextOutput from '#components/text-output';
+import Backdrop from '#components/backdrop';
 
 import {
   statuses,
@@ -11,11 +11,11 @@ import {
   sectors,
   programmeTypes,
   operationTypes,
-} from '../../utils/constants';
+} from '#utils/constants';
 
-import { getEventById } from '../../actions';
+import { getEventById } from '#actions';
 
-import { disasterTypes } from '../../utils/field-report-constants';
+import { disasterTypes } from '#utils/field-report-constants';
 
 const emptyObject = {};
 

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import c from 'classnames';
-import { environment } from '../config';
+import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 
 export default function ExportButtonComponent (props) {

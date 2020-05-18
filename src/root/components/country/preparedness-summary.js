@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { environment } from '#root/config';
 import { PropTypes as T } from 'prop-types';
 import Fold from './../fold';
-import { getPerComponent } from './../../utils/get-per-components';
+import { getPerComponent } from '#utils/get-per-components';
 
 class PreparednessSummary extends React.Component {
   constructor (props) {

@@ -5,11 +5,11 @@ import { Link, Redirect } from 'react-router-dom';
 import c from 'classnames';
 import { Helmet } from 'react-helmet';
 
-import { getAuthToken } from '../actions';
-import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
+import { getAuthToken } from '#actions';
+import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 
 import App from './app';
-import { FormInput } from '../components/form-elements/';
+import { FormInput } from '#components/form-elements/';
 
 class Login extends React.Component {
   constructor (props) {

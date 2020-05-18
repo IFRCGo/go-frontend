@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { getCountryOverview as getCountryOverviewAction } from '../../actions';
-import { countryOverviewSelector } from '../../selectors';
+import { getCountryOverview as getCountryOverviewAction } from '#actions';
+import { countryOverviewSelector } from '#selectors';
 
-import { countryIsoMapById } from '../../utils/field-report-constants';
+import { countryIsoMapById } from '#utils/field-report-constants';
 
 import KeyIndicators from './KeyIndicators';
 import NSIndicators from './NSIndicators';
