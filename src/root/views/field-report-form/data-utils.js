@@ -216,6 +216,7 @@ export function convertStateToPayload (originalState) {
   // Boolean values
   state.request_assistance = Boolean(originalState.assistance === 'true');
   state.ns_request_assistance = Boolean(originalState.nsAssistance === 'true');
+  state.is_covid_report = Boolean(originalState.isCovidReport === 'true');
   // For these properties when the source is the Red Cross use the provided,
   // when it's Government prepend gov_. This results in:
   // num_injured | gov_num_injured
@@ -348,7 +349,7 @@ export function getInitialDataState () {
   return {
     // Step 1
     summary: undefined,
-    isCovidReport: false,
+    isCovidReport: undefined,
     // Countries follows the structure defined by react-select.
     // Will need to be converted.
     country: undefined,
@@ -501,6 +502,7 @@ export function convertFieldReportToState (fieldReport, stateData) {
   // Boolean values
   state.assistance = fieldReport.request_assistance !== null ? fieldReport.request_assistance.toString() : state.assistance;
   state.nsAssistance = fieldReport.ns_request_assistance !== null ? fieldReport.ns_request_assistance.toString() : state.nsAssistance;
+  state.isCovidReport = fieldReport.is_covid_report !== null ? fieldReport.is_covid_report.toString() : state.isCovidReport;
 
   // For these properties when the source is the Red Cross use the provided,
   // when it's Government starts with gov_. This results in:
