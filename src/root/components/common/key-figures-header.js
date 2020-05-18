@@ -1,11 +1,11 @@
 import React from 'react';
 // import c from 'classnames';
-import { percent, shortenLargeNumber } from '../../utils/format';
-import BlockLoading from '../block-loading';
-import { environment } from '../../config';
+import { percent, shortenLargeNumber } from '#utils/format';
+import BlockLoading from '#components/block-loading';
+import { environment } from '#root/config';
 import { PropTypes as T } from 'prop-types';
-import Tooltip from './tooltip';
-import FullscreenHeader from './fullscreen-header';
+import Tooltip from '#components/common/tooltip';
+import FullscreenHeader from '#components/common/fullscreen-header';
 
 // Provides titles to associate with incoming stats
 // The explicit reference of these and the tooltip values could

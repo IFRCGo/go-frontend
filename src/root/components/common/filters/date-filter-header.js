@@ -1,8 +1,8 @@
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
-import { environment } from '../../../config';
+import { environment } from '#root/config';
 
-import Dropdown from '../dropdown';
+import Dropdown from '#components/common/dropdown';
 
 export default class DateFilterHeader extends React.PureComponent {
   constructor () {

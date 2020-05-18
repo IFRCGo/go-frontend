@@ -8,7 +8,7 @@ import _cloneDeep from 'lodash.clonedeep';
 
 import { getCountryIsoFromVt } from '../../utils/utils';
 import { source } from '../../utils/get-new-map';
-import { environment } from '../../config';
+import { environment } from '#root/config';
 import MapComponent from './common/map-component';
 // Commented when temporarily disabled the FormSelect filter, see ¤ below
 // import {

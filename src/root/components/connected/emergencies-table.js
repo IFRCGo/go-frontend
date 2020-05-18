@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { environment } from '../../config';
-import { getEmergenciesList } from '../../actions';
+import { environment } from '#root/config';
+import { getEmergenciesList } from '#actions';
 import {
   nope,
   commaSeparatedNumber as n,

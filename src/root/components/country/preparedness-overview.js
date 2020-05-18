@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { environment } from '../../config';
+import { environment } from '#root/config';
 import { PropTypes as T } from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';

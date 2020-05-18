@@ -10,7 +10,7 @@ import Ajv from 'ajv';
 import ajvKeywords from 'ajv-keywords';
 import ToggleButton from 'react-toggle-button';
 
-import { environment } from '../../config';
+import { environment } from '#root/config';
 import {
   step1 as schemaStep1,
   step2 as schemaStep2,

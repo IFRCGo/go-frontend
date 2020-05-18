@@ -12,6 +12,7 @@ module.exports = {
           "#config": "./src/config",
           "#hooks": "./src/root/hooks",
           "#lang": "./src/lang",
+          "#root": "./src/root",
           "#selectors": "./src/root/selectors",
           "#utils": "./src/root/utils",
           "#views": "./src/root/views",
