@@ -1217,4 +1217,5 @@ export default {
   passwordChangeHeading: 'Change my password',
 
   perPageTitle: 'IFRC Go - PER',
+  countryOverviewTab: 'Country Overview',
 };

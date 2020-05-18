@@ -1,9 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import _cs from 'classnames';
 
 import { getCountryOverview as getCountryOverviewAction } from '#actions';
 import { countryOverviewSelector } from '#selectors';
 
+import BlockLoading from '#components/block-loading';
 import { countryIsoMapById } from '#utils/field-report-constants';
 
 import KeyIndicators from './KeyIndicators';
@@ -18,6 +20,8 @@ import PastEpidemics from './PastEpidemics';
 import SeasonalCalendar from './SeasonalCalendar';
 import InformIndicators from './InformIndicators';
 import Translate from '#components/Translate';
+
+import styles from './styles.module.scss';
 
 class CountryOverview extends React.PureComponent {
   componentDidMount () {
@@ -39,19 +43,28 @@ class CountryOverview extends React.PureComponent {
     const {
       countryOverview,
       countryId,
+      className,
     } = this.props;
 
     const {
       data,
-      fetched,
+      fetching,
     } = countryOverview;
 
-    if (!fetched || Object.keys(data).length === 0) {
-      return null;
+    if (fetching) {
+      return <BlockLoading />;
+    }
+
+    if (Object.keys(data).length === 0) {
+      return (
+        <div className={_cs(styles.countryOverview, className)}>
+          Not enough data to show the overview
+        </div>
+      );
     }
 
     return (
-      <div className='country-overview'>
+      <div className={_cs(styles.countryOverview, className)}>
         <div className='top-section'>
           <KeyIndicators
             className='key-indicators'

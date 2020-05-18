@@ -72,7 +72,7 @@ import { NO_DATA } from '#utils/constants';
 import { getISO3 } from '#utils/country-iso';
 
 import ThreeW from './ThreeW';
-// import CountryOverview from './CountryOverview';
+import CountryOverview from './CountryOverview';
 
 const emptyObject = {};
 
@@ -173,7 +173,10 @@ class AdminArea extends SFPComponent {
         title: strings.country3WTab,
         hash: '#3w'
       },
-      // { title: 'Country Overview', hash: '#overview' },
+      {
+        title: strings.countryOverviewTab,
+        hash: '#overview',
+      },
       {
         title: strings.countryPreparednessTab,
         hash: '#preparedness'
@@ -703,7 +706,6 @@ class AdminArea extends SFPComponent {
                   <ThreeW countryId={getCountryId(this.props.match.params.id)} />
                 </TabContent>
               </TabPanel>
-              {/*
               <TabPanel>
                 <TabContent title='Overview'>
                   <CountryOverview
@@ -712,7 +714,6 @@ class AdminArea extends SFPComponent {
                   />
                 </TabContent>
               </TabPanel>
-              */}
               <TabPanel>
                 <TabContent showError={true} isError={!this.isPerPermission()} errorMessage={strings.accountPerPermission} title={strings.countryPreparednessTitle}>
                   {this.props.getPerNsPhase.fetched && this.props.perOverviewForm.fetched ? (
