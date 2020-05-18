@@ -222,8 +222,15 @@ class FieldReport extends React.Component {
               <dd>{n(get(data, 'num_localstaff'))}</dd>
               <dt>Volunteers: </dt>
               <dd>{n(get(data, 'num_volunteers'))}</dd>
-              <dt>Delegates: </dt>
-              <dd>{n(get(data, 'num_expats_delegates'))}</dd>
+              { !data.is_covid_report
+                ? (
+                  <React.Fragment>
+                    <dt>Delegates: </dt>
+                    <dd>{n(get(data, 'num_expats_delegates'))}</dd>
+                  </React.Fragment>
+                )
+                : null
+              }
             </dl>
           </React.Fragment>
         ) : (
