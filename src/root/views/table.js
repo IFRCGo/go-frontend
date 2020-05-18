@@ -4,18 +4,18 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import qs from 'qs';
 
-import { environment } from '../config';
-import { regions } from '../utils/region-constants';
-import { getCountryMeta } from '../utils/get-country-meta';
-import { get } from '../utils/utils';
+import { environment } from '#config';
+import { regions } from '#utils/region-constants';
+import { getCountryMeta } from '#utils/get-country-meta';
+import { get } from '#utils/utils';
 
 import App from './app';
-import EmergenciesTable from '../components/connected/emergencies-table';
-import FieldReportsTable from '../components/connected/field-reports-table';
-import AppealsTable from '../components/connected/appeals-table';
-import AlertsTable from '../components/connected/alerts-table';
-import EruTable from '../components/connected/eru-table';
-import PersonnelTable from '../components/connected/personnel-table';
+import EmergenciesTable from '#components/connected/emergencies-table';
+import FieldReportsTable from '#components/connected/field-reports-table';
+import AppealsTable from '#components/connected/appeals-table';
+import AlertsTable from '#components/connected/alerts-table';
+import EruTable from '#components/connected/eru-table';
+import PersonnelTable from '#components/connected/personnel-table';
 
 const displayTypes = {
   report: 'Field Reports',

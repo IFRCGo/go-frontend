@@ -1,5 +1,5 @@
 import React from 'react';
-import Backdrop from '../../components/backdrop';
+import Backdrop from '#components/backdrop';
 import _cs from 'classnames';
 
 import ProjectForm from './project-form';

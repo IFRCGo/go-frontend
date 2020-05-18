@@ -3,10 +3,10 @@ import _toNumber from 'lodash.tonumber';
 import _undefined from 'lodash.isundefined';
 import { DateTime } from 'luxon';
 
-import { api } from '../../config';
-import { get } from '../../utils/utils';
-import { request } from '../../utils/network';
-import * as formData from '../../utils/field-report-constants';
+import { api } from '#config';
+import { get } from '#utils/utils';
+import { request } from '#utils/network';
+import * as formData from '#utils/field-report-constants';
 
 export function dataPathToDisplay (path, keyword) {
   // Remove first . and any array ref.

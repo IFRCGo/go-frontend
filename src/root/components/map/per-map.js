@@ -10,7 +10,7 @@ import { environment } from '#root/config';
 import BlockLoading from '../block-loading';
 import MapComponent from './common/map-component';
 import OperationsPopover from './per-map/operations-popover';
-import { get } from '../../utils/utils';
+import { get } from '#utils/utils';
 // import ExplanationBubble from './home-map/explanation-bubble';
 // import { filtering } from './home-map/filtering/filtering-processor';
 // import { AppealTypeComparator } from './home-map/filtering/comparator/appeal-type-comparator';

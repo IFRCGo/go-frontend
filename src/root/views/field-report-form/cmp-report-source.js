@@ -5,7 +5,7 @@ import { environment } from '#root/config';
 import {
   FormInput,
   FormCheckbox
-} from '../../components/form-elements/';
+} from '#components/form-elements/';
 
 export default class ReportSource extends React.Component {
   constructor (props) {

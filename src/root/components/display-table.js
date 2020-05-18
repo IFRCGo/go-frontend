@@ -3,7 +3,7 @@ import { PropTypes as T } from 'prop-types';
 import ReactPaginate from 'react-paginate';
 import c from 'classnames';
 
-import { environment } from '../config';
+import { environment } from '#config';
 
 import Dropdown from './common/dropdown';
 

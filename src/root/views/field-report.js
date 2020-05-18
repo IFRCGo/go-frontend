@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import { Helmet } from 'react-helmet';
 
-import { environment } from '../config';
-import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
-import { getFieldReportById } from '../actions';
+import { environment } from '#config';
+import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
+import { getFieldReportById } from '#actions';
 import {
   commaSeparatedNumber as n,
   separateUppercaseWords as separate,
@@ -15,9 +15,9 @@ import {
   getResponseStatus,
   intersperse,
   yesno
-} from '../utils/format';
-import { get } from '../utils/utils';
-import { epiSources } from '../utils/field-report-constants';
+} from '#utils/format';
+import { get } from '#utils/utils';
+import { epiSources } from '#utils/field-report-constants';
 
 import App from './app';
 

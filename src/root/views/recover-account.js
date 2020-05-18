@@ -4,15 +4,15 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Helmet } from 'react-helmet';
 
-import { environment } from '../config';
+import { environment } from '#config';
 
 import App from './app';
-import { recoverPassword } from '../actions';
-import { FormInput, FormError } from '../components/form-elements/';
-import { isValidEmail } from '../utils/utils';
-import { showAlert } from '../components/system-alerts';
-import NewPassword from '../components/connected/new-password';
-import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
+import { recoverPassword } from '#actions';
+import { FormInput, FormError } from '#components/form-elements/';
+import { isValidEmail } from '#utils/utils';
+import { showAlert } from '#components/system-alerts';
+import NewPassword from '#components/connected/new-password';
+import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 
 class RecoverAccount extends React.Component {
   constructor (props) {

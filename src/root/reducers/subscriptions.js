@@ -1,6 +1,6 @@
-import { stateInflight, stateError, stateSuccess } from '../utils/reducer-utils';
+import { stateInflight, stateError, stateSuccess } from '#utils/reducer-utils';
 import { combineReducers } from 'redux';
-import { DEL_SUBSCRIPTION } from './../actions';
+import { DEL_SUBSCRIPTION } from '#actions';
 
 const initialState = {
   fetching: false,

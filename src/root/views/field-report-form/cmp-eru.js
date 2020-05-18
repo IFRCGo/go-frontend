@@ -5,13 +5,13 @@ import _cloneDeep from 'lodash.clonedeep';
 import c from 'classnames';
 
 import { environment } from '#root/config';
-import * as formData from '../../utils/field-report-constants';
+import * as formData from '#utils/field-report-constants';
 import {
   FormInput,
   FormRadioGroup,
   FormSelect,
   FormError
-} from '../../components/form-elements/';
+} from '#components/form-elements/';
 
 export default class Eru extends React.Component {
   onFieldChange (field, e) {

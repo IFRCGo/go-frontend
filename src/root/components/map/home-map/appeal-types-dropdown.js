@@ -1,8 +1,8 @@
 
 import React from 'react';
-import { appealTypeOptions } from './../../../utils/appeal-type-constants';
+import { appealTypeOptions } from '#utils/appeal-type-constants';
 import { PropTypes as T } from 'prop-types';
-import { environment } from '../../../config';
+import { environment } from '#config';
 
 class AppealTypesDropdown extends React.Component {
   render () {

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import App from './app';
-import PresentationDash from '../components/connected/presentation-dash';
-import AlertsTable from '../components/connected/alerts-table';
-import HighlightedOperations from '../components/highlighted-operations';
+import PresentationDash from '#components/connected/presentation-dash';
+import AlertsTable from '#components/connected/alerts-table';
+import HighlightedOperations from '#components/highlighted-operations';
 
 class Home extends React.Component {
   render () {

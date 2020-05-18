@@ -5,8 +5,8 @@ import { environment } from '#root/config';
 
 import {
   FormTextarea
-} from '../../components/form-elements/';
-import FormCheckboxGroupActions from '../../components/form-elements/checkbox-group-actions';
+} from '#components/form-elements/';
+import FormCheckboxGroupActions from '#components/form-elements/checkbox-group-actions';
 
 export default class ActionsCheckboxes extends React.Component {
   constructor (props) {

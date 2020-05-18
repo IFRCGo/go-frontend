@@ -1,6 +1,6 @@
 import React from 'react';
 import App from './app';
-import NewPassword from '../components/connected/new-password';
+import NewPassword from '#components/connected/new-password';
 import { Helmet } from 'react-helmet';
 
 class PasswordChange extends React.Component {

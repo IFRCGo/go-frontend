@@ -8,7 +8,7 @@ import { environment } from '#root/config';
 import BlockLoading from '../block-loading';
 import MapComponent from './common/map-component';
 import OperationsPopover from './home-map/operations-popover';
-import { get } from '../../utils/utils';
+import { get } from '#utils/utils';
 import ExplanationBubble from './home-map/explanation-bubble';
 import EmergencyTypesDropdown from './home-map/emergency-types-dropdown';
 import AppealTypesDropdown from './home-map/appeal-types-dropdown';

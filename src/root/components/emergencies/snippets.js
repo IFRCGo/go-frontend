@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { get } from '../../utils/utils';
+import { get } from '#utils/utils';
 import Fold from '../fold';
 import TabContent from '../tab-content';
-import { NO_DATA } from '../../utils/constants';
+import { NO_DATA } from '#utils/constants';
 
-import { getEventSnippets } from '../../actions/';
+import { getEventSnippets } from '#actions/';
 
 class Snippets extends Component {
   componentDidMount () {

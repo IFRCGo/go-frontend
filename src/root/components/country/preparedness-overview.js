@@ -4,7 +4,7 @@ import { environment } from '#root/config';
 import { PropTypes as T } from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getPerProcessType } from './../../utils/get-per-process-type';
+import { getPerProcessType } from '#utils/get-per-process-type';
 import Fold from './../fold';
 
 class PreparednessOverview extends React.Component {

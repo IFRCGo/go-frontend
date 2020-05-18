@@ -5,8 +5,8 @@ import _cloneDeep from 'lodash.clonedeep';
 import { DateTime } from 'luxon';
 import { Link } from 'react-router-dom';
 
-import { commaSeparatedNumber as n } from '../../utils/format';
-import eruTypes, { getEruType } from '../../utils/eru-types';
+import { commaSeparatedNumber as n } from '#utils/format';
+import eruTypes, { getEruType } from '#utils/eru-types';
 import { environment } from '#root/config';
 
 import CheckboxGroup from '../form-elements/checkbox-group';

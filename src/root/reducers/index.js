@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 
-import { systemAlertsReducer } from '../components/system-alerts';
-import { createReducer } from '../utils/reducer-utils';
+import { systemAlertsReducer } from '#components/system-alerts';
+import { createReducer } from '#utils/reducer-utils';
 
 import user from './user';
 import profile from './profile';

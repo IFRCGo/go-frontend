@@ -1,4 +1,4 @@
-import * as formData from '../utils/field-report-constants';
+import * as formData from '#utils/field-report-constants';
 
 const getValidValues = (arr, key) => arr.map(o => o[key]).filter(o => o !== '');
 

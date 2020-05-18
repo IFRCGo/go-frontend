@@ -9,8 +9,8 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import { Helmet } from 'react-helmet';
 
-import { api, environment } from '../config';
-import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
+import { api, environment } from '#config';
+import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 import {
   getEventById,
   getEventSnippets,
@@ -20,7 +20,7 @@ import {
   addSubscriptions,
   delSubscription,
   getUserProfile
-} from '../actions';
+} from '#actions';
 import {
   commaSeparatedNumber as n,
   separateUppercaseWords as separate,
@@ -28,25 +28,25 @@ import {
   isoDate,
   timestamp,
   noSummary
-} from '../utils/format';
+} from '#utils/format';
 import {
   get,
   mostRecentReport,
   getRecordsByType
-} from '../utils/utils';
+} from '#utils/utils';
 
 import App from './app';
-import Fold from '../components/fold';
-import TabContent from '../components/tab-content';
-import ErrorPanel from '../components/error-panel';
-import Expandable from '../components/expandable';
-import Snippets from '../components/emergencies/snippets';
-import SurgeAlertsTable from '../components/connected/alerts-table';
-import PersonnelTable from '../components/connected/personnel-table';
-import EruTable from '../components/connected/eru-table';
-import EmergencyMap from '../components/map/emergency-map';
-import { NO_DATA } from '../utils/constants';
-import { epiSources } from '../utils/field-report-constants';
+import Fold from '#components/fold';
+import TabContent from '#components/tab-content';
+import ErrorPanel from '#components/error-panel';
+import Expandable from '#components/expandable';
+import Snippets from '#components/emergencies/snippets';
+import SurgeAlertsTable from '#components/connected/alerts-table';
+import PersonnelTable from '#components/connected/personnel-table';
+import EruTable from '#components/connected/eru-table';
+import EmergencyMap from '#components/map/emergency-map';
+import { NO_DATA } from '#utils/constants';
+import { epiSources } from '#utils/field-report-constants';
 import ProjectFormModal from './ThreeW/project-form-modal';
 
 class Emergency extends React.Component {

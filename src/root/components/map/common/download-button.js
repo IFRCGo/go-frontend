@@ -1,9 +1,9 @@
 
 import React from 'react';
 import html2canvas from 'html2canvas';
-import { startDownload } from '../../../utils/download-starter';
+import { startDownload } from '#utils/download-starter';
 import { PropTypes as T } from 'prop-types';
-import { environment } from '../../../config';
+import { environment } from '#config';
 
 function svgToCanvas (targetElem) {
   const svgElem = targetElem.getElementsByTagName('svg');

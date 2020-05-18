@@ -11,25 +11,25 @@ import {
   isDefined,
 } from '@togglecorp/fujs';
 
-import BlockLoading from '../../components/block-loading';
+import BlockLoading from '#components/block-loading';
 
-import SelectInput from '../../components/form-elements/select-input';
-import TextInput from '../../components/form-elements/text-input';
-import NumberInput from '../../components/form-elements/number-input';
-import DateInput from '../../components/form-elements/date-input';
-import Checkbox from '../../components/form-elements/faram-checkbox';
-import TextOutput from '../../components/text-output';
+import SelectInput from '#components/form-elements/select-input';
+import TextInput from '#components/form-elements/text-input';
+import NumberInput from '#components/form-elements/number-input';
+import DateInput from '#components/form-elements/date-input';
+import Checkbox from '#components/form-elements/faram-checkbox';
+import TextOutput from '#components/text-output';
 
 import {
   getCountries,
   getDistrictsForCountryPF,
   getEventList,
   postProject,
-} from '../../actions';
+} from '#actions';
 
 import {
   disasterTypeList,
-} from '../../utils/field-report-constants';
+} from '#utils/field-report-constants';
 
 import {
   // statusList,
@@ -40,7 +40,7 @@ import {
   programmeTypeList,
   operationTypeList,
   projectVisibilityList,
-} from '../../utils/constants';
+} from '#utils/constants';
 
 const positiveIntegerCondition = (value) => {
   const ok = (value === undefined || value === '') || ((!Number.isNaN(value)) && (isFalsy(value) || isInteger(+value)) && (+value >= 0));

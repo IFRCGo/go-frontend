@@ -1,8 +1,8 @@
 
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
-import { environment } from '../../../config';
-import { processType } from './../../../utils/get-per-process-type';
+import { environment } from '#config';
+import { processType } from '#utils/get-per-process-type';
 
 const localProcessType = JSON.parse(JSON.stringify(processType));
 

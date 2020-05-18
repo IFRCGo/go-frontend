@@ -3,33 +3,33 @@ import { PropTypes as T } from 'prop-types';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
-import store from './utils/store';
-import { showAlert } from './components/system-alerts';
-import { detectIE } from './utils/ie';
+import store from '#utils/store';
+import { showAlert } from '#components/system-alerts';
+import { detectIE } from '#utils/ie';
 
 // Views.
-import Home from './views/home';
-import About from './views/about';
-import Account from './views/account';
-import PasswordChange from './views/password-change';
-import Login from './views/login';
-import Register from './views/register';
-import RecoverAccount from './views/recover-account';
-import RecoverUsername from './views/recover-username';
-import UhOh from './views/uhoh';
-import FieldReportForm from './views/field-report-form/';
-import FieldReport from './views/field-report';
-import Emergencies from './views/emergencies';
-import Emergency from './views/emergency';
-import Region from './views/region';
-import Country from './views/countries';
-import Deployments from './views/deployments';
-import Table from './views/table';
+import Home from '#views/home';
+import About from '#views/about';
+import Account from '#views/account';
+import PasswordChange from '#views/password-change';
+import Login from '#views/login';
+import Register from '#views/register';
+import RecoverAccount from '#views/recover-account';
+import RecoverUsername from '#views/recover-username';
+import UhOh from '#views/uhoh';
+import FieldReportForm from '#views/field-report-form/';
+import FieldReport from '#views/field-report';
+import Emergencies from '#views/emergencies';
+import Emergency from '#views/emergency';
+import Region from '#views/region';
+import Country from '#views/countries';
+import Deployments from '#views/deployments';
+import Table from '#views/table';
 
-import PerForms from './views/per-forms';
-import ViewPerForms from './views/view-per-forms';
-import EditPerForms from './views/edit-per-forms';
-import Preparedness from './views/preparedness';
+import PerForms from '#views/per-forms';
+import ViewPerForms from '#views/view-per-forms';
+import EditPerForms from '#views/edit-per-forms';
+import Preparedness from '#views/preparedness';
 
 require('isomorphic-fetch');
 
