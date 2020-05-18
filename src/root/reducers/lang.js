@@ -13,6 +13,7 @@ const initialState = {
       ...lang,
     },
     fr: {
+      ...lang,
       rcActivities: 'Activités de la Croix-Rouge et du Croissant-Rouge',
       langSelectLabel: 'Langue: {currentLanguage}',
       menuHome: 'Accueil',
@@ -21,6 +22,7 @@ const initialState = {
       menuPreparedness: 'Préparation',
     },
     es: {
+      ...lang,
       rcActivities: 'Actividades de la Cruz Roja / Media Luna Roja',
       langSelectLabel: 'Idioma: {currentLanguage}',
       menuHome: 'Casa',
@@ -29,6 +31,7 @@ const initialState = {
       menuPreparedness: 'Preparación',
     },
     ar: {
+      ...lang,
       rcActivities: 'أنشطة الصليب الأحمر والهلال الأحمر',
       langSelectLabel: 'لغة: {currentLanguage}',
       menuHome: 'الصفحة الرئيسية',
