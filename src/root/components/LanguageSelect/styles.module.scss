@@ -9,6 +9,7 @@
 .dropdown {
   z-index: 11111;
   padding: 0!important;
+  width: 160px;
 
   .language-button {
     background-color: transparent;
@@ -18,6 +19,7 @@
     padding: 6px 12px;
     outline: none;
     cursor: pointer;
+    text-align: left;
 
     &.active {
       background-color: $primary-color;
