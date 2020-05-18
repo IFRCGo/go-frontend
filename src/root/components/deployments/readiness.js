@@ -8,7 +8,6 @@ import { Link } from 'react-router-dom';
 import { commaSeparatedNumber as n } from '#utils/format';
 import eruTypes, { getEruType } from '#utils/eru-types';
 import { environment } from '#config';
-
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 
