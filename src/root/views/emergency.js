@@ -260,7 +260,12 @@ class Emergency extends React.Component {
             <li>Assisted<span className='content-highlight'>{n(numAssisted)}</span></li>
             <li>Local staff<span className='content-highlight'>{n(get(report, 'num_localstaff'))}</span></li>
             <li>Volunteers<span className='content-highlight'>{n(get(report, 'num_volunteers'))}</span></li>
-            <li>Delegates<span className='content-highlight'>{n(get(report, 'num_expats_delegates'))}</span></li>
+            { !isCOVID
+              ? (
+                <li>Delegates<span className='content-highlight'>{n(get(report, 'num_expats_delegates'))}</span></li>
+              )
+              : null
+            }
           </ul>
         </div>
       </div>
