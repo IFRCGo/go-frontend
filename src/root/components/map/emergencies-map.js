@@ -5,7 +5,7 @@ import mapboxgl from 'mapbox-gl';
 import { withRouter } from 'react-router-dom';
 
 import { source } from '../../utils/get-new-map';
-import { environment } from '../../config';
+import { environment } from '#root/config';
 import {
   FormRadioGroup
 } from '../form-elements';

@@ -5,7 +5,7 @@ import { PropTypes as T } from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import mapboxgl from 'mapbox-gl';
 import chroma from 'chroma-js';
-import { environment } from '../../config';
+import { environment } from '#root/config';
 import BlockLoading from '../block-loading';
 import MapComponent from './common/map-component';
 import OperationsPopover from './home-map/operations-popover';

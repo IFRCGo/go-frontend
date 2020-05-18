@@ -1,9 +1,9 @@
-import { fetchJSON } from '../utils/network';
+import { fetchJSON } from '#utils/network';
 import { stringify as buildAPIQS } from 'qs';
 
-import { getCountryMeta } from '../utils/get-country-meta';
-import getCode from '../utils/fdrs-codes';
-import { fdrsAuth } from '../config';
+import { getCountryMeta } from '#utils/get-country-meta';
+import getCode from '#utils/fdrs-codes';
+import { fdrsAuth } from '#root/config';
 
 // Properties to query from the FDRS API
 const fdrsProps = [

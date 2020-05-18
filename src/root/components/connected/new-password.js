@@ -7,14 +7,14 @@ import _cloneDeep from 'lodash.clonedeep';
 import Ajv from 'ajv';
 import ajvKeywords from 'ajv-keywords';
 
-import { environment } from '../../config';
+import { environment } from '#root/config';
 
-import { validateAndUpdatePassword } from '../../actions';
-import { get } from '../../utils/utils';
-import schemaDef from '../../schemas/new-password';
-import { FormInput, FormError } from '../../components/form-elements/';
-import { showAlert } from '../../components/system-alerts';
-import { showGlobalLoading, hideGlobalLoading } from '../../components/global-loading';
+import { validateAndUpdatePassword } from '#actions';
+import { get } from '#utils/utils';
+import schemaDef from '#root/schemas/new-password';
+import { FormInput, FormError } from '#components/form-elements/';
+import { showAlert } from '#components/system-alerts';
+import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 
 const ajv = new Ajv({ $data: true, allErrors: true, errorDataPath: 'property' });
 ajvKeywords(ajv);
