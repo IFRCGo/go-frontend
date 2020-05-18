@@ -4,6 +4,8 @@ import Select from 'react-select';
 import { Link, withRouter } from 'react-router-dom';
 
 import LanguageSelect from '#components/LanguageSelect';
+import Translate from '#components/Translate';
+
 import { api, environment } from '../config';
 import { request } from '../utils/network';
 import { uppercaseFirstLetter as u, isoDate } from '../utils/format';
@@ -113,11 +115,11 @@ class Header extends React.PureComponent {
           <div className='inner'>
             <nav className='page__prime-nav' role='navigation'>
               <ul className='nav-global-menu'>
-                <li><Link to='/' title='Visit Home page' className={this.props.match.path === '/' ? 'navbar-highlighted' : null}><span>Home</span></Link></li>
+                <li><Link to='/' title='Visit Home page' className={this.props.match.path === '/' ? 'navbar-highlighted' : null}><Translate stringId='menuHome' /></Link></li>
                 <li><HeaderRegionButton id='regions-menu' currentPath={this.props.match} /></li>
-                <li><Link to='/emergencies' title='Visit emergencies page' className={this.props.match.path.includes('/emergencies') ? 'navbar-highlighted' : null}><span>Emergencies</span></Link></li>
-                <li><Link to='/deployments' title='Visit Deployments page' className={this.props.match.path.includes('/deployments') ? 'navbar-highlighted' : null}><span>Deployments</span></Link></li>
-                <li><Link to='/preparedness' title='Visit Preparedness page' className={this.props.match.path.includes('/preparedness') ? 'navbar-highlighted' : null}><span>Preparedness</span></Link></li>
+                <li><Link to='/emergencies' title='Visit emergencies page' className={this.props.match.path.includes('/emergencies') ? 'navbar-highlighted' : null}><Translate stringId="menuEmergencies" /></Link></li>
+                <li><Link to='/deployments' title='Visit Deployments page' className={this.props.match.path.includes('/deployments') ? 'navbar-highlighted' : null}><Translate stringId="menuDeployments" /></Link></li>
+                <li><Link to='/preparedness' title='Visit Preparedness page' className={this.props.match.path.includes('/preparedness') ? 'navbar-highlighted' : null}><Translate stringId="menuPreparedness" /></Link></li>
               </ul>
             </nav>
             <div className='nav-global-search'>
