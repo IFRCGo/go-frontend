@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 
 import { source } from '#utils/get-new-map';
 import { environment } from '#config';
+import { source } from '../../utils/get-new-map';
 import {
   FormRadioGroup
 } from '../form-elements';
