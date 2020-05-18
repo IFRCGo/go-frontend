@@ -652,5 +652,8 @@ export function getPerMission () {
 
 export const GET_DOMAIN_WHITELIST = 'GET_DOMAIN_WHITELIST';
 export function getDomainWhitelist () {
-  return fetchJSON('/api/v2/domainwhitelist/', GET_DOMAIN_WHITELIST, withToken());
+  const f = buildAPIQS({
+    limit: 9999
+  });
+  return fetchJSON(`/api/v2/domainwhitelist/?${f}`, GET_DOMAIN_WHITELIST, withToken());
 }
