@@ -3,6 +3,7 @@ import { PropTypes as T } from 'prop-types';
 
 import { environment } from '#config';
 import { commaSeparatedNumber as n } from '#utils/format';
+import { commaSeparatedNumber as n } from '../../utils/format';
 
 export default class EmergenciesStats extends React.Component {
   render () {
