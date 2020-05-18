@@ -7,6 +7,9 @@ import BreadCrumb from '#components/breadcrumb';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
+
 export default class About extends React.Component {
   render () {
     const { strings } = this.context;

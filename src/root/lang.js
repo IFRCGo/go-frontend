@@ -22,6 +22,11 @@ export default {
   headerMenuPreparednessTooltip: 'Visit Preparedness page',
   headerSearchPlaceholder: 'Search',
 
+  menuHome: 'Home',
+  menuEmergencies: 'Emergencies',
+  menuDeployments: 'Deployments',
+  menuPreparedness: 'Preparedness',
+
   aboutTitle: 'IFRC Go - About',
   aboutResources: 'Resources',
   aboutDescription: 'GO is a Red Cross Red Crescent platform to connect information on emergency needs with the right response.',
