@@ -14,12 +14,15 @@ import {
 
 import languageContext from '#root/languageContext';
 import DropdownMenu from '#components/dropdown-menu';
+import Translate from '#components/Translate';
 
 import styles from './styles.module.scss';
 
 const languageOptions = {
   en: 'English',
   fr: 'French',
+  es: 'Spanish',
+  ar: 'Arabic',
 };
 
 function LanguageButton(p) {
@@ -72,7 +75,11 @@ function LanguageSelect(p) {
           className={styles.dropdownMenuLabel}
           title={languageOptions[currentLanguage]}
         >
-          lang: {currentLanguage} <IoMdArrowDropdown />
+          <Translate
+            stringId="langSelectLabel"
+            params={{ currentLanguage }}
+          />
+          <IoMdArrowDropdown />
         </div>
       }
       dropdownContainerClassName={styles.dropdown}
