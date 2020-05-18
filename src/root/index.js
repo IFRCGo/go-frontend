@@ -7,6 +7,7 @@ import store from '#utils/store';
 import { showAlert } from '#components/system-alerts';
 import { detectIE } from '#utils/ie';
 
+// Views.
 import Home from '#views/home';
 import About from '#views/about';
 import Account from '#views/account';
