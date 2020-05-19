@@ -1,0 +1,16 @@
+.breadcrumb__block {
+    margin: 0 ($global-spacing * 3);
+}
+
+.breadcrumb {
+  font-size: $font-size-xs;
+  padding: ($global-spacing/2);
+  display: inline-block;
+}
+
+.breadcrumb__next {
+  vertical-align: middle;
+  font-size: 8px;
+}
+
+

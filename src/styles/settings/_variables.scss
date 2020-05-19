@@ -1,0 +1,123 @@
+/* ==========================================================================
+   Variables
+   ========================================================================== */
+
+/* Colors
+   ========================================================================== */
+
+$base-color: #000000;                                   // Dark green
+$primary-color: #f5333f;                                // Red
+$secondary-color: #011e41;                              // Blue // Previously 24334c
+$secondary-color-light: #C9D2E3;
+
+$map-color: #23324D;                       // Blue light
+$grey-slate: rgba(45, 70, 98, 0.6);
+$grey-mist: #faf9f9; 									                  // Previously fafafa;
+$grey-fog: #f3f2f3;
+$grey-cloud: #c9c3c1;
+$grey-titanium: #eaeaea;
+$grey-pearl: #d1d1d1;
+$grey-silver: #848484;
+$grey-cement: #505050;
+$grey-gravel: #494949;
+
+/* State colors */
+
+$danger-color: $primary-color;                          // Red
+$success-color: #009896;                                // Turquoise
+$warning-color: #f39c12;                                // Yellow
+$info-color: $secondary-color;                          // Blue
+$light-base-color: #666666;;
+
+/* Helper colors */
+
+$link-color: $primary-color;
+$base-alpha-color: rgba($base-color, 0.10);
+
+
+/* Typography
+   ========================================================================== */
+
+$root-font-size: 16px;
+
+$base-font-color: $base-color;
+$base-font-family: "Poppins", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$base-font-style: normal;
+$base-font-light: 300;
+$base-font-regular: 400;
+$base-font-medium: 500;
+$base-font-semi-bold: 600;
+$base-font-bold: 700;
+$base-font-weight: $base-font-light;
+$base-line-height: 1.5;
+
+$base-font-size: 0.875rem;
+$font-size-xxs: 0.6rem;
+$font-size-xs: 0.695rem;
+$font-size-sm: 0.775rem;
+$font-size-lg: 0.95;
+$font-size-xl: 1.05rem;
+$font-size-xxl: 1.15rem;
+
+$code-font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+
+$letter-spacing-sm: 0.6px;
+
+$heading-font-family: "Poppins", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$heading-font-light: 300;
+$heading-font-regular: 500;
+$heading-font-bold: 700;
+$heading-font-weight: $base-font-semi-bold;
+
+
+/* Decoration
+   ========================================================================== */
+
+/* Border radius */
+
+$base-border-radius: 0.25rem;
+$full-border-radius: 100vh;
+$input-rounded-radius: 1.8rem;
+
+$base-border-color: rgba(#000, 0.1);
+$base-border-width: 1px;
+
+
+/* Box shadow */
+
+$base-box-shadow: 1px 2px 6px 1px $base-alpha-color;
+
+
+/* Sizing, spacing and media queries
+   ========================================================================== */
+
+/* Sizing */
+
+$page-header-y: 0 !default;
+
+/* Spacing */
+
+$global-spacing: 1rem;
+$global-spacing-2: 1.5rem;
+$global-spacing-3: 2rem;
+
+/* Rows */
+
+$row-min-width: 320px;
+$row-max-width: 1420px;
+$jeet-max-width: $row-max-width; // reset jeet.gs max width
+
+/* Media queries */
+
+$xsmall-range: (0, 543px);
+$small-range: (544px, 767px);
+$medium-range: (768px, 991px);
+$large-range: (992px, 1419px);
+$xlarge-range: (1420px, 1600px);
+$xxlarge-range: (1601px, 3000px);
+
+$screen: "only screen";
+
+$media-xsmall: 544px;
+$media-small: 768px;
+$media-medium: 992px;
