@@ -171,7 +171,14 @@ export function isValidEmail (email) {
 }
 
 export function isWhitelistedEmail (email, whitelistedDomains) {
-  return isValidEmail(email) && whitelistedDomains.find(o => email.indexOf(`@${o}`) !== -1);
+  if (!isValidEmail(email)) {
+    return false;
+  }
+
+  // Looking for an EXACT match in the domain whitelist
+  // (it finds even if UPPERCASE letters were used)
+  const userMailDomain = email.substring(email.lastIndexOf("@") +1);
+  return whitelistedDomains.find(dom => dom === userMailDomain);
 }
 
 export function finishedFetch (curr, next, prop) {
