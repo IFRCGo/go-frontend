@@ -104,4 +104,7 @@ export default {
   emergencyTitle: 'IFRC Go - Emergencies',
   emergencyTableTitle: 'Emergencies in the last 30 days',
   fieldReportsTableTitle: 'Field Reports in the last 30 days',
+  preparednessTitle: 'IFRC Go - Global Preparedness',
+  preparednessHeading: 'Preparedness for Effective Response (PER)',
+  preparednessDescription: 'To enable National Societies to fulfil their auxiliary role, in line with the Red Cross and Red Crescent Fundamental Principles, by strengthening local preparedness capacities to ensure timely and effective humanitarian assistance to prevent and alleviate human suffering.',
 };
