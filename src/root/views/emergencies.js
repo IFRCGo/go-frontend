@@ -13,6 +13,8 @@ import EmergenciesTable from '#components/connected/emergencies-table';
 import { getLastMonthsEmergencies, getAggregateEmergencies } from '#actions';
 import { environment } from '#config';
 
+import LanguageContext from '#root/languageContext';
+
 class Emergencies extends React.Component {
   componentDidMount () {
     this.props._getLastMonthsEmergencies();
@@ -20,10 +22,13 @@ class Emergencies extends React.Component {
   }
 
   render () {
+    const { strings } = this.context;
     return (
       <App className='page--emergencies'>
         <Helmet>
-          <title>IFRC Go - Emergencies</title>
+          <title>
+            {strings.emergencyTitle}
+          </title>
         </Helmet>
         <section className='inpage'>
           <BreadCrumb crumbs={[{link: '/emergencies', name: 'Emergencies'}, {link: '/', name: 'Home'}]} />
@@ -31,7 +36,7 @@ class Emergencies extends React.Component {
           <div className='inpage__body'>
             <div className='inner'>
               <EmergenciesTable
-                title='Emergencies in the last 30 days'
+                title={strings.emergencyTableTitle}
                 limit={10}
                 viewAll={'/emergencies/all'}
                 showRecent={true}
@@ -39,7 +44,7 @@ class Emergencies extends React.Component {
             </div>
             <div className='inner'>
               <FieldReportsTable
-                title='Field Reports in the last 30 days'
+                title={strings.fieldReportsTableTitle}
                 viewAll={'/reports/all'}
                 showRecent={true}
               />
@@ -73,4 +78,5 @@ const dispatcher = (dispatch) => ({
   _getLastMonthsEmergencies: () => dispatch(getLastMonthsEmergencies())
 });
 
+Emergencies.contextType = LanguageContext;
 export default connect(selector, dispatcher)(Emergencies);
