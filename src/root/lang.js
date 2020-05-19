@@ -85,6 +85,7 @@ export default {
   registerAccountPresent: 'Already have an account?',
   registerGotoLogin: 'Go to login page',
   registerLogin: 'Log in.',
+
   loginTitle: 'IFRC Go - Login',
   loginHeader: 'Login',
   loginUsername: 'Username',
@@ -100,4 +101,7 @@ export default {
   loginCreateAccountTitle: 'Create new account',
   loginSignUp: 'Sign Up.',
 
+  emergencyTitle: 'IFRC Go - Emergencies',
+  emergencyTableTitle: 'Emergencies in the last 30 days',
+  fieldReportsTableTitle: 'Field Reports in the last 30 days',
 };
