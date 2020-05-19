@@ -1,8 +1,9 @@
 import React from 'react';
 import _cs from 'classnames';
+import { isDefined } from '@togglecorp/fujs';
 
 import languageContext from '#root/languageContext';
-import { resolveToString } from '#utils/lang';
+import { resolveToComponent } from '#utils/lang';
 import styles from './styles.module.scss';
 
 function Translate(p) {
@@ -13,15 +14,20 @@ function Translate(p) {
     params,
   } = p;
 
-  const displayString = React.useMemo(() => {
+  const displayComponent = React.useMemo(() => {
     const string = strings[stringId];
-    const displayString = params ? resolveToString(string, params) : string;
-    return displayString;
+    const display = params ? resolveToComponent(string, params) : string;
+    return display;
   }, [stringId, params, strings]);
 
   return (
     <span className={_cs(styles.translate, className)}>
-      { displayString || `undefined ${stringId}` }
+      { displayComponent }
+      { !isDefined(displayComponent) && (
+        <React.Fragment>
+          undefined <b>{stringId}</b>
+        </React.Fragment>
+      )}
     </span>
   );
 }
