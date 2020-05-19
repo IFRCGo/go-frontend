@@ -4,7 +4,7 @@ import { PropTypes as T } from 'prop-types';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
 import { DateTime } from 'luxon';
 
-import { environment } from '#root/config';
+import { environment } from '#config';
 import Stats from '#components/emergencies/stats';
 import EmergenciesMap from '#components/map/emergencies-map';
 import Progress from '#components/progress';

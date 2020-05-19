@@ -4,7 +4,7 @@ import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import eruTypes, { getEruType } from '#utils/eru-types';
-import { environment } from '#root/config';
+import { environment } from '#config';
 import { getDeploymentERU } from '#actions';
 import { commaSeparatedNumber as n, nope } from '#utils/format';
 import { get } from '#utils/utils';

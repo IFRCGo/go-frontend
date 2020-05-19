@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { isMobileOnly } from 'react-device-detect';
-import { environment } from '#root/config';
+import { environment } from '#config';
 import { logoutUser } from '#actions';
 import Dropdown from '#components/common/dropdown';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
-import { environment } from '#root/config';
+import { environment } from '#config';
 import { get } from '#utils/utils';
 import { getFeaturedEmergencies, getFeaturedEmergenciesForRegion, getFeaturedEmergenciesDeployments, getDeploymentERU } from '#actions';
 import BlockLoading from '../block-loading';

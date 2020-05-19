@@ -1,6 +1,6 @@
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
-import { environment } from '#root/config';
+import { environment } from '#config';
 
 import Dropdown from '#components/common/dropdown';
 

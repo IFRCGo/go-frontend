@@ -1,5 +1,5 @@
 import React from 'react';
-import { environment } from '#root/config';
+import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 import InfoIcon from '#components/common/info-icon';
 import ReactTooltip from 'react-tooltip';

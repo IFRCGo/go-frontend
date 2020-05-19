@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 
-import { environment } from '#root/config';
+import { environment } from '#config';
 import { getAppealsList } from '#actions';
 import {
   enterFullscreen,

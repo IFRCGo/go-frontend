@@ -1,7 +1,7 @@
 
 import React from 'react';
 import c from 'classnames';
-import { environment } from '#root/config';
+import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 import RequestFactory from './factory/request-factory';
 const requestFactory = new RequestFactory();

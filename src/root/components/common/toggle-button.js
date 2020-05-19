@@ -1,7 +1,7 @@
 import React from 'react';
 import ToggleButton from 'react-toggle-button';
 import { PropTypes as T } from 'prop-types';
-import { environment } from '#root/config';
+import { environment } from '#config';
 
 const ToggleButtonComponent = ({ description, value, toggle }) => (
   <label className='toggle-button-group--horizontal'>

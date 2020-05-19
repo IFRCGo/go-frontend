@@ -1,6 +1,6 @@
 import React from 'react';
 import c from 'classnames';
-import { environment } from '#root/config';
+import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 import turfBbox from '@turf/bbox';
 import newMap from '#utils/get-new-map';

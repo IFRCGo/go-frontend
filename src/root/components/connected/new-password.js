@@ -7,7 +7,7 @@ import _cloneDeep from 'lodash.clonedeep';
 import Ajv from 'ajv';
 import ajvKeywords from 'ajv-keywords';
 
-import { environment } from '#root/config';
+import { environment } from '#config';
 
 import { validateAndUpdatePassword } from '#actions';
 import { get } from '#utils/utils';

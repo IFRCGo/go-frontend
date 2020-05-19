@@ -2,7 +2,7 @@ import React from 'react';
 // import c from 'classnames';
 import { percent, shortenLargeNumber } from '#utils/format';
 import BlockLoading from '#components/block-loading';
-import { environment } from '#root/config';
+import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 import Tooltip from '#components/common/tooltip';
 import FullscreenHeader from '#components/common/fullscreen-header';

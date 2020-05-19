@@ -4,7 +4,7 @@ import { PropTypes as T } from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { DateTime } from 'luxon';
 
-import { environment } from '#root/config';
+import { environment } from '#config';
 import { getFieldReportsList } from '#actions';
 import {
   recentInterval,
