@@ -9,7 +9,7 @@ import {
   nope,
   commaSeparatedNumber as n,
   isoDate,
-  // recentInterval,
+  recentInterval,
   intersperse
 } from '../../utils/format';
 import {
@@ -83,6 +83,12 @@ class EmergenciesTable extends SFPComponent {
     if (state.filters.date !== 'all') {
       qs.disaster_start_date__gte = datesAgo[state.filters.date]();
     } else if (props.showRecent) {
+      qs.disaster_start_date__gte = recentInterval;
+    }
+
+    // Add a condition for country pages
+    // In a country page, the default ('anytime') shows the last 12 months
+    if (state.filters.date === 'all' && props.showRecent && props.country) {
       qs.disaster_start_date__gte = datesAgo['year']();
     }
 
