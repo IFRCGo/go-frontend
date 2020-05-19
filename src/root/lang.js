@@ -99,5 +99,8 @@ export default {
   loginDontHaveAccount: 'Don’t have an account?',
   loginCreateAccountTitle: 'Create new account',
   loginSignUp: 'Sign Up.',
-
+  homeTitle: 'IFRC Go - Home',
+  homeHeading: 'IFRC Disaster Response and Preparedness',
+  homeDescription: 'IFRC GO aims to make all disaster information universally accessible and useful to IFRC responders for better decision making.',
+  homeSurgeNotification: 'Surge Notifications',
 };
