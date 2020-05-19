@@ -11,6 +11,9 @@ import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading
 import App from './app';
 import { FormInput } from '#components/form-elements/';
 
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
+
 class Login extends React.Component {
   constructor (props) {
     super(props);
@@ -57,13 +60,23 @@ class Login extends React.Component {
     if (!error) { return null; }
 
     if (error.statusCode === 400) {
-      return <p className='form__note'>Invalid username or password</p>;
+      return <p className='form__note'>
+               <Translate stringId='loginInvalid' />
+             </p>;
     }
 
-    return <p className='form__note'>Error: {error.message}</p>;
+    return <p className='form__note'>
+             <Translate
+               stringId='loginErrorMessage'
+               params={{
+                 message: error.message,
+               }}
+             />
+           </p>;
   }
 
   render () {
+    const { strings } = this.context;
     if (this.state.authenticated) {
       const { from } = this.props.location.state || { from: { pathname: '/' } };
       return (
@@ -74,14 +87,16 @@ class Login extends React.Component {
     return (
       <App className='page--login'>
         <Helmet>
-          <title>IFRC Go - Login</title>
+          <title>{strings.loginTitle}</title>
         </Helmet>
         <section className='inpage'>
           <header className='inpage__header'>
             <div className='inner'>
               <div className='inpage__headline'>
                 <div className='inpage__title--centered'>
-                  <h1 className='inpage__title'>Login</h1>
+                  <h1 className='inpage__title'>
+                    <Translate stringId='loginHeader' />
+                  </h1>
                 </div>
               </div>
             </div>
@@ -90,7 +105,7 @@ class Login extends React.Component {
             <div className='inner'>
               <form className='form form--centered' onSubmit={this.onSubmit}>
                 <FormInput
-                  label='Username'
+                  label={strings.loginUsername}
                   type='text'
                   name='login-username'
                   id='login-username'
@@ -99,7 +114,7 @@ class Login extends React.Component {
                   autoFocus
                 />
                 <FormInput
-                  label='Password'
+                  label={strings.loginPassword}
                   type='password'
                   name='login-password'
                   id='login-password'
@@ -107,17 +122,26 @@ class Login extends React.Component {
                   onChange={this.onFieldChange.bind(this, 'password')} >
 
                   <p className='form__help'>
-                    <Link to='/recover-account' title='Recover password'><span>I forgot my password.</span></Link>
+                    <Link to='/recover-account' title={strings.loginRecoverTitle}><span><Translate stringId='loginForgotPassword' /></span></Link>
                     <br/>
-                    <Link to='/recover-username' title='Show me my username'><span>I forgot my username only.</span></Link>
+                    <Link to='/recover-username' title={strings.loginShowUsernameTitle}><span><Translate stringId='aboutResources' /></span></Link>
                   </p>
                 </FormInput>
 
                 {this.renderError()}
                 <div className='form__footer'>
-                  <button className={c('mfa-tick', { disabled: !this.allowSubmit() })} type='submit' onClick={this.onSubmit}><span>Login</span></button>
+                  <button className={c('mfa-tick', { disabled: !this.allowSubmit() })} type='submit' onClick={this.onSubmit}>
+                    <span>
+                      <Translate stringId='loginButton' />
+                    </span>
+                  </button>
                   <p>
-                   Don’t have an account? <Link to='/register' title='Create new account'><span>Sign Up.</span></Link>
+                    <Translate stringId='loginDontHaveAccount' />
+                    <Link to='/register' title={strings.loginCreateAccountTitle}>
+                      <span>
+                        <Translate stringId='loginSignUp' />
+                      </span>
+                    </Link>
                   </p>
                 </div>
               </form>
@@ -148,4 +172,5 @@ const dispatcher = (dispatch) => ({
   _getAuthToken: (...args) => dispatch(getAuthToken(...args))
 });
 
+Login.contextType = LanguageContext;
 export default connect(selector, dispatcher)(Login);
