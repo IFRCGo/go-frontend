@@ -14,10 +14,13 @@ import { countries, orgTypes } from '#utils/field-report-constants';
 import { registerUser, getDomainWhitelist } from '#actions';
 import { environment } from '#config';
 
-import App from './app';
 import { FormInput, FormError } from '#components/form-elements/';
 import { showAlert } from '#components/system-alerts';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
+
+import App from './app';
 import registerSchemaDef from '../schemas/register';
 
 const ajv = new Ajv({ $data: true, allErrors: true, errorDataPath: 'property' });
@@ -128,10 +131,11 @@ class Register extends React.Component {
   }
 
   renderPasswordFields () {
+    const { strings } = this.context;
     return (
       <div className='form__hascol form__hascol--2'>
         <FormInput
-          label='Password *'
+          label={strings.registerPassword}
           type='password'
           name='register-password'
           id='register-password'
@@ -145,7 +149,7 @@ class Register extends React.Component {
           />
         </FormInput>
         <FormInput
-          label='Confirm Password *'
+          label={strings.registerConfirmPassword}
           type='password'
           name='register-password-conf'
           id='register-password-conf'
@@ -163,10 +167,13 @@ class Register extends React.Component {
   }
 
   renderAdditionalInfo () {
+    const { strings } = this.context;
     return (
       <div className='form__hascol form__hascol--2'>
         <div className='form__group'>
-          <label className='form__label'>Country *</label>
+          <label className='form__label'>
+            <Translate stringId='registerCountry' />
+          </label>
           <Select
             name='country'
             value={this.state.data.country}
@@ -178,7 +185,7 @@ class Register extends React.Component {
           />
         </div>
         <FormInput
-          label='City *'
+          label={strings.registerCity}
           type='text'
           name='register-city'
           id='register-city'
@@ -186,7 +193,9 @@ class Register extends React.Component {
           value={this.state.data.city}
           onChange={this.onFieldChange.bind(this, 'city')} />
         <div className='form__group'>
-          <label className='form__label'>Organization Type *</label>
+          <label className='form__label'>
+            <Translate stringId='registerOrganizationType' />
+          </label>
           <Select
             name='organizationType'
             value={this.state.data.organizationType}
@@ -198,7 +207,7 @@ class Register extends React.Component {
           />
         </div>
         <FormInput
-          label='Organization Name *'
+          label={strings.registerOrganizationName}
           type='text'
           name='register-organization'
           id='register-organization'
@@ -212,7 +221,7 @@ class Register extends React.Component {
           />
         </FormInput>
         <FormInput
-          label='Department'
+          label={strings.registerDepartment}
           type='text'
           name='register-department'
           id='register-department'
@@ -226,7 +235,7 @@ class Register extends React.Component {
           />
         </FormInput>
         <FormInput
-          label='Position'
+          label={strings.registerPosition}
           type='text'
           name='register-position'
           id='register-position'
@@ -240,7 +249,7 @@ class Register extends React.Component {
           />
         </FormInput>
         <FormInput
-          label='Phone Number'
+          label={strings.registerPhoneNumber}
           type='text'
           name='register-phoneNumber'
           id='register-phoneNumber'
@@ -262,15 +271,17 @@ class Register extends React.Component {
       return null;
     }
 
+    const { strings } = this.context;
+
     return (
       <div>
         <p className='form__note'>
-          It appears you do not have an official Red Cross Red Crescent email, we will need to verify your status. Please provide the names and email addresses of two RCRC members with active GO accounts for us to contact.
+          <Translate stringId='registerContactRequest'/>
         </p>
         {[0, 1].map(o => (
           <div key={o} className='form__hascol form__hascol--2'>
             <FormInput
-              label='Contact name'
+              label={strings.registerContactName}
               type='text'
               name={`register-contact[${o}][name]`}
               id={`register-contact-name-${o}`}
@@ -284,7 +295,7 @@ class Register extends React.Component {
               />
             </FormInput>
             <FormInput
-              label='Contact email'
+              label={strings.registerContactEmail}
               type='text'
               name={`register-contact[${o}][email]`}
               id={`register-contact-email-${o}`}
@@ -305,24 +316,35 @@ class Register extends React.Component {
 
   renderSubmitButton () {
     return this.shouldRequestAccess() ? (
-      <button className='mfa-tick' type='button' onClick={this.onSubmit}><span>Request Access</span></button>
+      <button className='mfa-tick' type='button' onClick={this.onSubmit}>
+        <span>
+          <Translate stringId='registerRequestAccess' />
+        </span>
+      </button>
     ) : (
-      <button className='mfa-tick' type='button' onClick={this.onSubmit}><span>Register</span></button>
+      <button className='mfa-tick' type='button' onClick={this.onSubmit}>
+        <span>
+          <Translate stringId='registerSubmit' />
+        </span>
+      </button>
     );
   }
 
   render () {
+    const { strings } = this.context;
     return (
       <App className='page--register'>
         <Helmet>
-          <title>IFRC Go - Register</title>
+          <title>{strings.registerTitle}</title>
         </Helmet>
         <section className='inpage'>
           <header className='inpage__header'>
             <div className='inner'>
               <div className='inpage__headline'>
                 <div className='inpage__title--centered'>
-                  <h1 className='inpage__title'>Register</h1>
+                  <h1 className='inpage__title'>
+                    <Translate stringId='registerHeading' />
+                  </h1>
                 </div>
               </div>
             </div>
@@ -332,7 +354,7 @@ class Register extends React.Component {
               <form className='form form--centered' onSubmit={this.onSubmit}>
                 <div className='form__hascol form__hascol--2'>
                   <FormInput
-                    label='First Name *'
+                    label={strings.registerFirstName}
                     type='text'
                     name='register-firstname'
                     id='register-firstname'
@@ -347,7 +369,7 @@ class Register extends React.Component {
                     />
                   </FormInput>
                   <FormInput
-                    label='Last Name *'
+                    label={strings.registerLastName}
                     type='text'
                     name='register-lastname'
                     id='register-lastname'
@@ -362,7 +384,7 @@ class Register extends React.Component {
                   </FormInput>
                 </div>
                 <FormInput
-                  label='Email *'
+                  label={strings.registerEmail}
                   type='text'
                   name='register-email'
                   id='register-email'
@@ -377,7 +399,7 @@ class Register extends React.Component {
                 </FormInput>
 
                 <FormInput
-                  label='Username *'
+                  label={strings.registerUsername}
                   type='text'
                   name='register-username'
                   id='register-username'
@@ -395,9 +417,19 @@ class Register extends React.Component {
                 {this.renderContactRequest()}
                 <div className='form__footer'>
                   {this.renderSubmitButton()}
-                  {this.state.errors ? <p className='form__error'>There are errors in the form. Please correct them before submitting again.</p> : null}
+                  {this.state.errors ?
+                   <p className='form__error'>
+                     <Translate stringId='registerSubmitError' />
+                   </p>
+                   : null
+                  }
                   <p>
-                    Already have an account? <Link to='/login' title='Go to login page'><span>Log in.</span></Link>
+                    <Translate stringId='registerAccountPresent' />
+                    <Link to='/login' title={strings.registerGotoLogin}>
+                      <span>
+                        <Translate stringId='registerLogin' />
+                      </span>
+                    </Link>
                   </p>
                 </div>
               </form>
@@ -428,4 +460,5 @@ const dispatcher = (dispatch) => ({
   _getDomainWhitelist: () => dispatch(getDomainWhitelist())
 });
 
+Register.contextType = LanguageContext;
 export default connect(selector, dispatcher)(Register);
