@@ -61,6 +61,7 @@ export default {
   aboutEuropeRegion: 'Europe Region',
   aboutMenaRegion: 'MENA Region',
   aboutGoFunding: 'GO has received dedicated personnel and funding support from:',
+
   registerTitle: 'IFRC Go - Register',
   registerHeading: 'Register',
   registerFirstName: 'First Name *',
@@ -103,24 +104,13 @@ export default {
 
   emergencyTitle: 'IFRC Go - Emergencies',
   emergencyTableTitle: 'Emergencies in the last 30 days',
+
   fieldReportsTableTitle: 'Field Reports in the last 30 days',
+
   preparednessTitle: 'IFRC Go - Preparedness',
   preparednessHeading: 'Preparedness for Effective Response (PER)',
   preparednessDescription: 'To enable National Societies to fulfil their auxiliary role, in line with the Red Cross and Red Crescent Fundamental Principles, by strengthening local preparedness capacities to ensure timely and effective humanitarian assistance to prevent and alleviate human suffering.',
-  loginTitle: 'IFRC Go - Login',
-  loginHeader: 'Login',
-  loginUsername: 'Username',
-  loginPassword: 'Password',
-  loginRecoverTitle: 'Recover password',
-  loginForgotPassword: 'I forgot my password.',
-  loginShowUsernameTitle: 'Show me my username',
-  loginForgotUsername: 'I forgot my username only.',
-  loginInvalid: 'Invalid username or password',
-  loginErrorMessage: 'Error: {message}',
-  loginButton: 'Login',
-  loginDontHaveAccount: 'Don’t have an account?',
-  loginCreateAccountTitle: 'Create new account',
-  loginSignUp: 'Sign Up.',
+
   homeTitle: 'IFRC Go - Home',
   homeHeading: 'IFRC Disaster Response and Preparedness',
   homeDescription: 'IFRC GO aims to make all disaster information universally accessible and useful to IFRC responders for better decision making.',
