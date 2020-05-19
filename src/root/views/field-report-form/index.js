@@ -718,10 +718,12 @@ class FieldReportForm extends React.Component {
               });
               values.options = sectionValues;
 
+              const description = this.state.data.isCovidReport === 'true' ? section.desc[status + '-COV'] : section.desc[status];
+
               return (
                 <ActionsCheckboxes
                   label={section.label[status]}
-                  description={section.desc[status]}
+                  description={description}
                   placeholder={section.placeholder[status]}
                   name={section.name}
                   key={section.key}
