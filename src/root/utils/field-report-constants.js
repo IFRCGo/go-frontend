@@ -538,7 +538,7 @@ export const fieldsStep1 = {
   'summary': {
     'EVT': {
       label: 'Title *',
-      desc: 'For Covid-19 Field Reports, please link to the country specific emergency page if one already exists. Please do not link to the Global emergency page.'
+      desc: 'For Covid-19 Field Reports, please link to the existing country specific emergency page. Please do not link to the Global emergency page.'
     },
     'EPI': {
       label: 'Title *',
