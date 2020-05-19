@@ -119,6 +119,7 @@ export default {
   homeHeading: 'IFRC Disaster Response and Preparedness',
   homeDescription: 'IFRC GO aims to make all disaster information universally accessible and useful to IFRC responders for better decision making.',
   homeSurgeNotification: 'Surge Notifications',
+
   regionTitle: 'IFRC Go - Region',
   regionTitleSelected: 'IFRC Go - {regionName}',
   regionAppealsTableTitle: 'Active IFRC Operations',
