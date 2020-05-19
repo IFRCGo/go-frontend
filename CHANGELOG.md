@@ -1,4 +1,29 @@
+### Release 4.3.4
+
+Frontend:
+
+ - Use webpack instead of gulp for the build process: https://github.com/IFRCGo/go-frontend/issues/1199
+ - 3W: Add disaster type to country 3W table, import and export: https://github.com/IFRCGo/go-frontend/issues/1149
+ - 3W: Add multi-region support in 3W projects: https://github.com/IFRCGo/go-frontend/issues/1145
+ - 3W: Replace Health (public) and Health (clinical) with Health in the sectors: https://github.com/IFRCGo/go-frontend/issues/1218
+ - 3W: Add RCCE tag in the 3W project: https://github.com/IFRCGo/go-frontend/issues/1227
+ - Restructure display of Epidemic data on Emergency page: https://github.com/IFRCGo/go-frontend/issues/1161
+ - Show more emergencies on Country pages: https://github.com/IFRCGo/go-frontend/issues/1132
+ - Don't require login to view public field reports: https://github.com/IFRCGo/go-frontend/issues/1118
+ - Fix PER mismatches between frontend and backend: https://github.com/IFRCGo/go-frontend/issues/1137
+ - PER: Enable years beyond 2018-2020: https://github.com/IFRCGo/go-frontend/issues/1230
+ - Removed 'Information Bulletin Published', 'Delegates' 'Number of RCRC Movement Personnel', 'Probable/Suspected/Confirmed Cases' for COVID-19 type Field Reports: (part of) https://github.com/IFRCGo/go-frontend/issues/1161
+ - Switch Is Covid Report toggle to Radio buttons: https://github.com/IFRCGo/go-frontend/issues/1247
+ 
+Backend:
+
+ - Change how EPI field report source data is stored
+ - Fix issue of parent_emergency not always showing for superusers
+ - The Domain Whitelist is a database table now and can be adjusted through the Django Admin, instead of being a static list maintained on both ends: https://github.com/IFRCGo/go-api/issues/669
+
+
 ### Release 4.3.3
+
 Frontend:
 - Add new tag "RCCE" for the projects ([#1227](https://github.com/IFRCGo/go-frontend/issues/1227))
 
