@@ -187,4 +187,15 @@ export default {
   snippetsTitle: 'Additional Graphics',
   linksTitle: 'Additional Links',
 
+  recoverAccountTitle: 'IFRC Go - Recover Password',
+  recoverAccountHeading: 'Recover Account',
+  recoverAccountEmail: 'Enter the email you used during registration',
+  recoverAccountEmailLabel: 'Email',
+  recoverAccountSubmitText: 'Reover',
+
+  recoverUsernameTitle: 'IFRC Go - Recover Username',
+  recoverUsernameHeading: 'Getting the given Username',
+  recoverUsernameEmail: 'Enter the email you used during registration',
+  recoverUsernameEmailLabel: 'Email',
+  recoverUsernameSubmitText: 'Send me my username',
 };
