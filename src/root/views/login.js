@@ -124,7 +124,7 @@ class Login extends React.Component {
                   <p className='form__help'>
                     <Link to='/recover-account' title={strings.loginRecoverTitle}><span><Translate stringId='loginForgotPassword' /></span></Link>
                     <br/>
-                    <Link to='/recover-username' title={strings.loginShowUsernameTitle}><span><Translate stringId='aboutResources' /></span></Link>
+                    <Link to='/recover-username' title={strings.loginShowUsernameTitle}><span><Translate stringId='loginForgotUsername' /></span></Link>
                   </p>
                 </FormInput>
 
