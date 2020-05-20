@@ -23,6 +23,9 @@ import { SFPComponent } from '#utils/extendables';
 import { appealTypes as appealsType, appealTypeOptions } from '#utils/appeal-type-constants';
 import MainMap from '#components/map/main-map';
 
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
+
 class AppealsTable extends SFPComponent {
   constructor (props) {
     super(props);
@@ -127,7 +130,8 @@ class AppealsTable extends SFPComponent {
       data
     } = this.props.appeals;
 
-    const title = this.props.title || 'Operations Overview';
+    const { strings } = this.context;
+    const title = this.props.title || strings.appealsTableTitle;
     if (fetching) {
       return (
         <Fold title={title} id={this.props.id}>
@@ -139,7 +143,9 @@ class AppealsTable extends SFPComponent {
     if (error) {
       return (
         <Fold title={title} id={this.props.id}>
-          <p>Operations data not available.</p>
+          <p>
+            <Translate stringId='appealsTableError'/>
+          </p>
         </Fold>
       );
     }
@@ -148,8 +154,10 @@ class AppealsTable extends SFPComponent {
       const headings = [
         {
           id: 'date',
-          label: <DateFilterHeader id='date'
-            title='Start Date' options={dateOptions}
+          label: <DateFilterHeader
+            id='date'
+            title={strings.appealsTableStartDate}
+            options={dateOptions}
             filter={this.state.table.filters.date}
             isActive={this.state.table.filters.date !== 'all'}
             featureType='table'
@@ -159,28 +167,28 @@ class AppealsTable extends SFPComponent {
           id: 'type',
           label: <FilterHeader
             id='type'
-            title='Type'
+            title={strings.appealsTableType}
             options={appealTypeOptions}
             filter={this.state.table.filters.atype}
             isActive={this.state.table.filters.atype !== 'all'}
             onSelect={this.handleFilterChange.bind(this, 'table', 'atype')} />
         },
-        { id: 'code', label: 'Code' },
+        { id: 'code', label: strings.appealsTableCode },
         {
           id: 'name',
           label: <SortHeader
             id='name'
-            title='Name'
+            title={strings.appealsTableName}
             sort={this.state.table.sort}
             isActive={this.state.table.sort.field === 'name'}
             onClick={this.handleSortChange.bind(this, 'table', 'name')} />
         },
-        { id: 'event', label: 'Emergency' },
+        { id: 'event', label: strings.appealsTableEmergency },
         {
           id: 'dtype',
           label: <FilterHeader
             id='dtype'
-            title='Disaster Type'
+            title={strings.appealsTableDisastertype}
             options={dTypeOptions} filter={this.state.table.filters.dtype}
             isActive={this.state.table.filters.dtype !== 'all'}
             onSelect={this.handleFilterChange.bind(this, 'table', 'dtype')} />
@@ -189,7 +197,7 @@ class AppealsTable extends SFPComponent {
           id: 'requestAmount',
           label: <SortHeader
             id='amount_requested'
-            title='Requested Amount (CHF)'
+            title={strings.appealsTableRequestedAmount}
             sort={this.state.table.sort}
             isActive={this.state.table.sort.field === 'amount_requested'}
             onClick={this.handleSortChange.bind(this, 'table', 'amount_requested')} />
@@ -198,14 +206,14 @@ class AppealsTable extends SFPComponent {
           id: 'fundedAmount',
           label: <SortHeader
             id='amount_funded'
-            title='Funding (CHF)'
+            title={strings.appealsTableFundedAmount}
             sort={this.state.table.sort}
             isActive={this.state.table.sort.field === 'amount_funded'}
             onClick={this.handleSortChange.bind(this, 'table', 'amount_funded')} />
         },
         {
           id: 'country',
-          label: 'Country'
+          label: strings.appealsTableCountry,
         }
       ];
 
@@ -214,7 +222,7 @@ class AppealsTable extends SFPComponent {
         date: DateTime.fromISO(o.start_date).toISODate(),
         code: o.code,
         name: o.name,
-        event: o.event ? <Link to={`/emergencies/${o.event}`} className='link--primary' title='View Emergency'>Link</Link> : nope,
+        event: o.event ? <Link to={`/emergencies/${o.event}`} className='link--primary' title={strings.appealsTableViewEmergency}>Link</Link> : nope,
         dtype: get(getDtypeMeta(o.dtype.id), 'label', nope),
         requestAmount: {
           value: n(o.amount_requested),
@@ -225,11 +233,11 @@ class AppealsTable extends SFPComponent {
           className: ''
         },
         type: appealsType[o.atype],
-        country: o.country ? <Link to={`/countries/${o.country.id}`} className='link--primary' title='View Country'>{o.country.name}</Link> : nope
+        country: o.country ? <Link to={`/countries/${o.country.id}`} className='link--primary' title={strings.appealsTableViewCountry}>{o.country.name}</Link> : nope
       }));
 
       const foldLink = this.props.viewAll ? (
-        <Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || 'View all operations'}</Link>
+        <Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || strings.viewAllOperations}</Link>
       ) : null;
 
       const {
@@ -321,5 +329,5 @@ const dispatcher = (dispatch) => ({
   _getAppeals: (...args) => dispatch(getAppeals(...args)),
   _getAppealsList: (...args) => dispatch(getAppealsList(...args))
 });
-
+AppealsTable.contextType = LanguageContext;
 export default connect(selector, dispatcher)(AppealsTable);
