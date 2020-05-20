@@ -227,4 +227,17 @@ export default {
   appealsTableRowEvent: 'View Emergency',
   appealsTableViewCountry: 'View Country',
   viewAllOperations: 'View all operations',
+
+  timeLineChartAppeal: 'Appeals',
+  timeLineChartAmount: 'Amount Funded Appeals',
+  timeLineChartPeopleTargeted: 'People Targeted',
+  timeLineChartDREFs: 'DREFs',
+  timeLineChartDrefsAmount: 'Amount Funded DREFs',
+  timeLineChartDrefsPeopleTargeted: 'People Targeted',
+  timeLineChartError: 'Operations data not available.',
+  timeLineChartByMonthTitle: 'DREFS and Appeals Over the Last Year',
+  timeLineChartByYearError: 'Annual statistics not available.',
+  timeLineChartByYearTitle: 'DREFS and Appeals by Year',
+  timeLineChartAggregateError: 'Aggregate data not available.',
+  timeLineChartHeading: 'DREFS and Appeals over time',
 };
