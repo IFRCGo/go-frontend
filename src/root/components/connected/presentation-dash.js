@@ -17,6 +17,7 @@ import KeyFiguresHeader from '#components/common/key-figures-header';
 
 import TimelineCharts from '#components/timeline-charts';
 import AppealsTable from '#components/connected/appeals-table';
+import LanguageContext from '#root/languageContext';
 
 class PresentationDash extends React.Component {
   constructor (props) {
@@ -55,6 +56,7 @@ class PresentationDash extends React.Component {
   }
 
   render () {
+    const { strings } = this.context;
     const { appealsList } = this.props;
     return (
       <section className={c('fold--stats', {presenting: this.state.fullscreen})} id='presentation'>
@@ -67,7 +69,7 @@ class PresentationDash extends React.Component {
           <AppealsTable
             showActive={true}
             showHomeMap={true}
-            title={'Active Operations'}
+            title={strings.presentationDashAppealsTitle}
             limit={5}
             viewAll={'/appeals/all'}
             fullscreen={this.state.fullscreen}
@@ -100,4 +102,5 @@ const dispatcher = (dispatch) => ({
   _getAppealsList: (...args) => dispatch(getAppealsList(...args)),
 });
 
+PresentationDash.contextType = LanguageContext;
 export default connect(selector, dispatcher)(PresentationDash);
