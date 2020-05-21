@@ -6,13 +6,16 @@ import {
   commaSeparatedNumber as n,
   separateUppercaseWords as separate
 } from '#utils/format';
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
 
 class _KeyFigures extends React.Component {
   render () {
+    const { strings } = this.context;
     const { fetching, fetched, error, data } = this.props.data;
     if (fetching || error || (fetched && !data.results.length)) return null;
     return (
-      <Fold id='key-figures' title='Key Figures' wrapper_class='key-figures'>
+      <Fold id='key-figures' title={strings.keyFiguresTitle} wrapper_class='key-figures'>
         <ul className='key-figures-list'>
           {data.results.map(o => (
             <li key={o.deck}>
@@ -27,19 +30,22 @@ class _KeyFigures extends React.Component {
   }
 }
 
+_KeyFigures.contextType = LanguageContext;
+
 class _Contacts extends React.Component {
   render () {
     const { data } = this.props;
+    const { strings }  = this.context;
     if (data.contacts && !data.contacts.length) return null;
     return (
-      <Fold id='contacts' title='Contacts' wrapperClass='contacts' foldClass='margin-reset'>
+      <Fold id='contacts' title={strings.contactsTitle} wrapperClass='contacts' foldClass='margin-reset'>
         <table className='table'>
           <thead className='visually-hidden'>
             <tr>
-              <th>Name</th>
-              <th>Title</th>
-              <th>Type</th>
-              <th>Contact</th>
+              <th><Translate stringId='contactsHeaderName'/></th>
+              <th><Translate stringId='contactsHeaderTitle'/></th>
+              <th><Translate stringId='contactsHeaderType'/></th>
+              <th><Translate stringId='contactsHeaderContact'/></th>
             </tr>
           </thead>
           <tbody>
@@ -49,8 +55,8 @@ class _Contacts extends React.Component {
                 <td>{o.title}</td>
                 <td>{separate(o.ctype)}</td>
                 <td>{o.email.indexOf('@') !== -1
-                  ? <a className='link--primary' href={`mailto:${o.email}`} title='Contact'>{o.email}</a>
-                  : <a className='link--primary' href={`tel:${o.email}`} title='Contact'>{o.email}</a>}
+                     ? <a className='link--primary' href={`mailto:${o.email}`} title={strings.contactsEmailTitle}>{o.email}</a>
+                     : <a className='link--primary' href={`tel:${o.email}`} title={strings.contactsEmailTitle}>{o.email}</a>}
                 </td>
               </tr>
             ))}
@@ -60,13 +66,15 @@ class _Contacts extends React.Component {
     );
   }
 }
+_Contacts.contextType = LanguageContext;
 
 class _Snippets extends React.Component {
   render () {
+    const { strings } = this.context;
     const { fetching, fetched, error, data } = this.props.data;
     if (fetching || error || (fetched && !data.results.length)) return null;
     return (
-      <Fold id='graphics' title='Additional Graphics' wrapper_class='additional-graphics'>
+      <Fold id='graphics' title={strings.snippetsTitle} wrapper_class='additional-graphics'>
         <div className='iframe__container'>
           {data.results.map(o => o.snippet ? <div className='snippet__item' key={o.id} dangerouslySetInnerHTML={{__html: o.snippet}} />
             : o.image ? <div key={o.id} className='snippet__item snippet__image'><img src={o.image}/></div> : null
@@ -76,13 +84,15 @@ class _Snippets extends React.Component {
     );
   }
 }
+_Snippets.contextType = LanguageContext;
 
 class _Links extends React.Component {
   render () {
+    const { strings } = this.context;
     const { data } = this.props;
     if (data.links && !data.links.length) return null;
     return (
-      <Fold id='links' title='Additional Links' wrapper_class='links' foldClass='margin-reset'>
+      <Fold id='links' title={strings.linksTitle} wrapper_class='links' foldClass='margin-reset'>
         <ul className='links-list'>
           {data.links.map(o => <li key={o.id}><a href={o.url} className='link--external'>{o.title}</a> </li>)}
         </ul>
@@ -90,6 +100,7 @@ class _Links extends React.Component {
     );
   }
 }
+_Links.contextType = LanguageContext;
 
 if (environment !== 'production') {
   _KeyFigures.propTypes = { data: T.object };
