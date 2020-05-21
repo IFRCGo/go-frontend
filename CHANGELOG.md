@@ -1,3 +1,11 @@
+### Release 4.3.5
+
+Frontend:
+
+ - Fix language in field report form: https://github.com/IFRCGo/go-frontend/issues/1226
+ - Fix validation of email addresses on registration: https://github.com/IFRCGo/go-frontend/pull/1265
+ - Remove Additional Graphics text on extra tabs: https://github.com/IFRCGo/go-frontend/issues/1232
+
 ### Release 4.3.4
 
 Frontend:
