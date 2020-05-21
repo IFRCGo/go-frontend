@@ -9,7 +9,8 @@ import BlockLoading from '../block-loading';
 import Fold from '../fold';
 import OperationCard from './operation-card';
 
-const title = 'Highlighted Operations';
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
 
 class HighlightedOperations extends React.Component {
   constructor (props) {
@@ -75,9 +76,13 @@ class HighlightedOperations extends React.Component {
 
   render () {
     const { error, fetching, fetched, data } = this.props.featured;
-    const foldLink = (<Link to='/appeals/all' className='fold__title__link'>View all operations</Link>);
+    const { strings } = this.context;
+    const foldLink = (
+      <Link to='/appeals/all' className='fold__title__link'>
+        <Translate stringId='highlightedOperationsViewAll'/>
+      </Link>);
     if (fetched && (error || !Array.isArray(data.results) || !data.results.length)) return null;
-    else if (!fetched || fetching) return <div className='inner'><Fold title={title}><BlockLoading/></Fold></div>;
+    else if (!fetched || fetching) return <div className='inner'><Fold title={strings.highlightedOperationsTitle}><BlockLoading/></Fold></div>;
     let operations = data.results;
     const listStyle = operations.length <= 4 ? (
       'key-emergencies-list key-emergencies-list-short'
@@ -86,7 +91,7 @@ class HighlightedOperations extends React.Component {
     );
     return (operations.length ? (
       <div className='inner inner--emergencies'>
-        <Fold title={title} navLink={foldLink} extraClass foldClass='fold__title--inline'>
+        <Fold title={strings.highlightedOperationsTitle} navLink={foldLink} extraClass foldClass='fold__title--inline'>
           <div className={listStyle}>
             {operations.slice(0, 6).map(operation =>
               <OperationCard
@@ -133,4 +138,5 @@ const dispatcher = (dispatch) => ({
   _getDeploymentERU: (...args) => dispatch(getDeploymentERU(...args))
 });
 
+HighlightedOperations.contextType = LanguageContext;
 export default connect(selector, dispatcher)(HighlightedOperations);
