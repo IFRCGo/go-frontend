@@ -151,4 +151,13 @@ export default {
   alertTableType: 'Type',
   alertTableViewEmergency: 'View Emergency page',
   alertTableViewAllText: 'View all surge alerts',
+
+  highlightedOperationsViewAll: 'View all operations',
+  highlightedOperationsTitle: 'Highlighted Operations',
+  operationCardLastUpdated: 'Last updated:',
+  operationCardTargetedPopulation: 'Targeted Population',
+  operationCardDepoloyedUnits: 'Deployed Emergency Response Units',
+  operationCardFunding: 'Funding Requirements',
+  operationCardDeployed: 'Deployed Surge Personnel',
+  operationCardFundingCoverage: 'Funding Coverage',
 };
