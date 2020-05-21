@@ -450,7 +450,7 @@ class FieldReportForm extends React.Component {
               placeholder='Select a disaster type'
               name='disaster-type'
               id='disaster-type'
-              disabled={ this.state.data.isCovidReport === 'true' }
+              disabled={ this.state.data.isCovidReport === 'true' || !this.state.data.isCovidReport }
               options={formData.disasterType}
               value={this.state.data.disasterType}
               onChange={({value}) => this.onFieldChange('disasterType', value)}
