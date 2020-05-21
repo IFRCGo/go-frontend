@@ -7,7 +7,7 @@ import Fold from './fold';
 
 const ErrorPanel = props => {
   return (
-    <Fold title={props.title} id="errorMessage">
+    <Fold showHeader={false} title={props.title} id="errorMessage">
       <span>{props.errorMessage}</span>
     </Fold>
   );
