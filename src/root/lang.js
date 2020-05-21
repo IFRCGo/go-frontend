@@ -161,4 +161,18 @@ export default {
   operationCardFunding: 'Funding Requirements',
   operationCardDeployed: 'Deployed Surge Personnel',
   operationCardFundingCoverage: 'Funding Coverage',
+
+  countryListInRegion: ' Countries in this Region',
+  countryListViewActiveOnly: 'View only active operations',
+  countryListActiveOperation: 'Active Operation',
+
+  emergenciesTableError: 'Latest emergencies not available.',
+  emergenciesTableDate: 'Start Date',
+  emergenciesTableName: 'Name',
+  emergenciesTableDisasterType: 'Disaster Type',
+  emergenciesTableGlide: 'Glide',
+  emergenciesTableRequestedAmt: 'Requested Amount (CHF)',
+  emergenciesTableAffected: '# Affected',
+  emergenciesTableCountry: 'Countries',
+  emergenciesTableViewAll: 'View all emergencies',
 };
