@@ -174,4 +174,15 @@ export default {
   emergenciesTableAffected: '# Affected',
   emergenciesTableCountry: 'Countries',
   emergenciesTableViewAll: 'View all emergencies',
+
+  keyFiguresTitle: 'Key Figures',
+  contactsTitle: 'Contacts',
+  contactsHeaderName: 'Name',
+  contactsHeaderTitle: 'Title',
+  contactsHeaderType: 'Type',
+  contactsHeaderContact: 'Contact',
+  contactsEmailTitle: 'Contact',
+  snippetsTitle: 'Additional Graphics',
+  linksTitle: 'Additional Links',
+
 };
