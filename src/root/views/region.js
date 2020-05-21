@@ -57,7 +57,6 @@ import { NO_DATA } from '#utils/constants';
 import RegionalThreeW from './RegionalThreeW';
 
 import LanguageContext from '#root/languageContext';
-import Translate from '#components/Translate';
 import { resolveToString } from '#utils/lang';
 
 class AdminArea extends SFPComponent {
