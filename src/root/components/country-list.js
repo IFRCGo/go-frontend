@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { environment } from '#config';
 import { get } from '#utils/utils';
 import Fold from './fold';
 import ToggleButtonComponent from './common/toggle-button';
+
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
 
 const CountryList = props => {
   const {
@@ -13,6 +16,7 @@ const CountryList = props => {
     data
   } = props.countries;
 
+  const { strings } = useContext(LanguageContext);
   const [isFullList, toggleList] = useState(true);
   const toggle = () => {
     isFullList ? toggleList(false) : toggleList(true);
@@ -45,11 +49,11 @@ const CountryList = props => {
   }, {});
 
   return (
-    <Fold title={countries.length + ' Countries in this Region'}>
+    <Fold title={countries.length + strings.countryListInRegion}>
       <ToggleButtonComponent
         value={ !isFullList || false }
         toggle={toggle}
-        description='View only active operations'
+        description={strings.countryListViewActiveOnly}
       />
       <ul className='region-countries__list'>
         {Object.entries(alphabetizedList).map(([letter, countries]) =>
@@ -59,7 +63,7 @@ const CountryList = props => {
               {countries.map(country =>
                 <li key={country.id} className='region-countries__item'>
                   <Link to={`/countries/${country.id}`} className='region-countries__link'><span className='region-countries__linkC'>{country.name}</span></Link>
-                  {country.numOperations ? <span className='region-countries__link-op'>({country.numOperations} Active Operation{country.numOperations > 1 ? 's' : ''})</span> : null}
+                  {country.numOperations ? <span className='region-countries__link-op'>({country.numOperations} <Translate stringId='countryListActiveOperation'/>{country.numOperations > 1 ? 's' : ''})</span> : null}
                 </li>
               )}
             </ul>
