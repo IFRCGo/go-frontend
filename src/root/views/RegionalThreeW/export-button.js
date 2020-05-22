@@ -9,6 +9,7 @@ import { getRegionalProjects as getRegionalProjectsAction } from '#actions';
 import { regionalProjectsSelector } from '#selectors';
 
 import exportHeaders from '../ThreeW/export-headers';
+import Translate from '#components/Translate';
 
 function ExportButton (p) {
   const {
@@ -79,7 +80,10 @@ function ExportButton (p) {
       )}
       disabled={pending}
     >
-      { pending ? 'Exporting...' : 'Export' }
+      { pending ?
+        <Translate stringId='exportButtonExporting'/> :
+        <Translate stringId='exportButtonExport'/>
+      }
     </button>
   );
 }
