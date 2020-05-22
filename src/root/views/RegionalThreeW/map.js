@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { Provider } from 'react-redux';
 import { render } from 'react-dom';
 import { BrowserRouter, Link } from 'react-router-dom';
@@ -10,6 +10,8 @@ import { getRegionBoundingBox } from '#utils/region-bounding-box';
 import { getCentroidByCountryId } from '#utils/country-centroids';
 
 import ActivityDetails from './activity-details';
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
 
 const emptyList = [];
 
@@ -80,6 +82,7 @@ function Map (props) {
   const [map, setMap] = React.useState();
   const [mapLoaded, setMapLoaded] = React.useState(false);
 
+  const { strings } = useContext(LanguageContext);
   React.useEffect(() => {
     const { current: mapContainer } = ref;
     setMap(newMap(mapContainer));
@@ -179,7 +182,7 @@ function Map (props) {
                   </Link>
                 </div>
                 <div className='tc-value'>
-                  {d.value} projects
+                  <Translate stringId='supportingNSListProjects' params={{ noOfProjects: d.value }}/>
                 </div>
               </div>
               <ProgressBar
