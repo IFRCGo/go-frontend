@@ -48,8 +48,7 @@ export function resolveToComponent(template, params) {
 
     return (
       <React.Fragment>
-        { part.replace(`${key}}`, '') }
-        { params[key] }
+        { part.replace(`${key}}`, params[key]) }
       </React.Fragment>
     );
   });

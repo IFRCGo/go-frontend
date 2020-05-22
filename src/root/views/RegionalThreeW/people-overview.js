@@ -2,6 +2,7 @@ import React from 'react';
 import _cs from 'classnames';
 
 import FormattedNumber from '#components/formatted-number';
+import Translate from '#components/Translate';
 
 function PeopleOverview (props) {
   const {
@@ -23,7 +24,7 @@ function PeopleOverview (props) {
   return (
     <div className={_cs(className, 'people-overview')}>
       <h4 className='tc-heading'>
-        Total number of people reached
+        <Translate stringId='peopleOverviewTotalPeople'/>
       </h4 >
       <div className='tc-content'>
         <FormattedNumber
@@ -34,7 +35,7 @@ function PeopleOverview (props) {
         />
         <div className='targeted-people'>
           <div className='tc-label'>
-            Targeted
+            <Translate stringId='peopleOverviewTargetedPeople'/>
           </div>
           <FormattedNumber
             className='targeted-people-count'
