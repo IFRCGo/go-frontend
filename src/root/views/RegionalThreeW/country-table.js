@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { connect } from 'react-redux';
 import { addSeparator } from '@togglecorp/fujs';
 import _cs from 'classnames';
@@ -16,44 +16,8 @@ import {
 import { getResultsFromResponse } from '#utils/request';
 import { getProjects as getProjectsAction } from '#actions';
 import { countryProjectSelector } from '#selectors';
-
-const tableHeaders = [
-  {
-    key: 'reporting_ns',
-    label: 'Reporting NS',
-    modifier: d => d.reporting_ns_detail.society_name,
-  },
-  {
-    key: 'primary_sector',
-    label: 'Activity sector',
-    modifier: d => sectors[d.primary_sector],
-  },
-  {
-    key: 'status',
-    label: 'Status',
-    modifier: d => statuses[d.status],
-  },
-  {
-    key: 'programme_type',
-    label: 'Type',
-    modifier: d => programmeTypes[d.programme_type],
-  },
-  {
-    key: 'target_total',
-    label: 'Total people targeted',
-    modifier: d => addSeparator(d.target_total),
-  },
-  {
-    key: 'reached_total',
-    label: 'Total people reached',
-    modifier: d => addSeparator(d.reached_total),
-  },
-  {
-    key: 'budget_amount',
-    label: 'Total budget',
-    modifier: d => addSeparator(d.budget_amount),
-  },
-];
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
 
 const emptyList = [];
 
@@ -86,6 +50,45 @@ function CountryTable (p) {
 
   const count = (data.projects_count || emptyList).length;
 
+  const { strings } = useContext(LanguageContext);
+  const tableHeaders = [
+    {
+      key: 'reporting_ns',
+      label: strings.countryTableReportingNS,
+      modifier: d => d.reporting_ns_detail.society_name,
+    },
+    {
+      key: 'primary_sector',
+      label: strings.countryTablePrimarySector,
+      modifier: d => sectors[d.primary_sector],
+    },
+    {
+      key: 'status',
+      label: strings.countryTableStatus,
+      modifier: d => statuses[d.status],
+    },
+    {
+      key: 'programme_type',
+      label: strings.countryTableProgrammeType,
+      modifier: d => programmeTypes[d.programme_type],
+    },
+    {
+      key: 'target_total',
+      label: strings.countryTableTargetTotal,
+      modifier: d => addSeparator(d.target_total),
+    },
+    {
+      key: 'reached_total',
+      label: strings.countryTableReachedTotal,
+      modifier: d => addSeparator(d.reached_total),
+    },
+    {
+      key: 'budget_amount',
+      label: strings.countryTableBudgetTotal,
+      modifier: d => addSeparator(d.budget_amount),
+    },
+  ];
+
   return (
     <div className={_cs('country-table', isActive && 'tc-active')}>
       <button
@@ -99,7 +102,12 @@ function CountryTable (p) {
             { data.name }
           </div>
           <div className='tc-project-count'>
-            { data.projects_count } projects
+            <Translate
+              stringId='countryTableProjectCount'
+              params={{
+                projectCount: data.projects_count,
+              }}
+            />
           </div>
         </div>
         { isActive ? (

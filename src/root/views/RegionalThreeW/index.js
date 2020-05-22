@@ -11,6 +11,8 @@ import {
 import _cs from 'classnames';
 
 import BlockLoading from '#components/block-loading';
+import Translate from '#components/Translate';
+
 import {
   getRegionalMovementActivities as getRegionalMovementActivitiesAction,
   getRegionalProjectsOverview as getRegionalProjectsOverviewAction,
@@ -217,7 +219,7 @@ function RegionalThreeW (p) {
         <div className='tc-header'>
           <div className='tc-top'>
             <h2 className='tc-heading'>
-              Movement activities
+              <Translate stringId='regional3WMovementActivity'/>
             </h2>
             <ExportButton
               regionId={regionId}
@@ -250,7 +252,7 @@ function RegionalThreeW (p) {
       <div className='regional-ns-activities'>
         <div className='tc-header'>
           <h2 className='tc-heading'>
-            National society activities
+            <Translate stringId='regional3WNationalActivity'/>
           </h2>
           <NSActivitiesFilters
             value={nsActivityFilters}
@@ -264,7 +266,7 @@ function RegionalThreeW (p) {
           ) : (
             (nationalSocietyActivities.links || emptyList).length === 0 ? (
               <div className='sankey-empty-message'>
-                Not enough data to show the chart
+                <Translate stringId='regional3WSankeyEmpty'/>
               </div>
             ) : (
               <ResponsiveContainer>
