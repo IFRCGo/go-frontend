@@ -125,6 +125,12 @@ export const step2 = {
     otherSources: {
       type: 'string'
     }
+  },
+  dependencies: {
+    epiCases: ['sitFieldsDate'],
+    epiSuspectedCases: ['sitFieldsDate'],
+    epiProbableCases: ['sitFieldsDate'],
+    epiConfirmedCases: ['sitFieldsDate']
   }
 };
 
