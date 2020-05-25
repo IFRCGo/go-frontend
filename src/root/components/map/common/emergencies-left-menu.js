@@ -6,6 +6,8 @@ import Progress from '../../progress';
 import { PropTypes as T } from 'prop-types';
 import { environment } from '#config';
 
+import Translate from '#components/Translate';
+
 export default class EmergenciesLeftMenu extends React.Component {
   constructor (props) {
     super(props);
@@ -32,10 +34,17 @@ export default class EmergenciesLeftMenu extends React.Component {
 
     return (
       <div className='emergencies chart'>
-        {this.props.data.noRenderEmergencyTitle ? <h1>Operations by Type</h1> : (
+        {this.props.data.noRenderEmergencyTitle ?
+         <h1>
+           <Translate stringId='emergenciesLeftMenuHeading'/>
+         </h1> : (
           <React.Fragment>
-            <h1>IFRC Emergency Operations</h1>
-            <h2 className='heading--xsmall'>Operations by Type</h2>
+            <h1>
+              <Translate stringId='emergenciesLeftMenuTitle'/>
+            </h1>
+            <h2 className='heading--xsmall'>
+              <Translate stringId='emergenciesLeftMenuHeading'/>
+            </h2>
           </React.Fragment>
         )}
         <ul className='emergencies__list'>
