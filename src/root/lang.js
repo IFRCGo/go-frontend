@@ -165,6 +165,7 @@ export default {
   countryListInRegion: ' Countries in this Region',
   countryListViewActiveOnly: 'View only active operations',
   countryListActiveOperation: 'Active Operation',
+  countryListActiveOperations: 'Active Operations',
 
   emergenciesTableError: 'Latest emergencies not available.',
   emergenciesTableDate: 'Start Date',
