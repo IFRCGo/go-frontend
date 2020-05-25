@@ -63,7 +63,7 @@ const CountryList = props => {
               {countries.map(country =>
                 <li key={country.id} className='region-countries__item'>
                   <Link to={`/countries/${country.id}`} className='region-countries__link'><span className='region-countries__linkC'>{country.name}</span></Link>
-                  {country.numOperations ? <span className='region-countries__link-op'>({country.numOperations} <Translate stringId='countryListActiveOperation'/>{country.numOperations > 1 ? 's' : ''})</span> : null}
+                  {country.numOperations ? <span className='region-countries__link-op'>({country.numOperations} {country.numOperations > 1 ? <Translate stringId='countryListActiveOperations' /> : <Translate stringId='countryListActiveOperation'/>})</span> : null}
                 </li>
               )}
             </ul>
