@@ -1,25 +1,29 @@
-
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
 import { environment } from '#config';
 
-const perPhases = [
-  {id: -1, name: 'All PER Phases'},
-  {id: 1, name: 'Orientation'},
-  {id: 2, name: 'Assessment'},
-  {id: 3, name: 'Prioritization'},
-  {id: 4, name: 'Plan of action'},
-  {id: 5, name: 'Action & accountability'}
-];
+import LanguageContext from '#root/languageContext';
 
 class PerPhaseDropdown extends React.Component {
+  constructor(props, context) {
+    super(props);
+    const { strings } = context;
+    this.perPhases = [
+      {id: -1, name: strings.perPhaseDropdownAllPerPhases},
+      {id: 1, name: strings.perPhaseDropdownOrientation},
+      {id: 2, name: strings.perPhaseDropdownAssessment},
+      {id: 3, name: strings.perPhaseDropdownPrioritization},
+      {id: 4, name: strings.perPhaseDropdownPlan},
+      {id: 5, name: strings.perPhaseDropdownAction},
+    ];
+  }
   render () {
     return (
       <figcaption className='map-vis__legend map-vis__legend--top-left legend'>
         <form>
           <select onChange={this.props.onPerPhaseChange} id='top-appeal-dropdown' className='form__control form__control--medium'>
             {
-              perPhases.map(phase => {
+              this.perPhases.map(phase => {
                 return (<option key={phase.id} value={phase.id}>{phase.name}</option>);
               })
             }
@@ -29,7 +33,7 @@ class PerPhaseDropdown extends React.Component {
     );
   }
 }
-
+PerPhaseDropdown.contextType = LanguageContext;
 if (environment !== 'production') {
   PerPhaseDropdown.propTypes = {
     onPerPhaseChange: T.func
