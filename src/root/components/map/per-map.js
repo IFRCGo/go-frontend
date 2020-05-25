@@ -19,6 +19,8 @@ import EmergenciesLeftMenu from './common/emergencies-left-menu';
 import MarkerLayerStylesheetFactory from './per-map/factory/marker-layer-stylesheet-factory';
 import PerPhaseDropdown from './per-map/per-phase-dropdown';
 import PerTypeDropdown from './per-map/per-type-dropdown';
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
 
 // const scale = chroma.scale(['#F0C9E8', '#861A70']);
 
@@ -187,7 +189,9 @@ class PerMap extends React.Component {
   renderError () {
     const { data } = this.props;
     if (get(data, 'error')) {
-      return <p>Data not available.</p>;
+      return <p>
+               <Translate stringId='preparednessMapError'/>
+             </p>;
     }
   }
 
@@ -196,6 +200,8 @@ class PerMap extends React.Component {
     const layers = this.props.layers ? this.state.markerLayers.concat(this.props.layers) : this.state.markerLayers;
     const geoJSON = this.state.markerGeoJSON;
     const mapContainerClassName = this.props.noRenderEmergencies ? 'map-container map-container-fullwidth' : 'map-container';
+
+    const { strings } = this.context;
 
     return (
       <React.Fragment>
@@ -214,7 +220,7 @@ class PerMap extends React.Component {
             layers={layers}
             geoJSON={geoJSON}
             downloadButton={true}
-            downloadedHeaderTitle='Preparedness state'>
+            downloadedHeaderTitle={strings.preparednessMapDownloadTitle}>
 
             <PerPhaseDropdown onPerPhaseChange={this.onPerPhaseChange} />
             <PerTypeDropdown onPerTypeChange={this.onPerTypeChange} />
@@ -252,5 +258,5 @@ if (environment !== 'production') {
     layers: T.array
   };
 }
-
+PerMap.contextType = LanguageContext;
 export default withRouter(PerMap);
