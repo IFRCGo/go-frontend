@@ -172,14 +172,6 @@ class Emergency extends React.Component {
     return false;
   }
 
-  renderMustLogin () {
-    return (
-      <React.Fragment>
-        <p>You must be logged in to view this. <Link key='login' to={{ pathname: '/login', state: { from: this.props.location } }} className='link--primary' title='Login'>Login</Link></p>
-      </React.Fragment>
-    );
-  }
-
   renderFieldReportStatsEW (report) {
     const numPotentiallyAffected = parseInt(get(report, 'num_potentially_affected')) || parseInt(get(report, 'gov_num_potentially_affected')) || parseInt(get(report, 'other_num_potentially_affected'));
     const numHighestRisk = parseInt(get(report, 'num_highest_risk')) || parseInt(get(report, 'gov_num_highest_risk')) || parseInt(get(report, 'other_num_highest_risk'));
@@ -347,13 +339,7 @@ class Emergency extends React.Component {
 
   renderFieldReports () {
     const { data } = this.props.event;
-    if (!this.props.isLogged) {
-      return (
-        <Fold id='field-reports' title='Field Reports' wrapperClass='event-field-reports' >
-          {this.renderMustLogin()}
-        </Fold>
-      );
-    } else if (data.field_reports && data.field_reports.length) {
+    if (data.field_reports && data.field_reports.length) {
       return (
         <Fold id='field-reports' title={`Field Reports (${data.field_reports.length})`} wrapperClass='event-field-reports' >
           <table className='table table--zebra'>
