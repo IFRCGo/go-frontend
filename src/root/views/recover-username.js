@@ -13,6 +13,9 @@ import { isValidEmail } from '#utils/utils';
 import { showAlert } from '#components/system-alerts';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
+
 class RecoverUsername extends React.Component {
   constructor (props) {
     super(props);
@@ -55,13 +58,14 @@ class RecoverUsername extends React.Component {
   }
 
   renderEmailForm () {
+    const { strings } = this.context;
     return (
       <form className='form form--centered' onSubmit={this.onSubmit}>
         <p className='form__note'>
-          Enter the email you used during registration
+          <Translate stringId='recoverUsernameEmail' />
         </p>
         <FormInput
-          label='Email'
+          label={strings.recoverUsernameEmailLabel}
           type='text'
           name='login-email'
           id='login-email'
@@ -74,22 +78,31 @@ class RecoverUsername extends React.Component {
             property='email'
           />
         </FormInput>
-        <button className={c('mfa-tick', { disabled: !this.allowSubmit() })} type='button' onClick={this.onSubmit}><span>Send me my username</span></button>
+        <button className={c('mfa-tick', { disabled: !this.allowSubmit() })} type='button' onClick={this.onSubmit}>
+          <span>
+            <Translate stringId='recoverUsernameSubmitText' />
+          </span>
+        </button>
       </form>
     );
   }
 
   render () {
+    const { strings } = this.context;
     return (
       <App className='page--login'>
         <Helmet>
-          <title>IFRC Go - Recover Username</title>
+          <title>
+            {strings.recoverUsernameTitle}
+          </title>
         </Helmet>
         <section className='inpage'>
           <header className='inpage__header'>
             <div className='inner'>
               <div className='inpage__headline'>
-                <h1 className='inpage__title'>Getting the given Username</h1>
+                <h1 className='inpage__title'>
+                  <Translate stringId='recoverUsernameHeading' />
+                </h1>
               </div>
             </div>
           </header>
@@ -120,4 +133,5 @@ const dispatcher = (dispatch) => ({
   _showUsername: (email) => dispatch(showUsername(email))
 });
 
+RecoverUsername.contextType = LanguageContext;
 export default connect(selector, dispatcher)(RecoverUsername);

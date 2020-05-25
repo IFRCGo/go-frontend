@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 // import c from 'classnames';
 import { percent, shortenLargeNumber } from '#utils/format';
 import BlockLoading from '#components/block-loading';
@@ -7,17 +7,12 @@ import { PropTypes as T } from 'prop-types';
 import Tooltip from '#components/common/tooltip';
 import FullscreenHeader from '#components/common/fullscreen-header';
 
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
+
 // Provides titles to associate with incoming stats
 // The explicit reference of these and the tooltip values could
 // be avoided by adding this data as properties on the incoming appealsList
-const keyTitle = {
-  activeDrefs: 'Active DREF Operations',
-  activeAppeals: 'Active Emergency Appeals',
-  budget: 'Funding requirements (CHF)',
-  appealsFunding: 'Funding coverage',
-  targetPop: 'Targeted population'
-};
-
 const keyFiguresList = ['activeDrefs', 'activeAppeals', 'budget', 'appealsFunding', 'targetPop'];
 
 // const keyIcon = {
@@ -36,18 +31,6 @@ const keyIconSrc = {
   targetPop: '/assets/graphics/layout/targeted-population.svg'
 };
 
-// Lists two tooltip descriptions currently in use.
-const tooltipOptions = {
-  activeDrefs: {
-    title: 'DREF',
-    description: 'These are small to medium scale emergency operations funded through the Disaster Relief Emergency Fund (DREF).The DREF provides immediate financial support to National Red Cross and Red Crescent Societies, enabling them to carry out their unique role as first responders after a disaster.'
-  },
-  activeAppeals: {
-    title: 'Emergency Appeal',
-    description: 'These are medium to large scale emergency operations funded through a public appeal for funds.'
-  }
-};
-
 export default function KeyFiguresHeader (props) {
   const {
     data: {
@@ -58,12 +41,36 @@ export default function KeyFiguresHeader (props) {
     error
   } = props.appealsListStats;
 
+  const {strings } = useContext(LanguageContext);
+
+  const keyTitle = {
+    activeDrefs: strings.keyFiguresActiveDrefs,
+    activeAppeals: strings.keyFiguresActiveAppeals,
+    budget: strings.keyFiguresBudget,
+    appealsFunding: strings.keyFiguresAppealsFunding,
+    targetPop: strings.keyFiguresTargetPop
+  };
+  // Lists two tooltip descriptions currently in use.
+  const tooltipOptions = {
+    activeDrefs: {
+      title: strings.keyFiguresDrefTitle,
+      description: strings.keyFiguresDrefDescription,
+    },
+    activeAppeals: {
+      title: strings.keyFigureActiveAppealTitle,
+      description: strings.keyFigureActiveAppealDescription,
+    }
+  };
+
+
+
+
   if (fetching) {
     return <BlockLoading/>;
   }
 
   if (error) {
-    return <p>Data not available.</p>;
+    return <p>{strings.keyFiguresError}</p>;
   }
 
   if (!fetched || error) { return null; }
@@ -97,10 +104,12 @@ export default function KeyFiguresHeader (props) {
   return (
     <div className='inner'>
       {props.fullscreen ? (
-        <FullscreenHeader title='IFRC Disaster Response and Preparedness'/>
+        <FullscreenHeader title={strings.keyFiguresHeading}/>
       ) : null}
       <div className='stats-overall'>
-        <h1 className='visually-hidden'>Overall stats</h1>
+        <h1 className='visually-hidden'>
+          <Translate stringId='keyFiguresStatsOverall'/>
+        </h1>
         <ul className='sumstats'>
           {filteredKeyFigures().map(keyFigure => (
             <li key={keyFigure.id} className='sumstats__item'>
