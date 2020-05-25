@@ -103,6 +103,9 @@ export const step2 = {
     epiCases: {
       type: 'number'
     },
+    epiNumDead: {
+      type: 'number'
+    },
     epiSuspectedCases: {
       type: 'number'
     },
@@ -128,6 +131,7 @@ export const step2 = {
   },
   dependencies: {
     epiCases: ['sitFieldsDate'],
+    epiNumDead: ['sitFieldsDate'],
     epiSuspectedCases: ['sitFieldsDate'],
     epiProbableCases: ['sitFieldsDate'],
     epiConfirmedCases: ['sitFieldsDate']
