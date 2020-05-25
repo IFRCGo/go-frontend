@@ -313,4 +313,12 @@ export default {
   operationsPopoverAction: 'Action & Accountability',
   operationsPopoverNoData: 'No data',
   operationsPopoverDate: 'Date of the assessment',
+  nationalSocietiesCountries: '({value} countries out of {total})',
+  nationalSocietiesTitle: 'National Societies engaged in the PER process',
+  globalPreparednessTitle: 'Global Preparedness Highlights',
+  globalPreparednessHighPerforming: 'High Performing Components (globally)',
+  globalPreparednessTopPrioritized: 'Top Prioritized Components (globally)',
+  globalPreparednessPermission: 'You can only see this data if you have the correct permissions.',
+  contactPerTitle: 'Contact PER team',
+  contactPerDetails: 'Click on the button to contact PER team if you have any questions regarding the PER process.',
 };
