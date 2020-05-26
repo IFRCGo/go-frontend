@@ -66,6 +66,14 @@ function Covid19ThreeWSankey (p) {
 
   return (
     <div className={_cs(className, styles.covid19ThreeWSankey)}>
+      <div className={styles.header}>
+        <h3 className={styles.heading}>
+          Movement COVID-19 Response - National Society Who does What Where (3w)
+        </h3>
+        <div className={styles.description}>
+          The Sankey chart below depicts the flow of National Society support. On the left are the National Societies providing the support, in the middle are the sectors and on the right are the countries where the projects are taking place. The thickness of the lines represents the number of projects.
+        </div>
+      </div>
       <Filters
         value={nsActivityFilters}
         data={nationalSocietyActivitiesWoFilters}
