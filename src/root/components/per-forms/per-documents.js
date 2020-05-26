@@ -4,6 +4,9 @@ import { environment } from '#config';
 import { getRegionById } from '#utils/region-constants';
 import { PropTypes as T } from 'prop-types';
 
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
+
 const PerDocuments = ({perOverviewForm, perForm}) => {
   const groupedDocuments = {};
   if (perOverviewForm.fetched) {
@@ -44,6 +47,7 @@ const PerDocuments = ({perOverviewForm, perForm}) => {
   }
 
   const renderPerFormDocuments = (documents) => {
+    const { strings } = this.context;
     const regions = [];
     Object.keys(documents).forEach((regionKey, regionIndex) => {
       const countries = [];
@@ -56,10 +60,12 @@ const PerDocuments = ({perOverviewForm, perForm}) => {
             perDocuments.push((<React.Fragment key={'documentoverviewrow' + document.id}>
               <div className='list__each__block flex'>
                 <div key={'documentov' + document.id}>
-                  Overview - {document.date_of_current_capacity_assessment.substring(0, 10)} - {typeof document.user !== 'undefined' && document.user !== null ? document.user.first_name + ' ' + document.user.last_name : null}
+                  {strings.perdocumentOverview} - {document.date_of_current_capacity_assessment.substring(0, 10)} - {typeof document.user !== 'undefined' && document.user !== null ? document.user.first_name + ' ' + document.user.last_name : null}
                 </div>
                 <div className='list__each__button'>
-                  <Link className='button button--small button--secondary-bounded' to={'/view-per-forms/overview/' + document.id}>View</Link>
+                  <Link className='button button--small button--secondary-bounded' to={'/view-per-forms/overview/' + document.id}>
+                    <Translate stringId='perdocumentView'/>
+                  </Link>
                 </div>
               </div>
             </React.Fragment>));
@@ -70,7 +76,9 @@ const PerDocuments = ({perOverviewForm, perForm}) => {
                   {document.code.toUpperCase()} - {document.name} - {document.updated_at.substring(0, 10)} - {typeof document.user !== 'undefined' && document.user !== null ? document.user.username : null}
                 </div>
                 <div className='list__each__button'>
-                  <Link className='button button--small button--secondary-bounded' to={'/view-per-forms/' + document.code + '/' + document.id}>View</Link>
+                  <Link className='button button--small button--secondary-bounded' to={'/view-per-forms/' + document.code + '/' + document.id}>
+                    <Translate stringId='perdocumentView'/>
+                  </Link>
                 </div>
               </div>
             </React.Fragment>));
@@ -87,6 +95,8 @@ const PerDocuments = ({perOverviewForm, perForm}) => {
     <span className='text-semi-bold'>{renderPerFormDocuments(groupedDocuments)}</span>
   </React.Fragment>);
 };
+
+PerDocuments.contextType = LanguageContext;
 
 if (environment !== 'production') {
   PerDocuments.propTypes = {
