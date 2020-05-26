@@ -5,23 +5,26 @@ import {
 } from '../../form-elements';
 import { PropTypes as T } from 'prop-types';
 import { environment } from '#config';
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
 
 class ExplanationBubble extends React.Component {
   render () {
+    const { strings } = this.context;
     return (
       <figcaption className='map-vis__legend map-vis__legend--bottom-right legend'>
         <form className='form'>
           <FormRadioGroup
-            label='Scale points by'
+            label={strings.explanationBubbleScalePoints}
             name='map-scale'
             classWrapper='map-scale-options'
             options={[
               {
-                label: '# of people targeted',
+                label: strings.explanationBubblePopulationLabel,
                 value: 'population'
               },
               {
-                label: 'IFRC financial requirements',
+                label: strings.explanationBubbleAmountLabel,
                 value: 'amount'
               }
             ]}
@@ -30,21 +33,31 @@ class ExplanationBubble extends React.Component {
             onChange={this.props.onFieldChange} />
         </form>
         <div className='key'>
-          <label className='form__label'>Type</label>
+          <label className='form__label'>
+            <Translate stringId='explanationBubbleType'/>
+          </label>
           <dl className='legend__dl legend__dl--colors'>
             <dt className='color color--red'>Red</dt>
-            <dd>Emergency appeal</dd>
+            <dd>
+              <Translate stringId='explanationBubbleEmergencyAppeal'/>
+            </dd>
             <dt className='color color--yellow'>Yellow</dt>
-            <dd>DREF</dd>
+            <dd>
+              <Translate stringId='explanationBubbleDref'/>
+            </dd>
             <dt className='color color--grey'>Grey</dt>
-            <dd>Movement response</dd>
+            <dd>
+              <Translate stringId='explanationBubbleMovement'/>
+            </dd>
             <dt className='color color--blue'>Grey</dt>
-            <dd>Multiple types</dd>
+            <dd>
+              <Translate stringId='explanationBubbleMultiple'/>
+            </dd>
           </dl>
         </div>
         {this.props.deployments ? (
           <div className='legend__block'>
-            <h3 className='legend__title'>{this.props.deploymentsKey || 'Deployments'}</h3>
+            <h3 className='legend__title'>{this.props.deploymentsKey || strings.explanationBubbleDeployments}</h3>
             <dl className='legend__grandient'>
               <dt style={{background: 'linear-gradient(to right, #F0C9E8, #861A70)'}}>Scale Gradient</dt>
               <dd>
@@ -68,5 +81,5 @@ if (environment !== 'production') {
     deploymentsKey: T.string
   };
 }
-
+ExplanationBubble.contextType = LanguageContext;
 export default ExplanationBubble;
