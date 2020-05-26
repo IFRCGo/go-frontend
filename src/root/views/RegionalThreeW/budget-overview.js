@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import _cs from 'classnames';
 import FormattedNumber from '#components/formatted-number';
+import LanguageContext from '#root/languageContext';
 
 function TextOutput (p) {
   const {
@@ -30,14 +31,15 @@ function BudgetOverview (p) {
     className,
   } = p;
 
+  const { strings } = useContext(LanguageContext);
   return (
     <div className={_cs(className, 'budget-overview')}>
       <TextOutput
-        label="NS with ongoing activities"
+        label={strings.budgetOverviewNSOngoingActivity}
         value={nsCountWithOngoingActivity}
       />
       <TextOutput
-        label="Total budget"
+        label={strings.butgetOverviewTotalBudget}
         value={totalBudget}
       />
     </div>

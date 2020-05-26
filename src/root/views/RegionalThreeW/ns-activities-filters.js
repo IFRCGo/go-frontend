@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Faram from '@togglecorp/faram';
 
 import SelectInput from '#components/form-elements/select-input';
 import { countryNameMapByIso } from '#utils/field-report-constants';
+import FormattedNumber from '#components/formatted-number';
+import LanguageContext from '#root/languageContext';
 
 const filterSchema = {
   fields: {
@@ -46,6 +48,7 @@ function NSActivitiesFilters (p) {
     (data.nodes || []).filter(d => d.type === 'receiving_ns').map(toLabelValue).sort(compareString),
   ], [data]);
 
+  const { strings } = useContext(LanguageContext);
   return (
     <Faram
       className='regional-ns-activity-filter'
@@ -55,24 +58,24 @@ function NSActivitiesFilters (p) {
     >
       <SelectInput
         faramElementName='reporting_ns'
-        label='Supporting NS'
-        placeholder='Select Who (Reporting NS)'
+        label={strings.nsActivityReporting}
+        placeholder={strings.nsActivityReportingPlaceholder}
         options={supportingNSOptions}
         className='select-input'
         multi
       />
       <SelectInput
         faramElementName='primary_sector'
-        label='Activity'
-        placeholder='Select What (Sector)'
+        label={strings.nsActivitySector}
+        placeholder={strings.nsActivitySectorPlaceholder}
         options={activityOptions}
         className='select-input'
         multi
       />
       <SelectInput
         faramElementName='project_country'
-        label='Receiving NS'
-        placeholder='Select Where (Country)'
+        label={strings.nsActivityCountry}
+        placeholder={strings.nsActivityCountryPlaceholder}
         options={receivingNSOptions}
         className='select-input'
         multi
