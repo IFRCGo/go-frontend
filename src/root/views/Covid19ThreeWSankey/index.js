@@ -2,19 +2,19 @@ import React from 'react';
 import { connect } from 'react-redux';
 import _cs from 'classnames';
 
-import BlockLoading from '../../components/block-loading';
-import ThreeWSankey from '../../components/ThreeWSankey';
+import BlockLoading from '#components/block-loading';
+import ThreeWSankey from '#components/ThreeWSankey';
 import {
   getNationalSocietyActivities as getNationalSocietyActivitiesAction,
   getNationalSocietyActivitiesWoFilters as getNationalSocietyActivitiesWoFiltersAction,
-} from '../../actions';
+} from '#actions';
 
 import {
   nationalSocietyActivitiesSelector,
   nationalSocietyActivitiesWoFiltersSelector,
-} from '../../selectors';
+} from '#selectors';
 
-import { getDataFromResponse } from '../../utils/request';
+import { getDataFromResponse } from '#utils/request';
 import Filters from './Filters';
 import styles from './styles.module.scss';
 

@@ -24,7 +24,7 @@ import Region from '#views/region';
 import Country from '#views/countries';
 import Deployments from '#views/deployments';
 import Table from '#views/table';
-import Covid19ThreeWSankey from './views/Covid19ThreeWSankey';
+import Covid19ThreeWSankey from '#views/Covid19ThreeWSankey';
 
 import PerForms from '#views/per-forms';
 import ViewPerForms from '#views/view-per-forms';
