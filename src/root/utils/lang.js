@@ -27,7 +27,8 @@ export function resolveToString(template, params) {
   return resolvedParts.join('');
 }
 
-export function resolveToComponent(template, params) {
+const emptyObject = {};
+export function resolveToComponent(template, params=emptyObject) {
   if (!isDefined(template)) {
     return '';
   }
@@ -48,7 +49,10 @@ export function resolveToComponent(template, params) {
 
     return (
       <React.Fragment>
-        { part.replace(`${key}}`, params[key]) }
+        {/* Remove the key */}
+        { part.replace(`${key}}`, '')}
+        {/* And, replace with associated component */}
+        { params[key] }
       </React.Fragment>
     );
   });

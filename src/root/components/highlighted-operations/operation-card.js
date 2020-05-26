@@ -4,7 +4,6 @@ import { environment } from '#config';
 import { PropTypes } from 'prop-types';
 import { formatDate, percent, round, commaSeparatedNumber as n } from '#utils/format';
 import Progress from './../progress-labeled';
-import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 
 const OperationCard = ({operationId, operationName, emergencyDeployments, appeals, lastUpdate}) => {
@@ -70,7 +69,6 @@ const OperationCard = ({operationId, operationName, emergencyDeployments, appeal
   );
 };
 
-OperationCard.contextType = LanguageContext;
 export default OperationCard;
 
 if (environment !== 'production') {
