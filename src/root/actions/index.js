@@ -83,7 +83,7 @@ export function getRegionalMovementActivities (regionId, filters) {
 export const GET_NATIONAL_SOCIETY_ACTIVITIES = 'GET_NATIONAL_SOCIETY_ACTIVITIES';
 export function getNationalSocietyActivities (regionId, filters) {
   const filtersWithRegion = {
-    regions: regionId,
+    region: regionId,
     ...filters,
   };
   const query = buildAPIQS(filtersWithRegion, { arrayFormat: 'comma' });
@@ -95,7 +95,7 @@ export function getNationalSocietyActivities (regionId, filters) {
 export const GET_NATIONAL_SOCIETY_ACTIVITIES_WO_FILTERS = 'GET_NATIONAL_SOCIETY_ACTIVITIES_WO_FILTERS';
 export function getNationalSocietyActivitiesWoFilters (regionId, filters) {
   const filtersWithRegion = {
-    regions: regionId,
+    region: regionId,
     ...filters,
   };
   const query = buildAPIQS(filtersWithRegion, { arrayFormat: 'comma' });
