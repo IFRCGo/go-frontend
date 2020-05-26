@@ -455,7 +455,7 @@ export default {
   accountDisasterCategoryDescription: 'Get notified about new disasters in these categories.',
   accountSurgeNotification: 'Surge Notifications',
   acccountOtherNotification: 'Other Notifications',
-  accountUnfollow: 'Inflow',
+  accountUnfollow: 'Unfollow',
   accountCurrentlyFollowing: 'Operations currently following',
   accountTitle: 'IFRC Go - Account',
   accountSubscriptionError: 'Subscriptions coming soon',
