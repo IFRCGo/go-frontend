@@ -66,18 +66,13 @@ import { NO_DATA } from '#utils/constants';
 // import { getRegionSlug } from '#utils/region-constants';
 import { getISO3 } from '#utils/country-iso';
 
+import Translate from '#components/Translate';
+import LanguageContext from '#root/LanguageContext';
+
 import ThreeW from './ThreeW';
 // import CountryOverview from './CountryOverview';
 
 const emptyObject = {};
-
-const TAB_DETAILS = [
-  { title: 'Operations', hash: '#operations' },
-  { title: '3w', hash: '#3w' },
-  // { title: 'Country Overview', hash: '#overview' },
-  { title: 'Preparedness', hash: '#preparedness' },
-  { title: 'Additional Information', hash: '#additional' }
-];
 
 const filterPaths = {
   ns: 'parent.name',
@@ -93,13 +88,14 @@ const getCountryId = idOrName => {
   return idOrName;
 };
 
+const {strings } = this.context;
 class AdminArea extends SFPComponent {
   // Methods form SFPComponent:
   // handlePageChange (what, page)
   // handleFilterChange (what, field, value)
   // handleSortChange (what, field)
 
-  constructor (props) {
+  constructor (props, context) {
     super(props);
     this.state = {
       appeals: {
@@ -123,6 +119,26 @@ class AdminArea extends SFPComponent {
     this.setPersistentMapFilter = this.setPersistentMapFilter.bind(this);
     this.removeMapFilter = this.removeMapFilter.bind(this);
     this.componentIsLoading = true;
+
+    this.TAB_DETAILS = [
+        {
+            title: strings.regionOperationTab,
+            hash: '#operations'
+        },
+        {
+            title: strings.region3WTab,
+            hash: '#3w'
+        },
+        // { title: 'Country Overview', hash: '#overview' },
+        {
+            title: strings.regionPreparedness,
+            hash: '#preparedness'
+        },
+        {
+            title: strings.regionAdditionalTabs,
+            hash: '#additional'
+        },
+    ];
   }
 
   // eslint-disable-next-line camelcase
@@ -167,7 +183,7 @@ class AdminArea extends SFPComponent {
   }
   // Sets default tab if url param is blank or incorrect
   displayTabContent () {
-    const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
+    const tabHashArray = this.TAB_DETAILS.map(({ hash }) => hash);
     if (!tabHashArray.find(hash => hash === this.props.location.hash)) {
       this.props.history.replace(`${this.props.location.pathname}${tabHashArray[0]}`);
     }
@@ -332,7 +348,7 @@ class AdminArea extends SFPComponent {
           label: (
             <FilterHeader
               id='date'
-              title='Start Date'
+              title={strings.countryTableDate}
               options={dateOptions}
               filter={this.state.appeals.filters.date}
               onSelect={this.handleFilterChange.bind(this, 'appeals', 'date')}
@@ -344,19 +360,19 @@ class AdminArea extends SFPComponent {
           label: (
             <SortHeader
               id='name'
-              title='Name'
+              title={strings.countryTableName}
               sort={this.state.appeals.sort}
               onClick={this.handleSortChange.bind(this, 'appeals', 'name')}
             />
           )
         },
-        { id: 'event', label: 'Emergency' },
+        { id: 'event', label: strings.countryTableEmergency},
         {
           id: 'dtype',
           label: (
             <FilterHeader
               id='dtype'
-              title='Disaster Type'
+              title={strings.countryTableDisasterType}
               options={dTypeOptions}
               filter={this.state.appeals.filters.dtype}
               onSelect={this.handleFilterChange.bind(this, 'appeals', 'dtype')}
@@ -368,7 +384,7 @@ class AdminArea extends SFPComponent {
           label: (
             <SortHeader
               id='amount_requested'
-              title='Requested Amount (CHF)'
+              title={strings.countryTableRequestAmount}
               sort={this.state.appeals.sort}
               onClick={this.handleSortChange.bind(this, 'appeals', 'amount_requested')}
             />
@@ -379,13 +395,13 @@ class AdminArea extends SFPComponent {
           label: (
             <SortHeader
               id='amount_funded'
-              title='Funding (CHF)'
+              title={strings.countryTableFundedAmount}
               sort={this.state.appeals.sort}
               onClick={this.handleSortChange.bind(this, 'appeals', 'amount_funded')}
             />
           )
         },
-        { id: 'active', label: 'Active' }
+        { id: 'active', label: strings.countryTableActive}
       ];
 
       const rows = data.results.map(o => ({
@@ -415,7 +431,7 @@ class AdminArea extends SFPComponent {
           />
           <div className='fold__footer'>
             <Link className='link--primary export--link' to={'/appeals/all/?country=' + id}>
-              View All Operations For {name}
+                <Translate stringId='countryTableViewAll' />{name}
             </Link>
           </div>
         </React.Fragment>
@@ -553,7 +569,7 @@ class AdminArea extends SFPComponent {
     // const { partnerDeployments } = this.props;
 
     const handleTabChange = index => {
-      const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
+      const tabHashArray =this.TAB_DETAILS.map(({ hash }) => hash);
       const url = this.props.location.pathname;
       this.props.history.replace(`${url}${tabHashArray[index]}`);
     };
@@ -589,11 +605,11 @@ class AdminArea extends SFPComponent {
           </div>
         </section>
         <Tabs
-          selectedIndex={TAB_DETAILS.map(({ hash }) => hash).indexOf(this.props.location.hash)}
+          selectedIndex={this.TAB_DETAILS.map(({ hash }) => hash).indexOf(this.props.location.hash)}
           onSelect={index => handleTabChange(index)}
         >
           <TabList>
-            {TAB_DETAILS.map(tab => (
+            {this.TAB_DETAILS.map(tab => (
               <Tab key={tab.title}>{tab.title}</Tab>
             ))}
           </TabList>
@@ -797,6 +813,8 @@ const dispatcher = dispatch => ({
   _getPerMission: (...args) => dispatch(getPerMission(...args)),
   _getAppealsListStats: (...args) => dispatch(getAppealsListStats(...args)),
 });
+
+AdminArea.contextType = LanguageContext;
 
 export default connect(
   selector,
