@@ -400,6 +400,7 @@ export default {
   tableAllAlertsTitle: 'All Surge Alerts',
   tableAllEruTitle: 'All Deployed ERUs',
   tableAllPersonnel: 'All Deployed Personnel',
+
   uhohPageNotFoundTitle: 'IFRC Go - Page not found',
   uhohPageNotFound: 'Page not found',
   uhohPageDescription: 'The requested page does not exist or may have been removed.',
