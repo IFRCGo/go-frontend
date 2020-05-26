@@ -82,7 +82,7 @@ function Covid19ThreeWSankey (p) {
       { nationalSocietyActivitiesPending ? (
         <BlockLoading />
       ) : (
-        <ThreeWSankey data={nationalSocietyActivities} />
+        <ThreeWSankey className={styles.chart} data={nationalSocietyActivities} />
       )}
     </div>
   );
