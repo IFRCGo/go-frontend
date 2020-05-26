@@ -49,10 +49,10 @@ export function resolveToComponent(template, params=emptyObject) {
 
     return (
       <React.Fragment>
-        {/* Remove the key */}
-        { part.replace(`${key}}`, '')}
         {/* And, replace with associated component */}
         { params[key] }
+        {/* Remove the key */}
+        { part.replace(`${key}}`, '')}
       </React.Fragment>
     );
   });
