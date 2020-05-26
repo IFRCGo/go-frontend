@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -13,6 +13,9 @@ import {
 import PerDraftDocuments from './per-drafts';
 import PerDocuments from './per-documents';
 
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
+
 const RESULT_TYPES = {
   COUNTRY: 1,
   CLUSTER: 2,
@@ -23,6 +26,8 @@ const RESULT_TYPES = {
 
 const PerAccountTab = props => {
   const [chosenCountry, setChosenCountry] = useState({ id: 0, society_name: '' });
+
+  const { strings } = useContext(LanguageContext);
 
   const changeChosenCountry = e => {
     let filteredCountry = props.perForm.getPerCountries.data.results.filter(country => country.id === parseInt(e.target.value));
@@ -47,27 +52,27 @@ const PerAccountTab = props => {
   const formButtons = [
     {
       link: 'policy-strategy',
-      title: 'Area 1: Policy and Standards'
+      title: strings.perAccountPoliceStrategy,
     },
     {
       link: 'analysis-and-planning',
-      title: 'Area 2: Analysis and Planning'
+      title: strings.perAccountAnalysis,
     },
     {
       link: 'operational-capacity',
-      title: 'Area 3: Operational capacity'
+      title: strings.perAccountOperationalCapacity,
     },
     {
       link: 'operational-capacity-2',
-      title: 'Area 3: Operational capacity 2'
+      title: strings.perAccountOperationalCapacity2,
     },
     {
       link: 'coordination',
-      title: 'Area 4: Coordination'
+      title: strings.perAccountCoordination,
     },
     {
       link: 'operations-support',
-      title: 'Area 5: Operations support'
+      title: strings.perAccountSupport,
     }
   ];
 
@@ -75,11 +80,15 @@ const PerAccountTab = props => {
     <div className='fold-container'>
       <section className='fold' id='per-forms'>
         <div className='inner'>
-          <h2 className='fold__title margin-reset'>New PER Forms</h2>
+          <h2 className='fold__title margin-reset'>
+            <Translate stringId='perAccountTitle'/>
+          </h2>
           <hr />
-          <p>Click on the following links to access the PER forms, where you can select individual National Societies.</p>
+          <p>
+            <Translate stringId='perAccountDescription'/>
+          </p>
           <br />
-          Choose National Society:&nbsp;
+          <Translate stringId='perAccountChooseCountry'/>
           <select onChange={changeChosenCountry}>
             {countryOptions}
           </select><br /><br />
@@ -87,7 +96,7 @@ const PerAccountTab = props => {
             <Link
               to={`/per-forms/overview/${chosenCountry.id}`}
               className='button button--medium button--secondary-bounded'>
-              Overview
+              <Translate stringId='perAccountOverview'/>
             </Link>
           </div>
           <div className='clearfix'>
@@ -103,7 +112,9 @@ const PerAccountTab = props => {
             ))}
           </div>
           <br /><br />
-          <h2 className='fold__title margin-reset'>Active PER Forms</h2>
+          <h2 className='fold__title margin-reset'>
+            <Translate stringId='perAccountActiveForms'/>
+          </h2>
           <hr />
           <PerDocuments perForm={props.perForm} perOverviewForm={props.perOverviewForm}/>
           <PerDraftDocuments
