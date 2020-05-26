@@ -1,0 +1,18 @@
+@import '~styles/settings/_variables.scss';
+
+.globalThreeWSankey {
+  height: 800px;
+}
+
+.sankeyLink {
+  fill: $secondary-color;
+  fill-opacity: 0.1;
+
+  &.sankeyLinkLeft {
+    fill: $primary-color;
+  }
+
+  &:hover {
+    fill-opacity: 0.4;
+  }
+}
