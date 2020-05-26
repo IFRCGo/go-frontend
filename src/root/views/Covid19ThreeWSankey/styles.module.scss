@@ -1,10 +1,22 @@
 @import '../../../styles/settings/_variables.scss';
 
 .covid19ThreeWSankey {
+  height: 100vh;
   background-color: #fff;
+  display: flex;
+  flex-direction: column;
 
   .header {
     padding: 10px;
+    flex-shrink: 0;
+  }
+
+  .filters {
+    flex-shrink: 0;
+  }
+
+  .chart {
+    flex-grow: 1;
   }
 }
 

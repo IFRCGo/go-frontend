@@ -1,5 +1,6 @@
 import React from 'react';
 import Faram from '@togglecorp/faram';
+import _cs from 'classnames';
 
 import SelectInput from '../../components/form-elements/select-input';
 import { countryNameMapByIso } from '../../utils/field-report-constants';
@@ -32,6 +33,7 @@ function NSActivitiesFilters (p) {
     value,
     onChange,
     data = emptyData,
+    className,
   } = p;
 
   const [
@@ -50,7 +52,7 @@ function NSActivitiesFilters (p) {
 
   return (
     <Faram
-      className={styles.filters}
+      className={_cs(className, styles.filters)}
       schema={filterSchema}
       value={value}
       onChange={onChange}
