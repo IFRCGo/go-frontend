@@ -3,25 +3,41 @@ import React from 'react';
 import { PropTypes as T } from 'prop-types';
 import { environment } from '#config';
 
+import Translate from '#components/Translate';
+
 class ExplanationBubble extends React.Component {
   render () {
     return (
       <figcaption className='map-vis__legend map-vis__legend--bottom-right legend'>
         <div>
-          <label className='form__label'>Current PER phase</label>
+          <label className='form__label'>
+            <Translate stringId='explanationBubbleCurrentPerPhase'/>
+          </label>
           <dl className='legend__dl legend__dl--colors'>
             <dt className='color color--orientation'>Green</dt>
-            <dd>Orientation</dd>
+            <dd>
+              <Translate stringId='explanationBubbleOrientation'/>
+            </dd>
             <dt className='color color--assessment'>Red</dt>
-            <dd>Assessment</dd>
+            <dd>
+              <Translate stringId='explanationBubbleAssessment'/>
+            </dd>
             <dt className='color color--prioritization'>Blue</dt>
-            <dd>Prioritization & Analysis</dd>
+            <dd>
+              <Translate stringId='explanationBubblePrioritization'/>
+            </dd>
             <dt className='color color--work'>Purple</dt>
-            <dd>Work Plan</dd>
+            <dd>
+              <Translate stringId='explanationBubbleWorkPlan'/>
+            </dd>
             <dt className='color color--action'>Orange</dt>
-            <dd>Action & Accountability</dd>
+            <dd>
+              <Translate stringId='explanationBubbleAction'/>
+            </dd>
             <dt className='color color--grey'>Grey</dt>
-            <dd>Incomplete</dd>
+            <dd>
+              <Translate stringId='explanationBubbleIncomplete'/>
+            </dd>
           </dl>
         </div>
       </figcaption>
