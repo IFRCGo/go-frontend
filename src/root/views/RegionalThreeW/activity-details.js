@@ -6,13 +6,13 @@ import {
 } from '@togglecorp/fujs';
 import { MdChevronRight } from 'react-icons/md';
 
-import TextOutput from '../../components/text-output';
-import BlockLoading from '../../components/block-loading';
+import TextOutput from '#components/text-output';
+import BlockLoading from '#components/block-loading';
 
-import { getResultsFromResponse } from '../../utils/request';
-import { getProjects as getProjectsAction } from '../../actions';
-import { countryProjectSelector } from '../../selectors';
-import { sectors } from '../../utils/constants';
+import { getResultsFromResponse } from '#utils/request';
+import { getProjects as getProjectsAction } from '#actions';
+import { countryProjectSelector } from '#selectors';
+import { sectors } from '#utils/constants';
 
 const emptyObject = {};
 

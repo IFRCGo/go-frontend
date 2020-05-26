@@ -1,6 +1,6 @@
 import React from 'react';
 import _cs from 'classnames';
-import FormattedNumber from '../../components/formatted-number';
+import FormattedNumber from '#components/formatted-number';
 
 function TextOutput (p) {
   const {

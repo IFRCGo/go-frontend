@@ -7,15 +7,15 @@ import {
   addSeparator,
 } from '@togglecorp/fujs';
 
-import { countryIsoMapById } from '../../utils/field-report-constants';
-import { getDistrictsForCountryPF } from '../../actions';
+import { countryIsoMapById } from '#utils/field-report-constants';
+import { getDistrictsForCountryPF } from '#actions';
 
-import { getBoundingBox } from '../../utils/country-bounding-box';
-import DownloadButton from '../../components/map/common/download-button';
-import MapHeader from '../../components/map/common/map-header';
-import MapFooter from '../../components/map/common/map-footer';
+import { getBoundingBox } from '#utils/country-bounding-box';
+import DownloadButton from '#components/map/common/download-button';
+import MapHeader from '#components/map/common/map-header';
+import MapFooter from '#components/map/common/map-footer';
 
-import newMap from '../../utils/get-new-map';
+import newMap from '#utils/get-new-map';
 
 const emptyList = [];
 const emptyObject = {};

@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import { saveAs } from 'file-saver';
 import _cs from 'classnames';
 
-import { getResultsFromResponse } from '../../utils/request';
-import { convertJsonToCsv } from '../../utils/utils';
-import { getRegionalProjects as getRegionalProjectsAction } from '../../actions';
-import { regionalProjectsSelector } from '../../selectors';
+import { getResultsFromResponse } from '#utils/request';
+import { convertJsonToCsv } from '#utils/utils';
+import { getRegionalProjects as getRegionalProjectsAction } from '#actions';
+import { regionalProjectsSelector } from '#selectors';
 
 import exportHeaders from '../ThreeW/export-headers';
 

@@ -9,17 +9,17 @@ import Select from 'react-select';
 import Ajv from 'ajv';
 import ajvKeywords from 'ajv-keywords';
 
-import { environment } from '../../config';
+import { environment } from '#config';
 import {
   step1 as schemaStep1,
   step2 as schemaStep2,
   step3 as schemaStep3,
   step4 as schemaStep4
 } from '../../schemas/field-report-form';
-import * as formData from '../../utils/field-report-constants';
-import { showAlert } from '../../components/system-alerts';
-import { createFieldReport, updateFieldReport, getFieldReportById, getDistrictsForCountry, getActions } from '../../actions';
-import { showGlobalLoading, hideGlobalLoading } from '../../components/global-loading';
+import * as formData from '#utils/field-report-constants';
+import { showAlert } from '#components/system-alerts';
+import { createFieldReport, updateFieldReport, getFieldReportById, getDistrictsForCountry, getActions } from '#actions';
+import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 import {
   dataPathToDisplay,
   prepStateForValidation,
@@ -32,14 +32,14 @@ import {
 } from './data-utils';
 
 import App from '../app';
-import Fold from '../../components/fold';
+import Fold from '#components/fold';
 import {
   FormInput,
   FormInputSelect,
   FormTextarea,
   FormRadioGroup,
   FormError
-} from '../../components/form-elements/';
+} from '#components/form-elements/';
 import ActionsCheckboxes from './cmp-action-checkboxes.js';
 import ContactRow from './cmp-contact-row.js';
 import PlanResponseRow from './cmp-planned-response-row.js';

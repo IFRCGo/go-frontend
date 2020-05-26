@@ -2,14 +2,14 @@ import React from 'react';
 import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 
-import { environment } from '../config';
+import { environment } from '#config';
 
-import Header from '../components/header';
-import MobileHeader from '../components/mobile-header';
-import Footer from '../components/footer';
-import GlobalLoading from '../components/global-loading';
-import GlobalHeaderBanner from '../components/global-header-banner';
-import SysAlerts from '../components/system-alerts';
+import Header from '#components/header';
+import MobileHeader from '#components/mobile-header';
+import Footer from '#components/footer';
+import GlobalLoading from '#components/global-loading';
+import GlobalHeaderBanner from '#components/global-header-banner';
+import SysAlerts from '#components/system-alerts';
 
 class App extends React.Component {
   render () {

@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { countryIsoMapById } from '../../utils/field-report-constants';
+import { countryIsoMapById } from '#utils/field-report-constants';
 
-import { getBoundingBox } from '../../utils/country-bounding-box';
-import newMap from '../../utils/get-new-map';
+import { getBoundingBox } from '#utils/country-bounding-box';
+import newMap from '#utils/get-new-map';
 
 export default class ThreeWMap extends React.PureComponent {
   constructor (props) {

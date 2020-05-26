@@ -5,12 +5,12 @@ import { PropTypes as T } from 'prop-types';
 import { Helmet } from 'react-helmet';
 
 import App from './app';
-import FieldReportsTable from '../components/connected/field-reports-table';
-import EmergenciesDash from '../components/connected/emergencies-dash';
-import EmergenciesTable from '../components/connected/emergencies-table';
+import FieldReportsTable from '#components/connected/field-reports-table';
+import EmergenciesDash from '#components/connected/emergencies-dash';
+import EmergenciesTable from '#components/connected/emergencies-table';
 
-import { getLastMonthsEmergencies, getAggregateEmergencies } from '../actions';
-import { environment } from '../config';
+import { getLastMonthsEmergencies, getAggregateEmergencies } from '#actions';
+import { environment } from '#config';
 
 class Emergencies extends React.Component {
   componentDidMount () {

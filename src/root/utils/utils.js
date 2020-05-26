@@ -10,7 +10,7 @@ import { isNotDefined } from '@togglecorp/fujs';
 import { getCentroid } from './country-centroids';
 import { disasterType } from './field-report-constants';
 import { getDtypeMeta } from './get-dtype-meta';
-import { appealTypes } from './../utils/appeal-type-constants';
+import { appealTypes } from '#utils/appeal-type-constants';
 
 // lodash.get will only return the defaultValue when
 // the path is undefined. We want to also catch null and ''

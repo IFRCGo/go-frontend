@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 
-import { getCentroid } from '../utils/country-centroids';
-import { stateInflight, stateError, stateSuccess } from '../utils/reducer-utils';
-import { get, groupByDisasterType, mostRecentReport } from '../utils/utils';
+import { getCentroid } from '#utils/country-centroids';
+import { stateInflight, stateError, stateSuccess } from '#utils/reducer-utils';
+import { get, groupByDisasterType, mostRecentReport } from '#utils/utils';
 
 const listInitialState = {
   fetching: false,

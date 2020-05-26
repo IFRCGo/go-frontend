@@ -1,8 +1,8 @@
 import React from 'react';
 import Faram from '@togglecorp/faram';
 
-import SelectInput from '../../components/form-elements/select-input';
-import { countryNameMapByIso } from '../../utils/field-report-constants';
+import SelectInput from '#components/form-elements/select-input';
+import { countryNameMapByIso } from '#utils/field-report-constants';
 
 const filterSchema = {
   fields: {

@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
-import { environment } from '../../config';
+import { environment } from '#config';
 import {
   getPerCountries,
   getPerDraftDocument,
   getPerDocuments,
   deletePerDraft,
   getPerOverviewFormStrict as getPerOverviewForm
-} from '../../actions';
+} from '#actions';
 import PerDraftDocuments from './per-drafts';
 import PerDocuments from './per-documents';
 

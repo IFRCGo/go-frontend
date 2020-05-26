@@ -1,5 +1,5 @@
 import React from 'react';
-import { showAlert, hideAllAlert } from './../components/system-alerts';
+import { showAlert, hideAllAlert } from '#components/system-alerts';
 
 export function startDownload (renderedCanvas, filename) {
   let dataUri = null;

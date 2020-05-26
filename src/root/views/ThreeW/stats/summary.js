@@ -4,7 +4,7 @@ import {
   unique,
 } from '@togglecorp/fujs';
 
-import FormattedNumber from '../../../components/formatted-number';
+import FormattedNumber from '#components/formatted-number';
 
 const SummaryElement = (p) => {
   const {

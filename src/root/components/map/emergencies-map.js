@@ -4,13 +4,13 @@ import { PropTypes as T } from 'prop-types';
 import mapboxgl from 'mapbox-gl';
 import { withRouter } from 'react-router-dom';
 
-import { source } from '../../utils/get-new-map';
-import { environment } from '../../config';
+import { source } from '#utils/get-new-map';
+import { environment } from '#config';
 import {
   FormRadioGroup
 } from '../form-elements';
 import MapComponent from './common/map-component';
-import { commaSeparatedNumber as n } from '../../utils/format';
+import { commaSeparatedNumber as n } from '#utils/format';
 
 class EmergenciesMap extends React.Component {
   constructor (props) {

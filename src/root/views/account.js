@@ -10,7 +10,7 @@ import { DateTime } from 'luxon';
 import { set } from 'object-path';
 import { Helmet } from 'react-helmet';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import { environment } from '../config';
+import { environment } from '#config';
 import {
   getUserProfile,
   updateSubscriptions,
@@ -25,22 +25,22 @@ import {
   deletePerDraft,
   getPerOverviewFormStrict as getPerOverviewForm,
   getPerMission
-} from '../actions';
-import { get } from '../utils/utils';
-import { getCountryMeta } from '../utils/get-country-meta';
-import { countries, disasterType, orgTypes } from '../utils/field-report-constants';
-import { apiPropertyDisplay, apiPropertyValue } from '../utils/format';
-import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
-import { showAlert } from '../components/system-alerts';
+} from '#actions';
+import { get } from '#utils/utils';
+import { getCountryMeta } from '#utils/get-country-meta';
+import { countries, disasterType, orgTypes } from '#utils/field-report-constants';
+import { apiPropertyDisplay, apiPropertyValue } from '#utils/format';
+import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
+import { showAlert } from '#components/system-alerts';
 
-import Fold from '../components/fold';
-import TabContent from '../components/tab-content';
-import PerAccountTab from '../components/per-forms/per-account-tab';
+import Fold from '#components/fold';
+import TabContent from '#components/tab-content';
+import PerAccountTab from '#components/per-forms/per-account-tab';
 
 import {
   FormCheckboxGroup,
   FormInput
-} from '../components/form-elements/';
+} from '#components/form-elements/';
 
 import App from './app';
 

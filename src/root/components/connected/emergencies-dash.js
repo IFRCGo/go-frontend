@@ -4,11 +4,11 @@ import { PropTypes as T } from 'prop-types';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
 import { DateTime } from 'luxon';
 
-import { environment } from '../../config';
-import Stats from '../emergencies/stats';
-import EmergenciesMap from '../map/emergencies-map';
-import Progress from '../progress';
-import BlockLoading from '../block-loading';
+import { environment } from '#config';
+import Stats from '#components/emergencies/stats';
+import EmergenciesMap from '#components/map/emergencies-map';
+import Progress from '#components/progress';
+import BlockLoading from '#components/block-loading';
 
 class EmergenciesDash extends React.Component {
   renderEmergencies () {

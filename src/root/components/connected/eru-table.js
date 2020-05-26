@@ -3,17 +3,17 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import eruTypes, { getEruType } from '../../utils/eru-types';
-import { environment } from '../../config';
-import { getDeploymentERU } from '../../actions';
-import { commaSeparatedNumber as n, nope } from '../../utils/format';
-import { get } from '../../utils/utils';
+import eruTypes, { getEruType } from '#utils/eru-types';
+import { environment } from '#config';
+import { getDeploymentERU } from '#actions';
+import { commaSeparatedNumber as n, nope } from '#utils/format';
+import { get } from '#utils/utils';
 
-import ExportButton from '../export-button-container';
-import Fold from '../fold';
-import BlockLoading from '../block-loading';
-import DisplayTable, { SortHeader, FilterHeader } from '../display-table';
-import { SFPComponent } from '../../utils/extendables';
+import ExportButton from '#components/export-button-container';
+import Fold from '#components/fold';
+import BlockLoading from '#components/block-loading';
+import DisplayTable, { SortHeader, FilterHeader } from '#components/display-table';
+import { SFPComponent } from '#utils/extendables';
 
 const eruTypeOptions = [{label: 'All', value: 'all'}].concat(Object.keys(eruTypes).map(type => {
   return {label: eruTypes[type], value: type};

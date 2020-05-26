@@ -1,11 +1,11 @@
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
 
-import { environment } from '../../config';
+import { environment } from '#config';
 import {
   FormInput,
   FormError
-} from '../../components/form-elements/';
+} from '#components/form-elements/';
 
 export default class ContactRow extends React.Component {
   onFieldChange (field, e) {

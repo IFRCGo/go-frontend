@@ -9,15 +9,15 @@ import ajvKeywords from 'ajv-keywords';
 import Select from 'react-select';
 import { Helmet } from 'react-helmet';
 
-import { isValidEmail, isWhitelistedEmail, get } from '../utils/utils';
-import { countries, orgTypes } from '../utils/field-report-constants';
-import { registerUser, getDomainWhitelist } from '../actions';
-import { environment } from '../config';
+import { isValidEmail, isWhitelistedEmail, get } from '#utils/utils';
+import { countries, orgTypes } from '#utils/field-report-constants';
+import { registerUser, getDomainWhitelist } from '#actions';
+import { environment } from '#config';
 
 import App from './app';
-import { FormInput, FormError } from '../components/form-elements/';
-import { showAlert } from '../components/system-alerts';
-import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
+import { FormInput, FormError } from '#components/form-elements/';
+import { showAlert } from '#components/system-alerts';
+import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 import registerSchemaDef from '../schemas/register';
 
 const ajv = new Ajv({ $data: true, allErrors: true, errorDataPath: 'property' });

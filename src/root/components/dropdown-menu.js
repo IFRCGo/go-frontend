@@ -4,7 +4,7 @@ import { _cs } from '@togglecorp/fujs';
 import {
   useBlurEffect,
   useFloatPlacement,
-} from '../hooks';
+} from '#hooks';
 
 import Portal from './portal';
 

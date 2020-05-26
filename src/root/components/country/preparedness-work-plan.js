@@ -2,12 +2,12 @@
 import React from 'react';
 import c from 'classnames';
 import { connect } from 'react-redux';
-import { environment } from '../../config';
+import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 import Fold from './../fold';
-import { getAllComponents, getBenchmarksByComponent } from './../../utils/get-per-components';
+import { getAllComponents, getBenchmarksByComponent } from '#utils/get-per-components';
 import { withRouter } from 'react-router-dom';
-import { sendPerWorkplan, deletePerWorkplanApi } from './../../actions';
+import { sendPerWorkplan, deletePerWorkplanApi } from '#actions';
 
 const PRIORITIZATION = ['Low', 'Mid', 'High'];
 const STATUS = [

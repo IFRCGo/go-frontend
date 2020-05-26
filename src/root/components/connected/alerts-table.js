@@ -4,17 +4,18 @@ import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
 
-import { environment } from '../../config';
-import { getSurgeAlerts } from '../../actions';
-import { get, dateOptions, datesAgo, isLoggedIn } from '../../utils/utils';
-import { nope, privateSurgeAlert, recentInterval } from '../../utils/format';
+import { environment } from '#config';
+import { getSurgeAlerts } from '#actions';
+import { get, dateOptions, datesAgo, isLoggedIn } from '#utils/utils';
+import { nope, privateSurgeAlert, recentInterval } from '#utils/format';
 
-import ExportButton from '../export-button-container';
-import { SFPComponent } from '../../utils/extendables';
-import DisplayTable, { FilterHeader } from '../display-table';
-import BlockLoading from '../block-loading';
-import Fold from '../fold';
-import Expandable from '../expandable';
+// FIXME: imports from the /components/ could be a 1 liner?
+import ExportButton from '#components/export-button-container';
+import { SFPComponent } from '#utils/extendables';
+import DisplayTable, { FilterHeader } from '#components/display-table';
+import BlockLoading from '#components/block-loading';
+import Fold from '#components/fold';
+import Expandable from '#components/expandable';
 
 const alertTypes = {
   0: 'FACT',

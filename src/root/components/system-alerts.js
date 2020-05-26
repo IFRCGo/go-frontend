@@ -2,8 +2,8 @@ import React from 'react';
 import { PropTypes as T } from 'prop-types';
 import { connect } from 'react-redux';
 
-import { environment } from '../config';
-import store from '../utils/store';
+import { environment } from '#config';
+import store from '#utils/store';
 
 import Alert from './alert';
 

@@ -7,22 +7,22 @@ import {
   deleteProject as deleteProjectAction,
   getMe as getMeAction,
   getProjects as getProjectsAction,
-} from '../../actions';
+} from '#actions';
 
 import {
   countryProjectSelector,
   meSelector,
   projectFormSelector,
   projectDeleteSelector,
-} from '../../selectors';
+} from '#selectors';
 
-import ConfirmModal from '../../components/confirm-modal';
-import BlockLoading from '../../components/block-loading';
+import ConfirmModal from '#components/confirm-modal';
+import BlockLoading from '#components/block-loading';
 import {
   getResultsFromResponse,
   getDataFromResponse,
-} from '../../utils/request';
-import { convertJsonToCsv } from '../../utils/utils';
+} from '#utils/request';
+import { convertJsonToCsv } from '#utils/utils';
 
 import Summary from './stats/summary';
 import SectorActivity from './stats/sector-activity';

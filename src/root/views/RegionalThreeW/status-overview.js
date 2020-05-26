@@ -10,7 +10,7 @@ import {
   Cell,
 } from 'recharts';
 
-import FormattedNumber from '../../components/formatted-number';
+import FormattedNumber from '#components/formatted-number';
 
 const colors = {
   'Completed': '#f5333f',

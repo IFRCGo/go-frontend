@@ -4,7 +4,7 @@ import { createLogger } from 'redux-logger';
 import listen from 'redux-listener-middleware';
 import * as localStorage from 'local-storage';
 
-import config from '../config';
+import config from '#config';
 import reducer from '../reducers';
 
 const hydrateUser = () => {

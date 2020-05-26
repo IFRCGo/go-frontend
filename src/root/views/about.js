@@ -1,7 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import App from './app';
-import VideoCarousel from '../components/about/video-carousel';
+import VideoCarousel from '#components/about/video-carousel';
 
 export default class About extends React.Component {
   render () {

@@ -1,11 +1,11 @@
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
 
-import { environment } from '../../config';
+import { environment } from '#config';
 import {
   FormInput,
   FormCheckbox
-} from '../../components/form-elements/';
+} from '#components/form-elements/';
 
 export default class ReportSource extends React.Component {
   constructor (props) {

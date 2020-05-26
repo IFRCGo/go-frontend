@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { environment } from '../../config';
+import { environment } from '#config';
 import { PropTypes } from 'prop-types';
-import { formatDate, percent, round, commaSeparatedNumber as n } from '../../utils/format';
+import { formatDate, percent, round, commaSeparatedNumber as n } from '#utils/format';
 import Progress from './../progress-labeled';
 
 const OperationCard = ({operationId, operationName, emergencyDeployments, appeals, lastUpdate}) => {

@@ -3,8 +3,8 @@ import React from 'react';
 import Fold from './../fold';
 import {
   getPerComponent
-} from './../../utils/get-per-components';
-import { environment } from './../../config';
+} from '#utils/get-per-components';
+import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 
 export default class GlobalPreparednessHighlights extends React.Component {
