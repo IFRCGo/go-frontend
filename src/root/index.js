@@ -7,7 +7,6 @@ import store from '#utils/store';
 import { showAlert } from '#components/system-alerts';
 import { detectIE } from '#utils/ie';
 
-// Views.
 import Home from '#views/home';
 import About from '#views/about';
 import Account from '#views/account';
@@ -25,6 +24,7 @@ import Region from '#views/region';
 import Country from '#views/countries';
 import Deployments from '#views/deployments';
 import Table from '#views/table';
+import Covid19ThreeWSankey from './views/Covid19ThreeWSankey';
 
 import PerForms from '#views/per-forms';
 import ViewPerForms from '#views/view-per-forms';
@@ -89,6 +89,7 @@ const Root = () => (
     <Router>
       <Switch>
         <Route exact path='/' component={Home}/>
+        <Route exact path='/covid19-3w-sankey' component={Covid19ThreeWSankey}/>
         <Route exact path='/about' component={About}/>
         <PrivateRoute exact path='/account' component={Account}/>
         <PrivateRoute exact path='/account/password-change' component={PasswordChange}/>
