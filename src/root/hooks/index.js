@@ -88,3 +88,29 @@ export const useFloatPlacement = (parentRef /* React.RefObject<HTMLElement> */) 
 
   return placement;
 };
+
+function getCurrentHash() {
+  const hash = window.location.hash;
+
+  if (hash) {
+    return hash.substr(1);
+  }
+
+  return undefined;
+}
+
+export function useHash() {
+  const [hash, setHash] = React.useState(getCurrentHash());
+  const handleHashChange = React.useCallback(() => {
+    setHash(getCurrentHash());
+  }, [setHash]);
+  React.useEffect(() => {
+    window.addEventListener('hashchange', handleHashChange);
+
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+    };
+  }, [handleHashChange]);
+
+  return hash;
+}

@@ -78,6 +78,8 @@ function SankeyLink (p) {
   );
 }
 
+const emptyList = [];
+
 function GlobalThreeWSankey (p) {
   const {
     className,
@@ -86,7 +88,7 @@ function GlobalThreeWSankey (p) {
 
   return (
     <div className={_cs(className, styles.globalThreeWSankey)}>
-      { data.length === 0 ? (
+      { (data.links || emptyList).length === 0 ? (
         <div className={styles.emptyMessage}>
           Not enough data to show the chart!
         </div>
