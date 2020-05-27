@@ -48,6 +48,8 @@ import ContactRow from './cmp-contact-row.js';
 import PlanResponseRow from './cmp-planned-response-row.js';
 import SourceEstimation from './cmp-source-estimation.js';
 import EPISourceEstimation from './cmp-source-epi';
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
 
 const ajv = new Ajv({ $data: true, allErrors: true, errorDataPath: 'property' });
 ajvKeywords(ajv);
@@ -902,8 +904,17 @@ class FieldReportForm extends React.Component {
 
     return (
       <div className='validation-result'>
-        <h3>Page {this.state.step} of 4 incomplete.</h3>
-        <p>To continue please fix:</p>
+        <h3>
+          <Translate
+            stringId='fieldReportIncomplete'
+            params={{
+              step: this.state.step,
+            }}
+          />
+        </h3>
+        <p>
+          <Translate stringId='fieldReportFix'/>
+        </p>
         <ul>
           {errors.map(o => <li key={o.dataPath}>{dataPathToDisplay(o.dataPath, o.keyword)}</li>)}
         </ul>
@@ -912,7 +923,8 @@ class FieldReportForm extends React.Component {
   }
 
   render () {
-    const submitTitle = this.state.step === 4 ? 'Submit' : 'Continue';
+    const { strings } = this.context;
+    const submitTitle = this.state.step === 4 ? strings.fieldReportSubmit : strings.fieldReportContinue;
     return (
       <App className='page--frep-form'>
         <Helmet>
@@ -926,7 +938,9 @@ class FieldReportForm extends React.Component {
           <header className='inpage__header'>
             <div className='inner'>
               <div className='iSave and Continuenpage__headline'>
-                <h1 className='inpage__title'>Create Field Report</h1>
+                <h1 className='inpage__title'>
+                  <Translate stringId='fieldReportCreate'/>
+                </h1>
                 {this.renderStepper()}
               </div>
             </div>
@@ -938,7 +952,7 @@ class FieldReportForm extends React.Component {
                 {this.renderErrorSummary()}
 
                 <div className='form__actions text-center'>
-                  <button type='button' className={c('button button--secondary-bounded', {disabled: this.state.step <= 1})} title='Go back to previous step' onClick={this.onStepBackClick}>Back</button>
+                  <button type='button' className={c('button button--secondary-bounded', {disabled: this.state.step <= 1})} title={strings.fieldReportGoBack} onClick={this.onStepBackClick}><Translate stringId='fieldReportBack'/></button>
                   <button type='submit' className='button button--secondary-filled' title={submitTitle}>{submitTitle}</button>
                 </div>
               </form>
@@ -988,5 +1002,5 @@ const dispatcher = (dispatch) => ({
   _getDistrictsForCountry: (...args) => dispatch(getDistrictsForCountry(...args)),
   _getActions: (...args) => dispatch(getActions(...args))
 });
-
+FieldReportForm.contextType = LanguageContext;
 export default connect(selector, dispatcher)(FieldReportForm);

@@ -6,6 +6,7 @@ import {
   FormInput,
   FormError
 } from '#components/form-elements/';
+import LanguageContext from '#root/languageContext';
 
 export default class ContactRow extends React.Component {
   onFieldChange (field, e) {
@@ -24,6 +25,8 @@ export default class ContactRow extends React.Component {
       fieldKey
     } = this.props;
 
+    const { strings } = this.context;
+
     return (
       <div className='form__group contact-row'>
         <div className='form__inner-header'>
@@ -36,7 +39,7 @@ export default class ContactRow extends React.Component {
           <div className='clearfix'>
             <div className='form__group__col__6'>
               <FormInput
-                label='Name'
+                label={strings.cmpContactName}
                 type='text'
                 name={`${name}[name]`}
                 id={`${name}-name`}
@@ -51,7 +54,7 @@ export default class ContactRow extends React.Component {
             </div>
             <div className='form__group__col__6'>
               <FormInput
-                label='Title'
+                label={strings.cmpContactTitle}
                 type='text'
                 name={`${name}[title]`}
                 id={`${name}-title`}
@@ -66,7 +69,7 @@ export default class ContactRow extends React.Component {
             </div>
             <div className='form__group__col__6'>
               <FormInput
-                label='Email'
+                label={strings.cmpContactEmail}
                 type='text'
                 name={`${name}[email]`}
                 id={`${name}-email`}
@@ -81,7 +84,7 @@ export default class ContactRow extends React.Component {
             </div>
             <div className='form__group__col__6'>
               <FormInput
-                label='Phone'
+                label={strings.cmpContactPhone}
                 type='text'
                 name={`${name}[phone]`}
                 id={`${name}-phone`}
@@ -100,6 +103,8 @@ export default class ContactRow extends React.Component {
     );
   }
 }
+
+ContactRow.contextType = LanguageContext;
 
 if (environment !== 'production') {
   ContactRow.propTypes = {
