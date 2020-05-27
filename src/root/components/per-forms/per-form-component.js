@@ -5,7 +5,7 @@ import { environment } from '#root/config';
 import { PropTypes as T } from 'prop-types';
 import RequestFactory from './factory/request-factory';
 import EpiSelector from './epi-selector';
-
+import Translate from '#components/Translate';
 const requestFactory = new RequestFactory();
 
 const renderLanguageSelectDropdown = (props) => {
@@ -223,25 +223,35 @@ const newFormElementKey = () => 'form' + Math.floor(Math.random() * 99999) + Dat
 // };
 
 export const PerFormComponent = (props) => {
-  let button = null;
+    let button = null;
   if (props.mode === 'new') {
     button = (<React.Fragment>
       <div className='text-center'>
-        <button className='button button--medium button--primary-filled' onClick={props.sendForm}>Submit form</button>&nbsp;
-        <button className='button button--medium button--secondary-filled' onClick={props.saveDraft}>Save as draft</button>
+        <button className='button button--medium button--primary-filled' onClick={props.sendForm}>
+          <Translate stringId='perFormComponentSubmitForm'/>
+        </button>&nbsp;
+        <button className='button button--medium button--secondary-filled' onClick={props.saveDraft}>
+          <Translate stringId='perFormComponentSaveDraft'/>
+        </button>
       </div>
     </React.Fragment>);
   } else if (props.mode === 'edit') {
     button = (<React.Fragment>
       <div className='text-center'>
-        <button className='button button--medium button--primary-filled' onClick={props.sendForm}>Submit form</button>&nbsp;
-        <button className='button button--medium button--secondary-filled' onClick={props.editDraft}>Save draft</button>
+        <button className='button button--medium button--primary-filled' onClick={props.sendForm}>
+          <Translate stringId='perFormComponentSubmitForm'/>
+        </button>&nbsp;
+        <button className='button button--medium button--secondary-filled' onClick={props.editDraft}>
+          <Translate stringId='perFormComponentSave'/>
+        </button>
       </div>
     </React.Fragment>);
   }
   return (
     <React.Fragment>
-      <Link to='/account#per-forms' className='button button--medium button--primary-filled' style={{float: 'right', marginBottom: '1rem'}}>Exit form</Link>
+      <Link to='/account#per-forms' className='button button--medium button--primary-filled' style={{float: 'right', marginBottom: '1rem'}}>
+        <Translate stringId='perFormExitForm'/>
+      </Link>
       {/* Commenting out Drop Autosave button because we want to hide it for now, we may move it to somewhere more hidden. */}
       {/* {props.view ? null : <button className='button button--medium button--secondary-filled' id={'autosave' + props.mode + props.formCode + props.ns} onClick={dropAutosaveAndReload} style={{float: 'right', marginBottom: '1rem', marginRight: '1rem'}}>Drop autosave &amp; reload draft</button>} */}
       <div className='fold'>

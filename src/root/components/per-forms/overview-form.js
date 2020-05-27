@@ -15,6 +15,7 @@ import React from 'react';
 import c from 'classnames';
 import { Link, Redirect } from 'react-router-dom';
 import { showAlert } from '../system-alerts';
+import Translate from '#components/Translate';
 
 const assessmentTypes = [
   'Self assessment',
@@ -211,64 +212,76 @@ class OverviewForm extends React.Component {
       if (!this.props.perOverviewForm.fetched) return null;
       return (
         <React.Fragment>
-          <Link to='/account#per-forms' className='button button--medium button--primary-filled' style={{float: 'right', marginBottom: '1rem'}}>Exit form</Link>
+          <Link to='/account#per-forms' className='button button--medium button--primary-filled' style={{float: 'right', marginBottom: '1rem'}}>
+            <Translate stringId='overviewFormExit'/>
+          </Link>
           <div className='fold'>
             <div className='inner'>
 
               <div className="fold__header">
-                <h2 className="fold__title">WELCOME TO THE PREPAREDNESS FOR EFFECTIVE RESPONSE - OVERVIEW FORM</h2>
+                <h2 className="fold__title">
+                  <Translate stringId='overviewFormHeading'/>
+                </h2>
               </div>
               <div style={{clear: 'both'}}></div>
 
               <div>
-                <div className='per_form_ns'>General Information</div>
-                National Society:<br />
+                <div className='per_form_ns'>
+                  <Translate stringId='overviewFormGeneralInfo'/>
+                </div>
+                <Translate stringId='overviewFormNationalSociety'/>
+                <br />
                 <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].country.society_name === null ? '' : this.props.perOverviewForm.data.results[0].country.society_name} /><br /><br />
-
-                Start date of current capacity assessment<br />
+                <Translate stringId='overviewFormStartDate'/>
+                <br />
                 <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].date_of_current_capacity_assessment === null ? '' : this.props.perOverviewForm.data.results[0].date_of_current_capacity_assessment} /><br /><br />
-
-                Type of capacity assessment<br />
+                <Translate stringId='overviewFormTypeCapacityAssessment'/>
+                <br />
                 <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].type_of_capacity_assessment === null ? '' : assessmentTypes[this.props.perOverviewForm.data.results[0].type_of_capacity_assessment]} /><br /><br />
-
-                Branch involved:<br />
+                <Translate stringId='overviewFormBranchInvolved'/>
+                <br />
                 <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].branch_involved === null ? '' : this.props.perOverviewForm.data.results[0].branch_involved} /><br /><br />
-
-                Focal point name in the National Society:<br />
+                <Translate stringId='overviewFormFocalPoint'/>
+                <br />
                 <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].focal_point_name === null ? '' : this.props.perOverviewForm.data.results[0].focal_point_name} /><br /><br />
-
-                Focal point email in the National Society:<br />
+                <Translate stringId='overviewFormFocalPointEmail'/>
+                <br />
                 <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].focal_point_email === null ? '' : this.props.perOverviewForm.data.results[0].focal_point_email === null} /><br /><br />
-
-                Have you had a previous PER capacity assessment?<br />
+                <Translate stringId='overviewFormPreviousPer'/>
+                <br />
                 <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].had_previous_assessment === null ? '' : this.props.perOverviewForm.data.results[0].had_previous_assessment} /><br /><br />
-
-                Date of last capacity assessment<br />
+                <Translate stringId='overviewFormDateOfLastAssessment'/>
+                <br />
                 <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].date_of_last_capacity_assessment === null ? '' : this.props.perOverviewForm.data.results[0].date_of_last_capacity_assessment} /><br /><br />
-
-                Type of last capacity assessment:<br />
+                <Translate stringId='overviewFormTypeOfLastAssessment'/>
+                <br />
                 <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].type_of_last_capacity_assessment === null ? '' : assessmentTypes[this.props.perOverviewForm.data.results[0].type_of_last_capacity_assessment]} /><br /><br />
-
-                Focus:<br />
+                <Translate stringId='overviewFormFocus'/>
+                <br />
                 <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].focus === null ? '' : this.props.perOverviewForm.data.results[0].focus} onChange={this.onFieldChange.bind(this, 'focus')} /><br /><br />
 
-                <div className='per_form_ns'>Facilitator information</div>
-                Name of lead facilitator<br />
+                <div className='per_form_ns'>
+                  <Translate stringId='overviewFormFacilitatorInfo'/>
+                </div>
+                <Translate stringId='overviewFormNameLeadFacilitator'/>
+                <br />
                 <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].facilitated_by === null ? '' : this.props.perOverviewForm.data.results[0].facilitated_by} /><br /><br />
-
-                E-mail<br />
+                <Translate stringId='overviewFormEmail'/>
+                <br />
                 <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].facilitator_email === null ? '' : this.props.perOverviewForm.data.results[0].facilitator_email} /><br /><br />
-
-                Phone number<br />
+                <Translate stringId='overviewFormPhoneNumber'/>
+                <br />
                 <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].facilitator_phone === null ? '' : this.props.perOverviewForm.data.results[0].facilitator_phone} onChange={this.onFieldChange.bind(this, 'facilitator_phone')} /><br /><br />
 
-                Skype address<br />
+                <Translate stringId='overviewFormSkype'/>
+                <br />
                 <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].skype_address === null ? '' : this.props.perOverviewForm.data.results[0].skype_address} /><br /><br />
-
-                Date of mid-term review (approximate date)<br />
+                <Translate stringId='overviewFormDateOfMidReview'/>
+                <br />
                 <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].date_of_mid_term_review === null ? '' : this.props.perOverviewForm.data.results[0].date_of_mid_term_review} /><br /><br />
 
-                Approximate date of next capacity assessment<br />
+                <Translate stringId='overviewFormDateOfNext'/>
+                <br />
                 <input type='text' className='form__control form__control--medium' disabled='disabled' value={this.props.perOverviewForm.data.results[0].approximate_date_next_capacity_assmt === null ? '' : this.props.perOverviewForm.data.results[0].approximate_date_next_capacity_assmt} /><br /><br />
               </div>
             </div>
@@ -277,19 +290,26 @@ class OverviewForm extends React.Component {
     } else {
       return (
         <React.Fragment>
-          <Link to='/account#per-forms' className='button button--medium button--primary-filled' style={{float: 'right', marginBottom: '1rem'}}>Exit form</Link>
+          <Link to='/account#per-forms' className='button button--medium button--primary-filled' style={{float: 'right', marginBottom: '1rem'}}>
+            <Translate stringId='overviewFormExit'/>
+          </Link>
           <button className={c('button button--medium button--secondary-filled')} onClick={this.resetForm} style={{float: 'right', marginBottom: '1rem', marginRight: '4px'}}>Reset fields</button>
           <div className='fold'>
             <div className='inner'>
 
               <div className="fold__header">
-                <h2 className="fold__title">WELCOME TO THE PREPAREDNESS FOR EFFECTIVE RESPONSE - OVERVIEW FORM</h2>
+                <h2 className="fold__title">
+                  <Translate stringId='overviewFormPreparednessHeading'/>
+                </h2>
               </div>
               <div style={{clear: 'both'}}></div>
 
               <div id="overview__form">
-                <div className='per_form_ns'>General Information</div>
-                Start date of current capacity assessment<br />
+                <div className='per_form_ns'>
+                  <Translate stringId='overviewFormGeneralInfo'/>
+                </div>
+                <Translate stringId='overviewFormStartDate'/>
+                <br />
                 <select className='form__control form__control--medium' style={{width: '100px', display: 'inline-block'}} name='date_of_current_assessment_year'>
                   <option value='2023'>2023</option>
                   <option value='2022'>2022</option>
@@ -358,33 +378,39 @@ class OverviewForm extends React.Component {
                   <option value='31'>31</option>
                 </select><br /><br />
 
-                Type of capacity assessment<br />
+                <Translate stringId='overviewFormTypeCapacityAssessment'/>
+                <br />
                 <select className='form__control form__control--medium' style={{width: '200px', display: 'inline-block'}} name='capacity_assessment_type'>
                   <option value='0'>Self assessment</option>
                   <option value='1'>Simulation</option>
                   <option value='2'>Operation</option>
                   <option value='3'>Post operational</option>
                 </select><br /><br />
-
-                Branch involved:<br />
+                <Translate stringId='overviewFormBranchInvolved'/>
+                <br />
                 <input type='text' className='form__control form__control--medium' name='branch_involved' /><br /><br />
 
-                Focal point name in the National Society:<br />
+                <Translate stringId='overviewFormFocalPoint'/>
+                <br />
                 <input type='text' className='form__control form__control--medium' name='focal_point_name' /><br /><br />
 
-                Focal point email in the National Society:<br />
+                <Translate stringId='overviewFormFocalPointEmail'/>
+                <br />
                 <input type='text' className='form__control form__control--medium' name='focal_point_email' /><br /><br />
 
-                Focus:<br />
+                <Translate stringId='overviewFormFocus'/>
+                <br />
                 <input type='text' className='form__control form__control--medium' name='focus' value={this.state.data.focus} onChange={this.onFieldChange.bind(this, 'focus')} /><br /><br />
 
-                Have you had a previous PER capacity assessment?<br />
+                <Translate stringId='overviewFormPreviousPer'/>
+                <br />
                 <select className='form__control form__control--medium' name='prev_capacity_assessment' style={{width: '100px', display: 'inline-block'}}>
                   <option value='1'>Yes</option>
                   <option value='0'>No</option>
                 </select><br /><br />
 
-                Date of last capacity assessment<br />
+                <Translate stringId='overviewFormDateOfLastAssessment'/>
+                <br />
                 <select className='form__control form__control--medium' style={{width: '100px', display: 'inline-block'}} name='date_of_last_assessment_year'>
                   <option value='2023'>2023</option>
                   <option value='2022'>2022</option>
@@ -452,7 +478,8 @@ class OverviewForm extends React.Component {
                   <option value='31'>31</option>
                 </select><br /><br />
 
-                Type of last capacity assessment:<br />
+                <Translate stringId='overviewFormTypeOfLastAssessment'/>
+                <br />
                 <select className='form__control form__control--medium' style={{width: '200px', display: 'inline-block'}} name='type_of_last_assessment'>
                   <option value='0'>Self assessment</option>
                   <option value='1'>Simulation</option>
@@ -460,20 +487,24 @@ class OverviewForm extends React.Component {
                   <option value='3'>Post operational</option>
                 </select><br /><br />
 
-                <div className='per_form_ns'>Facilitator information</div>
-                Name of lead facilitator<br />
+                <div className='per_form_ns'>
+                  <Translate stringId='overviewFormFacilitatorInfo'/>
+                </div>
+                <Translate stringId='overviewFormNameLeadFacilitator'/>
+                <br />
                 <input type='text' className='form__control form__control--medium' name='facilitated_by' /><br /><br />
-
-                E-mail<br />
+                <Translate stringId='overviewFormEmail'/>
+                <br />
                 <input type='text' className='form__control form__control--medium' name='facilitator_email' /><br /><br />
-
-                Phone number<br />
+                <Translate stringId='overviewFormPhoneNumber'/>
+                <br />
                 <input type='text' className='form__control form__control--medium' name='facilitator_phone' value={this.state.data.facilitator_phone} onChange={this.onFieldChange.bind(this, 'facilitator_phone')} /><br /><br />
-
-                Skype address<br />
+                <Translate stringId='overviewFormSkype'/>
+                <br />
                 <input type='text' className='form__control form__control--medium' name='facilitator_skype' /><br /><br />
 
-                Date of mid-term review (approximate date)<br />
+                <Translate stringId='overviewFormDateOfMidReview'/>
+                <br />
                 <select className='form__control form__control--medium' style={{width: '100px', display: 'inline-block'}} name='date_of_mid_review_year'>
                   <option value='2023'>2023</option>
                   <option value='2022'>2022</option>
@@ -541,7 +572,8 @@ class OverviewForm extends React.Component {
                   <option value='31'>31</option>
                 </select><br /><br />
 
-                Approximate date of next capacity assessment<br />
+                <Translate stringId='overviewFormDateOfNext'/>
+                <br />
                 <select className='form__control form__control--medium' style={{width: '100px', display: 'inline-block'}} name='date_of_next_assessment_year'>
                   <option value='2023'>2023</option>
                   <option value='2022'>2022</option>
@@ -611,8 +643,12 @@ class OverviewForm extends React.Component {
                 </select><br /><br />
 
                 <button className={c('button button--medium button--primary-filled', { disabled: !this.allowSubmit() })} onClick={this.submitForm}>Submit form</button>&nbsp;
-                <button className='button button--medium button--secondary-filled' onClick={this.saveDraft}>Save as draft</button>
-                <p><br />&nbsp;&nbsp;Take care, only <strong>Drafts</strong> can be edited afterwards!</p>
+                <button className='button button--medium button--secondary-filled' onClick={this.saveDraft}>
+                  <Translate stringId='overviewFormSaveAsDraft'/>
+                </button>
+                <p><br />
+                  <Translate stringId='overviewFormDraftInfo' />
+                </p>
               </div>
             </div>
           </div>
