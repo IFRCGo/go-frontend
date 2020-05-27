@@ -32,7 +32,7 @@ function Covid19ThreeWSankey (p) {
   const [nsActivityFilters, setNSActivityFilters] = React.useState({
     reporting_ns: [],
     primary_sector: [],
-    project_country: [],
+    country: [],
   });
 
   const hash = useHash();

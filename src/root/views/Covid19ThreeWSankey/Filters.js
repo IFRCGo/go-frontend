@@ -10,7 +10,7 @@ import styles from './styles.module.scss';
 const filterSchema = {
   fields: {
     reporting_ns: [],
-    project_country: [],
+    country: [],
     primary_sector: [],
   }
 };
@@ -47,7 +47,10 @@ function NSActivitiesFilters (p) {
       countryName: countryNameMapByIso[d.iso] || '',
     })).sort((a, b) => a.countryName.localeCompare(b.countryName)),
     (data.nodes || []).filter(d => d.type === 'sector').map(toLabelValue).sort(compareString),
-    (data.nodes || []).filter(d => d.type === 'receiving_ns').map(toLabelValue).sort(compareString),
+    (data.nodes || [])
+      .filter(d => d.type === 'receiving_ns')
+      .map(d => ({ label: d.name, value: d.iso }))
+      .sort(compareString),
   ], [data]);
 
   return (
@@ -74,7 +77,7 @@ function NSActivitiesFilters (p) {
         multi
       />
       <SelectInput
-        faramElementName='project_country'
+        faramElementName='country'
         label='Receiving NS'
         placeholder='Select Where (Country)'
         options={receivingNSOptions}
