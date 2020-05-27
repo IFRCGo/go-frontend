@@ -14,7 +14,7 @@ import {
   nationalSocietyActivitiesWoFiltersSelector,
 } from '#selectors';
 
-import { useHash } from '../../hooks';
+import { useHash } from '#hooks';
 
 import { getDataFromResponse } from '#utils/request';
 import Filters from './Filters';
