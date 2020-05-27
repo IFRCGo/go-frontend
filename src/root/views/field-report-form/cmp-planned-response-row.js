@@ -7,6 +7,7 @@ import {
   FormRadioGroup,
   FormError
 } from '#components/form-elements/';
+import LanguageContext from '#root/languageContext';
 
 export default class PlanResponseRow extends React.Component {
   onFieldChange (field, e) {
@@ -48,6 +49,8 @@ export default class PlanResponseRow extends React.Component {
       fieldKey
     } = this.props;
 
+    const { strings } = this.context;
+
     return (
       <div className='form__group plan-response-row'>
         <div className='form__inner-header'>
@@ -60,11 +63,11 @@ export default class PlanResponseRow extends React.Component {
         </div>
         <div className='form__inner-body'>
           <FormRadioGroup
+            label={strings.cmpPlannedStatus}
             name={`${name}[status]`}
             id={`${name}-status`}
             classLabel='visually-hidden'
             classWrapper='resp-status'
-            label='Status'
             options={options}
             selectedOption={values.status}
             onChange={this.onFieldChange.bind(this, 'status')}
@@ -90,6 +93,7 @@ export default class PlanResponseRow extends React.Component {
   }
 }
 
+PlanResponseRow.contextType = LanguageContext;
 if (environment !== 'production') {
   PlanResponseRow.propTypes = {
     label: T.string,

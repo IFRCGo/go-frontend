@@ -10,6 +10,7 @@ import {
   FormRadioGroup,
   FormError
 } from '#components/form-elements/';
+import LanguageContext from '#root/languageContext';
 
 export default class SourceEstimation extends React.Component {
   onEstimationChange (idx, e) {
@@ -56,6 +57,8 @@ export default class SourceEstimation extends React.Component {
       errors
     } = this.props;
 
+    const { strings } = this.context;
+
     return (
       <div className='form__group estimation-row'>
         <div className='form__inner-header'>
@@ -83,7 +86,7 @@ export default class SourceEstimation extends React.Component {
               </FormInput>
 
               <FormRadioGroup
-                label='Source'
+                label={strings.cmpSourceLabel}
                 name={`${name}[${idx}][source]`}
                 options={formData.fieldsStep2.organizations[status]}
                 classLabel={c('label-secondary', {'visually-hidden': idx > 0})}
@@ -111,6 +114,7 @@ export default class SourceEstimation extends React.Component {
   }
 }
 
+SourceEstimation.contextType = LanguageContext;
 if (environment !== 'production') {
   SourceEstimation.propTypes = {
     label: T.string,
