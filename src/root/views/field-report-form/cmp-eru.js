@@ -12,6 +12,8 @@ import {
   FormSelect,
   FormError
 } from '#components/form-elements/';
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
 
 export default class Eru extends React.Component {
   onFieldChange (field, e) {
@@ -48,6 +50,7 @@ export default class Eru extends React.Component {
     } = this.props;
 
     const usedEruTypes = values.map(o => o.type);
+    const { strings } = this.context;
 
     return (
       <div className='form__group'>
@@ -56,7 +59,9 @@ export default class Eru extends React.Component {
             <label className='form__label'>{label}</label>
           </div>
           <div className='form__inner-actions'>
-            <button type='button' className={c('button--add-item button--secondary-light', {disabled: !this.canAdd()})} title='Add new ERU' onClick={this.onAddSource.bind(this)}>Add another ERU</button>
+            <button type='button' className={c('button--add-item button--secondary-light', {disabled: !this.canAdd()})} title={strings.cmpEruAddNew} onClick={this.onAddSource.bind(this)}>
+              <Translate stringId='cmpEruAddNew'/>
+            </button>
           </div>
         </div>
         <div className='form__inner-body'>
@@ -69,7 +74,7 @@ export default class Eru extends React.Component {
             return (
               <div key={o.type || `idx-${idx}`} className='eru'>
                 <FormSelect
-                  label='Type'
+                  label={strings.cmpEruType}
                   name={`${name}[${idx}][type]`}
                   id={`${name}-${idx}-type`}
                   classLabel='form__label--nested'
@@ -84,7 +89,7 @@ export default class Eru extends React.Component {
                 </FormSelect>
 
                 <FormRadioGroup
-                  label='Status'
+                  label={strings.cmpEruStatus}
                   name={`${name}[${idx}][status]`}
                   classLabel='form__label--nested'
                   classWrapper='eru__item-status'
@@ -106,7 +111,7 @@ export default class Eru extends React.Component {
                   onChange={this.onFieldChange.bind(this, `[${idx}].status`)} />
 
                 <FormInput
-                  label='Units'
+                  label={strings.cmpEruUnits}
                   type='text'
                   name={`${name}[${idx}][units]`}
                   id={`${name}-${idx}-units`}
@@ -121,7 +126,9 @@ export default class Eru extends React.Component {
                 </FormInput>
 
                 <div className='eru__item-actions'>
-                  <button type='button' className={c('button--remove-source', {disabled: values.length <= 1})} title='Delete ERU' onClick={this.onRemoveSource.bind(this, idx)}>Delete ERU</button>
+                  <button type='button' className={c('button--remove-source', {disabled: values.length <= 1})} title={strings.cmpEruDelete} onClick={this.onRemoveSource.bind(this, idx)}>
+                    <Translate stringId='cmpEruDelete'/>
+                  </button>
                 </div>
               </div>
             );
@@ -132,6 +139,8 @@ export default class Eru extends React.Component {
     );
   }
 }
+
+Eru.contextType = LanguageContext;
 
 if (environment !== 'production') {
   Eru.propTypes = {
