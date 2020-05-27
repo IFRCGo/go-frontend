@@ -14,6 +14,8 @@ import {
   nationalSocietyActivitiesWoFiltersSelector,
 } from '#selectors';
 
+import { useHash } from '../../hooks';
+
 import { getDataFromResponse } from '#utils/request';
 import Filters from './Filters';
 import styles from './styles.module.scss';
@@ -33,22 +35,24 @@ function Covid19ThreeWSankey (p) {
     project_country: [],
   });
 
-  React.useEffect(() => {
-    const filters = {
-      secondary_sectors: 13,  // covid-19
-      exclude_within: window.location.hash !== '#all',
-    };
-    getNationalSocietyActivitiesWoFilters(undefined, filters);
-  }, [getNationalSocietyActivitiesWoFilters]);
+  const hash = useHash();
 
   React.useEffect(() => {
     const filters = {
       secondary_sectors: 13,  // covid-19
-      exclude_within: window.location.hash !== '#all',
+      exclude_within: hash !== 'all',
+    };
+    getNationalSocietyActivitiesWoFilters(undefined, filters);
+  }, [hash, getNationalSocietyActivitiesWoFilters]);
+
+  React.useEffect(() => {
+    const filters = {
+      secondary_sectors: 13,  // covid-19
+      exclude_within: hash !== 'all',
       ...nsActivityFilters,
     };
     getNationalSocietyActivities(undefined, filters);
-  }, [nsActivityFilters, getNationalSocietyActivities]);
+  }, [hash, nsActivityFilters, getNationalSocietyActivities]);
 
   const [
     nationalSocietyActivities,
