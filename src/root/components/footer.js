@@ -2,6 +2,9 @@
 import React from 'react';
 import { api } from '#config';
 
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
+
 class Footer extends React.PureComponent {
   render () {
     const { NODE_ENV: currentEnv } = process.env;
@@ -11,20 +14,25 @@ class Footer extends React.PureComponent {
           {process.env.NODE_ENV === 'staging' ? 'STAGING' : 'TESTING (SURGE)'} SITE
         </div>
       )
-      : null;
+          : null;
+    const { strings } = this.context;
     return (
       <React.Fragment>
         <footer className='page__footer' role='contentinfo'>
           <div className='inner'>
             <div className='footer-menu'>
               <div className="footer-left-block">
-                <a href='https://github.com/ifrcgo/go-frontend' title='Open Source Code'>Open Source Code</a>
-                <a href={`${process.env.NODE_ENV === 'production' ? 'https://goadmin.ifrc.org/' : api}docs`} title='API Documentation'>API Documentation</a>
-                <a href='mailto:im@ifrc.org'>Contact Us</a>
+                <a href='https://github.com/ifrcgo/go-frontend' title={strings.footerOpenSourceCode}><Translate stringId='footerOpenSourceCode'/></a>
+                <a href={`${process.env.NODE_ENV === 'production' ? 'https://goadmin.ifrc.org/' : api}docs`} title={strings.footerApiDocumentation}>
+                  <Translate stringId='footerApiDocumentation'/>
+                </a>
+                <a href='mailto:im@ifrc.org'>
+                  <Translate stringId='footerContactUs'/>
+                </a>
               </div>
 
               <div className="footer-right-block">
-              © IFRC 2020
+                <Translate stringId='footerIFRC'/>
               </div>
             </div>
           </div>
@@ -35,5 +43,5 @@ class Footer extends React.PureComponent {
     );
   }
 }
-
+Footer.contextType = LanguageContext;
 export default Footer;
