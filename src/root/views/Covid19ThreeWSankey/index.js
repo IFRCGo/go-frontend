@@ -36,7 +36,7 @@ function Covid19ThreeWSankey (p) {
   React.useEffect(() => {
     const filters = {
       secondary_sectors: 13,  // covid-19
-      exclude_within: true,
+      exclude_within: window.location.hash !== '#all',
     };
     getNationalSocietyActivitiesWoFilters(undefined, filters);
   }, [getNationalSocietyActivitiesWoFilters]);
@@ -44,7 +44,7 @@ function Covid19ThreeWSankey (p) {
   React.useEffect(() => {
     const filters = {
       secondary_sectors: 13,  // covid-19
-      exclude_within: true,
+      exclude_within: window.location.hash !== '#all',
       ...nsActivityFilters,
     };
     getNationalSocietyActivities(undefined, filters);
