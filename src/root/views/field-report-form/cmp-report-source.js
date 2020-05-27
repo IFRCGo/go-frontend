@@ -6,6 +6,7 @@ import {
   FormInput,
   FormCheckbox
 } from '#components/form-elements/';
+import LanguageContext from '#root/languageContext';
 
 export default class ReportSource extends React.Component {
   constructor (props) {
@@ -43,6 +44,7 @@ export default class ReportSource extends React.Component {
       checked
     } = this.props;
 
+    const { strings } = this.context;
     return (
       <div className='sources-list__item'>
         <FormCheckbox
@@ -54,7 +56,7 @@ export default class ReportSource extends React.Component {
           onChange={this.onCheckChange} />
 
         <FormInput
-          label='Specification'
+          label={strings.cmpReportSource}
           type='text'
           name={`source[${idx || 0}][spec]`}
           id='source-spec'
@@ -66,6 +68,8 @@ export default class ReportSource extends React.Component {
     );
   }
 }
+
+ReportSource.contextType = LanguageContext;
 
 if (environment !== 'production') {
   ReportSource.propTypes = {
