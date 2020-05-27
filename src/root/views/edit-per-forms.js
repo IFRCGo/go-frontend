@@ -11,6 +11,8 @@ import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 import App from './app';
 
+import LanguageContext from '#root/languageContext';
+
 class EditPerForms extends React.Component {
   render () {
     let form = null;
@@ -58,10 +60,11 @@ class EditPerForms extends React.Component {
         ns={this.props.match.params.ns} />);
     }
 
+    const { strings } = this.context;
     return (
       <App className='page--emergencies'>
         <Helmet>
-          <title>IFRC Go - Emergencies</title>
+          <title>{strings.editPerFormsTitle}</title>
         </Helmet>
         <section className='inpage'>
           <div className='inpage__body'>
@@ -75,6 +78,7 @@ class EditPerForms extends React.Component {
   }
 }
 
+EditPerForms.contextType = LanguageContext;
 if (environment !== 'production') {
   EditPerForms.propTypes = {
     user: T.object,
