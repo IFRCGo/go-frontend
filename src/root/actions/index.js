@@ -82,14 +82,24 @@ export function getRegionalMovementActivities (regionId, filters) {
 
 export const GET_NATIONAL_SOCIETY_ACTIVITIES = 'GET_NATIONAL_SOCIETY_ACTIVITIES';
 export function getNationalSocietyActivities (regionId, filters) {
-  const query = buildAPIQS(filters, { arrayFormat: 'comma' });
+  const filtersWithRegion = {
+    region: regionId,
+    ...filters,
+  };
+  const query = buildAPIQS(filtersWithRegion, { arrayFormat: 'comma' });
 
-  return fetchJSON(`api/v2/region-project/${regionId}/national-society-activities/?${query}`, GET_NATIONAL_SOCIETY_ACTIVITIES, withToken());
+  return fetchJSON(`api/v2/region-project/national-society-activities/?${query}`, GET_NATIONAL_SOCIETY_ACTIVITIES, withToken());
 }
 
+// NOTE: this is used to get intial values for the filters
 export const GET_NATIONAL_SOCIETY_ACTIVITIES_WO_FILTERS = 'GET_NATIONAL_SOCIETY_ACTIVITIES_WO_FILTERS';
-export function getNationalSocietyActivitiesWoFilters (regionId) {
-  return fetchJSON(`api/v2/region-project/${regionId}/national-society-activities/`, GET_NATIONAL_SOCIETY_ACTIVITIES_WO_FILTERS, withToken());
+export function getNationalSocietyActivitiesWoFilters (regionId, filters) {
+  const filtersWithRegion = {
+    region: regionId,
+    ...filters,
+  };
+  const query = buildAPIQS(filtersWithRegion, { arrayFormat: 'comma' });
+  return fetchJSON(`api/v2/region-project/national-society-activities/?${query}`, GET_NATIONAL_SOCIETY_ACTIVITIES_WO_FILTERS, withToken());
 }
 
 export const GET_PROJECTS = 'GET_PROJECTS';

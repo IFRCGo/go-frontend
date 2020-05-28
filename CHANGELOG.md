@@ -22,6 +22,7 @@ Frontend:
  - PER: Enable years beyond 2018-2020: https://github.com/IFRCGo/go-frontend/issues/1230
  - Removed 'Information Bulletin Published', 'Delegates' 'Number of RCRC Movement Personnel', 'Probable/Suspected/Confirmed Cases' for COVID-19 type Field Reports: (part of) https://github.com/IFRCGo/go-frontend/issues/1161
  - Switch Is Covid Report toggle to Radio buttons: https://github.com/IFRCGo/go-frontend/issues/1247
+ - Add COVID-19 Sankey Diagram for 3W activities: https://github.com/IFRCGo/go-frontend/issues/1284
  
 Backend:
 

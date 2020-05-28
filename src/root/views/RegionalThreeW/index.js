@@ -130,7 +130,7 @@ function RegionalThreeW (p) {
   const [nsActivityFilters, setNSActivityFilters] = React.useState({
     reporting_ns: [],
     primary_sector: [],
-    project_country: [],
+    country: [],
   });
 
   React.useEffect(() => {
