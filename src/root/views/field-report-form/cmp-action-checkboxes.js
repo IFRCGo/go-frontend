@@ -74,7 +74,7 @@ export default class ActionsCheckboxes extends React.Component {
   }
 }
 
-ActionsCheckboxes.contexType = LanguageContext;
+ActionsCheckboxes.contextType = LanguageContext;
 if (environment !== 'production') {
   ActionsCheckboxes.propTypes = {
     label: T.string,
