@@ -1,7 +1,10 @@
+/* ==========================================================================
    Typography
+   ========================================================================== */
 
 
 /* Prose
+   ========================================================================== */
 
 .prose {
   font-size: $base-font-size;                           // 16px
@@ -58,6 +61,7 @@
 
 
 /* Common elements
+   ========================================================================== */
 
 p, ul, ol, dl, pre, blockquote {
   margin: 0 0 $global-spacing 0;
@@ -65,6 +69,7 @@ p, ul, ol, dl, pre, blockquote {
 
 
 /* Lead
+   ========================================================================== */
 
 .lead {
   font-size: 1.25rem;
@@ -85,6 +90,7 @@ p, ul, ol, dl, pre, blockquote {
 
 
 /* Lists
+   ========================================================================== */
 
 ol ol, ol ul, ul ol, ul ul {
   margin-bottom: 0;
@@ -322,6 +328,7 @@ dd {
 
 
 /* Blockquote
+   ========================================================================== */
 
 blockquote,
 .blockquote {
@@ -393,6 +400,7 @@ blockquote,
 
 
 /* Dividers
+   ========================================================================== */
 
 hr,
 .hr {
@@ -425,6 +433,7 @@ hr,
 
 
 /* Emphasis
+   ========================================================================== */
 
 b, strong {
   font-weight: $base-font-bold;
@@ -443,6 +452,7 @@ mark, .mark {
 
 
 /* Abbreviation
+   ========================================================================== */
 
 abbr[title] {
   cursor: help;
@@ -453,6 +463,7 @@ abbr[title] {
 
 
 /* Headings
+   ========================================================================== */
 
 .heading, h1, h2, h3, h4, h5, h6 {
   font-family: $heading-font-family;
@@ -550,6 +561,7 @@ h4, h5, h6 {
 
 
 /* Font Weights
+   ========================================================================== */
 
 // Generates classes for font weights
 // E.g. .base-font-light, .base-font-regular, .base-font-medium, etc.
@@ -572,6 +584,7 @@ $font-weights: (
 
 
 /* Font Sizes
+   ========================================================================== */
 
 // Generates classes for font sizes
 // E.g. .font-size-xs, .font-size-sm, .font-size-lg, .font-size-xl, .font-size-xxl, etc.
@@ -595,6 +608,7 @@ $font-sizes: (
 
 
 /* Decoration
+   ========================================================================== */
 
 .dropcap:first-letter {
   font-size: 3.4em;
@@ -626,6 +640,7 @@ $font-sizes: (
 }
 
 /* Text Styles
+   ========================================================================== */
 
 .text-uppercase {
   text-transform: uppercase;
