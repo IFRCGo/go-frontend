@@ -580,4 +580,10 @@ export default {
   fieldReportAffectedPopOther: 'Affected Pop Centres (Other): ',
   fieldReportNumericTitle: 'Numeric details',
   fieldReportSourcesOther: 'Sources for data marked as Other',
+  deploymentsTitle: 'IFRC Go - Deployments',
+  deploymentsDeployedERU: 'Deployed ERUs',
+  deploymentsDeployedRR: 'Deployed Rapid Response',
+  deploymentsDeployedHeops: 'Deployed Hops',
+  deploymentEruDeploymentTypes: 'ERU Deployment Types',
+  deploymentNumber: 'Number of Deployments by NS'
 };
