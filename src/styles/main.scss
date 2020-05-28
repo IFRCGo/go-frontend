@@ -1,4 +1,6 @@
+/* ==========================================================================
    Main
+   ========================================================================== */
 
 /**
  * Following Necolas' Principles of writing consistent, idiomatic CSS:
@@ -10,6 +12,7 @@
 @charset "UTF-8";
 
 /* Third-party
+   ========================================================================== */
 
 /**
  * Using Bourbon for extended SASS functionality:
@@ -33,12 +36,14 @@
 @import "vendor/normalize";
 
 /* Settings
+   ========================================================================== */
 
 @import "settings/variables";
 @import "settings/functions";
 @import "settings/mixins";
 
 /* Core
+   ========================================================================== */
 
 @import "core/base";
 @import "core/collecticons"; // Webfont icon library: Collecticons
@@ -51,6 +56,7 @@
 @import "core/animation";
 
 /* Global
+   ========================================================================== */
 
 @import "global/buttons";
 @import "global/forms";
@@ -86,6 +92,7 @@
 @import "global/tooltip";
 
 /* Home
+   ========================================================================== */
 
 @import "home/global";
 @import "home/presenting";
@@ -93,46 +100,56 @@
 @import "home/homemap.scss";
 
 /* About
+   ========================================================================== */
 
 @import "about/global";
 
 /* Deployments
+   ========================================================================== */
 
 @import "deployments/global";
 @import "deployments/presenting";
 
 /* country
+   ========================================================================== */
 
 @import "country/global";
 
 /* Field Report
+   ========================================================================== */
 
 @import "field-report/form";
 @import "field-report/global";
 @import "field-report/display";
 
 /* Emergency 
+   ========================================================================== */
 
 @import "emergencies/global";
 
 /* Preparedness 
+   ========================================================================== */
 
 @import "preparedness/global";
 
 
 /* Emergency 
+   ========================================================================== */
 
 @import "emergency/global";
 
 /* Region 
+   ========================================================================== */
 
 @import "region/global";
 
 /* UhOh
+   ========================================================================== */
 
 @import "uhoh/global";
 
 /* Components
+   ========================================================================== */
 
 @import "components/select";
 @import "components/formatted-number";
@@ -142,14 +159,17 @@
 @import "components/common";
 
 /* Core (...cont)
+   ========================================================================== */
 
 @import "core/utilities";
 
 /* Third Party
+   ========================================================================== */
 
 @import "../../node_modules/react-select/dist/react-select";
 
 /* Vendor
+   ========================================================================== */
 
 @import "vendor/react-paginate";
 @import "vendor/react-select";
@@ -157,6 +177,7 @@
 @import "vendor/mapbox-gl";
 
 /* Header navbar 
+   ========================================================================== */
 
 @import "header/navbar";
 @import "forms/per-form";
