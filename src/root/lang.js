@@ -582,9 +582,17 @@ export default {
   fieldReportNumericTitle: 'Numeric details',
   fieldReportSourcesOther: 'Sources for data marked as Other',
   deploymentsTitle: 'IFRC Go - Deployments',
-  deploymentsDeployedERU: 'Deployed ERUs',
+  deploymentsDeployedERU: 'Deployed ERU\'s',
   deploymentsDeployedRR: 'Deployed Rapid Response',
   deploymentsDeployedHeops: 'Deployed Hops',
   deploymentEruDeploymentTypes: 'ERU Deployment Types',
-  deploymentNumber: 'Number of Deployments by NS'
+  deploymentNumber: 'Number of Deployments by NS',
+  readinessFilteredERUs: 'Filter Ready ERU\'s',
+  readinessResetFilters: 'Reset Filters',
+  readinessLastUpdated: 'Last updated {date}',
+  readinessReadyErus:' {numReady} Ready ERU\'s',
+readinessDeployedErus: '{numDeployed} Deployed ERU\'s',
+
+
+
 };
