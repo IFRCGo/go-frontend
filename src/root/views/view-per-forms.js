@@ -11,6 +11,7 @@ import { Helmet } from 'react-helmet';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 import App from './app';
+import LanguageContext from '#root/languageContext';
 
 class ViewPerForms extends React.Component {
   render () {
@@ -50,10 +51,11 @@ class ViewPerForms extends React.Component {
         formId={this.props.match.params.id} />);
     }
 
+    const { strings } = this.context;
     return (
       <App className='page--emergencies'>
         <Helmet>
-          <title>IFRC Go - Emergencies</title>
+          <title>{strings.viewPerFormsTitle}</title>
         </Helmet>
         <section className='inpage'>
           <div className='inpage__body'>
@@ -80,5 +82,5 @@ if (environment !== 'production') {
     _updateProfile: T.func
   };
 }
-
+ViewPerForms.contextType = LanguageContext;
 export default ViewPerForms;
