@@ -32,6 +32,8 @@ import { SFPComponent } from '#utils/extendables';
 import DeploymentsMap from '#components/map/deployments-map';
 import Readiness from '#components/deployments/readiness';
 import BreadCrumb from '#components/breadcrumb';
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
 
 class Deployments extends SFPComponent {
   // Methods form SFPComponent:
@@ -151,21 +153,21 @@ class Deployments extends SFPComponent {
               <span className='sumstats__value'>
                 {n(data.deployed)}
               </span>
-              <span className='sumstats__key'>Deployed ERUs</span>
+              <Translate className='sumstats__key' stringId='deploymentsDeployedERU'/>
             </li>
             <li className='sumstats__item'>
               <img className='sumstats__icon_2020' src='/assets/graphics/layout/fact-brand.svg' />
               <span className='sumstats__value'>
                 {n(fact)}
               </span>
-              <span className='sumstats__key'>Deployed Rapid Response</span>
+              <Translate className='sumstats__key' stringId='deploymentsDeployedRR'/>
             </li>
             <li className='sumstats__item'>
               <img className='sumstats__icon_2020' src='/assets/graphics/layout/heops-brand.svg' />
               <span className='sumstats__value'>
                 {n(heop)}
               </span>
-              <span className='sumstats__key'>Deployed Heops</span>
+              <Translate className='sumstats__key' stringId='deploymentsDeployedHeops'/>
             </li>
           </ul>
         </div>
@@ -175,15 +177,16 @@ class Deployments extends SFPComponent {
 
   renderCharts () {
     const { data } = this.props.eruOwners;
+    const { strings } = this.context;
     return (
       <div className='fold'>
         <div className='inner'>
           <div className='inpage__body-charts'>
             <div className='chart'>
-              {this.renderHeaderCharts(data.types, 'ERU Deployment Types')}
+              {this.renderHeaderCharts(data.types, strings.deploymentEruDeploymentTypes)}
             </div>
             <div className='chart'>
-              {this.renderHeaderCharts(data.owners, 'Number of Deployments by NS')}
+              {this.renderHeaderCharts(data.owners, strings.deploymentNumber)}
             </div>
           </div>
         </div>
@@ -245,10 +248,13 @@ class Deployments extends SFPComponent {
   }
 
   render () {
+    const { strings } = this.context;
     return (
       <App className='page--deployments'>
         <Helmet>
-          <title>IFRC Go - Deployments</title>
+          <title>
+            {strings.deploymentsTitle}
+          </title>
         </Helmet>
         <BreadCrumb crumbs={[
           {link: this.props.location.pathname, name: 'Deployments'},
@@ -259,7 +265,7 @@ class Deployments extends SFPComponent {
     );
   }
 }
-
+Deployments.contextType = LanguageContext;
 if (environment !== 'production') {
   Deployments.propTypes = {
     _getEruOwners: T.func,
