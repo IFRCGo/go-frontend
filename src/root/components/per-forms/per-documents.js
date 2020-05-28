@@ -8,6 +8,8 @@ import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 
 const PerDocuments = ({perOverviewForm, perForm}) => {
+  const { strings } = React.useContext(LanguageContext);
+
   const groupedDocuments = {};
   if (perOverviewForm.fetched) {
     perOverviewForm.data.results.forEach((perOverviewForm) => {
@@ -47,7 +49,6 @@ const PerDocuments = ({perOverviewForm, perForm}) => {
   }
 
   const renderPerFormDocuments = (documents) => {
-    const { strings } = this.context;
     const regions = [];
     Object.keys(documents).forEach((regionKey, regionIndex) => {
       const countries = [];
@@ -95,8 +96,6 @@ const PerDocuments = ({perOverviewForm, perForm}) => {
     <span className='text-semi-bold'>{renderPerFormDocuments(groupedDocuments)}</span>
   </React.Fragment>);
 };
-
-PerDocuments.contextType = LanguageContext;
 
 if (environment !== 'production') {
   PerDocuments.propTypes = {

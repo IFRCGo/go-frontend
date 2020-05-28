@@ -22,6 +22,7 @@ function getUriForType (type, id) {
   }
 }
 
+// FIXME: Cannot use context with withRouter, change to functional component
 class MobileHeader extends React.PureComponent {
   constructor (props) {
     super(props);

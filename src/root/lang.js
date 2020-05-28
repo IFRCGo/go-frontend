@@ -439,7 +439,7 @@ export default {
   perAccountSupport: 'Area 5: Operations support',
   perAccountTitle: 'New PER Forms',
   perAccountDescription: 'Click on the following links to access the PER forms, where you can select individual National Societies.',
-  perAccountChoseCountry: 'Choose National Society:&nbsp;',
+  perAccountChooseCountry: 'Choose National Society ',
   perAccountOverview: 'Overview',
   perAccountActiveForms: 'Active PER Forms',
   perdocumentOverview: 'Overview',
