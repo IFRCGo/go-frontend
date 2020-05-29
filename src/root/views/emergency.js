@@ -48,7 +48,6 @@ import EmergencyMap from '#components/map/emergency-map';
 import { NO_DATA } from '#utils/constants';
 import { epiSources } from '#utils/field-report-constants';
 import ProjectFormModal from './ThreeW/project-form-modal';
-import { throws } from 'assert';
 
 class Emergency extends React.Component {
   constructor (props) {
