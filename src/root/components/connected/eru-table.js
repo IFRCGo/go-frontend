@@ -14,6 +14,7 @@ import Fold from '#components/fold';
 import BlockLoading from '#components/block-loading';
 import DisplayTable, { SortHeader, FilterHeader } from '#components/display-table';
 import { SFPComponent } from '#utils/extendables';
+import LanguageContext from '#root/languageContext';
 
 const eruTypeOptions = [{label: 'All', value: 'all'}].concat(Object.keys(eruTypes).map(type => {
   return {label: eruTypes[type], value: type};
@@ -88,7 +89,8 @@ class EruTable extends SFPComponent {
       error,
       data
     } = this.props.eru;
-    const title = this.props.title || 'Deployed ERUs';
+    const { strings } = this.context;
+    const title = this.props.title || strings.eruTableTitle;
 
     if (fetching) {
       return (
@@ -108,27 +110,27 @@ class EruTable extends SFPComponent {
       const headings = [
         {
           id: 'name',
-          label: <SortHeader id='name' title='Owner' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'eru_owner')} />
+          label: <SortHeader id='name' title={strings.eruTableNameTitle} sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'eru_owner')} />
         },
         {
           id: 'type',
-          label: <FilterHeader id='type' title='Type' options={eruTypeOptions} filter={this.state.table.filters.type} onSelect={this.handleFilterChange.bind(this, 'table', 'type')} />
+          label: <FilterHeader id='type' title={strings.eruTableNameTitle} options={eruTypeOptions} filter={this.state.table.filters.type} onSelect={this.handleFilterChange.bind(this, 'table', 'type')} />
         },
         {
           id: 'personnel',
-          label: <SortHeader id='personnel' title='Personnel Units' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'units')} />
+          label: <SortHeader id='personnel' title={strings.eruTablePersonnel} sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'units')} />
         },
         {
           id: 'equipment',
-          label: <SortHeader id='equipment' title='Equipment Units' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'equipment_units')} />
+          label: <SortHeader id='equipment' title={strings.eruTableEquipment} sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'equipment_units')} />
         },
         {
           id: 'country',
-          label: <SortHeader id='country' title='Country Deployed to' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'deployed_to')} />
+          label: <SortHeader id='country' title={strings.eruTableCountriesDeployed} sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'deployed_to')} />
         },
         {
           id: 'emer',
-          label: <SortHeader id='emer' title='Emergency' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'event')} />
+          label: <SortHeader id='emer' title={strings.eruTableEmergency} sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'event')} />
         }
       ];
 
@@ -137,16 +139,16 @@ class EruTable extends SFPComponent {
         return {
           id: o.id,
           name: owner !== null ? (owner.society_name || owner.name) : nope,
-          country: o.deployed_to ? <Link to={`/countries/${o.deployed_to.id}`} className='link--primary' title='View Country'>{o.deployed_to.name}</Link> : nope,
+          country: o.deployed_to ? <Link to={`/countries/${o.deployed_to.id}`} className='link--primary' title={strings.eruTableViewCountry}>{o.deployed_to.name}</Link> : nope,
           type: getEruType(o.type),
-          emer: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
+          emer: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title={strings.eruTableViewEmergency}>{o.event.name}</Link> : nope,
           personnel: o.units,
           equipment: o.equipment_units
         };
       });
 
       const foldLink = this.props.viewAll ? (
-        <Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || 'View all deployed ERUs'}</Link>
+        <Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || strings.eruTableViewAll}</Link>
       ) : null;
       return (
         <Fold title={`${title} (${n(data.count)})`} id={this.props.id} wrapperClass='table__container' navLink={foldLink} foldClass='fold__title--inline'>
@@ -170,6 +172,7 @@ class EruTable extends SFPComponent {
   }
 }
 
+EruTable.contextType = LanguageContext;
 if (environment !== 'production') {
   EruTable.propTypes = {
     _getDeploymentERU: T.func,
