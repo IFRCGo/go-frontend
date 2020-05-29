@@ -349,11 +349,11 @@ class Emergency extends React.Component {
 
     // anonymous users can only see public reports
     if (userIsAnon) {
-      return visibility === 1;
+      return visibility === 3;
     }
 
     // logged in users can see all reports not restricted to IFRC
-    return visibility !== 3;
+    return visibility !== 2;
   }
 
   renderFieldReports () {
