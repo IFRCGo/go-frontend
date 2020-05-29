@@ -359,8 +359,8 @@ class Emergency extends React.Component {
 
   renderFieldReports () {
     const { data } = this.props.event;
-
-    if (data.field_reports && data.field_reports.length) {
+    const fieldReports = data.field_reports ? data.field_reports.filter(fr => this.userHasPerms(fr)) : [];
+    if (fieldReports.length) {
       return (
         <Fold id='field-reports' title={`Field Reports (${data.field_reports.length})`} wrapperClass='event-field-reports' >
           <table className='table table--zebra'>
@@ -373,7 +373,7 @@ class Emergency extends React.Component {
               </tr>
             </thead>
             <tbody>
-              {data.field_reports.map(o => this.userHasPerms(o) ? (
+              {fieldReports.map(o => (
                 <tr key={o.id}>
                   <td>{isoDate(o.created_at)}</td>
                   <td><Link to={`/reports/${o.id}`} className='link--primary' title='View Field Report'>{o.summary || noSummary}</Link></td>
@@ -388,7 +388,7 @@ class Emergency extends React.Component {
                     )) : nope}
                   </td>
                 </tr>
-              ) : null)}
+              ))}
             </tbody>
           </table>
         </Fold>
