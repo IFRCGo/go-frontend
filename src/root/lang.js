@@ -581,4 +581,14 @@ export default {
   fieldReportAffectedPopOther: 'Affected Pop Centres (Other): ',
   fieldReportNumericTitle: 'Numeric details',
   fieldReportSourcesOther: 'Sources for data marked as Other',
+  videoCarouselHeading1: '3W - Who does What, Where.',
+  videoCarouselSubHeading1: 'The "Who does What, Where", or 3W, is a GO platform tool to enhance coordination, improve disaster analysis, and elevate the speed and quality of Red Cross Red Crescent emergency response.',
+  videoCarouselHeading2: '3W Instructional',
+  videoCarouselSubHeading2: 'View this video tutorial on how to manage the 3W tool data  (Who, What, Where) and generate useful and visually pleasant information products on the GO Platform - International Federation of Red Cross Red Crescent (IFRC).',
+  videoCarouselHeading3: 'Field Report COVID-19',
+  videoCarouselSubHeading3: 'View this video tutorial on how to create a "Field Report" COVID-19 on the GO Platform - International Federation of Red Cross Red Crescent (IFRC).',
+  videoCarouselHeading4: 'Preparedness for Effective Response Module',
+  videoCarouselSubHeading4: 'View this video tutorial on how to navigate on the Preparedness for Effective Response (PER) module on the GO Platform - International Federation of Red Cross Red Crescent (IFRC).',
+  videoCarouselHeading5: 'Subscriptions to User Notifications',
+  videoCarouselSubHeading5: 'View this video tutorial on how to "Subscribe to User Notifications" on the GO Platform - International Federation of Red Cross Red Crescent (IFRC).'
 };
