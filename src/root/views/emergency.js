@@ -48,6 +48,7 @@ import EmergencyMap from '#components/map/emergency-map';
 import { NO_DATA } from '#utils/constants';
 import { epiSources } from '#utils/field-report-constants';
 import ProjectFormModal from './ThreeW/project-form-modal';
+import { throws } from 'assert';
 
 class Emergency extends React.Component {
   constructor (props) {
@@ -337,8 +338,31 @@ class Emergency extends React.Component {
     );
   }
 
+  userHasPerms (fieldReport) {
+    const userIsAnon = !this.props.isLogged;
+    const userIsSuperuser = this.props.profile.fetched && this.props.profile.data.email.endsWith('ifrc.org');
+    const visibility = fieldReport.visibility;
+
+    // superusers can see all reports
+    if (userIsSuperuser) {
+      return true;
+    }
+
+    // anonymous users can only see public reports
+    if (userIsAnon) {
+      return visibility === '1';
+    }
+
+    // logged in users can see all reports not restricted to IFRC
+    return visibility !== '3';
+  }
+
   renderFieldReports () {
     const { data } = this.props.event;
+    console.log('field reports', data.field_reports);
+    console.log('user', this.props.user);
+    console.log('profile', this.props.profile);
+
     if (data.field_reports && data.field_reports.length) {
       return (
         <Fold id='field-reports' title={`Field Reports (${data.field_reports.length})`} wrapperClass='event-field-reports' >
@@ -352,7 +376,7 @@ class Emergency extends React.Component {
               </tr>
             </thead>
             <tbody>
-              {data.field_reports.map(o => (
+              {data.field_reports.map(o => this.userHasPerms(o) ? (
                 <tr key={o.id}>
                   <td>{isoDate(o.created_at)}</td>
                   <td><Link to={`/reports/${o.id}`} className='link--primary' title='View Field Report'>{o.summary || noSummary}</Link></td>
@@ -367,7 +391,7 @@ class Emergency extends React.Component {
                     )) : nope}
                   </td>
                 </tr>
-              ))}
+              ) : null)}
             </tbody>
           </table>
         </Fold>
