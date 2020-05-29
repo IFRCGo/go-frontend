@@ -5,6 +5,15 @@ Frontend:
  - Fix language in field report form: https://github.com/IFRCGo/go-frontend/issues/1226
  - Fix validation of email addresses on registration: https://github.com/IFRCGo/go-frontend/pull/1265
  - Remove Additional Graphics text on extra tabs: https://github.com/IFRCGo/go-frontend/issues/1232
+ - Add COVID-19 Sankey Diagram for 3W activities: https://github.com/IFRCGo/go-frontend/issues/1284
+
+Backend:
+
+ - Add Global National Society Activities API (https://github.com/IFRCGo/go-frontend/issues/1284)
+ - Add Project Filter to exclude where country and RNS are same (above ticket)
+ - Removed multi-upload for Situation Report and PER documents (https://github.com/IFRCGo/go-frontend/issues/1117)
+ - Field Report endpoint to return the proper list of Field Reports based on visibility (https://github.com/IFRCGo/go-frontend/pull/1286)
+
 
 ### Release 4.3.4
 
