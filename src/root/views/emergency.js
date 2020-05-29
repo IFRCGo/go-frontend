@@ -339,7 +339,7 @@ class Emergency extends React.Component {
 
   userHasPerms (fieldReport) {
     const userIsAnon = !this.props.isLogged;
-    const userIsSuperuser = this.props.profile.fetched && this.props.profile.data.email.endsWith('ifrc.org');
+    const userIsSuperuser = this.props.profile.fetched && this.props.profile.data.is_superuser;
     const visibility = fieldReport.visibility;
 
     // superusers can see all reports
