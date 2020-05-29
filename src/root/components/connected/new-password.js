@@ -15,6 +15,8 @@ import schemaDef from '#root/schemas/new-password';
 import { FormInput, FormError } from '#components/form-elements/';
 import { showAlert } from '#components/system-alerts';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
 
 const ajv = new Ajv({ $data: true, allErrors: true, errorDataPath: 'property' });
 ajvKeywords(ajv);
@@ -114,17 +116,23 @@ class NewPassword extends React.Component {
 
   render () {
     const { verifyOldPassword } = this.props;
+    const { strings } = this.context;
     return (
       <form className='form form--centered' onSubmit={this.onSubmit}>
         {verifyOldPassword && this.renderPasswordField('Verify old password', 'oldPassword')}
-        {this.renderPasswordField('New password', 'password')}
-        {this.renderPasswordField('Confirm new password', 'passwordConfirm')}
-        <button className='mfa-tick' type='button' onClick={this.onSubmit}><span>Submit</span></button>
+        {this.renderPasswordField(strings.newPasswordField, 'password')}
+        {this.renderPasswordField(strings.newPasswordConfirm, 'passwordConfirm')}
+        <button className='mfa-tick' type='button' onClick={this.onSubmit}>
+          <span>
+            <Translate stringId='newPasswordSubmit'/>
+          </span>
+        </button>
       </form>
     );
   }
 }
 
+NewPassword.contextType = LanguageContext;
 if (environment !== 'production') {
   NewPassword.propTypes = {
     user: T.object,
