@@ -2,38 +2,41 @@
 import React from 'react';
 import Carousel from '@brainhubeu/react-carousel';
 
+import LanguageContext from '#root/languageContext';
+
 export default class VideoCarousel2 extends React.Component {
   render () {
+    const { strings } = this.context;
     const videoLinks = [
       {
         'id': 1,
         'embedID': 'https://www.youtube.com/embed/E1TuUEEMBRM',
-        'heading': '3W - Who does What, Where.',
-        'subHeading': 'The "Who does What, Where", or 3W, is a GO platform tool to enhance coordination, improve disaster analysis, and elevate the speed and quality of Red Cross Red Crescent emergency response.',
+        'heading': strings.videoCarouselHeading1,
+        'subHeading': strings.videoCarouselSubHeading1,
       },
       {
         'id': 2,
         'embedID': 'https://www.youtube.com/embed/QiDwKVr5pxg',
-        'heading': '3W Instructional',
-        'subHeading': 'View this video tutorial on how to manage the 3W tool data  (Who, What, Where) and generate useful and visually pleasant information products on the GO Platform - International Federation of Red Cross Red Crescent (IFRC).',
+        'heading': strings.videoCarouselHeading2,
+        'subHeading': strings.videoCarouselSubHeading2,
       },
       {
         'id': 3,
         'embedID': 'https://www.youtube.com/embed/adBR-U26XZs',
-        'heading': 'Field Report COVID-19',
-        'subHeading': 'View this video tutorial on how to create a "Field Report" COVID-19 on the GO Platform - International Federation of Red Cross Red Crescent (IFRC).',
+        'heading': strings.videoCarouselHeading3,
+        'subHeading': strings.videoCarouselSubHeading3,
       },
       {
         'id': 4,
         'embedID': 'https://www.youtube.com/embed/JAQ_yixX57A',
-        'heading': 'Preparedness for Effective Response Module',
-        'subHeading': 'View this video tutorial on how to navigate on the Preparedness for Effective Response (PER) module on the GO Platform - International Federation of Red Cross Red Crescent (IFRC).',
+        'heading': strings.videoCarouselHeading4,
+        'subHeading': strings.videoCarouselSubHeading4,
       },
       {
         'id': 5,
         'embedID': 'https://www.youtube.com/embed/wEz70tcwWx8',
-        'heading': 'Subscriptions to User Notifications',
-        'subHeading': 'View this video tutorial on how to "Subscribe to User Notifications" on the GO Platform - International Federation of Red Cross Red Crescent (IFRC).',
+        'heading': strings.videoCarouselHeading5,
+        'subHeading': strings.videoCarouselSubHeading5,
       },
     ];
 
@@ -70,3 +73,5 @@ export default class VideoCarousel2 extends React.Component {
     );
   }
 }
+
+VideoCarousel2.contextType = LanguageContext;
