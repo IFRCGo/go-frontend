@@ -359,9 +359,6 @@ class Emergency extends React.Component {
 
   renderFieldReports () {
     const { data } = this.props.event;
-    console.log('field reports', data.field_reports);
-    console.log('user', this.props.user);
-    console.log('profile', this.props.profile);
 
     if (data.field_reports && data.field_reports.length) {
       return (
