@@ -726,4 +726,13 @@ export default {
   emergenciesStatsAffected: 'Affected People',
   emergenciesStatsRequested: 'Requested Amount (CHF)',
   emergenciesStatsFunding: 'Funding (CHF)',
+  alertDismissTitle: 'Dismiss alert',
+  alertDismiss: 'Dismiss',
+  confirmModalCancel: 'Cancel',
+  confirmModalOk: 'Ok',
+  expandableShowLess: 'Show less',
+  expandableShowMore: 'Show more',
+  exportButtonExportTable: 'Export Table',
+  globalHeaderBannerTitle: 'COVID-19 global situational information and technical guidance available ',
+  globalHeaderBannerHere: 'here.',
 };
