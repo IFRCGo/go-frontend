@@ -20,8 +20,8 @@ import DateFilterHeader from '../common/filters/date-filter-header';
 import EmergenciesLeftMenu from './common/emergencies-left-menu';
 import MarkerLayerStylesheetFactory from './home-map/factory/marker-layer-stylesheet-factory';
 
-import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
+import { withLanguage } from '#root/languageContext';
 
 const scale = chroma.scale(['#F0C9E8', '#861A70']);
 
@@ -269,7 +269,7 @@ class MainMap extends React.Component {
     const mapContainerClassName = this.props.noRenderEmergencies ? 'map-container map-container-fullwidth' : 'map-container';
     const emergenciesByType = get(this.props, 'operations.data.emergenciesByType', []);
 
-    const { strings } = this.context;
+    const { strings } = this.props;
     return (
       <React.Fragment>
         {this.props.noRenderEmergencies
@@ -354,5 +354,5 @@ if (environment !== 'production') {
     fullscreen: T.bool
   };
 }
-MainMap.contextType = LanguageContext;
-export default withRouter(MainMap);
+
+export default withLanguage(withRouter(MainMap));
