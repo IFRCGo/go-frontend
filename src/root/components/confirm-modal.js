@@ -2,6 +2,7 @@ import React from 'react';
 import _cs from 'classnames';
 
 import Backdrop from './backdrop';
+import Translate from '#components/Translate';
 
 function ConfirmModal (p) {
   const {
@@ -37,13 +38,13 @@ function ConfirmModal (p) {
             className='button'
             onClick={handleCancelClick}
           >
-            Cancel
+            <Translate stringId='confirmModalCancel'/>
           </button>
           <button
             className='button tc-ok-button'
             onClick={handleOkClick}
           >
-            Ok
+            <Translate stringId='confirmModalOk'/>
           </button>
         </div>
       </div>
