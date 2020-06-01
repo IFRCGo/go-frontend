@@ -5,6 +5,8 @@ import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 import Fold from './../fold';
 import { getPerComponent } from '#utils/get-per-components';
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
 
 class PreparednessSummary extends React.Component {
   constructor (props) {
@@ -61,20 +63,21 @@ class PreparednessSummary extends React.Component {
     this.state.popupComponentList.forEach((component, componentIndex) => {
       popupComponentNameList.push(<div key={'componentList' + componentIndex}>{component.name}</div>);
     });
+    const { strings } = this.context;
     return (
-      <Fold id='per-summary' title='PER Components And Sub-Component results' wrapper_class='preparedness' foldClass='margin-reset'>
+      <Fold id='per-summary' title={strings.preparednessSummaryTitle} wrapper_class='preparedness' foldClass='margin-reset'>
         <div className='clearfix'>
           <div className='component__block__wrap' style={{cursor: 'pointer'}} id='selectedOption7' onClick={this.listComponents}>
             <div className='component__block'>
               <div className='component__block__title__block'>
                 <img src='/assets/graphics/layout/card-tick.svg' className='component__block__icon' />
                 <span className='component__block__title'>
-                  High performance
+                  <Translate stringId='preparednessSummaryHighPerformance'/>
                 </span>
               </div>
               <div className='component__block__content'>
                 <span className='component__block__value'>{highPerformance}</span> / {allComponents}<br />
-                COMPONENTS
+                <Translate stringId='preparednessSummaryComponents'/>
               </div>
 
             </div>
@@ -84,12 +87,12 @@ class PreparednessSummary extends React.Component {
               <div className='component__block__title__block'>
                 <img src='/assets/graphics/layout/card-tick.svg' className='component__block__icon' />
                 <span className='component__block__title'>
-                  Exists
+                  <Translate stringId='preparednessSummaryExists'/>
                 </span>
               </div>
               <div className='component__block__content'>
                 <span className='component__block__value'>{exists}</span> / {allComponents}<br />
-                COMPONENTS
+                <Translate stringId='preparednessSummaryComponents'/>
               </div>
 
             </div>
@@ -99,12 +102,12 @@ class PreparednessSummary extends React.Component {
               <div className='component__block__title__block'>
                 <img src='/assets/graphics/layout/card-mid-line.svg' className='component__block__icon' />
                 <span className='component__block__title'>
-                  Needs improvement
+                  <Translate stringId='preparednessSummaryNeedsImprovement'/>
                 </span>
               </div>
               <div className='component__block__content'>
                 <span className='component__block__value'>{needsImprovement}</span> / {allComponents}<br />
-                COMPONENTS
+                <Translate stringId='preparednessSummaryComponents'/>
               </div>
 
             </div>
@@ -114,12 +117,12 @@ class PreparednessSummary extends React.Component {
               <div className='component__block__title__block'>
                 <img src='/assets/graphics/layout/card-mid-line.svg' className='component__block__icon' />
                 <span className='component__block__title'>
-                  Partially exists
+                  <Translate stringId='preparednessSummaryExistsPartially'/>
                 </span>
               </div>
               <div className='component__block__content'>
                 <span className='component__block__value'>{partiallyExists}</span> / {allComponents}<br />
-                COMPONENTS
+                <Translate stringId='preparednessSummaryComponents'/>
               </div>
 
             </div>
@@ -129,12 +132,12 @@ class PreparednessSummary extends React.Component {
               <div className='component__block__title__block'>
                 <img src='/assets/graphics/layout/card-x.svg' className='component__block__icon' />
                 <span className='component__block__title'>
-                  Does not exist
+                  <Translate stringId='preparednessSummaryDoesnotExists'/>
                 </span>
               </div>
               <div className='component__block__content'>
                 <span className='component__block__value'>{doesNotExist}</span> / {allComponents}<br />
-                COMPONENTS
+                <Translate stringId='preparednessSummaryComponents'/>
               </div>
 
             </div>
@@ -144,12 +147,12 @@ class PreparednessSummary extends React.Component {
               <div className='component__block__title__block'>
                 <img src='/assets/graphics/layout/card-x.svg' className='component__block__icon' />
                 <span className='component__block__title'>
-                  Not reviewed
+                  <Translate stringId='preparednessSummaryNotReviewed'/>
                 </span>
               </div>
               <div className='component__block__content'>
                 <span className='component__block__value'>{notReviewed}</span> / {allComponents}<br />
-                COMPONENTS
+                <Translate stringId='preparednessSummaryComponents'/>
               </div>
             </div>
           </div>
@@ -161,6 +164,8 @@ class PreparednessSummary extends React.Component {
     );
   }
 }
+
+PreparednessSummary.contextType = LanguageContext;
 
 if (environment !== 'production') {
   PreparednessSummary.propTypes = {
