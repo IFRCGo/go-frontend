@@ -721,4 +721,8 @@ export default {
   preparednessWorkPlanFocalPointLabel: 'Focal Point',
   preparednessWorkPlanStatusLabel: 'Status',
   preparednessWorkPlanSupportLabel: 'Support required',
+  emergenciesStatsTitle: 'Emergencies',
+  emergenciesStatsAffected: 'Affected People',
+  emergenciesStatsRequested: 'Requested Amount (CHF)',
+  emergenciesStatsFunding: 'Funding (CHF)',
 };
