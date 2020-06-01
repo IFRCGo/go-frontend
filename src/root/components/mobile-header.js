@@ -8,7 +8,7 @@ import { api, environment } from '#config';
 import { request } from '#utils/network';
 import { uppercaseFirstLetter as u, isoDate } from '#utils/format';
 import UserMenu from './connected/user-menu';
-import LanguageContext from '#root/languageContext';
+import { withLanguage } from '#root/languageContext';
 import Translate from '#components/Translate';
 
 function getUriForType (type, id) {
@@ -22,7 +22,6 @@ function getUriForType (type, id) {
   }
 }
 
-// FIXME: Cannot use context with withRouter, change to functional component
 class MobileHeader extends React.PureComponent {
   constructor (props) {
     super(props);
@@ -64,7 +63,7 @@ class MobileHeader extends React.PureComponent {
 
   render () {
     const { pathname } = this.props.location;
-    const { strings } = this.context;
+    const { strings } = this.props;
     return (
       <header className='page__header page__header--mobile' role='banner'>
         <div className='inner'>
@@ -145,5 +144,4 @@ if (environment !== 'production') {
   };
 }
 
-MobileHeader.contextType = LanguageContext;
-export default withRouter(MobileHeader);
+export default withLanguage(withRouter(MobileHeader));
