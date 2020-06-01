@@ -9,6 +9,7 @@ import {
 } from 'recharts';
 import { connect } from 'react-redux';
 import RequestFactory from './../per-forms/factory/request-factory';
+import LanguageContext from '#root/languageContext';
 
 class PreparednessColumnBar extends React.Component {
   constructor (props) {
@@ -56,6 +57,7 @@ class PreparednessColumnBar extends React.Component {
   }
 
   render () {
+    const  {strings } = this.context;
     if (!this.props.getPerDocument.fetched || !this.props.getPerDocuments.fetched || !this.props.user.username || typeof this.props.getPerDocuments.data.results === 'undefined') return null;
     if (typeof this.props.getPerDocument.data.count !== 'undefined' && this.props.getPerDocument.data.count === 0 &&
       typeof this.props.getPerDocument.data.count !== 'undefined' && this.props.getPerDocument.data.count === 0) return null;
@@ -63,7 +65,7 @@ class PreparednessColumnBar extends React.Component {
     const tmpData = this.buildDataForGraph();
     const groupedData = this.buildGroupedData(tmpData);
     return (
-      <Fold id='per-column-graph' title='PER components results' wrapper_class='preparedness' foldClass='margin-reset'>
+      <Fold id='per-column-graph' title={strings.preparednessColumnGraphTitle} wrapper_class='preparedness' foldClass='margin-reset'>
         <div style={{width: 'fit-content', margin: 'auto'}}>
           <BarChart
             width={900}
@@ -104,4 +106,5 @@ const dispatcher = (dispatch) => ({
   _getPerNsPhase: () => dispatch('getPerNsPhase()')
 });
 
+PreparednessColumnBar.contextType = LanguageContext;
 export default connect(selector, dispatcher)(PreparednessColumnBar);
