@@ -3,6 +3,7 @@ import { PropTypes as T } from 'prop-types';
 
 import { environment } from '#config';
 import { commaSeparatedNumber as n } from '#utils/format';
+import Translate from '#components/Translate';
 
 export default class EmergenciesStats extends React.Component {
   render () {
@@ -21,28 +22,36 @@ export default class EmergenciesStats extends React.Component {
               <img className='sumstats__icon_2020' src='/assets/graphics/layout/emergency-brand.svg' />
             </span>
             <div className='sumstats__value'>{n(data.count)}</div>
-            <div className='sumstats__key'>Emergencies</div>
+            <div className='sumstats__key'>
+              <Translate stringId='emergenciesStatsTitle'/>
+            </div>
           </li>
           <li className='sumstats__item stats-people'>
             <span className='sumstats__icon_wrapper'>
               <img className='sumstats__icon_2020' src='/assets/graphics/layout/heops-brand.svg' />
             </span>
             <div className='sumstats__value'>{n(data.numAffected)}</div>
-            <div className='sumstats__key'>Affected People</div>
+            <div className='sumstats__key'>
+              <Translate stringId='emergenciesStatsAffected'/>
+            </div>
           </li>
           <li className='sumstats__item stats-funding stat-borderless stat-double'>
             <span className='sumstats__icon_wrapper'>
               <img className='sumstats__icon_2020' src='/assets/graphics/layout/funding-coverage.svg' />
             </span>
             <div className='sumstats__value'>{n(data.totalAppeals)}</div>
-            <div className='sumstats__key'>Requested Amount (CHF)</div>
+            <div className='sumstats__key'>
+              <Translate stringId='emergenciesStatsRequested'/>
+            </div>
           </li>
           <li className='sumstats__item stat-double'>
             <span className='sumstats__icon_wrapper'>
               <img className='sumstats__icon_2020' src='/assets/graphics/layout/funding-requirements.svg' />
             </span>
             <div className='sumstats__value'>{n(data.totalAppealsFunding)}</div>
-            <div className='sumstats__key'>Funding (CHF)</div>
+            <div className='sumstats__key'>
+              <Translate stringId='emergenciesStatsFunding'/>
+            </div>
           </li>
         </ul>
       </div>
