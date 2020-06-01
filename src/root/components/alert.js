@@ -3,6 +3,8 @@ import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 
 import { environment } from '#config';
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
 
 export default class Alert extends React.Component {
   constructor (props) {
@@ -32,10 +34,15 @@ export default class Alert extends React.Component {
     let cl = c('alert', `alert--${this.props.type}`, {
       'alert--popover': this.props.popover
     });
+    const { strings } = this.context;
     return (
       <div className={cl} role='alert'>
         {this.props.dismissable ? (
-          <button className='alert__button-dismiss' title='Dismiss alert' onClick={this.onDismiss}><span>Dismiss</span></button>
+          <button className='alert__button-dismiss' title={strings.alertDismissTitle} onClick={this.onDismiss}>
+            <span>
+              <Translate stringId='alertDismiss'/>
+            </span>
+          </button>
         ) : null}
         {this.props.children}
       </div>
@@ -43,6 +50,7 @@ export default class Alert extends React.Component {
   }
 }
 
+Alert.contextType = LanguageContext;
 if (environment !== 'production') {
   Alert.propTypes = {
     type: T.string,
