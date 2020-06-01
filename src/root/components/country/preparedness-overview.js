@@ -6,10 +6,13 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getPerProcessType } from '#utils/get-per-process-type';
 import Fold from './../fold';
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
 
 class PreparednessOverview extends React.Component {
   render () {
     const NO_DATA = '--';
+    const { strings } = this.context;
     if (!this.props.getPerNsPhase.fetched || !this.props.perOverviewForm.fetched || !this.props.user.username) return null;
     if (typeof this.props.getPerNsPhase.data.results !== 'undefined' && this.props.getPerNsPhase.data.results[0].phase === 0 &&
       typeof this.props.perOverviewForm.data.count !== 'undefined' && this.props.perOverviewForm.data.count === 0) return null;
@@ -23,17 +26,21 @@ class PreparednessOverview extends React.Component {
     const focalPointNameString = typeof overviewForm !== 'undefined' ? overviewForm.focal_point_name : NO_DATA;
     const focalPointEmailString = typeof overviewForm !== 'undefined' ? overviewForm.focal_point_email : NO_DATA;
     return (
-      <Fold id='per' title='Preparedness For Effective Response Overview' wrapper_class='preparedness' foldClass='margin-reset'>
+      <Fold id='per' title={strings.preparednessOverviewTitle} wrapper_class='preparedness' foldClass='margin-reset'>
         <div style={{float: 'left', width: '33%'}}>
 
           <div style={{float: 'left', width: '30%', textTransform: 'uppercase', fontSize: '13px'}}>
-            <div style={{marginBottom: '5px'}}>Current PER</div>
-            <div style={{marginBottom: '5px'}}>process phase</div>
+            <div style={{marginBottom: '5px'}}>
+              <Translate stringId='preparednessOverviewCurrent'/>
+            </div>
+            <div style={{marginBottom: '5px'}}>
+              <Translate stringId='preparednessOverviewProcessPhase'/>
+            </div>
           </div>
           <div style={{float: 'left', width: '70%'}}>
             <div style={{marginBottom: '5px', float: 'left', width: '100%'}}>
               <div style={{width: '80%', float: 'left', textTransform: 'uppercase', fontWeight: 'bold', fontSize: '13px'}}>
-                Orientation
+                <Translate stringId='preparednessOverviewOrientation'/>
               </div>
               <div style={{width: '20%', float: 'left'}}>
                 {phase.phase > 0 ? <img src='/assets/graphics/layout/tick.png' alt='phase ticked' style={{width: '10px', height: '10px'}} /> : null}
@@ -42,7 +49,7 @@ class PreparednessOverview extends React.Component {
 
             <div style={{marginBottom: '5px', float: 'left', width: '100%'}}>
               <div style={{width: '80%', float: 'left', textTransform: 'uppercase', fontWeight: 'bold', fontSize: '13px'}}>
-                Assessment
+                <Translate stringId='preparednessOverviewAssessment'/>
               </div>
               <div style={{width: '20%', float: 'left'}}>
                 {phase.phase > 1 ? <img src='/assets/graphics/layout/tick.png' alt='phase ticked' style={{width: '10px', height: '10px'}} /> : null}
@@ -51,7 +58,7 @@ class PreparednessOverview extends React.Component {
 
             <div style={{marginBottom: '5px', float: 'left', width: '100%'}}>
               <div style={{width: '80%', float: 'left', textTransform: 'uppercase', fontWeight: 'bold', fontSize: '13px'}}>
-                Prioritization
+                <Translate stringId='preparednessOverviewPrioritization'/>
               </div>
               <div style={{width: '20%', float: 'left'}}>
                 {phase.phase > 2 ? <img src='/assets/graphics/layout/tick.png' alt='phase ticked' style={{width: '10px', height: '10px'}} /> : null}
@@ -60,7 +67,7 @@ class PreparednessOverview extends React.Component {
 
             <div style={{marginBottom: '5px', float: 'left', width: '100%'}}>
               <div style={{width: '80%', float: 'left', textTransform: 'uppercase', fontWeight: 'bold', fontSize: '13px'}}>
-                Plan of action
+                <Translate stringId='preparednessOverviewPlanAction'/>
               </div>
               <div style={{width: '20%', float: 'left'}}>
                 {phase.phase > 3 ? <img src='/assets/graphics/layout/tick.png' alt='phase ticked' style={{width: '10px', height: '10px'}} /> : null}
@@ -69,7 +76,7 @@ class PreparednessOverview extends React.Component {
 
             <div style={{marginBottom: '5px', float: 'left', width: '100%'}}>
               <div style={{width: '80%', float: 'left', textTransform: 'uppercase', fontWeight: 'bold', fontSize: '13px'}}>
-                Action &amp; Accountability
+                <Translate stringId='preparednessOverviewAction'/>
               </div>
               <div style={{width: '20%', float: 'left'}}>
                 {phase.phase > 4 ? <img src='/assets/graphics/layout/tick.png' alt='phase ticked' style={{width: '10px', height: '10px'}} /> : null}
@@ -81,9 +88,15 @@ class PreparednessOverview extends React.Component {
         <div style={{float: 'left', width: '34%'}}>
 
           <div style={{width: '50%', float: 'left', textTransform: 'uppercase', fontSize: '13px'}}>
-            <div style={{marginBottom: '5px'}}>Date of the assessment</div>
-            <div style={{marginBottom: '5px'}}>Per process type</div>
-            <div style={{marginBottom: '5px'}}>Focus</div>
+            <div style={{marginBottom: '5px'}}>
+              <Translate stringId='preparednessOverviewAssessmentDate'/>
+            </div>
+            <div style={{marginBottom: '5px'}}>
+              <Translate stringId='preparednessOverviewPerProcessType'/>
+            </div>
+            <div style={{marginBottom: '5px'}}>
+              <Translate stringId='preparednessOverviewFocus'/>
+            </div>
           </div>
           <div style={{width: '50%', float: 'left', textTransform: 'uppercase', fontWeight: 'bold', fontSize: '13px'}}>
             <div style={{marginBottom: '5px'}}>{dateOfAssessmentString}</div>
@@ -95,8 +108,12 @@ class PreparednessOverview extends React.Component {
         <div style={{float: 'left', width: '33%'}}>
 
           <div style={{width: '50%', float: 'left', textTransform: 'uppercase', fontSize: '13px'}}>
-            <div style={{marginBottom: '5px'}}>Focal point</div>
-            <div style={{marginBottom: '5px'}}>Email</div>
+            <div style={{marginBottom: '5px'}}>
+              <Translate stringId='preparednessOverviewFocalPoint'/>
+            </div>
+            <div style={{marginBottom: '5px'}}>
+              <Translate stringId='preparednessOverviewEmail'/>
+            </div>
           </div>
           <div style={{width: '50%', float: 'left', textTransform: 'uppercase', fontWeight: 'bold', fontSize: '13px', overflowWrap: 'break-word'}}>
             <div style={{marginBottom: '5px'}}>{focalPointNameString}</div>
@@ -134,4 +151,5 @@ const dispatcher = (dispatch) => ({
   _test: (...args) => dispatch('test')
 });
 
+PreparednessOverview.contextType = LanguageContext;
 export default withRouter(connect(selector, dispatcher)(PreparednessOverview));
