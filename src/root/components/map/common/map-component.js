@@ -8,6 +8,7 @@ import { environment } from '#config';
 import exportMap from '#utils/export-map';
 import DownloadButton from './download-button';
 import MapHeader from './map-header';
+import Translate from '#components/Translate';
 
 export default class MapComponent extends React.Component {
   constructor (props) {
@@ -95,7 +96,9 @@ export default class MapComponent extends React.Component {
           <div className='fold__actions'>
             <button className={c('button button--primary-bounded button--export', {
               disabled: !this.state.ready
-            })} onClick={() => exportMap(this.theMap)}>Export Map</button>
+            })} onClick={() => exportMap(this.theMap)}>
+              <Translate stringId='mapComponentExport'/>
+            </button>
           </div>
         )}
         <div className={className} ref='map'/>

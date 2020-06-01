@@ -1,4 +1,5 @@
 import React from 'react';
+import Translate from '#components/Translate';
 
 const MapFooter = (props) => (
   <div
@@ -17,7 +18,7 @@ const MapFooter = (props) => (
     }}
     id='map-export-footer'
   >
-    The maps used do not imply the expresion of any opinion on the part of the International Federation of the Red Cross and Red Crescent Societies or National Societies concerning the legal status of a territory or of its authorities, Data sources: IFRC, OSM contributors, Mapbox.
+    <Translate stringId='mapFooterDisclaimer'/>
   </div>
 );
 

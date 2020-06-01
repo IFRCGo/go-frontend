@@ -9,6 +9,9 @@ import { commaSeparatedNumber as n } from '#utils/format';
 import eruTypes, { getEruType } from '#utils/eru-types';
 import { environment } from '#config';
 
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
+
 import CheckboxGroup from '../form-elements/checkbox-group';
 
 const eruOptions = Object.keys(eruTypes).map(key => ({
@@ -59,14 +62,35 @@ class Readiness extends React.Component {
       <div className='readiness__card' key={eruOwner.id}>
         <div className='readiness__card-header'>
           <Link className='link--primary' to={`/countries/${owner.id}`}>{owner.society_name}</Link>
-          <span className='updated'>Last updated {DateTime.fromISO(eruOwner.updated_at).toISODate()}</span>
+          <span className='updated'>
+            <Translate
+              stringId='readinessLastUpdated'
+              params={{
+                date: DateTime.fromISO(eruOwner.updated_at).toISODate(),
+              }}
+            />
+          </span>
         </div>
         <div className='card__col'>
-          <p className='card__label card__label--ready'>{n(numReady)} Ready ERU's</p>
+          <p className='card__label card__label--ready'>
+            <Translate
+              stringId='readinessReadyErus'
+              params={{
+                numReady: n(numReady),
+              }}
+            />
+          </p>
           {readyTypes && <p>{readyTypes}</p>}
         </div>
         <div className='card__col'>
-          <p className='card__label'>{n(numDeployed)} Deployed ERU's</p>
+          <p className='card__label'>
+            <Translate
+              stringId='readinessDeployedErus'
+              params={{
+                numDeployed: n(numDeployed),
+              }}
+            />
+          </p>
           {deployed.map(o => (
             <p key={o.id}>{getEruType(o.type)} - <Link className='link--primary' to={`/countries/${o.deployed_to.id}`}>{o.deployed_to.name}</Link></p>
           ))}
@@ -79,6 +103,7 @@ class Readiness extends React.Component {
     const { filters } = this.state;
     const { data } = this.props.eruOwners;
 
+    const { strings } = this.context;
     const activeFilters = filters.filter(o => o.checked)
       .map(o => o.value);
 
@@ -91,14 +116,16 @@ class Readiness extends React.Component {
       <div>
         <div className='readiness__filters'>
           <CheckboxGroup
-            label={'Filter Ready ERU\'s'}
+            label={strings.readinessFilteredERUs}
             description={null}
             name={'ready-erus'}
             classWrapper=''
             options={eruOptions}
             values={this.state.filters}
             onChange={this.onChange} />
-          <button className='button button--secondary-light' onClick={this.clearFilters}>Reset Filters</button>
+          <button className='button button--secondary-light' onClick={this.clearFilters}>
+            <Translate stringId='readinessResetFilters'/>
+          </button>
         </div>
         <div className='readiness__header'>
           <h2 className='form__label'>National Societies</h2>
@@ -116,5 +143,5 @@ if (environment !== 'production') {
     eruOwners: T.object
   };
 }
-
+Readiness.contextType = LanguageContext;
 export default Readiness;
