@@ -3,6 +3,7 @@ import { PropTypes as T } from 'prop-types';
 
 import { environment } from '#config';
 import { commaSeparatedNumber as n } from '#utils/format';
+import Translate from '#components/Translate';
 
 export default class EmergenciesStats extends React.Component {
   render () {
@@ -17,16 +18,28 @@ export default class EmergenciesStats extends React.Component {
       <div className='header-stats'>
         <ul className='stats-list'>
           <li className='stats-list__item stats-emergencies'>
-            {n(data.count)}<small>Emergencies</small>
+            {n(data.count)}
+            <small>
+              <Translate stringId='emergenciesStatsTitle'/>
+            </small>
           </li>
           <li className='stats-list__item stats-people'>
-            {n(data.numAffected)}<small>Affected People</small>
+            {n(data.numAffected)}
+            <small>
+              <Translate stringId='emergenciesStatsAffected'/>
+            </small>
           </li>
           <li className='stats-list__item stats-funding stat-borderless stat-double'>
-            {n(data.totalAppeals)}<small>Requested Amount (CHF)</small>
+            {n(data.totalAppeals)}
+            <small>
+              <Translate stringId='emergenciesStatsRequested'/>
+            </small>
           </li>
           <li className='stats-list__item stat-double'>
-            {n(data.totalAppealsFunding)}<small>Funding (CHF)</small>
+            {n(data.totalAppealsFunding)}
+            <small>
+              <Translate stringId='emergenciesStatsFunding'/>
+            </small>
           </li>
         </ul>
       </div>
