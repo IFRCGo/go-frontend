@@ -172,14 +172,6 @@ class Emergency extends React.Component {
     return false;
   }
 
-  renderMustLogin () {
-    return (
-      <React.Fragment>
-        <p>You must be logged in to view this. <Link key='login' to={{ pathname: '/login', state: { from: this.props.location } }} className='link--primary' title='Login'>Login</Link></p>
-      </React.Fragment>
-    );
-  }
-
   renderFieldReportStatsEW (report) {
     const numPotentiallyAffected = parseInt(get(report, 'num_potentially_affected')) || parseInt(get(report, 'gov_num_potentially_affected')) || parseInt(get(report, 'other_num_potentially_affected'));
     const numHighestRisk = parseInt(get(report, 'num_highest_risk')) || parseInt(get(report, 'gov_num_highest_risk')) || parseInt(get(report, 'other_num_highest_risk'));
@@ -345,15 +337,29 @@ class Emergency extends React.Component {
     );
   }
 
+  userHasPerms (fieldReport) {
+    const userIsAnon = !this.props.isLogged;
+    const userIsSuperuser = this.props.profile.fetched && this.props.profile.data.is_superuser;
+    const visibility = fieldReport.visibility;
+
+    // superusers can see all reports
+    if (userIsSuperuser) {
+      return true;
+    }
+
+    // anonymous users can only see public reports
+    if (userIsAnon) {
+      return visibility === 3;
+    }
+
+    // logged in users can see all reports not restricted to IFRC
+    return visibility !== 2;
+  }
+
   renderFieldReports () {
     const { data } = this.props.event;
-    if (!this.props.isLogged) {
-      return (
-        <Fold id='field-reports' title='Field Reports' wrapperClass='event-field-reports' >
-          {this.renderMustLogin()}
-        </Fold>
-      );
-    } else if (data.field_reports && data.field_reports.length) {
+    const fieldReports = data.field_reports ? data.field_reports.filter(fr => this.userHasPerms(fr)) : [];
+    if (fieldReports.length) {
       return (
         <Fold id='field-reports' title={`Field Reports (${data.field_reports.length})`} wrapperClass='event-field-reports' >
           <table className='table table--zebra'>
@@ -366,7 +372,7 @@ class Emergency extends React.Component {
               </tr>
             </thead>
             <tbody>
-              {data.field_reports.map(o => (
+              {fieldReports.map(o => (
                 <tr key={o.id}>
                   <td>{isoDate(o.created_at)}</td>
                   <td><Link to={`/reports/${o.id}`} className='link--primary' title='View Field Report'>{o.summary || noSummary}</Link></td>

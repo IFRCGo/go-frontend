@@ -538,15 +538,15 @@ export const fieldsStep1 = {
   'summary': {
     'EVT': {
       label: 'Title *',
-      desc: 'For Covid-19 Field Reports, please link to the country specific emergency page if one already exists. Please do not link to the Global emergency page.'
+      desc: 'For Covid-19 Field Reports, please link to the existing country specific emergency page. Please do not link to the Global emergency page.'
     },
     'EPI': {
       label: 'Title *',
-      desc: 'For Covid-19 Field Reports, please link to the country specific emergency page if one already exists. Please do not link to the Global emergency page.'
+      desc: 'For Covid-19 Field Reports, please link to the existing country specific emergency page. Please do not link to the Global emergency page.'
     },
     'EW': {
       label: 'Title *',
-      desc: 'For Covid-19 Field Reports, please link to the country specific emergency page if one already exists. Please do not link to the Global emergency page.'
+      desc: 'For Covid-19 Field Reports, please link to the existing country specific emergency page. Please do not link to the Global emergency page.'
     }
   },
   'disaster-type': {
@@ -872,6 +872,7 @@ export const fieldsStep3 = {
       'desc': {
         'EVT': 'Select the activities undertaken by the National Society and briefly describe.',
         'EPI': 'Select the activities undertaken by the National Society and briefly describe.',
+        'EPI-COV': 'Select the activities undertaken by the National Society and briefly describe.',
         'EW': 'Select the early action activities undertaken by the National Society and give a brief description'
       },
       'placeholder': {
@@ -892,6 +893,7 @@ export const fieldsStep3 = {
       'desc': {
         'EVT': 'Select the activities taken by the IFRC (could be the Regional office, cluster office or country office) and briefly describe.',
         'EPI': 'Select the activities taken by the IFRC (could be the Regional office, cluster office or country office) and briefly describe.',
+        'EPI-COV': 'Describe the activities taken by the IFRC (could be the Regional office, cluster office or country office)',
         'EW': 'Select the early action activities undertaken by the IFRC and give a brief description'
       },
       'placeholder': {
@@ -912,6 +914,7 @@ export const fieldsStep3 = {
       'desc': {
         'EVT': 'Select the activities undertaken by any other RCRC Movement actor(s) and briefly describe.',
         'EPI': 'Select the activities undertaken by any other RCRC Movement actor(s) and briefly describe.',
+        'EPI-COV': 'Describe the activities undertaken by any other RCRC Movement actor(s)',
         'EW': 'Select the early action activities undertaken by the RCRC Movement and give a brief description.'
       },
       'placeholder': {
