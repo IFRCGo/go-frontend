@@ -93,7 +93,7 @@ if (process.env.NODE_ENV !== 'production') {
     selectPlaceholder: T.string,
     selectValue: T.object,
     selectOnChange: T.func,
-    selectLoadOptions: T.func,
+    selectLoadOptions: T.array,
     formInnerHeaderClass: T.string,
     formInnerBodyClass: T.string,
     type: T.string,
