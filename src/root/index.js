@@ -7,6 +7,7 @@ import store from '#utils/store';
 import { showAlert } from '#components/system-alerts';
 import { detectIE } from '#utils/ie';
 
+// Views.
 import Home from '#views/home';
 import About from '#views/about';
 import Account from '#views/account';
@@ -25,7 +26,6 @@ import Country from '#views/countries';
 import Deployments from '#views/deployments';
 import Table from '#views/table';
 import Covid19ThreeWSankey from '#views/Covid19ThreeWSankey';
-
 import PerForms from '#views/per-forms';
 import ViewPerForms from '#views/view-per-forms';
 import EditPerForms from '#views/edit-per-forms';
