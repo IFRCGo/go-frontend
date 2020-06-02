@@ -300,9 +300,11 @@ export function getEventById (id) {
 export const GET_EVENT_LIST = 'GET_EVENT_LIST';
 export function getEventList (countryId) {
   const query = {
-    countries__in: countryId,
-    limit: 9999,
+    limit: 9999
   };
+  if (countryId) {
+    query.countries__in = countryId;
+  }
   const q = buildAPIQS(query);
   return fetchJSON(`api/v2/event/mini/?${q}`, GET_EVENT_LIST, withToken());
 }

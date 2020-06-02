@@ -43,12 +43,12 @@ export default function FormInputSelect (props) {
       </div>
       <div className={c('form__inner-body', formInnerBodyClass)}>
         <label className='label-secondary'>{selectLabel}</label>
-        <Select.Async
+        <Select
           labelSecondary={selectLabel}
           value={selectValue}
           onChange={selectOnChange}
           placeholder={selectPlaceholder}
-          loadOptions={selectLoadOptions}
+          options={selectLoadOptions}
           disabled={disabled} />
 
         {labelSecondary ? (<label htmlFor={id} className='label-secondary global-margin-t'>{labelSecondary}</label>) : null}

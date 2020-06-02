@@ -37,7 +37,7 @@ class TimelineCharts extends React.Component {
     }
 
     const contentFormatter = (payload) => {
-      if (!payload.payload[0]) { return null; }
+      if (!payload.payload) { return null; }
 
       const item = payload.payload[0].payload;
       return (

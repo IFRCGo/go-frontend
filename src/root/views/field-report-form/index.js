@@ -8,6 +8,7 @@ import c from 'classnames';
 import Select from 'react-select';
 import Ajv from 'ajv';
 import ajvKeywords from 'ajv-keywords';
+import { DateTime } from 'luxon';
 
 import { environment } from '#config';
 import {
@@ -18,12 +19,11 @@ import {
 } from '../../schemas/field-report-form';
 import * as formData from '#utils/field-report-constants';
 import { showAlert } from '#components/system-alerts';
-import { createFieldReport, updateFieldReport, getFieldReportById, getDistrictsForCountry, getActions } from '#actions';
+import { createFieldReport, updateFieldReport, getFieldReportById, getDistrictsForCountry, getActions, getEventList } from '#actions';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 import {
   dataPathToDisplay,
   prepStateForValidation,
-  getEventsFromApi,
   getInitialDataState,
   convertStateToPayload,
   convertFieldReportToState,
@@ -114,11 +114,16 @@ class FieldReportForm extends React.Component {
         if (country) this.updateDistricts(country);
       }
     }
+    
+    if (nextProps.eventList) {
+      this.setState({eventList: nextProps.eventList});
+    }
   }
 
   componentDidMount () {
     // fetch actions data from backend
     this.props._getActions();
+    this.props._getEventList();
   }
 
   getReport (id) {
@@ -392,7 +397,7 @@ class FieldReportForm extends React.Component {
           selectOnChange={this.onFieldChange.bind(this, 'event')}
           selectValue={this.state.data.event}
           errors={this.state.errors}
-          selectLoadOptions={getEventsFromApi}
+          selectLoadOptions={this.state.eventList}
           disabled={!this.state.data.isCovidReport}
           autoFocus >
 
@@ -906,6 +911,7 @@ if (environment !== 'production') {
   FieldReportForm.propTypes = {
     _createFieldReport: T.func,
     _updateFieldReport: T.func,
+    _getEventList: T.func,
     _getFieldReportById: T.func,
     _getDistrictsForCountry: T.func,
     districts: T.object,
@@ -921,6 +927,12 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state, ownProps) => ({
+  eventList: state.event.eventList.data
+    ? state.event.eventList.data.results.map(ev => ({
+        value: ev.id,
+        label: `${ev.name} (${DateTime.fromISO(ev.created_at).toISODate()})`
+      }))
+    : [],
   fieldReportForm: state.fieldReportForm,
   actions: state.actions,
   user: state.user,
@@ -935,6 +947,7 @@ const selector = (state, ownProps) => ({
 const dispatcher = (dispatch) => ({
   _createFieldReport: (...args) => dispatch(createFieldReport(...args)),
   _updateFieldReport: (...args) => dispatch(updateFieldReport(...args)),
+  _getEventList: (...args) => dispatch(getEventList(...args)),
   _getFieldReportById: (...args) => dispatch(getFieldReportById(...args)),
   _getDistrictsForCountry: (...args) => dispatch(getDistrictsForCountry(...args)),
   _getActions: (...args) => dispatch(getActions(...args))
