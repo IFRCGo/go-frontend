@@ -116,7 +116,7 @@ class FieldReportForm extends React.Component {
     }
     
     if (nextProps.eventList) {
-      this.setState({eventList: nextProps.eventList});
+      this.setState({eventList: nextProps.eventList.sort((a, b) => (a.label > b.label) ? 1 : -1)});
     }
   }
 
