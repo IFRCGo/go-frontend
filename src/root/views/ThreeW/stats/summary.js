@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   _cs,
   unique,
 } from '@togglecorp/fujs';
 
+import LanguageContext from '#root/languageContext';
 import FormattedNumber from '#components/formatted-number';
 
 const SummaryElement = (p) => {
@@ -45,15 +46,16 @@ function ProjectSummary (p) {
       totalBudget,
     ];
   }, [projectList]);
+  const { strings } = useContext(LanguageContext);
 
   return (
     <div className={_cs(className, 'three-w-stats-summary')}>
       <SummaryElement
-        label="Active National societies"
+        label={strings.summaryStatsLabel}
         value={activeNationalSocietyCount}
       />
       <SummaryElement
-        label="Total budget"
+        label={strings.summaryStatsTotalBudget}
         value={totalBudget}
       />
     </div>
