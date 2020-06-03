@@ -30,6 +30,7 @@ import PerForms from '#views/per-forms';
 import ViewPerForms from '#views/view-per-forms';
 import EditPerForms from '#views/edit-per-forms';
 import Preparedness from '#views/preparedness';
+import TranslationDashboard from '#views/TranslationDashboard';
 
 import LanguageContext from '#root/languageContext';
 import lang from '#lang';
@@ -103,6 +104,7 @@ function Root () {
           <Switch>
             <Route exact path='/' component={Home}/>
             <Route exact path='/covid19-3w-sankey' component={Covid19ThreeWSankey}/>
+            <Route exact path='/translation-dashboard' component={TranslationDashboard}/>
             <Route exact path='/about' component={About}/>
             <PrivateRoute exact path='/account' component={Account}/>
             <PrivateRoute exact path='/account/password-change' component={PasswordChange}/>

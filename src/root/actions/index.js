@@ -673,3 +673,13 @@ export const setCurrentLanguageAction = (currentLanguage) => ({
     type: SET_CURRENT_LANGUAGE,
     language: currentLanguage,
 });
+
+export const GET_LANGUAGE = 'GET_LANGUAGE';
+export const getLanguage = (langCode) => {
+  return fetchJSON(`/api/v2/${langCode}/`, GET_LANGUAGE);
+};
+
+export const POST_LANGUAGE_BULK_ACTION = 'POST_LANGUAGE_BULK_ACTION';
+export const postLanguage = (langCode, data) => {
+  return postJSON(`/api/v2/${langCode}/`, POST_LANGUAGE_BULK_ACTION, data, withToken());
+};
