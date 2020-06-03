@@ -20,7 +20,7 @@ import Fold from '#components/fold';
 import BlockLoading from '#components/block-loading';
 import DisplayTable, { FilterHeader, SortHeader } from '#components/display-table';
 import { SFPComponent } from '#utils/extendables';
-import LanguageContext from '#root/languageContext';
+import { withLanguage } from '#root/languageContext';
 import Translate from '#components/Translate';
 
 
@@ -196,7 +196,6 @@ class FieldReportsTable extends SFPComponent {
   }
 }
 
-FieldReportsTable.contextType = LanguageContext;
 if (environment !== 'production') {
   FieldReportsTable.propTypes = {
     _getFieldReportsList: T.func,
@@ -230,4 +229,4 @@ const dispatcher = (dispatch) => ({
   _getFieldReportsList: (...args) => dispatch(getFieldReportsList(...args))
 });
 
-export default withRouter(connect(selector, dispatcher)(FieldReportsTable));
+export default withLanguage(withRouter(connect(selector, dispatcher)(FieldReportsTable)));

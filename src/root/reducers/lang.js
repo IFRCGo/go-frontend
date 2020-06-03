@@ -9,36 +9,7 @@ import lang from '#lang';
 const initialState = {
   current: 'en',
   strings: {
-    en: {
-      ...lang,
-    },
-    fr: {
-      ...lang,
-      rcActivities: 'Activités de la Croix-Rouge et du Croissant-Rouge',
-      langSelectLabel: 'Langue: {currentLanguage}',
-      menuHome: 'Accueil',
-      menuEmergencies: 'Urgence',
-      menuDeployments: 'Déploiements',
-      menuPreparedness: 'Préparation',
-    },
-    es: {
-      ...lang,
-      rcActivities: 'Actividades de la Cruz Roja / Media Luna Roja',
-      langSelectLabel: 'Idioma: {currentLanguage}',
-      menuHome: 'Casa',
-      menuEmergencies: 'Emergencias',
-      menuDeployments: 'Implementaciones',
-      menuPreparedness: 'Preparación',
-    },
-    ar: {
-      ...lang,
-      rcActivities: 'أنشطة الصليب الأحمر والهلال الأحمر',
-      langSelectLabel: 'لغة: {currentLanguage}',
-      menuHome: 'الصفحة الرئيسية',
-      menuEmergencies: 'الطوارئ',
-      menuDeployments: 'عمليات النشر',
-      menuPreparedness: 'التأهب',
-    }
+    ...lang,
   }
 };
 
@@ -53,7 +24,16 @@ export default function reducer (state = initialState, action) {
       newState = stateError(state, action);
       break;
     case 'GET_LANGUAGE_SUCCESS':
-      newState = stateSuccess(state, action);
+      const { data } = stateSuccess(state, action);
+      const newStrings = data.strings.reduce((acc, val) => {
+        acc[val.key] = val.value;
+        return acc;
+      }, {});
+
+      newState = {
+        ...state,
+        strings: newStrings,
+      };
       break;
     case 'SET_CURRENT_LANGUAGE':
       newState.current = action.language;
