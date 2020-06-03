@@ -16,6 +16,8 @@ import {
 
 import { sectorList } from '#utils/constants';
 
+import Translate from '#components/Translate';
+
 const propTypes = {
   className: PropTypes.string,
   projectList: PropTypes.array,
@@ -71,7 +73,7 @@ export default class SectorActivity extends React.PureComponent {
     return (
       <div className={_cs(className, 'three-w-stats-sector-activity')}>
         <h4 className='tc-heading'>
-          Activities by sector
+          <Translate stringId='regionOverviewSectorActivity'/>
         </h4>
         <div className='tc-content'>
           <ResponsiveContainer>
