@@ -675,11 +675,11 @@ export const setCurrentLanguageAction = (currentLanguage) => ({
 });
 
 export const GET_LANGUAGE = 'GET_LANGUAGE';
-export const getLanguage = (langCode) => {
-  return fetchJSON(`/api/v2/${langCode}/`, GET_LANGUAGE);
+export const getLanguageAction = (langCode) => {
+  return fetchJSON(`/api/v2/language/${langCode}/`, GET_LANGUAGE);
 };
 
-export const POST_LANGUAGE_BULK_ACTION = 'POST_LANGUAGE_BULK_ACTION';
-export const postLanguage = (langCode, data) => {
-  return postJSON(`/api/v2/${langCode}/`, POST_LANGUAGE_BULK_ACTION, data, withToken());
+export const POST_LANGUAGE_BULK = 'POST_LANGUAGE_BULK';
+export const postLanguageBulkAction = (langCode, data) => {
+  return postJSON(`/api/v2/language/${langCode}/bulk-action/`, POST_LANGUAGE_BULK, data, withToken());
 };

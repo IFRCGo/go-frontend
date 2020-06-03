@@ -4,12 +4,13 @@ import { connect } from 'react-redux';
 import { IoMdArrowDropdown } from 'react-icons/io';
 
 import {
-  currentLangugageSelector,
-  currentLanguageStringsSelector,
+  currentLanguageSelector,
+  languageStringsSelector,
 } from '#selectors';
 
 import {
   setCurrentLanguageAction,
+  getLanguageAction,
 } from '#actions';
 
 import languageContext from '#root/languageContext';
@@ -55,14 +56,19 @@ function LanguageSelect(p) {
   const { setStrings } = React.useContext(languageContext);
 
   const {
+    getLanguage,
     currentLanguage,
     setCurrentLanguage,
-    currentLanguageStrings,
+    languageStrings,
   } = p;
 
   React.useEffect(() => {
-    setStrings(currentLanguageStrings);
-  }, [currentLanguageStrings, setStrings]);
+    getLanguage(currentLanguage);
+  }, [currentLanguage, getLanguage]);
+
+  React.useEffect(() => {
+    setStrings(languageStrings);
+  }, [languageStrings, setStrings]);
 
   const handleLanguageButtonClick = React.useCallback((languageId) => {
     setCurrentLanguage(languageId);
@@ -98,12 +104,13 @@ function LanguageSelect(p) {
 }
 
 const mapStateToProps = (state) => ({
-  currentLanguage: currentLangugageSelector(state),
-  currentLanguageStrings: currentLanguageStringsSelector(state),
+  currentLanguage: currentLanguageSelector(state),
+  languageStrings: languageStringsSelector(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   setCurrentLanguage: (...args) => dispatch(setCurrentLanguageAction(...args)),
+  getLanguage: (...args) => dispatch(getLanguageAction(...args)),
 });
 
 

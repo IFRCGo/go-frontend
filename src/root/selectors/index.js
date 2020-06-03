@@ -49,18 +49,19 @@ export const projectFormSelector = (state) => (
 );
 
 export const languageSelector = (state) => (
-  state.lang || {}
+  state.lang
 );
 
-export const currentLangugageSelector = (state) => (
-  languageSelector(state).current || 'en'
+export const currentLanguageSelector = (state) => (
+  languageSelector(state).current
 );
 
 export const languageStringsSelector = (state) => (
-  languageSelector(state).strings || { en: lang }
+  languageSelector(state).strings
 );
 
-export const currentLanguageStringsSelector = (state) => (
-  languageStringsSelector(state)[currentLangugageSelector(state)] || lang
-);
+export const currentLanguageStringsSelector = languageStringsSelector;
 
+export const languageBulkResponseSelector = (state) => (
+  state.postLanguageBulk
+);
