@@ -1,6 +1,13 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import _cs from 'classnames';
 
-import { _cs } from '@togglecorp/fujs';
+import { postLanguageBulkAction } from '#actions';
+
+import {
+  currentLanguageSelector,
+  languageBulkResponseSelector,
+} from '#selectors';
 
 import LanguageSelect from '#components/LanguageSelect';
 import languageContext from '#root/languageContext';
@@ -8,14 +15,29 @@ import languageContext from '#root/languageContext';
 import styles from './styles.module.scss';
 
 function TranslationDashboard(p) {
-  const { className } = p;
+  const {
+    className,
+    postLanguageBulk,
+    currentLanguage,
+    // languageBulkResponse,
+  } = p;
   const { strings } = React.useContext(languageContext);
 
-  const languageKeys = Object.keys(strings);
+  const languageKeys = React.useMemo(() => {
+    const keys = Object.keys(strings);
+    return keys.sort((a, b) => (a || '').localeCompare(b));
+  }, [strings]);
 
   const handleSaveButtonClick = React.useCallback(() => {
-    console.warn('...save');
-  });
+    const actions = languageKeys.map((key) => ({
+      action: 'set',
+      key,
+      value: strings[key],
+    }));
+
+    const data = { actions };
+    postLanguageBulk(currentLanguage, data);
+  }, [languageKeys, strings, postLanguageBulk, currentLanguage]);
 
   return (
     <div className={_cs(className, styles.translationDashboard)}>
@@ -27,9 +49,6 @@ function TranslationDashboard(p) {
           <LanguageSelect />
           <button className="button">
             Export current
-          </button>
-          <button className="button">
-            Export all 
           </button>
           <button
             className="button"
@@ -58,4 +77,16 @@ function TranslationDashboard(p) {
   );
 }
 
-export default TranslationDashboard;
+const mapStateToProps = (state, props) => ({
+  languageBulkResponse: languageBulkResponseSelector(state),
+  currentLanguage: currentLanguageSelector(state),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  postLanguageBulk: (...args) => dispatch(postLanguageBulkAction(...args)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(React.memo(TranslationDashboard));
