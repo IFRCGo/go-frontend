@@ -75,7 +75,6 @@ import ThreeW from './ThreeW';
 
 const emptyObject = {};
 
-
 const filterPaths = {
   ns: 'parent.name',
   type: 'activity.activity'
