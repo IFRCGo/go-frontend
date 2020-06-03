@@ -19,6 +19,8 @@ import NumberInput from '#components/form-elements/number-input';
 import DateInput from '#components/form-elements/date-input';
 import Checkbox from '#components/form-elements/faram-checkbox';
 import TextOutput from '#components/text-output';
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
 
 import {
   getCountries,
@@ -561,6 +563,7 @@ class ProjectForm extends React.PureComponent {
     const filteredSecondarySectorOptions = this.getFilteredSecondarySectorOptions(faramValues.sector);
 
     const hasNonFieldErrors = projectForm.error;
+    const { strings } = this.context;
 
     return (
       <React.Fragment>
@@ -576,42 +579,42 @@ class ProjectForm extends React.PureComponent {
           disabled={projectForm.fetching}
         >
           <InputSection
-            title='Reporting National Society *'
-            helpText='Select National Society that is carrying out the activity.'
-            tooltip='It can be either the National Society where the disaster has taken place or a different National Society that is carrying out an activity in support of the response.'
+            title={strings.projectFormReportingNational}
+            helpText={strings.projectFormReportingHelpText}
+            tooltip={strings.projectFormReportingTooltip}
           >
             <SelectInput
               faramElementName='reporting_ns'
               className='project-form-select'
               options={nationalSocietyOptions}
-              placeholder={fetchingNationalSocieties ? 'Fetching national societies...' : undefined}
+              placeholder={fetchingNationalSocieties ? strings.projectFormFetching : undefined}
               disabled={shouldDisableNationalSocietyInput}
             />
           </InputSection>
 
           <InputSection
             className='multi-input-section'
-            title='Country and Region / Province* '
-            helpText='Select the country and region where the disaster is taking place.'
-            tooltip='The region can be referred to as states, provinces, or Admin Level 1. Choose countrywide for activities that are not limited to specific places. If the project takes place on multiple regions please submit each region separately using the clone-function on the country view table'
+            title={strings.projectFormCountryTitle}
+            helpText={strings.projectFormCountryHelpText}
+            tooltip={strings.projectFormCountryTooltip}
           >
             <SelectInput
               faramElementName='project_country'
-              label='Country'
+              label={strings.projectFormCountryLabel}
               className='project-form-select'
               options={countryOptions}
               clearable={false}
               disabled={shouldDisableCountryInput}
-              placeholder={fetchingCountries ? 'Fetching countries...' : undefined}
+              placeholder={fetchingCountries ? strings.projectFormCountryPlaceholder : undefined}
             />
             <div className="district-select-container">
               <SelectInput
                 faramElementName='project_districts'
-                label='Region / Province'
+                label={strings.projectFormDistrictLabel}
                 className='project-form-select'
                 options={districtOptions}
                 disabled={shouldDisableDistrictInput}
-                placeholder={fetchingDistricts ? 'Fetching regions...' : 'Select regions' }
+                placeholder={fetchingDistricts ? strings.projectFormDistrictFetching : strings.projectFormDistrictSelect }
                 multi
               />
               <button
@@ -620,30 +623,31 @@ class ProjectForm extends React.PureComponent {
                 disabled={shouldDisableDistrictInput}
                 onClick={this.handleSelectAllDistrictButtonClick}
               >
-                All
+                <Translate stringId='projectFormAll'/>
               </button>
             </div>
           </InputSection>
 
           <InputSection
             className='multi-input-section'
-            title='Type of Operation / Programme*'
-            tooltip='The operation type can be either an Emergency Operation or a Programme. Emergency Operations are new efforts linked to a specific emergency. Programs are ongoing work linked to a disaster. &#13;&#13;If you choose Domestic, Bilateral, or Multilateral Programme, select Disaster Type that best fits the situation. Disasters are often multifactorial. Please choose the type that makes the most sense, recognizing that disasters are often the result of many complex factors. &#13;If you choose Bilateral Emergency Operation, then no additional info is required. &#13;If you choose Multilateral Emergency Operation, then please identify linked IFRC Emergency Operation.'
+            title={strings.projectFormTypeOfOperation}
+            tooltip={strings.projectFormTypeOfOperationTooltip}
             helpText={
               <React.Fragment>
-                <b>Programme Type:</b> Select the Programme Type. Choose from the options of Domestic, Bilateral, Multilateral. If you choose Domestic Emergency Operation, then identify linked Ongoing Emergency.
+                <b>{strings.projectFormProgrammeType}</b>
+                {strings.projectFormProgrammeTooltip}
               </React.Fragment>
             }
           >
             <SelectInput
               faramElementName='operation_type'
-              label='Operation Type'
+              label={strings.projectFormOperationType}
               className='project-form-select'
               options={operationTypeOptions}
             />
             <SelectInput
               faramElementName='programme_type'
-              label='Programme Type'
+              label={strings.projectFormProgrammeTypeLabel}
               className='project-form-select'
               options={programmeTypeOptions}
             />
@@ -651,7 +655,7 @@ class ProjectForm extends React.PureComponent {
 
           { shouldShowCurrentOperation && (
             <InputSection
-              title='Current IFRC Operation*'
+              title={strings.projectFormCurrentOperation}
             >
               <SelectInput
                 faramElementName='event'
@@ -665,37 +669,37 @@ class ProjectForm extends React.PureComponent {
 
           { shouldShowCurrentEmergencyOperation && (
             <InputSection
-              title='Current Emergency Operation*'
-              helpText='The list is populated from current emergency operations related to the selected country. If necessary, create the related emergency through a field report'
+              title={strings.projectFormCurrentEmergency}
+              helpText={strings.projectFormCurrentEmergencyHelpText}
             >
               <SelectInput
                 faramElementName='event'
                 className='project-form-select'
                 options={currentEmergencyOperationOptions}
                 disabled={shouldDisableCurrentOperation}
-                placeholder={fetchingEvents ? 'Fetching events...' : undefined}
+                placeholder={fetchingEvents ? strings.projectFormFetchingEvents : undefined}
               />
             </InputSection>
           )}
 
           { shouldShowDisasterType && (
             <InputSection
-              title='Disaster Type'
+              title={strings.projectFormDisasterType}
             >
               <SelectInput
                 faramElementName='dtype'
                 className='project-form-select'
                 options={disasterTypeOptions}
                 disabled={shouldDisableDisasterType}
-                placeholder={shouldDisableDisasterType ? 'Select an operation to view its disaster type' : undefined}
+                placeholder={shouldDisableDisasterType ? strings.projectFormDisasterTypePlaceholder : undefined}
               />
             </InputSection>
           )}
 
           <InputSection
-            title='Project Name*'
-            helpText='Enter a name that differentiates your activity or project from other initiatives taking place in the response.'
-            tooltip='The 3w system does allow for duplicate activities projects with the same name, but please choose a descriptive and original title.'
+            title={strings.projectFormProjectName}
+            helpText={strings.projectFormHelpText}
+            tooltip={strings.projectFormTooltip}
           >
             <TextInput
               faramElementName='name'
@@ -704,29 +708,35 @@ class ProjectForm extends React.PureComponent {
 
           <InputSection
             className='multi-input-section'
-            title='Sector and Tagging'
+            title={strings.projectFormSectorTitle}
             helpText={
               <React.Fragment>
                 <div>
-                  <b>Primary Sector:</b> Choose the sector that best represents the activity or project.
+                  <b>
+                    {strings.projectFormPrimarySector}
+                  </b>
+                  {strings.projectFormPrimarySectorText}
                 </div>
                 <div>
-                  <b>Tagging:</b> Projects are often multi-sector. After choosing the primary sector, feel free to add additional sector ‘tags’.
+                  <b>
+                    {strings.projectFormTagging}
+                  </b>
+                  {strings.projectFormTaggingText}
                 </div>
               </React.Fragment>
             }
-            tooltip='CEA - Community engagement and accountability is a set of communication and participation activities that help put communities at the centre of the response. &#13; &#13;DRR - Disaster risk reduction is the concept and practice of reducing disaster risks through systemic efforts. It encompasses a broad range of activities – from ensuring that legislative and policy approaches reflect known hazards, to community-based initiatives and technical solutions such as early warning systems. &#13; &#13;Education - Educational programming for people affected by disasters. &#13; &#13;Health - Immediate assistance for disaster-affected people and longer-term activities that save lives and improve health outcomes. Separated into clinical and public health. &#13; &#13;Livelihood and basic needs - Livelihoods are the capabilities, assets and activities required for generating income and securing a basic means of living. &#13; &#13;Migration - Aid and protection for migrants and displaced people, in countries of origin, transit and destination, whatever their legal status. &#13;&#13;NS Strengthening - Support to the auxiliary role, strategy, governance and accountability; strengthening areas such as financial management, communications, fundraising; increase volunteer engagement; improve external relations; or ramp up their preparedness for responding to emergencies or improve the planning and execution of programmes and services they provide. &#13; &#13;PGI - Protection, gender and inclusion (PGI) in emergencies including sexual and gender-based violence and disability inclusion. &#13; &#13;Shelter - Immediate and long term shelter assistance.  &#13;&#13;WASH - Water, sanitation and hygiene support. &#13; &#13; &#13;It is possible to add none, one or many tags using the definitions listed above. For COVID-19 related projects please add the COVID-19 tag'
+            tooltip={strings.projectFormTaggingTooltip}
           >
             <SelectInput
               faramElementName='primary_sector'
               className='project-form-select'
-              label='Primary Sector* '
+              label={strings.projectFormPrimarySectorSelect}
               options={sectorOptions}
             />
             <SelectInput
               faramElementName='secondary_sectors'
               className='project-form-select'
-              label='Tagging'
+              label={strings.projectFormSecondarySectorLabel}
               options={filteredSecondarySectorOptions}
               multi
             />
@@ -734,35 +744,43 @@ class ProjectForm extends React.PureComponent {
 
           <InputSection
             className='multi-input-section'
-            title='Start and End Dates* '
-            helpText='Choose the date when the work on the activity or project begins'
-            tooltip='Choose the date when the project is likely to end. Remember, you can easily return and edit this data if plans evolve.'
+            title={strings.projectFormMultiLabel}
+            helpText={strings.projectFormMultiLabelHelpText}
+            tooltip={strings.projectFormMultiLabelTooltip}
           >
             <DateInput
               faramElementName='start_date'
-              label='Start Date'
+              label={strings.projectFormStartDate}
             />
             <DateInput
               faramElementName='end_date'
-              label='End Date'
+              label={strings.projectFormEndDate}
             />
           </InputSection>
 
           <InputSection
             className='multi-input-section'
+            // TODO: use translations
             title={`Budget and Status${isBudgetAndTotalNotRequired ? '' : '*'}`}
             helpText={
               <React.Fragment>
                 <div>
-                  <b>Budget:</b> Enter the budget for the activity or project.
+                  <b>
+                    {strings.projectFormBudget}
+                  </b>
+                  {strings.projectFormBudgetText}
                 </div>
                 <div>
-                  <b>Project status:</b> The project status (planned and ongoing) is automatically defined by the current date and the submitted project timeline.
+                  <b>
+                    {strings.projectFormProjectStatus}
+                  </b>
+                  {strings.projectFormProjectStatusText}
                 </div>
               </React.Fragment>
             }
-            tooltip='The budget includes the total costs for the listed activity or project. &#13;The project can be marked completed, which makes the people reached a required value.'
+            tooltip={strings.projectFormProjectTooltip}
           >
+            {/* TODO: use translations */}
             { faramValues.is_project_completed ? (
               <NumberInput
                 label='Actual Expenditure (CHF)'
@@ -776,11 +794,11 @@ class ProjectForm extends React.PureComponent {
             )}
             <div>
               <Checkbox
-                label="Completed"
+                label={strings.projectFormProjectCompleted}
                 faramElementName="is_project_completed"
               />
               <TextOutput
-                label='Project Status'
+                label={strings.projectFormProjectStatusTitle}
                 value={statuses[faramValues.status]}
               />
             </div>
@@ -788,46 +806,47 @@ class ProjectForm extends React.PureComponent {
 
           <InputSection
             className='multi-input-section'
-            title='People Targeted'
-            helpText='Enter the number of people that the project plans to reach through the work.'
-            tooltip='The options are: &#13;Male - People who identify as having the male gender &#13;Female - People who identify as having the female gender &#13;Other - Other can include data such as “other sex/gender”, “undisclosed”, “unknown”, etc &#13;Total - The total number of people included in the subcategories above'
+            title={strings.projectFormPeopleTageted}
+            helpText={strings.projectFormPeopleTagetedHelpText}
+            tooltip={strings.projectFormPeopleTagetedTooltip}
           >
             <NumberInput
               faramElementName='target_male'
-              label='Male'
+              label={strings.projectFormMale}
             />
             <NumberInput
               faramElementName='target_female'
-              label='Female'
+              label={strings.projectFormFemale}
             />
             <NumberInput
               faramElementName='target_other'
-              label='Other'
+              label={strings.projectFormOther}
             />
             <NumberInput
               disabled={shouldDisableTotalTarget}
               faramElementName='target_total'
+              // TODO: use translations
               label={isTargetTotalRequired ? 'Total* ' : 'Total'}
             />
           </InputSection>
 
           <InputSection
             className='multi-input-section'
-            title='People Reached'
-            helpText='Enter the total number of people reached already with (TOTAL, male, female, other) according to the definitions above.'
-            tooltip='lease follow the Counting People Reached guidelines as establishing the Federation-wide Databank and Reporting System.'
+            title={strings.projectFormPeopleReached}
+            helpText={strings.projectFormPeopleReachedHelpText}
+            tooltip={strings.projectFormPeopleReachedTooltip}
           >
             <NumberInput
               faramElementName='reached_male'
-              label='Male'
+              label={strings.projectFormPeopleReachedMale}
             />
             <NumberInput
               faramElementName='reached_female'
-              label='Female'
+              label={strings.projectFormPeopleReachedFemale}
             />
             <NumberInput
               faramElementName='reached_other'
-              label='Other'
+              label={strings.projectFormPeopleReachedOther}
             />
             <NumberInput
               disabled={shouldDisableTotalReached}
@@ -836,20 +855,20 @@ class ProjectForm extends React.PureComponent {
             />
           </InputSection>
           <InputSection
-            title='Project visibility*'
+            title={strings.projectFormProjectVisibility}
           >
             <SelectInput
               faramElementName='visibility'
               className='project-form-select'
               options={projectVisibilityOptions}
-              helpText='Enter the desired visibility of the project'
-              tooltip='The IFRC Only option limits viewing to only those vetted IFRC members who are logged into the GO platform and have the required permissions to view the data. Most programs should be in public mode, and we should only use the IFRC Only option in limited sensitive contexts where issues such as protection concerns are present. As with the wider GO Platform, there is no place for Personal or Community Identifiable data on this type of coordination platform. Sensitive data or information that could jeopardize the safety of staff or project participants should not be shared.'
+              helpText={strings.projectFormProjectVisibilityHelpText}
+              tooltip={strings.projectFormProjectVisibilityTooltip}
               clearable={false}
             />
           </InputSection>
           { hasNonFieldErrors && (
             <div className='tc-non-field-errors'>
-              There was an error submitting the request!
+              <Translate stringId='projectFormError'/>
             </div>
           )}
 
@@ -868,7 +887,7 @@ class ProjectForm extends React.PureComponent {
               type="submit"
               disabled={shouldDisableSubmitButton}
             >
-              { projectFormPending ? 'Submitting...' : 'Submit' }
+              { projectFormPending ? strings.projectFormSubmitting : strings.projectFormSubmit }
             </button>
           </footer>
         </Faram>
@@ -876,6 +895,8 @@ class ProjectForm extends React.PureComponent {
     );
   }
 }
+
+ProjectForm.contexType = LanguageContext;
 
 const selector = (state, ownProps) => ({
   countries: state.countries,
