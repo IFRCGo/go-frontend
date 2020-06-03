@@ -17,6 +17,9 @@ import { getEventById } from '#actions';
 
 import { disasterTypes } from '#utils/field-report-constants';
 
+import Translate from '#components/Translate';
+import LanguageContext from '#root/languageContext';
+
 const emptyObject = {};
 
 class ProjectDetails extends React.PureComponent {
@@ -73,89 +76,90 @@ class ProjectDetails extends React.PureComponent {
     } = data;
 
     const currentEventDetails = this.getCurrentEventDetails(eventDetails, event);
+    const { strings } = this.context;
 
     return (
       <Backdrop>
         <div className='tc-project-details-modal'>
           <header>
             <h2>
-              Red Cross / Red Crescent activities
+              <Translate stringId='threeWProjectDetails' />
             </h2>
             <button
               className='button button--secondary-bounded'
               onClick={onCloseButtonClick}
             >
-              Close
+              <Translate stringId='threeWClose' />
             </button>
           </header>
           <div className='tc-project-details'>
             <div className='tc-section'>
               <TextOutput
                 className='tc-project-name'
-                label='Project Name'
+                label={strings.threeWProjectName}
                 value={name}
               />
             </div>
             <div className='tc-section tc-date-section'>
               <TextOutput
-                label='Start Date'
+                label={strings.threeWStartDate}
                 value={start_date}
               />
               <TextOutput
-                label='End Date'
+                label={strings.threeWEndDate}
                 value={end_date}
               />
             </div>
             <div className='tc-section'>
               <TextOutput
-                label='Project Districts'
+                label={strings.threeWProjectDistricts}
                 value={project_districts_detail ? (project_districts_detail.map(d => d.name).join(', ')) : ''}
               />
             </div>
             <div className='tc-section'>
               <TextOutput
-                label='Reporting National Society'
+                label={strings.threeWNationalSociety}
                 value={reporting_ns ? reporting_ns_detail.society_name : undefined}
               />
               <TextOutput
-                label='Budget Amount (CHF)'
+                label={strings.threeWBudgetAmount}
                 value={budget_amount}
                 type='number'
                 addSeparatorToValue
               />
               <TextOutput
-                label='Programme Type'
+                label={strings.threeWProgrammeType}
                 value={programmeTypes[programme_type]}
               />
               <TextOutput
-                label='Status'
+                label={strings.threeWStatus}
                 value={statuses[status]}
               />
             </div>
             <div className='tc-section'>
               <TextOutput
-                label='Current IFRC Operation'
+                label={strings.threeWCurrentOperation}
                 value={currentEventDetails.name}
                 hideEmptyValue
               />
               <TextOutput
-                label='Disaster Type'
+                label={strings.threeWDisasterType}
                 value={dtype ? disasterTypes[dtype] : undefined}
                 hideEmptyValue
               />
             </div>
             <div className='tc-section'>
               <TextOutput
-                label='Operation Type'
+                label={strings.threeWOperationType}
                 value={operationTypes[operation_type]}
               />
               <TextOutput
-                label='Primary Sector'
+                label={strings.threeWPrimarySector}
                 value={sectors[primary_sector]}
               />
               {secondary_sectors.length > 0 && (
                 <TextOutput
-                  label='Tagging'
+                  label={strings.threeWTagging}
                   value={(secondary_sectors.map(d => secondarySectors[d])).join(', ')}
                   hideEmptyValue
                 />
@@ -163,29 +167,29 @@ class ProjectDetails extends React.PureComponent {
             </div>
             <div className='tc-section'>
               <div className='tc-section-title'>
-                Targeted
+                <Translate stringId='threeWTargeted' />
               </div>
               <div className='tc-section-content'>
                 <TextOutput
-                  label='Male'
+                  label={strings.threeWMale}
                   value={target_male}
                   type='number'
                   addSeparatorToValue
                 />
                 <TextOutput
-                  label='Female'
+                  label={strings.threeWFemale}
                   value={target_female}
                   type='number'
                   addSeparatorToValue
                 />
                 <TextOutput
-                  label='Other'
+                  label={strings.threeWOther}
                   value={target_other}
                   type='number'
                   addSeparatorToValue
                 />
                 <TextOutput
-                  label='Total'
+                  label={strings.threeWTotal}
                   value={target_total}
                   type='number'
                   addSeparatorToValue
@@ -194,29 +198,29 @@ class ProjectDetails extends React.PureComponent {
             </div>
             <div className='tc-section'>
               <div className='tc-section-title'>
-                Reached
+                <Translate stringId='threeWReached' />
               </div>
               <div className='tc-section-content'>
                 <TextOutput
-                  label='Male'
+                  label={strings.threeWMale}
                   value={reached_male}
                   type='number'
                   addSeparatorToValue
                 />
                 <TextOutput
-                  label='Female'
+                  label={strings.threeWFemale}
                   value={reached_female}
                   type='number'
                   addSeparatorToValue
                 />
                 <TextOutput
-                  label='Other'
+                  label={strings.threeWOther}
                   value={reached_other}
                   type='number'
                   addSeparatorToValue
                 />
                 <TextOutput
-                  label='Total'
+                  label={strings.threeWTotal}
                   value={reached_total}
                   type='number'
                   addSeparatorToValue
@@ -229,6 +233,8 @@ class ProjectDetails extends React.PureComponent {
     );
   }
 }
+
+ProjectDetails.contextType = LanguageContext;
 
 const selector = (state, ownProps) => ({
   eventDetails: state.event ? state.event.event : undefined,

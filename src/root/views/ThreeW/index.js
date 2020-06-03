@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import _cs from 'classnames';
 import { saveAs } from 'file-saver';
 import { connect } from 'react-redux';
@@ -16,6 +16,7 @@ import {
   projectDeleteSelector,
 } from '#selectors';
 
+import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 import ConfirmModal from '#components/confirm-modal';
 import BlockLoading from '#components/block-loading';
@@ -84,6 +85,8 @@ function ThreeW (p) {
     projectFormResponse.fetching ||
     deleteProjectResponse.fetching ||
     meResponse.fetching;
+
+  const { strings } = useContext(LanguageContext);
 
   const projectList = React.useMemo(() => (
     getResultsFromResponse(projectListResponse)
@@ -206,7 +209,9 @@ function ThreeW (p) {
               onClick={handleAddButtonClick}
               disabled={disabled}
             >
-              Add
+              <Translate
+                stringId="threeWAdd"
+              />
             </button>
           )}
           <button
@@ -217,7 +222,9 @@ function ThreeW (p) {
             onClick={handleExportButtonClick}
             disabled={shouldDisableExportButton}
           >
-            Export
+            <Translate
+              stringId="threeWExport"
+            />
           </button>
         </div>
       </header>
@@ -256,8 +263,8 @@ function ThreeW (p) {
       </div>
       { showDeleteConfirmationModal && (
         <ConfirmModal
-          title="Delete project"
-          message="Are you sure you want to delete the project?"
+          title={strings.threeWDeleteProject}
+          message={strings.threeWDeleteProjectMessage}
           onClose={handleDeleteProjectConfirmModalClose}
         />
       )}
