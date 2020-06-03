@@ -46,6 +46,8 @@ import TabContent from '#components/tab-content';
 import Fold from '#components/fold';
 import DisplayTable, { SortHeader, FilterHeader } from '#components/display-table';
 import EmergenciesTable from '#components/connected/emergencies-table';
+import Translate from '#components/Translate';
+import LanguageContext from '#root/LanguageContext';
 
 // import BulletTable from '#components/bullet-table';
 import Pills from '#components/pills';
@@ -71,12 +73,26 @@ import ThreeW from './ThreeW';
 
 const emptyObject = {};
 
+const { strings } = this.context;
+
 const TAB_DETAILS = [
-  { title: 'Operations', hash: '#operations' },
-  { title: '3w', hash: '#3w' },
+  {
+    title: strings.regionOperationsTab,
+    hash: '#operations'
+  },
+  {
+    title: strings.region3WTab,
+    hash: '#3w'
+  },
   // { title: 'Country Overview', hash: '#overview' },
-  { title: 'Preparedness', hash: '#preparedness' },
-  { title: 'Additional Information', hash: '#additional' }
+  {
+    title: strings.regionPreparedness,
+    hash: '#preparedness'
+  },
+  {
+    title: strings.regionAdditionalInfoTab,
+    hash: '#additional'
+  },
 ];
 
 const filterPaths = {
@@ -227,7 +243,7 @@ class AdminArea extends SFPComponent {
 
     if (homepageIfrc) {
       const ifrcLink = {
-        'text': `${adminArea.data.name} on IFRC.org`,
+        'text': `${adminArea.data.name} ${strings.ifrcLinkText}`,
         'url': homepageIfrc
       };
       links.push(ifrcLink);
@@ -235,7 +251,7 @@ class AdminArea extends SFPComponent {
 
     if (iso3) {
       const reliefWebLink = {
-        'text': `${adminArea.data.name} on reliefweb.int`,
+        'text': `${adminArea.data.name} ${strings.reliefWebLinkText}`,
         'url': `https://reliefweb.int/country/${iso3}`
       };
       links.push(reliefWebLink);
@@ -243,7 +259,7 @@ class AdminArea extends SFPComponent {
 
     if (homepage) {
       const homepageLink = {
-        'text': `${adminArea.data.name} RC Homepage`,
+        'text': `${adminArea.data.name} ${strings.homePageLinkText}`,
         'url': homepage
       };
       links.push(homepageLink);
@@ -332,7 +348,7 @@ class AdminArea extends SFPComponent {
           label: (
             <FilterHeader
               id='date'
-              title='Start Date'
+              title={strings.countryTableDate}
               options={dateOptions}
               filter={this.state.appeals.filters.date}
               onSelect={this.handleFilterChange.bind(this, 'appeals', 'date')}
@@ -344,19 +360,22 @@ class AdminArea extends SFPComponent {
           label: (
             <SortHeader
               id='name'
-              title='Name'
+              title={strings.countryTableName}
               sort={this.state.appeals.sort}
               onClick={this.handleSortChange.bind(this, 'appeals', 'name')}
             />
           )
         },
-        { id: 'event', label: 'Emergency' },
+        {
+          id: 'event',
+          label: strings.countryTableEmergency,
+        },
         {
           id: 'dtype',
           label: (
             <FilterHeader
               id='dtype'
-              title='Disaster Type'
+              title={strings.countryTableDisasterType}
               options={dTypeOptions}
               filter={this.state.appeals.filters.dtype}
               onSelect={this.handleFilterChange.bind(this, 'appeals', 'dtype')}
@@ -368,7 +387,7 @@ class AdminArea extends SFPComponent {
           label: (
             <SortHeader
               id='amount_requested'
-              title='Requested Amount (CHF)'
+              title={strings.countryTableRequestAmount}
               sort={this.state.appeals.sort}
               onClick={this.handleSortChange.bind(this, 'appeals', 'amount_requested')}
             />
@@ -379,13 +398,16 @@ class AdminArea extends SFPComponent {
           label: (
             <SortHeader
               id='amount_funded'
-              title='Funding (CHF)'
+              title= {strings.countryTableFundedAmount}
               sort={this.state.appeals.sort}
               onClick={this.handleSortChange.bind(this, 'appeals', 'amount_funded')}
             />
           )
         },
-        { id: 'active', label: 'Active' }
+        {
+          id: 'active',
+          label: strings.countryTableActive,
+        }
       ];
 
       const rows = data.results.map(o => ({
@@ -569,7 +591,7 @@ class AdminArea extends SFPComponent {
               {data.name}
               {data.inform_score ? (
                 <span className='inpage__title--inform'>
-                    Inform Score: <span className='inpage__title--inform--score'>{round(data.inform_score, 1)}</span>
+                    <Translate stringId='countryInformScore' /> <span className='inpage__title--inform--score'>{round(data.inform_score, 1)}</span>
                 </span>
               ) : null}
             </h1>
@@ -578,7 +600,7 @@ class AdminArea extends SFPComponent {
                 href={url.resolve(api, `api/country/${data.id}/change/`)}
                 className='button button--primary-bounded'
               >
-                  Edit Country
+                <Translate stringId='countryEditCountry' />
               </a>
             </div>
           </div>
@@ -635,17 +657,17 @@ class AdminArea extends SFPComponent {
                 <TabContent>
                   <EmergenciesTable
                     id={'emergencies'}
-                    title='Recent Emergencies'
+                    title={strings.emergenciesTableRecentEmergencies}
                     limit={5}
                     country={getCountryId(this.props.match.params.id)}
                     showRecent={true}
                     viewAll={'/emergencies/all?country=' + data.id}
-                    viewAllText={`View All Emergencies For ${data.name}`}
+                    viewAllText={`${strings.emergenciesRecentViewAll} ${data.name}`}
                   />
                 </TabContent>
               </TabPanel>
               <TabPanel>
-                <TabContent title="3W">
+                <TabContent title= {strings.region3WTitle}>
                   <ThreeW countryId={getCountryId(this.props.match.params.id)} />
                 </TabContent>
               </TabPanel>
@@ -660,32 +682,32 @@ class AdminArea extends SFPComponent {
               </TabPanel>
               */}
               <TabPanel>
-                <TabContent showError={true} isError={!this.isPerPermission()} errorMessage='Please log in' title='Preparedness'>
+                <TabContent showError={true} isError={!this.isPerPermission()} errorMessage={strings.accountPerPermission} title={strings.preparednessTitle}>
                   {this.props.getPerNsPhase.fetched && this.props.perOverviewForm.fetched ? (
                     <PreparednessOverview getPerNsPhase={this.props.getPerNsPhase} perOverviewForm={this.props.perOverviewForm} />)
-                    : <ErrorPanel title='Preparedness Overciew' errorMessage={ NO_DATA } />}
+                    : <ErrorPanel title={strings.preparednessOverview} errorMessage={ NO_DATA } />}
                   {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
                     <PreparednessSummary getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
-                    : <ErrorPanel title='Preparedness Summary' errorMessage={ NO_DATA } />}
+                    : <ErrorPanel title={strings.preparednessSummary} errorMessage={ NO_DATA } />}
                   {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
                     <PreparednessColumnBar getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
-                    : <ErrorPanel title='Preparedness Column Bar' errorMessage={ NO_DATA } />}
+                    : <ErrorPanel title={strings.preparednessColumnBar} errorMessage={ NO_DATA } />}
                   {this.props.getPerWorkPlan.fetched ? (
                     <PreparednessWorkPlan getPerWorkPlan={this.props.getPerWorkPlan} />)
-                    : <ErrorPanel title='Preparedness Work Plan' errorMessage={ NO_DATA } />}
+                    : <ErrorPanel title={strings.preparednessWorkPlan} errorMessage={ NO_DATA } />}
                   {this.props.getPerUploadedDocuments.fetched ? (
                     <PreparednessPhaseOutcomes getPerUploadedDocuments={this.props.getPerUploadedDocuments} countryId={getCountryId(this.props.match.params.id)} />)
-                    : <ErrorPanel title='Preparedness Phase Outcomes' errorMessage={ NO_DATA } />}
+                    : <ErrorPanel title={strings.preparednessPhaseOutcomes} errorMessage={ NO_DATA } />}
                 </TabContent>
               </TabPanel>
               <TabPanel>
-                <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ NO_DATA } title='Graphics'>
+                <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ NO_DATA } title={strings.regionGraphiccs}>
                   <Snippets data={this.props.snippets} />
                 </TabContent>
-                <TabContent showError={true} isError={!get(data, 'contacts.length')} errorMessage={ NO_DATA } title='Contacts'>
+                <TabContent showError={true} isError={!get(data, 'contacts.length')} errorMessage={ NO_DATA } title={strings.regionContacts}>
                   <Contacts data={data} />
                 </TabContent>
-                <TabContent isError={!get(data, 'links.length')} errorMessage={ NO_DATA } title='Links'>
+                <TabContent isError={!get(data, 'links.length')} errorMessage={ NO_DATA } title={strings.regionLinks}>
                   <Links data={data} />
                 </TabContent>
               </TabPanel>
@@ -719,7 +741,9 @@ class AdminArea extends SFPComponent {
     return (
       <App className={`page--${this.props.type}`}>
         <Helmet>
-          <title>IFRC Go - Country</title>
+          <title>
+            <Translate stringId={strings.countryTitle} />
+          </title>
         </Helmet>
         { this.renderContent() }
       </App>
@@ -748,6 +772,8 @@ if (environment !== 'production') {
     partnerDeployments: T.object
   };
 }
+
+AdminArea.contextType = LanguageContext;
 
 // /////////////////////////////////////////////////////////////////// //
 // Connect functions
