@@ -6,7 +6,7 @@
   flex: 1;
   display: flex;
   position: relative;
-  float: left;
+  float: inline-start;
 
 /*  &::before {
     content: '';
@@ -195,7 +195,7 @@
     float: right;
   }
   .page__menu {
-    float: left;
+    float: inline-start;
     a {
       position: relative;
       font-size: 1.5rem;

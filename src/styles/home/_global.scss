@@ -394,7 +394,7 @@
 
     &--top-left {
       position: relative;
-      float: left;
+      float: inline-start;
       margin-top: 10px;
       margin-inline-start: 10px;
     }
@@ -410,7 +410,7 @@
     .form {
       margin-bottom: 0;
       margin-inline-start: $global-spacing/2;
-      float: left;
+      float: inline-start;
       .form__option--custom-radio .form__option__ui {
         height: 1rem;
         width: 1rem;
@@ -422,7 +422,7 @@
     }
 
     .key {
-      float: left;
+      float: inline-start;
       border-left: solid 1px rgba($base-color, 0.2);
       padding-inline-start: $global-spacing/2;
       margin-inline-start: $global-spacing/2;
@@ -480,7 +480,7 @@
   dt, dd {
     font-size: 0.75rem;
     line-height: 1.25rem;
-    float: left;
+    float: inline-start;
     padding: 0;
     margin: 0 0 0.25rem 0;
   }
@@ -629,7 +629,7 @@
 
 .report__list--header {
   margin-bottom: 1rem;
-  float: left;
+  float: inline-start;
   width: 100%;
 }
 
@@ -658,7 +658,7 @@
   @include column(12/12);
 
   a {
-    //float: left;
+    //float: inline-start;
     color: $base-color;
     border: solid 1px rgba($base-color, 0.1);
     border-radius: 5px;
@@ -691,7 +691,7 @@
       font-size: 0.875rem;
     }
     .card__stat-list {
-      float: left;
+      float: inline-start;
       margin-top: $global-spacing;
       margin-inline-start: 0;
     }
