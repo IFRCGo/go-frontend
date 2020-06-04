@@ -25,7 +25,7 @@
   }
 
   .inpage__meta {
-    float: left;
+    float: inline-start;
     margin-top: $global-spacing;
     .bold {
       font-weight: $base-font-bold;
@@ -63,7 +63,7 @@
       @include column(12/12);
     }
     .content-list {
-      float: left;
+      float: inline-start;
       @include column(12/12);
       margin-inline-start: 0;
       @include media(medium-up) {
@@ -74,7 +74,7 @@
       }
     }
     .content-list-third {
-      float: left;
+      float: inline-start;
       @include column(12/12);
       margin-inline-start: 0;
       @include media(medium-up) {
@@ -108,7 +108,7 @@
       }
     }
     dl {
-      float: left;
+      float: inline-start;
       width: 50%;
 
     }
@@ -135,7 +135,7 @@
   }
 
   .key {
-    float: left;
+    float: inline-start;
     border-left: solid 1px rgba($base-color, 0.2);
     padding-inline-start: $global-spacing/2;
     margin-inline-start: $global-spacing/2;
@@ -147,14 +147,14 @@
 .operations__container {
   color: #FFF;
   background-color: $map-color;
-  float: left;
+  float: inline-start;
   width: 100%;
   margin-bottom: $global-spacing * 2;
   list-style: none;
 }
 
 .country__operations {
-  float: left;
+  float: inline-start;
   width: 100%;
   @include media(medium-up) {
     width: 40%;
@@ -1040,7 +1040,7 @@
             width: 100%;
 
             .calendar-chart-title {
-              float: left;
+              float: inline-start;
               flex-shrink: 0;
               background-color: #eee;
               display: flex;
