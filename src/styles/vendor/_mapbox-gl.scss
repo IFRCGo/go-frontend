@@ -277,7 +277,7 @@ a.mapboxgl-ctrl-logo {
     -webkit-align-self: flex-start;
     align-self: flex-start;
     border-top: none;
-    border-left: none;
+    border-inline-start: none;
     border-bottom-color: #fff;
 }
 .mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip {
@@ -297,7 +297,7 @@ a.mapboxgl-ctrl-logo {
     -webkit-align-self: flex-start;
     align-self: flex-start;
     border-bottom: none;
-    border-left: none;
+    border-inline-start: none;
     border-top-color: #fff;
 }
 .mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip {
@@ -310,7 +310,7 @@ a.mapboxgl-ctrl-logo {
 .mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
     -webkit-align-self: center;
     align-self: center;
-    border-left: none;
+    border-inline-start: none;
     border-right-color: #fff;
 }
 .mapboxgl-popup-anchor-right .mapboxgl-popup-tip {
