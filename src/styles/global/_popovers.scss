@@ -103,7 +103,7 @@ a.popover__contents {
     list-style: none;
   }
   ul {
-    margin-left: 0;
+    margin-inline-start: 0;
   }
 
   img {
@@ -139,7 +139,7 @@ a.popover__contents {
   }
 
   dd + dd {
-    margin-left: 68%;
+    margin-inline-start: 68%;
   }
 
   span {
