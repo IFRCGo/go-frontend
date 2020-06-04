@@ -200,7 +200,7 @@ a.link--external {
   &--centered {
     max-width: $row-max-width;
     margin-inline-start: auto;
-    margin-right: auto;
+    margin-inline-end: auto;
   }
 }
 
@@ -217,7 +217,7 @@ a.link--external {
   &--centered {
     max-width: $row-max-width;
     margin-inline-start: auto;
-    margin-right: auto;
+    margin-inline-end: auto;
   }
 }
 
