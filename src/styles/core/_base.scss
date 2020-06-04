@@ -190,11 +190,11 @@ a.link--external {
 .row {
   @extend .clearfix;
   padding-inline-start: $global-spacing * 3;
-  padding-right: $global-spacing * 3;
+  padding-inline-end: $global-spacing * 3;
 
   @include media(xlarge-up) {
     padding-inline-start: $global-spacing * 5;
-    padding-right: $global-spacing * 5;
+    padding-inline-end: $global-spacing * 5;
   }
 
   &--centered {
@@ -207,11 +207,11 @@ a.link--external {
 .row-fold {
   @extend .clearfix;
   padding-inline-start: $global-spacing * 1.5;
-  padding-right: $global-spacing * 1.5;
+  padding-inline-end: $global-spacing * 1.5;
 
   @include media(xlarge-up) {
     padding-inline-start: $global-spacing * 2.5;
-    padding-right: $global-spacing * 2.5;
+    padding-inline-end: $global-spacing * 2.5;
   }
 
   &--centered {

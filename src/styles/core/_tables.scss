@@ -30,7 +30,7 @@
 
   th:last-child,
   td:last-child {
-    padding-right: $global-spacing;
+    padding-inline-end: $global-spacing;
   }
 
   .table__header--active {
@@ -221,7 +221,7 @@ td.right-align, th.right-align{
 
   th:last-child,
   td:last-child {
-    padding-right: $global-spacing;
+    padding-inline-end: $global-spacing;
   }
 
   tbody tr {
@@ -279,7 +279,7 @@ td.right-align, th.right-align{
       top: 1rem;
       left: 1rem;
       width: 40%;
-      padding-right: 1rem;
+      padding-inline-end: 1rem;
       white-space: wrap;
       font-weight: $base-font-bold;
       speak: none;

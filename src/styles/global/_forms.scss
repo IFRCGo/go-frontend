@@ -70,7 +70,7 @@ select.form__control {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  padding-right: 2rem;
+  padding-inline-end: 2rem;
   cursor: pointer;
   background-image: url('data:image/svg+xml;utf8,' + urlencode('<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="512px" height="512px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><polygon fill="#{$secondary-color}" points="256,384 73.373,201.373 118.628,156.118 256,293.49 393.373,156.118 438.627,201.373"/></svg>'));
   background-position: calc(100% - 0.5rem) center;
@@ -81,13 +81,13 @@ select.form__control {
 
   &.form__control--small,
   &.form__control--medium {
-    padding-right: 2rem;
+    padding-inline-end: 2rem;
     background-position: calc(100% - 0.5rem) center;
   }
 
   &.form__control--large,
   &.form__control--xlarge {
-    padding-right: 2.25rem;
+    padding-inline-end: 2.25rem;
     background-position: calc(100% - 0.75rem) center;
   }
 }
@@ -195,7 +195,7 @@ textarea.form__control {
   @extend .form__control;
   position: relative;
   cursor: pointer;
-  padding-right: 2rem;
+  padding-inline-end: 2rem;
 
   &::before {
     @extend %collecticon-folder;
@@ -245,7 +245,7 @@ input, select, textarea {
 
 .form__file--small,
 .form__file--medium {
-  padding-right: 2rem;
+  padding-inline-end: 2rem;
 
   &::before {
     right: 0.5rem;
@@ -254,7 +254,7 @@ input, select, textarea {
 
 .form__file--large,
 .form__file--xlarge {
-  padding-right: 2.25rem;
+  padding-inline-end: 2.25rem;
 
   &::before {
     right: 0.75rem;
