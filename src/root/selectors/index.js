@@ -1,5 +1,4 @@
 // import { getResponseFromRequest } from '#utils/request';
-import lang from '#lang';
 
 const initialState = {
   fetching: false,
