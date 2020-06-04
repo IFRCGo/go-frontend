@@ -97,7 +97,7 @@
       line-height: 1rem;
     }
     &:last-child {
-      border-left: solid 1px rgba($base-color, 0.1);
+      border-inline-start: solid 1px rgba($base-color, 0.1);
       padding-inline-start: $global-spacing;
     };
     .link--primary {
@@ -140,7 +140,7 @@
     @include column(12/12);
   }
   .map-vis .map-vis__legend .key {
-    border-left: none;
+    border-inline-start: none;
     padding-inline-start: 0;
     margin-inline-start: 0;
   }
