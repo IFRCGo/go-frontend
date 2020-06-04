@@ -45,7 +45,7 @@
   }
 
   .inpage__header-actions {
-    float: right;
+    float: inline-end;
   }
 
   .inpage__header {
@@ -210,7 +210,7 @@
 }
 
 .country__map {
-  float: right;
+  float: inline-end;
   width: 100%;
   @include media(medium-up) {
     width: 60%;

@@ -52,7 +52,7 @@
     float: inline-start;
     margin-bottom: $global-spacing;
     @include media(medium-up) {
-      float: right;
+      float: inline-end;
       margin-bottom: 0;
     }
   };
