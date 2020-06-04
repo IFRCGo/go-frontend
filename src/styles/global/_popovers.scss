@@ -45,7 +45,7 @@
   }
 
   img {
-    margin-right: 0px !important;
+    margin-inline-end: 0px !important;
   }
 }
 
@@ -108,7 +108,7 @@ a.popover__contents {
 
   img {
     height: 20px;
-    margin-right: $global-spacing;
+    margin-inline-end: $global-spacing;
   }
 }
 
@@ -179,7 +179,7 @@ a.popover__contents {
   }
 
   > *:last-child {
-    margin-right: -$global-spacing / 4;
+    margin-inline-end: -$global-spacing / 4;
   }
 }
 
@@ -240,7 +240,7 @@ a.popover__contents {
 
 .tooltip__contents-col {
   float: left;
-  margin-right: $global-spacing;
+  margin-inline-end: $global-spacing;
 }
 
 .appeals-content {
