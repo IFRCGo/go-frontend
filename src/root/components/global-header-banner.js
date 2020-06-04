@@ -5,12 +5,16 @@ class GlobalHeaderBanner extends React.PureComponent {
   render () {
     return (
       <div className='global__banner global__banner--danger text-center'>
-        <span>
-          <Translate stringId='globalHeaderBannerTitle'/>
-        </span>
-        <a href='https://go.ifrc.org/emergencies/3972'>
-          <Translate stringId='globalHeaderBannerHere'/>
-        </a>
+        <Translate
+          stringId='globalHeaderBannerTitle'
+          params={{
+            link: (
+              <a href='https://go.ifrc.org/emergencies/3972'>
+                <Translate stringId='globalHeaderBannerHere'/>
+              </a>
+            )
+          }}
+        />
       </div>
     );
   }
