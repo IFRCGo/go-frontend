@@ -15,7 +15,7 @@
       font-size: 1rem;
       line-height: inherit;
       vertical-align: top;
-      margin-left: 0.25rem;
+      margin-inline-start: 0.25rem;
     }
   }
 
@@ -122,7 +122,7 @@
 .drop-trans--left {
   &.drop__content {
     transition: opacity .16s ease, left .16s ease;
-    margin-left: 1rem;
+    margin-inline-start: 1rem;
   }
 }
 

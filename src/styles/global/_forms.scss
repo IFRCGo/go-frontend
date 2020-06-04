@@ -311,7 +311,7 @@ input, select, textarea {
 .form__input-addon + .form__control:not(select),
 .form__control:not(select) + .form__input-addon,
 select.form__control + .form__control:not(select)  {
-  margin-left: -$base-border-width;
+  margin-inline-start: -$base-border-width;
 }
 
 .form__input-addon,
@@ -580,7 +580,7 @@ label[for] {
 }
 
 .form__option--inline + .form__option--inline {
-  margin-left: $global-spacing;
+  margin-inline-start: $global-spacing;
 }
 
 /* Form option text-hidden modifier */
@@ -831,7 +831,7 @@ label[for] {
   }
 
   > *:first-child {
-    margin-left: -$global-spacing;
+    margin-inline-start: -$global-spacing;
   }
 }
 
@@ -954,7 +954,7 @@ label[for] {
   }
   
   ul {
-    margin-left: 0;
+    margin-inline-start: 0;
   }
 
   li {
