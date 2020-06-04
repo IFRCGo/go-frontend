@@ -39,7 +39,7 @@
   font-size: 0.75rem;
   line-height: 1.25rem;
   border-right: 1px solid #c9c3c1;
-  padding-right: 1rem;
+  padding-inline-end: 1rem;
   padding-inline-start: 1rem;
   @include media(small-down) {
     padding-inline-start: 0;
@@ -49,7 +49,7 @@
 .page__meta-nav-elements-borderless {
   font-size: 0.75rem;
   line-height: 1.25rem;
-  padding-right: 1rem;
+  padding-inline-end: 1rem;
   padding-inline-start: 1rem;
 }
 
