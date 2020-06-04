@@ -75,27 +75,6 @@ import ThreeW from './ThreeW';
 
 const emptyObject = {};
 
-const { strings } = this.context;
-
-const TAB_DETAILS = [
-  {
-    title: strings.regionOperationsTab,
-    hash: '#operations'
-  },
-  {
-    title: strings.region3WTab,
-    hash: '#3w'
-  },
-  // { title: 'Country Overview', hash: '#overview' },
-  {
-    title: strings.regionPreparedness,
-    hash: '#preparedness'
-  },
-  {
-    title: strings.regionAdditionalInfoTab,
-    hash: '#additional'
-  },
-];
 
 const filterPaths = {
   ns: 'parent.name',
@@ -183,9 +162,36 @@ class AdminArea extends SFPComponent {
     const countryId = getCountryId(this.props.match.params.id);
     this.loadCountry(this.props, countryId);
   }
+
+  getTabDetails = (strings) => {
+    const tabDetails = [
+      {
+        title: strings.regionOperationsTab,
+        hash: '#operations'
+      },
+      {
+        title: strings.region3WTab,
+        hash: '#3w'
+      },
+      // { title: 'Country Overview', hash: '#overview' },
+      {
+        title: strings.regionPreparedness,
+        hash: '#preparedness'
+      },
+      {
+        title: strings.regionAdditionalInfoTab,
+        hash: '#additional'
+      },
+    ];
+
+    return tabDetails;
+  }
   // Sets default tab if url param is blank or incorrect
   displayTabContent () {
-    const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
+    const { strings } = this.context;
+    const tabDetails = this.getTabDetails(strings);
+
+    const tabHashArray = tabDetails.map(({ hash }) => hash);
     if (!tabHashArray.find(hash => hash === this.props.location.hash)) {
       this.props.history.replace(`${this.props.location.pathname}${tabHashArray[0]}`);
     }
@@ -242,6 +248,7 @@ class AdminArea extends SFPComponent {
     // const regionSlug = getRegionSlug(adminArea.data.region);
     // const countryLower = adminArea.data.name.toLowerCase();
     const links = [];
+    const { strings } = this.context;
 
     if (homepageIfrc) {
       const ifrcLink = {
@@ -337,6 +344,7 @@ class AdminArea extends SFPComponent {
 
   renderAppeals () {
     const { fetched, fetching, error, data } = this.props.countryOperations;
+    const { strings } = this.context;
 
     if (error || fetching) return null;
 
@@ -575,17 +583,21 @@ class AdminArea extends SFPComponent {
     // const mapContainerClass = 'country__map';
 
     // const { partnerDeployments } = this.props;
+    const { strings } = this.context;
+    const tabDetails = this.getTabDetails(strings);
 
     const handleTabChange = index => {
-      const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
+      const tabHashArray = tabDetails.map(({ hash }) => hash);
       const url = this.props.location.pathname;
       this.props.history.replace(`${url}${tabHashArray[index]}`);
     };
 
+    const countryName = get(data, 'name', 'Country');
+
     // add region to the breadcrumb only if country has a region defined
     const region = getRegionById(data.region);
     const crumbs = [
-      {link: this.props.location.pathname, name: get(data, 'name', 'Country')},
+      {link: this.props.location.pathname, name: countryName},
       {link: '/', name: 'Home'}
     ];
     if (region) {
@@ -594,10 +606,11 @@ class AdminArea extends SFPComponent {
       });
     }
 
+
     return (
       <section className='inpage'>
         <Helmet>
-          <title>IFRC Go - {get(data, 'name', 'Country')}</title>
+          <title>IFRC Go - {countryName}</title>
         </Helmet>
         <BreadCrumb crumbs={ crumbs } />
         <header className='inpage__header'>
@@ -626,11 +639,11 @@ class AdminArea extends SFPComponent {
           </div>
         </section>
         <Tabs
-          selectedIndex={TAB_DETAILS.map(({ hash }) => hash).indexOf(this.props.location.hash)}
+          selectedIndex={tabDetails.map(({ hash }) => hash).indexOf(this.props.location.hash)}
           onSelect={index => handleTabChange(index)}
         >
           <TabList>
-            {TAB_DETAILS.map(tab => (
+            {tabDetails.map(tab => (
               <Tab key={tab.title}>{tab.title}</Tab>
             ))}
           </TabList>
@@ -753,11 +766,13 @@ class AdminArea extends SFPComponent {
       user,
     );
 
+    const { strings } = this.context;
+
     return (
       <App className={`page--${this.props.type}`}>
         <Helmet>
           <title>
-            <Translate stringId={strings.countryTitle} />
+            { strings.countryTitle }
           </title>
         </Helmet>
         { this.renderContent() }
