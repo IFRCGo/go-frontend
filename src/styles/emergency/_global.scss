@@ -50,7 +50,7 @@
     }
     .inpage__headline-stats {
       @include column(12/12);
-      border-right: solid 1px rgba($base-color, 0.1);
+      border-inline-end: solid 1px rgba($base-color, 0.1);
     }
     .stats-list {
       li {
@@ -58,12 +58,12 @@
         font-size: 2.25rem;
         line-height: 3rem;
         padding-bottom: $global-spacing;
-        border-right: 0;
+        border-inline-end: 0;
         padding-inline-start: $global-spacing * 3.5;
         border-bottom: solid 1px rgba($base-color, 0.18);
         margin-bottom: $global-spacing;
         &:last-child {
-          border-right: none;
+          border-inline-end: none;
           border-bottom: none;
         }
         &:nth-child(2) {

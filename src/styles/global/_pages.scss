@@ -177,7 +177,7 @@ main {
     }
 
     a:not(:last-child) {
-      border-right: 1px solid #fff;
+      border-inline-end: 1px solid #fff;
     }
   }
 

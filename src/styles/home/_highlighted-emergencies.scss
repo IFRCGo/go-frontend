@@ -31,7 +31,7 @@
   border-bottom: 1px solid $base-border-color;
   //}
   // @include media(small-up) {
-  //   border-right: 1px solid base-border-color;
+  //   border-inline-end: 1px solid base-border-color;
   // }
 }
 
@@ -90,7 +90,7 @@
   @include span(6/12, $offset: 0, $cycle: 0);
 
   &:first-of-type {
-    border-right: 1px solid $base-border-color;
+    border-inline-end: 1px solid $base-border-color;
   }
 }
 
