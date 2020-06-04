@@ -45,7 +45,7 @@
   .inpage__headline-actions {
     @include column(3/12);
     button {
-      float: right;
+      float: inline-end;
     }
   }
 }
