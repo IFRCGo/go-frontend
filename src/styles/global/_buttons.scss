@@ -242,7 +242,7 @@
 
 .button-group--horizontal {
   > .button {
-    float: left;
+    float: inline-start;
   }
 
   > .button:first-child:not(:last-child) {

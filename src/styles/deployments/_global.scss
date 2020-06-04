@@ -58,7 +58,7 @@
   .form__label {
     font-size: 1.25rem;
   }
-  float: left;
+  float: inline-start;
   margin-top: $global-spacing * 3;
   @include media(medium-up) {
     margin-top: 0
@@ -80,7 +80,7 @@
     color: rgba($base-color, 0.48);
     width: 40%;
     text-align: left;
-    float: left;
+    float: inline-start;
     width: 100%;
     margin-top: $global-spacing;
     @include media(large-up) {
@@ -115,7 +115,7 @@
   padding-bottom: $global-spacing;
   margin-bottom: $global-spacing;
   border-bottom: solid 1px rgba($base-color, 0.1);
-  float: left;
+  float: inline-start;
   width: 100%;
 }
 

@@ -199,7 +199,7 @@ a.card__contents {
   .detail {
     @extend .heading-alt;
     position: relative;
-    float: left;
+    float: inline-start;
     padding: 0 0 0 1.25rem;
 
     > span {
