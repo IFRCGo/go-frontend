@@ -59,7 +59,7 @@
         line-height: 3rem;
         padding-bottom: $global-spacing;
         border-right: 0;
-        padding-left: $global-spacing * 3.5;
+        padding-inline-start: $global-spacing * 3.5;
         border-bottom: solid 1px rgba($base-color, 0.18);
         margin-bottom: $global-spacing;
         &:last-child {
@@ -290,5 +290,5 @@ h2.map__container__title {
 }
 
 .pl-small {
-  padding-left: 1.5rem;
+  padding-inline-start: 1.5rem;
 }
