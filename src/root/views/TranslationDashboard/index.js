@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import _cs from 'classnames';
 
 import { postLanguageBulkAction } from '#actions';
+import lang from '#lang';
 
 import {
   currentLanguageSelector,
@@ -39,6 +40,18 @@ function TranslationDashboard(p) {
     postLanguageBulk(currentLanguage, data);
   }, [languageKeys, strings, postLanguageBulk, currentLanguage]);
 
+  const handleOverwriteButtonClick = React.useCallback(() => {
+    const keys = Object.keys(lang);
+    const actions = keys.map((key) => ({
+      action: 'set',
+      key,
+      value: lang[key],
+    }));
+
+    const data = { actions };
+    postLanguageBulk(currentLanguage, data);
+  }, [ postLanguageBulk, currentLanguage]);
+
   return (
     <div className={_cs(className, styles.translationDashboard)}>
       <header className={styles.header}>
@@ -55,6 +68,12 @@ function TranslationDashboard(p) {
             onClick={handleSaveButtonClick}
           >
             Save
+          </button>
+          <button
+            className="button"
+            onClick={handleOverwriteButtonClick}
+          >
+            Overwrite server with local dev copy
           </button>
         </div>
       </header>
