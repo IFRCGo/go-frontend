@@ -27,11 +27,8 @@ import FormattedDate from '#components/formatted-date';
 import DropdownMenu from '#components/dropdown-menu';
 
 export default class ProjectListTable extends React.PureComponent {
-  constructor (props, context) {
-    super(props);
-
-    const { strings } = context;
-    this.headers = [
+  getHeaders = (strings) => {
+    const headers = [
       {
         key: 'start_date',
         label: strings.projectListTableStartDate,
@@ -154,6 +151,8 @@ export default class ProjectListTable extends React.PureComponent {
         ),
       },
     ];
+
+    return headers;
   }
 
   render () {
@@ -162,11 +161,14 @@ export default class ProjectListTable extends React.PureComponent {
       projectList,
     } = this.props;
 
+    const { strings } = this.context;
+    const headers = this.getHeaders(strings);
+
     return (
       <table className={_cs(className, 'three-w-project-list-table')}>
         <thead>
           <tr>
-            { this.headers.map(h => (
+            { headers.map(h => (
               <th key={h.key}>
                 {h.label}
               </th>
@@ -176,7 +178,7 @@ export default class ProjectListTable extends React.PureComponent {
         <tbody>
           { projectList.map(p => (
             <tr key={p.id}>
-              { this.headers.map(h => (
+              { headers.map(h => (
                 <td key={h.key}>
                   { h.modifier ? h.modifier(p) : (p[h.key] || '-') }
                 </td>
@@ -189,4 +191,4 @@ export default class ProjectListTable extends React.PureComponent {
   }
 }
 
-ProjectListTable.contexType = LanguageContext;
+ProjectListTable.contextType = LanguageContext;

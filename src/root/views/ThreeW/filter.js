@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { PropTypes } from 'prop-types';
 import Faram from '@togglecorp/faram';
 import { unique } from '@togglecorp/fujs';
@@ -84,7 +84,7 @@ export default class ThreeWFilter extends React.PureComponent {
     } = this.props;
 
     const { filterValues } = this.state;
-    const { strings } = useContext(LanguageContext);
+    const { strings } = this.context;
 
     return (
       <Faram
@@ -133,6 +133,7 @@ export default class ThreeWFilter extends React.PureComponent {
   }
 }
 
+ThreeWFilter.contextType = LanguageContext;
 ThreeWFilter.propTypes = {
   className: PropTypes.string,
   projectList: PropTypes.array,
