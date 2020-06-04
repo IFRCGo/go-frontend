@@ -139,7 +139,7 @@ dd {
   li {
     display: block;
     position: relative;
-    padding-left:$global-spacing * 1.5;
+    padding-inline-start:$global-spacing * 1.5;
 
     &::before {
       position: absolute;
@@ -219,7 +219,7 @@ dd {
 
   dd {
     width: 68%;
-    padding-left: $global-spacing / 2;
+    padding-inline-start: $global-spacing / 2;
   }
 
   dd + dd {
@@ -286,7 +286,7 @@ dd {
 
       dd {
         text-align: right;
-        padding-left: $global-spacing / 2;
+        padding-inline-start: $global-spacing / 2;
       }
 
       dd + dd {
