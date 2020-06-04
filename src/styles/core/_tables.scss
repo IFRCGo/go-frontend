@@ -179,7 +179,7 @@ td.right-align, th.right-align{
   &__item {
     margin-bottom: $global-spacing;
     box-shadow: 0 0 0 1px $base-alpha-color;
-    border-left: 3px solid red;
+    border-inline-start: 3px solid red;
 
     &:last-child {
       margin-bottom: 0;
@@ -225,7 +225,7 @@ td.right-align, th.right-align{
   }
 
   tbody tr {
-    border-left: 4px solid transparent;
+    border-inline-start: 4px solid transparent;
 
     &:nth-child(odd) {
       box-shadow: 0 0 2px 0 rgba($base-color, 0.24);
