@@ -24,7 +24,7 @@
     //text-align: center;
     //float: none;  
     margin-inline-start: auto;
-    margin-right: auto !important;
+    margin-inline-end: auto !important;
   }
 
   .inpage__introduction__bigger {
@@ -56,7 +56,7 @@
 
   &:before {
     content: url('/assets/graphics/layout/fullscreen-square.svg');
-    margin-right: $global-spacing;
+    margin-inline-end: $global-spacing;
     position: relative;
     top: 2px;
   };
@@ -159,7 +159,7 @@
         border-radius: 0 $base-border-radius $base-border-radius 0;
 
         &:before {
-        background-color: transparent;
+          background-color: transparent;
         }
       }
     }
@@ -290,7 +290,7 @@
       .key {
         min-width: 6rem;
         width: 50%;
-        margin-right: $global-spacing;
+        margin-inline-end: $global-spacing;
       }
 
       .value {
@@ -463,10 +463,10 @@
 
 .map-vis__legend__filters-wrap {
   display: inline-block;
-  margin-right: $global-spacing-2;
+  margin-inline-end: $global-spacing-2;
 
   &:last-of-type {
-    margin-right: 0;
+    margin-inline-end: 0;
   }
 }
 
@@ -489,7 +489,7 @@
     width: 1.25rem;
     font-size: 0;
     clear: left;
-    margin-right: $global-spacing / 2;
+    margin-inline-end: $global-spacing / 2;
     opacity: 1;
 
     &::before {
@@ -582,7 +582,7 @@
   font-style: italic;
   padding-top: $global-spacing/2;
   margin-bottom: 0;
-  margin-right: 0;
+  margin-inline-end: 0;
 }
 
 .stats-chart {
@@ -640,7 +640,7 @@
   flex-wrap: wrap;
   justify-content: center;
   .key-emergencies-item {
-    margin-right: 2% !important;
+    margin-inline-end: 2% !important;
   }
 }
 

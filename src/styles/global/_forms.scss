@@ -495,7 +495,7 @@ select.form__control:focus {
   }
 
   > *:last-child {
-    margin-right: -$global-spacing / 4;
+    margin-inline-end: -$global-spacing / 4;
   }
 }
 
@@ -961,7 +961,7 @@ label[for] {
     display: inline-block;
     &:after {
       content: ",";
-      margin-right: $global-spacing/2;
+      margin-inline-end: $global-spacing/2;
     };
     &:last-child {
       &:after {

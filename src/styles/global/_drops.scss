@@ -115,7 +115,7 @@
 .drop-trans--right {
   &.drop__content {
     transition: opacity .16s ease, right .16s ease;
-    margin-right: 1rem;
+    margin-inline-end: 1rem;
   }
 }
 

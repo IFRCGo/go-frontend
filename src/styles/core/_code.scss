@@ -57,13 +57,13 @@ pre {
   > pre {
     @include media(small-up) {
       margin-inline-start: -$global-spacing; 
-      margin-right: -$global-spacing;
+      margin-inline-end: -$global-spacing;
     }
 
     @include media(medium-up) {
       padding: $global-spacing * 2;
       margin-inline-start: -$global-spacing * 2;
-      margin-right: -$global-spacing * 2;
+      margin-inline-end: -$global-spacing * 2;
     }
   }
 }

@@ -189,7 +189,7 @@
 .block-center {
   display: block;
   margin-inline-start: auto;
-  margin-right: auto;
+  margin-inline-end: auto;
 }
 
 
@@ -205,7 +205,7 @@
 
 .margin-auto {
   margin-inline-start: auto;
-  margin-right: auto;
+  margin-inline-end: auto;
 }
 
 /* Clearfix
@@ -338,7 +338,7 @@ $spacing-global: (
 @each $name, $value in $spacing-global {
   .#{$name}-h, %#{$name}-h {
     margin-inline-start: $value;
-    margin-right: $value;
+    margin-inline-end: $value;
   }
 }
 
