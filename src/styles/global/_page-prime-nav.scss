@@ -31,7 +31,7 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding-left: 1rem;
+  padding-inline-start: 1rem;
   position: relative;
 }
 
@@ -40,9 +40,9 @@
   line-height: 1.25rem;
   border-right: 1px solid #c9c3c1;
   padding-right: 1rem;
-  padding-left: 1rem;
+  padding-inline-start: 1rem;
   @include media(small-down) {
-    padding-left: 0;
+    padding-inline-start: 0;
   }
 }
 
@@ -50,7 +50,7 @@
   font-size: 0.75rem;
   line-height: 1.25rem;
   padding-right: 1rem;
-  padding-left: 1rem;
+  padding-inline-start: 1rem;
 }
 
 /* Global menu */
@@ -121,7 +121,7 @@
 
   .form__control {
     border-radius: $full-border-radius;
-    padding-left: 3rem;
+    padding-inline-start: 3rem;
     font-size: 0.875rem;
     color: $base-color;
     &:hover {
@@ -144,7 +144,7 @@
   top: 0;
   left: 0;
   background-color: transparent;
-  padding-left: 1rem;
+  padding-inline-start: 1rem;
 
   &::before {
     @extend %collecticon-magnifier-right;

@@ -90,7 +90,7 @@
 }
 
 .inpage__title--map-fullscreen {
-  padding-left: 400px; // width of logo + some padding
+  padding-inline-start: 400px; // width of logo + some padding
   margin: ($global-spacing/2) 0 0 0;
   text-align: center;
   font-size: 2rem;
