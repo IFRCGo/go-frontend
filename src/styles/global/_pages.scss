@@ -173,7 +173,7 @@ main {
     }
 
     a:not(:first-child) {
-      padding-left: 10px;
+      padding-inline-start: 10px;
     }
 
     a:not(:last-child) {

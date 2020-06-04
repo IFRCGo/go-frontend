@@ -98,7 +98,7 @@
     }
     &:last-child {
       border-left: solid 1px rgba($base-color, 0.1);
-      padding-left: $global-spacing;
+      padding-inline-start: $global-spacing;
     };
     .link--primary {
       line-height: 1.5;
@@ -120,7 +120,7 @@
 }
 
 .card__label--ready {
-  padding-left: 1rem;
+  padding-inline-start: 1rem;
   position: relative;
   &:before {
     content: '';
@@ -141,7 +141,7 @@
   }
   .map-vis .map-vis__legend .key {
     border-left: none;
-    padding-left: 0;
+    padding-inline-start: 0;
     margin-left: 0;
   }
 

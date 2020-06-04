@@ -264,7 +264,7 @@ $spacing-global: (
 
 @each $name, $value in $spacing-global {
   .#{$name}-h, %#{$name}-h {
-    padding-left: $value;
+    padding-inline-start: $value;
     padding-right: $value;
   }
 }

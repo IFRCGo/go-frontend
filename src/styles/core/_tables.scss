@@ -25,7 +25,7 @@
 
   th:first-child,
   td:first-child {
-    padding-left: $global-spacing;
+    padding-inline-start: $global-spacing;
   }
 
   th:last-child,
@@ -216,7 +216,7 @@ td.right-align, th.right-align{
 
   th:first-child,
   td:first-child {
-    padding-left: $global-spacing;
+    padding-inline-start: $global-spacing;
   }
 
   th:last-child,
@@ -264,7 +264,7 @@ td.right-align, th.right-align{
       padding: 1rem 1rem 0 45%;
 
       &:first-child {
-        padding-left: 45%;
+        padding-inline-start: 45%;
       }
 
       &:last-child {

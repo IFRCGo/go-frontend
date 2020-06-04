@@ -344,7 +344,7 @@
 
 .drop__menu--iconified {
   .drop__menu-item {
-    padding-left: $global-spacing * 2.75;
+    padding-inline-start: $global-spacing * 2.75;
 
     &::before,
     > [class^="collecticon-"] {
