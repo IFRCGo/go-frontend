@@ -11,6 +11,7 @@ import {
   secondarySectorList,
   programmeTypeList,
 } from '#utils/constants';
+import LanguageContext from '#root/languageContext';
 
 const compareString = (a, b) => a.label.localeCompare(b.label);
 
@@ -83,6 +84,7 @@ export default class ThreeWFilter extends React.PureComponent {
     } = this.props;
 
     const { filterValues } = this.state;
+    const { strings } = this.context;
 
     return (
       <Faram
@@ -93,36 +95,36 @@ export default class ThreeWFilter extends React.PureComponent {
       >
         <SelectInput
           faramElementName='reporting_ns'
-          label='National societies'
-          placeholder='All National Societies'
+          label={strings.threeWFilter}
+          placeholder={strings.threeWFilterReportingNsPlaceholer}
           options={this.getNationalSocietiesOptions(projectList)}
           className='select-input'
         />
         <SelectInput
           faramElementName='programme_type'
-          label='Programme type'
-          placeholder='All Programme Types'
+          label={strings.threeWProgrammeType}
+          placeholder={strings.threeWProgrammeTypePlaceholder}
           options={programmeTypeOptions}
           className='select-input'
         />
         <SelectInput
           faramElementName='primary_sector'
-          label='Sectors of Activity'
-          placeholder='All Sectors'
+          label={strings.threeWSector}
+          placeholder={strings.threeWSectorPlaceholder}
           options={sectorsOfActivityOptions}
           className='select-input'
         />
         <SelectInput
           faramElementName='secondary_sectors'
-          label='Tag'
-          placeholder='All Tags'
+          label={strings.threeWTag}
+          placeholder={strings.threeWTagPlaceholder}
           options={tagOptions}
           className='select-input'
         />
         <SelectInput
           faramElementName='status'
-          label='Status'
-          placeholder='All Status'
+          label={strings.threeWStatus}
+          placeholder={strings.threeWStatusPlaceholder}
           options={statusOptions}
           className='select-input'
         />
@@ -131,6 +133,7 @@ export default class ThreeWFilter extends React.PureComponent {
   }
 }
 
+ThreeWFilter.contextType = LanguageContext;
 ThreeWFilter.propTypes = {
   className: PropTypes.string,
   projectList: PropTypes.array,
