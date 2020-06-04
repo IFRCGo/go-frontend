@@ -210,7 +210,7 @@
       @include column(3/12);
       border-right: solid 1px rgba($base-color, 0.18);
       border-bottom: 0;
-      padding-right: $global-spacing;
+      padding-inline-end: $global-spacing;
       margin-bottom: 0;
     }
   }
@@ -266,7 +266,7 @@
       @include column(4/12);
       border-right: solid 1px rgba($base-color, 0.18);
       border-bottom: 0;
-      padding-right: $global-spacing;
+      padding-inline-end: $global-spacing;
       margin-bottom: 0;
     }
   }
