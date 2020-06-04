@@ -64,7 +64,7 @@
   width: 100%;
   margin-bottom: $global-spacing * 2;
   @include media(medium-up) {
-    float: right;
+    float: inline-end;
     width: auto;
     margin-bottom: 0;
   }
