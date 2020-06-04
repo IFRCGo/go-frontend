@@ -178,17 +178,17 @@
     font-size: 2.25rem;
     line-height: 3rem;
     padding-bottom: $global-spacing;
-    border-right: 0;
+    border-inline-end: 0;
     padding-inline-start: $global-spacing * 3.5;
     border-bottom: solid 1px rgba($base-color, 0.18);
     margin-bottom: $global-spacing;
     &:last-child {
-      border-right: none;
+      border-inline-end: none;
       border-bottom: none;
     }
     @include media(large-up) {
       @include column(3/12);
-      border-right: solid 1px rgba($base-color, 0.18);
+      border-inline-end: solid 1px rgba($base-color, 0.18);
       border-bottom: 0;
       padding-inline-end: $global-spacing;
       margin-bottom: 0;
@@ -203,7 +203,7 @@
     }
   }
   .stat-borderless {
-    border-right: none;
+    border-inline-end: none;
     border-bottom: 0;
     padding-bottom: 0;
   }
@@ -234,17 +234,17 @@
     font-size: 2.25rem;
     line-height: 3rem;
     padding-bottom: $global-spacing;
-    border-right: 0;
+    border-inline-end: 0;
     padding-inline-start: $global-spacing * 3.5;
     border-bottom: solid 1px rgba($base-color, 0.18);
     margin-bottom: $global-spacing;
     &:last-child {
-      border-right: none;
+      border-inline-end: none;
       border-bottom: none;
     }
     @include media(large-up) {
       @include column(4/12);
-      border-right: solid 1px rgba($base-color, 0.18);
+      border-inline-end: solid 1px rgba($base-color, 0.18);
       border-bottom: 0;
       padding-inline-end: $global-spacing;
       margin-bottom: 0;
@@ -259,7 +259,7 @@
     }
   }
   .stat-borderless {
-    border-right: none;
+    border-inline-end: none;
     border-bottom: 0;
     padding-bottom: 0;
   }
