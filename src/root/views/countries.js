@@ -47,7 +47,7 @@ import Fold from '#components/fold';
 import DisplayTable, { SortHeader, FilterHeader } from '#components/display-table';
 import EmergenciesTable from '#components/connected/emergencies-table';
 import Translate from '#components/Translate';
-import LanguageContext from '#root/LanguageContext';
+import LanguageContext from '#root/languageContext';
 
 // import BulletTable from '#components/bullet-table';
 import Pills from '#components/pills';
@@ -682,7 +682,7 @@ class AdminArea extends SFPComponent {
               </TabPanel>
               */}
               <TabPanel>
-                <TabContent showError={true} isError={!this.isPerPermission()} errorMessage={strings.accountPerPermission} title={strings.preparednessTitle}>
+                <TabContent showError={true} isError={!this.isPerPermission()} errorMessage={strings.accountPerPermission} title={strings.countryPreparednessTitle}>
                   {this.props.getPerNsPhase.fetched && this.props.perOverviewForm.fetched ? (
                     <PreparednessOverview getPerNsPhase={this.props.getPerNsPhase} perOverviewForm={this.props.perOverviewForm} />)
                     : <ErrorPanel title={strings.preparednessOverview} errorMessage={ NO_DATA } />}
@@ -697,7 +697,7 @@ class AdminArea extends SFPComponent {
                     : <ErrorPanel title={strings.preparednessWorkPlan} errorMessage={ NO_DATA } />}
                   {this.props.getPerUploadedDocuments.fetched ? (
                     <PreparednessPhaseOutcomes getPerUploadedDocuments={this.props.getPerUploadedDocuments} countryId={getCountryId(this.props.match.params.id)} />)
-                    : <ErrorPanel title={strings.preparednessPhaseOutcomes} errorMessage={ NO_DATA } />}
+                    : <ErrorPanel title={strings.countryPreparednessPhaseOutcomes} errorMessage={ NO_DATA } />}
                 </TabContent>
               </TabPanel>
               <TabPanel>
