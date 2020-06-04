@@ -20,9 +20,11 @@
   }
 
   .inpage__introduction {
-
+    @include column(8/12);
     //text-align: center;
     //float: none;  
+    margin-inline-start: auto;
+    margin-right: auto !important;
   }
 
   .inpage__introduction__bigger {
@@ -392,7 +394,7 @@
       position: relative;
       float: left;
       margin-top: 10px;
-      margin-left: 10px;
+      margin-inline-start: 10px;
     }
 
     .form__option {
@@ -405,7 +407,7 @@
 
     .form {
       margin-bottom: 0;
-      margin-left: $global-spacing/2;
+      margin-inline-start: $global-spacing/2;
       float: left;
       .form__option--custom-radio .form__option__ui {
         height: 1rem;
@@ -413,7 +415,7 @@
       }
       width: 35%;
       @include media(small-up) {
-        margin-left: 0;
+        margin-inline-start: 0;
       }
     }
 
@@ -421,11 +423,11 @@
       float: left;
       border-left: solid 1px rgba($base-color, 0.2);
       padding-inline-start: $global-spacing/2;
-      margin-left: $global-spacing/2;
+      margin-inline-start: $global-spacing/2;
       width: 55%;
       @include media(small-up) {
         padding-inline-start: $global-spacing;
-        margin-left: $global-spacing;
+        margin-inline-start: $global-spacing;
       }
     }
   }
@@ -649,7 +651,7 @@
 
 .key-emergencies-list {
   display: flex;
-  margin-left: 0;
+  margin-inline-start: 0;
   @extend .clearfix;
   @include column(12/12);
 
@@ -674,7 +676,7 @@
       @include column(4/12)
     }
     &:first-child {
-      margin-left: 0;
+      margin-inline-start: 0;
     };
     .card__title {
       font-size: $base-font-size;
@@ -687,14 +689,14 @@
     .card__stat-list {
       float: left;
       margin-top: $global-spacing;
-      margin-left: 0;
+      margin-inline-start: 0;
     }
     li.card__stat {
       padding-inline-start: $global-spacing * 3.5;
       font-size: 1.5rem;
       line-height: 1.25rem;
       display: block;
-      margin-left: 0;
+      margin-inline-start: 0;
       margin-bottom: $global-spacing;
       small {
         display: block;

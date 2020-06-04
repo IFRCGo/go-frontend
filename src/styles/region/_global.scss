@@ -348,7 +348,7 @@
                 .tc-icon {
                   color: inherit;
                   font-size: $font-size-xxl;
-                  margin-left: 3px;
+                  margin-inline-start: 3px;
                 }
               }
 
@@ -523,7 +523,7 @@
 
                 .tc-project-count {
                   font-weight: $base-font-light;
-                  margin-left: 10px;
+                  margin-inline-start: 10px;
                   color: $grey-cement;
                 }
               }

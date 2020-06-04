@@ -188,7 +188,7 @@
 
 .block-center {
   display: block;
-  margin-left: auto;
+  margin-inline-start: auto;
   margin-right: auto;
 }
 
@@ -204,7 +204,7 @@
    ========================================================================== */
 
 .margin-auto {
-  margin-left: auto;
+  margin-inline-start: auto;
   margin-right: auto;
 }
 
@@ -337,7 +337,7 @@ $spacing-global: (
 
 @each $name, $value in $spacing-global {
   .#{$name}-h, %#{$name}-h {
-    margin-left: $value;
+    margin-inline-start: $value;
     margin-right: $value;
   }
 }

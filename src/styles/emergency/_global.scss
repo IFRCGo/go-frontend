@@ -20,7 +20,7 @@
     .content-list {
       float: left;
       @include column(12/12);
-      margin-left: 0;
+      margin-inline-start: 0;
       @include media(medium-up) {
         @include column(6/12);
       }
@@ -30,7 +30,7 @@
       list-style: none;
 
       @include column(12/12);
-      margin-left: 0;
+      margin-inline-start: 0;
       @include media(medium-up) {
         @include column(4/12);
       }
@@ -42,7 +42,7 @@
         font-weight: $base-font-regular;
         .content-highlight {
           font-size: 1.15rem;
-          margin-left: $global-spacing/2;
+          margin-inline-start: $global-spacing/2;
           color: rgba(0, 0, 0, 1);
           text-transform: capitalize;
         }
@@ -100,7 +100,7 @@
 
 .introduction-nav {
   list-style: none;
-  margin-left: 0;
+  margin-inline-start: 0;
   li {
     display: inline-block;
     margin-right: $global-spacing;
@@ -116,7 +116,7 @@
 .key-figures-list {
   list-style: none;
   @include column(12/12);
-  margin-left: 0;
+  margin-inline-start: 0;
   display: block;
   @include media(medium-up) {
     display: flex;
@@ -133,10 +133,10 @@
     width: 100%;
     margin-bottom: $global-spacing;
     @include media(medium-up) {
-      margin-left: $global-spacing * 2;
+      margin-inline-start: $global-spacing * 2;
       margin-bottom: 0;
       &:first-child {
-        margin-left: 0;
+        margin-inline-start: 0;
       }
     }
   }
@@ -163,7 +163,7 @@
 
 .situation-reports-list {
   list-style: none;
-  margin-left: 0;
+  margin-inline-start: 0;
   @include column(12/12);
   margin-bottom: $global-spacing/2;
   li {
@@ -176,7 +176,7 @@
 
 .public-docs-list {
   list-style: none;
-  margin-left: 0;
+  margin-inline-start: 0;
   @include column(12/12);
   li {
     @include media(medium-up) {
@@ -184,7 +184,7 @@
     }
     margin-bottom: $global-spacing/2;
     a {
-      margin-left: $global-spacing/2;
+      margin-inline-start: $global-spacing/2;
     }
   }
 }

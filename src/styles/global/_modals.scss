@@ -189,7 +189,7 @@
       margin: 0 ($global-spacing / 4);
 
       &:first-child {
-        margin-left: 0;
+        margin-inline-start: 0;
       }
 
       &:last-child {

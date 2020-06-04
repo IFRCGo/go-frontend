@@ -42,7 +42,7 @@
   animation: spinner-bouncedelay 1.4s infinite ease-in-out both;
 
   &:first-child {
-    margin-left: 0;
+    margin-inline-start: 0;
   }
 
   &:last-child {
