@@ -62,7 +62,7 @@ main {
   }
   p {
     margin-bottom: 0;
-    float: left;
+    float: inline-start;
     width: 90%;
   }
   .beta-note__actions {
@@ -166,7 +166,7 @@ main {
   }
 
   .footer-left-block {
-    float: left;
+    float: inline-start;
 
     a {
       padding-inline-end: 10px;

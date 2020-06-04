@@ -202,7 +202,7 @@ a.popover__contents {
 }
 
 .chart-tooltip {
-  float: left;
+  float: inline-start;
   background: #fff;
   box-shadow: 0 4px 16px 2px rgba($base-color, 0.08);   // Elevation Index: 2
   border-radius: $base-border-radius;
@@ -239,7 +239,7 @@ a.popover__contents {
 }
 
 .tooltip__contents-col {
-  float: left;
+  float: inline-start;
   margin-inline-end: $global-spacing;
 }
 
