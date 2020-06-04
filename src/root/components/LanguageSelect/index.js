@@ -72,6 +72,12 @@ function LanguageSelect(p) {
 
   const handleLanguageButtonClick = React.useCallback((languageId) => {
     setCurrentLanguage(languageId);
+
+    if (languageId === 'ar') {
+      document.body.style.direction = 'rtl';
+    } else {
+      document.body.style.direction = 'ltr';
+    }
   }, [setCurrentLanguage]);
 
   return (
