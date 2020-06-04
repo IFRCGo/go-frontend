@@ -15,7 +15,7 @@
     left: 0;
     height: 1px;
     width: 200vw;
-    margin-left: -50vw;
+    margin-inline-start: -50vw;
     background: tint($base-color, 92%);
   }*/
 
@@ -75,7 +75,7 @@
     margin: 0 $global-spacing;
 
     &:first-child {
-      margin-left: 0;
+      margin-inline-start: 0;
     }
 
     &:last-child {
@@ -240,7 +240,7 @@
     margin-top: $global-spacing;
     li {
       font-weight: $base-font-light;
-      margin-left: 0.5rem;
+      margin-inline-start: 0.5rem;
       font-size: 0.875rem;
     }
   }
