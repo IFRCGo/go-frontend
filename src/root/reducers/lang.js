@@ -28,7 +28,7 @@ export default function reducer (state = initialState, action) {
       const newStrings = data.strings.reduce((acc, val) => {
         acc[val.key] = val.value;
         return acc;
-      }, {});
+      }, { ...lang });
 
       newState = {
         ...state,
