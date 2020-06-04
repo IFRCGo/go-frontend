@@ -262,7 +262,7 @@ a.card__contents {
   }
 
   > li:not(:last-child) {
-    margin-right: $global-spacing / 4;
+    margin-inline-end: $global-spacing / 4;
   }
 }
 

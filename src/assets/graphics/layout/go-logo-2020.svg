@@ -37,7 +37,7 @@
    showgrid="false"
    fit-margin-top="0"
    fit-margin-inline-start="0"
-   fit-margin-right="0"
+   fit-margin-inline-end="0"
    fit-margin-bottom="0"
    inkscape:zoom="1.1146667"
    inkscape:cx="739.44"

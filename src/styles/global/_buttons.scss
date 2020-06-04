@@ -46,7 +46,7 @@
     font-size: 1rem;
   }
 
-  &::before { margin-right: 0.375rem; }
+  &::before { margin-inline-end: 0.375rem; }
   &::after { margin-inline-start: 0.375rem; }
 
   &::before,
@@ -303,5 +303,5 @@
 }
 
 .toggle-button-description {
-  margin-right: $global-spacing;
+  margin-inline-end: $global-spacing;
 }
