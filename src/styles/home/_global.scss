@@ -62,7 +62,7 @@
 
 .button--fullscreen {
   //@extend .button--text-hidden;
-  float: right;
+  float: inline-end;
   position: relative;
   padding: ($global-spacing/2) $global-spacing-2;
   background-color: #fff;

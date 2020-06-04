@@ -36,7 +36,7 @@
 }
 
 .ifrc_supported_badge {
-  float: right;
+  float: inline-end;
   width: 100%;
   margin-top: 1rem;
   background-color: #fafafa;
@@ -67,7 +67,7 @@
     padding-inline-start: 5px;
     text-align: right;
     width: 20%;
-    float: right;
+    float: inline-end;
   }
 }
 
@@ -76,7 +76,7 @@
 }
 
 .more_button {
-  float: right;
+  float: inline-end;
 }
 
 .last_updated {

@@ -85,7 +85,7 @@
     margin-top: $global-spacing;
     @include media(large-up) {
       text-align: right;
-      float: right;
+      float: inline-end;
       width: 30%;
       margin-top: 0;
     }
@@ -184,7 +184,7 @@
       @extend .visually-hidden;
     }
     span:last-child() {
-      float: right;
+      float: inline-end;
     }
   }
 }

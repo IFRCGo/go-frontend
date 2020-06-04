@@ -188,11 +188,11 @@
     img {
       margin-top: $global-spacing/2;
       height: 2rem;
-      float: right;
+      float: inline-end;
     }
   }
   .page__title {
-    float: right;
+    float: inline-end;
   }
   .page__menu {
     float: inline-start;
@@ -248,7 +248,7 @@
   .mobile__actions {
     padding: $global-spacing 0;
     button {
-      float: right;
+      float: inline-end;
     }
   }
 }
