@@ -27,6 +27,7 @@ import {
 
 import { statuses } from '#utils/constants';
 import { getDataFromResponse } from '#utils/request';
+import ProjectFormModal from '#views/ThreeW/project-form-modal';
 
 import StatusOverview from './status-overview';
 import BudgetOverview from './budget-overview';
@@ -118,8 +119,12 @@ function RegionalThreeW (p) {
     getRegionalProjectsOverview,
     getNationalSocietyActivities,
     getNationalSocietyActivitiesWoFilters,
+    isUserLoggedIn,
+    projectFormResponse,
   } = p;
 
+  const [showProjectForm, setShowProjectForm] = React.useState(false);
+  const [refetchKey, setRefetchKey] = React.useState(undefined);
   const [activeCountryId, setActiveCountryId] = React.useState(undefined);
   const [movementActivityFilters, setMovementActivityFilters] = React.useState({
     operation_type: undefined,
@@ -133,25 +138,46 @@ function RegionalThreeW (p) {
     country: [],
   });
 
+  const handleProjectFormModalCloseButtonClick = React.useCallback(() => {
+    setShowProjectForm(false);
+  }, [setShowProjectForm]);
+
+  const handleCreateThreeWActivityButtonClick = React.useCallback(() => {
+    setShowProjectForm(true);
+  }, [setShowProjectForm]);
+
+  React.useEffect(() => {
+    const {
+      fetching,
+      fetched,
+      error,
+    } = projectFormResponse;
+    if (!fetching && fetched && !error) {
+      setShowProjectForm(false);
+      setRefetchKey(new Date().getTime());
+    }
+  }, [setRefetchKey, setShowProjectForm, projectFormResponse]);
+
   React.useEffect(() => {
     getRegionalMovementActivities(regionId, movementActivityFilters);
   }, [
     regionId,
     getRegionalMovementActivities,
     movementActivityFilters,
+    refetchKey,
   ]);
 
   React.useEffect(() => {
     getRegionalProjectsOverview(regionId);
-  }, [regionId, getRegionalProjectsOverview]);
+  }, [regionId, getRegionalProjectsOverview, refetchKey]);
 
   React.useEffect(() => {
     getNationalSocietyActivitiesWoFilters(regionId);
-  }, [regionId, getNationalSocietyActivitiesWoFilters]);
+  }, [regionId, getNationalSocietyActivitiesWoFilters, refetchKey]);
 
   React.useEffect(() => {
     getNationalSocietyActivities(regionId, nsActivityFilters);
-  }, [regionId, nsActivityFilters, getNationalSocietyActivities]);
+  }, [regionId, nsActivityFilters, getNationalSocietyActivities, refetchKey]);
 
   const [
     movementActivityList,
@@ -219,10 +245,20 @@ function RegionalThreeW (p) {
             <h2 className='tc-heading'>
               Movement activities
             </h2>
-            <ExportButton
-              regionId={regionId}
-              filters={movementActivityFilters}
-            />
+            <div className='tc-actions'>
+              {isUserLoggedIn && (
+                <button
+                  onClick={handleCreateThreeWActivityButtonClick}
+                  className='button button--primary-bounded'
+                >
+                  Create 3W activity
+                </button>
+              )}
+              <ExportButton
+                regionId={regionId}
+                filters={movementActivityFilters}
+              />
+            </div>
           </div>
           <MovementActivitiesFilters
             value={movementActivityFilters}
@@ -281,6 +317,11 @@ function RegionalThreeW (p) {
           )}
         </div>
       </div>
+      { showProjectForm && (
+        <ProjectFormModal
+          onCloseButtonClick={handleProjectFormModalCloseButtonClick}
+        />
+      )}
     </div>
   );
 }
@@ -290,6 +331,8 @@ const mapStateToProps = (state) => ({
   regionalProjectsOverviewResponse: regionalProjectsOverviewSelector(state),
   nationalSocietyActivitiesResponse: nationalSocietyActivitiesSelector(state),
   nationalSocietyActivitiesWoFiltersResponse: nationalSocietyActivitiesWoFiltersSelector(state),
+  isUserLoggedIn: !!state.user.data.token,
+  projectFormResponse: state.projectForm,
 });
 
 const mapDispatchToProps = (dispatch) => ({

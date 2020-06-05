@@ -44,7 +44,7 @@ export default class ProjectListTable extends React.PureComponent {
       },
       {
         key: 'reporting_ns',
-        label: 'Supporting NS',
+        label: 'Reporting NS',
         modifier: d => d.reporting_ns_detail.society_name,
       },
       {

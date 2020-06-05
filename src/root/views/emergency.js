@@ -35,7 +35,7 @@ import {
   getRecordsByType
 } from '#utils/utils';
 
-import App from './app';
+import App from '#views/app';
 import Fold from '#components/fold';
 import TabContent from '#components/tab-content';
 import ErrorPanel from '#components/error-panel';
@@ -47,7 +47,7 @@ import EruTable from '#components/connected/eru-table';
 import EmergencyMap from '#components/map/emergency-map';
 import { NO_DATA } from '#utils/constants';
 import { epiSources } from '#utils/field-report-constants';
-import ProjectFormModal from './ThreeW/project-form-modal';
+import ProjectFormModal from '#views/ThreeW/project-form-modal';
 
 class Emergency extends React.Component {
   constructor (props) {
