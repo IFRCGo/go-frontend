@@ -153,9 +153,10 @@ function RegionalThreeW (p) {
       error,
     } = projectFormResponse;
     if (!fetching && fetched && !error) {
+      setShowProjectForm(false);
       setRefetchKey(new Date().getTime());
     }
-  }, [setRefetchKey, projectFormResponse]);
+  }, [setRefetchKey, setShowProjectForm, projectFormResponse]);
 
   React.useEffect(() => {
     getRegionalMovementActivities(regionId, movementActivityFilters);
@@ -163,6 +164,7 @@ function RegionalThreeW (p) {
     regionId,
     getRegionalMovementActivities,
     movementActivityFilters,
+    refetchKey,
   ]);
 
   React.useEffect(() => {
