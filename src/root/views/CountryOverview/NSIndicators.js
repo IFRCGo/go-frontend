@@ -2,6 +2,8 @@ import React from 'react';
 import _cs from 'classnames';
 
 import IndicatorOutput from './IndicatorOutput';
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
 
 class NSIndicators extends React.PureComponent {
   render () {
@@ -13,31 +15,33 @@ class NSIndicators extends React.PureComponent {
       trainedInFirstAid,
     } = this.props;
 
+    const { strings } = this.context;
+
     return (
       <div className={_cs(className, 'overview-ns-indicators')}>
         <h3 className='tc-heading'>
-          National society indicators
+          <Translate stringId='NSIndicatorsTitle' />
         </h3>
         <div className='tc-content'>
           <IndicatorOutput
-            label="Income (CHF)"
+            label={strings.NSIndicatorsIncome}
             value={income}
             normalizeValue
             fixedTo={1}
           />
           <IndicatorOutput
-            label="Expenditures (CHF)"
+            label={strings.NSIndicatorsExpenditure}
             value={expenditures}
             normalizeValue
             fixedTo={1}
           />
           <IndicatorOutput
-            label="Volunteers"
+            label={strings.NSIndicatorsVolunteers}
             value={volunteers}
             addSeparatorToValue
           />
           <IndicatorOutput
-            label="Trained in first aid"
+            label={strings.NSIndicatorsTrained}
             value={trainedInFirstAid}
             addSeparatorToValue
           />
@@ -47,4 +51,5 @@ class NSIndicators extends React.PureComponent {
   }
 }
 
+NSIndicators.contextType = LanguageContext;
 export default NSIndicators;
