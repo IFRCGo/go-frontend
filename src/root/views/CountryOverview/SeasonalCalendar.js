@@ -1,6 +1,7 @@
 import React from 'react';
 import { listToGroupList } from '@togglecorp/fujs';
 import _cs from 'classnames';
+import Translate from '#components/Translate';
 
 const daysInMonth = (year, month) => (
   new Date(year, month + 1, 0).getDate()
@@ -50,7 +51,7 @@ class SeasonalCalendar extends React.PureComponent {
     return (
       <div className={_cs(className, 'country-seasonal-calendar')}>
         <h3 className='tc-heading'>
-          Seasonal calendar
+          <Translate stringId='easonalCalendarTitle'/>
         </h3>
         <div className='tc-content'>
           <div className='calendar-chart'>

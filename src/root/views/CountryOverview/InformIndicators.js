@@ -9,6 +9,7 @@ import {
   YAxis,
   LabelList,
 } from 'recharts';
+import Translate from '#components/Translate';
 
 const chartMargin = {
   top: 0,
@@ -65,7 +66,7 @@ class InformIndicators extends React.PureComponent {
     return (
       <div className={_cs(className, 'country-inform-indicators')}>
         <h3 className='tc-heading'>
-          Inform indicators
+          <Translate stringId='informIndicatorsTitle' />
         </h3>
         <div className='tc-content'>
           { indicators.map(indicator => (
