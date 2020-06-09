@@ -291,6 +291,13 @@ class OverviewForm extends React.Component {
                 <div className='per_form_ns'>General Information</div>
                 Start date of current capacity assessment<br />
                 <select className='form__control form__control--medium' style={{width: '100px', display: 'inline-block'}} name='date_of_current_assessment_year'>
+                  <option value='2030'>2030</option>
+                  <option value='2029'>2029</option>
+                  <option value='2028'>2028</option>
+                  <option value='2027'>2027</option>
+                  <option value='2026'>2026</option>
+                  <option value='2025'>2025</option>
+                  <option value='2024'>2024</option>
                   <option value='2023'>2023</option>
                   <option value='2022'>2022</option>
                   <option value='2021'>2021</option>
@@ -386,6 +393,13 @@ class OverviewForm extends React.Component {
 
                 Date of last capacity assessment<br />
                 <select className='form__control form__control--medium' style={{width: '100px', display: 'inline-block'}} name='date_of_last_assessment_year'>
+                  <option value='2030'>2030</option>
+                  <option value='2029'>2029</option>
+                  <option value='2028'>2028</option>
+                  <option value='2027'>2027</option>
+                  <option value='2026'>2026</option>
+                  <option value='2025'>2025</option>
+                  <option value='2024'>2024</option>
                   <option value='2023'>2023</option>
                   <option value='2022'>2022</option>
                   <option value='2021'>2021</option>
@@ -475,6 +489,13 @@ class OverviewForm extends React.Component {
 
                 Date of mid-term review (approximate date)<br />
                 <select className='form__control form__control--medium' style={{width: '100px', display: 'inline-block'}} name='date_of_mid_review_year'>
+                  <option value='2030'>2030</option>
+                  <option value='2029'>2029</option>
+                  <option value='2028'>2028</option>
+                  <option value='2027'>2027</option>
+                  <option value='2026'>2026</option>
+                  <option value='2025'>2025</option>
+                  <option value='2024'>2024</option>
                   <option value='2023'>2023</option>
                   <option value='2022'>2022</option>
                   <option value='2021'>2021</option>
@@ -543,6 +564,13 @@ class OverviewForm extends React.Component {
 
                 Approximate date of next capacity assessment<br />
                 <select className='form__control form__control--medium' style={{width: '100px', display: 'inline-block'}} name='date_of_next_assessment_year'>
+                  <option value='2030'>2030</option>
+                  <option value='2029'>2029</option>
+                  <option value='2028'>2028</option>
+                  <option value='2027'>2027</option>
+                  <option value='2026'>2026</option>
+                  <option value='2025'>2025</option>
+                  <option value='2024'>2024</option>
                   <option value='2023'>2023</option>
                   <option value='2022'>2022</option>
                   <option value='2021'>2021</option>
