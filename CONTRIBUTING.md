@@ -46,7 +46,7 @@ const lang = {
   sampleDynamicString: 'Hi {name}, how are you on {today}?',
 };
 ```
-The templates can also be used with the format shown above in `sampleDynamicString`. Variables are surrounded by the curly braces `{<variable_name}`. This type of template is resolve using the `resolveToString` helper function available in `#utils/lang`.
+The templates can also be used with the format shown above in `sampleDynamicString`. Variables are surrounded by the curly braces `{<variable_name>}`. This type of template is resolve using the `resolveToString` helper function available in `#utils/lang`.
 
 **Note**: Proper namespacing should be maintained in the key to avoid conflicts. For example, as shown in the strings above, `homeMainTitle` has `home` to represent that this string belongs to the Home page.
 
@@ -127,3 +127,33 @@ function MyComponent(props) {
     </div>
 }
 ```
+
+### RTL aware styling 
+RTL languages (eg: Arabic) are read and written from right-to-left, and the user interface for these languages should be mirrored to ensure the content is easy to understand.
+
+When a UI is changed from LTR to RTL (or vice-versa), it’s often called mirroring. An RTL layout is the mirror image of an LTR layout, and it affects layout, text, and graphics.
+
+In RTL, anything that relates to time should be depicted as moving from right to left. For example, forward points to the left, and backwards points to the right.
+
+#### Mirroring layout
+When a UI is mirrored, these changes occur:
+
+- Text fields icons are displayed on the opposite side of a field
+- Navigation buttons are displayed in reverse order
+- Icons that communicate direction, like arrows, are mirrored
+- Text is usually aligned to the right
+- In CSS, while it's possible to apply a rule for LTR and a separate one specifically for RTL, it's usually better to use CSS Logical Properties which provide the ability to control layout through logical, rather than physical mappings.
+
+| **Do**                                                                       | **Don't do**                                    |
+|------------------------------------------------------------------------------|-------------------------------------------------|
+| `margin-inline-start: 5px;`                                                  | `margin-left: 5px;`                             |
+| `padding-inline-end: 5px;`                                                   | `padding-right: 5px;`                           |
+| `float: inline-start;`                                                       | `float: left;`                                  |
+| `inset-inline-start: 5px;`                                                   | `left: 5px;`                                    |
+| `border-inline-end: 1px;`                                                    | `border-right: 1px;`                            |
+| `border-{start/end}-{start/end}-radius: 2px;`                                | `border-{top/bottom}-{left/right}-radius: 2px;` |
+| `padding: 1px 2px;`                                                          | `padding: 1px 2px 1px 2px;`                     |
+| `margin-block: 1px 3px;` && `margin-inline: 4px 2px;`                        | `margin: 1px 2px 3px 4px;`                      |
+| `text-align: start;` or `text-align: match-parent;` (depends on the context) | `text-align: left;`                             |
+
+For more information, refer to [MDN](https://developer.mozilla.org/en-US/docs/Mozilla/Developer_guide/RTL_Guidelines).
