@@ -1,0 +1,109 @@
+@import '~styles/settings/_variables.scss';
+
+.covid19ThreeWSankey {
+  height: 100vh;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  .header {
+    padding: 10px;
+    flex-shrink: 0;
+  }
+
+  .filters {
+    flex-shrink: 0;
+  }
+
+  .chart {
+    flex-grow: 1;
+  }
+}
+
+.filters {
+  display: flex;
+  align-items: flex-start;
+
+  .input {
+    flex-basis: 0;
+    flex-grow: 1;
+    flex-direction: column;
+  }
+
+  :global {
+    .tc-select-label {
+      font-size: $font-size-sm;
+      padding-bottom: 0;
+    }
+
+    .tc-select-input {
+      align-self: stretch;
+      flex-grow: 1;
+    }
+
+    .Select-menu-outer {
+      z-index: 11;
+      left: 5px;
+      width: calc(100% - 10px);
+    }
+
+    .tc-select {
+      .tc-select-label {
+        display: none;
+      }
+
+      .tc-select-input {
+        .Select-control {
+          border: 0;
+          border-radius: 0;
+          background-color: $grey-mist;
+          border-bottom: 1px solid $primary-color;
+          font-size: $font-size-sm;
+        }
+
+        .Select-placeholder {
+          padding: 0 16px;
+          color: $base-color;
+          font-weight: $base-font-medium;
+        }
+
+        &:focus-within {
+          .Select-placeholder {
+            color: rgba($base-color, 0.3);
+          }
+        }
+
+        .Select-input {
+          height: auto;
+
+          input {
+            padding: 0;
+          }
+        }
+
+        .Select-multi-value-wrapper {
+          padding: 6px;
+        }
+
+        .Select-value {
+          background-color: $grey-cloud;
+          border-radius: 0;
+          margin: 1px;
+          vertical-align: middle;
+          font-size: $font-size-sm;
+
+          .Select-value-icon {
+            padding: 2px 3px;
+            font-size: $font-size-lg;
+          }
+
+          .Select-value-label {
+            padding: 2px 3px;
+            font-weight: $base-font-medium;
+          }
+        }
+      }
+    }
+  }
+}

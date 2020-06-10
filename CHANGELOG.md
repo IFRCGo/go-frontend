@@ -1,3 +1,108 @@
+### Release 4.3.5
+
+Frontend:
+
+ - Fix language in field report form: https://github.com/IFRCGo/go-frontend/issues/1226
+ - Fix validation of email addresses on registration: https://github.com/IFRCGo/go-frontend/pull/1265
+ - Remove Additional Graphics text on extra tabs: https://github.com/IFRCGo/go-frontend/issues/1232
+ - Add COVID-19 Sankey Diagram for 3W activities: https://github.com/IFRCGo/go-frontend/issues/1284
+
+Backend:
+
+ - Add Global National Society Activities API (https://github.com/IFRCGo/go-frontend/issues/1284)
+ - Add Project Filter to exclude where country and RNS are same (above ticket)
+ - Removed multi-upload for Situation Report and PER documents (https://github.com/IFRCGo/go-frontend/issues/1117)
+ - Field Report endpoint to return the proper list of Field Reports based on visibility (https://github.com/IFRCGo/go-frontend/pull/1286)
+
+### Release 4.3.4
+
+Frontend:
+
+ - Use webpack instead of gulp for the build process: https://github.com/IFRCGo/go-frontend/issues/1199
+ - 3W: Add disaster type to country 3W table, import and export: https://github.com/IFRCGo/go-frontend/issues/1149
+ - 3W: Add multi-region support in 3W projects: https://github.com/IFRCGo/go-frontend/issues/1145
+ - 3W: Replace Health (public) and Health (clinical) with Health in the sectors: https://github.com/IFRCGo/go-frontend/issues/1218
+ - 3W: Add RCCE tag in the 3W project: https://github.com/IFRCGo/go-frontend/issues/1227
+ - Restructure display of Epidemic data on Emergency page: https://github.com/IFRCGo/go-frontend/issues/1161
+ - Show more emergencies on Country pages: https://github.com/IFRCGo/go-frontend/issues/1132
+ - Don't require login to view public field reports: https://github.com/IFRCGo/go-frontend/issues/1118
+ - Fix PER mismatches between frontend and backend: https://github.com/IFRCGo/go-frontend/issues/1137
+ - PER: Enable years beyond 2018-2020: https://github.com/IFRCGo/go-frontend/issues/1230
+ - Removed 'Information Bulletin Published', 'Delegates' 'Number of RCRC Movement Personnel', 'Probable/Suspected/Confirmed Cases' for COVID-19 type Field Reports: (part of) https://github.com/IFRCGo/go-frontend/issues/1161
+ - Switch Is Covid Report toggle to Radio buttons: https://github.com/IFRCGo/go-frontend/issues/1247
+ - Add COVID-19 Sankey Diagram for 3W activities: https://github.com/IFRCGo/go-frontend/issues/1284
+ 
+Backend:
+
+ - Change how EPI field report source data is stored
+ - Fix issue of parent_emergency not always showing for superusers
+ - The Domain Whitelist is a database table now and can be adjusted through the Django Admin, instead of being a static list maintained on both ends: https://github.com/IFRCGo/go-api/issues/669
+
+
+### Release 4.3.3
+
+Frontend:
+- Add new tag "RCCE" for the projects ([#1227](https://github.com/IFRCGo/go-frontend/issues/1227))
+
+Backend:
+- Add new option "RCCE" for the secondary sectors in projects ([#1227](https://github.com/IFRCGo/go-frontend/issues/1227))
+
+### Release 4.3.2
+
+Minor hotfix release, adds a video to the Resources page.
+
+### Release 4.3.1
+
+Frontend:
+
+ - Add COVID-19 specific options for Field Report - #1160
+ - Implement redesign of About / Resources page - #1094
+
+Backend:
+
+ - Refactor / fix issues with ElasticSearch indexing
+ - Add is_disabled option to Actions to allow deprecation of actions: https://github.com/IFRCGo/go-frontend/issues/1101
+
+### Release 4.3.0
+
+Frontend:
+
+- Add **3w** tab to **Country** page ([#641](https://github.com/IFRCGo/go-frontend/issues/641))
+	- Create a 3w view with a map, some basic overview charts and the projects table
+	- Add basic filters to the view
+	- Add ability to add / edit 3w project for logged in user
+	- Add ability to export the all the 3w data
+- Add 3w project form ([#640](https://github.com/IFRCGo/go-frontend/issues/640))
+	- Create a form to add a 3w project
+	- Create dynamic fields according to the values of `Operation type` and `Programme type`. The fields `Current IFRC Operation`, `Current Emergency Operation` and `Disaster type` will be conditionally displayed accordingly.
+	- Create dynamic schema and required conditions for different field (eg: People reached > Total is required only if project is marked as Completed)
+	- Add a separate tag for COVID-19 specifc project / activity
+- Add **3w** tab to **Region** page ([#1019](https://github.com/IFRCGo/go-frontend/issues/1019))
+	- Create the view with 3w overview, movement activities and national society activities for all the countries in the region
+	- Add map to show the movement activities in the countries of the selected region
+	- Add ability to view projects within the countries of selected region
+	- Add sankey diagram to view the national society activities
+- Add ability to add the 3w project from **Emergency** page ([#1066](https://github.com/IFRCGo/go-frontend/issues/1066))
+- Add [`react-icons`](https://react-icons.netlify.com/#/) for easy usage of icons
+- Add [`@togglecorp/fujs`](https://github.com/toggle-corp/fujs/) for a lot of utils
+- Add [`@togglecorp/faram`](https://github.com/toggle-corp/fujs/) to implement dynamic forms
+- Add some faram compatible wrapped inputs (`TextInput`, `SelectInput`, `FaramCheckbox`, `DateInput`, `NumberInput`) with existing input elements
+- Add some components that use [Hooks](https://reactjs.org/docs/hooks-intro.html). Custom hooks are added to `/hooks/` directory
+- Add selectors for common selection approach for the redux. Selectors are added to `/selectors/` directory
+- Refactor map download code (break down into components and remove unnecessary codes).
+
+API:
+ - Fetch FTS HPC Data using google sheet.
+ - Add visibility support for project. (Public, Login required, IFRC Only)
+ - New Programme Type `Domestic`
+ - Add Bulk Project Import in Admin Panel.
+ - Enable history for Project changes.
+ - Add Sector/SectorTag `Health (private)` and `COVID-19`.
+ - Add API for Project for region.
+ - Add Multiselect filters for Project API enumfields.
+ - Change Sector/SectorTag `Health` to `Health (public)`.
+
+
 ### Release 4.2.3
 
 Frontend:

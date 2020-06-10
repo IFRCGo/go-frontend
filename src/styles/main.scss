@@ -1,0 +1,184 @@
+/* ==========================================================================
+   Main
+   ========================================================================== */
+
+/**
+ * Following Necolas' Principles of writing consistent, idiomatic CSS:
+ * https://github.com/necolas/idiomatic-css
+ */
+
+/* Charset */
+
+@charset "UTF-8";
+
+/* Third-party
+   ========================================================================== */
+
+/**
+ * Using Bourbon for extended SASS functionality:
+ * http://bourbon.io/
+ */
+
+@import "../../node_modules/bourbon/app/assets/stylesheets/bourbon";
+
+/**
+ * Using Jeet, a grid system designed for humans:
+ * http://jeet.gs/
+ */
+
+@import "../../node_modules/jeet/scss/index";
+
+/**
+ * Normalize.css, a modern, HTML5-ready alternative to CSS resets:
+ * http://necolas.github.io/normalize.css/
+ */
+
+@import "vendor/normalize";
+
+/* Settings
+   ========================================================================== */
+
+@import "settings/variables";
+@import "settings/functions";
+@import "settings/mixins";
+
+/* Core
+   ========================================================================== */
+
+@import "core/base";
+@import "core/collecticons"; // Webfont icon library: Collecticons
+@import "core/typography";
+@import "core/tables";
+@import "core/tabs";
+@import "core/code";
+@import "core/media";
+@import "core/skins";
+@import "core/animation";
+
+/* Global
+   ========================================================================== */
+
+@import "global/buttons";
+@import "global/forms";
+@import "global/labels";
+@import "global/drops";
+@import "global/cards";
+@import "global/panels";
+@import "global/pills";
+@import "global/callouts";
+@import "global/alerts";
+@import "global/modals";
+@import "global/iframe-embeds";
+@import "global/box-heading-content";
+@import "global/icon-styles";
+@import "global/frames";
+@import "global/navs";
+@import "global/breadcrumbs";
+@import "global/loading";
+@import "global/pages";
+@import "global/inpages";
+@import "global/folds";
+@import "global/global-banner";
+@import "global/scrollbar-custom";
+@import "global/page-prime-nav";
+@import "global/popovers";
+@import "global/charts";
+@import "global/print";
+@import "global/login";
+@import "global/tooltip";
+@import "global/faram-inputs/raw-input";
+@import "global/faram-inputs/select-input";
+@import "global/faram-inputs/faram-checkbox";
+@import "global/text-output";
+@import "global/tooltip";
+
+/* Home
+   ========================================================================== */
+
+@import "home/global";
+@import "home/presenting";
+@import "home/highlighted-emergencies";
+@import "home/homemap.scss";
+
+/* About
+   ========================================================================== */
+
+@import "about/global";
+
+/* Deployments
+   ========================================================================== */
+
+@import "deployments/global";
+@import "deployments/presenting";
+
+/* country
+   ========================================================================== */
+
+@import "country/global";
+
+/* Field Report
+   ========================================================================== */
+
+@import "field-report/form";
+@import "field-report/global";
+@import "field-report/display";
+
+/* Emergency 
+   ========================================================================== */
+
+@import "emergencies/global";
+
+/* Preparedness 
+   ========================================================================== */
+
+@import "preparedness/global";
+
+
+/* Emergency 
+   ========================================================================== */
+
+@import "emergency/global";
+
+/* Region 
+   ========================================================================== */
+
+@import "region/global";
+
+/* UhOh
+   ========================================================================== */
+
+@import "uhoh/global";
+
+/* Components
+   ========================================================================== */
+
+@import "components/select";
+@import "components/formatted-number";
+@import "components/formatted-date";
+@import "components/dropdown-menu";
+@import "components/backdrop";
+@import "components/common";
+
+/* Core (...cont)
+   ========================================================================== */
+
+@import "core/utilities";
+
+/* Third Party
+   ========================================================================== */
+
+@import "../../node_modules/react-select/dist/react-select";
+
+/* Vendor
+   ========================================================================== */
+
+@import "vendor/react-paginate";
+@import "vendor/react-select";
+@import "vendor/react-carousel";
+@import "vendor/mapbox-gl";
+
+/* Header navbar 
+   ========================================================================== */
+
+@import "header/navbar";
+@import "forms/per-form";
