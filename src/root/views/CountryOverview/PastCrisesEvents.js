@@ -2,6 +2,8 @@ import React from 'react';
 import _cs from 'classnames';
 
 import IndicatorOutput from './IndicatorOutput';
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
 
 class PastCrisesEvents extends React.PureComponent {
   render () {
@@ -11,14 +13,15 @@ class PastCrisesEvents extends React.PureComponent {
       events,
     } = this.props;
 
+    const { strings } = this.context;
     return (
       <div className={_cs(className, 'overview-past-crises-events')}>
         <h3 className='tc-heading'>
-          Past crises events
+          <Translate stringId='pastCrisesEventsTitle'/>
         </h3>
         <div className='tc-content'>
           <IndicatorOutput
-            label="Conflict events"
+            label={strings.pastCrisesEventsConflict}
             value={conflictEventCount}
           />
           { events.map(e => (
@@ -33,5 +36,5 @@ class PastCrisesEvents extends React.PureComponent {
     );
   }
 }
-
+PastCrisesEvents.contextType = LanguageContext;
 export default PastCrisesEvents;

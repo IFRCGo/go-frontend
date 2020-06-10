@@ -10,6 +10,8 @@ import {
   LabelList,
 } from 'recharts';
 
+import Translate from '#components/Translate';
+
 const chartMargin = {
   top: 24,
   right: 10,
@@ -50,7 +52,7 @@ class ClimateChart extends React.PureComponent {
     return (
       <div className={_cs(className, 'country-climate-chart')}>
         <h3 className='tc-heading'>
-          Climate chart (C°)
+          <Translate stringId='climateChartHeading' />
         </h3>
         <div className='tc-content'>
           <div className='tc-charts'>
@@ -112,7 +114,7 @@ class ClimateChart extends React.PureComponent {
           </div>
           <div className='tc-key-info'>
             <h4 className='tc-heading'>
-              Key climate events
+              <Translate stringId='climateChartKeyClimateHeading' />
             </h4>
             <div className='tc-content'>
               <KeyEventOutput

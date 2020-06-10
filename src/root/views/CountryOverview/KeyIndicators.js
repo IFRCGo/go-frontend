@@ -2,6 +2,8 @@ import React from 'react';
 import _cs from 'classnames';
 
 import IndicatorOutput from './IndicatorOutput';
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
 
 class KeyIndicators extends React.PureComponent {
   render () {
@@ -16,45 +18,46 @@ class KeyIndicators extends React.PureComponent {
       literacy,
     } = this.props;
 
+    const { strings } = this.context;
     return (
       <div className={_cs(className, 'overview-key-indicators')}>
         <h3 className='tc-heading'>
-          Key indicators
+          <Translate stringId='keyIndicatorsTitle' />
         </h3>
         <div className='tc-content'>
           <div className='tc-left'>
             <IndicatorOutput
-              label="Population"
+              label={strings.keyIndicatorsPopulation}
               value={population}
               addSeparatorToValue
             />
             <IndicatorOutput
-              label="Urban pop (% pop)"
+              label={strings.keyIndicatorsPopulationPercent}
               value={urbanPopulation}
             />
             <IndicatorOutput
-              label="GDP"
+              label={strings.keyIndicatorsGDP}
               value={gdp}
               normalizeValue
               fixedTo={1}
             />
             <IndicatorOutput
-              label="GNI / capita"
+              label={strings.keyIndicatorsGNI}
               value={gnipc}
               addSeparatorToValue
             />
           </div>
           <div className='tc-right'>
             <IndicatorOutput
-              label="Poverty (% pop)"
+              label={strings.keyIndicatorsPovertyPercent}
               value={poverty}
             />
             <IndicatorOutput
-              label="Life expentancy"
+              label={strings.keyIndicatorsLifeExpectancy}
               value={lifeExpectancy}
             />
             <IndicatorOutput
-              label="Literacy"
+              label={strings.keyIndicatorsLiteracy}
               value={literacy}
             />
           </div>
@@ -64,4 +67,5 @@ class KeyIndicators extends React.PureComponent {
   }
 }
 
+KeyIndicators.contextType = LanguageContext;
 export default KeyIndicators;
