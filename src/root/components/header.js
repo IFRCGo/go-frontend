@@ -49,7 +49,7 @@ class Header extends React.PureComponent {
           } else {
             return resolve({ options: [] });
           }
-        }, 150);
+        }, 500);
       });
     };
   }
