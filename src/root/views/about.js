@@ -2,6 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import App from './app';
 import VideoCarousel from '#components/about/video-carousel';
+import BreadCrumb from '#components/breadcrumb';
 
 export default class About extends React.Component {
   render () {
@@ -10,6 +11,10 @@ export default class About extends React.Component {
         <Helmet>
           <title>IFRC Go - About</title>
         </Helmet>
+        <BreadCrumb crumbs={[
+          {link: this.props.location.pathname, name: 'Resources'},
+          {link: '/', name: 'Home'}
+        ]} />
         <section className='inpage'>
           <header className='inpage__header'>
             <div className='inner'>
