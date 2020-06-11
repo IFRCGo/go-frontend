@@ -71,6 +71,23 @@ class FieldReportForm extends React.Component {
 
     this.onSubmit = this.onSubmit.bind(this);
     this.onStepBackClick = this.onStepBackClick.bind(this);
+
+    // Basic function to wait until user stops typing to query ES.
+    // Code duplicate of components/header.js:40 (different timeout)
+    let i = 0;
+    this.slowLoad = input => {
+      i += 1;
+      let mirror = i;
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          if (i === mirror) {
+            return resolve(getEventsFromApi(input));
+          } else {
+            return resolve({ options: [] });
+          }
+        }, 350);
+      });
+    };
   }
 
   // eslint-disable-next-line camelcase
@@ -393,7 +410,7 @@ class FieldReportForm extends React.Component {
           selectOnChange={this.onFieldChange.bind(this, 'event')}
           selectValue={this.state.data.event}
           errors={this.state.errors}
-          selectLoadOptions={getEventsFromApi}
+          selectLoadOptions={this.slowLoad}
           disabled={!this.state.data.isCovidReport}
           autoFocus >
 
