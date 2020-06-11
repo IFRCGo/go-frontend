@@ -743,6 +743,7 @@ class Emergency extends React.Component {
       hashes.indexOf(this.props.location.hash) !== -1
         ? hashes.indexOf(this.props.location.hash)
         : 0;
+
     return (
       <section className="inpage">
         <Helmet>
@@ -751,11 +752,10 @@ class Emergency extends React.Component {
         <BreadCrumb
           crumbs={[
             {
-              link: `/emergency/${get(this.props.event.data)}`,
+              link: `/emergency/${get(data, 'id')}`,
               name: 'Emergency',
             },
             { link: `/countries/${this.props.event.data.countries[0].id}`, name: `${data.countries[0].name}` },
-            // {link: `/regions/${data.region}`, name: getRegionById(data.region).name},
             { link: '/emergencies', name: 'Emergencies' },
             { link: '/', name: 'Home' },
           ]}
