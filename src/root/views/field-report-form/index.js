@@ -4,6 +4,7 @@ import { PropTypes as T } from 'prop-types';
 import _get from 'lodash.get';
 import _set from 'lodash.set';
 import _cloneDeep from 'lodash.clonedeep';
+import isUndefined from 'lodash.isundefined';
 import c from 'classnames';
 import Select from 'react-select';
 import Ajv from 'ajv';
@@ -530,6 +531,22 @@ class FieldReportForm extends React.Component {
     const fields = formData.fieldsStep2;
     const status = this.getStatus();
     const covidTag = this.state.data.isCovidReport === 'true' ? '-COV' : '';
+
+    /** Indicate whether the date of data for an epidemic
+     * is required: it is required when any of these fields
+     * have data 
+      * */
+    let isSitFieldsDateRequired = [
+      'epiCases',
+      'epiSuspectedCases',
+      'epiProbableCases',
+      'epiConfirmedCases',
+      'epiNumDead'
+    ].reduce((acc, curVal) => {
+      return !isUndefined(this.state.data[curVal]) || acc;
+    }, false);
+    const sitFieldsDateLabelMarker = isSitFieldsDateRequired ? ' *' : '';
+
     return (
       <Fold title='Numeric Details (People)'>
         {
@@ -596,7 +613,7 @@ class FieldReportForm extends React.Component {
 
         {fields.sitFieldsDate[status] &&
           <FormInput
-            label={fields.sitFieldsDate[status].label}
+            label={fields.sitFieldsDate[status].label + sitFieldsDateLabelMarker}
             type='date'
             name={fields.sitFieldsDate[status].name}
             id={fields.sitFieldsDate[status].key}
