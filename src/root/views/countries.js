@@ -561,15 +561,15 @@ class AdminArea extends SFPComponent {
     };
 
     // add region to the breadcrumb only if country has a region defined
-    const region = getRegionById(data.region)
+    const region = getRegionById(data.region);
     const crumbs = [
       {link: this.props.location.pathname, name: get(data, 'name', 'Country')},
       {link: '/', name: 'Home'}
-    ]
+    ];
     if (region) {
       crumbs.splice(1, 0, {
         link: `/regions/${data.region}`, name: region.name
-      })
+      });
     }
 
     return (
