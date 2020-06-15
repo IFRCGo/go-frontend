@@ -39,19 +39,7 @@ export const step1 = {
       type: 'boolean'
     }
   },
-  anyOf: [
-    {
-      required: [
-        'summary'
-      ]
-    },
-    {
-      required: [
-        'event'
-      ]
-    }
-  ],
-  required: ['country', 'status', 'startDate', 'disasterType']
+  required: ['country', 'summary', 'status', 'startDate', 'disasterType']
 };
 
 export const step2 = {
