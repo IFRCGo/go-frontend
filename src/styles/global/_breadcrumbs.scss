@@ -1,15 +1,25 @@
 .breadcrumb__block {
-    margin: 0 ($global-spacing * 3);
+  margin: ($global-spacing / 2) ($global-spacing * 3) 0;
+
+  span span:first-of-type .breadcrumb {
+    padding-left: 0;
+  }
+
 }
 
 .breadcrumb {
-  font-size: $font-size-xs;
+  color: $base-color--light;
+  font-size: $font-size-sm;
   padding: ($global-spacing/2);
   display: inline-block;
 }
 
+b.breadcrumb {
+  font-weight: $base-font-semi-bold;
+}
+
 .breadcrumb__next {
   vertical-align: middle;
-  font-size: 8px;
+  font-size: 12px;
 }
 
