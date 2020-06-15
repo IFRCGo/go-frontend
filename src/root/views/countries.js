@@ -560,16 +560,24 @@ class AdminArea extends SFPComponent {
       this.props.history.replace(`${url}${tabHashArray[index]}`);
     };
 
+    // add region to the breadcrumb only if country has a region defined
+    const region = getRegionById(data.region)
+    const crumbs = [
+      {link: this.props.location.pathname, name: get(data, 'name', 'Country')},
+      {link: '/', name: 'Home'}
+    ]
+    if (region) {
+      crumbs.splice(1, 0, {
+        link: `/regions/${data.region}`, name: region.name
+      })
+    }
+
     return (
       <section className='inpage'>
         <Helmet>
           <title>IFRC Go - {get(data, 'name', 'Country')}</title>
         </Helmet>
-        <BreadCrumb crumbs={[
-          {link: this.props.location.pathname, name: get(data, 'name', 'Country')},
-          {link: `/regions/${data.region}`, name: getRegionById(data.region).name},
-          {link: '/', name: 'Home'}
-        ]} />
+        <BreadCrumb crumbs={ crumbs } />
         <header className='inpage__header'>
           <div className='inner'>
             <h1 className='inpage__title'>
