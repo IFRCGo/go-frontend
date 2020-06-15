@@ -10,7 +10,8 @@ const initialState = {
   current: 'en',
   strings: {
     ...lang,
-  }
+  },
+  data: {},
 };
 
 export default function reducer (state = initialState, action) {
@@ -33,7 +34,9 @@ export default function reducer (state = initialState, action) {
       newState = {
         ...state,
         strings: newStrings,
+        data: data,
       };
+
       break;
     case 'SET_CURRENT_LANGUAGE':
       newState.current = action.language;
