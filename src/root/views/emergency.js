@@ -753,9 +753,10 @@ class Emergency extends React.Component {
           crumbs={[
             {
               link: `/emergency/${get(data, 'id')}`,
-              name: 'Emergency',
+              name: get(data, 'name', 'Emergency')
             },
             { link: `/countries/${this.props.event.data.countries[0].id}`, name: `${data.countries[0].name}` },
+
             { link: '/emergencies', name: 'Emergencies' },
             { link: '/', name: 'Home' },
           ]}
