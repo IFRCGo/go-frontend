@@ -12,7 +12,7 @@ export default function BreadCrumb ({crumbs}) {
       <Breadcrumbs
         separator={<span className="breadcrumb__next"> > </span>}
         item={NavLink}
-        compare={(a,b) => a.order < b.order}
+        compare={(a,b) => b.order - a.order}
         finalItem={'b'}
       />
     </div>
