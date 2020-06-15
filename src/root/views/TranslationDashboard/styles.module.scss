@@ -3,18 +3,22 @@
   flex-direction: column;
   height: 100vh;
 
-  .header {
-    display: flex;
-    padding: 10px;
+  .top-content {
     flex-shrink: 0;
 
-    .heading {
-      flex-grow: 1;
+    .header {
+      display: flex;
       padding: 10px;
-    }
+      flex-shrink: 0;
 
-    .actions {
-      padding: 10px;
+      .heading {
+        flex-grow: 1;
+        padding: 10px;
+      }
+
+      .actions {
+        padding: 10px;
+      }
     }
   }
 
@@ -32,6 +36,11 @@
       }
 
       .value {
+        display: table-cell;
+        padding: 10px;
+      }
+
+      .hash {
         display: table-cell;
         padding: 10px;
       }
