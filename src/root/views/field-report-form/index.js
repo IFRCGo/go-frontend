@@ -95,7 +95,10 @@ class FieldReportForm extends React.Component {
     if (this.props.fieldReportForm.fetching && !nextProps.fieldReportForm.fetching) {
       hideGlobalLoading();
       if (nextProps.fieldReportForm.error) {
-        const message = nextProps.fieldReportForm.error.error_message || nextProps.fieldReportForm.error.detail || 'Could not submit field report';
+        const message = nextProps.fieldReportForm.error.error_message
+          || nextProps.fieldReportForm.error.detail
+          || nextProps.fieldReportForm.error[Object.keys(nextProps.fieldReportForm.error)[0]][0] // first key's value
+          || 'Could not submit field report';
         showAlert('danger', <p><strong>Error:</strong> {message}</p>, true, 4500);
       } else {
         const { history } = this.props;
