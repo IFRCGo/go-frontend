@@ -392,9 +392,9 @@ class FieldReport extends React.Component {
         </Helmet>
         <BreadCrumb
           crumbs={[
-            {link: `/reports/${data.id}`, name: 'Report'},
+            {link: `/reports/${data.id}`, name: get(data, 'summary', 'Field Report')},
             // {link: this.props.location.state, name: 'Emergency'},
-            {link: '/emergencies', name: 'Emgergencies'},
+            {link: '/emergencies', name: 'Emergencies'},
             {link: '/', name: 'Home'}
           ]}
         />
