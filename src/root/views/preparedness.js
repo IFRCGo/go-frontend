@@ -141,7 +141,7 @@ class Preparedness extends React.Component {
       <App className='page--homepage'>
         <section className='inpage'>
           <Helmet>
-            <title>IFRC Go - Home</title>
+            <title>IFRC Go - Global Preparedness</title>
           </Helmet>
           <header className='inpage__header'>
             <div className='inner'>
