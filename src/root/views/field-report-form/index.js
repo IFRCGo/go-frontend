@@ -7,6 +7,7 @@ import _cloneDeep from 'lodash.clonedeep';
 import isUndefined from 'lodash.isundefined';
 import c from 'classnames';
 import Select from 'react-select';
+import { Helmet } from 'react-helmet';
 import Ajv from 'ajv';
 import ajvKeywords from 'ajv-keywords';
 
@@ -908,6 +909,9 @@ class FieldReportForm extends React.Component {
     const submitTitle = this.state.step === 4 ? 'Submit' : 'Continue';
     return (
       <App className='page--frep-form'>
+        <Helmet>
+          <title>IFRC Go - New Field Report</title>
+        </Helmet>
         <section className='inpage'>
           <header className='inpage__header'>
             <div className='inner'>
