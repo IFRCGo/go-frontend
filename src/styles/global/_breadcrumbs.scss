@@ -1,5 +1,6 @@
 .breadcrumb__block {
-  margin: ($global-spacing / 2) ($global-spacing * 3) 0;
+
+  margin-top: ($global-spacing / 2);
 
   span span:first-of-type .breadcrumb {
     padding-left: 0;
