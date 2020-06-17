@@ -18,6 +18,7 @@ const OperationCard = ({operationId, operationName, emergencyDeployments, appeal
           <h2 className='card__title'>{ operationName.length > 30 ? operationName.slice(0, 30) + '...' : operationName }</h2>
           <small className='last_updated'>
             <Translate stringId='operationCardLastUpdated'/>
+            &nbsp;
             {formatDate(lastUpdate)}
           </small>
         </div>
