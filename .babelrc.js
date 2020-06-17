@@ -1,6 +1,14 @@
 module.exports = {
-  "presets": ["react-app"],
+  "presets": [
+    "react-app",
+    ['@babel/preset-env', {
+      'useBuiltIns': 'usage',
+      'corejs': 3,
+      'debug': false,
+    }],
+  ],
   "plugins": [
+    ['@babel/plugin-proposal-class-properties', { 'loose': false }],
     [
       "module-resolver",
       {
