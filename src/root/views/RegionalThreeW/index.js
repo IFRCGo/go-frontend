@@ -253,7 +253,7 @@ function RegionalThreeW (p) {
                   onClick={handleCreateThreeWActivityButtonClick}
                   className='button button--primary-bounded'
                 >
-                  Add
+                  <Translate stringId='regional3WAdd' />
                 </button>
               )}
               <ExportButton

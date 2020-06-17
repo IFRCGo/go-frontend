@@ -71,7 +71,7 @@ class AdminArea extends SFPComponent {
     this.toggleFullscreen = this.toggleFullscreen.bind(this);
     this.onFullscreenChange = this.onFullscreenChange.bind(this);
     this.TAB_DETAILS = [
-      { title: context.strings.regionOperationTab, hash: '#operations' },
+      { title: context.strings.regionOperationsTab, hash: '#operations' },
       { title: context.strings.region3WTab, hash: '#3w' },
       { title: context.strings.regionAdditionalInfoTab, hash: '#additional-info' }
     ];

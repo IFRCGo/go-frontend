@@ -126,8 +126,9 @@ export default {
   regionGraphics: 'Graphics',
   regionLinks: 'Links',
   regionContacts: 'Contacts',
-  regionOperationTab: 'Operations',
+  regionOperationsTab: 'Operations',
   region3WTab: '3w',
+  regionPreparednessTab: 'Preparedness',
   regionAdditionalInfoTab: 'Additional Information',
 
   alertTableAlertTypeFact: 'FACT',
@@ -167,6 +168,11 @@ export default {
   countryListActiveOperation: 'Active Operation',
   countryListActiveOperations: 'Active Operations',
   countryPreparednessTitle: 'Preparedness',
+
+  countryOperationsTab: 'Operations',
+  country3WTab: '3W',
+  countryPreparednessTab: 'Preparedness',
+  countryAdditionalInfoTab: 'Additional Information',
 
   emergenciesTableError: 'Latest emergencies not available.',
   emergenciesTableDate: 'Start Date',
@@ -247,6 +253,7 @@ export default {
   regional3WMovementActivity: 'Movement activities',
   regional3WNationalActivity: 'National society activities',
   regional3WSankeyEmpty: 'Not enough data to show the chart',
+  regional3WAdd: 'Add',
   budgetOverviewNSOngoingActivity: 'NS with ongoing activities',
   butgetOverviewTotalBudget: 'Total budget',
   peopleOverviewTotalPeople: 'Total number of people reached',
