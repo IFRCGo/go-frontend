@@ -166,20 +166,20 @@ class AdminArea extends SFPComponent {
   getTabDetails = (strings) => {
     const tabDetails = [
       {
-        title: strings.regionOperationsTab,
+        title: strings.countryOperationsTab,
         hash: '#operations'
       },
       {
-        title: strings.region3WTab,
+        title: strings.country3WTab,
         hash: '#3w'
       },
       // { title: 'Country Overview', hash: '#overview' },
       {
-        title: strings.regionPreparedness,
+        title: strings.countryPreparednessTab,
         hash: '#preparedness'
       },
       {
-        title: strings.regionAdditionalInfoTab,
+        title: strings.countryAdditionalInfoTab,
         hash: '#additional'
       },
     ];
