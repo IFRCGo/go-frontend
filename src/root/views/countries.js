@@ -44,6 +44,7 @@ import App from './app';
 import ErrorPanel from '#components/error-panel';
 import TabContent from '#components/tab-content';
 import Fold from '#components/fold';
+import BreadCrumb from '#components/breadcrumb';
 import DisplayTable, { SortHeader, FilterHeader } from '#components/display-table';
 import EmergenciesTable from '#components/connected/emergencies-table';
 
@@ -62,6 +63,7 @@ import PreparednessPhaseOutcomes from '#components/country/preparedness-phase-ou
 import PreparednessColumnBar from '#components/country/preparedness-column-graph';
 import KeyFiguresHeader from '#components/common/key-figures-header';
 import { SFPComponent } from '#utils/extendables';
+import { getRegionById } from '#utils/region-constants';
 import { NO_DATA } from '#utils/constants';
 // import { getRegionSlug } from '#utils/region-constants';
 import { getISO3 } from '#utils/country-iso';
@@ -558,11 +560,24 @@ class AdminArea extends SFPComponent {
       this.props.history.replace(`${url}${tabHashArray[index]}`);
     };
 
+    // add region to the breadcrumb only if country has a region defined
+    const region = getRegionById(data.region);
+    const crumbs = [
+      {link: this.props.location.pathname, name: get(data, 'name', 'Country')},
+      {link: '/', name: 'Home'}
+    ];
+    if (region) {
+      crumbs.splice(1, 0, {
+        link: `/regions/${data.region}`, name: region.name
+      });
+    }
+
     return (
       <section className='inpage'>
         <Helmet>
           <title>IFRC Go - {get(data, 'name', 'Country')}</title>
         </Helmet>
+        <BreadCrumb crumbs={ crumbs } />
         <header className='inpage__header'>
           <div className='inner'>
             <h1 className='inpage__title'>

@@ -8,6 +8,8 @@ import { Helmet } from 'react-helmet';
 import { environment } from '#config';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 import { getFieldReportById } from '#actions';
+import BreadCrumb from '#components/breadcrumb';
+
 import {
   commaSeparatedNumber as n,
   separateUppercaseWords as separate,
@@ -369,6 +371,8 @@ class FieldReport extends React.Component {
         return null;
       }
     }
+    console.log('report', this.props.location.state);
+    console.log('props', this.props);
     const infoBulletinOptions = {
       '0': 'No',
       '2': 'Planned',
@@ -386,6 +390,14 @@ class FieldReport extends React.Component {
         <Helmet>
           <title>IFRC Go - {get(data, 'summary', 'Field Report')}</title>
         </Helmet>
+        <BreadCrumb
+          crumbs={[
+            {link: `/reports/${data.id}`, name: get(data, 'summary', 'Field Report')},
+            // {link: this.props.location.state, name: 'Emergency'},
+            {link: '/emergencies', name: 'Emergencies'},
+            {link: '/', name: 'Home'}
+          ]}
+        />
         <header className='inpage__header'>
           <div className='inner'>
             <div className='inpage__headline'>

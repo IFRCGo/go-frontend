@@ -12,6 +12,7 @@ import { environment } from '#config';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 import { get } from '#utils/utils';
 import { nope } from '#utils/format';
+import BreadCrumb from '#components/breadcrumb';
 import {
   enterFullscreen,
   exitFullscreen,
@@ -195,6 +196,10 @@ class AdminArea extends SFPComponent {
         <Helmet>
           <title>IFRC Go - {regionName}</title>
         </Helmet>
+        <BreadCrumb crumbs={[
+          {link: this.props.location.pathname, name: regionName},
+          {link: '/', name: 'Home'}
+        ]} />
         <header className='inpage__header'>
           <div className='inner'>
             <div className='inpage__headline'>

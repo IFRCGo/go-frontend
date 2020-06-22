@@ -22,6 +22,7 @@ import * as formData from '#utils/field-report-constants';
 import { showAlert } from '#components/system-alerts';
 import { createFieldReport, updateFieldReport, getFieldReportById, getDistrictsForCountry, getActions } from '#actions';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
+import BreadCrumb from '#components/breadcrumb';
 import {
   dataPathToDisplay,
   prepStateForValidation,
@@ -915,6 +916,10 @@ class FieldReportForm extends React.Component {
         <Helmet>
           <title>IFRC Go - New Field Report</title>
         </Helmet>
+        <BreadCrumb crumbs={[
+          {link: this.props.location.pathname, name: 'New Field Report'},
+          {link: '/', name: 'Home'}
+        ]} />
         <section className='inpage'>
           <header className='inpage__header'>
             <div className='inner'>
@@ -954,6 +959,7 @@ if (environment !== 'production') {
     user: T.object,
     report: T.object,
     match: T.object,
+    location: T.object,
     history: T.object
   };
 }

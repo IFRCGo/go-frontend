@@ -13,6 +13,7 @@ import {
   getPerMission
 } from '#actions';
 import ContactPer from '#components/preparedness/contact-per';
+import BreadCrumb from '#components/breadcrumb';
 import { Helmet } from 'react-helmet';
 import { PropTypes as T } from 'prop-types';
 import { environment } from '#config';
@@ -143,6 +144,10 @@ class Preparedness extends React.Component {
           <Helmet>
             <title>IFRC Go - Global Preparedness</title>
           </Helmet>
+          <BreadCrumb crumbs={[
+            {link: '/preparedness', name: 'Preparedness'},
+            {link: '/', name: 'Home'}
+          ]} />
           <header className='inpage__header'>
             <div className='inner'>
               <div className='inpage__headline'>

@@ -31,6 +31,7 @@ import EruTable from '#components/connected/eru-table';
 import { SFPComponent } from '#utils/extendables';
 import DeploymentsMap from '#components/map/deployments-map';
 import Readiness from '#components/deployments/readiness';
+import BreadCrumb from '#components/breadcrumb';
 
 class Deployments extends SFPComponent {
   // Methods form SFPComponent:
@@ -215,7 +216,10 @@ class Deployments extends SFPComponent {
         </section>
         <div className='inpage__body'>
           <div className='inner'>
-            <EruTable limit={5} viewAll={'/deployments/erus/all'} />
+            <EruTable
+              limit={5}
+              viewAll={'/deployments/erus/all'}
+            />
           </div>
           <div className='inner'>
             <PersonnelTable limit={20} viewAll={'/deployments/personnel/all'} />
@@ -234,6 +238,10 @@ class Deployments extends SFPComponent {
         <Helmet>
           <title>IFRC Go - Deployments</title>
         </Helmet>
+        <BreadCrumb crumbs={[
+          {link: this.props.location.pathname, name: 'Deployments'},
+          {link: '/', name: 'Home'}
+        ]} />
         {this.renderContent()}
       </App>
     );
