@@ -1,3 +1,27 @@
+### Release 4.3.6
+
+Frontend:
+
+ - 3W: Change Supporting NS to Reporting NS in country 3w table [#1297](https://github.com/IFRCGo/go-frontend/issues/1297)
+ - 3W: "Add" 3w activity -button to 3w regional page [#1296](https://github.com/IFRCGo/go-frontend/issues/1296)
+ - 3W: Country page: grey screen in Edge [#1314](https://github.com/IFRCGo/go-frontend/issues/1314)
+ - Implement Breadcrumbs [#770](https://github.com/IFRCGo/go-frontend/issues/770)
+ - Ensure title is mandatory for Field Reports [#1141](https://github.com/IFRCGo/go-frontend/issues/1141)
+ - PER: Add more year options to selector [#1230](https://github.com/IFRCGo/go-frontend/issues/1230)
+ - Fixed error message when trying to submit a new - but with errors - Field Report - https://github.com/IFRCGo/go-frontend/issues/1077
+ - Adjusted Elasticsearch timeouts so it won't make multiple requests at once - https://github.com/IFRCGo/go-frontend/issues/989
+
+Backend:
+
+ - Django updated from 2.2.10 to 2.2.13
+ - Fixed case-insensitive check for password/username recovery - https://github.com/IFRCGo/go-frontend/issues/1300
+ - Related Elasticsearch records are now deleted when GO records are deleted - https://github.com/IFRCGo/go-frontend/issues/989
+ - Added 'visibility' handling for notification emails of Field Reports
+ - Fixed 'scrape_pdf' error - https://github.com/IFRCGo/go-api/commit/fed29fb4c827991cca0caef154e0327992bf37b8
+ - Added 'record_type' to Country serializer - https://github.com/IFRCGo/go-api/issues/759
+ - Added 'Notification GUID' to the backend which serves as a log of the sent out emails - https://github.com/IFRCGo/go-api/issues/737
+ - Changed 'Snippets' into Rich Text Editor fields - https://github.com/IFRCGo/go-api/issues/670
+
 ### Release 4.3.5
 
 Frontend:
