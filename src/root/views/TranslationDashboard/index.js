@@ -1,8 +1,12 @@
 import React from 'react';
+import ContentEditable from 'react-contenteditable';
 import { connect } from 'react-redux';
 import _cs from 'classnames';
 import spark from 'spark-md5';
-import { listToMap } from '@togglecorp/fujs';
+import {
+  listToMap,
+  isDefined,
+} from '@togglecorp/fujs';
 
 import { postLanguageBulkAction } from '#actions';
 import lang from '#lang';
@@ -14,35 +18,51 @@ import {
 } from '#selectors';
 
 import LanguageSelect from '#components/LanguageSelect';
-import languageContext from '#root/languageContext';
 
 import styles from './styles.module.scss';
 
 const views = {
-  all: 'All',
-  added: 'Added',
-  removed: 'Removed',
-  updated: 'Updated',
+  all: 'All in server',
+  added: 'New by dev',
+  removed: 'Removed by dev',
+  updated: 'Updated by dev',
 };
 
 function StringRow(p) {
   const {
     stringKey,
-    value,
+    devValue,
+    value = '',
+    editable,
+    obsolete,
+    onChange,
   } = p;
 
+  // const [html, setHtml] = React.useState(value);
+  const handleHtmlChange = React.useCallback((e) => {
+    // setHtml(e.target.value);
+    if (onChange) {
+      onChange(stringKey, e.target.value);
+    }
+  }, [onChange, stringKey]);
+
   return (
-    <div className={styles.row}>
+    <div className={_cs(styles.row, obsolete && styles.obsolete)}>
       <div className={styles.key}>
         { stringKey }
       </div>
-      <div className={styles.value}>
-        { value }
+      <div className={styles.devValue}>
+        { devValue }
       </div>
+      <ContentEditable
+        className={styles.value}
+        html={value}
+        onChange={handleHtmlChange}
+        disabled={!editable || obsolete}
+      />
     </div>
   );
 }
-
 
 function TranslationDashboard(p) {
   const {
@@ -50,107 +70,101 @@ function TranslationDashboard(p) {
     postLanguageBulk,
     currentLanguage,
     languageData,
-    // languageBulkResponse,
   } = p;
-  const { strings } = React.useContext(languageContext);
+
   const viewKeys = React.useMemo(() => Object.keys(views), []);
   const [currentView, setCurrentView] = React.useState(viewKeys[0]);
 
-  const devStringKeys = React.useMemo(() => {
+  const appStrings = React.useMemo(() => (
+    listToMap(
+      languageData.strings || [],
+      d => d.key,
+      d => ({
+        hash: d.hash,
+        value: d.value
+      }),
+    )
+  ), [languageData]);
+
+  const appStringKeyList = React.useMemo(() => {
+    const keys = Object.keys(appStrings);
+    return keys.sort((a, b) => (a || '').localeCompare(b));
+  },  [appStrings]);
+
+  const devStringKeyList = React.useMemo(() => {
     const keys = Object.keys(lang);
     return keys.sort((a, b) => (a || '').localeCompare(b));
   }, []);
 
-  const [devStringList, devStrings] = React.useMemo(() => {
-    const map = {};
-    const list = devStringKeys.map((key) => {
-      const hash = spark.hash(lang[key]);
-      const languageUnit = {
-        key,
+  const devStrings = React.useMemo(() => {
+    const map = devStringKeyList.reduce((acc, key) => {
+      acc[key] = {
         value: lang[key],
-        hash,
+        hash: spark.hash(lang[key]),
       };
 
-      map[key] = languageUnit;
-      return languageUnit;
-    });
+      return acc;
+    }, {});
 
-    return [list, map];
-  }, [devStringKeys]);
+    return map;
+  }, [devStringKeyList]);
 
-  const appStringKeys = React.useMemo(() => {
-    const keys = Object.keys(strings);
-    return keys.sort((a, b) => (a || '').localeCompare(b));
-  }, [strings]);
+  const [strings, setStrings] = React.useState(devStrings);
+  const handleStringChange = React.useCallback((key, value) => {
+    setStrings((oldStrings) => ({
+      ...oldStrings,
+      [key]: {
+        value,
+      }
+    }));
+  }, [setStrings]);
 
-  const [appStringList, appStrings] = React.useMemo(() => {
-    const { strings } = languageData;
-    const stringHash = listToMap(strings, d => d.key, d => d.hash);
+  const [addedKeyList, removedKeyList, updatedKeyList] = React.useMemo(() => {
+    const allKeyList = [...new Set([...devStringKeyList, ...appStringKeyList])];
+    const removedKeyList = [];
+    const addedKeyList = [];
+    const updatedKeyList = [];
 
-    const map = {};
-    const list = appStringKeys.map((key) => {
-      const languageUnit = {
-        key,
-        value: lang[key],
-        hash: stringHash[key],
-      };
-
-      map[key] = languageUnit;
-      return languageUnit;
-    });
-
-    return [list, map];
-  }, [appStringKeys, languageData]);
-
-  const [addedKeys, removedKeys, updatedKeys] = React.useMemo(() => {
-    const keys = devStringKeys.length < appStringKeys ? appStringKeys : devStringKeys;
-    const removedKeys = [];
-    const addedKeys = [];
-    const updatedKeys = [];
-
-    keys.forEach((key) => {
-      const added = !appStrings[key];
-      const removed = !devStrings[key];
+    allKeyList.forEach((key) => {
+      const added = !isDefined(appStrings[key]);
+      const removed = !isDefined(devStrings[key]);
       const updated = !added && !removed && appStrings[key].hash !== devStrings[key].hash;
-      
+
       if (removed) {
-        removedKeys.push(key);
+        removedKeyList.push(key);
       }
 
       if (added) {
-        addedKeys.push(key);
+        addedKeyList.push(key);
       }
 
       if (updated) {
-        updatedKeys.push(key);
+        updatedKeyList.push(key);
       }
     });
 
     return [
-      addedKeys,
-      removedKeys,
-      updatedKeys,
+      addedKeyList,
+      removedKeyList,
+      updatedKeyList,
     ];
-  }, [devStringKeys, appStringKeys, devStrings, appStrings]);
+  }, [devStringKeyList, appStringKeyList, devStrings, appStrings]);
 
-  const languageKeys = React.useMemo(() => {
-    const keys = Object.keys(strings);
-    return keys.sort((a, b) => (a || '').localeCompare(b));
-  }, [strings]);
+  const removedKeys = React.useMemo(() => listToMap(removedKeyList, d => d, d => true), [removedKeyList]);
 
   const handleSaveButtonClick = React.useCallback(() => {
-    const actions = languageKeys.map((key) => ({
+    const actions = appStringKeyList.map((key) => ({
       action: 'set',
       key,
-      value: strings[key],
+      value: appStrings[key],
     }));
 
     const data = { actions };
     postLanguageBulk(currentLanguage, data);
-  }, [languageKeys, strings, postLanguageBulk, currentLanguage]);
+  }, [appStringKeyList, appStrings, postLanguageBulk, currentLanguage]);
 
   const handleOverwriteButtonClick = React.useCallback(() => {
-    const actions = devStringKeys.map((key) => ({
+    const actions = devStringKeyList.map((key) => ({
       action: 'set',
       key,
       value: devStrings[key].value,
@@ -159,11 +173,28 @@ function TranslationDashboard(p) {
 
     const data = { actions };
     postLanguageBulk(currentLanguage, data);
-  }, [postLanguageBulk, devStrings, devStringKeys, currentLanguage]);
+  }, [postLanguageBulk, devStrings, devStringKeyList, currentLanguage]);
 
   const handleTabClick = React.useCallback((e) => {
     setCurrentView(e.target.name);
   }, [setCurrentView]);
+
+  React.useEffect(() => {
+    setStrings((oldStrings) => ({
+      ...oldStrings,
+      ...updatedKeyList.reduce((acc, key) => {
+        acc[key] = appStrings[key];
+        return acc;
+      }, {}),
+    }));
+  }, [setStrings, updatedKeyList, appStrings]);
+
+  const viewCounts = React.useMemo(() => ({
+    all: appStringKeyList.length,
+    added: addedKeyList.length,
+    removed: removedKeyList.length,
+    updated: updatedKeyList.length,
+  }), [appStringKeyList, addedKeyList, removedKeyList, updatedKeyList]);
 
   return (
     <div className={_cs(className, styles.translationDashboard)}>
@@ -179,46 +210,98 @@ function TranslationDashboard(p) {
             </button>
             <button
               className="button"
-              onClick={handleSaveButtonClick}
-            >
-              Save
-            </button>
-            <button
-              className="button"
               onClick={handleOverwriteButtonClick}
             >
               Overwrite server with local dev copy
             </button>
           </div>
         </div>
-        <div className={styles.tabs}>
-          { viewKeys.map(viewKey => (
+        <div className={styles.bottomSection}>
+          <div className={styles.tabs}>
+            { viewKeys.map(viewKey => (
+              <button
+                key={viewKey}
+                name={viewKey}
+                onClick={handleTabClick}
+                type="button"
+                className={_cs(styles.tab, currentView === viewKey && styles.active)}
+              >
+                { views[viewKey] }
+                &nbsp;
+                ({ viewCounts[viewKey] })
+              </button>
+            ))}
+          </div>
+          <div className={styles.tabActions}>
             <button
-              key={viewKey}
-              name={viewKey}
-              onClick={handleTabClick}
-              type="button"
+              className="button button--primary-outline"
+              onClick={handleSaveButtonClick}
             >
-              { views[viewKey] }
+              Save
             </button>
-          ))}
+            { currentView === 'removed' && (
+              <button>
+                Remove outdated keys
+              </button>
+            )}
+          </div>
         </div>
       </header>
       <div className={styles.content}>
-        { currentView === 'all' && languageKeys.map((k) => (
-          <StringRow
-            key={k}
-            stringKey={k}
-            value={strings[k]}
-          />
-        ))}
-        { currentView === 'added' && addedKeys.map((k) => (
-          <StringRow
-            key={k}
-            stringKey={k}
-            value={devStrings[k]}
-          />
-        ))}
+        <div className={styles.stringsTable}>
+          <div className={styles.headerRow}>
+            <div className={styles.key}>
+              Key
+            </div>
+            <div className={styles.devValue}>
+              Dev value
+            </div>
+            <div className={styles.value}>
+              Value
+            </div>
+          </div>
+          { currentView === 'all' && appStringKeyList.map((k) => (
+            <StringRow
+              key={k}
+              stringKey={k}
+              devValue={devStrings[k]?.value}
+              value={strings[k]?.value || appStrings[k]?.value}
+              editable={!removedKeys[k]}
+              obsolete={removedKeys[k]}
+              onChange={handleStringChange}
+            />
+          ))}
+          { currentView === 'added' && addedKeyList.map((k) => (
+            <StringRow
+              key={k}
+              stringKey={k}
+              devValue={devStrings[k]?.value}
+              value={strings[k]?.value || appStrings[k]?.value}
+              editable={!removedKeys[k]}
+              obsolete={removedKeys[k]}
+              onChange={handleStringChange}
+            />
+          ))}
+          { currentView === 'removed' && removedKeyList.map((k) => (
+            <StringRow
+              key={k}
+              stringKey={k}
+              devValue={devStrings[k]?.value}
+              value={appStrings[k]?.value}
+            />
+          ))}
+          { currentView === 'updated' && updatedKeyList.map((k) => (
+            <StringRow
+              key={k}
+              stringKey={k}
+              devValue={devStrings[k]?.value}
+              value={strings[k]?.value || appStrings[k]?.value}
+              editable={!removedKeys[k]}
+              obsolete={removedKeys[k]}
+              onChange={handleStringChange}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -1,15 +1,17 @@
+@import '~styles/settings/variables';
+
 .translation-dashboard {
   display: flex;
   flex-direction: column;
   height: 100vh;
-
-  .top-content {
+  background-color: #fff;
+  
+  .header {
+    padding: 10px;
     flex-shrink: 0;
 
-    .header {
+    .top-section {
       display: flex;
-      padding: 10px;
-      flex-shrink: 0;
 
       .heading {
         flex-grow: 1;
@@ -20,29 +22,89 @@
         padding: 10px;
       }
     }
+
+    .bottom-section {
+      display: flex;
+      background-color: $grey-fog;
+      align-items: center;
+
+      .tabs {
+        flex-grow: 1;
+
+        .tab {
+          border: 0;
+          border-bottom: 2px solid transparent;
+          padding: 10px;
+          background-color: transparent;
+          outline: none;
+          cursor: pointer;
+          font-weight: $base-font-bold;
+
+          &:hover {
+            background-color: $grey-titanium;
+          }
+
+          &.active {
+            color: $primary-color;
+            border-bottom-color: $primary-color;
+          }
+        }
+      }
+
+      .tab-actions {
+        flex-shrink: 0;
+      }
+    }
   }
 
   .content {
     flex-grow: 1;
-    padding: 10px;
     overflow: auto;
+    overflow-y: scroll;
+    margin: 10px;
 
-    .row {
-      display: table-row;
+    .strings-table {
+      width: 100%;
+      display: table;
 
-      .key {
-        display: table-cell;
-        padding: 10px;
+      %row {
+        display: table-row;
+
+        .key {
+          display: table-cell;
+          padding: 10px;
+        }
+
+        .value {
+          display: table-cell;
+          padding: 10px;
+        }
+
+        .dev-value {
+          display: table-cell;
+          padding: 10px;
+        }
       }
 
-      .value {
-        display: table-cell;
-        padding: 10px;
+      .row {
+        @extend %row;
+
+        &.obsolete {
+          color: rgba(0, 0, 0, .5);
+        }
       }
 
-      .hash {
-        display: table-cell;
-        padding: 10px;
+      .header-row {
+        @extend %row;
+
+        .key,
+        .dev-value,
+        .value {
+          font-weight: $base-font-bold;
+          position: sticky;
+          top: 0;
+          background-color: $grey-fog;
+        }
       }
     }
   }
