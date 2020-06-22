@@ -16,11 +16,14 @@ Backend:
  - Django updated from 2.2.10 to 2.2.13
  - Fixed case-insensitive check for password/username recovery - https://github.com/IFRCGo/go-frontend/issues/1300
  - Related Elasticsearch records are now deleted when GO records are deleted - https://github.com/IFRCGo/go-frontend/issues/989
- - Added 'visibility' handling for notification emails of Field Reports
+ - Added 'visibility' handling for notification emails of Field Reports - [#1308](https://github.com/IFRCGo/go-frontend/issues/1308)
  - Fixed 'scrape_pdf' error - https://github.com/IFRCGo/go-api/commit/fed29fb4c827991cca0caef154e0327992bf37b8
  - Added 'record_type' to Country serializer - https://github.com/IFRCGo/go-api/issues/759
  - Added 'Notification GUID' to the backend which serves as a log of the sent out emails - https://github.com/IFRCGo/go-api/issues/737
  - Changed 'Snippets' into Rich Text Editor fields - https://github.com/IFRCGo/go-api/issues/670
+ - Added 'is_covid_report' to FieldReportFilter as a query param - [#1326](https://github.com/IFRCGo/go-frontend/issues/1326)
+ - Added 'record_type' to CountryFilter as a query param - https://github.com/IFRCGo/go-api/issues/759
+ - Removed redundant notifications sent alongside the Weekly Digest - [#1328](https://github.com/IFRCGo/go-frontend/issues/1328)
 
 ### Release 4.3.5
 
