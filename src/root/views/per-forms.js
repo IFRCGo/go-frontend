@@ -57,7 +57,7 @@ class PerForms extends React.Component {
     return (
       <App className='page--emergencies'>
         <Helmet>
-          <title>IFRC Go - Emergencies</title>
+          <title>IFRC Go - PER</title>
         </Helmet>
         <BreadCrumb crumbs={[
           {link: this.props.location.pathname, name: formName},

@@ -15,6 +15,9 @@ export default function FormError (props) {
     case 'required':
       message = 'Please fill in the field.';
       break;
+    case 'dependencies':
+      message = 'Please fill in the field.';
+      break;
     case 'const':
       message = 'Passwords must match.';
       break;
