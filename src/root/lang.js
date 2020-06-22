@@ -1,8 +1,9 @@
 export default {
+  test: 'Tets',
   rcActivities: 'Red Cross / Red Crescent Activities',
   langSelectLabel: 'Language: {currentLanguage}',
 
-  headerAppName: 'IFRC GO',
+  headerAppName: 'IFRC GO Go Go',
   headerBetaNote: 'This is the beta version of IFRC GO. For issues and feedback on the platform, contact {email}',
   headerCloseLabel: 'close',
   headerMenuResources: 'Resources',
@@ -39,7 +40,7 @@ export default {
   aboutVisualIdentity: 'Visual Identity',
   aboutUserStudy: 'User Studies',
   aboutInformationArchitecture: 'Information Architecture',
-  about3WGuidance: '3w guidance',
+  // about3WGuidance: '3w guidance',
   about3WLessonLearned: '3w lessons learned',
   aboutPresentation: 'GO presentation materials',
   aboutImStrategy: 'IFRC IM strategy',
