@@ -23,18 +23,14 @@ import Translate from '#components/Translate';
 import { resolveToString } from '#utils/lang';
 
 class Table extends React.Component {
-  constructor(props, context) {
-    super(props);
-    const { strings } = context;
-     this.displayTypes = {
-       report: strings.tableReport,
-       appeal: strings.tableOperation,
-       emergency: strings.tableEmergency,
-       alert: strings.tableAlert,
-       eru: strings.tableEru,
-       personnel: strings.tablePersonnel,
-    };
-  }
+  getDisplayTypes = (strings) => ({
+      report: strings.tableReport,
+      appeal: strings.tableOperation,
+      emergency: strings.tableEmergency,
+      alert: strings.tableAlert,
+      eru: strings.tableEru,
+      personnel: strings.tablePersonnel,
+  })
 
   getQueryParams () {
     const { search } = this.props.location;
@@ -91,6 +87,8 @@ class Table extends React.Component {
   }
 
   getCrumbs () {
+    const { strings } = this.context;
+    const displayTypes = this.getDisplayTypes(strings);
     const tableType = displayTypes[this.props.type];
     const home = {
       link: '/',
@@ -130,6 +128,9 @@ class Table extends React.Component {
 
   render () {
     const crumbs = this.getCrumbs();
+    const { strings } = this.context;
+    const displayTypes = this.getDisplayTypes(strings);
+
     return (
       <App>
         <Helmet>
@@ -137,7 +138,7 @@ class Table extends React.Component {
             <Translate
               stringId='tableTitle'
               params={{
-                type: this.displayTypes[this.props.type],
+                type: displayTypes[this.props.type],
               }}
             />
           </title>
