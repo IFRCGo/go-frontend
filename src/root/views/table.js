@@ -81,16 +81,50 @@ class Table extends React.Component {
     }
   }
 
+  getCrumbs () {
+    const tableType = displayTypes[this.props.type];
+    const home = {
+      link: '/',
+      name: 'Home'
+    };
+    const qs = this.getQueryParams();
+    const isEmptyQS = Object.keys(qs).length === 0;
+    const extraCrumbs = [];
+    if (isEmptyQS) {
+      extraCrumbs.push(`All ${tableType}`);
+    } else {
+      extraCrumbs.push({
+        link: this.props.location.pathname,
+        name: tableType
+      });
+      if (qs.hasOwnProperty('region')) {
+        const regionId = qs.region;
+        const region = get(regions, regionId.toString(), 'name');
+        extraCrumbs.push({
+          link: `/regions/${regionId}`,
+          name: region.name
+        });
+      }
+      if (qs.hasOwnProperty('country')) {
+        const country = getCountryMeta(qs.country);
+        extraCrumbs.push({
+          link: `/countries/${qs.country}`,
+          name: country.label
+        });
+      }
+    }
+    return extraCrumbs.concat([home]);
+  }
+
   render () {
+    const crumbs = this.getCrumbs();
+    console.log('crumbs', crumbs);
     return (
       <App>
         <Helmet>
           <title>IFRC Go - {displayTypes[this.props.type]}</title>
         </Helmet>
-        <BreadCrumb crumbs={[
-          { link: this.props.location.pathname, name: displayTypes[this.props.type] },
-          { link: '/', name: 'Home' }
-        ]} />
+        <BreadCrumb crumbs={crumbs} />
         <div className='inpage__body'>
           <div className='inner table__container'>
             {this.renderContent()}
