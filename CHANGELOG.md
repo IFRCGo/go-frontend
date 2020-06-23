@@ -10,6 +10,7 @@ Frontend:
  - PER: Add more year options to selector [#1230](https://github.com/IFRCGo/go-frontend/issues/1230)
  - Fixed error message when trying to submit a new - but with errors - Field Report - https://github.com/IFRCGo/go-frontend/issues/1077
  - Adjusted Elasticsearch timeouts so it won't make multiple requests at once - https://github.com/IFRCGo/go-frontend/issues/989
+ - Fix page titles: https://github.com/IFRCGo/go-frontend/issues/1125
 
 Backend:
 
