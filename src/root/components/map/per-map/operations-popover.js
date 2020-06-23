@@ -1,10 +1,10 @@
 
-import { environment } from '../../../config';
+import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
-import { getPerProcessType } from './../../../utils/get-per-process-type';
-// import { commaSeparatedNumber as n } from '../../../utils/format';
+import { getPerProcessType } from '#utils/get-per-process-type';
+// import { commaSeparatedNumber as n } from '#utils/format';
 // import { DateTime } from 'luxon';
-// import { get } from '../../../utils/utils';
+// import { get } from '#utils/utils';
 import React from 'react';
 
 class OperationsPopover extends React.Component {

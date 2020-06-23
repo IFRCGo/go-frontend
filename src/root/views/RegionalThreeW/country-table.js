@@ -7,15 +7,15 @@ import {
   MdExpandLess,
 } from 'react-icons/md';
 
-import BlockLoading from '../../components/block-loading';
+import BlockLoading from '#components/block-loading';
 import {
   programmeTypes,
   sectors,
   statuses,
-} from '../../utils/constants';
-import { getResultsFromResponse } from '../../utils/request';
-import { getProjects as getProjectsAction } from '../../actions';
-import { countryProjectSelector } from '../../selectors';
+} from '#utils/constants';
+import { getResultsFromResponse } from '#utils/request';
+import { getProjects as getProjectsAction } from '#actions';
+import { countryProjectSelector } from '#selectors';
 
 const tableHeaders = [
   {

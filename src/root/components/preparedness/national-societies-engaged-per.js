@@ -1,7 +1,7 @@
 
 import React, { PureComponent } from 'react';
 import { PropTypes as T } from 'prop-types';
-import { environment } from '../../config';
+import { environment } from '#config';
 import Fold from './../fold';
 import NationalSocietiesEngagedPerGraphDataFactory from './factory/national-societies-engaged-per-graph-data-factory';
 import {

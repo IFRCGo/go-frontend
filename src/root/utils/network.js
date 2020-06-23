@@ -1,6 +1,6 @@
 import * as url from 'url';
 import * as localStorage from 'local-storage';
-import { api } from '../config';
+import { api } from '#config';
 
 /**
  * Adds authorization token to request headers.

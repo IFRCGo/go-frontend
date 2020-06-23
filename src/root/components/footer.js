@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { api } from '../config';
+import { api } from '#config';
 
 class Footer extends React.PureComponent {
   render () {

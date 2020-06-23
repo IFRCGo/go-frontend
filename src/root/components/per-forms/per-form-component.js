@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import c from 'classnames';
-import { environment } from '../../config';
+import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 import RequestFactory from './factory/request-factory';
 import EpiSelector from './epi-selector';

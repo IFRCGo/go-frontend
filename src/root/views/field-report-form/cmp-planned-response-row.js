@@ -1,12 +1,12 @@
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
 
-import { environment } from '../../config';
+import { environment } from '#config';
 import {
   FormInput,
   FormRadioGroup,
   FormError
-} from '../../components/form-elements/';
+} from '#components/form-elements/';
 
 export default class PlanResponseRow extends React.Component {
   onFieldChange (field, e) {

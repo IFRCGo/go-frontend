@@ -259,7 +259,7 @@ export const getRegionId = (idOrName) => {
 };
 
 export const getRegionById = (id) => {
-  return regions[id];
+  return regions.hasOwnProperty(id) ? regions[id] : null;
 };
 
 export const getRegionSlug = (id) => {

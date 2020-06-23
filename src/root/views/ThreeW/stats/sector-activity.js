@@ -14,7 +14,7 @@ import {
   Text
 } from 'recharts';
 
-import { sectorList } from '../../../utils/constants';
+import { sectorList } from '#utils/constants';
 
 const propTypes = {
   className: PropTypes.string,

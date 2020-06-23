@@ -4,10 +4,10 @@ import { render } from 'react-dom';
 import { BrowserRouter, Link } from 'react-router-dom';
 import mapboxgl from 'mapbox-gl';
 
-import store from '../../utils/store';
-import newMap from '../../utils/get-new-map';
-import { getRegionBoundingBox } from '../../utils/region-bounding-box';
-import { getCentroidByCountryId } from '../../utils/country-centroids';
+import store from '#utils/store';
+import newMap from '#utils/get-new-map';
+import { getRegionBoundingBox } from '#utils/region-bounding-box';
+import { getCentroidByCountryId } from '#utils/country-centroids';
 
 import ActivityDetails from './activity-details';
 

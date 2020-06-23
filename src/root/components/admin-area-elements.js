@@ -1,11 +1,11 @@
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
-import { environment } from '../config';
+import { environment } from '#config';
 import Fold from './fold';
 import {
   commaSeparatedNumber as n,
   separateUppercaseWords as separate
-} from '../utils/format';
+} from '#utils/format';
 
 class _KeyFigures extends React.Component {
   render () {

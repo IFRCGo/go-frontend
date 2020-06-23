@@ -8,9 +8,9 @@ import {
   getPerDraftDocument,
   sendPerDraft,
   editPerDocument
-} from '../../actions';
+} from '#actions';
 import { connect } from 'react-redux';
-import { environment } from '../../config';
+import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 
 class A5OperationsSupport extends PerForm {

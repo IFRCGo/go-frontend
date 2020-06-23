@@ -1,21 +1,28 @@
-{
+module.exports = {
   "extends": ["react-app"],
   "env": {
     "es6": true,
     "browser": true
   },
   "plugins": [
-    "react"
+    "react",
+    "react-hooks",
+    "import",
   ],
   "parser": "babel-eslint",
   "parserOptions": {
-    "allowImportExportEverywhere": true,
     "ecmaVersion": 6,
+    "sourceType": "module",
+    "allowImportExportEverywhere": true,
     "ecmaFeatures": {
-      "jsx": true
-    }
+      "jsx": true,
+      "modules": true,
+    },
   },
   "settings": {
+    "import/resolver": {
+      "babel-module": {},
+    },
     "react": {
       "version": "detect"
     }	
@@ -51,4 +58,4 @@
     "react/jsx-no-target-blank": 0,
     "react/prop-types": 0,
   },
-}
+};

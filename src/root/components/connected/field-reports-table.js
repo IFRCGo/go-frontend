@@ -4,22 +4,22 @@ import { PropTypes as T } from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { DateTime } from 'luxon';
 
-import { environment } from '../../config';
-import { getFieldReportsList } from '../../actions';
+import { environment } from '#config';
+import { getFieldReportsList } from '#actions';
 import {
   recentInterval,
   nope,
   commaSeparatedNumber as n,
   intersperse
-} from '../../utils/format';
-import { get, dTypeOptions, dateOptions, datesAgo } from '../../utils/utils';
-import { getDtypeMeta } from '../../utils/get-dtype-meta';
+} from '#utils/format';
+import { get, dTypeOptions, dateOptions, datesAgo } from '#utils/utils';
+import { getDtypeMeta } from '#utils/get-dtype-meta';
 
-import ExportButton from '../export-button-container';
-import Fold from '../fold';
-import BlockLoading from '../block-loading';
-import DisplayTable, { FilterHeader, SortHeader } from '../display-table';
-import { SFPComponent } from '../../utils/extendables';
+import ExportButton from '#components/export-button-container';
+import Fold from '#components/fold';
+import BlockLoading from '#components/block-loading';
+import DisplayTable, { FilterHeader, SortHeader } from '#components/display-table';
+import { SFPComponent } from '#utils/extendables';
 
 class FieldReportsTable extends SFPComponent {
   // Methods form SFPComponent:

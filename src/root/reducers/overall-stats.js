@@ -4,7 +4,7 @@ import _toNumber from 'lodash.tonumber';
 import {
   groupByDisasterType,
   aggregateCountryAppeals
-} from '../utils/utils';
+} from '#utils/utils';
 
 const appealsListInitialState = {
   fetching: false,

@@ -3,13 +3,13 @@ import { PropTypes as T } from 'prop-types';
 import _cloneDeep from 'lodash.clonedeep';
 import c from 'classnames';
 
-import { environment } from '../../config';
-import * as formData from '../../utils/field-report-constants';
+import { environment } from '#config';
+import * as formData from '#utils/field-report-constants';
 import {
   FormInput,
   FormRadioGroup,
   FormError
-} from '../../components/form-elements/';
+} from '#components/form-elements/';
 
 export default class SourceEstimation extends React.Component {
   onEstimationChange (idx, e) {

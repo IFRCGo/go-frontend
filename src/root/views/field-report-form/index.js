@@ -4,22 +4,25 @@ import { PropTypes as T } from 'prop-types';
 import _get from 'lodash.get';
 import _set from 'lodash.set';
 import _cloneDeep from 'lodash.clonedeep';
+import isUndefined from 'lodash.isundefined';
 import c from 'classnames';
 import Select from 'react-select';
+import { Helmet } from 'react-helmet';
 import Ajv from 'ajv';
 import ajvKeywords from 'ajv-keywords';
 
-import { environment } from '../../config';
+import { environment } from '#config';
 import {
   step1 as schemaStep1,
   step2 as schemaStep2,
   step3 as schemaStep3,
   step4 as schemaStep4
 } from '../../schemas/field-report-form';
-import * as formData from '../../utils/field-report-constants';
-import { showAlert } from '../../components/system-alerts';
-import { createFieldReport, updateFieldReport, getFieldReportById, getDistrictsForCountry, getActions } from '../../actions';
-import { showGlobalLoading, hideGlobalLoading } from '../../components/global-loading';
+import * as formData from '#utils/field-report-constants';
+import { showAlert } from '#components/system-alerts';
+import { createFieldReport, updateFieldReport, getFieldReportById, getDistrictsForCountry, getActions } from '#actions';
+import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
+import BreadCrumb from '#components/breadcrumb';
 import {
   dataPathToDisplay,
   prepStateForValidation,
@@ -32,14 +35,14 @@ import {
 } from './data-utils';
 
 import App from '../app';
-import Fold from '../../components/fold';
+import Fold from '#components/fold';
 import {
   FormInput,
   FormInputSelect,
   FormTextarea,
   FormRadioGroup,
   FormError
-} from '../../components/form-elements/';
+} from '#components/form-elements/';
 import ActionsCheckboxes from './cmp-action-checkboxes.js';
 import ContactRow from './cmp-contact-row.js';
 import PlanResponseRow from './cmp-planned-response-row.js';
@@ -70,6 +73,23 @@ class FieldReportForm extends React.Component {
 
     this.onSubmit = this.onSubmit.bind(this);
     this.onStepBackClick = this.onStepBackClick.bind(this);
+
+    // Basic function to wait until user stops typing to query ES.
+    // Code duplicate of components/header.js:40 (different timeout)
+    let i = 0;
+    this.slowLoad = input => {
+      i += 1;
+      let mirror = i;
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          if (i === mirror) {
+            return resolve(getEventsFromApi(input));
+          } else {
+            return resolve({ options: [] });
+          }
+        }, 350);
+      });
+    };
   }
 
   // eslint-disable-next-line camelcase
@@ -77,7 +97,10 @@ class FieldReportForm extends React.Component {
     if (this.props.fieldReportForm.fetching && !nextProps.fieldReportForm.fetching) {
       hideGlobalLoading();
       if (nextProps.fieldReportForm.error) {
-        const message = nextProps.fieldReportForm.error.error_message || nextProps.fieldReportForm.error.detail || 'Could not submit field report';
+        const message = nextProps.fieldReportForm.error.error_message
+          || nextProps.fieldReportForm.error.detail
+          || nextProps.fieldReportForm.error[Object.keys(nextProps.fieldReportForm.error)[0]][0] // first key's value
+          || 'Could not submit field report';
         showAlert('danger', <p><strong>Error:</strong> {message}</p>, true, 4500);
       } else {
         const { history } = this.props;
@@ -392,7 +415,7 @@ class FieldReportForm extends React.Component {
           selectOnChange={this.onFieldChange.bind(this, 'event')}
           selectValue={this.state.data.event}
           errors={this.state.errors}
-          selectLoadOptions={getEventsFromApi}
+          selectLoadOptions={this.slowLoad}
           disabled={!this.state.data.isCovidReport}
           autoFocus >
 
@@ -530,6 +553,22 @@ class FieldReportForm extends React.Component {
     const fields = formData.fieldsStep2;
     const status = this.getStatus();
     const covidTag = this.state.data.isCovidReport === 'true' ? '-COV' : '';
+
+    /** Indicate whether the date of data for an epidemic
+     * is required: it is required when any of these fields
+     * have data 
+      * */
+    let isSitFieldsDateRequired = [
+      'epiCases',
+      'epiSuspectedCases',
+      'epiProbableCases',
+      'epiConfirmedCases',
+      'epiNumDead'
+    ].reduce((acc, curVal) => {
+      return !isUndefined(this.state.data[curVal]) || acc;
+    }, false);
+    const sitFieldsDateLabelMarker = isSitFieldsDateRequired ? ' *' : '';
+
     return (
       <Fold title='Numeric Details (People)'>
         {
@@ -596,7 +635,7 @@ class FieldReportForm extends React.Component {
 
         {fields.sitFieldsDate[status] &&
           <FormInput
-            label={fields.sitFieldsDate[status].label}
+            label={fields.sitFieldsDate[status].label + sitFieldsDateLabelMarker}
             type='date'
             name={fields.sitFieldsDate[status].name}
             id={fields.sitFieldsDate[status].key}
@@ -874,6 +913,13 @@ class FieldReportForm extends React.Component {
     const submitTitle = this.state.step === 4 ? 'Submit' : 'Continue';
     return (
       <App className='page--frep-form'>
+        <Helmet>
+          <title>IFRC Go - New Field Report</title>
+        </Helmet>
+        <BreadCrumb crumbs={[
+          {link: this.props.location.pathname, name: 'New Field Report'},
+          {link: '/', name: 'Home'}
+        ]} />
         <section className='inpage'>
           <header className='inpage__header'>
             <div className='inner'>
@@ -913,6 +959,7 @@ if (environment !== 'production') {
     user: T.object,
     report: T.object,
     match: T.object,
+    location: T.object,
     history: T.object
   };
 }

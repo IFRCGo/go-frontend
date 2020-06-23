@@ -1,7 +1,8 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import App from './app';
-import VideoCarousel from '../components/about/video-carousel';
+import VideoCarousel from '#components/about/video-carousel';
+import BreadCrumb from '#components/breadcrumb';
 
 export default class About extends React.Component {
   render () {
@@ -10,6 +11,10 @@ export default class About extends React.Component {
         <Helmet>
           <title>IFRC Go - About</title>
         </Helmet>
+        <BreadCrumb crumbs={[
+          {link: this.props.location.pathname, name: 'Resources'},
+          {link: '/', name: 'Home'}
+        ]} />
         <section className='inpage'>
           <header className='inpage__header'>
             <div className='inner'>
@@ -93,21 +98,21 @@ export default class About extends React.Component {
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
                               </div>
 
-                              <div className='box__global__content--ref__link'>
+                              <a href='https://github.com/IFRCGo/go-frontend/files/4818646/GoUserGuide_MediumRes_AR.pdf.pdf' className='box__global__content--ref__link'>
                                 <span className='icon__circle'>
                                   <span className='icon__circle__content'>AR</span>
                                 </span>
                                 <span>أدلة المستخدم</span>
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </div>
+                              </a>
 
-                              <div className='box__global__content--ref__link'>
+                              <a href='https://github.com/IFRCGo/go-frontend/files/4818648/GoAdminGuide_MediumRes_AR.pdf.pdf' className='box__global__content--ref__link'>
                                 <span className='icon__circle'>
                                   <span className='icon__circle__content'>AR</span>
                                 </span>
                                 <span>أدلة إدارية</span>
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </div>
+                              </a>
                             </div>
                           </div>
                         </div>

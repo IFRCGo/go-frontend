@@ -1,13 +1,13 @@
 import { combineReducers } from 'redux';
 import _groupBy from 'lodash.groupby';
 
-import { stateInflight, stateError, stateSuccess } from '../utils/reducer-utils';
+import { stateInflight, stateError, stateSuccess } from '#utils/reducer-utils';
 import {
   aggregateAppealStats,
   aggregateCountryAppeals,
   aggregatePartnerDeployments,
   groupByDisasterType
-} from '../utils/utils';
+} from '#utils/utils';
 
 const initialState = {
   fetching: false,

@@ -3,10 +3,10 @@ import _toNumber from 'lodash.tonumber';
 import _undefined from 'lodash.isundefined';
 import { DateTime } from 'luxon';
 
-import { api } from '../../config';
-import { get } from '../../utils/utils';
-import { request } from '../../utils/network';
-import * as formData from '../../utils/field-report-constants';
+import { api } from '#config';
+import { get } from '#utils/utils';
+import { request } from '#utils/network';
+import * as formData from '#utils/field-report-constants';
 
 export function dataPathToDisplay (path, keyword) {
   // Remove first . and any array ref.
@@ -38,6 +38,7 @@ export function dataPathToDisplay (path, keyword) {
     'numHighestRisk': 'Estimation Highest Risk',
     'affectedPopCentres': 'Affected Pop Centres',
     epiCases: 'Cases',
+    epiNumDead: 'Confirmed Dead',
     epiSuspectedCases: 'Suspected Cases',
     epiProbableCases: 'Probable Cases',
     epiConfirmedCases: 'Confirmed Cases',
@@ -128,6 +129,7 @@ export function prepStateForValidation (state) {
     numHighestRisk: (val) => val.map(objPropToNum('estimation')),
     affectedPopCentres: (val) => val.map(objPropToStr('estimation')),
     epiCases: toNumIfNum,
+    epiNumDead: toNumIfNum,
     epiSuspectedCases: toNumIfNum,
     epiProbableCases: toNumIfNum,
     epiConfirmedCases: toNumIfNum,

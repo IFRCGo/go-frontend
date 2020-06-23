@@ -4,13 +4,13 @@ import Faram from '@togglecorp/faram';
 import { unique } from '@togglecorp/fujs';
 import memoize from 'memoize-one';
 
-import SelectInput from '../../components/form-elements/select-input';
+import SelectInput from '#components/form-elements/select-input';
 import {
   statusList,
   sectorList,
   secondarySectorList,
   programmeTypeList,
-} from '../../utils/constants';
+} from '#utils/constants';
 
 const compareString = (a, b) => a.label.localeCompare(b.label);
 

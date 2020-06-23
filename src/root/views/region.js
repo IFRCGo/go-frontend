@@ -6,19 +6,20 @@ import { DateTime } from 'luxon';
 import memoize from 'memoize-one';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { Helmet } from 'react-helmet';
-import CountryList from '../components/country-list';
-import BlockLoading from '../components/block-loading';
-import { environment } from '../config';
-import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
-import { get } from '../utils/utils';
-import { nope } from '../utils/format';
+import CountryList from '#components/country-list';
+import BlockLoading from '#components/block-loading';
+import { environment } from '#config';
+import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
+import { get } from '#utils/utils';
+import { nope } from '#utils/format';
+import BreadCrumb from '#components/breadcrumb';
 import {
   enterFullscreen,
   exitFullscreen,
   isFullscreen,
   addFullscreenListener,
   removeFullscreenListener
-} from '../utils/fullscreen';
+} from '#utils/fullscreen';
 import {
   getAdmAreaById,
   getAdmAreaAppealsList,
@@ -28,31 +29,31 @@ import {
   getAdmAreaSnippets,
   getCountries,
   getAppealsListStats
-} from '../actions';
-import { getRegionBoundingBox } from '../utils/region-bounding-box';
+} from '#actions';
+import { getRegionBoundingBox } from '#utils/region-bounding-box';
 import {
   countriesByRegion,
   getRegionId,
   regions as regionMeta
-} from '../utils/region-constants';
-import { getCountryMeta } from '../utils/get-country-meta';
+} from '#utils/region-constants';
+import { getCountryMeta } from '#utils/get-country-meta';
 
 import App from './app';
-import Fold from '../components/fold';
-import TabContent from '../components/tab-content';
-import EmergenciesTable from '../components/connected/emergencies-table';
-import HighlightedOperations from '../components/highlighted-operations';
-import AppealsTable from '../components/connected/appeals-table';
-import TimelineCharts from '../components/timeline-charts';
-import KeyFiguresHeader from '../components/common/key-figures-header';
+import Fold from '#components/fold';
+import TabContent from '#components/tab-content';
+import EmergenciesTable from '#components/connected/emergencies-table';
+import HighlightedOperations from '#components/highlighted-operations';
+import AppealsTable from '#components/connected/appeals-table';
+import TimelineCharts from '#components/timeline-charts';
+import KeyFiguresHeader from '#components/common/key-figures-header';
 import {
   Snippets,
   KeyFigures,
   Contacts,
   Links
-} from '../components/admin-area-elements';
-import { SFPComponent } from '../utils/extendables';
-import { NO_DATA } from '../utils/constants';
+} from '#components/admin-area-elements';
+import { SFPComponent } from '#utils/extendables';
+import { NO_DATA } from '#utils/constants';
 import RegionalThreeW from './RegionalThreeW';
 
 const TAB_DETAILS = [
@@ -195,6 +196,10 @@ class AdminArea extends SFPComponent {
         <Helmet>
           <title>IFRC Go - {regionName}</title>
         </Helmet>
+        <BreadCrumb crumbs={[
+          {link: this.props.location.pathname, name: regionName},
+          {link: '/', name: 'Home'}
+        ]} />
         <header className='inpage__header'>
           <div className='inner'>
             <div className='inpage__headline'>

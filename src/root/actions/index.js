@@ -6,12 +6,12 @@ import {
   patchJSON,
   deleteJSON,
   withToken
-} from '../utils/network';
-import { countryIsoMapById } from '../utils/field-report-constants';
+} from '#utils/network';
+import { countryIsoMapById } from '#utils/field-report-constants';
 import { stringify as buildAPIQS } from 'qs';
 import { DateTime } from 'luxon';
 
-import { countriesByRegion } from '../utils/region-constants';
+import { countriesByRegion } from '#utils/region-constants';
 
 export const TOKEN = 'TOKEN';
 export function getAuthToken (username, password) {

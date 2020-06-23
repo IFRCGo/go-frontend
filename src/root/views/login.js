@@ -5,11 +5,13 @@ import { Link, Redirect } from 'react-router-dom';
 import c from 'classnames';
 import { Helmet } from 'react-helmet';
 
-import { getAuthToken } from '../actions';
-import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
+import { getAuthToken } from '#actions';
+import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
+import BreadCrumb from '#components/breadcrumb';
+
 
 import App from './app';
-import { FormInput } from '../components/form-elements/';
+import { FormInput } from '#components/form-elements/';
 
 class Login extends React.Component {
   constructor (props) {
@@ -76,6 +78,10 @@ class Login extends React.Component {
         <Helmet>
           <title>IFRC Go - Login</title>
         </Helmet>
+        <BreadCrumb crumbs={[
+          {link: '/login', name: 'Login'},
+          {link: '/', name: 'Home'}
+        ]} />
         <section className='inpage'>
           <header className='inpage__header'>
             <div className='inner'>

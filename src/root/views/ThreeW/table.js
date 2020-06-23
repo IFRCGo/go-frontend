@@ -17,11 +17,11 @@ import {
   programmeTypes,
   sectors,
   statuses,
-} from '../../utils/constants';
-import { api } from '../../config';
+} from '#utils/constants';
+import { api } from '#config';
 
-import FormattedDate from '../../components/formatted-date';
-import DropdownMenu from '../../components/dropdown-menu';
+import FormattedDate from '#components/formatted-date';
+import DropdownMenu from '#components/dropdown-menu';
 
 export default class ProjectListTable extends React.PureComponent {
   constructor (props) {
@@ -44,7 +44,7 @@ export default class ProjectListTable extends React.PureComponent {
       },
       {
         key: 'reporting_ns',
-        label: 'Supporting NS',
+        label: 'Reporting NS',
         modifier: d => d.reporting_ns_detail.society_name,
       },
       {

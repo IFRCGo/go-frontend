@@ -1,9 +1,11 @@
 {
   "name": "go-frontend",
-  "version": "4.3.5",
+  "version": "4.3.6",
   "private": true,
   "devDependencies": {
     "@babel/core": "7.9.0",
+    "@babel/plugin-proposal-class-properties": "^7.10.1",
+    "@babel/preset-env": "^7.10.2",
     "@svgr/webpack": "4.3.3",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
@@ -11,14 +13,16 @@
     "@typescript-eslint/eslint-plugin": "^2.10.0",
     "@typescript-eslint/parser": "^2.10.0",
     "azure-storage": "^2.10.3",
-    "babel-eslint": "10.1.0",
+    "babel-eslint": "^10.1.0",
     "babel-jest": "^24.9.0",
     "babel-loader": "8.1.0",
+    "babel-plugin-module-resolver": "^4.0.0",
     "babel-plugin-named-asset-import": "^0.3.6",
     "babel-preset-react-app": "^9.1.2",
     "camelcase": "^5.3.1",
     "case-sensitive-paths-webpack-plugin": "2.3.0",
     "copy-webpack-plugin": "^5.1.1",
+    "core-js": "^3.6.5",
     "css-loader": "3.4.2",
     "dotenv": "8.2.0",
     "dotenv-expand": "5.1.0",
@@ -26,7 +30,7 @@
     "eslint-config-react-app": "^5.2.1",
     "eslint-loader": "3.0.3",
     "eslint-plugin-flowtype": "4.6.0",
-    "eslint-plugin-import": "2.20.1",
+    "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-jsx-a11y": "6.2.3",
     "eslint-plugin-react": "7.19.0",
     "eslint-plugin-react-app": "^6.2.2",
@@ -106,6 +110,7 @@
     "prop-types": "^15.6.0",
     "qs": "^6.5.1",
     "react": "^16.9.0",
+    "react-breadcrumbs-dynamic": "^1.2.1",
     "react-device-detect": "^1.11.14",
     "react-dom": "^16.9.0",
     "react-helmet": "^5.2.0",
@@ -117,6 +122,7 @@
     "react-select": "^1.0.1",
     "react-tabs": "^3.0.0",
     "react-tether": "^0.6.0",
+    "react-through": "^1.1.4",
     "react-toggle-button": "^2.2.0",
     "react-tooltip": "^3.11.1",
     "react-transition-group": "^2.2.1",
@@ -142,9 +148,6 @@
     "teardown-surge": "branch=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD); surge teardown https://ifrc-go-${branch////-}.surge.sh",
     "deploy-staging": "AZURE_CONNECTIONS_STRING=$staging_connection_string node .build_scripts/az-upload.js ./build",
     "deploy-prod": "AZURE_CONNECTIONS_STRING=$production_connection_string node .build_scripts/az-upload.js ./build"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "browserslist": {
     "staging": [
@@ -211,11 +214,6 @@
     "watchPlugins": [
       "jest-watch-typeahead/filename",
       "jest-watch-typeahead/testname"
-    ]
-  },
-  "babel": {
-    "presets": [
-      "react-app"
     ]
   }
 }

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
-import { environment } from '../config';
-import { get } from '../utils/utils';
+import { environment } from '#config';
+import { get } from '#utils/utils';
 import Fold from './fold';
 import ToggleButtonComponent from './common/toggle-button';
 

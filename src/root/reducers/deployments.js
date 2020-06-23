@@ -1,8 +1,8 @@
-import { get } from '../utils/utils';
+import { get } from '#utils/utils';
 import { combineReducers } from 'redux';
 import _groupBy from 'lodash.groupby';
-import { stateInflight, stateError, stateSuccess } from '../utils/reducer-utils';
-import { getCentroid } from '../utils/country-centroids';
+import { stateInflight, stateError, stateSuccess } from '#utils/reducer-utils';
+import { getCentroid } from '#utils/country-centroids';
 
 const initialState = {
   fetching: false,

@@ -1,5 +1,5 @@
 
-import { source } from './../../../../utils/get-new-map';
+import { source } from '#utils/get-new-map';
 
 class MarkerLayerStylesheetFactory {
   constructor () {

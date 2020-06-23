@@ -8,17 +8,17 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { Helmet } from 'react-helmet';
 import url from 'url';
 
-import { countries } from '../utils/field-report-constants';
-import { environment, api } from '../config';
-import { showGlobalLoading, hideGlobalLoading } from '../components/global-loading';
-// import BasicTable from '../components/common/table-basic';
-import { get, dateOptions, datesAgo, dTypeOptions } from '../utils/utils';
+import { countries } from '#utils/field-report-constants';
+import { environment, api } from '#config';
+import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
+// import BasicTable from '#components/common/table-basic';
+import { get, dateOptions, datesAgo, dTypeOptions } from '#utils/utils';
 import {
   commaSeparatedNumber as n,
   // commaSeparatedLargeNumber as bigN,
   nope,
   round,
-} from '../utils/format';
+} from '#utils/format';
 import {
   getAdmAreaById,
   getAdmAreaAppealsList,
@@ -35,36 +35,38 @@ import {
   getPerUploadedDocuments,
   getPerMission,
   getAppealsListStats,
-} from '../actions';
+} from '#actions';
 
-import { getFdrs } from '../actions/query-external';
-// import { getBoundingBox } from '../utils/country-bounding-box';
+import { getFdrs } from '#actions/query-external';
+// import { getBoundingBox } from '#utils/country-bounding-box';
 
 import App from './app';
-import ErrorPanel from '../components/error-panel';
-import TabContent from '../components/tab-content';
-import Fold from '../components/fold';
-import DisplayTable, { SortHeader, FilterHeader } from '../components/display-table';
-import EmergenciesTable from '../components/connected/emergencies-table';
+import ErrorPanel from '#components/error-panel';
+import TabContent from '#components/tab-content';
+import Fold from '#components/fold';
+import BreadCrumb from '#components/breadcrumb';
+import DisplayTable, { SortHeader, FilterHeader } from '#components/display-table';
+import EmergenciesTable from '#components/connected/emergencies-table';
 
-// import BulletTable from '../components/bullet-table';
-import Pills from '../components/pills';
+// import BulletTable from '#components/bullet-table';
+import Pills from '#components/pills';
 import {
   Snippets,
   // KeyFigures,
   Contacts,
   Links
-} from '../components/admin-area-elements';
-import PreparednessOverview from '../components/country/preparedness-overview';
-import PreparednessSummary from '../components/country/preparedness-summary';
-import PreparednessWorkPlan from '../components/country/preparedness-work-plan';
-import PreparednessPhaseOutcomes from '../components/country/preparedness-phase-outcomes';
-import PreparednessColumnBar from '../components/country/preparedness-column-graph';
-import KeyFiguresHeader from '../components/common/key-figures-header';
-import { SFPComponent } from '../utils/extendables';
-import { NO_DATA } from '../utils/constants';
-// import { getRegionSlug } from '../utils/region-constants';
-import { getISO3 } from '../utils/country-iso';
+} from '#components/admin-area-elements';
+import PreparednessOverview from '#components/country/preparedness-overview';
+import PreparednessSummary from '#components/country/preparedness-summary';
+import PreparednessWorkPlan from '#components/country/preparedness-work-plan';
+import PreparednessPhaseOutcomes from '#components/country/preparedness-phase-outcomes';
+import PreparednessColumnBar from '#components/country/preparedness-column-graph';
+import KeyFiguresHeader from '#components/common/key-figures-header';
+import { SFPComponent } from '#utils/extendables';
+import { getRegionById } from '#utils/region-constants';
+import { NO_DATA } from '#utils/constants';
+// import { getRegionSlug } from '#utils/region-constants';
+import { getISO3 } from '#utils/country-iso';
 
 import ThreeW from './ThreeW';
 // import CountryOverview from './CountryOverview';
@@ -558,11 +560,24 @@ class AdminArea extends SFPComponent {
       this.props.history.replace(`${url}${tabHashArray[index]}`);
     };
 
+    // add region to the breadcrumb only if country has a region defined
+    const region = getRegionById(data.region);
+    const crumbs = [
+      {link: this.props.location.pathname, name: get(data, 'name', 'Country')},
+      {link: '/', name: 'Home'}
+    ];
+    if (region) {
+      crumbs.splice(1, 0, {
+        link: `/regions/${data.region}`, name: region.name
+      });
+    }
+
     return (
       <section className='inpage'>
         <Helmet>
           <title>IFRC Go - {get(data, 'name', 'Country')}</title>
         </Helmet>
+        <BreadCrumb crumbs={ crumbs } />
         <header className='inpage__header'>
           <div className='inner'>
             <h1 className='inpage__title'>

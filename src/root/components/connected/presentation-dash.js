@@ -3,20 +3,20 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 
-import { environment } from '../../config';
-import { getAppealsList } from '../../actions';
+import { environment } from '#config';
+import { getAppealsList } from '#actions';
 import {
   enterFullscreen,
   exitFullscreen,
   isFullscreen,
   addFullscreenListener,
   removeFullscreenListener
-} from '../../utils/fullscreen';
+} from '#utils/fullscreen';
 
-import KeyFiguresHeader from '../../components/common/key-figures-header';
+import KeyFiguresHeader from '#components/common/key-figures-header';
 
-import TimelineCharts from '../timeline-charts';
-import AppealsTable from '../../components/connected/appeals-table';
+import TimelineCharts from '#components/timeline-charts';
+import AppealsTable from '#components/connected/appeals-table';
 
 class PresentationDash extends React.Component {
   constructor (props) {

@@ -1,14 +1,14 @@
 import React from 'react';
 import c from 'classnames';
-import { environment } from '../../config';
+import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 import turfBbox from '@turf/bbox';
-import newMap from '../../utils/get-new-map';
+import newMap from '#utils/get-new-map';
 import html2canvas from 'html2canvas';
-import { startDownload } from '../../utils/download-starter';
-// import exportMap from '../../utils/export-map';
+import { startDownload } from '#utils/download-starter';
+// import exportMap from '#utils/export-map';
 import { DateTime } from 'luxon';
-import { disasterType } from '../../utils/field-report-constants';
+import { disasterType } from '#utils/field-report-constants';
 import _find from 'lodash.find';
 class EmergencyMap extends React.Component {
   constructor (props) {

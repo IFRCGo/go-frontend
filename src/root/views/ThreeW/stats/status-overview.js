@@ -14,7 +14,7 @@ import {
   YAxis,
 } from 'recharts';
 
-import { statuses } from '../../../utils/constants';
+import { statuses } from '#utils/constants';
 
 const propTypes = {
   className: PropTypes.string,

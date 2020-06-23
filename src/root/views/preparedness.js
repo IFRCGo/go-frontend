@@ -1,7 +1,7 @@
 import React from 'react';
 import App from './app';
-import PreparednessHeader from '../components/preparedness/preparedness-header';
-import PerMap from './../components/map/per-map';
+import PreparednessHeader from '#components/preparedness/preparedness-header';
+import PerMap from '#components/map/per-map';
 import { connect } from 'react-redux';
 import {
   getCollaboratingPerCountry,
@@ -11,15 +11,16 @@ import {
   getPerOverviewForm,
   getPerWorkPlan,
   getPerMission
-} from './../actions';
-import ContactPer from './../components/preparedness/contact-per';
+} from '#actions';
+import ContactPer from '#components/preparedness/contact-per';
+import BreadCrumb from '#components/breadcrumb';
 import { Helmet } from 'react-helmet';
 import { PropTypes as T } from 'prop-types';
-import { environment } from '../config';
-import { getCountryMeta } from './../utils/get-country-meta';
-import { getCentroid } from './../utils/country-centroids';
-import NationalSocietiesEngagedPer from '../components/preparedness/national-societies-engaged-per';
-import GlobalPreparednessHighlights from '../components/preparedness/global-preparedness-highlights';
+import { environment } from '#config';
+import { getCountryMeta } from '#utils/get-country-meta';
+import { getCentroid } from '#utils/country-centroids';
+import NationalSocietiesEngagedPer from '#components/preparedness/national-societies-engaged-per';
+import GlobalPreparednessHighlights from '#components/preparedness/global-preparedness-highlights';
 // import _groupBy from 'lodash.groupby';
 
 class Preparedness extends React.Component {
@@ -141,8 +142,12 @@ class Preparedness extends React.Component {
       <App className='page--homepage'>
         <section className='inpage'>
           <Helmet>
-            <title>IFRC Go - Home</title>
+            <title>IFRC Go - Global Preparedness</title>
           </Helmet>
+          <BreadCrumb crumbs={[
+            {link: '/preparedness', name: 'Preparedness'},
+            {link: '/', name: 'Home'}
+          ]} />
           <header className='inpage__header'>
             <div className='inner'>
               <div className='inpage__headline'>

@@ -3,28 +3,28 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { environment } from '../../config';
-import { getEmergenciesList } from '../../actions';
+import { environment } from '#config';
+import { getEmergenciesList } from '#actions';
 import {
   nope,
   commaSeparatedNumber as n,
   isoDate,
   recentInterval,
   intersperse
-} from '../../utils/format';
+} from '#utils/format';
 import {
   get,
   dTypeOptions,
   dateOptions,
   datesAgo,
   mostRecentReport
-} from '../../utils/utils';
+} from '#utils/utils';
 
 import ExportButton from '../export-button-container';
 import Fold from '../fold';
 import BlockLoading from '../block-loading';
 import DisplayTable, { SortHeader, FilterHeader } from '../display-table';
-import { SFPComponent } from '../../utils/extendables';
+import { SFPComponent } from '#utils/extendables';
 
 class EmergenciesTable extends SFPComponent {
   // Methods form SFPComponent:

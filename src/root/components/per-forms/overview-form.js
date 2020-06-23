@@ -7,9 +7,9 @@ import {
   editPerDocument,
   getPerOverviewForm,
   sendPerOverview
-} from '../../actions';
+} from '#actions';
 import { connect } from 'react-redux';
-import { environment } from '../../config';
+import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 import React from 'react';
 import c from 'classnames';

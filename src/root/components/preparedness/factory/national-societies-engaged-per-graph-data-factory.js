@@ -1,5 +1,5 @@
 
-import { getRegionById } from './../../../utils/region-constants';
+import { getRegionById } from '#utils/region-constants';
 
 export default class NationalSocietiesEngagedPerGraphDataFactory {
   buildGraphData (rawData) {

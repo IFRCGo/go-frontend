@@ -1,9 +1,9 @@
-import { englishForm as a1Form } from './../components/per-forms/form-data/a1/english-data';
-import { englishForm as a2Form } from './../components/per-forms/form-data/a2/english-data';
-import { englishForm as a3Form } from './../components/per-forms/form-data/a3/english-data';
-import { englishForm as a32Form } from './../components/per-forms/form-data/a3-2/english-data';
-import { englishForm as a4Form } from './../components/per-forms/form-data/a4/english-data';
-import { englishForm as a5Form } from './../components/per-forms/form-data/a5/english-data';
+import { englishForm as a1Form } from '#components/per-forms/form-data/a1/english-data';
+import { englishForm as a2Form } from '#components/per-forms/form-data/a2/english-data';
+import { englishForm as a3Form } from '#components/per-forms/form-data/a3/english-data';
+import { englishForm as a32Form } from '#components/per-forms/form-data/a3-2/english-data';
+import { englishForm as a4Form } from '#components/per-forms/form-data/a4/english-data';
+import { englishForm as a5Form } from '#components/per-forms/form-data/a5/english-data';
 
 const defaultComponent = {id: '', name: '', cid: 0};
 

@@ -3,14 +3,15 @@ import { connect } from 'react-redux';
 import { DateTime } from 'luxon';
 import { PropTypes as T } from 'prop-types';
 import { Helmet } from 'react-helmet';
+import BreadCrumb from '../components/breadcrumb';
 
 import App from './app';
-import FieldReportsTable from '../components/connected/field-reports-table';
-import EmergenciesDash from '../components/connected/emergencies-dash';
-import EmergenciesTable from '../components/connected/emergencies-table';
+import FieldReportsTable from '#components/connected/field-reports-table';
+import EmergenciesDash from '#components/connected/emergencies-dash';
+import EmergenciesTable from '#components/connected/emergencies-table';
 
-import { getLastMonthsEmergencies, getAggregateEmergencies } from '../actions';
-import { environment } from '../config';
+import { getLastMonthsEmergencies, getAggregateEmergencies } from '#actions';
+import { environment } from '#config';
 
 class Emergencies extends React.Component {
   componentDidMount () {
@@ -25,6 +26,7 @@ class Emergencies extends React.Component {
           <title>IFRC Go - Emergencies</title>
         </Helmet>
         <section className='inpage'>
+          <BreadCrumb crumbs={[{link: '/emergencies', name: 'Emergencies'}, {link: '/', name: 'Home'}]} />
           <EmergenciesDash />
           <div className='inpage__body'>
             <div className='inner'>

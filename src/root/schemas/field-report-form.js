@@ -1,4 +1,4 @@
-import * as formData from '../utils/field-report-constants';
+import * as formData from '#utils/field-report-constants';
 
 const getValidValues = (arr, key) => arr.map(o => o[key]).filter(o => o !== '');
 
@@ -39,19 +39,7 @@ export const step1 = {
       type: 'boolean'
     }
   },
-  anyOf: [
-    {
-      required: [
-        'summary'
-      ]
-    },
-    {
-      required: [
-        'event'
-      ]
-    }
-  ],
-  required: ['country', 'status', 'startDate', 'disasterType']
+  required: ['country', 'summary', 'status', 'startDate', 'disasterType']
 };
 
 export const step2 = {
@@ -103,6 +91,9 @@ export const step2 = {
     epiCases: {
       type: 'number'
     },
+    epiNumDead: {
+      type: 'number'
+    },
     epiSuspectedCases: {
       type: 'number'
     },
@@ -125,6 +116,13 @@ export const step2 = {
     otherSources: {
       type: 'string'
     }
+  },
+  dependencies: {
+    epiCases: ['sitFieldsDate'],
+    epiNumDead: ['sitFieldsDate'],
+    epiSuspectedCases: ['sitFieldsDate'],
+    epiProbableCases: ['sitFieldsDate'],
+    epiConfirmedCases: ['sitFieldsDate']
   }
 };
 
