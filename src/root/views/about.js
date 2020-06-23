@@ -98,21 +98,21 @@ export default class About extends React.Component {
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
                               </div>
 
-                              <div className='box__global__content--ref__link'>
+                              <a href='https://github.com/IFRCGo/go-frontend/files/4818646/GoUserGuide_MediumRes_AR.pdf.pdf' className='box__global__content--ref__link'>
                                 <span className='icon__circle'>
                                   <span className='icon__circle__content'>AR</span>
                                 </span>
                                 <span>أدلة المستخدم</span>
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </div>
+                              </a>
 
-                              <div className='box__global__content--ref__link'>
+                              <a href='https://github.com/IFRCGo/go-frontend/files/4818648/GoAdminGuide_MediumRes_AR.pdf.pdf' className='box__global__content--ref__link'>
                                 <span className='icon__circle'>
                                   <span className='icon__circle__content'>AR</span>
                                 </span>
                                 <span>أدلة إدارية</span>
                                 <span className='collecticon-chevron-right icon-about-ref'></span>
-                              </div>
+                              </a>
                             </div>
                           </div>
                         </div>
