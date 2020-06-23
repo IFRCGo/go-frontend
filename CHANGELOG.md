@@ -25,6 +25,7 @@ Backend:
  - Added 'is_covid_report' to FieldReportFilter as a query param - [#1326](https://github.com/IFRCGo/go-frontend/issues/1326)
  - Added 'record_type' to CountryFilter as a query param - https://github.com/IFRCGo/go-api/issues/759
  - Removed redundant notifications sent alongside the Weekly Digest - [#1328](https://github.com/IFRCGo/go-frontend/issues/1328)
+ - Code changes required for translation framework
 
 ### Release 4.3.5
 
