@@ -121,7 +121,6 @@ class Table extends React.Component {
 
   render () {
     const crumbs = this.getCrumbs();
-    console.log('crumbs', crumbs);
     return (
       <App>
         <Helmet>
