@@ -91,7 +91,10 @@ class Table extends React.Component {
     const isEmptyQS = Object.keys(qs).length === 0;
     const extraCrumbs = [];
     if (isEmptyQS) {
-      extraCrumbs.push(`All ${tableType}`);
+      extraCrumbs.push({
+        link: this.props.location.pathname,
+        name: `All ${tableType}`
+      });
     } else {
       extraCrumbs.push({
         link: this.props.location.pathname,
