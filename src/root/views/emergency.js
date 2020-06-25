@@ -36,6 +36,7 @@ import {
   getRecordsByType
 } from '#utils/utils';
 
+import { getRegionById } from '#utils/region-constants';
 import App from '#views/app';
 import Fold from '#components/fold';
 import TabContent from '#components/tab-content';
@@ -463,17 +464,19 @@ class Emergency extends React.Component {
                       : nope}
                   </td>
                   <td>
-                    {Array.isArray(o.regions)
-                      ? o.regions.map((r) => (
-                        <Link
-                          to={`/regions/${r.id}`}
-                          key={r.id}
-                          className="link--primary"
-                        >
-                          {r.name}{' '}
-                        </Link>
-                      ))
-                      : nope}
+                    {Array.isArray(o.countries) ? o.countries.map(c => c.region).reduce((acc, curr) => {
+                      if (curr !== null && acc.indexOf(curr) === -1) {
+                        acc.push(curr);
+                      }
+                      return acc;
+                    }, []).map(region => {
+                      return (<Link to={`/regions/${region}`}
+                        key={region}
+                        className="link--primary"
+                      >
+                        {getRegionById(region.toString()).name}
+                      </Link>);
+                    }) : nope }
                   </td>
                 </tr>
               ))}
