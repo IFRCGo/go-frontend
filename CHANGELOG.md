@@ -1,3 +1,7 @@
+### Release 4.3.7
+
+Hotfix release: fixes broken breadcrumbs on tabular views without filters - i.e. All Emergencies, All Operations, etc.
+
 ### Release 4.3.6
 
 Frontend:
