@@ -141,6 +141,7 @@ class ProjectForm extends React.PureComponent {
     this.defaultSchema = {
       fields: {
         is_project_completed: [],
+        actual_expenditure: [requiredCondition, positiveIntegerCondition],
         budget_amount: [requiredCondition, positiveIntegerCondition],
         project_country: [],
         event: [],
@@ -182,6 +183,7 @@ class ProjectForm extends React.PureComponent {
 
     this.state = {
       faramValues: {
+        actual_expenditure: projectData.actual_expenditure,
         budget_amount: projectData.budget_amount,
         project_country: props.countryId,
         event: projectData.event,
@@ -376,6 +378,14 @@ class ProjectForm extends React.PureComponent {
       ...faramErrors,
     };
 
+    if (oldFaramValues.is_project_completed !== faramValues.is_project_completed && faramValues.is_project_completed && !isDefined(faramValues.actual_expenditure)) {
+      newFaramValues.actual_expenditure = faramValues.budget_amount;
+    }
+
+    if (oldFaramValues.budget_amount !== faramValues.budget_amount) {
+      newFaramValues.actual_expenditure = faramValues.budget_amount;
+    }
+
     if (oldFaramValues.event !== faramValues.event) {
       const { operationToDisasterMap } = this.getCurrentOperationOptions(eventList);
       const dtype = operationToDisasterMap[faramValues.event];
@@ -441,15 +451,21 @@ class ProjectForm extends React.PureComponent {
 
     if (isBudgetAndTotalNotRequired) {
       schema.fields.budget_amount = [positiveIntegerCondition];
+      schema.fields.actual_expenditure = [positiveIntegerCondition];
       schema.fields.target_total = [positiveIntegerCondition];
     }
 
+    // operationType: 1 = Emergency operation
+    // programmeType: 1 = Multilateral
+    // programmeType: 2 = Domestic
     if (String(operationType) === '1' && (String(programmeType) === '1' || String(programmeType) === '2')) {
       schema.fields.event = [requiredCondition];
     }
 
+    // projectStatus: 2 = Completed
     if (String(projectStatus) === '2' && !isBudgetAndTotalNotRequired) {
       schema.fields.reached_total = [requiredCondition, positiveIntegerCondition];
+      schema.fields.budget_amount = [positiveIntegerCondition];
     }
 
     return schema;
@@ -747,10 +763,17 @@ class ProjectForm extends React.PureComponent {
             }
             tooltip='The budget includes the total costs for the listed activity or project. &#13;The project can be marked completed, which makes the people reached a required value.'
           >
-            <NumberInput
-              label='Project Budget (CHF)'
-              faramElementName='budget_amount'
-            />
+            { faramValues.is_project_completed ? (
+              <NumberInput
+                label='Actual Expenditure (CHF)'
+                faramElementName='actual_expenditure'
+              />
+            ) : (
+              <NumberInput
+                label='Project Budget (CHF)'
+                faramElementName='budget_amount'
+              />
+            )}
             <div>
               <Checkbox
                 label="Completed"
