@@ -138,9 +138,10 @@ class ProjectForm extends React.PureComponent {
   constructor (props) {
     super(props);
 
-    this.schema = {
+    this.defaultSchema = {
       fields: {
         is_project_completed: [],
+        actual_expenditure: [requiredCondition, positiveIntegerCondition],
         budget_amount: [requiredCondition, positiveIntegerCondition],
         project_country: [],
         event: [],
@@ -182,6 +183,7 @@ class ProjectForm extends React.PureComponent {
 
     this.state = {
       faramValues: {
+        actual_expenditure: projectData.actual_expenditure,
         budget_amount: projectData.budget_amount,
         project_country: props.countryId,
         event: projectData.event,
@@ -376,6 +378,14 @@ class ProjectForm extends React.PureComponent {
       ...faramErrors,
     };
 
+    if (oldFaramValues.is_project_completed !== faramValues.is_project_completed && faramValues.is_project_completed && !isDefined(faramValues.actual_expenditure)) {
+      newFaramValues.actual_expenditure = faramValues.budget_amount;
+    }
+
+    if (oldFaramValues.budget_amount !== faramValues.budget_amount) {
+      newFaramValues.actual_expenditure = faramValues.budget_amount;
+    }
+
     if (oldFaramValues.event !== faramValues.event) {
       const { operationToDisasterMap } = this.getCurrentOperationOptions(eventList);
       const dtype = operationToDisasterMap[faramValues.event];
@@ -423,18 +433,39 @@ class ProjectForm extends React.PureComponent {
     alert('Please fill in all the required fields before submitting.');
   }
 
+  getBudgetAndTotalNotRequired = (selectedNS, nsOptions) => {
+    const ns = nsOptions.find(d => d.value === selectedNS);
+
+    if (ns?.label === 'ICRC') {
+      return true;
+    }
+
+    return false;
+  }
+
   // Generate schema dynamically
-  getSchema = memoize((operationType, programmeType, projectStatus) => {
+  getSchema = memoize((operationType, programmeType, projectStatus, isBudgetAndTotalNotRequired) => {
     const schema = {
-      fields: { ...this.schema.fields }
+      fields: { ...this.defaultSchema.fields }
     };
 
+    if (isBudgetAndTotalNotRequired) {
+      schema.fields.budget_amount = [positiveIntegerCondition];
+      schema.fields.actual_expenditure = [positiveIntegerCondition];
+      schema.fields.target_total = [positiveIntegerCondition];
+    }
+
+    // operationType: 1 = Emergency operation
+    // programmeType: 1 = Multilateral
+    // programmeType: 2 = Domestic
     if (String(operationType) === '1' && (String(programmeType) === '1' || String(programmeType) === '2')) {
       schema.fields.event = [requiredCondition];
     }
 
-    if (String(projectStatus) === '2') {
+    // projectStatus: 2 = Completed
+    if (String(projectStatus) === '2' && !isBudgetAndTotalNotRequired) {
       schema.fields.reached_total = [requiredCondition, positiveIntegerCondition];
+      schema.fields.budget_amount = [positiveIntegerCondition];
     }
 
     return schema;
@@ -509,16 +540,20 @@ class ProjectForm extends React.PureComponent {
     const shouldShowCurrentOperation = String(faramValues.operation_type) === '1' &&
       String(faramValues.programme_type) === '1';
 
+    const isBudgetAndTotalNotRequired = this.getBudgetAndTotalNotRequired(faramValues.reporting_ns, nationalSocietyOptions);
+
     const shouldShowDisasterType = String(faramValues.operation_type) === '0' ||
       shouldShowCurrentOperation ||
       shouldShowCurrentEmergencyOperation;
     const shouldDisableDisasterType = String(faramValues.operation_type) === '1';
-    const isReachedTotalRequired = String(faramValues.status) === '2';
+    const isReachedTotalRequired = String(faramValues.status) === '2' && !isBudgetAndTotalNotRequired;
+    const isTargetTotalRequired = !isBudgetAndTotalNotRequired;
 
     const schema = this.getSchema(
       faramValues.operation_type,
       faramValues.programme_type,
-      faramValues.status
+      faramValues.status,
+      isBudgetAndTotalNotRequired,
     );
 
     const shouldDisableTotalTarget = !isFalsy(faramValues.target_male) || !isFalsy(faramValues.target_female) || !isFalsy(faramValues.target_other);
@@ -715,7 +750,7 @@ class ProjectForm extends React.PureComponent {
 
           <InputSection
             className='multi-input-section'
-            title='Budget and Status*'
+            title={`Budget and Status${isBudgetAndTotalNotRequired ? '' : '*'}`}
             helpText={
               <React.Fragment>
                 <div>
@@ -728,10 +763,17 @@ class ProjectForm extends React.PureComponent {
             }
             tooltip='The budget includes the total costs for the listed activity or project. &#13;The project can be marked completed, which makes the people reached a required value.'
           >
-            <NumberInput
-              label='Project Budget (CHF)'
-              faramElementName='budget_amount'
-            />
+            { faramValues.is_project_completed ? (
+              <NumberInput
+                label='Actual Expenditure (CHF)'
+                faramElementName='actual_expenditure'
+              />
+            ) : (
+              <NumberInput
+                label='Project Budget (CHF)'
+                faramElementName='budget_amount'
+              />
+            )}
             <div>
               <Checkbox
                 label="Completed"
@@ -765,7 +807,7 @@ class ProjectForm extends React.PureComponent {
             <NumberInput
               disabled={shouldDisableTotalTarget}
               faramElementName='target_total'
-              label='Total* '
+              label={isTargetTotalRequired ? 'Total* ' : 'Total'}
             />
           </InputSection>
 
