@@ -92,7 +92,7 @@
 /* Stats */
 
 .fold--stats {
-  background: #ffffff;
+  // background: #ffffff;
   //box-shadow: 0 2px 4px 1px $base-alpha-color;
 
   .inner {
@@ -108,8 +108,12 @@
   }
 }
 
+.fold--stats.presenting {
+  background: #fff;
+}
+
 .stats-overall {
-  padding-bottom: $global-spacing-3;
+  padding-bottom: $global-spacing-2;
 }
 
 .sumstats {

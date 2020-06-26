@@ -166,6 +166,14 @@
   }
 }
 
+.header-stats--emergencies {
+  .sumstats__item {
+    @include media(large-up) {
+      flex: 1;
+    }
+  }
+}
+
 .stats-list {
   list-style: none;
   @include column(12/12);
@@ -278,26 +286,26 @@
   }
 }
 
-.stats-emergencies {
-  background-image: url('/assets/graphics/layout/emergency.svg');
-  background-size: 45px;
-  background-repeat: no-repeat;
-  background-position: 0% 10%;
-}
+//.stats-emergencies {
+//  background-image: url('/assets/graphics/layout/emergency.svg');
+//  background-size: 45px;
+//  background-repeat: no-repeat;
+//  background-position: 0% 10%;
+//}
 
-.stats-people {
-  background-image: url('/assets/graphics/layout/people.svg');
-  background-size: 45px;
-  background-repeat: no-repeat;
-  background-position: 0% 10%;
-}
+//.stats-people {
+//  background-image: url('/assets/graphics/layout/people.svg');
+//  background-size: 45px;
+//  background-repeat: no-repeat;
+//  background-position: 0% 10%;
+//}
 
-.stats-funding {
-  background-image: url('/assets/graphics/layout/funding.svg');
-  background-size: 45px;
-  background-repeat: no-repeat;
-  background-position: 0% 10%;
-}
+//.stats-funding {
+//  background-image: url('/assets/graphics/layout/funding.svg');
+//  background-size: 45px;
+//  background-repeat: no-repeat;
+//  background-position: 0% 10%;
+//}
 
 
 .stats-eru {
