@@ -120,6 +120,7 @@
   @extend .clearfix;
   list-style: none;
   margin: 0;
+  width: 100%;
 
   @include media(small-up) {
     display: flex;
@@ -153,11 +154,10 @@
       @include column(6/12, $cycle: 2);
     }
 
-    @include media(medium-up) {
-      @include column(4/12, $cycle: 3);
+    //@include media(medium-up) {
+      //@include column(4/12, $cycle: 3);
       //margin: 0 ($global-spacing * .5) ($global-spacing * 2) 0;
-
-    }
+    //}
 
     @include media(large-up) {
       @include span(2/10, $cycle: 5);
