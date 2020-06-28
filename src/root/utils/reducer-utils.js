@@ -17,6 +17,7 @@ export const stateError = (state, action) => {
 
 export const stateSuccess = (state, action) => {
   return Object.assign({}, state, {
+    error: null,
     fetching: false,
     fetched: true,
     receivedAt: action.receivedAt,

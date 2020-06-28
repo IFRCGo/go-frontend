@@ -8,19 +8,25 @@ import {
   isDefined,
 } from '@togglecorp/fujs';
 
-import { postLanguageBulkAction } from '#actions';
+import {
+  postLanguageBulkAction,
+  getLanguageAction,
+} from '#actions';
 import lang from '#lang';
 
 import {
   currentLanguageSelector,
   languageDataSelector,
   languageBulkResponseSelector,
+  languageResponseSelector,
 } from '#selectors';
 
+import BlockLoading from '#components/block-loading';
 import LanguageSelect from '#components/LanguageSelect';
 
 import styles from './styles.module.scss';
 
+// TODO: use translation
 const views = {
   all: 'All in server',
   added: 'New by dev',
@@ -70,10 +76,23 @@ function TranslationDashboard(p) {
     postLanguageBulk,
     currentLanguage,
     languageData,
+    languageResponse,
+    languageBulkResponse,
+    getLanguage,
   } = p;
 
   const viewKeys = React.useMemo(() => Object.keys(views), []);
   const [currentView, setCurrentView] = React.useState(viewKeys[0]);
+  const prevBulkResponse = React.useRef(languageBulkResponse);
+
+  React.useEffect(() => {
+    const { current } = prevBulkResponse;
+    if (current.fetching && !languageBulkResponse.fetching && languageBulkResponse.error === null) {
+      getLanguage(currentLanguage);
+    }
+
+    prevBulkResponse.current = languageBulkResponse;
+  }, [prevBulkResponse, languageBulkResponse, currentLanguage, getLanguage]);
 
   const appStrings = React.useMemo(() => (
     listToMap(
@@ -153,27 +172,26 @@ function TranslationDashboard(p) {
   const removedKeys = React.useMemo(() => listToMap(removedKeyList, d => d, d => true), [removedKeyList]);
 
   const handleSaveButtonClick = React.useCallback(() => {
-    const actions = appStringKeyList.map((key) => ({
+    const actions = Object.keys(strings).map((key) => ({
       action: 'set',
       key,
-      value: appStrings[key],
+      value: strings[key].value,
+      hash: strings[key].hash,
     }));
 
     const data = { actions };
     postLanguageBulk(currentLanguage, data);
-  }, [appStringKeyList, appStrings, postLanguageBulk, currentLanguage]);
+  }, [strings, postLanguageBulk, currentLanguage]);
 
-  const handleOverwriteButtonClick = React.useCallback(() => {
-    const actions = devStringKeyList.map((key) => ({
-      action: 'set',
+  const handleRemoveOutdatedButtonClick = React.useCallback(() => {
+    const actions = removedKeyList.map((key) => ({
+      action: 'delete',
       key,
-      value: devStrings[key].value,
-      hash: devStrings[key].hash,
     }));
 
     const data = { actions };
     postLanguageBulk(currentLanguage, data);
-  }, [postLanguageBulk, devStrings, devStringKeyList, currentLanguage]);
+  }, [removedKeyList, postLanguageBulk, currentLanguage]);
 
   const handleTabClick = React.useCallback((e) => {
     setCurrentView(e.target.name);
@@ -196,6 +214,8 @@ function TranslationDashboard(p) {
     updated: updatedKeyList.length,
   }), [appStringKeyList, addedKeyList, removedKeyList, updatedKeyList]);
 
+  const pending = languageResponse.fetching || languageBulkResponse.fetching;
+
   return (
     <div className={_cs(className, styles.translationDashboard)}>
       <header className={styles.header}>
@@ -205,6 +225,7 @@ function TranslationDashboard(p) {
           </h2>
           <div className={styles.actions}>
             <LanguageSelect />
+            {/*
             <button className="button">
               Export current
             </button>
@@ -214,6 +235,7 @@ function TranslationDashboard(p) {
             >
               Overwrite server with local dev copy
             </button>
+            */}
           </div>
         </div>
         <div className={styles.bottomSection}>
@@ -225,6 +247,7 @@ function TranslationDashboard(p) {
                 onClick={handleTabClick}
                 type="button"
                 className={_cs(styles.tab, currentView === viewKey && styles.active)}
+                disabled={pending}
               >
                 { views[viewKey] }
                 &nbsp;
@@ -233,15 +256,22 @@ function TranslationDashboard(p) {
             ))}
           </div>
           <div className={styles.tabActions}>
-            <button
-              className="button button--primary-outline"
-              onClick={handleSaveButtonClick}
-            >
-              Save
-            </button>
-            { currentView === 'removed' && (
-              <button>
+            { currentView === 'removed' ? (
+              <button
+                className="button button--secondary-bounded"
+                onClick={handleRemoveOutdatedButtonClick}
+                disabled={pending}
+              >
                 Remove outdated keys
+              </button>
+            ) : (
+              <button
+                className="button button--primary-bounded"
+                onClick={handleSaveButtonClick}
+                disabled={pending}
+              >
+                {/* TODO: use translations */}
+                Save
               </button>
             )}
           </div>
@@ -260,47 +290,53 @@ function TranslationDashboard(p) {
               Value
             </div>
           </div>
-          { currentView === 'all' && appStringKeyList.map((k) => (
-            <StringRow
-              key={k}
-              stringKey={k}
-              devValue={devStrings[k]?.value}
-              value={strings[k]?.value || appStrings[k]?.value}
-              editable={!removedKeys[k]}
-              obsolete={removedKeys[k]}
-              onChange={handleStringChange}
-            />
-          ))}
-          { currentView === 'added' && addedKeyList.map((k) => (
-            <StringRow
-              key={k}
-              stringKey={k}
-              devValue={devStrings[k]?.value}
-              value={strings[k]?.value || appStrings[k]?.value}
-              editable={!removedKeys[k]}
-              obsolete={removedKeys[k]}
-              onChange={handleStringChange}
-            />
-          ))}
-          { currentView === 'removed' && removedKeyList.map((k) => (
-            <StringRow
-              key={k}
-              stringKey={k}
-              devValue={devStrings[k]?.value}
-              value={appStrings[k]?.value}
-            />
-          ))}
-          { currentView === 'updated' && updatedKeyList.map((k) => (
-            <StringRow
-              key={k}
-              stringKey={k}
-              devValue={devStrings[k]?.value}
-              value={strings[k]?.value || appStrings[k]?.value}
-              editable={!removedKeys[k]}
-              obsolete={removedKeys[k]}
-              onChange={handleStringChange}
-            />
-          ))}
+          { pending ? (
+            <BlockLoading />
+          ) : (
+            <>
+              { currentView === 'all' && appStringKeyList.map((k) => (
+                <StringRow
+                  key={k}
+                  stringKey={k}
+                  devValue={devStrings[k]?.value}
+                  value={strings[k]?.value || appStrings[k]?.value}
+                  editable={!removedKeys[k]}
+                  obsolete={removedKeys[k]}
+                  onChange={handleStringChange}
+                />
+              ))}
+              { currentView === 'added' && addedKeyList.map((k) => (
+                <StringRow
+                  key={k}
+                  stringKey={k}
+                  devValue={devStrings[k]?.value}
+                  value={strings[k]?.value || appStrings[k]?.value}
+                  editable={!removedKeys[k]}
+                  obsolete={removedKeys[k]}
+                  onChange={handleStringChange}
+                />
+              ))}
+              { currentView === 'removed' && removedKeyList.map((k) => (
+                <StringRow
+                  key={k}
+                  stringKey={k}
+                  devValue={devStrings[k]?.value}
+                  value={appStrings[k]?.value}
+                />
+              ))}
+              { currentView === 'updated' && updatedKeyList.map((k) => (
+                <StringRow
+                  key={k}
+                  stringKey={k}
+                  devValue={devStrings[k]?.value}
+                  value={strings[k]?.value || appStrings[k]?.value}
+                  editable={!removedKeys[k]}
+                  obsolete={removedKeys[k]}
+                  onChange={handleStringChange}
+                />
+              ))}
+            </>
+          )}
         </div>
       </div>
     </div>
@@ -311,10 +347,12 @@ const mapStateToProps = (state, props) => ({
   languageBulkResponse: languageBulkResponseSelector(state),
   currentLanguage: currentLanguageSelector(state),
   languageData: languageDataSelector(state),
+  languageResponse: languageResponseSelector(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   postLanguageBulk: (...args) => dispatch(postLanguageBulkAction(...args)),
+  getLanguage: (...args) => dispatch(getLanguageAction(...args)),
 });
 
 export default connect(
