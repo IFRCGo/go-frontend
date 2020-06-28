@@ -25,14 +25,16 @@ export default function reducer (state = initialState, action) {
       newState = stateError(state, action);
       break;
     case 'GET_LANGUAGE_SUCCESS':
-      const { data } = stateSuccess(state, action);
+      const successState = stateSuccess(state, action);
+      const { data } = successState;
+
       const newStrings = data.strings.reduce((acc, val) => {
         acc[val.key] = val.value;
         return acc;
       }, { ...lang });
 
       newState = {
-        ...state,
+        ...successState,
         strings: newStrings,
         data: data,
       };
