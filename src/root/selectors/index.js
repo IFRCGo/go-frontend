@@ -51,6 +51,10 @@ export const languageSelector = (state) => (
   state.lang
 );
 
+export const languageResponseSelector = (state) => (
+  state.lang
+);
+
 export const currentLanguageSelector = (state) => (
   languageSelector(state).current
 );

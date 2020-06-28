@@ -25,7 +25,6 @@
 
     .bottom-section {
       display: flex;
-      background-color: $grey-fog;
       align-items: center;
 
       .tabs {
@@ -66,6 +65,7 @@
     .strings-table {
       width: 100%;
       display: table;
+      table-layout: fixed;
 
       %row {
         display: table-row;
