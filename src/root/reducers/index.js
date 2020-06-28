@@ -33,7 +33,6 @@ import projects from './projects';
 import countryOverview from './country-overview';
 import domainWhitelist from './domain-whitelist';
 import lang from './lang';
-<<<<<<< HEAD
 
 import {
   POST_PROJECT,
@@ -46,8 +45,6 @@ import {
   GET_ME,
   POST_LANGUAGE_BULK,
 } from '#actions';
-=======
->>>>>>> c282d5bc... Add basic translation module
 
 export const reducers = {
   user,
@@ -81,7 +78,6 @@ export const reducers = {
   projectForm: createReducer(POST_PROJECT),
   projectDelete: createReducer(DELETE_PROJECT),
   countryOverview,
-<<<<<<< HEAD
   regionalProjectsOverview: createReducer(GET_REGIONAL_PROJECTS_OVERVIEW),
   regionalMovementActivities: createReducer(GET_REGIONAL_MOVEMENT_ACTIVITIES),
   nationalSocietyActivities: createReducer(GET_NATIONAL_SOCIETY_ACTIVITIES),
@@ -91,16 +87,6 @@ export const reducers = {
   domainWhitelist,
   lang,
   postLanguageBulk: createReducer(POST_LANGUAGE_BULK),
-=======
-  regionalProjectsOverview: createReducer('GET_REGIONAL_PROJECTS_OVERVIEW'),
-  regionalMovementActivities: createReducer('GET_REGIONAL_MOVEMENT_ACTIVITIES'),
-  nationalSocietyActivities: createReducer('GET_NATIONAL_SOCIETY_ACTIVITIES'),
-  nationalSocietyActivitiesWoFilters: createReducer('GET_NATIONAL_SOCIETY_ACTIVITIES_WO_FILTERS'),
-  regionalProjects: createReducer('GET_REGIONAL_PROJECTS'),
-  me: createReducer('GET_ME'),
-  domainWhitelist,
-  lang,
->>>>>>> c282d5bc... Add basic translation module
 };
 
 export default combineReducers(reducers);
