@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { environment } from '#config';
 import { getRegionById } from '#utils/region-constants';
-import { getRegionById } from '../../utils/region-constants';
 import { PropTypes as T } from 'prop-types';
 
 import LanguageContext from '#root/languageContext';
