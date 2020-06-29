@@ -55,7 +55,7 @@ The site will automatically refresh since it is bundled with livereload.
 
 ## Deploy a branch to surge.sh for testing and preview
 We use surge.sh to deploy directly from a branch to test new features and fixes. To do this:
-* Build `yarn build`. You'll need to login to a surge account if this is the first you are running. You can create an account from the CLI.
+* Build `yarn build-staging`. You'll need to login to a surge account if this is the first you are running. You can create an account from the CLI.
 * Deploy `yarn deploy-surge`
 
 Once the testing is over, remember to teardown:
