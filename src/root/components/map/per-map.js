@@ -21,6 +21,7 @@ import PerPhaseDropdown from './per-map/per-phase-dropdown';
 import PerTypeDropdown from './per-map/per-type-dropdown';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
+import { withLanguage } from '#root/languageContext';
 
 // const scale = chroma.scale(['#F0C9E8', '#861A70']);
 
@@ -201,7 +202,7 @@ class PerMap extends React.Component {
     const geoJSON = this.state.markerGeoJSON;
     const mapContainerClassName = this.props.noRenderEmergencies ? 'map-container map-container-fullwidth' : 'map-container';
 
-    const { strings } = this.context;
+    const { strings } = this.props;
 
     return (
       <React.Fragment>
@@ -258,5 +259,5 @@ if (environment !== 'production') {
     layers: T.array
   };
 }
-PerMap.contextType = LanguageContext;
-export default withRouter(PerMap);
+
+export default withLanguage(withRouter(PerMap));
