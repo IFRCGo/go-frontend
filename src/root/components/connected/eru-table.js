@@ -114,7 +114,7 @@ class EruTable extends SFPComponent {
         },
         {
           id: 'type',
-          label: <FilterHeader id='type' title={strings.eruTableNameTitle} options={eruTypeOptions} filter={this.state.table.filters.type} onSelect={this.handleFilterChange.bind(this, 'table', 'type')} />
+          label: <FilterHeader id='type' title={strings.eruTableNameType} options={eruTypeOptions} filter={this.state.table.filters.type} onSelect={this.handleFilterChange.bind(this, 'table', 'type')} />
         },
         {
           id: 'personnel',

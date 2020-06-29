@@ -3,6 +3,7 @@ import _cs from 'classnames';
 import { isDefined } from '@togglecorp/fujs';
 
 import languageContext from '#root/languageContext';
+import lang from '#root/lang';
 import { resolveToComponent } from '#utils/lang';
 import styles from './styles.module.scss';
 
@@ -15,7 +16,7 @@ function Translate(p) {
   } = p;
 
   const displayComponent = React.useMemo(() => {
-    const string = strings[stringId];
+    const string = strings[stringId] || lang[stringId];
     const display = params ? resolveToComponent(string, params) : string;
     return display;
   }, [stringId, params, strings]);
