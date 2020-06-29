@@ -101,8 +101,6 @@
 
   &__introduction {
     color: $base-font-color;
-    //font-size: 1rem;
-    //line-height: 1.5rem;
 
     > *:last-child {
       margin-bottom: 0;
@@ -285,28 +283,6 @@
     }
   }
 }
-
-//.stats-emergencies {
-//  background-image: url('/assets/graphics/layout/emergency.svg');
-//  background-size: 45px;
-//  background-repeat: no-repeat;
-//  background-position: 0% 10%;
-//}
-
-//.stats-people {
-//  background-image: url('/assets/graphics/layout/people.svg');
-//  background-size: 45px;
-//  background-repeat: no-repeat;
-//  background-position: 0% 10%;
-//}
-
-//.stats-funding {
-//  background-image: url('/assets/graphics/layout/funding.svg');
-//  background-size: 45px;
-//  background-repeat: no-repeat;
-//  background-position: 0% 10%;
-//}
-
 
 .stats-eru {
   background-image: url('/assets/graphics/layout/eru.svg');
