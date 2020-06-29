@@ -19,7 +19,6 @@ import PersonnelTable from '#components/connected/personnel-table';
 import BreadCrumb from '#components/breadcrumb';
 
 import LanguageContext from '#root/languageContext';
-import Translate from '#components/Translate';
 import { resolveToString } from '#utils/lang';
 
 class Table extends React.Component {
@@ -131,16 +130,18 @@ class Table extends React.Component {
     const { strings } = this.context;
     const displayTypes = this.getDisplayTypes(strings);
 
+    const title = resolveToString(
+      strings.tableTitle,
+      {
+        type: displayTypes[this.props.type],
+      }
+    );
+
     return (
       <App>
         <Helmet>
           <title>
-            <Translate
-              stringId='tableTitle'
-              params={{
-                type: displayTypes[this.props.type],
-              }}
-            />
+            { title }
           </title>
         </Helmet>
         <BreadCrumb crumbs={crumbs} />
