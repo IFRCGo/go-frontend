@@ -248,7 +248,7 @@ class FieldReport extends React.Component {
               </dt>
               <dd>{n(get(data, 'gov_num_assisted'))}</dd>
               <dt>
-                <Translate stringId='fieldReportAssitedRCRC'/>
+                <Translate stringId='fieldReportAssistedRCRC'/>
               </dt>
               <dd>{n(get(data, 'num_assisted'))}</dd>
               <dt>
@@ -280,7 +280,7 @@ class FieldReport extends React.Component {
               </dt>
               <dd>{n(get(data, 'num_injured'))}</dd>
               <dt>
-                <Translate stringId='fieldReportInjured'/>
+                <Translate stringId='fieldReportMissing'/>
               </dt>
               <dd>{n(get(data, 'num_missing'))}</dd>
               <dt>
@@ -324,7 +324,7 @@ class FieldReport extends React.Component {
               </dt>
               <dd>{n(get(data, 'other_num_injured'))}</dd>
               <dt>
-                <Translate stringId='fieldReportInjuredOther'/>
+                <Translate stringId='fieldReportMissingOther'/>
               </dt>
               <dd>{n(get(data, 'other_num_missing'))}</dd>
               <dt>
@@ -354,7 +354,7 @@ class FieldReport extends React.Component {
               </dt>
               <dd>{n(get(data, 'num_localstaff'))}</dd>
               <dt>
-                <Translate stringId='fieldReportAssistedRCRC'/>
+                <Translate stringId='fieldReportVolunteers'/>
               </dt>
               <dd>{n(get(data, 'num_volunteers'))}</dd>
               <dt>
@@ -540,8 +540,9 @@ class FieldReport extends React.Component {
                 { epiStatus === 'EPI' ? <DisplaySection title={strings.fieldReportDateOfData} inner={sitFieldsDate} /> : null }
                 <DisplaySection sectionClass='rich-text-section' title={ status === 'EW' ? strings.fieldReportRiskAnalyisis : strings.fieldReportDescription } inner={get(data, 'description', false)} />
                 <DisplaySection title={ status === 'EW' ? strings.fieldReportForecastedDate : strings.fieldReportStartDate } inner={startDate} />
-                { data.is_covid_report ? (
-                  <DisplaySection title={strings.fieldReportCovidReport} inner='Yes' />                ) : null }
+                { data.is_covid_report && (
+                  <DisplaySection title={strings.fieldReportCovidReport} inner='Yes' />
+                )}
                 <DisplaySection title={strings.fieldReportRequest}>
                   <p>
                     <span>
