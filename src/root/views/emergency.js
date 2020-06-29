@@ -541,7 +541,7 @@ class Emergency extends React.Component {
     // return empty when no data, only on default filters.
     if (!data.length && date === 'all' && type === 'all') return null;
     const { id } = this.props.match.params;
-    const addReportLink = url.resolve(api, `admin/api/event/${id}/change`);
+    const addReportLink = url.resolve(api, `api/event/${id}/change`);
     const types = this.props.situationReportTypes;
     if (!types.fetched) {
       return null;
