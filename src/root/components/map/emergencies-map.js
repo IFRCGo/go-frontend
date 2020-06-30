@@ -12,7 +12,7 @@ import {
 import MapComponent from './common/map-component';
 import { commaSeparatedNumber as n } from '#utils/format';
 
-import LanguageContext from '#root/languageContext';
+import { withLanguage } from '#root/languageContext';
 import Translate from '#components/Translate';
 
 class EmergenciesMap extends React.Component {
@@ -138,7 +138,7 @@ class EmergenciesMap extends React.Component {
 
     if (!fetched) return null;
 
-    const { strings } = this.context;
+    const { strings } = this.props;
     return (
       <div className='stats-map emergencies-map'>
         <div className='inner'>
@@ -211,7 +211,6 @@ class EmergenciesMap extends React.Component {
   }
 }
 
-EmergenciesMap.contextType = LanguageContext;
 if (environment !== 'production') {
   EmergenciesMap.propTypes = {
     lastMonth: T.object,
@@ -219,7 +218,7 @@ if (environment !== 'production') {
   };
 }
 
-export default withRouter(EmergenciesMap);
+export default withLanguage(withRouter(EmergenciesMap));
 
 class MapPopover extends React.Component {
   render () {
