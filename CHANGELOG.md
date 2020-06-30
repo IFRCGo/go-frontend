@@ -1,3 +1,13 @@
+### Release 4.3.9
+
+Frontend:
+
+ - 3w: Make fields not required if reporting society is ICRC: https://github.com/IFRCGo/go-frontend/issues/1334
+ - 3w: Project completed changes budget field to actual expenditure: https://github.com/IFRCGo/go-frontend/issues/1319
+ - Fix display of country, region in field report listing on Emergency pages: https://github.com/IFRCGo/go-frontend/issues/1122
+ - Fix redirect of Add Report button to go to Emergency page in Admin: https://github.com/IFRCGo/go-frontend/issues/1116
+
+
 ### Release 4.3.8
 
 Hotfix Release (only an API release): Fix regression in CSV exports where ENUM fields were showing verbose labels instead of db values: https://github.com/IFRCGo/go-api/pull/794

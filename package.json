@@ -1,6 +1,6 @@
 {
   "name": "go-frontend",
-  "version": "4.3.8",
+  "version": "4.3.9",
   "private": true,
   "devDependencies": {
     "@babel/core": "7.9.0",
