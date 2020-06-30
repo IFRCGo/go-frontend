@@ -19,7 +19,6 @@ import EmergenciesLeftMenu from './common/emergencies-left-menu';
 import MarkerLayerStylesheetFactory from './per-map/factory/marker-layer-stylesheet-factory';
 import PerPhaseDropdown from './per-map/per-phase-dropdown';
 import PerTypeDropdown from './per-map/per-type-dropdown';
-import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 import { withLanguage } from '#root/languageContext';
 
