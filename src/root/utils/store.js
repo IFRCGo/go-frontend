@@ -6,6 +6,7 @@ import * as localStorage from 'local-storage';
 
 import config from '#config';
 import reducer from '../reducers';
+import { langInitialState } from '#root/reducers/lang';
 
 const hydrateUser = () => {
   // Check if there's user data in localstorage.
@@ -28,8 +29,26 @@ const hydrateUser = () => {
   };
 };
 
+const LANG_STORAGE_KEY = 'language';
+
+const hydrateCurrentLanguage = () => {
+  // Check if there's user data in localstorage.
+  const current = localStorage.get(LANG_STORAGE_KEY);
+
+  if (!current) {
+    // Returning undefined will cause the reducer to use the initial state.
+    return undefined;
+  }
+
+  return {
+    ...langInitialState,
+    current,
+  };
+};
+
 const initialState = {
-  user: hydrateUser()
+  user: hydrateUser(),
+  lang: hydrateCurrentLanguage(),
 };
 
 const logger = createLogger({
@@ -52,13 +71,19 @@ const tokenListener = ({ data }) => {
   });
 };
 
+const currentLanguageListener = ({ language }) => {
+  localStorage.set(LANG_STORAGE_KEY, language);
+};
+
 const logoutListener = ({ data }) => {
   localStorage.remove('user');
+  localStorage.remove(LANG_STORAGE_KEY);
 };
 
 const listener = listen();
 listener.createListener(tokenListener).addRule(/^TOKEN_SUCCESS/);
 listener.createListener(logoutListener).addRule(/^LOGOUT_USER/);
+listener.createListener(currentLanguageListener).addRule(/^SET_CURRENT_LANGUAGE/);
 
 const composeEnhancers = config.environment !== 'production' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose : compose;
 const store = createStore(reducer, initialState, composeEnhancers(applyMiddleware(

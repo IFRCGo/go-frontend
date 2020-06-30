@@ -6,7 +6,7 @@ import {
 
 import lang from '#lang';
 
-const initialState = {
+export const langInitialState = {
   current: 'en',
   strings: {
     ...lang,
@@ -14,7 +14,7 @@ const initialState = {
   data: {},
 };
 
-export default function reducer (state = initialState, action) {
+export default function reducer (state = langInitialState, action) {
   let newState = state;
 
   switch (action.type) {
