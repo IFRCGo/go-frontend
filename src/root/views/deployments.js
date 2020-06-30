@@ -143,17 +143,29 @@ class Deployments extends SFPComponent {
     const heop = types.heop || nope;
 
     return (
-      <div className='inpage__introduction'>
+      <div>
         <div className='header-stats'>
-          <ul className='stats-list-deployments'>
-            <li className='stats-list__item stats-eru'>
-              {n(data.deployed)}<small>Deployed ERUs</small>
+          <ul className='sumstats'>
+            <li className='sumstats__item'>
+              <img className='sumstats__icon_2020' src='/assets/graphics/layout/eru-brand.svg' /> 
+              <span className='sumstats__value'>
+                {n(data.deployed)}
+              </span>
+              <span className='sumstats__key'>Deployed ERUs</span>
             </li>
-            <li className='stats-list__item stats-fact'>
-              {n(fact)}<small>Deployed Rapid Response</small>
+            <li className='sumstats__item'>
+              <img className='sumstats__icon_2020' src='/assets/graphics/layout/fact-brand.svg' />
+              <span className='sumstats__value'>
+                {n(fact)}
+              </span>
+              <span className='sumstats__key'>Deployed Rapid Response</span>
             </li>
-            <li className='stats-list__item stats-heops'>
-              {n(heop)}<small>Deployed Heops</small>
+            <li className='sumstats__item'>
+              <img className='sumstats__icon_2020' src='/assets/graphics/layout/heops-brand.svg' />
+              <span className='sumstats__value'>
+                {n(heop)}
+              </span>
+              <span className='sumstats__key'>Deployed Heops</span>
             </li>
           </ul>
         </div>
@@ -189,7 +201,7 @@ class Deployments extends SFPComponent {
 
     return (
       <section>
-        <section className={c('inpage', {presenting: this.state.fullscreen})} id='presentation'>
+        <section className={c('inpage row', {presenting: this.state.fullscreen})} id='presentation'>
           <header className='inpage__header'>
             <div className='inner'>
               <div className='inpage__headline'>
@@ -214,7 +226,7 @@ class Deployments extends SFPComponent {
             </div>
           </div>
         </section>
-        <div className='inpage__body'>
+        <div className='inpage__body row'>
           <div className='inner'>
             <EruTable
               limit={5}

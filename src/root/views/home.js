@@ -16,7 +16,7 @@ class Home extends React.Component {
           <header className='inpage__header'>
             <div className='inner'>
               <div className='inpage__headline'>
-                <h1 className='inpage__title'>IFRC Disaster Response and Preparedness</h1>
+                <h1 className='inpage__title inpage__title--home'>IFRC Disaster Response and Preparedness</h1>
                 <p className='inpage__introduction'>IFRC GO aims to make all disaster information universally accessible and useful to IFRC responders for better decision making.</p>
               </div>
               <PresentationDash />

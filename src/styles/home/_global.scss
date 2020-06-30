@@ -20,21 +20,19 @@
   }
 
   .inpage__introduction {
-    @include column(8/12);
-    text-align: center;
-    float: none;
-    margin-left: auto;
-    margin-right: auto !important;
+
+    //text-align: center;
+    //float: none;  
   }
 
   .inpage__introduction__bigger {
     font-size: 1.2rem
   }
 
-  .inpage__title {
-    @include column(12/12);
-    text-align: center;
-  }
+  //.inpage__title {
+    //@include column(12/12);
+    //text-align: center;
+  //}
 }
 
 .presentation__actions {
@@ -136,7 +134,7 @@
     }
 
     @include media(large-up) {
-      @include span(2/10, $cycle: 5);
+      //@include span(2/10, $cycle: 5);
       border: none;
       margin: 0 !important;
 
@@ -191,6 +189,7 @@
   }
 
   &__icon_2020 {
+    align-self: baseline;
     height: 2.5rem;
     padding-bottom: ($global-spacing /2);
     margin-bottom: auto;

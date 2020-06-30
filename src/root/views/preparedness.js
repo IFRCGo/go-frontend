@@ -152,14 +152,14 @@ class Preparedness extends React.Component {
             <div className='inner'>
               <div className='inpage__headline'>
                 <h1 className='inpage__title'>Preparedness for Effective Response (PER)</h1>
-                <p className='inpage__introduction inpage__introduction__bigger'>
+                <p className='inpage__introduction'>
                   To enable National Societies to fulfil their auxiliary role, in line with the Red Cross and Red Crescent Fundamental Principles, by strengthening
                   local preparedness capacities to ensure timely and effective humanitarian assistance to prevent and alleviate human suffering.
                 </p>
               </div>
             </div>
           </header>
-          <div className='inpage__body'>
+          <div className='inpage__body row'>
             <PreparednessHeader />
             { this.geoJsonBuilt && this.state.geoJsonFinal !== null && this.state.geoJsonFinal.data.geoJSON.features.length > 0 ? <PerMap data={this.state.geoJsonFinal} noExport={true} noRenderEmergencies={true} overviewData={this.props.perOverviewForm} /> : null }
             { this.props.getPerEngagedNsPercentage.fetched && nsEngagedHasData ? <NationalSocietiesEngagedPer data={this.props.getPerEngagedNsPercentage} /> : null }

@@ -28,7 +28,7 @@ class Emergencies extends React.Component {
         <section className='inpage'>
           <BreadCrumb crumbs={[{link: '/emergencies', name: 'Emergencies'}, {link: '/', name: 'Home'}]} />
           <EmergenciesDash />
-          <div className='inpage__body'>
+          <div className='inpage__body row'>
             <div className='inner'>
               <EmergenciesTable
                 title='Emergencies in the last 30 days'
