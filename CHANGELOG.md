@@ -1,3 +1,7 @@
+### Release 4.3.8
+
+Hotfix Release (only an API release): Fix regression in CSV exports where ENUM fields were showing verbose labels instead of db values: https://github.com/IFRCGo/go-api/pull/794
+
 ### Release 4.3.7
 
 Hotfix release: fixes broken breadcrumbs on tabular views without filters - i.e. All Emergencies, All Operations, etc.
