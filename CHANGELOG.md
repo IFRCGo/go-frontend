@@ -9,7 +9,7 @@ Frontend:
 
 Backend:
 
- - Remove status=completed and reached_total is defined validation from 3W (This is handled on the frontend now)
+ - Remove status=completed and reached_total is defined validation from 3W (This is handled on the frontend now) - https://github.com/IFRCGo/go-api/pull/792/files#diff-181356e13945b05b6ffefda13468c403L134-L136
 
 ### Release 4.3.8
 
