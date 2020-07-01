@@ -64,6 +64,12 @@ function LanguageSelect(p) {
 
   React.useEffect(() => {
     getLanguage(currentLanguage);
+
+    if (currentLanguage === 'ar') {
+      document.body.style.direction = 'rtl';
+    } else {
+      document.body.style.direction = 'ltr';
+    }
   }, [currentLanguage, getLanguage]);
 
   React.useEffect(() => {
@@ -72,12 +78,6 @@ function LanguageSelect(p) {
 
   const handleLanguageButtonClick = React.useCallback((languageId) => {
     setCurrentLanguage(languageId);
-
-    if (languageId === 'ar') {
-      document.body.style.direction = 'rtl';
-    } else {
-      document.body.style.direction = 'ltr';
-    }
   }, [setCurrentLanguage]);
 
   return (

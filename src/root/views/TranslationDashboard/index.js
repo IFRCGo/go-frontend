@@ -225,17 +225,6 @@ function TranslationDashboard(p) {
           </h2>
           <div className={styles.actions}>
             <LanguageSelect />
-            {/*
-            <button className="button">
-              Export current
-            </button>
-            <button
-              className="button"
-              onClick={handleOverwriteButtonClick}
-            >
-              Overwrite server with local dev copy
-            </button>
-            */}
           </div>
         </div>
         <div className={styles.bottomSection}>
@@ -249,9 +238,7 @@ function TranslationDashboard(p) {
                 className={_cs(styles.tab, currentView === viewKey && styles.active)}
                 disabled={pending}
               >
-                { views[viewKey] }
-                &nbsp;
-                ({ viewCounts[viewKey] })
+                {`${views[viewKey]} (${viewCounts[viewKey]})`}
               </button>
             ))}
           </div>
