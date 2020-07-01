@@ -23,7 +23,7 @@ class Expandable extends React.Component {
     const link = expanded ? 'Show less' : 'Show more';
     return (
       <React.Fragment>
-        <p><span className={sectionClass || ''} dangerouslySetInnerHTML={{__html: out}} /></p>
+        <span className={sectionClass || ''} dangerouslySetInnerHTML={{__html: out}} />
         {this.state.expanded ? null : '...'} <a href='#' onClick={this.toggle}>{link}</a>
       </React.Fragment>
     );
