@@ -7,6 +7,9 @@ Frontend:
  - Fix display of country, region in field report listing on Emergency pages: https://github.com/IFRCGo/go-frontend/issues/1122
  - Fix redirect of Add Report button to go to Emergency page in Admin: https://github.com/IFRCGo/go-frontend/issues/1116
 
+Backend:
+
+ - Remove status=completed and reached_total is defined validation from 3W (This is handled on the frontend now)
 
 ### Release 4.3.8
 
