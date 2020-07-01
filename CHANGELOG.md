@@ -1,3 +1,23 @@
+### Release 4.3.9
+
+Frontend:
+
+ - 3w: Make fields not required if reporting society is ICRC: https://github.com/IFRCGo/go-frontend/issues/1334
+ - 3w: Project completed changes budget field to actual expenditure: https://github.com/IFRCGo/go-frontend/issues/1319
+ - Fix display of country, region in field report listing on Emergency pages: https://github.com/IFRCGo/go-frontend/issues/1122
+ - Fix redirect of Add Report button to go to Emergency page in Admin: https://github.com/IFRCGo/go-frontend/issues/1116
+
+Backend:
+
+ - Remove status=completed and reached_total is defined validation from 3W (This is handled on the frontend now) - https://github.com/IFRCGo/go-api/pull/792/files#diff-181356e13945b05b6ffefda13468c403L134-L136
+ - Added the previous email sending method back (python's smtplib) as a backup if sending emails with the API fails - https://github.com/IFRCGo/go-api/issues/737
+ - Fix some of the logs failing because of missing recordtypes
+ - Retaining Django (cronjob) logs with a new volume added to the docker container - MSM ticket
+
+### Release 4.3.8
+
+Hotfix Release (only an API release): Fix regression in CSV exports where ENUM fields were showing verbose labels instead of db values: https://github.com/IFRCGo/go-api/pull/794
+
 ### Release 4.3.7
 
 Hotfix release: fixes broken breadcrumbs on tabular views without filters - i.e. All Emergencies, All Operations, etc.
