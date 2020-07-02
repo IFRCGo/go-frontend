@@ -4,6 +4,8 @@ import _cs from 'classnames';
 
 import ProjectForm from './project-form';
 
+import Translate from '#components/Translate';
+
 function ProjectFormModal (p) {
   const {
     projectData,
@@ -17,7 +19,7 @@ function ProjectFormModal (p) {
       <div className='project-form-modal'>
         <header className='tc-header'>
           <h1 className='tc-heading'>
-            Red Cross / Red Crescent activities
+            <Translate stringId='projectFormModalTitle'/>
           </h1>
           <div className='tc-actions'>
             <button
@@ -30,7 +32,7 @@ function ProjectFormModal (p) {
               onClick={onCloseButtonClick}
               disabled={pending}
             >
-              Close
+              <Translate stringId='projectFormModalClose'/>
             </button>
           </div>
         </header>

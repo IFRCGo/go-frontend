@@ -16,6 +16,8 @@ import { AppealTypeComparator } from './home-map/filtering/comparator/appeal-typ
 import { EmergencyTypeComparator } from './home-map/filtering/comparator/emergency-type-comparator';
 import EmergenciesLeftMenu from './common/emergencies-left-menu';
 import MarkerLayerStylesheetFactory from './home-map/factory/marker-layer-stylesheet-factory';
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
 
 const scale = chroma.scale(['#F0C9E8', '#861A70']);
 
@@ -238,7 +240,9 @@ class CountryMap extends React.Component {
   renderError () {
     const { operations, deployments } = this.props;
     if (get(operations, 'error') || get(deployments, 'error')) {
-      return <p>Data not available.</p>;
+      return <p>
+               <Translate stringId='countryMapError'/>
+             </p>;
     }
   }
 
@@ -247,6 +251,7 @@ class CountryMap extends React.Component {
     const layers = this.props.layers ? this.state.markerLayers.concat(this.props.layers) : this.state.markerLayers;
     const geoJSON = this.state.markerGeoJSON;
     const mapContainerClassName = this.props.noRenderEmergencies ? 'map-container map-container-fullwidth' : 'map-container';
+    const { strings } = this.context;
 
     return (
       <React.Fragment>
@@ -262,7 +267,7 @@ class CountryMap extends React.Component {
           <MapComponent className='map-vis__holder'
             noExport={this.props.noExport}
             downloadButton={true}
-            downloadedHeaderTitle='Movement activities'
+            downloadedHeaderTitle={strings.countryMapDownloadedTitle}
             configureMap={this.configureMap}
             layers={layers}
             geoJSON={geoJSON}>
@@ -290,6 +295,7 @@ class CountryMap extends React.Component {
   }
 }
 
+CountryMap.contextType = LanguageContext;
 if (environment !== 'production') {
   CountryMap.propTypes = {
     operations: T.object,

@@ -15,7 +15,7 @@
       font-size: 1rem;
       line-height: inherit;
       vertical-align: top;
-      margin-left: 0.25rem;
+      margin-inline-start: 0.25rem;
     }
   }
 
@@ -115,14 +115,14 @@
 .drop-trans--right {
   &.drop__content {
     transition: opacity .16s ease, right .16s ease;
-    margin-right: 1rem;
+    margin-inline-end: 1rem;
   }
 }
 
 .drop-trans--left {
   &.drop__content {
     transition: opacity .16s ease, left .16s ease;
-    margin-left: 1rem;
+    margin-inline-start: 1rem;
   }
 }
 
@@ -318,7 +318,7 @@
 
 .drop__menu--select {
   .drop__menu-item {
-    padding-right: $global-spacing * 2.5;
+    padding-inline-end: $global-spacing * 2.5;
   }
 
   .drop__menu-item--active {
@@ -344,7 +344,7 @@
 
 .drop__menu--iconified {
   .drop__menu-item {
-    padding-left: $global-spacing * 2.75;
+    padding-inline-start: $global-spacing * 2.75;
 
     &::before,
     > [class^="collecticon-"] {

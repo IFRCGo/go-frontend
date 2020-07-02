@@ -44,7 +44,7 @@
 
   .logo__item {
     display: inline-block;
-    margin-right: $global-spacing * 3;
+    margin-inline-end: $global-spacing * 3;
     @include column(12/12);
     margin-top: $global-spacing;
     margin-bottom: $global-spacing;
@@ -146,7 +146,7 @@
   }
 
   .icon__circle {
-    margin-right: ($global-spacing / 2);
+    margin-inline-end: ($global-spacing / 2);
     flex-shrink: 0;
   }
 }
@@ -260,7 +260,7 @@
   }
 
   .box__global__content--ref__link {
-    padding-right: $global-spacing-3;
+    padding-inline-end: $global-spacing-3;
 
     &:last-of-type {
       margin-bottom: 0;

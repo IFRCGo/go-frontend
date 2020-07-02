@@ -20,19 +20,19 @@
 
   .align-center {
     display: block;
-    margin-left: auto;
-    margin-right: auto;
+    margin-inline-start: auto;
+    margin-inline-end: auto;
   }
 
   .align-left {
-    float: left;
-    margin-right: $global-spacing * 1.5;
+    float: inline-start;
+    margin-inline-end: $global-spacing * 1.5;
   }
 
 
   .align-right {
-    float: right;
-    margin-left:  $global-spacing * 1.5;
+    float: inline-end;
+    margin-inline-start:  $global-spacing * 1.5;
   }
 }
 
@@ -49,12 +49,12 @@
     }
 
     .align-left {
-      margin-right: $prose-resp-font-size * $prose-resp-line-height;
+      margin-inline-end: $prose-resp-font-size * $prose-resp-line-height;
     }
 
 
     .align-right {
-      margin-left: $prose-resp-font-size * $prose-resp-line-height;
+      margin-inline-start: $prose-resp-font-size * $prose-resp-line-height;
     }
   }
 }
@@ -134,12 +134,12 @@ dd {
 .ul--go,
 .ol--go {
   list-style: none;
-  margin-left: 0;
+  margin-inline-start: 0;
 
   li {
     display: block;
     position: relative;
-    padding-left:$global-spacing * 1.5;
+    padding-inline-start:$global-spacing * 1.5;
 
     &::before {
       position: absolute;
@@ -189,7 +189,7 @@ dd {
   line-height: 1.25rem;
   padding-top: $global-spacing;
   font-weight: $base-font-regular;
-  margin-left: 1rem;
+  margin-inline-start: 1rem;
 
   &::before {
     position: absolute;
@@ -206,7 +206,7 @@ dd {
   @extend .clearfix;
 
   dt, dd {
-    float: left;
+    float: inline-start;
   }
 
   dt {
@@ -214,16 +214,16 @@ dd {
     clear: left;
     padding-top: $global-spacing / 8;
     padding-bottom: $global-spacing / 8;
-    padding-right: $global-spacing / 2;
+    padding-inline-end: $global-spacing / 2;
   }
 
   dd {
     width: 68%;
-    padding-left: $global-spacing / 2;
+    padding-inline-start: $global-spacing / 2;
   }
 
   dd + dd {
-    margin-left: 32%;
+    margin-inline-start: 32%;
   }
 }
 
@@ -237,7 +237,7 @@ dd {
     font-weight: $base-font-regular;
     .content-highlight {
       font-size: 1.15rem;
-      margin-left: $global-spacing/2;
+      margin-inline-start: $global-spacing/2;
       color: rgba(0, 0, 0, 1);
       text-transform: capitalize;
     }
@@ -250,7 +250,7 @@ dd {
   > ul,
   > ol {
     @include media(medium-up) {
-      margin-left: $global-spacing * 1.5;
+      margin-inline-start: $global-spacing * 1.5;
     }
   }
 
@@ -268,7 +268,7 @@ dd {
       padding-bottom: 0;
 
       dt, dd {
-        float: left;
+        float: inline-start;
         width: 50%;
         margin: 0;
         padding: ($global-spacing / 2) 0;
@@ -281,16 +281,16 @@ dd {
 
       dt {
         clear: left;
-        padding-right: $global-spacing / 2;
+        padding-inline-end: $global-spacing / 2;
       }
 
       dd {
         text-align: right;
-        padding-left: $global-spacing / 2;
+        padding-inline-start: $global-spacing / 2;
       }
 
       dd + dd {
-        margin-left: 50%;
+        margin-inline-start: 50%;
         box-shadow: none;
       }
     }
@@ -307,7 +307,7 @@ dd {
   > .ul--go,
   > .ol--go {
     @include media(medium-up) {
-      margin-left: 0;
+      margin-inline-start: 0;
 
       li {
         &::before {
@@ -404,7 +404,7 @@ blockquote,
 
 hr,
 .hr {
-  float: left;
+  float: inline-start;
   border: 0;
   height: 1px;
   background: none;
@@ -614,7 +614,7 @@ $font-sizes: (
   font-size: 3.4em;
   padding: 0 0.1em 0 0;
   line-height: 0.7;
-  float: left;
+  float: inline-start;
   margin: 0.1em 0.1em 0 0;
 }
 

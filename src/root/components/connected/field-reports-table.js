@@ -20,6 +20,9 @@ import Fold from '#components/fold';
 import BlockLoading from '#components/block-loading';
 import DisplayTable, { FilterHeader, SortHeader } from '#components/display-table';
 import { SFPComponent } from '#utils/extendables';
+import { withLanguage } from '#root/languageContext';
+import Translate from '#components/Translate';
+
 
 class FieldReportsTable extends SFPComponent {
   // Methods form SFPComponent:
@@ -104,7 +107,8 @@ class FieldReportsTable extends SFPComponent {
       error,
       data
     } = this.props.list;
-    const title = this.props.title || 'Field Reports';
+    const { strings } = this.props;
+    const title = this.props.title || strings.fieldReportsTableTitleDefault;
 
     if (fetching) {
       return (
@@ -118,7 +122,11 @@ class FieldReportsTable extends SFPComponent {
     if (error || (fetched && !results.length && !this.props.isAuthenticated)) {
       return (
         <Fold title={this.props.title} id={this.props.id}>
-          <p>You must be logged in to view field reports. <Link key='login' to={{pathname: '/login', state: {from: this.props.location}}} className='link--primary' title='Login'>Login</Link></p>
+          <p>
+              <Translate stringId='fieldReportsTableLoginRequired'/>
+            <Link key='login' to={{pathname: '/login', state: {from: this.props.location}}} className='link--primary' title={strings.fieldReportsTableLogin}>
+              <Translate stringId='fieldReportsTableLogin'/>
+            </Link></p>
         </Fold>
       );
     }
@@ -127,25 +135,25 @@ class FieldReportsTable extends SFPComponent {
       const headings = [
         {
           id: 'date',
-          label: <FilterHeader id='date' title='Created At' options={dateOptions} filter={this.state.table.filters.date} onSelect={this.handleFilterChange.bind(this, 'table', 'date')} />
+          label: <FilterHeader id='date' title={strings.fieldReportsTableCreatedAt} options={dateOptions} filter={this.state.table.filters.date} onSelect={this.handleFilterChange.bind(this, 'table', 'date')} />
         },
         {
           id: 'name',
-          label: <SortHeader id='name' title='Name' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'summary')} />
+          label: <SortHeader id='name' title={strings.fieldReportsTableName} sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'summary')} />
         },
-        { id: 'event', label: 'Emergency' },
+        { id: 'event', label: strings.fieldReportsTableEmergency },
         {
           id: 'dtype',
-          label: <FilterHeader id='dtype' title='Disaster Type' options={dTypeOptions} filter={this.state.table.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'table', 'dtype')} />
+          label: <FilterHeader id='dtype' title={strings.fieldReportsTableDisasterType} options={dTypeOptions} filter={this.state.table.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'table', 'dtype')} />
         },
-        { id: 'countries', label: 'Countries' }
+        { id: 'countries', label: strings.fieldReportsTableCountry }
       ];
 
       const rows = results.map(o => ({
         id: o.id,
         date: DateTime.fromISO(o.created_at).toISODate(),
-        name: <Link to={`/reports/${o.id}`} className='link--primary' title='View Field Report'>{o.summary || nope}</Link>,
-        event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title='View Emergency'>{o.event.name}</Link> : nope,
+        name: <Link to={`/reports/${o.id}`} className='link--primary' title={strings.fieldReportsTableViewAll}>{o.summary || nope}</Link>,
+        event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title={strings.fieldReportsTableViewEmergency}>{o.event.name}</Link> : nope,
         dtype: get(getDtypeMeta(o.dtype.id), 'label', nope),
         countries: intersperse(o.countries.map(c => <Link key={c.id} to={`/countries/${c.id}`} className='link--primary' title='View Country'>{c.name}</Link>), ', ')
       }));
@@ -168,12 +176,16 @@ class FieldReportsTable extends SFPComponent {
           />
           {this.props.viewAll ? (
             <div className='fold__footer'>
-              View all field reports in <Link className='link--primary export--link' to={this.props.viewAll + '?region=0'}>{this.props.viewAllText || ' Africa'}</Link> /&nbsp;
+              <Translate stringId='fieldReportsViewAllIn'/>
+               <Link className='link--primary export--link' to={this.props.viewAll + '?region=0'}>{this.props.viewAllText || ' Africa'}</Link> /&nbsp;
               <Link className='link--primary export--link' to={this.props.viewAll + '?region=1'}>{this.props.viewAllText || 'America'}</Link> /&nbsp;
               <Link className='link--primary export--link' to={this.props.viewAll + '?region=2'}>{this.props.viewAllText || 'Asia'}</Link> /&nbsp;
               <Link className='link--primary export--link' to={this.props.viewAll + '?region=3'}>{this.props.viewAllText || 'Europe'}</Link> /&nbsp;
               <Link className='link--primary export--link' to={this.props.viewAll + '?region=4'}>{this.props.viewAllText || 'the Middle East'}</Link><br/>
-              <Link className='link--primary export--link' to={this.props.viewAll}>{this.props.viewAllText || 'View all field reports'}</Link> <i>(Performance problems with Export Table)</i>
+              <Link className='link--primary export--link' to={this.props.viewAll}>{this.props.viewAllText || strings.fieldReportsTableViewAllReports}</Link>
+              <i>
+                <Translate stringId='fieldReportsTableProblem'/>
+              </i>
             </div>
           ) : null}
         </Fold>
@@ -217,4 +229,4 @@ const dispatcher = (dispatch) => ({
   _getFieldReportsList: (...args) => dispatch(getFieldReportsList(...args))
 });
 
-export default withRouter(connect(selector, dispatcher)(FieldReportsTable));
+export default withLanguage(withRouter(connect(selector, dispatcher)(FieldReportsTable)));

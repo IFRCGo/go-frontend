@@ -42,8 +42,8 @@
     margin-bottom: 0 !important;
 
     .form__group {
-      margin-right: 0 !important;
-      margin-left: 0 !important;
+      margin-inline-end: 0 !important;
+      margin-inline-start: 0 !important;
       width: 50% !important;
     }
   }
@@ -196,7 +196,7 @@
     }
 
     .form__option--inline {
-      margin-left: 0;
+      margin-inline-start: 0;
       display: flex;
     }
   }
@@ -352,7 +352,7 @@
   }
 
   .resp-status {
-    margin-right: 8%;
+    margin-inline-end: 8%;
     padding-top: 0;
 
     .form__inner-header {
@@ -488,7 +488,7 @@
   margin: ($global-spacing * 4) 0;
   button {
     &:first-child {
-      margin-right: $global-spacing/2;
+      margin-inline-end: $global-spacing/2;
     };
   }
 }
@@ -511,7 +511,7 @@
 }
 
 .epi-figures-source {
-  float: left;
+  float: inline-start;
   width: 100%;
 }
 
@@ -521,9 +521,9 @@
 }
 
 .epi-label-indent {
-  padding-left: 3rem;
+  padding-inline-start: 3rem;
 }
 
 .pl-small {
-  padding-left: 1.5rem;
+  padding-inline-start: 1.5rem;
 }

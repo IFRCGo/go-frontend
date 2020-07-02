@@ -4,6 +4,7 @@ import { environment } from '#config';
 import { PropTypes } from 'prop-types';
 import { formatDate, percent, round, commaSeparatedNumber as n } from '#utils/format';
 import Progress from './../progress-labeled';
+import Translate from '#components/Translate';
 
 const OperationCard = ({operationId, operationName, emergencyDeployments, appeals, lastUpdate}) => {
   const beneficiaries = appeals.reduce((acc, curr) => acc + curr.num_beneficiaries, 0);
@@ -15,36 +16,50 @@ const OperationCard = ({operationId, operationName, emergencyDeployments, appeal
       <Link to={`/emergencies/${operationId}`}>
         <div className="card_box card_box_left">
           <h2 className='card__title'>{ operationName.length > 30 ? operationName.slice(0, 30) + '...' : operationName }</h2>
-          <small className='last_updated'>Last updated: {formatDate(lastUpdate)}</small>
+          <small className='last_updated'>
+            <Translate stringId='operationCardLastUpdated'/>
+            &nbsp;
+            {formatDate(lastUpdate)}
+          </small>
         </div>
 
         <div className='card_box_container card_box_container--op'>
           <div className='card_box card_box_left card_box--op'>
             <div className="card_box_no">{beneficiaries && beneficiaries !== 0 ? n(beneficiaries) : '--'}</div>
             <span className='affected_population_icon'></span>
-            <small className='heading-tiny'>Targeted Population</small>
+            <small className='heading-tiny'>
+              <Translate stringId='operationCardTargetedPopulation'/>
+            </small>
           </div>
           <div className='card_box card_box_left card_box--op'>
             <span className='affected_population_icon'></span>
             <div className="card_box_no">{n(emergencyDeployments.deployedErus)}</div>
-            <small className='heading-tiny'>Deployed Emergency Response Units</small>
+            <small className='heading-tiny'>
+              <Translate stringId='operationCardDepoloyedUnits'/>
+            </small>
           </div>
         </div>
 
         <div className='card_box_container card_box_container--op'>
           <div className='card_box card_box_left card_box--op'>
             <div className="card_box_no">{requested && requested !== 0 ? `${n(requested)} CHF` : '--'}</div>
-            <small className='heading-tiny'>Funding Requirements</small>
+            <small className='heading-tiny'>
+              <Translate stringId='operationCardFunding'/>
+            </small>
           </div>
           <div className='card_box card_box_left card_box--op'>
             <span className='deployed_personnel_icon'></span>
             <div className="card_box_no">{n(emergencyDeployments.deployedPersonnel)}</div>
-            <small className='heading-tiny'>Deployed Surge Personnel</small>
+            <small className='heading-tiny'>
+              <Translate stringId='operationCardDeployed'/>
+            </small>
           </div>
         </div>
 
         <div className='card_box_full card_box_container card_box_container--op'>
-          <div className="heading-tiny">Funding Coverage</div>
+          <div className="heading-tiny">
+            <Translate stringId='operationCardFundingCoverage'/>
+          </div>
           <div className="card_box_fc">{requested ? round(percent(funded, requested)) : 0}%</div>
         </div>
         <div className="card_box_footer">

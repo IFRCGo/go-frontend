@@ -1,6 +1,7 @@
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
 import { environment } from '#config';
+import LanguageContext from '#root/languageContext';
 class Expandable extends React.Component {
   constructor (props) {
     super(props);
@@ -18,9 +19,10 @@ class Expandable extends React.Component {
   render () {
     const { text, limit, sectionClass } = this.props;
     const { expanded } = this.state;
+    const { strings } = this.context;
     const out = expanded ? text
       : text && text.length > limit ? text.slice(0, limit) : text;
-    const link = expanded ? 'Show less' : 'Show more';
+    const link = expanded ? strings.expandableShowLess : strings.expandableShowMore;
     return (
       <React.Fragment>
         <span className={sectionClass || ''} dangerouslySetInnerHTML={{__html: out}} />
@@ -30,6 +32,7 @@ class Expandable extends React.Component {
   }
 }
 
+Expandable.contextType = LanguageContext;
 if (environment !== 'production') {
   Expandable.propTypes = {
     limit: T.number,

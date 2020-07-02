@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 import Fold from '../fold';
+import Translate from '#components/Translate';
 
 class PreparednessPhaseOutcomes extends React.Component {
   render () {
@@ -30,7 +31,9 @@ class PreparednessPhaseOutcomes extends React.Component {
           <div style={boxContainer}>
             <div style={boxInner}>
               <p>
-                <span style={title}>PER related uploaded documents</span>
+                <span style={title}>
+                  <Translate stringId='preparednessPhaseOutcomes'/>
+                </span>
               </p>
               {links}
             </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import _cs from 'classnames';
 
+import Translate from '#components/Translate';
 import IndicatorOutput from './IndicatorOutput';
 
 class SocialEvents extends React.PureComponent {
@@ -13,7 +14,7 @@ class SocialEvents extends React.PureComponent {
     return (
       <div className={_cs(className, 'overview-social-events')}>
         <h3 className='tc-heading'>
-          Social events
+          <Translate stringId='socialEventsTitle'/>
         </h3>
         <div className='tc-content'>
           {data.map(d => (

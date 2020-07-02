@@ -11,6 +11,7 @@ import {
 } from 'recharts';
 
 import FormattedNumber from '#components/formatted-number';
+import Translate from '#components/Translate';
 
 const colors = {
   'Completed': '#f5333f',
@@ -28,7 +29,7 @@ function StatusOverview (p) {
   return (
     <div className={_cs('status-activity', className)}>
       <h4 className='tc-heading'>
-        Total activities by status
+        <Translate stringId='statusOverviewTotalActivityStatus'/>
       </h4>
       <div className='tc-content'>
         <div className='total-activity'>
@@ -39,7 +40,7 @@ function StatusOverview (p) {
             fixedTo={1}
           />
           <div className='tc-label'>
-            Total activities
+            <Translate stringId='statusOverviewTotalActivity'/>
           </div>
         </div>
         <div className='tc-chart-container'>

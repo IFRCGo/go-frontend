@@ -162,9 +162,9 @@ a.link--external {
   color: $secondary-color;
   text-decoration: none;
   position: relative;
-  padding-left: $global-spacing * 1.5;
+  padding-inline-start: $global-spacing * 1.5;
   font-weight: $base-font-regular;
-  transition: padding-left .2s ease-in-out;
+  transition: padding-inline-start .2s ease-in-out;
   &:before {
     content: '';
     position: absolute;
@@ -177,7 +177,7 @@ a.link--external {
   };
   &:hover {
     opacity: 1;
-    padding-left: $global-spacing * 2;
+    padding-inline-start: $global-spacing * 2;
     &:before {
       width: 1.5rem;
     };
@@ -189,35 +189,35 @@ a.link--external {
 
 .row {
   @extend .clearfix;
-  padding-left: $global-spacing * 3;
-  padding-right: $global-spacing * 3;
+  padding-inline-start: $global-spacing * 3;
+  padding-inline-end: $global-spacing * 3;
 
   @include media(xlarge-up) {
-    padding-left: $global-spacing * 5;
-    padding-right: $global-spacing * 5;
+    padding-inline-start: $global-spacing * 5;
+    padding-inline-end: $global-spacing * 5;
   }
 
   &--centered {
     max-width: $row-max-width;
-    margin-left: auto;
-    margin-right: auto;
+    margin-inline-start: auto;
+    margin-inline-end: auto;
   }
 }
 
 .row-fold {
   @extend .clearfix;
-  padding-left: $global-spacing * 1.5;
-  padding-right: $global-spacing * 1.5;
+  padding-inline-start: $global-spacing * 1.5;
+  padding-inline-end: $global-spacing * 1.5;
 
   @include media(xlarge-up) {
-    padding-left: $global-spacing * 2.5;
-    padding-right: $global-spacing * 2.5;
+    padding-inline-start: $global-spacing * 2.5;
+    padding-inline-end: $global-spacing * 2.5;
   }
 
   &--centered {
     max-width: $row-max-width;
-    margin-left: auto;
-    margin-right: auto;
+    margin-inline-start: auto;
+    margin-inline-end: auto;
   }
 }
 

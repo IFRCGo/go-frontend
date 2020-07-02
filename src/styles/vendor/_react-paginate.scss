@@ -15,7 +15,7 @@
   margin-bottom: $global-spacing * 2;
 
   > li {
-    float: left;
+    float: inline-start;
   }
 
   .previous a,
@@ -23,8 +23,8 @@
     @extend .button, .button--primary-glass, .button--text-hidden;
     text-decoration: none;
     text-transform: uppercase;
-    padding-right: 0;
-    padding-left: 0;
+    padding-inline-end: 0;
+    padding-inline-start: 0;
   }
 
   .previous a {
@@ -46,7 +46,7 @@
     @extend .clearfix;
 
     &__wrapper {
-      float: left;
+      float: inline-start;
 
       &.active .pages__page {
         border-radius: 5px;

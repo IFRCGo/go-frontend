@@ -1,3 +1,5 @@
+// import { getResponseFromRequest } from '#utils/request';
+
 const initialState = {
   fetching: false,
   fetched: false,
@@ -43,4 +45,34 @@ export const projectDeleteSelector = (state) => (
 
 export const projectFormSelector = (state) => (
   state.projectForm
+);
+
+export const languageSelector = (state) => (
+  state.lang
+);
+
+export const languageResponseSelector = (state) => (
+  state.lang
+);
+
+export const currentLanguageSelector = (state) => (
+  languageSelector(state).current
+);
+
+export const languageDataSelector = (state) => (
+  languageSelector(state).data
+);
+
+export const languageStringsSelector = (state) => (
+  languageSelector(state).strings
+);
+
+export const currentLanguageStringsSelector = languageStringsSelector;
+
+export const languageBulkResponseSelector = (state) => (
+  state.postLanguageBulk
+);
+
+export const currentLangugageSelector = (state) => (
+  languageSelector(state).current || 'en'
 );

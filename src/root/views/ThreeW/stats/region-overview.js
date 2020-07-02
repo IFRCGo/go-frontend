@@ -1,6 +1,8 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
 
+import Translate from '#components/Translate';
+
 const ProgressBar = (p) => {
   const {
     value,
@@ -62,7 +64,7 @@ export default class RegionOverview extends React.PureComponent {
       <div className={_cs(className, 'three-w-stats-region-overview')}>
         <div className='tc-header'>
           <h4>
-            Regions
+            <Translate stringId='regionOverviewTitle'/>
           </h4>
           <Scale
             max={max}

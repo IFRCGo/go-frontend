@@ -10,6 +10,8 @@ import EmergenciesMap from '#components/map/emergencies-map';
 import Progress from '#components/progress';
 import BlockLoading from '#components/block-loading';
 
+import Translate from '#components/Translate';
+
 class EmergenciesDash extends React.Component {
   renderEmergencies () {
     const { lastMonth } = this.props;
@@ -19,7 +21,9 @@ class EmergenciesDash extends React.Component {
     const max = Math.max.apply(Math, emerg.map(o => o.items.length));
     return (
       <div className='emergencies'>
-        <h2>Emergencies by Type</h2>
+        <h2>
+          <Translate stringId='emergenciesDashHeading' />
+        </h2>
         <div className='emergencies__container'>
           <ul className='emergencies__list emergenciest__list--static'>
             {emerg.map(o => (
@@ -46,9 +50,13 @@ class EmergenciesDash extends React.Component {
         <article className='chart-tooltip'>
           <div className='chart-tooltip__contents'>
             <dl>
-              <dd>Date</dd>
+              <dd>
+                <Translate stringId='emergenciesDashDate' />
+              </dd>
               <dt>{DateTime.fromISO(item.timespan, {zone}).toFormat('MMMM yyyy')}</dt>
-              <dd>Total</dd>
+              <dd>
+                <Translate stringId='emergenciesDashTotal' />
+              </dd>
               <dt>{item.count}</dt>
             </dl>
           </div>
@@ -80,7 +88,9 @@ class EmergenciesDash extends React.Component {
 
     return (
       <figure className='chart'>
-        <figcaption>Emergencies Over the Last Year</figcaption>
+        <figcaption>
+          <Translate stringId='emergenciesDashOverLastYear' />
+        </figcaption>
         <div className='chart__container'>
           {this.renderChart(data, 'month')}
         </div>
@@ -97,14 +107,18 @@ class EmergenciesDash extends React.Component {
           <div className='inner'>
             <div className='inpage__headline'>
               <div className='inpage__headline-content'>
-                <h1 className='inpage__title'>Emergencies in the last 30 days</h1>
+                <h1 className='inpage__title'>
+                  <Translate stringId='emergenciesDashLast30Days' />
+                </h1>
                 <div className='row'>
                   <div className='inpage__headline-stats'>
                     <Stats lastMonth={lastMonth} />
                   </div>
                   <div className='inpage__headline-charts'>
                     <div className='stats-chart'>
-                      <h1 className='visually-hidden'>DREFS and Appeals over time</h1>
+                      <h1 className='visually-hidden'>
+                        <Translate stringId='emergenciesDashOverTime'/>
+                      </h1>
                       {this.renderByMonth()}
                       {this.renderEmergencies()}
                     </div>

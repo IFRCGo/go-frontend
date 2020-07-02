@@ -41,7 +41,7 @@
 .component__block__icon {
   width: 13px;
   height: 13px;
-  margin-right: $global-spacing/2;
+  margin-inline-end: $global-spacing/2;
   vertical-align: sub;
 }
 
@@ -73,7 +73,7 @@
     height: auto;
 
     @include media(small-up) {
-      float: right;
+      float: inline-end;
     }
   }
 }

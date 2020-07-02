@@ -29,9 +29,22 @@ import fdrs from './fdrs';
 import csv from './csv';
 import perForm from './per-form';
 import subscriptions from './subscriptions';
-import projects from './projects.js';
-import countryOverview from './country-overview.js';
+import projects from './projects';
+import countryOverview from './country-overview';
 import domainWhitelist from './domain-whitelist';
+import lang from './lang';
+
+import {
+  POST_PROJECT,
+  DELETE_PROJECT,
+  GET_REGIONAL_PROJECTS_OVERVIEW,
+  GET_REGIONAL_MOVEMENT_ACTIVITIES,
+  GET_NATIONAL_SOCIETY_ACTIVITIES,
+  GET_NATIONAL_SOCIETY_ACTIVITIES_WO_FILTERS,
+  GET_REGIONAL_PROJECTS,
+  GET_ME,
+  POST_LANGUAGE_BULK,
+} from '#actions';
 
 export const reducers = {
   user,
@@ -62,16 +75,18 @@ export const reducers = {
   perForm,
   subscriptions,
   projects,
-  projectForm: createReducer('POST_PROJECT'),
-  projectDelete: createReducer('DELETE_PROJECT'),
+  projectForm: createReducer(POST_PROJECT),
+  projectDelete: createReducer(DELETE_PROJECT),
   countryOverview,
-  regionalProjectsOverview: createReducer('GET_REGIONAL_PROJECTS_OVERVIEW'),
-  regionalMovementActivities: createReducer('GET_REGIONAL_MOVEMENT_ACTIVITIES'),
-  nationalSocietyActivities: createReducer('GET_NATIONAL_SOCIETY_ACTIVITIES'),
-  nationalSocietyActivitiesWoFilters: createReducer('GET_NATIONAL_SOCIETY_ACTIVITIES_WO_FILTERS'),
-  regionalProjects: createReducer('GET_REGIONAL_PROJECTS'),
-  me: createReducer('GET_ME'),
-  domainWhitelist
+  regionalProjectsOverview: createReducer(GET_REGIONAL_PROJECTS_OVERVIEW),
+  regionalMovementActivities: createReducer(GET_REGIONAL_MOVEMENT_ACTIVITIES),
+  nationalSocietyActivities: createReducer(GET_NATIONAL_SOCIETY_ACTIVITIES),
+  nationalSocietyActivitiesWoFilters: createReducer(GET_NATIONAL_SOCIETY_ACTIVITIES_WO_FILTERS),
+  regionalProjects: createReducer(GET_REGIONAL_PROJECTS),
+  me: createReducer(GET_ME),
+  domainWhitelist,
+  lang,
+  postLanguageBulk: createReducer(POST_LANGUAGE_BULK),
 };
 
 export default combineReducers(reducers);

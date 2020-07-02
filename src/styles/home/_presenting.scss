@@ -73,7 +73,7 @@
 
 .tooltip-button {
   content: url('/assets/graphics/layout/circle-information.svg');
-  margin-left: 5px;
+  margin-inline-start: 5px;
   display: inline-block;
   width: 15px;
   height: 15px;
@@ -82,7 +82,7 @@
 
 .tooltip-button:hover {
   content: url('/assets/graphics/layout/circle-information-hover.svg');
-  margin-left: 5px;
+  margin-inline-start: 5px;
   display: inline-block;
   width: 15px;
   height: 15px;
@@ -90,7 +90,7 @@
 }
 
 .inpage__title--map-fullscreen {
-  padding-left: 400px; // width of logo + some padding
+  padding-inline-start: 400px; // width of logo + some padding
   margin: ($global-spacing/2) 0 0 0;
   text-align: center;
   font-size: 2rem;

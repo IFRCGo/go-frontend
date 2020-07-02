@@ -36,7 +36,7 @@
 }
 
 .label-secondary-list {
-  margin-left: $global-spacing-3;
+  margin-inline-start: $global-spacing-3;
 }
 
 
@@ -47,7 +47,7 @@
 .label--info,
 .label--warning,
 .label--danger {
-  padding-left: 1.25rem;
+  padding-inline-start: 1.25rem;
 
   &::before {
     position: absolute;

@@ -6,7 +6,7 @@
   flex: 1;
   display: flex;
   position: relative;
-  float: left;
+  float: inline-start;
 
 /*  &::before {
     content: '';
@@ -15,7 +15,7 @@
     left: 0;
     height: 1px;
     width: 200vw;
-    margin-left: -50vw;
+    margin-inline-start: -50vw;
     background: tint($base-color, 92%);
   }*/
 
@@ -31,26 +31,26 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding-left: 1rem;
+  padding-inline-start: 1rem;
   position: relative;
 }
 
 .page__meta-nav-elements {
   font-size: 0.75rem;
   line-height: 1.25rem;
-  border-right: 1px solid #c9c3c1;
-  padding-right: 1rem;
-  padding-left: 1rem;
+  border-inline-end: 1px solid #c9c3c1;
+  padding-inline-end: 1rem;
+  padding-inline-start: 1rem;
   @include media(small-down) {
-    padding-left: 0;
+    padding-inline-start: 0;
   }
 }
 
 .page__meta-nav-elements-borderless {
   font-size: 0.75rem;
   line-height: 1.25rem;
-  padding-right: 1rem;
-  padding-left: 1rem;
+  padding-inline-end: 1rem;
+  padding-inline-start: 1rem;
 }
 
 /* Global menu */
@@ -76,11 +76,11 @@
     margin: 0 $global-spacing;
 
     &:first-child {
-      margin-left: 0;
+      margin-inline-start: 0;
     }
 
     &:last-child {
-      margin-right: 0;
+      margin-inline-end: 0;
     }
   }
 }
@@ -121,7 +121,7 @@
 
   .form__control {
     border-radius: $full-border-radius;
-    padding-left: 3rem;
+    padding-inline-start: 3rem;
     font-size: 0.875rem;
     color: $base-color;
     &:hover {
@@ -144,7 +144,7 @@
   top: 0;
   left: 0;
   background-color: transparent;
-  padding-left: 1rem;
+  padding-inline-start: 1rem;
 
   &::before {
     @extend %collecticon-magnifier-right;
@@ -188,14 +188,14 @@
     img {
       margin-top: $global-spacing/2;
       height: 2rem;
-      float: right;
+      float: inline-end;
     }
   }
   .page__title {
-    float: right;
+    float: inline-end;
   }
   .page__menu {
-    float: left;
+    float: inline-start;
     a {
       position: relative;
       font-size: 1.5rem;
@@ -241,14 +241,14 @@
     margin-top: $global-spacing;
     li {
       font-weight: $base-font-light;
-      margin-left: 0.5rem;
+      margin-inline-start: 0.5rem;
       font-size: 0.875rem;
     }
   }
   .mobile__actions {
     padding: $global-spacing 0;
     button {
-      float: right;
+      float: inline-end;
     }
   }
 }

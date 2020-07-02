@@ -62,11 +62,11 @@ main {
   }
   p {
     margin-bottom: 0;
-    float: left;
+    float: inline-start;
     width: 90%;
   }
   .beta-note__actions {
-    float: right;
+    float: inline-end;
     text-align: right;
     width: 10%;
   }
@@ -166,23 +166,23 @@ main {
   }
 
   .footer-left-block {
-    float: left;
+    float: inline-start;
 
     a {
-      padding-right: 10px;
+      padding-inline-end: 10px;
     }
 
     a:not(:first-child) {
-      padding-left: 10px;
+      padding-inline-start: 10px;
     }
 
     a:not(:last-child) {
-      border-right: 1px solid #fff;
+      border-inline-end: 1px solid #fff;
     }
   }
 
   .footer-right-block {
-    float: right;
+    float: inline-end;
   }
 }
 

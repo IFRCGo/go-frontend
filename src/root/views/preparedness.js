@@ -21,6 +21,9 @@ import { getCountryMeta } from '#utils/get-country-meta';
 import { getCentroid } from '#utils/country-centroids';
 import NationalSocietiesEngagedPer from '#components/preparedness/national-societies-engaged-per';
 import GlobalPreparednessHighlights from '#components/preparedness/global-preparedness-highlights';
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
+
 // import _groupBy from 'lodash.groupby';
 
 class Preparedness extends React.Component {
@@ -135,6 +138,7 @@ class Preparedness extends React.Component {
   }
 
   render () {
+    const { strings } = this.context;
     const nsEngagedHasData = this.props.getPerEngagedNsPercentage.fetched && typeof this.props.getPerEngagedNsPercentage.data.results !== 'undefined'
       ? this.props.getPerEngagedNsPercentage.data.results.filter((engaged) => engaged.forms_sent !== 0).length > 0
       : false;
@@ -142,7 +146,7 @@ class Preparedness extends React.Component {
       <App className='page--homepage'>
         <section className='inpage'>
           <Helmet>
-            <title>IFRC Go - Global Preparedness</title>
+            <title>{strings.preparednessTitle}</title>
           </Helmet>
           <BreadCrumb crumbs={[
             {link: '/preparedness', name: 'Preparedness'},
@@ -151,10 +155,11 @@ class Preparedness extends React.Component {
           <header className='inpage__header'>
             <div className='inner'>
               <div className='inpage__headline'>
-                <h1 className='inpage__title'>Preparedness for Effective Response (PER)</h1>
+                <h1 className='inpage__title'>
+                  <Translate stringId='preparednessHeading' />
+                </h1>
                 <p className='inpage__introduction'>
-                  To enable National Societies to fulfil their auxiliary role, in line with the Red Cross and Red Crescent Fundamental Principles, by strengthening
-                  local preparedness capacities to ensure timely and effective humanitarian assistance to prevent and alleviate human suffering.
+                  <Translate stringId='preparednessDescription' />
                 </p>
               </div>
             </div>
@@ -215,4 +220,5 @@ const dispatcher = (dispatch) => ({
   _getPerMission: (...args) => dispatch(getPerMission(...args))
 });
 
+Preparedness.contextType = LanguageContext;
 export default connect(selector, dispatcher)(Preparedness);

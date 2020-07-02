@@ -17,6 +17,7 @@ import PastCrisesEvents from './PastCrisesEvents';
 import PastEpidemics from './PastEpidemics';
 import SeasonalCalendar from './SeasonalCalendar';
 import InformIndicators from './InformIndicators';
+import Translate from '#components/Translate';
 
 class CountryOverview extends React.PureComponent {
   componentDidMount () {
@@ -71,10 +72,10 @@ class CountryOverview extends React.PureComponent {
           />
           <div className='tc-data-source'>
             <div className='tc-label'>
-              Source:
+              <Translate stringId='countryOverviewSource' />
             </div>
             <div className='tc-value'>
-              FDRS
+              <Translate stringId='countryOverviewFDRS' />
             </div>
           </div>
         </div>

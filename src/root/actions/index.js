@@ -667,3 +667,19 @@ export function getDomainWhitelist () {
   });
   return fetchJSON(`/api/v2/domainwhitelist/?${f}`, GET_DOMAIN_WHITELIST, withToken());
 }
+
+export const SET_CURRENT_LANGUAGE = 'SET_CURRENT_LANGUAGE';
+export const setCurrentLanguageAction = (currentLanguage) => ({
+    type: SET_CURRENT_LANGUAGE,
+    language: currentLanguage,
+});
+
+export const GET_LANGUAGE = 'GET_LANGUAGE';
+export const getLanguageAction = (langCode) => {
+  return fetchJSON(`/api/v2/language/${langCode}/`, GET_LANGUAGE);
+};
+
+export const POST_LANGUAGE_BULK = 'POST_LANGUAGE_BULK';
+export const postLanguageBulkAction = (langCode, data) => {
+  return postJSON(`/api/v2/language/${langCode}/bulk-action/`, POST_LANGUAGE_BULK, data, withToken());
+};

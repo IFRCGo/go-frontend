@@ -21,6 +21,10 @@ import {
 import { get } from '#utils/utils';
 import { epiSources } from '#utils/field-report-constants';
 
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
+import { resolveToString } from '#utils/lang';
+
 import App from './app';
 
 class FieldReport extends React.Component {
@@ -107,8 +111,16 @@ class FieldReport extends React.Component {
         options: actions.actions.filter(filteredOption => filteredOption.category === category)
       }));
 
+    const { strings } = this.context;
+    const title = resolveToString(
+      strings.fieldReportActionTakenBy,
+      {
+        orgDisplayName,
+      }
+    );
+
     return (
-      <DisplaySection title={`Actions taken by ${orgDisplayName}`}>
+      <DisplaySection title={title}>
         {groupedActions.map(category => (
           <React.Fragment key={category.label}>
             {groupedActions.length > 1 ? <p className='form__label'>{category.label}</p> : null}
@@ -131,8 +143,9 @@ class FieldReport extends React.Component {
     if (!sources.length) {
       return null;
     }
+    const { strings } = this.context;
     return (
-      <DisplaySection title='Sources'>
+      <DisplaySection title={strings.fieldReportSources}>
         {sources.map((d, i) => (
           <div className='form__group' key={`${d.id} + ${i}`}>
             <p className='form__label'>{d.stype}</p>
@@ -148,8 +161,9 @@ class FieldReport extends React.Component {
     if (!contacts.length) {
       return null;
     }
+    const { strings } = this.context;
     return (
-      <DisplaySection title='Contacts'>
+      <DisplaySection title={strings.fieldReportContacts}>
         {contacts.map((d, i) => (
           <div className='form__group' key={`${d.name} + ${i}`}>
             <p className='form__label'>{separate(d.ctype)}</p>
@@ -184,50 +198,73 @@ class FieldReport extends React.Component {
     const status = this.getStatus();
     const epiStatus = this.getEpiStatus();
     const epiFiguresSource = epiSources.find(source => source.value === `${data.epi_figures_source}`);
+    const { strings } = this.context;
     const evtHtml = (
       <React.Fragment>
         {epiStatus === 'EPI' ? (
           <React.Fragment>
             <dl className='dl-horizontal numeric-list'>
-              <dt>Cases: </dt>
+              <dt>
+                <Translate stringId='fieldReportCases'/>
+              </dt>
               <dd>{n(get(data, 'epi_cases'))}</dd>
               { !data.is_covid_report
                 ? (
                   <React.Fragment>
-                    <dt className='pl-small'>Suspected Cases: </dt>
+                    <dt className='pl-small'>
+                      <Translate stringId='fieldReportSuspectedCases'/>
+                    </dt>
                     <dd className='pl-small'>{n(get(data, 'epi_suspected_cases'))}</dd>
-                    <dt className='pl-small'>Probable Cases: </dt>
+                    <dt className='pl-small'>
+                      <Translate stringId='fieldReportProbableCases'/>
+                    </dt>
                     <dd className='pl-small'>{n(get(data, 'epi_probable_cases'))}</dd>
-                    <dt className='pl-small'>Confirmed Cases: </dt>
+                    <dt className='pl-small'>
+                      <Translate stringId='fieldReportConfirmedCases'/>
+                    </dt>
                     <dd className='pl-small'>{n(get(data, 'epi_confirmed_cases'))}</dd>
                   </React.Fragment>
                 )
                 : null
               }
-              <dt>Dead: </dt>
+              <dt>
+                <Translate stringId='fieldReportDeadCases'/>
+              </dt>
               <dd>{n(get(data, 'epi_num_dead'))}</dd>
               { data.dtype.id === 1
                 ? (
                   <p className='epi-figures-source'>
-                    <span className='text-semi-bold'>Source</span>: { epiFiguresSource ? epiFiguresSource.label : '--' }
+                    <span className='text-semi-bold'>
+                      <Translate stringId='fieldReportSource'/>
+                    </span>: { epiFiguresSource ? epiFiguresSource.label : '--' }
                   </p>
                 )
                 : null
               }
             </dl>
             <dl className='dl-horizontal numeric-list'>
-              <dt>Assisted by Government:</dt>
+              <dt>
+                <Translate stringId='fieldReportAssistedByGovernment'/>
+              </dt>
               <dd>{n(get(data, 'gov_num_assisted'))}</dd>
-              <dt>Assisted by RCRC Movement:</dt>
+              <dt>
+                <Translate stringId='fieldReportAssistedRCRC'/>
+              </dt>
               <dd>{n(get(data, 'num_assisted'))}</dd>
-              <dt>Local Staff: </dt>
+              <dt>
+                <Translate stringId='fieldReportLocalStaff'/>
+              </dt>
               <dd>{n(get(data, 'num_localstaff'))}</dd>
-              <dt>Volunteers: </dt>
+              <dt>
+                <Translate stringId='fieldReportVolunteers'/>
+              </dt>
               <dd>{n(get(data, 'num_volunteers'))}</dd>
               { !data.is_covid_report
                 ? (
                   <React.Fragment>
-                    <dt>Delegates: </dt>
+                    <dt>
+                      <Translate stringId='fieldReportDelegates'/>
+                    </dt>
                     <dd>{n(get(data, 'num_expats_delegates'))}</dd>
                   </React.Fragment>
                 )
@@ -238,51 +275,91 @@ class FieldReport extends React.Component {
         ) : (
           <React.Fragment>
             <dl className='dl-horizontal numeric-list'>
-              <dt>Injured (RC): </dt>
+              <dt>
+                <Translate stringId='fieldReportInjured'/>
+              </dt>
               <dd>{n(get(data, 'num_injured'))}</dd>
-              <dt>Missing (RC): </dt>
+              <dt>
+                <Translate stringId='fieldReportMissing'/>
+              </dt>
               <dd>{n(get(data, 'num_missing'))}</dd>
-              <dt>Dead (RC): </dt>
+              <dt>
+                <Translate stringId='fieldReportDead'/>
+              </dt>
               <dd>{n(get(data, 'num_dead'))}</dd>
-              <dt>Displaced (RC): </dt>
+              <dt>
+                <Translate stringId='fieldReportDisplaced'/>
+              </dt>
               <dd>{n(get(data, 'num_displaced'))}</dd>
-              <dt>Affected (RC): </dt>
+              <dt>
+                <Translate stringId='fieldReportAffected'/>
+              </dt>
               <dd>{n(get(data, 'num_affected'))}</dd>
             </dl>
             <dl className='dl-horizontal numeric-list'>
-              <dt>Injured (Government): </dt>
+              <dt>
+                <Translate stringId='fieldReportInjuredGov'/>
+              </dt>
               <dd>{n(get(data, 'gov_num_injured'))}</dd>
-              <dt>Missing (Government): </dt>
+              <dt>
+                <Translate stringId='fieldReportMissingGov'/>
+              </dt>
               <dd>{n(get(data, 'gov_num_missing'))}</dd>
-              <dt>Dead (Government): </dt>
+              <dt>
+                <Translate stringId='fieldReportDeadGov'/>
+              </dt>
               <dd>{n(get(data, 'gov_num_dead'))}</dd>
-              <dt>Displaced (Government): </dt>
+              <dt>
+                <Translate stringId='fieldReportDisplacedGov'/>
+              </dt>
               <dd>{n(get(data, 'gov_num_displaced'))}</dd>
-              <dt>Affected (Government): </dt>
+              <dt>
+                <Translate stringId='fieldReportAffectedGov'/>
+              </dt>
               <dd>{n(get(data, 'gov_num_affected'))}</dd>
             </dl>
             <dl className='dl-horizontal numeric-list'>
-              <dt>Injured (Other): </dt>
+              <dt>
+                <Translate stringId='fieldReportInjuredOther'/>
+              </dt>
               <dd>{n(get(data, 'other_num_injured'))}</dd>
-              <dt>Missing (Other): </dt>
+              <dt>
+                <Translate stringId='fieldReportMissingOther'/>
+              </dt>
               <dd>{n(get(data, 'other_num_missing'))}</dd>
-              <dt>Dead (Other): </dt>
+              <dt>
+                <Translate stringId='fieldReportDeadOther'/>
+              </dt>
               <dd>{n(get(data, 'other_num_dead'))}</dd>
-              <dt>Displaced (Other): </dt>
+              <dt>
+                <Translate stringId='fieldReportDisplacedOther'/>
+              </dt>
               <dd>{n(get(data, 'other_num_displaced'))}</dd>
-              <dt>Affected (Other): </dt>
+              <dt>
+                <Translate stringId='fieldReportAffectedOther'/>
+              </dt>
               <dd>{n(get(data, 'other_num_affected'))}</dd>
             </dl>
             <dl className='dl-horizontal numeric-list'>
-              <dt>Assisted by Government:</dt>
+              <dt>
+                <Translate stringId='fieldReportAssistedByGovernment'/>
+              </dt>
               <dd>{n(get(data, 'gov_num_assisted'))}</dd>
-              <dt>Assisted by RCRC Movement:</dt>
+              <dt>
+                <Translate stringId='fieldReportAssistedRCRC'/>
+              </dt>
               <dd>{n(get(data, 'num_assisted'))}</dd>
-              <dt>Local Staff: </dt>
+              <dt>
+                <Translate stringId='fieldReportLocalStaff'/>
+              </dt>
               <dd>{n(get(data, 'num_localstaff'))}</dd>
-              <dt>Volunteers: </dt>
+              <dt>
+                <Translate stringId='fieldReportVolunteers'/>
+              </dt>
               <dd>{n(get(data, 'num_volunteers'))}</dd>
-              <dt>Delegates: </dt>
+              <dt>
+                <Translate stringId='fieldReportDelegates'/>
+              </dt>
               <dd>{n(get(data, 'num_expats_delegates'))}</dd>
             </dl>
           </React.Fragment>
@@ -293,44 +370,66 @@ class FieldReport extends React.Component {
     const ewHtml = (
       <React.Fragment>
         <dl className='dl-horizontal numeric-list'>
-          <dt>Potentially Affected (RC): </dt>
+          <dt>
+            <Translate stringId='Potentially Affected (RC): '/>
+          </dt>
           <dd>{n(get(data, 'num_potentially_affected'))}</dd>
-          <dt>People at Highest Risk (RC): </dt>
+          <dt>
+            <Translate stringId='fieldReportHighestRisk'/>
+          </dt>
           <dd>{n(get(data, 'num_highest_risk'))}</dd>
-          <dt>Affected Pop Centres (RC): </dt>
+          <dt>
+            <Translate stringId='fieldReportAffectedPop'/>
+          </dt>
           <dd>{get(data, 'affected_pop_centres') || '--'}</dd>
         </dl>
         <dl className='dl-horizontal numeric-list'>
-          <dt>Potentially Affected (Government): </dt>
+          <dt>
+            <Translate stringId='fieldReportPotentiallyAffectedGov'/>
+          </dt>
           <dd>{n(get(data, 'gov_num_potentially_affected'))}</dd>
-          <dt>People at Highest Risk (Government): </dt>
+          <dt>
+            <Translate stringId='fieldReportHighestRiskGov'/>
+          </dt>
           <dd>{n(get(data, 'gov_num_highest_risk'))}</dd>
-          <dt>Affected Pop Centres (Government): </dt>
+          <dt>
+            <Translate stringId='fieldReportAffectedGov'/>
+          </dt>
           <dd>{get(data, 'gov_affected_pop_centres') || '--'}</dd>
         </dl>
         <dl className='dl-horizontal numeric-list'>
-          <dt>Potentially Affected (Other): </dt>
+          <dt>
+            <Translate stringId='fieldReportPotentiallyAffectedOther'/>
+          </dt>
           <dd>{n(get(data, 'other_num_potentially_affected'))}</dd>
-          <dt>People at Highest Risk (Other): </dt>
+          <dt>
+            <Translate stringId='fieldReportHighestRiskOther'/>
+          </dt>
           <dd>{n(get(data, 'other_num_highest_risk'))}</dd>
-          <dt>Affected Pop Centres (Other): </dt>
+          <dt>
+            <Translate stringId='fieldReportAffectedPopOther'/>
+          </dt>
           <dd>{get(data, 'other_affected_pop_centres') || '--'}</dd>
         </dl>
         <dl className='dl-horizontal numeric-list'>
-          <dt>Assisted by Government:</dt>
+          <dt>
+            <Translate stringId='fieldReportAsstByGov'/>
+          </dt>
           <dd>{n(get(data, 'gov_num_assisted'))}</dd>
-          <dt>Assisted by RCRC Movement:</dt>
+          <dt>
+            <Translate stringId='fieldReportAsstByRCRC'/>
+          </dt>
           <dd>{n(get(data, 'num_assisted'))}</dd>
         </dl>
       </React.Fragment>
     );
     return (
       <React.Fragment>
-        <DisplaySection title='Numeric details'>
+        <DisplaySection title={strings.fieldReportNumericTitle}>
           { status === 'EVT' ? evtHtml : ewHtml }
         </DisplaySection>
         <DisplaySection
-          title='Sources for data marked as Other'
+          title={strings.fieldReportSourcesOther}
           inner={get(data, 'other_sources', false)}
         />
       </React.Fragment>
@@ -339,6 +438,7 @@ class FieldReport extends React.Component {
 
   renderContent () {
     const { data } = this.props.report;
+    const { strings } = this.context;
     if (!this.props.report.fetched || !data) {
       // If the error is a 404, then either the report doesn't exist
       // or the user is not authorized to see the resource
@@ -348,7 +448,9 @@ class FieldReport extends React.Component {
             <header className='inpage__header'>
               <div className='inner'>
                 <div className='inpage__headline-content'>
-                  <h1 className='inpage__title'>Resource Not Found!</h1>
+                  <h1 className='inpage__title'>
+                    <Translate stringId='fieldReportResourceNotFound'/>
+                  </h1>
               </div>
             </div>
             </header>
@@ -356,9 +458,15 @@ class FieldReport extends React.Component {
               <div className='inner'>
                 <div className='prose fold prose--responsive'>
                   <div className='inner'>
-                    <p className='inpage_note'>The resource doesn't exist or you are not authorized to access this resource.</p>
+                    <p className='inpage_note'>
+                      <Translate stringId='fieldReportResourceDescription'/>
+                    </p>
                     {
-                      (!this.props.user) ? <Link className='button button--medium button--primary-filled' to='/login' title='Go to login page'><span>Go to login</span></Link> 
+                      (!this.props.user) ? <Link className='button button--medium button--primary-filled' to='/login' title={strings.fieldReportGoToLogin}>
+                                             <span>
+                                               <Translate stringId='fieldReportGoToLogin'/>
+                                             </span>
+                                           </Link>
                         : <React.Fragment />
                     }
                   </div>
@@ -385,10 +493,18 @@ class FieldReport extends React.Component {
     const startDate = DateTime.fromISO(data.start_date).toISODate();
     const sitFieldsDate = DateTime.fromISO(data.sit_fields_date).toISODate();
     const isCOVID = data.is_covid_report;
+    const title = resolveToString(
+      strings.fieldReportSummaryTitle,
+      {
+        reportName: get(data, 'summary', 'Field Report'),
+      }
+    );
     return (
       <section className='inpage'>
         <Helmet>
-          <title>IFRC Go - {get(data, 'summary', 'Field Report')}</title>
+          <title>
+            {title}
+          </title>
         </Helmet>
         <BreadCrumb
           crumbs={[
@@ -408,7 +524,9 @@ class FieldReport extends React.Component {
                 </div>
               </div>
               <div className='inpage__headline-actions'>
-                <Link className='button button--primary-bounded' to={`/reports/${data.id}/edit`}>Edit Report</Link>
+                <Link className='button button--primary-bounded' to={`/reports/${data.id}/edit`}>
+                  <Translate stringId='fieldReportEdit'/>
+                </Link>
               </div>
             </div>
           </div>
@@ -419,30 +537,34 @@ class FieldReport extends React.Component {
               <div className='inner'>
                 <p className='inpage__note'>Last updated{data.user ? ` by ${data.user.username}` : null} on {lastTouchedAt}</p>
                 {this.renderNumericDetails(data)}
-                { epiStatus === 'EPI' ? <DisplaySection title='Date of Data' inner={sitFieldsDate} /> : null }
-                <DisplaySection sectionClass='rich-text-section' title={ status === 'EW' ? 'Risk Analysis' : 'Description' } inner={get(data, 'description', false)} />
-                <DisplaySection title={ status === 'EW' ? 'Forecasted Date of Impact' : 'Start Date' } inner={startDate} />
-                { data.is_covid_report ? (
-                  <DisplaySection title='COVID-19 Field Report' inner='Yes' />
-                ) : null }
-                <DisplaySection title='Requests for Assistance'>
+                { epiStatus === 'EPI' ? <DisplaySection title={strings.fieldReportDateOfData} inner={sitFieldsDate} /> : null }
+                <DisplaySection sectionClass='rich-text-section' title={ status === 'EW' ? strings.fieldReportRiskAnalyisis : strings.fieldReportDescription } inner={get(data, 'description', false)} />
+                <DisplaySection title={ status === 'EW' ? strings.fieldReportForecastedDate : strings.fieldReportStartDate } inner={startDate} />
+                { data.is_covid_report && (
+                  <DisplaySection title={strings.fieldReportCovidReport} inner='Yes' />
+                )}
+                <DisplaySection title={strings.fieldReportRequest}>
                   <p>
-                    <span>Government Requests International Assistance: </span>
+                    <span>
+                      <Translate stringId='fieldReportGovernmentRequest'/>
+                    </span>
                     <span>{yesno(get(data, 'request_assistance'))}</span>
                   </p>
                   <p>
-                    <span>NS Requests International Assistance:</span>
+                    <span>
+                      <Translate stringId='fieldReportInternationalRequest'/>
+                    </span>
                     <span>{yesno(get(data, 'ns_request_assistance'))}</span>
                   </p>
                 </DisplaySection>
                 { !isCOVID
-                  ? <DisplaySection title='Information Bulletin Published' inner={ infoBulletin } />
+                  ? <DisplaySection title={strings.fieldReportInformationBulletin} inner={ infoBulletin } />
                   : null
                 }
                 {this.renderActionsTaken(data, 'NTLS', 'National Society')}
                 {this.renderActionsTaken(data, 'FDRN', 'IFRC')}
                 {this.renderActionsTaken(data, 'PNS', 'any other RCRC Movement actors') /* instead of PNS Red Cross, go-frontend/issues/822 */ }
-                <DisplaySection title='Actions taken by others' inner={get(data, 'actions_others', false)} />
+                <DisplaySection title={strings.fieldReportActionTaken} inner={get(data, 'actions_others', false)} />
                 {data.is_covid_report && this.renderPlannedResponse(data)}
                 {this.renderSources(data)}
                 {this.renderContacts(data)}
@@ -455,10 +577,11 @@ class FieldReport extends React.Component {
   }
 
   render () {
+    const { strings } = this.context;
     return (
       <App className='page--field-report'>
         <Helmet>
-          <title>IFRC Go - Field Report</title>
+          <title>{strings.fieldReportTitle}</title>
         </Helmet>
         {this.renderContent()}
       </App>
@@ -466,6 +589,7 @@ class FieldReport extends React.Component {
   }
 }
 
+FieldReport.contextType = LanguageContext;
 if (environment !== 'production') {
   FieldReport.propTypes = {
     _getFieldReportById: T.func,

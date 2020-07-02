@@ -167,11 +167,11 @@
    ========================================================================== */
 
 .float-left {
-  float: left;
+  float: inline-start;
 }
 
 .float-right {
-  float: right;
+  float: inline-end;
 }
 
 .text-left {
@@ -188,8 +188,8 @@
 
 .block-center {
   display: block;
-  margin-left: auto;
-  margin-right: auto;
+  margin-inline-start: auto;
+  margin-inline-end: auto;
 }
 
 
@@ -204,8 +204,8 @@
    ========================================================================== */
 
 .margin-auto {
-  margin-left: auto;
-  margin-right: auto;
+  margin-inline-start: auto;
+  margin-inline-end: auto;
 }
 
 /* Clearfix
@@ -264,8 +264,8 @@ $spacing-global: (
 
 @each $name, $value in $spacing-global {
   .#{$name}-h, %#{$name}-h {
-    padding-left: $value;
-    padding-right: $value;
+    padding-inline-start: $value;
+    padding-inline-end: $value;
   }
 }
 
@@ -337,8 +337,8 @@ $spacing-global: (
 
 @each $name, $value in $spacing-global {
   .#{$name}-h, %#{$name}-h {
-    margin-left: $value;
-    margin-right: $value;
+    margin-inline-start: $value;
+    margin-inline-end: $value;
   }
 }
 

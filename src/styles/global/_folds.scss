@@ -4,7 +4,7 @@
 
 .fold-container {
   margin-bottom: 50px !important;
-  float: left;
+  float: inline-start;
   width: 100%;
 }
 
@@ -60,11 +60,11 @@
 }
 
 .fold__actions {
-  float: left;
+  float: inline-start;
   width: 100%;
   margin-bottom: $global-spacing * 2;
   @include media(medium-up) {
-    float: right;
+    float: inline-end;
     width: auto;
     margin-bottom: 0;
   }
