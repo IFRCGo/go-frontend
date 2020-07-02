@@ -62,7 +62,7 @@ class ViewPerForms extends React.Component {
     return (
       <App className='page--emergencies'>
         <Helmet>
-          <title>{`IFRC Go: ${formName}`}</title>
+          <title>IFRC Go - PER</title>
         </Helmet>
         <BreadCrumb crumbs={[
           {link: this.props.location.pathname, name: formName},
