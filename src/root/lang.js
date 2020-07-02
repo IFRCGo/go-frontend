@@ -168,7 +168,8 @@ export default {
   operationCardDeployed: 'Deployed Surge Personnel',
   operationCardFundingCoverage: 'Funding Coverage',
 
-  countryTitle: 'IFRC Go -  Country',
+  countryPageTitle: 'IFRC Go - {countryName}',
+  countryTitle: 'IFRC Go - Country',
   countryListInRegion: ' Countries in this Region',
   countryListViewActiveOnly: 'View only active operations',
   countryListActiveOperation: 'Active Operation',

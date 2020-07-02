@@ -11,6 +11,7 @@ import url from 'url';
 import { countries } from '#utils/field-report-constants';
 import { environment, api } from '#config';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
+import { resolveToString } from '#utils/lang';
 // import BasicTable from '#components/common/table-basic';
 import { get, dateOptions, datesAgo, dTypeOptions } from '#utils/utils';
 import {
@@ -605,11 +606,12 @@ class AdminArea extends SFPComponent {
       });
     }
 
+    const title = resolveToString(strings.countryPageTitle, { countryName });
 
     return (
       <section className='inpage'>
         <Helmet>
-          <title>IFRC Go - {countryName}</title>
+          <title>{title}</title>
         </Helmet>
         <BreadCrumb crumbs={ crumbs } />
         <header className='inpage__header'>
