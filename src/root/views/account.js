@@ -776,7 +776,7 @@ class Account extends React.Component {
               ))}
             </TabList>
 
-            <div className='inpage__body'>
+            <div className='inpage__body row'>
               <div className='inner'>
                 <TabPanel>
                   <TabContent>

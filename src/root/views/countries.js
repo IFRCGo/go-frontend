@@ -612,7 +612,7 @@ class AdminArea extends SFPComponent {
               <Tab key={tab.title}>{tab.title}</Tab>
             ))}
           </TabList>
-          <div className='inpage__body'>
+          <div className='inpage__body row'>
             <div className='inner'>
               <TabPanel>
                 <TabContent>

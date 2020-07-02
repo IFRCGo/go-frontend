@@ -20,7 +20,7 @@ export default class About extends React.Component {
             <div className='inner'>
               <div className='inpage__headline'>
                 <h1 className='inpage__title'>Resources</h1>
-                <p className='text-center'>GO is a Red Cross Red Crescent platform to connect information on emergency needs with the right response.</p>
+                <p className='inpage__introduction'>GO is a Red Cross Red Crescent platform to connect information on emergency needs with the right response.</p>
               </div>
             </div>
           </header>
@@ -34,7 +34,7 @@ export default class About extends React.Component {
                         <iframe width="604" height="340" className='iframe__embed__video' src="https://www.youtube.com/embed/dwPsQzla9A4" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
                       </div>
                     </div>
-                    <section className='section__about__guides__ref'>
+                    <section className='section__about__guides__ref row'>
                       <div className='text-center'>
                         <div className='line-brand-deco-border-top-wrap'>
                           <div className='line-brand-deco-border-top'></div>
@@ -185,7 +185,7 @@ export default class About extends React.Component {
                       <h2 className='fold__title text-center'>IFRC Resources</h2>
                     </div>
                   </div>
-                  <div className='about__resources'>
+                  <div className='about__resources row'>
                     <div className='about__resources__row clearfix'>
                       <div className='box__global box__global--resources'>
                         {/* <span className='collecticon-circle-information icon__about__resources'></span> */}

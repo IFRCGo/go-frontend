@@ -21,6 +21,8 @@ $grey-pearl: #d1d1d1;
 $grey-silver: #848484;
 $grey-cement: #505050;
 $grey-gravel: #494949;
+$grey-soot: #282d32;
+$black: #000;
 
 /* State colors */
 
@@ -63,6 +65,7 @@ $font-size-xxl: 1.15rem;
 $code-font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 
 $letter-spacing-sm: 0.6px;
+$letter-spacing-lg: 1.6px;
 
 $heading-font-family: "Poppins", "Helvetica Neue", Helvetica, Arial, sans-serif;
 $heading-font-light: 300;
@@ -87,6 +90,7 @@ $base-border-width: 1px;
 /* Box shadow */
 
 $base-box-shadow: 1px 2px 6px 1px $base-alpha-color;
+$box-shadow-component: 1px 1px 4px rgba($black, 0.06);
 
 
 /* Sizing, spacing and media queries

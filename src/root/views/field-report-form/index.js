@@ -300,16 +300,18 @@ class FieldReportForm extends React.Component {
       }
     ];
     return (
-      <ol className='stepper'>
-        {items.map((o, idx) => {
-          const stepNum = idx + 1;
-          const classes = c('stepper__item', {
-            'stepper__item--complete': step > stepNum,
-            'stepper__item--current': step === stepNum
-          });
-          return <li key={o[status]} className={classes}><a href='#' onClick={this.onStepperClick.bind(this, stepNum)}><span>{o[status]}</span></a></li>;
-        })}
-      </ol>
+      <div className='row'>
+        <ol className='stepper'>
+          {items.map((o, idx) => {
+            const stepNum = idx + 1;
+            const classes = c('stepper__item', {
+              'stepper__item--complete': step > stepNum,
+              'stepper__item--current': step === stepNum
+            });
+            return <li key={o[status]} className={classes}><a href='#' onClick={this.onStepperClick.bind(this, stepNum)}><span>{o[status]}</span></a></li>;
+          })}
+        </ol>
+      </div>
     );
   }
 
@@ -931,7 +933,7 @@ class FieldReportForm extends React.Component {
           </header>
           <div className='inpage__body'>
             <div className='inner'>
-              <form className='form form--field-report' onSubmit={this.onSubmit}>
+              <form className='form form--field-report row' onSubmit={this.onSubmit}>
                 {this[`renderStep${this.state.step}`]()}
                 {this.renderErrorSummary()}
 

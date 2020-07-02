@@ -85,10 +85,6 @@
     @include media(medium-up) {
       @include span(4/12, $offset: 0, $cycle: 0);
     }
-
-    @include media(medium-up) {
-      @include span(4/12, $offset: 0, $cycle: 0);
-    }
   }
 }
 

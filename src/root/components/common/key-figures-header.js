@@ -95,7 +95,7 @@ export default function KeyFiguresHeader (props) {
   };
 
   return (
-    <div className='inner'>
+    <div className='inner row'>
       {props.fullscreen ? (
         <FullscreenHeader title='IFRC Disaster Response and Preparedness'/>
       ) : null}

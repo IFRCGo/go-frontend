@@ -98,7 +98,7 @@ class EmergenciesDash extends React.Component {
             <div className='inpage__headline'>
               <div className='inpage__headline-content'>
                 <h1 className='inpage__title'>Emergencies in the last 30 days</h1>
-                <div className='inpage__introduction'>
+                <div className='row'>
                   <div className='inpage__headline-stats'>
                     <Stats lastMonth={lastMonth} />
                   </div>
@@ -114,7 +114,7 @@ class EmergenciesDash extends React.Component {
             </div>
           </div>
         </header>
-        <section className='map-section__container'>
+        <section className='map-section__container row'>
           <EmergenciesMap lastMonth={lastMonth} />
         </section>
       </div>
