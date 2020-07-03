@@ -18,7 +18,7 @@
       @include column(12/12);
     }
     .content-list {
-      float: inline-start;
+      float: left;
       @include column(12/12);
       margin-inline-start: 0;
       @include media(medium-up) {
@@ -26,7 +26,7 @@
       }
     }
     .content-list-third {
-      float: inline-start;
+      float: left;
       list-style: none;
 
       @include column(12/12);
@@ -72,7 +72,7 @@
       }
     }
     dl {
-      float: inline-start;
+      float: left;
       width: 50%;
     }
   }

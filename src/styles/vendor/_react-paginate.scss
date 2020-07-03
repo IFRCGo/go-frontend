@@ -15,7 +15,7 @@
   margin-bottom: $global-spacing * 2;
 
   > li {
-    float: inline-start;
+    float: left;
   }
 
   .previous a,
@@ -46,7 +46,7 @@
     @extend .clearfix;
 
     &__wrapper {
-      float: inline-start;
+      float: left;
 
       &.active .pages__page {
         border-radius: 5px;

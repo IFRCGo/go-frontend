@@ -25,13 +25,13 @@
   }
 
   .align-left {
-    float: inline-start;
+    float: left;
     margin-inline-end: $global-spacing * 1.5;
   }
 
 
   .align-right {
-    float: inline-end;
+    float: right;
     margin-inline-start:  $global-spacing * 1.5;
   }
 }
@@ -206,7 +206,7 @@ dd {
   @extend .clearfix;
 
   dt, dd {
-    float: inline-start;
+    float: left;
   }
 
   dt {
@@ -268,7 +268,7 @@ dd {
       padding-bottom: 0;
 
       dt, dd {
-        float: inline-start;
+        float: left;
         width: 50%;
         margin: 0;
         padding: ($global-spacing / 2) 0;
@@ -404,7 +404,7 @@ blockquote,
 
 hr,
 .hr {
-  float: inline-start;
+  float: left;
   border: 0;
   height: 1px;
   background: none;
@@ -614,7 +614,7 @@ $font-sizes: (
   font-size: 3.4em;
   padding: 0 0.1em 0 0;
   line-height: 0.7;
-  float: inline-start;
+  float: left;
   margin: 0.1em 0.1em 0 0;
 }
 

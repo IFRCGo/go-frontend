@@ -73,7 +73,7 @@
     height: auto;
 
     @include media(small-up) {
-      float: inline-end;
+      float: right;
     }
   }
 }

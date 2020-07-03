@@ -6,7 +6,7 @@
   flex: 1;
   display: flex;
   position: relative;
-  float: inline-start;
+  float: left;
 
 /*  &::before {
     content: '';
@@ -188,14 +188,14 @@
     img {
       margin-top: $global-spacing/2;
       height: 2rem;
-      float: inline-end;
+      float: right;
     }
   }
   .page__title {
-    float: inline-end;
+    float: right;
   }
   .page__menu {
-    float: inline-start;
+    float: left;
     a {
       position: relative;
       font-size: 1.5rem;
@@ -248,7 +248,7 @@
   .mobile__actions {
     padding: $global-spacing 0;
     button {
-      float: inline-end;
+      float: right;
     }
   }
 }
