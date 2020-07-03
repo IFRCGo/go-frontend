@@ -462,7 +462,7 @@ select.form__control:focus {
   font-size: 0.875rem;
   line-height: 1rem;
   border: 0;
-  float: inline-start;
+  float: left;
   width: 100%;
   margin: 0 0 ($global-spacing / 2) 0;
   padding: ($global-spacing / 4) 0;

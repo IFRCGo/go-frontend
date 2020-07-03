@@ -7,7 +7,7 @@
 }
 
 .card_box {
-  //float: inline-start;
+  //float: left;
   //font-size: 1.5rem;
   text-align: left;
   //padding-inline-start: 5px;
@@ -36,7 +36,7 @@
 }
 
 .ifrc_supported_badge {
-  float: inline-end;
+  float: right;
   width: 100%;
   margin-top: 1rem;
   background-color: #fafafa;
@@ -67,7 +67,7 @@
     padding-inline-start: 5px;
     text-align: right;
     width: 20%;
-    float: inline-end;
+    float: right;
   }
 }
 
@@ -76,7 +76,7 @@
 }
 
 .more_button {
-  float: inline-end;
+  float: right;
 }
 
 .last_updated {
