@@ -134,6 +134,16 @@
 /* Button size modifiers
    ========================================================================== */
 
+/* Extra Small */
+
+.button--xsmall,
+.button-group--xsmall .button {
+  line-height: 1rem;
+  font-size: $font-size-xs;
+  padding: 0.25rem 1rem;
+  min-width: 2rem;
+}
+
 /* Small (24px) */
 
 .button--small,

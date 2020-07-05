@@ -55,12 +55,12 @@ $base-font-weight: $base-font-light;
 $base-line-height: 1.5;
 
 $base-font-size: 0.875rem;
-$font-size-xxs: 0.6rem;
+$font-size-xxs: 0.63rem;
 $font-size-xs: 0.695rem;
 $font-size-sm: 0.775rem;
-$font-size-lg: 0.95;
-$font-size-xl: 1.05rem;
-$font-size-xxl: 1.15rem;
+$font-size-lg: 1rem;
+$font-size-xl: 1.06rem;
+$font-size-xxl: 1.16rem;
 
 $code-font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 
@@ -84,6 +84,7 @@ $full-border-radius: 100vh;
 $input-rounded-radius: 1.8rem;
 
 $base-border-color: rgba(#000, 0.1);
+$base-border-color--light: rgba(#000, 0.05);
 $base-border-width: 1px;
 
 

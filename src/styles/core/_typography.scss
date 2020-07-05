@@ -509,12 +509,10 @@ abbr[title] {
 }
 
 .heading-tiny {
-  color: #000;
-  font-size: 0.675rem;
-  font-weight: $base-font-regular;
+  color: $grey-soot;
+  font-size: $font-size-xxs;
+  font-weight: $base-font-light;
   display: block;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
 .heading-sub {

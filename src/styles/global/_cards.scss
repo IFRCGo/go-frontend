@@ -119,8 +119,9 @@ a.card__contents {
 }
 
 .card__title {
-  @include heading(1.25rem);
-  margin: 0;
+  //@include heading(1.25rem);
+  margin-bottom: ($global-spacing / 2);
+  line-height: 1.3rem;
 
   a.card__contents & {
     color: $link-color;

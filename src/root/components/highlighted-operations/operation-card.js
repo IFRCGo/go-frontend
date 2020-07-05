@@ -14,13 +14,18 @@ const OperationCard = ({operationId, operationName, emergencyDeployments, appeal
   return (
     <div className='key-emergencies-item' key={operationId}>
       <Link to={`/emergencies/${operationId}`}>
-        <div className="card_box card_box_left">
-          <h2 className='card__title'>{ operationName.length > 30 ? operationName.slice(0, 30) + '...' : operationName }</h2>
-          <small className='last_updated'>
-            <Translate stringId='operationCardLastUpdated'/>
-            &nbsp;
-            {formatDate(lastUpdate)}
-          </small>
+        <div className="card_box card_box_left row">
+          <div className='card__title__wrap'>
+            <h2 className='card__title'>{ operationName.length > 30 ? operationName.slice(0, 30) + '...' : operationName }</h2>
+            <small className='last_updated'>
+              <Translate stringId='operationCardLastUpdated'/>
+              &nbsp;
+              {formatDate(lastUpdate)}
+            </small>
+          </div>
+          <div className='button--key-emergencies__wrap'>  
+            <a href="" className='button button--capsule button--xsmall button--primary-filled button--key-emergencies'>Follow</a>
+          </div>
         </div>
 
         <div className='card_box_container card_box_container--op'>
@@ -56,14 +61,14 @@ const OperationCard = ({operationId, operationName, emergencyDeployments, appeal
           </div>
         </div>
 
-        <div className='card_box_full card_box_container card_box_container--op'>
-          <div className="heading-tiny">
-            <Translate stringId='operationCardFundingCoverage'/>
-          </div>
-          <div className="card_box_fc">{requested ? round(percent(funded, requested)) : 0}%</div>
-        </div>
         <div className="card_box_footer">
           <Progress value={requested ? percent(funded, requested) : percent(0.1, 10)} max={100} />
+          <div className='card_box_full card_box_container card_box_container--op'>
+            <div className="heading-tiny">
+              <Translate stringId='operationCardFundingCoverage'/>
+            </div>
+            <div className="card_box_fc">{requested ? round(percent(funded, requested)) : 0}%</div>
+          </div>
         </div>
       </Link>
     </div>
