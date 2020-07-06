@@ -8,6 +8,8 @@ import { request } from '#utils/network';
 import { uppercaseFirstLetter as u, isoDate } from '#utils/format';
 import UserMenu from './connected/user-menu';
 import HeaderRegionButton from './header-region-button';
+import Dropdown from './common/dropdown';
+
 
 const noFilter = options => options;
 
@@ -105,6 +107,21 @@ class Header extends React.PureComponent {
                 <Link to='/about' title='Visit Resources page' className='page__meta-nav-elements'><span>Resources</span></Link>
                 <UserMenu />
                 <Link to='/reports/new' className='button button--small button--primary-bounded' title='Create Field Report'><span>Create Field Report</span></Link>
+                {/*
+                <Dropdown
+                  id='drop__header__field__report'
+                  triggerClassName='drop__toggle--caret button button--primary-bounded button--small'
+                  triggerActiveClassName='active'
+                  triggerText='Create Field Report'
+                  triggerElement='a'
+                  direction='down'
+                  alignment='center' >
+                  <ul className='drop__menu drop__menu--select' role='menu'>
+                    <li className='drop__menu-item'>Foo</li>
+                    <li className='drop__menu-item'>Bar</li>
+                  </ul>
+                </Dropdown>
+              */}
               </nav>
             </div>
           </div>
