@@ -8,7 +8,9 @@ import { getFeaturedEmergencies, getFeaturedEmergenciesForRegion, getFeaturedEme
 import BlockLoading from '../block-loading';
 import Fold from '../fold';
 import OperationCard from './operation-card';
-
+import {
+  getUserProfile
+} from '#actions';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 
@@ -25,6 +27,9 @@ class HighlightedOperations extends React.Component {
       this.props._getFeaturedEmergenciesForRegion(this.props.opsId);
     } else {
       this.props._getFeaturedEmergencies();
+    }
+    if (this.props.isLogged) {
+      this.props._getUserProfile(this.props.user.data.username);
     }
     this.props._getFeaturedEmergenciesDeployments();
   }
@@ -74,8 +79,16 @@ class HighlightedOperations extends React.Component {
     return {'deployedErus': deployedErus, 'deployedPersonnel': deployedPersonnel};
   }
 
+  // whether to show the Follow button for Highlighted Ops
+  getShowFollow () {
+    if (!this.props.isLogged) return false;
+    if (!this.props.profile.fetched) return false;
+    return true;
+  }
+
   render () {
     const { error, fetching, fetched, data } = this.props.featured;
+    const { user } = this.props;
     const { strings } = this.context;
     const foldLink = (
       <Link to='/appeals/all' className='fold__title__link'>
@@ -89,6 +102,22 @@ class HighlightedOperations extends React.Component {
     ) : (
       'key-emergencies-list key-emergencies-list-long'
     );
+    const showFollow = this.getShowFollow();
+    if (showFollow) {
+      const followedOpIds = this.props.profile.data.subscription.reduce((memo, val) => {
+        const eventId = val.event;
+        if (eventId && memo.indexOf(eventId) === -1) {
+          memo.push(eventId);
+        }
+        return memo;
+      }, []);
+      operations = operations.map(o => {
+        return {
+          ...o,
+          following: followedOpIds.indexOf(o.id) !== -1
+        };
+      });
+    }
     return (operations.length ? (
       <div className='inner inner--emergencies'>
         <Fold title={strings.highlightedOperationsTitle} navLink={foldLink} extraClass foldClass='fold__title--inline'>
@@ -96,6 +125,8 @@ class HighlightedOperations extends React.Component {
             {operations.slice(0, 6).map(operation =>
               <OperationCard
                 key={operation.id}
+                showFollow={showFollow}
+                isFollowing = {operation.following ? true : false}
                 operationId={operation.id}
                 operationName={operation.name}
                 emergencyDeployments={this.calculateDeployedPersonnel(operation)}
@@ -128,14 +159,18 @@ if (environment !== 'production') {
 const selector = (state) => ({
   featured: state.emergencies.featured,
   deployments: state.emergencies.emergencyDeployments,
-  eru: state.deployments.eru
+  eru: state.deployments.eru,
+  isLogged: !!state.user.data.token,
+  user: state.user,
+  profile: state.profile  
 });
 
 const dispatcher = (dispatch) => ({
   _getFeaturedEmergencies: (...args) => dispatch(getFeaturedEmergencies(...args)),
   _getFeaturedEmergenciesForRegion: (...args) => dispatch(getFeaturedEmergenciesForRegion(...args)),
   _getFeaturedEmergenciesDeployments: (...args) => dispatch(getFeaturedEmergenciesDeployments(...args)),
-  _getDeploymentERU: (...args) => dispatch(getDeploymentERU(...args))
+  _getDeploymentERU: (...args) => dispatch(getDeploymentERU(...args)),
+  _getUserProfile: (...args) => dispatch(getUserProfile(...args))
 });
 
 HighlightedOperations.contextType = LanguageContext;

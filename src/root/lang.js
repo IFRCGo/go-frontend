@@ -167,6 +167,8 @@ export default {
   operationCardFunding: 'Funding Requirements',
   operationCardDeployed: 'Deployed Surge Personnel',
   operationCardFundingCoverage: 'Funding Coverage',
+  operationCardFollow: 'Follow',
+  operationCardFollowing: 'Following',
 
   countryPageTitle: 'IFRC Go - {countryName}',
   countryTitle: 'IFRC Go - Country',
