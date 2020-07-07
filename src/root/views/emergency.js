@@ -425,7 +425,7 @@ class Emergency extends React.Component {
           title={`Field Reports (${data.field_reports.length})`}
           wrapperClass="event-field-reports"
         >
-          <table className="table table--zebra">
+          <table className="table table--border-bottom">
             <thead>
               <tr>
                 <th>Date</th>

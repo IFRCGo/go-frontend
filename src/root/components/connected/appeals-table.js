@@ -222,7 +222,7 @@ class AppealsTable extends SFPComponent {
         date: DateTime.fromISO(o.start_date).toISODate(),
         code: o.code,
         name: o.name,
-        event: o.event ? <Link to={`/emergencies/${o.event}`} className='link--primary' title={strings.appealsTableViewEmergency}>Link</Link> : nope,
+        event: o.event ? <Link to={`/emergencies/${o.event}`} className='link--table' title={strings.appealsTableViewEmergency}>Link</Link> : nope,
         dtype: get(getDtypeMeta(o.dtype.id), 'label', nope),
         requestAmount: {
           value: n(o.amount_requested),
@@ -233,7 +233,7 @@ class AppealsTable extends SFPComponent {
           className: ''
         },
         type: appealsType[o.atype],
-        country: o.country ? <Link to={`/countries/${o.country.id}`} className='link--primary' title={strings.appealsTableViewCountry}>{o.country.name}</Link> : nope
+        country: o.country ? <Link to={`/countries/${o.country.id}`} className='link--table' title={strings.appealsTableViewCountry}>{o.country.name}</Link> : nope
       }));
 
       const foldLink = this.props.viewAll ? (
@@ -273,7 +273,7 @@ class AppealsTable extends SFPComponent {
             />) : null}
           {this.props.fullscreen ? null : (
             <DisplayTable
-              className='table table--zebra table--active-ops'
+              className='table table--border-bottom table--active-ops'
               headings={headings}
               rows={rows}
               pageCount={data.count / this.state.table.limit}

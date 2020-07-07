@@ -317,6 +317,39 @@ td.right-align, th.right-align{
   }
 }
 
+.table--border-bottom {
+  thead th {
+    font-weight: $base-font-semi-bold;
+    box-shadow: none;
+
+  }
+
+  th {
+    .drop__toggle--caret::after {
+      content: '\EA0A';
+      font-size: $font-size-xxs;
+    }
+  }
+
+  td {
+    color: $grey-soot;
+    border-bottom: 1px solid $base-border-color--light;
+    font-weight: $base-font-regular;
+  }
+}
+
 .table--border__list {
   padding: $global-spacing 0;
+}
+
+// Simple, underlined links for tables
+.link--table {
+  color: $black;
+  font-weight: $base-font-medium;
+  text-decoration: underline;
+
+  &:hover, &:focus {
+    color: $primary-color;
+    opacity: 1;
+  }
 }
