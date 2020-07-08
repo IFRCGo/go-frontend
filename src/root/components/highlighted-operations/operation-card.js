@@ -6,7 +6,7 @@ import { formatDate, percent, round, commaSeparatedNumber as n } from '#utils/fo
 import Progress from './../progress-labeled';
 import Translate from '#components/Translate';
 
-const OperationCard = ({operationId, operationName, emergencyDeployments, appeals, lastUpdate}) => {
+const OperationCard = ({operationId, operationName, emergencyDeployments, appeals, lastUpdate, showFollow, isFollowing}) => {
   const beneficiaries = appeals.reduce((acc, curr) => acc + curr.num_beneficiaries, 0);
   const requested = appeals.reduce((acc, curr) => acc + Number(curr.amount_requested), 0);
   const funded = appeals.reduce((acc, curr) => acc + Number(curr.amount_funded), 0);
@@ -23,9 +23,20 @@ const OperationCard = ({operationId, operationName, emergencyDeployments, appeal
               {formatDate(lastUpdate)}
             </small>
           </div>
-          <div className='button--key-emergencies__wrap'>  
-            <a href="" className='button button--capsule button--xsmall button--primary-filled button--key-emergencies'>Follow</a>
-          </div>
+          {showFollow ? (
+            <div className='button--key-emergencies__wrap'>  
+              <div className='button button--capsule button--xsmall button--primary-filled button--key-emergencies'>
+                {
+                  isFollowing ? (
+                    <Translate stringId='operationCardFollowing' />
+                  ) : (
+                    <Translate stringId='operationCardFollow' />
+                  )
+                }
+              </div>
+            </div>
+          ) : null
+          }
         </div>
 
         <div className='card_box_container card_box_container--op'>
@@ -80,6 +91,8 @@ export default OperationCard;
 if (environment !== 'production') {
   OperationCard.propTypes = {
     operationId: PropTypes.number,
+    showFollow: PropTypes.bool,
+    isFollowing: PropTypes.bool,
     operationName: PropTypes.string,
     emergencyDeployments: PropTypes.shape({
       deployedErus: PropTypes.number,
