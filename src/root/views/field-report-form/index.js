@@ -818,7 +818,8 @@ class FieldReportForm extends React.Component {
   }
 
   renderStep4 () {
-    const fields = formData.fieldsStep4;
+    const { strings } = this.context;
+    const fields = formData.getFieldsStep4(strings);
     const status = this.getStatus();
     const plannedResponseRows = fields.plannedResponseRows.filter(row => {
       return !!row.label[status];

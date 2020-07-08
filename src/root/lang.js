@@ -1039,4 +1039,35 @@ export default {
   fieldsStep3ActionsOthersEWLabel: 'Early Actions Taken by Others (Governments, UN)',
   fieldsStep3ActionsOthersEVTEPIDescription: 'Who else was involved? UN agencies? NGOs? Government? Describe what other actors did. Also mention who the other actors are.',
   fieldsStep3ActionsOthersEWDescription: 'List the early action activities undertaken by other actors, mention who the other actors are, and give a brief description.',
+
+  fieldsStep4PlannedResponseRowsDREFValueFieldLabel: 'Amount CHF',
+  fieldsStep4PlannedResponseRowsDREFEVTEPILabel: 'DREF Requested',
+  fieldsStep4PlannedResponseRowsDREFEWLabel: 'DREF',
+
+  fieldsStep4PlannedResponseRowsEmergencyAppealValueFieldLabel: 'Amount CHF',
+  fieldsStep4PlannedResponseRowsEmergencyAppealEVTEPIEWLabel: 'Emergency Appeal',
+
+  fieldsStep4PlannedResponseRowsFactValueFieldLabel: 'Number of people',
+  fieldsStep4PlannedResponseRowsFactEVTEPIEWLabel: 'Rapid Response Personnel',
+  fieldsStep4PlannedResponseRowsFactDescription: 'This is the new name for FACT/RDRT/RIT',
+
+  fieldsStep4PlannedResponseRowsIFRCStaffValueFieldLabel: 'Units',
+  fieldsStep4PlannedResponseRowsIFRCStaffEVTEPIEWLabel: 'Emergency Response Units',
+
+  fieldsStep4PlannedResponseRowsForecastBasedActionValueFieldLabel: 'Amount CHF',
+  fieldsStep4PlannedResponseRowsForecastBasedActionEWLabel: 'Forecast Based Action',
+
+  fieldsStep4ContactRowsOriginatorLabel: 'Originator',
+  fieldsStep4ContactRowsOriginatorEVTEPIEWDesc: 'NS or IFRC Staff completing the Field Report.',
+
+  fieldsStep4ContactRowsNSContactLabel: 'National Society Contact',
+  fieldsStep4ContactRowsNSContactEVTEPIDesc: 'The most senior staff in the National Society responsible and knowledgeable about the disaster event.',
+  fieldsStep4ContactRowsNSContactEWDesc: 'The most senior staff in the NS responsible and knowledgeable about the risk.',
+
+  fieldsStep4ContactRowsFederationContactLabel: 'IFRC Focal Point for the Emergency',
+  fieldsStep4ContactRowsFederationContactEVTEPIDesc: 'IFRC staff who is overall responsible for supporting the NS in its response to the disaster event.',
+  fieldsStep4ContactRowsFederationContactEWDesc: 'IFRC staff who is overall responsible for supporting the NS in its response to the anticipated disaster event',
+
+  fieldsStep4ContactRowsMediaContactLabel: 'Media Contact',
+  fieldsStep4ContactRowsMediaContactEVTEPIEWDesc: 'An IFRC secretariat media contact in Geneva/Region or Country.',
 };

@@ -967,105 +967,105 @@ emergencyOptions.push({
   'value': '3'
 });
 
-export const fieldsStep4 = {
-  'plannedResponseRows': [
+export const getFieldsStep4 = (strings) => ({
+  plannedResponseRows: [
     {
       'name': 'dref',
-      'valueFieldLabel': 'Amount CHF',
+      'valueFieldLabel': strings.fieldsStep4PlannedResponseRowsDREFValueFieldLabel,
       'options': drefOptions,
       'key': 'dref',
       'label': {
-        'EVT': 'DREF Requested',
-        'EPI': 'DREF Requested',
-        'EW': 'DREF'
+        'EVT': strings.fieldsStep4PlannedResponseRowsDREFEVTEPILabel,
+        'EPI': strings.fieldsStep4PlannedResponseRowsDREFEVTEPILabel,
+        'EW': strings.fieldsStep4PlannedResponseRowsDREFEWLabel,
       }
     },
     {
       'name': 'emergency-appeal',
-      'valueFieldLabel': 'Amount CHF',
+      'valueFieldLabel': strings.fieldsStep4PlannedResponseRowsEmergencyAppealValueFieldLabel,
       'options': emergencyOptions,
       'key': 'emergencyAppeal',
       'label': {
-        'EVT': 'Emergency Appeal',
-        'EPI': 'Emergency Appeal',
-        'EW': 'Emergency Appeal'
+        'EVT': strings.fieldsStep4PlannedResponseRowsEmergencyAppealEVTEPIEWLabel,
+        'EPI': strings.fieldsStep4PlannedResponseRowsEmergencyAppealEVTEPIEWLabel,
+        'EW': strings.fieldsStep4PlannedResponseRowsEmergencyAppealEVTEPIEWLabel,
       }
     },
     {
       'name': 'fact',
-      'valueFieldLabel': 'Number of people',
+      'valueFieldLabel': strings.fieldsStep4PlannedResponseRowsFactValueFieldLabel,
       'options': defaultFieldOptions,
       'key': 'fact',
       'label': {
-        'EVT': 'Rapid Response Personnel',
-        'EPI': 'Rapid Response Personnel',
-        'EW': 'Rapid Response Personnel'
+        'EVT': strings.fieldsStep4PlannedResponseRowsFactEVTEPIEWLabel,
+        'EPI': strings.fieldsStep4PlannedResponseRowsFactEVTEPIEWLabel,
+        'EW': strings.fieldsStep4PlannedResponseRowsFactEVTEPIEWLabel,
       },
-      'description': 'This is the new name for FACT/RDRT/RIT' // WARNING: This is the only row with a description.
+      'description': strings.fieldsStep4PlannedResponseRowsFact, // WARNING: This is the only row with a description.
     },
     {
       'name': 'ifrc-staff',
-      'valueFieldLabel': 'Units',
+      'valueFieldLabel': strings.fieldsStep4PlannedResponseRowsIFRCStaffValueFieldLabel,
       'options': defaultFieldOptions,
       'key': 'ifrcStaff',
       'label': {
-        'EVT': 'Emergency Response Units',
-        'EPI': 'Emergency Response Units',
-        'EW': 'Emergency Response Units'
+        'EVT': strings.fieldsStep4PlannedResponseRowsIFRCStaffEVTEPIEWLabel,
+        'EPI': strings.fieldsStep4PlannedResponseRowsIFRCStaffEVTEPIEWLabel,
+        'EW': strings.fieldsStep4PlannedResponseRowsIFRCStaffEVTEPIEWLabel,
       }
     },
     {
       'name': 'forecast-based-action',
-      'valueFieldLabel': 'Amount CHF',
+      'valueFieldLabel': strings.fieldsStep4PlannedResponseRowsForecastBasedActionValueFieldLabel,
       'options': drefOptions,
       'key': 'forecastBasedAction',
       'label': {
         'EVT': null,
         'EPI': null,
-        'EW': 'Forecast Based Action'
+        'EW': strings.fieldsStep4PlannedResponseRowsForecastBasedActionEWLabel,
       }
     }
   ],
-  'contactRows': [
+  contactRows: [
     {
       'name': 'contact-originator',
       'key': 'contactOriginator',
-      'label': 'Originator',
+      'label': strings.fieldsStep4ContactRowsOriginatorLabel,
       'desc': {
-        'EVT': 'NS or IFRC Staff completing the Field Report.',
-        'EPI': 'NS or IFRC Staff completing the Field Report.',
-        'EW': 'NS or IFRC Staff completing the Field Report.'
+        'EVT': strings.fieldsStep4ContactRowsOriginatorEVTEPIEWDesc,
+        'EPI': strings.fieldsStep4ContactRowsOriginatorEVTEPIEWDesc,
+        'EW': strings.fieldsStep4ContactRowsOriginatorEVTEPIEWDesc,
       }
     },
     {
       'name': 'contact-nat-soc',
       'key': 'contactNatSoc',
-      'label': 'National Society Contact',
+      'label': strings.fieldsStep4ContactRowsNSContactLabel,
       'desc': {
-        'EVT': 'The most senior staff in the National Society responsible and knowledgeable about the disaster event.',
-        'EPI': 'The most senior staff in the National Society responsible and knowledgeable about the disaster event.',
-        'EW': 'The most senior staff in the NS responsible and knowledgeable about the risk.'
+        'EVT': strings.fieldsStep4ContactRowsNSContactEVTEPIDesc,
+        'EPI': strings.fieldsStep4ContactRowsNSContactEVTEPIDesc,
+        'EW': strings.fieldsStep4ContactRowsNSContactEWDesc,
       }
     },
     {
       'name': 'contact-federation',
       'key': 'contactFederation',
-      'label': 'IFRC Focal Point for the Emergency',
+      'label': strings.fieldsStep4ContactRowsFederationContactLabel,
       'desc': {
-        'EVT': 'IFRC staff who is overall responsible for supporting the NS in its response to the disaster event.',
-        'EPI': 'IFRC staff who is overall responsible for supporting the NS in its response to the disaster event.',
-        'EW': 'IFRC staff who is overall responsible for supporting the NS in its response to the anticipated disaster event'
+        'EVT': strings.fieldsStep4ContactRowsFederationContactEVTEPIDesc,
+        'EPI': strings.fieldsStep4ContactRowsFederationContactEVTEPIDesc,
+        'EW': strings.fieldsStep4ContactRowsFederationContactEWDesc,
       }
     },
     {
       'name': 'contact-media',
       'key': 'contactMedia',
-      'label': 'Media Contact',
+      'label': strings.fieldsStep4ContactRowsMediaContactLabel,
       'desc': {
-        'EVT': 'An IFRC secretariat media contact in Geneva/Region or Country.',
-        'EPI': 'An IFRC secretariat media contact in Geneva/Region or Country.',
-        'EW': 'An IFRC secretariat media contact in Geneva/Region or Country.'
+        'EVT': strings.fieldsStep4ContactRowsMediaContactEVTEPIEWDesc,
+        'EPI': strings.fieldsStep4ContactRowsMediaContactEVTEPIEWDesc,
+        'EW': strings.fieldsStep4ContactRowsMediaContactEVTEPIEWDesc,
       }
     }
-  ]
-};
+  ],
+});
