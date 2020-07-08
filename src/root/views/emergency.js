@@ -444,7 +444,7 @@ class Emergency extends React.Component {
                         pathname: `/reports/${o.id}`,
                         state: this.props.location.pathname
                       }}
-                      className="link--primary"
+                      className="link--table"
                       title="View Field Report"
                     >
                       {o.summary || noSummary}
@@ -456,7 +456,7 @@ class Emergency extends React.Component {
                         <Link
                           to={`/countries/${c.id}`}
                           key={c.id}
-                          className="link--primary"
+                          className="link--table"
                         >
                           {c.name}{' '}
                         </Link>
@@ -472,7 +472,7 @@ class Emergency extends React.Component {
                     }, []).map(region => {
                       return (<Link to={`/regions/${region}`}
                         key={region}
-                        className="link--primary"
+                        className="link--table"
                       >
                         {getRegionById(region.toString()).name}
                       </Link>);

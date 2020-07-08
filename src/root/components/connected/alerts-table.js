@@ -162,7 +162,7 @@ class AlertsTable extends SFPComponent {
       acc.push({
         id: rowData.id,
         date: date.toISODate(),
-        emergency: event ? <Link className='link--primary' to={`/emergencies/${event}`} title={strings.alertTableViewEmergency}>{rowData.operation}</Link> : rowData.operation || nope,
+        emergency: event ? <Link className='link--table' to={`/emergencies/${event}`} title={strings.alertTableViewEmergency}>{rowData.operation}</Link> : rowData.operation || nope,
 
         msg: isLoggedIn(this.props.user) ? <Expandable limit={128} text={rowData.message} /> : privateSurgeAlert,
         type: this.alertTypes[rowData.atype],

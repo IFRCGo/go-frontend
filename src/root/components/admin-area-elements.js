@@ -55,8 +55,8 @@ class _Contacts extends React.Component {
                 <td>{o.title}</td>
                 <td>{separate(o.ctype)}</td>
                 <td>{o.email.indexOf('@') !== -1
-                     ? <a className='link--primary' href={`mailto:${o.email}`} title={strings.contactsEmailTitle}>{o.email}</a>
-                     : <a className='link--primary' href={`tel:${o.email}`} title={strings.contactsEmailTitle}>{o.email}</a>}
+                     ? <a className='link--table' href={`mailto:${o.email}`} title={strings.contactsEmailTitle}>{o.email}</a>
+                     : <a className='link--table' href={`tel:${o.email}`} title={strings.contactsEmailTitle}>{o.email}</a>}
                 </td>
               </tr>
             ))}

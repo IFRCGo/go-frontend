@@ -324,6 +324,18 @@ td.right-align, th.right-align{
 
   }
 
+  thead th, td {
+    font-size: $base-font-size;
+
+    &:first-child {
+      padding-inline-start: 0;
+    }
+
+    &:last-child {
+      padding-inline-end: 0;
+    }
+  }
+
   th {
     .drop__toggle--caret::after {
       content: '\EA0A';
@@ -352,4 +364,11 @@ td.right-align, th.right-align{
     color: $primary-color;
     opacity: 1;
   }
+}
+
+// Pagination for table
+.pagination-wrapper.pagination-wrapper--table {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: $global-spacing;
 }
