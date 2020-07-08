@@ -34,7 +34,7 @@ const OperationCard = ({operationId, operationName, emergencyDeployments, appeal
           </div>
           {showFollow ? (
             <div className='button--key-emergencies__wrap'>  
-              <div onClick={toggleFollow} className='button button--capsule button--xsmall button--primary-filled button--key-emergencies'>
+              <div onClick={toggleFollow} className={`button button--capsule button--xsmall button--key-emergencies ${isFollowing ? 'button--primary-bounded' : 'button--primary-filled'}`}>
                 {
                   isFollowing ? (
                     <Translate stringId='operationCardFollowing' />
