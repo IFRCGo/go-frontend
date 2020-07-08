@@ -106,19 +106,24 @@ class Header extends React.PureComponent {
               <nav className='page__meta-nav' role='navigation'>
                 <Link to='/about' title='Visit Resources page' className='page__meta-nav-elements'><span>Resources</span></Link>
                 <UserMenu />
-                {/* <Link to='/reports/new' className='button button--small button--primary-bounded' title='Create Field Report'><span>Create Field Report</span></Link> */}
                 <Dropdown
                   id='drop__header__field__report'
                   triggerClassName='drop__toggle--caret button button--primary-bounded button--small'
                   triggerActiveClassName='active'
-                  triggerText='Create Field Report'
+                  triggerText='Create Report'
                   triggerElement='a'
                   direction='down'
                   alignment='center' >
                   <ul className='drop__menu drop__menu--select' role='menu'>
-                    <li className='drop__menu-item'><Link to='/reports/new'>New Field Report</Link></li>
-                    <li className='drop__menu-item'><a href='https://example.com'>External Form 1</a></li>
-                    <li className='drop__menu-item'><a href='https://example.com'>External Form 2</a></li>                                        
+                    <li className='drop__menu-item'>
+                      <Link to='/reports/new'>New Field Report</Link>
+                    </li>
+                    <li className='drop__menu-item'>
+                      <a href='https://ee.kob4.ifrc.org/single/::Ho8bHKDr' target='_blank'>Covid-19 Indicator Report</a>
+                    </li>
+                    <li className='drop__menu-item'>
+                      <a href='https://example.com' target='_blank'>Covid-19 NS Financial Form</a>
+                    </li>                                        
                   </ul>
                 </Dropdown>
               </nav>
