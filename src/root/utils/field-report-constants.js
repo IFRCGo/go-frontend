@@ -628,167 +628,167 @@ export const epiSources = [
   { value: '2', label: 'Other' }
 ];
 
-export const fieldsStep2 = {
-  'organizations': {
-    'EVT': [
-      {'label': 'Red Cross / Red Crescent', 'value': 'red-cross'},
-      {'label': 'Government', 'value': 'government'},
-      {'label': 'Other', 'value': 'other'}
+export const getFieldsStep2 = (strings) => ({
+  organizations: {
+    EVT: [
+      {'label': strings.fieldsStep2OrganizationsEVTEWLabelRC, 'value': 'red-cross'},
+      {'label': strings.fieldsStep2OrganizationsEVTEWLabelGovernment, 'value': 'government'},
+      {'label': strings.fieldsStep2OrganizationsLabelOther, 'value': 'other'},
     ],
-    'EW': [
-      {'label': 'Red Cross / Red Crescent', 'value': 'red-cross'},
-      {'label': 'Government', 'value': 'government'},
-      {'label': 'Other', 'value': 'other'}
+    EW: [
+      {'label': strings.fieldsStep2OrganizationsEVTEWLabelRC, 'value': 'red-cross'},
+      {'label': strings.fieldsStep2OrganizationsEVTEWLabelGovernment, 'value': 'government'},
+      {'label': strings.fieldsStep2OrganizationsLabelOther, 'value': 'other'},
     ],
-    'EPI': [
-      {'label': 'Ministry of Health', 'value': 'ministry-of-health'},
-      {'label': 'World Health Organization', 'value': 'world-health-organization'},
-      {'label': 'Other', 'value': 'other'},
-    ],
+    EPI: [
+      {'label': strings.fieldsStep2OrganizationsEPILabelHealthMinistry, 'value': 'ministry-of-health'},
+      {'label': strings.fieldsStep2OrganizationsEPILabelWHO, 'value': 'world-health-organization'},
+      {'label': strings.fieldsStep2OrganizationsLabelOther, 'value': 'other'},
+    ]
   },
-  'situationFields': {
-    'EVT': [
+  situationFields: {
+    EVT: [
       {
         'name': 'num-injured',
         'key': 'numInjured',
-        'label': 'Injured',
-        'estimationLabel': 'Estimation',
-        'desc': 'Number of people suffering from physical injuries, trauma or an illness requiring immediate medical treatment as a direct result of a disaster.'
+        'label': strings.fieldsStep2SituationFieldsEVTInjuredLabel,
+        'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
+        'desc': strings.fieldsStep2SituationFieldsEVTInjuredDescription,
       },
       {
         'name': 'num-dead',
         'key': 'numDead',
-        'label': 'Dead',
-        'estimationLabel': 'Estimation',
-        'desc': 'Number of people confirmed dead.'
+        'label': strings.fieldsStep2SituationFieldsEVTDeadLabel,
+        'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
+        'desc': strings.fieldsStep2SituationFieldsEVTDeadDescription,
       },
       {
         'name': 'num-missing',
         'key': 'numMissing',
-        'label': 'Missing',
-        'estimationLabel': 'Estimation',
-        'desc': 'Number of people missing.'
+        'label': strings.fieldsStep2SituationFieldsEVTMissingLabel,
+        'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
+        'desc': strings.fieldsStep2SituationFieldsEVTMissingDescription,
       },
       {
         'name': 'num-affected',
         'key': 'numAffected',
-        'label': 'Affected',
-        'estimationLabel': 'Estimation',
-        'desc': 'Number of people requiring immediate assistance during a period of emergency; this may include displaced or evacuated people.'
+        'label': strings.fieldsStep2SituationFieldsEVTAffectedLabel,
+        'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
+        'desc': strings.fieldsStep2SituationFieldsEVTAffectedDescription,
       },
       {
         'name': 'num-displaced',
         'key': 'numDisplaced',
-        'label': 'Displaced',
-        'estimationLabel': 'Estimation',
-        'desc': 'Number of people displaced.'
+        'label': strings.fieldsStep2SituationFieldsEVTDisplacedLabel,
+        'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
+        'desc': strings.fieldsStep2SituationFieldsEVTDisplacedDescription,
       }
     ],
-    'EPI': [
+    EPI: [
       {
         'name': 'epi-cases',
         'key': 'epiCases',
-        'label': 'Cases',
-        'estimationLabel': 'Estimation',
-        'desc': 'Number of registered cases.'
+        'label': strings.fieldsStep2SituationFieldsEPICasesLabel,
+        'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
+        'desc': strings.fieldsStep2SituationFieldsEPICasesDescription,
       },
       {
         'name': 'epi-suspected-cases',
         'key': 'epiSuspectedCases',
-        'label': 'Suspected Cases',
-        'estimationLabel': 'Estimation',
-        'desc': 'Number of suspected cases.'
+        'label': strings.fieldsStep2SituationFieldsEPISuspectedCasesLabel,
+        'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
+        'desc': strings.fieldsStep2SituationFieldsEPISuspectedCasesDescription,
       },
       {
         'name': 'epi-probable-cases',
         'key': 'epiProbableCases',
-        'label': 'Probable Cases',
-        'estimationLabel': 'Estimation',
-        'desc': 'Probable Cases.'
+        'label': strings.fieldsStep2SituationFieldsEPIProbableCasesLabel,
+        'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
+        'desc': strings.fieldsStep2SituationFieldsEPIProbableCasesDescription,
       },
       {
         'name': 'epi-confirmed-cases',
         'key': 'epiConfirmedCases',
-        'label': 'Confirmed Cases',
-        'estimationLabel': 'Estimation',
-        'desc': 'Confirmed Cases.'
+        'label': strings.fieldsStep2SituationFieldsEPIConfirmedCasesLabel,
+        'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
+        'desc': strings.fieldsStep2SituationFieldsEPIConfirmedCasesDescription,
       },
       {
         'name': 'epi-num-dead',
         'key': 'epiNumDead',
-        'label': 'Dead',
-        'estimationLabel': 'Estimation',
-        'desc': 'Number of people confirmed dead.'
+        'label': strings.fieldsStep2SituationFieldsEPIDeadLabel,
+        'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
+        'desc': strings.fieldsStep2SituationFieldsEPIDeadDescription,
       }
     ],
     'EPI-COV': [
       {
         'name': 'epi-cases',
         'key': 'epiCases',
-        'label': 'Cases',
-        'estimationLabel': 'Estimation',
-        'desc': 'Number of registered cases.'
+        'label': strings.fieldsStep2SituationFieldsEPICasesLabel,
+        'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
+        'desc': strings.fieldsStep2SituationFieldsEPICasesDescription,
       },
       {
         'name': 'epi-num-dead',
         'key': 'epiNumDead',
-        'label': 'Dead',
-        'estimationLabel': 'Estimation',
-        'desc': 'Number of people confirmed dead.'
+        'label': strings.fieldsStep2SituationFieldsEPIDeadLabel,
+        'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
+        'desc': strings.fieldsStep2SituationFieldsEPIDeadDescription,
       }
     ],
-    'EW': [
+    EW: [
       {
         'name': 'num-potentially-affected',
         'key': 'numPotentiallyAffected',
-        'label': 'Potentially Affected',
-        'estimationLabel': 'Estimation',
-        'desc': 'Number of people that are located in the geographic area where the hazard is likely to impact'
+        'label': strings.fieldsStep2SituationFieldsEWPotentiallyAffectedLabel,
+        'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
+        'desc': strings.fieldsStep2SituationFieldsEWPotentiallyAffectedDescription,
       },
       {
         'name': 'num-highest-risk',
         'key': 'numHighestRisk',
-        'label': 'People at Highest Risk',
-        'estimationLabel': 'Estimation',
-        'desc': 'Number of people that are located in the geographic area where the hazard\'s impact is likely to be the highest'
+        'label': strings.fieldsStep2SituationFieldsEWHighestRiskLabel,
+        'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
+        'desc': strings.fieldsStep2SituationFieldsEWHighestRiskDescription,
       },
       // WARNING: this is the only field that requires a non-numeric response
       {
         'name': 'affected-pop-centres',
         'key': 'affectedPopCentres',
-        'label': 'Largest Population Centres Likely to be Affected',
-        'estimationLabel': 'Names',
-        'desc': 'Names of large cities or towns which are most at risk'
+        'label': strings.fieldsStep2SituationFieldsEWAffectedPopCenteresLabel,
+        'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
+        'desc': strings.fieldsStep2SituationFieldsEWAffectedPopCenteresDescription,
       }
     ],
   },
-  'sitFieldsDate': {
-    'EPI': {
+  sitFieldsDate: {
+    EPI: {
       'name': 'situation-fields-date',
       'key': 'sitFieldsDate',
-      'label': 'Date of Data',
-      'estimationLabel': 'The key figures above are reported as of this date',
-      'desc': 'Date of figures reported.'
+      'label': strings.fieldsStep2SituationFieldsDateEPILabel,
+      'estimationLabel': strings.fieldsStep2SituationFieldsDateEPIEstimationLabel,
+      'desc': strings.fieldsStep2SituationFieldsDateEPIDescription,
+    }
+  },
+  description: {
+    EVT: {
+      'label': strings.fieldsStep2DescriptionEVTLabel,
+      'desc': strings.fieldsStep2DescriptionEVTDescription,
+      'placeholder': strings.fieldsStep2DescriptionEVTPlaceholder,
+    },
+    EPI: {
+      'label': strings.fieldsStep2DescriptionEPILabel,
+      'desc': strings.fieldsStep2DescriptionEPIDescription,
+      'placeholder': strings.fieldsStep2DescriptionEPIPlaceholder,
+    },
+    EW: {
+      'label': strings.fieldsStep2DescriptionEWLabel,
+      'desc': strings.fieldsStep2DescriptionEWDescription,
+      'placeholder': strings.fieldsStep2DescriptionEWPlaceholder,
     },
   },
-  'description': {
-    'EVT': {
-      'label': 'Situational Overview',
-      'desc': 'Describe the effects of the hazard, the current context, the affected population and how they have been affected.',
-      'placeholder': 'Example: According to the local government, the overflow of the Zimbizi river has caused extensive flood water damage to low income housing along the river bank. The majority of the affected households do not have sufficient insurance coverage for their assets. The local branch of the National Society is currently assessing how to best support the most vulnerable families affected by the disaster.'
-    },
-    'EPI': {
-      'label': 'Situational Overview',
-      'desc': 'Describe the primary and secondary effects on the health system and affected population.',
-      'placeholder': 'Description of the epidemic'
-    },
-    'EW': {
-      'label': 'Risk Analysis',
-      'desc': 'Brief overview of the potential disaster and projected impacts',
-      'placeholder': 'Hurricane Sirius is expected to hit the Whinging region early Tuesday morning. The system currently has sustained core wind speeds of 140km/h and gusts up to 170 km/h. The local government has started evacuating thousands of people. The Red Cross branch in Whinging has deployed staff and volunteers to communities at risk to support evacuation and to assist the population in protecting themselves and their livelihoods from the impacts of Sirius.'
-    }
-  }
-};
+});
 
 export const fieldsStep3 = {
   'section1fields': [

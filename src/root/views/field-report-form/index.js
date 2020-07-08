@@ -555,7 +555,8 @@ class FieldReportForm extends React.Component {
   }
 
   renderStep2 () {
-    const fields = formData.fieldsStep2;
+    const { strings } = this.context;
+    const fields = formData.getFieldsStep2(strings);
     const status = this.getStatus();
     const covidTag = this.state.data.isCovidReport === 'true' ? '-COV' : '';
 
