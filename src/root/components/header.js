@@ -114,7 +114,7 @@ class Header extends React.PureComponent {
                   triggerElement='a'
                   direction='down'
                   alignment='center' >
-                  <ul className='drop__menu drop__menu--select' role='menu'>
+                  <ul className='drop__menu drop__menu--select drop__menu__field__report' role='menu'>
                     <li className='drop__menu-item'>
                       <Link to='/reports/new'>New Field Report</Link>
                     </li>
