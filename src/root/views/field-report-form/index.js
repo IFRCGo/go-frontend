@@ -693,7 +693,8 @@ class FieldReportForm extends React.Component {
   }
 
   renderStep3 () {
-    const fields = formData.fieldsStep3;
+    const { strings } = this.context;
+    const fields = formData.getFieldsStep3(strings);
     const status = this.getStatus();
 
     // only for filtering the list of actions, we use the COVID type,

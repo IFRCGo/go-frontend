@@ -1003,4 +1003,40 @@ export default {
   fieldsStep2DescriptionEWPlaceholder: 'Hurricane Sirius is expected to hit the Whinging region early Tuesday morning. The system currently has sustained core wind speeds of 140km/h and gusts up to 170 km/h. The local government has started evacuating thousands of people. The Red Cross branch in Whinging has deployed staff and volunteers to communities at risk to support evacuation and to assist the population in protecting themselves and their livelihoods from the impacts of Sirius.',
 
   fieldsStep2SituationFieldsEstimation: 'Estimation',
+
+  fieldsStep3Section1FieldsAssistedGovEVTEPILabel: 'Assisted by Government',
+  fieldsStep3Section1FieldsAssistedGovEWLabel: 'Number of People Assisted by Government - Early Action',
+  fieldsStep3Section1FieldsAssistedRCRCEVTEPILabel: 'Assisted by RCRC Movement',
+  fieldsStep3Section1FieldsAssistedRCRCEWLabel: 'Number of People Assisted by RCRC Movement - Early Action',
+  fieldsStep3Section1FieldsLocalStaffEVTEPILabel: 'Number of NS Personnel Involved',
+  fieldsStep3Section1FieldsVolunteersEVTEPILabel: 'Number of Volunteers Involved',
+  fieldsStep3Section1FieldsExpatsEVTEPILabel: 'Number of RCRC Partner Personnel Involved',
+  fieldsStep3Section1FieldsExpatsEVTEPIDescription: 'Personnel from IFRC, ICRC & PNS',
+
+  fieldsStep3CheckboxSectionsNSActionsEVTEPILabel: 'Actions Taken by National Society Red Cross (if any)',
+  fieldsStep3CheckboxSectionsNSActionsEWLabel: 'Early Actions Taken by NS',
+  fieldsStep3CheckboxSectionsNSActionsEVTEPIDescription: 'Select the activities undertaken by the National Society and briefly describe.',
+  fieldsStep3CheckboxSectionsNSActionsEWDescription: 'Select the early action activities undertaken by the National Society and give a brief description',
+  fieldsStep3CheckboxSectionsNSActionsEVTPlaceholder: 'Example: The two local branches of the National Society in the affected districts have provided first aid, psychosocial support and basic relief items to the affected families. An evacuation centre has been set up in a local school to accommodate those unable to return to their homes. Groups of Red Cross volunteers are helping the local search and rescue personnel in cleaning storm debris from houses and streets.',
+  fieldsStep3CheckboxSectionsNSActionsEPIEWPlaceholder: 'Brief description of the action',
+
+  fieldsStep3CheckboxSectionsFederationActionsEVTEPILabel: 'Actions taken by the IFRC',
+  fieldsStep3CheckboxSectionsFederationActionsEWLabel: 'Early Actions Taken by IFRC',
+  fieldsStep3CheckboxSectionsFederationActionsEVTEPIDescription: 'Select the activities taken by the IFRC (could be the Regional office, cluster office or country office) and briefly describe.',
+  fieldsStep3CheckboxSectionsFederationActionsEPICOVDescription: 'Describe the activities taken by the IFRC (could be the Regional office, cluster office or country office)',
+  fieldsStep3CheckboxSectionsFederationActionsEWDescription: 'Select the early action activities undertaken by the IFRC and give a brief description',
+  fieldsStep3CheckboxSectionsFederationActionsEVTEPIEWPlaceholder: 'Brief description of the action',
+
+  fieldsStep3CheckboxSectionsPNSActionsEVTLabel: 'Actions taken by any other RCRC Movement actors',
+  fieldsStep3CheckboxSectionsPNSActionsEPILabel: 'Actions taken by other RCRC Movement',
+  fieldsStep3CheckboxSectionsPNSActionsEWLabel: 'Early Action Taken by other RCRC Movement',
+  fieldsStep3CheckboxSectionsPNSActionsEVTEPIDescription: 'Select the activities undertaken by any other RCRC Movement actor(s) and briefly describe.',
+  fieldsStep3CheckboxSectionsPNSActionsEPICOVDescription: 'Describe the activities undertaken by any other RCRC Movement actor(s)',
+  fieldsStep3CheckboxSectionsPNSActionsEWDescription: 'Select the early action activities undertaken by the RCRC Movement and give a brief description.',
+  fieldsStep3CheckboxSectionsPNSActionsEVTEPIEWPlaceholder: 'Brief description of the action',
+
+  fieldsStep3ActionsOthersEVTEPILabel: 'Actions Taken by Others (Governments, UN)',
+  fieldsStep3ActionsOthersEWLabel: 'Early Actions Taken by Others (Governments, UN)',
+  fieldsStep3ActionsOthersEVTEPIDescription: 'Who else was involved? UN agencies? NGOs? Government? Describe what other actors did. Also mention who the other actors are.',
+  fieldsStep3ActionsOthersEWDescription: 'List the early action activities undertaken by other actors, mention who the other actors are, and give a brief description.',
 };

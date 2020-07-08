@@ -790,8 +790,9 @@ export const getFieldsStep2 = (strings) => ({
   },
 });
 
-export const fieldsStep3 = {
-  'section1fields': [
+
+export const getFieldsStep3 = (strings) => ({
+  section1fields: [
     {
       'name': 'num-assisted-gov',
       'key': 'numAssistedGov',
@@ -800,9 +801,9 @@ export const fieldsStep3 = {
       'EPI-COV': true,
       'EW': true,
       'label': {
-        'EVT': 'Assisted by Government',
-        'EPI': 'Assisted by Government',
-        'EW': 'Number of People Assisted by Government - Early Action'
+        'EVT': strings.fieldsStep3Section1FieldsAssistedGovEVTEPILabel,
+        'EPI': strings.fieldsStep3Section1FieldsAssistedGovEVTEPILabel,
+        'EW': strings.fieldsStep3Section1FieldsAssistedGovEWLabel,
       }
     },
     {
@@ -813,9 +814,9 @@ export const fieldsStep3 = {
       'EPI-COV': true,
       'EW': true,
       'label': {
-        'EVT': 'Assisted by RCRC Movement',
-        'EPI': 'Assisted by RCRC Movement',
-        'EW': 'Number of People Assisted by RCRC Movement - Early Action'
+        'EVT': strings.fieldsStep3Section1FieldsAssistedRCRCEVTEPILabel,
+        'EPI': strings.fieldsStep3Section1FieldsAssistedRCRCEVTEPILabel,
+        'EW': strings.fieldsStep3Section1FieldsAssistedGovEWLabel,
       }
     },
     {
@@ -826,8 +827,8 @@ export const fieldsStep3 = {
       'EPI-COV': true,
       'EW': false,
       'label': {
-        'EVT': 'Number of NS Personnel Involved',
-        'EPI': 'Number of NS Personnel Involved'
+        'EVT': strings.fieldsStep3Section1FieldsLocalStaffEVTEPILabel,
+        'EPI': strings.fieldsStep3Section1FieldsLocalStaffEVTEPILabel,
       }
     },
     {
@@ -838,8 +839,8 @@ export const fieldsStep3 = {
       'EPI-COV': true,
       'EW': false,
       'label': {
-        'EVT': 'Number of Volunteers Involved',
-        'EPI': 'Number of Volunteers Involved'
+        'EVT': strings.fieldsStep3Section1FieldsVolunteersEVTEPILabel,
+        'EPI': strings.fieldsStep3Section1FieldsVolunteersEVTEPILabel,
       }
     },
     {
@@ -850,35 +851,35 @@ export const fieldsStep3 = {
       'EPI-COV': false,
       'EW': false,
       'label': {
-        'EVT': 'Number of RCRC Partner Personnel Involved',
-        'EPI': 'Number of RCRC Partner Personnel Involved'
+        'EVT': strings.fieldsStep3Section1FieldsExpatsEVTEPILabel,
+        'EPI': strings.fieldsStep3Section1FieldsExpatsEVTEPILabel,
       },
       'description': {
-        'EVT': 'Personnel from IFRC, ICRC & PNS',
-        'EPI': 'Personnel from IFRC, ICRC & PNS'
+        'EVT': strings.fieldsStep3Section1FieldsExpatsEVTEPIDescription,
+        'EPI': strings.fieldsStep3Section1FieldsExpatsEVTEPIDescription,
       }
-    }
+    },
   ],
-  'checkboxSections': [
+  checkboxSections: [
     {
       'name': 'actions-nat-soc',
       'key': 'actionsNatSoc',
       'action_type': 'NTLS',
       'label': {
-        'EVT': 'Actions Taken by National Society Red Cross (if any)',
-        'EPI': 'Actions Taken by National Society Red Cross (if any)',
-        'EW': 'Early Actions Taken by NS'
+        'EVT': strings.fieldsStep3CheckboxSectionsNSActionsEVTEPILabel,
+        'EPI': strings.fieldsStep3CheckboxSectionsNSActionsEVTEPILabel,
+        'EW': strings.fieldsStep3CheckboxSectionsNSActionsEWLabel,
       },
       'desc': {
-        'EVT': 'Select the activities undertaken by the National Society and briefly describe.',
-        'EPI': 'Select the activities undertaken by the National Society and briefly describe.',
-        'EPI-COV': 'Select the activities undertaken by the National Society and briefly describe.',
-        'EW': 'Select the early action activities undertaken by the National Society and give a brief description'
+        'EVT': strings.fieldsStep3CheckboxSectionsNSActionsEVTEPIDescription,
+        'EPI': strings.fieldsStep3CheckboxSectionsNSActionsEVTEPIDescription,
+        'EPI-COV': strings.fieldsStep3CheckboxSectionsNSActionsEVTEPIDescription,
+        'EW': strings.fieldsStep3CheckboxSectionsNSActionsEWDescription,
       },
       'placeholder': {
-        'EVT': 'Example: The two local branches of the National Society in the affected districts have provided first aid, psychosocial support and basic relief items to the affected families. An evacuation centre has been set up in a local school to accommodate those unable to return to their homes. Groups of Red Cross volunteers are helping the local search and rescue personnel in cleaning storm debris from houses and streets.',
-        'EPI': 'Brief description of the action',
-        'EW': 'Brief description of the action'
+        'EVT': strings.fieldsStep3CheckboxSectionsNSActionsEVTPlaceholder,
+        'EPI': strings.fieldsStep3CheckboxSectionsNSActionsEPIEWPlaceholder,
+        'EW': strings.fieldsStep3CheckboxSectionsNSActionsEPIEWPlaceholder,
       }
     },
     {
@@ -886,20 +887,20 @@ export const fieldsStep3 = {
       'key': 'actionsFederation',
       'action_type': 'FDRN',
       'label': {
-        'EVT': 'Actions taken by the IFRC',
-        'EPI': 'Actions taken by the IFRC',
-        'EW': 'Early Actions Taken by IFRC'
+        'EVT': strings.fieldsStep3CheckboxSectionsFederationActionsEVTEPILabel,
+        'EPI': strings.fieldsStep3CheckboxSectionsFederationActionsEVTEPILabel,
+        'EW': strings.fieldsStep3CheckboxSectionsFederationActionsEWLabel,
       },
       'desc': {
-        'EVT': 'Select the activities taken by the IFRC (could be the Regional office, cluster office or country office) and briefly describe.',
-        'EPI': 'Select the activities taken by the IFRC (could be the Regional office, cluster office or country office) and briefly describe.',
-        'EPI-COV': 'Describe the activities taken by the IFRC (could be the Regional office, cluster office or country office)',
-        'EW': 'Select the early action activities undertaken by the IFRC and give a brief description'
+        'EVT': strings.fieldsStep3CheckboxSectionsFederationActionsEVTEPIDescription,
+        'EPI': strings.fieldsStep3CheckboxSectionsFederationActionsEVTEPIDescription,
+        'EPI-COV': strings.fieldsStep3CheckboxSectionsFederationActionsEPICOVDescription,
+        'EW': strings.fieldsStep3CheckboxSectionsFederationActionsEWDescription,
       },
       'placeholder': {
-        'EVT': 'Brief description of the action',
-        'EPI': 'Brief description of the action',
-        'EW': 'Brief description of the action'
+        'EVT': strings.fieldsStep3CheckboxSectionsFederationActionsEVTEPIEWPlaceholder,
+        'EPI': strings.fieldsStep3CheckboxSectionsFederationActionsEVTEPIEWPlaceholder,
+        'EW': strings.fieldsStep3CheckboxSectionsFederationActionsEVTEPIEWPlaceholder,
       }
     },
     {
@@ -907,36 +908,36 @@ export const fieldsStep3 = {
       'key': 'actionsPns',
       'action_type': 'PNS',
       'label': {
-        'EVT': 'Actions taken by any other RCRC Movement actors',
-        'EPI': 'Actions taken by other RCRC Movement',
-        'EW': 'Early Action Taken by other RCRC Movement'
+        'EVT': strings.fieldsStep3CheckboxSectionsPNSActionsEVTLabel,
+        'EPI': strings.fieldsStep3CheckboxSectionsPNSActionsEPILabel,
+        'EW': strings.fieldsStep3CheckboxSectionsPNSActionsEWLabel,
       },
       'desc': {
-        'EVT': 'Select the activities undertaken by any other RCRC Movement actor(s) and briefly describe.',
-        'EPI': 'Select the activities undertaken by any other RCRC Movement actor(s) and briefly describe.',
-        'EPI-COV': 'Describe the activities undertaken by any other RCRC Movement actor(s)',
-        'EW': 'Select the early action activities undertaken by the RCRC Movement and give a brief description.'
+        'EVT': strings.fieldsStep3CheckboxSectionsPNSActionsEVTEPIDescription,
+        'EPI': strings.fieldsStep3CheckboxSectionsPNSActionsEVTEPIDescription,
+        'EPI-COV': strings.fieldsStep3CheckboxSectionsPNSActionsEPICOVDescription,
+        'EW': strings.fieldsStep3CheckboxSectionsPNSActionsEWDescription,
       },
       'placeholder': {
-        'EVT': 'Brief description of the action',
-        'EPI': 'Brief description of the action',
-        'EW': 'Brief description of the action'
+        'EVT': strings.fieldsStep3CheckboxSectionsPNSActionsEVTEPIEWPlaceholder,
+        'EPI': strings.fieldsStep3CheckboxSectionsPNSActionsEVTEPIEWPlaceholder,
+        'EW': strings.fieldsStep3CheckboxSectionsPNSActionsEVTEPIEWPlaceholder,
       }
     }
   ],
-  'actionsOthers': {
+  actionsOthers: {
     'label': {
-      'EVT': 'Actions Taken by Others (Governments, UN)',
-      'EPI': 'Actions Taken by Others (Governments, UN)',
-      'EW': 'Early Actions Taken by Others (Governments, UN)'
+      'EVT': strings.fieldsStep3ActionsOthersEVTEPILabel,
+      'EPI': strings.fieldsStep3ActionsOthersEVTEPILabel,
+      'EW': strings.fieldsStep3ActionsOthersEWLabel,
     },
     'desc': {
-      'EVT': 'Who else was involved? UN agencies? NGOs? Government? Describe what other actors did. Also mention who the other actors are.',
-      'EPI': 'Who else was involved? UN agencies? NGOs? Government? Describe what other actors did. Also mention who the other actors are.',
-      'EW': 'List the early action activities undertaken by other actors, mention who the other actors are, and give a brief description.'
+      'EVT': strings.fieldsStep3ActionsOthersEVTEPIDescription,
+      'EPI': strings.fieldsStep3ActionsOthersEVTEPIDescription,
+      'EW': strings.fieldsStep3ActionsOthersEWDescription,
     }
   }
-};
+});
 
 const defaultFieldOptions = [
   {
