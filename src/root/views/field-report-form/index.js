@@ -887,7 +887,7 @@ class FieldReportForm extends React.Component {
         <FormRadioGroup
           label='This field report is visible to'
           name='visibility'
-          options={formData.visibility}
+          options={formData.getVisibility(strings)}
           selectedOption={this.state.data.visibility}
           onChange={this.onFieldChange.bind(this, 'visibility')}
           classWrapper='form__group--visible-field-group'>

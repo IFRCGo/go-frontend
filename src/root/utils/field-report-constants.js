@@ -1,5 +1,6 @@
 import { listToMap } from '@togglecorp/fujs';
 
+// FIXME: pull this list from server
 export const statusEarlyWarningValue = '8';
 export const statusEventValue = '9';
 
@@ -28,17 +29,17 @@ export const statusValues = [
   {value: statusEventValue},
 ];
 
-export const visibility = [
+export const getVisibility = (strings) => [
   {
-    label: 'Public',
+    label: strings.fieldReportConstantVisibilityPublicLabel,
     value: '3'
   },
   {
-    label: 'RCRC Movement',
+    label: strings.fieldReportConstantVisibilityRCRCMovementLabel,
     value: '1'
   },
   {
-    label: 'IFRC Secretariat',
+    label: strings.fieldReportConstantVisibilityIFRCSecretariatLabel,
     value: '2'
   }
 ];
@@ -336,6 +337,7 @@ export const countryNameMapByIso = listToMap(
   d => d.label,
 );
 
+// FIXME: pull this list from server
 export const disasterTypeList = [
   {
     value: '66',
@@ -448,6 +450,7 @@ export const getIsEpidemicDisasterTypeByValue = value =>
 
 export const disasterTypes = listToMap(disasterTypeList, d => d.value, d => d.label);
 
+// FIXME: pull this list from server
 export const sources = [
   {
     label: 'National Society',
@@ -483,6 +486,7 @@ export const sources = [
   }
 ];
 
+// FIXME: pull this list from server
 // Step 4.
 export const eruTypes = [
   {
@@ -527,6 +531,7 @@ export const eruTypes = [
   }
 ];
 
+// FIXME: pull this list from server
 export const orgTypes = [
   {
     label: 'National Society',

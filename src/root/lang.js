@@ -1073,7 +1073,10 @@ export default {
 
   fieldReportConstantStatusEarlyWarningLabel: 'Early Warning / Early Action',
   fieldReportConstantStatusEarlyWarningDescription: 'First report for this hazard.',
-
   fieldReportConstantStatusEventLabel: 'Event',
   fieldReportConstantStatusEventDescription: 'First report for this disaster.',
+
+  fieldReportConstantVisibilityPublicLabel: 'Public',
+  fieldReportConstantVisibilityRCRCMovementLabel: 'RCRC Movement',
+  fieldReportConstantVisibilityIFRCSecretariatLabel: 'IFRC Secretariat',
 };
