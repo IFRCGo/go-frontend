@@ -1,37 +1,50 @@
 import { listToMap } from '@togglecorp/fujs';
 
-export const statusEarlyWarning = {
-  label: 'Early Warning / Early Action',
-  value: '8',
-  description: 'First report for this hazard.'
-};
+// FIXME: pull this list from server
+export const statusEarlyWarningValue = '8';
+export const statusEventValue = '9';
 
-export const statusEvent = {
-  label: 'Event',
-  value: '9',
-  description: 'First report for this disaster.'
-};
+export const getStatusEarlyWarning = (strings) => ({
+  value: statusEarlyWarningValue,
+  label: strings.fieldReportConstantStatusEarlyWarningLabel,
+  description: strings.fieldReportConstantStatusEarlyWarningDescription,
+});
+
+export const getStatusEvent = (strings) => ({
+  value: statusEventValue,
+  label: strings.fieldReportConstantStatusEventLabel,
+  description: strings.fieldReportConstantStatusEventDescription,
+});
 
 export const getIsStatusEventByValue = value =>
-  value === statusEvent.value;
+  value === statusEventValue;
 
-export const status = [statusEarlyWarning, statusEvent];
+export const getStatus = (strings) => [
+  getStatusEarlyWarning(strings),
+  getStatusEvent(strings), 
+];
 
-export const visibility = [
+export const statusValues = [
+  {value: statusEarlyWarningValue},
+  {value: statusEventValue},
+];
+
+export const getVisibility = (strings) => [
   {
-    label: 'Public',
+    label: strings.fieldReportConstantVisibilityPublicLabel,
     value: '3'
   },
   {
-    label: 'RCRC Movement',
+    label: strings.fieldReportConstantVisibilityRCRCMovementLabel,
     value: '1'
   },
   {
-    label: 'IFRC Secretariat',
+    label: strings.fieldReportConstantVisibilityIFRCSecretariatLabel,
     value: '2'
   }
 ];
 
+// FIXME: pull this list from server
 export const countryList = [
   {value: '1', label: 'Ukraine', iso: 'ua'},
   {value: '2', label: 'United Arab Emirates', iso: 'ae'},
@@ -324,6 +337,7 @@ export const countryNameMapByIso = listToMap(
   d => d.label,
 );
 
+// FIXME: pull this list from server
 export const disasterTypeList = [
   {
     value: '66',
@@ -436,6 +450,7 @@ export const getIsEpidemicDisasterTypeByValue = value =>
 
 export const disasterTypes = listToMap(disasterTypeList, d => d.value, d => d.label);
 
+// FIXME: pull this list from server
 export const sources = [
   {
     label: 'National Society',
@@ -471,6 +486,7 @@ export const sources = [
   }
 ];
 
+// FIXME: pull this list from server
 // Step 4.
 export const eruTypes = [
   {
@@ -515,6 +531,7 @@ export const eruTypes = [
   }
 ];
 
+// FIXME: pull this list from server
 export const orgTypes = [
   {
     label: 'National Society',
@@ -534,92 +551,92 @@ export const orgTypes = [
   }
 ];
 
-export const fieldsStep1 = {
-  'summary': {
-    'EVT': {
-      label: 'Title *',
-      desc: 'For Covid-19 Field Reports, please link to the existing country specific emergency page. Please do not link to the Global emergency page.'
+export const getFieldsStep1 = (strings) => ({
+  summary: {
+    EVT: {
+      label: strings.fieldsStep1SummaryLabel,
+      desc: strings.fieldsStep1SummaryDescription,
     },
-    'EPI': {
-      label: 'Title *',
-      desc: 'For Covid-19 Field Reports, please link to the existing country specific emergency page. Please do not link to the Global emergency page.'
+    EPI: {
+      label: strings.fieldsStep1SummaryLabel,
+      desc: strings.fieldsStep1SummaryDescription,
     },
-    'EW': {
-      label: 'Title *',
-      desc: 'For Covid-19 Field Reports, please link to the existing country specific emergency page. Please do not link to the Global emergency page.'
-    }
+    EW: {
+      label: strings.fieldsStep1SummaryLabel,
+      desc: strings.fieldsStep1SummaryDescription,
+    },
   },
   'disaster-type': {
-    'EVT': {
-      label: 'Disaster Type *',
-      desc: 'If Covid-19 select “Epidemic” as the disaster type'
+    EVT: {
+      label: strings.fieldsStep1DisasterTypeLabel,
+      desc: strings.fieldsStep1DisasterTypeDescription,
     },
-    'EPI': {
-      label: 'Disaster Type *',
-      desc: 'If Covid-19 select “Epidemic” as the disaster type'
+    EPI: {
+      label: strings.fieldsStep1DisasterTypeLabel,
+      desc: strings.fieldsStep1DisasterTypeDescription,
     },
-    'EW': {
-      label: 'Hazard Type *',
-      desc: 'If Covid-19 select “Epidemic” as the disaster type'
+    EW: {
+      label: strings.fieldsStep1DisasterTypeLabel,
+      desc: strings.fieldsStep1DisasterTypeDescription,
+    },
+  },
+  startDate: {
+    EVT: {
+      label: strings.fieldsStep1StartDateLabelStartDate,
+      desc: strings.fieldsStep1StartDateDescriptionEVT,
+    },
+    EPI: {
+      label: strings.fieldsStep1StartDateLabelStartDate,
+      desc: strings.fieldsStep1StartDateDescriptionEPI,
+    },
+    EW: {
+      label: strings.fieldsStep1StartDateLabelEW,
+      desc: strings.fieldsStep1StartDateDescriptionEW,
     }
   },
-  'startDate': {
-    'EVT': {
-      label: 'Start Date *',
-      desc: 'Start date is when some significant effects are felt or when the first significant impact is felt.'
+  country: {
+    EVT: {
+      label: strings.fieldsStep1CountryLabelAffected,
+      desc: '',
     },
-    'EPI': {
-      label: 'Start Date *',
-      desc: 'The date when the first case is confirmed.'
+    EPI: {
+      label: strings.fieldsStep1CountryLabelAffected,
+      desc: '',
     },
-    'EW': {
-      label: 'Forecasted Date of Impact *',
-      desc: 'Date at which significant impacts are forecasted to occur.'
-    }
+    EW: {
+      label: strings.fieldsStep1CountryLabelEW,
+      desc: strings.fieldsStep1CountryDescriptionEW,
+    },
   },
-  'country': {
-    'EVT': {
-      label: 'Affected Country and Province / Region *',
-      desc: ''
+  assistance: {
+    EVT: {
+      label: strings.fieldsStep1AssistanceLabel,
+      desc: strings.fieldsStep1AssistanceDescription,
     },
-    'EPI': {
-      label: 'Affected Country and Province / Region *',
-      desc: ''
+    EPI: {
+      label: strings.fieldsStep1AssistanceLabel,
+      desc: strings.fieldsStep1AssistanceDescription,
     },
-    'EW': {
-      label: 'Potentially Affected Country and Province / Region *',
-      desc: 'Anticipated Affected Country and Province / Region'
-    }
-  },
-  'assistance': {
-    'EVT': {
-      label: 'Government requests international assistance?',
-      desc: 'Indicate if the government requested international assistance.'
+    EW: {
+      label: strings.fieldsStep1AssistanceLabel,
+      desc: strings.fieldsStep1AssistanceDescription,
     },
-    'EPI': {
-      label: 'Government requests international assistance?',
-      desc: 'Indicate if the government requested international assistance.'
-    },
-    'EW': {
-      label: 'Government requests international assistance?',
-      desc: 'Indicate if the government requested international assistance.'
-    }
   },
   'ns-assistance': {
-    'EVT': {
-      label: 'National Society requests international assistance?',
-      desc: 'Indicate if the National Society requested international assistance'
+    EVT: {
+      label: strings.fieldsStep1NSAssistanceLabel,
+      desc: strings.fieldsStep1NSAssistanceDescription,
     },
-    'EPI': {
-      label: 'National Society requests international assistance?',
-      desc: 'Indicate if the National Society requested international assistance'
+    EPI: {
+      label: strings.fieldsStep1NSAssistanceLabel,
+      desc: strings.fieldsStep1NSAssistanceDescription,
     },
-    'EW': {
-      label: 'National Society requests international assistance?',
-      desc: 'Indicate if the National Society requested international assistance'
-    }
-  }
-};
+    EW: {
+      label: strings.fieldsStep1NSAssistanceLabel,
+      desc: strings.fieldsStep1NSAssistanceDescription,
+    },
+  },
+});
 
 export const epiSources = [
   { value: '', label: '-- Source --' },
@@ -628,170 +645,171 @@ export const epiSources = [
   { value: '2', label: 'Other' }
 ];
 
-export const fieldsStep2 = {
-  'organizations': {
-    'EVT': [
-      {'label': 'Red Cross / Red Crescent', 'value': 'red-cross'},
-      {'label': 'Government', 'value': 'government'},
-      {'label': 'Other', 'value': 'other'}
+export const getFieldsStep2 = (strings) => ({
+  organizations: {
+    EVT: [
+      {'label': strings.fieldsStep2OrganizationsEVTEWLabelRC, 'value': 'red-cross'},
+      {'label': strings.fieldsStep2OrganizationsEVTEWLabelGovernment, 'value': 'government'},
+      {'label': strings.fieldsStep2OrganizationsLabelOther, 'value': 'other'},
     ],
-    'EW': [
-      {'label': 'Red Cross / Red Crescent', 'value': 'red-cross'},
-      {'label': 'Government', 'value': 'government'},
-      {'label': 'Other', 'value': 'other'}
+    EW: [
+      {'label': strings.fieldsStep2OrganizationsEVTEWLabelRC, 'value': 'red-cross'},
+      {'label': strings.fieldsStep2OrganizationsEVTEWLabelGovernment, 'value': 'government'},
+      {'label': strings.fieldsStep2OrganizationsLabelOther, 'value': 'other'},
     ],
-    'EPI': [
-      {'label': 'Ministry of Health', 'value': 'ministry-of-health'},
-      {'label': 'World Health Organization', 'value': 'world-health-organization'},
-      {'label': 'Other', 'value': 'other'},
-    ],
+    EPI: [
+      {'label': strings.fieldsStep2OrganizationsEPILabelHealthMinistry, 'value': 'ministry-of-health'},
+      {'label': strings.fieldsStep2OrganizationsEPILabelWHO, 'value': 'world-health-organization'},
+      {'label': strings.fieldsStep2OrganizationsLabelOther, 'value': 'other'},
+    ]
   },
-  'situationFields': {
-    'EVT': [
+  situationFields: {
+    EVT: [
       {
         'name': 'num-injured',
         'key': 'numInjured',
-        'label': 'Injured',
-        'estimationLabel': 'Estimation',
-        'desc': 'Number of people suffering from physical injuries, trauma or an illness requiring immediate medical treatment as a direct result of a disaster.'
+        'label': strings.fieldsStep2SituationFieldsEVTInjuredLabel,
+        'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
+        'desc': strings.fieldsStep2SituationFieldsEVTInjuredDescription,
       },
       {
         'name': 'num-dead',
         'key': 'numDead',
-        'label': 'Dead',
-        'estimationLabel': 'Estimation',
-        'desc': 'Number of people confirmed dead.'
+        'label': strings.fieldsStep2SituationFieldsEVTDeadLabel,
+        'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
+        'desc': strings.fieldsStep2SituationFieldsEVTDeadDescription,
       },
       {
         'name': 'num-missing',
         'key': 'numMissing',
-        'label': 'Missing',
-        'estimationLabel': 'Estimation',
-        'desc': 'Number of people missing.'
+        'label': strings.fieldsStep2SituationFieldsEVTMissingLabel,
+        'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
+        'desc': strings.fieldsStep2SituationFieldsEVTMissingDescription,
       },
       {
         'name': 'num-affected',
         'key': 'numAffected',
-        'label': 'Affected',
-        'estimationLabel': 'Estimation',
-        'desc': 'Number of people requiring immediate assistance during a period of emergency; this may include displaced or evacuated people.'
+        'label': strings.fieldsStep2SituationFieldsEVTAffectedLabel,
+        'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
+        'desc': strings.fieldsStep2SituationFieldsEVTAffectedDescription,
       },
       {
         'name': 'num-displaced',
         'key': 'numDisplaced',
-        'label': 'Displaced',
-        'estimationLabel': 'Estimation',
-        'desc': 'Number of people displaced.'
+        'label': strings.fieldsStep2SituationFieldsEVTDisplacedLabel,
+        'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
+        'desc': strings.fieldsStep2SituationFieldsEVTDisplacedDescription,
       }
     ],
-    'EPI': [
+    EPI: [
       {
         'name': 'epi-cases',
         'key': 'epiCases',
-        'label': 'Cases',
-        'estimationLabel': 'Estimation',
-        'desc': 'Number of registered cases.'
+        'label': strings.fieldsStep2SituationFieldsEPICasesLabel,
+        'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
+        'desc': strings.fieldsStep2SituationFieldsEPICasesDescription,
       },
       {
         'name': 'epi-suspected-cases',
         'key': 'epiSuspectedCases',
-        'label': 'Suspected Cases',
-        'estimationLabel': 'Estimation',
-        'desc': 'Number of suspected cases.'
+        'label': strings.fieldsStep2SituationFieldsEPISuspectedCasesLabel,
+        'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
+        'desc': strings.fieldsStep2SituationFieldsEPISuspectedCasesDescription,
       },
       {
         'name': 'epi-probable-cases',
         'key': 'epiProbableCases',
-        'label': 'Probable Cases',
-        'estimationLabel': 'Estimation',
-        'desc': 'Probable Cases.'
+        'label': strings.fieldsStep2SituationFieldsEPIProbableCasesLabel,
+        'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
+        'desc': strings.fieldsStep2SituationFieldsEPIProbableCasesDescription,
       },
       {
         'name': 'epi-confirmed-cases',
         'key': 'epiConfirmedCases',
-        'label': 'Confirmed Cases',
-        'estimationLabel': 'Estimation',
-        'desc': 'Confirmed Cases.'
+        'label': strings.fieldsStep2SituationFieldsEPIConfirmedCasesLabel,
+        'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
+        'desc': strings.fieldsStep2SituationFieldsEPIConfirmedCasesDescription,
       },
       {
         'name': 'epi-num-dead',
         'key': 'epiNumDead',
-        'label': 'Dead',
-        'estimationLabel': 'Estimation',
-        'desc': 'Number of people confirmed dead.'
+        'label': strings.fieldsStep2SituationFieldsEPIDeadLabel,
+        'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
+        'desc': strings.fieldsStep2SituationFieldsEPIDeadDescription,
       }
     ],
     'EPI-COV': [
       {
         'name': 'epi-cases',
         'key': 'epiCases',
-        'label': 'Cases',
-        'estimationLabel': 'Estimation',
-        'desc': 'Number of registered cases.'
+        'label': strings.fieldsStep2SituationFieldsEPICasesLabel,
+        'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
+        'desc': strings.fieldsStep2SituationFieldsEPICasesDescription,
       },
       {
         'name': 'epi-num-dead',
         'key': 'epiNumDead',
-        'label': 'Dead',
-        'estimationLabel': 'Estimation',
-        'desc': 'Number of people confirmed dead.'
+        'label': strings.fieldsStep2SituationFieldsEPIDeadLabel,
+        'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
+        'desc': strings.fieldsStep2SituationFieldsEPIDeadDescription,
       }
     ],
-    'EW': [
+    EW: [
       {
         'name': 'num-potentially-affected',
         'key': 'numPotentiallyAffected',
-        'label': 'Potentially Affected',
-        'estimationLabel': 'Estimation',
-        'desc': 'Number of people that are located in the geographic area where the hazard is likely to impact'
+        'label': strings.fieldsStep2SituationFieldsEWPotentiallyAffectedLabel,
+        'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
+        'desc': strings.fieldsStep2SituationFieldsEWPotentiallyAffectedDescription,
       },
       {
         'name': 'num-highest-risk',
         'key': 'numHighestRisk',
-        'label': 'People at Highest Risk',
-        'estimationLabel': 'Estimation',
-        'desc': 'Number of people that are located in the geographic area where the hazard\'s impact is likely to be the highest'
+        'label': strings.fieldsStep2SituationFieldsEWHighestRiskLabel,
+        'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
+        'desc': strings.fieldsStep2SituationFieldsEWHighestRiskDescription,
       },
       // WARNING: this is the only field that requires a non-numeric response
       {
         'name': 'affected-pop-centres',
         'key': 'affectedPopCentres',
-        'label': 'Largest Population Centres Likely to be Affected',
-        'estimationLabel': 'Names',
-        'desc': 'Names of large cities or towns which are most at risk'
+        'label': strings.fieldsStep2SituationFieldsEWAffectedPopCenteresLabel,
+        'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
+        'desc': strings.fieldsStep2SituationFieldsEWAffectedPopCenteresDescription,
       }
     ],
   },
-  'sitFieldsDate': {
-    'EPI': {
+  sitFieldsDate: {
+    EPI: {
       'name': 'situation-fields-date',
       'key': 'sitFieldsDate',
-      'label': 'Date of Data',
-      'estimationLabel': 'The key figures above are reported as of this date',
-      'desc': 'Date of figures reported.'
+      'label': strings.fieldsStep2SituationFieldsDateEPILabel,
+      'estimationLabel': strings.fieldsStep2SituationFieldsDateEPIEstimationLabel,
+      'desc': strings.fieldsStep2SituationFieldsDateEPIDescription,
+    }
+  },
+  description: {
+    EVT: {
+      'label': strings.fieldsStep2DescriptionEVTLabel,
+      'desc': strings.fieldsStep2DescriptionEVTDescription,
+      'placeholder': strings.fieldsStep2DescriptionEVTPlaceholder,
+    },
+    EPI: {
+      'label': strings.fieldsStep2DescriptionEPILabel,
+      'desc': strings.fieldsStep2DescriptionEPIDescription,
+      'placeholder': strings.fieldsStep2DescriptionEPIPlaceholder,
+    },
+    EW: {
+      'label': strings.fieldsStep2DescriptionEWLabel,
+      'desc': strings.fieldsStep2DescriptionEWDescription,
+      'placeholder': strings.fieldsStep2DescriptionEWPlaceholder,
     },
   },
-  'description': {
-    'EVT': {
-      'label': 'Situational Overview',
-      'desc': 'Describe the effects of the hazard, the current context, the affected population and how they have been affected.',
-      'placeholder': 'Example: According to the local government, the overflow of the Zimbizi river has caused extensive flood water damage to low income housing along the river bank. The majority of the affected households do not have sufficient insurance coverage for their assets. The local branch of the National Society is currently assessing how to best support the most vulnerable families affected by the disaster.'
-    },
-    'EPI': {
-      'label': 'Situational Overview',
-      'desc': 'Describe the primary and secondary effects on the health system and affected population.',
-      'placeholder': 'Description of the epidemic'
-    },
-    'EW': {
-      'label': 'Risk Analysis',
-      'desc': 'Brief overview of the potential disaster and projected impacts',
-      'placeholder': 'Hurricane Sirius is expected to hit the Whinging region early Tuesday morning. The system currently has sustained core wind speeds of 140km/h and gusts up to 170 km/h. The local government has started evacuating thousands of people. The Red Cross branch in Whinging has deployed staff and volunteers to communities at risk to support evacuation and to assist the population in protecting themselves and their livelihoods from the impacts of Sirius.'
-    }
-  }
-};
+});
 
-export const fieldsStep3 = {
-  'section1fields': [
+
+export const getFieldsStep3 = (strings) => ({
+  section1fields: [
     {
       'name': 'num-assisted-gov',
       'key': 'numAssistedGov',
@@ -800,9 +818,9 @@ export const fieldsStep3 = {
       'EPI-COV': true,
       'EW': true,
       'label': {
-        'EVT': 'Assisted by Government',
-        'EPI': 'Assisted by Government',
-        'EW': 'Number of People Assisted by Government - Early Action'
+        'EVT': strings.fieldsStep3Section1FieldsAssistedGovEVTEPILabel,
+        'EPI': strings.fieldsStep3Section1FieldsAssistedGovEVTEPILabel,
+        'EW': strings.fieldsStep3Section1FieldsAssistedGovEWLabel,
       }
     },
     {
@@ -813,9 +831,9 @@ export const fieldsStep3 = {
       'EPI-COV': true,
       'EW': true,
       'label': {
-        'EVT': 'Assisted by RCRC Movement',
-        'EPI': 'Assisted by RCRC Movement',
-        'EW': 'Number of People Assisted by RCRC Movement - Early Action'
+        'EVT': strings.fieldsStep3Section1FieldsAssistedRCRCEVTEPILabel,
+        'EPI': strings.fieldsStep3Section1FieldsAssistedRCRCEVTEPILabel,
+        'EW': strings.fieldsStep3Section1FieldsAssistedGovEWLabel,
       }
     },
     {
@@ -826,8 +844,8 @@ export const fieldsStep3 = {
       'EPI-COV': true,
       'EW': false,
       'label': {
-        'EVT': 'Number of NS Personnel Involved',
-        'EPI': 'Number of NS Personnel Involved'
+        'EVT': strings.fieldsStep3Section1FieldsLocalStaffEVTEPILabel,
+        'EPI': strings.fieldsStep3Section1FieldsLocalStaffEVTEPILabel,
       }
     },
     {
@@ -838,8 +856,8 @@ export const fieldsStep3 = {
       'EPI-COV': true,
       'EW': false,
       'label': {
-        'EVT': 'Number of Volunteers Involved',
-        'EPI': 'Number of Volunteers Involved'
+        'EVT': strings.fieldsStep3Section1FieldsVolunteersEVTEPILabel,
+        'EPI': strings.fieldsStep3Section1FieldsVolunteersEVTEPILabel,
       }
     },
     {
@@ -850,35 +868,35 @@ export const fieldsStep3 = {
       'EPI-COV': false,
       'EW': false,
       'label': {
-        'EVT': 'Number of RCRC Partner Personnel Involved',
-        'EPI': 'Number of RCRC Partner Personnel Involved'
+        'EVT': strings.fieldsStep3Section1FieldsExpatsEVTEPILabel,
+        'EPI': strings.fieldsStep3Section1FieldsExpatsEVTEPILabel,
       },
       'description': {
-        'EVT': 'Personnel from IFRC, ICRC & PNS',
-        'EPI': 'Personnel from IFRC, ICRC & PNS'
+        'EVT': strings.fieldsStep3Section1FieldsExpatsEVTEPIDescription,
+        'EPI': strings.fieldsStep3Section1FieldsExpatsEVTEPIDescription,
       }
-    }
+    },
   ],
-  'checkboxSections': [
+  checkboxSections: [
     {
       'name': 'actions-nat-soc',
       'key': 'actionsNatSoc',
       'action_type': 'NTLS',
       'label': {
-        'EVT': 'Actions Taken by National Society Red Cross (if any)',
-        'EPI': 'Actions Taken by National Society Red Cross (if any)',
-        'EW': 'Early Actions Taken by NS'
+        'EVT': strings.fieldsStep3CheckboxSectionsNSActionsEVTEPILabel,
+        'EPI': strings.fieldsStep3CheckboxSectionsNSActionsEVTEPILabel,
+        'EW': strings.fieldsStep3CheckboxSectionsNSActionsEWLabel,
       },
       'desc': {
-        'EVT': 'Select the activities undertaken by the National Society and briefly describe.',
-        'EPI': 'Select the activities undertaken by the National Society and briefly describe.',
-        'EPI-COV': 'Select the activities undertaken by the National Society and briefly describe.',
-        'EW': 'Select the early action activities undertaken by the National Society and give a brief description'
+        'EVT': strings.fieldsStep3CheckboxSectionsNSActionsEVTEPIDescription,
+        'EPI': strings.fieldsStep3CheckboxSectionsNSActionsEVTEPIDescription,
+        'EPI-COV': strings.fieldsStep3CheckboxSectionsNSActionsEVTEPIDescription,
+        'EW': strings.fieldsStep3CheckboxSectionsNSActionsEWDescription,
       },
       'placeholder': {
-        'EVT': 'Example: The two local branches of the National Society in the affected districts have provided first aid, psychosocial support and basic relief items to the affected families. An evacuation centre has been set up in a local school to accommodate those unable to return to their homes. Groups of Red Cross volunteers are helping the local search and rescue personnel in cleaning storm debris from houses and streets.',
-        'EPI': 'Brief description of the action',
-        'EW': 'Brief description of the action'
+        'EVT': strings.fieldsStep3CheckboxSectionsNSActionsEVTPlaceholder,
+        'EPI': strings.fieldsStep3CheckboxSectionsNSActionsEPIEWPlaceholder,
+        'EW': strings.fieldsStep3CheckboxSectionsNSActionsEPIEWPlaceholder,
       }
     },
     {
@@ -886,20 +904,20 @@ export const fieldsStep3 = {
       'key': 'actionsFederation',
       'action_type': 'FDRN',
       'label': {
-        'EVT': 'Actions taken by the IFRC',
-        'EPI': 'Actions taken by the IFRC',
-        'EW': 'Early Actions Taken by IFRC'
+        'EVT': strings.fieldsStep3CheckboxSectionsFederationActionsEVTEPILabel,
+        'EPI': strings.fieldsStep3CheckboxSectionsFederationActionsEVTEPILabel,
+        'EW': strings.fieldsStep3CheckboxSectionsFederationActionsEWLabel,
       },
       'desc': {
-        'EVT': 'Select the activities taken by the IFRC (could be the Regional office, cluster office or country office) and briefly describe.',
-        'EPI': 'Select the activities taken by the IFRC (could be the Regional office, cluster office or country office) and briefly describe.',
-        'EPI-COV': 'Describe the activities taken by the IFRC (could be the Regional office, cluster office or country office)',
-        'EW': 'Select the early action activities undertaken by the IFRC and give a brief description'
+        'EVT': strings.fieldsStep3CheckboxSectionsFederationActionsEVTEPIDescription,
+        'EPI': strings.fieldsStep3CheckboxSectionsFederationActionsEVTEPIDescription,
+        'EPI-COV': strings.fieldsStep3CheckboxSectionsFederationActionsEPICOVDescription,
+        'EW': strings.fieldsStep3CheckboxSectionsFederationActionsEWDescription,
       },
       'placeholder': {
-        'EVT': 'Brief description of the action',
-        'EPI': 'Brief description of the action',
-        'EW': 'Brief description of the action'
+        'EVT': strings.fieldsStep3CheckboxSectionsFederationActionsEVTEPIEWPlaceholder,
+        'EPI': strings.fieldsStep3CheckboxSectionsFederationActionsEVTEPIEWPlaceholder,
+        'EW': strings.fieldsStep3CheckboxSectionsFederationActionsEVTEPIEWPlaceholder,
       }
     },
     {
@@ -907,36 +925,36 @@ export const fieldsStep3 = {
       'key': 'actionsPns',
       'action_type': 'PNS',
       'label': {
-        'EVT': 'Actions taken by any other RCRC Movement actors',
-        'EPI': 'Actions taken by other RCRC Movement',
-        'EW': 'Early Action Taken by other RCRC Movement'
+        'EVT': strings.fieldsStep3CheckboxSectionsPNSActionsEVTLabel,
+        'EPI': strings.fieldsStep3CheckboxSectionsPNSActionsEPILabel,
+        'EW': strings.fieldsStep3CheckboxSectionsPNSActionsEWLabel,
       },
       'desc': {
-        'EVT': 'Select the activities undertaken by any other RCRC Movement actor(s) and briefly describe.',
-        'EPI': 'Select the activities undertaken by any other RCRC Movement actor(s) and briefly describe.',
-        'EPI-COV': 'Describe the activities undertaken by any other RCRC Movement actor(s)',
-        'EW': 'Select the early action activities undertaken by the RCRC Movement and give a brief description.'
+        'EVT': strings.fieldsStep3CheckboxSectionsPNSActionsEVTEPIDescription,
+        'EPI': strings.fieldsStep3CheckboxSectionsPNSActionsEVTEPIDescription,
+        'EPI-COV': strings.fieldsStep3CheckboxSectionsPNSActionsEPICOVDescription,
+        'EW': strings.fieldsStep3CheckboxSectionsPNSActionsEWDescription,
       },
       'placeholder': {
-        'EVT': 'Brief description of the action',
-        'EPI': 'Brief description of the action',
-        'EW': 'Brief description of the action'
+        'EVT': strings.fieldsStep3CheckboxSectionsPNSActionsEVTEPIEWPlaceholder,
+        'EPI': strings.fieldsStep3CheckboxSectionsPNSActionsEVTEPIEWPlaceholder,
+        'EW': strings.fieldsStep3CheckboxSectionsPNSActionsEVTEPIEWPlaceholder,
       }
     }
   ],
-  'actionsOthers': {
+  actionsOthers: {
     'label': {
-      'EVT': 'Actions Taken by Others (Governments, UN)',
-      'EPI': 'Actions Taken by Others (Governments, UN)',
-      'EW': 'Early Actions Taken by Others (Governments, UN)'
+      'EVT': strings.fieldsStep3ActionsOthersEVTEPILabel,
+      'EPI': strings.fieldsStep3ActionsOthersEVTEPILabel,
+      'EW': strings.fieldsStep3ActionsOthersEWLabel,
     },
     'desc': {
-      'EVT': 'Who else was involved? UN agencies? NGOs? Government? Describe what other actors did. Also mention who the other actors are.',
-      'EPI': 'Who else was involved? UN agencies? NGOs? Government? Describe what other actors did. Also mention who the other actors are.',
-      'EW': 'List the early action activities undertaken by other actors, mention who the other actors are, and give a brief description.'
+      'EVT': strings.fieldsStep3ActionsOthersEVTEPIDescription,
+      'EPI': strings.fieldsStep3ActionsOthersEVTEPIDescription,
+      'EW': strings.fieldsStep3ActionsOthersEWDescription,
     }
   }
-};
+});
 
 const defaultFieldOptions = [
   {
@@ -966,105 +984,105 @@ emergencyOptions.push({
   'value': '3'
 });
 
-export const fieldsStep4 = {
-  'plannedResponseRows': [
+export const getFieldsStep4 = (strings) => ({
+  plannedResponseRows: [
     {
       'name': 'dref',
-      'valueFieldLabel': 'Amount CHF',
+      'valueFieldLabel': strings.fieldsStep4PlannedResponseRowsDREFValueFieldLabel,
       'options': drefOptions,
       'key': 'dref',
       'label': {
-        'EVT': 'DREF Requested',
-        'EPI': 'DREF Requested',
-        'EW': 'DREF'
+        'EVT': strings.fieldsStep4PlannedResponseRowsDREFEVTEPILabel,
+        'EPI': strings.fieldsStep4PlannedResponseRowsDREFEVTEPILabel,
+        'EW': strings.fieldsStep4PlannedResponseRowsDREFEWLabel,
       }
     },
     {
       'name': 'emergency-appeal',
-      'valueFieldLabel': 'Amount CHF',
+      'valueFieldLabel': strings.fieldsStep4PlannedResponseRowsEmergencyAppealValueFieldLabel,
       'options': emergencyOptions,
       'key': 'emergencyAppeal',
       'label': {
-        'EVT': 'Emergency Appeal',
-        'EPI': 'Emergency Appeal',
-        'EW': 'Emergency Appeal'
+        'EVT': strings.fieldsStep4PlannedResponseRowsEmergencyAppealEVTEPIEWLabel,
+        'EPI': strings.fieldsStep4PlannedResponseRowsEmergencyAppealEVTEPIEWLabel,
+        'EW': strings.fieldsStep4PlannedResponseRowsEmergencyAppealEVTEPIEWLabel,
       }
     },
     {
       'name': 'fact',
-      'valueFieldLabel': 'Number of people',
+      'valueFieldLabel': strings.fieldsStep4PlannedResponseRowsFactValueFieldLabel,
       'options': defaultFieldOptions,
       'key': 'fact',
       'label': {
-        'EVT': 'Rapid Response Personnel',
-        'EPI': 'Rapid Response Personnel',
-        'EW': 'Rapid Response Personnel'
+        'EVT': strings.fieldsStep4PlannedResponseRowsFactEVTEPIEWLabel,
+        'EPI': strings.fieldsStep4PlannedResponseRowsFactEVTEPIEWLabel,
+        'EW': strings.fieldsStep4PlannedResponseRowsFactEVTEPIEWLabel,
       },
-      'description': 'This is the new name for FACT/RDRT/RIT' // WARNING: This is the only row with a description.
+      'description': strings.fieldsStep4PlannedResponseRowsFact, // WARNING: This is the only row with a description.
     },
     {
       'name': 'ifrc-staff',
-      'valueFieldLabel': 'Units',
+      'valueFieldLabel': strings.fieldsStep4PlannedResponseRowsIFRCStaffValueFieldLabel,
       'options': defaultFieldOptions,
       'key': 'ifrcStaff',
       'label': {
-        'EVT': 'Emergency Response Units',
-        'EPI': 'Emergency Response Units',
-        'EW': 'Emergency Response Units'
+        'EVT': strings.fieldsStep4PlannedResponseRowsIFRCStaffEVTEPIEWLabel,
+        'EPI': strings.fieldsStep4PlannedResponseRowsIFRCStaffEVTEPIEWLabel,
+        'EW': strings.fieldsStep4PlannedResponseRowsIFRCStaffEVTEPIEWLabel,
       }
     },
     {
       'name': 'forecast-based-action',
-      'valueFieldLabel': 'Amount CHF',
+      'valueFieldLabel': strings.fieldsStep4PlannedResponseRowsForecastBasedActionValueFieldLabel,
       'options': drefOptions,
       'key': 'forecastBasedAction',
       'label': {
         'EVT': null,
         'EPI': null,
-        'EW': 'Forecast Based Action'
+        'EW': strings.fieldsStep4PlannedResponseRowsForecastBasedActionEWLabel,
       }
     }
   ],
-  'contactRows': [
+  contactRows: [
     {
       'name': 'contact-originator',
       'key': 'contactOriginator',
-      'label': 'Originator',
+      'label': strings.fieldsStep4ContactRowsOriginatorLabel,
       'desc': {
-        'EVT': 'NS or IFRC Staff completing the Field Report.',
-        'EPI': 'NS or IFRC Staff completing the Field Report.',
-        'EW': 'NS or IFRC Staff completing the Field Report.'
+        'EVT': strings.fieldsStep4ContactRowsOriginatorEVTEPIEWDesc,
+        'EPI': strings.fieldsStep4ContactRowsOriginatorEVTEPIEWDesc,
+        'EW': strings.fieldsStep4ContactRowsOriginatorEVTEPIEWDesc,
       }
     },
     {
       'name': 'contact-nat-soc',
       'key': 'contactNatSoc',
-      'label': 'National Society Contact',
+      'label': strings.fieldsStep4ContactRowsNSContactLabel,
       'desc': {
-        'EVT': 'The most senior staff in the National Society responsible and knowledgeable about the disaster event.',
-        'EPI': 'The most senior staff in the National Society responsible and knowledgeable about the disaster event.',
-        'EW': 'The most senior staff in the NS responsible and knowledgeable about the risk.'
+        'EVT': strings.fieldsStep4ContactRowsNSContactEVTEPIDesc,
+        'EPI': strings.fieldsStep4ContactRowsNSContactEVTEPIDesc,
+        'EW': strings.fieldsStep4ContactRowsNSContactEWDesc,
       }
     },
     {
       'name': 'contact-federation',
       'key': 'contactFederation',
-      'label': 'IFRC Focal Point for the Emergency',
+      'label': strings.fieldsStep4ContactRowsFederationContactLabel,
       'desc': {
-        'EVT': 'IFRC staff who is overall responsible for supporting the NS in its response to the disaster event.',
-        'EPI': 'IFRC staff who is overall responsible for supporting the NS in its response to the disaster event.',
-        'EW': 'IFRC staff who is overall responsible for supporting the NS in its response to the anticipated disaster event'
+        'EVT': strings.fieldsStep4ContactRowsFederationContactEVTEPIDesc,
+        'EPI': strings.fieldsStep4ContactRowsFederationContactEVTEPIDesc,
+        'EW': strings.fieldsStep4ContactRowsFederationContactEWDesc,
       }
     },
     {
       'name': 'contact-media',
       'key': 'contactMedia',
-      'label': 'Media Contact',
+      'label': strings.fieldsStep4ContactRowsMediaContactLabel,
       'desc': {
-        'EVT': 'An IFRC secretariat media contact in Geneva/Region or Country.',
-        'EPI': 'An IFRC secretariat media contact in Geneva/Region or Country.',
-        'EW': 'An IFRC secretariat media contact in Geneva/Region or Country.'
+        'EVT': strings.fieldsStep4ContactRowsMediaContactEVTEPIEWDesc,
+        'EPI': strings.fieldsStep4ContactRowsMediaContactEVTEPIEWDesc,
+        'EW': strings.fieldsStep4ContactRowsMediaContactEVTEPIEWDesc,
       }
     }
-  ]
-};
+  ],
+});
