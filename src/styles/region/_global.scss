@@ -26,6 +26,12 @@
     }
   }
   
+  #stats {
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+  }
+
   .region-countries__letter {
     color: $primary-color;
     font-weight: $base-font-bold;
