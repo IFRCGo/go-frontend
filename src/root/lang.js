@@ -240,7 +240,7 @@ export default {
   appealsTableEmergency: 'Emergency',
   appealsTableDisastertype: 'Disaster Type',
   appealsTableRequestedAmount: 'Requested Amount (CHF)',
-  appealsTableFundedAmount: 'Funding (CHF)',
+  appealsTableFundedAmount: 'Funding (%)',
   appealsTableCountry: 'Country',
   appealsTableRowEvent: 'View Emergency',
   appealsTableViewCountry: 'View Country',
