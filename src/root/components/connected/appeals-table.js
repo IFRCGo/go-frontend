@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
+import Progress from '../progress-labeled';
+
 
 import { environment } from '#config';
 import { getAppealsList, getAppeals } from '#actions';
@@ -229,7 +231,7 @@ class AppealsTable extends SFPComponent {
           className: ''
         },
         fundedAmount: {
-          value: n(o.amount_funded),
+          value: <div><span className='progress_value_funding_table'>80</span><Progress value={80} max={100} /></div>,
           className: ''
         },
         type: appealsType[o.atype],

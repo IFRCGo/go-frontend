@@ -326,6 +326,7 @@ td.right-align, th.right-align{
 
   thead th, td {
     font-size: $base-font-size;
+    padding-bottom: ($global-spacing * 1.5);
 
     &:first-child {
       padding-inline-start: 0;
@@ -347,6 +348,23 @@ td.right-align, th.right-align{
     color: $grey-soot;
     border-bottom: 1px solid $base-border-color--light;
     font-weight: $base-font-regular;
+  }
+
+  // Progress bar styling for tables with bottom borders
+  .progress-bar {
+    background-color: rgba(50, 50, 50, 0.1);
+    border-radius: 0;
+  }
+
+  .progress-bar__value {
+    background-color: $primary-color;
+    border-radius: 0;
+    height: 4px;
+  }
+
+  .progress_value_funding_table {
+    margin-bottom: ($global-spacing / 3);
+    display: block;
   }
 }
 
