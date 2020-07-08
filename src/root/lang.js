@@ -1079,4 +1079,58 @@ export default {
   fieldReportConstantVisibilityPublicLabel: 'Public',
   fieldReportConstantVisibilityRCRCMovementLabel: 'RCRC Movement',
   fieldReportConstantVisibilityIFRCSecretariatLabel: 'IFRC Secretariat',
+
+  fieldReportFormSubmitError: 'Could not submit field report',
+  fieldReportFormErrorLabel: 'Error:',
+  fieldReportFormLoadDataErrorMessage: 'Failed to load Form Data',
+  fieldReportFormErrorInFormMessage: 'There are errors in the form',
+  fieldReportFormRedirectMessage: 'Field report updated, redirecting...',
+  fieldReportFormItemContextLabel: 'Context',
+  fieldReportFormItemSituationLabel: 'Situation',
+  fieldReportFormItemRiskAnalysisLabel: 'Risk Analysis',
+  fieldReportFormItemActionsLabel: 'Actions',
+  fieldReportFormItemEarlyActionsLabel: 'Early Actions',
+  fieldReportFormItemResponseLabel: 'Response',
+
+  fieldReportFormStatusLabel: 'Status *',
+  fieldReportFormCovidLabel: 'COVID-19 Related Event *',
+
+  fieldReportFormOptionYesLabel: 'Yes',
+  fieldReportFormOptionNoLabel: 'No',
+  fieldReportFormOptionPlannedLabel: 'Planned',
+  fieldReportFormOptionPublishedLabel: 'Yes/Published',
+
+  fieldReportFormTitleSecondaryLabel: 'Add Title',
+  fieldReportFormTitleSelectLabel: 'Please check for, and link to an existing emergency if available',
+  fieldReportFormTitleInputPlaceholder: 'Example: Malawi - Central Region: Floods 03/2019',
+  fieldReportFormTitleSelectPlaceholder: 'Click here to link to an existing hazard alert (if one exists)',
+
+  fieldReportFormCountrySelectPlaceholder: 'Select a country',
+  fieldReportFormRegionSelectPlaceholder: 'Select Provinces / Regions',
+
+  fieldReportFormEPISourceOfFiguresLabel: 'Source (of figures)',
+  fieldReportFormEPISourceOfFiguresDescription: 'description',
+
+  fieldReportFormSourceDetailsLabel: 'Source Details',
+  fieldReportFormSourceDetailsPlaceholder: 'Add details for data with sources marked as Other above.',
+  fieldReportFormSourceDetailsEPIPlaceholder: 'Add resource url for situation report',
+  fieldReportFormSourceDetailsDescription: 'Add details for sources above (if applicable)',
+
+  fieldReportFormActionDataLoadingMessage: 'Loading Actions Data...',
+  fieldReportFormActionTakenTitle: 'Actions taken',
+
+  fieldReportFormInformationBulletinLabel: 'Information Bulletin',
+  fieldReportFormInformationBulletinDescription: 'Indicate if an Information Bulletin was published, is planned or if no Information Bulletin will be issued for this operation/disaster/hazard.',
+
+  fieldReportFormOthersActionsPlaceholder: 'Brief description of the action',
+  fieldReportFormResponseTitle: 'Planned Interventions',
+  fieldReportFormResponseTitleEVT: 'Planned Response',
+  fieldReportFormResponseLabel: 'Planned International Response',
+  fieldReportFormResponseDescription: 'Indicate status of global and regional tools.',
+  fieldReportFormContactsTitle: 'Contacts',
+
+  fieldReportFormVisibilityLabel: 'This field report is visible to',
+  fieldReportFormPageTitle: 'IFRC Go - New Field Report',
+  fieldReportFormBreadCrumbCurrentPageTitle: 'New Field Report',
+  fieldReportFormBreadCrumbHomePageTitle: 'Home',
 };
