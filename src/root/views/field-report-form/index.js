@@ -246,11 +246,11 @@ class FieldReportForm extends React.Component {
     if (field === 'disasterType' &&
       formData.getIsEpidemicDisasterTypeByValue(val)
     ) {
-      _set(data, 'status', formData.statusEvent.value);
+      _set(data, 'status', formData.statusEventValue);
     }
 
     if (field === 'isCovidReport' && val && val === 'true') {
-      _set(data, 'status', formData.statusEvent.value);
+      _set(data, 'status', formData.statusEventValue);
       _set(data, 'disasterType', '1');
     }
 
@@ -320,7 +320,7 @@ class FieldReportForm extends React.Component {
   getStatus () {
     const { status, disasterType } = this.state.data;
 
-    if (status === formData.statusEarlyWarning.value) {
+    if (status === formData.statusEarlyWarningValue) {
       return 'EW';
     } else if (formData.getIsEpidemicDisasterTypeByValue(disasterType)) {
       return 'EPI';
@@ -364,7 +364,7 @@ class FieldReportForm extends React.Component {
         <FormRadioGroup
           label='Status *'
           name='status'
-          options={formData.status.map(status => ({
+          options={formData.getStatus(strings).map(status => ({
             ...status,
             // If Epidemic, only 'Event' can be selected
             ...(

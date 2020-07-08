@@ -1,21 +1,32 @@
 import { listToMap } from '@togglecorp/fujs';
 
-export const statusEarlyWarning = {
-  label: 'Early Warning / Early Action',
-  value: '8',
-  description: 'First report for this hazard.'
-};
+export const statusEarlyWarningValue = '8';
+export const statusEventValue = '9';
 
-export const statusEvent = {
-  label: 'Event',
-  value: '9',
-  description: 'First report for this disaster.'
-};
+export const getStatusEarlyWarning = (strings) => ({
+  value: statusEarlyWarningValue,
+  label: strings.fieldReportConstantStatusEarlyWarningLabel,
+  description: strings.fieldReportConstantStatusEarlyWarningDescription,
+});
+
+export const getStatusEvent = (strings) => ({
+  value: statusEventValue,
+  label: strings.fieldReportConstantStatusEventLabel,
+  description: strings.fieldReportConstantStatusEventDescription,
+});
 
 export const getIsStatusEventByValue = value =>
-  value === statusEvent.value;
+  value === statusEventValue;
 
-export const status = [statusEarlyWarning, statusEvent];
+export const getStatus = (strings) => [
+  getStatusEarlyWarning(strings),
+  getStatusEvent(strings), 
+];
+
+export const statusValues = [
+  {value: statusEarlyWarningValue},
+  {value: statusEventValue},
+];
 
 export const visibility = [
   {
@@ -32,6 +43,7 @@ export const visibility = [
   }
 ];
 
+// FIXME: pull this list from server
 export const countryList = [
   {value: '1', label: 'Ukraine', iso: 'ua'},
   {value: '2', label: 'United Arab Emirates', iso: 'ae'},

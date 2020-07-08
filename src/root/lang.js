@@ -1070,4 +1070,10 @@ export default {
 
   fieldsStep4ContactRowsMediaContactLabel: 'Media Contact',
   fieldsStep4ContactRowsMediaContactEVTEPIEWDesc: 'An IFRC secretariat media contact in Geneva/Region or Country.',
+
+  fieldReportConstantStatusEarlyWarningLabel: 'Early Warning / Early Action',
+  fieldReportConstantStatusEarlyWarningDescription: 'First report for this hazard.',
+
+  fieldReportConstantStatusEventLabel: 'Event',
+  fieldReportConstantStatusEventDescription: 'First report for this disaster.',
 };

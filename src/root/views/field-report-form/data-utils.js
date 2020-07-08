@@ -470,9 +470,9 @@ export function convertFieldReportToState (fieldReport, stateData) {
     state.sitFieldsDate = fieldReport.sit_fields_date.split('T')[0];
   }
   // Everything not an early warning is an event.
-  state.status = fieldReport.status !== parseInt(formData.statusEarlyWarning.value)
-    ? formData.statusEvent.value
-    : formData.statusEarlyWarning.value;
+  state.status = fieldReport.status !== parseInt(formData.statusEarlyWarningValue)
+    ? formData.statusEventValue
+    : formData.statusEarlyWarningValue;
 
   const directMapping = [
     // [source, destination]
