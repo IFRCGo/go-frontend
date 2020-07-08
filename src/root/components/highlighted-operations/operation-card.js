@@ -6,10 +6,19 @@ import { formatDate, percent, round, commaSeparatedNumber as n } from '#utils/fo
 import Progress from './../progress-labeled';
 import Translate from '#components/Translate';
 
-const OperationCard = ({operationId, operationName, emergencyDeployments, appeals, lastUpdate, showFollow, isFollowing}) => {
+const OperationCard = ({operationId, operationName, emergencyDeployments, appeals, lastUpdate, showFollow, isFollowing, followOperation, unfollowOperation}) => {
   const beneficiaries = appeals.reduce((acc, curr) => acc + curr.num_beneficiaries, 0);
   const requested = appeals.reduce((acc, curr) => acc + Number(curr.amount_requested), 0);
   const funded = appeals.reduce((acc, curr) => acc + Number(curr.amount_funded), 0);
+
+  function toggleFollow (event) {
+    event.preventDefault();
+    if (isFollowing) {
+      unfollowOperation(operationId);
+    } else {
+      followOperation(operationId);
+    }
+  }
 
   return (
     <div className='key-emergencies-item' key={operationId}>
@@ -25,7 +34,7 @@ const OperationCard = ({operationId, operationName, emergencyDeployments, appeal
           </div>
           {showFollow ? (
             <div className='button--key-emergencies__wrap'>  
-              <div className='button button--capsule button--xsmall button--primary-filled button--key-emergencies'>
+              <div onClick={toggleFollow} className='button button--capsule button--xsmall button--primary-filled button--key-emergencies'>
                 {
                   isFollowing ? (
                     <Translate stringId='operationCardFollowing' />
@@ -93,6 +102,8 @@ if (environment !== 'production') {
     operationId: PropTypes.number,
     showFollow: PropTypes.bool,
     isFollowing: PropTypes.bool,
+    followOperation: PropTypes.func,
+    unfollowOperation: PropTypes.func,
     operationName: PropTypes.string,
     emergencyDeployments: PropTypes.shape({
       deployedErus: PropTypes.number,

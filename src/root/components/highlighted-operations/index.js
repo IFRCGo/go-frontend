@@ -9,7 +9,9 @@ import BlockLoading from '../block-loading';
 import Fold from '../fold';
 import OperationCard from './operation-card';
 import {
-  getUserProfile
+  getUserProfile,
+  addSubscriptions,
+  delSubscription
 } from '#actions';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
@@ -20,6 +22,10 @@ class HighlightedOperations extends React.Component {
 
     this.calculateDeployedPersonnel = this.calculateDeployedPersonnel.bind(this);
     this.getDeploymentERU = this.getDeploymentERU.bind(this);
+    this.state = {
+      followed: new Set(),
+      unfollowed: new Set()
+    };
   }
 
   componentDidMount () {
@@ -86,9 +92,30 @@ class HighlightedOperations extends React.Component {
     return true;
   }
 
+  followOperation (id) {
+    this.props._addSubscriptions(id);
+    const { followed, unfollowed } = this.state;
+    followed.add(id);
+    unfollowed.delete(id);
+    this.setState({
+      followed,
+      unfollowed
+    });
+  }
+
+  unfollowOperation (id) {
+    this.props._delSubscription(id);
+    const { followed, unfollowed } = this.state;
+    followed.delete(id);
+    unfollowed.add(id);
+    this.setState({
+      followed,
+      unfollowed
+    });  
+  }
+
   render () {
     const { error, fetching, fetched, data } = this.props.featured;
-    const { user } = this.props;
     const { strings } = this.context;
     const foldLink = (
       <Link to='/appeals/all' className='fold__title__link'>
@@ -112,9 +139,12 @@ class HighlightedOperations extends React.Component {
         return memo;
       }, []);
       operations = operations.map(o => {
+        const following = (followedOpIds.indexOf(o.id) !== -1 &&
+                           !this.state.unfollowed.has(o.id)) || this.state.followed.has(o.id);
+
         return {
           ...o,
-          following: followedOpIds.indexOf(o.id) !== -1
+          following
         };
       });
     }
@@ -127,6 +157,8 @@ class HighlightedOperations extends React.Component {
                 key={operation.id}
                 showFollow={showFollow}
                 isFollowing = {operation.following ? true : false}
+                followOperation = {this.followOperation.bind(this)}
+                unfollowOperation = {this.unfollowOperation.bind(this)}
                 operationId={operation.id}
                 operationName={operation.name}
                 emergencyDeployments={this.calculateDeployedPersonnel(operation)}
@@ -170,7 +202,9 @@ const dispatcher = (dispatch) => ({
   _getFeaturedEmergenciesForRegion: (...args) => dispatch(getFeaturedEmergenciesForRegion(...args)),
   _getFeaturedEmergenciesDeployments: (...args) => dispatch(getFeaturedEmergenciesDeployments(...args)),
   _getDeploymentERU: (...args) => dispatch(getDeploymentERU(...args)),
-  _getUserProfile: (...args) => dispatch(getUserProfile(...args))
+  _getUserProfile: (...args) => dispatch(getUserProfile(...args)),
+  _addSubscriptions: (...args) => dispatch(addSubscriptions(...args)),
+  _delSubscription: (...args) => dispatch(delSubscription(...args))
 });
 
 HighlightedOperations.contextType = LanguageContext;
