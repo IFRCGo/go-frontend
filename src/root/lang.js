@@ -932,4 +932,26 @@ export default {
   populationMapTitle: 'Population map',
   seasonalCalendarTitle: 'Seasonal calendar',
   socialEventsTitle: 'Social events',
+
+  fieldsStep1SummaryLabel: 'Title *',
+  fieldsStep1SummaryDescription:  'For Covid-19 Field Reports, please link to the existing country specific emergency page. Please do not link to the Global emergency page.',
+
+  fieldsStep1DisasterTypeLabel: 'Disaster Type *',
+  fieldsStep1DisasterTypeDescription: 'If Covid-19 select “Epidemic” as the disaster type',
+
+  fieldsStep1StartDateLabelStartDate: 'Start Date *',
+  fieldsStep1StartDateDescriptionEVT: 'Start date is when some significant effects are felt or when the first significant impact is felt.',
+  fieldsStep1StartDateDescriptionEPI: 'The date when the first case is confirmed.',
+  fieldsStep1StartDateLabelEW: 'Forecasted Date of Impact *',
+  fieldsStep1StartDateDescriptionEW: 'Date at which significant impacts are forecasted to occur.',
+
+  fieldsStep1CountryLabelAffected: 'Affected Country and Province / Region *',
+  fieldsStep1CountryLabelEW: 'Potentially Affected Country and Province / Region *',
+  fieldsStep1CountryDescriptionEW: 'Anticipated Affected Country and Province / Region',
+
+  fieldsStep1AssistanceLabel: 'Government requests international assistance?',
+  fieldsStep1AssistanceDescription: 'Indicate if the government requested international assistance.',
+
+  fieldsStep1NSAssistanceLabel: 'National Society requests international assistance?',
+  fieldsStep1NSAssistanceDescription: 'Indicate if the National Society requested international assistance.',
 };

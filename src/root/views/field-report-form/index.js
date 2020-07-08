@@ -355,8 +355,9 @@ class FieldReportForm extends React.Component {
   }
 
   renderStep1 () {
+    const { strings } = this.context;
     const districtChoices = this.getDistrictChoices() || [];
-    const fields = formData.fieldsStep1;
+    const fields = formData.getFieldsStep1(strings);
     const status = this.getStatus();
     return (
       <Fold title='Context' extraClass foldClass='margin-reset'>

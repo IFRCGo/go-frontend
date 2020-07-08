@@ -534,92 +534,92 @@ export const orgTypes = [
   }
 ];
 
-export const fieldsStep1 = {
-  'summary': {
-    'EVT': {
-      label: 'Title *',
-      desc: 'For Covid-19 Field Reports, please link to the existing country specific emergency page. Please do not link to the Global emergency page.'
+export const getFieldsStep1 = (strings) => ({
+  summary: {
+    EVT: {
+      label: strings.fieldsStep1SummaryLabel,
+      desc: strings.fieldsStep1SummaryDescription,
     },
-    'EPI': {
-      label: 'Title *',
-      desc: 'For Covid-19 Field Reports, please link to the existing country specific emergency page. Please do not link to the Global emergency page.'
+    EPI: {
+      label: strings.fieldsStep1SummaryLabel,
+      desc: strings.fieldsStep1SummaryDescription,
     },
-    'EW': {
-      label: 'Title *',
-      desc: 'For Covid-19 Field Reports, please link to the existing country specific emergency page. Please do not link to the Global emergency page.'
-    }
+    EW: {
+      label: strings.fieldsStep1SummaryLabel,
+      desc: strings.fieldsStep1SummaryDescription,
+    },
   },
   'disaster-type': {
-    'EVT': {
-      label: 'Disaster Type *',
-      desc: 'If Covid-19 select “Epidemic” as the disaster type'
+    EVT: {
+      label: strings.fieldsStep1DisasterTypeLabel,
+      desc: strings.fieldsStep1DisasterTypeDescription,
     },
-    'EPI': {
-      label: 'Disaster Type *',
-      desc: 'If Covid-19 select “Epidemic” as the disaster type'
+    EPI: {
+      label: strings.fieldsStep1DisasterTypeLabel,
+      desc: strings.fieldsStep1DisasterTypeDescription,
     },
-    'EW': {
-      label: 'Hazard Type *',
-      desc: 'If Covid-19 select “Epidemic” as the disaster type'
+    EW: {
+      label: strings.fieldsStep1DisasterTypeLabel,
+      desc: strings.fieldsStep1DisasterTypeDescription,
+    },
+  },
+  startDate: {
+    EVT: {
+      label: strings.fieldsStep1StartDateLabelStartDate,
+      desc: strings.fieldsStep1StartDateDescriptionEVT,
+    },
+    EPI: {
+      label: strings.fieldsStep1StartDateLabelStartDate,
+      desc: strings.fieldsStep1StartDateDescriptionEPI,
+    },
+    EW: {
+      label: strings.fieldsStep1StartDateLabelEW,
+      desc: strings.fieldsStep1StartDateDescriptionEW,
     }
   },
-  'startDate': {
-    'EVT': {
-      label: 'Start Date *',
-      desc: 'Start date is when some significant effects are felt or when the first significant impact is felt.'
+  country: {
+    EVT: {
+      label: strings.fieldsStep1CountryLabelAffected,
+      desc: '',
     },
-    'EPI': {
-      label: 'Start Date *',
-      desc: 'The date when the first case is confirmed.'
+    EPI: {
+      label: strings.fieldsStep1CountryLabelAffected,
+      desc: '',
     },
-    'EW': {
-      label: 'Forecasted Date of Impact *',
-      desc: 'Date at which significant impacts are forecasted to occur.'
-    }
+    EW: {
+      label: strings.fieldsStep1CountryLabelEW,
+      desc: strings.fieldsStep1CountryDescriptionEW,
+    },
   },
-  'country': {
-    'EVT': {
-      label: 'Affected Country and Province / Region *',
-      desc: ''
+  assistance: {
+    EVT: {
+      label: strings.fieldsStep1AssistanceLabel,
+      desc: strings.fieldsStep1AssistanceDescription,
     },
-    'EPI': {
-      label: 'Affected Country and Province / Region *',
-      desc: ''
+    EPI: {
+      label: strings.fieldsStep1AssistanceLabel,
+      desc: strings.fieldsStep1AssistanceDescription,
     },
-    'EW': {
-      label: 'Potentially Affected Country and Province / Region *',
-      desc: 'Anticipated Affected Country and Province / Region'
-    }
-  },
-  'assistance': {
-    'EVT': {
-      label: 'Government requests international assistance?',
-      desc: 'Indicate if the government requested international assistance.'
+    EW: {
+      label: strings.fieldsStep1AssistanceLabel,
+      desc: strings.fieldsStep1AssistanceDescription,
     },
-    'EPI': {
-      label: 'Government requests international assistance?',
-      desc: 'Indicate if the government requested international assistance.'
-    },
-    'EW': {
-      label: 'Government requests international assistance?',
-      desc: 'Indicate if the government requested international assistance.'
-    }
   },
   'ns-assistance': {
-    'EVT': {
-      label: 'National Society requests international assistance?',
-      desc: 'Indicate if the National Society requested international assistance'
+    EVT: {
+      label: strings.fieldsStep1NSAssistanceLabel,
+      desc: strings.fieldsStep1NSAssistanceDescription,
     },
-    'EPI': {
-      label: 'National Society requests international assistance?',
-      desc: 'Indicate if the National Society requested international assistance'
+    EPI: {
+      label: strings.fieldsStep1NSAssistanceLabel,
+      desc: strings.fieldsStep1NSAssistanceDescription,
     },
-    'EW': {
-      label: 'National Society requests international assistance?',
-      desc: 'Indicate if the National Society requested international assistance'
-    }
-  }
-};
+    EW: {
+      label: strings.fieldsStep1NSAssistanceLabel,
+      desc: strings.fieldsStep1NSAssistanceDescription,
+    },
+  },
+});
 
 export const epiSources = [
   { value: '', label: '-- Source --' },
