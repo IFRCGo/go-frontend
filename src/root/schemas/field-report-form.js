@@ -6,7 +6,7 @@ export const step1 = {
   properties: {
     status: {
       type: 'string',
-      enum: getValidValues(formData.status, 'value')
+      enum: getValidValues(formData.statusValues, 'value')
     },
     isCovidReport: {
       type: 'boolean'

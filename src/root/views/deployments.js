@@ -257,8 +257,8 @@ class Deployments extends SFPComponent {
           </title>
         </Helmet>
         <BreadCrumb crumbs={[
-          {link: this.props.location.pathname, name: 'Deployments'},
-          {link: '/', name: 'Home'}
+          {link: this.props.location.pathname, name: strings.breadCrumbDeployments},
+          {link: '/', name: strings.breadCrumbHome}
         ]} />
         {this.renderContent()}
       </App>

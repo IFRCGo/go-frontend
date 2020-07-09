@@ -461,14 +461,11 @@ class FieldReport extends React.Component {
                     <p className='inpage_note'>
                       <Translate stringId='fieldReportResourceDescription'/>
                     </p>
-                    {
-                      (!this.props.user) ? <Link className='button button--medium button--primary-filled' to='/login' title={strings.fieldReportGoToLogin}>
-                                             <span>
-                                               <Translate stringId='fieldReportGoToLogin'/>
-                                             </span>
-                                           </Link>
-                        : <React.Fragment />
-                    }
+                    {(!this.props.user) && (
+                      <Link className='button button--medium button--primary-filled' to='/login' title={strings.fieldReportGoToLogin}>
+                        <Translate stringId='fieldReportGoToLogin'/>
+                      </Link>
+                    )}
                   </div>
                 </div>
               </div>
@@ -496,7 +493,7 @@ class FieldReport extends React.Component {
     const title = resolveToString(
       strings.fieldReportSummaryTitle,
       {
-        reportName: get(data, 'summary', 'Field Report'),
+        reportName: get(data, 'summary', strings.breadCrumbFieldReport),
       }
     );
     return (
@@ -508,10 +505,10 @@ class FieldReport extends React.Component {
         </Helmet>
         <BreadCrumb
           crumbs={[
-            {link: `/reports/${data.id}`, name: get(data, 'summary', 'Field Report')},
-            // {link: this.props.location.state, name: 'Emergency'},
-            {link: '/emergencies', name: 'Emergencies'},
-            {link: '/', name: 'Home'}
+            {link: `/reports/${data.id}`, name: get(data, 'summary', strings.breadCrumbFieldReport)},
+            // {link: this.props.location.state, name: strings.breadCrumbEmergency},
+            {link: '/emergencies', name: strings.breadCrumbEmergencies},
+            {link: '/', name: strings.breadCrumbHome}
           ]}
         />
         <header className='inpage__header'>
@@ -545,15 +542,11 @@ class FieldReport extends React.Component {
                 )}
                 <DisplaySection title={strings.fieldReportRequest}>
                   <p>
-                    <span>
-                      <Translate stringId='fieldReportGovernmentRequest'/>
-                    </span>
+                    <Translate stringId='fieldReportGovernmentRequest'/>
                     <span>{yesno(get(data, 'request_assistance'))}</span>
                   </p>
                   <p>
-                    <span>
-                      <Translate stringId='fieldReportInternationalRequest'/>
-                    </span>
+                    <Translate stringId='fieldReportInternationalRequest'/>
                     <span>{yesno(get(data, 'ns_request_assistance'))}</span>
                   </p>
                 </DisplaySection>
@@ -561,9 +554,9 @@ class FieldReport extends React.Component {
                   ? <DisplaySection title={strings.fieldReportInformationBulletin} inner={ infoBulletin } />
                   : null
                 }
-                {this.renderActionsTaken(data, 'NTLS', 'National Society')}
-                {this.renderActionsTaken(data, 'FDRN', 'IFRC')}
-                {this.renderActionsTaken(data, 'PNS', 'any other RCRC Movement actors') /* instead of PNS Red Cross, go-frontend/issues/822 */ }
+                {this.renderActionsTaken(data, 'NTLS', strings.fieldReportNationalSocietyLabel)}
+                {this.renderActionsTaken(data, 'FDRN', strings.fieldReportIFRCLabel)}
+                {this.renderActionsTaken(data, 'PNS', strings.fieldReportPNSLabel) /* instead of PNS Red Cross, go-frontend/issues/822 */ }
                 <DisplaySection title={strings.fieldReportActionTaken} inner={get(data, 'actions_others', false)} />
                 {data.is_covid_report && this.renderPlannedResponse(data)}
                 {this.renderSources(data)}

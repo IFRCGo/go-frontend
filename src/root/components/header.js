@@ -10,7 +10,7 @@ import {
 import { api, environment } from '#config';
 import { request } from '#utils/network';
 import { uppercaseFirstLetter as u, isoDate } from '#utils/format';
-// import LanguageSelect from '#components/LanguageSelect';
+import LanguageSelect from '#components/LanguageSelect';
 import Translate from '#components/Translate';
 import LanguageContext from '#root/languageContext';
 
@@ -107,9 +107,7 @@ function Header (props) {
               <Link to='/reports/new' className='button button--small button--primary-bounded' title={strings.headerCreateFieldReportTooltip}>
                 <Translate stringId="headerCreateFieldReportLabel" />
               </Link>
-              {/*
               <LanguageSelect />
-              */}
             </nav>
           </div>
         </div>

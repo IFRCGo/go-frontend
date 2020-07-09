@@ -339,8 +339,8 @@ class Register extends React.Component {
           <title>{strings.registerTitle}</title>
         </Helmet>
         <BreadCrumb crumbs={[
-          {link: '/register', name: 'Register'},
-          {link: '/', name: 'Home'}
+          {link: '/register', name: strings.breadCrumbRegister},
+          {link: '/', name: strings.breadCrumbHome}
         ]} />
         <section className='inpage'>
           <header className='inpage__header'>

@@ -96,21 +96,23 @@ class FieldReportForm extends React.Component {
 
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps (nextProps) {
+    const { strings } = this.context;
+
     if (this.props.fieldReportForm.fetching && !nextProps.fieldReportForm.fetching) {
       hideGlobalLoading();
       if (nextProps.fieldReportForm.error) {
         const message = nextProps.fieldReportForm.error.error_message
           || nextProps.fieldReportForm.error.detail
           || nextProps.fieldReportForm.error[Object.keys(nextProps.fieldReportForm.error)[0]][0] // first key's value
-          || 'Could not submit field report';
-        showAlert('danger', <p><strong>Error:</strong> {message}</p>, true, 4500);
+          || strings.fieldReportFormSubmitError;
+        showAlert('danger', <p><strong><Translate stringId="fieldReportFormErrorLabel" /></strong> {message}</p>, true, 4500);
       } else {
         const { history } = this.props;
         const { id } = nextProps.fieldReportForm.data;
         if (this.props.match.params.id) {
-          showAlert('success', <p>Field report updated, redirecting...</p>, true, 2000);
+          showAlert('success', <p><Translate stringId="fieldReportFormRedirectMessage" /></p>, true, 2000);
         } else {
-          showAlert('success', <p>Field report created, redirecting...</p>, true, 2000);
+          showAlert('success', <p><Translate stringId="fieldReportFormRedirectMessage" /></p>, true, 2000);
         }
         setTimeout(() => history.push(`/reports/${id}`), 2000);
       }
@@ -118,7 +120,14 @@ class FieldReportForm extends React.Component {
 
     if (this.props.actions.fetching && !nextProps.actions.fetching) {
       if (nextProps.actions.error) {
-        showAlert('danger', <p><strong>Error:</strong>Failed to load Form Data</p>, true, 4500);
+        showAlert('danger', (
+          <p>
+            <strong>
+              <Translate stringId="fieldReportFormErrorLabel" />
+            </strong>
+            <Translate stringId="fieldReportFormLoadDataErrorMessage" />
+          </p>
+        ), true, 4500);
       } else {
         this.setActions(nextProps.actions.data.results);
 
@@ -207,7 +216,14 @@ class FieldReportForm extends React.Component {
         this.setState({ step: step + 1 });
       }
     } else {
-      showAlert('danger', <p><strong>Error:</strong> There are errors in the form</p>, true, 4500);
+      showAlert('danger', (
+        <p>
+          <strong>
+            <Translate stringId="fieldReportFormErrorLabel" />
+          </strong>
+          <Translate stringId="fieldReportFormErrorInFormMessage" />
+        </p>
+      ), true, 4500);
     }
   }
 
@@ -246,11 +262,11 @@ class FieldReportForm extends React.Component {
     if (field === 'disasterType' &&
       formData.getIsEpidemicDisasterTypeByValue(val)
     ) {
-      _set(data, 'status', formData.statusEvent.value);
+      _set(data, 'status', formData.statusEventValue);
     }
 
     if (field === 'isCovidReport' && val && val === 'true') {
-      _set(data, 'status', formData.statusEvent.value);
+      _set(data, 'status', formData.statusEventValue);
       _set(data, 'disasterType', '1');
     }
 
@@ -272,34 +288,42 @@ class FieldReportForm extends React.Component {
       window.scrollTo(0, 0);
       this.setState({ step });
     } else {
-      showAlert('danger', <p><strong>Error:</strong> There are errors in the form</p>, true, 4500);
+      showAlert('danger', (
+        <p>
+          <strong>
+            <Translate stringId="fieldReportFormErrorLabel" />
+          </strong>
+          <Translate stringId="fieldReportFormErrorInFormMessage" />
+        </p>
+      ), true, 4500);
     }
   }
 
   renderStepper () {
+    const { strings } = this.context;
     const status = this.getStatus();
     const step = this.state.step;
     const items = [
       {
-        'EPI': 'Context',
-        'EVT': 'Context',
-        'EW': 'Context'
+        'EVT': strings.fieldReportFormItemContextLabel,
+        'EPI': strings.fieldReportFormItemContextLabel,
+        'EW': strings.fieldReportFormItemContextLabel
       },
       {
-        'EVT': 'Situation',
-        'EPI': 'Situation',
-        'EW': 'Risk Analysis'
+        'EVT': strings.fieldReportFormItemSituationLabel,
+        'EPI': strings.fieldReportFormItemSituationLabel,
+        'EW': strings.fieldReportFormItemRiskAnalysisLabel,
       },
       {
-        'EVT': 'Actions',
-        'EPI': 'Actions',
-        'EW': 'Early Actions'
+        'EVT': strings.fieldReportFormItemActionsLabel,
+        'EPI': strings.fieldReportFormItemActionsLabel,
+        'EW': strings.fieldReportFormItemEarlyActionsLabel
       },
       {
-        'EVT': 'Response',
-        'EPI': 'Response',
-        'EW': 'Response'
-      }
+        'EVT': strings.fieldReportFormItemResponseLabel,
+        'EPI': strings.fieldReportFormItemResponseLabel,
+        'EW': strings.fieldReportFormItemResponseLabel
+      },
     ];
     return (
       <div className='row'>
@@ -320,7 +344,7 @@ class FieldReportForm extends React.Component {
   getStatus () {
     const { status, disasterType } = this.state.data;
 
-    if (status === formData.statusEarlyWarning.value) {
+    if (status === formData.statusEarlyWarningValue) {
       return 'EW';
     } else if (formData.getIsEpidemicDisasterTypeByValue(disasterType)) {
       return 'EPI';
@@ -355,15 +379,16 @@ class FieldReportForm extends React.Component {
   }
 
   renderStep1 () {
+    const { strings } = this.context;
     const districtChoices = this.getDistrictChoices() || [];
-    const fields = formData.fieldsStep1;
+    const fields = formData.getFieldsStep1(strings);
     const status = this.getStatus();
     return (
       <Fold title='Context' extraClass foldClass='margin-reset'>
         <FormRadioGroup
-          label='Status *'
+          label={strings.fieldReportFormStatusLabel}
           name='status'
-          options={formData.status.map(status => ({
+          options={formData.getStatus(strings).map(status => ({
             ...status,
             // If Epidemic, only 'Event' can be selected
             ...(
@@ -380,15 +405,15 @@ class FieldReportForm extends React.Component {
           />
         </FormRadioGroup>
         <FormRadioGroup
-          label='COVID-19 Related Event *'
+          label={strings.fieldReportFormCovidLabel}
           name='is-covid-report'
           // description='Is this a COVID-19 Field Report?'
           options={[{
             value: 'true',
-            label: 'Yes'
+            label: strings.fieldReportFormOptionYesLabel,
           }, {
             value: 'false',
-            label: 'No'
+            label: strings.fieldReportFormOptionNoLabel,
           }]}
           selectedOption={this.state.data.isCovidReport}
           onChange={this.onFieldChange.bind(this, 'isCovidReport')} >
@@ -400,10 +425,10 @@ class FieldReportForm extends React.Component {
         </FormRadioGroup>
         <FormInputSelect
           label={fields.summary[status].label}
-          labelSecondary='Add Title'
-          selectLabel='Please check for, and link to an existing emergency if available'
-          inputPlaceholder='Example: Malawi - Central Region: Floods 03/2019'
-          selectPlaceholder='Click here to link to an existing hazard alert (if one exists)'
+          labelSecondary={strings.fieldReportFormTitleSecondaryLabel}
+          selectLabel={strings.fieldReportFormTitleSelectLabel}
+          inputPlaceholder={strings.fieldReportFormTitleInputPlaceholder}
+          selectPlaceholder={strings.fieldReportFormTitleSelectPlaceholder}
           type='text'
           name='summary'
           id='summary'
@@ -436,7 +461,7 @@ class FieldReportForm extends React.Component {
           <div className="form__inner-body clearfix">
             <div className="form__group__col__6">
               <Select
-                placeholder='Select a country'
+                placeholder={strings.fieldReportFormCountrySelectPlaceholder}
                 name='country'
                 value={this.state.data.country}
                 onChange={this.onCountryChange.bind(this)}
@@ -451,7 +476,7 @@ class FieldReportForm extends React.Component {
             </div>
             <div className="form__group__col__6">
               <Select
-                placeholder='Select Provinces / Regions'
+                placeholder={strings.fieldReportFormRegionSelectPlaceholder}
                 name='districts'
                 value={this.state.data.districts}
                 onChange={this.onFieldChange.bind(this, 'districts')}
@@ -509,12 +534,12 @@ class FieldReportForm extends React.Component {
           name='assistance'
           options={[
             {
-              label: 'Yes',
+              label: strings.fieldReportFormOptionYesLabel,
               value: 'true',
               disabled: !this.state.data.isCovidReport
             },
             {
-              label: 'No',
+              label: strings.fieldReportFormOptionNoLabel,
               value: 'false',
               disabled: !this.state.data.isCovidReport
             }
@@ -532,12 +557,12 @@ class FieldReportForm extends React.Component {
           name='ns-assistance'
           options={[
             {
-              label: 'Yes',
+              label: strings.fieldReportFormOptionYesLabel,
               value: 'true',
               disabled: !this.state.data.isCovidReport
             },
             {
-              label: 'No',
+              label: strings.fieldReportFormOptionNoLabel,
               value: 'false',
               disabled: !this.state.data.isCovidReport
             }
@@ -554,7 +579,8 @@ class FieldReportForm extends React.Component {
   }
 
   renderStep2 () {
-    const fields = formData.fieldsStep2;
+    const { strings } = this.context;
+    const fields = formData.getFieldsStep2(strings);
     const status = this.getStatus();
     const covidTag = this.state.data.isCovidReport === 'true' ? '-COV' : '';
 
@@ -613,8 +639,12 @@ class FieldReportForm extends React.Component {
             <div className='form__group'>
               <div className='form__inner-header'>
                 <div className='form__inner-headline'>
-                  <label className='form__label'>Source (of figures)</label>
-                  <p className='form__description'>description</p>
+                  <label className='form__label'>
+                    <Translate stringId="fieldReportFormEPISourceOfFiguresLabel" />
+                  </label>
+                  <p className='form__description'>
+                    <Translate stringId="fieldReportFormEPISourceOfFiguresDescription" />
+                  </p>
                 </div>
               </div>
               <div className='form__inner-body'>
@@ -656,12 +686,12 @@ class FieldReportForm extends React.Component {
         {/* TODO: update this to be a file upload */}
         <React.Fragment>
           <FormTextarea
-            label='Source Details'
+            label={strings.fieldReportFormSourceDetailsLabel}
             name='other-sources'
             classInput='textarea--lg'
-            placeholder={status === 'EPI' ? 'Add resource url for situation report' : 'Add details for data with sources marked as Other above.'}
+            placeholder={status === 'EPI' ? strings.fieldReportFormSourceDetailsEPIPlaceholder : strings.fieldReportFormSourceDetailsPlaceholder }
             id='other-sources'
-            description='Add details for sources above (if applicable)'
+            description={strings.fieldReportFormSourceDetailsDescription}
             value={this.state.data.otherSources}
             onChange={this.onFieldChange.bind(this, 'otherSources')} >
             <FormError
@@ -691,7 +721,8 @@ class FieldReportForm extends React.Component {
   }
 
   renderStep3 () {
-    const fields = formData.fieldsStep3;
+    const { strings } = this.context;
+    const fields = formData.getFieldsStep3(strings);
     const status = this.getStatus();
 
     // only for filtering the list of actions, we use the COVID type,
@@ -705,7 +736,7 @@ class FieldReportForm extends React.Component {
       if (!actions.fetching) this.props._getActions();
       return (
         <div>
-          Loading Actions Data...
+          <Translate stringId="fieldReportFormActionDataLoadingMessage" />
         </div>
       );
     }
@@ -715,7 +746,7 @@ class FieldReportForm extends React.Component {
     // Note: There's no need for validation on this step.
     // All the fields are optional, and the text fields are just strings.
     return (
-      <Fold title='Actions taken'>
+      <Fold title={strings.fieldReportFormActionTakenTitle}>
         <div className='form__group'>
           {
             fields.section1fields.map(field => {
@@ -780,21 +811,21 @@ class FieldReportForm extends React.Component {
           }
         </React.Fragment>
         <FormRadioGroup
-          label='Information Bulletin'
-          description='Indicate if an Information Bulletin was published, is planned or if no Information Bulletin will be issued for this operation/disaster/hazard.'
+          label={strings.fieldReportFormInformationBulletinLabel}
+          description={strings.fieldReportFormInformationBulletinDescription}
           name='bulletin'
           classWrapper={this.state.data.isCovidReport === 'true' ? 'hidden' : null}
           options={[
             {
-              label: 'No',
+              label: strings.fieldReportFormOptionNoLabel,
               value: '0'
             },
             {
-              label: 'Planned',
+              label: strings.fieldReportFormOptionPlannedLabel,
               value: '2'
             },
             {
-              label: 'Yes/Published',
+              label: strings.fieldReportFormOptionPublishedLabel,
               value: '3'
             }
           ]}
@@ -807,7 +838,7 @@ class FieldReportForm extends React.Component {
           id='actions-others'
           classInput='textarea--lg'
           description={fields.actionsOthers.desc[status]}
-          placeholder='Brief description of the action'
+          placeholder={strings.fieldReportFormOthersActionsPlaceholder}
           value={this.state.data.actionsOthers}
           onChange={this.onFieldChange.bind(this, 'actionsOthers')} />
       </Fold>
@@ -815,12 +846,13 @@ class FieldReportForm extends React.Component {
   }
 
   renderStep4 () {
-    const fields = formData.fieldsStep4;
+    const { strings } = this.context;
+    const fields = formData.getFieldsStep4(strings);
     const status = this.getStatus();
     const plannedResponseRows = fields.plannedResponseRows.filter(row => {
       return !!row.label[status];
     });
-    let responseTitle = status === 'EVT' ? 'Planned Response' : 'Planned Interventions';
+    let responseTitle = status === 'EVT' ? strings.fieldReportFormResponseTitleEVT : strings.fieldReportFormResponseTitle;
 
     // We hide the entire Planned International Response section for COVID reports
     const isCovidReport = this.state.data.isCovidReport;
@@ -831,9 +863,14 @@ class FieldReportForm extends React.Component {
       <Fold title={responseTitle}>
         { this.state.data.isCovidReport === 'true' ? null : (
           <React.Fragment>
-            <label className='form__label'>Planned International Response</label>
+            <label className='form__label'>
+              <Translate stringId="fieldReportFormResponseLabel" />
+            </label>
             <div className='form__description'>
-              <p>Indicate status of global and regional tools.</p>
+              <Translate stringId="fieldReportFormResponseLabel" />
+              <p>
+                <Translate stringId="fieldReportFormResponseDescription" />
+              </p>
             </div>
 
             <React.Fragment>
@@ -859,7 +896,9 @@ class FieldReportForm extends React.Component {
           </React.Fragment>
         )}
 
-        <h2 className='fold__title fold__title--contact'>Contacts</h2>
+        <h2 className='fold__title fold__title--contact'>
+          <Translate stringId="fieldReportFormContactsTitle" />
+        </h2>
 
         <React.Fragment>
           {
@@ -881,9 +920,9 @@ class FieldReportForm extends React.Component {
         </React.Fragment>
 
         <FormRadioGroup
-          label='This field report is visible to'
+          label={strings.fieldReportFormVisibilityLabel}
           name='visibility'
-          options={formData.visibility}
+          options={formData.getVisibility(strings)}
           selectedOption={this.state.data.visibility}
           onChange={this.onFieldChange.bind(this, 'visibility')}
           classWrapper='form__group--visible-field-group'>
@@ -928,11 +967,11 @@ class FieldReportForm extends React.Component {
     return (
       <App className='page--frep-form'>
         <Helmet>
-          <title>IFRC Go - New Field Report</title>
+          <title>{ strings.fieldReportFormPageTitle }</title>
         </Helmet>
         <BreadCrumb crumbs={[
-          {link: this.props.location.pathname, name: 'New Field Report'},
-          {link: '/', name: 'Home'}
+          {link: this.props.location.pathname, name: strings.breadCrumbNewFieldReport},
+          {link: '/', name: strings.breadCrumbHome}
         ]} />
         <section className='inpage'>
           <header className='inpage__header'>

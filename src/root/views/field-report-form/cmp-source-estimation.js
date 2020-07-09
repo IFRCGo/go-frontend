@@ -88,7 +88,7 @@ export default class SourceEstimation extends React.Component {
               <FormRadioGroup
                 label={strings.cmpSourceLabel}
                 name={`${name}[${idx}][source]`}
-                options={formData.fieldsStep2.organizations[status]}
+                options={formData.getFieldsStep2(strings).organizations[status]}
                 classLabel={c('label-secondary', {'visually-hidden': idx > 0})}
                 classWrapper='estimation__item'
                 selectedOption={o.source}

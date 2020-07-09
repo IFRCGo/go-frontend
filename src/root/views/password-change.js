@@ -1,34 +1,40 @@
 import React from 'react';
-import App from './app';
-import NewPassword from '#components/connected/new-password';
 import { Helmet } from 'react-helmet';
 
-class PasswordChange extends React.Component {
-  render () {
-    return (
-      <App className='page--passwordchange'>
-        <Helmet>
-          <title>IFRC Go - Change Password</title>
-        </Helmet>
-        <section className='inpage'>
-          <header className='inpage__header'>
-            <div className='inner'>
-              <div className='inpage__headline'>
-                <h1 className='inpage__title'>Change my password</h1>
-              </div>
-            </div>
-          </header>
-          <div className='inpage__body'>
-            <div className='inner'>
-              <div className='prose prose--responsive'>
-                <NewPassword verifyOldPassword={true} />
-              </div>
+import App from '#views/app';
+import NewPassword from '#components/connected/new-password';
+import languageContext from '#root/languageContext';
+
+function PasswordChange() {
+  const { strings } = React.useContext(languageContext);
+
+  return (
+    <App className='page--passwordchange'>
+      <Helmet>
+        <title>
+          { strings.passwordChangePageTitle }
+        </title>
+      </Helmet>
+      <section className='inpage'>
+        <header className='inpage__header'>
+          <div className='inner'>
+            <div className='inpage__headline'>
+              <h1 className='inpage__title'>
+                { strings.passwordChangeHeading }
+              </h1>
             </div>
           </div>
-        </section>
-      </App>
-    );
-  }
+        </header>
+        <div className='inpage__body'>
+          <div className='inner'>
+            <div className='prose prose--responsive'>
+              <NewPassword verifyOldPassword={true} />
+            </div>
+          </div>
+        </div>
+      </section>
+    </App>
+  );
 }
 
 export default PasswordChange;
