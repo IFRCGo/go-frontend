@@ -249,7 +249,11 @@ class Register extends React.Component {
           )
           : (
             <FormInput
-              label={strings.registerOrganizationName}
+              label={
+                this.state.data.organizationType?.value === 'ICRC'
+                  ? strings.registerOfficeName
+                  : strings.registerOrganizationName
+              }
               type='text'
               name='register-organization'
               id='register-organization'
@@ -389,10 +393,13 @@ class Register extends React.Component {
           <header className='inpage__header'>
             <div className='inner'>
               <div className='inpage__headline'>
-                <div className='inpage__title--centered'>
+                <div>
                   <h1 className='inpage__title'>
                     <Translate stringId='registerHeading' />
                   </h1>
+                  <p className='inpage__introduction'>
+                    <Translate stringId='registerSubHeader' />
+                  </p>
                 </div>
               </div>
             </div>
@@ -455,6 +462,9 @@ class Register extends React.Component {
                   value={this.state.data.username}
                   onChange={this.onFieldChange.bind(this, 'username')}
                 >
+                  <p className='text-italic'>
+                    This will be your username to log into the platform
+                  </p>
                   <FormError
                     errors={this.state.errors}
                     property='username'
