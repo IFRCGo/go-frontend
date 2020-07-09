@@ -69,6 +69,7 @@ export default {
 
   registerTitle: 'IFRC Go - Register',
   registerHeading: 'Register',
+  registerSubHeader: 'Staff, members and volunteers of the Red Cross Red Crescent Movement (National Societies, the IFRC and the ICRC) are welcome to register for a user account on GO, to access information for the Membership. Other responders and members of the public may browse the public areas of the site without registering for an account.',
   registerFirstName: 'First Name *',
   registerLastName: 'Last Name *',
   registerEmail: 'Email *',
@@ -77,6 +78,7 @@ export default {
   registerCity: 'City *',
   registerOrganizationType: 'Organization Type *',
   registerOrganizationName: 'Organization Name *',
+  registerOfficeName: 'Office Name *',
   registerDepartment: 'Department',
   registerPosition: 'Position',
   registerPhoneNumber: 'Phone Number',
