@@ -12,7 +12,7 @@
   text-align: left;
   //padding-inline-start: 5px;
   //@include media(xsmall-only) {
-  padding: ($global-spacing * 0.8);
+  padding: ($global-spacing * 0.8) ($global-spacing * 1.5);
   width: 100%;
   //}
   // @include media(small-up) {
@@ -21,14 +21,14 @@
 }
 
 .card_box_no {
-  color: #011e41;
-  font-weight: $base-font-medium;
-  font-size: 172%;
+  color: $grey-soot;
+  font-weight: $base-font-semi-bold;
+  font-size: $font-size-lg;
 }
 
 .card_box_left {
   //@include media(xsmall-only) {
-  border-bottom: 1px solid $base-border-color;
+  border-bottom: 1px solid $base-border-color--light;
   //}
   // @include media(small-up) {
   //   border-inline-end: 1px solid base-border-color;
@@ -54,7 +54,7 @@
 .card_box_full {
   width: 100%;
   text-align: left;
-  padding: $global-spacing $global-spacing ($global-spacing / 2) $global-spacing;
+  //padding: $global-spacing $global-spacing ($global-spacing / 2) $global-spacing;
   justify-content: space-between;
   align-items: baseline;
 
@@ -72,6 +72,7 @@
 }
 
 .card_box_footer {
+  padding: $global-spacing $global-spacing ($global-spacing / 2) $global-spacing;
   margin-bottom: ($global-spacing / 2);
 }
 
@@ -80,22 +81,20 @@
 }
 
 .last_updated {
-  font-size: $font-size-xs;
+  font-size: $font-size-xxs;
   margin-bottom: 10px;
-  color: rgba(0, 0, 0, 0.6);
-  font-style: italic;
 }
 
 .card_box--op {
   @include span(6/12, $offset: 0, $cycle: 0);
 
   &:first-of-type {
-    border-inline-end: 1px solid $base-border-color;
+    border-inline-end: 1px solid $base-border-color--light;
   }
 }
 
 .card_box_fc {
-  color: $secondary-color;
+  color: $black;
   text-align: right;
   font-weight: $base-font-medium;
 }

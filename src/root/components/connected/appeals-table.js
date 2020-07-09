@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
+import Progress from '../progress-labeled';
+
 
 import { environment } from '#config';
 import { getAppealsList, getAppeals } from '#actions';
@@ -217,24 +219,31 @@ class AppealsTable extends SFPComponent {
         }
       ];
 
-      const rows = data.results.map(o => ({
-        id: o.id,
-        date: DateTime.fromISO(o.start_date).toISODate(),
-        code: o.code,
-        name: o.name,
-        event: o.event ? <Link to={`/emergencies/${o.event}`} className='link--primary' title={strings.appealsTableViewEmergency}>Link</Link> : nope,
-        dtype: get(getDtypeMeta(o.dtype.id), 'label', nope),
-        requestAmount: {
-          value: n(o.amount_requested),
-          className: ''
-        },
-        fundedAmount: {
-          value: n(o.amount_funded),
-          className: ''
-        },
-        type: appealsType[o.atype],
-        country: o.country ? <Link to={`/countries/${o.country.id}`} className='link--primary' title={strings.appealsTableViewCountry}>{o.country.name}</Link> : nope
-      }));
+      const rows = data.results.map(o => {
+        const fundedPercent = (parseInt(o.amount_funded) / parseInt(o.amount_requested)) * 100;
+        const fundedPercentRounded = Math.round(fundedPercent * 100) / 100;
+        return {
+          id: o.id,
+          date: DateTime.fromISO(o.start_date).toISODate(),
+          code: o.code,
+          name: o.name,
+          event: o.event ? <Link to={`/emergencies/${o.event}`} className='link--table' title={strings.appealsTableViewEmergency}>Link</Link> : nope,
+          dtype: get(getDtypeMeta(o.dtype.id), 'label', nope),
+          requestAmount: {
+            value: n(o.amount_requested),
+            className: ''
+          },
+          fundedAmount: {
+            value: (<div>
+              <span className='progress_value_funding_table'>{fundedPercentRounded}</span>
+              <Progress value={fundedPercent} max={100} />
+            </div>),
+            className: ''
+          },
+          type: appealsType[o.atype],
+          country: o.country ? <Link to={`/countries/${o.country.id}`} className='link--table' title={strings.appealsTableViewCountry}>{o.country.name}</Link> : nope
+        };
+      });
 
       const foldLink = this.props.viewAll ? (
         <Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || strings.viewAllOperations}</Link>
@@ -273,7 +282,7 @@ class AppealsTable extends SFPComponent {
             />) : null}
           {this.props.fullscreen ? null : (
             <DisplayTable
-              className='table table--zebra table--active-ops'
+              className='table table--border-bottom table--active-ops'
               headings={headings}
               rows={rows}
               pageCount={data.count / this.state.table.limit}

@@ -425,7 +425,7 @@ class AdminArea extends SFPComponent {
         date: DateTime.fromISO(o.start_date).toISODate(),
         name: o.name,
         event: o.event ? (
-          <Link to={`/emergencies/${o.event}`} className='link--primary' title={strings.countriesEmergencyLinkTooltip}>
+          <Link to={`/emergencies/${o.event}`} className='link--table' title={strings.countriesEmergencyLinkTooltip}>
             Link
           </Link>
         ) : (

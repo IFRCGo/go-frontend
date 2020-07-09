@@ -443,7 +443,7 @@ class Emergency extends React.Component {
           title={resolveToString(strings.emergencyFieldReportsWithCountTitle, { count: data.field_reports.length })}
           wrapperClass="event-field-reports"
         >
-          <table className="table table--zebra">
+          <table className="table table--border-bottom">
             <thead>
               <tr>
                 <th>{strings.emergencyFieldReportTableHeaderDate}</th>
@@ -462,7 +462,7 @@ class Emergency extends React.Component {
                         pathname: `/reports/${o.id}`,
                         state: this.props.location.pathname
                       }}
-                      className="link--primary"
+                      className="link--table"
                       title={strings.emergencyFieldReportLinkTitle}
                     >
                       {o.summary || noSummary}
@@ -474,7 +474,7 @@ class Emergency extends React.Component {
                         <Link
                           to={`/countries/${c.id}`}
                           key={c.id}
-                          className="link--primary"
+                          className="link--table"
                         >
                           {c.name}{' '}
                         </Link>
@@ -490,7 +490,7 @@ class Emergency extends React.Component {
                     }, []).map(region => {
                       return (<Link to={`/regions/${region}`}
                         key={region}
-                        className="link--primary"
+                        className="link--table"
                       >
                         {getRegionById(region.toString()).name}
                       </Link>);

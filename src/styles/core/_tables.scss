@@ -317,6 +317,76 @@ td.right-align, th.right-align{
   }
 }
 
+.table--border-bottom {
+  thead th {
+    font-weight: $base-font-semi-bold;
+    box-shadow: none;
+
+  }
+
+  thead th, td {
+    font-size: $base-font-size;
+    padding-bottom: ($global-spacing * 1.5);
+
+    &:first-child {
+      padding-inline-start: 0;
+    }
+
+    &:last-child {
+      padding-inline-end: 0;
+    }
+  }
+
+  th {
+    .drop__toggle--caret::after {
+      content: '\EA0A';
+      font-size: $font-size-xxs;
+    }
+  }
+
+  td {
+    color: $grey-soot;
+    border-bottom: 1px solid $base-border-color--light;
+    font-weight: $base-font-regular;
+  }
+
+  // Progress bar styling for tables with bottom borders
+  .progress-bar {
+    background-color: rgba(50, 50, 50, 0.1);
+    border-radius: 0;
+  }
+
+  .progress-bar__value {
+    background-color: $primary-color;
+    border-radius: 0;
+    height: 4px;
+  }
+
+  .progress_value_funding_table {
+    margin-bottom: ($global-spacing / 3);
+    display: block;
+  }
+}
+
 .table--border__list {
   padding: $global-spacing 0;
+}
+
+// Simple, underlined links for tables
+.link--table {
+  color: $black;
+  font-weight: $base-font-medium;
+  text-decoration: underline;
+
+  &:hover, &:focus {
+    color: $primary-color;
+    opacity: 1;
+  }
+}
+
+// Pagination for table
+.pagination-wrapper.pagination-wrapper--table {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: $global-spacing;
 }

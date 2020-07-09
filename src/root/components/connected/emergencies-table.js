@@ -179,7 +179,7 @@ class EmergenciesTable extends SFPComponent {
         let row = {
           id: rowData.id,
           date: date,
-          name: <Link className='link--primary' to={`/emergencies/${rowData.id}`}>{get(rowData, 'name', nope)}</Link>,
+          name: <Link className='link--table' to={`/emergencies/${rowData.id}`}>{get(rowData, 'name', nope)}</Link>,
           dtype: rowData.dtype ? rowData.dtype.name : nope,
           requested: {
             value: n(get(rowData, 'appeals.0.amount_requested')),
@@ -194,7 +194,7 @@ class EmergenciesTable extends SFPComponent {
 
         if (isNaN(this.props.country)) {
           const countries = get(rowData, 'countries', []).map(c => (
-            <Link key={c.id} className='link--primary' to={`/countries/${c.id}`}>{c.name}</Link>
+            <Link key={c.id} className='link--table' to={`/countries/${c.id}`}>{c.name}</Link>
           ));
           row.countries = countries.length ? intersperse(countries, ', ') : nope;
         }

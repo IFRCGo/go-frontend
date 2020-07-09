@@ -18,13 +18,21 @@
     float: left;
   }
 
+  .disabled {
+    opacity: 0.2;
+  }
+
   .previous a,
   .next a {
-    @extend .button, .button--primary-glass, .button--text-hidden;
+    @extend .button, .button--text-hidden;
     text-decoration: none;
     text-transform: uppercase;
     padding-inline-end: 0;
     padding-inline-start: 0;
+
+    &:before {
+      font-size: $font-size-sm;
+    }
   }
 
   .previous a {
@@ -49,13 +57,14 @@
       float: left;
 
       &.active .pages__page {
-        border-radius: 5px;
-        @extend .button--primary-filled
+        @extend .button--primary-filled;
       }
 
       .pages__page {
         @extend .button, .button--base-plain;
-        border-radius: 5px;
+        border-radius: 50%;
+        font-weight: $base-font-regular;
+        font-size: $font-size-xs;
       }
     }
   }

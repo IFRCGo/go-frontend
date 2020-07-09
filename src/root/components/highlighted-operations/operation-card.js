@@ -6,21 +6,46 @@ import { formatDate, percent, round, commaSeparatedNumber as n } from '#utils/fo
 import Progress from './../progress-labeled';
 import Translate from '#components/Translate';
 
-const OperationCard = ({operationId, operationName, emergencyDeployments, appeals, lastUpdate}) => {
+const OperationCard = ({operationId, operationName, emergencyDeployments, appeals, lastUpdate, showFollow, isFollowing, followOperation, unfollowOperation}) => {
   const beneficiaries = appeals.reduce((acc, curr) => acc + curr.num_beneficiaries, 0);
   const requested = appeals.reduce((acc, curr) => acc + Number(curr.amount_requested), 0);
   const funded = appeals.reduce((acc, curr) => acc + Number(curr.amount_funded), 0);
 
+  function toggleFollow (event) {
+    event.preventDefault();
+    if (isFollowing) {
+      unfollowOperation(operationId);
+    } else {
+      followOperation(operationId);
+    }
+  }
+
   return (
     <div className='key-emergencies-item' key={operationId}>
       <Link to={`/emergencies/${operationId}`}>
-        <div className="card_box card_box_left">
-          <h2 className='card__title'>{ operationName.length > 30 ? operationName.slice(0, 30) + '...' : operationName }</h2>
-          <small className='last_updated'>
-            <Translate stringId='operationCardLastUpdated'/>
-            &nbsp;
-            {formatDate(lastUpdate)}
-          </small>
+        <div className="card_box card_box_left row">
+          <div className='card__title__wrap'>
+            <h2 className='card__title'>{ operationName.length > 30 ? operationName.slice(0, 30) + '...' : operationName }</h2>
+            <small className='last_updated'>
+              <Translate stringId='operationCardLastUpdated'/>
+              &nbsp;
+              {formatDate(lastUpdate)}
+            </small>
+          </div>
+          {showFollow ? (
+            <div className='button--key-emergencies__wrap'>  
+              <div onClick={toggleFollow} className={`button button--capsule button--xsmall button--key-emergencies ${isFollowing ? 'button--primary-bounded' : 'button--primary-filled'}`}>
+                {
+                  isFollowing ? (
+                    <Translate stringId='operationCardFollowing' />
+                  ) : (
+                    <Translate stringId='operationCardFollow' />
+                  )
+                }
+              </div>
+            </div>
+          ) : null
+          }
         </div>
 
         <div className='card_box_container card_box_container--op'>
@@ -56,14 +81,14 @@ const OperationCard = ({operationId, operationName, emergencyDeployments, appeal
           </div>
         </div>
 
-        <div className='card_box_full card_box_container card_box_container--op'>
-          <div className="heading-tiny">
-            <Translate stringId='operationCardFundingCoverage'/>
-          </div>
-          <div className="card_box_fc">{requested ? round(percent(funded, requested)) : 0}%</div>
-        </div>
         <div className="card_box_footer">
           <Progress value={requested ? percent(funded, requested) : percent(0.1, 10)} max={100} />
+          <div className='card_box_full card_box_container card_box_container--op'>
+            <div className="heading-tiny">
+              <Translate stringId='operationCardFundingCoverage'/>
+            </div>
+            <div className="card_box_fc">{requested ? round(percent(funded, requested)) : 0}%</div>
+          </div>
         </div>
       </Link>
     </div>
@@ -75,6 +100,10 @@ export default OperationCard;
 if (environment !== 'production') {
   OperationCard.propTypes = {
     operationId: PropTypes.number,
+    showFollow: PropTypes.bool,
+    isFollowing: PropTypes.bool,
+    followOperation: PropTypes.func,
+    unfollowOperation: PropTypes.func,
     operationName: PropTypes.string,
     emergencyDeployments: PropTypes.shape({
       deployedErus: PropTypes.number,

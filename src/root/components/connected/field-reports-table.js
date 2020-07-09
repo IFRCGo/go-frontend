@@ -152,10 +152,10 @@ class FieldReportsTable extends SFPComponent {
       const rows = results.map(o => ({
         id: o.id,
         date: DateTime.fromISO(o.created_at).toISODate(),
-        name: <Link to={`/reports/${o.id}`} className='link--primary' title={strings.fieldReportsTableViewAll}>{o.summary || nope}</Link>,
-        event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--primary' title={strings.fieldReportsTableViewEmergency}>{o.event.name}</Link> : nope,
+        name: <Link to={`/reports/${o.id}`} className='link--table' title={strings.fieldReportsTableViewAll}>{o.summary || nope}</Link>,
+        event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--table' title={strings.fieldReportsTableViewEmergency}>{o.event.name}</Link> : nope,
         dtype: get(getDtypeMeta(o.dtype.id), 'label', nope),
-        countries: intersperse(o.countries.map(c => <Link key={c.id} to={`/countries/${c.id}`} className='link--primary' title='View Country'>{c.name}</Link>), ', ')
+        countries: intersperse(o.countries.map(c => <Link key={c.id} to={`/countries/${c.id}`} className='link--table' title='View Country'>{c.name}</Link>), ', ')
       }));
 
       return (

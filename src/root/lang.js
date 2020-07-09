@@ -170,6 +170,8 @@ export default {
   operationCardFunding: 'Funding Requirements',
   operationCardDeployed: 'Deployed Surge Personnel',
   operationCardFundingCoverage: 'Funding Coverage',
+  operationCardFollow: 'Follow',
+  operationCardFollowing: 'Following',
 
   countryPageTitle: 'IFRC Go - {countryName}',
   countryTitle: 'IFRC Go - Country',
@@ -241,7 +243,7 @@ export default {
   appealsTableEmergency: 'Emergency',
   appealsTableDisastertype: 'Disaster Type',
   appealsTableRequestedAmount: 'Requested Amount (CHF)',
-  appealsTableFundedAmount: 'Funding (CHF)',
+  appealsTableFundedAmount: 'Funding (%)',
   appealsTableCountry: 'Country',
   appealsTableRowEvent: 'View Emergency',
   appealsTableViewCountry: 'View Country',
