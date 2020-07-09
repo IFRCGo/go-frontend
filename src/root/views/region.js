@@ -207,7 +207,7 @@ class AdminArea extends SFPComponent {
         </Helmet>
         <BreadCrumb crumbs={[
           {link: this.props.location.pathname, name: regionName},
-          {link: '/', name: 'Home'}
+          {link: '/', name: strings.breadCrumbHome}
         ]} />
         <header className='inpage__header'>
           <div className='inner'>

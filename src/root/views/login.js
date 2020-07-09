@@ -92,8 +92,8 @@ class Login extends React.Component {
           <title>{strings.loginTitle}</title>
         </Helmet>
         <BreadCrumb crumbs={[
-          {link: '/login', name: 'Login'},
-          {link: '/', name: 'Home'}
+          {link: '/login', name: strings.breadCrumbLogin},
+          {link: '/', name: strings.breadCrumbHome}
         ]} />
         <section className='inpage'>
           <header className='inpage__header'>
@@ -137,16 +137,12 @@ class Login extends React.Component {
                 {this.renderError()}
                 <div className='form__footer'>
                   <button className={c('mfa-tick', { disabled: !this.allowSubmit() })} type='submit' onClick={this.onSubmit}>
-                    <span>
-                      <Translate stringId='loginButton' />
-                    </span>
+                    <Translate stringId='loginButton' />
                   </button>
                   <p>
                     <Translate stringId='loginDontHaveAccount' />
                     <Link to='/register' title={strings.loginCreateAccountTitle}>
-                      <span>
-                        <Translate stringId='loginSignUp' />
-                      </span>
+                      <Translate stringId='loginSignUp' />
                     </Link>
                   </p>
                 </div>

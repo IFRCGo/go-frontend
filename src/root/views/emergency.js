@@ -6,12 +6,15 @@ import { Link, withRouter } from 'react-router-dom';
 import { PropTypes as T } from 'prop-types';
 import _toNumber from 'lodash.tonumber';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import BreadCrumb from '../components/breadcrumb';
 
 import { Helmet } from 'react-helmet';
 
 import { api, environment } from '#config';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
+import Translate from '#components/Translate';
+import BreadCrumb from '#components/breadcrumb';
+import { withLanguage } from '#root/languageContext';
+import { resolveToString } from '#utils/lang';
 import {
   getEventById,
   getEventSnippets,
@@ -106,7 +109,7 @@ class Emergency extends React.Component {
       let tabs = [...this.state.tabs];
       const tabLabels = ['tab_one_title', 'tab_two_title', 'tab_three_title'];
       tabLabels.forEach((key) => {
-        if (data[key]) {
+        if (data && data[key]) {
           const title = data[key];
           const hash = `#${title.toLowerCase().split(' ').join('-')}`;
           tabs.push({
@@ -202,33 +205,35 @@ class Emergency extends React.Component {
       get(report, 'other_affected_pop_centres');
     return (
       <div className="inpage__header-col">
-        <h3 className="global-spacing-2-t clear">Emergency Overview</h3>
+        <h3 className="global-spacing-2-t clear">
+          <Translate stringId="emergencyTopOverviewSectionTitle" />
+        </h3>
         <div className="content-list-group">
           <ul className="content-list">
             <li>
-              Potentially Affected
+              <Translate stringId="emergencyPotentiallyAffectedLabel" />
               <span className="content-highlight">
                 {n(numPotentiallyAffected)}
               </span>
             </li>
             <li>
-              Highest Risk
+              <Translate stringId="emergencyHighestRiskLabel" />
               <span className="content-highlight">{n(numHighestRisk)}</span>
             </li>
             <li>
-              Affected Population Centres
+              <Translate stringId="emergencyAffectedPopulationCentresLabel" />
               <span className="content-highlight">{affectedPopCentres}</span>
             </li>
           </ul>
           <ul className="content-list">
             <li>
-              Number of People Assisted by Government - Early Action
+              <Translate stringId="emergencyAssistedByGovernmentLabel" />
               <span className="content-highlight">
                 {n(get(report, 'gov_num_assisted'))}
               </span>
             </li>
             <li>
-              Number of People Assisted by RCRC Movement - Early Action
+              <Translate stringId="emergencyAssistedByRCRCLabel" />
               <span className="content-highlight">
                 {n(get(report, 'num_assisted'))}
               </span>
@@ -247,6 +252,7 @@ class Emergency extends React.Component {
   }
 
   renderFieldReportStatsEvent (report, isEPI, isCOVID) {
+    const { strings } = this.props;
     const numAffected = parseInt(get(report, 'num_affected')) || parseInt(get(report, 'gov_num_affected')) || parseInt(get(report, 'other_num_affected'));
     const numInjured = parseInt(get(report, 'num_injured')) || parseInt(get(report, 'gov_num_injured')) || parseInt(get(report, 'other_num_injured'));
     const numDead = parseInt(get(report, 'num_dead')) || parseInt(get(report, 'gov_num_dead')) || parseInt(get(report, 'other_num_dead'));
@@ -261,18 +267,18 @@ class Emergency extends React.Component {
           { isEPI
             ? (
               <ul className='content-list'>
-                <li>Cases<span className='content-highlight'>{n(get(report, 'epi_cases'))}</span></li>
+                <li>{strings.emergencyCasesLabel}<span className='content-highlight'>{n(get(report, 'epi_cases'))}</span></li>
                 { !isCOVID
                   ? (
                     <React.Fragment>
-                      <li className='pl-small'>Suspected Cases<span className='content-highlight'>{n(get(report, 'epi_suspected_cases'))}</span></li>
-                      <li className='pl-small'>Probable Cases<span className='content-highlight'>{n(get(report, 'epi_probable_cases'))}</span></li>
-                      <li className='pl-small'>Confirmed Cases<span className='content-highlight'>{n(get(report, 'epi_confirmed_cases'))}</span></li>
+                      <li className='pl-small'>{strings.emergencySuspectedCasesLabel}<span className='content-highlight'>{n(get(report, 'epi_suspected_cases'))}</span></li>
+                      <li className='pl-small'>{strings.emergencyProbableCasesLabel}<span className='content-highlight'>{n(get(report, 'epi_probable_cases'))}</span></li>
+                      <li className='pl-small'>{strings.emergencyConfirmedCasesLabel}<span className='content-highlight'>{n(get(report, 'epi_confirmed_cases'))}</span></li>
                     </React.Fragment>
                   )
                   : null
                 }
-                <li>Dead<span className='content-highlight'>{n(get(report, 'epi_num_dead'))}</span></li>
+                <li>{strings.emergencyDeadLabel}<span className='content-highlight'>{n(get(report, 'epi_num_dead'))}</span></li>
                 <li>
                   <p className='emergency__source'>Source:
                     { isEPI
@@ -291,21 +297,21 @@ class Emergency extends React.Component {
             )
             : (
               <ul className='content-list'>
-                <li>Affected<span className='content-highlight'>{n(numAffected)}</span></li>
-                <li>Injured<span className='content-highlight'>{n(numInjured)}</span></li>
-                <li>Dead<span className='content-highlight'>{n(numDead)}</span></li>
-                <li>Missing<span className='content-highlight'>{n(numMissing)}</span></li>
-                <li>Displaced<span className='content-highlight'>{n(numDisplaced)}</span></li>
+                <li>{strings.emergencyAffectedLabel}<span className='content-highlight'>{n(numAffected)}</span></li>
+                <li>{strings.emergencyInjuredLabel}<span className='content-highlight'>{n(numInjured)}</span></li>
+                <li>{strings.emergencyDeadLabel}<span className='content-highlight'>{n(numDead)}</span></li>
+                <li>{strings.emergencyMissingLabel}<span className='content-highlight'>{n(numMissing)}</span></li>
+                <li>{strings.emergencyDisplacedLabel}<span className='content-highlight'>{n(numDisplaced)}</span></li>
               </ul>
             )
           }
           <ul className='content-list'>
-            <li>Assisted<span className='content-highlight'>{n(numAssisted)}</span></li>
-            <li>Local staff<span className='content-highlight'>{n(get(report, 'num_localstaff'))}</span></li>
-            <li>Volunteers<span className='content-highlight'>{n(get(report, 'num_volunteers'))}</span></li>
+            <li>{strings.emergencyAssistedLabel}<span className='content-highlight'>{n(numAssisted)}</span></li>
+            <li>{strings.emergencyLocalStaffLabel}<span className='content-highlight'>{n(get(report, 'num_localstaff'))}</span></li>
+            <li>{strings.emergencyVolunteersLabel}<span className='content-highlight'>{n(get(report, 'num_volunteers'))}</span></li>
             { !isCOVID
               ? (
-                <li>Delegates<span className='content-highlight'>{n(get(report, 'num_expats_delegates'))}</span></li>
+                <li>{strings.emergencyDelegatesLabel}<span className='content-highlight'>{n(get(report, 'num_expats_delegates'))}</span></li>
               )
               : null
             }
@@ -364,7 +370,10 @@ class Emergency extends React.Component {
                     <span className="sumstats__value">
                       {n(stats.beneficiaries)}
                     </span>
-                    <span className="sumstats__key">People Targeted</span>
+                    <Translate
+                      className="sumstats__key"
+                      stringId="emergencyPeopleTargetedLabel"
+                    />
                   </li>
                 ) : null}
 
@@ -374,16 +383,20 @@ class Emergency extends React.Component {
                     <span className="sumstats__value">
                       {n(stats.requested)}
                     </span>
-                    <span className="sumstats__key">
-                      Funding Requirements (CHF)
-                    </span>
+                    <span
+                      className="sumstats__key"
+                      stringId="emergencyFundingRequirementsLabel"
+                    />
                   </li>
                 ) : null}
                 {stats.funded > 0 ? (
                   <li className="sumstats__item">
                     <span className="collecticon-cash-bag sumstats__icon"></span>
                     <span className="sumstats__value">{n(stats.funded)}</span>
-                    <span className="sumstats__key">Funding (CHF)</span>
+                    <Translate
+                      className="sumstats__key"
+                      stringId="emergencyFundingLabel"
+                    />
                   </li>
                 ) : null}
               </ul>
@@ -416,22 +429,27 @@ class Emergency extends React.Component {
   }
 
   renderFieldReports () {
-    const { data } = this.props.event;
+    const {
+      strings,
+      event: {
+        data,
+      },
+    } = this.props;
     const fieldReports = data.field_reports ? data.field_reports.filter(fr => this.userHasPerms(fr)) : [];
     if (fieldReports.length) {
       return (
         <Fold
           id="field-reports"
-          title={`Field Reports (${data.field_reports.length})`}
+          title={resolveToString(strings.emergencyFieldReportsWithCountTitle, { count: data.field_reports.length })}
           wrapperClass="event-field-reports"
         >
           <table className="table table--zebra">
             <thead>
               <tr>
-                <th>Date</th>
-                <th>Name</th>
-                <th>Countries</th>
-                <th>Regions</th>
+                <th>{strings.emergencyFieldReportTableHeaderDate}</th>
+                <th>{strings.emergencyFieldReportTableHeaderName}</th>
+                <th>{strings.emergencyFieldReportTableHeaderCountries}</th>
+                <th>{strings.emergencyFieldReportTableHeaderRegions}</th>
               </tr>
             </thead>
             <tbody>
@@ -445,7 +463,7 @@ class Emergency extends React.Component {
                         state: this.props.location.pathname
                       }}
                       className="link--primary"
-                      title="View Field Report"
+                      title={strings.emergencyFieldReportLinkTitle}
                     >
                       {o.summary || noSummary}
                     </Link>
@@ -522,7 +540,7 @@ class Emergency extends React.Component {
                         })
                       ) : (
                         <div className="response__doc__item">
-                          No documents added
+                          <Translate stringId="emergencyNoDocumentsMessage" />
                         </div>
                       )}
                   </div>
@@ -591,10 +609,11 @@ class Emergency extends React.Component {
   }
 
   renderAppealDocuments () {
+    const { strings } = this.props;
     const data = get(this.props.appealDocuments, 'data.results', []);
     if (!data.length) return null;
     return (
-      <Fold id="documents" title="Appeal Documents">
+      <Fold id="documents" title={strings.emergencyAppealDocumentsTitle}>
         {this.renderAppealReports('public-docs-list', data)}
       </Fold>
     );
@@ -611,19 +630,25 @@ class Emergency extends React.Component {
   }
 
   renderKeyFigures () {
+    const { strings } = this.props;
     const { data } = this.props.event;
     const kf = get(data, 'key_figures');
     if (!this.hasKeyFigures()) return null;
 
     return (
-      <Fold title="Key Figures" wrapperClass="key-figures">
+      <Fold title={strings.emergencyKeyFiguresTitle} wrapperClass="key-figures">
         <ul className="key-figures-list">
           {kf.map((o) => (
             <li key={o.deck}>
               <h3>{isNaN(o.number) ? o.number : n(o.number)}</h3>
               <p className="key-figure-label">{o.deck}</p>
               <p className="key-figure-source emergency__source">
-                Source: {o.source}
+                <Translate
+                  stringId="emergencySourceFigure"
+                  params={{
+                    source: o.source,
+                  }}
+                />
               </p>
             </li>
           ))}
@@ -697,7 +722,7 @@ class Emergency extends React.Component {
             className="button button--primary-filled float-right"
             onClick={this.delSubscription}
           >
-            Unsubscribe
+            <Translate stringId="emergencyActionUnsubscribeLabel" />
           </button>
           <br />
           <br />
@@ -708,7 +733,7 @@ class Emergency extends React.Component {
             className="button button--primary-filled float-right"
             onClick={this.addSubscription}
           >
-              Subscribe
+            <Translate stringId="emergencyActionSubscribeLabel" />
           </button>
           <br />
           <br />
@@ -747,21 +772,25 @@ class Emergency extends React.Component {
         ? hashes.indexOf(this.props.location.hash)
         : 0;
 
+    const { strings } = this.props;
+
     return (
       <section className="inpage">
         <Helmet>
-          <title>IFRC Go - {get(data, 'name', 'Emergency')}</title>
+          <title>
+            { resolveToString(strings.emergencyPageTitle, { name: get(data, 'name', 'Emergency') }) }
+          </title>
         </Helmet>
         <BreadCrumb
           crumbs={[
             {
               link: `/emergency/${get(data, 'id')}`,
-              name: get(data, 'name', 'Emergency')
+              name: get(data, 'name', strings.breadCrumbEmergency)
             },
             { link: `/countries/${this.props.event.data.countries[0].id}`, name: `${data.countries[0].name}` },
 
-            { link: '/emergencies', name: 'Emergencies' },
-            { link: '/', name: 'Home' },
+            { link: '/emergencies', name: strings.breadCrumbEmergencies},
+            { link: '/', name: strings.breadCrumbHome},
           ]}
         />
         {this.state.showProjectForm && (
@@ -781,7 +810,9 @@ class Emergency extends React.Component {
                     href={url.resolve(api, `api/event/${data.id}/change/`)}
                     className="button button--primary-bounded float-right"
                   >
-                    Edit Event
+                    <Translate
+                      stringId="emergencyActionEditEventLabel"
+                    />
                   </a>
                   <br />
                   <br />
@@ -794,7 +825,9 @@ class Emergency extends React.Component {
                       }}
                       className="button button--primary-bounded float-right"
                     >
-                      Create 3W activity
+                      <Translate
+                        stringId="emergencyActionCreateThreeWActivityLabel"
+                      />
                     </button>
                   )}
                 </div>
@@ -817,18 +850,18 @@ class Emergency extends React.Component {
           <div className="inpage__body">
             <div className="inner">
               <TabPanel>
-                <TabContent isError={!this.hasKeyFigures()} title="Key Figures">
+                <TabContent isError={!this.hasKeyFigures()} title={strings.emergencyKeyFiguresTitle}>
                   {this.renderKeyFigures()}
                 </TabContent>
                 {showExportMap()}
                 <TabContent
                   isError={!summary}
                   errorMessage={NO_DATA}
-                  title="Overview"
+                  title={strings.emergencyOverviewTitle}
                 >
                   <Fold
                     id="overview"
-                    title="Situational Overview"
+                    title={strings.emergencySituationalOverviewTitle}
                     wrapperClass="situational-overview"
                   >
                     <Expandable
@@ -838,10 +871,10 @@ class Emergency extends React.Component {
                     />
                   </Fold>
                 </TabContent>
-                <TabContent title="Alerts">
+                <TabContent title={strings.emergencyAlertsTitle}>
                   <SurgeAlertsTable
                     id="alerts"
-                    title="Alerts"
+                    title={strings.emergencyAlertsTitle}
                     emergency={this.props.match.params.id}
                     returnNullForEmpty={true}
                   />
@@ -849,11 +882,11 @@ class Emergency extends React.Component {
                 <TabContent
                   isError={!get(this.props.eru, 'data.results.length')}
                   errorMessage={NO_DATA}
-                  title="ERUs"
+                  title={strings.emergencyERUTitle}
                 >
                   <EruTable id="erus" emergency={this.props.match.params.id} />
                 </TabContent>
-                <TabContent title="Personnel">
+                <TabContent title={strings.emergencyPersonnelTitle}>
                   <PersonnelTable
                     id="personnel"
                     emergency={this.props.match.params.id}
@@ -862,7 +895,7 @@ class Emergency extends React.Component {
                 <TabContent
                   isError={!get(this.props.event, 'data.field_reports.length')}
                   errorMessage={NO_DATA}
-                  title="Field Reports"
+                  title={strings.emergencyFieldReportsTitle}
                 >
                   {this.renderFieldReports()}
                 </TabContent>
@@ -871,7 +904,7 @@ class Emergency extends React.Component {
                     !get(this.props.appealDocuments, 'data.results.length')
                   }
                   errorMessage={NO_DATA}
-                  title="Appeal Documents"
+                  title={strings.emergencyAppealDocumentsTitle}
                 >
                   {this.renderAppealDocuments()}
                 </TabContent>
@@ -880,20 +913,20 @@ class Emergency extends React.Component {
                     !get(this.props.situationReports, 'data.results.length')
                   }
                   errorMessage={NO_DATA}
-                  title="Response Documents"
+                  title={strings.emergencyResponseDocumentsTitle}
                 >
                   {this.renderResponseDocuments()}
                 </TabContent>
 
                 {contacts && contacts.length ? (
-                  <Fold id="contacts" title="Contacts" wrapperClass="contacts">
+                  <Fold id="contacts" title={strings.emergencyContactsTitle} wrapperClass="contacts">
                     <table className="table">
                       <thead className="visually-hidden">
                         <tr>
-                          <th>Name</th>
-                          <th>Title</th>
-                          <th>Type</th>
-                          <th>Contact</th>
+                          <th>{strings.emergencyContactsTableHeaderName}</th>
+                          <th>{strings.emergencyContactsTableHeaderTitle}</th>
+                          <th>{strings.emergencyContactsTableHeaderType}</th>
+                          <th>{strings.emergencyContactsTableHeaderContact}</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -907,7 +940,7 @@ class Emergency extends React.Component {
                                 <a
                                   className="button button--small button--grey-cement-bounded"
                                   href={`mailto:${o.email}`}
-                                  title="Contact"
+                                  title={strings.emergencyContactTitle}
                                 >
                                   {o.email}
                                 </a>
@@ -915,7 +948,7 @@ class Emergency extends React.Component {
                                 <a
                                   className="button button--small button--grey-cement-bounded"
                                   href={`tel:${o.email}`}
-                                  title="Contact"
+                                  title={strings.emergencyContactTitle}
                                 >
                                   {o.email}
                                 </a>
@@ -928,8 +961,8 @@ class Emergency extends React.Component {
                   </Fold>
                 ) : (
                   <ErrorPanel
-                    title="Contacts"
-                    errorMessage="No current contacts"
+                    title={strings.emergencyContactsTitle}
+                    errorMessage={strings.emergencyContactEmptyMessage}
                   />
                 )}
               </TabPanel>
@@ -944,11 +977,12 @@ class Emergency extends React.Component {
 
   render () {
     this.syncLoadingAnimation(this.props.projectForm);
+    const { strings } = this.props;
 
     return (
       <App className="page--emergency">
         <Helmet>
-          <title>IFRC Go - Emergency</title>
+          <title>{strings.emergencyPageTitleStatic}</title>
         </Helmet>
         {this.renderContent()}
       </App>
@@ -1033,4 +1067,4 @@ const dispatcher = (dispatch) => ({
   _getUserProfile: (...args) => dispatch(getUserProfile(...args)),
 });
 
-export default withRouter(connect(selector, dispatcher)(Emergency));
+export default withLanguage(withRouter(connect(selector, dispatcher)(Emergency)));

@@ -154,7 +154,13 @@ export function hideGlobalLoading (count = 1, cb = () => {}) {
     count = 1;
   }
 
-  const hide = () => { theGlobalLoading.setState({revealed: false}); cb(); };
+  const hide = () => {
+    if (!theGlobalLoading) {
+      return;
+    }
+
+    theGlobalLoading.setState({revealed: false}); cb();
+  };
 
   // Using 0 or negative numbers results in the loading being
   // immediately dismissed.

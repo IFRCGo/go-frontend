@@ -149,8 +149,8 @@ class Preparedness extends React.Component {
             <title>{strings.preparednessTitle}</title>
           </Helmet>
           <BreadCrumb crumbs={[
-            {link: '/preparedness', name: 'Preparedness'},
-            {link: '/', name: 'Home'}
+            {link: '/preparedness', name: strings.breadCrumbPreparedness},
+            {link: '/', name: strings.breadCrumbHome}
           ]} />
           <header className='inpage__header'>
             <div className='inner'>
