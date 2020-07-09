@@ -896,7 +896,7 @@ class ProjectForm extends React.PureComponent {
   }
 }
 
-ProjectForm.contexType = LanguageContext;
+ProjectForm.contextType = LanguageContext;
 
 const selector = (state, ownProps) => ({
   countries: state.countries,
