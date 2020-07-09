@@ -970,8 +970,8 @@ class FieldReportForm extends React.Component {
           <title>{ strings.fieldReportFormPageTitle }</title>
         </Helmet>
         <BreadCrumb crumbs={[
-          {link: this.props.location.pathname, name: strings.fieldReportFormBreadCrumbCurrentPageTitle},
-          {link: '/', name: strings.fieldReportFormBreadCrumbHomePageTitle}
+          {link: this.props.location.pathname, name: strings.breadCrumbNewFieldReport},
+          {link: '/', name: strings.breadCrumbHome}
         ]} />
         <section className='inpage'>
           <header className='inpage__header'>

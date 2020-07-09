@@ -27,16 +27,16 @@ class Emergencies extends React.Component {
       <App className='page--emergencies'>
         <Helmet>
           <title>
-            {strings.emergencyTitle}
+            {strings.emergenciesTitle}
           </title>
         </Helmet>
         <section className='inpage'>
-          <BreadCrumb crumbs={[{link: '/emergencies', name: 'Emergencies'}, {link: '/', name: 'Home'}]} />
+          <BreadCrumb crumbs={[{link: '/emergencies', name: 'Emergencies'}, {link: '/', name: strings.breadCrumbHome }]} />
           <EmergenciesDash />
           <div className='inpage__body row'>
             <div className='inner'>
               <EmergenciesTable
-                title={strings.emergencyTableTitle}
+                title={strings.emergenciesTableTitle}
                 limit={10}
                 viewAll={'/emergencies/all'}
                 showRecent={true}

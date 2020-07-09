@@ -425,7 +425,7 @@ class AdminArea extends SFPComponent {
         date: DateTime.fromISO(o.start_date).toISODate(),
         name: o.name,
         event: o.event ? (
-          <Link to={`/emergencies/${o.event}`} className='link--primary' title='View Emergency'>
+          <Link to={`/emergencies/${o.event}`} className='link--primary' title={strings.countriesEmergencyLinkTooltip}>
             Link
           </Link>
         ) : (
@@ -434,7 +434,7 @@ class AdminArea extends SFPComponent {
         dtype: o.dtype.name,
         requestAmount: n(o.amount_requested),
         fundedAmount: n(o.amount_funded),
-        active: new Date(o.end_date).getTime() > now ? 'Active' : 'Inactive'
+        active: new Date(o.end_date).getTime() > now ? strings.countriesActiveLabel: strings.countriesInactiveLabel,
       }));
 
       return (
@@ -447,7 +447,10 @@ class AdminArea extends SFPComponent {
           />
           <div className='fold__footer'>
             <Link className='link--primary export--link' to={'/appeals/all/?country=' + id}>
-              View All Operations For {name}
+              <Translate
+                stringId="countriesAllOperationExportLink"
+                params={{ name }}
+              />
             </Link>
           </div>
         </React.Fragment>
@@ -598,7 +601,7 @@ class AdminArea extends SFPComponent {
     const region = getRegionById(data.region);
     const crumbs = [
       {link: this.props.location.pathname, name: countryName},
-      {link: '/', name: 'Home'}
+      {link: '/', name: strings.breadCrumbHome}
     ];
     if (region) {
       crumbs.splice(1, 0, {
@@ -652,7 +655,7 @@ class AdminArea extends SFPComponent {
             <div className='inner'>
               <TabPanel>
                 <TabContent>
-                  <Fold title='Statistics' headerClass='visually-hidden' id='operations'>
+                  <Fold title={strings.countriesStatisticsTitle} headerClass='visually-hidden' id='operations'>
                     {/*
                     <div className='operations__container'>
                       <div className='country__operations'>

@@ -18,8 +18,8 @@ export default class About extends React.Component {
           </title>
         </Helmet>
         <BreadCrumb crumbs={[
-          {link: this.props.location.pathname, name: 'Resources'},
-          {link: '/', name: 'Home'}
+          {link: this.props.location.pathname, name: strings.breadCrumbResources},
+          {link: '/', name: strings.breadCrumbHome}
         ]} />
         <section className='inpage'>
           <header className='inpage__header'>

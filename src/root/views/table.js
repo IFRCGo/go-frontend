@@ -66,7 +66,7 @@ class Table extends React.Component {
     if (titleArea) titleArea += ' ';
     switch (this.props.type) {
       case 'emergency':
-      return <EmergenciesTable title={resolveToString(strings.emergenciesTableTitle, { title: titleArea})} {...props} />;
+      return <EmergenciesTable title={resolveToString(strings.tableEmergenciesTitle, { title: titleArea})} {...props} />;
       case 'report':
       return <FieldReportsTable title={resolveToString(strings.reportsTableTitle, { title: titleArea})} {...props} />;
       case 'appeal':
@@ -91,7 +91,7 @@ class Table extends React.Component {
     const tableType = displayTypes[this.props.type];
     const home = {
       link: '/',
-      name: 'Home'
+      name: strings.breadCrumbHome,
     };
     const qs = this.getQueryParams();
     const isEmptyQS = Object.keys(qs).length === 0;
@@ -99,6 +99,7 @@ class Table extends React.Component {
     if (isEmptyQS) {
       extraCrumbs.push({
         link: this.props.location.pathname,
+        // TODO: use strings
         name: `All ${tableType}`
       });
     } else {

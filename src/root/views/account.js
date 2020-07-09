@@ -792,14 +792,21 @@ class Account extends React.Component {
           </title>
         </Helmet>
         <BreadCrumb crumbs={[
-          {link: '/account', name: 'Account'},
-          {link: '/', name: 'Home'}
+          {link: '/account', name: strings.breadCrumbAccount},
+          {link: '/', name: strings.breadCrumbHome}
         ]} />
         <section className='inpage'>
           <header className='inpage__header'>
             <div className='inner'>
               <div className='inpage__headline'>
-                <h1 className='inpage__title'>Hello {this.props.user.firstName}</h1>
+                <h1 className='inpage__title'>
+                  <Translate
+                    stringId="accountUserGreeting"
+                    params={{
+                      user: this.props.user.firstName,
+                    }}
+                  />
+                </h1>
               </div>
             </div>
           </header>

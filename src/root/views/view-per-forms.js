@@ -68,8 +68,8 @@ class ViewPerForms extends React.Component {
         </Helmet>
         <BreadCrumb crumbs={[
           {link: this.props.location.pathname, name: formName},
-          {link: '/account', name: 'Account'},
-          {link: '/', name: 'Home'}
+          {link: '/account', name: strings.breadCrumbAccount},
+          {link: '/', name: strings.breadCrumbHome}
         ]} />
         <section className='inpage'>
           <div className='inpage__body'>

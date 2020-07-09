@@ -69,9 +69,9 @@ class EditPerForms extends React.Component {
           <title>{strings.editPerFormsTitle}</title>
         </Helmet>
         <BreadCrumb crumbs={[
-          {link: this.props.location.pathname, name: 'PER Form'},
-          {link: `/countries/${this.props.match.params.id}`, name: `${getCountryMeta(this.props.match.params.id).label || 'Account'}`},
-          {link: '/', name: 'Home'}
+          {link: this.props.location.pathname, name: strings.breadCrumbPERForm},
+          {link: `/countries/${this.props.match.params.id}`, name: `${getCountryMeta(this.props.match.params.id).label || strings.breadCrumbAccount}`},
+          {link: '/', name: strings.breadCrumbHome}
         ]} />
         <section className='inpage'>
           <div className='inpage__body'>
