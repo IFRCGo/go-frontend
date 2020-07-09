@@ -603,7 +603,9 @@
     }
 
     figcaption {
+      border-bottom: 1px solid $base-border-color;
       font-weight: $base-font-bold;
+      padding: $global-spacing $global-spacing ($global-spacing / 2) $global-spacing;
     }
   }
 }

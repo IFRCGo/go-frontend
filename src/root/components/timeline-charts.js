@@ -125,7 +125,7 @@ class TimelineCharts extends React.Component {
 
     return (
       <figure className='chart box__content'>
-        <figcaption className='global-spacing fold__title'>
+        <figcaption className='fold__title'>
           <Translate stringId='timeLineChartByMonthTitle'/>
         </figcaption>
         <div className='chart__container'>
@@ -173,7 +173,7 @@ class TimelineCharts extends React.Component {
 
     return (
       <figure className='chart box__content'>
-        <figcaption className='global-spacing fold__title'>
+        <figcaption className='fold__title'>
           <Translate stringId='timeLineChartByYearTitle'/>
         </figcaption>
         <div className='chart__container'>
