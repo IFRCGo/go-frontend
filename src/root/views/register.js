@@ -11,7 +11,7 @@ import { Helmet } from 'react-helmet';
 
 import { isValidEmail, isWhitelistedEmail, get } from '#utils/utils';
 import { countries, orgTypes } from '#utils/field-report-constants';
-import { registerUser, getDomainWhitelist } from '#actions';
+import { registerUser, getDomainWhitelist, getCountries } from '#actions';
 import { environment } from '#config';
 
 import { FormInput, FormError } from '#components/form-elements/';
@@ -59,6 +59,7 @@ class Register extends React.Component {
         contact: [0, 1].map(o => ({ name: undefined, email: undefined }))
       },
       whitelist: [],
+      nationalSocieties: [],
       errors: null
     };
 
@@ -67,6 +68,7 @@ class Register extends React.Component {
 
   componentDidMount () {
     this.props._getDomainWhitelist();
+    this.props._getCountries(null, true);
   }
 
   // eslint-disable-next-line camelcase
@@ -98,6 +100,15 @@ class Register extends React.Component {
       registerSchemaDef.if.properties.email.not = { pattern: domList.map((dom) => `@${dom}`).join('|') };
       registerValidator = ajv.compile(registerSchemaDef);
     }
+
+    if (nextProps.countries.fetched) {
+      this.setState({
+        nationalSocieties: nextProps.countries.data.results.map((country) => ({ 
+          value: country.society_name,
+          label: country.society_name
+        }))
+      });
+    }
   }
 
   prepStateForValidation (state) {
@@ -119,7 +130,19 @@ class Register extends React.Component {
 
   onFieldChange (field, e) {
     let data = _cloneDeep(this.state.data);
+
     let val = e.target ? e.target.value : e;
+    // If 'National Society' is selected as an Org.Type we still only want 'organization' as a string
+    // but since it's a dropdown we need its 'value' only
+    if (field === 'organization' && this.state.data.organizationType?.value === 'NTLS') {
+      val = e.value;
+    }
+    // Empty out the 'organization' field as the Org.Type is changed to 'National Society'
+    // in case someone doesn't select an Organization, since the Select is empty at first
+    // but the previous value would be still kept in the state
+    if (field === 'organizationType' && this.state.data.organizationType?.value !== 'NTLS' && e.value === 'NTLS') {
+      data.organization = undefined;
+    }
     _set(data, field, val === '' || val === null ? undefined : val);
     this.setState({data});
   }
@@ -207,20 +230,40 @@ class Register extends React.Component {
             property='organizationType'
           />
         </div>
-        <FormInput
-          label={strings.registerOrganizationName}
-          type='text'
-          name='register-organization'
-          id='register-organization'
-          classInput={getClassIfError(this.state.errors, 'organization')}
-          value={this.state.data.organization}
-          onChange={this.onFieldChange.bind(this, 'organization')}
-        >
-          <FormError
-            errors={this.state.errors}
-            property='organization'
-          />
-        </FormInput>
+        { this.state.data.organizationType?.value === 'NTLS'
+          ? (
+            <div className='form__group'>
+              <label className='form__label'>
+                <Translate stringId='registerOrganizationName' />
+              </label>
+              <Select
+                name='register-organization'
+                value={this.state.data.organization}
+                onChange={this.onFieldChange.bind(this, 'organization')}
+                options={this.state.nationalSocieties} />
+              <FormError
+                errors={this.state.errors}
+                property='organizationType'
+              />
+            </div>
+          )
+          : (
+            <FormInput
+              label={strings.registerOrganizationName}
+              type='text'
+              name='register-organization'
+              id='register-organization'
+              classInput={getClassIfError(this.state.errors, 'organization')}
+              value={this.state.data.organization}
+              onChange={this.onFieldChange.bind(this, 'organization')}
+            >
+              <FormError
+                errors={this.state.errors}
+                property='organization'
+              />
+            </FormInput>
+          )
+        }
         <FormInput
           label={strings.registerDepartment}
           type='text'
@@ -457,12 +500,14 @@ if (environment !== 'production') {
 
 const selector = (state) => ({
   registration: state.registration,
-  domainWhitelist: state.domainWhitelist
+  domainWhitelist: state.domainWhitelist,
+  countries: state.countries
 });
 
 const dispatcher = (dispatch) => ({
   _registerUser: (payload) => dispatch(registerUser(payload)),
-  _getDomainWhitelist: () => dispatch(getDomainWhitelist())
+  _getDomainWhitelist: () => dispatch(getDomainWhitelist()),
+  _getCountries: (...args) => dispatch(getCountries(...args))
 });
 
 Register.contextType = LanguageContext;
