@@ -72,7 +72,7 @@ import { NO_DATA } from '#utils/constants';
 import { getISO3 } from '#utils/country-iso';
 
 import ThreeW from './ThreeW';
-import CountryOverview from './CountryOverview';
+import CountryProfile from './CountryProfile';
 
 const emptyObject = {};
 
@@ -708,7 +708,7 @@ class AdminArea extends SFPComponent {
               </TabPanel>
               <TabPanel>
                 <TabContent title='Overview'>
-                  <CountryOverview
+                  <CountryProfile
                     countryId={getCountryId(this.props.match.params.id)}
                     user={this.props.user}
                   />
