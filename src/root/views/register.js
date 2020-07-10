@@ -463,7 +463,7 @@ class Register extends React.Component {
                   onChange={this.onFieldChange.bind(this, 'username')}
                 >
                   <p className='text-italic'>
-                    This will be your username to log into the platform
+                    <Translate stringId='registerUsernameInfo' />
                   </p>
                   <FormError
                     errors={this.state.errors}

@@ -74,6 +74,7 @@ export default {
   registerLastName: 'Last Name *',
   registerEmail: 'Email *',
   registerUsername: 'Username *',
+  registerUsernameInfo: 'This will be your username to log into the platform',
   registerCountry: 'Country *',
   registerCity: 'City *',
   registerOrganizationType: 'Organization Type *',
