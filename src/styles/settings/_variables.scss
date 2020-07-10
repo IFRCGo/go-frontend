@@ -94,6 +94,13 @@ $base-box-shadow: 1px 2px 6px 1px $base-alpha-color;
 $box-shadow-component: 1px 1px 4px rgba($black, 0.06);
 
 
+/* Grid
+   ========================================================================== */
+
+$grid-column-count: 12;
+$grid-gutter: 12px;
+
+
 /* Sizing, spacing and media queries
    ========================================================================== */
 
@@ -106,6 +113,15 @@ $page-header-y: 0 !default;
 $global-spacing: 1rem;
 $global-spacing-2: 1.5rem;
 $global-spacing-3: 2rem;
+
+/* Spacing Variables in pixels */
+
+$spacing: 12px;
+$spacing-2: ($spacing * 2);
+$spacing-3: ($spacing * 3);
+$spacing-3: ($spacing * 4);
+$spacing-5: ($spacing * 5);
+
 
 /* Rows */
 
@@ -127,3 +143,4 @@ $screen: "only screen";
 $media-xsmall: 544px;
 $media-small: 768px;
 $media-medium: 992px;
+$media-large: 992px;

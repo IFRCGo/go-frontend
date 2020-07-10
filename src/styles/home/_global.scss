@@ -120,25 +120,33 @@
     flex-wrap: nowrap;
   }
 
+  &__item__wrap {
+    @include media(small) {
+      display: flex;
+      width: 50%;
+      @include col;
+    }
+
+    @include media(mid) {
+      width: auto;
+    }
+  }
+
   &__item {
-    @include column(12/12);
+    //@include column(12/12);
     background-color: #fff;
     border: 1px solid $grey-mist;
     border-radius: $base-border-radius;
-    padding: $global-spacing $global-spacing;
+    padding: $global-spacing;
     display: flex;
     flex-direction: column;
+    width: 100%;
     position: relative;
     margin-bottom: $global-spacing;
 
-    @include media(small-up) {
-      @include column(6/12, $cycle: 2);
-    }
-
-    @include media(large-up) {
-      //@include span(2/10, $cycle: 5);
+    @include media(mid) {
       border: none;
-      margin: 0 !important;
+      margin-bottom: 0;
 
       &:before {
         content: "";
@@ -588,18 +596,18 @@
 }
 
 .stats-chart {
-  @include column(12/12);
+  //@include column(12/12);
   margin: ($global-spacing) 0;
   .chart {
     margin-bottom: 0;
-    @include column(12/12);
+    //@include column(12/12);
 
     &:last-child {
       margin-bottom: 0;
     }
 
     @include media(medium-up) {
-      @include column(6/12, $cycle: 2);
+      //@include column(6/12, $cycle: 2);
     }
 
     figcaption {
@@ -641,11 +649,11 @@
 }
 
 .key-emergencies-list-long {
-  flex-wrap: wrap;
-  justify-content: center;
-  .key-emergencies-item {
-    margin-inline-end: 2% !important;
-  }
+  //flex-wrap: wrap;
+  //justify-content: center;
+  //.key-emergencies-item {
+    //margin-inline-end: 2% !important;
+  //}
 }
 
 .key-emergencies-list-short {
@@ -654,21 +662,21 @@
 }
 
 .key-emergencies-list {
-  display: flex;
-  margin-inline-start: 0;
-  @extend .clearfix;
-  @include column(12/12);
+  //display: flex;
+  //margin-inline-start: 0;
+  //@extend .clearfix;
+  //@include column(12/12);
 
   .key-emergencies-item {
     margin-bottom: $global-spacing;
     @include media(medium-up) {
-      @include column(6/12)
+      //@include column(6/12)
     }
     @include media(medium-up) {
-      @include column(4/12)
+      //@include column(4/12)
     }
     &:first-child {
-      margin-inline-start: 0;
+      //margin-inline-start: 0;
     };
 
     > a {

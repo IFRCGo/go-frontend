@@ -1,15 +1,15 @@
-.card_box_container {
+//.card_box_container {
   //margin-top: 1rem;
-}
+//}
 
 .card_box_container--op {
-  display: flex;
+  @include flex;
 }
 
 .card_box {
   //float: left;
   //font-size: 1.5rem;
-  text-align: left;
+  //text-align: left;
   //padding-inline-start: 5px;
   //@include media(xsmall-only) {
   padding: ($global-spacing * 0.8) ($global-spacing * 1.5);
@@ -86,7 +86,9 @@
 }
 
 .card_box--op {
-  @include span(6/12, $offset: 0, $cycle: 0);
+  width: 50%;
+  //@include span(6/12, $offset: 0, $cycle: 0);
+
 
   &:first-of-type {
     border-inline-end: 1px solid $base-border-color--light;

@@ -124,14 +124,16 @@ class TimelineCharts extends React.Component {
     });
 
     return (
-      <figure className='chart box__content'>
-        <figcaption className='fold__title'>
-          <Translate stringId='timeLineChartByMonthTitle'/>
-        </figcaption>
-        <div className='chart__container'>
-          {this.renderChart(data, 'month')}
-        </div>
-      </figure>
+      <div className='col col-6-sm'>
+        <figure className='chart box__content'>
+          <figcaption className='fold__title'>
+            <Translate stringId='timeLineChartByMonthTitle'/>
+          </figcaption>
+          <div className='chart__container'>
+            {this.renderChart(data, 'month')}
+          </div>
+        </figure>
+      </div>
     );
   }
 
@@ -172,14 +174,16 @@ class TimelineCharts extends React.Component {
     });
 
     return (
-      <figure className='chart box__content'>
-        <figcaption className='fold__title'>
-          <Translate stringId='timeLineChartByYearTitle'/>
-        </figcaption>
-        <div className='chart__container'>
-          {this.renderChart(data, 'year')}
-        </div>
-      </figure>
+      <div className='col col-6-sm'>
+        <figure className='chart box__content'>
+          <figcaption className='fold__title'>
+            <Translate stringId='timeLineChartByYearTitle'/>
+          </figcaption>
+          <div className='chart__container'>
+            {this.renderChart(data, 'year')}
+          </div>
+        </figure>
+      </div>
     );
   }
 
@@ -199,7 +203,7 @@ class TimelineCharts extends React.Component {
 
   renderContent () {
     return (
-      <div>
+      <div className='g-row flex-sm'>
         {this.renderByMonth()}
         {this.renderByYear()}
       </div>

@@ -1,0 +1,260 @@
+/* ==========================================================================
+   Grid
+   ========================================================================== */
+
+// ---------------------------------------------
+// GRID: CONTAINERS
+//  - Wrap a row in a container
+
+// Container: Mixin
+//  - All parameters have defaults
+//  - Parameters:
+//    - $max-width {number} : Maximum width
+//    - $grid-gutter {number} : Gutter or horizontal padding
+@mixin container ($max-width: $media-large, $centered: true, $grid-gutter: $grid-gutter) {
+  @if $max-width {
+    max-width: $max-width;
+  }
+  
+  @if $centered {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: $grid-gutter;
+  padding-right: $grid-gutter;
+}
+
+// Container: Default / Large
+.container-lg {
+  @include container;
+}
+
+// Container: Medium
+.container-mid {
+  @include container($media-medium);
+}
+
+// Container: Small
+.container-sm {
+  @include container($media-small);
+}
+
+// Container: Extra small
+.container-xs {
+  @include container($media-xsmall);
+}
+
+// Container: Full Width
+.container-full {
+  @include container($max-width: false);
+}
+
+
+// ---------------------------------------------
+// GRID: CLEARFIX
+// Add a clearfix class or mixin to the parent of floated children
+
+@mixin clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+.clearfix {
+  @include clearfix;
+}
+
+
+// ---------------------------------------------
+// GRID: ROWS
+//  - Used to wrap grid columns
+//  - Rows reset the 1st column's left and last column's right gutter
+//  - Must be wrapped in a container
+//  - All parameters have defaults
+//  - Parameters:
+//    - $grid-gutter {number}: Negative margins to offset horizontal padding
+
+// Row: Mixin
+@mixin g-row($grid-gutter: $grid-gutter) {
+  margin-left: -$grid-gutter;
+  margin-right: -$grid-gutter;   
+  @include clearfix;
+}
+
+// Row: Default
+.g-row {
+  @include g-row;
+}
+
+// Row: Small
+//.g-row-sm {
+  //@include row($grid-gutter: $grid-gutter-sm);
+//}
+
+// Row: Large
+//.g-row-lg {
+//  @include row($grid-gutter: $grid-gutter-lg);
+//}
+
+
+// ---------------------------------------------
+// GRID: COLUMNS
+//  - Wrap in a row: 
+//  - Columns create gutters
+//  - All parameters have defaults
+//  - Parameters:
+//    - $width {number} : defaults to false, i.e. width not set;
+//    - $grid-gutter {number} : Gutter or horizontal padding
+ //   - $spacing-v {number} : Vertical padding (top and bottom), defaults to false, i.e. padding not set
+
+// Column: Mixin
+@mixin col($width: false, $grid-gutter: $grid-gutter, $spacing-v: false) {
+
+  @if $width {
+    width: $width;
+  }
+
+  @if $spacing-v {
+    padding-top: $global-spacing;
+    padding-bottom: $global-spacing;
+  }
+
+  @if $grid-gutter {
+    padding-left: $grid-gutter;
+    padding-right: $grid-gutter;
+  }
+}
+
+// Column: Default
+.col {
+  @include col;
+}
+
+// Column: Small
+//.col-sm {
+  //@include col($grid-gutter: $grid-gutter-sm);
+//}
+
+// Column: Large
+//.col-lg {
+  //@include col($grid-gutter: $grid-gutter-lg);
+//}
+
+// ---------------------------------------------
+// Column: Classes
+// Generates classes for 12 columns
+
+// Classes: Default
+// E.g., .col-1, .col-12 
+@for $i from 1 through $grid-column-count {
+  .col-#{$i} { 
+    width: percentage($i / $grid-column-count);
+  }
+}
+
+// Classes: Extra Small Breakpoint
+// E.g., .col-1-xs, .col-12-xs 
+@media (min-width: $media-xsmall) {
+  @for $i from 1 through $grid-column-count {
+    .col-#{$i}-xs {
+      width: percentage($i / $grid-column-count);
+    }
+  }
+}
+
+// Classes: Small Breakpoint
+// E.g., .col-1-sm, .col-12-sm 
+@media (min-width: $media-small) {
+  @for $i from 1 through $grid-column-count {
+    .col-#{$i}-sm {
+      width: percentage($i / $grid-column-count);
+    }
+  }
+}
+
+// Classes: Medium Breakpoint
+// E.g., .col-1-mid, .col-12-mid 
+@media (min-width: $media-medium) {
+  @for $i from 1 through $grid-column-count {
+    .col-#{$i}-mid {
+      width: percentage($i / $grid-column-count);
+    }
+  }
+}
+
+// Classes: Large Breakpoint
+// E.g., .col-1-lg, .col-12-lg 
+@media (min-width: $media-large) {
+  @for $i from 1 through $grid-column-count {
+    .col-#{$i}-lg {
+      width: percentage($i / $grid-column-count);
+    }
+  }
+}
+
+
+// ---------------------------------------------
+// GRID: FLEXBOX HELPERS
+
+
+@mixin flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.flex {
+  @include flex;
+}
+
+.flex-xs {
+  @media (min-width: $media-xsmall) {
+    @include flex;
+  }
+}
+
+.flex-sm {
+  @media (min-width: $media-small) {
+    @include flex;
+  }
+}
+
+.flex-mid {
+  @media (min-width: $media-medium) {
+    @include flex;
+  }
+}
+
+.flex-lg {
+  @media (min-width: $media-large) {
+    @include flex;
+  }
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-justify-center {
+  justify-content: center;
+}
+
+.flex-align-center {
+  align-items: center;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.margin-left-auto {
+  margin-left: auto;
+}
+
+.margin-right-auto {
+  margin-right: auto;
+}

@@ -21,7 +21,7 @@ const OperationCard = ({operationId, operationName, emergencyDeployments, appeal
   }
 
   return (
-    <div className='key-emergencies-item' key={operationId}>
+    <div className='key-emergencies-item col col-6-sm col-4-mid' key={operationId}>
       <Link to={`/emergencies/${operationId}`}>
         <div className="card_box card_box_left row">
           <div className='card__title__wrap'>
