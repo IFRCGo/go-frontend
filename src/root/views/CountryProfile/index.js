@@ -11,13 +11,11 @@ import { countryIsoMapById } from '#utils/field-report-constants';
 import KeyIndicators from './KeyIndicators';
 import NSIndicators from './NSIndicators';
 
-import PastOperation from './PastOperation';
 import PopulationMap from './PopulationMap';
 import ClimateChart from './ClimateChart';
 import SocialEvents from './SocialEvents';
 import KeyClimateEvents from './KeyClimateEvents';
 import SeasonalCalendar from './SeasonalCalendar';
-import InformIndicators from './InformIndicators';
 import Translate from '#components/Translate';
 
 import styles from './styles.module.scss';
@@ -113,22 +111,10 @@ class CountryOverview extends React.PureComponent {
             data={data.social_events}
           />
         </div>
-        <PastOperation
-          countryId={data.country}
-          appeals={data.appeals}
-          ftsData={data.fts_data}
-          startNetworkData={data.start_network_data}
-          data={data.appeals}
-          className='past-operations'
-        />
         <SeasonalCalendar
           className='seasonal-calender'
           appeals={data.appeals}
           data={data.seasonal_calender}
-        />
-        <InformIndicators
-          className='inform-indicators'
-          data={data.inform_indicators}
         />
       </div>
     );
