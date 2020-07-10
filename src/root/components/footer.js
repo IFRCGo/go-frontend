@@ -19,8 +19,8 @@ class Footer extends React.PureComponent {
     return (
       <React.Fragment>
         <footer className='page__footer' role='contentinfo'>
-          <div className='inner'>
-            <div className='footer-menu g-row flex-xs'>
+          <div className='container-lg'>
+            <div className='footer-menu row flex-xs'>
               <div className="footer-left-block col col-7-xs">
                 <a href='https://github.com/ifrcgo/go-frontend' title={strings.footerOpenSourceCode}><Translate stringId='footerOpenSourceCode'/></a>
                 <a href={`${process.env.NODE_ENV === 'production' ? 'https://goadmin.ifrc.org/' : api}docs`} title={strings.footerApiDocumentation}>

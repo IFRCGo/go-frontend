@@ -122,9 +122,14 @@ $global-spacing-5: 3rem;
 $spacing: 12px;
 $spacing-2: ($spacing * 2);
 $spacing-3: ($spacing * 3);
-$spacing-3: ($spacing * 4);
+$spacing-4: ($spacing * 4);
 $spacing-5: ($spacing * 5);
 
+/* Maximum Widths: Site */
+$media-xsmall: 544px;
+$media-small: 768px;
+$media-medium: 992px;
+$media-large: 1420px;
 
 /* Rows */
 
@@ -143,7 +148,3 @@ $xxlarge-range: (1601px, 3000px);
 
 $screen: "only screen";
 
-$media-xsmall: 544px;
-$media-small: 768px;
-$media-medium: 992px;
-$media-large: 992px;

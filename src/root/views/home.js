@@ -18,7 +18,7 @@ class Home extends React.Component {
             <title>{strings.homeTitle}</title>
           </Helmet>
           <header className='inpage__header'>
-            <div className='inner'>
+            <div className=''>
               <div className='inpage__headline'>
                 <h1 className='inpage__title inpage__title--home'>
                   <Translate stringId='homeHeading' />

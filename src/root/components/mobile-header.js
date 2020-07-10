@@ -66,12 +66,12 @@ class MobileHeader extends React.PureComponent {
     const { strings } = this.props;
     return (
       <header className='page__header page__header--mobile' role='banner'>
-        <div className='inner'>
-          <div className='page__headline'>
-            <div className='page__menu'>
+        <div className='inner container-lg'>
+          <div className='page__headline row flex'>
+            <div className='page__menu col'>
               <a href='' onClick={this.toggleMenu}></a>
             </div>
-            <h1 className='page__title'>
+            <h1 className='page__title col'>
               <Link to='/' title={strings.mobileHeaderVisitHome}>
                 <img src='/assets/graphics/layout/go-logo-2020.svg' alt='IFRC GO logo'/>
                 <span>
@@ -81,7 +81,7 @@ class MobileHeader extends React.PureComponent {
             </h1>
           </div>
         </div>
-        <div className='inner'>
+        <div className='inner container-lg'>
           <div className='nav-global-search'>
             <form className='gsearch'>
               <div>
@@ -99,7 +99,7 @@ class MobileHeader extends React.PureComponent {
         <div className={c('nav__block', {
           'nav__block--open': this.state.showMenu
         })}>
-          <div className='inner'>
+          <div className='inner container-lg'>
             <div className='mobile__actions'>
               <Link to='/reports/new' className='button button--small button--primary-filled' title={strings.mobileHeaderCreateFieldReport}><span><Translate stringId='mobileHeaderCreateFieldReport'/></span></Link>
               <button className='button button--small button--close button--text-hidden' onClick={this.toggleMenu}>

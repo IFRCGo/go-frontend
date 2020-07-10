@@ -21,15 +21,20 @@
     margin-right: auto;
   }
 
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: $grid-gutter;
-  padding-right: $grid-gutter;
+  @if $grid-gutter {
+    padding-left: $grid-gutter;
+    padding-right: $grid-gutter;
+  }
 }
 
 // Container: Default / Large
 .container-lg {
-  @include container;
+  @include container($media-large, $grid-gutter: $grid-gutter);
+
+  @include media(medium) {
+    padding-left: $spacing-4;
+    padding-right: $spacing-4;
+  }
 }
 
 // Container: Medium
@@ -80,24 +85,24 @@
 //    - $grid-gutter {number}: Negative margins to offset horizontal padding
 
 // Row: Mixin
-@mixin g-row($grid-gutter: $grid-gutter) {
+@mixin row($grid-gutter: $grid-gutter) {
   margin-left: -$grid-gutter;
   margin-right: -$grid-gutter;   
   @include clearfix;
 }
 
 // Row: Default
-.g-row {
-  @include g-row;
+.row {
+  @include row;
 }
 
 // Row: Small
-//.g-row-sm {
+//.row-sm {
   //@include row($grid-gutter: $grid-gutter-sm);
 //}
 
 // Row: Large
-//.g-row-lg {
+//.row-lg {
 //  @include row($grid-gutter: $grid-gutter-lg);
 //}
 
@@ -159,7 +164,7 @@
 
 // Classes: Extra Small Breakpoint
 // E.g., .col-1-xs, .col-12-xs 
-@media (min-width: $media-xsmall) {
+@include media (xsmall) {
   @for $i from 1 through $grid-column-count {
     .col-#{$i}-xs {
       width: percentage($i / $grid-column-count);
@@ -169,7 +174,7 @@
 
 // Classes: Small Breakpoint
 // E.g., .col-1-sm, .col-12-sm 
-@media (min-width: $media-small) {
+@include media(small) {
   @for $i from 1 through $grid-column-count {
     .col-#{$i}-sm {
       width: percentage($i / $grid-column-count);
@@ -179,7 +184,7 @@
 
 // Classes: Medium Breakpoint
 // E.g., .col-1-mid, .col-12-mid 
-@media (min-width: $media-medium) {
+@include media(medium) {
   @for $i from 1 through $grid-column-count {
     .col-#{$i}-mid {
       width: percentage($i / $grid-column-count);
@@ -189,7 +194,7 @@
 
 // Classes: Large Breakpoint
 // E.g., .col-1-lg, .col-12-lg 
-@media (min-width: $media-large) {
+@include media(large) {
   @for $i from 1 through $grid-column-count {
     .col-#{$i}-lg {
       width: percentage($i / $grid-column-count);
@@ -212,25 +217,25 @@
 }
 
 .flex-xs {
-  @media (min-width: $media-xsmall) {
+  @include media(xsmall) {
     @include flex;
   }
 }
 
 .flex-sm {
-  @media (min-width: $media-small) {
+  @include media(small) {
     @include flex;
   }
 }
 
 .flex-mid {
-  @media (min-width: $media-medium) {
+  @include media(medium) {
     @include flex;
   }
 }
 
 .flex-lg {
-  @media (min-width: $media-large) {
+  @include media(large) {
     @include flex;
   }
 }

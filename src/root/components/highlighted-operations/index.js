@@ -125,9 +125,9 @@ class HighlightedOperations extends React.Component {
     else if (!fetched || fetching) return <div className='inner'><Fold title={strings.highlightedOperationsTitle}><BlockLoading/></Fold></div>;
     let operations = data.results;
     const listStyle = operations.length <= 4 ? (
-      'key-emergencies-list key-emergencies-list-short g-row flex-sm'
+      'key-emergencies-list key-emergencies-list-short row flex-sm'
     ) : (
-      'key-emergencies-list key-emergencies-list-long g-row flex-sm'
+      'key-emergencies-list key-emergencies-list-long row flex-sm'
     );
     const showFollow = this.getShowFollow();
     if (showFollow) {

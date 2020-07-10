@@ -189,16 +189,16 @@ a.link--external {
 
 .row {
   @extend .clearfix;
-  padding-inline-start: $global-spacing * 3;
-  padding-inline-end: $global-spacing * 3;
+  //padding-inline-start: $global-spacing * 3;
+  //padding-inline-end: $global-spacing * 3;
 
   @include media(xlarge-up) {
-    padding-inline-start: $global-spacing * 5;
-    padding-inline-end: $global-spacing * 5;
+    //padding-inline-start: $global-spacing * 5;
+    //padding-inline-end: $global-spacing * 5;
   }
 
   &--centered {
-    max-width: $row-max-width;
+    //max-width: $row-max-width;
     margin-inline-start: auto;
     margin-inline-end: auto;
   }

@@ -37,7 +37,7 @@ export default class About extends React.Component {
           <div className='inpage__body'>
             <div className='inner'>
               <div className='fold fold--about-iframe-video'>
-                <div className='row row--centered'>
+                <div className='row'>
                   <div className='inner'>
                     <div className='iframe__about__block'>
                       <div className='iframe__embed'>
@@ -193,12 +193,12 @@ export default class About extends React.Component {
               </div>
 
               <div className='fold fold__about__video__carousel'>
-                <div className='row row--centered'>
+                <div className='row'>
                   <VideoCarousel />
                 </div>
               </div>
               <section className='about__resources__block'>
-                <div className='row row--centered'>
+                <div className='row'>
                   <div className='text-center'>
                     <div className='line-brand-deco-border-top-wrap'>
                       <div className='line-brand-deco-border-top'></div>
@@ -370,7 +370,7 @@ export default class About extends React.Component {
               </section>
 
               <section className='logo__group'>
-                <div className='row--centered row-fold'>
+                <div className='row-fold'>
                   <p className='logo__title text-center'>
                     <Translate stringId='aboutGoFunding'/>
                   </p>

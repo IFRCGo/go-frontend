@@ -77,7 +77,7 @@
 .fold--stats {
 
   .inner {
-    @extend .row, .row--centered;
+    //@extend .row, .row--centered;
   }
 
   .stats-chart {
@@ -100,35 +100,47 @@
 .sumstats {
   @extend .clearfix;
   list-style: none;
-  margin: 0;
-  width: 100%;
+  @include row;
+  //width: 100%;
 
-  @include media(small-up) {
+  @include media(small) {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
   }
 
-  @include media(large-up) {
+  @include media(medium) {
     border-radius: $base-border-radius;
     box-shadow: $box-shadow-component;
     border: 1px solid $grey-mist;
     justify-content: center;
   }
 
-  @include media(large-up) {
+  @include media(medium) {
     flex-wrap: nowrap;
   }
 
   &__item__wrap {
+    @include col;
+
     @include media(small) {
       display: flex;
       width: 50%;
-      @include col;
     }
 
-    @include media(mid) {
+    @include media(medium) {
       width: auto;
+      flex: 1;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    &:last-of-type {
+      .sumstats__item {
+        &:before {
+          background-color: transparent;
+        }
+      }
     }
   }
 
@@ -144,7 +156,7 @@
     position: relative;
     margin-bottom: $global-spacing;
 
-    @include media(mid) {
+    @include media(medium) {
       border: none;
       margin-bottom: 0;
 
@@ -165,10 +177,6 @@
 
       &:last-of-type {
         border-radius: 0 $base-border-radius $base-border-radius 0;
-
-        &:before {
-          background-color: transparent;
-        }
       }
     }
   }

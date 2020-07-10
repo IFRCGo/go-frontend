@@ -203,7 +203,7 @@ class TimelineCharts extends React.Component {
 
   renderContent () {
     return (
-      <div className='g-row flex-sm'>
+      <div className='row flex-sm'>
         {this.renderByMonth()}
         {this.renderByYear()}
       </div>
@@ -212,7 +212,7 @@ class TimelineCharts extends React.Component {
 
   render () {
     return (
-      <div className='inner'>
+      <div className='container-lg'>
         <div className='stats-chart'>
           <h1 className='visually-hidden'>
             <Translate stringId='timeLineChartHeading'/>

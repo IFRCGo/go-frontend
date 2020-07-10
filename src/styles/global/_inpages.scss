@@ -13,7 +13,7 @@
     //}
 
     > .inner {
-      @extend .row, .row--centered;
+      //@extend .row, .row--centered;
     }
 
     @include media(medium-up) {
@@ -152,9 +152,9 @@
 
   &__body {
     margin-top: $global-spacing;
-    > .inner {
-      @extend .row-fold, .row--centered;
-    }
+    //> .inner {
+      //@extend .row-fold, .row--centered;
+    //}
 
     > *:last-child {
       margin-bottom: 0;
@@ -328,7 +328,7 @@
 
 .stats-map {
   .inner {
-    @extend .row-fold, .row-fold--centered;
+    //@extend .row-fold, .row-fold--centered;
   }
 }
 
