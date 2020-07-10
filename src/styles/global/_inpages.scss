@@ -6,22 +6,24 @@
   &__header {
     position: relative;
     color: $base-font-color;
-    padding: ($global-spacing * 2) 0;
-    @include media(small-up) {
-      padding: ($global-spacing * 2) 0;
-    }
+    padding-top: $global-spacing-2;
+    //padding-bottom: $global-spacing-2;
+    //@include media(small-up) {
+      //padding: ($global-spacing * 2) 0;
+    //}
 
     > .inner {
       @extend .row, .row--centered;
     }
 
     @include media(medium-up) {
-      padding: ($global-spacing * 4) 0;
+      padding-top: $global-spacing-5;
+      //padding-bottom: $global-spacing-5;
     }
 
-    @include media(large-up) {
-      padding: ($global-spacing * 4) 0;
-    }
+    //@include media(large-up) {
+      //padding: ($global-spacing * 3) 0;
+    //}
   }
 
   &__nav {

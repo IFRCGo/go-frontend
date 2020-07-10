@@ -6,9 +6,9 @@
 .page--frep-form {
   background: #fff;
 
-  .inpage__header {
-    padding-bottom: 0;
-  }
+  //.inpage__header {
+    //padding-bottom: 0;
+  //}
 
   .fold__body > .form__group {
     @include form__group;
