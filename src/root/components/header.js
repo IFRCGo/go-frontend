@@ -119,10 +119,10 @@ class Header extends React.PureComponent {
                       <Link to='/reports/new'>New Field Report</Link>
                     </li>
                     <li className='drop__menu-item'>
-                      <a href='https://ee.kob4.ifrc.org/single/::Ho8bHKDr' target='_blank'>Covid-19 Indicator Report</a>
+                      <a href='https://ee.kob4.ifrc.org/single/::Ho8bHKDr' target='_blank'>Covid-19 Indicator Tracking</a>
                     </li>
                     <li className='drop__menu-item'>
-                      <a href='https://example.com' target='_blank'>Covid-19 NS Financial Form</a>
+                      <a href='https://example.com' target='_blank'>Covid-19 NS Financial Overview</a>
                     </li>                                        
                   </ul>
                 </Dropdown>
