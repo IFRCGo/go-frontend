@@ -15,8 +15,7 @@ import PastOperation from './PastOperation';
 import PopulationMap from './PopulationMap';
 import ClimateChart from './ClimateChart';
 import SocialEvents from './SocialEvents';
-import PastCrisesEvents from './PastCrisesEvents';
-import PastEpidemics from './PastEpidemics';
+import KeyClimateEvents from './KeyClimateEvents';
 import SeasonalCalendar from './SeasonalCalendar';
 import InformIndicators from './InformIndicators';
 import Translate from '#components/Translate';
@@ -101,24 +100,17 @@ class CountryOverview extends React.PureComponent {
           <ClimateChart
             className='climate-chart'
             yearlyEvents={data.climate_events}
+          />
+        </div>
+        <div className='middle-section'>
+          <KeyClimateEvents
             averageTemperature={data.avg_temperature}
             averageRainfallPrecipitation={data.avg_rainfall_precipitation}
             rainySeasonStatus={data.rainy_season_display}
           />
-        </div>
-        <div className='middle-section'>
           <SocialEvents
             className='social-events'
             data={data.social_events}
-          />
-          <PastCrisesEvents
-            conflictEventCount={data.past_crises_events_count}
-            events={data.past_crises_events}
-            className='past-crises-events'
-          />
-          <PastEpidemics
-            className='past-epidemics'
-            events={data.past_epidemics}
           />
         </div>
         <PastOperation
