@@ -102,11 +102,13 @@
   }
 
   .Select-menu, .Select-menu-outer {
-    border-radius: 0 0 $input-rounded-radius/1.5 $input-rounded-radius/1.5;
+    //border-radius: 0 0 $input-rounded-radius/1.5 $input-rounded-radius/1.5;
+    border-radius: 0;
   }
 
   .Select.is-open > .Select-control {
     border-radius: $input-rounded-radius/1.5 $input-rounded-radius/1.5 0 0;
+    border-radius: 0;
   }
 }
 
