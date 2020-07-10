@@ -84,7 +84,7 @@ function LanguageSelect(p) {
     <DropdownMenu
       label={
         <div
-          className={styles.dropdownMenuLabel}
+          className={`${styles.dropdownMenuLabel} page__meta-nav-elements`}
           title={languageOptions[currentLanguage]}
         >
           <Translate

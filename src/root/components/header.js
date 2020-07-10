@@ -100,6 +100,7 @@ function Header (props) {
               </h1>
             </div>
             <nav className='page__meta-nav' role='navigation'>
+              <LanguageSelect />
               <Link to='/about' title={strings.headerMenuResourceTooltip} className='page__meta-nav-elements'>
                 <Translate stringId="headerMenuResources" />
               </Link>
@@ -107,7 +108,6 @@ function Header (props) {
               <Link to='/reports/new' className='button button--small button--primary-bounded' title={strings.headerCreateFieldReportTooltip}>
                 <Translate stringId="headerCreateFieldReportLabel" />
               </Link>
-              <LanguageSelect />
             </nav>
           </div>
         </div>

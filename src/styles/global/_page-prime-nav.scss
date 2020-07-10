@@ -91,8 +91,10 @@
   min-width: 20rem;
 
   .Select-control {
-    border-radius: $input-rounded-radius;
-    border-color: $grey-cement;
+    border-radius: 0;
+    //border-color: $grey-cement;
+    border: none;
+    border-bottom: 1px solid $grey-cloud;
   }
 
   .Select-arrow {
@@ -100,11 +102,13 @@
   }
 
   .Select-menu, .Select-menu-outer {
-    border-radius: 0 0 $input-rounded-radius/1.5 $input-rounded-radius/1.5;
+    //border-radius: 0 0 $input-rounded-radius/1.5 $input-rounded-radius/1.5;
+    border-radius: 0;
   }
 
   .Select.is-open > .Select-control {
     border-radius: $input-rounded-radius/1.5 $input-rounded-radius/1.5 0 0;
+    border-radius: 0;
   }
 }
 

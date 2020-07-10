@@ -113,7 +113,8 @@ main {
 .page__footer {
   background: #323232;
   padding: ($global-spacing * 2) 0;
-  font-size: 0.875rem;
+  font-weight: $base-font-regular;
+  font-size: $font-size-sm;
   line-height: 1.25rem;
   color: #ffffff;
 
