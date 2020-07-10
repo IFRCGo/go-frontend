@@ -257,17 +257,26 @@
 // Dropdown for Create Report
 
 .drop__menu__field__report.drop__menu {
+  padding: 0;
+
+  .drop-trans--down.drop__content {
+    transform: 0;
+  }
 
   .drop__menu-item {
+    padding: $global-spacing/2;
     font-weight: $base-font-medium;
     font-size: $font-size-xs;
 
     &:hover, &:focus {
       background-color: $grey-titanium;
+
+      a {
+        opacity: 1;
+      }
     }
   }  
 } 
-
 
 .drop__toggle--field-report-new {
   font-weight: $base-font-semi-bold;
