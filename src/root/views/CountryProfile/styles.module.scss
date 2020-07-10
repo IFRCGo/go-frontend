@@ -8,6 +8,46 @@
   overflow-x: auto;
   padding: 2rem;
 
+  .key-events-section {
+    display: flex;
+
+    .key-climate-events {
+      padding: 14px 10px;
+      flex-basis: 0;
+      flex-grow: 1;
+
+      .heading {
+        padding: 16px 10px;
+        margin: 0;
+        margin-bottom: 24px;
+        border-bottom: 1px solid rgba(0, 0, 0, .1);
+        text-transform: uppercase;
+      }
+
+      .content {
+        .key-event-output {
+          display: table-row;
+
+          .label {
+            display: table-cell;
+            padding: 6px 10px;
+          }
+
+          .value {
+            display: table-cell;
+            padding: 6px 10px;
+            font-weight: $base-font-bold;
+          }
+        }
+      }
+    }
+
+    .social-events {
+      flex-basis: 0;
+      flex-grow: 1;
+    }
+  }
+
   :global {
     .top-section {
       display: flex;
@@ -196,7 +236,7 @@
 
       .tc-value {
         padding: 2px 6px;
-        font-weight: bold;
+        font-weight: $base-font-bold;
       }
 
       .tc-label {
@@ -214,7 +254,7 @@
         align-items: baseline;
         padding: 0 10px;
         font-size: 18px;
-        font-weight: bold;
+        font-weight: $base-font-bold;
         color: $primary-color;
 
         .event-country-name {
@@ -292,7 +332,7 @@
 
               .tc-value {
                 display: table-cell;
-                font-weight: bold;
+                font-weight: $base-font-bold;
                 padding: 4px 10px;
               }
             }

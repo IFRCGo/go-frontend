@@ -29,11 +29,11 @@ function KeyClimateEvents(p) {
   } = p;
 
   return (
-    <div className='tc-key-info'>
-      <h4 className='tc-heading'>
+    <div className={styles.keyClimateEvents}>
+      <h3 className={styles.heading}>
         <Translate stringId='climateChartKeyClimateHeading' />
-      </h4>
-      <div className='tc-content'>
+      </h3>
+      <div className={styles.content}>
         <KeyEventOutput
           label='Avg. rainfall precipitation'
           value={averageRainfallPrecipitation}

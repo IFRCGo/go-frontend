@@ -102,14 +102,14 @@ class CountryOverview extends React.PureComponent {
             yearlyEvents={data.climate_events}
           />
         </div>
-        <div className='middle-section'>
+        <div className={styles.keyEventsSection}>
           <KeyClimateEvents
             averageTemperature={data.avg_temperature}
             averageRainfallPrecipitation={data.avg_rainfall_precipitation}
             rainySeasonStatus={data.rainy_season_display}
           />
           <SocialEvents
-            className='social-events'
+            className={styles.socialEvents}
             data={data.social_events}
           />
         </div>
