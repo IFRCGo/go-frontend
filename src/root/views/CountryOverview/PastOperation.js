@@ -14,6 +14,7 @@ import {
 
 import { countryNameMapById } from '#utils/field-report-constants';
 import Translate from '#components/Translate';
+import languageContext from '#root/languageContext';
 
 
 const DetailElement = ({
@@ -186,4 +187,5 @@ class PastOperations extends React.PureComponent {
   }
 }
 
+PastOperations.contextType = languageContext;
 export default PastOperations;
