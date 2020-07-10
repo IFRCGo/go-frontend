@@ -108,9 +108,9 @@ class Header extends React.PureComponent {
                 <UserMenu />
                 <Dropdown
                   id='drop__header__field__report'
-                  triggerClassName='drop__toggle--caret button button--primary-bounded button--small'
+                  triggerClassName='drop__toggle--caret button button--primary-bounded button--small drop__toggle--field-report-new'
                   triggerActiveClassName='active'
-                  triggerText='Create Report'
+                  triggerText='Create a Report'
                   triggerElement='a'
                   direction='down'
                   alignment='center' >

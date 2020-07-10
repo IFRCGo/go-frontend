@@ -98,20 +98,6 @@ main {
   }
 }
 
-// Dropdown for Create Report
-
-.drop__menu__field__report.drop__menu {
-
-  .drop__menu-item {
-    font-weight: $base-font-medium;
-    font-size: $font-size-xs;
-
-    &:hover, &:focus {
-      background-color: $grey-titanium;
-    }
-  }  
-} 
-
 /* Body
    ========================================================================== */
 
