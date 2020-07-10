@@ -86,11 +86,13 @@
       display: flex;
 
       .population-map {
-        flex-basis: 45%;
+        flex-basis: 0;
+        flex-grow: 1;
       }
 
       .climate-chart {
-        flex-basis: 55%;
+        flex-basis: 0;
+        flex-grow: 1;
       }
     }
 
@@ -304,9 +306,12 @@
         align-items: flex-start;
 
         .tc-charts {
-          flex-basis: 70%;
-          .precipitation-chart,
+          flex-grow: 1;
           .temperature-chart {
+            height: 300px;
+          }
+
+          .precipitation-chart {
             height: 200px;
           }
         }
