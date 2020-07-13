@@ -191,18 +191,18 @@ td.right-align, th.right-align{
   margin-bottom: $global-spacing * 2;
   width: 100%;
 
-  th, td  {
-    vertical-align: top;
-    text-align: left;
-  }
+  //th, td  {
+    //vertical-align: top;
+    //text-align: left;
+  //}
 
-  th {
-    padding: $global-spacing ($global-spacing / 2);
-  }
+  //th {
+    //padding: $global-spacing ($global-spacing / 2);
+  //}
 
   td {
-    padding: ($global-spacing * 2) ($global-spacing / 2);
-    font-weight: $base-font-regular;
+    //padding: ($global-spacing * 2) ($global-spacing / 2);
+    //font-weight: $base-font-regular;
     &:nth-child(3) {
       width: 50%;
       @include media(large-up){
@@ -214,22 +214,22 @@ td.right-align, th.right-align{
     };
   }
 
-  th:first-child,
-  td:first-child {
-    padding-inline-start: $global-spacing;
-  }
+  //th:first-child,
+  //td:first-child {
+    //padding-inline-start: $global-spacing;
+  //}
 
-  th:last-child,
-  td:last-child {
-    padding-inline-end: $global-spacing;
-  }
+  //th:last-child,
+  //td:last-child {
+    //padding-inline-end: $global-spacing;
+  //}
 
   tbody tr {
     border-inline-start: 4px solid transparent;
 
-    &:nth-child(odd) {
-      box-shadow: 0 0 2px 0 rgba($base-color, 0.24);
-    }
+    //&:nth-child(odd) {
+      //box-shadow: 0 0 2px 0 rgba($base-color, 0.24);
+    //}
 
     &:nth-child(even) {
       height: $global-spacing;
@@ -321,7 +321,6 @@ td.right-align, th.right-align{
   thead th {
     font-weight: $base-font-semi-bold;
     box-shadow: none;
-
   }
 
   thead th, td {
@@ -341,6 +340,7 @@ td.right-align, th.right-align{
     .drop__toggle--caret::after {
       content: '\EA0A';
       font-size: $font-size-xxs;
+      vertical-align: baseline;
     }
   }
 

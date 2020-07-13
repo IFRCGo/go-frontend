@@ -126,7 +126,7 @@
 .fold__header__block {
   //@extend .clearfix;
   border-bottom: 1px solid #c9c3c1;
-  padding-bottom: $global-spacing;
+  padding-bottom: $spacing;
   display: flex;
   @include row;
 }
@@ -144,24 +144,33 @@
 
 .fold__title__linkwrap {  
   font-size: $font-size-sm;
-  color: $primary-color;
+  //color: $primary-color;
   @include col;
   margin-left: auto;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
 
   @include media(medium-up) {
     text-align: right !important;
     //@include column(4/12);
   }
+
+  > span {
+    font-size: $font-size-xxs;
+    font-weight: $base-font-bold;
+    margin-inline-start: $spacing-half;
+  }
 }
 
 .fold__title__link {
-  color: $primary-color;
-  font-weight: $base-font-semi-bold;
+  //color: $primary-color;
+  font-weight: $base-font-medium;
+  text-decoration: underline;
 
   > span {
-    font-size: $font-size-xs;
-    font-weight: $base-font-semi-bold;
+    font-size: $font-size-xxs;
+    font-weight: $base-font-medium;
   }
 }
   

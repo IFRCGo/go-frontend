@@ -23,9 +23,9 @@ class Home extends React.Component {
                 <h1 className='inpage__title inpage__title--home'>
                   <Translate stringId='homeHeading' />
                 </h1>
-                <p className='inpage__introduction'>
-                  <Translate stringId='homeDescription' />
-                </p>
+                <div className='inpage__introduction container-xs'>
+                  <p><Translate stringId='homeDescription' /></p>
+                </div>
               </div>
               <PresentationDash />
             </div>

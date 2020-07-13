@@ -15,16 +15,16 @@
   //}
 
   .inpage__headline {
-    @include column(12/12);
+    //@include column(12/12);
     text-align: center;
   }
 
   .inpage__introduction {
-    @include column(8/12);
+    //@include column(8/12);
     //text-align: center;
-    float: none;  
-    margin-inline-start: auto;
-    margin-inline-end: auto !important;
+    //float: none;  
+    //margin-inline-start: auto;
+    //margin-inline-end: auto !important;
   }
 
   .inpage__introduction__bigger {
@@ -94,7 +94,7 @@
 }
 
 .stats-overall {
-  padding-bottom: $global-spacing-2;
+  padding-bottom: $spacing-half;
 }
 
 .sumstats {

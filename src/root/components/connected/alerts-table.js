@@ -189,7 +189,7 @@ class AlertsTable extends SFPComponent {
           />
         ) : null}
         <DisplayTable
-          className='responsive-table alerts-table'
+          className='responsive-table alerts-table table--border-bottom'
           headings={headings}
           rows={rows}
           pageCount={data.count / this.state.table.limit}

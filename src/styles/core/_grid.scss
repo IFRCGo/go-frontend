@@ -10,6 +10,7 @@
 //  - All parameters have defaults
 //  - Parameters:
 //    - $max-width {number} : Maximum width
+//    - $centered {boolean} : Horizontally centers container
 //    - $grid-gutter {number} : Gutter or horizontal padding
 @mixin container ($max-width: $media-large, $centered: true, $grid-gutter: $grid-gutter) {
   @if $max-width {
@@ -29,7 +30,7 @@
 
 // Container: Default / Large
 .container-lg {
-  @include container($media-large, $grid-gutter: $grid-gutter);
+  @include container($max-width: $media-large, $grid-gutter: $grid-gutter);
 
   @include media(medium) {
     padding-left: $spacing-4;
@@ -40,11 +41,21 @@
 // Container: Medium
 .container-mid {
   @include container($media-medium);
+
+  @include media(medium) {
+    padding-left: $spacing-4;
+    padding-right: $spacing-4;
+  }
 }
 
 // Container: Small
 .container-sm {
   @include container($media-small);
+
+  @include media(medium) {
+    padding-left: $spacing-4;
+    padding-right: $spacing-4;
+  }
 }
 
 // Container: Extra small
@@ -140,15 +151,15 @@
   @include col;
 }
 
-// Column: Small
-//.col-sm {
-  //@include col($grid-gutter: $grid-gutter-sm);
-//}
+// Column: Small gutters
+.col-sm {
+  @include col($grid-gutter: $grid-gutter-sm);
+}
 
-// Column: Large
-//.col-lg {
-  //@include col($grid-gutter: $grid-gutter-lg);
-//}
+// Column: Large gutters
+.col-lg {
+  @include col($grid-gutter: $grid-gutter-lg);
+}
 
 // ---------------------------------------------
 // Column: Classes

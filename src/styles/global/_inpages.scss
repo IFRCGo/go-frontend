@@ -6,7 +6,7 @@
   &__header {
     position: relative;
     color: $base-font-color;
-    padding-top: $global-spacing-2;
+    padding-top: $spacing-3;
     //padding-bottom: $global-spacing-2;
     //@include media(small-up) {
       //padding: ($global-spacing * 2) 0;
@@ -17,7 +17,7 @@
     }
 
     @include media(medium-up) {
-      padding-top: $global-spacing-5;
+      padding-top: $spacing-5;
       //padding-bottom: $global-spacing-5;
     }
 
@@ -31,16 +31,16 @@
   }
 
   &__headline {
-    @include column(12/12);
-    margin-bottom: $global-spacing;
+    //@include column(12/12);
+    margin-bottom: $spacing-2;
 
-    > *:last-child {
-      margin-bottom: 0;
-    }
+    //> *:last-child {
+      //margin-bottom: 0;
+    //}
 
-    @include media(medium-up) {
-      @include column(12/12);
-    }
+    //@include media(medium-up) {
+      //@include column(12/12);
+    //}
   }
 
   &__headline-content {
@@ -104,47 +104,48 @@
   }
 
   &__introduction {
-    color: $base-font-color;
+    margin-bottom: $spacing-2;
+    //color: $base-font-color;
 
-    > *:last-child {
-      margin-bottom: 0;
-    }
-/*
-    @include media(small-up) {
-      @include column(10/12)
-      font-size: 1.5rem;
-      line-height: 2.25rem;
-    }*/
+    //> *:last-child {
+      //margin-bottom: 0;
+    //}
+
+    //@include media(small-up) {
+      //@include column(10/12)
+      //font-size: 1.5rem;
+      //line-height: 2.25rem;
+    //}
 
     @include media(medium-up) {
-      @include column(10/12);
-      float: none;
+      //@include column(10/12);
+      //float: none;
       text-align: center;
-      margin-left: auto;
-      margin-right: auto !important;
+      //margin-left: auto;
+      //margin-right: auto !important;
     }
 
-    @include media(large-up) {
-      @include column(5.6/12);
-      float: none;
-      text-align: center;
-      margin-left: auto;
-      margin-right: auto !important;
-    }
+    //@include media(large-up) {
+      //@include column(5.6/12);
+      //float: none;
+      //text-align: center;
+      //margin-left: auto;
+      //margin-right: auto !important;
+    //}
   }
 
   &__introduction--small {
-    @include column(12/12);
-    color: rgba($base-font-color, 0.64);
+    //@include column(12/12);
+    //color: rgba($base-font-color, 0.64);
     font-size: 1.25rem;
     line-height: 2rem;
 
-    > *:last-child {
-      margin-bottom: 0;
-    }
+    //> *:last-child {
+      //margin-bottom: 0;
+    //}
 
     @include media(medium-up) {
-      @include column(7/12);
+      //@include column(7/12);
       font-size: 1.5rem;
       line-height: 2.25rem;
     }
@@ -156,9 +157,9 @@
       //@extend .row-fold, .row--centered;
     //}
 
-    > *:last-child {
-      margin-bottom: 0;
-    }
+    //> *:last-child {
+      //margin-bottom: 0;
+    //}
   }
 }
 
