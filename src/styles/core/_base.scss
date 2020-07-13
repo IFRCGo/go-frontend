@@ -144,6 +144,12 @@ a.link--primary {
   }
 }
 
+.link {
+  color: $primary-color;
+  font-weight: $base-font-medium;
+  font-size: $font-size-sm;
+}
+
 a.link--secondary {
   color: $base-color;
   font-weight: 400;

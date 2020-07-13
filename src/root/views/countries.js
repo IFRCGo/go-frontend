@@ -620,7 +620,7 @@ class AdminArea extends SFPComponent {
           <title>{title}</title>
         </Helmet>
         <BreadCrumb crumbs={ crumbs } />
-        <header className='inpage__header'>
+        <header className='inpage__header container-lg'>
           <div className='inner'>
             <h1 className='inpage__title'>
               {data.name}
@@ -630,10 +630,10 @@ class AdminArea extends SFPComponent {
                 </span>
               ) : null}
             </h1>
-            <div className='inpage__header-actions'>
+            <div className='inpage__header-actions text-center'>
               <a
                 href={url.resolve(api, `api/country/${data.id}/change/`)}
-                className='button button--primary-bounded'
+                className='link'
               >
                 <Translate stringId='countryEditCountry' />
               </a>
