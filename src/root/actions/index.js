@@ -138,10 +138,13 @@ export const getCountryOverview = (countryIso) => {
 };
 
 export const GET_COUNTRIES = 'GET_COUNTRIES';
-export function getCountries (region) {
+export function getCountries (region, mini) {
   let filters = {limit: 1000};
   if (region) {
     filters.region = region;
+  }
+  if (mini) {
+    filters.mini = true;
   }
   const f = buildAPIQS(filters);
   return fetchJSON(`api/v2/country/?${f}`, GET_COUNTRIES);
