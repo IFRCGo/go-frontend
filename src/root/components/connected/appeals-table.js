@@ -180,12 +180,12 @@ class AppealsTable extends SFPComponent {
           id: 'name',
           label: <SortHeader
             id='name'
-            title={strings.appealsTableName}
+            title={strings.appealsTableOperation}
             sort={this.state.table.sort}
             isActive={this.state.table.sort.field === 'name'}
             onClick={this.handleSortChange.bind(this, 'table', 'name')} />
         },
-        { id: 'event', label: strings.appealsTableEmergency },
+        // { id: 'event', label: strings.appealsTableEmergency },
         {
           id: 'dtype',
           label: <FilterHeader
@@ -222,11 +222,14 @@ class AppealsTable extends SFPComponent {
       const rows = data.results.map(o => {
         const fundedPercent = (parseInt(o.amount_funded) / parseInt(o.amount_requested)) * 100;
         const fundedPercentRounded = Math.round(fundedPercent * 100) / 100;
+        const name = o.event ? (<Link to={`/emergencies/${o.event}`} className='link--table' title={strings.appealsTableViewEmergency}>
+            {o.name}
+          </Link>): o.name;
         return {
           id: o.id,
           date: DateTime.fromISO(o.start_date).toISODate(),
           code: o.code,
-          name: o.name,
+          name: name,
           event: o.event ? <Link to={`/emergencies/${o.event}`} className='link--table' title={strings.appealsTableViewEmergency}>Link</Link> : nope,
           dtype: get(getDtypeMeta(o.dtype.id), 'label', nope),
           requestAmount: {
