@@ -1,3 +1,7 @@
+### Release 4.3.10
+
+Hotfix release to add links to KoBo forms in Dropdown: https://github.com/IFRCGo/go-frontend/issues/1363
+
 ### Release 4.3.9
 
 Frontend:
