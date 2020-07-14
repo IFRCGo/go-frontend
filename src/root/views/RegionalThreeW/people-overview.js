@@ -23,7 +23,7 @@ function PeopleOverview (props) {
 
   return (
     <div className={_cs(className, 'people-overview box__global')}>
-      <h4 className='tc-heading'>
+      <h4 className='tc-heading margin-reset'>
         <Translate stringId='peopleOverviewTotalPeople'/>
       </h4 >
       <div className='tc-content'>

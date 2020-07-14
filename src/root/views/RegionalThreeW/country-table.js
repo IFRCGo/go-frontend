@@ -121,7 +121,7 @@ function CountryTable (p) {
           { pending ? (
             <BlockLoading />
           ) : (
-            <table className='tc-table'>
+            <table className='tc-table table table--border-bottom'>
               <thead>
                 <tr>
                   { tableHeaders.map(h => (

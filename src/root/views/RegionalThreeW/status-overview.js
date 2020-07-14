@@ -28,7 +28,7 @@ function StatusOverview (p) {
 
   return (
     <div className={_cs('status-activity box__global', className)}>
-      <h4 className='tc-heading'>
+      <h4 className='tc-heading margin-reset'>
         <Translate stringId='statusOverviewTotalActivityStatus'/>
       </h4>
       <div className='tc-content'>

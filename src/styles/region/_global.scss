@@ -143,22 +143,27 @@
       }
     }
 
-    .tc-value {
+    .box__global .tc-value {
       font-size: $font-size-heading-widget;
       //color: $secondary-color;
       font-weight: $base-font-semi-bold;
     }
 
     .regional-threew-overview {
-      display: flex;
-      padding: 10px;
+      //display: flex;
+      padding: $spacing-2 0 0 0;
 
-      >* {
-        flex-basis: 0;
-        flex-grow: 1;
-        padding: 10px 20px;
-        margin: 10px;
+      > .col-lg {
+        //flex-basis: 0;
+        //flex-grow: 1;
+        display: flex;
         //background-color: $grey-fog;
+
+        > div {
+          width: 100%;
+          padding: $spacing-half $spacing;
+          margin-bottom: $spacing;
+        }
       }
 
       .status-activity {
@@ -176,9 +181,11 @@
             flex-direction: column;
             //align-items: center;
             justify-content: center;
+            flex-shrink: 0;
 
             .tc-label {
               font-weight: $base-font-regular;
+              letter-spacing: $letter-spacing-sm;
               //text-align: center;
               //text-transform: uppercase;
             }
@@ -515,12 +522,15 @@
           padding: 10px 0;
 
           .country-table {
-            margin: 10px;
+            //margin: 10px;
+            border-bottom: 1px solid $grey-titanium;
 
             .tc-header-button {
               display: flex;
               width: 100%;
-              background-color: $grey-fog;
+              color: $grey-soot;
+              background-color: $grey-mist;
+              font-weight: $base-font-semi-bold;
               border: 0;
               padding: 10px;
               text-align: left;
@@ -555,22 +565,22 @@
               .tc-table {
                 width: 100%;
 
-                th {
-                  padding: 16px 10px;
-                  text-align: left;
-                }
+                //th {
+                  //padding: 16px 10px;
+                  //text-align: left;
+                //}
 
-                td {
-                  padding: 10px;
-                }
+                //td {
+                  //padding: 10px;
+                //}
 
-                tbody {
-                  tr {
-                    &:nth-child(odd) {
-                      background-color: $grey-mist;
-                    }
-                  }
-                }
+                //tbody {
+                  //tr {
+                    //&:nth-child(odd) {
+                      //background-color: $grey-mist;
+                    //}
+                  //}
+                //}
               }
             }
 
