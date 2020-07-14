@@ -151,7 +151,7 @@
     flex-direction: column;
     width: 100%;
     position: relative;
-    margin-bottom: $global-spacing;
+    margin-bottom: $spacing-2;
 
     @include media(medium) {
       border: none;

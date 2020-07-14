@@ -292,3 +292,11 @@ h2.map__container__title {
 .pl-small {
   padding-inline-start: 1.5rem;
 }
+
+.inner--field-reports-emergencies {
+  > .fold {
+    .fold__title {
+      margin-bottom: 0;
+    }
+  }
+}

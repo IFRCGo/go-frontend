@@ -42,7 +42,7 @@ class Emergencies extends React.Component {
                 showRecent={true}
               />
             </div>
-            <div className='inner'>
+            <div className='inner inner--field-reports-emergencies'>
               <FieldReportsTable
                 title={strings.fieldReportsTableTitle}
                 viewAll={'/reports/all'}

@@ -31,9 +31,12 @@ class EmergenciesDash extends React.Component {
             <ul className='emergencies__list emergenciest__list--static'>
               {emerg.map(o => (
                 <li key={o.id}
-                  className='emergencies__item clearfix'>
-                  <span className='key'>{o.name} ({o.items.length})</span>
-                  <span className='value'><Progress value={o.items.length} max={max}><span>100</span></Progress></span>
+                  className='emergencies__item'>
+                  <span className='key'>{o.name}</span>
+                  <span className='value'>
+                    <Progress value={o.items.length} max={max}><span>100</span></Progress>
+                    <span className='key__value__emergency'>{o.items.length}</span>
+                  </span>
                 </li>
               ))}
             </ul>
@@ -126,8 +129,8 @@ class EmergenciesDash extends React.Component {
                     </h1>
                     <div className='stats-chart'>
                       <div className='row flex-mid stats-chart-row'>
-                        {this.renderByMonth()}
                         {this.renderEmergencies()}
+                        {this.renderByMonth()}
                       </div>
                     </div>
                   </div>
