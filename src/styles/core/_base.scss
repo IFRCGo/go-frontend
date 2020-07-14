@@ -150,6 +150,11 @@ a.link--primary {
   font-size: $font-size-sm;
 }
 
+.link--underline {
+  text-decoration: underline;
+  font-weight: $base-font-medium;
+}
+
 a.link--secondary {
   color: $base-color;
   font-weight: 400;

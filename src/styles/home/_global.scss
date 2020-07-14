@@ -151,7 +151,7 @@
     flex-direction: column;
     width: 100%;
     position: relative;
-    margin-bottom: $global-spacing;
+    margin-bottom: $spacing-2;
 
     @include media(medium) {
       border: none;
@@ -606,16 +606,16 @@
   //@include column(12/12);
   margin: ($global-spacing) 0;
   .chart {
-    margin-bottom: 0;
+    //margin-bottom: 0;
     //@include column(12/12);
 
-    &:last-child {
-      margin-bottom: 0;
-    }
+    //&:last-child {
+      //margin-bottom: 0;
+    //}
 
-    @include media(medium-up) {
+    //@include media(medium-up) {
       //@include column(6/12, $cycle: 2);
-    }
+    //}
 
     //figcaption {
     //}
@@ -623,6 +623,11 @@
 }
 
 .chart {
+  width: 100%;
+  background-color: #fff;
+  box-shadow: $base-box-shadow;
+  border-radius: $base-border-radius;
+
   figcaption {
     border-bottom: 1px solid $base-border-color;
     font-weight: $base-font-bold;

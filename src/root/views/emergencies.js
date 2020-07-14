@@ -33,7 +33,7 @@ class Emergencies extends React.Component {
         <section className='inpage'>
           <BreadCrumb crumbs={[{link: '/emergencies', name: 'Emergencies'}, {link: '/', name: strings.breadCrumbHome }]} />
           <EmergenciesDash />
-          <div className='inpage__body row'>
+          <div className='inpage__body'>
             <div className='inner'>
               <EmergenciesTable
                 title={strings.emergenciesTableTitle}
@@ -42,7 +42,7 @@ class Emergencies extends React.Component {
                 showRecent={true}
               />
             </div>
-            <div className='inner'>
+            <div className='inner inner--field-reports-emergencies'>
               <FieldReportsTable
                 title={strings.fieldReportsTableTitle}
                 viewAll={'/reports/all'}

@@ -39,28 +39,57 @@
   }
 
  .emergencies__item {
-    display: flex;
+    @include flex;
+    @include row;
     align-items: center;
     cursor: pointer;
     font-size: 0.875rem;
-    line-height: 1rem;
-    height: 2rem;
+    line-height: 2.5rem;
+    //height: 2rem;
+
     &:last-child {
       margin-bottom: 0;
     }
     .key {
-      min-width: 6rem;
-      width: 45%;
-      margin-inline-end: $global-spacing;
+      color: $grey-soot;
+      font-size: $font-size-xs;
+      font-weight: $base-font-medium;
+      position: relative;
+      display: block;
+      text-align: inline-end;
+      //min-width: 6rem;
+      @include col(33.33%);
+      //width: 45%;
+      //margin-inline-end: $global-spacing;
+
+      &:after {
+        content: '';
+        width: 1px;
+        height: 100%;
+        background-color: $base-border-color;
+        position: absolute;
+        right: 0;
+        top: 0;
+        display: block;
+      }
     }
     .value {
+      @include col(66.66%);
       flex-grow: 1;
+      display: flex;
+      align-items: baseline;
       .progress-bar {
         background-color: transparent;
+        margin-inline-end: $spacing;
       }
       .progress-bar__value {
         background-color: $primary-color;
+        height: 12px;
       }
+    }
+
+    .key__value__emergency {
+      min-width: 20px;
     }
   }
 }
