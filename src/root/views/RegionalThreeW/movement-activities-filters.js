@@ -58,7 +58,7 @@ function MovementActivitiesFilters (p) {
   const { strings } = useContext(LanguageContext);
   return (
     <Faram
-      className={_cs('regional-movement-activity-filter', className)}
+      className={_cs('regional-movement-activity-filter row-sm', className)}
       schema={filterSchema}
       value={value}
       onChange={onChange}

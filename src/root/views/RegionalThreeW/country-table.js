@@ -5,6 +5,8 @@ import _cs from 'classnames';
 import {
   MdChevronRight,
   MdExpandLess,
+  MdArrowDropDown,
+  MdArrowDropUp
 } from 'react-icons/md';
 
 import BlockLoading from '#components/block-loading';
@@ -111,9 +113,9 @@ function CountryTable (p) {
           </div>
         </div>
         { isActive ? (
-          <MdExpandLess className='tc-icon' />
+          <MdArrowDropUp className='tc-icon' />
         ) : (
-          <MdChevronRight className='tc-icon' />
+          <MdArrowDropDown className='tc-icon' />
         )}
       </button>
       { isActive && (

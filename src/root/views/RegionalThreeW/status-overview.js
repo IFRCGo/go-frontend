@@ -44,7 +44,7 @@ function StatusOverview (p) {
           </div>
         </div>
         <div className='tc-chart-container'>
-          <ResponsiveContainer>
+          <ResponsiveContainer width='100%' height={80}>
             <PieChart>
               <Pie
                 data={data}

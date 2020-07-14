@@ -152,13 +152,22 @@
 }
 
 // Column: Small gutters
-.col-sm {
+
+@mixin col-sm {
   @include col($grid-gutter: $grid-gutter-sm);
 }
 
+.col-sm {
+  @include col-sm;
+}
+
 // Column: Large gutters
-.col-lg {
+@mixin col-lg {
   @include col($grid-gutter: $grid-gutter-lg);
+}
+
+.col-lg {
+  @include col-lg;
 }
 
 // ---------------------------------------------

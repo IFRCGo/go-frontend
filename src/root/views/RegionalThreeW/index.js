@@ -249,8 +249,8 @@ function RegionalThreeW (p) {
       <div className='regional-movement-activities'>
         { movementActivityListPending && <BlockLoading /> }
         <div className='tc-header'>
-          <div className='tc-top'>
-            <h2 className='fold__title'>
+          <div className='tc-top fold__header__block'>
+            <h2 className='fold__title margin-reset'>
               <Translate stringId='regional3WMovementActivity'/>
             </h2>
             <div className='tc-actions'>
@@ -293,9 +293,11 @@ function RegionalThreeW (p) {
       </div>
       <div className='regional-ns-activities'>
         <div className='tc-header'>
-          <h2 className='fold__title'>
-            <Translate stringId='regional3WNationalActivity'/>
-          </h2>
+          <div className='fold__header__block'>
+            <h2 className='fold__title margin-reset'>
+              <Translate stringId='regional3WNationalActivity'/>
+            </h2>
+          </div>
           <NSActivitiesFilters
             value={nsActivityFilters}
             onChange={setNSActivityFilters}

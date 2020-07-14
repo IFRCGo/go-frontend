@@ -3,6 +3,10 @@
    ========================================================================== */
 
 .page--region {
+  .page__body {
+    margin-bottom: 0
+  }
+
   //.inpage__body {
     //> * {
       //margin-bottom: $global-spacing * 2;
@@ -80,6 +84,7 @@
     //padding: 20px;
 
     .Select-menu-outer {
+      font-size: $font-size-xs;
       z-index: 11;
       left: 5px;
       width: calc(100% - 10px);
@@ -96,7 +101,7 @@
           border-radius: 0;
           background-color: $grey-mist;
           border-bottom: 1px solid $primary-color;
-          font-size: $font-size-sm;
+          font-size: $font-size-xs;
         }
 
         .Select-placeholder {
@@ -193,7 +198,7 @@
 
           .tc-chart-container {
             flex-grow: 1;
-            height: 120px;
+            //height: 120px;
           }
         }
       }
@@ -217,15 +222,17 @@
         .targeted-people {
           display: flex;
           justify-content: flex-end;
+          align-items: baseline;
 
           .tc-label {
             padding: 3px 5px;
             text-transform: uppercase;
+            font-size: $font-size-xxs;
           }
 
           .targeted-people-count {
             padding: 3px 5px;
-            font-weight: $base-font-semi-bold;
+            font-weight: $base-font-medium;
             color: $secondary-color;
           }
         }
@@ -263,10 +270,12 @@
             //font-weight: $base-font-bold;
           //}
 
-          //.tc-label {
+          .tc-label {
             //text-align: center;
             //text-transform: uppercase;
-          //}
+            font-weight: $base-font-regular;
+            letter-spacing: $letter-spacing-sm;
+          }
         }
       }
     }
@@ -287,7 +296,7 @@
 
       >.tc-header {
         margin-top: 5rem;
-        padding: 0 10px;
+        //padding: 0 10px;
 
         .tc-top {
           display: flex;
@@ -310,6 +319,7 @@
         .regional-movement-activity-filter {
           display: flex;
           align-items: flex-start;
+          padding: $spacing 0;
 
           >* {
             flex-basis: 0;
@@ -331,12 +341,12 @@
 
       >.tc-content {
         .regional-threew-map-wrapper {
-          padding: 20px;
+          //padding: 20px;
           display: flex;
 
           $height-map: 500px;
-          $width-country-details: 360px;
-          $width-popup: 360px;
+          $width-country-details: 295px;
+          $width-popup: 295px;
           $height-popup: 240px;
 
           .regional-threew-map {
@@ -350,12 +360,16 @@
               overflow: auto;
               display: flex;
               flex-direction: column;
+              box-shadow: $base-box-shadow;
 
               >.tc-heading {
+                color: $primary-color;
+                text-transform: uppercase;
+                font-weight: $base-font-medium;
+                font-size: $base-font-size;
                 flex-shrink: 0;
                 padding: 3px 6px;
                 margin: 0;
-                color: $primary-color;
 
                 a {
                   color: inherit;
@@ -365,7 +379,7 @@
 
                 .tc-icon {
                   color: inherit;
-                  font-size: $font-size-xxl;
+                  //font-size: $font-size-xxl;
                   margin-inline-start: 3px;
                 }
               }
@@ -383,6 +397,7 @@
 
                   .tc-text-output {
                     padding: 0 5px;
+                    flex: 1;
 
                     .tc-label {
                       padding: 3px;
@@ -434,7 +449,7 @@
 
                     .tc-heading {
                       margin: 0;
-                      font-size: 0.8rem;
+                      font-size: $font-size-sm;
                       padding: 0 3px;
                     }
 
@@ -460,14 +475,21 @@
           }
 
           .supporting-ns-list {
-            height: $height-map;
+            box-shadow: -1px 2px 6px 1px $base-alpha-color;
+            height: calc(#{$height-map} - #{$spacing-4});
             flex-shrink: 0;
             overflow: auto;
             width: $width-country-details;
             display: flex;
             flex-direction: column;
+            position: relative;
+            top: $spacing-2;
+            padding: $spacing;
 
             .three-w-region-scale {
+              color: $grey-silver;
+              font-size: $font-size-xxs;
+              font-weight: $base-font-semi-bold;
               flex-shrink: 0;
               padding: 0;
               margin: 0 16px 0 10px;
@@ -480,7 +502,7 @@
             }
 
             ::-webkit-scrollbar-track {
-              background-color: #eee;
+              background-color: $grey-mist;
             }
 
             ::-webkit-scrollbar {
@@ -491,7 +513,7 @@
 
             ::-webkit-scrollbar-thumb {
               border-radius: 3px;
-              background-color: #aaa;
+              background-color: $grey-pearl;
             }
 
             .supporting-ns {
@@ -500,10 +522,14 @@
               border-bottom: 1px solid rgba(0, 0, 0, .1);
 
               .tc-label {
-                font-size: $font-size-sm;
+                color: $grey-soot;
+                font-size: $font-size-xxs;
+                text-transform: uppercase;
                 display: flex;
+                margin-bottom: $spacing-half;
 
                 .tc-name {
+                  font-weight: $base-font-semi-bold;
                   flex-grow: 1;
                   padding: 0 3px;
                   overflow: hidden;
@@ -519,7 +545,8 @@
         }
 
         .countries-threew-tables {
-          padding: 10px 0;
+          box-shadow: $base-box-shadow;
+          //padding: 10px 0;
 
           .country-table {
             //margin: 10px;
@@ -586,9 +613,9 @@
 
             &.tc-active {
               .tc-header-button {
-                .tc-label {
-                  color: $primary-color;
-                }
+                //.tc-label {
+                  //color: $primary-color;
+                //}
               }
             }
           }
@@ -598,6 +625,7 @@
 
     .regional-ns-activities {
       position: relative;
+      padding-bottom: $spacing-5;
 
       .tc-header {
         margin-top: 5rem;
@@ -612,11 +640,14 @@
       .regional-ns-activity-filter {
         display: flex;
         align-items: flex-start;
+        justify-content: flex-end;
+        margin: $spacing 0 $spacing-5;
 
         >* {
-          flex-basis: 0;
-          flex-grow: 1;
+          //flex-basis: 0;
+          //flex-grow: 1;
           flex-direction: column;
+          min-width: 200px;
 
           .tc-select-label {
             font-size: $font-size-sm;
