@@ -23,13 +23,13 @@
     position: relative;
     list-style: none;
     padding: ($global-spacing * 1) ($global-spacing * 2);
-    font-size: 120%;
+    //font-size: 120%;
     cursor: pointer;
 
     &--selected {
       background: #fff;
       border-color: $base-border-color;
-      font-weight: $base-font-bold;
+      font-weight: $base-font-semi-bold;
       color: $primary-color;
     }
 

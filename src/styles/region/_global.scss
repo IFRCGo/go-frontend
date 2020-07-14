@@ -3,15 +3,15 @@
    ========================================================================== */
 
 .page--region {
-  .inpage__body {
-    > * {
-      margin-bottom: $global-spacing * 2;
-    }
-
-    &:last-child() {
-      margin-bottom: 0;
-    }
-  }
+  //.inpage__body {
+    //> * {
+      //margin-bottom: $global-spacing * 2;
+    //}
+    //
+    //&:last-child() {
+      //margin-bottom: 0;
+    //}
+  //}
 
   //.inpage__header {
     //padding-bottom: $global-spacing;
@@ -61,7 +61,7 @@
   }
 
   .region-countries__link {
-    font-size: $font-size-xxl;
+    //font-size: $font-size-xxl;
     font-weight: $base-font-medium;
   }
   

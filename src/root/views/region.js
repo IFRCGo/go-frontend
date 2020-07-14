@@ -233,7 +233,7 @@ class AdminArea extends SFPComponent {
             ))}
           </TabList>
 
-          <div className='inpage__body row'>
+          <div className='inpage__body'>
             <div className='inner'>
               <TabPanel>
                 <TabContent>
