@@ -108,14 +108,14 @@
 }
 
 // Row: Small
-//.row-sm {
-  //@include row($grid-gutter: $grid-gutter-sm);
-//}
+.row-sm {
+  @include row($grid-gutter: $grid-gutter-sm);
+}
 
 // Row: Large
-//.row-lg {
-//  @include row($grid-gutter: $grid-gutter-lg);
-//}
+.row-lg {
+  @include row($grid-gutter: $grid-gutter-lg);
+}
 
 
 // ---------------------------------------------

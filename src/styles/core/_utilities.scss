@@ -307,7 +307,7 @@ $spacing-global: (
 
 
 
-/* Spacing Utilities: Padding
+/* Spacing Utilities: Margins
    ========================================================================== */
 
 $spacing-global: (
@@ -375,5 +375,80 @@ $spacing-global: (
 @each $name, $value in $spacing-global {
   .#{$name}, %#{$name} {
     margin: $value;
+  }
+}
+
+
+/* Spacing Utilities: Padding (IN PX)
+   ========================================================================== */
+
+$spacing: (
+  spacing: $spacing,
+  spacing-2: $spacing-2,
+  spacing-3: $spacing-3,
+  spacing-4: $spacing-4,
+  spacing-5: $spacing-5,
+  spacing-half: $spacing-half,
+);
+
+// Spacing: Vertical (IN PX)
+
+// Generates placeholders and classes for vertical spacing
+// Uses padding top and bottom
+// E.g. .spacing-v, %spacing-v, .spacing-2-v, %spacing-2-v, etc.
+
+@each $name, $value in $spacing {
+  .#{$name}-v, %#{$name}-v {
+    padding-top: $value;
+    padding-bottom: $value;
+  }
+}
+
+// Spacing: Horizontal
+
+// Generates placeholders and classes for horizontal spacing
+// Uses padding left and right
+// E.g. .spacing-h, %spacing-h, .spacing-2-h, %spacing-2-h, etc.
+
+@each $name, $value in $spacing {
+  .#{$name}-h, %#{$name}-h {
+    padding-inline-start: $value;
+    padding-inline-end: $value;
+  }
+}
+
+// Spacing: Top
+
+// Generates placeholders and classes for top spacing
+// Uses padding top
+// E.g. .spacing-t, %spacing-t, .spacing-2-t, %spacing-3-t, etc.
+
+@each $name, $value in $spacing {
+  .#{$name}-t, %#{$name}-t {
+    padding-top: $value;
+  }
+}
+
+// Spacing: Bottom
+
+// Generates placeholders and classes for top spacing
+// Uses padding bottom
+// E.g. .spacing-b, %spacing-b, .spacing-2-b, %spacing-3-b, etc.
+
+@each $name, $value in $spacing {
+  .#{$name}-b, %#{$name}-b {
+    padding-bottom: $value;
+  }
+}
+
+// Spacing
+
+// Generates placeholders and classes for spacing
+// Uses padding on all four sides
+// E.g. .spacing, %spacing, .spacing-2, %spacing-2, etc.
+
+@each $name, $value in $spacing {
+  .#{$name}, %#{$name} {
+    padding: $value;
   }
 }

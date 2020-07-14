@@ -98,14 +98,13 @@
 }
 
 .sumstats {
-  @extend .clearfix;
+  //@extend .clearfix;
   list-style: none;
   @include row;
   //width: 100%;
 
   @include media(small) {
-    display: flex;
-    flex-wrap: wrap;
+    @include flex;
     justify-content: center;
   }
 
@@ -113,11 +112,9 @@
     border-radius: $base-border-radius;
     box-shadow: $box-shadow-component;
     border: 1px solid $grey-mist;
-    justify-content: center;
-  }
-
-  @include media(medium) {
     flex-wrap: nowrap;
+    margin-left: 0;
+    margin-right: 0;
   }
 
   &__item__wrap {
@@ -316,11 +313,11 @@
   }
 
   .map-container {
-    @include column(12/12);
+    //@include column(12/12);
     margin-bottom: ($global-spacing * 2);
 
     @include media(medium-up) {
-      @include column(8.5/12);
+      //@include column(8.5/12);
       margin-bottom: 0;
     }
   }
@@ -380,8 +377,10 @@
 
     &--bottom-right {
       bottom: -3rem;
-      right: -2rem;
-      left: -2rem;
+      //right: -2rem;
+      //left: -2rem;
+      right: 0;
+      left: 0;
       @include media(small-up) {
         left: auto;
         bottom: $global-spacing;
@@ -618,17 +617,21 @@
       //@include column(6/12, $cycle: 2);
     }
 
-    figcaption {
-      border-bottom: 1px solid $base-border-color;
-      font-weight: $base-font-bold;
-      padding: $global-spacing $global-spacing ($global-spacing / 2) $global-spacing;
-    }
+    //figcaption {
+    //}
   }
 }
 
 .chart {
   figcaption {
+    border-bottom: 1px solid $base-border-color;
+    font-weight: $base-font-bold;
+    padding: $global-spacing $global-spacing ($global-spacing / 2) $global-spacing;
     margin-bottom: $global-spacing;
+
+    h2 {
+      margin-bottom: 0;
+    }
   }
 
   &__container {
