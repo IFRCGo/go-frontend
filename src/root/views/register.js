@@ -103,10 +103,21 @@ class Register extends React.Component {
 
     if (nextProps.countries.fetched) {
       this.setState({
-        nationalSocieties: nextProps.countries.data.results.map((country) => ({ 
-          value: country.society_name,
-          label: country.society_name
-        }))
+        nationalSocieties: nextProps.countries.data.results
+          .reduce(function (results, country) {
+            if (country.society_name) {
+              results.push({
+                value: country.society_name,
+                label: country.society_name
+              });
+            }
+            return results;
+          }, [])
+          .sort((a, b) => {
+            if (a.value > b.value) return 1;
+            if (a.value < b.value) return -1;
+            return 0;
+          })
       });
     }
   }
