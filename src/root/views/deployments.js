@@ -119,8 +119,10 @@ class Deployments extends SFPComponent {
     const items = data.length > 6 ? data.slice(0, 6) : data;
     return (
       <div>
-        <h2>{title}</h2>
-        <div className='emergencies__container'>
+        <figcaption>
+          <h2 className='fold__title'>{title}</h2>
+        </figcaption>
+        <div className='emergencies__container spacing-2'>
           <ul className='emergencies__list'>
             {items.map(o => (
               <li key={o.name}
@@ -146,28 +148,34 @@ class Deployments extends SFPComponent {
 
     return (
       <div>
-        <div className='header-stats'>
+        <div className='header-stats container-lg'>
           <ul className='sumstats'>
-            <li className='sumstats__item'>
-              <img className='sumstats__icon_2020' src='/assets/graphics/layout/eru-brand.svg' /> 
-              <span className='sumstats__value'>
-                {n(data.deployed)}
-              </span>
-              <Translate className='sumstats__key' stringId='deploymentsDeployedERU'/>
+            <li className='sumstats__item__wrap'>            
+              <div className='sumstats__item'>
+                <img className='sumstats__icon_2020' src='/assets/graphics/layout/eru-brand.svg' /> 
+                <span className='sumstats__value'>
+                  {n(data.deployed)}
+                </span>
+                <Translate className='sumstats__key' stringId='deploymentsDeployedERU'/>
+              </div>
             </li>
-            <li className='sumstats__item'>
-              <img className='sumstats__icon_2020' src='/assets/graphics/layout/fact-brand.svg' />
-              <span className='sumstats__value'>
-                {n(fact)}
-              </span>
-              <Translate className='sumstats__key' stringId='deploymentsDeployedRR'/>
+            <li className='sumstats__item__wrap'>
+              <div className='sumstats__item'>
+                <img className='sumstats__icon_2020' src='/assets/graphics/layout/fact-brand.svg' />
+                <span className='sumstats__value'>
+                  {n(fact)}
+                </span>
+                <Translate className='sumstats__key' stringId='deploymentsDeployedRR'/>
+              </div>
             </li>
-            <li className='sumstats__item'>
-              <img className='sumstats__icon_2020' src='/assets/graphics/layout/heops-brand.svg' />
-              <span className='sumstats__value'>
-                {n(heop)}
-              </span>
-              <Translate className='sumstats__key' stringId='deploymentsDeployedHeops'/>
+            <li className='sumstats__item__wrap'>
+              <div className='sumstats__item'>
+                <img className='sumstats__icon_2020' src='/assets/graphics/layout/heops-brand.svg' />
+                <span className='sumstats__value'>
+                  {n(heop)}
+                </span>
+                <Translate className='sumstats__key' stringId='deploymentsDeployedHeops'/>
+              </div>
             </li>
           </ul>
         </div>
@@ -179,14 +187,20 @@ class Deployments extends SFPComponent {
     const { data } = this.props.eruOwners;
     const { strings } = this.context;
     return (
-      <div className='fold'>
+      <div className=''>
         <div className='inner'>
           <div className='inpage__body-charts'>
-            <div className='chart'>
-              {this.renderHeaderCharts(data.types, strings.deploymentEruDeploymentTypes)}
+            <div className='row flex-xs'>
+              <div className='col col-6-xs spacing-v'>
+                <div className='chart box__content'>
+                  {this.renderHeaderCharts(data.types, strings.deploymentEruDeploymentTypes)}
+                </div>
+              </div>
+              <div className='col col-6-xs spacing-v'>
+                <div className='chart box__content'>
+                  {this.renderHeaderCharts(data.owners, strings.deploymentNumber)}
+                </div>
             </div>
-            <div className='chart'>
-              {this.renderHeaderCharts(data.owners, strings.deploymentNumber)}
             </div>
           </div>
         </div>
@@ -204,7 +218,7 @@ class Deployments extends SFPComponent {
 
     return (
       <section>
-        <section className={c('inpage row', {presenting: this.state.fullscreen})} id='presentation'>
+        <section className={c('inpage', {presenting: this.state.fullscreen})} id='presentation'>
           <header className='inpage__header'>
             <div className='inner'>
               <div className='inpage__headline'>
@@ -220,16 +234,16 @@ class Deployments extends SFPComponent {
               </div>
             </div>
           </header>
-          <div>
+          <div className='container-lg'>
             <DeploymentsMap data={this.props.locations} />
           </div>
-          <div className='inpage__body'>
+          <div className='inpage__body container-lg'>
             <div className='inner'>
               {this.renderCharts()}
             </div>
           </div>
         </section>
-        <div className='inpage__body row'>
+        <div className='inpage__body container-lg'>
           <div className='inner'>
             <EruTable
               limit={5}

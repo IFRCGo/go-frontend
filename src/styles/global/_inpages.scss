@@ -44,17 +44,17 @@
   }
 
   &__headline-content {
-    @include column(12/12);
+    //@include column(12/12);
     .inpage__title {
-      margin-bottom: $global-spacing * 2;
+      margin-bottom: $spacing-2;
     }
   };
 
   &__headline-actions {
-    float: left;
+    //float: left;
     margin-bottom: $global-spacing;
     @include media(medium-up) {
-      float: right;
+      //float: right;
       margin-bottom: 0;
     }
   };
@@ -152,7 +152,7 @@
   }
 
   &__body {
-    margin-top: $global-spacing;
+    margin-top: ($spacing * 1.5);
     //> .inner {
       //@extend .row-fold, .row--centered;
     //}
@@ -172,7 +172,7 @@
    ========================================================================== */
 
 .header-stats {
-  @include column(12/12);
+  //@include column(12/12);
   hr {
    opacity: 0;
    @include media(medium-up) {
@@ -328,9 +328,9 @@
 }
 
 .stats-map {
-  .inner {
+  //.inner {
     //@extend .row-fold, .row-fold--centered;
-  }
+  //}
 }
 
 .header-stats--two-col {

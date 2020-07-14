@@ -20,7 +20,7 @@ class Home extends React.Component {
           <header className='inpage__header'>
             <div className=''>
               <div className='inpage__headline'>
-                <h1 className='inpage__title inpage__title--home'>
+                <h1 className='inpage__title inpage__title--home container-lg'>
                   <Translate stringId='homeHeading' />
                 </h1>
                 <div className='inpage__introduction container-xs'>
