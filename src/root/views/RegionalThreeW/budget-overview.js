@@ -33,7 +33,7 @@ function BudgetOverview (p) {
 
   const { strings } = useContext(LanguageContext);
   return (
-    <div className={_cs(className, 'budget-overview')}>
+    <div className={_cs(className, 'budget-overview box__global')}>
       <TextOutput
         label={strings.budgetOverviewNSOngoingActivity}
         value={nsCountWithOngoingActivity}

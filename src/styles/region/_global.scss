@@ -75,9 +75,9 @@
   }
 
   .regional-threew {
-    background-color: #fff;
-    box-shadow: 1px 2px 6px 1px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    //background-color: #fff;
+    //box-shadow: 1px 2px 6px 1px rgba(0, 0, 0, 0.1);
+    //padding: 20px;
 
     .Select-menu-outer {
       z-index: 11;
@@ -143,6 +143,12 @@
       }
     }
 
+    .tc-value {
+      font-size: $font-size-heading-widget;
+      //color: $secondary-color;
+      font-weight: $base-font-semi-bold;
+    }
+
     .regional-threew-overview {
       display: flex;
       padding: 10px;
@@ -152,14 +158,14 @@
         flex-grow: 1;
         padding: 10px 20px;
         margin: 10px;
-        background-color: $grey-fog;
+        //background-color: $grey-fog;
       }
 
       .status-activity {
         .tc-heading {
           font-weight: $base-font-light;
           text-transform: uppercase;
-          font-size: $font-size-sm;
+          font-size: $font-size-xxs;
         }
 
         .tc-content {
@@ -168,18 +174,13 @@
           .total-activity {
             display: flex;
             flex-direction: column;
-            align-items: center;
+            //align-items: center;
             justify-content: center;
 
-            .tc-value {
-              font-size: 2rem;
-              color: $secondary-color;
-              font-weight: $base-font-bold;
-            }
-
             .tc-label {
-              text-align: center;
-              text-transform: uppercase;
+              font-weight: $base-font-regular;
+              //text-align: center;
+              //text-transform: uppercase;
             }
           }
 
@@ -194,16 +195,16 @@
         .tc-heading {
           font-weight: $base-font-light;
           text-transform: uppercase;
-          font-size: $font-size-sm;
+          font-size: $font-size-xxs;
         }
 
         .reached-people-count {
-          font-size: 2rem;
+          //font-size: 2rem;
           display: flex;
-          justify-content: center;
-          padding: 10px;
-          font-weight: $base-font-bold;
-          color: $secondary-color;
+          //justify-content: center;
+          //padding: 10px;
+          //font-weight: $base-font-bold;
+          //color: $secondary-color;
         }
 
         .targeted-people {
@@ -246,19 +247,19 @@
           flex-grow: 1;
           display: flex;
           flex-direction: column;
-          align-items: center;
+          //align-items: center;
           padding: 6px;
 
-          .tc-value {
-            font-size: 2rem;
-            color: $secondary-color;
-            font-weight: $base-font-bold;
-          }
+          //.tc-value {
+            //font-size: 2rem;
+            //color: $secondary-color;
+            //font-weight: $base-font-bold;
+          //}
 
-          .tc-label {
-            text-align: center;
-            text-transform: uppercase;
-          }
+          //.tc-label {
+            //text-align: center;
+            //text-transform: uppercase;
+          //}
         }
       }
     }

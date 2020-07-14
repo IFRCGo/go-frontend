@@ -27,7 +27,7 @@ function StatusOverview (p) {
   } = p;
 
   return (
-    <div className={_cs('status-activity', className)}>
+    <div className={_cs('status-activity box__global', className)}>
       <h4 className='tc-heading'>
         <Translate stringId='statusOverviewTotalActivityStatus'/>
       </h4>
