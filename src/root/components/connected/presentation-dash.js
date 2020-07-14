@@ -14,6 +14,7 @@ import {
 } from '#utils/fullscreen';
 
 import KeyFiguresHeader from '#components/common/key-figures-header';
+import HighlightedOperations from '#components/highlighted-operations';
 
 import TimelineCharts from '#components/timeline-charts';
 import AppealsTable from '#components/connected/appeals-table';
@@ -65,6 +66,7 @@ class PresentationDash extends React.Component {
           fullscreen={this.state.fullscreen}
           toggleFullscreen={this.toggleFullscreen}
         />
+        <HighlightedOperations opsType='all'/>
         <div className={c('inner', {'appeals--fullscreen': this.state.fullscreen})}>
           <AppealsTable
             showActive={true}
