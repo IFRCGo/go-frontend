@@ -185,7 +185,6 @@ class AppealsTable extends SFPComponent {
             isActive={this.state.table.sort.field === 'name'}
             onClick={this.handleSortChange.bind(this, 'table', 'name')} />
         },
-        // { id: 'event', label: strings.appealsTableEmergency },
         {
           id: 'dtype',
           label: <FilterHeader
@@ -230,7 +229,6 @@ class AppealsTable extends SFPComponent {
           date: DateTime.fromISO(o.start_date).toISODate(),
           code: o.code,
           name: name,
-          event: o.event ? <Link to={`/emergencies/${o.event}`} className='link--table' title={strings.appealsTableViewEmergency}>Link</Link> : nope,
           dtype: get(getDtypeMeta(o.dtype.id), 'label', nope),
           requestAmount: {
             value: n(o.amount_requested),
