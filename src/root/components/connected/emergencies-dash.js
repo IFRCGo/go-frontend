@@ -20,20 +20,24 @@ class EmergenciesDash extends React.Component {
     const emerg = lastMonth.data.emergenciesByType.slice(0, 6);
     const max = Math.max.apply(Math, emerg.map(o => o.items.length));
     return (
-      <div className='emergencies'>
-        <h2>
-          <Translate stringId='emergenciesDashHeading' />
-        </h2>
-        <div className='emergencies__container'>
-          <ul className='emergencies__list emergenciest__list--static'>
-            {emerg.map(o => (
-              <li key={o.id}
-                className='emergencies__item'>
-                <span className='key'>{o.name} ({o.items.length})</span>
-                <span className='value'><Progress value={o.items.length} max={max}><span>100</span></Progress></span>
-              </li>
-            ))}
-          </ul>
+      <div className='col col-6-mid spacing-v'>
+        <div className='chart emergencies'>
+          <figcaption>
+            <h2 className='fold__title'>
+              <Translate stringId='emergenciesDashHeading' />
+            </h2>
+          </figcaption>
+          <div className='emergencies__container spacing-2'>
+            <ul className='emergencies__list emergenciest__list--static'>
+              {emerg.map(o => (
+                <li key={o.id}
+                  className='emergencies__item clearfix'>
+                  <span className='key'>{o.name} ({o.items.length})</span>
+                  <span className='value'><Progress value={o.items.length} max={max}><span>100</span></Progress></span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     );
@@ -87,14 +91,16 @@ class EmergenciesDash extends React.Component {
     if (!fetched) return null;
 
     return (
-      <figure className='chart'>
-        <figcaption>
-          <Translate stringId='emergenciesDashOverLastYear' />
-        </figcaption>
-        <div className='chart__container'>
-          {this.renderChart(data, 'month')}
-        </div>
-      </figure>
+      <div className='col col-6-mid spacing-v'>
+        <figure className='chart'>
+          <figcaption>
+            <h2 className='fold__title'><Translate stringId='emergenciesDashOverLastYear' /></h2>
+          </figcaption>
+          <div className='chart__container'>
+            {this.renderChart(data, 'month')}
+          </div>
+        </figure>
+      </div>
     );
   }
 
@@ -110,17 +116,19 @@ class EmergenciesDash extends React.Component {
                 <h1 className='inpage__title'>
                   <Translate stringId='emergenciesDashLast30Days' />
                 </h1>
-                <div className='row'>
+                <div className='container-lg'>
                   <div className='inpage__headline-stats'>
                     <Stats lastMonth={lastMonth} />
                   </div>
                   <div className='inpage__headline-charts'>
+                    <h1 className='visually-hidden'>
+                      <Translate stringId='emergenciesDashOverTime'/>
+                    </h1>
                     <div className='stats-chart'>
-                      <h1 className='visually-hidden'>
-                        <Translate stringId='emergenciesDashOverTime'/>
-                      </h1>
-                      {this.renderByMonth()}
-                      {this.renderEmergencies()}
+                      <div className='row flex-mid stats-chart-row'>
+                        {this.renderByMonth()}
+                        {this.renderEmergencies()}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -128,7 +136,7 @@ class EmergenciesDash extends React.Component {
             </div>
           </div>
         </header>
-        <section className='map-section__container row'>
+        <section className='map-section__container container-lg'>
           <EmergenciesMap lastMonth={lastMonth} />
         </section>
       </div>

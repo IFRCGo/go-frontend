@@ -39,7 +39,8 @@
   }
 
  .emergencies__item {
-    display: flex;
+    @include flex;
+    @include row;
     align-items: center;
     cursor: pointer;
     font-size: 0.875rem;
@@ -49,11 +50,16 @@
       margin-bottom: 0;
     }
     .key {
-      min-width: 6rem;
-      width: 45%;
-      margin-inline-end: $global-spacing;
+      color: $grey-soot;
+      font-size: $font-size-xs;
+      font-weight: $base-font-medium;
+      //min-width: 6rem;
+      @include col(33.33%);
+      //width: 45%;
+      //margin-inline-end: $global-spacing;
     }
     .value {
+      @include col(66.66%);
       flex-grow: 1;
       .progress-bar {
         background-color: transparent;

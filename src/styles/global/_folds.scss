@@ -87,7 +87,7 @@
 }
 
 .fold__footer {
-  @include column(12/12);
+  //@include column(12/12);
   margin-top: $global-spacing * 2;
 }
 
