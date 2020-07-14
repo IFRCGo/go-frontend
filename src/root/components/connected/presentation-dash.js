@@ -66,7 +66,7 @@ class PresentationDash extends React.Component {
           fullscreen={this.state.fullscreen}
           toggleFullscreen={this.toggleFullscreen}
         />
-        <HighlightedOperations opsType='all'/>
+        { !this.state.fullscreen ? (<HighlightedOperations opsType='all'/>) : null }
         <div className={c('inner', {'appeals--fullscreen': this.state.fullscreen})}>
           <AppealsTable
             showActive={true}
