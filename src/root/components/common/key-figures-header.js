@@ -102,7 +102,7 @@ export default function KeyFiguresHeader (props) {
   };
 
   return (
-    <div className='inner row'>
+    <div className='inner row stats-overall-row'>
       {props.fullscreen ? (
         <FullscreenHeader title={strings.keyFiguresHeading}/>
       ) : null}
