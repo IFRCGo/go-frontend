@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import { addSeparator } from '@togglecorp/fujs';
 import _cs from 'classnames';
 import {
-  MdChevronRight,
-  MdExpandLess,
   MdArrowDropDown,
   MdArrowDropUp
 } from 'react-icons/md';
