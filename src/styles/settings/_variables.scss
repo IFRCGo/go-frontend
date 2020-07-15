@@ -133,12 +133,12 @@ $spacing-half: ($spacing / 2);
 $media-xsmall: 544px;
 $media-small: 768px;
 $media-medium: 992px;
-$media-large: 1420px;
+$media-large: 1440px;
 
 /* Rows */
 
 $row-min-width: 320px;
-$row-max-width: 1420px;
+$row-max-width: 1440px;
 $jeet-max-width: $row-max-width; // reset jeet.gs max width
 
 /* Media queries */
@@ -147,7 +147,7 @@ $xsmall-range: (0, 543px);
 $small-range: (544px, 767px);
 $medium-range: (768px, 991px);
 $large-range: (992px, 1419px);
-$xlarge-range: (1420px, 1600px);
+$xlarge-range: (1440px, 1600px);
 $xxlarge-range: (1601px, 3000px);
 
 $screen: "only screen";

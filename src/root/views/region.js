@@ -182,7 +182,7 @@ class AdminArea extends SFPComponent {
 
     const presentationClass = c({
       'presenting fold--stats': this.state.fullscreen,
-      'fold': !this.state.fullscreen
+      'fold--r': !this.state.fullscreen
     });
 
     const mapBoundingBox = getRegionBoundingBox(data.id);
@@ -273,6 +273,7 @@ class AdminArea extends SFPComponent {
                     />
                     <EmergenciesTable
                       id='emergencies'
+                      className='baz'
                       title={strings.regionRecentEmergencies}
                       limit={5}
                       region={getRegionId(this.props.match.params.id)}

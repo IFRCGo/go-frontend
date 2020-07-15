@@ -256,12 +256,13 @@
 // Three W and components
 // ---------------------------
 .three-w-container {
-  width: 100%;
+  //width: 100%;
   background-color: #fff;
-  box-shadow: $base-box-shadow;
+  //box-shadow: $base-box-shadow;
   position: relative;
   overflow-x: auto;
-  padding: 2rem;
+  //padding: 2rem;
+  padding-top: $spacing-2;
 
   * {
     box-sizing: border-box;
@@ -297,13 +298,14 @@
   }
 
   .content {
-    padding: 16px;
-    overflow-x: auto;
+    //padding: 16px;
+    //overflow-x: auto;
 
     .three-w-filters {
       display: flex;
       flex-wrap: wrap;
       flex-grow: 1;
+      padding: $spacing 0;
 
       .Select-menu-outer {
         z-index: 11;
@@ -508,25 +510,25 @@
 }
 
 .three-w-project-list-table {
-  width: 100%;
+  //width: 100%;
   overflow-x: scroll;
 
-  th {
-    padding: 16px 10px;
-    text-align: left;
-  }
+  //th {
+    //padding: 16px 10px;
+    //text-align: left;
+  //}
 
-  td {
-    padding: 10px;
-  }
+  //td {
+    //padding: 10px;
+  //}
 
-  tbody {
-    tr {
-      &:nth-child(odd) {
-        background-color: $grey-fog;
-      }
-    }
-  }
+  //tbody {
+    //tr {
+      //&:nth-child(odd) {
+        //background-color: $grey-fog;
+      //}
+    //}
+  //}
 }
 
 .more-actions-dropdown-menu.tc-dropdown-menu {
@@ -638,7 +640,7 @@
     flex-shrink: 0;
     display: flex;
     align-items: center;
-    max-width: 1420px;
+    max-width: $media-large;
     width: 100%;
 
     >h2 {
@@ -665,7 +667,7 @@
   }
 
   .tc-project-details {
-    max-width: 1420px;
+    max-width: $media-large;
     width: 100%;
 
     .tc-project-name {

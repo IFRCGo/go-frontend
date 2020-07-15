@@ -78,7 +78,9 @@ class PresentationDash extends React.Component {
             toggleFullscreen={this.toggleFullscreen}
           />
         </div>
-        {this.state.fullscreen ? null : <TimelineCharts /> }
+        <div className='container-lg'>
+          {this.state.fullscreen ? null : <TimelineCharts /> }
+        </div>
       </section>
     );
   }
