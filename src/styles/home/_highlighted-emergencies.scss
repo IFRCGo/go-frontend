@@ -86,6 +86,10 @@
 }
 
 .card_box--op {
+  .heading-tiny {
+    font-size: $font-size-sm;
+  }
+  
   @include span(6/12, $offset: 0, $cycle: 0);
 
   &:first-of-type {
