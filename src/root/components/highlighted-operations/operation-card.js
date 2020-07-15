@@ -67,9 +67,9 @@ const OperationCard = ({operationId, operationName, emergencyDeployments, appeal
 
         <div className='card_box_container card_box_container--op'>
           <div className='card_box card_box_left card_box--op'>
-            <div className="card_box_no">{requested && requested !== 0 ? `${n(requested)} CHF` : '--'}</div>
+            <div className="card_box_no">{requested && requested !== 0 ? `${n(requested)}` : '--'}</div>
             <small className='heading-tiny'>
-              <Translate stringId='operationCardFunding'/>
+              <Translate stringId='operationCardFunding'/> (CHF)
             </small>
           </div>
           <div className='card_box card_box_left card_box--op'>
@@ -85,7 +85,7 @@ const OperationCard = ({operationId, operationName, emergencyDeployments, appeal
           <Progress value={requested ? percent(funded, requested) : percent(0.1, 10)} max={100} />
           <div className='card_box_full card_box_container card_box_container--op'>
             <div className="heading-tiny">
-              <span className='font-size-xxs base-font-regular'><Translate stringId='operationCardFundingCoverage'/></span>
+              <Translate stringId='operationCardFundingCoverage'/>
             </div>
             <div className="card_box_fc">{requested ? round(percent(funded, requested)) : 0}%</div>
           </div>
