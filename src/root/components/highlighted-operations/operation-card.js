@@ -67,9 +67,9 @@ const OperationCard = ({operationId, operationName, emergencyDeployments, appeal
 
         <div className='card_box_container card_box_container--op'>
           <div className='card_box card_box_left card_box--op'>
-            <div className="card_box_no">{requested && requested !== 0 ? `${n(requested)} CHF` : '--'}</div>
+            <div className="card_box_no">{requested && requested !== 0 ? `${n(requested)}` : '--'}</div>
             <small className='heading-tiny'>
-              <Translate stringId='operationCardFunding'/>
+              <Translate stringId='operationCardFunding'/> (CHF)
             </small>
           </div>
           <div className='card_box card_box_left card_box--op'>

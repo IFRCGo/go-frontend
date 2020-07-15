@@ -23,7 +23,7 @@
 .card_box_no {
   color: $grey-soot;
   font-weight: $base-font-semi-bold;
-  font-size: $font-size-lg;
+  font-size: 1.5rem;
 }
 
 .card_box_left {
@@ -87,8 +87,10 @@
 
 .card_box--op {
   width: 50%;
-  //@include span(6/12, $offset: 0, $cycle: 0);
 
+  .heading-tiny {
+    font-size: $font-size-sm;
+  }
 
   &:first-of-type {
     border-inline-end: 1px solid $base-border-color--light;
