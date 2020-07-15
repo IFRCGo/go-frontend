@@ -8,6 +8,8 @@ import { api, environment } from '#config';
 import { request } from '#utils/network';
 import { uppercaseFirstLetter as u, isoDate } from '#utils/format';
 import UserMenu from './connected/user-menu';
+import HeaderRegionButton from './header-region-button';
+import Dropdown from './common/dropdown';
 
 function getUriForType (type, id) {
   switch (type) {
@@ -94,7 +96,26 @@ class MobileHeader extends React.PureComponent {
         })}>
           <div className='inner'>
             <div className='mobile__actions'>
-              <Link to='/reports/new' className='button button--small button--primary-filled' title='Create Field Report'><span>Create Field Report</span></Link>
+              <Dropdown
+                id='drop__header__field__report'
+                triggerClassName='drop__toggle--caret button button--primary-bounded button--small drop__toggle--field-report-new'
+                triggerActiveClassName='active'
+                triggerText='Create a Report'
+                triggerElement='a'
+                direction='down'
+                alignment='center' >
+                <ul className='drop__menu drop__menu--select drop__menu__field__report' role='menu'>
+                  <li className='drop__menu-item'>
+                    <Link to='/reports/new'>New Field Report</Link>
+                  </li>
+                  <li className='drop__menu-item'>
+                    <a href='https://ee.kob4.ifrc.org/single/::Ho8bHKDr' target='_blank'>Covid-19 Indicator Tracking</a>
+                  </li>
+                  <li className='drop__menu-item'>
+                    <a href='https://ee.kob4.ifrc.org/single/::w4KbO3Rc' target='_blank'>Covid-19 NS Financial Overview</a>
+                  </li>                                        
+                </ul>
+              </Dropdown>              
               <button className='button button--small button--close button--text-hidden' onClick={this.toggleMenu}>
                 <span>close</span>
               </button>
