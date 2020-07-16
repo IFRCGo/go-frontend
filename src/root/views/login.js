@@ -79,8 +79,14 @@ class Login extends React.Component {
 
   render () {
     const { strings } = this.context;
+
     if (this.state.authenticated) {
+      // TODO: remove
+      // This condition is handled by Anonymous route now
+      // Hence, is redundant
+
       const { from } = this.props.location.state || { from: { pathname: '/' } };
+
       return (
         <Redirect to={from}/>
       );
