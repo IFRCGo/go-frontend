@@ -1,3 +1,7 @@
+.emergencies-map {
+  background-color: #fff;
+}
+
 .action-header {
   padding-top: 1.5rem;
   padding-bottom: 0;
@@ -86,5 +90,12 @@
 .page--emergencies {
   .form__group {
     @include form__group;
+    padding: $spacing;
+  }
+
+  .map-vis__legend {
+    .key {
+      padding: $spacing;
+    }
   }
 }

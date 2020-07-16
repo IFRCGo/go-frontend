@@ -369,6 +369,20 @@ td.right-align, th.right-align{
   }
 }
 
+.table--box-shadow {
+  @include box__global;
+
+  thead th, td {
+    &:first-child {
+      padding-inline-start: $global-spacing;
+    }
+
+    &:last-child {
+      padding-inline-end: $global-spacing;
+    }
+  }  
+}
+
 .table--border__list {
   padding: $global-spacing 0;
 }

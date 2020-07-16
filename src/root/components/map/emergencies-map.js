@@ -141,7 +141,7 @@ class EmergenciesMap extends React.Component {
     const { strings } = this.props;
     return (
       <div className='stats-map emergencies-map'>
-        <div className='inner'>
+        <div className='container-lg'>
           {!error ? (
             <div className='map-container'>
               <h2 className='visually-hidden'>
@@ -257,12 +257,14 @@ class MapPopover extends React.Component {
               />
             </p>
             <p className='popover__stat'>
-              <Translate
-                stringId='emergenciesMapPopoverTotalEmergencies'
-                params={{
-                  totalEmergencies: n(totalEmergencies),
-                }}
-              />
+              <span className='base-font-semi-bold'>
+                <Translate
+                  stringId='emergenciesMapPopoverTotalEmergencies'
+                  params={{
+                    totalEmergencies: n(totalEmergencies),
+                  }}
+                />
+              </span>
             </p>
             <p className='popover__stat'>
               <Translate
