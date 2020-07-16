@@ -57,10 +57,11 @@ $base-line-height: 1.5;
 $base-font-size: 0.875rem;
 $font-size-xxs: 0.63rem;
 $font-size-xs: 0.695rem;
-$font-size-sm: 0.775rem;
+$font-size-sm: 0.72rem;
 $font-size-lg: 1rem;
 $font-size-xl: 1.06rem;
 $font-size-xxl: 1.16rem;
+$font-size-heading-widget: 1.72rem;
 
 $code-font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 
@@ -100,7 +101,7 @@ $box-shadow-component: 1px 1px 4px rgba($black, 0.06);
 $grid-column-count: 12;
 $grid-gutter: 12px;
 $grid-gutter-sm: ($grid-gutter / 2);
-$grid-gutter-lg: ($grid-gutter * 2);
+$grid-gutter-lg: ($grid-gutter * 1.5);
 
 
 /* Sizing, spacing and media queries
@@ -132,12 +133,12 @@ $spacing-half: ($spacing / 2);
 $media-xsmall: 544px;
 $media-small: 768px;
 $media-medium: 992px;
-$media-large: 1420px;
+$media-large: 1440px;
 
 /* Rows */
 
 $row-min-width: 320px;
-$row-max-width: 1420px;
+$row-max-width: 1440px;
 $jeet-max-width: $row-max-width; // reset jeet.gs max width
 
 /* Media queries */
@@ -146,7 +147,7 @@ $xsmall-range: (0, 543px);
 $small-range: (544px, 767px);
 $medium-range: (768px, 991px);
 $large-range: (992px, 1419px);
-$xlarge-range: (1420px, 1600px);
+$xlarge-range: (1440px, 1600px);
 $xxlarge-range: (1601px, 3000px);
 
 $screen: "only screen";

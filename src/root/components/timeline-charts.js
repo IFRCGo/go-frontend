@@ -212,15 +212,13 @@ class TimelineCharts extends React.Component {
 
   render () {
     return (
-      <div className='container-lg'>
-        <div className='stats-chart'>
-          <h1 className='visually-hidden'>
-            <Translate stringId='timeLineChartHeading'/>
-          </h1>
-          {this.renderLoading()}
-          {this.renderError()}
-          {this.renderContent()}
-        </div>
+      <div className='stats-chart'>
+        <h1 className='visually-hidden'>
+          <Translate stringId='timeLineChartHeading'/>
+        </h1>
+        {this.renderLoading()}
+        {this.renderError()}
+        {this.renderContent()}
       </div>
     );
   }

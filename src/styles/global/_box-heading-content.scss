@@ -2,10 +2,14 @@
    Box: With heading box and content box below
    ========================================================================== */
 
-.box__global {
+@mixin box__global {
   background-color: #fff;
   border-radius: $base-border-radius;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+.box__global {
+	@include box__global;	
 }
 
 .box__global__heading {

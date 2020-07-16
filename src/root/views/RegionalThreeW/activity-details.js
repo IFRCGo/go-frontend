@@ -25,7 +25,7 @@ function NSDetails (p) {
   } = p.data;
 
   return (
-    <div className='ns-details'>
+    <div className='ns-details flex flex-align-baseline'>
       <h5 className='tc-heading'>
         { nsDetails.society_name }
       </h5>

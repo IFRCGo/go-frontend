@@ -22,17 +22,20 @@ function PeopleOverview (props) {
   }, [targeted, reached]);
 
   return (
-    <div className={_cs(className, 'people-overview')}>
-      <h4 className='tc-heading'>
+    <div className={_cs(className, 'people-overview box__global')}>
+      <h4 className='tc-heading margin-reset'>
         <Translate stringId='peopleOverviewTotalPeople'/>
       </h4 >
       <div className='tc-content'>
         <FormattedNumber
-          className='reached-people-count'
+          className='reached-people-count tc-value'
           value={reached}
           normalize
           fixedTo={1}
         />
+        <div className='tc-progress-bar'>
+          <div style={barStyle} className='tc-progress' />
+        </div>
         <div className='targeted-people'>
           <div className='tc-label'>
             <Translate stringId='peopleOverviewTargetedPeople'/>
@@ -43,9 +46,6 @@ function PeopleOverview (props) {
             normalize
             fixedTo={1}
           />
-        </div>
-        <div className='tc-progress-bar'>
-          <div style={barStyle} className='tc-progress' />
         </div>
       </div>
     </div>

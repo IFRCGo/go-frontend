@@ -216,7 +216,7 @@
 
   &__value {
     color: $grey-soot;
-    font-size: 1.72rem;
+    font-size: $font-size-heading-widget;
     font-weight: $base-font-semi-bold;
     line-height: 1.3;
   }
@@ -709,7 +709,7 @@
     }
 
     .card__title {
-      font-size: $font-size-sm;
+      font-size: $base-font-size;
       font-weight: $base-font-medium;
     }
     .card__date {
@@ -828,3 +828,9 @@
     height: 16px;
   }
 }
+
+//stats-overall-row {
+  //max-width: 1200px !important;
+  //margin-left: auto;
+  //margin-right: auto;
+//}

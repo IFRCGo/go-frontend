@@ -76,6 +76,7 @@
   font-size: 1.14rem;
   text-transform: uppercase;
   letter-spacing: 1.6px;
+  margin-bottom: 0;
   @include col;
 }
 
@@ -128,8 +129,13 @@
   //@extend .clearfix;
   border-bottom: 1px solid #c9c3c1;
   padding-bottom: $spacing;
-  display: flex;
   @include row;
+
+  @include media(xsmall-up) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+  }
 }
 
 .fold__title--inline {
@@ -147,10 +153,13 @@
   font-size: $font-size-sm;
   //color: $primary-color;
   @include col;
-  margin-left: auto;
   flex-shrink: 0;
   display: flex;
   align-items: center;
+
+  @include media(xsmall-up) {
+    margin-left: auto;
+  }
 
   @include media(medium-up) {
     text-align: right !important;

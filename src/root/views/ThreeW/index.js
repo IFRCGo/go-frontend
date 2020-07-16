@@ -189,17 +189,17 @@ function ThreeW (p) {
   const shouldDisableExportButton = disabled || !projectList || projectList.length === 0;
 
   return (
-    <div className='three-w-container'>
+    <div className='three-w-container container-lg'>
       { pending && (
         <BlockLoading />
       )}
-      <header className='tc-header'>
-        <h2 className='tc-heading'>
+      <header className='fold__header__block'>
+        <h2 className='fold__title fold__title--inline'>
           <Translate
             stringId="rcActivities"
           />
         </h2>
-        <div className='tc-actions'>
+        <div className='fold__title__linkwrap'>
           { isCountryAdmin && (
             <button
               className={_cs(
@@ -231,7 +231,7 @@ function ThreeW (p) {
       <div className='content'>
         <Filter
           projectList={projectList}
-          className='three-w-filters'
+          className='three-w-filters row-sm'
           onFilterChange={setFilters}
         />
         <div className="three-w-map-vis">

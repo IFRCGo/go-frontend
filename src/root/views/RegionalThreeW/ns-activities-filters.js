@@ -53,7 +53,7 @@ function NSActivitiesFilters (p) {
   const { strings } = useContext(LanguageContext);
   return (
     <Faram
-      className='regional-ns-activity-filter'
+      className='regional-ns-activity-filter row-sm'
       schema={filterSchema}
       value={value}
       onChange={onChange}

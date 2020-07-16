@@ -27,8 +27,8 @@ function StatusOverview (p) {
   } = p;
 
   return (
-    <div className={_cs('status-activity', className)}>
-      <h4 className='tc-heading'>
+    <div className={_cs('status-activity box__global', className)}>
+      <h4 className='tc-heading margin-reset'>
         <Translate stringId='statusOverviewTotalActivityStatus'/>
       </h4>
       <div className='tc-content'>
@@ -44,7 +44,7 @@ function StatusOverview (p) {
           </div>
         </div>
         <div className='tc-chart-container'>
-          <ResponsiveContainer>
+          <ResponsiveContainer width='100%' height={80}>
             <PieChart>
               <Pie
                 data={data}
