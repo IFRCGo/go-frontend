@@ -19,7 +19,8 @@
   display: block;
   width: 100%;
   padding: 0.25rem 0.5rem;
-  font-size: 1rem;
+  //font-size: 1rem;
+  font-size: $base-font-size;
   line-height: 1.5rem;
   color: $secondary-color;
   background-color: #fff;
@@ -164,8 +165,8 @@ textarea.form__control {
 
 .form__control--medium {
   padding: 0.25rem 0.5rem;
-  font-size: 1rem;
-  line-height: 1.5rem;
+  //font-size: 1rem;
+  //line-height: 1.5rem;
   height: 36px;
 }
 
@@ -578,11 +579,12 @@ label[for] {
 
 .form__option--inline {
   display: inline-flex;
+  margin-inline-start: $grid-gutter-lg;
 }
 
-.form__option--inline + .form__option--inline {
-  margin-inline-start: $global-spacing;
-}
+//.form__option--inline + .form__option--inline {
+  //margin-inline-start: $global-spacing;
+//}
 
 /* Form option text-hidden modifier */
 
@@ -608,7 +610,9 @@ label[for] {
     height: 1.25rem;
     width: 1.25rem;
     /*box-shadow: inset 0 0 0 $base-border-width rgba($base-color, 0.12);*/
-    background: $secondary-color-light;
+    //background: $secondary-color-light;
+    background-color: #fff;
+    border: 2px solid $base-border-color;
 
     &::before {
       position: absolute;
@@ -621,16 +625,18 @@ label[for] {
   }
 
   &:hover .form__option__ui {
-    box-shadow: inset 0 0 0 $base-border-width rgba($base-color, 0.24);
+    //box-shadow: inset 0 0 0 $base-border-width rgba($base-color, 0.24);
   }
 
   input:focus  ~ .form__option__ui,
   &:active .form__option__ui {
-    box-shadow: inset 0 0 0 ($base-border-width * 2) rgba($base-color, 0.32);
+    //box-shadow: inset 0 0 0 ($base-border-width * 2) rgba($base-color, 0.32);
+    border-color: $primary-color;
   }
 
   input:checked ~ .form__option__ui {
-    box-shadow: inset 0 0 0 ($base-border-width * 2) $secondary-color;
+    //box-shadow: inset 0 0 0 ($base-border-width * 2) $primary-color;
+    border-color: $primary-color;
 
     &::before {
       opacity: 1;
@@ -648,7 +654,7 @@ label[for] {
       content: "";
       height: 0.5rem;
       width: 0.5rem;
-      background: $secondary-color;
+      background: $primary-color;
     }
   }
 }
@@ -656,12 +662,18 @@ label[for] {
 .form__option--custom-checkbox {
   .form__option__ui {
     &, &:before {
-      border-radius: $base-border-radius;
+      //border-radius: $base-border-radius;
     }
 
     &::before {
-      @extend %collecticon-sm-tick;
-      color: $secondary-color;
+      //@extend %collecticon-sm-tick;
+      //color: $secondary-color;
+      content: '';
+      width: 0.5rem;
+      height: 0.5rem;
+      background-color: $primary-color;
+      //border-radius: 0;
+
     }
   }
 }
