@@ -509,9 +509,9 @@ label[for] {
 
 .form__label {
   display: block;
-  font-weight: $base-font-bold;
-  font-size: 1rem;
-  line-height: 1.5;
+  font-weight: $base-font-semi-bold;
+  //font-size: 1rem;
+  //line-height: 1.5;
   margin: 0 0 ($global-spacing/2) 0;
 
   &:only-of-type {
@@ -540,8 +540,8 @@ label[for] {
 .form__option {
   display: flex;
   align-items: flex-start;
-  font-size: 1rem;
-  line-height: 1.5;
+  //font-size: 1rem;
+  //line-height: 1.5;
   cursor: pointer;
   margin-top: $global-spacing / 2;
 
@@ -561,9 +561,10 @@ label[for] {
   em {
     display: block;
     font-style: normal;
-    font-size: 0.875rem;
-    line-height: 1rem;
-    color: rgba($base-font-color, 0.48);
+    font-weight: $base-font-regular;
+    font-size: $font-size-xs;
+    //line-height: 1rem;
+    //color: rgba($base-font-color, 0.48);
   }
 }
 
@@ -911,9 +912,9 @@ label[for] {
 }
 
 .form__description {
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  color: rgba($base-font-color, 0.48);
+  font-size: $font-size-xs;
+  //line-height: 1.25rem;
+  //color: rgba($base-font-color, 0.48);
   margin-bottom: $global-spacing;
   p {
     width: 100%;

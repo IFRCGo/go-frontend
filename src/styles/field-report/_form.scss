@@ -4,14 +4,21 @@
 
 
 .page--frep-form {
-  background: #fff;
+  //background: #fff;
 
   //.inpage__header {
     //padding-bottom: 0;
   //}
 
+  .fold {
+    background-color: transparent;
+  }
+
   .fold__body > .form__group {
     @include form__group;
+    background-color: #fff;
+    box-shadow: $box-shadow-component;
+    margin-bottom: ($spacing * 1.5);
     
     > .form__inner-header {
       display: block;
@@ -83,9 +90,9 @@
 }
 
 
-.form--field-report {
-  margin-bottom: $global-spacing * 4;
-}
+//.form--field-report {
+  //margin-bottom: $global-spacing * 4;
+//}
 
 .sources-list {
   &__item {
@@ -485,7 +492,7 @@
 }
 
 .form__actions {
-  margin: ($global-spacing * 4) 0;
+  //margin: $spacing-2 0;
   button {
     &:first-child {
       margin-inline-end: $global-spacing/2;

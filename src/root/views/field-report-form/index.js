@@ -326,7 +326,7 @@ class FieldReportForm extends React.Component {
       },
     ];
     return (
-      <div className='row'>
+      <div className='container-lg'>
         <ol className='stepper'>
           {items.map((o, idx) => {
             const stepNum = idx + 1;
@@ -986,13 +986,13 @@ class FieldReportForm extends React.Component {
           </header>
           <div className='inpage__body'>
             <div className='inner'>
-              <form className='form form--field-report row' onSubmit={this.onSubmit}>
+              <form className='form form--field-report' onSubmit={this.onSubmit}>
                 {this[`renderStep${this.state.step}`]()}
                 {this.renderErrorSummary()}
 
                 <div className='form__actions text-center'>
-                  <button type='button' className={c('button button--secondary-bounded', {disabled: this.state.step <= 1})} title={strings.fieldReportGoBack} onClick={this.onStepBackClick}><Translate stringId='fieldReportBack'/></button>
-                  <button type='submit' className='button button--secondary-filled' title={submitTitle}>{submitTitle}</button>
+                  <button type='button' className={c('button button--secondary-bounded button--small', {disabled: this.state.step <= 1})} title={strings.fieldReportGoBack} onClick={this.onStepBackClick}><Translate stringId='fieldReportBack'/></button>
+                  <button type='submit' className='button button--secondary-filled button--small' title={submitTitle}>{submitTitle}</button>
                 </div>
               </form>
             </div>
