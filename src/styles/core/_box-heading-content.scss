@@ -1,0 +1,26 @@
+/* ==========================================================================
+   Box: With heading box and content box below
+   ========================================================================== */
+
+@mixin box__global {
+  background-color: #fff;
+  border-radius: $base-border-radius;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+.box__global {
+	@include box__global;	
+}
+
+.box__global__heading {
+  padding: ($global-spacing * 1.5) ($global-spacing * 1.2);
+  border-bottom: 1px solid $grey-pearl;
+}
+
+.box__global__content {
+  padding: ($global-spacing * 1.5) ($global-spacing * 1.2);
+}
+
+.box__content {
+  background-color: #fff;
+}

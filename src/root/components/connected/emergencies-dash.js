@@ -9,7 +9,6 @@ import Stats from '#components/emergencies/stats';
 import EmergenciesMap from '#components/map/emergencies-map';
 import Progress from '#components/progress';
 import BlockLoading from '#components/block-loading';
-
 import Translate from '#components/Translate';
 
 class EmergenciesDash extends React.Component {
@@ -114,23 +113,25 @@ class EmergenciesDash extends React.Component {
       <div>
         <header className='inpage__header'>
           <div className='inner'>
-            <div className='inpage__headline'>
+            <div>
               <div className='inpage__headline-content'>
                 <h1 className='inpage__title'>
                   <Translate stringId='emergenciesDashLast30Days' />
                 </h1>
-                <div className='container-lg'>
-                  <div className='inpage__headline-stats'>
-                    <Stats lastMonth={lastMonth} />
-                  </div>
-                  <div className='inpage__headline-charts'>
-                    <h1 className='visually-hidden'>
-                      <Translate stringId='emergenciesDashOverTime'/>
-                    </h1>
-                    <div className='stats-chart'>
-                      <div className='row flex-mid stats-chart-row'>
-                        {this.renderEmergencies()}
-                        {this.renderByMonth()}
+                <div className='inpage__headline-stats'>
+                  <Stats lastMonth={lastMonth} />
+                </div>
+                <div className='box__content'>
+                  <div className='container-lg'>
+                    <div className='inpage__headline-charts'>
+                      <h1 className='visually-hidden'>
+                        <Translate stringId='emergenciesDashOverTime'/>
+                      </h1>
+                      <div className='stats-chart'>
+                        <div className='row flex-mid stats-chart-row'>
+                          {this.renderEmergencies()}
+                          {this.renderByMonth()}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -139,7 +140,7 @@ class EmergenciesDash extends React.Component {
             </div>
           </div>
         </header>
-        <section className='map-section__container container-lg'>
+        <section className='map-section__container'>
           <EmergenciesMap lastMonth={lastMonth} />
         </section>
       </div>

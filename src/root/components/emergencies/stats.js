@@ -15,7 +15,7 @@ export default class EmergenciesStats extends React.Component {
     if (!fetched) return null;
 
     return (
-      <div className='header-stats header-stats--emergencies'>
+      <div className='header-stats header-stats--emergencies container-lg'>
         <ul className='sumstats'>
           <li className='sumstats__item__wrap'>
             <div className='sumstats__item'>
