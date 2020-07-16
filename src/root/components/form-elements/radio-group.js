@@ -22,28 +22,30 @@ export default function FormRadioGroup (props) {
 
   return (
     <div className={c('form__group', classWrapper)}>
-      <div className='form__inner-header'>
-        <div className='form__inner-headline'>
-          <label className={c('form__label', classLabel)}>{label}</label>
-          <FormDescription value={description} />
+      <div className='form__group__wrap'>
+        <div className='form__inner-header'>
+          <div className='form__inner-headline'>
+            <label className={c('form__label', classLabel)}>{label}</label>
+            <FormDescription value={description} />
+          </div>
         </div>
-      </div>
-      <div className='form__inner-body'>
-        {options.map(o => (
-          <FormRadio
-            key={o.value}
-            label={o.label}
-            name={name}
-            id={`${name}-${o.value}`}
-            value={o.value}
-            inline={inline}
-            checked={selectedOption === o.value}
-            onChange={onChange}
-            onClick={onClick}
-            description={o.description}
-            disabled={o.disabled} />
-        ))}
-        {children || null}
+        <div className='form__inner-body'>
+          {options.map(o => (
+            <FormRadio
+              key={o.value}
+              label={o.label}
+              name={name}
+              id={`${name}-${o.value}`}
+              value={o.value}
+              inline={inline}
+              checked={selectedOption === o.value}
+              onChange={onChange}
+              onClick={onClick}
+              description={o.description}
+              disabled={o.disabled} />
+          ))}
+          {children || null}
+        </div>
       </div>
     </div>
   );

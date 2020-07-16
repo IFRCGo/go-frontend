@@ -28,27 +28,29 @@ export default function FormInput (props) {
 
   return (
     <div className={c('form__group', classWrapper)}>
-      <div className={c('form__inner-header', formInnerHeaderClass)}>
-        <div className='form__inner-headline'>
-          <label className={c('form__label', classLabel)} htmlFor={id} >{label}</label>
-          <FormDescription value={description} />
+      <div className='form__group__wrap'>
+        <div className={c('form__inner-header', formInnerHeaderClass)}>
+          <div className='form__inner-headline'>
+            <label className={c('form__label', classLabel)} htmlFor={id} >{label}</label>
+            <FormDescription value={description} />
+          </div>
         </div>
-      </div>
-      <div className={c('form__inner-body', formInnerBodyClass)}>
-        {labelSecondary ? (<label htmlFor={id} className='label-secondary'>{labelSecondary}</label>) : null}
-        <input
-          type={type}
-          id={id}
-          name={name}
-          placeholder={placeholder}
-          className={c('form__control form__control--medium', classInput)}
-          value={value || ''}
-          onChange={onChange}
-          disabled={disabled}
-          autoFocus={autoFocus}
-          maxLength={maxLength}
-        />
-        {children || null}
+        <div className={c('form__inner-body', formInnerBodyClass)}>
+          {labelSecondary ? (<label htmlFor={id} className='label-secondary'>{labelSecondary}</label>) : null}
+          <input
+            type={type}
+            id={id}
+            name={name}
+            placeholder={placeholder}
+            className={c('form__control form__control--medium', classInput)}
+            value={value || ''}
+            onChange={onChange}
+            disabled={disabled}
+            autoFocus={autoFocus}
+            maxLength={maxLength}
+          />
+          {children || null}
+        </div>
       </div>
     </div>
   );

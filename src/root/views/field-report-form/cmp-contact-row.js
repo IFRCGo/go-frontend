@@ -36,8 +36,8 @@ export default class ContactRow extends React.Component {
           </div>
         </div>
         <div className='form__inner-body'>
-          <div className='clearfix'>
-            <div className='form__group__col__6'>
+          <div className='row'>
+            <div className='col col-6-mid'>
               <FormInput
                 label={strings.cmpContactName}
                 type='text'
@@ -52,7 +52,7 @@ export default class ContactRow extends React.Component {
                 />
               </FormInput>
             </div>
-            <div className='form__group__col__6'>
+            <div className='col col-6-mid'>
               <FormInput
                 label={strings.cmpContactTitle}
                 type='text'
@@ -67,7 +67,7 @@ export default class ContactRow extends React.Component {
                 />
               </FormInput>
             </div>
-            <div className='form__group__col__6'>
+            <div className='col col-6-mid'>
               <FormInput
                 label={strings.cmpContactEmail}
                 type='text'
@@ -82,7 +82,7 @@ export default class ContactRow extends React.Component {
                 />
               </FormInput>
             </div>
-            <div className='form__group__col__6'>
+            <div className='col col-6-mid'>
               <FormInput
                 label={strings.cmpContactPhone}
                 type='text'
