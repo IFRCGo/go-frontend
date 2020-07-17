@@ -23,29 +23,31 @@ const OperationCard = ({operationId, operationName, emergencyDeployments, appeal
   return (
     <div className='key-emergencies-item col col-6-sm col-4-mid' key={operationId}>
       <Link to={`/emergencies/${operationId}`}>
-        <div className="card_box card_box_left row">
-          <div className='card__title__wrap'>
-            <h2 className='card__title'>{ operationName.length > 30 ? operationName.slice(0, 30) + '...' : operationName }</h2>
-            <small className='last_updated'>
-              <Translate stringId='operationCardLastUpdated'/>
-              &nbsp;
-              {formatDate(lastUpdate)}
-            </small>
-          </div>
-          {showFollow ? (
-            <div className='button--key-emergencies__wrap'>  
-              <div onClick={toggleFollow} className={`button button--capsule button--xsmall button--key-emergencies ${isFollowing ? 'button--primary-bounded' : 'button--primary-filled'}`}>
-                {
-                  isFollowing ? (
-                    <Translate stringId='operationCardFollowing' />
-                  ) : (
-                    <Translate stringId='operationCardFollow' />
-                  )
-                }
-              </div>
+        <div className="card_box card_box_left">
+          <div className='row flex'>
+            <div className='card__title__wrap col col-6'>
+              <h2 className='card__title'>{ operationName.length > 30 ? operationName.slice(0, 30) + '...' : operationName }</h2>
+              <small className='last_updated'>
+                <Translate stringId='operationCardLastUpdated'/>
+                &nbsp;
+                {formatDate(lastUpdate)}
+              </small>
             </div>
-          ) : null
-          }
+            {showFollow ? (
+              <div className='button--key-emergencies__wrap col col-6'>  
+                <div onClick={toggleFollow} className={`button button--capsule button--xsmall button--key-emergencies ${isFollowing ? 'button--primary-bounded' : 'button--primary-filled'}`}>
+                  {
+                    isFollowing ? (
+                      <Translate stringId='operationCardFollowing' />
+                    ) : (
+                      <Translate stringId='operationCardFollow' />
+                    )
+                  }
+                </div>
+              </div>
+            ) : null
+            }
+          </div>
         </div>
 
         <div className='card_box_container card_box_container--op'>

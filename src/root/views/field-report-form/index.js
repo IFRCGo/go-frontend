@@ -766,7 +766,7 @@ class FieldReportForm extends React.Component {
       <Fold title=<Translate stringId="fieldReportFormContactsTitle" />>
       {/*<Fold title={strings.fieldReportFormActionTakenTitle}>*/}
  
-        <div className='form__group'>
+        <div className='form__group row flex-mid'>
           {
             fields.section1fields.map(field => {
               if (!field[status]) {
@@ -783,7 +783,7 @@ class FieldReportForm extends React.Component {
                   key={field.key}
                   name={field.name}
                   id={field.name}
-                  classWrapper='form__group--kv form__group--kv-actions form__group__fr'
+                  classWrapper='form__group--kv form__group--kv-actions form__group__fr col col-6-mid'
                   value={this.state.data[field.key]}
                   onChange={this.onFieldChange.bind(this, field.key)} >
                   <FormError
@@ -893,26 +893,28 @@ class FieldReportForm extends React.Component {
               </p>
             </div>
 
-            <React.Fragment>
-              {
-                plannedResponseRows.map(row => {
-                  return (
-                    <PlanResponseRow
-                      label={row.label[status]}
-                      key={row.key}
-                      valueFieldLabel={row.valueFieldLabel}
-                      name={row.name}
-                      options={row.options}
-                      values={this.state.data[row.key]}
-                      errors={this.state.errors}
-                      fieldKey={row.key}
-                      onChange={this.onFieldChange.bind(this, row.key)}
-                    />
-                  );
-                })
-              }
+            <div className='plan-response-row-wrap'>
+              <React.Fragment>
+                {
+                  plannedResponseRows.map(row => {
+                    return (
+                      <PlanResponseRow
+                        label={row.label[status]}
+                        key={row.key}
+                        valueFieldLabel={row.valueFieldLabel}
+                        name={row.name}
+                        options={row.options}
+                        values={this.state.data[row.key]}
+                        errors={this.state.errors}
+                        fieldKey={row.key}
+                        onChange={this.onFieldChange.bind(this, row.key)}
+                      />
+                    );
+                  })
+                }
 
-            </React.Fragment>
+              </React.Fragment>
+            </div>
           </React.Fragment>
         )}
 
@@ -924,16 +926,18 @@ class FieldReportForm extends React.Component {
           {
             fields.contactRows.map(row => {
               return (
-                <ContactRow
-                  label={row.label}
-                  description={row.desc[status]}
-                  name={row.name}
-                  key={row.key}
-                  values={this.state.data[row.key]}
-                  fieldKey={row.key}
-                  errors={this.state.errors}
-                  onChange={this.onFieldChange.bind(this, row.key)}
-                />
+                <div className='contact-row-wrap'>
+                  <ContactRow
+                    label={row.label}
+                    description={row.desc[status]}
+                    name={row.name}
+                    key={row.key}
+                    values={this.state.data[row.key]}
+                    fieldKey={row.key}
+                    errors={this.state.errors}
+                    onChange={this.onFieldChange.bind(this, row.key)}
+                  />
+                </div>
               );
             })
           }

@@ -445,7 +445,7 @@ class Account extends React.Component {
       <div className='inner'>
         <div className='fold__header'>
           <div className='fold__actions'>
-            <button className='button button--medium button--secondary-bounded' onClick={this.toggleEditProfile}>
+            <button className='button button--small button--secondary-bounded' onClick={this.toggleEditProfile}>
               <Translate stringId='accountEditProfile'/>
             </button>
           </div>
@@ -464,7 +464,7 @@ class Account extends React.Component {
           </dl>
         </div>
         <div className='fold__footer text-right'>
-          <Link className='link--primary' to='/account/password-change'>
+          <Link className='button button--small button--secondary-light' to='/account/password-change'>
             <Translate stringId='accountChangePassword'/>
           </Link>
         </div>
@@ -590,10 +590,10 @@ class Account extends React.Component {
     const data = get(userReports, 'data.results', []);
     if (!data.length) { return null; }
     return (
-      <div className='prose prose--responsive'>
+      <div className='prose'>
         <div className='fold-container'>
-          <section className='fold'>
-            <div className='inner'>
+          <section className='fold fold--main'>
+            <div className='container-lg'>
               <div className='fold__header'>
                 <h2 className='fold__title margin-reset'>
                   <Translate stringId='accountSubmittedReports'/>
@@ -606,7 +606,7 @@ class Account extends React.Component {
                     <li key={o.id} className='report__list--item'>
                       <div className='report__list--header list__each__block flex'>
                         <div>
-                          <Link className='link--primary' to={`/reports/${o.id}`}>{o.summary}</Link>&nbsp;
+                          <Link className='link--underline' to={`/reports/${o.id}`}>{o.summary}</Link>&nbsp;
                           <div className='report__list--updated global-margin-t'>Last Updated: {DateTime.fromISO(o.updated_at || o.created_at).toISODate()}</div>
                         </div>
                       </div>
@@ -635,7 +635,7 @@ class Account extends React.Component {
     return (
       <form className='form' onSubmit={this.onNotificationSubmit}>
         <div className='fold-container'>
-          <Fold title={strings.accountSubscriptionPreferences} foldClass='margin-reset'>
+          <Fold title={strings.accountSubscriptionPreferences} foldClass='margin-reset' extraClass='fold--main'>
             <FormCheckboxGroup
               label={strings.accountSubscriptionTypes}
               description={strings.accountSubscriptionTypesDescription}
@@ -758,7 +758,7 @@ class Account extends React.Component {
     return (<div className='fold-container'>
               <section className='fold' id='notifications'>
                 <div className='inner'>
-                  <h2 className='fold__title'>
+                  <h2 className='fold__title spacing-b'>
                     <Translate stringId='accountOperationFollowing'/>
                   </h2>
                   <div className='clearfix'>
@@ -810,40 +810,52 @@ class Account extends React.Component {
               </div>
             </div>
           </header>
-          <Tabs
-            selectedIndex={this.TAB_DETAILS.map(({ hash }) => hash).indexOf(this.props.location.hash)}
-            onSelect={index => this.handleTabChange(index)}
-          >
-            <TabList>
-              {this.TAB_DETAILS.map(tab => (
-                <Tab key={tab.title}>{tab.title}</Tab>
-              ))}
-            </TabList>
+          <div className='tab__wrap'>
+            <Tabs
+              selectedIndex={this.TAB_DETAILS.map(({ hash }) => hash).indexOf(this.props.location.hash)}
+              onSelect={index => this.handleTabChange(index)}
+            >
+              <TabList>
+                {this.TAB_DETAILS.map(tab => (
+                  <Tab key={tab.title}>{tab.title}</Tab>
+                ))}
+              </TabList>
 
-            <div className='inpage__body row'>
-              <div className='inner'>
-                <TabPanel>
-                  <TabContent>
-                    {this.renderOperationsFollowing()}
-                    {this.renderAccountInformation()}
-                  </TabContent>
-                </TabPanel>
-                <TabPanel>
-                  <TabContent>
-                    {this.renderFieldReports()}
-                  </TabContent>
-                  <TabContent isError={this.props.profile.fetched && this.props.profile.error} errorMessage={strings.accountSubscriptionError} title={strings.accountSubscriptionTitle}>
-                    {this.props.profile.fetched && this.renderSubscriptionForm()}
-                  </TabContent>
-                </TabPanel>
-                <TabPanel>
-                  <TabContent isError={!this.isPerPermission()} errorMessage={strings.accountPerError} title={strings.accountPerTitle}>
-                    <PerAccountTab user={this.props.user} />
-                  </TabContent>
-                </TabPanel>
+              <div className='inpage__body'>
+                <div className='inner'>
+                  <TabPanel>
+                    <TabContent>
+                      <div className='container-lg'>
+                        {this.renderOperationsFollowing()}
+                      </div>
+                      <div className='container-lg'>
+                        {this.renderAccountInformation()}
+                      </div>
+                    </TabContent>
+                  </TabPanel>
+                  <TabPanel>
+                    <TabContent>
+                      <div className='container-lg'>
+                        {this.renderFieldReports()}
+                      </div>
+                    </TabContent>
+                    <TabContent isError={this.props.profile.fetched && this.props.profile.error} errorMessage={strings.accountSubscriptionError} title={strings.accountSubscriptionTitle}>
+                      <div className='container-lg'>
+                        {this.props.profile.fetched && this.renderSubscriptionForm()}
+                      </div>
+                    </TabContent>
+                  </TabPanel>
+                  <TabPanel>
+                    <TabContent isError={!this.isPerPermission()} errorMessage={strings.accountPerError} title={strings.accountPerTitle}>
+                      <div className='container-lg'>
+                        <PerAccountTab user={this.props.user} />
+                      </div>
+                    </TabContent>
+                  </TabPanel>
+                </div>
               </div>
-            </div>
-          </Tabs>
+            </Tabs>
+          </div>
         </section>
       </App>
     );

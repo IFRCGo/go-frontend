@@ -97,17 +97,17 @@
 
       .tc-select-input {
         .Select-control {
-          border: 0;
+          //border: 0;
           border-radius: 0;
           background-color: $grey-mist;
-          border-bottom: 1px solid $primary-color;
+          //border-bottom: 1px solid $primary-color;
           font-size: $font-size-xs;
         }
 
         .Select-placeholder {
-          padding: 0 16px;
-          color: $base-color;
-          font-weight: $base-font-medium;
+          //padding: 0 16px;
+          //color: $base-color;
+          //font-weight: $base-font-medium;
         }
 
         &:focus-within {
@@ -124,9 +124,9 @@
           }
         }
 
-        .Select-multi-value-wrapper {
-          padding: 6px;
-        }
+        //.Select-multi-value-wrapper {
+          //padding: 6px;
+        //}
 
         .Select-value {
           background-color: $grey-cloud;

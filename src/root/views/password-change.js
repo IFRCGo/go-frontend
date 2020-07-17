@@ -27,7 +27,7 @@ function PasswordChange() {
         </header>
         <div className='inpage__body'>
           <div className='inner'>
-            <div className='prose prose--responsive'>
+            <div className='prose'>
               <NewPassword verifyOldPassword={true} />
             </div>
           </div>

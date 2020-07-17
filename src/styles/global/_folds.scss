@@ -4,7 +4,7 @@
 
 .fold-container {
   margin-bottom: 50px !important;
-  float: left;
+  //float: left;
   width: 100%;
 }
 
@@ -77,7 +77,6 @@
   text-transform: uppercase;
   letter-spacing: 1.6px;
   margin-bottom: 0;
-  @include col;
 }
 
 .fold__description {
@@ -136,6 +135,14 @@
     flex-wrap: wrap;
     align-items: baseline;
   }
+
+  .fold__title {
+    @include col;
+  }
+  
+  .fold__title__linkwrap {  
+    @include col;
+  }
 }
 
 .fold__title--inline {
@@ -152,7 +159,6 @@
 .fold__title__linkwrap {  
   font-size: $font-size-sm;
   //color: $primary-color;
-  @include col;
   flex-shrink: 0;
   display: flex;
   align-items: center;

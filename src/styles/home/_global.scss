@@ -655,8 +655,8 @@
 
 .report__list--header {
   margin-bottom: 1rem;
-  float: left;
-  width: 100%;
+  //float: left;
+  //width: 100%;
 }
 
 .report__list--updated {
@@ -685,15 +685,17 @@
 
   .key-emergencies-item {
     margin-bottom: $global-spacing;
-    @include media(medium-up) {
+    display: flex;
+
+    //@include media(medium-up) {
       //@include column(6/12)
-    }
-    @include media(medium-up) {
+    //}
+    //@include media(medium-up) {
       //@include column(4/12)
-    }
-    &:first-child {
+    //}
+    //&:first-child {
       //margin-inline-start: 0;
-    };
+    //};
 
     > a {
       color: $base-color;
@@ -742,25 +744,28 @@
 }
 
 .card__title__wrap {
-  @include media(medium-up) {
-    @include column(6/12);
-  }
+  //@include media(medium-up) {
+    //@include column(6/12);
+  //}
 
-  @include media(large-up) {
-    @include column(7/12);
-  }
+  //@include media(large-up) {
+    //@include column(7/12);
+  //}
+
+  //@include col(50%);
 }
 
 .button--key-emergencies__wrap {
   margin-top: $global-spacing / 2;
 
-  @include media(medium-up) {
-    @include column(6/12);
-  }
+  //@include media(medium-up) {
+    //@include column(6/12);
+  //}
 
-  @include media(large-up) {
-    @include column(5/12);
-  }
+  //@include media(large-up) {
+    //@include column(5/12);
+  //}
+  //@include col(50%);
 }
 
 .button--key-emergencies {

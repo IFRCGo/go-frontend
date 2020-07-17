@@ -28,74 +28,76 @@ export default class ContactRow extends React.Component {
     const { strings } = this.context;
 
     return (
-      <div className='form__group contact-row'>
-        <div className='form__inner-header'>
-          <div className='form__inner-headline'>
-            <label className='form__label'>{label}</label>
-            <p className='form__description'>{description}</p>
+      <div className='form__group contact-row form__group__fr'>
+        <div className='form__group__wrap'>
+          <div className='form__inner-header'>
+            <div className='form__inner-headline'>
+              <label className='form__label'>{label}</label>
+              <p className='form__description'>{description}</p>
+            </div>
           </div>
-        </div>
-        <div className='form__inner-body'>
-          <div className='row'>
-            <div className='col col-6-mid'>
-              <FormInput
-                label={strings.cmpContactName}
-                type='text'
-                name={`${name}[name]`}
-                id={`${name}-name`}
-                classLabel='label-secondary'
-                value={values.name}
-                onChange={this.onFieldChange.bind(this, 'name')} >
-                <FormError
-                  errors={errors}
-                  property={`${fieldKey}.name`}
-                />
-              </FormInput>
-            </div>
-            <div className='col col-6-mid'>
-              <FormInput
-                label={strings.cmpContactTitle}
-                type='text'
-                name={`${name}[title]`}
-                id={`${name}-title`}
-                classLabel='label-secondary'
-                value={values.title}
-                onChange={this.onFieldChange.bind(this, 'title')} >
-                <FormError
-                  errors={errors}
-                  property={`${fieldKey}.title`}
-                />
-              </FormInput>
-            </div>
-            <div className='col col-6-mid'>
-              <FormInput
-                label={strings.cmpContactEmail}
-                type='text'
-                name={`${name}[email]`}
-                id={`${name}-email`}
-                classLabel='label-secondary'
-                value={values.email}
-                onChange={this.onFieldChange.bind(this, 'email')} >
-                <FormError
-                  errors={errors}
-                  property={`${fieldKey}.email`}
-                />
-              </FormInput>
-            </div>
-            <div className='col col-6-mid'>
-              <FormInput
-                label={strings.cmpContactPhone}
-                type='text'
-                name={`${name}[phone]`}
-                id={`${name}-phone`}
-                classLabel='label-secondary'
-                value={values.phone}
-                onChange={this.onFieldChange.bind(this, 'phone')} >
-                <FormError
-                  errors={errors}
-                  property={`${fieldKey}.phone`}
-                />
-              </FormInput>
+          <div className='form__inner-body'>
+            <div className='row flex-mid'>
+              <div className='col col-6-mid spacing-b'>
+                <FormInput
+                  label={strings.cmpContactName}
+                  type='text'
+                  name={`${name}[name]`}
+                  id={`${name}-name`}
+                  classLabel='label-secondary'
+                  value={values.name}
+                  onChange={this.onFieldChange.bind(this, 'name')} >
+                  <FormError
+                    errors={errors}
+                    property={`${fieldKey}.name`}
+                  />
+                </FormInput>
+              </div>
+              <div className='col col-6-mid spacing-b'>
+                <FormInput
+                  label={strings.cmpContactTitle}
+                  type='text'
+                  name={`${name}[title]`}
+                  id={`${name}-title`}
+                  classLabel='label-secondary'
+                  value={values.title}
+                  onChange={this.onFieldChange.bind(this, 'title')} >
+                  <FormError
+                    errors={errors}
+                    property={`${fieldKey}.title`}
+                  />
+                </FormInput>
+              </div>
+              <div className='col col-6-mid'>
+                <FormInput
+                  label={strings.cmpContactEmail}
+                  type='text'
+                  name={`${name}[email]`}
+                  id={`${name}-email`}
+                  classLabel='label-secondary'
+                  value={values.email}
+                  onChange={this.onFieldChange.bind(this, 'email')} >
+                  <FormError
+                    errors={errors}
+                    property={`${fieldKey}.email`}
+                  />
+                </FormInput>
+              </div>
+              <div className='col col-6-mid'>
+                <FormInput
+                  label={strings.cmpContactPhone}
+                  type='text'
+                  name={`${name}[phone]`}
+                  id={`${name}-phone`}
+                  classLabel='label-secondary'
+                  value={values.phone}
+                  onChange={this.onFieldChange.bind(this, 'phone')} >
+                  <FormError
+                    errors={errors}
+                    property={`${fieldKey}.phone`}
+                  />
+                </FormInput>
+              </div>
             </div>
           </div>
         </div>

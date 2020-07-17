@@ -52,41 +52,43 @@ export default class PlanResponseRow extends React.Component {
     const { strings } = this.context;
 
     return (
-      <div className='form__group plan-response-row'>
-        <div className='form__inner-header'>
-          <div className='form__inner-headline'>
-            <label className='form__label'>{label}</label>
-            <div className="form__description">
-              {description}
+      <div className='form__group plan-response-row form__group__fr'>
+        <div className='form__group__wrap'>
+          <div className='form__inner-header'>
+            <div className='form__inner-headline'>
+              <label className='form__label'>{label}</label>
+              <div className="form__description">
+                {description}
+              </div>
             </div>
           </div>
-        </div>
-        <div className='form__inner-body'>
-          <FormRadioGroup
-            label={strings.cmpPlannedStatus}
-            name={`${name}[status]`}
-            id={`${name}-status`}
-            classLabel='visually-hidden'
-            classWrapper='resp-status'
-            options={options}
-            selectedOption={values.status}
-            onChange={this.onFieldChange.bind(this, 'status')}
-            onClick={this.onRadioClick.bind(this)} />
+          <div className='form__inner-body row flex-sm'>
+            <FormRadioGroup
+              label={strings.cmpPlannedStatus}
+              name={`${name}[status]`}
+              id={`${name}-status`}
+              classLabel='visually-hidden'
+              classWrapper='resp-status col col-8-sm'
+              options={options}
+              selectedOption={values.status}
+              onChange={this.onFieldChange.bind(this, 'status')}
+              onClick={this.onRadioClick.bind(this)} />
 
-          <FormInput
-            label={valueFieldLabel}
-            type='text'
-            name={`${name}[value]`}
-            id={`${name}-value`}
-            classLabel='label-secondary'
-            classWrapper='resp-value'
-            value={values.value}
-            onChange={this.onFieldChange.bind(this, 'value')} >
-            <FormError
-              errors={errors}
-              property={`${fieldKey}.value`}
-            />
-          </FormInput>
+            <FormInput
+              label={valueFieldLabel}
+              type='text'
+              name={`${name}[value]`}
+              id={`${name}-value`}
+              classLabel='label-secondary'
+              classWrapper='resp-value col col-4-sm'
+              value={values.value}
+              onChange={this.onFieldChange.bind(this, 'value')} >
+              <FormError
+                errors={errors}
+                property={`${fieldKey}.value`}
+              />
+            </FormInput>
+          </div>
         </div>
       </div>
     );

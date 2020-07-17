@@ -93,6 +93,56 @@ select.form__control {
   }
 }
 
+/* Form Control: Filters */
+.form__control--filter {
+  color: $grey-silver;
+  height: 30px;
+  padding-top: 0.18rem;
+
+  &.form__control--medium {
+    padding-top: 0.18rem;
+    height: 30px;
+  }
+
+  .Select-multi-value-wrapper {
+    //padding-top: 0.18rem;
+    //padding-inline-start: 0.5rem;
+    //padding-inline-end: 2rem;
+    //padding-bottom: 0.25rem;
+    padding: $spacing-half 0;
+  }
+
+  .Select-control {
+    height: 30px;
+    border: none;
+    border-bottom: 1px solid;
+    border-bottom-color: $grey-mist;
+  }
+
+  .is-open {
+    .Select-control {
+      border-bottom-color: $primary-color;
+    }
+  }
+
+  .Select-placeholder {
+    color: $grey-silver;
+  }
+
+  &.form__control--brand {
+    border-bottom-color: $grey-mist;
+  }
+  
+  &:focus, &.active, &:active, &:hover {
+    box-shadow: none;
+  }
+
+  &.active {
+    color: $base-font-color;
+    border-bottom-color: $primary-color;
+  }
+}
+
 /* Form Control: Brand: with bottom red border */
 .form__control--brand {
   box-shadow: none;
@@ -286,7 +336,7 @@ input, select, textarea {
 
 .form__group {
   @extend .clearfix;
-  margin-bottom: $global-spacing * 4;
+  margin-bottom: $spacing-3;
 
   > *:last-child {
     margin-bottom: 0;
@@ -913,8 +963,8 @@ label[for] {
 
 .form__help {
   text-align: right;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
+  font-size: $font-size-sm;
+  //line-height: 1.25rem;
   color: rgba($base-font-color, 0.48);
   margin-top: $global-spacing / 2;
 

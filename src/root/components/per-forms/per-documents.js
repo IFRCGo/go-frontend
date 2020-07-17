@@ -64,7 +64,7 @@ const PerDocuments = ({perOverviewForm, perForm}) => {
                   {strings.perdocumentOverview} - {document.date_of_current_capacity_assessment.substring(0, 10)} - {typeof document.user !== 'undefined' && document.user !== null ? document.user.first_name + ' ' + document.user.last_name : null}
                 </div>
                 <div className='list__each__button'>
-                  <Link className='button button--small button--secondary-bounded' to={'/view-per-forms/overview/' + document.id}>
+                  <Link className='button button--xsmall button--secondary-bounded' to={'/view-per-forms/overview/' + document.id}>
                     <Translate stringId='perdocumentView'/>
                   </Link>
                 </div>
@@ -77,7 +77,7 @@ const PerDocuments = ({perOverviewForm, perForm}) => {
                   {document.code.toUpperCase()} - {document.name} - {document.updated_at.substring(0, 10)} - {typeof document.user !== 'undefined' && document.user !== null ? document.user.username : null}
                 </div>
                 <div className='list__each__button'>
-                  <Link className='button button--small button--secondary-bounded' to={'/view-per-forms/' + document.code + '/' + document.id}>
+                  <Link className='button button--xsmall button--secondary-bounded' to={'/view-per-forms/' + document.code + '/' + document.id}>
                     <Translate stringId='perdocumentView'/>
                   </Link>
                 </div>
