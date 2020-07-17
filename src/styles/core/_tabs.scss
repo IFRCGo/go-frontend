@@ -28,10 +28,10 @@
     background-color: $grey-mist;
     position: relative;
     list-style: none;
-    padding: $spacing $spacing-3;
+    padding: $spacing $spacing-2;
     //font-size: 120%;
     cursor: pointer;
-    margin-inline-end: $spacing;
+    margin-inline-end: ($spacing / 1.5);
 
     &:last-of-type {
       margin-inline-end: 0;    
@@ -51,8 +51,8 @@
     }
 
     &:focus {
-      box-shadow: 0 0 5px hsl(208, 99%, 50%);
-      border-color: hsl(208, 99%, 50%);
+      box-shadow: 0 0 5px $grey-pearl;
+      //border-color: $grey-pear;
       outline: none;
 
       &:after {

@@ -179,27 +179,27 @@
   }
 
   &__icon {
-    text-align: center;
+    //text-align: center;
     color: $primary-color;
     display: block;
     font-size: 2.2rem;
     padding-bottom: ($global-spacing /2);
-    margin-bottom: auto;
+    //margin-bottom: auto;
 
     &.collecticon-cash-notes {
-      font-size: 1.6rem;
+      font-size: 1.5rem;
     }
 
      &.collecticon-people-arrows {
-      font-size: 3.2em;
+      font-size: 3em;
     }
 
     &.collecticon-rc {
-      font-size: 3.3em;
+      font-size: 3.1em;
     }
 
     &.collecticon-rc-appeals {
-      font-size: 3.3em;
+      font-size: 3.1em;
     }
   }
 
