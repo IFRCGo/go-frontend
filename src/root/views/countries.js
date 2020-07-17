@@ -633,9 +633,10 @@ class AdminArea extends SFPComponent {
             <div className='inpage__header-actions text-center'>
               <a
                 href={url.resolve(api, `api/country/${data.id}/change/`)}
-                className='link'
+                className='link link--with-icon flex-justify-center'
               >
                 <Translate stringId='countryEditCountry' />
+                <span className='collecticon-chevron-right link--with-icon-inner'></span>
               </a>
             </div>
           </div>

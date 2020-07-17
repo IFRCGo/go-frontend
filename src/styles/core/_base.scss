@@ -150,6 +150,22 @@ a.link--primary {
   font-size: $font-size-sm;
 }
 
+.link--with-icon {
+  display: flex;
+  align-items: center;
+  border: none; // to reset for icon buttons
+  background: none; // to reset for icon buttons
+  cursor: pointer;
+}
+
+.link--with-icon-inner {
+  &:before {
+    font-size: $font-size-xxs;
+    margin-inline-start: ($spacing-half / 2);
+  }
+}
+
+
 .link--underline {
   text-decoration: underline;
   font-weight: $base-font-medium;
