@@ -53,27 +53,30 @@
 }
 
 .key-emergencies-list--preparedness {
-  font-size: 145%;
-  @include column (8/12);
+  font-size: $font-size-xl;
+  //@include column (8/12);
 
-  @include media(small-up) {
-    @include column (8/12);
-  }
+  //@include media(small-up) {
+    //@include column (8/12);
+  //}
 }  
 
 .key-emergencies-list-image {
-  @include column (4/12);
+  //@include column (4/12);
 
-  @include media(small-up) {
-    @include column (3/12);
-  }
+  //@include media(small-up) {
+    //@include column (3/12);
+  //}
+
+  display: flex;
 
   img {
     max-width: 100%;
     height: auto;
 
     @include media(small-up) {
-      float: right;
+      //float: right;
+      margin-left: auto;
     }
   }
 }
@@ -97,5 +100,15 @@
   text {
     fill: lighten($secondary-color, 35%);
     font-weight: $base-font-semi-bold;
+  }
+}
+
+.col--preparedness-ns {
+  @include media(small) {
+    width: 33.33%;
+  }
+
+  @include media(medium) {
+    width: 20%;
   }
 }

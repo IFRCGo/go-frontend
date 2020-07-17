@@ -54,7 +54,7 @@ export default class NationalSocietiesEngagedPer extends PureComponent {
 
     this.preparedData.forEach((region) => {
       charts.push(
-        <div key={'regionChart' + region.region.id} style={{float: 'left', width: '20%'}}>
+        <div key={'regionChart' + region.region.id} className='col col--preparedness-ns'>
           <div style={{margin: 'auto', width: 'fit-content'}}>
             <PieChart width={160} height={160}>
               <Pie
@@ -96,7 +96,9 @@ export default class NationalSocietiesEngagedPer extends PureComponent {
     return (
       <div className='inner'>
         <Fold title={strings.nationalSocietiesTitle} foldClass='margin-reset' extraClass='fold--main'>
-          {charts}
+          <div className='row flex-sm'>
+            {charts}
+          </div>
         </Fold>
       </div>
     );

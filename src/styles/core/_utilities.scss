@@ -291,7 +291,7 @@ $spacing-global: (
 
 // Globals: Spacing: Bottom
 
-// Generates placeholders and classes for top spacing
+// Generates placeholders and classes for bottom spacing
 // Uses padding bottom
 // E.g. .global-spacing-b, %global-spacing-b, .global-spacing-2-b, %global-spacing-3-b, etc.
 
@@ -458,5 +458,81 @@ $spacing: (
 @each $name, $value in $spacing {
   .#{$name}, %#{$name} {
     padding: $value;
+  }
+}
+
+
+/* Margin Utilities: Margin (IN PX)
+   ========================================================================== */
+
+$margins: (
+  'margin': 12px, // Change this later
+  'margin-2': $spacing-2,
+  'margin-3': $spacing-3,
+  'margin-4': $spacing-4,
+  'margin-5': $spacing-5,
+  'margin-half': $spacing-half,
+);
+
+
+// Margin: Vertical (IN PX)
+
+// Generates placeholders and classes for vertical margins
+// Uses margin top and bottom
+// E.g. .margin-v, %margin-v, .margin-2-v, %margin-2-v, etc.
+
+@each $name, $value in $margins {
+  .#{$name}-v, %#{$name}-v {
+    margin-top: $value;
+    margin-bottom: $value;
+  }
+}
+
+// Margin: Horizontal
+
+// Generates placeholders and classes for horizontal margins
+// Uses margin left and right
+// E.g. .margin-h, %margin-h, .margin-2-h, %margin-2-h, etc.
+
+@each $name, $value in $margins {
+  .#{$name}-h, %#{$name}-h {
+    margin-inline-start: $value;
+    margin-inline-end: $value;
+  }
+}
+
+// Margin: Top
+
+// Generates placeholders and classes for top margin
+// Uses margin top
+// E.g. .margin-t, %margin-t, .margin-2-t, %margin-3-t, etc.
+
+@each $name, $value in $margins {
+  .#{$name}-t, %#{$name}-t {
+    margin-top: $value;
+  }
+}
+
+// Margin: Bottom
+
+// Generates placeholders and classes for bottom margin
+// Uses margin bottom
+// E.g. .margin-b, %margin-b, .margin-2-b, %margin-3-b, etc.
+
+@each $name, $value in $margins {
+  .#{$name}-b, %#{$name}-b {
+    margin-bottom: $value;
+  }
+}
+
+// Margin
+
+// Generates placeholders and classes for margin
+// Uses margin on all four sides
+// E.g. .margin, %margin, .margin-2, %margin-2, etc.
+
+@each $name, $value in $margins {
+  .#{$name}, %#{$name} {
+    margin: $value;
   }
 }

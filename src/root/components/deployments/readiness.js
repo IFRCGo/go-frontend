@@ -58,7 +58,7 @@ class Readiness extends React.Component {
     const owner = eruOwner.national_society_country;
 
     return (
-      <div className='col col-6-mid'>
+      <div className='col col-6-sm'>
         <div className='readiness__card' key={eruOwner.id}>
           <div className='readiness__card-header row flex'>
             <div className='col col-7'>
@@ -119,7 +119,7 @@ class Readiness extends React.Component {
       });
     return (
       <div className='row flex-mid'>
-        <div className='readiness__filters col col-3-mid'>
+        <div className='readiness__filters col col-3-mid spacing-2-b'>
           <CheckboxGroup
             label={strings.readinessFilteredERUs}
             classLabel='fold__title'
@@ -129,13 +129,13 @@ class Readiness extends React.Component {
             options={eruOptions}
             values={this.state.filters}
             onChange={this.onChange} />
-          <button className='button button--secondary-light' onClick={this.clearFilters}>
+          <button className='button button--secondary-light button--small' onClick={this.clearFilters}>
             <Translate stringId='readinessResetFilters'/>
           </button>
         </div>
         <div className='col col-9-mid'>
           <div className='readiness__header'>
-            <h2 className='fold__title'>National Societies</h2>
+            <h2 className='fold__title spacing-b'>National Societies</h2>
           </div>
           <div className='readiness__cards row flex-sm'>
             {filtered.map(this.renderCard)}

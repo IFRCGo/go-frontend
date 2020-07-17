@@ -68,6 +68,13 @@
   @include container($max-width: false);
 }
 
+// Container: Reset Padding for Large Container: Modifier
+
+.container-lg--padding-reset {
+  padding-left: $grid-gutter;
+  padding-right: $grid-gutter;
+}
+
 
 // ---------------------------------------------
 // GRID: CLEARFIX
