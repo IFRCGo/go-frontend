@@ -43,7 +43,7 @@ export default class Fold extends React.Component {
 
   render () {
     const extraClassName = 'fold--main';
-    const extraContainerClassName = 'padding-reset';
+    const extraContainerClassName = 'container-lg--padding-reset';
 
     // default should be to show the header
     let showHeader;

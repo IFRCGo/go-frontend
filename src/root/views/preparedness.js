@@ -153,23 +153,31 @@ class Preparedness extends React.Component {
             {link: '/', name: strings.breadCrumbHome}
           ]} />
           <header className='inpage__header'>
-            <div className='inner'>
+            <div className='inner container-lg'>
               <div className='inpage__headline'>
                 <h1 className='inpage__title'>
                   <Translate stringId='preparednessHeading' />
                 </h1>
-                <p className='inpage__introduction'>
+                <p className='inpage__introduction container-sm'>
                   <Translate stringId='preparednessDescription' />
                 </p>
               </div>
             </div>
           </header>
-          <div className='inpage__body row'>
+          <div className='inpage__body'>
             <PreparednessHeader />
-            { this.geoJsonBuilt && this.state.geoJsonFinal !== null && this.state.geoJsonFinal.data.geoJSON.features.length > 0 ? <PerMap data={this.state.geoJsonFinal} noExport={true} noRenderEmergencies={true} overviewData={this.props.perOverviewForm} /> : null }
-            { this.props.getPerEngagedNsPercentage.fetched && nsEngagedHasData ? <NationalSocietiesEngagedPer data={this.props.getPerEngagedNsPercentage} /> : null }
-            { this.props.getPerGlobalPreparedness.fetched && this.props.perWorkPlan.fetched ? <GlobalPreparednessHighlights data={this.props.getPerGlobalPreparedness} prioritizationData={this.state.topPrioritizedComponents} perPermission={this.state.perPerMission} /> : null }
-            <ContactPer />
+            <div className='container-lg margin-5-v'>
+              { this.geoJsonBuilt && this.state.geoJsonFinal !== null && this.state.geoJsonFinal.data.geoJSON.features.length > 0 ? <PerMap data={this.state.geoJsonFinal} noExport={true} noRenderEmergencies={true} overviewData={this.props.perOverviewForm} /> : null }
+            </div>
+            <div className='margin-5-t'>
+              { this.props.getPerEngagedNsPercentage.fetched && nsEngagedHasData ? <NationalSocietiesEngagedPer data={this.props.getPerEngagedNsPercentage} /> : null }
+            </div>
+            <div className='margin-2-b'>
+              { this.props.getPerGlobalPreparedness.fetched && this.props.perWorkPlan.fetched ? <GlobalPreparednessHighlights data={this.props.getPerGlobalPreparedness} prioritizationData={this.state.topPrioritizedComponents} perPermission={this.state.perPerMission} /> : null }
+            </div>
+            <div className='container-lg'>
+              <ContactPer />
+            </div>
           </div>
         </section>
       </App>);
