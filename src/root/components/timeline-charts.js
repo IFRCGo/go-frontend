@@ -212,7 +212,7 @@ class TimelineCharts extends React.Component {
 
   render () {
     return (
-      <div className='stats-chart'>
+      <div className='stats-chart margin-t margin-3-b'>
         <h1 className='visually-hidden'>
           <Translate stringId='timeLineChartHeading'/>
         </h1>

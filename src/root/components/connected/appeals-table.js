@@ -283,7 +283,7 @@ class AppealsTable extends SFPComponent {
             />) : null}
           {this.props.fullscreen ? null : (
             <DisplayTable
-              className='table table--border-bottom table--active-ops'
+              className='table table--border-bottom table--box-shadow table--active-ops margin-half-t'
               headings={headings}
               rows={rows}
               pageCount={data.count / this.state.table.limit}
