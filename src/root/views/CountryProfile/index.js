@@ -89,27 +89,35 @@ class CountryOverview extends React.PureComponent {
             </div>
           </div>
         </div>
-        <div className='population-and-climate-section'>
-          <PopulationMap
-            countryId={countryId}
-            className='population-map'
-            data={data.wb_population}
-          />
-          <ClimateChart
-            className='climate-chart'
-            yearlyEvents={data.climate_events}
-          />
+        <div className='population-and-climate-section row flex-sm'>
+          <div className='col col-6-sm'>
+            <PopulationMap
+              countryId={countryId}
+              className='population-map'
+              data={data.wb_population}
+            />
+          </div>
+          <div className='col col-6-sm'>
+            <ClimateChart
+              className='climate-chart'
+              yearlyEvents={data.climate_events}
+            />
+          </div>
         </div>
-        <div className={styles.keyEventsSection}>
-          <KeyClimateEvents
-            averageTemperature={data.avg_temperature}
-            averageRainfallPrecipitation={data.avg_rainfall_precipitation}
-            rainySeasonStatus={data.rainy_season_display}
-          />
-          <SocialEvents
-            className={styles.socialEvents}
-            data={data.social_events}
-          />
+        <div className={`${styles.keyEventsSection}} row flex-sm`}>
+          <div className='col col-6-sm'>
+            <KeyClimateEvents
+              averageTemperature={data.avg_temperature}
+              averageRainfallPrecipitation={data.avg_rainfall_precipitation}
+              rainySeasonStatus={data.rainy_season_display}
+            />
+          </div>
+          <div className='col col-6-sm'>
+            <SocialEvents
+              className={styles.socialEvents}
+              data={data.social_events}
+            />
+          </div>
         </div>
         <SeasonalCalendar
           className='seasonal-calender'

@@ -72,11 +72,15 @@
   }
 }
 
-.fold__title {
+@mixin fold__title {
   font-size: 1.14rem;
   text-transform: uppercase;
   letter-spacing: 1.6px;
   margin-bottom: 0;
+}
+
+.fold__title {
+  @include fold__title;
 }
 
 .fold__description {
