@@ -113,9 +113,9 @@ class PreparednessWorkPlan extends React.Component {
     const components = [];
     const statusDropdown = [];
     const benchmarks = [];
-    const tableRowStyle = {width: '100%', float: 'left'};
-    const tableCellStyle = {width: '10%', float: 'left', padding: '5px', overflowWrap: 'break-word'};
-    const tableTitleCellStyle = {width: '10%', float: 'left', fontWeight: 'bold', padding: '5px'};
+    const tableRowStyle = {width: '100%'};
+    //const tableCellStyle = {width: '10%', float: 'left', padding: '5px', overflowWrap: 'break-word'};
+    //const tableTitleCellStyle = {width: '10%', float: 'left', fontWeight: 'bold', padding: '5px'};
     const tableTitleDoubleCellStyle = {width: '20%', float: 'left', fontWeight: 'bold', padding: '5px'};
     const lightBackground = {backgroundColor: '#fff'};
     const darkBackground = {backgroundColor: '#fff'};
@@ -124,40 +124,40 @@ class PreparednessWorkPlan extends React.Component {
     this.props.getPerWorkPlan.data.results.forEach((workPlan, index) => {
       const timeline = new Date(workPlan.timeline);
       workPlans.push((
-        <div key={'workplanList' + index} style={Object.assign({}, tableRowStyle, index % 2 === 0 ? lightBackground : darkBackground, inputWidthFitDiv)}>
-          <div style={tableCellStyle}>
+        <div key={'workplanList' + index} style={Object.assign({}, tableRowStyle, index % 2 === 0 ? lightBackground : darkBackground, inputWidthFitDiv)} className='row-sm flex spacing-v border-bottom-base'>
+          <div className='col-sm flex-1'>
             {PRIORITIZATION[workPlan.prioritization]}
           </div>
-          <div style={tableCellStyle}>
+          <div className='col-sm flex-1'>
             {workPlan.components}
           </div>
-          <div style={tableCellStyle}>
+          <div className='col-sm flex-1'>
             {workPlan.benchmark}
           </div>
-          <div style={tableCellStyle}>
+          <div className='col-sm flex-1'>
             {workPlan.actions}
           </div>
-          <div style={tableCellStyle}>
+          <div className='col-sm flex-1'>
             {workPlan.comments}
           </div>
-          <div style={tableCellStyle}>
+          <div className='col-sm flex-1'>
             {timeline.getMonth() + 1}/{timeline.getDate()}/{timeline.getFullYear()}
           </div>
-          <div style={tableCellStyle}>
+          <div className='col-sm flex-1'>
             {workPlan.focal_point}
           </div>
-          <div style={tableCellStyle}>
+          <div className='col-sm flex-1'>
             {STATUS[workPlan.status]}
           </div>
-          <div style={Object.assign({}, tableCellStyle, textToCenter)}>
+          <div style={Object.assign({})} className='col-sm flex-1'>
 
-            <label className={c(`form__option--custom-checkbox`, {'form__option--inline': 'inline'})}>
+            <label className={c(`form__option--custom-checkbox margin-reset`, {'form__option--inline': 'inline'})}>
               <input type='checkbox' name='test' value={true} checked={workPlan.support_required} />
               <span className='form__option__ui'></span>
             </label>
 
           </div>
-          <div style={Object.assign({}, tableCellStyle, textToCenter)}>
+          <div style={Object.assign({})} className='col-sm flex-1'>
             {
               typeof workPlan.id !== 'undefined'
                 ? (<button className='button button--small button--primary-bounded' id={'workplan' + workPlan.id} onClick={this.deleteWorkPlan}>Delete</button>)
@@ -181,8 +181,8 @@ class PreparednessWorkPlan extends React.Component {
     });
     const { strings } = this.context;
     return (
-      <Fold id='per-work-plan' title={strings.preparednessWorkPlanTitle} wrapper_class='preparedness' foldClass='margin-reset'>
-        <div style={{borderBottom: '1px solid #000', paddingBottom: '20px', float: 'left', width: '100%'}}>
+      <Fold id='per-work-plan' title={strings.preparednessWorkPlanTitle} wrapper_class='preparedness' foldClass='margin-reset' extraClass='fold--main' extraContainerClass='container-lg--padding-reset'>
+        <div className='spacing-2-b'>
           {!this.state.showAddModul ? <button className='button button--small button--primary-bounded' onClick={this.showAddModul}>
                                         <Translate stringId='preparednessWorkPlanAdd'/>
                                       </button> : null}
@@ -354,33 +354,35 @@ class PreparednessWorkPlan extends React.Component {
               </div>
             ) : null}
 
-          <div className='global-margin-2-t'>
-            <div style={tableTitleCellStyle}>
-              <Translate stringId='preparednessWorkPlanPrioritizationLabel'/>
-            </div>
-            <div style={tableTitleCellStyle}>
-              <Translate stringId='preparednessWorkPlanComponentLabel'/>
-            </div>
-            <div style={tableTitleCellStyle}>
-              <Translate stringId='preparednessWorkPlanBenchmarkLabel'/>
-            </div>
-            <div style={tableTitleCellStyle}>
-              <Translate stringId='preparednessWorkPlanActionsLabel'/>
-            </div>
-            <div style={tableTitleCellStyle}>
-              <Translate stringId='preparednessWorkPlanCommentsLabel'/>
-            </div>
-            <div style={tableTitleCellStyle}>
-              <Translate stringId='preparednessWorkPlanTimelineLabel'/>
-            </div>
-            <div style={tableTitleCellStyle}>
-              <Translate stringId='preparednessWorkPlanFocalPointLabel'/>
-            </div>
-            <div style={tableTitleCellStyle}>
-              <Translate stringId='preparednessWorkPlanStatusLabel'/>
-            </div>
-            <div style={tableTitleDoubleCellStyle}>
-              <Translate stringId='preparednessWorkPlanSupportLabel'/>
+          <div>
+            <div className='spacing-2-t flex row-sm'>
+              <div className='col-sm flex-1 base-font-semi-bold spacing-b'>
+                <Translate stringId='preparednessWorkPlanPrioritizationLabel'/>
+              </div>
+              <div className='col-sm flex-1 base-font-semi-bold spacing-b'>
+                <Translate stringId='preparednessWorkPlanComponentLabel'/>
+              </div>
+              <div className='col-sm flex-1 base-font-semi-bold spacing-b'>
+                <Translate stringId='preparednessWorkPlanBenchmarkLabel'/>
+              </div>
+              <div className='col-sm flex-1 base-font-semi-bold spacing-b'>
+                <Translate stringId='preparednessWorkPlanActionsLabel'/>
+              </div>
+              <div className='col-sm flex-1 base-font-semi-bold spacing-b'>
+                <Translate stringId='preparednessWorkPlanCommentsLabel'/>
+              </div>
+              <div className='col-sm flex-1 base-font-semi-bold spacing-b'>
+                <Translate stringId='preparednessWorkPlanTimelineLabel'/>
+              </div>
+              <div className='col-sm flex-1 base-font-semi-bold spacing-b'>
+                <Translate stringId='preparednessWorkPlanFocalPointLabel'/>
+              </div>
+              <div className='col-sm flex-1 base-font-semi-bold spacing-b'>
+                <Translate stringId='preparednessWorkPlanStatusLabel'/>
+              </div>
+              <div className='col-sm flex-1 base-font-semi-bold spacing-b'>
+                <Translate stringId='preparednessWorkPlanSupportLabel'/>
+              </div>
             </div>
 
             {workPlans}

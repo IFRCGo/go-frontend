@@ -449,7 +449,7 @@ class AdminArea extends SFPComponent {
             noPaginate={true}
           />
           <div className='fold__footer'>
-            <Link className='link--primary export--link' to={'/appeals/all/?country=' + id}>
+            <Link className='link--underline export--link' to={'/appeals/all/?country=' + id}>
               <Translate
                 stringId="countriesAllOperationExportLink"
                 params={{ name }}
@@ -656,95 +656,107 @@ class AdminArea extends SFPComponent {
                 <Tab key={tab.title}>{tab.title}</Tab>
               ))}
             </TabList>
-            <div className='inpage__body row'>
+            <div className='inpage__body'>
               <div className='inner'>
                 <TabPanel>
                   <TabContent>
-                    <Fold title={strings.countriesStatisticsTitle} headerClass='visually-hidden' id='operations'>
-                      {/*
-                      <div className='operations__container'>
-                        <div className='country__operations'>
-                          <h2>Movement activities in support of NS</h2>
-                          <BulletTable title='Activities'
-                            onClick={this.setPersistentMapFilter.bind(this, 'ns')}
-                            onMouseOver={this.setMapFilter.bind(this, 'ns')}
-                            onMouseOut={this.removeMapFilter.bind(this, 'ns')}
-                            rows={get(partnerDeployments, 'data.parentSocieties', [])} />
-                          <BulletTable title='Type'
-                            onClick={this.setPersistentMapFilter.bind(this, 'type')}
-                            onMouseOver={this.setMapFilter.bind(this, 'type')}
-                            onMouseOut={this.removeMapFilter.bind(this, 'type')}
-                            rows={get(partnerDeployments, 'data.activities', [])} />
-                        </div>
+                    <div className='container-lg'>
+                      <Fold title={strings.countriesStatisticsTitle} headerClass='visually-hidden' id='operations' extraContainerClass='container-lg--padding-reset'>
+                        {/*
+                        <div className='operations__container'>
+                          <div className='country__operations'>
+                            <h2>Movement activities in support of NS</h2>
+                            <BulletTable title='Activities'
+                              onClick={this.setPersistentMapFilter.bind(this, 'ns')}
+                              onMouseOver={this.setMapFilter.bind(this, 'ns')}
+                              onMouseOut={this.removeMapFilter.bind(this, 'ns')}
+                              rows={get(partnerDeployments, 'data.parentSocieties', [])} />
+                            <BulletTable title='Type'
+                              onClick={this.setPersistentMapFilter.bind(this, 'type')}
+                              onMouseOver={this.setMapFilter.bind(this, 'type')}
+                              onMouseOut={this.removeMapFilter.bind(this, 'type')}
+                              rows={get(partnerDeployments, 'data.activities', [])} />
+                          </div>
 
-                        <div className={mapContainerClass}>
-                          <CountryMap operations={this.props.appealStats}
-                            bbox={bbox}
-                            deployments={this.props.partnerDeployments}
-                            deploymentsKey='Additional Response Activities' // From Elsa instead of 'PNS Activities'
-                            noRenderEmergencies={true}
-                            noExport={true}
-                          />
+                          <div className={mapContainerClass}>
+                            <CountryMap operations={this.props.appealStats}
+                              bbox={bbox}
+                              deployments={this.props.partnerDeployments}
+                              deploymentsKey='Additional Response Activities' // From Elsa instead of 'PNS Activities'
+                              noRenderEmergencies={true}
+                              noExport={true}
+                            />
+                          </div>
                         </div>
-                      </div>
-                      */}
-                      {this.renderAppeals()}
-                    </Fold>
+                        */}
+                        {this.renderAppeals()}
+                      </Fold>
+                    </div>
                   </TabContent>
                   <TabContent>
-                    <EmergenciesTable
-                      id={'emergencies'}
-                      title={strings.emergenciesTableRecentEmergencies}
-                      limit={5}
-                      country={getCountryId(this.props.match.params.id)}
-                      showRecent={true}
-                      viewAll={'/emergencies/all?country=' + data.id}
-                      viewAllText={`${strings.emergenciesRecentViewAll} ${data.name}`}
-                    />
+                    <div className='container-lg'>
+                      <EmergenciesTable
+                        id={'emergencies'}
+                        title={strings.emergenciesTableRecentEmergencies}
+                        limit={5}
+                        country={getCountryId(this.props.match.params.id)}
+                        showRecent={true}
+                        viewAll={'/emergencies/all?country=' + data.id}
+                        viewAllText={`${strings.emergenciesRecentViewAll} ${data.name}`}
+                      />
+                    </div>
                   </TabContent>
                 </TabPanel>
                 <TabPanel>
-                  <TabContent title= {strings.region3WTitle}>
-                    <ThreeW countryId={getCountryId(this.props.match.params.id)} />
-                  </TabContent>
+                  <div className='container-lg'>
+                    <TabContent title= {strings.region3WTitle}>
+                      <ThreeW countryId={getCountryId(this.props.match.params.id)} />
+                    </TabContent>
+                  </div>
                 </TabPanel>
                 <TabPanel>
                   <TabContent title='Overview'>
-                    <CountryProfile
-                      countryId={getCountryId(this.props.match.params.id)}
-                      user={this.props.user}
-                    />
+                    <div className='container-lg'>
+                      <CountryProfile
+                        countryId={getCountryId(this.props.match.params.id)}
+                        user={this.props.user}
+                      />
+                    </div>
                   </TabContent>
                 </TabPanel>
                 <TabPanel>
                   <TabContent showError={true} isError={!this.isPerPermission()} errorMessage={strings.accountPerPermission} title={strings.countryPreparednessTitle}>
-                    {this.props.getPerNsPhase.fetched && this.props.perOverviewForm.fetched ? (
-                      <PreparednessOverview getPerNsPhase={this.props.getPerNsPhase} perOverviewForm={this.props.perOverviewForm} />)
-                      : <ErrorPanel title={strings.preparednessOverview} errorMessage={ NO_DATA } />}
-                    {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
-                      <PreparednessSummary getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
-                      : <ErrorPanel title={strings.preparednessSummary} errorMessage={ NO_DATA } />}
-                    {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
-                      <PreparednessColumnBar getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
-                      : <ErrorPanel title={strings.preparednessColumnBar} errorMessage={ NO_DATA } />}
-                    {this.props.getPerWorkPlan.fetched ? (
-                      <PreparednessWorkPlan getPerWorkPlan={this.props.getPerWorkPlan} />)
-                      : <ErrorPanel title={strings.preparednessWorkPlan} errorMessage={ NO_DATA } />}
-                    {this.props.getPerUploadedDocuments.fetched ? (
-                      <PreparednessPhaseOutcomes getPerUploadedDocuments={this.props.getPerUploadedDocuments} countryId={getCountryId(this.props.match.params.id)} />)
-                      : <ErrorPanel title={strings.countryPreparednessPhaseOutcomes} errorMessage={ NO_DATA } />}
+                    <div className='container-lg'>
+                      {this.props.getPerNsPhase.fetched && this.props.perOverviewForm.fetched ? (
+                        <PreparednessOverview getPerNsPhase={this.props.getPerNsPhase} perOverviewForm={this.props.perOverviewForm} />)
+                        : <ErrorPanel title={strings.preparednessOverview} errorMessage={ NO_DATA } />}
+                      {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
+                        <PreparednessSummary getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
+                        : <ErrorPanel title={strings.preparednessSummary} errorMessage={ NO_DATA } />}
+                      {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
+                        <PreparednessColumnBar getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
+                        : <ErrorPanel title={strings.preparednessColumnBar} errorMessage={ NO_DATA } />}
+                      {this.props.getPerWorkPlan.fetched ? (
+                        <PreparednessWorkPlan getPerWorkPlan={this.props.getPerWorkPlan} />)
+                        : <ErrorPanel title={strings.preparednessWorkPlan} errorMessage={ NO_DATA } />}
+                      {this.props.getPerUploadedDocuments.fetched ? (
+                        <PreparednessPhaseOutcomes getPerUploadedDocuments={this.props.getPerUploadedDocuments} countryId={getCountryId(this.props.match.params.id)} />)
+                        : <ErrorPanel title={strings.countryPreparednessPhaseOutcomes} errorMessage={ NO_DATA } />}
+                      </div>
                   </TabContent>
                 </TabPanel>
                 <TabPanel>
-                  <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ NO_DATA } title={strings.regionGraphiccs}>
-                    <Snippets data={this.props.snippets} />
-                  </TabContent>
-                  <TabContent showError={true} isError={!get(data, 'contacts.length')} errorMessage={ NO_DATA } title={strings.regionContacts}>
-                    <Contacts data={data} />
-                  </TabContent>
-                  <TabContent isError={!get(data, 'links.length')} errorMessage={ NO_DATA } title={strings.regionLinks}>
-                    <Links data={data} />
-                  </TabContent>
+                  <div className='container-lg'>
+                    <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ NO_DATA } title={strings.regionGraphiccs}>
+                      <Snippets data={this.props.snippets} />
+                    </TabContent>
+                    <TabContent showError={true} isError={!get(data, 'contacts.length')} errorMessage={ NO_DATA } title={strings.regionContacts}>
+                      <Contacts data={data} />
+                    </TabContent>
+                    <TabContent isError={!get(data, 'links.length')} errorMessage={ NO_DATA } title={strings.regionLinks}>
+                      <Links data={data} />
+                    </TabContent>
+                  </div>
                 </TabPanel>
               </div>
             </div>
