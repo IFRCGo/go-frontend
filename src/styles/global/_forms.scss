@@ -99,10 +99,25 @@ select.form__control {
   height: 30px;
   padding-top: 0.18rem;
 
+  &.form__control--brand.form__control {
+    background-image: url('/assets/icons/collecticons/triangle-down-grey.svg');
+    background-size: 8px;
+  }
+  
   &.form__control--medium {
     padding-top: 0.18rem;
     height: 30px;
   }
+
+  //&.drop__toggle--caret {
+    //position: relative !important; // to prevent background icon from disappearing
+
+    //&::after {
+      //color: $grey-platinum;
+      //position: absolute;
+      //right: $spacing-half;
+    //}
+  //}
 
   .Select-multi-value-wrapper {
     //padding-top: 0.18rem;
@@ -152,7 +167,7 @@ select.form__control {
 
   &.form__control {
     background-image: url('data:image/svg+xml;utf8,' + urlencode('<svg width="8" height="6" viewBox="0 0 8 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 6L7.4641 0H0.535898L4 6Z" fill="black"/></svg>'));
-    background-size: auto;
+    background-size: 8px;
     background-repeat: no-repeat;
   }
 }

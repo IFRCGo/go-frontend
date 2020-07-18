@@ -31,7 +31,7 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding-inline-start: 1rem;
+  //padding-inline-start: 1rem;
   position: relative;
 }
 
@@ -290,6 +290,11 @@
   padding-inline-start: ($global-spacing * 2);
   padding-inline-end: ($global-spacing * 2);
   position: relative;
+
+  @include media(medium) {
+    padding-inline-start: ($global-spacing * 2.7);
+    padding-inline-end: ($global-spacing * 2.7);
+  }
 
   .drop__menu {
     padding: 0;
