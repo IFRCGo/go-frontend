@@ -151,7 +151,7 @@ class EruTable extends SFPComponent {
         <Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || strings.eruTableViewAll}</Link>
       ) : null;
       return (
-        <Fold title={`${title} (${n(data.count)})`} id={this.props.id} wrapperClass='table__container' navLink={foldLink} foldClass='fold__title--inline'>
+        <Fold title={`${title} (${n(data.count)})`} id={this.props.id} wrapperClass='table__container container-lg--padding-reset' navLink={foldLink} foldClass='fold__title--inline'>
           {this.props.showExport ? (
             <ExportButton filename='deployed-erus'
               qs={this.getQs(this.props)}

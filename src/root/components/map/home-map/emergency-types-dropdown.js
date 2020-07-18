@@ -28,7 +28,7 @@ class EmergencyTypesDropdown extends React.Component {
     return (
       <figcaption className='map-vis__legend map-vis__legend--top-left legend'>
         <form>
-          <select onChange={this.filterByEmergencyType} id='top-emergency-dropdown' className='form__control form__control--medium form__control--brand'>
+          <select onChange={this.filterByEmergencyType} id='top-emergency-dropdown' className='form__control form__control--medium form__control--brand form__control--filter'>
             <option value='0'>
               {strings.emergencyTypesAll}
             </option>

@@ -9,7 +9,7 @@ import Translate from '#components/Translate';
 export default function ExportButtonComponent (props) {
   return (
     <div className='fold__actions'>
-      <button onClick={props.exportAsCsv} className={c('button button--primary-bounded', {
+      <button onClick={props.exportAsCsv} className={c('button button--primary-bounded button--small', {
         disabled: props.csv.fetching
       })}>
         <Translate stringId='exportButtonExportTable'/>

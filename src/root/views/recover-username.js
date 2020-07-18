@@ -96,7 +96,7 @@ class RecoverUsername extends React.Component {
             {strings.recoverUsernameTitle}
           </title>
         </Helmet>
-        <section className='inpage'>
+        <section className='inpage container-lg'>
           <header className='inpage__header'>
             <div className='inner'>
               <div className='inpage__headline'>

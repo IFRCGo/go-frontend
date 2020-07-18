@@ -93,6 +93,71 @@ select.form__control {
   }
 }
 
+/* Form Control: Filters */
+.form__control--filter {
+  color: $grey-silver;
+  height: 30px;
+  padding-top: 0.18rem;
+
+  &.form__control--brand.form__control {
+    background-image: url('/assets/icons/collecticons/triangle-down-grey.svg');
+    background-size: 8px;
+  }
+  
+  &.form__control--medium {
+    padding-top: 0.18rem;
+    height: 30px;
+  }
+
+  //&.drop__toggle--caret {
+    //position: relative !important; // to prevent background icon from disappearing
+
+    //&::after {
+      //color: $grey-platinum;
+      //position: absolute;
+      //right: $spacing-half;
+    //}
+  //}
+
+  .Select-multi-value-wrapper {
+    //padding-top: 0.18rem;
+    //padding-inline-start: 0.5rem;
+    //padding-inline-end: 2rem;
+    //padding-bottom: 0.25rem;
+    padding: $spacing-half 0;
+  }
+
+  .Select-control {
+    height: 30px;
+    border: none;
+    border-bottom: 1px solid;
+    border-bottom-color: $grey-mist;
+  }
+
+  .is-open {
+    .Select-control {
+      border-bottom-color: $primary-color;
+    }
+  }
+
+  .Select-placeholder {
+    color: $grey-silver;
+  }
+
+  &.form__control--brand {
+    border-bottom-color: $grey-mist;
+  }
+  
+  &:focus, &.active, &:active, &:hover {
+    box-shadow: none;
+  }
+
+  &.active {
+    color: $base-font-color;
+    border-bottom-color: $primary-color;
+  }
+}
+
 /* Form Control: Brand: with bottom red border */
 .form__control--brand {
   box-shadow: none;
@@ -102,7 +167,7 @@ select.form__control {
 
   &.form__control {
     background-image: url('data:image/svg+xml;utf8,' + urlencode('<svg width="8" height="6" viewBox="0 0 8 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 6L7.4641 0H0.535898L4 6Z" fill="black"/></svg>'));
-    background-size: auto;
+    background-size: 8px;
     background-repeat: no-repeat;
   }
 }
@@ -286,7 +351,7 @@ input, select, textarea {
 
 .form__group {
   @extend .clearfix;
-  margin-bottom: $global-spacing * 4;
+  margin-bottom: $spacing-3;
 
   > *:last-child {
     margin-bottom: 0;
@@ -913,8 +978,8 @@ label[for] {
 
 .form__help {
   text-align: right;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
+  font-size: $font-size-sm;
+  //line-height: 1.25rem;
   color: rgba($base-font-color, 0.48);
   margin-top: $global-spacing / 2;
 

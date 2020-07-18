@@ -225,20 +225,20 @@ function RegionalThreeW (p) {
       { projectsOverviewPending ? (
         <BlockLoading />
       ) : (
-        <div className='regional-threew-overview row-lg flex-sm'>
-          <div className='col-lg col-4-sm'>
+        <div className='regional-threew-overview row-lg flex-mid'>
+          <div className='col-lg col-4-mid'>
             <BudgetOverview
               totalBudget={projectsOverview.total_budget}
               nsCountWithOngoingActivity={projectsOverview.ns_with_ongoing_activities}
             />
           </div>
-          <div className='col-lg col-4-sm'>
+          <div className='col-lg col-4-mid'>
             <PeopleOverview
               targeted={projectsOverview.target_total}
               reached={projectsOverview.reached_total}
             />
           </div>
-          <div className='col-lg col-4-sm'>
+          <div className='col-lg col-4-mid'>
             <StatusOverview
               total={projectsOverview.total_projects}
               data={sectorActivityData}
@@ -257,7 +257,7 @@ function RegionalThreeW (p) {
               {isUserLoggedIn && (
                 <button
                   onClick={handleCreateThreeWActivityButtonClick}
-                  className='button button--primary-bounded'
+                  className='button button--primary-bounded button--small'
                 >
                   <Translate stringId='regional3WAdd' />
                 </button>

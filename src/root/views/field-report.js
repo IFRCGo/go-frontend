@@ -50,13 +50,13 @@ class FieldReport extends React.Component {
 
   renderCountries (data) {
     const els = get(data, 'countries', [])
-      .map(c => <Link key={c.id} className='link--primary' to={'/countries/' + c.id}>{c.name}</Link>);
+      .map(c => <Link key={c.id} className='link--underline' to={'/countries/' + c.id}>{c.name}</Link>);
     return intersperse(els, ', ');
   }
 
   renderEmergencyLink (data) {
     const { event } = data;
-    return event ? <Link className='link--primary' to={'/emergencies/' + event.id}>{event.name}</Link> : 'No emergency page';
+    return event ? <Link className='link--underline' to={'/emergencies/' + event.id}>{event.name}</Link> : 'No emergency page';
   }
 
   renderPlannedResponse (data) {
@@ -426,7 +426,9 @@ class FieldReport extends React.Component {
     return (
       <React.Fragment>
         <DisplaySection title={strings.fieldReportNumericTitle}>
-          { status === 'EVT' ? evtHtml : ewHtml }
+          <div className='row flex-xs'>        
+            { status === 'EVT' ? evtHtml : ewHtml }
+          </div>
         </DisplaySection>
         <DisplaySection
           title={strings.fieldReportSourcesOther}
@@ -516,20 +518,21 @@ class FieldReport extends React.Component {
             <div className='inpage__headline'>
               <div className='inpage__headline-content'>
                 <h1 className='inpage__title'>{get(data, 'summary', nope)}</h1>
-                <div>
-                  <h2 className='inpage__introduction'>{get(data, 'dtype.name', nope)} | {this.renderCountries(data)} | {this.renderEmergencyLink(data)}</h2>
+                <div className='text-center'>
+                  <h2 className='font-size-lg'>{get(data, 'dtype.name', nope)} | {this.renderCountries(data)} | {this.renderEmergencyLink(data)}</h2>
                 </div>
               </div>
-              <div className='inpage__headline-actions'>
-                <Link className='button button--primary-bounded' to={`/reports/${data.id}/edit`}>
+              <div className='inpage__headline-actions text-center'>
+                <Link className='link link--with-icon flex-justify-center' to={`/reports/${data.id}/edit`}>
                   <Translate stringId='fieldReportEdit'/>
+                  <span className='collecticon-chevron-right link--with-icon-inner'></span>
                 </Link>
               </div>
             </div>
           </div>
         </header>
         <div className='inpage__body'>
-          <div className='inner'>
+          <div className='inner container-lg'>
             <div className='prose fold prose--responsive'>
               <div className='inner'>
                 <p className='inpage__note'>Last updated{data.user ? ` by ${data.user.username}` : null} on {lastTouchedAt}</p>
@@ -598,7 +601,7 @@ class DisplaySection extends React.Component {
     const content = children || <p dangerouslySetInnerHTML={{__html: inner}} />;
     return (
       <section className={`display-section${sectionClass ? ' ' + sectionClass : ''}`}>
-        <h3>{title}</h3>
+        <h3 className='font-size-lg'>{title}</h3>
         {content}
       </section>
     );

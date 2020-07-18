@@ -108,7 +108,7 @@ class Login extends React.Component {
             </div>
           </header>
           <div className='inpage__body'>
-            <div className='inner'>
+            <div className='inner container-lg'>
               <form className='form form--centered' onSubmit={this.onSubmit}>
                 <FormInput
                   label={strings.loginUsername}

@@ -20,9 +20,9 @@
 .per__form__col {
 	margin-top: $global-spacing;
 
-	@include media(small-up) {
-		@include column(4/12, $cycle: 3);
-	}
+	//@include media(small-up) {
+	  //@include column(4/12, $cycle: 3);
+	//}
 
 	.button {
 	  width: 100%;
