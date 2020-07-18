@@ -104,8 +104,8 @@ a.link--primary {
   border-radius: $base-border-radius;
 
   .popover__subtitle {
-    font-weight: $base-font-medium;
-    text-decoration: underline;
+    font-weight: $base-font-semi-bold;
+    //text-decoration: underline;
     margin-bottom: $global-spacing/2.5;
   }
   

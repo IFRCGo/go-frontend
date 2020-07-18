@@ -41,13 +41,16 @@ class OperationsPopover extends React.Component {
                   ) : d.name}
                 </h3>
                 <ul className='popover__details'>
-                  <li>{n(d.num_beneficiaries)}
+                  <li>
+                    <span>{n(d.num_beneficiaries)} </span> 
                     <Translate stringId='operationPopoverPeopleAffected'/>
                   </li>
-                  <li>{n(d.amount_requested)}
+                  <li>
+                    <span>{n(d.amount_requested)} </span>
                     <Translate stringId='operationPopoverAmountRequested'/>
                   </li>
-                  <li>{n(d.amount_funded)}
+                  <li>
+                    <span>{n(d.amount_funded)} </span>
                     <Translate stringId='operationPopoverAmountFunded'/>
                   </li>
                 </ul>
