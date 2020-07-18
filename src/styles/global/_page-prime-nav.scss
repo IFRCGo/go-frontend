@@ -258,3 +258,55 @@
     }
   }
 }
+
+
+// Dropdown for Create Report
+
+.drop__menu__field__report.drop__menu {
+  padding: 0;
+
+  .drop-trans--down.drop__content {
+    transform: 0;
+  }
+
+  .drop__menu-item {
+    padding: $global-spacing/2;
+    font-weight: $base-font-medium;
+    font-size: $font-size-xs;
+
+    &:hover, &:focus {
+      background-color: $grey-titanium;
+
+      a {
+        opacity: 1;
+      }
+    }
+  }  
+} 
+
+.drop__toggle--field-report-new {
+  font-weight: $base-font-semi-bold;
+  letter-spacing: 0.5px;
+  padding-inline-start: ($global-spacing * 2);
+  padding-inline-end: ($global-spacing * 2);
+  position: relative;
+
+  .drop__menu {
+    padding: 0;
+  }
+
+  &::after {
+    font-size: $font-size-sm;
+    position: absolute;
+    right: ($global-spacing / 1.5);
+  }
+
+  &:hover, &.active {
+    color: #fff;
+    background: $primary-color;
+
+    &::after {
+      color: #fff;
+    }
+  }
+}
