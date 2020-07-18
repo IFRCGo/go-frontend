@@ -75,7 +75,7 @@ function ExportButton (p) {
     <button
       onClick={handleClick}
       className={ _cs(
-        'regional-export-button button button--secondary-bounded',
+        'regional-export-button button button--secondary-bounded button--small',
         pending && 'disabled',
       )}
       disabled={pending}
