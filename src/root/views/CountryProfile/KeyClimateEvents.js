@@ -30,9 +30,11 @@ function KeyClimateEvents(p) {
 
   return (
     <div className={styles.keyClimateEvents}>
-      <h3 className={styles.heading}>
-        <Translate stringId='climateChartKeyClimateHeading' />
-      </h3>
+      <div className='fold__header__block'>
+        <h3 className='fold__title'>
+          <Translate stringId='climateChartKeyClimateHeading' />
+        </h3>
+      </div>
       <div className={styles.content}>
         <KeyEventOutput
           label='Avg. rainfall precipitation'

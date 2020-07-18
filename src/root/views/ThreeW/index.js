@@ -189,7 +189,7 @@ function ThreeW (p) {
   const shouldDisableExportButton = disabled || !projectList || projectList.length === 0;
 
   return (
-    <div className='three-w-container container-lg'>
+    <div className='three-w-container'>
       { pending && (
         <BlockLoading />
       )}

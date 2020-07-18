@@ -9,11 +9,11 @@ import Translate from '#components/Translate';
 class PreparednessPhaseOutcomes extends React.Component {
   render () {
     if (typeof this.props.getPerUploadedDocuments.data.results === 'undefined') return null;
-    const header = {float: 'left', padding: '10px', width: '100%'};
-    const body = {float: 'left', padding: '5px', width: '100%'};
-    const boxContainer = {float: 'left', padding: '10px', width: '100%'};
-    const boxInner = {float: 'left', width: '100%', height: '100%', borderBottom: '1px solid rgba(0,0,0,0.1)', padding: '5px'};
-    const title = {fontWeight: 'bold'};
+    //const header = {float: 'left', padding: '10px', width: '100%'};
+    //const body = {float: 'left', padding: '5px', width: '100%'};
+    //const boxContainer = {float: 'left', padding: '10px', width: '100%'};
+    //const boxInner = {float: 'left', width: '100%', height: '100%', borderBottom: '1px solid rgba(0,0,0,0.1)', padding: '5px'};
+    //const title = {fontWeight: 'bold'};
     const links = [];
     this.props.getPerUploadedDocuments.data.results.forEach((link, index) => {
       if (link.visibility === 1) {
@@ -23,15 +23,15 @@ class PreparednessPhaseOutcomes extends React.Component {
       }
     });
     return (
-      <Fold id='per-outcomes' title='PER Phase Outcomes' wrapper_class='preparedness' foldClass='margin-reset'>
-        <div style={header}>
+      <Fold id='per-outcomes' title='PER Phase Outcomes' wrapper_class='preparedness' foldClass='margin-reset' extraClass='fold--main' extraContainerClass='container-lg--padding-reset'>
+        <div className='spacing'>
           <a href='https://dsgocdnapi.azureedge.net/admin/per/nicedocument/' target='_blank' className='button button--small button--primary-bounded'>Upload</a>&nbsp;
         </div>
-        <div style={body}>
-          <div style={boxContainer}>
-            <div style={boxInner}>
+        <div className='spacing'>
+          <div>
+            <div className='spacing-v border-bottom-base'>
               <p>
-                <span style={title}>
+                <span className='base-font-semi-bold'>
                   <Translate stringId='preparednessPhaseOutcomes'/>
                 </span>
               </p>

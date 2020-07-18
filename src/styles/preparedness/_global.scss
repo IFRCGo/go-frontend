@@ -3,14 +3,19 @@
    ========================================================================== */
 
 .component__block__wrap {
-  @include media(medium-up) {
-    @include column(2/12, $gutter: .5);
+  //@include media(medium-up) {
+    //@include column(2/12, $gutter: .5);
+  //}
+
+  @include media(medium) {
+    @include col($width: calc(100% / 6), $grid-gutter: $grid-gutter-sm);
   }
 }
 
 .component__block {
   border: 1px solid $base-border-color;
   border-radius: $base-border-radius;
+  cursor: pointer;
 }
 
 .component__block__title__block {
@@ -23,6 +28,7 @@
   color: $secondary-color;
   font-weight: $base-font-semi-bold;
   text-transform: uppercase;
+  font-size: $font-size-xs;
   letter-spacing: $letter-spacing-sm;
 }
 
@@ -39,10 +45,10 @@
 }
 
 .component__block__icon {
-  width: 13px;
-  height: 13px;
+  width: 11px;
+  height: 11px;
   margin-inline-end: $global-spacing/2;
-  vertical-align: sub;
+  vertical-align: middle;
 }
 
 .key-emergencies-list-wrap {

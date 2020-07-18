@@ -89,6 +89,7 @@
 
 .nav-global-search {
   min-width: 20rem;
+  width: 100%;
 
   .Select-control {
     border-radius: 0;
@@ -109,6 +110,10 @@
   .Select.is-open > .Select-control {
     border-radius: $input-rounded-radius/1.5 $input-rounded-radius/1.5 0 0;
     border-radius: 0;
+  }
+
+  @include media(small) {
+    width: auto;
   }
 }
 

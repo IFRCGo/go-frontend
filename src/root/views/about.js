@@ -44,7 +44,7 @@ export default class About extends React.Component {
                         <iframe width="604" height="340" className='iframe__embed__video' src="https://www.youtube.com/embed/dwPsQzla9A4" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
                       </div>
                     </div>
-                    <section className='section__about__guides__ref row'>
+                    <section className='section__about__guides__ref'>
                       <div className='container-lg'>
                         <div className='text-center'>
                           <div className='line-brand-deco-border-top-wrap'>

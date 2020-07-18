@@ -35,9 +35,11 @@ class ClimateChart extends React.PureComponent {
 
     return (
       <div className={_cs(className, 'country-climate-chart')}>
-        <h3 className='tc-heading'>
-          <Translate stringId='climateChartHeading' />
-        </h3>
+        <div className='fold__header__block'>
+          <h3 className='tc-heading fold__title'>
+            <Translate stringId='climateChartHeading' />
+          </h3>
+        </div>
         <div className='tc-content'>
           <div className='tc-charts'>
             <div className='temperature-chart'>

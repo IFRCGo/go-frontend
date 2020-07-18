@@ -502,8 +502,10 @@ class FieldReportForm extends React.Component {
         <div className='form__group form__group__fr'>
           <div className='form__group__wrap'>
             <div className='form__inner-header'>
-              <label className='form__label'>{fields['disaster-type'][status].label}</label>
-              <p className='form__description'>{fields['disaster-type'][status].desc}</p>
+              <div className='form__inner__headline'>
+                <label className='form__label'>{fields['disaster-type'][status].label}</label>
+                <p className='form__description'>{fields['disaster-type'][status].desc}</p>
+              </div>
             </div>
             <div className='form__inner-body'>
               <Select
@@ -966,7 +968,7 @@ class FieldReportForm extends React.Component {
     }
 
     return (
-      <div className='validation-result'>
+      <div className='validation-result container-lg'>
         <h3>
           <Translate
             stringId='fieldReportIncomplete'
