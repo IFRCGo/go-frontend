@@ -838,7 +838,7 @@ class Emergency extends React.Component {
                             showProjectForm: true,
                           });
                         }}
-                        className="link link--with-icon"
+                        className="link link--with-icon padding-reset"
                       >
                         <Translate
                           stringId="emergencyActionCreateThreeWActivityLabel"
