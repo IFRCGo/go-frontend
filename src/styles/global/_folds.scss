@@ -130,7 +130,7 @@
 
 .fold__header__block {
   //@extend .clearfix;
-  border-bottom: 1px solid #c9c3c1;
+  border-bottom: 1px solid $grey-cloud;
   padding-bottom: $spacing;
   @include row;
 

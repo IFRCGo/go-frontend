@@ -38,9 +38,8 @@
 .page__meta-nav-elements {
   font-size: 0.75rem;
   line-height: 1.25rem;
-  border-inline-end: 1px solid #c9c3c1;
-  padding-inline-end: 1rem;
-  padding-inline-start: 1rem;
+  border-inline-end: 0.5px solid $grey-titanium;
+  padding: 0 $spacing;
   @include media(small-down) {
     padding-inline-start: 0;
   }
@@ -90,6 +89,17 @@
 .nav-global-search {
   min-width: 20rem;
   width: 100%;
+
+  .Select-placeholder, .Select-input {
+    padding-left: $spacing-2;
+  }
+
+  .Select-control, .Select-input {
+    background-image: url('/assets/icons/collecticons/magnifier-left-grey.svg');
+    background-repeat: no-repeat;
+    background-size: 14px;
+    background-position: left 44%;
+  }
 
   .Select-control {
     border-radius: 0;

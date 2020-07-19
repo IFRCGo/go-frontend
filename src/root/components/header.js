@@ -90,7 +90,7 @@ function Header (props) {
     <div className='desktop__header'>
       <header className='page__header' role='banner'>
         <div className='page__header__inner__wrap'>
-          <div className='container-lg global-spacing-v'>
+          <div className='container-lg spacing-v'>
             <div className='inner row flex'>
               <div className='page__headline col'>
                 <h1 className='page__title'>

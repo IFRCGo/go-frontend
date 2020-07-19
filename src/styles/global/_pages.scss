@@ -35,9 +35,9 @@ main {
     //align-items: center;
     //flex-flow: row nowrap;
     border-bottom: solid 1px tint($base-color, 92%);
-    &:last-child{
-      border-bottom: none;
-    }
+    //&:last-child{
+      //border-bottom: none;
+    //}
   }
 }
 
@@ -88,7 +88,7 @@ main {
 
     img {
       vertical-align: middle;
-      height: 2.6rem;
+      height: 2.2rem;
       width: auto;
     }
 
