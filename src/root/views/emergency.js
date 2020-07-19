@@ -453,7 +453,7 @@ class Emergency extends React.Component {
         <Fold
           id="field-reports"
           title={resolveToString(strings.emergencyFieldReportsWithCountTitle, { count: data.field_reports.length })}
-          wrapperClass="event-field-reports fold--main"
+          wrapperClass="event-field-reports" extraClass='fold--main'
         >
           <table className="table table--border-bottom">
             <thead>
@@ -584,7 +584,7 @@ class Emergency extends React.Component {
           <div className="fold__headline">
             <div className="fold__actions">
               <a
-                className="button button--primary-bounded"
+                className="button button--primary-bounded button--small"
                 href={addReportLink}
                 target="_blank"
               >
@@ -649,19 +649,21 @@ class Emergency extends React.Component {
 
     return (
       <Fold title={strings.emergencyKeyFiguresTitle} wrapperClass="key-figures">
-        <ul className="key-figures-list">
+        <ul className="sumstats">
           {kf.map((o) => (
-            <li key={o.deck}>
-              <h3>{isNaN(o.number) ? o.number : n(o.number)}</h3>
-              <p className="key-figure-label">{o.deck}</p>
-              <p className="key-figure-source emergency__source">
-                <Translate
-                  stringId="emergencySourceFigure"
-                  params={{
-                    source: o.source,
-                  }}
-                />
-              </p>
+            <li key={o.deck} className='sumstats__item__wrap'>
+              <div className='sumstats__item'>
+                <h3 className='sumstats__value margin-reset'>{isNaN(o.number) ? o.number : n(o.number)}</h3>
+                <p className="sumstats__key">{o.deck}</p>
+                <p className="key-figure-source emergency__source">
+                  <Translate
+                    stringId="emergencySourceFigure"
+                    params={{
+                      source: o.source,
+                    }}
+                  />
+                </p>
+              </div>
             </li>
           ))}
         </ul>
@@ -870,7 +872,9 @@ class Emergency extends React.Component {
                   <TabContent isError={!this.hasKeyFigures()} title={strings.emergencyKeyFiguresTitle}>
                     {this.renderKeyFigures()}
                   </TabContent>
-                  {showExportMap()}
+                  <div className='container-lg'>
+                    {showExportMap()}
+                  </div>
                   <TabContent
                     isError={!summary}
                     errorMessage={NO_DATA}
@@ -880,6 +884,7 @@ class Emergency extends React.Component {
                       id="overview"
                       title={strings.emergencySituationalOverviewTitle}
                       wrapperClass="situational-overview"
+                      extraClass='fold--main'
                     >
                       <Expandable
                         sectionClass="rich-text-section"
@@ -936,51 +941,55 @@ class Emergency extends React.Component {
                   </TabContent>
 
                   {contacts && contacts.length ? (
-                    <Fold id="contacts" title={strings.emergencyContactsTitle} wrapperClass="contacts fold--main">
-                      <table className="table">
-                        <thead className="visually-hidden">
-                          <tr>
-                            <th>{strings.emergencyContactsTableHeaderName}</th>
-                            <th>{strings.emergencyContactsTableHeaderTitle}</th>
-                            <th>{strings.emergencyContactsTableHeaderType}</th>
-                            <th>{strings.emergencyContactsTableHeaderContact}</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {contacts.map((o) => (
-                            <tr key={o.id}>
-                              <td>{o.name}</td>
-                              <td>{o.title}</td>
-                              <td>{separate(o.ctype)}</td>
-                              <td>
-                                {o.email.indexOf('@') !== -1 ? (
-                                  <a
-                                    className="button button--small button--grey-cement-bounded"
-                                    href={`mailto:${o.email}`}
-                                    title={strings.emergencyContactTitle}
-                                  >
-                                    {o.email}
-                                  </a>
-                                ) : (
-                                  <a
-                                    className="button button--small button--grey-cement-bounded"
-                                    href={`tel:${o.email}`}
-                                    title={strings.emergencyContactTitle}
-                                  >
-                                    {o.email}
-                                  </a>
-                                )}
-                              </td>
+                    <div className='container-lg margin-2-v'>
+                      <Fold id="contacts" title={strings.emergencyContactsTitle} wrapperClass="contacts fold--main" extraContainerClass='container-lg--padding-reset'>
+                        <table className="table table--border-bottom">
+                          <thead className="visually-hidden">
+                            <tr>
+                              <th>{strings.emergencyContactsTableHeaderName}</th>
+                              <th>{strings.emergencyContactsTableHeaderTitle}</th>
+                              <th>{strings.emergencyContactsTableHeaderType}</th>
+                              <th>{strings.emergencyContactsTableHeaderContact}</th>
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </Fold>
+                          </thead>
+                          <tbody>
+                            {contacts.map((o) => (
+                              <tr key={o.id}>
+                                <td>{o.name}</td>
+                                <td>{o.title}</td>
+                                <td>{separate(o.ctype)}</td>
+                                <td>
+                                  {o.email.indexOf('@') !== -1 ? (
+                                    <a
+                                      className="button button--small button--grey-cement-bounded"
+                                      href={`mailto:${o.email}`}
+                                      title={strings.emergencyContactTitle}
+                                    >
+                                      {o.email}
+                                    </a>
+                                  ) : (
+                                    <a
+                                      className="button button--small button--grey-cement-bounded"
+                                      href={`tel:${o.email}`}
+                                      title={strings.emergencyContactTitle}
+                                    >
+                                      {o.email}
+                                    </a>
+                                  )}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </Fold>
+                    </div>
                   ) : (
-                    <ErrorPanel
-                      title={strings.emergencyContactsTitle}
-                      errorMessage={strings.emergencyContactEmptyMessage}
-                    />
+                    <div className='container-lg margin-2-v'>
+                      <ErrorPanel
+                        title={strings.emergencyContactsTitle}
+                        errorMessage={strings.emergencyContactEmptyMessage}
+                      />
+                    </div>
                   )}
                 </TabPanel>
 

@@ -116,8 +116,8 @@
 
 .key-figures-list {
   list-style: none;
-  @include column(12/12);
-  margin-inline-start: 0;
+  //@include column(12/12);
+  //margin-inline-start: 0;
   display: block;
   @include media(medium-up) {
     display: flex;
@@ -197,9 +197,9 @@
   }
 
   td {
-    border: 1px solid $base-border-color;
-    border-right-color: transparent;
-    border-left-color: transparent;
+    //border: 1px solid $base-border-color;
+    //border-right-color: transparent;
+    //border-left-color: transparent;
 
     &:first-child {
       font-weight: $base-font-bold;

@@ -49,7 +49,7 @@ const CountryList = props => {
   }, {});
 
   return (
-    <Fold title={countries.length + strings.countryListInRegion} extraClass='fold--main'>
+    <Fold title={`${countries.length} ${strings.countryListInRegion} `} extraClass='fold--main'>
       <ToggleButtonComponent
         value={ !isFullList || false }
         toggle={toggle}

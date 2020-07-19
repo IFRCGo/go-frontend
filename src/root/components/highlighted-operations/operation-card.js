@@ -25,8 +25,8 @@ const OperationCard = ({operationId, operationName, emergencyDeployments, appeal
       <Link to={`/emergencies/${operationId}`}>
         <div className="card_box card_box_left">
           <div className='row flex'>
-            <div className='card__title__wrap col col-6 col-9-mid'>
-              <h2 className='card__title'>{ operationName.length > 30 ? operationName.slice(0, 30) + '...' : operationName }</h2>
+            <div className='card__title__wrap col col-6 col-8-mid'>
+              <h2 className='card__title truncated'>{operationName}</h2>
               <small className='last_updated'>
                 <Translate stringId='operationCardLastUpdated'/>
                 &nbsp;
@@ -34,7 +34,7 @@ const OperationCard = ({operationId, operationName, emergencyDeployments, appeal
               </small>
             </div>
             {showFollow ? (
-              <div className='button--key-emergencies__wrap col col-6 col-3-mid'>  
+              <div className='button--key-emergencies__wrap col col-6 col-4-mid'>  
                 <div onClick={toggleFollow} className={`button button--capsule button--xsmall button--key-emergencies ${isFollowing ? 'button--primary-bounded' : 'button--primary-filled'}`}>
                   {
                     isFollowing ? (
