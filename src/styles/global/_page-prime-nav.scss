@@ -221,7 +221,7 @@
       font-size: 1.5rem;
       &:before {
         position: absolute;
-        top: $global-spacing;
+        top: $spacing;
         left: 0;
         @extend %collecticon-hamburger-menu;
       }
