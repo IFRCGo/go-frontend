@@ -105,7 +105,7 @@ class Register extends React.Component {
       this.setState({
         nationalSocieties: nextProps.countries.data.results
           .reduce(function (results, country) {
-            if (country.society_name) {
+            if (country.society_name && country.society_name !== 'ICRC') {
               results.push({
                 value: country.society_name,
                 label: country.society_name
