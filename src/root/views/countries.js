@@ -449,7 +449,7 @@ class AdminArea extends SFPComponent {
             noPaginate={true}
           />
           <div className='fold__footer'>
-            <Link className='link--underline export--link' to={'/appeals/all/?country=' + id}>
+            <Link className='link-underline export--link' to={'/appeals/all/?country=' + id}>
               <Translate
                 stringId="countriesAllOperationExportLink"
                 params={{ name }}
@@ -635,7 +635,7 @@ class AdminArea extends SFPComponent {
                 href={url.resolve(api, `api/country/${data.id}/change/`)}
                 className='link link--with-icon flex-justify-center'
               >
-                <Translate stringId='countryEditCountry' />
+                <span className='link--with-icon-text'><Translate stringId='countryEditCountry' /></span>
                 <span className='collecticon-chevron-right link--with-icon-inner'></span>
               </a>
             </div>

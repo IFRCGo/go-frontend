@@ -124,7 +124,7 @@ class FieldReportsTable extends SFPComponent {
         <Fold title={this.props.title} id={this.props.id}>
           <p>
               <Translate stringId='fieldReportsTableLoginRequired'/>
-            <Link key='login' to={{pathname: '/login', state: {from: this.props.location}}} className='link--primary' title={strings.fieldReportsTableLogin}>
+            <Link key='login' to={{pathname: '/login', state: {from: this.props.location}}} className='link-underline' title={strings.fieldReportsTableLogin}>
               <Translate stringId='fieldReportsTableLogin'/>
             </Link></p>
         </Fold>
@@ -181,11 +181,11 @@ class FieldReportsTable extends SFPComponent {
           {this.props.viewAll ? (
             <div className='fold__footer'>
               <Translate stringId='fieldReportsViewAllIn'/>
-               <Link className='link--primary export--link' to={this.props.viewAll + '?region=0'}>{this.props.viewAllText || ' Africa'}</Link> /&nbsp;
-              <Link className='link--primary export--link' to={this.props.viewAll + '?region=1'}>{this.props.viewAllText || 'America'}</Link> /&nbsp;
-              <Link className='link--primary export--link' to={this.props.viewAll + '?region=2'}>{this.props.viewAllText || 'Asia'}</Link> /&nbsp;
-              <Link className='link--primary export--link' to={this.props.viewAll + '?region=3'}>{this.props.viewAllText || 'Europe'}</Link> /&nbsp;
-              <Link className='link--primary export--link' to={this.props.viewAll + '?region=4'}>{this.props.viewAllText || 'the Middle East'}</Link><br/>
+               <Link className='link-underline export--link' to={this.props.viewAll + '?region=0'}>{this.props.viewAllText || ' Africa'}</Link> /&nbsp;
+              <Link className='link-underline export--link' to={this.props.viewAll + '?region=1'}>{this.props.viewAllText || 'America'}</Link> /&nbsp;
+              <Link className='link-underline export--link' to={this.props.viewAll + '?region=2'}>{this.props.viewAllText || 'Asia'}</Link> /&nbsp;
+              <Link className='link-underline export--link' to={this.props.viewAll + '?region=3'}>{this.props.viewAllText || 'Europe'}</Link> /&nbsp;
+              <Link className='link-underline export--link' to={this.props.viewAll + '?region=4'}>{this.props.viewAllText || 'the Middle East'}</Link><br/>
               <i>
                 <Translate stringId='fieldReportsTableProblem'/>
               </i>

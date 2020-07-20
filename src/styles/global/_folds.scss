@@ -184,13 +184,14 @@
 }
 
 .fold__title__link {
+  @include link-brand;
   //color: $primary-color;
-  font-weight: $base-font-medium;
-  text-decoration: underline;
+  //font-weight: $base-font-medium;
+  //text-decoration: underline;
 
-  > span {
-    font-size: $font-size-xxs;
-    font-weight: $base-font-medium;
-  }
+  //> span {
+    //font-size: $font-size-xxs;
+    //font-weight: $base-font-medium;
+  //}
 }
   

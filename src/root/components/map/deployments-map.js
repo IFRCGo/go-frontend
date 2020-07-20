@@ -365,7 +365,7 @@ class MapPopover extends React.Component {
         <div className='popover__contents'>
           <header className='popover__header'>
             <div className='popover__headline'>
-              <a className='link--primary' href={`/countries/${countryId}`}>{title}</a>
+              <a className='link-underline' href={`/countries/${countryId}`}>{title}</a>
             </div>
             <div className='popover__actions actions'>
               <ul className='actions__menu'>

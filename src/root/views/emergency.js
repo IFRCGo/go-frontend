@@ -610,7 +610,7 @@ class Emergency extends React.Component {
           }
           return (
             <li key={o.id} className='col col-6-xs'>
-              <a className="link--underline" href={href} target="_blank">
+              <a className="link-underline" href={href} target="_blank">
                 {o.name}, {isoDate(o.created_at)}
               </a>
             </li>
@@ -826,9 +826,11 @@ class Emergency extends React.Component {
                       href={url.resolve(api, `api/event/${data.id}/change/`)}
                       className="link link--with-icon"
                     >
-                      <Translate
-                        stringId="emergencyActionEditEventLabel"
-                      />
+                      <span className='link--with-icon-text'>
+                        <Translate
+                          stringId="emergencyActionEditEventLabel"
+                        />
+                      </span>
                       <span className='collecticon-chevron-right link--with-icon-inner'></span>
                     </a>
                   </div>
@@ -842,9 +844,11 @@ class Emergency extends React.Component {
                         }}
                         className="link link--with-icon padding-reset"
                       >
-                        <Translate
-                          stringId="emergencyActionCreateThreeWActivityLabel"
-                        />
+                        <span className='link--with-icon-text'>
+                          <Translate
+                            stringId="emergencyActionCreateThreeWActivityLabel"
+                          />
+                        </span>
                         <span className='collecticon-chevron-right link--with-icon-inner'></span>
                       </button>
                     )}

@@ -606,7 +606,7 @@ class Account extends React.Component {
                     <li key={o.id} className='report__list--item'>
                       <div className='report__list--header list__each__block flex'>
                         <div>
-                          <Link className='link--underline' to={`/reports/${o.id}`}>{o.summary}</Link>&nbsp;
+                          <Link className='link-underline' to={`/reports/${o.id}`}>{o.summary}</Link>&nbsp;
                           <div className='report__list--updated global-margin-t'>Last Updated: {DateTime.fromISO(o.updated_at || o.created_at).toISODate()}</div>
                         </div>
                       </div>
@@ -743,7 +743,7 @@ class Account extends React.Component {
           events.push(
             <div key={'operations-component' + eventId} className='account__op__block clearfix'>
               <div className='account__op__each__link'>
-                <Link className={'link--primary'} to={'/emergencies/' + eventId}>{this.props.event.event[eventId].data.name}</Link>
+                <Link className={'link-underline'} to={'/emergencies/' + eventId}>{this.props.event.event[eventId].data.name}</Link>
               </div>
               <div className='account__op__each__button'>
                 <button className={'button button--small button--primary-bounded'} onClick={this.delSubscription} id={'followedEvent' + eventId}>

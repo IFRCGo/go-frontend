@@ -76,20 +76,20 @@ a:focus {
   vertical-align: top;
 }
 
-a.link--primary {
-  background-image: linear-gradient(180deg,transparent 65%, $primary-color 0);
-  color: $base-color;
-  font-weight: $base-font-regular;
-  padding-bottom: $global-spacing/4;
-  background-size: 100% 140%;
-  background-repeat: no-repeat;
-  text-decoration: none;
-  transition: background-size .4s ease;
-  &:hover {
-    opacity: 1;
-    background-size: 100% 85%;
-  };
-}
+//a.link--primary {
+  //background-image: linear-gradient(180deg,transparent 65%, $primary-color 0);
+  //color: $base-color;
+  //font-weight: $base-font-regular;
+  //padding-bottom: $global-spacing/4;
+  //background-size: 100% 140%;
+  //background-repeat: no-repeat;
+  //text-decoration: none;
+  //transition: background-size .4s ease;
+  //&:hover {
+    //opacity: 1;
+    //background-size: 100% 85%;
+  //};
+//}
 
 .mapboxgl-popup {
   z-index: 2;
@@ -148,6 +148,11 @@ a.link--primary {
   color: $primary-color;
   font-weight: $base-font-medium;
   font-size: $font-size-sm;
+
+  &:hover, &:focus {
+    text-decoration: underline;
+    opacity: 1;
+  }
 }
 
 .link--with-icon {
@@ -156,6 +161,14 @@ a.link--primary {
   border: none; // to reset for icon buttons
   background: none; // to reset for icon buttons
   cursor: pointer;
+
+  &:hover, &:focus {
+    text-decoration: none;
+
+    .link--with-icon-text {
+      text-decoration: underline;
+    }
+  }
 }
 
 .link--with-icon-inner {
@@ -166,24 +179,33 @@ a.link--primary {
 }
 
 
-.link--underline {
+@mixin link-underline {
   text-decoration: underline;
   font-weight: $base-font-medium;
+
+  &:hover, &:focus {
+    color: $primary-color;
+    opacity: 1;
+  }
 }
 
-a.link--secondary {
-  color: $base-color;
-  font-weight: 400;
-  background-image: linear-gradient(180deg, transparent 65%, rgba($base-color, 0.1) 0);
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  text-decoration: none;
-  transition: background-size .4s ease;
-  &:hover {
-    opacity: 1;
-    background-size: 100% 140%;
-  };
+.link-underline {
+  @include link-underline;
 }
+
+//a.link--secondary {
+  //color: $base-color;
+  //font-weight: 400;
+  //background-image: linear-gradient(180deg, transparent 65%, rgba($base-color, 0.1) 0);
+  //background-size: 100% 100%;
+  //background-repeat: no-repeat;
+  //text-decoration: none;
+  //transition: background-size .4s ease;
+  //&:hover {
+    //opacity: 1;
+    //background-size: 100% 140%;
+  //};
+//}
 
 a.link--external {
   color: $secondary-color;

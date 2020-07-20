@@ -18,7 +18,7 @@ class PreparednessPhaseOutcomes extends React.Component {
     this.props.getPerUploadedDocuments.data.results.forEach((link, index) => {
       if (link.visibility === 1) {
         links.push(<p key={'perUploadedDoc' + index}>
-          <a className='link--primary export--link' target='_blank' href={link.document}>{link.name}</a>
+          <a className='link-underline export--link' target='_blank' href={link.document}>{link.name}</a>
         </p>);
       }
     });
