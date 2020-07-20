@@ -685,7 +685,7 @@
     }
 
     .card__title {
-      font-size: $font-size-sm;
+      font-size: $base-font-size;
       font-weight: $base-font-medium;
     }
     .card__date {
@@ -805,8 +805,8 @@
   }
 }
 
-.stats-overall-row {
-  max-width: 1200px !important;
-  margin-left: auto;
-  margin-right: auto;
-}
+//stats-overall-row {
+  //max-width: 1200px !important;
+  //margin-left: auto;
+  //margin-right: auto;
+//}
