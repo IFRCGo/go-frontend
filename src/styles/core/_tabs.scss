@@ -37,11 +37,14 @@
     //font-size: 120%;
     font-size: $font-size-sm;
     cursor: pointer;
-    margin-inline-end: ($spacing / 1.5);
+    margin-inline-end: $spacing-half;
 
     @include media(small) {
       font-size: $base-font-size;
-      padding: $spacing $spacing-2;
+    }
+
+    @include media(small) {
+      padding: $spacing ($spacing * 2.5);
     }
 
     &:last-of-type {
@@ -52,6 +55,7 @@
       background: #fff;
       font-weight: $base-font-semi-bold;
       color: $primary-color;
+      box-shadow: 0px 15px 1px -14px $primary-color;
   
       @include media(small) {
         border-color: $base-border-color;

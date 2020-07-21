@@ -237,6 +237,12 @@
   }
 }
 
+.inner--emergencies {
+  .fold {
+    padding-bottom: 0;
+  }
+}
+
 .stats-map {
 
   h1 {
@@ -801,12 +807,6 @@
   //thead th, tbody td {
     //padding: 0.5rem;
   //}
-
-  // Ensure table dates don't wrap
-
-  .table__header--date, table__cell--date {
-    width: 110px;
-  }
 }
 
 .drop__menu--date {

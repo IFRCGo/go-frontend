@@ -224,7 +224,7 @@ class AdminArea extends SFPComponent {
           </div>
         </section>
 
-        <div className='tab__wrap'>
+        <div className='tab__wrap tab__wrap--3W'>
           <Tabs
             selectedIndex={ selectedIndex }
             onSelect={index => handleTabChange(index)}
@@ -273,7 +273,6 @@ class AdminArea extends SFPComponent {
                     />
                     <EmergenciesTable
                       id='emergencies'
-                      className='baz'
                       title={strings.regionRecentEmergencies}
                       limit={5}
                       region={getRegionId(this.props.match.params.id)}

@@ -24,6 +24,10 @@
     font-weight: $base-font-regular;
     margin-bottom: 0;
   }
+
+  @media (min-width: 1200px) {
+    width: 58%;
+  }
 }
 
 .page__meta-nav {
@@ -87,7 +91,7 @@
 /* Site Search */
 
 .nav-global-search {
-  min-width: 20rem;
+  //min-width: 20rem;
   width: 100%;
 
   .Select-placeholder, .Select-input {
@@ -122,8 +126,12 @@
     border-radius: 0;
   }
 
-  @include media(small) {
-    width: auto;
+  //@include media(small) {
+    //width: auto;
+  //}
+
+  @media (min-width: 1200px) {
+    width: 42%;
   }
 }
 

@@ -661,7 +661,7 @@ class AdminArea extends SFPComponent {
                 <TabPanel>
                   <TabContent>
                     <div className='container-lg'>
-                      <Fold title={strings.countriesStatisticsTitle} headerClass='visually-hidden' id='operations' extraContainerClass='container-lg--padding-reset'>
+                      <Fold title={strings.countriesStatisticsTitle} headerClass='visually-hidden' id='operations' extraClass extraContainerClass='container-lg--padding-reset'>
                         {/*
                         <div className='operations__container'>
                           <div className='country__operations'>
@@ -694,7 +694,7 @@ class AdminArea extends SFPComponent {
                     </div>
                   </TabContent>
                   <TabContent>
-                    <div className='container-lg'>
+                    <div>
                       <EmergenciesTable
                         id={'emergencies'}
                         title={strings.emergenciesTableRecentEmergencies}

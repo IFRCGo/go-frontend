@@ -33,6 +33,10 @@
       margin-bottom: 0;
     }
   }
+
+  #emergencies {
+    padding-top: 0;
+  }
   
   #stats {
     background: transparent;
@@ -295,7 +299,7 @@
       }
 
       >.tc-header {
-        margin-top: 5rem;
+        margin-top: $spacing-5;
         //padding: 0 10px;
 
         .tc-top {
@@ -701,3 +705,11 @@
   }
 }
 
+.tab__wrap--3W {
+  @include media(small) {
+    .react-tabs__tab:nth-of-type(2) {
+      padding-left: $spacing-5;
+      padding-right: $spacing-5;
+    }
+  }
+}

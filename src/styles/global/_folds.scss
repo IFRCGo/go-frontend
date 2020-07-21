@@ -10,7 +10,7 @@
 
 .fold {
   background: #fff;
-  padding: ($global-spacing * 2) 0;
+  padding: $spacing-2 0;
   box-shadow: $base-box-shadow;
   &:last-child {
     margin-bottom: 0;
@@ -31,9 +31,9 @@
     }
   }
 
-  //@include media(medium-up) {
-    //padding: ($global-spacing * 3) 0;
-  //}
+  @include media(medium-up) {
+    padding: $spacing-5 0;
+  }
 
   //@include media(large-up) {
     //padding: ($global-spacing * 4) 0;
