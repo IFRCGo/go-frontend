@@ -3,10 +3,6 @@
     //margin-bottom: $global-spacing * 2;
   //}
 
-  .container--breadcrumb {
-    padding: 0;
-  }
-
   .introduction-nav {
     clear: both;
   }
@@ -307,7 +303,7 @@ h2.map__container__title {
   }
 }
 
-.button--edit-event {
+.button--edit-action {
   .collecticon-pencil::before {
     font-size: $font-size-sm !important;
     position: relative;

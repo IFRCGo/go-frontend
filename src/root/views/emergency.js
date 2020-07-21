@@ -805,7 +805,7 @@ class Emergency extends React.Component {
           <div className='row flex-sm'>
             <div className='col col-6-sm col-7-mid'>
               <BreadCrumb
-                extraClass='container--breadcrumb'
+                breadcrumbContainerClass='padding-reset'
                 crumbs={[
                   {
                     link: `/emergency/${get(data, 'id')}`,
@@ -825,7 +825,7 @@ class Emergency extends React.Component {
                 <div className='col-sm spacing-half-v flex'>
                   <a
                     href={url.resolve(api, `api/event/${data.id}/change/`)}
-                    className="button button--xsmall button--primary-bounded button button--edit-event"
+                    className="button button--xsmall button--primary-bounded button button--edit-action"
                   >
                     <span className='collecticon-pencil margin-half-r'></span>
                     <Translate

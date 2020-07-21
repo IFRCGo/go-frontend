@@ -619,7 +619,26 @@ class AdminArea extends SFPComponent {
         <Helmet>
           <title>{title}</title>
         </Helmet>
-        <BreadCrumb crumbs={ crumbs } />
+        <div className='container-lg'>
+          <div className='row flex-sm'>
+            <div className='col col-6-sm col-7-mid'>
+              <BreadCrumb breadcrumbContainerClass='padding-reset' crumbs={ crumbs } />
+            </div>
+            <div className='col col-6-sm col-5-mid spacing-half-t'>  
+              <div className='row-sm flex flex-justify-flex-end'>
+                <div className='col-sm spacing-half-v'>
+                  <a
+                    href={url.resolve(api, `api/country/${data.id}/change/`)}
+                    className='button button--xsmall button--primary-bounded button--edit-action'
+                  >
+                    <span className='collecticon-pencil margin-half-r'></span>
+                    <Translate stringId='countryEditCountry' />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <header className='inpage__header container-lg'>
           <div className='inner'>
             <h1 className='inpage__title'>
@@ -630,15 +649,17 @@ class AdminArea extends SFPComponent {
                 </span>
               ) : null}
             </h1>
+            {/*
             <div className='inpage__header-actions text-center'>
               <a
                 href={url.resolve(api, `api/country/${data.id}/change/`)}
                 className='link link--with-icon flex-justify-center'
               >
-                <span className='link--with-icon-text'><Translate stringId='countryEditCountry' /></span>
+                <span className='link--with-icon-text'>Region</span>
                 <span className='collecticon-chevron-right link--with-icon-inner'></span>
               </a>
             </div>
+          */}
           </div>
         </header>
         <section className='inpage__body'>
