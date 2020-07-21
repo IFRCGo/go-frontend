@@ -172,7 +172,7 @@ class FieldReportsTable extends SFPComponent {
           <DisplayTable
             headings={headings}
             rows={rows}
-            className='table table--border-bottom table--box-shadow'
+            className='table table--border-bottom'
             pageCount={data.count / this.state.table.limit}
             page={this.state.table.page - 1}
             onPageChange={this.handlePageChange.bind(this, 'table')}
