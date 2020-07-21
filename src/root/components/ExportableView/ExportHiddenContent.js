@@ -17,23 +17,10 @@ function ExportHiddenContent(p) {
     mode='display', // display or visibility
   } = p;
 
-  const [isExporting, setIsExporting] = React.useState(false);
-
   const {
-    addExportEventListener,
-    removeExportEventListener,
+    isExporting,
     isPreviewMode,
   } = React.useContext(exportContext);
-
-  const handleExportEvent = React.useCallback((isExporting) => {
-    setIsExporting(isExporting);
-  }, [setIsExporting]);
-
-  React.useEffect(() => {
-    addExportEventListener('export-hidden-content', handleExportEvent);
-
-    return () => removeExportEventListener('export-hidden-content');
-  }, [addExportEventListener, removeExportEventListener, handleExportEvent]);
 
   return (
     <div className={_cs(

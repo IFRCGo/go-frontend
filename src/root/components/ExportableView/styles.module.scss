@@ -1,18 +1,36 @@
+@import '~styles/settings/variables';
+
 .export-header {
+  display: flex;
+  align-items: center;
+  border-bottom: 5px solid $primary-color;
+
   .header {
+    display: flex;
+    align-items: baseline;
+    flex-grow: 1;
+
     .heading {
       padding: 0;
+      color: $primary-color;
+      font-weight: $base-font-light;
+      margin: 0;
+      padding: 10px;
     }
 
     .date {
-      padding: 0;
+      padding: 10px;
+      color: $primary-color;
     }
   }
 
   .content {
+    flex-shrink: 0;
+    padding: 10px;
+
     img {
       width: auto;
-      height: 40px;
+      height: 36px;
     }
   }
 }
