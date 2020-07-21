@@ -23,7 +23,7 @@ function ExportHeader (p) {
           { heading }
         </h1>
         <time className={styles.date}>
-          { formatDate(new Date()) }
+          ({ formatDate(new Date()) })
         </time>
       </div>
       <div className={styles.content}>

@@ -1,9 +1,13 @@
 import React from 'react';
+import _cs from 'classnames';
 
 import exportContext from './exportContext';
 
 function ExportContainer(p) {
-  const { setContainerRef } = React.useContext(exportContext);
+  const {
+    setContainerRef,
+    isExporting,
+  } = React.useContext(exportContext);
   const containerRef = React.useRef();
 
   React.useEffect(() => {
@@ -12,12 +16,16 @@ function ExportContainer(p) {
 
   const {
     className,
+    exportClassName,
     children,
   } = p;
 
   return (
     <div
-      className={className}
+      className={_cs(
+        className,
+        isExporting && exportClassName,
+      )}
       ref={containerRef}
     >
       { children }

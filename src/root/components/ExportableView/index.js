@@ -5,56 +5,36 @@ import { startDownload } from '#utils/download-starter';
 import exportContext from './exportContext';
 
 function ExportableView(p) {
-  const [eventListeners, setEventListeners] = React.useState({});
   const [containerRef, setContainerRef] = React.useState({ current: null });
+  const [isExporting, setIsExporting] = React.useState(false);
+
   const {
     preview,
     children,
   } = p;
 
   const startExport = React.useCallback(() => {
-    Object.values(eventListeners).forEach(listener => {
-      listener(true);
-    });
+    setIsExporting(true);
 
     if (containerRef.current) {
-      // this is to skip current js event loop
       html2canvas(containerRef.current, {useCORS: true}).then((renderedCanvas) => {
-        Object.values(eventListeners).forEach(listener => {
-          listener(false);
-        });
-
+        setIsExporting(false);
         startDownload(
           renderedCanvas,
           `export-${new Date().getTime()}.png`,
         );
       });
+    } else {
+      setIsExporting(false);
     }
-  }, [eventListeners, containerRef]);
-
-  const addExportEventListener = React.useCallback((key, eventListener) => {
-    setEventListeners((prevListeners) => ({
-      ...prevListeners,
-      [key]: eventListener,
-    }));
-  }, [setEventListeners]);
-
-  const removeExportEventListener = React.useCallback((key) => {
-    setEventListeners((prevListeners) => {
-      let newListeners = { ...prevListeners };
-      delete newListeners[key];
-
-      return newListeners;
-    });
-  }, [setEventListeners]);
+  }, [setIsExporting, containerRef]);
 
   const contextValue = React.useMemo(() => ({
-    addExportEventListener,
-    removeExportEventListener,
     isPreviewMode: preview,
     setContainerRef,
     startExport,
-  }), [addExportEventListener, removeExportEventListener, preview, setContainerRef, startExport]);
+    isExporting,
+  }), [preview, setContainerRef, startExport, isExporting]);
 
   return (
     <exportContext.Provider value={contextValue}>
