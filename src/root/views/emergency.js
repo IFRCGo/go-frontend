@@ -737,9 +737,9 @@ class Emergency extends React.Component {
     const subscribeButton = () =>
       this.state.subscribed ? (
         <React.Fragment>
-          <div className='col spacing-half-v'>
+          <div className='col-sm spacing-half-v'>
             <button
-              className="button button--primary-filled button--xsmall"
+              className="button button--primary-bounded button--xsmall"
               onClick={this.delSubscription}
             >
               <Translate stringId="emergencyActionUnsubscribeLabel" />
@@ -748,9 +748,9 @@ class Emergency extends React.Component {
         </React.Fragment>
       ) : (
         <React.Fragment>
-          <div className='col spacing-half-v'>
+          <div className='col-sm spacing-half-v'>
             <button
-              className="button button--primary-bounded button--xsmall"
+              className="button button--primary-filled button--xsmall"
               onClick={this.addSubscription}
             >
               <Translate stringId="emergencyActionSubscribeLabel" />
@@ -800,65 +800,97 @@ class Emergency extends React.Component {
             { resolveToString(strings.emergencyPageTitle, { name: get(data, 'name', 'Emergency') }) }
           </title>
         </Helmet>
-        <BreadCrumb
-          crumbs={[
-            {
-              link: `/emergency/${get(data, 'id')}`,
-              name: get(data, 'name', strings.breadCrumbEmergency)
-            },
-            { link: `/countries/${this.props.event.data.countries[0].id}`, name: `${data.countries[0].name}` },
 
-            { link: '/emergencies', name: strings.breadCrumbEmergencies},
-            { link: '/', name: strings.breadCrumbHome},
-          ]}
-        />
-        {this.state.showProjectForm && (
-          <ProjectFormModal
-            onCloseButtonClick={() => {
-              this.setState({ showProjectForm: false });
-            }}
-          />
-        )}
+        <div className='container-lg'>
+          <div className='row flex-sm'>
+            <div className='col col-6-sm col-7-mid'>
+              <BreadCrumb
+                extraClass='container--breadcrumb'
+                crumbs={[
+                  {
+                    link: `/emergency/${get(data, 'id')}`,
+                    name: get(data, 'name', strings.breadCrumbEmergency)
+                  },
+                  { link: `/countries/${this.props.event.data.countries[0].id}`, name: `${data.countries[0].name}` },
+
+                  { link: '/emergencies', name: strings.breadCrumbEmergencies},
+                  { link: '/', name: strings.breadCrumbHome},
+                ]}
+              />
+            </div>
+
+            <div className='col col-6-sm col-5-mid spacing-half-t'>
+              <div className='row-sm flex flex-justify-flex-end'>
+                {this.props.isLogged ? subscribeButton() : null}
+                <div className='col-sm spacing-half-v flex'>
+                  <a
+                    href={url.resolve(api, `api/event/${data.id}/change/`)}
+                    className="button button--xsmall button--primary-bounded button button--edit-event"
+                  >
+                    <span className='collecticon-pencil margin-half-r'></span>
+                    <Translate
+                      stringId="emergencyActionEditEventLabel"
+                    />
+                  </a>
+                </div>
+                <div className='col-sm spacing-half-v flex'>
+                  {this.props.isLogged && (
+                    <button
+                      onClick={() => {
+                        this.setState({
+                          showProjectForm: true,
+                        });
+                      }}
+                      className="button button--xsmall button--primary-bounded"
+                    >
+                        <Translate
+                          stringId="emergencyActionCreateThreeWActivityLabel"
+                        />
+                    </button>
+                  )}
+                </div>
+              </div>
+              </div>
+            </div>
+          </div>
+          {this.state.showProjectForm && (
+            <ProjectFormModal
+              onCloseButtonClick={() => {
+                this.setState({ showProjectForm: false });
+              }}
+            />
+          )}
         <header className="inpage__header">
           <div className="container-lg">
             <div className="inpage__headline-content">
               <div className="inpage__headline-content">
                 <h1 className="inpage__title">{data.name}</h1>
+                {/*
                 <div className="inpage__headline-actions row flex flex-justify-center">
-                  {this.props.isLogged ? subscribeButton() : null}
                   <div className='col spacing-half-v flex'>
                     <a
-                      href={url.resolve(api, `api/event/${data.id}/change/`)}
+                      href=''
                       className="link link--with-icon"
                     >
                       <span className='link--with-icon-text'>
-                        <Translate
-                          stringId="emergencyActionEditEventLabel"
-                        />
+                        Region Name
                       </span>
                       <span className='collecticon-chevron-right link--with-icon-inner'></span>
                     </a>
                   </div>
                   <div className='col spacing-half-v flex'>
-                    {this.props.isLogged && (
-                      <button
-                        onClick={() => {
-                          this.setState({
-                            showProjectForm: true,
-                          });
-                        }}
-                        className="link link--with-icon padding-reset"
-                      >
-                        <span className='link--with-icon-text'>
-                          <Translate
-                            stringId="emergencyActionCreateThreeWActivityLabel"
-                          />
-                        </span>
-                        <span className='collecticon-chevron-right link--with-icon-inner'></span>
-                      </button>
-                    )}
+                    <a
+                      href=''
+                      className="link link--with-icon"
+                    >
+                      <span className='link--with-icon-text'>
+                        Country Name
+                      </span>
+                      <span className='collecticon-chevron-right link--with-icon-inner'></span>
+                    </a>
                   </div>
                 </div>
+              */}
                 {this.renderHeaderStats()}
               </div>
             </div>

@@ -3,6 +3,10 @@
     //margin-bottom: $global-spacing * 2;
   //}
 
+  .container--breadcrumb {
+    padding: 0;
+  }
+
   .introduction-nav {
     clear: both;
   }
@@ -300,5 +304,13 @@ h2.map__container__title {
     .fold__title {
       margin-bottom: 0;
     }
+  }
+}
+
+.button--edit-event {
+  .collecticon-pencil::before {
+    font-size: $font-size-sm !important;
+    position: relative;
+    top: -2px;
   }
 }

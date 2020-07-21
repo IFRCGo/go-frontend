@@ -172,6 +172,9 @@ a:focus {
 }
 
 .link--with-icon-inner {
+  position: relative;
+  top: -1px;
+  
   &:before {
     font-size: $font-size-xxs;
     margin-inline-start: ($spacing-half / 2);

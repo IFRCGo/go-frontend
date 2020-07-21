@@ -365,7 +365,7 @@ $spacing-global: (
   }
 }
 
-// Globals: Spacing: Top
+// Globals: Margin: Top
 
 // Generates placeholders and classes for top margin
 // Uses margin top
@@ -377,7 +377,7 @@ $spacing-global: (
   }
 }
 
-// Globals: Spacing: Bottom
+// Globals: Margin: Bottom
 
 // Generates placeholders and classes for bottom margin
 // Uses margin bottom
@@ -464,6 +464,30 @@ $spacing: (
   }
 }
 
+// Spacing: Left
+
+// Generates placeholders and classes for left spacing
+// Uses padding left
+// E.g. .spacing-l, %spacing-l, .spacing-2-l, %spacing-3-l, etc.
+
+@each $name, $value in $spacing {
+  .#{$name}-l, %#{$name}-l {
+    padding-left: $value;
+  }
+}
+
+// Spacing: Right
+
+// Generates placeholders and classes for right spacing
+// Uses padding right
+// E.g. .spacing-r, %spacing-r, .spacing-2-r, %spacing-3-r, etc.
+
+@each $name, $value in $spacing {
+  .#{$name}-r, %#{$name}-r {
+    padding-right: $value;
+  }
+}
+
 // Spacing
 
 // Generates placeholders and classes for spacing
@@ -537,6 +561,30 @@ $margins: (
 @each $name, $value in $margins {
   .#{$name}-b, %#{$name}-b {
     margin-bottom: $value;
+  }
+}
+
+// Margin: Left
+
+// Generates placeholders and classes for left margin
+// Uses margin left
+// E.g. .margin-l, %margin-l, .margin-2-l, %margin-3-l, etc.
+
+@each $name, $value in $margins {
+  .#{$name}-l, %#{$name}-l {
+    margin-left: $value;
+  }
+}
+
+// Margin: Right
+
+// Generates placeholders and classes for right margin
+// Uses margin right
+// E.g. .margin-r, %margin-r, .margin-2-r, %margin-3-r, etc.
+
+@each $name, $value in $margins {
+  .#{$name}-r, %#{$name}-r {
+    margin-right: $value;
   }
 }
 
