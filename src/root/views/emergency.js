@@ -369,49 +369,55 @@ class Emergency extends React.Component {
         <div className="inpage__header-col">
           {displayHeadlineStats ? (
             <div className="inpage__headline-stats spacing-3-t">
-              <ul className="sumstats">
-                {stats.beneficiaries > 0 ? (
-                  <li className="sumstats__item__wrap">
-                    <div className='sumstats__item'>
-                      <span className="collecticon-people-arrows sumstats__icon"></span>
-                      <span className="sumstats__value">
-                        {n(stats.beneficiaries)}
-                      </span>
-                      <Translate
-                        className="sumstats__key"
-                        stringId="emergencyPeopleTargetedLabel"
-                      />
-                    </div>
-                  </li>
-                ) : null}
+              <div className='sumstats__wrap'>
+                <ul className="sumstats">
+                  {stats.beneficiaries > 0 ? (
+                    <li className="sumstats__item__wrap">
+                      <div className='sumstats__item'>
+                        <span className="collecticon-people-arrows sumstats__icon"></span>
+                        <span className="sumstats__value">
+                          {n(stats.beneficiaries)}
+                        </span>
+                        <Translate
+                          className="sumstats__key"
+                          stringId="emergencyPeopleTargetedLabel"
+                        />
+                      </div>
+                    </li>
+                  ) : null}
 
-                {stats.requested > 0 ? (
-                  <li className="sumstats__item__wrap">
-                    <div className='sumstats__item'>                  
-                      <span className="collecticon-cash-notes sumstats__icon"></span>
-                      <span className="sumstats__value">
-                        {n(stats.requested)}
-                      </span>
-                      <span
-                        className="sumstats__key"
-                        stringId="emergencyFundingRequirementsLabel"
-                      />
-                    </div>
-                  </li>
-                ) : null}
-                {stats.funded > 0 ? (
-                  <li className="sumstats__item__wrap">
-                    <div className='sumstats__item'>
-                      <span className="collecticon-cash-bag sumstats__icon"></span>
-                      <span className="sumstats__value">{n(stats.funded)}</span>
-                      <Translate
-                        className="sumstats__key"
-                        stringId="emergencyFundingLabel"
-                      />
-                    </div>
-                  </li>
-                ) : null}
-              </ul>
+                  {stats.requested > 0 ? (
+                    <li className="sumstats__item__wrap">
+                      <div className='sumstats__item'>                  
+                        <span className='sumstats__icon_wrapper'>
+                          <img className='sumstats__icon_2020' src="/assets/graphics/layout/funding-requirements.svg" />
+                        </span>
+                        <span className="sumstats__value">
+                          {n(stats.requested)}
+                        </span>
+                        <span
+                          className="sumstats__key"
+                          stringId="emergencyFundingRequirementsLabel"
+                        />
+                      </div>
+                    </li>
+                  ) : null}
+                  {stats.funded > 0 ? (
+                    <li className="sumstats__item__wrap">
+                      <div className='sumstats__item'>
+                        <span className='sumstats__icon_wrapper'>
+                          <img className='sumstats__icon_2020' src="/assets/graphics/layout/funding-coverage.svg" />
+                        </span>
+                        <span className="sumstats__value">{n(stats.funded)}</span>
+                        <Translate
+                          className="sumstats__key"
+                          stringId="emergencyFundingLabel"
+                        />
+                      </div>
+                    </li>
+                  ) : null}
+                </ul>
+              </div>
             </div>
           ) : null}
         </div>
@@ -453,8 +459,7 @@ class Emergency extends React.Component {
         <Fold
           id="field-reports"
           title={resolveToString(strings.emergencyFieldReportsWithCountTitle, { count: data.field_reports.length })}
-          wrapperClass="event-field-reports" extraClass='fold--main'
-        >
+          foldWrapperClass="event-field-reports fold--main">
           <table className="table table--border-bottom">
             <thead>
               <tr>
@@ -610,7 +615,7 @@ class Emergency extends React.Component {
           }
           return (
             <li key={o.id} className='col col-6-xs'>
-              <a className="link--underline" href={href} target="_blank">
+              <a className="link-underline" href={href} target="_blank">
                 {o.name}, {isoDate(o.created_at)}
               </a>
             </li>
@@ -625,7 +630,7 @@ class Emergency extends React.Component {
     const data = get(this.props.appealDocuments, 'data.results', []);
     if (!data.length) return null;
     return (
-      <Fold id="documents" title={strings.emergencyAppealDocumentsTitle} wrapperClass='fold--main'>
+      <Fold id="documents" title={strings.emergencyAppealDocumentsTitle} foldWrapperClass='fold--main'>
         {this.renderAppealReports('public-docs-list row flex-xs', data)}
       </Fold>
     );
@@ -648,7 +653,7 @@ class Emergency extends React.Component {
     if (!this.hasKeyFigures()) return null;
 
     return (
-      <Fold title={strings.emergencyKeyFiguresTitle} wrapperClass="key-figures">
+      <Fold title={strings.emergencyKeyFiguresTitle} foldWrapperClass="key-figures">
         <ul className="sumstats">
           {kf.map((o) => (
             <li key={o.deck} className='sumstats__item__wrap'>
@@ -732,9 +737,9 @@ class Emergency extends React.Component {
     const subscribeButton = () =>
       this.state.subscribed ? (
         <React.Fragment>
-          <div className='col spacing-half-v'>
+          <div className='col-sm spacing-half-v'>
             <button
-              className="button button--primary-filled button--xsmall"
+              className="button button--primary-bounded button--xsmall"
               onClick={this.delSubscription}
             >
               <Translate stringId="emergencyActionUnsubscribeLabel" />
@@ -743,9 +748,9 @@ class Emergency extends React.Component {
         </React.Fragment>
       ) : (
         <React.Fragment>
-          <div className='col spacing-half-v'>
+          <div className='col-sm spacing-half-v'>
             <button
-              className="button button--primary-bounded button--xsmall"
+              className="button button--primary-filled button--xsmall"
               onClick={this.addSubscription}
             >
               <Translate stringId="emergencyActionSubscribeLabel" />
@@ -795,61 +800,97 @@ class Emergency extends React.Component {
             { resolveToString(strings.emergencyPageTitle, { name: get(data, 'name', 'Emergency') }) }
           </title>
         </Helmet>
-        <BreadCrumb
-          crumbs={[
-            {
-              link: `/emergency/${get(data, 'id')}`,
-              name: get(data, 'name', strings.breadCrumbEmergency)
-            },
-            { link: `/countries/${this.props.event.data.countries[0].id}`, name: `${data.countries[0].name}` },
 
-            { link: '/emergencies', name: strings.breadCrumbEmergencies},
-            { link: '/', name: strings.breadCrumbHome},
-          ]}
-        />
-        {this.state.showProjectForm && (
-          <ProjectFormModal
-            onCloseButtonClick={() => {
-              this.setState({ showProjectForm: false });
-            }}
-          />
-        )}
+        <div className='container-lg'>
+          <div className='row flex-sm'>
+            <div className='col col-6-sm col-7-mid'>
+              <BreadCrumb
+                breadcrumbContainerClass='padding-reset'
+                crumbs={[
+                  {
+                    link: `/emergency/${get(data, 'id')}`,
+                    name: get(data, 'name', strings.breadCrumbEmergency)
+                  },
+                  { link: `/countries/${this.props.event.data.countries[0].id}`, name: `${data.countries[0].name}` },
+
+                  { link: '/emergencies', name: strings.breadCrumbEmergencies},
+                  { link: '/', name: strings.breadCrumbHome},
+                ]}
+              />
+            </div>
+
+            <div className='col col-6-sm col-5-mid spacing-half-t'>
+              <div className='row-sm flex flex-justify-flex-end'>
+                {this.props.isLogged ? subscribeButton() : null}
+                <div className='col-sm spacing-half-v flex'>
+                  <a
+                    href={url.resolve(api, `api/event/${data.id}/change/`)}
+                    className="button button--xsmall button--primary-bounded button button--edit-action"
+                  >
+                    <span className='collecticon-pencil margin-half-r'></span>
+                    <Translate
+                      stringId="emergencyActionEditEventLabel"
+                    />
+                  </a>
+                </div>
+                <div className='col-sm spacing-half-v flex'>
+                  {this.props.isLogged && (
+                    <button
+                      onClick={() => {
+                        this.setState({
+                          showProjectForm: true,
+                        });
+                      }}
+                      className="button button--xsmall button--primary-bounded"
+                    >
+                        <Translate
+                          stringId="emergencyActionCreateThreeWActivityLabel"
+                        />
+                    </button>
+                  )}
+                </div>
+              </div>
+              </div>
+            </div>
+          </div>
+          {this.state.showProjectForm && (
+            <ProjectFormModal
+              onCloseButtonClick={() => {
+                this.setState({ showProjectForm: false });
+              }}
+            />
+          )}
         <header className="inpage__header">
           <div className="container-lg">
             <div className="inpage__headline-content">
               <div className="inpage__headline-content">
                 <h1 className="inpage__title">{data.name}</h1>
+                {/*
                 <div className="inpage__headline-actions row flex flex-justify-center">
-                  {this.props.isLogged ? subscribeButton() : null}
                   <div className='col spacing-half-v flex'>
                     <a
-                      href={url.resolve(api, `api/event/${data.id}/change/`)}
+                      href=''
                       className="link link--with-icon"
                     >
-                      <Translate
-                        stringId="emergencyActionEditEventLabel"
-                      />
+                      <span className='link--with-icon-text'>
+                        Region Name
+                      </span>
                       <span className='collecticon-chevron-right link--with-icon-inner'></span>
                     </a>
                   </div>
                   <div className='col spacing-half-v flex'>
-                    {this.props.isLogged && (
-                      <button
-                        onClick={() => {
-                          this.setState({
-                            showProjectForm: true,
-                          });
-                        }}
-                        className="link link--with-icon padding-reset"
-                      >
-                        <Translate
-                          stringId="emergencyActionCreateThreeWActivityLabel"
-                        />
-                        <span className='collecticon-chevron-right link--with-icon-inner'></span>
-                      </button>
-                    )}
+                    <a
+                      href=''
+                      className="link link--with-icon"
+                    >
+                      <span className='link--with-icon-text'>
+                        Country Name
+                      </span>
+                      <span className='collecticon-chevron-right link--with-icon-inner'></span>
+                    </a>
                   </div>
                 </div>
+              */}
                 {this.renderHeaderStats()}
               </div>
             </div>
@@ -883,8 +924,7 @@ class Emergency extends React.Component {
                     <Fold
                       id="overview"
                       title={strings.emergencySituationalOverviewTitle}
-                      wrapperClass="situational-overview"
-                      extraClass='fold--main'
+                      foldWrapperClass="situational-overview fold--main"
                     >
                       <Expandable
                         sectionClass="rich-text-section"
@@ -942,7 +982,7 @@ class Emergency extends React.Component {
 
                   {contacts && contacts.length ? (
                     <div className='container-lg margin-2-v'>
-                      <Fold id="contacts" title={strings.emergencyContactsTitle} wrapperClass="contacts fold--main" extraContainerClass='container-lg--padding-reset'>
+                      <Fold id="contacts" title={strings.emergencyContactsTitle} foldWrapperClass="contacts fold--main" foldContainerClass='container-lg--padding-reset'>
                         <table className="table table--border-bottom">
                           <thead className="visually-hidden">
                             <tr>

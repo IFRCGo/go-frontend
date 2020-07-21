@@ -405,3 +405,9 @@ td.right-align, th.right-align{
   justify-content: flex-end;
   margin-top: $global-spacing;
 }
+
+
+// Ensure table dates don't wrap
+.table__header--date, table__cell--date {
+  width: 110px;
+}

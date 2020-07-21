@@ -449,7 +449,7 @@ class AdminArea extends SFPComponent {
             noPaginate={true}
           />
           <div className='fold__footer'>
-            <Link className='link--underline export--link' to={'/appeals/all/?country=' + id}>
+            <Link className='link-underline export--link' to={'/appeals/all/?country=' + id}>
               <Translate
                 stringId="countriesAllOperationExportLink"
                 params={{ name }}
@@ -619,7 +619,26 @@ class AdminArea extends SFPComponent {
         <Helmet>
           <title>{title}</title>
         </Helmet>
-        <BreadCrumb crumbs={ crumbs } />
+        <div className='container-lg'>
+          <div className='row flex-sm'>
+            <div className='col col-6-sm col-7-mid'>
+              <BreadCrumb breadcrumbContainerClass='padding-reset' crumbs={ crumbs } />
+            </div>
+            <div className='col col-6-sm col-5-mid spacing-half-t'>  
+              <div className='row-sm flex flex-justify-flex-end'>
+                <div className='col-sm spacing-half-v'>
+                  <a
+                    href={url.resolve(api, `api/country/${data.id}/change/`)}
+                    className='button button--xsmall button--primary-bounded button--edit-action'
+                  >
+                    <span className='collecticon-pencil margin-half-r'></span>
+                    <Translate stringId='countryEditCountry' />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <header className='inpage__header container-lg'>
           <div className='inner'>
             <h1 className='inpage__title'>
@@ -630,15 +649,17 @@ class AdminArea extends SFPComponent {
                 </span>
               ) : null}
             </h1>
+            {/*
             <div className='inpage__header-actions text-center'>
               <a
                 href={url.resolve(api, `api/country/${data.id}/change/`)}
                 className='link link--with-icon flex-justify-center'
               >
-                <Translate stringId='countryEditCountry' />
+                <span className='link--with-icon-text'>Region</span>
                 <span className='collecticon-chevron-right link--with-icon-inner'></span>
               </a>
             </div>
+          */}
           </div>
         </header>
         <section className='inpage__body'>
@@ -661,7 +682,7 @@ class AdminArea extends SFPComponent {
                 <TabPanel>
                   <TabContent>
                     <div className='container-lg'>
-                      <Fold title={strings.countriesStatisticsTitle} headerClass='visually-hidden' id='operations' extraContainerClass='container-lg--padding-reset'>
+                      <Fold title={strings.countriesStatisticsTitle} foldHeaderClass='visually-hidden' id='operations' foldWrapperClass='fold--main' foldContainerClass='container-lg--padding-reset'>
                         {/*
                         <div className='operations__container'>
                           <div className='country__operations'>
@@ -694,7 +715,7 @@ class AdminArea extends SFPComponent {
                     </div>
                   </TabContent>
                   <TabContent>
-                    <div className='container-lg'>
+                    <div>
                       <EmergenciesTable
                         id={'emergencies'}
                         title={strings.emergenciesTableRecentEmergencies}

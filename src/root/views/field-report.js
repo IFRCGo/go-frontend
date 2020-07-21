@@ -50,13 +50,13 @@ class FieldReport extends React.Component {
 
   renderCountries (data) {
     const els = get(data, 'countries', [])
-      .map(c => <Link key={c.id} className='link--underline' to={'/countries/' + c.id}>{c.name}</Link>);
+      .map(c => <Link key={c.id} className='link-underline' to={'/countries/' + c.id}>{c.name}</Link>);
     return intersperse(els, ', ');
   }
 
   renderEmergencyLink (data) {
     const { event } = data;
-    return event ? <Link className='link--underline' to={'/emergencies/' + event.id}>{event.name}</Link> : 'No emergency page';
+    return event ? <Link className='link-underline' to={'/emergencies/' + event.id}>{event.name}</Link> : 'No emergency page';
   }
 
   renderPlannedResponse (data) {
@@ -167,7 +167,7 @@ class FieldReport extends React.Component {
         {contacts.map((d, i) => (
           <div className='form__group' key={`${d.name} + ${i}`}>
             <p className='form__label'>{separate(d.ctype)}</p>
-            <p><strong>{d.name}</strong>, {d.title}, <a className='link--primary' href={`mailto:${d.email}`}>{d.email}</a></p>
+            <p><strong>{d.name}</strong>, {d.title}, <a className='link-underline' href={`mailto:${d.email}`}>{d.email}</a></p>
           </div>
         ))}
       </DisplaySection>
@@ -524,7 +524,7 @@ class FieldReport extends React.Component {
               </div>
               <div className='inpage__headline-actions text-center'>
                 <Link className='link link--with-icon flex-justify-center' to={`/reports/${data.id}/edit`}>
-                  <Translate stringId='fieldReportEdit'/>
+                  <span className='link--with-icon-text'><Translate stringId='fieldReportEdit'/></span>
                   <span className='collecticon-chevron-right link--with-icon-inner'></span>
                 </Link>
               </div>

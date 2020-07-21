@@ -124,7 +124,7 @@ class FieldReportsTable extends SFPComponent {
         <Fold title={this.props.title} id={this.props.id}>
           <p>
               <Translate stringId='fieldReportsTableLoginRequired'/>
-            <Link key='login' to={{pathname: '/login', state: {from: this.props.location}}} className='link--primary' title={strings.fieldReportsTableLogin}>
+            <Link key='login' to={{pathname: '/login', state: {from: this.props.location}}} className='link-underline' title={strings.fieldReportsTableLogin}>
               <Translate stringId='fieldReportsTableLogin'/>
             </Link></p>
         </Fold>
@@ -159,7 +159,7 @@ class FieldReportsTable extends SFPComponent {
       }));
 
       return (
-        <Fold title={`${title} (${n(data.count)})`} id={this.props.id} extraClass='fold--main'
+        <Fold title={`${title} (${n(data.count)})`} id={this.props.id} foldWrapperClass='fold--main'
           navLink={this.props.viewAll ? (
               <Link className='fold__title__link export--link' to={this.props.viewAll}>{this.props.viewAllText || strings.fieldReportsTableViewAllReports}</Link>
           ) : null}>
@@ -172,7 +172,7 @@ class FieldReportsTable extends SFPComponent {
           <DisplayTable
             headings={headings}
             rows={rows}
-            className='table table--border-bottom table--box-shadow'
+            className='table table--border-bottom'
             pageCount={data.count / this.state.table.limit}
             page={this.state.table.page - 1}
             onPageChange={this.handlePageChange.bind(this, 'table')}
@@ -181,11 +181,11 @@ class FieldReportsTable extends SFPComponent {
           {this.props.viewAll ? (
             <div className='fold__footer'>
               <Translate stringId='fieldReportsViewAllIn'/>
-               <Link className='link--primary export--link' to={this.props.viewAll + '?region=0'}>{this.props.viewAllText || ' Africa'}</Link> /&nbsp;
-              <Link className='link--primary export--link' to={this.props.viewAll + '?region=1'}>{this.props.viewAllText || 'America'}</Link> /&nbsp;
-              <Link className='link--primary export--link' to={this.props.viewAll + '?region=2'}>{this.props.viewAllText || 'Asia'}</Link> /&nbsp;
-              <Link className='link--primary export--link' to={this.props.viewAll + '?region=3'}>{this.props.viewAllText || 'Europe'}</Link> /&nbsp;
-              <Link className='link--primary export--link' to={this.props.viewAll + '?region=4'}>{this.props.viewAllText || 'the Middle East'}</Link><br/>
+               <Link className='link-underline export--link' to={this.props.viewAll + '?region=0'}>{this.props.viewAllText || ' Africa'}</Link> /&nbsp;
+              <Link className='link-underline export--link' to={this.props.viewAll + '?region=1'}>{this.props.viewAllText || 'America'}</Link> /&nbsp;
+              <Link className='link-underline export--link' to={this.props.viewAll + '?region=2'}>{this.props.viewAllText || 'Asia'}</Link> /&nbsp;
+              <Link className='link-underline export--link' to={this.props.viewAll + '?region=3'}>{this.props.viewAllText || 'Europe'}</Link> /&nbsp;
+              <Link className='link-underline export--link' to={this.props.viewAll + '?region=4'}>{this.props.viewAllText || 'the Middle East'}</Link><br/>
               <i>
                 <Translate stringId='fieldReportsTableProblem'/>
               </i>

@@ -476,10 +476,10 @@ class Account extends React.Component {
     const { profile } = this.state;
     const { strings } = this.context;
     return (
-      <div className='inner profile__form'>
+      <div className='inner profile__form container-xs margin-reset'>
         <div className='fold__header'>
           <div className='fold__actions'>
-            <button className='button button--medium button--secondary-bounded' onClick={this.toggleEditProfile}>
+            <button className='button button--small button--secondary-bounded' onClick={this.toggleEditProfile}>
               <Translate stringId='accountCancel'/>
             </button>
           </div>
@@ -494,7 +494,7 @@ class Account extends React.Component {
               type='text'
               name='first-name'
               id='first-name'
-              classWrapper='form__group--kv'
+              classWrapper='form__group__fr'
               value={profile.firstName}
               onChange={this.onFieldChange.bind(this, 'profile', 'firstName')} >
             </FormInput>
@@ -503,7 +503,7 @@ class Account extends React.Component {
               type='text'
               name='last-name'
               id='last-name'
-              classWrapper='form__group--kv'
+              classWrapper='form__group__fr'
               value={profile.lastName}
               onChange={this.onFieldChange.bind(this, 'profile', 'lastName')} >
             </FormInput>
@@ -512,7 +512,7 @@ class Account extends React.Component {
               type='text'
               name='phone-number'
               id='phone-number'
-              classWrapper='form__group--kv'
+              classWrapper='form__group__fr'
               value={profile.phoneNumber}
               onChange={this.onFieldChange.bind(this, 'profile', 'phoneNumber')} >
             </FormInput>
@@ -521,7 +521,7 @@ class Account extends React.Component {
               type='text'
               name='city'
               id='city'
-              classWrapper='form__group--kv'
+              classWrapper='form__group__fr'
               value={profile.city}
               onChange={this.onFieldChange.bind(this, 'profile', 'city')} >
             </FormInput>
@@ -530,22 +530,24 @@ class Account extends React.Component {
               type='text'
               name='organization'
               id='organization'
-              classWrapper='form__group--kv'
+              classWrapper='form__group__fr'
               value={profile.org}
               onChange={this.onFieldChange.bind(this, 'profile', 'org')} >
             </FormInput>
-            <div className='form__group form__group--kv'>
-              <div className='form__inner-header'>
-                <label className='form__label'>
-                  <Translate stringId='accountOrganizationType'/>
-                </label>
-              </div>
-              <div className='form__inner-body'>
-                <Select
-                  name='organizationType'
-                  value={profile.orgType}
-                  onChange={this.onFieldChange.bind(this, 'profile', 'orgType')}
-                  options={orgTypes} />
+            <div className='form__group form__group__fr'>
+              <div className='form__group__wrap'>
+                <div className='form__inner-header'>
+                  <label className='form__label'>
+                    <Translate stringId='accountOrganizationType'/>
+                  </label>
+                </div>
+                <div className='form__inner-body'>
+                  <Select
+                    name='organizationType'
+                    value={profile.orgType}
+                    onChange={this.onFieldChange.bind(this, 'profile', 'orgType')}
+                    options={orgTypes} />
+                </div>
               </div>
             </div>
             <FormInput
@@ -553,7 +555,7 @@ class Account extends React.Component {
               type='text'
               name='department'
               id='department'
-              classWrapper='form__group--kv'
+              classWrapper='form__group__fr'
               value={profile.department}
               onChange={this.onFieldChange.bind(this, 'profile', 'department')} >
             </FormInput>
@@ -562,7 +564,7 @@ class Account extends React.Component {
               type='text'
               name='position'
               id='position'
-              classWrapper='form__group--kv'
+              classWrapper='form__group__fr'
               value={profile.position}
               onChange={this.onFieldChange.bind(this, 'profile', 'position')} >
             </FormInput>
@@ -606,7 +608,7 @@ class Account extends React.Component {
                     <li key={o.id} className='report__list--item'>
                       <div className='report__list--header list__each__block flex'>
                         <div>
-                          <Link className='link--underline' to={`/reports/${o.id}`}>{o.summary}</Link>&nbsp;
+                          <Link className='link-underline' to={`/reports/${o.id}`}>{o.summary}</Link>&nbsp;
                           <div className='report__list--updated global-margin-t'>Last Updated: {DateTime.fromISO(o.updated_at || o.created_at).toISODate()}</div>
                         </div>
                       </div>
@@ -635,7 +637,7 @@ class Account extends React.Component {
     return (
       <form className='form' onSubmit={this.onNotificationSubmit}>
         <div className='fold-container'>
-          <Fold title={strings.accountSubscriptionPreferences} foldClass='margin-reset' extraClass='fold--main'>
+          <Fold title={strings.accountSubscriptionPreferences} foldTitleClass='margin-reset' foldWrapperClass='fold--main'>
             <FormCheckboxGroup
               label={strings.accountSubscriptionTypes}
               description={strings.accountSubscriptionTypesDescription}
@@ -726,7 +728,7 @@ class Account extends React.Component {
   }
 
   renderAccountInformation () {
-    return (<div className='prose prose--responsive'>
+    return (<div className='prose'>
               <div className='fold-container'>
                 <section className='fold' id='account-information'>
                   {this.state.profileEditMode ? this.renderProfileForm() : this.renderProfileAttributes()}
@@ -743,7 +745,7 @@ class Account extends React.Component {
           events.push(
             <div key={'operations-component' + eventId} className='account__op__block clearfix'>
               <div className='account__op__each__link'>
-                <Link className={'link--primary'} to={'/emergencies/' + eventId}>{this.props.event.event[eventId].data.name}</Link>
+                <Link className={'link-underline'} to={'/emergencies/' + eventId}>{this.props.event.event[eventId].data.name}</Link>
               </div>
               <div className='account__op__each__button'>
                 <button className={'button button--small button--primary-bounded'} onClick={this.delSubscription} id={'followedEvent' + eventId}>

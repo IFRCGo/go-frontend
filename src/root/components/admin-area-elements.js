@@ -15,7 +15,7 @@ class _KeyFigures extends React.Component {
     const { fetching, fetched, error, data } = this.props.data;
     if (fetching || error || (fetched && !data.results.length)) return null;
     return (
-      <Fold id='key-figures' title={strings.keyFiguresTitle} wrapper_class='key-figures'>
+      <Fold id='key-figures' title={strings.keyFiguresTitle} foldWrapperClass='key-figures'>
         <ul className='key-figures-list'>
           {data.results.map(o => (
             <li key={o.deck}>
@@ -38,7 +38,7 @@ class _Contacts extends React.Component {
     const { strings }  = this.context;
     if (data.contacts && !data.contacts.length) return null;
     return (
-      <Fold id='contacts' title={strings.contactsTitle} wrapperClass='contacts' foldClass='margin-reset'>
+      <Fold id='contacts' title={strings.contactsTitle} foldWrapperClass='contacts' foldTitleClass='margin-reset'>
         <table className='table'>
           <thead className='visually-hidden'>
             <tr>
@@ -74,7 +74,7 @@ class _Snippets extends React.Component {
     const { fetching, fetched, error, data } = this.props.data;
     if (fetching || error || (fetched && !data.results.length)) return null;
     return (
-      <Fold id='graphics' title={strings.snippetsTitle} wrapper_class='additional-graphics'>
+      <Fold id='graphics' title={strings.snippetsTitle} foldWrapperClass='additional-graphics'>
         <div className='iframe__container'>
           {data.results.map(o => o.snippet ? <div className='snippet__item' key={o.id} dangerouslySetInnerHTML={{__html: o.snippet}} />
             : o.image ? <div key={o.id} className='snippet__item snippet__image'><img src={o.image}/></div> : null
@@ -92,7 +92,7 @@ class _Links extends React.Component {
     const { data } = this.props;
     if (data.links && !data.links.length) return null;
     return (
-      <Fold id='links' title={strings.linksTitle} wrapper_class='links' foldClass='margin-reset'>
+      <Fold id='links' title={strings.linksTitle} foldWrapperClass='links' foldTitleClass='margin-reset'>
         <ul className='links-list'>
           {data.links.map(o => <li key={o.id}><a href={o.url} className='link--external'>{o.title}</a> </li>)}
         </ul>

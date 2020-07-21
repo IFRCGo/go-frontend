@@ -95,7 +95,7 @@ export default class NationalSocietiesEngagedPer extends PureComponent {
     const { strings } = this.context;
     return (
       <div className='inner'>
-        <Fold title={strings.nationalSocietiesTitle} foldClass='margin-reset' extraClass='fold--main'>
+        <Fold title={strings.nationalSocietiesTitle} foldTitleClass='margin-reset' foldWrapperClass='fold--main'>
           <div className='row flex-sm'>
             {charts}
           </div>

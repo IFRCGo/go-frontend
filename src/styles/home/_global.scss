@@ -97,6 +97,13 @@
   padding-bottom: $spacing-half;
 }
 
+.sumstats__wrap {
+  @include media(medium) {
+    display: flex;
+    justify-content: center;
+  }
+}
+
 .sumstats {
   //@extend .clearfix;
   list-style: none;
@@ -109,6 +116,7 @@
   }
 
   @include media(medium) {
+    display: inline-flex;
     border-radius: $base-border-radius;
     box-shadow: $box-shadow-component;
     border: 1px solid $grey-mist;
@@ -156,6 +164,7 @@
     @include media(medium) {
       border: none;
       margin-bottom: 0;
+      max-width: 240px;
 
       &:before {
         content: "";
@@ -175,6 +184,10 @@
       &:last-of-type {
         border-radius: 0 $base-border-radius $base-border-radius 0;
       }
+    }
+
+    @include media(large) {
+      width: 240px;
     }
   }
 
@@ -234,6 +247,12 @@
 
   .tooltip-button {
     vertical-align: text-top;
+  }
+}
+
+.inner--emergencies {
+  .fold {
+    padding-bottom: 0;
   }
 }
 
@@ -684,7 +703,7 @@
   //@include column(12/12);
 
   .key-emergencies-item {
-    margin-bottom: $global-spacing;
+    margin-bottom: $spacing-2;
     display: flex;
 
     //@include media(medium-up) {
@@ -801,12 +820,6 @@
   //thead th, tbody td {
     //padding: 0.5rem;
   //}
-
-  // Ensure table dates don't wrap
-
-  .table__header--date, table__cell--date {
-    width: 110px;
-  }
 }
 
 .drop__menu--date {
@@ -845,3 +858,10 @@
   //margin-left: auto;
   //margin-right: auto;
 //}
+
+// Appeals Table
+.fold--appeals-table {
+  .fold__header {
+    margin-bottom: 0;
+  }
+}

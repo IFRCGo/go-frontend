@@ -115,9 +115,11 @@ class EmergenciesDash extends React.Component {
           <div className='inner'>
             <div>
               <div className='inpage__headline-content'>
-                <h1 className='inpage__title'>
-                  <Translate stringId='emergenciesDashLast30Days' />
-                </h1>
+                <div className='container-lg'>
+                  <h1 className='inpage__title'>
+                    <Translate stringId='emergenciesDashLast30Days' />
+                  </h1>
+                </div>
                 <div className='inpage__headline-stats'>
                   <Stats lastMonth={lastMonth} />
                 </div>

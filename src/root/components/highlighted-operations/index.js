@@ -150,7 +150,7 @@ class HighlightedOperations extends React.Component {
     }
     return (operations.length ? (
       <div className='inner inner--emergencies'>
-        <Fold title={strings.highlightedOperationsTitle} navLink={foldLink} extraClass foldClass='fold__title--inline'>
+        <Fold title={strings.highlightedOperationsTitle} navLink={foldLink} foldWrapperClass='fold--main' foldTitleClass='fold__title--inline'>
           <div className={listStyle}>
             {operations.slice(0, 6).map(operation =>
               <OperationCard

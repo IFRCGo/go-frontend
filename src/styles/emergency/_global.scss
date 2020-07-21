@@ -302,3 +302,11 @@ h2.map__container__title {
     }
   }
 }
+
+.button--edit-action {
+  .collecticon-pencil::before {
+    font-size: $font-size-sm !important;
+    position: relative;
+    top: -2px;
+  }
+}

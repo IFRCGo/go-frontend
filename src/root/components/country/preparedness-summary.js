@@ -65,7 +65,7 @@ class PreparednessSummary extends React.Component {
     });
     const { strings } = this.context;
     return (
-      <Fold id='per-summary' title={strings.preparednessSummaryTitle} wrapper_class='preparedness' extraClass='fold--main margin-reset' extraContainerClass='container-lg--padding-reset'>
+      <Fold id='per-summary' title={strings.preparednessSummaryTitle} foldWrapperClass='preparedness fold--main' foldContainerClass='container-lg--padding-reset'>
         <div className='row-sm flex-mid'>
           <div className='component__block__wrap' id='selectedOption7' onClick={this.listComponents}>
             <div className='component__block'>

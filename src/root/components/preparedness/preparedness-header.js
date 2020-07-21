@@ -10,7 +10,7 @@ class PreparednessHeader extends React.Component {
     const { strings }  = this.context;
     return (
       <div className='inner'>
-        <Fold title={strings.preparednessHeaderTitle} foldClass='margin-reset' extraClass='fold--main'>
+        <Fold title={strings.preparednessHeaderTitle} foldTitleClass='margin-reset' foldWrapperClass='fold--main'>
           <div className='container-full'>
             <div className='key-emergencies-list-wrap row flex-xs'>
               <ul className='key-emergencies-list key-emergencies-list--preparedness col col-8-xs'>
