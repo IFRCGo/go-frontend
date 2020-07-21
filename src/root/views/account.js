@@ -476,10 +476,10 @@ class Account extends React.Component {
     const { profile } = this.state;
     const { strings } = this.context;
     return (
-      <div className='inner profile__form'>
+      <div className='inner profile__form container-xs margin-reset'>
         <div className='fold__header'>
           <div className='fold__actions'>
-            <button className='button button--medium button--secondary-bounded' onClick={this.toggleEditProfile}>
+            <button className='button button--small button--secondary-bounded' onClick={this.toggleEditProfile}>
               <Translate stringId='accountCancel'/>
             </button>
           </div>
@@ -494,7 +494,7 @@ class Account extends React.Component {
               type='text'
               name='first-name'
               id='first-name'
-              classWrapper='form__group--kv'
+              classWrapper='form__group__fr'
               value={profile.firstName}
               onChange={this.onFieldChange.bind(this, 'profile', 'firstName')} >
             </FormInput>
@@ -503,7 +503,7 @@ class Account extends React.Component {
               type='text'
               name='last-name'
               id='last-name'
-              classWrapper='form__group--kv'
+              classWrapper='form__group__fr'
               value={profile.lastName}
               onChange={this.onFieldChange.bind(this, 'profile', 'lastName')} >
             </FormInput>
@@ -512,7 +512,7 @@ class Account extends React.Component {
               type='text'
               name='phone-number'
               id='phone-number'
-              classWrapper='form__group--kv'
+              classWrapper='form__group__fr'
               value={profile.phoneNumber}
               onChange={this.onFieldChange.bind(this, 'profile', 'phoneNumber')} >
             </FormInput>
@@ -521,7 +521,7 @@ class Account extends React.Component {
               type='text'
               name='city'
               id='city'
-              classWrapper='form__group--kv'
+              classWrapper='form__group__fr'
               value={profile.city}
               onChange={this.onFieldChange.bind(this, 'profile', 'city')} >
             </FormInput>
@@ -530,22 +530,24 @@ class Account extends React.Component {
               type='text'
               name='organization'
               id='organization'
-              classWrapper='form__group--kv'
+              classWrapper='form__group__fr'
               value={profile.org}
               onChange={this.onFieldChange.bind(this, 'profile', 'org')} >
             </FormInput>
-            <div className='form__group form__group--kv'>
-              <div className='form__inner-header'>
-                <label className='form__label'>
-                  <Translate stringId='accountOrganizationType'/>
-                </label>
-              </div>
-              <div className='form__inner-body'>
-                <Select
-                  name='organizationType'
-                  value={profile.orgType}
-                  onChange={this.onFieldChange.bind(this, 'profile', 'orgType')}
-                  options={orgTypes} />
+            <div className='form__group form__group__fr'>
+              <div className='form__group__wrap'>
+                <div className='form__inner-header'>
+                  <label className='form__label'>
+                    <Translate stringId='accountOrganizationType'/>
+                  </label>
+                </div>
+                <div className='form__inner-body'>
+                  <Select
+                    name='organizationType'
+                    value={profile.orgType}
+                    onChange={this.onFieldChange.bind(this, 'profile', 'orgType')}
+                    options={orgTypes} />
+                </div>
               </div>
             </div>
             <FormInput
@@ -553,7 +555,7 @@ class Account extends React.Component {
               type='text'
               name='department'
               id='department'
-              classWrapper='form__group--kv'
+              classWrapper='form__group__fr'
               value={profile.department}
               onChange={this.onFieldChange.bind(this, 'profile', 'department')} >
             </FormInput>
@@ -562,7 +564,7 @@ class Account extends React.Component {
               type='text'
               name='position'
               id='position'
-              classWrapper='form__group--kv'
+              classWrapper='form__group__fr'
               value={profile.position}
               onChange={this.onFieldChange.bind(this, 'profile', 'position')} >
             </FormInput>
@@ -726,7 +728,7 @@ class Account extends React.Component {
   }
 
   renderAccountInformation () {
-    return (<div className='prose prose--responsive'>
+    return (<div className='prose'>
               <div className='fold-container'>
                 <section className='fold' id='account-information'>
                   {this.state.profileEditMode ? this.renderProfileForm() : this.renderProfileAttributes()}

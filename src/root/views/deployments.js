@@ -245,16 +245,16 @@ class Deployments extends SFPComponent {
             </div>
           </div>
         </section>
-        <div className='inpage__body container-lg'>
+        <div className='inpage__body'>
           <div className='inner'>
             <EruTable
               limit={5}
               viewAll={'/deployments/erus/all'}
             />
           </div>
-          <div className='inner'>
+          <div className='inner margin-4-t'>
             <PersonnelTable limit={20} viewAll={'/deployments/personnel/all'} />
-            <div className='readiness__container'>
+            <div className='readiness__container container-lg'>
               <Readiness eruOwners={this.props.eruOwners} />
             </div>
           </div>

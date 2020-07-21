@@ -185,6 +185,10 @@
         border-radius: 0 $base-border-radius $base-border-radius 0;
       }
     }
+
+    @include media(large) {
+      width: 240px;
+    }
   }
 
   &__icon {
