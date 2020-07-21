@@ -184,7 +184,7 @@
 }
 
 .fold__title__link {
-  @include link-brand;
+  @include link-underline;
   //color: $primary-color;
   //font-weight: $base-font-medium;
   //text-decoration: underline;

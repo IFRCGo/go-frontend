@@ -12,12 +12,24 @@
   //text-align: left;
   //padding-inline-start: 5px;
   //@include media(xsmall-only) {
-  padding: ($global-spacing * 0.8) ($global-spacing * 1.5);
   width: 100%;
   //}
   // @include media(small-up) {
   //   width: 33%;
   // }
+}
+
+.card_box, .card_box_footer {
+  padding: $spacing $spacing-2;
+}
+
+.card_box_title {
+  padding-bottom: $spacing-half;
+}
+
+.card__title {
+  min-height: 50px;
+  line-height: 1.2;
 }
 
 .card_box_no {
@@ -72,8 +84,12 @@
 }
 
 .card_box_footer {
-  padding: $global-spacing $global-spacing ($global-spacing / 2) $global-spacing;
-  margin-bottom: ($global-spacing / 2);
+  //padding: $global-spacing $global-spacing ($global-spacing / 2) $global-spacing;
+  margin-top: $spacing-half;
+
+  .progress-bar {
+    height: 8px;
+  }
 }
 
 .more_button {
@@ -82,24 +98,26 @@
 
 .last_updated {
   color: $grey-platinum;
+  font-weight: $base-font-light;
   font-size: $font-size-xxs;
-  margin-bottom: 10px;
 }
 
 .card_box--op {
   width: 50%;
-
-  .heading-tiny {
-    font-size: $font-size-sm;
-  }
 
   &:first-of-type {
     border-inline-end: 1px solid $base-border-color--light;
   }
 }
 
+.card_box--op, .card_box_footer {
+  .heading-tiny {
+    font-size: $font-size-sm;
+  }
+}
+
 .card_box_fc {
   color: $black;
-  text-align: right;
+  text-align: inline-end;
   font-weight: $base-font-medium;
 }
