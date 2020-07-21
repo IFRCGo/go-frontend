@@ -16,3 +16,28 @@
     }
   }
 }
+
+.export-hidden {
+  &.preview,
+  &.exporting {
+    &.display {
+      display: none;
+    }
+
+    &.visibility {
+      visibility: hidden;
+    }
+  }
+}
+
+.export-only {
+  &:not(.preview):not(.exporting) {
+    &.display {
+      display: none;
+    }
+
+    &.visibility {
+      visibility: hidden;
+    }
+  }
+}
