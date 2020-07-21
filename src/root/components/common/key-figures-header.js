@@ -110,23 +110,25 @@ export default function KeyFiguresHeader (props) {
         <h1 className='visually-hidden'>
           <Translate stringId='keyFiguresStatsOverall'/>
         </h1>
-        <ul className='sumstats'>
-          {filteredKeyFigures().map(keyFigure => (
-            <li key={keyFigure.id} className='sumstats__item__wrap'>
-              <div className='sumstats__item'>
-                {/* <span className={c(`${keyFigure.icon}`, 'sumstats__icon')}></span> */}
-                <span className='sumstats__icon_wrapper'>
-                  <img className='sumstats__icon_2020' src={keyFigure.icon} />
-                </span>
-                <span className='sumstats__value'>{keyFigure.value}</span>
-                <span className='sumstats__key'>
-                  {keyFigure.title}
-                  {keyFigure.tooltip ? <Tooltip title={keyFigure.tooltip.title} description={keyFigure.tooltip.description}/> : null}
-                </span>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <div className='sumstats__wrap'>
+          <ul className='sumstats'>
+            {filteredKeyFigures().map(keyFigure => (
+              <li key={keyFigure.id} className='sumstats__item__wrap'>
+                <div className='sumstats__item'>
+                  {/* <span className={c(`${keyFigure.icon}`, 'sumstats__icon')}></span> */}
+                  <span className='sumstats__icon_wrapper'>
+                    <img className='sumstats__icon_2020' src={keyFigure.icon} />
+                  </span>
+                  <span className='sumstats__value'>{keyFigure.value}</span>
+                  <span className='sumstats__key'>
+                    {keyFigure.title}
+                    {keyFigure.tooltip ? <Tooltip title={keyFigure.tooltip.title} description={keyFigure.tooltip.description}/> : null}
+                  </span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );

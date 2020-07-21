@@ -255,7 +255,7 @@ class AppealsTable extends SFPComponent {
       } = this.props;
 
       return (
-        <Fold showHeader={!this.props.fullscreen} title={`${title} (${n(data.count)})`} id={this.props.id} navLink={foldLink} foldClass='fold__title--inline' extraClass='fold--main'>
+        <Fold showHeader={!this.props.fullscreen} title={`${title} (${n(data.count)})`} id={this.props.id} navLink={foldLink} foldTitleClass='fold__title--inline' foldWrapperClass='fold--main fold--appeals-table'>
           {this.props.showExport ? (
             <ExportButton filename='appeals'
               qs={this.getQs(this.props)}

@@ -22,6 +22,11 @@
 
     .tc-actions {
       padding: 24px;
+
+      @include media(small) {
+       display: flex;
+       justify-content: flex-end;
+      }
     }
   }
 

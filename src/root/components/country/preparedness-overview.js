@@ -26,7 +26,7 @@ class PreparednessOverview extends React.Component {
     const focalPointNameString = typeof overviewForm !== 'undefined' ? overviewForm.focal_point_name : NO_DATA;
     const focalPointEmailString = typeof overviewForm !== 'undefined' ? overviewForm.focal_point_email : NO_DATA;
     return (
-      <Fold id='per' title={strings.preparednessOverviewTitle} wrapper_class='preparedness' foldClass='margin-reset'>
+      <Fold id='per' title={strings.preparednessOverviewTitle} foldWrapperClass='preparedness' foldTitleClass='margin-reset'>
         <div style={{float: 'left', width: '33%'}}>
 
           <div style={{float: 'left', width: '30%', textTransform: 'uppercase', fontSize: '13px'}}>

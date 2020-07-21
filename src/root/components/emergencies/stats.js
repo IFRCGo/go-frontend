@@ -16,52 +16,54 @@ export default class EmergenciesStats extends React.Component {
 
     return (
       <div className='header-stats header-stats--emergencies container-lg'>
-        <ul className='sumstats'>
-          <li className='sumstats__item__wrap'>
-            <div className='sumstats__item'>
-              <span className='sumstats__icon_wrapper'>
-                <img className='sumstats__icon_2020' src='/assets/graphics/layout/emergency-brand.svg' />
-              </span>
-              <div className='sumstats__value'>{n(data.count)}</div>
-              <div className='sumstats__key'>
-                <Translate stringId='emergenciesStatsTitle'/>
+        <div className='sumstats__wrap'>
+          <ul className='sumstats'>
+            <li className='sumstats__item__wrap'>
+              <div className='sumstats__item'>
+                <span className='sumstats__icon_wrapper'>
+                  <img className='sumstats__icon_2020' src='/assets/graphics/layout/emergency-brand.svg' />
+                </span>
+                <div className='sumstats__value'>{n(data.count)}</div>
+                <div className='sumstats__key'>
+                  <Translate stringId='emergenciesStatsTitle'/>
+                </div>
               </div>
-            </div>
-          </li>
-          <li className='sumstats__item__wrap'>
-            <div className='sumstats__item'>
-              <span className='sumstats__icon_wrapper'>
-                <img className='sumstats__icon_2020' src='/assets/graphics/layout/heops-brand.svg' />
-              </span>
-              <div className='sumstats__value'>{n(data.numAffected)}</div>
-              <div className='sumstats__key'>
-                <Translate stringId='emergenciesStatsAffected'/>
+            </li>
+            <li className='sumstats__item__wrap'>
+              <div className='sumstats__item'>
+                <span className='sumstats__icon_wrapper'>
+                  <img className='sumstats__icon_2020' src='/assets/graphics/layout/heops-brand.svg' />
+                </span>
+                <div className='sumstats__value'>{n(data.numAffected)}</div>
+                <div className='sumstats__key'>
+                  <Translate stringId='emergenciesStatsAffected'/>
+                </div>
               </div>
-            </div>
-          </li>
-          <li className='sumstats__item__wrap'>
-            <div className='sumstats__item'>
-              <span className='sumstats__icon_wrapper'>
-                <img className='sumstats__icon_2020' src='/assets/graphics/layout/funding-coverage.svg' />
-              </span>
-              <div className='sumstats__value'>{n(data.totalAppeals)}</div>
-              <div className='sumstats__key'>
-                <Translate stringId='emergenciesStatsRequested'/>
+            </li>
+            <li className='sumstats__item__wrap'>
+              <div className='sumstats__item'>
+                <span className='sumstats__icon_wrapper'>
+                  <img className='sumstats__icon_2020' src='/assets/graphics/layout/funding-coverage.svg' />
+                </span>
+                <div className='sumstats__value'>{n(data.totalAppeals)}</div>
+                <div className='sumstats__key'>
+                  <Translate stringId='emergenciesStatsRequested'/>
+                </div>
               </div>
-            </div>
-          </li>
-          <li className='sumstats__item__wrap'>
-            <div className='sumstats__item'>
-              <span className='sumstats__icon_wrapper'>
-                <img className='sumstats__icon_2020' src='/assets/graphics/layout/funding-requirements.svg' />
-              </span>
-              <div className='sumstats__value'>{n(data.totalAppealsFunding)}</div>
-              <div className='sumstats__key'>
-                <Translate stringId='emergenciesStatsFunding'/>
+            </li>
+            <li className='sumstats__item__wrap'>
+              <div className='sumstats__item'>
+                <span className='sumstats__icon_wrapper'>
+                  <img className='sumstats__icon_2020' src='/assets/graphics/layout/funding-requirements.svg' />
+                </span>
+                <div className='sumstats__value'>{n(data.totalAppealsFunding)}</div>
+                <div className='sumstats__key'>
+                  <Translate stringId='emergenciesStatsFunding'/>
+                </div>
               </div>
-            </div>
-          </li>
-        </ul>
+            </li>
+          </ul>
+        </div>
       </div>
     );
   }

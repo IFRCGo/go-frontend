@@ -38,12 +38,13 @@
   //@include media(small-down) {
     //@include column(12/12);
   //}
-  @include media (large-up) {
-    //@include column(12/12);
-    padding-top: $global-spacing * 2;
-    margin-top: $global-spacing;
-    //border-top: solid 1px rgba($base-color, .18);
-  }
+
+  padding: ($spacing * 2.5) 0;
+
+  //@include media (large-up) {
+    //@include column(12/12);    //border-top: solid 1px rgba($base-color, .18);
+  //}
+
   .chart {
     //@include column(12/12);
     //@include media(large-up) {

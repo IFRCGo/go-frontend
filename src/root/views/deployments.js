@@ -149,35 +149,37 @@ class Deployments extends SFPComponent {
     return (
       <div>
         <div className='header-stats container-lg'>
-          <ul className='sumstats'>
-            <li className='sumstats__item__wrap'>            
-              <div className='sumstats__item'>
-                <img className='sumstats__icon_2020' src='/assets/graphics/layout/eru-brand.svg' /> 
-                <span className='sumstats__value'>
-                  {n(data.deployed)}
-                </span>
-                <Translate className='sumstats__key' stringId='deploymentsDeployedERU'/>
-              </div>
-            </li>
-            <li className='sumstats__item__wrap'>
-              <div className='sumstats__item'>
-                <img className='sumstats__icon_2020' src='/assets/graphics/layout/fact-brand.svg' />
-                <span className='sumstats__value'>
-                  {n(fact)}
-                </span>
-                <Translate className='sumstats__key' stringId='deploymentsDeployedRR'/>
-              </div>
-            </li>
-            <li className='sumstats__item__wrap'>
-              <div className='sumstats__item'>
-                <img className='sumstats__icon_2020' src='/assets/graphics/layout/heops-brand.svg' />
-                <span className='sumstats__value'>
-                  {n(heop)}
-                </span>
-                <Translate className='sumstats__key' stringId='deploymentsDeployedHeops'/>
-              </div>
-            </li>
-          </ul>
+          <div className='sumstats__wrap'>
+            <ul className='sumstats'>
+              <li className='sumstats__item__wrap'>            
+                <div className='sumstats__item'>
+                  <img className='sumstats__icon_2020' src='/assets/graphics/layout/eru-brand.svg' /> 
+                  <span className='sumstats__value'>
+                    {n(data.deployed)}
+                  </span>
+                  <Translate className='sumstats__key' stringId='deploymentsDeployedERU'/>
+                </div>
+              </li>
+              <li className='sumstats__item__wrap'>
+                <div className='sumstats__item'>
+                  <img className='sumstats__icon_2020' src='/assets/graphics/layout/fact-brand.svg' />
+                  <span className='sumstats__value'>
+                    {n(fact)}
+                  </span>
+                  <Translate className='sumstats__key' stringId='deploymentsDeployedRR'/>
+                </div>
+              </li>
+              <li className='sumstats__item__wrap'>
+                <div className='sumstats__item'>
+                  <img className='sumstats__icon_2020' src='/assets/graphics/layout/heops-brand.svg' />
+                  <span className='sumstats__value'>
+                    {n(heop)}
+                  </span>
+                  <Translate className='sumstats__key' stringId='deploymentsDeployedHeops'/>
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     );

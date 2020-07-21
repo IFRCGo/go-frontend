@@ -159,7 +159,7 @@ class FieldReportsTable extends SFPComponent {
       }));
 
       return (
-        <Fold title={`${title} (${n(data.count)})`} id={this.props.id} extraClass='fold--main'
+        <Fold title={`${title} (${n(data.count)})`} id={this.props.id} foldWrapperClass='fold--main'
           navLink={this.props.viewAll ? (
               <Link className='fold__title__link export--link' to={this.props.viewAll}>{this.props.viewAllText || strings.fieldReportsTableViewAllReports}</Link>
           ) : null}>

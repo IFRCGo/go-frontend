@@ -384,7 +384,7 @@ class FieldReportForm extends React.Component {
     const fields = formData.getFieldsStep1(strings);
     const status = this.getStatus();
     return (
-      <Fold title='Context' extraClass foldClass='margin-reset'>
+      <Fold title='Context' foldWrapperClass='fold--main' foldTitleClass='margin-reset'>
         <FormRadioGroup
           label={strings.fieldReportFormStatusLabel}
           name='status'

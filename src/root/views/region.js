@@ -262,7 +262,7 @@ class AdminArea extends SFPComponent {
                         />
                       </div>
                     </section>
-                    <Fold title={strings.regionStatistics} headerClass='visually-hidden' id='stats'>
+                    <Fold title={strings.regionStatistics} foldHeaderClass='visually-hidden' id='stats'>
                       <div className='stats-chart'>
                         <TimelineCharts region={data.id} />
                       </div>

@@ -635,7 +635,7 @@ class Account extends React.Component {
     return (
       <form className='form' onSubmit={this.onNotificationSubmit}>
         <div className='fold-container'>
-          <Fold title={strings.accountSubscriptionPreferences} foldClass='margin-reset' extraClass='fold--main'>
+          <Fold title={strings.accountSubscriptionPreferences} foldTitleClass='margin-reset' foldWrapperClass='fold--main'>
             <FormCheckboxGroup
               label={strings.accountSubscriptionTypes}
               description={strings.accountSubscriptionTypesDescription}

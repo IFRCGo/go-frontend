@@ -369,49 +369,55 @@ class Emergency extends React.Component {
         <div className="inpage__header-col">
           {displayHeadlineStats ? (
             <div className="inpage__headline-stats spacing-3-t">
-              <ul className="sumstats">
-                {stats.beneficiaries > 0 ? (
-                  <li className="sumstats__item__wrap">
-                    <div className='sumstats__item'>
-                      <span className="collecticon-people-arrows sumstats__icon"></span>
-                      <span className="sumstats__value">
-                        {n(stats.beneficiaries)}
-                      </span>
-                      <Translate
-                        className="sumstats__key"
-                        stringId="emergencyPeopleTargetedLabel"
-                      />
-                    </div>
-                  </li>
-                ) : null}
+              <div className='sumstats__wrap'>
+                <ul className="sumstats">
+                  {stats.beneficiaries > 0 ? (
+                    <li className="sumstats__item__wrap">
+                      <div className='sumstats__item'>
+                        <span className="collecticon-people-arrows sumstats__icon"></span>
+                        <span className="sumstats__value">
+                          {n(stats.beneficiaries)}
+                        </span>
+                        <Translate
+                          className="sumstats__key"
+                          stringId="emergencyPeopleTargetedLabel"
+                        />
+                      </div>
+                    </li>
+                  ) : null}
 
-                {stats.requested > 0 ? (
-                  <li className="sumstats__item__wrap">
-                    <div className='sumstats__item'>                  
-                      <span className="collecticon-cash-notes sumstats__icon"></span>
-                      <span className="sumstats__value">
-                        {n(stats.requested)}
-                      </span>
-                      <span
-                        className="sumstats__key"
-                        stringId="emergencyFundingRequirementsLabel"
-                      />
-                    </div>
-                  </li>
-                ) : null}
-                {stats.funded > 0 ? (
-                  <li className="sumstats__item__wrap">
-                    <div className='sumstats__item'>
-                      <span className="collecticon-cash-bag sumstats__icon"></span>
-                      <span className="sumstats__value">{n(stats.funded)}</span>
-                      <Translate
-                        className="sumstats__key"
-                        stringId="emergencyFundingLabel"
-                      />
-                    </div>
-                  </li>
-                ) : null}
-              </ul>
+                  {stats.requested > 0 ? (
+                    <li className="sumstats__item__wrap">
+                      <div className='sumstats__item'>                  
+                        <span className='sumstats__icon_wrapper'>
+                          <img className='sumstats__icon_2020' src="/assets/graphics/layout/funding-requirements.svg" />
+                        </span>
+                        <span className="sumstats__value">
+                          {n(stats.requested)}
+                        </span>
+                        <span
+                          className="sumstats__key"
+                          stringId="emergencyFundingRequirementsLabel"
+                        />
+                      </div>
+                    </li>
+                  ) : null}
+                  {stats.funded > 0 ? (
+                    <li className="sumstats__item__wrap">
+                      <div className='sumstats__item'>
+                        <span className='sumstats__icon_wrapper'>
+                          <img className='sumstats__icon_2020' src="/assets/graphics/layout/funding-coverage.svg" />
+                        </span>
+                        <span className="sumstats__value">{n(stats.funded)}</span>
+                        <Translate
+                          className="sumstats__key"
+                          stringId="emergencyFundingLabel"
+                        />
+                      </div>
+                    </li>
+                  ) : null}
+                </ul>
+              </div>
             </div>
           ) : null}
         </div>
@@ -453,8 +459,7 @@ class Emergency extends React.Component {
         <Fold
           id="field-reports"
           title={resolveToString(strings.emergencyFieldReportsWithCountTitle, { count: data.field_reports.length })}
-          wrapperClass="event-field-reports" extraClass='fold--main'
-        >
+          foldWrapperClass="event-field-reports fold--main">
           <table className="table table--border-bottom">
             <thead>
               <tr>
@@ -625,7 +630,7 @@ class Emergency extends React.Component {
     const data = get(this.props.appealDocuments, 'data.results', []);
     if (!data.length) return null;
     return (
-      <Fold id="documents" title={strings.emergencyAppealDocumentsTitle} wrapperClass='fold--main'>
+      <Fold id="documents" title={strings.emergencyAppealDocumentsTitle} foldWrapperClass='fold--main'>
         {this.renderAppealReports('public-docs-list row flex-xs', data)}
       </Fold>
     );
@@ -648,7 +653,7 @@ class Emergency extends React.Component {
     if (!this.hasKeyFigures()) return null;
 
     return (
-      <Fold title={strings.emergencyKeyFiguresTitle} wrapperClass="key-figures">
+      <Fold title={strings.emergencyKeyFiguresTitle} foldWrapperClass="key-figures">
         <ul className="sumstats">
           {kf.map((o) => (
             <li key={o.deck} className='sumstats__item__wrap'>
@@ -887,8 +892,7 @@ class Emergency extends React.Component {
                     <Fold
                       id="overview"
                       title={strings.emergencySituationalOverviewTitle}
-                      wrapperClass="situational-overview"
-                      extraClass='fold--main'
+                      foldWrapperClass="situational-overview fold--main"
                     >
                       <Expandable
                         sectionClass="rich-text-section"
@@ -946,7 +950,7 @@ class Emergency extends React.Component {
 
                   {contacts && contacts.length ? (
                     <div className='container-lg margin-2-v'>
-                      <Fold id="contacts" title={strings.emergencyContactsTitle} wrapperClass="contacts fold--main" extraContainerClass='container-lg--padding-reset'>
+                      <Fold id="contacts" title={strings.emergencyContactsTitle} foldWrapperClass="contacts fold--main" foldContainerClass='container-lg--padding-reset'>
                         <table className="table table--border-bottom">
                           <thead className="visually-hidden">
                             <tr>

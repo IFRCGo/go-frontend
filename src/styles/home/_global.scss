@@ -97,6 +97,13 @@
   padding-bottom: $spacing-half;
 }
 
+.sumstats__wrap {
+  @include media(medium) {
+    display: flex;
+    justify-content: center;
+  }
+}
+
 .sumstats {
   //@extend .clearfix;
   list-style: none;
@@ -109,6 +116,7 @@
   }
 
   @include media(medium) {
+    display: inline-flex;
     border-radius: $base-border-radius;
     box-shadow: $box-shadow-component;
     border: 1px solid $grey-mist;
@@ -156,6 +164,7 @@
     @include media(medium) {
       border: none;
       margin-bottom: 0;
+      max-width: 240px;
 
       &:before {
         content: "";
@@ -845,3 +854,10 @@
   //margin-left: auto;
   //margin-right: auto;
 //}
+
+// Appeals Table
+.fold--appeals-table {
+  .fold__header {
+    margin-bottom: 0;
+  }
+}

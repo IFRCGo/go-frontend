@@ -209,7 +209,7 @@ class EmergenciesTable extends SFPComponent {
 
       const foldLink = this.props.viewAll ? (<Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || strings.emergenciesTableViewAll}</Link>) : null;
       return (
-        <Fold extraClass='fold--main' foldClass='fold__title--inline margin-reset' navLink={foldLink} title={`${title} (${n(data.count)})`} id={this.props.id}>
+        <Fold foldWrapperClass='fold--main' foldTitleClass='fold__title--inline margin-reset' navLink={foldLink} title={`${title} (${n(data.count)})`} id={this.props.id}>
           {this.props.showExport ? (
             <ExportButton filename='emergencies'
               qs={this.getQs(this.props)}
