@@ -20,11 +20,6 @@ import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 import ConfirmModal from '#components/confirm-modal';
 import BlockLoading from '#components/block-loading';
-import ExportableView from '#components/ExportableView';
-import ExportContainer from '#components/ExportableView/ExportContainer';
-import ExportButton from '#components/ExportableView/ExportButton';
-import ExportHeader from '#components/ExportableView/ExportHeader';
-
 
 import {
   getResultsFromResponse,

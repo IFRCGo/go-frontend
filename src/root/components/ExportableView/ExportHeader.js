@@ -3,16 +3,21 @@ import _cs from 'classnames';
 
 import { formatDate } from '#utils/format';
 
+import ExportOnlyContent from './ExportOnlyContent';
 import styles from './styles.module.scss';
 
 function ExportHeader (p) {
   const {
     className,
     heading,
+    mode,
   } = p;
 
   return (
-    <div className={_cs(styles.exportHeader, className)}>
+    <ExportOnlyContent
+      className={_cs(styles.exportHeader, className)}
+      mode={mode}
+    >
       <div className={styles.header}>
         <h1 className={styles.heading}>
           { heading }
@@ -24,7 +29,7 @@ function ExportHeader (p) {
       <div className={styles.content}>
         <img src="/assets/graphics/layout/go-logo-2020.svg" alt="IFRC GO" />
       </div>
-    </div>
+    </ExportOnlyContent>
   );
 }
 

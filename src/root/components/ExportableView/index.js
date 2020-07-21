@@ -13,12 +13,17 @@ function ExportableView(p) {
   } = p;
 
   const startExport = React.useCallback(() => {
-    Object.values(eventListeners).forEach(listener => () => {
-      listener('start');
+    Object.values(eventListeners).forEach(listener => {
+      listener(true);
     });
 
     if (containerRef.current) {
+      // this is to skip current js event loop
       html2canvas(containerRef.current, {useCORS: true}).then((renderedCanvas) => {
+        Object.values(eventListeners).forEach(listener => {
+          listener(false);
+        });
+
         startDownload(
           renderedCanvas,
           `export-${new Date().getTime()}.png`,
