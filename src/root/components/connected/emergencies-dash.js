@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
 import { DateTime } from 'luxon';
-
+import { Link } from 'react-router-dom';
 import { environment } from '#config';
 import Stats from '#components/emergencies/stats';
 import EmergenciesMap from '#components/map/emergencies-map';
@@ -143,6 +143,19 @@ class EmergenciesDash extends React.Component {
           </div>
         </header>
         <section className='map-section__container'>
+          <div className='fold padding-top-reset spacing-b'>
+            <div className='container-lg'>
+              <div className='fold__header__block'>
+                <h2 className='fold__title'>{ this.props.title }</h2>
+                <div className="fold__title__linkwrap">
+                  <Link to='/emergencies/all' className='fold__title__link'>
+                    View All Emergencies
+                    <span className="collecticon-chevron-right"></span>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
           <EmergenciesMap lastMonth={lastMonth} />
         </section>
       </div>
