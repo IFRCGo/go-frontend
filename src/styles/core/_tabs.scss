@@ -34,7 +34,6 @@
     position: relative;
     list-style: none;
     padding: $spacing $spacing-2;
-    //font-size: 120%;
     font-size: $font-size-sm;
     cursor: pointer;
     margin-inline-end: $spacing-half;
@@ -70,7 +69,6 @@
 
     &:focus {
       box-shadow: 0 0 5px $grey-pearl;
-      //border-color: $grey-pear;
       outline: none;
 
       &:after {
