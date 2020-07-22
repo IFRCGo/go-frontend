@@ -114,12 +114,8 @@ class PreparednessWorkPlan extends React.Component {
     const statusDropdown = [];
     const benchmarks = [];
     const tableRowStyle = {width: '100%'};
-    //const tableCellStyle = {width: '10%', float: 'left', padding: '5px', overflowWrap: 'break-word'};
-    //const tableTitleCellStyle = {width: '10%', float: 'left', fontWeight: 'bold', padding: '5px'};
-    const tableTitleDoubleCellStyle = {width: '20%', float: 'left', fontWeight: 'bold', padding: '5px'};
     const lightBackground = {backgroundColor: '#fff'};
     const darkBackground = {backgroundColor: '#fff'};
-    const textToCenter = {textAlign: 'center'};
     const inputWidthFitDiv = {width: '100%'};
     this.props.getPerWorkPlan.data.results.forEach((workPlan, index) => {
       const timeline = new Date(workPlan.timeline);
