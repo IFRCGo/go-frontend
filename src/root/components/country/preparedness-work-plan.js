@@ -177,7 +177,7 @@ class PreparednessWorkPlan extends React.Component {
     });
     const { strings } = this.context;
     return (
-      <Fold id='per-work-plan' title={strings.preparednessWorkPlanTitle} foldWrapperClass='fold--main' foldTitleClass='margin-reset' foldContainerClass='container-lg--padding-reset'>
+      <Fold id='per-work-plan' title={strings.preparednessWorkPlanTitle} foldWrapperClass='fold--main' foldTitleClass='margin-reset' foldContainerClass='container--padding-reset'>
         <div className='spacing-2-b'>
           {!this.state.showAddModul ? <button className='button button--small button--primary-bounded' onClick={this.showAddModul}>
                                         <Translate stringId='preparednessWorkPlanAdd'/>

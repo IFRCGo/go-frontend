@@ -5,6 +5,9 @@
 // ---------------------------------------------
 // GRID: CONTAINERS
 //  - Wrap a row in a container
+//  - container-lg is the default container for the maximum size of the site,
+//      with large left and right padding on desktop
+//  - smaller containers can be used for sections with smaller widths, but they are rarely used
 
 // Container: Mixin
 //  - All parameters have defaults
@@ -58,7 +61,7 @@
   }
 }
 
-// Container: Extra small
+// Container: Extra Small
 .container-xs {
   @include container($media-xsmall);
 }
@@ -70,7 +73,7 @@
 
 // Container: Reset Padding for Large Container: Modifier
 
-.container-lg--padding-reset {
+.container--padding-reset {
   padding-left: $grid-gutter;
   padding-right: $grid-gutter;
 }

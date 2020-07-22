@@ -679,7 +679,7 @@ class AdminArea extends SFPComponent {
                 <TabPanel>
                   <TabContent>
                     <div className='container-lg'>
-                      <Fold title={strings.countriesStatisticsTitle} foldHeaderClass='visually-hidden' id='operations' foldWrapperClass='fold--main' foldContainerClass='container-lg--padding-reset'>
+                      <Fold title={strings.countriesStatisticsTitle} foldHeaderClass='visually-hidden' id='operations' foldWrapperClass='fold--main' foldContainerClass='container--padding-reset'>
                         {/*
                         <div className='operations__container'>
                           <div className='country__operations'>

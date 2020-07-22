@@ -983,7 +983,7 @@ class Emergency extends React.Component {
 
                   {contacts && contacts.length ? (
                     <div className='container-lg margin-2-v'>
-                      <Fold id="contacts" title={strings.emergencyContactsTitle} foldWrapperClass="contacts fold--main" foldContainerClass='container-lg--padding-reset'>
+                      <Fold id="contacts" title={strings.emergencyContactsTitle} foldWrapperClass="contacts fold--main" foldContainerClass='container--padding-reset'>
                         <table className="table table--border-bottom">
                           <thead className="visually-hidden">
                             <tr>
