@@ -182,7 +182,7 @@ class AdminArea extends SFPComponent {
 
     const presentationClass = c({
       'presenting fold--stats': this.state.fullscreen,
-      'fold': !this.state.fullscreen
+      'fold--r': !this.state.fullscreen
     });
 
     const mapBoundingBox = getRegionBoundingBox(data.id);
@@ -223,89 +223,92 @@ class AdminArea extends SFPComponent {
             ) : <BlockLoading/>}
           </div>
         </section>
-        <Tabs
-          selectedIndex={ selectedIndex }
-          onSelect={index => handleTabChange(index)}
-        >
-          <TabList>
-            {this.TAB_DETAILS.map(tab => (
-              <Tab key={tab.title}>{tab.title}</Tab>
-            ))}
-          </TabList>
 
-          <div className='inpage__body row'>
-            <div className='inner'>
-              <TabPanel>
-                <TabContent>
-                  <HighlightedOperations opsType='region' opsId={data.id}/>
-                  <section className={presentationClass} id='presentation'>
-                    {this.state.fullscreen ? (
-                      <KeyFiguresHeader fullscreen={this.state.fullscreen} appealsListStats={this.props.appealsListStats} />
-                    ) : null}
-                    <div className={c('inner', {'appeals--fullscreen': this.state.fullscreen})}>
-                      <AppealsTable
-                        title={strings.regionAppealsTableTitle}
-                        region={getRegionId(this.props.match.params.id)}
-                        regionOperations={this.props.appealStats}
-                        mapBoundingBox={mapBoundingBox}
-                        mapLayers={[this.state.maskLayer]}
-                        activeOperations={activeOperations}
-                        showActive={true}
-                        id={'appeals'}
-                        showRegionMap={true}
-                        viewAll={'/appeals/all?region=' + data.id}
-                        viewAllText={resolveToString(strings.regionAppealsTableViewAllText, { regionName: regionName })}
-                        fullscreen={this.state.fullscreen}
-                        toggleFullscreen={this.toggleFullscreen}
-                      />
-                    </div>
-                  </section>
-                  <Fold title={strings.regionStatistics} headerClass='visually-hidden' id='stats'>
-                    <div className='stats-chart'>
-                      <TimelineCharts region={data.id} />
-                    </div>
-                  </Fold>
-                  <CountryList
-                    countries={this.props.countries}
-                    appealStats={this.props.appealStats}
-                  />
-                  <EmergenciesTable
-                    id='emergencies'
-                    title={strings.regionRecentEmergencies}
-                    limit={5}
-                    region={getRegionId(this.props.match.params.id)}
-                    showRecent={true}
-                    viewAll={'/emergencies/all?region=' + data.id}
-                    viewAllText={resolveToString(strings.regionEmergenciesTableViewAllText, { regionName: regionName })}
-                  />
+        <div className='tab__wrap tab__wrap--3W'>
+          <Tabs
+            selectedIndex={ selectedIndex }
+            onSelect={index => handleTabChange(index)}
+          >
+            <TabList>
+              {this.TAB_DETAILS.map(tab => (
+                <Tab key={tab.title}>{tab.title}</Tab>
+              ))}
+            </TabList>
 
-                </TabContent>
-              </TabPanel>
-              <TabPanel>
-                <TabContent title={strings.region3WTitle}>
-                  <RegionalThreeW
-                    disabled={this.loading}
-                    regionId={this.getRegionId(this.props.match.params.id)}
-                  />
-                </TabContent>
-              </TabPanel>
-              <TabPanel>
-                <TabContent isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage={ NO_DATA } title={strings.regionKeyFigures}>
-                  <KeyFigures data={this.props.keyFigures} />
-                </TabContent>
-                <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ NO_DATA } title={strings.regionGraphics}>
-                  <Snippets data={this.props.snippets} />
-                </TabContent>
-                <TabContent isError={!get(data, 'links.length')} errorMessage={ NO_DATA } title={strings.regionLinks}>
-                  <Links data={data} />
-                </TabContent>
-                <TabContent showError={true} isError={!get(data, 'contacts.length')} errorMessage={ NO_DATA } title={strings.regionContacts}>
-                  <Contacts data={data} />
-                </TabContent>
-              </TabPanel>
+            <div className='inpage__body'>
+              <div className='inner'>
+                <TabPanel>
+                  <TabContent>
+                    <HighlightedOperations opsType='region' opsId={data.id}/>
+                    <section className={presentationClass} id='presentation'>
+                      {this.state.fullscreen ? (
+                        <KeyFiguresHeader fullscreen={this.state.fullscreen} appealsListStats={this.props.appealsListStats} />
+                      ) : null}
+                      <div className={c('inner', {'appeals--fullscreen': this.state.fullscreen})}>
+                        <AppealsTable
+                          title={strings.regionAppealsTableTitle}
+                          region={getRegionId(this.props.match.params.id)}
+                          regionOperations={this.props.appealStats}
+                          mapBoundingBox={mapBoundingBox}
+                          mapLayers={[this.state.maskLayer]}
+                          activeOperations={activeOperations}
+                          showActive={true}
+                          id={'appeals'}
+                          showRegionMap={true}
+                          viewAll={'/appeals/all?region=' + data.id}
+                          viewAllText={resolveToString(strings.regionAppealsTableViewAllText, { regionName: regionName })}
+                          fullscreen={this.state.fullscreen}
+                          toggleFullscreen={this.toggleFullscreen}
+                        />
+                      </div>
+                    </section>
+                    <Fold title={strings.regionStatistics} foldHeaderClass='visually-hidden' id='stats'>
+                      <div className='stats-chart'>
+                        <TimelineCharts region={data.id} />
+                      </div>
+                    </Fold>
+                    <CountryList
+                      countries={this.props.countries}
+                      appealStats={this.props.appealStats}
+                    />
+                    <EmergenciesTable
+                      id='emergencies'
+                      title={strings.regionRecentEmergencies}
+                      limit={5}
+                      region={getRegionId(this.props.match.params.id)}
+                      showRecent={true}
+                      viewAll={'/emergencies/all?region=' + data.id}
+                      viewAllText={resolveToString(strings.regionEmergenciesTableViewAllText, { regionName: regionName })}
+                    />
+
+                  </TabContent>
+                </TabPanel>
+                <TabPanel>
+                  <TabContent title={strings.region3WTitle}>
+                    <RegionalThreeW
+                      disabled={this.loading}
+                      regionId={this.getRegionId(this.props.match.params.id)}
+                    />
+                  </TabContent>
+                </TabPanel>
+                <TabPanel>
+                  <TabContent isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage={ NO_DATA } title={strings.regionKeyFigures}>
+                    <KeyFigures data={this.props.keyFigures} />
+                  </TabContent>
+                  <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ NO_DATA } title={strings.regionGraphics}>
+                    <Snippets data={this.props.snippets} />
+                  </TabContent>
+                  <TabContent isError={!get(data, 'links.length')} errorMessage={ NO_DATA } title={strings.regionLinks}>
+                    <Links data={data} />
+                  </TabContent>
+                  <TabContent showError={true} isError={!get(data, 'contacts.length')} errorMessage={ NO_DATA } title={strings.regionContacts}>
+                    <Contacts data={data} />
+                  </TabContent>
+                </TabPanel>
+              </div>
             </div>
-          </div>
-        </Tabs>
+          </Tabs>
+        </div>
       </section>
     );
   }

@@ -22,22 +22,24 @@ export default function FormTextarea (props) {
 
   return (
     <div className={c('form__group', classWrapper)}>
-      <div className='form__inner-header'>
-        <div className='form__inner-headline'>
-          <label className={c('form__label', classLabel)} htmlFor={id}>{label}</label>
-          <FormDescription value={description} />
+      <div className='form__group__wrap'>
+        <div className='form__inner-header'>
+          <div className='form__inner-headline'>
+            <label className={c('form__label', classLabel)} htmlFor={id}>{label}</label>
+            <FormDescription value={description} />
+          </div>
         </div>
-      </div>
-      <div className='form__inner-body'>
-        <textarea
-          id={id}
-          name={name}
-          className={c('form__control form__control--medium', classInput)}
-          placeholder={placeholder}
-          value={value || ''}
-          onChange={onChange}
-          autoFocus={autoFocus} />
-        {children || null}
+        <div className='form__inner-body'>
+          <textarea
+            id={id}
+            name={name}
+            className={c('form__control form__control--medium', classInput)}
+            placeholder={placeholder}
+            value={value || ''}
+            onChange={onChange}
+            autoFocus={autoFocus} />
+          {children || null}
+        </div>
       </div>
     </div>
   );

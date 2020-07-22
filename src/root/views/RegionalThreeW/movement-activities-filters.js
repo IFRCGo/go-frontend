@@ -58,7 +58,7 @@ function MovementActivitiesFilters (p) {
   const { strings } = useContext(LanguageContext);
   return (
     <Faram
-      className={_cs('regional-movement-activity-filter', className)}
+      className={_cs('regional-movement-activity-filter row-sm', className)}
       schema={filterSchema}
       value={value}
       onChange={onChange}
@@ -68,28 +68,28 @@ function MovementActivitiesFilters (p) {
         label={strings.movementFilterOperationType}
         placeholder={strings.movementFilterOperationPlaceholder}
         options={operationTypeOptions}
-        className='select-input'
+        className='select-input form__control--filter'
       />
       <SelectInput
         faramElementName='programme_type'
         label={strings.movementFilterProgrammeType}
         placeholder={strings.movementFilterProgrammePlaceholder}
         options={programmeTypeOptions}
-        className='select-input'
+        className='select-input form__control--filter'
       />
       <SelectInput
         faramElementName='primary_sector'
         label={strings.movementFilterSector}
         placeholder={strings.movementFilterSectorPlaceholder}
         options={sectorsOfActivityOptions}
-        className='select-input'
+        className='select-input form__control--filter'
       />
       <SelectInput
         faramElementName='secondary_sectors'
         label={strings.movementFilterTag}
         placeholder={strings.movementFilterTagPlaceholder}
         options={tagOptions}
-        className='select-input'
+        className='select-input form__control--filter'
 
       />
       <SelectInput
@@ -97,7 +97,7 @@ function MovementActivitiesFilters (p) {
         label={strings.movementFilterStatus}
         placeholder={strings.movementFilterStatusPlaceholder}
         options={statusOptions}
-        className='select-input'
+        className='select-input form__control--filter'
       />
     </Faram>
   );

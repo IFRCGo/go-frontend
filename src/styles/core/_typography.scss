@@ -203,28 +203,23 @@ dd {
 }
 
 .dl--horizontal {
-  @extend .clearfix;
-
-  dt, dd {
-    float: left;
-  }
+  //@extend .clearfix;
+  @include row;
+  @include flex;
 
   dt {
-    width: 32%;
-    clear: left;
     padding-top: $global-spacing / 8;
     padding-bottom: $global-spacing / 8;
-    padding-inline-end: $global-spacing / 2;
+    @include col(33.33%);
   }
 
   dd {
-    width: 68%;
-    padding-inline-start: $global-spacing / 2;
+    @include col(66.66%);
   }
 
-  dd + dd {
-    margin-inline-start: 32%;
-  }
+  //dd + dd {
+    //margin-inline-start: 32%;
+  //}
 }
 
 .content-list {
@@ -510,7 +505,7 @@ abbr[title] {
 
 .heading-tiny {
   color: $grey-soot;
-  font-size: $font-size-xxs;
+  font-size: $font-size-xs;
   font-weight: $base-font-light;
   display: block;
 }

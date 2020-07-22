@@ -12,9 +12,6 @@
   }
 
   .inpage__body {
-  	//p {
-  		//width: 80%;
-  	//}
 
     > .inner {
       max-width: none;
@@ -22,14 +19,9 @@
     }
   }
 
-  //.inpage__title {
-    //text-align: center;
-    //width: 100%;
-  //}
-
-  //.inpage__header {
-    //padding-bottom: $global-spacing-2;
-  //}
+  .inpage__header {
+    padding-bottom: $spacing-4;
+  }
 
   .logo__group {
     background-color: #fff;
@@ -38,27 +30,14 @@
 
   .logo__list {
     list-style: none;
-    max-width: $media-medium;
     margin: $global-spacing-3 auto 0 auto;
   }
 
   .logo__item {
-    display: inline-block;
-    margin-inline-end: $global-spacing * 3;
-    @include column(12/12);
     margin-top: $global-spacing;
     margin-bottom: $global-spacing;
 
-    @include media(small-up) {
-      @include column(6/12, $cycle: 2);
-    }
-
-    @include media(medium-up) {
-      @include column(4/12, $cycle: 3);
-    }
-
     @include media(large-up) {
-      @include column(3/12, $cycle: 4);
       margin-top: 0;
     }
 
@@ -77,8 +56,8 @@
 
 .fold--about-iframe-video {
   box-shadow: none;
-  margin-bottom: $global-spacing-3;
-  padding-bottom: $global-spacing-2;
+  margin-bottom: $spacing-2;
+  padding-bottom: $spacing-2;
 }
 
 .iframe__about__block {
@@ -97,9 +76,7 @@
 }
 
 .box__global__wrap__about {
-  @include media(medium-up) {
-    display: flex;
-  }  
+  margin-top: $spacing;
 }
 
 .box__global__content--ref__link {
@@ -111,24 +88,9 @@
 .box__global--about-guides, .box__global--about-ref {
   margin: 0 0 $global-spacing-2 0;
 
-  @include media(medium-up) {
-    @include column(6/12);
-  }
-
   .box__global__heading {
     @include media(medium-up) {
       min-height: 124px;
-    }
-  }
-
-  .box__global__content--ref__link {
-
-    @include media(small-up) {
-      @include column(1/2, $cycle: 2);
-
-      &:last-of-type { //, &:nth-last-of-type(2) {
-        margin: 0;
-      }
     }
   }
 }
@@ -227,10 +189,6 @@
   }
 }
 
-.about__video__carousel__each {
-  @include column(1/3);
-}
-
 .about__video__carousel__each__heading {
   font-weight: $base-font-semi-bold;
   padding: ($global-spacing/2) 0 0 0;
@@ -246,7 +204,9 @@
 }
 
 .about__resources__row {
-  @include media(medium-up) {
+  margin-top: $spacing;
+
+  > .col {
     display: flex;
   }
 }
@@ -254,10 +214,7 @@
 .box__global--resources {
   position: relative;
   margin: 0 0 $global-spacing-3 0;
-
-  @include media(medium-up) {
-    @include column(1/3);
-  }
+  width: 100%;
 
   .box__global__content--ref__link {
     padding-inline-end: $global-spacing-3;
@@ -290,16 +247,10 @@
 
 .about__contact__info__block {
   padding: $global-spacing-2 0;
-  display: flex;
   align-items: center;
 }
 
-.about__contact__info {
-  @include column(2/3);
-}
-
 .about__contact__link {
-  @include column(1/3);
 
   .button {
     font-size: $font-size-sm;
@@ -311,13 +262,8 @@
 }
 
 .about__contact__col {
-  @include media(medium-up) {
-    @include column(1/3, $cycle: 3);
-  }
-}
-
-.about__contact__col {
-  @include media(medium-up) {
+  @include media(medium) {
+    @include col(33.33%);
     margin-bottom: $global-spacing;  
   }
 }

@@ -90,93 +90,97 @@ function Header (props) {
     <div className='desktop__header'>
       <header className='page__header' role='banner'>
         <div className='page__header__inner__wrap'>
-          <div className='inner'>
-            <div className='page__headline'>
-              <h1 className='page__title'>
-                <Link to='/' title={strings.headerVisitPageTooltip}>
-                  <img src='/assets/graphics/layout/go-logo-2020.svg' alt={strings.headerLogoAltText} className="logo-main" />
-                  <Translate
-                    stringId="headerAppName"
-                  />
+          <div className='container-lg spacing-v'>
+            <div className='inner row flex'>
+              <div className='page__headline col'>
+                <h1 className='page__title'>
+                  <Link to='/' title={strings.headerVisitPageTooltip}>
+                    <img src='/assets/graphics/layout/go-logo-2020.svg' alt={strings.headerLogoAltText} className="logo-main" />
+                    <Translate
+                      stringId="headerAppName"
+                    />
+                  </Link>
+                </h1>
+              </div>
+              <nav className='page__meta-nav col' role='navigation'>
+                <LanguageSelect />
+                <Link to='/about' title={strings.headerMenuResourceTooltip} className='page__meta-nav-elements'>
+                  <Translate stringId="headerMenuResources" />
                 </Link>
-              </h1>
+                <UserMenu />
+                <Dropdown
+                  id='drop__header__field__report'
+                  triggerClassName='drop__toggle--caret button button--primary-bounded button--small drop__toggle--field-report-new'
+                  triggerActiveClassName='active'
+                  triggerText={strings.headerCreateAReportLabel}
+                  triggerElement='a'
+                  direction='down'
+                  alignment='center' >
+                  <ul className='drop__menu drop__menu--select drop__menu__field__report' role='menu'>
+                    <li className='drop__menu-item'>
+                      <Link to='/reports/new'>{strings.headerDropdownNewFieldReport}</Link>
+                    </li>
+                    <li className='drop__menu-item'>
+                      <a href='https://ee.kob4.ifrc.org/single/::Ho8bHKDr' target='_blank'>
+                        {strings.headerDropdownCovid19IndicatorTracking}
+                      </a>
+                    </li>
+                    <li className='drop__menu-item'>
+                      <a href='https://ee.kob4.ifrc.org/single/::w4KbO3Rc' target='_blank'>
+                        {strings.headerDropdownCovid19NSFinancialOverview}
+                      </a>
+                    </li>                                        
+                  </ul>
+                </Dropdown>
+              </nav>
             </div>
-            <nav className='page__meta-nav' role='navigation'>
-              <LanguageSelect />
-              <Link to='/about' title={strings.headerMenuResourceTooltip} className='page__meta-nav-elements'>
-                <Translate stringId="headerMenuResources" />
-              </Link>
-              <UserMenu />
-              <Dropdown
-                id='drop__header__field__report'
-                triggerClassName='drop__toggle--caret button button--primary-bounded button--small drop__toggle--field-report-new'
-                triggerActiveClassName='active'
-                triggerText={strings.headerCreateAReportLabel}
-                triggerElement='a'
-                direction='down'
-                alignment='center' >
-                <ul className='drop__menu drop__menu--select drop__menu__field__report' role='menu'>
-                  <li className='drop__menu-item'>
-                    <Link to='/reports/new'>{strings.headerDropdownNewFieldReport}</Link>
-                  </li>
-                  <li className='drop__menu-item'>
-                    <a href='https://ee.kob4.ifrc.org/single/::Ho8bHKDr' target='_blank'>
-                      {strings.headerDropdownCovid19IndicatorTracking}
-                    </a>
-                  </li>
-                  <li className='drop__menu-item'>
-                    <a href='https://ee.kob4.ifrc.org/single/::w4KbO3Rc' target='_blank'>
-                      {strings.headerDropdownCovid19NSFinancialOverview}
-                    </a>
-                  </li>                                        
-                </ul>
-              </Dropdown>
-            </nav>
           </div>
         </div>
-        <div className='inner'>
-          <nav className='page__prime-nav' role='navigation'>
-            <ul className='nav-global-menu'>
-              <li>
-                <NavLink to='/' title={strings.headerMenuHomeTooltip} activeClassName='navbar-highlighted' exact>
-                  <Translate stringId='headerMenuHome' />
-                </NavLink>
-              </li>
-              <li>
-                <HeaderRegionButton id='regions-menu' currentPath={match} />
-              </li>
-              <li>
-                <NavLink to='/emergencies' title={strings.headerMenuEmergenciesTooltip} activeClassName='navbar-highlighted' exact>
-                  <Translate stringId="headerMenuEmergencies" />
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to='/deployments' title={strings.headerMenuDeploymentsTooltip} activeClassName='navbar-highlighted' exact>
-                  <Translate stringId="headerMenuDeployments" />
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to='/preparedness' title={strings.headerMenuPreparednessTooltip} activeClassName='navbar-highlighted' exact>
-                  <Translate stringId="headerMenuPreparedness" />
-                </NavLink>
-              </li>
-            </ul>
-          </nav>
-          <div className='nav-global-search'>
-            <form className='gsearch'>
-              <div>
-                <label className='form__label'>
-                  <Translate stringId="headerSearchLabel" />
-                </label>
-                <Select.Async
-                  placeholder={strings.headerSearchPlaceholder}
-                  onChange={handleSelect}
-                  filterOptions={noFilter}
-                  autoload={false}
-                  cache={false}
-                  loadOptions={slowLoad} />
-              </div>
-            </form>
+        <div className='inner container-lg'>
+          <div className='row flex'>
+            <nav className='page__prime-nav col' role='navigation'>
+              <ul className='nav-global-menu'>
+                <li>
+                  <NavLink to='/' title={strings.headerMenuHomeTooltip} activeClassName='navbar-highlighted' exact>
+                    <Translate stringId='headerMenuHome' />
+                  </NavLink>
+                </li>
+                <li>
+                  <HeaderRegionButton id='regions-menu' currentPath={match} />
+                </li>
+                <li>
+                  <NavLink to='/emergencies' title={strings.headerMenuEmergenciesTooltip} activeClassName='navbar-highlighted' exact>
+                    <Translate stringId="headerMenuEmergencies" />
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to='/deployments' title={strings.headerMenuDeploymentsTooltip} activeClassName='navbar-highlighted' exact>
+                    <Translate stringId="headerMenuDeployments" />
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to='/preparedness' title={strings.headerMenuPreparednessTooltip} activeClassName='navbar-highlighted' exact>
+                    <Translate stringId="headerMenuPreparedness" />
+                  </NavLink>
+                </li>
+              </ul>
+            </nav>
+            <div className='nav-global-search col'>
+              <form className='gsearch'>
+                <div>
+                  <label className='form__label'>
+                    <Translate stringId="headerSearchLabel" />
+                  </label>
+                  <Select.Async
+                    placeholder={strings.headerSearchPlaceholder}
+                    onChange={handleSelect}
+                    filterOptions={noFilter}
+                    autoload={false}
+                    cache={false}
+                    loadOptions={slowLoad} />
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </header>

@@ -1,7 +1,8 @@
 .tc-select {
   display: flex;
   align-items: baseline;
-  padding: 0 4px;
+  //padding: 0 4px;
+  @include col-sm;
 
   .tc-select-label {
     padding: 6px;
@@ -12,7 +13,7 @@
   }
 
   .tc-select-input {
-    padding: 6px;
+    //padding: 6px;
     min-width: 120px;
   }
 }

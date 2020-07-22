@@ -165,7 +165,7 @@ export default class ProjectListTable extends React.PureComponent {
     const headers = this.getHeaders(strings);
 
     return (
-      <table className={_cs(className, 'three-w-project-list-table')}>
+      <table className={_cs(className, 'three-w-project-list-table table table--border-bottom')}>
         <thead>
           <tr>
             { headers.map(h => (

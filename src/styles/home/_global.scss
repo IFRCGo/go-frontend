@@ -4,37 +4,15 @@
    ========================================================================== */
 
 .page--homepage {
-  .inpage__header {
-    @include media(medium-up) {
-      padding: ($global-spacing * 3) 0;
-    }
-
-    @include media(large-up) {
-      padding: ($global-spacing * 4) 0;
-    }
-  }
 
   .inpage__headline {
-    @include column(12/12);
     text-align: center;
   }
 
-  .inpage__introduction {
-    @include column(8/12);
-    //text-align: center;
-    float: none;  
-    margin-inline-start: auto;
-    margin-inline-end: auto !important;
-  }
-
   .inpage__introduction__bigger {
-    font-size: 1.2rem
+    font-size: 1.2rem;
   }
 
-  //.inpage__title {
-    //@include column(12/12);
-    //text-align: center;
-  //}
 }
 
 .presentation__actions {
@@ -76,10 +54,6 @@
 
 .fold--stats {
 
-  .inner {
-    @extend .row, .row--centered;
-  }
-
   .stats-chart {
     padding: ($global-spacing * 2) 0;
   }
@@ -94,51 +68,74 @@
 }
 
 .stats-overall {
-  padding-bottom: $global-spacing-2;
+  padding-bottom: $spacing-half;
+}
+
+.sumstats__wrap {
+  @include media(medium) {
+    display: flex;
+    justify-content: center;
+  }
 }
 
 .sumstats {
-  @extend .clearfix;
   list-style: none;
-  margin: 0;
-  width: 100%;
+  @include row;
 
-  @include media(small-up) {
-    display: flex;
-    flex-wrap: wrap;
+  @include media(small) {
+    @include flex;
     justify-content: center;
   }
 
-  @include media(large-up) {
+  @include media(medium) {
+    display: inline-flex;
     border-radius: $base-border-radius;
     box-shadow: $box-shadow-component;
     border: 1px solid $grey-mist;
-    justify-content: center;
+    flex-wrap: nowrap;
+    margin-left: 0;
+    margin-right: 0;
   }
 
-  @include media(large-up) {
-    flex-wrap: nowrap;
+  &__item__wrap {
+    @include col;
+
+    @include media(small) {
+      display: flex;
+      width: 50%;
+    }
+
+    @include media(medium) {
+      width: auto;
+      flex: 1;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    &:last-of-type {
+      .sumstats__item {
+        &:before {
+          background-color: transparent;
+        }
+      }
+    }
   }
 
   &__item {
-    @include column(12/12);
     background-color: #fff;
     border: 1px solid $grey-mist;
     border-radius: $base-border-radius;
-    padding: $global-spacing $global-spacing;
+    padding: $global-spacing;
     display: flex;
     flex-direction: column;
+    width: 100%;
     position: relative;
-    margin-bottom: $global-spacing;
+    margin-bottom: $spacing-2;
 
-    @include media(small-up) {
-      @include column(6/12, $cycle: 2);
-    }
-
-    @include media(large-up) {
-      //@include span(2/10, $cycle: 5);
+    @include media(medium) {
       border: none;
-      margin: 0 !important;
+      margin-bottom: 0;
+      max-width: 240px;
 
       &:before {
         content: "";
@@ -157,36 +154,34 @@
 
       &:last-of-type {
         border-radius: 0 $base-border-radius $base-border-radius 0;
-
-        &:before {
-          background-color: transparent;
-        }
       }
+    }
+
+    @include media(large) {
+      width: 240px;
     }
   }
 
   &__icon {
-    text-align: center;
     color: $primary-color;
     display: block;
     font-size: 2.2rem;
     padding-bottom: ($global-spacing /2);
-    margin-bottom: auto;
 
     &.collecticon-cash-notes {
-      font-size: 1.6rem;
+      font-size: 1.5rem;
     }
 
      &.collecticon-people-arrows {
-      font-size: 3.2em;
+      font-size: 3em;
     }
 
     &.collecticon-rc {
-      font-size: 3.3em;
+      font-size: 3.1em;
     }
 
     &.collecticon-rc-appeals {
-      font-size: 3.3em;
+      font-size: 3.1em;
     }
   }
 
@@ -203,7 +198,7 @@
 
   &__value {
     color: $grey-soot;
-    font-size: 1.72rem;
+    font-size: $font-size-heading-widget;
     font-weight: $base-font-semi-bold;
     line-height: 1.3;
   }
@@ -221,6 +216,12 @@
 
   .tooltip-button {
     vertical-align: text-top;
+  }
+}
+
+.inner--emergencies {
+  .fold {
+    padding-bottom: 0;
   }
 }
 
@@ -300,11 +301,9 @@
   }
 
   .map-container {
-    @include column(12/12);
     margin-bottom: ($global-spacing * 2);
 
     @include media(medium-up) {
-      @include column(8.5/12);
       margin-bottom: 0;
     }
   }
@@ -364,8 +363,8 @@
 
     &--bottom-right {
       bottom: -3rem;
-      right: -2rem;
-      left: -2rem;
+      right: 0;
+      left: 0;
       @include media(small-up) {
         left: auto;
         bottom: $global-spacing;
@@ -410,7 +409,6 @@
     .form {
       margin-bottom: 0;
       margin-inline-start: $global-spacing/2;
-      float: left;
       .form__option--custom-radio .form__option__ui {
         height: 1rem;
         width: 1rem;
@@ -422,7 +420,6 @@
     }
 
     .key {
-      float: left;
       border-inline-start: solid 1px rgba($base-color, 0.2);
       padding-inline-start: $global-spacing/2;
       margin-inline-start: $global-spacing/2;
@@ -476,11 +473,11 @@
   padding: 0;
   margin: 0;
   overflow: hidden;
+  display: flex;
 
   dt, dd {
     font-size: 0.75rem;
     line-height: 1.25rem;
-    float: left;
     padding: 0;
     margin: 0 0 0.25rem 0;
   }
@@ -490,7 +487,6 @@
     height: 1.25rem;
     width: 1.25rem;
     font-size: 0;
-    clear: left;
     margin-inline-end: $global-spacing / 2;
     opacity: 1;
 
@@ -576,7 +572,7 @@
 }
 
 .legend__group {
-  @extend .clearfix;
+  @include flex;
 }
 
 .legend__note {
@@ -588,31 +584,23 @@
 }
 
 .stats-chart {
-  @include column(12/12);
   margin: ($global-spacing) 0;
-  .chart {
-    margin-bottom: 0;
-    @include column(12/12);
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-
-    @include media(medium-up) {
-      @include column(6/12, $cycle: 2);
-    }
-
-    figcaption {
-      border-bottom: 1px solid $base-border-color;
-      font-weight: $base-font-bold;
-      padding: $global-spacing $global-spacing ($global-spacing / 2) $global-spacing;
-    }
-  }
 }
 
 .chart {
+  width: 100%;
+  background-color: #fff;
+  box-shadow: $base-box-shadow;
+  border-radius: $base-border-radius;
+
   figcaption {
-    margin-bottom: $global-spacing;
+    border-bottom: 1px solid $base-border-color;
+    font-weight: $base-font-bold;
+    padding: $global-spacing $global-spacing ($global-spacing / 2) $global-spacing;
+
+    h2 {
+      margin-bottom: 0;
+    }
   }
 
   &__container {
@@ -631,21 +619,11 @@
 
 .report__list--header {
   margin-bottom: 1rem;
-  float: left;
-  width: 100%;
 }
 
 .report__list--updated {
   color: rgba($base-color, 0.48);
   font-size: 0.75rem;
-}
-
-.key-emergencies-list-long {
-  flex-wrap: wrap;
-  justify-content: center;
-  .key-emergencies-item {
-    margin-inline-end: 2% !important;
-  }
 }
 
 .key-emergencies-list-short {
@@ -654,26 +632,13 @@
 }
 
 .key-emergencies-list {
-  display: flex;
-  margin-inline-start: 0;
-  @extend .clearfix;
-  @include column(12/12);
 
   .key-emergencies-item {
-    margin-bottom: $global-spacing;
-    @include media(medium-up) {
-      @include column(6/12)
-    }
-    @include media(medium-up) {
-      @include column(4/12)
-    }
-    &:first-child {
-      margin-inline-start: 0;
-    };
+    margin-bottom: $spacing-2;
+    display: flex;
 
     > a {
       color: $base-color;
-      //border: solid 1px rgba($base-color, 0.1);
       border-radius: $base-border-radius;
       box-shadow: 0 2px 10px 0 rgba($black, 0.06);
       width: 100%;
@@ -717,28 +682,6 @@
   }
 }
 
-.card__title__wrap {
-  @include media(medium-up) {
-    @include column(6/12);
-  }
-
-  @include media(large-up) {
-    @include column(7/12);
-  }
-}
-
-.button--key-emergencies__wrap {
-  margin-top: $global-spacing / 2;
-
-  @include media(medium-up) {
-    @include column(6/12);
-  }
-
-  @include media(large-up) {
-    @include column(5/12);
-  }
-}
-
 .button--key-emergencies {
   min-width: 90px;  // to account for text when toggled
 
@@ -762,16 +705,6 @@
 
 .map-vis__legend {
   z-index: 1;
-}
-
-.table--active-ops {
-  //thead th {
-    //font-size: 95%;
-  //}
-
-  //thead th, tbody td {
-    //padding: 0.5rem;
-  //}
 }
 
 .drop__menu--date {
@@ -805,8 +738,9 @@
   }
 }
 
-//stats-overall-row {
-  //max-width: 1200px !important;
-  //margin-left: auto;
-  //margin-right: auto;
-//}
+// Appeals Table
+.fold--appeals-table {
+  .fold__header {
+    margin-bottom: 0;
+  }
+}

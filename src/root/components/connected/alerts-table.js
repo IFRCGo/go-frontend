@@ -181,7 +181,7 @@ class AlertsTable extends SFPComponent {
     const foldLink = this.props.viewAll ? (<Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || strings.alertTableViewAllText}</Link>) : null;
 
     return (
-      <Fold title={`${title} (${data.count})`} id={this.props.id} navLink={foldLink} foldClass='fold__title--inline' extraClass='fold--main'>
+      <Fold title={`${title} (${data.count})`} id={this.props.id} navLink={foldLink} foldTitleClass='fold__title--inline' foldWrapperClass='fold--main'>
         {this.props.showExport ? (
           <ExportButton filename='surge-alerts'
             qs={this.getQs(this.props)}
@@ -189,7 +189,7 @@ class AlertsTable extends SFPComponent {
           />
         ) : null}
         <DisplayTable
-          className='responsive-table alerts-table'
+          className='responsive-table table table--border-bottom'
           headings={headings}
           rows={rows}
           pageCount={data.count / this.state.table.limit}

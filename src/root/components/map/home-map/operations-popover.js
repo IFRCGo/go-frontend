@@ -18,7 +18,7 @@ class OperationsPopover extends React.Component {
         <div className='popover__contents'>
           <header className='popover__header'>
             <div className='popover__headline'>
-              {deployments ? title : <a className='link--primary' onClick={e => { e.preventDefault(); navigate(`/countries/${pageId}`); }}>{title} <span className='popover__headline__icon collecticon-chevron-right'></span></a>}
+              {deployments ? title : <a className='link-underline' onClick={e => { e.preventDefault(); navigate(`/countries/${pageId}`); }}>{title} <span className='popover__headline__icon collecticon-chevron-right'></span></a>}
             </div>
             <div className='popover__actions actions'>
               <ul className='actions__menu'>
@@ -41,13 +41,16 @@ class OperationsPopover extends React.Component {
                   ) : d.name}
                 </h3>
                 <ul className='popover__details'>
-                  <li>{n(d.num_beneficiaries)}
+                  <li>
+                    <span>{n(d.num_beneficiaries)} </span> 
                     <Translate stringId='operationPopoverPeopleAffected'/>
                   </li>
-                  <li>{n(d.amount_requested)}
+                  <li>
+                    <span>{n(d.amount_requested)} </span>
                     <Translate stringId='operationPopoverAmountRequested'/>
                   </li>
-                  <li>{n(d.amount_funded)}
+                  <li>
+                    <span>{n(d.amount_funded)} </span>
                     <Translate stringId='operationPopoverAmountFunded'/>
                   </li>
                 </ul>

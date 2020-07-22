@@ -449,7 +449,7 @@ class AdminArea extends SFPComponent {
             noPaginate={true}
           />
           <div className='fold__footer'>
-            <Link className='link--primary export--link' to={'/appeals/all/?country=' + id}>
+            <Link className='link-underline export--link' to={'/appeals/all/?country=' + id}>
               <Translate
                 stringId="countriesAllOperationExportLink"
                 params={{ name }}
@@ -619,8 +619,27 @@ class AdminArea extends SFPComponent {
         <Helmet>
           <title>{title}</title>
         </Helmet>
-        <BreadCrumb crumbs={ crumbs } />
-        <header className='inpage__header'>
+        <div className='container-lg'>
+          <div className='row flex-sm'>
+            <div className='col col-6-sm col-7-mid'>
+              <BreadCrumb breadcrumbContainerClass='padding-reset' crumbs={ crumbs } />
+            </div>
+            <div className='col col-6-sm col-5-mid spacing-half-t'>  
+              <div className='row-sm flex flex-justify-flex-end'>
+                <div className='col-sm spacing-half-v'>
+                  <a
+                    href={url.resolve(api, `api/country/${data.id}/change/`)}
+                    className='button button--xsmall button--primary-bounded button--edit-action'
+                  >
+                    <span className='collecticon-pencil margin-half-r'></span>
+                    <Translate stringId='countryEditCountry' />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <header className='inpage__header container-lg'>
           <div className='inner'>
             <h1 className='inpage__title'>
               {data.name}
@@ -630,13 +649,13 @@ class AdminArea extends SFPComponent {
                 </span>
               ) : null}
             </h1>
-            <div className='inpage__header-actions'>
-              <a
-                href={url.resolve(api, `api/country/${data.id}/change/`)}
-                className='button button--primary-bounded'
+            <div className='inpage__header-actions text-center'>
+              <Link to={`/regions/${data.region}`}
+                className='link link--with-icon flex-justify-center'
               >
-                <Translate stringId='countryEditCountry' />
-              </a>
+                <span className='link--with-icon-text'>{region.name}</span>
+                <span className='collecticon-chevron-right link--with-icon-inner'></span>
+              </Link>
             </div>
           </div>
         </header>
@@ -645,108 +664,122 @@ class AdminArea extends SFPComponent {
             <KeyFiguresHeader appealsListStats={this.props.appealsListStats}/>
           </div>
         </section>
-        <Tabs
-          selectedIndex={tabDetails.map(({ hash }) => hash).indexOf(this.props.location.hash)}
-          onSelect={index => handleTabChange(index)}
-        >
-          <TabList>
-            {tabDetails.map(tab => (
-              <Tab key={tab.title}>{tab.title}</Tab>
-            ))}
-          </TabList>
-          <div className='inpage__body row'>
-            <div className='inner'>
-              <TabPanel>
-                <TabContent>
-                  <Fold title={strings.countriesStatisticsTitle} headerClass='visually-hidden' id='operations'>
-                    {/*
-                    <div className='operations__container'>
-                      <div className='country__operations'>
-                        <h2>Movement activities in support of NS</h2>
-                        <BulletTable title='Activities'
-                          onClick={this.setPersistentMapFilter.bind(this, 'ns')}
-                          onMouseOver={this.setMapFilter.bind(this, 'ns')}
-                          onMouseOut={this.removeMapFilter.bind(this, 'ns')}
-                          rows={get(partnerDeployments, 'data.parentSocieties', [])} />
-                        <BulletTable title='Type'
-                          onClick={this.setPersistentMapFilter.bind(this, 'type')}
-                          onMouseOver={this.setMapFilter.bind(this, 'type')}
-                          onMouseOut={this.removeMapFilter.bind(this, 'type')}
-                          rows={get(partnerDeployments, 'data.activities', [])} />
-                      </div>
+        <div className='tab__wrap'>
+          <Tabs
+            selectedIndex={tabDetails.map(({ hash }) => hash).indexOf(this.props.location.hash)}
+            onSelect={index => handleTabChange(index)}
+          >
+            <TabList>
+              {tabDetails.map(tab => (
+                <Tab key={tab.title}>{tab.title}</Tab>
+              ))}
+            </TabList>
+            <div className='inpage__body'>
+              <div className='inner'>
+                <TabPanel>
+                  <TabContent>
+                    <div className='container-lg'>
+                      <Fold title={strings.countriesStatisticsTitle} foldHeaderClass='visually-hidden' id='operations' foldWrapperClass='fold--main' foldContainerClass='container-lg--padding-reset'>
+                        {/*
+                        <div className='operations__container'>
+                          <div className='country__operations'>
+                            <h2>Movement activities in support of NS</h2>
+                            <BulletTable title='Activities'
+                              onClick={this.setPersistentMapFilter.bind(this, 'ns')}
+                              onMouseOver={this.setMapFilter.bind(this, 'ns')}
+                              onMouseOut={this.removeMapFilter.bind(this, 'ns')}
+                              rows={get(partnerDeployments, 'data.parentSocieties', [])} />
+                            <BulletTable title='Type'
+                              onClick={this.setPersistentMapFilter.bind(this, 'type')}
+                              onMouseOver={this.setMapFilter.bind(this, 'type')}
+                              onMouseOut={this.removeMapFilter.bind(this, 'type')}
+                              rows={get(partnerDeployments, 'data.activities', [])} />
+                          </div>
 
-                      <div className={mapContainerClass}>
-                        <CountryMap operations={this.props.appealStats}
-                          bbox={bbox}
-                          deployments={this.props.partnerDeployments}
-                          deploymentsKey='Additional Response Activities' // From Elsa instead of 'PNS Activities'
-                          noRenderEmergencies={true}
-                          noExport={true}
-                        />
-                      </div>
+                          <div className={mapContainerClass}>
+                            <CountryMap operations={this.props.appealStats}
+                              bbox={bbox}
+                              deployments={this.props.partnerDeployments}
+                              deploymentsKey='Additional Response Activities' // From Elsa instead of 'PNS Activities'
+                              noRenderEmergencies={true}
+                              noExport={true}
+                            />
+                          </div>
+                        </div>
+                        */}
+                        {this.renderAppeals()}
+                      </Fold>
                     </div>
-                    */}
-                    {this.renderAppeals()}
-                  </Fold>
-                </TabContent>
-                <TabContent>
-                  <EmergenciesTable
-                    id={'emergencies'}
-                    title={strings.emergenciesTableRecentEmergencies}
-                    limit={5}
-                    country={getCountryId(this.props.match.params.id)}
-                    showRecent={true}
-                    viewAll={'/emergencies/all?country=' + data.id}
-                    viewAllText={`${strings.emergenciesRecentViewAll} ${data.name}`}
-                  />
-                </TabContent>
-              </TabPanel>
-              <TabPanel>
-                <TabContent title= {strings.region3WTitle}>
-                  <ThreeW countryId={getCountryId(this.props.match.params.id)} />
-                </TabContent>
-              </TabPanel>
-              <TabPanel>
-                <TabContent title='Overview'>
-                  <CountryProfile
-                    countryId={getCountryId(this.props.match.params.id)}
-                    user={this.props.user}
-                  />
-                </TabContent>
-              </TabPanel>
-              <TabPanel>
-                <TabContent showError={true} isError={!this.isPerPermission()} errorMessage={strings.accountPerPermission} title={strings.countryPreparednessTitle}>
-                  {this.props.getPerNsPhase.fetched && this.props.perOverviewForm.fetched ? (
-                    <PreparednessOverview getPerNsPhase={this.props.getPerNsPhase} perOverviewForm={this.props.perOverviewForm} />)
-                    : <ErrorPanel title={strings.preparednessOverview} errorMessage={ NO_DATA } />}
-                  {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
-                    <PreparednessSummary getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
-                    : <ErrorPanel title={strings.preparednessSummary} errorMessage={ NO_DATA } />}
-                  {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
-                    <PreparednessColumnBar getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
-                    : <ErrorPanel title={strings.preparednessColumnBar} errorMessage={ NO_DATA } />}
-                  {this.props.getPerWorkPlan.fetched ? (
-                    <PreparednessWorkPlan getPerWorkPlan={this.props.getPerWorkPlan} />)
-                    : <ErrorPanel title={strings.preparednessWorkPlan} errorMessage={ NO_DATA } />}
-                  {this.props.getPerUploadedDocuments.fetched ? (
-                    <PreparednessPhaseOutcomes getPerUploadedDocuments={this.props.getPerUploadedDocuments} countryId={getCountryId(this.props.match.params.id)} />)
-                    : <ErrorPanel title={strings.countryPreparednessPhaseOutcomes} errorMessage={ NO_DATA } />}
-                </TabContent>
-              </TabPanel>
-              <TabPanel>
-                <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ NO_DATA } title={strings.regionGraphiccs}>
-                  <Snippets data={this.props.snippets} />
-                </TabContent>
-                <TabContent showError={true} isError={!get(data, 'contacts.length')} errorMessage={ NO_DATA } title={strings.regionContacts}>
-                  <Contacts data={data} />
-                </TabContent>
-                <TabContent isError={!get(data, 'links.length')} errorMessage={ NO_DATA } title={strings.regionLinks}>
-                  <Links data={data} />
-                </TabContent>
-              </TabPanel>
+                  </TabContent>
+                  <TabContent>
+                    <div>
+                      <EmergenciesTable
+                        id={'emergencies'}
+                        title={strings.emergenciesTableRecentEmergencies}
+                        limit={5}
+                        country={getCountryId(this.props.match.params.id)}
+                        showRecent={true}
+                        viewAll={'/emergencies/all?country=' + data.id}
+                        viewAllText={`${strings.emergenciesRecentViewAll} ${data.name}`}
+                      />
+                    </div>
+                  </TabContent>
+                </TabPanel>
+                <TabPanel>
+                  <div className='container-lg'>
+                    <TabContent title= {strings.region3WTitle}>
+                      <ThreeW countryId={getCountryId(this.props.match.params.id)} />
+                    </TabContent>
+                  </div>
+                </TabPanel>
+                <TabPanel>
+                  <TabContent title='Overview'>
+                    <div className='container-lg'>
+                      <CountryProfile
+                        countryId={getCountryId(this.props.match.params.id)}
+                        user={this.props.user}
+                      />
+                    </div>
+                  </TabContent>
+                </TabPanel>
+                <TabPanel>
+                  <TabContent showError={true} isError={!this.isPerPermission()} errorMessage={strings.accountPerPermission} title={strings.countryPreparednessTitle}>
+                    <div className='container-lg'>
+                      {this.props.getPerNsPhase.fetched && this.props.perOverviewForm.fetched ? (
+                        <PreparednessOverview getPerNsPhase={this.props.getPerNsPhase} perOverviewForm={this.props.perOverviewForm} />)
+                        : <ErrorPanel title={strings.preparednessOverview} errorMessage={ NO_DATA } />}
+                      {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
+                        <PreparednessSummary getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
+                        : <ErrorPanel title={strings.preparednessSummary} errorMessage={ NO_DATA } />}
+                      {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
+                        <PreparednessColumnBar getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
+                        : <ErrorPanel title={strings.preparednessColumnBar} errorMessage={ NO_DATA } />}
+                      {this.props.getPerWorkPlan.fetched ? (
+                        <PreparednessWorkPlan getPerWorkPlan={this.props.getPerWorkPlan} />)
+                        : <ErrorPanel title={strings.preparednessWorkPlan} errorMessage={ NO_DATA } />}
+                      {this.props.getPerUploadedDocuments.fetched ? (
+                        <PreparednessPhaseOutcomes getPerUploadedDocuments={this.props.getPerUploadedDocuments} countryId={getCountryId(this.props.match.params.id)} />)
+                        : <ErrorPanel title={strings.countryPreparednessPhaseOutcomes} errorMessage={ NO_DATA } />}
+                      </div>
+                  </TabContent>
+                </TabPanel>
+                <TabPanel>
+                  <div className='container-lg'>
+                    <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ NO_DATA } title={strings.regionGraphiccs}>
+                      <Snippets data={this.props.snippets} />
+                    </TabContent>
+                    <TabContent showError={true} isError={!get(data, 'contacts.length')} errorMessage={ NO_DATA } title={strings.regionContacts}>
+                      <Contacts data={data} />
+                    </TabContent>
+                    <TabContent isError={!get(data, 'links.length')} errorMessage={ NO_DATA } title={strings.regionLinks}>
+                      <Links data={data} />
+                    </TabContent>
+                  </div>
+                </TabPanel>
+              </div>
             </div>
-          </div>
-        </Tabs>
+          </Tabs>
+        </div>
         <div className='inpage__body'>
           <div className='inner'>
             { countryLinks ? <Pills links={countryLinks} /> : null }

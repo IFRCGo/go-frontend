@@ -400,7 +400,7 @@ class Register extends React.Component {
           {link: '/register', name: strings.breadCrumbRegister},
           {link: '/', name: strings.breadCrumbHome}
         ]} />
-        <section className='inpage'>
+        <section className='inpage container-lg'>
           <header className='inpage__header'>
             <div className='inner'>
               <div className='inpage__headline'>

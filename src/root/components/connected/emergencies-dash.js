@@ -3,13 +3,12 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
 import { DateTime } from 'luxon';
-
+import { Link } from 'react-router-dom';
 import { environment } from '#config';
 import Stats from '#components/emergencies/stats';
 import EmergenciesMap from '#components/map/emergencies-map';
 import Progress from '#components/progress';
 import BlockLoading from '#components/block-loading';
-
 import Translate from '#components/Translate';
 
 class EmergenciesDash extends React.Component {
@@ -20,20 +19,27 @@ class EmergenciesDash extends React.Component {
     const emerg = lastMonth.data.emergenciesByType.slice(0, 6);
     const max = Math.max.apply(Math, emerg.map(o => o.items.length));
     return (
-      <div className='emergencies'>
-        <h2>
-          <Translate stringId='emergenciesDashHeading' />
-        </h2>
-        <div className='emergencies__container'>
-          <ul className='emergencies__list emergenciest__list--static'>
-            {emerg.map(o => (
-              <li key={o.id}
-                className='emergencies__item'>
-                <span className='key'>{o.name} ({o.items.length})</span>
-                <span className='value'><Progress value={o.items.length} max={max}><span>100</span></Progress></span>
-              </li>
-            ))}
-          </ul>
+      <div className='col col-6-mid spacing-v'>
+        <div className='chart emergencies'>
+          <figcaption>
+            <h2 className='fold__title'>
+              <Translate stringId='emergenciesDashHeading' />
+            </h2>
+          </figcaption>
+          <div className='emergencies__container spacing-2'>
+            <ul className='emergencies__list emergenciest__list--static'>
+              {emerg.map(o => (
+                <li key={o.id}
+                  className='emergencies__item'>
+                  <span className='key'>{o.name}</span>
+                  <span className='value'>
+                    <Progress value={o.items.length} max={max}><span>100</span></Progress>
+                    <span className='key__value__emergency'>{o.items.length}</span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     );
@@ -87,14 +93,16 @@ class EmergenciesDash extends React.Component {
     if (!fetched) return null;
 
     return (
-      <figure className='chart'>
-        <figcaption>
-          <Translate stringId='emergenciesDashOverLastYear' />
-        </figcaption>
-        <div className='chart__container'>
-          {this.renderChart(data, 'month')}
-        </div>
-      </figure>
+      <div className='col col-6-mid spacing-v'>
+        <figure className='chart'>
+          <figcaption>
+            <h2 className='fold__title'><Translate stringId='emergenciesDashOverLastYear' /></h2>
+          </figcaption>
+          <div className='chart__container'>
+            {this.renderChart(data, 'month')}
+          </div>
+        </figure>
+      </div>
     );
   }
 
@@ -105,22 +113,28 @@ class EmergenciesDash extends React.Component {
       <div>
         <header className='inpage__header'>
           <div className='inner'>
-            <div className='inpage__headline'>
+            <div>
               <div className='inpage__headline-content'>
-                <h1 className='inpage__title'>
-                  <Translate stringId='emergenciesDashLast30Days' />
-                </h1>
-                <div className='row'>
-                  <div className='inpage__headline-stats'>
-                    <Stats lastMonth={lastMonth} />
-                  </div>
-                  <div className='inpage__headline-charts'>
-                    <div className='stats-chart'>
+                <div className='container-lg'>
+                  <h1 className='inpage__title'>
+                    <Translate stringId='emergenciesDashLast30Days' />
+                  </h1>
+                </div>
+                <div className='inpage__headline-stats'>
+                  <Stats lastMonth={lastMonth} />
+                </div>
+                <div className='box__content'>
+                  <div className='container-lg'>
+                    <div className='inpage__headline-charts'>
                       <h1 className='visually-hidden'>
                         <Translate stringId='emergenciesDashOverTime'/>
                       </h1>
-                      {this.renderByMonth()}
-                      {this.renderEmergencies()}
+                      <div className='stats-chart'>
+                        <div className='row flex-mid stats-chart-row'>
+                          {this.renderEmergencies()}
+                          {this.renderByMonth()}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -128,7 +142,20 @@ class EmergenciesDash extends React.Component {
             </div>
           </div>
         </header>
-        <section className='map-section__container row'>
+        <section className='map-section__container'>
+          <div className='fold padding-top-reset spacing-b'>
+            <div className='container-lg'>
+              <div className='fold__header__block'>
+                <h2 className='fold__title'>{ this.props.title }</h2>
+                <div className="fold__title__linkwrap">
+                  <Link to='/emergencies/all' className='fold__title__link'>
+                    View All Emergencies
+                    <span className="collecticon-chevron-right"></span>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
           <EmergenciesMap lastMonth={lastMonth} />
         </section>
       </div>

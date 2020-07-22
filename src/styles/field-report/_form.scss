@@ -4,26 +4,16 @@
 
 
 .page--frep-form {
-  background: #fff;
-
-  .inpage__header {
-    padding-bottom: 0;
-  }
 
   .fold__body > .form__group {
     @include form__group;
+    background-color: #fff;
+    box-shadow: $box-shadow-component;
+    margin-bottom: ($spacing * 1.5);
+    @include row;
     
     > .form__inner-header {
       display: block;
-      @include media(medium-up) {
-        @include column(3/12);
-      }
-    }
-
-    > .form__inner-body {
-      @include media(medium-up) {
-        @include column(9/12);
-      }
     }
   }
 
@@ -57,34 +47,18 @@
     margin-bottom: $global-spacing-2;
   }
 
-  .fold__body .form__group--kv-actions {
-    @include media(medium-up) {
-      @include column(6/12, $cycle: 2, $offset: 0);      
-      
-      .form__inner-header {
-        @include column(8/12);
-      }  
-
-      .form__inner-body {
-        @include column(4/12);
-      }  
+  .fold__body {
+    .plan-response-row-wrap, .contact-row-wrap {
+      @include form__group;
+      background-color: #fff;
+      box-shadow: $box-shadow-component;
+      margin-bottom: ($spacing * 1.5);
+    }
+    
+    .plan-response-row, .contact-row {
+      box-shadow: none;
     }
   }
-
-  .fold__body .plan-response-row, .contact-row {
-    margin-bottom: 0;
-  }
-}
-
-.fold__title--contact {
-  padding: ($global-spacing * 4) 0;
-  clear: both;
-  float: none;
-}
-
-
-.form--field-report {
-  margin-bottom: $global-spacing * 4;
 }
 
 .sources-list {
@@ -107,62 +81,12 @@
 }
 
 .contact-row {
-
-  > .form__inner-header {
-    @include column(12/12);
-
-    @include media(large-up) {
-      @include column(3/12);
-    }
-  }
-
-  > .form__inner-body {
-    @include column(12/12);
-
-    @include media(large-up) {
-      @include column(9/12);
-    }
-    > .form__group {
-      @include column(12/12);
-
-      @include media(small-up) {
-        @include column(6/12, $cycle: 2);
-      }
-
-      @include media(large-up) {
-        @include column(4/12, $cycle: 3);
-      }
-    }
-  }
-
   .form__group {
     padding-top: 0;
   }
 }
 
-.form__group__col__6 {
-  @include media(large-up) {
-    @include column(6/12, $cycle: 2);
-  }  
-}
-
 .estimation-row {
-  > .form__inner-header {
-    @include column(12/12);
-
-    @include media(large-up) {
-      @include column(3/12);
-    }
-  }
-
-  > .form__inner-body {
-    @include column(12/12);
-
-    @include media(large-up) {
-      @include column(9/12);
-    }
-  }
-
   .estimation {
     @extend .clearfix;
     margin-bottom: $global-spacing;
@@ -172,48 +96,9 @@
     }
   }
 
-  .estimation__item-field {
-    @include column(12/12);
-
-    @include media(medium-up) {
-      @include column(4/12);
-    }
-
-    @include media(large-up) {
-      @include column(3/12);
-    }
-  }
-
   .estimation__item {
-    @include column(12/12);
-
-    @include media(medium-up) {
-      @include column(5/12);
-    }
-
-    @include media(large-up) {
-      @include column(6/12);
-    }
-
     .form__option--inline {
-      margin-inline-start: 0;
       display: flex;
-    }
-  }
-
-  .estimation__item-field {
-    @include column(12/12);
-
-    @include media(medium-up) {
-      @include column(3/12);
-    }
-  }
-
-  .estimation__item--actions {
-    @include column(12/12);
-
-    @include media(medium-up) {
-      @include column(3/12);
     }
   }
 
@@ -228,55 +113,24 @@
   display: flex;
   flex-wrap: wrap;
   .form__option {
-    @include column(12/12);
+    @include col;
 
     @include media(small-up) {
-      @include column(6/12, $cycle: 2);
+      @include col(50%);
     }
 
     @include media(medium-up) {
-      @include column(4/12, $cycle: 3);
+      width: 33.33%;
     }
 
     @include media(large-up) {
-      @include column(3/12, $cycle: 4);
+      width: 25%;
     }
   }
 }
 
 .eru {
   @extend .clearfix;
-
-  .eru__item-type,
-  .eru__item-status,
-  .eru__item-units,
-  .eru__item-actions {
-    @include column(12/12);
-  }
-
-  @include media(medium-up) {
-    .eru__item-type,
-    .eru__item-status {
-      @include column(6/12, $cycle: 2);
-    }
-    .eru__item-units {
-      @include column(8/12);
-    }
-    .eru__item-actions {
-      @include column(4/12);
-    }
-  }
-
-  @include media(large-up) {
-    .eru__item-type,
-    .eru__item-status {
-      @include column(4/12, $cycle: 4);
-    }
-    .eru__item-units,
-    .eru__item-actions {
-      @include column(2/12, $cycle: 4);
-    }
-  }
 
   .eru__item-actions {
     padding-top: 1.5rem;
@@ -290,50 +144,13 @@
   opacity: 0.64;
 }
 
-.form__group--kv {
-  > * {
-    @include column(12/12);
-
-    @include media(small-up) {
-      @include column(6/12);
-    }
-
-    @include media(medium-up) {
-      @include column(4/12);
-    }
-
-    @include media(large-up) {
-      @include column(3/12);
-    }
-  }
-}
-
-
 .plan-response-row  {
-
-  @include media(medium-up) {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: flex-start;
-  }
-
-  > .form__inner-header {
-    @include media(medium-up) {
-      @include column(3/12);
-    }
-
-    @include media(large-up) {
-      @include column(2/12);
-    }
-  }
 
   > .form__inner-body {
     @include media(medium-up) {
-      @include column(9/12);
 
       display: flex;
       flex-flow: row nowrap;
-      //align-items: flex-end;
 
       .form__group {
         margin-bottom: 0;
@@ -344,21 +161,14 @@
         vertical-align: top;
       }
     }
-
-    @include media(large-up) {
-      @include column(10/12);
-    }
-
   }
 
   .resp-status {
-    margin-inline-end: 8%;
     padding-top: 0;
 
-    .form__inner-header {
-      @include media(medium-up) {
-        @include column(7/12);
-      }
+    .form__inner-body {
+      display: flex;
+      flex-wrap: wrap;
     }
   }
 }
@@ -375,20 +185,20 @@
 
 
 .stepper {
-  @include column(12/12);
+  max-width: $media-medium;
   display: flex;
   flex-flow: column wrap;
   list-style: none;
-  margin: 0 0 ($global-spacing * 2) 0;
+  margin: 0 auto ($global-spacing * 2) auto;
   padding: 0;
-  max-width: 60rem;
   font-family: $heading-font-family;
   font-size: 0.875rem;
   line-height: 1rem;
 
   @include media(medium-up) {
     flex-flow: row wrap;
-    margin: 0 0 ($global-spacing * 4) 0;
+    margin-bottom: ($global-spacing * 4);
+    margin-inline-start: 18%;
   }
 }
 
@@ -397,8 +207,7 @@
   flex-grow: 1;
   padding: 0 0 1rem 1.5rem;
   margin: 0 0 0.5rem 0;
-  overflow: hidden;
-  color: tint($base-color, 80%);
+  color: $grey-pearl;
 
   @include media(medium-up) {
     padding: 1.5rem 1rem 0 0;
@@ -459,19 +268,24 @@
 
   a {
     color: inherit;
-    font-weight: $base-font-medium;
+    font-weight: $base-font-semi-bold;
     text-transform: uppercase;
+    display: block;
+    margin-inline-start: $spacing-half;
+
+    @include media(medium-up) {
+      margin: $spacing-half 0 0 0;
+      position: relative;
+      margin-inline-start: -10%;
+    }
   }
 
  &--current {
     color: $primary-color;
 
-    //&::before, &::after {
-      //background: $secondary-color;
-    //}
-
      &::before {
        background: $primary-color;
+       box-shadow: 0 0 0 4px $grey-mist, 0 0 0 6px $primary-color;
      }
   }
 
@@ -485,7 +299,6 @@
 }
 
 .form__actions {
-  margin: ($global-spacing * 4) 0;
   button {
     &:first-child {
       margin-inline-end: $global-spacing/2;
@@ -526,4 +339,36 @@
 
 .pl-small {
   padding-inline-start: 1.5rem;
+}
+
+.form__group__fr  {
+  > .form__group__wrap {
+    @include row;
+
+    @include media(medium-up) {
+      @include flex;
+    }
+
+    > .form__inner-header {
+      @include col;
+
+      @include media(medium-up) {
+        @include col(30%);
+      }
+    }
+
+    > .form__inner-body {
+      @include col;
+
+      @include media(medium-up) {
+        @include col(70%);
+      }
+    }
+  }
+
+  .form__option--custom-radio {
+    .form__option__text {
+      font-weight: $base-font-regular;
+    }
+  }
 }

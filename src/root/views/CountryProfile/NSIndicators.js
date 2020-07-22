@@ -18,33 +18,37 @@ class NSIndicators extends React.PureComponent {
     const { strings } = this.context;
 
     return (
-      <div className={_cs(className, 'overview-ns-indicators')}>
-        <h3 className='tc-heading'>
-          <Translate stringId='NSIndicatorsTitle' />
-        </h3>
-        <div className='tc-content'>
-          <IndicatorOutput
-            label={strings.NSIndicatorsIncome}
-            value={income}
-            normalizeValue
-            fixedTo={1}
-          />
-          <IndicatorOutput
-            label={strings.NSIndicatorsExpenditure}
-            value={expenditures}
-            normalizeValue
-            fixedTo={1}
-          />
-          <IndicatorOutput
-            label={strings.NSIndicatorsVolunteers}
-            value={volunteers}
-            addSeparatorToValue
-          />
-          <IndicatorOutput
-            label={strings.NSIndicatorsTrained}
-            value={trainedInFirstAid}
-            addSeparatorToValue
-          />
+      <div className='col col-6-sm flex'>
+        <div className={_cs(className, 'chart box__content overview-ns-indicators')}>
+          <figcaption className='fold__title'>
+            <h3 className='tc-heading margin-reset'>
+              <Translate stringId='NSIndicatorsTitle' />
+            </h3>
+          </figcaption>
+          <div className='tc-content'>
+            <IndicatorOutput
+              label={strings.NSIndicatorsIncome}
+              value={income}
+              normalizeValue
+              fixedTo={1}
+            />
+            <IndicatorOutput
+              label={strings.NSIndicatorsExpenditure}
+              value={expenditures}
+              normalizeValue
+              fixedTo={1}
+            />
+            <IndicatorOutput
+              label={strings.NSIndicatorsVolunteers}
+              value={volunteers}
+              addSeparatorToValue
+            />
+            <IndicatorOutput
+              label={strings.NSIndicatorsTrained}
+              value={trainedInFirstAid}
+              addSeparatorToValue
+            />
+          </div>
         </div>
       </div>
     );

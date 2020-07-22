@@ -25,13 +25,13 @@ const PerDraftDocuments = ({ perForm, deletePerDraft }) => {
             </div>
             <div className='list__each__button'>
               <Link
-                className='button button--small button--secondary-bounded'
+                className='button button--xsmall button--secondary-bounded'
                 to={draftDocument.code === 'overview' ? '/per-forms/overview/' + draftDocument.country.id : '/edit-per-forms/' + draftDocument.code + '/' + draftDocument.user.username + '/' + draftDocument.country.id}>
                   <Translate stringId='perDraftEdit'/>
               </Link>
 
               <button
-                className='button button--small button--primary-bounded'
+                className='button button--xsmall button--primary-bounded'
                 onClick={() => deletePerDraft({id: draftDocument.id})}
                 style={{ marginLeft: 10 }}>
                 <Translate stringId='perDraftDelete'/>

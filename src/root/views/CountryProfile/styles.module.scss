@@ -1,15 +1,23 @@
 @import '~styles/settings/variables';
 
+.key-climate-events {
+  padding: 16px 16px;
+
+  .content {
+    padding: $spacing 0;
+  }
+}
+
 .country-overview {
   width: 100%;
   background-color: #fff;
-  box-shadow: $base-box-shadow;
+  //box-shadow: $base-box-shadow;
   position: relative;
   overflow-x: auto;
   padding: 2rem;
 
   .key-events-section {
-    display: flex;
+    //display: flex;
 
     .key-climate-events {
       padding: 14px 10px;
@@ -17,11 +25,13 @@
       flex-grow: 1;
 
       .heading {
-        padding: 16px 10px;
-        margin: 0;
-        margin-bottom: 24px;
-        border-bottom: 1px solid rgba(0, 0, 0, .1);
-        text-transform: uppercase;
+        //font-size: 1.14rem;
+        //text-transform: uppercase;
+        //letter-spacing: 1.6px;
+        //padding: 16px 10px;
+        //margin: 0;
+        //margin-bottom: 24px;
+        //border-bottom: 1px solid #c9c3c1;
       }
 
       .content {
@@ -50,16 +60,19 @@
 
   :global {
     .top-section {
-      display: flex;
-      border: 1px solid rgba(0, 0, 0, .1);
-      flex-wrap: wrap;
+      //border: 1px solid rgba(0, 0, 0, .1);
 
-      .key-indicators {
-        flex-basis: 50%;
-      }
+      //.key-indicators {
+        //flex-basis: 50%;
+      //}
 
-      .ns-indicators {
-        flex-basis: 50%;
+      //.ns-indicators {
+        //flex-basis: 50%;
+      //}
+
+      @media (min-width: $media-small) {
+        display: flex;
+        flex-wrap: wrap;
       }
 
       .tc-data-source {
@@ -83,7 +96,7 @@
     }
 
     .population-and-climate-section {
-      display: flex;
+      //display: flex;
 
       .population-map {
         flex-basis: 0;
@@ -131,16 +144,16 @@
     %tc-block {
       padding: 16px 16px;
 
-      >.tc-heading {
-        padding: 16px 10px;
-        margin: 0;
-        margin-bottom: 24px;
-        border-bottom: 1px solid rgba(0, 0, 0, .1);
-      }
+      //>.tc-heading {
+        //padding: 16px 10px;
+        //margin: 0;
+        //margin-bottom: 24px;
+        //border-bottom: 1px solid rgba(0, 0, 0, .1);
+      //}
 
-      .tc-heading {
-        text-transform: uppercase;
-      }
+      //.tc-heading {
+        //text-transform: uppercase;
+      //}
 
       >.tc-content {
         padding: 10px 0;
@@ -148,23 +161,38 @@
     }
 
     .overview-key-indicators {
-      @extend %tc-block;
+      //@extend %tc-block;
 
       .tc-content {
-        display: flex;
+        @media (min-width: $media-small) {
+          display: flex;
+          padding: $spacing;
+        }
 
         .tc-left {
-          flex-basis: 50%;
+          @media (min-width: $media-medium) {
+            flex-basis: 50%;
+          }  
+        }
+          
+        .tc-right {
+          @media (min-width: $media-medium) {
+            flex-basis: 50%;
+          }
         }
 
-        .tc-right {
-          flex-basis: 50%;
+        .tc-label {
+          width: 50%;
         }
+
       }
     }
 
     .overview-ns-indicators {
-      @extend %tc-block;
+      //@extend %tc-block;
+      .tc-content {
+        padding: $spacing;
+      }
     }
 
     .overview-social-events {

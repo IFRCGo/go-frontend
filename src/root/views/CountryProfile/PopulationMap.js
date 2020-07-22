@@ -14,9 +14,11 @@ class PopulationMap extends React.PureComponent {
 
     return (
       <div className={_cs(className, 'overview-population-map')}>
-        <h3 className='tc-heading'>
-          <Translate stringId='populationMapTitle'/>
-        </h3>
+        <div className='fold__header__block'>
+          <h3 className='tc-heading fold__title'>
+            <Translate stringId='populationMapTitle'/>
+          </h3>
+        </div>
         <div className='tc-content'>
           <Map
             className='overview-map-container'

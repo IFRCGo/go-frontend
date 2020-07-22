@@ -9,7 +9,7 @@
   font-size: 0.875rem;
 
   th, td  {
-    padding: $global-spacing;
+    padding: ($spacing * 1.5);
     vertical-align: top;
     text-align: left;
     @include media(small-down) {
@@ -42,7 +42,7 @@
     color: $base-color;
     font-size: 1rem;
     line-height: 1.25rem;
-    vertical-align: bottom;
+    vertical-align: top;
     box-shadow: inset 0 (-$base-border-width) 0 0 $base-alpha-color;
 
     a {
@@ -191,18 +191,18 @@ td.right-align, th.right-align{
   margin-bottom: $global-spacing * 2;
   width: 100%;
 
-  th, td  {
-    vertical-align: top;
-    text-align: left;
-  }
+  //th, td  {
+    //vertical-align: top;
+    //text-align: left;
+  //}
 
-  th {
-    padding: $global-spacing ($global-spacing / 2);
-  }
+  //th {
+    //padding: $global-spacing ($global-spacing / 2);
+  //}
 
   td {
-    padding: ($global-spacing * 2) ($global-spacing / 2);
-    font-weight: $base-font-regular;
+    //padding: ($global-spacing * 2) ($global-spacing / 2);
+    //font-weight: $base-font-regular;
     &:nth-child(3) {
       width: 50%;
       @include media(large-up){
@@ -214,22 +214,22 @@ td.right-align, th.right-align{
     };
   }
 
-  th:first-child,
-  td:first-child {
-    padding-inline-start: $global-spacing;
-  }
+  //th:first-child,
+  //td:first-child {
+    //padding-inline-start: $global-spacing;
+  //}
 
-  th:last-child,
-  td:last-child {
-    padding-inline-end: $global-spacing;
-  }
+  //th:last-child,
+  //td:last-child {
+    //padding-inline-end: $global-spacing;
+  //}
 
   tbody tr {
     border-inline-start: 4px solid transparent;
 
-    &:nth-child(odd) {
-      box-shadow: 0 0 2px 0 rgba($base-color, 0.24);
-    }
+    //&:nth-child(odd) {
+      //box-shadow: 0 0 2px 0 rgba($base-color, 0.24);
+    //}
 
     &:nth-child(even) {
       height: $global-spacing;
@@ -319,14 +319,14 @@ td.right-align, th.right-align{
 
 .table--border-bottom {
   thead th {
-    font-weight: $base-font-semi-bold;
     box-shadow: none;
-
+    font-weight: $base-font-semi-bold;
+    text-align: inline-start;
   }
 
   thead th, td {
     font-size: $base-font-size;
-    padding-bottom: ($global-spacing * 1.5);
+    //padding-bottom: ($spacing * 1.5);
 
     &:first-child {
       padding-inline-start: 0;
@@ -341,6 +341,7 @@ td.right-align, th.right-align{
     .drop__toggle--caret::after {
       content: '\EA0A';
       font-size: $font-size-xxs;
+      vertical-align: baseline;
     }
   }
 
@@ -368,8 +369,22 @@ td.right-align, th.right-align{
   }
 }
 
+.table--box-shadow {
+  @include box__global;
+
+  thead th, td {
+    &:first-child {
+      padding-inline-start: $global-spacing;
+    }
+
+    &:last-child {
+      padding-inline-end: $global-spacing;
+    }
+  }  
+}
+
 .table--border__list {
-  padding: $global-spacing 0;
+  padding: $spacing 0;
 }
 
 // Simple, underlined links for tables
@@ -389,4 +404,10 @@ td.right-align, th.right-align{
   display: flex;
   justify-content: flex-end;
   margin-top: $global-spacing;
+}
+
+
+// Ensure table dates don't wrap
+.table__header--date, table__cell--date {
+  width: 110px;
 }

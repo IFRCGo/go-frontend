@@ -47,14 +47,6 @@
         font-size: 1rem;
       }
     }
-    span.sumstats__value {
-      font-size: 2.5rem;
-      line-height: 2rem;
-      @include media(xlarge-up) {
-        font-size: 3rem;
-        line-height: 3.5rem;
-      }
-    }
   }
   .stats-map {
     height: 58vh;
@@ -93,6 +85,6 @@
   padding-inline-start: 400px; // width of logo + some padding
   margin: ($global-spacing/2) 0 0 0;
   text-align: center;
-  font-size: 2rem;
+  font-size: 1.2rem;
   width: 100%;
 }

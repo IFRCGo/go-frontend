@@ -19,7 +19,7 @@ class OperationsPopover extends React.Component {
         <div className='popover__contents__preparedness'>
           <header className='popover__header'>
             <div className='popover__headline'>
-              {deployments ? title : <a className='link--primary' onClick={e => { e.preventDefault(); navigate(`/countries/${pageId}#per`); }}>{title}</a>}
+              {deployments ? title : <a className='link-underline' onClick={e => { e.preventDefault(); navigate(`/countries/${pageId}#per`); }}>{title}</a>}
             </div>
             <div className='popover__actions actions'>
               <ul className='actions__menu'>

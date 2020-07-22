@@ -4,7 +4,7 @@ import { DateTime } from 'luxon';
 import { PropTypes as T } from 'prop-types';
 import { Helmet } from 'react-helmet';
 import BreadCrumb from '../components/breadcrumb';
-
+import BlockLoading from '#components/block-loading';
 import App from './app';
 import FieldReportsTable from '#components/connected/field-reports-table';
 import EmergenciesDash from '#components/connected/emergencies-dash';
@@ -23,6 +23,13 @@ class Emergencies extends React.Component {
 
   render () {
     const { strings } = this.context;
+    if (!this.props.lastMonth.fetched) {
+      return (
+        <BlockLoading />
+      );
+    }
+    const count = this.props.lastMonth.data.count;
+    const dashTitle = `${strings.emergenciesTitle} (${count})`;
     return (
       <App className='page--emergencies'>
         <Helmet>
@@ -32,17 +39,19 @@ class Emergencies extends React.Component {
         </Helmet>
         <section className='inpage'>
           <BreadCrumb crumbs={[{link: '/emergencies', name: 'Emergencies'}, {link: '/', name: strings.breadCrumbHome }]} />
-          <EmergenciesDash />
-          <div className='inpage__body row'>
+          <EmergenciesDash 
+            title={dashTitle}
+          />
+          <div>
             <div className='inner'>
               <EmergenciesTable
                 title={strings.emergenciesTableTitle}
                 limit={10}
-                viewAll={'/emergencies/all'}
                 showRecent={true}
+                showHeader={false}
               />
             </div>
-            <div className='inner'>
+            <div className='inner inner--field-reports-emergencies'>
               <FieldReportsTable
                 title={strings.fieldReportsTableTitle}
                 viewAll={'/reports/all'}

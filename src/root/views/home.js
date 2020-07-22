@@ -17,14 +17,14 @@ class Home extends React.Component {
             <title>{strings.homeTitle}</title>
           </Helmet>
           <header className='inpage__header'>
-            <div className='inner'>
+            <div className=''>
               <div className='inpage__headline'>
-                <h1 className='inpage__title inpage__title--home'>
+                <h1 className='inpage__title inpage__title--home container-lg'>
                   <Translate stringId='homeHeading' />
                 </h1>
-                <p className='inpage__introduction'>
-                  <Translate stringId='homeDescription' />
-                </p>
+                <div className='inpage__introduction container-xs'>
+                  <p><Translate stringId='homeDescription' /></p>
+                </div>
               </div>
               <PresentationDash />
             </div>

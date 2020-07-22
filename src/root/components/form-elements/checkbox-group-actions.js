@@ -32,36 +32,38 @@ export default class FormCheckboxGroupActions extends React.Component {
 
     return (
       <div className={c('form__group', classWrapper)}>
-        <div className='form__inner-header'>
-          <div className='form__inner-headline'>
-            <label className={c('form__label', classLabel)}>{label}</label>
-            <FormDescription value={description} />
+        <div className='form__group__wrap'>
+          <div className='form__inner-header'>
+            <div className='form__inner-headline'>
+              <label className={c('form__label', classLabel)}>{label}</label>
+              <FormDescription value={description} />
+            </div>
           </div>
-        </div>
-        <div className='form__inner-body'>
-          {options.map(optionGroup => (
-            <React.Fragment>
-              {options.length > 1 ? (
-                <label key={optionGroup.label} className={c('form__label', classLabel)}>{optionGroup.label}</label>
-              ) : null}
-              <div className='form__options-group'>
-                {(optionGroup.options || options).map(option => {
-                  return (
-                    <FormCheckbox
-                      key={option.value}
-                      label={option.label}
-                      name={`${name}[]`}
-                      id={`${name.replace(/(\[|\])/g, '-')}-${option.value}`}
-                      value={option.value}
-                      checked={(values.find(({value}) => value === option.value) || {}).checked}
-                      onChange={this.onCheckChange.bind(this, option.value)}
-                      description={option.description} />
-                  );
-                })}
-              </div>
-            </React.Fragment>
-          ))}
-          {children || null}
+          <div className='form__inner-body'>
+            {options.map(optionGroup => (
+              <React.Fragment>
+                {options.length > 1 ? (
+                  <label key={optionGroup.label} className={c('form__label', classLabel)}>{optionGroup.label}</label>
+                ) : null}
+                <div className='form__options-group'>
+                  {(optionGroup.options || options).map(option => {
+                    return (
+                      <FormCheckbox
+                        key={option.value}
+                        label={option.label}
+                        name={`${name}[]`}
+                        id={`${name.replace(/(\[|\])/g, '-')}-${option.value}`}
+                        value={option.value}
+                        checked={(values.find(({value}) => value === option.value) || {}).checked}
+                        onChange={this.onCheckChange.bind(this, option.value)}
+                        description={option.description} />
+                    );
+                  })}
+                </div>
+              </React.Fragment>
+            ))}
+            {children || null}
+          </div>
         </div>
       </div>
     );

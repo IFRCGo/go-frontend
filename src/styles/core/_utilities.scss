@@ -137,6 +137,12 @@
   overflow-x: hidden;
 }
 
+/* Base bottom border
+   ========================================================================== */
+
+   .border-bottom-base {
+    border-bottom: 1px solid $base-border-color;
+   }
 
 /* Round shapes
    ========================================================================== */
@@ -179,7 +185,7 @@
 }
 
 .text-right {
-  text-align: right;
+  text-align: end;
 }
 
 .text-center {
@@ -190,6 +196,23 @@
   display: block;
   margin-inline-start: auto;
   margin-inline-end: auto;
+}
+
+
+/* Padding Reset
+   ========================================================================== */
+
+.padding-reset {
+  padding: 0;  
+} 
+
+.padding-top-reset {
+  padding-top: 0;
+}
+
+
+.padding-bottom-reset {
+  padding-bottom: 0;
 }
 
 
@@ -227,12 +250,6 @@
   }
 }
 
-
-/* Flexbox
-   ========================================================================== */
-.flex {
-  display: flex;
-}
 
 /* Spacing Utilities: Padding
    ========================================================================== */
@@ -283,7 +300,7 @@ $spacing-global: (
 
 // Globals: Spacing: Bottom
 
-// Generates placeholders and classes for top spacing
+// Generates placeholders and classes for bottom spacing
 // Uses padding bottom
 // E.g. .global-spacing-b, %global-spacing-b, .global-spacing-2-b, %global-spacing-3-b, etc.
 
@@ -307,7 +324,7 @@ $spacing-global: (
 
 
 
-/* Spacing Utilities: Padding
+/* Spacing Utilities: Margins
    ========================================================================== */
 
 $spacing-global: (
@@ -342,7 +359,7 @@ $spacing-global: (
   }
 }
 
-// Globals: Spacing: Top
+// Globals: Margin: Top
 
 // Generates placeholders and classes for top margin
 // Uses margin top
@@ -354,7 +371,7 @@ $spacing-global: (
   }
 }
 
-// Globals: Spacing: Bottom
+// Globals: Margin: Bottom
 
 // Generates placeholders and classes for bottom margin
 // Uses margin bottom
@@ -373,6 +390,205 @@ $spacing-global: (
 // E.g. .global-margin, %global-margin, .global-margin-2, %global-margin-2, etc.
 
 @each $name, $value in $spacing-global {
+  .#{$name}, %#{$name} {
+    margin: $value;
+  }
+}
+
+
+/* Spacing Utilities: Padding (IN PX)
+   ========================================================================== */
+
+$spacing-g: (
+  spacing: $spacing,
+  spacing-2: $spacing-2,
+  spacing-3: $spacing-3,
+  spacing-4: $spacing-4,
+  spacing-5: $spacing-5,
+  spacing-half: $spacing-half,
+);
+
+// Spacing: Vertical (IN PX)
+
+// Generates placeholders and classes for vertical spacing
+// Uses padding top and bottom
+// E.g. .spacing-v, %spacing-v, .spacing-2-v, %spacing-2-v, etc.
+
+@each $name, $value in $spacing-g {
+  .#{$name}-v, %#{$name}-v {
+    padding-top: $value;
+    padding-bottom: $value;
+  }
+}
+
+// Spacing: Horizontal
+
+// Generates placeholders and classes for horizontal spacing
+// Uses padding left and right
+// E.g. .spacing-h, %spacing-h, .spacing-2-h, %spacing-2-h, etc.
+
+@each $name, $value in $spacing-g {
+  .#{$name}-h, %#{$name}-h {
+    padding-inline-start: $value;
+    padding-inline-end: $value;
+  }
+}
+
+// Spacing: Top
+
+// Generates placeholders and classes for top spacing
+// Uses padding top
+// E.g. .spacing-t, %spacing-t, .spacing-2-t, %spacing-3-t, etc.
+
+@each $name, $value in $spacing-g {
+  .#{$name}-t, %#{$name}-t {
+    padding-top: $value;
+  }
+}
+
+// Spacing: Bottom
+
+// Generates placeholders and classes for top spacing
+// Uses padding bottom
+// E.g. .spacing-b, %spacing-b, .spacing-2-b, %spacing-3-b, etc.
+
+@each $name, $value in $spacing-g {
+  .#{$name}-b, %#{$name}-b {
+    padding-bottom: $value;
+  }
+}
+
+// Spacing: Left
+
+// Generates placeholders and classes for left spacing
+// Uses padding left
+// E.g. .spacing-l, %spacing-l, .spacing-2-l, %spacing-3-l, etc.
+
+@each $name, $value in $spacing-g {
+  .#{$name}-l, %#{$name}-l {
+    padding-left: $value;
+  }
+}
+
+// Spacing: Right
+
+// Generates placeholders and classes for right spacing
+// Uses padding right
+// E.g. .spacing-r, %spacing-r, .spacing-2-r, %spacing-3-r, etc.
+
+@each $name, $value in $spacing-g {
+  .#{$name}-r, %#{$name}-r {
+    padding-right: $value;
+  }
+}
+
+// Spacing
+
+// Generates placeholders and classes for spacing
+// Uses padding on all four sides
+// E.g. .spacing, %spacing, .spacing-2, %spacing-2, etc.
+
+@each $name, $value in $spacing-g {
+  .#{$name}, %#{$name} {
+    padding: $value;
+  }
+}
+
+
+/* Margin Utilities: Margin (IN PX)
+   ========================================================================== */
+
+$margins: (
+  'margin': $spacing,
+  'margin-2': $spacing-2,
+  'margin-3': $spacing-3,
+  'margin-4': $spacing-4,
+  'margin-5': $spacing-5,
+  'margin-half': $spacing-half,
+);
+
+
+// Margin: Vertical (IN PX)
+
+// Generates placeholders and classes for vertical margins
+// Uses margin top and bottom
+// E.g. .margin-v, %margin-v, .margin-2-v, %margin-2-v, etc.
+
+@each $name, $value in $margins {
+  .#{$name}-v, %#{$name}-v {
+    margin-top: $value;
+    margin-bottom: $value;
+  }
+}
+
+// Margin: Horizontal
+
+// Generates placeholders and classes for horizontal margins
+// Uses margin left and right
+// E.g. .margin-h, %margin-h, .margin-2-h, %margin-2-h, etc.
+
+@each $name, $value in $margins {
+  .#{$name}-h, %#{$name}-h {
+    margin-inline-start: $value;
+    margin-inline-end: $value;
+  }
+}
+
+// Margin: Top
+
+// Generates placeholders and classes for top margin
+// Uses margin top
+// E.g. .margin-t, %margin-t, .margin-2-t, %margin-3-t, etc.
+
+@each $name, $value in $margins {
+  .#{$name}-t, %#{$name}-t {
+    margin-top: $value;
+  }
+}
+
+// Margin: Bottom
+
+// Generates placeholders and classes for bottom margin
+// Uses margin bottom
+// E.g. .margin-b, %margin-b, .margin-2-b, %margin-3-b, etc.
+
+@each $name, $value in $margins {
+  .#{$name}-b, %#{$name}-b {
+    margin-bottom: $value;
+  }
+}
+
+// Margin: Left
+
+// Generates placeholders and classes for left margin
+// Uses margin left
+// E.g. .margin-l, %margin-l, .margin-2-l, %margin-3-l, etc.
+
+@each $name, $value in $margins {
+  .#{$name}-l, %#{$name}-l {
+    margin-left: $value;
+  }
+}
+
+// Margin: Right
+
+// Generates placeholders and classes for right margin
+// Uses margin right
+// E.g. .margin-r, %margin-r, .margin-2-r, %margin-3-r, etc.
+
+@each $name, $value in $margins {
+  .#{$name}-r, %#{$name}-r {
+    margin-right: $value;
+  }
+}
+
+// Margin
+
+// Generates placeholders and classes for margin
+// Uses margin on all four sides
+// E.g. .margin, %margin, .margin-2, %margin-2, etc.
+
+@each $name, $value in $margins {
   .#{$name}, %#{$name} {
     margin: $value;
   }

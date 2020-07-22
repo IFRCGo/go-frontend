@@ -141,7 +141,7 @@ class EmergenciesMap extends React.Component {
     const { strings } = this.props;
     return (
       <div className='stats-map emergencies-map'>
-        <div className='inner'>
+        <div className='container-lg'>
           {!error ? (
             <div className='map-container'>
               <h2 className='visually-hidden'>
@@ -234,7 +234,7 @@ class MapPopover extends React.Component {
         <div className='popover__contents'>
           <header className='popover__header'>
             <div className='popover__headline'>
-              <a className='link--primary' onClick={() => this.props.onTitleClick(this.props.uri)}>{title}</a>
+              <a className='link-underline' onClick={() => this.props.onTitleClick(this.props.uri)}>{title}</a>
             </div>
             <div className='popover__actions actions'>
               <ul className='actions__menu'>
@@ -257,12 +257,14 @@ class MapPopover extends React.Component {
               />
             </p>
             <p className='popover__stat'>
-              <Translate
-                stringId='emergenciesMapPopoverTotalEmergencies'
-                params={{
-                  totalEmergencies: n(totalEmergencies),
-                }}
-              />
+              <span className='base-font-semi-bold'>
+                <Translate
+                  stringId='emergenciesMapPopoverTotalEmergencies'
+                  params={{
+                    totalEmergencies: n(totalEmergencies),
+                  }}
+                />
+              </span>
             </p>
             <p className='popover__stat'>
               <Translate

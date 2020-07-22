@@ -175,7 +175,7 @@ class PersonnelTable extends SFPComponent {
       ) : null;
 
       return (
-        <Fold title={`${title} (${n(data.count)})`} navLink={foldLink} id={this.props.id} wrapperClass='table__container' foldClass='fold__title--inline'>
+        <Fold title={`${title} (${n(data.count)})`} navLink={foldLink} id={this.props.id} foldWrapperClass='table__container' foldTitleClass='fold__title--inline'>
           {this.props.showExport ? (
             <ExportButton filename='deployed-personnel'
               qs={this.getQs(this.props)}

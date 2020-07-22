@@ -44,7 +44,7 @@ export default class DisplayTable extends React.Component {
   }
 
   renderPagination () {
-    if (this.props.rows.length && !this.props.noPaginate) {
+    if (this.props.rows.length && !this.props.noPaginate && this.props.pageCount > 1) {
       return (
         <div className='pagination-wrapper pagination-wrapper--table'>
           <ReactPaginate

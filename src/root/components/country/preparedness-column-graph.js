@@ -65,7 +65,7 @@ class PreparednessColumnBar extends React.Component {
     const tmpData = this.buildDataForGraph();
     const groupedData = this.buildGroupedData(tmpData);
     return (
-      <Fold id='per-column-graph' title={strings.preparednessColumnGraphTitle} wrapper_class='preparedness' foldClass='margin-reset'>
+      <Fold id='per-column-graph' title={strings.preparednessColumnGraphTitle} foldWrapperClass='preparedness' foldTitleClass='margin-reset'>
         <div style={{width: 'fit-content', margin: 'auto'}}>
           <BarChart
             width={900}

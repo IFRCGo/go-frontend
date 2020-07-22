@@ -13,9 +13,11 @@ class SocialEvents extends React.PureComponent {
 
     return (
       <div className={_cs(className, 'overview-social-events')}>
-        <h3 className='tc-heading'>
-          <Translate stringId='socialEventsTitle'/>
-        </h3>
+        <div className='fold__header__block'>
+          <h3 className='tc-heading fold__title'>
+            <Translate stringId='socialEventsTitle'/>
+          </h3>
+        </div>
         <div className='tc-content'>
           {data.map(d => (
             <IndicatorOutput

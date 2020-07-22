@@ -88,10 +88,17 @@ const PerAccountTab = props => {
             <Translate stringId='perAccountDescription'/>
           </p>
           <br />
-          <Translate stringId='perAccountChooseCountry'/>
-          <select onChange={changeChosenCountry}>
-            {countryOptions}
-          </select><br /><br />
+          <div className='row flex-xs'>
+            <div className='col col-5-xs col-3-mid'>
+              <span className='form__label'><Translate stringId='perAccountChooseCountry'/></span>
+            </div>
+            <div className='col col-7-xs col-9-mid'>
+              <select onChange={changeChosenCountry}>
+                {countryOptions}
+              </select>
+            </div>
+          </div>
+          <br /><br />
           <div className='text-center'>
             <Link
               to={`/per-forms/overview/${chosenCountry.id}`}
@@ -99,9 +106,9 @@ const PerAccountTab = props => {
               <Translate stringId='perAccountOverview'/>
             </Link>
           </div>
-          <div className='clearfix'>
+          <div className='row flex-xs'>
             {formButtons.map(button => (
-              <div key={button.title} className='per__form__col'>
+              <div key={button.title} className='per__form__col col col-6-xs col-4-mid'>
                 <Link
                   to={`/per-forms/${button.link}/${chosenCountry.id}`}
                   className='button button--medium button--secondary-bounded'

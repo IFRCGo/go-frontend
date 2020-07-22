@@ -66,8 +66,8 @@ export default class GlobalPreparednessHighlights extends React.Component {
     const { strings } = this.context;
     return (
       <div className='inner'>
-        <Fold title={strings.globalPreparednessTitle} foldClass='margin-reset' extraClass='fold--main'>
-          <table className='table table--border'>
+        <Fold title={strings.globalPreparednessTitle} foldTitleClass='margin-reset' foldWrapperClass='fold--main'>
+          <table className='table table--border-bottom table--box-shadow'>
             <thead>
               <tr>
                 <th>

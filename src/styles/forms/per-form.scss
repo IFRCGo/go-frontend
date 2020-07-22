@@ -20,10 +20,6 @@
 .per__form__col {
 	margin-top: $global-spacing;
 
-	@include media(small-up) {
-		@include column(4/12, $cycle: 3);
-	}
-
 	.button {
 	  width: 100%;
 	}
@@ -38,48 +34,20 @@
 
 .list__each__button {
 	margin-inline-start: auto;
-	// padding-inline-start: 3%;
 }
 
 
 /* Account Forms
    ========================================================================== */
 
-.form__account__info {
- @include column(6/12);
-}
-
-.account__op__block {
-	@include media(medium-up) {
-		@include column(6/12, $cycle: 2);
-	}
-}
-
-.account__op__title {
-	@include media(small-up) {
-		@include column(2/12);
-	}
-}
-
-.account__op__links {
-	@include media(small-up) {
-		@include column(10/12);
-	}
-}
+//.form__account__info {
+ //@include column(6/12);
+//}
 
 .account__op__each__link {
-	padding-bottom: $global-spacing;
-
-	@include media(small-up) {
-		@include column(8/12);
-	}
+	padding-bottom: ($spacing * 1.5);
 }
 
 .account__op__each__button {
-	padding-bottom: $global-spacing;
-
-	@include media(small-up) {
-		@include column(4/12);
-	}
-	
+	padding-bottom: ($spacing * 1.5);
 }
