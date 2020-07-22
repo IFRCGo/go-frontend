@@ -298,7 +298,8 @@ td.right-align, th.right-align{
 
 .table__container {
   .fold__actions {
-    margin-top: -5.8em;
+    position: relative;
+    top: -4em;
     @include media(small-down) {
       display: none;
     }
