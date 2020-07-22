@@ -209,7 +209,14 @@ class EmergenciesTable extends SFPComponent {
 
       const foldLink = this.props.viewAll ? (<Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || strings.emergenciesTableViewAll}</Link>) : null;
       return (
-        <Fold foldWrapperClass='fold--main spacing-half-t' foldTitleClass='fold__title--inline margin-reset' navLink={foldLink} title={`${title} (${n(data.count)})`} id={this.props.id}>
+        <Fold 
+          foldWrapperClass='fold--main spacing-half-t'
+          foldTitleClass='fold__title--inline margin-reset'
+          navLink={foldLink}
+          title={`${title} (${n(data.count)})`}
+          id={this.props.id}
+          showHeader={this.props.showHeader ? this.props.showHeader : false}
+        >
           {this.props.showExport ? (
             <ExportButton filename='emergencies'
               qs={this.getQs(this.props)}
@@ -244,6 +251,7 @@ if (environment !== 'production') {
 
     noPaginate: T.bool,
     showExport: T.bool,
+    showHeader: T.bool,
     title: T.string,
 
     showRecent: T.bool,
