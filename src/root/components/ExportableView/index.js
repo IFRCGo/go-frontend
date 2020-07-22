@@ -11,6 +11,7 @@ function ExportableView(p) {
   const {
     preview,
     children,
+    exportFileLabel = 'export',
   } = p;
 
   const startExport = React.useCallback(() => {
@@ -21,13 +22,13 @@ function ExportableView(p) {
         setIsExporting(false);
         startDownload(
           renderedCanvas,
-          `export-${new Date().getTime()}.png`,
+          `${exportFileLabel}-${new Date().getTime()}.png`,
         );
       });
     } else {
       setIsExporting(false);
     }
-  }, [setIsExporting, containerRef]);
+  }, [setIsExporting, containerRef, exportFileLabel]);
 
   const contextValue = React.useMemo(() => ({
     isPreviewMode: preview,
