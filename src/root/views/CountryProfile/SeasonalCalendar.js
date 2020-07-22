@@ -1,5 +1,9 @@
 import React from 'react';
-import { listToGroupList } from '@togglecorp/fujs';
+import {
+  listToGroupList,
+  getColorOnBgColor,
+  getHexFromString,
+} from '@togglecorp/fujs';
 import _cs from 'classnames';
 import Translate from '#components/Translate';
 
@@ -44,61 +48,65 @@ function SeasonalCalendar(props) {
 
   return (
     <Container
-      className={_cs(className, 'country-seasonal-calendar')}
+      className={_cs(className, styles.seasonalCalendar)}
       heading={<Translate stringId='seasonalCalendarTitle'/>}
-      contentClassName='tc-content'
+      contentClassName={styles.content}
     >
-      <div className='calendar-chart'>
-        { sectorKeys.map(sectorKey => {
-          let prevRight = 0;
+      { sectorKeys.map(sectorKey => {
+        const sectorBgColor= getHexFromString(sectorKey);
+        const sectorColor = getColorOnBgColor(sectorBgColor, '#212121', '#ffffff');
 
-          return (
+        return (
+          <div
+            key={sectorKey}
+            className={styles.row}
+          >
             <div
-              key={sectorKey}
-              className='calendar-chart-row'
+              className={styles.sectorCell}
+              title={sectorKey}
             >
-              <div className='calendar-chart-sector-cell'>
-                { sectorKey }
-              </div>
-              <div className='calendar-chart-title-list-cell'>
-                <div className='calendar-chart-title-list'>
-                  { sectorMap[sectorKey].map(d => {
-                    const absMargin = 100 * d.dateStart / 12;
-                    const currentMargin = absMargin - prevRight;
-                    const currentWidth = 100 * (d.dateEnd - d.dateStart) / 12;
-                    prevRight = absMargin + currentWidth;
+              { sectorKey }
+            </div>
+            <div className={styles.titleListCell}>
+              <div className={styles.titleList}>
+                { sectorMap[sectorKey].map(d => {
+                  const absMargin = 100 * d.dateStart / 12;
+                  const currentWidth = 100 * (d.dateEnd - d.dateStart) / 12;
 
-                    return (
-                      <div
-                        key={d.id}
-                        className='calendar-chart-title'
-                        style={{
-                          marginLeft: `${currentMargin}%`,
-                          width: `${currentWidth}%`,
-                        }}
-                      >
-                        {d.title}
-                      </div>
-                    );
-                  })}
-                </div>
+                  return (
+                    <div
+                      key={d.id}
+                      className={styles.title}
+                      style={{
+                        insetInlineStart: `${absMargin}%`,
+                        width: `${currentWidth}%`,
+                        backgroundColor: sectorBgColor,
+                        color: sectorColor,
+                        borderColor: sectorColor,
+                      }}
+                      title={d.title}
+                    >
+                      {d.title}
+                    </div>
+                  );
+                })}
               </div>
             </div>
-          );
-        })}
-        <div className='calendar-chart-row'>
-          <div className='calendar-chart-sector-cell' />
-          <div className='calendar-chart-title-list-cell'>
-            <div className='calendar-chart-month-title-list'>
-              { monthList.map(monthName => (
-                <div
-                  key={monthName}
-                  className='calendar-chart-month-title'
-                >
-                  { monthName }
-                </div>
-              ))}
-            </div>
+          </div>
+        );
+      })}
+      <div className={styles.row}>
+        <div className={styles.sectorCell} />
+        <div className={styles.titleListCell}>
+          <div className={styles.monthTitleList}>
+            { monthList.map(monthName => (
+              <div
+                key={monthName}
+                className={styles.monthTitle}
+              >
+                { monthName }
+              </div>
+            ))}
           </div>
         </div>
       </div>
