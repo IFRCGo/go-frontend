@@ -4,6 +4,9 @@ import _cs from 'classnames';
 import Map from './Map';
 import Translate from '#components/Translate';
 
+import Container from './Container';
+import styles from './styles.module.scss';
+
 class PopulationMap extends React.PureComponent {
   render () {
     const {
@@ -13,20 +16,17 @@ class PopulationMap extends React.PureComponent {
     } = this.props;
 
     return (
-      <div className={_cs(className, 'overview-population-map')}>
-        <div className='fold__header__block'>
-          <h3 className='tc-heading fold__title'>
-            <Translate stringId='populationMapTitle'/>
-          </h3>
-        </div>
-        <div className='tc-content'>
-          <Map
-            className='overview-map-container'
-            countryId={countryId}
-            districtList={data.districts}
-          />
-        </div>
-      </div>
+      <Container
+        className={_cs(className, styles.populationMap)}
+        heading={<Translate stringId='populationMapTitle'/>}
+        contentClassName={styles.content}
+      >
+        <Map
+          className={styles.mapContainer}
+          countryId={countryId}
+          districtList={data.districts}
+        />
+      </Container>
     );
   }
 }

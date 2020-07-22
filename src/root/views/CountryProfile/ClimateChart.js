@@ -12,6 +12,9 @@ import {
 
 import Translate from '#components/Translate';
 
+import Container from './Container';
+import styles from './styles.module.scss';
+
 const chartMargin = {
   top: 24,
   right: 10,
@@ -19,89 +22,111 @@ const chartMargin = {
   left: 10,
 };
 
+function ChartContainer(p) {
+  const {
+    className,
+    containerClassName,
+    heading,
+    children,
+  } = p;
 
-class ClimateChart extends React.PureComponent {
-  render () {
-    const {
-      className,
-      yearlyEvents,
-    } = this.props;
+  return (
+    <div className={_cs(className, styles.chartContainer)}>
+      <header className={styles.header}>
+        <h4 className={styles.heading}>
+          { heading }
+        </h4>
+      </header>
+      <div className={_cs(containerClassName, styles.content)}>
+        <ResponsiveContainer>
+          { children }
+        </ResponsiveContainer>
+      </div>
+    </div>
+  );
+}
 
-    // TODO: memoize
-    const temperatureChartData = yearlyEvents.map(d => ({
+
+function ClimateChart(p){
+  const {
+    className,
+    yearlyEvents,
+  } = p;
+
+  const temperatureChartData = React.useMemo(() => (
+    yearlyEvents.map(d => ({
       ...d,
       temperature_value: [d.avg_min_temperature, d.avg_max_temperature],
-    }));
+    }))
+  ), [yearlyEvents]);
 
-    return (
-      <div className={_cs(className, 'country-climate-chart')}>
-        <div className='fold__header__block'>
-          <h3 className='tc-heading fold__title'>
-            <Translate stringId='climateChartHeading' />
-          </h3>
-        </div>
-        <div className='tc-content'>
-          <div className='tc-charts'>
-            <div className='temperature-chart'>
-              <ResponsiveContainer>
-                <BarChart
-                  data={temperatureChartData}
-                  margin={chartMargin}
-                >
-                  <defs>
-                    <linearGradient
-                      id='temperature-chart-gradient'
-                      x1={0}
-                      x2={0}
-                      y1={0}
-                      y2={1}
-                    >
-                      <stop offset='0%' stopColor='#f44336' />
-                      <stop offset='100%' stopColor='#2196f3' />
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid
-                    stroke='rgba(0, 0, 0, 0.06)'
-                    vertical={false}
-                  />
-                  <YAxis />
-                  <XAxis dataKey='month' />
-                  <Bar
-                    fill='url(#temperature-chart-gradient)'
-                    dataKey='temperature_value'
-                  >
-                    <LabelList position='top' dataKey='avg_max_temperature' />
-                    <LabelList position='bottom' dataKey='avg_min_temperature' />
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-            <div className='precipitation-chart'>
-              <ResponsiveContainer>
-                <BarChart
-                  data={yearlyEvents}
-                  margin={chartMargin}
-                >
-                  <CartesianGrid
-                    stroke='rgba(0, 0, 0, 0.06)'
-                    vertical={false}
-                  />
-                  <YAxis />
-                  <XAxis dataKey='month' />
-                  <Bar
-                    fill='#24334c'
-                    dataKey='avg_rainfall_precipitation'
-                  >
-                    <LabelList position='top' />
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  return (
+    <Container
+      className={_cs(className, styles.climateChart)}
+      heading={<Translate stringId='climateChartHeading' />}
+      contentClassName={styles.content}
+    >
+      <ChartContainer
+        className={styles.temperatureChart}
+        heading="Average min and max temperature"
+      >
+        <BarChart
+          data={temperatureChartData}
+          margin={chartMargin}
+          barCategoryGap="30%"
+        >
+          <defs>
+            <linearGradient
+              id='temperature-chart-gradient'
+              x1={0}
+              x2={0}
+              y1={0}
+              y2={1}
+            >
+              <stop offset='0%' stopColor='#ff5014' />
+              <stop offset='100%' stopColor='#ffffff' />
+            </linearGradient>
+          </defs>
+          <CartesianGrid
+            stroke='rgba(0, 0, 0, 0.06)'
+            vertical={false}
+          />
+          <YAxis width={30} axisLine={false} />
+          <XAxis dataKey='month' axisLine={false} />
+          <Bar
+            fill='url(#temperature-chart-gradient)'
+            dataKey='temperature_value'
+          >
+            <LabelList position='top' dataKey='avg_max_temperature' />
+            <LabelList position='bottom' dataKey='avg_min_temperature' />
+          </Bar>
+        </BarChart>
+      </ChartContainer>
+      <ChartContainer
+        className={styles.precipitationChart}
+        heading="Precipitation totals in mm"
+      >
+        <BarChart
+          data={yearlyEvents}
+          margin={chartMargin}
+          barCategoryGap="30%"
+        >
+          <CartesianGrid
+            stroke='rgba(0, 0, 0, 0.06)'
+            vertical={false}
+          />
+          <YAxis width={30} axisLine={false} />
+          <XAxis dataKey='month' axisLine={false} />
+          <Bar
+            fill='#42bfef'
+            dataKey='avg_rainfall_precipitation'
+          >
+            <LabelList position='top' />
+          </Bar>
+        </BarChart>
+      </ChartContainer>
+    </Container>
+  );
 }
 
 export default ClimateChart;

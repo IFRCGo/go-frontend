@@ -1224,4 +1224,7 @@ export default {
 
   perPageTitle: 'IFRC Go - PER',
   countryOverviewTab: 'Country Profile',
+
+  countryProfileKeyDocumentsTitle: 'Key Documents',
+  countryProfileExternalSourcesTitle: 'External Sources',
 };

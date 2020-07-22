@@ -2,6 +2,7 @@ import React from 'react';
 import Translate from '#components/Translate';
 import _cs from 'classnames';
 
+import Card from './Card';
 import styles from './styles.module.scss';
 
 function KeyEventOutput ({
@@ -23,33 +24,31 @@ function KeyEventOutput ({
 
 function KeyClimateEvents(p) {
   const {
-      averageTemperature,
-      averageRainfallPrecipitation,
-      rainySeasonStatus,
+    averageTemperature,
+    averageRainfallPrecipitation,
+    rainySeasonStatus,
+    className,
   } = p;
 
   return (
-    <div className={styles.keyClimateEvents}>
-      <div className='fold__header__block'>
-        <h3 className='fold__title'>
-          <Translate stringId='climateChartKeyClimateHeading' />
-        </h3>
-      </div>
-      <div className={styles.content}>
-        <KeyEventOutput
-          label='Avg. rainfall precipitation'
-          value={averageRainfallPrecipitation}
-        />
-        <KeyEventOutput
-          label='Avg. temperature'
-          value={averageTemperature}
-        />
-        <KeyEventOutput
-          label='Rainy season'
-          value={rainySeasonStatus}
-        />
-      </div>
-    </div>
+    <Card
+      className={_cs(className, styles.keyClimateEvents)}
+      heading={<Translate stringId='climateChartKeyClimateHeading' />}
+      contentClassName={styles.content}
+    >
+      <KeyEventOutput
+        label='Avg. rainfall precipitation'
+        value={averageRainfallPrecipitation}
+      />
+      <KeyEventOutput
+        label='Avg. temperature'
+        value={averageTemperature}
+      />
+      <KeyEventOutput
+        label='Rainy season'
+        value={rainySeasonStatus}
+      />
+    </Card>
   );
 }
 

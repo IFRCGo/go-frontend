@@ -134,7 +134,7 @@ export function deleteProject (projectId) {
 
 export const GET_COUNTRY_OVERVIEW = 'GET_COUNTRY_OVERVIEW';
 export const getCountryOverview = (countryIso) => {
-  return fetchJSON(`api/v2/data-bank/country-overview/${countryIso}`, GET_COUNTRY_OVERVIEW, withToken());
+  return fetchJSON(`api/v2/country/${countryIso}/databank/`, GET_COUNTRY_OVERVIEW, withToken());
 };
 
 export const GET_COUNTRIES = 'GET_COUNTRIES';
