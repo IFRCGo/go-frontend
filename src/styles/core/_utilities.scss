@@ -206,13 +206,20 @@
   padding: 0;  
 } 
 
-.padding-top-reset {
+.padding-t-reset {
   padding-top: 0;
 }
 
-
-.padding-bottom-reset {
+.padding-b-reset {
   padding-bottom: 0;
+}
+
+.padding-l-reset {
+  padding-left: 0;
+}
+
+.padding-r-reset {
+  padding-right: 0;
 }
 
 
@@ -222,6 +229,24 @@
 .margin-reset {
   margin: 0;  
 } 
+
+.margin-t-reset {
+  margin-top: 0;  
+} 
+
+.margin-b-reset {
+  margin-bottom: 0;
+}
+
+.margin-l-reset {
+  margin-left: 0;
+}
+
+.margin-r-reset {
+  margin-right: 0;
+}
+
+
 
 /* Margin Auto
    ========================================================================== */

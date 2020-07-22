@@ -32,7 +32,7 @@
 }
 
 // Container: Default / Large
-.container-lg {
+@mixin container-lg {
   @include container($max-width: $media-large, $grid-gutter: $grid-gutter);
 
   @include media(medium) {
@@ -41,43 +41,65 @@
   }
 }
 
-// Container: Medium
-.container-mid {
-  @include container($media-medium);
+.container-lg {
+  @include container-lg;
+}
 
-  @include media(medium) {
-    padding-left: $spacing-4;
-    padding-right: $spacing-4;
-  }
+// Container: Medium
+@mixin container-mid {
+  @include container($media-medium);
+}
+
+.container-mid {
+  @include container-mid;
 }
 
 // Container: Small
-.container-sm {
+@mixin container-sm {
   @include container($media-small);
+}
 
-  @include media(medium) {
-    padding-left: $spacing-4;
-    padding-right: $spacing-4;
-  }
+.container-sm {
+  @include container-sm;
 }
 
 // Container: Extra Small
-.container-xs {
+@mixin container-xs {
   @include container($media-xsmall);
+}
+.container-xs {
+  @include container-xs;
 }
 
 // Container: Full Width
-.container-full {
+@mixin container-full {
   @include container($max-width: false);
 }
 
-// Container: Reset Padding for Large Container: Modifier
+.container-full {
+  @include container-full;
+}
 
-.container--padding-reset {
+// Container: Reset Padding for Container: Modifier
+
+@mixin container--padding-reset {
   padding-left: $grid-gutter;
   padding-right: $grid-gutter;
 }
 
+.container--padding-reset {
+  @include container--padding-reset;
+}
+
+// Container: Uncenter
+@mixin container--uncenter {
+  margin-left: unset;
+  margin-right: unset;
+}
+
+.container--uncenter {
+  @include container--uncenter;
+}
 
 // ---------------------------------------------
 // GRID: CLEARFIX
@@ -112,17 +134,17 @@
   @include clearfix;
 }
 
-// Row: Default
+// Row: Default Gutter
 .row {
   @include row;
 }
 
-// Row: Small
+// Row: Small Gutter
 .row-sm {
   @include row($grid-gutter: $grid-gutter-sm);
 }
 
-// Row: Large
+// Row: Large Gutter
 .row-lg {
   @include row($grid-gutter: $grid-gutter-lg);
 }
@@ -272,6 +294,10 @@
 
 .flex-wrap {
   flex-wrap: wrap;
+}
+
+.flex-direction-column {
+  flex-direction: column;
 }
 
 .flex-justify-center {
