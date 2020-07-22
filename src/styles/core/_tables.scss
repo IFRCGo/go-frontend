@@ -9,7 +9,7 @@
   font-size: 0.875rem;
 
   th, td  {
-    padding: ($spacing * 1.5);
+    padding: ($spacing * 1.2);
     vertical-align: top;
     text-align: left;
     @include media(small-down) {
@@ -50,9 +50,11 @@
 
       &.table__sort:after {
         font-size: 1rem;
-        margin-inline-start: 0.375rem;
+        //margin-inline-start: 0.375rem;
         vertical-align: top;
         display: inline-block;
+        position: relative;
+        left: ($spacing / 4);
         line-height: inherit !important;
       }
 
@@ -153,13 +155,9 @@
 }
 
 td.right-align, th.right-align{
-  text-align: right;
+  text-align: end;
 }
 
-
-//td.table__cell--requestAmount, td.table__cell--fundedAmount, th.table__header--requestAmount, th.table__header--fundedAmount {
-  //text-align: right;
-//}
 
 /* Prose specific */
 
@@ -191,18 +189,7 @@ td.right-align, th.right-align{
   margin-bottom: $global-spacing * 2;
   width: 100%;
 
-  //th, td  {
-    //vertical-align: top;
-    //text-align: left;
-  //}
-
-  //th {
-    //padding: $global-spacing ($global-spacing / 2);
-  //}
-
   td {
-    //padding: ($global-spacing * 2) ($global-spacing / 2);
-    //font-weight: $base-font-regular;
     &:nth-child(3) {
       width: 50%;
       @include media(large-up){
@@ -214,22 +201,8 @@ td.right-align, th.right-align{
     };
   }
 
-  //th:first-child,
-  //td:first-child {
-    //padding-inline-start: $global-spacing;
-  //}
-
-  //th:last-child,
-  //td:last-child {
-    //padding-inline-end: $global-spacing;
-  //}
-
   tbody tr {
     border-inline-start: 4px solid transparent;
-
-    //&:nth-child(odd) {
-      //box-shadow: 0 0 2px 0 rgba($base-color, 0.24);
-    //}
 
     &:nth-child(even) {
       height: $global-spacing;
@@ -299,7 +272,7 @@ td.right-align, th.right-align{
 .table__container {
   .fold__actions {
     position: relative;
-    top: -4em;
+    top: -5.2em;
     @include media(small-down) {
       display: none;
     }
@@ -327,7 +300,6 @@ td.right-align, th.right-align{
 
   thead th, td {
     font-size: $base-font-size;
-    //padding-bottom: ($spacing * 1.5);
 
     &:first-child {
       padding-inline-start: 0;
@@ -410,5 +382,16 @@ td.right-align, th.right-align{
 
 // Ensure table dates don't wrap
 .table__header--date, table__cell--date {
-  width: 110px;
+  width: 120px;
+}
+
+.table__header--name, .table__cell--name {
+  width: 260px;
+}
+
+.table {
+  table__header--requestAmount, .table__cell--requestAmount {
+    text-align: end;
+    width: 184px;
+  }
 }

@@ -182,7 +182,7 @@ class EmergenciesTable extends SFPComponent {
           name: <Link className='link--table' to={`/emergencies/${rowData.id}`}>{get(rowData, 'name', nope)}</Link>,
           dtype: rowData.dtype ? rowData.dtype.name : nope,
           requested: {
-            value: n(get(rowData, 'appeals.0.amount_requested')),
+            value: `${n(get(rowData, 'appeals.0.amount_requested'))} CHF`,
             className: 'right-align'
           },
           affected: {
@@ -210,7 +210,7 @@ class EmergenciesTable extends SFPComponent {
       const foldLink = this.props.viewAll ? (<Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || strings.emergenciesTableViewAll}</Link>) : null;
       return (
         <Fold 
-          foldWrapperClass='fold--main spacing-half-t'
+          foldWrapperClass='fold--main'
           foldTitleClass='fold__title--inline margin-reset'
           navLink={foldLink}
           title={`${title} (${n(data.count)})`}
