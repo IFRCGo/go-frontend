@@ -215,7 +215,7 @@ class EmergenciesTable extends SFPComponent {
           navLink={foldLink}
           title={`${title} (${n(data.count)})`}
           id={this.props.id}
-          showHeader={this.props.showHeader ? this.props.showHeader : false}
+          showHeader={this.props.hasOwnProperty('showHeader') ? this.props.showHeader : true}
         >
           {this.props.showExport ? (
             <ExportButton filename='emergencies'
