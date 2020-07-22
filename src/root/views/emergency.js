@@ -792,6 +792,11 @@ class Emergency extends React.Component {
         : 0;
 
     const { strings } = this.props;
+    const countryLink = `/countries/${this.props.event.data.countries[0].id}`;
+    const countryName = data.countries[0].name;
+    const regionId = this.props.event.data.countries[0].region;
+    const regionLink = `/regions/${regionId}`;
+    const regionName = getRegionById(regionId.toString()).name;
 
     return (
       <section className="inpage">
@@ -811,7 +816,7 @@ class Emergency extends React.Component {
                     link: `/emergency/${get(data, 'id')}`,
                     name: get(data, 'name', strings.breadCrumbEmergency)
                   },
-                  { link: `/countries/${this.props.event.data.countries[0].id}`, name: `${data.countries[0].name}` },
+                  { link: countryLink, name: countryName },
 
                   { link: '/emergencies', name: strings.breadCrumbEmergencies},
                   { link: '/', name: strings.breadCrumbHome},
@@ -865,32 +870,28 @@ class Emergency extends React.Component {
             <div className="inpage__headline-content">
               <div className="inpage__headline-content">
                 <h1 className="inpage__title">{data.name}</h1>
-                {/*
                 <div className="inpage__headline-actions row flex flex-justify-center">
                   <div className='col spacing-half-v flex'>
-                    <a
-                      href=''
+                    <Link to={regionLink}
                       className="link link--with-icon"
                     >
                       <span className='link--with-icon-text'>
-                        Region Name
+                        {regionName}
                       </span>
                       <span className='collecticon-chevron-right link--with-icon-inner'></span>
-                    </a>
+                    </Link>
                   </div>
                   <div className='col spacing-half-v flex'>
-                    <a
-                      href=''
+                    <Link to={countryLink}
                       className="link link--with-icon"
                     >
                       <span className='link--with-icon-text'>
-                        Country Name
+                        {countryName}
                       </span>
                       <span className='collecticon-chevron-right link--with-icon-inner'></span>
-                    </a>
+                    </Link>
                   </div>
                 </div>
-              */}
                 {this.renderHeaderStats()}
               </div>
             </div>

@@ -649,17 +649,14 @@ class AdminArea extends SFPComponent {
                 </span>
               ) : null}
             </h1>
-            {/*
             <div className='inpage__header-actions text-center'>
-              <a
-                href={url.resolve(api, `api/country/${data.id}/change/`)}
+              <Link to={`/regions/${data.region}`}
                 className='link link--with-icon flex-justify-center'
               >
-                <span className='link--with-icon-text'>Region</span>
+                <span className='link--with-icon-text'>{region.name}</span>
                 <span className='collecticon-chevron-right link--with-icon-inner'></span>
-              </a>
+              </Link>
             </div>
-          */}
           </div>
         </header>
         <section className='inpage__body'>
