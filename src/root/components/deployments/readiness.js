@@ -60,11 +60,11 @@ class Readiness extends React.Component {
     return (
       <div className='col col-6-sm'>
         <div className='readiness__card' key={eruOwner.id}>
-          <div className='readiness__card-header row flex'>
-            <div className='col col-7'>
+          <div className='readiness__card-header row-sm flex'>
+            <div className='col-sm col-6'>
               <Link className='link' to={`/countries/${owner.id}`}>{owner.society_name}</Link>
             </div>
-            <span className='updated col col-5'>
+            <span className='updated col-sm col-6'>
               <Translate
                 stringId='readinessLastUpdated'
                 params={{

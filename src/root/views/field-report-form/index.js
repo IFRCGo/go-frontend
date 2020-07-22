@@ -384,7 +384,7 @@ class FieldReportForm extends React.Component {
     const fields = formData.getFieldsStep1(strings);
     const status = this.getStatus();
     return (
-      <Fold title='Context' foldWrapperClass='fold--main' foldTitleClass='margin-reset'>
+      <Fold title='Context' foldWrapperClass='fold--main fold--transparent' foldTitleClass='margin-reset'>
         <FormRadioGroup
           label={strings.fieldReportFormStatusLabel}
           name='status'
@@ -614,7 +614,7 @@ class FieldReportForm extends React.Component {
     const sitFieldsDateLabelMarker = isSitFieldsDateRequired ? ' *' : '';
 
     return (
-      <Fold title='Numeric Details (People)'>
+      <Fold title='Numeric Details (People)' foldWrapperClass='fold--main fold--transparent'>
         {
           fields.situationFields[status + covidTag].map(field => {
             return status !== 'EPI'
@@ -765,7 +765,7 @@ class FieldReportForm extends React.Component {
     // Note: There's no need for validation on this step.
     // All the fields are optional, and the text fields are just strings.
     return (
-      <Fold title=<Translate stringId="fieldReportFormContactsTitle" />>
+      <Fold title=<Translate stringId="fieldReportFormContactsTitle" /> foldWrapperClass='fold--main fold--transparent'>
       {/*<Fold title={strings.fieldReportFormActionTakenTitle}>*/}
  
         <div className='form__group row flex-mid'>
@@ -882,7 +882,7 @@ class FieldReportForm extends React.Component {
       responseTitle = '';
     }
     return (
-      <Fold title={responseTitle}>
+      <Fold title={responseTitle} foldWrapperClass='fold--main fold--transparent'>
         { this.state.data.isCovidReport === 'true' ? null : (
           <React.Fragment>
             <label className='form__label'>

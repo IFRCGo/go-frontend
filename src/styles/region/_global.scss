@@ -7,25 +7,6 @@
     margin-bottom: 0
   }
 
-  //.inpage__body {
-    //> * {
-      //margin-bottom: $global-spacing * 2;
-    //}
-    //
-    //&:last-child() {
-      //margin-bottom: 0;
-    //}
-  //}
-
-  //.inpage__header {
-    //padding-bottom: $global-spacing;
-  //}
-
-  //.inpage__title {
-    //width: 100%;
-    //text-align: center;
-  //}
-
   .fold {
     margin-bottom: $global-spacing * 2;
 
@@ -69,7 +50,6 @@
   }
 
   .region-countries__link {
-    //font-size: $font-size-xxl;
     font-weight: $base-font-medium;
   }
   
@@ -83,9 +63,6 @@
   }
 
   .regional-threew {
-    //background-color: #fff;
-    //box-shadow: 1px 2px 6px 1px rgba(0, 0, 0, 0.1);
-    //padding: 20px;
 
     .Select-menu-outer {
       font-size: $font-size-xs;
@@ -101,17 +78,9 @@
 
       .tc-select-input {
         .Select-control {
-          //border: 0;
           border-radius: 0;
           background-color: $grey-mist;
-          //border-bottom: 1px solid $primary-color;
           font-size: $font-size-xs;
-        }
-
-        .Select-placeholder {
-          //padding: 0 16px;
-          //color: $base-color;
-          //font-weight: $base-font-medium;
         }
 
         &:focus-within {
@@ -127,10 +96,6 @@
             padding: 0;
           }
         }
-
-        //.Select-multi-value-wrapper {
-          //padding: 6px;
-        //}
 
         .Select-value {
           background-color: $grey-cloud;
@@ -154,19 +119,14 @@
 
     .box__global .tc-value {
       font-size: $font-size-heading-widget;
-      //color: $secondary-color;
       font-weight: $base-font-semi-bold;
     }
 
     .regional-threew-overview {
-      //display: flex;
       padding: $spacing-2 0 0 0;
 
       > .col-lg {
-        //flex-basis: 0;
-        //flex-grow: 1;
         display: flex;
-        //background-color: $grey-fog;
 
         > div {
           width: 100%;
@@ -188,21 +148,17 @@
           .total-activity {
             display: flex;
             flex-direction: column;
-            //align-items: center;
             justify-content: center;
             flex-shrink: 0;
 
             .tc-label {
               font-weight: $base-font-regular;
               letter-spacing: $letter-spacing-sm;
-              //text-align: center;
-              //text-transform: uppercase;
             }
           }
 
           .tc-chart-container {
             flex-grow: 1;
-            //height: 120px;
           }
         }
       }
@@ -215,12 +171,7 @@
         }
 
         .reached-people-count {
-          //font-size: 2rem;
           display: flex;
-          //justify-content: center;
-          //padding: 10px;
-          //font-weight: $base-font-bold;
-          //color: $secondary-color;
         }
 
         .targeted-people {
@@ -265,18 +216,9 @@
           flex-grow: 1;
           display: flex;
           flex-direction: column;
-          //align-items: center;
           padding: 6px;
 
-          //.tc-value {
-            //font-size: 2rem;
-            //color: $secondary-color;
-            //font-weight: $base-font-bold;
-          //}
-
           .tc-label {
-            //text-align: center;
-            //text-transform: uppercase;
             font-weight: $base-font-regular;
             letter-spacing: $letter-spacing-sm;
           }
@@ -300,7 +242,6 @@
 
       >.tc-header {
         margin-top: $spacing-5;
-        //padding: 0 10px;
 
         .tc-top {
           display: flex;
@@ -345,7 +286,6 @@
 
       >.tc-content {
         .regional-threew-map-wrapper {
-          //padding: 20px;
           display: flex;
 
           $height-map: 500px;
@@ -383,7 +323,6 @@
 
                 .tc-icon {
                   color: inherit;
-                  //font-size: $font-size-xxl;
                   margin-inline-start: 3px;
                 }
               }
@@ -550,10 +489,8 @@
 
         .countries-threew-tables {
           box-shadow: $base-box-shadow;
-          //padding: 10px 0;
 
           .country-table {
-            //margin: 10px;
             border-bottom: 1px solid $grey-titanium;
 
             .tc-header-button {
@@ -596,31 +533,6 @@
 
               .tc-table {
                 width: 100%;
-
-                //th {
-                  //padding: 16px 10px;
-                  //text-align: left;
-                //}
-
-                //td {
-                  //padding: 10px;
-                //}
-
-                //tbody {
-                  //tr {
-                    //&:nth-child(odd) {
-                      //background-color: $grey-mist;
-                    //}
-                  //}
-                //}
-              }
-            }
-
-            &.tc-active {
-              .tc-header-button {
-                //.tc-label {
-                  //color: $primary-color;
-                //}
               }
             }
           }
@@ -649,8 +561,6 @@
         margin: $spacing 0 $spacing-5;
 
         >* {
-          //flex-basis: 0;
-          //flex-grow: 1;
           flex-direction: column;
           min-width: 200px;
 

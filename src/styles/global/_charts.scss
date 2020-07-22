@@ -13,25 +13,6 @@
   }
 }
 
-//.chart {
-  //figcaption {
-    //margin-bottom: $global-spacing/2;
-  //}
-//}
-
-.emergencies__container {
-  //@include column(12/12);
-}
-
-.inpage__headline-charts, .inpage__headline-charts--two-col {
-  h2 {
-    //font-size: 1rem;
-    //line-height: 1.25rem;
-    //font-family: $base-font-family;
-    //font-weight: $base-font-bold;
-  }
-}
-
 .inpage__headline-charts, .inpage__headline-charts--two-col, .inpage__body-charts {
   .emergencies__list {
     margin: 0;
@@ -45,7 +26,6 @@
     cursor: pointer;
     font-size: 0.875rem;
     line-height: 2.5rem;
-    //height: 2rem;
 
     &:last-child {
       margin-bottom: 0;
@@ -57,10 +37,7 @@
       position: relative;
       display: block;
       text-align: inline-end;
-      //min-width: 6rem;
       @include col(33.33%);
-      //width: 45%;
-      //margin-inline-end: $global-spacing;
 
       &:after {
         content: '';

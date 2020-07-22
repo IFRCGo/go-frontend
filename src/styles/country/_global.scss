@@ -5,15 +5,6 @@
     display: none;
   }
 
-  //.fold {
-   // margin-bottom: $global-spacing * 4;
-  //}
-
-  .inpage__title {
-    width: 100%;
-    text-align: center;
-  }
-
   .inpage__title--inform {
     font-size: 1rem;
     color: rgba($base-color, 0.48);
@@ -25,7 +16,6 @@
   }
 
   .inpage__meta {
-    float: left;
     margin-top: $global-spacing;
     .bold {
       font-weight: $base-font-bold;
@@ -44,53 +34,34 @@
     }
   }
 
-  //.inpage__header-actions {
-    //float: right;
-  //}
-
   .inpage__header {
-    //@include column(12/12);
-    //float: none;
     margin-bottom: $global-spacing * 2;
-    //border-bottom: solid 1px rgba($base-color, 0.1);
-    .inpage__header-col {
-      //@include column(12/12);
-      //@include media(medium-up) {
-        //@include column(6/12);
-      //}
-    }
     .content-list-group {
       @include column(12/12);
     }
     .content-list {
-      float: left;
-      @include column(12/12);
-      margin-inline-start: 0;
+      @include row;
       @include media(medium-up) {
-        @include column(6/12);
+        @include col(50%);
       }
       ul {
         list-style: none;
       }
     }
     .content-list-third {
-      float: left;
-      @include column(12/12);
-      margin-inline-start: 0;
+      @include row;
       @include media(medium-up) {
-        @include column(4/12);
+        @include col(33.33%);
       }
       ul {
         list-style: none;
       }
     }
     .inpage__headline-stats {
-      @include column(12/12);
       border-inline-end: solid 1px rgba($base-color, 0.1);
     }
     .stats-list {
       li {
-        @include column(12/12);
         font-size: 2.25rem;
         line-height: 3rem;
         padding-bottom: $global-spacing;
@@ -112,9 +83,6 @@
       width: 50%;
 
     }
-  }
-  .stats-map {
-    @include column(12/12);
   }
 
   .map-vis {
@@ -256,12 +224,9 @@
 // Three W and components
 // ---------------------------
 .three-w-container {
-  //width: 100%;
   background-color: #fff;
-  //box-shadow: $base-box-shadow;
   position: relative;
   overflow-x: auto;
-  //padding: 2rem;
   padding-top: $spacing-2;
 
   * {
@@ -298,8 +263,6 @@
   }
 
   .content {
-    //padding: 16px;
-    //overflow-x: auto;
 
     .three-w-filters {
       display: flex;
@@ -510,25 +473,7 @@
 }
 
 .three-w-project-list-table {
-  //width: 100%;
   overflow-x: scroll;
-
-  //th {
-    //padding: 16px 10px;
-    //text-align: left;
-  //}
-
-  //td {
-    //padding: 10px;
-  //}
-
-  //tbody {
-    //tr {
-      //&:nth-child(odd) {
-        //background-color: $grey-fog;
-      //}
-    //}
-  //}
 }
 
 .more-actions-dropdown-menu.tc-dropdown-menu {

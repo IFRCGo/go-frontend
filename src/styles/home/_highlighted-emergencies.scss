@@ -1,22 +1,9 @@
-//.card_box_container {
-  //margin-top: 1rem;
-//}
-
 .card_box_container--op {
   @include flex;
 }
 
 .card_box {
-  //float: left;
-  //font-size: 1.5rem;
-  //text-align: left;
-  //padding-inline-start: 5px;
-  //@include media(xsmall-only) {
   width: 100%;
-  //}
-  // @include media(small-up) {
-  //   width: 33%;
-  // }
 }
 
 .card_box, .card_box_footer {
@@ -40,12 +27,7 @@
 }
 
 .card_box_left {
-  //@include media(xsmall-only) {
   border-bottom: 1px solid $base-border-color--light;
-  //}
-  // @include media(small-up) {
-  //   border-inline-end: 1px solid base-border-color;
-  // }
 }
 
 .ifrc_supported_badge {
@@ -67,7 +49,6 @@
 .card_box_full {
   width: 100%;
   text-align: left;
-  //padding: $global-spacing $global-spacing ($global-spacing / 2) $global-spacing;
   justify-content: space-between;
   align-items: baseline;
 
@@ -85,7 +66,6 @@
 }
 
 .card_box_footer {
-  //padding: $global-spacing $global-spacing ($global-spacing / 2) $global-spacing;
   margin-top: $spacing-half;
 
   .progress-bar {
