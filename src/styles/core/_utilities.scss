@@ -399,7 +399,7 @@ $spacing-global: (
 /* Spacing Utilities: Padding (IN PX)
    ========================================================================== */
 
-$spacing: (
+$spacing-g: (
   spacing: $spacing,
   spacing-2: $spacing-2,
   spacing-3: $spacing-3,
@@ -414,7 +414,7 @@ $spacing: (
 // Uses padding top and bottom
 // E.g. .spacing-v, %spacing-v, .spacing-2-v, %spacing-2-v, etc.
 
-@each $name, $value in $spacing {
+@each $name, $value in $spacing-g {
   .#{$name}-v, %#{$name}-v {
     padding-top: $value;
     padding-bottom: $value;
@@ -427,7 +427,7 @@ $spacing: (
 // Uses padding left and right
 // E.g. .spacing-h, %spacing-h, .spacing-2-h, %spacing-2-h, etc.
 
-@each $name, $value in $spacing {
+@each $name, $value in $spacing-g {
   .#{$name}-h, %#{$name}-h {
     padding-inline-start: $value;
     padding-inline-end: $value;
@@ -440,7 +440,7 @@ $spacing: (
 // Uses padding top
 // E.g. .spacing-t, %spacing-t, .spacing-2-t, %spacing-3-t, etc.
 
-@each $name, $value in $spacing {
+@each $name, $value in $spacing-g {
   .#{$name}-t, %#{$name}-t {
     padding-top: $value;
   }
@@ -464,7 +464,7 @@ $spacing: (
 // Uses padding left
 // E.g. .spacing-l, %spacing-l, .spacing-2-l, %spacing-3-l, etc.
 
-@each $name, $value in $spacing {
+@each $name, $value in $spacing-g {
   .#{$name}-l, %#{$name}-l {
     padding-left: $value;
   }
@@ -476,7 +476,7 @@ $spacing: (
 // Uses padding right
 // E.g. .spacing-r, %spacing-r, .spacing-2-r, %spacing-3-r, etc.
 
-@each $name, $value in $spacing {
+@each $name, $value in $spacing-g {
   .#{$name}-r, %#{$name}-r {
     padding-right: $value;
   }
@@ -488,7 +488,7 @@ $spacing: (
 // Uses padding on all four sides
 // E.g. .spacing, %spacing, .spacing-2, %spacing-2, etc.
 
-@each $name, $value in $spacing {
+@each $name, $value in $spacing-g {
   .#{$name}, %#{$name} {
     padding: $value;
   }
@@ -499,7 +499,7 @@ $spacing: (
    ========================================================================== */
 
 $margins: (
-  'margin': 12px, // Change this later
+  'margin': $spacing,
   'margin-2': $spacing-2,
   'margin-3': $spacing-3,
   'margin-4': $spacing-4,

@@ -1,42 +1,18 @@
-.inpage__body-charts {
-  //@include column(6/12);
-  width: 100%;
-  //@include media(small-down) {
-    //@include column(12/12);
-  //}
-  //@include media (large-up) {
-    //@include column(12/12);
-  //}
-  .chart {
-    //@include column(12/12);
-    //@include media(large-up) {
-      //@include column(6/12);
-    //}
-  }
-  .emergencies {
-    @include column(12/12);
-    @include media(large-up) {
-      @include column(6/12);
-    }
-  }
-}
-
-
 .readiness__container {
-  //@include column(12/12);
   margin-top: $spacing-3;
 }
 
 .readiness__filters {
-  //@include column(12/12);
-  @include media(medium-up) {
-    //@include column(3/12);
-    //margin-bottom: 0;
-  }
-  .form__options-group .form__option {
-    @include column(6/12, $cycle: 2);
-    @include media(medium-up) {
-      @include column(12/12);
+  .form__options-group {
+    @include row;
+    @include flex;
+
+    .form__option {
+      @include col(50%);
+      
+      @include media(medium) {
+        width: 100%;
+      }
     }
   }
   .form__group {
@@ -49,10 +25,6 @@
 }
 
 .readiness__cards {
-  //@include column(12/12);
-  //@include media(medium-up) {
-    //@include column(9/12);
-  //}
 
   > .col {
     display: flex;
@@ -63,7 +35,7 @@
   .form__label {
     font-size: 1.25rem;
   }
-  //float: left;
+
   margin-top: $global-spacing * 3;
   @include media(medium-up) {
     margin-top: 0
@@ -75,32 +47,19 @@
   padding: $spacing $spacing-2;
   box-shadow: 0 2px 4px 1px $base-alpha-color;
   width: 100%;
-  //@include column(12/12);
+
   margin-bottom: $spacing-2;
-  @include media(medium-up) {
-    //@include column(6/12, $cycle: 2);
-    //min-height: 250px;
-  }
   .updated {
     font-size: 0.75rem;
     color: rgba($base-color, 0.48);
     text-align: end;
-    //width: 40%;
-    //text-align: left;
-    //float: left;
-    //width: 100%;
-    //margin-left: auto;
     margin-top: $global-spacing;
     @include media(large-up) {
-      //text-align: right;
-      //float: right;
-
-      //width: 30%;
       margin-top: 0;
     }
   }
+
   .card__col {
-    //@include column(5.5/12);
     p {
       font-size: 0.875rem;
       line-height: 1rem;
@@ -121,12 +80,9 @@
 }
 
 .readiness__card-header {
-  //display: flex;
   padding-bottom: $global-spacing;
   margin-bottom: $global-spacing;
   border-bottom: solid 1px rgba($base-color, 0.1);
-  //float: left;
-  //width: 100%;
 }
 
 .card__label--ready {
@@ -147,7 +103,6 @@
 .deployments-map {
   margin-bottom: $global-spacing * 4;
   .map-container {
-    //@include column(12/12);
     width: 100%;
   }
   .map-vis .map-vis__legend .key {

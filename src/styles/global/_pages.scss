@@ -28,16 +28,9 @@ main {
   z-index: 10;
 
   > .inner {
-    //@extend .row, .row--centered;
     padding-top: $global-spacing;
     padding-bottom: $global-spacing;
-    //display: flex;
-    //align-items: center;
-    //flex-flow: row nowrap;
     border-bottom: solid 1px tint($base-color, 92%);
-    //&:last-child{
-      //border-bottom: none;
-    //}
   }
 }
 
@@ -118,10 +111,6 @@ main {
   line-height: 1.25rem;
   color: #ffffff;
 
-  //> .inner {
-    //@extend .row, .row--centered;
-  //}
-
   *:last-child {
     margin-bottom: 0;
   }
@@ -167,7 +156,6 @@ main {
   }
 
   .footer-left-block {
-    //float: left;
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
@@ -197,7 +185,6 @@ main {
   }
 
   .footer-right-block {
-    //float: right;
     @include media(xsmall) {
       display: flex;
       justify-content: flex-end;

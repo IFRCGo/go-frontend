@@ -37,7 +37,7 @@ export default class About extends React.Component {
           <div className='inpage__body'>
             <div className='inner'>
               <div className='fold fold--about-iframe-video'>
-                <div className='row'>
+                <div>
                   <div className='inner'>
                     <div className='iframe__about__block'>
                       <div className='iframe__embed'>
@@ -56,7 +56,7 @@ export default class About extends React.Component {
                         </div>
 
                         <div className='box__global__wrap__about row flex-mid'>
-                          <div className='col col-6-mid'>
+                          <div className='col col-6-mid flex'>
                             <div className='box__global box__global--about-guides'>
                               <div className='box__global__heading'>
                                 <div className='base-font-semi-bold'>
@@ -67,8 +67,8 @@ export default class About extends React.Component {
                                 </p>
                               </div>
                               <div className='box__global__content'>
-                                <div className='clearfix'>
-                                  <a href='https://github.com/IFRCGo/go-frontend/files/4415370/GoUserGuide_MediumRes.pdf' className='box__global__content--ref__link'>
+                                <div className='row flex-xs'>
+                                  <a href='https://github.com/IFRCGo/go-frontend/files/4415370/GoUserGuide_MediumRes.pdf' className='box__global__content--ref__link col col-6-xs'>
                                     <span className='icon__circle'>
                                       <span className='icon__circle__content'>EN</span>
                                     </span>
@@ -76,7 +76,7 @@ export default class About extends React.Component {
                                     <span className='collecticon-chevron-right icon-about-ref'></span>
                                   </a>
 
-                                  <a href='https://github.com/IFRCGo/go-frontend/files/4415371/GoAdminGuide_MediumRes.pdf' className='box__global__content--ref__link'>
+                                  <a href='https://github.com/IFRCGo/go-frontend/files/4415371/GoAdminGuide_MediumRes.pdf' className='box__global__content--ref__link col col-6-xs'>
                                     <span className='icon__circle'>
                                       <span className='icon__circle__content'>EN</span>
                                     </span>
@@ -84,7 +84,7 @@ export default class About extends React.Component {
                                     <span className='collecticon-chevron-right icon-about-ref'></span>
                                   </a>
 
-                                  <div className='box__global__content--ref__link'>
+                                  <div className='box__global__content--ref__link col col-6-xs'>
                                     <span className='icon__circle'>
                                       <span className='icon__circle__content'>FR</span>
                                     </span>
@@ -92,7 +92,7 @@ export default class About extends React.Component {
                                     <span className='collecticon-chevron-right icon-about-ref'></span>
                                   </div>
 
-                                  <div className='box__global__content--ref__link'>
+                                  <div className='box__global__content--ref__link col col-6-xs'>
                                     <span className='icon__circle'>
                                       <span className='icon__circle__content'>FR</span>
                                     </span>
@@ -100,7 +100,7 @@ export default class About extends React.Component {
                                     <span className='collecticon-chevron-right icon-about-ref'></span>
                                   </div>
 
-                                  <a href='https://drive.google.com/file/d/1FnmBm_8K52eTKWa8xWK52eebhgOz60SO/view' target='_blank' className='box__global__content--ref__link'>
+                                  <a href='https://drive.google.com/file/d/1FnmBm_8K52eTKWa8xWK52eebhgOz60SO/view' target='_blank' className='box__global__content--ref__link col col-6-xs'>
                                     <span className='icon__circle'>
                                       <span className='icon__circle__content'>ES</span>
                                     </span>
@@ -108,7 +108,7 @@ export default class About extends React.Component {
                                     <span className='collecticon-chevron-right icon-about-ref'></span>
                                   </a>
 
-                                  <div className='box__global__content--ref__link'>
+                                  <div className='box__global__content--ref__link col col-6-xs'>
                                     <span className='icon__circle'>
                                       <span className='icon__circle__content'>ES</span>
                                     </span>
@@ -116,7 +116,7 @@ export default class About extends React.Component {
                                     <span className='collecticon-chevron-right icon-about-ref'></span>
                                   </div>
 
-                                  <a href='https://github.com/IFRCGo/go-frontend/files/4818646/GoUserGuide_MediumRes_AR.pdf.pdf' className='box__global__content--ref__link'>
+                                  <a href='https://github.com/IFRCGo/go-frontend/files/4818646/GoUserGuide_MediumRes_AR.pdf.pdf' className='box__global__content--ref__link col col-6-xs'>
                                     <span className='icon__circle'>
                                       <span className='icon__circle__content'>AR</span>
                                     </span>
@@ -124,7 +124,7 @@ export default class About extends React.Component {
                                     <span className='collecticon-chevron-right icon-about-ref'></span>
                                   </a>
 
-                                  <a href='https://github.com/IFRCGo/go-frontend/files/4818648/GoAdminGuide_MediumRes_AR.pdf.pdf' className='box__global__content--ref__link'>
+                                  <a href='https://github.com/IFRCGo/go-frontend/files/4818648/GoAdminGuide_MediumRes_AR.pdf.pdf' className='box__global__content--ref__link col col-6-xs'>
                                     <span className='icon__circle'>
                                       <span className='icon__circle__content'>AR</span>
                                     </span>
@@ -136,7 +136,7 @@ export default class About extends React.Component {
                             </div>
                           </div>
 
-                          <div className='col col-6-mid'>
+                          <div className='col col-6-mid flex'>
                             <div className='box__global box__global--about-ref'>
                               <div className='box__global__heading'>
                                 <div className='base-font-semi-bold'>
@@ -147,36 +147,36 @@ export default class About extends React.Component {
                                 </p>
                               </div>
                               <div className='box__global__content'>
-                                <div className='box__global__content--ref clearfix'>
-                                  <a href='https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/EX2saJXpnKRNtez_YFsTyAABZkv63odVuBlH7XLYtxgEgQ?e=lTm6ID' target='_blank' className='box__global__content--ref__link'>
+                                <div className='box__global__content--ref row flex-xs'>
+                                  <a href='https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/EX2saJXpnKRNtez_YFsTyAABZkv63odVuBlH7XLYtxgEgQ?e=lTm6ID' target='_blank' className='box__global__content--ref__link col col-6-xs'>
                                     <Translate stringId='aboutVisualGuidelines'/>
                                     <span className='collecticon-chevron-right icon-about-ref'></span>
                                   </a>
-                                  <a href='https://company-190156.frontify.com/d/zFf8DVC7Q8Uq/go-visual-identity' target='_blank' className='box__global__content--ref__link'>
+                                  <a href='https://company-190156.frontify.com/d/zFf8DVC7Q8Uq/go-visual-identity' target='_blank' className='box__global__content--ref__link col col-6-xs'>
                                     <Translate stringId='aboutVisualIdentity'/>
                                     <span className='collecticon-chevron-right icon-about-ref'></span>
                                   </a>
-                                  <a href='https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/EUV7xJOyEZtDmecIH6uS9SIBwl3gv1cbxVjwS6m79gx7TQ?e=b2AgU3' target='_blank' className='box__global__content--ref__link'>
+                                  <a href='https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/EUV7xJOyEZtDmecIH6uS9SIBwl3gv1cbxVjwS6m79gx7TQ?e=b2AgU3' target='_blank' className='box__global__content--ref__link col col-6-xs'>
                                     <Translate stringId='aboutUserStudy'/>
                                     <span className='collecticon-chevron-right icon-about-ref'></span>
                                   </a>
-                                  <a href='https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/ESX7S_-kp-FAuPP_yXIcLQkB6zE6t2hVhKxGgWbSXZXOFg?e=RsWNSa' target='_blank' className='box__global__content--ref__link'>
+                                  <a href='https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/ESX7S_-kp-FAuPP_yXIcLQkB6zE6t2hVhKxGgWbSXZXOFg?e=RsWNSa' target='_blank' className='box__global__content--ref__link col col-6-xs'>
                                     <Translate stringId='aboutInformationArchitecture'/>
                                     <span className='collecticon-chevron-right icon-about-ref'></span>
                                   </a>
-                                  <a href='https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/Eaje4wKVk5pFlqfNSv9HTSMBz-wABgwmlDraa3CtN8I33g?e=zlCAfG' target='_blank' className='box__global__content--ref__link'>
+                                  <a href='https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/Eaje4wKVk5pFlqfNSv9HTSMBz-wABgwmlDraa3CtN8I33g?e=zlCAfG' target='_blank' className='box__global__content--ref__link col col-6-xs'>
                                     <Translate stringId='about3WGuidance'/>
                                     <span className='collecticon-chevron-right icon-about-ref'></span>
                                   </a>
-                                  <a href='https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/EUqbJHWGW8xLjFJgwG-x4GABfUD5UCS3DS6uwW74tufs9Q?e=pHcyLH' target='_blank' className='box__global__content--ref__link'>
+                                  <a href='https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/EUqbJHWGW8xLjFJgwG-x4GABfUD5UCS3DS6uwW74tufs9Q?e=pHcyLH' target='_blank' className='box__global__content--ref__link col col-6-xs'>
                                     <Translate stringId='about3WLessonLearned'/>
                                     <span className='collecticon-chevron-right icon-about-ref'></span>
                                   </a>
-                                  <div className='box__global__content--ref__link'>
+                                  <div className='box__global__content--ref__link col col-6-xs'>
                                     <Translate stringId='aboutPresentation'/>
                                     <span className='collecticon-chevron-right icon-about-ref'></span>
                                   </div>
-                                  <div className='box__global__content--ref__link'>
+                                  <div className='box__global__content--ref__link col col-6-xs'>
                                     <Translate stringId='aboutImStrategy'/>
                                     <span className='collecticon-chevron-right icon-about-ref'></span>
                                   </div>
@@ -350,7 +350,7 @@ export default class About extends React.Component {
                       <a href='mailto:im@ifrc.org' className='button button--primary-filled button--small'>im@ifrc.org</a>
                     </span>
                   </p>
-                  <div className='clearfix'>
+                  <div className='row flex-mid'>
                     <div className='about__contact__col about__contact__region'>
                       <Translate stringId='aboutAfricaRegion'/>
                     </div>

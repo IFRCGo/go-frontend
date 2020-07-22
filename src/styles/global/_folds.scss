@@ -4,7 +4,6 @@
 
 .fold-container {
   margin-bottom: 50px !important;
-  //float: left;
   width: 100%;
 }
 
@@ -17,7 +16,6 @@
   };
 
   > .inner {
-    //@extend .row-fold, .row--centered;
     padding-left: $spacing-2;
     padding-right: $spacing-2;
   }
@@ -25,19 +23,14 @@
   &,
   .fold__header,
   .fold__body {
-    //@include column(12/12);
     > *:last-child {
       margin-bottom: 0;
     }
   }
 
-  @include media(medium-up) {
+  @include media(medium) {
     padding: $spacing-5 0;
   }
-
-  //@include media(large-up) {
-    //padding: ($global-spacing * 4) 0;
-  //}
 }
 
 .fold--transparent {
@@ -45,7 +38,6 @@
 }
 
 .fold__header {
-  //@include column(12/12);
   margin-bottom: $global-spacing;
 
   > *:last-child {
@@ -87,12 +79,7 @@
   color: rgba($base-color, 0.58);
 }
 
-.fold__headline {
-  @include column(12/12);
-}
-
 .fold__footer {
-  //@include column(12/12);
   margin-top: $global-spacing * 2;
 }
 
@@ -129,7 +116,6 @@
 }
 
 .fold__header__block {
-  //@extend .clearfix;
   border-bottom: 1px solid $grey-cloud;
   padding-bottom: $spacing;
   @include row;
@@ -155,14 +141,11 @@
   @include media(medium-up) {
    margin-bottom: 0;
    line-height: 1;
-
-   //@include column(8/12);
   }
 }
 
 .fold__title__linkwrap {  
   font-size: $font-size-sm;
-  //color: $primary-color;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -173,7 +156,6 @@
 
   @include media(medium-up) {
     text-align: right !important;
-    //@include column(4/12);
   }
 
   > span {
@@ -181,17 +163,15 @@
     font-weight: $base-font-bold;
     margin-inline-start: $spacing-half;
   }
+
+  &:hover, &:focus {
+    > span {
+      color: $primary-color;
+    }
+  }
 }
 
 .fold__title__link {
   @include link-underline;
-  //color: $primary-color;
-  //font-weight: $base-font-medium;
-  //text-decoration: underline;
-
-  //> span {
-    //font-size: $font-size-xxs;
-    //font-weight: $base-font-medium;
-  //}
 }
   

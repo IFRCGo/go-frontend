@@ -743,14 +743,16 @@ class Account extends React.Component {
       Object.keys(this.props.event.event).forEach((eventId) => {
         if (this.props.event.event[eventId].fetched) {
           events.push(
-            <div key={'operations-component' + eventId} className='account__op__block clearfix'>
-              <div className='account__op__each__link'>
-                <Link className={'link-underline'} to={'/emergencies/' + eventId}>{this.props.event.event[eventId].data.name}</Link>
-              </div>
-              <div className='account__op__each__button'>
-                <button className={'button button--small button--primary-bounded'} onClick={this.delSubscription} id={'followedEvent' + eventId}>
-                  <Translate stringId='accountUnfollow'/>
-                </button>
+            <div key={'operations-component' + eventId} className='account__op__block col col-6-mid'>
+              <div className='row flex-sm'>
+                <div className='account__op__each__link col col-8-sm'>
+                  <Link className={'link-underline'} to={'/emergencies/' + eventId}>{this.props.event.event[eventId].data.name}</Link>
+                </div>
+                <div className='account__op__each__button col col-4-sm'>
+                  <button className={'button button--small button--primary-bounded'} onClick={this.delSubscription} id={'followedEvent' + eventId}>
+                    <Translate stringId='accountUnfollow'/>
+                  </button>
+                </div>
               </div>
             </div>
           );
@@ -763,13 +765,13 @@ class Account extends React.Component {
                   <h2 className='fold__title spacing-b'>
                     <Translate stringId='accountOperationFollowing'/>
                   </h2>
-                  <div className='clearfix'>
-                    <div className='account__op__title'>
+                  <div className='row flex-sm'>
+                    <div className='account__op__title col col-3-sm'>
                       <div className='text-uppercase'>
                         <Translate stringId='accountCurrentlyFollowing'/>
                       </div>
                     </div>
-                    <div className='account__op__links'>
+                    <div className='account__op__links col col-9-sm row flex-mid'>
                       {events}
                     </div>
                   </div>
