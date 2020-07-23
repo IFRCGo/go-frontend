@@ -233,11 +233,16 @@
     box-sizing: border-box;
   }
 
+  .fold__header__block {
+    margin-left: unset;
+    margin-right: unset;
+  }
+
   .block-loading {
     position: absolute;
     border-radius: 0;
     z-index: 11;
-    width: calc(100% - 2 * 2rem);
+    width: 100%;
     margin: 0;
     background-color: rgba(255, 255, 255, .7);
     height: calc(100% - 2 * 2rem);
@@ -263,6 +268,7 @@
   }
 
   .content {
+    overflow: hidden;
 
     .three-w-filters {
       display: flex;

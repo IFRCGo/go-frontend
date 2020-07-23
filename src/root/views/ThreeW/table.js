@@ -83,11 +83,13 @@ export default class ProjectListTable extends React.PureComponent {
         label: strings.projectListTableStatus,
         modifier: d => statuses[d.status],
       },
+      /*
       {
         key: 'modified_at',
         label: strings.projectListTableLastUpdated,
         modifier: d => <FormattedDate value={d['modified_at']} />,
       },
+      */
       {
         key: 'actions',
         label: '',
