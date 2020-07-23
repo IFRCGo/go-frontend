@@ -134,9 +134,15 @@ class AppealsTable extends SFPComponent {
     const { strings } = this.context;
     const title = this.props.title || strings.appealsTableTitle;
     if (fetching) {
-      return (
-        <BlockLoading/>
-      );
+      return this.props.title
+        ? (
+          <Fold title={title} id={this.props.id}>
+            <BlockLoading/>
+          </Fold>
+        )
+        : (
+          <BlockLoading/>
+        );
     }
 
     if (error) {
