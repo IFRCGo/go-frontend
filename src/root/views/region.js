@@ -267,14 +267,13 @@ class AdminArea extends SFPComponent {
                             fullscreen={this.state.fullscreen}
                             toggleFullscreen={this.toggleFullscreen}
                             mapBoundingBox={mapBoundingBox}
+                            // layers={this.state.maskLayer}
                           />
                           <AppealsTable
                             foldLink={foldLink}
                             region={getRegionId(this.props.match.params.id)}
-                            regionOperations={this.props.appealStats}
                             showActive={true}
                             id={'appeals'}
-                            showRegionMap={true}
                             fullscreen={this.state.fullscreen}
                             toggleFullscreen={this.toggleFullscreen}
                           />
