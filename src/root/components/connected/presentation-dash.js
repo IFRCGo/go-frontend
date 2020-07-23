@@ -13,6 +13,7 @@ import {
   addFullscreenListener,
   removeFullscreenListener
 } from '#utils/fullscreen';
+import { get } from '#utils/utils';
 
 import Fold from '#components/fold';
 import { commaSeparatedNumber as n } from '#utils/format';
@@ -79,7 +80,7 @@ class PresentationDash extends React.Component {
         <div className={c('inner', {'appeals--fullscreen': this.state.fullscreen})}>
           <Fold
             showHeader={!this.state.fullscreen}
-            title={`${strings.presentationDashAppealsTitle} (${n(appealsList.count)})`}
+            title={`${strings.presentationDashAppealsTitle} (${n(this.props.appeals.data.count)})`}
             id={this.props.id}
             navLink={foldLink}
             foldTitleClass='fold__title--inline'
@@ -101,7 +102,6 @@ class PresentationDash extends React.Component {
             <AppealsTable
               showActive={true}
               showHomeMap={true}
-              title={strings.presentationDashAppealsTitle}
               foldLink={foldLink}
               limit={5}
               viewAll={'/appeals/all'}
@@ -122,14 +122,16 @@ if (environment !== 'production') {
   PresentationDash.propTypes = {
     _getAppealsList: T.func,
     appealsList: T.object,
-    aggregate: T.object
+    aggregate: T.object,
+    appeals: T.object
   };
 }
 
 // /////////////////////////////////////////////////////////////////// //
 // Connect functions
 
-const selector = (state) => ({
+const selector = (state, props) => ({
+  appeals: props.statePath ? get(state, props.statePath) : state.appeals,
   appealsList: state.overallStats.appealsList,
   aggregate: state.overallStats.aggregate
 });

@@ -2,6 +2,7 @@ import React from 'react';
 import c from 'classnames';
 import { PropTypes as T } from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import memoize from 'memoize-one';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -31,6 +32,7 @@ import {
   getAppealsListStats
 } from '#actions';
 import { getRegionBoundingBox } from '#utils/region-bounding-box';
+import { commaSeparatedNumber as n } from '#utils/format';
 import {
   countriesByRegion,
   getRegionId,
@@ -55,6 +57,7 @@ import {
 import { SFPComponent } from '#utils/extendables';
 import { NO_DATA } from '#utils/constants';
 import RegionalThreeW from './RegionalThreeW';
+import MainMap from '#components/map/main-map';
 
 import LanguageContext from '#root/languageContext';
 import { resolveToString } from '#utils/lang';
@@ -198,6 +201,13 @@ class AdminArea extends SFPComponent {
     const selectedIndex = hashes.indexOf(this.props.location.hash) !== -1 ? hashes.indexOf(this.props.location.hash) : 0;
     const { strings } = this.context;
 
+    const foldLink = (
+      <Link className='fold__title__link' to={'/appeals/all?region=' + data.id}>{resolveToString(strings.regionAppealsTableViewAllText, { regionName: regionName })}</Link>
+    );
+    const appealsCount = this.props.appealStats.fetched
+      ? this.props.appealStats.data.results.length
+      : '--';
+
     return (
       <section className='inpage'>
         <Helmet>
@@ -245,21 +255,33 @@ class AdminArea extends SFPComponent {
                         <KeyFiguresHeader fullscreen={this.state.fullscreen} appealsListStats={this.props.appealsListStats} />
                       ) : null}
                       <div className={c('inner', {'appeals--fullscreen': this.state.fullscreen})}>
-                        <AppealsTable
-                          title={strings.regionAppealsTableTitle}
-                          region={getRegionId(this.props.match.params.id)}
-                          regionOperations={this.props.appealStats}
-                          mapBoundingBox={mapBoundingBox}
-                          mapLayers={[this.state.maskLayer]}
-                          activeOperations={activeOperations}
-                          showActive={true}
+                        <Fold
+                          showHeader={!this.state.fullscreen}
+                          title={`${strings.regionAppealsTableTitle} (${n(appealsCount)})`}
                           id={'appeals'}
-                          showRegionMap={true}
-                          viewAll={'/appeals/all?region=' + data.id}
-                          viewAllText={resolveToString(strings.regionAppealsTableViewAllText, { regionName: regionName })}
-                          fullscreen={this.state.fullscreen}
-                          toggleFullscreen={this.toggleFullscreen}
-                        />
+                          navLink={foldLink}
+                          foldTitleClass='fold__title--inline'
+                          foldWrapperClass='fold--main fold--appeals-table'
+                        >
+                          <MainMap
+                            operations={this.props.appealStats}
+                            noExport={true}
+                            noRenderEmergencies={true}
+                            fullscreen={this.state.fullscreen}
+                            toggleFullscreen={this.toggleFullscreen}
+                            mapBoundingBox={mapBoundingBox}
+                          />
+                          <AppealsTable
+                            foldLink={foldLink}
+                            region={getRegionId(this.props.match.params.id)}
+                            regionOperations={this.props.appealStats}
+                            showActive={true}
+                            id={'appeals'}
+                            showRegionMap={true}
+                            fullscreen={this.state.fullscreen}
+                            toggleFullscreen={this.toggleFullscreen}
+                          />
+                        </Fold>
                       </div>
                     </section>
                     <Fold title={strings.regionStatistics} foldHeaderClass='visually-hidden' id='stats'>

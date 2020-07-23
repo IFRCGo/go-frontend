@@ -245,27 +245,56 @@ class AppealsTable extends SFPComponent {
         };
       });
 
-      return (
-        <React.Fragment>
-          {this.props.showExport ? (
-            <ExportButton filename='appeals'
-              qs={this.getQs(this.props)}
-              resource='api/v2/appeal'
-            />
-          ) : null}
-          {this.props.fullscreen ? null : (
-            <DisplayTable
-              className='table table--border-bottom table--box-shadow table--active-ops margin-half-t'
-              headings={headings}
-              rows={rows}
-              pageCount={data.count / this.state.table.limit}
-              page={this.state.table.page - 1}
-              onPageChange={this.handlePageChange.bind(this, 'table')}
-              noPaginate={this.props.noPaginate}
-            />
-          )}
-        </React.Fragment>
-      );
+      return this.props.title
+        ? (
+          <Fold
+            showHeader={!this.props.fullscreen}
+            title={`${title} (${n(data.count)})`}
+            id={this.props.id}
+            navLink={this.props.foldLink}
+            foldTitleClass='fold__title--inline'
+            foldWrapperClass='fold--main fold--appeals-table'
+          >
+            {this.props.showExport ? (
+              <ExportButton filename='appeals'
+                qs={this.getQs(this.props)}
+                resource='api/v2/appeal'
+              />
+            ) : null}
+            {this.props.fullscreen ? null : (
+              <DisplayTable
+                className='table table--border-bottom table--box-shadow table--active-ops margin-half-t'
+                headings={headings}
+                rows={rows}
+                pageCount={data.count / this.state.table.limit}
+                page={this.state.table.page - 1}
+                onPageChange={this.handlePageChange.bind(this, 'table')}
+                noPaginate={this.props.noPaginate}
+              />
+            )}
+          </Fold>
+        )
+        : (
+          <React.Fragment>
+            {this.props.showExport ? (
+              <ExportButton filename='appeals'
+                qs={this.getQs(this.props)}
+                resource='api/v2/appeal'
+              />
+            ) : null}
+            {this.props.fullscreen ? null : (
+              <DisplayTable
+                className='table table--border-bottom table--box-shadow table--active-ops margin-half-t'
+                headings={headings}
+                rows={rows}
+                pageCount={data.count / this.state.table.limit}
+                page={this.state.table.page - 1}
+                onPageChange={this.handlePageChange.bind(this, 'table')}
+                noPaginate={this.props.noPaginate}
+              />
+            )}
+          </React.Fragment>
+        );
     }
     return null;
   }
@@ -288,6 +317,7 @@ if (environment !== 'production') {
     showMap: T.bool,
 
     title: T.string,
+    foldLink: T.object,
 
     showActive: T.bool,
     viewAll: T.string,
