@@ -231,7 +231,7 @@ class AppealsTable extends SFPComponent {
           name: name,
           dtype: get(getDtypeMeta(o.dtype.id), 'label', nope),
           requestAmount: {
-            value: `${n(o.amount_requested)} CHF`,
+            value: n(o.amount_requested, 'CHF'),
             className: ''
           },
           fundedAmount: {

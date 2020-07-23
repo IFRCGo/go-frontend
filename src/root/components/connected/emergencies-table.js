@@ -182,7 +182,7 @@ class EmergenciesTable extends SFPComponent {
           name: <Link className='link--table' to={`/emergencies/${rowData.id}`}>{get(rowData, 'name', nope)}</Link>,
           dtype: rowData.dtype ? rowData.dtype.name : nope,
           requested: {
-            value: `${n(get(rowData, 'appeals.0.amount_requested'))} CHF`,
+            value: n(get(rowData, 'appeals.0.amount_requested'), 'CHF'),
             className: 'right-align'
           },
           affected: {
