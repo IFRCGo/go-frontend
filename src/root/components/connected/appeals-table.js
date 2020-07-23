@@ -231,12 +231,12 @@ class AppealsTable extends SFPComponent {
           name: name,
           dtype: get(getDtypeMeta(o.dtype.id), 'label', nope),
           requestAmount: {
-            value: n(o.amount_requested),
+            value: n(o.amount_requested, 'CHF'),
             className: ''
           },
           fundedAmount: {
             value: (<div>
-              <span className='progress_value_funding_table'>{fundedPercentRounded}</span>
+              <span className='progress_value_funding_table'>{fundedPercentRounded}%</span>
               <Progress value={fundedPercent} max={100} />
             </div>),
             className: ''
