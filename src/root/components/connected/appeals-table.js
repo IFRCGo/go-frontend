@@ -23,7 +23,6 @@ import DisplayTable, { SortHeader, FilterHeader } from '#components/display-tabl
 import DateFilterHeader from '#components/common/filters/date-filter-header';
 import { SFPComponent } from '#utils/extendables';
 import { appealTypes as appealsType, appealTypeOptions } from '#utils/appeal-type-constants';
-import MainMap from '#components/map/main-map';
 
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
@@ -246,41 +245,14 @@ class AppealsTable extends SFPComponent {
         };
       });
 
-      const foldLink = this.props.viewAll ? (
-        <Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || strings.viewAllOperations}</Link>
-      ) : null;
-
-      const {
-        appealsList
-      } = this.props;
-
       return (
-        <Fold showHeader={!this.props.fullscreen} title={`${title} (${n(data.count)})`} id={this.props.id} navLink={foldLink} foldTitleClass='fold__title--inline' foldWrapperClass='fold--main fold--appeals-table'>
+        <React.Fragment>
           {this.props.showExport ? (
             <ExportButton filename='appeals'
               qs={this.getQs(this.props)}
               resource='api/v2/appeal'
             />
           ) : null}
-          {this.props.showRegionMap ? (
-            <MainMap
-              operations={this.props.regionOperations}
-              mapBoundingBox={this.props.mapBoundingBox}
-              layers={this.props.maskLayer}
-              noExport={true}
-              noRenderEmergencies={true}
-              fullscreen={this.props.fullscreen}
-              toggleFullscreen={this.props.toggleFullscreen}
-            />
-          ) : null }
-          {this.props.showHomeMap ? (
-            <MainMap
-              operations={appealsList}
-              noExport={true}
-              noRenderEmergencies={true}
-              fullscreen={this.props.fullscreen}
-              toggleFullscreen={this.props.toggleFullscreen}
-            />) : null}
           {this.props.fullscreen ? null : (
             <DisplayTable
               className='table table--border-bottom table--box-shadow table--active-ops margin-half-t'
@@ -292,7 +264,7 @@ class AppealsTable extends SFPComponent {
               noPaginate={this.props.noPaginate}
             />
           )}
-        </Fold>
+        </React.Fragment>
       );
     }
     return null;
