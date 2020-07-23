@@ -23,12 +23,18 @@ export const formatDate = (date) => {
 };
 
 // Ie. given 12345.99, return '12,346'
-export const commaSeparatedNumber = (x) => {
+// optionally, can be passed a suffix, so:
+// commaSeparatedNumber(12345.99, 'CHF') => '12,346 CHF'
+export const commaSeparatedNumber = (x, suffix=null) => {
   // isNaN(null) === true :*(
   if (isNaN(x) || (!x && x !== 0)) {
     return nope;
   }
-  return Math.round(Number(x)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  let s = Math.round(Number(x)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  if (suffix) {
+    s += ` ${suffix}`;
+  }
+  return s;
 };
 
 export function percent (value, total, decimals = 2) {

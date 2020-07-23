@@ -43,7 +43,7 @@ class Emergencies extends React.Component {
             title={dashTitle}
           />
           <div>
-            <div className='inner'>
+            <div className='inner inner--emergencies-table-map'>
               <EmergenciesTable
                 title={strings.emergenciesTableTitle}
                 limit={10}
