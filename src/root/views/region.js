@@ -204,9 +204,6 @@ class AdminArea extends SFPComponent {
     const foldLink = (
       <Link className='fold__title__link' to={'/appeals/all?region=' + data.id}>{resolveToString(strings.regionAppealsTableViewAllText, { regionName: regionName })}</Link>
     );
-    const appealsCount = this.props.appealStats.fetched
-      ? this.props.appealStats.data.results.length
-      : '--';
 
     return (
       <section className='inpage'>
@@ -257,7 +254,7 @@ class AdminArea extends SFPComponent {
                       <div className={c('inner', {'appeals--fullscreen': this.state.fullscreen})}>
                         <Fold
                           showHeader={!this.state.fullscreen}
-                          title={`${strings.regionAppealsTableTitle} (${n(appealsCount)})`}
+                          title={`${strings.regionAppealsTableTitle} (${n(activeOperations)})`}
                           id={'appeals'}
                           navLink={foldLink}
                           foldTitleClass='fold__title--inline'
