@@ -157,3 +157,6 @@ When a UI is mirrored, these changes occur:
 | `text-align: start;` or `text-align: match-parent;` (depends on the context) | `text-align: left;`                             |
 
 For more information, refer to [MDN](https://developer.mozilla.org/en-US/docs/Mozilla/Developer_guide/RTL_Guidelines).
+
+### Grid UI Documentation
+[Documentation for the grid is available here](DOCS-GRID.md)

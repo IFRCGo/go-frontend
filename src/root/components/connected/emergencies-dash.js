@@ -143,7 +143,7 @@ class EmergenciesDash extends React.Component {
           </div>
         </header>
         <section className='map-section__container'>
-          <div className='fold padding-top-reset spacing-b'>
+          <div className='fold padding-t-reset spacing-b'>
             <div className='container-lg'>
               <div className='fold__header__block'>
                 <h2 className='fold__title'>{ this.props.title }</h2>
