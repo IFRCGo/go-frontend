@@ -158,13 +158,11 @@ class EmergenciesTable extends SFPComponent {
         },
         {
           id: 'requested',
-          label: <SortHeader id='amount_requested' title={strings.emergenciesTableRequestedAmt} sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'amount_requested')} />,
-          className: 'right-align'
+          label: <SortHeader id='amount_requested' title={strings.emergenciesTableRequestedAmt} sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'amount_requested')} />
         },
         {
           id: 'affected',
-          label: <SortHeader id='num_affected' title={strings.emergenciesTableAffected} sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'num_affected')} />,
-          className: 'right-align'
+          label: <SortHeader id='num_affected' title={strings.emergenciesTableAffected} sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'num_affected')} />
         }
       ];
 
@@ -182,12 +180,10 @@ class EmergenciesTable extends SFPComponent {
           name: <Link className='link--table' to={`/emergencies/${rowData.id}`}>{get(rowData, 'name', nope)}</Link>,
           dtype: rowData.dtype ? rowData.dtype.name : nope,
           requested: {
-            value: n(get(rowData, 'appeals.0.amount_requested'), 'CHF'),
-            className: 'right-align'
+            value: n(get(rowData, 'appeals.0.amount_requested'), 'CHF')
           },
           affected: {
-            value: n(affected),
-            className: 'right-align'
+            value: n(affected)
           },
           glide: rowData.glide || nope
         };

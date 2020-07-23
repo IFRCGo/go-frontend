@@ -381,7 +381,7 @@ td.right-align, th.right-align{
 
 
 // Ensure table dates don't wrap
-.table__header--date, table__cell--date {
+.table__header--date, table__cell--date, .table__header--startDateInterval, .table__cell--startDateInterval, .table__header--endDate, .table__cell--endDate {
   width: 120px;
 }
 
@@ -391,7 +391,18 @@ td.right-align, th.right-align{
 
 .table {
   table__header--requestAmount, .table__cell--requestAmount {
-    text-align: end;
     width: 184px;
   }
+}
+
+.table__header--fundedAmount, table__cell--fundedAmount {
+  width: 110px;  
+}
+
+.table__header--dtype, table__cell--dtype {
+  width: 140px;
+}
+
+.table__header--deployed, .table__cell--deployed {
+  width: 140px;
 }
