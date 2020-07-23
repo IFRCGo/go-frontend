@@ -1213,8 +1213,8 @@ export default {
   emergencyFundingLabel: 'Funding (CHF)',
   emergencyNoDocumentsMessage: 'No documents added',
   emergencySourceFigure: 'Source: {source}',
-  emergencyActionSubscribeLabel: 'Subscribe',
-  emergencyActionUnsubscribeLabel: 'Unsubscribe',
+  emergencyActionSubscribeLabel: 'Follow',
+  emergencyActionUnsubscribeLabel: 'Unfollow',
   emergencyActionEditEventLabel: 'Edit Event',
   emergencyActionCreateThreeWActivityLabel: 'Create 3W Activity',
 
