@@ -454,6 +454,11 @@
   width: auto;
   padding-top: ($global-spacing / 3);
   background-position: right 0.5rem center;
+
+  [dir='rtl'] & {
+    background-position: left 0.5rem center;
+  }
+  
   &:hover {
     opacity: 1;
   }

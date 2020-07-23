@@ -148,10 +148,12 @@ class EmergenciesDash extends React.Component {
               <div className='fold__header__block'>
                 <h2 className='fold__title'>{ this.props.title }</h2>
                 <div className="fold__title__linkwrap">
-                  <Link to='/emergencies/all' className='fold__title__link'>
-                    View All Emergencies
-                    <span className="collecticon-chevron-right"></span>
-                  </Link>
+                  <span>
+                    <Link to='/emergencies/all' className='fold__title__link'>
+                      View All Emergencies
+                    </Link>
+                  </span>
+                  <span className="collecticon-chevron-right"></span>
                 </div>
               </div>
             </div>
