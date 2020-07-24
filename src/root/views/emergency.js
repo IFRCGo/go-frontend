@@ -374,7 +374,9 @@ class Emergency extends React.Component {
                   {stats.beneficiaries > 0 ? (
                     <li className="sumstats__item__wrap">
                       <div className='sumstats__item'>
-                        <span className="collecticon-people-arrows sumstats__icon"></span>
+                        <span className='sumstats__icon_wrapper'>
+                          <img className='sumstats__icon_2020' src="/assets/graphics/layout/targeted-population.svg" />
+                        </span>
                         <span className="sumstats__value">
                           {n(stats.beneficiaries)}
                         </span>
