@@ -651,6 +651,7 @@ class AdminArea extends SFPComponent {
                 </span>
               ) : null}
             </h1>
+            { region ? (
             <div className='inpage__header-actions text-center'>
               <div className='spacing-half-v'>
                 <Link to={`/regions/${data.region}`}
@@ -660,7 +661,8 @@ class AdminArea extends SFPComponent {
                   <span className='collecticon-chevron-right link--with-icon-inner'></span>
                 </Link>
               </div>
-            </div>
+            </div>) : null }
+
           </div>
         </header>
         <section className='inpage__body'>
