@@ -795,8 +795,11 @@ class Emergency extends React.Component {
     const countryLink = `/countries/${this.props.event.data.countries[0].id}`;
     const countryName = data.countries[0].name;
     const regionId = this.props.event.data.countries[0].region;
-    const regionLink = `/regions/${regionId}`;
-    const regionName = getRegionById(regionId.toString()).name;
+    let regionLink, regionName;
+    if (regionId) {
+      regionLink = `/regions/${regionId}`;
+      regionName = getRegionById(regionId.toString()).name;
+    }
 
     return (
       <section className="inpage">
@@ -870,17 +873,19 @@ class Emergency extends React.Component {
             <div>
               <div>
                 <h1 className="inpage__title">{data.name}</h1>
-                <div className="inpage__header-actions text-center row flex flex-justify-center">
-                  <div className='col spacing-half-v flex'>
-                    <Link to={regionLink}
-                      className="link link--with-icon"
-                    >
-                      <span className='link--with-icon-text'>
-                        {regionName}
-                      </span>
-                      <span className='collecticon-chevron-right link--with-icon-inner'></span>
-                    </Link>
-                  </div>
+                <div className="inpage__headline-actions text-center row flex flex-justify-center">
+                  { regionId ? (
+                    <div className='col spacing-half-v flex'>
+                      <Link to={regionLink}
+                        className="link link--with-icon"
+                      >
+                        <span className='link--with-icon-text'>
+                          {regionName}
+                        </span>
+                        <span className='collecticon-chevron-right link--with-icon-inner'></span>
+                      </Link>
+                    </div>
+                  ) : null }
                   <div className='col spacing-half-v flex'>
                     <Link to={countryLink}
                       className="link link--with-icon"
