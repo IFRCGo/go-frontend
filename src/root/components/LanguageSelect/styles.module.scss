@@ -1,30 +1,49 @@
 @import '~styles/settings/variables';
+@mixin drop-menu-header-dropdown {
+  padding: $global-spacing/2;
+  font-weight: $base-font-regular;
+  font-size: $font-size-sm;
+
+  &:hover, &:focus {
+    background-color: $grey-titanium;
+
+    a {
+      opacity: 1;
+    }
+  }
+}
+
 
 .dropdown-menu-label {
   display: flex;
   align-items: center;
   padding: 3px 6px;
+  border-bottom: 2px solid transparent;
+
+  &:focus {
+    outline: 0;
+    border-bottom-color: $primary-color;
+  }
 }
 
 .dropdown {
   z-index: 11111;
   padding: 0!important;
-  width: 160px;
+  width: 110px;
 
   .language-button {
     background-color: transparent;
     display: block;
     width: 100%;
     border: 0;
-    padding: 6px 12px;
     outline: none;
     cursor: pointer;
     text-align: start;
+    @include drop-menu-header-dropdown;
 
     &.active {
       background-color: $primary-color;
       color: #fff;
-      font-weight: $base-font-medium;
     }
   }
 }

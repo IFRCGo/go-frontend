@@ -2,6 +2,22 @@
    Global: Page Prime Nav
    ========================================================================== */
 
+// Mixin for consistent style for dropdown items in header navigation
+@mixin drop-menu-header-dropdown {
+  padding: $global-spacing/2;
+  font-weight: $base-font-regular;
+  font-size: $font-size-sm;
+
+  &:hover, &:focus {
+    background-color: $grey-titanium;
+
+    a {
+      opacity: 1;
+    }
+  }
+}
+
+
 .page__prime-nav {
   flex: 1;
   display: flex;
@@ -24,6 +40,12 @@
   justify-content: flex-end;
   align-items: center;
   position: relative;
+
+  .tc-dropdown-menu {
+    &:focus {
+      outline: 0;
+    }
+  }
 }
 
 .page__meta-nav-elements {
@@ -36,11 +58,28 @@
   }
 }
 
+.page__meta-nav-elements--lang {
+  padding-inline-start: 0;    
+}
+
 .page__meta-nav-elements-borderless {
   font-size: 0.75rem;
   line-height: 1.25rem;
   padding-inline-end: 1rem;
   padding-inline-start: 1rem;
+}
+
+.drop__title--page__meta-nav {
+  margin-inline-start: -.5rem !important;
+  margin-bottom: $spacing-2 !important;
+}
+
+.drop__menu--page__meta-nav {
+  padding: 0;
+
+  .drop__menu-item {
+    @include drop-menu-header-dropdown;
+  }
 }
 
 /* Global menu */
@@ -258,7 +297,6 @@
   }
 }
 
-
 // Dropdown for Create Report
 
 .drop__menu__field__report.drop__menu {
@@ -269,17 +307,7 @@
   }
 
   .drop__menu-item {
-    padding: $global-spacing/2;
-    font-weight: $base-font-medium;
-    font-size: $font-size-sm;
-
-    &:hover, &:focus {
-      background-color: $grey-titanium;
-
-      a {
-        opacity: 1;
-      }
-    }
+    @include drop-menu-header-dropdown;
   }  
 } 
 

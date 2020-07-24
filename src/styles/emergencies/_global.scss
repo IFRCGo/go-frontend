@@ -58,11 +58,13 @@
   }
 }
 
+.map-scale-options {
+  @include form__group;
+  background-color: $grey-mist;
+  padding: $spacing;
+}
+
 .page--emergencies {
-  .form__group {
-    @include form__group;
-    padding: $spacing;
-  }
 
   .map-vis__legend {
     .key {

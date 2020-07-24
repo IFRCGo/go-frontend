@@ -652,12 +652,14 @@ class AdminArea extends SFPComponent {
               ) : null}
             </h1>
             <div className='inpage__header-actions text-center'>
-              <Link to={`/regions/${data.region}`}
-                className='link link--with-icon flex-justify-center'
-              >
-                <span className='link--with-icon-text'>{region.name}</span>
-                <span className='collecticon-chevron-right link--with-icon-inner'></span>
-              </Link>
+              <div className='spacing-half-v'>
+                <Link to={`/regions/${data.region}`}
+                  className='link link--with-icon flex-justify-center'
+                >
+                  <span className='link--with-icon-text'>{region.name}</span>
+                  <span className='collecticon-chevron-right link--with-icon-inner'></span>
+                </Link>
+              </div>
             </div>
           </div>
         </header>

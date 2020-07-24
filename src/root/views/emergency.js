@@ -395,7 +395,7 @@ class Emergency extends React.Component {
                         <span className="sumstats__value">
                           {n(stats.requested)}
                         </span>
-                        <span
+                        <Translate
                           className="sumstats__key"
                           stringId="emergencyFundingRequirementsLabel"
                         />
@@ -870,10 +870,10 @@ class Emergency extends React.Component {
           )}
         <header className="inpage__header">
           <div className="container-lg">
-            <div className="inpage__headline-content">
-              <div className="inpage__headline-content">
+            <div>
+              <div>
                 <h1 className="inpage__title">{data.name}</h1>
-                <div className="inpage__headline-actions row flex flex-justify-center">
+                <div className="inpage__headline-actions text-center row flex flex-justify-center">
                   { regionId ? (
                     <div className='col spacing-half-v flex'>
                       <Link to={regionLink}
