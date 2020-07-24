@@ -491,7 +491,7 @@ $spacing-g: (
 
 @each $name, $value in $spacing-g {
   .#{$name}-l, %#{$name}-l {
-    padding-left: $value;
+    padding-inline-start: $value;
   }
 }
 
@@ -503,7 +503,7 @@ $spacing-g: (
 
 @each $name, $value in $spacing-g {
   .#{$name}-r, %#{$name}-r {
-    padding-right: $value;
+    padding-inline-end: $value;
   }
 }
 
@@ -591,7 +591,7 @@ $margins: (
 
 @each $name, $value in $margins {
   .#{$name}-l, %#{$name}-l {
-    margin-left: $value;
+    margin-inline-start: $value;
   }
 }
 
@@ -603,7 +603,7 @@ $margins: (
 
 @each $name, $value in $margins {
   .#{$name}-r, %#{$name}-r {
-    margin-right: $value;
+    margin-inline-end: $value;
   }
 }
 

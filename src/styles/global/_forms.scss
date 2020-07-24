@@ -77,18 +77,31 @@ select.form__control {
   background-repeat: no-repeat;
   background-size: 1rem auto;
 
+  [dir='rtl'] & {
+    background-position: calc(0% + 0.5rem) center;
+  }
+
   /* Size modifiers */
 
   &.form__control--small,
   &.form__control--medium {
     padding-inline-end: 2rem;
     background-position: calc(100% - 0.5rem) center;
+  
+    [dir='rtl'] & {
+      background-position: calc(0% + 0.5rem) center;
+    }
   }
 
   &.form__control--large,
   &.form__control--xlarge {
     padding-inline-end: 2.25rem;
     background-position: calc(100% - 0.75rem) center;
+
+    [dir='rtl'] & {
+      background-position: calc(0% + 0.75rem) center;
+    }
+
   }
 }
 
@@ -597,7 +610,12 @@ label[for] {
 }
 
 .form__option__text {
-  padding: 0 0 0 ($global-spacing / 2);
+  padding-inline-start: $global-spacing / 2;
+
+  [dir='rtl'] {
+    padding-inline-end: $global-spacing / 2;
+    padding-inline-start: 0;
+  }
 
   &:not(:last-child) {
     padding: 0 ($global-spacing / 2) 0 0;

@@ -150,13 +150,18 @@
 
   @include media(xsmall-up) {
     margin-left: auto;
+
+    [dir='rtl'] & {
+      margin-right: auto;
+      margin-left: unset;
+    }
   }
 
   @include media(medium-up) {
-    text-align: right !important;
+    text-align: end !important;
   }
 
-  > span {
+  span:last-of-type {
     font-size: $font-size-xxs;
     font-weight: $base-font-bold;
     margin-inline-start: $spacing-half;

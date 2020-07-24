@@ -48,6 +48,11 @@
         right: 0;
         top: 0;
         display: block;
+
+        [dir='rtl'] & {
+          left: 0;
+          right: auto;
+        }
       }
     }
     .value {
