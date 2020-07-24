@@ -45,7 +45,8 @@ function Header (props) {
   } = props;
 
   const { strings } = React.useContext(LanguageContext);
-  let requestCount = React.useRef(0);
+  const requestCountRef = React.useRef(0);
+  const timeoutRef = React.useRef();
 
   const getOptions = React.useCallback((input) => (
       !input
@@ -67,20 +68,24 @@ function Header (props) {
   ), []);
 
   const slowLoad = React.useCallback((input) => {
-    let { current: i } = requestCount;
-    i += 1;
-    let mirror = i;
+    requestCountRef.current += 1;
+    let mirror = requestCountRef.current;
 
     return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (i === mirror) {
+      if (!input) {
+        resolve({ options: [] });
+      }
+      window.clearTimeout(timeoutRef.current);
+
+      timeoutRef.current = window.setTimeout(() => {
+        if (requestCountRef.current === mirror) {
           return resolve(getOptions(input));
         } else {
           return resolve({ options: [] });
         }
       }, 500);
     });
-  }, [requestCount, getOptions]);
+  }, [requestCountRef, getOptions]);
 
   const handleSelect = React.useCallback(({ value }) => {
     history.push(value);
