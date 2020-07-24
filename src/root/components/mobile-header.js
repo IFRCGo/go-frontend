@@ -8,6 +8,7 @@ import { api, environment } from '#config';
 import { request } from '#utils/network';
 import { uppercaseFirstLetter as u, isoDate } from '#utils/format';
 import UserMenu from './connected/user-menu';
+import Dropdown from './common/dropdown';
 import { withLanguage } from '#root/languageContext';
 import Translate from '#components/Translate';
 
@@ -101,7 +102,30 @@ class MobileHeader extends React.PureComponent {
         })}>
           <div className='inner container-lg'>
             <div className='mobile__actions'>
-              <Link to='/reports/new' className='button button--small button--primary-filled' title={strings.mobileHeaderCreateFieldReport}><span><Translate stringId='mobileHeaderCreateFieldReport'/></span></Link>
+              <Dropdown
+                id='drop__header__field__report'
+                triggerClassName='drop__toggle--caret button button--primary-bounded button--small drop__toggle--field-report-new'
+                triggerActiveClassName='active'
+                triggerText={strings.headerCreateAReportLabel}
+                triggerElement='a'
+                direction='down'
+                alignment='center' >
+                <ul className='drop__menu drop__menu--select drop__menu__field__report' role='menu'>
+                  <li className='drop__menu-item'>
+                    <Link to='/reports/new'>{strings.headerDropdownNewFieldReport}</Link>
+                  </li>
+                  <li className='drop__menu-item'>
+                    <a href='https://ee.kob4.ifrc.org/single/::Ho8bHKDr' target='_blank'>
+                      {strings.headerDropdownCovid19IndicatorTracking}
+                    </a>
+                  </li>
+                  <li className='drop__menu-item'>
+                    <a href='https://ee.kob4.ifrc.org/single/::w4KbO3Rc' target='_blank'>
+                      {strings.headerDropdownCovid19NSFinancialOverview}
+                    </a>
+                  </li>                                        
+                </ul>
+              </Dropdown>              
               <button className='button button--small button--close button--text-hidden' onClick={this.toggleMenu}>
                 <span>
                   <Translate stringId='mobileHeaderClose'/>
