@@ -21,8 +21,11 @@ import {
   languageResponseSelector,
 } from '#selectors';
 
+
 import BlockLoading from '#components/block-loading';
 import LanguageSelect from '#components/LanguageSelect';
+
+import AllInServer from './AllInServer';
 
 import styles from './styles.module.scss';
 
@@ -69,6 +72,7 @@ function StringRow(p) {
     </div>
   );
 }
+
 
 function TranslationDashboard(p) {
   const {
@@ -281,7 +285,12 @@ function TranslationDashboard(p) {
             <BlockLoading />
           ) : (
             <>
-              { currentView === 'all' && appStringKeyList.map((k) => (
+              { currentView === 'all' && (
+                <AllInServer
+                  strings={strings}
+                />
+              )}
+              {/* currentView === 'all' && appStringKeyList.map((k) => (
                 <StringRow
                   key={k}
                   stringKey={k}
@@ -291,7 +300,7 @@ function TranslationDashboard(p) {
                   obsolete={removedKeys[k]}
                   onChange={handleStringChange}
                 />
-              ))}
+              )) */}
               { currentView === 'added' && addedKeyList.map((k) => (
                 <StringRow
                   key={k}
