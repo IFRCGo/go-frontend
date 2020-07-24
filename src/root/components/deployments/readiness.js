@@ -8,6 +8,8 @@ import { Link } from 'react-router-dom';
 import { commaSeparatedNumber as n } from '#utils/format';
 import eruTypes, { getEruType } from '#utils/eru-types';
 import { environment } from '#config';
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
 
 import CheckboxGroup from '../form-elements/checkbox-group';
 
@@ -56,20 +58,47 @@ class Readiness extends React.Component {
     const owner = eruOwner.national_society_country;
 
     return (
-      <div className='readiness__card' key={eruOwner.id}>
-        <div className='readiness__card-header'>
-          <Link className='link--primary' to={`/countries/${owner.id}`}>{owner.society_name}</Link>
-          <span className='updated'>Last updated {DateTime.fromISO(eruOwner.updated_at).toISODate()}</span>
-        </div>
-        <div className='card__col'>
-          <p className='card__label card__label--ready'>{n(numReady)} Ready ERU's</p>
-          {readyTypes && <p>{readyTypes}</p>}
-        </div>
-        <div className='card__col'>
-          <p className='card__label'>{n(numDeployed)} Deployed ERU's</p>
-          {deployed.map(o => (
-            <p key={o.id}>{getEruType(o.type)} - <Link className='link--primary' to={`/countries/${o.deployed_to.id}`}>{o.deployed_to.name}</Link></p>
-          ))}
+      <div className='col col-6-sm'>
+        <div className='readiness__card' key={eruOwner.id}>
+          <div className='readiness__card-header row-sm flex'>
+            <div className='col-sm col-6'>
+              <Link className='link' to={`/countries/${owner.id}`}>{owner.society_name}</Link>
+            </div>
+            <span className='updated col-sm col-6'>
+              <Translate
+                stringId='readinessLastUpdated'
+                params={{
+                  date: DateTime.fromISO(eruOwner.updated_at).toISODate(),
+                }}
+              />
+            </span>
+          </div>
+          <div className='row flex'>
+            <div className='card__col col col-6'>
+              <p className='card__label card__label--ready'>
+                <Translate
+                  stringId='readinessReadyErus'
+                  params={{
+                    numReady: n(numReady),
+                  }}
+                />
+              </p>
+              {readyTypes && <p>{readyTypes}</p>}
+            </div>
+            <div className='card__col col col-6'>
+              <p className='card__label'>
+                <Translate
+                  stringId='readinessDeployedErus'
+                  params={{
+                    numDeployed: n(numDeployed),
+                  }}
+                />
+              </p>
+              {deployed.map(o => (
+                <p key={o.id}>{getEruType(o.type)} - <Link className='link-underline' to={`/countries/${o.deployed_to.id}`}>{o.deployed_to.name}</Link></p>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -79,6 +108,7 @@ class Readiness extends React.Component {
     const { filters } = this.state;
     const { data } = this.props.eruOwners;
 
+    const { strings } = this.context;
     const activeFilters = filters.filter(o => o.checked)
       .map(o => o.value);
 
@@ -88,23 +118,28 @@ class Readiness extends React.Component {
         return _intersection(activeEruTypes, activeFilters).length;
       });
     return (
-      <div>
-        <div className='readiness__filters'>
+      <div className='row flex-mid'>
+        <div className='readiness__filters col col-3-mid spacing-2-b'>
           <CheckboxGroup
-            label={'Filter Ready ERU\'s'}
+            label={strings.readinessFilteredERUs}
+            classLabel='fold__title'
             description={null}
             name={'ready-erus'}
             classWrapper=''
             options={eruOptions}
             values={this.state.filters}
             onChange={this.onChange} />
-          <button className='button button--secondary-light' onClick={this.clearFilters}>Reset Filters</button>
+          <button className='button button--secondary-light button--small' onClick={this.clearFilters}>
+            <Translate stringId='readinessResetFilters'/>
+          </button>
         </div>
-        <div className='readiness__header'>
-          <h2 className='form__label'>National Societies</h2>
-        </div>
-        <div className='readiness__cards'>
-          {filtered.map(this.renderCard)}
+        <div className='col col-9-mid'>
+          <div className='readiness__header'>
+            <h2 className='fold__title spacing-b'>National Societies</h2>
+          </div>
+          <div className='readiness__cards row flex-sm'>
+            {filtered.map(this.renderCard)}
+          </div>
         </div>
       </div>
     );
@@ -116,5 +151,5 @@ if (environment !== 'production') {
     eruOwners: T.object
   };
 }
-
+Readiness.contextType = LanguageContext;
 export default Readiness;

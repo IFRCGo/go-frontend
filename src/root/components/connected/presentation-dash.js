@@ -14,9 +14,11 @@ import {
 } from '#utils/fullscreen';
 
 import KeyFiguresHeader from '#components/common/key-figures-header';
+import HighlightedOperations from '#components/highlighted-operations';
 
 import TimelineCharts from '#components/timeline-charts';
 import AppealsTable from '#components/connected/appeals-table';
+import LanguageContext from '#root/languageContext';
 
 class PresentationDash extends React.Component {
   constructor (props) {
@@ -55,6 +57,7 @@ class PresentationDash extends React.Component {
   }
 
   render () {
+    const { strings } = this.context;
     const { appealsList } = this.props;
     return (
       <section className={c('fold--stats', {presenting: this.state.fullscreen})} id='presentation'>
@@ -63,18 +66,21 @@ class PresentationDash extends React.Component {
           fullscreen={this.state.fullscreen}
           toggleFullscreen={this.toggleFullscreen}
         />
+        { !this.state.fullscreen ? (<HighlightedOperations opsType='all'/>) : null }
         <div className={c('inner', {'appeals--fullscreen': this.state.fullscreen})}>
           <AppealsTable
             showActive={true}
             showHomeMap={true}
-            title={'Active Operations'}
+            title={strings.presentationDashAppealsTitle}
             limit={5}
             viewAll={'/appeals/all'}
             fullscreen={this.state.fullscreen}
             toggleFullscreen={this.toggleFullscreen}
           />
         </div>
-        {this.state.fullscreen ? null : <TimelineCharts /> }
+        <div className='container-lg'>
+          {this.state.fullscreen ? null : <TimelineCharts /> }
+        </div>
       </section>
     );
   }
@@ -100,4 +106,5 @@ const dispatcher = (dispatch) => ({
   _getAppealsList: (...args) => dispatch(getAppealsList(...args)),
 });
 
+PresentationDash.contextType = LanguageContext;
 export default connect(selector, dispatcher)(PresentationDash);

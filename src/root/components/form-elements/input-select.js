@@ -35,43 +35,45 @@ export default function FormInputSelect (props) {
 
   return (
     <div className={c('form__group', classWrapper)}>
-      <div className={c('form__inner-header', formInnerHeaderClass)}>
-        <div className='form__inner-headline'>
-          <label className={c('form__label', classLabel)} htmlFor={id} >{label}</label>
-          <FormDescription value={description} />
+      <div className='form__group__wrap'>
+        <div className={c('form__inner-header', formInnerHeaderClass)}>
+          <div className='form__inner-headline'>
+            <label className={c('form__label', classLabel)} htmlFor={id} >{label}</label>
+            <FormDescription value={description} />
+          </div>
         </div>
-      </div>
-      <div className={c('form__inner-body', formInnerBodyClass)}>
-        <label className='label-secondary'>{selectLabel}</label>
-        <Select.Async
-          labelSecondary={selectLabel}
-          value={selectValue}
-          onChange={selectOnChange}
-          placeholder={selectPlaceholder}
-          loadOptions={selectLoadOptions}
-          disabled={disabled} />
+        <div className={c('form__inner-body', formInnerBodyClass)}>
+          <label className='label-secondary'>{selectLabel}</label>
+          <Select.Async
+            labelSecondary={selectLabel}
+            value={selectValue}
+            onChange={selectOnChange}
+            placeholder={selectPlaceholder}
+            loadOptions={selectLoadOptions}
+            disabled={disabled} />
 
-        {labelSecondary ? (<label htmlFor={id} className='label-secondary global-margin-t'>{labelSecondary}</label>) : null}
-        <input
-          type={type}
-          id={id}
-          name={name}
-          placeholder={inputPlaceholder}
-          className={c('form__control form__control--medium', classInput)}
-          value={inputValue || ''}
-          onChange={inputOnChange}
-          disabled={disabled}
-          autoFocus={autoFocus}
-          maxLength={maxLength}
-        />
-        {children || null}
+          {labelSecondary ? (<label htmlFor={id} className='label-secondary global-margin-t'>{labelSecondary}</label>) : null}
+          <input
+            type={type}
+            id={id}
+            name={name}
+            placeholder={inputPlaceholder}
+            className={c('form__control form__control--medium', classInput)}
+            value={inputValue || ''}
+            onChange={inputOnChange}
+            disabled={disabled}
+            autoFocus={autoFocus}
+            maxLength={maxLength}
+          />
+          {children || null}
 
-        {/* <div className="label-secondary global-margin-t">Or</div> */}
+          {/* <div className="label-secondary global-margin-t">Or</div> */}
 
-        <FormError
-          errors={errors}
-          property='event'
-        />
+          <FormError
+            errors={errors}
+            property='event'
+          />
+        </div>
       </div>
     </div>
   );

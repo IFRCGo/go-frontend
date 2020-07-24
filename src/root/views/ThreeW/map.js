@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { render } from 'react-dom';
 import { connect } from 'react-redux';
 import mapboxgl from 'mapbox-gl';
@@ -16,6 +16,7 @@ import MapHeader from '#components/map/common/map-header';
 import MapFooter from '#components/map/common/map-footer';
 
 import newMap from '#utils/get-new-map';
+import LanguageContext from '#root/languageContext';
 
 const emptyList = [];
 const emptyObject = {};
@@ -67,36 +68,37 @@ const ProjectDetail = (p) => {
     },
   } = p;
 
+  const { strings } = useContext(LanguageContext);
   return (
     <div className='popover-project-detail'>
       <ProjectDetailElement
         className='popover-project-detail-last-updated'
-        label='Last update'
+        label={strings.threeWMapLastUpdate}
         value={modifiedAt.substring(0, 10)}
       />
       <div className='popover-project-detail-heading'>
         { reportingNationalSocietyName } : { projectName }
       </div>
       <ProjectDetailElement
-        label='Status'
+        label={strings.threeWMapStatus}
         value={`${status_display} (${startDate} to ${endDate})`}
       />
       <ProjectDetailElement
-        label='Sector'
+        label={strings.threeWMapSector}
         value={primary_sector_display}
       />
       { districts && districts.length > 0 && (
         <ProjectDetailElement
-          label='Regions'
+          label={strings.threeWMapRegions}
           value={districts.map(d => d.name).join(', ')}
         />
       )}
       <ProjectDetailElement
-        label='Programme type'
+        label={strings.threeWMapProgrammeType}
         value={programme_type_display}
       />
       <ProjectDetailElement
-        label='Budget'
+        label={strings.threeWMapBudget}
         value={addSeparator(budget)}
       />
     </div>
@@ -306,9 +308,11 @@ class ThreeWMap extends React.PureComponent {
   }
 
   render () {
+    const { strings } = this.context;
+
     return (
       <div className='three-w-map-wrapper'>
-        <MapHeader downloadedHeaderTitle="3W Projects" />
+        <MapHeader downloadedHeaderTitle={strings.threeWMapProjects} />
         <div
           ref={this.mapContainerRef}
           className='three-w-map'
@@ -322,6 +326,8 @@ class ThreeWMap extends React.PureComponent {
     );
   }
 }
+
+ThreeWMap.contextType = LanguageContext;
 
 const selector = (state, ownProps) => ({
   districtsResponse: state.districts,

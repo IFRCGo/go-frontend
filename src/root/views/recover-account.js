@@ -14,6 +14,9 @@ import { showAlert } from '#components/system-alerts';
 import NewPassword from '#components/connected/new-password';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
+
 class RecoverAccount extends React.Component {
   constructor (props) {
     super(props);
@@ -64,13 +67,14 @@ class RecoverAccount extends React.Component {
   }
 
   renderEmailForm () {
+    const { strings } = this.context;
     return (
       <form className='form form--centered' onSubmit={this.onSubmit}>
         <p className='form__note'>
-          Enter the email you used during registration
+          <Translate stringId='recoverAccountEmail' />
         </p>
         <FormInput
-          label='Email'
+          label={strings.recoverAccountEmailLabel}
           type='text'
           name='login-email'
           id='login-email'
@@ -83,22 +87,31 @@ class RecoverAccount extends React.Component {
             property='email'
           />
         </FormInput>
-        <button className={c('mfa-tick', { disabled: !this.allowSubmit() })} type='button' onClick={this.onSubmit}><span>Recover</span></button>
+        <button className={c('mfa-tick', { disabled: !this.allowSubmit() })} type='button' onClick={this.onSubmit}>
+          <span>
+            <Translate stringId='recoverAccountSubmitText' />
+          </span>
+        </button>
       </form>
     );
   }
 
   render () {
+    const { strings } = this.context;
     return (
       <App className='page--login'>
         <Helmet>
-          <title>IFRC Go - Recover Password</title>
+          <title>
+            {strings.recoverAccountTitle}
+          </title>
         </Helmet>
-        <section className='inpage'>
+        <section className='inpage container-lg'>
           <header className='inpage__header'>
             <div className='inner'>
               <div className='inpage__headline'>
-                <h1 className='inpage__title'>Recover Account</h1>
+                <h1 className='inpage__title'>
+                  <Translate stringId='recoverAccountHeading' />
+                </h1>
               </div>
             </div>
           </header>
@@ -129,4 +142,5 @@ const dispatcher = (dispatch) => ({
   _recoverPassword: (email) => dispatch(recoverPassword(email))
 });
 
+RecoverAccount.contextType = LanguageContext;
 export default connect(selector, dispatcher)(RecoverAccount);

@@ -50,7 +50,7 @@ export default class DateFilterHeader extends React.PureComponent {
 
   render () {
     const {id, title, featureType} = this.props;
-    const mapStyle = 'form__control--medium form__control form__control--data_select form__control--brand';
+    const mapStyle = 'form__control--medium form__control form__control--data_select form__control--brand form__control--filter';
     const tableStyle = 'drop__toggle--caret';
 
     return (
@@ -79,7 +79,7 @@ export default class DateFilterHeader extends React.PureComponent {
           <li className='global-spacing-h'>
             <p className='text-center'>
               <button
-                className="button button--primary-bounded button--small"
+                className="button button--primary-bounded button--xsmall"
                 onClick={this.applyPeriodFilter.bind(this)}
               >
               Apply

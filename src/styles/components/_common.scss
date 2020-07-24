@@ -22,6 +22,11 @@
 
     .tc-actions {
       padding: 24px;
+
+      @include media(small) {
+       display: flex;
+       justify-content: flex-end;
+      }
     }
   }
 
@@ -129,7 +134,7 @@
     flex-basis: 27%;
     min-width: 300px;
     flex-shrink: 0;
-    padding-right: 24px;
+    padding-inline-end: 24px;
 
     .tc-title {
       font-weight: bold;
@@ -158,7 +163,7 @@
 
 .three-w-region-progress-bar {
   height: 10px;
-  background-color: rgba(0, 0, 0, .1);
+  background-color: $grey-mist;
   overflow: hidden;
   border-radius: 5px;
 
@@ -172,7 +177,7 @@
 .three-w-region-scale {
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
+  border-bottom: 1px solid $grey-pearl;
   padding: 6px 0;
 }
 

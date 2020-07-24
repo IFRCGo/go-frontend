@@ -1,11 +1,19 @@
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
 import Select from 'react-select';
-import { Link, withRouter } from 'react-router-dom';
+import {
+  NavLink,
+  Link,
+  withRouter,
+} from 'react-router-dom';
 
 import { api, environment } from '#config';
 import { request } from '#utils/network';
 import { uppercaseFirstLetter as u, isoDate } from '#utils/format';
+// import LanguageSelect from '#components/LanguageSelect';
+import Translate from '#components/Translate';
+import LanguageContext from '#root/languageContext';
+
 import UserMenu from './connected/user-menu';
 import HeaderRegionButton from './header-region-button';
 import Dropdown from './common/dropdown';
@@ -30,134 +38,154 @@ function getUriForType (type, id, data) {
   }
 }
 
-class Header extends React.PureComponent {
-  constructor (props) {
-    super(props);
-    this.state = {
-      search: '',
-      showBetaBanner: false
-    };
-    this.onSelect = this.onSelect.bind(this);
+function Header (props) {
+  const {
+    history,
+    match,
+  } = props;
 
-    // Basic function to wait until user stops typing to query ES.
-    let i = 0;
-    this.slowLoad = input => {
-      i += 1;
-      let mirror = i;
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          if (i === mirror) {
-            return resolve(this.getOptions(input));
-          } else {
-            return resolve({ options: [] });
-          }
-        }, 500);
-      });
-    };
-  }
+  const { strings } = React.useContext(LanguageContext);
+  let requestCount = React.useRef(0);
 
-  onSelect ({value}) {
-    this.props.history.push(value);
-  }
+  const getOptions = React.useCallback((input) => (
+      !input
+        ? Promise.resolve({ options: [] })
+        : request(`${api}api/v1/es_search/?keyword=${input}`)
+          .then(data => {
+            const options = data.hits.map(o => {
+              const d = o._source;
+              const value = getUriForType(d.type, d.id, d);
+              const date = d.date ? ` (${isoDate(d.date)})` : '';
+              const label = `${u(d.type)}: ${d.name}${date}`;
+              return {
+                value,
+                label
+              };
+            }).filter(Boolean);
+            return { options };
+          })
+  ), []);
 
-  getOptions (input) {
-    return !input
-      ? Promise.resolve({ options: [] })
-      : request(`${api}api/v1/es_search/?keyword=${input}`)
-        .then(data => {
-          const options = data.hits.map(o => {
-            const d = o._source;
-            const value = getUriForType(d.type, d.id, d);
-            const date = d.date ? ` (${isoDate(d.date)})` : '';
-            const label = `${u(d.type)}: ${d.name}${date}`;
-            return {
-              value,
-              label
-            };
-          }).filter(Boolean);
-          return { options };
-        });
-  }
+  const slowLoad = React.useCallback((input) => {
+    let { current: i } = requestCount;
+    i += 1;
+    let mirror = i;
 
-  render () {
-    return (
-      <div className='desktop__header'>
-        {this.state.showBetaBanner && (
-          <div className='beta-note'>
-            <div className='inner'>
-              <p>This is the beta version of IFRC GO. For issues and feedback on the platform, contact <a href='mailto:im@ifrc.org'>im@ifrc.org</a>.</p>
-              <div className='beta-note__actions'>
-                <button className='button button--small button--close button--text-hidden' onClick={() => this.setState({ showBetaBanner: false })}><span>close</span></button>
-              </div>
-            </div>
-          </div>
-        )}
-        <header className='page__header' role='banner'>
-          <div className='page__header__inner__wrap'>
-            <div className='inner'>
-              <div className='page__headline'>
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (i === mirror) {
+          return resolve(getOptions(input));
+        } else {
+          return resolve({ options: [] });
+        }
+      }, 500);
+    });
+  }, [requestCount, getOptions]);
+
+  const handleSelect = React.useCallback(({ value }) => {
+    history.push(value);
+  }, [history]);
+
+  return (
+    <div className='desktop__header'>
+      <header className='page__header' role='banner'>
+        <div className='page__header__inner__wrap'>
+          <div className='container-lg spacing-v'>
+            <div className='inner row flex'>
+              <div className='page__headline col'>
                 <h1 className='page__title'>
-                  <Link to='/' title='Visit page'>
-                    <img src='/assets/graphics/layout/go-logo-2020.svg' alt='IFRC GO logo' className="logo-main" />
-                    <span>IFRC GO</span>
+                  <Link to='/' title={strings.headerVisitPageTooltip}>
+                    <img src='/assets/graphics/layout/go-logo-2020.svg' alt={strings.headerLogoAltText} className="logo-main" />
+                    <Translate
+                      stringId="headerAppName"
+                    />
                   </Link>
                 </h1>
               </div>
-              <nav className='page__meta-nav' role='navigation'>
-                <Link to='/about' title='Visit Resources page' className='page__meta-nav-elements'><span>Resources</span></Link>
+              <nav className='page__meta-nav col' role='navigation'>
+                {/* <LanguageSelect /> */}
+                <Link to='/about' title={strings.headerMenuResourceTooltip} className='page__meta-nav-elements'>
+                  <Translate stringId="headerMenuResources" />
+                </Link>
                 <UserMenu />
                 <Dropdown
                   id='drop__header__field__report'
                   triggerClassName='drop__toggle--caret button button--primary-bounded button--small drop__toggle--field-report-new'
                   triggerActiveClassName='active'
-                  triggerText='Create a Report'
+                  triggerText={strings.headerCreateAReportLabel}
                   triggerElement='a'
                   direction='down'
                   alignment='center' >
                   <ul className='drop__menu drop__menu--select drop__menu__field__report' role='menu'>
                     <li className='drop__menu-item'>
-                      <Link to='/reports/new'>New Field Report</Link>
+                      <Link to='/reports/new'>{strings.headerDropdownNewFieldReport}</Link>
                     </li>
                     <li className='drop__menu-item'>
-                      <a href='https://ee.kob4.ifrc.org/single/::Ho8bHKDr' target='_blank'>Covid-19 Indicator Tracking</a>
+                      <a href='https://ee.kob4.ifrc.org/single/::Ho8bHKDr' target='_blank'>
+                        {strings.headerDropdownCovid19IndicatorTracking}
+                      </a>
                     </li>
                     <li className='drop__menu-item'>
-                      <a href='https://ee.kob4.ifrc.org/single/::w4KbO3Rc' target='_blank'>Covid-19 NS Financial Overview</a>
+                      <a href='https://ee.kob4.ifrc.org/single/::w4KbO3Rc' target='_blank'>
+                        {strings.headerDropdownCovid19NSFinancialOverview}
+                      </a>
                     </li>                                        
                   </ul>
                 </Dropdown>
               </nav>
             </div>
           </div>
-          <div className='inner'>
-            <nav className='page__prime-nav' role='navigation'>
+        </div>
+        <div className='inner container-lg'>
+          <div className='row flex'>
+            <nav className='page__prime-nav col' role='navigation'>
               <ul className='nav-global-menu'>
-                <li><Link to='/' title='Visit Home page' className={this.props.match.path === '/' ? 'navbar-highlighted' : null}><span>Home</span></Link></li>
-                <li><HeaderRegionButton id='regions-menu' currentPath={this.props.match} /></li>
-                <li><Link to='/emergencies' title='Visit emergencies page' className={this.props.match.path.includes('/emergencies') ? 'navbar-highlighted' : null}><span>Emergencies</span></Link></li>
-                <li><Link to='/deployments' title='Visit Deployments page' className={this.props.match.path.includes('/deployments') ? 'navbar-highlighted' : null}><span>Deployments</span></Link></li>
-                <li><Link to='/preparedness' title='Visit Preparedness page' className={this.props.match.path.includes('/preparedness') ? 'navbar-highlighted' : null}><span>Preparedness</span></Link></li>
+                <li>
+                  <NavLink to='/' title={strings.headerMenuHomeTooltip} activeClassName='navbar-highlighted' exact>
+                    <Translate stringId='headerMenuHome' />
+                  </NavLink>
+                </li>
+                <li>
+                  <HeaderRegionButton id='regions-menu' currentPath={match} />
+                </li>
+                <li>
+                  <NavLink to='/emergencies' title={strings.headerMenuEmergenciesTooltip} activeClassName='navbar-highlighted' exact>
+                    <Translate stringId="headerMenuEmergencies" />
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to='/deployments' title={strings.headerMenuDeploymentsTooltip} activeClassName='navbar-highlighted' exact>
+                    <Translate stringId="headerMenuDeployments" />
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to='/preparedness' title={strings.headerMenuPreparednessTooltip} activeClassName='navbar-highlighted' exact>
+                    <Translate stringId="headerMenuPreparedness" />
+                  </NavLink>
+                </li>
               </ul>
             </nav>
-            <div className='nav-global-search'>
+            <div className='nav-global-search col'>
               <form className='gsearch'>
                 <div>
-                  <label className='form__label'>Search</label>
+                  <label className='form__label'>
+                    <Translate stringId="headerSearchLabel" />
+                  </label>
                   <Select.Async
-                    placeholder='Search'
-                    onChange={this.onSelect}
+                    placeholder={strings.headerSearchPlaceholder}
+                    onChange={handleSelect}
                     filterOptions={noFilter}
                     autoload={false}
                     cache={false}
-                    loadOptions={this.slowLoad} />
+                    loadOptions={slowLoad} />
                 </div>
               </form>
             </div>
           </div>
-        </header>
-      </div>
-    );
-  }
+        </div>
+      </header>
+    </div>
+  );
 }
 
 if (environment !== 'production') {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import _cs from 'classnames';
 import { saveAs } from 'file-saver';
 import { connect } from 'react-redux';
@@ -16,6 +16,8 @@ import {
   projectDeleteSelector,
 } from '#selectors';
 
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
 import ConfirmModal from '#components/confirm-modal';
 import BlockLoading from '#components/block-loading';
 import {
@@ -83,6 +85,8 @@ function ThreeW (p) {
     projectFormResponse.fetching ||
     deleteProjectResponse.fetching ||
     meResponse.fetching;
+
+  const { strings } = useContext(LanguageContext);
 
   const projectList = React.useMemo(() => (
     getResultsFromResponse(projectListResponse)
@@ -189,11 +193,13 @@ function ThreeW (p) {
       { pending && (
         <BlockLoading />
       )}
-      <header className='tc-header'>
-        <h2 className='tc-heading'>
-          Red Cross / Red Crescent activities
+      <header className='fold__header__block'>
+        <h2 className='fold__title fold__title--inline'>
+          <Translate
+            stringId="rcActivities"
+          />
         </h2>
-        <div className='tc-actions'>
+        <div className='fold__title__linkwrap'>
           { isCountryAdmin && (
             <button
               className={_cs(
@@ -203,7 +209,9 @@ function ThreeW (p) {
               onClick={handleAddButtonClick}
               disabled={disabled}
             >
-              Add
+              <Translate
+                stringId="threeWAdd"
+              />
             </button>
           )}
           <button
@@ -214,14 +222,16 @@ function ThreeW (p) {
             onClick={handleExportButtonClick}
             disabled={shouldDisableExportButton}
           >
-            Export
+            <Translate
+              stringId="threeWExport"
+            />
           </button>
         </div>
       </header>
       <div className='content'>
         <Filter
           projectList={projectList}
-          className='three-w-filters'
+          className='three-w-filters row-sm'
           onFilterChange={setFilters}
         />
         <div className="three-w-map-vis">
@@ -253,8 +263,8 @@ function ThreeW (p) {
       </div>
       { showDeleteConfirmationModal && (
         <ConfirmModal
-          title="Delete project"
-          message="Are you sure you want to delete the project?"
+          title={strings.threeWDeleteProject}
+          message={strings.threeWDeleteProjectMessage}
           onClose={handleDeleteProjectConfirmModalClose}
         />
       )}

@@ -10,6 +10,7 @@ import { getRegionBoundingBox } from '#utils/region-bounding-box';
 import { getCentroidByCountryId } from '#utils/country-centroids';
 
 import ActivityDetails from './activity-details';
+import Translate from '#components/Translate';
 
 const emptyList = [];
 
@@ -179,7 +180,7 @@ function Map (props) {
                   </Link>
                 </div>
                 <div className='tc-value'>
-                  {d.value} projects
+                  <Translate stringId='supportingNSListProjects' params={{ noOfProjects: d.value }}/>
                 </div>
               </div>
               <ProgressBar

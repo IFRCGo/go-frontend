@@ -1,6 +1,7 @@
 import React from 'react';
 
 import LoginModal from './login-modal';
+import Translate from '#components/Translate';
 
 class AuthControls extends React.Component {
   constructor (props) {
@@ -25,7 +26,9 @@ class AuthControls extends React.Component {
   render () {
     return (
       <div>
-        <button title='Login' className='button button--base-plain' onClick={this.openModal}><span>Login</span></button>
+        <button title='Login' className='button button--base-plain' onClick={this.openModal}><span>
+                                                                                               <Translate stringId='loginButton'/>
+                                                                                             </span></button>
         <LoginModal
           revealed={this.state.loginRevealed}
           onCloseClick={this.closeModal} />

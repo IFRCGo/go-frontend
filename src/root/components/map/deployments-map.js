@@ -14,6 +14,9 @@ import MapComponent from './common/map-component';
 // import {
 //   FormSelect
 // } from '../form-elements';
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
+import { resolveToString } from '#utils/lang';
 
 const countryChromaScale = chroma.scale(['#F0C9E8', '#861A70']);
 
@@ -202,11 +205,14 @@ export default class DeploymentsMap extends React.Component {
       }
     ];
 
+    const { strings } = this.context;
+
     render(<MapPopover
-      title={`Deployments in ${feature.properties.name}`}
-      countryId={feature.properties.id}
-      deployments={deployments}
-      onCloseClick={this.onPopoverCloseClick.bind(this)} />, popoverContent);
+             title={resolveToString(strings.mapPopoverTitle, { name: feature.properties.name })}
+             countryId={feature.properties.id}
+             deployments={deployments}
+             onCloseClick={this.onPopoverCloseClick.bind(this)}
+           />, popoverContent);
 
     // Populate the popup and set its coordinates
     // based on the feature found.
@@ -251,16 +257,19 @@ export default class DeploymentsMap extends React.Component {
     ];
     const activeFilter = filterTypes.find(d => d.value === this.state.mapFilter.deployment).label;
 
+    const { strings } = this.context;
     return (
       <div className='stats-map deployments-map'>
         <div className='inner'>
           <div className='map-container'>
-            <h2 className='visually-hidden'>Deployments by Country</h2>
+            <h2 className='visually-hidden'>
+              <Translate stringId='deploymentsMapHeading'/>
+            </h2>
             <MapComponent className='map-vis__holder'
               configureMap={this.configureMap}
               noExport={true}
               downloadButton={true}
-              downloadedHeaderTitle='Deployments'
+              downloadedHeaderTitle={strings.deploymentsMapDownloadTitle}
               layers={this.state.layers}
               filters={this.state.filters}
               geoJSON={this.props.data}>
@@ -268,20 +277,35 @@ export default class DeploymentsMap extends React.Component {
               <figcaption className='map-vis__legend map-vis__legend--bottom-right legend'>
                 <div className='deployments-key'>
                   <div>
-                    <label className='form__label'>Key</label>
+                    <label className='form__label'>
+                      <Translate stringId='deploymentsMapKey'/>
+                    </label>
                     <dl className='legend__dl legend__dl--colors'>
                       <dt className='color color--blue'>blue</dt>
                       {activeFilter === 'All' ? (
-                        <dd>Deployed FACT, RDRT/RIT, & HEOPs</dd>
+                        <dd>
+                          <Translate stringId='deploymentsMapDeployedTitle'/>
+                        </dd>
                       ) : (
-                        <dd>Deployed {activeFilter}</dd>
+                        <dd>
+                          <Translate
+                            stringId='deploymentsMapDeployed'
+                            params={{
+                              activeFilter: activeFilter,
+                            }}
+                          />
+                        </dd>
                       )}
                     </dl>
                   </div>
                   <div className='legend__block'>
-                    <h3 className='legend__title'>Emergency Response Units deployed</h3>
+                    <h3 className='legend__title'>
+                      <Translate stringId='deploymentsMapLegendTitle'/>
+                    </h3>
                     <dl className='legend__grandient'>
-                      <dt style={{background: 'linear-gradient(to right, #F0C9E8, #861A70)'}}>Scale Gradient</dt>
+                      <dt style={{background: 'linear-gradient(to right, #F0C9E8, #861A70)'}}>
+                        <Translate stringId='deploymentsMapScaleGradient'/>
+                      </dt>
                       <dd>
                         <span>0</span>
                         <span>to</span>
@@ -314,6 +338,7 @@ export default class DeploymentsMap extends React.Component {
   }
 }
 
+DeploymentsMap.contextType = LanguageContext;
 if (environment !== 'production') {
   DeploymentsMap.propTypes = {
     data: T.object
@@ -340,11 +365,16 @@ class MapPopover extends React.Component {
         <div className='popover__contents'>
           <header className='popover__header'>
             <div className='popover__headline'>
-              <a className='link--primary' href={`/countries/${countryId}`}>{title}</a>
+              <a className='link-underline' href={`/countries/${countryId}`}>{title}</a>
             </div>
             <div className='popover__actions actions'>
               <ul className='actions__menu'>
-                <li><button type='button' className='actions__menu-item poa-xmark' title='Close popover' onClick={this.props.onCloseClick}><span>Dismiss</span></button></li>
+                <li><button type='button' className='actions__menu-item poa-xmark' title='Close popover' onClick={this.props.onCloseClick}>
+                      <span>
+                        <Translate stringid='mapPopOverDismiss'/>
+                      </span>
+                    </button>
+                </li>
               </ul>
             </div>
           </header>

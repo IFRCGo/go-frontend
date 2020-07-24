@@ -1,6 +1,7 @@
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
 import { environment } from '#config';
+import LanguageContext from '#root/languageContext';
 
 class EmergencyTypesDropdown extends React.Component {
   constructor (props) {
@@ -23,11 +24,14 @@ class EmergencyTypesDropdown extends React.Component {
 
   render () {
     const emergenciesByType = this.props.emergenciesByType;
+    const { strings } = this.context;
     return (
       <figcaption className='map-vis__legend map-vis__legend--top-left legend'>
         <form>
-          <select onChange={this.filterByEmergencyType} id='top-emergency-dropdown' className='form__control form__control--medium form__control--brand'>
-            <option value='0'>All Emergency Types</option>
+          <select onChange={this.filterByEmergencyType} id='top-emergency-dropdown' className='form__control form__control--medium form__control--brand form__control--filter'>
+            <option value='0'>
+              {strings.emergencyTypesAll}
+            </option>
             {emergenciesByType.map(emergency => (
               <option
                 key={emergency.id}
@@ -49,5 +53,5 @@ if (environment !== 'production') {
     emergenciesByType: T.array
   };
 }
-
+EmergencyTypesDropdown.contextType = LanguageContext;
 export default EmergencyTypesDropdown;

@@ -18,6 +18,7 @@ import Fold from '#components/fold';
 import BlockLoading from '#components/block-loading';
 import DisplayTable, { SortHeader, FilterHeader } from '#components/display-table';
 import { SFPComponent } from '#utils/extendables';
+import LanguageContext from '#root/languageContext';
 
 const typeOptions = [
   { value: 'all', label: 'All' },
@@ -107,7 +108,8 @@ class PersonnelTable extends SFPComponent {
       data
     } = this.props.personnel;
 
-    const title = this.props.title || 'Deployed Personnel';
+    const { strings } = this.context;
+    const title = this.props.title || strings.personnelTableTitle;
 
     if (fetching) {
       return (
@@ -125,35 +127,35 @@ class PersonnelTable extends SFPComponent {
     if (fetched) {
       const headings = [{
         id: 'startDateInterval',
-        label: <FilterHeader id='startDateInterval' title='Start Date' options={dateOptions} filter={this.state.table.filters.startDateInterval} onSelect={this.handleFilterChange.bind(this, 'table', 'startDateInterval')} />
+        label: <FilterHeader id='startDateInterval' title={strings.personnelTableStartDate} options={dateOptions} filter={this.state.table.filters.startDateInterval} onSelect={this.handleFilterChange.bind(this, 'table', 'startDateInterval')} />
       },
       {
         id: 'endDate',
-        label: <SortHeader id='end_date' title='End Date' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'end_date')} />
+        label: <SortHeader id='end_date' title={strings.personnelTableEndDate} sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'end_date')} />
       },
       {
         id: 'name',
-        label: <SortHeader id='name' title='Name' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'name')} />
+        label: <SortHeader id='name' title={strings.personnelTableName} sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'name')} />
       },
       {
         id: 'role',
-        label: <SortHeader id='role' title='Role' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'role')} />
+        label: <SortHeader id='role' title={strings.personnelTableRole} sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'role')} />
       },
       {
         id: 'type',
-        label: <FilterHeader id='type' title='Type' options={typeOptions} filter={this.state.table.filters.type} onSelect={this.handleFilterChange.bind(this, 'table', 'type')} />
+        label: <FilterHeader id='type' title={strings.personnelTableType} options={typeOptions} filter={this.state.table.filters.type} onSelect={this.handleFilterChange.bind(this, 'table', 'type')} />
       },
       {
         id: 'country',
-        label: <SortHeader id='country_from' title='From' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'country_from')} />
+        label: <SortHeader id='country_from' title={strings.personnelTableFrom} sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'country_from')} />
       },
       {
         id: 'deployed',
-        label: <SortHeader id='deployment' title='Deployed to' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'deployment')} />
+        label: <SortHeader id='deployment' title={strings.personnelTableDeployedTo} sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'deployment')} />
       },
       {
         id: 'emer',
-        label: <SortHeader id='emer' title='Emergency' sort={this.state.table.sort} onClick={() => {}} /> // for filtering options check .../api/v2/personnel/?limit=2 - the Filters button, Ordering
+        label: <SortHeader id='emer' title={strings.personnelTableEmergency} sort={this.state.table.sort} onClick={() => {}} /> // for filtering options check .../api/v2/personnel/?limit=2 - the Filters button, Ordering
       }];
 
       const rows = data.results.map(o => ({
@@ -163,17 +165,17 @@ class PersonnelTable extends SFPComponent {
         name: o.name,
         role: get(o, 'role', nope),
         type: o.type === 'rr' ? typeLongNames[o.type] : o.type.toUpperCase(),
-        country: o.country_from ? <Link to={`/countries/${o.country_from.id}`} className='link--primary' title='View Country'>{o.country_from.society_name || o.country_from.name}</Link> : nope,
-        deployed: o.deployment && o.deployment.country_deployed_to ? <Link to={`/countries/${o.deployment.country_deployed_to.id}`} className='link--primary' title='View Country'>{o.deployment.country_deployed_to.name}</Link> : nope,
-        emer: o.deployment && o.deployment.event_deployed_to ? <Link to={`/emergencies/${o.deployment.event_deployed_to.id}`} className='link--primary' title='View Country'>{o.deployment.event_deployed_to.name}</Link> : nope
+        country: o.country_from ? <Link to={`/countries/${o.country_from.id}`} className='link--table' title={strings.personnelTableViewCountry}>{o.country_from.society_name || o.country_from.name}</Link> : nope,
+        deployed: o.deployment && o.deployment.country_deployed_to ? <Link to={`/countries/${o.deployment.country_deployed_to.id}`} className='link--table' title={strings.personnelTableViewCountry}>{o.deployment.country_deployed_to.name}</Link> : nope,
+        emer: o.deployment && o.deployment.event_deployed_to ? <Link to={`/emergencies/${o.deployment.event_deployed_to.id}`} className='link--table' title={strings.personnelTableViewCountry}>{o.deployment.event_deployed_to.name}</Link> : nope
       }));
 
       const foldLink = this.props.viewAll ? (
-        <Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || 'View all deployed personnel'}</Link>
+        <Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || strings.personnelTableViewAllDeployed}</Link>
       ) : null;
 
       return (
-        <Fold title={`${title} (${n(data.count)})`} navLink={foldLink} id={this.props.id} wrapperClass='table__container' foldClass='fold__title--inline'>
+        <Fold title={`${title} (${n(data.count)})`} navLink={foldLink} id={this.props.id} foldWrapperClass='table__container' foldTitleClass='fold__title--inline'>
           {this.props.showExport ? (
             <ExportButton filename='deployed-personnel'
               qs={this.getQs(this.props)}
@@ -196,6 +198,7 @@ class PersonnelTable extends SFPComponent {
   }
 }
 
+PersonnelTable.contextType = LanguageContext;
 if (environment !== 'production') {
   PersonnelTable.propTypes = {
     _getPersonnel: T.func,

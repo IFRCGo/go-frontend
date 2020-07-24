@@ -15,12 +15,15 @@ $map-color: #23324D;                       // Blue light
 $grey-slate: rgba(45, 70, 98, 0.6);
 $grey-mist: #faf9f9; 									                  // Previously fafafa;
 $grey-fog: #f3f2f3;
-$grey-cloud: #c9c3c1;
 $grey-titanium: #eaeaea;
 $grey-pearl: #d1d1d1;
+$grey-cloud: #c9c3c1;
+$grey-platinum: #919191;
 $grey-silver: #848484;
 $grey-cement: #505050;
 $grey-gravel: #494949;
+$grey-soot: #282d32;
+$black: #000;
 
 /* State colors */
 
@@ -53,16 +56,18 @@ $base-font-weight: $base-font-light;
 $base-line-height: 1.5;
 
 $base-font-size: 0.875rem;
-$font-size-xxs: 0.6rem;
+$font-size-xxs: 0.63rem;
 $font-size-xs: 0.695rem;
-$font-size-sm: 0.775rem;
-$font-size-lg: 0.95;
-$font-size-xl: 1.05rem;
-$font-size-xxl: 1.15rem;
+$font-size-sm: 0.75rem;
+$font-size-lg: 1rem;
+$font-size-xl: 1.06rem;
+$font-size-xxl: 1.16rem;
+$font-size-heading-widget: 1.72rem;
 
 $code-font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 
 $letter-spacing-sm: 0.6px;
+$letter-spacing-lg: 1.6px;
 
 $heading-font-family: "Poppins", "Helvetica Neue", Helvetica, Arial, sans-serif;
 $heading-font-light: 300;
@@ -81,12 +86,23 @@ $full-border-radius: 100vh;
 $input-rounded-radius: 1.8rem;
 
 $base-border-color: rgba(#000, 0.1);
+$base-border-color--light: rgba(#000, 0.05);
 $base-border-width: 1px;
 
 
 /* Box shadow */
 
 $base-box-shadow: 1px 2px 6px 1px $base-alpha-color;
+$box-shadow-component: 1px 1px 4px rgba($black, 0.06);
+
+
+/* Grid
+   ========================================================================== */
+
+$grid-column-count: 12;
+$grid-gutter: 12px;
+$grid-gutter-sm: ($grid-gutter / 2);
+$grid-gutter-lg: ($grid-gutter * 1.5);
 
 
 /* Sizing, spacing and media queries
@@ -101,11 +117,29 @@ $page-header-y: 0 !default;
 $global-spacing: 1rem;
 $global-spacing-2: 1.5rem;
 $global-spacing-3: 2rem;
+$global-spacing-4: 2.5rem;
+$global-spacing-5: 3rem;
+
+
+/* Spacing Variables in pixels */
+
+$spacing: 12px;
+$spacing-2: ($spacing * 2);
+$spacing-3: ($spacing * 3);
+$spacing-4: ($spacing * 4);
+$spacing-5: ($spacing * 5);
+$spacing-half: ($spacing / 2);
+
+/* Maximum Widths: Site */
+$media-xsmall: 544px;
+$media-small: 768px;
+$media-medium: 992px;
+$media-large: 1440px;
 
 /* Rows */
 
 $row-min-width: 320px;
-$row-max-width: 1420px;
+$row-max-width: 1440px;
 $jeet-max-width: $row-max-width; // reset jeet.gs max width
 
 /* Media queries */
@@ -114,11 +148,8 @@ $xsmall-range: (0, 543px);
 $small-range: (544px, 767px);
 $medium-range: (768px, 991px);
 $large-range: (992px, 1419px);
-$xlarge-range: (1420px, 1600px);
+$xlarge-range: (1440px, 1600px);
 $xxlarge-range: (1601px, 3000px);
 
 $screen: "only screen";
 
-$media-xsmall: 544px;
-$media-small: 768px;
-$media-medium: 992px;

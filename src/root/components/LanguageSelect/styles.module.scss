@@ -1,0 +1,30 @@
+@import '~styles/settings/variables';
+
+.dropdown-menu-label {
+  display: flex;
+  align-items: center;
+  padding: 3px 6px;
+}
+
+.dropdown {
+  z-index: 11111;
+  padding: 0!important;
+  width: 160px;
+
+  .language-button {
+    background-color: transparent;
+    display: block;
+    width: 100%;
+    border: 0;
+    padding: 6px 12px;
+    outline: none;
+    cursor: pointer;
+    text-align: start;
+
+    &.active {
+      background-color: $primary-color;
+      color: #fff;
+      font-weight: $base-font-medium;
+    }
+  }
+}

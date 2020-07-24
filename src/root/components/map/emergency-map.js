@@ -10,6 +10,9 @@ import { startDownload } from '#utils/download-starter';
 import { DateTime } from 'luxon';
 import { disasterType } from '#utils/field-report-constants';
 import _find from 'lodash.find';
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
+
 class EmergencyMap extends React.Component {
   constructor (props) {
     super(props);
@@ -116,9 +119,11 @@ class EmergencyMap extends React.Component {
       <div className='emergency-map'>
         <div className='inner'>
           <div className='row text-right'>
-            <button className={c('button button--primary-bounded button--export global-margin-3-b', {
+            <button className={c('button button--primary-bounded button--small button--export global-margin-3-b', {
               disabled: !this.state.ready
-            })} onClick={this.exportMap.bind(this, countries[0].name, _find(disasterType, {value: String(disasterTypeCode)}).label)}>Export Map</button>
+            })} onClick={this.exportMap.bind(this, countries[0].name, _find(disasterType, {value: String(disasterTypeCode)}).label)}>
+              <Translate stringId='emergencyMapExport'/>
+            </button>
           </div>
           <div className='map-container' id='mapContainer'>
             <div style={exportStyle} className='global-margin'>
@@ -135,20 +140,36 @@ class EmergencyMap extends React.Component {
                   <div>
                     <label className='form__label'>Key</label>
                     <dl className='legend__dl legend__dl--colors'>
-                      <dt className='color color--lightblue'>selected</dt>
-                      <dd>Affected country</dd>
-                      <dt className='color color--maroon'>selected</dt>
-                      <dd>Affected regions</dd>
+                      <dt className='color color--lightblue'>
+                        <Translate stringId='emergencyMapSelected'/>
+                      </dt>
+                      <dd>
+                        <Translate stringId='emergencyMapAffectedCountry'/>
+                      </dd>
+                      <dt className='color color--maroon'>
+                        <Translate stringId='emergencyMapSelected'/>
+                      </dt>
+                      <dd>
+                        <Translate stringId='emergencyMapAffectedRegion'/>
+                      </dd>
                     </dl>
                     <dl className='legend__dl legend__dl--borders'>
-                      <dt className='border--disputed'>border</dt>
-                      <dd>Disputed borders</dd>
+                      <dt className='border--disputed'>
+                        <Translate stringId='emergencyMapBorder'/>
+                      </dt>
+                      <dd>
+                        <Translate stringId='emergencyMapBorderDisputed'/>
+                      </dd>
                     </dl>
                     {
                       this.state.disputedTerritoriesVisible
                         ? <dl className='legend__dl legend__dl--borders'>
-                          <dt className='border--territory'>territory</dt>
-                          <dd>Disputed territory</dd>
+                            <dt className='border--territory'>
+                              <Translate stringId='emergencyMapTerritory'/>
+                            </dt>
+                            <dd>
+                              <Translate stringId='emergencyMapDisputedTerritory'/>
+                            </dd>
                         </dl> : null
                     }
                   </div>
@@ -157,13 +178,17 @@ class EmergencyMap extends React.Component {
               <div className="map-vis__holder" ref='map'/>
               <img id="exportimage" style={exportImageStyle} src='/assets/graphics/layout/go-logo-2020.svg'/>
             </figure>
-            <p style={exportStyle} className='map__container__disclaimer'>The maps used do not imply the expresion of any opinion on the part of the International Federation of the Red Cross and Red Crescent Societies or National Societies concerning the legal status of a territory or of its authorities, Data sources: IFRC, OSM contributors, Mapbox.</p>
+            <p style={exportStyle} className='map__container__disclaimer'>
+              <Translate stringId='mapFooterDisclaimer'/>
+            </p>
           </div>
         </div>
       </div>
     );
   }
 }
+
+EmergencyMap.contextType = LanguageContext;
 
 if (environment !== 'production') {
   EmergencyMap.propTypes = {

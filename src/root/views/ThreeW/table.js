@@ -20,73 +20,76 @@ import {
 } from '#utils/constants';
 import { api } from '#config';
 
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
+
 import FormattedDate from '#components/formatted-date';
 import DropdownMenu from '#components/dropdown-menu';
 
 export default class ProjectListTable extends React.PureComponent {
-  constructor (props) {
-    super(props);
-
-    this.headers = [
+  getHeaders = (strings) => {
+    const headers = [
       {
         key: 'start_date',
-        label: 'Start Date',
+        label: strings.projectListTableStartDate,
         modifier: d => <FormattedDate value={d['start_date']} />,
       },
       {
         key: 'end_date',
-        label: 'End Date',
+        label: strings.projectListTableEndDate,
         modifier: d => <FormattedDate value={d['end_date']} />,
       },
       {
         key: 'name',
-        label: 'Project Name',
+        label: strings.projectListTableProjectName,
       },
       {
         key: 'reporting_ns',
-        label: 'Reporting NS',
+        label: strings.projectListTableSupportingNs,
         modifier: d => d.reporting_ns_detail.society_name,
       },
       {
         key: 'primary_sector',
-        label: 'Sector of Activity',
+        label: strings.projectListTableActivitySector,
         modifier: d => sectors[d.primary_sector],
       },
       {
         key: 'budget_amount',
-        label: 'Budget (CHF)',
+        label: strings.projectListTableBudget,
         modifier: d => addSeparator(d.budget_amount),
       },
       {
         key: 'programme_type',
-        label: 'Programme Type',
+        label: strings.projectListTableProgrammeType,
         modifier: d => programmeTypes[d.programme_type],
       },
       {
         key: 'dtype_detail',
-        label: 'Disaster Type',
+        label: strings.projectListTableDisaster,
         modifier: r => r.dtype_detail ? r.dtype_detail.name : '',
       },
       {
         key: 'target_total',
-        label: 'People Targeted',
+        label: strings.projectListTablePeopleTargeted,
         modifier: d => addSeparator(d.target_total),
       },
       {
         key: 'reached_total',
-        label: 'People Reached',
+        label: strings.projectListTablePeopleReached,
         modifier: d => addSeparator(d.reached_total),
       },
       {
         key: 'status',
-        label: 'Status',
+        label: strings.projectListTableStatus,
         modifier: d => statuses[d.status],
       },
+      /*
       {
         key: 'modified_at',
-        label: 'Last Updated',
+        label: strings.projectListTableLastUpdated,
         modifier: d => <FormattedDate value={d['modified_at']} />,
       },
+      */
       {
         key: 'actions',
         label: '',
@@ -102,7 +105,7 @@ export default class ProjectListTable extends React.PureComponent {
             >
               <MdSearch className='tc-icon' />
               <div className='tc-label'>
-                View details
+                <Translate stringId='projectListTableViewDetails'/>
               </div>
             </button>
             { this.props.isCountryAdmin && (
@@ -113,7 +116,7 @@ export default class ProjectListTable extends React.PureComponent {
                 >
                   <MdEdit className='tc-icon' />
                   <div className='tc-label'>
-                    Edit
+                    <Translate stringId='projectListTableEdit'/>
                   </div>
                 </button>
                 <button
@@ -122,7 +125,7 @@ export default class ProjectListTable extends React.PureComponent {
                 >
                   <MdContentCopy className='tc-icon' />
                   <div className='tc-label'>
-                    Duplicate
+                    <Translate stringId='projectListTableDuplicate'/>
                   </div>
                 </button>
                 <a
@@ -131,7 +134,7 @@ export default class ProjectListTable extends React.PureComponent {
                 >
                   <MdHistory className='tc-icon' />
                   <div className='tc-label'>
-                    History
+                    <Translate stringId='projectListTableHistory'/>
                   </div>
                 </a>
                 <hr />
@@ -141,7 +144,7 @@ export default class ProjectListTable extends React.PureComponent {
                 >
                   <MdDeleteForever className='tc-icon' />
                   <div className='tc-label'>
-                    Delete
+                    <Translate stringId='projectListTableDelete'/>
                   </div>
                 </button>
               </React.Fragment>
@@ -150,6 +153,8 @@ export default class ProjectListTable extends React.PureComponent {
         ),
       },
     ];
+
+    return headers;
   }
 
   render () {
@@ -158,11 +163,14 @@ export default class ProjectListTable extends React.PureComponent {
       projectList,
     } = this.props;
 
+    const { strings } = this.context;
+    const headers = this.getHeaders(strings);
+
     return (
-      <table className={_cs(className, 'three-w-project-list-table')}>
+      <table className={_cs(className, 'three-w-project-list-table table table--border-bottom')}>
         <thead>
           <tr>
-            { this.headers.map(h => (
+            { headers.map(h => (
               <th key={h.key}>
                 {h.label}
               </th>
@@ -172,7 +180,7 @@ export default class ProjectListTable extends React.PureComponent {
         <tbody>
           { projectList.map(p => (
             <tr key={p.id}>
-              { this.headers.map(h => (
+              { headers.map(h => (
                 <td key={h.key}>
                   { h.modifier ? h.modifier(p) : (p[h.key] || '-') }
                 </td>
@@ -184,3 +192,5 @@ export default class ProjectListTable extends React.PureComponent {
     );
   }
 }
+
+ProjectListTable.contextType = LanguageContext;

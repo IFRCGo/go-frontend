@@ -47,7 +47,9 @@
 
 @import "core/base";
 @import "core/collecticons"; // Webfont icon library: Collecticons
+@import "core/grid";
 @import "core/typography";
+@import "core/box-heading-content";
 @import "core/tables";
 @import "core/tabs";
 @import "core/code";
@@ -69,7 +71,6 @@
 @import "global/alerts";
 @import "global/modals";
 @import "global/iframe-embeds";
-@import "global/box-heading-content";
 @import "global/icon-styles";
 @import "global/frames";
 @import "global/navs";

@@ -38,6 +38,8 @@ import Fold from '#components/fold';
 import TabContent from '#components/tab-content';
 import PerAccountTab from '#components/per-forms/per-account-tab';
 import BreadCrumb from '../components/breadcrumb';
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
 
 import {
   FormCheckboxGroup,
@@ -51,76 +53,18 @@ const Fragment = React.Fragment;
 // Exclude the first item since it's a dropdown placeholder
 const disasterTypes = disasterType.slice(1);
 
-const TAB_DETAILS = [
-  { title: 'Account Information', hash: '#account-information' },
-  { title: 'Notifications', hash: '#notifications' },
-  { title: 'PER forms', hash: '#per-forms' }
-];
+// helper to unmark all checkboxes in initial state
+const markUnChecked = o => ({
+  value: o.value,
+  checked: false
+});
 
-// Constants used to create form elements
-
-const basicTypes = [{
-  label: 'Weekly Digest',
-  value: 'weeklyDigest',
-  description: 'Select to get a weekly compilation of emergency events based on your preferences.'
-},
-{
-  label: 'New Emergencies',
-  value: 'newEmergencies',
-  description: 'Select to receive notifications for new emergency events (includes Field Reports, GDACS alerts and WHO Alerts).'
-},
-{
-  label: 'New Operations',
-  value: 'newOperations',
-  description: 'Select to receive notifications of new IFRC supported emergency operations.'
-},
-{
-  label: 'General Announcements',
-  value: 'general'
-}];
-
-const systemNotificationTypes = [{
-  label: 'New records',
-  value: 'new'
-}, {
-  label: 'Modified records',
-  value: 'modified'
-}];
-
-const surgeNotificationTypes = [{
-  label: 'Surge alerts',
-  value: 'surge'
-},
-{
-  label: 'Deployment Messages',
-  value: 'surgeDM'
-},
-{
-  label: 'Approaching End of Mission',
-  value: 'surgeAEM'
-}];
-
-const perDueDateTypes = [{
-  label: 'PER Due Dates',
-  value: 'perDueDate'
-}];
-
-const regions = [{
-  label: 'Africa',
-  value: '0'
-}, {
-  label: 'Asia Pacific',
-  value: '2'
-}, {
-  label: 'MENA',
-  value: '4'
-}, {
-  label: 'Europe',
-  value: '3'
-}, {
-  label: 'Americas',
-  value: '1'
-}];
+const updateChecks = (checkboxes, value) => {
+  return checkboxes.map(o => ({
+    value: o.value,
+    checked: o.value === value ? true : o.checked
+  }));
+};
 
 // constants to translate existing subscriptions from the API
 const rtypes = {
@@ -146,19 +90,6 @@ const stypes = {
   1: 'modified'
 };
 
-// helper to unmark all checkboxes in initial state
-const markUnChecked = o => ({
-  value: o.value,
-  checked: false
-});
-
-const updateChecks = (checkboxes, value) => {
-  return checkboxes.map(o => ({
-    value: o.value,
-    checked: o.value === value ? true : o.checked
-  }));
-};
-
 const profileAttributes = [
   ['username'],
   ['first_name', 'firstName'],
@@ -173,20 +104,96 @@ const profileAttributes = [
 ];
 
 class Account extends React.Component {
-  constructor (props) {
+  constructor (props, context) {
     super(props);
+
+    const { strings } = context;
+
+    this.TAB_DETAILS = [
+      { title: strings.accountInformation, hash: '#account-information' },
+      { title: strings.accountNotification, hash: '#notifications' },
+      { title: strings.accountPerForms, hash: '#per-forms' }
+    ];
+    // Constants used to create form elements
+
+    this.basicTypes = [
+      {
+        label: strings.accountWeeklyDigest,
+        value: 'weeklyDigest',
+        description: strings.accountWeeklyDigestDescription,
+      },
+      {
+        label: strings.accountNewEmergencies,
+        value: 'newEmergencies',
+        description: strings.accountNewEmergenciesDescription,
+      },
+      {
+        label: strings.accountNewOperation,
+        value: 'newOperations',
+        description: strings.accountNewOperationDescription,
+      },
+      {
+        label: strings.accountGeneralAnnouncements,
+        value: 'general'
+      }];
+
+    this.systemNotificationTypes = [
+      {
+        label: strings.accountNewRecords,
+        value: 'new'
+      }, {
+        label: strings.accountModifiedRecords,
+        value: 'modified'
+      }];
+
+    this.surgeNotificationTypes = [
+      {
+        label: strings.accountSurgeAlerts,
+        value: 'surge'
+      },
+      {
+        label: strings.accountDeplyomentMessages,
+        value: 'surgeDM'
+      },
+      {
+        label: strings.accountsurgeAEM,
+        value: 'surgeAEM'
+      }];
+
+    this.perDueDateTypes = [{
+      label: strings.accountPerDueDate,
+      value: 'perDueDate'
+    }];
+
+    this.regions = [{
+      label: strings.accountRegionAfrica,
+      value: '0'
+    }, {
+      label: strings.accountRegionAsia,
+      value: '2'
+    }, {
+      label: strings.accountRegionMENA,
+      value: '4'
+    }, {
+      label: strings.accountRegionEurope,
+      value: '3'
+    }, {
+      label: strings.accountRegionAmerica,
+      value: '1'
+    }];
+
     this.state = {
       isNotificationsDirty: false,
       notifications: {
         countries: [],
-        basic: basicTypes.map(markUnChecked),
-        regions: regions.map(markUnChecked),
+        basic: this.basicTypes.map(markUnChecked),
+        regions: this.regions.map(markUnChecked),
         disasterTypes: disasterTypes.map(markUnChecked),
-        event: systemNotificationTypes.map(markUnChecked),
-        fieldReport: systemNotificationTypes.map(markUnChecked),
-        appeal: systemNotificationTypes.map(markUnChecked),
-        surg: surgeNotificationTypes.map(markUnChecked),
-        per: perDueDateTypes.map(markUnChecked)
+        event: this.systemNotificationTypes.map(markUnChecked),
+        fieldReport: this.systemNotificationTypes.map(markUnChecked),
+        appeal: this.systemNotificationTypes.map(markUnChecked),
+        surg: this.surgeNotificationTypes.map(markUnChecked),
+        per: this.perDueDateTypes.map(markUnChecked)
       },
 
       isProfileDirty: false,
@@ -226,7 +233,7 @@ class Account extends React.Component {
 
   // Sets default tab if url param is blank or incorrect
   displayTabContent () {
-    const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
+    const tabHashArray = this.TAB_DETAILS.map(({ hash }) => hash);
     if (!tabHashArray.find(hash => hash === this.props.location.hash)) {
       this.props.history.replace(`${this.props.location.pathname}${tabHashArray[0]}`);
     }
@@ -246,7 +253,7 @@ class Account extends React.Component {
     if (this.props.profile.fetching && !nextProps.profile.fetching) {
       hideGlobalLoading();
       if (nextProps.profile.error) {
-        showAlert('danger', <p><strong>Error:</strong> Could not load user profile</p>, true, 4500);
+        showAlert('danger', <p><strong><Translate stringId='accountError'/></strong><Translate stringId='accountCouldNotLoad'/></p>, true, 4500);
       } else {
         this.syncNotificationState(nextProps.profile.data);
         this.syncProfileState(nextProps.profile.data);
@@ -255,9 +262,9 @@ class Account extends React.Component {
     if (this.props.profile.updating && !nextProps.profile.updating) {
       hideGlobalLoading();
       if (nextProps.profile.updateError) {
-        showAlert('danger', <p><strong>Error:</strong> {nextProps.profile.updateError.detail}</p>, true, 4500);
+        showAlert('danger', <p><strong><Translate stringId='accountError' /></strong> {nextProps.profile.updateError.detail}</p>, true, 4500);
       } else {
-        showAlert('success', <p>Profile updated</p>, true, 4500);
+        showAlert('success', <p><Translate stringId='accountUpdated'/></p>, true, 4500);
         this.setState({ isNotificationsDirty: false, isProfileDirty: false, profileEditMode: false });
         this.props._getProfile(this.props.user.username);
       }
@@ -341,15 +348,15 @@ class Account extends React.Component {
 
   serializeNotifications (notifications) {
     let serialized = ['regions', 'disasterTypes', 'appeal', 'event', 'fieldReport']
-      .reduce((acc, currentType) => {
-        const flattened = get(notifications, currentType, [])
-          .filter(d => d.checked)
-          .map(d => ({
-            type: currentType,
-            value: d.value
-          }));
-        return acc.concat(flattened);
-      }, []);
+        .reduce((acc, currentType) => {
+          const flattened = get(notifications, currentType, [])
+                .filter(d => d.checked)
+                .map(d => ({
+                  type: currentType,
+                  value: d.value
+                }));
+          return acc.concat(flattened);
+        }, []);
 
     let surgeNotifications = get(notifications, 'surg', []).filter(d => d.checked).map(d => ({
       type: d.value,
@@ -438,9 +445,13 @@ class Account extends React.Component {
       <div className='inner'>
         <div className='fold__header'>
           <div className='fold__actions'>
-            <button className='button button--medium button--secondary-bounded' onClick={this.toggleEditProfile}>Edit Profile</button>
+            <button className='button button--small button--secondary-bounded' onClick={this.toggleEditProfile}>
+              <Translate stringId='accountEditProfile'/>
+            </button>
           </div>
-          <h2 className='fold__title'>Account Information</h2>
+          <h2 className='fold__title'>
+            <Translate stringId='accountInformation'/>
+          </h2>
         </div>
         <div className='fold__body'>
           <dl className='dl--horizontal'>
@@ -453,7 +464,9 @@ class Account extends React.Component {
           </dl>
         </div>
         <div className='fold__footer text-right'>
-          <Link className='link--primary' to='/account/password-change'>Change my password</Link>
+          <Link className='button button--small button--secondary-light' to='/account/password-change'>
+            <Translate stringId='accountChangePassword'/>
+          </Link>
         </div>
       </div>
     );
@@ -461,95 +474,106 @@ class Account extends React.Component {
 
   renderProfileForm () {
     const { profile } = this.state;
+    const { strings } = this.context;
     return (
-      <div className='inner profile__form'>
+      <div className='inner profile__form container-xs margin-reset'>
         <div className='fold__header'>
           <div className='fold__actions'>
-            <button className='button button--medium button--secondary-bounded' onClick={this.toggleEditProfile}>Cancel</button>
+            <button className='button button--small button--secondary-bounded' onClick={this.toggleEditProfile}>
+              <Translate stringId='accountCancel'/>
+            </button>
           </div>
-          <h2 className='fold__title'>Edit Profile</h2>
+          <h2 className='fold__title'>
+            <Translate stringId='accountEditProfile'/>
+          </h2>
         </div>
         <div className='fold__body'>
           <form className='form' onSubmit={this.onProfileSubmit}>
             <FormInput
-              label='First Name'
+              label={strings.accountFirstName}
               type='text'
               name='first-name'
               id='first-name'
-              classWrapper='form__group--kv'
+              classWrapper='form__group__fr'
               value={profile.firstName}
               onChange={this.onFieldChange.bind(this, 'profile', 'firstName')} >
             </FormInput>
             <FormInput
-              label='Last Name'
+              label={strings.accountLastName}
               type='text'
               name='last-name'
               id='last-name'
-              classWrapper='form__group--kv'
+              classWrapper='form__group__fr'
               value={profile.lastName}
               onChange={this.onFieldChange.bind(this, 'profile', 'lastName')} >
             </FormInput>
             <FormInput
-              label='Phone Number'
+              label={strings.accountPhoneNumber}
               type='text'
               name='phone-number'
               id='phone-number'
-              classWrapper='form__group--kv'
+              classWrapper='form__group__fr'
               value={profile.phoneNumber}
               onChange={this.onFieldChange.bind(this, 'profile', 'phoneNumber')} >
             </FormInput>
             <FormInput
-              label='City'
+              label={strings.accountCity}
               type='text'
               name='city'
               id='city'
-              classWrapper='form__group--kv'
+              classWrapper='form__group__fr'
               value={profile.city}
               onChange={this.onFieldChange.bind(this, 'profile', 'city')} >
             </FormInput>
             <FormInput
-              label='Organization'
+              label={strings.accountOrganization}
               type='text'
               name='organization'
               id='organization'
-              classWrapper='form__group--kv'
+              classWrapper='form__group__fr'
               value={profile.org}
               onChange={this.onFieldChange.bind(this, 'profile', 'org')} >
             </FormInput>
-            <div className='form__group form__group--kv'>
-              <div className='form__inner-header'>
-                <label className='form__label'>Organization Type</label>
-              </div>
-              <div className='form__inner-body'>
-                <Select
-                  name='organizationType'
-                  value={profile.orgType}
-                  onChange={this.onFieldChange.bind(this, 'profile', 'orgType')}
-                  options={orgTypes} />
+            <div className='form__group form__group__fr'>
+              <div className='form__group__wrap'>
+                <div className='form__inner-header'>
+                  <label className='form__label'>
+                    <Translate stringId='accountOrganizationType'/>
+                  </label>
+                </div>
+                <div className='form__inner-body'>
+                  <Select
+                    name='organizationType'
+                    value={profile.orgType}
+                    onChange={this.onFieldChange.bind(this, 'profile', 'orgType')}
+                    options={orgTypes} />
+                </div>
               </div>
             </div>
             <FormInput
-              label='Department'
+              label={strings.accountDepartment}
               type='text'
               name='department'
               id='department'
-              classWrapper='form__group--kv'
+              classWrapper='form__group__fr'
               value={profile.department}
               onChange={this.onFieldChange.bind(this, 'profile', 'department')} >
             </FormInput>
             <FormInput
-              label='Position'
+              label={strings.accountPosition}
               type='text'
               name='position'
               id='position'
-              classWrapper='form__group--kv'
+              classWrapper='form__group__fr'
               value={profile.position}
               onChange={this.onFieldChange.bind(this, 'profile', 'position')} >
             </FormInput>
             <div className='text-center'>
               <button type='submit' className={c('button', 'button--large', 'button--secondary-filled', {
                 'disabled': !this.state.isProfileDirty
-              })} title='Save'>Save</button>
+              })} title='Save'>
+                <Translate stringId='accountSave'/>
+              </button>
             </div>
           </form>
         </div>
@@ -568,11 +592,14 @@ class Account extends React.Component {
     const data = get(userReports, 'data.results', []);
     if (!data.length) { return null; }
     return (
-      <div className='prose prose--responsive'>
+      <div className='prose'>
         <div className='fold-container'>
-          <section className='fold'>
-            <div className='inner'>
-              <div className='fold__header'> <h2 className='fold__title margin-reset'>Submitted Field Reports</h2>
+          <section className='fold fold--main'>
+            <div className='container-lg'>
+              <div className='fold__header'>
+                <h2 className='fold__title margin-reset'>
+                  <Translate stringId='accountSubmittedReports'/>
+                </h2>
                 <hr />
               </div>
               <div className='fold__body'>
@@ -581,7 +608,7 @@ class Account extends React.Component {
                     <li key={o.id} className='report__list--item'>
                       <div className='report__list--header list__each__block flex'>
                         <div>
-                          <Link className='link--primary' to={`/reports/${o.id}`}>{o.summary}</Link>&nbsp;
+                          <Link className='link-underline' to={`/reports/${o.id}`}>{o.summary}</Link>&nbsp;
                           <div className='report__list--updated global-margin-t'>Last Updated: {DateTime.fromISO(o.updated_at || o.created_at).toISODate()}</div>
                         </div>
                       </div>
@@ -591,7 +618,7 @@ class Account extends React.Component {
                 </ul>
               </div>
               <div className='fold__footer'>
-                <p>To delete a field report, contact <a href='mailto:im@ifrc.org'>the IM team</a>.</p>
+                <p><Translate stringId='accountDeleteContact'/> <a href='mailto:im@ifrc.org'><Translate stringId='accountDeleteInfo'/></a>.</p>
               </div>
             </div>
           </section>
@@ -603,32 +630,37 @@ class Account extends React.Component {
   renderSubscriptionForm () {
     this.props.profile.data.subscription.filter(subscription => subscription.event !== null);
     const events = [];
+    const { strings } = this.context;
     Object.keys(this.props.event.event).forEach(event => {
       events.push(<input type='hidden' name='followedEvent' key={'followedEvent' + event} value={event} />);
     });
     return (
       <form className='form' onSubmit={this.onNotificationSubmit}>
         <div className='fold-container'>
-          <Fold title='Subscription preferences' foldClass='margin-reset'>
+          <Fold title={strings.accountSubscriptionPreferences} foldTitleClass='margin-reset' foldWrapperClass='fold--main'>
             <FormCheckboxGroup
-              label='Notification types'
-              description={'Set basic notification types.'}
+              label={strings.accountSubscriptionTypes}
+              description={strings.accountSubscriptionTypesDescription}
               name='basic'
               classWrapper='action-checkboxes'
-              options={basicTypes}
+              options={this.basicTypes}
               values={this.state.notifications.basic}
               onChange={this.onFieldChange.bind(this, 'notifications', 'basic')} />
             <FormCheckboxGroup
-              label='Regional notifications'
-              description={'Select one or more regions to receive notifications about.'}
+              label={strings.accountRegionalNotification}
+              description={strings.accountRegionalNotificationDescription}
               name='regions'
               classWrapper='action-checkboxes'
-              options={regions}
+              options={this.regions}
               values={this.state.notifications.regions}
               onChange={this.onFieldChange.bind(this, 'notifications', 'regions')} />
             <div className='form__group'>
-              <label className='form__label'>Country-level notifications</label>
-              <p className='form__description'>Select one or more countries to receive notifications about.</p>
+              <label className='form__label'>
+                <Translate stringId='accountCountryLevel'/>
+              </label>
+              <p className='form__description'>
+                <Translate stringId='accountCountryLevelDescription'/>
+              </p>
               <Select
                 name='countries'
                 value={this.state.notifications.countries}
@@ -637,57 +669,57 @@ class Account extends React.Component {
                 multi />
             </div>
             <FormCheckboxGroup
-              label='Disaster types'
-              description={'Get notified about new disasters in these categories.'}
+              label={strings.accountDisasterCategory}
+              description={strings.accountDisasterCategoryDescription}
               name='disasterTypes'
               classWrapper='action-checkboxes'
               options={disasterTypes}
               values={this.state.notifications.disasterTypes}
               onChange={this.onFieldChange.bind(this, 'notifications', 'disasterTypes')} />
             {/*
+               <FormCheckboxGroup
+               label='Emergencies'
+               name='event'
+               classWrapper='action-checkboxes'
+               options={systemNotificationTypes}
+               values={this.state.notifications.event}
+               onChange={this.onFieldChange.bind(this, 'notifications', 'event')} />
+               <FormCheckboxGroup
+               label='Field Reports'
+               name='fieldReport'
+               classWrapper='action-checkboxes'
+               options={systemNotificationTypes}
+               values={this.state.notifications.fieldReport}
+               onChange={this.onFieldChange.bind(this, 'notifications', 'fieldReport')} />
+               <FormCheckboxGroup
+               label='Appeals'
+               name='appeal'
+               classWrapper='action-checkboxes'
+               options={systemNotificationTypes}
+               values={this.state.notifications.appeal}
+               onChange={this.onFieldChange.bind(this, 'notifications', 'appeal')} />
+             */}
             <FormCheckboxGroup
-              label='Emergencies'
-              name='event'
-              classWrapper='action-checkboxes'
-              options={systemNotificationTypes}
-              values={this.state.notifications.event}
-              onChange={this.onFieldChange.bind(this, 'notifications', 'event')} />
-            <FormCheckboxGroup
-              label='Field Reports'
-              name='fieldReport'
-              classWrapper='action-checkboxes'
-              options={systemNotificationTypes}
-              values={this.state.notifications.fieldReport}
-              onChange={this.onFieldChange.bind(this, 'notifications', 'fieldReport')} />
-            <FormCheckboxGroup
-              label='Appeals'
-              name='appeal'
-              classWrapper='action-checkboxes'
-              options={systemNotificationTypes}
-              values={this.state.notifications.appeal}
-              onChange={this.onFieldChange.bind(this, 'notifications', 'appeal')} />
-              */}
-            <FormCheckboxGroup
-              label='Surge Notifications'
+              label={strings.accountSurgeNotification}
               name='surg'
               classWrapper='action-checkboxes'
-              options={surgeNotificationTypes}
+              options={this.surgeNotificationTypes}
               values={this.state.notifications.surg}
               onChange={this.onFieldChange.bind(this, 'notifications', 'surg')} />
             {this.isPerPermission()
-              ? <FormCheckboxGroup
-                label='Other Notifications'
-                name='per'
-                classWrapper='action-checkboxes'
-                options={perDueDateTypes}
-                values={this.state.notifications.per}
-                onChange={this.onFieldChange.bind(this, 'notifications', 'per')} />
-              : null}
+             ? <FormCheckboxGroup
+                 label={strings.acccountOtherNotification}
+                 name='per'
+                 classWrapper='action-checkboxes'
+                 options={this.perDueDateTypes}
+                 values={this.state.notifications.per}
+                 onChange={this.onFieldChange.bind(this, 'notifications', 'per')} />
+             : null}
             {events}
             <div className="text-center">
               <button type='submit' className={c('button', 'button--large', 'button--secondary-filled', {
                 'disabled': !this.state.isNotificationsDirty
-              })} title='Save'>Save</button>
+              })} title={strings.accountSave}><Translate stringId='accountSave'/></button>
             </div>
           </Fold>
         </div>
@@ -696,13 +728,13 @@ class Account extends React.Component {
   }
 
   renderAccountInformation () {
-    return (<div className='prose prose--responsive'>
-      <div className='fold-container'>
-        <section className='fold' id='account-information'>
-          {this.state.profileEditMode ? this.renderProfileForm() : this.renderProfileAttributes()}
-        </section>
-      </div>
-    </div>);
+    return (<div className='prose'>
+              <div className='fold-container'>
+                <section className='fold' id='account-information'>
+                  {this.state.profileEditMode ? this.renderProfileForm() : this.renderProfileAttributes()}
+                </section>
+              </div>
+            </div>);
   }
 
   renderOperationsFollowing () {
@@ -711,12 +743,16 @@ class Account extends React.Component {
       Object.keys(this.props.event.event).forEach((eventId) => {
         if (this.props.event.event[eventId].fetched) {
           events.push(
-            <div key={'operations-component' + eventId} className='account__op__block clearfix'>
-              <div className='account__op__each__link'>
-                <Link className={'link--primary'} to={'/emergencies/' + eventId}>{this.props.event.event[eventId].data.name}</Link>
-              </div>
-              <div className='account__op__each__button'>
-                <button className={'button button--small button--primary-bounded'} onClick={this.delSubscription} id={'followedEvent' + eventId}>Unfollow</button>
+            <div key={'operations-component' + eventId} className='account__op__block col col-6-mid'>
+              <div className='row flex-sm'>
+                <div className='account__op__each__link col col-8-sm'>
+                  <Link className={'link-underline'} to={'/emergencies/' + eventId}>{this.props.event.event[eventId].data.name}</Link>
+                </div>
+                <div className='account__op__each__button col col-4-sm'>
+                  <button className={'button button--small button--primary-bounded'} onClick={this.delSubscription} id={'followedEvent' + eventId}>
+                    <Translate stringId='accountUnfollow'/>
+                  </button>
+                </div>
               </div>
             </div>
           );
@@ -724,82 +760,106 @@ class Account extends React.Component {
       });
     }
     return (<div className='fold-container'>
-      <section className='fold' id='notifications'>
-        <div className='inner'>
-          <h2 className='fold__title'>Operations following</h2>
-          <div className='clearfix'>
-            <div className='account__op__title'>
-              <div className='text-uppercase'>
-                Operations currently following
-              </div>
-            </div>
-            <div className='account__op__links'>
-              {events}
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>);
+              <section className='fold' id='notifications'>
+                <div className='inner'>
+                  <h2 className='fold__title spacing-b'>
+                    <Translate stringId='accountOperationFollowing'/>
+                  </h2>
+                  <div className='row flex-sm'>
+                    <div className='account__op__title col col-3-sm'>
+                      <div className='text-uppercase'>
+                        <Translate stringId='accountCurrentlyFollowing'/>
+                      </div>
+                    </div>
+                    <div className='account__op__links col col-9-sm row flex-mid'>
+                      {events}
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>);
   }
 
   handleTabChange (index) {
-    const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
+    const tabHashArray = this.TAB_DETAILS.map(({ hash }) => hash);
     const url = this.props.location.pathname;
     this.props.history.replace(`${url}${tabHashArray[index]}`);
   }
 
   render () {
+    const { strings } = this.context;
     return (
       <App className='page--account'>
         <Helmet>
-          <title>IFRC Go - Account</title>
+          <title>
+            {strings.accountTitle}
+          </title>
         </Helmet>
         <BreadCrumb crumbs={[
-          {link: '/account', name: 'Account'},
-          {link: '/', name: 'Home'}
+          {link: '/account', name: strings.breadCrumbAccount},
+          {link: '/', name: strings.breadCrumbHome}
         ]} />
         <section className='inpage'>
           <header className='inpage__header'>
             <div className='inner'>
               <div className='inpage__headline'>
-                <h1 className='inpage__title'>Hello {this.props.user.firstName}</h1>
+                <h1 className='inpage__title'>
+                  <Translate
+                    stringId="accountUserGreeting"
+                    params={{
+                      user: this.props.user.firstName,
+                    }}
+                  />
+                </h1>
               </div>
             </div>
           </header>
-          <Tabs
-            selectedIndex={TAB_DETAILS.map(({ hash }) => hash).indexOf(this.props.location.hash)}
-            onSelect={index => this.handleTabChange(index)}
-          >
-            <TabList>
-              {TAB_DETAILS.map(tab => (
-                <Tab key={tab.title}>{tab.title}</Tab>
-              ))}
-            </TabList>
+          <div className='tab__wrap'>
+            <Tabs
+              selectedIndex={this.TAB_DETAILS.map(({ hash }) => hash).indexOf(this.props.location.hash)}
+              onSelect={index => this.handleTabChange(index)}
+            >
+              <TabList>
+                {this.TAB_DETAILS.map(tab => (
+                  <Tab key={tab.title}>{tab.title}</Tab>
+                ))}
+              </TabList>
 
-            <div className='inpage__body'>
-              <div className='inner'>
-                <TabPanel>
-                  <TabContent>
-                    {this.renderOperationsFollowing()}
-                    {this.renderAccountInformation()}
-                  </TabContent>
-                </TabPanel>
-                <TabPanel>
-                  <TabContent>
-                    {this.renderFieldReports()}
-                  </TabContent>
-                  <TabContent isError={this.props.profile.fetched && this.props.profile.error} errorMessage="Subscriptions coming soon" title="Subscriptions">
-                    {this.props.profile.fetched && this.renderSubscriptionForm()}
-                  </TabContent>
-                </TabPanel>
-                <TabPanel>
-                  <TabContent isError={!this.isPerPermission()} errorMessage="Please login to view content" title="PER Forms">
-                    <PerAccountTab user={this.props.user} />
-                  </TabContent>
-                </TabPanel>
+              <div className='inpage__body'>
+                <div className='inner'>
+                  <TabPanel>
+                    <TabContent>
+                      <div className='container-lg'>
+                        {this.renderOperationsFollowing()}
+                      </div>
+                      <div className='container-lg'>
+                        {this.renderAccountInformation()}
+                      </div>
+                    </TabContent>
+                  </TabPanel>
+                  <TabPanel>
+                    <TabContent>
+                      <div className='container-lg'>
+                        {this.renderFieldReports()}
+                      </div>
+                    </TabContent>
+                    <TabContent isError={this.props.profile.fetched && this.props.profile.error} errorMessage={strings.accountSubscriptionError} title={strings.accountSubscriptionTitle}>
+                      <div className='container-lg'>
+                        {this.props.profile.fetched && this.renderSubscriptionForm()}
+                      </div>
+                    </TabContent>
+                  </TabPanel>
+                  <TabPanel>
+                    <TabContent isError={!this.isPerPermission()} errorMessage={strings.accountPerError} title={strings.accountPerTitle}>
+                      <div className='container-lg'>
+                        <PerAccountTab user={this.props.user} />
+                      </div>
+                    </TabContent>
+                  </TabPanel>
+                </div>
               </div>
-            </div>
-          </Tabs>
+            </Tabs>
+          </div>
         </section>
       </App>
     );
@@ -864,4 +924,5 @@ const dispatcher = (dispatch) => ({
   _getPerMission: (...args) => dispatch(getPerMission(...args))
 });
 
+Account.contextType = LanguageContext;
 export default connect(selector, dispatcher)(Account);

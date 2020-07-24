@@ -10,6 +10,7 @@ import {
   FormRadioGroup,
   FormError
 } from '#components/form-elements/';
+import LanguageContext from '#root/languageContext';
 
 export default class SourceEstimation extends React.Component {
   onEstimationChange (idx, e) {
@@ -56,61 +57,66 @@ export default class SourceEstimation extends React.Component {
       errors
     } = this.props;
 
+    const { strings } = this.context;
+
     return (
-      <div className='form__group estimation-row'>
-        <div className='form__inner-header'>
-          <div className='form__inner-headline'>
-            <label className='form__label'>{label}</label>
-            <p className='form__description'>{description}</p>
-          </div>
-        </div>
-        <div className='form__inner-body'>
-          {values.map((o, idx) => (
-            <div key={o.source || idx} className='estimation'>
-              <FormInput
-                label={estimationLabel}
-                type='text'
-                name={`${name}[${idx}][estimation]`}
-                id={`${name}-${idx}-estimation`}
-                classLabel={c('label-secondary', {'visually-hidden': idx > 0})}
-                classWrapper='estimation__item-field'
-                value={o.estimation}
-                onChange={this.onEstimationChange.bind(this, idx)} >
-                <FormError
-                  errors={errors}
-                  property={`${fieldKey}[${idx}].estimation`}
-                />
-              </FormInput>
-
-              <FormRadioGroup
-                label='Source'
-                name={`${name}[${idx}][source]`}
-                options={formData.fieldsStep2.organizations[status]}
-                classLabel={c('label-secondary', {'visually-hidden': idx > 0})}
-                classWrapper='estimation__item'
-                selectedOption={o.source}
-                onChange={this.onSourceChange.bind(this, idx)} />
-              {/*
-              We do not want these buttons to Add new sources any more.
-              Leaving commented out for now. When we delete this, we should
-              also remove other bits of code that this feature refers to.
-              <div className='estimation__item estimation__item--actions'>
-                {values.length > 1 ? (
-                  <button type='button' className='button--remove-source' title='Delete Source' onClick={this.onRemoveSource.bind(this, idx)}>Delete source</button>
-                ) : (
-                  <button type='button' className='button--add-item button--secondary-light' title='Add new source' onClick={this.onAddSource.bind(this)}>Add source</button>
-                )}
-              </div>
-              */}
+      <div className='form__group estimation-row form__group__fr'>
+        <div className='form__group__wrap'>
+          <div className='form__inner-header'>
+            <div className='form__inner-headline'>
+              <label className='form__label'>{label}</label>
+              <p className='form__description'>{description}</p>
             </div>
-          ))}
+          </div>
+          <div className='form__inner-body'>
+            {values.map((o, idx) => (
+              <div key={o.source || idx} className='estimation row flex-mid'>
+                <FormInput
+                  label={estimationLabel}
+                  type='text'
+                  name={`${name}[${idx}][estimation]`}
+                  id={`${name}-${idx}-estimation`}
+                  classLabel={c('label-secondary', {'visually-hidden': idx > 0})}
+                  classWrapper='estimation__item-field col col-4-mid spacing-b'
+                  value={o.estimation}
+                  onChange={this.onEstimationChange.bind(this, idx)} >
+                  <FormError
+                    errors={errors}
+                    property={`${fieldKey}[${idx}].estimation`}
+                  />
+                </FormInput>
 
+                <FormRadioGroup
+                  label={strings.cmpSourceLabel}
+                  name={`${name}[${idx}][source]`}
+                  options={formData.getFieldsStep2(strings).organizations[status]}
+                  classLabel={c('label-secondary', {'visually-hidden': idx > 0})}
+                  classWrapper='estimation__item col col-8-mid'
+                  selectedOption={o.source}
+                  onChange={this.onSourceChange.bind(this, idx)} />
+                {/*
+                We do not want these buttons to Add new sources any more.
+                Leaving commented out for now. When we delete this, we should
+                also remove other bits of code that this feature refers to.
+                <div className='estimation__item estimation__item--actions'>
+                  {values.length > 1 ? (
+                    <button type='button' className='button--remove-source' title='Delete Source' onClick={this.onRemoveSource.bind(this, idx)}>Delete source</button>
+                  ) : (
+                    <button type='button' className='button--add-item button--secondary-light' title='Add new source' onClick={this.onAddSource.bind(this)}>Add source</button>
+                  )}
+                </div>
+                */}
+              </div>
+            ))}
+
+          </div>
         </div>
       </div>
     );
   }
 }
 
+SourceEstimation.contextType = LanguageContext;
 if (environment !== 'production') {
   SourceEstimation.propTypes = {
     label: T.string,

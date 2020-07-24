@@ -6,20 +6,28 @@ import { DateTime } from 'luxon';
 import { get } from '#utils/utils';
 import React from 'react';
 
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
+
 class OperationsPopover extends React.Component {
   render () {
     const { pageId, navigate, title, onCloseClick, operations, deployments } = this.props;
+    const { strings } = this.context;
     return (
       <article className='popover'>
         <div className='popover__contents'>
           <header className='popover__header'>
             <div className='popover__headline'>
-              {deployments ? title : <a className='link--primary' onClick={e => { e.preventDefault(); navigate(`/countries/${pageId}`); }}>{title} <span className='popover__headline__icon collecticon-chevron-right'></span></a>}
+              {deployments ? title : <a className='link-underline' onClick={e => { e.preventDefault(); navigate(`/countries/${pageId}`); }}>{title} <span className='popover__headline__icon collecticon-chevron-right'></span></a>}
             </div>
             <div className='popover__actions actions'>
               <ul className='actions__menu'>
                 <li>
-                  <button type='button' className='actions__menu-item poa-xmark' title='Close popover' onClick={onCloseClick}><span>Dismiss</span></button>
+                  <button type='button' className='actions__menu-item poa-xmark' title={strings.operationPopoverClose} onClick={onCloseClick}>
+                    <span>
+                      <Translate stringId='operationPopoverDismiss'/>
+                    </span>
+                  </button>
                 </li>
               </ul>
             </div>
@@ -33,9 +41,18 @@ class OperationsPopover extends React.Component {
                   ) : d.name}
                 </h3>
                 <ul className='popover__details'>
-                  <li>{n(d.num_beneficiaries)} People Affected</li>
-                  <li>{n(d.amount_requested)} Amount Requested (CHF)</li>
-                  <li>{n(d.amount_funded)} Amount Funded (CHF)</li>
+                  <li>
+                    <span>{n(d.num_beneficiaries)} </span> 
+                    <Translate stringId='operationPopoverPeopleAffected'/>
+                  </li>
+                  <li>
+                    <span>{n(d.amount_requested)} </span>
+                    <Translate stringId='operationPopoverAmountRequested'/>
+                  </li>
+                  <li>
+                    <span>{n(d.amount_funded)} </span>
+                    <Translate stringId='operationPopoverAmountFunded'/>
+                  </li>
                 </ul>
               </React.Fragment>
             )) : null}
@@ -43,9 +60,30 @@ class OperationsPopover extends React.Component {
               <React.Fragment key={i}>
                 <h3 className='popover__subtitle'>{get(d.parent, 'society_name', d.parent.name)}</h3>
                 <ul className='popover__details'>
-                  <li>Activity: {d.activity.activity}</li>
-                  <li>Start: {DateTime.fromISO(d.start).toISODate()}</li>
-                  <li>End: {DateTime.fromISO(d.end).toISODate()}</li>
+                  <li>
+                    <Translate
+                      stringId='operationPopoverActivity'
+                      params={{
+                        activity: d.activity.activity,
+                      }}
+                    />
+                  </li>
+                  <li>
+                    <Translate
+                      stringId='operationPopoverStart'
+                      params={{
+                        start: DateTime.fromISO(d.start).toISODate(),
+                      }}
+                    />
+                  </li>
+                  <li>
+                    <Translate
+                      stringId='operationPopoverEnd'
+                      params={{
+                        end: DateTime.fromISO(d.end).toISODate(),
+                      }}
+                    />
+                  </li>
                 </ul>
               </React.Fragment>
             )) : null}
@@ -66,5 +104,5 @@ if (environment !== 'production') {
     navigate: T.func
   };
 }
-
+OperationsPopover.contextType = LanguageContext;
 export default OperationsPopover;

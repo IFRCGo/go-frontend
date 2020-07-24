@@ -46,8 +46,8 @@
     font-size: 1rem;
   }
 
-  &::before { margin-right: 0.375rem; }
-  &::after { margin-left: 0.375rem; }
+  &::before { margin-inline-end: 0.375rem; }
+  &::after { margin-inline-start: 0.375rem; }
 
   &::before,
   &::after,
@@ -134,6 +134,16 @@
 /* Button size modifiers
    ========================================================================== */
 
+/* Extra Small */
+
+.button--xsmall,
+.button-group--xsmall .button {
+  line-height: 1rem;
+  font-size: $font-size-xs;
+  padding: 0.25rem 0.8rem;
+  min-width: 2rem;
+}
+
 /* Small (24px) */
 
 .button--small,
@@ -177,7 +187,7 @@
 }
 
 
-/* Button contaning icons & icons modifiers
+/* Button containing icons & icons modifiers
    ========================================================================== */
 
 .button--text-hidden {
@@ -189,8 +199,8 @@
     @extend .visually-hidden;
   }
 /*  :not(.button-group) & {
-    padding-left: 0;
-    padding-right: 0;
+    padding-inline-start: 0;
+    padding-inline-end: 0;
   }*/
 }
 
@@ -217,7 +227,7 @@
     font-size: 1rem;
     line-height: inherit;
     vertical-align: top;
-    margin-left: 0.25rem;
+    margin-inline-start: 0.25rem;
   }
 }
 
@@ -263,7 +273,7 @@
   }
 
   > .button + .button {
-    margin-left: -$base-border-width;
+    margin-inline-start: -$base-border-width;
   }
 }
 
@@ -303,5 +313,5 @@
 }
 
 .toggle-button-description {
-  margin-right: $global-spacing;
+  margin-inline-end: $global-spacing;
 }

@@ -1,3 +1,7 @@
+.emergencies-map {
+  background-color: #fff;
+}
+
 .action-header {
   padding-top: 1.5rem;
   padding-bottom: 0;
@@ -9,13 +13,6 @@
 }
 
 .inpage__headline-stats {
-  @include column(5/12);
-  @include media(small-down) {
-    @include column(12/12);
-  }
-  @include media (large-up) {
-    @include column(12/12);
-  }
   small {
     @include media(medium-up) {
       font-size: 0.875rem;
@@ -30,37 +27,21 @@
 }
 
 .inpage__headline-charts {
-  @include column(6/12);
-  @include media(small-down) {
-    @include column(12/12);
-  }
-  @include media (large-up) {
-    @include column(12/12);
-    padding-top: $global-spacing * 2;
-    margin-top: $global-spacing;
-    border-top: solid 1px rgba($base-color, .18);
-  }
-  .chart {
-    @include column(12/12);
-    @include media(large-up) {
-      @include column(6/12);
-    }
-  }
-  .emergencies {
-    @include column(12/12);
-    @include media(large-up) {
-      @include column(6/12);
-    }
-  }
+  padding: ($spacing * 2.5) 0;
 }
 
 .stats-chart {
   margin-top: 0;
 }
 
+.stats-chart-row {
+  > .col {
+    display: flex;
+  }
+}
+
 .emergencies-map {
   .map-container {
-    @include column(12/12);
     position: relative;
   }
 }
@@ -80,5 +61,18 @@
 .page--emergencies {
   .form__group {
     @include form__group;
+    padding: $spacing;
+  }
+
+  .map-vis__legend {
+    .key {
+      padding: $spacing;
+    }
+  }
+}
+
+.inner--emergencies-table-map {
+  .fold {
+    padding-top: $spacing-half;
   }
 }

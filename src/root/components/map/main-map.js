@@ -20,6 +20,9 @@ import DateFilterHeader from '../common/filters/date-filter-header';
 import EmergenciesLeftMenu from './common/emergencies-left-menu';
 import MarkerLayerStylesheetFactory from './home-map/factory/marker-layer-stylesheet-factory';
 
+import Translate from '#components/Translate';
+import { withLanguage } from '#root/languageContext';
+
 const scale = chroma.scale(['#F0C9E8', '#861A70']);
 
 class MainMap extends React.Component {
@@ -253,7 +256,9 @@ class MainMap extends React.Component {
   renderError () {
     const { operations, deployments } = this.props;
     if (get(operations, 'error') || get(deployments, 'error')) {
-      return <p>Data not available.</p>;
+      return <p>
+               <Translate stringId='mainMapDataError'/>
+             </p>;
     }
   }
 
@@ -264,6 +269,7 @@ class MainMap extends React.Component {
     const mapContainerClassName = this.props.noRenderEmergencies ? 'map-container map-container-fullwidth' : 'map-container';
     const emergenciesByType = get(this.props, 'operations.data.emergenciesByType', []);
 
+    const { strings } = this.props;
     return (
       <React.Fragment>
         {this.props.noRenderEmergencies
@@ -301,7 +307,7 @@ class MainMap extends React.Component {
             layers={layers}
             geoJSON={geoJSON}
             downloadButton={true}
-            downloadedHeaderTitle='Ongoing operations'>
+            downloadedHeaderTitle={strings.mainMapDownloadHeaderTitle}>
 
             <ExplanationBubble scaleBy={this.state.scaleBy}
               onFieldChange={this.onFieldChange}
@@ -311,8 +317,8 @@ class MainMap extends React.Component {
           <div className='map-vis__legend--fullscreen-wrap'>
             <button className='button button--secondary-bounded button--small button--fullscreen'
               onClick={this.props.toggleFullscreen}
-              title='View in fullscreen'>
-              <span>{this.props.fullscreen ? 'Close the Map' : 'Presentation Mode'}</span>
+              title={strings.mainMapViewFullscreen}>
+              <span>{this.props.fullscreen ? strings.mainMapClose : strings.mainMapPresentation}</span>
             </button>
           </div>
         </div>
@@ -349,4 +355,4 @@ if (environment !== 'production') {
   };
 }
 
-export default withRouter(MainMap);
+export default withLanguage(withRouter(MainMap));

@@ -56,14 +56,11 @@ import { SFPComponent } from '#utils/extendables';
 import { NO_DATA } from '#utils/constants';
 import RegionalThreeW from './RegionalThreeW';
 
-const TAB_DETAILS = [
-  { title: 'Operations', hash: '#operations' },
-  { title: '3w', hash: '#3w' },
-  { title: 'Additional Information', hash: '#additional-info' }
-];
+import LanguageContext from '#root/languageContext';
+import { resolveToString } from '#utils/lang';
 
 class AdminArea extends SFPComponent {
-  constructor (props) {
+  constructor (props, context) {
     super(props);
 
     this.state = {
@@ -73,7 +70,15 @@ class AdminArea extends SFPComponent {
 
     this.toggleFullscreen = this.toggleFullscreen.bind(this);
     this.onFullscreenChange = this.onFullscreenChange.bind(this);
+    this.TAB_DETAILS = [
+      { title: context.strings.regionOperationsTab, hash: '#operations' },
+      { title: context.strings.region3WTab, hash: '#3w' },
+      { title: context.strings.regionAdditionalInfoTab, hash: '#additional-info' }
+    ];
+
   }
+
+
 
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps (nextProps) {
@@ -120,7 +125,7 @@ class AdminArea extends SFPComponent {
 
   // Sets default tab if url param is blank or incorrect
   displayTabContent () {
-    const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
+    const tabHashArray = this.TAB_DETAILS.map(({ hash }) => hash);
     if (!tabHashArray.find(hash => hash === this.props.location.hash)) {
       this.props.history.replace(`${this.props.location.pathname}${tabHashArray[0]}`);
     }
@@ -177,7 +182,7 @@ class AdminArea extends SFPComponent {
 
     const presentationClass = c({
       'presenting fold--stats': this.state.fullscreen,
-      'fold': !this.state.fullscreen
+      'fold--r': !this.state.fullscreen
     });
 
     const mapBoundingBox = getRegionBoundingBox(data.id);
@@ -185,20 +190,24 @@ class AdminArea extends SFPComponent {
     const activeOperations = get(this.props.appealStats, 'data.results.length', false);
 
     const handleTabChange = index => {
-      const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
+      const tabHashArray = this.TAB_DETAILS.map(({ hash }) => hash);
       const url = this.props.location.pathname;
       this.props.history.replace(`${url}${tabHashArray[index]}`);
     };
-    const hashes = TAB_DETAILS.map(t => t.hash);
+    const hashes = this.TAB_DETAILS.map(t => t.hash);
     const selectedIndex = hashes.indexOf(this.props.location.hash) !== -1 ? hashes.indexOf(this.props.location.hash) : 0;
+    const { strings } = this.context;
+
     return (
       <section className='inpage'>
         <Helmet>
-          <title>IFRC Go - {regionName}</title>
+          <title>
+            {resolveToString(strings.regionTitleSelected, { regionName: regionName})}
+          </title>
         </Helmet>
         <BreadCrumb crumbs={[
           {link: this.props.location.pathname, name: regionName},
-          {link: '/', name: 'Home'}
+          {link: '/', name: strings.breadCrumbHome}
         ]} />
         <header className='inpage__header'>
           <div className='inner'>
@@ -214,98 +223,103 @@ class AdminArea extends SFPComponent {
             ) : <BlockLoading/>}
           </div>
         </section>
-        <Tabs
-          selectedIndex={ selectedIndex }
-          onSelect={index => handleTabChange(index)}
-        >
-          <TabList>
-            {TAB_DETAILS.map(tab => (
-              <Tab key={tab.title}>{tab.title}</Tab>
-            ))}
-          </TabList>
 
-          <div className='inpage__body'>
-            <div className='inner'>
-              <TabPanel>
-                <TabContent>
-                  <HighlightedOperations opsType='region' opsId={data.id}/>
-                  <section className={presentationClass} id='presentation'>
-                    {this.state.fullscreen ? (
-                      <KeyFiguresHeader fullscreen={this.state.fullscreen} appealsListStats={this.props.appealsListStats} />
-                    ) : null}
-                    <div className={c('inner', {'appeals--fullscreen': this.state.fullscreen})}>
-                      <AppealsTable
-                        title={'Active IFRC Operations'}
-                        region={getRegionId(this.props.match.params.id)}
-                        regionOperations={this.props.appealStats}
-                        mapBoundingBox={mapBoundingBox}
-                        mapLayers={[this.state.maskLayer]}
-                        activeOperations={activeOperations}
-                        showActive={true}
-                        id={'appeals'}
-                        showRegionMap={true}
-                        viewAll={'/appeals/all?region=' + data.id}
-                        viewAllText={`View all IFRC operations for ${regionName} region`}
-                        fullscreen={this.state.fullscreen}
-                        toggleFullscreen={this.toggleFullscreen}
-                      />
-                    </div>
-                  </section>
-                  <Fold title='Statistics' headerClass='visually-hidden' id='stats'>
-                    <div className='stats-chart'>
-                      <TimelineCharts region={data.id} />
-                    </div>
-                  </Fold>
-                  <CountryList
-                    countries={this.props.countries}
-                    appealStats={this.props.appealStats}
-                  />
-                  <EmergenciesTable
-                    id='emergencies'
-                    title='Recent Emergencies'
-                    limit={5}
-                    region={getRegionId(this.props.match.params.id)}
-                    showRecent={true}
-                    viewAll={'/emergencies/all?region=' + data.id}
-                    viewAllText={`View all Emergencies for ${regionName} region`}
-                  />
+        <div className='tab__wrap tab__wrap--3W'>
+          <Tabs
+            selectedIndex={ selectedIndex }
+            onSelect={index => handleTabChange(index)}
+          >
+            <TabList>
+              {this.TAB_DETAILS.map(tab => (
+                <Tab key={tab.title}>{tab.title}</Tab>
+              ))}
+            </TabList>
 
-                </TabContent>
-              </TabPanel>
-              <TabPanel>
-                <TabContent title="3W">
-                  <RegionalThreeW
-                    disabled={this.loading}
-                    regionId={this.getRegionId(this.props.match.params.id)}
-                  />
-                </TabContent>
-              </TabPanel>
-              <TabPanel>
-                <TabContent isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage={ NO_DATA } title="Key Figures">
-                  <KeyFigures data={this.props.keyFigures} />
-                </TabContent>
-                <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ NO_DATA } title="Graphics">
-                  <Snippets data={this.props.snippets} />
-                </TabContent>
-                <TabContent isError={!get(data, 'links.length')} errorMessage={ NO_DATA } title="Links">
-                  <Links data={data} />
-                </TabContent>
-                <TabContent showError={true} isError={!get(data, 'contacts.length')} errorMessage={ NO_DATA } title="Contacts">
-                  <Contacts data={data} />
-                </TabContent>
-              </TabPanel>
+            <div className='inpage__body'>
+              <div className='inner'>
+                <TabPanel>
+                  <TabContent>
+                    <HighlightedOperations opsType='region' opsId={data.id}/>
+                    <section className={presentationClass} id='presentation'>
+                      {this.state.fullscreen ? (
+                        <KeyFiguresHeader fullscreen={this.state.fullscreen} appealsListStats={this.props.appealsListStats} />
+                      ) : null}
+                      <div className={c('inner', {'appeals--fullscreen': this.state.fullscreen})}>
+                        <AppealsTable
+                          title={strings.regionAppealsTableTitle}
+                          region={getRegionId(this.props.match.params.id)}
+                          regionOperations={this.props.appealStats}
+                          mapBoundingBox={mapBoundingBox}
+                          mapLayers={[this.state.maskLayer]}
+                          activeOperations={activeOperations}
+                          showActive={true}
+                          id={'appeals'}
+                          showRegionMap={true}
+                          viewAll={'/appeals/all?region=' + data.id}
+                          viewAllText={resolveToString(strings.regionAppealsTableViewAllText, { regionName: regionName })}
+                          fullscreen={this.state.fullscreen}
+                          toggleFullscreen={this.toggleFullscreen}
+                        />
+                      </div>
+                    </section>
+                    <Fold title={strings.regionStatistics} foldHeaderClass='visually-hidden' id='stats'>
+                      <div className='stats-chart'>
+                        <TimelineCharts region={data.id} />
+                      </div>
+                    </Fold>
+                    <CountryList
+                      countries={this.props.countries}
+                      appealStats={this.props.appealStats}
+                    />
+                    <EmergenciesTable
+                      id='emergencies'
+                      title={strings.regionRecentEmergencies}
+                      limit={5}
+                      region={getRegionId(this.props.match.params.id)}
+                      showRecent={true}
+                      viewAll={'/emergencies/all?region=' + data.id}
+                      viewAllText={resolveToString(strings.regionEmergenciesTableViewAllText, { regionName: regionName })}
+                    />
+
+                  </TabContent>
+                </TabPanel>
+                <TabPanel>
+                  <TabContent title={strings.region3WTitle}>
+                    <RegionalThreeW
+                      disabled={this.loading}
+                      regionId={this.getRegionId(this.props.match.params.id)}
+                    />
+                  </TabContent>
+                </TabPanel>
+                <TabPanel>
+                  <TabContent isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage={ NO_DATA } title={strings.regionKeyFigures}>
+                    <KeyFigures data={this.props.keyFigures} />
+                  </TabContent>
+                  <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ NO_DATA } title={strings.regionGraphics}>
+                    <Snippets data={this.props.snippets} />
+                  </TabContent>
+                  <TabContent isError={!get(data, 'links.length')} errorMessage={ NO_DATA } title={strings.regionLinks}>
+                    <Links data={data} />
+                  </TabContent>
+                  <TabContent showError={true} isError={!get(data, 'contacts.length')} errorMessage={ NO_DATA } title={strings.regionContacts}>
+                    <Contacts data={data} />
+                  </TabContent>
+                </TabPanel>
+              </div>
             </div>
-          </div>
-        </Tabs>
+          </Tabs>
+        </div>
       </section>
     );
   }
 
   render () {
+    const { strings } = this.context;
+
     return (
       <App className={`page--${this.props.type}`}>
         <Helmet>
-          <title>IFRC Go - Region</title>
+          <title>{strings.regionTitle}</title>
         </Helmet>
         {this.renderContent()}
       </App>
@@ -369,4 +383,5 @@ const dispatcher = (dispatch) => ({
   _getAppealsListStats: (...args) => dispatch(getAppealsListStats(...args)),
 });
 
+AdminArea.contextType = LanguageContext;
 export default connect(selector, dispatcher)(AdminArea);

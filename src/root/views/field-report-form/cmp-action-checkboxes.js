@@ -7,6 +7,7 @@ import {
   FormTextarea
 } from '#components/form-elements/';
 import FormCheckboxGroupActions from '#components/form-elements/checkbox-group-actions';
+import LanguageContext from '#root/languageContext';
 
 export default class ActionsCheckboxes extends React.Component {
   constructor (props) {
@@ -48,18 +49,19 @@ export default class ActionsCheckboxes extends React.Component {
         options: options.filter(filteredOption => filteredOption.category === category)
       }));
 
+    const { strings } = this.context;
     return (
       <FormCheckboxGroupActions
         label={label}
         key={label}
         description={description}
         name={`${name}[options]`}
-        classWrapper='action-checkboxes action-checkboxes--textarea'
+        classWrapper='action-checkboxes action-checkboxes--textarea form__group__fr'
         options={groupedOptions}
         values={values.options}
         onChange={this.onChecksChange} >
         <FormTextarea
-          label='Description'
+          label={strings.cmpActionDescriptionLabel}
           classInput={classInput}
           placeholder={placeholder}
           name={`${name}[description]`}
@@ -72,6 +74,7 @@ export default class ActionsCheckboxes extends React.Component {
   }
 }
 
+ActionsCheckboxes.contextType = LanguageContext;
 if (environment !== 'production') {
   ActionsCheckboxes.propTypes = {
     label: T.string,

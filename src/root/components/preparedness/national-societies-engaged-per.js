@@ -8,6 +8,9 @@ import {
   PieChart, Pie, Cell
 } from 'recharts';
 
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
+
 export default class NationalSocietiesEngagedPer extends PureComponent {
   static get PIE_COLORS () {
     return ['rgba(36, 51, 76, 0.2)', '#24334c', '#FFBB28', '#FF8042'];
@@ -51,7 +54,7 @@ export default class NationalSocietiesEngagedPer extends PureComponent {
 
     this.preparedData.forEach((region) => {
       charts.push(
-        <div key={'regionChart' + region.region.id} style={{float: 'left', width: '20%'}}>
+        <div key={'regionChart' + region.region.id} className='col col--preparedness-ns'>
           <div style={{margin: 'auto', width: 'fit-content'}}>
             <PieChart width={160} height={160}>
               <Pie
@@ -78,21 +81,31 @@ export default class NationalSocietiesEngagedPer extends PureComponent {
           </div>
           <div className='donot__label__preparedness'>{region.region.name}</div>
           <div className='donot__label__desc'>
-            ({region.data[1].value} countries out of {region.data[0].value})
+            <Translate
+              stringId='nationalSocietiesCountries'
+              params={{
+                value: region.data[1].value,
+                total: region.data[0].value,
+              }}
+            />
           </div>
         </div>
       );
     });
+    const { strings } = this.context;
     return (
       <div className='inner'>
-        <Fold title={'National Societies engaged in the PER process'} foldClass='margin-reset' extraClass='fold--main'>
-          {charts}
+        <Fold title={strings.nationalSocietiesTitle} foldTitleClass='margin-reset' foldWrapperClass='fold--main'>
+          <div className='row flex-sm'>
+            {charts}
+          </div>
         </Fold>
       </div>
     );
   }
 }
 
+NationalSocietiesEngagedPer.contextType = LanguageContext;
 if (environment !== 'production') {
   NationalSocietiesEngagedPer.propTypes = {
     data: T.object

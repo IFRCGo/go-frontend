@@ -44,9 +44,9 @@ export default class DisplayTable extends React.Component {
   }
 
   renderPagination () {
-    if (this.props.rows.length && !this.props.noPaginate) {
+    if (this.props.rows.length && !this.props.noPaginate && this.props.pageCount > 1) {
       return (
-        <div className='pagination-wrapper'>
+        <div className='pagination-wrapper pagination-wrapper--table'>
           <ReactPaginate
             previousLabel={<span>previous</span>}
             nextLabel={<span>next</span>}
@@ -105,7 +105,7 @@ if (environment !== 'production') {
 }
 
 DisplayTable.defaultProps = {
-  className: 'table table--zebra'
+  className: 'table table--border-bottom'
 };
 
 export class SortHeader extends React.PureComponent {

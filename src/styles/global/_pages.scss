@@ -18,7 +18,7 @@ main {
    ========================================================================== */
 
 .page__header__inner__wrap {
-  border-bottom: 1px solid $primary-color;
+  border-bottom: 2px solid $primary-color;
 }
 
 .page__header, .page__header__inner__wrap {
@@ -28,16 +28,9 @@ main {
   z-index: 10;
 
   > .inner {
-    @extend .row, .row--centered;
     padding-top: $global-spacing;
     padding-bottom: $global-spacing;
-    display: flex;
-    align-items: center;
-    flex-flow: row nowrap;
     border-bottom: solid 1px tint($base-color, 92%);
-    &:last-child{
-      border-bottom: none;
-    }
   }
 }
 
@@ -88,7 +81,7 @@ main {
 
     img {
       vertical-align: middle;
-      height: 2.6rem;
+      height: 2.2rem;
       width: auto;
     }
 
@@ -113,13 +106,10 @@ main {
 .page__footer {
   background: #323232;
   padding: ($global-spacing * 2) 0;
-  font-size: 0.875rem;
+  font-weight: $base-font-regular;
+  font-size: $font-size-sm;
   line-height: 1.25rem;
   color: #ffffff;
-
-  > .inner {
-    @extend .row, .row--centered;
-  }
 
   *:last-child {
     margin-bottom: 0;
@@ -166,23 +156,39 @@ main {
   }
 
   .footer-left-block {
-    float: left;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+
+    @include media(small) {
+      flex-direction: row;
+    }
 
     a {
-      padding-right: 10px;
-    }
+      margin-bottom: $spacing;
+  
+      @include media(small) {
+        padding-inline-end: 10px;
+        margin-inline-end: 10px;
+        margin-bottom: 0;
+    
+        &:last-of-type {
+          margin-inline-end: 0;
+          padding-inline-end: 0;
+        }
 
-    a:not(:first-child) {
-      padding-left: 10px;
-    }
-
-    a:not(:last-child) {
-      border-right: 1px solid #fff;
+        &:not(:last-child) {
+          border-inline-end: 1px solid #fff;
+        }
+      }
     }
   }
 
   .footer-right-block {
-    float: right;
+    @include media(xsmall) {
+      display: flex;
+      justify-content: flex-end;
+    }
   }
 }
 

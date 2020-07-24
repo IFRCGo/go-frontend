@@ -17,31 +17,8 @@ import BlockLoading from '#components/block-loading';
 import Fold from '#components/fold';
 import Expandable from '#components/expandable';
 
-const alertTypes = {
-  0: 'FACT',
-  1: 'SIMS',
-  2: 'ERU',
-  3: 'DHEOps',
-  4: 'HEOps',
-  5: 'SURGE',
-  6: 'Rapid Response'
-};
-
-const typeOptions = [{value: 'all', label: 'All'}].concat(Object.keys(alertTypes).map(d => ({
-  label: alertTypes[d], value: d.toString()
-})));
-
-const alertCategories = {
-  0: 'Info',
-  1: 'Deployment',
-  2: 'Alert',
-  3: 'Shelter',
-  4: 'Stand down'
-};
-
-const categoryOptions = [{value: 'all', label: 'All'}].concat(Object.keys(alertCategories).map(d => ({
-  label: alertCategories[d], value: d.toString()
-})));
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
 
 class AlertsTable extends SFPComponent {
   // Methods form SFPComponent:
@@ -49,7 +26,7 @@ class AlertsTable extends SFPComponent {
   // handleFilterChange (what, field, value)
   // handleSortChange (what, field)
 
-  constructor (props) {
+  constructor (props, context) {
     super(props);
     this.state = {
       table: {
@@ -67,6 +44,30 @@ class AlertsTable extends SFPComponent {
       }
     };
     this.handlePageChange = this.handlePageChange.bind(this);
+    const { strings } = context;
+    this.alertTypes = {
+      0: strings.alertTableAlertTypeFact,
+      1: strings.alertTableAlertTypeSims,
+      2: strings.alertTableAlertTypeEru,
+      3: strings.alertTableAlertTypeDheops,
+      4: strings.alertTableAlertTypeHeops,
+      5: strings.alertTableAlertTypeSurge,
+      6: strings.alertTableAlertTypeRapidResponse,
+    };
+    this.typeOptions = [{value: 'all', label: 'All'}].concat(Object.keys(this.alertTypes).map(d => ({
+      label: this.alertTypes[d], value: d.toString()
+    })));
+    this.alertCategories = {
+      0: strings.alertTableCategoryInfo,
+      1: strings.alertTableCateogryDeployment,
+      2: strings.alertTableCategoryAlert,
+      3: strings.alertTableCategoryShelter,
+      4: strings.alertTableCategoryStandDown,
+    };
+
+    this.categoryOptions = [{value: 'all', label: 'All'}].concat(Object.keys(this.alertCategories).map(d => ({
+      label: this.alertCategories[d], value: d.toString()
+    })));
   }
 
   componentDidMount () {
@@ -121,7 +122,8 @@ class AlertsTable extends SFPComponent {
       error
     } = this.props.surgeAlerts;
 
-    const title = this.props.title || 'Latest Alerts';
+    const { strings } = this.context;
+    const title = this.props.title || strings.alertTableTitle;
 
     if (this.props.returnNullForEmpty &&
         (error || (fetching && !fetched) || (fetched && !data.results.length))) {
@@ -129,23 +131,27 @@ class AlertsTable extends SFPComponent {
     } else if (fetching || !fetched) {
       return <Fold title={title} id={this.props.id}><BlockLoading/></Fold>;
     } else if (error) {
-      return <Fold title={title} id={this.props.id}><p>Surge alerts not available.</p></Fold>;
+      return <Fold title={title} id={this.props.id}>
+               <p>
+                 <Translate stringId='alertTableError'/>
+               </p>
+             </Fold>;
     }
 
     const headings = [
       {
         id: 'date',
-        label: <FilterHeader id='date' title='Date' options={dateOptions} filter={this.state.table.filters.date} onSelect={this.handleFilterChange.bind(this, 'table', 'date')} />
+        label: <FilterHeader id='date' title={strings.alertTableDate} options={dateOptions} filter={this.state.table.filters.date} onSelect={this.handleFilterChange.bind(this, 'table', 'date')} />
       },
       {
         id: 'category',
-        label: <FilterHeader id='category' title='Category' options={categoryOptions} filter={this.state.table.filters.category} onSelect={this.handleFilterChange.bind(this, 'table', 'category')} />
+        label: <FilterHeader id='category' title={strings.alertTableCategory} options={this.categoryOptions} filter={this.state.table.filters.category} onSelect={this.handleFilterChange.bind(this, 'table', 'category')} />
       },
-      { id: 'emergency', label: 'Emergency' },
-      { id: 'msg', label: 'Alert Message' },
+      { id: 'emergency', label: strings.alertTableEmergency },
+      { id: 'msg', label: strings.alertTableMessage },
       {
         id: 'type',
-        label: <FilterHeader id='type' title='Type' options={typeOptions} filter={this.state.table.filters.type} onSelect={this.handleFilterChange.bind(this, 'table', 'type')} />
+        label: <FilterHeader id='type' title={strings.alertTableType} options={this.typeOptions} filter={this.state.table.filters.type} onSelect={this.handleFilterChange.bind(this, 'table', 'type')} />
       }
     ];
 
@@ -156,11 +162,11 @@ class AlertsTable extends SFPComponent {
       acc.push({
         id: rowData.id,
         date: date.toISODate(),
-        emergency: event ? <Link className='link--primary' to={`/emergencies/${event}`} title='View Emergency page'>{rowData.operation}</Link> : rowData.operation || nope,
+        emergency: event ? <Link className='link--table' to={`/emergencies/${event}`} title={strings.alertTableViewEmergency}>{rowData.operation}</Link> : rowData.operation || nope,
 
         msg: isLoggedIn(this.props.user) ? <Expandable limit={128} text={rowData.message} /> : privateSurgeAlert,
-        type: alertTypes[rowData.atype],
-        category: alertCategories[rowData.category]
+        type: this.alertTypes[rowData.atype],
+        category: this.alertCategories[rowData.category]
       });
 
       if (!isLast) {
@@ -172,10 +178,10 @@ class AlertsTable extends SFPComponent {
       return acc;
     }, []);
 
-    const foldLink = this.props.viewAll ? (<Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || 'View all surge alerts'}</Link>) : null;
+    const foldLink = this.props.viewAll ? (<Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || strings.alertTableViewAllText}</Link>) : null;
 
     return (
-      <Fold title={`${title} (${data.count})`} id={this.props.id} navLink={foldLink} foldClass='fold__title--inline' extraClass='fold--main'>
+      <Fold title={`${title} (${data.count})`} id={this.props.id} navLink={foldLink} foldTitleClass='fold__title--inline' foldWrapperClass='fold--main'>
         {this.props.showExport ? (
           <ExportButton filename='surge-alerts'
             qs={this.getQs(this.props)}
@@ -183,7 +189,7 @@ class AlertsTable extends SFPComponent {
           />
         ) : null}
         <DisplayTable
-          className='responsive-table alerts-table'
+          className='responsive-table table table--border-bottom'
           headings={headings}
           rows={rows}
           pageCount={data.count / this.state.table.limit}
@@ -228,4 +234,5 @@ const dispatcher = (dispatch) => ({
   _getSurgeAlerts: (...args) => dispatch(getSurgeAlerts(...args))
 });
 
+AlertsTable.contextType = LanguageContext;
 export default connect(selector, dispatcher)(AlertsTable);

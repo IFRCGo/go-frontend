@@ -9,7 +9,7 @@
   font-size: 0.875rem;
 
   th, td  {
-    padding: $global-spacing;
+    padding: ($spacing * 1.2);
     vertical-align: top;
     text-align: left;
     @include media(small-down) {
@@ -25,12 +25,12 @@
 
   th:first-child,
   td:first-child {
-    padding-left: $global-spacing;
+    padding-inline-start: $global-spacing;
   }
 
   th:last-child,
   td:last-child {
-    padding-right: $global-spacing;
+    padding-inline-end: $global-spacing;
   }
 
   .table__header--active {
@@ -42,7 +42,7 @@
     color: $base-color;
     font-size: 1rem;
     line-height: 1.25rem;
-    vertical-align: bottom;
+    vertical-align: top;
     box-shadow: inset 0 (-$base-border-width) 0 0 $base-alpha-color;
 
     a {
@@ -50,9 +50,11 @@
 
       &.table__sort:after {
         font-size: 1rem;
-        margin-left: 0.375rem;
+        //margin-inline-start: 0.375rem;
         vertical-align: top;
         display: inline-block;
+        position: relative;
+        left: ($spacing / 4);
         line-height: inherit !important;
       }
 
@@ -70,7 +72,7 @@
 
       &.table__filter:after {
         font-size: 1rem;
-        margin-left: 0.375rem;
+        margin-inline-start: 0.375rem;
         vertical-align: top;
         display: inline-block;
         line-height: inherit !important;
@@ -141,7 +143,7 @@
 }
 
 .table__basic-footer-line {
-  margin-left: 4px; 
+  margin-inline-start: 4px; 
 }
 
 /* Warapped in a scrollable-x element (optimized for narrow screens) */
@@ -153,13 +155,9 @@
 }
 
 td.right-align, th.right-align{
-  text-align: right;
+  text-align: end;
 }
 
-
-//td.table__cell--requestAmount, td.table__cell--fundedAmount, th.table__header--requestAmount, th.table__header--fundedAmount {
-  //text-align: right;
-//}
 
 /* Prose specific */
 
@@ -179,7 +177,7 @@ td.right-align, th.right-align{
   &__item {
     margin-bottom: $global-spacing;
     box-shadow: 0 0 0 1px $base-alpha-color;
-    border-left: 3px solid red;
+    border-inline-start: 3px solid red;
 
     &:last-child {
       margin-bottom: 0;
@@ -191,18 +189,7 @@ td.right-align, th.right-align{
   margin-bottom: $global-spacing * 2;
   width: 100%;
 
-  th, td  {
-    vertical-align: top;
-    text-align: left;
-  }
-
-  th {
-    padding: $global-spacing ($global-spacing / 2);
-  }
-
   td {
-    padding: ($global-spacing * 2) ($global-spacing / 2);
-    font-weight: $base-font-regular;
     &:nth-child(3) {
       width: 50%;
       @include media(large-up){
@@ -214,22 +201,8 @@ td.right-align, th.right-align{
     };
   }
 
-  th:first-child,
-  td:first-child {
-    padding-left: $global-spacing;
-  }
-
-  th:last-child,
-  td:last-child {
-    padding-right: $global-spacing;
-  }
-
   tbody tr {
-    border-left: 4px solid transparent;
-
-    &:nth-child(odd) {
-      box-shadow: 0 0 2px 0 rgba($base-color, 0.24);
-    }
+    border-inline-start: 4px solid transparent;
 
     &:nth-child(even) {
       height: $global-spacing;
@@ -264,7 +237,7 @@ td.right-align, th.right-align{
       padding: 1rem 1rem 0 45%;
 
       &:first-child {
-        padding-left: 45%;
+        padding-inline-start: 45%;
       }
 
       &:last-child {
@@ -279,7 +252,7 @@ td.right-align, th.right-align{
       top: 1rem;
       left: 1rem;
       width: 40%;
-      padding-right: 1rem;
+      padding-inline-end: 1rem;
       white-space: wrap;
       font-weight: $base-font-bold;
       speak: none;
@@ -298,7 +271,8 @@ td.right-align, th.right-align{
 
 .table__container {
   .fold__actions {
-    margin-top: -5.8em;
+    position: relative;
+    top: -5.2em;
     @include media(small-down) {
       display: none;
     }
@@ -317,6 +291,107 @@ td.right-align, th.right-align{
   }
 }
 
+.table--border-bottom {
+  thead th {
+    box-shadow: none;
+    font-weight: $base-font-semi-bold;
+    text-align: inline-start;
+  }
+
+  thead th, td {
+    font-size: $base-font-size;
+
+    &:first-child {
+      padding-inline-start: 0;
+    }
+
+    &:last-child {
+      padding-inline-end: 0;
+    }
+  }
+
+  th {
+    .drop__toggle--caret::after {
+      content: '\EA0A';
+      font-size: $font-size-xxs;
+      vertical-align: baseline;
+    }
+  }
+
+  td {
+    color: $grey-soot;
+    border-bottom: 1px solid $base-border-color--light;
+    font-weight: $base-font-regular;
+  }
+
+  // Progress bar styling for tables with bottom borders
+  .progress-bar {
+    background-color: rgba(50, 50, 50, 0.1);
+    border-radius: 0;
+  }
+
+  .progress-bar__value {
+    background-color: $primary-color;
+    border-radius: 0;
+    height: 4px;
+  }
+
+  .progress_value_funding_table {
+    margin-bottom: ($global-spacing / 3);
+    display: block;
+  }
+}
+
+.table--box-shadow {
+  @include box__global;
+
+  thead th, td {
+    &:first-child {
+      padding-inline-start: $global-spacing;
+    }
+
+    &:last-child {
+      padding-inline-end: $global-spacing;
+    }
+  }  
+}
+
 .table--border__list {
-  padding: $global-spacing 0;
+  padding: $spacing 0;
+}
+
+// Simple, underlined links for tables
+.link--table {
+  color: $black;
+  font-weight: $base-font-medium;
+  text-decoration: underline;
+
+  &:hover, &:focus {
+    color: $primary-color;
+    opacity: 1;
+  }
+}
+
+// Pagination for table
+.pagination-wrapper.pagination-wrapper--table {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: $global-spacing;
+}
+
+
+// Ensure table dates don't wrap
+.table__header--date, table__cell--date {
+  width: 120px;
+}
+
+.table__header--name, .table__cell--name {
+  width: 260px;
+}
+
+.table {
+  table__header--requestAmount, .table__cell--requestAmount {
+    text-align: end;
+    width: 184px;
+  }
 }
