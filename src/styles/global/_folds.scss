@@ -161,7 +161,7 @@
     text-align: end !important;
   }
 
-  span:last-of-type {
+  [class^="collecticon"] {
     font-size: $font-size-xxs;
     font-weight: $base-font-bold;
     margin-inline-start: $spacing-half;
