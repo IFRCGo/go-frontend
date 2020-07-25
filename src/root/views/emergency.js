@@ -365,10 +365,10 @@ class Emergency extends React.Component {
     const displayHeadlineStats =
       stats.beneficiaries || stats.requested || stats.funded;
     return (
-      <div className="spacing-2-b">
+      <div>
         <div className="inpage__header-col">
           {displayHeadlineStats ? (
-            <div className="inpage__headline-stats spacing-3-t">
+            <div className="inpage__headline-stats inpage__headline-stats--emergency">
               <div className='sumstats__wrap'>
                 <ul className="sumstats">
                   {stats.beneficiaries > 0 ? (
@@ -656,24 +656,26 @@ class Emergency extends React.Component {
 
     return (
       <Fold title={strings.emergencyKeyFiguresTitle} foldWrapperClass="key-figures">
-        <ul className="sumstats">
-          {kf.map((o) => (
-            <li key={o.deck} className='sumstats__item__wrap'>
-              <div className='sumstats__item'>
-                <h3 className='sumstats__value margin-reset'>{isNaN(o.number) ? o.number : n(o.number)}</h3>
-                <p className="sumstats__key">{o.deck}</p>
-                <p className="key-figure-source emergency__source">
-                  <Translate
-                    stringId="emergencySourceFigure"
-                    params={{
-                      source: o.source,
-                    }}
-                  />
-                </p>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <div className='sumstats__wrap'>
+          <ul className="sumstats">
+            {kf.map((o) => (
+              <li key={o.deck} className='sumstats__item__wrap'>
+                <div className='sumstats__item'>
+                  <h3 className='sumstats__value margin-reset'>{isNaN(o.number) ? o.number : n(o.number)}</h3>
+                  <p className="sumstats__key">{o.deck}</p>
+                  <p className="key-figure-source emergency__source">
+                    <Translate
+                      stringId="emergencySourceFigure"
+                      params={{
+                        source: o.source,
+                      }}
+                    />
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
       </Fold>
     );
   }
@@ -870,7 +872,7 @@ class Emergency extends React.Component {
               }}
             />
           )}
-        <header className="inpage__header">
+        <header className="inpage__header inpage__header--action">
           <div className="container-lg">
             <div>
               <div>

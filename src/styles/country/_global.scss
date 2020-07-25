@@ -35,7 +35,6 @@
   }
 
   .inpage__header {
-    margin-bottom: $global-spacing * 2;
     .content-list-group {
       @include column(12/12);
     }
