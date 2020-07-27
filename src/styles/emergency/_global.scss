@@ -4,7 +4,6 @@
   }
 
   .inpage__header {
-    margin-bottom: $global-spacing * 2;
     .content-list {
       width: 100%;
     }
@@ -263,4 +262,8 @@ h2.map__container__title {
     top: -2px;
     height: 24px; //TODO FIX
   }
+}
+
+.inpage__headline-stats--emergency {
+  margin-top: ($spacing * 1.5);
 }

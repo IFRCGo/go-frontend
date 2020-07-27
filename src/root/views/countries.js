@@ -641,7 +641,7 @@ class AdminArea extends SFPComponent {
             </div>
           </div>
         </div>
-        <header className='inpage__header container-lg'>
+        <header className='inpage__header inpage__header--action container-lg'>
           <div className='inner'>
             <h1 className='inpage__title'>
               {data.name}

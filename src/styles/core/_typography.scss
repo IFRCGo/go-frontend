@@ -464,7 +464,7 @@ abbr[title] {
   font-family: $heading-font-family;
   font-weight: $heading-font-weight;
   margin-top: 0;
-  margin-bottom: $global-spacing;
+  margin-bottom: ($spacing * 1.5);
 }
 
 .heading--xlarge {

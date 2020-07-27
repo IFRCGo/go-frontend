@@ -264,6 +264,16 @@
 }
 
 
+/* Use for header with action buttons
+   ========================================================================== */
+.inpage__header--action {
+  padding-top: $spacing-3;
+
+  .inpage__title {
+    margin-bottom: 0;
+  }
+}
+
 /* Dark theme modifier
    ========================================================================== */
 

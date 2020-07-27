@@ -119,7 +119,7 @@ class EmergencyMap extends React.Component {
       <div className='emergency-map'>
         <div className='inner'>
           <div className='row text-right'>
-            <button className={c('button button--primary-bounded button--small button--export global-margin-3-b', {
+            <button className={c('button button--primary-bounded button--small button--export margin-2-v', {
               disabled: !this.state.ready
             })} onClick={this.exportMap.bind(this, countries[0].name, _find(disasterType, {value: String(disasterTypeCode)}).label)}>
               <Translate stringId='emergencyMapExport'/>
