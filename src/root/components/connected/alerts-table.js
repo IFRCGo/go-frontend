@@ -156,7 +156,6 @@ class AlertsTable extends SFPComponent {
     ];
 
     const rows = data.results.reduce((acc, rowData, idx, all) => {
-      const isLast = idx === all.length - 1;
       const date = DateTime.fromISO(rowData.created_at);
       const event = get(rowData, 'event.id');
       acc.push({
@@ -168,12 +167,6 @@ class AlertsTable extends SFPComponent {
         type: this.alertTypes[rowData.atype],
         category: this.alertCategories[rowData.category]
       });
-
-      if (!isLast) {
-        acc.push({
-          rowOverride: <tr role='presentation' key={`${rowData.id}-empty`}><td colSpan='4'></td></tr>
-        });
-      }
 
       return acc;
     }, []);
