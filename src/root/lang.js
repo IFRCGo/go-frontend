@@ -1169,6 +1169,7 @@ export default {
   emergencyPageTitle: 'IFRC Go - {name}',
   emergencyKeyFiguresTitle: 'Key Figures',
   emergencyOverviewTitle: 'Overview',
+  emergencyAffectedRegions: 'Affected Regions',
   emergencySituationalOverviewTitle: 'Situational Overview',
   emergencyAlertsTitle: 'Alerts',
   emergencyPersonnelTitle: 'Personnel',

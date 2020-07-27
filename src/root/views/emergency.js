@@ -655,7 +655,7 @@ class Emergency extends React.Component {
     if (!this.hasKeyFigures()) return null;
 
     return (
-      <Fold title={strings.emergencyKeyFiguresTitle} foldWrapperClass="key-figures">
+      <Fold title={strings.emergencyKeyFiguresTitle} foldWrapperClass="key-figures fold--main padding-b-reset" foldContainerClass='container--padding-reset'>
         <div className='sumstats__wrap'>
           <ul className="sumstats">
             {kf.map((o) => (
@@ -921,10 +921,23 @@ class Emergency extends React.Component {
               <div className="inner">
                 <TabPanel>
                   <TabContent isError={!this.hasKeyFigures()} title={strings.emergencyKeyFiguresTitle}>
-                    {this.renderKeyFigures()}
+                    <div className='container-lg'>
+                      {this.renderKeyFigures()}
+                    </div>
                   </TabContent>
-                  <div className='container-lg'>
-                    {showExportMap()}
+                  <div className='fold fold--main'>
+                    <div className='container-lg'>
+                      <div className='fold__header'>
+                        <div className='fold__header__block'>
+                          <h2 className='fold__title'>
+                            <Translate stringId='emergencyAffectedRegions' />
+                          </h2>
+                        </div>
+                        <div className='fold__body'>  
+                          {showExportMap()}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <TabContent
                     isError={!summary}
