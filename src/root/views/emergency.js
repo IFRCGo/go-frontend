@@ -906,7 +906,7 @@ class Emergency extends React.Component {
             </div>
           </div>
         </header>
-        <div className='tab__wrap'>
+        <div className='tab__wrap margin-2-t'>
           <Tabs
             selectedIndex={selectedIndex}
             onSelect={(index) => handleTabChange(index)}
@@ -925,20 +925,7 @@ class Emergency extends React.Component {
                       {this.renderKeyFigures()}
                     </div>
                   </TabContent>
-                  <div className='fold fold--main'>
-                    <div className='container-lg'>
-                      <div className='fold__header'>
-                        <div className='fold__header__block'>
-                          <h2 className='fold__title'>
-                            <Translate stringId='emergencyAffectedRegions' />
-                          </h2>
-                        </div>
-                        <div className='fold__body'>  
-                          {showExportMap()}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  {showExportMap()}
                   <TabContent
                     isError={!summary}
                     errorMessage={NO_DATA}
