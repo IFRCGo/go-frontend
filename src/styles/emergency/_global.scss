@@ -256,11 +256,9 @@ h2.map__container__title {
 }
 
 .button--edit-action {
-  &.button .collecticon-pencil::before {
+  
+  &.button [class^="collecticon-"] {
     font-size: 0.8rem !important;
-    position: relative;
-    top: -2px;
-    height: 24px; //TODO FIX
   }
 }
 
