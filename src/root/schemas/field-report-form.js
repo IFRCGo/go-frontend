@@ -1,7 +1,6 @@
 import * as formData from '#utils/field-report-constants';
 
 const getValidValues = (arr, key) => arr.map(o => o[key]).filter(o => o !== '');
-// const currentDate = new Date().toISOString().slice(0,10);
 
 export const step1 = {
   properties: {
@@ -22,7 +21,6 @@ export const step1 = {
     startDate: {
       type: 'string',
       format: 'date',
-      // formatMaximum: currentDate
     },
     country: {
       type: 'string',
