@@ -217,7 +217,6 @@ class FieldReportForm extends React.Component {
       return;
     }
     const step = this.state.step;
-    console.log('result', this.state.data);
 
     const result = this.validate();
     if (result) {
