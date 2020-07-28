@@ -204,6 +204,16 @@
   }*/
 }
 
+/* Button Clickthrough
+   ========================================================================== */
+// Add this class to the click event of the button to pass through to the child
+// Uses pointer events property
+
+.btn--span-clickthrough {
+  span {
+    pointer-events: none;
+  }  
+}
 
 /* Button misc modifiers
    ========================================================================== */
