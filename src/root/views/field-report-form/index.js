@@ -250,7 +250,9 @@ class FieldReportForm extends React.Component {
   }
 
   onCountryChange (e) {
-    this.updateDistricts(e);
+    if(e) {
+      this.updateDistricts(e);
+    }
     this.onFieldChange('country', e);
   }
 
