@@ -160,24 +160,27 @@ class FieldReportForm extends React.Component {
     this.props._getFieldReportById(id);
   }
 
+  /**
+   * If a link is added in a text block on the API interface, it will show in the form editor 
+   * as <p><a href="url">url</a></p>. Assuming this is the desired behavior of the RTE on the API, 
+   * this helper function identifies urls within a string and wraps it in a tags so they are recognized
+   * as links in the form view.
+   * @param {object} campaign - The campaign data object.
+   * @param {string} stringInput - string from form input that possibly includes urls.
+   * @returns {string} - Returns the string with a tags wrapping urls.
+   */
   formatDescripton (stringInput) {
-    // remove a tags
-    const aTagStart = /<a[^>]*>/g;
-    const aTagEnd = /<\/a[^>]*>/g;
+    // removes a tags so their is always one set
+    const aTags = /<a[^>]*>|<\/a[^>]*>/g;
+    const cleanedString = stringInput.split(aTags).join('');
 
-    const replaceAll = (string, search, replace) => string.split(search).join(replace);
-    
-    const cleanedString1 = replaceAll(stringInput, aTagStart, '');
-    const cleanedString2 = replaceAll(cleanedString1, aTagEnd, '');
-    console.log('what is it now?', cleanedString2);
-
-    // add a tags
+    // add a tags to all urls
     const urls = /(https?:\/\/[^\s]+)/gi;
-    const editedURL = cleanedString2
+    const linkedStringInput = cleanedString
       .split(urls)
       .map(item => item.includes('http') ? `<a href="${item}">${item}</a>` : item)
       .join('');
-    return editedURL;
+    return linkedStringInput;
   }
 
   validate () {
