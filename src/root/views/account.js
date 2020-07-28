@@ -749,7 +749,7 @@ class Account extends React.Component {
                   <Link className={'link-underline'} to={'/emergencies/' + eventId}>{this.props.event.event[eventId].data.name}</Link>
                 </div>
                 <div className='account__op__each__button col col-4-sm'>
-                  <button className={'button button--small button--primary-bounded'} onClick={this.delSubscription} id={'followedEvent' + eventId}>
+                  <button className={'button button--small button--primary-bounded btn--span-clickthrough'} onClick={this.delSubscription} id={'followedEvent' + eventId}>
                     <Translate stringId='accountUnfollow'/>
                   </button>
                 </div>
