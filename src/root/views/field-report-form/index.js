@@ -194,8 +194,26 @@ class FieldReportForm extends React.Component {
       return;
     }
     const step = this.state.step;
+    console.log('result', this.state.data);
+
     const result = this.validate();
     if (result) {
+      // this doesn't work because it will apply to already formatted urls
+      // if (step === 2) {
+      //   let data = _cloneDeep(this.state.data);
+      //   const formattedDescripton = (string) => {
+      //     console.log('check string', data.description);
+      //     const search = /(https?:\/\/[^\s]+)/gi;
+      //     const editedURL = string
+      //       .split(search)
+      //       .map(item => item.includes('http') ? `<a target="_blank" href="${item}">${item}</a>` : item)
+      //       .join('');
+      //     return editedURL;
+      //   };
+        
+      //   _set(data, 'description', formattedDescripton(data.description));
+      //   this.setState({data});
+      // }
       if (step === 4) {
         const payload = convertStateToPayload(this.state.data);
         const userId = _get(this.props.user, 'data.id');
@@ -283,6 +301,7 @@ class FieldReportForm extends React.Component {
 
   onStepperClick (step, e) {
     e.preventDefault();
+    console.log('STEPPPPP', step);
     const result = this.validate();
     if (result) {
       window.scrollTo(0, 0);
@@ -297,6 +316,7 @@ class FieldReportForm extends React.Component {
         </p>
       ), true, 4500);
     }
+
   }
 
   renderStepper () {
