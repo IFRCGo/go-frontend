@@ -20,6 +20,7 @@ class PopulationMap extends React.PureComponent {
         className={_cs(className, styles.populationMap)}
         heading={<Translate stringId='populationMapTitle'/>}
         contentClassName={styles.content}
+        exportable
       >
         <Map
           className={styles.mapContainer}

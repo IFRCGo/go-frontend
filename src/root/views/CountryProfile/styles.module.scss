@@ -63,9 +63,16 @@
         height: 160px;
 
         :global {
-          .recharts-text,
           .recharts-label {
             font-size: $font-size-xxs;
+            font-weight: $base-font-light;
+            fill: rgba(0, 0, 0, .6);
+          }
+
+          .recharts-cartesian-axis-tick {
+            font-size: $font-size-xxs;
+            font-weight: $base-font-bold;
+            text-transform: uppercase;
           }
         }
       }

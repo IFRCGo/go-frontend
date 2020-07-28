@@ -13,6 +13,7 @@ import {
 import Translate from '#components/Translate';
 
 import Container from './Container';
+import { monthList } from './common';
 import styles from './styles.module.scss';
 
 const chartMargin = {
@@ -65,6 +66,7 @@ function ClimateChart(p){
       className={_cs(className, styles.climateChart)}
       heading={<Translate stringId='climateChartHeading' />}
       contentClassName={styles.content}
+      exportable
     >
       <ChartContainer
         className={styles.temperatureChart}
@@ -73,7 +75,7 @@ function ClimateChart(p){
         <BarChart
           data={temperatureChartData}
           margin={chartMargin}
-          barCategoryGap="30%"
+          barCategoryGap="25%"
         >
           <defs>
             <linearGradient
@@ -84,15 +86,24 @@ function ClimateChart(p){
               y2={1}
             >
               <stop offset='0%' stopColor='#ff5014' />
-              <stop offset='100%' stopColor='#ffffff' />
+              <stop offset='100%' stopColor='#f5f5f5' />
             </linearGradient>
           </defs>
           <CartesianGrid
             stroke='rgba(0, 0, 0, 0.06)'
             vertical={false}
           />
-          <YAxis width={30} axisLine={false} />
-          <XAxis dataKey='month' axisLine={false} />
+          <YAxis
+            width={30}
+            axisLine={false}
+          />
+          <XAxis
+            dataKey='month'
+            axisLine={false}
+            tickLine={false}
+            tickFormatter={(i) => monthList[i-1]}
+            tickMargin={10}
+          />
           <Bar
             fill='url(#temperature-chart-gradient)'
             dataKey='temperature_value'
@@ -109,14 +120,20 @@ function ClimateChart(p){
         <BarChart
           data={yearlyEvents}
           margin={chartMargin}
-          barCategoryGap="30%"
+          barCategoryGap="25%"
         >
           <CartesianGrid
             stroke='rgba(0, 0, 0, 0.06)'
             vertical={false}
           />
           <YAxis width={30} axisLine={false} />
-          <XAxis dataKey='month' axisLine={false} />
+          <XAxis
+            dataKey='month'
+            axisLine={false}
+            tickLine={false}
+            tickFormatter={(i) => monthList[i-1]}
+            tickMargin={10}
+          />
           <Bar
             fill='#42bfef'
             dataKey='avg_rainfall_precipitation'

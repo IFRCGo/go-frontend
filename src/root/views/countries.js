@@ -175,7 +175,7 @@ class AdminArea extends SFPComponent {
       },
       {
         title: strings.countryOverviewTab,
-        hash: '#overview',
+        hash: '#profile',
       },
       {
         title: strings.countryPreparednessTab,

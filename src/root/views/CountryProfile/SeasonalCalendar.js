@@ -8,15 +8,13 @@ import _cs from 'classnames';
 import Translate from '#components/Translate';
 
 import Container from './Container';
+import { monthList } from './common';
 import styles from './styles.module.scss';
 
 const daysInMonth = (year, month) => (
   new Date(year, month + 1, 0).getDate()
 );
 
-const monthList = [
-  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-];
 
 function SeasonalCalendar(props) {
   const {

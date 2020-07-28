@@ -18,9 +18,9 @@ export default class ThreeWMap extends React.PureComponent {
     this.map = newMap(
       mapContainer,
       'mapbox://styles/go-ifrc/ck1izjgrs016k1cmxwekow9m0',
+      { interactive: false },
     );
 
-    this.map.setMaxZoom(7);
     this.map.on('load', this.handleMapLoad);
   }
 
@@ -57,7 +57,7 @@ export default class ThreeWMap extends React.PureComponent {
   fillMap = (countryId, districtList) => {
     const iso2 = countryIsoMapById[countryId].toUpperCase();
     const bbox = getBoundingBox(iso2);
-    this.map.fitBounds(bbox);
+    this.map.fitBounds(bbox, { padding: 50 });
 
     const maxPopulation = Math.max(0, ...districtList.map(district => district.population));
     let opacityProperty;
