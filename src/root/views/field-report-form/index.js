@@ -225,6 +225,7 @@ class FieldReportForm extends React.Component {
         let data = _cloneDeep(this.state.data);
         
         _set(data, 'description', this.formatDescripton(data.description));
+        _set(data, 'otherSources', this.formatDescripton(data.description));
         this.setState({data});
       }
       if (step === 4) {

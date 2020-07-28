@@ -478,8 +478,6 @@ class FieldReport extends React.Component {
         return null;
       }
     }
-    console.log('report', this.props.location.state);
-    console.log('props', this.props);
     const infoBulletinOptions = {
       '0': 'No',
       '2': 'Planned',
