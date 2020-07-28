@@ -160,6 +160,26 @@ class FieldReportForm extends React.Component {
     this.props._getFieldReportById(id);
   }
 
+  formatDescripton (stringInput) {
+    // remove a tags
+    const aTagStart = /<a[^>]*>/g;
+    const aTagEnd = /<\/a[^>]*>/g;
+
+    const replaceAll = (string, search, replace) => string.split(search).join(replace);
+    
+    const cleanedString1 = replaceAll(stringInput, aTagStart, '');
+    const cleanedString2 = replaceAll(cleanedString1, aTagEnd, '');
+    console.log('what is it now?', cleanedString2);
+
+    // add a tags
+    const urls = /(https?:\/\/[^\s]+)/gi;
+    const editedURL = cleanedString2
+      .split(urls)
+      .map(item => item.includes('http') ? `<a href="${item}">${item}</a>` : item)
+      .join('');
+    return editedURL;
+  }
+
   validate () {
     const { step, data } = this.state;
     let state = prepStateForValidation(data);
@@ -199,21 +219,12 @@ class FieldReportForm extends React.Component {
     const result = this.validate();
     if (result) {
       // this doesn't work because it will apply to already formatted urls
-      // if (step === 2) {
-      //   let data = _cloneDeep(this.state.data);
-      //   const formattedDescripton = (string) => {
-      //     console.log('check string', data.description);
-      //     const search = /(https?:\/\/[^\s]+)/gi;
-      //     const editedURL = string
-      //       .split(search)
-      //       .map(item => item.includes('http') ? `<a target="_blank" href="${item}">${item}</a>` : item)
-      //       .join('');
-      //     return editedURL;
-      //   };
+      if (step === 2) {
+        let data = _cloneDeep(this.state.data);
         
-      //   _set(data, 'description', formattedDescripton(data.description));
-      //   this.setState({data});
-      // }
+        _set(data, 'description', this.formatDescripton(data.description));
+        this.setState({data});
+      }
       if (step === 4) {
         const payload = convertStateToPayload(this.state.data);
         const userId = _get(this.props.user, 'data.id');
@@ -301,7 +312,6 @@ class FieldReportForm extends React.Component {
 
   onStepperClick (step, e) {
     e.preventDefault();
-    console.log('STEPPPPP', step);
     const result = this.validate();
     if (result) {
       window.scrollTo(0, 0);
