@@ -16,6 +16,7 @@ Frontend:
 
 Backend:
 
+ - Update Docker base image for deploy, to support future Geospatial work: https://github.com/IFRCGo/go-api/pull/807
  - Optimize queries / improve performance of Events API endpoint: https://github.com/IFRCGo/go-api/issues/763
  - Optimize queries / improve performance of Appeals endpoint: https://github.com/IFRCGo/go-api/pull/828
  - Fix typo in cronjob: https://github.com/IFRCGo/go-api/issues/826
