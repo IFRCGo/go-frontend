@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 
@@ -12,12 +13,16 @@ import {
   addFullscreenListener,
   removeFullscreenListener
 } from '#utils/fullscreen';
+import { get } from '#utils/utils';
 
+import Fold from '#components/fold';
+import { commaSeparatedNumber as n } from '#utils/format';
 import KeyFiguresHeader from '#components/common/key-figures-header';
 import HighlightedOperations from '#components/highlighted-operations';
 
 import TimelineCharts from '#components/timeline-charts';
 import AppealsTable from '#components/connected/appeals-table';
+import MainMap from '#components/map/main-map';
 import LanguageContext from '#root/languageContext';
 
 class PresentationDash extends React.Component {
@@ -59,6 +64,11 @@ class PresentationDash extends React.Component {
   render () {
     const { strings } = this.context;
     const { appealsList } = this.props;
+
+    const foldLink = (
+      <Link className='fold__title__link' to={'/appeals/all'}>{this.props.viewAllText || strings.viewAllOperations}</Link>
+    );
+
     return (
       <section className={c('fold--stats', {presenting: this.state.fullscreen})} id='presentation'>
         <KeyFiguresHeader
@@ -68,15 +78,37 @@ class PresentationDash extends React.Component {
         />
         { !this.state.fullscreen ? (<HighlightedOperations opsType='all'/>) : null }
         <div className={c('inner', {'appeals--fullscreen': this.state.fullscreen})}>
-          <AppealsTable
-            showActive={true}
-            showHomeMap={true}
-            title={strings.presentationDashAppealsTitle}
-            limit={5}
-            viewAll={'/appeals/all'}
-            fullscreen={this.state.fullscreen}
-            toggleFullscreen={this.toggleFullscreen}
-          />
+          <Fold
+            showHeader={!this.state.fullscreen}
+            title={`${strings.presentationDashAppealsTitle} (${n(this.props.appeals.data.count)})`}
+            id={this.props.id}
+            navLink={foldLink}
+            foldTitleClass='fold__title--inline'
+            foldWrapperClass='fold--main fold--appeals-table'
+          >
+            { appealsList.fetched ?
+              (
+                <MainMap
+                  operations={appealsList}
+                  noExport={true}
+                  noRenderEmergencies={true}
+                  fullscreen={this.state.fullscreen}
+                  toggleFullscreen={this.toggleFullscreen}
+                />
+              )
+              : null
+            }
+            
+            <AppealsTable
+              showActive={true}
+              showHomeMap={true}
+              foldLink={foldLink}
+              limit={5}
+              viewAll={'/appeals/all'}
+              fullscreen={this.state.fullscreen}
+              toggleFullscreen={this.toggleFullscreen}
+            />
+          </Fold>
         </div>
         <div className='container-lg'>
           {this.state.fullscreen ? null : <TimelineCharts /> }
@@ -90,14 +122,16 @@ if (environment !== 'production') {
   PresentationDash.propTypes = {
     _getAppealsList: T.func,
     appealsList: T.object,
-    aggregate: T.object
+    aggregate: T.object,
+    appeals: T.object
   };
 }
 
 // /////////////////////////////////////////////////////////////////// //
 // Connect functions
 
-const selector = (state) => ({
+const selector = (state, props) => ({
+  appeals: props.statePath ? get(state, props.statePath) : state.appeals,
   appealsList: state.overallStats.appealsList,
   aggregate: state.overallStats.aggregate
 });
