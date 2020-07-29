@@ -1,0 +1,33 @@
+@import '~styles/settings/variables';
+
+.initial-loading {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+
+  .logo {
+    height: 220px;
+  }
+
+  .content {
+    display: flex;
+
+    .message {
+      font-size: 2rem;
+      padding: 10px;
+      font-weight: $base-font-bold;
+      color: $grey-cement;
+    }
+
+    .loading {
+      padding: 0;
+      margin: 0;
+      height: auto;
+      border: 0;
+    }
+  }
+}
