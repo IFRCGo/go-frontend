@@ -64,7 +64,7 @@ ajvKeywords(ajv);
 // - Add field to the submission payload in convertStateToPayload()
 
 class FieldReportForm extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -95,7 +95,7 @@ class FieldReportForm extends React.Component {
   }
 
   // eslint-disable-next-line camelcase
-  UNSAFE_componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { strings } = this.context;
 
     if (this.props.fieldReportForm.fetching && !nextProps.fieldReportForm.fetching) {
@@ -143,19 +143,19 @@ class FieldReportForm extends React.Component {
       hideGlobalLoading();
       if (!nextProps.report.error) {
         const prefillState = convertFieldReportToState(nextProps.report.data, this.state.data);
-        this.setState({data: prefillState});
+        this.setState({ data: prefillState });
         const country = prefillState.country;
         if (country) this.updateDistricts(country);
       }
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     // fetch actions data from backend
     this.props._getActions();
   }
 
-  getReport (id) {
+  getReport(id) {
     showGlobalLoading();
     this.props._getFieldReportById(id);
   }
@@ -169,7 +169,7 @@ class FieldReportForm extends React.Component {
    * @param {string} stringInput - string from form input that possibly includes urls.
    * @returns {string} - Returns the string with a tags wrapping urls.
    */
-  formatDescripton (stringInput) {
+  formatDescripton(stringInput) {
     // removes a tags so their is always one set
     const aTags = /<a[^>]*>|<\/a[^>]*>/g;
     const cleanedString = stringInput.split(aTags).join('');
@@ -183,7 +183,7 @@ class FieldReportForm extends React.Component {
     return linkedStringInput;
   }
 
-  validate () {
+  validate() {
     const { step, data } = this.state;
     let state = prepStateForValidation(data);
 
@@ -211,7 +211,7 @@ class FieldReportForm extends React.Component {
     return validator.errors === null;
   }
 
-  onSubmit (e) {
+  onSubmit(e) {
     e.preventDefault();
     if (this.props.fieldReportForm.fetching) {
       return;
@@ -223,10 +223,10 @@ class FieldReportForm extends React.Component {
       // this doesn't work because it will apply to already formatted urls
       if (step === 2) {
         let data = _cloneDeep(this.state.data);
-        
+
         _set(data, 'description', this.formatDescripton(data.description));
         _set(data, 'otherSources', this.formatDescripton(data.description));
-        this.setState({data});
+        this.setState({ data });
       }
       if (step === 4) {
         const payload = convertStateToPayload(this.state.data);
@@ -259,12 +259,12 @@ class FieldReportForm extends React.Component {
     }
   }
 
-  updateDistricts (e) {
+  updateDistricts(e) {
     this.props._getDistrictsForCountry(e);
     return true;
   }
 
-  getDistrictChoices () {
+  getDistrictChoices() {
     const { districts } = this.props;
     const country = this.state.data.country;
     if (!country) return [];
@@ -281,7 +281,7 @@ class FieldReportForm extends React.Component {
     }
   }
 
-  onCountryChange (e) {
+  onCountryChange(e) {
     this.updateDistricts(e);
     this.onFieldChange('country', e);
   }
@@ -303,17 +303,17 @@ class FieldReportForm extends React.Component {
     }
 
     _set(data, field, val === '' || val === null ? undefined : val);
-    this.setState({data});
+    this.setState({ data });
   }
 
-  onStepBackClick () {
+  onStepBackClick() {
     if (this.state.step > 1) {
       window.scrollTo(0, 0);
       this.setState({ step: this.state.step - 1 });
     }
   }
 
-  onStepperClick (step, e) {
+  onStepperClick(step, e) {
     e.preventDefault();
     const result = this.validate();
     if (result) {
@@ -332,7 +332,7 @@ class FieldReportForm extends React.Component {
 
   }
 
-  renderStepper () {
+  renderStepper() {
     const { strings } = this.context;
     const status = this.getStatus();
     const step = this.state.step;
@@ -374,7 +374,7 @@ class FieldReportForm extends React.Component {
     );
   }
 
-  getStatus () {
+  getStatus() {
     const { status, disasterType } = this.state.data;
 
     if (status === formData.statusEarlyWarningValue) {
@@ -389,7 +389,7 @@ class FieldReportForm extends React.Component {
   /**
    * Modifies state.data to incorporate actions received from the API
    */
-  setActions (actions) {
+  setActions(actions) {
     const actionsNatSocOpts = checkFalse(filterActions(actions, 'NTLS'));
     const actionsPnsOpts = checkFalse(filterActions(actions, 'PNS'));
     const actionsFederationOpts = checkFalse(filterActions(actions, 'FDRN'));
@@ -408,10 +408,10 @@ class FieldReportForm extends React.Component {
         options: actionsPnsOpts
       }
     };
-    this.setState({'data': newData});
+    this.setState({ 'data': newData });
   }
 
-  renderStep1 () {
+  renderStep1() {
     const { strings } = this.context;
     const districtChoices = this.getDistrictChoices() || [];
     const fields = formData.getFieldsStep1(strings);
@@ -428,7 +428,7 @@ class FieldReportForm extends React.Component {
             ...(
               !formData.getIsStatusEventByValue(status.value) &&
               formData.getIsEpidemicDisasterTypeByValue(this.state.data.disasterType) &&
-              {disabled: true}
+              { disabled: true }
             )
           }))}
           selectedOption={this.state.data.status}
@@ -545,10 +545,10 @@ class FieldReportForm extends React.Component {
                 placeholder='Select a disaster type'
                 name='disaster-type'
                 id='disaster-type'
-                disabled={ this.state.data.isCovidReport === 'true' || !this.state.data.isCovidReport }
+                disabled={this.state.data.isCovidReport === 'true' || !this.state.data.isCovidReport}
                 options={formData.disasterType}
                 value={this.state.data.disasterType}
-                onChange={({value}) => this.onFieldChange('disasterType', value)}
+                onChange={({ value }) => this.onFieldChange('disasterType', value)}
               />
               <FormError
                 errors={this.state.errors}
@@ -625,7 +625,7 @@ class FieldReportForm extends React.Component {
     );
   }
 
-  renderStep2 () {
+  renderStep2() {
     const { strings } = this.context;
     const fields = formData.getFieldsStep2(strings);
     const status = this.getStatus();
@@ -681,7 +681,7 @@ class FieldReportForm extends React.Component {
           })
         }
 
-        { status === 'EPI'
+        {status === 'EPI'
           ? (
             <div className='form__group form__group__fr'>
               <div className='form__group__wrap'>
@@ -701,7 +701,7 @@ class FieldReportForm extends React.Component {
                       placeholder='Source (of figures)'
                       name='epi-figures-source'
                       value={this.state.data.epiFiguresSource}
-                      onChange={({value}) => this.onFieldChange('epiFiguresSource', value)}
+                      onChange={({ value }) => this.onFieldChange('epiFiguresSource', value)}
                       options={formData.epiSources}
                     />
                     <FormError
@@ -740,7 +740,7 @@ class FieldReportForm extends React.Component {
             name='other-sources'
             classInput='textarea--lg'
             classWrapper='form__group__fr'
-            placeholder={status === 'EPI' ? strings.fieldReportFormSourceDetailsEPIPlaceholder : strings.fieldReportFormSourceDetailsPlaceholder }
+            placeholder={status === 'EPI' ? strings.fieldReportFormSourceDetailsEPIPlaceholder : strings.fieldReportFormSourceDetailsPlaceholder}
             id='other-sources'
             description={strings.fieldReportFormSourceDetailsDescription}
             value={this.state.data.otherSources}
@@ -772,7 +772,7 @@ class FieldReportForm extends React.Component {
     );
   }
 
-  renderStep3 () {
+  renderStep3() {
     const { strings } = this.context;
     const fields = formData.getFieldsStep3(strings);
     const status = this.getStatus();
@@ -798,9 +798,9 @@ class FieldReportForm extends React.Component {
     // Note: There's no need for validation on this step.
     // All the fields are optional, and the text fields are just strings.
     return (
-      <Fold title=<Translate stringId="fieldReportFormContactsTitle" /> foldWrapperClass='fold--main fold--transparent'>
-      {/*<Fold title={strings.fieldReportFormActionTakenTitle}>*/}
- 
+      <Fold title={<Translate stringId="fieldReportFormContactsTitle" />} foldWrapperClass='fold--main fold--transparent'>
+        {/*<Fold title={strings.fieldReportFormActionTakenTitle}>*/}
+
         <div className='form__group row flex-mid'>
           {
             fields.section1fields.map(field => {
@@ -900,7 +900,7 @@ class FieldReportForm extends React.Component {
     );
   }
 
-  renderStep4 () {
+  renderStep4() {
     const { strings } = this.context;
     const fields = formData.getFieldsStep4(strings);
     const status = this.getStatus();
@@ -916,7 +916,7 @@ class FieldReportForm extends React.Component {
     }
     return (
       <Fold title={responseTitle} foldWrapperClass='fold--main fold--transparent'>
-        { this.state.data.isCovidReport === 'true' ? null : (
+        {this.state.data.isCovidReport === 'true' ? null : (
           <React.Fragment>
             <label className='form__label'>
               <Translate stringId="fieldReportFormResponseLabel" />
@@ -994,7 +994,7 @@ class FieldReportForm extends React.Component {
     );
   }
 
-  renderErrorSummary () {
+  renderErrorSummary() {
     const { errors } = this.state;
     if (!errors) {
       return null;
@@ -1011,7 +1011,7 @@ class FieldReportForm extends React.Component {
           />
         </h3>
         <p>
-          <Translate stringId='fieldReportFix'/>
+          <Translate stringId='fieldReportFix' />
         </p>
         <ul>
           {errors.map(o => <li key={o.dataPath}>{dataPathToDisplay(o.dataPath, o.keyword)}</li>)}
@@ -1020,24 +1020,24 @@ class FieldReportForm extends React.Component {
     );
   }
 
-  render () {
+  render() {
     const { strings } = this.context;
     const submitTitle = this.state.step === 4 ? strings.fieldReportSubmit : strings.fieldReportContinue;
     return (
       <App className='page--frep-form'>
         <Helmet>
-          <title>{ strings.fieldReportFormPageTitle }</title>
+          <title>{strings.fieldReportFormPageTitle}</title>
         </Helmet>
         <BreadCrumb crumbs={[
-          {link: this.props.location.pathname, name: strings.breadCrumbNewFieldReport},
-          {link: '/', name: strings.breadCrumbHome}
+          { link: this.props.location.pathname, name: strings.breadCrumbNewFieldReport },
+          { link: '/', name: strings.breadCrumbHome }
         ]} />
         <section className='inpage'>
           <header className='inpage__header'>
             <div className='inner'>
               <div className='iSave and Continuenpage__headline'>
                 <h1 className='inpage__title'>
-                  <Translate stringId='fieldReportCreate'/>
+                  <Translate stringId='fieldReportCreate' />
                 </h1>
                 {this.renderStepper()}
               </div>
@@ -1050,7 +1050,7 @@ class FieldReportForm extends React.Component {
                 {this.renderErrorSummary()}
 
                 <div className='form__actions text-center'>
-                  <button type='button' className={c('button button--secondary-bounded button--small', {disabled: this.state.step <= 1})} title={strings.fieldReportGoBack} onClick={this.onStepBackClick}><Translate stringId='fieldReportBack'/></button>
+                  <button type='button' className={c('button button--secondary-bounded button--small', { disabled: this.state.step <= 1 })} title={strings.fieldReportGoBack} onClick={this.onStepBackClick}><Translate stringId='fieldReportBack' /></button>
                   <button type='submit' className='button button--secondary-filled button--small' title={submitTitle}>{submitTitle}</button>
                 </div>
               </form>
