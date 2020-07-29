@@ -39,8 +39,6 @@ class PresentationDash extends React.Component {
 
   componentDidMount () {
     addFullscreenListener(this.onFullscreenChange);
-
-    this.props._getAppealsList();
   }
 
   componentWillUnmount () {
