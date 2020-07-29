@@ -142,13 +142,42 @@
 
   .key-documents {
     .content {
-      display: flex;
-      flex-wrap: wrap;
+      .filters {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px;
+        margin-bottom: 10px;
 
-      .document-group {
-        flex-basis: calc(100% / 3);
-        flex-grow: 1;
-        margin: 6px;
+        .search-container {
+          display: flex;
+          align-items: center;
+          border-bottom: 1px solid rgba(0, 0, 0, .1);
+
+          .icon {
+            font-size: $font-size-lg;
+          }
+
+          .search {
+            padding: 0;
+
+            input {
+              border: 0;
+              outline: none;
+            }
+          }
+        }
+      }
+
+      .cards {
+        display: flex;
+        flex-wrap: wrap;
+
+        .document-group {
+          flex-basis: calc(100% / 3);
+          margin: 6px;
+          max-height: 240px;
+        }
       }
     }
   }

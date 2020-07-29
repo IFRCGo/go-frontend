@@ -6,6 +6,7 @@
   box-shadow: $base-box-shadow;
   padding: 0 10px;
   background-color: #fff;
+  overflow: auto;
 
   .header {
     flex-shrink: 0;
@@ -24,6 +25,7 @@
   .content {
     flex-grow: 1;
     padding: 10px 0;
+    overflow: auto;
   }
 
   .footer {

@@ -1227,4 +1227,6 @@ export default {
 
   countryProfileKeyDocumentsTitle: 'Key Documents',
   countryProfileExternalSourcesTitle: 'External Sources',
+  countryProfileDateRange: 'Date Range',
+  countryProfileSearchPlaceholder: 'Search',
 };
