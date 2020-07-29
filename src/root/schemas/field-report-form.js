@@ -21,6 +21,8 @@ export const step1 = {
     startDate: {
       type: 'string',
       format: 'date',
+      formatMinimum: '1980-01-01',
+      formatExclusiveMaximum: true
     },
     country: {
       type: 'string',
