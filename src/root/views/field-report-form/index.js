@@ -220,7 +220,6 @@ class FieldReportForm extends React.Component {
 
     const result = this.validate();
     if (result) {
-      // this doesn't work because it will apply to already formatted urls
       if (step === 2) {
         let data = _cloneDeep(this.state.data);
         
