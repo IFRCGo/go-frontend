@@ -253,7 +253,9 @@ class Deployments extends SFPComponent {
             />
           </div>
           <div className='inner margin-4-t'>
-            <PersonnelTable limit={20} viewAll={'/deployments/personnel/all'} />
+            <div className='table-deployed-personnel-block'>
+              <PersonnelTable limit={20} viewAll={'/deployments/personnel/all'} />
+            </div>
             <div className='readiness__container container-lg'>
               <Readiness eruOwners={this.props.eruOwners} />
             </div>

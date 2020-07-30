@@ -1,3 +1,9 @@
+.table-deployed-personnel-block {
+  .table__header--name, .table__cell--name {
+    width: 158px;
+  }  
+}
+
 .readiness__container {
   margin-top: $spacing-3;
 }
