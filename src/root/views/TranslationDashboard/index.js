@@ -217,7 +217,7 @@ function TranslationDashboard(p) {
   }, [strings, updatedKeyList, devStrings, postLanguageBulk, currentLanguage]);
 
   const handleAddNewKeysButtonClick = React.useCallback(() => {
-    const actions = Object.keys(devStrings).map((key) => ({
+    const actions = addedKeyList.map((key) => ({
       action: 'set',
       key,
       value: devStrings[key].value,
@@ -226,7 +226,7 @@ function TranslationDashboard(p) {
 
     const data = { actions };
     postLanguageBulk(currentLanguage, data);
-  }, [devStrings, postLanguageBulk, currentLanguage]);
+  }, [devStrings, addedKeyList, postLanguageBulk, currentLanguage]);
 
   const handleTabClick = React.useCallback((e) => {
     setCurrentView(e.target.name);
