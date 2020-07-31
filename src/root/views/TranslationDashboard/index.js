@@ -197,6 +197,34 @@ function TranslationDashboard(p) {
     postLanguageBulk(currentLanguage, data);
   }, [removedKeyList, postLanguageBulk, currentLanguage]);
 
+  const handleResolveButtonClick = React.useCallback(() => {
+    const actions = updatedKeyList.map((key) => {
+      const value = strings[key].value || devStrings[key].value;
+
+      return {
+        action: 'set',
+        key,
+        value,
+        hash: spark.hash(value),
+      };
+    });
+
+    const data = { actions };
+    postLanguageBulk(currentLanguage, data);
+  }, [strings, updatedKeyList, devStrings, postLanguageBulk, currentLanguage]);
+
+  const handleAddNewKeysButtonClick = React.useCallback(() => {
+    const actions = Object.keys(devStrings).map((key) => ({
+      action: 'set',
+      key,
+      value: devStrings[key].value,
+      hash: devStrings[key].hash,
+    }));
+
+    const data = { actions };
+    postLanguageBulk(currentLanguage, data);
+  }, [devStrings, postLanguageBulk, currentLanguage]);
+
   const handleTabClick = React.useCallback((e) => {
     setCurrentView(e.target.name);
   }, [setCurrentView]);
@@ -247,7 +275,7 @@ function TranslationDashboard(p) {
             ))}
           </div>
           <div className={styles.tabActions}>
-            { currentView === 'removed' ? (
+            { currentView === 'removed' && (
               <button
                 className="button button--secondary-bounded"
                 onClick={handleRemoveOutdatedButtonClick}
@@ -255,7 +283,26 @@ function TranslationDashboard(p) {
               >
                 Remove outdated keys
               </button>
-            ) : (
+            )}
+            { currentView === 'added' && (
+              <button
+                className="button button--secondary-bounded"
+                onClick={handleAddNewKeysButtonClick}
+                disabled={pending}
+              >
+                Add new keys
+              </button>
+            )}
+            { currentView === 'updated' && (
+              <button
+                className="button button--secondary-bounded"
+                onClick={handleResolveButtonClick}
+                disabled={pending}
+              >
+                Resolve
+              </button>
+            )}
+            { currentView === 'all' && (
               <button
                 className="button button--primary-bounded"
                 onClick={handleSaveButtonClick}
@@ -285,12 +332,7 @@ function TranslationDashboard(p) {
             <BlockLoading />
           ) : (
             <>
-              { currentView === 'all' && (
-                <AllInServer
-                  strings={strings}
-                />
-              )}
-              {/* currentView === 'all' && appStringKeyList.map((k) => (
+              { currentView === 'all' && appStringKeyList.map((k) => (
                 <StringRow
                   key={k}
                   stringKey={k}
@@ -300,16 +342,13 @@ function TranslationDashboard(p) {
                   obsolete={removedKeys[k]}
                   onChange={handleStringChange}
                 />
-              )) */}
+              )) }
               { currentView === 'added' && addedKeyList.map((k) => (
                 <StringRow
                   key={k}
                   stringKey={k}
                   devValue={devStrings[k]?.value}
-                  value={strings[k]?.value || appStrings[k]?.value}
-                  editable={!removedKeys[k]}
-                  obsolete={removedKeys[k]}
-                  onChange={handleStringChange}
+                  value={devStrings[k]?.value}
                 />
               ))}
               { currentView === 'removed' && removedKeyList.map((k) => (
@@ -325,7 +364,7 @@ function TranslationDashboard(p) {
                   key={k}
                   stringKey={k}
                   devValue={devStrings[k]?.value}
-                  value={strings[k]?.value || appStrings[k]?.value}
+                  value={strings[k]?.value}
                   editable={!removedKeys[k]}
                   obsolete={removedKeys[k]}
                   onChange={handleStringChange}
