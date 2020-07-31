@@ -3,6 +3,7 @@ import ContentEditable from 'react-contenteditable';
 import { connect } from 'react-redux';
 import _cs from 'classnames';
 import spark from 'spark-md5';
+import Helmet from 'react-helmet';
 import {
   listToMap,
   isDefined,
@@ -99,16 +100,20 @@ function TranslationDashboard(p) {
     prevBulkResponse.current = languageBulkResponse;
   }, [prevBulkResponse, languageBulkResponse, currentLanguage, getLanguage]);
 
-  const appStrings = React.useMemo(() => (
-    listToMap(
-      languageData.strings || [],
-      d => d.key,
-      d => ({
-        hash: d.hash,
-        value: d.value
-      }),
-    )
-  ), [languageData]);
+  const [appStrings, setAppStrings] = React.useState({});
+
+  React.useEffect(() => {
+    setAppStrings(
+      listToMap(
+        languageData.strings || [],
+        d => d.key,
+        d => ({
+          hash: d.hash,
+          value: d.value
+        }),
+      )
+    );
+  }, [setAppStrings, languageData]);
 
   const appStringKeyList = React.useMemo(() => {
     const keys = Object.keys(appStrings);
@@ -144,6 +149,16 @@ function TranslationDashboard(p) {
     }));
   }, [setStrings]);
 
+  const handleAppStringChange = React.useCallback((key, value) => {
+    setAppStrings((oldStrings) => ({
+      ...oldStrings,
+      [key]: {
+        value,
+        hash: oldStrings[key].hash,
+      }
+    }));
+  }, [setAppStrings]);
+
   const [addedKeyList, removedKeyList, updatedKeyList] = React.useMemo(() => {
     const allKeyList = [...new Set([...devStringKeyList, ...appStringKeyList])];
     const removedKeyList = [];
@@ -178,16 +193,16 @@ function TranslationDashboard(p) {
   const removedKeys = React.useMemo(() => listToMap(removedKeyList, d => d, d => true), [removedKeyList]);
 
   const handleSaveButtonClick = React.useCallback(() => {
-    const actions = Object.keys(strings).map((key) => ({
+    const actions = Object.keys(appStrings).map((key) => ({
       action: 'set',
       key,
-      value: strings[key].value,
-      hash: strings[key].hash,
+      value: appStrings[key].value,
+      hash: appStrings[key].hash,
     }));
 
     const data = { actions };
     postLanguageBulk(currentLanguage, data);
-  }, [strings, postLanguageBulk, currentLanguage]);
+  }, [appStrings, postLanguageBulk, currentLanguage]);
 
   const handleRemoveOutdatedButtonClick = React.useCallback(() => {
     const actions = removedKeyList.map((key) => ({
@@ -257,10 +272,15 @@ function TranslationDashboard(p) {
 
   return (
     <div className={_cs(className, styles.translationDashboard)}>
+      <Helmet>
+        <title>
+          IFRC GO - Translation Dashboard
+        </title>
+      </Helmet>
       <header className={styles.header}>
         <div className={styles.topSection}>
           <h2 className={styles.heading}>
-            Translation
+            Translation Dashboard
           </h2>
           <div className={styles.actions}>
             <LanguageSelect />
@@ -313,16 +333,15 @@ function TranslationDashboard(p) {
                 )}
               </>
             ) : (
-              currentView === 'all' && (
-                <button
-                  className="button button--primary-bounded"
-                  onClick={handleSaveButtonClick}
-                  disabled={pending}
-                >
-                  {/* TODO: use translations */}
-                  Save
-                </button>
-            ))}
+              <button
+                className="button button--primary-bounded"
+                onClick={handleSaveButtonClick}
+                disabled={pending}
+              >
+                {/* TODO: use translations */}
+                Save
+              </button>
+            )}
           </div>
         </div>
       </header>
@@ -378,10 +397,10 @@ function TranslationDashboard(p) {
                   key={k}
                   stringKey={k}
                   devValue={devStrings[k]?.value}
-                  value={strings[k]?.value || appStrings[k]?.value}
+                  value={appStrings[k]?.value}
                   editable={!removedKeys[k]}
                   obsolete={removedKeys[k]}
-                  onChange={handleStringChange}
+                  onChange={handleAppStringChange}
                 />
               ))
             )
