@@ -25,16 +25,17 @@ import {
 import BlockLoading from '#components/block-loading';
 import LanguageSelect from '#components/LanguageSelect';
 
-import AllInServer from './AllInServer';
-
 import styles from './styles.module.scss';
 
 // TODO: use translation
-const views = {
-  all: 'All in server',
+const conflictedViews = {
   added: 'New by dev',
   removed: 'Removed by dev',
   updated: 'Updated by dev',
+};
+
+const modifiableViews = {
+  all: 'All in server',
 };
 
 function StringRow(p) {
@@ -85,8 +86,8 @@ function TranslationDashboard(p) {
     getLanguage,
   } = p;
 
-  const viewKeys = React.useMemo(() => Object.keys(views), []);
-  const [currentView, setCurrentView] = React.useState(viewKeys[0]);
+  const conflictedViewKeys = React.useMemo(() => Object.keys(conflictedViews), []);
+  const [currentView, setCurrentView] = React.useState(conflictedViewKeys[0]);
   const prevBulkResponse = React.useRef(languageBulkResponse);
 
   React.useEffect(() => {
@@ -138,6 +139,7 @@ function TranslationDashboard(p) {
       ...oldStrings,
       [key]: {
         value,
+        hash: oldStrings[key].hash,
       }
     }));
   }, [setStrings]);
@@ -199,13 +201,14 @@ function TranslationDashboard(p) {
 
   const handleResolveButtonClick = React.useCallback(() => {
     const actions = updatedKeyList.map((key) => {
-      const value = strings[key].value || devStrings[key].value;
+      const value = strings[key].value;
+      const devValue = devStrings[key].value;
 
       return {
         action: 'set',
         key,
         value,
-        hash: spark.hash(value),
+        hash: spark.hash(devValue),
       };
     });
 
@@ -247,6 +250,10 @@ function TranslationDashboard(p) {
   }), [appStringKeyList, addedKeyList, removedKeyList, updatedKeyList]);
 
   const pending = languageResponse.fetching || languageBulkResponse.fetching;
+  const conflicted = React.useMemo(() => (
+    viewCounts.added > 0 || viewCounts.removed > 0 || viewCounts.updated > 0
+  ), [viewCounts]);
+  const views = conflicted ? conflictedViews : modifiableViews;
 
   return (
     <div className={_cs(className, styles.translationDashboard)}>
@@ -261,13 +268,13 @@ function TranslationDashboard(p) {
         </div>
         <div className={styles.bottomSection}>
           <div className={styles.tabs}>
-            { viewKeys.map(viewKey => (
+            { Object.keys(views).map(viewKey => (
               <button
                 key={viewKey}
                 name={viewKey}
                 onClick={handleTabClick}
                 type="button"
-                className={_cs(styles.tab, currentView === viewKey && styles.active)}
+                className={_cs(styles.tab, (!conflicted || currentView === viewKey) && styles.active)}
                 disabled={pending}
               >
                 {`${views[viewKey]} (${viewCounts[viewKey]})`}
@@ -275,43 +282,47 @@ function TranslationDashboard(p) {
             ))}
           </div>
           <div className={styles.tabActions}>
-            { currentView === 'removed' && (
-              <button
-                className="button button--secondary-bounded"
-                onClick={handleRemoveOutdatedButtonClick}
-                disabled={pending}
-              >
-                Remove outdated keys
-              </button>
-            )}
-            { currentView === 'added' && (
-              <button
-                className="button button--secondary-bounded"
-                onClick={handleAddNewKeysButtonClick}
-                disabled={pending}
-              >
-                Add new keys
-              </button>
-            )}
-            { currentView === 'updated' && (
-              <button
-                className="button button--secondary-bounded"
-                onClick={handleResolveButtonClick}
-                disabled={pending}
-              >
-                Resolve
-              </button>
-            )}
-            { currentView === 'all' && (
-              <button
-                className="button button--primary-bounded"
-                onClick={handleSaveButtonClick}
-                disabled={pending}
-              >
-                {/* TODO: use translations */}
-                Save
-              </button>
-            )}
+            { conflicted ? (
+              <>
+                { currentView === 'removed' && (
+                  <button
+                    className="button button--secondary-bounded"
+                    onClick={handleRemoveOutdatedButtonClick}
+                    disabled={pending}
+                  >
+                    Remove outdated keys
+                  </button>
+                )}
+                { currentView === 'added' && (
+                  <button
+                    className="button button--secondary-bounded"
+                    onClick={handleAddNewKeysButtonClick}
+                    disabled={pending}
+                  >
+                    Add new keys
+                  </button>
+                )}
+                { currentView === 'updated' && (
+                  <button
+                    className="button button--secondary-bounded"
+                    onClick={handleResolveButtonClick}
+                    disabled={pending}
+                  >
+                    Resolve
+                  </button>
+                )}
+              </>
+            ) : (
+              currentView === 'all' && (
+                <button
+                  className="button button--primary-bounded"
+                  onClick={handleSaveButtonClick}
+                  disabled={pending}
+                >
+                  {/* TODO: use translations */}
+                  Save
+                </button>
+            ))}
           </div>
         </div>
       </header>
@@ -331,8 +342,38 @@ function TranslationDashboard(p) {
           { pending ? (
             <BlockLoading />
           ) : (
-            <>
-              { currentView === 'all' && appStringKeyList.map((k) => (
+            conflicted ? (
+              <>
+                { currentView === 'added' && addedKeyList.map((k) => (
+                  <StringRow
+                    key={k}
+                    stringKey={k}
+                    devValue={devStrings[k]?.value}
+                    value={devStrings[k]?.value}
+                  />
+                ))}
+                { currentView === 'removed' && removedKeyList.map((k) => (
+                  <StringRow
+                    key={k}
+                    stringKey={k}
+                    devValue={devStrings[k]?.value}
+                    value={appStrings[k]?.value}
+                  />
+                ))}
+                { currentView === 'updated' && updatedKeyList.map((k) => (
+                  <StringRow
+                    key={k}
+                    stringKey={k}
+                    devValue={devStrings[k]?.value}
+                    value={strings[k]?.value}
+                    editable={!removedKeys[k]}
+                    obsolete={removedKeys[k]}
+                    onChange={handleStringChange}
+                  />
+                ))}
+              </>
+            ) : (
+              appStringKeyList.map((k) => (
                 <StringRow
                   key={k}
                   stringKey={k}
@@ -342,35 +383,8 @@ function TranslationDashboard(p) {
                   obsolete={removedKeys[k]}
                   onChange={handleStringChange}
                 />
-              )) }
-              { currentView === 'added' && addedKeyList.map((k) => (
-                <StringRow
-                  key={k}
-                  stringKey={k}
-                  devValue={devStrings[k]?.value}
-                  value={devStrings[k]?.value}
-                />
-              ))}
-              { currentView === 'removed' && removedKeyList.map((k) => (
-                <StringRow
-                  key={k}
-                  stringKey={k}
-                  devValue={devStrings[k]?.value}
-                  value={appStrings[k]?.value}
-                />
-              ))}
-              { currentView === 'updated' && updatedKeyList.map((k) => (
-                <StringRow
-                  key={k}
-                  stringKey={k}
-                  devValue={devStrings[k]?.value}
-                  value={strings[k]?.value}
-                  editable={!removedKeys[k]}
-                  obsolete={removedKeys[k]}
-                  onChange={handleStringChange}
-                />
-              ))}
-            </>
+              ))
+            )
           )}
         </div>
       </div>

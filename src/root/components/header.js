@@ -10,7 +10,7 @@ import {
 import { api, environment } from '#config';
 import { request } from '#utils/network';
 import { uppercaseFirstLetter as u, isoDate } from '#utils/format';
-// import LanguageSelect from '#components/LanguageSelect';
+import LanguageSelect from '#components/LanguageSelect';
 import Translate from '#components/Translate';
 import LanguageContext from '#root/languageContext';
 
@@ -108,7 +108,7 @@ function Header (props) {
                 </h1>
               </div>
               <nav className='page__meta-nav col' role='navigation'>
-                {/* <LanguageSelect /> */}
+                { <LanguageSelect /> }
                 <Link to='/about' title={strings.headerMenuResourceTooltip} className='page__meta-nav-elements'>
                   <Translate stringId="headerMenuResources" />
                 </Link>
