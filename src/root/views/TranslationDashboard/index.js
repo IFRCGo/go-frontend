@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import _cs from 'classnames';
 import spark from 'spark-md5';
 import Helmet from 'react-helmet';
+import sheet from 'xlsx';
+
 import {
   listToMap,
   isDefined,
@@ -270,6 +272,29 @@ function TranslationDashboard(p) {
   ), [viewCounts]);
   const views = conflicted ? conflictedViews : modifiableViews;
 
+  const handleFileInputChange = React.useCallback((e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const workbook = sheet.read(e.target.result, { type: 'binary' });
+        const firstSheet = workbook.SheetNames[0];
+        const rowList = sheet.utils.sheet_to_row_object_array(workbook.Sheets[firstSheet]);
+        const rows = listToMap(rowList, d => d['ID'], d => d[currentLanguage]);
+        const newAppStrings = devStringKeyList.reduce((acc, key) => {
+          acc[key] = {
+            value: rows[key],
+            hash: devStrings[key].hash,
+          };
+          return acc;
+        }, {});
+
+        setAppStrings(newAppStrings);
+      };
+      reader.readAsBinaryString(file);
+    }
+  }, [devStringKeyList, devStrings, setAppStrings, currentLanguage]);
+
   return (
     <div className={_cs(className, styles.translationDashboard)}>
       <Helmet>
@@ -283,6 +308,17 @@ function TranslationDashboard(p) {
             Translation Dashboard
           </h2>
           <div className={styles.actions}>
+            <label htmlFor="import" className={_cs(pending && 'disabled', 'button button--secondary-bounded')}>
+              Import from xlsx
+            </label>
+            <input
+              disabled={pending}
+              id="import"
+              type="file"
+              accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+              onChange={handleFileInputChange}
+              hidden
+            />
             <LanguageSelect />
           </div>
         </div>
@@ -306,7 +342,7 @@ function TranslationDashboard(p) {
               <>
                 { currentView === 'removed' && (
                   <button
-                    className="button button--secondary-bounded"
+                    className={_cs(pending && 'disabled', 'button button--secondary-bounded')}
                     onClick={handleRemoveOutdatedButtonClick}
                     disabled={pending}
                   >
@@ -315,7 +351,7 @@ function TranslationDashboard(p) {
                 )}
                 { currentView === 'added' && (
                   <button
-                    className="button button--secondary-bounded"
+                    className={_cs(pending && 'disabled', 'button button--secondary-bounded')}
                     onClick={handleAddNewKeysButtonClick}
                     disabled={pending}
                   >
@@ -324,7 +360,7 @@ function TranslationDashboard(p) {
                 )}
                 { currentView === 'updated' && (
                   <button
-                    className="button button--secondary-bounded"
+                    className={_cs(pending && 'disabled', 'button button--secondary-bounded')}
                     onClick={handleResolveButtonClick}
                     disabled={pending}
                   >
@@ -334,7 +370,7 @@ function TranslationDashboard(p) {
               </>
             ) : (
               <button
-                className="button button--primary-bounded"
+                className={_cs(pending && 'disabled', 'button button--primary-bounded')}
                 onClick={handleSaveButtonClick}
                 disabled={pending}
               >
