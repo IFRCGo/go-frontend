@@ -74,7 +74,9 @@ class Table extends React.Component {
         if (props.atype) {
           noun = props.atype === 'dref' ? 'DREFs' : 'Appeals';
         }
-      const title = props.hasOwnProperty('record') ? strings.operationsWithEmergency : resolveToString(strings.tableAppealsTitle, { title: titleArea, noun: noun });
+        const title = props.hasOwnProperty('record')
+          ? strings.operationsWithEmergency
+          : resolveToString(strings.tableAppealsTitle, { title: titleArea, noun: noun });
       return <AppealsTable title={title} {...props} />;
       case 'alert':
       return <AlertsTable title={strings.tableAllAlertsTitle} {...props} />;
