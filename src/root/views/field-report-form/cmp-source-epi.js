@@ -60,7 +60,7 @@ export default class EPISourceEstimation extends React.Component {
                 onChange={this.onEstimationChange.bind(this)} >
                 <FormError
                   errors={errors}
-                  property={`${fieldKey}.estimation`}
+                  property={`${fieldKey}`}
                 />
               </FormInput>
             </div>
