@@ -1,23 +1,16 @@
 import React from 'react';
-// import { PropTypes as T } from 'prop-types';
+import _cs from 'classnames';
 
-import { environment } from '#config';
+import Spinner from '#components/spinner';
 
-export default class BlockLoading extends React.Component {
-  render () {
-    return (
-      <div className='block-loading'>
-        <div className='spinner'>
-          <div className='spinner__bounce'></div>
-          <div className='spinner__bounce'></div>
-          <div className='spinner__bounce'></div>
-        </div>
-      </div>
-    );
-  }
+function BlockLoading(p) {
+  const { className } = p;
+
+  return (
+    <div className={_cs(className, 'block-loading')}>
+      <Spinner />
+    </div>
+  );
 }
 
-if (environment !== 'production') {
-  BlockLoading.propTypes = {
-  };
-}
+export default BlockLoading;
