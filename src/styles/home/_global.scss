@@ -691,11 +691,17 @@
   }
 }
 
-.button--key-emergencies {
-  min-width: 90px;  // to account for text when toggled
+.button--key-emergencies__wrap {
+  display: flex;
+  justify-content: flex-end;
+  align-items: start;
+}
 
-  @include media(medium-up) {
-    float: right;
+.button--key-emergencies {
+  min-width: 80px;  // to account for text when toggled
+
+  @media(min-width: $media-desktop) {
+    min-width: 90px;
   }
 }
 
