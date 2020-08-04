@@ -137,6 +137,8 @@ class Login extends React.Component {
                     <Link to='/recover-account' title={strings.loginRecoverTitle}><span><Translate stringId='loginForgotPassword' /></span></Link>
                     <br/>
                     <Link to='/recover-username' title={strings.loginShowUsernameTitle}><span><Translate stringId='loginForgotUsername' /></span></Link>
+                    <br/>
+                    <Link to='/resend-validation' title={strings.loginResendValidationTitle}><span><Translate stringId='loginResendValidation' /></span></Link>
                   </p>
                 </FormInput>
 
