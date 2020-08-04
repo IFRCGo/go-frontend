@@ -160,3 +160,11 @@
     }
   }
 }
+
+.page--deployments {
+  .sumstats__item__wrap {
+    @include media(medium) {
+      width: 240px;
+    }
+  }
+}

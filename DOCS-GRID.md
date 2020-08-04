@@ -16,17 +16,19 @@ The site uses a custom grid in the grid.scss partial.
 
 *Reference files: _variables.scss, _mixins.scss*
 
-The site currently uses 4 media query breakpoints
+The site currently uses 5 media query breakpoints
 
 - $media-xsmall: 544px; // Extra Small
 - $media-small: 768px;  // Small
 - $media-medium: 992px; // Medium
+- $media-desktop: 1300px; // Desktop // RARELY USED
 - $media-large: 1440px; // Large
 
 ***Notes***
 - Using **min-width media queries** is recommended.
 - Max-width media queries can be used as needed.
-- The large media query is rarely used.
+- The desktop and large media query are rarely used.
+- The desktop media query does not have containers and columns associated with it, since usage is rare.
 - The site also has other media query mixins outside the ones above, suffixed with `-up`, which will be slowly phased out. Avoid using them.
 ```scss
 // Avoid usage of media queries suffixed with -up:
