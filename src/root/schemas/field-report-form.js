@@ -15,11 +15,14 @@ export const step1 = {
       type: 'string'
     },
     event: {
-      type: 'number',
+      type: 'integer',
       minimum: 0
     },
     startDate: {
-      type: 'string'
+      type: 'string',
+      format: 'date',
+      formatMinimum: '1980-01-01',
+      formatExclusiveMaximum: true
     },
     country: {
       type: 'string',
@@ -48,7 +51,7 @@ export const step2 = {
       type: 'array',
       items: {
         properties: {
-          estimation: { type: 'number', minimum: 0 },
+          estimation: { type: 'integer', minimum: 0 },
           source: {enum: ['red-cross', 'government', 'other']}
         }
       }
@@ -89,22 +92,22 @@ export const step2 = {
       '$ref': '#/definitions/estimationString'
     },
     epiCases: {
-      type: 'number'
+      type: 'integer'
     },
     epiNumDead: {
-      type: 'number'
+      type: 'integer'
     },
     epiSuspectedCases: {
-      type: 'number'
+      type: 'integer'
     },
     epiProbableCases: {
-      type: 'number'
+      type: 'integer'
     },
     epiConfirmedCases: {
-      type: 'number'
+      type: 'integer'
     },
     epiFiguresSource: {
-      type: 'number',
+      type: 'integer',
       enum: getValidValues(formData.epiSources, 'value')
     },
     sitFieldsDate: {
@@ -147,11 +150,11 @@ export const step3 = {
     }
   },
   properties: {
-    numAssistedGov: { type: 'number', minimum: 0 },
-    numAssistedRedCross: { type: 'number', minimum: 0 },
-    numLocalStaff: { type: 'number', minimum: 0 },
-    numVolunteers: { type: 'number', minimum: 0 },
-    numExpats: { type: 'number', minimum: 0 },
+    numAssistedGov: { type: 'integer', minimum: 0 },
+    numAssistedRedCross: { type: 'integer', minimum: 0 },
+    numLocalStaff: { type: 'integer', minimum: 0 },
+    numVolunteers: { type: 'integer', minimum: 0 },
+    numExpats: { type: 'integer', minimum: 0 },
     actionsNatSoc: {
       '$ref': '#/definitions/actionsCheckboxes'
     },
@@ -175,7 +178,7 @@ export const step4 = {
     plannedResponse: {
       properties: {
         status: { type: 'string' },
-        value: { type: 'number', minimum: 0 }
+        value: { type: 'integer', minimum: 0 }
       }
     },
     contact: {
@@ -228,3 +231,4 @@ export const step4 = {
     }
   }
 };
+
