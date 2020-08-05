@@ -765,8 +765,7 @@ class FieldReportForm extends React.Component {
     // Note: There's no need for validation on this step.
     // All the fields are optional, and the text fields are just strings.
     return (
-      <Fold title=<Translate stringId="fieldReportFormContactsTitle" /> foldWrapperClass='fold--main fold--transparent'>
-      {/*<Fold title={strings.fieldReportFormActionTakenTitle}>*/}
+      <Fold title={strings.fieldReportFormActionTakenTitle} foldWrapperClass='fold--main fold--transparent'>
  
         <div className='form__group row flex-mid'>
           {
@@ -920,9 +919,9 @@ class FieldReportForm extends React.Component {
           </React.Fragment>
         )}
 
-        {/*<h2 className='fold__title fold__title--contact'>
+        <h2 className='fold__title fold__title--contact'>
           <Translate stringId="fieldReportFormContactsTitle" />
-        </h2>*/}
+        </h2>
 
         <React.Fragment>
           {
