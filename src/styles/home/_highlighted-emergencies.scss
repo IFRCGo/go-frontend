@@ -12,7 +12,6 @@
   @media(min-width: $media-desktop) {
     padding: $spacing $spacing-2;
   }
-
 }
 
 .card_box_title {
@@ -29,6 +28,10 @@
   font-weight: $base-font-semi-bold;
   font-size: 1.2rem;
   line-height: 1.2;
+
+  @include media(medium) {
+    font-size: 1rem;
+  }
 
   @media(min-width: $media-desktop) {
     font-size: 1.5rem;
