@@ -66,6 +66,12 @@
 
 .page--emergencies {
 
+  .sumstats__item__wrap {
+    @include media(medium) {
+      width: 240px;
+    }
+  }
+
   .map-vis__legend {
     .key {
       padding: $spacing;

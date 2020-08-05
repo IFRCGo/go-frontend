@@ -1,3 +1,13 @@
+.table-deployed-personnel-block {
+  .table__header--name, .table__cell--name {
+    width: 158px;
+  }  
+
+  .table__header--type, .table__cell--type {
+    width: 148px;
+  }
+}
+
 .readiness__container {
   margin-top: $spacing-3;
 }
@@ -151,6 +161,14 @@
     }
     span:last-child() {
       float: right;
+    }
+  }
+}
+
+.page--deployments {
+  .sumstats__item__wrap {
+    @include media(medium) {
+      width: 240px;
     }
   }
 }

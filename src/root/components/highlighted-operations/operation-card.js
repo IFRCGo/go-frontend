@@ -1,7 +1,9 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { environment } from '#config';
 import { PropTypes } from 'prop-types';
+
 import { formatDate, percent, round, commaSeparatedNumber as n } from '#utils/format';
 import Progress from './../progress-labeled';
 import Translate from '#components/Translate';
@@ -25,11 +27,11 @@ const OperationCard = ({operationId, operationName, emergencyDeployments, appeal
       <Link to={`/emergencies/${operationId}`}>
         <div className="card_box card_box_left card_box_title">
           <div className='row flex'>
-            <div className='card__title__wrap col col-6 col-8-mid'>
+            <div className='card__title__wrap col col-7 col-8-mid'>
               <h2 className='card__title'>{ operationName.length > 60 ? operationName.slice(0, 60) + '...' : operationName }</h2>
             </div>
             {showFollow ? (
-              <div className='button--key-emergencies__wrap col col-6 col-4-mid'>  
+              <div className='button--key-emergencies__wrap col col-5 col-4-mid'>  
                 <div onClick={toggleFollow} className={`button button--capsule button--xsmall button--key-emergencies ${isFollowing ? 'button--primary-bounded' : 'button--primary-filled'}`}>
                   {
                     isFollowing ? (
