@@ -918,9 +918,13 @@ class FieldReportForm extends React.Component {
           </React.Fragment>
         )}
 
-        <h2 className='fold__title fold__title--contact'>
-          <Translate stringId="fieldReportFormContactsTitle" />
-        </h2>
+        <div className='fold__header'>
+          <div className='fold__header__block'>
+            <h2 className='fold__title fold__title--contact'>
+              <Translate stringId="fieldReportFormContactsTitle" />
+            </h2>
+          </div>
+        </div>
 
         <React.Fragment>
           {
