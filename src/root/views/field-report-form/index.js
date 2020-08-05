@@ -765,8 +765,7 @@ class FieldReportForm extends React.Component {
     // Note: There's no need for validation on this step.
     // All the fields are optional, and the text fields are just strings.
     return (
-      <Fold title=<Translate stringId="fieldReportFormContactsTitle" /> foldWrapperClass='fold--main fold--transparent'>
-      {/*<Fold title={strings.fieldReportFormActionTakenTitle}>*/}
+      <Fold title={strings.fieldReportFormActionTakenTitle} foldWrapperClass='fold--main fold--transparent'>
  
         <div className='form__group row flex-mid'>
           {
@@ -877,19 +876,18 @@ class FieldReportForm extends React.Component {
     let responseTitle = status === 'EVT' ? strings.fieldReportFormResponseTitleEVT : strings.fieldReportFormResponseTitle;
 
     // We hide the entire Planned International Response section for COVID reports
-    const isCovidReport = this.state.data.isCovidReport;
-    if (isCovidReport === 'true') {
+    const isCovidReport = this.state.data.isCovidReport === 'true';
+    if (isCovidReport) {
       responseTitle = '';
     }
     return (
-      <Fold title={responseTitle} foldWrapperClass='fold--main fold--transparent'>
+      <Fold title={responseTitle} foldWrapperClass='fold--main fold--transparent' showHeader={!isCovidReport}>
         { this.state.data.isCovidReport === 'true' ? null : (
           <React.Fragment>
             <label className='form__label'>
               <Translate stringId="fieldReportFormResponseLabel" />
             </label>
             <div className='form__description'>
-              <Translate stringId="fieldReportFormResponseLabel" />
               <p>
                 <Translate stringId="fieldReportFormResponseDescription" />
               </p>
@@ -920,9 +918,13 @@ class FieldReportForm extends React.Component {
           </React.Fragment>
         )}
 
-        {/*<h2 className='fold__title fold__title--contact'>
-          <Translate stringId="fieldReportFormContactsTitle" />
-        </h2>*/}
+        <div className='fold__header'>
+          <div className='fold__header__block'>
+            <h2 className='fold__title fold__title--contact'>
+              <Translate stringId="fieldReportFormContactsTitle" />
+            </h2>
+          </div>
+        </div>
 
         <React.Fragment>
           {
