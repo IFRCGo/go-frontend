@@ -888,7 +888,6 @@ class FieldReportForm extends React.Component {
               <Translate stringId="fieldReportFormResponseLabel" />
             </label>
             <div className='form__description'>
-              <Translate stringId="fieldReportFormResponseLabel" />
               <p>
                 <Translate stringId="fieldReportFormResponseDescription" />
               </p>
