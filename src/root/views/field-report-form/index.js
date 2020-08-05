@@ -876,12 +876,12 @@ class FieldReportForm extends React.Component {
     let responseTitle = status === 'EVT' ? strings.fieldReportFormResponseTitleEVT : strings.fieldReportFormResponseTitle;
 
     // We hide the entire Planned International Response section for COVID reports
-    const isCovidReport = this.state.data.isCovidReport;
-    if (isCovidReport === 'true') {
+    const isCovidReport = this.state.data.isCovidReport === 'true';
+    if (isCovidReport) {
       responseTitle = '';
     }
     return (
-      <Fold title={responseTitle} foldWrapperClass='fold--main fold--transparent'>
+      <Fold title={responseTitle} foldWrapperClass='fold--main fold--transparent' showHeader={!isCovidReport}>
         { this.state.data.isCovidReport === 'true' ? null : (
           <React.Fragment>
             <label className='form__label'>
