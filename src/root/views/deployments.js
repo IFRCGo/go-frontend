@@ -65,7 +65,7 @@ class Deployments extends SFPComponent {
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps (nextProps) {
     if (finishedFetch(this.props, nextProps, 'eruOwners')) {
-      hideGlobalLoading();
+      hideGlobalLoading(0);
     }
   }
 

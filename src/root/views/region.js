@@ -92,7 +92,7 @@ class AdminArea extends SFPComponent {
     }
 
     if (this.props.adminArea.fetching && !nextProps.adminArea.fetching) {
-      hideGlobalLoading();
+      hideGlobalLoading(0);
       if (nextProps.adminArea.error) {
         console.error(nextProps.adminArea.error);
         // removed because redirect is highly misleading

@@ -88,7 +88,7 @@ class Emergency extends React.Component {
     }
 
     if (this.props.event.fetching && !nextProps.event.fetching) {
-      hideGlobalLoading();
+      // hideGlobalLoading();
 
       // Redirect if it's a merged Emergency
       if (
@@ -160,7 +160,7 @@ class Emergency extends React.Component {
   }
 
   getEvent (id) {
-    showGlobalLoading();
+    // showGlobalLoading();
     this.props._getEventById(id);
     this.props._getSitrepsByEventId(id);
   }
@@ -710,12 +710,13 @@ class Emergency extends React.Component {
     }
   }
 
-  syncLoadingAnimation = memoize((projectForm = {}) => {
-    const shouldShowLoadingAnimation = projectForm.fetching;
+  syncLoadingAnimation = memoize((projectForm = {}, eventForm = {}, siteRepForm = {}) => {
+    const shouldShowLoadingAnimation = projectForm.fetching || eventForm.fetching || siteRepForm.fetching;
 
     if (shouldShowLoadingAnimation) {
-      this.loading = true;
-      showGlobalLoading();
+      if (!this.loading) {
+        this.loading = showGlobalLoading();
+      }
     } else {
       if (this.loading) {
         hideGlobalLoading();
@@ -1053,7 +1054,7 @@ class Emergency extends React.Component {
   }
 
   render () {
-    this.syncLoadingAnimation(this.props.projectForm);
+    this.syncLoadingAnimation(this.props.projectForm, this.props.event, this.props.siteRepResponse);
     const { strings } = this.props;
 
     return (
@@ -1109,6 +1110,7 @@ const selector = (state, ownProps) => ({
     fetching: false,
     fetched: false,
   }),
+  siteRepResponse: state.situationReports,
   situationReports: get(
     state.situationReports,
     ['reports', ownProps.match.params.id],
