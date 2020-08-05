@@ -796,15 +796,36 @@ class Emergency extends React.Component {
         : 0;
 
     const { strings } = this.props;
-    const countryLink = `/countries/${this.props.event.data.countries[0].id}`;
-    const countryName = data.countries[0].name;
-    const regionId = this.props.event.data.countries[0].region;
-    let regionLink, regionName;
-    if (regionId) {
-      regionLink = `/regions/${regionId}`;
-      regionName = getRegionById(regionId.toString()).name;
-    }
+    let country = null,
+      regionId = null,
+      countryLink = null,
+      regionLink = null,
+      regionName = null;
 
+    let crumbs = [
+      {
+        link: `/emergency/${get(data, 'id')}`,
+        name: get(data, 'name', strings.breadCrumbEmergency)
+      }
+    ];
+    if (data.countries.length > 0) {
+      country = data.countries[0];
+      countryLink = `/countries/${this.props.event.data.countries[0].id}`;
+      crumbs.push({
+        link: countryLink, name: country.name
+      });
+      regionId = country.region;
+      if (regionId) {
+        regionLink = `/regions/${regionId}`;
+        regionName = getRegionById(regionId.toString()).name;
+      }
+    }
+    crumbs.push({
+      link: '/emergencies', name: strings.breadCrumbEmergencies,
+    });
+    crumbs.push({
+      link: '/', name: strings.breadCrumbHome,
+    });
     return (
       <section className="inpage">
         <Helmet>
@@ -818,16 +839,7 @@ class Emergency extends React.Component {
             <div className='col col-6-sm col-7-mid'>
               <BreadCrumb
                 breadcrumbContainerClass='padding-reset'
-                crumbs={[
-                  {
-                    link: `/emergency/${get(data, 'id')}`,
-                    name: get(data, 'name', strings.breadCrumbEmergency)
-                  },
-                  { link: countryLink, name: countryName },
-
-                  { link: '/emergencies', name: strings.breadCrumbEmergencies},
-                  { link: '/', name: strings.breadCrumbHome},
-                ]}
+                crumbs={crumbs}
               />
             </div>
 
@@ -890,16 +902,18 @@ class Emergency extends React.Component {
                       </Link>
                     </div>
                   ) : null }
+                  { country ? (
                   <div className='col spacing-half-v flex'>
                     <Link to={countryLink}
                       className="link link--with-icon"
                     >
                       <span className='link--with-icon-text'>
-                        {countryName}
+                        {country.name}
                       </span>
                       <span className='collecticon-chevron-right link--with-icon-inner'></span>
                     </Link>
                   </div>
+                  ) : null }
                 </div>
                 {this.renderHeaderStats()}
               </div>
