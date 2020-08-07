@@ -10,6 +10,8 @@ import {
   LabelList,
 } from 'recharts';
 
+import Translate from '#components/Translate';
+
 const chartMargin = {
   top: 24,
   right: 10,
@@ -17,28 +19,12 @@ const chartMargin = {
   left: 10,
 };
 
-const KeyEventOutput = ({
-  label,
-  value,
-}) => (
-  <div className='climate-key-event'>
-    <div className='tc-label'>
-      { label }
-    </div>
-    <div className='tc-value'>
-      { value || '-' }
-    </div>
-  </div>
-);
 
 class ClimateChart extends React.PureComponent {
   render () {
     const {
       className,
       yearlyEvents,
-      averageTemperature,
-      averageRainfallPrecipitation,
-      rainySeasonStatus,
     } = this.props;
 
     // TODO: memoize
@@ -49,9 +35,11 @@ class ClimateChart extends React.PureComponent {
 
     return (
       <div className={_cs(className, 'country-climate-chart')}>
-        <h3 className='tc-heading'>
-          Climate chart (C°)
-        </h3>
+        <div className='fold__header__block'>
+          <h3 className='tc-heading fold__title'>
+            <Translate stringId='climateChartHeading' />
+          </h3>
+        </div>
         <div className='tc-content'>
           <div className='tc-charts'>
             <div className='temperature-chart'>
@@ -108,25 +96,6 @@ class ClimateChart extends React.PureComponent {
                   </Bar>
                 </BarChart>
               </ResponsiveContainer>
-            </div>
-          </div>
-          <div className='tc-key-info'>
-            <h4 className='tc-heading'>
-              Key climate events
-            </h4>
-            <div className='tc-content'>
-              <KeyEventOutput
-                label='Avg. rainfall precipitation'
-                value={averageRainfallPrecipitation}
-              />
-              <KeyEventOutput
-                label='Avg. temperature'
-                value={averageTemperature}
-              />
-              <KeyEventOutput
-                label='Rainy season'
-                value={rainySeasonStatus}
-              />
             </div>
           </div>
         </div>

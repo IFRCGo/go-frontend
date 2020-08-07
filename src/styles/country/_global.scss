@@ -5,18 +5,10 @@
     display: none;
   }
 
-  .fold {
-    margin-bottom: $global-spacing * 4;
-  }
-
-  .inpage__title {
-    width: auto;
-  }
-
   .inpage__title--inform {
     font-size: 1rem;
     color: rgba($base-color, 0.48);
-    margin-left: $global-spacing;
+    margin-inline-start: $global-spacing;
   }
 
   .inpage__title--inform--score {
@@ -24,81 +16,60 @@
   }
 
   .inpage__meta {
-    float: left;
     margin-top: $global-spacing;
     .bold {
       font-weight: $base-font-bold;
     }
     ul {
       list-style: none;
-      margin-left: 0;
+      margin-inline-start: 0;
       font-size: 0.87rem;
       li {
         display: inline-block;
-        padding-right: $global-spacing/2;
+        padding-inline-end: $global-spacing/2;
         &:last-child {
-          padding-right: 0;
+          padding-inline-end: 0;
         };
       }
     }
   }
 
-  .inpage__header-actions {
-    float: right;
-  }
-
   .inpage__header {
-    @include column(12/12);
-    float: none;
-    margin-bottom: $global-spacing * 2;
-    border-bottom: solid 1px rgba($base-color, 0.1);
-    .inpage__header-col {
-      @include column(12/12);
-      @include media(medium-up) {
-        @include column(6/12);
-      }
-    }
     .content-list-group {
       @include column(12/12);
     }
     .content-list {
-      float: left;
-      @include column(12/12);
-      margin-left: 0;
+      @include row;
       @include media(medium-up) {
-        @include column(6/12);
+        @include col(50%);
       }
       ul {
         list-style: none;
       }
     }
     .content-list-third {
-      float: left;
-      @include column(12/12);
-      margin-left: 0;
+      @include row;
       @include media(medium-up) {
-        @include column(4/12);
+        @include col(33.33%);
       }
       ul {
         list-style: none;
       }
     }
     .inpage__headline-stats {
-      @include column(12/12);
-      border-right: solid 1px rgba($base-color, 0.1);
+      border-inline-end: solid 1px rgba($base-color, 0.1);
     }
     .stats-list {
       li {
-        @include column(12/12);
         font-size: 2.25rem;
         line-height: 3rem;
         padding-bottom: $global-spacing;
-        border-right: 0;
-        padding-left: $global-spacing * 3.5;
+        border-inline-end: 0;
+        padding-inline-start: $global-spacing * 3.5;
         border-bottom: solid 1px rgba($base-color, 0.18);
         margin-bottom: $global-spacing;
         &:last-child {
-          border-right: none;
+          border-inline-end: none;
           border-bottom: none;
         }
         &:nth-child(2) {
@@ -111,9 +82,6 @@
       width: 50%;
 
     }
-  }
-  .stats-map {
-    @include column(12/12);
   }
 
   .map-vis {
@@ -135,9 +103,9 @@
 
   .key {
     float: left;
-    border-left: solid 1px rgba($base-color, 0.2);
-    padding-left: $global-spacing/2;
-    margin-left: $global-spacing/2;
+    border-inline-start: solid 1px rgba($base-color, 0.2);
+    padding-inline-start: $global-spacing/2;
+    margin-inline-start: $global-spacing/2;
     width: 55%;
   }
 
@@ -169,7 +137,7 @@
     display: inline-block;
     color: rgba(#FFF, 0.7);
     padding: 0 $global-spacing / 2;
-    margin-right: $global-spacing / 2;
+    margin-inline-end: $global-spacing / 2;
     border-radius: $full-border-radius;
     border: solid 1px rgba(255, 255, 255, 0);
     li {
@@ -178,9 +146,9 @@
       border-radius: 999px;
       background-color: #7e95bb;
       display: inline-block;
-      margin-right: $global-spacing/2;
+      margin-inline-end: $global-spacing/2;
       &:last-child {
-        margin-right: 0;
+        margin-inline-end: 0;
       }
     }
   }
@@ -216,8 +184,8 @@
   }
 
   .inner {
-    padding-left: 0;
-    padding-right: 0;
+    padding-inline-start: 0;
+    padding-inline-end: 0;
   }
 
   .map-container {
@@ -255,22 +223,25 @@
 // Three W and components
 // ---------------------------
 .three-w-container {
-  width: 100%;
   background-color: #fff;
-  box-shadow: $base-box-shadow;
   position: relative;
   overflow-x: auto;
-  padding: 2rem;
+  padding-top: $spacing-2;
 
   * {
     box-sizing: border-box;
+  }
+
+  .fold__header__block {
+    margin-left: unset;
+    margin-right: unset;
   }
 
   .block-loading {
     position: absolute;
     border-radius: 0;
     z-index: 11;
-    width: calc(100% - 2 * 2rem);
+    width: 100%;
     margin: 0;
     background-color: rgba(255, 255, 255, .7);
     height: calc(100% - 2 * 2rem);
@@ -296,13 +267,13 @@
   }
 
   .content {
-    padding: 16px;
-    overflow-x: auto;
+    overflow: hidden;
 
     .three-w-filters {
       display: flex;
       flex-wrap: wrap;
       flex-grow: 1;
+      padding: $spacing 0;
 
       .Select-menu-outer {
         z-index: 11;
@@ -414,7 +385,7 @@
           flex-shrink: 0;
 
           .three-w-region-scale {
-            margin-right: 10px;
+            margin-inline-end: 10px;
           }
         }
 
@@ -507,25 +478,7 @@
 }
 
 .three-w-project-list-table {
-  width: 100%;
   overflow-x: scroll;
-
-  th {
-    padding: 16px 10px;
-    text-align: left;
-  }
-
-  td {
-    padding: 10px;
-  }
-
-  tbody {
-    tr {
-      &:nth-child(odd) {
-        background-color: $grey-fog;
-      }
-    }
-  }
 }
 
 .more-actions-dropdown-menu.tc-dropdown-menu {
@@ -637,7 +590,7 @@
     flex-shrink: 0;
     display: flex;
     align-items: center;
-    max-width: 1420px;
+    max-width: $media-large;
     width: 100%;
 
     >h2 {
@@ -662,8 +615,9 @@
       padding: 24px;
     }
   }
+
   .tc-project-details {
-    max-width: 1420px;
+    max-width: $media-large;
     width: 100%;
 
     .tc-project-name {
@@ -706,428 +660,6 @@
 
       .tc-text-output {
         padding: 0 10px;
-      }
-    }
-  }
-}
-
-
-// ---------------------------
-// Country overview and components
-// ---------------------------
-.country-overview {
-  // background-color: #fff;
-  // box-shadow: 0 0 3px -1px rgba(0, 0, 0, .3);
-
-  .top-section {
-    display: flex;
-    border: 1px solid rgba(0, 0, 0, .1);
-    flex-wrap: wrap;
-
-    .key-indicators {
-      flex-basis: 50%;
-    }
-
-    .ns-indicators {
-      flex-basis: 50%;
-    }
-
-    .tc-data-source {
-      display: flex;
-      flex-basis: 100%;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      color: rgba(0, 0, 0, .3);
-      font-weight: bold;
-      padding: 10px 0;
-      
-      .tc-label {
-        padding: 3px;
-      }
-
-      .tc-value {
-        padding: 3px;
-      }
-    }
-  }
-
-  .population-and-climate-section {
-    display: flex;
-
-    .population-map {
-      flex-basis: 45%;
-    }
-
-    .climate-chart {
-      flex-basis: 55%;
-    }
-  }
-
-  .middle-section {
-    border: 1px solid rgba(0, 0, 0, .1);
-    display: flex;
-
-    .social-events {
-      flex-basis: calc(100% / 3);
-    }
-
-    .past-crises-events {
-      flex-basis: calc(100% / 3);
-    }
-
-    .past-epidemics {
-      flex-basis: calc(100% / 3);
-    }
-  }
-}
-
-.key-indicator-text-output {
-  display: table-row;
-
-  .tc-label {
-    display: table-cell;
-    padding: 5px 10px;
-  }
-
-  .tc-value {
-    display: table-cell;
-    padding: 5px 10px;
-    font-weight: bold;
-  }
-}
-
-%tc-block {
-  padding: 16px 16px;
-
-  >.tc-heading {
-    padding: 16px 10px;
-    margin: 0;
-    margin-bottom: 24px;
-    border-bottom: 1px solid rgba(0, 0, 0, .1);
-  }
-
-  .tc-heading {
-    text-transform: uppercase;
-  }
-
-  >.tc-content {
-    padding: 10px 0;
-  }
-}
-
-.overview-key-indicators {
-  @extend %tc-block;
-
-  .tc-content {
-    display: flex;
-
-    .tc-left {
-      flex-basis: 50%;
-    }
-
-    .tc-right {
-      flex-basis: 50%;
-    }
-  }
-}
-
-.overview-ns-indicators {
-  @extend %tc-block;
-}
-
-.overview-social-events {
-  @extend %tc-block;
-
-  .tc-content {
-    max-height: 160px;
-    overflow: auto;
-  }
-}
-
-.overview-past-crises-events {
-  @extend %tc-block;
-
-  .tc-content {
-    max-height: 160px;
-    overflow: auto;
-  }
-}
-
-.overview-past-epidemics {
-  @extend %tc-block;
-
-  .tc-content {
-    max-height: 160px;
-    overflow: auto;
-  }
-}
-
-.overview-population-map {
-  @extend %tc-block;
-  display: flex;
-  flex-direction: column;
-
-  .tc-content {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-
-    .overview-map-container {
-      flex-grow: 1;
-    }
-  }
-}
-
-.overview-past-operations {
-  @extend %tc-block;
-
-  .tc-content {
-    margin: 12px 0;
-    height: 300px;
-  }
-
-  .past-operations-filter {
-    .chart-mode-input {
-      padding: 12px 0;
-
-      .chart-mode-button {
-        &:not(:last-child) {
-          border-right: 1px solid rgba(0, 0, 0, .3);
-        }
-      }
-    }
-  }
-}
-
-.event-detail-element {
-  display: flex;
-  align-items: baseline;
-  padding: 0 10px;
-
-  .tc-value {
-    padding: 2px 6px;
-    font-weight: bold;
-  }
-
-  .tc-label {
-    padding: 2px 6px;
-  }
-}
-
-.event-detail-tooltip {
-  background-color: #fff;
-  box-shadow: 0 0 3px 1px rgba(0, 0, 0, .3);
-  padding: 10px 0;
-
-  .basic-detail {
-    display: flex;
-    align-items: baseline;
-    padding: 0 10px;
-    font-size: 18px;
-    font-weight: bold;
-    color: $primary-color;
-
-    .event-country-name {
-      padding: 4px 6px;
-    }
-
-    .separator {
-      padding: 4px 6px;
-    }
-
-    .disaster-title {
-      padding: 4px 6px;
-    }
-  }
-
-  .event-start-date {
-    padding: 0 16px;
-  }
-
-  .other-details {
-    padding: 6px 0;
-  }
-}
-
-.tc-segment-button {
-  border: 0;
-  background-color: transparent;
-  cursor: pointer;
-  color: rgba(0, 0, 0, .5);
-  padding: 2px 10px;
-  outline: none;
-
-  &:hover {
-    color: rgba(0, 0, 0, .8);
-  }
-
-  &.tc-active {
-    color: $primary-color;
-  }
-}
-
-.country-climate-chart {
-  @extend %tc-block;
-
-  >.tc-content {
-    display: flex;
-    align-items: flex-start;
-
-    .tc-charts {
-      flex-basis: 70%;
-      .precipitation-chart,
-      .temperature-chart {
-        height: 200px;
-      }
-    }
-
-    .tc-key-info {
-      flex-basis: 30%;
-      padding: 14px 10px;
-      border: 1px solid rgba(0, 0, 0, .06);
-
-      .tc-heading {
-        padding: 4px 10px;
-        text-align: center;
-      }
-
-      .tc-content {
-        .climate-key-event {
-          display: table-row;
-
-          .tc-label {
-            display: table-cell;
-            padding: 4px 10px;
-          }
-
-          .tc-value {
-            display: table-cell;
-            font-weight: bold;
-            padding: 4px 10px;
-          }
-        }
-      }
-    }
-  }
-}
-
-.country-seasonal-calendar {
-  @extend %tc-block;
-
-  >.tc-content {
-    .calendar-chart {
-      display: table;
-      width: 100%;
-
-      .calendar-chart-row {
-        display: table-row;
-
-        .calendar-chart-sector-cell {
-          display: table-cell;
-          border-right: 1px solid rgba(0, 0, 0, .1);
-          vertical-align: middle;
-          text-align: right;
-          padding: 2px 6px;
-        }
-
-        .calendar-chart-title-list-cell {
-          width: 88%;
-          display: table-cell;
-
-          .calendar-chart-title-list {
-            width: 100%;
-
-            .calendar-chart-title {
-              float: left;
-              flex-shrink: 0;
-              background-color: #eee;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              padding: 6px;
-              margin: 2px;
-              overflow: hidden;
-            }
-
-            .calendar-chart-month-title {
-              border-top: 1px solid rgba(0, 0, 0, .1);
-
-              flex-shrink: 0;
-              flex-basis: calc(100% / 12);
-              display: flex;
-              justify-content: center;
-              align-items: center;
-            }
-          }
-
-          .calendar-chart-month-title-list {
-            display: flex;
-
-            .calendar-chart-month-title {
-              border-top: 1px solid rgba(0, 0, 0, .1);
-
-              flex-shrink: 0;
-              flex-basis: calc(100% / 12);
-              display: flex;
-              justify-content: center;
-              align-items: center;
-            }
-          }
-        }
-
-        .calendar-bubble-chart {
-          height: 80px;
-        }
-      }
-    }
-  }
-}
-
-.country-inform-indicators {
-  @extend %tc-block;
-
-  >.tc-content {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    max-height: 900px;
-
-    .inform-indicator-element {
-      min-width: 400px;
-      flex-basis: calc(100% / 3);
-      padding: 10px 0;
-
-      >.tc-heading {
-        padding: 16px 10px;
-      }
-
-      >.tc-content {
-        height: 400px;
-      }
-
-      &.inform-indicator-hazard-and-exposure {
-        order: 3;
-
-        >.tc-content {
-          height: 692px;
-        }
-      }
-
-      &.inform-indicator-vulnerability {
-        order: 2;
-
-        >.tc-content {
-          height: 400px;
-        }
-      }
-
-      &.inform-indicator-lack-of-coping-capacity {
-        order: 1;
-
-        >.tc-content {
-          height: 200px;
-        }
       }
     }
   }

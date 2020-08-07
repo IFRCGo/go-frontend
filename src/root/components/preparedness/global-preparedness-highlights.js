@@ -7,6 +7,9 @@ import {
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
+
 export default class GlobalPreparednessHighlights extends React.Component {
   constructor (props) {
     super(props);
@@ -60,20 +63,29 @@ export default class GlobalPreparednessHighlights extends React.Component {
       });
     }
     if (highPerformingComponents.length === 0 && highPriorityComponents.length === 0) return null;
+    const { strings } = this.context;
     return (
       <div className='inner'>
-        <Fold title={'Global Preparedness Highlights'} foldClass='margin-reset' extraClass='fold--main'>
-          <table className='table table--border'>
+        <Fold title={strings.globalPreparednessTitle} foldTitleClass='margin-reset' foldWrapperClass='fold--main'>
+          <table className='table table--border-bottom table--box-shadow'>
             <thead>
               <tr>
-                <th><span style={{textTransform: 'uppercase', letterSpacing: '0.6px'}}>High Performing Components (globally)</span></th>
-                <th><span style={{textTransform: 'uppercase', letterSpacing: '0.6px'}}>Top Prioritized Components (globally)</span></th>
+                <th>
+                  <span style={{textTransform: 'uppercase', letterSpacing: '0.6px'}}>
+                    <Translate stringId='globalPreparednessHighPerforming'/>
+                  </span>
+                </th>
+                <th>
+                  <span style={{textTransform: 'uppercase', letterSpacing: '0.6px'}}>
+                    <Translate stringId='globalPreparednessTopPrioritized'/>
+                  </span>
+                </th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>
-                  {this.props.perPermission ? highPerformingComponents : 'You can only see this data if you have the correct permissions.'}
+                  {this.props.perPermission ? highPerformingComponents : strings.globalPreparednessPermission}
                 </td>
                 <td>
                   {highPriorityComponents}
@@ -86,7 +98,7 @@ export default class GlobalPreparednessHighlights extends React.Component {
     );
   }
 }
-
+GlobalPreparednessHighlights.contextType = LanguageContext;
 if (environment !== 'production') {
   GlobalPreparednessHighlights.propTypes = {
     data: T.object,

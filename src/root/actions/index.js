@@ -138,10 +138,13 @@ export const getCountryOverview = (countryIso) => {
 };
 
 export const GET_COUNTRIES = 'GET_COUNTRIES';
-export function getCountries (region) {
+export function getCountries (region, mini) {
   let filters = {limit: 1000};
   if (region) {
     filters.region = region;
+  }
+  if (mini) {
+    filters.mini = true;
   }
   const f = buildAPIQS(filters);
   return fetchJSON(`api/v2/country/?${f}`, GET_COUNTRIES);
@@ -667,3 +670,19 @@ export function getDomainWhitelist () {
   });
   return fetchJSON(`/api/v2/domainwhitelist/?${f}`, GET_DOMAIN_WHITELIST, withToken());
 }
+
+export const SET_CURRENT_LANGUAGE = 'SET_CURRENT_LANGUAGE';
+export const setCurrentLanguageAction = (currentLanguage) => ({
+    type: SET_CURRENT_LANGUAGE,
+    language: currentLanguage,
+});
+
+export const GET_LANGUAGE = 'GET_LANGUAGE';
+export const getLanguageAction = (langCode) => {
+  return fetchJSON(`/api/v2/language/${langCode}/`, GET_LANGUAGE);
+};
+
+export const POST_LANGUAGE_BULK = 'POST_LANGUAGE_BULK';
+export const postLanguageBulkAction = (langCode, data) => {
+  return postJSON(`/api/v2/language/${langCode}/bulk-action/`, POST_LANGUAGE_BULK, data, withToken());
+};

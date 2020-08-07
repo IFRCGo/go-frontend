@@ -1,6 +1,7 @@
 import React from 'react';
 import { listToGroupList } from '@togglecorp/fujs';
 import _cs from 'classnames';
+import Translate from '#components/Translate';
 
 const daysInMonth = (year, month) => (
   new Date(year, month + 1, 0).getDate()
@@ -39,38 +40,15 @@ class SeasonalCalendar extends React.PureComponent {
       'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
     ];
 
-    /*
-    const scatterData = appeals.map(a => ({
-      ...a,
-      index: 1,
-      month: monthList[(new Date(a.start_date)).getMonth()],
-    }));
-    */
-
     return (
       <div className={_cs(className, 'country-seasonal-calendar')}>
-        <h3 className='tc-heading'>
-          Seasonal calendar
-        </h3>
+        <div className='fold__header__block'>
+          <h3 className='tc-heading fold__title'>
+            <Translate stringId='seasonalCalendarTitle'/>
+          </h3>
+        </div>
         <div className='tc-content'>
           <div className='calendar-chart'>
-            {/*
-            <div className='calendar-chart-row'>
-              <div className='calendar-chart-sector-cell'/>
-              <div className='calendar-chart-title-list-cell'>
-                <div className='calendar-bubble-chart'>
-                  <ResponsiveContainer>
-                    <ScatterChart>
-                      <XAxis type='category' dataKey='month' />
-                      <ZAxis type='number' dataKey='num_beneficiaries' />
-                      <YAxis type='number' dataKye='index' />
-                      <Scatter data={scatterData} fill="red" />
-                    </ScatterChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
-            </div>
-            */}
             { sectorKeys.map(sectorKey => {
               let prevRight = 0;
 

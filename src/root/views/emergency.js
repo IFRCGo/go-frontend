@@ -6,12 +6,15 @@ import { Link, withRouter } from 'react-router-dom';
 import { PropTypes as T } from 'prop-types';
 import _toNumber from 'lodash.tonumber';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import BreadCrumb from '../components/breadcrumb';
 
 import { Helmet } from 'react-helmet';
 
 import { api, environment } from '#config';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
+import Translate from '#components/Translate';
+import BreadCrumb from '#components/breadcrumb';
+import { withLanguage } from '#root/languageContext';
+import { resolveToString } from '#utils/lang';
 import {
   getEventById,
   getEventSnippets,
@@ -106,7 +109,7 @@ class Emergency extends React.Component {
       let tabs = [...this.state.tabs];
       const tabLabels = ['tab_one_title', 'tab_two_title', 'tab_three_title'];
       tabLabels.forEach((key) => {
-        if (data[key]) {
+        if (data && data[key]) {
           const title = data[key];
           const hash = `#${title.toLowerCase().split(' ').join('-')}`;
           tabs.push({
@@ -202,33 +205,35 @@ class Emergency extends React.Component {
       get(report, 'other_affected_pop_centres');
     return (
       <div className="inpage__header-col">
-        <h3 className="global-spacing-2-t clear">Emergency Overview</h3>
+        <h3 className="global-spacing-2-t clear">
+          <Translate stringId="emergencyTopOverviewSectionTitle" />
+        </h3>
         <div className="content-list-group">
           <ul className="content-list">
             <li>
-              Potentially Affected
+              <Translate stringId="emergencyPotentiallyAffectedLabel" />
               <span className="content-highlight">
                 {n(numPotentiallyAffected)}
               </span>
             </li>
             <li>
-              Highest Risk
+              <Translate stringId="emergencyHighestRiskLabel" />
               <span className="content-highlight">{n(numHighestRisk)}</span>
             </li>
             <li>
-              Affected Population Centres
+              <Translate stringId="emergencyAffectedPopulationCentresLabel" />
               <span className="content-highlight">{affectedPopCentres}</span>
             </li>
           </ul>
           <ul className="content-list">
             <li>
-              Number of People Assisted by Government - Early Action
+              <Translate stringId="emergencyAssistedByGovernmentLabel" />
               <span className="content-highlight">
                 {n(get(report, 'gov_num_assisted'))}
               </span>
             </li>
             <li>
-              Number of People Assisted by RCRC Movement - Early Action
+              <Translate stringId="emergencyAssistedByRCRCLabel" />
               <span className="content-highlight">
                 {n(get(report, 'num_assisted'))}
               </span>
@@ -247,6 +252,7 @@ class Emergency extends React.Component {
   }
 
   renderFieldReportStatsEvent (report, isEPI, isCOVID) {
+    const { strings } = this.props;
     const numAffected = parseInt(get(report, 'num_affected')) || parseInt(get(report, 'gov_num_affected')) || parseInt(get(report, 'other_num_affected'));
     const numInjured = parseInt(get(report, 'num_injured')) || parseInt(get(report, 'gov_num_injured')) || parseInt(get(report, 'other_num_injured'));
     const numDead = parseInt(get(report, 'num_dead')) || parseInt(get(report, 'gov_num_dead')) || parseInt(get(report, 'other_num_dead'));
@@ -256,60 +262,66 @@ class Emergency extends React.Component {
     const epiFiguresSource = epiSources.find(source => source.value === `${report.epi_figures_source}`);
     return (
       <div className='inpage__header-col'>
-        <h3 className='global-spacing-2-t clear'>Emergency Overview</h3>
-        <div className='content-list-group'>
+        <h3 className='fold__title spacing-2-t spacing-b'>Emergency Overview</h3>
+        <div className='content-list-group row flex-xs'>
           { isEPI
             ? (
-              <ul className='content-list'>
-                <li>Cases<span className='content-highlight'>{n(get(report, 'epi_cases'))}</span></li>
-                { !isCOVID
-                  ? (
-                    <React.Fragment>
-                      <li className='pl-small'>Suspected Cases<span className='content-highlight'>{n(get(report, 'epi_suspected_cases'))}</span></li>
-                      <li className='pl-small'>Probable Cases<span className='content-highlight'>{n(get(report, 'epi_probable_cases'))}</span></li>
-                      <li className='pl-small'>Confirmed Cases<span className='content-highlight'>{n(get(report, 'epi_confirmed_cases'))}</span></li>
-                    </React.Fragment>
-                  )
-                  : null
-                }
-                <li>Dead<span className='content-highlight'>{n(get(report, 'epi_num_dead'))}</span></li>
-                <li>
-                  <p className='emergency__source'>Source:
-                    { isEPI
-                      ? (
-                        <React.Fragment>
-                          <strong>{epiFiguresSource ? ` ${epiFiguresSource.label}` : ' --' }</strong>
-                        </React.Fragment>
-                      )
-                      : (
-                        <Link to={`/reports/${report.id}`}>{report.summary}, {timestamp(report.updated_at || report.created_at)}</Link>
-                      )
-                    }
-                  </p>
-                </li>
-              </ul>
+              <div className='col col-6-xs flex'>
+                <ul className='content-list box__global spacing-v spacing-2-h'>
+                  <li>{strings.emergencyCasesLabel}<span className='content-highlight'>{n(get(report, 'epi_cases'))}</span></li>
+                  { !isCOVID
+                    ? (
+                      <React.Fragment>
+                        <li className='pl-small'>{strings.emergencySuspectedCasesLabel}<span className='content-highlight'>{n(get(report, 'epi_suspected_cases'))}</span></li>
+                        <li className='pl-small'>{strings.emergencyProbableCasesLabel}<span className='content-highlight'>{n(get(report, 'epi_probable_cases'))}</span></li>
+                        <li className='pl-small'>{strings.emergencyConfirmedCasesLabel}<span className='content-highlight'>{n(get(report, 'epi_confirmed_cases'))}</span></li>
+                      </React.Fragment>
+                    )
+                    : null
+                  }
+                  <li>{strings.emergencyDeadLabel}<span className='content-highlight'>{n(get(report, 'epi_num_dead'))}</span></li>
+                  <li>
+                    <p className='emergency__source'>Source:
+                      { isEPI
+                        ? (
+                          <React.Fragment>
+                            <strong>{epiFiguresSource ? ` ${epiFiguresSource.label}` : ' --' }</strong>
+                          </React.Fragment>
+                        )
+                        : (
+                          <Link to={`/reports/${report.id}`}>{report.summary}, {timestamp(report.updated_at || report.created_at)}</Link>
+                        )
+                      }
+                    </p>
+                  </li>
+                </ul>
+              </div>
             )
             : (
-              <ul className='content-list'>
-                <li>Affected<span className='content-highlight'>{n(numAffected)}</span></li>
-                <li>Injured<span className='content-highlight'>{n(numInjured)}</span></li>
-                <li>Dead<span className='content-highlight'>{n(numDead)}</span></li>
-                <li>Missing<span className='content-highlight'>{n(numMissing)}</span></li>
-                <li>Displaced<span className='content-highlight'>{n(numDisplaced)}</span></li>
-              </ul>
+              <div className='col col-6-xs flex'>
+                <ul className='content-list box__global spacing-v spacing-2-h'>
+                  <li>{strings.emergencyAffectedLabel}<span className='content-highlight'>{n(numAffected)}</span></li>
+                  <li>{strings.emergencyInjuredLabel}<span className='content-highlight'>{n(numInjured)}</span></li>
+                  <li>{strings.emergencyDeadLabel}<span className='content-highlight'>{n(numDead)}</span></li>
+                  <li>{strings.emergencyMissingLabel}<span className='content-highlight'>{n(numMissing)}</span></li>
+                  <li>{strings.emergencyDisplacedLabel}<span className='content-highlight'>{n(numDisplaced)}</span></li>
+                </ul>
+              </div>
             )
           }
-          <ul className='content-list'>
-            <li>Assisted<span className='content-highlight'>{n(numAssisted)}</span></li>
-            <li>Local staff<span className='content-highlight'>{n(get(report, 'num_localstaff'))}</span></li>
-            <li>Volunteers<span className='content-highlight'>{n(get(report, 'num_volunteers'))}</span></li>
-            { !isCOVID
-              ? (
-                <li>Delegates<span className='content-highlight'>{n(get(report, 'num_expats_delegates'))}</span></li>
-              )
-              : null
-            }
-          </ul>
+          <div className='col col-6-xs flex'>
+            <ul className='content-list box__global spacing-v spacing-2-h'>
+              <li>{strings.emergencyAssistedLabel}<span className='content-highlight'>{n(numAssisted)}</span></li>
+              <li>{strings.emergencyLocalStaffLabel}<span className='content-highlight'>{n(get(report, 'num_localstaff'))}</span></li>
+              <li>{strings.emergencyVolunteersLabel}<span className='content-highlight'>{n(get(report, 'num_volunteers'))}</span></li>
+              { !isCOVID
+                ? (
+                  <li>{strings.emergencyDelegatesLabel}<span className='content-highlight'>{n(get(report, 'num_expats_delegates'))}</span></li>
+                )
+                : null
+              }
+            </ul>
+          </div>
         </div>
       </div>
     );
@@ -353,40 +365,61 @@ class Emergency extends React.Component {
     const displayHeadlineStats =
       stats.beneficiaries || stats.requested || stats.funded;
     return (
-      <div className="inpage__introduction">
+      <div>
         <div className="inpage__header-col">
           {displayHeadlineStats ? (
-            <div className="inpage__headline-stats">
-              <ul className="sumstats">
-                {stats.beneficiaries > 0 ? (
-                  <li className="sumstats__item">
-                    <span className="collecticon-people-arrows sumstats__icon"></span>
-                    <span className="sumstats__value">
-                      {n(stats.beneficiaries)}
-                    </span>
-                    <span className="sumstats__key">People Targeted</span>
-                  </li>
-                ) : null}
+            <div className="inpage__headline-stats inpage__headline-stats--emergency">
+              <div className='sumstats__wrap'>
+                <ul className="sumstats">
+                  {stats.beneficiaries > 0 ? (
+                    <li className="sumstats__item__wrap">
+                      <div className='sumstats__item'>
+                        <span className='sumstats__icon_wrapper'>
+                          <img className='sumstats__icon_2020' src="/assets/graphics/layout/targeted-population.svg" />
+                        </span>
+                        <span className="sumstats__value">
+                          {n(stats.beneficiaries)}
+                        </span>
+                        <Translate
+                          className="sumstats__key"
+                          stringId="emergencyPeopleTargetedLabel"
+                        />
+                      </div>
+                    </li>
+                  ) : null}
 
-                {stats.requested > 0 ? (
-                  <li className="sumstats__item">
-                    <span className="collecticon-cash-notes sumstats__icon"></span>
-                    <span className="sumstats__value">
-                      {n(stats.requested)}
-                    </span>
-                    <span className="sumstats__key">
-                      Funding Requirements (CHF)
-                    </span>
-                  </li>
-                ) : null}
-                {stats.funded > 0 ? (
-                  <li className="sumstats__item">
-                    <span className="collecticon-cash-bag sumstats__icon"></span>
-                    <span className="sumstats__value">{n(stats.funded)}</span>
-                    <span className="sumstats__key">Funding (CHF)</span>
-                  </li>
-                ) : null}
-              </ul>
+                  {stats.requested > 0 ? (
+                    <li className="sumstats__item__wrap">
+                      <div className='sumstats__item'>                  
+                        <span className='sumstats__icon_wrapper'>
+                          <img className='sumstats__icon_2020' src="/assets/graphics/layout/funding-requirements.svg" />
+                        </span>
+                        <span className="sumstats__value">
+                          {n(stats.requested)}
+                        </span>
+                        <Translate
+                          className="sumstats__key"
+                          stringId="emergencyFundingRequirementsLabel"
+                        />
+                      </div>
+                    </li>
+                  ) : null}
+                  {stats.funded > 0 ? (
+                    <li className="sumstats__item__wrap">
+                      <div className='sumstats__item'>
+                        <span className='sumstats__icon_wrapper'>
+                          <img className='sumstats__icon_2020' src="/assets/graphics/layout/funding-coverage.svg" />
+                        </span>
+                        <span className="sumstats__value">{n(stats.funded)}</span>
+                        <Translate
+                          className="sumstats__key"
+                          stringId="emergencyFundingLabel"
+                        />
+                      </div>
+                    </li>
+                  ) : null}
+                </ul>
+              </div>
             </div>
           ) : null}
         </div>
@@ -416,22 +449,26 @@ class Emergency extends React.Component {
   }
 
   renderFieldReports () {
-    const { data } = this.props.event;
+    const {
+      strings,
+      event: {
+        data,
+      },
+    } = this.props;
     const fieldReports = data.field_reports ? data.field_reports.filter(fr => this.userHasPerms(fr)) : [];
     if (fieldReports.length) {
       return (
         <Fold
           id="field-reports"
-          title={`Field Reports (${data.field_reports.length})`}
-          wrapperClass="event-field-reports"
-        >
-          <table className="table table--zebra">
+          title={resolveToString(strings.emergencyFieldReportsWithCountTitle, { count: data.field_reports.length })}
+          foldWrapperClass="event-field-reports fold--main">
+          <table className="table table--border-bottom">
             <thead>
               <tr>
-                <th>Date</th>
-                <th>Name</th>
-                <th>Countries</th>
-                <th>Regions</th>
+                <th>{strings.emergencyFieldReportTableHeaderDate}</th>
+                <th>{strings.emergencyFieldReportTableHeaderName}</th>
+                <th>{strings.emergencyFieldReportTableHeaderCountries}</th>
+                <th>{strings.emergencyFieldReportTableHeaderRegions}</th>
               </tr>
             </thead>
             <tbody>
@@ -444,8 +481,8 @@ class Emergency extends React.Component {
                         pathname: `/reports/${o.id}`,
                         state: this.props.location.pathname
                       }}
-                      className="link--primary"
-                      title="View Field Report"
+                      className="link--table"
+                      title={strings.emergencyFieldReportLinkTitle}
                     >
                       {o.summary || noSummary}
                     </Link>
@@ -456,7 +493,7 @@ class Emergency extends React.Component {
                         <Link
                           to={`/countries/${c.id}`}
                           key={c.id}
-                          className="link--primary"
+                          className="link--table"
                         >
                           {c.name}{' '}
                         </Link>
@@ -472,7 +509,7 @@ class Emergency extends React.Component {
                     }, []).map(region => {
                       return (<Link to={`/regions/${region}`}
                         key={region}
-                        className="link--primary"
+                        className="link--table"
                       >
                         {getRegionById(region.toString()).name}
                       </Link>);
@@ -522,7 +559,7 @@ class Emergency extends React.Component {
                         })
                       ) : (
                         <div className="response__doc__item">
-                          No documents added
+                          <Translate stringId="emergencyNoDocumentsMessage" />
                         </div>
                       )}
                   </div>
@@ -554,7 +591,7 @@ class Emergency extends React.Component {
           <div className="fold__headline">
             <div className="fold__actions">
               <a
-                className="button button--primary-bounded"
+                className="button button--primary-bounded button--small"
                 href={addReportLink}
                 target="_blank"
               >
@@ -579,8 +616,8 @@ class Emergency extends React.Component {
             return null;
           }
           return (
-            <li key={o.id}>
-              <a className="link--secondary" href={href} target="_blank">
+            <li key={o.id} className='col col-6-xs'>
+              <a className="link-underline" href={href} target="_blank">
                 {o.name}, {isoDate(o.created_at)}
               </a>
             </li>
@@ -591,11 +628,12 @@ class Emergency extends React.Component {
   }
 
   renderAppealDocuments () {
+    const { strings } = this.props;
     const data = get(this.props.appealDocuments, 'data.results', []);
     if (!data.length) return null;
     return (
-      <Fold id="documents" title="Appeal Documents">
-        {this.renderAppealReports('public-docs-list', data)}
+      <Fold id="documents" title={strings.emergencyAppealDocumentsTitle} foldWrapperClass='fold--main'>
+        {this.renderAppealReports('public-docs-list row flex-xs', data)}
       </Fold>
     );
   }
@@ -611,23 +649,33 @@ class Emergency extends React.Component {
   }
 
   renderKeyFigures () {
+    const { strings } = this.props;
     const { data } = this.props.event;
     const kf = get(data, 'key_figures');
     if (!this.hasKeyFigures()) return null;
 
     return (
-      <Fold title="Key Figures" wrapperClass="key-figures">
-        <ul className="key-figures-list">
-          {kf.map((o) => (
-            <li key={o.deck}>
-              <h3>{isNaN(o.number) ? o.number : n(o.number)}</h3>
-              <p className="key-figure-label">{o.deck}</p>
-              <p className="key-figure-source emergency__source">
-                Source: {o.source}
-              </p>
-            </li>
-          ))}
-        </ul>
+      <Fold title={strings.emergencyKeyFiguresTitle} foldWrapperClass="key-figures fold--main padding-b-reset" foldContainerClass='container--padding-reset'>
+        <div className='sumstats__wrap'>
+          <ul className="sumstats">
+            {kf.map((o) => (
+              <li key={o.deck} className='sumstats__item__wrap'>
+                <div className='sumstats__item'>
+                  <h3 className='sumstats__value margin-reset'>{isNaN(o.number) ? o.number : n(o.number)}</h3>
+                  <p className="sumstats__key">{o.deck}</p>
+                  <p className="key-figure-source emergency__source">
+                    <Translate
+                      stringId="emergencySourceFigure"
+                      params={{
+                        source: o.source,
+                      }}
+                    />
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
       </Fold>
     );
   }
@@ -693,25 +741,25 @@ class Emergency extends React.Component {
     const subscribeButton = () =>
       this.state.subscribed ? (
         <React.Fragment>
-          <button
-            className="button button--primary-filled float-right"
-            onClick={this.delSubscription}
-          >
-            Unsubscribe
-          </button>
-          <br />
-          <br />
+          <div className='col-sm spacing-half-v'>
+            <button
+              className="button button--primary-bounded button--xsmall"
+              onClick={this.delSubscription}
+            >
+              <Translate stringId="emergencyActionUnsubscribeLabel" />
+            </button>
+          </div>
         </React.Fragment>
       ) : (
         <React.Fragment>
-          <button
-            className="button button--primary-filled float-right"
-            onClick={this.addSubscription}
-          >
-              Subscribe
-          </button>
-          <br />
-          <br />
+          <div className='col-sm spacing-half-v'>
+            <button
+              className="button button--primary-filled button--xsmall"
+              onClick={this.addSubscription}
+            >
+              <Translate stringId="emergencyActionSubscribeLabel" />
+            </button>
+          </div>
         </React.Fragment>
       );
 
@@ -747,44 +795,69 @@ class Emergency extends React.Component {
         ? hashes.indexOf(this.props.location.hash)
         : 0;
 
+    const { strings } = this.props;
+    let country = null,
+      regionId = null,
+      countryLink = null,
+      regionLink = null,
+      regionName = null;
+
+    let crumbs = [
+      {
+        link: `/emergency/${get(data, 'id')}`,
+        name: get(data, 'name', strings.breadCrumbEmergency)
+      }
+    ];
+    if (data.countries.length > 0) {
+      country = data.countries[0];
+      countryLink = `/countries/${this.props.event.data.countries[0].id}`;
+      crumbs.push({
+        link: countryLink, name: country.name
+      });
+      regionId = country.region;
+      if (regionId) {
+        regionLink = `/regions/${regionId}`;
+        regionName = getRegionById(regionId.toString()).name;
+      }
+    }
+    crumbs.push({
+      link: '/emergencies', name: strings.breadCrumbEmergencies,
+    });
+    crumbs.push({
+      link: '/', name: strings.breadCrumbHome,
+    });
     return (
       <section className="inpage">
         <Helmet>
-          <title>IFRC Go - {get(data, 'name', 'Emergency')}</title>
+          <title>
+            { resolveToString(strings.emergencyPageTitle, { name: get(data, 'name', 'Emergency') }) }
+          </title>
         </Helmet>
-        <BreadCrumb
-          crumbs={[
-            {
-              link: `/emergency/${get(data, 'id')}`,
-              name: get(data, 'name', 'Emergency')
-            },
-            { link: `/countries/${this.props.event.data.countries[0].id}`, name: `${data.countries[0].name}` },
 
-            { link: '/emergencies', name: 'Emergencies' },
-            { link: '/', name: 'Home' },
-          ]}
-        />
-        {this.state.showProjectForm && (
-          <ProjectFormModal
-            onCloseButtonClick={() => {
-              this.setState({ showProjectForm: false });
-            }}
-          />
-        )}
-        <header className="inpage__header">
-          <div className="inner">
-            <div className="inpage__headline">
-              <div className="inpage__headline-content">
-                <div className="inpage__headline-actions">
-                  {this.props.isLogged ? subscribeButton() : null}
+        <div className='container-lg'>
+          <div className='row flex-sm'>
+            <div className='col col-6-sm col-7-mid'>
+              <BreadCrumb
+                breadcrumbContainerClass='padding-reset'
+                crumbs={crumbs}
+              />
+            </div>
+
+            <div className='col col-6-sm col-5-mid spacing-half-t'>
+              <div className='row-sm flex flex-justify-flex-end'>
+                {this.props.isLogged ? subscribeButton() : null}
+                <div className='col-sm spacing-half-v flex'>
                   <a
                     href={url.resolve(api, `api/event/${data.id}/change/`)}
-                    className="button button--primary-bounded float-right"
+                    className="button button--xsmall button--primary-bounded button button--edit-action"
                   >
-                    Edit Event
+                    <span className='collecticon-pencil margin-half-r'></span>
+                    <Translate
+                      stringId="emergencyActionEditEventLabel"
+                    />
                   </a>
-                  <br />
-                  <br />
+                </div>
+                <div className='col-sm spacing-half-v flex'>
                   {this.props.isLogged && (
                     <button
                       onClick={() => {
@@ -792,163 +865,215 @@ class Emergency extends React.Component {
                           showProjectForm: true,
                         });
                       }}
-                      className="button button--primary-bounded float-right"
+                      className="button button--xsmall button--primary-bounded"
                     >
-                      Create 3W activity
+                        <Translate
+                          stringId="emergencyActionCreateThreeWActivityLabel"
+                        />
                     </button>
                   )}
                 </div>
+              </div>
+              </div>
+            </div>
+          </div>
+          {this.state.showProjectForm && (
+            <ProjectFormModal
+              onCloseButtonClick={() => {
+                this.setState({ showProjectForm: false });
+              }}
+            />
+          )}
+        <header className="inpage__header inpage__header--action">
+          <div className="container-lg">
+            <div>
+              <div>
                 <h1 className="inpage__title">{data.name}</h1>
+                <div className="inpage__headline-actions text-center row flex flex-justify-center">
+                  { regionId ? (
+                    <div className='col spacing-half-v flex'>
+                      <Link to={regionLink}
+                        className="link link--with-icon"
+                      >
+                        <span className='link--with-icon-text'>
+                          {regionName}
+                        </span>
+                        <span className='collecticon-chevron-right link--with-icon-inner'></span>
+                      </Link>
+                    </div>
+                  ) : null }
+                  { country ? (
+                  <div className='col spacing-half-v flex'>
+                    <Link to={countryLink}
+                      className="link link--with-icon"
+                    >
+                      <span className='link--with-icon-text'>
+                        {country.name}
+                      </span>
+                      <span className='collecticon-chevron-right link--with-icon-inner'></span>
+                    </Link>
+                  </div>
+                  ) : null }
+                </div>
                 {this.renderHeaderStats()}
               </div>
             </div>
           </div>
         </header>
-        <Tabs
-          selectedIndex={selectedIndex}
-          onSelect={(index) => handleTabChange(index)}
-        >
-          <TabList>
-            {this.state.tabs.map((tab) => (
-              <Tab key={tab.title}>{tab.title}</Tab>
-            ))}
-          </TabList>
+        <div className='tab__wrap margin-2-t'>
+          <Tabs
+            selectedIndex={selectedIndex}
+            onSelect={(index) => handleTabChange(index)}
+          >
+            <TabList>
+              {this.state.tabs.map((tab) => (
+                <Tab key={tab.title}>{tab.title}</Tab>
+              ))}
+            </TabList>
 
-          <div className="inpage__body">
-            <div className="inner">
-              <TabPanel>
-                <TabContent isError={!this.hasKeyFigures()} title="Key Figures">
-                  {this.renderKeyFigures()}
-                </TabContent>
-                {showExportMap()}
-                <TabContent
-                  isError={!summary}
-                  errorMessage={NO_DATA}
-                  title="Overview"
-                >
-                  <Fold
-                    id="overview"
-                    title="Situational Overview"
-                    wrapperClass="situational-overview"
+            <div className="inpage__body">
+              <div className="inner">
+                <TabPanel>
+                  <TabContent isError={!this.hasKeyFigures()} title={strings.emergencyKeyFiguresTitle}>
+                    <div className='container-lg'>
+                      {this.renderKeyFigures()}
+                    </div>
+                  </TabContent>
+                  {showExportMap()}
+                  <TabContent
+                    isError={!summary}
+                    errorMessage={NO_DATA}
+                    title={strings.emergencyOverviewTitle}
                   >
-                    <Expandable
-                      sectionClass="rich-text-section"
-                      limit={2048}
-                      text={summary}
+                    <Fold
+                      id="overview"
+                      title={strings.emergencySituationalOverviewTitle}
+                      foldWrapperClass="situational-overview fold--main"
+                    >
+                      <Expandable
+                        sectionClass="rich-text-section"
+                        limit={2048}
+                        text={summary}
+                      />
+                    </Fold>
+                  </TabContent>
+                  <TabContent title={strings.emergencyAlertsTitle}>
+                    <SurgeAlertsTable
+                      id="alerts"
+                      title={strings.emergencyAlertsTitle}
+                      emergency={this.props.match.params.id}
+                      returnNullForEmpty={true}
                     />
-                  </Fold>
-                </TabContent>
-                <TabContent title="Alerts">
-                  <SurgeAlertsTable
-                    id="alerts"
-                    title="Alerts"
-                    emergency={this.props.match.params.id}
-                    returnNullForEmpty={true}
-                  />
-                </TabContent>
-                <TabContent
-                  isError={!get(this.props.eru, 'data.results.length')}
-                  errorMessage={NO_DATA}
-                  title="ERUs"
-                >
-                  <EruTable id="erus" emergency={this.props.match.params.id} />
-                </TabContent>
-                <TabContent title="Personnel">
-                  <PersonnelTable
-                    id="personnel"
-                    emergency={this.props.match.params.id}
-                  />
-                </TabContent>
-                <TabContent
-                  isError={!get(this.props.event, 'data.field_reports.length')}
-                  errorMessage={NO_DATA}
-                  title="Field Reports"
-                >
-                  {this.renderFieldReports()}
-                </TabContent>
-                <TabContent
-                  isError={
-                    !get(this.props.appealDocuments, 'data.results.length')
-                  }
-                  errorMessage={NO_DATA}
-                  title="Appeal Documents"
-                >
-                  {this.renderAppealDocuments()}
-                </TabContent>
-                <TabContent
-                  isError={
-                    !get(this.props.situationReports, 'data.results.length')
-                  }
-                  errorMessage={NO_DATA}
-                  title="Response Documents"
-                >
-                  {this.renderResponseDocuments()}
-                </TabContent>
+                  </TabContent>
+                  <TabContent
+                    isError={!get(this.props.eru, 'data.results.length')}
+                    errorMessage={NO_DATA}
+                    title={strings.emergencyERUTitle}
+                  >
+                    <EruTable id="erus" emergency={this.props.match.params.id} />
+                  </TabContent>
+                  <TabContent title={strings.emergencyPersonnelTitle}>
+                    <PersonnelTable
+                      id="personnel"
+                      emergency={this.props.match.params.id}
+                    />
+                  </TabContent>
+                  <TabContent
+                    isError={!get(this.props.event, 'data.field_reports.length')}
+                    errorMessage={NO_DATA}
+                    title={strings.emergencyFieldReportsTitle}
+                  >
+                    {this.renderFieldReports()}
+                  </TabContent>
+                  <TabContent
+                    isError={
+                      !get(this.props.appealDocuments, 'data.results.length')
+                    }
+                    errorMessage={NO_DATA}
+                    title={strings.emergencyAppealDocumentsTitle}
+                  >
+                    {this.renderAppealDocuments()}
+                  </TabContent>
+                  <TabContent
+                    isError={
+                      !get(this.props.situationReports, 'data.results.length')
+                    }
+                    errorMessage={NO_DATA}
+                    title={strings.emergencyResponseDocumentsTitle}
+                  >
+                    {this.renderResponseDocuments()}
+                  </TabContent>
 
-                {contacts && contacts.length ? (
-                  <Fold id="contacts" title="Contacts" wrapperClass="contacts">
-                    <table className="table">
-                      <thead className="visually-hidden">
-                        <tr>
-                          <th>Name</th>
-                          <th>Title</th>
-                          <th>Type</th>
-                          <th>Contact</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {contacts.map((o) => (
-                          <tr key={o.id}>
-                            <td>{o.name}</td>
-                            <td>{o.title}</td>
-                            <td>{separate(o.ctype)}</td>
-                            <td>
-                              {o.email.indexOf('@') !== -1 ? (
-                                <a
-                                  className="button button--small button--grey-cement-bounded"
-                                  href={`mailto:${o.email}`}
-                                  title="Contact"
-                                >
-                                  {o.email}
-                                </a>
-                              ) : (
-                                <a
-                                  className="button button--small button--grey-cement-bounded"
-                                  href={`tel:${o.email}`}
-                                  title="Contact"
-                                >
-                                  {o.email}
-                                </a>
-                              )}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </Fold>
-                ) : (
-                  <ErrorPanel
-                    title="Contacts"
-                    errorMessage="No current contacts"
-                  />
-                )}
-              </TabPanel>
+                  {contacts && contacts.length ? (
+                    <div className='container-lg margin-2-v'>
+                      <Fold id="contacts" title={strings.emergencyContactsTitle} foldWrapperClass="contacts fold--main" foldContainerClass='container--padding-reset'>
+                        <table className="table table--border-bottom">
+                          <thead className="visually-hidden">
+                            <tr>
+                              <th>{strings.emergencyContactsTableHeaderName}</th>
+                              <th>{strings.emergencyContactsTableHeaderTitle}</th>
+                              <th>{strings.emergencyContactsTableHeaderType}</th>
+                              <th>{strings.emergencyContactsTableHeaderContact}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {contacts.map((o) => (
+                              <tr key={o.id}>
+                                <td>{o.name}</td>
+                                <td>{o.title}</td>
+                                <td>{separate(o.ctype)}</td>
+                                <td>
+                                  {o.email.indexOf('@') !== -1 ? (
+                                    <a
+                                      className="button button--small button--grey-cement-bounded"
+                                      href={`mailto:${o.email}`}
+                                      title={strings.emergencyContactTitle}
+                                    >
+                                      {o.email}
+                                    </a>
+                                  ) : (
+                                    <a
+                                      className="button button--small button--grey-cement-bounded"
+                                      href={`tel:${o.email}`}
+                                      title={strings.emergencyContactTitle}
+                                    >
+                                      {o.email}
+                                    </a>
+                                  )}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </Fold>
+                    </div>
+                  ) : (
+                    <div className='container-lg margin-2-v'>
+                      <ErrorPanel
+                        title={strings.emergencyContactsTitle}
+                        errorMessage={strings.emergencyContactEmptyMessage}
+                      />
+                    </div>
+                  )}
+                </TabPanel>
 
-              {this.renderAdditionalTabPanels()}
+                {this.renderAdditionalTabPanels()}
+              </div>
             </div>
-          </div>
-        </Tabs>
+          </Tabs>
+        </div>
       </section>
     );
   }
 
   render () {
     this.syncLoadingAnimation(this.props.projectForm);
+    const { strings } = this.props;
 
     return (
       <App className="page--emergency">
         <Helmet>
-          <title>IFRC Go - Emergency</title>
+          <title>{strings.emergencyPageTitleStatic}</title>
         </Helmet>
         {this.renderContent()}
       </App>
@@ -1033,4 +1158,4 @@ const dispatcher = (dispatch) => ({
   _getUserProfile: (...args) => dispatch(getUserProfile(...args)),
 });
 
-export default withRouter(connect(selector, dispatcher)(Emergency));
+export default withLanguage(withRouter(connect(selector, dispatcher)(Emergency)));

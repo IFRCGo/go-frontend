@@ -3,6 +3,7 @@ import { PropTypes as T } from 'prop-types';
 
 import { environment } from '#config';
 import { commaSeparatedNumber as n } from '#utils/format';
+import Translate from '#components/Translate';
 
 export default class EmergenciesStats extends React.Component {
   render () {
@@ -14,21 +15,55 @@ export default class EmergenciesStats extends React.Component {
     if (!fetched) return null;
 
     return (
-      <div className='header-stats'>
-        <ul className='stats-list'>
-          <li className='stats-list__item stats-emergencies'>
-            {n(data.count)}<small>Emergencies</small>
-          </li>
-          <li className='stats-list__item stats-people'>
-            {n(data.numAffected)}<small>Affected People</small>
-          </li>
-          <li className='stats-list__item stats-funding stat-borderless stat-double'>
-            {n(data.totalAppeals)}<small>Requested Amount (CHF)</small>
-          </li>
-          <li className='stats-list__item stat-double'>
-            {n(data.totalAppealsFunding)}<small>Funding (CHF)</small>
-          </li>
-        </ul>
+      <div className='header-stats header-stats--emergencies container-lg'>
+        <div className='sumstats__wrap'>
+          <ul className='sumstats'>
+            <li className='sumstats__item__wrap'>
+              <div className='sumstats__item'>
+                <span className='sumstats__icon_wrapper'>
+                  <img className='sumstats__icon_2020' src='/assets/graphics/layout/emergency-brand.svg' />
+                </span>
+                <div className='sumstats__value'>{n(data.count)}</div>
+                <div className='sumstats__key'>
+                  <Translate stringId='emergenciesStatsTitle'/>
+                </div>
+              </div>
+            </li>
+            <li className='sumstats__item__wrap'>
+              <div className='sumstats__item'>
+                <span className='sumstats__icon_wrapper'>
+                  <img className='sumstats__icon_2020' src='/assets/graphics/layout/heops-brand.svg' />
+                </span>
+                <div className='sumstats__value'>{n(data.numAffected)}</div>
+                <div className='sumstats__key'>
+                  <Translate stringId='emergenciesStatsAffected'/>
+                </div>
+              </div>
+            </li>
+            <li className='sumstats__item__wrap'>
+              <div className='sumstats__item'>
+                <span className='sumstats__icon_wrapper'>
+                  <img className='sumstats__icon_2020' src='/assets/graphics/layout/funding-coverage.svg' />
+                </span>
+                <div className='sumstats__value'>{n(data.totalAppeals)}</div>
+                <div className='sumstats__key'>
+                  <Translate stringId='emergenciesStatsRequested'/>
+                </div>
+              </div>
+            </li>
+            <li className='sumstats__item__wrap'>
+              <div className='sumstats__item'>
+                <span className='sumstats__icon_wrapper'>
+                  <img className='sumstats__icon_2020' src='/assets/graphics/layout/funding-requirements.svg' />
+                </span>
+                <div className='sumstats__value'>{n(data.totalAppealsFunding)}</div>
+                <div className='sumstats__key'>
+                  <Translate stringId='emergenciesStatsFunding'/>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     );
   }

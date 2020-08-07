@@ -13,6 +13,8 @@ import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 import App from './app';
 
+import LanguageContext from '#root/languageContext';
+
 class EditPerForms extends React.Component {
   render () {
     let form = null;
@@ -59,15 +61,17 @@ class EditPerForms extends React.Component {
         user={this.props.match.params.user}
         ns={this.props.match.params.ns} />);
     }
+
+    const { strings } = this.context;
     return (
       <App className='page--emergencies'>
         <Helmet>
-          <title>IFRC Go - Emergencies</title>
+          <title>{strings.editPerFormsTitle}</title>
         </Helmet>
         <BreadCrumb crumbs={[
-          {link: this.props.location.pathname, name: 'PER Form'},
-          {link: `/countries/${this.props.match.params.id}`, name: `${getCountryMeta(this.props.match.params.id).label || 'Account'}`},
-          {link: '/', name: 'Home'}
+          {link: this.props.location.pathname, name: strings.breadCrumbPERForm},
+          {link: `/countries/${this.props.match.params.id}`, name: `${getCountryMeta(this.props.match.params.id).label || strings.breadCrumbAccount}`},
+          {link: '/', name: strings.breadCrumbHome}
         ]} />
         <section className='inpage'>
           <div className='inpage__body'>
@@ -81,6 +85,7 @@ class EditPerForms extends React.Component {
   }
 }
 
+EditPerForms.contextType = LanguageContext;
 if (environment !== 'production') {
   EditPerForms.propTypes = {
     user: T.object,

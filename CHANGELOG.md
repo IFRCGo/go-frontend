@@ -1,3 +1,29 @@
+### Release 4.3.11
+
+This release includes a lot of code changes to support future translations support, as well as significant changes toward implementing updated site designs.
+
+Frontend:
+
+ - Replace all strings on the frontend with translatable strings: https://github.com/IFRCGo/go-frontend/issues/1239
+ - Use new grid framework for styling, to support RTL languages: https://github.com/IFRCGo/go-frontend/issues/1382
+ - Update styles across the site to match new designs:
+   - UI Elements Update: https://github.com/IFRCGo/go-frontend/issues/1325
+   - Update Key Figures Styling: https://github.com/IFRCGo/go-frontend/issues/1324
+   - Table styling across platform: https://github.com/IFRCGo/go-frontend/issues/1203
+   - Styling cleanup of Highlighted Operations + Adding Follow buttons: https://github.com/IFRCGo/go-frontend/issues/1206
+ - Improvements to Signup Workflow: https://github.com/IFRCGo/go-frontend/issues/1233
+ - Fix Create a Report dropdown on mobile: https://github.com/IFRCGo/go-frontend/issues/1363
+ - Rename Subscribe / Unsubscribe to Follow / Unfollow on Emergency page: https://github.com/IFRCGo/go-frontend/issues/1370
+
+Backend:
+
+ - Update Docker base image for deploy, to support future Geospatial work: https://github.com/IFRCGo/go-api/pull/807
+ - Optimize queries / improve performance of Events API endpoint: https://github.com/IFRCGo/go-api/issues/763
+ - Optimize queries / improve performance of Appeals endpoint: https://github.com/IFRCGo/go-api/pull/828
+ - Fix typo in cronjob: https://github.com/IFRCGo/go-api/issues/826
+ - Add User Profile to User Admin page: https://github.com/IFRCGo/go-frontend/issues/956#issuecomment-659182089
+
+
 ### Release 4.3.10
 
 Hotfix release to add links to KoBo forms in Dropdown: https://github.com/IFRCGo/go-frontend/issues/1363

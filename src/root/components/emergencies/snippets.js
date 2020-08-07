@@ -8,6 +8,7 @@ import TabContent from '../tab-content';
 import { NO_DATA } from '#utils/constants';
 
 import { getEventSnippets } from '#actions/';
+import LanguageContext from '#root/languageContext';
 
 class Snippets extends Component {
   componentDidMount () {
@@ -16,10 +17,10 @@ class Snippets extends Component {
   render () {
     const { fetching, error, data } = this.props.snippets;
     if (fetching || error) return null;
-
+    const { strings } = this.context;
     return (
-      <TabContent showError={true} isError={!get(data, 'results.length')} errorMessage={ NO_DATA } title="Additional Graphics">
-        <Fold id='graphics' showHeader={false} title='Additional Graphics' wrapper_class='additional-graphics'>
+      <TabContent showError={true} isError={!get(data, 'results.length')} errorMessage={ NO_DATA } title={strings.snippetsTitle}>
+        <Fold id='graphics' showHeader={false} title={strings.snippetsTitle} foldWrapperClass='additional-graphics'>
           <div className='iframe__container'>
             {data.results.map(o => o.snippet ? <div className='snippet__item' key={o.id} dangerouslySetInnerHTML={{__html: o.snippet}} />
               : o.image ? <div key={o.id} className='snippet__item snippet__image'><img src={o.image}/></div> : null
@@ -65,4 +66,5 @@ const dispatcher = (dispatch) => ({
   _getEventSnippets: (...args) => dispatch(getEventSnippets(...args))
 });
 
+Snippets.contextType = LanguageContext;
 export default withRouter(connect(selector, dispatcher)(Snippets));

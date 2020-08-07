@@ -1,3 +1,8 @@
+.tab__wrap {
+  background-color: #fff;
+  padding: $spacing-2 0;
+}
+
 .react-tabs {
   -webkit-tap-highlight-color: transparent;
 
@@ -6,12 +11,18 @@
     margin: 0 0 10px;
     padding: 0;
     display: flex;
+    flex-direction: column;
     align-items: stretch;
     justify-content: center;
     width: 100%;
+
+    @include media(small) {
+      flex-direction: row;
+    }
   }
 
   &__tab {
+    color: $black;
     display: inline-block;
     font-family: $heading-font-family;
     text-transform: uppercase;
@@ -19,18 +30,36 @@
     font-weight: $base-font-medium;
     border: 1px solid transparent;
     border-bottom: none;
-    bottom: -1px;
+    background-color: $grey-mist;
     position: relative;
     list-style: none;
-    padding: ($global-spacing * 1) ($global-spacing * 2);
-    font-size: 120%;
+    padding: $spacing $spacing-2;
+    font-size: $font-size-sm;
     cursor: pointer;
+    margin-inline-end: $spacing-half;
+
+    @include media(small) {
+      font-size: $base-font-size;
+    }
+
+    @include media(small) {
+      padding: $spacing ($spacing * 2.5);
+    }
+
+    &:last-of-type {
+      margin-inline-end: 0;    
+    }
 
     &--selected {
       background: #fff;
-      border-color: $base-border-color;
-      font-weight: $base-font-bold;
+      font-weight: $base-font-semi-bold;
       color: $primary-color;
+      box-shadow: 0px 15px 1px -14px $primary-color;
+  
+      @include media(small) {
+        border-color: $base-border-color;
+        bottom: -1px;
+      }
     }
 
     &--disabled {
@@ -39,8 +68,7 @@
     }
 
     &:focus {
-      box-shadow: 0 0 5px hsl(208, 99%, 50%);
-      border-color: hsl(208, 99%, 50%);
+      box-shadow: 0 0 5px $grey-pearl;
       outline: none;
 
       &:after {

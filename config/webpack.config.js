@@ -85,7 +85,10 @@ module.exports = function(webpackEnv) {
       },
       {
         loader: require.resolve('css-loader'),
-        options: cssOptions,
+        options: {
+          localsConvention: 'camelCase',
+          ...cssOptions,
+        },
       },
       {
         // Options for PostCSS as we reference these options twice

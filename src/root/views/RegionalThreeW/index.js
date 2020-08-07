@@ -11,6 +11,8 @@ import {
 import _cs from 'classnames';
 
 import BlockLoading from '#components/block-loading';
+import Translate from '#components/Translate';
+
 import {
   getRegionalMovementActivities as getRegionalMovementActivitiesAction,
   getRegionalProjectsOverview as getRegionalProjectsOverviewAction,
@@ -219,39 +221,45 @@ function RegionalThreeW (p) {
   ), [projectsOverview]);
 
   return (
-    <div className='regional-threew'>
+    <div className='regional-threew container-lg'>
       { projectsOverviewPending ? (
         <BlockLoading />
       ) : (
-        <div className='regional-threew-overview'>
-          <BudgetOverview
-            totalBudget={projectsOverview.total_budget}
-            nsCountWithOngoingActivity={projectsOverview.ns_with_ongoing_activities}
-          />
-          <PeopleOverview
-            targeted={projectsOverview.target_total}
-            reached={projectsOverview.reached_total}
-          />
-          <StatusOverview
-            total={projectsOverview.total_projects}
-            data={sectorActivityData}
-          />
+        <div className='regional-threew-overview row-lg flex-mid'>
+          <div className='col-lg col-4-mid'>
+            <BudgetOverview
+              totalBudget={projectsOverview.total_budget}
+              nsCountWithOngoingActivity={projectsOverview.ns_with_ongoing_activities}
+            />
+          </div>
+          <div className='col-lg col-4-mid'>
+            <PeopleOverview
+              targeted={projectsOverview.target_total}
+              reached={projectsOverview.reached_total}
+            />
+          </div>
+          <div className='col-lg col-4-mid'>
+            <StatusOverview
+              total={projectsOverview.total_projects}
+              data={sectorActivityData}
+            />
+          </div>
         </div>
       )}
       <div className='regional-movement-activities'>
         { movementActivityListPending && <BlockLoading /> }
         <div className='tc-header'>
-          <div className='tc-top'>
-            <h2 className='tc-heading'>
-              Movement activities
+          <div className='tc-top fold__header__block'>
+            <h2 className='fold__title margin-reset'>
+              <Translate stringId='regional3WMovementActivity'/>
             </h2>
             <div className='tc-actions'>
               {isUserLoggedIn && (
                 <button
                   onClick={handleCreateThreeWActivityButtonClick}
-                  className='button button--primary-bounded'
+                  className='button button--primary-bounded button--small'
                 >
-                  Add
+                  <Translate stringId='regional3WAdd' />
                 </button>
               )}
               <ExportButton
@@ -285,9 +293,11 @@ function RegionalThreeW (p) {
       </div>
       <div className='regional-ns-activities'>
         <div className='tc-header'>
-          <h2 className='tc-heading'>
-            National society activities
-          </h2>
+          <div className='fold__header__block'>
+            <h2 className='fold__title margin-reset'>
+              <Translate stringId='regional3WNationalActivity'/>
+            </h2>
+          </div>
           <NSActivitiesFilters
             value={nsActivityFilters}
             onChange={setNSActivityFilters}
@@ -300,7 +310,7 @@ function RegionalThreeW (p) {
           ) : (
             (nationalSocietyActivities.links || emptyList).length === 0 ? (
               <div className='sankey-empty-message'>
-                Not enough data to show the chart
+                <Translate stringId='regional3WSankeyEmpty'/>
               </div>
             ) : (
               <ResponsiveContainer>

@@ -18,16 +18,19 @@ import EruTable from '#components/connected/eru-table';
 import PersonnelTable from '#components/connected/personnel-table';
 import BreadCrumb from '#components/breadcrumb';
 
-const displayTypes = {
-  report: 'Field Reports',
-  appeal: 'Operations',
-  emergency: 'Emergencies',
-  alert: 'Surge Alerts',
-  eru: 'Deployed ERUs',
-  personnel: 'Deployed Personnel'
-};
+import LanguageContext from '#root/languageContext';
+import { resolveToString } from '#utils/lang';
 
 class Table extends React.Component {
+  getDisplayTypes = (strings) => ({
+      report: strings.tableReport,
+      appeal: strings.tableOperation,
+      emergency: strings.tableEmergency,
+      alert: strings.tableAlert,
+      eru: strings.tableEru,
+      personnel: strings.tablePersonnel,
+  })
+
   getQueryParams () {
     const { search } = this.props.location;
     const query = search ? qs.parse(search.slice(1, search.length)) : {};
@@ -41,6 +44,7 @@ class Table extends React.Component {
       showExport: true
     };
 
+    const { strings } = this.context;
     const query = this.getQueryParams();
     let titleArea = '';
     if (query.hasOwnProperty('region')) {
@@ -62,30 +66,32 @@ class Table extends React.Component {
     if (titleArea) titleArea += ' ';
     switch (this.props.type) {
       case 'emergency':
-        return <EmergenciesTable title={`All ${titleArea}Emergencies`} {...props} />;
+      return <EmergenciesTable title={resolveToString(strings.tableEmergenciesTitle, { title: titleArea})} {...props} />;
       case 'report':
-        return <FieldReportsTable title={`All ${titleArea}Field Reports`} {...props} />;
+      return <FieldReportsTable title={resolveToString(strings.reportsTableTitle, { title: titleArea})} {...props} />;
       case 'appeal':
         let noun = 'Operations';
         if (props.atype) {
           noun = props.atype === 'dref' ? 'DREFs' : 'Appeals';
         }
-        const title = props.hasOwnProperty('record') ? 'Operation without Emergency Page' : `All ${titleArea}${noun}`;
-        return <AppealsTable title={title} {...props} />;
+      const title = props.hasOwnProperty('record') ? strings.operationsWithEmergency : resolveToString(strings.tableAppealsTitle, { title: titleArea, noun: noun });
+      return <AppealsTable title={title} {...props} />;
       case 'alert':
-        return <AlertsTable title={'All Surge Alerts'} {...props} />;
+      return <AlertsTable title={strings.tableAllAlertsTitle} {...props} />;
       case 'eru':
-        return <EruTable title={'All Deployed ERUs'} {...props} />;
+      return <EruTable title={strings.tableAllEruTitle} {...props} />;
       case 'personnel':
-        return <PersonnelTable title={'All Deployed Personnel'} {...props} />;
+      return <PersonnelTable title={strings.tableAllPersonnel} {...props} />;
     }
   }
 
   getCrumbs () {
+    const { strings } = this.context;
+    const displayTypes = this.getDisplayTypes(strings);
     const tableType = displayTypes[this.props.type];
     const home = {
       link: '/',
-      name: 'Home'
+      name: strings.breadCrumbHome,
     };
     const qs = this.getQueryParams();
     const isEmptyQS = Object.keys(qs).length === 0;
@@ -93,6 +99,7 @@ class Table extends React.Component {
     if (isEmptyQS) {
       extraCrumbs.push({
         link: this.props.location.pathname,
+        // TODO: use strings
         name: `All ${tableType}`
       });
     } else {
@@ -121,10 +128,22 @@ class Table extends React.Component {
 
   render () {
     const crumbs = this.getCrumbs();
+    const { strings } = this.context;
+    const displayTypes = this.getDisplayTypes(strings);
+
+    const title = resolveToString(
+      strings.tableTitle,
+      {
+        type: displayTypes[this.props.type],
+      }
+    );
+
     return (
       <App>
         <Helmet>
-          <title>IFRC Go - {displayTypes[this.props.type]}</title>
+          <title>
+            { title }
+          </title>
         </Helmet>
         <BreadCrumb crumbs={crumbs} />
         <div className='inpage__body'>
@@ -136,6 +155,8 @@ class Table extends React.Component {
     );
   }
 }
+
+Table.contextType = LanguageContext;
 
 if (environment !== 'production') {
   Table.propTypes = {

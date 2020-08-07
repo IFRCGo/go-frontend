@@ -21,6 +21,9 @@ import { getCountryMeta } from '#utils/get-country-meta';
 import { getCentroid } from '#utils/country-centroids';
 import NationalSocietiesEngagedPer from '#components/preparedness/national-societies-engaged-per';
 import GlobalPreparednessHighlights from '#components/preparedness/global-preparedness-highlights';
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
+
 // import _groupBy from 'lodash.groupby';
 
 class Preparedness extends React.Component {
@@ -135,6 +138,7 @@ class Preparedness extends React.Component {
   }
 
   render () {
+    const { strings } = this.context;
     const nsEngagedHasData = this.props.getPerEngagedNsPercentage.fetched && typeof this.props.getPerEngagedNsPercentage.data.results !== 'undefined'
       ? this.props.getPerEngagedNsPercentage.data.results.filter((engaged) => engaged.forms_sent !== 0).length > 0
       : false;
@@ -142,29 +146,38 @@ class Preparedness extends React.Component {
       <App className='page--homepage'>
         <section className='inpage'>
           <Helmet>
-            <title>IFRC Go - Global Preparedness</title>
+            <title>{strings.preparednessTitle}</title>
           </Helmet>
           <BreadCrumb crumbs={[
-            {link: '/preparedness', name: 'Preparedness'},
-            {link: '/', name: 'Home'}
+            {link: '/preparedness', name: strings.breadCrumbPreparedness},
+            {link: '/', name: strings.breadCrumbHome}
           ]} />
           <header className='inpage__header'>
-            <div className='inner'>
+            <div className='inner container-lg'>
               <div className='inpage__headline'>
-                <h1 className='inpage__title'>Preparedness for Effective Response (PER)</h1>
-                <p className='inpage__introduction inpage__introduction__bigger'>
-                  To enable National Societies to fulfil their auxiliary role, in line with the Red Cross and Red Crescent Fundamental Principles, by strengthening
-                  local preparedness capacities to ensure timely and effective humanitarian assistance to prevent and alleviate human suffering.
+                <h1 className='inpage__title'>
+                  <Translate stringId='preparednessHeading' />
+                </h1>
+                <p className='inpage__introduction container-sm'>
+                  <Translate stringId='preparednessDescription' />
                 </p>
               </div>
             </div>
           </header>
           <div className='inpage__body'>
             <PreparednessHeader />
-            { this.geoJsonBuilt && this.state.geoJsonFinal !== null && this.state.geoJsonFinal.data.geoJSON.features.length > 0 ? <PerMap data={this.state.geoJsonFinal} noExport={true} noRenderEmergencies={true} overviewData={this.props.perOverviewForm} /> : null }
-            { this.props.getPerEngagedNsPercentage.fetched && nsEngagedHasData ? <NationalSocietiesEngagedPer data={this.props.getPerEngagedNsPercentage} /> : null }
-            { this.props.getPerGlobalPreparedness.fetched && this.props.perWorkPlan.fetched ? <GlobalPreparednessHighlights data={this.props.getPerGlobalPreparedness} prioritizationData={this.state.topPrioritizedComponents} perPermission={this.state.perPerMission} /> : null }
-            <ContactPer />
+            <div className='container-lg margin-5-v'>
+              { this.geoJsonBuilt && this.state.geoJsonFinal !== null && this.state.geoJsonFinal.data.geoJSON.features.length > 0 ? <PerMap data={this.state.geoJsonFinal} noExport={true} noRenderEmergencies={true} overviewData={this.props.perOverviewForm} /> : null }
+            </div>
+            <div className='margin-5-t'>
+              { this.props.getPerEngagedNsPercentage.fetched && nsEngagedHasData ? <NationalSocietiesEngagedPer data={this.props.getPerEngagedNsPercentage} /> : null }
+            </div>
+            <div className='margin-2-b'>
+              { this.props.getPerGlobalPreparedness.fetched && this.props.perWorkPlan.fetched ? <GlobalPreparednessHighlights data={this.props.getPerGlobalPreparedness} prioritizationData={this.state.topPrioritizedComponents} perPermission={this.state.perPerMission} /> : null }
+            </div>
+            <div className='container-lg'>
+              <ContactPer />
+            </div>
           </div>
         </section>
       </App>);
@@ -215,4 +228,5 @@ const dispatcher = (dispatch) => ({
   _getPerMission: (...args) => dispatch(getPerMission(...args))
 });
 
+Preparedness.contextType = LanguageContext;
 export default connect(selector, dispatcher)(Preparedness);

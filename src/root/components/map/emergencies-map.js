@@ -12,6 +12,9 @@ import {
 import MapComponent from './common/map-component';
 import { commaSeparatedNumber as n } from '#utils/format';
 
+import { withLanguage } from '#root/languageContext';
+import Translate from '#components/Translate';
+
 class EmergenciesMap extends React.Component {
   constructor (props) {
     super(props);
@@ -135,17 +138,20 @@ class EmergenciesMap extends React.Component {
 
     if (!fetched) return null;
 
+    const { strings } = this.props;
     return (
       <div className='stats-map emergencies-map'>
-        <div className='inner'>
+        <div className='container-lg'>
           {!error ? (
             <div className='map-container'>
-              <h2 className='visually-hidden'>Emergencies by Country</h2>
+              <h2 className='visually-hidden'>
+                <Translate stringId='emergenciesMapHeading'/>
+              </h2>
               <MapComponent className='map-vis__holder'
                 configureMap={this.configureMap}
                 noExport={true}
                 downloadButton={true}
-                downloadedHeaderTitle='Emergencies'
+                downloadedHeaderTitle={strings.emergenciesMapDownloadTitle}
                 layers={this.state.layers}
                 filters={this.state.filters}
                 geoJSON={data.geoJSON}>
@@ -174,20 +180,30 @@ class EmergenciesMap extends React.Component {
                       <label className='form__label'>Key</label>
                       <dl className='legend__dl legend__dl--colors'>
                         <dt className='color color--red'>red</dt>
-                        <dd>Without IFRC response*</dd>
+                        <dd>
+                          <Translate stringId='emergenciesMapWithoutIFRC'/>
+                        </dd>
                         <dt className='color color--yellow'>yellow</dt>
-                        <dd>With IFRC response</dd>
+                        <dd>
+                          <Translate stringId='emergenciesMapWithIFRC'/>
+                        </dd>
                         <dt className='color color--blue'>blue</dt>
-                        <dd>Mixed Level of response</dd>
+                        <dd>
+                          <Translate stringId='emergenciesMapMixResponse'/>
+                        </dd>
                       </dl>
                     </div>
                   </div>
-                  <p className='legend__note'>*IFRC response indicates the existence of appeal(s) and/or DREF(s) for a given emergency.</p>
+                  <p className='legend__note'>
+                    <Translate stringId='emergenciesMapDescription'/>
+                  </p>
                 </figcaption>
               </MapComponent>
             </div>
           ) : (
-            <p>Data not available.</p>
+            <p>
+              <Translate stringId='emergenciesMapNoData'/>
+            </p>
           )}
         </div>
       </div>
@@ -202,7 +218,7 @@ if (environment !== 'production') {
   };
 }
 
-export default withRouter(EmergenciesMap);
+export default withLanguage(withRouter(EmergenciesMap));
 
 class MapPopover extends React.Component {
   render () {
@@ -218,19 +234,54 @@ class MapPopover extends React.Component {
         <div className='popover__contents'>
           <header className='popover__header'>
             <div className='popover__headline'>
-              <a className='link--primary' onClick={() => this.props.onTitleClick(this.props.uri)}>{title}</a>
+              <a className='link-underline' onClick={() => this.props.onTitleClick(this.props.uri)}>{title}</a>
             </div>
             <div className='popover__actions actions'>
               <ul className='actions__menu'>
-                <li><button type='button' className='actions__menu-item poa-xmark' title='Close popover' onClick={this.props.onCloseClick}><span>Dismiss</span></button></li>
+                <li><button type='button' className='actions__menu-item poa-xmark' title='Close popover' onClick={this.props.onCloseClick}>
+                      <span>
+                        <Translate stringId='emergenciesMapPopoverDismiss'/>
+                      </span>
+                    </button>
+                </li>
               </ul>
             </div>
           </header>
           <div className='popover__body'>
-            <p className='popover__stat'>{n(numAffected)} People Affected</p>
-            <p className='popover__stat'>{n(totalEmergencies)} {totalEmergencies === 1 ? 'Emergency' : 'Emergencies'}</p>
-            <p className='popover__stat'>{n(withoutResponse)} without IFRC response</p>
-            <p className='popover__stat'>{n(withResponse)} with IFRC response</p>
+            <p className='popover__stat'>
+              <Translate
+                stringId='emergenciesMapPopoverPeopleAffected'
+                params={{
+                  numAffected: n(numAffected),
+                }}
+              />
+            </p>
+            <p className='popover__stat'>
+              <span className='base-font-semi-bold'>
+                <Translate
+                  stringId='emergenciesMapPopoverTotalEmergencies'
+                  params={{
+                    totalEmergencies: n(totalEmergencies),
+                  }}
+                />
+              </span>
+            </p>
+            <p className='popover__stat'>
+              <Translate
+                stringId='emergenciesMapPopoverWithoutIFRC'
+                params={{
+                  withoutResponse: n(withoutResponse),
+                }}
+              />
+            </p>
+            <p className='popover__stat'>
+              <Translate
+                stringId='emergenciesMapPopoverWithIFRC'
+                params={{
+                  withResponse: n(withResponse),
+                }}
+              />
+            </p>
           </div>
         </div>
       </article>

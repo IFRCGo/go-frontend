@@ -119,8 +119,8 @@ a.card__contents {
 }
 
 .card__title {
-  @include heading(1.25rem);
-  margin: 0;
+  margin-bottom: ($global-spacing / 2);
+  line-height: 1.3rem;
 
   a.card__contents & {
     color: $link-color;
@@ -254,7 +254,7 @@ a.card__contents {
 
   &:last-child {
     box-shadow: none;
-    padding-right: 0;
+    padding-inline-end: 0;
   }
 
   &, > li {
@@ -262,7 +262,7 @@ a.card__contents {
   }
 
   > li:not(:last-child) {
-    margin-right: $global-spacing / 4;
+    margin-inline-end: $global-spacing / 4;
   }
 }
 

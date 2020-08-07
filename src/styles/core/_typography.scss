@@ -20,19 +20,19 @@
 
   .align-center {
     display: block;
-    margin-left: auto;
-    margin-right: auto;
+    margin-inline-start: auto;
+    margin-inline-end: auto;
   }
 
   .align-left {
     float: left;
-    margin-right: $global-spacing * 1.5;
+    margin-inline-end: $global-spacing * 1.5;
   }
 
 
   .align-right {
     float: right;
-    margin-left:  $global-spacing * 1.5;
+    margin-inline-start:  $global-spacing * 1.5;
   }
 }
 
@@ -49,12 +49,12 @@
     }
 
     .align-left {
-      margin-right: $prose-resp-font-size * $prose-resp-line-height;
+      margin-inline-end: $prose-resp-font-size * $prose-resp-line-height;
     }
 
 
     .align-right {
-      margin-left: $prose-resp-font-size * $prose-resp-line-height;
+      margin-inline-start: $prose-resp-font-size * $prose-resp-line-height;
     }
   }
 }
@@ -134,12 +134,12 @@ dd {
 .ul--go,
 .ol--go {
   list-style: none;
-  margin-left: 0;
+  margin-inline-start: 0;
 
   li {
     display: block;
     position: relative;
-    padding-left:$global-spacing * 1.5;
+    padding-inline-start:$global-spacing * 1.5;
 
     &::before {
       position: absolute;
@@ -189,7 +189,7 @@ dd {
   line-height: 1.25rem;
   padding-top: $global-spacing;
   font-weight: $base-font-regular;
-  margin-left: 1rem;
+  margin-inline-start: 1rem;
 
   &::before {
     position: absolute;
@@ -203,28 +203,23 @@ dd {
 }
 
 .dl--horizontal {
-  @extend .clearfix;
-
-  dt, dd {
-    float: left;
-  }
+  //@extend .clearfix;
+  @include row;
+  @include flex;
 
   dt {
-    width: 32%;
-    clear: left;
     padding-top: $global-spacing / 8;
     padding-bottom: $global-spacing / 8;
-    padding-right: $global-spacing / 2;
+    @include col(33.33%);
   }
 
   dd {
-    width: 68%;
-    padding-left: $global-spacing / 2;
+    @include col(66.66%);
   }
 
-  dd + dd {
-    margin-left: 32%;
-  }
+  //dd + dd {
+    //margin-inline-start: 32%;
+  //}
 }
 
 .content-list {
@@ -237,7 +232,7 @@ dd {
     font-weight: $base-font-regular;
     .content-highlight {
       font-size: 1.15rem;
-      margin-left: $global-spacing/2;
+      margin-inline-start: $global-spacing/2;
       color: rgba(0, 0, 0, 1);
       text-transform: capitalize;
     }
@@ -250,7 +245,7 @@ dd {
   > ul,
   > ol {
     @include media(medium-up) {
-      margin-left: $global-spacing * 1.5;
+      margin-inline-start: $global-spacing * 1.5;
     }
   }
 
@@ -281,16 +276,16 @@ dd {
 
       dt {
         clear: left;
-        padding-right: $global-spacing / 2;
+        padding-inline-end: $global-spacing / 2;
       }
 
       dd {
         text-align: right;
-        padding-left: $global-spacing / 2;
+        padding-inline-start: $global-spacing / 2;
       }
 
       dd + dd {
-        margin-left: 50%;
+        margin-inline-start: 50%;
         box-shadow: none;
       }
     }
@@ -307,7 +302,7 @@ dd {
   > .ul--go,
   > .ol--go {
     @include media(medium-up) {
-      margin-left: 0;
+      margin-inline-start: 0;
 
       li {
         &::before {
@@ -469,7 +464,7 @@ abbr[title] {
   font-family: $heading-font-family;
   font-weight: $heading-font-weight;
   margin-top: 0;
-  margin-bottom: $global-spacing;
+  margin-bottom: ($spacing * 1.5);
 }
 
 .heading--xlarge {
@@ -509,12 +504,10 @@ abbr[title] {
 }
 
 .heading-tiny {
-  color: #000;
-  font-size: 0.675rem;
-  font-weight: $base-font-regular;
+  color: $grey-soot;
+  font-size: $font-size-xs;
+  font-weight: $base-font-light;
   display: block;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
 .heading-sub {
@@ -648,4 +641,8 @@ $font-sizes: (
 
 .text-semi-bold {
   font-weight: $base-font-semi-bold;
+}
+
+.text-italic {
+  font-style: italic;
 }

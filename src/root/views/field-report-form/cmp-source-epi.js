@@ -39,29 +39,31 @@ export default class EPISourceEstimation extends React.Component {
     }
 
     return (
-      <div className={ name === 'epi-num-dead' ? 'form__group estimation-row' : 'form__group estimation-row epi-form-group' }>
-        <div className={labelClass}>
-          <div className='form__inner-headline'>
-            <label className='form__label'>{label}</label>
-            <p className='form__description'>{description}</p>
+      <div className={ name === 'epi-num-dead' ? 'form__group estimation-row form__group__fr' : 'form__group estimation-row epi-form-group form__group__fr' }>
+        <div className='form__group__wrap'>
+          <div className={labelClass}>
+            <div className='form__inner-headline'>
+              <label className='form__label'>{label}</label>
+              <p className='form__description'>{description}</p>
+            </div>
           </div>
-        </div>
-        <div className='form__inner-body'>
-          <div key={fieldKey} className='estimation'>
-            <FormInput
-              label={estimationLabel}
-              type='text'
-              name={name}
-              id={`${name}-estimation`}
-              classLabel={c('label-secondary', {'visually-hidden': 1 > 0})}
-              classWrapper='estimation__item-field'
-              value={values}
-              onChange={this.onEstimationChange.bind(this)} >
-              <FormError
-                errors={errors}
-                property={`${fieldKey}.estimation`}
-              />
-            </FormInput>
+          <div className='form__inner-body'>
+            <div key={fieldKey} className='estimation'>
+              <FormInput
+                label={estimationLabel}
+                type='text'
+                name={name}
+                id={`${name}-estimation`}
+                classLabel={c('label-secondary', {'visually-hidden': 1 > 0})}
+                classWrapper='estimation__item-field'
+                value={values}
+                onChange={this.onEstimationChange.bind(this)} >
+                <FormError
+                  errors={errors}
+                  property={`${fieldKey}.estimation`}
+                />
+              </FormInput>
+            </div>
           </div>
         </div>
       </div>

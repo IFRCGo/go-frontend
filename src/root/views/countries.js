@@ -11,6 +11,7 @@ import url from 'url';
 import { countries } from '#utils/field-report-constants';
 import { environment, api } from '#config';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
+import { resolveToString } from '#utils/lang';
 // import BasicTable from '#components/common/table-basic';
 import { get, dateOptions, datesAgo, dTypeOptions } from '#utils/utils';
 import {
@@ -47,6 +48,8 @@ import Fold from '#components/fold';
 import BreadCrumb from '#components/breadcrumb';
 import DisplayTable, { SortHeader, FilterHeader } from '#components/display-table';
 import EmergenciesTable from '#components/connected/emergencies-table';
+import Translate from '#components/Translate';
+import LanguageContext from '#root/languageContext';
 
 // import BulletTable from '#components/bullet-table';
 import Pills from '#components/pills';
@@ -69,17 +72,9 @@ import { NO_DATA } from '#utils/constants';
 import { getISO3 } from '#utils/country-iso';
 
 import ThreeW from './ThreeW';
-// import CountryOverview from './CountryOverview';
+// import CountryProfile from './CountryProfile';
 
 const emptyObject = {};
-
-const TAB_DETAILS = [
-  { title: 'Operations', hash: '#operations' },
-  { title: '3w', hash: '#3w' },
-  // { title: 'Country Overview', hash: '#overview' },
-  { title: 'Preparedness', hash: '#preparedness' },
-  { title: 'Additional Information', hash: '#additional' }
-];
 
 const filterPaths = {
   ns: 'parent.name',
@@ -167,9 +162,41 @@ class AdminArea extends SFPComponent {
     const countryId = getCountryId(this.props.match.params.id);
     this.loadCountry(this.props, countryId);
   }
+
+  getTabDetails = (strings) => {
+    const tabDetails = [
+      {
+        title: strings.countryOperationsTab,
+        hash: '#operations'
+      },
+      {
+        title: strings.country3WTab,
+        hash: '#3w'
+      },
+      /*
+      {
+        title: strings.countryOverviewTab,
+        hash: '#overview',
+      },
+      */
+      {
+        title: strings.countryPreparednessTab,
+        hash: '#preparedness'
+      },
+      {
+        title: strings.countryAdditionalInfoTab,
+        hash: '#additional'
+      },
+    ];
+
+    return tabDetails;
+  }
   // Sets default tab if url param is blank or incorrect
   displayTabContent () {
-    const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
+    const { strings } = this.context;
+    const tabDetails = this.getTabDetails(strings);
+
+    const tabHashArray = tabDetails.map(({ hash }) => hash);
     if (!tabHashArray.find(hash => hash === this.props.location.hash)) {
       this.props.history.replace(`${this.props.location.pathname}${tabHashArray[0]}`);
     }
@@ -226,10 +253,11 @@ class AdminArea extends SFPComponent {
     // const regionSlug = getRegionSlug(adminArea.data.region);
     // const countryLower = adminArea.data.name.toLowerCase();
     const links = [];
+    const { strings } = this.context;
 
     if (homepageIfrc) {
       const ifrcLink = {
-        'text': `${adminArea.data.name} on IFRC.org`,
+        'text': `${adminArea.data.name} ${strings.ifrcLinkText}`,
         'url': homepageIfrc
       };
       links.push(ifrcLink);
@@ -237,7 +265,7 @@ class AdminArea extends SFPComponent {
 
     if (iso3) {
       const reliefWebLink = {
-        'text': `${adminArea.data.name} on reliefweb.int`,
+        'text': `${adminArea.data.name} ${strings.reliefWebLinkText}`,
         'url': `https://reliefweb.int/country/${iso3}`
       };
       links.push(reliefWebLink);
@@ -245,7 +273,7 @@ class AdminArea extends SFPComponent {
 
     if (homepage) {
       const homepageLink = {
-        'text': `${adminArea.data.name} RC Homepage`,
+        'text': `${adminArea.data.name} ${strings.homePageLinkText}`,
         'url': homepage
       };
       links.push(homepageLink);
@@ -321,6 +349,7 @@ class AdminArea extends SFPComponent {
 
   renderAppeals () {
     const { fetched, fetching, error, data } = this.props.countryOperations;
+    const { strings } = this.context;
 
     if (error || fetching) return null;
 
@@ -334,7 +363,7 @@ class AdminArea extends SFPComponent {
           label: (
             <FilterHeader
               id='date'
-              title='Start Date'
+              title={strings.countryTableDate}
               options={dateOptions}
               filter={this.state.appeals.filters.date}
               onSelect={this.handleFilterChange.bind(this, 'appeals', 'date')}
@@ -346,19 +375,22 @@ class AdminArea extends SFPComponent {
           label: (
             <SortHeader
               id='name'
-              title='Name'
+              title={strings.countryTableName}
               sort={this.state.appeals.sort}
               onClick={this.handleSortChange.bind(this, 'appeals', 'name')}
             />
           )
         },
-        { id: 'event', label: 'Emergency' },
+        {
+          id: 'event',
+          label: strings.countryTableEmergency,
+        },
         {
           id: 'dtype',
           label: (
             <FilterHeader
               id='dtype'
-              title='Disaster Type'
+              title={strings.countryTableDisasterType}
               options={dTypeOptions}
               filter={this.state.appeals.filters.dtype}
               onSelect={this.handleFilterChange.bind(this, 'appeals', 'dtype')}
@@ -370,7 +402,7 @@ class AdminArea extends SFPComponent {
           label: (
             <SortHeader
               id='amount_requested'
-              title='Requested Amount (CHF)'
+              title={strings.countryTableRequestAmount}
               sort={this.state.appeals.sort}
               onClick={this.handleSortChange.bind(this, 'appeals', 'amount_requested')}
             />
@@ -381,13 +413,16 @@ class AdminArea extends SFPComponent {
           label: (
             <SortHeader
               id='amount_funded'
-              title='Funding (CHF)'
+              title= {strings.countryTableFundedAmount}
               sort={this.state.appeals.sort}
               onClick={this.handleSortChange.bind(this, 'appeals', 'amount_funded')}
             />
           )
         },
-        { id: 'active', label: 'Active' }
+        {
+          id: 'active',
+          label: strings.countryTableActive,
+        }
       ];
 
       const rows = data.results.map(o => ({
@@ -395,7 +430,7 @@ class AdminArea extends SFPComponent {
         date: DateTime.fromISO(o.start_date).toISODate(),
         name: o.name,
         event: o.event ? (
-          <Link to={`/emergencies/${o.event}`} className='link--primary' title='View Emergency'>
+          <Link to={`/emergencies/${o.event}`} className='link--table' title={strings.countriesEmergencyLinkTooltip}>
             Link
           </Link>
         ) : (
@@ -404,7 +439,7 @@ class AdminArea extends SFPComponent {
         dtype: o.dtype.name,
         requestAmount: n(o.amount_requested),
         fundedAmount: n(o.amount_funded),
-        active: new Date(o.end_date).getTime() > now ? 'Active' : 'Inactive'
+        active: new Date(o.end_date).getTime() > now ? strings.countriesActiveLabel: strings.countriesInactiveLabel,
       }));
 
       return (
@@ -416,8 +451,11 @@ class AdminArea extends SFPComponent {
             noPaginate={true}
           />
           <div className='fold__footer'>
-            <Link className='link--primary export--link' to={'/appeals/all/?country=' + id}>
-              View All Operations For {name}
+            <Link className='link-underline export--link' to={'/appeals/all/?country=' + id}>
+              <Translate
+                stringId="countriesAllOperationExportLink"
+                params={{ name }}
+              />
             </Link>
           </div>
         </React.Fragment>
@@ -553,18 +591,22 @@ class AdminArea extends SFPComponent {
     // const mapContainerClass = 'country__map';
 
     // const { partnerDeployments } = this.props;
+    const { strings } = this.context;
+    const tabDetails = this.getTabDetails(strings);
 
     const handleTabChange = index => {
-      const tabHashArray = TAB_DETAILS.map(({ hash }) => hash);
+      const tabHashArray = tabDetails.map(({ hash }) => hash);
       const url = this.props.location.pathname;
       this.props.history.replace(`${url}${tabHashArray[index]}`);
     };
 
+    const countryName = get(data, 'name', 'Country');
+
     // add region to the breadcrumb only if country has a region defined
     const region = getRegionById(data.region);
     const crumbs = [
-      {link: this.props.location.pathname, name: get(data, 'name', 'Country')},
-      {link: '/', name: 'Home'}
+      {link: this.props.location.pathname, name: countryName},
+      {link: '/', name: strings.breadCrumbHome}
     ];
     if (region) {
       crumbs.splice(1, 0, {
@@ -572,30 +614,55 @@ class AdminArea extends SFPComponent {
       });
     }
 
+    const title = resolveToString(strings.countryPageTitle, { countryName });
+
     return (
       <section className='inpage'>
         <Helmet>
-          <title>IFRC Go - {get(data, 'name', 'Country')}</title>
+          <title>{title}</title>
         </Helmet>
-        <BreadCrumb crumbs={ crumbs } />
-        <header className='inpage__header'>
+        <div className='container-lg'>
+          <div className='row flex-sm'>
+            <div className='col col-6-sm col-7-mid'>
+              <BreadCrumb breadcrumbContainerClass='padding-reset' crumbs={ crumbs } />
+            </div>
+            <div className='col col-6-sm col-5-mid spacing-half-t'>  
+              <div className='row-sm flex flex-justify-flex-end'>
+                <div className='col-sm spacing-half-v'>
+                  <a
+                    href={url.resolve(api, `api/country/${data.id}/change/`)}
+                    className='button button--xsmall button--primary-bounded button--edit-action'
+                  >
+                    <span className='collecticon-pencil margin-half-r'></span>
+                    <Translate stringId='countryEditCountry' />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <header className='inpage__header inpage__header--action container-lg'>
           <div className='inner'>
             <h1 className='inpage__title'>
               {data.name}
               {data.inform_score ? (
                 <span className='inpage__title--inform'>
-                    Inform Score: <span className='inpage__title--inform--score'>{round(data.inform_score, 1)}</span>
+                    <Translate stringId='countryInformScore' /> <span className='inpage__title--inform--score'>{round(data.inform_score, 1)}</span>
                 </span>
               ) : null}
             </h1>
-            <div className='inpage__header-actions'>
-              <a
-                href={url.resolve(api, `api/country/${data.id}/change/`)}
-                className='button button--primary-bounded'
-              >
-                  Edit Country
-              </a>
-            </div>
+            { region ? (
+            <div className='inpage__header-actions text-center'>
+              <div className='spacing-half-v'>
+                <Link to={`/regions/${data.region}`}
+                  className='link link--with-icon flex-justify-center'
+                >
+                  <span className='link--with-icon-text'>{region.name}</span>
+                  <span className='collecticon-chevron-right link--with-icon-inner'></span>
+                </Link>
+              </div>
+            </div>) : null }
+
           </div>
         </header>
         <section className='inpage__body'>
@@ -603,110 +670,124 @@ class AdminArea extends SFPComponent {
             <KeyFiguresHeader appealsListStats={this.props.appealsListStats}/>
           </div>
         </section>
-        <Tabs
-          selectedIndex={TAB_DETAILS.map(({ hash }) => hash).indexOf(this.props.location.hash)}
-          onSelect={index => handleTabChange(index)}
-        >
-          <TabList>
-            {TAB_DETAILS.map(tab => (
-              <Tab key={tab.title}>{tab.title}</Tab>
-            ))}
-          </TabList>
-          <div className='inpage__body'>
-            <div className='inner'>
-              <TabPanel>
-                <TabContent>
-                  <Fold title='Statistics' headerClass='visually-hidden' id='operations'>
-                    {/*
-                    <div className='operations__container'>
-                      <div className='country__operations'>
-                        <h2>Movement activities in support of NS</h2>
-                        <BulletTable title='Activities'
-                          onClick={this.setPersistentMapFilter.bind(this, 'ns')}
-                          onMouseOver={this.setMapFilter.bind(this, 'ns')}
-                          onMouseOut={this.removeMapFilter.bind(this, 'ns')}
-                          rows={get(partnerDeployments, 'data.parentSocieties', [])} />
-                        <BulletTable title='Type'
-                          onClick={this.setPersistentMapFilter.bind(this, 'type')}
-                          onMouseOver={this.setMapFilter.bind(this, 'type')}
-                          onMouseOut={this.removeMapFilter.bind(this, 'type')}
-                          rows={get(partnerDeployments, 'data.activities', [])} />
-                      </div>
+        <div className='tab__wrap'>
+          <Tabs
+            selectedIndex={tabDetails.map(({ hash }) => hash).indexOf(this.props.location.hash)}
+            onSelect={index => handleTabChange(index)}
+          >
+            <TabList>
+              {tabDetails.map(tab => (
+                <Tab key={tab.title}>{tab.title}</Tab>
+              ))}
+            </TabList>
+            <div className='inpage__body'>
+              <div className='inner'>
+                <TabPanel>
+                  <TabContent>
+                    <div className='container-lg'>
+                      <Fold title={strings.countriesStatisticsTitle} foldHeaderClass='visually-hidden' id='operations' foldWrapperClass='fold--main' foldContainerClass='container--padding-reset'>
+                        {/*
+                        <div className='operations__container'>
+                          <div className='country__operations'>
+                            <h2>Movement activities in support of NS</h2>
+                            <BulletTable title='Activities'
+                              onClick={this.setPersistentMapFilter.bind(this, 'ns')}
+                              onMouseOver={this.setMapFilter.bind(this, 'ns')}
+                              onMouseOut={this.removeMapFilter.bind(this, 'ns')}
+                              rows={get(partnerDeployments, 'data.parentSocieties', [])} />
+                            <BulletTable title='Type'
+                              onClick={this.setPersistentMapFilter.bind(this, 'type')}
+                              onMouseOver={this.setMapFilter.bind(this, 'type')}
+                              onMouseOut={this.removeMapFilter.bind(this, 'type')}
+                              rows={get(partnerDeployments, 'data.activities', [])} />
+                          </div>
 
-                      <div className={mapContainerClass}>
-                        <CountryMap operations={this.props.appealStats}
-                          bbox={bbox}
-                          deployments={this.props.partnerDeployments}
-                          deploymentsKey='Additional Response Activities' // From Elsa instead of 'PNS Activities'
-                          noRenderEmergencies={true}
-                          noExport={true}
-                        />
-                      </div>
+                          <div className={mapContainerClass}>
+                            <CountryMap operations={this.props.appealStats}
+                              bbox={bbox}
+                              deployments={this.props.partnerDeployments}
+                              deploymentsKey='Additional Response Activities' // From Elsa instead of 'PNS Activities'
+                              noRenderEmergencies={true}
+                              noExport={true}
+                            />
+                          </div>
+                        </div>
+                        */}
+                        {this.renderAppeals()}
+                      </Fold>
                     </div>
-                    */}
-                    {this.renderAppeals()}
-                  </Fold>
-                </TabContent>
-                <TabContent>
-                  <EmergenciesTable
-                    id={'emergencies'}
-                    title='Recent Emergencies'
-                    limit={5}
-                    country={getCountryId(this.props.match.params.id)}
-                    showRecent={true}
-                    viewAll={'/emergencies/all?country=' + data.id}
-                    viewAllText={`View All Emergencies For ${data.name}`}
-                  />
-                </TabContent>
-              </TabPanel>
-              <TabPanel>
-                <TabContent title="3W">
-                  <ThreeW countryId={getCountryId(this.props.match.params.id)} />
-                </TabContent>
-              </TabPanel>
-              {/*
-              <TabPanel>
-                <TabContent title='Overview'>
-                  <CountryOverview
-                    countryId={getCountryId(this.props.match.params.id)}
-                    user={this.props.user}
-                  />
-                </TabContent>
-              </TabPanel>
-              */}
-              <TabPanel>
-                <TabContent showError={true} isError={!this.isPerPermission()} errorMessage='Please log in' title='Preparedness'>
-                  {this.props.getPerNsPhase.fetched && this.props.perOverviewForm.fetched ? (
-                    <PreparednessOverview getPerNsPhase={this.props.getPerNsPhase} perOverviewForm={this.props.perOverviewForm} />)
-                    : <ErrorPanel title='Preparedness Overciew' errorMessage={ NO_DATA } />}
-                  {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
-                    <PreparednessSummary getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
-                    : <ErrorPanel title='Preparedness Summary' errorMessage={ NO_DATA } />}
-                  {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
-                    <PreparednessColumnBar getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
-                    : <ErrorPanel title='Preparedness Column Bar' errorMessage={ NO_DATA } />}
-                  {this.props.getPerWorkPlan.fetched ? (
-                    <PreparednessWorkPlan getPerWorkPlan={this.props.getPerWorkPlan} />)
-                    : <ErrorPanel title='Preparedness Work Plan' errorMessage={ NO_DATA } />}
-                  {this.props.getPerUploadedDocuments.fetched ? (
-                    <PreparednessPhaseOutcomes getPerUploadedDocuments={this.props.getPerUploadedDocuments} countryId={getCountryId(this.props.match.params.id)} />)
-                    : <ErrorPanel title='Preparedness Phase Outcomes' errorMessage={ NO_DATA } />}
-                </TabContent>
-              </TabPanel>
-              <TabPanel>
-                <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ NO_DATA } title='Graphics'>
-                  <Snippets data={this.props.snippets} />
-                </TabContent>
-                <TabContent showError={true} isError={!get(data, 'contacts.length')} errorMessage={ NO_DATA } title='Contacts'>
-                  <Contacts data={data} />
-                </TabContent>
-                <TabContent isError={!get(data, 'links.length')} errorMessage={ NO_DATA } title='Links'>
-                  <Links data={data} />
-                </TabContent>
-              </TabPanel>
+                  </TabContent>
+                  <TabContent>
+                    <div>
+                      <EmergenciesTable
+                        id={'emergencies'}
+                        title={strings.emergenciesTableRecentEmergencies}
+                        limit={5}
+                        country={getCountryId(this.props.match.params.id)}
+                        showRecent={true}
+                        viewAll={'/emergencies/all?country=' + data.id}
+                        viewAllText={`${strings.emergenciesRecentViewAll} ${data.name}`}
+                      />
+                    </div>
+                  </TabContent>
+                </TabPanel>
+                <TabPanel>
+                  <div className='container-lg'>
+                    <TabContent title= {strings.region3WTitle}>
+                      <ThreeW countryId={getCountryId(this.props.match.params.id)} />
+                    </TabContent>
+                  </div>
+                </TabPanel>
+                {/*
+                <TabPanel>
+                  <TabContent title='Overview'>
+                    <div className='container-lg'>
+                      <CountryProfile
+                        countryId={getCountryId(this.props.match.params.id)}
+                        user={this.props.user}
+                      />
+                    </div>
+                  </TabContent>
+                </TabPanel>
+                */}
+                <TabPanel>
+                  <TabContent showError={true} isError={!this.isPerPermission()} errorMessage={strings.accountPerPermission} title={strings.countryPreparednessTitle}>
+                    <div className='container-lg'>
+                      {this.props.getPerNsPhase.fetched && this.props.perOverviewForm.fetched ? (
+                        <PreparednessOverview getPerNsPhase={this.props.getPerNsPhase} perOverviewForm={this.props.perOverviewForm} />)
+                        : <ErrorPanel title={strings.preparednessOverview} errorMessage={ NO_DATA } />}
+                      {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
+                        <PreparednessSummary getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
+                        : <ErrorPanel title={strings.preparednessSummary} errorMessage={ NO_DATA } />}
+                      {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
+                        <PreparednessColumnBar getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
+                        : <ErrorPanel title={strings.preparednessColumnBar} errorMessage={ NO_DATA } />}
+                      {this.props.getPerWorkPlan.fetched ? (
+                        <PreparednessWorkPlan getPerWorkPlan={this.props.getPerWorkPlan} />)
+                        : <ErrorPanel title={strings.preparednessWorkPlan} errorMessage={ NO_DATA } />}
+                      {this.props.getPerUploadedDocuments.fetched ? (
+                        <PreparednessPhaseOutcomes getPerUploadedDocuments={this.props.getPerUploadedDocuments} countryId={getCountryId(this.props.match.params.id)} />)
+                        : <ErrorPanel title={strings.countryPreparednessPhaseOutcomes} errorMessage={ NO_DATA } />}
+                      </div>
+                  </TabContent>
+                </TabPanel>
+                <TabPanel>
+                  <div className='container-lg'>
+                    <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ NO_DATA } title={strings.regionGraphiccs}>
+                      <Snippets data={this.props.snippets} />
+                    </TabContent>
+                    <TabContent showError={true} isError={!get(data, 'contacts.length')} errorMessage={ NO_DATA } title={strings.regionContacts}>
+                      <Contacts data={data} />
+                    </TabContent>
+                    <TabContent isError={!get(data, 'links.length')} errorMessage={ NO_DATA } title={strings.regionLinks}>
+                      <Links data={data} />
+                    </TabContent>
+                  </div>
+                </TabPanel>
+              </div>
             </div>
-          </div>
-        </Tabs>
+          </Tabs>
+        </div>
         <div className='inpage__body'>
           <div className='inner'>
             { countryLinks ? <Pills links={countryLinks} /> : null }
@@ -731,10 +812,14 @@ class AdminArea extends SFPComponent {
       user,
     );
 
+    const { strings } = this.context;
+
     return (
       <App className={`page--${this.props.type}`}>
         <Helmet>
-          <title>IFRC Go - Country</title>
+          <title>
+            { strings.countryTitle }
+          </title>
         </Helmet>
         { this.renderContent() }
       </App>
@@ -763,6 +848,8 @@ if (environment !== 'production') {
     partnerDeployments: T.object
   };
 }
+
+AdminArea.contextType = LanguageContext;
 
 // /////////////////////////////////////////////////////////////////// //
 // Connect functions

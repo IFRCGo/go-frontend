@@ -48,6 +48,8 @@ import ContactRow from './cmp-contact-row.js';
 import PlanResponseRow from './cmp-planned-response-row.js';
 import SourceEstimation from './cmp-source-estimation.js';
 import EPISourceEstimation from './cmp-source-epi';
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
 
 const ajv = new Ajv({ $data: true, allErrors: true, errorDataPath: 'property' });
 ajvKeywords(ajv);
@@ -94,21 +96,23 @@ class FieldReportForm extends React.Component {
 
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps (nextProps) {
+    const { strings } = this.context;
+
     if (this.props.fieldReportForm.fetching && !nextProps.fieldReportForm.fetching) {
       hideGlobalLoading();
       if (nextProps.fieldReportForm.error) {
         const message = nextProps.fieldReportForm.error.error_message
           || nextProps.fieldReportForm.error.detail
           || nextProps.fieldReportForm.error[Object.keys(nextProps.fieldReportForm.error)[0]][0] // first key's value
-          || 'Could not submit field report';
-        showAlert('danger', <p><strong>Error:</strong> {message}</p>, true, 4500);
+          || strings.fieldReportFormSubmitError;
+        showAlert('danger', <p><strong><Translate stringId="fieldReportFormErrorLabel" /></strong> {message}</p>, true, 4500);
       } else {
         const { history } = this.props;
         const { id } = nextProps.fieldReportForm.data;
         if (this.props.match.params.id) {
-          showAlert('success', <p>Field report updated, redirecting...</p>, true, 2000);
+          showAlert('success', <p><Translate stringId="fieldReportFormRedirectMessage" /></p>, true, 2000);
         } else {
-          showAlert('success', <p>Field report created, redirecting...</p>, true, 2000);
+          showAlert('success', <p><Translate stringId="fieldReportFormRedirectMessage" /></p>, true, 2000);
         }
         setTimeout(() => history.push(`/reports/${id}`), 2000);
       }
@@ -116,7 +120,14 @@ class FieldReportForm extends React.Component {
 
     if (this.props.actions.fetching && !nextProps.actions.fetching) {
       if (nextProps.actions.error) {
-        showAlert('danger', <p><strong>Error:</strong>Failed to load Form Data</p>, true, 4500);
+        showAlert('danger', (
+          <p>
+            <strong>
+              <Translate stringId="fieldReportFormErrorLabel" />
+            </strong>
+            <Translate stringId="fieldReportFormLoadDataErrorMessage" />
+          </p>
+        ), true, 4500);
       } else {
         this.setActions(nextProps.actions.data.results);
 
@@ -205,7 +216,14 @@ class FieldReportForm extends React.Component {
         this.setState({ step: step + 1 });
       }
     } else {
-      showAlert('danger', <p><strong>Error:</strong> There are errors in the form</p>, true, 4500);
+      showAlert('danger', (
+        <p>
+          <strong>
+            <Translate stringId="fieldReportFormErrorLabel" />
+          </strong>
+          <Translate stringId="fieldReportFormErrorInFormMessage" />
+        </p>
+      ), true, 4500);
     }
   }
 
@@ -244,11 +262,11 @@ class FieldReportForm extends React.Component {
     if (field === 'disasterType' &&
       formData.getIsEpidemicDisasterTypeByValue(val)
     ) {
-      _set(data, 'status', formData.statusEvent.value);
+      _set(data, 'status', formData.statusEventValue);
     }
 
     if (field === 'isCovidReport' && val && val === 'true') {
-      _set(data, 'status', formData.statusEvent.value);
+      _set(data, 'status', formData.statusEventValue);
       _set(data, 'disasterType', '1');
     }
 
@@ -270,53 +288,63 @@ class FieldReportForm extends React.Component {
       window.scrollTo(0, 0);
       this.setState({ step });
     } else {
-      showAlert('danger', <p><strong>Error:</strong> There are errors in the form</p>, true, 4500);
+      showAlert('danger', (
+        <p>
+          <strong>
+            <Translate stringId="fieldReportFormErrorLabel" />
+          </strong>
+          <Translate stringId="fieldReportFormErrorInFormMessage" />
+        </p>
+      ), true, 4500);
     }
   }
 
   renderStepper () {
+    const { strings } = this.context;
     const status = this.getStatus();
     const step = this.state.step;
     const items = [
       {
-        'EPI': 'Context',
-        'EVT': 'Context',
-        'EW': 'Context'
+        'EVT': strings.fieldReportFormItemContextLabel,
+        'EPI': strings.fieldReportFormItemContextLabel,
+        'EW': strings.fieldReportFormItemContextLabel
       },
       {
-        'EVT': 'Situation',
-        'EPI': 'Situation',
-        'EW': 'Risk Analysis'
+        'EVT': strings.fieldReportFormItemSituationLabel,
+        'EPI': strings.fieldReportFormItemSituationLabel,
+        'EW': strings.fieldReportFormItemRiskAnalysisLabel,
       },
       {
-        'EVT': 'Actions',
-        'EPI': 'Actions',
-        'EW': 'Early Actions'
+        'EVT': strings.fieldReportFormItemActionsLabel,
+        'EPI': strings.fieldReportFormItemActionsLabel,
+        'EW': strings.fieldReportFormItemEarlyActionsLabel
       },
       {
-        'EVT': 'Response',
-        'EPI': 'Response',
-        'EW': 'Response'
-      }
+        'EVT': strings.fieldReportFormItemResponseLabel,
+        'EPI': strings.fieldReportFormItemResponseLabel,
+        'EW': strings.fieldReportFormItemResponseLabel
+      },
     ];
     return (
-      <ol className='stepper'>
-        {items.map((o, idx) => {
-          const stepNum = idx + 1;
-          const classes = c('stepper__item', {
-            'stepper__item--complete': step > stepNum,
-            'stepper__item--current': step === stepNum
-          });
-          return <li key={o[status]} className={classes}><a href='#' onClick={this.onStepperClick.bind(this, stepNum)}><span>{o[status]}</span></a></li>;
-        })}
-      </ol>
+      <div className='container-lg'>
+        <ol className='stepper'>
+          {items.map((o, idx) => {
+            const stepNum = idx + 1;
+            const classes = c('stepper__item', {
+              'stepper__item--complete': step > stepNum,
+              'stepper__item--current': step === stepNum
+            });
+            return <li key={o[status]} className={classes}><a href='#' onClick={this.onStepperClick.bind(this, stepNum)}><span>{o[status]}</span></a></li>;
+          })}
+        </ol>
+      </div>
     );
   }
 
   getStatus () {
     const { status, disasterType } = this.state.data;
 
-    if (status === formData.statusEarlyWarning.value) {
+    if (status === formData.statusEarlyWarningValue) {
       return 'EW';
     } else if (formData.getIsEpidemicDisasterTypeByValue(disasterType)) {
       return 'EPI';
@@ -351,15 +379,17 @@ class FieldReportForm extends React.Component {
   }
 
   renderStep1 () {
+    const { strings } = this.context;
     const districtChoices = this.getDistrictChoices() || [];
-    const fields = formData.fieldsStep1;
+    const fields = formData.getFieldsStep1(strings);
     const status = this.getStatus();
     return (
-      <Fold title='Context' extraClass foldClass='margin-reset'>
+      <Fold title='Context' foldWrapperClass='fold--main fold--transparent' foldTitleClass='margin-reset'>
         <FormRadioGroup
-          label='Status *'
+          label={strings.fieldReportFormStatusLabel}
           name='status'
-          options={formData.status.map(status => ({
+          classWrapper='form__group__fr'
+          options={formData.getStatus(strings).map(status => ({
             ...status,
             // If Epidemic, only 'Event' can be selected
             ...(
@@ -376,15 +406,16 @@ class FieldReportForm extends React.Component {
           />
         </FormRadioGroup>
         <FormRadioGroup
-          label='COVID-19 Related Event *'
+          classWrapper='form__group__fr'
+          label={strings.fieldReportFormCovidLabel}
           name='is-covid-report'
           // description='Is this a COVID-19 Field Report?'
           options={[{
             value: 'true',
-            label: 'Yes'
+            label: strings.fieldReportFormOptionYesLabel,
           }, {
             value: 'false',
-            label: 'No'
+            label: strings.fieldReportFormOptionNoLabel,
           }]}
           selectedOption={this.state.data.isCovidReport}
           onChange={this.onFieldChange.bind(this, 'isCovidReport')} >
@@ -396,12 +427,13 @@ class FieldReportForm extends React.Component {
         </FormRadioGroup>
         <FormInputSelect
           label={fields.summary[status].label}
-          labelSecondary='Add Title'
-          selectLabel='Please check for, and link to an existing emergency if available'
-          inputPlaceholder='Example: Malawi - Central Region: Floods 03/2019'
-          selectPlaceholder='Click here to link to an existing hazard alert (if one exists)'
+          labelSecondary={strings.fieldReportFormTitleSecondaryLabel}
+          selectLabel={strings.fieldReportFormTitleSelectLabel}
+          inputPlaceholder={strings.fieldReportFormTitleInputPlaceholder}
+          selectPlaceholder={strings.fieldReportFormTitleSelectPlaceholder}
           type='text'
           name='summary'
+          classWrapper='form__group__fr'
           id='summary'
           maxLength={100}
           description={
@@ -424,64 +456,72 @@ class FieldReportForm extends React.Component {
             property='summary'
           />
         </FormInputSelect>
-        <div className='form__group'>
-          <div className='form__inner-header'>
-            <label className='form__label'>{fields.country[status].label}</label>
-            <p className='form__description'>{fields.country[status].desc}</p>
-          </div>
-          <div className="form__inner-body clearfix">
-            <div className="form__group__col__6">
-              <Select
-                placeholder='Select a country'
-                name='country'
-                value={this.state.data.country}
-                onChange={this.onCountryChange.bind(this)}
-                options={formData.countries}
-                disabled={!this.state.data.isCovidReport}
-              />
-
-              <FormError
-                errors={this.state.errors}
-                property='country'
-              />
+        <div className='form__group form__group__fr'>
+          <div className='form__group__wrap'>
+            <div className='form__inner-header'>
+              <label className='form__label'>{fields.country[status].label}</label>
+              <p className='form__description'>{fields.country[status].desc}</p>
             </div>
-            <div className="form__group__col__6">
-              <Select
-                placeholder='Select Provinces / Regions'
-                name='districts'
-                value={this.state.data.districts}
-                onChange={this.onFieldChange.bind(this, 'districts')}
-                options={districtChoices}
-                disabled={!this.state.data.isCovidReport}
-                multi
-              />
+            <div className="form__inner-body">
+              <div className='row flex-mid'>
+                <div className="col col-6-mid">
+                  <Select
+                    placeholder={strings.fieldReportFormCountrySelectPlaceholder}
+                    name='country'
+                    value={this.state.data.country}
+                    onChange={this.onCountryChange.bind(this)}
+                    options={formData.countries}
+                    disabled={!this.state.data.isCovidReport}
+                  />
 
-              <FormError
-                errors={this.state.errors}
-                property='districts'
-              />
+                  <FormError
+                    errors={this.state.errors}
+                    property='country'
+                  />
+                </div>
+                <div className="col col-6-mid">
+                  <Select
+                    placeholder={strings.fieldReportFormRegionSelectPlaceholder}
+                    name='districts'
+                    value={this.state.data.districts}
+                    onChange={this.onFieldChange.bind(this, 'districts')}
+                    options={districtChoices}
+                    disabled={!this.state.data.isCovidReport}
+                    multi
+                  />
+
+                  <FormError
+                    errors={this.state.errors}
+                    property='districts'
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div className='form__group'>
-          <div className='form__inner-header'>
-            <label className='form__label'>{fields['disaster-type'][status].label}</label>
-            <p className='form__description'>{fields['disaster-type'][status].desc}</p>
-          </div>
-          <div className='form__inner-body'>
-            <Select
-              placeholder='Select a disaster type'
-              name='disaster-type'
-              id='disaster-type'
-              disabled={ this.state.data.isCovidReport === 'true' || !this.state.data.isCovidReport }
-              options={formData.disasterType}
-              value={this.state.data.disasterType}
-              onChange={({value}) => this.onFieldChange('disasterType', value)}
-            />
-            <FormError
-              errors={this.state.errors}
-              property='disasterType'
-            />
+        <div className='form__group form__group__fr'>
+          <div className='form__group__wrap'>
+            <div className='form__inner-header'>
+              <div className='form__inner__headline'>
+                <label className='form__label'>{fields['disaster-type'][status].label}</label>
+                <p className='form__description'>{fields['disaster-type'][status].desc}</p>
+              </div>
+            </div>
+            <div className='form__inner-body'>
+              <Select
+                placeholder='Select a disaster type'
+                name='disaster-type'
+                id='disaster-type'
+                disabled={ this.state.data.isCovidReport === 'true' || !this.state.data.isCovidReport }
+                options={formData.disasterType}
+                value={this.state.data.disasterType}
+                onChange={({value}) => this.onFieldChange('disasterType', value)}
+              />
+              <FormError
+                errors={this.state.errors}
+                property='disasterType'
+              />
+            </div>
           </div>
         </div>
         <FormInput
@@ -489,6 +529,7 @@ class FieldReportForm extends React.Component {
           type='date'
           name='startDate'
           id='startDate'
+          classWrapper='form__group__fr'
           value={this.state.data.startDate}
           onChange={this.onFieldChange.bind(this, 'startDate')}
           description={fields.startDate[status].desc}
@@ -500,17 +541,18 @@ class FieldReportForm extends React.Component {
           />
         </FormInput>
         <FormRadioGroup
+          classWrapper='form__group__fr'
           label={fields.assistance[status].label}
           description={fields.assistance[status].desc}
           name='assistance'
           options={[
             {
-              label: 'Yes',
+              label: strings.fieldReportFormOptionYesLabel,
               value: 'true',
               disabled: !this.state.data.isCovidReport
             },
             {
-              label: 'No',
+              label: strings.fieldReportFormOptionNoLabel,
               value: 'false',
               disabled: !this.state.data.isCovidReport
             }
@@ -526,14 +568,15 @@ class FieldReportForm extends React.Component {
           label={fields['ns-assistance'][status].label}
           description={fields['ns-assistance'][status].desc}
           name='ns-assistance'
+          classWrapper='form__group__fr'
           options={[
             {
-              label: 'Yes',
+              label: strings.fieldReportFormOptionYesLabel,
               value: 'true',
               disabled: !this.state.data.isCovidReport
             },
             {
-              label: 'No',
+              label: strings.fieldReportFormOptionNoLabel,
               value: 'false',
               disabled: !this.state.data.isCovidReport
             }
@@ -550,7 +593,8 @@ class FieldReportForm extends React.Component {
   }
 
   renderStep2 () {
-    const fields = formData.fieldsStep2;
+    const { strings } = this.context;
+    const fields = formData.getFieldsStep2(strings);
     const status = this.getStatus();
     const covidTag = this.state.data.isCovidReport === 'true' ? '-COV' : '';
 
@@ -570,7 +614,7 @@ class FieldReportForm extends React.Component {
     const sitFieldsDateLabelMarker = isSitFieldsDateRequired ? ' *' : '';
 
     return (
-      <Fold title='Numeric Details (People)'>
+      <Fold title='Numeric Details (People)' foldWrapperClass='fold--main fold--transparent'>
         {
           fields.situationFields[status + covidTag].map(field => {
             return status !== 'EPI'
@@ -606,26 +650,32 @@ class FieldReportForm extends React.Component {
 
         { status === 'EPI'
           ? (
-            <div className='form__group'>
-              <div className='form__inner-header'>
-                <div className='form__inner-headline'>
-                  <label className='form__label'>Source (of figures)</label>
-                  <p className='form__description'>description</p>
+            <div className='form__group form__group__fr'>
+              <div className='form__group__wrap'>
+                <div className='form__inner-header'>
+                  <div className='form__inner-headline'>
+                    <label className='form__label'>
+                      <Translate stringId="fieldReportFormEPISourceOfFiguresLabel" />
+                    </label>
+                    <p className='form__description'>
+                      <Translate stringId="fieldReportFormEPISourceOfFiguresDescription" />
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div className='form__inner-body'>
-                <div key='epi-figures-source' className='estimation'>
-                  <Select
-                    placeholder='Source (of figures)'
-                    name='epi-figures-source'
-                    value={this.state.data.epiFiguresSource}
-                    onChange={({value}) => this.onFieldChange('epiFiguresSource', value)}
-                    options={formData.epiSources}
-                  />
-                  <FormError
-                    errors={this.state.errors}
-                    property='country'
-                  />
+                <div className='form__inner-body'>
+                  <div key='epi-figures-source' className='estimation'>
+                    <Select
+                      placeholder='Source (of figures)'
+                      name='epi-figures-source'
+                      value={this.state.data.epiFiguresSource}
+                      onChange={({value}) => this.onFieldChange('epiFiguresSource', value)}
+                      options={formData.epiSources}
+                    />
+                    <FormError
+                      errors={this.state.errors}
+                      property='country'
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -640,6 +690,7 @@ class FieldReportForm extends React.Component {
             name={fields.sitFieldsDate[status].name}
             id={fields.sitFieldsDate[status].key}
             value={this.state.data[fields.sitFieldsDate[status].key]}
+            classWrapper='form__group__fr'
             onChange={this.onFieldChange.bind(this, `${fields.sitFieldsDate[status].key}`)}
             description={fields.sitFieldsDate[status].desc}
           >
@@ -652,12 +703,13 @@ class FieldReportForm extends React.Component {
         {/* TODO: update this to be a file upload */}
         <React.Fragment>
           <FormTextarea
-            label='Source Details'
+            label={strings.fieldReportFormSourceDetailsLabel}
             name='other-sources'
             classInput='textarea--lg'
-            placeholder={status === 'EPI' ? 'Add resource url for situation report' : 'Add details for data with sources marked as Other above.'}
+            classWrapper='form__group__fr'
+            placeholder={status === 'EPI' ? strings.fieldReportFormSourceDetailsEPIPlaceholder : strings.fieldReportFormSourceDetailsPlaceholder }
             id='other-sources'
-            description='Add details for sources above (if applicable)'
+            description={strings.fieldReportFormSourceDetailsDescription}
             value={this.state.data.otherSources}
             onChange={this.onFieldChange.bind(this, 'otherSources')} >
             <FormError
@@ -671,6 +723,7 @@ class FieldReportForm extends React.Component {
             label={fields.description[status].label}
             name='description'
             classInput='textarea--lg'
+            classWrapper='form__group__fr'
             placeholder={fields.description[status].placeholder}
             id='description'
             description={fields.description[status].desc}
@@ -687,7 +740,8 @@ class FieldReportForm extends React.Component {
   }
 
   renderStep3 () {
-    const fields = formData.fieldsStep3;
+    const { strings } = this.context;
+    const fields = formData.getFieldsStep3(strings);
     const status = this.getStatus();
 
     // only for filtering the list of actions, we use the COVID type,
@@ -701,7 +755,7 @@ class FieldReportForm extends React.Component {
       if (!actions.fetching) this.props._getActions();
       return (
         <div>
-          Loading Actions Data...
+          <Translate stringId="fieldReportFormActionDataLoadingMessage" />
         </div>
       );
     }
@@ -711,8 +765,9 @@ class FieldReportForm extends React.Component {
     // Note: There's no need for validation on this step.
     // All the fields are optional, and the text fields are just strings.
     return (
-      <Fold title='Actions taken'>
-        <div className='form__group'>
+      <Fold title={strings.fieldReportFormActionTakenTitle} foldWrapperClass='fold--main fold--transparent'>
+ 
+        <div className='form__group row flex-mid'>
           {
             fields.section1fields.map(field => {
               if (!field[status]) {
@@ -729,7 +784,7 @@ class FieldReportForm extends React.Component {
                   key={field.key}
                   name={field.name}
                   id={field.name}
-                  classWrapper='form__group--kv form__group--kv-actions'
+                  classWrapper='form__group--kv form__group--kv-actions form__group__fr col col-6-mid'
                   value={this.state.data[field.key]}
                   onChange={this.onFieldChange.bind(this, field.key)} >
                   <FormError
@@ -776,21 +831,21 @@ class FieldReportForm extends React.Component {
           }
         </React.Fragment>
         <FormRadioGroup
-          label='Information Bulletin'
-          description='Indicate if an Information Bulletin was published, is planned or if no Information Bulletin will be issued for this operation/disaster/hazard.'
+          label={strings.fieldReportFormInformationBulletinLabel}
+          description={strings.fieldReportFormInformationBulletinDescription}
           name='bulletin'
-          classWrapper={this.state.data.isCovidReport === 'true' ? 'hidden' : null}
+          classWrapper={`${this.state.data.isCovidReport === 'true' ? 'hidden' : null} form__group__fr`}
           options={[
             {
-              label: 'No',
+              label: strings.fieldReportFormOptionNoLabel,
               value: '0'
             },
             {
-              label: 'Planned',
+              label: strings.fieldReportFormOptionPlannedLabel,
               value: '2'
             },
             {
-              label: 'Yes/Published',
+              label: strings.fieldReportFormOptionPublishedLabel,
               value: '3'
             }
           ]}
@@ -801,9 +856,10 @@ class FieldReportForm extends React.Component {
           label={fields.actionsOthers.label[status]}
           name='actions-others'
           id='actions-others'
+          classWrapper='form__group__fr'
           classInput='textarea--lg'
           description={fields.actionsOthers.desc[status]}
-          placeholder='Brief description of the action'
+          placeholder={strings.fieldReportFormOthersActionsPlaceholder}
           value={this.state.data.actionsOthers}
           onChange={this.onFieldChange.bind(this, 'actionsOthers')} />
       </Fold>
@@ -811,75 +867,90 @@ class FieldReportForm extends React.Component {
   }
 
   renderStep4 () {
-    const fields = formData.fieldsStep4;
+    const { strings } = this.context;
+    const fields = formData.getFieldsStep4(strings);
     const status = this.getStatus();
     const plannedResponseRows = fields.plannedResponseRows.filter(row => {
       return !!row.label[status];
     });
-    let responseTitle = status === 'EVT' ? 'Planned Response' : 'Planned Interventions';
+    let responseTitle = status === 'EVT' ? strings.fieldReportFormResponseTitleEVT : strings.fieldReportFormResponseTitle;
 
     // We hide the entire Planned International Response section for COVID reports
-    const isCovidReport = this.state.data.isCovidReport;
-    if (isCovidReport === 'true') {
+    const isCovidReport = this.state.data.isCovidReport === 'true';
+    if (isCovidReport) {
       responseTitle = '';
     }
     return (
-      <Fold title={responseTitle}>
+      <Fold title={responseTitle} foldWrapperClass='fold--main fold--transparent' showHeader={!isCovidReport}>
         { this.state.data.isCovidReport === 'true' ? null : (
           <React.Fragment>
-            <label className='form__label'>Planned International Response</label>
+            <label className='form__label'>
+              <Translate stringId="fieldReportFormResponseLabel" />
+            </label>
             <div className='form__description'>
-              <p>Indicate status of global and regional tools.</p>
+              <p>
+                <Translate stringId="fieldReportFormResponseDescription" />
+              </p>
             </div>
 
-            <React.Fragment>
-              {
-                plannedResponseRows.map(row => {
-                  return (
-                    <PlanResponseRow
-                      label={row.label[status]}
-                      key={row.key}
-                      valueFieldLabel={row.valueFieldLabel}
-                      name={row.name}
-                      options={row.options}
-                      values={this.state.data[row.key]}
-                      errors={this.state.errors}
-                      fieldKey={row.key}
-                      onChange={this.onFieldChange.bind(this, row.key)}
-                    />
-                  );
-                })
-              }
+            <div className='plan-response-row-wrap'>
+              <React.Fragment>
+                {
+                  plannedResponseRows.map(row => {
+                    return (
+                      <PlanResponseRow
+                        label={row.label[status]}
+                        key={row.key}
+                        valueFieldLabel={row.valueFieldLabel}
+                        name={row.name}
+                        options={row.options}
+                        values={this.state.data[row.key]}
+                        errors={this.state.errors}
+                        fieldKey={row.key}
+                        onChange={this.onFieldChange.bind(this, row.key)}
+                      />
+                    );
+                  })
+                }
 
-            </React.Fragment>
+              </React.Fragment>
+            </div>
           </React.Fragment>
         )}
 
-        <h2 className='fold__title fold__title--contact'>Contacts</h2>
+        <div className='fold__header'>
+          <div className='fold__header__block'>
+            <h2 className='fold__title fold__title--contact'>
+              <Translate stringId="fieldReportFormContactsTitle" />
+            </h2>
+          </div>
+        </div>
 
         <React.Fragment>
           {
             fields.contactRows.map(row => {
               return (
-                <ContactRow
-                  label={row.label}
-                  description={row.desc[status]}
-                  name={row.name}
-                  key={row.key}
-                  values={this.state.data[row.key]}
-                  fieldKey={row.key}
-                  errors={this.state.errors}
-                  onChange={this.onFieldChange.bind(this, row.key)}
-                />
+                <div className='contact-row-wrap'>
+                  <ContactRow
+                    label={row.label}
+                    description={row.desc[status]}
+                    name={row.name}
+                    key={row.key}
+                    values={this.state.data[row.key]}
+                    fieldKey={row.key}
+                    errors={this.state.errors}
+                    onChange={this.onFieldChange.bind(this, row.key)}
+                  />
+                </div>
               );
             })
           }
         </React.Fragment>
 
         <FormRadioGroup
-          label='This field report is visible to'
+          label={strings.fieldReportFormVisibilityLabel}
           name='visibility'
-          options={formData.visibility}
+          options={formData.getVisibility(strings)}
           selectedOption={this.state.data.visibility}
           onChange={this.onFieldChange.bind(this, 'visibility')}
           classWrapper='form__group--visible-field-group'>
@@ -899,9 +970,18 @@ class FieldReportForm extends React.Component {
     }
 
     return (
-      <div className='validation-result'>
-        <h3>Page {this.state.step} of 4 incomplete.</h3>
-        <p>To continue please fix:</p>
+      <div className='validation-result container-lg'>
+        <h3>
+          <Translate
+            stringId='fieldReportIncomplete'
+            params={{
+              step: this.state.step,
+            }}
+          />
+        </h3>
+        <p>
+          <Translate stringId='fieldReportFix'/>
+        </p>
         <ul>
           {errors.map(o => <li key={o.dataPath}>{dataPathToDisplay(o.dataPath, o.keyword)}</li>)}
         </ul>
@@ -910,21 +990,24 @@ class FieldReportForm extends React.Component {
   }
 
   render () {
-    const submitTitle = this.state.step === 4 ? 'Submit' : 'Continue';
+    const { strings } = this.context;
+    const submitTitle = this.state.step === 4 ? strings.fieldReportSubmit : strings.fieldReportContinue;
     return (
       <App className='page--frep-form'>
         <Helmet>
-          <title>IFRC Go - New Field Report</title>
+          <title>{ strings.fieldReportFormPageTitle }</title>
         </Helmet>
         <BreadCrumb crumbs={[
-          {link: this.props.location.pathname, name: 'New Field Report'},
-          {link: '/', name: 'Home'}
+          {link: this.props.location.pathname, name: strings.breadCrumbNewFieldReport},
+          {link: '/', name: strings.breadCrumbHome}
         ]} />
         <section className='inpage'>
           <header className='inpage__header'>
             <div className='inner'>
               <div className='iSave and Continuenpage__headline'>
-                <h1 className='inpage__title'>Create Field Report</h1>
+                <h1 className='inpage__title'>
+                  <Translate stringId='fieldReportCreate'/>
+                </h1>
                 {this.renderStepper()}
               </div>
             </div>
@@ -936,8 +1019,8 @@ class FieldReportForm extends React.Component {
                 {this.renderErrorSummary()}
 
                 <div className='form__actions text-center'>
-                  <button type='button' className={c('button button--secondary-bounded', {disabled: this.state.step <= 1})} title='Go back to previous step' onClick={this.onStepBackClick}>Back</button>
-                  <button type='submit' className='button button--secondary-filled' title={submitTitle}>{submitTitle}</button>
+                  <button type='button' className={c('button button--secondary-bounded button--small', {disabled: this.state.step <= 1})} title={strings.fieldReportGoBack} onClick={this.onStepBackClick}><Translate stringId='fieldReportBack'/></button>
+                  <button type='submit' className='button button--secondary-filled button--small' title={submitTitle}>{submitTitle}</button>
                 </div>
               </form>
             </div>
@@ -986,5 +1069,5 @@ const dispatcher = (dispatch) => ({
   _getDistrictsForCountry: (...args) => dispatch(getDistrictsForCountry(...args)),
   _getActions: (...args) => dispatch(getActions(...args))
 });
-
+FieldReportForm.contextType = LanguageContext;
 export default connect(selector, dispatcher)(FieldReportForm);

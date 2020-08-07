@@ -19,7 +19,7 @@
   display: block;
   width: 100%;
   padding: 0.25rem 0.5rem;
-  font-size: 1rem;
+  font-size: $base-font-size;
   line-height: 1.5rem;
   color: $secondary-color;
   background-color: #fff;
@@ -70,25 +70,89 @@ select.form__control {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  padding-right: 2rem;
+  padding-inline-end: 2rem;
   cursor: pointer;
   background-image: url('data:image/svg+xml;utf8,' + urlencode('<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="512px" height="512px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><polygon fill="#{$secondary-color}" points="256,384 73.373,201.373 118.628,156.118 256,293.49 393.373,156.118 438.627,201.373"/></svg>'));
   background-position: calc(100% - 0.5rem) center;
   background-repeat: no-repeat;
   background-size: 1rem auto;
 
+  [dir='rtl'] & {
+    background-position: calc(0% + 0.5rem) center;
+  }
+
   /* Size modifiers */
 
   &.form__control--small,
   &.form__control--medium {
-    padding-right: 2rem;
+    padding-inline-end: 2rem;
     background-position: calc(100% - 0.5rem) center;
+  
+    [dir='rtl'] & {
+      background-position: calc(0% + 0.5rem) center;
+    }
   }
 
   &.form__control--large,
   &.form__control--xlarge {
-    padding-right: 2.25rem;
+    padding-inline-end: 2.25rem;
     background-position: calc(100% - 0.75rem) center;
+
+    [dir='rtl'] & {
+      background-position: calc(0% + 0.75rem) center;
+    }
+
+  }
+}
+
+/* Form Control: Filters */
+.form__control--filter {
+  color: $grey-silver;
+  height: 30px;
+  padding-top: 0.18rem;
+
+  &.form__control--brand.form__control {
+    background-image: url('/assets/icons/collecticons/triangle-down-grey.svg');
+    background-size: 8px;
+  }
+  
+  &.form__control--medium {
+    padding-top: 0.18rem;
+    height: 30px;
+  }
+
+  .Select-multi-value-wrapper {
+    padding: $spacing-half 0;
+  }
+
+  .Select-control {
+    height: 30px;
+    border: none;
+    border-bottom: 1px solid;
+    border-bottom-color: $grey-mist;
+  }
+
+  .is-open {
+    .Select-control {
+      border-bottom-color: $primary-color;
+    }
+  }
+
+  .Select-placeholder {
+    color: $grey-silver;
+  }
+
+  &.form__control--brand {
+    border-bottom-color: $grey-mist;
+  }
+  
+  &:focus, &.active, &:active, &:hover {
+    box-shadow: none;
+  }
+
+  &.active {
+    color: $base-font-color;
+    border-bottom-color: $primary-color;
   }
 }
 
@@ -101,7 +165,7 @@ select.form__control {
 
   &.form__control {
     background-image: url('data:image/svg+xml;utf8,' + urlencode('<svg width="8" height="6" viewBox="0 0 8 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 6L7.4641 0H0.535898L4 6Z" fill="black"/></svg>'));
-    background-size: auto;
+    background-size: 8px;
     background-repeat: no-repeat;
   }
 }
@@ -164,8 +228,6 @@ textarea.form__control {
 
 .form__control--medium {
   padding: 0.25rem 0.5rem;
-  font-size: 1rem;
-  line-height: 1.5rem;
   height: 36px;
 }
 
@@ -195,7 +257,7 @@ textarea.form__control {
   @extend .form__control;
   position: relative;
   cursor: pointer;
-  padding-right: 2rem;
+  padding-inline-end: 2rem;
 
   &::before {
     @extend %collecticon-folder;
@@ -245,7 +307,7 @@ input, select, textarea {
 
 .form__file--small,
 .form__file--medium {
-  padding-right: 2rem;
+  padding-inline-end: 2rem;
 
   &::before {
     right: 0.5rem;
@@ -254,7 +316,7 @@ input, select, textarea {
 
 .form__file--large,
 .form__file--xlarge {
-  padding-right: 2.25rem;
+  padding-inline-end: 2.25rem;
 
   &::before {
     right: 0.75rem;
@@ -285,7 +347,7 @@ input, select, textarea {
 
 .form__group {
   @extend .clearfix;
-  margin-bottom: $global-spacing * 4;
+  margin-bottom: $spacing-3;
 
   > *:last-child {
     margin-bottom: 0;
@@ -311,7 +373,7 @@ input, select, textarea {
 .form__input-addon + .form__control:not(select),
 .form__control:not(select) + .form__input-addon,
 select.form__control + .form__control:not(select)  {
-  margin-left: -$base-border-width;
+  margin-inline-start: -$base-border-width;
 }
 
 .form__input-addon,
@@ -495,7 +557,7 @@ select.form__control:focus {
   }
 
   > *:last-child {
-    margin-right: -$global-spacing / 4;
+    margin-inline-end: -$global-spacing / 4;
   }
 }
 
@@ -509,9 +571,7 @@ label[for] {
 
 .form__label {
   display: block;
-  font-weight: $base-font-bold;
-  font-size: 1rem;
-  line-height: 1.5;
+  font-weight: $base-font-semi-bold;
   margin: 0 0 ($global-spacing/2) 0;
 
   &:only-of-type {
@@ -540,8 +600,6 @@ label[for] {
 .form__option {
   display: flex;
   align-items: flex-start;
-  font-size: 1rem;
-  line-height: 1.5;
   cursor: pointer;
   margin-top: $global-spacing / 2;
 
@@ -552,7 +610,12 @@ label[for] {
 }
 
 .form__option__text {
-  padding: 0 0 0 ($global-spacing / 2);
+  padding-inline-start: $global-spacing / 2;
+
+  [dir='rtl'] {
+    padding-inline-end: $global-spacing / 2;
+    padding-inline-start: 0;
+  }
 
   &:not(:last-child) {
     padding: 0 ($global-spacing / 2) 0 0;
@@ -561,9 +624,8 @@ label[for] {
   em {
     display: block;
     font-style: normal;
-    font-size: 0.875rem;
-    line-height: 1rem;
-    color: rgba($base-font-color, 0.48);
+    font-weight: $base-font-regular;
+    font-size: $font-size-xs;
   }
 }
 
@@ -577,11 +639,9 @@ label[for] {
 
 .form__option--inline {
   display: inline-flex;
+  margin-inline-start: $grid-gutter-lg;
 }
 
-.form__option--inline + .form__option--inline {
-  margin-left: $global-spacing;
-}
 
 /* Form option text-hidden modifier */
 
@@ -606,8 +666,8 @@ label[for] {
     margin: 0.125rem 0;
     height: 1.25rem;
     width: 1.25rem;
-    /*box-shadow: inset 0 0 0 $base-border-width rgba($base-color, 0.12);*/
-    background: $secondary-color-light;
+    background-color: #fff;
+    border: 2px solid $base-border-color;
 
     &::before {
       position: absolute;
@@ -619,17 +679,13 @@ label[for] {
     }
   }
 
-  &:hover .form__option__ui {
-    box-shadow: inset 0 0 0 $base-border-width rgba($base-color, 0.24);
-  }
-
   input:focus  ~ .form__option__ui,
   &:active .form__option__ui {
-    box-shadow: inset 0 0 0 ($base-border-width * 2) rgba($base-color, 0.32);
+    border-color: $primary-color;
   }
 
   input:checked ~ .form__option__ui {
-    box-shadow: inset 0 0 0 ($base-border-width * 2) $secondary-color;
+    border-color: $primary-color;
 
     &::before {
       opacity: 1;
@@ -647,7 +703,7 @@ label[for] {
       content: "";
       height: 0.5rem;
       width: 0.5rem;
-      background: $secondary-color;
+      background: $primary-color;
     }
   }
 }
@@ -655,12 +711,13 @@ label[for] {
 .form__option--custom-checkbox {
   .form__option__ui {
     &, &:before {
-      border-radius: $base-border-radius;
     }
 
     &::before {
-      @extend %collecticon-sm-tick;
-      color: $secondary-color;
+      content: '';
+      width: 0.5rem;
+      height: 0.5rem;
+      background-color: $primary-color;
     }
   }
 }
@@ -831,7 +888,7 @@ label[for] {
   }
 
   > *:first-child {
-    margin-left: -$global-spacing;
+    margin-inline-start: -$global-spacing;
   }
 }
 
@@ -900,8 +957,7 @@ label[for] {
 
 .form__help {
   text-align: right;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
+  font-size: $font-size-sm;
   color: rgba($base-font-color, 0.48);
   margin-top: $global-spacing / 2;
 
@@ -911,9 +967,7 @@ label[for] {
 }
 
 .form__description {
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  color: rgba($base-font-color, 0.48);
+  font-size: $font-size-xs;
   margin-bottom: $global-spacing;
   p {
     width: 100%;
@@ -954,14 +1008,14 @@ label[for] {
   }
   
   ul {
-    margin-left: 0;
+    margin-inline-start: 0;
   }
 
   li {
     display: inline-block;
     &:after {
       content: ",";
-      margin-right: $global-spacing/2;
+      margin-inline-end: $global-spacing/2;
     };
     &:last-child {
       &:after {

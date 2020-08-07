@@ -13,51 +13,65 @@
   }
 }
 
-.chart {
-  figcaption {
-    margin-bottom: $global-spacing/2;
-  }
-}
-
-.emergencies__container {
-  @include column(12/12);
-}
-
 .inpage__headline-charts, .inpage__headline-charts--two-col, .inpage__body-charts {
-  h2 {
-    font-size: 1rem;
-    line-height: 1.25rem;
-    font-family: $base-font-family;
-    font-weight: $base-font-bold;
-  }
   .emergencies__list {
     margin: 0;
     list-style: none;
   }
 
  .emergencies__item {
-    display: flex;
+    @include flex;
+    @include row;
     align-items: center;
     cursor: pointer;
     font-size: 0.875rem;
-    line-height: 1rem;
-    height: 2rem;
+    line-height: 2.5rem;
+
     &:last-child {
       margin-bottom: 0;
     }
     .key {
-      min-width: 6rem;
-      width: 45%;
-      margin-right: $global-spacing;
+      color: $grey-soot;
+      font-size: $font-size-xs;
+      font-weight: $base-font-medium;
+      position: relative;
+      display: block;
+      text-align: inline-end;
+      @include col(33.33%);
+
+      &:after {
+        content: '';
+        width: 1px;
+        height: 100%;
+        background-color: $base-border-color;
+        position: absolute;
+        right: 0;
+        top: 0;
+        display: block;
+
+        [dir='rtl'] & {
+          left: 0;
+          right: auto;
+        }
+      }
     }
     .value {
+      @include col(66.66%);
       flex-grow: 1;
+      display: flex;
+      align-items: baseline;
       .progress-bar {
         background-color: transparent;
+        margin-inline-end: $spacing;
       }
       .progress-bar__value {
         background-color: $primary-color;
+        height: 12px;
       }
+    }
+
+    .key__value__emergency {
+      min-width: 20px;
     }
   }
 }
@@ -69,5 +83,5 @@
  }
 
 .recharts-legend-item-text {
-  font-size: $font-size-sm;
+  font-size: $font-size-xs;
 }

@@ -2,27 +2,35 @@
    Global: Page Prime Nav
    ========================================================================== */
 
+// Mixin for consistent style for dropdown items in header navigation
+@mixin drop-menu-header-dropdown {
+  padding: $global-spacing/2;
+  font-weight: $base-font-regular;
+  font-size: $font-size-sm;
+
+  &:hover, &:focus {
+    background-color: $grey-titanium;
+
+    a {
+      opacity: 1;
+    }
+  }
+}
+
+
 .page__prime-nav {
   flex: 1;
   display: flex;
   position: relative;
-  float: left;
-
-/*  &::before {
-    content: '';
-    position: absolute;
-    top: -$global-spacing;
-    left: 0;
-    height: 1px;
-    width: 200vw;
-    margin-left: -50vw;
-    background: tint($base-color, 92%);
-  }*/
 
   button, a {
     font-family: $base-font-family;
     font-weight: $base-font-regular;
     margin-bottom: 0;
+  }
+
+  @media (min-width: 1200px) {
+    width: 58%;
   }
 }
 
@@ -31,26 +39,47 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding-left: 1rem;
   position: relative;
+
+  .tc-dropdown-menu {
+    &:focus {
+      outline: 0;
+    }
+  }
 }
 
 .page__meta-nav-elements {
   font-size: 0.75rem;
   line-height: 1.25rem;
-  border-right: 1px solid #c9c3c1;
-  padding-right: 1rem;
-  padding-left: 1rem;
+  border-inline-end: 0.5px solid $grey-titanium;
+  padding: 0 $spacing;
   @include media(small-down) {
-    padding-left: 0;
+    padding-inline-start: 0;
   }
+}
+
+.page__meta-nav-elements--lang {
+  padding-inline-start: 0;    
 }
 
 .page__meta-nav-elements-borderless {
   font-size: 0.75rem;
   line-height: 1.25rem;
-  padding-right: 1rem;
-  padding-left: 1rem;
+  padding-inline-end: 1rem;
+  padding-inline-start: 1rem;
+}
+
+.drop__title--page__meta-nav {
+  margin-inline-start: -.5rem !important;
+  margin-bottom: $spacing-2 !important;
+}
+
+.drop__menu--page__meta-nav {
+  padding: 0;
+
+  .drop__menu-item {
+    @include drop-menu-header-dropdown;
+  }
 }
 
 /* Global menu */
@@ -76,11 +105,11 @@
     margin: 0 $global-spacing;
 
     &:first-child {
-      margin-left: 0;
+      margin-inline-start: 0;
     }
 
     &:last-child {
-      margin-right: 0;
+      margin-inline-end: 0;
     }
   }
 }
@@ -88,11 +117,32 @@
 /* Site Search */
 
 .nav-global-search {
-  min-width: 20rem;
+  width: 100%;
+
+  .Select-placeholder, .Select-input {
+    padding-left: $spacing-2;
+
+    [dir='rtl'] & {
+      padding-right: $spacing-2;
+      padding-left: 0;
+    }
+  }
+
+  .Select-control, .Select-input {
+    background-image: url('/assets/icons/collecticons/magnifier-left-grey.svg');
+    background-repeat: no-repeat;
+    background-size: 14px;
+    background-position: left 44%;
+
+    [dir='rtl'] & {
+      background-position: right 44%;
+    }
+  }
 
   .Select-control {
-    border-radius: $input-rounded-radius;
-    border-color: $grey-cement;
+    border-radius: 0;
+    border: none;
+    border-bottom: 1px solid $grey-cloud;
   }
 
   .Select-arrow {
@@ -100,11 +150,16 @@
   }
 
   .Select-menu, .Select-menu-outer {
-    border-radius: 0 0 $input-rounded-radius/1.5 $input-rounded-radius/1.5;
+    border-radius: 0;
   }
 
   .Select.is-open > .Select-control {
     border-radius: $input-rounded-radius/1.5 $input-rounded-radius/1.5 0 0;
+    border-radius: 0;
+  }
+
+  @media (min-width: 1200px) {
+    width: 42%;
   }
 }
 
@@ -121,7 +176,7 @@
 
   .form__control {
     border-radius: $full-border-radius;
-    padding-left: 3rem;
+    padding-inline-start: 3rem;
     font-size: 0.875rem;
     color: $base-color;
     &:hover {
@@ -144,7 +199,7 @@
   top: 0;
   left: 0;
   background-color: transparent;
-  padding-left: 1rem;
+  padding-inline-start: 1rem;
 
   &::before {
     @extend %collecticon-magnifier-right;
@@ -184,7 +239,6 @@
     padding-top: $global-spacing/2;
   }
   .page__headline {
-    width: 100%;
     img {
       margin-top: $global-spacing/2;
       height: 2rem;
@@ -192,16 +246,15 @@
     }
   }
   .page__title {
-    float: right;
+    margin-left: auto;
   }
   .page__menu {
-    float: left;
     a {
       position: relative;
       font-size: 1.5rem;
       &:before {
         position: absolute;
-        top: $global-spacing;
+        top: $spacing;
         left: 0;
         @extend %collecticon-hamburger-menu;
       }
@@ -230,7 +283,7 @@
       border-bottom: solid 1px rgba($base-color, 0.2);
     }
     > .inner {
-      @extend .row, .row--centered;
+    
     }
     &--open {
       left: 0;
@@ -241,7 +294,7 @@
     margin-top: $global-spacing;
     li {
       font-weight: $base-font-light;
-      margin-left: 0.5rem;
+      margin-inline-start: 0.5rem;
       font-size: 0.875rem;
     }
   }
@@ -253,7 +306,6 @@
   }
 }
 
-
 // Dropdown for Create Report
 
 .drop__menu__field__report.drop__menu {
@@ -264,17 +316,7 @@
   }
 
   .drop__menu-item {
-    padding: $global-spacing/2;
-    font-weight: $base-font-medium;
-    font-size: $font-size-xs;
-
-    &:hover, &:focus {
-      background-color: $grey-titanium;
-
-      a {
-        opacity: 1;
-      }
-    }
+    @include drop-menu-header-dropdown;
   }  
 } 
 
@@ -284,6 +326,12 @@
   padding-inline-start: ($global-spacing * 2);
   padding-inline-end: ($global-spacing * 2);
   position: relative;
+  top: ($global-spacing * 1.3);
+
+  @include media(medium) {
+    padding-inline-start: ($global-spacing * 2.7);
+    padding-inline-end: ($global-spacing * 2.7);
+  }
 
   .drop__menu {
     padding: 0;
@@ -302,5 +350,9 @@
     &::after {
       color: #fff;
     }
+  }
+
+  @include media(medium-up) {
+    top: auto;
   }
 }

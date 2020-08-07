@@ -1,38 +1,45 @@
-.card_box_container {
-  //margin-top: 1rem;
-}
-
 .card_box_container--op {
-  display: flex;
+  @include flex;
 }
 
 .card_box {
-  //float: left;
-  //font-size: 1.5rem;
-  text-align: left;
-  //padding-left: 5px;
-  //@include media(xsmall-only) {
-  padding: ($global-spacing * 0.8);
   width: 100%;
-  //}
-  // @include media(small-up) {
-  //   width: 33%;
-  // }
+}
+
+.card_box, .card_box_footer {
+  padding: $spacing ($spacing * 1.5);
+
+  @media(min-width: $media-desktop) {
+    padding: $spacing $spacing-2;
+  }
+}
+
+.card_box_title {
+  padding-bottom: $spacing-half;
+}
+
+.card__title {
+  min-height: 50px;
+  line-height: 1.2;
 }
 
 .card_box_no {
-  color: #011e41;
-  font-weight: $base-font-medium;
-  font-size: 172%;
+  color: $grey-soot;
+  font-weight: $base-font-semi-bold;
+  font-size: 1.2rem;
+  line-height: 1.2;
+
+  @include media(medium) {
+    font-size: 1rem;
+  }
+
+  @media(min-width: $media-desktop) {
+    font-size: 1.5rem;
+  }
 }
 
 .card_box_left {
-  //@include media(xsmall-only) {
-  border-bottom: 1px solid $base-border-color;
-  //}
-  // @include media(small-up) {
-  //   border-right: 1px solid base-border-color;
-  // }
+  border-bottom: 1px solid $base-border-color--light;
 }
 
 .ifrc_supported_badge {
@@ -54,7 +61,6 @@
 .card_box_full {
   width: 100%;
   text-align: left;
-  padding: $global-spacing $global-spacing ($global-spacing / 2) $global-spacing;
   justify-content: space-between;
   align-items: baseline;
 
@@ -64,7 +70,7 @@
 
   .progress-bar__key {
     display: inline-block;
-    padding-left: 5px;
+    padding-inline-start: 5px;
     text-align: right;
     width: 20%;
     float: right;
@@ -72,7 +78,11 @@
 }
 
 .card_box_footer {
-  margin-bottom: ($global-spacing / 2);
+  margin-top: $spacing-half;
+
+  .progress-bar {
+    height: 8px;
+  }
 }
 
 .more_button {
@@ -80,22 +90,27 @@
 }
 
 .last_updated {
-  font-size: $font-size-xs;
-  margin-bottom: 10px;
-  color: rgba(0, 0, 0, 0.6);
-  font-style: italic;
+  color: $grey-platinum;
+  font-weight: $base-font-light;
+  font-size: $font-size-xxs;
 }
 
 .card_box--op {
-  @include span(6/12, $offset: 0, $cycle: 0);
+  width: 50%;
 
   &:first-of-type {
-    border-right: 1px solid $base-border-color;
+    border-inline-end: 1px solid $base-border-color--light;
+  }
+}
+
+.card_box--op, .card_box_footer {
+  .heading-tiny {
+    font-size: $font-size-sm;
   }
 }
 
 .card_box_fc {
-  color: $secondary-color;
-  text-align: right;
+  color: $black;
+  text-align: inline-end;
   font-weight: $base-font-medium;
 }

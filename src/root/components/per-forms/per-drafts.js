@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 
+import Translate from '#components/Translate';
+
 const PerDraftDocuments = ({ perForm, deletePerDraft }) => {
   const draftDocuments = [];
   if (perForm.getPerDraftDocument.fetched) {
@@ -23,16 +25,16 @@ const PerDraftDocuments = ({ perForm, deletePerDraft }) => {
             </div>
             <div className='list__each__button'>
               <Link
-                className='button button--small button--secondary-bounded'
+                className='button button--xsmall button--secondary-bounded'
                 to={draftDocument.code === 'overview' ? '/per-forms/overview/' + draftDocument.country.id : '/edit-per-forms/' + draftDocument.code + '/' + draftDocument.user.username + '/' + draftDocument.country.id}>
-                  Edit
+                  <Translate stringId='perDraftEdit'/>
               </Link>
 
               <button
-                className='button button--small button--primary-bounded'
+                className='button button--xsmall button--primary-bounded'
                 onClick={() => deletePerDraft({id: draftDocument.id})}
                 style={{ marginLeft: 10 }}>
-                  Delete
+                <Translate stringId='perDraftDelete'/>
               </button>
             </div>
           </div>);
@@ -42,7 +44,7 @@ const PerDraftDocuments = ({ perForm, deletePerDraft }) => {
   }
   return (<React.Fragment>
     <br /><br />
-    <h2 className='fold__title margin-reset'>Active drafts</h2>
+    <h2 className='fold__title margin-reset'><Translate stringId='perDraftHeading'/></h2>
     <hr />
     {draftDocuments}
   </React.Fragment>);

@@ -9,6 +9,9 @@ import BlockLoading from './block-loading';
 import { commaSeparatedLargeNumber } from '#utils/format';
 import { getAggregateAppeals } from '#actions';
 
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
+
 class TimelineCharts extends React.Component {
   componentDidMount () {
     const lastYear = DateTime.local().minus({months: 11}).startOf('day').toISODate();
@@ -24,6 +27,7 @@ class TimelineCharts extends React.Component {
     let tickFormatter;
     let contentDateFormatter;
 
+    const { strings } = this.context;
     const zone = 'utc';
     switch (unit) {
       case 'month':
@@ -45,19 +49,19 @@ class TimelineCharts extends React.Component {
           <div className='chart-tooltip__contents'>
             <p>{contentDateFormatter(item.timespan)}</p>
             <dl className='tooltip__contents-col appeals-content'>
-              <dd>Appeals</dd>
+              <dd>{strings.timeLineChartAppeal}</dd>
               <dt>{item.appeals.count}</dt>
-              <dd>Amount Funded Appeals</dd>
+              <dd>{strings.timeLineChartAmount}</dd>
               <dt>{commaSeparatedLargeNumber(item.appeals.amount_funded)}</dt>
-              <dd>People Targeted</dd>
+              <dd>{strings.timeLineChartPeopleTargeted}</dd>
               <dt>{commaSeparatedLargeNumber(item.appeals.beneficiaries)}</dt>
             </dl>
             <dl className='tooltip__contents-col drefs-content'>
-              <dd>DREFs</dd>
+              <dd>{strings.timeLineChartDREFs}</dd>
               <dt>{item.drefs.count}</dt>
-              <dd>Amount Funded DREFs</dd>
+              <dd>{strings.timeLineChartDrefsAmount}</dd>
               <dt>{commaSeparatedLargeNumber(item.drefs.amount_funded)}</dt>
-              <dd>People Targeted</dd>
+              <dd>{strings.timeLineChartDrefsPeopleTargeted}</dd>
               <dt>{commaSeparatedLargeNumber(item.drefs.beneficiaries)}</dt>
             </dl>
           </div>
@@ -65,13 +69,14 @@ class TimelineCharts extends React.Component {
       );
     };
 
+
     return (
       <ResponsiveContainer>
         <LineChart data={data}>
           <XAxis tickFormatter={tickFormatter} dataKey='timespan' axisLine={false} padding={{ left: 16, right: 16 }} />
           <YAxis axisLine={false} tickLine={false} width={32} padding={{ bottom: 16 }} />
-          <Line name='Appeals' type='monotone' dataKey='appeals.count' stroke='#f5333f' />
-          <Line name='DREFs' type='monotone' dataKey='drefs.count' stroke='#F39C12' />
+          <Line name={strings.timeLineChartAppeal} type='monotone' dataKey='appeals.count' stroke='#f5333f' />
+          <Line name={strings.timeLineChartDREFs} type='monotone' dataKey='drefs.count' stroke='#F39C12' />
           <Tooltip content={contentFormatter}/>
           <Legend verticalAlign='bottom' iconType='circle' iconSize={10} />
         </LineChart>
@@ -98,7 +103,9 @@ class TimelineCharts extends React.Component {
 
     if (errorDrefs || errorAppeals) {
       return (
-        <p>Operations data not available.</p>
+        <p>
+          <Translate stringId='timeLineChartError'/>
+        </p>
       );
     }
 
@@ -117,12 +124,16 @@ class TimelineCharts extends React.Component {
     });
 
     return (
-      <figure className='chart'>
-        <figcaption>DREFS and Appeals Over the Last Year</figcaption>
-        <div className='chart__container'>
-          {this.renderChart(data, 'month')}
-        </div>
-      </figure>
+      <div className='col col-6-sm'>
+        <figure className='chart box__content'>
+          <figcaption className='fold__title'>
+            <Translate stringId='timeLineChartByMonthTitle'/>
+          </figcaption>
+          <div className='chart__container margin-t'>
+            {this.renderChart(data, 'month')}
+          </div>
+        </figure>
+      </div>
     );
   }
 
@@ -145,7 +156,9 @@ class TimelineCharts extends React.Component {
 
     if (errorDrefs || errorAppeals) {
       return (
-        <p>Annual statistics not available.</p>
+        <p>
+          <Translate stringId='timeLineChartByYearError'/>
+        </p>
       );
     }
 
@@ -161,12 +174,16 @@ class TimelineCharts extends React.Component {
     });
 
     return (
-      <figure className='chart'>
-        <figcaption>DREFS and Appeals by Year</figcaption>
-        <div className='chart__container'>
-          {this.renderChart(data, 'year')}
-        </div>
-      </figure>
+      <div className='col col-6-sm'>
+        <figure className='chart box__content'>
+          <figcaption className='fold__title'>
+            <Translate stringId='timeLineChartByYearTitle'/>
+          </figcaption>
+          <div className='chart__container margin-t'>
+            {this.renderChart(data, 'year')}
+          </div>
+        </figure>
+      </div>
     );
   }
 
@@ -178,13 +195,15 @@ class TimelineCharts extends React.Component {
 
   renderError () {
     if (this.props.aggregate.error) {
-      return <p>Aggregate data not available.</p>;
+      return <p>
+               <Translate stringId='timeLineChartAggregateError'/>
+             </p>;
     }
   }
 
   renderContent () {
     return (
-      <div>
+      <div className='row flex-sm'>
         {this.renderByMonth()}
         {this.renderByYear()}
       </div>
@@ -193,13 +212,13 @@ class TimelineCharts extends React.Component {
 
   render () {
     return (
-      <div className='inner'>
-        <div className='stats-chart'>
-          <h1 className='visually-hidden'>DREFS and Appeals over time</h1>
-          {this.renderLoading()}
-          {this.renderError()}
-          {this.renderContent()}
-        </div>
+      <div className='stats-chart margin-t margin-3-b'>
+        <h1 className='visually-hidden'>
+          <Translate stringId='timeLineChartHeading'/>
+        </h1>
+        {this.renderLoading()}
+        {this.renderError()}
+        {this.renderContent()}
       </div>
     );
   }
@@ -222,5 +241,5 @@ const selector = (state) => ({
 const dispatcher = (dispatch) => ({
   _getAggregateAppeals: (...args) => dispatch(getAggregateAppeals(...args))
 });
-
+TimelineCharts.contextType = LanguageContext;
 export default connect(selector, dispatcher)(TimelineCharts);

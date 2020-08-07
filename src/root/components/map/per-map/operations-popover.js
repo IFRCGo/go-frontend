@@ -6,32 +6,39 @@ import { getPerProcessType } from '#utils/get-per-process-type';
 // import { DateTime } from 'luxon';
 // import { get } from '#utils/utils';
 import React from 'react';
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
 
 class OperationsPopover extends React.Component {
   render () {
     const { pageId, navigate, title, onCloseClick, deployments, phase, overviewData } = this.props;
     const filteredOverviewData = overviewData.data.results.filter(overview => overview.country.id === parseInt(pageId));
+    const { strings } = this.context;
     return (
       <article className='popover'>
         <div className='popover__contents__preparedness'>
           <header className='popover__header'>
             <div className='popover__headline'>
-              {deployments ? title : <a className='link--primary' onClick={e => { e.preventDefault(); navigate(`/countries/${pageId}#per`); }}>{title}</a>}
+              {deployments ? title : <a className='link-underline' onClick={e => { e.preventDefault(); navigate(`/countries/${pageId}#per`); }}>{title}</a>}
             </div>
             <div className='popover__actions actions'>
               <ul className='actions__menu'>
                 <li>
-                  <button type='button' className='actions__menu-item poa-xmark' title='Close popover' onClick={onCloseClick}><span>Dismiss</span></button>
+                  <button type='button' className='actions__menu-item poa-xmark' title={strings.operationsPopoverClose} onClick={onCloseClick}>
+                    <span>
+                      <Translate stringId='operationsPopoverDismiss'/>
+                    </span>
+                  </button>
                 </li>
               </ul>
             </div>
           </header>
           <div className='popover__body'>
             <div style={{width: '50%', float: 'left', fontWeight: 'bold', marginBottom: '10px'}}>
-              Current PER process phase
+              <Translate stringId='operationsPopoverCurrentPerPhase'/>
             </div>
             <div style={{width: '50%', float: 'left', fontWeight: 'bold', marginBottom: '10px'}}>
-              Current PER process type
+              <Translate stringId='operationsPopoverCurrentPerPhase'/>
             </div>
             <div style={{width: '50%', float: 'left'}}>
               <div style={{marginBottom: '5px', float: 'left', width: '100%'}}>
@@ -40,7 +47,7 @@ class OperationsPopover extends React.Component {
                   &nbsp;
                 </div>
                 <div style={{width: '80%', float: 'left'}}>
-                  Orientation
+                  <Translate stringId='operationsPopoverOrientation'/>
                 </div>
               </div>
 
@@ -50,7 +57,7 @@ class OperationsPopover extends React.Component {
                   &nbsp;
                 </div>
                 <div style={{width: '80%', float: 'left'}}>
-                  Assessment
+                  <Translate stringId='operationsPopoverAssessment'/>
                 </div>
               </div>
 
@@ -60,7 +67,7 @@ class OperationsPopover extends React.Component {
                   &nbsp;
                 </div>
                 <div style={{width: '80%', float: 'left'}}>
-                  Prioritization
+                  <Translate stringId='operationsPopoverPrioritization'/>
                 </div>
               </div>
 
@@ -70,7 +77,7 @@ class OperationsPopover extends React.Component {
                   &nbsp;
                 </div>
                 <div style={{width: '80%', float: 'left'}}>
-                  Plan of action
+                  <Translate stringId='operationsPopoverPlan'/>
                 </div>
               </div>
 
@@ -80,21 +87,30 @@ class OperationsPopover extends React.Component {
                   &nbsp;
                 </div>
                 <div style={{width: '80%', float: 'left'}}>
-                  Action &amp; Accountability
+                  <Translate stringId='operationsPopoverAction'/>
                 </div>
               </div>
             </div>
             <div style={{width: '50%', float: 'left'}}>
               {
                 !overviewData.fetched || filteredOverviewData.length === 0
-                  ? (<React.Fragment>
-                    <div style={{marginBottom: '10px'}}>No data</div>
-                    <div style={{fontWeight: 'bold', marginBottom: '10px'}}>Date of the assessment</div>
-                    <div>No data</div>
-                  </React.Fragment>)
+                  ? (
+                    <React.Fragment>
+                      <div style={{marginBottom: '10px'}}>
+                        <Translate stringId='operationsPopoverNoData'/>
+                      </div>
+                      <div style={{fontWeight: 'bold', marginBottom: '10px'}}>
+                        <Translate stringId='operationsPopoverDate'/>
+                      </div>
+                      <div>
+                        <Translate stringId='operationsPopoverNoData'/>
+                      </div>
+                    </React.Fragment>)
                   : (<React.Fragment>
                     <div style={{marginBottom: '10px'}}>{ getPerProcessType(filteredOverviewData[0].type_of_capacity_assessment) }</div>
-                    <div style={{fontWeight: 'bold', marginBottom: '10px'}}>Date of the assessment</div>
+                    <div style={{fontWeight: 'bold', marginBottom: '10px'}}>
+                      <Translate stringId='operationsPopoverDate'/>
+                    </div>
                     <div>{filteredOverviewData[0].date_of_current_capacity_assessment.substring(0, 10)}</div>
                   </React.Fragment>)
               }
@@ -118,5 +134,5 @@ if (environment !== 'production') {
     overviewData: T.object
   };
 }
-
+OperationsPopover.contextType = LanguageContext;
 export default OperationsPopover;

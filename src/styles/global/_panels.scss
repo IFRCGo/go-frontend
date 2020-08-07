@@ -135,7 +135,7 @@
 
   &:last-child {
     box-shadow: none;
-    padding-right: 0;
+    padding-inline-end: 0;
   }
 
   &, > li {
@@ -143,7 +143,7 @@
   }
 
   > li:not(:last-child) {
-    margin-right: $global-spacing / 4;
+    margin-inline-end: $global-spacing / 4;
   }
 }
 

@@ -8,6 +8,8 @@ import Fold from './../fold';
 import { getAllComponents, getBenchmarksByComponent } from '#utils/get-per-components';
 import { withRouter } from 'react-router-dom';
 import { sendPerWorkplan, deletePerWorkplanApi } from '#actions';
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
 
 const PRIORITIZATION = ['Low', 'Mid', 'High'];
 const STATUS = [
@@ -111,51 +113,47 @@ class PreparednessWorkPlan extends React.Component {
     const components = [];
     const statusDropdown = [];
     const benchmarks = [];
-    const tableRowStyle = {width: '100%', float: 'left'};
-    const tableCellStyle = {width: '10%', float: 'left', padding: '5px', overflowWrap: 'break-word'};
-    const tableTitleCellStyle = {width: '10%', float: 'left', fontWeight: 'bold', padding: '5px'};
-    const tableTitleDoubleCellStyle = {width: '20%', float: 'left', fontWeight: 'bold', padding: '5px'};
+    const tableRowStyle = {width: '100%'};
     const lightBackground = {backgroundColor: '#fff'};
     const darkBackground = {backgroundColor: '#fff'};
-    const textToCenter = {textAlign: 'center'};
     const inputWidthFitDiv = {width: '100%'};
     this.props.getPerWorkPlan.data.results.forEach((workPlan, index) => {
       const timeline = new Date(workPlan.timeline);
       workPlans.push((
-        <div key={'workplanList' + index} style={Object.assign({}, tableRowStyle, index % 2 === 0 ? lightBackground : darkBackground, inputWidthFitDiv)}>
-          <div style={tableCellStyle}>
+        <div key={'workplanList' + index} style={Object.assign({}, tableRowStyle, index % 2 === 0 ? lightBackground : darkBackground, inputWidthFitDiv)} className='row-sm flex spacing-v border-bottom-base'>
+          <div className='col-sm flex-1'>
             {PRIORITIZATION[workPlan.prioritization]}
           </div>
-          <div style={tableCellStyle}>
+          <div className='col-sm flex-1'>
             {workPlan.components}
           </div>
-          <div style={tableCellStyle}>
+          <div className='col-sm flex-1'>
             {workPlan.benchmark}
           </div>
-          <div style={tableCellStyle}>
+          <div className='col-sm flex-1'>
             {workPlan.actions}
           </div>
-          <div style={tableCellStyle}>
+          <div className='col-sm flex-1'>
             {workPlan.comments}
           </div>
-          <div style={tableCellStyle}>
+          <div className='col-sm flex-1'>
             {timeline.getMonth() + 1}/{timeline.getDate()}/{timeline.getFullYear()}
           </div>
-          <div style={tableCellStyle}>
+          <div className='col-sm flex-1'>
             {workPlan.focal_point}
           </div>
-          <div style={tableCellStyle}>
+          <div className='col-sm flex-1'>
             {STATUS[workPlan.status]}
           </div>
-          <div style={Object.assign({}, tableCellStyle, textToCenter)}>
+          <div style={Object.assign({})} className='col-sm flex-1'>
 
-            <label className={c(`form__option--custom-checkbox`, {'form__option--inline': 'inline'})}>
+            <label className={c(`form__option--custom-checkbox margin-reset`, {'form__option--inline': 'inline'})}>
               <input type='checkbox' name='test' value={true} checked={workPlan.support_required} />
               <span className='form__option__ui'></span>
             </label>
 
           </div>
-          <div style={Object.assign({}, tableCellStyle, textToCenter)}>
+          <div style={Object.assign({})} className='col-sm flex-1'>
             {
               typeof workPlan.id !== 'undefined'
                 ? (<button className='button button--small button--primary-bounded' id={'workplan' + workPlan.id} onClick={this.deleteWorkPlan}>Delete</button>)
@@ -177,10 +175,13 @@ class PreparednessWorkPlan extends React.Component {
     getBenchmarksByComponent(this.state.chosenForm + this.state.chosenComponent).forEach((component, index) => {
       benchmarks.push((<option key={'benchmarkList' + index} value={'q' + component.index}>{component.title.length > 135 ? component.title.substring(0, 135) + '...' : component.title}</option>));
     });
+    const { strings } = this.context;
     return (
-      <Fold id='per-work-plan' title='Preparedness work plan' wrapper_class='preparedness' foldClass='margin-reset'>
-        <div style={{borderBottom: '1px solid #000', paddingBottom: '20px', float: 'left', width: '100%'}}>
-          {!this.state.showAddModul ? <button className='button button--small button--primary-bounded' onClick={this.showAddModul}>Add</button> : null}
+      <Fold id='per-work-plan' title={strings.preparednessWorkPlanTitle} foldWrapperClass='fold--main' foldTitleClass='margin-reset' foldContainerClass='container--padding-reset'>
+        <div className='spacing-2-b'>
+          {!this.state.showAddModul ? <button className='button button--small button--primary-bounded' onClick={this.showAddModul}>
+                                        <Translate stringId='preparednessWorkPlanAdd'/>
+                                      </button> : null}
 
           {this.state.showAddModul
             ? (
@@ -189,7 +190,9 @@ class PreparednessWorkPlan extends React.Component {
                 <div style={Object.assign({}, lightBackground)}>
                   <div className='form__group'>
                     <div className='form__inner-header'>
-                      <span className='label-secondary'>Prioritization:&nbsp;</span>
+                      <span className='label-secondary'>
+                        <Translate stringId='preparednessWorkPlanPrioritization'/>
+                      </span>
                     </div>
                     <div className='form__inner-body'>
                       <select name='prioritization' className='full-width'>
@@ -199,7 +202,9 @@ class PreparednessWorkPlan extends React.Component {
                   </div>
                   <div className='form__group'>
                     <div className='form__inner-header'>
-                      <span className='label-secondary'>Component:&nbsp;</span>
+                      <span className='label-secondary'>
+                        <Translate stringId='preparednessWorkPlanComponent'/>
+                      </span>
                     </div>
                     <div className='form__inner-body'>
                       <select name='components' onChange={this.onComponentChange} className='full-width'>
@@ -209,7 +214,9 @@ class PreparednessWorkPlan extends React.Component {
                   </div>
                   <div className='form__group'>
                     <div className='form__inner-header'>
-                      <span className='label-secondary'>Benchmark:&nbsp;</span>
+                      <span className='label-secondary'>
+                        <Translate stringId='preparednessWorkPlanBenchmark'/>
+                      </span>
                     </div>
                     <div className='form__inner-body'>
                       <select name='benchmark' className='full-width'>
@@ -219,7 +226,9 @@ class PreparednessWorkPlan extends React.Component {
                   </div>
                   <div className='form__group'>
                     <div className='form__inner-header'>
-                      <span className='label-secondary'>Actions:&nbsp;</span>
+                      <span className='label-secondary'>
+                        <Translate stringId='preparednessWorkPlanActions'/>
+                      </span>
                     </div>
                     <div className='form__inner-body'>
                       <input type='text' name='actions' className='form__control form__control--medium' />
@@ -227,7 +236,9 @@ class PreparednessWorkPlan extends React.Component {
                   </div>
                   <div className='form__group'>
                     <div className='form__inner-header'>
-                      <span className='label-secondary'>Comments:&nbsp;</span>
+                      <span className='label-secondary'>
+                        <Translate stringId='preparednessWorkPlanComments'/>
+                      </span>
                     </div>
                     <div className='form__inner-body'>
                       <input type='text' name='comments' className='form__control form__control--medium' />
@@ -235,7 +246,9 @@ class PreparednessWorkPlan extends React.Component {
                   </div>
                   <div className='form__group'>
                     <div className='form__inner-header'>
-                      <span className='label-secondary'>Timeline:&nbsp;</span>
+                      <span className='label-secondary'>
+                        <Translate stringId='preparednessWorkPlanTimeline'/>
+                      </span>
                     </div>
                     <div className='form__inner-body'>
                       <select name='timeline_year'>
@@ -294,7 +307,9 @@ class PreparednessWorkPlan extends React.Component {
                   </div>
                   <div className='form__group'>
                     <div className='form__inner-header'>
-                      <span className='label-secondary'>Focal Point:&nbsp;</span>
+                      <span className='label-secondary'>
+                        <Translate stringId='preparednessWorkPlanFocalPoint'/>
+                      </span>
                     </div>
                     <div className='form__inner-body'>
                       <input type='text' name='focal' className='form__control form__control--medium' />
@@ -302,7 +317,9 @@ class PreparednessWorkPlan extends React.Component {
                   </div>
                   <div className='form__group'>
                     <div className='form__inner-header'>
-                      <span className='label-secondary'>Status:&nbsp;</span>
+                      <span className='label-secondary'>
+                        <Translate stringId='preparednessWorkPlanStatus'/>
+                      </span>
                     </div>
                     <div className='form__inner-body'>
                       <select name='status' className='full-width'>
@@ -313,7 +330,9 @@ class PreparednessWorkPlan extends React.Component {
 
                   <div className='form__group'>
                     <div className='form__inner-header'>
-                      <span className='label-secondary'>Required:&nbsp;</span>
+                      <span className='label-secondary'>
+                        <Translate stringId='preparednessWorkPlanRequired'/>
+                      </span>
                     </div>
                     <div className='form__inner-body'>
                       <label className={c(`form__option--custom-checkbox`, {'form__option--inline': 'inline'})}>
@@ -323,39 +342,43 @@ class PreparednessWorkPlan extends React.Component {
                     </div>
                   </div>
                   <div className='form__group text-center'>
-                    <button className='button button--small button--primary-bounded' onClick={this.addNewPlan}>Add</button>
+                    <button className='button button--small button--primary-bounded' onClick={this.addNewPlan}>
+                      <Translate stringId='preparednessWorkPlanAdd'/>
+                    </button>
                   </div>
                 </div>
               </div>
             ) : null}
 
-          <div className='global-margin-2-t'>
-            <div style={tableTitleCellStyle}>
-              Prioritization
-            </div>
-            <div style={tableTitleCellStyle}>
-              Component
-            </div>
-            <div style={tableTitleCellStyle}>
-              Benchmark
-            </div>
-            <div style={tableTitleCellStyle}>
-              Actions
-            </div>
-            <div style={tableTitleCellStyle}>
-              Comments
-            </div>
-            <div style={tableTitleCellStyle}>
-              Timeline
-            </div>
-            <div style={tableTitleCellStyle}>
-              Focal Point
-            </div>
-            <div style={tableTitleCellStyle}>
-              Status
-            </div>
-            <div style={tableTitleDoubleCellStyle}>
-              Support required
+          <div>
+            <div className='spacing-2-t flex row-sm'>
+              <div className='col-sm flex-1 base-font-semi-bold spacing-b'>
+                <Translate stringId='preparednessWorkPlanPrioritizationLabel'/>
+              </div>
+              <div className='col-sm flex-1 base-font-semi-bold spacing-b'>
+                <Translate stringId='preparednessWorkPlanComponentLabel'/>
+              </div>
+              <div className='col-sm flex-1 base-font-semi-bold spacing-b'>
+                <Translate stringId='preparednessWorkPlanBenchmarkLabel'/>
+              </div>
+              <div className='col-sm flex-1 base-font-semi-bold spacing-b'>
+                <Translate stringId='preparednessWorkPlanActionsLabel'/>
+              </div>
+              <div className='col-sm flex-1 base-font-semi-bold spacing-b'>
+                <Translate stringId='preparednessWorkPlanCommentsLabel'/>
+              </div>
+              <div className='col-sm flex-1 base-font-semi-bold spacing-b'>
+                <Translate stringId='preparednessWorkPlanTimelineLabel'/>
+              </div>
+              <div className='col-sm flex-1 base-font-semi-bold spacing-b'>
+                <Translate stringId='preparednessWorkPlanFocalPointLabel'/>
+              </div>
+              <div className='col-sm flex-1 base-font-semi-bold spacing-b'>
+                <Translate stringId='preparednessWorkPlanStatusLabel'/>
+              </div>
+              <div className='col-sm flex-1 base-font-semi-bold spacing-b'>
+                <Translate stringId='preparednessWorkPlanSupportLabel'/>
+              </div>
             </div>
 
             {workPlans}
@@ -367,6 +390,7 @@ class PreparednessWorkPlan extends React.Component {
   }
 }
 
+PreparednessWorkPlan.contextType = LanguageContext;
 if (environment !== 'production') {
   PreparednessWorkPlan.propTypes = {
     _getPerNsPhase: T.func,

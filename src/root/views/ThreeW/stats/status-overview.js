@@ -15,6 +15,7 @@ import {
 } from 'recharts';
 
 import { statuses } from '#utils/constants';
+import Translate from '#components/Translate';
 
 const propTypes = {
   className: PropTypes.string,
@@ -53,7 +54,7 @@ export default class StatusOverview extends React.PureComponent {
     return (
       <div className={_cs(className, 'three-w-stats-status-overview')}>
         <h4 className='tc-heading'>
-          Activity status overview
+          <Translate stringId='regionOverviewActivityStatus'/>
         </h4>
         <div className='tc-content'>
           <ResponsiveContainer>

@@ -9,6 +9,7 @@ import { getRegionalProjects as getRegionalProjectsAction } from '#actions';
 import { regionalProjectsSelector } from '#selectors';
 
 import exportHeaders from '../ThreeW/export-headers';
+import Translate from '#components/Translate';
 
 function ExportButton (p) {
   const {
@@ -74,12 +75,15 @@ function ExportButton (p) {
     <button
       onClick={handleClick}
       className={ _cs(
-        'regional-export-button button button--secondary-bounded',
+        'regional-export-button button button--secondary-bounded button--small',
         pending && 'disabled',
       )}
       disabled={pending}
     >
-      { pending ? 'Exporting...' : 'Export' }
+      { pending ?
+        <Translate stringId='exportButtonExporting'/> :
+        <Translate stringId='exportButtonExport'/>
+      }
     </button>
   );
 }

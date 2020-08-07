@@ -25,6 +25,8 @@ import Fold from '../fold';
 import BlockLoading from '../block-loading';
 import DisplayTable, { SortHeader, FilterHeader } from '../display-table';
 import { SFPComponent } from '#utils/extendables';
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
 
 class EmergenciesTable extends SFPComponent {
   // Methods form SFPComponent:
@@ -124,10 +126,14 @@ class EmergenciesTable extends SFPComponent {
       );
     }
 
+    const { strings } = this.context;
+
     if (error) {
       return (
         <Fold title={this.props.title} id={this.props.id}>
-          <p>Latest emergencies not available.</p>
+          <p>
+            <Translate stringId='emergenciesTableError' />
+          </p>
         </Fold>
       );
     }
@@ -136,35 +142,33 @@ class EmergenciesTable extends SFPComponent {
       let headings = [
         {
           id: 'date',
-          label: <FilterHeader id='date' title='Start Date' options={dateOptions} filter={this.state.table.filters.date} onSelect={this.handleFilterChange.bind(this, 'table', 'date')} />
+          label: <FilterHeader id='date' title={strings.emergenciesTableDate} options={dateOptions} filter={this.state.table.filters.date} onSelect={this.handleFilterChange.bind(this, 'table', 'date')} />
         },
         {
           id: 'name',
-          label: <SortHeader id='name' title='Name' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'name')} />
+          label: <SortHeader id='name' title={strings.emergenciesTableName} sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'name')} />
         },
         {
           id: 'dtype',
-          label: <FilterHeader id='dtype' title='Disaster Type' options={dTypeOptions} filter={this.state.table.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'table', 'dtype')} />
+          label: <FilterHeader id='dtype' title={strings.emergenciesTableDisasterType} options={dTypeOptions} filter={this.state.table.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'table', 'dtype')} />
         },
         {
           id: 'glide',
-          label: <SortHeader id='glide' title='Glide' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'glide')} />
+          label: <SortHeader id='glide' title={strings.emergenciesTableGlide} sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'glide')} />
         },
         {
           id: 'requested',
-          label: <SortHeader id='amount_requested' title='Requested Amount (CHF)' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'amount_requested')} />,
-          className: 'right-align'
+          label: <SortHeader id='amount_requested' title={strings.emergenciesTableRequestedAmt} sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'amount_requested')} />
         },
         {
           id: 'affected',
-          label: <SortHeader id='num_affected' title='# Affected' sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'num_affected')} />,
-          className: 'right-align'
+          label: <SortHeader id='num_affected' title={strings.emergenciesTableAffected} sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'num_affected')} />
         }
       ];
 
       // If we're showing this on a country-specific page, don't show the country column
       if (isNaN(this.props.country)) {
-        headings.push({ id: 'countries', label: 'Countries' });
+        headings.push({ id: 'countries', label: strings.emergenciesTableCountry });
       }
 
       const rows = data.results.map(rowData => {
@@ -173,22 +177,20 @@ class EmergenciesTable extends SFPComponent {
         let row = {
           id: rowData.id,
           date: date,
-          name: <Link className='link--primary' to={`/emergencies/${rowData.id}`}>{get(rowData, 'name', nope)}</Link>,
+          name: <Link className='link--table' to={`/emergencies/${rowData.id}`}>{get(rowData, 'name', nope)}</Link>,
           dtype: rowData.dtype ? rowData.dtype.name : nope,
           requested: {
-            value: n(get(rowData, 'appeals.0.amount_requested')),
-            className: 'right-align'
+            value: n(get(rowData, 'appeals.0.amount_requested'), 'CHF')
           },
           affected: {
-            value: n(affected),
-            className: 'right-align'
+            value: n(affected)
           },
           glide: rowData.glide || nope
         };
 
         if (isNaN(this.props.country)) {
           const countries = get(rowData, 'countries', []).map(c => (
-            <Link key={c.id} className='link--primary' to={`/countries/${c.id}`}>{c.name}</Link>
+            <Link key={c.id} className='link--table' to={`/countries/${c.id}`}>{c.name}</Link>
           ));
           row.countries = countries.length ? intersperse(countries, ', ') : nope;
         }
@@ -201,9 +203,16 @@ class EmergenciesTable extends SFPComponent {
         noPaginate
       } = this.props;
 
-      const foldLink = this.props.viewAll ? (<Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || 'View all emergencies'}</Link>) : null;
+      const foldLink = this.props.viewAll ? (<Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || strings.emergenciesTableViewAll}</Link>) : null;
       return (
-        <Fold foldClass='fold__title--inline margin-reset' navLink={foldLink} title={`${title} (${n(data.count)})`} id={this.props.id}>
+        <Fold 
+          foldWrapperClass='fold--main'
+          foldTitleClass='fold__title--inline margin-reset'
+          navLink={foldLink}
+          title={`${title} (${n(data.count)})`}
+          id={this.props.id}
+          showHeader={this.props.hasOwnProperty('showHeader') ? this.props.showHeader : true}
+        >
           {this.props.showExport ? (
             <ExportButton filename='emergencies'
               qs={this.getQs(this.props)}
@@ -217,6 +226,7 @@ class EmergenciesTable extends SFPComponent {
             page={this.state.table.page - 1}
             onPageChange={this.handlePageChange.bind(this, 'table')}
             noPaginate={noPaginate}
+            className='table table--border-bottom table--box-shadow'
           />
         </Fold>
       );
@@ -237,6 +247,7 @@ if (environment !== 'production') {
 
     noPaginate: T.bool,
     showExport: T.bool,
+    showHeader: T.bool,
     title: T.string,
 
     showRecent: T.bool,
@@ -256,5 +267,5 @@ const selector = (state) => ({
 const dispatcher = (dispatch) => ({
   _getEmergenciesList: (...args) => dispatch(getEmergenciesList(...args))
 });
-
+EmergenciesTable.contextType = LanguageContext;
 export default connect(selector, dispatcher)(EmergenciesTable);

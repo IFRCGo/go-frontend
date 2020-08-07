@@ -3,14 +3,8 @@
    ========================================================================== */
 
 .page--region {
-  .inpage__body {
-    > * {
-      margin-bottom: $global-spacing * 2;
-    }
-
-    &:last-child() {
-      margin-bottom: 0;
-    }
+  .page__body {
+    margin-bottom: 0
   }
 
   .fold {
@@ -20,7 +14,17 @@
       margin-bottom: 0;
     }
   }
+
+  #emergencies {
+    padding-top: 0;
+  }
   
+  #stats {
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+  }
+
   .region-countries__letter {
     color: $primary-color;
     font-weight: $base-font-bold;
@@ -46,7 +50,6 @@
   }
 
   .region-countries__link {
-    font-size: $font-size-xxl;
     font-weight: $base-font-medium;
   }
   
@@ -60,11 +63,9 @@
   }
 
   .regional-threew {
-    background-color: #fff;
-    box-shadow: 1px 2px 6px 1px rgba(0, 0, 0, 0.1);
-    padding: 20px;
 
     .Select-menu-outer {
+      font-size: $font-size-xs;
       z-index: 11;
       left: 5px;
       width: calc(100% - 10px);
@@ -77,17 +78,9 @@
 
       .tc-select-input {
         .Select-control {
-          border: 0;
           border-radius: 0;
           background-color: $grey-mist;
-          border-bottom: 1px solid $primary-color;
-          font-size: $font-size-sm;
-        }
-
-        .Select-placeholder {
-          padding: 0 16px;
-          color: $base-color;
-          font-weight: $base-font-medium;
+          font-size: $font-size-xs;
         }
 
         &:focus-within {
@@ -102,10 +95,6 @@
           input {
             padding: 0;
           }
-        }
-
-        .Select-multi-value-wrapper {
-          padding: 6px;
         }
 
         .Select-value {
@@ -128,23 +117,29 @@
       }
     }
 
-    .regional-threew-overview {
-      display: flex;
-      padding: 10px;
+    .box__global .tc-value {
+      font-size: $font-size-heading-widget;
+      font-weight: $base-font-semi-bold;
+    }
 
-      >* {
-        flex-basis: 0;
-        flex-grow: 1;
-        padding: 10px 20px;
-        margin: 10px;
-        background-color: $grey-fog;
+    .regional-threew-overview {
+      padding: $spacing-2 0 0 0;
+
+      > .col-lg {
+        display: flex;
+
+        > div {
+          width: 100%;
+          padding: $spacing-half $spacing;
+          margin-bottom: $spacing;
+        }
       }
 
       .status-activity {
         .tc-heading {
           font-weight: $base-font-light;
           text-transform: uppercase;
-          font-size: $font-size-sm;
+          font-size: $font-size-xxs;
         }
 
         .tc-content {
@@ -153,24 +148,17 @@
           .total-activity {
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: center;
-
-            .tc-value {
-              font-size: 2rem;
-              color: $secondary-color;
-              font-weight: $base-font-bold;
-            }
+            flex-shrink: 0;
 
             .tc-label {
-              text-align: center;
-              text-transform: uppercase;
+              font-weight: $base-font-regular;
+              letter-spacing: $letter-spacing-sm;
             }
           }
 
           .tc-chart-container {
             flex-grow: 1;
-            height: 120px;
           }
         }
       }
@@ -179,30 +167,27 @@
         .tc-heading {
           font-weight: $base-font-light;
           text-transform: uppercase;
-          font-size: $font-size-sm;
+          font-size: $font-size-xxs;
         }
 
         .reached-people-count {
-          font-size: 2rem;
           display: flex;
-          justify-content: center;
-          padding: 10px;
-          font-weight: $base-font-bold;
-          color: $secondary-color;
         }
 
         .targeted-people {
           display: flex;
           justify-content: flex-end;
+          align-items: baseline;
 
           .tc-label {
             padding: 3px 5px;
             text-transform: uppercase;
+            font-size: $font-size-xxs;
           }
 
           .targeted-people-count {
             padding: 3px 5px;
-            font-weight: $base-font-semi-bold;
+            font-weight: $base-font-medium;
             color: $secondary-color;
           }
         }
@@ -231,18 +216,11 @@
           flex-grow: 1;
           display: flex;
           flex-direction: column;
-          align-items: center;
           padding: 6px;
 
-          .tc-value {
-            font-size: 2rem;
-            color: $secondary-color;
-            font-weight: $base-font-bold;
-          }
-
           .tc-label {
-            text-align: center;
-            text-transform: uppercase;
+            font-weight: $base-font-regular;
+            letter-spacing: $letter-spacing-sm;
           }
         }
       }
@@ -263,8 +241,7 @@
       }
 
       >.tc-header {
-        margin-top: 5rem;
-        padding: 0 10px;
+        margin-top: $spacing-5;
 
         .tc-top {
           display: flex;
@@ -287,6 +264,7 @@
         .regional-movement-activity-filter {
           display: flex;
           align-items: flex-start;
+          padding: $spacing 0;
 
           >* {
             flex-basis: 0;
@@ -308,12 +286,11 @@
 
       >.tc-content {
         .regional-threew-map-wrapper {
-          padding: 20px;
           display: flex;
 
           $height-map: 500px;
-          $width-country-details: 360px;
-          $width-popup: 360px;
+          $width-country-details: 295px;
+          $width-popup: 295px;
           $height-popup: 240px;
 
           .regional-threew-map {
@@ -327,12 +304,16 @@
               overflow: auto;
               display: flex;
               flex-direction: column;
+              box-shadow: $base-box-shadow;
 
               >.tc-heading {
+                color: $primary-color;
+                text-transform: uppercase;
+                font-weight: $base-font-medium;
+                font-size: $base-font-size;
                 flex-shrink: 0;
                 padding: 3px 6px;
                 margin: 0;
-                color: $primary-color;
 
                 a {
                   color: inherit;
@@ -342,8 +323,7 @@
 
                 .tc-icon {
                   color: inherit;
-                  font-size: $font-size-xxl;
-                  margin-left: 3px;
+                  margin-inline-start: 3px;
                 }
               }
 
@@ -360,6 +340,7 @@
 
                   .tc-text-output {
                     padding: 0 5px;
+                    flex: 1;
 
                     .tc-label {
                       padding: 3px;
@@ -411,7 +392,7 @@
 
                     .tc-heading {
                       margin: 0;
-                      font-size: 0.8rem;
+                      font-size: $font-size-sm;
                       padding: 0 3px;
                     }
 
@@ -437,14 +418,21 @@
           }
 
           .supporting-ns-list {
-            height: $height-map;
+            box-shadow: -1px 2px 6px 1px $base-alpha-color;
+            height: calc(#{$height-map} - #{$spacing-4});
             flex-shrink: 0;
             overflow: auto;
             width: $width-country-details;
             display: flex;
             flex-direction: column;
+            position: relative;
+            top: $spacing-2;
+            padding: $spacing;
 
             .three-w-region-scale {
+              color: $grey-silver;
+              font-size: $font-size-xxs;
+              font-weight: $base-font-semi-bold;
               flex-shrink: 0;
               padding: 0;
               margin: 0 16px 0 10px;
@@ -457,7 +445,7 @@
             }
 
             ::-webkit-scrollbar-track {
-              background-color: #eee;
+              background-color: $grey-mist;
             }
 
             ::-webkit-scrollbar {
@@ -468,7 +456,7 @@
 
             ::-webkit-scrollbar-thumb {
               border-radius: 3px;
-              background-color: #aaa;
+              background-color: $grey-pearl;
             }
 
             .supporting-ns {
@@ -477,10 +465,14 @@
               border-bottom: 1px solid rgba(0, 0, 0, .1);
 
               .tc-label {
-                font-size: $font-size-sm;
+                color: $grey-soot;
+                font-size: $font-size-xxs;
+                text-transform: uppercase;
                 display: flex;
+                margin-bottom: $spacing-half;
 
                 .tc-name {
+                  font-weight: $base-font-semi-bold;
                   flex-grow: 1;
                   padding: 0 3px;
                   overflow: hidden;
@@ -496,15 +488,17 @@
         }
 
         .countries-threew-tables {
-          padding: 10px 0;
+          box-shadow: $base-box-shadow;
 
           .country-table {
-            margin: 10px;
+            border-bottom: 1px solid $grey-titanium;
 
             .tc-header-button {
               display: flex;
               width: 100%;
-              background-color: $grey-fog;
+              color: $grey-soot;
+              background-color: $grey-mist;
+              font-weight: $base-font-semi-bold;
               border: 0;
               padding: 10px;
               text-align: left;
@@ -518,7 +512,7 @@
 
                 .tc-project-count {
                   font-weight: $base-font-light;
-                  margin-left: 10px;
+                  margin-inline-start: 10px;
                   color: $grey-cement;
                 }
               }
@@ -526,6 +520,7 @@
               .tc-icon {
                 font-size: 1.4rem;
                 flex-shrink: 0;
+                fill: $grey-silver;
               }
 
               &:hover {
@@ -538,31 +533,6 @@
 
               .tc-table {
                 width: 100%;
-
-                th {
-                  padding: 16px 10px;
-                  text-align: left;
-                }
-
-                td {
-                  padding: 10px;
-                }
-
-                tbody {
-                  tr {
-                    &:nth-child(odd) {
-                      background-color: $grey-mist;
-                    }
-                  }
-                }
-              }
-            }
-
-            &.tc-active {
-              .tc-header-button {
-                .tc-label {
-                  color: $primary-color;
-                }
               }
             }
           }
@@ -572,6 +542,7 @@
 
     .regional-ns-activities {
       position: relative;
+      padding-bottom: $spacing-5;
 
       .tc-header {
         margin-top: 5rem;
@@ -586,11 +557,12 @@
       .regional-ns-activity-filter {
         display: flex;
         align-items: flex-start;
+        justify-content: flex-end;
+        margin: $spacing 0 $spacing-5;
 
         >* {
-          flex-basis: 0;
-          flex-grow: 1;
           flex-direction: column;
+          min-width: 200px;
 
           .tc-select-label {
             font-size: $font-size-sm;
@@ -643,3 +615,11 @@
   }
 }
 
+.tab__wrap--3W {
+  @include media(small) {
+    .react-tabs__tab:nth-of-type(2) {
+      padding-left: $spacing-5;
+      padding-right: $spacing-5;
+    }
+  }
+}

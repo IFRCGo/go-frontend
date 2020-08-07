@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import _cs from 'classnames';
 import Faram from '@togglecorp/faram';
 
@@ -10,6 +10,7 @@ import {
   programmeTypeList,
   operationTypeList,
 } from '#utils/constants';
+import LanguageContext from '#root/languageContext';
 
 const compareString = (a, b) => a.label.localeCompare(b.label);
 
@@ -54,48 +55,49 @@ function MovementActivitiesFilters (p) {
     onChange,
   } = p;
 
+  const { strings } = useContext(LanguageContext);
   return (
     <Faram
-      className={_cs('regional-movement-activity-filter', className)}
+      className={_cs('regional-movement-activity-filter row-sm', className)}
       schema={filterSchema}
       value={value}
       onChange={onChange}
     >
       <SelectInput
         faramElementName='operation_type'
-        label='Operation type'
-        placeholder='All Operation Types'
+        label={strings.movementFilterOperationType}
+        placeholder={strings.movementFilterOperationPlaceholder}
         options={operationTypeOptions}
-        className='select-input'
+        className='select-input form__control--filter'
       />
       <SelectInput
         faramElementName='programme_type'
-        label='Programme type'
-        placeholder='All Programme Types'
+        label={strings.movementFilterProgrammeType}
+        placeholder={strings.movementFilterProgrammePlaceholder}
         options={programmeTypeOptions}
-        className='select-input'
+        className='select-input form__control--filter'
       />
       <SelectInput
         faramElementName='primary_sector'
-        label='Sectors of Activity'
-        placeholder='All Sectors'
+        label={strings.movementFilterSector}
+        placeholder={strings.movementFilterSectorPlaceholder}
         options={sectorsOfActivityOptions}
-        className='select-input'
+        className='select-input form__control--filter'
       />
       <SelectInput
         faramElementName='secondary_sectors'
-        label='Tag'
-        placeholder='All Tags'
+        label={strings.movementFilterTag}
+        placeholder={strings.movementFilterTagPlaceholder}
         options={tagOptions}
-        className='select-input'
+        className='select-input form__control--filter'
 
       />
       <SelectInput
         faramElementName='status'
-        label='Status'
-        placeholder='All - Status'
+        label={strings.movementFilterStatus}
+        placeholder={strings.movementFilterStatusPlaceholder}
         options={statusOptions}
-        className='select-input'
+        className='select-input form__control--filter'
       />
     </Faram>
   );

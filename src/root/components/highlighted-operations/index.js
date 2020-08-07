@@ -8,8 +8,13 @@ import { getFeaturedEmergencies, getFeaturedEmergenciesForRegion, getFeaturedEme
 import BlockLoading from '../block-loading';
 import Fold from '../fold';
 import OperationCard from './operation-card';
-
-const title = 'Highlighted Operations';
+import {
+  getUserProfile,
+  addSubscriptions,
+  delSubscription
+} from '#actions';
+import LanguageContext from '#root/languageContext';
+import Translate from '#components/Translate';
 
 class HighlightedOperations extends React.Component {
   constructor (props) {
@@ -17,6 +22,10 @@ class HighlightedOperations extends React.Component {
 
     this.calculateDeployedPersonnel = this.calculateDeployedPersonnel.bind(this);
     this.getDeploymentERU = this.getDeploymentERU.bind(this);
+    this.state = {
+      followed: new Set(),
+      unfollowed: new Set()
+    };
   }
 
   componentDidMount () {
@@ -24,6 +33,9 @@ class HighlightedOperations extends React.Component {
       this.props._getFeaturedEmergenciesForRegion(this.props.opsId);
     } else {
       this.props._getFeaturedEmergencies();
+    }
+    if (this.props.isLogged) {
+      this.props._getUserProfile(this.props.user.data.username);
     }
     this.props._getFeaturedEmergenciesDeployments();
   }
@@ -73,24 +85,80 @@ class HighlightedOperations extends React.Component {
     return {'deployedErus': deployedErus, 'deployedPersonnel': deployedPersonnel};
   }
 
+  // whether to show the Follow button for Highlighted Ops
+  getShowFollow () {
+    if (!this.props.isLogged) return false;
+    if (!this.props.profile.fetched) return false;
+    return true;
+  }
+
+  followOperation (id) {
+    this.props._addSubscriptions(id);
+    const { followed, unfollowed } = this.state;
+    followed.add(id);
+    unfollowed.delete(id);
+    this.setState({
+      followed,
+      unfollowed
+    });
+  }
+
+  unfollowOperation (id) {
+    this.props._delSubscription(id);
+    const { followed, unfollowed } = this.state;
+    followed.delete(id);
+    unfollowed.add(id);
+    this.setState({
+      followed,
+      unfollowed
+    });  
+  }
+
   render () {
     const { error, fetching, fetched, data } = this.props.featured;
-    const foldLink = (<Link to='/appeals/all' className='fold__title__link'>View all operations</Link>);
+    const { strings } = this.context;
+    const foldLink = (
+      <Link to='/appeals/all' className='fold__title__link'>
+        <Translate stringId='highlightedOperationsViewAll'/>
+      </Link>);
     if (fetched && (error || !Array.isArray(data.results) || !data.results.length)) return null;
-    else if (!fetched || fetching) return <div className='inner'><Fold title={title}><BlockLoading/></Fold></div>;
+    else if (!fetched || fetching) return <div className='inner'><Fold title={strings.highlightedOperationsTitle}><BlockLoading/></Fold></div>;
     let operations = data.results;
     const listStyle = operations.length <= 4 ? (
-      'key-emergencies-list key-emergencies-list-short'
+      'key-emergencies-list key-emergencies-list-short row flex-sm'
     ) : (
-      'key-emergencies-list key-emergencies-list-long'
+      'key-emergencies-list key-emergencies-list-long row flex-sm'
     );
+    const showFollow = this.getShowFollow();
+    if (showFollow) {
+      const followedOpIds = this.props.profile.data.subscription.reduce((memo, val) => {
+        const eventId = val.event;
+        if (eventId && memo.indexOf(eventId) === -1) {
+          memo.push(eventId);
+        }
+        return memo;
+      }, []);
+      operations = operations.map(o => {
+        const following = (followedOpIds.indexOf(o.id) !== -1 &&
+                           !this.state.unfollowed.has(o.id)) || this.state.followed.has(o.id);
+
+        return {
+          ...o,
+          following
+        };
+      });
+    }
     return (operations.length ? (
       <div className='inner inner--emergencies'>
-        <Fold title={title} navLink={foldLink} extraClass foldClass='fold__title--inline'>
+        <Fold title={strings.highlightedOperationsTitle} navLink={foldLink} foldWrapperClass='fold--main' foldTitleClass='fold__title--inline'>
           <div className={listStyle}>
             {operations.slice(0, 6).map(operation =>
               <OperationCard
                 key={operation.id}
+                showFollow={showFollow}
+                isFollowing = {operation.following ? true : false}
+                followOperation = {this.followOperation.bind(this)}
+                unfollowOperation = {this.unfollowOperation.bind(this)}
                 operationId={operation.id}
                 operationName={operation.name}
                 emergencyDeployments={this.calculateDeployedPersonnel(operation)}
@@ -123,14 +191,21 @@ if (environment !== 'production') {
 const selector = (state) => ({
   featured: state.emergencies.featured,
   deployments: state.emergencies.emergencyDeployments,
-  eru: state.deployments.eru
+  eru: state.deployments.eru,
+  isLogged: !!state.user.data.token,
+  user: state.user,
+  profile: state.profile  
 });
 
 const dispatcher = (dispatch) => ({
   _getFeaturedEmergencies: (...args) => dispatch(getFeaturedEmergencies(...args)),
   _getFeaturedEmergenciesForRegion: (...args) => dispatch(getFeaturedEmergenciesForRegion(...args)),
   _getFeaturedEmergenciesDeployments: (...args) => dispatch(getFeaturedEmergenciesDeployments(...args)),
-  _getDeploymentERU: (...args) => dispatch(getDeploymentERU(...args))
+  _getDeploymentERU: (...args) => dispatch(getDeploymentERU(...args)),
+  _getUserProfile: (...args) => dispatch(getUserProfile(...args)),
+  _addSubscriptions: (...args) => dispatch(addSubscriptions(...args)),
+  _delSubscription: (...args) => dispatch(delSubscription(...args))
 });
 
+HighlightedOperations.contextType = LanguageContext;
 export default connect(selector, dispatcher)(HighlightedOperations);

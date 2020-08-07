@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { connect } from 'react-redux';
 import {
   listToGroupList as listToGroupMap,
@@ -14,6 +14,8 @@ import { getProjects as getProjectsAction } from '#actions';
 import { countryProjectSelector } from '#selectors';
 import { sectors } from '#utils/constants';
 
+import LanguageContext from '#root/languageContext';
+
 const emptyObject = {};
 
 function NSDetails (p) {
@@ -23,7 +25,7 @@ function NSDetails (p) {
   } = p.data;
 
   return (
-    <div className='ns-details'>
+    <div className='ns-details flex flex-align-baseline'>
       <h5 className='tc-heading'>
         { nsDetails.society_name }
       </h5>
@@ -85,6 +87,7 @@ function ActivityDetails (p) {
     return sectorGroupedProjectsByNS;
   }, [projectList]);
 
+  const { strings } = useContext(LanguageContext);
   return (
     <div className='regional-map-threew-activity-details'>
       <h4 className='tc-heading'>
@@ -95,24 +98,24 @@ function ActivityDetails (p) {
       <div className='tc-content'>
         <div className='status-counts'>
           <TextOutput
-            label="planned"
+            label={strings.activityDetailsPlanned}
             value={planned}
             reverseOrder
           />
           <TextOutput
-            label="ongoing"
+            label={strings.activityDetailsOngoing}
             value={ongoing}
             reverseOrder
           />
           <TextOutput
-            label="completed"
+            label={strings.activityDetailsCompleted}
             value={completed}
             reverseOrder
           />
         </div>
         <div className='active-ns-count'>
           <TextOutput
-            label="Active National Societies"
+            label={strings.activityDetailsActiveNationalCount}
             value={nsSectorList.length}
             reverseOrder
           />

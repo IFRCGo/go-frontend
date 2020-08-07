@@ -4,7 +4,7 @@ import { DateTime } from 'luxon';
 import { PropTypes as T } from 'prop-types';
 import { Helmet } from 'react-helmet';
 import BreadCrumb from '../components/breadcrumb';
-
+import BlockLoading from '#components/block-loading';
 import App from './app';
 import FieldReportsTable from '#components/connected/field-reports-table';
 import EmergenciesDash from '#components/connected/emergencies-dash';
@@ -13,6 +13,8 @@ import EmergenciesTable from '#components/connected/emergencies-table';
 import { getLastMonthsEmergencies, getAggregateEmergencies } from '#actions';
 import { environment } from '#config';
 
+import LanguageContext from '#root/languageContext';
+
 class Emergencies extends React.Component {
   componentDidMount () {
     this.props._getLastMonthsEmergencies();
@@ -20,26 +22,38 @@ class Emergencies extends React.Component {
   }
 
   render () {
+    const { strings } = this.context;
+    if (!this.props.lastMonth.fetched) {
+      return (
+        <BlockLoading />
+      );
+    }
+    const count = this.props.lastMonth.data.count;
+    const dashTitle = `${strings.emergenciesTitle} (${count})`;
     return (
       <App className='page--emergencies'>
         <Helmet>
-          <title>IFRC Go - Emergencies</title>
+          <title>
+            {strings.emergenciesTitle}
+          </title>
         </Helmet>
         <section className='inpage'>
-          <BreadCrumb crumbs={[{link: '/emergencies', name: 'Emergencies'}, {link: '/', name: 'Home'}]} />
-          <EmergenciesDash />
-          <div className='inpage__body'>
-            <div className='inner'>
+          <BreadCrumb crumbs={[{link: '/emergencies', name: 'Emergencies'}, {link: '/', name: strings.breadCrumbHome }]} />
+          <EmergenciesDash 
+            title={dashTitle}
+          />
+          <div>
+            <div className='inner inner--emergencies-table-map'>
               <EmergenciesTable
-                title='Emergencies in the last 30 days'
+                title={strings.emergenciesTableTitle}
                 limit={10}
-                viewAll={'/emergencies/all'}
                 showRecent={true}
+                showHeader={false}
               />
             </div>
-            <div className='inner'>
+            <div className='inner inner--field-reports-emergencies'>
               <FieldReportsTable
-                title='Field Reports in the last 30 days'
+                title={strings.fieldReportsTableTitle}
                 viewAll={'/reports/all'}
                 showRecent={true}
               />
@@ -73,4 +87,5 @@ const dispatcher = (dispatch) => ({
   _getLastMonthsEmergencies: () => dispatch(getLastMonthsEmergencies())
 });
 
+Emergencies.contextType = LanguageContext;
 export default connect(selector, dispatcher)(Emergencies);

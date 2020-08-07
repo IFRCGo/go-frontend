@@ -10,15 +10,6 @@ import Portal from './portal';
 
 // import styles from './styles.css';
 
-/*
-interface DropdownProps {
-  className?: string;
-  parentRef: React.RefObject<HTMLElement>;
-  elementRef: React.RefObject<HTMLDivElement>;
-  children: React.ReactNode;
-}
-*/
-
 function Dropdown (props) {
   const {
     parentRef,
@@ -40,15 +31,6 @@ function Dropdown (props) {
   );
 }
 
-/*
-interface Props {
-  className?: string;
-  dropdownContainerClassName?: string;
-  children: React.ReactNode;
-  label: string | undefined;
-}
-*/
-
 function DropdownMenu (props) {
   const {
     className,
@@ -64,7 +46,11 @@ function DropdownMenu (props) {
     setShowDropdown(true);
   }, [setShowDropdown]);
 
-  useBlurEffect(showDropdown, setShowDropdown, dropdownRef, buttonRef);
+  const handleBlurCallback = React.useCallback(() => {
+    setShowDropdown(false);
+  }, [setShowDropdown]);
+
+  useBlurEffect(showDropdown, handleBlurCallback, dropdownRef, buttonRef);
 
   return (
     <React.Fragment>

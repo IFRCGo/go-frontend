@@ -13,6 +13,9 @@ import {
 } from 'recharts';
 
 import { countryNameMapById } from '#utils/field-report-constants';
+import Translate from '#components/Translate';
+import languageContext from '#root/languageContext';
+
 
 const DetailElement = ({
   value,
@@ -130,24 +133,25 @@ class PastOperations extends React.PureComponent {
     const { chartMode } = this.state;
     const EventDetailTooltip = this.renderEventDetailTooltip;
     const chartData = this.getChartData(data);
+    const { strings } = this.context;
 
     return (
       <div className={_cs(className, 'overview-past-operations')}>
         <h3 className='tc-heading'>
-          Past operations
+          <Translate stringId='pastOperationsTitle'/>
         </h3>
         <div className='past-operations-filter'>
           <div className='chart-mode-input'>
             <SegmentButton
               onClick={this.handleChartModeChange}
-              label='People targeted'
+              label={strings.pastOperationsPeopleTargeted}
               segmentKey='num_beneficiaries'
               className='chart-mode-button'
               isActive={chartMode === 'num_beneficiaries'}
             />
             <SegmentButton
               onClick={this.handleChartModeChange}
-              label="Funding requirements"
+              label={strings.pastOperationsFunding}
               className='chart-mode-button'
               segmentKey='amount_requested'
               isActive={chartMode === 'amount_requested'}
@@ -183,4 +187,5 @@ class PastOperations extends React.PureComponent {
   }
 }
 
+PastOperations.contextType = languageContext;
 export default PastOperations;

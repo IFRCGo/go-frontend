@@ -1,6 +1,7 @@
 import * as url from 'url';
 import * as localStorage from 'local-storage';
 import { api } from '#config';
+import store from '#utils/store';
 
 /**
  * Adds authorization token to request headers.
@@ -29,9 +30,12 @@ export function withToken (options = {}) {
  * @return {Object}         Options with headers and payload
  */
 export function withJSONRequest (payload, options = {}) {
+  const currentLanguage = store.getState().lang.current;
+
   options.headers = options.headers || {};
   options.headers['Content-Type'] = 'application/json';
   options.headers['Accept'] = 'application/json';
+  options.headers['Accept-Language'] = currentLanguage;
   options.body = JSON.stringify(payload);
   return options;
 }
@@ -73,7 +77,18 @@ function failed (action) {
  * @return {func}             Dispatch function.
  */
 export function fetchJSON (path, action, options, extraData) {
-  return makeRequest(path, action, options, extraData);
+  const currentLanguage = store.getState().lang.current;
+
+  const newOptions = {
+    ...options,
+
+    headers: {
+      ...options?.headers,
+      'Accept-Language': currentLanguage,
+    },
+  };
+
+  return makeRequest(path, action, newOptions, extraData);
 }
 
 /**
