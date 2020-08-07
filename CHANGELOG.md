@@ -13,6 +13,7 @@ Frontend:
    - Styling cleanup of Highlighted Operations + Adding Follow buttons: https://github.com/IFRCGo/go-frontend/issues/1206
  - Improvements to Signup Workflow: https://github.com/IFRCGo/go-frontend/issues/1233
  - Fix Create a Report dropdown on mobile: https://github.com/IFRCGo/go-frontend/issues/1363
+ - Rename Subscribe / Unsubscribe to Follow / Unfollow on Emergency page: https://github.com/IFRCGo/go-frontend/issues/1370
 
 Backend:
 
