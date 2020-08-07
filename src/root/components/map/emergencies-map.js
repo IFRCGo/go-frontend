@@ -19,9 +19,10 @@ class EmergenciesMap extends React.Component {
   constructor (props) {
     super(props);
     const scaleBy = 'numAffected';
+    const { lastMonth } = props;
     this.state = {
       scaleBy,
-      layers: [],
+      layers: this.getLayers(lastMonth.data.geoJSON, scaleBy),
       filters: []
     };
     this.configureMap = this.configureMap.bind(this);
@@ -135,9 +136,6 @@ class EmergenciesMap extends React.Component {
       error,
       data
     } = this.props.lastMonth;
-
-    if (!fetched) return null;
-
     const { strings } = this.props;
     return (
       <div className='stats-map emergencies-map'>
