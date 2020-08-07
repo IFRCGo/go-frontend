@@ -25,8 +25,8 @@ export const step1 = {
       formatExclusiveMaximum: true
     },
     country: {
-      type: 'string',
-      enum: getValidValues(formData.countries, 'value')
+      type: 'string'
+      // enum: getValidValues(formData.countries, 'value')
     },
     districts: {
       type: 'array'

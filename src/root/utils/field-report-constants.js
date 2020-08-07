@@ -308,10 +308,17 @@ export const countryList = [
   {value: '290', label: 'South Sudan', iso: 'ss'}
 ];
 
-export const countries = [
-  {value: '-- Country --', label: ''},
-  ...countryList,
-].sort((a, b) => a.label < b.label ? -1 : 1);
+export const countries = (countries) => {
+  return [
+    {value: '-- Country --', label: ''},
+    ...countryList,
+  ].sort((a, b) => a.label < b.label ? -1 : 1);
+};
+
+// export const countries = [
+//   {value: '-- Country --', label: ''},
+//   ...countryList,
+// ].sort((a, b) => a.label < b.label ? -1 : 1);
 
 export const countryIsoMapById = listToMap(
   countryList,

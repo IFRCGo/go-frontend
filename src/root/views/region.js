@@ -34,7 +34,7 @@ import {
 import { getRegionBoundingBox } from '#utils/region-bounding-box';
 import { commaSeparatedNumber as n } from '#utils/format';
 import {
-  countriesByRegion,
+  // countriesByRegion,
   getRegionId,
   regions as regionMeta
 } from '#utils/region-constants';
@@ -61,6 +61,8 @@ import MainMap from '#components/map/main-map';
 
 import LanguageContext from '#root/languageContext';
 import { resolveToString } from '#utils/lang';
+
+import { countriesSelector, countriesByRegionSelector } from '../selectors';
 
 class AdminArea extends SFPComponent {
   constructor (props, context) {
@@ -146,10 +148,17 @@ class AdminArea extends SFPComponent {
   }
 
   getMaskLayer (regionId) {
-    const countries = countriesByRegion[regionId.toString()];
-    const isoCodes = countries.map(getCountryMeta)
-      .filter(Boolean)
-      .map(d => d.iso.toUpperCase());
+    const countries = this.props.countriesByRegion[regionId.toString()];
+    console.log('countriesByRegion', this.props.countriesByRegion);
+    const isoCodes = countries.map(country => {
+      return country.iso.toUpperCase();
+    });
+
+    isoCodes.filter(Boolean).map(d => d.iso.toUpperCase());
+
+    // const isoCodes = countries.map(getCountryMeta)
+    //   .filter(Boolean)
+    //   .map(d => d.iso.toUpperCase());
     return {
       id: 'country-mask',
       type: 'fill',
@@ -386,8 +395,9 @@ const selector = (state, ownProps) => ({
   personnel: state.adminArea.personnel,
   keyFigures: state.adminArea.keyFigures,
   snippets: state.adminArea.snippets,
-  countries: state.countries,
-  appealsListStats: state.overallStats.appealsListStats
+  countries: countriesSelector(state),
+  appealsListStats: state.overallStats.appealsListStats,
+  countriesByRegion: countriesByRegionSelector(state)
 });
 
 const dispatcher = (dispatch) => ({

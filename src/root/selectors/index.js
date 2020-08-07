@@ -1,4 +1,5 @@
 // import { getResponseFromRequest } from '#utils/request';
+import _groupBy from 'lodash.groupby';
 
 const initialState = {
   fetching: false,
@@ -7,9 +8,41 @@ const initialState = {
   data: {}
 };
 
-export const countriesSelector = (state) => (
-  state.countries || {}
-);
+export const countriesSelector = (state) => {
+  if (state.countries.data.results && state.countries.data.results.length) {
+    let results = state.countries.data.results.map((country) => {
+      return {
+        'value': country.id,
+        'label': country.name || null,
+        'iso': country.iso || null,
+        'iso3': country.iso3 || null,
+        'region': country.region,
+        'bbox': country.bbox,
+        'centroid': country.centroid,
+        'independent': country.independent,
+        'society_name': country.society_name,
+        'society_url': country.society_url,
+        'url_ifrc': country.url_ifrc,
+        'overview': country.overview,
+        'key_priorities': country.key_priorities,
+        'record_type': country.record_type,
+        'inform_score': country.inform_score
+      };
+    });
+    return results;
+  } else {
+    return initialState;
+  }
+};
+
+export const countriesByRegionSelector = (state) => {
+  if (state.countries && state.countries.length) {
+    let countriesByRegion = _groupBy(state.countries.data.results, 'region');
+    return countriesByRegion;
+  } else {
+    return initialState;
+  }
+};
 
 export const countryOverviewSelector = (state) => (
   state.countryOverview
