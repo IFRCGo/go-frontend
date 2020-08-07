@@ -7,6 +7,10 @@ const initialState = {
   data: {}
 };
 
+export const countriesSelector = (state) => (
+  state.countries || {}
+);
+
 export const countryOverviewSelector = (state) => (
   state.countryOverview
 );
