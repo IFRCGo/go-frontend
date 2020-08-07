@@ -32,8 +32,7 @@ const fdrsQuery = {
 export const GET_FDRS = 'GET_FDRS';
 export function getFdrs (countryId) {
   return (dispatch, getState) => {
-    console.log('STATETETETE', countrySelector(getState(), countryId));
-    const { iso } = getCountryMeta(countryId) || {};
+    const { iso } = countrySelector(getState(), countryId) || {};
     const fdrsCode = getCode(iso);
     if (!fdrsCode) {
       return {

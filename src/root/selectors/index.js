@@ -10,7 +10,6 @@ const initialState = {
 };
 
 export const countriesSelector = (state) => {
-  console.log('state', state);
   if (state.countries.data.results && state.countries.data.results.length) {
     let results = state.countries.data.results.map((country) => {
       return {
@@ -48,7 +47,8 @@ export const countriesByRegionSelector = (state) => {
 
 export const countrySelector = (state, countryId) => {
   if (state.countries && state.countries.data.results) {
-    let thisCountry = _find(state.countries.data.results, ['id', countryId]);
+    countryId = typeof(countryId) === "string" ? Number(countryId) : countryId;
+    let thisCountry = _find(state.countries.data.results, { 'id': countryId } );
     return thisCountry;
   } else {
     return null;
