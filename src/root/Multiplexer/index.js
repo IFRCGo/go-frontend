@@ -55,10 +55,9 @@ function Multiplexer(props) {
   }, [getUser, getCountries]);
 
   const pending = React.useMemo(() => (
-    userResponse.fetching || countriesResponse.fetching
+    !userResponse.fetched || !countriesResponse.fetched
   ), [userResponse, countriesResponse]);
 
-  // console.log('pending', countriesResponse);
   if (pending) {
     return (
       <div className={styles.initialLoading}>
@@ -120,7 +119,7 @@ function Multiplexer(props) {
 
 const mapStateToProps = (state) => ({
   userResponse: userResponseSelector(state),
-  countriesResponse: countriesSelector(state)
+  countriesResponse: state.countries
 });
 
 const mapDispatchToProps = (dispatch) => ({
