@@ -1,3 +1,7 @@
+### Release 4.3.12
+
+Hotfix release: Fix undefined string for Potentially Affected in Field Report frontend
+
 ### Release 4.3.11
 
 This release includes a lot of code changes to support future translations support, as well as significant changes toward implementing updated site designs.
