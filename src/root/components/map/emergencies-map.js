@@ -132,7 +132,6 @@ class EmergenciesMap extends React.Component {
 
   render () {
     const {
-      fetched,
       error,
       data
     } = this.props.lastMonth;
