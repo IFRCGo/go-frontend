@@ -28,7 +28,6 @@ import {
   getRegionPersonnel,
   getAdmAreaKeyFigures,
   getAdmAreaSnippets,
-  getCountries,
   getAppealsListStats
 } from '#actions';
 import { getRegionBoundingBox } from '#utils/region-bounding-box';
@@ -143,13 +142,13 @@ class AdminArea extends SFPComponent {
     this.props._getRegionPersonnel(id);
     this.props._getAdmAreaKeyFigures(props.type, id);
     this.props._getAdmAreaSnippets(props.type, id);
-    this.props._getCountries(id);
+    // this.props._getCountries(id);
     this.props._getAppealsListStats({regionId: id});
   }
 
   getMaskLayer (regionId) {
-    const countries = this.props.countriesByRegion[regionId.toString()];
     console.log('countriesByRegion', this.props.countriesByRegion);
+    const countries = this.props.countriesByRegion[regionId.toString()];
     const isoCodes = countries.map(country => {
       return country.iso.toUpperCase();
     });
@@ -407,7 +406,7 @@ const dispatcher = (dispatch) => ({
   _getRegionPersonnel: (...args) => dispatch(getRegionPersonnel(...args)),
   _getAdmAreaKeyFigures: (...args) => dispatch(getAdmAreaKeyFigures(...args)),
   _getAdmAreaSnippets: (...args) => dispatch(getAdmAreaSnippets(...args)),
-  _getCountries: (...args) => dispatch(getCountries(...args)),
+  // _getCountries: (...args) => dispatch(getCountries(...args)),
   _getAppealsListStats: (...args) => dispatch(getAppealsListStats(...args)),
 });
 

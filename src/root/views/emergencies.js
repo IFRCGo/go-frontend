@@ -17,6 +17,7 @@ import LanguageContext from '#root/languageContext';
 
 class Emergencies extends React.Component {
   componentDidMount () {
+    console.log('countries', this.props.countries);
     this.props._getLastMonthsEmergencies();
     this.props._getAggregateEmergencies(DateTime.local().minus({months: 11}).startOf('day').toISODate(), 'month');
   }
@@ -80,6 +81,7 @@ if (environment !== 'production') {
 const selector = (state) => ({
   lastMonth: state.emergencies.lastMonth,
   aggregate: state.emergencies.aggregate,
+  countries: state.countries
 });
 
 const dispatcher = (dispatch) => ({

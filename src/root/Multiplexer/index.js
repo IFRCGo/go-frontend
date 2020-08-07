@@ -58,6 +58,7 @@ function Multiplexer(props) {
     userResponse.fetching || countriesResponse.fetching
   ), [userResponse, countriesResponse]);
 
+  // console.log('pending', countriesResponse);
   if (pending) {
     return (
       <div className={styles.initialLoading}>

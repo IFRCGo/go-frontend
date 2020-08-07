@@ -23,7 +23,7 @@ import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 
 import {
-  getCountries,
+  // getCountries,
   getDistrictsForCountryPF,
   getEventList,
   postProject,
@@ -218,7 +218,7 @@ class ProjectForm extends React.PureComponent {
   }
 
   componentDidMount () {
-    this.props._getCountries();
+    // this.props._getCountries();
 
     if (this.props.countryId) {
       this.props._getEventList(this.props.countryId);
@@ -906,7 +906,7 @@ const selector = (state, ownProps) => ({
 });
 
 const dispatcher = dispatch => ({
-  _getCountries: (...args) => dispatch(getCountries(...args)),
+  // _getCountries: (...args) => dispatch(getCountries(...args)),
   _getDistricts: (...args) => dispatch(getDistrictsForCountryPF(...args)),
   _getEventList: (...args) => dispatch(getEventList(...args)),
   _postProject: (...args) => dispatch(postProject(...args)),

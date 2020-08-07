@@ -9,6 +9,7 @@ const initialState = {
 };
 
 export const countriesSelector = (state) => {
+  console.log('state', state);
   if (state.countries.data.results && state.countries.data.results.length) {
     let results = state.countries.data.results.map((country) => {
       return {
@@ -36,7 +37,8 @@ export const countriesSelector = (state) => {
 };
 
 export const countriesByRegionSelector = (state) => {
-  if (state.countries && state.countries.length) {
+  console.log('countries by region', state.countries);
+  if (state.countries && state.countries.data.results) {
     let countriesByRegion = _groupBy(state.countries.data.results, 'region');
     return countriesByRegion;
   } else {
