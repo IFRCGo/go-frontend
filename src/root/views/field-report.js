@@ -371,7 +371,7 @@ class FieldReport extends React.Component {
       <React.Fragment>
         <dl className='dl-horizontal numeric-list'>
           <dt>
-            <Translate stringId='Potentially Affected (RC): '/>
+            <Translate stringId='fieldReportPotentiallyAffected'/>
           </dt>
           <dd>{n(get(data, 'num_potentially_affected'))}</dd>
           <dt>
