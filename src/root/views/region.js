@@ -150,10 +150,12 @@ class AdminArea extends SFPComponent {
     console.log('countriesByRegion', this.props.countriesByRegion);
     const countries = this.props.countriesByRegion[regionId.toString()];
     const isoCodes = countries.map(country => {
+      // console.log('country', country);
       return country.iso.toUpperCase();
     });
 
-    isoCodes.filter(Boolean).map(d => d.iso.toUpperCase());
+    console.log('isocode', isoCodes);
+    // isoCodes.filter(Boolean).map(d => d.iso.toUpperCase());
 
     // const isoCodes = countries.map(getCountryMeta)
     //   .filter(Boolean)

@@ -1,5 +1,6 @@
 // import { getResponseFromRequest } from '#utils/request';
 import _groupBy from 'lodash.groupby';
+import _find from 'lodash.find';
 
 const initialState = {
   fetching: false,
@@ -37,12 +38,20 @@ export const countriesSelector = (state) => {
 };
 
 export const countriesByRegionSelector = (state) => {
-  console.log('countries by region', state.countries);
   if (state.countries && state.countries.data.results) {
     let countriesByRegion = _groupBy(state.countries.data.results, 'region');
     return countriesByRegion;
   } else {
     return initialState;
+  }
+};
+
+export const countrySelector = (state, countryId) => {
+  if (state.countries && state.countries.data.results) {
+    let thisCountry = _find(state.countries.data.results, ['id', countryId]);
+    return thisCountry;
+  } else {
+    return null;
   }
 };
 
