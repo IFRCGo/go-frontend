@@ -267,6 +267,10 @@ class FieldReportForm extends React.Component {
       _set(data, 'status', formData.statusEventValue);
     }
 
+    if (field === 'country' && val === null) {
+      _set(data, 'districts', []);
+    }
+
     if (field === 'isCovidReport' && val && val === 'true') {
       _set(data, 'status', formData.statusEventValue);
       _set(data, 'disasterType', '1');
@@ -385,6 +389,7 @@ class FieldReportForm extends React.Component {
     const districtChoices = this.getDistrictChoices() || [];
     const fields = formData.getFieldsStep1(strings);
     const status = this.getStatus();
+    console.log('watch', this.state.data.assistance);
     return (
       <Fold title='Context' foldWrapperClass='fold--main fold--transparent' foldTitleClass='margin-reset'>
         <FormRadioGroup
