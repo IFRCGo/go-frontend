@@ -93,7 +93,12 @@ export default class SourceEstimation extends React.Component {
                   classLabel={c('label-secondary', {'visually-hidden': idx > 0})}
                   classWrapper='estimation__item col col-8-mid'
                   selectedOption={o.source}
-                  onChange={this.onSourceChange.bind(this, idx)} />
+                  onChange={this.onSourceChange.bind(this, idx)}>
+                    <FormError
+                    errors={errors}
+                    property={`${fieldKey}[${idx}].source`}
+                  />
+                  </FormRadioGroup>
                 {/*
                 We do not want these buttons to Add new sources any more.
                 Leaving commented out for now. When we delete this, we should

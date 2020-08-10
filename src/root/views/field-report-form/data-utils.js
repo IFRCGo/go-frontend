@@ -30,10 +30,15 @@ export function dataPathToDisplay (path, keyword) {
 
     // Step 2.
     'numInjured.estimation': 'Estimation Injured',
+    'numInjured.source': 'Source Injured',
     'numDead.estimation': 'Estimation Dead',
+    'numDead.source': 'Source Dead',
     'numMissing.estimation': 'Estimation Missing',
+    'numMissing.source': 'Source Missing',
     'numAffected.estimation': 'Estimation Affected',
+    'numAffected.source': 'Source Affected',
     'numDisplaced.estimation': 'Estimation Displaced',
+    'numDisplaced.source': 'Source Displaced',
     'numPotentiallyAffected': 'Estimation Potentially Affected',
     'numHighestRisk': 'Estimation Highest Risk',
     'affectedPopCentres': 'Affected Pop Centres',

@@ -53,6 +53,10 @@ export const step2 = {
         properties: {
           estimation: { type: 'integer', minimum: 0 },
           source: {enum: ['red-cross', 'government', 'other']}
+        },
+        dependencies: {
+          estimation: ['source'],
+          source: ['estimation'],
         }
       }
     },

@@ -389,7 +389,6 @@ class FieldReportForm extends React.Component {
     const districtChoices = this.getDistrictChoices() || [];
     const fields = formData.getFieldsStep1(strings);
     const status = this.getStatus();
-    console.log('watch', this.state.data.assistance);
     return (
       <Fold title='Context' foldWrapperClass='fold--main fold--transparent' foldTitleClass='margin-reset'>
         <FormRadioGroup
