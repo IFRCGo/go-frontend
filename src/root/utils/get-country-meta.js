@@ -1,6 +1,5 @@
-import { countries } from './field-report-constants';
-export function getCountryMeta (countryId) {
-  const searchTerm = countryId.toString();
-  const result = countries.find(d => d.value === searchTerm);
+export function getCountryMeta (countryId, countries) {
+  countryId = typeof(countryId) === "string" ? Number(countryId) : countryId;
+  const result = countries.find(d => d.value === countryId);
   return result || null;
 }

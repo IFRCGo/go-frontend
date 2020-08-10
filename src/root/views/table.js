@@ -20,6 +20,7 @@ import BreadCrumb from '#components/breadcrumb';
 
 import LanguageContext from '#root/languageContext';
 import { resolveToString } from '#utils/lang';
+import { countriesSelector } from '#selectors';
 
 class Table extends React.Component {
   getDisplayTypes = (strings) => ({
@@ -51,7 +52,7 @@ class Table extends React.Component {
       titleArea = get(regions, [query.region.toString(), 'name']);
       props.region = titleArea ? query.region : null;
     } else if (query.hasOwnProperty('country')) {
-      titleArea = getCountryMeta(query.country);
+      titleArea = getCountryMeta(query.country, this.props.countries);
       titleArea = titleArea ? titleArea.label : null;
       props.country = titleArea ? query.country : null;
     }
@@ -118,7 +119,7 @@ class Table extends React.Component {
         });
       }
       if (qs.hasOwnProperty('country')) {
-        const country = getCountryMeta(qs.country);
+        const country = getCountryMeta(qs.country, this.props.countries);
         extraCrumbs.push({
           link: `/countries/${qs.country}`,
           name: country.label
@@ -168,6 +169,7 @@ if (environment !== 'production') {
 }
 
 const selector = (state) => ({
+  countries: countriesSelector(state)
 });
 
 const dispatcher = {};

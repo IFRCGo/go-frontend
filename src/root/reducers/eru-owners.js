@@ -4,7 +4,7 @@ import { get } from '#utils/utils';
 import { nope } from '#utils/format';
 import eruTypes from '#utils/eru-types';
 import { getCentroid } from '#utils/country-centroids';
-import { getCountryMeta } from '#utils/get-country-meta';
+import { countrySelector } from '#selectors';
 
 const initialState = {
   // fetching: false,
@@ -35,14 +35,14 @@ export default function reducer (state = initialState, action) {
         fetching: false,
         fetched: true,
         receivedAt: action.receivedAt,
-        data: createStoreFromRaw(action.data)
+        data: createStoreFromRaw(action.data, action.state)
       });
       break;
   }
   return state;
 }
 
-function createStoreFromRaw (raw) {
+function createStoreFromRaw (raw, state) {
   const records = raw.results || [];
 
   // flatten the data structure
@@ -78,7 +78,7 @@ function createStoreFromRaw (raw) {
 
   const erusByOwnerNation = _groupBy(deployed, 'eru_owner.id');
   const owners = Object.keys(erusByOwnerNation).filter(Boolean).map(key => ({
-    name: getCountryMeta(key).label,
+    name: countrySelector(state, key).name,
     items: erusByOwnerNation[key].reduce((acc, next) => acc + Number(get(next, 'equipment_units', 0)), 0)
   })).sort((a, b) => a.items > b.items ? -1 : 1);
 

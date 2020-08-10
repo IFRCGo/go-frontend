@@ -23,7 +23,7 @@ import NationalSocietiesEngagedPer from '#components/preparedness/national-socie
 import GlobalPreparednessHighlights from '#components/preparedness/global-preparedness-highlights';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
-
+import { countriesSelector } from '#selectors';
 // import _groupBy from 'lodash.groupby';
 
 class Preparedness extends React.Component {
@@ -60,7 +60,7 @@ class Preparedness extends React.Component {
 
       nextProps.collaboratingPerCountry.data.results.map((perForm) => {
         if (perForm.country) {
-          let countryMeta = getCountryMeta(perForm.country.id);
+          let countryMeta = getCountryMeta(perForm.country.id, this.props.countries);
           perForm.country.iso = countryMeta.iso;
           let countryCentroid = getCentroid(perForm.country.iso);
           perForm.country.centroid = countryCentroid;
@@ -215,7 +215,8 @@ const selector = (state) => ({
   perOverviewForm: state.perForm.getPerOverviewForm,
   perWorkPlan: state.perForm.getPerWorkPlan,
   getPerMission: state.perForm.getPerMission,
-  user: state.user
+  user: state.user,
+  countries: countriesSelector(state)
 });
 
 const dispatcher = (dispatch) => ({

@@ -311,7 +311,7 @@ export const countryList = [
 export const countries = (countries) => {
   return [
     {value: '-- Country --', label: ''},
-    ...countryList,
+    ...countries,
   ].sort((a, b) => a.label < b.label ? -1 : 1);
 };
 
