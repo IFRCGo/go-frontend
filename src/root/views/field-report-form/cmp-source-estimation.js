@@ -16,7 +16,7 @@ export default class SourceEstimation extends React.Component {
   onEstimationChange (idx, e) {
     const { values, onChange } = this.props;
     const newVals = _cloneDeep(values);
-    newVals[idx].estimation = e.target.value;
+    newVals[idx].estimation = e.target.value === '' ? undefined :  e.target.value;
     onChange(newVals);
   }
 
@@ -73,7 +73,7 @@ export default class SourceEstimation extends React.Component {
               <div key={o.source || idx} className='estimation row flex-mid'>
                 <FormInput
                   label={estimationLabel}
-                  type='text'
+                  type='number'
                   name={`${name}[${idx}][estimation]`}
                   id={`${name}-${idx}-estimation`}
                   classLabel={c('label-secondary', {'visually-hidden': idx > 0})}
