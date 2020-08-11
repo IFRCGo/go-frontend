@@ -44,7 +44,7 @@ export const getVisibility = (strings) => [
   }
 ];
 
-// FIXME: pull this list from server
+// FIXME: remove because it's deprecated
 export const countryList = [
   {value: '1', label: 'Ukraine', iso: 'ua'},
   {value: '2', label: 'United Arab Emirates', iso: 'ae'},
@@ -308,6 +308,8 @@ export const countryList = [
   {value: '290', label: 'South Sudan', iso: 'ss'}
 ];
 
+// This transforms a countries collection to be used
+// directly in a select dropdown
 export const countries = (countries) => {
   return [
     {value: '-- Country --', label: ''},
@@ -315,17 +317,14 @@ export const countries = (countries) => {
   ].sort((a, b) => a.label < b.label ? -1 : 1);
 };
 
-// export const countries = [
-//   {value: '-- Country --', label: ''},
-//   ...countryList,
-// ].sort((a, b) => a.label < b.label ? -1 : 1);
-
+// FIXME: remove because deprecated. Except from https://github.com/IFRCGo/go-frontend/blob/feature/geo-apis/src/root/views/CountryProfile/Map.js#L1 -- can't figure out any references
 export const countryIsoMapById = listToMap(
   countryList,
   d => d.value,
   d => d.iso,
 );
 
+// FIXME: remove because this isn't used anywhere
 export const countryIsoMapByName = listToMap(
   countryList,
   d => window.decodeURI(d.name),

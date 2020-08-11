@@ -7,11 +7,11 @@ import {
   deleteJSON,
   withToken
 } from '#utils/network';
-import { countryIsoMapById } from '#utils/field-report-constants';
 import { stringify as buildAPIQS } from 'qs';
 import { DateTime } from 'luxon';
 
 import { countriesByRegion } from '#utils/region-constants';
+import { countrySelector } from '#selectors';
 
 export const TOKEN = 'TOKEN';
 export function getAuthToken (username, password) {
@@ -109,13 +109,16 @@ export function getNationalSocietyActivitiesWoFilters (regionId, filters) {
 
 export const GET_PROJECTS = 'GET_PROJECTS';
 export function getProjects (countryId, filterValues) {
-  const filters = {
-    limit: 9999,
-    country: countryIsoMapById[countryId],
-    ...filterValues
+  return (dispatch, getState) => {
+    const { iso } = countrySelector(getState(), countryId);
+    const filters = {
+      limit: 9999,
+      country: iso,
+      ...filterValues
+    };
+    const f = buildAPIQS(filters);
+    dispatch(fetchJSON(`api/v2/project/?${f}`, GET_PROJECTS, withToken(), { countryId }));
   };
-  const f = buildAPIQS(filters);
-  return fetchJSON(`api/v2/project/?${f}`, GET_PROJECTS, withToken(), { countryId });
 }
 
 export const POST_PROJECT = 'POST_PROJECT';

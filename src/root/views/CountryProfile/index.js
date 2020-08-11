@@ -6,7 +6,6 @@ import { getCountryOverview as getCountryOverviewAction } from '#actions';
 import { countryOverviewSelector } from '#selectors';
 
 import BlockLoading from '#components/block-loading';
-import { countryIsoMapById } from '#utils/field-report-constants';
 
 import KeyIndicators from './KeyIndicators';
 import NSIndicators from './NSIndicators';
@@ -20,6 +19,8 @@ import KeyDocuments from './KeyDocuments';
 import ExternalSources from './ExternalSources';
 
 import styles from './styles.module.scss';
+import { countriesSelector } from '../../selectors';
+import { getCountryMeta } from '../../utils/get-country-meta';
 
 function Section(p) {
   const {
@@ -49,8 +50,7 @@ class CountryOverview extends React.PureComponent {
       return;
     }
 
-    const currentCountryIso = countryIsoMapById[countryId];
-
+    const currentCountryIso = getCountryMeta(countryId, this.props.countries).iso;
     getCountryOverview(currentCountryIso);
   }
 
@@ -146,6 +146,7 @@ class CountryOverview extends React.PureComponent {
 
 const mapStateToProps = (state) => ({
   countryOverview: countryOverviewSelector(state),
+  countries: countriesSelector(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
