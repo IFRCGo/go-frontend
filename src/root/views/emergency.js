@@ -88,7 +88,7 @@ class Emergency extends React.Component {
     }
 
     if (this.props.event.fetching && !nextProps.event.fetching) {
-      hideGlobalLoading();
+      // hideGlobalLoading();
 
       // Redirect if it's a merged Emergency
       if (
@@ -160,7 +160,7 @@ class Emergency extends React.Component {
   }
 
   getEvent (id) {
-    showGlobalLoading();
+    // showGlobalLoading();
     this.props._getEventById(id);
     this.props._getSitrepsByEventId(id);
   }
@@ -432,10 +432,11 @@ class Emergency extends React.Component {
   userHasPerms (fieldReport) {
     const userIsAnon = !this.props.isLogged;
     const userIsSuperuser = this.props.profile.fetched && this.props.profile.data.is_superuser;
+    const userIsIFRCAdmin = this.props.profile.fetched && this.props.profile.data.is_ifrc_admin;
     const visibility = fieldReport.visibility;
 
     // superusers can see all reports
-    if (userIsSuperuser) {
+    if (userIsSuperuser || userIsIFRCAdmin) {
       return true;
     }
 
@@ -655,7 +656,7 @@ class Emergency extends React.Component {
     if (!this.hasKeyFigures()) return null;
 
     return (
-      <Fold title={strings.emergencyKeyFiguresTitle} foldWrapperClass="key-figures">
+      <Fold title={strings.emergencyKeyFiguresTitle} foldWrapperClass="key-figures fold--main padding-b-reset" foldContainerClass='container--padding-reset'>
         <div className='sumstats__wrap'>
           <ul className="sumstats">
             {kf.map((o) => (
@@ -710,12 +711,13 @@ class Emergency extends React.Component {
     }
   }
 
-  syncLoadingAnimation = memoize((projectForm = {}) => {
-    const shouldShowLoadingAnimation = projectForm.fetching;
+  syncLoadingAnimation = memoize((projectForm = {}, eventForm = {}, siteRepForm = {}) => {
+    const shouldShowLoadingAnimation = projectForm.fetching || eventForm.fetching || siteRepForm.fetching;
 
     if (shouldShowLoadingAnimation) {
-      this.loading = true;
-      showGlobalLoading();
+      if (!this.loading) {
+        this.loading = showGlobalLoading();
+      }
     } else {
       if (this.loading) {
         hideGlobalLoading();
@@ -796,15 +798,36 @@ class Emergency extends React.Component {
         : 0;
 
     const { strings } = this.props;
-    const countryLink = `/countries/${this.props.event.data.countries[0].id}`;
-    const countryName = data.countries[0].name;
-    const regionId = this.props.event.data.countries[0].region;
-    let regionLink, regionName;
-    if (regionId) {
-      regionLink = `/regions/${regionId}`;
-      regionName = getRegionById(regionId.toString()).name;
-    }
+    let country = null,
+      regionId = null,
+      countryLink = null,
+      regionLink = null,
+      regionName = null;
 
+    let crumbs = [
+      {
+        link: `/emergency/${get(data, 'id')}`,
+        name: get(data, 'name', strings.breadCrumbEmergency)
+      }
+    ];
+    if (data.countries.length > 0) {
+      country = data.countries[0];
+      countryLink = `/countries/${this.props.event.data.countries[0].id}`;
+      crumbs.push({
+        link: countryLink, name: country.name
+      });
+      regionId = country.region;
+      if (regionId) {
+        regionLink = `/regions/${regionId}`;
+        regionName = getRegionById(regionId.toString()).name;
+      }
+    }
+    crumbs.push({
+      link: '/emergencies', name: strings.breadCrumbEmergencies,
+    });
+    crumbs.push({
+      link: '/', name: strings.breadCrumbHome,
+    });
     return (
       <section className="inpage">
         <Helmet>
@@ -818,16 +841,7 @@ class Emergency extends React.Component {
             <div className='col col-6-sm col-7-mid'>
               <BreadCrumb
                 breadcrumbContainerClass='padding-reset'
-                crumbs={[
-                  {
-                    link: `/emergency/${get(data, 'id')}`,
-                    name: get(data, 'name', strings.breadCrumbEmergency)
-                  },
-                  { link: countryLink, name: countryName },
-
-                  { link: '/emergencies', name: strings.breadCrumbEmergencies},
-                  { link: '/', name: strings.breadCrumbHome},
-                ]}
+                crumbs={crumbs}
               />
             </div>
 
@@ -890,23 +904,25 @@ class Emergency extends React.Component {
                       </Link>
                     </div>
                   ) : null }
+                  { country ? (
                   <div className='col spacing-half-v flex'>
                     <Link to={countryLink}
                       className="link link--with-icon"
                     >
                       <span className='link--with-icon-text'>
-                        {countryName}
+                        {country.name}
                       </span>
                       <span className='collecticon-chevron-right link--with-icon-inner'></span>
                     </Link>
                   </div>
+                  ) : null }
                 </div>
                 {this.renderHeaderStats()}
               </div>
             </div>
           </div>
         </header>
-        <div className='tab__wrap'>
+        <div className='tab__wrap margin-2-t'>
           <Tabs
             selectedIndex={selectedIndex}
             onSelect={(index) => handleTabChange(index)}
@@ -921,11 +937,11 @@ class Emergency extends React.Component {
               <div className="inner">
                 <TabPanel>
                   <TabContent isError={!this.hasKeyFigures()} title={strings.emergencyKeyFiguresTitle}>
-                    {this.renderKeyFigures()}
+                    <div className='container-lg'>
+                      {this.renderKeyFigures()}
+                    </div>
                   </TabContent>
-                  <div className='container-lg'>
-                    {showExportMap()}
-                  </div>
+                  {showExportMap()}
                   <TabContent
                     isError={!summary}
                     errorMessage={NO_DATA}
@@ -1053,7 +1069,7 @@ class Emergency extends React.Component {
   }
 
   render () {
-    this.syncLoadingAnimation(this.props.projectForm);
+    this.syncLoadingAnimation(this.props.projectForm, this.props.event, this.props.siteRepResponse);
     const { strings } = this.props;
 
     return (
@@ -1109,6 +1125,7 @@ const selector = (state, ownProps) => ({
     fetching: false,
     fetched: false,
   }),
+  siteRepResponse: state.situationReports,
   situationReports: get(
     state.situationReports,
     ['reports', ownProps.match.params.id],

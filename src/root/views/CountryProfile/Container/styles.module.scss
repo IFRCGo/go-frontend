@@ -1,0 +1,41 @@
+@import '~styles/settings/variables';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 64px 6px;
+
+  .header {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    padding: 0 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
+
+    .heading {
+      text-transform: uppercase;
+      margin: 0;
+      padding: 10px;
+      letter-spacing: 0.1rem;
+      flex-grow: 1;
+    }
+
+    .export-button-container {
+      flex-shrink: 0;
+
+      .export-button {
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    .header-content {
+      flex-shrink: 0;
+    }
+  }
+
+  .content {
+    flex-grow: 1;
+    padding: 10px 0;
+  }
+}

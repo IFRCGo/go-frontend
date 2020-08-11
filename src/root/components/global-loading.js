@@ -112,8 +112,11 @@ export default GlobalLoading;
  */
 export function showGlobalLoading (count = 1) {
   if (theGlobalLoading === null) {
-    throw new Error('<GlobalLoading /> component not mounted');
+    // throw new Error('<GlobalLoading /> component not mounted');
+    console.error('<GlobalLoading /> component not mounted');
+    return false;
   }
+
   if (hideTimeout) {
     clearTimeout(hideTimeout);
   }
@@ -124,6 +127,8 @@ export function showGlobalLoading (count = 1) {
     showTimestamp: Date.now(),
     revealed: true
   });
+
+  return true;
 }
 
 /**

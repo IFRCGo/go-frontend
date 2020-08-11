@@ -1169,6 +1169,7 @@ export default {
   emergencyPageTitle: 'IFRC Go - {name}',
   emergencyKeyFiguresTitle: 'Key Figures',
   emergencyOverviewTitle: 'Overview',
+  emergencyAffectedRegions: 'Affected Regions',
   emergencySituationalOverviewTitle: 'Situational Overview',
   emergencyAlertsTitle: 'Alerts',
   emergencyPersonnelTitle: 'Personnel',
@@ -1223,4 +1224,9 @@ export default {
 
   perPageTitle: 'IFRC Go - PER',
   countryOverviewTab: 'Country Profile',
+
+  countryProfileKeyDocumentsTitle: 'Key Documents',
+  countryProfileExternalSourcesTitle: 'External Sources',
+  countryProfileDateRange: 'Date Range',
+  countryProfileSearchPlaceholder: 'Search',
 };

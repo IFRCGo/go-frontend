@@ -20,6 +20,7 @@ import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 import ConfirmModal from '#components/confirm-modal';
 import BlockLoading from '#components/block-loading';
+
 import {
   getResultsFromResponse,
   getDataFromResponse,
@@ -209,9 +210,7 @@ function ThreeW (p) {
               onClick={handleAddButtonClick}
               disabled={disabled}
             >
-              <Translate
-                stringId="threeWAdd"
-              />
+              <Translate stringId="threeWAdd" />
             </button>
           )}
           <button
@@ -222,9 +221,7 @@ function ThreeW (p) {
             onClick={handleExportButtonClick}
             disabled={shouldDisableExportButton}
           >
-            <Translate
-              stringId="threeWExport"
-            />
+            <Translate stringId="threeWExport" />
           </button>
         </div>
       </header>

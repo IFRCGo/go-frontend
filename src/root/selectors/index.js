@@ -76,3 +76,11 @@ export const languageBulkResponseSelector = (state) => (
 export const currentLangugageSelector = (state) => (
   languageSelector(state).current || 'en'
 );
+
+export const userResponseSelector = (state) => (
+  state.me || {}
+);
+
+export const userSelector = (state) => (
+  userResponseSelector(state).data
+);
