@@ -12,9 +12,11 @@ import {
   Tooltip,
 } from 'recharts';
 
-import { countryNameMapById } from '#utils/field-report-constants';
 import Translate from '#components/Translate';
 import languageContext from '#root/languageContext';
+import { countriesSelector } from '../../selectors';
+import connect from 'react-redux/lib/connect/connect';
+import { getCountryMeta } from '../../utils/get-country-meta';
 
 
 const DetailElement = ({
@@ -77,12 +79,12 @@ class PastOperations extends React.PureComponent {
     const fundedValue = `${Math.round(Math.min(100, 100 * fundedFraction))}%`;
 
     const startDate = new Date(data.start_date);
-
+    const countryName = getCountryMeta(countryId, this.props.countries).label || '';
     return (
       <div className='event-detail-tooltip'>
         <div className='basic-detail'>
           <div className='event-country-name'>
-            { countryNameMapById[countryId] }
+            { countryName }
           </div>
           <div className='tc-separator'>
             -
@@ -187,5 +189,11 @@ class PastOperations extends React.PureComponent {
   }
 }
 
+const selector = (state, ownProps) => ({
+  countries: countriesSelector(state)
+});
+
+const dispatcher = (dispatch) => ({});
+
 PastOperations.contextType = languageContext;
-export default PastOperations;
+export default connect(selector, dispatcher)(PastOperations);

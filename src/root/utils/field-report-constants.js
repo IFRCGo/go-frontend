@@ -332,6 +332,7 @@ export const countryIsoMapByName = listToMap(
   d => d.iso,
 );
 
+// FIXME: remove because this is deprecated
 export const countryNameMapById = listToMap(
   countryList,
   d => d.value,
