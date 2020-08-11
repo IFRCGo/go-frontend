@@ -5,6 +5,9 @@ import IndicatorOutput from './IndicatorOutput';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 
+import Card from './Card';
+import styles from './styles.module.scss';
+
 class NSIndicators extends React.PureComponent {
   render () {
     const {
@@ -18,39 +21,34 @@ class NSIndicators extends React.PureComponent {
     const { strings } = this.context;
 
     return (
-      <div className='col col-6-sm flex'>
-        <div className={_cs(className, 'chart box__content overview-ns-indicators')}>
-          <figcaption className='fold__title'>
-            <h3 className='tc-heading margin-reset'>
-              <Translate stringId='NSIndicatorsTitle' />
-            </h3>
-          </figcaption>
-          <div className='tc-content'>
-            <IndicatorOutput
-              label={strings.NSIndicatorsIncome}
-              value={income}
-              normalizeValue
-              fixedTo={1}
-            />
-            <IndicatorOutput
-              label={strings.NSIndicatorsExpenditure}
-              value={expenditures}
-              normalizeValue
-              fixedTo={1}
-            />
-            <IndicatorOutput
-              label={strings.NSIndicatorsVolunteers}
-              value={volunteers}
-              addSeparatorToValue
-            />
-            <IndicatorOutput
-              label={strings.NSIndicatorsTrained}
-              value={trainedInFirstAid}
-              addSeparatorToValue
-            />
-          </div>
-        </div>
-      </div>
+      <Card
+        className={_cs(className, styles.nsIndicator)}
+        heading={<Translate stringId='NSIndicatorsTitle' />}
+        contentClassName={styles.content}
+      >
+        <IndicatorOutput
+          label={strings.NSIndicatorsIncome}
+          value={income}
+          normalizeValue
+          fixedTo={1}
+        />
+        <IndicatorOutput
+          label={strings.NSIndicatorsExpenditure}
+          value={expenditures}
+          normalizeValue
+          fixedTo={1}
+        />
+        <IndicatorOutput
+          label={strings.NSIndicatorsVolunteers}
+          value={volunteers}
+          addSeparatorToValue
+        />
+        <IndicatorOutput
+          label={strings.NSIndicatorsTrained}
+          value={trainedInFirstAid}
+          addSeparatorToValue
+        />
+      </Card>
     );
   }
 }
