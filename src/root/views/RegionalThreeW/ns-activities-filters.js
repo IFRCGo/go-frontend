@@ -2,8 +2,9 @@ import React, { useContext } from 'react';
 import Faram from '@togglecorp/faram';
 
 import SelectInput from '#components/form-elements/select-input';
-import { countryNameMapByIso } from '#utils/field-report-constants';
 import LanguageContext from '#root/languageContext';
+import { countriesByIso } from '../../selectors';
+import connect from 'react-redux/lib/connect/connect';
 
 const filterSchema = {
   fields: {
@@ -32,7 +33,6 @@ function NSActivitiesFilters (p) {
     onChange,
     data = emptyData,
   } = p;
-
   const [
     supportingNSOptions,
     activityOptions,
@@ -41,7 +41,7 @@ function NSActivitiesFilters (p) {
     (data.nodes || []).filter(d => d.type === 'supporting_ns').map(d => ({
       label: d.name,
       value: d.id,
-      countryName: countryNameMapByIso[d.iso] || '',
+      countryName: p.countriesByIso[d.iso].name || '',
     })).sort((a, b) => a.countryName.localeCompare(b.countryName)),
     (data.nodes || []).filter(d => d.type === 'sector').map(toLabelValue).sort(compareString),
     (data.nodes || [])
@@ -86,4 +86,10 @@ function NSActivitiesFilters (p) {
   );
 }
 
-export default NSActivitiesFilters;
+const selector = (state, ownProps) => ({
+  countriesByIso: countriesByIso(state)
+});
+
+const dispatcher = (dispatch) => ({});
+
+export default connect(selector, dispatcher)(NSActivitiesFilters);

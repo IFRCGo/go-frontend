@@ -7,7 +7,6 @@ import {
   addSeparator,
 } from '@togglecorp/fujs';
 
-import { countryIsoMapById } from '#utils/field-report-constants';
 import { getDistrictsForCountryPF } from '#actions';
 
 import { getBoundingBox } from '#utils/country-bounding-box';
@@ -17,6 +16,9 @@ import MapFooter from '#components/map/common/map-footer';
 
 import newMap from '#utils/get-new-map';
 import LanguageContext from '#root/languageContext';
+
+import { getCountryMeta } from '#utils/get-country-meta';
+import { countriesSelector } from '#selectors';
 
 const emptyList = [];
 const emptyObject = {};
@@ -164,7 +166,7 @@ class ThreeWMap extends React.PureComponent {
   }
 
   resetBounds = (countryId, largePadding = false) => {
-    const iso2 = countryIsoMapById[countryId].toUpperCase();
+    const iso2 = getCountryMeta(countryId, this.props.countries).iso.toUpperCase();
     const bbox = getBoundingBox(iso2);
     this.map.fitBounds(
       bbox,
@@ -331,6 +333,7 @@ ThreeWMap.contextType = LanguageContext;
 
 const selector = (state, ownProps) => ({
   districtsResponse: state.districts,
+  countries: countriesSelector(state)
 });
 
 const dispatcher = dispatch => ({

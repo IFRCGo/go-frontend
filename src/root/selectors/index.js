@@ -55,6 +55,15 @@ export const countrySelector = (state, countryId) => {
   }
 };
 
+export const countriesByIso = (state) => {
+  if (state.countries && state.countries.data.results) {
+    let countriesByIso = _groupBy(state.countries.data.results, 'iso');
+    return countriesByIso;
+  } else {
+    return null;
+  }
+};
+
 export const countryOverviewSelector = (state) => (
   state.countryOverview
 );

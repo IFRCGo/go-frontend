@@ -3,7 +3,8 @@ import Faram from '@togglecorp/faram';
 import _cs from 'classnames';
 
 import SelectInput from '../../components/form-elements/select-input';
-import { countryNameMapByIso } from '../../utils/field-report-constants';
+import connect from 'react-redux/lib/connect/connect';
+import { countriesByIso } from '#selectors';
 
 import styles from './styles.module.scss';
 
@@ -34,6 +35,7 @@ function NSActivitiesFilters (p) {
     onChange,
     data = emptyData,
     className,
+    countriesByIso,
   } = p;
 
   const [
@@ -44,7 +46,7 @@ function NSActivitiesFilters (p) {
     (data.nodes || []).filter(d => d.type === 'supporting_ns').map(d => ({
       label: d.name,
       value: d.id,
-      countryName: countryNameMapByIso[d.iso] || '',
+      countryName: countriesByIso[d.iso].name || '',
     })).sort((a, b) => a.countryName.localeCompare(b.countryName)),
     (data.nodes || []).filter(d => d.type === 'sector').map(toLabelValue).sort(compareString),
     (data.nodes || [])
@@ -88,4 +90,9 @@ function NSActivitiesFilters (p) {
   );
 }
 
-export default NSActivitiesFilters;
+const selector = (state, ownProps) => ({
+  countriesByIso: countriesByIso(state)
+});
+
+const dispatcher = (dispatch) => ({});
+export default connect(selector, dispatcher)(NSActivitiesFilters);
