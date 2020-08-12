@@ -62,17 +62,19 @@ function LanguageSelect(p) {
     languageStrings,
   } = p;
 
-  React.useEffect(() => {
-    getLanguage(currentLanguage);
+  const languageRef = React.useRef(currentLanguage);
 
-    if (currentLanguage === 'ar') {
+  React.useEffect(() => {
+    getLanguage(languageRef.current);
+
+    if (languageRef.current === 'ar') {
       document.body.style.direction = 'rtl';
       document.body.setAttribute('dir', 'rtl');
     } else {
       document.body.style.direction = 'ltr';
       document.body.setAttribute('dir', 'ltr');
     }
-  }, [currentLanguage, getLanguage]);
+  }, [getLanguage]);
 
   React.useEffect(() => {
     setStrings(languageStrings);
