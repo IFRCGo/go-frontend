@@ -317,7 +317,7 @@ export const countries = (countries) => {
   ].sort((a, b) => a.label < b.label ? -1 : 1);
 };
 
-// FIXME: remove because deprecated. Except from https://github.com/IFRCGo/go-frontend/blob/feature/geo-apis/src/root/views/CountryProfile/Map.js#L1 -- can't figure out any references
+// FIXME: remove because deprecated.
 export const countryIsoMapById = listToMap(
   countryList,
   d => d.value,

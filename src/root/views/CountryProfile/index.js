@@ -104,6 +104,7 @@ class CountryOverview extends React.PureComponent {
             countryId={countryId}
             className={styles.populationMap}
             data={data.wb_population}
+            countries={this.props.countries}
           />
           <ClimateChart
             className={styles.climateChart}

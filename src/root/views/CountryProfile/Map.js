@@ -4,6 +4,7 @@ import { countryIsoMapById } from '#utils/field-report-constants';
 
 import { getBoundingBox } from '#utils/country-bounding-box';
 import newMap from '#utils/get-new-map';
+import { getCountryMeta } from '../../utils/get-country-meta';
 
 export default class ThreeWMap extends React.PureComponent {
   constructor (props) {
@@ -34,11 +35,12 @@ export default class ThreeWMap extends React.PureComponent {
     const {
       countryId,
       districtList,
+      countries,
     } = nextProps;
 
     if (countryId !== oldCountryId || districtList !== oldDistrictList) {
       if (this.mapLoaded) {
-        this.fillMap(countryId, districtList);
+        this.fillMap(countryId, districtList, countries);
       }
     }
   }
@@ -49,13 +51,15 @@ export default class ThreeWMap extends React.PureComponent {
     const {
       countryId,
       districtList,
+      countries,
     } = this.props;
 
-    this.fillMap(countryId, districtList);
+    this.fillMap(countryId, districtList, countries);
   }
 
-  fillMap = (countryId, districtList) => {
-    const iso2 = countryIsoMapById[countryId].toUpperCase();
+  fillMap = (countryId, districtList, countries) => {
+    const iso2 = getCountryMeta(countryId, countries).iso.toUpperCase();
+    // const iso2 = countryIsoMapById[countryId].toUpperCase();
     const bbox = getBoundingBox(iso2);
     this.map.fitBounds(bbox, { padding: 50 });
 
