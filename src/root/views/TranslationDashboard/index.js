@@ -89,6 +89,18 @@ function TranslationDashboard(p) {
     getLanguage,
   } = p;
 
+  const handleExportButtonClick = React.useCallback(() => {
+    const langEntries = Object.entries(lang);
+    const ws = sheet.utils.aoa_to_sheet([
+      ['ID', 'dev', 'en', 'fr', 'es', 'ar'],
+      ...langEntries,
+    ]);
+    const wb = sheet.utils.book_new();
+    sheet.utils.book_append_sheet(wb, ws);
+
+    sheet.writeFile(wb, 'go-strings.xlsx');
+  }, []);
+
   const conflictedViewKeys = React.useMemo(() => Object.keys(conflictedViews), []);
   const [currentView, setCurrentView] = React.useState(conflictedViewKeys[0]);
   const prevBulkResponse = React.useRef(languageBulkResponse);
@@ -319,6 +331,12 @@ function TranslationDashboard(p) {
               onChange={handleFileInputChange}
               hidden
             />
+            <button
+              onClick={handleExportButtonClick}
+              className='button button--secondary-bounded'
+            >
+              Export dev strings
+            </button>
             <LanguageSelect />
           </div>
         </div>
