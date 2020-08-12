@@ -1,4 +1,5 @@
 
+// FIXME: deprecate this util entirely.
 const boundingBoxes = {
   AW:
    [ -70.05809485599988,

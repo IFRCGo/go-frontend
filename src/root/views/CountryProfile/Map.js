@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { getBoundingBox } from '#utils/country-bounding-box';
 import newMap from '#utils/get-new-map';
 import { getCountryMeta } from '../../utils/get-country-meta';
+import turfBbox from '@turf/bbox';
 
 export default class ThreeWMap extends React.PureComponent {
   constructor (props) {
@@ -56,8 +56,8 @@ export default class ThreeWMap extends React.PureComponent {
   }
 
   fillMap = (countryId, districtList, countries) => {
-    const iso2 = getCountryMeta(countryId, countries).iso.toUpperCase();
-    const bbox = getBoundingBox(iso2);
+    const countryMeta = getCountryMeta(countryId, countries);
+    const bbox = turfBbox(countryMeta.bbox);
     this.map.fitBounds(bbox, { padding: 50 });
     const maxPopulation = Math.max(0, ...districtList.map(district => district.population));
     let opacityProperty;

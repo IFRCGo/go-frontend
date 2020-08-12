@@ -9,7 +9,6 @@ import {
 
 import { getDistrictsForCountryPF } from '#actions';
 
-import { getBoundingBox } from '#utils/country-bounding-box';
 import DownloadButton from '#components/map/common/download-button';
 import MapHeader from '#components/map/common/map-header';
 import MapFooter from '#components/map/common/map-footer';
@@ -19,6 +18,7 @@ import LanguageContext from '#root/languageContext';
 
 import { getCountryMeta } from '#utils/get-country-meta';
 import { countriesSelector } from '#selectors';
+import turfBbox from '@turf/bbox';
 
 const emptyList = [];
 const emptyObject = {};
@@ -166,8 +166,8 @@ class ThreeWMap extends React.PureComponent {
   }
 
   resetBounds = (countryId, largePadding = false) => {
-    const iso2 = getCountryMeta(countryId, this.props.countries).iso.toUpperCase();
-    const bbox = getBoundingBox(iso2);
+    const countryMeta = getCountryMeta(countryId, this.props.countries);
+    const bbox = turfBbox(countryMeta.bbox);
     this.map.fitBounds(
       bbox,
       {
