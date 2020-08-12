@@ -67,8 +67,10 @@ function LanguageSelect(p) {
 
     if (currentLanguage === 'ar') {
       document.body.style.direction = 'rtl';
+      document.body.setAttribute('dir', 'rtl');
     } else {
       document.body.style.direction = 'ltr';
+      document.body.setAttribute('dir', 'ltr');
     }
   }, [currentLanguage, getLanguage]);
 
@@ -78,6 +80,11 @@ function LanguageSelect(p) {
 
   const handleLanguageButtonClick = React.useCallback((languageId) => {
     setCurrentLanguage(languageId);
+
+    // just to make sure the selected language is written in the preference
+    setTimeout(() => {
+      window.location.reload();
+    }, 0);
   }, [setCurrentLanguage]);
 
   return (
