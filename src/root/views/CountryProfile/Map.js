@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { countryIsoMapById } from '#utils/field-report-constants';
-
 import { getBoundingBox } from '#utils/country-bounding-box';
 import newMap from '#utils/get-new-map';
 import { getCountryMeta } from '../../utils/get-country-meta';
@@ -59,10 +57,8 @@ export default class ThreeWMap extends React.PureComponent {
 
   fillMap = (countryId, districtList, countries) => {
     const iso2 = getCountryMeta(countryId, countries).iso.toUpperCase();
-    // const iso2 = countryIsoMapById[countryId].toUpperCase();
     const bbox = getBoundingBox(iso2);
     this.map.fitBounds(bbox, { padding: 50 });
-
     const maxPopulation = Math.max(0, ...districtList.map(district => district.population));
     let opacityProperty;
 
