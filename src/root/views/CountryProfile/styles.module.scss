@@ -4,7 +4,6 @@
   width: 100%;
   position: relative;
   overflow-x: auto;
-  padding: 2rem;
 
   %card-section {
     display: flex;
@@ -13,7 +12,15 @@
   %card-content {
     flex-basis: 0;
     flex-grow: 1;
-    margin: 6px;
+  }
+
+  section {
+    padding-top: $spacing-2;
+    padding-bottom: $spacing-2;
+
+    &:nth-child(even) {
+      background-color: $grey-mist;
+    }
   }
 
   .top-section {
@@ -81,7 +88,6 @@
 
   .population-and-climate-section {
     display: flex;
-    padding: 20px 0;
 
     .population-map,
     .climate-chart {

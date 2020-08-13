@@ -4,21 +4,24 @@
   display: flex;
   flex-direction: column;
   box-shadow: $base-box-shadow;
-  padding: 0 10px;
   background-color: #fff;
   overflow: auto;
+  margin: $spacing-half;
 
   .header {
     flex-shrink: 0;
-    padding: 0 10px;
+    border-bottom: $base-border-width solid $base-border-color;
+    padding: 0 $spacing;
 
     .heading {
       text-transform: uppercase;
       margin: 0;
+      padding: $spacing;
+      letter-spacing: $letter-spacing-heading;
+      flex-grow: 1;
+      font-family: $heading-font-family;
+      font-weight: $base-font-semi-bold;
       text-align: center;
-      padding: 10px;
-      border-bottom: 1px solid rgba(0, 0, 0, .1);
-      letter-spacing: $letter-spacing-lg;
     }
   }
 

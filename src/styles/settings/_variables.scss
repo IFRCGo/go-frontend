@@ -24,6 +24,7 @@ $grey-cement: #505050;
 $grey-gravel: #494949;
 $grey-soot: #282d32;
 $black: #000;
+$white: #fff;
 
 /* State colors */
 
@@ -63,11 +64,14 @@ $font-size-lg: 1rem; 	   // 16px
 $font-size-xl: 1.06rem;	   // 17px	
 $font-size-xxl: 1.16rem;   // 18px
 $font-size-heading-widget: 1.72rem;
+$font-size-heading: 18px;
+
 
 $code-font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 
 $letter-spacing-sm: 0.6px;
 $letter-spacing-lg: 1.6px;
+$letter-spacing-heading: $letter-spacing-lg;
 
 $heading-font-family: "Poppins", "Helvetica Neue", Helvetica, Arial, sans-serif;
 $heading-font-light: 300;
