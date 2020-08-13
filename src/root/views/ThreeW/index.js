@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 
 import {
   deleteProject as deleteProjectAction,
-  getMe as getMeAction,
   getProjects as getProjectsAction,
 } from '#actions';
 
@@ -75,7 +74,6 @@ function ThreeW (p) {
     projectFormResponse,
     deleteProjectResponse,
     getProjects,
-    getMe,
     deleteProject,
   } = p;
 
@@ -124,10 +122,6 @@ function ThreeW (p) {
     }
     prevDeleteProjectResponse.current = deleteProjectResponse;
   }, [deleteProjectResponse, setShowProjectFormModal, setShouldRefetch]);
-
-  React.useEffect(() => {
-    getMe();
-  }, [getMe]);
 
   React.useEffect(() => {
     getProjects(countryId, filters);
@@ -291,7 +285,6 @@ const mapStateToProps = (state, props) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getProjects: (...args) => dispatch(getProjectsAction(...args)),
-  getMe: (...args) => dispatch(getMeAction(...args)),
   deleteProject: (...args) => dispatch(deleteProjectAction(...args)),
 });
 
