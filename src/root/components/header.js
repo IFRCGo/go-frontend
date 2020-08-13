@@ -148,7 +148,6 @@ function Header (props) {
                 <li>
                   <NavLink to='/' title={strings.headerMenuHomeTooltip} activeClassName='navbar-highlighted' exact>
                     <Translate stringId='headerMenuHome' />
-                    { strings.headerMenuHome }
                   </NavLink>
                 </li>
                 <li>

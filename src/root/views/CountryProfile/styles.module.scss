@@ -113,13 +113,13 @@
 
     .label {
       display: table-cell;
-      padding: 5px 10px;
+      padding: $spacing-half $spacing;
       font-weight: $base-font-regular;
     }
 
     .value {
       display: table-cell;
-      padding: 5px 10px;
+      padding: $spacing-half $spacing;
       font-weight: $base-font-bold;
       color: $secondary-color;
     }
@@ -131,18 +131,18 @@
     display: table-row;
 
     .title {
-      padding: 4px 6px;
+      padding: $spacing-half;
       display: table-cell;
     }
 
     .date {
       display: table-cell;
-      padding: 4px 6px;
+      padding: $spacing-half;
     }
 
     .file-download-link {
       display: table-cell;
-      padding: 4px 6px;
+      padding: $spacing-half;
     }
   }
 
@@ -152,13 +152,13 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 10px;
-        margin-bottom: 10px;
+        padding: $spacing;
+        margin-bottom: $spacing;
 
         .search-container {
           display: flex;
           align-items: center;
-          border-bottom: 1px solid rgba(0, 0, 0, .1);
+          border-bottom: $base-border-width solid $base-border-color;
 
           .icon {
             font-size: $font-size-lg;
@@ -179,9 +179,20 @@
         display: flex;
         flex-wrap: wrap;
 
+        h3 {
+          font-size: $font-size-heading-sm;
+          letter-spacing: 0;
+          text-align: inline-start!important;
+          margin-left: -$spacing;
+          margin-right: -$spacing;
+          padding-left: $spacing + $spacing-half;
+          padding-right: $spacing + $spacing-half;
+        }
+
         .document-group {
           flex-basis: calc(100% / 3);
-          margin: 6px;
+          min-width: $row-min-width;
+          margin: $spacing-half;
           max-height: 240px;
         }
       }
@@ -192,23 +203,24 @@
     .content {
       display: flex;
       flex-wrap: wrap;
+      padding: $spacing;
 
       .source-details {
         display: flex;
         align-items: center;
-        color: #fff;
+        color: $white;
         background-color: $primary-color;
-        margin: 6px 10px;
-        padding: 0 10px;
-        border-radius: calc(0.5rem + 5px);
+        margin: $spacing-half $spacing;
+        padding: 0 $spacing;
+        border-radius: calc(0.5rem + #{$spacing-half});
         font-weight: $base-font-medium;
 
         .title {
-          padding: 4px 6px;
+          padding: $spacing-half;
         }
 
         .icon {
-          padding: 4px 6px;
+          padding: $spacing-half;
           display: flex;
           align-items: center;
         }
@@ -221,11 +233,11 @@
     font-weight: $base-font-medium;
 
     .content {
-      padding: 0 10px;
+      padding: 0 $spacing;
 
       .row {
         display: flex;
-        margin: 10px 0;
+        margin: $spacing 0;
 
         .sector-cell {
           width: 120px;

@@ -31,6 +31,7 @@ function Card(p) {
             <a
               className={styles.link}
               target="_blank"
+              href="http://fdrs.ifrc.org/"
             >
               FDRS
             </a>

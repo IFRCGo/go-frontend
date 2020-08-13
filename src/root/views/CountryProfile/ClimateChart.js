@@ -122,6 +122,18 @@ function ClimateChart(p){
           margin={chartMargin}
           barCategoryGap="25%"
         >
+          <defs>
+            <linearGradient
+              id='precipitation-chart-gradient'
+              x1={0}
+              x2={0}
+              y1={0}
+              y2={1}
+            >
+              <stop offset='0%' stopColor='#00a0dc' />
+              <stop offset='100%' stopColor='#f5f5f5' />
+            </linearGradient>
+          </defs>
           <CartesianGrid
             stroke='rgba(0, 0, 0, 0.06)'
             vertical={false}
@@ -135,7 +147,7 @@ function ClimateChart(p){
             tickMargin={10}
           />
           <Bar
-            fill='#42bfef'
+            fill='url(#precipitation-chart-gradient)'
             dataKey='avg_rainfall_precipitation'
           >
             <LabelList position='top' />

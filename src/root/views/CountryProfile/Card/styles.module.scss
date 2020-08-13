@@ -4,16 +4,17 @@
   display: flex;
   flex-direction: column;
   box-shadow: $base-box-shadow;
-  background-color: #fff;
+  background-color: $white;
   overflow: auto;
   margin: $spacing-half;
+  border-radius: $base-border-radius;
 
   .header {
     flex-shrink: 0;
-    border-bottom: $base-border-width solid $base-border-color;
     padding: 0 $spacing;
 
     .heading {
+      border-bottom: $base-border-width solid $base-border-color;
       text-transform: uppercase;
       margin: 0;
       padding: $spacing;
@@ -27,7 +28,7 @@
 
   .content {
     flex-grow: 1;
-    padding: 10px 0;
+    padding: $spacing;
     overflow: auto;
   }
 
