@@ -154,6 +154,7 @@ export function deleteJSON (path, action, options, extraData) {
 export function postJSON (path, action, payload, options, extraData) {
   options = withJSONRequest(payload, options);
   options.method = 'POST';
+  options.headers['Accept-Language'] = 'en'; // POST only supports english
   return makeRequest(path, action, options, extraData);
 }
 
