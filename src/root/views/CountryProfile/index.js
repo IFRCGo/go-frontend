@@ -16,7 +16,8 @@ import ClimateChart from './ClimateChart';
 import SocialEvents from './SocialEvents';
 import KeyClimateEvents from './KeyClimateEvents';
 import SeasonalCalendar from './SeasonalCalendar';
-import Translate from '#components/Translate';
+import KeyDocuments from './KeyDocuments';
+import ExternalSources from './ExternalSources';
 
 import styles from './styles.module.scss';
 
@@ -62,9 +63,9 @@ class CountryOverview extends React.PureComponent {
 
     return (
       <div className={_cs(styles.countryOverview, className)}>
-        <div className='top-section'>
+        <section className={styles.topSection}>
           <KeyIndicators
-            className='key-indicators'
+            className={styles.keyIndicators}
             population={data.population}
             urbanPopulation={data.urban_population}
             gdp={data.gdp}
@@ -74,55 +75,48 @@ class CountryOverview extends React.PureComponent {
             literacy={data.literacy}
           />
           <NSIndicators
-            className='ns-indicators'
+            className={styles.nsIndicators}
             income={data.income}
             expenditures={data.expenditures}
             volunteers={data.volunteers}
             trainedInFirstAid={data.trained_in_first_aid}
           />
-          <div className='tc-data-source'>
-            <div className='tc-label'>
-              <Translate stringId='countryOverviewSource' />
-            </div>
-            <div className='tc-value'>
-              <Translate stringId='countryOverviewFDRS' />
-            </div>
-          </div>
+        </section>
+        <div className={styles.populationAndClimateSection}>
+          <PopulationMap
+            countryId={countryId}
+            className={styles.populationMap}
+            data={data.wb_population}
+          />
+          <ClimateChart
+            className={styles.climateChart}
+            yearlyEvents={data.climate_events}
+          />
         </div>
-        <div className='population-and-climate-section row flex-sm'>
-          <div className='col col-6-sm'>
-            <PopulationMap
-              countryId={countryId}
-              className='population-map'
-              data={data.wb_population}
-            />
-          </div>
-          <div className='col col-6-sm'>
-            <ClimateChart
-              className='climate-chart'
-              yearlyEvents={data.climate_events}
-            />
-          </div>
-        </div>
-        <div className={`${styles.keyEventsSection}} row flex-sm`}>
-          <div className='col col-6-sm'>
-            <KeyClimateEvents
-              averageTemperature={data.avg_temperature}
-              averageRainfallPrecipitation={data.avg_rainfall_precipitation}
-              rainySeasonStatus={data.rainy_season_display}
-            />
-          </div>
-          <div className='col col-6-sm'>
-            <SocialEvents
-              className={styles.socialEvents}
-              data={data.social_events}
-            />
-          </div>
+        <div className={styles.keyClimateEventsAndDatesSection}>
+          <KeyClimateEvents
+            className={styles.keyClimateEvents}
+            averageTemperature={data.avg_temperature}
+            averageRainfallPrecipitation={data.avg_rainfall_precipitation}
+            rainySeasonStatus={data.rainy_season_display}
+          />
+          <SocialEvents
+            className={styles.socialEvents}
+            data={data.social_events}
+          />
         </div>
         <SeasonalCalendar
           className='seasonal-calender'
           appeals={data.appeals}
           data={data.seasonal_calender}
+        />
+        <KeyDocuments
+          className={styles.keyDocuments}
+          data={data.key_documents}
+        />
+        <ExternalSources
+          className={styles.externalSources}
+          data={data.external_sources}
         />
       </div>
     );

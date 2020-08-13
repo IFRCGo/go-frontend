@@ -62,15 +62,19 @@ function LanguageSelect(p) {
     languageStrings,
   } = p;
 
-  React.useEffect(() => {
-    getLanguage(currentLanguage);
+  const languageRef = React.useRef(currentLanguage);
 
-    if (currentLanguage === 'ar') {
+  React.useEffect(() => {
+    getLanguage(languageRef.current);
+
+    if (languageRef.current === 'ar') {
       document.body.style.direction = 'rtl';
+      document.body.setAttribute('dir', 'rtl');
     } else {
       document.body.style.direction = 'ltr';
+      document.body.setAttribute('dir', 'ltr');
     }
-  }, [currentLanguage, getLanguage]);
+  }, [getLanguage]);
 
   React.useEffect(() => {
     setStrings(languageStrings);
@@ -78,6 +82,11 @@ function LanguageSelect(p) {
 
   const handleLanguageButtonClick = React.useCallback((languageId) => {
     setCurrentLanguage(languageId);
+
+    // just to make sure the selected language is written in the preference
+    setTimeout(() => {
+      window.location.reload();
+    }, 0);
   }, [setCurrentLanguage]);
 
   return (

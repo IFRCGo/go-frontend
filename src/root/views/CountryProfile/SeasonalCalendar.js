@@ -1,111 +1,115 @@
 import React from 'react';
-import { listToGroupList } from '@togglecorp/fujs';
+import {
+  listToGroupList,
+  getColorOnBgColor,
+  getHexFromString,
+} from '@togglecorp/fujs';
 import _cs from 'classnames';
 import Translate from '#components/Translate';
+
+import Container from './Container';
+import { monthList } from './common';
+import styles from './styles.module.scss';
 
 const daysInMonth = (year, month) => (
   new Date(year, month + 1, 0).getDate()
 );
 
-class SeasonalCalendar extends React.PureComponent {
-  render () {
-    const {
-      className,
-      data,
-      // appeals,
-    } = this.props;
 
-    // TODO: memoize
-    const chartData = data.map(d => {
-      const startDate = new Date(d.date_start);
-      const endDate = new Date(d.date_end);
+function SeasonalCalendar(props) {
+  const {
+    className,
+    data,
+    // appeals,
+  } = props;
 
-      const daysInStartMonth = daysInMonth(startDate.getFullYear(), startDate.getMonth());
-      const daysInEndMonth = daysInMonth(endDate.getFullYear(), endDate.getMonth());
+  // TODO: memoize
+  const chartData = React.useMemo(() => data.map(d => {
+    const startDate = new Date(d.date_start);
+    const endDate = new Date(d.date_end);
 
-      const dateStart = startDate.getMonth() + startDate.getDate() / daysInStartMonth;
-      const dateEnd = endDate.getMonth() + endDate.getDate() / daysInEndMonth;
+    const daysInStartMonth = daysInMonth(startDate.getFullYear(), startDate.getMonth());
+    const daysInEndMonth = daysInMonth(endDate.getFullYear(), endDate.getMonth());
 
-      return {
-        ...d,
-        dateStart,
-        dateEnd,
-      };
-    });
+    const dateStart = startDate.getMonth() + startDate.getDate() / daysInStartMonth;
+    const dateEnd = endDate.getMonth() + endDate.getDate() / daysInEndMonth;
 
-    const sectorMap = listToGroupList(chartData, c => c.sector);
-    const sectorKeys = Object.keys(sectorMap);
+    return {
+      ...d,
+      dateStart,
+      dateEnd,
+    };
+  }), [data]);
 
-    const monthList = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-    ];
+  const sectorMap = listToGroupList(chartData, c => c.sector);
+  const sectorKeys = Object.keys(sectorMap);
 
-    return (
-      <div className={_cs(className, 'country-seasonal-calendar')}>
-        <div className='fold__header__block'>
-          <h3 className='tc-heading fold__title'>
-            <Translate stringId='seasonalCalendarTitle'/>
-          </h3>
-        </div>
-        <div className='tc-content'>
-          <div className='calendar-chart'>
-            { sectorKeys.map(sectorKey => {
-              let prevRight = 0;
+  return (
+    <Container
+      className={_cs(className, styles.seasonalCalendar)}
+      heading={<Translate stringId='seasonalCalendarTitle'/>}
+      contentClassName={styles.content}
+    >
+      { sectorKeys.map(sectorKey => {
+        const sectorBgColor= getHexFromString(sectorKey);
+        const sectorColor = getColorOnBgColor(sectorBgColor, '#212121', '#ffffff');
 
-              return (
-                <div
-                  key={sectorKey}
-                  className='calendar-chart-row'
-                >
-                  <div className='calendar-chart-sector-cell'>
-                    { sectorKey }
-                  </div>
-                  <div className='calendar-chart-title-list-cell'>
-                    <div className='calendar-chart-title-list'>
-                      { sectorMap[sectorKey].map(d => {
-                        const absMargin = 100 * d.dateStart / 12;
-                        const currentMargin = absMargin - prevRight;
-                        const currentWidth = 100 * (d.dateEnd - d.dateStart) / 12;
-                        prevRight = absMargin + currentWidth;
+        return (
+          <div
+            key={sectorKey}
+            className={styles.row}
+          >
+            <div
+              className={styles.sectorCell}
+              title={sectorKey}
+            >
+              { sectorKey }
+            </div>
+            <div className={styles.titleListCell}>
+              <div className={styles.titleList}>
+                { sectorMap[sectorKey].map(d => {
+                  const absMargin = 100 * d.dateStart / 12;
+                  const currentWidth = 100 * (d.dateEnd - d.dateStart) / 12;
 
-                        return (
-                          <div
-                            key={d.id}
-                            className='calendar-chart-title'
-                            style={{
-                              marginLeft: `${currentMargin}%`,
-                              width: `${currentWidth}%`,
-                            }}
-                          >
-                            {d.title}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-            <div className='calendar-chart-row'>
-              <div className='calendar-chart-sector-cell' />
-              <div className='calendar-chart-title-list-cell'>
-                <div className='calendar-chart-month-title-list'>
-                  { monthList.map(monthName => (
+                  return (
                     <div
-                      key={monthName}
-                      className='calendar-chart-month-title'
+                      key={d.id}
+                      className={styles.title}
+                      style={{
+                        insetInlineStart: `${absMargin}%`,
+                        width: `${currentWidth}%`,
+                        backgroundColor: sectorBgColor,
+                        color: sectorColor,
+                        borderColor: sectorColor,
+                      }}
+                      title={d.title}
                     >
-                      { monthName }
+                      {d.title}
                     </div>
-                  ))}
-                </div>
+                  );
+                })}
               </div>
             </div>
           </div>
+        );
+      })}
+      <div className={styles.row}>
+        <div className={styles.sectorCell} />
+        <div className={styles.titleListCell}>
+          <div className={styles.monthTitleList}>
+            { monthList.map(monthName => (
+              <div
+                key={monthName}
+                className={styles.monthTitle}
+              >
+                { monthName }
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-    );
-  }
+    </Container>
+  );
 }
 
 export default SeasonalCalendar;

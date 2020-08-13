@@ -1,0 +1,51 @@
+@import '~styles/settings/variables';
+
+.card {
+  display: flex;
+  flex-direction: column;
+  box-shadow: $base-box-shadow;
+  padding: 0 10px;
+  background-color: #fff;
+  overflow: auto;
+
+  .header {
+    flex-shrink: 0;
+    padding: 0 10px;
+
+    .heading {
+      text-transform: uppercase;
+      margin: 0;
+      text-align: center;
+      padding: 10px;
+      border-bottom: 1px solid rgba(0, 0, 0, .1);
+      letter-spacing: $letter-spacing-lg;
+    }
+  }
+
+  .content {
+    flex-grow: 1;
+    padding: 10px 0;
+    overflow: auto;
+  }
+
+  .footer {
+    font-size: $font-size-sm;
+    display: flex;
+    flex-shrink: 0;
+    color: $grey-cement;
+    align-items: center;
+    padding: 6px 0;
+
+    .source,
+    .reporting-year {
+      display: flex;
+      padding: 0 4px;
+    }
+
+    .label,
+    .link,
+    .year {
+      padding: 6px 4px;
+    }
+  }
+}

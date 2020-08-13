@@ -371,7 +371,7 @@ class FieldReport extends React.Component {
       <React.Fragment>
         <dl className='dl-horizontal numeric-list'>
           <dt>
-            <Translate stringId='Potentially Affected (RC): '/>
+            <Translate stringId='fieldReportPotentiallyAffected'/>
           </dt>
           <dd>{n(get(data, 'num_potentially_affected'))}</dd>
           <dt>
@@ -478,8 +478,6 @@ class FieldReport extends React.Component {
         return null;
       }
     }
-    console.log('report', this.props.location.state);
-    console.log('props', this.props);
     const infoBulletinOptions = {
       '0': 'No',
       '2': 'Planned',

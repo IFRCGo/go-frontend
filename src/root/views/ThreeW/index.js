@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 
 import {
   deleteProject as deleteProjectAction,
-  getMe as getMeAction,
   getProjects as getProjectsAction,
 } from '#actions';
 
@@ -20,6 +19,7 @@ import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 import ConfirmModal from '#components/confirm-modal';
 import BlockLoading from '#components/block-loading';
+
 import {
   getResultsFromResponse,
   getDataFromResponse,
@@ -74,7 +74,6 @@ function ThreeW (p) {
     projectFormResponse,
     deleteProjectResponse,
     getProjects,
-    getMe,
     deleteProject,
   } = p;
 
@@ -123,10 +122,6 @@ function ThreeW (p) {
     }
     prevDeleteProjectResponse.current = deleteProjectResponse;
   }, [deleteProjectResponse, setShowProjectFormModal, setShouldRefetch]);
-
-  React.useEffect(() => {
-    getMe();
-  }, [getMe]);
 
   React.useEffect(() => {
     getProjects(countryId, filters);
@@ -209,9 +204,7 @@ function ThreeW (p) {
               onClick={handleAddButtonClick}
               disabled={disabled}
             >
-              <Translate
-                stringId="threeWAdd"
-              />
+              <Translate stringId="threeWAdd" />
             </button>
           )}
           <button
@@ -222,9 +215,7 @@ function ThreeW (p) {
             onClick={handleExportButtonClick}
             disabled={shouldDisableExportButton}
           >
-            <Translate
-              stringId="threeWExport"
-            />
+            <Translate stringId="threeWExport" />
           </button>
         </div>
       </header>
@@ -294,7 +285,6 @@ const mapStateToProps = (state, props) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getProjects: (...args) => dispatch(getProjectsAction(...args)),
-  getMe: (...args) => dispatch(getMeAction(...args)),
   deleteProject: (...args) => dispatch(deleteProjectAction(...args)),
 });
 
