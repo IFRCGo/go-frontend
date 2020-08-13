@@ -79,6 +79,12 @@ export const countriesByIso = (state) => {
   }
 };
 
+export const regionsByIdSelector = (state) => {
+  if (state.regions && state.regions.data.results) {
+    return _groupBy(state.regions.data.results, 'id');
+  }
+};
+
 export const countryOverviewSelector = (state) => (
   state.countryOverview
 );

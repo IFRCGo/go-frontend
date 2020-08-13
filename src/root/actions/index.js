@@ -141,6 +141,11 @@ export function deleteProject (projectId) {
   return deleteJSON(`api/v2/project/${projectId}/`, DELETE_PROJECT, withToken());
 }
 
+export const GET_REGIONS = 'GET_REGIONS';
+export function getRegions () {
+  return fetchJSON('api/v2/region/', GET_REGIONS);
+}
+
 export const GET_COUNTRY_OVERVIEW = 'GET_COUNTRY_OVERVIEW';
 export const getCountryOverview = (countryIso) => {
   return fetchJSON(`api/v2/country/${countryIso}/databank/`, GET_COUNTRY_OVERVIEW, withToken());

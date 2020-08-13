@@ -5,6 +5,7 @@ import { createReducer } from '#utils/reducer-utils';
 
 import user from './user';
 import profile from './profile';
+import regions from './regions';
 import countries from './countries';
 import districts from './districts';
 import actions from './actions';
@@ -50,6 +51,7 @@ import {
 export const reducers = {
   user,
   profile,
+  regions,
   countries,
   districts,
   systemAlertsReducer,

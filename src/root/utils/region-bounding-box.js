@@ -1,4 +1,5 @@
 
+// FIXME: deprectate this util
 const boundingBoxes = {
   '0':
     [ -32.99047851563364,

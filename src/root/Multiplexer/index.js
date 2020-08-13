@@ -9,8 +9,8 @@ import AnonymousRoute from '#components/AnonymousRoute';
 import BlockLoading from '#components/block-loading';
 
 
-import { getMe as getUserAction, getCountries as getCountriesAction } from '#actions';
-import { userResponseSelector, countriesSelector } from '#selectors';
+import { getMe as getUserAction, getCountries as getCountriesAction, getRegions as getRegionsAction } from '#actions';
+import { userResponseSelector } from '#selectors';
 
 // Views.
 import Home from '#views/home';
@@ -45,18 +45,21 @@ function Multiplexer(props) {
   const {
     getUser,
     getCountries,
+    getRegions,
     userResponse,
-    countriesResponse
+    countriesResponse,
+    regionsResponse
   } = props;
 
   React.useEffect(() => {
     getUser();
     getCountries();
-  }, [getUser, getCountries]);
+    getRegions();
+  }, [getUser, getCountries, getRegions]);
 
   const pending = React.useMemo(() => (
-    !userResponse.fetched || !countriesResponse.fetched
-  ), [userResponse, countriesResponse]);
+    !userResponse.fetched || !countriesResponse.fetched || !regionsResponse.fetched
+  ), [userResponse, countriesResponse, regionsResponse]);
 
   if (pending) {
     return (
@@ -119,12 +122,14 @@ function Multiplexer(props) {
 
 const mapStateToProps = (state) => ({
   userResponse: userResponseSelector(state),
-  countriesResponse: state.countries
+  countriesResponse: state.countries,
+  regionsResponse: state.regions
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getUser: (...args) => dispatch(getUserAction(...args)),
-  getCountries: (...args) => dispatch(getCountriesAction(...args))
+  getCountries: (...args) => dispatch(getCountriesAction(...args)),
+  getRegions: (...args) => dispatch(getRegionsAction(...args))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Multiplexer);

@@ -6,11 +6,11 @@ import mapboxgl from 'mapbox-gl';
 
 import store from '#utils/store';
 import newMap from '#utils/get-new-map';
-import { getRegionBoundingBox } from '#utils/region-bounding-box';
 
 import ActivityDetails from './activity-details';
 import Translate from '#components/Translate';
 import { getCountryMeta } from '../../utils/get-country-meta';
+import turfBbox from '@turf/bbox';
 
 const emptyList = [];
 
@@ -76,6 +76,7 @@ function Map (props) {
     regionId,
     data,
     countries,
+    regions,
   } = props;
 
   const ref = React.useRef();
@@ -93,7 +94,7 @@ function Map (props) {
     }
 
     map.on('load', () => {
-      const bbox = getRegionBoundingBox(regionId);
+      const bbox = turfBbox(regions[regionId][0].bbox);
       map.fitBounds(bbox);
       setMapLoaded(true);
     });

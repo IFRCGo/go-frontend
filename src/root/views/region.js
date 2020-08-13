@@ -30,14 +30,12 @@ import {
   getAdmAreaSnippets,
   getAppealsListStats
 } from '#actions';
-import { getRegionBoundingBox } from '#utils/region-bounding-box';
 import { commaSeparatedNumber as n } from '#utils/format';
 import {
   // countriesByRegion,
   getRegionId,
   regions as regionMeta
 } from '#utils/region-constants';
-import { getCountryMeta } from '#utils/get-country-meta';
 
 import App from './app';
 import Fold from '#components/fold';
@@ -61,7 +59,8 @@ import MainMap from '#components/map/main-map';
 import LanguageContext from '#root/languageContext';
 import { resolveToString } from '#utils/lang';
 
-import { countriesSelector, countriesByRegionSelector } from '../selectors';
+import { countriesSelector, countriesByRegionSelector, regionsByIdSelector } from '../selectors';
+import turfBbox from '@turf/bbox';
 
 class AdminArea extends SFPComponent {
   constructor (props, context) {
@@ -147,14 +146,12 @@ class AdminArea extends SFPComponent {
   }
 
   getMaskLayer (regionId) {
-    console.log('countriesByRegion', this.props.countriesByRegion);
     const countries = this.props.countriesByRegion[regionId.toString()];
     const isoCodes = countries.map(country => {
       // console.log('country', country);
       return country.iso.toUpperCase();
     });
 
-    console.log('isocode', isoCodes);
     // isoCodes.filter(Boolean).map(d => d.iso.toUpperCase());
 
     // const isoCodes = countries.map(getCountryMeta)
@@ -191,6 +188,8 @@ class AdminArea extends SFPComponent {
       data
     } = this.props.adminArea;
 
+    const { regions } = this.props;
+
     if (!fetched || error) return null;
 
     const presentationClass = c({
@@ -198,7 +197,7 @@ class AdminArea extends SFPComponent {
       'fold--r': !this.state.fullscreen
     });
 
-    const mapBoundingBox = getRegionBoundingBox(data.id);
+    const mapBoundingBox = turfBbox(regions[data.id][0].bbox);
     const regionName = get(regionMeta, [data.id, 'name'], nope);
     const activeOperations = get(this.props.appealStats, 'data.results.length', false);
 
@@ -398,7 +397,8 @@ const selector = (state, ownProps) => ({
   snippets: state.adminArea.snippets,
   countries: countriesSelector(state),
   appealsListStats: state.overallStats.appealsListStats,
-  countriesByRegion: countriesByRegionSelector(state)
+  countriesByRegion: countriesByRegionSelector(state),
+  regions: regionsByIdSelector(state)
 });
 
 const dispatcher = (dispatch) => ({

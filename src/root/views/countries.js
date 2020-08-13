@@ -235,7 +235,6 @@ class AdminArea extends SFPComponent {
     const { adminArea, country } = this.props;
     if (!adminArea.fetched) return false;
     const iso3 = country.iso3;
-    console.log('iso3', iso3);
     const homepage = adminArea.data.society_url;
     const homepageIfrc = adminArea.data.url_ifrc;
     // const regionSlug = getRegionSlug(adminArea.data.region);
