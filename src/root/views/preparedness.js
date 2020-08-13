@@ -18,7 +18,6 @@ import { Helmet } from 'react-helmet';
 import { PropTypes as T } from 'prop-types';
 import { environment } from '#config';
 import { getCountryMeta } from '#utils/get-country-meta';
-import { getCentroid } from '#utils/country-centroids';
 import NationalSocietiesEngagedPer from '#components/preparedness/national-societies-engaged-per';
 import GlobalPreparednessHighlights from '#components/preparedness/global-preparedness-highlights';
 import LanguageContext from '#root/languageContext';
@@ -62,7 +61,7 @@ class Preparedness extends React.Component {
         if (perForm.country) {
           let countryMeta = getCountryMeta(perForm.country.id, this.props.countries);
           perForm.country.iso = countryMeta.iso;
-          let countryCentroid = getCentroid(perForm.country.iso);
+          let countryCentroid = countryMeta.centroid.coordinates || [0, 0];
           perForm.country.centroid = countryCentroid;
 
           geoJson.features.push({

@@ -39,6 +39,8 @@ import MovementActivitiesFilters from './movement-activities-filters';
 import NSActivitiesFilters from './ns-activities-filters';
 import ExportButton from './export-button';
 import Map from './map';
+import { countries } from '../../utils/field-report-constants';
+import { countriesSelector } from '../../selectors';
 
 const emptyList = [];
 
@@ -123,6 +125,7 @@ function RegionalThreeW (p) {
     getNationalSocietyActivitiesWoFilters,
     isUserLoggedIn,
     projectFormResponse,
+    countries,
   } = p;
 
   const [showProjectForm, setShowProjectForm] = React.useState(false);
@@ -277,6 +280,7 @@ function RegionalThreeW (p) {
           <Map
             regionId={regionId}
             data={movementActivityList}
+            countries={countries}
           />
           <div className='countries-threew-tables'>
             { movementActivityList.map(c => (
@@ -343,6 +347,7 @@ const mapStateToProps = (state) => ({
   nationalSocietyActivitiesWoFiltersResponse: nationalSocietyActivitiesWoFiltersSelector(state),
   isUserLoggedIn: !!state.user.data.token,
   projectFormResponse: state.projectForm,
+  countries: countriesSelector(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

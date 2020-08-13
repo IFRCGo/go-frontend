@@ -1,3 +1,4 @@
+//FIXME: deprecate this entire util
 import { countryIsoMapById } from './field-report-constants';
 
 const centroids = {

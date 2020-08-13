@@ -11,7 +11,8 @@ import { stringify as buildAPIQS } from 'qs';
 import { DateTime } from 'luxon';
 
 import { countriesByRegion } from '#utils/region-constants';
-import { countrySelector } from '#selectors';
+import { countriesSelector, countrySelector } from '#selectors';
+import { countriesByIso } from '../selectors';
 
 export const TOKEN = 'TOKEN';
 export function getAuthToken (username, password) {
@@ -203,12 +204,14 @@ export function getSurgeAlerts (page = 1, filters = {}) {
 
 export const GET_APPEALS_LIST = 'GET_APPEALS_LIST';
 export function getAppealsList () {
-  const filters = {
-    end_date__gt: DateTime.utc().toISO(),
-    limit: 1000
+  return (dispatch, getState) => {
+    const filters = {
+      end_date__gt: DateTime.utc().toISO(),
+      limit: 1000
+    };
+    const f = buildAPIQS(filters);
+    dispatch(fetchJSON(`api/v2/appeal/?${f}`, GET_APPEALS_LIST, withToken(), { countries: countriesSelector(getState()) }));
   };
-  const f = buildAPIQS(filters);
-  return fetchJSON(`api/v2/appeal/?${f}`, GET_APPEALS_LIST, withToken());
 }
 
 export const GET_APPEALS_LIST_STATS = 'GET_APPEALS_LIST_STATS';
@@ -267,12 +270,14 @@ export function getEmergenciesList (page = 1, filters = {}) {
 
 export const GET_LAST_MO_EMERGENCIES = 'GET_LAST_MO_EMERGENCIES';
 export function getLastMonthsEmergencies () {
-  const f = buildAPIQS({
-    disaster_start_date__gt: DateTime.utc().minus({days: 30}).startOf('day').toISO(),
-    limit: 500,
-    ordering: '-disaster_start_date'
-  });
-  return fetchJSON(`api/v2/event/?${f}`, GET_LAST_MO_EMERGENCIES, {});
+  return (dispatch, getState) => {
+    const f = buildAPIQS({
+      disaster_start_date__gt: DateTime.utc().minus({days: 30}).startOf('day').toISO(),
+      limit: 500,
+      ordering: '-disaster_start_date'
+    });
+    dispatch(fetchJSON(`api/v2/event/?${f}`, GET_LAST_MO_EMERGENCIES, {}, { countries: countriesByIso(getState()) }));
+  };
 }
 
 export const GET_AGGREGATE_EMERGENCIES = 'GET_AGGREGATE_EMERGENCIES';
@@ -379,24 +384,26 @@ export const GET_AA_DREFS = 'GET_AA_DREFS';
 export const GET_AA_FIELD_REPORTS = 'GET_AA_FIELD_REPORTS';
 export const GET_AA_APPEALS_LIST = 'GET_AA_APPEALS_LIST';
 export function getAdmAreaAppealsList (aaType, aaId) {
-  let filters = {
-    end_date__gt: DateTime.utc().toISO(),
-    limit: 1000
+  return (dispatch, getState) => {
+    let filters = {
+      end_date__gt: DateTime.utc().toISO(),
+      limit: 1000
+    };
+
+    switch (aaType) {
+      case 'region':
+        filters.region = aaId;
+        break;
+      case 'country':
+        filters.country = aaId;
+        break;
+      default:
+        throw new Error('Invalid admin area type ' + aaType);
+    }
+
+    const f = buildAPIQS(filters);
+    dispatch(fetchJSON(`api/v2/appeal/?${f}`, GET_AA_APPEALS_LIST, withToken(), { countries: countriesSelector(getState()) }));
   };
-
-  switch (aaType) {
-    case 'region':
-      filters.region = aaId;
-      break;
-    case 'country':
-      filters.country = aaId;
-      break;
-    default:
-      throw new Error('Invalid admin area type ' + aaType);
-  }
-
-  const f = buildAPIQS(filters);
-  return fetchJSON(`api/v2/appeal/?${f}`, GET_AA_APPEALS_LIST, withToken());
 }
 
 export const GET_COUNTRY_OPERATIONS = 'GET_COUNTRY_OPERATIONS';
@@ -533,18 +540,22 @@ export function getPersonnel (page = 1, filters = {}) {
 
 export const GET_ACTIVE_PERSONNEL = 'GET_ACTIVE_PERSONNEL';
 export function getActivePersonnel (filters = {}) {
-  filters.limit = 1000;
-  filters.end_date__gt = DateTime.utc().toISO();
-  const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v2/personnel/?${f}`, GET_ACTIVE_PERSONNEL, withToken());
+  return (dispatch, getState) => {
+    filters.limit = 1000;
+    filters.end_date__gt = DateTime.utc().toISO();
+    const f = buildAPIQS(filters);
+    dispatch(fetchJSON(`/api/v2/personnel/?${f}`, GET_ACTIVE_PERSONNEL, withToken(), { countries: countriesSelector(getState()) }));
+  };
 }
 
 export const GET_ALL_DEPLOYMENT_ERU = 'GET_ALL_DEPLOYMENT_ERU';
 export function getAllDeploymentERU (filters = {}) {
-  filters['deployed_to__isnull'] = false;
-  filters.limit = 1000;
-  const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v2/eru/?${f}`, GET_ALL_DEPLOYMENT_ERU, withToken());
+  return (dispatch, getState) => {
+    filters['deployed_to__isnull'] = false;
+    filters.limit = 1000;
+    const f = buildAPIQS(filters);
+    dispatch(fetchJSON(`/api/v2/eru/?${f}`, GET_ALL_DEPLOYMENT_ERU, withToken(), { countries: countriesSelector(getState()) }));
+  };
 }
 
 export const GET_LIST_CSV = 'GET_LIST_CSV';

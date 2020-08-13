@@ -17,7 +17,6 @@ import LanguageContext from '#root/languageContext';
 
 class Emergencies extends React.Component {
   componentDidMount () {
-    console.log('countries', this.props.countries);
     this.props._getLastMonthsEmergencies();
     this.props._getAggregateEmergencies(DateTime.local().minus({months: 11}).startOf('day').toISODate(), 'month');
   }
