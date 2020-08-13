@@ -53,6 +53,11 @@ export function showUsername (email) {
   return postJSON('show_username', SHOW_USERNAME, { email });
 }
 
+export const RESEND_VALIDATION = 'RESEND_VALIDATION';
+export function resendValidation (username) {
+  return postJSON('resend_validation', RESEND_VALIDATION, { username });
+}
+
 export const GET_ME = 'GET_ME';
 export const getMe = () => (
   fetchJSON('api/v2/user/me/', GET_ME, withToken())

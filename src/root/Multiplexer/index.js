@@ -21,6 +21,7 @@ import Login from '#views/login';
 import Register from '#views/register';
 import RecoverAccount from '#views/recover-account';
 import RecoverUsername from '#views/recover-username';
+import ResendValidation from '#views/resend-validation';
 import UhOh from '#views/uhoh';
 import FieldReportForm from '#views/field-report-form/';
 import FieldReport from '#views/field-report';
@@ -88,6 +89,7 @@ function Multiplexer(props) {
           <AnonymousRoute exact path='/recover-account' component={RecoverAccount}/>
           <AnonymousRoute exact path='/recover-account/:username/:token' component={RecoverAccount}/>
           <AnonymousRoute exact path='/recover-username' component={RecoverUsername}/>
+          <AnonymousRoute exact path='/resend-validation' component={ResendValidation} />
           <PrivateRoute exact path='/reports/new' component={FieldReportForm}/>
           <Route exact path='/reports/all' render={props => <Table {...props} type='report' />} />
           <PrivateRoute exact path='/reports/:id/edit' component={FieldReportForm}/>
