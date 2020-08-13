@@ -55,6 +55,21 @@ export const countrySelector = (state, countryId) => {
   }
 };
 
+export const countryByIdOrNameSelector = (state, name) => {
+  if (state.countries && state.countries.data.results) {
+    if (isNaN(name)) {
+      const thisCountry = state.countries.data.results.find(country => {
+        return country.name.toLowerCase() === decodeURI(name.toLowerCase());
+      });
+      return thisCountry;
+    } else {
+      return countrySelector(state, name);
+    }
+  } else {
+    return null;
+  }
+};
+
 export const countriesByIso = (state) => {
   if (state.countries && state.countries.data.results) {
     let countriesByIso = _groupBy(state.countries.data.results, 'iso');
