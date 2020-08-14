@@ -1036,7 +1036,6 @@ class FieldReportForm extends React.Component {
     const { strings } = this.context;
     const submitTitle = this.state.step === 4 ? strings.fieldReportSubmit : strings.fieldReportContinue;
 
-    console.log('COUNTRIES', this.props.countries);
     return (
       <App className='page--frep-form'>
         <Helmet>

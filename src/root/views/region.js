@@ -140,15 +140,9 @@ class AdminArea extends SFPComponent {
   getMaskLayer (regionId) {
     const countries = this.props.countriesByRegion[regionId.toString()];
     const isoCodes = countries.map(country => {
-      // console.log('country', country);
       return country.iso.toUpperCase();
     });
 
-    // isoCodes.filter(Boolean).map(d => d.iso.toUpperCase());
-
-    // const isoCodes = countries.map(getCountryMeta)
-    //   .filter(Boolean)
-    //   .map(d => d.iso.toUpperCase());
     return {
       id: 'country-mask',
       type: 'fill',
