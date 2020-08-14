@@ -55,13 +55,13 @@ $base-font-bold: 700;
 $base-font-weight: $base-font-light;
 $base-line-height: 1.5;
 
-$base-font-size: 0.875rem;
-$font-size-xxs: 0.63rem;
-$font-size-xs: 0.695rem;
-$font-size-sm: 0.75rem;
-$font-size-lg: 1rem;
-$font-size-xl: 1.06rem;
-$font-size-xxl: 1.16rem;
+$base-font-size: 0.875rem; // 14px
+$font-size-xxs: 0.63rem;   // 10px
+$font-size-xs: 0.695rem;   // 11px
+$font-size-sm: 0.75rem;	   // 12px
+$font-size-lg: 1rem; 	   // 16px	
+$font-size-xl: 1.06rem;	   // 17px	
+$font-size-xxl: 1.16rem;   // 18px
 $font-size-heading-widget: 1.72rem;
 
 $code-font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
