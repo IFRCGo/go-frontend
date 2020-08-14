@@ -10,8 +10,10 @@ import {
 
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
+import { regionsByIdSelector } from '../../selectors';
+import connect from 'react-redux/lib/connect/connect';
 
-export default class NationalSocietiesEngagedPer extends PureComponent {
+class NationalSocietiesEngagedPer extends PureComponent {
   static get PIE_COLORS () {
     return ['rgba(36, 51, 76, 0.2)', '#24334c', '#FFBB28', '#FF8042'];
   }
@@ -39,7 +41,7 @@ export default class NationalSocietiesEngagedPer extends PureComponent {
   }
 
   componentDidMount () {
-    this.preparedData = this.nationalSocietiesEngagedPerGraphDataFactory.buildGraphData(this.props.data);
+    this.preparedData = this.nationalSocietiesEngagedPerGraphDataFactory.buildGraphData(this.props.data, this.props.regionsById);
     this.forceUpdate();
   }
 
@@ -111,3 +113,11 @@ if (environment !== 'production') {
     data: T.object
   };
 }
+
+const selector = (state, ownProps) => ({
+  regionsById: regionsByIdSelector(state)
+});
+
+const dispatcher = dispatch => ({});
+
+export default connect(selector, dispatcher)(NationalSocietiesEngagedPer);

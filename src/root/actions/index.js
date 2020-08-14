@@ -10,9 +10,8 @@ import {
 import { stringify as buildAPIQS } from 'qs';
 import { DateTime } from 'luxon';
 
-import { countriesByRegion } from '#utils/region-constants';
 import { countriesSelector, countrySelector } from '#selectors';
-import { countriesByIso } from '../selectors';
+import { countriesByIso, countriesByRegionSelector } from '../selectors';
 
 export const TOKEN = 'TOKEN';
 export function getAuthToken (username, password) {
@@ -458,13 +457,16 @@ export function setPartnerDeploymentFilter (id, filters) {
 
 export const GET_PARTNER_DEPLOYMENTS = 'GET_PARTNER_DEPLOYMENTS';
 export function getPartnerDeployments (aaType, id) {
-  aaType = aaType || 'country';
-  let filters = aaType === 'country' ? { country_deployed_to: id }
-    : aaType === 'region' ? { country_deployed_to__in: countriesByRegion[id].join(',') }
-      : { district_deployed_to: id };
-  filters.limit = 1000;
-  const f = buildAPIQS(filters);
-  return fetchJSON(`api/v2/partner_deployment/?${f}`, GET_PARTNER_DEPLOYMENTS, withToken(), { id });
+  return (dispatch, getState) => {
+    aaType = aaType || 'country';
+    const countriesByRegion = countriesByRegionSelector(getState());
+    let filters = aaType === 'country' ? { country_deployed_to: id }
+      : aaType === 'region' ? { country_deployed_to__in: countriesByRegion[id][0].id.join(',') }
+        : { district_deployed_to: id };
+    filters.limit = 1000;
+    const f = buildAPIQS(filters);
+    dispatch(fetchJSON(`api/v2/partner_deployment/?${f}`, GET_PARTNER_DEPLOYMENTS, withToken(), { id }));
+  };
 }
 
 export const GET_AA_KEY_FIGURES = 'GET_AA_KEY_FIGURES';

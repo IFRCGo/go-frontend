@@ -4,7 +4,6 @@ import { PropTypes as T } from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
-import memoize from 'memoize-one';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { Helmet } from 'react-helmet';
 import CountryList from '#components/country-list';
@@ -12,7 +11,6 @@ import BlockLoading from '#components/block-loading';
 import { environment } from '#config';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 import { get } from '#utils/utils';
-import { nope } from '#utils/format';
 import BreadCrumb from '#components/breadcrumb';
 import {
   enterFullscreen,
@@ -31,12 +29,6 @@ import {
   getAppealsListStats
 } from '#actions';
 import { commaSeparatedNumber as n } from '#utils/format';
-import {
-  // countriesByRegion,
-  getRegionId,
-  regions as regionMeta
-} from '#utils/region-constants';
-
 import App from './app';
 import Fold from '#components/fold';
 import TabContent from '#components/tab-content';
@@ -59,7 +51,7 @@ import MainMap from '#components/map/main-map';
 import LanguageContext from '#root/languageContext';
 import { resolveToString } from '#utils/lang';
 
-import { countriesSelector, countriesByRegionSelector, regionsByIdSelector } from '../selectors';
+import { countriesSelector, countriesByRegionSelector, regionsByIdSelector, regionByIdOrNameSelector } from '../selectors';
 import turfBbox from '@turf/bbox';
 
 class AdminArea extends SFPComponent {
@@ -67,7 +59,7 @@ class AdminArea extends SFPComponent {
     super(props);
 
     this.state = {
-      maskLayer: this.getMaskLayer(getRegionId(props.match.params.id)),
+      maskLayer: this.getMaskLayer(this.props.thisRegion.id),
       fullscreen: false
     };
 
@@ -85,10 +77,10 @@ class AdminArea extends SFPComponent {
 
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps (nextProps) {
-    if (getRegionId(this.props.match.params.id) !== getRegionId(nextProps.match.params.id)) {
+    if (this.props.thisRegion.id !== nextProps.thisRegion.id) {
       this.getData(nextProps);
-      this.setState({ maskLayer: this.getMaskLayer(getRegionId(nextProps.match.params.id)) });
-      return this.getAdmArea(nextProps.type, getRegionId(nextProps.match.params.id));
+      this.setState({ maskLayer: this.getMaskLayer(nextProps.thisRegion.id) });
+      return this.getAdmArea(nextProps.type, nextProps.thisRegion.id);
     }
 
     if (this.props.adminArea.fetching && !nextProps.adminArea.fetching) {
@@ -103,7 +95,7 @@ class AdminArea extends SFPComponent {
 
   componentDidMount () {
     this.getData(this.props);
-    this.getAdmArea(this.props.type, getRegionId(this.props.match.params.id));
+    this.getAdmArea(this.props.type, this.props.thisRegion.id);
     this.displayTabContent();
     addFullscreenListener(this.onFullscreenChange);
   }
@@ -135,7 +127,7 @@ class AdminArea extends SFPComponent {
   }
 
   getData (props) {
-    const id = getRegionId(props.match.params.id);
+    const id = this.props.thisRegion.id;
     this.props._getAdmAreaAppealsList(props.type, id);
     this.props._getAdmAreaAggregateAppeals(props.type, id, DateTime.local().minus({ years: 10 }).startOf('month').toISODate(), 'year');
     this.props._getRegionPersonnel(id);
@@ -177,10 +169,6 @@ class AdminArea extends SFPComponent {
     this.props._getAdmAreaById(type, id);
   }
 
-  getRegionId = memoize((regionIdFromProps) => {
-    return getRegionId(regionIdFromProps);
-  })
-
   renderContent () {
     const {
       fetched,
@@ -188,7 +176,7 @@ class AdminArea extends SFPComponent {
       data
     } = this.props.adminArea;
 
-    const { regions } = this.props;
+    const { regions, thisRegion } = this.props;
 
     if (!fetched || error) return null;
 
@@ -198,7 +186,7 @@ class AdminArea extends SFPComponent {
     });
 
     const mapBoundingBox = turfBbox(regions[data.id][0].bbox);
-    const regionName = get(regionMeta, [data.id, 'name'], nope);
+    const regionName = thisRegion.region_name;
     const activeOperations = get(this.props.appealStats, 'data.results.length', false);
 
     const handleTabChange = index => {
@@ -280,7 +268,7 @@ class AdminArea extends SFPComponent {
                           />
                           <AppealsTable
                             foldLink={foldLink}
-                            region={getRegionId(this.props.match.params.id)}
+                            region={thisRegion.id}
                             showActive={true}
                             id={'appeals'}
                             fullscreen={this.state.fullscreen}
@@ -302,7 +290,7 @@ class AdminArea extends SFPComponent {
                       id='emergencies'
                       title={strings.regionRecentEmergencies}
                       limit={5}
-                      region={getRegionId(this.props.match.params.id)}
+                      region={thisRegion.id}
                       showRecent={true}
                       viewAll={'/emergencies/all?region=' + data.id}
                       viewAllText={resolveToString(strings.regionEmergenciesTableViewAllText, { regionName: regionName })}
@@ -314,7 +302,7 @@ class AdminArea extends SFPComponent {
                   <TabContent title={strings.region3WTitle}>
                     <RegionalThreeW
                       disabled={this.loading}
-                      regionId={this.getRegionId(this.props.match.params.id)}
+                      regionId={thisRegion.id}
                     />
                   </TabContent>
                 </TabPanel>
@@ -379,7 +367,7 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state, ownProps) => ({
-  adminArea: get(state.adminArea.aaData, getRegionId(ownProps.match.params.id), {
+  adminArea: get(state.adminArea.aaData, regionByIdOrNameSelector(state, ownProps.match.params.id).id, {
     data: {},
     fetching: false,
     fetched: false
@@ -398,7 +386,8 @@ const selector = (state, ownProps) => ({
   countries: countriesSelector(state),
   appealsListStats: state.overallStats.appealsListStats,
   countriesByRegion: countriesByRegionSelector(state),
-  regions: regionsByIdSelector(state)
+  regions: regionsByIdSelector(state),
+  thisRegion: regionByIdOrNameSelector(state, ownProps.match.params.id)
 });
 
 const dispatcher = (dispatch) => ({

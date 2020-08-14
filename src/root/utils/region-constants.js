@@ -1,4 +1,5 @@
 
+// FIXME: deprecate
 export const countriesByRegion = {
   '0': [
     '12',
@@ -208,6 +209,7 @@ export const countriesByRegion = {
   ]
 };
 
+// FIXME: deprecate
 export const regions = {
   '-1': {
     id: -1,
@@ -241,6 +243,7 @@ export const regions = {
   }
 };
 
+// FIXME: deprecate
 export const regionsIdByName = {
   'other': -1,
   'africa': 0,
@@ -250,6 +253,7 @@ export const regionsIdByName = {
   'mena': 4
 };
 
+// FIXME: deprecate
 export const getRegionId = (idOrName) => {
   // If region name
   if (isNaN(idOrName)) {
@@ -258,10 +262,12 @@ export const getRegionId = (idOrName) => {
   return idOrName;
 };
 
+// FIXME: deprecate
 export const getRegionById = (id) => {
   return regions.hasOwnProperty(id) ? regions[id] : null;
 };
 
+// FIME: deprecate. Can't see any references to this code
 export const getRegionSlug = (id) => {
   if (!regions.hasOwnProperty(id)) {
     return null;

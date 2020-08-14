@@ -85,6 +85,25 @@ export const regionsByIdSelector = (state) => {
   }
 };
 
+export const regionByIdOrNameSelector = (state, name) => {
+  if (state.regions && state.regions.data.results) {
+    if (isNaN(name)) {
+      const thisRegion = state.regions.data.results.find(region => {
+        return region.region_name.toLowerCase() === name.toLowerCase();
+      });
+      return thisRegion;
+    } else {
+      const id = parseInt(name);
+      const thisRegion = state.regions.data.results.find(region => {
+        return region.id === id;
+      });
+      return thisRegion;
+    }
+  } else {
+    return null;
+  }
+};
+
 export const countryOverviewSelector = (state) => (
   state.countryOverview
 );

@@ -65,13 +65,11 @@ import PreparednessPhaseOutcomes from '#components/country/preparedness-phase-ou
 import PreparednessColumnBar from '#components/country/preparedness-column-graph';
 import KeyFiguresHeader from '#components/common/key-figures-header';
 import { SFPComponent } from '#utils/extendables';
-import { getRegionById } from '#utils/region-constants';
 import { NO_DATA } from '#utils/constants';
-// import { getRegionSlug } from '#utils/region-constants';
 
 import ThreeW from './ThreeW';
 import CountryProfile from './CountryProfile';
-import { countryByIdOrNameSelector } from '../selectors';
+import { countryByIdOrNameSelector, regionsByIdSelector } from '../selectors';
 
 const emptyObject = {};
 
@@ -590,14 +588,14 @@ class AdminArea extends SFPComponent {
     const countryName = get(data, 'name', 'Country');
 
     // add region to the breadcrumb only if country has a region defined
-    const region = getRegionById(data.region);
+    const region = this.props.regionsById[data.region] ? this.props.regionsById[data.region][0] : undefined;
     const crumbs = [
       {link: this.props.location.pathname, name: countryName},
       {link: '/', name: strings.breadCrumbHome}
     ];
     if (region) {
       crumbs.splice(1, 0, {
-        link: `/regions/${data.region}`, name: region.name
+        link: `/regions/${data.region}`, name: region.region_name
       });
     }
 
@@ -644,7 +642,7 @@ class AdminArea extends SFPComponent {
                 <Link to={`/regions/${data.region}`}
                   className='link link--with-icon flex-justify-center'
                 >
-                  <span className='link--with-icon-text'>{region.name}</span>
+                  <span className='link--with-icon-text'>{region.region_name}</span>
                   <span className='collecticon-chevron-right link--with-icon-inner'></span>
                 </Link>
               </div>
@@ -863,7 +861,8 @@ const selector = (state, ownProps) => ({
   getPerMission: state.perForm.getPerMission,
   user: state.user.data,
   appealsListStats: state.overallStats.appealsListStats,
-  country: countryByIdOrNameSelector(state, ownProps.match.params.id)
+  country: countryByIdOrNameSelector(state, ownProps.match.params.id),
+  regionsById: regionsByIdSelector(state),
 
 });
 
