@@ -40,6 +40,7 @@ function Container(p) {
             <ExportHiddenContent className={styles.exportButtonContainer}>
               <ExportButton className={_cs(styles.exportButton, 'button button--xsmall button--primary-bounded')}>
                 <IoMdDownload />
+                &nbsp;
                 Export
               </ExportButton>
             </ExportHiddenContent>

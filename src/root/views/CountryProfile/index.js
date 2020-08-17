@@ -21,6 +21,23 @@ import ExternalSources from './ExternalSources';
 
 import styles from './styles.module.scss';
 
+function Section(p) {
+  const {
+    className,
+    containerClassName,
+    children,
+  } = p;
+
+  return (
+    <section className={_cs(className, styles.section)}>
+      <div className={_cs(styles.container, 'container-lg', containerClassName)}>
+        { children }
+      </div>
+    </section>
+  );
+}
+
+
 class CountryOverview extends React.PureComponent {
   componentDidMount () {
     const {
@@ -63,7 +80,7 @@ class CountryOverview extends React.PureComponent {
 
     return (
       <div className={_cs(styles.countryOverview, className)}>
-        <section className={styles.topSection}>
+        <Section containerClassName={styles.topSection}>
           <KeyIndicators
             className={styles.keyIndicators}
             population={data.population}
@@ -81,8 +98,8 @@ class CountryOverview extends React.PureComponent {
             volunteers={data.volunteers}
             trainedInFirstAid={data.trained_in_first_aid}
           />
-        </section>
-        <div className={styles.populationAndClimateSection}>
+        </Section>
+        <Section containerClassName={styles.populationAndClimateSection}>
           <PopulationMap
             countryId={countryId}
             className={styles.populationMap}
@@ -92,8 +109,8 @@ class CountryOverview extends React.PureComponent {
             className={styles.climateChart}
             yearlyEvents={data.climate_events}
           />
-        </div>
-        <div className={styles.keyClimateEventsAndDatesSection}>
+        </Section>
+        <Section containerClassName={styles.keyClimateEventsAndDatesSection}>
           <KeyClimateEvents
             className={styles.keyClimateEvents}
             averageTemperature={data.avg_temperature}
@@ -104,20 +121,24 @@ class CountryOverview extends React.PureComponent {
             className={styles.socialEvents}
             data={data.social_events}
           />
-        </div>
-        <SeasonalCalendar
-          className='seasonal-calender'
-          appeals={data.appeals}
-          data={data.seasonal_calender}
-        />
-        <KeyDocuments
-          className={styles.keyDocuments}
-          data={data.key_documents}
-        />
-        <ExternalSources
-          className={styles.externalSources}
-          data={data.external_sources}
-        />
+        </Section>
+        <Section>
+          <SeasonalCalendar
+            className='seasonal-calender'
+            appeals={data.appeals}
+            data={data.seasonal_calender}
+          />
+        </Section>
+        <Section>
+          <KeyDocuments
+            className={styles.keyDocuments}
+            data={data.key_documents}
+          />
+          <ExternalSources
+            className={styles.externalSources}
+            data={data.external_sources}
+          />
+        </Section>
       </div>
     );
   }
