@@ -55,14 +55,14 @@
 
   .climate-chart {
     .chart-container {
-      padding: 6px 0;
+      padding: $spacing-half 0;
 
       .header {
         .heading {
           letter-spacing: $letter-spacing-lg;
           text-transform: uppercase;
           font-size: $font-size-sm;
-          padding: 4px 20px;
+          padding: $spacing-half $spacing-2;
         }
       }
 
@@ -242,7 +242,7 @@
         .sector-cell {
           width: 120px;
           vertical-align: middle;
-          padding: 6px;
+          padding: $spacing-half;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -259,13 +259,10 @@
               position: absolute;
               background-color: pink;
               overflow: hidden;
-              padding: 6px;
+              padding: $spacing-half;
               text-align: center;
               text-transform: uppercase;
               font-size: $font-size-xxs;
-              box-shadow: 0 3px 8px -5px rgba(0, 0, 0, .7);
-              border: 1px solid rgba(0, 0, 0, .1);
-              opacity: 0.9;
               white-space: nowrap;
               overflow: hidden;
               text-overflow: ellipsis;
@@ -284,7 +281,7 @@
               align-items: center;
               text-transform: uppercase;
               font-size: $font-size-xxs;
-              padding: 6px 0;
+              padding: $spacing-half 0;
             }
           }
         }

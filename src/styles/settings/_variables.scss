@@ -5,15 +5,15 @@
 /* Colors
    ========================================================================== */
 
-$base-color: #000000;                                   // Black
-$base-color--light: #1b1b1b;							// Black: Lighter
-$primary-color: #f5333f;                                // Red
-$secondary-color: #011e41;                              // Blue // Previously 24334c
+$base-color: #000000;                 // Black
+$base-color--light: #1b1b1b;          // Black: Lighter
+$primary-color: #f5333f;              // Red
+$secondary-color: #011e41;            // Blue // Previously 24334c
 $secondary-color-light: #C9D2E3;
 
-$map-color: #23324D;                       // Blue light
+$map-color: #23324D;                  // Blue light
 $grey-slate: rgba(45, 70, 98, 0.6);
-$grey-mist: #faf9f9; 									                  // Previously fafafa;
+$grey-mist: #faf9f9;                  // Previously fafafa;
 $grey-fog: #f3f2f3;
 $grey-titanium: #eaeaea;
 $grey-pearl: #d1d1d1;
@@ -28,10 +28,10 @@ $white: #fff;
 
 /* State colors */
 
-$danger-color: $primary-color;                          // Red
-$success-color: #009896;                                // Turquoise
-$warning-color: #f39c12;                                // Yellow
-$info-color: $secondary-color;                          // Blue
+$danger-color: $primary-color;        // Red
+$success-color: #009896;              // Turquoise
+$warning-color: #f39c12;              // Yellow
+$info-color: $secondary-color;        // Blue
 $light-base-color: #666666;;
 
 /* Helper colors */
@@ -56,13 +56,13 @@ $base-font-bold: 700;
 $base-font-weight: $base-font-light;
 $base-line-height: 1.5;
 
-$base-font-size: 0.875rem; // 14px
-$font-size-xxs: 0.63rem;   // 10px
-$font-size-xs: 0.695rem;   // 11px
-$font-size-sm: 0.75rem;	   // 12px
-$font-size-lg: 1rem; 	   // 16px	
-$font-size-xl: 1.06rem;	   // 17px	
-$font-size-xxl: 1.16rem;   // 18px
+$base-font-size: 0.875rem;  // 14px
+$font-size-xxs: 0.63rem;    // 10px
+$font-size-xs: 0.695rem;    // 11px
+$font-size-sm: 0.75rem;     // 12px
+$font-size-lg: 1rem;        // 16px  
+$font-size-xl: 1.06rem;     // 17px  
+$font-size-xxl: 1.16rem;    // 18px
 $font-size-heading-widget: 1.72rem;
 $font-size-heading: 18px;
 $font-size-heading-sm: 14px;
