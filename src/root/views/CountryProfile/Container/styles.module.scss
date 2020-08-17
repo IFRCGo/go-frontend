@@ -3,25 +3,29 @@
 .container {
   display: flex;
   flex-direction: column;
-  padding: 64px 6px;
+  background-color: $white;
+  margin: $spacing-half;
 
   .header {
     display: flex;
     flex-shrink: 0;
     align-items: center;
-    padding: 0 10px;
-    border-bottom: 1px solid rgba(0, 0, 0, .1);
+    padding: 0 $spacing;
+    border-bottom: $base-border-width solid $base-border-color;
 
     .heading {
       text-transform: uppercase;
       margin: 0;
-      padding: 10px;
-      letter-spacing: 0.1rem;
+      padding: $spacing;
+      letter-spacing: $letter-spacing-heading;
       flex-grow: 1;
+      font-family: $heading-font-family;
+      font-weight: $base-font-semi-bold;
     }
 
     .export-button-container {
       flex-shrink: 0;
+      padding: $spacing;
 
       .export-button {
         display: flex;
@@ -36,6 +40,5 @@
 
   .content {
     flex-grow: 1;
-    padding: 10px 0;
   }
 }

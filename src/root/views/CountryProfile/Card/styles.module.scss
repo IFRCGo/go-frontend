@@ -4,27 +4,31 @@
   display: flex;
   flex-direction: column;
   box-shadow: $base-box-shadow;
-  padding: 0 10px;
-  background-color: #fff;
+  background-color: $white;
   overflow: auto;
+  margin: $spacing-half;
+  border-radius: $base-border-radius;
 
   .header {
     flex-shrink: 0;
-    padding: 0 10px;
+    padding: 0 $spacing;
 
     .heading {
+      border-bottom: $base-border-width solid $base-border-color;
       text-transform: uppercase;
       margin: 0;
+      padding: $spacing;
+      letter-spacing: $letter-spacing-heading;
+      flex-grow: 1;
+      font-family: $heading-font-family;
+      font-weight: $base-font-semi-bold;
       text-align: center;
-      padding: 10px;
-      border-bottom: 1px solid rgba(0, 0, 0, .1);
-      letter-spacing: $letter-spacing-lg;
     }
   }
 
   .content {
     flex-grow: 1;
-    padding: 10px 0;
+    padding: $spacing;
     overflow: auto;
   }
 

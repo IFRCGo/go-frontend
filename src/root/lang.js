@@ -106,10 +106,12 @@ export default {
   loginForgotPassword: 'I forgot my password.',
   loginShowUsernameTitle: 'Show me my username',
   loginForgotUsername: 'I forgot my username only.',
+  loginResendValidation: 'Re-send validation email.',
+  loginResendValidationTitle: 'I didn\'t get my validation email',
   loginInvalid: 'Invalid username or password',
   loginErrorMessage: 'Error: {message}',
   loginButton: 'Login',
-  loginDontHaveAccount: 'Don’t have an account?',
+  loginDontHaveAccount: 'Don’t have an account? ',
   loginCreateAccountTitle: 'Create new account',
   loginSignUp: 'Sign Up.',
 
@@ -225,6 +227,11 @@ export default {
   recoverUsernameEmail: 'Enter the email you used during registration',
   recoverUsernameEmailLabel: 'Email',
   recoverUsernameSubmitText: 'Send me my username',
+
+  resendValidationTitle: 'IFRC Go - Re-send Validation Email',
+  resendValidationUsername: 'Enter the username you used during registration',
+  resendValidationUsernameLabel: 'Username',
+  resendValidationSubmitText: 'Re-send',
 
   presentationDashAppealsTitle: 'Active Operations',
 
