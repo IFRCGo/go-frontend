@@ -578,7 +578,7 @@ class FieldReportForm extends React.Component {
 
           <FormError
             errors={this.state.errors}
-            property='start_date'
+            property='startDate'
           />
         </FormInput>
         <FormRadioGroup
