@@ -50,8 +50,7 @@ import SourceEstimation from './cmp-source-estimation.js';
 import EPISourceEstimation from './cmp-source-epi';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
-import countriesSelection from '#selectors';
-import { countriesSelector } from '../../selectors';
+import { countriesSelector } from '#selectors';
 
 const ajv = new Ajv({ $data: true, allErrors: true, errorDataPath: 'property' });
 ajvKeywords(ajv);
