@@ -39,7 +39,6 @@ import MovementActivitiesFilters from './movement-activities-filters';
 import NSActivitiesFilters from './ns-activities-filters';
 import ExportButton from './export-button';
 import Map from './map';
-import { countries } from '../../utils/field-report-constants';
 import { countriesSelector, regionsByIdSelector } from '../../selectors';
 
 const emptyList = [];
