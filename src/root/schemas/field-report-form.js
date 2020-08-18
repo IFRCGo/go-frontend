@@ -187,7 +187,11 @@ export const step4 = {
       properties: {
         status: { type: 'string' },
         value: { type: 'integer', minimum: 0 }
-      }
+      },
+        dependencies: {
+          status: ['value'],
+          value: ['status'],
+        }
     },
     contact: {
       properties: {

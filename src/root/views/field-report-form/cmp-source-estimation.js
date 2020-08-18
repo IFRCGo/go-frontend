@@ -74,7 +74,7 @@ export default class SourceEstimation extends React.Component {
               <div key={o.source || idx} className='estimation row flex-mid'>
                 <FormInput
                   label={estimationLabel}
-                  type='number'
+                  type={fieldKey !== 'affectedPopCentres' ? 'number': 'text'}
                   name={`${name}[${idx}][estimation]`}
                   id={`${name}-${idx}-estimation`}
                   classLabel={c('label-secondary', {'visually-hidden': idx > 0})}
