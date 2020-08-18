@@ -135,7 +135,7 @@ export function prepStateForValidation (state) {
     numDisplaced: (val) => val.map(objPropToNum('estimation')),
     numPotentiallyAffected: (val) => val.map(objPropToNum('estimation')),
     numHighestRisk: (val) => val.map(objPropToNum('estimation')),
-    affectedPopCentres: (val) => val.map(objPropToStr('estimation')),
+    affectedPopCentres: (val) => val.map(objPropToStr('estimationString')),
     epiCases: toNumIfNum,
     epiNumDead: toNumIfNum,
     epiSuspectedCases: toNumIfNum,
