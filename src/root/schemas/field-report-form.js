@@ -66,6 +66,10 @@ export const step2 = {
         properties: {
           estimation: { type: 'string' },
           source: {enum: ['red-cross', 'government', 'other']}
+        },
+        dependencies: {
+          estimation: ['source'],
+          source: ['estimation'],
         }
       }
     }
@@ -93,7 +97,17 @@ export const step2 = {
       '$ref': '#/definitions/estimation'
     },
     affectedPopCentres: {
-      '$ref': '#/definitions/estimationString'
+      type: 'array',
+      items: {
+        properties: {
+          estimation: { type: 'string' },
+          source: {enum: ['red-cross', 'government', 'other']}
+        },
+        dependencies: {
+          estimation: ['source'],
+          source: ['estimation'],
+        }
+      }
     },
     epiCases: {
       type: 'integer'
