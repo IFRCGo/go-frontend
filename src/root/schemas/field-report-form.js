@@ -24,10 +24,6 @@ export const step1 = {
       formatMinimum: '1980-01-01',
       formatExclusiveMaximum: true
     },
-    country: {
-      type: 'string'
-      // enum: getValidValues(formData.countries, 'value')
-    },
     districts: {
       type: 'array'
     },
