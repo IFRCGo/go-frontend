@@ -53,7 +53,7 @@ export default class PlanResponseRow extends React.Component {
               name={`${name}[status]`}
               id={`${name}-status`}
               classLabel='visually-hidden'
-              classWrapper='resp-status col col-8-sm'
+              classWrapper='resp-status col col-7-sm'
               options={options}
               selectedOption={values.status}
               onChange={this.onFieldChange.bind(this, 'status')}
@@ -66,11 +66,11 @@ export default class PlanResponseRow extends React.Component {
 
             <FormInput
               label={valueFieldLabel}
-              type='text'
+              type='number'
               name={`${name}[value]`}
               id={`${name}-value`}
               classLabel='label-secondary'
-              classWrapper='resp-value col col-3-sm'
+              classWrapper='resp-value col col-4-sm'
               value={values.value}
               onChange={this.onFieldChange.bind(this, 'value')} >
               <FormError
