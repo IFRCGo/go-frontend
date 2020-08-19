@@ -911,9 +911,21 @@ class FieldReportForm extends React.Component {
     const { strings } = this.context;
     const fields = formData.getFieldsStep4(strings);
     const status = this.getStatus();
-    const plannedResponseRows = fields.plannedResponseRows.filter(row => {
-      return !!row.label[status];
-    });
+    const plannedResponseRows = fields.plannedResponseRows.filter(row => !!row.label[status]);
+    // The form sets all planned response statuses to "0" on submit including 
+    // the planned responses not listed. This hack resets ALL the planned responses so that validation
+    // can be successfully executed.
+    plannedResponseRows.map(row => this.state.data[row.key].status === "0" ? this.onFieldChange(row.key, {status: undefined, value: undefined}) : null);
+    if(this.state.data.rdrtrits.status === "0") {
+      this.onFieldChange('rdrtrits', {status: undefined, value: undefined});
+    } 
+    if(this.state.data.imminentDref.status === "0") {
+      this.onFieldChange('imminentDref', {status: undefined, value: undefined});
+    } 
+    if(this.state.data.forecastBasedAction.status === "0") {
+      this.onFieldChange('forecastBasedAction', {status: undefined, value: undefined});
+    } 
+
     let responseTitle = status === 'EVT' ? strings.fieldReportFormResponseTitleEVT : strings.fieldReportFormResponseTitle;
 
     // We hide the entire Planned International Response section for COVID reports
