@@ -10,20 +10,13 @@ import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 
 const CountryList = props => {
-  const {
-    fetched,
-    error,
-    data
-  } = props.countries;
-
   const { strings } = useContext(LanguageContext);
   const [isFullList, toggleList] = useState(true);
   const toggle = () => {
     isFullList ? toggleList(false) : toggleList(true);
   };
 
-  if (!fetched || error) { return null; }
-  let countries = data.results;
+  let countries = props.countries;
   if (props.appealStats.fetched && !props.appealStats.error) {
     const activeOperations = get(props.appealStats, 'data.results', []);
     countries = countries.map(d => {

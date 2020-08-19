@@ -170,6 +170,7 @@ class AdminArea extends SFPComponent {
       data
     } = this.props.adminArea;
 
+    const regionId = data.id;
     const { regions, thisRegion } = this.props;
 
     if (!fetched || error) return null;
@@ -277,7 +278,7 @@ class AdminArea extends SFPComponent {
                       </div>
                     </Fold>
                     <CountryList
-                      countries={this.props.countries}
+                      countries={this.props.countriesByRegion[regionId]}
                       appealStats={this.props.appealStats}
                     />
                     <EmergenciesTable
