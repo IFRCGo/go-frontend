@@ -127,7 +127,7 @@ class AdminArea extends SFPComponent {
   }
 
   getData (props) {
-    const id = this.props.thisRegion.id;
+    const id = props.thisRegion.id;
     this.props._getAdmAreaAppealsList(props.type, id);
     this.props._getAdmAreaAggregateAppeals(props.type, id, DateTime.local().minus({ years: 10 }).startOf('month').toISODate(), 'year');
     this.props._getRegionPersonnel(id);
