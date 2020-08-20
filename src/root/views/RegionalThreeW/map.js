@@ -98,7 +98,7 @@ function Map (props) {
       map.fitBounds(bbox);
       setMapLoaded(true);
     });
-  }, [map, setMapLoaded, regionId]);
+  }, [map, setMapLoaded, regionId, regions]);
 
   React.useEffect(() => {
     if (!map || !mapLoaded) {
@@ -148,7 +148,7 @@ function Map (props) {
         .setDOMContent(popoverContent.children[0])
         .addTo(map);
     });
-  }, [map, regionId, data, mapLoaded]);
+  }, [map, regionId, data, mapLoaded, countries]);
 
   const [supportingNSList, maxProjects] = React.useMemo(() => {
     const maxProjects = Math.max(...data.map(d => d.projects_count));
