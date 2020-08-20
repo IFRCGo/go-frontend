@@ -53,7 +53,7 @@ function NSActivitiesFilters (p) {
       .filter(d => d.type === 'receiving_ns')
       .map(d => ({ label: d.name, value: d.iso }))
       .sort(compareString),
-  ], [data]);
+  ], [data, countriesByIso]);
 
   return (
     <Faram
