@@ -3,23 +3,15 @@ import React from 'react';
 import Dropdown from './common/dropdown';
 import { Link } from 'react-router-dom';
 import { environment } from '#config';
-import { regions, getRegionId } from '#utils/region-constants';
 import { PropTypes as T } from 'prop-types';
+import { regionsByIdSelector, regionByIdOrNameSelector } from '../selectors';
+import { connect } from 'react-redux';
 
-const regionArray = Object.keys(regions).map(k => regions[k]);
+// const regionArray = Object.keys(regions).map(k => regions[k]);
 
 class HeaderRegionButton extends React.Component {
   construct () {
-    this.decideTitle = this.decideTitle.bind(this);
     this.decideTriggerClassName = this.decideTriggerClassName.bind(this);
-  }
-
-  decideTitle (currentPath) {
-    if (currentPath.url.includes('/regions')) {
-      return regionArray[getRegionId(currentPath.params['id'])].name;
-    }
-
-    return 'Regions';
   }
 
   decideTriggerClassName (currentPath) {
@@ -33,11 +25,16 @@ class HeaderRegionButton extends React.Component {
   }
 
   render () {
-    const { id, currentPath } = this.props;
-    const title = this.decideTitle(currentPath);
-    const regions = regionArray.map(o => ({to: `/regions/${o.id}`, text: o.name})).slice(0, 5); // excluding Other from the region dropdown menu
+    const { id, currentPath, regions, thisRegion } = this.props;
+    const title = thisRegion ? thisRegion.region_name : 'Regions';
     const triggerClassName = this.decideTriggerClassName(currentPath);
-
+    const regionLinks = Object.values(regions).map(r => {
+      r = r[0];
+      return {
+        to: `/regions/${r.id}`,
+        text: r.region_name
+      };
+    });
     return (
       <Dropdown
         id={id}
@@ -49,7 +46,7 @@ class HeaderRegionButton extends React.Component {
         direction='down'
         alignment='center' >
         <ul className='drop__menu' role='menu'>
-          {regions.map(o => (
+          {regionLinks.map(o => (
             <li key={o.to}><Link to={o.to} className='drop__menu-item' title={`View ${o.text}`} data-hook='dropdown:close'>{o.text}</Link></li>
           ))}
         </ul>
@@ -65,4 +62,11 @@ if (environment !== 'production') {
   };
 }
 
-export default HeaderRegionButton;
+const selector = (state, ownProps) => ({
+  regions: regionsByIdSelector(state),
+  thisRegion: ownProps.currentPath.url.includes('/regions') ? regionByIdOrNameSelector(state, ownProps.currentPath.params['id']) : null
+});
+
+const dispatcher = dispatch => ({});
+
+export default connect(selector, dispatcher)(HeaderRegionButton);

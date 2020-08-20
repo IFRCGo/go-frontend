@@ -2,7 +2,7 @@ import { get } from '#utils/utils';
 import { combineReducers } from 'redux';
 import _groupBy from 'lodash.groupby';
 import { stateInflight, stateError, stateSuccess } from '#utils/reducer-utils';
-import { getCentroid } from '#utils/country-centroids';
+import { getCountryMeta } from '../utils/get-country-meta';
 
 const initialState = {
   fetching: false,
@@ -90,7 +90,9 @@ function locations (state = locationInitialState, action) {
   return state;
 }
 
+// TODO: This can be simplified a lot
 function parseLocations (existingFeatures, action) {
+  const allCountries = action.countries;
   const isEru = action.type === 'GET_ALL_DEPLOYMENT_ERU_SUCCESS';
   const results = get(action, 'data.results', []);
   let countryPath = isEru ? 'deployed_to' : 'deployment.country_deployed_to';
@@ -114,14 +116,9 @@ function parseLocations (existingFeatures, action) {
       }
     } else {
       let country = get(deployments[0], countryPath);
-      features.push({
-        type: 'Feature',
-        geometry: {
-          type: 'Point',
-          coordinates: getCentroid(country.iso)
-        },
-        properties: Object.assign({eru: 0, heop: 0, fact: 0, rdrt: 0}, country, values)
-      });
+      const thisCentroid = getCountryMeta(country.id, allCountries).centroid || [0, 0];
+      thisCentroid.properties = Object.assign({eru: 0, heop: 0, fact: 0, rdrt: 0}, country, values);
+      features.push(thisCentroid);
     }
   }
   return { type: 'FeatureCollection', features };

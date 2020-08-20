@@ -40,6 +40,7 @@ import PerAccountTab from '#components/per-forms/per-account-tab';
 import BreadCrumb from '../components/breadcrumb';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
+import { countriesSelector } from '#selectors';
 
 import {
   FormCheckboxGroup,
@@ -284,9 +285,9 @@ class Account extends React.Component {
     subscriptions.forEach(sub => {
       const rtype = rtypes[sub.rtype];
       if (rtype === 'country' && sub.country) {
-        let countryMeta = getCountryMeta(sub.country);
+        let countryMeta = getCountryMeta(this.props.allCountries, sub.country);
         if (countryMeta && !next.countries.some((country) => country.value === countryMeta.value)) {
-          next.countries = next.countries.concat([{ label: countryMeta.label, value: sub.country.toString() }]);
+          next.countries = next.countries.concat([{ label: countryMeta.name, value: sub.country.toString() }]);
         }
       } else if (rtype === 'region' && (sub.region || sub.region === 0)) {
         next.regions = updateChecks(next.regions, sub.region.toString());
@@ -665,7 +666,7 @@ class Account extends React.Component {
                 name='countries'
                 value={this.state.notifications.countries}
                 onChange={this.onFieldChange.bind(this, 'notifications', 'countries')}
-                options={countries}
+                options={countries(this.props.allCountries)}
                 multi />
             </div>
             <FormCheckboxGroup
@@ -904,7 +905,8 @@ const selector = (state, ownProps) => ({
   event: state.event,
   eventDeletion: state.subscriptions.delSubscriptions,
   perOverviewForm: state.perForm.getPerOverviewForm,
-  getPerMission: state.perForm.getPerMission
+  getPerMission: state.perForm.getPerMission,
+  allCountries: countriesSelector(state),
 });
 
 const dispatcher = (dispatch) => ({

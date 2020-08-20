@@ -39,7 +39,6 @@ import {
   getRecordsByType
 } from '#utils/utils';
 
-import { getRegionById } from '#utils/region-constants';
 import App from '#views/app';
 import Fold from '#components/fold';
 import TabContent from '#components/tab-content';
@@ -53,6 +52,7 @@ import EmergencyMap from '#components/map/emergency-map';
 import { NO_DATA } from '#utils/constants';
 import { epiSources } from '#utils/field-report-constants';
 import ProjectFormModal from '#views/ThreeW/project-form-modal';
+import { regionsByIdSelector } from '../selectors';
 
 class Emergency extends React.Component {
   constructor (props) {
@@ -512,7 +512,7 @@ class Emergency extends React.Component {
                         key={region}
                         className="link--table"
                       >
-                        {getRegionById(region.toString()).name}
+                        { this.props.regionsById[region][0].region_name }
                       </Link>);
                     }) : nope }
                   </td>
@@ -819,7 +819,11 @@ class Emergency extends React.Component {
       regionId = country.region;
       if (regionId) {
         regionLink = `/regions/${regionId}`;
-        regionName = getRegionById(regionId.toString()).name;
+        regionName = this.props.regionsById[regionId][0].region_name;
+        crumbs.push({
+          link: regionLink,
+          name: regionName
+        });
       }
     }
     crumbs.push({
@@ -828,6 +832,7 @@ class Emergency extends React.Component {
     crumbs.push({
       link: '/', name: strings.breadCrumbHome,
     });
+
     return (
       <section className="inpage">
         <Helmet>
@@ -1147,6 +1152,7 @@ const selector = (state, ownProps) => ({
   isLogged: !!state.user.data.token,
   user: state.user,
   profile: state.profile,
+  regionsById: regionsByIdSelector(state),
 });
 
 const dispatcher = (dispatch) => ({

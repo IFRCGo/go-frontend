@@ -18,12 +18,11 @@ import { Helmet } from 'react-helmet';
 import { PropTypes as T } from 'prop-types';
 import { environment } from '#config';
 import { getCountryMeta } from '#utils/get-country-meta';
-import { getCentroid } from '#utils/country-centroids';
 import NationalSocietiesEngagedPer from '#components/preparedness/national-societies-engaged-per';
 import GlobalPreparednessHighlights from '#components/preparedness/global-preparedness-highlights';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
-
+import { countriesSelector } from '#selectors';
 // import _groupBy from 'lodash.groupby';
 
 class Preparedness extends React.Component {
@@ -60,9 +59,9 @@ class Preparedness extends React.Component {
 
       nextProps.collaboratingPerCountry.data.results.map((perForm) => {
         if (perForm.country) {
-          let countryMeta = getCountryMeta(perForm.country.id);
+          let countryMeta = getCountryMeta(perForm.country.id, this.props.countries);
           perForm.country.iso = countryMeta.iso;
-          let countryCentroid = getCentroid(perForm.country.iso);
+          let countryCentroid = countryMeta.centroid.coordinates || [0, 0];
           perForm.country.centroid = countryCentroid;
 
           geoJson.features.push({
@@ -215,7 +214,8 @@ const selector = (state) => ({
   perOverviewForm: state.perForm.getPerOverviewForm,
   perWorkPlan: state.perForm.getPerWorkPlan,
   getPerMission: state.perForm.getPerMission,
-  user: state.user
+  user: state.user,
+  countries: countriesSelector(state)
 });
 
 const dispatcher = (dispatch) => ({

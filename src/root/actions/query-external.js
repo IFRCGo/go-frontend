@@ -1,9 +1,9 @@
 import { fetchJSON } from '#utils/network';
 import { stringify as buildAPIQS } from 'qs';
 
-import { getCountryMeta } from '#utils/get-country-meta';
 import getCode from '#utils/fdrs-codes';
 import { fdrsAuth } from '#root/config';
+import { countrySelector } from '#selectors';
 
 // Properties to query from the FDRS API
 const fdrsProps = [
@@ -30,19 +30,21 @@ const fdrsQuery = {
 
 export const GET_FDRS = 'GET_FDRS';
 export function getFdrs (countryId) {
-  const { iso } = getCountryMeta(countryId) || {};
-  const fdrsCode = getCode(iso);
-  if (!fdrsCode) {
-    return {
-      type: 'GET_FDRS_FAILED',
-      error: new Error('We don\'t have a valid FDRS code for this country.')
-    };
-  }
-  const f = buildAPIQS(Object.assign({
-    KPI_Don_Code: fdrsCode
-  }, fdrsQuery));
-
-  return fetchJSON('https://data-api.ifrc.org/api/data?' + f, GET_FDRS, {
-    headers: { Authorization: `Basic ${fdrsAuth}` }
-  });
+  return (dispatch, getState) => {
+    const { iso } = countrySelector(getState(), countryId) || {};
+    const fdrsCode = getCode(iso);
+    if (!fdrsCode) {
+      return {
+        type: 'GET_FDRS_FAILED',
+        error: new Error('We don\'t have a valid FDRS code for this country.')
+      };
+    }
+    const f = buildAPIQS(Object.assign({
+      KPI_Don_Code: fdrsCode
+    }, fdrsQuery));
+  
+    dispatch(fetchJSON('https://data-api.ifrc.org/api/data?' + f, GET_FDRS, {
+      headers: { Authorization: `Basic ${fdrsAuth}` }
+    }));
+  };
 }

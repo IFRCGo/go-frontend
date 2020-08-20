@@ -7,10 +7,10 @@ import * as EmailValidator from 'email-validator';
 import { DateTime } from 'luxon';
 import { isNotDefined } from '@togglecorp/fujs';
 
-import { getCentroid } from './country-centroids';
 import { disasterType } from './field-report-constants';
 import { getDtypeMeta } from './get-dtype-meta';
 import { appealTypes } from '#utils/appeal-type-constants';
+import { getCountryMeta } from '#utils/get-country-meta';
 
 // lodash.get will only return the defaultValue when
 // the path is undefined. We want to also catch null and ''
@@ -51,9 +51,9 @@ export function aggregateAppealStats (appeals) {
 }
 
 // returns a GeoJSON representation of a country's operations
-export function aggregateCountryAppeals (appeals) {
+export function aggregateCountryAppeals (appeals, countries) {
   const grouped = _groupBy(appeals.filter(o => o.country), 'country.iso');
-  return {
+  const geojson = {
     type: 'FeatureCollection',
     features: Object.keys(grouped).map(countryIso => {
       const countryAppeals = grouped[countryIso];
@@ -70,11 +70,12 @@ export function aggregateCountryAppeals (appeals) {
         }),
         geometry: {
           type: 'Point',
-          coordinates: getCentroid(countryIso)
+          coordinates: getCountryMeta(countryAppeals[0].country.id, countries).centroid.coordinates || [0, 0]
         }
       };
     })
   };
+  return(geojson);
 }
 
 export function aggregatePartnerDeployments (deploymentGroups, filters = []) {

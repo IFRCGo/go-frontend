@@ -50,6 +50,7 @@ import SourceEstimation from './cmp-source-estimation.js';
 import EPISourceEstimation from './cmp-source-epi';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
+import { countriesSelector } from '#selectors';
 
 const ajv = new Ajv({ $data: true, allErrors: true, errorDataPath: 'property' });
 ajvKeywords(ajv);
@@ -511,7 +512,7 @@ class FieldReportForm extends React.Component {
                     name='country'
                     value={this.state.data.country}
                     onChange={this.onCountryChange.bind(this)}
-                    options={formData.countries}
+                    options={ formData.countries(this.props.countries) }
                     disabled={!this.state.data.isCovidReport}
                   />
 
@@ -1045,6 +1046,7 @@ class FieldReportForm extends React.Component {
   render() {
     const { strings } = this.context;
     const submitTitle = this.state.step === 4 ? strings.fieldReportSubmit : strings.fieldReportContinue;
+
     return (
       <App className='page--frep-form'>
         <Helmet>
@@ -1112,7 +1114,8 @@ const selector = (state, ownProps) => ({
     fetching: false,
     fetched: false
   }),
-  districts: state.districts
+  districts: state.districts,
+  countries: countriesSelector(state)
 });
 
 const dispatcher = (dispatch) => ({

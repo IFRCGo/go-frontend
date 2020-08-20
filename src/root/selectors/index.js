@@ -1,10 +1,107 @@
 // import { getResponseFromRequest } from '#utils/request';
+import _groupBy from 'lodash.groupby';
+import _find from 'lodash.find';
 
 const initialState = {
   fetching: false,
   fetched: false,
   receivedAt: null,
   data: {}
+};
+
+export const countriesSelector = (state) => {
+  if (state.countries.data.results && state.countries.data.results.length) {
+    let results = state.countries.data.results.map((country) => {
+      return {
+        'value': country.id,
+        'label': country.name || null,
+        'iso': country.iso || null,
+        'iso3': country.iso3 || null,
+        'region': country.region,
+        'bbox': country.bbox,
+        'centroid': country.centroid,
+        'independent': country.independent,
+        'society_name': country.society_name,
+        'society_url': country.society_url,
+        'url_ifrc': country.url_ifrc,
+        'overview': country.overview,
+        'key_priorities': country.key_priorities,
+        'record_type': country.record_type,
+        'inform_score': country.inform_score
+      };
+    });
+    return results;
+  } else {
+    return initialState;
+  }
+};
+
+export const countriesByRegionSelector = (state) => {
+  if (state.countries && state.countries.data.results) {
+    let countriesByRegion = _groupBy(state.countries.data.results, 'region');
+    return countriesByRegion;
+  } else {
+    return initialState;
+  }
+};
+
+export const countrySelector = (state, countryId) => {
+  if (state.countries && state.countries.data.results) {
+    countryId = typeof(countryId) === "string" ? Number(countryId) : countryId;
+    let thisCountry = _find(state.countries.data.results, { 'id': countryId } );
+    return thisCountry;
+  } else {
+    return null;
+  }
+};
+
+export const countryByIdOrNameSelector = (state, name) => {
+  if (state.countries && state.countries.data.results) {
+    if (isNaN(name)) {
+      const thisCountry = state.countries.data.results.find(country => {
+        return country.name.toLowerCase() === decodeURI(name.toLowerCase());
+      });
+      return thisCountry;
+    } else {
+      return countrySelector(state, name);
+    }
+  } else {
+    return null;
+  }
+};
+
+export const countriesByIso = (state) => {
+  if (state.countries && state.countries.data.results) {
+    let countriesByIso = _groupBy(state.countries.data.results, 'iso');
+    return countriesByIso;
+  } else {
+    return null;
+  }
+};
+
+export const regionsByIdSelector = (state) => {
+  if (state.regions && state.regions.data.results) {
+    return _groupBy(state.regions.data.results, 'id');
+  }
+};
+
+export const regionByIdOrNameSelector = (state, name) => {
+  if (state.regions && state.regions.data.results) {
+    if (isNaN(name)) {
+      const thisRegion = state.regions.data.results.find(region => {
+        return region.region_name.toLowerCase() === name.toLowerCase();
+      });
+      return thisRegion;
+    } else {
+      const id = parseInt(name);
+      const thisRegion = state.regions.data.results.find(region => {
+        return region.id === id;
+      });
+      return thisRegion;
+    }
+  } else {
+    return null;
+  }
 };
 
 export const countryOverviewSelector = (state) => (

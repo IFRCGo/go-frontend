@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { connect } from 'react-redux';
 import A1PolicyStrategyForm from '#components/per-forms/a1-policy-strategy-form';
 import A2AnalysisAndPlanningForm from '#components/per-forms/a2-analysis-and-planning-form';
 import A3OperationalCapacity from '#components/per-forms/a3-operational-capacity';
@@ -12,6 +13,7 @@ import { Helmet } from 'react-helmet';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 import App from './app';
+import { countriesSelector } from '#selectors';
 
 import LanguageContext from '#root/languageContext';
 
@@ -70,7 +72,7 @@ class EditPerForms extends React.Component {
         </Helmet>
         <BreadCrumb crumbs={[
           {link: this.props.location.pathname, name: strings.breadCrumbPERForm},
-          {link: `/countries/${this.props.match.params.id}`, name: `${getCountryMeta(this.props.match.params.id).label || strings.breadCrumbAccount}`},
+          {link: `/countries/${this.props.match.params.ns}`, name: `${getCountryMeta(this.props.match.params.ns, this.props.countries).label || strings.breadCrumbAccount}`},
           {link: '/', name: strings.breadCrumbHome}
         ]} />
         <section className='inpage'>
@@ -100,4 +102,11 @@ if (environment !== 'production') {
   };
 }
 
-export default EditPerForms;
+const selector = (state, ownProps) => ({
+  countries: countriesSelector(state)
+});
+
+const dispatcher = (dispatch) => ({
+});
+
+export default connect(selector, dispatcher)(EditPerForms);
