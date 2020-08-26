@@ -26,13 +26,13 @@ class HeaderRegionButton extends React.Component {
 
   render () {
     const { id, currentPath, regions, thisRegion } = this.props;
-    const title = thisRegion ? thisRegion.region_name : 'Regions';
+    const title = thisRegion ? thisRegion.label : 'Regions';
     const triggerClassName = this.decideTriggerClassName(currentPath);
     const regionLinks = Object.values(regions).map(r => {
       r = r[0];
       return {
         to: `/regions/${r.id}`,
-        text: r.region_name
+        text: r.label
       };
     });
     return (

@@ -50,7 +50,7 @@ class Table extends React.Component {
     if (query.hasOwnProperty('region')) {
       const regionId = query.region;
       const thisRegion = this.props.regionsById[regionId][0];
-      titleArea = thisRegion.region_name;
+      titleArea = thisRegion.label;
       props.region = titleArea ? query.region : null;
     } else if (query.hasOwnProperty('country')) {
       titleArea = getCountryMeta(query.country, this.props.countries);
@@ -116,7 +116,7 @@ class Table extends React.Component {
         const region = this.props.regionsById[regionId][0];
         extraCrumbs.push({
           link: `/regions/${regionId}`,
-          name: region.region_name
+          name: region.label
         });
       }
       if (qs.hasOwnProperty('country')) {
