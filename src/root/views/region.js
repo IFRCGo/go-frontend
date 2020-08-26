@@ -181,7 +181,7 @@ class AdminArea extends SFPComponent {
     });
 
     const mapBoundingBox = turfBbox(regions[data.id][0].bbox);
-    const regionName = thisRegion.region_name;
+    const regionName = thisRegion.label;
     const activeOperations = get(this.props.appealStats, 'data.results.length', false);
 
     const handleTabChange = index => {

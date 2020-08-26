@@ -595,7 +595,7 @@ class AdminArea extends SFPComponent {
     ];
     if (region) {
       crumbs.splice(1, 0, {
-        link: `/regions/${data.region}`, name: region.region_name
+        link: `/regions/${data.region}`, name: region.label
       });
     }
 
@@ -642,7 +642,7 @@ class AdminArea extends SFPComponent {
                 <Link to={`/regions/${data.region}`}
                   className='link link--with-icon flex-justify-center'
                 >
-                  <span className='link--with-icon-text'>{region.region_name}</span>
+                  <span className='link--with-icon-text'>{region.label}</span>
                   <span className='collecticon-chevron-right link--with-icon-inner'></span>
                 </Link>
               </div>

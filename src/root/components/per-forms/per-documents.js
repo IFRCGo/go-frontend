@@ -86,7 +86,7 @@ const PerDocuments = ({perOverviewForm, perForm, regionsById}) => {
         });
         countries.push(<div key={'countryDocument' + countryKey}><div className='heading-sub global-spacing-v'>{currentCountryName}</div>{perDocuments}<br /></div>);
       });
-      regions.push(<div key={'regionDocument' + regionKey}><span className='fold__title'>{regionsById[regionKey][0].region_name}</span>{countries}<br /></div>);
+      regions.push(<div key={'regionDocument' + regionKey}><span className='fold__title'>{regionsById[regionKey][0].label}</span>{countries}<br /></div>);
     });
     return regions;
   };

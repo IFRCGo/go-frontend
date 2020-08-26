@@ -5,7 +5,7 @@ export default class NationalSocietiesEngagedPerGraphDataFactory {
     if (!(typeof rawData.error !== 'undefined' && rawData.error !== null)) {
       rawData.data.results.forEach((region) => {
         const thisRegion = regionsById[region.id][0];
-        thisRegion['name'] = thisRegion['region_name'];
+        thisRegion['name'] = thisRegion['label'];
         preparedData.push(
           {
             region: thisRegion,

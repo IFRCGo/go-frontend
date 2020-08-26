@@ -89,7 +89,7 @@ export const regionByIdOrNameSelector = (state, name) => {
   if (state.regions && state.regions.data.results) {
     if (isNaN(name)) {
       const thisRegion = state.regions.data.results.find(region => {
-        return region.region_name.toLowerCase() === name.toLowerCase();
+        return region.label.toLowerCase() === name.toLowerCase();
       });
       return thisRegion;
     } else {

@@ -512,7 +512,7 @@ class Emergency extends React.Component {
                         key={region}
                         className="link--table"
                       >
-                        { this.props.regionsById[region][0].region_name }
+                        { this.props.regionsById[region][0].label }
                       </Link>);
                     }) : nope }
                   </td>
@@ -819,7 +819,7 @@ class Emergency extends React.Component {
       regionId = country.region;
       if (regionId) {
         regionLink = `/regions/${regionId}`;
-        regionName = this.props.regionsById[regionId][0].region_name;
+        regionName = this.props.regionsById[regionId][0].label;
         crumbs.push({
           link: regionLink,
           name: regionName
