@@ -35,7 +35,7 @@ class FieldReport extends React.Component {
     }
 
     if (this.props.report.fetching && !nextProps.report.fetching) {
-      hideGlobalLoading();
+      hideGlobalLoading(0);
     }
   }
 
