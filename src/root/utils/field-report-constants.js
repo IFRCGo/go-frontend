@@ -47,7 +47,13 @@ export const getVisibility = (strings) => [
 // This transforms a countries collection to be used
 // directly in a select dropdown
 export const countries = (countries) => {
-  const countriesSelectList = countries.map(country => ({ value: country.id, label: country.name }));
+  let countriesSelectList = [];
+  if (countries[0].hasOwnProperty('value') && countries[0].hasOwnProperty('label')) {
+    countriesSelectList = countries;
+  } else {
+    countriesSelectList = countries.map(country => ({ value: country.id, label: country.name }));
+  }
+
   return [
     {value: '-- Country --', label: ''},
     ...countriesSelectList,

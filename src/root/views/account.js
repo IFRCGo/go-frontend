@@ -40,6 +40,7 @@ import PerAccountTab from '#components/per-forms/per-account-tab';
 import BreadCrumb from '../components/breadcrumb';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
+import { countriesSelector } from '#selectors';
 
 import {
   FormCheckboxGroup,
@@ -634,9 +635,6 @@ class Account extends React.Component {
     Object.keys(this.props.event.event).forEach(event => {
       events.push(<input type='hidden' name='followedEvent' key={'followedEvent' + event} value={event} />);
     });
-    const countriesList = (this.props.countries && this.props.countries.fetched)
-      ? countries(this.props.countries.data.results)
-      : [];
     return (
       <form className='form' onSubmit={this.onNotificationSubmit}>
         <div className='fold-container'>
@@ -668,7 +666,7 @@ class Account extends React.Component {
                 name='countries'
                 value={this.state.notifications.countries}
                 onChange={this.onFieldChange.bind(this, 'notifications', 'countries')}
-                options={countriesList}
+                options={countries(this.props.allCountries)}
                 multi />
             </div>
             <FormCheckboxGroup
@@ -908,7 +906,7 @@ const selector = (state, ownProps) => ({
   eventDeletion: state.subscriptions.delSubscriptions,
   perOverviewForm: state.perForm.getPerOverviewForm,
   getPerMission: state.perForm.getPerMission,
-  countries: state.countries
+  allCountries: countriesSelector(state)
 });
 
 const dispatcher = (dispatch) => ({
