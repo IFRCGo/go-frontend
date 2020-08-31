@@ -11,7 +11,7 @@ import { Helmet } from 'react-helmet';
 
 import { isValidEmail, isWhitelistedEmail, get } from '#utils/utils';
 import { countries, orgTypes } from '#utils/field-report-constants';
-import { registerUser, getDomainWhitelist, getCountries } from '#actions';
+import { registerUser, getDomainWhitelist } from '#actions';
 import { environment } from '#config';
 
 import { FormInput, FormError } from '#components/form-elements/';
@@ -68,7 +68,6 @@ class Register extends React.Component {
 
   componentDidMount () {
     this.props._getDomainWhitelist();
-    this.props._getCountries(null, true);
   }
 
   // eslint-disable-next-line camelcase
@@ -203,6 +202,9 @@ class Register extends React.Component {
 
   renderAdditionalInfo () {
     const { strings } = this.context;
+    const countriesList = (this.props.countries && this.props.countries.fetched)
+      ? countries(this.props.countries.data.results)
+      : [];
     return (
       <div className='form__hascol form__hascol--2'>
         <div className='form__group'>
@@ -213,7 +215,7 @@ class Register extends React.Component {
             name='country'
             value={this.state.data.country}
             onChange={this.onFieldChange.bind(this, 'country')}
-            options={countries} />
+            options={countriesList} />
           <FormError
             errors={this.state.errors}
             property='country'
@@ -528,7 +530,6 @@ const selector = (state) => ({
 const dispatcher = (dispatch) => ({
   _registerUser: (payload) => dispatch(registerUser(payload)),
   _getDomainWhitelist: () => dispatch(getDomainWhitelist()),
-  _getCountries: (...args) => dispatch(getCountries(...args))
 });
 
 Register.contextType = LanguageContext;

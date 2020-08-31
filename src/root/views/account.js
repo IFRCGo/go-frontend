@@ -906,7 +906,7 @@ const selector = (state, ownProps) => ({
   eventDeletion: state.subscriptions.delSubscriptions,
   perOverviewForm: state.perForm.getPerOverviewForm,
   getPerMission: state.perForm.getPerMission,
-  allCountries: countriesSelector(state),
+  allCountries: countriesSelector(state)
 });
 
 const dispatcher = (dispatch) => ({
