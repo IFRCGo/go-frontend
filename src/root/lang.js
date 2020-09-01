@@ -652,7 +652,7 @@ export default {
   readinessReadyErus:' {numReady} Ready ERUs',
   readinessDeployedErus: '{numDeployed} Deployed ERUs',
   mapComponentExport: 'Export Map',
-  mapFooterDisclaimer: 'The maps used do not imply the expresion of any opinion on the part of the International Federation of the Red Cross and Red Crescent Societies or National Societies concerning the legal status of a territory or of its authorities, Data sources: IFRC, OSM contributors, Map box.',
+  mapFooterDisclaimer: 'The maps used do not imply the expresion of any opinion on the part of the International Federation of Red Cross and Red Crescent Societies or National Societies concerning the legal status of a territory or of its authorities, Data sources: IFRC, OSM contributors, Map box.',
   countryMapError: 'Data not available.',
   countryMapDownloadedTitle: 'Movement activities',
   mapPopoverTitle: 'Deployments in {name}',
