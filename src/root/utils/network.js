@@ -2,6 +2,7 @@ import * as url from 'url';
 import * as localStorage from 'local-storage';
 import { api } from '#config';
 import store from '#utils/store';
+import cache from '#utils/cache';
 
 /**
  * Adds authorization token to request headers.
@@ -249,6 +250,17 @@ export function makeRequest (path, action, options, extraData = {}) {
 }
 
 export function request (url, options) {
+
+  const cacheKey = cache.getKey(url, options);
+  console.log('key', cacheKey);
+  // if data exists in cache, just return it and do not make any requests
+  if (cache.isCacheable(url, options)) {
+    const data = cache.getItem(cacheKey);
+    if (data) {
+      return Promise.resolve(data);
+    }
+  }
+
   return fetch(url, options)
     .then(response => {
       return response.text()
@@ -268,7 +280,7 @@ export function request (url, options) {
 
           return response.status >= 400
             ? Promise.reject(json)
-            : Promise.resolve(json);
+            : cache.setItem(cacheKey, json) && Promise.resolve(json);
         });
     }, error => {
       console.log('JSON fetch error', error);
