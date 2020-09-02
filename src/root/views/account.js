@@ -252,7 +252,6 @@ class Account extends React.Component {
       }
     }
     if (this.props.profile.fetching && !nextProps.profile.fetching) {
-      // hideGlobalLoading();
       if (nextProps.profile.error) {
         showAlert('danger', <p><strong><Translate stringId='accountError'/></strong><Translate stringId='accountCouldNotLoad'/></p>, true, 4500);
       } else {
@@ -261,7 +260,6 @@ class Account extends React.Component {
       }
     }
     if (this.props.profile.updating && !nextProps.profile.updating) {
-      // hideGlobalLoading();
       if (nextProps.profile.updateError) {
         showAlert('danger', <p><strong><Translate stringId='accountError' /></strong> {nextProps.profile.updateError.detail}</p>, true, 4500);
       } else {
