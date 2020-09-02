@@ -136,9 +136,17 @@ class Emergency extends React.Component {
     if (newProjectAdded) {
       this.setState({ showProjectForm: false });
     }
+
+    if (
+      (nextProps.projectForm.fetched || (!nextProps.projectForm.fetched && !nextProps.projectForm.fetching))
+      && nextProps.event.fetched && nextProps.situationReports.fetched
+    ) {
+      hideGlobalLoading();
+    }
   }
 
   componentDidMount () {
+    showGlobalLoading();
     this.getEvent(this.props.match.params.id);
     this.props._getSitrepTypes();
     if (this.props.isLogged) {
@@ -160,7 +168,6 @@ class Emergency extends React.Component {
   }
 
   getEvent (id) {
-    // showGlobalLoading();
     this.props._getEventById(id);
     this.props._getSitrepsByEventId(id);
   }
@@ -711,20 +718,20 @@ class Emergency extends React.Component {
     }
   }
 
-  syncLoadingAnimation = memoize((projectForm = {}, eventForm = {}, siteRepForm = {}) => {
-    const shouldShowLoadingAnimation = projectForm.fetching || eventForm.fetching || siteRepForm.fetching;
+  // syncLoadingAnimation = memoize((projectForm = {}, eventForm = {}, siteRepForm = {}) => {
+  //   const shouldShowLoadingAnimation = projectForm.fetching || eventForm.fetching || siteRepForm.fetching;
 
-    if (shouldShowLoadingAnimation) {
-      if (!this.loading) {
-        this.loading = showGlobalLoading();
-      }
-    } else {
-      if (this.loading) {
-        hideGlobalLoading();
-        this.loading = false;
-      }
-    }
-  });
+  //   if (shouldShowLoadingAnimation) {
+  //     if (!this.loading) {
+  //       this.loading = showGlobalLoading();
+  //     }
+  //   } else {
+  //     if (this.loading) {
+  //       hideGlobalLoading();
+  //       this.loading = false;
+  //     }
+  //   }
+  // });
 
   renderContent () {
     const { fetched, error, data } = this.props.event;
@@ -1074,7 +1081,7 @@ class Emergency extends React.Component {
   }
 
   render () {
-    this.syncLoadingAnimation(this.props.projectForm, this.props.event, this.props.siteRepResponse);
+    // this.syncLoadingAnimation(this.props.projectForm, this.props.event, this.props.situationReports);
     const { strings } = this.props;
 
     return (
