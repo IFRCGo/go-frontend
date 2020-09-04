@@ -9,7 +9,7 @@ import { Helmet } from 'react-helmet';
 import url from 'url';
 
 import { environment, api } from '#config';
-import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
+import NewGlobalLoading from '#components/NewGlobalLoading';
 import { resolveToString } from '#utils/lang';
 // import BasicTable from '#components/common/table-basic';
 import { get, dateOptions, datesAgo, dTypeOptions } from '#utils/utils';
@@ -120,7 +120,6 @@ class AdminArea extends SFPComponent {
     }
 
     if (this.props.adminArea.fetching && !nextProps.adminArea.fetching) {
-      hideGlobalLoading();
       if (nextProps.adminArea.error) {
         console.error(nextProps.adminArea.error);
         // removed because redirect is highly misleading
@@ -201,32 +200,20 @@ class AdminArea extends SFPComponent {
   }
 
   getAdmArea (type, id) {
-    // showGlobalLoading();
     this.props._getAdmAreaById(type, id);
   }
 
-  syncLoadingAnimation = memoize((
+  isPending = memoize((
     adminArea = emptyObject,
     fdrs = emptyObject,
     perForm = emptyObject,
     user = emptyObject,
-  ) => {
-    const shouldShowLoadingAnimation = adminArea.fetching ||
+  ) => (
+    adminArea.fetching ||
       fdrs.fetching ||
       perForm.fetching ||
-      user.fetching;
-
-    if (shouldShowLoadingAnimation && !this.loading) {
-      showGlobalLoading();
-      this.loading = true;
-    } else {
-      if (this.loading) {
-        hideGlobalLoading();
-      }
-
-      this.loading = false;
-    }
-  })
+      user.fetching
+  ))
 
   // gets links to display in the pills at bottom of the tabs
   getLinks () {
@@ -788,7 +775,7 @@ class AdminArea extends SFPComponent {
       user,
     } = this.props;
 
-    this.syncLoadingAnimation(
+    const pending = this.isPending(
       adminArea,
       fdrs,
       perForm,
@@ -798,6 +785,7 @@ class AdminArea extends SFPComponent {
     const { strings } = this.context;
     return (
       <App className={`page--${this.props.type}`}>
+        { pending && <NewGlobalLoading />}
         <Helmet>
           <title>
             { strings.countryTitle }
