@@ -22,10 +22,14 @@ class Emergencies extends React.Component {
   }
 
   render () {
+    const {
+      lastMonth,
+    } = this.props;
     const { strings } = this.context;
-    const pending = this.props.lastMonth?.fetching;
-    const count = this.props.lastMonth?.data?.count;
+    const pending = !(lastMonth?.fetched);
+    const count = lastMonth?.data?.count;
     const dashTitle = count ? `${strings.emergenciesTitle} (${count})` : strings.emergenciesTitle;
+
     return (
       <App className='page--emergencies'>
         <Helmet>
@@ -33,33 +37,35 @@ class Emergencies extends React.Component {
             {strings.emergenciesTitle}
           </title>
         </Helmet>
-        { pending ? (
-          <BlockLoading />
-        ) : (
-          <section className='inpage'>
-            <BreadCrumb crumbs={[{link: '/emergencies', name: 'Emergencies'}, {link: '/', name: strings.breadCrumbHome }]} />
-            <EmergenciesDash 
-              title={dashTitle}
-            />
-            <div>
-              <div className='inner inner--emergencies-table-map'>
-                <EmergenciesTable
-                  title={strings.emergenciesTableTitle}
-                  limit={10}
-                  showRecent={true}
-                  showHeader={false}
-                />
+        <section className='inpage'>
+          <BreadCrumb crumbs={[{link: '/emergencies', name: 'Emergencies'}, {link: '/', name: strings.breadCrumbHome }]} />
+          { pending ? (
+            <BlockLoading />
+          ) : (
+            <>
+              <EmergenciesDash 
+                title={dashTitle}
+              />
+              <div>
+                <div className='inner inner--emergencies-table-map'>
+                  <EmergenciesTable
+                    title={strings.emergenciesTableTitle}
+                    limit={10}
+                    showRecent={true}
+                    showHeader={false}
+                  />
+                </div>
+                <div className='inner inner--field-reports-emergencies'>
+                  <FieldReportsTable
+                    title={strings.fieldReportsTableTitle}
+                    viewAll={'/reports/all'}
+                    showRecent={true}
+                  />
+                </div>
               </div>
-              <div className='inner inner--field-reports-emergencies'>
-                <FieldReportsTable
-                  title={strings.fieldReportsTableTitle}
-                  viewAll={'/reports/all'}
-                  showRecent={true}
-                />
-              </div>
-            </div>
-          </section>
-        )};
+            </>
+          )};
+        </section>
       </App>
     );
   }
