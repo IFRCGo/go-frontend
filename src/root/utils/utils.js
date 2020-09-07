@@ -70,7 +70,7 @@ export function aggregateCountryAppeals (appeals, countries) {
         }),
         geometry: {
           type: 'Point',
-          coordinates: getCountryMeta(countryAppeals[0].country.id, countries).centroid.coordinates || [0, 0]
+          coordinates: getCountryMeta(countryAppeals[0].country.id, countries).centroid?.coordinates || [0, 0]
         }
       };
     })
