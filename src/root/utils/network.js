@@ -1,5 +1,6 @@
 import * as url from 'url';
 import * as localStorage from 'local-storage';
+import delay from 'delay';
 import { api } from '#config';
 import store from '#utils/store';
 import cache from '#utils/cache';
@@ -253,13 +254,19 @@ export function request (url, options) {
 
   const cacheKey = cache.getKey(url, options);
   console.log('key', cacheKey);
+
   // if data exists in cache, just return it and do not make any requests
   if (cache.isCacheable(url, options)) {
     const data = cache.getItem(cacheKey);
+    console.log('got data', data);
     if (data) {
-      return Promise.resolve(data);
+      return delay(100)
+        .then(() => {
+          console.log('resolving promise', data);
+          return Promise.resolve(data);  
+        });
     }
-  }
+  } 
 
   return fetch(url, options)
     .then(response => {
