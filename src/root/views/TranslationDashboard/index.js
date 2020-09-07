@@ -295,7 +295,7 @@ function TranslationDashboard(p) {
         const rows = listToMap(rowList, d => d['ID'], d => d[currentLanguage]);
         const newAppStrings = devStringKeyList.reduce((acc, key) => {
           acc[key] = {
-            value: rows[key],
+            value: rows[key] || appStrings[key]?.value || devStrings[key].value,
             hash: devStrings[key].hash,
           };
           return acc;
@@ -305,7 +305,7 @@ function TranslationDashboard(p) {
       };
       reader.readAsBinaryString(file);
     }
-  }, [devStringKeyList, devStrings, setAppStrings, currentLanguage]);
+  }, [devStringKeyList, devStrings, appStrings, setAppStrings, currentLanguage]);
 
   return (
     <div className={_cs(className, styles.translationDashboard)}>
