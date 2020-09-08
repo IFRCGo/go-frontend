@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import memoize from 'memoize-one';
 import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 import { Helmet } from 'react-helmet';
@@ -17,7 +18,7 @@ import {
   getEruOwners
 } from '#actions';
 import { finishedFetch, datesAgo } from '#utils/utils';
-import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
+import NewGlobalLoading from '#components/NewGlobalLoading';
 import { environment } from '#config';
 import {
   commaSeparatedNumber as n,
@@ -34,6 +35,8 @@ import Readiness from '#components/deployments/readiness';
 import BreadCrumb from '#components/breadcrumb';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
+
+const emptyObject = {};
 
 class Deployments extends SFPComponent {
   // Methods form SFPComponent:
@@ -56,18 +59,13 @@ class Deployments extends SFPComponent {
 
   componentDidMount () {
     addFullscreenListener(this.onFullscreenChange);
-    showGlobalLoading();
     this.props._getEruOwners();
     this.props._getAllDeploymentERU();
     this.props._getActivePersonnel();
   }
 
-  // eslint-disable-next-line camelcase
-  UNSAFE_componentWillReceiveProps (nextProps) {
-    if (finishedFetch(this.props, nextProps, 'eruOwners')) {
-      hideGlobalLoading(0);
-    }
-  }
+  isPending = memoize((eruOwners = emptyObject) => eruOwners.fetching);
+
 
   componentWillUnmount () {
     removeFullscreenListener(this.onFullscreenChange);
@@ -267,6 +265,12 @@ class Deployments extends SFPComponent {
 
   render () {
     const { strings } = this.context;
+    const pending = this.isPending(this.props.eruOwners);
+    if (pending) {
+      return (
+        <NewGlobalLoading />
+      );
+    }
     return (
       <App className='page--deployments'>
         <Helmet>
