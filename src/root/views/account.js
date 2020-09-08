@@ -5,6 +5,7 @@ import Select from 'react-select';
 import _set from 'lodash.set';
 import _cloneDeep from 'lodash.clonedeep';
 import c from 'classnames';
+import memoize from 'memoize-one';
 import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import { set } from 'object-path';
@@ -31,7 +32,8 @@ import { get } from '#utils/utils';
 import { getCountryMeta } from '#utils/get-country-meta';
 import { countries, disasterType, orgTypes } from '#utils/field-report-constants';
 import { apiPropertyDisplay, apiPropertyValue } from '#utils/format';
-import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
+import NewGlobalLoading from '#components/NewGlobalLoading';
+// import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 import { showAlert } from '#components/system-alerts';
 
 import Fold from '#components/fold';
@@ -48,6 +50,8 @@ import {
 } from '#components/form-elements/';
 
 import App from './app';
+
+const emptyObject = {};
 
 const Fragment = React.Fragment;
 
@@ -217,9 +221,13 @@ class Account extends React.Component {
     this.componentIsLoading = true;
   }
 
+  isPending = memoize((
+    profile = emptyObject
+  ) => profile.fetching)
+
   componentDidMount () {
     this.componentIsLoading = true;
-    showGlobalLoading();
+    // showGlobalLoading();
     const { user, _getProfile, _getFieldReportsByUser, _getPerCountries, _getPerDocuments, _getPerDraftDocument } = this.props;
     _getProfile(user.username);
     _getFieldReportsByUser(user.id);
@@ -273,9 +281,9 @@ class Account extends React.Component {
       this.props._getPerDraftDocument(draftQueryFilters);
     }
 
-    if (nextProps.profile.fetched === true) {
-      hideGlobalLoading();
-    }
+    // if (nextProps.profile.fetched === true) {
+    //   hideGlobalLoading();
+    // }
   }
 
   syncNotificationState (data) {
@@ -343,7 +351,7 @@ class Account extends React.Component {
 
   onNotificationSubmit (e) {
     e.preventDefault();
-    showGlobalLoading();
+    // showGlobalLoading();
     const payload = this.serializeNotifications(this.state.notifications);
     const id = this.props.profile.data.id;
     this.props._updateSubscriptions(id, payload);
@@ -409,7 +417,7 @@ class Account extends React.Component {
 
   onProfileSubmit (e) {
     e.preventDefault();
-    showGlobalLoading();
+    // showGlobalLoading();
     const id = this.props.profile.data.id;
     this.props._updateProfile(id, this.serializeProfile(profileAttributes.slice(1, profileAttributes.length)));
   }
@@ -791,8 +799,15 @@ class Account extends React.Component {
 
   render () {
     const { strings } = this.context;
+    const pending = this.isPending(this.props.profile);
+    if (pending) {
+      return (
+        <NewGlobalLoading />
+      );
+    }
     return (
       <App className='page--account'>
+        { pending && <NewGlobalLoading />}
         <Helmet>
           <title>
             {strings.accountTitle}
