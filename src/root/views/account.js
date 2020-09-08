@@ -33,7 +33,6 @@ import { getCountryMeta } from '#utils/get-country-meta';
 import { countries, disasterType, orgTypes } from '#utils/field-report-constants';
 import { apiPropertyDisplay, apiPropertyValue } from '#utils/format';
 import NewGlobalLoading from '#components/NewGlobalLoading';
-// import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 import { showAlert } from '#components/system-alerts';
 
 import Fold from '#components/fold';
@@ -227,7 +226,6 @@ class Account extends React.Component {
 
   componentDidMount () {
     this.componentIsLoading = true;
-    // showGlobalLoading();
     const { user, _getProfile, _getFieldReportsByUser, _getPerCountries, _getPerDocuments, _getPerDraftDocument } = this.props;
     _getProfile(user.username);
     _getFieldReportsByUser(user.id);
@@ -281,9 +279,6 @@ class Account extends React.Component {
       this.props._getPerDraftDocument(draftQueryFilters);
     }
 
-    // if (nextProps.profile.fetched === true) {
-    //   hideGlobalLoading();
-    // }
   }
 
   syncNotificationState (data) {
@@ -351,7 +346,6 @@ class Account extends React.Component {
 
   onNotificationSubmit (e) {
     e.preventDefault();
-    // showGlobalLoading();
     const payload = this.serializeNotifications(this.state.notifications);
     const id = this.props.profile.data.id;
     this.props._updateSubscriptions(id, payload);
@@ -417,7 +411,6 @@ class Account extends React.Component {
 
   onProfileSubmit (e) {
     e.preventDefault();
-    // showGlobalLoading();
     const id = this.props.profile.data.id;
     this.props._updateProfile(id, this.serializeProfile(profileAttributes.slice(1, profileAttributes.length)));
   }
@@ -807,7 +800,6 @@ class Account extends React.Component {
     }
     return (
       <App className='page--account'>
-        { pending && <NewGlobalLoading />}
         <Helmet>
           <title>
             {strings.accountTitle}
