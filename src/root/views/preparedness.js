@@ -61,7 +61,7 @@ class Preparedness extends React.Component {
         if (perForm.country) {
           let countryMeta = getCountryMeta(perForm.country.id, this.props.countries);
           perForm.country.iso = countryMeta.iso;
-          let countryCentroid = countryMeta.centroid.coordinates || [0, 0];
+          let countryCentroid = countryMeta.centroid?.coordinates || [0, 0];
           perForm.country.centroid = countryCentroid;
 
           geoJson.features.push({

@@ -23,7 +23,7 @@ function getGeojsonFromMovementActivities (movementActivities = emptyList, count
         type: 'Feature',
         geometry: {
           type: 'Point',
-          coordinates: getCountryMeta(d.id, countries).centroid.coordinates || [0, 0],
+          coordinates: getCountryMeta(d.id, countries).centroid?.coordinates || [0, 0],
         },
         properties: {
           ...d,
