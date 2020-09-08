@@ -104,7 +104,7 @@ function createStoreFromRaw (raw, state) {
         properties,
         geometry: {
           type: 'Point',
-          coordinates: countrySelector(state, id).centroid.coordinates || [0, 0]
+          coordinates: countrySelector(state, id).centroid?.coordinates || [0, 0]
         }
       };
     })
