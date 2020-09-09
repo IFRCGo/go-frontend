@@ -50,8 +50,6 @@ import {
 
 import App from './app';
 
-const emptyObject = {};
-
 const Fragment = React.Fragment;
 
 // Exclude the first item since it's a dropdown placeholder
@@ -219,10 +217,6 @@ class Account extends React.Component {
     this.delSubscription = this.delSubscription.bind(this);
     this.componentIsLoading = true;
   }
-
-  isPending = memoize((
-    profile = emptyObject
-  ) => profile.fetching)
 
   componentDidMount () {
     this.componentIsLoading = true;
@@ -792,7 +786,7 @@ class Account extends React.Component {
 
   render () {
     const { strings } = this.context;
-    const pending = this.isPending(this.props.profile);
+    const pending = this.props.profile?.fetching;
     if (pending) {
       return (
         <NewGlobalLoading />

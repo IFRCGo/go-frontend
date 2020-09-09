@@ -36,8 +36,6 @@ import BreadCrumb from '#components/breadcrumb';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 
-const emptyObject = {};
-
 class Deployments extends SFPComponent {
   // Methods form SFPComponent:
   // handlePageChange (what, page)
@@ -63,9 +61,6 @@ class Deployments extends SFPComponent {
     this.props._getAllDeploymentERU();
     this.props._getActivePersonnel();
   }
-
-  isPending = memoize((eruOwners = emptyObject) => eruOwners.fetching);
-
 
   componentWillUnmount () {
     removeFullscreenListener(this.onFullscreenChange);
@@ -265,7 +260,7 @@ class Deployments extends SFPComponent {
 
   render () {
     const { strings } = this.context;
-    const pending = this.isPending(this.props.eruOwners);
+    const pending = this.props.eruOwners?.fetching;
     if (pending) {
       return (
         <NewGlobalLoading />
