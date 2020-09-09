@@ -51,20 +51,15 @@ export const countries = (countries) => {
   if (countries[0].hasOwnProperty('value') && countries[0].hasOwnProperty('label')) {
     countriesSelectList = countries;
   } else {
-    countriesSelectList = countries.map(country => ({ value: country.id, label: country.name }));
+    // show only independent countries (include countries with empty or unavailable 'independent' prop)
+    countriesSelectList = countries
+      .filter(
+        country => country.independent === true
+        || country.independent === undefined
+        || country.independent === null
+      )
+      .map(country => ({ value: country.id, label: country.name }));
   }
-
-  // show only independent countries.
-  countriesSelectList = countriesSelectList.filter(country => {
-    // incase country doesn't have independent property, include anyway
-    if (!country.hasOwnProperty('independent')) {
-      return country;
-    }
-
-    if (country.hasOwnProperty('independent') && country.independent) {
-      return country.independent;
-    }
-  });
 
   return [
     {value: '-- Country --', label: ''},
