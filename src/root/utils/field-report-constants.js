@@ -54,6 +54,11 @@ export const countries = (countries) => {
     countriesSelectList = countries.map(country => ({ value: country.id, label: country.name }));
   }
 
+  // show only independent countries.
+  countriesSelectList = countriesSelectList.filter(country => {
+    return country.independent;
+  });
+
   return [
     {value: '-- Country --', label: ''},
     ...countriesSelectList,
