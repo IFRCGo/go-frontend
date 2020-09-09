@@ -56,7 +56,14 @@ export const countries = (countries) => {
 
   // show only independent countries.
   countriesSelectList = countriesSelectList.filter(country => {
-    return country.independent;
+    // incase country doesn't have independent property, include anyway
+    if (!country.hasOwnProperty('independent')) {
+      return country;
+    }
+
+    if (country.hasOwnProperty('independent') && country.independent) {
+      return country.independent;
+    }
   });
 
   return [
