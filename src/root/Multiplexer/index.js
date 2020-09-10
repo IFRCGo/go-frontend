@@ -47,6 +47,7 @@ import ViewPerForms from '#views/view-per-forms';
 import EditPerForms from '#views/edit-per-forms';
 import Preparedness from '#views/preparedness';
 import TranslationDashboard from '#views/TranslationDashboard';
+import ClearInitCache from '#views/ClearInitCache';
 
 import styles from './styles.module.scss';
 
@@ -60,9 +61,14 @@ function Multiplexer(props) {
     allCountriesResponse,
     allRegionsResponse,
     tokenResponse,
+    getCountries,
   } = props;
 
   const [skipUserDetails, setSkipUserDetails] = React.useState(false);
+
+  React.useEffect(() => {
+    getCountries();
+  }, [getCountries]);
 
   React.useEffect(() => {
     if (!userResponse.fetching && !userResponse.fetched && !userResponse.cached) {
@@ -124,6 +130,7 @@ function Multiplexer(props) {
       <BreadcrumbsProvider>
         <Switch>
           <Route exact path='/' component={Home}/>
+          <Route path='/clear-init-cache' component={ClearInitCache} />
           <Route exact path='/covid19-3w-sankey' component={Covid19ThreeWSankey}/>
           <PrivateRoute exact path='/translation-dashboard' component={TranslationDashboard}/>
           <Route exact path='/about' component={About}/>

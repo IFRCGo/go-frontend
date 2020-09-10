@@ -717,7 +717,7 @@ export const postLanguageBulkAction = (langCode, data) => {
 
 export const GET_COUNTRIES_ALL = 'GET_COUNTRIES_ALL';
 export function getCountriesAllAction () {
-  return fetchJSON('api/v2/country/', GET_COUNTRIES_ALL);
+  return fetchJSON('api/v2/country/?limit=1000', GET_COUNTRIES_ALL);
 }
 
 export const GET_REGIONS_ALL = 'GET_REGIONS_ALL';

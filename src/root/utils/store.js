@@ -32,10 +32,17 @@ const hydrateUser = () => {
   };
 };
 
-const LANG_STORAGE_KEY = 'language';
-const ALL_COUNTRIES_STORAGE_KEY = 'allCountries';
-const ALL_REGIONS_STORAGE_KEY = 'allRegions';
-const ME_STORAGE_KEY = 'me';
+export const LANG_STORAGE_KEY = 'language';
+export const ALL_COUNTRIES_STORAGE_KEY = 'allCountries';
+export const ALL_REGIONS_STORAGE_KEY = 'allRegions';
+export const ME_STORAGE_KEY = 'me';
+
+const ONE_SECOND = 1000;
+const ONE_MINUTE = ONE_SECOND * 60;
+const ONE_HOUR = ONE_MINUTE * 60;
+const ONE_DAY = ONE_HOUR * 24;
+
+const DEFAULT_CACHE_DURATION = ONE_DAY;
 
 const hydrateMe = () => {
   const data = localStorage.get(ME_STORAGE_KEY);
@@ -71,6 +78,12 @@ const hydrateAllCountries = () => {
     return undefined;
   }
 
+  if (data.receivedAt + DEFAULT_CACHE_DURATION < new Date().getTime()) {
+    // Expired
+    console.info('all countries cache expired');
+    return undefined;
+  }
+
   return {
     ...defaultInitialState,
     ...data,
@@ -82,6 +95,12 @@ const hydrateAllRegions = () => {
   const data = localStorage.get(ALL_REGIONS_STORAGE_KEY);
 
   if (!data) {
+    return undefined;
+  }
+
+  if (data.receivedAt + DEFAULT_CACHE_DURATION < new Date().getTime()) {
+    // Expired
+    console.info('all regions cache expired');
     return undefined;
   }
 
