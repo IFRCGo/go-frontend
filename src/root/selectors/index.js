@@ -2,16 +2,13 @@
 import _groupBy from 'lodash.groupby';
 import _find from 'lodash.find';
 
-const initialState = {
-  fetching: false,
-  fetched: false,
-  receivedAt: null,
-  data: {}
-};
+import { defaultInitialState } from '#utils/reducer-utils';
+
+const initialState = { ...defaultInitialState };
 
 export const countriesSelector = (state) => {
-  if (state.countries.data.results && state.countries.data.results.length) {
-    let results = state.countries.data.results.map((country) => {
+  if (state.allCountries.data.results && state.allCountries.data.results.length) {
+    let results = state.allCountries.data.results.map((country) => {
       return {
         'value': country.id,
         'label': country.name || null,
@@ -37,8 +34,8 @@ export const countriesSelector = (state) => {
 };
 
 export const countriesByRegionSelector = (state) => {
-  if (state.countries && state.countries.data.results) {
-    let countriesByRegion = _groupBy(state.countries.data.results, 'region');
+  if (state.allCountries && state.allCountries.data.results) {
+    let countriesByRegion = _groupBy(state.allCountries.data.results, 'region');
     return countriesByRegion;
   } else {
     return initialState;
@@ -46,9 +43,9 @@ export const countriesByRegionSelector = (state) => {
 };
 
 export const countrySelector = (state, countryId) => {
-  if (state.countries && state.countries.data.results) {
+  if (state.allCountries && state.allCountries.data.results) {
     countryId = typeof(countryId) === "string" ? Number(countryId) : countryId;
-    let thisCountry = _find(state.countries.data.results, { 'id': countryId } );
+    let thisCountry = _find(state.allCountries.data.results, { 'id': countryId } );
     return thisCountry;
   } else {
     return null;
@@ -56,9 +53,9 @@ export const countrySelector = (state, countryId) => {
 };
 
 export const countryByIdOrNameSelector = (state, name) => {
-  if (state.countries && state.countries.data.results) {
+  if (state.allCountries && state.allCountries.data.results) {
     if (isNaN(name)) {
-      const thisCountry = state.countries.data.results.find(country => {
+      const thisCountry = state.allCountries.data.results.find(country => {
         return country.name.toLowerCase() === decodeURI(name.toLowerCase());
       });
       return thisCountry;
@@ -71,8 +68,8 @@ export const countryByIdOrNameSelector = (state, name) => {
 };
 
 export const countriesByIso = (state) => {
-  if (state.countries && state.countries.data.results) {
-    let countriesByIso = _groupBy(state.countries.data.results, 'iso');
+  if (state.allCountries && state.allCountries.data.results) {
+    let countriesByIso = _groupBy(state.allCountries.data.results, 'iso');
     return countriesByIso;
   } else {
     return null;
@@ -80,21 +77,21 @@ export const countriesByIso = (state) => {
 };
 
 export const regionsByIdSelector = (state) => {
-  if (state.regions && state.regions.data.results) {
-    return _groupBy(state.regions.data.results, 'id');
+  if (state.allRegions && state.allRegions.data.results) {
+    return _groupBy(state.allRegions.data.results, 'id');
   }
 };
 
 export const regionByIdOrNameSelector = (state, name) => {
-  if (state.regions && state.regions.data.results) {
+  if (state.allRegions && state.allRegions.data.results) {
     if (isNaN(name)) {
-      const thisRegion = state.regions.data.results.find(region => {
+      const thisRegion = state.allRegions.data.results.find(region => {
         return region.label.toLowerCase() === name.toLowerCase();
       });
       return thisRegion;
     } else {
       const id = parseInt(name);
-      const thisRegion = state.regions.data.results.find(region => {
+      const thisRegion = state.allRegions.data.results.find(region => {
         return region.id === id;
       });
       return thisRegion;
@@ -180,4 +177,12 @@ export const userResponseSelector = (state) => (
 
 export const userSelector = (state) => (
   userResponseSelector(state).data
+);
+
+export const allCountriesSelector = (state) => (
+  state.allCountries
+);
+
+export const allRegionsSelector = (state) => (
+  state.allRegions
 );

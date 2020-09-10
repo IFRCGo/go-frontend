@@ -46,6 +46,8 @@ import {
   GET_REGIONAL_PROJECTS,
   GET_ME,
   POST_LANGUAGE_BULK,
+  GET_COUNTRIES_ALL,
+  GET_REGIONS_ALL,
 } from '#actions';
 
 export const reducers = {
@@ -91,6 +93,8 @@ export const reducers = {
   domainWhitelist,
   lang,
   postLanguageBulk: createReducer(POST_LANGUAGE_BULK),
+  allCountries: createReducer(GET_COUNTRIES_ALL),
+  allRegions: createReducer(GET_REGIONS_ALL),
 };
 
 export default combineReducers(reducers);

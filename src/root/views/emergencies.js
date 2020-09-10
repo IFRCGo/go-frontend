@@ -9,6 +9,7 @@ import App from './app';
 import FieldReportsTable from '#components/connected/field-reports-table';
 import EmergenciesDash from '#components/connected/emergencies-dash';
 import EmergenciesTable from '#components/connected/emergencies-table';
+import { allCountriesSelector } from '#selectors';
 
 import { getLastMonthsEmergencies, getAggregateEmergencies } from '#actions';
 import { environment } from '#config';
@@ -86,7 +87,7 @@ if (environment !== 'production') {
 const selector = (state) => ({
   lastMonth: state.emergencies.lastMonth,
   aggregate: state.emergencies.aggregate,
-  countries: state.countries
+  countries: allCountriesSelector(state),
 });
 
 const dispatcher = (dispatch) => ({
