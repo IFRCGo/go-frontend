@@ -512,7 +512,7 @@ class FieldReportForm extends React.Component {
                     name='country'
                     value={this.state.data.country}
                     onChange={this.onCountryChange.bind(this)}
-                    options={ formData.countries(this.props.countries) }
+                    options={ formData.countries(this.props.countries, true) }
                     disabled={!this.state.data.isCovidReport}
                   />
 
