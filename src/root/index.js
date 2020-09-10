@@ -1,5 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
+import browser from 'browser-detect';
 
 import store from '#utils/store';
 import { detectIE } from '#utils/ie';
@@ -10,22 +11,37 @@ import Multiplexer from './Multiplexer';
 
 require('isomorphic-fetch');
 
+const browserNames = {
+  ie: 'Internet Explorer',
+  edge: 'Edge',
+  firefox: 'Firefox',
+  chrome: 'Chrome'
+};
+const unsupportedBrowsers = ['ie', 'edge'];
+
 function Root () {
+  const brw = browser();
   const [strings, setStrings] = React.useState(lang);
   const contextValue = React.useMemo(() => {
     return {
       strings,
       setStrings,
+      brw
     };
-  }, [strings, setStrings]);
+  }, [strings, setStrings, brw]);
 
-  return (
-    <Provider store={store}>
-      <LanguageContext.Provider value={contextValue}>
-        <Multiplexer />
-      </LanguageContext.Provider>
-    </Provider>
-  );
+  const isSupportedBrowser = !unsupportedBrowsers.includes(brw.name);
+
+  return isSupportedBrowser
+    ? ( 
+      <Provider store={store}>
+        <LanguageContext.Provider value={contextValue}>
+          <Multiplexer />
+        </LanguageContext.Provider>
+      </Provider>
+    ) : (
+      <p>Sorry we does not support {browserNames[brw.name]}</p>
+    );
 }
 
 export default Root;
