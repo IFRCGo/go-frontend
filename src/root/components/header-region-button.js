@@ -1,6 +1,7 @@
 
 import React from 'react';
 import Dropdown from './common/dropdown';
+import DropdownMenu from './dropdown-menu';
 import { Link } from 'react-router-dom';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
@@ -35,7 +36,7 @@ class HeaderRegionButton extends React.Component {
         text: r.label
       };
     });
-    return (
+    /*
       <Dropdown
         id={id}
         triggerClassName={triggerClassName}
@@ -51,6 +52,27 @@ class HeaderRegionButton extends React.Component {
           ))}
         </ul>
       </Dropdown>
+    */
+    return (
+      <DropdownMenu
+        className={triggerClassName}
+        label={
+          <span title={`View ${title}`}>
+            { title }
+          </span>
+        }
+        dropdownContainerClassName='header-menu-dropdown'
+      >
+        <ul className='drop__menu' role='menu'>
+          {regionLinks.map(o => (
+            <li key={o.to}>
+              <Link to={o.to} className='drop__menu-item' title={`View ${o.text}`}>
+                {o.text}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </DropdownMenu>
     );
   }
 }

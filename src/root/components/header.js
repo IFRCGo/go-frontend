@@ -17,6 +17,7 @@ import LanguageContext from '#root/languageContext';
 import UserMenu from './connected/user-menu';
 import HeaderRegionButton from './header-region-button';
 import Dropdown from './common/dropdown';
+import DropdownMenu from './dropdown-menu';
 
 
 const noFilter = options => options;
@@ -113,6 +114,31 @@ function Header (props) {
                   <Translate stringId="headerMenuResources" />
                 </Link>
                 <UserMenu />
+                <DropdownMenu
+                  className='drop__toggle--caret button button--primary-bounded button--small drop__toggle--field-report-new'
+                  activeClassName='active'
+                  label={
+                    <Translate stringId="headerCreateAReportLabel" />
+                  }
+                  dropdownContainerClassName='header-menu-dropdown'
+                >
+                  <ul className='drop__menu drop__menu--select drop__menu__field__report' role='menu'>
+                    <li className='drop__menu-item'>
+                      <Link to='/reports/new'>{strings.headerDropdownNewFieldReport}</Link>
+                    </li>
+                    <li className='drop__menu-item'>
+                      <a href='https://ee.kob4.ifrc.org/single/::Ho8bHKDr' target='_blank'>
+                        {strings.headerDropdownCovid19IndicatorTracking}
+                      </a>
+                    </li>
+                    <li className='drop__menu-item'>
+                      <a href='https://ee.kob4.ifrc.org/single/::w4KbO3Rc' target='_blank'>
+                        {strings.headerDropdownCovid19NSFinancialOverview}
+                      </a>
+                    </li>                                        
+                  </ul>
+                </DropdownMenu>
+                {/*
                 <Dropdown
                   id='drop__header__field__report'
                   triggerClassName='drop__toggle--caret button button--primary-bounded button--small drop__toggle--field-report-new'
@@ -137,6 +163,7 @@ function Header (props) {
                     </li>                                        
                   </ul>
                 </Dropdown>
+                */}
               </nav>
             </div>
           </div>
