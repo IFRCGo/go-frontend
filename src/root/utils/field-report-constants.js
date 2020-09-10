@@ -46,12 +46,22 @@ export const getVisibility = (strings) => [
 
 // This transforms a countries collection to be used
 // directly in a select dropdown
-export const countries = (countries) => {
+export const countries = (countries, independent=false) => {
   let countriesSelectList = [];
   if (countries[0].hasOwnProperty('value') && countries[0].hasOwnProperty('label')) {
     countriesSelectList = countries;
   } else {
     countriesSelectList = countries.map(country => ({ value: country.id, label: country.name }));
+  }
+
+  // show only independent countries (include countries with empty or unavailable 'independent' prop)
+  if (independent) {
+    countriesSelectList = countries
+    .filter(
+        country => country.independent === true
+        || country.independent === undefined
+        || country.independent === null
+      );
   }
 
   return [
