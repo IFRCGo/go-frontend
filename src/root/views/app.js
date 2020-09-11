@@ -1,9 +1,6 @@
 import React from 'react';
-import { PropTypes as T } from 'prop-types';
 import { ThroughProvider } from 'react-through';
 import c from 'classnames';
-
-import { environment } from '#config';
 
 import Header from '#components/header';
 import MobileHeader from '#components/mobile-header';
