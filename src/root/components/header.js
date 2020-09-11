@@ -16,9 +16,7 @@ import LanguageContext from '#root/languageContext';
 
 import UserMenu from './connected/user-menu';
 import HeaderRegionButton from './header-region-button';
-import Dropdown from './common/dropdown';
 import DropdownMenu from './dropdown-menu';
-
 
 const noFilter = options => options;
 

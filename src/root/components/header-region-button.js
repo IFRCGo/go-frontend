@@ -1,6 +1,4 @@
-
 import React from 'react';
-import Dropdown from './common/dropdown';
 import DropdownMenu from './dropdown-menu';
 import { Link } from 'react-router-dom';
 import { environment } from '#config';
@@ -26,7 +24,7 @@ class HeaderRegionButton extends React.Component {
   }
 
   render () {
-    const { id, currentPath, regions = {}, thisRegion } = this.props;
+    const { currentPath, regions = {}, thisRegion } = this.props;
     const title = thisRegion ? thisRegion.label : 'Regions';
     const triggerClassName = this.decideTriggerClassName(currentPath);
     const regionLinks = Object.values(regions).map(r => {

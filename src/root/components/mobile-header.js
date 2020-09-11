@@ -8,7 +8,6 @@ import { api, environment } from '#config';
 import { request } from '#utils/network';
 import { uppercaseFirstLetter as u, isoDate } from '#utils/format';
 import UserMenu from './connected/user-menu';
-import Dropdown from './common/dropdown';
 import DropdownMenu from './dropdown-menu';
 import { withLanguage } from '#root/languageContext';
 import Translate from '#components/Translate';
