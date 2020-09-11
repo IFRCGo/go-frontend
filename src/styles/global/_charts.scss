@@ -85,3 +85,7 @@
 .recharts-legend-item-text {
   font-size: $font-size-xs;
 }
+
+.charts__container__rtl {
+  direction: ltr; // fix for tooltips on hover position in RTL languages like Arabic
+}

@@ -98,7 +98,7 @@ class EmergenciesDash extends React.Component {
           <figcaption>
             <h2 className='fold__title'><Translate stringId='emergenciesDashOverLastYear' /></h2>
           </figcaption>
-          <div className='chart__container'>
+          <div className='chart__container charts__container__rtl'>
             {this.renderChart(data, 'month')}
           </div>
         </figure>
