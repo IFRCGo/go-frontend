@@ -2,7 +2,6 @@ import React from 'react';
 import { PropTypes as T } from 'prop-types';
 import { environment } from '#config';
 
-import Dropdown from '#components/common/dropdown';
 import DropdownMenu from '#components/dropdown-menu';
 
 export default class DateFilterHeader extends React.PureComponent {
@@ -50,7 +49,7 @@ export default class DateFilterHeader extends React.PureComponent {
   }
 
   render () {
-    const {id, title, featureType} = this.props;
+    const {title, featureType} = this.props;
     const mapStyle = 'form__control--medium form__control form__control--data_select form__control--brand form__control--filter';
     const tableStyle = 'drop__toggle--caret';
     /*

@@ -5,7 +5,6 @@ import c from 'classnames';
 
 import { environment } from '#config';
 
-import Dropdown from './common/dropdown';
 import DropdownMenu from './dropdown-menu';
 
 export default class DisplayTable extends React.Component {
@@ -141,7 +140,7 @@ if (environment !== 'production') {
 
 export class FilterHeader extends React.PureComponent {
   render () {
-    const {id, title, options, onSelect, filter} = this.props;
+    const { title, options, onSelect, filter} = this.props;
     const onFilterClick = (option, e) => {
       e.preventDefault();
       onSelect(option.value);
