@@ -10,7 +10,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { Helmet } from 'react-helmet';
 
 import { api, environment } from '#config';
-import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
+import NewGlobalLoading from '#components/NewGlobalLoading';
 import Translate from '#components/Translate';
 import BreadCrumb from '#components/breadcrumb';
 import { withLanguage } from '#root/languageContext';
@@ -88,8 +88,6 @@ class Emergency extends React.Component {
     }
 
     if (this.props.event.fetching && !nextProps.event.fetching) {
-      // hideGlobalLoading();
-
       // Redirect if it's a merged Emergency
       if (
         nextProps.event.fetched &&
@@ -711,20 +709,9 @@ class Emergency extends React.Component {
     }
   }
 
-  syncLoadingAnimation = memoize((projectForm = {}, eventForm = {}, siteRepForm = {}) => {
-    const shouldShowLoadingAnimation = projectForm.fetching || eventForm.fetching || siteRepForm.fetching;
-
-    if (shouldShowLoadingAnimation) {
-      if (!this.loading) {
-        this.loading = showGlobalLoading();
-      }
-    } else {
-      if (this.loading) {
-        hideGlobalLoading();
-        this.loading = false;
-      }
-    }
-  });
+  isPending = memoize((projectForm = {}, eventForm = {}, siteRepForm = {}) => (
+    projectForm.fetching || eventForm.fetching || siteRepForm.fetching
+  ))
 
   renderContent () {
     const { fetched, error, data } = this.props.event;
@@ -1074,14 +1061,21 @@ class Emergency extends React.Component {
   }
 
   render () {
-    this.syncLoadingAnimation(this.props.projectForm, this.props.event, this.props.siteRepResponse);
-    const { strings } = this.props;
+    const {
+      strings,
+      projectForm,
+      event,
+      siteRepResponse,
+    } = this.props;
+
+    const pending = this.isPending(projectForm, event, siteRepResponse);
 
     return (
       <App className="page--emergency">
         <Helmet>
           <title>{strings.emergencyPageTitleStatic}</title>
         </Helmet>
+        { pending && <NewGlobalLoading /> }
         {this.renderContent()}
       </App>
     );
