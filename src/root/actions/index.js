@@ -714,3 +714,13 @@ export const POST_LANGUAGE_BULK = 'POST_LANGUAGE_BULK';
 export const postLanguageBulkAction = (langCode, data) => {
   return postJSON(`/api/v2/language/${langCode}/bulk-action/`, POST_LANGUAGE_BULK, data, withToken());
 };
+
+export const GET_COUNTRIES_ALL = 'GET_COUNTRIES_ALL';
+export function getCountriesAllAction () {
+  return fetchJSON('api/v2/country/?limit=1000', GET_COUNTRIES_ALL);
+}
+
+export const GET_REGIONS_ALL = 'GET_REGIONS_ALL';
+export function getRegionsAllAction () {
+  return fetchJSON('api/v2/region/', GET_REGIONS_ALL);
+}

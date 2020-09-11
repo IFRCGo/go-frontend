@@ -25,7 +25,7 @@ export const stateSuccess = (state, action) => {
   });
 };
 
-const initialState = {
+export const defaultInitialState = {
   fetching: false,
   fetched: false,
   receivedAt: null,
@@ -37,7 +37,7 @@ export function createReducer (actionName) {
   const failed = `${actionName}_FAILED`;
   const success = `${actionName}_SUCCESS`;
 
-  return (state = initialState, action) => {
+  return (state = defaultInitialState, action) => {
     let newState = state;
 
     switch (action.type) {

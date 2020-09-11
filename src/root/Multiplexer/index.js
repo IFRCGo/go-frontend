@@ -9,8 +9,18 @@ import AnonymousRoute from '#components/AnonymousRoute';
 import BlockLoading from '#components/block-loading';
 
 
-import { getMe as getUserAction, getCountries as getCountriesAction, getRegions as getRegionsAction } from '#actions';
-import { userResponseSelector } from '#selectors';
+import {
+  getMe as getUserAction,
+  getCountriesAllAction,
+  getRegionsAllAction,
+  getCountries as getCountriesAction,
+  getRegions as getRegionsAction,
+} from '#actions';
+import {
+  userResponseSelector,
+  allCountriesSelector,
+  allRegionsSelector,
+} from '#selectors';
 
 // Views.
 import Home from '#views/home';
@@ -37,6 +47,7 @@ import ViewPerForms from '#views/view-per-forms';
 import EditPerForms from '#views/edit-per-forms';
 import Preparedness from '#views/preparedness';
 import TranslationDashboard from '#views/TranslationDashboard';
+import ClearInitCache from '#views/ClearInitCache';
 
 import styles from './styles.module.scss';
 
@@ -44,22 +55,57 @@ import styles from './styles.module.scss';
 function Multiplexer(props) {
   const {
     getUser,
-    getCountries,
-    getRegions,
     userResponse,
-    countriesResponse,
-    regionsResponse
+    getAllCountries,
+    getAllRegions,
+    allCountriesResponse,
+    allRegionsResponse,
+    tokenResponse,
+    getCountries,
   } = props;
 
-  React.useEffect(() => {
-    getUser();
-    getCountries();
-    getRegions();
-  }, [getUser, getCountries, getRegions]);
+  const [skipUserDetails, setSkipUserDetails] = React.useState(false);
 
+  React.useEffect(() => {
+    getCountries();
+  }, [getCountries]);
+
+  React.useEffect(() => {
+    if (!userResponse.fetching && !userResponse.fetched && !userResponse.cached) {
+      if ((tokenResponse.fetched || tokenResponse.cached)) {
+        getUser();
+        console.info('user details not found in cache, requesting user');
+      } else {
+        setSkipUserDetails(true);
+      }
+    }
+  }, [tokenResponse, userResponse, getUser, setSkipUserDetails]);
+
+  React.useEffect(() => {
+    if (!allCountriesResponse.fetching && !allCountriesResponse.fetched && !allCountriesResponse.cached) {
+      getAllCountries();
+      console.info('all countries not found in cache, requesting all country');
+    }
+  }, [allCountriesResponse, getAllCountries]);
+
+  React.useEffect(() => {
+    if (!allRegionsResponse.fetching && !allRegionsResponse.fetched && !allRegionsResponse.cached) {
+      getAllRegions();
+      console.info('all regions not found in cache, requesting all regions');
+    }
+  }, [allRegionsResponse, getAllRegions]);
+
+  const pending = React.useMemo(() => (
+    (allCountriesResponse.fetching || (!allCountriesResponse.cached && !allCountriesResponse.fetched))
+    || (allRegionsResponse.fetching || (!allRegionsResponse.cached && !allRegionsResponse.fetched))
+    || (!skipUserDetails && (userResponse.fetching || (!userResponse.cached && !userResponse.fetched)))
+  ), [allCountriesResponse, userResponse, allRegionsResponse, skipUserDetails]);
+
+  /*
   const pending = React.useMemo(() => (
     !userResponse.fetched || !countriesResponse.fetched || !regionsResponse.fetched
   ), [userResponse, countriesResponse, regionsResponse]);
+  */
 
   if (pending) {
     return (
@@ -84,6 +130,7 @@ function Multiplexer(props) {
       <BreadcrumbsProvider>
         <Switch>
           <Route exact path='/' component={Home}/>
+          <Route path='/clear-init-cache' component={ClearInitCache} />
           <Route exact path='/covid19-3w-sankey' component={Covid19ThreeWSankey}/>
           <PrivateRoute exact path='/translation-dashboard' component={TranslationDashboard}/>
           <Route exact path='/about' component={About}/>
@@ -121,15 +168,20 @@ function Multiplexer(props) {
 }
 
 const mapStateToProps = (state) => ({
-  userResponse: userResponseSelector(state),
+  tokenResponse: state.user,
+  allCountriesResponse: allCountriesSelector(state),
+  allRegionsResponse: allRegionsSelector(state),
   countriesResponse: state.countries,
-  regionsResponse: state.regions
+  regionsResponse: state.regions,
+  userResponse: userResponseSelector(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getUser: (...args) => dispatch(getUserAction(...args)),
   getCountries: (...args) => dispatch(getCountriesAction(...args)),
-  getRegions: (...args) => dispatch(getRegionsAction(...args))
+  getRegions: (...args) => dispatch(getRegionsAction(...args)),
+  getAllCountries: (...args) => dispatch(getCountriesAllAction(...args)),
+  getAllRegions: (...args) => dispatch(getRegionsAllAction(...args))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Multiplexer);
