@@ -6,6 +6,7 @@ import c from 'classnames';
 import { environment } from '#config';
 
 import Dropdown from './common/dropdown';
+import DropdownMenu from './dropdown-menu';
 
 export default class DisplayTable extends React.Component {
   renderTbody () {
@@ -145,22 +146,39 @@ export class FilterHeader extends React.PureComponent {
       e.preventDefault();
       onSelect(option.value);
     };
+    /*
+    <Dropdown
+      id={id}
+      triggerClassName='drop__toggle--caret'
+      triggerActiveClassName='active'
+      triggerText={title}
+      triggerTitle={`Filter by ${title}`}
+      triggerElement='a'
+      direction='down'
+      alignment='center' >
+      <ul className='drop__menu drop__menu--select' role='menu'>
+        {options.map(o => <li key={o.value}>
+          <a href='#' title={`Filter by ${title} - ${o.label}`} className={c('drop__menu-item button', {'drop__menu-item--active': filter === o.value})} data-hook='dropdown:close' onClick={onFilterClick.bind(this, o)}>{o.label}</a>
+        </li>)}
+      </ul>
+    </Dropdown>
+    */
     return (
-      <Dropdown
-        id={id}
-        triggerClassName='drop__toggle--caret'
-        triggerActiveClassName='active'
-        triggerText={title}
-        triggerTitle={`Filter by ${title}`}
-        triggerElement='a'
-        direction='down'
-        alignment='center' >
+      <DropdownMenu
+        className="drop__toggle--caret"
+        activeClassName="active"
+        label={
+          <span title={`Filter by ${title}`}>
+            { title }
+          </span>
+        }
+      >
         <ul className='drop__menu drop__menu--select' role='menu'>
           {options.map(o => <li key={o.value}>
             <a href='#' title={`Filter by ${title} - ${o.label}`} className={c('drop__menu-item button', {'drop__menu-item--active': filter === o.value})} data-hook='dropdown:close' onClick={onFilterClick.bind(this, o)}>{o.label}</a>
           </li>)}
         </ul>
-      </Dropdown>
+      </DropdownMenu>
     );
   }
 }

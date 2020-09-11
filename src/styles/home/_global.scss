@@ -722,6 +722,15 @@
   z-index: 1;
 }
 
+.tc-dropdown-container.header-menu-dropdown {
+  padding: $spacing-half 0;
+}
+
+.tc-dropdown-container .drop__menu {
+  padding: 0;
+  margin: 0;
+}
+
 .drop__menu--date {
   input[type="date"] {
     font-size: $font-size-sm;
