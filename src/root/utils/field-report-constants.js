@@ -65,7 +65,6 @@ export const countries = (countries, independent=false) => {
   }
 
   return [
-    {value: '-- Country --', label: ''},
     ...countriesSelectList,
   ].sort((a, b) => a.label < b.label ? -1 : 1);
 };
