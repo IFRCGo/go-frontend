@@ -6,6 +6,7 @@ import { IoMdArrowDropdown } from 'react-icons/io';
 import {
   currentLanguageSelector,
   languageStringsSelector,
+  languageResponseSelector,
 } from '#selectors';
 
 import {
@@ -15,7 +16,7 @@ import {
 
 import languageContext from '#root/languageContext';
 import DropdownMenu from '#components/dropdown-menu';
-import Translate from '#components/Translate';
+import NewGlobalLoading from '#components/NewGlobalLoading';
 
 import styles from './styles.module.scss';
 
@@ -60,6 +61,8 @@ function LanguageSelect(p) {
     currentLanguage,
     setCurrentLanguage,
     languageStrings,
+    languageResponse,
+    className,
   } = p;
 
   const languageRef = React.useRef(currentLanguage);
@@ -90,35 +93,36 @@ function LanguageSelect(p) {
   }, [setCurrentLanguage]);
 
   return (
-    <DropdownMenu
-      label={
-        <div
-          className={`${styles.dropdownMenuLabel} page__meta-nav-elements page__meta-nav-elements--lang`}
-          title={languageOptions[currentLanguage]}
-        >
-          <Translate
-            stringId="langSelectLabel"
-            params={{ currentLanguage }}
+    <>
+      { languageResponse.fetching && <NewGlobalLoading /> }
+      <DropdownMenu
+        label={
+          <div
+            className={_cs(styles.dropdownMenuLabel, className)}
+            title={languageOptions[currentLanguage]}
+          >
+            {languageOptions[currentLanguage]}
+            <IoMdArrowDropdown />
+          </div>
+        }
+        dropdownContainerClassName={styles.dropdown}
+      >
+        { Object.keys(languageOptions).map(l => (
+          <LanguageButton
+            isActive={currentLanguage === l}
+            key={l}
+            languageId={l}
+            label={languageOptions[l]}
+            onClick={handleLanguageButtonClick}
           />
-          <IoMdArrowDropdown />
-        </div>
-      }
-      dropdownContainerClassName={styles.dropdown}
-    >
-      { Object.keys(languageOptions).map(l => (
-        <LanguageButton
-          isActive={currentLanguage === l}
-          key={l}
-          languageId={l}
-          label={languageOptions[l]}
-          onClick={handleLanguageButtonClick}
-        />
-      ))}
-    </DropdownMenu>
+        ))}
+      </DropdownMenu>
+    </>
   );
 }
 
 const mapStateToProps = (state) => ({
+  languageResponse: languageResponseSelector(state),
   currentLanguage: currentLanguageSelector(state),
   languageStrings: languageStringsSelector(state),
 });

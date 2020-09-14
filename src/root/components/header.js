@@ -107,7 +107,7 @@ function Header (props) {
                 </h1>
               </div>
               <nav className='page__meta-nav col' role='navigation'>
-                { <LanguageSelect /> }
+                { <LanguageSelect className="page__meta-nav-elements page__meta-nav-elements--lang" /> }
                 <Link to='/about' title={strings.headerMenuResourceTooltip} className='page__meta-nav-elements'>
                   <Translate stringId="headerMenuResources" />
                 </Link>
