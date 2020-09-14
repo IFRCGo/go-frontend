@@ -50,7 +50,7 @@ class UserMenu extends React.Component {
             </span>
           }
         >
-          <h6 className='drop__title drop__title--page__meta-nav'>Hello {this.props.userData.firstName} {this.props.userData.lastName}</h6>
+          <div className='drop__title drop__title--page__meta-nav'>Hello {this.props.userData.firstName} {this.props.userData.lastName}</div>
           <ul className='drop__menu drop__menu--page__meta-nav' role='menu'>
             <li>
               <Link

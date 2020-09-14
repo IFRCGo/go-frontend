@@ -70,8 +70,9 @@
 }
 
 .drop__title--page__meta-nav {
-  margin-inline-start: -.5rem !important;
-  margin-bottom: $spacing-2 !important;
+  // margin-inline-start: -.5rem !important;
+  // margin-inline-end: -.5rem !important;
+  padding: $spacing-half $spacing-half 0 $spacing-half;
 }
 
 .drop__menu--page__meta-nav {
