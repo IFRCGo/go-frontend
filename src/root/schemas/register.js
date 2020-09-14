@@ -198,7 +198,7 @@ export default {
       type: 'string'
     },
     country: {
-      type: 'string'
+      type: 'number'
     },
     city: {
       type: 'string'
