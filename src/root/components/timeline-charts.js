@@ -129,7 +129,7 @@ class TimelineCharts extends React.Component {
           <figcaption className='fold__title'>
             <Translate stringId='timeLineChartByMonthTitle'/>
           </figcaption>
-          <div className='chart__container margin-t'>
+          <div className='chart__container charts__container__rtl margin-t'>
             {this.renderChart(data, 'month')}
           </div>
         </figure>
@@ -179,7 +179,7 @@ class TimelineCharts extends React.Component {
           <figcaption className='fold__title'>
             <Translate stringId='timeLineChartByYearTitle'/>
           </figcaption>
-          <div className='chart__container margin-t'>
+          <div className='chart__container charts__container__rtl margin-t'>
             {this.renderChart(data, 'year')}
           </div>
         </figure>
