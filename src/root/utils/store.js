@@ -142,6 +142,8 @@ const tokenListener = ({ data }) => {
 
 const currentLanguageListener = ({ language }) => {
   localStorage.set(LANG_STORAGE_KEY, language);
+  localStorage.remove(ALL_COUNTRIES_STORAGE_KEY);
+  localStorage.remove(ALL_REGIONS_STORAGE_KEY);
 };
 
 const allCountriesListener = ({ data, receivedAt }) => {
