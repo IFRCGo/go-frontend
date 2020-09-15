@@ -95,14 +95,11 @@ function Multiplexer(props) {
     }
   }, [allRegionsResponse, getAllRegions]);
 
-  /*const pending = React.useMemo(() => (
+  const pending = React.useMemo(() => (
     (allCountriesResponse.fetching || (!allCountriesResponse.cached && !allCountriesResponse.fetched))
     || (allRegionsResponse.fetching || (!allRegionsResponse.cached && !allRegionsResponse.fetched))
     || (!skipUserDetails && (userResponse.fetching || (!userResponse.cached && !userResponse.fetched)))
   ), [allCountriesResponse, userResponse, allRegionsResponse, skipUserDetails]);
-  */
-
-  const pending = true;
 
   /*
   const pending = React.useMemo(() => (
