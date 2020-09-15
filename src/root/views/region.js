@@ -50,7 +50,7 @@ import MainMap from '#components/map/main-map';
 import LanguageContext from '#root/languageContext';
 import { resolveToString } from '#utils/lang';
 
-import { countriesSelector, countriesByRegionSelector, regionsByIdSelector, regionByIdOrNameSelector } from '../selectors';
+import { countriesSelector, countriesByRegionSelector, regionsByIdSelector, regionByIdOrNameSelector, countriesGeojsonSelector } from '../selectors';
 import turfBbox from '@turf/bbox';
 
 class AdminArea extends SFPComponent {
@@ -258,6 +258,7 @@ class AdminArea extends SFPComponent {
                             fullscreen={this.state.fullscreen}
                             toggleFullscreen={this.toggleFullscreen}
                             mapBoundingBox={mapBoundingBox}
+                            countriesGeojson={this.props.countriesGeojson}
                             // layers={this.state.maskLayer}
                           />
                           <AppealsTable
@@ -381,7 +382,8 @@ const selector = (state, ownProps) => ({
   appealsListStats: state.overallStats.appealsListStats,
   countriesByRegion: countriesByRegionSelector(state),
   regions: regionsByIdSelector(state),
-  thisRegion: regionByIdOrNameSelector(state, ownProps.match.params.id)
+  thisRegion: regionByIdOrNameSelector(state, ownProps.match.params.id),
+  countriesGeojson: countriesGeojsonSelector(state)
 });
 
 const dispatcher = (dispatch) => ({
