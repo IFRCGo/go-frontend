@@ -8,20 +8,12 @@
   justify-content: center;
   flex-direction: column;
 
-
   .logo {
-    height: 220px;
+    margin-bottom: ($spacing * 6);
   }
 
   .content {
     display: flex;
-
-    .message {
-      font-size: 2rem;
-      padding: 10px;
-      font-weight: $base-font-bold;
-      color: $grey-cement;
-    }
 
     .loading {
       padding: 0;
@@ -29,5 +21,50 @@
       height: auto;
       border: 0;
     }
+
+  }
+}
+
+@keyframes ball-beat {
+  50% {
+    opacity: 0.2;
+    transform: scale(0.75);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes ball-beat-scale {
+  50% {
+    opacity: 0.2;
+    transform: scale(0.75);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+}
+
+.loading-global {
+  > div {
+    background-color: $grey-cloud;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    margin: 4px;
+    display: inline-block;
+    animation: ball-beat .7s 0s infinite linear;
+  }
+
+  > div:nth-child(2n-1) {
+    animation-delay: -.35s !important;
+  }
+
+  > div:nth-child(2) {
+    animation: ball-beat-scale 1.2s 0s infinite ease-out;
   }
 }
