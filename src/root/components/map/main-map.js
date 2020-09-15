@@ -306,6 +306,7 @@ class MainMap extends React.Component {
             configureMap={this.configureMap}
             layers={layers}
             geoJSON={geoJSON}
+            countriesGeojson={this.props.countriesGeojson}
             downloadButton={true}
             downloadedHeaderTitle={strings.mainMapDownloadHeaderTitle}>
 
@@ -351,7 +352,8 @@ if (environment !== 'production') {
     noExport: T.bool,
     layers: T.array,
     toggleFullscreen: T.func,
-    fullscreen: T.bool
+    fullscreen: T.bool,
+    countriesGeojson: T.object
   };
 }
 
