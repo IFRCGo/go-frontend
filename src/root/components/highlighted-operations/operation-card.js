@@ -28,7 +28,7 @@ const OperationCard = ({operationId, operationName, emergencyDeployments, appeal
         <div className="card_box card_box_left card_box_title">
           <div className='row flex'>
             <div className='card__title__wrap col col-7 col-8-mid'>
-              <h2 className='card__title'>{ operationName.length > 60 ? operationName.slice(0, 60) + '...' : operationName }</h2>
+              <h2 className='card__title'>{ operationName?.length > 60 ? operationName?.slice(0, 60) + '...' : operationName }</h2>
             </div>
             {showFollow ? (
               <div className='button--key-emergencies__wrap col col-5 col-4-mid'>  
