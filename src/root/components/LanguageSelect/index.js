@@ -11,7 +11,6 @@ import {
 
 import {
   setCurrentLanguageAction,
-  getLanguageAction,
 } from '#actions';
 
 import languageContext from '#root/languageContext';
@@ -57,27 +56,12 @@ function LanguageSelect(p) {
   const { setStrings } = React.useContext(languageContext);
 
   const {
-    getLanguage,
     currentLanguage,
     setCurrentLanguage,
     languageStrings,
     languageResponse,
     className,
   } = p;
-
-  const languageRef = React.useRef(currentLanguage);
-
-  React.useEffect(() => {
-    getLanguage(languageRef.current);
-
-    if (languageRef.current === 'ar') {
-      document.body.style.direction = 'rtl';
-      document.body.setAttribute('dir', 'rtl');
-    } else {
-      document.body.style.direction = 'ltr';
-      document.body.setAttribute('dir', 'ltr');
-    }
-  }, [getLanguage]);
 
   React.useEffect(() => {
     setStrings(languageStrings);
@@ -129,7 +113,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setCurrentLanguage: (...args) => dispatch(setCurrentLanguageAction(...args)),
-  getLanguage: (...args) => dispatch(getLanguageAction(...args)),
 });
 
 

@@ -13,13 +13,14 @@ import {
   getMe as getUserAction,
   getCountriesAllAction,
   getRegionsAllAction,
-  getCountries as getCountriesAction,
-  getRegions as getRegionsAction,
+  getLanguageAction,
 } from '#actions';
 import {
   userResponseSelector,
   allCountriesSelector,
   allRegionsSelector,
+  languageResponseSelector,
+  currentLanguageSelector,
 } from '#selectors';
 
 // Views.
@@ -61,14 +62,25 @@ function Multiplexer(props) {
     allCountriesResponse,
     allRegionsResponse,
     tokenResponse,
-    getCountries,
+    getLanguage,
+    languageResponse,
+    currentLanguage,
   } = props;
 
+  const languageRef = React.useRef(currentLanguage);
   const [skipUserDetails, setSkipUserDetails] = React.useState(false);
 
   React.useEffect(() => {
-    getCountries();
-  }, [getCountries]);
+    getLanguage(languageRef.current);
+
+    if (languageRef.current === 'ar') {
+      document.body.style.direction = 'rtl';
+      document.body.setAttribute('dir', 'rtl');
+    } else {
+      document.body.style.direction = 'ltr';
+      document.body.setAttribute('dir', 'ltr');
+    }
+  }, [getLanguage]);
 
   React.useEffect(() => {
     if (!userResponse.fetching && !userResponse.fetched && !userResponse.cached) {
@@ -96,10 +108,11 @@ function Multiplexer(props) {
   }, [allRegionsResponse, getAllRegions]);
 
   const pending = React.useMemo(() => (
-    (allCountriesResponse.fetching || (!allCountriesResponse.cached && !allCountriesResponse.fetched))
+    (languageResponse.fetching || !languageResponse.fetched)
+    || (allCountriesResponse.fetching || (!allCountriesResponse.cached && !allCountriesResponse.fetched))
     || (allRegionsResponse.fetching || (!allRegionsResponse.cached && !allRegionsResponse.fetched))
     || (!skipUserDetails && (userResponse.fetching || (!userResponse.cached && !userResponse.fetched)))
-  ), [allCountriesResponse, userResponse, allRegionsResponse, skipUserDetails]);
+  ), [allCountriesResponse, userResponse, allRegionsResponse, skipUserDetails, languageResponse]);
 
   /*
   const pending = React.useMemo(() => (
@@ -174,14 +187,15 @@ const mapStateToProps = (state) => ({
   countriesResponse: state.countries,
   regionsResponse: state.regions,
   userResponse: userResponseSelector(state),
+  languageResponse: languageResponseSelector(state),
+  currentLanguage: currentLanguageSelector(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getUser: (...args) => dispatch(getUserAction(...args)),
-  getCountries: (...args) => dispatch(getCountriesAction(...args)),
-  getRegions: (...args) => dispatch(getRegionsAction(...args)),
   getAllCountries: (...args) => dispatch(getCountriesAllAction(...args)),
-  getAllRegions: (...args) => dispatch(getRegionsAllAction(...args))
+  getAllRegions: (...args) => dispatch(getRegionsAllAction(...args)),
+  getLanguage: (...args) => dispatch(getLanguageAction(...args)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Multiplexer);
