@@ -77,6 +77,32 @@ export const countriesByIso = (state) => {
   }
 };
 
+export const countriesGeojsonSelector = (state) => {
+  const featureCollection = {
+    'type': 'FeatureCollection',
+    'features': []
+  };
+  if (state.allCountries && state.allCountries.data.results) {
+
+    state.allCountries.data.results.forEach(country => {
+      if (country.centroid && country.independent) {
+        const f = {
+          'type': 'Feature',
+          'geometry': country.centroid,
+          'properties': {
+            'name': country.name,
+            'iso': country.iso,
+            'iso3': country.iso3,
+            'society_name': country.society_name
+          }
+        };
+        featureCollection.features.push(f);
+      }
+    });
+  }
+  return featureCollection;
+};
+
 export const regionsByIdSelector = (state) => {
   if (state.allRegions && state.allRegions.data.results) {
     return _groupBy(state.allRegions.data.results, 'id');
