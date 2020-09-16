@@ -1241,4 +1241,6 @@ export default {
   dateFilterHeaderFromLabel: 'From',
   dateFilterHeaderToLabel: 'To',
   dateFilterHeaderApplyButtonLabel: 'Apply',
+
+  alertsTableAllLabel: 'All',
 };
