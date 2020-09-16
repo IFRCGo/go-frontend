@@ -272,8 +272,8 @@ export default class DeploymentsMap extends React.Component {
               downloadedHeaderTitle={strings.deploymentsMapDownloadTitle}
               layers={this.state.layers}
               filters={this.state.filters}
-              geoJSON={this.props.data}>
-
+              geoJSON={this.props.data}
+              countriesGeojson={this.props.countriesGeojson}>
               <figcaption className='map-vis__legend map-vis__legend--bottom-right legend'>
                 <div className='deployments-key'>
                   <div>
@@ -341,7 +341,8 @@ export default class DeploymentsMap extends React.Component {
 DeploymentsMap.contextType = LanguageContext;
 if (environment !== 'production') {
   DeploymentsMap.propTypes = {
-    data: T.object
+    data: T.object,
+    countriesGeojson: T.object
   };
 }
 
