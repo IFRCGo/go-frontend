@@ -75,13 +75,15 @@ class Register extends React.Component {
 
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps (nextProps) {
+    const { strings } = this.context;
+
     if (this.props.registration.fetching && !nextProps.registration.fetching) {
       hideGlobalLoading();
       if (nextProps.registration.error) {
-        const message = nextProps.registration.error.error_message || 'Could not create user';
-        showAlert('danger', <p><strong>Error:</strong> {message}</p>, true, 4500);
+        const message = nextProps.registration.error.error_message || strings.registerCreateUserDefaultErrorMessage;
+        showAlert('danger', <p><Translate stringId="registerErrorMessage" params={{ message }} /></p>, true, 4500);
       } else {
-        showAlert('success', <p>Success! Verification email sent, redirecting...</p>, true, 2000);
+        showAlert('success', <p><Translate stringId="registerSuccessMessage" /></p>, true, 2000);
         setTimeout(() => this.props.history.push('/'), 2000);
       }
     }

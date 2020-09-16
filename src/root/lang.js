@@ -1315,4 +1315,8 @@ export default {
 
   recoverUsernameSuccessMessage: 'If the given email address exists here, you will find an email in your mailbox...',
   recoverUsernameInvalidEmailMessage: 'Please enter a valid email',
+
+  registerCreateUserDefaultErrorMessage: 'Could not create user',
+  registerErrorMessage: 'Error: {message}',
+  registerSuccessMessage: 'Success! Verification email sent, redirecting...',
 };
