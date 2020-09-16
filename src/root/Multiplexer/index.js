@@ -6,8 +6,6 @@ import { BreadcrumbsProvider } from 'react-breadcrumbs-dynamic';
 
 import PrivateRoute from '#components/PrivateRoute';
 import AnonymousRoute from '#components/AnonymousRoute';
-import BlockLoading from '#components/block-loading';
-
 
 import {
   getMe as getUserAction,
