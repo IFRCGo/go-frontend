@@ -1280,4 +1280,8 @@ export default {
 
   preparednessOverviewContactLabel: 'Contact PER team',
   preparednessPhaseOutcomesUploadLinkLabel: 'Upload',
+
+  formElementErrorRequiredMessage: 'Please fill in the field.',
+  formElementErrorDependenciesMessage: 'Please fill in the field.',
+  formElementErrorConstMessage: 'Passwords must match.',
 };
