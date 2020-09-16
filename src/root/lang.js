@@ -1304,4 +1304,12 @@ export default {
   noDataMessage: 'No data to display.',
 
   deploymentsPageTitle: 'Deployments',
+
+  emergencySourceMessage: 'Source: {link}',
+  emergencyFieldReportStatsHeading: 'Emergency Overview',
+
+  recoverAccountErrorMessage: 'Error: {message}',
+  recoverAccountSuccessMessage: 'We have sent an email to your inbox. Redirecting...',
+
+  recoverAccountInvalidEmailMessage: 'Please enter a valid email',
 };
