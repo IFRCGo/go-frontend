@@ -1289,4 +1289,8 @@ export default {
   preparednessFactoryNSGraphDataEngagedCountriesLabel: 'Engaged countries',
 
   privateRouteNotAuthenticatedMessage: 'Please log in to view this page',
+
+  displayTableFilterHeaderOptionTooltipText: 'Filter by {title} - {label}',
+  displayTableFilterHeaderLabelTooltipText: 'Filter by {title}',
+  displayTableSortHeaderTooltip: 'Sort by {title}',
 };

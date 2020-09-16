@@ -26,12 +26,13 @@ class AuthControls extends React.Component {
   render () {
     return (
       <div>
-        <button title='Login' className='button button--base-plain' onClick={this.openModal}><span>
-                                                                                               <Translate stringId='loginButton'/>
-                                                                                             </span></button>
+        <button title='Login' className='button button--base-plain' onClick={this.openModal}>
+          <Translate stringId='loginButton'/>
+        </button>
         <LoginModal
           revealed={this.state.loginRevealed}
-          onCloseClick={this.closeModal} />
+          onCloseClick={this.closeModal}
+        />
       </div>
     );
   }
