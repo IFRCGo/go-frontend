@@ -1302,4 +1302,6 @@ export default {
   homePageLinkText: '{countryName} RC Homepage',
 
   noDataMessage: 'No data to display.',
+
+  deploymentsPageTitle: 'Deployments',
 };
