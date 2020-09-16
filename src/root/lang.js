@@ -1251,4 +1251,32 @@ export default {
   newPasswordVerifyInputLabel: 'Verify old password',
 
   userMenuPopupHeading: 'Hello {firstName} {lastName}',
+
+  monthNameJanuary: 'January',
+  monthNameFebruary: 'February',
+  monthNameMarch: 'March',
+  monthNameApril: 'April',
+  monthNameMay: 'May',
+  monthNameJune: 'June',
+  monthNameJuly: 'July',
+  monthNameAugust: 'August',
+  monthNameSeptember: 'September',
+  monthNameOctober: 'October',
+  monthNameNovember: 'November',
+  monthNameDecember: 'December',
+
+  monthNameShortJan: 'Jan',
+  monthNameShortFeb: 'Feb',
+  monthNameShortMar: 'Mar',
+  monthNameShortApr: 'Apr',
+  monthNameShortMay: 'May',
+  monthNameShortJun: 'Jun',
+  monthNameShortJul: 'Jul',
+  monthNameShortAug: 'Aug',
+  monthNameShortSep: 'Sep',
+  monthNameShortOct: 'Oct',
+  monthNameShortNov: 'Nov',
+  monthNameShortDec: 'Dec',
+
+  preparednessOverviewContactLabel: 'Contact PER team',
 };

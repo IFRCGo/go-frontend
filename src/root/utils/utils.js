@@ -313,3 +313,18 @@ export const convertJsonToCsv = (data, columnDelimiter = ',', lineDelimiter = '\
 
   return result;
 };
+
+export const getFullMonthNameList = (strings) => ([
+  strings.monthNameJanuary,
+  strings.monthNameFebruary,
+  strings.monthNameMarch,
+  strings.monthNameApril,
+  strings.monthNameMay,
+  strings.monthNameJune,
+  strings.monthNameJuly,
+  strings.monthNameAugust,
+  strings.monthNameSeptember,
+  strings.monthNameOctober,
+  strings.monthNameNovember,
+  strings.monthNameDecember,
+]);

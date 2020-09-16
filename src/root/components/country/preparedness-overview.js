@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
@@ -8,6 +7,7 @@ import { getPerProcessType } from '#utils/get-per-process-type';
 import Fold from './../fold';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
+import { getFullMonthNameList } from '#utils/utils';
 
 class PreparednessOverview extends React.Component {
   render () {
@@ -16,7 +16,9 @@ class PreparednessOverview extends React.Component {
     if (!this.props.getPerNsPhase.fetched || !this.props.perOverviewForm.fetched || !this.props.user.username) return null;
     if (typeof this.props.getPerNsPhase.data.results !== 'undefined' && this.props.getPerNsPhase.data.results[0].phase === 0 &&
       typeof this.props.perOverviewForm.data.count !== 'undefined' && this.props.perOverviewForm.data.count === 0) return null;
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    const months = getFullMonthNameList(strings);
+
     const phase = {phase: this.props.getPerNsPhase.data.results[0].phase};
     const overviewForm = this.props.perOverviewForm.data.results[0];
     const dateOfAssessment = typeof overviewForm !== 'undefined' ? new Date(overviewForm.date_of_current_capacity_assessment.substring(0, 10)) : null;
@@ -119,7 +121,6 @@ class PreparednessOverview extends React.Component {
             <div style={{marginBottom: '5px'}}>{focalPointNameString}</div>
             <div style={{marginBottom: '5px'}}>{focalPointEmailString}</div>
           </div>
-
         </div>
 
         <div style={{float: 'left', width: '100%', textAlign: 'center', marginTop: '25px'}}>
@@ -127,7 +128,9 @@ class PreparednessOverview extends React.Component {
             <a href='https://dsgocdnapi.azureedge.net/admin/per/nsphase/' target='_blank' className='button button--medium button--primary-filled'>Set phase</a>
           </div>
           <div style={{float: 'left', width: '50%'}}>
-            <a href='mailto:PER.Team@ifrc.org' className='button button--medium button--primary-filled'>Contact PER team</a>
+            <a href='mailto:PER.Team@ifrc.org' className='button button--medium button--primary-filled'>
+              <Translate stringId="preparednessOverviewContactLabel" />
+            </a>
           </div>
         </div>
       </Fold>
