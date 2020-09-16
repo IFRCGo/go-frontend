@@ -1,4 +1,3 @@
-
 import React, { PureComponent } from 'react';
 import { PropTypes as T } from 'prop-types';
 import { environment } from '#config';
@@ -41,7 +40,8 @@ class NationalSocietiesEngagedPer extends PureComponent {
   }
 
   componentDidMount () {
-    this.preparedData = this.nationalSocietiesEngagedPerGraphDataFactory.buildGraphData(this.props.data, this.props.regionsById);
+    const { strings } = this.context;
+    this.preparedData = this.nationalSocietiesEngagedPerGraphDataFactory.buildGraphData(this.props.data, this.props.regionsById, strings);
     this.forceUpdate();
   }
 
