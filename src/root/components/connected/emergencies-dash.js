@@ -10,6 +10,7 @@ import EmergenciesMap from '#components/map/emergencies-map';
 import Progress from '#components/progress';
 import BlockLoading from '#components/block-loading';
 import Translate from '#components/Translate';
+import { countriesGeojsonSelector } from '../../selectors';
 
 class EmergenciesDash extends React.Component {
   renderEmergencies () {
@@ -158,7 +159,10 @@ class EmergenciesDash extends React.Component {
               </div>
             </div>
           </div>
-          <EmergenciesMap lastMonth={lastMonth} />
+          <EmergenciesMap
+            lastMonth={lastMonth}
+            countriesGeojson={this.props.countriesGeojson}
+          />
         </section>
       </div>
     );
@@ -177,7 +181,8 @@ if (environment !== 'production') {
 
 const selector = (state) => ({
   lastMonth: state.emergencies.lastMonth,
-  aggregate: state.emergencies.aggregate
+  aggregate: state.emergencies.aggregate,
+  countriesGeojson: countriesGeojsonSelector(state)
 });
 
 export default connect(selector)(EmergenciesDash);
