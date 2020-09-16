@@ -1319,4 +1319,7 @@ export default {
   registerCreateUserDefaultErrorMessage: 'Could not create user',
   registerErrorMessage: 'Error: {message}',
   registerSuccessMessage: 'Success! Verification email sent, redirecting...',
+
+  resendValidationErrorMessage: 'Error: {message}',
+  resendValidationSuccessMessage: 'We have sent an email to your inbox. Redirecting...',
 };

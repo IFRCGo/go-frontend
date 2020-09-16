@@ -36,9 +36,9 @@ class ResendValidation extends React.Component {
     hideGlobalLoading();
     if (nextProps.resendValidation.fetched) {
       if (nextProps.resendValidation.error) {   
-        showAlert('danger', <p><strong>Error:</strong> {nextProps.resendValidation.error.error_message}</p>, true, 7000);
+        showAlert('danger', <p><Translate stringId="resendValidationErrorMessage" params={{message: nextProps.resendValidation.error.error_message}} /></p>, true, 7000);
       } else {
-        showAlert('success', <p>We've sent an email to your inbox. Redirecting...</p>, true, 2000);
+        showAlert('success', <p><Translate stringId="resendValidationSuccessMessage" /></p>, true, 2000);
         setTimeout(() => this.props.history.push('/login'), 2000);
       }
     }
