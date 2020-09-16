@@ -1296,4 +1296,6 @@ export default {
 
   exportButtonContainerErrorMessage: 'Error: Could not export data',
   exportButtonContainerExportingMessage: 'Info: Exporting...',
+
+  accountReportListLastUpdated: 'Last Updated: {on}',
 };

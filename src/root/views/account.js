@@ -574,7 +574,7 @@ class Account extends React.Component {
             <div className='text-center'>
               <button type='submit' className={c('button', 'button--large', 'button--secondary-filled', {
                 'disabled': !this.state.isProfileDirty
-              })} title='Save'>
+              })} title={strings.accountProfileFormSubmitButtonTooltip}>
                 <Translate stringId='accountSave'/>
               </button>
             </div>
@@ -612,7 +612,14 @@ class Account extends React.Component {
                       <div className='report__list--header list__each__block flex'>
                         <div>
                           <Link className='link-underline' to={`/reports/${o.id}`}>{o.summary}</Link>&nbsp;
-                          <div className='report__list--updated global-margin-t'>Last Updated: {DateTime.fromISO(o.updated_at || o.created_at).toISODate()}</div>
+                          <div className='report__list--updated global-margin-t'>
+                            <Translate
+                              stringId='accountReportListLastUpdated'
+                              params={{
+                                on: DateTime.fromISO(o.updated_at || o.created_at).toISODate(),
+                              }}
+                            />
+                          </div>
                         </div>
                       </div>
                       <p>{o.description}</p>
@@ -621,7 +628,7 @@ class Account extends React.Component {
                 </ul>
               </div>
               <div className='fold__footer'>
-                <p><Translate stringId='accountDeleteContact'/> <a href='mailto:im@ifrc.org'><Translate stringId='accountDeleteInfo'/></a>.</p>
+                <p><Translate stringId='accountDeleteContact'/> <a href='mailto:im@ifrc.org'><Translate stringId='accountDeleteInfo'/></a></p>
               </div>
             </div>
           </section>
