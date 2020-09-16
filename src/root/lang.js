@@ -1279,4 +1279,5 @@ export default {
   monthNameShortDec: 'Dec',
 
   preparednessOverviewContactLabel: 'Contact PER team',
+  preparednessPhaseOutcomesUploadLinkLabel: 'Upload',
 };
