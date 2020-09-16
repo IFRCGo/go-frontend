@@ -34,6 +34,7 @@ import Readiness from '#components/deployments/readiness';
 import BreadCrumb from '#components/breadcrumb';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
+import { countriesGeojsonSelector } from '../selectors';
 
 class Deployments extends SFPComponent {
   // Methods form SFPComponent:
@@ -239,7 +240,10 @@ class Deployments extends SFPComponent {
             </div>
           </header>
           <div className='container-lg'>
-            <DeploymentsMap data={this.props.locations} />
+            <DeploymentsMap
+              data={this.props.locations}
+              countriesGeojson={this.props.countriesGeojson}
+            />
           </div>
           <div className='inpage__body container-lg'>
             <div className='inner'>
@@ -294,14 +298,16 @@ if (environment !== 'production') {
     eruOwners: T.object,
     eru: T.object,
     activePersonnel: T.object,
-    locations: T.object
+    locations: T.object,
+    countriesGeojson: T.object
   };
 }
 
 const selector = (state) => ({
   eruOwners: state.eruOwners,
   activePersonnel: state.deployments.activePersonnel,
-  locations: state.deployments.locations
+  locations: state.deployments.locations,
+  countriesGeojson: countriesGeojsonSelector(state)
 });
 
 const dispatcher = (dispatch) => ({
