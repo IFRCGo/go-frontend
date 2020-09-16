@@ -124,7 +124,7 @@ export class SortHeader extends React.PureComponent {
       'table__sort--desc': sort.field === id && sort.direction === 'desc'
     });
     return (
-      <a href='#' title={resolveToString(strings.displayTableSortHeaderTooltip, title)} className={cl} onClick={onSortClick}>{title}</a>
+      <a href='#' title={resolveToString(strings.displayTableSortHeaderTooltip, title || '')} className={cl} onClick={onSortClick}>{title}</a>
     );
   }
 }

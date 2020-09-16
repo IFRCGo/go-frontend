@@ -1293,4 +1293,7 @@ export default {
   displayTableFilterHeaderOptionTooltipText: 'Filter by {title} - {label}',
   displayTableFilterHeaderLabelTooltipText: 'Filter by {title}',
   displayTableSortHeaderTooltip: 'Sort by {title}',
+
+  exportButtonContainerErrorMessage: 'Error: Could not export data',
+  exportButtonContainerExportingMessage: 'Info: Exporting...',
 };
