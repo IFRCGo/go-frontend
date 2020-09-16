@@ -3,6 +3,8 @@ import { PropTypes as T } from 'prop-types';
 import { environment } from '#config';
 
 import DropdownMenu from '#components/dropdown-menu';
+import languageContext from '#root/languageContext';
+import { resolveToString } from '#utils/lang';
 
 export default class DateFilterHeader extends React.PureComponent {
   constructor () {
@@ -49,52 +51,18 @@ export default class DateFilterHeader extends React.PureComponent {
   }
 
   render () {
+    const { strings } = this.context;
     const {title, featureType} = this.props;
     const mapStyle = 'form__control--medium form__control form__control--data_select form__control--brand form__control--filter';
     const tableStyle = 'drop__toggle--caret';
-    /*
-    <Dropdown
-      id={id}
-      triggerClassName={featureType === 'map' ? mapStyle : tableStyle}
-      triggerActiveClassName='active'
-      triggerText={this.state.setDate || title}
-      triggerTitle={`Filter by ${title}`}
-      triggerElement='a'
-      isClosingDropdown={this.state.isClosingDropdown}
-      resetDateStatus={this.resetDateStatus}
-      direction='down'
-      alignment='center'>
-      <ul className='drop__menu drop__menu--select drop__menu--date' role='menu'>
-        <li className='global-spacing'>
-          <label className='form__label form__label--small'>From</label>
-          <input type="date" className='form__control form__control--brand' name="startdate" value={this.state.startDate}
-            onChange={this.changeStartDate.bind(this)} />
-        </li>
-        <li className='global-spacing'>
-          <label className='form__label form__label--small'>To</label>
-          <input type="date" className='form__control form__control--brand' name="enddate" value={this.state.endDate}
-            onChange={this.changeEndDate.bind(this)} />
-        </li>
-        <li className='global-spacing-h'>
-          <p className='text-center'>
-            <button
-              className="button button--primary-bounded button--xsmall"
-              onClick={this.applyPeriodFilter.bind(this)}
-            >
-            Apply
-            </button>
-          </p>
-        </li>
-      </ul>
-    </Dropdown>
-    */
+    const labelTooltip = resolveToString(strings.dateFilterHeaderTooltip, { title });
 
     return (
       <DropdownMenu
         className={featureType === 'map' ? mapStyle : tableStyle}
         activeClassName='active'
         label={
-          <span title={`Filter by ${title}`}>
+          <span title={labelTooltip}>
             {this.state.setDate || title}
           </span>
         }
@@ -102,12 +70,12 @@ export default class DateFilterHeader extends React.PureComponent {
       >
         <ul className='drop__menu drop__menu--select drop__menu--date' role='menu'>
           <li className='global-spacing'>
-            <label className='form__label form__label--small'>From</label>
+            <label className='form__label form__label--small'>{strings.dateFilterHeaderFromLabel}</label>
             <input type="date" className='form__control form__control--brand' name="startdate" value={this.state.startDate}
               onChange={this.changeStartDate.bind(this)} />
           </li>
           <li className='global-spacing'>
-            <label className='form__label form__label--small'>To</label>
+            <label className='form__label form__label--small'>{strings.dateFilterHeaderToLabel}</label>
             <input type="date" className='form__control form__control--brand' name="enddate" value={this.state.endDate}
               onChange={this.changeEndDate.bind(this)} />
           </li>
@@ -117,7 +85,7 @@ export default class DateFilterHeader extends React.PureComponent {
                 className="button button--primary-bounded button--xsmall"
                 onClick={this.applyPeriodFilter.bind(this)}
               >
-              Apply
+                {strings.dateFilterHeaderApplyButtonLabel}
               </button>
             </p>
           </li>
@@ -126,6 +94,8 @@ export default class DateFilterHeader extends React.PureComponent {
     );
   }
 }
+
+DateFilterHeader.contextType = languageContext;
 
 if (environment !== 'production') {
   DateFilterHeader.propTypes = {

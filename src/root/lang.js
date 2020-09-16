@@ -1236,4 +1236,9 @@ export default {
   countryProfileExternalSourcesTitle: 'External Sources',
   countryProfileDateRange: 'Date Range',
   countryProfileSearchPlaceholder: 'Search',
+
+  dateFilterHeaderTooltip: 'Filter by {title}',
+  dateFilterHeaderFromLabel: 'From',
+  dateFilterHeaderToLabel: 'To',
+  dateFilterHeaderApplyButtonLabel: 'Apply',
 };
