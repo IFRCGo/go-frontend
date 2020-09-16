@@ -198,7 +198,10 @@
   @include media(medium-up) {
     flex-flow: row wrap;
     margin-bottom: ($global-spacing * 4);
-    margin-inline-start: 18%;
+
+    [dir='ltr'] & {
+      margin-inline-start: 18%;
+    }
   }
 }
 
@@ -232,6 +235,12 @@
     text-align: center;
     font-size: 0.75rem;
     line-height: 1rem;
+    z-index: 1;
+
+    [dir='rtl'] & {
+      right: -1.5rem;
+      left: auto;
+    }
 
     @include media(medium-up) {
       top: 0;
@@ -261,8 +270,10 @@
     padding-bottom: 0;
     margin-bottom: 0;
 
-    &::after {
-      display: none;
+    [dir='ltr'] & {
+      &::after {
+        display: none;
+      }
     }
   }
 
