@@ -68,6 +68,9 @@ class Register extends React.Component {
 
   componentDidMount () {
     this.props._getDomainWhitelist();
+    if (this.props.countries.fetched || this.props.countries.cached) {
+      this.setNSState(this.props);
+    }
   }
 
   // eslint-disable-next-line camelcase
@@ -99,26 +102,31 @@ class Register extends React.Component {
       registerSchemaDef.if.properties.email.not = { pattern: domList.map((dom) => `@${dom}`).join('|') };
       registerValidator = ajv.compile(registerSchemaDef);
     }
+    
+    if (nextProps.countries.fetched || nextProps.countries.cached) {
+      this.setNSState(nextProps);
 
-    if (nextProps.countries.fetched) {
-      this.setState({
-        nationalSocieties: nextProps.countries.data.results
-          .reduce(function (results, country) {
-            if (country.society_name && country.society_name !== 'ICRC') {
-              results.push({
-                value: country.society_name,
-                label: country.society_name
-              });
-            }
-            return results;
-          }, [])
-          .sort((a, b) => {
-            if (a.value > b.value) return 1;
-            if (a.value < b.value) return -1;
-            return 0;
-          })
-      });
     }
+  }
+
+  setNSState (props) {
+    this.setState({
+      nationalSocieties: props.countries.data.results
+        .reduce(function (results, country) {
+          if (country.society_name && country.society_name !== 'ICRC') {
+            results.push({
+              value: country.society_name,
+              label: country.society_name
+            });
+          }
+          return results;
+        }, [])
+        .sort((a, b) => {
+          if (a.value > b.value) return 1;
+          if (a.value < b.value) return -1;
+          return 0;
+        })
+    });
   }
 
   prepStateForValidation (state) {
@@ -202,7 +210,7 @@ class Register extends React.Component {
 
   renderAdditionalInfo () {
     const { strings } = this.context;
-    const countriesList = (this.props.countries && this.props.countries.fetched)
+    const countriesList = (this.props.countries && (this.props.countries.fetched || this.props.countries.cached))
       ? countries(this.props.countries.data.results)
       : [];
     return (
@@ -319,8 +327,8 @@ class Register extends React.Component {
           onChange={this.onFieldChange.bind(this, 'phoneNumber')}
         >
           <FormError
-            errors={this.state.errors}
             property='phoneNumber'
+            errors={this.state.errors}
           />
         </FormInput>
       </div>
@@ -524,7 +532,7 @@ if (environment !== 'production') {
 const selector = (state) => ({
   registration: state.registration,
   domainWhitelist: state.domainWhitelist,
-  countries: state.countries
+  countries: state.allCountries
 });
 
 const dispatcher = (dispatch) => ({
