@@ -32,15 +32,17 @@ class RecoverUsername extends React.Component {
   UNSAFE_componentWillReceiveProps (nextProps) {
     if (this.props.email.fetching && !nextProps.email.fetching) {
       hideGlobalLoading();
-      showAlert('success', <p>If the given email address exists here, you will find an email in your mailbox...</p>, true, 3000);
+      showAlert('success', <p><Translate stringId="recoverUsernameSuccessMessage" /></p>, true, 3000);
       setTimeout(() => this.props.history.push('/login'), 3000);
     }
   }
 
   onSubmit (e) {
+    const { strings } = this.context;
+
     e.preventDefault();
     const errors = isValidEmail(this.state.data.email) ? null
-      : [{ dataPath: '.email', message: 'Please enter a valid email' }];
+      : [{ dataPath: '.email', message: strings.recoverUsernameInvalidEmailMessage }];
     this.setState({ errors });
     if (errors === null) {
       showGlobalLoading();

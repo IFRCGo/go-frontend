@@ -1312,4 +1312,7 @@ export default {
   recoverAccountSuccessMessage: 'We have sent an email to your inbox. Redirecting...',
 
   recoverAccountInvalidEmailMessage: 'Please enter a valid email',
+
+  recoverUsernameSuccessMessage: 'If the given email address exists here, you will find an email in your mailbox...',
+  recoverUsernameInvalidEmailMessage: 'Please enter a valid email',
 };
