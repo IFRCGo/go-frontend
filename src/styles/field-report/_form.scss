@@ -237,16 +237,13 @@
     line-height: 1rem;
     z-index: 1;
 
+    [dir='rtl'] & {
+      right: -1.5rem;
+      left: auto;
+    }
+
     @include media(medium-up) {
       top: 0;
-    }
-  }
-
-  &:not(.stepper__item--complete) {
-    &:last-child::before {
-      [dir='rtl'] & {
-        background: transparent;
-      }
     }
   }
 
