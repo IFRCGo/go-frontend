@@ -1322,4 +1322,8 @@ export default {
 
   resendValidationErrorMessage: 'Error: {message}',
   resendValidationSuccessMessage: 'We have sent an email to your inbox. Redirecting...',
+
+  tableNounOperations: 'Operations',
+  tableNounDREFs: 'DREFs',
+  tableNounAppeals: 'Appeals',
 };

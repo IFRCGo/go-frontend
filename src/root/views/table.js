@@ -72,9 +72,9 @@ class Table extends React.Component {
       case 'report':
       return <FieldReportsTable title={resolveToString(strings.reportsTableTitle, { title: titleArea})} {...props} />;
       case 'appeal':
-        let noun = 'Operations';
+        let noun = strings.tableNounOperations;
         if (props.atype) {
-          noun = props.atype === 'dref' ? 'DREFs' : 'Appeals';
+          noun = props.atype === 'dref' ? strings.tableNounDREFs: strings.tableNounAppeals;
         }
         const title = props.hasOwnProperty('record')
           ? strings.operationsWithEmergency
