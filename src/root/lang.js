@@ -1287,4 +1287,6 @@ export default {
 
   preparednessFactoryNSGraphDataAllCountriesLabel: 'All countries',
   preparednessFactoryNSGraphDataEngagedCountriesLabel: 'Engaged countries',
+
+  privateRouteNotAuthenticatedMessage: 'Please log in to view this page',
 };
