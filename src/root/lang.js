@@ -1243,4 +1243,6 @@ export default {
   dateFilterHeaderApplyButtonLabel: 'Apply',
 
   alertsTableAllLabel: 'All',
+
+  emergenciesDashAllEmergenciesLinkLabel: 'View All Emergencies',
 };

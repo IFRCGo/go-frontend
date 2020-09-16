@@ -150,7 +150,7 @@ class EmergenciesDash extends React.Component {
                 <div className="fold__title__linkwrap">
                   <span>
                     <Link to='/emergencies/all' className='fold__title__link'>
-                      View All Emergencies
+                      <Translate stringId="emergenciesDashAllEmergenciesLinkLabel" />
                     </Link>
                   </span>
                   <span className="collecticon-chevron-right"></span>
