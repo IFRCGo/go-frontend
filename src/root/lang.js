@@ -1245,4 +1245,10 @@ export default {
   alertsTableAllLabel: 'All',
 
   emergenciesDashAllEmergenciesLinkLabel: 'View All Emergencies',
+
+  newPasswordErrorMessage: 'Error: {message}',
+  newPasswordSuccessMessage: 'Success! Password changed, redirecting...',
+  newPasswordVerifyInputLabel: 'Verify old password',
+
+  userMenuPopupHeading: 'Hello {firstName} {lastName}',
 };
