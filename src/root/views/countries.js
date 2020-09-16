@@ -65,7 +65,6 @@ import PreparednessPhaseOutcomes from '#components/country/preparedness-phase-ou
 import PreparednessColumnBar from '#components/country/preparedness-column-graph';
 import KeyFiguresHeader from '#components/common/key-figures-header';
 import { SFPComponent } from '#utils/extendables';
-import { NO_DATA } from '#utils/constants';
 
 import ThreeW from './ThreeW';
 import CountryProfile from './CountryProfile';
@@ -216,7 +215,7 @@ class AdminArea extends SFPComponent {
   ))
 
   // gets links to display in the pills at bottom of the tabs
-  getLinks () {
+  getLinks (strings) {
     const { adminArea, country } = this.props;
     if (!adminArea.fetched) return false;
     const iso3 = country.iso3;
@@ -225,28 +224,28 @@ class AdminArea extends SFPComponent {
     // const regionSlug = getRegionSlug(adminArea.data.region);
     // const countryLower = adminArea.data.name.toLowerCase();
     const links = [];
-    const { strings } = this.context;
+    const countryName = adminArea.data.name;
 
     if (homepageIfrc) {
       const ifrcLink = {
-        'text': `${adminArea.data.name} ${strings.ifrcLinkText}`,
-        'url': homepageIfrc
+        text: resolveToString(strings.ifrcLinkText, { countryName }),
+        url: homepageIfrc,
       };
       links.push(ifrcLink);
     }
 
     if (iso3) {
       const reliefWebLink = {
-        'text': `${adminArea.data.name} ${strings.reliefWebLinkText}`,
-        'url': `https://reliefweb.int/country/${iso3}`
+        text: resolveToString(strings.reliefWebLinkText, { countryName }),
+        url: `https://reliefweb.int/country/${iso3}`
       };
       links.push(reliefWebLink);
     }
 
     if (homepage) {
       const homepageLink = {
-        'text': `${adminArea.data.name} ${strings.homePageLinkText}`,
-        'url': homepage
+        text: resolveToString(strings.homePageLinkText, { countryName }),
+        url: homepage,
       };
       links.push(homepageLink);
     }
@@ -556,7 +555,6 @@ class AdminArea extends SFPComponent {
       error,
       data
     } = this.props.adminArea;
-    const countryLinks = this.getLinks();
     if (!fetched || error) return null;
 
     // const bbox = getBoundingBox(data.iso);
@@ -564,6 +562,7 @@ class AdminArea extends SFPComponent {
 
     // const { partnerDeployments } = this.props;
     const { strings } = this.context;
+    const countryLinks = this.getLinks(strings);
     const tabDetails = this.getTabDetails(strings);
 
     const handleTabChange = index => {
@@ -725,31 +724,31 @@ class AdminArea extends SFPComponent {
                     <div className='container-lg'>
                       {this.props.getPerNsPhase.fetched && this.props.perOverviewForm.fetched ? (
                         <PreparednessOverview getPerNsPhase={this.props.getPerNsPhase} perOverviewForm={this.props.perOverviewForm} />)
-                        : <ErrorPanel title={strings.preparednessOverview} errorMessage={ NO_DATA } />}
+                        : <ErrorPanel title={strings.preparednessOverview} errorMessage={ strings.noDataMessage } />}
                       {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
                         <PreparednessSummary getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
-                        : <ErrorPanel title={strings.preparednessSummary} errorMessage={ NO_DATA } />}
+                        : <ErrorPanel title={strings.preparednessSummary} errorMessage={ strings.noDataMessage } />}
                       {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
                         <PreparednessColumnBar getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
-                        : <ErrorPanel title={strings.preparednessColumnBar} errorMessage={ NO_DATA } />}
+                        : <ErrorPanel title={strings.preparednessColumnBar} errorMessage={ strings.noDataMessage } />}
                       {this.props.getPerWorkPlan.fetched ? (
                         <PreparednessWorkPlan getPerWorkPlan={this.props.getPerWorkPlan} />)
-                        : <ErrorPanel title={strings.preparednessWorkPlan} errorMessage={ NO_DATA } />}
+                        : <ErrorPanel title={strings.preparednessWorkPlan} errorMessage={ strings.noDataMessage } />}
                       {this.props.getPerUploadedDocuments.fetched ? (
                         <PreparednessPhaseOutcomes getPerUploadedDocuments={this.props.getPerUploadedDocuments} countryId={this.props.country.id} />)
-                        : <ErrorPanel title={strings.countryPreparednessPhaseOutcomes} errorMessage={ NO_DATA } />}
+                        : <ErrorPanel title={strings.countryPreparednessPhaseOutcomes} errorMessage={ strings.noDataMessage } />}
                       </div>
                   </TabContent>
                 </TabPanel>
                 <TabPanel>
                   <div className='container-lg'>
-                    <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ NO_DATA } title={strings.regionGraphiccs}>
+                    <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ strings.noDataMessage } title={strings.regionGraphiccs}>
                       <Snippets data={this.props.snippets} />
                     </TabContent>
-                    <TabContent showError={true} isError={!get(data, 'contacts.length')} errorMessage={ NO_DATA } title={strings.regionContacts}>
+                    <TabContent showError={true} isError={!get(data, 'contacts.length')} errorMessage={ strings.noDataMessage } title={strings.regionContacts}>
                       <Contacts data={data} />
                     </TabContent>
-                    <TabContent isError={!get(data, 'links.length')} errorMessage={ NO_DATA } title={strings.regionLinks}>
+                    <TabContent isError={!get(data, 'links.length')} errorMessage={ strings.noDataMessage } title={strings.regionLinks}>
                       <Links data={data} />
                     </TabContent>
                   </div>

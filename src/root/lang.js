@@ -522,9 +522,6 @@ export default {
   operationPopoverStart: 'Start: {start}',
   operationPopoverEnd: 'End: {end}',
 
-  ifrcLinkText: 'on IFRC.org',
-  reliefWebLinkText: 'on reliefweb.int',
-  homePageLinkText: 'RC Homepage',
 
   editPerFormsTitle: 'IFRC Go - Emergencies',
   footerOpenSourceCode: 'Open Source Code',
@@ -1298,4 +1295,11 @@ export default {
   exportButtonContainerExportingMessage: 'Info: Exporting...',
 
   accountReportListLastUpdated: 'Last Updated: {on}',
+  accountProfileFormSubmitButtonTooltip: 'Save',
+
+  ifrcLinkText: '{countryName} on IFRC.org',
+  reliefWebLinkText: '{countryName} on reliefweb.int',
+  homePageLinkText: '{countryName} RC Homepage',
+
+  noDataMessage: 'No data to display.',
 };
