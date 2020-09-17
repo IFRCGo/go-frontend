@@ -328,3 +328,5 @@ export const getFullMonthNameList = (strings) => ([
   strings.monthNameNovember,
   strings.monthNameDecember,
 ]);
+
+export const compareString = (a, b) => a.label.localeCompare(b.label);
