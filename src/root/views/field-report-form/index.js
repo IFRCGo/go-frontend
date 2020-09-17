@@ -161,8 +161,6 @@ class FieldReportForm extends React.Component {
   componentDidMount() {
     // fetch actions data from backend
     this.props._getActions();
-    // this probably could be included into the initial load instead (?)
-    this.props._getDisasterTypes();
   }
 
   getReport(id) {
@@ -1135,8 +1133,7 @@ const dispatcher = (dispatch) => ({
   _updateFieldReport: (...args) => dispatch(updateFieldReport(...args)),
   _getFieldReportById: (...args) => dispatch(getFieldReportById(...args)),
   _getDistrictsForCountry: (...args) => dispatch(getDistrictsForCountry(...args)),
-  _getActions: (...args) => dispatch(getActions(...args)),
-  _getDisasterTypes: (...args) => dispatch(getDisasterTypes(...args))
+  _getActions: (...args) => dispatch(getActions(...args))
 });
 FieldReportForm.contextType = LanguageContext;
 export default connect(selector, dispatcher)(FieldReportForm);
