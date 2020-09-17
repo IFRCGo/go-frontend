@@ -22,8 +22,9 @@ import TextOutput from '#components/text-output';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 
+import { countriesSelector } from '#selectors';
+
 import {
-  // getCountries,
   getDistrictsForCountryPF,
   getEventList,
   postProject,
@@ -899,14 +900,13 @@ class ProjectForm extends React.PureComponent {
 ProjectForm.contextType = LanguageContext;
 
 const selector = (state, ownProps) => ({
-  countries: state.countries,
+  countries: countriesSelector(state),
   districts: state.districts,
   eventList: state.event ? state.event.eventList : undefined,
   projectForm: state.projectForm,
 });
 
 const dispatcher = dispatch => ({
-  // _getCountries: (...args) => dispatch(getCountries(...args)),
   _getDistricts: (...args) => dispatch(getDistrictsForCountryPF(...args)),
   _getEventList: (...args) => dispatch(getEventList(...args)),
   _postProject: (...args) => dispatch(postProject(...args)),
