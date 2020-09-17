@@ -31,7 +31,6 @@ import {
 } from '#actions';
 
 import { disasterTypesSelectSelector } from '#selectors';
-
 import { getResultsFromResponse } from '#utils/request';
 
 import {
