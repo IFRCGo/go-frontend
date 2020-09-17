@@ -25,8 +25,7 @@ import {
   updateFieldReport,
   getFieldReportById,
   getDistrictsForCountry,
-  getActions,
-  getDisasterTypes
+  getActions
 } from '#actions';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 import BreadCrumb from '#components/breadcrumb';
