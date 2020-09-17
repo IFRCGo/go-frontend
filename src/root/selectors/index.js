@@ -186,3 +186,10 @@ export const allCountriesSelector = (state) => (
 export const allRegionsSelector = (state) => (
   state.allRegions
 );
+
+export const disasterTypesSelectSelector = (state) => {
+  if (state.disasterTypes && state.disasterTypes.data.results) {
+    return state.disasterTypes.data.results.map((dt) => ({ value: dt.id, label: dt.name }));
+  }
+  return [];
+};
