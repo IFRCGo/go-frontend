@@ -29,7 +29,7 @@ import {
 
 import { get } from '#utils/utils';
 import { getCountryMeta } from '#utils/get-country-meta';
-import { countries, disasterType, orgTypes } from '#utils/field-report-constants';
+import { countries, orgTypes } from '#utils/field-report-constants';
 import { apiPropertyDisplay, apiPropertyValue } from '#utils/format';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 import { showAlert } from '#components/system-alerts';
@@ -40,7 +40,7 @@ import PerAccountTab from '#components/per-forms/per-account-tab';
 import BreadCrumb from '../components/breadcrumb';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
-import { countriesSelector } from '#selectors';
+import { countriesSelector, disasterTypesSelectSelector } from '#selectors';
 
 import {
   FormCheckboxGroup,
@@ -51,12 +51,9 @@ import App from './app';
 
 const Fragment = React.Fragment;
 
-// Exclude the first item since it's a dropdown placeholder
-const disasterTypes = disasterType.slice(1);
-
 // helper to unmark all checkboxes in initial state
 const markUnChecked = o => ({
-  value: o.value,
+  value: o.value.toString(),
   checked: false
 });
 
@@ -189,7 +186,7 @@ class Account extends React.Component {
         countries: [],
         basic: this.basicTypes.map(markUnChecked),
         regions: this.regions.map(markUnChecked),
-        disasterTypes: disasterTypes.map(markUnChecked),
+        disasterTypes: this.props.disasterTypesSelect.map(markUnChecked),
         event: this.systemNotificationTypes.map(markUnChecked),
         fieldReport: this.systemNotificationTypes.map(markUnChecked),
         appeal: this.systemNotificationTypes.map(markUnChecked),
@@ -683,7 +680,7 @@ class Account extends React.Component {
               description={strings.accountDisasterCategoryDescription}
               name='disasterTypes'
               classWrapper='action-checkboxes'
-              options={disasterTypes}
+              options={this.props.disasterTypesSelect.map(dt => ({ value: dt.value.toString(), label: dt.label }))}
               values={this.state.notifications.disasterTypes}
               onChange={this.onFieldChange.bind(this, 'notifications', 'disasterTypes')} />
             {/*
@@ -915,7 +912,9 @@ const selector = (state, ownProps) => ({
   eventDeletion: state.subscriptions.delSubscriptions,
   perOverviewForm: state.perForm.getPerOverviewForm,
   getPerMission: state.perForm.getPerMission,
-  allCountries: countriesSelector(state)
+  allCountries: countriesSelector(state),
+  disasterTypesSelect: disasterTypesSelectSelector(state),
+  disasterTypes: state.disasterTypes
 });
 
 const dispatcher = (dispatch) => ({

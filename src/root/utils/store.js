@@ -128,6 +128,7 @@ const hydrateDisasterTypes = () => {
   return {
     ...defaultInitialState,
     ...data,
+    fetched: true,
     cached: true,
   };
 };

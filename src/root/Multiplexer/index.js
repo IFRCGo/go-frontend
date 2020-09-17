@@ -51,7 +51,6 @@ import TranslationDashboard from '#views/TranslationDashboard';
 import ClearInitCache from '#views/ClearInitCache';
 
 import styles from './styles.module.scss';
-import { disasterTypes } from '../utils/field-report-constants';
 
 
 function Multiplexer(props) {
