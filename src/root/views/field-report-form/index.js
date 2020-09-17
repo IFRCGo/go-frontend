@@ -20,7 +20,14 @@ import {
 } from '../../schemas/field-report-form';
 import * as formData from '#utils/field-report-constants';
 import { showAlert } from '#components/system-alerts';
-import { createFieldReport, updateFieldReport, getFieldReportById, getDistrictsForCountry, getActions } from '#actions';
+import {
+  createFieldReport,
+  updateFieldReport,
+  getFieldReportById,
+  getDistrictsForCountry,
+  getActions,
+  getDisasterTypes
+} from '#actions';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 import BreadCrumb from '#components/breadcrumb';
 import {
@@ -50,7 +57,7 @@ import SourceEstimation from './cmp-source-estimation.js';
 import EPISourceEstimation from './cmp-source-epi';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
-import { countriesSelector } from '#selectors';
+import { countriesSelector, disasterTypesSelectSelector } from '#selectors';
 
 const ajv = new Ajv({ $data: true, allErrors: true, errorDataPath: 'property' });
 ajvKeywords(ajv);
@@ -154,6 +161,8 @@ class FieldReportForm extends React.Component {
   componentDidMount() {
     // fetch actions data from backend
     this.props._getActions();
+    // this probably could be included into the initial load instead (?)
+    this.props._getDisasterTypes();
   }
 
   getReport(id) {
@@ -555,7 +564,7 @@ class FieldReportForm extends React.Component {
                 name='disaster-type'
                 id='disaster-type'
                 disabled={this.state.data.isCovidReport === 'true' || !this.state.data.isCovidReport}
-                options={formData.disasterType}
+                options={this.props.disasterTypesSelect}
                 value={this.state.data.disasterType}
                 onChange={({ value }) => this.onFieldChange('disasterType', value)}
               />
@@ -1092,7 +1101,9 @@ if (environment !== 'production') {
     _updateFieldReport: T.func,
     _getFieldReportById: T.func,
     _getDistrictsForCountry: T.func,
+    _getDisasterTypes: T.func,
     districts: T.object,
+    disasterTypesSelect: T.array,
     fieldReportForm: T.object,
     user: T.object,
     report: T.object,
@@ -1115,6 +1126,7 @@ const selector = (state, ownProps) => ({
     fetched: false
   }),
   districts: state.districts,
+  disasterTypesSelect: disasterTypesSelectSelector(state),
   countries: countriesSelector(state)
 });
 
@@ -1123,7 +1135,8 @@ const dispatcher = (dispatch) => ({
   _updateFieldReport: (...args) => dispatch(updateFieldReport(...args)),
   _getFieldReportById: (...args) => dispatch(getFieldReportById(...args)),
   _getDistrictsForCountry: (...args) => dispatch(getDistrictsForCountry(...args)),
-  _getActions: (...args) => dispatch(getActions(...args))
+  _getActions: (...args) => dispatch(getActions(...args)),
+  _getDisasterTypes: (...args) => dispatch(getDisasterTypes(...args))
 });
 FieldReportForm.contextType = LanguageContext;
 export default connect(selector, dispatcher)(FieldReportForm);
