@@ -522,9 +522,6 @@ export default {
   operationPopoverStart: 'Start: {start}',
   operationPopoverEnd: 'End: {end}',
 
-  ifrcLinkText: 'on IFRC.org',
-  reliefWebLinkText: 'on reliefweb.int',
-  homePageLinkText: 'RC Homepage',
 
   editPerFormsTitle: 'IFRC Go - Emergencies',
   footerOpenSourceCode: 'Open Source Code',
@@ -1236,4 +1233,97 @@ export default {
   countryProfileExternalSourcesTitle: 'External Sources',
   countryProfileDateRange: 'Date Range',
   countryProfileSearchPlaceholder: 'Search',
+
+  dateFilterHeaderTooltip: 'Filter by {title}',
+  dateFilterHeaderFromLabel: 'From',
+  dateFilterHeaderToLabel: 'To',
+  dateFilterHeaderApplyButtonLabel: 'Apply',
+
+  alertsTableAllLabel: 'All',
+
+  emergenciesDashAllEmergenciesLinkLabel: 'View All Emergencies',
+
+  newPasswordErrorMessage: 'Error: {message}',
+  newPasswordSuccessMessage: 'Success! Password changed, redirecting...',
+  newPasswordVerifyInputLabel: 'Verify old password',
+
+  userMenuPopupHeading: 'Hello {firstName} {lastName}',
+
+  monthNameJanuary: 'January',
+  monthNameFebruary: 'February',
+  monthNameMarch: 'March',
+  monthNameApril: 'April',
+  monthNameMay: 'May',
+  monthNameJune: 'June',
+  monthNameJuly: 'July',
+  monthNameAugust: 'August',
+  monthNameSeptember: 'September',
+  monthNameOctober: 'October',
+  monthNameNovember: 'November',
+  monthNameDecember: 'December',
+
+  monthNameShortJan: 'Jan',
+  monthNameShortFeb: 'Feb',
+  monthNameShortMar: 'Mar',
+  monthNameShortApr: 'Apr',
+  monthNameShortMay: 'May',
+  monthNameShortJun: 'Jun',
+  monthNameShortJul: 'Jul',
+  monthNameShortAug: 'Aug',
+  monthNameShortSep: 'Sep',
+  monthNameShortOct: 'Oct',
+  monthNameShortNov: 'Nov',
+  monthNameShortDec: 'Dec',
+
+  preparednessOverviewContactLabel: 'Contact PER team',
+  preparednessPhaseOutcomesUploadLinkLabel: 'Upload',
+
+  formElementErrorRequiredMessage: 'Please fill in the field.',
+  formElementErrorDependenciesMessage: 'Please fill in the field.',
+  formElementErrorConstMessage: 'Passwords must match.',
+
+  preparednessFactoryNSGraphDataAllCountriesLabel: 'All countries',
+  preparednessFactoryNSGraphDataEngagedCountriesLabel: 'Engaged countries',
+
+  privateRouteNotAuthenticatedMessage: 'Please log in to view this page',
+
+  displayTableFilterHeaderOptionTooltipText: 'Filter by {title} - {label}',
+  displayTableFilterHeaderLabelTooltipText: 'Filter by {title}',
+  displayTableSortHeaderTooltip: 'Sort by {title}',
+
+  exportButtonContainerErrorMessage: 'Error: Could not export data',
+  exportButtonContainerExportingMessage: 'Info: Exporting...',
+
+  accountReportListLastUpdated: 'Last Updated: {on}',
+  accountProfileFormSubmitButtonTooltip: 'Save',
+
+  ifrcLinkText: '{countryName} on IFRC.org',
+  reliefWebLinkText: '{countryName} on reliefweb.int',
+  homePageLinkText: '{countryName} RC Homepage',
+
+  noDataMessage: 'No data to display.',
+
+  deploymentsPageTitle: 'Deployments',
+
+  emergencySourceMessage: 'Source: {link}',
+  emergencyFieldReportStatsHeading: 'Emergency Overview',
+
+  recoverAccountErrorMessage: 'Error: {message}',
+  recoverAccountSuccessMessage: 'We have sent an email to your inbox. Redirecting...',
+
+  recoverAccountInvalidEmailMessage: 'Please enter a valid email',
+
+  recoverUsernameSuccessMessage: 'If the given email address exists here, you will find an email in your mailbox...',
+  recoverUsernameInvalidEmailMessage: 'Please enter a valid email',
+
+  registerCreateUserDefaultErrorMessage: 'Could not create user',
+  registerErrorMessage: 'Error: {message}',
+  registerSuccessMessage: 'Success! Verification email sent, redirecting...',
+
+  resendValidationErrorMessage: 'Error: {message}',
+  resendValidationSuccessMessage: 'We have sent an email to your inbox. Redirecting...',
+
+  tableNounOperations: 'Operations',
+  tableNounDREFs: 'DREFs',
+  tableNounAppeals: 'Appeals',
 };

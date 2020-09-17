@@ -34,23 +34,6 @@ class HeaderRegionButton extends React.Component {
         text: r.label
       };
     });
-    /*
-      <Dropdown
-        id={id}
-        triggerClassName={triggerClassName}
-        triggerActiveClassName='active'
-        triggerText={title}
-        triggerTitle={`View ${title}`}
-        triggerElement='a'
-        direction='down'
-        alignment='center' >
-        <ul className='drop__menu' role='menu'>
-          {regionLinks.map(o => (
-            <li key={o.to}><Link to={o.to} className='drop__menu-item' title={`View ${o.text}`} data-hook='dropdown:close'>{o.text}</Link></li>
-          ))}
-        </ul>
-      </Dropdown>
-    */
     return (
       <DropdownMenu
         className={triggerClassName}

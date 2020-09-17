@@ -44,31 +44,37 @@ class AlertsTable extends SFPComponent {
       }
     };
     this.handlePageChange = this.handlePageChange.bind(this);
-    const { strings } = context;
-    this.alertTypes = {
-      0: strings.alertTableAlertTypeFact,
-      1: strings.alertTableAlertTypeSims,
-      2: strings.alertTableAlertTypeEru,
-      3: strings.alertTableAlertTypeDheops,
-      4: strings.alertTableAlertTypeHeops,
-      5: strings.alertTableAlertTypeSurge,
-      6: strings.alertTableAlertTypeRapidResponse,
-    };
-    this.typeOptions = [{value: 'all', label: 'All'}].concat(Object.keys(this.alertTypes).map(d => ({
-      label: this.alertTypes[d], value: d.toString()
-    })));
-    this.alertCategories = {
-      0: strings.alertTableCategoryInfo,
-      1: strings.alertTableCateogryDeployment,
-      2: strings.alertTableCategoryAlert,
-      3: strings.alertTableCategoryShelter,
-      4: strings.alertTableCategoryStandDown,
-    };
-
-    this.categoryOptions = [{value: 'all', label: 'All'}].concat(Object.keys(this.alertCategories).map(d => ({
-      label: this.alertCategories[d], value: d.toString()
-    })));
   }
+
+  getAlertTypes = (strings) => ({
+    0: strings.alertTableAlertTypeFact,
+    1: strings.alertTableAlertTypeSims,
+    2: strings.alertTableAlertTypeEru,
+    3: strings.alertTableAlertTypeDheops,
+    4: strings.alertTableAlertTypeHeops,
+    5: strings.alertTableAlertTypeSurge,
+    6: strings.alertTableAlertTypeRapidResponse,
+  })
+
+  getAlertCategories = (strings) => ({
+    0: strings.alertTableCategoryInfo,
+    1: strings.alertTableCateogryDeployment,
+    2: strings.alertTableCategoryAlert,
+    3: strings.alertTableCategoryShelter,
+    4: strings.alertTableCategoryStandDown,
+  })
+
+  getTypeOptions = (strings) => ([
+    [{value: 'all', label: strings.alertsTableAllLabel}].concat(Object.keys(this.getAlertTypes(strings)).map(d => ({
+      label: this.getAlertTypes(strings)[d], value: d.toString()
+    })))
+  ])
+
+  getCategoryOptions = (strings) => ([
+    [{value: 'all', label: strings.alertsTableAllLabel}].concat(Object.keys(this.getAlertCategories(strings)).map(d => ({
+      label: this.getAlertCategories(strings)[d], value: d.toString()
+    })))
+  ])
 
   componentDidMount () {
     this.requestResults(this.props);
@@ -145,13 +151,13 @@ class AlertsTable extends SFPComponent {
       },
       {
         id: 'category',
-        label: <FilterHeader id='category' title={strings.alertTableCategory} options={this.categoryOptions} filter={this.state.table.filters.category} onSelect={this.handleFilterChange.bind(this, 'table', 'category')} />
+        label: <FilterHeader id='category' title={strings.alertTableCategory} options={this.getCategoryOptions(strings)} filter={this.state.table.filters.category} onSelect={this.handleFilterChange.bind(this, 'table', 'category')} />
       },
       { id: 'emergency', label: strings.alertTableEmergency },
       { id: 'msg', label: strings.alertTableMessage },
       {
         id: 'type',
-        label: <FilterHeader id='type' title={strings.alertTableType} options={this.typeOptions} filter={this.state.table.filters.type} onSelect={this.handleFilterChange.bind(this, 'table', 'type')} />
+        label: <FilterHeader id='type' title={strings.alertTableType} options={this.getTypeOptions(strings)} filter={this.state.table.filters.type} onSelect={this.handleFilterChange.bind(this, 'table', 'type')} />
       }
     ];
 
@@ -164,8 +170,8 @@ class AlertsTable extends SFPComponent {
         emergency: event ? <Link className='link--table' to={`/emergencies/${event}`} title={strings.alertTableViewEmergency}>{rowData.operation}</Link> : rowData.operation || nope,
 
         msg: isLoggedIn(this.props.user) ? <Expandable limit={128} text={rowData.message} /> : privateSurgeAlert,
-        type: this.alertTypes[rowData.atype],
-        category: this.alertCategories[rowData.category]
+        type: this.getAlertTypes(strings)[rowData.atype],
+        category: this.getAlertCategories(strings)[rowData.category]
       });
 
       return acc;

@@ -3,7 +3,9 @@ import { PropTypes as T } from 'prop-types';
 import ReactPaginate from 'react-paginate';
 import c from 'classnames';
 
+import { resolveToString } from '#utils/lang';
 import { environment } from '#config';
+import languageContext from '#root/languageContext';
 
 import DropdownMenu from './dropdown-menu';
 
@@ -13,7 +15,7 @@ export default class DisplayTable extends React.Component {
       return this.props.rows.map(row => {
         // If the raw has a `rowOverride` property that is used as override.
         if (row.rowOverride) {
-          return row.rowOverride;
+          return <React.Fragment key={row.rowOverride}>{row.rowOverride}</React.Fragment>;
         }
 
         return (
@@ -110,6 +112,7 @@ DisplayTable.defaultProps = {
 
 export class SortHeader extends React.PureComponent {
   render () {
+    const { strings } = this.context;
     const {id, title, sort, onClick} = this.props;
     const onSortClick = (e) => {
       e.preventDefault();
@@ -121,10 +124,12 @@ export class SortHeader extends React.PureComponent {
       'table__sort--desc': sort.field === id && sort.direction === 'desc'
     });
     return (
-      <a href='#' title={`Sort by ${title}`} className={cl} onClick={onSortClick}>{title}</a>
+      <a href='#' title={resolveToString(strings.displayTableSortHeaderTooltip, { title: title || '' })} className={cl} onClick={onSortClick}>{title}</a>
     );
   }
 }
+
+SortHeader.contextType = languageContext;
 
 if (environment !== 'production') {
   SortHeader.propTypes = {
@@ -140,47 +145,44 @@ if (environment !== 'production') {
 
 export class FilterHeader extends React.PureComponent {
   render () {
+    const { strings } = this.context;
     const { title, options, onSelect, filter} = this.props;
+
     const onFilterClick = (option, e) => {
       e.preventDefault();
       onSelect(option.value);
     };
-    /*
-    <Dropdown
-      id={id}
-      triggerClassName='drop__toggle--caret'
-      triggerActiveClassName='active'
-      triggerText={title}
-      triggerTitle={`Filter by ${title}`}
-      triggerElement='a'
-      direction='down'
-      alignment='center' >
-      <ul className='drop__menu drop__menu--select' role='menu'>
-        {options.map(o => <li key={o.value}>
-          <a href='#' title={`Filter by ${title} - ${o.label}`} className={c('drop__menu-item button', {'drop__menu-item--active': filter === o.value})} data-hook='dropdown:close' onClick={onFilterClick.bind(this, o)}>{o.label}</a>
-        </li>)}
-      </ul>
-    </Dropdown>
-    */
+
     return (
       <DropdownMenu
         className="drop__toggle--caret"
         activeClassName="active"
         label={
-          <span title={`Filter by ${title}`}>
+          <span title={resolveToString(strings.displayTableFilterHeaderLabelTooltipText, { title })}>
             { title }
           </span>
         }
       >
         <ul className='drop__menu drop__menu--select' role='menu'>
-          {options.map(o => <li key={o.value}>
-            <a href='#' title={`Filter by ${title} - ${o.label}`} className={c('drop__menu-item button', {'drop__menu-item--active': filter === o.value})} data-hook='dropdown:close' onClick={onFilterClick.bind(this, o)}>{o.label}</a>
-          </li>)}
+          {options.map((o, i) => (
+            <li key={`${o.value} - ${i}`}>
+              <a
+                href='#'
+                title={resolveToString(strings.displayTableFilterHeaderOptionTooltipText, { title, label: o.label || '' })}
+                className={c('drop__menu-item button', {'drop__menu-item--active': filter === o.value})}
+                onClick={onFilterClick.bind(this, o)}
+              >
+                {o.label}
+              </a>
+            </li>
+          ))}
         </ul>
       </DropdownMenu>
     );
   }
 }
+
+FilterHeader.contextType = languageContext;
 
 if (environment !== 'production') {
   FilterHeader.propTypes = {

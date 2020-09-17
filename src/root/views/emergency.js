@@ -49,7 +49,6 @@ import SurgeAlertsTable from '#components/connected/alerts-table';
 import PersonnelTable from '#components/connected/personnel-table';
 import EruTable from '#components/connected/eru-table';
 import EmergencyMap from '#components/map/emergency-map';
-import { NO_DATA } from '#utils/constants';
 import { epiSources } from '#utils/field-report-constants';
 import ProjectFormModal from '#views/ThreeW/project-form-modal';
 import { regionsByIdSelector } from '../selectors';
@@ -239,11 +238,16 @@ class Emergency extends React.Component {
           </ul>
         </div>
         <p className="emergency__source">
-          Source:{' '}
-          <Link to={`/reports/${report.id}`}>
-            {report.summary},{' '}
-            {timestamp(report.updated_at || report.created_at)}
-          </Link>
+          <Translate
+            stringId="emergencySourceMessage"
+            params={{
+              link: (
+                <Link to={`/reports/${report.id}`}>
+                  {`${report.summary} ${timestamp(report.updated_at || report.created_at)}`}
+                </Link>
+              ),
+            }}
+          />
         </p>
       </div>
     );
@@ -260,7 +264,9 @@ class Emergency extends React.Component {
     const epiFiguresSource = epiSources.find(source => source.value === `${report.epi_figures_source}`);
     return (
       <div className='inpage__header-col'>
-        <h3 className='fold__title spacing-2-t spacing-b'>Emergency Overview</h3>
+        <h3 className='fold__title spacing-2-t spacing-b'>
+          <Translate stringId="emergencyFieldReportStatsHeading" />
+        </h3>
         <div className='content-list-group row flex-xs'>
           { isEPI
             ? (
@@ -936,7 +942,7 @@ class Emergency extends React.Component {
                   {showExportMap()}
                   <TabContent
                     isError={!summary}
-                    errorMessage={NO_DATA}
+                    errorMessage={strings.noDataMessage}
                     title={strings.emergencyOverviewTitle}
                   >
                     <Fold
@@ -961,7 +967,7 @@ class Emergency extends React.Component {
                   </TabContent>
                   <TabContent
                     isError={!get(this.props.eru, 'data.results.length')}
-                    errorMessage={NO_DATA}
+                    errorMessage={strings.noDataMessage}
                     title={strings.emergencyERUTitle}
                   >
                     <EruTable id="erus" emergency={this.props.match.params.id} />
@@ -974,7 +980,7 @@ class Emergency extends React.Component {
                   </TabContent>
                   <TabContent
                     isError={!get(this.props.event, 'data.field_reports.length')}
-                    errorMessage={NO_DATA}
+                    errorMessage={strings.noDataMessage}
                     title={strings.emergencyFieldReportsTitle}
                   >
                     {this.renderFieldReports()}
@@ -983,7 +989,7 @@ class Emergency extends React.Component {
                     isError={
                       !get(this.props.appealDocuments, 'data.results.length')
                     }
-                    errorMessage={NO_DATA}
+                    errorMessage={strings.noDataMessage}
                     title={strings.emergencyAppealDocumentsTitle}
                   >
                     {this.renderAppealDocuments()}
@@ -992,7 +998,7 @@ class Emergency extends React.Component {
                     isError={
                       !get(this.props.situationReports, 'data.results.length')
                     }
-                    errorMessage={NO_DATA}
+                    errorMessage={strings.noDataMessage}
                     title={strings.emergencyResponseDocumentsTitle}
                   >
                     {this.renderResponseDocuments()}

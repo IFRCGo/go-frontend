@@ -44,7 +44,6 @@ import {
   Links
 } from '#components/admin-area-elements';
 import { SFPComponent } from '#utils/extendables';
-import { NO_DATA } from '#utils/constants';
 import RegionalThreeW from './RegionalThreeW';
 import MainMap from '#components/map/main-map';
 
@@ -288,7 +287,7 @@ class AdminArea extends SFPComponent {
                       region={thisRegion.id}
                       showRecent={true}
                       viewAll={'/emergencies/all?region=' + data.id}
-                      viewAllText={resolveToString(strings.regionEmergenciesTableViewAllText, { regionName: regionName })}
+                      viewAllText={resolveToString(strings.regionEmergenciesTableViewAllText, { regionName })}
                     />
 
                   </TabContent>
@@ -302,16 +301,16 @@ class AdminArea extends SFPComponent {
                   </TabContent>
                 </TabPanel>
                 <TabPanel>
-                  <TabContent isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage={ NO_DATA } title={strings.regionKeyFigures}>
+                  <TabContent isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage={ strings.noDataMessage } title={strings.regionKeyFigures}>
                     <KeyFigures data={this.props.keyFigures} />
                   </TabContent>
-                  <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ NO_DATA } title={strings.regionGraphics}>
+                  <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ strings.noDataMessage } title={strings.regionGraphics}>
                     <Snippets data={this.props.snippets} />
                   </TabContent>
-                  <TabContent isError={!get(data, 'links.length')} errorMessage={ NO_DATA } title={strings.regionLinks}>
+                  <TabContent isError={!get(data, 'links.length')} errorMessage={ strings.noDataMessage } title={strings.regionLinks}>
                     <Links data={data} />
                   </TabContent>
-                  <TabContent showError={true} isError={!get(data, 'contacts.length')} errorMessage={ NO_DATA } title={strings.regionContacts}>
+                  <TabContent showError={true} isError={!get(data, 'contacts.length')} errorMessage={ strings.noDataMessage } title={strings.regionContacts}>
                     <Contacts data={data} />
                   </TabContent>
                 </TabPanel>

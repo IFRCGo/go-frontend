@@ -4,6 +4,7 @@ import { Route, Redirect } from 'react-router-dom';
 import { PropTypes as T } from 'prop-types';
 
 import { showAlert } from '#components/system-alerts';
+import Translate from '#components/Translate';
 
 // Route available only if the user is logged in.
 // Redirects to login page and takes the user back afterwards.
@@ -15,7 +16,7 @@ class PrivateRoute extends React.Component {
 
   componentDidMount () {
     if (!this.isAuthenticated()) {
-      showAlert('danger', <p>Please log in to view this page</p>, true, 4500);
+      showAlert('danger', <p><Translate stringId="privateRouteNotAuthenticatedMessage" /></p>, true, 4500);
     }
   }
 

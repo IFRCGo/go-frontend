@@ -1,6 +1,5 @@
-
 export default class NationalSocietiesEngagedPerGraphDataFactory {
-  buildGraphData (rawData, regionsById) {
+  buildGraphData (rawData, regionsById, strings) {
     const preparedData = [];
     if (!(typeof rawData.error !== 'undefined' && rawData.error !== null)) {
       rawData.data.results.forEach((region) => {
@@ -10,8 +9,8 @@ export default class NationalSocietiesEngagedPerGraphDataFactory {
           {
             region: thisRegion,
             data: [
-              {name: 'All countries', value: region.country__count},
-              {name: 'Engaged countries', value: region.forms_sent}
+              {name: strings.preparednessFactoryNSGraphDataAllCountriesLabel, value: region.country__count},
+              {name: strings.preparednessFactoryNSGraphDataEngagedCountriesLabel, value: region.forms_sent}
             ]
           }
         );

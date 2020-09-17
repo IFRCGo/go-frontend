@@ -181,7 +181,7 @@ class FieldReportsTable extends SFPComponent {
           {this.props.viewAll ? (
             <div className='fold__footer'>
               <Translate stringId='fieldReportsViewAllIn'/>
-               <Link className='link-underline export--link' to={this.props.viewAll + '?region=0'}>{this.props.viewAllText || ' Africa'}</Link> /&nbsp;
+              <Link className='link-underline export--link' to={this.props.viewAll + '?region=0'}>{this.props.viewAllText || 'Africa'}</Link> /&nbsp;
               <Link className='link-underline export--link' to={this.props.viewAll + '?region=1'}>{this.props.viewAllText || 'America'}</Link> /&nbsp;
               <Link className='link-underline export--link' to={this.props.viewAll + '?region=2'}>{this.props.viewAllText || 'Asia'}</Link> /&nbsp;
               <Link className='link-underline export--link' to={this.props.viewAll + '?region=3'}>{this.props.viewAllText || 'Europe'}</Link> /&nbsp;

@@ -38,18 +38,30 @@ class RecoverAccount extends React.Component {
     if (this.props.password.fetching && !nextProps.password.fetching) {
       hideGlobalLoading();
       if (nextProps.password.error) {
-        showAlert('danger', <p><strong>Error:</strong> {nextProps.password.error.error_message}</p>, true, 4500);
+        showAlert(
+          'danger',
+          <p>
+            <Translate
+              stringId="recoverAccountErrorMessage"
+              params={{ message: nextProps.password.error.error_message}}
+            />
+          </p>,
+          true,
+          4500,
+        );
       } else {
-        showAlert('success', <p>We've sent an email to your inbox. Redirecting...</p>, true, 2000);
+        showAlert('success', <p><Translate stringId="recoverAccountSuccessmessage" /></p>, true, 2000);
         setTimeout(() => this.props.history.push('/account'), 2000);
       }
     }
   }
 
   onSubmit (e) {
+    const { strings } = this.context;
+
     e.preventDefault();
     const errors = isValidEmail(this.state.data.email) ? null
-      : [{ dataPath: '.email', message: 'Please enter a valid email' }];
+      : [{ dataPath: '.email', message: strings.recoverAccountInvalidEmailMessage }];
     this.setState({ errors });
     if (errors === null) {
       showGlobalLoading();

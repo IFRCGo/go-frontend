@@ -47,9 +47,19 @@ class NewPassword extends React.Component {
     if (this.props.password.fetching && !nextProps.password.fetching) {
       hideGlobalLoading();
       if (nextProps.password.error) {
-        showAlert('danger', <p><strong>Error:</strong> {nextProps.password.error.error_message}</p>, true, 4500);
+        showAlert(
+          'danger',
+          <p>
+            <Translate
+              stringId="newPasswordErrorMessage"
+              params={{ message: nextProps.password.error.error_message }}
+            />
+          </p>,
+          true,
+          4500,
+        );
       } else {
-        showAlert('success', <p>Success! Password changed, redirecting...</p>, true, 2000);
+        showAlert('success', <p><Translate stringId="newPasswordSuccessMessage" /></p>, true, 2000);
         setTimeout(() => this.props.history.push('/account'), 2000);
       }
     }
@@ -119,7 +129,7 @@ class NewPassword extends React.Component {
     const { strings } = this.context;
     return (
       <form className='form form--centered' onSubmit={this.onSubmit}>
-        {verifyOldPassword && this.renderPasswordField('Verify old password', 'oldPassword')}
+        {verifyOldPassword && this.renderPasswordField(strings.newPasswordVerifyInputLabel, 'oldPassword')}
         {this.renderPasswordField(strings.newPasswordField, 'password')}
         {this.renderPasswordField(strings.newPasswordConfirm, 'passwordConfirm')}
         <button className='mfa-tick' type='button' onClick={this.onSubmit}>
