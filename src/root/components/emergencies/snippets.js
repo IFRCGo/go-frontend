@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import { get } from '#utils/utils';
 import Fold from '../fold';
 import TabContent from '../tab-content';
-import { NO_DATA } from '#utils/constants';
 
 import { getEventSnippets } from '#actions/';
 import LanguageContext from '#root/languageContext';
@@ -19,7 +18,7 @@ class Snippets extends Component {
     if (fetching || error) return null;
     const { strings } = this.context;
     return (
-      <TabContent showError={true} isError={!get(data, 'results.length')} errorMessage={ NO_DATA } title={strings.snippetsTitle}>
+      <TabContent showError={true} isError={!get(data, 'results.length')} errorMessage={ strings.noDataMessage } title={strings.snippetsTitle}>
         <Fold id='graphics' showHeader={false} title={strings.snippetsTitle} foldWrapperClass='additional-graphics'>
           <div className='iframe__container'>
             {data.results.map(o => o.snippet ? <div className='snippet__item' key={o.id} dangerouslySetInnerHTML={{__html: o.snippet}} />
