@@ -7,7 +7,6 @@ import * as EmailValidator from 'email-validator';
 import { DateTime } from 'luxon';
 import { isNotDefined } from '@togglecorp/fujs';
 
-import { disasterType } from './field-report-constants';
 import { getDtypeMeta } from './get-dtype-meta';
 import { appealTypes } from '#utils/appeal-type-constants';
 import { getCountryMeta } from '#utils/get-country-meta';
@@ -189,12 +188,6 @@ export const datesAgo = {
   month: () => DateTime.utc().minus({months: 1}).startOf('day').toISO(),
   year: () => DateTime.utc().minus({years: 1}).startOf('day').toISO()
 };
-
-export const dTypeOptions = [
-  { value: 'all', label: 'All Types' },
-  // Exclude the first item since it's a dropdown placeholder
-  ...disasterType.slice(1)
-];
 
 export const appealStatusOptions = [
   { value: 'all', label: 'All' },

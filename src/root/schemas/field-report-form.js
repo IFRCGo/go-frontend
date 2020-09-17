@@ -27,10 +27,10 @@ export const step1 = {
     districts: {
       type: 'array'
     },
-    disasterType: {
-      type: 'string',
-      enum: getValidValues(formData.disasterType, 'value')
-    },
+    // disasterType: {
+    //   type: 'string',
+    //   enum: getValidValues(formData.disasterType, 'value')
+    // },
     assistance: {
       type: 'boolean'
     },

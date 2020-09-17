@@ -12,7 +12,7 @@ import { environment, api } from '#config';
 import NewGlobalLoading from '#components/NewGlobalLoading';
 import { resolveToString } from '#utils/lang';
 // import BasicTable from '#components/common/table-basic';
-import { get, dateOptions, datesAgo, dTypeOptions } from '#utils/utils';
+import { get, dateOptions, datesAgo } from '#utils/utils';
 import {
   commaSeparatedNumber as n,
   // commaSeparatedLargeNumber as bigN,
@@ -68,7 +68,7 @@ import { SFPComponent } from '#utils/extendables';
 
 import ThreeW from './ThreeW';
 import CountryProfile from './CountryProfile';
-import { countryByIdOrNameSelector, regionsByIdSelector } from '../selectors';
+import { countryByIdOrNameSelector, regionsByIdSelector, disasterTypesSelectSelector } from '../selectors';
 
 const emptyObject = {};
 
@@ -362,7 +362,7 @@ class AdminArea extends SFPComponent {
             <FilterHeader
               id='dtype'
               title={strings.countryTableDisasterType}
-              options={dTypeOptions}
+              options={[{ value: 'all', label: 'All Types' }, ...this.props.disasterTypesSelect ]}
               filter={this.state.appeals.filters.dtype}
               onSelect={this.handleFilterChange.bind(this, 'appeals', 'dtype')}
             />
@@ -850,7 +850,7 @@ const selector = (state, ownProps) => ({
   appealsListStats: state.overallStats.appealsListStats,
   country: countryByIdOrNameSelector(state, ownProps.match.params.id),
   regionsById: regionsByIdSelector(state),
-
+  disasterTypesSelect: disasterTypesSelectSelector(state)
 });
 
 const dispatcher = dispatch => ({

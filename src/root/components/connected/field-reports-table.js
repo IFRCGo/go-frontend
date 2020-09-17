@@ -12,7 +12,7 @@ import {
   commaSeparatedNumber as n,
   intersperse
 } from '#utils/format';
-import { get, dTypeOptions, dateOptions, datesAgo } from '#utils/utils';
+import { get, dateOptions, datesAgo } from '#utils/utils';
 import { getDtypeMeta } from '#utils/get-dtype-meta';
 
 import ExportButton from '#components/export-button-container';
@@ -23,6 +23,7 @@ import { SFPComponent } from '#utils/extendables';
 import { withLanguage } from '#root/languageContext';
 import Translate from '#components/Translate';
 
+import { disasterTypesSelectSelector } from '#selectors';
 
 class FieldReportsTable extends SFPComponent {
   // Methods form SFPComponent:
@@ -144,7 +145,7 @@ class FieldReportsTable extends SFPComponent {
         { id: 'event', label: strings.fieldReportsTableEmergency },
         {
           id: 'dtype',
-          label: <FilterHeader id='dtype' title={strings.fieldReportsTableDisasterType} options={dTypeOptions} filter={this.state.table.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'table', 'dtype')} />
+          label: <FilterHeader id='dtype' title={strings.fieldReportsTableDisasterType} options={[{ value: 'all', label: 'All Types' }, ...this.props.disasterTypesSelect ]} filter={this.state.table.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'table', 'dtype')} />
         },
         { id: 'countries', label: strings.fieldReportsTableCountry }
       ];
@@ -225,7 +226,8 @@ if (environment !== 'production') {
 
 const selector = (state) => ({
   list: state.fieldReports,
-  isAuthenticated: !!state.user.data.token
+  isAuthenticated: !!state.user.data.token,
+  disasterTypesSelect: disasterTypesSelectSelector(state)
 });
 
 const dispatcher = (dispatch) => ({
