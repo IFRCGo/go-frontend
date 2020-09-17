@@ -21,7 +21,7 @@ import BreadCrumb from '#components/breadcrumb';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 
-import { countriesSelector } from '#selectors';
+import { allCountriesSelector } from '#selectors';
 
 import App from './app';
 import registerSchemaDef from '../schemas/register';
@@ -536,7 +536,7 @@ if (environment !== 'production') {
 const selector = (state) => ({
   registration: state.registration,
   domainWhitelist: state.domainWhitelist,
-  countries: countriesSelector(state),
+  countries: allCountriesSelector(state),
 });
 
 const dispatcher = (dispatch) => ({

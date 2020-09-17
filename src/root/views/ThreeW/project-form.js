@@ -22,7 +22,7 @@ import TextOutput from '#components/text-output';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 
-import { countriesSelector } from '#selectors';
+import { allCountriesSelector } from '#selectors';
 
 import {
   getDistrictsForCountryPF,
@@ -33,6 +33,8 @@ import {
 import {
   disasterTypeList,
 } from '#utils/field-report-constants';
+
+import { getResultsFromResponse } from '#utils/request';
 
 import {
   // statusList,
@@ -226,21 +228,8 @@ class ProjectForm extends React.PureComponent {
     }
   }
 
-  getResultsFromResponse = (response, defaultValue = emptyList) => {
-    const {
-      fetched,
-      data
-    } = response || emptyObject;
-
-    if (!fetched || !data || !data.results || !data.results.length) {
-      return defaultValue;
-    }
-
-    return response.data.results;
-  }
-
   getCountryAndNationalSocietyOptions = (countries) => {
-    const countryList = this.getResultsFromResponse(countries);
+    const countryList = getResultsFromResponse(countries);
 
     const nationalSocietyOptions = countryList
       .filter(d => d.society_name)
@@ -272,7 +261,7 @@ class ProjectForm extends React.PureComponent {
       return emptyList;
     }
 
-    const districtList = this.getResultsFromResponse(currentDistrictResponse, emptyObject);
+    const districtList = getResultsFromResponse(currentDistrictResponse, emptyObject);
     if (!districtList) {
       return emptyList;
     }
@@ -293,7 +282,7 @@ class ProjectForm extends React.PureComponent {
   }
 
   getCurrentOperationOptions = (response) => {
-    const currentOperationList = this.getResultsFromResponse(response);
+    const currentOperationList = getResultsFromResponse(response);
 
     if (!currentOperationList) {
       return emptyList;
@@ -900,7 +889,7 @@ class ProjectForm extends React.PureComponent {
 ProjectForm.contextType = LanguageContext;
 
 const selector = (state, ownProps) => ({
-  countries: countriesSelector(state),
+  countries: allCountriesSelector(state),
   districts: state.districts,
   eventList: state.event ? state.event.eventList : undefined,
   projectForm: state.projectForm,
