@@ -29,6 +29,7 @@ export default {
   menuEmergencies: 'Emergencies',
   menuDeployments: 'Deployments',
   menuPreparedness: 'Preparedness',
+  menuRegions: 'Regions',
 
   aboutTitle: 'IFRC Go - About',
   aboutResources: 'Resources',
