@@ -224,7 +224,6 @@ class AppealsTable extends SFPComponent {
       const rows = data.results.map(o => {
         const fundedPercent = (parseInt(o.amount_funded) / parseInt(o.amount_requested)) * 100;
         const fundedPercentRounded = Math.round(fundedPercent * 100) / 100;
-        console.log(o);
         const name = o.event ? (<Link to={`/emergencies/${o.event}`} className='link--table' title={strings.appealsTableViewEmergency}>
             {o.name}
           </Link>): o.name;
