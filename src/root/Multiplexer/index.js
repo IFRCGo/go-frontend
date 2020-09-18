@@ -112,12 +112,6 @@ function Multiplexer(props) {
     || (!skipUserDetails && (userResponse.fetching || (!userResponse.cached && !userResponse.fetched)))
   ), [allCountriesResponse, userResponse, allRegionsResponse, skipUserDetails, languageResponse]);
 
-  /*
-  const pending = React.useMemo(() => (
-    !userResponse.fetched || !countriesResponse.fetched || !regionsResponse.fetched
-  ), [userResponse, countriesResponse, regionsResponse]);
-  */
-
   if (pending) {
     return (
       <div className={styles.initialLoading}>
@@ -188,8 +182,6 @@ const mapStateToProps = (state) => ({
   tokenResponse: state.user,
   allCountriesResponse: allCountriesSelector(state),
   allRegionsResponse: allRegionsSelector(state),
-  countriesResponse: state.countries,
-  regionsResponse: state.regions,
   userResponse: userResponseSelector(state),
   languageResponse: languageResponseSelector(state),
   currentLanguage: currentLanguageSelector(state),

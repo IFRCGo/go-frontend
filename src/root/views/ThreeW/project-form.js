@@ -22,8 +22,9 @@ import TextOutput from '#components/text-output';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 
+import { allCountriesSelector } from '#selectors';
+
 import {
-  // getCountries,
   getDistrictsForCountryPF,
   getEventList,
   postProject,
@@ -32,6 +33,8 @@ import {
 import {
   disasterTypeList,
 } from '#utils/field-report-constants';
+
+import { getResultsFromResponse } from '#utils/request';
 
 import {
   // statusList,
@@ -225,21 +228,8 @@ class ProjectForm extends React.PureComponent {
     }
   }
 
-  getResultsFromResponse = (response, defaultValue = emptyList) => {
-    const {
-      fetched,
-      data
-    } = response || emptyObject;
-
-    if (!fetched || !data || !data.results || !data.results.length) {
-      return defaultValue;
-    }
-
-    return response.data.results;
-  }
-
   getCountryAndNationalSocietyOptions = (countries) => {
-    const countryList = this.getResultsFromResponse(countries);
+    const countryList = getResultsFromResponse(countries);
 
     const nationalSocietyOptions = countryList
       .filter(d => d.society_name)
@@ -271,7 +261,7 @@ class ProjectForm extends React.PureComponent {
       return emptyList;
     }
 
-    const districtList = this.getResultsFromResponse(currentDistrictResponse, emptyObject);
+    const districtList = getResultsFromResponse(currentDistrictResponse, emptyObject);
     if (!districtList) {
       return emptyList;
     }
@@ -292,7 +282,7 @@ class ProjectForm extends React.PureComponent {
   }
 
   getCurrentOperationOptions = (response) => {
-    const currentOperationList = this.getResultsFromResponse(response);
+    const currentOperationList = getResultsFromResponse(response);
 
     if (!currentOperationList) {
       return emptyList;
@@ -899,14 +889,13 @@ class ProjectForm extends React.PureComponent {
 ProjectForm.contextType = LanguageContext;
 
 const selector = (state, ownProps) => ({
-  countries: state.countries,
+  countries: allCountriesSelector(state),
   districts: state.districts,
   eventList: state.event ? state.event.eventList : undefined,
   projectForm: state.projectForm,
 });
 
 const dispatcher = dispatch => ({
-  // _getCountries: (...args) => dispatch(getCountries(...args)),
   _getDistricts: (...args) => dispatch(getDistrictsForCountryPF(...args)),
   _getEventList: (...args) => dispatch(getEventList(...args)),
   _postProject: (...args) => dispatch(postProject(...args)),
