@@ -1,6 +1,3 @@
-import { listToMap } from '@togglecorp/fujs';
-
-// FIXME: pull this list from server
 export const statusEarlyWarningValue = '8';
 export const statusEventValue = '9';
 

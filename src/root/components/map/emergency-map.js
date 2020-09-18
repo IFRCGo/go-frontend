@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import c from 'classnames';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
@@ -218,4 +219,4 @@ const selector = (state, ownProps) => ({
   disasterTypesSelect: disasterTypesSelectSelector(state)
 });
 
-export default EmergencyMap;
+export default connect(selector)(EmergencyMap);

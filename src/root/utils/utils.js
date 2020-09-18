@@ -7,7 +7,6 @@ import * as EmailValidator from 'email-validator';
 import { DateTime } from 'luxon';
 import { isNotDefined } from '@togglecorp/fujs';
 
-import { getDtypeMeta } from './get-dtype-meta';
 import { appealTypes } from '#utils/appeal-type-constants';
 import { getCountryMeta } from '#utils/get-country-meta';
 
@@ -134,15 +133,16 @@ export function getCountryIsoFromVt (feature) {
 export function groupByDisasterType (objs) {
   const emergenciesByType = _groupBy(objs, 'dtype.id');
   return Object.keys(emergenciesByType).map(key => {
-    let meta = getDtypeMeta(key);
+    const meta = emergenciesByType[key][0]?.dtype;
     if (!meta) return null;
     var replacedDType = emergenciesByType[key];
+    // This is needed for ex. main-map to work... weird logic
     replacedDType.forEach(record => {
       record.dtype = record.dtype.id;
     });
     return {
       id: _toNumber(key),
-      name: meta.label,
+      name: meta.name,
       items: replacedDType
     };
   }).filter(Boolean).sort((a, b) => a.items.length < b.items.length ? 1 : -1);

@@ -9,7 +9,6 @@ import Progress from '../progress-labeled';
 import { environment } from '#config';
 import { getAppealsList, getAppeals } from '#actions';
 import { commaSeparatedNumber as n, nope } from '#utils/format';
-import { getDtypeMeta } from '#utils/get-dtype-meta';
 import {
   get,
   dateOptions,
@@ -233,7 +232,7 @@ class AppealsTable extends SFPComponent {
           date: DateTime.fromISO(o.start_date).toISODate(),
           code: o.code,
           name: name,
-          dtype: get(getDtypeMeta(o.dtype.id), 'label', nope),
+          dtype: o.dtype?.name || nope,
           requestAmount: {
             value: n(o.amount_requested, 'CHF'),
             className: ''

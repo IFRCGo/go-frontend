@@ -13,7 +13,6 @@ import {
   intersperse
 } from '#utils/format';
 import { get, dateOptions, datesAgo } from '#utils/utils';
-import { getDtypeMeta } from '#utils/get-dtype-meta';
 
 import ExportButton from '#components/export-button-container';
 import Fold from '#components/fold';
@@ -155,7 +154,7 @@ class FieldReportsTable extends SFPComponent {
         date: DateTime.fromISO(o.created_at).toISODate(),
         name: <Link to={`/reports/${o.id}`} className='link--table' title={strings.fieldReportsTableViewAll}>{o.summary || nope}</Link>,
         event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--table' title={strings.fieldReportsTableViewEmergency}>{o.event.name}</Link> : nope,
-        dtype: get(getDtypeMeta(o.dtype.id), 'label', nope),
+        dtype: o.dtype?.name || nope,
         countries: intersperse(o.countries.map(c => <Link key={c.id} to={`/countries/${c.id}`} className='link--table' title='View Country'>{c.name}</Link>), ', ')
       }));
 
