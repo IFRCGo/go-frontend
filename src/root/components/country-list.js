@@ -29,7 +29,7 @@ const CountryList = props => {
    * @type {object} with a key of the letter and value of an array with countries
    */
   const alphabetizedList = countries.reduce((prev, country) => {
-    const letter = country.name[0];
+    const letter = country.name ? country.name[0] : '';
     // Only adds countries with active operations
     const activeCountries = country.numOperations ? (
       {[letter]: [...(prev[letter] || []), country]}
@@ -70,7 +70,7 @@ const CountryList = props => {
 if (environment !== 'production') {
   CountryList.propTypes = {
     appealStats: T.object,
-    countries: T.object
+    countries: T.array
   };
 }
 
