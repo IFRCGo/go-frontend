@@ -5,6 +5,7 @@ import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 import { regionsByIdSelector, regionByIdOrNameSelector } from '../selectors';
 import { connect } from 'react-redux';
+import LanguageContext from '#root/languageContext';
 
 // const regionArray = Object.keys(regions).map(k => regions[k]);
 
@@ -24,8 +25,9 @@ class HeaderRegionButton extends React.Component {
   }
 
   render () {
+    const { strings } = this.context; 
     const { currentPath, regions = {}, thisRegion } = this.props;
-    const title = thisRegion ? thisRegion.label : 'Regions';
+    const title = thisRegion ? thisRegion.label : strings.regionOverviewTitle;
     const triggerClassName = this.decideTriggerClassName(currentPath);
     const regionLinks = Object.values(regions).map(r => {
       r = r[0];
@@ -64,6 +66,8 @@ if (environment !== 'production') {
     currentPath: T.object
   };
 }
+
+HeaderRegionButton.contextType = LanguageContext;
 
 const selector = (state, ownProps) => ({
   regions: regionsByIdSelector(state),
