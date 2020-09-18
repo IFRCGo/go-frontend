@@ -36,6 +36,7 @@ export const LANG_STORAGE_KEY = 'language';
 export const ALL_COUNTRIES_STORAGE_KEY = 'allCountries';
 export const ALL_REGIONS_STORAGE_KEY = 'allRegions';
 export const ME_STORAGE_KEY = 'me';
+export const DTYPES_STORAGE_KEY = 'disasterTypes';
 
 const ONE_SECOND = 1000;
 const ONE_MINUTE = ONE_SECOND * 60;
@@ -111,12 +112,34 @@ const hydrateAllRegions = () => {
   };
 };
 
+const hydrateDisasterTypes = () => {
+  const data = localStorage.get(DTYPES_STORAGE_KEY);
+
+  if (!data) {
+    return undefined;
+  }
+
+  if (data.receivedAt + DEFAULT_CACHE_DURATION < new Date().getTime()) {
+    // Expired
+    console.info('all disasterTypes cache expired');
+    return undefined;
+  }
+
+  return {
+    ...defaultInitialState,
+    ...data,
+    fetched: true,
+    cached: true,
+  };
+};
+
 const initialState = {
   user: hydrateUser(),
   lang: hydrateCurrentLanguage(),
   allCountries: hydrateAllCountries(),
   allRegions: hydrateAllRegions(),
   me: hydrateMe(),
+  disasterTypes: hydrateDisasterTypes(),
 };
 
 
@@ -144,6 +167,7 @@ const currentLanguageListener = ({ language }) => {
   localStorage.set(LANG_STORAGE_KEY, language);
   localStorage.remove(ALL_COUNTRIES_STORAGE_KEY);
   localStorage.remove(ALL_REGIONS_STORAGE_KEY);
+  localStorage.remove(DTYPES_STORAGE_KEY);
 };
 
 const allCountriesListener = ({ data, receivedAt }) => {
@@ -167,6 +191,13 @@ const meListener = ({ data, receivedAt }) => {
   });
 };
 
+const disasterTypesListener = ({ data, receivedAt }) => {
+  localStorage.set(DTYPES_STORAGE_KEY, {
+    data,
+    receivedAt,
+  });
+};
+
 
 const logoutListener = ({ data }) => {
   localStorage.remove('user');
@@ -183,6 +214,7 @@ listener.createListener(currentLanguageListener).addRule(/^SET_CURRENT_LANGUAGE/
 listener.createListener(allCountriesListener).addRule(/^GET_COUNTRIES_ALL_SUCCESS/);
 listener.createListener(allRegionsListener).addRule(/^GET_REGIONS_ALL_SUCCESS/);
 listener.createListener(meListener).addRule(/^GET_ME_SUCCESS/);
+listener.createListener(disasterTypesListener).addRule(/^GET_DISASTER_TYPES_SUCCESS/);
 
 const composeEnhancers = config.environment !== 'production' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose : compose;
 const store = createStore(reducer, initialState, composeEnhancers(applyMiddleware(

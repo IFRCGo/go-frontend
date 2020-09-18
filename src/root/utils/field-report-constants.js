@@ -1,6 +1,3 @@
-import { listToMap } from '@togglecorp/fujs';
-
-// FIXME: pull this list from server
 export const statusEarlyWarningValue = '8';
 export const statusEventValue = '9';
 
@@ -69,118 +66,8 @@ export const countries = (countries, independent=false) => {
   ].sort((a, b) => a.label < b.label ? -1 : 1);
 };
 
-// FIXME: pull this list from server
-export const disasterTypeList = [
-  {
-    value: '66',
-    label: 'Biological Emergency'
-  },
-  {
-    value: '57',
-    label: 'Chemical Emergency'
-  },
-  {
-    value: '7',
-    label: 'Civil Unrest'
-  },
-  {
-    value: '14',
-    label: 'Cold Wave'
-  },
-  {
-    value: '6',
-    label: 'Complex Emergency'
-  },
-  {
-    value: '4',
-    label: 'Cyclone'
-  },
-  {
-    value: '20',
-    label: 'Drought'
-  },
-  {
-    value: '2',
-    label: 'Earthquake'
-  },
-  {
-    value: '1',
-    label: 'Epidemic'
-  },
-  {
-    value: '15',
-    label: 'Fire'
-  },
-  {
-    value: '12',
-    label: 'Flood'
-  },
-  {
-    value: '21',
-    label: 'Food Insecurity'
-  },
-  {
-    value: '19',
-    label: 'Heat Wave'
-  },
-  {
-    value: '62',
-    label: 'Insect Infestation'
-  },
-  {
-    value: '24',
-    label: 'Landslide'
-  },
-  {
-    value: '13',
-    label: 'Other'
-  },
-  {
-    value: '27',
-    label: 'Pluvial/Flash Flood'
-  },
-  {
-    value: '5',
-    label: 'Population Movement'
-  },
-  {
-    value: '67',
-    label: 'Radiological Emergency'
-  },
-  {
-    value: '23',
-    label: 'Storm Surge'
-  },
-  {
-    value: '54',
-    label: 'Transport Accident'
-  },
-  {
-    value: '68',
-    label: 'Transport Emergency'
-  },
-  {
-    value: '11',
-    label: 'Tsunami'
-  },
-  {
-    value: '8',
-    label: 'Volcanic Eruption'
-  }
-];
-
-export const disasterType = [
-  {
-    label: '-- Disaster Type --',
-    value: ''
-  },
-  ...disasterTypeList,
-];
-
 export const getIsEpidemicDisasterTypeByValue = value =>
   value === '1';
-
-export const disasterTypes = listToMap(disasterTypeList, d => d.value, d => d.label);
 
 // FIXME: pull this list from server
 export const sources = [

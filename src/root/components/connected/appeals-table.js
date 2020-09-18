@@ -9,11 +9,9 @@ import Progress from '../progress-labeled';
 import { environment } from '#config';
 import { getAppealsList, getAppeals } from '#actions';
 import { commaSeparatedNumber as n, nope } from '#utils/format';
-import { getDtypeMeta } from '#utils/get-dtype-meta';
 import {
   get,
   dateOptions,
-  dTypeOptions
 } from '#utils/utils';
 
 import ExportButton from '#components/export-button-container';
@@ -26,6 +24,8 @@ import { appealTypes as appealsType, appealTypeOptions } from '#utils/appeal-typ
 
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
+
+import { disasterTypesSelectSelector } from '#selectors';
 
 class AppealsTable extends SFPComponent {
   constructor (props) {
@@ -193,7 +193,7 @@ class AppealsTable extends SFPComponent {
           label: <FilterHeader
             id='dtype'
             title={strings.appealsTableDisastertype}
-            options={dTypeOptions} filter={this.state.table.filters.dtype}
+            options={[{ value: 'all', label: 'All Types' }, ...this.props.disasterTypesSelect ]} filter={this.state.table.filters.dtype}
             isActive={this.state.table.filters.dtype !== 'all'}
             onSelect={this.handleFilterChange.bind(this, 'table', 'dtype')} />
         },
@@ -232,7 +232,7 @@ class AppealsTable extends SFPComponent {
           date: DateTime.fromISO(o.start_date).toISODate(),
           code: o.code,
           name: name,
-          dtype: get(getDtypeMeta(o.dtype.id), 'label', nope),
+          dtype: o.dtype?.name || nope,
           requestAmount: {
             value: n(o.amount_requested, 'CHF'),
             className: ''
@@ -338,7 +338,8 @@ if (environment !== 'production') {
 
 const selector = (state, props) => ({
   appeals: props.statePath ? get(state, props.statePath) : state.appeals,
-  appealsList: state.overallStats.appealsList
+  appealsList: state.overallStats.appealsList,
+  disasterTypesSelect: disasterTypesSelectSelector(state)
 });
 
 const dispatcher = (dispatch) => ({

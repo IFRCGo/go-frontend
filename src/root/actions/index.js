@@ -724,3 +724,8 @@ export const GET_REGIONS_ALL = 'GET_REGIONS_ALL';
 export function getRegionsAllAction () {
   return fetchJSON('api/v2/region/', GET_REGIONS_ALL);
 }
+
+export const GET_DISASTER_TYPES = 'GET_DISASTER_TYPES';
+export function getDisasterTypes () {
+  return fetchJSON('api/v2/disaster_type', GET_DISASTER_TYPES);
+}

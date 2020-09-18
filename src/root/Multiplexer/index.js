@@ -12,6 +12,7 @@ import {
   getCountriesAllAction,
   getRegionsAllAction,
   getLanguageAction,
+  getDisasterTypes,
 } from '#actions';
 import {
   userResponseSelector,
@@ -19,6 +20,7 @@ import {
   allRegionsSelector,
   languageResponseSelector,
   currentLanguageSelector,
+  disasterTypesSelectSelector,
 } from '#selectors';
 
 // Views.
@@ -63,6 +65,8 @@ function Multiplexer(props) {
     getLanguage,
     languageResponse,
     currentLanguage,
+    disasterTypes,
+    getDisasterTypes,
   } = props;
 
   const languageRef = React.useRef(currentLanguage);
@@ -105,12 +109,20 @@ function Multiplexer(props) {
     }
   }, [allRegionsResponse, getAllRegions]);
 
+  React.useEffect(() => {
+    if (!disasterTypes.fetching && !disasterTypes.fetched && !disasterTypes.cached) {
+      getDisasterTypes();
+      console.info('all disasterTypes not found in cache, requesting all disasterTypes');
+    }
+  });
+
   const pending = React.useMemo(() => (
     (languageResponse.fetching || !languageResponse.fetched)
     || (allCountriesResponse.fetching || (!allCountriesResponse.cached && !allCountriesResponse.fetched))
     || (allRegionsResponse.fetching || (!allRegionsResponse.cached && !allRegionsResponse.fetched))
     || (!skipUserDetails && (userResponse.fetching || (!userResponse.cached && !userResponse.fetched)))
-  ), [allCountriesResponse, userResponse, allRegionsResponse, skipUserDetails, languageResponse]);
+    || (!disasterTypes || (!disasterTypes.cached && !disasterTypes.fetched))
+  ), [allCountriesResponse, userResponse, allRegionsResponse, skipUserDetails, languageResponse, disasterTypes]);
 
   if (pending) {
     return (
@@ -185,6 +197,8 @@ const mapStateToProps = (state) => ({
   userResponse: userResponseSelector(state),
   languageResponse: languageResponseSelector(state),
   currentLanguage: currentLanguageSelector(state),
+  disasterTypes: state.disasterTypes,
+  disasterTypesSelect: disasterTypesSelectSelector(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -192,6 +206,7 @@ const mapDispatchToProps = (dispatch) => ({
   getAllCountries: (...args) => dispatch(getCountriesAllAction(...args)),
   getAllRegions: (...args) => dispatch(getRegionsAllAction(...args)),
   getLanguage: (...args) => dispatch(getLanguageAction(...args)),
+  getDisasterTypes: (...args) => dispatch(getDisasterTypes(...args)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Multiplexer);

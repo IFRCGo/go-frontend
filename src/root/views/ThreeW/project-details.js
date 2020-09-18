@@ -15,7 +15,7 @@ import {
 
 import { getEventById } from '#actions';
 
-import { disasterTypes } from '#utils/field-report-constants';
+import { disasterTypesSelectSelector } from '#selectors';
 
 import Translate from '#components/Translate';
 import LanguageContext from '#root/languageContext';
@@ -54,6 +54,7 @@ class ProjectDetails extends React.PureComponent {
       budget_amount,
       event,
       dtype,
+      dtype_detail,
       project_districts_detail,
       reporting_ns_detail,
       name,
@@ -144,7 +145,10 @@ class ProjectDetails extends React.PureComponent {
               />
               <TextOutput
                 label={strings.threeWDisasterType}
-                value={dtype ? disasterTypes[dtype] : undefined}
+                value={dtype
+                  ? dtype_detail?.name
+                  : undefined
+                }
                 hideEmptyValue
               />
             </div>
@@ -238,6 +242,7 @@ ProjectDetails.contextType = LanguageContext;
 
 const selector = (state, ownProps) => ({
   eventDetails: state.event ? state.event.event : undefined,
+  disasterTypesSelect: disasterTypesSelectSelector(state)
 });
 
 const dispatcher = dispatch => ({

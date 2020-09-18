@@ -12,8 +12,7 @@ import {
   commaSeparatedNumber as n,
   intersperse
 } from '#utils/format';
-import { get, dTypeOptions, dateOptions, datesAgo } from '#utils/utils';
-import { getDtypeMeta } from '#utils/get-dtype-meta';
+import { get, dateOptions, datesAgo } from '#utils/utils';
 
 import ExportButton from '#components/export-button-container';
 import Fold from '#components/fold';
@@ -23,6 +22,7 @@ import { SFPComponent } from '#utils/extendables';
 import { withLanguage } from '#root/languageContext';
 import Translate from '#components/Translate';
 
+import { disasterTypesSelectSelector } from '#selectors';
 
 class FieldReportsTable extends SFPComponent {
   // Methods form SFPComponent:
@@ -144,7 +144,7 @@ class FieldReportsTable extends SFPComponent {
         { id: 'event', label: strings.fieldReportsTableEmergency },
         {
           id: 'dtype',
-          label: <FilterHeader id='dtype' title={strings.fieldReportsTableDisasterType} options={dTypeOptions} filter={this.state.table.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'table', 'dtype')} />
+          label: <FilterHeader id='dtype' title={strings.fieldReportsTableDisasterType} options={[{ value: 'all', label: 'All Types' }, ...this.props.disasterTypesSelect ]} filter={this.state.table.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'table', 'dtype')} />
         },
         { id: 'countries', label: strings.fieldReportsTableCountry }
       ];
@@ -154,7 +154,7 @@ class FieldReportsTable extends SFPComponent {
         date: DateTime.fromISO(o.created_at).toISODate(),
         name: <Link to={`/reports/${o.id}`} className='link--table' title={strings.fieldReportsTableViewAll}>{o.summary || nope}</Link>,
         event: o.event ? <Link to={`/emergencies/${o.event.id}`} className='link--table' title={strings.fieldReportsTableViewEmergency}>{o.event.name}</Link> : nope,
-        dtype: get(getDtypeMeta(o.dtype.id), 'label', nope),
+        dtype: o.dtype?.name || nope,
         countries: intersperse(o.countries.map(c => <Link key={c.id} to={`/countries/${c.id}`} className='link--table' title='View Country'>{c.name}</Link>), ', ')
       }));
 
@@ -225,7 +225,8 @@ if (environment !== 'production') {
 
 const selector = (state) => ({
   list: state.fieldReports,
-  isAuthenticated: !!state.user.data.token
+  isAuthenticated: !!state.user.data.token,
+  disasterTypesSelect: disasterTypesSelectSelector(state)
 });
 
 const dispatcher = (dispatch) => ({

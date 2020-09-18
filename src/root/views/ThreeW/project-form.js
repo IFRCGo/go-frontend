@@ -30,10 +30,7 @@ import {
   postProject,
 } from '#actions';
 
-import {
-  disasterTypeList,
-} from '#utils/field-report-constants';
-
+import { disasterTypesSelectSelector } from '#selectors';
 import { getResultsFromResponse } from '#utils/request';
 
 import {
@@ -47,6 +44,8 @@ import {
   projectVisibilityList,
 } from '#utils/constants';
 
+import { compareString } from '#utils/utils';
+
 const positiveIntegerCondition = (value) => {
   const ok = (value === undefined || value === '') || ((!Number.isNaN(value)) && (isFalsy(value) || isInteger(+value)) && (+value >= 0));
   return {
@@ -54,8 +53,6 @@ const positiveIntegerCondition = (value) => {
     message: 'Value must be a positive integer',
   };
 };
-
-const compareString = (a, b) => a.label.localeCompare(b.label);
 
 /*
 const statusOptions = statusList.map(p => ({
@@ -77,11 +74,6 @@ const secondarySectorOptions = secondarySectorList.map(p => ({
 const programmeTypeOptions = programmeTypeList.map(p => ({
   value: p.key,
   label: p.title,
-})).sort(compareString);
-
-const disasterTypeOptions = disasterTypeList.map(d => ({
-  value: d.value,
-  label: d.label,
 })).sort(compareString);
 
 const operationTypeOptions = [...operationTypeList].sort(compareString);
@@ -679,7 +671,7 @@ class ProjectForm extends React.PureComponent {
               <SelectInput
                 faramElementName='dtype'
                 className='project-form-select'
-                options={disasterTypeOptions}
+                options={this.props.disasterTypesSelect}
                 disabled={shouldDisableDisasterType}
                 placeholder={shouldDisableDisasterType ? strings.projectFormDisasterTypePlaceholder : undefined}
               />
@@ -893,6 +885,7 @@ const selector = (state, ownProps) => ({
   districts: state.districts,
   eventList: state.event ? state.event.eventList : undefined,
   projectForm: state.projectForm,
+  disasterTypesSelect: disasterTypesSelectSelector(state)
 });
 
 const dispatcher = dispatch => ({
