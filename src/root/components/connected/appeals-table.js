@@ -130,7 +130,6 @@ class AppealsTable extends SFPComponent {
       error,
       data
     } = this.props.appeals;
-    console.log(this.props);
 
     const { strings } = this.context;
     const title = this.props.title || strings.appealsTableTitle;
