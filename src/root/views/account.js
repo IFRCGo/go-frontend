@@ -287,7 +287,7 @@ class Account extends React.Component {
     subscriptions.forEach(sub => {
       const rtype = rtypes[sub.rtype];
       if (rtype === 'country' && sub.country) {
-        let countryMeta = getCountryMeta(this.props.allCountries, sub.country);
+        let countryMeta = getCountryMeta(sub.country, this.props.allCountries);
         if (countryMeta && !next.countries.some((country) => country.value === countryMeta.value)) {
           next.countries = next.countries.concat([{ label: countryMeta.name, value: sub.country.toString() }]);
         }
