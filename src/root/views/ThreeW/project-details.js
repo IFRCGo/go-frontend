@@ -54,6 +54,7 @@ class ProjectDetails extends React.PureComponent {
       budget_amount,
       event,
       dtype,
+      dtype_detail,
       project_districts_detail,
       reporting_ns_detail,
       name,
