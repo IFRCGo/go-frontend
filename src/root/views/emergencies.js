@@ -39,7 +39,7 @@ class Emergencies extends React.Component {
           </title>
         </Helmet>
         <section className='inpage'>
-          <BreadCrumb crumbs={[{link: '/emergencies', name: 'Emergencies'}, {link: '/', name: strings.breadCrumbHome }]} />
+          <BreadCrumb crumbs={[{link: '/emergencies', name: strings.breadCrumbEmergencies}, {link: '/', name: strings.breadCrumbHome }]} />
           { pending ? (
             <BlockLoading />
           ) : (
