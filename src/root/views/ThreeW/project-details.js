@@ -145,7 +145,7 @@ class ProjectDetails extends React.PureComponent {
               <TextOutput
                 label={strings.threeWDisasterType}
                 value={dtype
-                  ? this.props.disasterTypesSelect.filter(dt => dt.value === dtype).label
+                  ? dtype.name
                   : undefined
                 }
                 hideEmptyValue
