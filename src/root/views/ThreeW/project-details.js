@@ -145,7 +145,7 @@ class ProjectDetails extends React.PureComponent {
               <TextOutput
                 label={strings.threeWDisasterType}
                 value={dtype
-                  ? dtype.name
+                  ? dtype_detail?.name
                   : undefined
                 }
                 hideEmptyValue
