@@ -312,7 +312,7 @@ if (environment !== 'production') {
 
     limit: T.number,
     country: T.number,
-    region: T.string,
+    region: T.number,
     atype: T.string,
     record: T.string,
 

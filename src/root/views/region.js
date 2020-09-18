@@ -353,7 +353,7 @@ if (environment !== 'production') {
     personnel: T.object,
     keyFigures: T.object,
     snippets: T.object,
-    countries: T.object
+    countries: T.array
   };
 }
 
