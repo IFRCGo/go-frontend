@@ -130,6 +130,7 @@ class AppealsTable extends SFPComponent {
       error,
       data
     } = this.props.appeals;
+    console.log(this.props);
 
     const { strings } = this.context;
     const title = this.props.title || strings.appealsTableTitle;
@@ -224,6 +225,7 @@ class AppealsTable extends SFPComponent {
       const rows = data.results.map(o => {
         const fundedPercent = (parseInt(o.amount_funded) / parseInt(o.amount_requested)) * 100;
         const fundedPercentRounded = Math.round(fundedPercent * 100) / 100;
+        console.log(o);
         const name = o.event ? (<Link to={`/emergencies/${o.event}`} className='link--table' title={strings.appealsTableViewEmergency}>
             {o.name}
           </Link>): o.name;
@@ -312,7 +314,7 @@ if (environment !== 'production') {
 
     limit: T.number,
     country: T.number,
-    region: T.string,
+    region: T.number,
     atype: T.string,
     record: T.string,
 

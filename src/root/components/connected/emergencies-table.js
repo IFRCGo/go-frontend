@@ -244,7 +244,7 @@ if (environment !== 'production') {
 
     limit: T.number,
     country: T.string,
-    region: T.string,
+    region: T.number,
 
     noPaginate: T.bool,
     showExport: T.bool,
