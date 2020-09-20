@@ -11,6 +11,7 @@ import DropdownMenu from './dropdown-menu';
 
 export default class DisplayTable extends React.Component {
   renderTbody () {
+    const { strings } = this.context;
     if (this.props.rows.length) {
       return this.props.rows.map(row => {
         // If the raw has a `rowOverride` property that is used as override.
@@ -39,7 +40,7 @@ export default class DisplayTable extends React.Component {
     } else {
       return (
         <tr>
-          <td colSpan={this.props.headings.length}>{this.props.emptyMessage || 'No data to display.'}</td>
+          <td colSpan={this.props.headings.length}>{this.props.emptyMessage || strings.noDataMessage}</td>
         </tr>
       );
     }
@@ -106,6 +107,7 @@ if (environment !== 'production') {
   };
 }
 
+DisplayTable.contextType = languageContext;
 DisplayTable.defaultProps = {
   className: 'table table--border-bottom'
 };
