@@ -1327,4 +1327,7 @@ export default {
   tableNounOperations: 'Operations',
   tableNounDREFs: 'DREFs',
   tableNounAppeals: 'Appeals',
+
+  fieldReportLastUpdatedBy: 'Last updated by {user} on {date}',
+  fieldReportLastUpdatedOn: 'Last updated on {date}',
 };
