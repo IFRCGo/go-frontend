@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import { set } from 'object-path';
 import { Helmet } from 'react-helmet';
+import memoize from 'memoize-one';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { environment } from '#config';
 import {
@@ -107,91 +108,20 @@ class Account extends React.Component {
 
     const { strings } = context;
 
-    this.TAB_DETAILS = [
-      { title: strings.accountInformation, hash: '#account-information' },
-      { title: strings.accountNotification, hash: '#notifications' },
-      { title: strings.accountPerForms, hash: '#per-forms' }
-    ];
     // Constants used to create form elements
-
-    this.basicTypes = [
-      {
-        label: strings.accountWeeklyDigest,
-        value: 'weeklyDigest',
-        description: strings.accountWeeklyDigestDescription,
-      },
-      {
-        label: strings.accountNewEmergencies,
-        value: 'newEmergencies',
-        description: strings.accountNewEmergenciesDescription,
-      },
-      {
-        label: strings.accountNewOperation,
-        value: 'newOperations',
-        description: strings.accountNewOperationDescription,
-      },
-      {
-        label: strings.accountGeneralAnnouncements,
-        value: 'general'
-      }];
-
-    this.systemNotificationTypes = [
-      {
-        label: strings.accountNewRecords,
-        value: 'new'
-      }, {
-        label: strings.accountModifiedRecords,
-        value: 'modified'
-      }];
-
-    this.surgeNotificationTypes = [
-      {
-        label: strings.accountSurgeAlerts,
-        value: 'surge'
-      },
-      {
-        label: strings.accountDeplyomentMessages,
-        value: 'surgeDM'
-      },
-      {
-        label: strings.accountsurgeAEM,
-        value: 'surgeAEM'
-      }];
-
-    this.perDueDateTypes = [{
-      label: strings.accountPerDueDate,
-      value: 'perDueDate'
-    }];
-
-    this.regions = [{
-      label: strings.accountRegionAfrica,
-      value: '0'
-    }, {
-      label: strings.accountRegionAsia,
-      value: '2'
-    }, {
-      label: strings.accountRegionMENA,
-      value: '4'
-    }, {
-      label: strings.accountRegionEurope,
-      value: '3'
-    }, {
-      label: strings.accountRegionAmerica,
-      value: '1'
-    }];
 
     this.state = {
       isNotificationsDirty: false,
       notifications: {
         countries: [],
-        basic: this.basicTypes.map(markUnChecked),
-        regions: this.regions.map(markUnChecked),
+        basic: this.getBasicTypes(strings).map(markUnChecked),
+        regions: this.getRegions(strings).map(markUnChecked),
         disasterTypes: this.props.disasterTypesSelect.map(markUnChecked),
-        event: this.systemNotificationTypes.map(markUnChecked),
-        fieldReport: this.systemNotificationTypes.map(markUnChecked),
-        appeal: this.systemNotificationTypes.map(markUnChecked),
-        surg: this.surgeNotificationTypes.map(markUnChecked),
-        per: this.perDueDateTypes.map(markUnChecked)
+        event: this.getSystemNotificationTypes(strings).map(markUnChecked),
+        fieldReport: this.getSystemNotificationTypes(strings).map(markUnChecked),
+        appeal: this.getSystemNotificationTypes(strings).map(markUnChecked),
+        surg: this.getSurgeNotificationTypes(strings).map(markUnChecked),
+        per: this.getPerDueDateTypes(strings).map(markUnChecked)
       },
 
       isProfileDirty: false,
@@ -229,9 +159,107 @@ class Account extends React.Component {
     this.displayTabContent();
   }
 
+  getNotifications = memoize((strings) => ({
+    countries: [],
+    basic: this.getBasicTypes(strings).map(markUnChecked),
+    regions: this.getRegions(strings).map(markUnChecked),
+    disasterTypes: this.props.disasterTypesSelect.map(markUnChecked),
+    event: this.getSystemNotificationTypes(strings).map(markUnChecked),
+    fieldReport: this.getSystemNotificationTypes(strings).map(markUnChecked),
+    appeal: this.getSystemNotificationTypes(strings).map(markUnChecked),
+    surg: this.getSurgeNotificationTypes(strings).map(markUnChecked),
+    per: this.getPerDueDateTypes(strings).map(markUnChecked)
+  }))
+
+  getTabDetails = memoize((strings) => [
+    { title: strings.accountInformation, hash: '#account-information' },
+    { title: strings.accountNotification, hash: '#notifications' },
+    { title: strings.accountPerForms, hash: '#per-forms' }
+  ])
+
+  getBasicTypes = memoize((strings) => [
+    {
+      label: strings.accountWeeklyDigest,
+      value: 'weeklyDigest',
+      description: strings.accountWeeklyDigestDescription,
+    },
+    {
+      label: strings.accountNewEmergencies,
+      value: 'newEmergencies',
+      description: strings.accountNewEmergenciesDescription,
+    },
+    {
+      label: strings.accountNewOperation,
+      value: 'newOperations',
+      description: strings.accountNewOperationDescription,
+    },
+    {
+      label: strings.accountGeneralAnnouncements,
+      value: 'general'
+    }
+  ])
+
+  getSystemNotificationTypes = memoize((strings) => [
+    {
+      label: strings.accountNewRecords,
+      value: 'new'
+    }, {
+      label: strings.accountModifiedRecords,
+      value: 'modified'
+    }
+  ])
+
+  getSurgeNotificationTypes = memoize((strings) => [
+    {
+      label: strings.accountSurgeAlerts,
+      value: 'surge'
+    },
+    {
+      label: strings.accountDeplyomentMessages,
+      value: 'surgeDM'
+    },
+    {
+      label: strings.accountsurgeAEM,
+      value: 'surgeAEM'
+    }
+  ])
+
+  getPerDueDateTypes = memoize((strings) => [
+    {
+      label: strings.accountPerDueDate,
+      value: 'perDueDate'
+    }
+  ])
+  
+  getRegions = memoize((strings) => [
+    {
+      label: strings.accountRegionAfrica,
+      value: '0'
+    },
+    {
+      label: strings.accountRegionAsia,
+      value: '2'
+    },
+    {
+      label: strings.accountRegionMENA,
+      value: '4'
+    },
+    {
+      label: strings.accountRegionEurope,
+      value: '3'
+    },
+    {
+      label: strings.accountRegionAmerica,
+      value: '1'
+    },
+  ])
+
+
   // Sets default tab if url param is blank or incorrect
   displayTabContent () {
-    const tabHashArray = this.TAB_DETAILS.map(({ hash }) => hash);
+    const { strings } = this.context;
+
+    const tabHashArray = this.getTabDetails(strings).map(({ hash }) => hash);
     if (!tabHashArray.find(hash => hash === this.props.location.hash)) {
       this.props.history.replace(`${this.props.location.pathname}${tabHashArray[0]}`);
     }
@@ -276,11 +304,12 @@ class Account extends React.Component {
   }
 
   syncNotificationState (data) {
+    const { strings } = this.context;
     const subscriptions = get(data, 'subscription', []);
     if (!subscriptions.length) {
       return;
     }
-    let next = Object.assign({}, this.state.notifications);
+    let next = Object.assign({}, this.getNotifications(strings));
     subscriptions.forEach(sub => {
       const rtype = rtypes[sub.rtype];
       if (rtype === 'country' && sub.country) {
@@ -339,9 +368,10 @@ class Account extends React.Component {
   }
 
   onNotificationSubmit (e) {
+    const { strings } = this.context;
     e.preventDefault();
     showGlobalLoading();
-    const payload = this.serializeNotifications(this.state.notifications);
+    const payload = this.serializeNotifications(this.getNotifications(strings));
     const id = this.props.profile.data.id;
     this.props._updateSubscriptions(id, payload);
   }
@@ -650,16 +680,16 @@ class Account extends React.Component {
               description={strings.accountSubscriptionTypesDescription}
               name='basic'
               classWrapper='action-checkboxes'
-              options={this.basicTypes}
-              values={this.state.notifications.basic}
+              options={this.getBasicTypes(strings)}
+              values={this.getNotifications(strings).basic}
               onChange={this.onFieldChange.bind(this, 'notifications', 'basic')} />
             <FormCheckboxGroup
               label={strings.accountRegionalNotification}
               description={strings.accountRegionalNotificationDescription}
               name='regions'
               classWrapper='action-checkboxes'
-              options={this.regions}
-              values={this.state.notifications.regions}
+              options={this.getRegions(strings)}
+              values={this.getNotifications(strings).regions}
               onChange={this.onFieldChange.bind(this, 'notifications', 'regions')} />
             <div className='form__group'>
               <label className='form__label'>
@@ -670,7 +700,7 @@ class Account extends React.Component {
               </p>
               <Select
                 name='countries'
-                value={this.state.notifications.countries}
+                value={this.getNotifications(strings).countries}
                 onChange={this.onFieldChange.bind(this, 'notifications', 'countries')}
                 options={countries(this.props.allCountries)}
                 multi />
@@ -681,45 +711,45 @@ class Account extends React.Component {
               name='disasterTypes'
               classWrapper='action-checkboxes'
               options={this.props.disasterTypesSelect.map(dt => ({ value: dt.value.toString(), label: dt.label }))}
-              values={this.state.notifications.disasterTypes}
+              values={this.getNotifications(strings).disasterTypes}
               onChange={this.onFieldChange.bind(this, 'notifications', 'disasterTypes')} />
             {/*
                <FormCheckboxGroup
                label='Emergencies'
                name='event'
                classWrapper='action-checkboxes'
-               options={systemNotificationTypes}
-               values={this.state.notifications.event}
+               options={getSystemNotificationTypes(strings)}
+               values={this.getNotifications(strings).event}
                onChange={this.onFieldChange.bind(this, 'notifications', 'event')} />
                <FormCheckboxGroup
                label='Field Reports'
                name='fieldReport'
                classWrapper='action-checkboxes'
-               options={systemNotificationTypes}
-               values={this.state.notifications.fieldReport}
+               options={getSystemNotificationTypes(strings)}
+               values={this.getNotifications(strings).fieldReport}
                onChange={this.onFieldChange.bind(this, 'notifications', 'fieldReport')} />
                <FormCheckboxGroup
                label='Appeals'
                name='appeal'
                classWrapper='action-checkboxes'
-               options={systemNotificationTypes}
-               values={this.state.notifications.appeal}
+               options={getSystemNotificationTypes(strings)}
+               values={this.getNotifications(strings).appeal}
                onChange={this.onFieldChange.bind(this, 'notifications', 'appeal')} />
              */}
             <FormCheckboxGroup
               label={strings.accountSurgeNotification}
               name='surg'
               classWrapper='action-checkboxes'
-              options={this.surgeNotificationTypes}
-              values={this.state.notifications.surg}
+              options={this.getSurgeNotificationTypes(strings)}
+              values={this.getNotifications(strings).surg}
               onChange={this.onFieldChange.bind(this, 'notifications', 'surg')} />
             {this.isPerPermission()
              ? <FormCheckboxGroup
                  label={strings.acccountOtherNotification}
                  name='per'
                  classWrapper='action-checkboxes'
-                 options={this.perDueDateTypes}
-                 values={this.state.notifications.per}
+                 options={this.getPerDueDateTypes(strings)}
+                 values={this.getNotifications(strings).per}
                  onChange={this.onFieldChange.bind(this, 'notifications', 'per')} />
              : null}
             {events}
@@ -766,29 +796,32 @@ class Account extends React.Component {
         }
       });
     }
-    return (<div className='fold-container'>
-              <section className='fold' id='notifications'>
-                <div className='inner'>
-                  <h2 className='fold__title spacing-b'>
-                    <Translate stringId='accountOperationFollowing'/>
-                  </h2>
-                  <div className='row flex-sm'>
-                    <div className='account__op__title col col-3-sm'>
-                      <div className='text-uppercase'>
-                        <Translate stringId='accountCurrentlyFollowing'/>
-                      </div>
-                    </div>
-                    <div className='account__op__links col col-9-sm row flex-mid'>
-                      {events}
-                    </div>
-                  </div>
+    return (
+      <div className='fold-container'>
+        <section className='fold' id='notifications'>
+          <div className='inner'>
+            <h2 className='fold__title spacing-b'>
+              <Translate stringId='accountOperationFollowing'/>
+            </h2>
+            <div className='row flex-sm'>
+              <div className='account__op__title col col-3-sm'>
+                <div className='text-uppercase'>
+                  <Translate stringId='accountCurrentlyFollowing'/>
                 </div>
-              </section>
-            </div>);
+              </div>
+              <div className='account__op__links col col-9-sm row flex-mid'>
+                {events}
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    );
   }
 
   handleTabChange (index) {
-    const tabHashArray = this.TAB_DETAILS.map(({ hash }) => hash);
+    const { strings } = this.context;
+    const tabHashArray = this.getTabDetails(strings).map(({ hash }) => hash);
     const url = this.props.location.pathname;
     this.props.history.replace(`${url}${tabHashArray[index]}`);
   }
@@ -823,11 +856,11 @@ class Account extends React.Component {
           </header>
           <div className='tab__wrap'>
             <Tabs
-              selectedIndex={this.TAB_DETAILS.map(({ hash }) => hash).indexOf(this.props.location.hash)}
+              selectedIndex={this.getTabDetails(strings).map(({ hash }) => hash).indexOf(this.props.location.hash)}
               onSelect={index => this.handleTabChange(index)}
             >
               <TabList>
-                {this.TAB_DETAILS.map(tab => (
+                {this.getTabDetails(strings).map(tab => (
                   <Tab key={tab.title}>{tab.title}</Tab>
                 ))}
               </TabList>
