@@ -112,6 +112,8 @@ class Account extends React.Component {
 
     this.state = {
       isNotificationsDirty: false,
+      isProfileDirty: false,
+      profileEditMode: false,
       notifications: {
         countries: [],
         basic: this.getBasicTypes(strings).map(markUnChecked),
@@ -124,8 +126,6 @@ class Account extends React.Component {
         per: this.getPerDueDateTypes(strings).map(markUnChecked)
       },
 
-      isProfileDirty: false,
-      profileEditMode: false,
       profile: {
         firstName: null,
         lastName: null,
@@ -158,18 +158,6 @@ class Account extends React.Component {
     this.props._getPerMission();
     this.displayTabContent();
   }
-
-  getNotifications = memoize((strings) => ({
-    countries: [],
-    basic: this.getBasicTypes(strings).map(markUnChecked),
-    regions: this.getRegions(strings).map(markUnChecked),
-    disasterTypes: this.props.disasterTypesSelect.map(markUnChecked),
-    event: this.getSystemNotificationTypes(strings).map(markUnChecked),
-    fieldReport: this.getSystemNotificationTypes(strings).map(markUnChecked),
-    appeal: this.getSystemNotificationTypes(strings).map(markUnChecked),
-    surg: this.getSurgeNotificationTypes(strings).map(markUnChecked),
-    per: this.getPerDueDateTypes(strings).map(markUnChecked)
-  }))
 
   getTabDetails = memoize((strings) => [
     { title: strings.accountInformation, hash: '#account-information' },
@@ -304,12 +292,11 @@ class Account extends React.Component {
   }
 
   syncNotificationState (data) {
-    const { strings } = this.context;
     const subscriptions = get(data, 'subscription', []);
     if (!subscriptions.length) {
       return;
     }
-    let next = Object.assign({}, this.getNotifications(strings));
+    let next = Object.assign({}, this.state.notifications);
     subscriptions.forEach(sub => {
       const rtype = rtypes[sub.rtype];
       if (rtype === 'country' && sub.country) {
@@ -368,10 +355,9 @@ class Account extends React.Component {
   }
 
   onNotificationSubmit (e) {
-    const { strings } = this.context;
     e.preventDefault();
     showGlobalLoading();
-    const payload = this.serializeNotifications(this.getNotifications(strings));
+    const payload = this.serializeNotifications(this.state.notifications);
     const id = this.props.profile.data.id;
     this.props._updateSubscriptions(id, payload);
   }
@@ -681,7 +667,7 @@ class Account extends React.Component {
               name='basic'
               classWrapper='action-checkboxes'
               options={this.getBasicTypes(strings)}
-              values={this.getNotifications(strings).basic}
+              values={this.state.notifications.basic}
               onChange={this.onFieldChange.bind(this, 'notifications', 'basic')} />
             <FormCheckboxGroup
               label={strings.accountRegionalNotification}
@@ -689,7 +675,7 @@ class Account extends React.Component {
               name='regions'
               classWrapper='action-checkboxes'
               options={this.getRegions(strings)}
-              values={this.getNotifications(strings).regions}
+              values={this.state.notifications.regions}
               onChange={this.onFieldChange.bind(this, 'notifications', 'regions')} />
             <div className='form__group'>
               <label className='form__label'>
@@ -700,7 +686,7 @@ class Account extends React.Component {
               </p>
               <Select
                 name='countries'
-                value={this.getNotifications(strings).countries}
+                value={this.state.notifications.countries}
                 onChange={this.onFieldChange.bind(this, 'notifications', 'countries')}
                 options={countries(this.props.allCountries)}
                 multi />
@@ -711,7 +697,7 @@ class Account extends React.Component {
               name='disasterTypes'
               classWrapper='action-checkboxes'
               options={this.props.disasterTypesSelect.map(dt => ({ value: dt.value.toString(), label: dt.label }))}
-              values={this.getNotifications(strings).disasterTypes}
+              values={this.state.notifications.disasterTypes}
               onChange={this.onFieldChange.bind(this, 'notifications', 'disasterTypes')} />
             {/*
                <FormCheckboxGroup
@@ -719,21 +705,21 @@ class Account extends React.Component {
                name='event'
                classWrapper='action-checkboxes'
                options={getSystemNotificationTypes(strings)}
-               values={this.getNotifications(strings).event}
+               values={this.state.notifications.event}
                onChange={this.onFieldChange.bind(this, 'notifications', 'event')} />
                <FormCheckboxGroup
                label='Field Reports'
                name='fieldReport'
                classWrapper='action-checkboxes'
                options={getSystemNotificationTypes(strings)}
-               values={this.getNotifications(strings).fieldReport}
+               values={this.state.notifications.fieldReport}
                onChange={this.onFieldChange.bind(this, 'notifications', 'fieldReport')} />
                <FormCheckboxGroup
                label='Appeals'
                name='appeal'
                classWrapper='action-checkboxes'
                options={getSystemNotificationTypes(strings)}
-               values={this.getNotifications(strings).appeal}
+               values={this.state.notifications.appeal}
                onChange={this.onFieldChange.bind(this, 'notifications', 'appeal')} />
              */}
             <FormCheckboxGroup
@@ -741,7 +727,7 @@ class Account extends React.Component {
               name='surg'
               classWrapper='action-checkboxes'
               options={this.getSurgeNotificationTypes(strings)}
-              values={this.getNotifications(strings).surg}
+              values={this.state.notifications.surg}
               onChange={this.onFieldChange.bind(this, 'notifications', 'surg')} />
             {this.isPerPermission()
              ? <FormCheckboxGroup
@@ -749,7 +735,7 @@ class Account extends React.Component {
                  name='per'
                  classWrapper='action-checkboxes'
                  options={this.getPerDueDateTypes(strings)}
-                 values={this.getNotifications(strings).per}
+                 values={this.state.notifications.per}
                  onChange={this.onFieldChange.bind(this, 'notifications', 'per')} />
              : null}
             {events}
