@@ -114,7 +114,7 @@ function createStoreFromRaw (raw, countriesByIso) {
     features: Object.keys(countries).map(iso => {
       const { country, records } = countries[iso];
       let thisCentroid;
-      if (countriesByIso[country.iso][0].centroid) {
+      if (countriesByIso[country.iso] && countriesByIso[country.iso][0]?.centroid) {
         thisCentroid = countriesByIso[country.iso][0].centroid.coordinates;
       } else {
         thisCentroid = [0, 0];
