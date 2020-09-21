@@ -302,7 +302,7 @@ class Account extends React.Component {
       if (rtype === 'country' && sub.country) {
         let countryMeta = getCountryMeta(sub.country, this.props.allCountries);
         if (countryMeta && !next.countries.some((country) => country.value === countryMeta.value)) {
-          next.countries = next.countries.concat([{ label: countryMeta.name, value: sub.country.toString() }]);
+          next.countries = next.countries.concat([{ label: countryMeta.label, value: sub.country.toString() }]);
         }
       } else if (rtype === 'region' && (sub.region || sub.region === 0)) {
         next.regions = updateChecks(next.regions, sub.region.toString());
