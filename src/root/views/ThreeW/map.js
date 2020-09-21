@@ -173,6 +173,7 @@ class ThreeWMap extends React.PureComponent {
 
       // hide stock labels
       this.map.setLayoutProperty('icrc_admin0_labels', 'visibility', 'none');
+      this.map.setLayoutProperty('additional-geography-labels', 'visibility', 'none');
 
       this.map.addLayer(countryLabels);
     }

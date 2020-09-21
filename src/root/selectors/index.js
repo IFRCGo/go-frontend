@@ -85,7 +85,7 @@ export const countriesGeojsonSelector = (state) => {
   if (state.allCountries && state.allCountries.data.results) {
 
     state.allCountries.data.results.forEach(country => {
-      if (country.centroid && country.independent) {
+      if (country.centroid && (country.independent || country.independent === null)) {
         const f = {
           'type': 'Feature',
           'geometry': country.centroid,
