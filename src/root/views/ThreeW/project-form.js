@@ -231,7 +231,10 @@ class ProjectForm extends React.PureComponent {
       })).sort(compareString);
 
     const countryOptions = countryList
-      .filter(d => d.iso)
+      .filter(d => d.iso &&
+        // make sure either this country is explicitly independent or undefined or null. But not false.
+        (d.hasOwnProperty('independent') && (d.independent || d.independent === undefined || d.independent === null))
+      )
       .map(d => ({
         value: d.id,
         label: d.name,
