@@ -136,6 +136,7 @@ export function deleteJSON (path, action, options, extraData) {
 
   deleteOptions.headers['Content-Type'] = 'application/json';
   deleteOptions.headers['Accept'] = 'application/json';
+  deleteOptions.headers['Accept-Language'] = 'en'; // DELETE only supports english
   deleteOptions.method = 'DELETE';
 
   return makeRequest(path, action, deleteOptions, extraData);
@@ -171,6 +172,7 @@ export function postJSON (path, action, payload, options, extraData) {
 export function putJSON (path, action, payload, options, extraData) {
   options = withJSONRequest(payload, options);
   options.method = 'PUT';
+  options.headers['Accept-Language'] = 'en'; // PUT only supports english
   return makeRequest(path, action, options, extraData);
 }
 
@@ -187,6 +189,7 @@ export function putJSON (path, action, payload, options, extraData) {
 export function patchJSON (path, action, payload, options, extraData) {
   options = withJSONRequest(payload, options);
   options.method = 'PATCH';
+  options.headers['Accept-Language'] = 'en'; // PATCH only supports english
   return makeRequest(path, action, options, extraData);
 }
 
