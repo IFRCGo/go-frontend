@@ -1,3 +1,46 @@
+### Release 4.4.0 - Safar(i)
+
+_Safar_ / _Safari_ : A journey / expedition.
+
+Release 4.4.0, codename `Safari`, has been a journey across languages, cultures and continents. Major updates in this release include translations of the platform into the 4 official languages of the IFRC. The release also includes a major overhaul of our handling of geo data, making spatial data a core part of the GO API.
+
+### Frontend
+
+ - Validation fixes on Field Report form: https://github.com/IFRCGo/go-frontend/issues/1189
+ - Fix Source issue on Field Report form: https://github.com/IFRCGo/go-frontend/issues/987
+ - Link URLs in field report submission: https://github.com/IFRCGo/go-frontend/issues/1108
+ - Clear Districts dropdown when Country dropdown is cleared in Field Report form: https://github.com/IFRCGo/go-frontend/commit/bff2f16ce6c5ef7c4b08bc8a9536d95e75ffb2e7
+ - Prefetch data and add an initial loading screen: https://github.com/IFRCGo/go-frontend/issues/1386
+ - Move all geospatial strings to come from API: https://github.com/IFRCGo/go-frontend/issues/1534
+ - Implement translations of all static strings on frontend: https://github.com/IFRCGo/go-frontend/issues/1238
+ - Create UI to manage translations: https://github.com/IFRCGo/go-frontend/issues/1240
+ - Fix visibility of field reports for IFRC admins: https://github.com/IFRCGo/go-frontend/issues/1501
+
+
+### Backend
+
+ - Remove old EPI fields from backend - https://github.com/IFRCGo/go-frontend/issues/1161
+ - Add Rich Text Editor support to Admin fields - https://github.com/IFRCGo/go-api/issues/670
+ - Fix encoding issue with Rich Text Editor fields - https://github.com/IFRCGo/go-api/issues/837
+ - Implement end-points for Tableau Web Data Connector - https://github.com/IFRCGo/go-api/issues/743
+ - Management command to import geo-data from shape-field - https://github.com/IFRCGo/go-frontend/issues/938
+ - Addition of centroid and bbox fields to geospatial elements in the API - https://github.com/IFRCGo/go-frontend/issues/938
+ - Translation of static strings in the backend - https://github.com/IFRCGo/go-api/issues/774
+ - Translations for all model text fields in the backend - https://github.com/IFRCGo/go-api/issues/719
+ - Setup `Celery` to handle async translation job-flows - https://github.com/IFRCGo/go-api/issues/819
+ - Add `is_ifrc_admin` boolean to users end-point in the API - https://github.com/IFRCGo/go-api/pull/845
+ - Refactor views to use APIViews - https://github.com/IFRCGo/go-api/pull/840
+ - Implement resending verification email - https://github.com/IFRCGo/go-api/issues/737
+ - Fix Azure Storage class to help tests + local development - https://github.com/IFRCGo/go-api/issues/825
+ - Change FDRS auth to use API key - https://github.com/IFRCGo/go-api/issues/851
+ - Add labels to Region model in the backend - https://github.com/IFRCGo/go-api/pull/858
+ - Change ElasticSearch configuration settings to improve stability - https://github.com/IFRCGo/go-frontend/issues/1353
+ - Fix PDF scraper errors and added more information about errors to logs - https://github.com/IFRCGo/go-api/issues/863
+ - Fix ingest_databank error - https://github.com/IFRCGo/go-api/pull/856
+ - Removed child Emergencies from appearing in dropdowns - https://github.com/IFRCGo/go-frontend/issues/1487
+ - Added 'Activate users' action and 'User is active' column to Pending Users page - https://github.com/IFRCGo/go-api/issues/766
+ - Simplify CSV export on Emergencies end-point - https://github.com/IFRCGo/go-api/issues/708
+
 ### Release 4.3.12
 
 Hotfix release: Fix undefined string for Potentially Affected in Field Report frontend
