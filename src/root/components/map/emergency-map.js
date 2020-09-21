@@ -129,7 +129,7 @@ class EmergencyMap extends React.Component {
                 <div className='fold__title__linkwrap'>
                   <button className={c('button button--primary-bounded button--small button--export', {
                     disabled: !this.state.ready
-                  })} onClick={this.exportMap.bind(this, countries[0].name, _find(this.props.disasterTypesSelect, {value: String(disasterTypeCode)}).label)}>
+                  })} onClick={this.exportMap.bind(this, countries[0].name, _find(this.props.disasterTypesSelect, {value: String(disasterTypeCode)})?.label)}>
                     <Translate stringId='emergencyMapExport'/>
                   </button>
                 </div>
