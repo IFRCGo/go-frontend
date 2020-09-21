@@ -124,15 +124,17 @@ function Map (props) {
     }
 
     // add custom labels
-    map.setLayoutProperty('icrc_admin0_labels', 'visibility', 'none');
     if (countriesGeojson) {
       map.addSource('countryCentroids', {
         type: 'geojson',
         data: countriesGeojson
       });
-    }
 
-    map.addLayer(countryLabels);
+      // hide stock labels
+      map.setLayoutProperty('icrc_admin0_labels', 'visibility', 'none');
+
+      map.addLayer(countryLabels);
+    }
 
     map.addSource('movement-activity-markers', geojson);
     map.addLayer({

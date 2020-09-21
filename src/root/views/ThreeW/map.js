@@ -165,15 +165,18 @@ class ThreeWMap extends React.PureComponent {
     } = this.props;
 
     // add custom labels
-    this.map.setLayoutProperty('icrc_admin0_labels', 'visibility', 'none');
     if (this.props.countriesGeojson) {
       this.map.addSource('countryCentroids', {
         type: 'geojson',
         data: this.props.countriesGeojson
       });
+
+      // hide stock labels
+      this.map.setLayoutProperty('icrc_admin0_labels', 'visibility', 'none');
+
+      this.map.addLayer(countryLabels);
     }
 
-    this.map.addLayer(countryLabels);
     this.fillMap(countryId, projectList, districtsResponse);
   }
 

@@ -99,8 +99,10 @@ export const countriesGeojsonSelector = (state) => {
         featureCollection.features.push(f);
       }
     });
+    return featureCollection;
+  } else {
+    return null;
   }
-  return featureCollection;
 };
 
 export const regionsByIdSelector = (state) => {

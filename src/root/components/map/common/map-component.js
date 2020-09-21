@@ -34,16 +34,16 @@ export default class MapComponent extends React.Component {
         type: 'geojson',
         data: this.props.countriesGeojson
       });
+      // hide stock labels
+      this.theMap.setLayoutProperty('icrc_admin0_labels', 'visibility', 'none');
+
+      // add custom language labels
+      this.theMap.addLayer(countryLabels);
     }
 
     get(this.props, 'layers', []).forEach(layer => this.theMap.addLayer(layer));
     get(this.props, 'filters', []).forEach(this.safeSetFilter);
 
-    // hide stock labels
-    this.theMap.setLayoutProperty('icrc_admin0_labels', 'visibility', 'none');
-
-    // add custom language labels
-    this.theMap.addLayer(countryLabels);
   }
 
   safeSetFilter (filter) {
