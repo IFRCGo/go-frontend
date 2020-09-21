@@ -36,6 +36,7 @@ export default class MapComponent extends React.Component {
       });
       // hide stock labels
       this.theMap.setLayoutProperty('icrc_admin0_labels', 'visibility', 'none');
+      this.theMap.setLayoutProperty('additional-geography-labels', 'visibility', 'none');
 
       // add custom language labels
       this.theMap.addLayer(countryLabels);

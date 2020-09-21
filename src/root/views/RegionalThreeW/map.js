@@ -132,6 +132,7 @@ function Map (props) {
 
       // hide stock labels
       map.setLayoutProperty('icrc_admin0_labels', 'visibility', 'none');
+      map.setLayoutProperty('additional-geography-labels', 'visibility', 'none');
 
       map.addLayer(countryLabels);
     }
