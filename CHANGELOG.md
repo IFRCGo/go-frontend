@@ -4,6 +4,8 @@ _Safar_ / _Safari_ : A journey / expedition.
 
 Release 4.4.0, codename `Safari`, has been a journey across languages, cultures and continents. Major updates in this release include translations of the platform into the 4 official languages of the IFRC. The release also includes a major overhaul of our handling of geo data, making spatial data a core part of the GO API.
 
+Details about API changes in this release can be found here: https://github.com/IFRCGo/go-frontend/wiki/GO-API-Changes-v4.4.0---Safari
+
 ### Frontend
 
  - Validation fixes on Field Report form: https://github.com/IFRCGo/go-frontend/issues/1189
