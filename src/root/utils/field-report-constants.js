@@ -55,7 +55,7 @@ export const countries = (countries, independent=false) => {
   countriesSelectList = countries.filter(country => country.record_type === 1 || country.record_type === 3);
 
   if (independent) {
-    countriesSelectList = countries
+    countriesSelectList = countriesSelectList
     .filter(
         country => (country.independent === true
         || country.independent === undefined
