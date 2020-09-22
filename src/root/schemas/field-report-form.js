@@ -15,23 +15,22 @@ export const step1 = {
       type: 'string'
     },
     event: {
-      type: 'number',
+      type: 'integer',
       minimum: 0
     },
     startDate: {
-      type: 'string'
-    },
-    country: {
       type: 'string',
-      enum: getValidValues(formData.countries, 'value')
+      format: 'date',
+      formatMinimum: '1980-01-01',
+      formatExclusiveMaximum: true
     },
     districts: {
       type: 'array'
     },
-    disasterType: {
-      type: 'string',
-      enum: getValidValues(formData.disasterType, 'value')
-    },
+    // disasterType: {
+    //   type: 'string',
+    //   enum: getValidValues(formData.disasterType, 'value')
+    // },
     assistance: {
       type: 'boolean'
     },
@@ -48,8 +47,12 @@ export const step2 = {
       type: 'array',
       items: {
         properties: {
-          estimation: { type: 'number', minimum: 0 },
+          estimation: { type: 'integer', minimum: 0 },
           source: {enum: ['red-cross', 'government', 'other']}
+        },
+        dependencies: {
+          estimation: ['source'],
+          source: ['estimation'],
         }
       }
     },
@@ -59,6 +62,10 @@ export const step2 = {
         properties: {
           estimation: { type: 'string' },
           source: {enum: ['red-cross', 'government', 'other']}
+        },
+        dependencies: {
+          estimation: ['source'],
+          source: ['estimation'],
         }
       }
     }
@@ -89,22 +96,22 @@ export const step2 = {
       '$ref': '#/definitions/estimationString'
     },
     epiCases: {
-      type: 'number'
+      type: 'integer'
     },
     epiNumDead: {
-      type: 'number'
+      type: 'integer'
     },
     epiSuspectedCases: {
-      type: 'number'
+      type: 'integer'
     },
     epiProbableCases: {
-      type: 'number'
+      type: 'integer'
     },
     epiConfirmedCases: {
-      type: 'number'
+      type: 'integer'
     },
     epiFiguresSource: {
-      type: 'number',
+      type: 'integer',
       enum: getValidValues(formData.epiSources, 'value')
     },
     sitFieldsDate: {
@@ -147,11 +154,11 @@ export const step3 = {
     }
   },
   properties: {
-    numAssistedGov: { type: 'number', minimum: 0 },
-    numAssistedRedCross: { type: 'number', minimum: 0 },
-    numLocalStaff: { type: 'number', minimum: 0 },
-    numVolunteers: { type: 'number', minimum: 0 },
-    numExpats: { type: 'number', minimum: 0 },
+    numAssistedGov: { type: 'integer', minimum: 0 },
+    numAssistedRedCross: { type: 'integer', minimum: 0 },
+    numLocalStaff: { type: 'integer', minimum: 0 },
+    numVolunteers: { type: 'integer', minimum: 0 },
+    numExpats: { type: 'integer', minimum: 0 },
     actionsNatSoc: {
       '$ref': '#/definitions/actionsCheckboxes'
     },
@@ -175,8 +182,12 @@ export const step4 = {
     plannedResponse: {
       properties: {
         status: { type: 'string' },
-        value: { type: 'number', minimum: 0 }
-      }
+        value: { type: 'integer', minimum: 0 }
+      },
+        dependencies: {
+          status: ['value'],
+          value: ['status'],
+        }
     },
     contact: {
       properties: {
@@ -228,3 +239,4 @@ export const step4 = {
     }
   }
 };
+

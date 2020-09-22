@@ -10,7 +10,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { Helmet } from 'react-helmet';
 
 import { api, environment } from '#config';
-import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
+import NewGlobalLoading from '#components/NewGlobalLoading';
 import Translate from '#components/Translate';
 import BreadCrumb from '#components/breadcrumb';
 import { withLanguage } from '#root/languageContext';
@@ -39,7 +39,6 @@ import {
   getRecordsByType
 } from '#utils/utils';
 
-import { getRegionById } from '#utils/region-constants';
 import App from '#views/app';
 import Fold from '#components/fold';
 import TabContent from '#components/tab-content';
@@ -50,9 +49,9 @@ import SurgeAlertsTable from '#components/connected/alerts-table';
 import PersonnelTable from '#components/connected/personnel-table';
 import EruTable from '#components/connected/eru-table';
 import EmergencyMap from '#components/map/emergency-map';
-import { NO_DATA } from '#utils/constants';
 import { epiSources } from '#utils/field-report-constants';
 import ProjectFormModal from '#views/ThreeW/project-form-modal';
+import { regionsByIdSelector } from '../selectors';
 
 class Emergency extends React.Component {
   constructor (props) {
@@ -88,8 +87,6 @@ class Emergency extends React.Component {
     }
 
     if (this.props.event.fetching && !nextProps.event.fetching) {
-      hideGlobalLoading();
-
       // Redirect if it's a merged Emergency
       if (
         nextProps.event.fetched &&
@@ -160,7 +157,7 @@ class Emergency extends React.Component {
   }
 
   getEvent (id) {
-    showGlobalLoading();
+    // showGlobalLoading();
     this.props._getEventById(id);
     this.props._getSitrepsByEventId(id);
   }
@@ -241,11 +238,16 @@ class Emergency extends React.Component {
           </ul>
         </div>
         <p className="emergency__source">
-          Source:{' '}
-          <Link to={`/reports/${report.id}`}>
-            {report.summary},{' '}
-            {timestamp(report.updated_at || report.created_at)}
-          </Link>
+          <Translate
+            stringId="emergencySourceMessage"
+            params={{
+              link: (
+                <Link to={`/reports/${report.id}`}>
+                  {`${report.summary} ${timestamp(report.updated_at || report.created_at)}`}
+                </Link>
+              ),
+            }}
+          />
         </p>
       </div>
     );
@@ -262,7 +264,9 @@ class Emergency extends React.Component {
     const epiFiguresSource = epiSources.find(source => source.value === `${report.epi_figures_source}`);
     return (
       <div className='inpage__header-col'>
-        <h3 className='fold__title spacing-2-t spacing-b'>Emergency Overview</h3>
+        <h3 className='fold__title spacing-2-t spacing-b'>
+          <Translate stringId="emergencyFieldReportStatsHeading" />
+        </h3>
         <div className='content-list-group row flex-xs'>
           { isEPI
             ? (
@@ -432,10 +436,11 @@ class Emergency extends React.Component {
   userHasPerms (fieldReport) {
     const userIsAnon = !this.props.isLogged;
     const userIsSuperuser = this.props.profile.fetched && this.props.profile.data.is_superuser;
+    const userIsIFRCAdmin = this.props.profile.fetched && this.props.profile.data.is_ifrc_admin;
     const visibility = fieldReport.visibility;
 
     // superusers can see all reports
-    if (userIsSuperuser) {
+    if (userIsSuperuser || userIsIFRCAdmin) {
       return true;
     }
 
@@ -511,7 +516,7 @@ class Emergency extends React.Component {
                         key={region}
                         className="link--table"
                       >
-                        {getRegionById(region.toString()).name}
+                        { this.props.regionsById[region][0].label }
                       </Link>);
                     }) : nope }
                   </td>
@@ -710,19 +715,9 @@ class Emergency extends React.Component {
     }
   }
 
-  syncLoadingAnimation = memoize((projectForm = {}) => {
-    const shouldShowLoadingAnimation = projectForm.fetching;
-
-    if (shouldShowLoadingAnimation) {
-      this.loading = true;
-      showGlobalLoading();
-    } else {
-      if (this.loading) {
-        hideGlobalLoading();
-        this.loading = false;
-      }
-    }
-  });
+  isPending = memoize((projectForm = {}, eventForm = {}, siteRepForm = {}) => (
+    projectForm.fetching || eventForm.fetching || siteRepForm.fetching
+  ))
 
   renderContent () {
     const { fetched, error, data } = this.props.event;
@@ -817,7 +812,11 @@ class Emergency extends React.Component {
       regionId = country.region;
       if (regionId) {
         regionLink = `/regions/${regionId}`;
-        regionName = getRegionById(regionId.toString()).name;
+        regionName = this.props.regionsById[regionId][0].label;
+        crumbs.push({
+          link: regionLink,
+          name: regionName
+        });
       }
     }
     crumbs.push({
@@ -826,6 +825,7 @@ class Emergency extends React.Component {
     crumbs.push({
       link: '/', name: strings.breadCrumbHome,
     });
+
     return (
       <section className="inpage">
         <Helmet>
@@ -942,7 +942,7 @@ class Emergency extends React.Component {
                   {showExportMap()}
                   <TabContent
                     isError={!summary}
-                    errorMessage={NO_DATA}
+                    errorMessage={strings.noDataMessage}
                     title={strings.emergencyOverviewTitle}
                   >
                     <Fold
@@ -967,7 +967,7 @@ class Emergency extends React.Component {
                   </TabContent>
                   <TabContent
                     isError={!get(this.props.eru, 'data.results.length')}
-                    errorMessage={NO_DATA}
+                    errorMessage={strings.noDataMessage}
                     title={strings.emergencyERUTitle}
                   >
                     <EruTable id="erus" emergency={this.props.match.params.id} />
@@ -980,7 +980,7 @@ class Emergency extends React.Component {
                   </TabContent>
                   <TabContent
                     isError={!get(this.props.event, 'data.field_reports.length')}
-                    errorMessage={NO_DATA}
+                    errorMessage={strings.noDataMessage}
                     title={strings.emergencyFieldReportsTitle}
                   >
                     {this.renderFieldReports()}
@@ -989,7 +989,7 @@ class Emergency extends React.Component {
                     isError={
                       !get(this.props.appealDocuments, 'data.results.length')
                     }
-                    errorMessage={NO_DATA}
+                    errorMessage={strings.noDataMessage}
                     title={strings.emergencyAppealDocumentsTitle}
                   >
                     {this.renderAppealDocuments()}
@@ -998,7 +998,7 @@ class Emergency extends React.Component {
                     isError={
                       !get(this.props.situationReports, 'data.results.length')
                     }
-                    errorMessage={NO_DATA}
+                    errorMessage={strings.noDataMessage}
                     title={strings.emergencyResponseDocumentsTitle}
                   >
                     {this.renderResponseDocuments()}
@@ -1067,14 +1067,21 @@ class Emergency extends React.Component {
   }
 
   render () {
-    this.syncLoadingAnimation(this.props.projectForm);
-    const { strings } = this.props;
+    const {
+      strings,
+      projectForm,
+      event,
+      siteRepResponse,
+    } = this.props;
+
+    const pending = this.isPending(projectForm, event, siteRepResponse);
 
     return (
       <App className="page--emergency">
         <Helmet>
           <title>{strings.emergencyPageTitleStatic}</title>
         </Helmet>
+        { pending && <NewGlobalLoading /> }
         {this.renderContent()}
       </App>
     );
@@ -1123,6 +1130,7 @@ const selector = (state, ownProps) => ({
     fetching: false,
     fetched: false,
   }),
+  siteRepResponse: state.situationReports,
   situationReports: get(
     state.situationReports,
     ['reports', ownProps.match.params.id],
@@ -1144,6 +1152,7 @@ const selector = (state, ownProps) => ({
   isLogged: !!state.user.data.token,
   user: state.user,
   profile: state.profile,
+  regionsById: regionsByIdSelector(state),
 });
 
 const dispatcher = (dispatch) => ({

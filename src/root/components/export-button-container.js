@@ -4,6 +4,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { stringify } from 'qs';
+
+import Translate from '#components/Translate';
+
 import { get } from '#utils/utils';
 import { startDownload } from '#utils/download-starter';
 import { environment, api } from '#config';
@@ -70,7 +73,7 @@ class ExportButton extends React.Component {
       startDownload(dataUri, this.generateFileName(newProps.filename, '.csv'));
       this.props._clearLoadedCsv(this.props.resource);
     } else if (!this.props.csv.error && newProps.csv.error) {
-      showAlert('danger', <p><strong>Error:</strong> Could not export data</p>, true, 4500);
+      showAlert('danger', <p><Translate stringId="exportButtonContainerErrorMessage" /></p>, true, 4500);
     }
   }
 
@@ -79,7 +82,7 @@ class ExportButton extends React.Component {
     if (!this.props.csv.fetching) {
       const id = this.props.resource;
       this.props._getListAsCsv(this.getExportLink(), id);
-      showAlert('info', <p><strong>Info:</strong> Exporting...</p>, true);
+      showAlert('info', <p><Translate stringId="exportButtonContainerExportingMessage" /></p>, true);
     }
   }
 

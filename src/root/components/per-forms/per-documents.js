@@ -1,13 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { environment } from '#config';
-import { getRegionById } from '#utils/region-constants';
 import { PropTypes as T } from 'prop-types';
 
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 
-const PerDocuments = ({perOverviewForm, perForm}) => {
+const PerDocuments = ({perOverviewForm, perForm, regionsById}) => {
   const { strings } = React.useContext(LanguageContext);
 
   const groupedDocuments = {};
@@ -87,7 +86,7 @@ const PerDocuments = ({perOverviewForm, perForm}) => {
         });
         countries.push(<div key={'countryDocument' + countryKey}><div className='heading-sub global-spacing-v'>{currentCountryName}</div>{perDocuments}<br /></div>);
       });
-      regions.push(<div key={'regionDocument' + regionKey}><span className='fold__title'>{getRegionById(regionKey).name}</span>{countries}<br /></div>);
+      regions.push(<div key={'regionDocument' + regionKey}><span className='fold__title'>{regionsById[regionKey][0].label}</span>{countries}<br /></div>);
     });
     return regions;
   };

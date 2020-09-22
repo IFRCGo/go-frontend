@@ -1,494 +1,287 @@
 @import '~styles/settings/variables';
 
-.key-climate-events {
-  padding: 16px 16px;
-
-  .content {
-    padding: $spacing 0;
-  }
-}
-
 .country-overview {
   width: 100%;
-  background-color: #fff;
-  //box-shadow: $base-box-shadow;
   position: relative;
   overflow-x: auto;
-  padding: 2rem;
 
-  .key-events-section {
-    //display: flex;
+  %card-section {
+    display: flex;
+  }
 
-    .key-climate-events {
-      padding: 14px 10px;
-      flex-basis: 0;
-      flex-grow: 1;
+  %card-content {
+    flex-basis: 0;
+    flex-grow: 1;
+  }
 
-      .heading {
-        //font-size: 1.14rem;
-        //text-transform: uppercase;
-        //letter-spacing: 1.6px;
-        //padding: 16px 10px;
-        //margin: 0;
-        //margin-bottom: 24px;
-        //border-bottom: 1px solid #c9c3c1;
-      }
+  section {
+    padding-top: $spacing-2;
+    padding-bottom: $spacing-2;
 
-      .content {
-        .key-event-output {
-          display: table-row;
-
-          .label {
-            display: table-cell;
-            padding: 6px 10px;
-          }
-
-          .value {
-            display: table-cell;
-            padding: 6px 10px;
-            font-weight: $base-font-bold;
-          }
-        }
-      }
-    }
-
-    .social-events {
-      flex-basis: 0;
-      flex-grow: 1;
+    &:nth-child(even) {
+      background-color: $grey-mist;
     }
   }
 
-  :global {
-    .top-section {
-      //border: 1px solid rgba(0, 0, 0, .1);
+  .top-section {
+    @extend %card-section;
 
-      //.key-indicators {
-        //flex-basis: 50%;
-      //}
-
-      //.ns-indicators {
-        //flex-basis: 50%;
-      //}
-
-      @media (min-width: $media-small) {
-        display: flex;
-        flex-wrap: wrap;
-      }
-
-      .tc-data-source {
-        display: flex;
-        flex-basis: 100%;
-        align-items: center;
-        justify-content: center;
-        font-size: 11px;
-        color: rgba(0, 0, 0, .3);
-        font-weight: bold;
-        padding: 10px 0;
-        
-        .tc-label {
-          padding: 3px;
-        }
-
-        .tc-value {
-          padding: 3px;
-        }
-      }
+    .key-indicators,
+    .ns-indicators {
+      @extend %card-content;
     }
+  }
 
-    .population-and-climate-section {
-      //display: flex;
+  .key-climate-events-and-dates-section {
+    @extend %card-section;
 
-      .population-map {
-        flex-basis: 0;
-        flex-grow: 1;
-      }
-
-      .climate-chart {
-        flex-basis: 0;
-        flex-grow: 1;
-      }
+    .key-climate-events,
+    .social-events {
+      @extend %card-content;
     }
+  }
 
-    .middle-section {
-      border: 1px solid rgba(0, 0, 0, .1);
-      display: flex;
-
-      .social-events {
-        flex-basis: calc(100% / 3);
-      }
-
-      .past-crises-events {
-        flex-basis: calc(100% / 3);
-      }
-
-      .past-epidemics {
-        flex-basis: calc(100% / 3);
-      }
-    }
-
-    .key-indicator-text-output {
-      display: table-row;
-
-      .tc-label {
-        display: table-cell;
-        padding: 5px 10px;
-      }
-
-      .tc-value {
-        display: table-cell;
-        padding: 5px 10px;
-        font-weight: bold;
-      }
-    }
-
-    %tc-block {
-      padding: 16px 16px;
-
-      //>.tc-heading {
-        //padding: 16px 10px;
-        //margin: 0;
-        //margin-bottom: 24px;
-        //border-bottom: 1px solid rgba(0, 0, 0, .1);
-      //}
-
-      //.tc-heading {
-        //text-transform: uppercase;
-      //}
-
-      >.tc-content {
-        padding: 10px 0;
-      }
-    }
-
-    .overview-key-indicators {
-      //@extend %tc-block;
-
-      .tc-content {
-        @media (min-width: $media-small) {
-          display: flex;
-          padding: $spacing;
-        }
-
-        .tc-left {
-          @media (min-width: $media-medium) {
-            flex-basis: 50%;
-          }  
-        }
-          
-        .tc-right {
-          @media (min-width: $media-medium) {
-            flex-basis: 50%;
-          }
-        }
-
-        .tc-label {
-          width: 50%;
-        }
-
-      }
-    }
-
-    .overview-ns-indicators {
-      //@extend %tc-block;
-      .tc-content {
-        padding: $spacing;
-      }
-    }
-
-    .overview-social-events {
-      @extend %tc-block;
-
-      .tc-content {
-        max-height: 160px;
-        overflow: auto;
-      }
-    }
-
-    .overview-past-crises-events {
-      @extend %tc-block;
-
-      .tc-content {
-        max-height: 160px;
-        overflow: auto;
-      }
-    }
-
-    .overview-past-epidemics {
-      @extend %tc-block;
-
-      .tc-content {
-        max-height: 160px;
-        overflow: auto;
-      }
-    }
-
-    .overview-population-map {
-      @extend %tc-block;
+  .population-map {
+    .content {
       display: flex;
       flex-direction: column;
 
-      .tc-content {
-        display: flex;
-        flex-direction: column;
+      .map-container {
         flex-grow: 1;
-
-        .overview-map-container {
-          flex-grow: 1;
-        }
+        min-height: 360px;
       }
     }
+  }
 
-    .overview-past-operations {
-      @extend %tc-block;
+  .climate-chart {
+    .chart-container {
+      padding: $spacing-half 0;
 
-      .tc-content {
-        margin: 12px 0;
-        height: 300px;
+      .header {
+        .heading {
+          letter-spacing: $letter-spacing-lg;
+          text-transform: uppercase;
+          font-size: $font-size-sm;
+          padding: $spacing-half $spacing-2;
+        }
       }
 
-      .past-operations-filter {
-        .chart-mode-input {
-          padding: 12px 0;
+      .content {
+        height: 160px;
 
-          .chart-mode-button {
-            &:not(:last-child) {
-              border-right: 1px solid rgba(0, 0, 0, .3);
-            }
+        :global {
+          .recharts-label {
+            font-size: $font-size-xxs;
+            font-weight: $base-font-light;
+            fill: rgba(0, 0, 0, .6);
+          }
+
+          .recharts-cartesian-axis-tick {
+            font-size: $font-size-xxs;
+            font-weight: $base-font-bold;
+            text-transform: uppercase;
           }
         }
       }
     }
+  }
 
-    .event-detail-element {
+  .population-and-climate-section {
+    display: flex;
+
+    .population-map,
+    .climate-chart {
+      flex-basis: 0;
+      flex-grow: 1;
+    }
+  }
+
+  .overview-key-indicators {
+    .content {
       display: flex;
-      align-items: baseline;
-      padding: 0 10px;
 
-      .tc-value {
-        padding: 2px 6px;
-        font-weight: $base-font-bold;
-      }
-
-      .tc-label {
-        padding: 2px 6px;
+      .section {
+        flex-basis: 0;
+        flex-grow: 1;
       }
     }
+  }
 
-    .event-detail-tooltip {
-      background-color: #fff;
-      box-shadow: 0 0 3px 1px rgba(0, 0, 0, .3);
-      padding: 10px 0;
+  .key-event-output,
+  .key-indicator-text-output {
+    display: table-row;
 
-      .basic-detail {
+    .label {
+      display: table-cell;
+      padding: $spacing-half $spacing;
+      font-weight: $base-font-regular;
+    }
+
+    .value {
+      display: table-cell;
+      padding: $spacing-half $spacing;
+      font-weight: $base-font-bold;
+      color: $secondary-color;
+    }
+  }
+
+  .document-details {
+    display: flex;
+    font-weight: $base-font-medium;
+    display: table-row;
+
+    .title {
+      padding: $spacing-half;
+      display: table-cell;
+    }
+
+    .date {
+      display: table-cell;
+      padding: $spacing-half;
+    }
+
+    .file-download-link {
+      display: table-cell;
+      padding: $spacing-half;
+    }
+  }
+
+  .key-documents {
+    .content {
+      .filters {
         display: flex;
-        align-items: baseline;
-        padding: 0 10px;
-        font-size: 18px;
-        font-weight: $base-font-bold;
-        color: $primary-color;
+        align-items: center;
+        justify-content: space-between;
+        padding: $spacing;
+        margin-bottom: $spacing;
 
-        .event-country-name {
-          padding: 4px 6px;
+        .search-container {
+          display: flex;
+          align-items: center;
+          border-bottom: $base-border-width solid $base-border-color;
+
+          .icon {
+            font-size: $font-size-lg;
+          }
+
+          .search {
+            padding: 0;
+
+            input {
+              border: 0;
+              outline: none;
+            }
+          }
         }
-
-        .separator {
-          padding: 4px 6px;
-        }
-
-        .disaster-title {
-          padding: 4px 6px;
-        }
       }
 
-      .event-start-date {
-        padding: 0 16px;
-      }
-
-      .other-details {
-        padding: 6px 0;
-      }
-    }
-
-    .tc-segment-button {
-      border: 0;
-      background-color: transparent;
-      cursor: pointer;
-      color: rgba(0, 0, 0, .5);
-      padding: 2px 10px;
-      outline: none;
-
-      &:hover {
-        color: rgba(0, 0, 0, .8);
-      }
-
-      &.tc-active {
-        color: $primary-color;
-      }
-    }
-
-    .country-climate-chart {
-      @extend %tc-block;
-
-      >.tc-content {
+      .cards {
         display: flex;
-        align-items: flex-start;
-
-        .tc-charts {
-          flex-grow: 1;
-          .temperature-chart {
-            height: 300px;
-          }
-
-          .precipitation-chart {
-            height: 200px;
-          }
-        }
-
-        .tc-key-info {
-          flex-basis: 30%;
-          padding: 14px 10px;
-          border: 1px solid rgba(0, 0, 0, .06);
-
-          .tc-heading {
-            padding: 4px 10px;
-            text-align: center;
-          }
-
-          .tc-content {
-            .climate-key-event {
-              display: table-row;
-
-              .tc-label {
-                display: table-cell;
-                padding: 4px 10px;
-              }
-
-              .tc-value {
-                display: table-cell;
-                font-weight: $base-font-bold;
-                padding: 4px 10px;
-              }
-            }
-          }
-        }
-      }
-    }
-
-    .country-seasonal-calendar {
-      @extend %tc-block;
-
-      >.tc-content {
-        .calendar-chart {
-          display: table;
-          width: 100%;
-
-          .calendar-chart-row {
-            display: table-row;
-
-            .calendar-chart-sector-cell {
-              display: table-cell;
-              border-right: 1px solid rgba(0, 0, 0, .1);
-              vertical-align: middle;
-              text-align: right;
-              padding: 2px 6px;
-            }
-
-            .calendar-chart-title-list-cell {
-              width: 88%;
-              display: table-cell;
-
-              .calendar-chart-title-list {
-                width: 100%;
-
-                .calendar-chart-title {
-                  float: left;
-                  flex-shrink: 0;
-                  background-color: #eee;
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                  padding: 6px;
-                  margin: 2px;
-                  overflow: hidden;
-                }
-
-                .calendar-chart-month-title {
-                  border-top: 1px solid rgba(0, 0, 0, .1);
-
-                  flex-shrink: 0;
-                  flex-basis: calc(100% / 12);
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                }
-              }
-
-              .calendar-chart-month-title-list {
-                display: flex;
-
-                .calendar-chart-month-title {
-                  border-top: 1px solid rgba(0, 0, 0, .1);
-
-                  flex-shrink: 0;
-                  flex-basis: calc(100% / 12);
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                }
-              }
-            }
-
-            .calendar-bubble-chart {
-              height: 80px;
-            }
-          }
-        }
-      }
-    }
-
-    .country-inform-indicators {
-      @extend %tc-block;
-
-      >.tc-content {
-        display: flex;
-        flex-direction: column;
         flex-wrap: wrap;
-        max-height: 900px;
 
-        .inform-indicator-element {
-          min-width: 400px;
+        h3 {
+          font-size: $font-size-heading-sm;
+          letter-spacing: 0;
+          text-align: inline-start!important;
+          margin-left: -$spacing;
+          margin-right: -$spacing;
+          padding-left: $spacing + $spacing-half;
+          padding-right: $spacing + $spacing-half;
+        }
+
+        .document-group {
           flex-basis: calc(100% / 3);
-          padding: 10px 0;
+          min-width: $row-min-width;
+          margin: $spacing-half;
+          max-height: 240px;
+        }
+      }
+    }
+  }
 
-          >.tc-heading {
-            padding: 16px 10px;
-          }
+  .external-sources {
+    .content {
+      display: flex;
+      flex-wrap: wrap;
+      padding: $spacing;
 
-          >.tc-content {
-            height: 400px;
-          }
+      .source-details {
+        display: flex;
+        align-items: center;
+        color: $white;
+        background-color: $primary-color;
+        margin: $spacing-half $spacing;
+        padding: 0 $spacing;
+        border-radius: calc(0.5rem + #{$spacing-half});
+        font-weight: $base-font-medium;
 
-          &.inform-indicator-hazard-and-exposure {
-            order: 3;
+        .title {
+          padding: $spacing-half;
+        }
 
-            >.tc-content {
-              height: 692px;
+        .icon {
+          padding: $spacing-half;
+          display: flex;
+          align-items: center;
+        }
+      }
+    }
+  }
+
+  .seasonal-calendar {
+    font-size: $font-size-sm;
+    font-weight: $base-font-medium;
+
+    .content {
+      padding: 0 $spacing;
+
+      .row {
+        display: flex;
+        margin: $spacing 0;
+
+        .sector-cell {
+          width: 120px;
+          vertical-align: middle;
+          padding: $spacing-half;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .title-list-cell {
+          flex-grow: 1;
+
+          .title-list {
+            position: relative;
+            height: 100%;
+
+            .title {
+              position: absolute;
+              background-color: pink;
+              overflow: hidden;
+              padding: $spacing-half;
+              text-align: center;
+              text-transform: uppercase;
+              font-size: $font-size-xxs;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
             }
           }
 
-          &.inform-indicator-vulnerability {
-            order: 2;
+          .month-title-list {
+            display: flex;
 
-            >.tc-content {
-              height: 400px;
-            }
-          }
-
-          &.inform-indicator-lack-of-coping-capacity {
-            order: 1;
-
-            >.tc-content {
-              height: 200px;
+            .month-title {
+              border-top: 1px solid rgba(0, 0, 0, .1);
+              flex-shrink: 0;
+              flex-basis: calc(100% / 12);
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              text-transform: uppercase;
+              font-size: $font-size-xxs;
+              padding: $spacing-half 0;
             }
           }
         }
@@ -496,4 +289,3 @@
     }
   }
 }
-

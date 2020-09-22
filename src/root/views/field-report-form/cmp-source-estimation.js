@@ -16,7 +16,7 @@ export default class SourceEstimation extends React.Component {
   onEstimationChange (idx, e) {
     const { values, onChange } = this.props;
     const newVals = _cloneDeep(values);
-    newVals[idx].estimation = e.target.value;
+    newVals[idx].estimation = e.target.value === '' ? undefined :  e.target.value;
     onChange(newVals);
   }
 
@@ -38,10 +38,11 @@ export default class SourceEstimation extends React.Component {
     onChange(values.concat({estimation: undefined, source: undefined}));
   }
 
-  onRemoveSource (idx) {
+  onClearSource (idx) {
     const { values, onChange } = this.props;
-    const newVals = _cloneDeep(values);
-    newVals.splice(idx, 1);
+    let newVals = _cloneDeep(values);
+    newVals[idx].source = undefined;
+    newVals[idx].estimation = undefined;
     onChange(newVals);
   }
 
@@ -73,7 +74,7 @@ export default class SourceEstimation extends React.Component {
               <div key={o.source || idx} className='estimation row flex-mid'>
                 <FormInput
                   label={estimationLabel}
-                  type='text'
+                  type={fieldKey !== 'affectedPopCentres' ? 'number': 'text'}
                   name={`${name}[${idx}][estimation]`}
                   id={`${name}-${idx}-estimation`}
                   classLabel={c('label-secondary', {'visually-hidden': idx > 0})}
@@ -91,9 +92,19 @@ export default class SourceEstimation extends React.Component {
                   name={`${name}[${idx}][source]`}
                   options={formData.getFieldsStep2(strings).organizations[status]}
                   classLabel={c('label-secondary', {'visually-hidden': idx > 0})}
-                  classWrapper='estimation__item col col-8-mid'
+                  classWrapper='estimation__item col col-6-mid'
                   selectedOption={o.source}
-                  onChange={this.onSourceChange.bind(this, idx)} />
+                  onChange={this.onSourceChange.bind(this, idx)}>
+                    <FormError
+                    errors={errors}
+                    property={`${fieldKey}[${idx}].source`}
+                  />
+                  </FormRadioGroup>
+                  <div className='col-2-mid'>
+                    {values[idx].estimation || values[idx].source ? (
+                    <button type='button' className='button--clear-source' title='Clear Entry' onClick={this.onClearSource.bind(this, idx)}></button>
+                    ) : null}
+                  </div>
                 {/*
                 We do not want these buttons to Add new sources any more.
                 Leaving commented out for now. When we delete this, we should

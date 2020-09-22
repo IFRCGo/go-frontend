@@ -71,7 +71,7 @@ function appealsList (state = appealsListInitialState, action) {
       const emergenciesByType = groupByDisasterType(objs);
 
       // Features for the map.
-      const geoJSON = aggregateCountryAppeals(objs);
+      const geoJSON = aggregateCountryAppeals(objs, action.countries);
 
       state = Object.assign({}, state, {
         fetching: false,

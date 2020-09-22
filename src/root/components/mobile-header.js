@@ -8,7 +8,7 @@ import { api, environment } from '#config';
 import { request } from '#utils/network';
 import { uppercaseFirstLetter as u, isoDate } from '#utils/format';
 import UserMenu from './connected/user-menu';
-import Dropdown from './common/dropdown';
+import DropdownMenu from './dropdown-menu';
 import { withLanguage } from '#root/languageContext';
 import Translate from '#components/Translate';
 
@@ -102,14 +102,11 @@ class MobileHeader extends React.PureComponent {
         })}>
           <div className='inner container-lg'>
             <div className='mobile__actions'>
-              <Dropdown
-                id='drop__header__field__report'
-                triggerClassName='drop__toggle--caret button button--primary-bounded button--small drop__toggle--field-report-new'
-                triggerActiveClassName='active'
-                triggerText={strings.headerCreateAReportLabel}
-                triggerElement='a'
-                direction='down'
-                alignment='center' >
+              <DropdownMenu
+                className='drop__toggle--caret button button--primary-bounded button--small drop__toggle--field-report-new'
+                activeClassName='active'
+                label={strings.headerCreateAReportLabel}
+              >
                 <ul className='drop__menu drop__menu--select drop__menu__field__report' role='menu'>
                   <li className='drop__menu-item'>
                     <Link to='/reports/new'>{strings.headerDropdownNewFieldReport}</Link>
@@ -125,7 +122,7 @@ class MobileHeader extends React.PureComponent {
                     </a>
                   </li>                                        
                 </ul>
-              </Dropdown>              
+              </DropdownMenu>
               <button className='button button--small button--close button--text-hidden' onClick={this.toggleMenu}>
                 <span>
                   <Translate stringId='mobileHeaderClose'/>

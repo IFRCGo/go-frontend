@@ -9,11 +9,9 @@ import Progress from '../progress-labeled';
 import { environment } from '#config';
 import { getAppealsList, getAppeals } from '#actions';
 import { commaSeparatedNumber as n, nope } from '#utils/format';
-import { getDtypeMeta } from '#utils/get-dtype-meta';
 import {
   get,
   dateOptions,
-  dTypeOptions
 } from '#utils/utils';
 
 import ExportButton from '#components/export-button-container';
@@ -23,10 +21,11 @@ import DisplayTable, { SortHeader, FilterHeader } from '#components/display-tabl
 import DateFilterHeader from '#components/common/filters/date-filter-header';
 import { SFPComponent } from '#utils/extendables';
 import { appealTypes as appealsType, appealTypeOptions } from '#utils/appeal-type-constants';
-import MainMap from '#components/map/main-map';
 
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
+
+import { disasterTypesSelectSelector } from '#selectors';
 
 class AppealsTable extends SFPComponent {
   constructor (props) {
@@ -135,11 +134,15 @@ class AppealsTable extends SFPComponent {
     const { strings } = this.context;
     const title = this.props.title || strings.appealsTableTitle;
     if (fetching) {
-      return (
-        <Fold title={title} id={this.props.id}>
+      return this.props.title
+        ? (
+          <Fold title={title} id={this.props.id}>
+            <BlockLoading/>
+          </Fold>
+        )
+        : (
           <BlockLoading/>
-        </Fold>
-      );
+        );
     }
 
     if (error) {
@@ -190,7 +193,7 @@ class AppealsTable extends SFPComponent {
           label: <FilterHeader
             id='dtype'
             title={strings.appealsTableDisastertype}
-            options={dTypeOptions} filter={this.state.table.filters.dtype}
+            options={[{ value: 'all', label: 'All Types' }, ...this.props.disasterTypesSelect ]} filter={this.state.table.filters.dtype}
             isActive={this.state.table.filters.dtype !== 'all'}
             onSelect={this.handleFilterChange.bind(this, 'table', 'dtype')} />
         },
@@ -229,7 +232,7 @@ class AppealsTable extends SFPComponent {
           date: DateTime.fromISO(o.start_date).toISODate(),
           code: o.code,
           name: name,
-          dtype: get(getDtypeMeta(o.dtype.id), 'label', nope),
+          dtype: o.dtype?.name || nope,
           requestAmount: {
             value: n(o.amount_requested, 'CHF'),
             className: ''
@@ -246,54 +249,56 @@ class AppealsTable extends SFPComponent {
         };
       });
 
-      const foldLink = this.props.viewAll ? (
-        <Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || strings.viewAllOperations}</Link>
-      ) : null;
-
-      const {
-        appealsList
-      } = this.props;
-
-      return (
-        <Fold showHeader={!this.props.fullscreen} title={`${title} (${n(data.count)})`} id={this.props.id} navLink={foldLink} foldTitleClass='fold__title--inline' foldWrapperClass='fold--main fold--appeals-table'>
-          {this.props.showExport ? (
-            <ExportButton filename='appeals'
-              qs={this.getQs(this.props)}
-              resource='api/v2/appeal'
-            />
-          ) : null}
-          {this.props.showRegionMap ? (
-            <MainMap
-              operations={this.props.regionOperations}
-              mapBoundingBox={this.props.mapBoundingBox}
-              layers={this.props.maskLayer}
-              noExport={true}
-              noRenderEmergencies={true}
-              fullscreen={this.props.fullscreen}
-              toggleFullscreen={this.props.toggleFullscreen}
-            />
-          ) : null }
-          {this.props.showHomeMap ? (
-            <MainMap
-              operations={appealsList}
-              noExport={true}
-              noRenderEmergencies={true}
-              fullscreen={this.props.fullscreen}
-              toggleFullscreen={this.props.toggleFullscreen}
-            />) : null}
-          {this.props.fullscreen ? null : (
-            <DisplayTable
-              className='table table--border-bottom table--box-shadow table--active-ops margin-half-t'
-              headings={headings}
-              rows={rows}
-              pageCount={data.count / this.state.table.limit}
-              page={this.state.table.page - 1}
-              onPageChange={this.handlePageChange.bind(this, 'table')}
-              noPaginate={this.props.noPaginate}
-            />
-          )}
-        </Fold>
-      );
+      return this.props.title
+        ? (
+          <Fold
+            showHeader={!this.props.fullscreen}
+            title={`${title} (${n(data.count)})`}
+            id={this.props.id}
+            navLink={this.props.foldLink}
+            foldTitleClass='fold__title--inline'
+            foldWrapperClass='fold--main fold--appeals-table'
+          >
+            {this.props.showExport ? (
+              <ExportButton filename='appeals'
+                qs={this.getQs(this.props)}
+                resource='api/v2/appeal'
+              />
+            ) : null}
+            {this.props.fullscreen ? null : (
+              <DisplayTable
+                className='table table--border-bottom table--box-shadow table--active-ops margin-half-t'
+                headings={headings}
+                rows={rows}
+                pageCount={data.count / this.state.table.limit}
+                page={this.state.table.page - 1}
+                onPageChange={this.handlePageChange.bind(this, 'table')}
+                noPaginate={this.props.noPaginate}
+              />
+            )}
+          </Fold>
+        )
+        : (
+          <React.Fragment>
+            {this.props.showExport ? (
+              <ExportButton filename='appeals'
+                qs={this.getQs(this.props)}
+                resource='api/v2/appeal'
+              />
+            ) : null}
+            {this.props.fullscreen ? null : (
+              <DisplayTable
+                className='table table--border-bottom table--box-shadow table--active-ops margin-half-t'
+                headings={headings}
+                rows={rows}
+                pageCount={data.count / this.state.table.limit}
+                page={this.state.table.page - 1}
+                onPageChange={this.handlePageChange.bind(this, 'table')}
+                noPaginate={this.props.noPaginate}
+              />
+            )}
+          </React.Fragment>
+        );
     }
     return null;
   }
@@ -307,7 +312,7 @@ if (environment !== 'production') {
 
     limit: T.number,
     country: T.number,
-    region: T.string,
+    region: T.number,
     atype: T.string,
     record: T.string,
 
@@ -316,6 +321,7 @@ if (environment !== 'production') {
     showMap: T.bool,
 
     title: T.string,
+    foldLink: T.object,
 
     showActive: T.bool,
     viewAll: T.string,
@@ -332,7 +338,8 @@ if (environment !== 'production') {
 
 const selector = (state, props) => ({
   appeals: props.statePath ? get(state, props.statePath) : state.appeals,
-  appealsList: state.overallStats.appealsList
+  appealsList: state.overallStats.appealsList,
+  disasterTypesSelect: disasterTypesSelectSelector(state)
 });
 
 const dispatcher = (dispatch) => ({

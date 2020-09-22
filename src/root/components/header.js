@@ -10,14 +10,13 @@ import {
 import { api, environment } from '#config';
 import { request } from '#utils/network';
 import { uppercaseFirstLetter as u, isoDate } from '#utils/format';
-// import LanguageSelect from '#components/LanguageSelect';
+import LanguageSelect from '#components/LanguageSelect';
 import Translate from '#components/Translate';
 import LanguageContext from '#root/languageContext';
 
 import UserMenu from './connected/user-menu';
 import HeaderRegionButton from './header-region-button';
-import Dropdown from './common/dropdown';
-
+import DropdownMenu from './dropdown-menu';
 
 const noFilter = options => options;
 
@@ -108,19 +107,19 @@ function Header (props) {
                 </h1>
               </div>
               <nav className='page__meta-nav col' role='navigation'>
-                {/* <LanguageSelect /> */}
+                { <LanguageSelect className="page__meta-nav-elements page__meta-nav-elements--lang" /> }
                 <Link to='/about' title={strings.headerMenuResourceTooltip} className='page__meta-nav-elements'>
                   <Translate stringId="headerMenuResources" />
                 </Link>
                 <UserMenu />
-                <Dropdown
-                  id='drop__header__field__report'
-                  triggerClassName='drop__toggle--caret button button--primary-bounded button--small drop__toggle--field-report-new'
-                  triggerActiveClassName='active'
-                  triggerText={strings.headerCreateAReportLabel}
-                  triggerElement='a'
-                  direction='down'
-                  alignment='center' >
+                <DropdownMenu
+                  className='drop__toggle--caret button button--primary-bounded button--small drop__toggle--field-report-new'
+                  activeClassName='active'
+                  label={
+                    <Translate stringId="headerCreateAReportLabel" />
+                  }
+                  dropdownContainerClassName='header-menu-dropdown'
+                >
                   <ul className='drop__menu drop__menu--select drop__menu__field__report' role='menu'>
                     <li className='drop__menu-item'>
                       <Link to='/reports/new'>{strings.headerDropdownNewFieldReport}</Link>
@@ -136,7 +135,7 @@ function Header (props) {
                       </a>
                     </li>                                        
                   </ul>
-                </Dropdown>
+                </DropdownMenu>
               </nav>
             </div>
           </div>

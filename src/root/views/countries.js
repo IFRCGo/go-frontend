@@ -8,12 +8,11 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { Helmet } from 'react-helmet';
 import url from 'url';
 
-import { countries } from '#utils/field-report-constants';
 import { environment, api } from '#config';
-import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
+import NewGlobalLoading from '#components/NewGlobalLoading';
 import { resolveToString } from '#utils/lang';
 // import BasicTable from '#components/common/table-basic';
-import { get, dateOptions, datesAgo, dTypeOptions } from '#utils/utils';
+import { get, dateOptions, datesAgo } from '#utils/utils';
 import {
   commaSeparatedNumber as n,
   // commaSeparatedLargeNumber as bigN,
@@ -66,28 +65,16 @@ import PreparednessPhaseOutcomes from '#components/country/preparedness-phase-ou
 import PreparednessColumnBar from '#components/country/preparedness-column-graph';
 import KeyFiguresHeader from '#components/common/key-figures-header';
 import { SFPComponent } from '#utils/extendables';
-import { getRegionById } from '#utils/region-constants';
-import { NO_DATA } from '#utils/constants';
-// import { getRegionSlug } from '#utils/region-constants';
-import { getISO3 } from '#utils/country-iso';
 
 import ThreeW from './ThreeW';
 // import CountryProfile from './CountryProfile';
+import { countryByIdOrNameSelector, regionsByIdSelector, disasterTypesSelectSelector } from '../selectors';
 
 const emptyObject = {};
 
 const filterPaths = {
   ns: 'parent.name',
   type: 'activity.activity'
-};
-
-const getCountryId = idOrName => {
-  // If country name
-  if (isNaN(idOrName)) {
-    const countryMeta = countries.find(d => d.label.toLowerCase() === decodeURI(idOrName.toLowerCase()));
-    return countryMeta !== undefined ? countryMeta.value : idOrName;
-  }
-  return idOrName;
 };
 
 class AdminArea extends SFPComponent {
@@ -124,15 +111,14 @@ class AdminArea extends SFPComponent {
 
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps (nextProps) {
-    const newCountryId = getCountryId(nextProps.match.params.id);
-    const oldCountryId = getCountryId(this.props.match.params.id);
+    const newCountryId = nextProps.country.id; // getCountryId(nextProps.match.params.id, this.props.countries);
+    const oldCountryId = this.props.country.id; // getCountryId(this.props.match.params.id, this.props.countries);
     if (oldCountryId !== newCountryId) {
       // this.getData(nextProps);
       this.loadCountry(nextProps, newCountryId);
     }
 
     if (this.props.adminArea.fetching && !nextProps.adminArea.fetching) {
-      hideGlobalLoading();
       if (nextProps.adminArea.error) {
         console.error(nextProps.adminArea.error);
         // removed because redirect is highly misleading
@@ -141,9 +127,9 @@ class AdminArea extends SFPComponent {
     }
   }
 
-  loadCountry (props, countryId) {
+  loadCountry (props, countryId, countries) {
     this.getData(props);
-    this.getAdmArea(props.type, getCountryId(countryId));
+    this.getAdmArea(props.type, countryId);
     this.props._getPerNsPhase(countryId);
     this.props._getPerOverviewForm(countryId);
     this.props._getPerWorkPlan(countryId);
@@ -159,7 +145,7 @@ class AdminArea extends SFPComponent {
 
   componentDidMount () {
     this.componentIsLoading = true;
-    const countryId = getCountryId(this.props.match.params.id);
+    const countryId = this.props.country.id;
     this.loadCountry(this.props, countryId);
   }
 
@@ -176,7 +162,7 @@ class AdminArea extends SFPComponent {
       /*
       {
         title: strings.countryOverviewTab,
-        hash: '#overview',
+        hash: '#profile',
       },
       */
       {
@@ -204,7 +190,7 @@ class AdminArea extends SFPComponent {
 
   getData (props) {
     const type = 'country';
-    const id = getCountryId(props.match.params.id);
+    const id = this.props.country.id;
     this.props._getAdmAreaAppealsList(type, id);
     this.props._getAdmAreaKeyFigures(type, id);
     this.props._getAdmAreaSnippets(type, id);
@@ -215,66 +201,53 @@ class AdminArea extends SFPComponent {
   }
 
   getAdmArea (type, id) {
-    // showGlobalLoading();
     this.props._getAdmAreaById(type, id);
   }
 
-  syncLoadingAnimation = memoize((
+  isPending = memoize((
     adminArea = emptyObject,
     fdrs = emptyObject,
     perForm = emptyObject,
     user = emptyObject,
-  ) => {
-    const shouldShowLoadingAnimation = adminArea.fetching ||
+  ) => (
+    adminArea.fetching ||
       fdrs.fetching ||
       perForm.fetching ||
-      user.fetching;
-
-    if (shouldShowLoadingAnimation && !this.loading) {
-      showGlobalLoading();
-      this.loading = true;
-    } else {
-      if (this.loading) {
-        hideGlobalLoading();
-      }
-
-      this.loading = false;
-    }
-  })
+      user.fetching
+  ))
 
   // gets links to display in the pills at bottom of the tabs
-  getLinks () {
-    const { adminArea } = this.props;
+  getLinks (strings) {
+    const { adminArea, country } = this.props;
     if (!adminArea.fetched) return false;
-    const iso2 = adminArea.data.iso;
-    const iso3 = getISO3(iso2);
+    const iso3 = country.iso3;
     const homepage = adminArea.data.society_url;
     const homepageIfrc = adminArea.data.url_ifrc;
     // const regionSlug = getRegionSlug(adminArea.data.region);
     // const countryLower = adminArea.data.name.toLowerCase();
     const links = [];
-    const { strings } = this.context;
+    const countryName = adminArea.data.name;
 
     if (homepageIfrc) {
       const ifrcLink = {
-        'text': `${adminArea.data.name} ${strings.ifrcLinkText}`,
-        'url': homepageIfrc
+        text: resolveToString(strings.ifrcLinkText, { countryName }),
+        url: homepageIfrc,
       };
       links.push(ifrcLink);
     }
 
     if (iso3) {
       const reliefWebLink = {
-        'text': `${adminArea.data.name} ${strings.reliefWebLinkText}`,
-        'url': `https://reliefweb.int/country/${iso3}`
+        text: resolveToString(strings.reliefWebLinkText, { countryName }),
+        url: `https://reliefweb.int/country/${iso3}`
       };
       links.push(reliefWebLink);
     }
 
     if (homepage) {
       const homepageLink = {
-        'text': `${adminArea.data.name} ${strings.homePageLinkText}`,
-        'url': homepage
+        text: resolveToString(strings.homePageLinkText, { countryName }),
+        url: homepage,
       };
       links.push(homepageLink);
     }
@@ -309,7 +282,7 @@ class AdminArea extends SFPComponent {
   updateData (what) {
     this.props._getCountryOperations(
       this.props.type,
-      getCountryId(this.props.match.params.id),
+      this.props.country.id,
       this.state[what].page,
       this.computeFilters(what)
     );
@@ -344,7 +317,7 @@ class AdminArea extends SFPComponent {
       const path = filterPaths[key];
       return { path, value: filters[key] };
     });
-    this.props._setPartnerDeploymentFilter(getCountryId(this.props.match.params.id), filters);
+    this.props._setPartnerDeploymentFilter(this.props.country.id, filters);
   }
 
   renderAppeals () {
@@ -391,7 +364,7 @@ class AdminArea extends SFPComponent {
             <FilterHeader
               id='dtype'
               title={strings.countryTableDisasterType}
-              options={dTypeOptions}
+              options={[{ value: 'all', label: 'All Types' }, ...this.props.disasterTypesSelect ]}
               filter={this.state.appeals.filters.dtype}
               onSelect={this.handleFilterChange.bind(this, 'appeals', 'dtype')}
             />
@@ -584,7 +557,6 @@ class AdminArea extends SFPComponent {
       error,
       data
     } = this.props.adminArea;
-    const countryLinks = this.getLinks();
     if (!fetched || error) return null;
 
     // const bbox = getBoundingBox(data.iso);
@@ -592,6 +564,7 @@ class AdminArea extends SFPComponent {
 
     // const { partnerDeployments } = this.props;
     const { strings } = this.context;
+    const countryLinks = this.getLinks(strings);
     const tabDetails = this.getTabDetails(strings);
 
     const handleTabChange = index => {
@@ -603,14 +576,14 @@ class AdminArea extends SFPComponent {
     const countryName = get(data, 'name', 'Country');
 
     // add region to the breadcrumb only if country has a region defined
-    const region = getRegionById(data.region);
+    const region = this.props.regionsById[data.region] ? this.props.regionsById[data.region][0] : undefined;
     const crumbs = [
       {link: this.props.location.pathname, name: countryName},
       {link: '/', name: strings.breadCrumbHome}
     ];
     if (region) {
       crumbs.splice(1, 0, {
-        link: `/regions/${data.region}`, name: region.name
+        link: `/regions/${data.region}`, name: region.label
       });
     }
 
@@ -657,7 +630,7 @@ class AdminArea extends SFPComponent {
                 <Link to={`/regions/${data.region}`}
                   className='link link--with-icon flex-justify-center'
                 >
-                  <span className='link--with-icon-text'>{region.name}</span>
+                  <span className='link--with-icon-text'>{region.label}</span>
                   <span className='collecticon-chevron-right link--with-icon-inner'></span>
                 </Link>
               </div>
@@ -723,7 +696,7 @@ class AdminArea extends SFPComponent {
                         id={'emergencies'}
                         title={strings.emergenciesTableRecentEmergencies}
                         limit={5}
-                        country={getCountryId(this.props.match.params.id)}
+                        country={this.props.country.id}
                         showRecent={true}
                         viewAll={'/emergencies/all?country=' + data.id}
                         viewAllText={`${strings.emergenciesRecentViewAll} ${data.name}`}
@@ -734,16 +707,16 @@ class AdminArea extends SFPComponent {
                 <TabPanel>
                   <div className='container-lg'>
                     <TabContent title= {strings.region3WTitle}>
-                      <ThreeW countryId={getCountryId(this.props.match.params.id)} />
+                      <ThreeW countryId={this.props.country.id} />
                     </TabContent>
                   </div>
                 </TabPanel>
                 {/*
                 <TabPanel>
                   <TabContent title='Overview'>
-                    <div className='container-lg'>
+                    <div className='container-full'>
                       <CountryProfile
-                        countryId={getCountryId(this.props.match.params.id)}
+                        countryId={this.props.country.id}
                         user={this.props.user}
                       />
                     </div>
@@ -755,31 +728,31 @@ class AdminArea extends SFPComponent {
                     <div className='container-lg'>
                       {this.props.getPerNsPhase.fetched && this.props.perOverviewForm.fetched ? (
                         <PreparednessOverview getPerNsPhase={this.props.getPerNsPhase} perOverviewForm={this.props.perOverviewForm} />)
-                        : <ErrorPanel title={strings.preparednessOverview} errorMessage={ NO_DATA } />}
+                        : <ErrorPanel title={strings.preparednessOverview} errorMessage={ strings.noDataMessage } />}
                       {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
                         <PreparednessSummary getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
-                        : <ErrorPanel title={strings.preparednessSummary} errorMessage={ NO_DATA } />}
+                        : <ErrorPanel title={strings.preparednessSummary} errorMessage={ strings.noDataMessage } />}
                       {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
                         <PreparednessColumnBar getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
-                        : <ErrorPanel title={strings.preparednessColumnBar} errorMessage={ NO_DATA } />}
+                        : <ErrorPanel title={strings.preparednessColumnBar} errorMessage={ strings.noDataMessage } />}
                       {this.props.getPerWorkPlan.fetched ? (
                         <PreparednessWorkPlan getPerWorkPlan={this.props.getPerWorkPlan} />)
-                        : <ErrorPanel title={strings.preparednessWorkPlan} errorMessage={ NO_DATA } />}
+                        : <ErrorPanel title={strings.preparednessWorkPlan} errorMessage={ strings.noDataMessage } />}
                       {this.props.getPerUploadedDocuments.fetched ? (
-                        <PreparednessPhaseOutcomes getPerUploadedDocuments={this.props.getPerUploadedDocuments} countryId={getCountryId(this.props.match.params.id)} />)
-                        : <ErrorPanel title={strings.countryPreparednessPhaseOutcomes} errorMessage={ NO_DATA } />}
+                        <PreparednessPhaseOutcomes getPerUploadedDocuments={this.props.getPerUploadedDocuments} countryId={this.props.country.id} />)
+                        : <ErrorPanel title={strings.countryPreparednessPhaseOutcomes} errorMessage={ strings.noDataMessage } />}
                       </div>
                   </TabContent>
                 </TabPanel>
                 <TabPanel>
                   <div className='container-lg'>
-                    <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ NO_DATA } title={strings.regionGraphiccs}>
+                    <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ strings.noDataMessage } title={strings.regionGraphiccs}>
                       <Snippets data={this.props.snippets} />
                     </TabContent>
-                    <TabContent showError={true} isError={!get(data, 'contacts.length')} errorMessage={ NO_DATA } title={strings.regionContacts}>
+                    <TabContent showError={true} isError={!get(data, 'contacts.length')} errorMessage={ strings.noDataMessage } title={strings.regionContacts}>
                       <Contacts data={data} />
                     </TabContent>
-                    <TabContent isError={!get(data, 'links.length')} errorMessage={ NO_DATA } title={strings.regionLinks}>
+                    <TabContent isError={!get(data, 'links.length')} errorMessage={ strings.noDataMessage } title={strings.regionLinks}>
                       <Links data={data} />
                     </TabContent>
                   </div>
@@ -805,7 +778,7 @@ class AdminArea extends SFPComponent {
       user,
     } = this.props;
 
-    this.syncLoadingAnimation(
+    const pending = this.isPending(
       adminArea,
       fdrs,
       perForm,
@@ -813,9 +786,9 @@ class AdminArea extends SFPComponent {
     );
 
     const { strings } = this.context;
-
     return (
       <App className={`page--${this.props.type}`}>
+        { pending && <NewGlobalLoading />}
         <Helmet>
           <title>
             { strings.countryTitle }
@@ -855,7 +828,7 @@ AdminArea.contextType = LanguageContext;
 // Connect functions
 
 const selector = (state, ownProps) => ({
-  adminArea: get(state.adminArea.aaData, getCountryId(ownProps.match.params.id), {
+  adminArea: get(state.adminArea.aaData, countryByIdOrNameSelector(state, ownProps.match.params.id).id, {
     data: {},
     fetching: false,
     fetched: false
@@ -864,7 +837,7 @@ const selector = (state, ownProps) => ({
   keyFigures: state.adminArea.keyFigures,
   snippets: state.adminArea.snippets,
   countryOperations: state.adminArea.countryOperations,
-  partnerDeployments: get(state.adminArea.partnerDeployments, getCountryId(ownProps.match.params.id), {
+  partnerDeployments: get(state.adminArea.partnerDeployments, countryByIdOrNameSelector(state, ownProps.match.params.id).id, {
     data: {},
     fetching: false,
     fetched: false
@@ -878,7 +851,10 @@ const selector = (state, ownProps) => ({
   getPerUploadedDocuments: state.perForm.getPerUploadedDocuments,
   getPerMission: state.perForm.getPerMission,
   user: state.user.data,
-  appealsListStats: state.overallStats.appealsListStats
+  appealsListStats: state.overallStats.appealsListStats,
+  country: countryByIdOrNameSelector(state, ownProps.match.params.id),
+  regionsById: regionsByIdSelector(state),
+  disasterTypesSelect: disasterTypesSelectSelector(state)
 });
 
 const dispatcher = dispatch => ({

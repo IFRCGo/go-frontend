@@ -2,8 +2,8 @@ import React from 'react';
 import c from 'classnames';
 import { PropTypes as T } from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
-import memoize from 'memoize-one';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { Helmet } from 'react-helmet';
 import CountryList from '#components/country-list';
@@ -11,7 +11,6 @@ import BlockLoading from '#components/block-loading';
 import { environment } from '#config';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 import { get } from '#utils/utils';
-import { nope } from '#utils/format';
 import BreadCrumb from '#components/breadcrumb';
 import {
   enterFullscreen,
@@ -27,17 +26,9 @@ import {
   getRegionPersonnel,
   getAdmAreaKeyFigures,
   getAdmAreaSnippets,
-  getCountries,
   getAppealsListStats
 } from '#actions';
-import { getRegionBoundingBox } from '#utils/region-bounding-box';
-import {
-  countriesByRegion,
-  getRegionId,
-  regions as regionMeta
-} from '#utils/region-constants';
-import { getCountryMeta } from '#utils/get-country-meta';
-
+import { commaSeparatedNumber as n } from '#utils/format';
 import App from './app';
 import Fold from '#components/fold';
 import TabContent from '#components/tab-content';
@@ -53,18 +44,21 @@ import {
   Links
 } from '#components/admin-area-elements';
 import { SFPComponent } from '#utils/extendables';
-import { NO_DATA } from '#utils/constants';
 import RegionalThreeW from './RegionalThreeW';
+import MainMap from '#components/map/main-map';
 
 import LanguageContext from '#root/languageContext';
 import { resolveToString } from '#utils/lang';
+
+import { countriesSelector, countriesByRegionSelector, regionsByIdSelector, regionByIdOrNameSelector } from '../selectors';
+import turfBbox from '@turf/bbox';
 
 class AdminArea extends SFPComponent {
   constructor (props, context) {
     super(props);
 
     this.state = {
-      maskLayer: this.getMaskLayer(getRegionId(props.match.params.id)),
+      maskLayer: this.getMaskLayer(this.props.thisRegion.id),
       fullscreen: false
     };
 
@@ -82,14 +76,14 @@ class AdminArea extends SFPComponent {
 
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps (nextProps) {
-    if (getRegionId(this.props.match.params.id) !== getRegionId(nextProps.match.params.id)) {
+    if (this.props.thisRegion.id !== nextProps.thisRegion.id) {
       this.getData(nextProps);
-      this.setState({ maskLayer: this.getMaskLayer(getRegionId(nextProps.match.params.id)) });
-      return this.getAdmArea(nextProps.type, getRegionId(nextProps.match.params.id));
+      this.setState({ maskLayer: this.getMaskLayer(nextProps.thisRegion.id) });
+      return this.getAdmArea(nextProps.type, nextProps.thisRegion.id);
     }
 
     if (this.props.adminArea.fetching && !nextProps.adminArea.fetching) {
-      hideGlobalLoading();
+      hideGlobalLoading(0);
       if (nextProps.adminArea.error) {
         console.error(nextProps.adminArea.error);
         // removed because redirect is highly misleading
@@ -100,7 +94,7 @@ class AdminArea extends SFPComponent {
 
   componentDidMount () {
     this.getData(this.props);
-    this.getAdmArea(this.props.type, getRegionId(this.props.match.params.id));
+    this.getAdmArea(this.props.type, this.props.thisRegion.id);
     this.displayTabContent();
     addFullscreenListener(this.onFullscreenChange);
   }
@@ -132,21 +126,22 @@ class AdminArea extends SFPComponent {
   }
 
   getData (props) {
-    const id = getRegionId(props.match.params.id);
+    const id = props.thisRegion.id;
     this.props._getAdmAreaAppealsList(props.type, id);
     this.props._getAdmAreaAggregateAppeals(props.type, id, DateTime.local().minus({ years: 10 }).startOf('month').toISODate(), 'year');
     this.props._getRegionPersonnel(id);
     this.props._getAdmAreaKeyFigures(props.type, id);
     this.props._getAdmAreaSnippets(props.type, id);
-    this.props._getCountries(id);
+    // this.props._getCountries(id);
     this.props._getAppealsListStats({regionId: id});
   }
 
   getMaskLayer (regionId) {
-    const countries = countriesByRegion[regionId.toString()];
-    const isoCodes = countries.map(getCountryMeta)
-      .filter(Boolean)
-      .map(d => d.iso.toUpperCase());
+    const countries = this.props.countriesByRegion[regionId.toString()];
+    const isoCodes = countries.map(country => {
+      return country.iso.toUpperCase();
+    });
+
     return {
       id: 'country-mask',
       type: 'fill',
@@ -167,16 +162,15 @@ class AdminArea extends SFPComponent {
     this.props._getAdmAreaById(type, id);
   }
 
-  getRegionId = memoize((regionIdFromProps) => {
-    return getRegionId(regionIdFromProps);
-  })
-
   renderContent () {
     const {
       fetched,
       error,
       data
     } = this.props.adminArea;
+
+    const regionId = data.id;
+    const { regions, thisRegion } = this.props;
 
     if (!fetched || error) return null;
 
@@ -185,8 +179,8 @@ class AdminArea extends SFPComponent {
       'fold--r': !this.state.fullscreen
     });
 
-    const mapBoundingBox = getRegionBoundingBox(data.id);
-    const regionName = get(regionMeta, [data.id, 'name'], nope);
+    const mapBoundingBox = turfBbox(regions[data.id][0].bbox);
+    const regionName = thisRegion.label;
     const activeOperations = get(this.props.appealStats, 'data.results.length', false);
 
     const handleTabChange = index => {
@@ -197,6 +191,10 @@ class AdminArea extends SFPComponent {
     const hashes = this.TAB_DETAILS.map(t => t.hash);
     const selectedIndex = hashes.indexOf(this.props.location.hash) !== -1 ? hashes.indexOf(this.props.location.hash) : 0;
     const { strings } = this.context;
+
+    const foldLink = (
+      <Link className='fold__title__link' to={'/appeals/all?region=' + data.id}>{resolveToString(strings.regionAppealsTableViewAllText, { regionName: regionName })}</Link>
+    );
 
     return (
       <section className='inpage'>
@@ -245,21 +243,32 @@ class AdminArea extends SFPComponent {
                         <KeyFiguresHeader fullscreen={this.state.fullscreen} appealsListStats={this.props.appealsListStats} />
                       ) : null}
                       <div className={c('inner', {'appeals--fullscreen': this.state.fullscreen})}>
-                        <AppealsTable
-                          title={strings.regionAppealsTableTitle}
-                          region={getRegionId(this.props.match.params.id)}
-                          regionOperations={this.props.appealStats}
-                          mapBoundingBox={mapBoundingBox}
-                          mapLayers={[this.state.maskLayer]}
-                          activeOperations={activeOperations}
-                          showActive={true}
+                        <Fold
+                          showHeader={!this.state.fullscreen}
+                          title={`${strings.regionAppealsTableTitle} (${n(activeOperations)})`}
                           id={'appeals'}
-                          showRegionMap={true}
-                          viewAll={'/appeals/all?region=' + data.id}
-                          viewAllText={resolveToString(strings.regionAppealsTableViewAllText, { regionName: regionName })}
-                          fullscreen={this.state.fullscreen}
-                          toggleFullscreen={this.toggleFullscreen}
-                        />
+                          navLink={foldLink}
+                          foldTitleClass='fold__title--inline'
+                          foldWrapperClass='fold--main fold--appeals-table'
+                        >
+                          <MainMap
+                            operations={this.props.appealStats}
+                            noExport={true}
+                            noRenderEmergencies={true}
+                            fullscreen={this.state.fullscreen}
+                            toggleFullscreen={this.toggleFullscreen}
+                            mapBoundingBox={mapBoundingBox}
+                            // layers={this.state.maskLayer}
+                          />
+                          <AppealsTable
+                            foldLink={foldLink}
+                            region={thisRegion.id}
+                            showActive={true}
+                            id={'appeals'}
+                            fullscreen={this.state.fullscreen}
+                            toggleFullscreen={this.toggleFullscreen}
+                          />
+                        </Fold>
                       </div>
                     </section>
                     <Fold title={strings.regionStatistics} foldHeaderClass='visually-hidden' id='stats'>
@@ -268,17 +277,17 @@ class AdminArea extends SFPComponent {
                       </div>
                     </Fold>
                     <CountryList
-                      countries={this.props.countries}
+                      countries={this.props.countriesByRegion[regionId]}
                       appealStats={this.props.appealStats}
                     />
                     <EmergenciesTable
                       id='emergencies'
                       title={strings.regionRecentEmergencies}
                       limit={5}
-                      region={getRegionId(this.props.match.params.id)}
+                      region={thisRegion.id}
                       showRecent={true}
                       viewAll={'/emergencies/all?region=' + data.id}
-                      viewAllText={resolveToString(strings.regionEmergenciesTableViewAllText, { regionName: regionName })}
+                      viewAllText={resolveToString(strings.regionEmergenciesTableViewAllText, { regionName })}
                     />
 
                   </TabContent>
@@ -287,21 +296,21 @@ class AdminArea extends SFPComponent {
                   <TabContent title={strings.region3WTitle}>
                     <RegionalThreeW
                       disabled={this.loading}
-                      regionId={this.getRegionId(this.props.match.params.id)}
+                      regionId={thisRegion.id}
                     />
                   </TabContent>
                 </TabPanel>
                 <TabPanel>
-                  <TabContent isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage={ NO_DATA } title={strings.regionKeyFigures}>
+                  <TabContent isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage={ strings.noDataMessage } title={strings.regionKeyFigures}>
                     <KeyFigures data={this.props.keyFigures} />
                   </TabContent>
-                  <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ NO_DATA } title={strings.regionGraphics}>
+                  <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ strings.noDataMessage } title={strings.regionGraphics}>
                     <Snippets data={this.props.snippets} />
                   </TabContent>
-                  <TabContent isError={!get(data, 'links.length')} errorMessage={ NO_DATA } title={strings.regionLinks}>
+                  <TabContent isError={!get(data, 'links.length')} errorMessage={ strings.noDataMessage } title={strings.regionLinks}>
                     <Links data={data} />
                   </TabContent>
-                  <TabContent showError={true} isError={!get(data, 'contacts.length')} errorMessage={ NO_DATA } title={strings.regionContacts}>
+                  <TabContent showError={true} isError={!get(data, 'contacts.length')} errorMessage={ strings.noDataMessage } title={strings.regionContacts}>
                     <Contacts data={data} />
                   </TabContent>
                 </TabPanel>
@@ -344,7 +353,7 @@ if (environment !== 'production') {
     personnel: T.object,
     keyFigures: T.object,
     snippets: T.object,
-    countries: T.object
+    countries: T.array
   };
 }
 
@@ -352,7 +361,7 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state, ownProps) => ({
-  adminArea: get(state.adminArea.aaData, getRegionId(ownProps.match.params.id), {
+  adminArea: get(state.adminArea.aaData, regionByIdOrNameSelector(state, ownProps.match.params.id).id, {
     data: {},
     fetching: false,
     fetched: false
@@ -368,8 +377,11 @@ const selector = (state, ownProps) => ({
   personnel: state.adminArea.personnel,
   keyFigures: state.adminArea.keyFigures,
   snippets: state.adminArea.snippets,
-  countries: state.countries,
-  appealsListStats: state.overallStats.appealsListStats
+  countries: countriesSelector(state),
+  appealsListStats: state.overallStats.appealsListStats,
+  countriesByRegion: countriesByRegionSelector(state),
+  regions: regionsByIdSelector(state),
+  thisRegion: regionByIdOrNameSelector(state, ownProps.match.params.id)
 });
 
 const dispatcher = (dispatch) => ({
@@ -379,7 +391,7 @@ const dispatcher = (dispatch) => ({
   _getRegionPersonnel: (...args) => dispatch(getRegionPersonnel(...args)),
   _getAdmAreaKeyFigures: (...args) => dispatch(getAdmAreaKeyFigures(...args)),
   _getAdmAreaSnippets: (...args) => dispatch(getAdmAreaSnippets(...args)),
-  _getCountries: (...args) => dispatch(getCountries(...args)),
+  // _getCountries: (...args) => dispatch(getCountries(...args)),
   _getAppealsListStats: (...args) => dispatch(getAppealsListStats(...args)),
 });
 

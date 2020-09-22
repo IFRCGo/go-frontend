@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import c from 'classnames';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
@@ -8,10 +9,11 @@ import html2canvas from 'html2canvas';
 import { startDownload } from '#utils/download-starter';
 // import exportMap from '#utils/export-map';
 import { DateTime } from 'luxon';
-import { disasterType } from '#utils/field-report-constants';
 import _find from 'lodash.find';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
+
+import { disasterTypesSelectSelector } from '#selectors';
 
 class EmergencyMap extends React.Component {
   constructor (props) {
@@ -127,7 +129,7 @@ class EmergencyMap extends React.Component {
                 <div className='fold__title__linkwrap'>
                   <button className={c('button button--primary-bounded button--small button--export', {
                     disabled: !this.state.ready
-                  })} onClick={this.exportMap.bind(this, countries[0].name, _find(disasterType, {value: String(disasterTypeCode)}).label)}>
+                  })} onClick={this.exportMap.bind(this, countries[0].name, _find(this.props.disasterTypesSelect, {value: String(disasterTypeCode)})?.label)}>
                     <Translate stringId='emergencyMapExport'/>
                   </button>
                 </div>
@@ -213,4 +215,8 @@ if (environment !== 'production') {
   };
 }
 
-export default EmergencyMap;
+const selector = (state, ownProps) => ({
+  disasterTypesSelect: disasterTypesSelectSelector(state)
+});
+
+export default connect(selector)(EmergencyMap);

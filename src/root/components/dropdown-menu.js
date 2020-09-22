@@ -37,6 +37,8 @@ function DropdownMenu (props) {
     dropdownContainerClassName,
     children,
     label,
+    activeClassName,
+    persistant,
   } = props;
 
   const buttonRef = React.useRef(null);
@@ -46,16 +48,19 @@ function DropdownMenu (props) {
     setShowDropdown(true);
   }, [setShowDropdown]);
 
-  const handleBlurCallback = React.useCallback(() => {
+  const handleBlurCallback = React.useCallback((insideClick) => {
+    if (persistant && insideClick) {
+      return;
+    }
     setShowDropdown(false);
-  }, [setShowDropdown]);
+  }, [setShowDropdown, persistant]);
 
   useBlurEffect(showDropdown, handleBlurCallback, dropdownRef, buttonRef);
 
   return (
     <React.Fragment>
       <button
-        className={_cs(className, 'tc-dropdown-menu')}
+        className={_cs(className, 'tc-dropdown-menu', showDropdown && activeClassName)}
         ref={buttonRef}
         onClick={handleMenuClick}
       >

@@ -7,10 +7,8 @@ import * as EmailValidator from 'email-validator';
 import { DateTime } from 'luxon';
 import { isNotDefined } from '@togglecorp/fujs';
 
-import { getCentroid } from './country-centroids';
-import { disasterType } from './field-report-constants';
-import { getDtypeMeta } from './get-dtype-meta';
 import { appealTypes } from '#utils/appeal-type-constants';
+import { getCountryMeta } from '#utils/get-country-meta';
 
 // lodash.get will only return the defaultValue when
 // the path is undefined. We want to also catch null and ''
@@ -51,9 +49,9 @@ export function aggregateAppealStats (appeals) {
 }
 
 // returns a GeoJSON representation of a country's operations
-export function aggregateCountryAppeals (appeals) {
+export function aggregateCountryAppeals (appeals, countries) {
   const grouped = _groupBy(appeals.filter(o => o.country), 'country.iso');
-  return {
+  const geojson = {
     type: 'FeatureCollection',
     features: Object.keys(grouped).map(countryIso => {
       const countryAppeals = grouped[countryIso];
@@ -70,11 +68,12 @@ export function aggregateCountryAppeals (appeals) {
         }),
         geometry: {
           type: 'Point',
-          coordinates: getCentroid(countryIso)
+          coordinates: getCountryMeta(countryAppeals[0].country.id, countries).centroid?.coordinates || [0, 0]
         }
       };
     })
   };
+  return(geojson);
 }
 
 export function aggregatePartnerDeployments (deploymentGroups, filters = []) {
@@ -134,15 +133,16 @@ export function getCountryIsoFromVt (feature) {
 export function groupByDisasterType (objs) {
   const emergenciesByType = _groupBy(objs, 'dtype.id');
   return Object.keys(emergenciesByType).map(key => {
-    let meta = getDtypeMeta(key);
+    const meta = emergenciesByType[key][0]?.dtype;
     if (!meta) return null;
     var replacedDType = emergenciesByType[key];
+    // This is needed for ex. main-map to work... weird logic
     replacedDType.forEach(record => {
       record.dtype = record.dtype.id;
     });
     return {
       id: _toNumber(key),
-      name: meta.label,
+      name: meta.name,
       items: replacedDType
     };
   }).filter(Boolean).sort((a, b) => a.items.length < b.items.length ? 1 : -1);
@@ -188,12 +188,6 @@ export const datesAgo = {
   month: () => DateTime.utc().minus({months: 1}).startOf('day').toISO(),
   year: () => DateTime.utc().minus({years: 1}).startOf('day').toISO()
 };
-
-export const dTypeOptions = [
-  { value: 'all', label: 'All Types' },
-  // Exclude the first item since it's a dropdown placeholder
-  ...disasterType.slice(1)
-];
 
 export const appealStatusOptions = [
   { value: 'all', label: 'All' },
@@ -312,3 +306,20 @@ export const convertJsonToCsv = (data, columnDelimiter = ',', lineDelimiter = '\
 
   return result;
 };
+
+export const getFullMonthNameList = (strings) => ([
+  strings.monthNameJanuary,
+  strings.monthNameFebruary,
+  strings.monthNameMarch,
+  strings.monthNameApril,
+  strings.monthNameMay,
+  strings.monthNameJune,
+  strings.monthNameJuly,
+  strings.monthNameAugust,
+  strings.monthNameSeptember,
+  strings.monthNameOctober,
+  strings.monthNameNovember,
+  strings.monthNameDecember,
+]);
+
+export const compareString = (a, b) => a.label?.localeCompare(b.label);

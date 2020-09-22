@@ -29,6 +29,7 @@ export default {
   menuEmergencies: 'Emergencies',
   menuDeployments: 'Deployments',
   menuPreparedness: 'Preparedness',
+  menuRegions: 'Regions',
 
   aboutTitle: 'IFRC Go - About',
   aboutResources: 'Resources',
@@ -106,10 +107,12 @@ export default {
   loginForgotPassword: 'I forgot my password.',
   loginShowUsernameTitle: 'Show me my username',
   loginForgotUsername: 'I forgot my username only.',
+  loginResendValidation: 'Re-send validation email.',
+  loginResendValidationTitle: 'I didn\'t get my validation email',
   loginInvalid: 'Invalid username or password',
   loginErrorMessage: 'Error: {message}',
   loginButton: 'Login',
-  loginDontHaveAccount: 'Don’t have an account?',
+  loginDontHaveAccount: 'Don’t have an account? ',
   loginCreateAccountTitle: 'Create new account',
   loginSignUp: 'Sign Up.',
 
@@ -225,6 +228,11 @@ export default {
   recoverUsernameEmail: 'Enter the email you used during registration',
   recoverUsernameEmailLabel: 'Email',
   recoverUsernameSubmitText: 'Send me my username',
+
+  resendValidationTitle: 'IFRC Go - Re-send Validation Email',
+  resendValidationUsername: 'Enter the username you used during registration',
+  resendValidationUsernameLabel: 'Username',
+  resendValidationSubmitText: 'Re-send',
 
   presentationDashAppealsTitle: 'Active Operations',
 
@@ -515,9 +523,6 @@ export default {
   operationPopoverStart: 'Start: {start}',
   operationPopoverEnd: 'End: {end}',
 
-  ifrcLinkText: 'on IFRC.org',
-  reliefWebLinkText: 'on reliefweb.int',
-  homePageLinkText: 'RC Homepage',
 
   editPerFormsTitle: 'IFRC Go - Emergencies',
   footerOpenSourceCode: 'Open Source Code',
@@ -645,7 +650,7 @@ export default {
   readinessReadyErus:' {numReady} Ready ERUs',
   readinessDeployedErus: '{numDeployed} Deployed ERUs',
   mapComponentExport: 'Export Map',
-  mapFooterDisclaimer: 'The maps used do not imply the expresion of any opinion on the part of the International Federation of the Red Cross and Red Crescent Societies or National Societies concerning the legal status of a territory or of its authorities, Data sources: IFRC, OSM contributors, Map box.',
+  mapFooterDisclaimer: 'The maps used do not imply the expresion of any opinion on the part of the International Federation of Red Cross and Red Crescent Societies or National Societies concerning the legal status of a territory or of its authorities, Data sources: IFRC, OSM contributors, Map box.',
   countryMapError: 'Data not available.',
   countryMapDownloadedTitle: 'Movement activities',
   mapPopoverTitle: 'Deployments in {name}',
@@ -1224,4 +1229,105 @@ export default {
 
   perPageTitle: 'IFRC Go - PER',
   countryOverviewTab: 'Country Profile',
+
+  countryProfileKeyDocumentsTitle: 'Key Documents',
+  countryProfileExternalSourcesTitle: 'External Sources',
+  countryProfileDateRange: 'Date Range',
+  countryProfileSearchPlaceholder: 'Search',
+
+  dateFilterHeaderTooltip: 'Filter by {title}',
+  dateFilterHeaderFromLabel: 'From',
+  dateFilterHeaderToLabel: 'To',
+  dateFilterHeaderApplyButtonLabel: 'Apply',
+
+  alertsTableAllLabel: 'All',
+
+  emergenciesDashAllEmergenciesLinkLabel: 'View All Emergencies',
+
+  newPasswordErrorMessage: 'Error: {message}',
+  newPasswordSuccessMessage: 'Success! Password changed, redirecting...',
+  newPasswordVerifyInputLabel: 'Verify old password',
+
+  userMenuPopupHeading: 'Hello {firstName} {lastName}',
+
+  monthNameJanuary: 'January',
+  monthNameFebruary: 'February',
+  monthNameMarch: 'March',
+  monthNameApril: 'April',
+  monthNameMay: 'May',
+  monthNameJune: 'June',
+  monthNameJuly: 'July',
+  monthNameAugust: 'August',
+  monthNameSeptember: 'September',
+  monthNameOctober: 'October',
+  monthNameNovember: 'November',
+  monthNameDecember: 'December',
+
+  monthNameShortJan: 'Jan',
+  monthNameShortFeb: 'Feb',
+  monthNameShortMar: 'Mar',
+  monthNameShortApr: 'Apr',
+  monthNameShortMay: 'May',
+  monthNameShortJun: 'Jun',
+  monthNameShortJul: 'Jul',
+  monthNameShortAug: 'Aug',
+  monthNameShortSep: 'Sep',
+  monthNameShortOct: 'Oct',
+  monthNameShortNov: 'Nov',
+  monthNameShortDec: 'Dec',
+
+  preparednessOverviewContactLabel: 'Contact PER team',
+  preparednessPhaseOutcomesUploadLinkLabel: 'Upload',
+
+  formElementErrorRequiredMessage: 'Please fill in the field.',
+  formElementErrorDependenciesMessage: 'Please fill in the field.',
+  formElementErrorConstMessage: 'Passwords must match.',
+
+  preparednessFactoryNSGraphDataAllCountriesLabel: 'All countries',
+  preparednessFactoryNSGraphDataEngagedCountriesLabel: 'Engaged countries',
+
+  privateRouteNotAuthenticatedMessage: 'Please log in to view this page',
+
+  displayTableFilterHeaderOptionTooltipText: 'Filter by {title} - {label}',
+  displayTableFilterHeaderLabelTooltipText: 'Filter by {title}',
+  displayTableSortHeaderTooltip: 'Sort by {title}',
+
+  exportButtonContainerErrorMessage: 'Error: Could not export data',
+  exportButtonContainerExportingMessage: 'Info: Exporting...',
+
+  accountReportListLastUpdated: 'Last Updated: {on}',
+  accountProfileFormSubmitButtonTooltip: 'Save',
+
+  ifrcLinkText: '{countryName} on IFRC.org',
+  reliefWebLinkText: '{countryName} on reliefweb.int',
+  homePageLinkText: '{countryName} RC Homepage',
+
+  noDataMessage: 'No data to display.',
+
+  deploymentsPageTitle: 'Deployments',
+
+  emergencySourceMessage: 'Source: {link}',
+  emergencyFieldReportStatsHeading: 'Emergency Overview',
+
+  recoverAccountErrorMessage: 'Error: {message}',
+  recoverAccountSuccessMessage: 'We have sent an email to your inbox. Redirecting...',
+
+  recoverAccountInvalidEmailMessage: 'Please enter a valid email',
+
+  recoverUsernameSuccessMessage: 'If the given email address exists here, you will find an email in your mailbox...',
+  recoverUsernameInvalidEmailMessage: 'Please enter a valid email',
+
+  registerCreateUserDefaultErrorMessage: 'Could not create user',
+  registerErrorMessage: 'Error: {message}',
+  registerSuccessMessage: 'Success! Verification email sent, redirecting...',
+
+  resendValidationErrorMessage: 'Error: {message}',
+  resendValidationSuccessMessage: 'We have sent an email to your inbox. Redirecting...',
+
+  tableNounOperations: 'Operations',
+  tableNounDREFs: 'DREFs',
+  tableNounAppeals: 'Appeals',
+
+  fieldReportLastUpdatedBy: 'Last updated by {user} on {date}',
+  fieldReportLastUpdatedOn: 'Last updated on {date}',
 };

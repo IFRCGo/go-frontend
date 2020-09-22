@@ -5,9 +5,7 @@ import { Helmet } from 'react-helmet';
 import qs from 'qs';
 
 import { environment } from '#config';
-import { regions } from '#utils/region-constants';
 import { getCountryMeta } from '#utils/get-country-meta';
-import { get } from '#utils/utils';
 
 import App from './app';
 import EmergenciesTable from '#components/connected/emergencies-table';
@@ -20,6 +18,8 @@ import BreadCrumb from '#components/breadcrumb';
 
 import LanguageContext from '#root/languageContext';
 import { resolveToString } from '#utils/lang';
+import { countriesSelector } from '#selectors';
+import { regionsByIdSelector } from '../selectors';
 
 class Table extends React.Component {
   getDisplayTypes = (strings) => ({
@@ -48,10 +48,12 @@ class Table extends React.Component {
     const query = this.getQueryParams();
     let titleArea = '';
     if (query.hasOwnProperty('region')) {
-      titleArea = get(regions, [query.region.toString(), 'name']);
+      const regionId = query.region;
+      const thisRegion = this.props.regionsById[regionId][0];
+      titleArea = thisRegion.label;
       props.region = titleArea ? query.region : null;
     } else if (query.hasOwnProperty('country')) {
-      titleArea = getCountryMeta(query.country);
+      titleArea = getCountryMeta(query.country, this.props.countries);
       titleArea = titleArea ? titleArea.label : null;
       props.country = titleArea ? query.country : null;
     }
@@ -70,11 +72,13 @@ class Table extends React.Component {
       case 'report':
       return <FieldReportsTable title={resolveToString(strings.reportsTableTitle, { title: titleArea})} {...props} />;
       case 'appeal':
-        let noun = 'Operations';
+        let noun = strings.tableNounOperations;
         if (props.atype) {
-          noun = props.atype === 'dref' ? 'DREFs' : 'Appeals';
+          noun = props.atype === 'dref' ? strings.tableNounDREFs: strings.tableNounAppeals;
         }
-      const title = props.hasOwnProperty('record') ? strings.operationsWithEmergency : resolveToString(strings.tableAppealsTitle, { title: titleArea, noun: noun });
+        const title = props.hasOwnProperty('record')
+          ? strings.operationsWithEmergency
+          : resolveToString(strings.tableAppealsTitle, { title: titleArea, noun: noun });
       return <AppealsTable title={title} {...props} />;
       case 'alert':
       return <AlertsTable title={strings.tableAllAlertsTitle} {...props} />;
@@ -109,14 +113,14 @@ class Table extends React.Component {
       });
       if (qs.hasOwnProperty('region')) {
         const regionId = qs.region;
-        const region = get(regions, regionId.toString(), 'name');
+        const region = this.props.regionsById[regionId][0];
         extraCrumbs.push({
           link: `/regions/${regionId}`,
-          name: region.name
+          name: region.label
         });
       }
       if (qs.hasOwnProperty('country')) {
-        const country = getCountryMeta(qs.country);
+        const country = getCountryMeta(qs.country, this.props.countries);
         extraCrumbs.push({
           link: `/countries/${qs.country}`,
           name: country.label
@@ -166,6 +170,8 @@ if (environment !== 'production') {
 }
 
 const selector = (state) => ({
+  countries: countriesSelector(state),
+  regionsById: regionsByIdSelector(state)
 });
 
 const dispatcher = {};

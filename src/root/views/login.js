@@ -79,8 +79,14 @@ class Login extends React.Component {
 
   render () {
     const { strings } = this.context;
+
     if (this.state.authenticated) {
+      // TODO: remove
+      // This condition is handled by Anonymous route now
+      // Hence, is redundant
+
       const { from } = this.props.location.state || { from: { pathname: '/' } };
+
       return (
         <Redirect to={from}/>
       );
@@ -131,6 +137,8 @@ class Login extends React.Component {
                     <Link to='/recover-account' title={strings.loginRecoverTitle}><span><Translate stringId='loginForgotPassword' /></span></Link>
                     <br/>
                     <Link to='/recover-username' title={strings.loginShowUsernameTitle}><span><Translate stringId='loginForgotUsername' /></span></Link>
+                    <br/>
+                    <Link to='/resend-validation' title={strings.loginResendValidationTitle}><span><Translate stringId='loginResendValidation' /></span></Link>
                   </p>
                 </FormInput>
 

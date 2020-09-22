@@ -65,7 +65,7 @@ class Deployments extends SFPComponent {
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps (nextProps) {
     if (finishedFetch(this.props, nextProps, 'eruOwners')) {
-      hideGlobalLoading();
+      hideGlobalLoading(0);
     }
   }
 
@@ -225,7 +225,9 @@ class Deployments extends SFPComponent {
             <div className='inner'>
               <div className='inpage__headline'>
                 <div className='inpage__headline-content'>
-                  <h1 className='inpage__title'>Deployments</h1>
+                  <h1 className='inpage__title'>
+                    <Translate stringId="deploymentsPageTitle" />
+                  </h1>
                   { /* <div className='presentation__actions'>
                     <div className='inner'>
                       <button className='button button--base-plain button--fullscreen' onClick={this.toggleFullscreen} title='View in fullscreen'><span>FullScreen</span></button>

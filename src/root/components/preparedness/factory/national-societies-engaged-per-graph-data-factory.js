@@ -1,17 +1,16 @@
-
-import { getRegionById } from '#utils/region-constants';
-
 export default class NationalSocietiesEngagedPerGraphDataFactory {
-  buildGraphData (rawData) {
+  buildGraphData (rawData, regionsById, strings) {
     const preparedData = [];
     if (!(typeof rawData.error !== 'undefined' && rawData.error !== null)) {
       rawData.data.results.forEach((region) => {
+        const thisRegion = regionsById[region.id][0];
+        thisRegion['name'] = thisRegion['label'];
         preparedData.push(
           {
-            region: getRegionById(region.id),
+            region: thisRegion,
             data: [
-              {name: 'All countries', value: region.country__count},
-              {name: 'Engaged countries', value: region.forms_sent}
+              {name: strings.preparednessFactoryNSGraphDataAllCountriesLabel, value: region.country__count},
+              {name: strings.preparednessFactoryNSGraphDataEngagedCountriesLabel, value: region.forms_sent}
             ]
           }
         );

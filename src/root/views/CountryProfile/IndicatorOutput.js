@@ -2,6 +2,7 @@ import React from 'react';
 import _cs from 'classnames';
 
 import FormattedNumber from '#components/formatted-number';
+import styles from './styles.module.scss';
 
 const IndicatorOutput = ({
   className,
@@ -11,11 +12,11 @@ const IndicatorOutput = ({
   normalizeValue,
   fixedTo,
 }) => (
-  <div className={_cs('key-indicator-text-output', className)}>
-    <div className='tc-label'>
+  <div className={_cs(styles.keyIndicatorTextOutput, className)}>
+    <div className={styles.label}>
       {label}
     </div>
-    <div className='tc-value'>
+    <div className={styles.value}>
       <FormattedNumber
         value={value}
         addSeparator={addSeparatorToValue}

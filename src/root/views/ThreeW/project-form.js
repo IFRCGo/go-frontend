@@ -22,16 +22,16 @@ import TextOutput from '#components/text-output';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 
+import { allCountriesSelector } from '#selectors';
+
 import {
-  getCountries,
   getDistrictsForCountryPF,
   getEventList,
   postProject,
 } from '#actions';
 
-import {
-  disasterTypeList,
-} from '#utils/field-report-constants';
+import { disasterTypesSelectSelector } from '#selectors';
+import { getResultsFromResponse } from '#utils/request';
 
 import {
   // statusList,
@@ -44,6 +44,8 @@ import {
   projectVisibilityList,
 } from '#utils/constants';
 
+import { compareString } from '#utils/utils';
+
 const positiveIntegerCondition = (value) => {
   const ok = (value === undefined || value === '') || ((!Number.isNaN(value)) && (isFalsy(value) || isInteger(+value)) && (+value >= 0));
   return {
@@ -51,8 +53,6 @@ const positiveIntegerCondition = (value) => {
     message: 'Value must be a positive integer',
   };
 };
-
-const compareString = (a, b) => a.label.localeCompare(b.label);
 
 /*
 const statusOptions = statusList.map(p => ({
@@ -74,11 +74,6 @@ const secondarySectorOptions = secondarySectorList.map(p => ({
 const programmeTypeOptions = programmeTypeList.map(p => ({
   value: p.key,
   label: p.title,
-})).sort(compareString);
-
-const disasterTypeOptions = disasterTypeList.map(d => ({
-  value: d.value,
-  label: d.label,
 })).sort(compareString);
 
 const operationTypeOptions = [...operationTypeList].sort(compareString);
@@ -218,28 +213,15 @@ class ProjectForm extends React.PureComponent {
   }
 
   componentDidMount () {
-    this.props._getCountries();
+    // this.props._getCountries();
 
     if (this.props.countryId) {
       this.props._getEventList(this.props.countryId);
     }
   }
 
-  getResultsFromResponse = (response, defaultValue = emptyList) => {
-    const {
-      fetched,
-      data
-    } = response || emptyObject;
-
-    if (!fetched || !data || !data.results || !data.results.length) {
-      return defaultValue;
-    }
-
-    return response.data.results;
-  }
-
   getCountryAndNationalSocietyOptions = (countries) => {
-    const countryList = this.getResultsFromResponse(countries);
+    const countryList = getResultsFromResponse(countries);
 
     const nationalSocietyOptions = countryList
       .filter(d => d.society_name)
@@ -249,7 +231,10 @@ class ProjectForm extends React.PureComponent {
       })).sort(compareString);
 
     const countryOptions = countryList
-      .filter(d => d.iso)
+      .filter(d => d.iso &&
+        // make sure either this country is explicitly independent or undefined or null. But not false.
+        (d.hasOwnProperty('independent') && (d.independent || d.independent === undefined || d.independent === null))
+      )
       .map(d => ({
         value: d.id,
         label: d.name,
@@ -271,7 +256,7 @@ class ProjectForm extends React.PureComponent {
       return emptyList;
     }
 
-    const districtList = this.getResultsFromResponse(currentDistrictResponse, emptyObject);
+    const districtList = getResultsFromResponse(currentDistrictResponse, emptyObject);
     if (!districtList) {
       return emptyList;
     }
@@ -292,7 +277,7 @@ class ProjectForm extends React.PureComponent {
   }
 
   getCurrentOperationOptions = (response) => {
-    const currentOperationList = this.getResultsFromResponse(response);
+    const currentOperationList = getResultsFromResponse(response);
 
     if (!currentOperationList) {
       return emptyList;
@@ -689,7 +674,7 @@ class ProjectForm extends React.PureComponent {
               <SelectInput
                 faramElementName='dtype'
                 className='project-form-select'
-                options={disasterTypeOptions}
+                options={this.props.disasterTypesSelect}
                 disabled={shouldDisableDisasterType}
                 placeholder={shouldDisableDisasterType ? strings.projectFormDisasterTypePlaceholder : undefined}
               />
@@ -899,14 +884,14 @@ class ProjectForm extends React.PureComponent {
 ProjectForm.contextType = LanguageContext;
 
 const selector = (state, ownProps) => ({
-  countries: state.countries,
+  countries: allCountriesSelector(state),
   districts: state.districts,
   eventList: state.event ? state.event.eventList : undefined,
   projectForm: state.projectForm,
+  disasterTypesSelect: disasterTypesSelectSelector(state)
 });
 
 const dispatcher = dispatch => ({
-  _getCountries: (...args) => dispatch(getCountries(...args)),
   _getDistricts: (...args) => dispatch(getDistrictsForCountryPF(...args)),
   _getEventList: (...args) => dispatch(getEventList(...args)),
   _postProject: (...args) => dispatch(postProject(...args)),

@@ -41,9 +41,9 @@ export default class FormCheckboxGroupActions extends React.Component {
           </div>
           <div className='form__inner-body'>
             {options.map(optionGroup => (
-              <React.Fragment>
+              <React.Fragment key={optionGroup.label}>
                 {options.length > 1 ? (
-                  <label key={optionGroup.label} className={c('form__label', classLabel)}>{optionGroup.label}</label>
+                  <label className={c('form__label', classLabel)}>{optionGroup.label}</label>
                 ) : null}
                 <div className='form__options-group'>
                   {(optionGroup.options || options).map(option => {

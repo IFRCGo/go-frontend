@@ -1,5 +1,6 @@
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
+import Translate from '#components/Translate';
 
 export default function FormError (props) {
   const { errors, property } = props;
@@ -13,13 +14,13 @@ export default function FormError (props) {
   let message;
   switch (err.keyword) {
     case 'required':
-      message = 'Please fill in the field.';
+      message = <Translate id="formElementErrorRequiredMessage" />;
       break;
     case 'dependencies':
-      message = 'Please fill in the field.';
+      message = <Translate id="formElementErrorDependenciesMessage" />;
       break;
     case 'const':
-      message = 'Passwords must match.';
+      message = <Translate id="formElementErrorConstMessage" />;
       break;
     default:
       message = err.message;

@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
 
-import { getCentroid } from '#utils/country-centroids';
 import { stateInflight, stateError, stateSuccess } from '#utils/reducer-utils';
 import { get, groupByDisasterType, mostRecentReport } from '#utils/utils';
 
@@ -72,14 +71,14 @@ function lastMonth (state = lastMonthInitialState, action) {
         fetching: false,
         fetched: true,
         receivedAt: action.receivedAt,
-        data: createStoreFromRaw(action.data)
+        data: createStoreFromRaw(action.data, action.countries)
       });
       break;
   }
   return state;
 }
 
-function createStoreFromRaw (raw) {
+function createStoreFromRaw (raw, countriesByIso) {
   const count = raw.count;
   const records = get(raw, 'results', []);
   const emergenciesByType = groupByDisasterType(records);
@@ -114,7 +113,14 @@ function createStoreFromRaw (raw) {
     type: 'FeatureCollection',
     features: Object.keys(countries).map(iso => {
       const { country, records } = countries[iso];
-
+      let thisCentroid;
+      if (countriesByIso[country.iso] && countriesByIso[country.iso][0]?.centroid) {
+        thisCentroid = countriesByIso[country.iso][0].centroid.coordinates;
+      } else {
+        thisCentroid = [0, 0];
+        // FIXME: any missing centroid should be updated in the database
+        console.warn('missing centroid', country.iso);
+      }
       var properties = {
         id: country.id,
         name: country.name,
@@ -146,7 +152,7 @@ function createStoreFromRaw (raw) {
         properties,
         geometry: {
           type: 'Point',
-          coordinates: getCentroid(country.iso)
+          coordinates: thisCentroid
         }
       };
     }).filter(Boolean)

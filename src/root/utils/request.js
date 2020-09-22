@@ -6,7 +6,8 @@ export const getDataFromResponse = (response = emptyObject, defaultValue = empty
     return defaultValue;
   }
 
-  if (response.fetching || !response.fetched) {
+
+  if (!response.cached && (response.fetching || !response.fetched)) {
     return defaultValue;
   }
 

@@ -15,6 +15,7 @@ import PerDocuments from './per-documents';
 
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
+import { regionsByIdSelector } from '../../selectors';
 
 const RESULT_TYPES = {
   COUNTRY: 1,
@@ -123,7 +124,11 @@ const PerAccountTab = props => {
             <Translate stringId='perAccountActiveForms'/>
           </h2>
           <hr />
-          <PerDocuments perForm={props.perForm} perOverviewForm={props.perOverviewForm}/>
+          <PerDocuments
+            perForm={props.perForm}
+            perOverviewForm={props.perOverviewForm}
+            regionsById={props.regionsById}
+          />
           <PerDraftDocuments
             perForm={props.perForm}
             deletePerDraft={props._deletePerDraft}
@@ -153,8 +158,8 @@ if (environment !== 'production') {
 
 const selector = (state, ownProps) => ({
   perForm: state.perForm,
-  perOverviewForm: state.perForm.getPerOverviewForm
-
+  perOverviewForm: state.perForm.getPerOverviewForm,
+  regionsById: regionsByIdSelector(state),
 });
 
 const dispatcher = (dispatch) => ({

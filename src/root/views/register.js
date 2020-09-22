@@ -11,7 +11,7 @@ import { Helmet } from 'react-helmet';
 
 import { isValidEmail, isWhitelistedEmail, get } from '#utils/utils';
 import { countries, orgTypes } from '#utils/field-report-constants';
-import { registerUser, getDomainWhitelist, getCountries } from '#actions';
+import { registerUser, getDomainWhitelist } from '#actions';
 import { environment } from '#config';
 
 import { FormInput, FormError } from '#components/form-elements/';
@@ -20,6 +20,8 @@ import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading
 import BreadCrumb from '#components/breadcrumb';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
+
+import { countriesSelector } from '#selectors';
 
 import App from './app';
 import registerSchemaDef from '../schemas/register';
@@ -68,18 +70,22 @@ class Register extends React.Component {
 
   componentDidMount () {
     this.props._getDomainWhitelist();
-    this.props._getCountries(null, true);
+    if (this.props.countries.fetched || this.props.countries.cached) {
+      this.setNSState(this.props);
+    }
   }
 
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps (nextProps) {
+    const { strings } = this.context;
+
     if (this.props.registration.fetching && !nextProps.registration.fetching) {
       hideGlobalLoading();
       if (nextProps.registration.error) {
-        const message = nextProps.registration.error.error_message || 'Could not create user';
-        showAlert('danger', <p><strong>Error:</strong> {message}</p>, true, 4500);
+        const message = nextProps.registration.error.error_message || strings.registerCreateUserDefaultErrorMessage;
+        showAlert('danger', <p><Translate stringId="registerErrorMessage" params={{ message }} /></p>, true, 4500);
       } else {
-        showAlert('success', <p>Success! Verification email sent, redirecting...</p>, true, 2000);
+        showAlert('success', <p><Translate stringId="registerSuccessMessage" /></p>, true, 2000);
         setTimeout(() => this.props.history.push('/'), 2000);
       }
     }
@@ -100,26 +106,31 @@ class Register extends React.Component {
       registerSchemaDef.if.properties.email.not = { pattern: domList.map((dom) => `@${dom}`).join('|') };
       registerValidator = ajv.compile(registerSchemaDef);
     }
+    
+    if (nextProps.countries.fetched || nextProps.countries.cached) {
+      this.setNSState(nextProps);
 
-    if (nextProps.countries.fetched) {
-      this.setState({
-        nationalSocieties: nextProps.countries.data.results
-          .reduce(function (results, country) {
-            if (country.society_name && country.society_name !== 'ICRC') {
-              results.push({
-                value: country.society_name,
-                label: country.society_name
-              });
-            }
-            return results;
-          }, [])
-          .sort((a, b) => {
-            if (a.value > b.value) return 1;
-            if (a.value < b.value) return -1;
-            return 0;
-          })
-      });
     }
+  }
+
+  setNSState (props) {
+    this.setState({
+      nationalSocieties: props.countries.data.results
+        .reduce(function (results, country) {
+          if (country.society_name && country.society_name !== 'ICRC') {
+            results.push({
+              value: country.society_name,
+              label: country.society_name
+            });
+          }
+          return results;
+        }, [])
+        .sort((a, b) => {
+          if (a.value > b.value) return 1;
+          if (a.value < b.value) return -1;
+          return 0;
+        })
+    });
   }
 
   prepStateForValidation (state) {
@@ -203,6 +214,7 @@ class Register extends React.Component {
 
   renderAdditionalInfo () {
     const { strings } = this.context;
+    const countriesList = countries(this.props.countries);
     return (
       <div className='form__hascol form__hascol--2'>
         <div className='form__group'>
@@ -213,7 +225,7 @@ class Register extends React.Component {
             name='country'
             value={this.state.data.country}
             onChange={this.onFieldChange.bind(this, 'country')}
-            options={countries} />
+            options={countriesList} />
           <FormError
             errors={this.state.errors}
             property='country'
@@ -317,8 +329,8 @@ class Register extends React.Component {
           onChange={this.onFieldChange.bind(this, 'phoneNumber')}
         >
           <FormError
-            errors={this.state.errors}
             property='phoneNumber'
+            errors={this.state.errors}
           />
         </FormInput>
       </div>
@@ -522,13 +534,12 @@ if (environment !== 'production') {
 const selector = (state) => ({
   registration: state.registration,
   domainWhitelist: state.domainWhitelist,
-  countries: state.countries
+  countries: countriesSelector(state),
 });
 
 const dispatcher = (dispatch) => ({
   _registerUser: (payload) => dispatch(registerUser(payload)),
   _getDomainWhitelist: () => dispatch(getDomainWhitelist()),
-  _getCountries: (...args) => dispatch(getCountries(...args))
 });
 
 Register.contextType = LanguageContext;

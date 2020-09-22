@@ -101,7 +101,7 @@ function appealStats (state = initialState, action) {
         data: {
           stats: aggregateAppealStats(appeals),
           emergenciesByType,
-          geoJSON: aggregateCountryAppeals(appeals),
+          geoJSON: aggregateCountryAppeals(appeals, action.countries),
           results: appeals
         }
       });

@@ -35,7 +35,7 @@ class FieldReport extends React.Component {
     }
 
     if (this.props.report.fetching && !nextProps.report.fetching) {
-      hideGlobalLoading();
+      hideGlobalLoading(0);
     }
   }
 
@@ -478,8 +478,6 @@ class FieldReport extends React.Component {
         return null;
       }
     }
-    console.log('report', this.props.location.state);
-    console.log('props', this.props);
     const infoBulletinOptions = {
       '0': 'No',
       '2': 'Planned',
@@ -535,7 +533,24 @@ class FieldReport extends React.Component {
           <div className='inner container-lg'>
             <div className='prose fold prose--responsive'>
               <div className='inner'>
-                <p className='inpage__note'>Last updated{data.user ? ` by ${data.user.username}` : null} on {lastTouchedAt}</p>
+                <p className='inpage__note'>
+                  { data.user ? (
+                    <Translate
+                      stringId="fieldReportLastUpdatedBy"
+                      params={{
+                        user: data.user.username,
+                        date: lastTouchedAt,
+                      }}
+                    />
+                  ) : (
+                    <Translate
+                      stringId="fieldReportLastUpdatedBy"
+                      params={{
+                        date: lastTouchedAt,
+                      }}
+                    />
+                  )}
+                </p>
                 {this.renderNumericDetails(data)}
                 { epiStatus === 'EPI' ? <DisplaySection title={strings.fieldReportDateOfData} inner={sitFieldsDate} /> : null }
                 <DisplaySection sectionClass='rich-text-section' title={ status === 'EW' ? strings.fieldReportRiskAnalyisis : strings.fieldReportDescription } inner={get(data, 'description', false)} />

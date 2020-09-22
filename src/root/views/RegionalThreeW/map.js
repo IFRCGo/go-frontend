@@ -6,15 +6,15 @@ import mapboxgl from 'mapbox-gl';
 
 import store from '#utils/store';
 import newMap from '#utils/get-new-map';
-import { getRegionBoundingBox } from '#utils/region-bounding-box';
-import { getCentroidByCountryId } from '#utils/country-centroids';
 
 import ActivityDetails from './activity-details';
 import Translate from '#components/Translate';
+import { getCountryMeta } from '../../utils/get-country-meta';
+import turfBbox from '@turf/bbox';
 
 const emptyList = [];
 
-function getGeojsonFromMovementActivities (movementActivities = emptyList) {
+function getGeojsonFromMovementActivities (movementActivities = emptyList, countries) {
   const geojson = {
     type: 'geojson',
     data: {
@@ -23,7 +23,7 @@ function getGeojsonFromMovementActivities (movementActivities = emptyList) {
         type: 'Feature',
         geometry: {
           type: 'Point',
-          coordinates: getCentroidByCountryId(d.id),
+          coordinates: getCountryMeta(d.id, countries).centroid?.coordinates || [0, 0],
         },
         properties: {
           ...d,
@@ -75,6 +75,8 @@ function Map (props) {
   const {
     regionId,
     data,
+    countries,
+    regions,
   } = props;
 
   const ref = React.useRef();
@@ -92,18 +94,18 @@ function Map (props) {
     }
 
     map.on('load', () => {
-      const bbox = getRegionBoundingBox(regionId);
+      const bbox = turfBbox(regions[regionId][0].bbox);
       map.fitBounds(bbox);
       setMapLoaded(true);
     });
-  }, [map, setMapLoaded, regionId]);
+  }, [map, setMapLoaded, regionId, regions]);
 
   React.useEffect(() => {
     if (!map || !mapLoaded) {
       return;
     }
 
-    const geojson = getGeojsonFromMovementActivities(data);
+    const geojson = getGeojsonFromMovementActivities(data, countries);
 
     try {
       if (map.getLayer('movement-activity-circles')) {
@@ -146,7 +148,7 @@ function Map (props) {
         .setDOMContent(popoverContent.children[0])
         .addTo(map);
     });
-  }, [map, regionId, data, mapLoaded]);
+  }, [map, regionId, data, mapLoaded, countries]);
 
   const [supportingNSList, maxProjects] = React.useMemo(() => {
     const maxProjects = Math.max(...data.map(d => d.projects_count));

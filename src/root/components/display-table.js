@@ -3,17 +3,20 @@ import { PropTypes as T } from 'prop-types';
 import ReactPaginate from 'react-paginate';
 import c from 'classnames';
 
+import { resolveToString } from '#utils/lang';
 import { environment } from '#config';
+import languageContext from '#root/languageContext';
 
-import Dropdown from './common/dropdown';
+import DropdownMenu from './dropdown-menu';
 
 export default class DisplayTable extends React.Component {
   renderTbody () {
+    const { strings } = this.context;
     if (this.props.rows.length) {
       return this.props.rows.map(row => {
         // If the raw has a `rowOverride` property that is used as override.
         if (row.rowOverride) {
-          return row.rowOverride;
+          return <React.Fragment key={row.rowOverride}>{row.rowOverride}</React.Fragment>;
         }
 
         return (
@@ -37,7 +40,7 @@ export default class DisplayTable extends React.Component {
     } else {
       return (
         <tr>
-          <td colSpan={this.props.headings.length}>{this.props.emptyMessage || 'No data to display.'}</td>
+          <td colSpan={this.props.headings.length}>{this.props.emptyMessage || strings.noDataMessage}</td>
         </tr>
       );
     }
@@ -104,12 +107,14 @@ if (environment !== 'production') {
   };
 }
 
+DisplayTable.contextType = languageContext;
 DisplayTable.defaultProps = {
   className: 'table table--border-bottom'
 };
 
 export class SortHeader extends React.PureComponent {
   render () {
+    const { strings } = this.context;
     const {id, title, sort, onClick} = this.props;
     const onSortClick = (e) => {
       e.preventDefault();
@@ -121,10 +126,12 @@ export class SortHeader extends React.PureComponent {
       'table__sort--desc': sort.field === id && sort.direction === 'desc'
     });
     return (
-      <a href='#' title={`Sort by ${title}`} className={cl} onClick={onSortClick}>{title}</a>
+      <a href='#' title={resolveToString(strings.displayTableSortHeaderTooltip, { title: title || '' })} className={cl} onClick={onSortClick}>{title}</a>
     );
   }
 }
+
+SortHeader.contextType = languageContext;
 
 if (environment !== 'production') {
   SortHeader.propTypes = {
@@ -140,30 +147,44 @@ if (environment !== 'production') {
 
 export class FilterHeader extends React.PureComponent {
   render () {
-    const {id, title, options, onSelect, filter} = this.props;
+    const { strings } = this.context;
+    const { title, options, onSelect, filter} = this.props;
+
     const onFilterClick = (option, e) => {
       e.preventDefault();
       onSelect(option.value);
     };
+
     return (
-      <Dropdown
-        id={id}
-        triggerClassName='drop__toggle--caret'
-        triggerActiveClassName='active'
-        triggerText={title}
-        triggerTitle={`Filter by ${title}`}
-        triggerElement='a'
-        direction='down'
-        alignment='center' >
+      <DropdownMenu
+        className="drop__toggle--caret"
+        activeClassName="active"
+        label={
+          <span title={resolveToString(strings.displayTableFilterHeaderLabelTooltipText, { title })}>
+            { title }
+          </span>
+        }
+      >
         <ul className='drop__menu drop__menu--select' role='menu'>
-          {options.map(o => <li key={o.value}>
-            <a href='#' title={`Filter by ${title} - ${o.label}`} className={c('drop__menu-item button', {'drop__menu-item--active': filter === o.value})} data-hook='dropdown:close' onClick={onFilterClick.bind(this, o)}>{o.label}</a>
-          </li>)}
+          {options.map((o, i) => (
+            <li key={`${o.value} - ${i}`}>
+              <a
+                href='#'
+                title={resolveToString(strings.displayTableFilterHeaderOptionTooltipText, { title, label: o.label || '' })}
+                className={c('drop__menu-item button', {'drop__menu-item--active': filter === o.value})}
+                onClick={onFilterClick.bind(this, o)}
+              >
+                {o.label}
+              </a>
+            </li>
+          ))}
         </ul>
-      </Dropdown>
+      </DropdownMenu>
     );
   }
 }
+
+FilterHeader.contextType = languageContext;
 
 if (environment !== 'production') {
   FilterHeader.propTypes = {

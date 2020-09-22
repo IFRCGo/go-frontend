@@ -16,25 +16,10 @@ export default class PlanResponseRow extends React.Component {
     onChange(newVals);
   }
 
-  /*
-    This is a pretty terrible hack, but we need the user to be able to "unset" a selected Radio option here
-    So, if the radio being clicked is the same as the current selected value,
-    we trigger `onFieldChange` to set the value back to `undefined`.
-    FIXME: We should ideally re-think this whole thing a bit.
-  */
-  onRadioClick (e) {
-    const {
-      values
-    } = this.props;
-    const currentInput = e.target;
-    const inputValue = currentInput.value;
-    if (inputValue === values.status) {
-      this.onFieldChange('status', {
-        target: {
-          value: undefined
-        }
-      });
-    }
+  onClearSource (e) {
+    const { values, onChange } = this.props;
+    const newVals = Object.assign({}, values, {value: undefined, status: undefined});
+    onChange(newVals);
   }
 
   render () {
@@ -68,15 +53,20 @@ export default class PlanResponseRow extends React.Component {
               name={`${name}[status]`}
               id={`${name}-status`}
               classLabel='visually-hidden'
-              classWrapper='resp-status col col-8-sm'
+              classWrapper='resp-status col col-7-sm'
               options={options}
               selectedOption={values.status}
               onChange={this.onFieldChange.bind(this, 'status')}
-              onClick={this.onRadioClick.bind(this)} />
+              >
+              <FormError
+                errors={errors}
+                property={`${fieldKey}.status`}
+              />
+              </FormRadioGroup>
 
             <FormInput
               label={valueFieldLabel}
-              type='text'
+              type='number'
               name={`${name}[value]`}
               id={`${name}-value`}
               classLabel='label-secondary'
@@ -88,6 +78,11 @@ export default class PlanResponseRow extends React.Component {
                 property={`${fieldKey}.value`}
               />
             </FormInput>
+            <div className='col-1-mid'>
+              {values.value || values.status ? (
+              <button type='button' className='button--clear-source' title='Clear Entry' onClick={this.onClearSource.bind(this)}></button>
+              ) : null}
+            </div>
           </div>
         </div>
       </div>

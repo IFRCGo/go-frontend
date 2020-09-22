@@ -1,9 +1,6 @@
 import React from 'react';
-import { PropTypes as T } from 'prop-types';
 import { ThroughProvider } from 'react-through';
 import c from 'classnames';
-
-import { environment } from '#config';
 
 import Header from '#components/header';
 import MobileHeader from '#components/mobile-header';
@@ -12,31 +9,41 @@ import GlobalLoading from '#components/global-loading';
 import GlobalHeaderBanner from '#components/global-header-banner';
 import SysAlerts from '#components/system-alerts';
 
-class App extends React.Component {
-  render () {
-    return (
-      <ThroughProvider>
-        <div className={c('page', this.props.className)}>
+import {
+  GlobalLoadingContext,
+  NewGlobalLoadingParent,
+} from '#components/NewGlobalLoading';
+
+function App(p) {
+  const [loading, setLoading] = React.useState(false);
+
+  const setGlobalLoading = React.useCallback((isLoading) => {
+    setLoading((loading) => loading + (isLoading ? 1 : -1));
+  }, [setLoading]);
+
+  const contextValue = React.useMemo(() => ({
+    loading,
+    setLoading: setGlobalLoading,
+  }), [loading, setGlobalLoading]);
+
+  return (
+    <ThroughProvider>
+      <GlobalLoadingContext.Provider value={contextValue}>
+        <div className={c('page', p.className)}>
           <GlobalHeaderBanner />
           <GlobalLoading />
+          { loading > 0 && <NewGlobalLoadingParent /> }
           <Header />
           <MobileHeader />
           <main className='page__body' role='main'>
-            {this.props.children}
+            {p.children}
           </main>
           <SysAlerts />
           <Footer/>
         </div>
-      </ThroughProvider>
-    );
-  }
-}
-
-if (environment !== 'production') {
-  App.propTypes = {
-    className: T.string,
-    children: T.oneOfType([T.object, T.array])
-  };
+      </GlobalLoadingContext.Provider>
+    </ThroughProvider>
+  );
 }
 
 export default App;

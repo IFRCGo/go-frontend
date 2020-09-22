@@ -3,8 +3,7 @@ import _groupBy from 'lodash.groupby';
 import { get } from '#utils/utils';
 import { nope } from '#utils/format';
 import eruTypes from '#utils/eru-types';
-import { getCentroid } from '#utils/country-centroids';
-import { getCountryMeta } from '#utils/get-country-meta';
+import { countrySelector } from '#selectors';
 
 const initialState = {
   // fetching: false,
@@ -35,14 +34,14 @@ export default function reducer (state = initialState, action) {
         fetching: false,
         fetched: true,
         receivedAt: action.receivedAt,
-        data: createStoreFromRaw(action.data)
+        data: createStoreFromRaw(action.data, action.state)
       });
       break;
   }
   return state;
 }
 
-function createStoreFromRaw (raw) {
+function createStoreFromRaw (raw, state) {
   const records = raw.results || [];
 
   // flatten the data structure
@@ -78,23 +77,23 @@ function createStoreFromRaw (raw) {
 
   const erusByOwnerNation = _groupBy(deployed, 'eru_owner.id');
   const owners = Object.keys(erusByOwnerNation).filter(Boolean).map(key => ({
-    name: getCountryMeta(key).label,
+    name: countrySelector(state, key).name,
     items: erusByOwnerNation[key].reduce((acc, next) => acc + Number(get(next, 'equipment_units', 0)), 0)
   })).sort((a, b) => a.items > b.items ? -1 : 1);
 
   // calculate the number of units deployed to each country
   const recipientCountries = {};
   erus.filter(o => o.deployed_to).forEach(o => {
-    const { iso } = o.deployed_to;
-    recipientCountries[iso] = recipientCountries[iso] || { meta: o.deployed_to, total: 0, units: [] };
-    recipientCountries[iso].total += o.equipment_units;
-    recipientCountries[iso].units.push(`${o.equipment_units} - ${o.eru_owner.name}`);
+    const { id } = o.deployed_to;
+    recipientCountries[id] = recipientCountries[id] || { meta: o.deployed_to, total: 0, units: [] };
+    recipientCountries[id].total += o.equipment_units;
+    recipientCountries[id].units.push(`${o.equipment_units} - ${o.eru_owner.name}`);
   });
 
   const geoJSON = {
     type: 'FeatureCollection',
-    features: Object.keys(recipientCountries).map(iso => {
-      const { units, total, meta } = recipientCountries[iso];
+    features: Object.keys(recipientCountries).map(id => {
+      const { units, total, meta } = recipientCountries[id];
       const properties = Object.assign({}, meta, {
         type: 'eru',
         units: units.join('|'),
@@ -105,12 +104,11 @@ function createStoreFromRaw (raw) {
         properties,
         geometry: {
           type: 'Point',
-          coordinates: getCentroid(iso)
+          coordinates: countrySelector(state, id).centroid?.coordinates || [0, 0]
         }
       };
     })
   };
-
   return Object.assign({}, eruState, {
     geoJSON,
     types,

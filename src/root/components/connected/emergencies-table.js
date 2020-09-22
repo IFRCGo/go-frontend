@@ -14,7 +14,6 @@ import {
 } from '#utils/format';
 import {
   get,
-  dTypeOptions,
   dateOptions,
   datesAgo,
   mostRecentReport
@@ -27,6 +26,8 @@ import DisplayTable, { SortHeader, FilterHeader } from '../display-table';
 import { SFPComponent } from '#utils/extendables';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
+
+import { disasterTypesSelectSelector } from '#selectors';
 
 class EmergenciesTable extends SFPComponent {
   // Methods form SFPComponent:
@@ -150,7 +151,7 @@ class EmergenciesTable extends SFPComponent {
         },
         {
           id: 'dtype',
-          label: <FilterHeader id='dtype' title={strings.emergenciesTableDisasterType} options={dTypeOptions} filter={this.state.table.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'table', 'dtype')} />
+          label: <FilterHeader id='dtype' title={strings.emergenciesTableDisasterType} options={[{ value: 'all', label: 'All Types' }, ...this.props.disasterTypesSelect ]} filter={this.state.table.filters.dtype} onSelect={this.handleFilterChange.bind(this, 'table', 'dtype')} />
         },
         {
           id: 'glide',
@@ -243,7 +244,7 @@ if (environment !== 'production') {
 
     limit: T.number,
     country: T.string,
-    region: T.string,
+    region: T.number,
 
     noPaginate: T.bool,
     showExport: T.bool,
@@ -261,7 +262,8 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state) => ({
-  list: state.emergencies.list
+  list: state.emergencies.list,
+  disasterTypesSelect: disasterTypesSelectSelector(state)
 });
 
 const dispatcher = (dispatch) => ({

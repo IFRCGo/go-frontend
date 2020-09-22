@@ -9,6 +9,7 @@ import App from './app';
 import FieldReportsTable from '#components/connected/field-reports-table';
 import EmergenciesDash from '#components/connected/emergencies-dash';
 import EmergenciesTable from '#components/connected/emergencies-table';
+import { allCountriesSelector } from '#selectors';
 
 import { getLastMonthsEmergencies, getAggregateEmergencies } from '#actions';
 import { environment } from '#config';
@@ -22,14 +23,14 @@ class Emergencies extends React.Component {
   }
 
   render () {
+    const {
+      lastMonth,
+    } = this.props;
     const { strings } = this.context;
-    if (!this.props.lastMonth.fetched) {
-      return (
-        <BlockLoading />
-      );
-    }
-    const count = this.props.lastMonth.data.count;
-    const dashTitle = `${strings.emergenciesTitle} (${count})`;
+    const pending = !(lastMonth?.fetched);
+    const count = lastMonth?.data?.count;
+    const dashTitle = count ? `${strings.emergenciesTitle} (${count})` : strings.emergenciesTitle;
+
     return (
       <App className='page--emergencies'>
         <Helmet>
@@ -38,27 +39,33 @@ class Emergencies extends React.Component {
           </title>
         </Helmet>
         <section className='inpage'>
-          <BreadCrumb crumbs={[{link: '/emergencies', name: 'Emergencies'}, {link: '/', name: strings.breadCrumbHome }]} />
-          <EmergenciesDash 
-            title={dashTitle}
-          />
-          <div>
-            <div className='inner inner--emergencies-table-map'>
-              <EmergenciesTable
-                title={strings.emergenciesTableTitle}
-                limit={10}
-                showRecent={true}
-                showHeader={false}
+          <BreadCrumb crumbs={[{link: '/emergencies', name: strings.breadCrumbEmergencies}, {link: '/', name: strings.breadCrumbHome }]} />
+          { pending ? (
+            <BlockLoading />
+          ) : (
+            <>
+              <EmergenciesDash 
+                title={dashTitle}
               />
-            </div>
-            <div className='inner inner--field-reports-emergencies'>
-              <FieldReportsTable
-                title={strings.fieldReportsTableTitle}
-                viewAll={'/reports/all'}
-                showRecent={true}
-              />
-            </div>
-          </div>
+              <div>
+                <div className='inner inner--emergencies-table-map'>
+                  <EmergenciesTable
+                    title={strings.emergenciesTableTitle}
+                    limit={10}
+                    showRecent={true}
+                    showHeader={false}
+                  />
+                </div>
+                <div className='inner inner--field-reports-emergencies'>
+                  <FieldReportsTable
+                    title={strings.fieldReportsTableTitle}
+                    viewAll={'/reports/all'}
+                    showRecent={true}
+                  />
+                </div>
+              </div>
+            </>
+          )};
         </section>
       </App>
     );
@@ -80,6 +87,7 @@ if (environment !== 'production') {
 const selector = (state) => ({
   lastMonth: state.emergencies.lastMonth,
   aggregate: state.emergencies.aggregate,
+  countries: allCountriesSelector(state),
 });
 
 const dispatcher = (dispatch) => ({

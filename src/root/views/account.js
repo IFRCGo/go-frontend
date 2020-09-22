@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import { set } from 'object-path';
 import { Helmet } from 'react-helmet';
+import memoize from 'memoize-one';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { environment } from '#config';
 import {
@@ -29,7 +30,7 @@ import {
 
 import { get } from '#utils/utils';
 import { getCountryMeta } from '#utils/get-country-meta';
-import { countries, disasterType, orgTypes } from '#utils/field-report-constants';
+import { countries, orgTypes } from '#utils/field-report-constants';
 import { apiPropertyDisplay, apiPropertyValue } from '#utils/format';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 import { showAlert } from '#components/system-alerts';
@@ -40,6 +41,7 @@ import PerAccountTab from '#components/per-forms/per-account-tab';
 import BreadCrumb from '../components/breadcrumb';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
+import { countriesSelector, disasterTypesSelectSelector } from '#selectors';
 
 import {
   FormCheckboxGroup,
@@ -50,12 +52,9 @@ import App from './app';
 
 const Fragment = React.Fragment;
 
-// Exclude the first item since it's a dropdown placeholder
-const disasterTypes = disasterType.slice(1);
-
 // helper to unmark all checkboxes in initial state
 const markUnChecked = o => ({
-  value: o.value,
+  value: o.value.toString(),
   checked: false
 });
 
@@ -109,95 +108,24 @@ class Account extends React.Component {
 
     const { strings } = context;
 
-    this.TAB_DETAILS = [
-      { title: strings.accountInformation, hash: '#account-information' },
-      { title: strings.accountNotification, hash: '#notifications' },
-      { title: strings.accountPerForms, hash: '#per-forms' }
-    ];
     // Constants used to create form elements
-
-    this.basicTypes = [
-      {
-        label: strings.accountWeeklyDigest,
-        value: 'weeklyDigest',
-        description: strings.accountWeeklyDigestDescription,
-      },
-      {
-        label: strings.accountNewEmergencies,
-        value: 'newEmergencies',
-        description: strings.accountNewEmergenciesDescription,
-      },
-      {
-        label: strings.accountNewOperation,
-        value: 'newOperations',
-        description: strings.accountNewOperationDescription,
-      },
-      {
-        label: strings.accountGeneralAnnouncements,
-        value: 'general'
-      }];
-
-    this.systemNotificationTypes = [
-      {
-        label: strings.accountNewRecords,
-        value: 'new'
-      }, {
-        label: strings.accountModifiedRecords,
-        value: 'modified'
-      }];
-
-    this.surgeNotificationTypes = [
-      {
-        label: strings.accountSurgeAlerts,
-        value: 'surge'
-      },
-      {
-        label: strings.accountDeplyomentMessages,
-        value: 'surgeDM'
-      },
-      {
-        label: strings.accountsurgeAEM,
-        value: 'surgeAEM'
-      }];
-
-    this.perDueDateTypes = [{
-      label: strings.accountPerDueDate,
-      value: 'perDueDate'
-    }];
-
-    this.regions = [{
-      label: strings.accountRegionAfrica,
-      value: '0'
-    }, {
-      label: strings.accountRegionAsia,
-      value: '2'
-    }, {
-      label: strings.accountRegionMENA,
-      value: '4'
-    }, {
-      label: strings.accountRegionEurope,
-      value: '3'
-    }, {
-      label: strings.accountRegionAmerica,
-      value: '1'
-    }];
 
     this.state = {
       isNotificationsDirty: false,
-      notifications: {
-        countries: [],
-        basic: this.basicTypes.map(markUnChecked),
-        regions: this.regions.map(markUnChecked),
-        disasterTypes: disasterTypes.map(markUnChecked),
-        event: this.systemNotificationTypes.map(markUnChecked),
-        fieldReport: this.systemNotificationTypes.map(markUnChecked),
-        appeal: this.systemNotificationTypes.map(markUnChecked),
-        surg: this.surgeNotificationTypes.map(markUnChecked),
-        per: this.perDueDateTypes.map(markUnChecked)
-      },
-
       isProfileDirty: false,
       profileEditMode: false,
+      notifications: {
+        countries: [],
+        basic: this.getBasicTypes(strings).map(markUnChecked),
+        regions: this.getRegions(strings).map(markUnChecked),
+        disasterTypes: this.props.disasterTypesSelect.map(markUnChecked),
+        event: this.getSystemNotificationTypes(strings).map(markUnChecked),
+        fieldReport: this.getSystemNotificationTypes(strings).map(markUnChecked),
+        appeal: this.getSystemNotificationTypes(strings).map(markUnChecked),
+        surg: this.getSurgeNotificationTypes(strings).map(markUnChecked),
+        per: this.getPerDueDateTypes(strings).map(markUnChecked)
+      },
+
       profile: {
         firstName: null,
         lastName: null,
@@ -218,6 +146,7 @@ class Account extends React.Component {
 
   componentDidMount () {
     this.componentIsLoading = true;
+    showGlobalLoading();
     const { user, _getProfile, _getFieldReportsByUser, _getPerCountries, _getPerDocuments, _getPerDraftDocument } = this.props;
     _getProfile(user.username);
     _getFieldReportsByUser(user.id);
@@ -227,13 +156,98 @@ class Account extends React.Component {
     _getPerDraftDocument(draftQueryFilters);
     this.props._getPerOverviewForm();
     this.props._getPerMission();
-    showGlobalLoading();
     this.displayTabContent();
   }
 
+  getTabDetails = memoize((strings) => [
+    { title: strings.accountInformation, hash: '#account-information' },
+    { title: strings.accountNotification, hash: '#notifications' },
+    { title: strings.accountPerForms, hash: '#per-forms' }
+  ])
+
+  getBasicTypes = memoize((strings) => [
+    {
+      label: strings.accountWeeklyDigest,
+      value: 'weeklyDigest',
+      description: strings.accountWeeklyDigestDescription,
+    },
+    {
+      label: strings.accountNewEmergencies,
+      value: 'newEmergencies',
+      description: strings.accountNewEmergenciesDescription,
+    },
+    {
+      label: strings.accountNewOperation,
+      value: 'newOperations',
+      description: strings.accountNewOperationDescription,
+    },
+    {
+      label: strings.accountGeneralAnnouncements,
+      value: 'general'
+    }
+  ])
+
+  getSystemNotificationTypes = memoize((strings) => [
+    {
+      label: strings.accountNewRecords,
+      value: 'new'
+    }, {
+      label: strings.accountModifiedRecords,
+      value: 'modified'
+    }
+  ])
+
+  getSurgeNotificationTypes = memoize((strings) => [
+    {
+      label: strings.accountSurgeAlerts,
+      value: 'surge'
+    },
+    {
+      label: strings.accountDeplyomentMessages,
+      value: 'surgeDM'
+    },
+    {
+      label: strings.accountsurgeAEM,
+      value: 'surgeAEM'
+    }
+  ])
+
+  getPerDueDateTypes = memoize((strings) => [
+    {
+      label: strings.accountPerDueDate,
+      value: 'perDueDate'
+    }
+  ])
+  
+  getRegions = memoize((strings) => [
+    {
+      label: strings.accountRegionAfrica,
+      value: '0'
+    },
+    {
+      label: strings.accountRegionAsia,
+      value: '2'
+    },
+    {
+      label: strings.accountRegionMENA,
+      value: '4'
+    },
+    {
+      label: strings.accountRegionEurope,
+      value: '3'
+    },
+    {
+      label: strings.accountRegionAmerica,
+      value: '1'
+    },
+  ])
+
+
   // Sets default tab if url param is blank or incorrect
   displayTabContent () {
-    const tabHashArray = this.TAB_DETAILS.map(({ hash }) => hash);
+    const { strings } = this.context;
+
+    const tabHashArray = this.getTabDetails(strings).map(({ hash }) => hash);
     if (!tabHashArray.find(hash => hash === this.props.location.hash)) {
       this.props.history.replace(`${this.props.location.pathname}${tabHashArray[0]}`);
     }
@@ -251,7 +265,6 @@ class Account extends React.Component {
       }
     }
     if (this.props.profile.fetching && !nextProps.profile.fetching) {
-      hideGlobalLoading();
       if (nextProps.profile.error) {
         showAlert('danger', <p><strong><Translate stringId='accountError'/></strong><Translate stringId='accountCouldNotLoad'/></p>, true, 4500);
       } else {
@@ -260,7 +273,6 @@ class Account extends React.Component {
       }
     }
     if (this.props.profile.updating && !nextProps.profile.updating) {
-      hideGlobalLoading();
       if (nextProps.profile.updateError) {
         showAlert('danger', <p><strong><Translate stringId='accountError' /></strong> {nextProps.profile.updateError.detail}</p>, true, 4500);
       } else {
@@ -273,6 +285,10 @@ class Account extends React.Component {
       const draftQueryFilters = { user: this.props.user.id };
       this.props._getPerDraftDocument(draftQueryFilters);
     }
+
+    if (nextProps.profile.fetched === true) {
+      hideGlobalLoading();
+    }
   }
 
   syncNotificationState (data) {
@@ -284,7 +300,7 @@ class Account extends React.Component {
     subscriptions.forEach(sub => {
       const rtype = rtypes[sub.rtype];
       if (rtype === 'country' && sub.country) {
-        let countryMeta = getCountryMeta(sub.country);
+        let countryMeta = getCountryMeta(sub.country, this.props.allCountries);
         if (countryMeta && !next.countries.some((country) => country.value === countryMeta.value)) {
           next.countries = next.countries.concat([{ label: countryMeta.label, value: sub.country.toString() }]);
         }
@@ -571,7 +587,7 @@ class Account extends React.Component {
             <div className='text-center'>
               <button type='submit' className={c('button', 'button--large', 'button--secondary-filled', {
                 'disabled': !this.state.isProfileDirty
-              })} title='Save'>
+              })} title={strings.accountProfileFormSubmitButtonTooltip}>
                 <Translate stringId='accountSave'/>
               </button>
             </div>
@@ -609,7 +625,14 @@ class Account extends React.Component {
                       <div className='report__list--header list__each__block flex'>
                         <div>
                           <Link className='link-underline' to={`/reports/${o.id}`}>{o.summary}</Link>&nbsp;
-                          <div className='report__list--updated global-margin-t'>Last Updated: {DateTime.fromISO(o.updated_at || o.created_at).toISODate()}</div>
+                          <div className='report__list--updated global-margin-t'>
+                            <Translate
+                              stringId='accountReportListLastUpdated'
+                              params={{
+                                on: DateTime.fromISO(o.updated_at || o.created_at).toISODate(),
+                              }}
+                            />
+                          </div>
                         </div>
                       </div>
                       <p>{o.description}</p>
@@ -618,7 +641,7 @@ class Account extends React.Component {
                 </ul>
               </div>
               <div className='fold__footer'>
-                <p><Translate stringId='accountDeleteContact'/> <a href='mailto:im@ifrc.org'><Translate stringId='accountDeleteInfo'/></a>.</p>
+                <p><Translate stringId='accountDeleteContact'/> <a href='mailto:im@ifrc.org'><Translate stringId='accountDeleteInfo'/></a></p>
               </div>
             </div>
           </section>
@@ -643,7 +666,7 @@ class Account extends React.Component {
               description={strings.accountSubscriptionTypesDescription}
               name='basic'
               classWrapper='action-checkboxes'
-              options={this.basicTypes}
+              options={this.getBasicTypes(strings)}
               values={this.state.notifications.basic}
               onChange={this.onFieldChange.bind(this, 'notifications', 'basic')} />
             <FormCheckboxGroup
@@ -651,7 +674,7 @@ class Account extends React.Component {
               description={strings.accountRegionalNotificationDescription}
               name='regions'
               classWrapper='action-checkboxes'
-              options={this.regions}
+              options={this.getRegions(strings)}
               values={this.state.notifications.regions}
               onChange={this.onFieldChange.bind(this, 'notifications', 'regions')} />
             <div className='form__group'>
@@ -665,7 +688,7 @@ class Account extends React.Component {
                 name='countries'
                 value={this.state.notifications.countries}
                 onChange={this.onFieldChange.bind(this, 'notifications', 'countries')}
-                options={countries}
+                options={countries(this.props.allCountries)}
                 multi />
             </div>
             <FormCheckboxGroup
@@ -673,7 +696,7 @@ class Account extends React.Component {
               description={strings.accountDisasterCategoryDescription}
               name='disasterTypes'
               classWrapper='action-checkboxes'
-              options={disasterTypes}
+              options={this.props.disasterTypesSelect.map(dt => ({ value: dt.value.toString(), label: dt.label }))}
               values={this.state.notifications.disasterTypes}
               onChange={this.onFieldChange.bind(this, 'notifications', 'disasterTypes')} />
             {/*
@@ -681,21 +704,21 @@ class Account extends React.Component {
                label='Emergencies'
                name='event'
                classWrapper='action-checkboxes'
-               options={systemNotificationTypes}
+               options={getSystemNotificationTypes(strings)}
                values={this.state.notifications.event}
                onChange={this.onFieldChange.bind(this, 'notifications', 'event')} />
                <FormCheckboxGroup
                label='Field Reports'
                name='fieldReport'
                classWrapper='action-checkboxes'
-               options={systemNotificationTypes}
+               options={getSystemNotificationTypes(strings)}
                values={this.state.notifications.fieldReport}
                onChange={this.onFieldChange.bind(this, 'notifications', 'fieldReport')} />
                <FormCheckboxGroup
                label='Appeals'
                name='appeal'
                classWrapper='action-checkboxes'
-               options={systemNotificationTypes}
+               options={getSystemNotificationTypes(strings)}
                values={this.state.notifications.appeal}
                onChange={this.onFieldChange.bind(this, 'notifications', 'appeal')} />
              */}
@@ -703,7 +726,7 @@ class Account extends React.Component {
               label={strings.accountSurgeNotification}
               name='surg'
               classWrapper='action-checkboxes'
-              options={this.surgeNotificationTypes}
+              options={this.getSurgeNotificationTypes(strings)}
               values={this.state.notifications.surg}
               onChange={this.onFieldChange.bind(this, 'notifications', 'surg')} />
             {this.isPerPermission()
@@ -711,7 +734,7 @@ class Account extends React.Component {
                  label={strings.acccountOtherNotification}
                  name='per'
                  classWrapper='action-checkboxes'
-                 options={this.perDueDateTypes}
+                 options={this.getPerDueDateTypes(strings)}
                  values={this.state.notifications.per}
                  onChange={this.onFieldChange.bind(this, 'notifications', 'per')} />
              : null}
@@ -759,29 +782,32 @@ class Account extends React.Component {
         }
       });
     }
-    return (<div className='fold-container'>
-              <section className='fold' id='notifications'>
-                <div className='inner'>
-                  <h2 className='fold__title spacing-b'>
-                    <Translate stringId='accountOperationFollowing'/>
-                  </h2>
-                  <div className='row flex-sm'>
-                    <div className='account__op__title col col-3-sm'>
-                      <div className='text-uppercase'>
-                        <Translate stringId='accountCurrentlyFollowing'/>
-                      </div>
-                    </div>
-                    <div className='account__op__links col col-9-sm row flex-mid'>
-                      {events}
-                    </div>
-                  </div>
+    return (
+      <div className='fold-container'>
+        <section className='fold' id='notifications'>
+          <div className='inner'>
+            <h2 className='fold__title spacing-b'>
+              <Translate stringId='accountOperationFollowing'/>
+            </h2>
+            <div className='row flex-sm'>
+              <div className='account__op__title col col-3-sm'>
+                <div className='text-uppercase'>
+                  <Translate stringId='accountCurrentlyFollowing'/>
                 </div>
-              </section>
-            </div>);
+              </div>
+              <div className='account__op__links col col-9-sm row flex-mid'>
+                {events}
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    );
   }
 
   handleTabChange (index) {
-    const tabHashArray = this.TAB_DETAILS.map(({ hash }) => hash);
+    const { strings } = this.context;
+    const tabHashArray = this.getTabDetails(strings).map(({ hash }) => hash);
     const url = this.props.location.pathname;
     this.props.history.replace(`${url}${tabHashArray[index]}`);
   }
@@ -816,11 +842,11 @@ class Account extends React.Component {
           </header>
           <div className='tab__wrap'>
             <Tabs
-              selectedIndex={this.TAB_DETAILS.map(({ hash }) => hash).indexOf(this.props.location.hash)}
+              selectedIndex={this.getTabDetails(strings).map(({ hash }) => hash).indexOf(this.props.location.hash)}
               onSelect={index => this.handleTabChange(index)}
             >
               <TabList>
-                {this.TAB_DETAILS.map(tab => (
+                {this.getTabDetails(strings).map(tab => (
                   <Tab key={tab.title}>{tab.title}</Tab>
                 ))}
               </TabList>
@@ -904,7 +930,10 @@ const selector = (state, ownProps) => ({
   event: state.event,
   eventDeletion: state.subscriptions.delSubscriptions,
   perOverviewForm: state.perForm.getPerOverviewForm,
-  getPerMission: state.perForm.getPerMission
+  getPerMission: state.perForm.getPerMission,
+  allCountries: countriesSelector(state),
+  disasterTypesSelect: disasterTypesSelectSelector(state),
+  disasterTypes: state.disasterTypes
 });
 
 const dispatcher = (dispatch) => ({

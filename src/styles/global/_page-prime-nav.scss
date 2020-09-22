@@ -70,8 +70,9 @@
 }
 
 .drop__title--page__meta-nav {
-  margin-inline-start: -.5rem !important;
-  margin-bottom: $spacing-2 !important;
+  // margin-inline-start: -.5rem !important;
+  // margin-inline-end: -.5rem !important;
+  padding: $spacing-half $spacing-half 0 $spacing-half;
 }
 
 .drop__menu--page__meta-nav {
@@ -320,13 +321,14 @@
   }  
 } 
 
-.drop__toggle--field-report-new {
+.tc-dropdown-menu.drop__toggle--field-report-new {
   font-weight: $base-font-semi-bold;
   letter-spacing: 0.5px;
   padding-inline-start: ($global-spacing * 2);
   padding-inline-end: ($global-spacing * 2);
   position: relative;
   top: ($global-spacing * 1.3);
+  color: $primary-color;
 
   @include media(medium) {
     padding-inline-start: ($global-spacing * 2.7);
