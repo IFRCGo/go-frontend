@@ -159,10 +159,12 @@ class AdminArea extends SFPComponent {
         title: strings.country3WTab,
         hash: '#3w'
       },
+      /*
       {
         title: strings.countryOverviewTab,
         hash: '#profile',
       },
+      */
       {
         title: strings.countryPreparednessTab,
         hash: '#preparedness'
@@ -709,6 +711,7 @@ class AdminArea extends SFPComponent {
                     </TabContent>
                   </div>
                 </TabPanel>
+                {/*
                 <TabPanel>
                   <TabContent title='Overview'>
                     <div className='container-full'>
@@ -719,6 +722,7 @@ class AdminArea extends SFPComponent {
                     </div>
                   </TabContent>
                 </TabPanel>
+                */}
                 <TabPanel>
                   <TabContent showError={true} isError={!this.isPerPermission()} errorMessage={strings.accountPerPermission} title={strings.countryPreparednessTitle}>
                     <div className='container-lg'>
