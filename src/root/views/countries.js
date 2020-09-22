@@ -67,7 +67,7 @@ import KeyFiguresHeader from '#components/common/key-figures-header';
 import { SFPComponent } from '#utils/extendables';
 
 import ThreeW from './ThreeW';
-import CountryProfile from './CountryProfile';
+// import CountryProfile from './CountryProfile';
 import { countryByIdOrNameSelector, regionsByIdSelector, disasterTypesSelectSelector } from '../selectors';
 
 const emptyObject = {};
