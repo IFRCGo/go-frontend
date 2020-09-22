@@ -51,13 +51,15 @@ export const countries = (countries, independent=false) => {
     countriesSelectList = countries.map(country => ({ value: country.id, label: country.name }));
   }
 
-  // show only independent countries (include countries with empty or unavailable 'independent' prop)
+  // show only independent countries (country and region) (include countries with empty or unavailable 'independent' prop)
+  countriesSelectList = countries.filter(country => country.record_type === 1 || country.record_type === 3);
+
   if (independent) {
     countriesSelectList = countries
     .filter(
-        country => country.independent === true
+        country => (country.independent === true
         || country.independent === undefined
-        || country.independent === null
+        || country.independent === null)
       );
   }
 

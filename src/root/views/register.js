@@ -21,7 +21,7 @@ import BreadCrumb from '#components/breadcrumb';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 
-import { allCountriesSelector } from '#selectors';
+import { countriesSelector } from '#selectors';
 
 import App from './app';
 import registerSchemaDef from '../schemas/register';
@@ -214,9 +214,7 @@ class Register extends React.Component {
 
   renderAdditionalInfo () {
     const { strings } = this.context;
-    const countriesList = (this.props.countries && (this.props.countries.fetched || this.props.countries.cached))
-      ? countries(this.props.countries.data.results)
-      : [];
+    const countriesList = countries(this.props.countries);
     return (
       <div className='form__hascol form__hascol--2'>
         <div className='form__group'>
@@ -536,7 +534,7 @@ if (environment !== 'production') {
 const selector = (state) => ({
   registration: state.registration,
   domainWhitelist: state.domainWhitelist,
-  countries: allCountriesSelector(state),
+  countries: countriesSelector(state),
 });
 
 const dispatcher = (dispatch) => ({
