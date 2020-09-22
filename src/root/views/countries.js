@@ -67,7 +67,7 @@ import KeyFiguresHeader from '#components/common/key-figures-header';
 import { SFPComponent } from '#utils/extendables';
 
 import ThreeW from './ThreeW';
-import CountryProfile from './CountryProfile';
+// import CountryProfile from './CountryProfile';
 import { countryByIdOrNameSelector, regionsByIdSelector, disasterTypesSelectSelector } from '../selectors';
 
 const emptyObject = {};
@@ -159,10 +159,12 @@ class AdminArea extends SFPComponent {
         title: strings.country3WTab,
         hash: '#3w'
       },
+      /*
       {
         title: strings.countryOverviewTab,
         hash: '#profile',
       },
+      */
       {
         title: strings.countryPreparednessTab,
         hash: '#preparedness'
@@ -709,6 +711,7 @@ class AdminArea extends SFPComponent {
                     </TabContent>
                   </div>
                 </TabPanel>
+                {/*
                 <TabPanel>
                   <TabContent title='Overview'>
                     <div className='container-full'>
@@ -719,6 +722,7 @@ class AdminArea extends SFPComponent {
                     </div>
                   </TabContent>
                 </TabPanel>
+                */}
                 <TabPanel>
                   <TabContent showError={true} isError={!this.isPerPermission()} errorMessage={strings.accountPerPermission} title={strings.countryPreparednessTitle}>
                     <div className='container-lg'>
