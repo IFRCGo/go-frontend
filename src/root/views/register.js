@@ -70,7 +70,7 @@ class Register extends React.Component {
 
   componentDidMount () {
     this.props._getDomainWhitelist();
-    if (this.props.countries.fetched || this.props.countries.cached) {
+    if (this.props.countries) {
       this.setNSState(this.props);
     }
   }
