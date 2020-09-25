@@ -69,22 +69,23 @@ function failed (action) {
 
 /**
  * Get a JSON resource
- * @param  {string} path      Relative path to query. Has to be available from
- *                            the api.
- * @param  {string} action    Base action to dispatch.
- * @param  {Object} options   Options for the request.
- * @param  {Object} extraData Extra data to pass to the action.
- * @return {func}             Dispatch function.
+ * @param  {string} path            Relative path to query. Has to be available from the api.
+ * @param  {string} action          Base action to dispatch.
+ * @param  {Object} options         Options for the request.
+ * @param  {Object} options.headers Headers to be added for the request
+ * @param  {string} options.lang    Language to over-ride currentLanguage in request 
+ * @param  {Object} extraData       Extra data to pass to the action.
+ * @return {func}                   Dispatch function.
  */
 export function fetchJSON (path, action, options, extraData) {
   const currentLanguage = store.getState().lang.current;
 
   const newOptions = {
     ...options,
-
+    
     headers: {
       ...options?.headers,
-      'Accept-Language': currentLanguage,
+      'Accept-Language': options?.lang ? options.lang : currentLanguage,
     },
   };
 

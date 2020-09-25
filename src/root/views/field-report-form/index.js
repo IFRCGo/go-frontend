@@ -61,6 +61,10 @@ import { countriesSelector, disasterTypesSelectSelector } from '#selectors';
 const ajv = new Ajv({ $data: true, allErrors: true, errorDataPath: 'property' });
 ajvKeywords(ajv);
 
+// Overrides language pulled in to field report form to always be english,
+// regardless of user's currentLanguage
+const LANGUAGE_OVERRIDE = 'en';
+
 // How to add a new field to the form:
 // - Add the widget to the form.
 //    - If it has options, they should come from utils/form-report-constants.js
@@ -164,7 +168,7 @@ class FieldReportForm extends React.Component {
 
   getReport(id) {
     showGlobalLoading();
-    this.props._getFieldReportById(id);
+    this.props._getFieldReportById(id, LANGUAGE_OVERRIDE);
   }
 
   /**
