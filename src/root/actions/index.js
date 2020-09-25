@@ -164,8 +164,12 @@ export function getCountries (region, mini) {
 }
 
 export const GET_FIELD_REPORT = 'GET_FIELD_REPORT';
-export function getFieldReportById (id) {
-  return fetchJSON(`api/v2/field_report/${id}/`, GET_FIELD_REPORT, withToken(), { id });
+export function getFieldReportById (id, lang=null) {
+  const opts = {
+    ...withToken(),
+    lang
+  };
+  return fetchJSON(`api/v2/field_report/${id}/`, GET_FIELD_REPORT, opts, { id });
 }
 
 export function getFieldReportsByUser (userId) {
