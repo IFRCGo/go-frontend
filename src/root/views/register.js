@@ -107,15 +107,14 @@ class Register extends React.Component {
       registerValidator = ajv.compile(registerSchemaDef);
     }
     
-    if (nextProps.countries.fetched || nextProps.countries.cached) {
+    if (nextProps.countries) {
       this.setNSState(nextProps);
-
     }
   }
 
   setNSState (props) {
     this.setState({
-      nationalSocieties: props.countries.data.results
+      nationalSocieties: props.countries
         .reduce(function (results, country) {
           if (country.society_name && country.society_name !== 'ICRC') {
             results.push({
