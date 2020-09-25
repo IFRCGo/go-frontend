@@ -1,3 +1,10 @@
+### Release 4.4.1 - Bugfix Release
+
+Fixes a couple of critical issues:
+
+ - National Society dropdowns not working on register page: https://github.com/IFRCGo/go-frontend/issues/1627
+ - Issues with editing content in multiple languages in the Admin: https://github.com/IFRCGo/go-frontend/issues/1622 
+
 ### Release 4.4.0 - Safar(i)
 
 _Safar_ / _Safari_ : A journey / expedition.
