@@ -1,3 +1,8 @@
+### Release 4.4.2 - Bugfix
+
+Use default language `en` while editing a field report, fixes #1625
+
+
 ### Release 4.4.1 - Bugfix Release
 
 Fixes a couple of critical issues:
