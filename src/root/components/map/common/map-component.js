@@ -9,6 +9,7 @@ import exportMap from '#utils/export-map';
 import DownloadButton from './download-button';
 import MapHeader from './map-header';
 import Translate from '#components/Translate';
+import { countryLabels } from '#utils/country-labels';
 
 export default class MapComponent extends React.Component {
   constructor (props) {
@@ -27,8 +28,23 @@ export default class MapComponent extends React.Component {
         data: this.props.geoJSON
       });
     }
+
+    if (this.props.countriesGeojson) {
+      this.theMap.addSource('countryCentroids', {
+        type: 'geojson',
+        data: this.props.countriesGeojson
+      });
+      // hide stock labels
+      this.theMap.setLayoutProperty('icrc_admin0_labels', 'visibility', 'none');
+      this.theMap.setLayoutProperty('additional-geography-labels', 'visibility', 'none');
+
+      // add custom language labels
+      this.theMap.addLayer(countryLabels);
+    }
+
     get(this.props, 'layers', []).forEach(layer => this.theMap.addLayer(layer));
     get(this.props, 'filters', []).forEach(this.safeSetFilter);
+
   }
 
   safeSetFilter (filter) {
@@ -122,6 +138,7 @@ if (environment !== 'production') {
     className: T.string,
     noExport: T.bool,
     downloadButton: T.bool,
-    downloadedHeaderTitle: T.string
+    downloadedHeaderTitle: T.string,
+    countriesGeojson: T.object
   };
 }

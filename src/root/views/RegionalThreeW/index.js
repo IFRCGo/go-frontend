@@ -39,7 +39,7 @@ import MovementActivitiesFilters from './movement-activities-filters';
 import NSActivitiesFilters from './ns-activities-filters';
 import ExportButton from './export-button';
 import Map from './map';
-import { countriesSelector, regionsByIdSelector } from '../../selectors';
+import { countriesSelector, regionsByIdSelector, countriesGeojsonSelector } from '../../selectors';
 
 const emptyList = [];
 
@@ -126,6 +126,7 @@ function RegionalThreeW (p) {
     projectFormResponse,
     countries,
     regions,
+    countriesGeojson
   } = p;
 
   const [showProjectForm, setShowProjectForm] = React.useState(false);
@@ -282,6 +283,7 @@ function RegionalThreeW (p) {
             data={movementActivityList}
             countries={countries}
             regions={regions}
+            countriesGeojson={countriesGeojson}
           />
           <div className='countries-threew-tables'>
             { movementActivityList.map(c => (
@@ -350,6 +352,7 @@ const mapStateToProps = (state) => ({
   projectFormResponse: state.projectForm,
   countries: countriesSelector(state),
   regions: regionsByIdSelector(state),
+  countriesGeojson: countriesGeojsonSelector(state)
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -3,6 +3,7 @@ import React from 'react';
 import newMap from '#utils/get-new-map';
 import { getCountryMeta } from '../../utils/get-country-meta';
 import turfBbox from '@turf/bbox';
+import { countryLabels } from '#utils/country-labels';
 
 export default class ThreeWMap extends React.PureComponent {
   constructor (props) {
@@ -50,7 +51,21 @@ export default class ThreeWMap extends React.PureComponent {
       countryId,
       districtList,
       countries,
+      countriesGeojson
     } = this.props;
+
+    if (countriesGeojson) {
+      this.map.addSource('countryCentroids', {
+        type: 'geojson',
+        data: countriesGeojson
+      });
+      // hide stock labels
+      this.map.setLayoutProperty('icrc_admin0_labels', 'visibility', 'none');
+    }
+
+
+    // add custom language labels
+    this.map.addLayer(countryLabels);
 
     this.fillMap(countryId, districtList, countries);
   }

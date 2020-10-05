@@ -19,6 +19,8 @@ import LanguageContext from '#root/languageContext';
 import { getCountryMeta } from '#utils/get-country-meta';
 import { countriesSelector } from '#selectors';
 import turfBbox from '@turf/bbox';
+import { countriesGeojsonSelector } from '../../selectors';
+import { countryLabels } from '../../utils/country-labels';
 
 const emptyList = [];
 const emptyObject = {};
@@ -161,6 +163,20 @@ class ThreeWMap extends React.PureComponent {
       projectList,
       districtsResponse,
     } = this.props;
+
+    // add custom labels
+    if (this.props.countriesGeojson) {
+      this.map.addSource('countryCentroids', {
+        type: 'geojson',
+        data: this.props.countriesGeojson
+      });
+
+      // hide stock labels
+      this.map.setLayoutProperty('icrc_admin0_labels', 'visibility', 'none');
+      this.map.setLayoutProperty('additional-geography-labels', 'visibility', 'none');
+
+      this.map.addLayer(countryLabels);
+    }
 
     this.fillMap(countryId, projectList, districtsResponse);
   }
@@ -333,7 +349,8 @@ ThreeWMap.contextType = LanguageContext;
 
 const selector = (state, ownProps) => ({
   districtsResponse: state.districts,
-  countries: countriesSelector(state)
+  countries: countriesSelector(state),
+  countriesGeojson: countriesGeojsonSelector(state)
 });
 
 const dispatcher = dispatch => ({

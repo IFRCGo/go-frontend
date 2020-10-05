@@ -11,6 +11,7 @@ import ActivityDetails from './activity-details';
 import Translate from '#components/Translate';
 import { getCountryMeta } from '../../utils/get-country-meta';
 import turfBbox from '@turf/bbox';
+import { countryLabels } from '#utils/country-labels';
 
 const emptyList = [];
 
@@ -77,6 +78,7 @@ function Map (props) {
     data,
     countries,
     regions,
+    countriesGeojson
   } = props;
 
   const ref = React.useRef();
@@ -112,8 +114,27 @@ function Map (props) {
         map.removeLayer('movement-activity-circles');
       }
       map.removeSource('movement-activity-markers');
+
+      if (map.getLayer('countryLabels')) {
+        map.removeLayer('countryLabels');
+      }
+      map.removeSource('countryCentroids');
     } catch (err) {
       // pass
+    }
+
+    // add custom labels
+    if (countriesGeojson) {
+      map.addSource('countryCentroids', {
+        type: 'geojson',
+        data: countriesGeojson
+      });
+
+      // hide stock labels
+      map.setLayoutProperty('icrc_admin0_labels', 'visibility', 'none');
+      map.setLayoutProperty('additional-geography-labels', 'visibility', 'none');
+
+      map.addLayer(countryLabels);
     }
 
     map.addSource('movement-activity-markers', geojson);

@@ -4,6 +4,7 @@ import _find from 'lodash.find';
 
 import { defaultInitialState } from '#utils/reducer-utils';
 import { compareString } from '#utils/utils';
+import { palestineLabel } from '#utils/special-map-labels';
 
 const initialState = { ...defaultInitialState };
 
@@ -72,6 +73,35 @@ export const countriesByIso = (state) => {
   if (state.allCountries && state.allCountries.data.results) {
     let countriesByIso = _groupBy(state.allCountries.data.results, 'iso');
     return countriesByIso;
+  } else {
+    return null;
+  }
+};
+
+export const countriesGeojsonSelector = (state) => {
+  const featureCollection = {
+    'type': 'FeatureCollection',
+    'features': []
+  };
+  if (state.allCountries && state.allCountries.data.results) {
+    const currentLang = currentLanguageSelector(state);
+    state.allCountries.data.results.forEach(country => {
+      if (country.centroid && (country.independent || country.independent === null)) {
+        const f = {
+          'type': 'Feature',
+          'geometry': country.centroid,
+          'properties': {
+            'name': country.iso === 'ps' ? palestineLabel(currentLang) : country.name,
+            'iso': country.iso,
+            'iso3': country.iso3,
+            'society_name': country.society_name
+          }
+        };
+        featureCollection.features.push(f);
+      }
+    });
+
+    return featureCollection;
   } else {
     return null;
   }
