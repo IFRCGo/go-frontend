@@ -169,7 +169,7 @@ function Map (props) {
         .setDOMContent(popoverContent.children[0])
         .addTo(map);
     });
-  }, [map, regionId, data, mapLoaded, countries]);
+  }, [map, regionId, data, mapLoaded, countries, countriesGeojson]);
 
   const [supportingNSList, maxProjects] = React.useMemo(() => {
     const maxProjects = Math.max(...data.map(d => d.projects_count));
