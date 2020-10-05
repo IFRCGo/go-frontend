@@ -194,7 +194,9 @@ export default class About extends React.Component {
               <div className='text-center'>
                 <div className='line-brand-deco-border-top-wrap'>
                   <div className='line-brand-deco-border-top'></div>
-                  <h2 className='fold__title text-center'>Reference Videos</h2>
+                  <h2 className='fold__title text-center'>
+                    <Translate stringId='aboutReferenceVideos'/>
+                  </h2>
                 </div>
               </div>
 

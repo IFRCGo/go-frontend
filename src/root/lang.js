@@ -70,6 +70,7 @@ export default {
   aboutEuropeRegion: 'Europe Region',
   aboutMenaRegion: 'MENA Region',
   aboutGoFunding: 'GO has received dedicated personnel and funding support from:',
+  aboutReferenceVideos: 'Reference Videos',
 
   registerTitle: 'IFRC Go - Register',
   registerHeading: 'Register',
