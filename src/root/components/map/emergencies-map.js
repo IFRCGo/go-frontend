@@ -151,7 +151,8 @@ class EmergenciesMap extends React.Component {
                 downloadedHeaderTitle={strings.emergenciesMapDownloadTitle}
                 layers={this.state.layers}
                 filters={this.state.filters}
-                geoJSON={data.geoJSON}>
+                geoJSON={data.geoJSON}
+                countriesGeojson={this.props.countriesGeojson}>
                 <figcaption className='map-vis__legend map-vis__legend--bottom-right legend'>
                   <div className='legend__group'>
                     <form className='form'>
@@ -211,7 +212,8 @@ class EmergenciesMap extends React.Component {
 if (environment !== 'production') {
   EmergenciesMap.propTypes = {
     lastMonth: T.object,
-    history: T.object
+    history: T.object,
+    countriesGeojson: T.object
   };
 }
 
