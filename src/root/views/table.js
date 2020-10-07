@@ -104,7 +104,7 @@ class Table extends React.Component {
       extraCrumbs.push({
         link: this.props.location.pathname,
         // TODO: use strings
-        name: `All ${tableType}`
+        name: `${resolveToString(strings.alertsTableAllLabel)} ${tableType}`
       });
     } else {
       extraCrumbs.push({
