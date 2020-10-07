@@ -600,10 +600,12 @@ class Emergency extends React.Component {
                 href={addReportLink}
                 target="_blank"
               >
-                Add a Report
+                <Translate stringId='emergencyAddAReport' />
               </a>
             </div>
-            <h2 className="fold__title">Response Documents</h2>
+            <h2 className="fold__title">
+              <Translate stringId='emergencyResponseDocumentsTitle' />
+            </h2>
           </div>
         )}
       >

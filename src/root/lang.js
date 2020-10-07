@@ -1224,6 +1224,7 @@ export default {
   emergencyActionUnsubscribeLabel: 'Unfollow',
   emergencyActionEditEventLabel: 'Edit Event',
   emergencyActionCreateThreeWActivityLabel: 'Create 3W Activity',
+  emergencyAddAReport: 'Add a Report',
 
   passwordChangePageTitle: 'IFRC Go - Change Password',
   passwordChangeHeading: 'Change my password',
