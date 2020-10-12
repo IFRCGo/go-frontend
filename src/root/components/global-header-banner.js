@@ -23,7 +23,7 @@ class GlobalHeaderBanner extends React.PureComponent {
           stringId='globalHeaderBannerSurveyTitle'
           params={{
             link: (
-              <a href='https://forms.gle/AWzRXKLyfzM6Tnmi9'>
+              <a href='https://forms.gle/AWzRXKLyfzM6Tnmi9' target='_blank'>
                 <Translate stringId='globalHeaderBannerSurveyLink'/>
               </a>
             )
