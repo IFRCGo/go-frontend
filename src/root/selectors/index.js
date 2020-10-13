@@ -92,7 +92,10 @@ export const countriesGeojsonSelector = (state) => {
           country.centroid &&
           (country.independent || country.independent === null) &&
           country.record_type === 1 &&
-          (country.name !== 'ICRC' && country.name !== 'IFRC')
+
+          // This filters out the ICRC and IFRC "countries". FIXME: this should be handled better
+          // in the backend
+          (country.id !== 315 && country.id !== 289)
         ) {
         const f = {
           'type': 'Feature',
