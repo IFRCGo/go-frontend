@@ -1,3 +1,9 @@
+### Release 4.4.3 - Multilingual Maps
+
+ - Implement multilingual map labels
+ - Fix issue with countries spanning the date line: https://github.com/IFRCGo/go-frontend/issues/1629
+ - Includes hotfix to change header to point to GO survey
+
 ### Release 4.4.2 - Bugfix
 
 Use default language `en` while editing a field report, fixes #1625
