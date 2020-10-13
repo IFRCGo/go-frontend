@@ -14,13 +14,15 @@ import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 
 import { disasterTypesSelectSelector } from '#selectors';
+import { countryLabels } from '#utils/country-labels';
 
 class EmergencyMap extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
       ready: false,
-      isExporting: false
+      isExporting: false,
+      hideMap: false
     };
   }
 
@@ -46,7 +48,8 @@ class EmergencyMap extends React.Component {
   setupData () {
     const {
       countries,
-      districts
+      districts,
+      countriesGeojson
     } = this.props;
 
     const theMap = this.theMap;
@@ -56,10 +59,18 @@ class EmergencyMap extends React.Component {
       'ISO2',
       country.iso.toUpperCase()
     ];
+    const countryPolys = theMap.queryRenderedFeatures({'layers': ['country'], 'filter': countryFilter});
+    let geom;
+    if (countryPolys.length > 0) {
+      geom = countryPolys[0].geometry;
+    } else {
+      // NOTE: There is an edge case where the country is not independent / does not have a geom or ISO code.
+      // In this case, we just hide the map, and return this function early.
+      this.setState({hideMap: true});
+      return;
+    }
     const districtCodes = districts.map(d => d.code);
     const districtIds = districts.map(d => d.id);
-    const countryPolys = theMap.queryRenderedFeatures({'layers': ['country'], 'filter': countryFilter});
-    const geom = countryPolys[0].geometry;
     const bbox = turfBbox(geom);
     theMap.fitBounds(bbox);
 
@@ -89,6 +100,19 @@ class EmergencyMap extends React.Component {
     theMap.setLayoutProperty('admin1-country-selected', 'visibility', 'visible');
     theMap.setLayoutProperty('admin1-country-selected-boundaries', 'visibility', 'visible');
 
+    if (countriesGeojson) {
+      this.theMap.addSource('countryCentroids', {
+        type: 'geojson',
+        data: countriesGeojson
+      });
+      // hide stock labels
+      this.theMap.setLayoutProperty('icrc_admin0_labels', 'visibility', 'none');
+      this.theMap.setLayoutProperty('additional-geography-labels', 'visibility', 'none');
+
+      // add custom language labels
+      this.theMap.addLayer(countryLabels);
+    }
+
     const disputedTerritoriesVisible = this.theMap.queryRenderedFeatures({layers: ['disputed_territories copy']}).length;
     if (disputedTerritoriesVisible) {
       this.setState({ disputedTerritoriesVisible: true });
@@ -116,6 +140,11 @@ class EmergencyMap extends React.Component {
       display: this.state.isExporting ? 'block' : 'none'
     };
     const exportImageStyle = {width: '100%', height: 'auto', display: 'none'};
+
+    // If we have insufficient data or other factors, hide the map and return null.
+    if (this.state.hideMap) {
+      return null;
+    }
 
     return (
       <div className='emergency-map'>
