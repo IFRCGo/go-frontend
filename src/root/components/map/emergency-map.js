@@ -21,7 +21,8 @@ class EmergencyMap extends React.Component {
     super(props);
     this.state = {
       ready: false,
-      isExporting: false
+      isExporting: false,
+      hideMap: false
     };
   }
 
@@ -58,10 +59,18 @@ class EmergencyMap extends React.Component {
       'ISO2',
       country.iso.toUpperCase()
     ];
+    const countryPolys = theMap.queryRenderedFeatures({'layers': ['country'], 'filter': countryFilter});
+    let geom;
+    if (countryPolys.length > 0) {
+      geom = countryPolys[0].geometry;
+    } else {
+      // NOTE: There is an edge case where the country is not independent / does not have a geom or ISO code.
+      // In this case, we just hide the map, and return this function early.
+      this.setState({hideMap: true});
+      return;
+    }
     const districtCodes = districts.map(d => d.code);
     const districtIds = districts.map(d => d.id);
-    const countryPolys = theMap.queryRenderedFeatures({'layers': ['country'], 'filter': countryFilter});
-    const geom = countryPolys[0].geometry;
     const bbox = turfBbox(geom);
     theMap.fitBounds(bbox);
 
@@ -131,6 +140,11 @@ class EmergencyMap extends React.Component {
       display: this.state.isExporting ? 'block' : 'none'
     };
     const exportImageStyle = {width: '100%', height: 'auto', display: 'none'};
+
+    // If we have insufficient data or other factors, hide the map and return null.
+    if (this.state.hideMap) {
+      return null;
+    }
 
     return (
       <div className='emergency-map'>
