@@ -13,7 +13,7 @@ export default function newMap (container, mapStyle = 'mapbox://styles/go-ifrc/c
     scrollZoom: false,
     pitchWithRotate: false,
     dragRotate: false,
-    renderWorldCopies: false,
+    renderWorldCopies: true,
     attributionControl: false,
     preserveDrawingBuffer: true,
     ...mapOptions,

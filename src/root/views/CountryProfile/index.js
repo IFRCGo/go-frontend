@@ -19,7 +19,7 @@ import KeyDocuments from './KeyDocuments';
 import ExternalSources from './ExternalSources';
 
 import styles from './styles.module.scss';
-import { countriesSelector } from '../../selectors';
+import { countriesSelector, countriesGeojsonSelector } from '../../selectors';
 import { getCountryMeta } from '../../utils/get-country-meta';
 
 function Section(p) {
@@ -105,6 +105,7 @@ class CountryOverview extends React.PureComponent {
             className={styles.populationMap}
             data={data.wb_population}
             countries={this.props.countries}
+            countriesGeojson={this.props.countriesGeojson}
           />
           <ClimateChart
             className={styles.climateChart}
@@ -148,6 +149,7 @@ class CountryOverview extends React.PureComponent {
 const mapStateToProps = (state) => ({
   countryOverview: countryOverviewSelector(state),
   countries: countriesSelector(state),
+  countriesGeojson: countriesGeojsonSelector(state)
 });
 
 const mapDispatchToProps = (dispatch) => ({
