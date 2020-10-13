@@ -14,6 +14,7 @@ import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 
 import { disasterTypesSelectSelector } from '#selectors';
+import { countryLabels } from '#utils/country-labels';
 
 class EmergencyMap extends React.Component {
   constructor (props) {
@@ -46,7 +47,8 @@ class EmergencyMap extends React.Component {
   setupData () {
     const {
       countries,
-      districts
+      districts,
+      countriesGeojson
     } = this.props;
 
     const theMap = this.theMap;
@@ -88,6 +90,19 @@ class EmergencyMap extends React.Component {
     theMap.setLayoutProperty('admin1-selected-labels', 'visibility', 'visible');
     theMap.setLayoutProperty('admin1-country-selected', 'visibility', 'visible');
     theMap.setLayoutProperty('admin1-country-selected-boundaries', 'visibility', 'visible');
+
+    if (countriesGeojson) {
+      this.theMap.addSource('countryCentroids', {
+        type: 'geojson',
+        data: countriesGeojson
+      });
+      // hide stock labels
+      this.theMap.setLayoutProperty('icrc_admin0_labels', 'visibility', 'none');
+      this.theMap.setLayoutProperty('additional-geography-labels', 'visibility', 'none');
+
+      // add custom language labels
+      this.theMap.addLayer(countryLabels);
+    }
 
     const disputedTerritoriesVisible = this.theMap.queryRenderedFeatures({layers: ['disputed_territories copy']}).length;
     if (disputedTerritoriesVisible) {
