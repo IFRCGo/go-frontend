@@ -86,7 +86,14 @@ export const countriesGeojsonSelector = (state) => {
   if (state.allCountries && state.allCountries.data.results) {
     const currentLang = currentLanguageSelector(state);
     state.allCountries.data.results.forEach(country => {
-      if (country.centroid && (country.independent || country.independent === null) && country.record_type === 1) {
+      // select only independent = true or null and record_type = 1
+      // also remove ICRC and IFRC
+      if (
+          country.centroid &&
+          (country.independent || country.independent === null) &&
+          country.record_type === 1 &&
+          (country.name !== 'ICRC' && country.name !== 'IFRC')
+        ) {
         const f = {
           'type': 'Feature',
           'geometry': country.centroid,
