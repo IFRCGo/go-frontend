@@ -26,6 +26,7 @@ function PerTable ({regionId, countries}) {
           phone_number: form.phone_number,
           view_link: {
             value: (
+              // TODO: need url, action, etc
               <Link className='button button--xsmall button--secondary-bounded' to={'/view-per-forms/' + form.id}>
                 <Translate stringId='perdocumentView'/>
               </Link>

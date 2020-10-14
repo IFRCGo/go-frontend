@@ -73,6 +73,7 @@ function PerAccount (props) {
     return regionsDict;
   }, [props.regionsById]);
 
+  // Categorize PER Forms by their Region and Country (regionId: { countries: [forms] })
   const groupedFormList = useMemo(() => {
     let fL = {};
     const formListCount = formList.count || 0;
@@ -92,30 +93,6 @@ function PerAccount (props) {
     return fL;
   }, [fetching, fetched, formList, regions]);
 
-  // Categorize PER Forms by their Region and Country (regionId: { countries: [forms] })
-  useEffect(() => {
-    const formListCount = formList.count || 0;
-    if (!fetching && fetched && formListCount > 0 && regions) {
-      for (const form of formList.results) {
-        if (form.country) {
-          if (form.country.region in groupedFormList === false) {
-            groupedFormList[form.country.region] = {};
-          }
-          if (form.country in groupedFormList[form.country.region] === false) {
-            groupedFormList[form.country.region][form.country.name] = [];
-          }
-          groupedFormList[form.country.region][form.country.name].push(form); 
-        }
-      }
-    }
-  }, [fetching, fetched, formList, regions, groupedFormList]);
-
-
-
-  // TODO: draw groupedFormList - get names of forms into the serializer
-  console.log(groupedFormList);
-  console.log(regions);
-  Object.keys(groupedFormList).map((regionId, index) => console.log(regionId));
   return (
     // FIXME: <Translate stringId='perAccountTitle'/>
     <Fold title='New PER Forms' foldWrapperClass='fold--main' foldTitleClass='margin-reset'>
