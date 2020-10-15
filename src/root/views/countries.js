@@ -30,8 +30,8 @@ import {
   getPerNsPhase,
   getPerOverviewForm,
   getPerWorkPlan,
-  getPerDocument,
-  getPerDocuments,
+  getPerForm,
+  getPerForms,
   getPerUploadedDocuments,
   getPerMission,
   getAppealsListStats,
@@ -133,8 +133,8 @@ class AdminArea extends SFPComponent {
     this.props._getPerNsPhase(countryId);
     this.props._getPerOverviewForm(countryId);
     this.props._getPerWorkPlan(countryId);
-    this.props._getPerDocuments();
-    this.props._getPerDocument(null, countryId);
+    this.props._getPerForms();
+    this.props._getPerForm(null, countryId);
     this.props._getPerUploadedDocuments(countryId);
     if (typeof props.user.username !== 'undefined' && props.user.username !== null) {
       this.props._getPerMission();
@@ -729,11 +729,11 @@ class AdminArea extends SFPComponent {
                       {this.props.getPerNsPhase.fetched && this.props.perOverviewForm.fetched ? (
                         <PreparednessOverview getPerNsPhase={this.props.getPerNsPhase} perOverviewForm={this.props.perOverviewForm} />)
                         : <ErrorPanel title={strings.preparednessOverview} errorMessage={ strings.noDataMessage } />}
-                      {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
-                        <PreparednessSummary getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
+                      {this.props.getPerForm.fetched && this.props.getPerForms.fetched ? (
+                        <PreparednessSummary getPerForm={this.props.getPerForm} getPerForms={this.props.getPerForms} />)
                         : <ErrorPanel title={strings.preparednessSummary} errorMessage={ strings.noDataMessage } />}
-                      {this.props.getPerDocument.fetched && this.props.getPerDocuments.fetched ? (
-                        <PreparednessColumnBar getPerDocument={this.props.getPerDocument} getPerDocuments={this.props.getPerDocuments} />)
+                      {this.props.getPerForm.fetched && this.props.getPerForms.fetched ? (
+                        <PreparednessColumnBar getPerForm={this.props.getPerForm} getPerForms={this.props.getPerForms} />)
                         : <ErrorPanel title={strings.preparednessColumnBar} errorMessage={ strings.noDataMessage } />}
                       {this.props.getPerWorkPlan.fetched ? (
                         <PreparednessWorkPlan getPerWorkPlan={this.props.getPerWorkPlan} />)
@@ -806,8 +806,8 @@ if (environment !== 'production') {
     _getAdmAreaAppealsList: T.func,
     _getCountryOperations: T.func,
     _getPartnerDeployments: T.func,
-    _getPerDocument: T.func,
-    _getPerDocuments: T.func,
+    _getPerForm: T.func,
+    _getPerForms: T.func,
     _getPeruploadedDocuments: T.func,
     _getAppealsListStats: T.func,
     type: T.string,
@@ -846,8 +846,8 @@ const selector = (state, ownProps) => ({
   getPerNsPhase: state.perForm.getPerNsPhase,
   perOverviewForm: state.perForm.getPerOverviewForm,
   getPerWorkPlan: state.perForm.getPerWorkPlan,
-  getPerDocument: state.perForm.getPerDocument,
-  getPerDocuments: state.perForm.getPerDocuments,
+  getPerForm: state.perForm.getPerForm,
+  getPerForms: state.perForm.getPerForms,
   getPerUploadedDocuments: state.perForm.getPerUploadedDocuments,
   getPerMission: state.perForm.getPerMission,
   user: state.user.data,
@@ -869,8 +869,8 @@ const dispatcher = dispatch => ({
   _getPerNsPhase: (...args) => dispatch(getPerNsPhase(...args)),
   _getPerOverviewForm: (...args) => dispatch(getPerOverviewForm(...args)),
   _getPerWorkPlan: (...args) => dispatch(getPerWorkPlan(...args)),
-  _getPerDocument: (...args) => dispatch(getPerDocument(...args)),
-  _getPerDocuments: (...args) => dispatch(getPerDocuments(...args)),
+  _getPerForm: (...args) => dispatch(getPerForm(...args)),
+  _getPerForms: (...args) => dispatch(getPerForms(...args)),
   _getPerUploadedDocuments: (...args) => dispatch(getPerUploadedDocuments(...args)),
   _getPerMission: (...args) => dispatch(getPerMission(...args)),
   _getAppealsListStats: (...args) => dispatch(getAppealsListStats(...args)),

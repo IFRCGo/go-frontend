@@ -6,7 +6,7 @@ import { environment } from '#config';
 import {
   getPerCountries,
   getPerDraftDocument,
-  getPerDocuments,
+  getPerForms,
   deletePerDraft,
   getPerOverviewFormStrict as getPerOverviewForm
 } from '#actions';
@@ -147,7 +147,7 @@ if (environment !== 'production') {
     perOverviewForm: T.object,
     _deletePerDraft: T.func,
     _getPerCountries: T.func,
-    _getPerDocuments: T.func,
+    _getPerForms: T.func,
     _getPerDraftDocument: T.func,
     _getPerOverviewForm: T.func,
   };
@@ -164,7 +164,7 @@ const selector = (state, ownProps) => ({
 
 const dispatcher = (dispatch) => ({
   _getPerCountries: (...args) => dispatch(getPerCountries(...args)),
-  _getPerDocuments: (...args) => dispatch(getPerDocuments(...args)),
+  _getPerForms: (...args) => dispatch(getPerForms(...args)),
   _deletePerDraft: (...args) => dispatch(deletePerDraft(...args)),
   _getPerDraftDocument: (...args) => dispatch(getPerDraftDocument(...args)),
   _getPerOverviewForm: (...args) => dispatch(getPerOverviewForm(...args))

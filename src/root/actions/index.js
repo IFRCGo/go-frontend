@@ -591,13 +591,13 @@ export function getPerCountries () {
   return fetchJSON(`/api/v2/percountry/?${f}`, GET_PER_COUNTRIES, withToken());
 }
 
-export const GET_PER_DOCUMENTS = 'GET_PER_DOCUMENTS';
-export function getPerDocuments () {
-  return fetchJSON(`/api/v2/per/`, GET_PER_DOCUMENTS, withToken());
+export const GET_PER_FORMS = 'GET_PER_FORMS';
+export function getPerForms () {
+  return fetchJSON(`/api/v2/per/`, GET_PER_FORMS, withToken());
 }
 
 export const GET_PER_DOCUMENT = 'GET_PER_DOCUMENT';
-export function getPerDocument (id = null, countryId = null) {
+export function getPerForm (id = null, countryId = null) {
   const filters = {};
   filters.limit = 1000;
   if (id !== null) {
@@ -622,7 +622,7 @@ export function sendPerDraft (data) {
 }
 
 export const EDIT_PER_DOCUMENT = 'EDIT_PER_DOCUMENT';
-export function editPerDocument (data) {
+export function editPerForm (data) {
   return postJSON('editperform', EDIT_PER_DOCUMENT, data, withToken());
 }
 

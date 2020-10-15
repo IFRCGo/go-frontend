@@ -5,26 +5,16 @@ import { Link } from 'react-router-dom';
 // import { environment } from '#config';
 import {
   getPerCountries,
-  getPerDocuments,
+  getPerForms,
   getPerOverviewFormStrict as getPerOverviewForm
 } from '#actions';
-// import PerDocuments from './per-documents';
-import PerTable from './per-table';
-
 import { regionsByIdSelector } from '../../selectors';
 
-// const RESULT_TYPES = {
-//   COUNTRY: 1,
-//   CLUSTER: 2,
-//   REGION: 3,
-//   COUNTRY_OFFICE: 4,
-//   REPRESENTATIVE_OFFICE: 5
-// };
-
 import LanguageContext from '#root/languageContext';
-
-import Fold from '#components/fold';
 import Translate from '#components/Translate';
+
+import PerTable from './per-table';
+import Fold from '#components/fold';
 
 function PerAccount (props) {
   const { strings } = useContext(LanguageContext);
@@ -55,11 +45,8 @@ function PerAccount (props) {
     }
   ];
 
-  useEffect(() => {
-    getPerOverviewForm();
-  }, []);
-
-  const [fetching, fetched, formList] = useMemo(() => [
+  // PER Overviews vars
+  const [ovFetching, ovFetched, overviewFormList] = useMemo(() => [
     props.perOverviewForm.fetching,
     props.perOverviewForm.fetched,
     props.perOverviewForm.data,
@@ -72,12 +59,33 @@ function PerAccount (props) {
     }
     return regionsDict;
   }, [props.regionsById]);
+  // PER Forms vars
+  const [formsFetching, formsFetched, formList] = useMemo(() => [
+    props.perForms.fetching,
+    props.perForms.fetched,
+    props.perForms.data
+  ], [props.perForms]);
 
-  // Categorize PER Forms by their Region and Country (regionId: { countries: [forms] })
+  // Categorize PER Overviews by their Region and Country (regionId: { countries: [forms] })
   const groupedFormList = useMemo(() => {
     let fL = {};
-    const formListCount = formList.count || 0;
-    if (!fetching && fetched && formListCount > 0 && regions) {
+    const ovFLCount = overviewFormList.count || 0;
+    if (!ovFetching && ovFetched && ovFLCount > 0 && regions) {
+      for (const form of overviewFormList.results) {
+        if (form.country) {
+          if (form.country.region in fL === false) {
+            fL[form.country.region] = {};
+          }
+          if (form.country in fL[form.country.region] === false) {
+            fL[form.country.region][form.country.name] = [];
+          }
+          fL[form.country.region][form.country.name].push(form); 
+        }
+      }
+    }
+
+    const fLCount = formList.count || 0;
+    if (!formsFetching && formsFetched && fLCount > 0 && regions) {
       for (const form of formList.results) {
         if (form.country) {
           if (form.country.region in fL === false) {
@@ -90,8 +98,22 @@ function PerAccount (props) {
         }
       }
     }
+
+    // Sort the Country names (properties, thus why the ugly code, re-construct the 'dictionary')
+    let sortedFormList = fL;
+    for (const [key, regionObj] of Object.entries(fL)) {
+      let countriesDict = {};
+      const countriesArray = Object.entries(regionObj).sort();
+      for (const country of countriesArray) {
+        // Ex. ["Hungary", [...forms]]
+        countriesDict[country[0]] = country[1];
+      }
+
+      sortedFormList[key] = countriesDict;
+    }
+
     return fL;
-  }, [fetching, fetched, formList, regions]);
+  }, [ovFetching, ovFetched, overviewFormList, formsFetching, formsFetched, formList, regions]);
 
   return (
     // FIXME: <Translate stringId='perAccountTitle'/>
@@ -119,9 +141,9 @@ function PerAccount (props) {
           </div>
         ))}
       </div>
-      {}
       {Object.keys(groupedFormList).map((regionId, index) => (
         <Fold
+          key={regionId}
           showHeader={true}
           title={regions[regionId]}
           id={regionId}
@@ -129,7 +151,7 @@ function PerAccount (props) {
           foldTitleClass='fold__title--inline'
           foldWrapperClass='fold--main fold--per-table'
         >
-          <PerTable regionId={regionId} countries={groupedFormList[regionId]} />
+          <PerTable key={regionId} regionId={regionId} countries={groupedFormList[regionId]} />
         </Fold>
       ))}
     </Fold>
@@ -138,15 +160,15 @@ function PerAccount (props) {
 
 const selector = (state, ownProps) => ({
   user: state.user,
-  // perForm: state.perForm,
+  perForms: state.perForm.getPerForms,
   perOverviewForm: state.perForm.getPerOverviewForm,
   regionsById: regionsByIdSelector(state),
 });
 
 const dispatcher = (dispatch) => ({
   // _getPerCountries: (...args) => dispatch(getPerCountries(...args)),
-  // _getPerDocuments: (...args) => dispatch(getPerDocuments(...args)),
-  _getPerOverviewForm: (...args) => dispatch(getPerOverviewForm(...args))
+  // _getPerForms: (...args) => dispatch(getPerForms(...args)),
+  // _getPerOverviewForm: (...args) => dispatch(getPerOverviewForm(...args))
 });
 
 export default connect(selector, dispatcher)(PerAccount);

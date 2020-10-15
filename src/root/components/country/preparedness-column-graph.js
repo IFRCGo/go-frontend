@@ -19,7 +19,7 @@ class PreparednessColumnBar extends React.Component {
   }
 
   buildDataForGraph () {
-    const filteredData = this.props.getPerDocument.data.results.filter((component) => {
+    const filteredData = this.props.getPerForm.data.results.filter((component) => {
       return component.selected_option > 1;
     }).map((component) => {
       component.formCode = this.formIds[component.form].code;
@@ -36,7 +36,7 @@ class PreparednessColumnBar extends React.Component {
   }
 
   buildFormCodes () {
-    this.props.getPerDocuments.data.results.forEach((document) => {
+    this.props.getPerForms.data.results.forEach((document) => {
       this.formIds[document.id] = document;
     });
   }
@@ -58,9 +58,9 @@ class PreparednessColumnBar extends React.Component {
 
   render () {
     const  {strings } = this.context;
-    if (!this.props.getPerDocument.fetched || !this.props.getPerDocuments.fetched || !this.props.user.username || typeof this.props.getPerDocuments.data.results === 'undefined') return null;
-    if (typeof this.props.getPerDocument.data.count !== 'undefined' && this.props.getPerDocument.data.count === 0 &&
-      typeof this.props.getPerDocument.data.count !== 'undefined' && this.props.getPerDocument.data.count === 0) return null;
+    if (!this.props.getPerForm.fetched || !this.props.getPerForms.fetched || !this.props.user.username || typeof this.props.getPerForms.data.results === 'undefined') return null;
+    if (typeof this.props.getPerForm.data.count !== 'undefined' && this.props.getPerForm.data.count === 0 &&
+      typeof this.props.getPerForm.data.count !== 'undefined' && this.props.getPerForm.data.count === 0) return null;
     this.buildFormCodes();
     const tmpData = this.buildDataForGraph();
     const groupedData = this.buildGroupedData(tmpData);
@@ -92,8 +92,8 @@ if (environment !== 'production') {
   PreparednessColumnBar.propTypes = {
     getPerNsPhase: T.object,
     perOverviewForm: T.object,
-    getPerDocument: T.object,
-    getPerDocuments: T.object,
+    getPerForm: T.object,
+    getPerForms: T.object,
     user: T.object
   };
 }

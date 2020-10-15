@@ -18,7 +18,7 @@ import {
   getFieldReportsByUser,
   updateProfile,
   getPerCountries,
-  getPerDocuments,
+  getPerForms,
   getEventById,
   addSubscriptions,
   delSubscription,
@@ -145,11 +145,11 @@ class Account extends React.Component {
   componentDidMount () {
     this.componentIsLoading = true;
     showGlobalLoading();
-    const { user, _getProfile, _getFieldReportsByUser, _getPerCountries, _getPerDocuments } = this.props;
+    const { user, _getProfile, _getFieldReportsByUser, _getPerCountries, _getPerForms } = this.props;
     _getProfile(user.username);
     _getFieldReportsByUser(user.id);
     _getPerCountries();
-    _getPerDocuments();
+    _getPerForms();
     this.props._getPerOverviewForm();
     this.props._getPerMission();
     this.displayTabContent();
@@ -898,7 +898,7 @@ if (environment !== 'production') {
     _getFieldReportsByUser: T.func,
     _updateProfile: T.func,
     _getPerCountries: T.func,
-    _getPerDocuments: T.func,
+    _getPerForms: T.func,
     _getEventById: T.func,
     _getPerOverviewForm: T.func,
     _clearEvents: T.func,
@@ -930,7 +930,7 @@ const dispatcher = (dispatch) => ({
   _getFieldReportsByUser: (...args) => dispatch(getFieldReportsByUser(...args)),
   _updateProfile: (...args) => dispatch(updateProfile(...args)),
   _getPerCountries: (...args) => dispatch(getPerCountries(...args)),
-  _getPerDocuments: (...args) => dispatch(getPerDocuments(...args)),
+  _getPerForms: (...args) => dispatch(getPerForms(...args)),
   _getEventById: (...args) => dispatch(getEventById(...args)),
   _addSubscriptions: (...args) => dispatch(addSubscriptions(...args)),
   _delSubscription: (...args) => dispatch(delSubscription(...args)),

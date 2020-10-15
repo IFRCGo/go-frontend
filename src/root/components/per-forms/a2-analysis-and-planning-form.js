@@ -4,10 +4,10 @@ import { frenchForm } from './form-data/a2/french-data';
 import { spanishForm } from './form-data/a2/spanish-data';
 import {
   sendPerForm,
-  getPerDocument,
+  getPerForm,
   getPerDraftDocument,
   sendPerDraft,
-  editPerDocument
+  editPerForm
 } from '#actions';
 import { connect } from 'react-redux';
 import { environment } from '#config';
@@ -61,7 +61,7 @@ if (environment !== 'production') {
 
 const selector = (state) => ({
   sendPerForm: state.perForm.sendPerForm,
-  perDocument: state.perForm.getPerDocument,
+  perDocument: state.perForm.getPerForm,
   sendPerDraft: state.perForm.sendPerDraft,
   getPerDraftDocument: state.perForm.getPerDraftDocument,
   user: state.user
@@ -69,10 +69,10 @@ const selector = (state) => ({
 
 const dispatcher = (dispatch) => ({
   _sendPerForm: (payload) => dispatch(sendPerForm(payload)),
-  _getPerDocument: (...args) => dispatch(getPerDocument(...args)),
+  _getPerForm: (...args) => dispatch(getPerForm(...args)),
   _getPerDraftDocument: (...args) => dispatch(getPerDraftDocument(...args)),
   _sendPerDraft: (payload) => dispatch(sendPerDraft(payload)),
-  _editPerDocument: (payload) => dispatch(editPerDocument(payload))
+  _editPerForm: (payload) => dispatch(editPerForm(payload))
 });
 
 export default connect(selector, dispatcher)(A2AnalysisAndPlanning);

@@ -27,8 +27,8 @@ const PerDocuments = ({perOverviewForm, perForm, regionsById}) => {
       }
     });
   }
-  if (perForm.getPerDocuments.fetched && !!perForm.getPerDocuments.data && !!perForm.getPerDocuments.data.results) {
-    perForm.getPerDocuments.data.results.forEach(document => {
+  if (perForm.getPerForms.fetched && !!perForm.getPerForms.data && !!perForm.getPerForms.data.results) {
+    perForm.getPerForms.data.results.forEach(document => {
       if (document.country !== null) {
         if (document.country.region === null) {
           document.country.region = -1;

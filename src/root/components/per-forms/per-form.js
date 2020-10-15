@@ -39,7 +39,7 @@ export default class PerForm extends React.Component {
     window.scrollTo(0, 0);
     this.unifiedNs = this.props.mode === 'edit' ? this.props.ns : this.props.nationalSociety;
     if (this.props.mode === 'view') {
-      this.props._getPerDocument(this.props.match.params.id);
+      this.props._getPerForm(this.props.match.params.id);
       this.loadingFormPropsRunning = true;
     } else if (this.props.mode === 'edit' || this.props.mode === 'new') {
       const filters = {};
@@ -299,10 +299,10 @@ export default class PerForm extends React.Component {
 if (environment !== 'production') {
   PerForm.propTypes = {
     _sendPerForm: T.func,
-    _getPerDocument: T.func,
+    _getPerForm: T.func,
     _sendPerDraft: T.func,
     _getPerDraftDocument: T.func,
-    _editPerDocument: T.func,
+    _editPerForm: T.func,
     getPerDraftDocument: T.object,
     user: T.object,
     autosaveOn: T.func,

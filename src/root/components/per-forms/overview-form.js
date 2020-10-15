@@ -1,10 +1,10 @@
 
 import {
   sendPerForm,
-  getPerDocument,
+  getPerForm,
   getPerDraftDocument,
   sendPerDraft,
-  editPerDocument,
+  editPerForm,
   getPerOverviewForm,
   sendPerOverview
 } from '#actions';
@@ -708,7 +708,7 @@ if (environment !== 'production') {
 
 const selector = (state) => ({
   sendPerForm: state.perForm.sendPerForm,
-  perDocument: state.perForm.getPerDocument,
+  perDocument: state.perForm.getPerForm,
   sendPerDraft: state.perForm.sendPerDraft,
   getPerDraftDocument: state.perForm.getPerDraftDocument,
   perOverviewForm: state.perForm.getPerOverviewForm,
@@ -718,10 +718,10 @@ const selector = (state) => ({
 
 const dispatcher = (dispatch) => ({
   _sendPerForm: (payload) => dispatch(sendPerForm(payload)),
-  _getPerDocument: (...args) => dispatch(getPerDocument(...args)),
+  _getPerForm: (...args) => dispatch(getPerForm(...args)),
   _getPerDraftDocument: (...args) => dispatch(getPerDraftDocument(...args)),
   _sendPerDraft: (payload) => dispatch(sendPerDraft(payload)),
-  _editPerDocument: (payload) => dispatch(editPerDocument(payload)),
+  _editPerForm: (payload) => dispatch(editPerForm(payload)),
   _getPerOverviewForm: (...args) => dispatch(getPerOverviewForm(...args)),
   _sendPerOverview: (...args) => dispatch(sendPerOverview(...args))
 });

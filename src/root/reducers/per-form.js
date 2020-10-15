@@ -39,75 +39,45 @@ function getPerCountries (state = initialState, action) {
   return state;
 }
 
-function getPerDocuments (state = initialState, action) {
+function getPerForms (state = initialState, action) {
   switch (action.type) {
-    case 'GET_PER_DOCUMENTS_INFLIGHT':
+    case 'GET_PER_FORMS_INFLIGHT':
       state = stateInflight(state, action);
       break;
-    case 'GET_PER_DOCUMENTS_FAILED':
+    case 'GET_PER_FORMS_FAILED':
       state = stateError(state, action);
       break;
-    case 'GET_PER_DOCUMENTS_SUCCESS':
+    case 'GET_PER_FORMS_SUCCESS':
       state = stateSuccess(state, action);
       break;
   }
   return state;
 }
 
-function getPerDocument (state = initialState, action) {
+function getPerForm (state = initialState, action) {
   switch (action.type) {
-    case 'GET_PER_DOCUMENT_INFLIGHT':
+    case 'GET_PER_FORM_INFLIGHT':
       state = stateInflight(state, action);
       break;
-    case 'GET_PER_DOCUMENT_FAILED':
+    case 'GET_PER_FORM_FAILED':
       state = stateError(state, action);
       break;
-    case 'GET_PER_DOCUMENT_SUCCESS':
+    case 'GET_PER_FORM_SUCCESS':
       state = stateSuccess(state, action);
       break;
   }
   return state;
 }
 
-function getPerDraftDocument (state = initialState, action) {
+function editPerForm (state = initialState, action) {
   switch (action.type) {
-    case 'GET_PER_DRAFT_DOCUMENT_INFLIGHT':
+    case 'EDIT_PER_FORM_INFLIGHT':
       state = stateInflight(state, action);
       break;
-    case 'GET_PER_DRAFT_DOCUMENT_FAILED':
+    case 'EDIT_PER_FORM_FAILED':
       state = stateError(state, action);
       break;
-    case 'GET_PER_DRAFT_DOCUMENT_SUCCESS':
-      state = stateSuccess(state, action);
-      break;
-  }
-  return state;
-}
-
-function sendPerDraft (state = initialState, action) {
-  switch (action.type) {
-    case 'SEND_PER_DRAFT_DOCUMENT_INFLIGHT':
-      state = stateInflight(state, action);
-      break;
-    case 'SEND_PER_DRAFT_DOCUMENT_FAILED':
-      state = stateError(state, action);
-      break;
-    case 'SEND_PER_DRAFT_DOCUMENT_SUCCESS':
-      state = stateSuccess(state, action);
-      break;
-  }
-  return state;
-}
-
-function editPerDocument (state = initialState, action) {
-  switch (action.type) {
-    case 'EDIT_PER_DOCUMENT_INFLIGHT':
-      state = stateInflight(state, action);
-      break;
-    case 'EDIT_PER_DOCUMENT_FAILED':
-      state = stateError(state, action);
-      break;
-    case 'EDIT_PER_DOCUMENT_SUCCESS':
+    case 'EDIT_PER_FORM_SUCCESS':
       state = stateSuccess(state, action);
       break;
   }
@@ -256,21 +226,6 @@ export function deletePerWorkplanApi (state = initialState, action) {
   return state;
 }
 
-export function deletePerDraft (state = initialState, action) {
-  switch (action.type) {
-    case 'DELETE_PER_DRAFT_INFLIGHT':
-      state = stateInflight(state, action);
-      break;
-    case 'DELETE_PER_DRAFT_FAILED':
-      state = stateError(state, action);
-      break;
-    case 'DELETE_PER_DRAFT_SUCCESS':
-      state = stateSuccess(state, action);
-      break;
-  }
-  return state;
-}
-
 export function getPerUploadedDocuments (state = initialState, action) {
   switch (action.type) {
     case 'GET_PER_UPLOADED_DOCUMENTS_INFLIGHT':
@@ -304,11 +259,9 @@ export function getPerMission (state = initialState, action) {
 export default combineReducers({
   sendPerForm,
   getPerCountries,
-  getPerDocuments,
-  getPerDocument,
-  getPerDraftDocument,
-  sendPerDraft,
-  editPerDocument,
+  getPerForms,
+  getPerForm,
+  editPerForm,
   getCollaboratingPerCountry,
   getPerEngagedNsPercentage,
   getPerGlobalPreparedness,
@@ -318,7 +271,6 @@ export default combineReducers({
   sendPerOverview,
   sendPerWorkplan,
   deletePerWorkplanApi,
-  deletePerDraft,
   getPerUploadedDocuments,
   getPerMission
 });
