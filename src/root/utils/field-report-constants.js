@@ -454,7 +454,7 @@ export const getFieldsStep3 = (strings) => ({
       'label': {
         'EVT': strings.fieldsStep3Section1FieldsAssistedRCRCEVTEPILabel,
         'EPI': strings.fieldsStep3Section1FieldsAssistedRCRCEVTEPILabel,
-        'EW': strings.fieldsStep3Section1FieldsAssistedGovEWLabel,
+        'EW': strings.fieldsStep3Section1FieldsAssistedRCRCEWLabel,
       }
     },
     {
