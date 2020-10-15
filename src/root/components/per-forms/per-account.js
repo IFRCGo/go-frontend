@@ -18,32 +18,15 @@ import Fold from '#components/fold';
 
 function PerAccount (props) {
   const { strings } = useContext(LanguageContext);
-  const formButtons = [
-    {
-      link: 'policy-strategy',
-      title: strings.perAccountPoliceStrategy,
-    },
-    {
-      link: 'analysis-and-planning',
-      title: strings.perAccountAnalysis,
-    },
-    {
-      link: 'operational-capacity',
-      title: strings.perAccountOperationalCapacity,
-    },
-    {
-      link: 'operational-capacity-2',
-      title: strings.perAccountOperationalCapacity2,
-    },
-    {
-      link: 'coordination',
-      title: strings.perAccountCoordination,
-    },
-    {
-      link: 'operations-support',
-      title: strings.perAccountSupport,
+
+  const formButtons = useMemo(() => {
+    let sortedAreas = [];
+    if (!props.perAreas.fetching && props.perAreas.fetched && props.perAreas.data) {
+      sortedAreas = props.perAreas.data.results.sort((a,b) => (a.area_num > b.area_num) ? 1 : ((b.area_num > a.area_num) ? -1 : 0));
     }
-  ];
+    // TODO: make links like '/per-form/<area_num> (or ID)
+    return sortedAreas.map(area => ({ link: '', title: `${strings.perdocumentArea} ${area.area_num}: ${area.title}` }));
+  }, [props.perAreas]);
 
   // PER Overviews vars
   const [ovFetching, ovFetched, overviewFormList] = useMemo(() => [
@@ -51,6 +34,12 @@ function PerAccount (props) {
     props.perOverviewForm.fetched,
     props.perOverviewForm.data,
   ], [props.perOverviewForm]);
+  // PER Forms vars
+  const [formsFetching, formsFetched, formList] = useMemo(() => [
+    props.perForms.fetching,
+    props.perForms.fetched,
+    props.perForms.data
+  ], [props.perForms]);
   // Convert regions to a more usable format
   const regions = useMemo(() => {
     let regionsDict = {};
@@ -59,16 +48,12 @@ function PerAccount (props) {
     }
     return regionsDict;
   }, [props.regionsById]);
-  // PER Forms vars
-  const [formsFetching, formsFetched, formList] = useMemo(() => [
-    props.perForms.fetching,
-    props.perForms.fetched,
-    props.perForms.data
-  ], [props.perForms]);
 
-  // Categorize PER Overviews by their Region and Country (regionId: { countries: [forms] })
+
+  // Categorize PER Forms by their Region and Country (regionId: { countries: [forms] })
   const groupedFormList = useMemo(() => {
     let fL = {};
+    // Overviews
     const ovFLCount = overviewFormList.count || 0;
     if (!ovFetching && ovFetched && ovFLCount > 0 && regions) {
       for (const form of overviewFormList.results) {
@@ -83,7 +68,7 @@ function PerAccount (props) {
         }
       }
     }
-
+    // Forms
     const fLCount = formList.count || 0;
     if (!formsFetching && formsFetched && fLCount > 0 && regions) {
       for (const form of formList.results) {
@@ -112,8 +97,10 @@ function PerAccount (props) {
       sortedFormList[key] = countriesDict;
     }
 
-    return fL;
+    return sortedFormList;
   }, [ovFetching, ovFetched, overviewFormList, formsFetching, formsFetched, formList, regions]);
+
+  // TODO: show loading while Overviews and Forms are still loading
 
   return (
     // FIXME: <Translate stringId='perAccountTitle'/>
@@ -147,7 +134,6 @@ function PerAccount (props) {
           showHeader={true}
           title={regions[regionId]}
           id={regionId}
-          // navLink={this.props.foldLink}
           foldTitleClass='fold__title--inline'
           foldWrapperClass='fold--main fold--per-table'
         >
@@ -161,6 +147,7 @@ function PerAccount (props) {
 const selector = (state, ownProps) => ({
   user: state.user,
   perForms: state.perForm.getPerForms,
+  perAreas: state.perAreas,
   perOverviewForm: state.perForm.getPerOverviewForm,
   regionsById: regionsByIdSelector(state),
 });

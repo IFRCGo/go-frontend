@@ -494,6 +494,7 @@ export default {
   perAccountChooseCountry: 'Choose National Society ',
   perAccountOverview: 'Overview',
   perAccountActiveForms: 'Active PER Forms',
+  perdocumentArea: 'Area',
   perdocumentOverview: 'Overview',
   perdocumentView: 'View',
   perDraftEdit: 'Edit',

@@ -591,6 +591,11 @@ export function getPerCountries () {
   return fetchJSON(`/api/v2/percountry/?${f}`, GET_PER_COUNTRIES, withToken());
 }
 
+export const GET_PER_AREAS = 'GET_PER_AREAS';
+export function getPerAreas () {
+  return fetchJSON('/api/v2/per-formarea', GET_PER_AREAS);
+}
+
 export const GET_PER_FORMS = 'GET_PER_FORMS';
 export function getPerForms () {
   return fetchJSON(`/api/v2/per/`, GET_PER_FORMS, withToken());

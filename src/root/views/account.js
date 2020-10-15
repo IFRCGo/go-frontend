@@ -23,7 +23,8 @@ import {
   addSubscriptions,
   delSubscription,
   getPerOverviewFormStrict as getPerOverviewForm,
-  getPerMission
+  getPerMission,
+  getPerAreas
 } from '#actions';
 
 import { get } from '#utils/utils';
@@ -150,6 +151,7 @@ class Account extends React.Component {
     _getFieldReportsByUser(user.id);
     _getPerCountries();
     _getPerForms();
+    this.props._getPerAreas();
     this.props._getPerOverviewForm();
     this.props._getPerMission();
     this.displayTabContent();
@@ -901,6 +903,7 @@ if (environment !== 'production') {
     _getPerForms: T.func,
     _getEventById: T.func,
     _getPerOverviewForm: T.func,
+    _getPerAreas: T.func,
     _clearEvents: T.func,
     _getPerMission: T.func,
     getPerMission: T.object
@@ -915,6 +918,7 @@ const selector = (state, ownProps) => ({
   profile: state.profile,
   fieldReport: state.fieldReport,
   perForm: state.perForm,
+  perAreas: state.perAreas,
   event: state.event,
   eventDeletion: state.subscriptions.delSubscriptions,
   perOverviewForm: state.perForm.getPerOverviewForm,
@@ -931,6 +935,7 @@ const dispatcher = (dispatch) => ({
   _updateProfile: (...args) => dispatch(updateProfile(...args)),
   _getPerCountries: (...args) => dispatch(getPerCountries(...args)),
   _getPerForms: (...args) => dispatch(getPerForms(...args)),
+  _getPerAreas: (...args) => dispatch(getPerAreas(...args)),
   _getEventById: (...args) => dispatch(getEventById(...args)),
   _addSubscriptions: (...args) => dispatch(addSubscriptions(...args)),
   _delSubscription: (...args) => dispatch(delSubscription(...args)),

@@ -30,6 +30,7 @@ import appealDocuments from './appeal-documents';
 import fdrs from './fdrs';
 import csv from './csv';
 import perForm from './per-form';
+import perAreas from './per-areas';
 import subscriptions from './subscriptions';
 import projects from './projects';
 import countryOverview from './country-overview';
@@ -80,6 +81,7 @@ export const reducers = {
   fdrs,
   csv,
   perForm,
+  perAreas,
   subscriptions,
   projects,
   projectForm: createReducer(POST_PROJECT),
