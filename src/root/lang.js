@@ -530,6 +530,7 @@ export default {
   footerApiDocumentation: 'API Documentation',
   footerContactUs: 'Contact Us',
   footerIFRC: '© IFRC 2020',
+  perFormTitle: 'IFRC Go - PER Form',
   perFormComponentSaveDraft: 'Save as draft',
   perFormComponentSubmitForm: 'Submit form',
   perFormComponentSave: 'Save draft',

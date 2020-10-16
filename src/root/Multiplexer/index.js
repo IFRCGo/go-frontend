@@ -43,7 +43,8 @@ import Country from '#views/countries';
 import Deployments from '#views/deployments';
 import Table from '#views/table';
 import Covid19ThreeWSankey from '#views/Covid19ThreeWSankey';
-import PerForms from '#views/per-forms';
+import PerForm from '#views/per-form';
+import PerOverview from '#views/per-overview';
 import ViewPerForms from '#views/view-per-forms';
 import EditPerForms from '#views/edit-per-forms';
 import Preparedness from '#views/preparedness';
@@ -179,7 +180,10 @@ function Multiplexer(props) {
           <PrivateRoute exact path='/deployments' component={Deployments}/>
           <PrivateRoute exact path='/deployments/personnel/all' render={props => <Table {...props} type='personnel' />} />
           <PrivateRoute exact path='/deployments/erus/all' render={props => <Table {...props} type='eru' />} />
-          <Route path='/per-forms/:formName/:id' component={PerForms} />
+          <Route path='/per-form/:id' component={PerForm} />
+          <Route path='/per-form/create/:area_num' component={PerForm} />
+          <Route path='/per-form/overview/:id' component={PerOverview} />
+          <Route path='/per-form/overview/create' component={PerOverview} />
           <Route path='/preparedness' component={Preparedness} />
           <Route path='/view-per-forms/:formName/:id' component={ViewPerForms} />
           <Route path='/edit-per-forms/:formCode/:user/:ns' component={EditPerForms} />

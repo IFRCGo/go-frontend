@@ -597,11 +597,16 @@ export function getPerAreas () {
 }
 
 export const GET_PER_FORMS = 'GET_PER_FORMS';
-export function getPerForms () {
-  return fetchJSON(`/api/v2/per/`, GET_PER_FORMS, withToken());
+export function getPerForms (id = null) {
+  let filters = {};
+  if (id) {
+    filters.id = id;
+  }
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v2/per/?${f}`, GET_PER_FORMS, withToken());
 }
 
-export const GET_PER_DOCUMENT = 'GET_PER_DOCUMENT';
+export const GET_PER_FORM = 'GET_PER_FORM';
 export function getPerForm (id = null, countryId = null) {
   const filters = {};
   filters.limit = 1000;
@@ -612,9 +617,10 @@ export function getPerForm (id = null, countryId = null) {
     filters.country = countryId;
   }
   const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v2/perdata/?${f}`, GET_PER_DOCUMENT, withToken());
+  return fetchJSON(`/api/v2/perdata/?${f}`, GET_PER_FORM, withToken());
 }
 
+// TODO: probably remove these after
 export const GET_PER_DRAFT_DOCUMENT = 'GET_PER_DRAFT_DOCUMENT';
 export function getPerDraftDocument (filters) {
   const filterString = buildAPIQS(filters);

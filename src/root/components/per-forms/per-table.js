@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { connect } from 'react-redux';
-// import { PropTypes as T } from 'prop-types';
+import { environment } from '#config';
+import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import Translate from '#components/Translate';
 import LanguageContext from '#root/languageContext';
@@ -27,13 +28,13 @@ function PerTable ({regionId, countries}) {
         id: form.id,
         form_name: {
           value: form.hasOwnProperty('area')
-            ? `${strings.perdocumentArea} ${form.area?.area_num || ''} - ${form.area?.title || ''} - ${form.updated_at} - ${form.user?.first_name} ${form.user?.last_name}`
+            ? `${strings.perdocumentArea} ${form.area?.area_num || ''} - ${form.area?.title || ''} - ${form.updated_at.substring(0, 10)} - ${form.user?.first_name} ${form.user?.last_name}`
             : `${strings.perdocumentOverview} - ${form.date_of_current_capacity_assessment.substring(0, 10)} - ${form.user?.first_name} ${form.user?.last_name}`
         },
         view_link: {
           value: (
             // TODO: need url, action, etc
-            <Link className='button button--xsmall button--secondary-bounded' to={'/view-per-forms/' + form.id}>
+            <Link className='button button--xsmall button--secondary-bounded' to={`/per-form/${form.hasOwnProperty('area') ? '' : 'overview/'}${form.id}`}>
               <Translate stringId='perdocumentView'/>
             </Link>
           ),
@@ -57,15 +58,15 @@ function PerTable ({regionId, countries}) {
   });
 }
 
-const selector = (state, ownProps) => ({
-//   user: state.user,
-  // perForm: state.perForm,
-//   perOverviewForm: state.perForm.getPerOverviewForm,
-//   regionsById: regionsByIdSelector(state),
-});
+if (environment !== 'production') {
+  PerTable.propTypes = {
+    regionId: T.string,
+    countries: T.object
+  };
+}
 
-const dispatcher = (dispatch) => ({
-//   _getPerOverviewForm: (...args) => dispatch(getPerOverviewForm(...args))
-});
+const selector = (state, ownProps) => ({});
+
+const dispatcher = (dispatch) => ({});
 
 export default connect(selector, dispatcher)(PerTable);

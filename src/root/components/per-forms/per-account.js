@@ -1,13 +1,8 @@
-import React, { useState, useEffect, useContext, useMemo } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { connect } from 'react-redux';
-// import { PropTypes as T } from 'prop-types';
+import { environment } from '#config';
+import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
-// import { environment } from '#config';
-import {
-  getPerCountries,
-  getPerForms,
-  getPerOverviewFormStrict as getPerOverviewForm
-} from '#actions';
 import { regionsByIdSelector } from '../../selectors';
 
 import LanguageContext from '#root/languageContext';
@@ -22,11 +17,16 @@ function PerAccount (props) {
   const formButtons = useMemo(() => {
     let sortedAreas = [];
     if (!props.perAreas.fetching && props.perAreas.fetched && props.perAreas.data) {
-      sortedAreas = props.perAreas.data.results.sort((a,b) => (a.area_num > b.area_num) ? 1 : ((b.area_num > a.area_num) ? -1 : 0));
+      sortedAreas = props.perAreas.data.results.sort(
+        (a,b) => (a.area_num > b.area_num) ? 1 : ((b.area_num > a.area_num) ? -1 : 0)
+      );
     }
     // TODO: make links like '/per-form/<area_num> (or ID)
-    return sortedAreas.map(area => ({ link: '', title: `${strings.perdocumentArea} ${area.area_num}: ${area.title}` }));
-  }, [props.perAreas]);
+    return sortedAreas.map(area => ({
+      link: `/per-form/create/${area.area_num}`,
+      title: `${strings.perdocumentArea} ${area.area_num}: ${area.title}`
+    }));
+  }, [props.perAreas, strings.perdocumentArea]);
 
   // PER Overviews vars
   const [ovFetching, ovFetched, overviewFormList] = useMemo(() => [
@@ -48,7 +48,6 @@ function PerAccount (props) {
     }
     return regionsDict;
   }, [props.regionsById]);
-
 
   // Categorize PER Forms by their Region and Country (regionId: { countries: [forms] })
   const groupedFormList = useMemo(() => {
@@ -110,7 +109,7 @@ function PerAccount (props) {
       </p>
       <div className='text-center'>
         <Link
-          to={`/per-forms/overview/`}
+          to={`/per-form/overview/create`}
           className='button button--medium button--secondary-bounded'
         >
           <Translate stringId='perAccountOverview'/>
@@ -120,7 +119,7 @@ function PerAccount (props) {
         {formButtons.map(button => (
           <div key={button.title} className='per__form__col col col-6-xs col-4-mid'>
             <Link
-              to={`/per-forms/${button.link}/`}
+              to={button.link}
               className='button button--medium button--secondary-bounded'
             >
               {button.title}
@@ -144,8 +143,16 @@ function PerAccount (props) {
   );
 }
 
+if (environment !== 'production') {
+  PerAccount.propTypes = {
+    perForms: T.object,
+    perAreas: T.object,
+    perOverviewForm: T.object,
+    regionsById: T.object
+  };
+}
+
 const selector = (state, ownProps) => ({
-  user: state.user,
   perForms: state.perForm.getPerForms,
   perAreas: state.perAreas,
   perOverviewForm: state.perForm.getPerOverviewForm,
