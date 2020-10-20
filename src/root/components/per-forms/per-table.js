@@ -11,7 +11,7 @@ import DisplayTable from '#components/display-table';
 function PerTable ({regionId, countries}) {
   const { strings } = useContext(LanguageContext);
 
-  // Must pass headings to DisplayTable for the columns to show up at all
+  // Must pass headings (with matching 'id's) to DisplayTable for the columns to show up at all
   const headings = [
     {
       id: 'form_name',

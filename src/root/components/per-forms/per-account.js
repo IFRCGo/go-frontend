@@ -127,7 +127,7 @@ function PerAccount (props) {
           </div>
         ))}
       </div>
-      {Object.keys(groupedFormList).map((regionId, index) => (
+      { Object.keys(groupedFormList).map((regionId, index) => (
         <Fold
           key={regionId}
           showHeader={true}

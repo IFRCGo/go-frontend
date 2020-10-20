@@ -391,3 +391,8 @@
     }
   }
 }
+
+.per__form__radio-group {
+  margin-bottom: 12px;
+  margin-top: -24px; // to compensate the empty space caused by 'form__inner-header
+}

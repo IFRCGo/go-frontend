@@ -1,9 +1,10 @@
-import React, { useContext, useMemo } from 'react';
-import { connect } from 'react-redux';
+import React, { useContext, useEffect, useState, useMemo } from 'react';
+import { connect, useActions } from 'react-redux';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
-import { regionsByIdSelector } from '../selectors';
+import { regionsByIdSelector, formQuestionsSelector } from '../selectors';
+import { getPerAreas, getPerQuestions, getPerForms } from '#actions';
 
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
@@ -11,20 +12,43 @@ import Translate from '#components/Translate';
 import App from './app';
 import Fold from '#components/fold';
 import BreadCrumb from '#components/breadcrumb';
+import PerFormQuestion from '#components/per-forms/per-form-question';
 import { Helmet } from 'react-helmet';
 
 function PerForm (props) {
+  const [questionsState, setQuestionsState] = useState({});
   const { strings } = useContext(LanguageContext);
-  const { formId, isOverview } = props;
-  const title = isOverview ? strings.perdocumentOverview : strings.perdocumentArea;
+  const { _getPerAreas, _getPerQuestions } = props;
+  const areaNum = props.match.params.area_num;
+  const formId = props.match.params.form_id;
 
+  useEffect(() => {
+    if (areaNum) {
+      // Create Form
+      _getPerAreas(areaNum);
+      _getPerQuestions(areaNum);
+    } else if (formId) {
+      // Existing Form
+      // TODO: getFormData
+    }
+  }, [_getPerAreas, _getPerQuestions, areaNum, formId]);
+
+  const questionList = useMemo(() => {
+    return props.perQuestions || [];
+  }, [props.perQuestions]);
+  const title = useMemo(() => {
+    if (!props.perAreas.fetching && props.perAreas.fetched && props.perAreas.data) {
+      const res = props.perAreas.data.results[0];
+      return `${strings.perdocumentArea} ${res.area_num}: ${res.title}`;
+    }
+    return strings.perdocumentArea;
+  }, [props.perAreas]);
   const crumbs = [
-    // TODO: fix name
-    {link: props.location.pathname, name: 'asd'},
+    {link: props.location.pathname, name: title},
     {link: '/account', name: strings.breadCrumbAccount},
     {link: '/', name: strings.breadCrumbHome}
   ];
-  console.log(props);
+
   return (
     <App className='page--per-form'>
       <section className='inpage'>
@@ -41,8 +65,15 @@ function PerForm (props) {
         <section className='inpage__body'>
           <div className='inner'>
             {/* TODO: fix title */}
-            <Fold title='Area X' foldWrapperClass='fold--main' foldTitleClass='margin-reset'>
-              <div>asd</div>
+            <Fold title={title} foldWrapperClass='fold--main' foldTitleClass='margin-reset'>
+              {
+                Object.keys(questionList).map((qId) => {
+                  return questionList[qId].map((question) => (
+                    // TODO: check what to set really
+                    <PerFormQuestion onChange={(value) => setQuestionsState({...questionsState, /* here */})} question={question} key={question.id} />
+                  ));
+                })
+              }
             </Fold>
           </div>
         </section>
@@ -53,22 +84,21 @@ function PerForm (props) {
 
 if (environment !== 'production') {
   PerForm.propTypes = {
-    perForms: T.object,
     perAreas: T.object,
-    perOverviewForm: T.object,
-    regionsById: T.object
+    perQuestions: T.object,
+    getPerAreas: T.func,
+    getPerQuestions: T.func
   };
 }
 
 const selector = (state, ownProps) => ({
-  user: state.user,
-  perForms: state.perForm.getPerForms,
   perAreas: state.perAreas,
-  perOverviewForm: state.perForm.getPerOverviewForm,
-  regionsById: regionsByIdSelector(state),
+  perQuestions: formQuestionsSelector(state),
 });
 
 const dispatcher = (dispatch) => ({
+  _getPerAreas: (...args) => dispatch(getPerAreas(...args)),
+  _getPerQuestions: (...args) => dispatch(getPerQuestions(...args)),
   // _getPerCountries: (...args) => dispatch(getPerCountries(...args)),
   // _getPerForms: (...args) => dispatch(getPerForms(...args)),
   // _getPerOverviewForm: (...args) => dispatch(getPerOverviewForm(...args))

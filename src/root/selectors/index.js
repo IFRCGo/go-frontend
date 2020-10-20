@@ -224,3 +224,9 @@ export const disasterTypesSelectSelector = (state) => {
   }
   return [];
 };
+
+export const formQuestionsSelector = (state) => {
+  if (state.perQuestions && state.perQuestions.data.results) {
+    return _groupBy(state.perQuestions.data.results, 'component.component_num');
+  }
+};

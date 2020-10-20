@@ -585,15 +585,20 @@ export function sendPerForm (data) {
 
 export const GET_PER_COUNTRIES = 'GET_PER_COUNTRIES';
 export function getPerCountries () {
-  const filters = {};
+  let filters = {};
   filters.limit = 1000;
   const f = buildAPIQS(filters);
   return fetchJSON(`/api/v2/percountry/?${f}`, GET_PER_COUNTRIES, withToken());
 }
 
 export const GET_PER_AREAS = 'GET_PER_AREAS';
-export function getPerAreas () {
-  return fetchJSON('/api/v2/per-formarea', GET_PER_AREAS);
+export function getPerAreas (area_num = null) {
+  let filters = {};
+  if (area_num) {
+    filters.area_num = area_num;
+  }
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v2/per-formarea/?${f}`, GET_PER_AREAS);
 }
 
 export const GET_PER_FORMS = 'GET_PER_FORMS';
@@ -608,7 +613,7 @@ export function getPerForms (id = null) {
 
 export const GET_PER_FORM = 'GET_PER_FORM';
 export function getPerForm (id = null, countryId = null) {
-  const filters = {};
+  let filters = {};
   filters.limit = 1000;
   if (id !== null) {
     filters.form = id;
@@ -618,6 +623,16 @@ export function getPerForm (id = null, countryId = null) {
   }
   const f = buildAPIQS(filters);
   return fetchJSON(`/api/v2/perdata/?${f}`, GET_PER_FORM, withToken());
+}
+
+export const GET_PER_QUESTIONS = 'GET_PER_QUESTIONS';
+export function getPerQuestions (area_id = null) {
+  let filters = {};
+  if (area_id) {
+    filters.area_id = area_id;
+  }
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v2/per-formquestion/?${f}`, GET_PER_QUESTIONS);
 }
 
 // TODO: probably remove these after
