@@ -23,7 +23,7 @@ function PerAccount (props) {
     }
     // TODO: make links like '/per-form/<area_num> (or ID)
     return sortedAreas.map(area => ({
-      link: `/per-form/create/${area.area_num}`,
+      link: `/per-form/create/${area.id}`,
       title: `${strings.perdocumentArea} ${area.area_num}: ${area.title}`
     }));
   }, [props.perAreas, strings.perdocumentArea]);
@@ -63,7 +63,7 @@ function PerAccount (props) {
           if (form.country in fL[form.country.region] === false) {
             fL[form.country.region][form.country.name] = [];
           }
-          fL[form.country.region][form.country.name].push(form); 
+          fL[form.country.region][form.country.name].push(form);
         }
       }
     }
@@ -78,7 +78,7 @@ function PerAccount (props) {
           if (form.country in fL[form.country.region] === false) {
             fL[form.country.region][form.country.name] = [];
           }
-          fL[form.country.region][form.country.name].push(form); 
+          fL[form.country.region][form.country.name].push(form);
         }
       }
     }

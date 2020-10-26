@@ -701,16 +701,12 @@ if (environment !== 'production') {
     sendPerWorkPlan: T.func,
     nationalSociety: T.string,
     user: T.object,
-    getPerDraftDocument: T.object,
-    _sendPerDraft: T.func
   };
 }
 
 const selector = (state) => ({
   sendPerForm: state.perForm.sendPerForm,
   perDocument: state.perForm.getPerForm,
-  sendPerDraft: state.perForm.sendPerDraft,
-  getPerDraftDocument: state.perForm.getPerDraftDocument,
   perOverviewForm: state.perForm.getPerOverviewForm,
   sendPerWorkPlan: state.perForm.sendPerWorkPlan,
   user: state.user
@@ -719,8 +715,6 @@ const selector = (state) => ({
 const dispatcher = (dispatch) => ({
   _sendPerForm: (payload) => dispatch(sendPerForm(payload)),
   _getPerForm: (...args) => dispatch(getPerForm(...args)),
-  _getPerDraftDocument: (...args) => dispatch(getPerDraftDocument(...args)),
-  _sendPerDraft: (payload) => dispatch(sendPerDraft(payload)),
   _editPerForm: (payload) => dispatch(editPerForm(payload)),
   _getPerOverviewForm: (...args) => dispatch(getPerOverviewForm(...args)),
   _sendPerOverview: (...args) => dispatch(sendPerOverview(...args))

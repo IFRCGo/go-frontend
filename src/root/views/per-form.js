@@ -3,8 +3,12 @@ import { connect } from 'react-redux';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
-import { formQuestionsSelector } from '../selectors';
-import { getPerAreas, getPerQuestions } from '#actions';
+import { nsDropdownSelector, formQuestionsSelector } from '#selectors';
+import {
+  createPerForm,
+  getPerAreas,
+  getPerQuestions
+} from '#actions';
 
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
@@ -18,16 +22,25 @@ import {
   FormRadioGroup,
   FormError
 } from '#components/form-elements/';
+import Select from 'react-select';
 
 function PerForm (props) {
   const [questionsState, setQuestionsState] = useState({});
+  const [nsState, setNsState] = useState();
   const { strings } = useContext(LanguageContext);
-  const { _getPerAreas, _getPerQuestions } = props;
-  const areaNum = props.match.params.area_num;
+  const { _createPerForm, _getPerAreas, _getPerQuestions } = props;
+  const areaId = props.match.params.area_id;
   const formId = props.match.params.form_id;
+  const areaNum = useMemo(() => {
+    if (!props.perAreas.fetching && props.perAreas.fetched && props.perAreas.data) {
+      return props.perAreas.data.results[0].area_num;
+    }
+    return null;
+  }, [props.perAreas]);
 
   function changeQuestionsState (e, question, isRadio) {
     let modifiedState = questionsState;
+    // Check if radio buttons changed or the note of a question
     if (isRadio) {
       modifiedState[question.id].selectedAnswer = e.target.value;
     } else {
@@ -37,16 +50,33 @@ function PerForm (props) {
     setQuestionsState({...modifiedState});
   }
 
+  function submitForm (e, isDraft) {
+    _createPerForm({
+      'user_id': props.user.id,
+      'country_id': nsState,
+      'is_draft': isDraft,
+      'area_id': areaId,
+      'area_num': areaNum,
+      'questions': questionsState
+    });
+  }
+
+  // TODO: why _getPerQuestions firing 2 times???
+  useEffect(() => {
+    if (areaId) {
+      _getPerAreas(areaId);
+    }
+  }, [_getPerAreas, areaId]);
+
   useEffect(() => {
     if (areaNum) {
       // Create Form
-      _getPerAreas(areaNum);
       _getPerQuestions(areaNum);
     } else if (formId) {
       // Existing Form
       // TODO: getFormData
     }
-  }, [_getPerAreas, _getPerQuestions, areaNum, formId]);
+  }, [_getPerQuestions, areaNum, formId]);
 
   const questionList = useMemo(() => {
     if (!props.perQuestions.fetching && props.perQuestions.fetched && props.perQuestions.data) {
@@ -98,6 +128,20 @@ function PerForm (props) {
         <section className='inpage__body'>
           <div className='inner'>
             <Fold title={title} foldWrapperClass='fold--main' foldTitleClass='margin-reset'>
+              <div className='form__group'>
+                <label className='form__label'>
+                  <Translate stringId='perAccountChooseCountry' />
+                </label>
+                <Select
+                  name='country' // TODO: give name
+                  value={nsState}
+                  onChange={(e) => setNsState(e.value)}
+                  options={props.nsDropdownItems} />
+                <FormError
+                  errors={[]}
+                  property='country'
+                />
+              </div>
               { areaNum
                 ? Object.keys(groupedQuestionList).map((compId) => {
                   const componentHeader = (
@@ -119,8 +163,8 @@ function PerForm (props) {
                         onChange={(e) => changeQuestionsState(e, question, true)}
                       >
                         <FormError
-                          errors={[]}
-                          property='status'
+                          errors={[]} // TODO: handle errors
+                          property={`question${question.id}`}
                         />
                       </FormRadioGroup>
                       <FormInput
@@ -135,15 +179,27 @@ function PerForm (props) {
                       >
                         <FormError
                           errors={[]}
-                          property='startDate'
+                          property={`question${question.id}-note`}
                         />
                       </FormInput>
                     </div>
                   ));
-                  return (<React.Fragment key={compId}>{componentHeader}{questions}</React.Fragment>);
+                  return (
+                    <React.Fragment key={compId}>
+                      {componentHeader}
+                      {questions}
+                    </React.Fragment>
+                  );
                 }) // TODO: construct existing form
                 : (<div></div>)
               }
+
+              <button className='button button--medium button--primary-filled per__form__button' onClick={(e) => submitForm(e, false)}>
+                <Translate stringId='perFormComponentSubmitForm'/>
+              </button>
+              <button className='button button--medium button--secondary-filled per__form__button' onClick={(e) => submitForm(e, true)}>
+                <Translate stringId='perFormComponentSave'/>
+              </button>
             </Fold>
           </div>
         </section>
@@ -163,12 +219,15 @@ if (environment !== 'production') {
 }
 
 const selector = (state, ownProps) => ({
+  user: state.user.data,
+  nsDropdownItems: nsDropdownSelector(state),
   perAreas: state.perAreas,
   perQuestions: state.perQuestions,
   groupedPerQuestions: formQuestionsSelector(state)
 });
 
 const dispatcher = (dispatch) => ({
+  _createPerForm: (payload) => dispatch(createPerForm(payload)),
   _getPerAreas: (...args) => dispatch(getPerAreas(...args)),
   _getPerQuestions: (...args) => dispatch(getPerQuestions(...args))
 });

@@ -933,7 +933,7 @@ const dispatcher = (dispatch) => ({
   _updateSubscriptions: (...args) => dispatch(updateSubscriptions(...args)),
   _getFieldReportsByUser: (...args) => dispatch(getFieldReportsByUser(...args)),
   _updateProfile: (...args) => dispatch(updateProfile(...args)),
-  _getPerCountries: (...args) => dispatch(getPerCountries(...args)),
+  _getPerCountries: (...args) => dispatch(getPerCountries(...args)), // TODO: probably removable later
   _getPerForms: (...args) => dispatch(getPerForms(...args)),
   _getPerAreas: (...args) => dispatch(getPerAreas(...args)),
   _getEventById: (...args) => dispatch(getEventById(...args)),

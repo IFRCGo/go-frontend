@@ -578,9 +578,20 @@ export function clearLoadedCsv (id) {
   return { type: 'CLEAR_LOADED_CSV', id };
 }
 
+// TODO: probably removable after refactor
 export const SEND_PER_FORM = 'SEND_PER_FORM';
 export function sendPerForm (data) {
   return postJSON('sendperform', SEND_PER_FORM, data, withToken());
+}
+
+export const CREATE_PER_FORM = 'CREATE_PER_FORM';
+export function createPerForm (data) {
+  return postJSON('createperform', CREATE_PER_FORM, data, withToken());
+}
+
+export const EDIT_PER_FORM = 'EDIT_PER_FORM';
+export function editPerForm (data) {
+  return postJSON('editperform', EDIT_PER_FORM, data, withToken());
 }
 
 export const GET_PER_COUNTRIES = 'GET_PER_COUNTRIES';
@@ -592,10 +603,13 @@ export function getPerCountries () {
 }
 
 export const GET_PER_AREAS = 'GET_PER_AREAS';
-export function getPerAreas (area_num = null) {
+export function getPerAreas (id = null, area_num = null) {
   let filters = {};
   if (area_num) {
     filters.area_num = area_num;
+  }
+  if (id) {
+    filters.id = id;
   }
   const f = buildAPIQS(filters);
   return fetchJSON(`/api/v2/per-formarea/?${f}`, GET_PER_AREAS);
@@ -633,23 +647,6 @@ export function getPerQuestions (area_id = null) {
   }
   const f = buildAPIQS(filters);
   return fetchJSON(`/api/v2/per-formquestion/?${f}`, GET_PER_QUESTIONS);
-}
-
-// TODO: probably remove these after
-export const GET_PER_DRAFT_DOCUMENT = 'GET_PER_DRAFT_DOCUMENT';
-export function getPerDraftDocument (filters) {
-  const filterString = buildAPIQS(filters);
-  return fetchJSON(`/api/v2/perdraft/?${filterString}`, GET_PER_DRAFT_DOCUMENT, withToken());
-}
-
-export const SEND_PER_DRAFT_DOCUMENT = 'SEND_PER_DRAFT_DOCUMENT';
-export function sendPerDraft (data) {
-  return postJSON('sendperdraft', SEND_PER_DRAFT_DOCUMENT, data, withToken());
-}
-
-export const EDIT_PER_DOCUMENT = 'EDIT_PER_DOCUMENT';
-export function editPerForm (data) {
-  return postJSON('editperform', EDIT_PER_DOCUMENT, data, withToken());
 }
 
 export const COLLABORATING_PER_COUNTRY = 'COLLABORATING_PER_COUNTRY';

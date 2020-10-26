@@ -29,13 +29,6 @@ export default class RequestFactory {
     return year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds + '.' + milliseconds + '+00';
   }
 
-  newFormEditRequest (formId) {
-    return {
-      id: formId,
-      data: []
-    };
-  }
-
   addAreaQuestionData (request) {
     const formHeadQuestions = document.getElementsByName('a1');
 

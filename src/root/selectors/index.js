@@ -35,6 +35,21 @@ export const countriesSelector = (state) => {
   }
 };
 
+export const nsDropdownSelector = (state) => {
+  if (state.allCountries.data.results && state.allCountries.data.results.length) {
+    return state.allCountries.data.results.reduce((result, country) => {
+      if (country.society_name) {
+        result.push({
+          'value': country.id,
+          'label': country.society_name
+        });
+      }
+      return result;
+    }, []);
+  }
+  return initialState;
+};
+
 export const countriesByRegionSelector = (state) => {
   if (state.allCountries && state.allCountries.data.results) {
     let countriesByRegion = _groupBy(state.allCountries.data.results, 'region');

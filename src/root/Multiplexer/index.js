@@ -45,8 +45,6 @@ import Table from '#views/table';
 import Covid19ThreeWSankey from '#views/Covid19ThreeWSankey';
 import PerForm from '#views/per-form';
 import PerOverview from '#views/per-overview';
-import ViewPerForms from '#views/view-per-forms';
-import EditPerForms from '#views/edit-per-forms';
 import Preparedness from '#views/preparedness';
 import TranslationDashboard from '#views/TranslationDashboard';
 import ClearInitCache from '#views/ClearInitCache';
@@ -181,12 +179,10 @@ function Multiplexer(props) {
           <PrivateRoute exact path='/deployments/personnel/all' render={props => <Table {...props} type='personnel' />} />
           <PrivateRoute exact path='/deployments/erus/all' render={props => <Table {...props} type='eru' />} />
           <Route exact path='/per-form/:form_id' component={PerForm} />
-          <Route exact path='/per-form/create/:area_num' component={PerForm} />
+          <Route exact path='/per-form/create/:area_id' component={PerForm} />
           <Route path='/per-form/overview/:id' component={PerOverview} />
           <Route path='/per-form/overview/create' component={PerOverview} />
           <Route path='/preparedness' component={Preparedness} />
-          <Route path='/view-per-forms/:formName/:id' component={ViewPerForms} />
-          <Route path='/edit-per-forms/:formCode/:user/:ns' component={EditPerForms} />
           <Route component={UhOh}/>
         </Switch>
       </BreadcrumbsProvider>
