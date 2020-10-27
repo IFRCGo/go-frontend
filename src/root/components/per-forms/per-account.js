@@ -21,7 +21,7 @@ function PerAccount (props) {
         (a,b) => (a.area_num > b.area_num) ? 1 : ((b.area_num > a.area_num) ? -1 : 0)
       );
     }
-    // TODO: make links like '/per-form/<area_num> (or ID)
+
     return sortedAreas.map(area => ({
       link: `/per-form/create/${area.id}`,
       title: `${strings.perdocumentArea} ${area.area_num}: ${area.title}`
@@ -52,7 +52,7 @@ function PerAccount (props) {
   // Categorize PER Forms by their Region and Country (regionId: { countries: [forms] })
   const groupedFormList = useMemo(() => {
     let fL = {};
-    // Overviews
+    // PER Overviews array
     const ovFLCount = overviewFormList.count || 0;
     if (!ovFetching && ovFetched && ovFLCount > 0 && regions) {
       for (const form of overviewFormList.results) {
@@ -67,7 +67,7 @@ function PerAccount (props) {
         }
       }
     }
-    // Forms
+    // PER Forms array
     const fLCount = formList.count || 0;
     if (!formsFetching && formsFetched && fLCount > 0 && regions) {
       for (const form of formList.results) {
@@ -75,7 +75,7 @@ function PerAccount (props) {
           if (form.country.region in fL === false) {
             fL[form.country.region] = {};
           }
-          if (form.country in fL[form.country.region] === false) {
+          if (form.country.name in fL[form.country.region] === false) {
             fL[form.country.region][form.country.name] = [];
           }
           fL[form.country.region][form.country.name].push(form);
@@ -103,7 +103,7 @@ function PerAccount (props) {
 
   return (
     // FIXME: <Translate stringId='perAccountTitle'/>
-    <Fold title='New PER Forms' foldWrapperClass='fold--main' foldTitleClass='margin-reset'>
+    <Fold title='Create new PER Forms' foldWrapperClass='fold--main' foldTitleClass='margin-reset'>
       <p>
         <Translate stringId='perAccountDescription'/>
       </p>

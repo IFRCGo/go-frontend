@@ -578,12 +578,6 @@ export function clearLoadedCsv (id) {
   return { type: 'CLEAR_LOADED_CSV', id };
 }
 
-// TODO: probably removable after refactor
-export const SEND_PER_FORM = 'SEND_PER_FORM';
-export function sendPerForm (data) {
-  return postJSON('sendperform', SEND_PER_FORM, data, withToken());
-}
-
 export const CREATE_PER_FORM = 'CREATE_PER_FORM';
 export function createPerForm (data) {
   return postJSON('createperform', CREATE_PER_FORM, data, withToken());
