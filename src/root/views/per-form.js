@@ -42,12 +42,13 @@ function PerForm (props) {
     _getPerAreas,
     _getPerQuestions
   } = props;
-  const areaIdFromPath = props.match.params.area_id;
-  const formIdFromPath = props.match.params.form_id;
+  const areaIdFromPath = props.match.params.area_id; // only present for new forms
+  const formIdFromPath = props.match.params.form_id; // only present for existing forms
+  const editable = !!props.editable || areaIdFromPath;
 
   function changeQuestionsState (e, question, isRadio) {
     let modifiedState = questionsState;
-    // Check if radio buttons changed or the note of a question
+
     if (isRadio) {
       modifiedState[question.id].selectedAnswer = e.target.value;
     } else {
@@ -82,7 +83,7 @@ function PerForm (props) {
     }
   }
 
-    // FIXME: _getPerAreas and _getPerQuestions firing 2 times
+  // FIXME: _getPerAreas and _getPerQuestions firing 2 times
   useEffect(() => {
     if (areaIdFromPath || areaId) {
       _getPerAreas(areaIdFromPath || areaId);
@@ -101,8 +102,9 @@ function PerForm (props) {
   }, [_getPerQuestions, areaNum, _getPerForm, _getPerForms, formIdFromPath]);
 
   useEffect(() => {
-    if (!props.perAreas.fetching && props.perAreas.fetched && props.perAreas.data) {
-      const res = props.perAreas.data.results[0];
+    const pa = props.perAreas;
+    if (!pa.fetching && pa.fetched && pa.data) {
+      const res = pa.data.results[0];
       setTitle(`${strings.perdocumentArea} ${res.area_num}: ${res.title}`);
       setAreaNum(res.area_num);
     }
@@ -110,8 +112,10 @@ function PerForm (props) {
 
   // Use PER Form
   useEffect(() => {
-    if (!props.perForm.getPerForms.fetching && props.perForm.getPerForms.fetched && props.perForm.getPerForms.data) {
-      const res = props.perForm.getPerForms.data.results[0];
+    const pfs = props.perForm.getPerForms;
+    // FIXME: Needs !areaIdFromPath because revisiting a form has 'GET_PER_FORMS_SUCCESS' (?)
+    if (!pfs.fetching && pfs.fetched && pfs.data && !areaIdFromPath) {
+      const res = pfs.data.results[0];
       if (res.area) {
         setAreaNum(res.area.area_num);
         setAreaId(res.area.id);
@@ -120,28 +124,26 @@ function PerForm (props) {
         setNsState(res.country.id);
       }
     }
-  }, [props.perForm.getPerForms]);
+  }, [props.perForm.getPerForms, areaIdFromPath]);
 
   // Use PER FormData
-  const formData = useMemo(() => {
-    if (!props.perForm.getPerForm.fetching && props.perForm.getPerForm.fetched && props.perForm.getPerForm.data) {
+  useEffect(() => {
+    const pf = props.perForm.getPerForm;
+    if (!pf.fetching && pf.fetched && pf.data) {
       let questionsDict = {};
-      props.perForm.getPerForm.data.results.map((fd) => {
+      pf.data.results.forEach((fd) => {
         questionsDict[fd.question_id] = {
           selectedAnswer: fd.selected_answer?.id.toString(),
-          notes: fd.notes,
-          formDataId: fd.id // not used for anything atm
+          notes: fd.notes
         };
       });
       setQuestionsState(questionsDict);
-
-      return props.perForm.getPerForm.data.results;
     }
-    return [];
   }, [props.perForm.getPerForm]);
   const questionList = useMemo(() => {
-    if (!props.perQuestions.fetching && props.perQuestions.fetched && props.perQuestions.data) {
-      return props.perQuestions.data.results;
+    const pq = props.perQuestions;
+    if (!pq.fetching && pq.fetched && pq.data) {
+      return pq.data.results;
     }
 
     return [];
@@ -159,7 +161,7 @@ function PerForm (props) {
       }
       setQuestionsState(questionDict);
     }
-  }, [questionList]);
+  }, [questionList, areaIdFromPath]);
 
   const crumbs = [
     {link: props.location.pathname, name: title},
@@ -179,81 +181,101 @@ function PerForm (props) {
               <BreadCrumb breadcrumbContainerClass='padding-reset' crumbs={ crumbs } />
             </div>
           </div>
-        </div>
-        <section className='inpage__body'>
-          <div className='inner'>
-            <Fold title={title} foldWrapperClass='fold--main' foldTitleClass='margin-reset'>
-              <div className='form__group'>
-                <label className='form__label'>
-                  <Translate stringId='perAccountChooseCountry' />
-                </label>
-                <Select
-                  name='country'
-                  value={nsState}
-                  onChange={(e) => setNsState(e?.value)}
-                  options={props.nsDropdownItems} />
-                <FormError
-                  errors={[]}
-                  property='country'
-                />
-              </div>
-              { Object.keys(groupedQuestionList).map((compId) => {
-                const componentHeader = (
-                  <div className='per__component__header'>
-                    <h2>Component {compId}: {groupedQuestionList[compId][0].component.title}</h2>
-                    <span className='label-secondary'>{groupedQuestionList[compId][0].component.description}</span>
-                  </div>
-                );
-                const questions = groupedQuestionList[compId].map((question) => (
-                  <div key={question.id}>
-                    <h3>{compId}.{question.question_num} {question.question}</h3>
-                    <FormRadioGroup
-                      label=''
-                      name={`question${question.id}`}
-                      classWrapper='per__form__radio-group'
-                      options={question.answers.map((answer) => ({ value: answer.id.toString(), label: answer.text }))}
-                      selectedOption={questionsState[question.id]?.selectedAnswer}
-                      onChange={(e) => changeQuestionsState(e, question, true)}
-                    >
-                      <FormError
-                        errors={[]} // TODO: handle errors
-                        property={`question${question.id}`}
-                      />
-                    </FormRadioGroup>
-                    <FormInput
-                      label='Notes'
-                      type='text'
-                      name={`question${question.id}-note`}
-                      id={`question${question.id}-note`}
-                      classWrapper=''
-                      value={questionsState[question.id]?.notes}
-                      onChange={(e) => changeQuestionsState(e, question, false)}
-                      description=''
-                    >
-                      <FormError
-                        errors={[]}
-                        property={`question${question.id}-note`}
-                      />
-                    </FormInput>
-                  </div>
-                ));
-                return (
-                  <React.Fragment key={compId}>
-                    {componentHeader}
-                    {questions}
-                  </React.Fragment>
-                );
-              })}
+          <section className='inpage__body'>
+            <div className='inner'>
+              <Fold title={title} foldWrapperClass='fold--main' foldTitleClass='margin-reset'>
+                <div className='form__group'>
+                  <label className='form__label'>
+                    <Translate stringId='perAccountChooseCountry' />
+                  </label>
+                  <Select
+                    name='country'
+                    value={nsState}
+                    onChange={(e) => setNsState(e?.value)}
+                    options={props.nsDropdownItems}
+                    disabled={!editable}
+                  />
+                  <FormError
+                    errors={[]}
+                    property='country'
+                  />
+                </div>
+                { Object.keys(groupedQuestionList).map((compId) => {
+                  const componentHeader = (
+                    <div className='per__component__header'>
+                      <h2>Component {compId}: {groupedQuestionList[compId][0].component.title}</h2>
+                      <span className='label-secondary'>{groupedQuestionList[compId][0].component.description}</span>
+                    </div>
+                  );
+                  const questions = groupedQuestionList[compId].map((question) => (
+                    <div key={question.id}>
+                      <h3>{compId}.{question.question_num} {question.question}</h3>
+                      <FormRadioGroup
+                        label=''
+                        name={`question${question.id}`}
+                        classWrapper='per__form__radio-group'
+                        options={question.answers.map((answer) => ({
+                          value: answer.id.toString(),
+                          label: answer.text,
+                          disabled: !editable
+                        }))}
+                        selectedOption={questionsState[question.id]?.selectedAnswer}
+                        onChange={(e) => changeQuestionsState(e, question, true)}
+                      >
+                        <FormError
+                          errors={[]} // TODO: handle errors
+                          property={`question${question.id}`}
+                        />
+                      </FormRadioGroup>
+                      <FormInput
+                        label='Notes'
+                        type='text'
+                        name={`question${question.id}-note`}
+                        id={`question${question.id}-note`}
+                        classWrapper=''
+                        value={questionsState[question.id]?.notes}
+                        onChange={(e) => changeQuestionsState(e, question, false)}
+                        description=''
+                        disabled={!editable}
+                      >
+                        <FormError
+                          errors={[]}
+                          property={`question${question.id}-note`}
+                        />
+                      </FormInput>
+                    </div>
+                  ));
+                  return (
+                    <React.Fragment key={compId}>
+                      {componentHeader}
+                      {questions}
+                    </React.Fragment>
+                  );
+                })}
 
-              <button className='button button--medium button--primary-filled per__form__button' onClick={(e) => submitForm(e, false)}>
-                <Translate stringId='perFormComponentSubmitForm'/>
-              </button>
-              <button className='button button--medium button--secondary-filled per__form__button' onClick={(e) => submitForm(e, true)}>
-                <Translate stringId='perFormComponentSave'/>
-              </button>
-            </Fold>
-          </div>
-        </section>
+                { editable
+                  ? (
+                    <React.Fragment>
+                      <h4><Translate stringId='overviewFormDraftInfo' /></h4>
+                      <button
+                        className='button button--medium button--primary-filled per__form__button'
+                        onClick={(e) => submitForm(e, false)}
+                      >
+                        <Translate stringId='perFormComponentSubmitForm'/>
+                      </button>
+                      <button
+                        className='button button--medium button--secondary-filled per__form__button'
+                        onClick={(e) => submitForm(e, true)}
+                      >
+                        <Translate stringId='perFormComponentSave'/>
+                      </button>
+                    </React.Fragment>
+                  )
+                  : null }
+              </Fold>
+            </div>
+          </section>
+        </div>
       </section>
     </App>
   );

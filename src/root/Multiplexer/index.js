@@ -179,9 +179,11 @@ function Multiplexer(props) {
           <PrivateRoute exact path='/deployments/personnel/all' render={props => <Table {...props} type='personnel' />} />
           <PrivateRoute exact path='/deployments/erus/all' render={props => <Table {...props} type='eru' />} />
           <Route exact path='/per-form/:form_id' component={PerForm} />
+          <Route exact path='/per-form/:form_id/edit' render={props => <PerForm {...props} editable={true} />} />
           <Route exact path='/per-form/create/:area_id' component={PerForm} />
-          <Route path='/per-form/overview/:id' component={PerOverview} />
-          <Route path='/per-form/overview/create' component={PerOverview} />
+          <Route exact path='/per-form/overview/:id' component={PerOverview} />
+          <Route exact path='/per-form/overview/:id/edit' render={props => <PerOverview {...props} editable={true} />} />
+          <Route exact path='/per-form/overview/create' render={props => <PerOverview {...props} editable={true} />} />
           <Route path='/preparedness' component={Preparedness} />
           <Route component={UhOh}/>
         </Switch>
