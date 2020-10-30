@@ -9,6 +9,7 @@ import {
   createPerForm,
   updatePerForm,
   deletePerForm,
+  resetPerState,
   getPerAreas,
   getPerQuestions
 } from '#actions';
@@ -27,6 +28,7 @@ import {
 } from '#components/form-elements/';
 import Select from 'react-select';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
+import { showAlert } from '#components/system-alerts';
 
 function PerForm (props) {
   const { strings } = useContext(LanguageContext);
@@ -41,6 +43,7 @@ function PerForm (props) {
     _createPerForm,
     _updatePerForm,
     _deletePerForm,
+    _resetPerState,
     _getPerAreas,
     _getPerQuestions
   } = props;
@@ -104,6 +107,40 @@ function PerForm (props) {
     _deletePerForm(props.perForm.getPerForms.data.results[0].id);
   }
 
+  // Alert and redirect triggered by create/update/delete
+  useEffect(() => {
+    const cpf = props.perForm.createPerForm;
+    if (!cpf.fetching && cpf.fetched && cpf.data) {
+      if (cpf.data.status === 'ok') {
+        showAlert('success', <p><Translate stringId="perFormAlertCreated" /></p>, true, 2000);
+        setTimeout(() => props.history.push(`/account#per-forms`), 2000);
+        _resetPerState();
+      } else if (cpf.error) {
+        showAlert('danger', <p><Translate stringId="perFormAlertCreated" /></p>, true, 2000);
+      }
+    }
+    const upf = props.perForm.updatePerForm;
+    if (!upf.fetching && upf.fetched && upf.data) {
+      if (upf.data.status === 'ok') {
+        showAlert('success', <p><Translate stringId="perFormAlertUpdated" /></p>, true, 2000);
+        setTimeout(() => props.history.push(`/account#per-forms`), 2000);
+        _resetPerState();
+      } else if (upf.error) {
+        showAlert('danger', <p><Translate stringId="perFormAlertUpdated" /></p>, true, 2000);
+      }
+    }
+    const dpf = props.perForm.deletePerForm;
+    if (!dpf.fetching && dpf.fetched && dpf.data) {
+      if (dpf.data.status === 'ok') {
+        showAlert('success', <p><Translate stringId="perFormAlertDeleted" /></p>, true, 2000);
+        setTimeout(() => props.history.push(`/account#per-forms`), 2000);
+        _resetPerState();
+      } else if (dpf.error) {
+        showAlert('danger', <p><Translate stringId="perFormAlertDeleted" /></p>, true, 2000);
+      }
+    }
+  }, [props.perForm.createPerForm, props.perForm.updatePerForm, props.perForm.deletePerForm]);
+
   // FIXME: _getPerAreas and _getPerQuestions firing 2 times
   useEffect(() => {
     if (areaIdFromPath || areaId) {
@@ -120,7 +157,9 @@ function PerForm (props) {
       _getPerForm(formIdFromPath);
       _getPerForms(formIdFromPath);
     }
-    showGlobalLoading();
+    if (!isCreate) {
+      showGlobalLoading();
+    }
   }, [_getPerQuestions, areaNum, _getPerForm, _getPerForms, formIdFromPath]);
 
   useEffect(() => {
@@ -330,6 +369,7 @@ if (environment !== 'production') {
     _createPerForm: T.func,
     _updatePerForm: T.func,
     _deletePerForm: T.func,
+    _resetPerState: T.func,
     _getPerAreas: T.func,
     _getPerQuestions: T.func
   };
@@ -350,6 +390,7 @@ const dispatcher = (dispatch) => ({
   _createPerForm: (payload) => dispatch(createPerForm(payload)),
   _updatePerForm: (payload) => dispatch(updatePerForm(payload)),
   _deletePerForm: (...args) => dispatch(deletePerForm(...args)),
+  _resetPerState: () => dispatch(resetPerState()),
   _getPerAreas: (...args) => dispatch(getPerAreas(...args)),
   _getPerQuestions: (...args) => dispatch(getPerQuestions(...args))
 });

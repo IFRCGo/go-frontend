@@ -16,7 +16,8 @@ import {
   getPerOverviewFormStrict,
   createPerOverview,
   updatePerOverview,
-  deletePerOverview
+  deletePerOverview,
+  resetPerState
 } from '#actions';
 import { nsDropdownSelector } from '#selectors';
 
@@ -27,6 +28,7 @@ import {
 } from '#components/form-elements/';
 import Select from 'react-select';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
+import { showAlert } from '#components/system-alerts';
 
 function PerOverview (props) {
   const { strings } = useContext(LanguageContext);
@@ -69,7 +71,8 @@ function PerOverview (props) {
     _getPerOverviewFormStrict,
     _createPerOverview,
     _updatePerOverview,
-    _deletePerOverview
+    _deletePerOverview,
+    _resetPerState
   } = props;
 
   function fieldChange (e, hasTarget = true, isCheckbox = false, id = '') {
@@ -108,6 +111,44 @@ function PerOverview (props) {
       });
     }
   }
+
+  useEffect(() => {
+    const cpo = props.perForm.createPerOverview;
+    if (!cpo.fetching && cpo.fetched && cpo.data) {
+      if (cpo.data.status === 'ok') {
+        showAlert('success', <p><Translate stringId="perOverviewAlertCreated" /></p>, true, 2000);
+        setTimeout(() => props.history.push(`/account#per-forms`), 2000);
+        _resetPerState();
+      } else if (cpo.error) {
+        showAlert('danger', <p><Translate stringId="perOverviewAlertCreated" /></p>, true, 2000);
+      }
+    }
+    const upo = props.perForm.updatePerOverview;
+    if (!upo.fetching && upo.fetched && upo.data) {
+      if (upo.data.status === 'ok') {
+        showAlert('success', <p><Translate stringId="perOverviewAlertUpdated" /></p>, true, 2000);
+        setTimeout(() => props.history.push(`/account#per-forms`), 2000);
+        _resetPerState();
+      } else if (upo.error) {
+        showAlert('danger', <p><Translate stringId="perOverviewAlertUpdated" /></p>, true, 2000);
+      }
+    }
+    const dpo = props.perForm.deletePerOverview;
+    console.log(props.perForm);
+    if (!dpo.fetching && dpo.fetched && dpo.data) {
+      if (dpo.data.status === 'ok') {
+        showAlert('success', <p><Translate stringId="perOverviewAlertDeleted" /></p>, true, 2000);
+        setTimeout(() => props.history.push(`/account#per-forms`), 2000);
+        _resetPerState();
+      } else if (dpo.error) {
+        showAlert('danger', <p><Translate stringId="perOverviewAlertDeleted" /></p>, true, 2000);
+      }
+    }
+  }, [
+    props.perForm.createPerOverview,
+    props.perForm.updatePerOverview,
+    props.perForm.deletePerOverview
+  ]);
 
   useEffect(() => {
     _getAssessmentTypes();
@@ -472,7 +513,8 @@ if (environment !== 'production') {
     _getPerOverviewFormStrict: T.func,
     _createPerOverview: T.func,
     _updatePerOverview: T.func,
-    _deletePerOverview: T.func
+    _deletePerOverview: T.func,
+    _resetPerState: T.func
   };
 }
 
@@ -487,7 +529,8 @@ const dispatcher = (dispatch) => ({
   _getPerOverviewFormStrict: (...args) => dispatch(getPerOverviewFormStrict(...args)),
   _createPerOverview: (payload) => dispatch(createPerOverview(payload)),
   _updatePerOverview: (payload) => dispatch(updatePerOverview(payload)),
-  _deletePerOverview: (payload) => dispatch(deletePerOverview(payload))
+  _deletePerOverview: (payload) => dispatch(deletePerOverview(payload)),
+  _resetPerState: () => dispatch(resetPerState()),
 });
 
 export default connect(selector, dispatcher)(PerOverview);

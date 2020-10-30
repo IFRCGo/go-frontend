@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 
 import { stateInflight, stateError, stateSuccess } from '#utils/reducer-utils';
+import { RESET_PER_STATE } from '#actions';
 
 const initialState = {
   fetching: false,
@@ -35,6 +36,15 @@ function createPerForm (state = initialState, action) {
     case 'CREATE_PER_FORM_SUCCESS':
       state = stateSuccess(state, action);
       break;
+    case RESET_PER_STATE:
+      state = Object.assign({}, state, {
+        error: null,
+        fetching: false,
+        fetched: false,
+        receivedAt: null,
+        data: {}
+      });
+      break;
   }
   return state;
 }
@@ -49,6 +59,39 @@ function updatePerForm (state = initialState, action) {
       break;
     case 'UPDATE_PER_FORM_SUCCESS':
       state = stateSuccess(state, action);
+      break;
+    case RESET_PER_STATE:
+      state = Object.assign({}, state, {
+        error: null,
+        fetching: false,
+        fetched: false,
+        receivedAt: null,
+        data: {}
+      });
+      break;
+  }
+  return state;
+}
+
+function deletePerForm (state = initialState, action) {
+  switch (action.type) {
+    case 'DELETE_PER_FORM_INFLIGHT':
+      state = stateInflight(state, action);
+      break;
+    case 'DELETE_PER_FORM_FAILED':
+      state = stateError(state, action);
+      break;
+    case 'DELETE_PER_FORM_SUCCESS':
+      state = stateSuccess(state, action);
+      break;
+    case RESET_PER_STATE:
+      state = Object.assign({}, state, {
+        error: null,
+        fetching: false,
+        fetched: false,
+        receivedAt: null,
+        data: {}
+      });
       break;
   }
   return state;
@@ -80,6 +123,15 @@ function getPerForms (state = initialState, action) {
     case 'GET_PER_FORMS_SUCCESS':
       state = stateSuccess(state, action);
       break;
+    case RESET_PER_STATE:
+      state = Object.assign({}, state, {
+        error: null,
+        fetching: false,
+        fetched: false,
+        receivedAt: null,
+        data: {}
+      });
+      break;
   }
   return state;
 }
@@ -94,6 +146,15 @@ function getPerForm (state = initialState, action) {
       break;
     case 'GET_PER_FORM_SUCCESS':
       state = stateSuccess(state, action);
+      break;
+    case RESET_PER_STATE:
+      state = Object.assign({}, state, {
+        error: null,
+        fetching: false,
+        fetched: false,
+        receivedAt: null,
+        data: {}
+      });
       break;
   }
   return state;
@@ -207,6 +268,15 @@ export function createPerOverview (state = initialState, action) {
     case 'CREATE_PER_OVERVIEW_SUCCESS':
       state = stateSuccess(state, action);
       break;
+    case RESET_PER_STATE:
+      state = Object.assign({}, state, {
+        error: null,
+        fetching: false,
+        fetched: false,
+        receivedAt: null,
+        data: {}
+      });
+      break;
   }
   return state;
 }
@@ -221,6 +291,39 @@ export function updatePerOverview (state = initialState, action) {
       break;
     case 'UPDATE_PER_OVERVIEW_SUCCESS':
       state = stateSuccess(state, action);
+      break;
+    case RESET_PER_STATE:
+      state = Object.assign({}, state, {
+        error: null,
+        fetching: false,
+        fetched: false,
+        receivedAt: null,
+        data: {}
+      });
+      break;
+  }
+  return state;
+}
+
+export function deletePerOverview (state = initialState, action) {
+  switch (action.type) {
+    case 'DELETE_PER_OVERVIEW_INFLIGHT':
+      state = stateInflight(state, action);
+      break;
+    case 'DELETE_PER_OVERVIEW_FAILED':
+      state = stateError(state, action);
+      break;
+    case 'DELETE_PER_OVERVIEW_SUCCESS':
+      state = stateSuccess(state, action);
+      break;
+    case RESET_PER_STATE:
+      state = Object.assign({}, state, {
+        error: null,
+        fetching: false,
+        fetched: false,
+        receivedAt: null,
+        data: {}
+      });
       break;
   }
   return state;
@@ -290,6 +393,7 @@ export default combineReducers({
   assessmentTypes,
   createPerForm,
   updatePerForm,
+  deletePerForm,
   getPerCountries,
   getPerForms,
   getPerForm,
@@ -301,6 +405,7 @@ export default combineReducers({
   getPerWorkPlan,
   createPerOverview,
   updatePerOverview,
+  deletePerOverview,
   sendPerWorkplan,
   deletePerWorkplanApi,
   getPerUploadedDocuments,

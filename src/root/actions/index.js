@@ -593,6 +593,11 @@ export function deletePerForm (id) {
   return postJSON('deleteperform', DELETE_PER_FORM, { id: id }, withToken());
 }
 
+export const RESET_PER_STATE = 'RESET_PER_STATE';
+export function resetPerState () {
+  return { type: RESET_PER_STATE };
+}
+
 export const GET_PER_COUNTRIES = 'GET_PER_COUNTRIES';
 export function getPerCountries () {
   let filters = {};
