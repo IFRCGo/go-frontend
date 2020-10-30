@@ -134,7 +134,6 @@ function PerOverview (props) {
       }
     }
     const dpo = props.perForm.deletePerOverview;
-    console.log(props.perForm);
     if (!dpo.fetching && dpo.fetched && dpo.data) {
       if (dpo.data.status === 'ok') {
         showAlert('success', <p><Translate stringId="perOverviewAlertDeleted" /></p>, true, 2000);
