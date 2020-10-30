@@ -30,7 +30,7 @@
 }
 
 .list__each__block {
-	font-weight: $base-font-semi-bold; 
+	font-weight: $base-font-semi-bold;
 	background-color: $grey-fog;
 	margin: 0 0 $global-spacing 0;
 	padding: $global-spacing;
@@ -38,6 +38,11 @@
 
 .list__each__button {
 	margin-inline-start: auto;
+}
+
+.per__delete_button {
+	color: $primary-color;
+	float: right;
 }
 
 

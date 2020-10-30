@@ -22,10 +22,10 @@ function PerTable ({regionId, countries}) {
     }
   ];
 
-  return Object.keys(countries).map((countryName, index) => {
+  return Object.keys(countries).map((countryName) => {
     const rows = countries[countryName].map(form => {
       return {
-        id: form.id,
+        id: `${form.id}${form.hasOwnProperty('area') ? '-form' : '-overview'}`,
         form_name: {
           value: form.hasOwnProperty('area') // if 'area' is there it's not an Overview
             ? `${form.is_draft ? '(Draft)' : ''} ${strings.perdocumentArea} ${form.area?.area_num || ''} \
@@ -41,12 +41,6 @@ function PerTable ({regionId, countries}) {
               { form.is_draft
                 ? (
                   <React.Fragment>
-                    <Link
-                      className='button button--xsmall button--primary-filled per__list__button'
-                      to={`/per-form/${form.hasOwnProperty('area') ? '' : 'overview/'}${form.id}`}
-                    >
-                      <Translate stringId='perDraftDelete'/>
-                    </Link>
                     <Link
                       className='button button--xsmall button--secondary-filled per__list__button'
                       to={`/per-form/${form.hasOwnProperty('area') ? '' : 'overview/'}${form.id}/edit`}

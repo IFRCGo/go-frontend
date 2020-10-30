@@ -9,15 +9,45 @@ const initialState = {
   data: {}
 };
 
-function sendPerForm (state = initialState, action) {
+function assessmentTypes (state = initialState, action) {
   switch (action.type) {
-    case 'SEND_PER_FORM_INFLIGHT':
+    case 'GET_PER_ASSESSMENT_TYPES_INFLIGHT':
       state = stateInflight(state, action);
       break;
-    case 'SEND_PER_FORM_FAILED':
+    case 'GET_PER_ASSESSMENT_TYPES_FAILED':
       state = stateError(state, action);
       break;
-    case 'SEND_PER_FORM_SUCCESS':
+    case 'GET_PER_ASSESSMENT_TYPES_SUCCESS':
+      state = stateSuccess(state, action);
+      break;
+  }
+  return state;
+}
+
+function createPerForm (state = initialState, action) {
+  switch (action.type) {
+    case 'CREATE_PER_FORM_INFLIGHT':
+      state = stateInflight(state, action);
+      break;
+    case 'CREATE_PER_FORM_FAILED':
+      state = stateError(state, action);
+      break;
+    case 'CREATE_PER_FORM_SUCCESS':
+      state = stateSuccess(state, action);
+      break;
+  }
+  return state;
+}
+
+function updatePerForm (state = initialState, action) {
+  switch (action.type) {
+    case 'UPDATE_PER_FORM_INFLIGHT':
+      state = stateInflight(state, action);
+      break;
+    case 'UPDATE_PER_FORM_FAILED':
+      state = stateError(state, action);
+      break;
+    case 'UPDATE_PER_FORM_SUCCESS':
       state = stateSuccess(state, action);
       break;
   }
@@ -63,21 +93,6 @@ function getPerForm (state = initialState, action) {
       state = stateError(state, action);
       break;
     case 'GET_PER_FORM_SUCCESS':
-      state = stateSuccess(state, action);
-      break;
-  }
-  return state;
-}
-
-function editPerForm (state = initialState, action) {
-  switch (action.type) {
-    case 'EDIT_PER_FORM_INFLIGHT':
-      state = stateInflight(state, action);
-      break;
-    case 'EDIT_PER_FORM_FAILED':
-      state = stateError(state, action);
-      break;
-    case 'EDIT_PER_FORM_SUCCESS':
       state = stateSuccess(state, action);
       break;
   }
@@ -181,15 +196,30 @@ export function getPerWorkPlan (state = initialState, action) {
   return state;
 }
 
-export function sendPerOverview (state = initialState, action) {
+export function createPerOverview (state = initialState, action) {
   switch (action.type) {
-    case 'PER_SEND_OVERVIEW_INFLIGHT':
+    case 'CREATE_PER_OVERVIEW_INFLIGHT':
       state = stateInflight(state, action);
       break;
-    case 'PER_SEND_OVERVIEW_FAILED':
+    case 'CREATE_PER_OVERVIEW_FAILED':
       state = stateError(state, action);
       break;
-    case 'PER_SEND_OVERVIEW_SUCCESS':
+    case 'CREATE_PER_OVERVIEW_SUCCESS':
+      state = stateSuccess(state, action);
+      break;
+  }
+  return state;
+}
+
+export function updatePerOverview (state = initialState, action) {
+  switch (action.type) {
+    case 'UPDATE_PER_OVERVIEW_INFLIGHT':
+      state = stateInflight(state, action);
+      break;
+    case 'UPDATE_PER_OVERVIEW_FAILED':
+      state = stateError(state, action);
+      break;
+    case 'UPDATE_PER_OVERVIEW_SUCCESS':
       state = stateSuccess(state, action);
       break;
   }
@@ -257,18 +287,20 @@ export function getPerMission (state = initialState, action) {
 }
 
 export default combineReducers({
-  sendPerForm,
+  assessmentTypes,
+  createPerForm,
+  updatePerForm,
   getPerCountries,
   getPerForms,
   getPerForm,
-  editPerForm,
   getCollaboratingPerCountry,
   getPerEngagedNsPercentage,
   getPerGlobalPreparedness,
   getPerNsPhase,
   getPerOverviewForm,
   getPerWorkPlan,
-  sendPerOverview,
+  createPerOverview,
+  updatePerOverview,
   sendPerWorkplan,
   deletePerWorkplanApi,
   getPerUploadedDocuments,

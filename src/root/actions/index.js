@@ -583,9 +583,14 @@ export function createPerForm (data) {
   return postJSON('createperform', CREATE_PER_FORM, data, withToken());
 }
 
-export const EDIT_PER_FORM = 'EDIT_PER_FORM';
-export function editPerForm (data) {
-  return postJSON('editperform', EDIT_PER_FORM, data, withToken());
+export const UPDATE_PER_FORM = 'UPDATE_PER_FORM';
+export function updatePerForm (data) {
+  return postJSON('updateperform', UPDATE_PER_FORM, data, withToken());
+}
+
+export const DELETE_PER_FORM = 'DELETE_PER_FORM';
+export function deletePerForm (id) {
+  return postJSON('deleteperform', DELETE_PER_FORM, { id: id }, withToken());
 }
 
 export const GET_PER_COUNTRIES = 'GET_PER_COUNTRIES';
@@ -643,6 +648,11 @@ export function getPerQuestions (area_id = null) {
   return fetchJSON(`/api/v2/per-formquestion/?${f}`, GET_PER_QUESTIONS);
 }
 
+export const GET_PER_ASSESSMENT_TYPES = 'GET_PER_ASSESSMENT_TYPES';
+export function getAssessmentTypes () {
+  return fetchJSON('api/v2/per-assessmenttype/', GET_PER_ASSESSMENT_TYPES);
+}
+
 export const COLLABORATING_PER_COUNTRY = 'COLLABORATING_PER_COUNTRY';
 export function getCollaboratingPerCountry () {
   return fetchJSON(`/api/v2/per_country_duedate/`, COLLABORATING_PER_COUNTRY, withToken());
@@ -681,9 +691,19 @@ export function getPerWorkPlan (countryId = null) {
   return fetchJSON(`api/v2/perworkplan/?${f}`, PER_WORK_PLAN, withToken());
 }
 
-export const PER_SEND_OVERVIEW = 'PER_SEND_OVERVIEW';
-export function sendPerOverview (payload) {
-  return postJSON('sendperoverview', PER_SEND_OVERVIEW, payload, withToken());
+export const CREATE_PER_OVERVIEW = 'CREATE_PER_OVERVIEW';
+export function createPerOverview (payload) {
+  return postJSON('createperoverview', CREATE_PER_OVERVIEW, payload, withToken());
+}
+
+export const UPDATE_PER_OVERVIEW = 'UPDATE_PER_OVERVIEW';
+export function updatePerOverview (payload) {
+  return postJSON('updateperoverview', UPDATE_PER_OVERVIEW, payload, withToken());
+}
+
+export const DELETE_PER_OVERVIEW = 'DELETE_PER_OVERVIEW';
+export function deletePerOverview (id) {
+  return postJSON('deleteperoverview', DELETE_PER_OVERVIEW, { id: id }, withToken());
 }
 
 export const SEND_PER_WORKPLAN = 'SEND_PER_WORKPLAN';
@@ -694,11 +714,6 @@ export function sendPerWorkplan (payload) {
 export const DELETE_PER_WORKPLAN_API = 'DELETE_PER_WORKPLAN_API';
 export function deletePerWorkplanApi (payload) {
   return postJSON('api/v2/del_perworkplan/', DELETE_PER_WORKPLAN_API, payload, withToken());
-}
-
-export const DELETE_PER_DRAFT = 'DELETE_PER_DRAFT';
-export function deletePerDraft (payload) {
-  return postJSON('api/v2/del_perdraft', DELETE_PER_DRAFT, payload, withToken());
 }
 
 export const GET_PER_UPLOADED_DOCUMENTS = 'GET_PER_UPLOADED_DOCUMENTS';

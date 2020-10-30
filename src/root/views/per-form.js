@@ -2,13 +2,13 @@ import React, { useContext, useEffect, useState, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
-import { Link } from 'react-router-dom';
 import { nsDropdownSelector, formQuestionsSelector } from '#selectors';
 import {
   getPerForm,
   getPerForms,
   createPerForm,
-  editPerForm,
+  updatePerForm,
+  deletePerForm,
   getPerAreas,
   getPerQuestions
 } from '#actions';
@@ -26,6 +26,7 @@ import {
   FormError
 } from '#components/form-elements/';
 import Select from 'react-select';
+import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 
 function PerForm (props) {
   const { strings } = useContext(LanguageContext);
@@ -38,13 +39,28 @@ function PerForm (props) {
     _getPerForm,
     _getPerForms,
     _createPerForm,
-    _editPerForm,
+    _updatePerForm,
+    _deletePerForm,
     _getPerAreas,
     _getPerQuestions
   } = props;
   const areaIdFromPath = props.match.params.area_id; // only present for new forms
   const formIdFromPath = props.match.params.form_id; // only present for existing forms
-  const editable = !!props.editable || areaIdFromPath;
+  const isEdit = !!props.isEdit;
+  const isCreate = !!props.isCreate;
+
+  const editable = useMemo(() => {
+    let isedi = false;
+    if (isCreate) {
+      isedi = true;
+    } else {
+      const pfs = props.perForm.getPerForms;
+      if (!pfs.fetching && pfs.fetched && pfs.data) {
+        isedi = pfs.data.results[0].is_draft && isEdit;
+      }
+    }
+    return isedi;
+  }, [isEdit, isCreate, props.perForm.getPerForms]);
 
   function changeQuestionsState (e, question, isRadio) {
     let modifiedState = questionsState;
@@ -62,7 +78,7 @@ function PerForm (props) {
     e.preventDefault();
 
     if (formIdFromPath) {
-      _editPerForm({
+      _updatePerForm({
         'id': formIdFromPath,
         'user_id': props.user.id,
         'country_id': nsState,
@@ -83,6 +99,11 @@ function PerForm (props) {
     }
   }
 
+  function deleteForm (e) {
+    e.preventDefault();
+    _deletePerForm(props.perForm.getPerForms.data.results[0].id);
+  }
+
   // FIXME: _getPerAreas and _getPerQuestions firing 2 times
   useEffect(() => {
     if (areaIdFromPath || areaId) {
@@ -99,6 +120,7 @@ function PerForm (props) {
       _getPerForm(formIdFromPath);
       _getPerForms(formIdFromPath);
     }
+    showGlobalLoading();
   }, [_getPerQuestions, areaNum, _getPerForm, _getPerForms, formIdFromPath]);
 
   useEffect(() => {
@@ -107,6 +129,7 @@ function PerForm (props) {
       const res = pa.data.results[0];
       setTitle(`${strings.perdocumentArea} ${res.area_num}: ${res.title}`);
       setAreaNum(res.area_num);
+      hideGlobalLoading();
     }
   }, [props.perAreas, strings.perdocumentArea]);
 
@@ -123,6 +146,7 @@ function PerForm (props) {
       if (res.country) {
         setNsState(res.country.id);
       }
+      hideGlobalLoading();
     }
   }, [props.perForm.getPerForms, areaIdFromPath]);
 
@@ -138,6 +162,7 @@ function PerForm (props) {
         };
       });
       setQuestionsState(questionsDict);
+      hideGlobalLoading();
     }
   }, [props.perForm.getPerForm]);
   const questionList = useMemo(() => {
@@ -269,6 +294,17 @@ function PerForm (props) {
                       >
                         <Translate stringId='perFormComponentSave'/>
                       </button>
+
+                      { formIdFromPath
+                        ? (
+                          <a
+                            className='link-underline per__delete_button'
+                            onClick={(e) => deleteForm(e)}
+                          >
+                            <Translate stringId='perDraftDelete' />
+                          </a>
+                        )
+                        : null}
                     </React.Fragment>
                   )
                   : null }
@@ -283,14 +319,19 @@ function PerForm (props) {
 
 if (environment !== 'production') {
   PerForm.propTypes = {
+    user: T.object,
+    nsDropdownItems: T.array,
+    perForm: T.object,
     perAreas: T.object,
     perQuestions: T.object,
     groupedPerQuestions: T.object,
-    getPerForm: T.func,
-    getPerForms: T.func,
-    createPerForm: T.func,
-    getPerAreas: T.func,
-    getPerQuestions: T.func
+    _getPerForm: T.func,
+    _getPerForms: T.func,
+    _createPerForm: T.func,
+    _updatePerForm: T.func,
+    _deletePerForm: T.func,
+    _getPerAreas: T.func,
+    _getPerQuestions: T.func
   };
 }
 
@@ -307,7 +348,8 @@ const dispatcher = (dispatch) => ({
   _getPerForm: (...args) => dispatch(getPerForm(...args)),
   _getPerForms: (...args) => dispatch(getPerForms(...args)),
   _createPerForm: (payload) => dispatch(createPerForm(payload)),
-  _editPerForm: (payload) => dispatch(editPerForm(payload)),
+  _updatePerForm: (payload) => dispatch(updatePerForm(payload)),
+  _deletePerForm: (...args) => dispatch(deletePerForm(...args)),
   _getPerAreas: (...args) => dispatch(getPerAreas(...args)),
   _getPerQuestions: (...args) => dispatch(getPerQuestions(...args))
 });

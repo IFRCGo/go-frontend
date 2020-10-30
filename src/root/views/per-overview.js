@@ -1,9 +1,7 @@
-import React, { useContext, useMemo, useState } from 'react';
+import React, { useContext, useMemo, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
-import { Link } from 'react-router-dom';
-import { regionsByIdSelector } from '../selectors';
 
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
@@ -14,36 +12,65 @@ import BreadCrumb from '#components/breadcrumb';
 import { Helmet } from 'react-helmet';
 
 import {
+  getAssessmentTypes,
+  getPerOverviewFormStrict,
+  createPerOverview,
+  updatePerOverview,
+  deletePerOverview
+} from '#actions';
+import { nsDropdownSelector } from '#selectors';
+
+import {
   FormInput,
   FormCheckbox,
   FormError
 } from '#components/form-elements/';
 import Select from 'react-select';
+import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 
 function PerOverview (props) {
   const { strings } = useContext(LanguageContext);
+  const [nsState, setNsState] = useState();
   const [overviewState, setOverviewState] = useState({
+    approximate_date_next_capacity_assmt: '',
+    branch_involved: '',
     country_id: '',
-    user_id: props.user.id,
     date_of_current_capacity_assessment: '',
     date_of_last_capacity_assessment: '',
-    type_of_capacity_assessment: '',
-    branch_involved: '',
-    focal_point_name: '',
-    focal_point_email: '',
-    had_previous_assessment: false,
-    focus: '',
+    date_of_mid_term_review: '',
     facilitated_by: '',
     facilitator_email: '',
+    focal_point_email: '',
+    focal_point_name: '',
+    focus: '',
+    had_previous_assessment: false,
     phone_number: '',
     skype_address: '',
-    date_of_mid_term_review: '',
-    approximate_date_next_capacity_assmt: '',
-    is_draft: true
+    type_of_ca: '',
+    user_id: props.user.id,
   });
   const idFromPath = props.match.params.id;
-  const editable = !!props.editable;
-  console.log(props);
+  const isEdit = !!props.isEdit;
+  const isCreate = !!props.isCreate;
+  const editable = useMemo(() => {
+    let isedi = false;
+    if (isCreate) {
+      isedi = true;
+    } else {
+      const of = props.perForm.getPerOverviewForm;
+      if (!of.fetching && of.fetched && of.data) {
+        isedi = of.data.results[0].is_draft && isEdit;
+      }
+    }
+    return isedi;
+  }, [isEdit, isCreate, props.perForm.getPerOverviewForm]);
+  const {
+    _getAssessmentTypes,
+    _getPerOverviewFormStrict,
+    _createPerOverview,
+    _updatePerOverview,
+    _deletePerOverview
+  } = props;
 
   function fieldChange (e, hasTarget = true, isCheckbox = false, id = '') {
     if (hasTarget) {
@@ -59,38 +86,82 @@ function PerOverview (props) {
     }
   }
 
+  function deleteOverview (e) {
+    e.preventDefault();
+    _deletePerOverview(props.perForm.getPerOverviewForm.data.results[0].id);
+  }
+
   function submitForm (e, isDraft) {
     e.preventDefault();
 
-    // if (formIdFromPath) {
-    //   _editPerForm({
-    //     'id': formIdFromPath,
-    //     'user_id': props.user.id,
-    //     'country_id': nsState,
-    //     'is_draft': isDraft,
-    //     'area_id': areaIdFromPath || areaId,
-    //     'area_num': areaNum,
-    //     'questions': questionsState
-    //   });
-    // } else {
-    //   _createPerForm({
-    //     'user_id': props.user.id,
-    //     'country_id': nsState,
-    //     'is_draft': isDraft,
-    //     'area_id': areaIdFromPath || areaId,
-    //     'area_num': areaNum,
-    //     'questions': questionsState
-    //   });
-    // }
+    if (isCreate) {
+      _createPerOverview({
+        ...overviewState,
+        is_draft: isDraft,
+        country_id: nsState
+      });
+    } else {
+      _updatePerOverview({
+        ...overviewState,
+        is_draft: isDraft,
+        country_id: nsState
+      });
+    }
   }
+
+  useEffect(() => {
+    _getAssessmentTypes();
+  }, [_getAssessmentTypes]);
+
+  useEffect(() => {
+    if (idFromPath) {
+      _getPerOverviewFormStrict(null, idFromPath);
+      showGlobalLoading();
+    }
+  }, [_getPerOverviewFormStrict, idFromPath]);
+
+  useEffect(() => {
+    const of = props.perForm.getPerOverviewForm;
+    if (of.data && !of.fetching && of.fetched) {
+      const res = of.data.results[0];
+      setNsState(res.country?.id);
+      setOverviewState({
+        approximate_date_next_capacity_assmt: res.approximate_date_next_capacity_assmt?.substring(0, 10),
+        branch_involved: res.branch_involved,
+        country_id: res.country?.id,
+        date_of_current_capacity_assessment: res.date_of_current_capacity_assessment?.substring(0, 10),
+        date_of_last_capacity_assessment: res.date_of_last_capacity_assessment?.substring(0, 10),
+        date_of_mid_term_review: res.date_of_mid_term_review?.substring(0, 10),
+        facilitated_by: res.facilitated_by,
+        facilitator_email: res.facilitator_email,
+        focal_point_email: res.focal_point_email,
+        focal_point_name: res.focal_point_name,
+        focus: res.focus,
+        had_previous_assessment: res.had_previous_assessment,
+        id: res.id,
+        is_draft: res.isDraft,
+        phone_number: res.phone_number,
+        skype_address: res.skype_address,
+        type_of_ca: res.type_of_ca?.id,
+        user_id: props.user.id
+      });
+      hideGlobalLoading();
+    }
+  }, [props.perForm.getPerOverviewForm, props.user]);
+
+  const assessmentTypes = useMemo(() => {
+    const ats = props.perForm.assessmentTypes;
+    if (ats.data && !ats.fetching && ats.fetched) {
+      return ats.data.results.map(res => ({ value: res.id, label: res.name }));
+    }
+    return [];
+  }, [props.perForm.assessmentTypes]);
 
   const crumbs = [
     {link: props.location.pathname, name: strings.preparednessOverviewCrumb},
     {link: '/account', name: strings.breadCrumbAccount},
     {link: '/', name: strings.breadCrumbHome}
   ];
-
-  console.log(overviewState);
 
   return (
     <App className='page--per-form'>
@@ -107,6 +178,23 @@ function PerOverview (props) {
           <section className='inpage__body'>
             <div className='inner'>
               <Fold title={strings.perAccountOverview} foldWrapperClass='fold--main' foldTitleClass='margin-reset'>
+               <div className='form__group'>
+                  <label className='form__label'>
+                    <Translate stringId='perAccountChooseCountry' />
+                  </label>
+                  <Select
+                    name='country'
+                    value={nsState}
+                    onChange={(e) => setNsState(e?.value)}
+                    options={props.nsDropdownItems}
+                    disabled={!editable}
+                  />
+                  <FormError
+                    errors={[]}
+                    property='country'
+                  />
+                </div>
+
                 <h1><Translate stringId='overviewFormGeneralInfo' /></h1>
 
                 <FormInput
@@ -117,6 +205,7 @@ function PerOverview (props) {
                   value={overviewState.date_of_current_capacity_assessment}
                   classWrapper='form__group'
                   onChange={(e) => fieldChange(e)}
+                  disabled={!editable}
                   // description={fields.sitFieldsDate[status].desc}
                 >
                   <FormError
@@ -124,7 +213,23 @@ function PerOverview (props) {
                     property='date_of_current_capacity_assessment'
                   />
                 </FormInput>
-                {/* TODO: select, type of capacity */}
+                <div className='form__group'>
+                  <label className='form__label'>
+                    <Translate stringId='overviewFormTypeCapacityAssessment' />
+                  </label>
+                  <Select
+                    id='type_of_ca'
+                    name='type_of_ca'
+                    value={overviewState.type_of_ca}
+                    onChange={(e) => setOverviewState({ ...overviewState, type_of_ca: e.value })}
+                    options={assessmentTypes}
+                    disabled={!editable}
+                  />
+                  <FormError
+                    errors={[]}
+                    property='type_of_ca'
+                  />
+                </div>
                 <FormInput
                   label={strings.overviewFormBranchInvolved}
                   type='text'
@@ -133,6 +238,7 @@ function PerOverview (props) {
                   value={overviewState.branch_involved}
                   classWrapper='form__group'
                   onChange={(e) => fieldChange(e)}
+                  disabled={!editable}
                   // description={fields.sitFieldsDate[status].desc}
                 >
                   <FormError
@@ -148,6 +254,7 @@ function PerOverview (props) {
                   value={overviewState.focal_point_name}
                   classWrapper='form__group'
                   onChange={(e) => fieldChange(e)}
+                  disabled={!editable}
                   // description={fields.sitFieldsDate[status].desc}
                 >
                   <FormError
@@ -163,6 +270,7 @@ function PerOverview (props) {
                   value={overviewState.focal_point_email}
                   classWrapper='form__group'
                   onChange={(e) => fieldChange(e)}
+                  disabled={!editable}
                   // description={fields.sitFieldsDate[status].desc}
                 >
                   <FormError
@@ -178,6 +286,7 @@ function PerOverview (props) {
                   value={overviewState.focus}
                   classWrapper='form__group'
                   onChange={(e) => fieldChange(e)}
+                  disabled={!editable}
                   // description={fields.sitFieldsDate[status].desc}
                 >
                   <FormError
@@ -185,7 +294,6 @@ function PerOverview (props) {
                     property='focus'
                   />
                 </FormInput>
-                {/* TODO: select have you had? */}
                 <div className='form__group'>
                   <FormCheckbox
                     label={strings.overviewFormPreviousPer}
@@ -193,6 +301,7 @@ function PerOverview (props) {
                     id='had_previous_assessment'
                     checked={overviewState.had_previous_assessment}
                     onChange={(e) => fieldChange(e, true, true)}
+                    disabled={!editable}
                   />
                   <FormError
                     errors={[]}
@@ -207,6 +316,7 @@ function PerOverview (props) {
                   value={overviewState.date_of_last_capacity_assessment}
                   classWrapper='form__group'
                   onChange={(e) => fieldChange(e)}
+                  disabled={!editable}
                   // description={fields.sitFieldsDate[status].desc}
                 >
                   <FormError
@@ -225,6 +335,7 @@ function PerOverview (props) {
                   value={overviewState.facilitated_by}
                   classWrapper='form__group'
                   onChange={(e) => fieldChange(e)}
+                  disabled={!editable}
                   // description={fields.sitFieldsDate[status].desc}
                 >
                   <FormError
@@ -240,6 +351,7 @@ function PerOverview (props) {
                   value={overviewState.facilitator_email}
                   classWrapper='form__group'
                   onChange={(e) => fieldChange(e)}
+                  disabled={!editable}
                   // description={fields.sitFieldsDate[status].desc}
                 >
                   <FormError
@@ -255,6 +367,7 @@ function PerOverview (props) {
                   value={overviewState.phone_number}
                   classWrapper='form__group'
                   onChange={(e) => fieldChange(e)}
+                  disabled={!editable}
                   // description={fields.sitFieldsDate[status].desc}
                 >
                   <FormError
@@ -270,6 +383,7 @@ function PerOverview (props) {
                   value={overviewState.skype_address}
                   classWrapper='form__group'
                   onChange={(e) => fieldChange(e)}
+                  disabled={!editable}
                   // description={fields.sitFieldsDate[status].desc}
                 >
                   <FormError
@@ -285,6 +399,7 @@ function PerOverview (props) {
                   value={overviewState.date_of_mid_term_review}
                   classWrapper='form__group'
                   onChange={(e) => fieldChange(e)}
+                  disabled={!editable}
                   // description={fields.sitFieldsDate[status].desc}
                 >
                   <FormError
@@ -300,6 +415,7 @@ function PerOverview (props) {
                   value={overviewState.approximate_date_next_capacity_assmt}
                   classWrapper='form__group'
                   onChange={(e) => fieldChange(e)}
+                  disabled={!editable}
                   // description={fields.sitFieldsDate[status].desc}
                 >
                   <FormError
@@ -324,6 +440,17 @@ function PerOverview (props) {
                       >
                         <Translate stringId='perFormComponentSave'/>
                       </button>
+
+                    { !isCreate
+                      ? (
+                        <a
+                          className='link-underline per__delete_button'
+                          onClick={(e) => deleteOverview(e)}
+                        >
+                          <Translate stringId='perDraftDelete' />
+                        </a>
+                      )
+                      : null }
                     </React.Fragment>
                   )
                   : null }
@@ -338,25 +465,29 @@ function PerOverview (props) {
 
 if (environment !== 'production') {
   PerOverview.propTypes = {
-    perForms: T.object,
-    perAreas: T.object,
-    perOverviewForm: T.object,
-    regionsById: T.object
+    user: T.object,
+    perForm: T.object,
+    nsDropdownItems: T.array,
+    _getAssessmentTypes: T.func,
+    _getPerOverviewFormStrict: T.func,
+    _createPerOverview: T.func,
+    _updatePerOverview: T.func,
+    _deletePerOverview: T.func
   };
 }
 
 const selector = (state, ownProps) => ({
   user: state.user.data,
-  perForms: state.perForm.getPerForms,
-  perAreas: state.perAreas,
-  perOverviewForm: state.perForm.getPerOverviewForm,
-  regionsById: regionsByIdSelector(state),
+  perForm: state.perForm,
+  nsDropdownItems: nsDropdownSelector(state)
 });
 
 const dispatcher = (dispatch) => ({
-  // _getPerCountries: (...args) => dispatch(getPerCountries(...args)),
-  // _getPerForms: (...args) => dispatch(getPerForms(...args)),
-  // _getPerOverviewForm: (...args) => dispatch(getPerOverviewForm(...args))
+  _getAssessmentTypes: () => dispatch(getAssessmentTypes()),
+  _getPerOverviewFormStrict: (...args) => dispatch(getPerOverviewFormStrict(...args)),
+  _createPerOverview: (payload) => dispatch(createPerOverview(payload)),
+  _updatePerOverview: (payload) => dispatch(updatePerOverview(payload)),
+  _deletePerOverview: (payload) => dispatch(deletePerOverview(payload))
 });
 
 export default connect(selector, dispatcher)(PerOverview);

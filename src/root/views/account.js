@@ -280,7 +280,7 @@ class Account extends React.Component {
       }
     }
 
-    if (nextProps.profile.fetched === true) {
+    if (nextProps.profile.fetched && nextProps.perForm.getPerForms.fetched && nextProps.perOverviewForm.fetched) {
       hideGlobalLoading();
     }
   }

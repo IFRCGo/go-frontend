@@ -43,7 +43,7 @@ function PerAccount (props) {
   // Convert regions to a more usable format
   const regions = useMemo(() => {
     let regionsDict = {};
-    for (const [key, regionArr] of Object.entries(props.regionsById)) {
+    for (const [regionArr] of Object.entries(props.regionsById)) {
       regionsDict[regionArr[0].id] = regionArr[0].region_name;
     }
     return regionsDict;
@@ -136,6 +136,7 @@ function PerAccount (props) {
           foldTitleClass='fold__title--inline'
           foldWrapperClass='fold--main fold--per-table'
         >
+          {/* FIXME: react still cries about a key here... */}
           <PerTable key={regionId} regionId={regionId} countries={groupedFormList[regionId]} />
         </Fold>
       ))}
