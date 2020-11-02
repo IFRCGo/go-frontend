@@ -139,7 +139,7 @@ function PerForm (props) {
         showAlert('danger', <p><Translate stringId="perFormAlertDeleted" /></p>, true, 2000);
       }
     }
-  }, [props.perForm.createPerForm, props.perForm.updatePerForm, props.perForm.deletePerForm]);
+  }, [props.perForm.createPerForm, props.perForm.updatePerForm, props.perForm.deletePerForm, _resetPerState, props.history]);
 
   // FIXME: _getPerAreas and _getPerQuestions firing 2 times
   useEffect(() => {
@@ -160,7 +160,7 @@ function PerForm (props) {
     if (!isCreate) {
       showGlobalLoading();
     }
-  }, [_getPerQuestions, areaNum, _getPerForm, _getPerForms, formIdFromPath]);
+  }, [_getPerQuestions, areaNum, _getPerForm, _getPerForms, formIdFromPath, isCreate]);
 
   useEffect(() => {
     const pa = props.perAreas;

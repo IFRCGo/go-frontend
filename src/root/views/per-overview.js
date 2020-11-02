@@ -146,7 +146,9 @@ function PerOverview (props) {
   }, [
     props.perForm.createPerOverview,
     props.perForm.updatePerOverview,
-    props.perForm.deletePerOverview
+    props.perForm.deletePerOverview,
+    _resetPerState,
+    props.history
   ]);
 
   useEffect(() => {
