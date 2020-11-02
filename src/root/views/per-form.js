@@ -69,7 +69,7 @@ function PerForm (props) {
     let modifiedState = questionsState;
 
     if (isRadio) {
-      modifiedState[question.id].selectedAnswer = e.target.value;
+      modifiedState[question.id].selected_answer = e.target.value;
     } else {
       modifiedState[question.id].notes = e.target.value;
     }
@@ -196,7 +196,7 @@ function PerForm (props) {
       let questionsDict = {};
       pf.data.results.forEach((fd) => {
         questionsDict[fd.question_id] = {
-          selectedAnswer: fd.selected_answer?.id.toString(),
+          selected_answer: fd.selected_answer?.id.toString(),
           notes: fd.notes
         };
       });
@@ -221,7 +221,7 @@ function PerForm (props) {
     if (questionList && areaIdFromPath) {
       let questionDict = {};
       for (const question of questionList) {
-        questionDict[question.id] = { selectedAnswer: null, notes: '' };
+        questionDict[question.id] = { selected_answer: null, notes: '' };
       }
       setQuestionsState(questionDict);
     }
@@ -283,7 +283,7 @@ function PerForm (props) {
                           label: answer.text,
                           disabled: !editable
                         }))}
-                        selectedOption={questionsState[question.id]?.selectedAnswer}
+                        selectedOption={questionsState[question.id]?.selected_answer}
                         onChange={(e) => changeQuestionsState(e, question, true)}
                       >
                         <FormError
