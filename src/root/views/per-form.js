@@ -196,7 +196,7 @@ function PerForm (props) {
       let questionsDict = {};
       pf.data.results.forEach((fd) => {
         questionsDict[fd.question_id] = {
-          selected_answer: fd.selected_answer?.id.toString(),
+          selected_answer: fd.selected_answer?.id.toString() || '',
           notes: fd.notes
         };
       });
