@@ -150,9 +150,12 @@ function PerForm (props) {
 
   useEffect(() => {
     if (areaIdFromPath) {
-      // Create Form
       _getPerQuestions(areaIdFromPath);
-    } else if (formIdFromPath) {
+    } else if (areaId) {
+      _getPerQuestions(areaId);
+    }
+
+    if (formIdFromPath) {
       // Edit Form
       _getPerForm(formIdFromPath);
       _getPerForms(formIdFromPath);
@@ -160,7 +163,7 @@ function PerForm (props) {
     if (!isCreate) {
       showGlobalLoading();
     }
-  }, [_getPerQuestions, areaIdFromPath, _getPerForm, _getPerForms, formIdFromPath, isCreate]);
+  }, [_getPerQuestions, areaIdFromPath, areaId, _getPerForm, _getPerForms, formIdFromPath, isCreate]);
 
   useEffect(() => {
     const pa = props.perAreas;
