@@ -32,6 +32,7 @@ import csv from './csv';
 import perForm from './per-form';
 import perAreas from './per-areas';
 import perQuestions from './per-questions';
+import perComponents from './per-components';
 import subscriptions from './subscriptions';
 import projects from './projects';
 import countryOverview from './country-overview';
@@ -84,6 +85,7 @@ export const reducers = {
   perForm,
   perAreas,
   perQuestions,
+  perComponents,
   subscriptions,
   projects,
   projectForm: createReducer(POST_PROJECT),

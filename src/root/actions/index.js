@@ -653,6 +653,16 @@ export function getPerQuestions (area_id = null) {
   return fetchJSON(`/api/v2/per-formquestion/?${f}`, GET_PER_QUESTIONS);
 }
 
+export const GET_PER_COMPONENTS = 'GET_PER_COMPONENTS';
+export function getPerComponents (area_id = null) {
+  let filters = {};
+  if (area_id) {
+    filters.area_id = area_id;
+  }
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v2/per-formcomponent/?${f}`, GET_PER_COMPONENTS);
+}
+
 export const GET_PER_ASSESSMENT_TYPES = 'GET_PER_ASSESSMENT_TYPES';
 export function getAssessmentTypes () {
   return fetchJSON('api/v2/per-assessmenttype/', GET_PER_ASSESSMENT_TYPES);
