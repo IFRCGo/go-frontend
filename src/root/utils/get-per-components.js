@@ -1,9 +1,9 @@
-import { englishForm as a1Form } from '#components/per-forms/form-data/a1/english-data';
-import { englishForm as a2Form } from '#components/per-forms/form-data/a2/english-data';
-import { englishForm as a3Form } from '#components/per-forms/form-data/a3/english-data';
-import { englishForm as a32Form } from '#components/per-forms/form-data/a3-2/english-data';
-import { englishForm as a4Form } from '#components/per-forms/form-data/a4/english-data';
-import { englishForm as a5Form } from '#components/per-forms/form-data/a5/english-data';
+// import { englishForm as a1Form } from '#components/per-forms/form-data/a1/english-data';
+// import { englishForm as a2Form } from '#components/per-forms/form-data/a2/english-data';
+// import { englishForm as a3Form } from '#components/per-forms/form-data/a3/english-data';
+// import { englishForm as a32Form } from '#components/per-forms/form-data/a3-2/english-data';
+// import { englishForm as a4Form } from '#components/per-forms/form-data/a4/english-data';
+// import { englishForm as a5Form } from '#components/per-forms/form-data/a5/english-data';
 
 const defaultComponent = {id: '', name: '', cid: 0};
 
@@ -189,49 +189,49 @@ export function getBenchmarksByComponent (componentId) {
   const benchmarks = [];
   let componentIndex = parseInt(splittedComponentId[1]);
 
-  if (formCode === 'a1') {
-    if (typeof a1Form.components[componentIndex].namespaces === 'undefined') {
-      componentIndex++;
-    }
-    a1Form.components[componentIndex].namespaces.forEach((benchmark, index) => {
-      benchmarks.push({title: benchmark.nsTitle, index: index});
-    });
-  } else if (formCode === 'a2') {
-    if (typeof a2Form.components[componentIndex].namespaces === 'undefined') {
-      componentIndex++;
-    }
-    a2Form.components[componentIndex].namespaces.forEach((benchmark, index) => {
-      benchmarks.push({title: benchmark.nsTitle, index: index});
-    });
-  } else if (formCode === 'a3') {
-    if (typeof a3Form.components[componentIndex].namespaces === 'undefined') {
-      componentIndex++;
-    }
-    a3Form.components[componentIndex].namespaces.forEach((benchmark, index) => {
-      benchmarks.push({title: benchmark.nsTitle, index: index});
-    });
-  } else if (formCode === 'a3_2') {
-    if (typeof a32Form.components[componentIndex].namespaces === 'undefined') {
-      componentIndex++;
-    }
-    a32Form.components[componentIndex].namespaces.forEach((benchmark, index) => {
-      benchmarks.push({title: benchmark.nsTitle, index: index});
-    });
-  } else if (formCode === 'a4') {
-    if (typeof a4Form.components[componentIndex].namespaces === 'undefined') {
-      componentIndex++;
-    }
-    a4Form.components[componentIndex].namespaces.forEach((benchmark, index) => {
-      benchmarks.push({title: benchmark.nsTitle, index: index});
-    });
-  } else if (formCode === 'a5') {
-    if (typeof a5Form.components[componentIndex].namespaces === 'undefined') {
-      componentIndex++;
-    }
-    a5Form.components[componentIndex].namespaces.forEach((benchmark, index) => {
-      benchmarks.push({title: benchmark.nsTitle, index: index});
-    });
-  }
+  // if (formCode === 'a1') {
+  //   if (typeof a1Form.components[componentIndex].namespaces === 'undefined') {
+  //     componentIndex++;
+  //   }
+  //   a1Form.components[componentIndex].namespaces.forEach((benchmark, index) => {
+  //     benchmarks.push({title: benchmark.nsTitle, index: index});
+  //   });
+  // } else if (formCode === 'a2') {
+  //   if (typeof a2Form.components[componentIndex].namespaces === 'undefined') {
+  //     componentIndex++;
+  //   }
+  //   a2Form.components[componentIndex].namespaces.forEach((benchmark, index) => {
+  //     benchmarks.push({title: benchmark.nsTitle, index: index});
+  //   });
+  // } else if (formCode === 'a3') {
+  //   if (typeof a3Form.components[componentIndex].namespaces === 'undefined') {
+  //     componentIndex++;
+  //   }
+  //   a3Form.components[componentIndex].namespaces.forEach((benchmark, index) => {
+  //     benchmarks.push({title: benchmark.nsTitle, index: index});
+  //   });
+  // } else if (formCode === 'a3_2') {
+  //   if (typeof a32Form.components[componentIndex].namespaces === 'undefined') {
+  //     componentIndex++;
+  //   }
+  //   a32Form.components[componentIndex].namespaces.forEach((benchmark, index) => {
+  //     benchmarks.push({title: benchmark.nsTitle, index: index});
+  //   });
+  // } else if (formCode === 'a4') {
+  //   if (typeof a4Form.components[componentIndex].namespaces === 'undefined') {
+  //     componentIndex++;
+  //   }
+  //   a4Form.components[componentIndex].namespaces.forEach((benchmark, index) => {
+  //     benchmarks.push({title: benchmark.nsTitle, index: index});
+  //   });
+  // } else if (formCode === 'a5') {
+  //   if (typeof a5Form.components[componentIndex].namespaces === 'undefined') {
+  //     componentIndex++;
+  //   }
+  //   a5Form.components[componentIndex].namespaces.forEach((benchmark, index) => {
+  //     benchmarks.push({title: benchmark.nsTitle, index: index});
+  //   });
+  // }
 
   return benchmarks;
 }

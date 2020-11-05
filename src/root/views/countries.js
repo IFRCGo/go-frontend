@@ -58,11 +58,11 @@ import {
   Contacts,
   Links
 } from '#components/admin-area-elements';
-import PreparednessOverview from '#components/country/preparedness-overview';
-import PreparednessSummary from '#components/country/preparedness-summary';
-import PreparednessWorkPlan from '#components/country/preparedness-work-plan';
-import PreparednessPhaseOutcomes from '#components/country/preparedness-phase-outcomes';
-import PreparednessColumnBar from '#components/country/preparedness-column-graph';
+// import PreparednessOverview from '#components/country/preparedness-overview';
+// import PreparednessSummary from '#components/country/preparedness-summary';
+// import PreparednessWorkPlan from '#components/country/preparedness-work-plan';
+// import PreparednessPhaseOutcomes from '#components/country/preparedness-phase-outcomes';
+// import PreparednessColumnBar from '#components/country/preparedness-column-graph';
 import KeyFiguresHeader from '#components/common/key-figures-header';
 import { SFPComponent } from '#utils/extendables';
 
@@ -165,10 +165,10 @@ class AdminArea extends SFPComponent {
         hash: '#profile',
       },
       */
-      {
-        title: strings.countryPreparednessTab,
-        hash: '#preparedness'
-      },
+      // {
+      //   title: strings.countryPreparednessTab,
+      //   hash: '#preparedness'
+      // },
       {
         title: strings.countryAdditionalInfoTab,
         hash: '#additional'
@@ -723,7 +723,7 @@ class AdminArea extends SFPComponent {
                   </TabContent>
                 </TabPanel>
                 */}
-                <TabPanel>
+                {/* <TabPanel>
                   <TabContent showError={true} isError={!this.isPerPermission()} errorMessage={strings.accountPerPermission} title={strings.countryPreparednessTitle}>
                     <div className='container-lg'>
                       {this.props.getPerNsPhase.fetched && this.props.perOverviewForm.fetched ? (
@@ -743,7 +743,7 @@ class AdminArea extends SFPComponent {
                         : <ErrorPanel title={strings.countryPreparednessPhaseOutcomes} errorMessage={ strings.noDataMessage } />}
                       </div>
                   </TabContent>
-                </TabPanel>
+                </TabPanel> */}
                 <TabPanel>
                   <div className='container-lg'>
                     <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ strings.noDataMessage } title={strings.regionGraphiccs}>
