@@ -14,32 +14,12 @@ import Fold from '#components/fold';
 function PerAccount (props) {
   const { strings } = useContext(LanguageContext);
 
-  const formButtons = useMemo(() => {
-    let sortedAreas = [];
-    if (!props.perAreas.fetching && props.perAreas.fetched && props.perAreas.data) {
-      sortedAreas = props.perAreas.data.results.sort(
-        (a,b) => (a.area_num > b.area_num) ? 1 : ((b.area_num > a.area_num) ? -1 : 0)
-      );
-    }
-
-    return sortedAreas.map(area => ({
-      link: `/per-form/create/${area.id}`,
-      title: `${strings.perdocumentArea} ${area.area_num}: ${area.title}`
-    }));
-  }, [props.perAreas, strings.perdocumentArea]);
-
-  // PER Overviews vars
+  // PER Overviews variables
   const [ovFetching, ovFetched, overviewFormList] = useMemo(() => [
     props.perOverviewForm.fetching,
     props.perOverviewForm.fetched,
     props.perOverviewForm.data,
   ], [props.perOverviewForm]);
-  // PER Forms vars
-  const [formsFetching, formsFetched, formList] = useMemo(() => [
-    props.perForms.fetching,
-    props.perForms.fetched,
-    props.perForms.data
-  ], [props.perForms]);
   // Convert regions to a more usable format
   const regions = useMemo(() => {
     let regionsDict = {};
@@ -67,22 +47,8 @@ function PerAccount (props) {
         }
       }
     }
-    // PER Forms array
-    const fLCount = formList.count || 0;
-    if (!formsFetching && formsFetched && fLCount > 0 && regions) {
-      for (const form of formList.results) {
-        if (form.country) {
-          if (form.country.region in fL === false) {
-            fL[form.country.region] = {};
-          }
-          if (form.country.name in fL[form.country.region] === false) {
-            fL[form.country.region][form.country.name] = [];
-          }
-          fL[form.country.region][form.country.name].push(form);
-        }
-      }
-    }
 
+    // TODO: since we don't need the Forms out here this might be easier to handle above
     // Sort the Country names (properties, thus why the ugly code, re-construct the 'dictionary')
     let sortedFormList = fL;
     for (const [key, regionObj] of Object.entries(fL)) {
@@ -97,9 +63,7 @@ function PerAccount (props) {
     }
 
     return sortedFormList;
-  }, [ovFetching, ovFetched, overviewFormList, formsFetching, formsFetched, formList, regions]);
-
-  // TODO: show loading while Overviews and Forms are still loading
+  }, [regions, ovFetching, ovFetched, overviewFormList]); //, formsFetching, formsFetched, formList]);
 
   return (
     // FIXME: <Translate stringId='perAccountTitle'/>
@@ -109,23 +73,11 @@ function PerAccount (props) {
       </p>
       <div className='text-center'>
         <Link
-          to={`/per-form/overview/create`}
+          to={`/per-overview/create`}
           className='button button--medium button--secondary-bounded'
         >
           <Translate stringId='perAccountOverview'/>
         </Link>
-      </div>
-      <div className='row flex-xs'>
-        {formButtons.map(button => (
-          <div key={button.title} className='per__form__col col col-6-xs col-4-mid'>
-            <Link
-              to={button.link}
-              className='button button--medium button--secondary-bounded'
-            >
-              {button.title}
-            </Link>
-          </div>
-        ))}
       </div>
       { Object.keys(groupedFormList).map((regionId, index) => (
         <Fold
@@ -146,24 +98,20 @@ function PerAccount (props) {
 
 if (environment !== 'production') {
   PerAccount.propTypes = {
-    perForms: T.object,
-    perAreas: T.object,
+    perAreas: T.object, // TODO: remove probably
     perOverviewForm: T.object,
     regionsById: T.object
   };
 }
 
 const selector = (state, ownProps) => ({
-  perForms: state.perForm.getPerForms,
-  perAreas: state.perAreas,
+  perAreas: state.perAreas, // TODO: remove probably
   perOverviewForm: state.perForm.getPerOverviewForm,
   regionsById: regionsByIdSelector(state),
 });
 
 const dispatcher = (dispatch) => ({
-  // _getPerCountries: (...args) => dispatch(getPerCountries(...args)),
-  // _getPerForms: (...args) => dispatch(getPerForms(...args)),
-  // _getPerOverviewForm: (...args) => dispatch(getPerOverviewForm(...args))
+  // TODO: not sure if this is needed, everything is dispatched by the main Account page
 });
 
 export default connect(selector, dispatcher)(PerAccount);

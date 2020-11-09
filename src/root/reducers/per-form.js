@@ -231,6 +231,15 @@ export function getPerOverviewForm (state = initialState, action) {
     case 'PER_OVERVIEW_FORM_SUCCESS':
       state = stateSuccess(state, action);
       break;
+    case RESET_PER_STATE:
+      state = Object.assign({}, state, {
+        error: null,
+        fetching: false,
+        fetched: false,
+        receivedAt: null,
+        data: {}
+      });
+      break;
   }
   return state;
 }

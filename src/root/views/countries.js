@@ -41,7 +41,7 @@ import { getFdrs } from '#actions/query-external';
 // import { getBoundingBox } from '#utils/country-bounding-box';
 
 import App from './app';
-import ErrorPanel from '#components/error-panel';
+// import ErrorPanel from '#components/error-panel';
 import TabContent from '#components/tab-content';
 import Fold from '#components/fold';
 import BreadCrumb from '#components/breadcrumb';

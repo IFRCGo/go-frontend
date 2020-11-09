@@ -183,11 +183,12 @@ export function getAllComponents () {
   return allComponents;
 }
 
+// FIXME: rework/remove this for the graph
 export function getBenchmarksByComponent (componentId) {
-  const splittedComponentId = componentId.split('c');
-  const formCode = splittedComponentId[0];
+  // const splittedComponentId = componentId.split('c');
+  // const formCode = splittedComponentId[0];
   const benchmarks = [];
-  let componentIndex = parseInt(splittedComponentId[1]);
+  // let componentIndex = parseInt(splittedComponentId[1]);
 
   // if (formCode === 'a1') {
   //   if (typeof a1Form.components[componentIndex].namespaces === 'undefined') {

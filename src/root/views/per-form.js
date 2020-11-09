@@ -2,13 +2,13 @@ import React, { useContext, useEffect, useState, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
-import { nsDropdownSelector, formQuestionsSelector } from '#selectors';
+import { formQuestionsSelector } from '#selectors';
 import {
   getPerForm,
   getPerForms,
   createPerForm,
   updatePerForm,
-  deletePerForm,
+  // deletePerForm,
   resetPerState,
   getPerAreas,
   getPerQuestions
@@ -26,14 +26,12 @@ import {
   FormRadioGroup,
   FormError
 } from '#components/form-elements/';
-import Select from 'react-select';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 import { showAlert } from '#components/system-alerts';
 
 function PerForm (props) {
   const { strings } = useContext(LanguageContext);
   const [questionsState, setQuestionsState] = useState({});
-  const [nsState, setNsState] = useState();
   const [areaId, setAreaId] = useState();
   const [areaNum, setAreaNum] = useState();
   const [title, setTitle] = useState(strings.perdocumentArea);
@@ -42,7 +40,7 @@ function PerForm (props) {
     _getPerForms,
     _createPerForm,
     _updatePerForm,
-    _deletePerForm,
+    // _deletePerForm,
     _resetPerState,
     _getPerAreas,
     _getPerQuestions
@@ -59,7 +57,7 @@ function PerForm (props) {
     } else {
       const pfs = props.perForm.getPerForms;
       if (!pfs.fetching && pfs.fetched && pfs.data) {
-        isedi = pfs.data.results[0].is_draft && isEdit;
+        isedi = !pfs.data.results[0].overview?.is_finalized && isEdit;
       }
     }
     return isedi;
@@ -77,15 +75,13 @@ function PerForm (props) {
     setQuestionsState({...modifiedState});
   }
 
-  function submitForm (e, isDraft) {
+  function submitForm (e) {
     e.preventDefault();
 
     if (formIdFromPath) {
       _updatePerForm({
         'id': formIdFromPath,
         'user_id': props.user.id,
-        'country_id': nsState,
-        'is_draft': isDraft,
         'area_id': areaIdFromPath || areaId,
         'area_num': areaNum,
         'questions': questionsState
@@ -93,8 +89,6 @@ function PerForm (props) {
     } else {
       _createPerForm({
         'user_id': props.user.id,
-        'country_id': nsState,
-        'is_draft': isDraft,
         'area_id': areaIdFromPath || areaId,
         'area_num': areaNum,
         'questions': questionsState
@@ -102,10 +96,11 @@ function PerForm (props) {
     }
   }
 
-  function deleteForm (e) {
-    e.preventDefault();
-    _deletePerForm(props.perForm.getPerForms.data.results[0].id);
-  }
+  // Currently we don't allow to delete Forms individually, only together with Overview
+  // function deleteForm (e) {
+  //   e.preventDefault();
+  //   _deletePerForm(props.perForm.getPerForms.data.results[0].id);
+  // }
 
   // Alert and redirect triggered by create/update/delete
   useEffect(() => {
@@ -113,33 +108,35 @@ function PerForm (props) {
     if (!cpf.fetching && cpf.fetched && cpf.data) {
       if (cpf.data.status === 'ok') {
         showAlert('success', <p><Translate stringId="perFormAlertCreated" /></p>, true, 2000);
-        setTimeout(() => props.history.push(`/account#per-forms`), 2000);
+        setTimeout(() => props.history.push(`/per-overview/${cpf.data.overview_id}/edit`), 2000);
         _resetPerState();
       } else if (cpf.error) {
         showAlert('danger', <p><Translate stringId="perFormAlertCreated" /></p>, true, 2000);
       }
     }
+
     const upf = props.perForm.updatePerForm;
     if (!upf.fetching && upf.fetched && upf.data) {
       if (upf.data.status === 'ok') {
         showAlert('success', <p><Translate stringId="perFormAlertUpdated" /></p>, true, 2000);
-        setTimeout(() => props.history.push(`/account#per-forms`), 2000);
+        setTimeout(() => props.history.push(`/per-overview/${upf.data.overview_id}/edit`), 2000);
         _resetPerState();
       } else if (upf.error) {
         showAlert('danger', <p><Translate stringId="perFormAlertUpdated" /></p>, true, 2000);
       }
     }
-    const dpf = props.perForm.deletePerForm;
-    if (!dpf.fetching && dpf.fetched && dpf.data) {
-      if (dpf.data.status === 'ok') {
-        showAlert('success', <p><Translate stringId="perFormAlertDeleted" /></p>, true, 2000);
-        setTimeout(() => props.history.push(`/account#per-forms`), 2000);
-        _resetPerState();
-      } else if (dpf.error) {
-        showAlert('danger', <p><Translate stringId="perFormAlertDeleted" /></p>, true, 2000);
-      }
-    }
-  }, [props.perForm.createPerForm, props.perForm.updatePerForm, props.perForm.deletePerForm, _resetPerState, props.history]);
+
+    // const dpf = props.perForm.deletePerForm;
+    // if (!dpf.fetching && dpf.fetched && dpf.data) {
+    //   if (dpf.data.status === 'ok') {
+    //     showAlert('success', <p><Translate stringId="perFormAlertDeleted" /></p>, true, 2000);
+    //     setTimeout(() => props.history.push(`/account#per-forms`), 2000);
+    //     _resetPerState();
+    //   } else if (dpf.error) {
+    //     showAlert('danger', <p><Translate stringId="perFormAlertDeleted" /></p>, true, 2000);
+    //   }
+    // }
+  }, [props.perForm.createPerForm, props.perForm.updatePerForm, _resetPerState, props.history]);
 
   // FIXME: _getPerAreas and _getPerQuestions firing 2 times
   useEffect(() => {
@@ -178,15 +175,11 @@ function PerForm (props) {
   // Use PER Form
   useEffect(() => {
     const pfs = props.perForm.getPerForms;
-    // FIXME: Needs !areaIdFromPath because revisiting a form has 'GET_PER_FORMS_SUCCESS' (?)
     if (!pfs.fetching && pfs.fetched && pfs.data && !areaIdFromPath) {
       const res = pfs.data.results[0];
       if (res.area) {
         setAreaNum(res.area.area_num);
         setAreaId(res.area.id);
-      }
-      if (res.country) {
-        setNsState(res.country.id);
       }
       hideGlobalLoading();
     }
@@ -251,22 +244,6 @@ function PerForm (props) {
           <section className='inpage__body'>
             <div className='inner'>
               <Fold title={title} foldWrapperClass='fold--main' foldTitleClass='margin-reset'>
-                <div className='form__group'>
-                  <label className='form__label'>
-                    <Translate stringId='perAccountChooseCountry' />
-                  </label>
-                  <Select
-                    name='country'
-                    value={nsState}
-                    onChange={(e) => setNsState(e?.value)}
-                    options={props.nsDropdownItems}
-                    disabled={!editable}
-                  />
-                  <FormError
-                    errors={[]}
-                    property='country'
-                  />
-                </div>
                 { Object.keys(groupedQuestionList).map((compId) => {
                   const componentHeader = (
                     <div className='per__component__header'>
@@ -326,18 +303,12 @@ function PerForm (props) {
                       <h4><Translate stringId='overviewFormDraftInfo' /></h4>
                       <button
                         className='button button--medium button--primary-filled per__form__button'
-                        onClick={(e) => submitForm(e, false)}
-                      >
-                        <Translate stringId='perFormComponentSubmitForm'/>
-                      </button>
-                      <button
-                        className='button button--medium button--secondary-filled per__form__button'
-                        onClick={(e) => submitForm(e, true)}
+                        onClick={(e) => submitForm(e)}
                       >
                         <Translate stringId='perFormComponentSave'/>
                       </button>
 
-                      { formIdFromPath
+                      {/* { formIdFromPath
                         ? (
                           <a
                             className='link-underline per__delete_button'
@@ -346,7 +317,7 @@ function PerForm (props) {
                             <Translate stringId='perDraftDelete' />
                           </a>
                         )
-                        : null}
+                        : null} */}
                     </React.Fragment>
                   )
                   : null }
@@ -362,7 +333,6 @@ function PerForm (props) {
 if (environment !== 'production') {
   PerForm.propTypes = {
     user: T.object,
-    nsDropdownItems: T.array,
     perForm: T.object,
     perAreas: T.object,
     perQuestions: T.object,
@@ -371,7 +341,7 @@ if (environment !== 'production') {
     _getPerForms: T.func,
     _createPerForm: T.func,
     _updatePerForm: T.func,
-    _deletePerForm: T.func,
+    // _deletePerForm: T.func,
     _resetPerState: T.func,
     _getPerAreas: T.func,
     _getPerQuestions: T.func
@@ -380,7 +350,6 @@ if (environment !== 'production') {
 
 const selector = (state, ownProps) => ({
   user: state.user.data,
-  nsDropdownItems: nsDropdownSelector(state),
   perForm: state.perForm,
   perAreas: state.perAreas,
   perQuestions: state.perQuestions,
@@ -392,7 +361,7 @@ const dispatcher = (dispatch) => ({
   _getPerForms: (...args) => dispatch(getPerForms(...args)),
   _createPerForm: (payload) => dispatch(createPerForm(payload)),
   _updatePerForm: (payload) => dispatch(updatePerForm(payload)),
-  _deletePerForm: (...args) => dispatch(deletePerForm(...args)),
+  // _deletePerForm: (...args) => dispatch(deletePerForm(...args)),
   _resetPerState: () => dispatch(resetPerState()),
   _getPerAreas: (...args) => dispatch(getPerAreas(...args)),
   _getPerQuestions: (...args) => dispatch(getPerQuestions(...args))

@@ -620,10 +620,13 @@ export function getPerAreas (id = null, area_num = null) {
 }
 
 export const GET_PER_FORMS = 'GET_PER_FORMS';
-export function getPerForms (id = null) {
+export function getPerForms (id = null, overview_id = null) {
   let filters = {};
   if (id) {
     filters.id = id;
+  }
+  if (overview_id) {
+    filters.overview_id = overview_id;
   }
   const f = buildAPIQS(filters);
   return fetchJSON(`/api/v2/per/?${f}`, GET_PER_FORMS, withToken());

@@ -9,11 +9,15 @@ import Translate from '#components/Translate';
 import App from './app';
 import Fold from '#components/fold';
 import BreadCrumb from '#components/breadcrumb';
+import PerAreaCards from '#components/per-forms/per-area-cards.js';
+// import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
 import {
   getAssessmentTypes,
+  getPerAreas,
   getPerOverviewFormStrict,
+  getPerForms,
   createPerOverview,
   updatePerOverview,
   deletePerOverview,
@@ -46,6 +50,7 @@ function PerOverview (props) {
     focal_point_name: '',
     focus: '',
     had_previous_assessment: false,
+    is_finalized: false,
     phone_number: '',
     skype_address: '',
     type_of_ca: '',
@@ -61,14 +66,16 @@ function PerOverview (props) {
     } else {
       const of = props.perForm.getPerOverviewForm;
       if (!of.fetching && of.fetched && of.data) {
-        isedi = of.data.results[0].is_draft && isEdit;
+        isedi = !of.data.results[0].is_finalized && isEdit;
       }
     }
     return isedi;
   }, [isEdit, isCreate, props.perForm.getPerOverviewForm]);
   const {
     _getAssessmentTypes,
+    _getPerAreas,
     _getPerOverviewFormStrict,
+    _getPerForms,
     _createPerOverview,
     _updatePerOverview,
     _deletePerOverview,
@@ -94,30 +101,55 @@ function PerOverview (props) {
     _deletePerOverview(props.perForm.getPerOverviewForm.data.results[0].id);
   }
 
-  function submitForm (e, isDraft) {
+  function submitForm (e) {
     e.preventDefault();
 
     if (isCreate) {
       _createPerOverview({
         ...overviewState,
-        is_draft: isDraft,
         country_id: nsState
       });
     } else {
       _updatePerOverview({
         ...overviewState,
-        is_draft: isDraft,
         country_id: nsState
       });
     }
   }
 
+  // Get PER Areas and fill up the links array with them
+  useEffect(() => {
+    _getPerAreas();
+  }, [_getPerAreas]);
+
+  const formAreas = useMemo(() => {
+    const pfs = props.perForm.getPerForms;
+    if (!pfs.fetching && pfs.fetched && pfs.data) {
+      return pfs.data.results.map(form => ({
+        link: `/per-form/${form.id}`,
+        title: `${strings.perdocumentArea} ${form.area.area_num}`,
+        subtitle: form.area.title
+      }));
+    } else if (!props.perAreas.fetching && props.perAreas.fetched && props.perAreas.data) {
+      const sortedAreas = props.perAreas.data.results.sort(
+        (a,b) => (a.area_num > b.area_num) ? 1 : ((b.area_num > a.area_num) ? -1 : 0)
+      );
+      return sortedAreas.map(area => ({
+        title: `${strings.perdocumentArea} ${area.area_num}`,
+        subtitle: area.title
+      }));
+    }
+
+    return [];
+  }, [props.perAreas, strings.perdocumentArea, props.perForm.getPerForms]);
+
+  // Create, update, delete actions
   useEffect(() => {
     const cpo = props.perForm.createPerOverview;
     if (!cpo.fetching && cpo.fetched && cpo.data) {
       if (cpo.data.status === 'ok') {
         showAlert('success', <p><Translate stringId="perOverviewAlertCreated" /></p>, true, 2000);
-        setTimeout(() => props.history.push(`/account#per-forms`), 2000);
+        setTimeout(() => props.history.push(`/per-overview/${cpo.data.overview_id}/edit`), 2000);
         _resetPerState();
       } else if (cpo.error) {
         showAlert('danger', <p><Translate stringId="perOverviewAlertCreated" /></p>, true, 2000);
@@ -163,8 +195,14 @@ function PerOverview (props) {
   }, [_getPerOverviewFormStrict, idFromPath]);
 
   useEffect(() => {
+    if (idFromPath) {
+      _getPerForms(null, idFromPath);
+    }
+  }, [_getPerForms, idFromPath]);
+
+  useEffect(() => {
     const of = props.perForm.getPerOverviewForm;
-    if (of.data && !of.fetching && of.fetched) {
+    if (!isCreate && of.data && !of.fetching && of.fetched) {
       const res = of.data.results[0];
       setNsState(res.country?.id);
       setOverviewState({
@@ -181,7 +219,7 @@ function PerOverview (props) {
         focus: res.focus,
         had_previous_assessment: res.had_previous_assessment,
         id: res.id,
-        is_draft: res.isDraft,
+        is_finalized: res.is_finalized,
         phone_number: res.phone_number,
         skype_address: res.skype_address,
         type_of_ca: res.type_of_ca?.id,
@@ -189,7 +227,7 @@ function PerOverview (props) {
       });
       hideGlobalLoading();
     }
-  }, [props.perForm.getPerOverviewForm, props.user]);
+  }, [props.perForm.getPerOverviewForm, props.user, isCreate]);
 
   const assessmentTypes = useMemo(() => {
     const ats = props.perForm.assessmentTypes;
@@ -211,7 +249,7 @@ function PerOverview (props) {
         <Helmet>
           <title>{strings.perFormTitle}</title>
         </Helmet>
-        <div className='container-mid'>
+        <div className='container-lg'>
           <div className='row flex-sm'>
             <div className='col col-6-sm col-7-mid'>
               <BreadCrumb breadcrumbContainerClass='padding-reset' crumbs={ crumbs } />
@@ -466,37 +504,54 @@ function PerOverview (props) {
                   />
                 </FormInput>
 
+                { !isCreate
+                  ? (
+                    <div className='form__group'>
+                      <FormCheckbox
+                        label={strings.overviewFormFinalized}
+                        name='is_finalized'
+                        id='is_finalized'
+                        checked={overviewState.is_finalized}
+                        onChange={(e) => fieldChange(e, true, true)}
+                        disabled={!editable}
+                      />
+                      <FormError
+                        errors={[]}
+                        property='is_finalized'
+                      />
+                    </div>
+                  )
+                  : null }
+                
+
+                {/* TODO: revisit editable */}
                 { editable
                   ? (
                     <React.Fragment>
                       <h4><Translate stringId='overviewFormDraftInfo' /></h4>
                       <button
                         className='button button--medium button--primary-filled per__form__button'
-                        onClick={(e) => submitForm(e, false)}
+                        onClick={(e) => submitForm(e)}
                       >
-                        <Translate stringId='perFormComponentSubmitForm'/>
-                      </button>
-                      <button
-                        className='button button--medium button--secondary-filled per__form__button'
-                        onClick={(e) => submitForm(e, true)}
-                      >
-                        <Translate stringId='perFormComponentSave'/>
-                      </button>
+                        <Translate stringId={`${isCreate ? 'perFormComponentCreate' : 'perFormComponentSave'}`}/>
+                      </button>                      
 
-                    { !isCreate
-                      ? (
-                        <a
-                          className='link-underline per__delete_button'
-                          onClick={(e) => deleteOverview(e)}
-                        >
-                          <Translate stringId='perDraftDelete' />
-                        </a>
-                      )
-                      : null }
+                      { !isCreate
+                        ? (
+                          <a
+                            className='link-underline per__delete_button'
+                            onClick={(e) => deleteOverview(e)}
+                          >
+                            <Translate stringId='perDraftDelete' />
+                          </a>
+                        )
+                        : null }
                     </React.Fragment>
                   )
                   : null }
               </Fold>
+
+              <PerAreaCards formAreas={formAreas} isCreate={isCreate} />
             </div>
           </section>
         </div>
@@ -508,6 +563,7 @@ function PerOverview (props) {
 if (environment !== 'production') {
   PerOverview.propTypes = {
     user: T.object,
+    perAreas: T.object,
     perForm: T.object,
     nsDropdownItems: T.array,
     _getAssessmentTypes: T.func,
@@ -521,13 +577,16 @@ if (environment !== 'production') {
 
 const selector = (state, ownProps) => ({
   user: state.user.data,
+  perAreas: state.perAreas,
   perForm: state.perForm,
   nsDropdownItems: nsDropdownSelector(state)
 });
 
 const dispatcher = (dispatch) => ({
   _getAssessmentTypes: () => dispatch(getAssessmentTypes()),
+  _getPerAreas: (...args) => dispatch(getPerAreas(...args)),
   _getPerOverviewFormStrict: (...args) => dispatch(getPerOverviewFormStrict(...args)),
+  _getPerForms: (...args) => dispatch(getPerForms(...args)),
   _createPerOverview: (payload) => dispatch(createPerOverview(payload)),
   _updatePerOverview: (payload) => dispatch(updatePerOverview(payload)),
   _deletePerOverview: (payload) => dispatch(deletePerOverview(payload)),

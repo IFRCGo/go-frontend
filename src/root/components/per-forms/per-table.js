@@ -27,23 +27,25 @@ function PerTable ({regionId, countries}) {
       return {
         id: `${form.id}${form.hasOwnProperty('area') ? '-form' : '-overview'}`,
         form_name: {
-          value: form.hasOwnProperty('area') // if 'area' is there it's not an Overview
-            ? `${form.is_draft ? '(Draft)' : ''} ${strings.perdocumentArea} ${form.area?.area_num || ''} \
+          // Keeping this logic in here, in case we want to re-add Forms
+          // if it has 'area' it's a Form, otherwise an Overview
+          value: form.hasOwnProperty('area')
+            ? `${strings.perdocumentArea} ${form.area?.area_num || ''} \
               - ${form.area?.title || ''} - ${form.updated_at.substring(0, 10)} \
               - ${form.user?.first_name} ${form.user?.last_name}`
-            : `${form.is_draft ? '(Draft)' : ''} ${strings.perdocumentOverview} \
+            : `${strings.perdocumentOverview} \
               - ${form.date_of_current_capacity_assessment.substring(0, 10)} \
               - ${form.user?.first_name} ${form.user?.last_name}`
         },
         view_link: {
           value: (
             <React.Fragment>
-              { form.is_draft
+              { !form.is_finalized
                 ? (
                   <React.Fragment>
                     <Link
                       className='button button--xsmall button--secondary-filled per__list__button'
-                      to={`/per-form/${form.hasOwnProperty('area') ? '' : 'overview/'}${form.id}/edit`}
+                      to={`${form.hasOwnProperty('area') ? '/per-form/' : '/per-overview/'}${form.id}/edit`}
                     >
                       <Translate stringId='perDraftEdit'/>
                     </Link>
@@ -52,7 +54,7 @@ function PerTable ({regionId, countries}) {
                 : null }
               <Link
                 className='button button--xsmall button--secondary-bounded per__list__button'
-                to={`/per-form/${form.hasOwnProperty('area') ? '' : 'overview/'}${form.id}`}
+                to={`${form.hasOwnProperty('area') ? '/per-form/' : '/per-overview/'}${form.id}`}
               >
                 <Translate stringId='perdocumentView'/>
               </Link>
