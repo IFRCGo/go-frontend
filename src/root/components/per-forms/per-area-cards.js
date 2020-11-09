@@ -10,7 +10,7 @@ import Translate from '#components/Translate';
 function PerAreaCards(props) {
   const { strings } = useContext(LanguageContext);
 
-  const { formAreas, isCreate } = props;
+  const { formAreas, isCreate, editable } = props;
 
   return (
     <div className='col col-12-sm per__container'>
@@ -23,15 +23,20 @@ function PerAreaCards(props) {
             <div className='per__card' key={1}>
               <div className='per__card-header row-sm flex'>
                 <div className='col-sm col-6'>{area.title}</div>
-                  { !isCreate
-                    ? (
+                  { isCreate
+                    ? null
+                    : (
                       <div className='col-sm col-6 text-right'>
-                        <Link
-                          className={`button button--xsmall button--secondary-filled per__list__button`}
-                          to={`${area.link}/edit` ?? ''}
-                        >
-                          <Translate stringId='perDraftEdit' />
-                        </Link>
+                        { editable
+                          ? (
+                            <Link
+                              className={`button button--xsmall button--secondary-filled per__list__button`}
+                              to={`${area.link}/edit` ?? ''}
+                            >
+                              <Translate stringId='perDraftEdit' />
+                            </Link>
+                          )
+                          : null }
                         <Link
                           className={`button button--xsmall button--secondary-bounded per__list__button`}
                           to={area.link ?? ''}
@@ -39,8 +44,7 @@ function PerAreaCards(props) {
                           <Translate stringId='perdocumentView' />
                         </Link>
                       </div>
-                    )
-                    : null }
+                    ) }
               </div>
               <div className='row flex'>
                 <div className='card__col col col-6'>

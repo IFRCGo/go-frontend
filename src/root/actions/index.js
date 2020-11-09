@@ -578,20 +578,20 @@ export function clearLoadedCsv (id) {
   return { type: 'CLEAR_LOADED_CSV', id };
 }
 
-export const CREATE_PER_FORM = 'CREATE_PER_FORM';
-export function createPerForm (data) {
-  return postJSON('createperform', CREATE_PER_FORM, data, withToken());
-}
+// export const CREATE_PER_FORM = 'CREATE_PER_FORM';
+// export function createPerForm (data) {
+//   return postJSON('createperform', CREATE_PER_FORM, data, withToken());
+// }
 
 export const UPDATE_PER_FORM = 'UPDATE_PER_FORM';
 export function updatePerForm (data) {
   return postJSON('updateperform', UPDATE_PER_FORM, data, withToken());
 }
 
-export const DELETE_PER_FORM = 'DELETE_PER_FORM';
-export function deletePerForm (id) {
-  return postJSON('deleteperform', DELETE_PER_FORM, { id: id }, withToken());
-}
+// export const DELETE_PER_FORM = 'DELETE_PER_FORM';
+// export function deletePerForm (id) {
+//   return postJSON('deleteperform', DELETE_PER_FORM, { id: id }, withToken());
+// }
 
 export const RESET_PER_STATE = 'RESET_PER_STATE';
 export function resetPerState () {

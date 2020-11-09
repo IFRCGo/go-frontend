@@ -551,7 +551,7 @@ function PerOverview (props) {
                   : null }
               </Fold>
 
-              <PerAreaCards formAreas={formAreas} isCreate={isCreate} />
+              <PerAreaCards formAreas={formAreas} isCreate={isCreate} editable={editable} />
             </div>
           </section>
         </div>

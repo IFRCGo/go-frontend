@@ -6,9 +6,7 @@ import { formQuestionsSelector } from '#selectors';
 import {
   getPerForm,
   getPerForms,
-  createPerForm,
   updatePerForm,
-  // deletePerForm,
   resetPerState,
   getPerAreas,
   getPerQuestions
@@ -23,6 +21,7 @@ import BreadCrumb from '#components/breadcrumb';
 import { Helmet } from 'react-helmet';
 import {
   FormInput,
+  FormTextarea,
   FormRadioGroup,
   FormError
 } from '#components/form-elements/';
@@ -33,35 +32,29 @@ function PerForm (props) {
   const { strings } = useContext(LanguageContext);
   const [questionsState, setQuestionsState] = useState({});
   const [areaId, setAreaId] = useState();
-  const [areaNum, setAreaNum] = useState();
+  const [comment, setComment] = useState();
   const [title, setTitle] = useState(strings.perdocumentArea);
   const {
     _getPerForm,
     _getPerForms,
-    _createPerForm,
     _updatePerForm,
-    // _deletePerForm,
     _resetPerState,
     _getPerAreas,
     _getPerQuestions
   } = props;
-  const areaIdFromPath = props.match.params.area_id; // only present for new forms
   const formIdFromPath = props.match.params.form_id; // only present for existing forms
   const isEdit = !!props.isEdit;
-  const isCreate = !!props.isCreate;
 
   const editable = useMemo(() => {
     let isedi = false;
-    if (isCreate) {
-      isedi = true;
-    } else {
-      const pfs = props.perForm.getPerForms;
-      if (!pfs.fetching && pfs.fetched && pfs.data) {
-        isedi = !pfs.data.results[0].overview?.is_finalized && isEdit;
-      }
+
+    const pfs = props.perForm.getPerForms;
+    if (!pfs.fetching && pfs.fetched && pfs.data) {
+      isedi = !pfs.data.results[0].overview?.is_finalized && isEdit;
     }
+
     return isedi;
-  }, [isEdit, isCreate, props.perForm.getPerForms]);
+  }, [isEdit, props.perForm.getPerForms]);
 
   function changeQuestionsState (e, question, isRadio) {
     let modifiedState = questionsState;
@@ -78,43 +71,16 @@ function PerForm (props) {
   function submitForm (e) {
     e.preventDefault();
 
-    if (formIdFromPath) {
-      _updatePerForm({
-        'id': formIdFromPath,
-        'user_id': props.user.id,
-        'area_id': areaIdFromPath || areaId,
-        'area_num': areaNum,
-        'questions': questionsState
-      });
-    } else {
-      _createPerForm({
-        'user_id': props.user.id,
-        'area_id': areaIdFromPath || areaId,
-        'area_num': areaNum,
-        'questions': questionsState
-      });
-    }
+    _updatePerForm({
+      'id': formIdFromPath,
+      'user_id': props.user.id,
+      'questions': questionsState,
+      'comment': comment
+    });
   }
 
-  // Currently we don't allow to delete Forms individually, only together with Overview
-  // function deleteForm (e) {
-  //   e.preventDefault();
-  //   _deletePerForm(props.perForm.getPerForms.data.results[0].id);
-  // }
-
-  // Alert and redirect triggered by create/update/delete
+  // Alert and redirect triggered by update success/error
   useEffect(() => {
-    const cpf = props.perForm.createPerForm;
-    if (!cpf.fetching && cpf.fetched && cpf.data) {
-      if (cpf.data.status === 'ok') {
-        showAlert('success', <p><Translate stringId="perFormAlertCreated" /></p>, true, 2000);
-        setTimeout(() => props.history.push(`/per-overview/${cpf.data.overview_id}/edit`), 2000);
-        _resetPerState();
-      } else if (cpf.error) {
-        showAlert('danger', <p><Translate stringId="perFormAlertCreated" /></p>, true, 2000);
-      }
-    }
-
     const upf = props.perForm.updatePerForm;
     if (!upf.fetching && upf.fetched && upf.data) {
       if (upf.data.status === 'ok') {
@@ -125,49 +91,34 @@ function PerForm (props) {
         showAlert('danger', <p><Translate stringId="perFormAlertUpdated" /></p>, true, 2000);
       }
     }
-
-    // const dpf = props.perForm.deletePerForm;
-    // if (!dpf.fetching && dpf.fetched && dpf.data) {
-    //   if (dpf.data.status === 'ok') {
-    //     showAlert('success', <p><Translate stringId="perFormAlertDeleted" /></p>, true, 2000);
-    //     setTimeout(() => props.history.push(`/account#per-forms`), 2000);
-    //     _resetPerState();
-    //   } else if (dpf.error) {
-    //     showAlert('danger', <p><Translate stringId="perFormAlertDeleted" /></p>, true, 2000);
-    //   }
-    // }
   }, [props.perForm.createPerForm, props.perForm.updatePerForm, _resetPerState, props.history]);
 
-  // FIXME: _getPerAreas and _getPerQuestions firing 2 times
   useEffect(() => {
-    if (areaIdFromPath || areaId) {
-      _getPerAreas(areaIdFromPath || areaId);
+    if (areaId) {
+      _getPerAreas(areaId);
     }
-  }, [_getPerAreas, areaIdFromPath, areaId]);
+  }, [_getPerAreas, areaId]);
 
+    // FIXME: _getPerForm and _getPerForms firing 2 times
   useEffect(() => {
-    if (areaIdFromPath) {
-      _getPerQuestions(areaIdFromPath);
-    } else if (areaId) {
+    if (areaId) {
       _getPerQuestions(areaId);
+      showGlobalLoading();
     }
 
     if (formIdFromPath) {
       // Edit Form
       _getPerForm(formIdFromPath);
       _getPerForms(formIdFromPath);
-    }
-    if (!isCreate) {
       showGlobalLoading();
     }
-  }, [_getPerQuestions, areaIdFromPath, areaId, _getPerForm, _getPerForms, formIdFromPath, isCreate]);
+  }, [_getPerQuestions, areaId, _getPerForm, _getPerForms, formIdFromPath]);
 
   useEffect(() => {
     const pa = props.perAreas;
     if (!pa.fetching && pa.fetched && pa.data) {
       const res = pa.data.results[0];
       setTitle(`${strings.perdocumentArea} ${res.area_num}: ${res.title}`);
-      setAreaNum(res.area_num);
       hideGlobalLoading();
     }
   }, [props.perAreas, strings.perdocumentArea]);
@@ -175,15 +126,15 @@ function PerForm (props) {
   // Use PER Form
   useEffect(() => {
     const pfs = props.perForm.getPerForms;
-    if (!pfs.fetching && pfs.fetched && pfs.data && !areaIdFromPath) {
+    if (!pfs.fetching && pfs.fetched && pfs.data) {
       const res = pfs.data.results[0];
       if (res.area) {
-        setAreaNum(res.area.area_num);
         setAreaId(res.area.id);
       }
+      setComment(res.comment);
       hideGlobalLoading();
     }
-  }, [props.perForm.getPerForms, areaIdFromPath]);
+  }, [props.perForm.getPerForms]);
 
   // Use PER FormData
   useEffect(() => {
@@ -200,28 +151,9 @@ function PerForm (props) {
       hideGlobalLoading();
     }
   }, [props.perForm.getPerForm]);
-  const questionList = useMemo(() => {
-    const pq = props.perQuestions;
-    if (!pq.fetching && pq.fetched && pq.data) {
-      return pq.data.results;
-    }
-
-    return [];
-  }, [props.perQuestions]);
   const groupedQuestionList = useMemo(() => {
     return props.groupedPerQuestions || [];
   }, [props.groupedPerQuestions]);
-
-  // Initialize the questionsState from the props - for new Forms
-  useEffect(() => {
-    if (questionList && areaIdFromPath) {
-      let questionDict = {};
-      for (const question of questionList) {
-        questionDict[question.id] = { selected_answer: null, notes: '' };
-      }
-      setQuestionsState(questionDict);
-    }
-  }, [questionList, areaIdFromPath]);
 
   const crumbs = [
     {link: props.location.pathname, name: title},
@@ -244,6 +176,22 @@ function PerForm (props) {
           <section className='inpage__body'>
             <div className='inner'>
               <Fold title={title} foldWrapperClass='fold--main' foldTitleClass='margin-reset'>
+                <FormTextarea
+                  label='Comment'
+                  type='text'
+                  name={`comment`}
+                  id={`comment`}
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  description=''
+                  disabled={!editable}
+                >
+                  <FormError
+                    errors={[]}
+                    property={'comments'}
+                  />
+                </FormTextarea>
+
                 { Object.keys(groupedQuestionList).map((compId) => {
                   const componentHeader = (
                     <div className='per__component__header'>
@@ -289,6 +237,7 @@ function PerForm (props) {
                       </FormInput>
                     </div>
                   ));
+
                   return (
                     <React.Fragment key={compId}>
                       {componentHeader}
@@ -307,17 +256,6 @@ function PerForm (props) {
                       >
                         <Translate stringId='perFormComponentSave'/>
                       </button>
-
-                      {/* { formIdFromPath
-                        ? (
-                          <a
-                            className='link-underline per__delete_button'
-                            onClick={(e) => deleteForm(e)}
-                          >
-                            <Translate stringId='perDraftDelete' />
-                          </a>
-                        )
-                        : null} */}
                     </React.Fragment>
                   )
                   : null }
@@ -339,9 +277,7 @@ if (environment !== 'production') {
     groupedPerQuestions: T.object,
     _getPerForm: T.func,
     _getPerForms: T.func,
-    _createPerForm: T.func,
     _updatePerForm: T.func,
-    // _deletePerForm: T.func,
     _resetPerState: T.func,
     _getPerAreas: T.func,
     _getPerQuestions: T.func
@@ -359,9 +295,7 @@ const selector = (state, ownProps) => ({
 const dispatcher = (dispatch) => ({
   _getPerForm: (...args) => dispatch(getPerForm(...args)),
   _getPerForms: (...args) => dispatch(getPerForms(...args)),
-  _createPerForm: (payload) => dispatch(createPerForm(payload)),
   _updatePerForm: (payload) => dispatch(updatePerForm(payload)),
-  // _deletePerForm: (...args) => dispatch(deletePerForm(...args)),
   _resetPerState: () => dispatch(resetPerState()),
   _getPerAreas: (...args) => dispatch(getPerAreas(...args)),
   _getPerQuestions: (...args) => dispatch(getPerQuestions(...args))
