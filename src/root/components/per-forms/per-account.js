@@ -40,7 +40,7 @@ function PerAccount (props) {
           if (form.country.region in fL === false) {
             fL[form.country.region] = {};
           }
-          if (form.country in fL[form.country.region] === false) {
+          if (form.country.name in fL[form.country.region] === false) {
             fL[form.country.region][form.country.name] = [];
           }
           fL[form.country.region][form.country.name].push(form);
