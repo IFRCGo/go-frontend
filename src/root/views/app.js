@@ -30,7 +30,7 @@ function App(p) {
     <ThroughProvider>
       <GlobalLoadingContext.Provider value={contextValue}>
         <div className={c('page', p.className)}>
-          <GlobalHeaderBanner />
+          {/* <GlobalHeaderBanner /> */}
           <GlobalLoading />
           { loading > 0 && <NewGlobalLoadingParent /> }
           <Header />
