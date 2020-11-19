@@ -94,7 +94,17 @@ class _Links extends React.Component {
     return (
       <Fold id='links' title={strings.linksTitle} foldWrapperClass='links' foldTitleClass='margin-reset'>
         <ul className='links-list'>
-          {data.links.map(o => <li key={o.id}><a href={o.url} className='link--external'>{o.title}</a> </li>)}
+          {
+            data.links.map(function (o) {
+              // If data.links[i] has property show_in_go, then turn it into a link that will
+              // send the object data back to the parent
+              if ('onClick' in o) {
+                return <li key={o.id} onClick={() => o.onClick(o)}><a className='link--external'>{o.title}</a> </li>;
+              } else {
+                return <li key={o.id}><a href={o.url} className='link--external'>{o.title}</a> </li>;
+              }
+            })
+          }
         </ul>
       </Fold>
     );

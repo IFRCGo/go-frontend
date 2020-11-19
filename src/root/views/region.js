@@ -59,11 +59,13 @@ class AdminArea extends SFPComponent {
 
     this.state = {
       maskLayer: this.getMaskLayer(this.props.thisRegion.id),
+      regionAdditionalInfoTabIframe: null,
       fullscreen: false
     };
 
     this.toggleFullscreen = this.toggleFullscreen.bind(this);
     this.onFullscreenChange = this.onFullscreenChange.bind(this);
+    this.onAdditionalLinkClickAction = this.onAdditionalLinkClickAction.bind(this);
     this.TAB_DETAILS = [
       { title: context.strings.regionOperationsTab, hash: '#operations' },
       { title: context.strings.region3WTab, hash: '#3w' },
@@ -105,6 +107,22 @@ class AdminArea extends SFPComponent {
 
   onFullscreenChange () {
     this.setState({fullscreen: isFullscreen()});
+  }
+
+  addClickHandler (data, clickHandler) {
+    if (data.links && data.links.length) {
+      data.links = data.links.map(link => {
+        if (true) //'show_in_go' in link) {
+          return Object.assign({}, link, { onClick: clickHandler });
+      });
+    }
+    return data;
+  }
+
+  onAdditionalLinkClickAction (linkObject) {
+    this.setState({
+      regionAdditionalInfoTabIframe: linkObject.url
+    });
   }
 
   toggleFullscreen () {
@@ -309,7 +327,14 @@ class AdminArea extends SFPComponent {
                     <Snippets data={this.props.snippets} />
                   </TabContent>
                   <TabContent isError={!get(data, 'links.length')} errorMessage={ strings.noDataMessage } title={strings.regionLinks}>
-                    <Links data={data} />
+                    {
+                      this.state.regionAdditionalInfoTabIframe 
+                      ? <div>
+                        <button>BACK</button>
+                        <iframe src={this.state.regionAdditionalInfoTabIframe} frameBorder='0' width='100%' height='800px'></iframe>
+                      </div>
+                      : <Links data={this.addClickHandler(data, this.onAdditionalLinkClickAction)} />
+                    }
                   </TabContent>
                   <TabContent showError={true} isError={!get(data, 'contacts.length')} errorMessage={ strings.noDataMessage } title={strings.regionContacts}>
                     <Contacts data={data} />
@@ -324,6 +349,7 @@ class AdminArea extends SFPComponent {
   }
 
   render () {
+    console.log('rerender');
     const { strings } = this.context;
 
     return (
