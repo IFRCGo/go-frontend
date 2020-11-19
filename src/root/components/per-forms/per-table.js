@@ -34,7 +34,7 @@ function PerTable ({regionId, countries}) {
               - ${form.area?.title || ''} - ${form.updated_at.substring(0, 10)} \
               - ${form.user?.first_name} ${form.user?.last_name}`
             : `${strings.perdocumentOverview} \
-              - ${form.date_of_current_capacity_assessment.substring(0, 10)} \
+              - ${form.date_of_assessment.substring(0, 10)} \
               - ${form.user?.first_name} ${form.user?.last_name}`
         },
         view_link: {

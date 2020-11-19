@@ -41,7 +41,7 @@ import { getFdrs } from '#actions/query-external';
 // import { getBoundingBox } from '#utils/country-bounding-box';
 
 import App from './app';
-// import ErrorPanel from '#components/error-panel';
+import ErrorPanel from '#components/error-panel';
 import TabContent from '#components/tab-content';
 import Fold from '#components/fold';
 import BreadCrumb from '#components/breadcrumb';
@@ -58,7 +58,7 @@ import {
   Contacts,
   Links
 } from '#components/admin-area-elements';
-// import PreparednessOverview from '#components/country/preparedness-overview';
+import PreparednessOverview from '#components/country/preparedness-overview';
 // import PreparednessSummary from '#components/country/preparedness-summary';
 // import PreparednessWorkPlan from '#components/country/preparedness-work-plan';
 // import PreparednessPhaseOutcomes from '#components/country/preparedness-phase-outcomes';
@@ -165,10 +165,10 @@ class AdminArea extends SFPComponent {
         hash: '#profile',
       },
       */
-      // {
-      //   title: strings.countryPreparednessTab,
-      //   hash: '#preparedness'
-      // },
+      {
+        title: strings.countryPreparednessTab,
+        hash: '#preparedness'
+      },
       {
         title: strings.countryAdditionalInfoTab,
         hash: '#additional'
@@ -723,13 +723,13 @@ class AdminArea extends SFPComponent {
                   </TabContent>
                 </TabPanel>
                 */}
-                {/* <TabPanel>
+                <TabPanel>
                   <TabContent showError={true} isError={!this.isPerPermission()} errorMessage={strings.accountPerPermission} title={strings.countryPreparednessTitle}>
                     <div className='container-lg'>
                       {this.props.getPerNsPhase.fetched && this.props.perOverviewForm.fetched ? (
                         <PreparednessOverview getPerNsPhase={this.props.getPerNsPhase} perOverviewForm={this.props.perOverviewForm} />)
                         : <ErrorPanel title={strings.preparednessOverview} errorMessage={ strings.noDataMessage } />}
-                      {this.props.getPerForm.fetched && this.props.getPerForms.fetched ? (
+                      {/* {this.props.getPerForm.fetched && this.props.getPerForms.fetched ? (
                         <PreparednessSummary getPerForm={this.props.getPerForm} getPerForms={this.props.getPerForms} />)
                         : <ErrorPanel title={strings.preparednessSummary} errorMessage={ strings.noDataMessage } />}
                       {this.props.getPerForm.fetched && this.props.getPerForms.fetched ? (
@@ -740,10 +740,10 @@ class AdminArea extends SFPComponent {
                         : <ErrorPanel title={strings.preparednessWorkPlan} errorMessage={ strings.noDataMessage } />}
                       {this.props.getPerUploadedDocuments.fetched ? (
                         <PreparednessPhaseOutcomes getPerUploadedDocuments={this.props.getPerUploadedDocuments} countryId={this.props.country.id} />)
-                        : <ErrorPanel title={strings.countryPreparednessPhaseOutcomes} errorMessage={ strings.noDataMessage } />}
+                        : <ErrorPanel title={strings.countryPreparednessPhaseOutcomes} errorMessage={ strings.noDataMessage } />} */}
                       </div>
                   </TabContent>
-                </TabPanel> */}
+                </TabPanel>
                 <TabPanel>
                   <div className='container-lg'>
                     <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ strings.noDataMessage } title={strings.regionGraphiccs}>

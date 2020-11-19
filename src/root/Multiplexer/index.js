@@ -44,7 +44,7 @@ import Deployments from '#views/deployments';
 import Table from '#views/table';
 import Covid19ThreeWSankey from '#views/Covid19ThreeWSankey';
 import PerForm from '#views/per-form';
-import PerOverview from '#views/per-overview';
+import PerAssessment from '#views/per-assessment';
 import Preparedness from '#views/preparedness';
 import TranslationDashboard from '#views/TranslationDashboard';
 import ClearInitCache from '#views/ClearInitCache';
@@ -180,9 +180,9 @@ function Multiplexer(props) {
           <PrivateRoute exact path='/deployments/erus/all' render={props => <Table {...props} type='eru' />} />
           <Route exact path='/per-form/:form_id' component={PerForm} />
           <Route exact path='/per-form/:form_id/edit' render={props => <PerForm {...props} isEdit={true} />} />
-          <Route exact path='/per-overview/create' render={props => <PerOverview {...props} isCreate={true} />} />
-          <Route exact path='/per-overview/:id' component={PerOverview} />
-          <Route exact path='/per-overview/:id/edit' render={props => <PerOverview {...props} isEdit={true} />} />
+          <Route path='/per-assessment/create' render={props => <PerAssessment {...props} isCreate={true} />} />
+          <Route exact path='/per-assessment/:id' component={PerAssessment} />
+          <Route exact path='/per-assessment/:id/edit' render={props => <PerAssessment {...props} isEdit={true} />} />
           <Route path='/preparedness' component={Preparedness} />
           <Route component={UhOh}/>
         </Switch>
