@@ -7,7 +7,6 @@ import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 
 import Fold from '#components/fold';
-import PerAreaCards from '#components/per-forms/per-area-cards.js';
 // import { Link } from 'react-router-dom';
 
 import {
@@ -25,6 +24,7 @@ import { nsDropdownSelector } from '#selectors';
 import {
   FormInput,
   FormCheckbox,
+  FormRadioGroup,
   FormError
 } from '#components/form-elements/';
 import Select from 'react-select';
@@ -43,7 +43,7 @@ function PerOverview (props) {
     facilitator_email: '',
     facilitator_phone: '',
     facilitator_contact: '',
-    is_epi: '',
+    is_epi: false,
     is_finalized: false, // TODO: maybe not handle here but at submit
     method_asmt_used: '',    
     ns_focal_point_name: '',
@@ -57,13 +57,11 @@ function PerOverview (props) {
     type_of_assessment: '',
     user_id: props.user.id,
   });
-  // console.log(props);
-  // const idFromPath = props.match.params.id;
-  const idFromPath = null;
+
+  // const idFromPath = props.idFromPath;
   const isEdit = !!props.isEdit;
   const isCreate = !!props.isCreate;
   const editable = useMemo(() => {
-    return true; // FIXME: only for testing
     let isedi = false;
     if (isCreate) {
       isedi = true;
@@ -86,11 +84,11 @@ function PerOverview (props) {
     _resetPerState
   } = props;
 
-  function fieldChange (e, hasTarget = true, isCheckbox = false, id = '') {
+  function fieldChange (e, hasTarget = true, isCheckbox = false, isRadio = false, id = '') {
     if (hasTarget) {
       setOverviewState({
         ...overviewState,
-        [e.target.id]: !isCheckbox ? e.target.value : e.target.checked
+        [isRadio ? e.target.name : e.target.id]: !isCheckbox ? e.target.value : e.target.checked
       });
     } else {
       setOverviewState({
@@ -121,36 +119,13 @@ function PerOverview (props) {
     }
   }
 
-  // Get PER Areas and fill up the links array with them
-  useEffect(() => {
-    _getPerAreas();
-  }, [_getPerAreas]);
-
-  const formAreas = useMemo(() => {
-    const pfs = props.perForm.getPerForms;
-    if (!pfs.fetching && pfs.fetched && pfs.data) {
-      return pfs.data.results.map(form => ({
-        link: `/per-form/${form.id}`,
-        title: `${strings.perdocumentArea} ${form.area.area_num}`,
-        subtitle: form.area.title
-      }));
-    } else if (isCreate && !props.perAreas.fetching && props.perAreas.fetched && props.perAreas.data) {
-      return props.perAreas.data.results.map(area => ({
-        title: `${strings.perdocumentArea} ${area.area_num}`,
-        subtitle: area.title
-      }));
-    }
-
-    return [];
-  }, [props.perAreas, strings.perdocumentArea, props.perForm.getPerForms, isCreate]);
-
   // Create, update, delete actions
   useEffect(() => {
     const cpo = props.perForm.createPerOverview;
     if (!cpo.fetching && cpo.fetched && cpo.data) {
       if (cpo.data.status === 'ok') {
         showAlert('success', <p><Translate stringId="perOverviewAlertCreated" /></p>, true, 2000);
-        setTimeout(() => props.history.push(`/per-overview/${cpo.data.overview_id}/edit`), 2000);
+        setTimeout(() => props.history.push(`/per-assessment/${cpo.data.overview_id}/edit#overview`), 2000);
         _resetPerState();
       } else if (cpo.error) {
         showAlert('danger', <p><Translate stringId="perOverviewAlertCreated" /></p>, true, 2000);
@@ -160,8 +135,8 @@ function PerOverview (props) {
     if (!upo.fetching && upo.fetched && upo.data) {
       if (upo.data.status === 'ok') {
         showAlert('success', <p><Translate stringId="perOverviewAlertUpdated" /></p>, true, 2000);
-        setTimeout(() => props.history.push(`/account#per-forms`), 2000);
-        _resetPerState();
+        // setTimeout(() => props.history.push(`/account#per-forms`), 2000);
+        // _resetPerState();
       } else if (upo.error) {
         showAlert('danger', <p><Translate stringId="perOverviewAlertUpdated" /></p>, true, 2000);
       }
@@ -187,18 +162,6 @@ function PerOverview (props) {
   useEffect(() => {
     _getAssessmentTypes();
   }, [_getAssessmentTypes]);
-
-  useEffect(() => {
-    if (idFromPath) {
-      _getPerOverviewFormStrict(null, idFromPath);
-    }
-  }, [_getPerOverviewFormStrict, idFromPath]);
-
-  useEffect(() => {
-    if (idFromPath) {
-      _getPerForms(null, idFromPath);
-    }
-  }, [_getPerForms, idFromPath]);
 
   useEffect(() => {
     const of = props.perForm.getPerOverviewForm;
@@ -240,36 +203,46 @@ function PerOverview (props) {
     }
     return [];
   }, [props.perForm.assessmentTypes]);
-
+  console.log(overviewState);
   return (
-    <section className='inpage__body'>
-      <div className='inner'>
-        <Fold title={strings.perAccountOverview} foldWrapperClass='fold--main' foldTitleClass='margin-reset'>
-          <h3><Translate stringId='perOverviewHeaderCurrent' /></h3>
-          <div className='form__group'>
-            <label className='form__label'>
-              <Translate stringId='perAccountChooseCountry' />
-            </label>
-            <Select
-              name='country'
-              value={nsState}
-              onChange={(e) => setNsState(e?.value)}
-              options={props.nsDropdownItems}
-              disabled={!editable}
-            />
-            <FormError
-              errors={[]}
-              property='country'
-            />
-          </div>
+    <React.Fragment>
+      <div className='container-lg'>
+        <h2 className=''><Translate stringId='perAccountOverview' /></h2>
 
+        <figure className='chart per-chart'>
+          <figcaption>
+            <h2 className='fold__title'><Translate stringId='perOverviewHeaderCurrent' /></h2>
+          </figcaption>
+
+          <div className='form__group form__group__per'>
+            <div className='form__group__wrap'>
+              <div className='form__inner-header'>
+                <label className='form__label'>
+                  <Translate stringId='perOverviewNS' />
+                </label>
+              </div>
+              <div className="form__inner-body">
+                <Select
+                  name='country'
+                  value={nsState}
+                  onChange={(e) => setNsState(e?.value)}
+                  options={props.nsDropdownItems}
+                  disabled={!editable}
+                />
+                <FormError
+                  errors={[]}
+                  property='country'
+                />
+              </div>
+            </div>
+          </div>
           <FormInput
             label={strings.overviewFormStartDate}
             type='date'
             name='date_of_assessment'
             id='date_of_assessment'
             value={overviewState.date_of_assessment}
-            classWrapper='form__group'
+            classWrapper='form__group__per'
             onChange={(e) => fieldChange(e)}
             disabled={!editable}
             // description={fields.sitFieldsDate[status].desc}
@@ -279,33 +252,52 @@ function PerOverview (props) {
               property='date_of_assessment'
             />
           </FormInput>
-          <div className='form__group'>
-            <label className='form__label'>
-              <Translate stringId='overviewFormTypeCapacityAssessment' />
-            </label>
-            <Select
-              id='type_of_assessment'
-              name='type_of_assessment'
-              value={overviewState.type_of_assessment}
-              onChange={(e) => setOverviewState({ ...overviewState, type_of_assessment: e.value })}
-              options={assessmentTypes}
-              disabled={!editable}
-            />
+          <div className='form__group form__group__per'>
+            <div className='form__group__wrap'>
+              <div className='form__inner-header'>
+                <label className='form__label'>
+                <Translate stringId='overviewFormTypeCapacityAssessment' />
+                </label>
+              </div>
+              <div className="form__inner-body">
+                <Select
+                  id='type_of_assessment'
+                  name='type_of_assessment'
+                  value={overviewState.type_of_assessment}
+                  onChange={(e) => setOverviewState({ ...overviewState, type_of_assessment: e.value })}
+                  options={assessmentTypes}
+                  disabled={!editable}
+                />
+                <FormError
+                  errors={[]}
+                  property='type_of_assessment'
+                />
+              </div>
+            </div>
+          </div>
+          <FormInput
+            label={strings.perTableAssessmentNumber}
+            type='text'
+            name='assessment_number'
+            id='assessment_number'
+            value={null} // FIXME: get value
+            classWrapper='form__group__per'
+            // onChange={}
+            disabled={true}
+            description={strings.perOverviewAsmtNumberDescription}
+          >
             <FormError
               errors={[]}
-              property='type_of_assessment'
+              property='assessment_number'
             />
-          </div>
-
-          <div>TODO: assessment Number</div>
-
+          </FormInput>
           <FormInput
             label={strings.overviewFormBranchInvolved}
             type='text'
             name='branches_involved'
             id='branches_involved'
             value={overviewState.branches_involved}
-            classWrapper='form__group'
+            classWrapper='form__group__per'
             onChange={(e) => fieldChange(e)}
             disabled={!editable}
             // description={fields.sitFieldsDate[status].desc}
@@ -316,12 +308,12 @@ function PerOverview (props) {
             />
           </FormInput>
           <FormInput
-            label={'What method has this assessment used'} // TODO: lang.js
+            label={strings.perOverviewWhatMethod}
             type='text'
             name='method_asmt_used'
             id='method_asmt_used'
             value={overviewState.method_asmt_used}
-            classWrapper='form__group'
+            classWrapper='form__group__per'
             onChange={(e) => fieldChange(e)}
             disabled={!editable}
             // description={fields.sitFieldsDate[status].desc}
@@ -331,33 +323,84 @@ function PerOverview (props) {
               property='method_asmt_used'
             />
           </FormInput>
-          <div className='form__group'>
-            <FormCheckbox
-              label={strings.overviewFormIsEPI}
-              name='is_epi'
-              id='is_epi'
-              checked={overviewState.is_epi}
-              onChange={(e) => fieldChange(e, true, true)}
-              disabled={!editable}
-            />
+          <FormRadioGroup
+            classWrapper='form__group__per'
+            label={strings.perOverviewEPIBenchmarks}
+            description={strings.overviewFormIsEPI}
+            id='is_epi'
+            name='is_epi'
+            options={[
+              {
+                label: strings.fieldReportFormOptionYesLabel,
+                value: 'true',
+                disabled: !editable
+              },
+              {
+                label: strings.fieldReportFormOptionNoLabel,
+                value: 'false',
+                disabled: !editable
+              }
+            ]}
+            selectedOption={overviewState.is_epi}
+            onChange={(e) => fieldChange(e, true, false, true)} >
             <FormError
               errors={[]}
               property='is_epi'
             />
-          </div>
-          
-          <h3><Translate stringId='perOverviewHeaderPrevious' /></h3>
-          <div>TODO: Previous assessment Date</div>
-          <div>TODO: Previous assessment Type</div>
+          </FormRadioGroup>
+        </figure>
 
-          <h3><Translate stringId='perOverviewHeaderReviews' /></h3>
+        <figure className='chart per-chart'>
+          <figcaption>
+            <h2 className='fold__title'><Translate stringId='perOverviewHeaderPrevious' /></h2>
+          </figcaption>
+
+          <FormInput
+            label={strings.perOverviewPrevAssessmentDate}
+            type='date'
+            name='prev_asmt_date'
+            id='prev_asmt_date'
+            value={null} // FIXME: get from backend
+            classWrapper='form__group__per'
+            // onChange={(e) => fieldChange(e)}
+            disabled={true}
+            // description={fields.sitFieldsDate[status].desc}
+          >
+            <FormError
+              errors={[]}
+              property='prev_asmt_date'
+            />
+          </FormInput>
+          <FormInput
+            label={strings.perOverviewPrevAssessmentType}
+            type='text'
+            name='prev_asmt_type'
+            id='prev_asmt_type'
+            value={''} // FIXME: get from backend
+            classWrapper='form__group__per'
+            // onChange={(e) => fieldChange(e)}
+            disabled={true}
+            // description={fields.sitFieldsDate[status].desc}
+          >
+            <FormError
+              errors={[]}
+              property='prev_asmt_type'
+            />
+          </FormInput>
+        </figure>
+
+        <figure className='chart per-chart'>
+          <figcaption>
+            <h2 className='fold__title'><Translate stringId='perOverviewHeaderReviews' /></h2>
+          </figcaption>
+
           <FormInput
             label={strings.overviewFormDateOfMidReview}
             type='date'
             name='date_of_mid_term_review'
             id='date_of_mid_term_review'
             value={overviewState.date_of_mid_term_review}
-            classWrapper='form__group'
+            classWrapper='form__group__per'
             onChange={(e) => fieldChange(e)}
             disabled={!editable}
             // description={fields.sitFieldsDate[status].desc}
@@ -373,7 +416,7 @@ function PerOverview (props) {
             name='date_of_next_asmt'
             id='date_of_next_asmt'
             value={overviewState.date_of_next_asmt}
-            classWrapper='form__group'
+            classWrapper='form__group__per'
             onChange={(e) => fieldChange(e)}
             disabled={!editable}
             // description={fields.sitFieldsDate[status].desc}
@@ -383,15 +426,20 @@ function PerOverview (props) {
               property='date_of_next_asmt'
             />
           </FormInput>
+        </figure>
 
-          <h3><Translate stringId='perOverviewHeaderContact' /></h3>
+        <figure className='chart per-chart'>
+          <figcaption>
+            <h2 className='fold__title'><Translate stringId='perOverviewHeaderContact' /></h2>
+          </figcaption>
+
           <FormInput
             label={strings.overviewFormFocalPoint}
             type='text'
             name='ns_focal_point_name'
             id='ns_focal_point_name'
             value={overviewState.ns_focal_point_name}
-            classWrapper='form__group'
+            classWrapper='form__group__per'
             onChange={(e) => fieldChange(e)}
             disabled={!editable}
             // description={fields.sitFieldsDate[status].desc}
@@ -407,7 +455,7 @@ function PerOverview (props) {
             name='ns_focal_point_email'
             id='ns_focal_point_email'
             value={overviewState.ns_focal_point_email}
-            classWrapper='form__group'
+            classWrapper='form__group__per'
             onChange={(e) => fieldChange(e)}
             disabled={!editable}
             // description={fields.sitFieldsDate[status].desc}
@@ -418,12 +466,12 @@ function PerOverview (props) {
             />
           </FormInput>
           <FormInput
-            label={strings.overviewFormPartnerFocalPoint}
+            label={strings.overviewFormFocalPointPhone}
             type='text'
             name='ns_focal_point_phone'
             id='ns_focal_point_phone'
             value={overviewState.ns_focal_point_phone}
-            classWrapper='form__group'
+            classWrapper='form__group__per'
             onChange={(e) => fieldChange(e)}
             disabled={!editable}
             // description={fields.sitFieldsDate[status].desc}
@@ -440,7 +488,7 @@ function PerOverview (props) {
             name='partner_focal_point_name'
             id='partner_focal_point_name'
             value={overviewState.partner_focal_point_name}
-            classWrapper='form__group'
+            classWrapper='form__group__per'
             onChange={(e) => fieldChange(e)}
             disabled={!editable}
             // description={fields.sitFieldsDate[status].desc}
@@ -456,7 +504,7 @@ function PerOverview (props) {
             name='partner_focal_point_email'
             id='partner_focal_point_email'
             value={overviewState.partner_focal_point_email}
-            classWrapper='form__group'
+            classWrapper='form__group__per'
             onChange={(e) => fieldChange(e)}
             disabled={!editable}
             // description={fields.sitFieldsDate[status].desc}
@@ -472,7 +520,7 @@ function PerOverview (props) {
             name='partner_focal_point_phone'
             id='partner_focal_point_phone'
             value={overviewState.partner_focal_point_phone}
-            classWrapper='form__group'
+            classWrapper='form__group__per'
             onChange={(e) => fieldChange(e)}
             disabled={!editable}
             // description={fields.sitFieldsDate[status].desc}
@@ -488,7 +536,7 @@ function PerOverview (props) {
             name='partner_focal_point_organization'
             id='partner_focal_point_organization'
             value={overviewState.partner_focal_point_organization}
-            classWrapper='form__group'
+            classWrapper='form__group__per'
             onChange={(e) => fieldChange(e)}
             disabled={!editable}
             // description={fields.sitFieldsDate[status].desc}
@@ -505,7 +553,7 @@ function PerOverview (props) {
             name='facilitator_name'
             id='facilitator_name'
             value={overviewState.facilitator_name}
-            classWrapper='form__group'
+            classWrapper='form__group__per'
             onChange={(e) => fieldChange(e)}
             disabled={!editable}
             // description={fields.sitFieldsDate[status].desc}
@@ -521,7 +569,7 @@ function PerOverview (props) {
             name='facilitator_email'
             id='facilitator_email'
             value={overviewState.facilitator_email}
-            classWrapper='form__group'
+            classWrapper='form__group__per'
             onChange={(e) => fieldChange(e)}
             disabled={!editable}
             // description={fields.sitFieldsDate[status].desc}
@@ -537,7 +585,7 @@ function PerOverview (props) {
             name='facilitator_phone'
             id='facilitator_phone'
             value={overviewState.facilitator_phone}
-            classWrapper='form__group'
+            classWrapper='form__group__per'
             onChange={(e) => fieldChange(e)}
             disabled={!editable}
             // description={fields.sitFieldsDate[status].desc}
@@ -553,7 +601,7 @@ function PerOverview (props) {
             name='facilitator_contact'
             id='facilitator_contact'
             value={overviewState.facilitator_contact}
-            classWrapper='form__group'
+            classWrapper='form__group__per'
             onChange={(e) => fieldChange(e)}
             disabled={!editable}
             // description={fields.sitFieldsDate[status].desc}
@@ -563,56 +611,37 @@ function PerOverview (props) {
               property='facilitator_contact'
             />
           </FormInput>
+        </figure>
+      </div>
 
-          
-
-          {/*{ !isCreate
-            ? (
-              <div className='form__group'>
-                <FormCheckbox
-                  label={strings.overviewFormFinalized}
-                  name='is_finalized'
-                  id='is_finalized'
-                  checked={overviewState.is_finalized}
-                  onChange={(e) => fieldChange(e, true, true)}
-                  disabled={!editable}
-                />
-                <FormError
-                  errors={[]}
-                  property='is_finalized'
-                />
-              </div>
-            )
-            : null }
-          */}
-
-          {/* TODO: revisit editable */}
-          { editable
-            ? (
-              <React.Fragment>
+      { editable
+        ? (
+          <React.Fragment>
+            <div className='container-lg'>
+              <div className='text-center'>
                 <button
                   className='button button--medium button--primary-filled per__form__button'
                   onClick={(e) => submitForm(e)}
                 >
-                  <Translate stringId={`${isCreate ? 'perFormComponentCreate' : 'perFormComponentSave'}`}/>
-                </button>                      
-
-                { !isCreate
-                  ? (
-                    <a
-                      className='link-underline per__delete_button'
-                      onClick={(e) => deleteOverview(e)}
-                    >
-                      <Translate stringId='perDraftDelete' />
-                    </a>
-                  )
-                  : null }
-              </React.Fragment>
-            )
-            : null }
-        </Fold>
-      </div>
-    </section>
+                  <Translate stringId={`${isCreate ? 'perOverviewSaveAndContinue' : 'perFormComponentSave'}`}/>
+                </button>
+              </div>
+            </div>
+            
+            { !isCreate
+              ? (
+                <a
+                  className='link-underline per__delete_button'
+                  onClick={(e) => deleteOverview(e)}
+                >
+                  <Translate stringId='perDraftDelete' />
+                </a>
+              )
+              : null }
+          </React.Fragment>
+        )
+        : null }
+    </React.Fragment>
   );
 }
 

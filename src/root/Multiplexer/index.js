@@ -43,7 +43,7 @@ import Country from '#views/countries';
 import Deployments from '#views/deployments';
 import Table from '#views/table';
 import Covid19ThreeWSankey from '#views/Covid19ThreeWSankey';
-import PerForm from '#views/per-form';
+import PerForm from '#components/per-forms/per-form';
 import PerAssessment from '#views/per-assessment';
 import Preparedness from '#views/preparedness';
 import TranslationDashboard from '#views/TranslationDashboard';

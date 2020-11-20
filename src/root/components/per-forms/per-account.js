@@ -11,6 +11,7 @@ import Translate from '#components/Translate';
 import Select from 'react-select';
 import { FormError } from '#components/form-elements/';
 import DisplayTable, { SortHeader, FilterHeader } from '#components/display-table';
+import { isoDate } from '#utils/format';
 
 function PerAccount (props) {
   const { strings } = useContext(LanguageContext);
@@ -61,7 +62,7 @@ function PerAccount (props) {
     ? formList.map(form => ({
       id: form.id,
       country: form.country?.name,
-      updatedDate: form.updated_at,
+      updatedDate: isoDate(form.updated_at),
       assessmentNumber: 1, // TODO: get assessmentNumber into the response or calc somehow
       formsIncluded: 'asd', // TODO: get these as well, based on which have been created
       link: {
@@ -71,16 +72,15 @@ function PerAccount (props) {
               ? (
                 <Link
                   className='button button--xsmall button--primary-filled per__list__button'
-                  to={`/per-assessment/${form.id}/edit`}
+                  to={`/per-assessment/${form.id}/edit#overview`}
                 >
                   <Translate stringId='perDraftEdit' />
                 </Link>
               ) 
               : null }
-            
             <Link
               className='button button--xsmall button--primary-bounded per__list__button'
-              to={`/per-assessment/${form.id}`}
+              to={`/per-assessment/${form.id}#overview`}
             >
               <Translate stringId='perdocumentView' />
             </Link>
@@ -94,14 +94,14 @@ function PerAccount (props) {
   return (
     <React.Fragment>
       <div className='container-lg new-assessment-button'>
-      <div className='text-center'>
-        <Link
-          to={'/per-assessment/create#overview'}
-          className='button button--medium button--primary-filled'
-        >
-          <Translate stringId='perAccountNewAssessment'/>
-        </Link>
-      </div>
+        <div className='text-center'>
+          <Link
+            to={'/per-assessment/create#overview'}
+            className='button button--medium button--primary-filled'
+          >
+            <Translate stringId='perAccountNewAssessment'/>
+          </Link>
+        </div>
       </div>
 
       <div className='container-lg'>
@@ -111,30 +111,30 @@ function PerAccount (props) {
           </figcaption>
           { !ovFetching && ovFetched
             ? (
-            <React.Fragment>
-              <div className='col col-4-sm mt-gs'>
-                <div className='form__group'>
-                  <Select
-                    name='country'
-                    value={country}
-                    placeholder={strings.perAccountSelectCountryPlaceholder}
-                    onChange={(e) => setCountry(e?.value)}
-                    options={props.countries.map(country => ({ value: country.value, label: country.label }))}
-                  />
-                  <FormError
-                    errors={[]}
-                    property='country'
-                  />
+              <React.Fragment>
+                <div className='col col-4-sm mt-gs'>
+                  <div className='form__group'>
+                    <Select
+                      name='country'
+                      value={country}
+                      placeholder={strings.perAccountSelectCountryPlaceholder}
+                      onChange={(e) => setCountry(e?.value)}
+                      options={props.countries.map(country => ({ value: country.value, label: country.label }))}
+                    />
+                    <FormError
+                      errors={[]}
+                      property='country'
+                    />
+                  </div>
                 </div>
-              </div>
-              <DisplayTable
-                headings={headings}
-                rows={rows}
-                showHeader={true}
-                noPaginate={true}
-                className='table per-table--border-bottom'
-              />
-            </React.Fragment>
+                <DisplayTable
+                  headings={headings}
+                  rows={rows}
+                  showHeader={true}
+                  noPaginate={true}
+                  className='table per-table--border-bottom'
+                />
+              </React.Fragment>
             )
             : null }
         </figure>

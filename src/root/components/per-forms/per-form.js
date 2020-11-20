@@ -15,7 +15,6 @@ import {
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 
-import App from './app';
 import Fold from '#components/fold';
 import BreadCrumb from '#components/breadcrumb';
 import { Helmet } from 'react-helmet';
@@ -31,30 +30,24 @@ import { showAlert } from '#components/system-alerts';
 function PerForm (props) {
   const { strings } = useContext(LanguageContext);
   const [questionsState, setQuestionsState] = useState({});
-  const [areaId, setAreaId] = useState();
   const [comment, setComment] = useState();
   const [title, setTitle] = useState(strings.perdocumentArea);
   const {
     _getPerForm,
-    _getPerForms,
     _updatePerForm,
     _resetPerState,
-    _getPerAreas,
     _getPerQuestions
   } = props;
-  const formIdFromPath = props.match.params.form_id; // only present for existing forms
+  const form = props.form;
   const isEdit = !!props.isEdit;
 
   const editable = useMemo(() => {
     let isedi = false;
-
-    const pfs = props.perForm.getPerForms;
-    if (!pfs.fetching && pfs.fetched && pfs.data) {
-      isedi = !pfs.data.results[0].overview?.is_finalized && isEdit;
+    if (form) {
+      isedi = form.overview?.is_finalized && isEdit;
     }
-
     return isedi;
-  }, [isEdit, props.perForm.getPerForms]);
+  }, [isEdit, form]);
 
   function changeQuestionsState (e, question, isRadio) {
     let modifiedState = questionsState;
@@ -72,7 +65,7 @@ function PerForm (props) {
     e.preventDefault();
 
     _updatePerForm({
-      'id': formIdFromPath,
+      'id': form.id,
       'user_id': props.user.id,
       'questions': questionsState,
       'comment': comment
@@ -93,53 +86,22 @@ function PerForm (props) {
     }
   }, [props.perForm.createPerForm, props.perForm.updatePerForm, _resetPerState, props.history]);
 
+    // FIXME: _getPerForm firing 2 times
   useEffect(() => {
-    if (areaId) {
-      _getPerAreas(areaId);
-    }
-  }, [_getPerAreas, areaId]);
-
-    // FIXME: _getPerForm and _getPerForms firing 2 times
-  useEffect(() => {
-    if (areaId) {
-      _getPerQuestions(areaId);
+    if (form) {
+      _getPerQuestions(form.area.id);
+      _getPerForm(form.id);
+      setComment(form.comment);
+      setTitle(`Area ${form.area.area_num} - ${form.area.title}`);
       showGlobalLoading();
     }
-
-    if (formIdFromPath) {
-      // Edit Form
-      _getPerForm(formIdFromPath);
-      _getPerForms(formIdFromPath);
-      showGlobalLoading();
-    }
-  }, [_getPerQuestions, areaId, _getPerForm, _getPerForms, formIdFromPath]);
-
-  useEffect(() => {
-    const pa = props.perAreas;
-    if (!pa.fetching && pa.fetched && pa.data) {
-      const res = pa.data.results[0];
-      setTitle(`${strings.perdocumentArea} ${res.area_num}: ${res.title}`);
-      hideGlobalLoading();
-    }
-  }, [props.perAreas, strings.perdocumentArea]);
-
-  // Use PER Form
-  useEffect(() => {
-    const pfs = props.perForm.getPerForms;
-    if (!pfs.fetching && pfs.fetched && pfs.data) {
-      const res = pfs.data.results[0];
-      if (res.area) {
-        setAreaId(res.area.id);
-      }
-      setComment(res.comment);
-      hideGlobalLoading();
-    }
-  }, [props.perForm.getPerForms]);
-
+  }, [_getPerQuestions, _getPerForm, form]);
+console.log(props.perQuestions);
   // Use PER FormData
   useEffect(() => {
     const pf = props.perForm.getPerForm;
-    if (!pf.fetching && pf.fetched && pf.data) {
+    const pq = props.perQuestions;
+    if (!pf.fetching && pf.fetched && pf.data && !pq.fetching && pq.fetched && pq.data) {
       let questionsDict = {};
       pf.data.results.forEach((fd) => {
         questionsDict[fd.question_id] = {
@@ -150,31 +112,14 @@ function PerForm (props) {
       setQuestionsState(questionsDict);
       hideGlobalLoading();
     }
-  }, [props.perForm.getPerForm]);
+  }, [props.perForm.getPerForm, props.perQuestions]);
+
   const groupedQuestionList = useMemo(() => {
     return props.groupedPerQuestions || [];
   }, [props.groupedPerQuestions]);
 
-  const crumbs = [
-    {link: props.location.pathname, name: title},
-    {link: '/account', name: strings.breadCrumbAccount},
-    {link: '/', name: strings.breadCrumbHome}
-  ];
-
   return (
-    <App className='page--per-form'>
-      <section className='inpage'>
-        <Helmet>
-          <title>{strings.perFormTitle}</title>
-        </Helmet>
-        <div className='container-lg'>
-          <div className='row flex-sm'>
-            <div className='col col-6-sm col-7-mid'>
-              <BreadCrumb breadcrumbContainerClass='padding-reset' crumbs={ crumbs } />
-            </div>
-          </div>
-          <section className='inpage__body'>
-            <div className='inner'>
+
               <Fold title={title} foldWrapperClass='fold--main' foldTitleClass='margin-reset'>
                 <FormTextarea
                   label='Comment'
@@ -260,11 +205,7 @@ function PerForm (props) {
                   )
                   : null }
               </Fold>
-            </div>
-          </section>
-        </div>
-      </section>
-    </App>
+
   );
 }
 

@@ -13,6 +13,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import TabContent from '#components/tab-content';
 // import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import PerForm from '#components/per-forms/per-form';
 import PerOverview from '#components/per-forms/per-overview';
 
 import {
@@ -27,43 +28,21 @@ import {
 } from '#actions';
 import { nsDropdownSelector } from '#selectors';
 
-import {
-  FormInput,
-  FormCheckbox,
-  FormError
-} from '#components/form-elements/';
-import Select from 'react-select';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 import { showAlert } from '#components/system-alerts';
 
 function PerAssessment (props) {
   const { strings } = useContext(LanguageContext);
 
-  //let tabs = [
-    //{ title: strings.perAccountOverview, hash: '#overview' }
-  //];
-
   const idFromPath = props.match.params.id;
   const isEdit = !!props.isEdit;
   const isCreate = !!props.isCreate;
-  const editable = useMemo(() => {
-    let isedi = false;
-    if (isCreate) {
-      isedi = true;
-    } else {
-      const of = props.perForm.getPerOverviewForm;
-      if (!of.fetching && of.fetched && of.data) {
-        isedi = !of.data.results[0].is_finalized && isEdit;
-      }
-    }
-    return isedi;
-  }, [isEdit, isCreate, props.perForm.getPerOverviewForm]);
+  let isEpi = false; // FIXME: get from Overview
+
   const {
-    _getAssessmentTypes,
     _getPerAreas,
     _getPerOverviewFormStrict,
     _getPerForms,
-    _resetPerState
   } = props;
 
   function handleTabChange (index) {
@@ -72,114 +51,81 @@ function PerAssessment (props) {
     props.history.replace(`${url}${tabHashArray[index]}`);
   }
 
-
-  // Get PER Areas and fill up the links array with them
   useEffect(() => {
     _getPerAreas();
   }, [_getPerAreas]);
 
+  useEffect(() => {
+    // Basically if it's not Create
+    if (idFromPath) {
+      _getPerOverviewFormStrict(null, idFromPath);
+      _getPerForms(null, idFromPath);
+      showGlobalLoading();
+    }
+  }, [_getPerOverviewFormStrict, _getPerForms, idFromPath]);
+
+  const [formsFetching, formsFetched, formsData] = useMemo(() => {
+    return [
+      props.perForm.getPerForms.fetching,
+      props.perForm.getPerForms.fetched,
+      props.perForm.getPerForms.data
+    ];
+  }, [props.perForm.getPerForms]);
 
   const tabs = useMemo(() => {
     let tabList = [{ title: strings.perAccountOverview, hash: '#overview' }];
-    console.log(tabList);
+
     if (isCreate && !props.perAreas.fetching && props.perAreas.fetched) {
       props.perAreas.data.results.forEach(
         area => tabList.push({ title: `Area ${area.area_num}`, hash: `#area-${area.area_num}`})
       );
-    }
-    console.log(props.perAreas.data);
-    return tabList;
-  }, [props.perAreas, isCreate]);
-
-
-  const formAreas = useMemo(() => {
-    const pfs = props.perForm.getPerForms;
-    if (!pfs.fetching && pfs.fetched && pfs.data) {
-      return pfs.data.results.map(form => ({
-        link: `/per-form/${form.id}`,
-        title: `${strings.perdocumentArea} ${form.area.area_num}`,
-        subtitle: form.area.title
-      }));
-    } else if (isCreate && !props.perAreas.fetching && props.perAreas.fetched && props.perAreas.data) {
-      props.perAreas.data.results.forEach(
-        area => tabs.push({ title: `Area ${area.area_num}`, hash: `#area-${area.area_num}`})
+    } else if (!formsFetching && formsFetched && formsData) {
+      formsData.results.forEach(
+        form => tabList.push({
+          title: `Area ${form.area.area_num}`,
+          hash: `#area-${form.area.area_num}`
+        })
       );
-      return props.perAreas.data.results.map(area => ({
-        title: `${strings.perdocumentArea} ${area.area_num}`,
-        subtitle: area.title
-      }));
     }
+    return tabList;
+  }, [props.perAreas, isCreate, strings.perAccountOverview, formsFetching, formsFetched, formsData]);
 
-    return [];
-  }, [props.perAreas, strings.perdocumentArea, props.perForm.getPerForms, isCreate]);
+  // const formAreas = useMemo(() => {
+  //   const pfs = props.perForm.getPerForms;
+  //   if (!pfs.fetching && pfs.fetched && pfs.data) {
+  //     return pfs.data.results.map(form => ({
+  //       link: `/per-form/${form.id}`,
+  //       title: `${strings.perdocumentArea} ${form.area.area_num}`,
+  //       subtitle: form.area.title
+  //     }));
+  //   } else if (isCreate && !props.perAreas.fetching && props.perAreas.fetched && props.perAreas.data) {
+  //     props.perAreas.data.results.forEach(
+  //       area => tabs.push({ title: `Area ${area.area_num}`, hash: `#area-${area.area_num}`})
+  //     );
+  //     return props.perAreas.data.results.map(area => ({
+  //       title: `${strings.perdocumentArea} ${area.area_num}`,
+  //       subtitle: area.title
+  //     }));
+  //   }
 
-  // Create, update, delete actions
+  //   return [];
+  // }, [props.perAreas, strings.perdocumentArea, props.perForm.getPerForms, isCreate]);
+
+
+
   useEffect(() => {
-    const cpo = props.perForm.createPerOverview;
-    if (!cpo.fetching && cpo.fetched && cpo.data) {
+    const overviews = props.perForm.getPerOverviewForm;
+    const forms = props.perForm.getPerForms;
+    if (!isCreate
+      && !overviews.fetching
+      && overviews.fetched
+      && overviews.data
+      && !forms.fetching
+      && forms.fetched
+      && forms.data) {
       hideGlobalLoading();
-      if (cpo.data.status === 'ok') {
-        showAlert('success', <p><Translate stringId="perOverviewAlertCreated" /></p>, true, 2000);
-        setTimeout(() => props.history.push(`/per-overview/${cpo.data.overview_id}/edit`), 2000);
-        _resetPerState();
-      } else if (cpo.error) {
-        showAlert('danger', <p><Translate stringId="perOverviewAlertCreated" /></p>, true, 2000);
-      }
     }
-    const upo = props.perForm.updatePerOverview;
-    if (!upo.fetching && upo.fetched && upo.data) {
-      hideGlobalLoading();
-      if (upo.data.status === 'ok') {
-        showAlert('success', <p><Translate stringId="perOverviewAlertUpdated" /></p>, true, 2000);
-        setTimeout(() => props.history.push(`/account#per-forms`), 2000);
-        _resetPerState();
-      } else if (upo.error) {
-        showAlert('danger', <p><Translate stringId="perOverviewAlertUpdated" /></p>, true, 2000);
-      }
-    }
-    const dpo = props.perForm.deletePerOverview;
-    if (!dpo.fetching && dpo.fetched && dpo.data) {
-      hideGlobalLoading();
-      if (dpo.data.status === 'ok') {
-        showAlert('success', <p><Translate stringId="perOverviewAlertDeleted" /></p>, true, 2000);
-        setTimeout(() => props.history.push(`/account#per-forms`), 2000);
-        _resetPerState();
-      } else if (dpo.error) {
-        showAlert('danger', <p><Translate stringId="perOverviewAlertDeleted" /></p>, true, 2000);
-      }
-    }
-  }, [
-    props.perForm.createPerOverview,
-    props.perForm.updatePerOverview,
-    props.perForm.deletePerOverview,
-    _resetPerState,
-    props.history
-  ]);
-
-  useEffect(() => {
-    _getAssessmentTypes();
-  }, [_getAssessmentTypes]);
-
-  useEffect(() => {
-    if (idFromPath) {
-      _getPerOverviewFormStrict(null, idFromPath);
-      showGlobalLoading();
-    }
-  }, [_getPerOverviewFormStrict, idFromPath]);
-
-  useEffect(() => {
-    if (idFromPath) {
-      _getPerForms(null, idFromPath);
-    }
-  }, [_getPerForms, idFromPath]);
-
-  const assessmentTypes = useMemo(() => {
-    const ats = props.perForm.assessmentTypes;
-    if (ats.data && !ats.fetching && ats.fetched) {
-      return ats.data.results.map(res => ({ value: res.id, label: res.name }));
-    }
-    return [];
-  }, [props.perForm.assessmentTypes]);
+  }, [props.perForm.getPerOverviewForm, props.perForm.getPerForms, isCreate]);
 
   return (
     <App className='page--per-form'>
@@ -195,7 +141,7 @@ function PerAssessment (props) {
               >
                 <TabList>
                   { tabs.map((tab, idx) => (
-                    <Tab key={tab.title} disabled={isCreate && idx !== 0 ? true : false}>{tab.title}</Tab>
+                    <Tab key={tab.title} disabled={(isCreate && idx !== 0) ? true : false}>{tab.title}</Tab>
                   ))}
                 </TabList>
 
@@ -203,19 +149,32 @@ function PerAssessment (props) {
                   <div className='inner'>
                     <TabPanel>
                       <TabContent>
-                        <div className='container-lg'>
-                          <PerOverview />
-                        </div>
+                        <PerOverview idFromPath={idFromPath} isCreate={isCreate} isEdit={isEdit} />
                       </TabContent>
                     </TabPanel>
-                    { tabs.map(tab => (
-                      <TabPanel>
+                    { formsData?.results ? formsData.results.map(form => (
+                      <TabPanel key={form.id}>
                         <TabContent>
-                          {/* TODO: Each Area's tab if !isCreate */}
-                          <div>asd</div>
+                          { isCreate
+                            ? null
+                            : (
+                              <PerForm form={form} formId={form.id} isCreate={isCreate} isEdit={isEdit} isEpi={isEpi} />
+                            )}
                         </TabContent>
                       </TabPanel>
-                    ))}
+                    )) : null }
+
+                    {/* { tabs.slice(1).map(tab => (
+                      <TabPanel key={tab.title}>
+                        <TabContent>
+                          { isCreate
+                            ? null
+                            : (
+                              <PerForm />
+                            )}
+                        </TabContent>
+                      </TabPanel>
+                    ))} */}
                     {/* <TabPanel>
                       <TabContent>
                         <div className='container-lg'>

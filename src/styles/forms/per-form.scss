@@ -197,3 +197,49 @@
   padding-top: $global-spacing * 2;
   padding-bottom: $global-spacing * 3;
 }
+
+.form__group__per  {
+  @include form__group;
+  background-color: #fff;
+  margin-bottom: 0;
+  padding-top: 0.9rem;
+  padding-bottom: 0.8rem;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  @include row;
+
+  > .form__group__wrap {
+    @include row;
+
+    @include media(medium-up) {
+      @include flex;
+    }
+
+    > .form__inner-header {
+      display: block;
+      @include col;
+
+      @include media(medium-up) {
+        @include col(30%);
+      }
+    }
+
+    > .form__inner-body {
+      @include col;
+
+      @include media(medium-up) {
+        @include col(70%);
+      }
+    }
+  }
+
+  .form__option--custom-radio {
+    .form__option__text {
+      font-weight: $base-font-regular;
+    }
+  }
+}
+
+.per-chart {
+  margin-bottom: 1.5rem;
+}
