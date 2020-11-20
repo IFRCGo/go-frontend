@@ -10,34 +10,40 @@ export default class VideoCarousel2 extends React.Component {
     const videoLinks = [
       {
         'id': 1,
-        'embedID': 'https://www.youtube.com/embed/E1TuUEEMBRM',
-        'heading': strings.videoCarouselHeading1,
-        'subHeading': strings.videoCarouselSubHeading1,
+        'embedID': 'https://www.youtube.com/embed/RzP9jZqt-Zk',
+        'heading': strings.videoCarouselHeadingTranslations,
+        'subHeading': strings.videoCarouselSubHeadingTranslations
       },
       {
         'id': 2,
-        'embedID': 'https://www.youtube.com/embed/QiDwKVr5pxg',
-        'heading': strings.videoCarouselHeading2,
-        'subHeading': strings.videoCarouselSubHeading2,
+        'embedID': 'https://www.youtube.com/embed/E1TuUEEMBRM',
+        'heading': strings.videoCarouselHeading3W,
+        'subHeading': strings.videoCarouselSubHeading3W,
       },
       {
         'id': 3,
-        'embedID': 'https://www.youtube.com/embed/adBR-U26XZs',
-        'heading': strings.videoCarouselHeading3,
-        'subHeading': strings.videoCarouselSubHeading3,
+        'embedID': 'https://www.youtube.com/embed/QiDwKVr5pxg',
+        'heading': strings.videoCarouselHeading3WInstructional,
+        'subHeading': strings.videoCarouselSubHeading3WInstructional,
       },
       {
         'id': 4,
-        'embedID': 'https://www.youtube.com/embed/JAQ_yixX57A',
-        'heading': strings.videoCarouselHeading4,
-        'subHeading': strings.videoCarouselSubHeading4,
+        'embedID': 'https://www.youtube.com/embed/adBR-U26XZs',
+        'heading': strings.videoCarouselHeadingFieldReport,
+        'subHeading': strings.videoCarouselSubHeadingFieldReport,
       },
       {
         'id': 5,
-        'embedID': 'https://www.youtube.com/embed/wEz70tcwWx8',
-        'heading': strings.videoCarouselHeading5,
-        'subHeading': strings.videoCarouselSubHeading5,
+        'embedID': 'https://www.youtube.com/embed/JAQ_yixX57A',
+        'heading': strings.videoCarouselHeadingPER,
+        'subHeading': strings.videoCarouselSubHeadingPER,
       },
+      {
+        'id': 6,
+        'embedID': 'https://www.youtube.com/embed/wEz70tcwWx8',
+        'heading': strings.videoCarouselHeadingSubscribe,
+        'subHeading': strings.videoCarouselSubHeadingSubscribe,
+      }
     ];
 
     const videoLinkItems = videoLinks.map((videoLink) =>
