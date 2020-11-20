@@ -146,8 +146,13 @@ export default {
   regionContacts: 'Contacts',
   regionOperationsTab: 'Operations',
   region3WTab: '3w',
+  regionProfileTab: 'Regional Profile',
   regionPreparednessTab: 'Preparedness',
   regionAdditionalInfoTab: 'Additional Information',
+
+  regionalTabBox1: 'National Societies in Africa',
+  regionalTabBox2: 'National Country Clusters',
+  regionalTabBoxSource: 'Source: IFRC',
 
   alertTableAlertTypeFact: 'FACT',
   alertTableAlertTypeSims: 'SIMS',

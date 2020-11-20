@@ -93,7 +93,7 @@ class _Links extends React.Component {
     if (data.links && !data.links.length) return null;
     return (
       <Fold id='links' title={strings.linksTitle} foldWrapperClass='links' foldTitleClass='margin-reset'>
-        <ul className='links-list'>
+        <ul className='links-list row flex'>
           {
             data.links.map(function (o) {
               // If data.links[i] has property show_in_go, then turn it into a link that will

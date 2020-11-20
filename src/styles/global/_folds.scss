@@ -101,14 +101,12 @@
 
 .links-list {
   list-style: none;
-  @include column(12/12);
   li {
-    @include column(12/12);
-    @include media(small-up) {
-      @include column(6/12);
+    @include media(small) {
+      @include col(50%);
     }
-    @include media(medium-up) {
-      @include column(3/12);
+    @include media(medium) {
+      @include col(33.33%);
     }
   }
 }

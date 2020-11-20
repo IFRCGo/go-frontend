@@ -69,6 +69,8 @@ class AdminArea extends SFPComponent {
     this.TAB_DETAILS = [
       { title: context.strings.regionOperationsTab, hash: '#operations' },
       { title: context.strings.region3WTab, hash: '#3w' },
+      { title: context.strings.regionProfileTab, hash: '#regional-profile' },
+      { title: context.strings.regionPreparednessTab, hash: '#preparedness' },
       { title: context.strings.regionAdditionalInfoTab, hash: '#additional-info' }
     ];
 
@@ -320,17 +322,34 @@ class AdminArea extends SFPComponent {
                   </TabContent>
                 </TabPanel>
                 <TabPanel>
-                  <TabContent isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage={ strings.noDataMessage } title={strings.regionKeyFigures}>
-                    <KeyFigures data={this.props.keyFigures} />
-                  </TabContent>
-                  <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ strings.noDataMessage } title={strings.regionGraphics}>
-                    <Snippets data={this.props.snippets} />
+                  <TabContent>
+                    <div className='container-sm margin-2-v'>
+                      <div className='row flex'>
+                        <div className='col col-12 col-6-sm margin-v'>
+                          <div className='regional-profile-key'>
+                            <div className='sumstats__value'>54</div>
+                            <div className='text-uppercase'>{strings.regionalTabBox1}</div>
+                            <div className='font-size-sm'>{strings.regionalTabBoxSource}</div>
+                          </div>
+                        </div>
+                        <div className='col col-12 col-6-sm margin-v'>
+                          <div className='regional-profile-key'>
+                            <div className='sumstats__value'>5</div>
+                            <div className='text-uppercase'>{strings.regionalTabBox2}</div>
+                            <div className='font-size-sm'>{strings.regionalTabBoxSource}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </TabContent>
                   <TabContent isError={!get(data, 'links.length')} errorMessage={ strings.noDataMessage } title={strings.regionLinks}>
                     {
                       this.state.regionAdditionalInfoTabIframe 
-                      ? <div>
-                        <button>BACK</button>
+                      ? 
+                      <div>
+                        <div className='container-lg'>
+                          <button className='button button--primary-filled button--small button-iframe-regional-profile'>BACK</button>
+                        </div>
                         <iframe src={this.state.regionAdditionalInfoTabIframe} frameBorder='0' width='100%' height='800px'></iframe>
                       </div>
                       : <Links data={this.addClickHandler(data, this.onAdditionalLinkClickAction)} />
@@ -338,6 +357,19 @@ class AdminArea extends SFPComponent {
                   </TabContent>
                   <TabContent showError={true} isError={!get(data, 'contacts.length')} errorMessage={ strings.noDataMessage } title={strings.regionContacts}>
                     <Contacts data={data} />
+                  </TabContent>
+                </TabPanel>
+                <TabPanel>
+                  <TabContent>
+                    
+                  </TabContent>
+                </TabPanel>
+                <TabPanel>
+                  <TabContent isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage={ strings.noDataMessage } title={strings.regionKeyFigures}>
+                    <KeyFigures data={this.props.keyFigures} />
+                  </TabContent>
+                  <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ strings.noDataMessage } title={strings.regionGraphics}>
+                    <Snippets data={this.props.snippets} />
                   </TabContent>
                 </TabPanel>
               </div>

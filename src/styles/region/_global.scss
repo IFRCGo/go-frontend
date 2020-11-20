@@ -25,6 +25,10 @@
     padding: 0;
   }
 
+  #contacts {
+    box-shadow: none;
+  }
+
   .region-countries__letter {
     color: $primary-color;
     font-weight: $base-font-bold;
@@ -622,4 +626,16 @@
       padding-right: $spacing-5;
     }
   }
+}
+
+.regional-profile-key {
+  background-color: $grey-mist;
+  text-align: center;
+  width: 100%;
+  padding: $spacing-2;
+}
+
+.button-iframe-regional-profile {
+  position: sticky;
+  top: 0;
 }
