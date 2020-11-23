@@ -629,10 +629,37 @@
 }
 
 .regional-profile-key {
-  background-color: $grey-mist;
-  text-align: center;
+  background-color: #fff;
+  border: 1px solid $grey-mist;
+  box-shadow: $base-box-shadow;
+  border-radius: $base-border-radius;
+  padding: $global-spacing;
   width: 100%;
   padding: $spacing-2;
+}
+
+.regional-profile-key-block {
+  align-items: baseline;
+}
+
+.regional-profile-subtitle {
+  font-weight: $base-font-medium;
+  position: relative;
+  top: -2px;
+}
+
+.regional-profile-icon-block {
+  align-items: flex-end;
+  margin-top: $spacing;
+}
+
+.regional-profile-icon-col {
+  margin-left: auto;
+}
+
+.regional-profile-source {
+  color: $grey-platinum;
+  font-size: $font-size-sm;  
 }
 
 .button-iframe-regional-profile {

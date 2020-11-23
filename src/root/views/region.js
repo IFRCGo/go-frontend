@@ -323,20 +323,46 @@ class AdminArea extends SFPComponent {
                 </TabPanel>
                 <TabPanel>
                   <TabContent>
-                    <div className='container-sm margin-2-v'>
-                      <div className='row flex'>
-                        <div className='col col-12 col-6-sm margin-v'>
+                    <div className='container-mid margin-2-v spacing-2-h'>
+                      <div className='row-lg flex'>
+                        <div className='col-lg col-12 col-6-xs margin-v'>
                           <div className='regional-profile-key'>
-                            <div className='sumstats__value'>54</div>
-                            <div className='text-uppercase'>{strings.regionalTabBox1}</div>
-                            <div className='font-size-sm'>{strings.regionalTabBoxSource}</div>
+                            <div className='row flex regional-profile-key-block'>
+                              <div className='col'>
+                                <div className='sumstats__value'>54</div>
+                              </div>
+                              <div className='col'>
+                                <div className='regional-profile-subtitle'>{strings.regionalTabBox1}</div>
+                              </div>
+                            </div>
+                            <div className='row flex regional-profile-icon-block'>
+                              <div className='col'>
+                                <div className='regional-profile-source'>{strings.regionalTabBoxSource}</div>
+                              </div>
+                              <div className='col regional-profile-icon-col'>
+                                <img src='/assets/graphics/layout/eru-brand.svg' />
+                              </div>
+                            </div>
                           </div>
                         </div>
-                        <div className='col col-12 col-6-sm margin-v'>
-                          <div className='regional-profile-key'>
-                            <div className='sumstats__value'>5</div>
-                            <div className='text-uppercase'>{strings.regionalTabBox2}</div>
-                            <div className='font-size-sm'>{strings.regionalTabBoxSource}</div>
+                        <div className='col-lg col-12 col-6-xs margin-v'>
+                          <div className='sumstat__item regional-profile-key'>
+                            <div className='row flex regional-profile-key-block'>
+                              <div className='col'>
+                                <div className='sumstats__value'>5</div>
+                              </div>
+                              <div className='col'>
+                                <div className='regional-profile-subtitle'>{strings.regionalTabBox2}</div>
+                              </div>
+                            </div>
+                            <div className='row flex regional-profile-icon-block'>
+                              <div className='col'>
+                                <div className='regional-profile-source'>{strings.regionalTabBoxSource}</div>
+                              </div>
+                              <div className='col regional-profile-icon-col'>
+                                <img src='/assets/graphics/layout/eru-brand.svg' />
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
