@@ -109,6 +109,18 @@
       @include col(33.33%);
     }
   }
+
+  a {
+    font-weight: 500;
+    display: block;
+    margin: 0 0 $spacing 0;
+  }
+}
+
+.icon-links-list {
+  font-size: $font-size-xxs;
+  font-weight: $base-font-bold;
+  padding: 0 0 0 $spacing-half;
 }
 
 .fold__header__block {

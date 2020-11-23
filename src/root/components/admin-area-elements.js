@@ -99,9 +99,13 @@ class _Links extends React.Component {
               // If data.links[i] has property show_in_go, then turn it into a link that will
               // send the object data back to the parent
               if ('onClick' in o) {
-                return <li key={o.id} onClick={() => o.onClick(o)}><a className='link--external'>{o.title}</a> </li>;
+                return <li key={o.id} onClick={() => o.onClick(o)}><a>{o.title}
+                  <span className='collecticon-chevron-right icon-links-list'></span>
+                </a></li>;
               } else {
-                return <li key={o.id}><a href={o.url} className='link--external'>{o.title}</a> </li>;
+                return <li key={o.id}><a href={o.url}>{o.title}
+                  <span className='collecticon-chevron-right icon-links-list'></span>
+                </a></li>;
               }
             })
           }
