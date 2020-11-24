@@ -101,12 +101,20 @@
 
 .links-list {
   list-style: none;
+
+  @include media(xsmall) {
+    display: flex;
+  }
+
   li {
+    display: block;
+
     @include media(small) {
-      @include col(50%);
+      width: 50%;
     }
+
     @include media(medium) {
-      @include col(33.33%);
+      width: 33.33%;
     }
   }
 

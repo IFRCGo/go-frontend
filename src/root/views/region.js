@@ -340,7 +340,7 @@ class AdminArea extends SFPComponent {
                                 <div className='regional-profile-source'>{strings.regionalTabBoxSource}</div>
                               </div>
                               <div className='col regional-profile-icon-col'>
-                                <img src='/assets/graphics/layout/eru-brand.svg' />
+                                <img src='/assets/graphics/content/2020/IFRC-icons-colour_Affected-people.svg' />
                               </div>
                             </div>
                           </div>
@@ -360,7 +360,7 @@ class AdminArea extends SFPComponent {
                                 <div className='regional-profile-source'>{strings.regionalTabBoxSource}</div>
                               </div>
                               <div className='col regional-profile-icon-col'>
-                                <img src='/assets/graphics/layout/eru-brand.svg' />
+                                <img src='/assets/graphics/content/2020/IFRC-icons-colour_Affected-people.svg' />
                               </div>
                             </div>
                           </div>
