@@ -117,6 +117,8 @@ class AdminArea extends SFPComponent {
       data.links = data.links.map(link => {
         if (link.show_in_go) {
           return Object.assign({}, link, { onClick: clickHandler });
+        } else {
+          return link;
         }
       });
     }
@@ -196,7 +198,6 @@ class AdminArea extends SFPComponent {
       error,
       data
     } = this.props.adminArea;
-    console.log('region', data);
     const regionId = data.id;
     const { regions, thisRegion } = this.props;
 
