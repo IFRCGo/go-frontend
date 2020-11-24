@@ -71,8 +71,8 @@ class AdminArea extends SFPComponent {
       { title: context.strings.regionOperationsTab, hash: '#operations' },
       { title: context.strings.region3WTab, hash: '#3w' },
       { title: context.strings.regionProfileTab, hash: '#regional-profile' },
-      { title: context.strings.regionPreparednessTab, hash: '#preparedness' },
-      { title: context.strings.regionAdditionalInfoTab, hash: '#additional-info' }
+      // { title: context.strings.regionPreparednessTab, hash: '#preparedness' },
+      // { title: context.strings.regionAdditionalInfoTab, hash: '#additional-info' }
     ];
 
   }
@@ -202,6 +202,24 @@ class AdminArea extends SFPComponent {
     const { regions, thisRegion } = this.props;
 
     if (!fetched || error) return null;
+    const { strings } = this.context;
+
+    const additionalTabName = data.additional_tab_name ? data.additional_tab_name : strings.regionAdditionalInfoTab;
+    
+    const tabDetails = [...this.TAB_DETAILS];
+    // Add Preparedness Tab only if Preparedness Snippets exist
+    if (data.preparedness_snippets.length > 0) {
+      tabDetails.push({
+        title: strings.regionPreparednessTab,
+        hash: '#preparedness'
+      });
+    }
+
+    // Add Additional Tab with custom name, FIXME: dont add if no data
+    tabDetails.push({
+      title: additionalTabName,
+      hash: '#additional-info'
+    });
 
     const presentationClass = c({
       'presenting fold--stats': this.state.fullscreen,
@@ -213,22 +231,21 @@ class AdminArea extends SFPComponent {
     const activeOperations = get(this.props.appealStats, 'data.results.length', false);
 
     const handleTabChange = index => {
-      const tabHashArray = this.TAB_DETAILS.map(({ hash }) => hash);
+      const tabHashArray = tabDetails.map(({ hash }) => hash);
       const url = this.props.location.pathname;
       this.props.history.replace(`${url}${tabHashArray[index]}`);
     };
-    const hashes = this.TAB_DETAILS.map(t => t.hash);
+    const hashes = tabDetails.map(t => t.hash);
     const selectedIndex = hashes.indexOf(this.props.location.hash) !== -1 ? hashes.indexOf(this.props.location.hash) : 0;
-    const { strings } = this.context;
 
     const foldLink = (
       <Link className='fold__title__link' to={'/appeals/all?region=' + data.id}>{resolveToString(strings.regionAppealsTableViewAllText, { regionName: regionName })}</Link>
     );
-    const additionalTabName = data.additional_tab_name ? data.additional_tab_name : strings.regionAdditionalInfoTab;
-    const tabDetails = this.TAB_DETAILS.map(d => {
-      d.title = d.hash === '#additional-info' ? additionalTabName : d.title;
-      return d;
-    });
+
+    // const tabDetails = this.TAB_DETAILS.map(d => {
+    //   d.title = d.hash === '#additional-info' ? additionalTabName : d.title;
+    //   return d;
+    // });
     return (
       <section className='inpage'>
         <Helmet>
@@ -261,7 +278,7 @@ class AdminArea extends SFPComponent {
             onSelect={index => handleTabChange(index)}
           >
             <TabList>
-              {this.TAB_DETAILS.map(tab => (
+              {tabDetails.map(tab => (
                 <Tab key={tab.title}>{tab.title}</Tab>
               ))}
             </TabList>
@@ -404,11 +421,13 @@ class AdminArea extends SFPComponent {
                   </React.Fragment>)
                 }
                 </TabPanel>
-                <TabPanel>
+                { data.preparedness_snippets.length > 0 ?
+                (<TabPanel>
                   <TabContent>
                     <TitledSnippets snippets={data.preparedness_snippets} />
                   </TabContent>
-                </TabPanel>
+                </TabPanel>) : null }
+
                 <TabPanel>
                   <TabContent isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage={ strings.noDataMessage } title={strings.regionKeyFigures}>
                     <KeyFigures data={this.props.keyFigures} />
