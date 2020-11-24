@@ -39,6 +39,7 @@ import TimelineCharts from '#components/timeline-charts';
 import KeyFiguresHeader from '#components/common/key-figures-header';
 import {
   Snippets,
+  TitledSnippets,
   KeyFigures,
   Contacts,
   Links
@@ -114,8 +115,9 @@ class AdminArea extends SFPComponent {
   addClickHandler (data, clickHandler) {
     if (data.links && data.links.length) {
       data.links = data.links.map(link => {
-        if (true) //'show_in_go' in link) {
+        if (link.show_in_go) {
           return Object.assign({}, link, { onClick: clickHandler });
+        }
       });
     }
     return data;
@@ -124,6 +126,12 @@ class AdminArea extends SFPComponent {
   onAdditionalLinkClickAction (linkObject) {
     this.setState({
       regionAdditionalInfoTabIframe: linkObject.url
+    });
+  }
+
+  onIframeBackClick () {
+    this.setState({
+      regionAdditionalInfoTabIframe: false
     });
   }
 
@@ -188,7 +196,7 @@ class AdminArea extends SFPComponent {
       error,
       data
     } = this.props.adminArea;
-
+    console.log('region', data);
     const regionId = data.id;
     const { regions, thisRegion } = this.props;
 
@@ -215,7 +223,11 @@ class AdminArea extends SFPComponent {
     const foldLink = (
       <Link className='fold__title__link' to={'/appeals/all?region=' + data.id}>{resolveToString(strings.regionAppealsTableViewAllText, { regionName: regionName })}</Link>
     );
-
+    const additionalTabName = data.additional_tab_name ? data.additional_tab_name : strings.regionAdditionalInfoTab;
+    const tabDetails = this.TAB_DETAILS.map(d => {
+      d.title = d.hash === '#additional-info' ? additionalTabName : d.title;
+      return d;
+    });
     return (
       <section className='inpage'>
         <Helmet>
@@ -310,7 +322,7 @@ class AdminArea extends SFPComponent {
                       viewAll={'/emergencies/all?region=' + data.id}
                       viewAllText={resolveToString(strings.regionEmergenciesTableViewAllText, { regionName })}
                     />
-
+                    <TitledSnippets snippets={data.emergency_snippets} />
                   </TabContent>
                 </TabPanel>
                 <TabPanel>
@@ -322,72 +334,78 @@ class AdminArea extends SFPComponent {
                   </TabContent>
                 </TabPanel>
                 <TabPanel>
-                  <TabContent>
-                    <div className='container-mid margin-2-v spacing-2-h'>
-                      <div className='row-lg flex'>
-                        <div className='col-lg col-12 col-6-xs margin-v'>
-                          <div className='regional-profile-key'>
-                            <div className='row flex regional-profile-key-block'>
-                              <div className='col'>
-                                <div className='sumstats__value'>54</div>
+                  {
+                    this.state.regionAdditionalInfoTabIframe 
+                    ? 
+                    (<TabContent>
+                      <div className='container-lg'>
+                        <button className='button button--primary-filled button--small button-iframe-regional-profile' onClick={this.onIframeBackClick.bind(this)}>BACK</button>
+                      </div>
+                      <iframe src={this.state.regionAdditionalInfoTabIframe} frameBorder='0' width='100%' height='800px'></iframe>
+                    </TabContent>)
+                    :
+                  (<React.Fragment>
+                    <TabContent>
+                      <div className='container-mid margin-2-v spacing-2-h'>
+                        <div className='row-lg flex'>
+                          <div className='col-lg col-12 col-6-xs margin-v'>
+                            <div className='regional-profile-key'>
+                              <div className='row flex regional-profile-key-block'>
+                                <div className='col'>
+                                  <div className='sumstats__value'>54</div>
+                                </div>
+                                <div className='col'>
+                                  <div className='regional-profile-subtitle'>{strings.regionalTabBox1}</div>
+                                </div>
                               </div>
-                              <div className='col'>
-                                <div className='regional-profile-subtitle'>{strings.regionalTabBox1}</div>
-                              </div>
-                            </div>
-                            <div className='row flex regional-profile-icon-block'>
-                              <div className='col'>
-                                <div className='regional-profile-source'>{strings.regionalTabBoxSource}</div>
-                              </div>
-                              <div className='col regional-profile-icon-col'>
-                                <img src='/assets/graphics/content/2020/IFRC-icons-colour_Affected-people.svg' />
+                              <div className='row flex regional-profile-icon-block'>
+                                <div className='col'>
+                                  <div className='regional-profile-source'>{strings.regionalTabBoxSource}</div>
+                                </div>
+                                <div className='col regional-profile-icon-col'>
+                                  <img src='/assets/graphics/content/2020/IFRC-icons-colour_Affected-people.svg' />
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                        <div className='col-lg col-12 col-6-xs margin-v'>
-                          <div className='sumstat__item regional-profile-key'>
-                            <div className='row flex regional-profile-key-block'>
-                              <div className='col'>
-                                <div className='sumstats__value'>5</div>
+                          <div className='col-lg col-12 col-6-xs margin-v'>
+                            <div className='sumstat__item regional-profile-key'>
+                              <div className='row flex regional-profile-key-block'>
+                                <div className='col'>
+                                  <div className='sumstats__value'>5</div>
+                                </div>
+                                <div className='col'>
+                                  <div className='regional-profile-subtitle'>{strings.regionalTabBox2}</div>
+                                </div>
                               </div>
-                              <div className='col'>
-                                <div className='regional-profile-subtitle'>{strings.regionalTabBox2}</div>
-                              </div>
-                            </div>
-                            <div className='row flex regional-profile-icon-block'>
-                              <div className='col'>
-                                <div className='regional-profile-source'>{strings.regionalTabBoxSource}</div>
-                              </div>
-                              <div className='col regional-profile-icon-col'>
-                                <img src='/assets/graphics/content/2020/IFRC-icons-colour_Affected-people.svg' />
+                              <div className='row flex regional-profile-icon-block'>
+                                <div className='col'>
+                                  <div className='regional-profile-source'>{strings.regionalTabBoxSource}</div>
+                                </div>
+                                <div className='col regional-profile-icon-col'>
+                                  <img src='/assets/graphics/content/2020/IFRC-icons-colour_Affected-people.svg' />
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </TabContent>
-                  <TabContent isError={!get(data, 'links.length')} errorMessage={ strings.noDataMessage } title={strings.regionLinks}>
-                    {
-                      this.state.regionAdditionalInfoTabIframe 
-                      ? 
-                      <div>
-                        <div className='container-lg'>
-                          <button className='button button--primary-filled button--small button-iframe-regional-profile'>BACK</button>
-                        </div>
-                        <iframe src={this.state.regionAdditionalInfoTabIframe} frameBorder='0' width='100%' height='800px'></iframe>
-                      </div>
-                      : <Links data={this.addClickHandler(data, this.onAdditionalLinkClickAction)} />
-                    }
-                  </TabContent>
-                  <TabContent showError={true} isError={!get(data, 'contacts.length')} errorMessage={ strings.noDataMessage } title={strings.regionContacts}>
-                    <Contacts data={data} />
-                  </TabContent>
+                    </TabContent>
+                    <TitledSnippets snippets={data.profile_snippets} />
+                    <TabContent isError={!get(data, 'links.length')} title={strings.regionLinks} showError={false}>
+
+                        <Links data={this.addClickHandler(data, this.onAdditionalLinkClickAction)} />
+                      
+                    </TabContent>
+                    <TabContent showError={false} isError={!get(data, 'contacts.length')} title={strings.regionContacts}>
+                      <Contacts data={data} />
+                    </TabContent>
+                  </React.Fragment>)
+                }
                 </TabPanel>
                 <TabPanel>
                   <TabContent>
-                    
+                    <TitledSnippets snippets={data.preparedness_snippets} />
                   </TabContent>
                 </TabPanel>
                 <TabPanel>
@@ -407,7 +425,6 @@ class AdminArea extends SFPComponent {
   }
 
   render () {
-    console.log('rerender');
     const { strings } = this.context;
 
     return (

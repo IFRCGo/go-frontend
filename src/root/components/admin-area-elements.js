@@ -86,6 +86,23 @@ class _Snippets extends React.Component {
 }
 _Snippets.contextType = LanguageContext;
 
+class _TitledSnippets extends React.Component {
+  render () {
+    const { snippets } = this.props;
+    if (snippets.length === 0) {
+      return null;
+    }
+    return snippets.map(snippet => (
+      <Fold title={snippet.title} foldWrapperClass='additional-graphics' key={snippet.id}> 
+        <div className='iframe__container'>
+          <div className='snippet_item' key={snippet.id} dangerouslySetInnerHTML={{__html: snippet.snippet}} />
+        </div>
+      </Fold>      
+    ));
+  }
+}
+_TitledSnippets.contextType = LanguageContext;
+
 class _Links extends React.Component {
   render () {
     const { strings } = this.context;
@@ -121,9 +138,11 @@ if (environment !== 'production') {
   _Contacts.propTypes = { data: T.object };
   _Links.propTypes = { data: T.object };
   _Snippets.propTypes = { data: T.object };
+  _TitledSnippets.propTypes = { snippets: T.array };
 }
 
 export const KeyFigures = _KeyFigures;
 export const Contacts = _Contacts;
 export const Links = _Links;
 export const Snippets = _Snippets;
+export const TitledSnippets = _TitledSnippets;
