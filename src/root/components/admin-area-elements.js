@@ -86,6 +86,23 @@ class _Snippets extends React.Component {
 }
 _Snippets.contextType = LanguageContext;
 
+class _TitledSnippets extends React.Component {
+  render () {
+    const { snippets } = this.props;
+    if (snippets.length === 0) {
+      return null;
+    }
+    return snippets.map(snippet => (
+      <Fold title={snippet.title} foldWrapperClass='additional-graphics' key={snippet.id}> 
+        <div className='iframe__container'>
+          <div className='snippet_item' key={snippet.id} dangerouslySetInnerHTML={{__html: snippet.snippet}} />
+        </div>
+      </Fold>      
+    ));
+  }
+}
+_TitledSnippets.contextType = LanguageContext;
+
 class _Links extends React.Component {
   render () {
     const { strings } = this.context;
@@ -94,7 +111,21 @@ class _Links extends React.Component {
     return (
       <Fold id='links' title={strings.linksTitle} foldWrapperClass='links' foldTitleClass='margin-reset'>
         <ul className='links-list'>
-          {data.links.map(o => <li key={o.id}><a href={o.url} className='link--external'>{o.title}</a> </li>)}
+          {
+            data.links.map(function (o) {
+              // If data.links[i] has property show_in_go, then turn it into a link that will
+              // send the object data back to the parent
+              if ('onClick' in o) {
+                return <li key={o.id} onClick={() => o.onClick(o)} className='col'><a>{o.title}
+                  <span className='collecticon-chevron-right icon-links-list'></span>
+                </a></li>;
+              } else {
+                return <li key={o.id} className='col'><a href={o.url}>{o.title}
+                  <span className='collecticon-chevron-right icon-links-list'></span>
+                </a></li>;
+              }
+            })
+          }
         </ul>
       </Fold>
     );
@@ -107,9 +138,11 @@ if (environment !== 'production') {
   _Contacts.propTypes = { data: T.object };
   _Links.propTypes = { data: T.object };
   _Snippets.propTypes = { data: T.object };
+  _TitledSnippets.propTypes = { snippets: T.array };
 }
 
 export const KeyFigures = _KeyFigures;
 export const Contacts = _Contacts;
 export const Links = _Links;
 export const Snippets = _Snippets;
+export const TitledSnippets = _TitledSnippets;

@@ -25,6 +25,10 @@
     padding: 0;
   }
 
+  #contacts {
+    box-shadow: none;
+  }
+
   .region-countries__letter {
     color: $primary-color;
     font-weight: $base-font-bold;
@@ -621,5 +625,55 @@
       padding-left: $spacing-5;
       padding-right: $spacing-5;
     }
+  }
+}
+
+.regional-profile-key {
+  background-color: #fff;
+  border: 1px solid $grey-mist;
+  box-shadow: $base-box-shadow;
+  border-radius: $base-border-radius;
+  padding: $global-spacing;
+  width: 100%;
+  padding: $spacing-2;
+}
+
+.regional-profile-key-block {
+  align-items: baseline;
+}
+
+.regional-profile-subtitle {
+  font-weight: $base-font-medium;
+  position: relative;
+  top: -2px;
+}
+
+.regional-profile-icon-block {
+  align-items: flex-end;
+  margin-top: $spacing;
+}
+
+.regional-profile-icon-col {
+  margin-left: auto;
+}
+
+.regional-profile-source {
+  color: $grey-platinum;
+  font-size: $font-size-sm;  
+}
+
+.regional-profile-back {
+  position: sticky;
+  top: 0;
+  font-size: $font-size-xxs;
+  display: flex;
+  padding: $spacing-half 0;
+  font-weight: $base-font-medium;
+  cursor: pointer;
+  background: none;
+  border: none;
+
+  &:hover {
+    opacity: 0.64;
   }
 }

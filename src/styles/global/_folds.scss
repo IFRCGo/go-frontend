@@ -101,16 +101,34 @@
 
 .links-list {
   list-style: none;
-  @include column(12/12);
+
+  @include media(xsmall) {
+    display: flex;
+  }
+
   li {
-    @include column(12/12);
-    @include media(small-up) {
-      @include column(6/12);
+    display: block;
+
+    @include media(small) {
+      width: 50%;
     }
-    @include media(medium-up) {
-      @include column(3/12);
+
+    @include media(medium) {
+      width: 33.33%;
     }
   }
+
+  a {
+    font-weight: 500;
+    display: block;
+    margin: 0 0 $spacing 0;
+  }
+}
+
+.icon-links-list {
+  font-size: $font-size-xxs;
+  font-weight: $base-font-bold;
+  padding: 0 0 0 $spacing-half;
 }
 
 .fold__header__block {
