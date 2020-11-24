@@ -1,3 +1,8 @@
+### Release 4.4.5 - Remove Survey Banner
+
+ - Add Translations video embed to the Resources page: https://github.com/IFRCGo/go-frontend/issues/1662
+ - Remove (hide) the Global banner: https://github.com/IFRCGo/go-frontend/issues/1675
+
 ### Release 4.4.4 - Multilingual Maps
 
  - Implement multilingual map labels: https://github.com/IFRCGo/go-frontend/issues/1652
