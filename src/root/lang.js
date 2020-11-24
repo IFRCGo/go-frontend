@@ -149,6 +149,7 @@ export default {
   regionProfileTab: 'Regional Profile',
   regionPreparednessTab: 'Preparedness',
   regionAdditionalInfoTab: 'Additional Information',
+  regionIframeBackLink: 'Back to Regional Profile',
 
   regionalTabBox1: 'National Societies in Africa',
   regionalTabBox2: 'National Country Clusters',

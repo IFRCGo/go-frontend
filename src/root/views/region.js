@@ -340,7 +340,7 @@ class AdminArea extends SFPComponent {
                     ? 
                     (<TabContent>
                       <div className='container-lg'>
-                        <button className='button button--primary-filled button--small button-iframe-regional-profile' onClick={this.onIframeBackClick.bind(this)}>BACK</button>
+                        <button onClick={this.onIframeBackClick.bind(this)} className='regional-profile-back'><span className='collecticon-chevron-left font-size-xxs spacing-half-r'></span>{strings.regionIframeBackLink}</button>
                       </div>
                       <iframe src={this.state.regionAdditionalInfoTabIframe} frameBorder='0' width='100%' height='800px'></iframe>
                     </TabContent>)

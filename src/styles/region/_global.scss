@@ -662,7 +662,18 @@
   font-size: $font-size-sm;  
 }
 
-.button-iframe-regional-profile {
+.regional-profile-back {
   position: sticky;
   top: 0;
+  font-size: $font-size-xxs;
+  display: flex;
+  padding: $spacing-half 0;
+  font-weight: $base-font-medium;
+  cursor: pointer;
+  background: none;
+  border: none;
+
+  &:hover {
+    opacity: 0.64;
+  }
 }
