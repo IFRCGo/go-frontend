@@ -620,7 +620,7 @@ export function getPerAreas (id = null, area_num = null) {
 }
 
 export const GET_PER_FORMS = 'GET_PER_FORMS';
-export function getPerForms (id = null, overview_id = null) {
+export function getPerForms (id = null, overview_id = null, withData = false) {
   let filters = {};
   if (id) {
     filters.id = id;
@@ -628,16 +628,19 @@ export function getPerForms (id = null, overview_id = null) {
   if (overview_id) {
     filters.overview_id = overview_id;
   }
+  if (withData === true) {
+    filters.with_data = true;
+  }
   const f = buildAPIQS(filters);
   return fetchJSON(`/api/v2/per/?${f}`, GET_PER_FORMS, withToken());
 }
 
 export const GET_PER_FORM = 'GET_PER_FORM';
-export function getPerForm (id = null, countryId = null) {
+export function getPerForm (formid = null, countryId = null) {
   let filters = {};
   filters.limit = 1000;
-  if (id !== null) {
-    filters.form = id;
+  if (formid !== null) {
+    filters.form = formid;
   }
   if (countryId !== null) {
     filters.country = countryId;
@@ -648,7 +651,9 @@ export function getPerForm (id = null, countryId = null) {
 
 export const GET_PER_QUESTIONS = 'GET_PER_QUESTIONS';
 export function getPerQuestions (area_id = null) {
-  let filters = {};
+  let filters = {
+    limit: 9999
+  };
   if (area_id) {
     filters.area_id = area_id;
   }

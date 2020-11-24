@@ -10,8 +10,6 @@ import Fold from '#components/fold';
 // import { Link } from 'react-router-dom';
 
 import {
-  getAssessmentTypes,
-  getPerAreas,
   getPerOverviewFormStrict,
   getPerForms,
   createPerOverview,
@@ -23,7 +21,6 @@ import { nsDropdownSelector } from '#selectors';
 
 import {
   FormInput,
-  FormCheckbox,
   FormRadioGroup,
   FormError
 } from '#components/form-elements/';
@@ -33,34 +30,19 @@ import { showAlert } from '#components/system-alerts';
 function PerOverview (props) {
   const { strings } = useContext(LanguageContext);
   const [nsState, setNsState] = useState();
-  const [overviewState, setOverviewState] = useState({
-    branches_involved: '',
-    country_id: '',
-    date_of_assessment: '',
-    date_of_mid_term_review: '',
-    date_of_next_asmt: '',  
-    facilitator_name: '',
-    facilitator_email: '',
-    facilitator_phone: '',
-    facilitator_contact: '',
-    is_epi: false,
-    is_finalized: false, // TODO: maybe not handle here but at submit
-    method_asmt_used: '',    
-    ns_focal_point_name: '',
-    ns_focal_point_email: '',
-    ns_focal_point_phone: '',
-    other_consideration: '',
-    partner_focal_point_name: '',
-    partner_focal_point_email: '',
-    partner_focal_point_phone: '',
-    partner_focal_point_organization: '',
-    type_of_assessment: '',
-    user_id: props.user.id,
-  });
 
-  // const idFromPath = props.idFromPath;
+  const {
+    assessmentTypes,
+    overviewState,
+    setOverviewState,
+    _createPerOverview,
+    _updatePerOverview,
+    _deletePerOverview,
+    _resetPerState
+  } = props;
   const isEdit = !!props.isEdit;
   const isCreate = !!props.isCreate;
+
   const editable = useMemo(() => {
     let isedi = false;
     if (isCreate) {
@@ -73,18 +55,8 @@ function PerOverview (props) {
     }
     return isedi;
   }, [isEdit, isCreate, props.perForm.getPerOverviewForm]);
-  const {
-    _getAssessmentTypes,
-    _getPerAreas,
-    _getPerOverviewFormStrict,
-    _getPerForms,
-    _createPerOverview,
-    _updatePerOverview,
-    _deletePerOverview,
-    _resetPerState
-  } = props;
 
-  function fieldChange (e, hasTarget = true, isCheckbox = false, isRadio = false, id = '') {
+  function handleChange (e, hasTarget = true, isCheckbox = false, isRadio = false, id = '') {
     if (hasTarget) {
       setOverviewState({
         ...overviewState,
@@ -159,9 +131,7 @@ function PerOverview (props) {
     props.history
   ]);
 
-  useEffect(() => {
-    _getAssessmentTypes();
-  }, [_getAssessmentTypes]);
+  
 
   useEffect(() => {
     const of = props.perForm.getPerOverviewForm;
@@ -194,16 +164,10 @@ function PerOverview (props) {
         user_id: props.user.id
       });
     }
-  }, [props.perForm.getPerOverviewForm, props.user, isCreate]);
+  }, [props.perForm.getPerOverviewForm, props.user, isCreate, setOverviewState]);
 
-  const assessmentTypes = useMemo(() => {
-    const ats = props.perForm.assessmentTypes;
-    if (ats.data && !ats.fetching && ats.fetched) {
-      return ats.data.results.map(res => ({ value: res.id, label: res.name }));
-    }
-    return [];
-  }, [props.perForm.assessmentTypes]);
-  console.log(overviewState);
+  
+
   return (
     <React.Fragment>
       <div className='container-lg'>
@@ -243,7 +207,7 @@ function PerOverview (props) {
             id='date_of_assessment'
             value={overviewState.date_of_assessment}
             classWrapper='form__group__per'
-            onChange={(e) => fieldChange(e)}
+            onChange={(e) => handleChange(e)}
             disabled={!editable}
             // description={fields.sitFieldsDate[status].desc}
           >
@@ -298,7 +262,7 @@ function PerOverview (props) {
             id='branches_involved'
             value={overviewState.branches_involved}
             classWrapper='form__group__per'
-            onChange={(e) => fieldChange(e)}
+            onChange={(e) => handleChange(e)}
             disabled={!editable}
             // description={fields.sitFieldsDate[status].desc}
           >
@@ -314,7 +278,7 @@ function PerOverview (props) {
             id='method_asmt_used'
             value={overviewState.method_asmt_used}
             classWrapper='form__group__per'
-            onChange={(e) => fieldChange(e)}
+            onChange={(e) => handleChange(e)}
             disabled={!editable}
             // description={fields.sitFieldsDate[status].desc}
           >
@@ -341,8 +305,8 @@ function PerOverview (props) {
                 disabled: !editable
               }
             ]}
-            selectedOption={overviewState.is_epi}
-            onChange={(e) => fieldChange(e, true, false, true)} >
+            selectedOption={`${overviewState.is_epi}`}
+            onChange={(e) => handleChange(e, true, false, true)} >
             <FormError
               errors={[]}
               property='is_epi'
@@ -401,7 +365,7 @@ function PerOverview (props) {
             id='date_of_mid_term_review'
             value={overviewState.date_of_mid_term_review}
             classWrapper='form__group__per'
-            onChange={(e) => fieldChange(e)}
+            onChange={(e) => handleChange(e)}
             disabled={!editable}
             // description={fields.sitFieldsDate[status].desc}
           >
@@ -417,7 +381,7 @@ function PerOverview (props) {
             id='date_of_next_asmt'
             value={overviewState.date_of_next_asmt}
             classWrapper='form__group__per'
-            onChange={(e) => fieldChange(e)}
+            onChange={(e) => handleChange(e)}
             disabled={!editable}
             // description={fields.sitFieldsDate[status].desc}
           >
@@ -440,7 +404,7 @@ function PerOverview (props) {
             id='ns_focal_point_name'
             value={overviewState.ns_focal_point_name}
             classWrapper='form__group__per'
-            onChange={(e) => fieldChange(e)}
+            onChange={(e) => handleChange(e)}
             disabled={!editable}
             // description={fields.sitFieldsDate[status].desc}
           >
@@ -456,7 +420,7 @@ function PerOverview (props) {
             id='ns_focal_point_email'
             value={overviewState.ns_focal_point_email}
             classWrapper='form__group__per'
-            onChange={(e) => fieldChange(e)}
+            onChange={(e) => handleChange(e)}
             disabled={!editable}
             // description={fields.sitFieldsDate[status].desc}
           >
@@ -472,7 +436,7 @@ function PerOverview (props) {
             id='ns_focal_point_phone'
             value={overviewState.ns_focal_point_phone}
             classWrapper='form__group__per'
-            onChange={(e) => fieldChange(e)}
+            onChange={(e) => handleChange(e)}
             disabled={!editable}
             // description={fields.sitFieldsDate[status].desc}
           >
@@ -489,7 +453,7 @@ function PerOverview (props) {
             id='partner_focal_point_name'
             value={overviewState.partner_focal_point_name}
             classWrapper='form__group__per'
-            onChange={(e) => fieldChange(e)}
+            onChange={(e) => handleChange(e)}
             disabled={!editable}
             // description={fields.sitFieldsDate[status].desc}
           >
@@ -505,7 +469,7 @@ function PerOverview (props) {
             id='partner_focal_point_email'
             value={overviewState.partner_focal_point_email}
             classWrapper='form__group__per'
-            onChange={(e) => fieldChange(e)}
+            onChange={(e) => handleChange(e)}
             disabled={!editable}
             // description={fields.sitFieldsDate[status].desc}
           >
@@ -521,7 +485,7 @@ function PerOverview (props) {
             id='partner_focal_point_phone'
             value={overviewState.partner_focal_point_phone}
             classWrapper='form__group__per'
-            onChange={(e) => fieldChange(e)}
+            onChange={(e) => handleChange(e)}
             disabled={!editable}
             // description={fields.sitFieldsDate[status].desc}
           >
@@ -537,7 +501,7 @@ function PerOverview (props) {
             id='partner_focal_point_organization'
             value={overviewState.partner_focal_point_organization}
             classWrapper='form__group__per'
-            onChange={(e) => fieldChange(e)}
+            onChange={(e) => handleChange(e)}
             disabled={!editable}
             // description={fields.sitFieldsDate[status].desc}
           >
@@ -554,7 +518,7 @@ function PerOverview (props) {
             id='facilitator_name'
             value={overviewState.facilitator_name}
             classWrapper='form__group__per'
-            onChange={(e) => fieldChange(e)}
+            onChange={(e) => handleChange(e)}
             disabled={!editable}
             // description={fields.sitFieldsDate[status].desc}
           >
@@ -570,7 +534,7 @@ function PerOverview (props) {
             id='facilitator_email'
             value={overviewState.facilitator_email}
             classWrapper='form__group__per'
-            onChange={(e) => fieldChange(e)}
+            onChange={(e) => handleChange(e)}
             disabled={!editable}
             // description={fields.sitFieldsDate[status].desc}
           >
@@ -586,7 +550,7 @@ function PerOverview (props) {
             id='facilitator_phone'
             value={overviewState.facilitator_phone}
             classWrapper='form__group__per'
-            onChange={(e) => fieldChange(e)}
+            onChange={(e) => handleChange(e)}
             disabled={!editable}
             // description={fields.sitFieldsDate[status].desc}
           >
@@ -602,7 +566,7 @@ function PerOverview (props) {
             id='facilitator_contact'
             value={overviewState.facilitator_contact}
             classWrapper='form__group__per'
-            onChange={(e) => fieldChange(e)}
+            onChange={(e) => handleChange(e)}
             disabled={!editable}
             // description={fields.sitFieldsDate[status].desc}
           >
@@ -651,7 +615,6 @@ if (environment !== 'production') {
     perAreas: T.object,
     perForm: T.object,
     nsDropdownItems: T.array,
-    _getAssessmentTypes: T.func,
     _getPerOverviewFormStrict: T.func,
     _createPerOverview: T.func,
     _updatePerOverview: T.func,
@@ -668,8 +631,6 @@ const selector = (state, ownProps) => ({
 });
 
 const dispatcher = (dispatch) => ({
-  _getAssessmentTypes: () => dispatch(getAssessmentTypes()),
-  _getPerAreas: (...args) => dispatch(getPerAreas(...args)),
   _getPerOverviewFormStrict: (...args) => dispatch(getPerOverviewFormStrict(...args)),
   _getPerForms: (...args) => dispatch(getPerForms(...args)),
   _createPerOverview: (payload) => dispatch(createPerOverview(payload)),

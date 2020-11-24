@@ -19,6 +19,7 @@ import PerOverview from '#components/per-forms/per-overview';
 import {
   getAssessmentTypes,
   getPerAreas,
+  getPerQuestions,
   getPerOverviewFormStrict,
   getPerForms,
   createPerOverview,
@@ -26,21 +27,46 @@ import {
   deletePerOverview,
   resetPerState
 } from '#actions';
-import { nsDropdownSelector } from '#selectors';
+import { formQuestionsSelector, nsDropdownSelector } from '#selectors';
 
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
-import { showAlert } from '#components/system-alerts';
 
 function PerAssessment (props) {
   const { strings } = useContext(LanguageContext);
-
+  const [overviewState, setOverviewState] = useState({
+    branches_involved: '',
+    country_id: '',
+    date_of_assessment: '',
+    date_of_mid_term_review: '',
+    date_of_next_asmt: '',  
+    facilitator_name: '',
+    facilitator_email: '',
+    facilitator_phone: '',
+    facilitator_contact: '',
+    is_epi: false,
+    is_finalized: false, // TODO: maybe not handle here but at submit
+    method_asmt_used: '',    
+    ns_focal_point_name: '',
+    ns_focal_point_email: '',
+    ns_focal_point_phone: '',
+    other_consideration: '',
+    partner_focal_point_name: '',
+    partner_focal_point_email: '',
+    partner_focal_point_phone: '',
+    partner_focal_point_organization: '',
+    type_of_assessment: '',
+    user_id: props.user.id
+  });
+  const [formsState, setFormsState] = useState();
+  const [formDataState, setFormDataState] = useState();
   const idFromPath = props.match.params.id;
   const isEdit = !!props.isEdit;
   const isCreate = !!props.isCreate;
   let isEpi = false; // FIXME: get from Overview
-
   const {
+    _getAssessmentTypes,
     _getPerAreas,
+    _getPerQuestions,
     _getPerOverviewFormStrict,
     _getPerForms,
   } = props;
@@ -56,10 +82,18 @@ function PerAssessment (props) {
   }, [_getPerAreas]);
 
   useEffect(() => {
+    _getAssessmentTypes();
+  }, [_getAssessmentTypes]);
+
+  useEffect(() => {
+    _getPerQuestions();
+  }, [_getPerQuestions]);
+
+  useEffect(() => {
     // Basically if it's not Create
     if (idFromPath) {
       _getPerOverviewFormStrict(null, idFromPath);
-      _getPerForms(null, idFromPath);
+      _getPerForms(null, idFromPath, true);
       showGlobalLoading();
     }
   }, [_getPerOverviewFormStrict, _getPerForms, idFromPath]);
@@ -90,42 +124,75 @@ function PerAssessment (props) {
     return tabList;
   }, [props.perAreas, isCreate, strings.perAccountOverview, formsFetching, formsFetched, formsData]);
 
-  // const formAreas = useMemo(() => {
-  //   const pfs = props.perForm.getPerForms;
-  //   if (!pfs.fetching && pfs.fetched && pfs.data) {
-  //     return pfs.data.results.map(form => ({
-  //       link: `/per-form/${form.id}`,
-  //       title: `${strings.perdocumentArea} ${form.area.area_num}`,
-  //       subtitle: form.area.title
-  //     }));
-  //   } else if (isCreate && !props.perAreas.fetching && props.perAreas.fetched && props.perAreas.data) {
-  //     props.perAreas.data.results.forEach(
-  //       area => tabs.push({ title: `Area ${area.area_num}`, hash: `#area-${area.area_num}`})
-  //     );
-  //     return props.perAreas.data.results.map(area => ({
-  //       title: `${strings.perdocumentArea} ${area.area_num}`,
-  //       subtitle: area.title
-  //     }));
+  // useEffect(() => {
+  //   const pf = props.perForm.getPerForm;
+  //   const pq = props.perQuestions;
+  //   if (!pf.fetching && pf.fetched && pf.data && !pq.fetching && pq.fetched && pq.data) {
+  //     let questionsDict = {};
+  //     pf.data.results.forEach((fd) => {
+  //       questionsDict[fd.question_id] = {
+  //         selected_answer: fd.selected_answer?.id.toString() || '',
+  //         notes: fd.notes
+  //       };
+  //     });
+  //     setQuestionsState(questionsDict);
+  //     hideGlobalLoading();
   //   }
+  // }, [props.perForm.getPerForm, props.perQuestions]);
 
-  //   return [];
-  // }, [props.perAreas, strings.perdocumentArea, props.perForm.getPerForms, isCreate]);
-
-
+  const assessmentTypes = useMemo(() => {
+    const ats = props.perForm.assessmentTypes;
+    if (ats.data && !ats.fetching && ats.fetched) {
+      return ats.data.results.map(res => ({ value: res.id, label: res.name }));
+    }
+    return [];
+  }, [props.perForm.assessmentTypes]);
 
   useEffect(() => {
     const overviews = props.perForm.getPerOverviewForm;
-    const forms = props.perForm.getPerForms;
     if (!isCreate
       && !overviews.fetching
       && overviews.fetched
       && overviews.data
-      && !forms.fetching
-      && forms.fetched
-      && forms.data) {
+      && !formsFetching
+      && formsFetched
+      && formsData
+      && formDataState
+      && props.groupedPerQuestions) {
       hideGlobalLoading();
     }
-  }, [props.perForm.getPerOverviewForm, props.perForm.getPerForms, isCreate]);
+  }, [
+    isCreate,
+    props.perForm.getPerOverviewForm,
+    formsFetching,
+    formsFetched,
+    formsData,
+    formDataState,
+    props.groupedPerQuestions
+  ]);
+
+  useEffect(() => {
+    if (!isCreate && !formsFetching && formsFetched && formsData) {
+      let formsDict = {};
+      let formsDataDict = {};
+      formsData.results.forEach(form => {
+        // Set the Forms / { form_id: { Form's props } }
+        formsDict[form.id] = form;
+
+        let questionsDict = {};
+        // Set the Questions from FormData / { form_id: { question_id: { ...FormData } } }
+        if (form.form_data) {
+          form.form_data.forEach(fd => questionsDict[fd.question_id] = {
+            selected_answer: fd.selected_answer,
+            notes: fd.notes
+          });
+        }
+        formsDataDict[form.id] = questionsDict;
+      });
+      setFormsState(formsDict);
+      setFormDataState(formsDataDict);
+    }
+  }, [isCreate, formsFetching, formsFetched, formsData]);
 
   return (
     <App className='page--per-form'>
@@ -149,32 +216,45 @@ function PerAssessment (props) {
                   <div className='inner'>
                     <TabPanel>
                       <TabContent>
-                        <PerOverview idFromPath={idFromPath} isCreate={isCreate} isEdit={isEdit} />
+                        <PerOverview
+                          idFromPath={idFromPath}
+                          isCreate={isCreate}
+                          isEdit={isEdit}
+                          overviewState={overviewState}
+                          setOverviewState={setOverviewState}
+                          assessmentTypes={assessmentTypes}
+                        />
                       </TabContent>
                     </TabPanel>
-                    { formsData?.results ? formsData.results.map(form => (
-                      <TabPanel key={form.id}>
-                        <TabContent>
-                          { isCreate
-                            ? null
-                            : (
-                              <PerForm form={form} formId={form.id} isCreate={isCreate} isEdit={isEdit} isEpi={isEpi} />
-                            )}
-                        </TabContent>
-                      </TabPanel>
-                    )) : null }
+                    { isCreate
+                      ? tabs.slice(1).map(tab => (
+                        <TabPanel key={tab.title}>
+                          <TabContent />
+                        </TabPanel>
+                      ))
+                      : (formsData?.results
+                        ? formsData.results.map(form => (
+                          <TabPanel key={form.id}>
+                            <TabContent>
+                              <PerForm
+                                formId={form.id}
+                                isCreate={isCreate}
+                                isEdit={isEdit}
+                                isEpi={isEpi}
+                                formsState={formsState}
+                                setFormsState={setFormsState}
+                                formDataState={formDataState}
+                                setFormDataState={setFormDataState}
+                              />
+                            </TabContent>
+                          </TabPanel>
+                        ))
+                        : null)
+                    }
+                    
+                    
 
-                    {/* { tabs.slice(1).map(tab => (
-                      <TabPanel key={tab.title}>
-                        <TabContent>
-                          { isCreate
-                            ? null
-                            : (
-                              <PerForm />
-                            )}
-                        </TabContent>
-                      </TabPanel>
-                    ))} */}
+                    { }
                     {/* <TabPanel>
                       <TabContent>
                         <div className='container-lg'>
@@ -206,9 +286,11 @@ if (environment !== 'production') {
   PerAssessment.propTypes = {
     user: T.object,
     perAreas: T.object,
+    perQuestions: T.object,
     perForm: T.object,
     nsDropdownItems: T.array,
     _getAssessmentTypes: T.func,
+    _getPerQuestions: T.func,
     _getPerOverviewFormStrict: T.func,
     _createPerOverview: T.func,
     _updatePerOverview: T.func,
@@ -220,13 +302,16 @@ if (environment !== 'production') {
 const selector = (state, ownProps) => ({
   user: state.user.data,
   perAreas: state.perAreas,
+  perQuestions: state.perQuestions,
   perForm: state.perForm,
+  groupedPerQuestions: formQuestionsSelector(state),
   nsDropdownItems: nsDropdownSelector(state)
 });
 
 const dispatcher = (dispatch) => ({
   _getAssessmentTypes: () => dispatch(getAssessmentTypes()),
   _getPerAreas: (...args) => dispatch(getPerAreas(...args)),
+  _getPerQuestions: (...args) => dispatch(getPerQuestions(...args)),
   _getPerOverviewFormStrict: (...args) => dispatch(getPerOverviewFormStrict(...args)),
   _getPerForms: (...args) => dispatch(getPerForms(...args)),
   _createPerOverview: (payload) => dispatch(createPerOverview(payload)),

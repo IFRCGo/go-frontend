@@ -240,8 +240,16 @@ export const disasterTypesSelectSelector = (state) => {
   return [];
 };
 
+// area_nums > component_nums > questions
 export const formQuestionsSelector = (state) => {
   if (state.perQuestions && state.perQuestions.data.results) {
-    return _groupBy(state.perQuestions.data.results, 'component.component_num');
+    return state.perQuestions.data.results.reduce((result, item) => {
+      // If area doesn't exist in the obj, create it, otherwise keep it
+      const area = result[item.component.area.area_num] = result[item.component.area.area_num] || {};
+      // If component doesn't exist in the area, create it, otherwise keep it
+      const comp = area[item.component.component_num] = area[item.component.component_num] || [];
+      comp.push(item);
+      return result;
+    }, {});
   }
 };

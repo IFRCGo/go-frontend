@@ -557,7 +557,7 @@ export default {
   perOverviewSaveAndContinue: 'Save and Continue',
   perOverviewNS: 'National Society*',
   perOverviewEPIBenchmarks: 'EPI benchmarks',
-  perOverviewAsmtNumberDescription: 'The cycle number of the current assessment',
+  perOverviewAsmtNumberDescription: 'The number of times that the National Society has gone through PER assessments',
   perOverviewWhatMethod: 'What method has this assessment used',
   perOverviewPrevAssessmentDate: 'Date of Previous PER Assessment',
   perOverviewPrevAssessmentType: 'Type of Previous PER Assessment',
