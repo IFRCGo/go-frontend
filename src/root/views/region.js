@@ -353,7 +353,7 @@ class AdminArea extends SFPComponent {
                             <div className='regional-profile-key'>
                               <div className='row flex regional-profile-key-block'>
                                 <div className='col'>
-                                  <div className='sumstats__value'>54</div>
+                                  <div className='sumstats__value'>{data.national_society_count}</div>
                                 </div>
                                 <div className='col'>
                                   <div className='regional-profile-subtitle'>{strings.regionalTabBox1}</div>
@@ -373,7 +373,7 @@ class AdminArea extends SFPComponent {
                             <div className='sumstat__item regional-profile-key'>
                               <div className='row flex regional-profile-key-block'>
                                 <div className='col'>
-                                  <div className='sumstats__value'>5</div>
+                                  <div className='sumstats__value'>{data.country_cluster_count}</div>
                                 </div>
                                 <div className='col'>
                                   <div className='regional-profile-subtitle'>{strings.regionalTabBox2}</div>
