@@ -144,11 +144,11 @@ export default {
   regionGraphics: 'Graphics',
   regionLinks: 'Links',
   regionContacts: 'Contacts',
-  regionOperationsTab: 'Operations',
+  regionEmergenciesTab: 'Emergencies',
   region3WTab: '3w',
   regionProfileTab: 'Regional Profile',
   regionPreparednessTab: 'Preparedness',
-  regionAdditionalInfoTab: 'Additional Information',
+  regionAdditionalInfoTab: 'Additional Data',
   regionIframeBackLink: 'Back to Regional Profile',
 
   regionalTabBox1: 'National Societies in Africa',
@@ -199,7 +199,7 @@ export default {
   countryOperationsTab: 'Operations',
   country3WTab: '3W',
   countryPreparednessTab: 'Preparedness',
-  countryAdditionalInfoTab: 'Additional Information',
+  countryAdditionalInfoTab: 'Additional Data',
 
   emergenciesTableError: 'Latest emergencies not available.',
   emergenciesTableDate: 'Start Date',

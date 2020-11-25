@@ -46,28 +46,32 @@ const CountryList = props => {
   }, {});
 
   return (
-    <Fold title={`${countries.length} ${strings.countryListInRegion} `} foldWrapperClass='fold--main'>
-      <ToggleButtonComponent
-        value={ !isFullList || false }
-        toggle={toggle}
-        description={strings.countryListViewActiveOnly}
-      />
-      <ul className='region-countries__list'>
-        {Object.entries(alphabetizedList).map(([letter, countries]) =>
-          <div key={letter}>
-            <li className='region-countries__letter' key={letter}>{letter}</li>
-            <ul>
-              {countries.map(country =>
-                <li key={country.id} className='region-countries__item'>
-                  <Link to={`/countries/${country.id}`} className='region-countries__link'><span className='region-countries__linkC'>{country.name}</span></Link>
-                  {country.numOperations ? <span className='region-countries__link-op'>({country.numOperations} {country.numOperations > 1 ? <Translate stringId='countryListActiveOperations' /> : <Translate stringId='countryListActiveOperation'/>})</span> : null}
-                </li>
-              )}
-            </ul>
-          </div>
-        )}
-      </ul>
-    </Fold>
+      <div>
+        {props.showCountriesSidebar &&
+        <Fold title={`${countries.length} ${strings.countryListInRegion} `} foldWrapperClass='fold--main'>
+          <ToggleButtonComponent
+            value={ !isFullList || false }
+            toggle={toggle}
+            description={strings.countryListViewActiveOnly}
+          />
+          <ul className='region-countries__list'>
+            {Object.entries(alphabetizedList).map(([letter, countries]) =>
+              <div key={letter}>
+                <li className='region-countries__letter' key={letter}>{letter}</li>
+                <ul>
+                  {countries.map(country =>
+                    <li key={country.id} className='region-countries__item'>
+                      <Link to={`/countries/${country.id}`} className='region-countries__link'><span className='region-countries__linkC'>{country.name}</span></Link>
+                      {country.numOperations ? <div className='region-countries__link-op'>({country.numOperations} {country.numOperations > 1 ? <Translate stringId='countryListActiveOperations' /> : <Translate stringId='countryListActiveOperation'/>})</div> : null}
+                    </li>
+                  )}
+                </ul>
+              </div>
+            )}
+          </ul>
+        </Fold>
+        }
+      </div>
   );
 };
 

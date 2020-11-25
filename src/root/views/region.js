@@ -61,23 +61,31 @@ class AdminArea extends SFPComponent {
     this.state = {
       maskLayer: this.getMaskLayer(this.props.thisRegion.id),
       regionAdditionalInfoTabIframe: null,
-      fullscreen: false
+      fullscreen: false,
+      showCountriesSidebar: true
+
     };
+
+    this.toggleCountriesSidebar = this.toggleCountriesSidebar.bind(this);
 
     this.toggleFullscreen = this.toggleFullscreen.bind(this);
     this.onFullscreenChange = this.onFullscreenChange.bind(this);
     this.onAdditionalLinkClickAction = this.onAdditionalLinkClickAction.bind(this);
     this.TAB_DETAILS = [
-      { title: context.strings.regionOperationsTab, hash: '#operations' },
+      { title: context.strings.regionEmergenciesTab, hash: '#operations' },
       { title: context.strings.region3WTab, hash: '#3w' },
       { title: context.strings.regionProfileTab, hash: '#regional-profile' },
       // { title: context.strings.regionPreparednessTab, hash: '#preparedness' },
       // { title: context.strings.regionAdditionalInfoTab, hash: '#additional-info' }
     ];
 
+
+
   }
 
-
+  toggleCountriesSidebar () {
+    this.setState({showCountriesSidebar: !this.state.showCountriesSidebar});
+  }
 
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps (nextProps) {
@@ -271,8 +279,22 @@ class AdminArea extends SFPComponent {
             ) : <BlockLoading/>}
           </div>
         </section>
-
         <div className='tab__wrap tab__wrap--3W'>
+          <div className='container-lg btn-region-countries-container'>
+            <div className='link btn-region-countries-trigger link link--with-icon' onClick={this.toggleCountriesSidebar}>
+              <span className='btn-region-countries-icon link--with-icon-inner'>
+                <span className='collecticon-sm-chevron-left'></span>
+                <span className='collecticon-sm-chevron-left'></span>
+              </span>
+              <span className='link--with-icon-text'>All countries</span>
+            </div>
+
+            <CountryList
+              showCountriesSidebar={this.state.showCountriesSidebar}
+              countries={this.props.countries}
+              appealStats={this.props.appealStats}
+            />
+          </div>
           <Tabs
             selectedIndex={ selectedIndex }
             onSelect={index => handleTabChange(index)}

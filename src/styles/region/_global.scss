@@ -32,29 +32,35 @@
   .region-countries__letter {
     color: $primary-color;
     font-weight: $base-font-bold;
-    font-size: 1.2rem;
+    font-size: $font-size-xl;
     padding: ($global-spacing * 1.5) 0;
   }
 
   .region-countries__list {
     list-style: none;
-    @include media(medium-up) {
-      column-count: 3;
-      column-gap: ($global-spacing * 6);
-      column-rule: 1px solid $base-border-color;  
-    }
+    //@include media(medium-up) {
+      //column-count: 3;
+      //column-gap: ($global-spacing * 6);
+      //column-rule: 1px solid $base-border-color;  
+    //}
   }
 
   .region-countries__item {
     display: block;
-    margin-bottom: $global-spacing/2;
+    margin-top: ($spacing * 1.5);
+
+    &:first-of-type {
+      margin-top: 0;
+    }
+
     .inactive {
       color: rgba($base-color, 0.4);
     }
   }
 
   .region-countries__link {
-    font-weight: $base-font-medium;
+    font-size: $font-size-lg;
+    font-weight: $base-font-semi-bold;
   }
   
   .region-countries__linkC {
@@ -62,8 +68,8 @@
   }
 
   .region-countries__link-op {
+    font-weight: $base-font-light;
     font-size: 0.875rem;
-    margin-top: $global-spacing/2;
   }
 
   .regional-threew {
@@ -620,11 +626,39 @@
 }
 
 .tab__wrap--3W {
+  position: relative;
+  padding-top: $spacing-4;
+
   @include media(small) {
     .react-tabs__tab:nth-of-type(2) {
       padding-left: $spacing-5;
       padding-right: $spacing-5;
     }
+  }
+}
+
+.btn-region-countries-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-region-countries-trigger {
+  font-size: $base-font-size;
+  justify-content: flex-end;
+  padding: $spacing $spacing-3;
+  box-shadow: $base-box-shadow;
+  display: inline-flex;
+}
+
+.btn-region-countries-icon {
+  span {
+    position: relative;
+    top: 1px;
+  }
+  
+  span:last-of-type {
+    position: relative;
+    right: 4px;
   }
 }
 
