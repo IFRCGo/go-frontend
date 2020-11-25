@@ -164,10 +164,11 @@ class AlertsTable extends SFPComponent {
     const rows = data.results.reduce((acc, rowData, idx, all) => {
       const date = DateTime.fromISO(rowData.created_at);
       const event = get(rowData, 'event.id');
+      const eventTitle = rowData.operation || get(rowData, 'event.name');
       acc.push({
         id: rowData.id,
         date: date.toISODate(),
-        emergency: event ? <Link className='link--table' to={`/emergencies/${event}`} title={strings.alertTableViewEmergency}>{rowData.operation}</Link> : rowData.operation || nope,
+        emergency: event ? <Link className='link--table' to={`/emergencies/${event}`} title={strings.alertTableViewEmergency}>{eventTitle}</Link> : rowData.operation || nope,
 
         msg: isLoggedIn(this.props.user) ? <Expandable limit={128} text={rowData.message} /> : privateSurgeAlert,
         type: this.getAlertTypes(strings)[rowData.atype],
