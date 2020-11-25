@@ -121,7 +121,7 @@ class _Links extends React.Component {
                 </a></li>;
               } else {
                 return <li key={o.id} className='col'><a href={o.url}>{o.title}
-                  <span className='collecticon-chevron-right icon-links-list'></span>
+                  <span className='collecticon-arrow-right-diagonal icon-links-list'></span>
                 </a></li>;
               }
             })
