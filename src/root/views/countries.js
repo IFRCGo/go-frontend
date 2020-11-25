@@ -150,6 +150,7 @@ class AdminArea extends SFPComponent {
   }
 
   getTabDetails = (strings) => {
+    const additionalTabName = get(this.props.adminArea, 'data.additional_tab_name') || strings.countryAdditionalInfoTab;
     const tabDetails = [
       {
         title: strings.countryOperationsTab,
@@ -170,7 +171,7 @@ class AdminArea extends SFPComponent {
         hash: '#preparedness'
       },
       {
-        title: strings.countryAdditionalInfoTab,
+        title: additionalTabName,
         hash: '#additional'
       },
     ];
