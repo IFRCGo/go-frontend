@@ -23,14 +23,14 @@ import { showAlert } from '#components/system-alerts';
 function PerForm (props) {
   const { strings } = useContext(LanguageContext);
 
-  const [comment, setComment] = useState();
   const [title, setTitle] = useState(strings.perdocumentArea);
   const {
     formId,
     formsState,
-    setFormsState,
     formDataState,
     setFormDataState,
+    formCommentsState,
+    setFormCommentsState,
     _updatePerForm,
     _resetPerState,
   } = props;
@@ -45,14 +45,10 @@ function PerForm (props) {
 
   function handleChange (e, question, isRadio, isFormVal = false) {
     if (isFormVal) {
-      setFormsState({
-        ...formsState,
-        [formId]: {
-          ...formsState[formId],
-          comment: e.target.value
-        }
+      setFormCommentsState({
+        ...formCommentsState,
+        [formId]: e.target.value
       });
-
     } else {
       let modifiedState = formDataState;
 
@@ -68,17 +64,14 @@ function PerForm (props) {
 
   useEffect(() => {
     if (formId && formsState) {
-      setComment(formsState[formId].comment);
       setTitle(`Area ${formsState[formId].area.area_num} - ${formsState[formId].area.title}`);
     }
   }, [formId, formsState]);
 
-  const groupedQuestionList = useMemo(() => {
-    if (props.groupedPerQuestions && formsState && formId) {
-      return props.groupedPerQuestions[formsState[formId].area.area_num];
-    }
-    return null;
-  }, [props.groupedPerQuestions, formsState, formId]);
+  // Not useMemo because object !== object, it triggers a re-render (props.groupedPerQuestions)
+  const groupedQuestionList = (props.groupedPerQuestions && formsState)
+    ? props.groupedPerQuestions[formsState[formId].area.area_num]
+    : null;
 
   return (
     <Fold title={title} foldWrapperClass='fold--main' foldTitleClass='margin-reset'>
@@ -87,7 +80,7 @@ function PerForm (props) {
         type='text'
         name={`comment`}
         id={`comment`}
-        value={comment}
+        value={formCommentsState ? formCommentsState[formId] : null}
         onChange={(e) => handleChange(e, null, false, true)}
         description=''
         disabled={!editable}

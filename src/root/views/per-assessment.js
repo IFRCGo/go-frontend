@@ -58,6 +58,7 @@ function PerAssessment (props) {
     user_id: props.user.id
   });
   const [formsState, setFormsState] = useState();
+  const [formCommentsState, setFormCommentsState] = useState();
   const [formDataState, setFormDataState] = useState();
   const idFromPath = props.match.params.id;
   const isEdit = !!props.isEdit;
@@ -175,9 +176,12 @@ function PerAssessment (props) {
     if (!isCreate && !formsFetching && formsFetched && formsData) {
       let formsDict = {};
       let formsDataDict = {};
+      let commentsDict = {};
+
       formsData.results.forEach(form => {
         // Set the Forms / { form_id: { Form's props } }
         formsDict[form.id] = form;
+        commentsDict[form.id] = form.comment;
 
         let questionsDict = {};
         // Set the Questions from FormData / { form_id: { question_id: { ...FormData } } }
@@ -191,6 +195,7 @@ function PerAssessment (props) {
       });
       setFormsState(formsDict);
       setFormDataState(formsDataDict);
+      setFormCommentsState(commentsDict);
     }
   }, [isCreate, formsFetching, formsFetched, formsData]);
 
@@ -242,9 +247,10 @@ function PerAssessment (props) {
                                 isEdit={isEdit}
                                 isEpi={isEpi}
                                 formsState={formsState}
-                                setFormsState={setFormsState}
                                 formDataState={formDataState}
                                 setFormDataState={setFormDataState}
+                                formCommentsState={formCommentsState}
+                                setFormCommentsState={setFormCommentsState}
                               />
                             </TabContent>
                           </TabPanel>

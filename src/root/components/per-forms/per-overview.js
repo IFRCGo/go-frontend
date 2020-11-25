@@ -7,11 +7,11 @@ import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 
 import Fold from '#components/fold';
+import { isoDate } from '#utils/format';
 // import { Link } from 'react-router-dom';
 
 import {
-  getPerOverviewFormStrict,
-  getPerForms,
+  getLatestCountryOverview,
   createPerOverview,
   updatePerOverview,
   deletePerOverview,
@@ -30,11 +30,16 @@ import { showAlert } from '#components/system-alerts';
 function PerOverview (props) {
   const { strings } = useContext(LanguageContext);
   const [nsState, setNsState] = useState();
+  const [prevOverviewState, setPrevOverviewState] = useState({
+    date_of_assessment: null,
+    type_of_assessment: null
+  });
 
   const {
     assessmentTypes,
     overviewState,
     setOverviewState,
+    _getLatestCountryOverview,
     _createPerOverview,
     _updatePerOverview,
     _deletePerOverview,
@@ -81,12 +86,12 @@ function PerOverview (props) {
     if (isCreate) {
       _createPerOverview({
         ...overviewState,
-        country_id: nsState
+        // country_id: nsState
       });
     } else {
       _updatePerOverview({
         ...overviewState,
-        country_id: nsState
+        // country_id: nsState
       });
     }
   }
@@ -131,8 +136,6 @@ function PerOverview (props) {
     props.history
   ]);
 
-  
-
   useEffect(() => {
     const of = props.perForm.getPerOverviewForm;
     if (!isCreate && of.data && !of.fetching && of.fetched) {
@@ -163,10 +166,30 @@ function PerOverview (props) {
         type_of_assessment: res.type_of_assessment?.id,
         user_id: props.user.id
       });
-    }
-  }, [props.perForm.getPerOverviewForm, props.user, isCreate, setOverviewState]);
 
-  
+      if (res.country) {
+        _getLatestCountryOverview(res.country.id);
+      }
+    }
+  }, [props.perForm.getPerOverviewForm, props.user, isCreate, setOverviewState, _getLatestCountryOverview]);
+
+  // If Country changes, get the latest Overview for that one
+  useEffect(() => {
+    if (overviewState.country_id) {
+      _getLatestCountryOverview(overviewState.country_id);
+    }
+  }, [overviewState.country_id, _getLatestCountryOverview]);
+
+  // Set the Latest Overview's data
+  useEffect(() => {
+    if (!overviewState.country_id) {
+      setPrevOverviewState({ date_of_assessment: null, type_of_assessment: null });
+    } else if (!props.perLatestOverview.fetching && props.perLatestOverview.fetched) {
+      setPrevOverviewState(props.perLatestOverview.data?.results[0]);
+    }
+  }, [overviewState.country_id, props.perLatestOverview]);
+
+  // TODO: use overviewState instead of nsState and such...
 
   return (
     <React.Fragment>
@@ -324,7 +347,9 @@ function PerOverview (props) {
             type='date'
             name='prev_asmt_date'
             id='prev_asmt_date'
-            value={null} // FIXME: get from backend
+            value={
+              prevOverviewState.date_of_assessment ? isoDate(prevOverviewState.date_of_assessment) : null
+            }
             classWrapper='form__group__per'
             // onChange={(e) => fieldChange(e)}
             disabled={true}
@@ -340,7 +365,7 @@ function PerOverview (props) {
             type='text'
             name='prev_asmt_type'
             id='prev_asmt_type'
-            value={''} // FIXME: get from backend
+            value={prevOverviewState.type_of_assessment?.name} // FIXME: get from backend
             classWrapper='form__group__per'
             // onChange={(e) => fieldChange(e)}
             disabled={true}
@@ -615,7 +640,8 @@ if (environment !== 'production') {
     perAreas: T.object,
     perForm: T.object,
     nsDropdownItems: T.array,
-    _getPerOverviewFormStrict: T.func,
+    perLatestOverview: T.object,
+    _getLatestCountryOverview: T.func,
     _createPerOverview: T.func,
     _updatePerOverview: T.func,
     _deletePerOverview: T.func,
@@ -627,12 +653,12 @@ const selector = (state, ownProps) => ({
   user: state.user.data,
   perAreas: state.perAreas,
   perForm: state.perForm,
+  perLatestOverview: state.perLatestOverview,
   nsDropdownItems: nsDropdownSelector(state)
 });
 
 const dispatcher = (dispatch) => ({
-  _getPerOverviewFormStrict: (...args) => dispatch(getPerOverviewFormStrict(...args)),
-  _getPerForms: (...args) => dispatch(getPerForms(...args)),
+  _getLatestCountryOverview: (payload) => dispatch(getLatestCountryOverview(payload)),
   _createPerOverview: (payload) => dispatch(createPerOverview(payload)),
   _updatePerOverview: (payload) => dispatch(updatePerOverview(payload)),
   _deletePerOverview: (payload) => dispatch(deletePerOverview(payload)),

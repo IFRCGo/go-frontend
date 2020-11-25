@@ -33,6 +33,7 @@ import perForm from './per-form';
 import perAreas from './per-areas';
 import perQuestions from './per-questions';
 import perComponents from './per-components';
+import perLatestOverview from './per-latest-overview';
 import subscriptions from './subscriptions';
 import projects from './projects';
 import countryOverview from './country-overview';
@@ -86,6 +87,7 @@ export const reducers = {
   perAreas,
   perQuestions,
   perComponents,
+  perLatestOverview,
   subscriptions,
   projects,
   projectForm: createReducer(POST_PROJECT),

@@ -673,7 +673,15 @@ export function getPerComponents (area_id = null) {
 
 export const GET_PER_ASSESSMENT_TYPES = 'GET_PER_ASSESSMENT_TYPES';
 export function getAssessmentTypes () {
-  return fetchJSON('api/v2/per-assessmenttype/', GET_PER_ASSESSMENT_TYPES);
+  return fetchJSON('/api/v2/per-assessmenttype/', GET_PER_ASSESSMENT_TYPES);
+}
+
+export const GET_LATEST_COUNTRY_OVERVIEW = 'GET_LATEST_COUNTRY_OVERVIEW';
+export function getLatestCountryOverview(countryId) {
+  if (countryId) {
+    return fetchJSON(`/api/v2/latest_country_overview/?country_id=${countryId}`, GET_LATEST_COUNTRY_OVERVIEW, withToken());
+  }
+  return null;
 }
 
 export const COLLABORATING_PER_COUNTRY = 'COLLABORATING_PER_COUNTRY';
