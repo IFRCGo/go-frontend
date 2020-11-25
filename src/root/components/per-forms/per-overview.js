@@ -11,11 +11,7 @@ import { isoDate } from '#utils/format';
 // import { Link } from 'react-router-dom';
 
 import {
-  getLatestCountryOverview,
-  createPerOverview,
-  updatePerOverview,
-  deletePerOverview,
-  resetPerState
+  getLatestCountryOverview
 } from '#actions';
 import { nsDropdownSelector } from '#selectors';
 
@@ -40,26 +36,11 @@ function PerOverview (props) {
     overviewState,
     setOverviewState,
     _getLatestCountryOverview,
-    _createPerOverview,
-    _updatePerOverview,
     _deletePerOverview,
-    _resetPerState
+    editable
   } = props;
-  const isEdit = !!props.isEdit;
   const isCreate = !!props.isCreate;
 
-  const editable = useMemo(() => {
-    let isedi = false;
-    if (isCreate) {
-      isedi = true;
-    } else {
-      const of = props.perForm.getPerOverviewForm;
-      if (!of.fetching && of.fetched && of.data) {
-        isedi = !of.data.results[0].is_finalized && isEdit;
-      }
-    }
-    return isedi;
-  }, [isEdit, isCreate, props.perForm.getPerOverviewForm]);
 
   function handleChange (e, hasTarget = true, isCheckbox = false, isRadio = false, id = '') {
     if (hasTarget) {
@@ -79,62 +60,6 @@ function PerOverview (props) {
     e.preventDefault();
     _deletePerOverview(props.perForm.getPerOverviewForm.data.results[0].id);
   }
-
-  function submitForm (e) {
-    e.preventDefault();
-
-    if (isCreate) {
-      _createPerOverview({
-        ...overviewState,
-        // country_id: nsState
-      });
-    } else {
-      _updatePerOverview({
-        ...overviewState,
-        // country_id: nsState
-      });
-    }
-  }
-
-  // Create, update, delete actions
-  useEffect(() => {
-    const cpo = props.perForm.createPerOverview;
-    if (!cpo.fetching && cpo.fetched && cpo.data) {
-      if (cpo.data.status === 'ok') {
-        showAlert('success', <p><Translate stringId="perOverviewAlertCreated" /></p>, true, 2000);
-        setTimeout(() => props.history.push(`/per-assessment/${cpo.data.overview_id}/edit#overview`), 2000);
-        _resetPerState();
-      } else if (cpo.error) {
-        showAlert('danger', <p><Translate stringId="perOverviewAlertCreated" /></p>, true, 2000);
-      }
-    }
-    const upo = props.perForm.updatePerOverview;
-    if (!upo.fetching && upo.fetched && upo.data) {
-      if (upo.data.status === 'ok') {
-        showAlert('success', <p><Translate stringId="perOverviewAlertUpdated" /></p>, true, 2000);
-        // setTimeout(() => props.history.push(`/account#per-forms`), 2000);
-        // _resetPerState();
-      } else if (upo.error) {
-        showAlert('danger', <p><Translate stringId="perOverviewAlertUpdated" /></p>, true, 2000);
-      }
-    }
-    const dpo = props.perForm.deletePerOverview;
-    if (!dpo.fetching && dpo.fetched && dpo.data) {
-      if (dpo.data.status === 'ok') {
-        showAlert('success', <p><Translate stringId="perOverviewAlertDeleted" /></p>, true, 2000);
-        setTimeout(() => props.history.push(`/account#per-forms`), 2000);
-        _resetPerState();
-      } else if (dpo.error) {
-        showAlert('danger', <p><Translate stringId="perOverviewAlertDeleted" /></p>, true, 2000);
-      }
-    }
-  }, [
-    props.perForm.createPerOverview,
-    props.perForm.updatePerOverview,
-    props.perForm.deletePerOverview,
-    _resetPerState,
-    props.history
-  ]);
 
   useEffect(() => {
     const of = props.perForm.getPerOverviewForm;
@@ -183,7 +108,10 @@ function PerOverview (props) {
   // Set the Latest Overview's data
   useEffect(() => {
     if (!overviewState.country_id) {
-      setPrevOverviewState({ date_of_assessment: null, type_of_assessment: null });
+      setPrevOverviewState({
+        date_of_assessment: null,
+        type_of_assessment: null
+      });
     } else if (!props.perLatestOverview.fetching && props.perLatestOverview.fetched) {
       setPrevOverviewState(props.perLatestOverview.data?.results[0]);
     }
@@ -610,7 +538,7 @@ function PerOverview (props) {
               <div className='text-center'>
                 <button
                   className='button button--medium button--primary-filled per__form__button'
-                  onClick={(e) => submitForm(e)}
+                  onClick={(e) => console.log(e)} // submitForm(e)}
                 >
                   <Translate stringId={`${isCreate ? 'perOverviewSaveAndContinue' : 'perFormComponentSave'}`}/>
                 </button>
@@ -642,10 +570,6 @@ if (environment !== 'production') {
     nsDropdownItems: T.array,
     perLatestOverview: T.object,
     _getLatestCountryOverview: T.func,
-    _createPerOverview: T.func,
-    _updatePerOverview: T.func,
-    _deletePerOverview: T.func,
-    _resetPerState: T.func
   };
 }
 
@@ -659,10 +583,6 @@ const selector = (state, ownProps) => ({
 
 const dispatcher = (dispatch) => ({
   _getLatestCountryOverview: (payload) => dispatch(getLatestCountryOverview(payload)),
-  _createPerOverview: (payload) => dispatch(createPerOverview(payload)),
-  _updatePerOverview: (payload) => dispatch(updatePerOverview(payload)),
-  _deletePerOverview: (payload) => dispatch(deletePerOverview(payload)),
-  _resetPerState: () => dispatch(resetPerState()),
 });
 
 export default connect(selector, dispatcher)(PerOverview);

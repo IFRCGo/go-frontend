@@ -31,17 +31,8 @@ function PerForm (props) {
     setFormDataState,
     formCommentsState,
     setFormCommentsState,
-    _updatePerForm,
-    _resetPerState,
+    editable
   } = props;
-  const isEdit = !!props.isEdit;
-  const editable = useMemo(() => {
-    let isedi = false;
-    if (formId && formsState) {
-      isedi = !formsState[formId].overview?.is_finalized && isEdit;
-    }
-    return isedi;
-  }, [isEdit, formId, formsState]);
 
   function handleChange (e, question, isRadio, isFormVal = false) {
     if (isFormVal) {
@@ -145,20 +136,6 @@ function PerForm (props) {
           </React.Fragment>
         );
       }) : null }
-
-      {/* { editable
-        ? (
-          <React.Fragment>
-            <h4><Translate stringId='overviewFormDraftInfo' /></h4>
-            <button
-              className='button button--medium button--primary-filled per__form__button'
-              onClick={(e) => submitForm(e)}
-            >
-              <Translate stringId='perFormComponentSave'/>
-            </button>
-          </React.Fragment>
-        )
-        : null } */}
     </Fold>
   );
 }
@@ -167,8 +144,6 @@ if (environment !== 'production') {
   PerForm.propTypes = {
     user: T.object,
     perForm: T.object,
-    _updatePerForm: T.func,
-    _resetPerState: T.func,
   };
 }
 

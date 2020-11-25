@@ -25,6 +25,7 @@ import {
   createPerOverview,
   updatePerOverview,
   deletePerOverview,
+  updatePerForm,
   resetPerState
 } from '#actions';
 import { formQuestionsSelector, nsDropdownSelector } from '#selectors';
@@ -70,6 +71,9 @@ function PerAssessment (props) {
     _getPerQuestions,
     _getPerOverviewFormStrict,
     _getPerForms,
+    _createPerOverview,
+    _updatePerOverview,
+    _updatePerForm
   } = props;
 
   function handleTabChange (index) {
@@ -77,6 +81,41 @@ function PerAssessment (props) {
     const url = props.location.pathname;
     props.history.replace(`${url}${tabHashArray[index]}`);
   }
+
+  function saveForms (e) {
+    e.preventDefault();
+
+    if (isCreate) {
+      _createPerOverview({
+        ...overviewState
+      });
+    } else {
+      _updatePerOverview({
+        ...overviewState // TODO: check if need to change anything here
+      });
+      
+      for (const [formId, form] of Object.entries(formsState)) {
+        _updatePerForm({
+          id: formId,
+          questions: '' // FIXME: get the changed formData...
+        });
+      }
+    }
+  }
+
+  // Editable if Overview is not finalized, /edit path, or isCreate
+  const editable = useMemo(() => {
+    let isedit = false;
+    if (isCreate) {
+      isedit = true;
+    } else {
+      const ov = props.perForm.getPerOverviewForm;
+      if (idFromPath && !ov.fetching && ov.fetched && ov.data) {
+        isedit = ov.data.results[0].is_finalized && isEdit;
+      }
+    }
+    return isedit;
+  }, [isCreate, isEdit, idFromPath, props.perForm.getPerOverviewForm]);
 
   useEffect(() => {
     _getPerAreas();
@@ -98,6 +137,47 @@ function PerAssessment (props) {
       showGlobalLoading();
     }
   }, [_getPerOverviewFormStrict, _getPerForms, idFromPath]);
+
+  // TODO: make these happen
+  // // Create, update, delete actions
+  // useEffect(() => {
+  //   const cpo = props.perForm.createPerOverview;
+  //   if (!cpo.fetching && cpo.fetched && cpo.data) {
+  //     if (cpo.data.status === 'ok') {
+  //       showAlert('success', <p><Translate stringId="perOverviewAlertCreated" /></p>, true, 2000);
+  //       setTimeout(() => props.history.push(`/per-assessment/${cpo.data.overview_id}/edit#overview`), 2000);
+  //       _resetPerState();
+  //     } else if (cpo.error) {
+  //       showAlert('danger', <p><Translate stringId="perOverviewAlertCreated" /></p>, true, 2000);
+  //     }
+  //   }
+  //   const upo = props.perForm.updatePerOverview;
+  //   if (!upo.fetching && upo.fetched && upo.data) {
+  //     if (upo.data.status === 'ok') {
+  //       showAlert('success', <p><Translate stringId="perOverviewAlertUpdated" /></p>, true, 2000);
+  //       // setTimeout(() => props.history.push(`/account#per-forms`), 2000);
+  //       // _resetPerState();
+  //     } else if (upo.error) {
+  //       showAlert('danger', <p><Translate stringId="perOverviewAlertUpdated" /></p>, true, 2000);
+  //     }
+  //   }
+  //   const dpo = props.perForm.deletePerOverview;
+  //   if (!dpo.fetching && dpo.fetched && dpo.data) {
+  //     if (dpo.data.status === 'ok') {
+  //       showAlert('success', <p><Translate stringId="perOverviewAlertDeleted" /></p>, true, 2000);
+  //       setTimeout(() => props.history.push(`/account#per-forms`), 2000);
+  //       _resetPerState();
+  //     } else if (dpo.error) {
+  //       showAlert('danger', <p><Translate stringId="perOverviewAlertDeleted" /></p>, true, 2000);
+  //     }
+  //   }
+  // }, [
+  //   props.perForm.createPerOverview,
+  //   props.perForm.updatePerOverview,
+  //   props.perForm.deletePerOverview,
+  //   _resetPerState,
+  //   props.history
+  // ]);
 
   const [formsFetching, formsFetched, formsData] = useMemo(() => {
     return [
@@ -125,6 +205,7 @@ function PerAssessment (props) {
     return tabList;
   }, [props.perAreas, isCreate, strings.perAccountOverview, formsFetching, formsFetched, formsData]);
 
+  // TODO: this is probably not needed anymore, have to check
   // useEffect(() => {
   //   const pf = props.perForm.getPerForm;
   //   const pq = props.perQuestions;
@@ -164,11 +245,11 @@ function PerAssessment (props) {
     }
   }, [
     isCreate,
-    props.perForm.getPerOverviewForm,
     formsFetching,
     formsFetched,
     formsData,
     formDataState,
+    props.perForm.getPerOverviewForm,
     props.groupedPerQuestions
   ]);
 
@@ -179,12 +260,10 @@ function PerAssessment (props) {
       let commentsDict = {};
 
       formsData.results.forEach(form => {
-        // Set the Forms / { form_id: { Form's props } }
         formsDict[form.id] = form;
         commentsDict[form.id] = form.comment;
 
         let questionsDict = {};
-        // Set the Questions from FormData / { form_id: { question_id: { ...FormData } } }
         if (form.form_data) {
           form.form_data.forEach(fd => questionsDict[fd.question_id] = {
             selected_answer: fd.selected_answer,
@@ -193,9 +272,9 @@ function PerAssessment (props) {
         }
         formsDataDict[form.id] = questionsDict;
       });
-      setFormsState(formsDict);
-      setFormDataState(formsDataDict);
-      setFormCommentsState(commentsDict);
+      setFormsState(formsDict); // { [formId]: {...form} }
+      setFormDataState(formsDataDict); // { [formId]: { [questionId]: { ...formData } } }
+      setFormCommentsState(commentsDict); // { [formId]: comment }
     }
   }, [isCreate, formsFetching, formsFetched, formsData]);
 
@@ -232,6 +311,7 @@ function PerAssessment (props) {
                       </TabContent>
                     </TabPanel>
                     { isCreate
+                      // Only render the Overview tab on Create
                       ? tabs.slice(1).map(tab => (
                         <TabPanel key={tab.title}>
                           <TabContent />
@@ -241,11 +321,21 @@ function PerAssessment (props) {
                         ? formsData.results.map(form => (
                           <TabPanel key={form.id}>
                             <TabContent>
+                              { editable
+                                ? (
+                                  <button
+                                    className='button button--medium button--primary-filled per__form__button align-right'
+                                    onClick={(e) => saveForms(e)}
+                                  >
+                                    <Translate stringId='perFormComponentSave'/>
+                                  </button>
+                                )
+                                : null }
                               <PerForm
                                 formId={form.id}
                                 isCreate={isCreate}
-                                isEdit={isEdit}
                                 isEpi={isEpi}
+                                editable={editable}
                                 formsState={formsState}
                                 formDataState={formDataState}
                                 setFormDataState={setFormDataState}
@@ -258,9 +348,6 @@ function PerAssessment (props) {
                         : null)
                     }
                     
-                    
-
-                    { }
                     {/* <TabPanel>
                       <TabContent>
                         <div className='container-lg'>
@@ -301,6 +388,7 @@ if (environment !== 'production') {
     _createPerOverview: T.func,
     _updatePerOverview: T.func,
     _deletePerOverview: T.func,
+    _updatePerForm: T.func,
     _resetPerState: T.func
   };
 }
@@ -323,6 +411,7 @@ const dispatcher = (dispatch) => ({
   _createPerOverview: (payload) => dispatch(createPerOverview(payload)),
   _updatePerOverview: (payload) => dispatch(updatePerOverview(payload)),
   _deletePerOverview: (payload) => dispatch(deletePerOverview(payload)),
+  _updatePerForm: (payload) => dispatch(updatePerForm(payload)),
   _resetPerState: () => dispatch(resetPerState()),
 });
 
