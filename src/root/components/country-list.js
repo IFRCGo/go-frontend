@@ -10,9 +10,15 @@ import Translate from '#components/Translate';
 
 const CountryList = props => {
   const { strings } = useContext(LanguageContext);
-  const [isFullList, toggleList] = useState(true);
-  const toggle = () => {
-    isFullList ? toggleList(false) : toggleList(true);
+  // const [isFullList, toggleList] = useState(true);
+  // const toggle = () => {
+  //   isFullList ? toggleList(false) : toggleList(true);
+  // };
+
+  const [countryFilter, setCountryFilter] = useState('');
+
+  const updateCountryFilter = (e) => {
+    setCountryFilter(e.currentTarget.value);
   };
 
   let countries = props.countries;
@@ -21,13 +27,15 @@ const CountryList = props => {
     countries = countries.map(d => {
       const numOperations = activeOperations.filter(o => o.country && o.country.id === d.id).length;
       return Object.assign({ numOperations }, d);
+    }).filter(c => {
+      return c.name.indexOf(countryFilter) !== -1;
     });
   }
 
   return (
       <div>
         <div className={`country__sidebar scrollbar__custom ${props.showCountriesSidebar ? 'country__sidebar--active' : ''}`}>
-          <input type='text' className='country__sidebar-input-search form__control' placeholder='Select a Country' />
+          <input type='text' className='country__sidebar-input-search form__control' placeholder='Select a Country' onChange={updateCountryFilter} />
           <ul className='region-countries__list'>
             {
               countries.map(country => 
