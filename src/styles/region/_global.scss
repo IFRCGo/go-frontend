@@ -678,6 +678,7 @@ $btn-region-countries-height: 50px;
 .country__sidebar {
   background-color: $white;
   box-shadow: $base-box-shadow;
+  border-radius: $base-border-radius;
   position: absolute;
   top: calc(#{$btn-region-countries-height} + #{$spacing-2} + 1px);
   width: 100%;
@@ -706,12 +707,12 @@ $btn-region-countries-height: 50px;
   background-image: url('/assets/icons/collecticons/magnifier-left-grey.svg');
   background-repeat: no-repeat;
   background-size: 14px;
-  background-position: left 44%;
+  background-position: left 69%;
   padding-left: $spacing-2;
   padding-top: $spacing-2;
   position: sticky;
   top: 0;
-  z-index: 2;
+  z-index: 1;
 
   &:hover {
     outline: 0;
