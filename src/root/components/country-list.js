@@ -1,15 +1,12 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { environment } from '#config';
 import { get } from '#utils/utils';
-import ToggleButtonComponent from './common/toggle-button';
 
-import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 
 const CountryList = props => {
-  const { strings } = useContext(LanguageContext);
   const [countryFilter, setCountryFilter] = useState('');
 
   const updateCountryFilter = (e) => {
