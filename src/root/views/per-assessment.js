@@ -15,6 +15,7 @@ import TabContent from '#components/tab-content';
 import { Helmet } from 'react-helmet';
 import PerForm from '#components/per-forms/per-form';
 import PerOverview from '#components/per-forms/per-overview';
+import { showAlert } from '#components/system-alerts';
 
 import {
   getAssessmentTypes,
@@ -73,7 +74,8 @@ function PerAssessment (props) {
     _getPerForms,
     _createPerOverview,
     _updatePerOverview,
-    _updatePerForm
+    _updatePerForm,
+    _resetPerState
   } = props;
 
   function handleTabChange (index) {
@@ -86,20 +88,16 @@ function PerAssessment (props) {
     e.preventDefault();
 
     if (isCreate) {
-      _createPerOverview({
-        ...overviewState
-      });
+      _createPerOverview({...overviewState, is_epi: overviewState.is_epi === 'true'});
     } else {
-      _updatePerOverview({
-        ...overviewState // TODO: check if need to change anything here
-      });
+      _updatePerOverview({...overviewState, is_epi: overviewState.is_epi === 'true'});
       
-      for (const [formId, form] of Object.entries(formsState)) {
-        _updatePerForm({
-          id: formId,
-          questions: '' // FIXME: get the changed formData...
-        });
-      }
+      // for (const [formId, form] of Object.entries(formsState)) {
+      //   _updatePerForm({
+      //     id: formId,
+      //     questions: '' // FIXME: get the changed formData...
+      //   });
+      // }
     }
   }
 
@@ -111,7 +109,7 @@ function PerAssessment (props) {
     } else {
       const ov = props.perForm.getPerOverviewForm;
       if (idFromPath && !ov.fetching && ov.fetched && ov.data) {
-        isedit = ov.data.results[0].is_finalized && isEdit;
+        isedit = !ov.data.results[0].is_finalized && isEdit;
       }
     }
     return isedit;
@@ -138,46 +136,41 @@ function PerAssessment (props) {
     }
   }, [_getPerOverviewFormStrict, _getPerForms, idFromPath]);
 
-  // TODO: make these happen
-  // // Create, update, delete actions
-  // useEffect(() => {
-  //   const cpo = props.perForm.createPerOverview;
-  //   if (!cpo.fetching && cpo.fetched && cpo.data) {
-  //     if (cpo.data.status === 'ok') {
-  //       showAlert('success', <p><Translate stringId="perOverviewAlertCreated" /></p>, true, 2000);
-  //       setTimeout(() => props.history.push(`/per-assessment/${cpo.data.overview_id}/edit#overview`), 2000);
-  //       _resetPerState();
-  //     } else if (cpo.error) {
-  //       showAlert('danger', <p><Translate stringId="perOverviewAlertCreated" /></p>, true, 2000);
-  //     }
-  //   }
-  //   const upo = props.perForm.updatePerOverview;
-  //   if (!upo.fetching && upo.fetched && upo.data) {
-  //     if (upo.data.status === 'ok') {
-  //       showAlert('success', <p><Translate stringId="perOverviewAlertUpdated" /></p>, true, 2000);
-  //       // setTimeout(() => props.history.push(`/account#per-forms`), 2000);
-  //       // _resetPerState();
-  //     } else if (upo.error) {
-  //       showAlert('danger', <p><Translate stringId="perOverviewAlertUpdated" /></p>, true, 2000);
-  //     }
-  //   }
-  //   const dpo = props.perForm.deletePerOverview;
-  //   if (!dpo.fetching && dpo.fetched && dpo.data) {
-  //     if (dpo.data.status === 'ok') {
-  //       showAlert('success', <p><Translate stringId="perOverviewAlertDeleted" /></p>, true, 2000);
-  //       setTimeout(() => props.history.push(`/account#per-forms`), 2000);
-  //       _resetPerState();
-  //     } else if (dpo.error) {
-  //       showAlert('danger', <p><Translate stringId="perOverviewAlertDeleted" /></p>, true, 2000);
-  //     }
-  //   }
-  // }, [
-  //   props.perForm.createPerOverview,
-  //   props.perForm.updatePerOverview,
-  //   props.perForm.deletePerOverview,
-  //   _resetPerState,
-  //   props.history
-  // ]);
+  // Triggers on create, update, delete actions
+  useEffect(() => {
+    const cpo = props.perForm.createPerOverview;
+    if (!cpo.fetching && cpo.fetched && cpo.data) {
+      if (cpo.data.status === 'ok') {
+        showAlert('success', <p><Translate stringId="perOverviewAlertCreated" /></p>, true, 2000);
+        setTimeout(() => props.history.push(`/per-assessment/${cpo.data.overview_id}/edit#overview`), 2000);
+        _resetPerState();
+      } else if (cpo.error) {
+        showAlert('danger', <p><Translate stringId="perOverviewAlertCreated" /></p>, true, 2000);
+      }
+    }
+  }, [props.perForm.createPerOverview, _resetPerState, props.history]);
+  useEffect(() => {
+    const upo = props.perForm.updatePerOverview;
+    if (!upo.fetching && upo.fetched && upo.data) {
+      if (upo.data.status === 'ok') {
+        showAlert('success', <p><Translate stringId="perOverviewAlertUpdated" /></p>, true, 2000);
+      } else if (upo.error) {
+        showAlert('danger', <p>{upo.error.error_message}</p>, true, 2000);
+      }
+    }
+  }, [props.perForm.updatePerOverview]);
+  useEffect(() => {
+    const dpo = props.perForm.deletePerOverview;
+    if (!dpo.fetching && dpo.fetched && dpo.data) {
+      if (dpo.data.status === 'ok') {
+        showAlert('success', <p><Translate stringId="perOverviewAlertDeleted" /></p>, true, 2000);
+        setTimeout(() => props.history.push(`/account#per-forms`), 2000);
+        _resetPerState();
+      } else if (dpo.error) {
+        showAlert('danger', <p><Translate stringId="perOverviewAlertDeleted" /></p>, true, 2000);
+      }
+    }
+  }, [props.perForm.deletePerOverview, _resetPerState, props.history]);
 
   const [formsFetching, formsFetched, formsData] = useMemo(() => {
     return [
@@ -187,6 +180,7 @@ function PerAssessment (props) {
     ];
   }, [props.perForm.getPerForms]);
 
+  // tabs still multiply sometimes...
   const tabs = useMemo(() => {
     let tabList = [{ title: strings.perAccountOverview, hash: '#overview' }];
 
@@ -204,23 +198,6 @@ function PerAssessment (props) {
     }
     return tabList;
   }, [props.perAreas, isCreate, strings.perAccountOverview, formsFetching, formsFetched, formsData]);
-
-  // TODO: this is probably not needed anymore, have to check
-  // useEffect(() => {
-  //   const pf = props.perForm.getPerForm;
-  //   const pq = props.perQuestions;
-  //   if (!pf.fetching && pf.fetched && pf.data && !pq.fetching && pq.fetched && pq.data) {
-  //     let questionsDict = {};
-  //     pf.data.results.forEach((fd) => {
-  //       questionsDict[fd.question_id] = {
-  //         selected_answer: fd.selected_answer?.id.toString() || '',
-  //         notes: fd.notes
-  //       };
-  //     });
-  //     setQuestionsState(questionsDict);
-  //     hideGlobalLoading();
-  //   }
-  // }, [props.perForm.getPerForm, props.perQuestions]);
 
   const assessmentTypes = useMemo(() => {
     const ats = props.perForm.assessmentTypes;
@@ -300,18 +277,42 @@ function PerAssessment (props) {
                   <div className='inner'>
                     <TabPanel>
                       <TabContent>
+                        { !isCreate && editable
+                          ? (
+                            <div className='container-lg text-right'>
+                              <button
+                                className='button button--medium button--primary-filled per__form__button'
+                                onClick={(e) => saveForms(e)}
+                              >
+                                <Translate stringId='perFormComponentSave'/>
+                              </button>
+                            </div>
+                          )
+                          : null }
                         <PerOverview
                           idFromPath={idFromPath}
                           isCreate={isCreate}
-                          isEdit={isEdit}
                           overviewState={overviewState}
                           setOverviewState={setOverviewState}
                           assessmentTypes={assessmentTypes}
+                          editable={editable}
                         />
+                        { isCreate
+                          ? (
+                            <div className='container-lg text-center'>
+                              <button
+                                className='button button--medium button--primary-filled per__form__button'
+                                onClick={(e) => saveForms(e)}
+                              >
+                                <Translate stringId='perOverviewSaveAndContinue'/>
+                              </button>
+                            </div>
+                          )
+                          : null }
                       </TabContent>
                     </TabPanel>
                     { isCreate
-                      // Only render the Overview tab on Create
+                      // Only render the Overview tab content on Create
                       ? tabs.slice(1).map(tab => (
                         <TabPanel key={tab.title}>
                           <TabContent />
@@ -323,18 +324,20 @@ function PerAssessment (props) {
                             <TabContent>
                               { editable
                                 ? (
-                                  <button
-                                    className='button button--medium button--primary-filled per__form__button align-right'
-                                    onClick={(e) => saveForms(e)}
-                                  >
-                                    <Translate stringId='perFormComponentSave'/>
-                                  </button>
+                                  <div className='container-lg text-right'>
+                                    <button
+                                      className='button button--medium button--primary-filled per__form__button'
+                                      onClick={(e) => saveForms(e)}
+                                    >
+                                      <Translate stringId='perFormComponentSave'/>
+                                    </button>
+                                  </div>
                                 )
                                 : null }
                               <PerForm
                                 formId={form.id}
                                 isCreate={isCreate}
-                                isEpi={isEpi}
+                                isEpi={isEpi} // TODO: handle EPI questions
                                 editable={editable}
                                 formsState={formsState}
                                 formDataState={formDataState}
@@ -347,24 +350,6 @@ function PerAssessment (props) {
                         ))
                         : null)
                     }
-                    
-                    {/* <TabPanel>
-                      <TabContent>
-                        <div className='container-lg'>
-                          {this.renderFieldReports()}
-                        </div>
-                      </TabContent>
-                      <TabContent isError={this.props.profile.fetched && this.props.profile.error} errorMessage={strings.accountSubscriptionError} title={strings.accountSubscriptionTitle}>
-                        <div className='container-lg'>
-                          {this.props.profile.fetched && this.renderSubscriptionForm()}
-                        </div>
-                      </TabContent>
-                    </TabPanel>
-                    <TabPanel>
-                      <TabContent isError={!this.isPerPermission()} errorMessage={strings.accountPerError} title={strings.accountPerTitle}>
-                        <PerAccount user={this.props.user} />
-                      </TabContent>
-                    </TabPanel> */}
                   </div>
                 </div>
               </Tabs>

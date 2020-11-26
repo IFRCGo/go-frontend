@@ -63,7 +63,7 @@ function PerAccount (props) {
       id: form.id,
       country: form.country?.name,
       updatedDate: isoDate(form.updated_at),
-      assessmentNumber: 1, // TODO: get assessmentNumber into the response or calc somehow
+      assessmentNumber: form.assessment_number, // TODO: get assessmentNumber into the response or calc somehow
       formsIncluded: 'asd', // TODO: get these as well, based on which have been created
       link: {
         value: (

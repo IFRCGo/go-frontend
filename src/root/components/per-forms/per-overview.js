@@ -21,12 +21,12 @@ import {
   FormError
 } from '#components/form-elements/';
 import Select from 'react-select';
-import { showAlert } from '#components/system-alerts';
 
 function PerOverview (props) {
   const { strings } = useContext(LanguageContext);
-  const [nsState, setNsState] = useState();
+  const [origCountry, setOrigCountry] = useState(1);
   const [prevOverviewState, setPrevOverviewState] = useState({
+    assessment_number: null,
     date_of_assessment: null,
     type_of_assessment: null
   });
@@ -41,7 +41,6 @@ function PerOverview (props) {
   } = props;
   const isCreate = !!props.isCreate;
 
-
   function handleChange (e, hasTarget = true, isCheckbox = false, isRadio = false, id = '') {
     if (hasTarget) {
       setOverviewState({
@@ -51,23 +50,24 @@ function PerOverview (props) {
     } else {
       setOverviewState({
         ...overviewState,
-        [id]: e.value
+        [id]: e?.value || null
       });
     }
   }
 
-  function deleteOverview (e) {
-    e.preventDefault();
-    _deletePerOverview(props.perForm.getPerOverviewForm.data.results[0].id);
-  }
+  // function deleteOverview (e) {
+  //   e.preventDefault();
+  //   _deletePerOverview(props.perForm.getPerOverviewForm.data.results[0].id);
+  // }
 
   useEffect(() => {
     const of = props.perForm.getPerOverviewForm;
     if (!isCreate && of.data && !of.fetching && of.fetched) {
       const res = of.data.results[0];
-      setNsState(res.country?.id);
+      setOrigCountry(res.country?.id);
       setOverviewState({
-        branches_involved: res.branch_involved,
+        assessment_number: res.assessment_number,
+        branches_involved: res.branches_involved,
         country_id: res.country?.id,
         date_of_assessment: res.date_of_assessment?.substring(0, 10),
         date_of_mid_term_review: res.date_of_mid_term_review?.substring(0, 10),
@@ -109,15 +109,22 @@ function PerOverview (props) {
   useEffect(() => {
     if (!overviewState.country_id) {
       setPrevOverviewState({
+        assessment_number: null,
         date_of_assessment: null,
         type_of_assessment: null
       });
-    } else if (!props.perLatestOverview.fetching && props.perLatestOverview.fetched) {
+    } else if (!props.perLatestOverview.fetching && props.perLatestOverview.fetched && !props.perLatestOverview.error) {
+      console.log(props.perLatestOverview);
       setPrevOverviewState(props.perLatestOverview.data?.results[0]);
     }
   }, [overviewState.country_id, props.perLatestOverview]);
 
-  // TODO: use overviewState instead of nsState and such...
+  const assessment_number = useMemo(() => {
+    if (overviewState.country_id !== origCountry) {
+      return prevOverviewState?.assessment_number + 1 || 1;
+    }
+    return overviewState.assessment_number;
+  }, [origCountry, overviewState, prevOverviewState]);
 
   return (
     <React.Fragment>
@@ -138,15 +145,16 @@ function PerOverview (props) {
               </div>
               <div className="form__inner-body">
                 <Select
-                  name='country'
-                  value={nsState}
-                  onChange={(e) => setNsState(e?.value)}
+                  id='country_id'
+                  name='country_id'
+                  value={overviewState.country_id}
+                  onChange={(e) => handleChange(e, false, false, false, 'country_id')}
                   options={props.nsDropdownItems}
                   disabled={!editable}
                 />
                 <FormError
                   errors={[]}
-                  property='country'
+                  property='country_id'
                 />
               </div>
             </div>
@@ -195,7 +203,7 @@ function PerOverview (props) {
             type='text'
             name='assessment_number'
             id='assessment_number'
-            value={null} // FIXME: get value
+            value={assessment_number}
             classWrapper='form__group__per'
             // onChange={}
             disabled={true}
@@ -276,7 +284,7 @@ function PerOverview (props) {
             name='prev_asmt_date'
             id='prev_asmt_date'
             value={
-              prevOverviewState.date_of_assessment ? isoDate(prevOverviewState.date_of_assessment) : null
+              prevOverviewState?.date_of_assessment ? isoDate(prevOverviewState.date_of_assessment) : null
             }
             classWrapper='form__group__per'
             // onChange={(e) => fieldChange(e)}
@@ -293,7 +301,7 @@ function PerOverview (props) {
             type='text'
             name='prev_asmt_type'
             id='prev_asmt_type'
-            value={prevOverviewState.type_of_assessment?.name} // FIXME: get from backend
+            value={prevOverviewState?.type_of_assessment?.name}
             classWrapper='form__group__per'
             // onChange={(e) => fieldChange(e)}
             disabled={true}
@@ -530,34 +538,6 @@ function PerOverview (props) {
           </FormInput>
         </figure>
       </div>
-
-      { editable
-        ? (
-          <React.Fragment>
-            <div className='container-lg'>
-              <div className='text-center'>
-                <button
-                  className='button button--medium button--primary-filled per__form__button'
-                  onClick={(e) => console.log(e)} // submitForm(e)}
-                >
-                  <Translate stringId={`${isCreate ? 'perOverviewSaveAndContinue' : 'perFormComponentSave'}`}/>
-                </button>
-              </div>
-            </div>
-            
-            { !isCreate
-              ? (
-                <a
-                  className='link-underline per__delete_button'
-                  onClick={(e) => deleteOverview(e)}
-                >
-                  <Translate stringId='perDraftDelete' />
-                </a>
-              )
-              : null }
-          </React.Fragment>
-        )
-        : null }
     </React.Fragment>
   );
 }

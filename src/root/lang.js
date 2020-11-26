@@ -548,7 +548,7 @@ export default {
   perFormAlertUpdated: 'PER Form updated, redirecting...',
   perFormAlertDeleted: 'PER Form deleted, redirecting...',
   perOverviewAlertCreated: 'PER Overview created, redirecting...',
-  perOverviewAlertUpdated: 'PER Overview updated, redirecting...',
+  perOverviewAlertUpdated: 'PER Overview updated',
   perOverviewAlertDeleted: 'PER Overview deleted, redirecting...',
   perOverviewHeaderCurrent: 'Current PER Assessment',
   perOverviewHeaderPrevious: 'Previous PER Assessment',
