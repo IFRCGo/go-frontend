@@ -28,7 +28,7 @@ const CountryList = props => {
       const numOperations = activeOperations.filter(o => o.country && o.country.id === d.id).length;
       return Object.assign({ numOperations }, d);
     }).filter(c => {
-      return c.name.indexOf(countryFilter) !== -1;
+      return c.name.toLowerCase().indexOf(countryFilter.toLowerCase()) !== -1;
     });
   }
 
