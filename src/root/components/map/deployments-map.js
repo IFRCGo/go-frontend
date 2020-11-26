@@ -84,7 +84,7 @@ export default class DeploymentsMap extends React.Component {
         }, ['case']);
 
         countryWithEruColor.push('hsl(213, 38%, 28%)');
-        this.theMap.setPaintProperty('country', 'fill-color', countryWithEruColor);
+        this.theMap.setPaintProperty('icrc_admin0', 'fill-color', countryWithEruColor);
       }
     }
   }
@@ -108,19 +108,19 @@ export default class DeploymentsMap extends React.Component {
       theMap.getCanvas().style.cursor = '';
     });
 
-    theMap.on('click', 'country', e => {
+    theMap.on('click', 'icrc_admin0', e => {
       const feat = getCountryFeat(e);
       if (feat) {
         this.showPopover(theMap, feat);
       }
     });
 
-    theMap.on('mousemove', 'country', e => {
+    theMap.on('mousemove', 'icrc_admin0', e => {
       if (getCountryFeat(e)) {
         theMap.getCanvas().style.cursor = 'pointer';
       }
     });
-    theMap.on('mouseleave', 'country', e => {
+    theMap.on('mouseleave', 'icrc_admin0', e => {
       theMap.getCanvas().style.cursor = '';
     });
 
