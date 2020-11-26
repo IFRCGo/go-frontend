@@ -148,7 +148,7 @@ export default {
   region3WTab: '3w',
   regionProfileTab: 'Regional Profile',
   regionPreparednessTab: 'Preparedness',
-  regionAdditionalInfoTab: 'Additional Information',
+  regionAdditionalInfoTab: 'Additional Data',
   regionIframeBackLink: 'Back to Regional Profile',
 
   regionalTabBox1: 'National Societies in Africa',
@@ -192,14 +192,14 @@ export default {
   countryTitle: 'IFRC Go - Country',
   countryListInRegion: ' Countries in this Region',
   countryListViewActiveOnly: 'View only active operations',
-  countryListActiveOperation: 'Active Operation',
-  countryListActiveOperations: 'Active Operations',
+  countryListActiveOperation: 'IFRC-Supported Operation',
+  countryListActiveOperations: 'IFRC-Supported Operations',
   countryPreparednessTitle: 'Preparedness',
 
   countryOperationsTab: 'Operations',
   country3WTab: '3W',
   countryPreparednessTab: 'Preparedness',
-  countryAdditionalInfoTab: 'Additional Information',
+  countryAdditionalInfoTab: 'Additional Data',
 
   emergenciesTableError: 'Latest emergencies not available.',
   emergenciesTableDate: 'Start Date',

@@ -61,8 +61,12 @@ class AdminArea extends SFPComponent {
     this.state = {
       maskLayer: this.getMaskLayer(this.props.thisRegion.id),
       regionAdditionalInfoTabIframe: null,
-      fullscreen: false
+      fullscreen: false,
+      showCountriesSidebar: false
+
     };
+
+    this.toggleCountriesSidebar = this.toggleCountriesSidebar.bind(this);
 
     this.toggleFullscreen = this.toggleFullscreen.bind(this);
     this.onFullscreenChange = this.onFullscreenChange.bind(this);
@@ -75,9 +79,13 @@ class AdminArea extends SFPComponent {
       // { title: context.strings.regionAdditionalInfoTab, hash: '#additional-info' }
     ];
 
+
+
   }
 
-
+  toggleCountriesSidebar () {
+    this.setState({showCountriesSidebar: !this.state.showCountriesSidebar});
+  }
 
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps (nextProps) {
@@ -271,8 +279,22 @@ class AdminArea extends SFPComponent {
             ) : <BlockLoading/>}
           </div>
         </section>
-
         <div className='tab__wrap tab__wrap--3W'>
+          <div className='btn-region-countries-container'>
+            <div className='link btn-region-countries-trigger link link--with-icon' onClick={this.toggleCountriesSidebar}>
+              <span className='btn-region-countries-icon link--with-icon-inner'>
+                <span className={this.state.showCountriesSidebar ? 'collecticon-sm-chevron-right' : 'collecticon-sm-chevron-left'}></span>
+                <span className={this.state.showCountriesSidebar ? 'collecticon-sm-chevron-right' : 'collecticon-sm-chevron-left'}></span>
+              </span>
+              <span className='link--with-icon-text'>All countries</span>
+            </div>
+
+            <CountryList
+              showCountriesSidebar={this.state.showCountriesSidebar}
+              countries={this.props.countriesByRegion[regionId]}
+              appealStats={this.props.appealStats}
+            />
+          </div>
           <Tabs
             selectedIndex={ selectedIndex }
             onSelect={index => handleTabChange(index)}
@@ -327,10 +349,6 @@ class AdminArea extends SFPComponent {
                         <TimelineCharts region={data.id} />
                       </div>
                     </Fold>
-                    <CountryList
-                      countries={this.props.countriesByRegion[regionId]}
-                      appealStats={this.props.appealStats}
-                    />
                     <EmergenciesTable
                       id='emergencies'
                       title={strings.regionRecentEmergencies}
