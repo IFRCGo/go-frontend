@@ -3,7 +3,6 @@ import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { environment } from '#config';
 import { get } from '#utils/utils';
-import Fold from './fold';
 import ToggleButtonComponent from './common/toggle-button';
 
 import LanguageContext from '#root/languageContext';
@@ -25,52 +24,20 @@ const CountryList = props => {
     });
   }
 
-  /**
-   * @type {object} with a key of the letter and value of an array with countries
-   */
-  const alphabetizedList = countries.reduce((prev, country) => {
-    if (!country.name) {
-      // it is possible a country name is null, in which case don't add to list.
-      return prev;
-    }
-    const letter = country.name[0];
-    // Only adds countries with active operations
-    const activeCountries = country.numOperations ? (
-      {[letter]: [...(prev[letter] || []), country]}
-    ) : ({});
-    return isFullList ? (
-      {...prev, [letter]: [...(prev[letter] || []), country]}
-    ) : (
-      {...prev, ...activeCountries}
-    );
-  }, {});
-
   return (
       <div>
-        {props.showCountriesSidebar &&
-        <Fold title={`${countries.length} ${strings.countryListInRegion} `} foldWrapperClass='fold--main'>
-          <ToggleButtonComponent
-            value={ !isFullList || false }
-            toggle={toggle}
-            description={strings.countryListViewActiveOnly}
-          />
+        <div className={`country__sidebar scrollbar__custom ${props.showCountriesSidebar ? 'country__sidebar--active' : ''}`}>
+          <input type='text' className='country__sidebar-input-search form__control' placeholder='Select a Country' />
           <ul className='region-countries__list'>
-            {Object.entries(alphabetizedList).map(([letter, countries]) =>
-              <div key={letter}>
-                <li className='region-countries__letter' key={letter}>{letter}</li>
-                <ul>
-                  {countries.map(country =>
-                    <li key={country.id} className='region-countries__item'>
-                      <Link to={`/countries/${country.id}`} className='region-countries__link'><span className='region-countries__linkC'>{country.name}</span></Link>
-                      {country.numOperations ? <div className='region-countries__link-op'>({country.numOperations} {country.numOperations > 1 ? <Translate stringId='countryListActiveOperations' /> : <Translate stringId='countryListActiveOperation'/>})</div> : null}
-                    </li>
-                  )}
-                </ul>
-              </div>
+            {
+              countries.map(country => 
+                <li key={country.id} className='region-countries__item'>
+                  <Link to={`/countries/${country.id}`} className='region-countries__link'><span className='region-countries__linkC'>{country.name}</span></Link>
+                  <div className='region-countries__link-op'>({country.numOperations} {country.numOperations === 1 ? <Translate stringId='countryListActiveOperation' /> : <Translate stringId='countryListActiveOperations'/>})</div>
+                </li>              
             )}
           </ul>
-        </Fold>
-        }
+        </div>
       </div>
   );
 };

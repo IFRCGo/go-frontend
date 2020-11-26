@@ -72,7 +72,7 @@ class AdminArea extends SFPComponent {
     this.onFullscreenChange = this.onFullscreenChange.bind(this);
     this.onAdditionalLinkClickAction = this.onAdditionalLinkClickAction.bind(this);
     this.TAB_DETAILS = [
-      { title: context.strings.regionEmergenciesTab, hash: '#operations' },
+      { title: context.strings.regionOperationsTab, hash: '#operations' },
       { title: context.strings.region3WTab, hash: '#3w' },
       { title: context.strings.regionProfileTab, hash: '#regional-profile' },
       // { title: context.strings.regionPreparednessTab, hash: '#preparedness' },
@@ -280,7 +280,7 @@ class AdminArea extends SFPComponent {
           </div>
         </section>
         <div className='tab__wrap tab__wrap--3W'>
-          <div className='container-lg btn-region-countries-container'>
+          <div className='btn-region-countries-container'>
             <div className='link btn-region-countries-trigger link link--with-icon' onClick={this.toggleCountriesSidebar}>
               <span className='btn-region-countries-icon link--with-icon-inner'>
                 <span className='collecticon-sm-chevron-left'></span>
@@ -291,7 +291,7 @@ class AdminArea extends SFPComponent {
 
             <CountryList
               showCountriesSidebar={this.state.showCountriesSidebar}
-              countries={this.props.countries}
+              countries={this.props.countriesByRegion[regionId]}
               appealStats={this.props.appealStats}
             />
           </div>
