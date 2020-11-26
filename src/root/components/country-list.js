@@ -10,11 +10,6 @@ import Translate from '#components/Translate';
 
 const CountryList = props => {
   const { strings } = useContext(LanguageContext);
-  // const [isFullList, toggleList] = useState(true);
-  // const toggle = () => {
-  //   isFullList ? toggleList(false) : toggleList(true);
-  // };
-
   const [countryFilter, setCountryFilter] = useState('');
 
   const updateCountryFilter = (e) => {
