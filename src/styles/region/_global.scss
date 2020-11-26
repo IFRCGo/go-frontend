@@ -651,6 +651,7 @@ $btn-region-countries-height: 50px;
 .btn-region-countries-container {
   display: flex;
   justify-content: flex-end;
+  margin-bottom: 4px;
 }
 
 .btn-region-countries-trigger {
@@ -666,12 +667,12 @@ $btn-region-countries-height: 50px;
 .btn-region-countries-icon {
   span {
     position: relative;
-    top: 1px;
+    top: -0.5px;
   }
   
   span:last-of-type {
     position: relative;
-    right: 4px;
+    right: 6px;
   }
 }
 

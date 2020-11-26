@@ -62,7 +62,7 @@ class AdminArea extends SFPComponent {
       maskLayer: this.getMaskLayer(this.props.thisRegion.id),
       regionAdditionalInfoTabIframe: null,
       fullscreen: false,
-      showCountriesSidebar: true
+      showCountriesSidebar: false
 
     };
 
@@ -283,8 +283,8 @@ class AdminArea extends SFPComponent {
           <div className='btn-region-countries-container'>
             <div className='link btn-region-countries-trigger link link--with-icon' onClick={this.toggleCountriesSidebar}>
               <span className='btn-region-countries-icon link--with-icon-inner'>
-                <span className='collecticon-sm-chevron-left'></span>
-                <span className='collecticon-sm-chevron-left'></span>
+                <span className={this.state.showCountriesSidebar ? 'collecticon-sm-chevron-right' : 'collecticon-sm-chevron-left'}></span>
+                <span className={this.state.showCountriesSidebar ? 'collecticon-sm-chevron-right' : 'collecticon-sm-chevron-left'}></span>
               </span>
               <span className='link--with-icon-text'>All countries</span>
             </div>
@@ -349,10 +349,6 @@ class AdminArea extends SFPComponent {
                         <TimelineCharts region={data.id} />
                       </div>
                     </Fold>
-                    <CountryList
-                      countries={this.props.countriesByRegion[regionId]}
-                      appealStats={this.props.appealStats}
-                    />
                     <EmergenciesTable
                       id='emergencies'
                       title={strings.regionRecentEmergencies}
