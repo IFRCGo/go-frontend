@@ -46,7 +46,7 @@ function PerAssessment (props) {
     facilitator_phone: '',
     facilitator_contact: '',
     is_epi: false,
-    is_finalized: false, // TODO: maybe not handle here but at submit
+    is_finalized: false,
     method_asmt_used: '',    
     ns_focal_point_name: '',
     ns_focal_point_email: '',
@@ -84,13 +84,17 @@ function PerAssessment (props) {
     props.history.replace(`${url}${tabHashArray[index]}`);
   }
 
-  function saveForms (e) {
+  function saveForms (e, isSubmit = false) {
     e.preventDefault();
 
     if (isCreate) {
       _createPerOverview({...overviewState, is_epi: overviewState.is_epi === 'true'});
     } else {
-      _updatePerOverview({...overviewState, is_epi: overviewState.is_epi === 'true'});
+      _updatePerOverview({
+        ...overviewState,
+        is_epi: overviewState.is_epi === 'true',
+        is_finalized: isSubmit
+      });
       
       // for (const [formId, form] of Object.entries(formsState)) {
       //   _updatePerForm({
@@ -153,18 +157,24 @@ function PerAssessment (props) {
     const upo = props.perForm.updatePerOverview;
     if (!upo.fetching && upo.fetched && upo.data) {
       if (upo.data.status === 'ok') {
-        showAlert('success', <p><Translate stringId="perOverviewAlertUpdated" /></p>, true, 2000);
+        if (upo.data.is_finalized) {
+          showAlert('success', <p><Translate stringId="perOverviewAlertUpdated" /></p>, true, 2000);
+          setTimeout(() => props.history.push('/account#per-forms'), 2000);
+          _resetPerState();
+        } else {
+          showAlert('success', <p><Translate stringId="perOverviewAlertUpdatedNoRedirect" /></p>, true, 2000);
+        }
       } else if (upo.error) {
         showAlert('danger', <p>{upo.error.error_message}</p>, true, 2000);
       }
     }
-  }, [props.perForm.updatePerOverview]);
+  }, [props.perForm.updatePerOverview, _resetPerState, props.history]);
   useEffect(() => {
     const dpo = props.perForm.deletePerOverview;
     if (!dpo.fetching && dpo.fetched && dpo.data) {
       if (dpo.data.status === 'ok') {
         showAlert('success', <p><Translate stringId="perOverviewAlertDeleted" /></p>, true, 2000);
-        setTimeout(() => props.history.push(`/account#per-forms`), 2000);
+        setTimeout(() => props.history.push('/account#per-forms'), 2000);
         _resetPerState();
       } else if (dpo.error) {
         showAlert('danger', <p><Translate stringId="perOverviewAlertDeleted" /></p>, true, 2000);
@@ -180,7 +190,7 @@ function PerAssessment (props) {
     ];
   }, [props.perForm.getPerForms]);
 
-  // tabs still multiply sometimes...
+  // FIXME: tabs still multiply if going to a Form, then navigating back to creating a new one
   const tabs = useMemo(() => {
     let tabList = [{ title: strings.perAccountOverview, hash: '#overview' }];
 
@@ -261,100 +271,128 @@ function PerAssessment (props) {
         <Helmet>
           <title>{strings.perFormTitle}</title>
         </Helmet>
-          <section className='inpage__body'>
-            <div className='tab__wrap'>
-              <Tabs
-                selectedIndex={tabs.map(({ hash }) => hash).indexOf(props.location.hash)}
-                onSelect={index => handleTabChange(index)}
-              >
-                <TabList>
-                  { tabs.map((tab, idx) => (
-                    <Tab key={tab.title} disabled={(isCreate && idx !== 0) ? true : false}>{tab.title}</Tab>
-                  ))}
-                </TabList>
+        <header className='inpage__header'>
+        
+          <div className='container-lg'>
+            <button
+              className='button button--primary-bounded button--small'
+              onClick={(e) => props.history.push('/account#per-forms')}
+            >
+              <Translate stringId='fieldReportBack'/>
+            </button>
+            { !isCreate && editable
+              ? (
+                  <button
+                    className='button button--primary-filled button--small per__submit_and_close'
+                    onClick={(e) => saveForms(e, true)}
+                  >
+                    <Translate stringId='perAssessmentSubmit'/>
+                  </button>
+              )
+              : null }
+          </div>
+          <div className='inner'>
+            <div className='inpage__headline'>
+              <h1 className='inpage__title'>
+                <Translate stringId='perAssessmentTitle' />
+              </h1>
+            </div>
+          </div>
+        </header>
+        <section className='inpage__body'>
+          <div className='tab__wrap'>
+            <Tabs
+              selectedIndex={tabs.map(({ hash }) => hash).indexOf(props.location.hash)}
+              onSelect={index => handleTabChange(index)}
+            >
+              <TabList>
+                { tabs.map((tab, idx) => (
+                  <Tab key={tab.title} disabled={(isCreate && idx !== 0) ? true : false}>{tab.title}</Tab>
+                ))}
+              </TabList>
 
-                <div className='inpage__body'>
-                  <div className='inner'>
-                    <TabPanel>
-                      <TabContent>
-                        { !isCreate && editable
-                          ? (
-                            <div className='container-lg text-right'>
-                              <button
-                                className='button button--medium button--primary-filled per__form__button'
-                                onClick={(e) => saveForms(e)}
-                              >
-                                <Translate stringId='perFormComponentSave'/>
-                              </button>
-                            </div>
-                          )
-                          : null }
-                        <PerOverview
-                          idFromPath={idFromPath}
-                          isCreate={isCreate}
-                          overviewState={overviewState}
-                          setOverviewState={setOverviewState}
-                          assessmentTypes={assessmentTypes}
-                          editable={editable}
-                        />
-                        { isCreate
-                          ? (
-                            <div className='container-lg text-center'>
-                              <button
-                                className='button button--medium button--primary-filled per__form__button'
-                                onClick={(e) => saveForms(e)}
-                              >
-                                <Translate stringId='perOverviewSaveAndContinue'/>
-                              </button>
-                            </div>
-                          )
-                          : null }
-                      </TabContent>
-                    </TabPanel>
-                    { isCreate
-                      // Only render the Overview tab content on Create
-                      ? tabs.slice(1).map(tab => (
-                        <TabPanel key={tab.title}>
-                          <TabContent />
+              <div className='inpage__body'>
+                <div className='inner'>
+                  <TabPanel>
+                    <TabContent>
+                      { !isCreate && editable
+                        ? (
+                          <div className='container-lg text-right'>
+                            <button
+                              className='button button--primary-filled button--small'
+                              onClick={(e) => saveForms(e)}
+                            >
+                              <Translate stringId='perFormComponentSave'/>
+                            </button>
+                          </div>
+                        )
+                        : null }
+                      <PerOverview
+                        idFromPath={idFromPath}
+                        isCreate={isCreate}
+                        overviewState={overviewState}
+                        setOverviewState={setOverviewState}
+                        assessmentTypes={assessmentTypes}
+                        editable={editable}
+                      />
+                      { isCreate
+                        ? (
+                          <div className='container-lg text-center'>
+                            <button
+                              className='button button--primary-filled button--small'
+                              onClick={(e) => saveForms(e)}
+                            >
+                              <Translate stringId='perOverviewSaveAndContinue'/>
+                            </button>
+                          </div>
+                        )
+                        : null }
+                    </TabContent>
+                  </TabPanel>
+                  { isCreate
+                    // Only render the Overview tab content on Create
+                    ? tabs.slice(1).map(tab => (
+                      <TabPanel key={tab.title}>
+                        <TabContent />
+                      </TabPanel>
+                    ))
+                    : (formsData?.results
+                      ? formsData.results.map(form => (
+                        <TabPanel key={form.id}>
+                          <TabContent>
+                            { editable
+                              ? (
+                                <div className='container-lg text-right'>
+                                  <button
+                                    className='button button--primary-filled button--small'
+                                    onClick={(e) => saveForms(e)}
+                                  >
+                                    <Translate stringId='perFormComponentSave'/>
+                                  </button>
+                                </div>
+                              )
+                              : null }
+                            <PerForm
+                              formId={form.id}
+                              isCreate={isCreate}
+                              isEpi={isEpi} // TODO: handle EPI questions
+                              editable={editable}
+                              formsState={formsState}
+                              formDataState={formDataState}
+                              setFormDataState={setFormDataState}
+                              formCommentsState={formCommentsState}
+                              setFormCommentsState={setFormCommentsState}
+                            />
+                          </TabContent>
                         </TabPanel>
                       ))
-                      : (formsData?.results
-                        ? formsData.results.map(form => (
-                          <TabPanel key={form.id}>
-                            <TabContent>
-                              { editable
-                                ? (
-                                  <div className='container-lg text-right'>
-                                    <button
-                                      className='button button--medium button--primary-filled per__form__button'
-                                      onClick={(e) => saveForms(e)}
-                                    >
-                                      <Translate stringId='perFormComponentSave'/>
-                                    </button>
-                                  </div>
-                                )
-                                : null }
-                              <PerForm
-                                formId={form.id}
-                                isCreate={isCreate}
-                                isEpi={isEpi} // TODO: handle EPI questions
-                                editable={editable}
-                                formsState={formsState}
-                                formDataState={formDataState}
-                                setFormDataState={setFormDataState}
-                                formCommentsState={formCommentsState}
-                                setFormCommentsState={setFormCommentsState}
-                              />
-                            </TabContent>
-                          </TabPanel>
-                        ))
-                        : null)
-                    }
-                  </div>
+                      : null)
+                  }
                 </div>
-              </Tabs>
-            </div>
-          </section>
+              </div>
+            </Tabs>
+          </div>
+        </section>
       </section>
     </App>
   );

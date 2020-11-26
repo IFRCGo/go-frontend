@@ -6,9 +6,7 @@ import { PropTypes as T } from 'prop-types';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 
-import Fold from '#components/fold';
 import { isoDate } from '#utils/format';
-// import { Link } from 'react-router-dom';
 
 import {
   getLatestCountryOverview
@@ -36,7 +34,6 @@ function PerOverview (props) {
     overviewState,
     setOverviewState,
     _getLatestCountryOverview,
-    _deletePerOverview,
     editable
   } = props;
   const isCreate = !!props.isCreate;
@@ -54,11 +51,6 @@ function PerOverview (props) {
       });
     }
   }
-
-  // function deleteOverview (e) {
-  //   e.preventDefault();
-  //   _deletePerOverview(props.perForm.getPerOverviewForm.data.results[0].id);
-  // }
 
   useEffect(() => {
     const of = props.perForm.getPerOverviewForm;
@@ -114,7 +106,6 @@ function PerOverview (props) {
         type_of_assessment: null
       });
     } else if (!props.perLatestOverview.fetching && props.perLatestOverview.fetched && !props.perLatestOverview.error) {
-      console.log(props.perLatestOverview);
       setPrevOverviewState(props.perLatestOverview.data?.results[0]);
     }
   }, [overviewState.country_id, props.perLatestOverview]);
