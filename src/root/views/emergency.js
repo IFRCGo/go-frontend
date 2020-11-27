@@ -65,7 +65,7 @@ class Emergency extends React.Component {
         type: 'all',
       },
       subscribed: false,
-      tabs: [{ title: 'Emergency Details', hash: '#details' }],
+      tabs: [{ title: 'Emergency Details', hash: '#details' }, { title: 'Reports/Documents', hash: '#reports' }, { title: 'Rapid Response', hash: '#rapid-response' }],
     };
     this.addSubscription = this.addSubscription.bind(this);
     this.delSubscription = this.delSubscription.bind(this);
@@ -1053,6 +1053,11 @@ class Emergency extends React.Component {
                 <TabPanel>
                   <TabContent isError={!this.hasKeyFigures()} title={strings.emergencyKeyFiguresTitle}>
                     <div className='container-lg'>
+                      {this.renderKeyFigures()}
+                    </div>
+                  </TabContent>
+                  <TabContent>
+                    <div className='container-lg'>
                       <div className='box__global emergency__overview'>
                         <div className='heading__title heading__title--emergency'>{strings.emergencyOverviewBoxTitle}</div>
                           <div className='row-sm flex'>
@@ -1130,16 +1135,7 @@ class Emergency extends React.Component {
                           </div>
                       </div>
                     </div>
-                    <div className='container-lg'>
-                      {this.renderKeyFigures()}
-                    </div>
                   </TabContent>
-                  <div className='container-lg'>
-                    <div className='row-lg flex-sm flex-justify-center'>
-                      {showExportMap()}
-                      {this.renderFieldReportStats()}
-                    </div>
-                  </div>
                   <TabContent
                     isError={!summary}
                     errorMessage={strings.noDataMessage}
@@ -1157,53 +1153,12 @@ class Emergency extends React.Component {
                       />
                     </Fold>
                   </TabContent>
-                  <TabContent title={strings.emergencyAlertsTitle}>
-                    <SurgeAlertsTable
-                      id="alerts"
-                      title={strings.emergencyAlertsTitle}
-                      emergency={this.props.match.params.id}
-                      returnNullForEmpty={true}
-                    />
-                  </TabContent>
-                  <TabContent
-                    isError={!get(this.props.eru, 'data.results.length')}
-                    errorMessage={strings.noDataMessage}
-                    title={strings.emergencyERUTitle}
-                  >
-                    <EruTable id="erus" emergency={this.props.match.params.id} />
-                  </TabContent>
-                  <TabContent title={strings.emergencyPersonnelTitle}>
-                    <PersonnelTable
-                      id="personnel"
-                      emergency={this.props.match.params.id}
-                    />
-                  </TabContent>
-                  <TabContent
-                    isError={!get(this.props.event, 'data.field_reports.length')}
-                    errorMessage={strings.noDataMessage}
-                    title={strings.emergencyFieldReportsTitle}
-                  >
-                    {this.renderFieldReports()}
-                  </TabContent>
-                  <TabContent
-                    isError={
-                      !get(this.props.appealDocuments, 'data.results.length')
-                    }
-                    errorMessage={strings.noDataMessage}
-                    title={strings.emergencyAppealDocumentsTitle}
-                  >
-                    {this.renderAppealDocuments()}
-                  </TabContent>
-                  <TabContent
-                    isError={
-                      !get(this.props.situationReports, 'data.results.length')
-                    }
-                    errorMessage={strings.noDataMessage}
-                    title={strings.emergencyResponseDocumentsTitle}
-                  >
-                    {this.renderResponseDocuments()}
-                  </TabContent>
-
+                  <div className='container-lg'>
+                    <div className='row-lg flex-sm flex-justify-center'>
+                      {showExportMap()}
+                      {this.renderFieldReportStats()}
+                    </div>
+                  </div>
                   {contacts && contacts.length ? (
                     <div className='container-lg margin-2-v'>
                       <Fold id="contacts" title={strings.emergencyContactsTitle} foldWrapperClass="contacts fold--main" foldContainerClass='container--padding-reset'>
@@ -1255,6 +1210,61 @@ class Emergency extends React.Component {
                       />
                     </div>
                   )}
+                </TabPanel>
+
+                <TabPanel>
+                  <TabContent
+                    isError={!get(this.props.event, 'data.field_reports.length')}
+                    errorMessage={strings.noDataMessage}
+                    title={strings.emergencyFieldReportsTitle}
+                  >
+                    {this.renderFieldReports()}
+                  </TabContent>
+
+                  <TabContent
+                    isError={
+                      !get(this.props.appealDocuments, 'data.results.length')
+                    }
+                    errorMessage={strings.noDataMessage}
+                    title={strings.emergencyAppealDocumentsTitle}
+                  >
+                    {this.renderAppealDocuments()}
+                  </TabContent>
+
+                  <TabContent
+                    isError={
+                      !get(this.props.situationReports, 'data.results.length')
+                    }
+                    errorMessage={strings.noDataMessage}
+                    title={strings.emergencyResponseDocumentsTitle}
+                  >
+                    {this.renderResponseDocuments()}
+                  </TabContent>
+
+                </TabPanel>
+
+                <TabPanel>
+                  <TabContent title={strings.emergencyAlertsTitle}>
+                    <SurgeAlertsTable
+                      id="alerts"
+                      title={strings.emergencyAlertsTitle}
+                      emergency={this.props.match.params.id}
+                      returnNullForEmpty={true}
+                    />
+                  </TabContent>
+                  <TabContent
+                    isError={!get(this.props.eru, 'data.results.length')}
+                    errorMessage={strings.noDataMessage}
+                    title={strings.emergencyERUTitle}
+                  >
+                    <EruTable id="erus" emergency={this.props.match.params.id} />
+                  </TabContent>
+                  <TabContent title={strings.emergencyPersonnelTitle}>
+                    <PersonnelTable
+                      id="personnel"
+                      emergency={this.props.match.params.id}
+                    />
+                  </TabContent>
                 </TabPanel>
 
                 {this.renderAdditionalTabPanels()}
