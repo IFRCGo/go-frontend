@@ -44,8 +44,10 @@
   float: right;
 }
 
-.per__submit_and_close {
-  float: right;
+// This is awful CSS, but will do for now
+.per__right_button {
+  margin-left: 3rem;
+  margin-right: 3rem;
 }
 
 /* Account Forms

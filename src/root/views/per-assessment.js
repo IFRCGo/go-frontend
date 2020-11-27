@@ -7,8 +7,6 @@ import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 
 import App from './app';
-import Fold from '#components/fold';
-import BreadCrumb from '#components/breadcrumb';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import TabContent from '#components/tab-content';
 // import { Link } from 'react-router-dom';
@@ -86,7 +84,6 @@ function PerAssessment (props) {
   function saveForms (e, isSubmit = false) {
     e.preventDefault();
 
-    // FIXME: loading not showing up...
     showGlobalLoading();
     if (isCreate) {
       _createPerOverview({...overviewState, is_epi: overviewState.is_epi === 'true'});
@@ -152,7 +149,6 @@ function PerAssessment (props) {
   useEffect(() => {
     const cpo = props.perForm.createPerOverview;
     if (!cpo.fetching && cpo.fetched && cpo.data) {
-      hideGlobalLoading();
       if (cpo.data.status === 'ok') {
         showAlert('success', <p><Translate stringId="perOverviewAlertCreated" /></p>, true, 2000);
         setTimeout(() => props.history.push(`/per-assessment/${cpo.data.overview_id}/edit#overview`), 2000);
@@ -166,8 +162,6 @@ function PerAssessment (props) {
     const upo = props.perForm.updatePerOverview;
     const umpf = props.perForm.updateMultiplePerForms;
     if (!upo.fetching && upo.fetched && upo.data && !umpf.fetching && umpf.fetched && umpf.data) {
-      hideGlobalLoading();
-
       if (umpf.data.status === 'ok') {
         showAlert('success', <p><Translate stringId="perFormsAlertUpdatedNoRedirect" /></p>, true, 2000);
       } else if (umpf.error) {
@@ -236,6 +230,8 @@ function PerAssessment (props) {
 
   useEffect(() => {
     const overviews = props.perForm.getPerOverviewForm;
+    const upo = props.perForm.updatePerOverview;
+    const umpf = props.perForm.updateMultiplePerForms;
     if (!isCreate
       && !overviews.fetching
       && overviews.fetched
@@ -244,7 +240,9 @@ function PerAssessment (props) {
       && formsFetched
       && formsData
       && formDataState
-      && props.groupedPerQuestions) {
+      && props.groupedPerQuestions
+      && !upo.fetching
+      && !umpf.fetching) {
       hideGlobalLoading();
     }
   }, [
@@ -254,7 +252,9 @@ function PerAssessment (props) {
     formsData,
     formDataState,
     props.perForm.getPerOverviewForm,
-    props.groupedPerQuestions
+    props.groupedPerQuestions,
+    props.perForm.updatePerOverview,
+    props.perForm.updateMultiplePerForms
   ]);
 
   useEffect(() => {
@@ -270,7 +270,7 @@ function PerAssessment (props) {
         let questionsDict = {};
         if (form.form_data) {
           form.form_data.forEach(fd => questionsDict[fd.question_id] = {
-            selected_answer: fd.selected_answer,
+            selected_answer: fd.selected_answer?.id.toString(),
             notes: fd.notes
           });
         }
@@ -289,25 +289,27 @@ function PerAssessment (props) {
           <title>{strings.perFormTitle}</title>
         </Helmet>
         <header className='inpage__header'>
-        
-          <div className='container-lg'>
-            <button
-              className='button button--primary-bounded button--small'
-              onClick={(e) => props.history.push('/account#per-forms')}
-            >
-              <Translate stringId='fieldReportBack'/>
-            </button>
-            { !isCreate && editable
-              ? (
-                  <button
-                    className='button button--primary-filled button--small per__submit_and_close'
-                    onClick={(e) => saveForms(e, true)}
-                  >
-                    <Translate stringId='perAssessmentSubmit'/>
-                  </button>
-              )
-              : null }
-          </div>
+            <div className='text-right'>
+              <a
+                className={`link--table${isCreate ? ' per__right_button' : ''}`}
+                onClick={() => {
+                  _resetPerState();
+                  props.history.push('/account#per-forms');
+                }}
+              >
+                <Translate stringId='threeWClose'/>
+              </a>
+              { !isCreate && editable
+                ? (
+                    <button
+                      className='button button--primary-bounded button--small per__right_button'
+                      onClick={(e) => saveForms(e, true)}
+                    >
+                      <Translate stringId='perAssessmentSubmit'/>
+                    </button>
+                )
+                : null }
+            </div>
           <div className='inner'>
             <div className='inpage__headline'>
               <h1 className='inpage__title'>
@@ -322,6 +324,18 @@ function PerAssessment (props) {
               selectedIndex={tabs.map(({ hash }) => hash).indexOf(props.location.hash)}
               onSelect={index => handleTabChange(index)}
             >
+              { !isCreate && editable
+                  ? (
+                    <div className='text-right'>
+                      <button
+                        className='button button--primary-filled button--small per__right_button'
+                        onClick={(e) => saveForms(e)}
+                      >
+                        <Translate stringId='perFormComponentSave'/>
+                      </button>
+                    </div>
+                  )
+                  : null }
               <TabList>
                 { tabs.map((tab, idx) => (
                   <Tab key={tab.title} disabled={(isCreate && idx !== 0) ? true : false}>{tab.title}</Tab>
@@ -332,18 +346,6 @@ function PerAssessment (props) {
                 <div className='inner'>
                   <TabPanel>
                     <TabContent>
-                      { !isCreate && editable
-                        ? (
-                          <div className='container-lg text-right'>
-                            <button
-                              className='button button--primary-filled button--small'
-                              onClick={(e) => saveForms(e)}
-                            >
-                              <Translate stringId='perFormComponentSave'/>
-                            </button>
-                          </div>
-                        )
-                        : null }
                       <PerOverview
                         idFromPath={idFromPath}
                         isCreate={isCreate}
@@ -377,18 +379,6 @@ function PerAssessment (props) {
                       ? formsData.results.map(form => (
                         <TabPanel key={form.id}>
                           <TabContent>
-                            { editable
-                              ? (
-                                <div className='container-lg text-right'>
-                                  <button
-                                    className='button button--primary-filled button--small'
-                                    onClick={(e) => saveForms(e)}
-                                  >
-                                    <Translate stringId='perFormComponentSave'/>
-                                  </button>
-                                </div>
-                              )
-                              : null }
                             <PerForm
                               formId={form.id}
                               isCreate={isCreate}
