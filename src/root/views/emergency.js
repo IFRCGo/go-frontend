@@ -201,43 +201,61 @@ class Emergency extends React.Component {
       get(report, 'gov_affected_pop_centres') ||
       get(report, 'other_affected_pop_centres');
     return (
-      <div className="inpage__header-col">
-        <h3 className="global-spacing-2-t clear">
+      <div className='box__global emergency__affected__figures'>
+        <h3 className='heading__title heading__title--emergency'>
           <Translate stringId="emergencyTopOverviewSectionTitle" />
         </h3>
-        <div className="content-list-group">
-          <ul className="content-list">
-            <li>
-              <Translate stringId="emergencyPotentiallyAffectedLabel" />
-              <span className="content-highlight">
-                {n(numPotentiallyAffected)}
-              </span>
+        <div>
+          <ul className='list-reset'>
+            <li className='row flex spacing-half-v'>
+              <div className='col'>
+                <Translate stringId="emergencyPotentiallyAffectedLabel" />
+              </div>
+              <div className='col margin-left-auto'>
+                <span className="base-font-semi-bold">
+                  {n(numPotentiallyAffected)}
+                </span>
+              </div>
             </li>
-            <li>
-              <Translate stringId="emergencyHighestRiskLabel" />
-              <span className="content-highlight">{n(numHighestRisk)}</span>
+            <li className='row flex spacing-half-v'>
+              <div className='col'>
+                <Translate stringId="emergencyHighestRiskLabel" />
+              </div>
+              <div className='col margin-left-auto'>
+                <span className="base-font-semi-bold">{n(numHighestRisk)}</span>
+              </div>
             </li>
-            <li>
-              <Translate stringId="emergencyAffectedPopulationCentresLabel" />
-              <span className="content-highlight">{affectedPopCentres}</span>
+            <li className='row flex spacing-half-v'>
+              <div className='col'>
+                <Translate stringId="emergencyAffectedPopulationCentresLabel" />
+              </div>
+              <div className='col margin-left-auto'>
+                <span className="base-font-semi-bold">{affectedPopCentres}</span>
+              </div>
             </li>
-          </ul>
-          <ul className="content-list">
-            <li>
-              <Translate stringId="emergencyAssistedByGovernmentLabel" />
-              <span className="content-highlight">
-                {n(get(report, 'gov_num_assisted'))}
-              </span>
+            <li className='row flex spacing-half-v'>
+              <div className='col'>
+                <Translate stringId="emergencyAssistedByGovernmentLabel" />
+              </div>
+              <div className='col margin-left-auto'>
+                <span className="base-font-semi-bold">
+                  {n(get(report, 'gov_num_assisted'))}
+                </span>
+              </div>
             </li>
-            <li>
-              <Translate stringId="emergencyAssistedByRCRCLabel" />
-              <span className="content-highlight">
-                {n(get(report, 'num_assisted'))}
-              </span>
+            <li className='row flex spacing-half-v'>
+              <div className='col'>
+                <Translate stringId="emergencyAssistedByRCRCLabel" />
+              </div>
+              <div className='col margin-left-auto'>
+                <span className="base-font-semi-bold">
+                  {n(get(report, 'num_assisted'))}
+                </span>
+              </div>
             </li>
           </ul>
         </div>
-        <p className="emergency__source">
+        <div className="emergency__source">
           <Translate
             stringId="emergencySourceMessage"
             params={{
@@ -248,7 +266,7 @@ class Emergency extends React.Component {
               ),
             }}
           />
-        </p>
+        </div>
       </div>
     );
   }
@@ -263,69 +281,162 @@ class Emergency extends React.Component {
     const numAssisted = parseInt(get(report, 'num_assisted')) || parseInt(get(report, 'gov_num_assisted')) || parseInt(get(report, 'other_num_assisted'));
     const epiFiguresSource = epiSources.find(source => source.value === `${report.epi_figures_source}`);
     return (
-      <div className='inpage__header-col'>
-        <h3 className='fold__title spacing-2-t spacing-b'>
+      <div className='box__global emergency__affected__figures'>
+        <h3 className='heading__title heading__title--emergency'>
           <Translate stringId="emergencyFieldReportStatsHeading" />
         </h3>
-        <div className='content-list-group row flex-xs'>
+        <div className=''>
           { isEPI
             ? (
-              <div className='col col-6-xs flex'>
-                <ul className='content-list box__global spacing-v spacing-2-h'>
-                  <li>{strings.emergencyCasesLabel}<span className='content-highlight'>{n(get(report, 'epi_cases'))}</span></li>
-                  { !isCOVID
-                    ? (
-                      <React.Fragment>
-                        <li className='pl-small'>{strings.emergencySuspectedCasesLabel}<span className='content-highlight'>{n(get(report, 'epi_suspected_cases'))}</span></li>
-                        <li className='pl-small'>{strings.emergencyProbableCasesLabel}<span className='content-highlight'>{n(get(report, 'epi_probable_cases'))}</span></li>
-                        <li className='pl-small'>{strings.emergencyConfirmedCasesLabel}<span className='content-highlight'>{n(get(report, 'epi_confirmed_cases'))}</span></li>
-                      </React.Fragment>
-                    )
-                    : null
-                  }
-                  <li>{strings.emergencyDeadLabel}<span className='content-highlight'>{n(get(report, 'epi_num_dead'))}</span></li>
-                  <li>
-                    <p className='emergency__source'>Source:
-                      { isEPI
-                        ? (
-                          <React.Fragment>
-                            <strong>{epiFiguresSource ? ` ${epiFiguresSource.label}` : ' --' }</strong>
-                          </React.Fragment>
-                        )
-                        : (
-                          <Link to={`/reports/${report.id}`}>{report.summary}, {timestamp(report.updated_at || report.created_at)}</Link>
-                        )
-                      }
-                    </p>
-                  </li>
-                </ul>
-              </div>
+              <ul className='list-reset'>
+                <li className='row flex spacing-half-v'>
+                  <div className='col'>
+                    {strings.emergencyCasesLabel}
+                  </div>  
+                  <div className='col margin-left-auto'>
+                    <span className='base-font-semi-bold'>{n(get(report, 'epi_cases'))}</span>
+                  </div>
+                </li>
+                { !isCOVID
+                  ? (
+                    <React.Fragment>
+                      <li className='row flex spacing-half-v pl-small'>
+                        <div className='col'>
+                          {strings.emergencySuspectedCasesLabel}
+                        </div>
+                        <div className='col margin-left-auto'>
+                          <span className='base-font-semi-bold'>{n(get(report, 'epi_suspected_cases'))}</span>
+                        </div>
+                      </li>
+                      <li className='row flex spacing-half-v pl-small'>
+                        <div className='col'>
+                          {strings.emergencyProbableCasesLabel}
+                        </div>
+                        <div className='col margin-left-auto'>
+                          <span className='base-font-semi-bold'>{n(get(report, 'epi_probable_cases'))}</span>
+                        </div>
+                      </li>
+                      <li className='row flex spacing-half-v pl-small'>
+                        <div className='col'>
+                          {strings.emergencyConfirmedCasesLabel}
+                        </div>
+                        <div className='col margin-left-auto'>
+                          <span className='base-font-semi-bold'>{n(get(report, 'epi_confirmed_cases'))}</span>
+                        </div>
+                      </li>
+                    </React.Fragment>
+                  )
+                  : null
+                }
+                <li className='row flex spacing-half-v'>
+                  <div className='col'>
+                    {strings.emergencyDeadLabel}
+                  </div>  
+                  <div className='col margin-left-auto'>
+                    <span className='base-font-semi-bold'>{n(get(report, 'epi_num_dead'))}</span>
+                  </div>  
+                </li>
+                <li className='row flex spacing-half-v'>
+                  <div className='col emergency__source'>Source:
+                    { isEPI
+                      ? (
+                        <React.Fragment>
+                          <strong>{epiFiguresSource ? ` ${epiFiguresSource.label}` : ' --' }</strong>
+                        </React.Fragment>
+                      )
+                      : (
+                        <Link to={`/reports/${report.id}`}>{report.summary}, {timestamp(report.updated_at || report.created_at)}</Link>
+                      )
+                    }
+                  </div>
+                </li>
+              </ul>
             )
             : (
-              <div className='col col-6-xs flex'>
-                <ul className='content-list box__global spacing-v spacing-2-h'>
-                  <li>{strings.emergencyAffectedLabel}<span className='content-highlight'>{n(numAffected)}</span></li>
-                  <li>{strings.emergencyInjuredLabel}<span className='content-highlight'>{n(numInjured)}</span></li>
-                  <li>{strings.emergencyDeadLabel}<span className='content-highlight'>{n(numDead)}</span></li>
-                  <li>{strings.emergencyMissingLabel}<span className='content-highlight'>{n(numMissing)}</span></li>
-                  <li>{strings.emergencyDisplacedLabel}<span className='content-highlight'>{n(numDisplaced)}</span></li>
-                </ul>
-              </div>
+              <ul className='list-reset'>
+                <li className='row flex spacing-half-v'>
+                  <div className='col'>
+                    {strings.emergencyAffectedLabel}
+                  </div>
+                  <div className='col margin-left-auto'>
+                    <span className='base-font-semi-bold'>{n(numAffected)}</span>
+                  </div>
+                </li>
+                <li className='row flex spacing-half-v'>
+                  <div className='col'>
+                    {strings.emergencyInjuredLabel}
+                  </div>
+                  <div className='col margin-left-auto'>
+                    <span className='base-font-semi-bold'>{n(numInjured)}</span>
+                  </div>
+                  </li>
+                <li className='row flex spacing-half-v'>
+                  <div className='col'>
+                    {strings.emergencyDeadLabel}
+                  </div>
+                  <div className='col margin-left-auto'>
+                    <span className='base-font-semi-bold'>{n(numDead)}</span>
+                  </div>
+                </li>
+                <li className='row flex spacing-half-v'>
+                  <div className='col'>
+                    {strings.emergencyMissingLabel}
+                  </div>
+                  <div className='col margin-left-auto'>
+                    <span className='base-font-semi-bold'>{n(numMissing)}</span>
+                  </div>
+                </li>
+                <li className='row flex spacing-half-v'>
+                  <div className='col'>
+                    {strings.emergencyDisplacedLabel}
+                  </div>
+                  <div className='col margin-left-auto'>
+                    <span className='base-font-semi-bold'>{n(numDisplaced)}</span>
+                  </div>
+                </li>
+              </ul>
             )
           }
-          <div className='col col-6-xs flex'>
-            <ul className='content-list box__global spacing-v spacing-2-h'>
-              <li>{strings.emergencyAssistedLabel}<span className='content-highlight'>{n(numAssisted)}</span></li>
-              <li>{strings.emergencyLocalStaffLabel}<span className='content-highlight'>{n(get(report, 'num_localstaff'))}</span></li>
-              <li>{strings.emergencyVolunteersLabel}<span className='content-highlight'>{n(get(report, 'num_volunteers'))}</span></li>
-              { !isCOVID
-                ? (
-                  <li>{strings.emergencyDelegatesLabel}<span className='content-highlight'>{n(get(report, 'num_expats_delegates'))}</span></li>
-                )
-                : null
-              }
-            </ul>
-          </div>
+          <hr />
+          <ul className='list-reset'>
+                <li className='row flex spacing-half-v'>
+              <div className='col'>
+                {strings.emergencyAssistedLabel}
+              </div>
+                  <div className='col margin-left-auto'>
+                <span className='base-font-semi-bold'>{n(numAssisted)}</span>
+              </div>
+            </li>
+            <li className='row flex spacing-half-v'>
+              <div className='col'>
+                {strings.emergencyLocalStaffLabel}
+              </div>
+              <div className='col margin-left-auto'>
+                <span className='base-font-semi-bold'>{n(get(report, 'num_localstaff'))}</span>
+              </div>
+            </li>
+            <li className='row flex spacing-half-v'>
+              <div className='col'>
+                {strings.emergencyVolunteersLabel}
+              </div>
+              <div className='col margin-left-auto'>
+                <span className='base-font-semi-bold'>{n(get(report, 'num_volunteers'))}</span>
+              </div>
+            </li>
+            { !isCOVID
+              ? (
+                <li className='row flex spacing-half-v'>
+                  <div className='col'>
+                    {strings.emergencyDelegatesLabel}
+                  </div>
+                  <div className='col margin-left-auto'>
+                    <span className='base-font-semi-bold'>{n(get(report, 'num_expats_delegates'))}</span>
+                  </div>
+                </li>
+              )
+              : null
+            }
+          </ul>
         </div>
       </div>
     );
@@ -427,7 +538,6 @@ class Emergency extends React.Component {
             </div>
           ) : null}
         </div>
-        {this.renderFieldReportStats()}
         <div className="funding-chart"></div>
       </div>
     );
@@ -938,7 +1048,7 @@ class Emergency extends React.Component {
                   <TabContent isError={!this.hasKeyFigures()} title={strings.emergencyKeyFiguresTitle}>
                     <div className='container-lg'>
                       <div className='box__global emergency__overview'>
-                        <div className='heading__title heading__title--emergency-overview'>{strings.emergencyOverviewBoxTitle}</div>
+                        <div className='heading__title heading__title--emergency'>{strings.emergencyOverviewBoxTitle}</div>
                           <div className='row-sm flex'>
                             <div className='col-sm col-12 col-4-mid'>
                               <div className='flex row emergency__overview-row'>

@@ -1388,7 +1388,7 @@ export default {
   deploymentsPageTitle: 'Deployments',
 
   emergencySourceMessage: 'Source: {link}',
-  emergencyFieldReportStatsHeading: 'Emergency Overview',
+  emergencyFieldReportStatsHeading: 'Key Figures',
 
   recoverAccountErrorMessage: 'Error: {message}',
   recoverAccountSuccessMessage: 'We have sent an email to your inbox. Redirecting...',

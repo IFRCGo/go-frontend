@@ -185,9 +185,10 @@
 }
 
 .emergency__source {
-  margin: 0;
+  margin: $spacing-2 0 0 0;
+  font-weight: $base-font-regular;
   font-size: $font-size-xs;
-  color: $light-base-color;
+  color: $grey-silver;
 }
 
 .map__container__title {
@@ -271,7 +272,7 @@ h2.map__container__title {
   margin: $spacing-5 0 $spacing 0;
 }
 
-.heading__title--emergency-overview {
+.heading__title--emergency {
   border-bottom: 1px solid $base-border-color;
   text-align: center;
   padding: 0 0 $spacing 0;
@@ -293,4 +294,8 @@ h2.map__container__title {
 .emergency__overview-desc {
   font-weight: $base-font-semi-bold;
   text-transform: uppercase;
+}
+
+.emergency__affected__figures {
+  padding: ($spacing * 1.5);  
 }
