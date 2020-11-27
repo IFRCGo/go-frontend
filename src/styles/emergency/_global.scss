@@ -298,4 +298,11 @@ h2.map__container__title {
 
 .emergency__affected__figures {
   padding: ($spacing * 1.5);  
+  width: 100%;
+
+  @include media(small) {
+    position: relative;
+    top: -2px;
+    width: 300px;
+  }
 }
