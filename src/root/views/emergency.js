@@ -647,14 +647,14 @@ class Emergency extends React.Component {
   renderReports (className, reportTypes) {
     return (
       <div className="response__doc__block">
-        <div className="clearfix">
+        <div className="row flex">
           {Object.keys(reportTypes).map((reportTypeId) => {
             return (
               <div
-                className="response__doc__col"
+                className="col col-12 col-6-xs col-4-mid response__doc__col"
                 key={`response-type-${reportTypeId}`}
               >
-                <div className="response__doc__each">
+                <div className="response__doc__each box__global">
                   <div className="response__doc__title">
                     {reportTypes[reportTypeId].title}
                   </div>
@@ -663,17 +663,16 @@ class Emergency extends React.Component {
                       reportTypes[reportTypeId].items.length > 0 ? (
                         reportTypes[reportTypeId].items.map((item) => {
                           return (
-                            <div
-                              className="response__doc__item"
-                              key={`item-${item.id}`}
-                            >
-                              {item.name}
-                              <a
-                                className="collecticon-download response__doc__item__link"
+                            <a className="response__doc__item"
                                 target="_blank"
                                 href={item.document || item.document_url}
-                              ></a>
-                            </div>
+                                key={`item-${item.id}`}
+                            >
+                              <div>{item.name}</div>
+                              <div
+                                className="collecticon-download response__doc__item__link"
+                              ></div>
+                            </a>
                           );
                         })
                       ) : (
@@ -707,8 +706,9 @@ class Emergency extends React.Component {
       <Fold
         id="response-documents"
         header={() => (
-          <div className="fold__headline">
-            <div className="fold__actions">
+          <div className="fold__header__block">
+            <h2 className="fold__title">Response Documents</h2>
+            <div className="fold__actions margin-left-auto">
               <a
                 className="button button--primary-bounded button--small"
                 href={addReportLink}
@@ -717,10 +717,11 @@ class Emergency extends React.Component {
                 Add a Report
               </a>
             </div>
-            <h2 className="fold__title">Response Documents</h2>
           </div>
         )}
       >
+        <input type='text' className='emergency__response__search form__control' placeholder='Search' />
+
         <div>{this.renderReports('situation-reports-list', reportsByType)}</div>
       </Fold>
     );

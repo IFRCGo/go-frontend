@@ -203,3 +203,29 @@
   padding: $global-spacing-2;
   margin-bottom: $global-spacing-2;
 }
+
+@mixin input__search {
+  border-bottom: 1px solid $grey-pearl;
+  box-shadow: none;
+  border-radius: 0;
+  background-image: url('/assets/icons/collecticons/magnifier-left-grey.svg');
+  background-repeat: no-repeat;
+  background-size: 14px;
+  background-position: left 69%;
+  padding-left: $spacing-2;
+  padding-top: $spacing-2;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+
+  &:hover {
+    outline: 0;
+    box-shadow: none;
+  }
+
+  &:focus {
+    outline: 0;
+    border-bottom-color: $grey-cement;
+    box-shadow: none;
+  }  
+}
