@@ -583,9 +583,16 @@ export function clearLoadedCsv (id) {
 //   return postJSON('createperform', CREATE_PER_FORM, data, withToken());
 // }
 
+// Update one Form and it's FormData
 export const UPDATE_PER_FORM = 'UPDATE_PER_FORM';
 export function updatePerForm (data) {
   return postJSON('updateperform', UPDATE_PER_FORM, data, withToken());
+}
+
+// Update multiple Forms at once with their FormData, let backend handle them
+export const UPDATE_MULTIPLE_PER_FORMS = 'UPDATE_MULTIPLE_PER_FORMS';
+export function updatePerForms (data) {
+  return postJSON('updatemultipleperforms', UPDATE_MULTIPLE_PER_FORMS, data, withToken());
 }
 
 // export const DELETE_PER_FORM = 'DELETE_PER_FORM';

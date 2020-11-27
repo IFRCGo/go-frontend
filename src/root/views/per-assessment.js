@@ -26,7 +26,7 @@ import {
   createPerOverview,
   updatePerOverview,
   deletePerOverview,
-  updatePerForm,
+  updatePerForms,
   resetPerState
 } from '#actions';
 import { formQuestionsSelector, nsDropdownSelector } from '#selectors';
@@ -65,7 +65,6 @@ function PerAssessment (props) {
   const idFromPath = props.match.params.id;
   const isEdit = !!props.isEdit;
   const isCreate = !!props.isCreate;
-  let isEpi = false; // FIXME: get from Overview
   const {
     _getAssessmentTypes,
     _getPerAreas,
@@ -74,7 +73,7 @@ function PerAssessment (props) {
     _getPerForms,
     _createPerOverview,
     _updatePerOverview,
-    _updatePerForm,
+    _updatePerForms,
     _resetPerState
   } = props;
 
@@ -87,6 +86,8 @@ function PerAssessment (props) {
   function saveForms (e, isSubmit = false) {
     e.preventDefault();
 
+    // FIXME: loading not showing up...
+    showGlobalLoading();
     if (isCreate) {
       _createPerOverview({...overviewState, is_epi: overviewState.is_epi === 'true'});
     } else {
@@ -95,13 +96,20 @@ function PerAssessment (props) {
         is_epi: overviewState.is_epi === 'true',
         is_finalized: isSubmit
       });
+
+      // Omit the original form_data from Forms because we don't need that
+      // on POST, also makes the request way smaller
+      let omittedFormData = {};
+      for (const [formId, form] of Object.entries(formsState)) {
+        const { form_data, ...restOfForm } = form;
+        restOfForm.comment = formCommentsState[formId];
+        omittedFormData[formId] = restOfForm;
+      }
       
-      // for (const [formId, form] of Object.entries(formsState)) {
-      //   _updatePerForm({
-      //     id: formId,
-      //     questions: '' // FIXME: get the changed formData...
-      //   });
-      // }
+      _updatePerForms({
+        forms: omittedFormData,
+        forms_data: formDataState
+      });
     }
   }
 
@@ -144,6 +152,7 @@ function PerAssessment (props) {
   useEffect(() => {
     const cpo = props.perForm.createPerOverview;
     if (!cpo.fetching && cpo.fetched && cpo.data) {
+      hideGlobalLoading();
       if (cpo.data.status === 'ok') {
         showAlert('success', <p><Translate stringId="perOverviewAlertCreated" /></p>, true, 2000);
         setTimeout(() => props.history.push(`/per-assessment/${cpo.data.overview_id}/edit#overview`), 2000);
@@ -155,7 +164,15 @@ function PerAssessment (props) {
   }, [props.perForm.createPerOverview, _resetPerState, props.history]);
   useEffect(() => {
     const upo = props.perForm.updatePerOverview;
-    if (!upo.fetching && upo.fetched && upo.data) {
+    const umpf = props.perForm.updateMultiplePerForms;
+    if (!upo.fetching && upo.fetched && upo.data && !umpf.fetching && umpf.fetched && umpf.data) {
+      hideGlobalLoading();
+
+      if (umpf.data.status === 'ok') {
+        showAlert('success', <p><Translate stringId="perFormsAlertUpdatedNoRedirect" /></p>, true, 2000);
+      } else if (umpf.error) {
+        showAlert('danger', <p>{umpf.error.error_message}</p>, true, 2000);
+      }
       if (upo.data.status === 'ok') {
         if (upo.data.is_finalized) {
           showAlert('success', <p><Translate stringId="perOverviewAlertUpdated" /></p>, true, 2000);
@@ -168,7 +185,7 @@ function PerAssessment (props) {
         showAlert('danger', <p>{upo.error.error_message}</p>, true, 2000);
       }
     }
-  }, [props.perForm.updatePerOverview, _resetPerState, props.history]);
+  }, [props.perForm.updatePerOverview, props.perForm.updateMultiplePerForms, _resetPerState, props.history]);
   useEffect(() => {
     const dpo = props.perForm.deletePerOverview;
     if (!dpo.fetching && dpo.fetched && dpo.data) {
@@ -375,7 +392,7 @@ function PerAssessment (props) {
                             <PerForm
                               formId={form.id}
                               isCreate={isCreate}
-                              isEpi={isEpi} // TODO: handle EPI questions
+                              isEpi={overviewState.is_epi}
                               editable={editable}
                               formsState={formsState}
                               formDataState={formDataState}
@@ -411,7 +428,7 @@ if (environment !== 'production') {
     _createPerOverview: T.func,
     _updatePerOverview: T.func,
     _deletePerOverview: T.func,
-    _updatePerForm: T.func,
+    _updatePerForms: T.func,
     _resetPerState: T.func
   };
 }
@@ -434,7 +451,7 @@ const dispatcher = (dispatch) => ({
   _createPerOverview: (payload) => dispatch(createPerOverview(payload)),
   _updatePerOverview: (payload) => dispatch(updatePerOverview(payload)),
   _deletePerOverview: (payload) => dispatch(deletePerOverview(payload)),
-  _updatePerForm: (payload) => dispatch(updatePerForm(payload)),
+  _updatePerForms: (payload) => dispatch(updatePerForms(payload)),
   _resetPerState: () => dispatch(resetPerState()),
 });
 

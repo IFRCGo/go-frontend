@@ -97,6 +97,30 @@ function deletePerForm (state = initialState, action) {
   return state;
 }
 
+export function updateMultiplePerForms (state = initialState, action) {
+  switch (action.type) {
+    case 'UPDATE_MULTIPLE_PER_FORMS_INFLIGHT':
+      state = stateInflight(state, action);
+      break;
+    case 'UPDATE_MULTIPLE_PER_FORMS_FAILED':
+      state = stateError(state, action);
+      break;
+    case 'UPDATE_MULTIPLE_PER_FORMS_SUCCESS':
+      state = stateSuccess(state, action);
+      break;
+    case RESET_PER_STATE:
+      state = Object.assign({}, state, {
+        error: null,
+        fetching: false,
+        fetched: false,
+        receivedAt: null,
+        data: {}
+      });
+      break;
+  }
+  return state;
+}
+
 function getPerCountries (state = initialState, action) {
   switch (action.type) {
     case 'GET_PER_COUNTRIES_INFLIGHT':
@@ -403,6 +427,7 @@ export default combineReducers({
   createPerForm,
   updatePerForm,
   deletePerForm,
+  updateMultiplePerForms,
   getPerCountries,
   getPerForms,
   getPerForm,

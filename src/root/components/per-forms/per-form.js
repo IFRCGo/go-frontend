@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useMemo } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
@@ -18,7 +18,6 @@ import {
   FormRadioGroup,
   FormError
 } from '#components/form-elements/';
-import { showAlert } from '#components/system-alerts';
 
 function PerForm (props) {
   const { strings } = useContext(LanguageContext);
@@ -31,6 +30,7 @@ function PerForm (props) {
     setFormDataState,
     formCommentsState,
     setFormCommentsState,
+    isEpi,
     editable
   } = props;
 
@@ -59,6 +59,10 @@ function PerForm (props) {
     }
   }, [formId, formsState]);
 
+  // TODO: probably pass isEPI to groupedQuestionList and filter there for is_epi questions!
+  // TODO: add benchmark questions to check if they work
+  // TODO: somehow set/alter import scripts for benchmark questions
+  // TODO: add is_epi questions to the import scripts too...
   // Not useMemo because object !== object, it triggers a re-render (props.groupedPerQuestions)
   const groupedQuestionList = (props.groupedPerQuestions && formsState)
     ? props.groupedPerQuestions[formsState[formId].area.area_num]
