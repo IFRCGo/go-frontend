@@ -265,3 +265,32 @@ h2.map__container__title {
 .inpage__headline-stats--emergency {
   margin-top: ($spacing * 1.5);
 }
+
+.emergency__overview {
+  padding: $spacing $spacing-2 0;
+  margin: $spacing-5 0 $spacing 0;
+}
+
+.heading__title--emergency-overview {
+  border-bottom: 1px solid $base-border-color;
+  text-align: center;
+  padding: 0 0 $spacing 0;
+  margin: 0 0 ($spacing* 1.5) 0;
+}
+
+.emergency__overview-row {
+  padding: 0 0 $spacing-2 0;
+}
+
+.emergency__overview-col-cat {
+  width: 60%;
+}
+
+.emergency__overview-col-desc {
+  width: 40%;
+}
+
+.emergency__overview-desc {
+  font-weight: $base-font-semi-bold;
+  text-transform: uppercase;
+}

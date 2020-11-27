@@ -520,6 +520,10 @@ abbr[title] {
   font-size: 1.2rem;
 }
 
+.heading__title {
+  @include heading__title;
+}
+
 h1 {
   @include heading(1.75rem);   // 28
 }

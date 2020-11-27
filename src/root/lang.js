@@ -31,6 +31,9 @@ export default {
   menuPreparedness: 'Preparedness',
   menuRegions: 'Regions',
 
+  globalStartDate: 'Start Date',
+  globalEndDate: 'End Date',
+
   aboutTitle: 'IFRC Go - About',
   aboutResources: 'Resources',
   aboutDescription: 'GO is a Red Cross Red Crescent platform to connect information on emergency needs with the right response.',
@@ -1245,6 +1248,13 @@ export default {
   emergencyPageTitle: 'IFRC Go - {name}',
   emergencyKeyFiguresTitle: 'Key Figures',
   emergencyOverviewTitle: 'Overview',
+  emergencyOverviewBoxTitle: 'Emergency Overview',
+  emergencyDisasterType: 'Disaster Type',
+  emergencyDisasterCat: 'Disaster Categorization',
+  emergencyGovtReqIntlAsst: 'Government Requests International Assistance',
+  emergencyNSReqIntlAsst: 'NS Requests International Assistance',
+  emergencyDREF: 'DREF',
+  emergencyRapidResponsePersonnel: 'Rapid Response Personnel',
   emergencyAffectedRegions: 'Affected Regions',
   emergencySituationalOverviewTitle: 'Situational Overview',
   emergencyAlertsTitle: 'Alerts',
