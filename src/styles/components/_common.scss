@@ -267,5 +267,14 @@
   margin-left: auto;
   position: relative;
   top: -($spacing * 1.5);
-  padding: 0 $spacing;
+
+  @include media(medium) {
+    top: -($spacing * 4.5);
+  }
+}
+
+.personnel__table__date {
+  &:last-of-type {
+    padding-right: $spacing-2;
+  }
 }

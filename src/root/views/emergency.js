@@ -1266,9 +1266,9 @@ class Emergency extends React.Component {
                       emergency={this.props.match.params.id}
                     />
                     <div className='personnel__table__daterange'>
-                      <div>05/05/2020</div>
-                      <div>07/05/2020</div>
-                      <div>09/05/2020</div>
+                      <div className='personnel__table__date'>05/05/2020</div>
+                      <div className='personnel__table__date'>07/05/2020</div>
+                      <div className='personnel__table__date'>09/05/2020</div>
                     </div>
                   </TabContent>
                 </TabPanel>
