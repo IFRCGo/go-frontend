@@ -88,4 +88,5 @@ To add an icon:
  - Add the SVG file to `src/assets/icons/collecticons/`
  - Run `yarn run collecticons` to rebuild the icon font and re-generate the _collecticons.scss file, found in `src/styles/core/`. NOTE: Do NOT update this file by hand.
  - Use the added class in your React Markup to add the icon - this class name will be `collecticons-` + your SVG filename, so if your file was called `my-icon.svg`, the className to use will be `collecticons-my-icon`. Refer to existing code for usage examples.
+ - Alternatively, you can use Icomoon to rebuild the icon font. First import the new SVG icons on the Icomoon site. Then upload the `selection.json` (src/assets/icons/icomoon/selection.json) file (which contains the icon settings) using the 'Import Icons' button. You can regenerate the font from Icomoon. For more instructions, see [Icomoon](https://icomoon.io/#docs).
  

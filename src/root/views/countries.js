@@ -607,7 +607,7 @@ class AdminArea extends SFPComponent {
                     href={url.resolve(api, `api/country/${data.id}/change/`)}
                     className='button button--xsmall button--primary-bounded button--edit-action'
                   >
-                    <span className='collecticon-pencil margin-half-r'></span>
+                    <span className='f-icon-pencil margin-half-r'></span>
                     <Translate stringId='countryEditCountry' />
                   </a>
                 </div>
