@@ -83,10 +83,6 @@ function PerOverview (props) {
         type_of_assessment: res.type_of_assessment?.id,
         user_id: props.user.id
       });
-
-      if (res.country) {
-        _getLatestCountryOverview(res.country.id);
-      }
     }
   }, [props.perForm.getPerOverviewForm, props.user, isCreate, setOverviewState, _getLatestCountryOverview]);
 

@@ -7,17 +7,32 @@ import { countriesSelector } from '../../selectors';
 
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
+import {
+  getPerOverviewForm,
+  deletePerOverview
+} from '#actions';
 
 import Select from 'react-select';
 import { FormError } from '#components/form-elements/';
 import DisplayTable, { SortHeader, FilterHeader } from '#components/display-table';
 import { isoDate } from '#utils/format';
-
+import { showAlert } from '#components/system-alerts';
+import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 function PerAccount (props) {
   const { strings } = useContext(LanguageContext);
 
   const [country, setCountry] = useState();
   const [formList, setFormList] = useState([]);
+  const {
+    _getPerOverviewForm,
+    _deletePerOverview
+  } = props;
+
+  function handleDelete (formId) {
+    _deletePerOverview(formId);
+    showGlobalLoading(); // FIXME: not showing... (or disappearing instantly?)
+  }
+
   // PER Overviews variables
   const [ovFetching, ovFetched, overviewFormList] = useMemo(() => [
     props.perOverviewForm.fetching,
@@ -63,33 +78,60 @@ function PerAccount (props) {
       id: form.id,
       country: form.country?.name,
       updatedDate: isoDate(form.updated_at),
-      assessmentNumber: form.assessment_number, // TODO: get assessmentNumber into the response or calc somehow
+      assessmentNumber: form.assessment_number,
       formsIncluded: 'asd', // TODO: get these as well, based on which have been created
       link: {
         value: (
           <React.Fragment>
+            {/* FIXME: will need logic once we have clear permissions */}
             { !form.is_finalized
               ? (
-                <Link
-                  className='button button--xsmall button--primary-filled per__list__button'
-                  to={`/per-assessment/${form.id}/edit#overview`}
-                >
-                  <Translate stringId='perDraftEdit' />
-                </Link>
+                <React.Fragment>
+                  <Link
+                    className='button button--xsmall button--primary-bounded per__list__button'
+                    to={`/per-assessment/${form.id}/edit#overview`}
+                  >
+                    <Translate stringId='perDraftEdit' />
+                  </Link>
+                  { form.user.id === props.user.data.id
+                    ? (
+                      <button
+                        className='button button--xsmall button--primary-filled per__list__button'
+                        onClick={() => handleDelete(form.id)}
+                      >
+                        <Translate stringId='perDraftDelete' />
+                      </button>
+                    )
+                    : null }
+                </React.Fragment>
               ) 
-              : null }
-            <Link
-              className='button button--xsmall button--primary-bounded per__list__button'
-              to={`/per-assessment/${form.id}#overview`}
-            >
-              <Translate stringId='perdocumentView' />
-            </Link>
+              : (
+                <Link
+                  className='button button--xsmall button--primary-bounded per__list__button'
+                  to={`/per-assessment/${form.id}#overview`}
+                >
+                  <Translate stringId='perdocumentView' />
+                </Link>
+              )}
           </React.Fragment>
         ),
         className: 'right-align'
       }
     }))
     : null;
+
+  useEffect(() => {
+    const dpo = props.perForm.deletePerOverview;
+    if (!dpo.fetching && dpo.fetched && dpo.data) {
+      hideGlobalLoading();
+      if (dpo.data.status === 'ok') {
+        showAlert('success', <p><Translate stringId="perOverviewAlertDeleted" /></p>, true, 2000);
+        _getPerOverviewForm();
+      } else if (dpo.error) {
+        showAlert('danger', <p><Translate stringId="perOverviewAlertDeleted" /></p>, true, 2000);
+      }
+    }
+  }, [props.perForm.deletePerOverview, _getPerOverviewForm]);
   
   return (
     <React.Fragment>
@@ -145,14 +187,24 @@ function PerAccount (props) {
 
 if (environment !== 'production') {
   PerAccount.propTypes = {
+    perForm: T.object,
     perOverviewForm: T.object,
-    countries: T.array
+    countries: T.array,
+    _getPerOverviewForm: T.func,
+    _deletePerOverview: T.func
   };
 }
 
 const selector = (state, ownProps) => ({
+  perForm: state.perForm,
   perOverviewForm: state.perForm.getPerOverviewForm,
-  countries: countriesSelector(state)
+  countries: countriesSelector(state),
+  user: state.user
 });
 
-export default connect(selector)(PerAccount);
+const dispatcher = (dispatch) => ({
+  _getPerOverviewForm: () => dispatch(getPerOverviewForm()),
+  _deletePerOverview: (payload) => dispatch(deletePerOverview(payload))
+});
+
+export default connect(selector, dispatcher)(PerAccount);

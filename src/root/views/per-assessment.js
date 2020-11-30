@@ -86,7 +86,10 @@ function PerAssessment (props) {
 
     showGlobalLoading();
     if (isCreate) {
-      _createPerOverview({...overviewState, is_epi: overviewState.is_epi === 'true'});
+      _createPerOverview({
+        ...overviewState,
+        is_epi: overviewState.is_epi === 'true'
+      });
     } else {
       _updatePerOverview({
         ...overviewState,
@@ -125,12 +128,17 @@ function PerAssessment (props) {
   }, [isCreate, isEdit, idFromPath, props.perForm.getPerOverviewForm]);
 
   useEffect(() => {
-    _getPerAreas();
-  }, [_getPerAreas]);
+    if (!props.perAreas || (!props.perAreas.fetched && !props.perAreas.fetching)) {
+      _getPerAreas();
+    }
+  }, [_getPerAreas, props.perAreas]);
 
   useEffect(() => {
-    _getAssessmentTypes();
-  }, [_getAssessmentTypes]);
+    const ats = props.perForm.assessmentTypes;
+    if (!ats || (!ats.fetched && !ats.fetching)) {
+      _getAssessmentTypes();
+    }
+  }, [_getAssessmentTypes, props.perForm.assessmentTypes]);
 
   useEffect(() => {
     _getPerQuestions();
@@ -145,7 +153,7 @@ function PerAssessment (props) {
     }
   }, [_getPerOverviewFormStrict, _getPerForms, idFromPath]);
 
-  // Triggers on create, update, delete actions
+  // Triggers on create, update actions
   useEffect(() => {
     const cpo = props.perForm.createPerOverview;
     if (!cpo.fetching && cpo.fetched && cpo.data) {
@@ -180,18 +188,6 @@ function PerAssessment (props) {
       }
     }
   }, [props.perForm.updatePerOverview, props.perForm.updateMultiplePerForms, _resetPerState, props.history]);
-  useEffect(() => {
-    const dpo = props.perForm.deletePerOverview;
-    if (!dpo.fetching && dpo.fetched && dpo.data) {
-      if (dpo.data.status === 'ok') {
-        showAlert('success', <p><Translate stringId="perOverviewAlertDeleted" /></p>, true, 2000);
-        setTimeout(() => props.history.push('/account#per-forms'), 2000);
-        _resetPerState();
-      } else if (dpo.error) {
-        showAlert('danger', <p><Translate stringId="perOverviewAlertDeleted" /></p>, true, 2000);
-      }
-    }
-  }, [props.perForm.deletePerOverview, _resetPerState, props.history]);
 
   const [formsFetching, formsFetched, formsData] = useMemo(() => {
     return [
@@ -442,7 +438,7 @@ const dispatcher = (dispatch) => ({
   _updatePerOverview: (payload) => dispatch(updatePerOverview(payload)),
   _deletePerOverview: (payload) => dispatch(deletePerOverview(payload)),
   _updatePerForms: (payload) => dispatch(updatePerForms(payload)),
-  _resetPerState: () => dispatch(resetPerState()),
+  _resetPerState: () => dispatch(resetPerState())
 });
 
 export default connect(selector, dispatcher)(PerAssessment);
