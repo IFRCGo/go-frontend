@@ -313,6 +313,7 @@ td.right-align, th.right-align{
   th {
     .drop__toggle--caret::after {
       content: '\EA0A';
+      font-family: 'icomoon';
       font-size: $font-size-xxs;
       vertical-align: baseline;
     }
