@@ -665,11 +665,8 @@ $btn-region-countries-height: 50px;
 }
 
 .btn-region-countries-icon {
-  span {
-    position: relative;
-    top: -0.5px;
-  }
-  
+  top: 1px;
+
   span:last-of-type {
     position: relative;
     right: 6px;
@@ -690,15 +687,30 @@ $btn-region-countries-height: 50px;
   padding: 0 $spacing-2 $spacing-2 $spacing-2;
   transition: all 0.2s linear;
 
+  [dir='rtl'] & {
+    right: auto;
+    left: -100%;
+  }
+
   @include media(small) {
     width: 500px;
     right: -500px;
+  
+    [dir='rtl'] & {
+      right: auto;
+      left: -500px;
+    }
   }
 }
 
 .country__sidebar--active {
   right: 0;
   transition: all 0.2s linear;
+
+  [dir='rtl'] & {
+    left: 0;
+    right: auto;
+  }
 }
 
 .country__sidebar-input-search {
