@@ -156,7 +156,7 @@ export default class DeploymentsMap extends React.Component {
   getLayers (features) {
     const layers = [];
     const sumProps = ['+', ['get', 'fact'], ['get', 'rdrt'], ['get', 'heop']];
-    const maxValue = Math.max(...features.map(({properties: { fact, rdrt, heop }}) => fact + rdrt + heop));
+    const maxValue = Math.max(...features.map(({properties: { fact, rdrt, heop }}) => fact + rdrt + heop)) || 1;
 
     layers.push({
       id: 'deployments',
@@ -221,7 +221,7 @@ export default class DeploymentsMap extends React.Component {
     }
 
     this.popover = new mapboxgl.Popup({closeButton: false})
-      .setLngLat(feature.geometry.coordinates)
+      .setLngLat(feature.coordinates)
       .setDOMContent(popoverContent.children[0])
       .addTo(theMap);
   }
