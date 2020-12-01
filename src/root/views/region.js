@@ -383,7 +383,7 @@ class AdminArea extends SFPComponent {
                   (<React.Fragment>
                     <TabContent>
                       <div className='container-mid margin-2-v spacing-2-h'>
-                        <div className='row-lg flex'>
+                        <div className='row-lg flex flex-justify-center'>
                           <div className='col-lg col-12 col-6-xs margin-v'>
                             <div className='regional-profile-key'>
                               <div className='row flex regional-profile-key-block'>
@@ -404,7 +404,7 @@ class AdminArea extends SFPComponent {
                               </div>
                             </div>
                           </div>
-                          <div className='col-lg col-12 col-6-xs margin-v'>
+                          {/*<div className='col-lg col-12 col-6-xs margin-v'>
                             <div className='sumstat__item regional-profile-key'>
                               <div className='row flex regional-profile-key-block'>
                                 <div className='col'>
@@ -423,15 +423,13 @@ class AdminArea extends SFPComponent {
                                 </div>
                               </div>
                             </div>
-                          </div>
+                          </div>*/}
                         </div>
                       </div>
                     </TabContent>
                     <TitledSnippets snippets={data.profile_snippets} />
                     <TabContent isError={!get(data, 'links.length')} title={strings.regionLinks} showError={false}>
-
-                        <Links data={this.addClickHandler(data, this.onAdditionalLinkClickAction)} />
-                      
+                        <Links data={this.addClickHandler(data, this.onAdditionalLinkClickAction)} />    
                     </TabContent>
                     <TabContent showError={false} isError={!get(data, 'contacts.length')} title={strings.regionContacts}>
                       <Contacts data={data} />

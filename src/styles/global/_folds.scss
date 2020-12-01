@@ -104,12 +104,13 @@
 
   @include media(xsmall) {
     display: flex;
+    flex-wrap: wrap;
   }
 
   li {
     display: block;
 
-    @include media(small) {
+    @include media(xsmall) {
       width: 50%;
     }
 
@@ -126,7 +127,7 @@
 }
 
 .icon-links-list {
-  font-size: $font-size-xxs;
+  font-size: 0.5rem;
   font-weight: $base-font-bold;
   padding: 0 0 0 $spacing-half;
 }
