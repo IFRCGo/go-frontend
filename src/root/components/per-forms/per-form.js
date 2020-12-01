@@ -59,14 +59,18 @@ function PerForm (props) {
     }
   }, [formId, formsState]);
 
-  // TODO: probably pass isEPI to groupedQuestionList and filter there for is_epi questions!
-  // TODO: add benchmark questions to check if they work
   // TODO: somehow set/alter import scripts for benchmark questions
   // TODO: add is_epi questions to the import scripts too...
   // Not useMemo because object !== object, it triggers a re-render (props.groupedPerQuestions)
-  const groupedQuestionList = (props.groupedPerQuestions && formsState)
+  let groupedQuestionList = (props.groupedPerQuestions && formsState)
     ? props.groupedPerQuestions[formsState[formId].area.area_num]
     : null;
+  // If EPI benchmark is false remove the EPI questions
+  if (groupedQuestionList && isEpi === 'false') {
+    for (const [compNum, questions] of Object.entries(groupedQuestionList)) {
+      groupedQuestionList[compNum] = questions.filter(question => !question.is_epi);
+    }
+  }
 
   return (
     <Fold title={title} foldWrapperClass='fold--main' foldTitleClass='margin-reset'>
@@ -97,6 +101,11 @@ function PerForm (props) {
         const questions = groupedQuestionList[compId].map((question) => (
           <div key={question.id}>
             <h3>{compId}.{question.question_num} {question.question}</h3>
+            { question.description
+              ? (
+                <span className='rich-text-section' dangerouslySetInnerHTML={{__html: question.description}} />
+              )
+              : null }
             <FormRadioGroup
               label=''
               name={`question${question.id}`}

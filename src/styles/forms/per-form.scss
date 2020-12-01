@@ -249,3 +249,12 @@
 .per-chart {
   margin-bottom: 1.5rem;
 }
+
+.per-inpage__header {
+  padding-top: $global-spacing;
+
+  .inpage__headline {
+    margin-top: $global-spacing * 2;
+    margin-bottom: $global-spacing * 3;
+  }
+}

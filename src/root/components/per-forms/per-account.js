@@ -14,7 +14,8 @@ import {
 
 import Select from 'react-select';
 import { FormError } from '#components/form-elements/';
-import DisplayTable, { SortHeader, FilterHeader } from '#components/display-table';
+// include , { SortHeader, FilterHeader } if needed
+import DisplayTable from '#components/display-table';
 import { isoDate } from '#utils/format';
 import { showAlert } from '#components/system-alerts';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';

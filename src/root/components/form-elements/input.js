@@ -23,7 +23,8 @@ export default function FormInput (props) {
     children,
     maxLength,
     formInnerHeaderClass,
-    formInnerBodyClass
+    formInnerBodyClass,
+    inputCol
   } = props;
 
   return (
@@ -36,20 +37,43 @@ export default function FormInput (props) {
           </div>
         </div>
         <div className={c('form__inner-body', formInnerBodyClass)}>
-          {labelSecondary ? (<label htmlFor={id} className='label-secondary'>{labelSecondary}</label>) : null}
-          <input
-            type={type}
-            id={id}
-            name={name}
-            placeholder={placeholder}
-            className={c('form__control form__control--medium', classInput)}
-            value={value || ''}
-            onChange={onChange}
-            disabled={disabled}
-            autoFocus={autoFocus}
-            maxLength={maxLength}
-          />
-          {children || null}
+          { inputCol
+            ? (
+              <div className={`col-${inputCol}-sm`}>
+                {labelSecondary ? (<label htmlFor={id} className='label-secondary'>{labelSecondary}</label>) : null}
+                <input
+                  type={type}
+                  id={id}
+                  name={name}
+                  placeholder={placeholder}
+                  className={c('form__control form__control--medium', classInput)}
+                  value={value || ''}
+                  onChange={onChange}
+                  disabled={disabled}
+                  autoFocus={autoFocus}
+                  maxLength={maxLength}
+                />
+                {children || null}
+              </div>
+            )
+            : (
+              <React.Fragment>
+                {labelSecondary ? (<label htmlFor={id} className='label-secondary'>{labelSecondary}</label>) : null}
+                <input
+                  type={type}
+                  id={id}
+                  name={name}
+                  placeholder={placeholder}
+                  className={c('form__control form__control--medium', classInput)}
+                  value={value || ''}
+                  onChange={onChange}
+                  disabled={disabled}
+                  autoFocus={autoFocus}
+                  maxLength={maxLength}
+                />
+                {children || null}
+              </React.Fragment>
+            )}
         </div>
       </div>
     </div>

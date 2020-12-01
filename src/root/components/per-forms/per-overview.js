@@ -54,7 +54,9 @@ function PerOverview (props) {
 
   useEffect(() => {
     const of = props.perForm.getPerOverviewForm;
-    if (!isCreate && of.data && !of.fetching && of.fetched) {
+    // Checking for 'id' so this doesn't overwrite the state again
+    // on changing tabs back and forth
+    if (!isCreate && !overviewState.id && of.data && !of.fetching && of.fetched) {
       const res = of.data.results[0];
       setOrigCountry(res.country?.id);
       setOverviewState({
@@ -84,9 +86,10 @@ function PerOverview (props) {
         user_id: props.user.id
       });
     }
-  }, [props.perForm.getPerOverviewForm, props.user, isCreate, setOverviewState, _getLatestCountryOverview]);
+  }, [props.perForm.getPerOverviewForm, props.user, isCreate, overviewState, setOverviewState]);
 
   // If Country changes, get the latest Overview for that one
+  // FIXME: every tab change triggers a get...
   useEffect(() => {
     if (overviewState.country_id) {
       _getLatestCountryOverview(overviewState.country_id);
@@ -131,18 +134,20 @@ function PerOverview (props) {
                 </label>
               </div>
               <div className="form__inner-body">
-                <Select
-                  id='country_id'
-                  name='country_id'
-                  value={overviewState.country_id}
-                  onChange={(e) => handleChange(e, false, false, false, 'country_id')}
-                  options={props.nsDropdownItems}
-                  disabled={!editable}
-                />
-                <FormError
-                  errors={[]}
-                  property='country_id'
-                />
+                <div className='col-6-sm'>
+                  <Select
+                    id='country_id'
+                    name='country_id'
+                    value={overviewState.country_id}
+                    onChange={(e) => handleChange(e, false, false, false, 'country_id')}
+                    options={props.nsDropdownItems}
+                    disabled={!editable}
+                  />
+                  <FormError
+                    errors={[]}
+                    property='country_id'
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -155,6 +160,7 @@ function PerOverview (props) {
             classWrapper='form__group__per'
             onChange={(e) => handleChange(e)}
             disabled={!editable}
+            inputCol={6}
             // description={fields.sitFieldsDate[status].desc}
           >
             <FormError
@@ -170,18 +176,20 @@ function PerOverview (props) {
                 </label>
               </div>
               <div className="form__inner-body">
-                <Select
-                  id='type_of_assessment'
-                  name='type_of_assessment'
-                  value={overviewState.type_of_assessment}
-                  onChange={(e) => setOverviewState({ ...overviewState, type_of_assessment: e.value })}
-                  options={assessmentTypes}
-                  disabled={!editable}
-                />
-                <FormError
-                  errors={[]}
-                  property='type_of_assessment'
-                />
+                <div className='col-6-sm'>
+                  <Select
+                    id='type_of_assessment'
+                    name='type_of_assessment'
+                    value={overviewState.type_of_assessment}
+                    onChange={(e) => setOverviewState({ ...overviewState, type_of_assessment: e.value })}
+                    options={assessmentTypes}
+                    disabled={!editable}
+                  />
+                  <FormError
+                    errors={[]}
+                    property='type_of_assessment'
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -195,6 +203,7 @@ function PerOverview (props) {
             // onChange={}
             disabled={true}
             description={strings.perOverviewAsmtNumberDescription}
+            inputCol={6}
           >
             <FormError
               errors={[]}
@@ -274,8 +283,8 @@ function PerOverview (props) {
               prevOverviewState?.date_of_assessment ? isoDate(prevOverviewState.date_of_assessment) : null
             }
             classWrapper='form__group__per'
-            // onChange={(e) => fieldChange(e)}
             disabled={true}
+            inputCol={6}
             // description={fields.sitFieldsDate[status].desc}
           >
             <FormError
@@ -290,8 +299,8 @@ function PerOverview (props) {
             id='prev_asmt_type'
             value={prevOverviewState?.type_of_assessment?.name}
             classWrapper='form__group__per'
-            // onChange={(e) => fieldChange(e)}
             disabled={true}
+            inputCol={6}
             // description={fields.sitFieldsDate[status].desc}
           >
             <FormError
@@ -315,6 +324,7 @@ function PerOverview (props) {
             classWrapper='form__group__per'
             onChange={(e) => handleChange(e)}
             disabled={!editable}
+            inputCol={6}
             // description={fields.sitFieldsDate[status].desc}
           >
             <FormError
@@ -331,6 +341,7 @@ function PerOverview (props) {
             classWrapper='form__group__per'
             onChange={(e) => handleChange(e)}
             disabled={!editable}
+            inputCol={6}
             // description={fields.sitFieldsDate[status].desc}
           >
             <FormError

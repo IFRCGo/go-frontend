@@ -197,7 +197,6 @@ function PerAssessment (props) {
     ];
   }, [props.perForm.getPerForms]);
 
-  // FIXME: tabs still multiply if going to a Form, then navigating back to creating a new one
   const tabs = useMemo(() => {
     let tabList = [{ title: strings.perAccountOverview, hash: '#overview' }];
 
@@ -284,21 +283,21 @@ function PerAssessment (props) {
         <Helmet>
           <title>{strings.perFormTitle}</title>
         </Helmet>
-        <header className='inpage__header'>
+        <header className='per-inpage__header'>
             <div className='text-right'>
-              <a
-                className={`link--table${isCreate ? ' per__right_button' : ''}`}
+              <button
+                className={`button button--primary-bounded button--small ${isCreate ? ' per__right_button' : ''}`}
                 onClick={() => {
                   _resetPerState();
                   props.history.push('/account#per-forms');
                 }}
               >
                 <Translate stringId='threeWClose'/>
-              </a>
+              </button>
               { !isCreate && editable
                 ? (
                     <button
-                      className='button button--primary-bounded button--small per__right_button'
+                      className='button button--primary-filled button--small per__right_button'
                       onClick={(e) => saveForms(e, true)}
                     >
                       <Translate stringId='perAssessmentSubmit'/>
