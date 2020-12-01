@@ -14,6 +14,7 @@ import { Helmet } from 'react-helmet';
 import PerForm from '#components/per-forms/per-form';
 import PerOverview from '#components/per-forms/per-overview';
 import { showAlert } from '#components/system-alerts';
+import { FormError } from '#components/form-elements/';
 
 import {
   getAssessmentTypes,
@@ -28,15 +29,21 @@ import {
   resetPerState
 } from '#actions';
 import { formQuestionsSelector, nsDropdownSelector } from '#selectors';
-
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
+
+import Ajv from 'ajv';
+import ajvKeywords from 'ajv-keywords';
+import overviewSchemaDef from '../schemas/per-overview';
+import _cloneDeep from 'lodash.clonedeep';
+
+const ajv = new Ajv({ $data: true, allErrors: true, errorDataPath: 'property' });
+ajvKeywords(ajv);
+let overviewValidator = ajv.compile(overviewSchemaDef);
 
 function PerAssessment (props) {
   const { strings } = useContext(LanguageContext);
   const [overviewState, setOverviewState] = useState({
     branches_involved: '',
-    country_id: '',
-    date_of_assessment: '',
     date_of_mid_term_review: '',
     date_of_next_asmt: '',  
     facilitator_name: '',
@@ -54,12 +61,12 @@ function PerAssessment (props) {
     partner_focal_point_email: '',
     partner_focal_point_phone: '',
     partner_focal_point_organization: '',
-    type_of_assessment: '',
     user_id: props.user.id
   });
   const [formsState, setFormsState] = useState();
   const [formCommentsState, setFormCommentsState] = useState();
   const [formDataState, setFormDataState] = useState();
+  const [errors, setErrors] = useState();
   const idFromPath = props.match.params.id;
   const isEdit = !!props.isEdit;
   const isCreate = !!props.isCreate;
@@ -84,32 +91,38 @@ function PerAssessment (props) {
   function saveForms (e, isSubmit = false) {
     e.preventDefault();
 
-    showGlobalLoading();
-    if (isCreate) {
-      _createPerOverview({
-        ...overviewState,
-        is_epi: overviewState.is_epi === 'true'
-      });
-    } else {
-      _updatePerOverview({
-        ...overviewState,
-        is_epi: overviewState.is_epi === 'true',
-        is_finalized: isSubmit
-      });
+    // Validate fields
+    overviewValidator(overviewState);
+    setErrors(_cloneDeep(overviewValidator.errors));
 
-      // Omit the original form_data from Forms because we don't need that
-      // on POST, also makes the request way smaller
-      let omittedFormData = {};
-      for (const [formId, form] of Object.entries(formsState)) {
-        const { form_data, ...restOfForm } = form;
-        restOfForm.comment = formCommentsState[formId];
-        omittedFormData[formId] = restOfForm;
+    if (overviewValidator.errors === null) {
+      showGlobalLoading();
+      if (isCreate) {
+        _createPerOverview({
+          ...overviewState,
+          is_epi: overviewState.is_epi === 'true'
+        });
+      } else {
+        _updatePerOverview({
+          ...overviewState,
+          is_epi: overviewState.is_epi === 'true',
+          is_finalized: isSubmit
+        });
+
+        // Omit the original form_data from Forms because we don't need that
+        // on POST, also makes the request way smaller
+        let omittedFormData = {};
+        for (const [formId, form] of Object.entries(formsState)) {
+          const { form_data, ...restOfForm } = form;
+          restOfForm.comment = formCommentsState[formId];
+          omittedFormData[formId] = restOfForm;
+        }
+        
+        _updatePerForms({
+          forms: omittedFormData,
+          forms_data: formDataState
+        });
       }
-      
-      _updatePerForms({
-        forms: omittedFormData,
-        forms_data: formDataState
-      });
     }
   }
 
@@ -170,12 +183,15 @@ function PerAssessment (props) {
     const upo = props.perForm.updatePerOverview;
     const umpf = props.perForm.updateMultiplePerForms;
     if (!upo.fetching && upo.fetched && upo.data && !umpf.fetching && umpf.fetched && umpf.data) {
-      if (umpf.data.status === 'ok') {
-        showAlert('success', <p><Translate stringId="perFormsAlertUpdatedNoRedirect" /></p>, true, 2000);
-      } else if (umpf.error) {
+      if (umpf.error) {
         showAlert('danger', <p>{umpf.error.error_message}</p>, true, 2000);
+      } else if (umpf.data.status === 'ok') {
+        showAlert('success', <p><Translate stringId="perFormsAlertUpdatedNoRedirect" /></p>, true, 2000);
       }
-      if (upo.data.status === 'ok') {
+
+      if (upo.error) {
+        showAlert('danger', <p>{upo.error.error_message}</p>, true, 2000);
+      } else if (upo.data.status === 'ok') {
         if (upo.data.is_finalized) {
           showAlert('success', <p><Translate stringId="perOverviewAlertUpdated" /></p>, true, 2000);
           setTimeout(() => props.history.push('/account#per-forms'), 2000);
@@ -183,8 +199,6 @@ function PerAssessment (props) {
         } else {
           showAlert('success', <p><Translate stringId="perOverviewAlertUpdatedNoRedirect" /></p>, true, 2000);
         }
-      } else if (upo.error) {
-        showAlert('danger', <p>{upo.error.error_message}</p>, true, 2000);
       }
     }
   }, [props.perForm.updatePerOverview, props.perForm.updateMultiplePerForms, _resetPerState, props.history]);
@@ -348,6 +362,7 @@ function PerAssessment (props) {
                         setOverviewState={setOverviewState}
                         assessmentTypes={assessmentTypes}
                         editable={editable}
+                        errors={errors}
                       />
                       { isCreate
                         ? (
@@ -358,6 +373,16 @@ function PerAssessment (props) {
                             >
                               <Translate stringId='perOverviewSaveAndContinue'/>
                             </button>
+
+                            { errors
+                              ? errors.map(err => (
+                                <FormError
+                                  key={err.dataPath}
+                                  errors={errors}
+                                  property={err.dataPath.slice(1)}
+                                />
+                              ))
+                              : null }
                           </div>
                         )
                         : null }
@@ -384,6 +409,7 @@ function PerAssessment (props) {
                               setFormDataState={setFormDataState}
                               formCommentsState={formCommentsState}
                               setFormCommentsState={setFormCommentsState}
+                              errors={errors}
                             />
                           </TabContent>
                         </TabPanel>

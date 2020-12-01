@@ -34,7 +34,8 @@ function PerOverview (props) {
     overviewState,
     setOverviewState,
     _getLatestCountryOverview,
-    editable
+    editable,
+    errors
   } = props;
   const isCreate = !!props.isCreate;
 
@@ -144,7 +145,7 @@ function PerOverview (props) {
                     disabled={!editable}
                   />
                   <FormError
-                    errors={[]}
+                    errors={errors}
                     property='country_id'
                   />
                 </div>
@@ -164,7 +165,7 @@ function PerOverview (props) {
             // description={fields.sitFieldsDate[status].desc}
           >
             <FormError
-              errors={[]}
+              errors={errors}
               property='date_of_assessment'
             />
           </FormInput>
@@ -181,12 +182,12 @@ function PerOverview (props) {
                     id='type_of_assessment'
                     name='type_of_assessment'
                     value={overviewState.type_of_assessment}
-                    onChange={(e) => setOverviewState({ ...overviewState, type_of_assessment: e.value })}
+                    onChange={(e) => setOverviewState({ ...overviewState, type_of_assessment: e?.value })}
                     options={assessmentTypes}
                     disabled={!editable}
                   />
                   <FormError
-                    errors={[]}
+                    errors={errors}
                     property='type_of_assessment'
                   />
                 </div>
@@ -195,7 +196,7 @@ function PerOverview (props) {
           </div>
           <FormInput
             label={strings.perTableAssessmentNumber}
-            type='number'
+            type='text'
             name='assessment_number'
             id='assessment_number'
             value={assessment_number}
