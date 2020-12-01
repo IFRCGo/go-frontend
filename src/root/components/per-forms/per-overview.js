@@ -71,7 +71,7 @@ function PerOverview (props) {
         facilitator_phone: res.facilitator_phone,
         facilitator_contact: res.facilitator_contact,
         id: res.id,
-        is_epi: res.is_epi,
+        is_epi: res.is_epi ? 'true' : 'false',
         is_finalized: res.is_finalized,
         method_asmt_used: res.method_asmt_used,
         ns_focal_point_name: res.ns_focal_point_name,

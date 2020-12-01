@@ -43,7 +43,7 @@ function PerAssessment (props) {
     facilitator_email: '',
     facilitator_phone: '',
     facilitator_contact: '',
-    is_epi: false,
+    is_epi: 'false',
     is_finalized: false,
     method_asmt_used: '',    
     ns_focal_point_name: '',
