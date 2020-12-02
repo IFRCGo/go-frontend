@@ -176,7 +176,7 @@ function PerAssessment (props) {
       if (cpo.data.status === 'ok') {
         showAlert('success', <p><Translate stringId="perOverviewAlertCreated" /></p>, true, 2000);
         setTimeout(() => props.history.push(`/per-assessment/${cpo.data.overview_id}/edit#overview`), 2000);
-        _resetPerState();
+        // _resetPerState();
       } else if (cpo.error) {
         showAlert('danger', <p><Translate stringId="perOverviewAlertCreated" /></p>, true, 2000);
       }
@@ -306,7 +306,6 @@ function PerAssessment (props) {
   }, [props.perForm.getPerOverviewForm, props.user, isCreate, overviewState, setOverviewState]);
 
   // If Country changes, get the latest Overview for that one
-  // FIXME: every tab change triggers a get...
   useEffect(() => {
     if (overviewState.country_id) {
       _getLatestCountryOverview(overviewState.country_id);
