@@ -100,6 +100,9 @@
 }
 
 .links-list {
+  @include box__global;
+  padding: $spacing-2;
+  position: relative;
   list-style: none;
 
   @include media(xsmall) {
@@ -124,6 +127,24 @@
     display: block;
     margin: 0 0 $spacing 0;
   }
+}
+
+li.links-list-design {
+  position: absolute;
+  top: $spacing-2;
+  bottom: $spacing-2;
+  width: 1px;
+  background-color: $base-border-color;
+  left: 32%;
+  display: none;
+
+  @include media(medium) {
+    display: block;
+  }
+}
+
+li.links-list-design--2 {
+  left: 65%;
 }
 
 .icon-links-list {

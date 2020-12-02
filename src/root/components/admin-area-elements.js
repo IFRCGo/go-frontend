@@ -126,6 +126,8 @@ class _Links extends React.Component {
               }
             })
           }
+          <li className='links-list-design links-list-design--1' aria-hidden='true'></li>
+          <li className='links-list-design links-list-design--2' aria-hidden='true'></li>
         </ul>
       </Fold>
     );

@@ -15,11 +15,6 @@
     }
   }
 
-  .links-list {
-    @include box__global;
-    padding: $spacing-2;
-  }
-
   #emergencies {
     padding-top: 0;
   }
