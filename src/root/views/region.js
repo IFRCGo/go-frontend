@@ -281,7 +281,7 @@ class AdminArea extends SFPComponent {
         </section>
         <div className='tab__wrap tab__wrap--3W'>
           <div className='btn-region-countries-container'>
-            <div className='link btn-region-countries-trigger link link--with-icon' onClick={this.toggleCountriesSidebar}>
+            <div className={`btn-region-countries-trigger link link--with-icon ${this.state.showCountriesSidebar ? 'btn-region-countries-trigger--active' : ''}`} onClick={this.toggleCountriesSidebar}>
               <span className='btn-region-countries-icon link--with-icon-inner'>
                 <span className={this.state.showCountriesSidebar ? 'collecticon-sm-chevron-right' : 'collecticon-sm-chevron-left'}></span>
                 <span className={this.state.showCountriesSidebar ? 'collecticon-sm-chevron-right' : 'collecticon-sm-chevron-left'}></span>

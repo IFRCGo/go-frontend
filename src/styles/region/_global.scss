@@ -651,6 +651,7 @@
   }
 }
 
+$country-sidebar-width: 500px;
 $btn-region-countries-height: 50px;
 
 .btn-region-countries-container {
@@ -662,11 +663,29 @@ $btn-region-countries-height: 50px;
 .btn-region-countries-trigger {
   font-weight: $base-font-medium;
   font-size: $base-font-size;
-  justify-content: flex-end;
-  padding: $spacing $spacing-3;
+  //justify-content: flex-end;
+  padding: $spacing $spacing;
   box-shadow: $base-box-shadow;
   display: inline-flex;
+  width: ($country-sidebar-width);
   height: $btn-region-countries-height;
+  position: relative;
+  right: -300px;
+  transition: all 0.2s linear;
+
+  [dir='rtl'] & {
+    left: -300px;
+    right: auto;
+  }
+}
+
+.btn-region-countries-trigger--active {
+  right: 0;
+  transition: all 0.2s linear;
+
+  [dir='rtl'] & {
+    left: 0;
+  }
 }
 
 .btn-region-countries-icon {
@@ -698,12 +717,12 @@ $btn-region-countries-height: 50px;
   }
 
   @include media(small) {
-    width: 500px;
-    right: -500px;
+    width: $country-sidebar-width;
+    right: -($country-sidebar-width);
   
     [dir='rtl'] & {
       right: auto;
-      left: -500px;
+      left: -($country-sidebar-width);
     }
   }
 }
@@ -711,6 +730,7 @@ $btn-region-countries-height: 50px;
 .country__sidebar--active {
   right: 0;
   transition: all 0.2s linear;
+  border-radius: 0 0 $base-border-radius $base-border-radius; 
 
   [dir='rtl'] & {
     left: 0;
