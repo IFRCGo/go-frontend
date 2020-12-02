@@ -39,7 +39,7 @@ class _Contacts extends React.Component {
     if (data.contacts && !data.contacts.length) return null;
     return (
       <Fold id='contacts' title={strings.contactsTitle} foldWrapperClass='contacts' foldTitleClass='margin-reset'>
-        <table className='table'>
+        <table className='table table--contacts'>
           <thead className='visually-hidden'>
             <tr>
               <th><Translate stringId='contactsHeaderName'/></th>
@@ -126,6 +126,8 @@ class _Links extends React.Component {
               }
             })
           }
+          <li className='links-list-design links-list-design--1' aria-hidden='true'></li>
+          <li className='links-list-design links-list-design--2' aria-hidden='true'></li>
         </ul>
       </Fold>
     );

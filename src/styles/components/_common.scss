@@ -221,3 +221,10 @@
     }
   }
 }
+
+.table--contacts {
+  td {
+    padding-bottom: $spacing-half;
+    padding-top: 0;
+  }  
+}
