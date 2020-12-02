@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState, useEffect } from 'react';
+import React, { useContext, useMemo, useState, useEffect, useReducer } from 'react';
 import { connect } from 'react-redux';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
@@ -64,9 +64,42 @@ function PerAssessment (props) {
     partner_focal_point_organization: '',
     user_id: props.user.id
   });
+
+  const initReducer = data => data;
+
+  function formDataReducer (prevState, { type, formId, question, value}) {
+    switch (type) {
+      case 'radio' : {
+        let newState = Object.assign({}, prevState);
+        newState[formId][question.id].selected_answer = value;
+        return newState;
+      }
+      case 'notes': {
+        let newState = Object.assign({}, prevState);
+        newState[formId][question.id].notes = value;
+        return newState;
+      }
+      case 'reset':
+        return initReducer(value);
+    }
+  }
+
+  function formCommentsReducer (prevState, { type, formId, value }) {
+    switch (type) {
+      case 'update': {
+        let newState = Object.assign({}, prevState);
+        newState[formId] = value;
+        return newState;
+      }
+      case 'reset': {
+        return initReducer(value);
+      }
+    }
+  }
+
   const [formsState, setFormsState] = useState();
-  const [formCommentsState, setFormCommentsState] = useState();
-  const [formDataState, setFormDataState] = useState();
+  const [formCommentsState, setFormCommentsState] = useReducer(formCommentsReducer, {}, initReducer);
+  const [formDataState, setFormDataState] = useReducer(formDataReducer, {}, initReducer);
   const [origCountry, setOrigCountry] = useState(1);
   const [errors, setErrors] = useState();
   const idFromPath = props.match.params.id;
@@ -332,8 +365,8 @@ function PerAssessment (props) {
         formsDataDict[form.id] = questionsDict;
       });
       setFormsState(formsDict); // { [formId]: {...form} }
-      setFormDataState(formsDataDict); // { [formId]: { [questionId]: { ...formData } } }
-      setFormCommentsState(commentsDict); // { [formId]: comment }
+      setFormDataState({ type: 'reset', value: formsDataDict }); // { [formId]: { [questionId]: { ...formData } } }
+      setFormCommentsState({ type: 'reset', value: commentsDict }); // { [formId]: comment }
     }
   }, [isCreate, formsFetching, formsFetched, formsData]);
 

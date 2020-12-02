@@ -32,22 +32,20 @@ function PerForm (props) {
     editable
   } = props;
 
+
   function handleChange (e, question, isRadio, isFormVal = false) {
     if (isFormVal) {
       setFormCommentsState({
-        ...formCommentsState,
-        [formId]: e.target.value
+        type: 'update',
+        formId,
+        value: e.target.value
       });
     } else {
-      let modifiedState = formDataState;
-
       if (isRadio) {
-        modifiedState[formId][question.id].selected_answer = e.target.value;
+        setFormDataState({ type: 'radio', formId, question, value: e.target.value});
       } else {
-        modifiedState[formId][question.id].notes = e.target.value;
+        setFormDataState({ type: 'notes', formId, question, value: e.target.value});
       }
-      // need to ...spread, otherwise not updating
-      setFormDataState({...modifiedState});
     }
   }
 
