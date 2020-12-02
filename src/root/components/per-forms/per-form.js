@@ -9,14 +9,12 @@ import {
 import { formQuestionsSelector } from '#selectors';
 
 import LanguageContext from '#root/languageContext';
-import Translate from '#components/Translate';
 
 import Fold from '#components/fold';
 import {
   FormInput,
   FormTextarea,
-  FormRadioGroup,
-  FormError
+  FormRadioGroup
 } from '#components/form-elements/';
 
 function PerForm (props) {
@@ -59,8 +57,6 @@ function PerForm (props) {
     }
   }, [formId, formsState]);
 
-  // TODO: somehow set/alter import scripts for benchmark questions
-  // TODO: add is_epi questions to the import scripts too...
   // Not useMemo because object !== object, it triggers a re-render (props.groupedPerQuestions)
   let groupedQuestionList = (props.groupedPerQuestions && formsState)
     ? props.groupedPerQuestions[formsState[formId].area.area_num]
@@ -81,14 +77,9 @@ function PerForm (props) {
         id={`comment`}
         value={formCommentsState ? formCommentsState[formId] : null}
         onChange={(e) => handleChange(e, null, false, true)}
-        description=''
+        // description=''
         disabled={!editable}
-      >
-        <FormError
-          errors={[]}
-          property={'comments'}
-        />
-      </FormTextarea>
+      />
 
       { groupedQuestionList
         ? Object.keys(groupedQuestionList).map((compId) => {
@@ -107,7 +98,7 @@ function PerForm (props) {
               )
               : null }
             <FormRadioGroup
-              label=''
+              // label=''
               name={`question${question.id}`}
               classWrapper='per__form__radio-group'
               options={question.answers.map((answer) => ({
@@ -118,10 +109,6 @@ function PerForm (props) {
               selectedOption={formDataState[formId][question.id]?.selected_answer}
               onChange={(e) => handleChange(e, question, true)}
             >
-              <FormError
-                errors={[]} // TODO: handle errors
-                property={`question${question.id}`}
-              />
             </FormRadioGroup>
             <FormInput
               label='Notes'
@@ -131,13 +118,9 @@ function PerForm (props) {
               classWrapper=''
               value={formDataState[formId][question.id]?.notes}
               onChange={(e) => handleChange(e, question, false)}
-              description=''
+              // description=''
               disabled={!editable}
             >
-              <FormError
-                errors={[]}
-                property={`question${question.id}-note`}
-              />
             </FormInput>
           </div>
         ));

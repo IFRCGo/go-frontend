@@ -22,6 +22,7 @@ import {
   getPerQuestions,
   getPerOverviewFormStrict,
   getPerForms,
+  getLatestCountryOverview,
   createPerOverview,
   updatePerOverview,
   deletePerOverview,
@@ -66,6 +67,7 @@ function PerAssessment (props) {
   const [formsState, setFormsState] = useState();
   const [formCommentsState, setFormCommentsState] = useState();
   const [formDataState, setFormDataState] = useState();
+  const [origCountry, setOrigCountry] = useState(1);
   const [errors, setErrors] = useState();
   const idFromPath = props.match.params.id;
   const isEdit = !!props.isEdit;
@@ -76,6 +78,7 @@ function PerAssessment (props) {
     _getPerQuestions,
     _getPerOverviewFormStrict,
     _getPerForms,
+    _getLatestCountryOverview,
     _createPerOverview,
     _updatePerOverview,
     _updatePerForms,
@@ -267,6 +270,50 @@ function PerAssessment (props) {
   ]);
 
   useEffect(() => {
+    const of = props.perForm.getPerOverviewForm;
+    // Checking for 'id' so this doesn't overwrite the state again
+    // on changing tabs back and forth
+    if (!isCreate && !overviewState.id && of.data && !of.fetching && of.fetched) {
+      const res = of.data.results[0];
+      setOrigCountry(res.country?.id);
+      setOverviewState({
+        assessment_number: res.assessment_number,
+        branches_involved: res.branches_involved,
+        country_id: res.country?.id,
+        date_of_assessment: res.date_of_assessment?.substring(0, 10),
+        date_of_mid_term_review: res.date_of_mid_term_review?.substring(0, 10),
+        date_of_next_asmt: res.date_of_next_asmt?.substring(0, 10),
+        facilitator_name: res.facilitator_name,
+        facilitator_email: res.facilitator_email,
+        facilitator_phone: res.facilitator_phone,
+        facilitator_contact: res.facilitator_contact,
+        id: res.id,
+        is_epi: res.is_epi ? 'true' : 'false',
+        is_finalized: res.is_finalized,
+        method_asmt_used: res.method_asmt_used,
+        ns_focal_point_name: res.ns_focal_point_name,
+        ns_focal_point_email: res.ns_focal_point_email,
+        ns_focal_point_phone: res.ns_focal_point_phone,
+        other_consideration: res.other_consideration,
+        partner_focal_point_name: res.partner_focal_point_name,
+        partner_focal_point_email: res.partner_focal_point_email,
+        partner_focal_point_phone: res.partner_focal_point_phone,
+        partner_focal_point_organization: res.partner_focal_point_organization,
+        type_of_assessment: res.type_of_assessment?.id,
+        user_id: props.user.id
+      });
+    }
+  }, [props.perForm.getPerOverviewForm, props.user, isCreate, overviewState, setOverviewState]);
+
+  // If Country changes, get the latest Overview for that one
+  // FIXME: every tab change triggers a get...
+  useEffect(() => {
+    if (overviewState.country_id) {
+      _getLatestCountryOverview(overviewState.country_id);
+    }
+  }, [overviewState.country_id, _getLatestCountryOverview]);
+
+  useEffect(() => {
     if (!isCreate && !formsFetching && formsFetched && formsData) {
       let formsDict = {};
       let formsDataDict = {};
@@ -356,11 +403,10 @@ function PerAssessment (props) {
                   <TabPanel>
                     <TabContent>
                       <PerOverview
-                        idFromPath={idFromPath}
-                        isCreate={isCreate}
                         overviewState={overviewState}
                         setOverviewState={setOverviewState}
                         assessmentTypes={assessmentTypes}
+                        origCountry={origCountry}
                         editable={editable}
                         errors={errors}
                       />
@@ -459,6 +505,7 @@ const dispatcher = (dispatch) => ({
   _getPerQuestions: (...args) => dispatch(getPerQuestions(...args)),
   _getPerOverviewFormStrict: (...args) => dispatch(getPerOverviewFormStrict(...args)),
   _getPerForms: (...args) => dispatch(getPerForms(...args)),
+  _getLatestCountryOverview: (...args) => dispatch(getLatestCountryOverview(...args)),
   _createPerOverview: (payload) => dispatch(createPerOverview(payload)),
   _updatePerOverview: (payload) => dispatch(updatePerOverview(payload)),
   _deletePerOverview: (payload) => dispatch(deletePerOverview(payload)),

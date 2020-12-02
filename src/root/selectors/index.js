@@ -243,10 +243,20 @@ export const disasterTypesSelectSelector = (state) => {
 // area_nums > component_nums > questions
 export const formQuestionsSelector = (state) => {
   if (state.perQuestions && state.perQuestions.data.results) {
+    // Custom sorting order, this was the cleanest way
+    const answersOrder = {
+      'yes': 0,
+      'no': 1,
+      'Not Reviewed': 2,
+      'Does not exist': 3,
+      'Partially exists': 4,
+      'Need improvements': 5,
+      'Exist, could be strengthened': 6,
+      'High performance': 7
+    };
     return state.perQuestions.data.results.reduce((result, item) => {
-      // If area doesn't exist in the obj, create it, otherwise keep it
+      item.answers.sort((a, b) => answersOrder[a.text_en] - answersOrder[b.text_en]);
       const area = result[item.component.area.area_num] = result[item.component.area.area_num] || {};
-      // If component doesn't exist in the area, create it, otherwise keep it
       const comp = area[item.component.component_num] = area[item.component.component_num] || [];
       comp.push(item);
       return result;

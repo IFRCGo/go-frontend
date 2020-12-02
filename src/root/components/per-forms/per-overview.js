@@ -5,12 +5,7 @@ import { PropTypes as T } from 'prop-types';
 
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
-
 import { isoDate } from '#utils/format';
-
-import {
-  getLatestCountryOverview
-} from '#actions';
 import { nsDropdownSelector } from '#selectors';
 
 import {
@@ -22,7 +17,6 @@ import Select from 'react-select';
 
 function PerOverview (props) {
   const { strings } = useContext(LanguageContext);
-  const [origCountry, setOrigCountry] = useState(1);
   const [prevOverviewState, setPrevOverviewState] = useState({
     assessment_number: null,
     date_of_assessment: null,
@@ -33,11 +27,10 @@ function PerOverview (props) {
     assessmentTypes,
     overviewState,
     setOverviewState,
-    _getLatestCountryOverview,
     editable,
+    origCountry,
     errors
   } = props;
-  const isCreate = !!props.isCreate;
 
   function handleChange (e, hasTarget = true, isCheckbox = false, isRadio = false, id = '') {
     if (hasTarget) {
@@ -52,50 +45,6 @@ function PerOverview (props) {
       });
     }
   }
-
-  useEffect(() => {
-    const of = props.perForm.getPerOverviewForm;
-    // Checking for 'id' so this doesn't overwrite the state again
-    // on changing tabs back and forth
-    if (!isCreate && !overviewState.id && of.data && !of.fetching && of.fetched) {
-      const res = of.data.results[0];
-      setOrigCountry(res.country?.id);
-      setOverviewState({
-        assessment_number: res.assessment_number,
-        branches_involved: res.branches_involved,
-        country_id: res.country?.id,
-        date_of_assessment: res.date_of_assessment?.substring(0, 10),
-        date_of_mid_term_review: res.date_of_mid_term_review?.substring(0, 10),
-        date_of_next_asmt: res.date_of_next_asmt?.substring(0, 10),
-        facilitator_name: res.facilitator_name,
-        facilitator_email: res.facilitator_email,
-        facilitator_phone: res.facilitator_phone,
-        facilitator_contact: res.facilitator_contact,
-        id: res.id,
-        is_epi: res.is_epi ? 'true' : 'false',
-        is_finalized: res.is_finalized,
-        method_asmt_used: res.method_asmt_used,
-        ns_focal_point_name: res.ns_focal_point_name,
-        ns_focal_point_email: res.ns_focal_point_email,
-        ns_focal_point_phone: res.ns_focal_point_phone,
-        other_consideration: res.other_consideration,
-        partner_focal_point_name: res.partner_focal_point_name,
-        partner_focal_point_email: res.partner_focal_point_email,
-        partner_focal_point_phone: res.partner_focal_point_phone,
-        partner_focal_point_organization: res.partner_focal_point_organization,
-        type_of_assessment: res.type_of_assessment?.id,
-        user_id: props.user.id
-      });
-    }
-  }, [props.perForm.getPerOverviewForm, props.user, isCreate, overviewState, setOverviewState]);
-
-  // If Country changes, get the latest Overview for that one
-  // FIXME: every tab change triggers a get...
-  useEffect(() => {
-    if (overviewState.country_id) {
-      _getLatestCountryOverview(overviewState.country_id);
-    }
-  }, [overviewState.country_id, _getLatestCountryOverview]);
 
   // Set the Latest Overview's data
   useEffect(() => {
@@ -547,8 +496,7 @@ if (environment !== 'production') {
     perAreas: T.object,
     perForm: T.object,
     nsDropdownItems: T.array,
-    perLatestOverview: T.object,
-    _getLatestCountryOverview: T.func,
+    perLatestOverview: T.object
   };
 }
 
@@ -560,8 +508,4 @@ const selector = (state, ownProps) => ({
   nsDropdownItems: nsDropdownSelector(state)
 });
 
-const dispatcher = (dispatch) => ({
-  _getLatestCountryOverview: (payload) => dispatch(getLatestCountryOverview(payload)),
-});
-
-export default connect(selector, dispatcher)(PerOverview);
+export default connect(selector)(PerOverview);
