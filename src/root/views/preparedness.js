@@ -15,6 +15,8 @@ import {
 import ContactPer from '#components/preparedness/contact-per';
 import BreadCrumb from '#components/breadcrumb';
 import { Helmet } from 'react-helmet';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import TabContent from '#components/tab-content';
 import { PropTypes as T } from 'prop-types';
 import { environment } from '#config';
 import { getCountryMeta } from '#utils/get-country-meta';
@@ -26,7 +28,7 @@ import { countriesSelector } from '#selectors';
 // import _groupBy from 'lodash.groupby';
 
 class Preparedness extends React.Component {
-  constructor (props) {
+  constructor (props, context) {
     super(props);
     this.state = {
       geoJsonFinal: null,
@@ -37,6 +39,13 @@ class Preparedness extends React.Component {
     this.geoJsonBuilt = false;
     this.collaboratingPerCountryBuilt = false;
     this.perNsPhaseBuilt = false;
+
+    this.tabDetails = [
+      { title: context.strings.prepGlobalTrendsTab, hash: '#global-trends' },
+      { title: context.strings.prepGlobalPerformanceTab, hash: '#global-performance' },
+      { title: context.strings.prepResourceCatalogueTab, hash: '#resources-catalogue' },
+      { title: context.strings.prepOpLearningTab, hash: '#operational-learning' },
+    ];
   }
 
   componentDidMount () {
@@ -138,6 +147,13 @@ class Preparedness extends React.Component {
 
   render () {
     const { strings } = this.context;
+
+    const handleTabChange = index => {
+      const tabHashArray = this.tabDetails.map(({ hash }) => hash);
+      const url = this.props.location.pathname;
+      this.props.history.replace(`${url}${tabHashArray[index]}`);
+    };
+
     const nsEngagedHasData = this.props.getPerEngagedNsPercentage.fetched && typeof this.props.getPerEngagedNsPercentage.data.results !== 'undefined'
       ? this.props.getPerEngagedNsPercentage.data.results.filter((engaged) => engaged.forms_sent !== 0).length > 0
       : false;
@@ -163,19 +179,54 @@ class Preparedness extends React.Component {
               </div>
             </div>
           </header>
+
           <div className='inpage__body'>
             <PreparednessHeader />
-            <div className='container-lg margin-5-v'>
-              { this.geoJsonBuilt && this.state.geoJsonFinal !== null && this.state.geoJsonFinal.data.geoJSON.features.length > 0 ? <PerMap data={this.state.geoJsonFinal} noExport={true} noRenderEmergencies={true} overviewData={this.props.perOverviewForm} /> : null }
-            </div>
-            <div className='margin-5-t'>
-              { this.props.getPerEngagedNsPercentage.fetched && nsEngagedHasData ? <NationalSocietiesEngagedPer data={this.props.getPerEngagedNsPercentage} /> : null }
-            </div>
-            <div className='margin-2-b'>
-              { this.props.getPerGlobalPreparedness.fetched && this.props.perWorkPlan.fetched ? <GlobalPreparednessHighlights data={this.props.getPerGlobalPreparedness} prioritizationData={this.state.topPrioritizedComponents} perPermission={this.state.perPerMission} /> : null }
-            </div>
-            <div className='container-lg'>
-              <ContactPer />
+
+            <div className='tab__wrap'>
+              <Tabs
+                selectedIndex={this.tabDetails.map(({ hash }) => hash).indexOf(this.props.location.hash)}
+                onSelect={index => handleTabChange(index)}
+              >
+                <TabList>
+                  {this.tabDetails.map(tab => (
+                    <Tab key={tab.title}>{tab.title}</Tab>
+                  ))}
+                </TabList>
+
+                <div className='inpage__body'>
+                  <div className='inner'>
+                    <TabPanel title={strings.prepGlobalTrendsTab}>
+                      <TabContent>
+                      <div className='container-lg'>
+                        Global Trends
+                      </div>
+                      </TabContent>
+                    </TabPanel>
+                    <TabPanel title={strings.prepGlobalPerformanceTab}>
+                      <TabContent>
+                      <div className='container-lg'>
+                        Global Performance
+                      </div>
+                      </TabContent>
+                    </TabPanel>
+                    <TabPanel title={strings.prepResourceCatalogueTab}>
+                      <TabContent>
+                        <div className='container-lg'>
+                          Catalogue of Resources
+                        </div>
+                      </TabContent>
+                    </TabPanel>
+                    <TabPanel title={strings.prepOpLearningTab}>
+                      <TabContent>
+                        <div className='container-lg'>
+                          Operational Learning
+                        </div>
+                      </TabContent>
+                    </TabPanel>
+                  </div>
+                </div>
+              </Tabs>
             </div>
           </div>
         </section>
