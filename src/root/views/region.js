@@ -391,7 +391,7 @@ class AdminArea extends SFPComponent {
                                   <div className='sumstats__value'>{data.national_society_count}</div>
                                 </div>
                                 <div className='col'>
-                                  <div className='regional-profile-subtitle'>{strings.regionalTabBox1}</div>
+                                  <div className='regional-profile-subtitle'>{resolveToString(strings.regionalTabBox1, { regionName })}</div>
                                 </div>
                               </div>
                               <div className='row flex regional-profile-icon-block'>
