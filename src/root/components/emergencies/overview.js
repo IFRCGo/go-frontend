@@ -6,8 +6,6 @@ import { yesno } from '../../utils/format';
 function EmergencyOverview(props) {
   const { strings } = React.useContext(LanguageContext);
   const { data, disasterTypes } = props;
-  console.log('props', props);
-  console.log('disaster types', disasterTypes);
   const severityLevelToClass = {
     0: 'low',
     1: 'mid',
