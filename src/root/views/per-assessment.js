@@ -1,7 +1,8 @@
-import React, { useContext, useMemo, useState, useEffect, useReducer } from 'react';
+import React, { useContext, useMemo, useState, useEffect, useReducer, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
+import memoize from "fast-memoize";
 
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
@@ -77,7 +78,6 @@ function PerAssessment (props) {
       }
       case 'notes': {
         return produce(prevState, draft => {
-          console.log(formId, question.id, value);
           draft[formId][question.id].notes = value;
         });
       }
@@ -125,6 +125,26 @@ function PerAssessment (props) {
     const url = props.location.pathname;
     props.history.replace(`${url}${tabHashArray[index]}`);
   }
+
+  const handlePerFormInputChange = useCallback(
+    memoize(function (formId, question, isRadio, isFormVal = false) {
+      return (e) => {
+        if (isFormVal) {
+          setFormCommentsState({
+            type: 'update',
+            formId,
+            value: e.target.value
+          });
+        } else {
+          if (isRadio) {
+            setFormDataState({ type: 'radio', formId, question, value: e.target.value });
+          } else {
+            setFormDataState({ type: 'notes', formId, question, value: e.target.value });
+          }
+        }
+      };
+    })
+  , []);
 
   function saveForms (e, isSubmit = false) {
     e.preventDefault();
@@ -481,14 +501,13 @@ function PerAssessment (props) {
                           <TabContent>
                             <PerForm
                               formId={form.id}
+                              handleChange={handlePerFormInputChange}
                               isCreate={isCreate}
                               isEpi={overviewState.is_epi}
                               editable={editable}
                               formsState={formsState}
                               formDataState={formDataState}
-                              setFormDataState={setFormDataState}
                               formCommentsState={formCommentsState}
-                              setFormCommentsState={setFormCommentsState}
                               errors={errors}
                             />
                           </TabContent>

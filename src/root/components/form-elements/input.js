@@ -4,7 +4,7 @@ import c from 'classnames';
 
 import { FormDescription } from './misc';
 
-export default function FormInput (props) {
+function FormInput (props) {
   const {
     label,
     labelSecondary,
@@ -109,3 +109,7 @@ if (process.env.NODE_ENV !== 'production') {
     maxLength: T.number
   };
 }
+
+const memoizedFormInput = React.memo(FormInput);
+
+export default memoizedFormInput;
