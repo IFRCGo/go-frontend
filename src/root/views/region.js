@@ -40,7 +40,7 @@ import KeyFiguresHeader from '#components/common/key-figures-header';
 import {
   Snippets,
   TitledSnippets,
-  // KeyFigures,
+  KeyFigures,
   Contacts,
   Links
 } from '#components/admin-area-elements';
@@ -223,7 +223,7 @@ class AdminArea extends SFPComponent {
       });
     }
 
-    if (get(this.props.snippets, 'data.results.length')) {
+    if (get(this.props.snippets, 'data.results.length') || get(this.props.keyFigures, 'data.results.length')) {
       tabDetails.push({
         title: additionalTabName,
         hash: '#additional-info'
@@ -445,13 +445,11 @@ class AdminArea extends SFPComponent {
                   </TabContent>
                 </TabPanel>) : null }
 
-                { get(this.props.snippets, 'data.results.length') ? (
+                { get(this.props.snippets, 'data.results.length') || get(this.props.keyFigures, 'data.results.length') ? (
                 <TabPanel>
-                  {/*
                   <TabContent isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage={ strings.noDataMessage } title={strings.regionKeyFigures}>
                     <KeyFigures data={this.props.keyFigures} />
                   </TabContent>
-                  */}
                   <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ strings.noDataMessage } title={strings.regionGraphics}>
                     <Snippets data={this.props.snippets} title={strings.regionSnippets} />
                   </TabContent>
