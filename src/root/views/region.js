@@ -40,7 +40,7 @@ import KeyFiguresHeader from '#components/common/key-figures-header';
 import {
   Snippets,
   TitledSnippets,
-  KeyFigures,
+  // KeyFigures,
   Contacts,
   Links
 } from '#components/admin-area-elements';
