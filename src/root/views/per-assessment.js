@@ -15,6 +15,7 @@ import PerForm from '#components/per-forms/per-form';
 import PerOverview from '#components/per-forms/per-overview';
 import { showAlert } from '#components/system-alerts';
 import { FormError } from '#components/form-elements/';
+import { produce } from 'immer';
 
 import {
   getAssessmentTypes,
@@ -70,14 +71,15 @@ function PerAssessment (props) {
   function formDataReducer (prevState, { type, formId, question, value}) {
     switch (type) {
       case 'radio' : {
-        let newState = Object.assign({}, prevState);
-        newState[formId][question.id].selected_answer = value;
-        return newState;
+        return produce(prevState, draft => {
+          draft[formId][question.id].selected_answer = value;
+        });
       }
       case 'notes': {
-        let newState = Object.assign({}, prevState);
-        newState[formId][question.id].notes = value;
-        return newState;
+        return produce(prevState, draft => {
+          console.log(formId, question.id, value);
+          draft[formId][question.id].notes = value;
+        });
       }
       case 'reset':
         return initReducer(value);
@@ -87,9 +89,9 @@ function PerAssessment (props) {
   function formCommentsReducer (prevState, { type, formId, value }) {
     switch (type) {
       case 'update': {
-        let newState = Object.assign({}, prevState);
-        newState[formId] = value;
-        return newState;
+        return produce(prevState, draft => {
+          draft[formId] = value;
+        });
       }
       case 'reset': {
         return initReducer(value);
