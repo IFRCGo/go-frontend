@@ -45,13 +45,14 @@ import TabContent from '#components/tab-content';
 import ErrorPanel from '#components/error-panel';
 import Expandable from '#components/expandable';
 import Snippets from '#components/emergencies/snippets';
+import EmergencyOverview from '#components/emergencies/overview';
 import SurgeAlertsTable from '#components/connected/alerts-table';
 import PersonnelTable from '#components/connected/personnel-table';
 import EruTable from '#components/connected/eru-table';
 import EmergencyMap from '#components/map/emergency-map';
 import { epiSources } from '#utils/field-report-constants';
 import ProjectFormModal from '#views/ThreeW/project-form-modal';
-import { countriesGeojsonSelector, regionsByIdSelector } from '../selectors';
+import { countriesGeojsonSelector, regionsByIdSelector, disasterTypesSelector } from '../selectors';
 
 class Emergency extends React.Component {
   constructor (props) {
@@ -836,7 +837,7 @@ class Emergency extends React.Component {
 
   renderContent () {
     const { fetched, error, data } = this.props.event;
-
+    const { disasterTypes } = this.props;
     if (!fetched || error) return null;
     const report =
       mostRecentReport(get(this.props, 'event.data.field_reports')) || {};
@@ -1058,84 +1059,11 @@ class Emergency extends React.Component {
                     </div>
                   </TabContent>
                   <TabContent>
-                    <div className='container-lg'>
-                      <div className='box__global emergency__overview'>
-                        <div className='heading__title heading__title--emergency'>{strings.emergencyOverviewBoxTitle}</div>
-                          <div className='row-sm flex'>
-                            <div className='col-sm col-12 col-4-mid'>
-                              <div className='flex row emergency__overview-row'>
-                                <div className='col emergency__overview-col-cat'>{strings.emergencyDisasterCat}</div>
-                                <div className='col emergency__overview-col-desc'>
-                                  <div className='state-block row-sm'>
-                                    <div className='col-sm'>
-                                      <div className='state-name'>Orange</div>
-                                    </div>
-                                    <div className='col-sm'>
-                                      <div className='state state--severity-mid'></div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div> 
-
-                              <div className='flex row emergency__overview-row'>
-                                <div className='col emergency__overview-col-cat'>{strings.emergencyDisasterType}</div>
-                                <div className='col emergency__overview-col-desc'>
-                                  <div className='emergency__overview-desc'>
-                                    Conflict
-                                  </div>
-                                </div>
-                              </div> 
-
-                              <div className='flex row emergency__overview-row'>
-                                <div className='col emergency__overview-col-cat'>{strings.globalStartDate}</div>
-                                <div className='col emergency__overview-col-desc'>
-                                  <div className='emergency__overview-desc'>
-                                    YYYY-MM-DD
-                                  </div>
-                                </div>
-                              </div> 
-                            </div>
-                            <div className='col-sm col-12 col-4-mid'>
-                              <div className='flex row emergency__overview-row'>
-                                <div className='col emergency__overview-col-cat'>{strings.emergencyGovtReqIntlAsst}</div>
-                                <div className='col emergency__overview-col-desc'>
-                                  <div className='emergency__overview-desc'>
-                                    Yes
-                                  </div>
-                                </div>
-                              </div> 
-
-                              <div className='flex row emergency__overview-row'>
-                                <div className='col emergency__overview-col-cat'>{strings.emergencyNSReqIntlAsst}</div>
-                                <div className='col emergency__overview-col-desc'>
-                                  <div className='emergency__overview-desc'>
-                                    Yes
-                                  </div>
-                                </div>
-                              </div> 
-                            </div>
-                            <div className='col-sm col-12 col-4-mid'>
-                              <div className='flex row emergency__overview-row'>
-                                <div className='col emergency__overview-col-cat'>{strings.emergencyDREF}</div>
-                                <div className='col emergency__overview-col-desc'>
-                                  <div className='emergency__overview-desc'>
-                                    Requested for 25000CHF
-                                  </div>
-                                </div>
-                              </div> 
-
-                              <div className='flex row emergency__overview-row'>
-                                <div className='col emergency__overview-col-cat'>{strings.emergencyRapidResponsePersonnel}</div>
-                                <div className='col emergency__overview-col-desc'>
-                                  <div className='emergency__overview-desc'>
-                                    Requested
-                                  </div>
-                                </div>
-                              </div> 
-                            </div>
-                          </div>
-                      </div>
-                    </div>
+                    <EmergencyOverview
+                      data={data}
+                      disasterTypes={disasterTypes} 
+                    
+                    />
                   </TabContent>
                   <TabContent
                     isError={!summary}
@@ -1370,6 +1298,7 @@ const selector = (state, ownProps) => ({
   profile: state.profile,
   regionsById: regionsByIdSelector(state),
   countriesGeojson: countriesGeojsonSelector(state),
+  disasterTypes: disasterTypesSelector(state)
 });
 
 const dispatcher = (dispatch) => ({
