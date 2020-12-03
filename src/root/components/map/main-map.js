@@ -202,6 +202,18 @@ class MainMap extends React.Component {
       }
     });
 
+    theMap.on('mousemove', 'icrc_admin0', e => {
+      const feature = e.features.length ? e.features[0] : undefined;
+      if (feature) {
+        theMap.setLayoutProperty('icrc_admin0_highlight', 'visibility', 'visible');
+        theMap.setFilter('icrc_admin0_highlight', ['==', 'OBJECTID', feature.properties.OBJECTID]);
+      }
+    });
+
+    theMap.on('mouseleave', 'icrc_admin0', e => {
+      theMap.setLayoutProperty('icrc_admin0_highlight', 'visibility', 'none');
+    });
+
     if (Array.isArray(this.props.mapBoundingBox)) {
       theMap.fitBounds(this.props.mapBoundingBox);
     }

@@ -2,7 +2,7 @@ import mapboxgl from 'mapbox-gl';
 import { mbtoken } from '#config';
 
 export const source = 'SOURCE';
-export default function newMap (container, mapStyle = 'mapbox://styles/go-ifrc/cjy5ugr3y11nj1cpjmrqd48u2', mapOptions = {}) {
+export default function newMap (container, mapStyle = 'mapbox://styles/go-ifrc/cki7aznup3hqz19rxliv3naf4', mapOptions = {}) {
   mapboxgl.accessToken = mbtoken;
   const map = new mapboxgl.Map({
     container: container,
