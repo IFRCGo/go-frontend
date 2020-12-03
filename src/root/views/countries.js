@@ -725,7 +725,7 @@ class AdminArea extends SFPComponent {
                 */}
                 <TabPanel>
                   <TabContent showError={true} isError={!this.isPerPermission()} errorMessage={strings.accountPerPermission} title={strings.countryPreparednessTitle}>
-                    <div className='container-lg'>
+                    <React.Fragment>
                       {this.props.getPerNsPhase.fetched && this.props.perOverviewForm.fetched ? (
                         <PreparednessOverview getPerNsPhase={this.props.getPerNsPhase} perOverviewForm={this.props.perOverviewForm} />)
                         : <ErrorPanel title={strings.preparednessOverview} errorMessage={ strings.noDataMessage } />}
@@ -741,7 +741,7 @@ class AdminArea extends SFPComponent {
                       {this.props.getPerUploadedDocuments.fetched ? (
                         <PreparednessPhaseOutcomes getPerUploadedDocuments={this.props.getPerUploadedDocuments} countryId={this.props.country.id} />)
                         : <ErrorPanel title={strings.countryPreparednessPhaseOutcomes} errorMessage={ strings.noDataMessage } />} */}
-                      </div>
+                    </React.Fragment>
                   </TabContent>
                 </TabPanel>
                 <TabPanel>
