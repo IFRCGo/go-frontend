@@ -149,6 +149,7 @@ export default {
   regionProfileTab: 'Regional Profile',
   regionPreparednessTab: 'Preparedness',
   regionAdditionalInfoTab: 'Additional Data',
+  regionSnippetsTitle: 'Regional Content',
   regionIframeBackLink: 'Back to Regional Profile',
 
   regionalTabBox1: 'National Societies in Africa',

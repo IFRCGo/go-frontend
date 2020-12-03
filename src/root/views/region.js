@@ -449,7 +449,7 @@ class AdminArea extends SFPComponent {
                     <KeyFigures data={this.props.keyFigures} />
                   </TabContent>
                   <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ strings.noDataMessage } title={strings.regionGraphics}>
-                    <Snippets data={this.props.snippets} />
+                    <Snippets data={this.props.snippets} title={strings.regionSnippets} />
                   </TabContent>
                 </TabPanel>
               </div>
