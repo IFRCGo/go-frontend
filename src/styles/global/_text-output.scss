@@ -10,8 +10,8 @@
   }
 
   .tc-value {
-    padding: 3px 6px;
-    font-weight: bold;
+    padding: 3px $spacing-half 3px 3px;
+    font-weight: $base-font-medium;
   }
 
   &.tc-text-output-reversed {

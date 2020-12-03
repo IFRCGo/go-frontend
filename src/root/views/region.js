@@ -40,7 +40,7 @@ import KeyFiguresHeader from '#components/common/key-figures-header';
 import {
   Snippets,
   TitledSnippets,
-  KeyFigures,
+  // KeyFigures,
   Contacts,
   Links
 } from '#components/admin-area-elements';
@@ -223,11 +223,12 @@ class AdminArea extends SFPComponent {
       });
     }
 
-    // Add Additional Tab with custom name, FIXME: dont add if no data
-    tabDetails.push({
-      title: additionalTabName,
-      hash: '#additional-info'
-    });
+    if (get(this.props.snippets, 'data.results.length')) {
+      tabDetails.push({
+        title: additionalTabName,
+        hash: '#additional-info'
+      });
+    }
 
     const presentationClass = c({
       'presenting fold--stats': this.state.fullscreen,
@@ -391,7 +392,7 @@ class AdminArea extends SFPComponent {
                                   <div className='sumstats__value'>{data.national_society_count}</div>
                                 </div>
                                 <div className='col'>
-                                  <div className='regional-profile-subtitle'>{strings.regionalTabBox1}</div>
+                                  <div className='regional-profile-subtitle'>{resolveToString(strings.regionalTabBox1, { regionName })}</div>
                                 </div>
                               </div>
                               <div className='row flex regional-profile-icon-block'>
@@ -444,14 +445,17 @@ class AdminArea extends SFPComponent {
                   </TabContent>
                 </TabPanel>) : null }
 
+                { get(this.props.snippets, 'data.results.length') ? (
                 <TabPanel>
+                  {/*
                   <TabContent isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage={ strings.noDataMessage } title={strings.regionKeyFigures}>
                     <KeyFigures data={this.props.keyFigures} />
                   </TabContent>
+                  */}
                   <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ strings.noDataMessage } title={strings.regionGraphics}>
-                    <Snippets data={this.props.snippets} />
+                    <Snippets data={this.props.snippets} title={strings.regionSnippets} />
                   </TabContent>
-                </TabPanel>
+                </TabPanel>) :null }
               </div>
             </div>
           </Tabs>

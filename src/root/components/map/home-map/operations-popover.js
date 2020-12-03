@@ -18,7 +18,7 @@ class OperationsPopover extends React.Component {
         <div className='popover__contents'>
           <header className='popover__header'>
             <div className='popover__headline'>
-              {deployments ? title : <a className='link-underline' onClick={e => { e.preventDefault(); navigate(`/countries/${pageId}`); }}>{title} <span className='popover__headline__icon collecticon-chevron-right'></span></a>}
+              {deployments ? title : <a className='link--primary' onClick={e => { e.preventDefault(); navigate(`/countries/${pageId}`); }}>{title} <span className='popover__headline__icon collecticon-chevron-right'></span></a>}
             </div>
             <div className='popover__actions actions'>
               <ul className='actions__menu'>
@@ -32,7 +32,7 @@ class OperationsPopover extends React.Component {
               </ul>
             </div>
           </header>
-          <div className='popover__body'>
+          <div className='popover__body scrollbar__custom'>
             {Array.isArray(operations) ? operations.map(d => (
               <React.Fragment key={d.id}>
                 <h3 className='popover__subtitle'>
