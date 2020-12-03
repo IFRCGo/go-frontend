@@ -3,16 +3,12 @@ import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getPerProcessType } from '#utils/get-per-process-type';
 import Fold from '#components/fold';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
-import { getFullMonthNameList } from '#utils/utils';
-
 
 function PreparednessOverview (props) {
   const { strings } = useContext(LanguageContext);
-  const months = getFullMonthNameList(strings);
 
   const phase = useMemo(() => {
     if (props.getPerNsPhase.data?.results) {
