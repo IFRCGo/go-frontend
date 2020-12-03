@@ -223,11 +223,12 @@ class AdminArea extends SFPComponent {
       });
     }
 
-    // Add Additional Tab with custom name, FIXME: dont add if no data
-    tabDetails.push({
-      title: additionalTabName,
-      hash: '#additional-info'
-    });
+    if (get(this.props.snippets, 'data.results.length')) {
+      tabDetails.push({
+        title: additionalTabName,
+        hash: '#additional-info'
+      });
+    }
 
     const presentationClass = c({
       'presenting fold--stats': this.state.fullscreen,
@@ -444,6 +445,7 @@ class AdminArea extends SFPComponent {
                   </TabContent>
                 </TabPanel>) : null }
 
+                { get(this.props.snippets, 'data.results.length') ? (
                 <TabPanel>
                   {/*
                   <TabContent isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage={ strings.noDataMessage } title={strings.regionKeyFigures}>
@@ -453,7 +455,7 @@ class AdminArea extends SFPComponent {
                   <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ strings.noDataMessage } title={strings.regionGraphics}>
                     <Snippets data={this.props.snippets} title={strings.regionSnippets} />
                   </TabContent>
-                </TabPanel>
+                </TabPanel>) :null }
               </div>
             </div>
           </Tabs>
