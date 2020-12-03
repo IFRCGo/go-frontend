@@ -1,7 +1,6 @@
 import React from 'react';
 import LanguageContext from '#root/languageContext';
-import { formatDate } from '#utils/format';
-import { yesno } from '../../utils/format';
+import { formatDate, yesno } from '#utils/format';
 
 function EmergencyOverview(props) {
   const { strings } = React.useContext(LanguageContext);
