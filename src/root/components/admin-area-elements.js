@@ -73,9 +73,10 @@ class _Snippets extends React.Component {
     const { strings } = this.context;
     const { fetching, fetched, error, data } = this.props.data;
     const title = this.props.title || strings.snippetsTitle;
+    const showHeader = this.props.hideHeader ? false : true;
     if (fetching || error || (fetched && !data.results.length)) return null;
     return (
-      <Fold id='graphics' title={title} foldWrapperClass='additional-graphics'>
+      <Fold id='graphics' title={title} foldWrapperClass='additional-graphics' showHeader={showHeader}>
         <div className='iframe__container'>
           {data.results.map(o => o.snippet ? <div className='snippet__item' key={o.id} dangerouslySetInnerHTML={{__html: o.snippet}} />
             : o.image ? <div key={o.id} className='snippet__item snippet__image'><img src={o.image}/></div> : null

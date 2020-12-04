@@ -748,7 +748,7 @@ class AdminArea extends SFPComponent {
                 <TabPanel>
                   <div className='container-lg'>
                     <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ strings.noDataMessage } title={strings.regionGraphiccs}>
-                      <Snippets data={this.props.snippets} />
+                      <Snippets data={this.props.snippets} hideHeader={true} />
                     </TabContent>
                     <TabContent showError={true} isError={!get(data, 'contacts.length')} errorMessage={ strings.noDataMessage } title={strings.regionContacts}>
                       <Contacts data={data} />
