@@ -21,18 +21,45 @@ class Footer extends React.PureComponent {
         <footer className='page__footer' role='contentinfo'>
           <div className='container-lg'>
             <div className='footer-menu row flex-xs'>
-              <div className="footer-left-block col col-7-xs">
-                <a href='https://github.com/ifrcgo/go-frontend' title={strings.footerOpenSourceCode}><Translate stringId='footerOpenSourceCode'/></a>
-                <a href={`${process.env.NODE_ENV === 'production' ? 'https://goadmin.ifrc.org/' : api}docs`} title={strings.footerApiDocumentation}>
+              <div className="col col-6-xs col-3-mid">
+                <div className='footer-section-heading'>About Go</div>
+                <div className='base-font-medium'>
+                  IFRC GO is a Red Cross Red Crescent platform to connect information on emergency needs with the right response.
+                </div>
+                 <div className='footer-copyright'><Translate stringId='footerIFRC'/></div>
+              </div>
+
+              <div className="col col-6-xs col-3-mid">
+                <div className='footer-section-heading'>Find out more</div>
+                <a href='https://ifrc.org' className='footer-section-link'>ifrc.org</a>
+                <a href='https://rcrcsims.org' className='footer-section-link'>rcrcsims.org</a>
+                <a href='https://data.ifrc.org' className='footer-section-link'>dataifrc.org</a>
+              </div>
+
+              <div className="col col-6-xs col-3-mid">
+                <div className='footer-section-heading'>Helpful links</div>
+                <div className='footer-section-link'><a href='https://github.com/ifrcgo/go-frontend' title={strings.footerOpenSourceCode}><Translate stringId='footerOpenSourceCode'/></a></div>
+                <a href={`${process.env.NODE_ENV === 'production' ? 'https://goadmin.ifrc.org/' : api}docs`} title={strings.footerApiDocumentation} className='footer-section-link'>
                   <Translate stringId='footerApiDocumentation'/>
                 </a>
-                <a href='mailto:im@ifrc.org'>
+                <a href='mailto:im@ifrc.org' className='footer-section-link'>
                   <Translate stringId='footerContactUs'/>
                 </a>
               </div>
 
-              <div className="footer-right-block col col-5-xs">
-                <Translate stringId='footerIFRC'/>
+              <div className="col col-6-xs col-3-mid">
+                <div className='footer-section-heading'>Contact us</div>
+                <a href='mailto:im@ifrc.org' className='button button--primary-filled button--small'>im@ifrc.org</a>
+                <div className='footer-social-block'>
+                  <a href='https://ifrcgoproject.medium.com' className='footer-social-each'></a>
+                  <a href='https://www.facebook.com/IFRC' className='footer-social-each'>
+                    <span className='f-icon-facebook'></span>
+                  </a>
+                  <a href='https://twitter.com/ifrcgo' className='footer-social-each'>
+                    <span className='f-icon-twitter'></span>
+                  </a>
+                  <a href='https://www.youtube.com/watch?v=dwPsQzla9A4' className='footer-social-each'></a>
+                </div>
               </div>
             </div>
           </div>
