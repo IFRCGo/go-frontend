@@ -33,7 +33,7 @@ class OperationsPopover extends React.Component {
             </div>
           </header>
           <div className='popover__body scrollbar__custom'>
-            {Array.isArray(operations) ? operations.map(d => (
+            {Array.isArray(operations) && operations.length > 0 ? operations.map(d => (
               <React.Fragment key={d.id}>
                 <h3 className='popover__subtitle'>
                   {d.event ? (
@@ -55,7 +55,11 @@ class OperationsPopover extends React.Component {
                   </li>
                 </ul>
               </React.Fragment>
-            )) : null}
+            )) : (
+              <React.Fragment>
+                No Current Operations
+              </React.Fragment>
+            )}
             {Array.isArray(deployments) ? deployments.map((d, i) => (
               <React.Fragment key={i}>
                 <h3 className='popover__subtitle'>{get(d.parent, 'society_name', d.parent.name)}</h3>

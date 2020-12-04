@@ -173,9 +173,10 @@ class MainMap extends React.Component {
       this.setState({ ready: true });
     });
 
-    theMap.on('click', 'appeals', e => {
-      this.showOperationsPopover(theMap, e.features[0]);
-    });
+    // theMap.on('click', e => {
+    //   console.log('features', e.features);
+    //   this.showOperationsPopover(theMap, e.features[0]);
+    // });
 
     theMap.on('mousemove', 'appeals', e => {
       theMap.getCanvas().style.cursor = 'pointer';
@@ -210,6 +211,16 @@ class MainMap extends React.Component {
       }
     });
 
+    theMap.on('click', 'icrc_admin0', e => {
+      console.log('features', e.features);
+      const feature = e.features.length ? e.features[0] : undefined;
+      if (feature) {
+        this.showOperationsPopover(theMap, feature, e);
+        // theMap.setLayoutProperty('icrc_admin0_highlight', 'visibility', 'visible');
+        // theMap.setFilter('icrc_admin0_highlight', ['==', 'OBJECTID', feature.properties.OBJECTID]);
+      }
+    });
+
     theMap.on('mouseleave', 'icrc_admin0', e => {
       theMap.setLayoutProperty('icrc_admin0_highlight', 'visibility', 'none');
     });
@@ -231,18 +242,36 @@ class MainMap extends React.Component {
     }
   }
 
-  showOperationsPopover (theMap, feature) {
+  showOperationsPopover (theMap, feature, event) {
+    // console.log('feature', feature);
     let popoverContent = document.createElement('div');
-    const { properties, geometry } = feature;
-    const operations = !properties.appeals ? []
+    const iso = feature.properties.ISO2.toUpperCase();
+    const appealFeature = this.state.markerGeoJSON.features.find(f => f.properties.iso.toUpperCase() === iso);
+    let title, pageId, operations, centroid;
+    if (appealFeature) {
+      const { properties } = appealFeature;
+      title = properties.name;
+      pageId = properties.id;
+      operations = !properties.appeals ? []
       : Array.isArray(properties.appeals) ? properties.appeals
         : JSON.parse(properties.appeals);
-    const title = `${properties.name}`;
+      centroid = appealFeature.geometry.coordinates;
+    } else {
+      title = feature.properties.NAME;
+      pageId = feature.id;
+      operations = [];
+      centroid = event.lngLat;
+    }
+    // const { properties, geometry } = feature;
+    // const operations = !properties.appeals ? []
+    //   : Array.isArray(properties.appeals) ? properties.appeals
+    //     : JSON.parse(properties.appeals);
+    // const title = `${properties.name}`;
 
     render(<OperationsPopover
       title={title}
       navigate={this.navigate}
-      pageId={properties.id}
+      pageId={pageId}
       operations={operations}
       onCloseClick={this.onPopoverCloseClick.bind(this)} />, popoverContent);
 
@@ -253,7 +282,7 @@ class MainMap extends React.Component {
     }
 
     this.popover = new mapboxgl.Popup({closeButton: false})
-      .setLngLat(geometry.coordinates)
+      .setLngLat(centroid)
       .setDOMContent(popoverContent.children[0])
       .addTo(theMap);
   }
