@@ -145,7 +145,7 @@ function PerOverview (props) {
           </div>
           <FormInput
             label={strings.perTableAssessmentNumber}
-            type='text'
+            type='number'
             name='assessment_number'
             id='assessment_number'
             value={assessment_number}

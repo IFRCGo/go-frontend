@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState, useEffect } from 'react';
+import React, { useContext, useMemo, useEffect } from 'react';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 import { withRouter } from 'react-router-dom';
@@ -30,7 +30,6 @@ function PreparednessOverview (props) {
 
   const NO_DATA = '--';
   const ov = props.perOverviewForm.data.results[0];
-  // ov.date_of_assessment.substring(0, 10);
 
   let tickIcons = [];
   for (let i = 0; i < phase; i++) {

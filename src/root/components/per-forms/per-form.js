@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useCallback } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
@@ -54,7 +54,7 @@ function PerForm (props) {
       }
       setGroupedQuestionList(perQuestions);
     }
-  }, [formsState, groupedPerQuestions]);
+  }, [formsState, groupedPerQuestions, formId, isEpi]);
 
   return (
     <Fold title={title} foldWrapperClass='fold--main' foldTitleClass='margin-reset'>
