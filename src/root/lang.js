@@ -532,8 +532,13 @@ export default {
 
 
   editPerFormsTitle: 'IFRC Go - Emergencies',
+  footerAboutGo: 'About Go',
+  footerAboutGoDesc: 'IFRC GO is a Red Cross Red Crescent platform to connect information on emergency needs with the right response.',
+  footerFindOutMore: 'Find out more',
+  footerHelpfulLinks: 'Helpful links',
   footerOpenSourceCode: 'Open Source Code',
   footerApiDocumentation: 'API Documentation',
+  footerOtherResources: 'Other Resources',
   footerContactUs: 'Contact Us',
   footerIFRC: '© IFRC 2020',
   perFormComponentSaveDraft: 'Save as draft',

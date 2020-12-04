@@ -22,44 +22,49 @@ class Footer extends React.PureComponent {
           <div className='container-lg'>
             <div className='footer-menu row flex-xs'>
               <div className="col col-6-xs col-3-mid">
-                <div className='footer-section-heading'>About Go</div>
+                <div className='footer-section-heading'><Translate stringId='footerAboutGo'/></div>
                 <div className='base-font-medium'>
-                  IFRC GO is a Red Cross Red Crescent platform to connect information on emergency needs with the right response.
+                  <Translate stringId='footerAboutGoDesc'/>
                 </div>
-                 <div className='footer-copyright'><Translate stringId='footerIFRC'/></div>
+                 <div className='footer-copyright footer-copyright--lg'><Translate stringId='footerIFRC'/></div>
               </div>
 
               <div className="col col-6-xs col-3-mid">
-                <div className='footer-section-heading'>Find out more</div>
+                <div className='footer-section-heading'><Translate stringId='footerFindOutMore'/></div>
                 <a href='https://ifrc.org' className='footer-section-link'>ifrc.org</a>
                 <a href='https://rcrcsims.org' className='footer-section-link'>rcrcsims.org</a>
                 <a href='https://data.ifrc.org' className='footer-section-link'>dataifrc.org</a>
               </div>
 
               <div className="col col-6-xs col-3-mid">
-                <div className='footer-section-heading'>Helpful links</div>
+                <div className='footer-section-heading'><Translate stringId='footerHelpfulLinks'/></div>
                 <div className='footer-section-link'><a href='https://github.com/ifrcgo/go-frontend' title={strings.footerOpenSourceCode}><Translate stringId='footerOpenSourceCode'/></a></div>
                 <a href={`${process.env.NODE_ENV === 'production' ? 'https://goadmin.ifrc.org/' : api}docs`} title={strings.footerApiDocumentation} className='footer-section-link'>
                   <Translate stringId='footerApiDocumentation'/>
                 </a>
-                <a href='mailto:im@ifrc.org' className='footer-section-link'>
-                  <Translate stringId='footerContactUs'/>
+                <a href='/about' className='footer-section-link'>
+                  <Translate stringId='footerOtherResources'/>
                 </a>
               </div>
 
               <div className="col col-6-xs col-3-mid">
-                <div className='footer-section-heading'>Contact us</div>
-                <a href='mailto:im@ifrc.org' className='button button--primary-filled button--small'>im@ifrc.org</a>
+                <div className='footer-section-heading'><Translate stringId='footerContactUs'/></div>
+                <a href='mailto:im@ifrc.org' className='button button--primary-filled button--small button-footer-contact'>im@ifrc.org</a>
                 <div className='footer-social-block'>
-                  <a href='https://ifrcgoproject.medium.com' className='footer-social-each'></a>
+                  <a href='https://ifrcgoproject.medium.com' className='footer-social-each'>
+                    <span className='f-icon-medium footer-social-icon'></span>
+                  </a>
                   <a href='https://www.facebook.com/IFRC' className='footer-social-each'>
-                    <span className='f-icon-facebook'></span>
+                    <span className='f-icon-facebook footer-social-icon'></span>
                   </a>
                   <a href='https://twitter.com/ifrcgo' className='footer-social-each'>
-                    <span className='f-icon-twitter'></span>
+                    <span className='f-icon-twitter footer-social-icon'></span>
                   </a>
-                  <a href='https://www.youtube.com/watch?v=dwPsQzla9A4' className='footer-social-each'></a>
+                  <a href='https://www.youtube.com/watch?v=dwPsQzla9A4' className='footer-social-each'>
+                    <span className='f-icon-youtube footer-social-icon'></span>
+                  </a>
                 </div>
+                <div className='footer-copyright footer-copyright--sm'><Translate stringId='footerIFRC'/></div>
               </div>
             </div>
           </div>

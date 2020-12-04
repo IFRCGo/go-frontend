@@ -113,13 +113,31 @@ main {
   }
 }
 
+.footer-menu {
+  > .col {
+    @include media(medium-down) {
+      margin-bottom: $spacing-3;
+    }
+  }
+
+  > .col:last-of-type {
+    @include media(medium-down) {
+      margin-bottom: 0;
+    }
+  }
+}
+
 .footer-section-heading {
   color: $white;
   font-size: $font-size-lg;
   font-weight: $base-font-bold;
   text-transform: uppercase;
   letter-spacing: $letter-spacing-lg;
-  margin: 0 0 $spacing-2 0;
+  margin: 0 0 $spacing-half 0;
+
+  @include media(medium) {
+    margin: 0 0 $spacing-2 0;
+  }
 }
 
 .footer-section-link {
@@ -128,11 +146,48 @@ main {
   margin: 0 0 $spacing 0;
 }
 
+.button-footer-contact {
+  padding-left: $spacing-3;
+  padding-right: $spacing-3;
+}
+
+.footer-social-block {
+  display: flex;
+  margin: $spacing-2 0 0 0;
+}
+
+.footer-social-each {
+  font-size: 140%;
+  margin: $spacing ($spacing * 1.7) 0 0;
+
+  &:last-of-type {
+    margin-right: 0;
+  }
+
+  &.f-icon-twitter {
+    font-size: 150%;
+  }
+}
+
 .footer-copyright {
   color: $grey-platinum;
   font-size: $font-size-sm;
   font-weight: $base-font-regular;
   margin: $spacing-2 0 0 0;
+}
+
+.footer-copyright--sm {
+  @include media(mid) {
+    display: none;
+  }
+}
+
+.footer-copyright--lg {
+  display: none;
+
+  @include media(mid) {
+    display: block;
+  }
 }
 
 .staging-footer {
