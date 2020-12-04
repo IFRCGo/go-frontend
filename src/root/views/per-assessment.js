@@ -1,7 +1,8 @@
-import React, { useContext, useMemo, useState, useEffect } from 'react';
+import React, { useContext, useMemo, useState, useEffect, useReducer, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
+import memoize from "fast-memoize";
 
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
@@ -15,6 +16,7 @@ import PerForm from '#components/per-forms/per-form';
 import PerOverview from '#components/per-forms/per-overview';
 import { showAlert } from '#components/system-alerts';
 import { FormError } from '#components/form-elements/';
+import { produce } from 'immer';
 
 import {
   getAssessmentTypes,
@@ -64,9 +66,42 @@ function PerAssessment (props) {
     partner_focal_point_organization: '',
     user_id: props.user.id
   });
+
+  const initReducer = data => data;
+
+  function formDataReducer (prevState, { type, formId, question, value}) {
+    switch (type) {
+      case 'radio' : {
+        return produce(prevState, draft => {
+          draft[formId][question.id].selected_answer = value;
+        });
+      }
+      case 'notes': {
+        return produce(prevState, draft => {
+          draft[formId][question.id].notes = value;
+        });
+      }
+      case 'reset':
+        return initReducer(value);
+    }
+  }
+
+  function formCommentsReducer (prevState, { type, formId, value }) {
+    switch (type) {
+      case 'update': {
+        return produce(prevState, draft => {
+          draft[formId] = value;
+        });
+      }
+      case 'reset': {
+        return initReducer(value);
+      }
+    }
+  }
+
   const [formsState, setFormsState] = useState();
-  const [formCommentsState, setFormCommentsState] = useState();
-  const [formDataState, setFormDataState] = useState();
+  const [formCommentsState, setFormCommentsState] = useReducer(formCommentsReducer, {}, initReducer);
+  const [formDataState, setFormDataState] = useReducer(formDataReducer, {}, initReducer);
   const [origCountry, setOrigCountry] = useState(1);
   const [errors, setErrors] = useState();
   const idFromPath = props.match.params.id;
@@ -90,6 +125,26 @@ function PerAssessment (props) {
     const url = props.location.pathname;
     props.history.replace(`${url}${tabHashArray[index]}`);
   }
+
+  const handlePerFormInputChange = useCallback(
+    memoize(function (formId, question, isRadio, isFormVal = false) {
+      return (e) => {
+        if (isFormVal) {
+          setFormCommentsState({
+            type: 'update',
+            formId,
+            value: e.target.value
+          });
+        } else {
+          if (isRadio) {
+            setFormDataState({ type: 'radio', formId, question, value: e.target.value });
+          } else {
+            setFormDataState({ type: 'notes', formId, question, value: e.target.value });
+          }
+        }
+      };
+    })
+  , []);
 
   function saveForms (e, isSubmit = false) {
     e.preventDefault();
@@ -332,8 +387,8 @@ function PerAssessment (props) {
         formsDataDict[form.id] = questionsDict;
       });
       setFormsState(formsDict); // { [formId]: {...form} }
-      setFormDataState(formsDataDict); // { [formId]: { [questionId]: { ...formData } } }
-      setFormCommentsState(commentsDict); // { [formId]: comment }
+      setFormDataState({ type: 'reset', value: formsDataDict }); // { [formId]: { [questionId]: { ...formData } } }
+      setFormCommentsState({ type: 'reset', value: commentsDict }); // { [formId]: comment }
     }
   }, [isCreate, formsFetching, formsFetched, formsData]);
 
@@ -446,14 +501,13 @@ function PerAssessment (props) {
                           <TabContent>
                             <PerForm
                               formId={form.id}
+                              handleChange={handlePerFormInputChange}
                               isCreate={isCreate}
                               isEpi={overviewState.is_epi}
                               editable={editable}
                               formsState={formsState}
                               formDataState={formDataState}
-                              setFormDataState={setFormDataState}
                               formCommentsState={formCommentsState}
-                              setFormCommentsState={setFormCommentsState}
                               errors={errors}
                             />
                           </TabContent>

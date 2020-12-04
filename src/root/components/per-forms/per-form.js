@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
@@ -21,52 +21,40 @@ function PerForm (props) {
   const { strings } = useContext(LanguageContext);
 
   const [title, setTitle] = useState(strings.perdocumentArea);
+
+  const [groupedQuestionList, setGroupedQuestionList] = useState();
   const {
     formId,
     formsState,
     formDataState,
-    setFormDataState,
     formCommentsState,
-    setFormCommentsState,
+    handleChange,
     isEpi,
-    editable
+    editable,
+    groupedPerQuestions
   } = props;
 
-  function handleChange (e, question, isRadio, isFormVal = false) {
-    if (isFormVal) {
-      setFormCommentsState({
-        ...formCommentsState,
-        [formId]: e.target.value
-      });
-    } else {
-      let modifiedState = formDataState;
-
-      if (isRadio) {
-        modifiedState[formId][question.id].selected_answer = e.target.value;
-      } else {
-        modifiedState[formId][question.id].notes = e.target.value;
-      }
-      // need to ...spread, otherwise not updating
-      setFormDataState({...modifiedState});
-    }
-  }
 
   useEffect(() => {
     if (formId && formsState) {
       setTitle(`Area ${formsState[formId].area.area_num} - ${formsState[formId].area.title}`);
-    }
-  }, [formId, formsState]);
 
-  // Not useMemo because object !== object, it triggers a re-render (props.groupedPerQuestions)
-  let groupedQuestionList = (props.groupedPerQuestions && formsState)
-    ? props.groupedPerQuestions[formsState[formId].area.area_num]
-    : null;
-  // If EPI benchmark is false remove the EPI questions
-  if (groupedQuestionList && isEpi === 'false') {
-    for (const [compNum, questions] of Object.entries(groupedQuestionList)) {
-      groupedQuestionList[compNum] = questions.filter(question => !question.is_epi);
     }
-  }
+  }, [formId, formsState, groupedPerQuestions]);
+
+  useEffect(() => {
+    if (formsState && groupedPerQuestions) {
+      let perQuestions = groupedPerQuestions[formsState[formId].area.area_num];
+
+      // If EPI benchmark is false remove the EPI questions
+      if (isEpi === 'false') {
+        for (const [compNum, questions] of Object.entries(perQuestions)) {
+          perQuestions[compNum] = questions.filter(question => !question.is_epi);
+        }
+      }
+      setGroupedQuestionList(perQuestions);
+    }
+  }, [formsState, groupedPerQuestions]);
 
   return (
     <Fold title={title} foldWrapperClass='fold--main' foldTitleClass='margin-reset'>
@@ -76,7 +64,7 @@ function PerForm (props) {
         name={`comment`}
         id={`comment`}
         value={formCommentsState ? formCommentsState[formId] : null}
-        onChange={(e) => handleChange(e, null, false, true)}
+        onChange={handleChange(formId, null, false, true)}
         // description=''
         disabled={!editable}
       />
@@ -107,7 +95,7 @@ function PerForm (props) {
                 disabled: !editable
               }))}
               selectedOption={formDataState[formId][question.id]?.selected_answer}
-              onChange={(e) => handleChange(e, question, true)}
+              onChange={handleChange(formId, question, true)}
             >
             </FormRadioGroup>
             <FormInput
@@ -117,7 +105,7 @@ function PerForm (props) {
               id={`question${question.id}-note`}
               classWrapper=''
               value={formDataState[formId][question.id]?.notes}
-              onChange={(e) => handleChange(e, question, false)}
+              onChange={handleChange(formId, question, false)}
               // description=''
               disabled={!editable}
             >
