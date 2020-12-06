@@ -266,11 +266,7 @@
   font-weight: $base-font-medium;
   margin-left: auto;
   position: relative;
-  top: -($spacing * 1.5);
-
-  @include media(medium) {
-    top: -($spacing * 4.5);
-  }
+  top: 0;
 }
 
 .personnel__table__date {

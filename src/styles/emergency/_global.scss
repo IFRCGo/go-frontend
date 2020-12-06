@@ -146,6 +146,10 @@
   }
 }
 
+.contacts__table__wrap {
+  border-bottom: 1px solid $base-border-color;
+}
+
 .contacts {
   .table {
     border-spacing: 0 $global-spacing;
