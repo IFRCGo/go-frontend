@@ -867,6 +867,19 @@ class Emergency extends React.Component {
         : Array.isArray(report.contacts) && report.contacts.length
           ? report.contacts
           : null;
+    const contactsByType = {
+      ifrc: [],
+      ns: []
+    };
+    if (contacts) {
+      contacts.forEach(contact => {
+        if (contact.email.endsWith('ifrc.org')) {
+          contactsByType.ifrc.push(contact);
+        } else {
+          contactsByType.ns.push(contact);
+        }
+      });
+    }
     const subscribeButton = () =>
       this.state.subscribed ? (
         <React.Fragment>
