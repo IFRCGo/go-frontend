@@ -1267,6 +1267,8 @@ export default {
   emergencyAppealDocHeaderCode: 'Code',
   emergencyAppealDocHeaderName: 'Name',
   emergencyResponseDocumentsTitle: 'Response Documents',
+  emergencyContactsIFRC: 'IFRC',
+  emergencyContactsNS: 'National Societies',
   emergencyContactsTitle: 'Contacts',
   emergencyContactTitle: 'Contact',
   emergencyContactEmptyMessage: 'No current contacts',

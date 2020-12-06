@@ -13,6 +13,7 @@ import { api, environment } from '#config';
 import NewGlobalLoading from '#components/NewGlobalLoading';
 import Translate from '#components/Translate';
 import BreadCrumb from '#components/breadcrumb';
+import ContactRow from '#components/contact-row';
 import { withLanguage } from '#root/languageContext';
 import { resolveToString } from '#utils/lang';
 import {
@@ -1122,45 +1123,48 @@ class Emergency extends React.Component {
                   {contacts && contacts.length ? (
                     <div className='container-lg margin-2-v'>
                       <Fold id="contacts" title={strings.emergencyContactsTitle} foldWrapperClass="contacts fold--main" foldContainerClass='container--padding-reset'>
-                        <table className="table table--border-bottom">
-                          <thead className="visually-hidden">
-                            <tr>
-                              <th>{strings.emergencyContactsTableHeaderName}</th>
-                              <th>{strings.emergencyContactsTableHeaderTitle}</th>
-                              <th>{strings.emergencyContactsTableHeaderType}</th>
-                              <th>{strings.emergencyContactsTableHeaderContact}</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {contacts.map((o) => (
-                              <tr key={o.id}>
-                                <td><span className='base-font-semi-bold'>IFRC</span></td>
-                                <td><span className='base-font-semi-bold'>{o.name}</span></td>
-                                <td>{o.title}</td>
-                                <td>{separate(o.ctype)}</td>
-                                <td>
-                                  {o.email.indexOf('@') !== -1 ? (
-                                    <a
-                                      className="link-underline"
-                                      href={`mailto:${o.email}`}
-                                      title={strings.emergencyContactTitle}
-                                    >
-                                      {o.email}
-                                    </a>
-                                  ) : (
-                                    <a
-                                      className="link-underline"
-                                      href={`tel:${o.email}`}
-                                      title={strings.emergencyContactTitle}
-                                    >
-                                      {o.email}
-                                    </a>
-                                  )}
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
+                        <div className='contacts__table__wrap'>
+                          {contactsByType.ifrc.length > 0 ? (
+                            <div>
+                              <div>{strings.emergencyContactsIFRC}</div>
+                              <table className='table'>
+                                <thead className="visually-hidden">
+                                  <tr>
+                                    <th>{strings.emergencyContactsTableHeaderName}</th>
+                                    <th>{strings.emergencyContactsTableHeaderTitle}</th>
+                                    <th>{strings.emergencyContactsTableHeaderType}</th>
+                                    <th>{strings.emergencyContactsTableHeaderContact}</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {contactsByType.ifrc.map((o) => (
+                                    <ContactRow contact={o} key={o.id} />
+                                  ))}
+                                </tbody>                            
+                              </table>
+                            </div>
+                          ) : null}
+                          {contactsByType.ns.length > 0 ? (
+                          <div>
+                            <div>{strings.emergencyContactsNS}</div>
+                            <table className="table">
+                              <thead className="visually-hidden">
+                                <tr>
+                                  <th>{strings.emergencyContactsTableHeaderName}</th>
+                                  <th>{strings.emergencyContactsTableHeaderTitle}</th>
+                                  <th>{strings.emergencyContactsTableHeaderType}</th>
+                                  <th>{strings.emergencyContactsTableHeaderContact}</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {contactsByType.ns.map((o) => (
+                                  <ContactRow contact={o} />
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                          ): null}
+                        </div>
                       </Fold>
                     </div>
                   ) : (
