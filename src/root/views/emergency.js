@@ -729,22 +729,40 @@ class Emergency extends React.Component {
   }
 
   renderAppealReports (className, reports) {
+    const { strings } = this.props;
     return (
-      <ul className={className}>
+      <table className="table table--border-bottom">
+        <thead>
+          <tr>
+            <th>{strings.emergencyAppealDocHeaderDate}</th>
+            <th>{strings.emergencyAppealDocHeaderCode}</th>
+            <th>{strings.emergencyAppealDocHeaderName}</th>
+          </tr>
+        </thead>
+        <tbody>
         {reports.map((o) => {
           let href = o['document'] || o['document_url'] || null;
           if (!href) {
             return null;
           }
           return (
-            <li key={o.id} className='col col-6-xs'>
-              <a className="link-underline" href={href} target="_blank">
-                {o.name}, {isoDate(o.created_at)}
-              </a>
-            </li>
+            <tr key={o.id}>
+              <td>
+                { isoDate(o.created_at) }
+              </td>
+              <td>
+                {o.appeal_code}
+              </td>
+              <td>
+                <a className="link-underline" href={href} target="_blank">
+                  {o.name}
+                </a>
+              </td>
+            </tr>
           );
         })}
-      </ul>
+        </tbody>
+      </table>
     );
   }
 
@@ -1194,11 +1212,6 @@ class Emergency extends React.Component {
                       id="personnel"
                       emergency={this.props.match.params.id}
                     />
-                    <div className='personnel__table__daterange'>
-                      <div className='personnel__table__date'>05/05/2020</div>
-                      <div className='personnel__table__date'>07/05/2020</div>
-                      <div className='personnel__table__date'>09/05/2020</div>
-                    </div>
                   </TabContent>
                 </TabPanel>
 

@@ -236,6 +236,11 @@ class PersonnelTable extends SFPComponent {
             onPageChange={this.handlePageChange.bind(this, 'table')}
             paginate={this.props.noPaginate}
           />
+          <div className='personnel__table__daterange'>
+            <div className='personnel__table__date'>05/05/2020</div>
+            <div className='personnel__table__date'>07/05/2020</div>
+            <div className='personnel__table__date'>09/05/2020</div>
+          </div>
         </Fold>
       );
     }
