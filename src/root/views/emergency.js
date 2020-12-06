@@ -1103,13 +1103,14 @@ class Emergency extends React.Component {
                           <tbody>
                             {contacts.map((o) => (
                               <tr key={o.id}>
-                                <td>{o.name}</td>
+                                <td><span className='base-font-semi-bold'>IFRC</span></td>
+                                <td><span className='base-font-semi-bold'>{o.name}</span></td>
                                 <td>{o.title}</td>
                                 <td>{separate(o.ctype)}</td>
                                 <td>
                                   {o.email.indexOf('@') !== -1 ? (
                                     <a
-                                      className="button button--small button--grey-cement-bounded"
+                                      className="link-underline"
                                       href={`mailto:${o.email}`}
                                       title={strings.emergencyContactTitle}
                                     >
@@ -1117,7 +1118,7 @@ class Emergency extends React.Component {
                                     </a>
                                   ) : (
                                     <a
-                                      className="button button--small button--grey-cement-bounded"
+                                      className="link-underline"
                                       href={`tel:${o.email}`}
                                       title={strings.emergencyContactTitle}
                                     >

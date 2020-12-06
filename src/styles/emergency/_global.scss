@@ -152,13 +152,6 @@
     border-collapse: initial;
   }
 
-  td {
-
-    &:first-child {
-      font-weight: $base-font-bold;
-    }
-  }
-
   tr td:first-of-type {
     border-left-color: $base-border-color; 
   }
