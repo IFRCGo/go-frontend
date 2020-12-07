@@ -16,8 +16,7 @@ import { get, dateOptions, datesAgo } from '#utils/utils';
 import {
   commaSeparatedNumber as n,
   // commaSeparatedLargeNumber as bigN,
-  nope,
-  round,
+  nope
 } from '#utils/format';
 import {
   getAdmAreaById,
@@ -619,11 +618,6 @@ class AdminArea extends SFPComponent {
           <div className='inner'>
             <h1 className='inpage__title'>
               {data.name}
-              {data.inform_score ? (
-                <span className='inpage__title--inform'>
-                    <Translate stringId='countryInformScore' /> <span className='inpage__title--inform--score'>{round(data.inform_score, 1)}</span>
-                </span>
-              ) : null}
             </h1>
             { region ? (
             <div className='inpage__header-actions text-center'>

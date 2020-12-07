@@ -1,3 +1,7 @@
+### Release 4.4.7 - Hotfix
+
+ - Remove Inform Score from country page title
+
 ### Release 4.4.6 - Region page tabs
 
 ### Frontend
