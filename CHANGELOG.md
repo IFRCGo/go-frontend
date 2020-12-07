@@ -12,6 +12,7 @@
  - Allow Region additional tab name to be renamable in Admin
  - Allow Country additional tab name to be renamable in Admin
  - Add fields to Country in the Admin for NS Indicators and WASH indicators
+ - Schema changes to Surge Alerts and Deployments to support Molnix integration.
 
 ### Release 4.4.5 - Remove Survey Banner
 
