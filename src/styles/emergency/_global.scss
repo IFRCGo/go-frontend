@@ -147,18 +147,36 @@
 }
 
 .contacts__table__wrap {
+  display: flex;
   border-bottom: 1px solid $base-border-color;
 }
 
+.contacts__table__header {
+  font-weight: $base-font-semi-bold;
+  text-transform: uppercase;
+  padding: ($spacing * 1.2);
+  width: 200px;
+}
+
 .contacts {
+  .fold__header {
+    margin-bottom: 0;
+  }
+
   .table {
-    border-spacing: 0 $global-spacing;
+    table-layout: fixed;
     border-collapse: initial;
+    margin-bottom: 0;
   }
 
   tr td:first-of-type {
     border-left-color: $base-border-color; 
   }
+
+  tr td:nth-of-type(2) {
+    font-weight: $base-font-regular;
+  }
+
 
   tr td:last-of-type {
     border-right-color: $base-border-color; 
