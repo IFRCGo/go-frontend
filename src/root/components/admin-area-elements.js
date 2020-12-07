@@ -112,17 +112,17 @@ class _Links extends React.Component {
     if (data.links && !data.links.length) return null;
     return (
       <Fold id='links' title={strings.linksTitle} foldWrapperClass='links' foldTitleClass='margin-reset'>
-        <ul className='links-list row'>
+        <ul className='links-list row-lg'>
           {
             data.links.map(function (o) {
               // If data.links[i] has property show_in_go, then turn it into a link that will
               // send the object data back to the parent
               if ('onClick' in o) {
-                return <li key={o.id} onClick={() => o.onClick(o)} className='col'><a>{o.title}
+                return <li key={o.id} onClick={() => o.onClick(o)} className='col-lg'><a>{o.title}
                   <span className='collecticon-chevron-right icon-links-list'></span>
                 </a></li>;
               } else {
-                return <li key={o.id} className='col'><a href={o.url}>{o.title}
+                return <li key={o.id} className='col-lg'><a href={o.url}>{o.title}
                   <span className='collecticon-arrow-right-diagonal icon-links-list'></span>
                 </a></li>;
               }
