@@ -13,6 +13,7 @@
  - Allow Country additional tab name to be renamable in Admin
  - Add fields to Country in the Admin for NS Indicators and WASH indicators
  - Schema changes to Surge Alerts and Deployments to support Molnix integration.
+ - Fix validations of admin emails to be case insensitive: https://github.com/IFRCGo/go-frontend/issues/1645
 
 ### Release 4.4.5 - Remove Survey Banner
 
