@@ -16,7 +16,7 @@ class Preparedness extends React.Component {
     super(props);
 
     this.tabDetails = [
-      { title: context.strings.prepGlobalTrendsTab, hash: '#global-trends' },
+      { title: context.strings.prepGlobalTrendsTab, hash: '#global-summary' },
       { title: context.strings.prepGlobalPerformanceTab, hash: '#global-performance' },
       { title: context.strings.prepResourceCatalogueTab, hash: '#resources-catalogue' },
       { title: context.strings.prepOpLearningTab, hash: '#operational-learning' },
@@ -34,9 +34,9 @@ class Preparedness extends React.Component {
     };
 
     const iFrames = [
-      'https://app.powerbi.com/view?r=eyJrIjoiYzliMzU5MzAtMjQ1ZC00YzY3LTg2MTgtNTI5NTI4MDNjZDM2IiwidCI6IjIyMmM0ZDE1LTA3ZmMtNDZhNi04ZTJjLTk0NDY0OTIxNmVjZCIsImMiOjN9',
-      'https://app.powerbi.com/view?r=eyJrIjoiYzliMzU5MzAtMjQ1ZC00YzY3LTg2MTgtNTI5NTI4MDNjZDM2IiwidCI6IjIyMmM0ZDE1LTA3ZmMtNDZhNi04ZTJjLTk0NDY0OTIxNmVjZCIsImMiOjN9',
-      'https://app.powerbi.com/view?r=eyJrIjoiNzRhMWFkMmItODA1OC00NzdiLTk2NTItZDM5NjA1Y2ViOWQ1IiwidCI6IjIyMmM0ZDE1LTA3ZmMtNDZhNi04ZTJjLTk0NDY0OTIxNmVjZCIsImMiOjN9',
+      'https://app.powerbi.com/view?r=eyJrIjoiMTExYTlmZDMtMTNkZi00MmY5LTkyYTYtNTczZGU0MmQxYjE3IiwidCI6ImEyYjUzYmU1LTczNGUtNGU2Yy1hYjBkLWQxODRmNjBmZDkxNyIsImMiOjh9',
+      'https://app.powerbi.com/view?r=eyJrIjoiMDQ5YzBlODItOTQ3Yy00Y2Q2LWFjZmEtZWIxMTAwZjkxZGU2IiwidCI6ImEyYjUzYmU1LTczNGUtNGU2Yy1hYjBkLWQxODRmNjBmZDkxNyIsImMiOjh9',
+      'https://app.powerbi.com/view?r=eyJrIjoiYmQxZjFhMzItYzRlNy00ZTQzLWE5ZTEtZDZhNDliNjY4OWEwIiwidCI6ImEyYjUzYmU1LTczNGUtNGU2Yy1hYjBkLWQxODRmNjBmZDkxNyIsImMiOjh9',
       'https://app.powerbi.com/view?r=eyJrIjoiMTM4Y2ZhZGEtNGZmMS00ODZhLWFjZjQtMTE2ZTIyYTI0ODc4IiwidCI6ImEyYjUzYmU1LTczNGUtNGU2Yy1hYjBkLWQxODRmNjBmZDkxNyIsImMiOjh9&pageName=ReportSectionfa0be9512521e929ae4a'
     ];
 

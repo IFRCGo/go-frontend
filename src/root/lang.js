@@ -333,7 +333,7 @@ export default {
   activityDetailsActiveNationalCount: 'Active National Societies',
   supportingNSListProjects: '{noOfProjects} projects',
 
-  preparednessHeaderTitle: 'The PER process',
+  preparednessHeaderTitle: 'The PER approach',
   preparednessHeaderDetail: 'PER follows a cyclical process for a National Society to systematically assess, measure and analyse the strength and gaps of its response system to construct a work-plan that, when implemented, will strengthen It\'s overall response capacity.',
   preparednessMapError: 'Data not available.',
   preparednessMapDownloadTitle: 'Preparedness state',
@@ -343,7 +343,7 @@ export default {
   preparednessWorkPlan: 'Preparedness Work Plan',
   preparednessPhaseOutcomes: 'Preparedness Phase Outcomes',
 
-  prepGlobalTrendsTab: 'Global Trends',
+  prepGlobalTrendsTab: 'Global Summary',
   prepGlobalPerformanceTab: 'Global Performance',
   prepResourceCatalogueTab: 'Catalogue of Resources',
   prepOpLearningTab: 'Operational Learning',
