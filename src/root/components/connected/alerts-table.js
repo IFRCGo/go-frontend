@@ -54,7 +54,7 @@ class AlertsTable extends SFPComponent {
     4: strings.alertTableAlertTypeHeops,
     5: strings.alertTableAlertTypeSurge,
     6: strings.alertTableAlertTypeRapidResponse,
-  })
+  });
 
   getAlertCategories = (strings) => ({
     0: strings.alertTableCategoryInfo,
@@ -62,19 +62,19 @@ class AlertsTable extends SFPComponent {
     2: strings.alertTableCategoryAlert,
     3: strings.alertTableCategoryShelter,
     4: strings.alertTableCategoryStandDown,
-  })
+  });
 
-  getTypeOptions = (strings) => ([
+  getTypeOptions = (strings) => (
     [{value: 'all', label: strings.alertsTableAllLabel}].concat(Object.keys(this.getAlertTypes(strings)).map(d => ({
       label: this.getAlertTypes(strings)[d], value: d.toString()
     })))
-  ])
+  );
 
-  getCategoryOptions = (strings) => ([
+  getCategoryOptions = (strings) => (
     [{value: 'all', label: strings.alertsTableAllLabel}].concat(Object.keys(this.getAlertCategories(strings)).map(d => ({
       label: this.getAlertCategories(strings)[d], value: d.toString()
     })))
-  ])
+  );
 
   componentDidMount () {
     this.requestResults(this.props);
@@ -143,7 +143,7 @@ class AlertsTable extends SFPComponent {
                </p>
              </Fold>;
     }
-
+   
     const headings = [
       {
         id: 'date',
@@ -164,10 +164,11 @@ class AlertsTable extends SFPComponent {
     const rows = data.results.reduce((acc, rowData, idx, all) => {
       const date = DateTime.fromISO(rowData.created_at);
       const event = get(rowData, 'event.id');
+      const eventTitle = rowData.operation || get(rowData, 'event.name');
       acc.push({
         id: rowData.id,
         date: date.toISODate(),
-        emergency: event ? <Link className='link--table' to={`/emergencies/${event}`} title={strings.alertTableViewEmergency}>{rowData.operation}</Link> : rowData.operation || nope,
+        emergency: event ? <Link className='link--table' to={`/emergencies/${event}`} title={strings.alertTableViewEmergency}>{eventTitle}</Link> : rowData.operation || nope,
 
         msg: isLoggedIn(this.props.user) ? <Expandable limit={128} text={rowData.message} /> : privateSurgeAlert,
         type: this.getAlertTypes(strings)[rowData.atype],

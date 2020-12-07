@@ -1,9 +1,8 @@
 import { fetchJSON } from '#utils/network';
 import { stringify as buildAPIQS } from 'qs';
 
-import getCode from '#utils/fdrs-codes';
 import { fdrsAuth } from '#root/config';
-import { countrySelector } from '#selectors';
+import { countrySelector, fdrsByIso } from '#selectors';
 
 // Properties to query from the FDRS API
 const fdrsProps = [
@@ -32,7 +31,7 @@ export const GET_FDRS = 'GET_FDRS';
 export function getFdrs (countryId) {
   return (dispatch, getState) => {
     const { iso } = countrySelector(getState(), countryId) || {};
-    const fdrsCode = getCode(iso);
+    const fdrsCode = fdrsByIso(getState(), iso);
     if (!fdrsCode) {
       return {
         type: 'GET_FDRS_FAILED',

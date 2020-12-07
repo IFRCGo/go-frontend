@@ -852,7 +852,7 @@ class Emergency extends React.Component {
                     href={url.resolve(api, `api/event/${data.id}/change/`)}
                     className="button button--xsmall button--primary-bounded button button--edit-action"
                   >
-                    <span className='collecticon-pencil margin-half-r'></span>
+                    <span className='f-icon-pencil margin-half-r'></span>
                     <Translate
                       stringId="emergencyActionEditEventLabel"
                     />

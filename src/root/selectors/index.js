@@ -117,6 +117,18 @@ export const countriesGeojsonSelector = (state) => {
   }
 };
 
+export const fdrsByIso = (state, iso) => {
+  if (state.allCountries && state.allCountries.data.results) {
+    const byIso = countriesByIso(state);
+    const thisCountry = byIso[iso][0];
+    if (thisCountry) {
+      return thisCountry.fdrs;
+    } else {
+      return null;
+    }
+  }
+};
+
 export const regionsByIdSelector = (state) => {
   if (state.allRegions && state.allRegions.data.results) {
     return _groupBy(state.allRegions.data.results, 'id');

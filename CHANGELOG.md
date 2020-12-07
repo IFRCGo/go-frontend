@@ -1,3 +1,20 @@
+### Release 4.4.6 - Region page tabs
+
+### Frontend
+
+ - Re-organize region page as per https://github.com/IFRCGo/go-frontend/issues/1621
+ - Allow embeddable Iframes in Additional Links
+
+### Backend
+
+ - Ingest country FDRS codes into database: https://github.com/IFRCGo/go-frontend/issues/1523
+ - Admin changes to add additional snippets to Region
+ - Allow Region additional tab name to be renamable in Admin
+ - Allow Country additional tab name to be renamable in Admin
+ - Add fields to Country in the Admin for NS Indicators and WASH indicators
+ - Schema changes to Surge Alerts and Deployments to support Molnix integration.
+ - Fix validations of admin emails to be case insensitive: https://github.com/IFRCGo/go-frontend/issues/1645
+
 ### Release 4.4.5 - Remove Survey Banner
 
  - Add Translations video embed to the Resources page: https://github.com/IFRCGo/go-frontend/issues/1662

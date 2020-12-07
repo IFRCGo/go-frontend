@@ -150,6 +150,7 @@ class AdminArea extends SFPComponent {
   }
 
   getTabDetails = (strings) => {
+    const additionalTabName = get(this.props.adminArea, 'data.additional_tab_name') || strings.countryAdditionalInfoTab;
     const tabDetails = [
       {
         title: strings.countryOperationsTab,
@@ -170,7 +171,7 @@ class AdminArea extends SFPComponent {
         hash: '#preparedness'
       },
       {
-        title: strings.countryAdditionalInfoTab,
+        title: additionalTabName,
         hash: '#additional'
       },
     ];
@@ -606,7 +607,7 @@ class AdminArea extends SFPComponent {
                     href={url.resolve(api, `api/country/${data.id}/change/`)}
                     className='button button--xsmall button--primary-bounded button--edit-action'
                   >
-                    <span className='collecticon-pencil margin-half-r'></span>
+                    <span className='f-icon-pencil margin-half-r'></span>
                     <Translate stringId='countryEditCountry' />
                   </a>
                 </div>
@@ -747,7 +748,7 @@ class AdminArea extends SFPComponent {
                 <TabPanel>
                   <div className='container-lg'>
                     <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ strings.noDataMessage } title={strings.regionGraphiccs}>
-                      <Snippets data={this.props.snippets} />
+                      <Snippets data={this.props.snippets} hideHeader={true} />
                     </TabContent>
                     <TabContent showError={true} isError={!get(data, 'contacts.length')} errorMessage={ strings.noDataMessage } title={strings.regionContacts}>
                       <Contacts data={data} />

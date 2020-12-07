@@ -100,17 +100,58 @@
 }
 
 .links-list {
+  @include box__global;
+  padding: $spacing-2 $spacing-half;
+  position: relative;
   list-style: none;
-  @include column(12/12);
+
+  @include media(xsmall) {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
   li {
-    @include column(12/12);
-    @include media(small-up) {
-      @include column(6/12);
+    display: block;
+
+    @include media(xsmall) {
+      width: 50%;
     }
-    @include media(medium-up) {
-      @include column(3/12);
+
+    @include media(medium) {
+      width: 33.33%;  
     }
   }
+
+  a {
+    font-weight: 500;
+    display: block;
+    margin: 0 0 $spacing 0;
+  }
+}
+
+li.links-list-design {
+  position: absolute;
+  top: $spacing-2;
+  bottom: $spacing-2;
+  width: 1px;
+  padding: 0;
+  background-color: $base-border-color;
+  left: 33.33%;
+  display: none;
+
+  @include media(medium) {
+    display: block;
+  }
+}
+
+li.links-list-design--2 {
+  left: 66.66%;
+}
+
+.icon-links-list {
+  font-size: 0.5rem;
+  font-weight: $base-font-bold;
+  padding: 0 0 0 $spacing-half;
 }
 
 .fold__header__block {
