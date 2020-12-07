@@ -1,44 +1,19 @@
 import React from 'react';
 import App from './app';
 import PreparednessHeader from '#components/preparedness/preparedness-header';
-import PerMap from '#components/map/per-map';
 import { connect } from 'react-redux';
-import {
-  getCollaboratingPerCountry,
-  getPerEngagedNsPercentage,
-  getPerGlobalPreparedness,
-  getPerNsPhase,
-  getPerOverviewForm,
-  getPerWorkPlan,
-  getPerMission
-} from '#actions';
-import ContactPer from '#components/preparedness/contact-per';
 import BreadCrumb from '#components/breadcrumb';
 import { Helmet } from 'react-helmet';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import TabContent from '#components/tab-content';
 import { PropTypes as T } from 'prop-types';
 import { environment } from '#config';
-import { getCountryMeta } from '#utils/get-country-meta';
-import NationalSocietiesEngagedPer from '#components/preparedness/national-societies-engaged-per';
-import GlobalPreparednessHighlights from '#components/preparedness/global-preparedness-highlights';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
-import { countriesSelector } from '#selectors';
-// import _groupBy from 'lodash.groupby';
 
 class Preparedness extends React.Component {
   constructor (props, context) {
     super(props);
-    this.state = {
-      geoJsonFinal: null,
-      preparednessGlobalHighlights: null,
-      topPrioritizedComponents: {},
-      perPerMission: false
-    };
-    this.geoJsonBuilt = false;
-    this.collaboratingPerCountryBuilt = false;
-    this.perNsPhaseBuilt = false;
 
     this.tabDetails = [
       { title: context.strings.prepGlobalTrendsTab, hash: '#global-trends' },
@@ -47,103 +22,7 @@ class Preparedness extends React.Component {
       { title: context.strings.prepOpLearningTab, hash: '#operational-learning' },
     ];
   }
-
-  componentDidMount () {
-    this.props._getCollaboratingPerCountry();
-    this.props._getPerEngagedNsPercentage();
-    this.props._getPerGlobalPreparedness();
-    this.props._getPerNsPhase();
-    this.props._getPerOverviewForm(null, null);
-    this.props._getPerWorkPlan(null);
-    this.props._getPerMission(null);
-  }
-
-  // eslint-disable-next-line camelcase
-  UNSAFE_componentWillReceiveProps (nextProps) {
-    if (nextProps.collaboratingPerCountry.fetched && !this.collaboratingPerCountryBuilt) {
-      const geoJson = {
-        type: 'FeatureCollection',
-        features: []
-      };
-
-      nextProps.collaboratingPerCountry.data.results.map((perForm) => {
-        if (perForm.country) {
-          let countryMeta = getCountryMeta(perForm.country.id, this.props.countries);
-          perForm.country.iso = countryMeta?.iso;
-          let countryCentroid = countryMeta?.centroid?.coordinates || [0, 0];
-          perForm.country.centroid = countryCentroid;
-
-          geoJson.features.push({
-            geometry: {
-              type: 'Point',
-              coordinates: countryCentroid
-            },
-            properties: perForm
-          });
-        } else {
-          console.error('Country details are missing for perform');
-        }
-
-        return perForm;
-      });
-      this.setState({geoJsonFinal: {error: false, fetched: true, fetching: false, receivedAt: false, data: {geoJSON: geoJson}}});
-      this.collaboratingPerCountryBuilt = true;
-    }
-
-    if (nextProps.getPerNsPhase.fetched && this.collaboratingPerCountryBuilt && !this.geoJsonBuilt && this.state.geoJsonFinal !== null) {
-      const builtGeoJson = this.state.geoJsonFinal;
-
-      builtGeoJson.data.geoJSON.features.map((mapObject) => {
-        if (typeof nextProps.getPerNsPhase.data.results !== 'undefined') {
-          const phaseObjects = nextProps.getPerNsPhase.data.results.filter((phaseObject) => phaseObject.country === mapObject.properties.country.id);
-          const phaseObject = phaseObjects.length > 0 ? phaseObjects[0] : {id: -1, country: -1, phase: -1, updated_at: -1};
-          mapObject.properties.phase = phaseObject;
-        }
-        return mapObject;
-      });
-      this.perNsPhaseBuilt = true;
-    }
-
-    if (this.collaboratingPerCountryBuilt && this.perNsPhaseBuilt && !this.geoJsonBuilt && nextProps.perOverviewForm.fetched) {
-      const builtGeoJson = JSON.parse(JSON.stringify(this.state.geoJsonFinal));
-      builtGeoJson.data.geoJSON.features.map((dataPoint) => {
-        nextProps.perOverviewForm.data.results.forEach((overviewForm) => {
-          if (dataPoint.properties.country.id === overviewForm.country.id) {
-            dataPoint.properties.overviewData = overviewForm;
-            return false;
-          }
-        });
-        return dataPoint;
-      });
-      this.setState({geoJsonFinal: builtGeoJson});
-      this.geoJsonBuilt = true;
-    }
-
-    if (!this.props.perWorkPlan.fetched && nextProps.perWorkPlan.fetched && !(typeof nextProps.perWorkPlan.error !== 'undefined' && nextProps.perWorkPlan.error !== null)) {
-      const matchingWorkPlans = {};
-      nextProps.perWorkPlan.data.results.forEach((perWorkPlan) => {
-        if (perWorkPlan.prioritization === 2) {
-          const perWorkPlanId = perWorkPlan.components.replace(/ /g, '_').replace(/,/g, '');
-          if (typeof matchingWorkPlans[perWorkPlanId] === 'undefined') {
-            matchingWorkPlans[perWorkPlanId] = 1;
-          } else {
-            const increasedCounter = this.state.topPrioritizedComponents[perWorkPlanId] + 1;
-            matchingWorkPlans[perWorkPlanId] = increasedCounter;
-          }
-        }
-        this.setState({topPrioritizedComponents: matchingWorkPlans});
-      });
-    }
-
-    if (this.props.getPerMission.fetched === false && nextProps.getPerMission.fetched === true) {
-      this.setState({perPerMission: this.isPerPermission(nextProps)});
-    }
-  }
-
-  isPerPermission (props) {
-    return (typeof props.user.data.username !== 'undefined' && props.user.data.username !== null) &&
-      (typeof props.getPerMission !== 'undefined' && props.getPerMission.fetched && props.getPerMission.data.count > 0);
-  }
+  
 
   render () {
     const { strings } = this.context;
@@ -154,9 +33,13 @@ class Preparedness extends React.Component {
       this.props.history.replace(`${url}${tabHashArray[index]}`);
     };
 
-    const nsEngagedHasData = this.props.getPerEngagedNsPercentage.fetched && typeof this.props.getPerEngagedNsPercentage.data.results !== 'undefined'
-      ? this.props.getPerEngagedNsPercentage.data.results.filter((engaged) => engaged.forms_sent !== 0).length > 0
-      : false;
+    const iFrames = [
+      'https://app.powerbi.com/view?r=eyJrIjoiYzliMzU5MzAtMjQ1ZC00YzY3LTg2MTgtNTI5NTI4MDNjZDM2IiwidCI6IjIyMmM0ZDE1LTA3ZmMtNDZhNi04ZTJjLTk0NDY0OTIxNmVjZCIsImMiOjN9',
+      'https://app.powerbi.com/view?r=eyJrIjoiYzliMzU5MzAtMjQ1ZC00YzY3LTg2MTgtNTI5NTI4MDNjZDM2IiwidCI6IjIyMmM0ZDE1LTA3ZmMtNDZhNi04ZTJjLTk0NDY0OTIxNmVjZCIsImMiOjN9',
+      'https://app.powerbi.com/view?r=eyJrIjoiNzRhMWFkMmItODA1OC00NzdiLTk2NTItZDM5NjA1Y2ViOWQ1IiwidCI6IjIyMmM0ZDE1LTA3ZmMtNDZhNi04ZTJjLTk0NDY0OTIxNmVjZCIsImMiOjN9',
+      'https://app.powerbi.com/view?r=eyJrIjoiMTM4Y2ZhZGEtNGZmMS00ODZhLWFjZjQtMTE2ZTIyYTI0ODc4IiwidCI6ImEyYjUzYmU1LTczNGUtNGU2Yy1hYjBkLWQxODRmNjBmZDkxNyIsImMiOjh9&pageName=ReportSectionfa0be9512521e929ae4a'
+    ];
+
     return (
       <App className='page--homepage'>
         <section className='inpage'>
@@ -173,7 +56,7 @@ class Preparedness extends React.Component {
                 <h1 className='inpage__title'>
                   <Translate stringId='preparednessHeading' />
                 </h1>
-                <p className='inpage__introduction container-sm'>
+                <p className='inpage__introduction container-lg'>
                   <Translate stringId='preparednessDescription' />
                 </p>
               </div>
@@ -199,28 +82,52 @@ class Preparedness extends React.Component {
                     <TabPanel title={strings.prepGlobalTrendsTab}>
                       <TabContent>
                       <div className='container-lg'>
-                        Global Trends
+                        <iframe
+                          src={iFrames[0]}
+                          title={strings.prepGlobalTrendsTab}
+                          frameBorder='0'
+                          width='100%'
+                          height='800px'
+                        />
                       </div>
                       </TabContent>
                     </TabPanel>
                     <TabPanel title={strings.prepGlobalPerformanceTab}>
                       <TabContent>
                       <div className='container-lg'>
-                        Global Performance
+                        <iframe
+                          src={iFrames[1]}
+                          title={strings.prepGlobalPerformanceTab}
+                          frameBorder='0'
+                          width='100%'
+                          height='800px'
+                        />
                       </div>
                       </TabContent>
                     </TabPanel>
                     <TabPanel title={strings.prepResourceCatalogueTab}>
                       <TabContent>
                         <div className='container-lg'>
-                          Catalogue of Resources
+                          <iframe
+                            src={iFrames[2]}
+                            title={strings.prepResourceCatalogueTab}
+                            frameBorder='0'
+                            width='100%'
+                            height='800px'
+                          />
                         </div>
                       </TabContent>
                     </TabPanel>
                     <TabPanel title={strings.prepOpLearningTab}>
                       <TabContent>
                         <div className='container-lg'>
-                          Operational Learning
+                          <iframe
+                            src={iFrames[3]}
+                            title={strings.prepOpLearningTab}
+                            frameBorder='0'
+                            width='100%'
+                            height='800px'
+                          />
                         </div>
                       </TabContent>
                     </TabPanel>
@@ -234,50 +141,15 @@ class Preparedness extends React.Component {
   }
 }
 
-// /////////////////////////////////////////////////////////////////// //
-// Connect functions
-
 if (environment !== 'production') {
   Preparedness.propTypes = {
-    _getCollaboratingPerCountry: T.func,
-    _getPerEngagedNsPercentage: T.func,
-    _getPerGlobalPreparedness: T.func,
-    _getPerNsPhase: T.func,
-    _getPerOverviewForm: T.func,
-    _getPerWorkPlan: T.func,
-    getPerEngagedNsPercentage: T.object,
-    getPerNsPhase: T.object,
-    collaboratingPerCountry: T.object,
-    getPerGlobalPreparedness: T.object,
-    perWorkPlan: T.object,
-    perOverviewForm: T.object,
-    _getPerMission: T.func,
     user: T.object,
-    getPerMission: T.object
   };
 }
 
 const selector = (state) => ({
-  collaboratingPerCountry: state.perForm.getCollaboratingPerCountry,
-  getPerEngagedNsPercentage: state.perForm.getPerEngagedNsPercentage,
-  getPerGlobalPreparedness: state.perForm.getPerGlobalPreparedness,
-  getPerNsPhase: state.perForm.getPerNsPhase,
-  perOverviewForm: state.perForm.getPerOverviewForm,
-  perWorkPlan: state.perForm.getPerWorkPlan,
-  getPerMission: state.perForm.getPerMission,
-  user: state.user,
-  countries: countriesSelector(state)
-});
-
-const dispatcher = (dispatch) => ({
-  _getCollaboratingPerCountry: () => dispatch(getCollaboratingPerCountry()),
-  _getPerEngagedNsPercentage: () => dispatch(getPerEngagedNsPercentage()),
-  _getPerGlobalPreparedness: () => dispatch(getPerGlobalPreparedness()),
-  _getPerNsPhase: () => dispatch(getPerNsPhase()),
-  _getPerOverviewForm: (...args) => dispatch(getPerOverviewForm(...args)),
-  _getPerWorkPlan: (...args) => dispatch(getPerWorkPlan(...args)),
-  _getPerMission: (...args) => dispatch(getPerMission(...args))
+  user: state.user
 });
 
 Preparedness.contextType = LanguageContext;
-export default connect(selector, dispatcher)(Preparedness);
+export default connect(selector)(Preparedness);
