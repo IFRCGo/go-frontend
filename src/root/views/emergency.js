@@ -51,7 +51,7 @@ import EruTable from '#components/connected/eru-table';
 import EmergencyMap from '#components/map/emergency-map';
 import { epiSources } from '#utils/field-report-constants';
 import ProjectFormModal from '#views/ThreeW/project-form-modal';
-import { regionsByIdSelector } from '../selectors';
+import { countriesGeojsonSelector, regionsByIdSelector } from '../selectors';
 
 class Emergency extends React.Component {
   constructor (props) {
@@ -772,6 +772,7 @@ class Emergency extends React.Component {
             name={data.name}
             date={data.updated_at}
             disasterTypeCode={data.dtype}
+            countriesGeojson={this.props.countriesGeojson}
           />
         );
       } else {
@@ -851,7 +852,7 @@ class Emergency extends React.Component {
                     href={url.resolve(api, `api/event/${data.id}/change/`)}
                     className="button button--xsmall button--primary-bounded button button--edit-action"
                   >
-                    <span className='collecticon-pencil margin-half-r'></span>
+                    <span className='f-icon-pencil margin-half-r'></span>
                     <Translate
                       stringId="emergencyActionEditEventLabel"
                     />
@@ -1153,6 +1154,7 @@ const selector = (state, ownProps) => ({
   user: state.user,
   profile: state.profile,
   regionsById: regionsByIdSelector(state),
+  countriesGeojson: countriesGeojsonSelector(state),
 });
 
 const dispatcher = (dispatch) => ({

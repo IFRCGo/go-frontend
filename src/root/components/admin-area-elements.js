@@ -39,7 +39,7 @@ class _Contacts extends React.Component {
     if (data.contacts && !data.contacts.length) return null;
     return (
       <Fold id='contacts' title={strings.contactsTitle} foldWrapperClass='contacts' foldTitleClass='margin-reset'>
-        <table className='table'>
+        <table className='table table--contacts'>
           <thead className='visually-hidden'>
             <tr>
               <th><Translate stringId='contactsHeaderName'/></th>
@@ -72,9 +72,11 @@ class _Snippets extends React.Component {
   render () {
     const { strings } = this.context;
     const { fetching, fetched, error, data } = this.props.data;
+    const title = this.props.title || strings.snippetsTitle;
+    const showHeader = this.props.hideHeader ? false : true;
     if (fetching || error || (fetched && !data.results.length)) return null;
     return (
-      <Fold id='graphics' title={strings.snippetsTitle} foldWrapperClass='additional-graphics'>
+      <Fold id='graphics' title={title} foldWrapperClass='additional-graphics' showHeader={showHeader}>
         <div className='iframe__container'>
           {data.results.map(o => o.snippet ? <div className='snippet__item' key={o.id} dangerouslySetInnerHTML={{__html: o.snippet}} />
             : o.image ? <div key={o.id} className='snippet__item snippet__image'><img src={o.image}/></div> : null
@@ -86,6 +88,23 @@ class _Snippets extends React.Component {
 }
 _Snippets.contextType = LanguageContext;
 
+class _TitledSnippets extends React.Component {
+  render () {
+    const { snippets } = this.props;
+    if (snippets.length === 0) {
+      return null;
+    }
+    return snippets.map(snippet => (
+      <Fold title={snippet.title} foldWrapperClass='additional-graphics' key={snippet.id}> 
+        <div className='iframe__container'>
+          <div className='snippet_item' key={snippet.id} dangerouslySetInnerHTML={{__html: snippet.snippet}} />
+        </div>
+      </Fold>      
+    ));
+  }
+}
+_TitledSnippets.contextType = LanguageContext;
+
 class _Links extends React.Component {
   render () {
     const { strings } = this.context;
@@ -93,8 +112,24 @@ class _Links extends React.Component {
     if (data.links && !data.links.length) return null;
     return (
       <Fold id='links' title={strings.linksTitle} foldWrapperClass='links' foldTitleClass='margin-reset'>
-        <ul className='links-list'>
-          {data.links.map(o => <li key={o.id}><a href={o.url} className='link--external'>{o.title}</a> </li>)}
+        <ul className='links-list row-lg'>
+          {
+            data.links.map(function (o) {
+              // If data.links[i] has property show_in_go, then turn it into a link that will
+              // send the object data back to the parent
+              if ('onClick' in o) {
+                return <li key={o.id} onClick={() => o.onClick(o)} className='col-lg'><a>{o.title}
+                  <span className='collecticon-chevron-right icon-links-list'></span>
+                </a></li>;
+              } else {
+                return <li key={o.id} className='col-lg'><a href={o.url}>{o.title}
+                  <span className='collecticon-arrow-right-diagonal icon-links-list'></span>
+                </a></li>;
+              }
+            })
+          }
+          <li className='links-list-design links-list-design--1' aria-hidden='true'></li>
+          <li className='links-list-design links-list-design--2' aria-hidden='true'></li>
         </ul>
       </Fold>
     );
@@ -107,9 +142,11 @@ if (environment !== 'production') {
   _Contacts.propTypes = { data: T.object };
   _Links.propTypes = { data: T.object };
   _Snippets.propTypes = { data: T.object };
+  _TitledSnippets.propTypes = { snippets: T.array };
 }
 
 export const KeyFigures = _KeyFigures;
 export const Contacts = _Contacts;
 export const Links = _Links;
 export const Snippets = _Snippets;
+export const TitledSnippets = _TitledSnippets;

@@ -1,6 +1,6 @@
 {
   "name": "go-frontend",
-  "version": "4.4.2",
+  "version": "4.4.7",
   "private": true,
   "devDependencies": {
     "@babel/core": "7.9.0",
@@ -85,6 +85,7 @@
     "ajv-keywords": "^2.1.1",
     "chroma-js": "^1.3.5",
     "classnames": "^2.2.5",
+    "collecticons-processor": "^4.1.0",
     "email-validator": "^2.0.4",
     "fast-memoize": "^2.5.2",
     "file-saver": "^2.0.2",
@@ -151,6 +152,7 @@
     "build": "node scripts/build.js",
     "build-staging": "NODE_ENV=staging node scripts/build.js",
     "build-prod": "NODE_ENV=production node scripts/build.js",
+    "collecticons": "collecticons compile src/assets/icons/collecticons/ --rescale --font-name Collecticons --font-types woff --style-formats sass --style-dest src/styles/core/ --style-name _collecticons --class-name collecticon --author-name 'IFRC' --author-url 'https://go.ifrc.org' --no-preview",
     "test": "echo 'No tests' && exit 0",
     "lint": "eslint src/ --ext .js",
     "deploy-surge": "branch=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD); branch=$(echo $branch  | tr ./ -); cp build/index.html build/200.html; surge -p build/ -d https://ifrc-go-$branch.surge.sh",

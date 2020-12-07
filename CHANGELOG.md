@@ -1,3 +1,41 @@
+### Release 4.4.7 - Hotfix
+
+ - Remove Inform Score from country page title
+
+### Release 4.4.6 - Region page tabs
+
+### Frontend
+
+ - Re-organize region page as per https://github.com/IFRCGo/go-frontend/issues/1621
+ - Allow embeddable Iframes in Additional Links
+
+### Backend
+
+ - Ingest country FDRS codes into database: https://github.com/IFRCGo/go-frontend/issues/1523
+ - Admin changes to add additional snippets to Region
+ - Allow Region additional tab name to be renamable in Admin
+ - Allow Country additional tab name to be renamable in Admin
+ - Add fields to Country in the Admin for NS Indicators and WASH indicators
+ - Schema changes to Surge Alerts and Deployments to support Molnix integration.
+ - Fix validations of admin emails to be case insensitive: https://github.com/IFRCGo/go-frontend/issues/1645
+
+### Release 4.4.5 - Remove Survey Banner
+
+ - Add Translations video embed to the Resources page: https://github.com/IFRCGo/go-frontend/issues/1662
+ - Remove (hide) the Global banner: https://github.com/IFRCGo/go-frontend/issues/1675
+
+### Release 4.4.4 - Multilingual Maps
+
+ - Implement multilingual map labels: https://github.com/IFRCGo/go-frontend/issues/1652
+ - Fix issue with countries spanning the date line: https://github.com/IFRCGo/go-frontend/issues/1629
+ - Includes hotfix to change header to point to GO survey
+
+### Release 4.4.3 - Backend Hotfix Release
+
+ - Add iso and iso3 to the recently modified Field Reports and Emergencies CSV outputs
+ - Make searches look for all languages on the Django Admin's list pages
+ - Fix mapping of WAF to SN instead of SG and removed its duplicate. Restricted the Appeals ingestion to look for record_type: 1 aka 'Country' typed records when trying to match GEC_code with iso
+
 ### Release 4.4.2 - Bugfix
 
 Use default language `en` while editing a field report, fixes #1625

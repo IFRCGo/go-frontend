@@ -6,7 +6,7 @@ import Header from '#components/header';
 import MobileHeader from '#components/mobile-header';
 import Footer from '#components/footer';
 import GlobalLoading from '#components/global-loading';
-import GlobalHeaderBanner from '#components/global-header-banner';
+// import GlobalHeaderBanner from '#components/global-header-banner';
 import SysAlerts from '#components/system-alerts';
 
 import {
@@ -30,7 +30,7 @@ function App(p) {
     <ThroughProvider>
       <GlobalLoadingContext.Provider value={contextValue}>
         <div className={c('page', p.className)}>
-          <GlobalHeaderBanner />
+          {/* <GlobalHeaderBanner /> */}
           <GlobalLoading />
           { loading > 0 && <NewGlobalLoadingParent /> }
           <Header />

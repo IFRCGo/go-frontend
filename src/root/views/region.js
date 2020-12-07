@@ -39,6 +39,7 @@ import TimelineCharts from '#components/timeline-charts';
 import KeyFiguresHeader from '#components/common/key-figures-header';
 import {
   Snippets,
+  TitledSnippets,
   KeyFigures,
   Contacts,
   Links
@@ -59,20 +60,32 @@ class AdminArea extends SFPComponent {
 
     this.state = {
       maskLayer: this.getMaskLayer(this.props.thisRegion.id),
-      fullscreen: false
+      regionAdditionalInfoTabIframe: null,
+      fullscreen: false,
+      showCountriesSidebar: false
+
     };
+
+    this.toggleCountriesSidebar = this.toggleCountriesSidebar.bind(this);
 
     this.toggleFullscreen = this.toggleFullscreen.bind(this);
     this.onFullscreenChange = this.onFullscreenChange.bind(this);
+    this.onAdditionalLinkClickAction = this.onAdditionalLinkClickAction.bind(this);
     this.TAB_DETAILS = [
       { title: context.strings.regionOperationsTab, hash: '#operations' },
       { title: context.strings.region3WTab, hash: '#3w' },
-      { title: context.strings.regionAdditionalInfoTab, hash: '#additional-info' }
+      { title: context.strings.regionProfileTab, hash: '#regional-profile' },
+      // { title: context.strings.regionPreparednessTab, hash: '#preparedness' },
+      // { title: context.strings.regionAdditionalInfoTab, hash: '#additional-info' }
     ];
+
+
 
   }
 
-
+  toggleCountriesSidebar () {
+    this.setState({showCountriesSidebar: !this.state.showCountriesSidebar});
+  }
 
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps (nextProps) {
@@ -105,6 +118,31 @@ class AdminArea extends SFPComponent {
 
   onFullscreenChange () {
     this.setState({fullscreen: isFullscreen()});
+  }
+
+  addClickHandler (data, clickHandler) {
+    if (data.links && data.links.length) {
+      data.links = data.links.map(link => {
+        if (link.show_in_go) {
+          return Object.assign({}, link, { onClick: clickHandler });
+        } else {
+          return link;
+        }
+      });
+    }
+    return data;
+  }
+
+  onAdditionalLinkClickAction (linkObject) {
+    this.setState({
+      regionAdditionalInfoTabIframe: linkObject.url
+    });
+  }
+
+  onIframeBackClick () {
+    this.setState({
+      regionAdditionalInfoTabIframe: false
+    });
   }
 
   toggleFullscreen () {
@@ -168,11 +206,29 @@ class AdminArea extends SFPComponent {
       error,
       data
     } = this.props.adminArea;
-
     const regionId = data.id;
     const { regions, thisRegion } = this.props;
 
     if (!fetched || error) return null;
+    const { strings } = this.context;
+
+    const additionalTabName = data.additional_tab_name ? data.additional_tab_name : strings.regionAdditionalInfoTab;
+    
+    const tabDetails = [...this.TAB_DETAILS];
+    // Add Preparedness Tab only if Preparedness Snippets exist
+    if (data.preparedness_snippets.length > 0) {
+      tabDetails.push({
+        title: strings.regionPreparednessTab,
+        hash: '#preparedness'
+      });
+    }
+
+    if (get(this.props.snippets, 'data.results.length') || get(this.props.keyFigures, 'data.results.length')) {
+      tabDetails.push({
+        title: additionalTabName,
+        hash: '#additional-info'
+      });
+    }
 
     const presentationClass = c({
       'presenting fold--stats': this.state.fullscreen,
@@ -184,18 +240,21 @@ class AdminArea extends SFPComponent {
     const activeOperations = get(this.props.appealStats, 'data.results.length', false);
 
     const handleTabChange = index => {
-      const tabHashArray = this.TAB_DETAILS.map(({ hash }) => hash);
+      const tabHashArray = tabDetails.map(({ hash }) => hash);
       const url = this.props.location.pathname;
       this.props.history.replace(`${url}${tabHashArray[index]}`);
     };
-    const hashes = this.TAB_DETAILS.map(t => t.hash);
+    const hashes = tabDetails.map(t => t.hash);
     const selectedIndex = hashes.indexOf(this.props.location.hash) !== -1 ? hashes.indexOf(this.props.location.hash) : 0;
-    const { strings } = this.context;
 
     const foldLink = (
       <Link className='fold__title__link' to={'/appeals/all?region=' + data.id}>{resolveToString(strings.regionAppealsTableViewAllText, { regionName: regionName })}</Link>
     );
 
+    // const tabDetails = this.TAB_DETAILS.map(d => {
+    //   d.title = d.hash === '#additional-info' ? additionalTabName : d.title;
+    //   return d;
+    // });
     return (
       <section className='inpage'>
         <Helmet>
@@ -221,14 +280,28 @@ class AdminArea extends SFPComponent {
             ) : <BlockLoading/>}
           </div>
         </section>
-
         <div className='tab__wrap tab__wrap--3W'>
+          <div className='btn-region-countries-container'>
+            <div className={`btn-region-countries-trigger link link--with-icon ${this.state.showCountriesSidebar ? 'btn-region-countries-trigger--active' : ''}`} onClick={this.toggleCountriesSidebar}>
+              <span className='btn-region-countries-icon link--with-icon-inner'>
+                <span className={this.state.showCountriesSidebar ? 'collecticon-sm-chevron-right' : 'collecticon-sm-chevron-left'}></span>
+                <span className={this.state.showCountriesSidebar ? 'collecticon-sm-chevron-right' : 'collecticon-sm-chevron-left'}></span>
+              </span>
+              <span className='link--with-icon-text'>All countries</span>
+            </div>
+
+            <CountryList
+              showCountriesSidebar={this.state.showCountriesSidebar}
+              countries={this.props.countriesByRegion[regionId]}
+              appealStats={this.props.appealStats}
+            />
+          </div>
           <Tabs
             selectedIndex={ selectedIndex }
             onSelect={index => handleTabChange(index)}
           >
             <TabList>
-              {this.TAB_DETAILS.map(tab => (
+              {tabDetails.map(tab => (
                 <Tab key={tab.title}>{tab.title}</Tab>
               ))}
             </TabList>
@@ -277,10 +350,6 @@ class AdminArea extends SFPComponent {
                         <TimelineCharts region={data.id} />
                       </div>
                     </Fold>
-                    <CountryList
-                      countries={this.props.countriesByRegion[regionId]}
-                      appealStats={this.props.appealStats}
-                    />
                     <EmergenciesTable
                       id='emergencies'
                       title={strings.regionRecentEmergencies}
@@ -290,7 +359,7 @@ class AdminArea extends SFPComponent {
                       viewAll={'/emergencies/all?region=' + data.id}
                       viewAllText={resolveToString(strings.regionEmergenciesTableViewAllText, { regionName })}
                     />
-
+                    <TitledSnippets snippets={data.emergency_snippets} />
                   </TabContent>
                 </TabPanel>
                 <TabPanel>
@@ -302,19 +371,89 @@ class AdminArea extends SFPComponent {
                   </TabContent>
                 </TabPanel>
                 <TabPanel>
+                  {
+                    this.state.regionAdditionalInfoTabIframe 
+                    ? 
+                    (<TabContent>
+                      <div className='container-lg'>
+                        <button onClick={this.onIframeBackClick.bind(this)} className='regional-profile-back'><span className='collecticon-chevron-left font-size-xxs spacing-half-r'></span>{strings.regionIframeBackLink}</button>
+                      </div>
+                      <iframe src={this.state.regionAdditionalInfoTabIframe} frameBorder='0' width='100%' height='800px'></iframe>
+                    </TabContent>)
+                    :
+                  (<React.Fragment>
+                    <TabContent>
+                      <div className='container-mid margin-2-v spacing-2-h'>
+                        <div className='row-lg flex flex-justify-center'>
+                          <div className='col-lg col-12 col-6-xs margin-v'>
+                            <div className='regional-profile-key'>
+                              <div className='row flex regional-profile-key-block'>
+                                <div className='col'>
+                                  <div className='sumstats__value'>{data.national_society_count}</div>
+                                </div>
+                                <div className='col'>
+                                  <div className='regional-profile-subtitle'>{resolveToString(strings.regionalTabBox1, { regionName })}</div>
+                                </div>
+                              </div>
+                              <div className='row flex regional-profile-icon-block'>
+                                <div className='col'>
+                                  <div className='regional-profile-source'>{strings.regionalTabBoxSource}</div>
+                                </div>
+                                <div className='col regional-profile-icon-col'>
+                                  <img src='/assets/graphics/content/2020/IFRC-icons-colour_Cross-ns.svg' />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          {/*<div className='col-lg col-12 col-6-xs margin-v'>
+                            <div className='sumstat__item regional-profile-key'>
+                              <div className='row flex regional-profile-key-block'>
+                                <div className='col'>
+                                  <div className='sumstats__value'>{data.country_cluster_count}</div>
+                                </div>
+                                <div className='col'>
+                                  <div className='regional-profile-subtitle'>{strings.regionalTabBox2}</div>
+                                </div>
+                              </div>
+                              <div className='row flex regional-profile-icon-block'>
+                                <div className='col'>
+                                  <div className='regional-profile-source'>{strings.regionalTabBoxSource}</div>
+                                </div>
+                                <div className='col regional-profile-icon-col'>
+                                  <img src='/assets/graphics/content/2020/IFRC-icons-colour_Cross-ns.svg' />
+                                </div>
+                              </div>
+                            </div>
+                          </div>*/}
+                        </div>
+                      </div>
+                    </TabContent>
+                    <TitledSnippets snippets={data.profile_snippets} />
+                    <TabContent isError={!get(data, 'links.length')} title={strings.regionLinks} showError={false}>
+                        <Links data={this.addClickHandler(data, this.onAdditionalLinkClickAction)} />    
+                    </TabContent>
+                    <TabContent showError={false} isError={!get(data, 'contacts.length')} title={strings.regionContacts}>
+                      <Contacts data={data} />
+                    </TabContent>
+                  </React.Fragment>)
+                }
+                </TabPanel>
+                { data.preparedness_snippets.length > 0 ?
+                (<TabPanel>
+                  <TabContent>
+                    <TitledSnippets snippets={data.preparedness_snippets} />
+                  </TabContent>
+                </TabPanel>) : null }
+
+                { get(this.props.snippets, 'data.results.length') || get(this.props.keyFigures, 'data.results.length') ? (
+                <TabPanel>
                   <TabContent isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage={ strings.noDataMessage } title={strings.regionKeyFigures}>
                     <KeyFigures data={this.props.keyFigures} />
                   </TabContent>
                   <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ strings.noDataMessage } title={strings.regionGraphics}>
-                    <Snippets data={this.props.snippets} />
+                    <Snippets data={this.props.snippets} title={strings.regionSnippetsTitle} />
                   </TabContent>
-                  <TabContent isError={!get(data, 'links.length')} errorMessage={ strings.noDataMessage } title={strings.regionLinks}>
-                    <Links data={data} />
-                  </TabContent>
-                  <TabContent showError={true} isError={!get(data, 'contacts.length')} errorMessage={ strings.noDataMessage } title={strings.regionContacts}>
-                    <Contacts data={data} />
-                  </TabContent>
-                </TabPanel>
+                </TabPanel>) :null }
               </div>
             </div>
           </Tabs>

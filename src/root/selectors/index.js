@@ -101,7 +101,17 @@ export const countriesGeojsonSelector = (state) => {
   if (state.allCountries && state.allCountries.data.results) {
     const currentLang = currentLanguageSelector(state);
     state.allCountries.data.results.forEach(country => {
-      if (country.centroid && (country.independent || country.independent === null)) {
+      // select only independent = true or null and record_type = 1
+      // also remove ICRC and IFRC
+      if (
+          country.centroid &&
+          (country.independent || country.independent === null) &&
+          country.record_type === 1 &&
+
+          // This filters out the ICRC and IFRC "countries". FIXME: this should be handled better
+          // in the backend
+          (country.id !== 315 && country.id !== 289)
+        ) {
         const f = {
           'type': 'Feature',
           'geometry': country.centroid,
@@ -119,6 +129,18 @@ export const countriesGeojsonSelector = (state) => {
     return featureCollection;
   } else {
     return null;
+  }
+};
+
+export const fdrsByIso = (state, iso) => {
+  if (state.allCountries && state.allCountries.data.results) {
+    const byIso = countriesByIso(state);
+    const thisCountry = byIso[iso][0];
+    if (thisCountry) {
+      return thisCountry.fdrs;
+    } else {
+      return null;
+    }
   }
 };
 
