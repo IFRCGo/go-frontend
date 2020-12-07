@@ -4,6 +4,7 @@ import Fold from './../fold';
 
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
+import ContactPer from '#components/preparedness/contact-per';
 
 class PreparednessHeader extends React.Component {
   render () {
@@ -15,6 +16,7 @@ class PreparednessHeader extends React.Component {
             <div className='key-emergencies-list-wrap row flex-xs'>
               <ul className='key-emergencies-list key-emergencies-list--preparedness col col-8-xs'>
                 <Translate stringId='preparednessHeaderDetail'/>
+                <ContactPer />
               </ul>
               <div className='key-emergencies-list-image col col-4-xs'>
                 <img src="/assets/graphics/content/per.jpg" alt="IFRC GO logo" width='220' />

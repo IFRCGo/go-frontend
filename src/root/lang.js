@@ -343,6 +343,12 @@ export default {
   preparednessColumnBar: 'Preparedness Column Bar',
   preparednessWorkPlan: 'Preparedness Work Plan',
   preparednessPhaseOutcomes: 'Preparedness Phase Outcomes',
+
+  prepGlobalTrendsTab: 'Global Trends',
+  prepGlobalPerformanceTab: 'Global Performance',
+  prepResourceCatalogueTab: 'Catalogue of Resources',
+  prepOpLearningTab: 'Operational Learning',
+
   emergenciesLeftMenuHeading: 'Operations by Type',
   emergenciesLeftMenuTitle: 'IFRC Emergency Operations',
   perPhaseDropdownAllPerPhases: 'All PER Phases',
