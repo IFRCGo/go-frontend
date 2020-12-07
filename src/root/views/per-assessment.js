@@ -10,6 +10,7 @@ import Translate from '#components/Translate';
 import App from './app';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import TabContent from '#components/tab-content';
+import ConfirmModal from '#components/confirm-modal';
 // import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import PerForm from '#components/per-forms/per-form';
@@ -103,6 +104,7 @@ function PerAssessment (props) {
   const [formCommentsState, setFormCommentsState] = useReducer(formCommentsReducer, {}, initReducer);
   const [formDataState, setFormDataState] = useReducer(formDataReducer, {}, initReducer);
   const [origCountry, setOrigCountry] = useState(1);
+  const [modalReveal, setModalReveal] = useState(false);
   const [errors, setErrors] = useState();
   const idFromPath = props.match.params.id;
   const isEdit = !!props.isEdit;
@@ -146,8 +148,10 @@ function PerAssessment (props) {
     })
   , []);
 
-  function saveForms (e, isSubmit = false) {
-    e.preventDefault();
+  const saveForms = useCallback((e, isSubmit = false) => {
+    if (e) {
+      e.preventDefault();
+    }
 
     // Validate fields
     overviewValidator(overviewState);
@@ -182,7 +186,23 @@ function PerAssessment (props) {
         });
       }
     }
-  }
+  }, [
+    _createPerOverview,
+    _updatePerOverview,
+    _updatePerForms,
+    formCommentsState,
+    formDataState,
+    formsState,
+    overviewState,
+    isCreate
+  ]);
+
+  const handleSubmitOk = useCallback((isOk) => {
+    if (isOk) {
+      saveForms(null, true);
+    }
+    setModalReveal(false);
+  }, [saveForms]);
 
   // Editable if Overview is not finalized, /edit path, or isCreate
   const editable = useMemo(() => {
@@ -401,7 +421,7 @@ function PerAssessment (props) {
         <header className='per-inpage__header'>
             <div className='text-right'>
               <button
-                className={`button button--primary-bounded button--small ${isCreate ? ' per__right_button' : ''}`}
+                className={`button button--primary-bounded button--small ${(isCreate || !editable) ? ' per__right_button' : ''}`}
                 onClick={() => {
                   _resetPerState();
                   props.history.push('/account#per-forms');
@@ -413,7 +433,7 @@ function PerAssessment (props) {
                 ? (
                     <button
                       className='button button--primary-filled button--small per__right_button'
-                      onClick={(e) => saveForms(e, true)}
+                      onClick={() => setModalReveal(true)}
                     >
                       <Translate stringId='perAssessmentSubmit'/>
                     </button>
@@ -429,6 +449,16 @@ function PerAssessment (props) {
           </div>
         </header>
         <section className='inpage__body'>
+          { modalReveal
+            ? (
+              <ConfirmModal
+                title={strings.perAssessmentSubmit}
+                message={strings.perAssessmentModalMessage}
+                onClose={handleSubmitOk}
+                okText={strings.confirmModalConfirm}
+              />
+            )
+            : null }
           <div className='tab__wrap'>
             <Tabs
               selectedIndex={tabs.map(({ hash }) => hash).indexOf(props.location.hash)}

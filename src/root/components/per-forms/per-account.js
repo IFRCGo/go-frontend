@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useMemo } from 'react';
+import React, { useState, useContext, useEffect, useMemo, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
@@ -16,12 +16,15 @@ import Select from 'react-select';
 import { FormError } from '#components/form-elements/';
 // include , { SortHeader, FilterHeader } if needed
 import DisplayTable from '#components/display-table';
+import ConfirmModal from '#components/confirm-modal';
 import { isoDate } from '#utils/format';
 import { showAlert } from '#components/system-alerts';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 function PerAccount (props) {
   const { strings } = useContext(LanguageContext);
 
+  const [modalReveal, setModalReveal] = useState(false);
+  const [idToDelete, setIdToDelete] = useState();
   const [country, setCountry] = useState();
   const [formList, setFormList] = useState([]);
   const {
@@ -29,10 +32,19 @@ function PerAccount (props) {
     _deletePerOverview
   } = props;
 
-  function handleDelete (formId) {
+  const handleDelete = useCallback((formId) => {
     _deletePerOverview(formId);
-    showGlobalLoading(); // FIXME: not showing... (or disappearing instantly?)
-  }
+    showGlobalLoading();
+    setIdToDelete(null);
+  }, [_deletePerOverview, setIdToDelete]);
+
+  const handleDeleteConfirmed = useCallback((isOk) => {
+    if (isOk) {
+      handleDelete(idToDelete);
+      showGlobalLoading(); // if not here too, it's not showing...
+    }
+    setModalReveal(false);
+  }, [handleDelete, idToDelete]);
 
   // PER Overviews variables
   const [ovFetching, ovFetched, overviewFormList] = useMemo(() => [
@@ -98,7 +110,10 @@ function PerAccount (props) {
                     ? (
                       <button
                         className='button button--xsmall button--primary-filled per__list__button'
-                        onClick={() => handleDelete(form.id)}
+                        onClick={() => {
+                          setModalReveal(true);
+                          setIdToDelete(form.id);
+                        }}
                       >
                         <Translate stringId='perDraftDelete' />
                       </button>
@@ -182,6 +197,17 @@ function PerAccount (props) {
             : null }
         </figure>
       </div>
+
+      { modalReveal
+        ? (
+          <ConfirmModal
+            title={strings.perDraftDelete}
+            message={strings.perAssessmentModalDelete}
+            onClose={handleDeleteConfirmed}
+            okText={strings.perDraftDelete}
+          />
+        )
+        : null }
     </React.Fragment>
   );
 }

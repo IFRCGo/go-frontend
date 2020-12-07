@@ -182,8 +182,9 @@
 }
 
 .tc-confirm-modal {
-  max-height: 40vh;
-  max-width: 600px;
+  border-radius: 4px;
+  max-height: 50vh;
+  width: 420px;
   overflow: auto;
   display: flex;
   flex-direction: column;
@@ -193,31 +194,40 @@
   top: 50%;
   transform: translate(-50%, -50%);
   background-color: #fff;
-  padding: $global-spacing / 2;
+  padding: 0 0 $global-spacing * 1.5 0;
 
   .tc-heading {
+    border-bottom: 1px solid #d1d1d1;
     flex-shrink: 0;
-    padding: $global-spacing / 2 $global-spacing;
+    font-size: $base-font-size;
+    font-weight: $base-font-semi-bold;
+    padding: $global-spacing * 0.9 $global-spacing * 1.5;
     margin: 0;
   }
 
   .tc-message {
     flex-grow: 1;
     overflow: auto;
-    padding: $global-spacing / 2 $global-spacing;
+    padding-top: $global-spacing * 1.5;
+    padding-left: $global-spacing * 1.5;
+    padding-right: $global-spacing * 1.5;
+    padding-bottom: $global-spacing * 3.5;
   }
 
   .tc-footer {
     flex-shrink: 0;
     display: flex;
     justify-content: flex-end;
+    padding: $global-spacing / 3 $global-spacing * 1.5;
 
     .button {
-      padding: $global-spacing / 2 $global-spacing;
+      font-size: $font-size-sm;
+      padding-left: $global-spacing * 2.5;
+      padding-right: $global-spacing * 2.5;
     }
 
     .tc-ok-button {
-      color: $primary-color;
+      font-size: $base-font-size !important;
     }
   }
 }
