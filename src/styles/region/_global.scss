@@ -682,9 +682,20 @@ $btn-region-countries-height: 50px;
 .btn-region-countries-icon {
   top: 1px;
 
+  span {
+    [dir='rtl'] & {
+      transform: rotate(180deg);
+      display: inline-block;
+    }
+  }
+
   span:last-of-type {
     position: relative;
     right: 6px;
+
+    [dir='rtl'] & {
+      right: -6px;
+    }
   }
 }
 
