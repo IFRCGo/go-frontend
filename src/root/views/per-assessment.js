@@ -348,7 +348,8 @@ function PerAssessment (props) {
     const of = props.perForm.getPerOverviewForm;
     // Checking for 'id' so this doesn't overwrite the state again
     // on changing tabs back and forth
-    if (!isCreate && !overviewState.id && of.data && !of.fetching && of.fetched) {
+    // TODO: find a better way to solve the count === 1, reset state doesn't seem to work well...
+    if (!isCreate && !overviewState.id && of.data && !of.fetching && of.fetched && of.data.count === 1) {
       const res = of.data.results[0];
       setOrigCountry(res.country?.id);
       setOverviewState({
