@@ -24,7 +24,7 @@ import TimelineCharts from '#components/timeline-charts';
 import AppealsTable from '#components/connected/appeals-table';
 import MainMap from '#components/map/main-map';
 import LanguageContext from '#root/languageContext';
-import { countriesGeojsonSelector } from '#selectors';
+import { countriesGeojsonSelector, countriesSelector } from '#selectors';
 class PresentationDash extends React.Component {
   constructor (props) {
     super(props);
@@ -93,6 +93,7 @@ class PresentationDash extends React.Component {
                   fullscreen={this.state.fullscreen}
                   toggleFullscreen={this.toggleFullscreen}
                   countriesGeojson={this.props.countriesGeojson}
+                  countries={this.props.countries}
                 />
               )
               : null
@@ -122,7 +123,9 @@ if (environment !== 'production') {
     _getAppealsList: T.func,
     appealsList: T.object,
     aggregate: T.object,
-    appeals: T.object
+    appeals: T.object,
+    countriesGeojson: T.object,
+    countries: T.array
   };
 }
 
@@ -133,7 +136,8 @@ const selector = (state, props) => ({
   appeals: props.statePath ? get(state, props.statePath) : state.appeals,
   appealsList: state.overallStats.appealsList,
   aggregate: state.overallStats.aggregate,
-  countriesGeojson: countriesGeojsonSelector(state)
+  countriesGeojson: countriesGeojsonSelector(state),
+  countries: countriesSelector(state)
 });
 
 const dispatcher = (dispatch) => ({

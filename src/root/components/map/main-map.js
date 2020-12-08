@@ -215,7 +215,7 @@ class MainMap extends React.Component {
       console.log('features', e.features);
       const feature = e.features.length ? e.features[0] : undefined;
       if (feature) {
-        this.showOperationsPopover(theMap, feature, e);
+        this.showOperationsPopover(theMap, feature, e, this.props.countries);
         // theMap.setLayoutProperty('icrc_admin0_highlight', 'visibility', 'visible');
         // theMap.setFilter('icrc_admin0_highlight', ['==', 'OBJECTID', feature.properties.OBJECTID]);
       }
@@ -242,8 +242,17 @@ class MainMap extends React.Component {
     }
   }
 
-  showOperationsPopover (theMap, feature, event) {
-    // console.log('feature', feature);
+  // FIXME: move this to a utils
+  getCountryIdFromIso(iso, countries) {
+    const country = countries.find(country => country.iso.toUpperCase() === iso && country.record_type === 1);
+    if (country) {
+      return country.value;
+    } else {
+      return null;
+    }
+  }
+
+  showOperationsPopover (theMap, feature, event, countries=[]) {
     let popoverContent = document.createElement('div');
     const iso = feature.properties.ISO2.toUpperCase();
     const appealFeature = this.state.markerGeoJSON.features.find(f => f.properties.iso.toUpperCase() === iso);
@@ -258,7 +267,7 @@ class MainMap extends React.Component {
       centroid = appealFeature.geometry.coordinates;
     } else {
       title = feature.properties.NAME;
-      pageId = feature.id;
+      pageId = this.getCountryIdFromIso(iso, countries);
       operations = [];
       centroid = event.lngLat;
     }
@@ -394,7 +403,8 @@ if (environment !== 'production') {
     layers: T.array,
     toggleFullscreen: T.func,
     fullscreen: T.bool,
-    countriesGeojson: T.object
+    countriesGeojson: T.object,
+    countries: T.array
   };
 }
 
