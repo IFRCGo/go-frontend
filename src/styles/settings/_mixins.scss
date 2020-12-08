@@ -19,6 +19,9 @@
   @if $arg == xsmall-up {
     @media #{$screen} and (min-width: lower-bound($xsmall-range)) { @content; }
   }
+  @if $arg == xsmall-down {
+    @media #{$screen} and (max-width: upper-bound($xsmall-range)) { @content; }
+  }
   @if $arg == xsmall-only {
     @media #{$screen} and (max-width: upper-bound($xsmall-range)) { @content; }
   }

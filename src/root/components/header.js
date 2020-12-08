@@ -163,7 +163,7 @@ function Header (props) {
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink to='/preparedness' title={strings.headerMenuPreparednessTooltip} activeClassName='navbar-highlighted' exact>
+                  <NavLink to='/preparedness#global-summary' title={strings.headerMenuPreparednessTooltip} activeClassName='navbar-highlighted' exact>
                     <Translate stringId="headerMenuPreparedness" />
                   </NavLink>
                 </li>

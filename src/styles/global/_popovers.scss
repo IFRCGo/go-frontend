@@ -18,10 +18,8 @@
   border-radius: $base-border-radius;
   position: relative;
   z-index: 1;
-  padding: $global-spacing;
-  overflow-x: hidden;
-  overflow-y: auto;
-  max-height: 225px; // Popovers can scroll
+  padding: ($spacing * 1.5);
+  //max-height: 225px; // Popovers can scroll
 
   > *:last-child {
     margin-bottom: 0;
@@ -93,7 +91,11 @@ a.popover__contents {
    ========================================================================== */
 
 .popover__body {
+  max-height: 190px; // Popovers can scroll
+  overflow-x: hidden;
+  overflow-y: auto;
   margin-bottom: $global-spacing;
+  padding-right: $spacing-half;
 
   > *:last-child {
     margin-bottom: 0;
@@ -175,7 +177,7 @@ a.popover__contents {
   }
 
   > *:last-child {
-    margin-inline-end: -$global-spacing / 4;
+    margin-inline-end: -($spacing);
   }
 }
 
@@ -195,6 +197,7 @@ a.popover__contents {
 
 .poa-xmark::before {
   @extend %collecticon-sm-xmark;
+  font-size: $font-size-xxl;
 }
 
 .chart-tooltip {
