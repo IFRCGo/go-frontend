@@ -92,7 +92,7 @@ function PerAccount (props) {
       country: form.country?.name,
       updatedDate: isoDate(form.updated_at),
       assessmentNumber: form.assessment_number,
-      formsIncluded: 'asd', // TODO: get these as well, based on which have been created
+      formsIncluded: form.included_forms,
       link: {
         value: (
           <React.Fragment>
