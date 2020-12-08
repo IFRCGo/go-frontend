@@ -986,7 +986,7 @@ class Emergency extends React.Component {
               districts={data.districts}
               name={data.name}
               date={data.updated_at}
-              disasterTypeCode={data.dtype}
+              disasterTypeCode={data.dtype.toString()}
               countriesGeojson={this.props.countriesGeojson}
             />
           </div> 
