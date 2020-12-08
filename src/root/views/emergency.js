@@ -30,7 +30,6 @@ import {
 } from '#actions';
 import {
   commaSeparatedNumber as n,
-  separateUppercaseWords as separate,
   nope,
   isoDate,
   timestamp,
@@ -60,7 +59,6 @@ import { countriesGeojsonSelector, regionsByIdSelector, disasterTypesSelector } 
 class Emergency extends React.Component {
   constructor (props) {
     super(props);
-    const {strings} = props;
     this.state = {
       showProjectForm: false,
       selectedAppeal: null,
@@ -106,22 +104,6 @@ class Emergency extends React.Component {
 
       this.getAppealDocuments(nextProps.event);
 
-      // setup tabs
-      const { data } = nextProps.event;
-      // check if there are additional tabs
-      // let tabs = [...this.state.tabs];
-      // const tabLabels = ['tab_one_title', 'tab_two_title', 'tab_three_title'];
-      // tabLabels.forEach((key) => {
-      //   if (data && data[key]) {
-      //     const title = data[key];
-      //     const hash = `#${title.toLowerCase().split(' ').join('-')}`;
-      //     tabs.push({
-      //       title: title,
-      //       hash: hash,
-      //     });
-      //   }
-      // });
-      // this.setState({ tabs: tabs });
       setTimeout(() => {
         this.displayTabContent();
       }, 0);
@@ -901,7 +883,6 @@ class Emergency extends React.Component {
   }
 
   getTabs () {
-    const { data } = this.props.event;
     const { strings } = this.props;
     const tabs = [
       { title: strings.emergencyTabDetails, hash: '#details' },
@@ -1243,7 +1224,7 @@ class Emergency extends React.Component {
                               </thead>
                               <tbody>
                                 {contactsByType.ns.map((o) => (
-                                  <ContactRow contact={o} />
+                                  <ContactRow contact={o} key={o.id} />
                                 ))}
                               </tbody>
                             </table>
@@ -1418,14 +1399,11 @@ const selector = (state, ownProps) => ({
   profile: state.profile,
   regionsById: regionsByIdSelector(state),
   countriesGeojson: countriesGeojsonSelector(state),
-  disasterTypes: disasterTypesSelector(state),
-  personnel: state.deployments.personnel,
-  surgeAlerts: state.surgeAlerts
+  disasterTypes: disasterTypesSelector(state)
 });
 
 const dispatcher = (dispatch) => ({
   _getEventById: (...args) => dispatch(getEventById(...args)),
-  _getEventSnippets: (...args) => dispatch(getEventSnippets(...args)),
   _getPersonnel: (...args) => dispatch(getPersonnel(...args)),
   _getSurgeAlerts: (...args) => dispatch(getSurgeAlerts(...args)),
   _getEventSnippets: (...args) => dispatch(getEventSnippets(...args)),
