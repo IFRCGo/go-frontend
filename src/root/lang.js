@@ -335,7 +335,7 @@ export default {
   supportingNSListProjects: '{noOfProjects} projects',
 
   preparednessHeaderTitle: 'The PER approach',
-  preparednessHeaderDetail: 'PER follows a cyclical process for a National Society to systematically assess, measure and analyse the strength and gaps of its response system to construct a work-plan that, when implemented, will strengthen It\'s overall response capacity.',
+  preparednessHeaderDetail: 'The PER Approach is a continuous and flexible process that enables National Societies to assess, measure and analyse the strengths and gaps of its preparedness and response mechanism, and ultimately take necessary action to improve it.',
   preparednessMapError: 'Data not available.',
   preparednessMapDownloadTitle: 'Preparedness state',
   preparednessOverviewCrumb: 'PER Overview',

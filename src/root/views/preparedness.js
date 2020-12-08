@@ -81,7 +81,6 @@ class Preparedness extends React.Component {
                   <div className='inner'>
                     <TabPanel title={strings.prepGlobalTrendsTab}>
                       <TabContent>
-                      <div className='container-lg'>
                         <iframe
                           src={iFrames[0]}
                           title={strings.prepGlobalTrendsTab}
@@ -89,12 +88,10 @@ class Preparedness extends React.Component {
                           width='100%'
                           height='800px'
                         />
-                      </div>
                       </TabContent>
                     </TabPanel>
                     <TabPanel title={strings.prepGlobalPerformanceTab}>
                       <TabContent>
-                      <div className='container-lg'>
                         <iframe
                           src={iFrames[1]}
                           title={strings.prepGlobalPerformanceTab}
@@ -102,33 +99,28 @@ class Preparedness extends React.Component {
                           width='100%'
                           height='800px'
                         />
-                      </div>
                       </TabContent>
                     </TabPanel>
                     <TabPanel title={strings.prepResourceCatalogueTab}>
                       <TabContent>
-                        <div className='container-lg'>
-                          <iframe
-                            src={iFrames[2]}
-                            title={strings.prepResourceCatalogueTab}
-                            frameBorder='0'
-                            width='100%'
-                            height='800px'
-                          />
-                        </div>
+                        <iframe
+                          src={iFrames[2]}
+                          title={strings.prepResourceCatalogueTab}
+                          frameBorder='0'
+                          width='100%'
+                          height='800px'
+                        />
                       </TabContent>
                     </TabPanel>
                     <TabPanel title={strings.prepOpLearningTab}>
                       <TabContent>
-                        <div className='container-lg'>
-                          <iframe
-                            src={iFrames[3]}
-                            title={strings.prepOpLearningTab}
-                            frameBorder='0'
-                            width='100%'
-                            height='800px'
-                          />
-                        </div>
+                        <iframe
+                          src={iFrames[3]}
+                          title={strings.prepOpLearningTab}
+                          frameBorder='0'
+                          width='100%'
+                          height='800px'
+                        />
                       </TabContent>
                     </TabPanel>
                   </div>
