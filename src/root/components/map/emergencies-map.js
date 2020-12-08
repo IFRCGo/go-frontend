@@ -233,7 +233,9 @@ class MapPopover extends React.Component {
         <div className='popover__contents'>
           <header className='popover__header'>
             <div className='popover__headline'>
-              <a className='link-underline' onClick={() => this.props.onTitleClick(this.props.uri)}>{title}</a>
+              <a className='link--primary' onClick={() => this.props.onTitleClick(this.props.uri)}>{title}
+                <span className='popover__headline__icon collecticon-chevron-right'></span>
+              </a>
             </div>
             <div className='popover__actions actions'>
               <ul className='actions__menu'>
@@ -246,7 +248,7 @@ class MapPopover extends React.Component {
               </ul>
             </div>
           </header>
-          <div className='popover__body'>
+          <div className='popover__body scrollbar__custom'>
             <p className='popover__stat'>
               <Translate
                 stringId='emergenciesMapPopoverPeopleAffected'

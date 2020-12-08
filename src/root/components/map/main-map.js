@@ -173,9 +173,10 @@ class MainMap extends React.Component {
       this.setState({ ready: true });
     });
 
-    theMap.on('click', 'appeals', e => {
-      this.showOperationsPopover(theMap, e.features[0]);
-    });
+    // theMap.on('click', e => {
+    //   console.log('features', e.features);
+    //   this.showOperationsPopover(theMap, e.features[0]);
+    // });
 
     theMap.on('mousemove', 'appeals', e => {
       theMap.getCanvas().style.cursor = 'pointer';
@@ -202,6 +203,28 @@ class MainMap extends React.Component {
       }
     });
 
+    theMap.on('mousemove', 'icrc_admin0', e => {
+      const feature = e.features.length ? e.features[0] : undefined;
+      if (feature) {
+        theMap.setLayoutProperty('icrc_admin0_highlight', 'visibility', 'visible');
+        theMap.setFilter('icrc_admin0_highlight', ['==', 'OBJECTID', feature.properties.OBJECTID]);
+      }
+    });
+
+    theMap.on('click', 'icrc_admin0', e => {
+      console.log('features', e.features);
+      const feature = e.features.length ? e.features[0] : undefined;
+      if (feature) {
+        this.showOperationsPopover(theMap, feature, e, this.props.countries);
+        // theMap.setLayoutProperty('icrc_admin0_highlight', 'visibility', 'visible');
+        // theMap.setFilter('icrc_admin0_highlight', ['==', 'OBJECTID', feature.properties.OBJECTID]);
+      }
+    });
+
+    theMap.on('mouseleave', 'icrc_admin0', e => {
+      theMap.setLayoutProperty('icrc_admin0_highlight', 'visibility', 'none');
+    });
+
     if (Array.isArray(this.props.mapBoundingBox)) {
       theMap.fitBounds(this.props.mapBoundingBox);
     }
@@ -219,18 +242,45 @@ class MainMap extends React.Component {
     }
   }
 
-  showOperationsPopover (theMap, feature) {
+  // FIXME: move this to a utils
+  getCountryIdFromIso(iso, countries) {
+    const country = countries.find(country => country.iso.toUpperCase() === iso && country.record_type === 1);
+    if (country) {
+      return country.value;
+    } else {
+      return null;
+    }
+  }
+
+  showOperationsPopover (theMap, feature, event, countries=[]) {
     let popoverContent = document.createElement('div');
-    const { properties, geometry } = feature;
-    const operations = !properties.appeals ? []
+    const iso = feature.properties.ISO2.toUpperCase();
+    const appealFeature = this.state.markerGeoJSON.features.find(f => f.properties.iso.toUpperCase() === iso);
+    let title, pageId, operations, centroid;
+    if (appealFeature) {
+      const { properties } = appealFeature;
+      title = properties.name;
+      pageId = properties.id;
+      operations = !properties.appeals ? []
       : Array.isArray(properties.appeals) ? properties.appeals
         : JSON.parse(properties.appeals);
-    const title = `${properties.name}`;
+      centroid = appealFeature.geometry.coordinates;
+    } else {
+      title = feature.properties.NAME;
+      pageId = this.getCountryIdFromIso(iso, countries);
+      operations = [];
+      centroid = event.lngLat;
+    }
+    // const { properties, geometry } = feature;
+    // const operations = !properties.appeals ? []
+    //   : Array.isArray(properties.appeals) ? properties.appeals
+    //     : JSON.parse(properties.appeals);
+    // const title = `${properties.name}`;
 
     render(<OperationsPopover
       title={title}
       navigate={this.navigate}
-      pageId={properties.id}
+      pageId={pageId}
       operations={operations}
       onCloseClick={this.onPopoverCloseClick.bind(this)} />, popoverContent);
 
@@ -241,7 +291,7 @@ class MainMap extends React.Component {
     }
 
     this.popover = new mapboxgl.Popup({closeButton: false})
-      .setLngLat(geometry.coordinates)
+      .setLngLat(centroid)
       .setDOMContent(popoverContent.children[0])
       .addTo(theMap);
   }
@@ -353,7 +403,8 @@ if (environment !== 'production') {
     layers: T.array,
     toggleFullscreen: T.func,
     fullscreen: T.bool,
-    countriesGeojson: T.object
+    countriesGeojson: T.object,
+    countries: T.array
   };
 }
 
