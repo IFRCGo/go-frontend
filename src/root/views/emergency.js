@@ -19,6 +19,8 @@ import { resolveToString } from '#utils/lang';
 import {
   getEventById,
   getEventSnippets,
+  getPersonnel,
+  getSurgeAlerts,
   getSitrepsByEventId,
   getSitrepTypes,
   getAppealDocsByAppealIds,
@@ -67,11 +69,9 @@ class Emergency extends React.Component {
         type: 'all',
       },
       subscribed: false,
-      tabs: [
-        { title: strings.emergencyTabDetails, hash: '#details' },
-        { title: strings.emergencyTabReports, hash: '#reports' },
-        { title: strings.emergencyTabRR, hash: '#rapid-response' }
-      ]
+      hasSnippets: false,
+      hasPersonnel: false,
+      hasSurgeAlerts: false
     };
     this.addSubscription = this.addSubscription.bind(this);
     this.delSubscription = this.delSubscription.bind(this);
@@ -109,19 +109,19 @@ class Emergency extends React.Component {
       // setup tabs
       const { data } = nextProps.event;
       // check if there are additional tabs
-      let tabs = [...this.state.tabs];
-      const tabLabels = ['tab_one_title', 'tab_two_title', 'tab_three_title'];
-      tabLabels.forEach((key) => {
-        if (data && data[key]) {
-          const title = data[key];
-          const hash = `#${title.toLowerCase().split(' ').join('-')}`;
-          tabs.push({
-            title: title,
-            hash: hash,
-          });
-        }
-      });
-      this.setState({ tabs: tabs });
+      // let tabs = [...this.state.tabs];
+      // const tabLabels = ['tab_one_title', 'tab_two_title', 'tab_three_title'];
+      // tabLabels.forEach((key) => {
+      //   if (data && data[key]) {
+      //     const title = data[key];
+      //     const hash = `#${title.toLowerCase().split(' ').join('-')}`;
+      //     tabs.push({
+      //       title: title,
+      //       hash: hash,
+      //     });
+      //   }
+      // });
+      // this.setState({ tabs: tabs });
       setTimeout(() => {
         this.displayTabContent();
       }, 0);
@@ -139,6 +139,24 @@ class Emergency extends React.Component {
     if (newProjectAdded) {
       this.setState({ showProjectForm: false });
     }
+
+    if (!this.props.snippets.fetched && nextProps.snippets.fetched) {
+      if (nextProps.snippets.data.results.length > 0) {
+        this.setState({ hasSnippets: true });
+      }
+    }
+
+    if (!this.props.personnel.fetched && nextProps.personnel.fetched) {
+      if (nextProps.personnel.data.results.length > 0) {
+        this.setState({ hasPersonnel: true });
+      }
+    }
+
+    if (!this.props.surgeAlerts.fetched && nextProps.surgeAlerts.fetched) {
+      if (nextProps.surgeAlerts.data.results.length > 0) {
+        this.setState({ hasSurgeAlerts: true });
+      }
+    }
   }
 
   componentDidMount () {
@@ -154,7 +172,8 @@ class Emergency extends React.Component {
 
   // Sets default tab if url param is blank or incorrect
   displayTabContent () {
-    const tabHashArray = this.state.tabs.map(({ hash }) => hash);
+    const tabs = this.getTabs();
+    const tabHashArray = tabs.map(({ hash }) => hash);
     if (!tabHashArray.find((hash) => hash === this.props.location.hash)) {
       this.props.history.replace(
         `${this.props.location.pathname}${tabHashArray[0]}`
@@ -166,6 +185,13 @@ class Emergency extends React.Component {
     // showGlobalLoading();
     this.props._getEventById(id);
     this.props._getSitrepsByEventId(id);
+
+    // We fetch the Personnel and Alerts here to know whether to render the Surge tab
+    // Ideally, we would pass this down to the personnel-table, currently
+    // we only use it to check whether there are personnel. #FIXME
+    this.props._getSurgeAlerts(1, { event: id });
+    this.props._getPersonnel(1, {'event_deployed_to': id});
+    this.props._getEventSnippets(id);
   }
 
   getAppealDocuments (event) {
@@ -835,7 +861,7 @@ class Emergency extends React.Component {
   }
 
   renderAdditionalTabPanels () {
-    const additionalTabs = this.state.tabs.slice(1);
+    const additionalTabs = this.getAdditionalTabs();
     if (additionalTabs.length) {
       return (
         <React.Fragment>
@@ -858,6 +884,61 @@ class Emergency extends React.Component {
     projectForm.fetching || eventForm.fetching || siteRepForm.fetching
   ))
 
+  hasReportsTab () {
+    return get(this.props.event, 'data.field_reports.length') || 
+      get(this.props.appealDocuments, 'data.results.length') || 
+      get(this.props.situationReports, 'data.results.length');    
+  }
+
+  hasRRTab () {
+    return this.state.hasPersonnel ||
+      this.state.hasSurgeAlerts ||
+      get(this.props.eru, 'data.results.length');
+  }
+
+  hasSnippets () {
+    return this.state.hasSnippets;
+  }
+
+  getTabs () {
+    const { data } = this.props.event;
+    const { strings } = this.props;
+    const tabs = [
+      { title: strings.emergencyTabDetails, hash: '#details' },
+    ];
+    if (this.hasReportsTab()) {
+      tabs.push({
+        title: strings.emergencyTabReports, hash: '#reports'
+      });
+    }
+    if (this.hasRRTab()) {
+      tabs.push({
+        title: strings.emergencyTabRR, hash: '#rapid-response'
+      });
+    }
+    return tabs.concat(this.getAdditionalTabs());
+  }
+
+  getAdditionalTabs () {
+    const { data } = this.props.event;
+    if (!this.hasSnippets()) {
+      return [];
+    }
+    const additionalTabs = [];
+    const tabLabels = ['tab_one_title', 'tab_two_title', 'tab_three_title'];
+    tabLabels.forEach((key) => {
+      if (data && data[key]) {
+        const title = data[key];
+        const hash = `#${title.toLowerCase().split(' ').join('-')}`;
+        additionalTabs.push({
+          title: title,
+          hash: hash,
+        });
+      }
+    });
+    return additionalTabs;
+  }
+
   renderContent () {
     const { fetched, error, data } = this.props.event;
     const { disasterTypes } = this.props;
@@ -865,7 +946,7 @@ class Emergency extends React.Component {
     const report =
       mostRecentReport(get(this.props, 'event.data.field_reports')) || {};
     const summary = data.summary || report.description || null;
-
+    const tabs = this.getTabs();
     const contacts =
       Array.isArray(data.contacts) && data.contacts.length
         ? data.contacts
@@ -935,11 +1016,11 @@ class Emergency extends React.Component {
     };
 
     const handleTabChange = (index) => {
-      const tabHashArray = this.state.tabs.map(({ hash }) => hash);
+      const tabHashArray = tabs.map(({ hash }) => hash);
       const url = this.props.location.pathname;
       this.props.history.replace(`${url}${tabHashArray[index]}`);
     };
-    const hashes = this.state.tabs.map((t) => t.hash);
+    const hashes = tabs.map((t) => t.hash);
     const selectedIndex =
       hashes.indexOf(this.props.location.hash) !== -1
         ? hashes.indexOf(this.props.location.hash)
@@ -1081,7 +1162,7 @@ class Emergency extends React.Component {
             onSelect={(index) => handleTabChange(index)}
           >
             <TabList>
-              {this.state.tabs.map((tab) => (
+              {tabs.map((tab) => (
                 <Tab key={tab.title}>{tab.title}</Tab>
               ))}
             </TabList>
@@ -1180,7 +1261,7 @@ class Emergency extends React.Component {
                     </div>
                   )}
                 </TabPanel>
-
+                { this.hasReportsTab() ? (
                 <TabPanel>
                   <TabContent
                     isError={!get(this.props.event, 'data.field_reports.length')}
@@ -1211,7 +1292,9 @@ class Emergency extends React.Component {
                   </TabContent>
 
                 </TabPanel>
+                ) : null }
 
+                { this.hasRRTab() ? (
                 <TabPanel>
                   <TabContent title={strings.emergencyAlertsTitle}>
                     <SurgeAlertsTable
@@ -1229,13 +1312,15 @@ class Emergency extends React.Component {
                     <EruTable id="erus" emergency={this.props.match.params.id} />
                   </TabContent>
                   <TabContent title={strings.emergencyPersonnelTitle}>
-                    <PersonnelTable
-                      id="personnel"
-                      emergency={this.props.match.params.id}
-                    />
+                    { this.state.hasPersonnel ? (
+                      <PersonnelTable
+                        id="personnel"
+                        emergency={this.props.match.params.id}
+                      />
+                    ) : null }
                   </TabContent>
                 </TabPanel>
-
+                ) : null }
                 {this.renderAdditionalTabPanels()}
               </div>
             </div>
@@ -1333,11 +1418,16 @@ const selector = (state, ownProps) => ({
   profile: state.profile,
   regionsById: regionsByIdSelector(state),
   countriesGeojson: countriesGeojsonSelector(state),
-  disasterTypes: disasterTypesSelector(state)
+  disasterTypes: disasterTypesSelector(state),
+  personnel: state.deployments.personnel,
+  surgeAlerts: state.surgeAlerts
 });
 
 const dispatcher = (dispatch) => ({
   _getEventById: (...args) => dispatch(getEventById(...args)),
+  _getEventSnippets: (...args) => dispatch(getEventSnippets(...args)),
+  _getPersonnel: (...args) => dispatch(getPersonnel(...args)),
+  _getSurgeAlerts: (...args) => dispatch(getSurgeAlerts(...args)),
   _getEventSnippets: (...args) => dispatch(getEventSnippets(...args)),
   _getSitrepsByEventId: (...args) => dispatch(getSitrepsByEventId(...args)),
   _getSitrepTypes: (...args) => dispatch(getSitrepTypes(...args)),
