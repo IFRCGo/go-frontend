@@ -211,7 +211,7 @@ function PerAssessment (props) {
       isedit = true;
     } else {
       const ov = props.perForm.getPerOverviewForm;
-      if (idFromPath && !ov.fetching && ov.fetched && ov.data) {
+      if (idFromPath && !ov.fetching && ov.fetched && ov.data && ov.data.results) {
         isedit = !ov.data.results[0].is_finalized && isEdit;
       }
     }
@@ -251,7 +251,7 @@ function PerAssessment (props) {
       if (cpo.data.status === 'ok') {
         showAlert('success', <p><Translate stringId="perOverviewAlertCreated" /></p>, true, 2000);
         setTimeout(() => props.history.push(`/per-assessment/${cpo.data.overview_id}/edit#overview`), 2000);
-        // _resetPerState();
+        _resetPerState();
       } else if (cpo.error) {
         showAlert('danger', <p><Translate stringId="perOverviewAlertCreated" /></p>, true, 2000);
       }
