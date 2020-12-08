@@ -236,5 +236,43 @@
   td {
     padding-bottom: $spacing-half;
     padding-top: 0;
-  }  
+  }
+}
+  
+.table__cell--progress__personnel {
+  width: 40%;
+}
+
+.progress__block__personnel {
+  .progress-bar {
+    background-color: transparent;
+  }
+
+  .progress-bar__value {
+    border-radius: $base-border-radius;
+    height: 24px;
+  }
+}
+
+.progress__block__tooltip__heading {
+  border-bottom: 1px solid $base-border-color;
+  margin: 0 0 $spacing-half 0;
+  padding: 0 0 $spacing-half 0;
+}
+
+.personnel__table__daterange {
+  width: 40%;
+  display: flex;
+  justify-content: space-between;
+  font-size: $font-size-xxs;
+  font-weight: $base-font-medium;
+  margin-left: auto;
+  position: relative;
+  top: 0;
+}
+
+.personnel__table__date {
+  &:last-of-type {
+    padding-right: $spacing-2;
+  }
 }
