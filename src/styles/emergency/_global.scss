@@ -155,7 +155,8 @@
   font-weight: $base-font-semi-bold;
   text-transform: uppercase;
   padding: ($spacing * 1.2);
-  width: 200px;
+  width: 180px;
+  flex-shrink: 0;
 }
 
 .contacts {
