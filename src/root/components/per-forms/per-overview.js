@@ -69,7 +69,7 @@ function PerOverview (props) {
   return (
     <React.Fragment>
       <div className='container-lg'>
-        <h2 className=''><Translate stringId='perAccountOverview' /></h2>
+        <h2 className='h3'><Translate stringId='perAccountOverview' /></h2>
 
         <figure className='chart per-chart'>
           <figcaption>

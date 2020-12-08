@@ -469,7 +469,7 @@ function PerAssessment (props) {
                   ? (
                     <div className='text-right'>
                       <button
-                        className='button button--primary-filled button--small per__right_button'
+                        className='button button--primary-filled button--small per__right_button per__right_button--save'
                         onClick={(e) => saveForms(e)}
                       >
                         <Translate stringId='perFormComponentSave'/>

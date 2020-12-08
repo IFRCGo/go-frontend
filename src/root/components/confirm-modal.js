@@ -49,7 +49,7 @@ function ConfirmModal (p) {
             <Translate stringId='confirmModalCancel'/>
           </button>
           <button
-            className='button button--primary-filled button--small tc-ok-button text-uppercase'
+            className='button button--primary-filled button--xsmall tc-ok-button text-uppercase'
             onClick={handleOkClick}
           >
             { okText

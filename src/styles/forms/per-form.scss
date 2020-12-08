@@ -46,8 +46,16 @@
 
 // This is awful CSS, but will do for now
 .per__right_button {
-  margin-left: 3rem;
-  margin-right: 3rem;
+  margin-left: $spacing;
+  margin-right: $spacing;
+}
+
+.per__right_button--save {
+
+  @include media(medium) {
+    position: relative;
+    top: $spacing-3;
+  }
 }
 
 /* Account Forms

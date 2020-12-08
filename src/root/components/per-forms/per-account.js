@@ -155,7 +155,7 @@ function PerAccount (props) {
         <div className='text-center'>
           <Link
             to={'/per-assessment/create#overview'}
-            className='button button--medium button--primary-filled'
+            className='button button--small button--primary-filled'
           >
             <Translate stringId='perAccountNewAssessment'/>
           </Link>

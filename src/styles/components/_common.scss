@@ -201,7 +201,7 @@
     flex-shrink: 0;
     font-size: $base-font-size;
     font-weight: $base-font-semi-bold;
-    padding: $global-spacing * 0.9 $global-spacing * 1.5;
+    padding: ($global-spacing * 0.9) ($global-spacing * 1.2) ($global-spacing * 0.9) ($global-spacing * 1.5);
     margin: 0;
   }
 
@@ -224,10 +224,6 @@
       font-size: $font-size-sm;
       padding-left: $global-spacing * 2.5;
       padding-right: $global-spacing * 2.5;
-    }
-
-    .tc-ok-button {
-      font-size: $base-font-size !important;
     }
   }
 }
