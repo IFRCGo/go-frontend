@@ -226,7 +226,10 @@ class MainMap extends React.Component {
     });
 
     if (Array.isArray(this.props.mapBoundingBox)) {
-      theMap.fitBounds(this.props.mapBoundingBox);
+      const infinite = !isFinite(this.props.mapBoundingBox[0]);
+      if (!infinite) {
+        theMap.fitBounds(this.props.mapBoundingBox);
+      }
     }
 
     this.theMap = theMap;

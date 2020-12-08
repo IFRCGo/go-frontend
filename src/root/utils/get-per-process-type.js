@@ -1,3 +1,4 @@
+// FIXME: remove these too if done
 export const processType = {
   0: 'Self-assessment',
   1: 'Simulation',

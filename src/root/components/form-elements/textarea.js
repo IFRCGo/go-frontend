@@ -17,6 +17,7 @@ export default function FormTextarea (props) {
     value,
     onChange,
     autoFocus,
+    disabled,
     children
   } = props;
 
@@ -36,6 +37,7 @@ export default function FormTextarea (props) {
             className={c('form__control form__control--medium', classInput)}
             placeholder={placeholder}
             value={value || ''}
+            disabled={disabled || false}
             onChange={onChange}
             autoFocus={autoFocus} />
           {children || null}

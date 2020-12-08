@@ -1,317 +1,145 @@
-import React from 'react';
-import { PerFormComponent } from './per-form-component';
-import RequestFactory from './factory/request-factory';
-import { Redirect } from 'react-router-dom';
-import { showAlert } from '../system-alerts';
+import React, { useContext, useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
+import {
+  updatePerForm,
+  resetPerState
+} from '#actions';
+import { formQuestionsSelector } from '#selectors';
 
-export default class PerForm extends React.Component {
-  constructor (props, defaultLanguage, formCode, formName) {
-    super(props);
-    this.formName = formName;
-    this.formCode = formCode;
-    this.nationalSociety = props.nationalSociety;
-    this.sendForm = this.sendForm.bind(this);
-    this.saveState = this.saveState.bind(this);
-    this.loadState = this.loadState.bind(this);
-    this.loadFromProps = this.loadFromProps.bind(this);
-    this.isEpiComponent = this.isEpiComponent.bind(this);
-    this.isEpiComponentFromProps = this.isEpiComponentFromProps.bind(this);
-    this.chooseFormStateSource = this.chooseFormStateSource.bind(this);
-    this.autosave = this.autosave.bind(this);
-    this.saveDraft = this.saveDraft.bind(this);
-    this.editDraft = this.editDraft.bind(this);
-    this.checkFormFilled = this.checkFormFilled.bind(this);
-    if (props.autosaveOn) {
-      this.autosaveInterval = setInterval(this.autosave, 10000);
+import LanguageContext from '#root/languageContext';
+
+import Fold from '#components/fold';
+import {
+  FormInput,
+  FormTextarea,
+  FormRadioGroup
+} from '#components/form-elements/';
+
+function PerForm (props) {
+  const { strings } = useContext(LanguageContext);
+
+  const [title, setTitle] = useState(strings.perdocumentArea);
+
+  const [groupedQuestionList, setGroupedQuestionList] = useState();
+  const {
+    formId,
+    formsState,
+    formDataState,
+    formCommentsState,
+    handleChange,
+    isEpi,
+    editable,
+    groupedPerQuestions
+  } = props;
+
+
+  useEffect(() => {
+    if (formId && formsState) {
+      setTitle(`Area ${formsState[formId].area.area_num} - ${formsState[formId].area.title}`);
+
     }
-    this.requestFactory = new RequestFactory();
-    defaultLanguage.epiComponent = 'no';
-    defaultLanguage.redirect = false;
-    this.loadingFormPropsRunning = false;
-    this.state = defaultLanguage;
-    this.changeEpiComponentState = this.changeEpiComponentState.bind(this);
-    this.unifiedNs = 0;
-  }
+  }, [formId, formsState, groupedPerQuestions]);
 
-  componentDidMount () {
-    window.scrollTo(0, 0);
-    this.unifiedNs = this.props.mode === 'edit' ? this.props.ns : this.props.nationalSociety;
-    if (this.props.mode === 'view') {
-      this.props._getPerDocument(this.props.match.params.id);
-      this.loadingFormPropsRunning = true;
-    } else if (this.props.mode === 'edit' || this.props.mode === 'new') {
-      const filters = {};
-      filters.user = this.props.user.data.id;
-      filters.code = this.formCode;
-      filters.country = this.unifiedNs;
-      this.props._getPerDraftDocument(filters);
-    }
-  }
+  useEffect(() => {
+    if (formsState && groupedPerQuestions) {
+      let perQuestions = groupedPerQuestions[formsState[formId].area.area_num];
 
-  componentDidUpdate (prevProps) {
-    let autoSaveShouldLoad = true;
-    if (this.props.mode === 'new' || this.props.mode === 'edit') {
-      if (!prevProps.getPerDraftDocument.fetched && this.props.getPerDraftDocument.fetched && !localStorage.getItem('autosave' + this.props.mode + this.formCode + this.unifiedNs)) {
-        autoSaveShouldLoad = false;
-      }
-    }
-    if ((this.props.perDocument.fetched && !prevProps.perDocument.fetched) || this.loadingFormPropsRunning) {
-      this.chooseFormStateSource(false, autoSaveShouldLoad);
-    } else {
-      this.chooseFormStateSource(true, autoSaveShouldLoad);
-    }
-  }
-
-  chooseFormStateSource (refresh = false, autoSaveShouldLoad) {
-    if (this.props.mode === 'view' && this.props.perDocument.fetched && (!refresh || this.loadingFormPropsRunning)) {
-      if (this.state.epiComponent !== 'yes' && this.isEpiComponent()) {
-        this.setState({epiComponent: 'yes'});
-        return;
-      }
-      this.loadingFormPropsRunning = false;
-      this.loadFromProps();
-    } else if (autoSaveShouldLoad && this.props.autosaveOn && localStorage.getItem('autosave' + this.props.mode + this.formCode + this.unifiedNs) !== null && localStorage.getItem('finished' + this.formCode) === null) {
-      if (this.isEpiComponent() && this.state.epiComponent !== 'yes') {
-        this.setState({epiComponent: 'yes'});
-        return;
-      }
-      this.loadState('autosave');
-    } else if ((this.props.mode === 'new' || this.props.mode === 'edit') && this.props.getPerDraftDocument.fetched && this.props.getPerDraftDocument.data.count === 1) {
-      localStorage.removeItem('finished' + this.formCode);
-      if (this.isEpiComponent() && this.state.epiComponent !== 'yes') {
-        this.setState({epiComponent: 'yes'});
-        return;
-      }
-      this.loadState('draft');
-    }
-  }
-
-  saveState (type) {
-    let request = this.requestFactory.newFormRequest(this.formCode, this.formName, this.state.languageCode);
-    request = this.requestFactory.addAreaQuestionData(request);
-    request = this.requestFactory.addComponentData(request);
-
-    if (type === 'autosave' && this.props.autosaveOn) {
-      localStorage.setItem(type + this.props.mode + this.formCode + this.unifiedNs, JSON.stringify(request));
-    }
-  }
-
-  isEpiComponent () {
-    let draft = null;
-    if (this.props.perDocument.fetched && this.props.mode === 'view') {
-      return this.isEpiComponentFromProps();
-    } else if (!!localStorage.getItem('autosave' + this.props.mode + this.formCode + this.unifiedNs) && !localStorage.getItem('finished' + this.formCode)) {
-      draft = JSON.parse(localStorage.getItem('autosave' + this.props.mode + this.formCode + this.unifiedNs));
-    } else if (this.props.getPerDraftDocument.fetched && this.props.getPerDraftDocument.data.count === 1) {
-      draft = JSON.parse(this.props.getPerDraftDocument.data.results[0].data.replace(/'/g, '"'));
-    }
-    if (draft !== null && draft.data !== null) {
-      let epi = draft.data.filter(question => {
-        return question.id === 'a1' && question.op === this.requestFactory.stringAnswerToNum('yes');
-      });
-      if (epi.length > 0) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  isEpiComponentFromProps () {
-    const formData = this.props.perDocument.data.results;
-    const filteredData = formData.filter(question => {
-      return question.question_id === 'a1' && question.selected_option === this.requestFactory.stringAnswerToNum('yes');
-    });
-    if (filteredData.length > 0) {
-      return true;
-    }
-    return false;
-  }
-
-  loadState (type) {
-    let draft = null;
-    if (type === 'autosave' && this.props.autosaveOn) {
-      draft = JSON.parse(localStorage.getItem(type + this.props.mode + this.formCode + this.unifiedNs));
-    } else if (type === 'draft') {
-      draft = JSON.parse(this.props.getPerDraftDocument.data.results[0].data.replace(/'/g, '"'));
-    }
-    if (draft !== null && typeof draft.data !== 'undefined' && draft.data !== null) {
-      draft.data.forEach(question => {
-        if (!isNaN(question.op) && !!question.id) {
-          const formRadioInput = document.querySelector('[name=\'' + question.id + '\'][value=\'' + question.op + '\']');
-          const feedbackInput = document.querySelector('[name=\'' + question.id + 'f\']');
-
-          if (typeof formRadioInput !== 'undefined' && formRadioInput !== null) {
-            formRadioInput.checked = true;
-          }
-
-          if (typeof feedbackInput !== 'undefined' && feedbackInput !== null) {
-            feedbackInput.value = question.nt;
-          }
-        }
-      });
-    }
-  }
-
-  loadFromProps () {
-    const formData = this.props.perDocument.data.results;
-    formData.forEach(question => {
-      if (!isNaN(question.selected_option) && !!question.question_id) {
-        const formRadioInput = document.querySelector('[name=\'' + question.question_id + '\'][value=\'' + question.selected_option + '\']');
-        const feedbackInput = document.querySelector('[name=\'' + question.question_id + 'f\']');
-
-        if (typeof formRadioInput !== 'undefined' && formRadioInput !== null) {
-          formRadioInput.checked = true;
-        }
-
-        if (typeof feedbackInput !== 'undefined' && feedbackInput !== null) {
-          feedbackInput.value = question.notes;
+      // If EPI benchmark is false remove the EPI questions
+      if (isEpi === 'false') {
+        for (const [compNum, questions] of Object.entries(perQuestions)) {
+          perQuestions[compNum] = questions.filter(question => !question.is_epi);
         }
       }
-    });
-  }
-
-  // TODO: Probably should have a delete function for drafts as well in the future.
-
-  sendForm () {
-    if (this.checkFormFilled()) {
-      let request = this.requestFactory.newFormRequest(this.formCode, this.formName, this.state.languageCode, this.nationalSociety);
-      request = this.requestFactory.addAreaQuestionData(request);
-      request = this.requestFactory.addComponentData(request);
-      request.country_id = this.country_id === undefined ? this.unifiedNs : request.country_id; // when submitting a draft it somehow didn't have the country_id anymore
-      this.props._sendPerForm(request);
-      showAlert('success', <p>PER form has been saved successfully!</p>, true, 2000);
-      clearInterval(this.autosaveInterval);
-      localStorage.setItem('finished' + this.formCode, 1);
-      this.setState({redirect: true});
+      setGroupedQuestionList(perQuestions);
     }
-  }
+  }, [formsState, groupedPerQuestions, formId, isEpi]);
 
-  editDraft () {
-    // if (this.checkFormFilled()) { No need to check mandatory fields when saving only for draft
-    let request = this.requestFactory.newFormRequest(this.formCode, this.formName, this.state.languageCode, this.nationalSociety);
-    request = this.requestFactory.addAreaQuestionData(request);
-    request = this.requestFactory.addComponentData(request);
-    const finalRequest = {code: this.formCode, user_id: this.props.user.data.id + '', data: request, country_id: this.props.ns};
-    this.props._sendPerDraft(finalRequest);
-    showAlert('success', <p>PER form has been saved successfully!</p>, true, 2000);
-    this.setState({redirect: true});
-    // }
-  }
+  return (
+    <Fold title={title} foldWrapperClass='fold--main' foldTitleClass='margin-reset'>
+      <FormTextarea
+        label='Comment'
+        type='text'
+        name={`comment`}
+        id={`comment`}
+        value={formCommentsState ? formCommentsState[formId] : null}
+        onChange={handleChange(formId, null, false, true)}
+        // description=''
+        disabled={!editable}
+      />
 
-  saveDraft () {
-    let request = this.requestFactory.newFormRequest(this.formCode, this.formName, this.state.languageCode, this.nationalSociety);
-    request = this.requestFactory.addAreaQuestionData(request);
-    request = this.requestFactory.addComponentData(request);
-    const finalRequest = {code: this.formCode, user_id: this.props.user.data.id + '', data: request, country_id: this.props.nationalSociety};
-    this.autosave();
-    this.props._sendPerDraft(finalRequest);
-    showAlert('success', <p>PER form has been saved successfully!</p>, true, 2000);
-  }
+      { groupedQuestionList
+        ? Object.keys(groupedQuestionList).map((compId) => {
+        const componentHeader = (
+          <div className='per__component__header'>
+            <h2>Component {compId}: {groupedQuestionList[compId][0].component.title}</h2>
+            <span className='label-secondary'>{groupedQuestionList[compId][0].component.description}</span>
+          </div>
+        );
+        const questions = groupedQuestionList[compId].map((question) => (
+          <div key={question.id}>
+            <h3>{compId}.{question.question_num} {question.question}</h3>
+            { question.description
+              ? (
+                <span className='rich-text-section' dangerouslySetInnerHTML={{__html: question.description}} />
+              )
+              : null }
+            <FormRadioGroup
+              // label=''
+              name={`question${question.id}`}
+              classWrapper='per__form__radio-group'
+              options={question.answers.map((answer) => ({
+                value: answer.id.toString(),
+                label: answer.text,
+                disabled: !editable
+              }))}
+              selectedOption={formDataState[formId][question.id]?.selected_answer}
+              onChange={handleChange(formId, question, true)}
+            >
+            </FormRadioGroup>
+            <FormInput
+              label='Notes'
+              type='text'
+              name={`question${question.id}-note`}
+              id={`question${question.id}-note`}
+              classWrapper=''
+              value={formDataState[formId][question.id]?.notes}
+              onChange={handleChange(formId, question, false)}
+              // description=''
+              disabled={!editable}
+            >
+            </FormInput>
+          </div>
+        ));
 
-  componentWillUnmount () {
-    if (this.props.autosaveOn) {
-      clearInterval(this.autosaveInterval);
-    }
-    if (this.props.mode === 'edit') {
-      localStorage.removeItem('autosave' + this.props.mode + this.formCode + this.unifiedNs);
-    }
-  }
-
-  changeEpiComponentState (e) {
-    this.autosave();
-    this.setState({epiComponent: this.requestFactory.numAnswerToString(parseInt(e.target.value))});
-  }
-
-  autosave () {
-    this.saveState('autosave');
-  }
-
-  checkFormFilled () {
-    let componentIndex = 0;
-    const formError = {filled: true, firstQuestionOffset: 0};
-
-    if (document.querySelectorAll("[name='a1']:checked").length === 0) {
-      document.getElementsByClassName('containera1')[0].style.backgroundColor = '#FEB8B8';
-      formError.filled = false;
-      formError.firstQuestionOffset = document.getElementsByClassName('containera1')[0].offsetTop;
-    }
-
-    for (let component of this.state.components) {
-      if (typeof component.namespaces !== 'undefined' && component.namespaces !== null) {
-        for (let questionIndex in component.namespaces) {
-          if (document.querySelectorAll('[name=\'c' + componentIndex + 'q' + questionIndex + '\']:checked').length < 1) {
-            document.getElementById('container' + componentIndex + 'q' + questionIndex).style.backgroundColor = '#FEB8B8';
-            if (formError.firstQuestionOffset === 0) {
-              formError.firstQuestionOffset = document.getElementById('container' + componentIndex + 'q' + questionIndex).offsetTop;
-            }
-            formError.filled = false;
-          } else {
-            document.getElementById('container' + componentIndex + 'q' + questionIndex).style.backgroundColor = '#FFFFFF';
-          }
-        }
-      }
-
-      if (this.state.epiComponent === 'yes' && typeof component.namespaces !== 'undefined' && component.namespaces !== null && component.epiComponent) {
-        if (document.querySelectorAll('[name=\'c' + componentIndex + 'epi\']:checked').length < 1) {
-          document.getElementById('container' + componentIndex + 'epi').style.backgroundColor = '#FEB8B8';
-          if (formError.firstQuestionOffset === 0) {
-            formError.firstQuestionOffset = document.getElementById('container' + componentIndex + 'epi').offsetTop;
-          }
-          formError.formFilled = false;
-        } else {
-          document.getElementById('container' + componentIndex + 'epi').style.backgroundColor = '#FFFFFF';
-        }
-      }
-
-      componentIndex++;
-    }
-
-    if (formError.firstQuestionOffset !== 0) {
-      window.scroll(0, formError.firstQuestionOffset);
-    }
-
-    return formError.filled;
-  }
-
-  render () {
-    let view = false;
-    if (this.props.mode === 'view') {
-      view = true;
-    }
-    if (this.state.redirect) {
-      return <Redirect to='/account#per-forms' />;
-    }
-    return <PerFormComponent chooseLanguage={this.chooseLanguage}
-      changeEpiComponentState={this.changeEpiComponentState}
-      sendForm={this.sendForm}
-      editDraft={this.editDraft}
-      saveDraft={this.saveDraft}
-      state={this.state}
-      view={view}
-      mode={this.props.mode}
-      ns={parseInt(this.unifiedNs)}
-      formCode={this.formCode} />;
-  }
+        return (
+          <React.Fragment key={compId}>
+            {componentHeader}
+            {questions}
+          </React.Fragment>
+        );
+      }) : null }
+    </Fold>
+  );
 }
 
 if (environment !== 'production') {
   PerForm.propTypes = {
-    _sendPerForm: T.func,
-    _getPerDocument: T.func,
-    _sendPerDraft: T.func,
-    _getPerDraftDocument: T.func,
-    _editPerDocument: T.func,
-    getPerDraftDocument: T.object,
     user: T.object,
-    autosaveOn: T.func,
-    nationalSociety: T.number,
-    view: T.bool,
-    match: T.object,
-    perDocument: T.object,
-    sendPerFormResponse: T.object,
-    mode: T.object,
-    ns: T.string
+    perForm: T.object,
   };
 }
+
+const selector = (state, ownProps) => ({
+  user: state.user.data,
+  perForm: state.perForm,
+  groupedPerQuestions: formQuestionsSelector(state)
+});
+
+const dispatcher = (dispatch) => ({
+  _updatePerForm: (payload) => dispatch(updatePerForm(payload)),
+  _resetPerState: () => dispatch(resetPerState()),
+});
+
+export default connect(selector, dispatcher)(PerForm);

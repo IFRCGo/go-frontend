@@ -43,9 +43,8 @@ import Country from '#views/countries';
 import Deployments from '#views/deployments';
 import Table from '#views/table';
 import Covid19ThreeWSankey from '#views/Covid19ThreeWSankey';
-import PerForms from '#views/per-forms';
-import ViewPerForms from '#views/view-per-forms';
-import EditPerForms from '#views/edit-per-forms';
+import PerForm from '#components/per-forms/per-form';
+import PerAssessment from '#views/per-assessment';
 import Preparedness from '#views/preparedness';
 import TranslationDashboard from '#views/TranslationDashboard';
 import ClearInitCache from '#views/ClearInitCache';
@@ -179,10 +178,12 @@ function Multiplexer(props) {
           <PrivateRoute exact path='/deployments' component={Deployments}/>
           <PrivateRoute exact path='/deployments/personnel/all' render={props => <Table {...props} type='personnel' />} />
           <PrivateRoute exact path='/deployments/erus/all' render={props => <Table {...props} type='eru' />} />
-          <Route path='/per-forms/:formName/:id' component={PerForms} />
+          <Route exact path='/per-form/:form_id' component={PerForm} />
+          <Route exact path='/per-form/:form_id/edit' render={props => <PerForm {...props} isEdit={true} />} />
+          <Route path='/per-assessment/create' render={props => <PerAssessment {...props} isCreate={true} />} />
+          <Route exact path='/per-assessment/:id' component={PerAssessment} />
+          <Route exact path='/per-assessment/:id/edit' render={props => <PerAssessment {...props} isEdit={true} />} />
           <Route path='/preparedness' component={Preparedness} />
-          <Route path='/view-per-forms/:formName/:id' component={ViewPerForms} />
-          <Route path='/edit-per-forms/:formCode/:user/:ns' component={EditPerForms} />
           <Route component={UhOh}/>
         </Switch>
       </BreadcrumbsProvider>

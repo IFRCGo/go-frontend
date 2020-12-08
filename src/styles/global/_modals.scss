@@ -238,18 +238,18 @@
 
 [class^="mma-"],
 [class*=" mma-"] {
-  @extend .button, .button--medium, .button--primary-filled, .button--text-hidden;
+  @extend .button, .button--small, .button--text-hidden;
 }
 
 .mma-xmark {
-  position: absolute;
-  top: $global-spacing * 2;
-  right: $global-spacing * 2;
+  float: right;
+  padding-right: 0;
+  padding-left: 0;
   z-index: 10;
 
   &::before {
     @extend %collecticon-xmark;
-    font-size: 1.25rem;
+    font-size: $base-font-size;
   }
 }
 

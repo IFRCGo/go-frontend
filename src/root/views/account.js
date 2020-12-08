@@ -18,14 +18,13 @@ import {
   getFieldReportsByUser,
   updateProfile,
   getPerCountries,
-  getPerDraftDocument,
-  getPerDocuments,
+  getPerForms,
   getEventById,
   addSubscriptions,
   delSubscription,
-  deletePerDraft,
   getPerOverviewFormStrict as getPerOverviewForm,
-  getPerMission
+  getPerMission,
+  getPerAreas
 } from '#actions';
 
 import { get } from '#utils/utils';
@@ -37,7 +36,7 @@ import { showAlert } from '#components/system-alerts';
 
 import Fold from '#components/fold';
 import TabContent from '#components/tab-content';
-import PerAccountTab from '#components/per-forms/per-account-tab';
+import PerAccount from '#components/per-forms/per-account';
 import BreadCrumb from '../components/breadcrumb';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
@@ -147,13 +146,12 @@ class Account extends React.Component {
   componentDidMount () {
     this.componentIsLoading = true;
     showGlobalLoading();
-    const { user, _getProfile, _getFieldReportsByUser, _getPerCountries, _getPerDocuments, _getPerDraftDocument } = this.props;
+    const { user, _getProfile, _getFieldReportsByUser, _getPerCountries, _getPerForms } = this.props;
     _getProfile(user.username);
     _getFieldReportsByUser(user.id);
     _getPerCountries();
-    _getPerDocuments();
-    const draftQueryFilters = { user: user.id };
-    _getPerDraftDocument(draftQueryFilters);
+    _getPerForms();
+    this.props._getPerAreas();
     this.props._getPerOverviewForm();
     this.props._getPerMission();
     this.displayTabContent();
@@ -281,12 +279,8 @@ class Account extends React.Component {
         this.props._getProfile(this.props.user.username);
       }
     }
-    if (this.props.perForm.deletePerDraft.receivedAt !== nextProps.perForm.deletePerDraft.receivedAt) {
-      const draftQueryFilters = { user: this.props.user.id };
-      this.props._getPerDraftDocument(draftQueryFilters);
-    }
 
-    if (nextProps.profile.fetched === true) {
+    if (nextProps.profile.fetched && nextProps.perForm.getPerForms.fetched && nextProps.perOverviewForm.fetched) {
       hideGlobalLoading();
     }
   }
@@ -877,9 +871,7 @@ class Account extends React.Component {
                   </TabPanel>
                   <TabPanel>
                     <TabContent isError={!this.isPerPermission()} errorMessage={strings.accountPerError} title={strings.accountPerTitle}>
-                      <div className='container-lg'>
-                        <PerAccountTab user={this.props.user} />
-                      </div>
+                      <PerAccount user={this.props.user} />
                     </TabContent>
                   </TabPanel>
                 </div>
@@ -905,14 +897,13 @@ if (environment !== 'production') {
     _getProfile: T.func,
     _updateSubscriptions: T.func,
     _delSubscription: T.func,
-    _deletePerDraft: T.func,
     _getFieldReportsByUser: T.func,
     _updateProfile: T.func,
     _getPerCountries: T.func,
-    _getPerDocuments: T.func,
-    _getPerDraftDocument: T.func,
+    _getPerForms: T.func,
     _getEventById: T.func,
     _getPerOverviewForm: T.func,
+    _getPerAreas: T.func,
     _clearEvents: T.func,
     _getPerMission: T.func,
     getPerMission: T.object
@@ -927,6 +918,7 @@ const selector = (state, ownProps) => ({
   profile: state.profile,
   fieldReport: state.fieldReport,
   perForm: state.perForm,
+  perAreas: state.perAreas,
   event: state.event,
   eventDeletion: state.subscriptions.delSubscriptions,
   perOverviewForm: state.perForm.getPerOverviewForm,
@@ -941,13 +933,12 @@ const dispatcher = (dispatch) => ({
   _updateSubscriptions: (...args) => dispatch(updateSubscriptions(...args)),
   _getFieldReportsByUser: (...args) => dispatch(getFieldReportsByUser(...args)),
   _updateProfile: (...args) => dispatch(updateProfile(...args)),
-  _getPerCountries: (...args) => dispatch(getPerCountries(...args)),
-  _getPerDocuments: (...args) => dispatch(getPerDocuments(...args)),
+  _getPerCountries: (...args) => dispatch(getPerCountries(...args)), // TODO: probably removable later
+  _getPerForms: (...args) => dispatch(getPerForms(...args)),
+  _getPerAreas: (...args) => dispatch(getPerAreas(...args)),
   _getEventById: (...args) => dispatch(getEventById(...args)),
-  _getPerDraftDocument: (...args) => dispatch(getPerDraftDocument(...args)),
   _addSubscriptions: (...args) => dispatch(addSubscriptions(...args)),
   _delSubscription: (...args) => dispatch(delSubscription(...args)),
-  _deletePerDraft: (...args) => dispatch(deletePerDraft(...args)),
   _clearEvents: (eventId) => dispatch({ type: 'CLEAR_EVENTS', eventId: eventId }),
   _getPerOverviewForm: (...args) => dispatch(getPerOverviewForm(...args)),
   _getPerMission: (...args) => dispatch(getPerMission(...args))

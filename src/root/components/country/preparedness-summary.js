@@ -21,7 +21,7 @@ class PreparednessSummary extends React.Component {
   }
 
   buildFormCodes () {
-    this.props.getPerDocuments.data.results.forEach((document) => {
+    this.props.getPerForms.data.results.forEach((document) => {
       this.formIds[document.id] = document;
     });
   }
@@ -32,10 +32,10 @@ class PreparednessSummary extends React.Component {
   }
 
   render () {
-    if (typeof this.props.getPerDocuments.data.count !== 'undefined' && this.props.getPerDocuments.data.count === 0) return null;
-    if (!this.props.user.data.username || typeof this.props.getPerDocuments.data.results === 'undefined') return null;
+    if (typeof this.props.getPerForms.data.count !== 'undefined' && this.props.getPerForms.data.count === 0) return null;
+    if (!this.props.user.data.username || typeof this.props.getPerForms.data.results === 'undefined') return null;
     this.buildFormCodes();
-    const resultSetCopy = JSON.parse(JSON.stringify(this.props.getPerDocument.data.results));
+    const resultSetCopy = JSON.parse(JSON.stringify(this.props.getPerForm.data.results));
     this.filteredData = resultSetCopy.filter((component) => {
       return component.selected_option > 1;
     }).map((component) => {
@@ -170,8 +170,8 @@ PreparednessSummary.contextType = LanguageContext;
 if (environment !== 'production') {
   PreparednessSummary.propTypes = {
     _getPerNsPhase: T.func,
-    getPerDocuments: T.object,
-    getPerDocument: T.object,
+    getPerForms: T.object,
+    getPerForm: T.object,
     user: T.object
   };
 }

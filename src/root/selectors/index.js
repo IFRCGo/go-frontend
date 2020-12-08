@@ -35,6 +35,21 @@ export const countriesSelector = (state) => {
   }
 };
 
+export const nsDropdownSelector = (state) => {
+  if (state.allCountries.data.results && state.allCountries.data.results.length) {
+    return state.allCountries.data.results.reduce((result, country) => {
+      if (country.society_name) {
+        result.push({
+          'value': country.id,
+          'label': country.society_name
+        });
+      }
+      return result;
+    }, []);
+  }
+  return initialState;
+};
+
 export const countriesByRegionSelector = (state) => {
   if (state.allCountries && state.allCountries.data.results) {
     let countriesByRegion = _groupBy(state.allCountries.data.results, 'region');
@@ -245,4 +260,28 @@ export const disasterTypesSelectSelector = (state) => {
     return state.disasterTypes.data.results.map((dt) => ({ value: dt.id, label: dt.name })).sort(compareString);
   }
   return [];
+};
+
+// area_nums > component_nums > questions
+export const formQuestionsSelector = (state) => {
+  if (state.perQuestions && state.perQuestions.data.results) {
+    // Custom sorting order, this was the cleanest way
+    const answersOrder = {
+      'yes': 0,
+      'no': 1,
+      'Not Reviewed': 2,
+      'Does not exist': 3,
+      'Partially exists': 4,
+      'Need improvements': 5,
+      'Exist, could be strengthened': 6,
+      'High performance': 7
+    };
+    return state.perQuestions.data.results.reduce((result, item) => {
+      item.answers.sort((a, b) => answersOrder[a.text_en] - answersOrder[b.text_en]);
+      const area = result[item.component.area.area_num] = result[item.component.area.area_num] || {};
+      const comp = area[item.component.component_num] = area[item.component.component_num] || [];
+      comp.push(item);
+      return result;
+    }, {});
+  }
 };
