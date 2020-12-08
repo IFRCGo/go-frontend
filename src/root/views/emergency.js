@@ -58,7 +58,7 @@ import { countriesGeojsonSelector, regionsByIdSelector, disasterTypesSelector } 
 class Emergency extends React.Component {
   constructor (props) {
     super(props);
-
+    const {strings} = props;
     this.state = {
       showProjectForm: false,
       selectedAppeal: null,
@@ -67,7 +67,11 @@ class Emergency extends React.Component {
         type: 'all',
       },
       subscribed: false,
-      tabs: [{ title: 'Emergency Details', hash: '#details' }, { title: 'Reports/Documents', hash: '#reports' }, { title: 'Rapid Response', hash: '#rapid-response' }],
+      tabs: [
+        { title: strings.emergencyTabDetails, hash: '#details' },
+        { title: strings.emergencyTabReports, hash: '#reports' },
+        { title: strings.emergencyTabRR, hash: '#rapid-response' }
+      ]
     };
     this.addSubscription = this.addSubscription.bind(this);
     this.delSubscription = this.delSubscription.bind(this);
