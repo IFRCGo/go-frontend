@@ -1109,7 +1109,7 @@ class Emergency extends React.Component {
                     >
                       <Expandable
                         sectionClass="rich-text-section"
-                        limit={2048}
+                        limit={4096}
                         text={summary}
                       />
                     </Fold>
