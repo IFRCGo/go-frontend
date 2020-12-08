@@ -105,7 +105,7 @@ main {
 
 .page__footer {
   background: $grey-coal;
-  padding: ($global-spacing * 2) 0;
+  padding: $spacing-3 0 $spacing-4;
   color: $grey-fog;
 
   a {
@@ -130,7 +130,7 @@ main {
 .footer-section-heading {
   color: $white;
   font-size: $font-size-lg;
-  font-weight: $base-font-bold;
+  font-weight: $base-font-semi-bold;
   text-transform: uppercase;
   letter-spacing: $letter-spacing-lg;
   margin: 0 0 $spacing-half 0;
@@ -177,7 +177,7 @@ main {
 }
 
 .footer-copyright--sm {
-  @include media(mid) {
+  @include media(medium) {
     display: none;
   }
 }
@@ -185,7 +185,7 @@ main {
 .footer-copyright--lg {
   display: none;
 
-  @include media(mid) {
+  @include media(medium) {
     display: block;
   }
 }
