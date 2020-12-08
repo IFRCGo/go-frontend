@@ -58,28 +58,33 @@ function PreparednessOverview (props) {
             </div>
           </div>
         </div>
-        <div className='col-2-sm'>
-          <p><Translate stringId='preparednessOverviewAssessmentDate'/></p>
-          <p><Translate stringId='preparednessOverviewPerProcessType'/></p>
-          <p><Translate stringId='preparednessOverviewCycle'/></p>
-        </div>
-        <div className='col-2-sm text-bold'>
-          <p>{ov.date_of_assessment.substring(0, 10)}</p>
-          <p>{ov.type_of_assessment?.name}</p>
-          <p>{ov.assessment_number}</p>
-        </div>
-        <div className='col-2-sm'>
-          <p><Translate stringId='overviewFormFocalPoint'/></p>
-          <p><Translate stringId='overviewFormFocalPointEmail'/></p>
-          <p><Translate stringId='overviewFormPartnerFocalPoint'/></p>
-          <p><Translate stringId='overviewFormPartnerFocalPointEmail'/></p>
-        </div>
-        <div className='col-2-sm text-bold'>
-          <p>{ov.ns_focal_point_name || NO_DATA}</p>
-          <p>{ov.ns_focal_point_email || NO_DATA}</p>
-          <p>{ov.partner_focal_point_name || NO_DATA}</p>
-          <p>{ov.partner_focal_point_email || NO_DATA}</p>
-        </div>
+        { ov
+          ? (
+            <React.Fragment>
+              <div className='col-2-sm'>
+                <p><Translate stringId='preparednessOverviewAssessmentDate'/></p>
+                <p><Translate stringId='preparednessOverviewPerProcessType'/></p>
+                <p><Translate stringId='preparednessOverviewCycle'/></p>
+              </div>
+              <div className='col-2-sm text-bold'>
+                <p>{ov.date_of_assessment.substring(0, 10)}</p>
+                <p>{ov.type_of_assessment?.name}</p>
+                <p>{ov.assessment_number}</p>
+              </div>
+              <div className='col-2-sm'>
+                <p><Translate stringId='overviewFormFocalPoint'/></p>
+                <p><Translate stringId='overviewFormFocalPointEmail'/></p>
+                <p><Translate stringId='overviewFormPartnerFocalPoint'/></p>
+                <p><Translate stringId='overviewFormPartnerFocalPointEmail'/></p>
+              </div>
+              <div className='col-2-sm text-bold'>
+                <p>{ov.ns_focal_point_name || NO_DATA}</p>
+                <p>{ov.ns_focal_point_email || NO_DATA}</p>
+                <p>{ov.partner_focal_point_name || NO_DATA}</p>
+                <p>{ov.partner_focal_point_email || NO_DATA}</p>
+              </div>
+            </React.Fragment>
+          ) : null }
       </div>
 
       <div className='text-center'>
