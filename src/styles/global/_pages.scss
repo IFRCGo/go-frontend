@@ -164,6 +164,12 @@ main {
     margin-right: 0;
   }
 
+  [dir='rtl'] & {
+    &:last-of-type {
+      margin-right: ($spacing * 1.7);
+    }
+  }
+
   &.f-icon-twitter {
     font-size: 150%;
   }
