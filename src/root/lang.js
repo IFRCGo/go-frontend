@@ -51,6 +51,7 @@ export default {
   aboutPresentation: 'GO presentation materials',
   aboutImStrategy: 'IFRC IM strategy',
   aboutIfrcResources: 'IFRC Resources',
+  aboutSurgeEvents: 'Global Surge events and trainings',
   aboutSurgeServices: 'IFRC Surge Services',
   aboutSurgeCatalogue: 'Catalogue of surge services',
   aboutSurgeNetwork: 'Surge IM network',

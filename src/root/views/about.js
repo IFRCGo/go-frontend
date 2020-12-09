@@ -224,6 +224,13 @@ export default class About extends React.Component {
                             </div>
                           </div>
                           <div className='box__global__content'>
+                            <a href='https://docs.google.com/spreadsheets/d/1F-78qDc8vdh5hli5FLFeyTvlFQgw19OqZXMR50TQ1C0/edit?usp=sharing' target='_blank' className='box__global__content--ref__link'>
+                              <span>
+                                <Translate stringId='aboutSurgeEvents'/>
+                              </span>
+                              <span className='collecticon-chevron-right icon-about-ref'></span>
+                            </a>
+
                             <a href='https://ifrcgo.org/global-services/' target='_blank' className='box__global__content--ref__link'>
                               <span>
                                 <Translate stringId='aboutSurgeCatalogue'/>
