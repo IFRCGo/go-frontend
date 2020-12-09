@@ -98,6 +98,7 @@
     "local-storage": "^1.4.2",
     "lodash": "^4.17.12",
     "lodash.clonedeep": "^4.5.0",
+    "lodash.debounce": "^4.0.8",
     "lodash.defaultsdeep": "^4.6.1",
     "lodash.filter": "^4.6.0",
     "lodash.find": "^4.6.0",

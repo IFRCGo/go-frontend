@@ -3,6 +3,7 @@ import { render } from 'react-dom';
 import { PropTypes as T } from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import mapboxgl from 'mapbox-gl';
+import _debounce from 'lodash.debounce';
 import chroma from 'chroma-js';
 import { environment } from '#config';
 import BlockLoading from '../block-loading';
@@ -39,6 +40,7 @@ class MainMap extends React.Component {
       selectedDtype: null,
       mapActions: [],
       ready: false,
+      selectedFeatureISO: '',
       filters: {
         startDate: '',
         endDate: ''
@@ -194,22 +196,23 @@ class MainMap extends React.Component {
       theMap.getCanvas().style.cursor = '';
     });
 
-    theMap.on('mousemove', 'district', e => {
-      const id = get(e, 'features.0.properties.OBJECTID').toString();
-      if (id && get(this.props, 'deployments.data.areas', []).find(d => d.id === id)) {
-        theMap.getCanvas().style.cursor = 'pointer';
-      } else {
-        theMap.getCanvas().style.cursor = '';
-      }
-    });
+    // theMap.on('mousemove', 'district', e => {
+    //   const id = get(e, 'features.0.properties.OBJECTID').toString();
+    //   if (id && get(this.props, 'deployments.data.areas', []).find(d => d.id === id)) {
+    //     theMap.getCanvas().style.cursor = 'pointer';
+    //   } else {
+    //     theMap.getCanvas().style.cursor = '';
+    //   }
+    // });
 
-    theMap.on('mousemove', 'icrc_admin0', e => {
+    theMap.on('mousemove', 'icrc_admin0', _debounce(e => {
       const feature = e.features.length ? e.features[0] : undefined;
-      if (feature) {
+      if (feature && feature.properties.ISO2 !== this.state.selectedFeatureISO) {
+        this.setState({ selectedFeatureISO: feature.properties.ISO2 });
         theMap.setLayoutProperty('icrc_admin0_highlight', 'visibility', 'visible');
         theMap.setFilter('icrc_admin0_highlight', ['==', 'OBJECTID', feature.properties.OBJECTID]);
       }
-    });
+    }, 80));
 
     theMap.on('click', 'icrc_admin0', e => {
       console.log('features', e.features);
