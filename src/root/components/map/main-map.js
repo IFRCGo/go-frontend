@@ -180,21 +180,21 @@ class MainMap extends React.Component {
     //   this.showOperationsPopover(theMap, e.features[0]);
     // });
 
-    theMap.on('mousemove', 'appeals', e => {
-      theMap.getCanvas().style.cursor = 'pointer';
-    });
+    // theMap.on('mousemove', 'appeals', e => {
+    //   theMap.getCanvas().style.cursor = 'pointer';
+    // });
 
-    theMap.on('mouseleave', 'appeals', e => {
-      theMap.getCanvas().style.cursor = '';
-    });
+    // theMap.on('mouseleave', 'appeals', e => {
+    //   theMap.getCanvas().style.cursor = '';
+    // });
 
-    theMap.on('mousemove', 'country', e => {
-      theMap.getCanvas().style.cursor = 'pointer';
-    });
+    // theMap.on('mousemove', 'icrc_admin0', e => {
+    //   theMap.getCanvas().style.cursor = 'pointer';
+    // });
 
-    theMap.on('mouseleave', 'country', e => {
-      theMap.getCanvas().style.cursor = '';
-    });
+    // theMap.on('mouseleave', 'icrc_admin0', e => {
+    //   theMap.getCanvas().style.cursor = '';
+    // });
 
     // theMap.on('mousemove', 'district', e => {
     //   const id = get(e, 'features.0.properties.OBJECTID').toString();
@@ -214,11 +214,19 @@ class MainMap extends React.Component {
       }
     }, 80));
 
-    theMap.on('click', 'icrc_admin0', e => {
-      console.log('features', e.features);
+    theMap.on('click', 'appeals', e => {
       const feature = e.features.length ? e.features[0] : undefined;
       if (feature) {
-        this.showOperationsPopover(theMap, feature, e, this.props.countries);
+        this.showOperationsPopover(theMap, feature, e, this.props.countries, 'appeals');
+        // theMap.setLayoutProperty('icrc_admin0_highlight', 'visibility', 'visible');
+        // theMap.setFilter('icrc_admin0_highlight', ['==', 'OBJECTID', feature.properties.OBJECTID]);
+      }
+    });
+
+    theMap.on('click', 'icrc_admin0', e => {
+      const feature = e.features.length ? e.features[0] : undefined;
+      if (feature) {
+        this.showOperationsPopover(theMap, feature, e, this.props.countries, 'icrc_admin0');
         // theMap.setLayoutProperty('icrc_admin0_highlight', 'visibility', 'visible');
         // theMap.setFilter('icrc_admin0_highlight', ['==', 'OBJECTID', feature.properties.OBJECTID]);
       }
@@ -258,10 +266,16 @@ class MainMap extends React.Component {
     }
   }
 
-  showOperationsPopover (theMap, feature, event, countries=[]) {
+  showOperationsPopover (theMap, feature, event, countries=[], layer) {
     let popoverContent = document.createElement('div');
-    const iso = feature.properties.ISO2.toUpperCase();
-    const appealFeature = this.state.markerGeoJSON.features.find(f => f.properties.iso.toUpperCase() === iso);
+    let appealFeature;
+    let iso;
+    if (layer === 'appeals') {
+      appealFeature = feature;
+    } else {
+      iso = feature.properties.ISO2.toUpperCase();
+      appealFeature = this.state.markerGeoJSON.features.find(f => f.properties.iso.toUpperCase() === iso);
+    }
     let title, pageId, operations, centroid;
     if (appealFeature) {
       const { properties } = appealFeature;
