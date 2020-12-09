@@ -348,9 +348,10 @@ function PerAssessment (props) {
     const of = props.perOverview;
     // Checking for 'id' so this doesn't overwrite the state again
     // on changing tabs back and forth
-    // TODO: find a better way to solve the count === 1, reset state doesn't seem to work well...
     if (!isCreate && !overviewState.id && of.data && !of.fetching && of.fetched) {
       const res = of.data.results[0];
+      // TODO: if the Overview is retained in the state this actually only pulls the
+      // previous values in... need to find a way to always overwrite
       if (idFromPath === res.id.toString()) {
         setOrigCountry(res.country?.id);
         setOverviewState({
