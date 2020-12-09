@@ -2,6 +2,7 @@ import React from 'react';
 import { PropTypes as T } from 'prop-types';
 import { connect } from 'react-redux';
 import { ResponsiveContainer, LineChart, Line, Legend, XAxis, YAxis, Tooltip } from 'recharts';
+import { find, sortBy } from 'lodash';
 import { DateTime } from 'luxon';
 
 import { environment } from '#config';
@@ -109,7 +110,7 @@ class TimelineCharts extends React.Component {
       );
     }
 
-    const data = dataDrefs.map((o, i) => {
+    let data = dataDrefs.map((o, i) => {
       const {timespan, ...drefData} = o;
       // Sometimes a month or year will have a DREF, but no appeals data yet.
       // The aggregate URL endpoint won't return an empty object for the appeal,
@@ -122,6 +123,20 @@ class TimelineCharts extends React.Component {
         appeals: appealsData
       };
     });
+
+    // Deal with missing months
+    const dates = dataDrefs.map(({ timespan }) => DateTime.fromISO(timespan, { zone: 'utc' }));
+    let curDate = DateTime.min(...dates);
+    const maxDate = DateTime.max(...dates);
+    while (curDate < maxDate) {
+      if (!find(dates, d => d.equals(curDate))) {
+        data.push({ timespan: curDate.toISODate({ zone: 'utc'}), drefs: { count: 0 }, appeals: { count: 0 }});
+      }
+      curDate = curDate.plus({ months: 1});
+    }
+
+    // sort by date
+    data = sortBy(data, [o => DateTime.fromISO(o.timespan, { zone: 'utc'}).ts]);
 
     return (
       <div className='col col-6-sm'>
