@@ -130,7 +130,7 @@ class AdminArea extends SFPComponent {
     this.getData(props);
     this.getAdmArea(props.type, countryId);
     this.props._getPerNsPhase(countryId);
-    this.props._getPerOverviewForm(countryId);
+    this.props._getPerOverviews(countryId);
     this.props._getPerWorkPlan(countryId);
     this.props._getPerForms();
     this.props._getPerForm(null, countryId);
