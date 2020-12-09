@@ -23,7 +23,7 @@ import {
   getAssessmentTypes,
   getPerAreas,
   getPerQuestions,
-  getPerOverviewFormStrict,
+  getPerOverviewStrict,
   getPerForms,
   getLatestCountryOverview,
   createPerOverview,
@@ -113,7 +113,7 @@ function PerAssessment (props) {
     _getAssessmentTypes,
     _getPerAreas,
     _getPerQuestions,
-    _getPerOverviewFormStrict,
+    _getPerOverviewStrict,
     _getPerForms,
     _getLatestCountryOverview,
     _createPerOverview,
@@ -210,13 +210,13 @@ function PerAssessment (props) {
     if (isCreate) {
       isedit = true;
     } else {
-      const ov = props.perForm.getPerOverviewForm;
+      const ov = props.perOverview;
       if (idFromPath && !ov.fetching && ov.fetched && ov.data && ov.data.results) {
         isedit = !ov.data.results[0].is_finalized && isEdit;
       }
     }
     return isedit;
-  }, [isCreate, isEdit, idFromPath, props.perForm.getPerOverviewForm]);
+  }, [isCreate, isEdit, idFromPath, props.perOverview]);
 
   useEffect(() => {
     if (!props.perAreas || (!props.perAreas.fetched && !props.perAreas.fetching)) {
@@ -238,11 +238,11 @@ function PerAssessment (props) {
   useEffect(() => {
     // Basically if it's not Create
     if (idFromPath) {
-      _getPerOverviewFormStrict(null, idFromPath);
+      _getPerOverviewStrict(idFromPath);
       _getPerForms(null, idFromPath, true);
       showGlobalLoading();
     }
-  }, [_getPerOverviewFormStrict, _getPerForms, idFromPath]);
+  }, [_getPerOverviewStrict, _getPerForms, idFromPath]);
 
   // Triggers on create, update actions
   useEffect(() => {
@@ -316,7 +316,7 @@ function PerAssessment (props) {
   }, [props.perForm.assessmentTypes]);
 
   useEffect(() => {
-    const overviews = props.perForm.getPerOverviewForm;
+    const overviews = props.perOverview;
     const upo = props.perForm.updatePerOverview;
     const umpf = props.perForm.updateMultiplePerForms;
     if (!isCreate
@@ -338,48 +338,51 @@ function PerAssessment (props) {
     formsFetched,
     formsData,
     formDataState,
-    props.perForm.getPerOverviewForm,
+    props.perOverview,
     props.groupedPerQuestions,
     props.perForm.updatePerOverview,
     props.perForm.updateMultiplePerForms
   ]);
 
   useEffect(() => {
-    const of = props.perForm.getPerOverviewForm;
+    const of = props.perOverview;
     // Checking for 'id' so this doesn't overwrite the state again
     // on changing tabs back and forth
-    // TODO: find a better way to solve the count === 1, reset state doesn't seem to work well...
-    if (!isCreate && !overviewState.id && of.data && !of.fetching && of.fetched && of.data.count === 1) {
+    if (!isCreate && !overviewState.id && of.data && !of.fetching && of.fetched) {
       const res = of.data.results[0];
-      setOrigCountry(res.country?.id);
-      setOverviewState({
-        assessment_number: res.assessment_number,
-        branches_involved: res.branches_involved,
-        country_id: res.country?.id,
-        date_of_assessment: res.date_of_assessment?.substring(0, 10),
-        date_of_mid_term_review: res.date_of_mid_term_review?.substring(0, 10),
-        date_of_next_asmt: res.date_of_next_asmt?.substring(0, 10),
-        facilitator_name: res.facilitator_name,
-        facilitator_email: res.facilitator_email,
-        facilitator_phone: res.facilitator_phone,
-        facilitator_contact: res.facilitator_contact,
-        id: res.id,
-        is_epi: res.is_epi ? 'true' : 'false',
-        is_finalized: res.is_finalized,
-        method_asmt_used: res.method_asmt_used,
-        ns_focal_point_name: res.ns_focal_point_name,
-        ns_focal_point_email: res.ns_focal_point_email,
-        ns_focal_point_phone: res.ns_focal_point_phone,
-        other_consideration: res.other_consideration,
-        partner_focal_point_name: res.partner_focal_point_name,
-        partner_focal_point_email: res.partner_focal_point_email,
-        partner_focal_point_phone: res.partner_focal_point_phone,
-        partner_focal_point_organization: res.partner_focal_point_organization,
-        type_of_assessment: res.type_of_assessment?.id,
-        user_id: props.user.id
-      });
+      // TODO: if the Overview is retained in the state this actually only pulls the
+      // previous values in... need to find a way to always overwrite
+      if (idFromPath === res.id.toString()) {
+        setOrigCountry(res.country?.id);
+        setOverviewState({
+          assessment_number: res.assessment_number,
+          branches_involved: res.branches_involved,
+          country_id: res.country?.id,
+          date_of_assessment: res.date_of_assessment?.substring(0, 10),
+          date_of_mid_term_review: res.date_of_mid_term_review?.substring(0, 10),
+          date_of_next_asmt: res.date_of_next_asmt?.substring(0, 10),
+          facilitator_name: res.facilitator_name,
+          facilitator_email: res.facilitator_email,
+          facilitator_phone: res.facilitator_phone,
+          facilitator_contact: res.facilitator_contact,
+          id: res.id,
+          is_epi: res.is_epi ? 'true' : 'false',
+          is_finalized: res.is_finalized,
+          method_asmt_used: res.method_asmt_used,
+          ns_focal_point_name: res.ns_focal_point_name,
+          ns_focal_point_email: res.ns_focal_point_email,
+          ns_focal_point_phone: res.ns_focal_point_phone,
+          other_consideration: res.other_consideration,
+          partner_focal_point_name: res.partner_focal_point_name,
+          partner_focal_point_email: res.partner_focal_point_email,
+          partner_focal_point_phone: res.partner_focal_point_phone,
+          partner_focal_point_organization: res.partner_focal_point_organization,
+          type_of_assessment: res.type_of_assessment?.id,
+          user_id: props.user.id
+        });
+      }
     }
-  }, [props.perForm.getPerOverviewForm, props.user, isCreate, overviewState, setOverviewState]);
+  }, [props.perOverview, props.user, isCreate, overviewState, setOverviewState, idFromPath]);
 
   // If Country changes, get the latest Overview for that one
   useEffect(() => {
@@ -579,6 +582,7 @@ const selector = (state, ownProps) => ({
   perAreas: state.perAreas,
   perQuestions: state.perQuestions,
   perForm: state.perForm,
+  perOverview: state.perOverview,
   groupedPerQuestions: formQuestionsSelector(state),
   nsDropdownItems: nsDropdownSelector(state)
 });
@@ -587,7 +591,7 @@ const dispatcher = (dispatch) => ({
   _getAssessmentTypes: () => dispatch(getAssessmentTypes()),
   _getPerAreas: (...args) => dispatch(getPerAreas(...args)),
   _getPerQuestions: (...args) => dispatch(getPerQuestions(...args)),
-  _getPerOverviewFormStrict: (...args) => dispatch(getPerOverviewFormStrict(...args)),
+  _getPerOverviewStrict: (...args) => dispatch(getPerOverviewStrict(...args)),
   _getPerForms: (...args) => dispatch(getPerForms(...args)),
   _getLatestCountryOverview: (...args) => dispatch(getLatestCountryOverview(...args)),
   _createPerOverview: (payload) => dispatch(createPerOverview(payload)),

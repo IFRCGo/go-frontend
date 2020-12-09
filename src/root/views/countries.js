@@ -27,7 +27,7 @@ import {
   getPartnerDeployments,
   setPartnerDeploymentFilter,
   getPerNsPhase,
-  getPerOverviewForm,
+  getPerOverviews,
   getPerWorkPlan,
   getPerForm,
   getPerForms,
@@ -130,7 +130,7 @@ class AdminArea extends SFPComponent {
     this.getData(props);
     this.getAdmArea(props.type, countryId);
     this.props._getPerNsPhase(countryId);
-    this.props._getPerOverviewForm(countryId);
+    this.props._getPerOverviews(countryId);
     this.props._getPerWorkPlan(countryId);
     this.props._getPerForms();
     this.props._getPerForm(null, countryId);
@@ -862,7 +862,7 @@ const dispatcher = dispatch => ({
   _setPartnerDeploymentFilter: (...args) => dispatch(setPartnerDeploymentFilter(...args)),
   _getFdrs: (...args) => dispatch(getFdrs(...args)),
   _getPerNsPhase: (...args) => dispatch(getPerNsPhase(...args)),
-  _getPerOverviewForm: (...args) => dispatch(getPerOverviewForm(...args)),
+  _getPerOverviews: (...args) => dispatch(getPerOverviews(...args)),
   _getPerWorkPlan: (...args) => dispatch(getPerWorkPlan(...args)),
   _getPerForm: (...args) => dispatch(getPerForm(...args)),
   _getPerForms: (...args) => dispatch(getPerForms(...args)),
