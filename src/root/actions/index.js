@@ -712,14 +712,23 @@ export function getPerNsPhase (countryId = null) {
   return fetchJSON(`api/v2/per_ns_phase/?${f}`, PER_NS_PHASE, withToken());
 }
 
-export const PER_OVERVIEW_FORM = 'PER_OVERVIEW_FORM';
-export function getPerOverviewForm (countryId = null, formId = null) {
+export const PER_OVERVIEWS = 'PER_OVERVIEWS';
+export function getPerOverviews (countryId = null, formId = null) {
   const f = buildAPIQS({country: countryId, id: formId});
-  return fetchJSON(`api/v2/peroverview/?${f}`, PER_OVERVIEW_FORM, withToken());
+  return fetchJSON(`api/v2/peroverview/?${f}`, PER_OVERVIEWS, withToken());
 }
 
-export function getPerOverviewFormStrict (countryId = null, formId = null) {
+export function getPerOverviewsStrict (countryId = null, formId = null) {
   const f = buildAPIQS({country: countryId, id: formId});
+  return fetchJSON(`api/v2/peroverviewstrict/?${f}`, PER_OVERVIEWS, withToken());
+}
+
+export const PER_OVERVIEW_FORM = 'PER_OVERVIEW_FORM';
+export function getPerOverviewStrict (formId) {
+  if (!formId) {
+    return {};
+  }
+  const f = buildAPIQS({id: formId});
   return fetchJSON(`api/v2/peroverviewstrict/?${f}`, PER_OVERVIEW_FORM, withToken());
 }
 

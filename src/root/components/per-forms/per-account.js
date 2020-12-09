@@ -8,7 +8,7 @@ import { countriesSelector } from '../../selectors';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 import {
-  getPerOverviewForm,
+  getPerOverviews,
   deletePerOverview
 } from '#actions';
 
@@ -28,7 +28,7 @@ function PerAccount (props) {
   const [country, setCountry] = useState();
   const [formList, setFormList] = useState([]);
   const {
-    _getPerOverviewForm,
+    _getPerOverviews,
     _deletePerOverview
   } = props;
 
@@ -142,12 +142,12 @@ function PerAccount (props) {
       hideGlobalLoading();
       if (dpo.data.status === 'ok') {
         showAlert('success', <p><Translate stringId="perOverviewAlertDeleted" /></p>, true, 2000);
-        _getPerOverviewForm();
+        _getPerOverviews();
       } else if (dpo.error) {
         showAlert('danger', <p><Translate stringId="perOverviewAlertDeleted" /></p>, true, 2000);
       }
     }
-  }, [props.perForm.deletePerOverview, _getPerOverviewForm]);
+  }, [props.perForm.deletePerOverview, _getPerOverviews]);
   
   return (
     <React.Fragment>
@@ -217,7 +217,7 @@ if (environment !== 'production') {
     perForm: T.object,
     perOverviewForm: T.object,
     countries: T.array,
-    _getPerOverviewForm: T.func,
+    _getPerOverviews: T.func,
     _deletePerOverview: T.func
   };
 }
@@ -230,7 +230,7 @@ const selector = (state, ownProps) => ({
 });
 
 const dispatcher = (dispatch) => ({
-  _getPerOverviewForm: () => dispatch(getPerOverviewForm()),
+  _getPerOverviews: () => dispatch(getPerOverviews()),
   _deletePerOverview: (payload) => dispatch(deletePerOverview(payload))
 });
 

@@ -246,13 +246,13 @@ export function getPerNsPhase (state = initialState, action) {
 
 export function getPerOverviewForm (state = initialState, action) {
   switch (action.type) {
-    case 'PER_OVERVIEW_FORM_INFLIGHT':
+    case 'PER_OVERVIEWS_INFLIGHT':
       state = stateInflight(state, action);
       break;
-    case 'PER_OVERVIEW_FORM_FAILED':
+    case 'PER_OVERVIEWS_FAILED':
       state = stateError(state, action);
       break;
-    case 'PER_OVERVIEW_FORM_SUCCESS':
+    case 'PER_OVERVIEWS_SUCCESS':
       state = stateSuccess(state, action);
       break;
     case RESET_PER_STATE:
