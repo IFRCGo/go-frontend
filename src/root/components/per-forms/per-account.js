@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect, useMemo, useCallback } from 'react';
 import { connect } from 'react-redux';
+import { saveAs } from 'file-saver';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -9,7 +10,8 @@ import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 import {
   getPerOverviews,
-  deletePerOverview
+  deletePerOverview,
+  exportPerToCsv
 } from '#actions';
 
 import Select from 'react-select';
@@ -29,7 +31,8 @@ function PerAccount (props) {
   const [formList, setFormList] = useState([]);
   const {
     _getPerOverviews,
-    _deletePerOverview
+    _deletePerOverview,
+    _exportPerToCsv
   } = props;
 
   const handleDelete = useCallback((formId) => {
@@ -46,12 +49,23 @@ function PerAccount (props) {
     setModalReveal(false);
   }, [handleDelete, idToDelete]);
 
+  const handleExport = useCallback((formId) => {
+    _exportPerToCsv(formId);
+  }, [_exportPerToCsv]);
+
   // PER Overviews variables
   const [ovFetching, ovFetched, overviewFormList] = useMemo(() => [
     props.perOverviewForm.fetching,
     props.perOverviewForm.fetched,
     props.perOverviewForm.data,
   ], [props.perOverviewForm]);
+
+  useEffect(() => {
+    // const blob = new Blob([csv], { type: 'text/csv' });
+    // const fileName = `projects-export-${timestamp}.csv`;
+
+    // saveAs(blob, fileName);
+  }, []);
 
   useEffect(() => {
     if (!ovFetching && ovFetched){
@@ -122,12 +136,20 @@ function PerAccount (props) {
                 </React.Fragment>
               ) 
               : (
-                <Link
-                  className='button button--xsmall button--primary-bounded per__list__button'
-                  to={`/per-assessment/${form.id}#overview`}
-                >
-                  <Translate stringId='perdocumentView' />
-                </Link>
+                <React.Fragment>
+                  <Link
+                    className='button button--xsmall button--primary-bounded per__list__button'
+                    to={`/per-assessment/${form.id}#overview`}
+                  >
+                    <Translate stringId='perdocumentView' />
+                  </Link>
+                  <button
+                    className='button button--xsmall button--primary-bounded per__list__button'
+                    onClick={() => handleExport(form.id)}
+                  >
+                    <Translate stringId='threeWExport' />
+                  </button>
+                </React.Fragment>
               )}
           </React.Fragment>
         ),
@@ -218,7 +240,8 @@ if (environment !== 'production') {
     perOverviewForm: T.object,
     countries: T.array,
     _getPerOverviews: T.func,
-    _deletePerOverview: T.func
+    _deletePerOverview: T.func,
+    _exportPerToCsv: T.func
   };
 }
 
@@ -231,7 +254,8 @@ const selector = (state, ownProps) => ({
 
 const dispatcher = (dispatch) => ({
   _getPerOverviews: () => dispatch(getPerOverviews()),
-  _deletePerOverview: (payload) => dispatch(deletePerOverview(payload))
+  _deletePerOverview: (payload) => dispatch(deletePerOverview(payload)),
+  _exportPerToCsv: (payload) => dispatch(exportPerToCsv(payload))
 });
 
 export default connect(selector, dispatcher)(PerAccount);
