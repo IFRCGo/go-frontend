@@ -29,6 +29,7 @@ import situationReports from './situation-reports';
 import appealDocuments from './appeal-documents';
 import fdrs from './fdrs';
 import csv from './csv';
+import exportPerToCSV from './export-per-to-csv';
 import perForm from './per-form';
 import perAreas from './per-areas';
 import perQuestions from './per-questions';
@@ -84,6 +85,7 @@ export const reducers = {
   situationReports,
   fdrs,
   csv,
+  exportPerToCSV,
   perForm,
   perAreas,
   perQuestions,

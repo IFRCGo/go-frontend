@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect, useMemo, useCallback } from 'react';
 import { connect } from 'react-redux';
+import { saveAs } from 'file-saver';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -9,7 +10,9 @@ import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 import {
   getPerOverviews,
-  deletePerOverview
+  deletePerOverview,
+  exportPerToCsv,
+  clearLoadedCsv
 } from '#actions';
 
 import Select from 'react-select';
@@ -27,9 +30,12 @@ function PerAccount (props) {
   const [idToDelete, setIdToDelete] = useState();
   const [country, setCountry] = useState();
   const [formList, setFormList] = useState([]);
+  const [formIdToDownload, setFormIdToDownload] = useState();
   const {
     _getPerOverviews,
-    _deletePerOverview
+    _deletePerOverview,
+    _exportPerToCsv,
+    _clearLoadedCsv
   } = props;
 
   const handleDelete = useCallback((formId) => {
@@ -46,12 +52,29 @@ function PerAccount (props) {
     setModalReveal(false);
   }, [handleDelete, idToDelete]);
 
+  const handleExport = useCallback((formId) => {
+    _exportPerToCsv(formId);
+    setFormIdToDownload(formId);
+  }, [_exportPerToCsv]);
+
   // PER Overviews variables
   const [ovFetching, ovFetched, overviewFormList] = useMemo(() => [
     props.perOverviewForm.fetching,
     props.perOverviewForm.fetched,
     props.perOverviewForm.data,
   ], [props.perOverviewForm]);
+
+  useEffect(() => {
+    if (!props.exportPer.fetching && props.exportPer.fetched && props.exportPer.data) {
+      const blob = new Blob([props.exportPer.data], { type: 'text/csv' });
+      const timestamp = (new Date()).getTime();
+      const filename = `assessment_${formIdToDownload}_${timestamp}.csv`;
+
+      saveAs(blob, filename);
+      _clearLoadedCsv();
+      setFormIdToDownload('');
+    }
+  }, [props.exportPer, _clearLoadedCsv, formIdToDownload]);
 
   useEffect(() => {
     if (!ovFetching && ovFetched){
@@ -122,12 +145,20 @@ function PerAccount (props) {
                 </React.Fragment>
               ) 
               : (
-                <Link
-                  className='button button--xsmall button--primary-bounded per__list__button'
-                  to={`/per-assessment/${form.id}#overview`}
-                >
-                  <Translate stringId='perdocumentView' />
-                </Link>
+                <React.Fragment>
+                  <Link
+                    className='button button--xsmall button--primary-bounded per__list__button'
+                    to={`/per-assessment/${form.id}#overview`}
+                  >
+                    <Translate stringId='perdocumentView' />
+                  </Link>
+                  <button
+                    className='button button--xsmall button--primary-bounded per__list__button'
+                    onClick={() => handleExport(form.id)}
+                  >
+                    <Translate stringId='threeWExport' />
+                  </button>
+                </React.Fragment>
               )}
           </React.Fragment>
         ),
@@ -218,11 +249,13 @@ if (environment !== 'production') {
     perOverviewForm: T.object,
     countries: T.array,
     _getPerOverviews: T.func,
-    _deletePerOverview: T.func
+    _deletePerOverview: T.func,
+    _exportPerToCsv: T.func
   };
 }
 
 const selector = (state, ownProps) => ({
+  exportPer: state.exportPerToCSV,
   perForm: state.perForm,
   perOverviewForm: state.perForm.getPerOverviewForm,
   countries: countriesSelector(state),
@@ -231,7 +264,9 @@ const selector = (state, ownProps) => ({
 
 const dispatcher = (dispatch) => ({
   _getPerOverviews: () => dispatch(getPerOverviews()),
-  _deletePerOverview: (payload) => dispatch(deletePerOverview(payload))
+  _deletePerOverview: (payload) => dispatch(deletePerOverview(payload)),
+  _exportPerToCsv: (payload) => dispatch(exportPerToCsv(payload)),
+  _clearLoadedCsv: (payload) => dispatch(clearLoadedCsv(payload))
 });
 
 export default connect(selector, dispatcher)(PerAccount);
