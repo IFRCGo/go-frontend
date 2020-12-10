@@ -3,6 +3,7 @@ import { render } from 'react-dom';
 import { PropTypes as T } from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import mapboxgl from 'mapbox-gl';
+import _debounce from 'lodash.debounce';
 import chroma from 'chroma-js';
 import { environment } from '#config';
 import BlockLoading from '../block-loading';
@@ -39,6 +40,7 @@ class MainMap extends React.Component {
       selectedDtype: null,
       mapActions: [],
       ready: false,
+      selectedFeatureISO: '',
       filters: {
         startDate: '',
         endDate: ''
@@ -178,44 +180,54 @@ class MainMap extends React.Component {
     //   this.showOperationsPopover(theMap, e.features[0]);
     // });
 
-    theMap.on('mousemove', 'appeals', e => {
-      theMap.getCanvas().style.cursor = 'pointer';
-    });
+    // theMap.on('mousemove', 'appeals', e => {
+    //   theMap.getCanvas().style.cursor = 'pointer';
+    // });
 
-    theMap.on('mouseleave', 'appeals', e => {
-      theMap.getCanvas().style.cursor = '';
-    });
+    // theMap.on('mouseleave', 'appeals', e => {
+    //   theMap.getCanvas().style.cursor = '';
+    // });
 
-    theMap.on('mousemove', 'country', e => {
-      theMap.getCanvas().style.cursor = 'pointer';
-    });
+    // theMap.on('mousemove', 'icrc_admin0', e => {
+    //   theMap.getCanvas().style.cursor = 'pointer';
+    // });
 
-    theMap.on('mouseleave', 'country', e => {
-      theMap.getCanvas().style.cursor = '';
-    });
+    // theMap.on('mouseleave', 'icrc_admin0', e => {
+    //   theMap.getCanvas().style.cursor = '';
+    // });
 
-    theMap.on('mousemove', 'district', e => {
-      const id = get(e, 'features.0.properties.OBJECTID').toString();
-      if (id && get(this.props, 'deployments.data.areas', []).find(d => d.id === id)) {
-        theMap.getCanvas().style.cursor = 'pointer';
-      } else {
-        theMap.getCanvas().style.cursor = '';
+    // theMap.on('mousemove', 'district', e => {
+    //   const id = get(e, 'features.0.properties.OBJECTID').toString();
+    //   if (id && get(this.props, 'deployments.data.areas', []).find(d => d.id === id)) {
+    //     theMap.getCanvas().style.cursor = 'pointer';
+    //   } else {
+    //     theMap.getCanvas().style.cursor = '';
+    //   }
+    // });
+
+    theMap.on('mousemove', 'icrc_admin0', _debounce(e => {
+      const feature = e.features.length ? e.features[0] : undefined;
+      if (feature && feature.properties.INDEPENDEN !== 'FALSE' &&
+        feature.properties.ISO2 !== this.state.selectedFeatureISO) {
+          this.setState({ selectedFeatureISO: feature.properties.ISO2 });
+          theMap.setLayoutProperty('icrc_admin0_highlight', 'visibility', 'visible');
+          theMap.setFilter('icrc_admin0_highlight', ['==', 'OBJECTID', feature.properties.OBJECTID]);
       }
-    });
+    }, 80));
 
-    theMap.on('mousemove', 'icrc_admin0', e => {
+    theMap.on('click', 'appeals', e => {
       const feature = e.features.length ? e.features[0] : undefined;
       if (feature) {
-        theMap.setLayoutProperty('icrc_admin0_highlight', 'visibility', 'visible');
-        theMap.setFilter('icrc_admin0_highlight', ['==', 'OBJECTID', feature.properties.OBJECTID]);
+        this.showOperationsPopover(theMap, feature, e, this.props.countries, 'appeals');
+        // theMap.setLayoutProperty('icrc_admin0_highlight', 'visibility', 'visible');
+        // theMap.setFilter('icrc_admin0_highlight', ['==', 'OBJECTID', feature.properties.OBJECTID]);
       }
     });
 
     theMap.on('click', 'icrc_admin0', e => {
-      console.log('features', e.features);
       const feature = e.features.length ? e.features[0] : undefined;
-      if (feature) {
-        this.showOperationsPopover(theMap, feature, e, this.props.countries);
+      if (feature && feature.properties.INDEPENDEN !== 'FALSE') {
+        this.showOperationsPopover(theMap, feature, e, this.props.countries, 'icrc_admin0');
         // theMap.setLayoutProperty('icrc_admin0_highlight', 'visibility', 'visible');
         // theMap.setFilter('icrc_admin0_highlight', ['==', 'OBJECTID', feature.properties.OBJECTID]);
       }
@@ -246,19 +258,25 @@ class MainMap extends React.Component {
   }
 
   // FIXME: move this to a utils
-  getCountryIdFromIso(iso, countries) {
+  getCountryFromIso(iso, countries) {
     const country = countries.find(country => country.iso.toUpperCase() === iso && country.record_type === 1);
     if (country) {
-      return country.value;
+      return country;
     } else {
       return null;
     }
   }
 
-  showOperationsPopover (theMap, feature, event, countries=[]) {
+  showOperationsPopover (theMap, feature, event, countries=[], layer) {
     let popoverContent = document.createElement('div');
-    const iso = feature.properties.ISO2.toUpperCase();
-    const appealFeature = this.state.markerGeoJSON.features.find(f => f.properties.iso.toUpperCase() === iso);
+    let appealFeature;
+    let iso;
+    if (layer === 'appeals') {
+      appealFeature = feature;
+    } else {
+      iso = feature.properties.ISO2.toUpperCase();
+      appealFeature = this.state.markerGeoJSON.features.find(f => f.properties.iso.toUpperCase() === iso);
+    }
     let title, pageId, operations, centroid;
     if (appealFeature) {
       const { properties } = appealFeature;
@@ -269,8 +287,9 @@ class MainMap extends React.Component {
         : JSON.parse(properties.appeals);
       centroid = appealFeature.geometry.coordinates;
     } else {
-      title = feature.properties.NAME;
-      pageId = this.getCountryIdFromIso(iso, countries);
+      const country = this.getCountryFromIso(iso, countries);
+      title = country.label;
+      pageId = country.value;
       operations = [];
       centroid = event.lngLat;
     }

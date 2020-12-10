@@ -86,7 +86,7 @@ class Preparedness extends React.Component {
                           title={strings.prepGlobalTrendsTab}
                           frameBorder='0'
                           width='100%'
-                          height='800px'
+                          height='2240px'
                         />
                       </TabContent>
                     </TabPanel>
@@ -97,7 +97,7 @@ class Preparedness extends React.Component {
                           title={strings.prepGlobalPerformanceTab}
                           frameBorder='0'
                           width='100%'
-                          height='800px'
+                          height='1840px'
                         />
                       </TabContent>
                     </TabPanel>
@@ -108,7 +108,7 @@ class Preparedness extends React.Component {
                           title={strings.prepResourceCatalogueTab}
                           frameBorder='0'
                           width='100%'
-                          height='800px'
+                          height='1640px'
                         />
                       </TabContent>
                     </TabPanel>
@@ -119,7 +119,7 @@ class Preparedness extends React.Component {
                           title={strings.prepOpLearningTab}
                           frameBorder='0'
                           width='100%'
-                          height='800px'
+                          height='3000px'
                         />
                       </TabContent>
                     </TabPanel>

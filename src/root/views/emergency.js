@@ -13,11 +13,14 @@ import { api, environment } from '#config';
 import NewGlobalLoading from '#components/NewGlobalLoading';
 import Translate from '#components/Translate';
 import BreadCrumb from '#components/breadcrumb';
+import ContactRow from '#components/contact-row';
 import { withLanguage } from '#root/languageContext';
 import { resolveToString } from '#utils/lang';
 import {
   getEventById,
   getEventSnippets,
+  getPersonnel,
+  getSurgeAlerts,
   getSitrepsByEventId,
   getSitrepTypes,
   getAppealDocsByAppealIds,
@@ -27,7 +30,6 @@ import {
 } from '#actions';
 import {
   commaSeparatedNumber as n,
-  separateUppercaseWords as separate,
   nope,
   isoDate,
   timestamp,
@@ -45,18 +47,18 @@ import TabContent from '#components/tab-content';
 import ErrorPanel from '#components/error-panel';
 import Expandable from '#components/expandable';
 import Snippets from '#components/emergencies/snippets';
+import EmergencyOverview from '#components/emergencies/overview';
 import SurgeAlertsTable from '#components/connected/alerts-table';
 import PersonnelTable from '#components/connected/personnel-table';
 import EruTable from '#components/connected/eru-table';
 import EmergencyMap from '#components/map/emergency-map';
 import { epiSources } from '#utils/field-report-constants';
 import ProjectFormModal from '#views/ThreeW/project-form-modal';
-import { countriesGeojsonSelector, regionsByIdSelector } from '../selectors';
+import { countriesGeojsonSelector, regionsByIdSelector, disasterTypesSelector } from '../selectors';
 
 class Emergency extends React.Component {
   constructor (props) {
     super(props);
-
     this.state = {
       showProjectForm: false,
       selectedAppeal: null,
@@ -65,7 +67,9 @@ class Emergency extends React.Component {
         type: 'all',
       },
       subscribed: false,
-      tabs: [{ title: 'Emergency Details', hash: '#details' }],
+      hasSnippets: false,
+      hasPersonnel: false,
+      hasSurgeAlerts: false
     };
     this.addSubscription = this.addSubscription.bind(this);
     this.delSubscription = this.delSubscription.bind(this);
@@ -100,22 +104,6 @@ class Emergency extends React.Component {
 
       this.getAppealDocuments(nextProps.event);
 
-      // setup tabs
-      const { data } = nextProps.event;
-      // check if there are additional tabs
-      let tabs = [...this.state.tabs];
-      const tabLabels = ['tab_one_title', 'tab_two_title', 'tab_three_title'];
-      tabLabels.forEach((key) => {
-        if (data && data[key]) {
-          const title = data[key];
-          const hash = `#${title.toLowerCase().split(' ').join('-')}`;
-          tabs.push({
-            title: title,
-            hash: hash,
-          });
-        }
-      });
-      this.setState({ tabs: tabs });
       setTimeout(() => {
         this.displayTabContent();
       }, 0);
@@ -133,6 +121,24 @@ class Emergency extends React.Component {
     if (newProjectAdded) {
       this.setState({ showProjectForm: false });
     }
+
+    if (!this.props.snippets.fetched && nextProps.snippets.fetched) {
+      if (nextProps.snippets.data.results.length > 0) {
+        this.setState({ hasSnippets: true });
+      }
+    }
+
+    if (!this.props.personnel.fetched && nextProps.personnel.fetched) {
+      if (nextProps.personnel.data.results.length > 0) {
+        this.setState({ hasPersonnel: true });
+      }
+    }
+
+    if (!this.props.surgeAlerts.fetched && nextProps.surgeAlerts.fetched) {
+      if (nextProps.surgeAlerts.data.results.length > 0) {
+        this.setState({ hasSurgeAlerts: true });
+      }
+    }
   }
 
   componentDidMount () {
@@ -148,7 +154,8 @@ class Emergency extends React.Component {
 
   // Sets default tab if url param is blank or incorrect
   displayTabContent () {
-    const tabHashArray = this.state.tabs.map(({ hash }) => hash);
+    const tabs = this.getTabs();
+    const tabHashArray = tabs.map(({ hash }) => hash);
     if (!tabHashArray.find((hash) => hash === this.props.location.hash)) {
       this.props.history.replace(
         `${this.props.location.pathname}${tabHashArray[0]}`
@@ -160,6 +167,13 @@ class Emergency extends React.Component {
     // showGlobalLoading();
     this.props._getEventById(id);
     this.props._getSitrepsByEventId(id);
+
+    // We fetch the Personnel and Alerts here to know whether to render the Surge tab
+    // Ideally, we would pass this down to the personnel-table, currently
+    // we only use it to check whether there are personnel. #FIXME
+    this.props._getSurgeAlerts(1, { event: id });
+    this.props._getPersonnel(1, {'event_deployed_to': id});
+    this.props._getEventSnippets(id);
   }
 
   getAppealDocuments (event) {
@@ -201,56 +215,76 @@ class Emergency extends React.Component {
       get(report, 'gov_affected_pop_centres') ||
       get(report, 'other_affected_pop_centres');
     return (
-      <div className="inpage__header-col">
-        <h3 className="global-spacing-2-t clear">
-          <Translate stringId="emergencyTopOverviewSectionTitle" />
-        </h3>
-        <div className="content-list-group">
-          <ul className="content-list">
-            <li>
-              <Translate stringId="emergencyPotentiallyAffectedLabel" />
-              <span className="content-highlight">
-                {n(numPotentiallyAffected)}
-              </span>
-            </li>
-            <li>
-              <Translate stringId="emergencyHighestRiskLabel" />
-              <span className="content-highlight">{n(numHighestRisk)}</span>
-            </li>
-            <li>
-              <Translate stringId="emergencyAffectedPopulationCentresLabel" />
-              <span className="content-highlight">{affectedPopCentres}</span>
-            </li>
-          </ul>
-          <ul className="content-list">
-            <li>
-              <Translate stringId="emergencyAssistedByGovernmentLabel" />
-              <span className="content-highlight">
-                {n(get(report, 'gov_num_assisted'))}
-              </span>
-            </li>
-            <li>
-              <Translate stringId="emergencyAssistedByRCRCLabel" />
-              <span className="content-highlight">
-                {n(get(report, 'num_assisted'))}
-              </span>
-            </li>
-          </ul>
+      <div className='col-lg flex spacing-4-t'>
+        <div className='box__global emergency__affected__figures'>
+          <h3 className='heading__title heading__title--emergency'>
+            <Translate stringId="emergencyTopOverviewSectionTitle" />
+          </h3>
+          <div>
+            <ul className='list-reset'>
+              <li className='row flex spacing-half-v'>
+                <div className='col'>
+                  <Translate stringId="emergencyPotentiallyAffectedLabel" />
+                </div>
+                <div className='col margin-left-auto'>
+                  <span className="base-font-semi-bold">
+                    {n(numPotentiallyAffected)}
+                  </span>
+                </div>
+              </li>
+              <li className='row flex spacing-half-v'>
+                <div className='col'>
+                  <Translate stringId="emergencyHighestRiskLabel" />
+                </div>
+                <div className='col margin-left-auto'>
+                  <span className="base-font-semi-bold">{n(numHighestRisk)}</span>
+                </div>
+              </li>
+              <li className='row flex spacing-half-v'>
+                <div className='col'>
+                  <Translate stringId="emergencyAffectedPopulationCentresLabel" />
+                </div>
+                <div className='col margin-left-auto'>
+                  <span className="base-font-semi-bold">{affectedPopCentres}</span>
+                </div>
+              </li>
+              <li className='row flex spacing-half-v'>
+                <div className='col'>
+                  <Translate stringId="emergencyAssistedByGovernmentLabel" />
+                </div>
+                <div className='col margin-left-auto'>
+                  <span className="base-font-semi-bold">
+                    {n(get(report, 'gov_num_assisted'))}
+                  </span>
+                </div>
+              </li>
+              <li className='row flex spacing-half-v'>
+                <div className='col'>
+                  <Translate stringId="emergencyAssistedByRCRCLabel" />
+                </div>
+                <div className='col margin-left-auto'>
+                  <span className="base-font-semi-bold">
+                    {n(get(report, 'num_assisted'))}
+                  </span>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div className="emergency__source">
+            <Translate
+              stringId="emergencySourceMessage"
+              params={{
+                link: (
+                  <Link to={`/reports/${report.id}`}>
+                    {`${report.summary} ${timestamp(report.updated_at || report.created_at)}`}
+                  </Link>
+                ),
+              }}
+            />
+          </div>
         </div>
-        <p className="emergency__source">
-          <Translate
-            stringId="emergencySourceMessage"
-            params={{
-              link: (
-                <Link to={`/reports/${report.id}`}>
-                  {`${report.summary} ${timestamp(report.updated_at || report.created_at)}`}
-                </Link>
-              ),
-            }}
-          />
-        </p>
       </div>
-    );
+      );
   }
 
   renderFieldReportStatsEvent (report, isEPI, isCOVID) {
@@ -263,29 +297,64 @@ class Emergency extends React.Component {
     const numAssisted = parseInt(get(report, 'num_assisted')) || parseInt(get(report, 'gov_num_assisted')) || parseInt(get(report, 'other_num_assisted'));
     const epiFiguresSource = epiSources.find(source => source.value === `${report.epi_figures_source}`);
     return (
-      <div className='inpage__header-col'>
-        <h3 className='fold__title spacing-2-t spacing-b'>
-          <Translate stringId="emergencyFieldReportStatsHeading" />
-        </h3>
-        <div className='content-list-group row flex-xs'>
-          { isEPI
-            ? (
-              <div className='col col-6-xs flex'>
-                <ul className='content-list box__global spacing-v spacing-2-h'>
-                  <li>{strings.emergencyCasesLabel}<span className='content-highlight'>{n(get(report, 'epi_cases'))}</span></li>
+      <div className='col-lg flex spacing-4-t'>
+        <div className='box__global emergency__affected__figures'>
+          <h3 className='heading__title heading__title--emergency'>
+            <Translate stringId="emergencyFieldReportStatsHeading" />
+          </h3>
+          <div className=''>
+            { isEPI
+              ? (
+                <ul className='list-reset'>
+                  <li className='row flex spacing-half-v'>
+                    <div className='col'>
+                      {strings.emergencyCasesLabel}
+                    </div>  
+                    <div className='col margin-left-auto'>
+                      <span className='base-font-semi-bold'>{n(get(report, 'epi_cases'))}</span>
+                    </div>
+                  </li>
                   { !isCOVID
                     ? (
                       <React.Fragment>
-                        <li className='pl-small'>{strings.emergencySuspectedCasesLabel}<span className='content-highlight'>{n(get(report, 'epi_suspected_cases'))}</span></li>
-                        <li className='pl-small'>{strings.emergencyProbableCasesLabel}<span className='content-highlight'>{n(get(report, 'epi_probable_cases'))}</span></li>
-                        <li className='pl-small'>{strings.emergencyConfirmedCasesLabel}<span className='content-highlight'>{n(get(report, 'epi_confirmed_cases'))}</span></li>
+                        <li className='row flex spacing-half-v pl-small'>
+                          <div className='col'>
+                            {strings.emergencySuspectedCasesLabel}
+                          </div>
+                          <div className='col margin-left-auto'>
+                            <span className='base-font-semi-bold'>{n(get(report, 'epi_suspected_cases'))}</span>
+                          </div>
+                        </li>
+                        <li className='row flex spacing-half-v pl-small'>
+                          <div className='col'>
+                            {strings.emergencyProbableCasesLabel}
+                          </div>
+                          <div className='col margin-left-auto'>
+                            <span className='base-font-semi-bold'>{n(get(report, 'epi_probable_cases'))}</span>
+                          </div>
+                        </li>
+                        <li className='row flex spacing-half-v pl-small'>
+                          <div className='col'>
+                            {strings.emergencyConfirmedCasesLabel}
+                          </div>
+                          <div className='col margin-left-auto'>
+                            <span className='base-font-semi-bold'>{n(get(report, 'epi_confirmed_cases'))}</span>
+                          </div>
+                        </li>
                       </React.Fragment>
                     )
                     : null
                   }
-                  <li>{strings.emergencyDeadLabel}<span className='content-highlight'>{n(get(report, 'epi_num_dead'))}</span></li>
-                  <li>
-                    <p className='emergency__source'>Source:
+                  <li className='row flex spacing-half-v'>
+                    <div className='col'>
+                      {strings.emergencyDeadLabel}
+                    </div>  
+                    <div className='col margin-left-auto'>
+                      <span className='base-font-semi-bold'>{n(get(report, 'epi_num_dead'))}</span>
+                    </div>  
+                  </li>
+                  <li className='row flex spacing-half-v'>
+                    <div className='col emergency__source'>Source:
                       { isEPI
                         ? (
                           <React.Fragment>
@@ -296,31 +365,91 @@ class Emergency extends React.Component {
                           <Link to={`/reports/${report.id}`}>{report.summary}, {timestamp(report.updated_at || report.created_at)}</Link>
                         )
                       }
-                    </p>
+                    </div>
                   </li>
                 </ul>
-              </div>
-            )
-            : (
-              <div className='col col-6-xs flex'>
-                <ul className='content-list box__global spacing-v spacing-2-h'>
-                  <li>{strings.emergencyAffectedLabel}<span className='content-highlight'>{n(numAffected)}</span></li>
-                  <li>{strings.emergencyInjuredLabel}<span className='content-highlight'>{n(numInjured)}</span></li>
-                  <li>{strings.emergencyDeadLabel}<span className='content-highlight'>{n(numDead)}</span></li>
-                  <li>{strings.emergencyMissingLabel}<span className='content-highlight'>{n(numMissing)}</span></li>
-                  <li>{strings.emergencyDisplacedLabel}<span className='content-highlight'>{n(numDisplaced)}</span></li>
+              )
+              : (
+                <ul className='list-reset'>
+                  <li className='row flex spacing-half-v'>
+                    <div className='col'>
+                      {strings.emergencyAffectedLabel}
+                    </div>
+                    <div className='col margin-left-auto'>
+                      <span className='base-font-semi-bold'>{n(numAffected)}</span>
+                    </div>
+                  </li>
+                  <li className='row flex spacing-half-v'>
+                    <div className='col'>
+                      {strings.emergencyInjuredLabel}
+                    </div>
+                    <div className='col margin-left-auto'>
+                      <span className='base-font-semi-bold'>{n(numInjured)}</span>
+                    </div>
+                    </li>
+                  <li className='row flex spacing-half-v'>
+                    <div className='col'>
+                      {strings.emergencyDeadLabel}
+                    </div>
+                    <div className='col margin-left-auto'>
+                      <span className='base-font-semi-bold'>{n(numDead)}</span>
+                    </div>
+                  </li>
+                  <li className='row flex spacing-half-v'>
+                    <div className='col'>
+                      {strings.emergencyMissingLabel}
+                    </div>
+                    <div className='col margin-left-auto'>
+                      <span className='base-font-semi-bold'>{n(numMissing)}</span>
+                    </div>
+                  </li>
+                  <li className='row flex spacing-half-v'>
+                    <div className='col'>
+                      {strings.emergencyDisplacedLabel}
+                    </div>
+                    <div className='col margin-left-auto'>
+                      <span className='base-font-semi-bold'>{n(numDisplaced)}</span>
+                    </div>
+                  </li>
                 </ul>
-              </div>
-            )
-          }
-          <div className='col col-6-xs flex'>
-            <ul className='content-list box__global spacing-v spacing-2-h'>
-              <li>{strings.emergencyAssistedLabel}<span className='content-highlight'>{n(numAssisted)}</span></li>
-              <li>{strings.emergencyLocalStaffLabel}<span className='content-highlight'>{n(get(report, 'num_localstaff'))}</span></li>
-              <li>{strings.emergencyVolunteersLabel}<span className='content-highlight'>{n(get(report, 'num_volunteers'))}</span></li>
+              )
+            }
+            <hr />
+            <ul className='list-reset'>
+                  <li className='row flex spacing-half-v'>
+                <div className='col'>
+                  {strings.emergencyAssistedLabel}
+                </div>
+                    <div className='col margin-left-auto'>
+                  <span className='base-font-semi-bold'>{n(numAssisted)}</span>
+                </div>
+              </li>
+              <li className='row flex spacing-half-v'>
+                <div className='col'>
+                  {strings.emergencyLocalStaffLabel}
+                </div>
+                <div className='col margin-left-auto'>
+                  <span className='base-font-semi-bold'>{n(get(report, 'num_localstaff'))}</span>
+                </div>
+              </li>
+              <li className='row flex spacing-half-v'>
+                <div className='col'>
+                  {strings.emergencyVolunteersLabel}
+                </div>
+                <div className='col margin-left-auto'>
+                  <span className='base-font-semi-bold'>{n(get(report, 'num_volunteers'))}</span>
+                </div>
+              </li>
               { !isCOVID
                 ? (
-                  <li>{strings.emergencyDelegatesLabel}<span className='content-highlight'>{n(get(report, 'num_expats_delegates'))}</span></li>
+                  <li className='row flex spacing-half-v'>
+                    <div className='col'>
+                      {strings.emergencyDelegatesLabel}
+                    </div>
+                    <div className='col margin-left-auto'>
+                      <span className='base-font-semi-bold'>{n(get(report, 'num_expats_delegates'))}</span>
+                    </div>
+                  </li>
                 )
                 : null
               }
@@ -427,7 +556,6 @@ class Emergency extends React.Component {
             </div>
           ) : null}
         </div>
-        {this.renderFieldReportStats()}
         <div className="funding-chart"></div>
       </div>
     );
@@ -533,14 +661,14 @@ class Emergency extends React.Component {
   renderReports (className, reportTypes) {
     return (
       <div className="response__doc__block">
-        <div className="clearfix">
+        <div className="row flex">
           {Object.keys(reportTypes).map((reportTypeId) => {
             return (
               <div
-                className="response__doc__col"
+                className="col col-12 col-6-xs col-4-mid response__doc__col"
                 key={`response-type-${reportTypeId}`}
               >
-                <div className="response__doc__each">
+                <div className="response__doc__each box__global">
                   <div className="response__doc__title">
                     {reportTypes[reportTypeId].title}
                   </div>
@@ -549,17 +677,16 @@ class Emergency extends React.Component {
                       reportTypes[reportTypeId].items.length > 0 ? (
                         reportTypes[reportTypeId].items.map((item) => {
                           return (
-                            <div
-                              className="response__doc__item"
-                              key={`item-${item.id}`}
-                            >
-                              {item.name}
-                              <a
-                                className="collecticon-download response__doc__item__link"
+                            <a className="response__doc__item"
                                 target="_blank"
                                 href={item.document || item.document_url}
-                              ></a>
-                            </div>
+                                key={`item-${item.id}`}
+                            >
+                              <div>{item.name}</div>
+                              <div
+                                className="collecticon-download response__doc__item__link"
+                              ></div>
+                            </a>
                           );
                         })
                       ) : (
@@ -593,8 +720,9 @@ class Emergency extends React.Component {
       <Fold
         id="response-documents"
         header={() => (
-          <div className="fold__headline">
-            <div className="fold__actions">
+          <div className="fold__header__block">
+            <h2 className="fold__title">Response Documents</h2>
+            <div className="fold__actions margin-left-auto">
               <a
                 className="button button--primary-bounded button--small"
                 href={addReportLink}
@@ -603,32 +731,51 @@ class Emergency extends React.Component {
                 Add a Report
               </a>
             </div>
-            <h2 className="fold__title">Response Documents</h2>
           </div>
         )}
       >
+        <input type='text' className='emergency__response__search form__control' placeholder='Search' />
+
         <div>{this.renderReports('situation-reports-list', reportsByType)}</div>
       </Fold>
     );
   }
 
   renderAppealReports (className, reports) {
+    const { strings } = this.props;
     return (
-      <ul className={className}>
+      <table className="table table--border-bottom">
+        <thead>
+          <tr>
+            <th>{strings.emergencyAppealDocHeaderDate}</th>
+            <th>{strings.emergencyAppealDocHeaderCode}</th>
+            <th>{strings.emergencyAppealDocHeaderName}</th>
+          </tr>
+        </thead>
+        <tbody>
         {reports.map((o) => {
           let href = o['document'] || o['document_url'] || null;
           if (!href) {
             return null;
           }
           return (
-            <li key={o.id} className='col col-6-xs'>
-              <a className="link-underline" href={href} target="_blank">
-                {o.name}, {isoDate(o.created_at)}
-              </a>
-            </li>
+            <tr key={o.id}>
+              <td>
+                { isoDate(o.created_at) }
+              </td>
+              <td>
+                {o.appeal_code}
+              </td>
+              <td>
+                <a className="link-underline" href={href} target="_blank">
+                  {o.name}
+                </a>
+              </td>
+            </tr>
           );
         })}
-      </ul>
+        </tbody>
+      </table>
     );
   }
 
@@ -696,7 +843,7 @@ class Emergency extends React.Component {
   }
 
   renderAdditionalTabPanels () {
-    const additionalTabs = this.state.tabs.slice(1);
+    const additionalTabs = this.getAdditionalTabs();
     if (additionalTabs.length) {
       return (
         <React.Fragment>
@@ -719,20 +866,87 @@ class Emergency extends React.Component {
     projectForm.fetching || eventForm.fetching || siteRepForm.fetching
   ))
 
+  hasReportsTab () {
+    return get(this.props.event, 'data.field_reports.length') || 
+      get(this.props.appealDocuments, 'data.results.length') || 
+      get(this.props.situationReports, 'data.results.length');    
+  }
+
+  hasRRTab () {
+    return this.state.hasPersonnel ||
+      this.state.hasSurgeAlerts ||
+      get(this.props.eru, 'data.results.length');
+  }
+
+  hasSnippets () {
+    return this.state.hasSnippets;
+  }
+
+  getTabs () {
+    const { strings } = this.props;
+    const tabs = [
+      { title: strings.emergencyTabDetails, hash: '#details' },
+    ];
+    if (this.hasReportsTab()) {
+      tabs.push({
+        title: strings.emergencyTabReports, hash: '#reports'
+      });
+    }
+    if (this.hasRRTab()) {
+      tabs.push({
+        title: strings.emergencyTabRR, hash: '#rapid-response'
+      });
+    }
+    return tabs.concat(this.getAdditionalTabs());
+  }
+
+  getAdditionalTabs () {
+    const { data } = this.props.event;
+    if (!this.hasSnippets()) {
+      return [];
+    }
+    const additionalTabs = [];
+    const tabLabels = ['tab_one_title', 'tab_two_title', 'tab_three_title'];
+    tabLabels.forEach((key) => {
+      if (data && data[key]) {
+        const title = data[key];
+        const hash = `#${title.toLowerCase().split(' ').join('-')}`;
+        additionalTabs.push({
+          title: title,
+          hash: hash,
+        });
+      }
+    });
+    return additionalTabs;
+  }
+
   renderContent () {
     const { fetched, error, data } = this.props.event;
-
+    const { disasterTypes } = this.props;
     if (!fetched || error) return null;
     const report =
       mostRecentReport(get(this.props, 'event.data.field_reports')) || {};
     const summary = data.summary || report.description || null;
-
+    const tabs = this.getTabs();
     const contacts =
       Array.isArray(data.contacts) && data.contacts.length
         ? data.contacts
         : Array.isArray(report.contacts) && report.contacts.length
           ? report.contacts
           : null;
+    const contactsByType = {
+      ifrc: [],
+      ns: []
+    };
+    if (contacts) {
+      contacts.forEach(contact => {
+        if (contact.email.endsWith('ifrc.org')) {
+          contactsByType.ifrc.push(contact);
+        } else {
+          contactsByType.ns.push(contact);
+        }
+      });
+    }
     const subscribeButton = () =>
       this.state.subscribed ? (
         <React.Fragment>
@@ -766,14 +980,16 @@ class Emergency extends React.Component {
         data.districts.length > 0
       ) {
         return (
-          <EmergencyMap
-            countries={data.countries}
-            districts={data.districts}
-            name={data.name}
-            date={data.updated_at}
-            disasterTypeCode={data.dtype}
-            countriesGeojson={this.props.countriesGeojson}
-          />
+          <div className='col-lg flex-1'>
+            <EmergencyMap
+              countries={data.countries}
+              districts={data.districts}
+              name={data.name}
+              date={data.updated_at}
+              disasterTypeCode={data.dtype.toString()}
+              countriesGeojson={this.props.countriesGeojson}
+            />
+          </div> 
         );
       } else {
         return null;
@@ -781,11 +997,11 @@ class Emergency extends React.Component {
     };
 
     const handleTabChange = (index) => {
-      const tabHashArray = this.state.tabs.map(({ hash }) => hash);
+      const tabHashArray = tabs.map(({ hash }) => hash);
       const url = this.props.location.pathname;
       this.props.history.replace(`${url}${tabHashArray[index]}`);
     };
-    const hashes = this.state.tabs.map((t) => t.hash);
+    const hashes = tabs.map((t) => t.hash);
     const selectedIndex =
       hashes.indexOf(this.props.location.hash) !== -1
         ? hashes.indexOf(this.props.location.hash)
@@ -927,7 +1143,7 @@ class Emergency extends React.Component {
             onSelect={(index) => handleTabChange(index)}
           >
             <TabList>
-              {this.state.tabs.map((tab) => (
+              {tabs.map((tab) => (
                 <Tab key={tab.title}>{tab.title}</Tab>
               ))}
             </TabList>
@@ -940,7 +1156,13 @@ class Emergency extends React.Component {
                       {this.renderKeyFigures()}
                     </div>
                   </TabContent>
-                  {showExportMap()}
+                  <TabContent>
+                    <EmergencyOverview
+                      data={data}
+                      disasterTypes={disasterTypes} 
+                    
+                    />
+                  </TabContent>
                   <TabContent
                     isError={!summary}
                     errorMessage={strings.noDataMessage}
@@ -953,11 +1175,108 @@ class Emergency extends React.Component {
                     >
                       <Expandable
                         sectionClass="rich-text-section"
-                        limit={2048}
+                        limit={4096}
                         text={summary}
                       />
                     </Fold>
                   </TabContent>
+                  <div className='container-lg'>
+                    <div className='row-lg flex-sm flex-justify-center'>
+                      {showExportMap()}
+                      {this.renderFieldReportStats()}
+                    </div>
+                  </div>
+                  {contacts && contacts.length ? (
+                    <div className='container-lg margin-2-v'>
+                      <Fold id="contacts" title={strings.emergencyContactsTitle} foldWrapperClass="contacts fold--main" foldContainerClass='container--padding-reset'>
+                        <div>
+                          {contactsByType.ifrc.length > 0 ? (
+                            <div className='contacts__table__wrap'>
+                              <div className='contacts__table__header'>{strings.emergencyContactsIFRC}</div>
+                              <table className='table'>
+                                <thead className="visually-hidden">
+                                  <tr>
+                                    <th>{strings.emergencyContactsTableHeaderName}</th>
+                                    <th>{strings.emergencyContactsTableHeaderTitle}</th>
+                                    <th>{strings.emergencyContactsTableHeaderType}</th>
+                                    <th>{strings.emergencyContactsTableHeaderContact}</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {contactsByType.ifrc.map((o) => (
+                                    <ContactRow contact={o} key={o.id} />
+                                  ))}
+                                </tbody>                            
+                              </table>
+                            </div>
+                          ) : null}
+                          {contactsByType.ns.length > 0 ? (
+                          <div className='contacts__table__wrap'>
+                            <div className='contacts__table__header'>{strings.emergencyContactsNS}</div>
+                            <table className="table">
+                              <thead className="visually-hidden">
+                                <tr>
+                                  <th>{strings.emergencyContactsTableHeaderName}</th>
+                                  <th>{strings.emergencyContactsTableHeaderTitle}</th>
+                                  <th>{strings.emergencyContactsTableHeaderType}</th>
+                                  <th>{strings.emergencyContactsTableHeaderContact}</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {contactsByType.ns.map((o) => (
+                                  <ContactRow contact={o} key={o.id} />
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                          ): null}
+                        </div>
+                      </Fold>
+                    </div>
+                  ) : (
+                    <div className='container-lg margin-2-v'>
+                      <ErrorPanel
+                        title={strings.emergencyContactsTitle}
+                        errorMessage={strings.emergencyContactEmptyMessage}
+                      />
+                    </div>
+                  )}
+                </TabPanel>
+                { this.hasReportsTab() ? (
+                <TabPanel>
+                  <TabContent
+                    isError={!get(this.props.event, 'data.field_reports.length')}
+                    errorMessage={strings.noDataMessage}
+                    title={strings.emergencyFieldReportsTitle}
+                  >
+                    {this.renderFieldReports()}
+                  </TabContent>
+
+                  <TabContent
+                    isError={
+                      !get(this.props.appealDocuments, 'data.results.length')
+                    }
+                    errorMessage={strings.noDataMessage}
+                    title={strings.emergencyAppealDocumentsTitle}
+                  >
+                    {this.renderAppealDocuments()}
+                  </TabContent>
+
+                  <TabContent
+                    isError={
+                      !get(this.props.situationReports, 'data.results.length')
+                    }
+                    errorMessage={strings.noDataMessage}
+                    title={strings.emergencyResponseDocumentsTitle}
+                  >
+                    {this.renderResponseDocuments()}
+                  </TabContent>
+
+                </TabPanel>
+                ) : null }
+
+                { this.hasRRTab() ? (
+                <TabPanel>
                   <TabContent title={strings.emergencyAlertsTitle}>
                     <SurgeAlertsTable
                       id="alerts"
@@ -974,90 +1293,15 @@ class Emergency extends React.Component {
                     <EruTable id="erus" emergency={this.props.match.params.id} />
                   </TabContent>
                   <TabContent title={strings.emergencyPersonnelTitle}>
-                    <PersonnelTable
-                      id="personnel"
-                      emergency={this.props.match.params.id}
-                    />
-                  </TabContent>
-                  <TabContent
-                    isError={!get(this.props.event, 'data.field_reports.length')}
-                    errorMessage={strings.noDataMessage}
-                    title={strings.emergencyFieldReportsTitle}
-                  >
-                    {this.renderFieldReports()}
-                  </TabContent>
-                  <TabContent
-                    isError={
-                      !get(this.props.appealDocuments, 'data.results.length')
-                    }
-                    errorMessage={strings.noDataMessage}
-                    title={strings.emergencyAppealDocumentsTitle}
-                  >
-                    {this.renderAppealDocuments()}
-                  </TabContent>
-                  <TabContent
-                    isError={
-                      !get(this.props.situationReports, 'data.results.length')
-                    }
-                    errorMessage={strings.noDataMessage}
-                    title={strings.emergencyResponseDocumentsTitle}
-                  >
-                    {this.renderResponseDocuments()}
-                  </TabContent>
-
-                  {contacts && contacts.length ? (
-                    <div className='container-lg margin-2-v'>
-                      <Fold id="contacts" title={strings.emergencyContactsTitle} foldWrapperClass="contacts fold--main" foldContainerClass='container--padding-reset'>
-                        <table className="table table--border-bottom">
-                          <thead className="visually-hidden">
-                            <tr>
-                              <th>{strings.emergencyContactsTableHeaderName}</th>
-                              <th>{strings.emergencyContactsTableHeaderTitle}</th>
-                              <th>{strings.emergencyContactsTableHeaderType}</th>
-                              <th>{strings.emergencyContactsTableHeaderContact}</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {contacts.map((o) => (
-                              <tr key={o.id}>
-                                <td>{o.name}</td>
-                                <td>{o.title}</td>
-                                <td>{separate(o.ctype)}</td>
-                                <td>
-                                  {o.email.indexOf('@') !== -1 ? (
-                                    <a
-                                      className="button button--small button--grey-cement-bounded"
-                                      href={`mailto:${o.email}`}
-                                      title={strings.emergencyContactTitle}
-                                    >
-                                      {o.email}
-                                    </a>
-                                  ) : (
-                                    <a
-                                      className="button button--small button--grey-cement-bounded"
-                                      href={`tel:${o.email}`}
-                                      title={strings.emergencyContactTitle}
-                                    >
-                                      {o.email}
-                                    </a>
-                                  )}
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </Fold>
-                    </div>
-                  ) : (
-                    <div className='container-lg margin-2-v'>
-                      <ErrorPanel
-                        title={strings.emergencyContactsTitle}
-                        errorMessage={strings.emergencyContactEmptyMessage}
+                    { this.state.hasPersonnel ? (
+                      <PersonnelTable
+                        id="personnel"
+                        emergency={this.props.match.params.id}
                       />
-                    </div>
-                  )}
+                    ) : null }
+                  </TabContent>
                 </TabPanel>
-
+                ) : null }
                 {this.renderAdditionalTabPanels()}
               </div>
             </div>
@@ -1155,10 +1399,13 @@ const selector = (state, ownProps) => ({
   profile: state.profile,
   regionsById: regionsByIdSelector(state),
   countriesGeojson: countriesGeojsonSelector(state),
+  disasterTypes: disasterTypesSelector(state)
 });
 
 const dispatcher = (dispatch) => ({
   _getEventById: (...args) => dispatch(getEventById(...args)),
+  _getPersonnel: (...args) => dispatch(getPersonnel(...args)),
+  _getSurgeAlerts: (...args) => dispatch(getSurgeAlerts(...args)),
   _getEventSnippets: (...args) => dispatch(getEventSnippets(...args)),
   _getSitrepsByEventId: (...args) => dispatch(getSitrepsByEventId(...args)),
   _getSitrepTypes: (...args) => dispatch(getSitrepTypes(...args)),

@@ -285,3 +285,13 @@ export const formQuestionsSelector = (state) => {
     }, {});
   }
 };
+
+export const disasterTypesSelector = (state) => {
+  if (state.disasterTypes && state.disasterTypes.data.results) {
+    return state.disasterTypes.data.results.reduce((memo, dt) => {
+      memo[dt.id] = dt.name;
+      return memo;
+    }, {});
+  }
+  return {};
+};

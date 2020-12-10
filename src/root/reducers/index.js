@@ -33,6 +33,7 @@ import perForm from './per-form';
 import perAreas from './per-areas';
 import perQuestions from './per-questions';
 import perComponents from './per-components';
+import perOverview from './per-overview';
 import perLatestOverview from './per-latest-overview';
 import subscriptions from './subscriptions';
 import projects from './projects';
@@ -87,6 +88,7 @@ export const reducers = {
   perAreas,
   perQuestions,
   perComponents,
+  perOverview,
   perLatestOverview,
   subscriptions,
   projects,

@@ -22,7 +22,7 @@ import {
   getEventById,
   addSubscriptions,
   delSubscription,
-  getPerOverviewFormStrict as getPerOverviewForm,
+  getPerOverviewsStrict as getPerOverviewForm,
   getPerMission,
   getPerAreas
 } from '#actions';
