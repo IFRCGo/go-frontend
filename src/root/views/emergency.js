@@ -123,19 +123,19 @@ class Emergency extends React.Component {
     }
 
     if (!this.props.snippets.fetched && nextProps.snippets.fetched) {
-      if (nextProps.snippets.data.results.length > 0) {
+      if (nextProps.snippets.data?.results?.length > 0) {
         this.setState({ hasSnippets: true });
       }
     }
 
     if (!this.props.personnel.fetched && nextProps.personnel.fetched) {
-      if (nextProps.personnel.data.results.length > 0) {
+      if (nextProps.personnel.data?.results?.length > 0) {
         this.setState({ hasPersonnel: true });
       }
     }
 
     if (!this.props.surgeAlerts.fetched && nextProps.surgeAlerts.fetched) {
-      if (nextProps.surgeAlerts.data.results.length > 0) {
+      if (nextProps.surgeAlerts.data?.results?.length > 0) {
         this.setState({ hasSurgeAlerts: true });
       }
     }
