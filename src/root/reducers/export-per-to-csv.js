@@ -19,6 +19,15 @@ export default function exportPerToCSV (state = initialState, action) {
     case `${PER_EXPORT_TO_CSV}_SUCCESS`:
       state = stateSuccess(state, action);
       break;
+    case 'CLEAR_LOADED_CSV':
+      state = Object.assign({}, state, {
+        error: null,
+        fetching: false,
+        fetched: false,
+        receivedAt: null,
+        data: {}
+      });
+      break;
   }
   return state;
 }

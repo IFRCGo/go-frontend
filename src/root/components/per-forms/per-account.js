@@ -11,7 +11,8 @@ import Translate from '#components/Translate';
 import {
   getPerOverviews,
   deletePerOverview,
-  exportPerToCsv
+  exportPerToCsv,
+  clearLoadedCsv
 } from '#actions';
 
 import Select from 'react-select';
@@ -29,10 +30,12 @@ function PerAccount (props) {
   const [idToDelete, setIdToDelete] = useState();
   const [country, setCountry] = useState();
   const [formList, setFormList] = useState([]);
+  const [formIdToDownload, setFormIdToDownload] = useState();
   const {
     _getPerOverviews,
     _deletePerOverview,
-    _exportPerToCsv
+    _exportPerToCsv,
+    _clearLoadedCsv
   } = props;
 
   const handleDelete = useCallback((formId) => {
@@ -51,6 +54,7 @@ function PerAccount (props) {
 
   const handleExport = useCallback((formId) => {
     _exportPerToCsv(formId);
+    setFormIdToDownload(formId);
   }, [_exportPerToCsv]);
 
   // PER Overviews variables
@@ -61,11 +65,16 @@ function PerAccount (props) {
   ], [props.perOverviewForm]);
 
   useEffect(() => {
-    // const blob = new Blob([csv], { type: 'text/csv' });
-    // const fileName = `projects-export-${timestamp}.csv`;
+    if (!props.exportPer.fetching && props.exportPer.fetched && props.exportPer.data) {
+      const blob = new Blob([props.exportPer.data], { type: 'text/csv' });
+      const timestamp = (new Date()).getTime();
+      const filename = `assessment_${formIdToDownload}_${timestamp}.csv`;
 
-    // saveAs(blob, fileName);
-  }, []);
+      saveAs(blob, filename);
+      _clearLoadedCsv();
+      setFormIdToDownload('');
+    }
+  }, [props.exportPer, _clearLoadedCsv, formIdToDownload]);
 
   useEffect(() => {
     if (!ovFetching && ovFetched){
@@ -246,6 +255,7 @@ if (environment !== 'production') {
 }
 
 const selector = (state, ownProps) => ({
+  exportPer: state.exportPerToCSV,
   perForm: state.perForm,
   perOverviewForm: state.perForm.getPerOverviewForm,
   countries: countriesSelector(state),
@@ -255,7 +265,8 @@ const selector = (state, ownProps) => ({
 const dispatcher = (dispatch) => ({
   _getPerOverviews: () => dispatch(getPerOverviews()),
   _deletePerOverview: (payload) => dispatch(deletePerOverview(payload)),
-  _exportPerToCsv: (payload) => dispatch(exportPerToCsv(payload))
+  _exportPerToCsv: (payload) => dispatch(exportPerToCsv(payload)),
+  _clearLoadedCsv: (payload) => dispatch(clearLoadedCsv(payload))
 });
 
 export default connect(selector, dispatcher)(PerAccount);
