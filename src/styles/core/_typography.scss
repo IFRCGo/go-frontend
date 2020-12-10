@@ -525,15 +525,15 @@ abbr[title] {
   @include heading__title;
 }
 
-h1 {
+h1, .h1 {
   @include heading(1.75rem);   // 28
 }
 
-h2 {
+h2, .h2 {
   @include heading(1.5rem);    // 24
 }
 
-h3 {
+h3, .h3 {
   @include heading(1.25rem);   // 20
 }
 
