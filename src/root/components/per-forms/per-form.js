@@ -34,7 +34,6 @@ function PerForm (props) {
     groupedPerQuestions
   } = props;
 
-
   useEffect(() => {
     if (formId && formsState) {
       setTitle(`Area ${formsState[formId].area.area_num} - ${formsState[formId].area.title}`);
@@ -73,11 +72,11 @@ function PerForm (props) {
         ? Object.keys(groupedQuestionList).map((compId) => {
         const componentHeader = (
           <div className='per__component__header'>
-            <h2>Component {compId}: {groupedQuestionList[compId][0].component.title}</h2>
-            <span className='label-secondary'>{groupedQuestionList[compId][0].component.description}</span>
+            <h2>Component {compId}: {groupedQuestionList[compId][0].question.component.title}</h2>
+            <span className='label-secondary'>{groupedQuestionList[compId][0].question.component.description}</span>
           </div>
         );
-        const questions = groupedQuestionList[compId].map((question) => (
+        const questions = groupedQuestionList[compId].map(({ question }) => (
           <div key={question.id}>
             <h3>{compId}.{question.question_num} {question.question}</h3>
             { question.description

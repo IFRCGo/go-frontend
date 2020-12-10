@@ -276,13 +276,17 @@ export const formQuestionsSelector = (state) => {
       'Exist, could be strengthened': 6,
       'High performance': 7
     };
-    return state.perQuestions.data.results.reduce((result, item) => {
+    const groupedQuestions = state.perQuestions.data.results.reduce((result, item) => {
       item.answers.sort((a, b) => answersOrder[a.text_en] - answersOrder[b.text_en]);
       const area = result[item.component.area.area_num] = result[item.component.area.area_num] || {};
-      const comp = area[item.component.component_num] = area[item.component.component_num] || [];
-      comp.push(item);
+
+      const compNumLetter = `${item.component.component_num}${item.component.component_letter}`;
+      const comp = area[compNumLetter] = area[compNumLetter] || [];
+      comp.push({compNumLetter, question: item});
       return result;
     }, {});
+
+    return groupedQuestions;
   }
 };
 
