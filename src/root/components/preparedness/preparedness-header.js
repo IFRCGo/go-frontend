@@ -15,11 +15,21 @@ class PreparednessHeader extends React.Component {
           <div className='container-full'>
             <div className='key-emergencies-list-wrap row flex-xs'>
               <ul className='key-emergencies-list key-emergencies-list--preparedness col col-8-xs'>
-                <Translate stringId='preparednessHeaderDetail'/>
+                <Translate
+                  stringId='preparednessHeaderDetail'
+                  params={{
+                    link: <a
+                      className='link key-emergencies-list--preparedness'
+                      href='https://media.ifrc.org/ifrc/what-we-do-disaster-and-crisis-national-society-preparedness-effective-response/'
+                      >
+                        here
+                      </a>
+                  }}
+                />
                 <ContactPer />
               </ul>
               <div className='key-emergencies-list-image col col-4-xs'>
-                <img src="/assets/graphics/content/per_old.jpg" alt="IFRC GO logo" width='220' />
+                <img src="/assets/graphics/content/per_approach_notext.svg" alt="IFRC GO logo" width='220' />
               </div>
             </div>
           </div>
