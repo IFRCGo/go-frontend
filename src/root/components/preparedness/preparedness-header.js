@@ -14,7 +14,7 @@ class PreparednessHeader extends React.Component {
         <Fold title={strings.preparednessHeaderTitle} foldTitleClass='margin-reset' foldWrapperClass='fold--main'>
           <div className='container-full'>
             <div className='key-emergencies-list-wrap row flex-xs'>
-              <ul className='key-emergencies-list key-emergencies-list--preparedness col col-8-xs'>
+              <ul className='key-emergencies-list key-emergencies-list--preparedness col col-6-xs'>
                 <Translate
                   stringId='preparednessHeaderDetail'
                   params={{
@@ -28,7 +28,7 @@ class PreparednessHeader extends React.Component {
                 />
                 <ContactPer />
               </ul>
-              <div className='key-emergencies-list-image col col-4-xs'>
+              <div className='key-emergencies-list-image col col-6-xs'>
                 <img src="/assets/graphics/content/per_approach_notext.svg" alt="IFRC GO logo" width='330' />
               </div>
             </div>
