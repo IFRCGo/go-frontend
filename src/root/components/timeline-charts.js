@@ -125,17 +125,19 @@ class TimelineCharts extends React.Component {
     });
 
     // Deal with missing months
+    // We take the min and max month from the data, and use a month by month for loop:
+    // If the loop index date is not in the data, then add a new entry in the 'data' array
+    // with empty drefs and appeals data
     const dates = dataDrefs.map(({ timespan }) => DateTime.fromISO(timespan, { zone: 'utc' }));
-    let curDate = DateTime.min(...dates);
+    const minDate = DateTime.min(...dates);
     const maxDate = DateTime.max(...dates);
-    while (curDate < maxDate) {
+    for (let curDate = minDate; curDate < maxDate; curDate = curDate.plus({ months: 1})) {
       if (!find(dates, d => d.equals(curDate))) {
         data.push({ timespan: curDate.toISODate({ zone: 'utc'}), drefs: { count: 0 }, appeals: { count: 0 }});
       }
-      curDate = curDate.plus({ months: 1});
     }
 
-    // sort by date
+    // Sort by date
     data = sortBy(data, [o => DateTime.fromISO(o.timespan, { zone: 'utc'}).ts]);
 
     return (
