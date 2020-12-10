@@ -323,3 +323,19 @@ export const getFullMonthNameList = (strings) => ([
 ]);
 
 export const compareString = (a, b) => a.label?.localeCompare(b.label);
+
+// Formats a luxon DateTime object to:
+// dd/mm/yyyy
+export const formatDateSlashes = (datetime) => {
+  return `${datetime.day}/${datetime.month}/${datetime.year}`;
+};
+
+export const formatDateMonth = (datetimeStr) => {
+  const dt = DateTime.fromISO(datetimeStr);
+  return `${dt.monthShort} ${dt.day}`;
+};
+
+export const getYear = (datetimeStr) => {
+  const dt = DateTime.fromISO(datetimeStr);
+  return dt.year;
+};
