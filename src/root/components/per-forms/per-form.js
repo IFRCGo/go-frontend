@@ -29,6 +29,7 @@ function PerForm (props) {
     formDataState,
     formCommentsState,
     handleChange,
+    clearRadio,
     isEpi,
     editable,
     groupedPerQuestions
@@ -96,8 +97,16 @@ function PerForm (props) {
               }))}
               selectedOption={formDataState[formId][question.id]?.selected_answer}
               onChange={handleChange(formId, question, true)}
-            >
-            </FormRadioGroup>
+              children={(
+                <button
+                  type='button'
+                  className='per--button--clear-source'
+                  title='Clear Entry'
+                  onClick={() => clearRadio(formId, question)}
+                >
+                </button>
+              )}
+            />
             <FormInput
               label='Notes'
               type='text'
