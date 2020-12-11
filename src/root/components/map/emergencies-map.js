@@ -233,7 +233,7 @@ class MapPopover extends React.Component {
         <div className='popover__contents'>
           <header className='popover__header'>
             <div className='popover__headline'>
-              <a className='link--primary' onClick={() => this.props.onTitleClick(this.props.uri)}>{title}
+              <a className='link--primary link--with-icon' onClick={() => this.props.onTitleClick(this.props.uri)}><span className='link--with-icon-text'>{title}</span>
                 <span className='popover__headline__icon collecticon-chevron-right'></span>
               </a>
             </div>
