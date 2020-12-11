@@ -35,7 +35,6 @@ function PerForm (props) {
     groupedPerQuestions
   } = props;
 
-
   useEffect(() => {
     if (formId && formsState) {
       setTitle(`Area ${formsState[formId].area.area_num} - ${formsState[formId].area.title}`);
@@ -45,7 +44,7 @@ function PerForm (props) {
 
   useEffect(() => {
     if (formsState && groupedPerQuestions) {
-      let perQuestions = groupedPerQuestions[formsState[formId].area.area_num];
+      let perQuestions = groupedPerQuestions['groupedQuestions'][formsState[formId].area.area_num];
 
       // If EPI benchmark is false remove the EPI questions
       if (isEpi === 'false') {
@@ -71,7 +70,7 @@ function PerForm (props) {
       />
 
       { groupedQuestionList
-        ? Object.keys(groupedQuestionList).map((compId) => {
+        ? groupedPerQuestions['areas'][formsState[formId].area.area_num].map((compId) => {
         const componentHeader = (
           <div className='per__component__header'>
             <h2>Component {compId}: {groupedQuestionList[compId][0].component.title}</h2>
