@@ -119,12 +119,20 @@ a:focus {
 }
 
 .popover__contents {
+  font-weight: $base-font-light;
   box-shadow: 1px 0px 4px 2px rgba(0,0,0,0.08);
 }
 
 .popover__actions {
   .poa-xmark {
-    padding: 0;
+    padding: $spacing-half 0;
+    position: relative;
+    top: -($spacing / 1.9);
+  }
+
+  .actions__menu {
+    padding-bottom: $spacing-half;
+    margin-bottom: 0;
   }
 }
 
@@ -140,7 +148,9 @@ a:focus {
   transition: none;
 
   .popover__headline__icon {
-    font-size: $font-size-sm;
+    font-size: $font-size-xs;
+    font-weight: $base-font-bold;
+    padding-left: ($spacing-half / 4);
   }
 }
 
@@ -164,6 +174,7 @@ a:focus {
 
   &:hover, &:focus {
     text-decoration: none;
+    opacity: 1;
 
     .link--with-icon-text {
       text-decoration: underline;

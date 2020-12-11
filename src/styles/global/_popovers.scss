@@ -5,7 +5,6 @@
 .popover {
   position: relative;
   text-align: initial;
-  font-size: 1rem;
   line-height: 1.5;
   min-width: 16rem;
   max-width: 20rem;
@@ -18,7 +17,7 @@
   border-radius: $base-border-radius;
   position: relative;
   z-index: 1;
-  padding: ($spacing * 1.5);
+  padding: ($spacing * 1.2) ($spacing * 1.5);
   //max-height: 225px; // Popovers can scroll
 
   > *:last-child {
@@ -50,6 +49,10 @@
 .popover__contents__noscroll {
   @extend .popover__contents;
   max-height:fit-content;
+}
+
+.popover__headline {
+  font-size: $base-font-size;
 }
 
 .popover__headline__bold {
@@ -91,7 +94,7 @@ a.popover__contents {
    ========================================================================== */
 
 .popover__body {
-  max-height: 190px; // Popovers can scroll
+  max-height: 170px; // Popovers can scroll
   overflow-x: hidden;
   overflow-y: auto;
   margin-bottom: $global-spacing;
@@ -143,6 +146,16 @@ a.popover__contents {
   dd + dd {
     margin-inline-start: 68%;
   }
+}
+
+.popover__details--list {
+  border-bottom: 1px solid $base-border-color;
+  padding-bottom: $spacing;
+
+  &:only-of-type {
+    border-color: transparent;
+    padding-bottom: 0;
+  }  
 }
 
 .popover__stat {

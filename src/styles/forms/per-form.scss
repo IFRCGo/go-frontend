@@ -268,9 +268,5 @@
 }
 
 .per--button--clear-source {
-  @extend .button, .button--base-glass;
-  &::before {
-    @extend %collecticon-trash-bin;
-  }
-  padding: 4px 0px 4px 6px;
+  @include button-trash;
 }

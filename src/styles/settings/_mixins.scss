@@ -229,3 +229,28 @@
     box-shadow: none;
   }  
 }
+
+
+/* ==========================================================================
+   Trash Button
+   ========================================================================== */
+
+@mixin button-trash {
+  @extend .button, .button--base-glass;
+    font-weight: $base-font-light;
+    padding: 0px 7px 2px 7px;
+    min-width: 0;
+    margin: -$spacing 0 0 $spacing-2;
+    background-color: transparent;
+
+    &:hover, &:focus {
+      background-color: $grey-titanium;
+    }
+
+    &::before {
+      content: '\ea54';
+      font-family: 'icomoon';
+      font-size: $font-size-sm;
+      margin: 0;
+    }
+}
