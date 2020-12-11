@@ -980,7 +980,6 @@ class Emergency extends React.Component {
         data.districts.length > 0
       ) {
         return (
-          <div className='col-lg flex-1'>
             <EmergencyMap
               countries={data.countries}
               districts={data.districts}
@@ -989,7 +988,6 @@ class Emergency extends React.Component {
               disasterTypeCode={data.dtype.toString()}
               countriesGeojson={this.props.countriesGeojson}
             />
-          </div> 
         );
       } else {
         return null;

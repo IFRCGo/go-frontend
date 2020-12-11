@@ -147,85 +147,87 @@ class EmergencyMap extends React.Component {
     }
 
     return (
-      <div className='emergency-map'>
-        <div className='fold fold--main padding-b-reset'>
-          <div className='fold__header'>
-            <div className='fold__header__block'>
-              <h2 className='fold__title'>
-                <Translate stringId='emergencyAffectedRegions' />
-              </h2>
-              <div className='fold__title__linkwrap'>
-                <button className={c('button button--primary-bounded button--small button--export', {
-                  disabled: !this.state.ready
-                })} onClick={this.exportMap.bind(this, countries[0].name, _find(this.props.disasterTypesSelect, {value: String(disasterTypeCode)})?.label)}>
-                  <Translate stringId='emergencyMapExport'/>
-                </button>
+      <div className='col-lg flex-1'>
+        <div className='emergency-map'>
+          <div className='fold fold--main padding-b-reset'>
+            <div className='fold__header'>
+              <div className='fold__header__block'>
+                <h2 className='fold__title'>
+                  <Translate stringId='emergencyAffectedRegions' />
+                </h2>
+                <div className='fold__title__linkwrap'>
+                  <button className={c('button button--primary-bounded button--small button--export', {
+                    disabled: !this.state.ready
+                  })} onClick={this.exportMap.bind(this, countries[0].name, _find(this.props.disasterTypesSelect, {value: String(disasterTypeCode)})?.label)}>
+                    <Translate stringId='emergencyMapExport'/>
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-          <div className='fold__body'>  
-            <div className='inner'>
-              <div className='map-container' id='mapContainer'>
-                <div style={exportStyle} className='global-margin'>
-                  <img className='' src='/assets/graphics/layout/go-logo-2020.svg' alt='IFRC GO logo'/>
-                  <h2 className='map__container__title'>{name}</h2>
-                  <div className=''>{DateTime.fromISO(date).toLocaleString(DateTime.DATE_FULL)}</div>
-                </div>
-                <figure className='map-vis'>
-                  <div className='fold__actions'>
-
+            <div className='fold__body'>  
+              <div className='inner'>
+                <div className='map-container' id='mapContainer'>
+                  <div style={exportStyle} className='global-margin'>
+                    <img className='' src='/assets/graphics/layout/go-logo-2020.svg' alt='IFRC GO logo'/>
+                    <h2 className='map__container__title'>{name}</h2>
+                    <div className=''>{DateTime.fromISO(date).toLocaleString(DateTime.DATE_FULL)}</div>
                   </div>
-                  <figcaption className='map-vis__legend map-vis__legend--bottom-right legend'>
-                    <div className='deployments-key'>
-                      <div>
-                        <label className='form__label'>Key</label>
-                        <dl className='legend__dl legend__dl--colors'>
-                          <dt className='color color--lightblue'>
-                            <Translate stringId='emergencyMapSelected'/>
-                          </dt>
-                          <dd>
-                            <Translate stringId='emergencyMapAffectedCountry'/>
-                          </dd>
-                          <dt className='color color--maroon'>
-                            <Translate stringId='emergencyMapSelected'/>
-                          </dt>
-                          <dd>
-                            <Translate stringId='emergencyMapAffectedRegion'/>
-                          </dd>
-                        </dl>
-                        <dl className='legend__dl legend__dl--borders'>
-                          <dt className='border--disputed'>
-                            <Translate stringId='emergencyMapBorder'/>
-                          </dt>
-                          <dd>
-                            <Translate stringId='emergencyMapBorderDisputed'/>
-                          </dd>
-                        </dl>
-                        {
-                          this.state.disputedTerritoriesVisible
-                            ? <dl className='legend__dl legend__dl--borders'>
-                                <dt className='border--territory'>
-                                  <Translate stringId='emergencyMapTerritory'/>
-                                </dt>
-                                <dd>
-                                  <Translate stringId='emergencyMapDisputedTerritory'/>
-                                </dd>
-                            </dl> : null
-                        }
-                      </div>
+                  <figure className='map-vis'>
+                    <div className='fold__actions'>
+
                     </div>
-                  </figcaption>
-                  <div className="map-vis__holder" ref='map'/>
-                  <img id="exportimage" style={exportImageStyle} src='/assets/graphics/layout/go-logo-2020.svg'/>
-                </figure>
-                <p style={exportStyle} className='map__container__disclaimer'>
-                  <Translate stringId='mapFooterDisclaimer'/>
-                </p>
+                    <figcaption className='map-vis__legend map-vis__legend--bottom-right legend'>
+                      <div className='deployments-key'>
+                        <div>
+                          <label className='form__label'>Key</label>
+                          <dl className='legend__dl legend__dl--colors'>
+                            <dt className='color color--lightblue'>
+                              <Translate stringId='emergencyMapSelected'/>
+                            </dt>
+                            <dd>
+                              <Translate stringId='emergencyMapAffectedCountry'/>
+                            </dd>
+                            <dt className='color color--maroon'>
+                              <Translate stringId='emergencyMapSelected'/>
+                            </dt>
+                            <dd>
+                              <Translate stringId='emergencyMapAffectedRegion'/>
+                            </dd>
+                          </dl>
+                          <dl className='legend__dl legend__dl--borders'>
+                            <dt className='border--disputed'>
+                              <Translate stringId='emergencyMapBorder'/>
+                            </dt>
+                            <dd>
+                              <Translate stringId='emergencyMapBorderDisputed'/>
+                            </dd>
+                          </dl>
+                          {
+                            this.state.disputedTerritoriesVisible
+                              ? <dl className='legend__dl legend__dl--borders'>
+                                  <dt className='border--territory'>
+                                    <Translate stringId='emergencyMapTerritory'/>
+                                  </dt>
+                                  <dd>
+                                    <Translate stringId='emergencyMapDisputedTerritory'/>
+                                  </dd>
+                              </dl> : null
+                          }
+                        </div>
+                      </div>
+                    </figcaption>
+                    <div className="map-vis__holder" ref='map'/>
+                    <img id="exportimage" style={exportImageStyle} src='/assets/graphics/layout/go-logo-2020.svg'/>
+                  </figure>
+                  <p style={exportStyle} className='map__container__disclaimer'>
+                    <Translate stringId='mapFooterDisclaimer'/>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </div> 
     );
   }
 }
