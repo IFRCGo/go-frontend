@@ -248,12 +248,13 @@ function PerAssessment (props) {
   useEffect(() => {
     const cpo = props.perForm.createPerOverview;
     if (!cpo.fetching && cpo.fetched && cpo.data) {
-      if (cpo.data.status === 'ok') {
+      if (cpo.error) {
+        showAlert('danger', <p>{cpo.error.error_message}</p>, true, 2000);
+        hideGlobalLoading();
+      } else if (cpo.data.status === 'ok') {
         showAlert('success', <p><Translate stringId="perOverviewAlertCreated" /></p>, true, 2000);
         setTimeout(() => props.history.push(`/per-assessment/${cpo.data.overview_id}/edit#overview`), 2000);
         _resetPerState();
-      } else if (cpo.error) {
-        showAlert('danger', <p><Translate stringId="perOverviewAlertCreated" /></p>, true, 2000);
       }
     }
   }, [props.perForm.createPerOverview, _resetPerState, props.history]);
@@ -263,12 +264,14 @@ function PerAssessment (props) {
     if (!upo.fetching && upo.fetched && upo.data && !umpf.fetching && umpf.fetched && umpf.data) {
       if (umpf.error) {
         showAlert('danger', <p>{umpf.error.error_message}</p>, true, 2000);
+        hideGlobalLoading();
       } else if (umpf.data.status === 'ok') {
         showAlert('success', <p><Translate stringId="perFormsAlertUpdatedNoRedirect" /></p>, true, 2000);
       }
 
       if (upo.error) {
         showAlert('danger', <p>{upo.error.error_message}</p>, true, 2000);
+        hideGlobalLoading();
       } else if (upo.data.status === 'ok') {
         if (upo.data.is_finalized) {
           showAlert('success', <p><Translate stringId="perOverviewAlertUpdated" /></p>, true, 2000);
