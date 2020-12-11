@@ -40,7 +40,7 @@ class OperationsPopover extends React.Component {
                     <a className='' onClick={e => { e.preventDefault(); navigate(`/emergencies/${d.event}`); }}>{d.name}</a>
                   ) : d.name}
                 </h3>
-                <ul className='popover__details'>
+                <ul className='popover__details popover__details--list'>
                   <li>
                     <span>{n(d.num_beneficiaries)} </span> 
                     <Translate stringId='operationPopoverPeopleAffected'/>
