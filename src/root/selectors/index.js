@@ -5,7 +5,6 @@ import _find from 'lodash.find';
 import { defaultInitialState } from '#utils/reducer-utils';
 import { compareString } from '#utils/utils';
 import { palestineLabel } from '#utils/special-map-labels';
-import { array } from 'prop-types';
 
 const initialState = { ...defaultInitialState };
 
