@@ -29,7 +29,7 @@ class PreparednessHeader extends React.Component {
                 <ContactPer />
               </ul>
               <div className='key-emergencies-list-image col col-6-xs'>
-                <img src="/assets/graphics/content/per_approach_notext.svg" alt="IFRC GO logo" width='330' />
+                <img src="/assets/graphics/content/per_approach_notext.png" alt="IFRC GO logo" width='330' />
               </div>
             </div>
           </div>
