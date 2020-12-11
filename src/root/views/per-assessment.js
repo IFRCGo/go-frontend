@@ -148,6 +148,12 @@ function PerAssessment (props) {
     })
   , []);
 
+  const clearRadio = useCallback(
+    memoize(function (formId, question) {
+      setFormDataState({ type: 'radio', formId, question, value: undefined });
+    })
+  , []);
+
   const saveForms = useCallback((e, isSubmit = false) => {
     if (e) {
       e.preventDefault();
@@ -536,6 +542,7 @@ function PerAssessment (props) {
                             <PerForm
                               formId={form.id}
                               handleChange={handlePerFormInputChange}
+                              clearRadio={clearRadio}
                               isCreate={isCreate}
                               isEpi={overviewState.is_epi}
                               editable={editable}
