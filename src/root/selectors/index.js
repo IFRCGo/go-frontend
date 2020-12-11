@@ -5,6 +5,7 @@ import _find from 'lodash.find';
 import { defaultInitialState } from '#utils/reducer-utils';
 import { compareString } from '#utils/utils';
 import { palestineLabel } from '#utils/special-map-labels';
+import { array } from 'prop-types';
 
 const initialState = { ...defaultInitialState };
 
@@ -276,17 +277,45 @@ export const formQuestionsSelector = (state) => {
       'Exist, could be strengthened': 6,
       'High performance': 7
     };
-    const groupedQuestions = state.perQuestions.data.results.reduce((result, item) => {
-      item.answers.sort((a, b) => answersOrder[a.text_en] - answersOrder[b.text_en]);
-      const area = result[item.component.area.area_num] = result[item.component.area.area_num] || {};
 
+    // This was the original, but sorting keys were a big problem
+    // -- keeping it here if we ever want to use it
+    // const groupedQuestions = state.perQuestions.data.results.reduce((result, item) => {
+    //   item.answers.sort((a, b) => answersOrder[a.text_en] - answersOrder[b.text_en]);
+    //   const area = result[item.component.area.area_num] = result[item.component.area.area_num] || {};
+
+    //   const compNumLetter = `${item.component.component_num}${item.component.component_letter}`;
+    //   const comp = area[compNumLetter] = area[compNumLetter] || [];
+    //   comp.push({compNumLetter, question: item});
+    //   return result;
+    // }, {});
+
+    const structuredObj = state.perQuestions.data.results.reduce((result, item) => {
       const compNumLetter = `${item.component.component_num}${item.component.component_letter}`;
-      const comp = area[compNumLetter] = area[compNumLetter] || [];
-      comp.push({compNumLetter, question: item});
+
+      // Add an array of area_nums to the returned object
+      // const areas = result['areas'] = result['areas'] || [];
+      // if (!areas.includes(item.component.area.area_num)) {
+      //   areas.push(item.component.area.area_num);
+      // }
+
+      const areas = result['areas'] = result['areas'] || {};
+      const area = areas[item.component.area.area_num] = areas[item.component.area.area_num] || [];
+      if (!area.includes(compNumLetter)) {
+        area.push(compNumLetter);
+      }
+
+      item.answers.sort((a, b) => answersOrder[a.text_en] - answersOrder[b.text_en]);
+      // Add the grouped questions (areas > components > questions) to the returned object
+      const groupedQuestions = result['groupedQuestions'] = result['groupedQuestions'] || {};
+      const ar = groupedQuestions[item.component.area.area_num] = groupedQuestions[item.component.area.area_num] || {};
+      const comp = ar[compNumLetter] = ar[compNumLetter] || [];
+      comp.push(item);
+
       return result;
     }, {});
 
-    return groupedQuestions;
+    return structuredObj;
   }
 };
 
