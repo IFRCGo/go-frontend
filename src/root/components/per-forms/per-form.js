@@ -96,15 +96,17 @@ function PerForm (props) {
               }))}
               selectedOption={formDataState[formId][question.id]?.selected_answer}
               onChange={handleChange(formId, question, true)}
-              children={(
-                <button
-                  type='button'
-                  className='per--button--clear-source'
-                  title='Clear Entry'
-                  onClick={() => clearRadio(formId, question)}
-                >
-                </button>
-              )}
+              children={editable
+                ? (
+                  <button
+                    type='button'
+                    className='per--button--clear-source'
+                    title='Clear Entry'
+                    onClick={() => clearRadio(formId, question)}
+                  >
+                  </button>
+                ) : null
+              }
             />
             <FormInput
               label='Notes'
