@@ -1394,7 +1394,9 @@ export default {
 
   noDataMessage: 'No data to display.',
 
-  deploymentsPageTitle: 'Deployments',
+  deploymentsPageTitle: 'Surge',
+  deploymentsOverviewByEmergencies: 'Deployments Overview By Emergencies',
+  deploymentsOverviewError: 'Error loading data',
 
   emergencySourceMessage: 'Source: {link}',
   emergencyFieldReportStatsHeading: 'Key Figures',
