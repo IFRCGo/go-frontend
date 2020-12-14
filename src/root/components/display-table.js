@@ -72,7 +72,7 @@ export default class DisplayTable extends React.Component {
   }
 
   render () {
-    const showHeader = this.props.showHeader ? this.props.showHeader : true;
+    const showHeader = this.props.hasOwnProperty('showHeader') ? this.props.showHeader : true;
     return (
       <React.Fragment>
         <table className={this.props.className}>
