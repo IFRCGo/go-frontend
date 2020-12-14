@@ -620,7 +620,9 @@ export function getPerCountries () {
 
 export const GET_PER_AREAS = 'GET_PER_AREAS';
 export function getPerAreas (id = null, area_num = null) {
-  let filters = {};
+  let filters = {
+    limit: 500
+  };
   if (area_num) {
     filters.area_num = area_num;
   }
@@ -675,7 +677,9 @@ export function getPerQuestions (area_id = null) {
 
 export const GET_PER_COMPONENTS = 'GET_PER_COMPONENTS';
 export function getPerComponents (area_id = null) {
-  let filters = {};
+  let filters = {
+    limit: 500
+  };
   if (area_id) {
     filters.area_id = area_id;
   }
