@@ -75,7 +75,6 @@ class EmergenciesMap extends React.Component {
     if (scaleValues.length) {
       maxScaleValue = Math.max.apply(Math, maxScaleValue) || 1;
     }
-    console.log('MAX', maxScaleValue);
     const cradius = {
       property: scaleBy,
       stops: [
