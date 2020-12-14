@@ -6,7 +6,7 @@ import {
   updatePerForm,
   resetPerState
 } from '#actions';
-import { formQuestionsSelector } from '#selectors';
+import { groupedPERQuestionsSelector } from '#selectors';
 
 import LanguageContext from '#root/languageContext';
 
@@ -32,7 +32,8 @@ function PerForm (props) {
     clearRadio,
     isEpi,
     editable,
-    groupedPerQuestions
+    groupedPerQuestions,
+    perComponents
   } = props;
 
   useEffect(() => {
@@ -48,13 +49,20 @@ function PerForm (props) {
 
       // If EPI benchmark is false remove the EPI questions
       if (isEpi === 'false') {
-        for (const [compNum, questions] of Object.entries(perQuestions)) {
-          perQuestions[compNum] = questions.filter(question => !question.is_epi);
+        for (const [compId, questions] of Object.entries(perQuestions)) {
+          perQuestions[compId] = questions.filter(question => !question.is_epi);
         }
       }
       setGroupedQuestionList(perQuestions);
     }
   }, [formsState, groupedPerQuestions, formId, isEpi]);
+
+  let filteredComponents = null;
+  if (formsState && !perComponents.fetching && perComponents.fetched && perComponents.data) {
+    filteredComponents = perComponents.data.results
+      .filter(comp => comp.area.area_num === formsState[formId].area.area_num)
+      .sort((a, b) => a.component_num < b.component_num);
+  }
 
   return (
     <Fold title={title} foldWrapperClass='fold--main' foldTitleClass='margin-reset'>
@@ -69,67 +77,69 @@ function PerForm (props) {
         disabled={!editable}
       />
 
-      { groupedQuestionList
-        ? groupedPerQuestions['areas'][formsState[formId].area.area_num].map((compId) => {
-        const componentHeader = (
-          <div className='per__component__header'>
-            <h2>Component {compId}: {groupedQuestionList[compId][0].component.title}</h2>
-            <span className='label-secondary'>{groupedQuestionList[compId][0].component.description}</span>
-          </div>
-        );
-        const questions = groupedQuestionList[compId].map((question) => (
-          <div key={question.id}>
-            <h3>{compId}.{question.question_num} {question.question}</h3>
-            { question.description
-              ? (
-                <span className='rich-text-section' dangerouslySetInnerHTML={{__html: question.description}} />
-              )
-              : null }
-            <FormRadioGroup
-              // label=''
-              name={`question${question.id}`}
-              classWrapper='per__form__radio-group'
-              options={question.answers.map((answer) => ({
-                value: answer.id.toString(),
-                label: answer.text,
-                disabled: !editable
-              }))}
-              selectedOption={formDataState[formId][question.id]?.selected_answer}
-              onChange={handleChange(formId, question, true)}
-              children={editable
-                ? (
-                  <button
-                    type='button'
-                    className='per--button--clear-source'
-                    title='Clear Entry'
-                    onClick={() => clearRadio(formId, question)}
-                  >
-                  </button>
-                ) : null
-              }
-            />
-            <FormInput
-              label='Notes'
-              type='text'
-              name={`question${question.id}-note`}
-              id={`question${question.id}-note`}
-              classWrapper=''
-              value={formDataState[formId][question.id]?.notes}
-              onChange={handleChange(formId, question, false)}
-              // description=''
-              disabled={!editable}
-            >
-            </FormInput>
-          </div>
-        ));
+      { filteredComponents && groupedQuestionList
+        ? filteredComponents.map((comp) => {
+          const componentHeader = (
+            <div className='per__component__header'>
+              <h2>Component {comp.component_num}{comp.component_letter}: {comp.title}</h2>
+              <span className='label-secondary'>{comp.description}</span>
+            </div>
+          );
 
-        return (
-          <React.Fragment key={compId}>
-            {componentHeader}
-            {questions}
-          </React.Fragment>
-        );
-      }) : null }
+          const questions = groupedQuestionList[comp.id]
+            ? groupedQuestionList[comp.id].map((question) => (
+              <div key={question.id}>
+                <h3>{comp.component_num}.{question.question_num} {question.question}</h3>
+                { question.description
+                  ? (
+                    <span className='rich-text-section' dangerouslySetInnerHTML={{__html: question.description}} />
+                  )
+                  : null }
+                <FormRadioGroup
+                  // label=''
+                  name={`question${question.id}`}
+                  classWrapper='per__form__radio-group'
+                  options={question.answers.map((answer) => ({
+                    value: answer.id.toString(),
+                    label: answer.text,
+                    disabled: !editable
+                  }))}
+                  selectedOption={formDataState[formId][question.id]?.selected_answer}
+                  onChange={handleChange(formId, question, true)}
+                  children={editable
+                    ? (
+                      <button
+                        type='button'
+                        className='per--button--clear-source'
+                        title='Clear Entry'
+                        onClick={() => clearRadio(formId, question)}
+                      >
+                      </button>
+                    ) : null
+                  }
+                />
+                <FormInput
+                  label='Notes'
+                  type='text'
+                  name={`question${question.id}-note`}
+                  id={`question${question.id}-note`}
+                  classWrapper=''
+                  value={formDataState[formId][question.id]?.notes}
+                  onChange={handleChange(formId, question, false)}
+                  // description=''
+                  disabled={!editable}
+                >
+                </FormInput>
+              </div>
+            )) : null;
+  
+          return (
+            <React.Fragment key={comp.id}>
+              {componentHeader}
+              {questions}
+            </React.Fragment>
+          );
+        }) : null }
     </Fold>
   );
 }
@@ -144,7 +154,8 @@ if (environment !== 'production') {
 const selector = (state, ownProps) => ({
   user: state.user.data,
   perForm: state.perForm,
-  groupedPerQuestions: formQuestionsSelector(state)
+  perComponents: state.perComponents,
+  groupedPerQuestions: groupedPERQuestionsSelector(state)
 });
 
 const dispatcher = (dispatch) => ({

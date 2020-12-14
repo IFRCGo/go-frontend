@@ -262,8 +262,8 @@ export const disasterTypesSelectSelector = (state) => {
   return [];
 };
 
-// area_nums > component_nums > questions
-export const formQuestionsSelector = (state) => {
+// area_nums > component_ids > questions
+export const groupedPERQuestionsSelector = (state) => {
   if (state.perQuestions && state.perQuestions.data.results) {
     // Custom sorting order, this was the cleanest way
     const answersOrder = {
@@ -277,38 +277,18 @@ export const formQuestionsSelector = (state) => {
       'High performance': 7
     };
 
-    // This was the original, but sorting keys were a big problem
-    // -- keeping it here if we ever want to use it
-    // const groupedQuestions = state.perQuestions.data.results.reduce((result, item) => {
-    //   item.answers.sort((a, b) => answersOrder[a.text_en] - answersOrder[b.text_en]);
-    //   const area = result[item.component.area.area_num] = result[item.component.area.area_num] || {};
-
-    //   const compNumLetter = `${item.component.component_num}${item.component.component_letter}`;
-    //   const comp = area[compNumLetter] = area[compNumLetter] || [];
-    //   comp.push({compNumLetter, question: item});
-    //   return result;
-    // }, {});
-
     const structuredObj = state.perQuestions.data.results.reduce((result, item) => {
-      const compNumLetter = `${item.component.component_num}${item.component.component_letter}`;
-
-      // Add an array of area_nums to the returned object
-      // const areas = result['areas'] = result['areas'] || [];
-      // if (!areas.includes(item.component.area.area_num)) {
-      //   areas.push(item.component.area.area_num);
-      // }
-
       const areas = result['areas'] = result['areas'] || {};
       const area = areas[item.component.area.area_num] = areas[item.component.area.area_num] || [];
-      if (!area.includes(compNumLetter)) {
-        area.push(compNumLetter);
+      if (!area.includes(item.component.id)) {
+        area.push(item.component.id);
       }
 
       item.answers.sort((a, b) => answersOrder[a.text_en] - answersOrder[b.text_en]);
       // Add the grouped questions (areas > components > questions) to the returned object
       const groupedQuestions = result['groupedQuestions'] = result['groupedQuestions'] || {};
       const ar = groupedQuestions[item.component.area.area_num] = groupedQuestions[item.component.area.area_num] || {};
-      const comp = ar[compNumLetter] = ar[compNumLetter] || [];
+      const comp = ar[item.component.id] = ar[item.component.id] || [];
       comp.push(item);
 
       return result;
@@ -316,6 +296,7 @@ export const formQuestionsSelector = (state) => {
 
     return structuredObj;
   }
+  return null;
 };
 
 export const disasterTypesSelector = (state) => {
