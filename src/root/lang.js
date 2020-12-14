@@ -710,6 +710,12 @@ export default {
 
   deploymentsTitle: 'IFRC Go - Deployments',
   deploymentsDeployedERU: 'Deployed ERUs',
+  deploymentsOverviewByEmergencies: 'Deployments Overview By Emergencies',
+  deploymentsOverviewEmergenciesLink: 'View All Deployed Personnel and ERUs',
+  deploymentsOverviewTableHeaderEmergency: 'Emergency',
+  deploymentsOverviewTableHeaderOrg: 'Deploying Organization',
+  deploymentsOverviewTableHeaderSurge: 'Surge Type',
+  deploymentsOverviewTableHeaderNo: 'Number of Deployments',
   deploymentsDeployedRR: 'Deployed Rapid Response',
   deploymentsDeployedHeops: 'Deployed HEOPS',
   deploymentEruDeploymentTypes: 'ERU Deployment Types',
@@ -1395,7 +1401,6 @@ export default {
   noDataMessage: 'No data to display.',
 
   deploymentsPageTitle: 'Surge',
-  deploymentsOverviewByEmergencies: 'Deployments Overview By Emergencies',
   deploymentsOverviewError: 'Error loading data',
 
   emergencySourceMessage: 'Source: {link}',
