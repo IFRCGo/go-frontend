@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { PropTypes as T } from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import mapboxgl from 'mapbox-gl';
-import _debounce from 'lodash.debounce';
+// import _debounce from 'lodash.debounce';
 import chroma from 'chroma-js';
 import { environment } from '#config';
 import BlockLoading from '../block-loading';
@@ -205,15 +205,15 @@ class MainMap extends React.Component {
     //   }
     // });
 
-    theMap.on('mousemove', 'icrc_admin0', _debounce(e => {
-      const feature = e.features.length ? e.features[0] : undefined;
-      if (feature && feature.properties.INDEPENDEN !== 'FALSE' &&
-        feature.properties.ISO2 !== this.state.selectedFeatureISO) {
-          this.setState({ selectedFeatureISO: feature.properties.ISO2 });
-          theMap.setLayoutProperty('icrc_admin0_highlight', 'visibility', 'visible');
-          theMap.setFilter('icrc_admin0_highlight', ['==', 'OBJECTID', feature.properties.OBJECTID]);
-      }
-    }, 80));
+    // theMap.on('mousemove', 'icrc_admin0', _debounce(e => {
+    //   const feature = e.features.length ? e.features[0] : undefined;
+    //   if (feature && feature.properties.INDEPENDEN !== 'FALSE' &&
+    //     feature.properties.ISO2 !== this.state.selectedFeatureISO) {
+    //       this.setState({ selectedFeatureISO: feature.properties.ISO2 });
+    //       theMap.setLayoutProperty('icrc_admin0_highlight', 'visibility', 'visible');
+    //       theMap.setFilter('icrc_admin0_highlight', ['==', 'OBJECTID', feature.properties.OBJECTID]);
+    //   }
+    // }, 80));
 
     theMap.on('click', 'appeals', e => {
       const feature = e.features.length ? e.features[0] : undefined;
