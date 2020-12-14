@@ -233,9 +233,9 @@ class MainMap extends React.Component {
       }
     });
 
-    theMap.on('mouseleave', 'icrc_admin0', e => {
-      theMap.setLayoutProperty('icrc_admin0_highlight', 'visibility', 'none');
-    });
+    // theMap.on('mouseleave', 'icrc_admin0', e => {
+    //   theMap.setLayoutProperty('icrc_admin0_highlight', 'visibility', 'none');
+    // });
 
     if (Array.isArray(this.props.mapBoundingBox)) {
       const infinite = !isFinite(this.props.mapBoundingBox[0]);
