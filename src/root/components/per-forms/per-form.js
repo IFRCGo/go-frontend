@@ -89,7 +89,7 @@ function PerForm (props) {
           const questions = groupedQuestionList[comp.id]
             ? groupedQuestionList[comp.id].map((question) => (
               <div key={question.id}>
-                <h3>{comp.component_num}.{question.question_num} {question.question}</h3>
+                <h3>{comp.component_num}{!question.question_num ? comp.component_letter : ''}.{question.question_num} {question.question}</h3>
                 { question.description
                   ? (
                     <span className='rich-text-section' dangerouslySetInnerHTML={{__html: question.description}} />
