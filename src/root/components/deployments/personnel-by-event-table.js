@@ -31,7 +31,7 @@ function PersonnelByEventTable (props) {
     <Fold
       title={strings.deploymentsOverviewByEmergencies}
       foldWrapperClass="fold--main fold-deployments-overview-emergencies"
-      navLink=<Link className='fold__title__link' to=''>{strings.deploymentsOverviewEmergenciesLink}</Link>>
+      navLink=<Link className='fold__title__link' to='/deployments/personnel/all'>{strings.deploymentsOverviewEmergenciesLink}</Link>>
       <table className='responsive-table table table--border-bottom table--box-shadow'>
         <thead>
           <th>
