@@ -336,6 +336,11 @@ export function getEventSnippets (eventId) {
   return fetchJSON(`api/v2/event_snippet/?event=${eventId}`, GET_EVENT_SNIPPETS, withToken(), { id: eventId });
 }
 
+export const GET_PERSONNEL_BY_EVENT = 'GET_PERSONNEL_BY_EVENT';
+export function getPersonnelByEvent () {
+  return fetchJSON(`api/v2/personnel_by_event`, GET_PERSONNEL_BY_EVENT);
+}
+
 export const GET_SITREP_TYPES = 'GET_SITREP_TYPES';
 export function getSitrepTypes (type) {
   return fetchJSON('api/v2/situation_report_type/', GET_SITREP_TYPES);

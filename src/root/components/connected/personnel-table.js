@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
-// import { DateTime } from 'luxon';
+import { DateTime } from 'luxon';
 
 import { environment } from '#config';
 import { getPersonnel } from '#actions';
@@ -10,6 +10,9 @@ import { commaSeparatedNumber as n, nope } from '#utils/format';
 import {
   get,
   // dateOptions,
+  formatDateSlashes,
+  formatDateMonth,
+  getYear,
   datesAgo
 } from '#utils/utils';
 
@@ -34,6 +37,19 @@ const typeOptions = [
 // These types reference types defined in the backend models here: https://github.com/IFRCGo/go-api/blob/e92b0ceadd70297a574fe4410d76eb7bf8614411/deployments/models.py#L98-L106
 const typeLongNames = {
   'rr': 'Rapid Response'
+};
+
+// Takes millisecond values for min, max, start and end
+// Returns object with start, value as starting point and length of deployment
+// as percentage values
+const getProgressValues = (min, max, start, end) => {
+  const totalDuration = max - min;
+  const startPercent = ((start - min) / totalDuration) * 100;
+  const valuePercent = ((end - start) / totalDuration) * 100;
+  return {
+    start: startPercent,
+    value: valuePercent
+  };
 };
 
 class PersonnelTable extends SFPComponent {
@@ -125,6 +141,7 @@ class PersonnelTable extends SFPComponent {
       return null;
     }
 
+
     // if (fetched) {
     if (fetched) {
       const headings = [
@@ -164,57 +181,71 @@ class PersonnelTable extends SFPComponent {
         id: 'emer',
         label: <SortHeader id='emer' title={strings.personnelTableEmergency} sort={this.state.table.sort} onClick={() => {}} /> // for filtering options check .../api/v2/personnel/?limit=2 - the Filters button, Ordering
       }*/];
-
-      const rows = data.results.map(o => ({
-        id: o.id,
-        //startDateInterval: DateTime.fromISO(o.start_date).toISODate(),
-        //endDate: DateTime.fromISO(o.end_date).toISODate(),
-        role: get(o, 'role', nope),
-        type: o.type === 'rr' ? typeLongNames[o.type] : o.type.toUpperCase(),
-        country: o.country_from ? <Link to={`/countries/${o.country_from.id}`} className='link--table' title={strings.personnelTableViewCountry}>{o.country_from.society_name || o.country_from.name}</Link> : nope,
-        name: o.name,
-        progress__personnel: 
-                  <div className='progress__block__personnel'
-                     data-html={true}
-                     data-tip='
-                      <div class="row-sm flex flex-align-center progress__block__tooltip__heading">
-                        <div class="col-sm text-uppercase base-font-medium">John Smith</div>
-                        <div class="col-sm margin-left-auto"><span class="collecticon-sm-xmark font-size-lg"></span></div>
-                      </div>
-                      <div class="row-sm spacing-half-b flex">
-                        <div class="col-sm">Start - End Dates</div>
-                        <div class="col-sm base-font-semi-bold">Jan 15 - Feb 15 2020</div>
-                      </div>
-                      <div class="row-sm spacing-half-b flex">
-                        <div class="col-sm">Position</div>
-                        <div class="col-sm base-font-semi-bold">Data Vis. Specialist</div>
-                      </div>
-                      <div class="row-sm spacing-half-b flex">
-                        <div class="col-sm">Type</div>
-                        <div class="col-sm base-font-semi-bold">RRP</div>
-                      </div>
-                      <div class="row-sm spacing-half-b flex">
-                        <div class="col-sm">Deploying Party</div>
-                        <div class="col-sm base-font-semi-bold">British NS</div>
-                      </div>
-                      <div class="row-sm spacing-half-b flex">
-                        <div class="col-sm">Deployed To</div>
-                        <div class="col-sm base-font-semi-bold">Republic of the Congo</div>
-                      </div>
-                     '
-                     //data-for='{`${o.id}`}'         
-                  >
-                    <ReactTooltip
-                      className='tooltip'
-                      html={true}
-                      //data-id={`${o.id}`},
-                      globalEventOff='click'
-                      aria-haspopup='true' />
-                    <Progress value='50' max='100'></Progress>
-                  </div>
-        /*deployed: o.deployment && o.deployment.country_deployed_to ? <Link to={`/countries/${o.deployment.country_deployed_to.id}`} className='link--table' title={strings.personnelTableViewCountry}>{o.deployment.country_deployed_to.name}</Link> : nope,
-        emer: o.deployment && o.deployment.event_deployed_to ? <Link to={`/emergencies/${o.deployment.event_deployed_to.id}`} className='link--table' title={strings.personnelTableViewCountry}>{o.deployment.event_deployed_to.name}</Link> : nope*/
-      }));
+      // DateTime.fromISO(data.results[0].start_date));
+      const startDates = data.results
+        .filter(d => d.start_date)
+        .map(d => DateTime.fromISO(d.start_date));
+      const minDate = DateTime.min(...startDates);
+      const endDates = data.results
+        .filter(d => d.end_date)
+        .map(d => new DateTime.fromISO(d.end_date));
+      const maxDate = DateTime.max(...endDates);
+      const midDate = DateTime.fromMillis((minDate.ts + maxDate.ts) / 2);
+      const rows = data.results.map(o => {
+        const progressValues = getProgressValues(minDate.ts, maxDate.ts, DateTime.fromISO(o.start_date).ts, DateTime.fromISO(o.end_date).ts);
+        return {
+          id: o.id,
+          //startDateInterval: DateTime.fromISO(o.start_date).toISODate(),
+          //endDate: DateTime.fromISO(o.end_date).toISODate(),
+          role: get(o, 'role', nope),
+          type: o.type === 'rr' ? typeLongNames[o.type] : o.type.toUpperCase(),
+          country: o.country_from ? <Link to={`/countries/${o.country_from.id}`} className='link--table' title={strings.personnelTableViewCountry}>{o.country_from.society_name || o.country_from.name}</Link> : nope,
+          name: o.name,
+          progress__personnel: 
+                    <div className='progress__block__personnel'
+                      data-html={true}
+                      data-tip={`
+                        <div class="row-sm flex flex-align-center progress__block__tooltip__heading">
+                          <div class="col-sm text-uppercase base-font-medium">${o.name}</div>
+                          <div class="col-sm margin-left-auto"><span class="collecticon-sm-xmark font-size-lg"></span></div>
+                        </div>
+                        <div class="row-sm spacing-half-b flex">
+                          <div class="col-sm">Start - End Dates</div>
+                          <div class="col-sm base-font-semi-bold">
+                            ${formatDateMonth(o.start_date)} - ${formatDateMonth(o.end_date)} ${getYear(o.end_date)}
+                          </div>
+                        </div>
+                        <div class="row-sm spacing-half-b flex">
+                          <div class="col-sm">Position</div>
+                          <div class="col-sm base-font-semi-bold">${o.role}</div>
+                        </div>
+                        <div class="row-sm spacing-half-b flex">
+                          <div class="col-sm">Type</div>
+                          <div class="col-sm base-font-semi-bold">${o.type === 'rr' ? typeLongNames[o.type] : o.type.toUpperCase()}</div>
+                        </div>
+                        <div class="row-sm spacing-half-b flex">
+                          <div class="col-sm">Deploying Party</div>
+                          <div class="col-sm base-font-semi-bold">${o.country_from ? o.country_from.society_name : '-'}</div>
+                        </div>
+                        <div class="row-sm spacing-half-b flex">
+                          <div class="col-sm">Deployed To</div>
+                          <div class="col-sm base-font-semi-bold">${o.deployment.country_deployed_to.name}</div>
+                        </div>
+                      `}
+                      //data-for='{`${o.id}`}'         
+                    >
+                      <ReactTooltip
+                        className='tooltip'
+                        html={true}
+                        //data-id={`${o.id}`},
+                        globalEventOff='click'
+                        aria-haspopup='true' />
+                      <Progress start={progressValues.start} value={progressValues.value} max='100'></Progress>
+                    </div>
+          /*deployed: o.deployment && o.deployment.country_deployed_to ? <Link to={`/countries/${o.deployment.country_deployed_to.id}`} className='link--table' title={strings.personnelTableViewCountry}>{o.deployment.country_deployed_to.name}</Link> : nope,
+          emer: o.deployment && o.deployment.event_deployed_to ? <Link to={`/emergencies/${o.deployment.event_deployed_to.id}`} className='link--table' title={strings.personnelTableViewCountry}>{o.deployment.event_deployed_to.name}</Link> : nope*/
+        };
+      });
 
       const foldLink = this.props.viewAll ? (
         <Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || strings.personnelTableViewAllDeployed}</Link>
@@ -237,9 +268,9 @@ class PersonnelTable extends SFPComponent {
             paginate={this.props.noPaginate}
           />
           <div className='personnel__table__daterange'>
-            <div className='personnel__table__date'>05/05/2020</div>
-            <div className='personnel__table__date'>07/05/2020</div>
-            <div className='personnel__table__date'>09/05/2020</div>
+            <div className='personnel__table__date'>{formatDateSlashes(minDate)}</div>
+            <div className='personnel__table__date'>{formatDateSlashes(midDate)}</div>
+            <div className='personnel__table__date'>{formatDateSlashes(maxDate)}</div>
           </div>
         </Fold>
       );
