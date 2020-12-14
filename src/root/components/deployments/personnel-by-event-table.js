@@ -14,6 +14,19 @@ function PersonnelByEventTable (props) {
   } = props.data;
   const { strings } = React.useContext(LanguageContext);
 
+  if (!fetched || data.results?.length === 0) {
+    return null;
+  }
+
+  if (error) {
+    return (
+      <ErrorPanel
+        title={strings.deploymentsOverviewByEmergencies}
+        errorMessage={strings.deploymentsOverviewError}
+      />
+    );
+  }
+
   return (
     <Fold
       title={strings.deploymentsOverviewByEmergencies}
@@ -35,35 +48,30 @@ function PersonnelByEventTable (props) {
           </th>
         </thead>
         <tbody>
-          <tr>
-            <td className='table__cell--deploy-emergency-name'><a className='link--table'>Philippines: Measles Outbreak</a></td>
-            <td>Typhoon SIM</td>
-            <td>Test</td>
-            <td className='table__cell--deploy-emergency-no'>4</td>
-          </tr>
-          <tr>
-            <td className='table__cell--deploy-emergency-name'><a className='link--table'>Mozambique: Operation 1</a></td>
-            <td>Test Emergency - Non-Covid</td>
-            <td>Assessment Coordinator, Volcano Eruption, Indonesia</td>
-            <td className='table__cell--deploy-emergency-no'>9</td>
-          </tr>
+          { data.results.map(d => (
+            <tr>
+              <td className='table__cell--deploy-emergency-name'>
+                <Link to={`/emergencies/${d.id}`} className='link--table'>
+                  { d.name }
+                </Link>
+              </td>
+              <td>
+                { d.organizations_from.join(', ') }
+              </td>
+              <td>
+                {strings.deploymentsRapidResponse}
+              </td>
+              <td className='table__cell--deploy-emergency-no'>
+                { d.personnel_count }
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </Fold>
   );
 
-  /*if (!fetched || data.results?.length === 0) {
-    return null;
-  }
-
-  if (error) {
-    return (
-      <ErrorPanel
-        title={strings.deploymentsOverviewByEmergencies}
-        errorMessage={strings.deploymentsOverviewError}
-      />
-    );
-  }
+  /*
 
   return (
     <div>

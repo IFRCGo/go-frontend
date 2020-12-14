@@ -1402,6 +1402,7 @@ export default {
 
   deploymentsPageTitle: 'Surge',
   deploymentsOverviewError: 'Error loading data',
+  deploymentsRapidResponse: 'Rapid Response',
 
   emergencySourceMessage: 'Source: {link}',
   emergencyFieldReportStatsHeading: 'Key Figures',
