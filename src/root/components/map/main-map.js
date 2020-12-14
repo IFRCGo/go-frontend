@@ -259,7 +259,7 @@ class MainMap extends React.Component {
 
   // FIXME: move this to a utils
   getCountryFromIso(iso, countries) {
-    const country = countries.find(country => country.iso.toUpperCase() === iso && country.record_type === 1);
+    const country = countries.find(country => country.iso && country.iso.toUpperCase() === iso && country.record_type === 1);
     if (country) {
       return country;
     } else {
