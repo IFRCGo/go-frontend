@@ -977,7 +977,8 @@ class Emergency extends React.Component {
       if (
         data.countries.length === 1 &&
         data.countries[0].record_type === 1 &&
-        data.districts.length > 0
+        data.districts.length > 0 &&
+        !data.hide_field_report_map
       ) {
         return (
             <EmergencyMap
