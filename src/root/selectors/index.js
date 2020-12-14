@@ -264,7 +264,12 @@ export const disasterTypesSelectSelector = (state) => {
 
 // area_nums > component_ids > questions
 export const groupedPERQuestionsSelector = (state) => {
-  if (state.perQuestions && state.perQuestions.data.results) {
+  if (
+    state.perQuestions
+    && state.perQuestions.data.results
+    && state.perComponents
+    && state.perComponents.data.results
+  ) {
     // Custom sorting order, this was the cleanest way
     const answersOrder = {
       'yes': 0,
@@ -277,19 +282,17 @@ export const groupedPERQuestionsSelector = (state) => {
       'High performance': 7
     };
 
-    const structuredObj = state.perQuestions.data.results.reduce((result, item) => {
-      const areas = result['areas'] = result['areas'] || {};
-      const area = areas[item.component.area.area_num] = areas[item.component.area.area_num] || [];
-      if (!area.includes(item.component.id)) {
-        area.push(item.component.id);
-      }
+    const structuredObj = state.perComponents.data.results.reduce((result, item) => {
+      // ALL area_nums > ALL component_ids (with empty arrays at least)
+      const area = result[item.area.area_num] = result[item.area.area_num] || {};
+      const comp = area[item.id] = area[item.id] || [];
 
-      item.answers.sort((a, b) => answersOrder[a.text_en] - answersOrder[b.text_en]);
-      // Add the grouped questions (areas > components > questions) to the returned object
-      const groupedQuestions = result['groupedQuestions'] = result['groupedQuestions'] || {};
-      const ar = groupedQuestions[item.component.area.area_num] = groupedQuestions[item.component.area.area_num] || {};
-      const comp = ar[item.component.id] = ar[item.component.id] || [];
-      comp.push(item);
+      state.perQuestions.data.results
+        .filter(question => question.component.id === item.id)
+        .forEach(question => {
+          question.answers.sort((a, b) => answersOrder[a.text_en] - answersOrder[b.text_en]);
+          comp.push(question);
+        });
 
       return result;
     }, {});

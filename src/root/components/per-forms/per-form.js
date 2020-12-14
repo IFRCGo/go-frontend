@@ -45,7 +45,7 @@ function PerForm (props) {
 
   useEffect(() => {
     if (formsState && groupedPerQuestions) {
-      let perQuestions = groupedPerQuestions['groupedQuestions'][formsState[formId].area.area_num];
+      let perQuestions = groupedPerQuestions[formsState[formId].area.area_num];
 
       // If EPI benchmark is false remove the EPI questions
       if (isEpi === 'false') {
@@ -61,7 +61,15 @@ function PerForm (props) {
   if (formsState && !perComponents.fetching && perComponents.fetched && perComponents.data) {
     filteredComponents = perComponents.data.results
       .filter(comp => comp.area.area_num === formsState[formId].area.area_num)
-      .sort((a, b) => a.component_num < b.component_num);
+      .sort((a, b) => {
+        // First sort by component_num
+        if (a.component_num < b.component_num) return -1;
+        if (a.component_num > b.component_num) return 1;
+        // then by id
+        if (a.id < b.id) return -1;
+        if (a.id > b.id) return 1;
+        return 1;
+      });
   }
 
   return (
