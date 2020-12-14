@@ -536,6 +536,18 @@
     }
   }
 
+  .color--map-red::before {
+    background: #f63440;
+  }
+
+  .color--map-yellow::before {
+    background: #ff9e00;
+  }
+
+  .color--map-red2::before {
+    background: #c02c2c;
+  }
+
   .color--red::before {
     background: $primary-color;
   }
