@@ -36,7 +36,7 @@ class MarkerLayerStylesheetFactory {
       'source': source,
       'paint': {
         'circle-color': ccolor,
-        'circle-radius': 4
+        'circle-radius': 5
       }
     });
     return layers;
