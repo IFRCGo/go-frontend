@@ -22,6 +22,7 @@ import { produce } from 'immer';
 import {
   getAssessmentTypes,
   getPerAreas,
+  getPerComponents,
   getPerQuestions,
   getPerOverviewStrict,
   getPerForms,
@@ -32,7 +33,7 @@ import {
   updatePerForms,
   resetPerState
 } from '#actions';
-import { formQuestionsSelector, nsDropdownSelector } from '#selectors';
+import { groupedPERQuestionsSelector, nsDropdownSelector } from '#selectors';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 
 import Ajv from 'ajv';
@@ -112,6 +113,7 @@ function PerAssessment (props) {
   const {
     _getAssessmentTypes,
     _getPerAreas,
+    _getPerComponents,
     _getPerQuestions,
     _getPerOverviewStrict,
     _getPerForms,
@@ -231,6 +233,12 @@ function PerAssessment (props) {
   }, [_getPerAreas, props.perAreas]);
 
   useEffect(() => {
+    if (!props.perComponents || (!props.perComponents.fetched && !props.perComponents.fetching)) {
+      _getPerComponents();
+    }
+  }, [_getPerComponents, props.perComponents]);
+
+  useEffect(() => {
     const ats = props.perForm.assessmentTypes;
     if (!ats || (!ats.fetched && !ats.fetching)) {
       _getAssessmentTypes();
@@ -328,6 +336,7 @@ function PerAssessment (props) {
     const overviews = props.perOverview;
     const upo = props.perForm.updatePerOverview;
     const umpf = props.perForm.updateMultiplePerForms;
+    const pc = props.perComponents;
     if (!isCreate
       && !overviews.fetching
       && overviews.fetched
@@ -338,7 +347,10 @@ function PerAssessment (props) {
       && formDataState
       && props.groupedPerQuestions
       && !upo.fetching
-      && !umpf.fetching) {
+      && !umpf.fetching
+      && !pc.fetching
+      && pc.fetched
+      && pc.data) {
       hideGlobalLoading();
     }
   }, [
@@ -350,7 +362,8 @@ function PerAssessment (props) {
     props.perOverview,
     props.groupedPerQuestions,
     props.perForm.updatePerOverview,
-    props.perForm.updateMultiplePerForms
+    props.perForm.updateMultiplePerForms,
+    props.perComponents
   ]);
 
   useEffect(() => {
@@ -590,16 +603,18 @@ if (environment !== 'production') {
 const selector = (state, ownProps) => ({
   user: state.user.data,
   perAreas: state.perAreas,
+  perComponents: state.perComponents,
   perQuestions: state.perQuestions,
   perForm: state.perForm,
   perOverview: state.perOverview,
-  groupedPerQuestions: formQuestionsSelector(state),
+  groupedPerQuestions: groupedPERQuestionsSelector(state),
   nsDropdownItems: nsDropdownSelector(state)
 });
 
 const dispatcher = (dispatch) => ({
   _getAssessmentTypes: () => dispatch(getAssessmentTypes()),
   _getPerAreas: (...args) => dispatch(getPerAreas(...args)),
+  _getPerComponents: (...args) => dispatch(getPerComponents(...args)),
   _getPerQuestions: (...args) => dispatch(getPerQuestions(...args)),
   _getPerOverviewStrict: (...args) => dispatch(getPerOverviewStrict(...args)),
   _getPerForms: (...args) => dispatch(getPerForms(...args)),

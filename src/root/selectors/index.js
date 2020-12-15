@@ -265,9 +265,14 @@ export const disasterTypesSelectSelector = (state) => {
   return [];
 };
 
-// area_nums > component_nums > questions
-export const formQuestionsSelector = (state) => {
-  if (state.perQuestions && state.perQuestions.data.results) {
+// area_nums > component_ids > questions
+export const groupedPERQuestionsSelector = (state) => {
+  if (
+    state.perQuestions
+    && state.perQuestions.data.results
+    && state.perComponents
+    && state.perComponents.data.results
+  ) {
     // Custom sorting order, this was the cleanest way
     const answersOrder = {
       'yes': 0,
@@ -275,50 +280,29 @@ export const formQuestionsSelector = (state) => {
       'Not Reviewed': 2,
       'Does not exist': 3,
       'Partially exists': 4,
-      'Need improvements': 5,
-      'Exist, could be strengthened': 6,
+      'Needs improvement': 5,
+      'Exists, could be strengthened': 6,
       'High performance': 7
     };
 
-    // This was the original, but sorting keys were a big problem
-    // -- keeping it here if we ever want to use it
-    // const groupedQuestions = state.perQuestions.data.results.reduce((result, item) => {
-    //   item.answers.sort((a, b) => answersOrder[a.text_en] - answersOrder[b.text_en]);
-    //   const area = result[item.component.area.area_num] = result[item.component.area.area_num] || {};
+    const structuredObj = state.perComponents.data.results.reduce((result, item) => {
+      // ALL area_nums > ALL component_ids (with empty arrays at least)
+      const area = result[item.area.area_num] = result[item.area.area_num] || {};
+      const comp = area[item.id] = area[item.id] || [];
 
-    //   const compNumLetter = `${item.component.component_num}${item.component.component_letter}`;
-    //   const comp = area[compNumLetter] = area[compNumLetter] || [];
-    //   comp.push({compNumLetter, question: item});
-    //   return result;
-    // }, {});
-
-    const structuredObj = state.perQuestions.data.results.reduce((result, item) => {
-      const compNumLetter = `${item.component.component_num}${item.component.component_letter}`;
-
-      // Add an array of area_nums to the returned object
-      // const areas = result['areas'] = result['areas'] || [];
-      // if (!areas.includes(item.component.area.area_num)) {
-      //   areas.push(item.component.area.area_num);
-      // }
-
-      const areas = result['areas'] = result['areas'] || {};
-      const area = areas[item.component.area.area_num] = areas[item.component.area.area_num] || [];
-      if (!area.includes(compNumLetter)) {
-        area.push(compNumLetter);
-      }
-
-      item.answers.sort((a, b) => answersOrder[a.text_en] - answersOrder[b.text_en]);
-      // Add the grouped questions (areas > components > questions) to the returned object
-      const groupedQuestions = result['groupedQuestions'] = result['groupedQuestions'] || {};
-      const ar = groupedQuestions[item.component.area.area_num] = groupedQuestions[item.component.area.area_num] || {};
-      const comp = ar[compNumLetter] = ar[compNumLetter] || [];
-      comp.push(item);
+      state.perQuestions.data.results
+        .filter(question => question.component.id === item.id)
+        .forEach(question => {
+          question.answers.sort((a, b) => answersOrder[a.text_en] - answersOrder[b.text_en]);
+          comp.push(question);
+        });
 
       return result;
     }, {});
 
     return structuredObj;
   }
+  return null;
 };
 
 export const disasterTypesSelector = (state) => {
