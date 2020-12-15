@@ -262,9 +262,16 @@
   justify-content: space-between;
   font-size: $font-size-xxs;
   font-weight: $base-font-medium;
-  margin-left: auto;
   position: relative;
   top: 0;
+
+  [dir='ltr'] & {
+    margin-left: auto;
+  }
+
+  [dir='rtl'] & {
+    margin-right: auto;
+  }
 }
 
 .personnel__table__date {
