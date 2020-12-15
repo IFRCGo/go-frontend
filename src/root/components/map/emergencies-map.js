@@ -73,7 +73,7 @@ class EmergenciesMap extends React.Component {
     const scaleValues = geoJSON?.features?.map(o => o.properties[scaleBy]);
     let maxScaleValue = 1;
     if (scaleValues.length) {
-      maxScaleValue = Math.max.apply(Math, maxScaleValue) || 1;
+      maxScaleValue = Math.max.apply(Math, scaleValues) || 1;
     }
     const cradius = {
       property: scaleBy,
