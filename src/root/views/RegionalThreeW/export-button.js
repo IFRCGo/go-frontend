@@ -80,7 +80,8 @@ function ExportButton (p) {
       )}
       disabled={pending}
     >
-      { pending ?
+      <span className='f-icon-download font-size-sm spacing-half-r'></span>
+      { pending ?        
         <Translate stringId='exportButtonExporting'/> :
         <Translate stringId='exportButtonExport'/>
       }

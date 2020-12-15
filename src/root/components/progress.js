@@ -5,7 +5,7 @@ import { environment } from '#config';
 const Progress = ({max, value, children, start}) => {
   start = start || 0;
   return (
-    <div className='progress-bar' style={{position: 'relative', left: `${start}%`}}>
+    <div className='progress-bar' style={{marginInlineStart: `${start}%`}}>
       <div className='progress-bar__value' style={{width: `${value / max * 100}%`}}>{children}</div>
     </div>
   );

@@ -171,7 +171,7 @@ class PersonnelTable extends SFPComponent {
       },
       {
         id: 'progress__personnel',
-        label: <SortHeader id='progress' title="" sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'progress')} />
+        label: ''
       },
       /*{
         id: 'deployed',

@@ -222,11 +222,11 @@ class Emergency extends React.Component {
           </h3>
           <div>
             <ul className='list-reset'>
-              <li className='row flex spacing-half-v'>
+              <li className='row spacing-half-v'>
                 <div className='col'>
                   <Translate stringId="emergencyPotentiallyAffectedLabel" />
                 </div>
-                <div className='col margin-left-auto'>
+                <div className='col margin-left-auto emergency__affected__no'>
                   <span className="base-font-semi-bold">
                     {n(numPotentiallyAffected)}
                   </span>
@@ -236,7 +236,7 @@ class Emergency extends React.Component {
                 <div className='col'>
                   <Translate stringId="emergencyHighestRiskLabel" />
                 </div>
-                <div className='col margin-left-auto'>
+                <div className='col margin-left-auto emergency__affected__no'>
                   <span className="base-font-semi-bold">{n(numHighestRisk)}</span>
                 </div>
               </li>
@@ -244,7 +244,7 @@ class Emergency extends React.Component {
                 <div className='col'>
                   <Translate stringId="emergencyAffectedPopulationCentresLabel" />
                 </div>
-                <div className='col margin-left-auto'>
+                <div className='col margin-left-auto emergency__affected__no'>
                   <span className="base-font-semi-bold">{affectedPopCentres}</span>
                 </div>
               </li>
@@ -252,7 +252,7 @@ class Emergency extends React.Component {
                 <div className='col'>
                   <Translate stringId="emergencyAssistedByGovernmentLabel" />
                 </div>
-                <div className='col margin-left-auto'>
+                <div className='col margin-left-auto emergency__affected__no'>
                   <span className="base-font-semi-bold">
                     {n(get(report, 'gov_num_assisted'))}
                   </span>
@@ -262,7 +262,7 @@ class Emergency extends React.Component {
                 <div className='col'>
                   <Translate stringId="emergencyAssistedByRCRCLabel" />
                 </div>
-                <div className='col margin-left-auto'>
+                <div className='col margin-left-auto emergency__affected__no'>
                   <span className="base-font-semi-bold">
                     {n(get(report, 'num_assisted'))}
                   </span>
@@ -306,7 +306,7 @@ class Emergency extends React.Component {
             { isEPI
               ? (
                 <ul className='list-reset'>
-                  <li className='row flex spacing-half-v'>
+                  <li className='row spacing-half-v'>
                     <div className='col'>
                       {strings.emergencyCasesLabel}
                     </div>  
@@ -371,7 +371,7 @@ class Emergency extends React.Component {
               )
               : (
                 <ul className='list-reset'>
-                  <li className='row flex spacing-half-v'>
+                  <li className='row spacing-half-v'>
                     <div className='col'>
                       {strings.emergencyAffectedLabel}
                     </div>
@@ -416,7 +416,7 @@ class Emergency extends React.Component {
             }
             <hr />
             <ul className='list-reset'>
-                  <li className='row flex spacing-half-v'>
+                  <li className='row spacing-half-v'>
                 <div className='col'>
                   {strings.emergencyAssistedLabel}
                 </div>
@@ -1190,7 +1190,7 @@ class Emergency extends React.Component {
                       <Fold id="contacts" title={strings.emergencyContactsTitle} foldWrapperClass="contacts fold--main" foldContainerClass='container--padding-reset'>
                         <div>
                           {contactsByType.ifrc.length > 0 ? (
-                            <div className='contacts__table__wrap'>
+                            <div className='contacts__table__wrap row'>
                               <div className='contacts__table__header'>{strings.emergencyContactsIFRC}</div>
                               <table className='table'>
                                 <thead className="visually-hidden">
@@ -1210,7 +1210,7 @@ class Emergency extends React.Component {
                             </div>
                           ) : null}
                           {contactsByType.ns.length > 0 ? (
-                          <div className='contacts__table__wrap'>
+                          <div className='contacts__table__wrap row'>
                             <div className='contacts__table__header'>{strings.emergencyContactsNS}</div>
                             <table className="table">
                               <thead className="visually-hidden">
