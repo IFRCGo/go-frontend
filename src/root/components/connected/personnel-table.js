@@ -252,13 +252,20 @@ class PersonnelTable extends SFPComponent {
       ) : null;
 
       return (
-        <Fold title={`${title} (${n(data.count)})`} navLink={foldLink} id={this.props.id} foldWrapperClass='table__container' foldTitleClass='fold__title--inline'>
+        <Fold title={`${title} (${n(data.count)})`} navLink={foldLink} id={this.props.id} foldWrapperClass='table__container fold__table--deploy-personnel' foldTitleClass='fold__title--inline'>
           {this.props.showExport ? (
             <ExportButton filename='deployed-personnel'
               qs={this.getQs(this.props)}
               resource='api/v2/personnel'
             />
           ) : null}
+          <div className='personnel__table__date__current'>
+            <div className='personnel__date__current'>{formatDateSlashes(minDate)}</div>
+          </div>
+          <div className='personnel__date__graphic__block'>
+            <div className='personnel__date__graphic'>
+            </div>
+          </div>
           <DisplayTable
             headings={headings}
             rows={rows}
