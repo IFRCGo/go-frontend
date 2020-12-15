@@ -894,7 +894,7 @@ class Emergency extends React.Component {
     }
     if (this.hasRRTab()) {
       tabs.push({
-        title: strings.emergencyTabRR, hash: '#rapid-response'
+        title: strings.emergencyTabSurge, hash: '#surge'
       });
     }
     return tabs.concat(this.getAdditionalTabs());

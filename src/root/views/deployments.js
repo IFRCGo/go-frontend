@@ -28,6 +28,7 @@ import {
 import App from './app';
 import Progress from '#components/progress';
 import PersonnelByEventTable from '#components/deployments/personnel-by-event-table';
+import AlertsTable from '#components/connected/alerts-table';
 // import PersonnelTable from '#components/connected/personnel-table';
 import EruTable from '#components/connected/eru-table';
 import { SFPComponent } from '#utils/extendables';
@@ -219,7 +220,7 @@ class Deployments extends SFPComponent {
       fetched,
       error
     } = this.props.eruOwners;
-
+    const { strings } = this.context;
     if (!fetched || error) return null;
 
     return (
@@ -262,6 +263,14 @@ class Deployments extends SFPComponent {
             />
           </div>
           <div className='inner margin-4-t'>
+            <div>
+              <AlertsTable
+                title={strings.homeSurgeNotification}
+                limit={5}
+                viewAll={'/alerts/all'}
+                showRecent={true}
+              />
+            </div>
             <div className='table-deployed-personnel-block'>
               <PersonnelByEventTable data={this.props.personnelByEvent} />
             </div>

@@ -1255,7 +1255,7 @@ export default {
   emergencyPageTitle: 'IFRC Go - {name}',
   emergencyTabDetails: 'Emergency Details',
   emergencyTabReports: 'Reports/Documents',
-  emergencyTabRR: 'Rapid Response',
+  emergencyTabSurge: 'Surge',
   emergencyKeyFiguresTitle: 'Key Figures',
   emergencyOverviewTitle: 'Overview',
   emergencyOverviewBoxTitle: 'Emergency Overview',

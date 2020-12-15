@@ -29,16 +29,6 @@ class Home extends React.Component {
               <PresentationDash />
             </div>
           </header>
-          <div className='inpage__body inpage__body__main'>
-            <div className='inner'>
-              <AlertsTable
-                title={strings.homeSurgeNotification}
-                limit={5}
-                viewAll={'/alerts/all'}
-                showRecent={true}
-              />
-            </div>
-          </div>
         </section>
       </App>
     );
