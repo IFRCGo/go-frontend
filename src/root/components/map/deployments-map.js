@@ -83,7 +83,7 @@ export default class DeploymentsMap extends React.Component {
           return acc;
         }, ['case']);
 
-        countryWithEruColor.push('hsl(213, 38%, 28%)');
+        countryWithEruColor.push('#dedede');
         this.theMap.setPaintProperty('icrc_admin0', 'fill-color', countryWithEruColor);
       }
     }
