@@ -802,7 +802,7 @@ export default {
   newPasswordField: 'New password',
   newPasswordConfirm: 'Confirm new password',
   newPasswordSubmit: 'Submit',
-  personnelTableTitle: 'Deployed Personnel',
+  personnelTableTitleRR: 'Rapid Response Personnel',
   personnelTableStartDate: 'Start Date',
   personnelTableEndDate: 'End Date',
   personnelTableName: 'Name',
