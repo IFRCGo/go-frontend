@@ -67,6 +67,7 @@ class Emergency extends React.Component {
         date: 'all',
         type: 'all',
       },
+      responseDocSearch: '',
       subscribed: false,
       hasSnippets: false,
       hasPersonnel: false,
@@ -693,7 +694,11 @@ class Emergency extends React.Component {
                         })
                       ) : (
                         <div className="response__doc__item">
-                          <Translate stringId="emergencyNoDocumentsMessage" />
+                          { reportTypes[reportTypeId].noSearchResults ? (
+                            <Translate stringId="emergencyDocumentsNoResultsMessage" />
+                          ) : (
+                            <Translate stringId="emergencyNoDocumentsMessage" />
+                          ) }
                         </div>
                       )}
                   </div>
@@ -706,7 +711,34 @@ class Emergency extends React.Component {
     );
   }
 
+  onResponseDocSearch (e) {
+    this.setState({
+      responseDocSearch: e.target.value
+    });
+  }
+
+  filterReports (reportsByType) {
+    const search = this.state.responseDocSearch;
+    if (search === '') {
+      return reportsByType;
+    }
+    const ret = [];
+    reportsByType.forEach(typ => {
+      let t = { ...typ };
+      const initialItemsLength = t.items.length;
+      t.items = t.items.filter(item => {
+        return item.name.indexOf(search) !== -1;
+      });
+      if (t.items.length === 0 && initialItemsLength > 0) {
+        t.noSearchResults = true;
+      }
+      ret.push(t);
+    });
+    return ret;
+  }
+
   renderResponseDocuments () {
+    const { strings } = this.props;
     const data = get(this.props.situationReports, 'data.results', []);
     const { date, type } = this.state.sitrepFilters;
     // return empty when no data, only on default filters.
@@ -718,6 +750,7 @@ class Emergency extends React.Component {
       return null;
     }
     const reportsByType = getRecordsByType(types, data);
+    const filteredReportsByType = this.filterReports(reportsByType);
     return (
       <Fold
         id="response-documents"
@@ -736,9 +769,15 @@ class Emergency extends React.Component {
           </div>
         )}
       >
-        <input type='text' className='emergency__response__search form__control' placeholder='Search' />
+        <input
+          type='text'
+          onChange={this.onResponseDocSearch.bind(this)}
+          value={this.state.responseDocSearch}
+          className='emergency__response__search form__control'
+          placeholder={strings.emergencyReportSearchPlaceholder}
+        />
 
-        <div>{this.renderReports('situation-reports-list', reportsByType)}</div>
+        <div>{this.renderReports('situation-reports-list', filteredReportsByType)}</div>
       </Fold>
     );
   }
