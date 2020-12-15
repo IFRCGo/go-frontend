@@ -51,6 +51,9 @@
 }
 
 .emergency-map {
+  .map-container {
+    min-height: 575px;
+  }
   img {
     vertical-align: top;
     height: 3rem;
