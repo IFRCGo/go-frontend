@@ -243,9 +243,6 @@
   .progress-bar {
     background-color: transparent;
     display: flex;
-
-    [dir='rtl'] & {
-    }
   }
 
   .progress-bar__value {
@@ -258,6 +255,12 @@
   border-bottom: 1px solid $base-border-color;
   margin: 0 0 $spacing-half 0;
   padding: 0 0 $spacing-half 0;
+}
+
+.fold__table--deploy-personnel {
+  .fold__body {
+    position: relative;  
+  }
 }
 
 .personnel__table__daterange {
@@ -276,10 +279,70 @@
   [dir='rtl'] & {
     margin-right: auto;
   }
+
+  @include media(small-down) {
+    display: none;
+  }
+}
+
+.personnel__table__date__current {
+  display: flex;
+  font-size: $font-size-xs;
+  font-weight: $base-font-medium;  
+  width: 40%;
+  position: relative;
+  top: 37px;
+  margin-inline-end: 30px;
+
+  [dir='ltr'] & {
+    margin-left: auto;
+  }
+
+  [dir='rtl'] & {
+    margin-right: auto;
+  }
+
+  @include media(small-down) {
+    display: none;
+  }
+}
+
+.personnel__date__graphic__block {
+  display: flex;
+  width: 40%;
+  position: absolute;
+  left: 60%;
+  top: 0;
+  bottom: 0;
+
+  [dir='rtl'] & {
+    right: 60%;
+  }
+
+  @include media(small-down) {
+    display: none;
+  }
+}
+
+.personnel__date__graphic {
+  position: absolute;
+  bottom: 42px;
+  top: 61px;
+  margin-top: 1px;
+  background:
+    repeating-linear-gradient(to bottom,transparent 0 4px, $white 4px 7px),
+    linear-gradient(to bottom, $grey-platinum, $grey-platinum);
+  background-size: 2px 100%;
+  background-repeat:no-repeat;
+  width: 1px;
 }
 
 .personnel__table__date {
+  &:first-of-type {
+    margin-inline-start: -30px;
+  }
+
   &:last-of-type {
-    padding-right: $spacing-2;
+    margin-inline-end: 30px;
   }
 }

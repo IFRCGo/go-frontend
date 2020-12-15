@@ -191,6 +191,9 @@ class PersonnelTable extends SFPComponent {
         .map(d => new DateTime.fromISO(d.end_date));
       const maxDate = DateTime.max(...endDates);
       const midDate = DateTime.fromMillis((minDate.ts + maxDate.ts) / 2);
+      const currDate = DateTime.utc();
+      const totalDuration = maxDate.ts - minDate.ts;
+      const currPercent = ((currDate.ts - minDate.ts) / totalDuration) * 100;
       const rows = data.results.map(o => {
         const progressValues = getProgressValues(minDate.ts, maxDate.ts, DateTime.fromISO(o.start_date).ts, DateTime.fromISO(o.end_date).ts);
         return {
@@ -252,13 +255,22 @@ class PersonnelTable extends SFPComponent {
       ) : null;
 
       return (
-        <Fold title={`${title} (${n(data.count)})`} navLink={foldLink} id={this.props.id} foldWrapperClass='table__container' foldTitleClass='fold__title--inline'>
+        <Fold title={`${title} (${n(data.count)})`} navLink={foldLink} id={this.props.id} foldWrapperClass='table__container fold__table--deploy-personnel' foldTitleClass='fold__title--inline'>
           {this.props.showExport ? (
             <ExportButton filename='deployed-personnel'
               qs={this.getQs(this.props)}
               resource='api/v2/personnel'
             />
           ) : null}
+          <div className='personnel__table__date__current' style={{paddingInlineStart: `${currPercent}%`}}>
+            <div className='personnel__date__current'>
+              {formatDateSlashes(currDate)}
+            </div>
+          </div>
+          <div className='personnel__date__graphic__block' style={{marginInlineStart: `${currPercent}%`}}>
+            <div className='personnel__date__graphic'>
+            </div>
+          </div>
           <DisplayTable
             headings={headings}
             rows={rows}
