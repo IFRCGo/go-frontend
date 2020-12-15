@@ -1190,7 +1190,7 @@ class Emergency extends React.Component {
                       <Fold id="contacts" title={strings.emergencyContactsTitle} foldWrapperClass="contacts fold--main" foldContainerClass='container--padding-reset'>
                         <div>
                           {contactsByType.ifrc.length > 0 ? (
-                            <div className='contacts__table__wrap'>
+                            <div className='contacts__table__wrap row'>
                               <div className='contacts__table__header'>{strings.emergencyContactsIFRC}</div>
                               <table className='table'>
                                 <thead className="visually-hidden">
@@ -1210,7 +1210,7 @@ class Emergency extends React.Component {
                             </div>
                           ) : null}
                           {contactsByType.ns.length > 0 ? (
-                          <div className='contacts__table__wrap'>
+                          <div className='contacts__table__wrap row'>
                             <div className='contacts__table__header'>{strings.emergencyContactsNS}</div>
                             <table className="table">
                               <thead className="visually-hidden">

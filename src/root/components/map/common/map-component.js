@@ -113,6 +113,7 @@ export default class MapComponent extends React.Component {
             <button className={c('button button--primary-bounded button--export', {
               disabled: !this.state.ready
             })} onClick={() => exportMap(this.theMap)}>
+              <span className='f-icon-download font-size-sm spacing-half-r'></span>
               <Translate stringId='mapComponentExport'/>
             </button>
           </div>

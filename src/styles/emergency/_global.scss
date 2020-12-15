@@ -154,8 +154,9 @@
 .contacts__table__header {
   font-weight: $base-font-semi-bold;
   text-transform: uppercase;
+  letter-spacing: $letter-spacing-lg;
   padding: ($spacing * 1.2);
-  width: 180px;
+  width: 250px;
   flex-shrink: 0;
 }
 
