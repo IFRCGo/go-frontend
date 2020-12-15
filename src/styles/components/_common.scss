@@ -242,6 +242,10 @@
 .progress__block__personnel {
   .progress-bar {
     background-color: transparent;
+    display: flex;
+
+    [dir='rtl'] & {
+    }
   }
 
   .progress-bar__value {
