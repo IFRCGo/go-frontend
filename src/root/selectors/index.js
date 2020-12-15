@@ -86,7 +86,10 @@ export const countryByIdOrNameSelector = (state, name) => {
 
 export const countriesByIso = (state) => {
   if (state.allCountries && state.allCountries.data.results) {
-    let countriesByIso = _groupBy(state.allCountries.data.results, 'iso');
+    // get record_type=1
+    const countryRecords = _groupBy(state.allCountries.data.results, 'record_type')['1'];
+    // group by iso
+    let countriesByIso = _groupBy(countryRecords, 'iso');
     return countriesByIso;
   } else {
     return null;
