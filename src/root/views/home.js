@@ -2,7 +2,6 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import App from './app';
 import PresentationDash from '#components/connected/presentation-dash';
-import AlertsTable from '#components/connected/alerts-table';
 
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
