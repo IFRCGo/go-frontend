@@ -159,7 +159,7 @@ function Header (props) {
                 </li>
                 <li>
                   <NavLink to='/deployments' title={strings.headerMenuDeploymentsTooltip} activeClassName='navbar-highlighted' exact>
-                    <Translate stringId="headerMenuDeployments" />
+                    <Translate stringId="headerMenuSurge" />
                   </NavLink>
                 </li>
                 <li>

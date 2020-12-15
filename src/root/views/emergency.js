@@ -26,7 +26,8 @@ import {
   getAppealDocsByAppealIds,
   addSubscriptions,
   delSubscription,
-  getUserProfile
+  getUserProfile,
+  getDeploymentERU
 } from '#actions';
 import {
   commaSeparatedNumber as n,
@@ -174,6 +175,7 @@ class Emergency extends React.Component {
     this.props._getSurgeAlerts(1, { event: id });
     this.props._getPersonnel(1, {'event_deployed_to': id});
     this.props._getEventSnippets(id);
+    this.props._getDeploymentERU(1, {'event': id});
   }
 
   getAppealDocuments (event) {
@@ -894,7 +896,7 @@ class Emergency extends React.Component {
     }
     if (this.hasRRTab()) {
       tabs.push({
-        title: strings.emergencyTabRR, hash: '#rapid-response'
+        title: strings.emergencyTabSurge, hash: '#surge'
       });
     }
     return tabs.concat(this.getAdditionalTabs());
@@ -1282,20 +1284,24 @@ class Emergency extends React.Component {
                       title={strings.emergencyAlertsTitle}
                       emergency={this.props.match.params.id}
                       returnNullForEmpty={true}
+                      viewAll='/alerts/all'
                     />
                   </TabContent>
                   <TabContent
-                    isError={!get(this.props.eru, 'data.results.length')}
-                    errorMessage={strings.noDataMessage}
                     title={strings.emergencyERUTitle}
                   >
-                    <EruTable id="erus" emergency={this.props.match.params.id} />
+                    <EruTable
+                      id="erus"
+                      emergency={this.props.match.params.id}
+                      viewAll='/deployments/erus/all'
+                    />
                   </TabContent>
                   <TabContent title={strings.emergencyPersonnelTitle}>
                     { this.state.hasPersonnel ? (
                       <PersonnelTable
                         id="personnel"
                         emergency={this.props.match.params.id}
+                        viewAll='/deployments/personnel/all'
                       />
                     ) : null }
                   </TabContent>
@@ -1403,6 +1409,7 @@ const selector = (state, ownProps) => ({
 
 const dispatcher = (dispatch) => ({
   _getEventById: (...args) => dispatch(getEventById(...args)),
+  _getDeploymentERU: (...args) => dispatch(getDeploymentERU(...args)),
   _getPersonnel: (...args) => dispatch(getPersonnel(...args)),
   _getSurgeAlerts: (...args) => dispatch(getSurgeAlerts(...args)),
   _getEventSnippets: (...args) => dispatch(getEventSnippets(...args)),

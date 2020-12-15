@@ -109,7 +109,7 @@ class AllPersonnelTable extends SFPComponent {
     } = this.props.personnel;
 
     const { strings } = this.context;
-    const title = this.props.title || strings.personnelTableTitle;
+    const title = this.props.title || strings.personnelTableTitleRR;
 
     if (fetching) {
       return (
