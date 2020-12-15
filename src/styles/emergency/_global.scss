@@ -335,10 +335,16 @@ a.response__doc__item {
 
   li {
     width: 100%;  
+    display: flex;
   }
 }
 
 .emergency__response__search {
   @include input__search;
   max-width: $media-xsmall;
+}
+
+.emergency__affected__no {
+  width: 80px;
+  text-align: inline-end;
 }
