@@ -26,7 +26,8 @@ import {
   getAppealDocsByAppealIds,
   addSubscriptions,
   delSubscription,
-  getUserProfile
+  getUserProfile,
+  getDeploymentERU
 } from '#actions';
 import {
   commaSeparatedNumber as n,
@@ -174,6 +175,7 @@ class Emergency extends React.Component {
     this.props._getSurgeAlerts(1, { event: id });
     this.props._getPersonnel(1, {'event_deployed_to': id});
     this.props._getEventSnippets(id);
+    this.props._getDeploymentERU(1, {'event': id});
   }
 
   getAppealDocuments (event) {
@@ -1286,8 +1288,6 @@ class Emergency extends React.Component {
                     />
                   </TabContent>
                   <TabContent
-                    isError={!get(this.props.eru, 'data.results.length')}
-                    errorMessage={strings.noDataMessage}
                     title={strings.emergencyERUTitle}
                   >
                     <EruTable
@@ -1409,6 +1409,7 @@ const selector = (state, ownProps) => ({
 
 const dispatcher = (dispatch) => ({
   _getEventById: (...args) => dispatch(getEventById(...args)),
+  _getDeploymentERU: (...args) => dispatch(getDeploymentERU(...args)),
   _getPersonnel: (...args) => dispatch(getPersonnel(...args)),
   _getSurgeAlerts: (...args) => dispatch(getSurgeAlerts(...args)),
   _getEventSnippets: (...args) => dispatch(getEventSnippets(...args)),
