@@ -1282,6 +1282,7 @@ class Emergency extends React.Component {
                       title={strings.emergencyAlertsTitle}
                       emergency={this.props.match.params.id}
                       returnNullForEmpty={true}
+                      viewAll='/alerts/all'
                     />
                   </TabContent>
                   <TabContent
@@ -1289,13 +1290,18 @@ class Emergency extends React.Component {
                     errorMessage={strings.noDataMessage}
                     title={strings.emergencyERUTitle}
                   >
-                    <EruTable id="erus" emergency={this.props.match.params.id} />
+                    <EruTable
+                      id="erus"
+                      emergency={this.props.match.params.id}
+                      viewAll='/deployments/erus/all'
+                    />
                   </TabContent>
                   <TabContent title={strings.emergencyPersonnelTitle}>
                     { this.state.hasPersonnel ? (
                       <PersonnelTable
                         id="personnel"
                         emergency={this.props.match.params.id}
+                        viewAll='/deployments/personnel/all'
                       />
                     ) : null }
                   </TabContent>
