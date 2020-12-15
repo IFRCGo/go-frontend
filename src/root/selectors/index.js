@@ -277,8 +277,8 @@ export const groupedPERQuestionsSelector = (state) => {
       'Not Reviewed': 2,
       'Does not exist': 3,
       'Partially exists': 4,
-      'Need improvements': 5,
-      'Exist, could be strengthened': 6,
+      'Needs improvement': 5,
+      'Exists, could be strengthened': 6,
       'High performance': 7
     };
 
