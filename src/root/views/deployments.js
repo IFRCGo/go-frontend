@@ -230,7 +230,7 @@ class Deployments extends SFPComponent {
               <div className='inpage__headline'>
                 <div className='inpage__headline-content'>
                   <h1 className='inpage__title'>
-                    <Translate stringId="deploymentsPageTitle" />
+                    <Translate stringId="deploymentsPageTitleSurge" />
                   </h1>
                   { /* <div className='presentation__actions'>
                     <div className='inner'>
@@ -284,7 +284,7 @@ class Deployments extends SFPComponent {
           </title>
         </Helmet>
         <BreadCrumb crumbs={[
-          {link: this.props.location.pathname, name: strings.breadCrumbDeployments},
+          {link: this.props.location.pathname, name: strings.breadCrumbSurge},
           {link: '/', name: strings.breadCrumbHome}
         ]} />
         {this.renderContent()}

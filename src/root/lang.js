@@ -12,7 +12,7 @@ export default {
   headerDropdownCovid19NSFinancialOverview: 'COVID-19 NS Financial Overview',
   headerMenuHome: 'Home',
   headerMenuEmergencies: 'Emergencies',
-  headerMenuDeployments: 'Deployments',
+  headerMenuSurge: 'Surge',
   headerMenuPreparedness: 'Preparedness',
   headerSearchLabel: 'Search',
   headerVisitPageTooltip: 'Visit page',
@@ -1235,7 +1235,7 @@ export default {
   breadCrumbResources: 'Resources',
   breadCrumbAccount: 'Account',
   breadCrumbHome: 'Home',
-  breadCrumbDeployments: 'Deployments',
+  breadCrumbSurge: 'Surge',
   breadCrumbPERForm: 'PER Form',
   breadCrumbEmergency: 'Emergency',
   breadCrumbEmergencies: 'Emergencies',
@@ -1400,7 +1400,7 @@ export default {
 
   noDataMessage: 'No data to display.',
 
-  deploymentsPageTitle: 'Surge',
+  deploymentsPageTitleSurge: 'Surge',
   deploymentsOverviewError: 'Error loading data',
   deploymentsRapidResponse: 'Rapid Response',
 
