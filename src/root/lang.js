@@ -711,7 +711,7 @@ export default {
   deploymentsTitle: 'IFRC Go - Deployments',
   deploymentsDeployedERU: 'Deployed ERUs',
   deploymentsOverviewByEmergencies: 'Deployments Overview By Emergencies',
-  deploymentsOverviewEmergenciesLink: 'View All Deployed Personnel and ERUs',
+  deploymentsOverviewViewAll: 'View All Deployed Personnel',
   deploymentsOverviewTableHeaderEmergency: 'Emergency',
   deploymentsOverviewTableHeaderOrg: 'Deploying Organization',
   deploymentsOverviewTableHeaderSurge: 'Surge Type',
