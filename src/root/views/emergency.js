@@ -1114,6 +1114,7 @@ class Emergency extends React.Component {
                     />
                   </a>
                 </div>
+                {/*
                 <div className='col-sm spacing-half-v flex'>
                   {this.props.isLogged && (
                     <button
@@ -1130,6 +1131,7 @@ class Emergency extends React.Component {
                     </button>
                   )}
                 </div>
+                    */}
               </div>
               </div>
             </div>
