@@ -97,7 +97,7 @@ class Preparedness extends React.Component {
                           title={strings.prepGlobalPerformanceTab}
                           frameBorder='0'
                           width='100%'
-                          height='1540px'
+                          height='1740px'
                         />
                       </TabContent>
                     </TabPanel>
