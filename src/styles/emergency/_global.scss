@@ -336,6 +336,16 @@ a.response__doc__item {
   li {
     width: 100%;  
     display: flex;
+
+    &.emergency__affected__figures--pop {
+      display: block;
+
+      .emergency__affected__no {
+        width: 100%;
+        text-align: inline-start;
+        margin-top: ($spacing-half / 2);
+      }
+    }
   }
 }
 
