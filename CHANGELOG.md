@@ -1,3 +1,70 @@
+### Release 4.5.0
+
+#### Map Styling Updates: https://github.com/IFRCGo/go-frontend/issues/1202
+
+ - Updates map styles on home, emergencies and deployment pages with new map design.
+ - Modified popup styling as per designs
+ - Adjust colours, styling and circle radius of points on map
+ - Allows country polygons on map to be clickable
+ - Fix issue with rendering of Arabic map labels: https://github.com/IFRCGo/go-frontend/issues/1765
+
+
+#### Geo-data imports: https://github.com/IFRCGo/go-frontend/issues/1643
+
+ - Made ISO codes consistent in the database
+ - ...
+
+### PER Refactor: https://github.com/IFRCGo/go-frontend/issues/1667
+
+ - Remove all hard-coded questions from frontend into the database
+ - Create schema to manage questions in the backend
+ - Modify existing schema and hierarchy to make forms part of Overviews
+ - Re-write frontend to use common components and follow new design
+ - Implement forms as tabs on PER form pages
+ - Implement export functionality for new PER data structure
+
+### PER Dashboards: https://github.com/IFRCGo/go-frontend/issues/1669
+
+ - Modified Preparedness page to follow tab structure as per design
+ - Include iframe'd dashboards on Preparedness page
+
+### Molnix Integration / Updates to Surge: https://github.com/IFRCGo/go-frontend/issues/1638
+
+Backend: 
+
+ - Implemented schema changes to support new data-points from Molnix to GO
+ - Implemented management command to fetch and sync data from Molnix API to GO
+ - Implemented logging to Cronjob Admin with status of job and details of warnings / errors.
+ - Implemented new end-point to fetch Events with counts of Deployed Personnel
+
+Frontend:
+
+ - Added Surge tab to Emergency pages
+ - Show new Deployments table on Emergency pages with GANTT chart
+ - Renamed Deployments page to Surge
+ - Moved Surge Alerts table from Home to Surge page
+ - Created new table on Surge page to list Emergencies along-with Deployment counts
+ - Updated designs and titles of Surge and Rapid Response tables.
+
+
+### Emergency Page Redesign: https://github.com/IFRCGo/go-frontend/issues/1243
+
+ - Fix 'Show More' behaviour on Summary field
+ - Re-organize tabs and data as per new design
+ - Move key figures along-side map
+ - Re-organize Contacts section as per design
+ - Re-design Response Documents section and implement client-side search
+ - Handle always hiding tabs that have no data in them
+
+
+### Assorted Bugfixes:
+
+ - Update Footer styles: https://github.com/IFRCGo/go-frontend/issues/1706
+ - Fix "missing months" bug on region page charts: https://github.com/IFRCGo/go-frontend/issues/1398
+ - Add option to hide map on emergency page: https://github.com/IFRCGo/go-frontend/issues/1397
+ - Change wording of check-box on Emergency page Admin: https://github.com/IFRCGo/go-api/issues/820
+ - Add link on Resources page: https://github.com/IFRCGo/go-frontend/issues/1723
+
 ### Release 4.4.7 - Hotfix
 
  - Remove Inform Score from country page title
