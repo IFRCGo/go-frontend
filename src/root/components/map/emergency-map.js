@@ -147,9 +147,9 @@ class EmergencyMap extends React.Component {
     }
 
     return (
-      <div className='emergency-map'>
-        <div className='fold fold--main padding-b-reset'>
-          <div className='container-lg'>
+      <div className='col-lg flex-1'>
+        <div className='emergency-map'>
+          <div className='fold fold--main padding-b-reset'>
             <div className='fold__header'>
               <div className='fold__header__block'>
                 <h2 className='fold__title'>
@@ -159,6 +159,7 @@ class EmergencyMap extends React.Component {
                   <button className={c('button button--primary-bounded button--small button--export', {
                     disabled: !this.state.ready
                   })} onClick={this.exportMap.bind(this, countries[0].name, _find(this.props.disasterTypesSelect, {value: String(disasterTypeCode)})?.label)}>
+                    <span className='f-icon-download font-size-sm spacing-half-r'></span>
                     <Translate stringId='emergencyMapExport'/>
                   </button>
                 </div>
@@ -227,7 +228,7 @@ class EmergencyMap extends React.Component {
             </div>
           </div>
         </div>
-      </div>
+      </div> 
     );
   }
 }

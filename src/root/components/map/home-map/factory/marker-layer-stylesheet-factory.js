@@ -12,10 +12,10 @@ class MarkerLayerStylesheetFactory {
       property: 'atype',
       type: 'categorical',
       stops: [
-        ['DREF', '#F39C12'],
-        ['Appeal', '#f5333f'],
+        ['DREF', '#c02c2c'],
+        ['Appeal', '#f63440'],
         ['Movement', '#CCCCCC'],
-        ['Mixed', '#4680F2']
+        ['Mixed', '#ff9e00']
       ]
     };
     const cradius = this.getCircleRadiusPaintProp(geoJSON, scaleBy);
@@ -26,7 +26,17 @@ class MarkerLayerStylesheetFactory {
       'source': source,
       'paint': {
         'circle-color': ccolor,
-        'circle-radius': cradius
+        'circle-radius': cradius,
+        'circle-opacity': 0.4
+      }
+    });
+    layers.push({
+      'id': 'appeals-inner',
+      'type': 'circle',
+      'source': source,
+      'paint': {
+        'circle-color': ccolor,
+        'circle-radius': 5
       }
     });
     return layers;
@@ -46,9 +56,9 @@ class MarkerLayerStylesheetFactory {
         0,
         0,
         1,
-        5,
+        10,
         maxScaleValue,
-        10
+        15
       ],
       8, [
         'interpolate',

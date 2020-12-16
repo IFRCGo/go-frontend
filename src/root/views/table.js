@@ -13,7 +13,7 @@ import FieldReportsTable from '#components/connected/field-reports-table';
 import AppealsTable from '#components/connected/appeals-table';
 import AlertsTable from '#components/connected/alerts-table';
 import EruTable from '#components/connected/eru-table';
-import PersonnelTable from '#components/connected/personnel-table';
+import AllPersonnelTable from '#components/connected/all-personnel-table';
 import BreadCrumb from '#components/breadcrumb';
 
 import LanguageContext from '#root/languageContext';
@@ -85,7 +85,7 @@ class Table extends React.Component {
       case 'eru':
       return <EruTable title={strings.tableAllEruTitle} {...props} />;
       case 'personnel':
-      return <PersonnelTable title={strings.tableAllPersonnel} {...props} />;
+      return <AllPersonnelTable title={strings.tableAllPersonnel} {...props} />;
     }
   }
 

@@ -29,13 +29,20 @@ import situationReports from './situation-reports';
 import appealDocuments from './appeal-documents';
 import fdrs from './fdrs';
 import csv from './csv';
+import exportPerToCSV from './export-per-to-csv';
 import perForm from './per-form';
+import perAreas from './per-areas';
+import perQuestions from './per-questions';
+import perComponents from './per-components';
+import perOverview from './per-overview';
+import perLatestOverview from './per-latest-overview';
 import subscriptions from './subscriptions';
 import projects from './projects';
 import countryOverview from './country-overview';
 import domainWhitelist from './domain-whitelist';
 import lang from './lang';
 import disasterTypes from './disaster-types';
+import personnelByEvent from './personnel-by-event';
 
 import {
   POST_PROJECT,
@@ -79,7 +86,13 @@ export const reducers = {
   situationReports,
   fdrs,
   csv,
+  exportPerToCSV,
   perForm,
+  perAreas,
+  perQuestions,
+  perComponents,
+  perOverview,
+  perLatestOverview,
   subscriptions,
   projects,
   projectForm: createReducer(POST_PROJECT),
@@ -97,6 +110,7 @@ export const reducers = {
   allCountries: createReducer(GET_COUNTRIES_ALL),
   allRegions: createReducer(GET_REGIONS_ALL),
   disasterTypes,
+  personnelByEvent
 };
 
 export default combineReducers(reducers);

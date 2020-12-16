@@ -328,18 +328,12 @@
 }
 
 .button--remove-source {
-  @extend .button, .button--base-glass;
-  &::before {
-    @extend %collecticon-trash-bin;
-  }
+  @include button-trash;
 }
 
 .button--clear-source {
-  @extend .button, .button--base-glass;
-  &::before {
-    @extend %collecticon-trash-bin;
-  }
-  padding: 4px 0px 4px 6px;
+  @include button-trash;
+  margin: $spacing 0 0 ($spacing * 2.2);
 }
 
 .epi-figures-source {
@@ -390,4 +384,20 @@
       font-weight: $base-font-regular;
     }
   }
+}
+
+.per__form__radio-group {
+  margin-bottom: 12px;
+  margin-top: -24px; // to compensate the empty space caused by 'form__inner-header
+}
+
+.per__form__button {
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+.per__list__button {
+  margin-left: 4px;
+  margin-right: 4px;
+  min-width: 62px;
 }

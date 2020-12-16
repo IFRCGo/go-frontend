@@ -35,6 +35,21 @@ export const countriesSelector = (state) => {
   }
 };
 
+export const nsDropdownSelector = (state) => {
+  if (state.allCountries.data.results && state.allCountries.data.results.length) {
+    return state.allCountries.data.results.reduce((result, country) => {
+      if (country.society_name) {
+        result.push({
+          'value': country.id,
+          'label': country.society_name
+        });
+      }
+      return result;
+    }, []);
+  }
+  return initialState;
+};
+
 export const countriesByRegionSelector = (state) => {
   if (state.allCountries && state.allCountries.data.results) {
     let countriesByRegion = _groupBy(state.allCountries.data.results, 'region');
@@ -71,7 +86,10 @@ export const countryByIdOrNameSelector = (state, name) => {
 
 export const countriesByIso = (state) => {
   if (state.allCountries && state.allCountries.data.results) {
-    let countriesByIso = _groupBy(state.allCountries.data.results, 'iso');
+    // get record_type=1
+    const countryRecords = _groupBy(state.allCountries.data.results, 'record_type')['1'];
+    // group by iso
+    let countriesByIso = _groupBy(countryRecords, 'iso');
     return countriesByIso;
   } else {
     return null;
@@ -245,4 +263,54 @@ export const disasterTypesSelectSelector = (state) => {
     return state.disasterTypes.data.results.map((dt) => ({ value: dt.id, label: dt.name })).sort(compareString);
   }
   return [];
+};
+
+// area_nums > component_ids > questions
+export const groupedPERQuestionsSelector = (state) => {
+  if (
+    state.perQuestions
+    && state.perQuestions.data.results
+    && state.perComponents
+    && state.perComponents.data.results
+  ) {
+    // Custom sorting order, this was the cleanest way
+    const answersOrder = {
+      'yes': 0,
+      'no': 1,
+      'Not Reviewed': 2,
+      'Does not exist': 3,
+      'Partially exists': 4,
+      'Needs improvement': 5,
+      'Exists, could be strengthened': 6,
+      'High performance': 7
+    };
+
+    const structuredObj = state.perComponents.data.results.reduce((result, item) => {
+      // ALL area_nums > ALL component_ids (with empty arrays at least)
+      const area = result[item.area.area_num] = result[item.area.area_num] || {};
+      const comp = area[item.id] = area[item.id] || [];
+
+      state.perQuestions.data.results
+        .filter(question => question.component.id === item.id)
+        .forEach(question => {
+          question.answers.sort((a, b) => answersOrder[a.text_en] - answersOrder[b.text_en]);
+          comp.push(question);
+        });
+
+      return result;
+    }, {});
+
+    return structuredObj;
+  }
+  return null;
+};
+
+export const disasterTypesSelector = (state) => {
+  if (state.disasterTypes && state.disasterTypes.data.results) {
+    return state.disasterTypes.data.results.reduce((memo, dt) => {
+      memo[dt.id] = dt.name;
+      return memo;
+    }, {});
+  }
+  return {};
 };

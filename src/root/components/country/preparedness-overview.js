@@ -1,141 +1,102 @@
-import React from 'react';
+import React, { useContext, useMemo, useEffect } from 'react';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getPerProcessType } from '#utils/get-per-process-type';
-import Fold from './../fold';
+import Fold from '#components/fold';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
-import { getFullMonthNameList } from '#utils/utils';
 
-class PreparednessOverview extends React.Component {
-  render () {
-    const NO_DATA = '--';
-    const { strings } = this.context;
-    if (!this.props.getPerNsPhase.fetched || !this.props.perOverviewForm.fetched || !this.props.user.username) return null;
-    if (typeof this.props.getPerNsPhase.data.results !== 'undefined' && this.props.getPerNsPhase.data.results[0].phase === 0 &&
-      typeof this.props.perOverviewForm.data.count !== 'undefined' && this.props.perOverviewForm.data.count === 0) return null;
+function PreparednessOverview (props) {
+  const { strings } = useContext(LanguageContext);
 
-    const months = getFullMonthNameList(strings);
+  const phase = useMemo(() => {
+    if (props.getPerNsPhase.data?.results) {
+      return props.getPerNsPhase.data.results[0].phase;
+    }
+    return 0;
+  }, [props.getPerNsPhase]);
 
-    const phase = {phase: this.props.getPerNsPhase.data.results[0].phase};
-    const overviewForm = this.props.perOverviewForm.data.results[0];
-    const dateOfAssessment = typeof overviewForm !== 'undefined' ? new Date(overviewForm.date_of_current_capacity_assessment.substring(0, 10)) : null;
-    const dateOfAssessmentString = dateOfAssessment !== null ? months[dateOfAssessment.getMonth()] + ' ' + dateOfAssessment.getFullYear() : NO_DATA;
-    const perProcessTypeString = typeof overviewForm !== 'undefined' ? getPerProcessType(overviewForm.type_of_capacity_assessment) : NO_DATA;
-    const focusString = typeof overviewForm !== 'undefined' ? overviewForm.focus : NO_DATA;
-    const focalPointNameString = typeof overviewForm !== 'undefined' ? overviewForm.focal_point_name : NO_DATA;
-    const focalPointEmailString = typeof overviewForm !== 'undefined' ? overviewForm.focal_point_email : NO_DATA;
-    return (
-      <Fold id='per' title={strings.preparednessOverviewTitle} foldWrapperClass='preparedness' foldTitleClass='margin-reset'>
-        <div style={{float: 'left', width: '33%'}}>
+  useEffect(() => {
+    if (!props.getPerNsPhase.fetched || !props.perOverviewForm.fetched || !props.user.username) {
+      return null;
+    }
 
-          <div style={{float: 'left', width: '30%', textTransform: 'uppercase', fontSize: '13px'}}>
-            <div style={{marginBottom: '5px'}}>
-              <Translate stringId='preparednessOverviewCurrent'/>
-            </div>
-            <div style={{marginBottom: '5px'}}>
-              <Translate stringId='preparednessOverviewProcessPhase'/>
-            </div>
-          </div>
-          <div style={{float: 'left', width: '70%'}}>
-            <div style={{marginBottom: '5px', float: 'left', width: '100%'}}>
-              <div style={{width: '80%', float: 'left', textTransform: 'uppercase', fontWeight: 'bold', fontSize: '13px'}}>
-                <Translate stringId='preparednessOverviewOrientation'/>
-              </div>
-              <div style={{width: '20%', float: 'left'}}>
-                {phase.phase > 0 ? <img src='/assets/graphics/layout/tick.png' alt='phase ticked' style={{width: '10px', height: '10px'}} /> : null}
-              </div>
-            </div>
+    const ovCount = props.perOverviewForm.data?.count || 0;
+    if (phase === 0 && ovCount === 0) {
+      return null;
+    }
+  }, [props.getPerNsPhase, props.perOverviewForm, props.user, phase]);
 
-            <div style={{marginBottom: '5px', float: 'left', width: '100%'}}>
-              <div style={{width: '80%', float: 'left', textTransform: 'uppercase', fontWeight: 'bold', fontSize: '13px'}}>
-                <Translate stringId='preparednessOverviewAssessment'/>
-              </div>
-              <div style={{width: '20%', float: 'left'}}>
-                {phase.phase > 1 ? <img src='/assets/graphics/layout/tick.png' alt='phase ticked' style={{width: '10px', height: '10px'}} /> : null}
-              </div>
-            </div>
+  const NO_DATA = '--';
+  const ov = props.perOverviewForm.data.results[0];
 
-            <div style={{marginBottom: '5px', float: 'left', width: '100%'}}>
-              <div style={{width: '80%', float: 'left', textTransform: 'uppercase', fontWeight: 'bold', fontSize: '13px'}}>
-                <Translate stringId='preparednessOverviewPrioritization'/>
-              </div>
-              <div style={{width: '20%', float: 'left'}}>
-                {phase.phase > 2 ? <img src='/assets/graphics/layout/tick.png' alt='phase ticked' style={{width: '10px', height: '10px'}} /> : null}
-              </div>
-            </div>
-
-            <div style={{marginBottom: '5px', float: 'left', width: '100%'}}>
-              <div style={{width: '80%', float: 'left', textTransform: 'uppercase', fontWeight: 'bold', fontSize: '13px'}}>
-                <Translate stringId='preparednessOverviewPlanAction'/>
-              </div>
-              <div style={{width: '20%', float: 'left'}}>
-                {phase.phase > 3 ? <img src='/assets/graphics/layout/tick.png' alt='phase ticked' style={{width: '10px', height: '10px'}} /> : null}
-              </div>
-            </div>
-
-            <div style={{marginBottom: '5px', float: 'left', width: '100%'}}>
-              <div style={{width: '80%', float: 'left', textTransform: 'uppercase', fontWeight: 'bold', fontSize: '13px'}}>
-                <Translate stringId='preparednessOverviewAction'/>
-              </div>
-              <div style={{width: '20%', float: 'left'}}>
-                {phase.phase > 4 ? <img src='/assets/graphics/layout/tick.png' alt='phase ticked' style={{width: '10px', height: '10px'}} /> : null}
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <div style={{float: 'left', width: '34%'}}>
-
-          <div style={{width: '50%', float: 'left', textTransform: 'uppercase', fontSize: '13px'}}>
-            <div style={{marginBottom: '5px'}}>
-              <Translate stringId='preparednessOverviewAssessmentDate'/>
-            </div>
-            <div style={{marginBottom: '5px'}}>
-              <Translate stringId='preparednessOverviewPerProcessType'/>
-            </div>
-            <div style={{marginBottom: '5px'}}>
-              <Translate stringId='preparednessOverviewFocus'/>
-            </div>
-          </div>
-          <div style={{width: '50%', float: 'left', textTransform: 'uppercase', fontWeight: 'bold', fontSize: '13px'}}>
-            <div style={{marginBottom: '5px'}}>{dateOfAssessmentString}</div>
-            <div style={{marginBottom: '5px'}}>{perProcessTypeString}</div>
-            <div style={{marginBottom: '5px'}}>{focusString}</div>
-          </div>
-
-        </div>
-        <div style={{float: 'left', width: '33%'}}>
-
-          <div style={{width: '50%', float: 'left', textTransform: 'uppercase', fontSize: '13px'}}>
-            <div style={{marginBottom: '5px'}}>
-              <Translate stringId='preparednessOverviewFocalPoint'/>
-            </div>
-            <div style={{marginBottom: '5px'}}>
-              <Translate stringId='preparednessOverviewEmail'/>
-            </div>
-          </div>
-          <div style={{width: '50%', float: 'left', textTransform: 'uppercase', fontWeight: 'bold', fontSize: '13px', overflowWrap: 'break-word'}}>
-            <div style={{marginBottom: '5px'}}>{focalPointNameString}</div>
-            <div style={{marginBottom: '5px'}}>{focalPointEmailString}</div>
-          </div>
-        </div>
-
-        <div style={{float: 'left', width: '100%', textAlign: 'center', marginTop: '25px'}}>
-          <div style={{float: 'left', width: '50%'}}>
-            <a href='https://dsgocdnapi.azureedge.net/admin/per/nsphase/' target='_blank' className='button button--medium button--primary-filled'>Set phase</a>
-          </div>
-          <div style={{float: 'left', width: '50%'}}>
-            <a href='mailto:PER.Team@ifrc.org' className='button button--medium button--primary-filled'>
-              <Translate stringId="preparednessOverviewContactLabel" />
-            </a>
-          </div>
-        </div>
-      </Fold>
-    );
+  let tickIcons = [];
+  for (let i = 0; i < phase; i++) {
+    tickIcons.push(<p key={`phase${i}`}>
+      <img src='/assets/graphics/layout/tick.png' alt='phase ticked' className='tick-icon' />
+    </p>);
   }
+
+  return (
+    <Fold title={strings.preparednessOverviewTitle} foldWrapperClass='fold--main' foldTitleClass='margin-reset'>
+      <div className='flex-sm text-uppercase'>
+        <div className='col-2-sm'>
+          <Translate stringId='preparednessOverviewCurrent'/>
+        </div>
+        <div className='col-2-sm text-bold'>
+          <div className='flex-sm'>
+            <div className='col-10-sm'>
+              <p><Translate stringId='preparednessOverviewOrientation'/></p>
+              <p><Translate stringId='preparednessOverviewAssessment'/></p>
+              <p><Translate stringId='preparednessOverviewPrioritization'/></p>
+              <p><Translate stringId='preparednessOverviewPlanAction'/></p>
+              <p><Translate stringId='preparednessOverviewAction'/></p>
+            </div>
+            <div className='col-2-sm'>
+              { tickIcons }
+            </div>
+          </div>
+        </div>
+        { ov
+          ? (
+            <React.Fragment>
+              <div className='col-2-sm'>
+                <p><Translate stringId='preparednessOverviewAssessmentDate'/></p>
+                <p><Translate stringId='preparednessOverviewPerProcessType'/></p>
+                <p><Translate stringId='preparednessOverviewCycle'/></p>
+              </div>
+              <div className='col-2-sm text-bold'>
+                <p>{ov.date_of_assessment.substring(0, 10)}</p>
+                <p>{ov.type_of_assessment?.name}</p>
+                <p>{ov.assessment_number}</p>
+              </div>
+              <div className='col-2-sm'>
+                <p><Translate stringId='overviewFormFocalPoint'/></p>
+                <p><Translate stringId='overviewFormFocalPointEmail'/></p>
+                <p><Translate stringId='overviewFormPartnerFocalPoint'/></p>
+                <p><Translate stringId='overviewFormPartnerFocalPointEmail'/></p>
+              </div>
+              <div className='col-2-sm text-bold'>
+                <p>{ov.ns_focal_point_name || NO_DATA}</p>
+                <p>{ov.ns_focal_point_email || NO_DATA}</p>
+                <p>{ov.partner_focal_point_name || NO_DATA}</p>
+                <p>{ov.partner_focal_point_email || NO_DATA}</p>
+              </div>
+            </React.Fragment>
+          ) : null }
+      </div>
+
+      <div className='text-center'>
+        {/* <div style={{float: 'left', width: '50%'}}>
+          <a href='https://dsgocdnapi.azureedge.net/admin/per/nsphase/' target='_blank' className='button button--medium button--primary-filled'>Set phase</a>
+        </div> */}
+        <a href='mailto:PER.Team@ifrc.org' className='button button--medium button--primary-filled'>
+          <Translate stringId="preparednessOverviewContactLabel" />
+        </a>
+      </div>
+    </Fold>
+  );
 }
 
 if (environment !== 'production') {
@@ -150,9 +111,4 @@ const selector = (state) => ({
   user: state.user.data
 });
 
-const dispatcher = (dispatch) => ({
-  _test: (...args) => dispatch('test')
-});
-
-PreparednessOverview.contextType = LanguageContext;
-export default withRouter(connect(selector, dispatcher)(PreparednessOverview));
+export default withRouter(connect(selector)(PreparednessOverview));

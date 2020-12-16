@@ -132,6 +132,7 @@ dd {
 .list-reset {
   padding: 0;
   list-style-type: none;  
+  margin: 0;
 } 
 
 .ul--tick,
@@ -520,15 +521,19 @@ abbr[title] {
   font-size: 1.2rem;
 }
 
-h1 {
+.heading__title {
+  @include heading__title;
+}
+
+h1, .h1 {
   @include heading(1.75rem);   // 28
 }
 
-h2 {
+h2, .h2 {
   @include heading(1.5rem);    // 24
 }
 
-h3 {
+h3, .h3 {
   @include heading(1.25rem);   // 20
 }
 

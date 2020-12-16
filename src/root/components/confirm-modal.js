@@ -10,6 +10,7 @@ function ConfirmModal (p) {
     title = 'Confirm',
     message,
     onClose,
+    okText
   } = p;
 
   const handleOkClick = React.useCallback(() => {
@@ -27,24 +28,33 @@ function ConfirmModal (p) {
   return (
     <Backdrop>
       <div className={_cs(className, 'tc-confirm-modal')}>
-        <h3 className='tc-heading'>
+        <h3 className='tc-heading text-uppercase'>
           { title }
+          <button
+            className='mma-xmark'
+            title='Close'
+            onClick={handleCancelClick}
+          >
+            <span>Dismiss</span>
+          </button>
         </h3>
         <div className='tc-message'>
           { message }
         </div>
         <div className='tc-footer'>
           <button
-            className='button'
+            className='button button-small'
             onClick={handleCancelClick}
           >
             <Translate stringId='confirmModalCancel'/>
           </button>
           <button
-            className='button tc-ok-button'
+            className='button button--primary-filled button--xsmall tc-ok-button text-uppercase'
             onClick={handleOkClick}
           >
-            <Translate stringId='confirmModalOk'/>
+            { okText
+              ? (okText)
+              : (<Translate stringId='confirmModalOk'/>) }
           </button>
         </div>
       </div>

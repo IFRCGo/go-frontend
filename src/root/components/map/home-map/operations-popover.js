@@ -18,7 +18,7 @@ class OperationsPopover extends React.Component {
         <div className='popover__contents'>
           <header className='popover__header'>
             <div className='popover__headline'>
-              {deployments ? title : <a className='link-underline' onClick={e => { e.preventDefault(); navigate(`/countries/${pageId}`); }}>{title} <span className='popover__headline__icon collecticon-chevron-right'></span></a>}
+              {deployments ? title : <a className='link--primary link--with-icon' onClick={e => { e.preventDefault(); navigate(`/countries/${pageId}`); }}><span className='link--with-icon-text'>{title}</span> <span className='popover__headline__icon collecticon-chevron-right'></span></a>}
             </div>
             <div className='popover__actions actions'>
               <ul className='actions__menu'>
@@ -32,15 +32,15 @@ class OperationsPopover extends React.Component {
               </ul>
             </div>
           </header>
-          <div className='popover__body'>
-            {Array.isArray(operations) ? operations.map(d => (
+          <div className='popover__body scrollbar__custom'>
+            {Array.isArray(operations) && operations.length > 0 ? operations.map(d => (
               <React.Fragment key={d.id}>
                 <h3 className='popover__subtitle'>
                   {d.event ? (
                     <a className='' onClick={e => { e.preventDefault(); navigate(`/emergencies/${d.event}`); }}>{d.name}</a>
                   ) : d.name}
                 </h3>
-                <ul className='popover__details'>
+                <ul className='popover__details popover__details--list'>
                   <li>
                     <span>{n(d.num_beneficiaries)} </span> 
                     <Translate stringId='operationPopoverPeopleAffected'/>
@@ -55,7 +55,11 @@ class OperationsPopover extends React.Component {
                   </li>
                 </ul>
               </React.Fragment>
-            )) : null}
+            )) : (
+              <React.Fragment>
+                No Current Operations
+              </React.Fragment>
+            )}
             {Array.isArray(deployments) ? deployments.map((d, i) => (
               <React.Fragment key={i}>
                 <h3 className='popover__subtitle'>{get(d.parent, 'society_name', d.parent.name)}</h3>

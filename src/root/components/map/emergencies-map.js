@@ -70,12 +70,16 @@ class EmergenciesMap extends React.Component {
       ]
     };
 
-    const maxScaleValue = Math.max.apply(Math, geoJSON?.features?.map(o => o.properties[scaleBy]));
+    const scaleValues = geoJSON?.features?.map(o => o.properties[scaleBy]);
+    let maxScaleValue = 1;
+    if (scaleValues.length) {
+      maxScaleValue = Math.max.apply(Math, scaleValues) || 1;
+    }
     const cradius = {
       property: scaleBy,
       stops: [
-        [0, 3],
-        [maxScaleValue, 10]
+        [0, 5],
+        [maxScaleValue, 12]
       ]
     };
 
@@ -233,7 +237,9 @@ class MapPopover extends React.Component {
         <div className='popover__contents'>
           <header className='popover__header'>
             <div className='popover__headline'>
-              <a className='link-underline' onClick={() => this.props.onTitleClick(this.props.uri)}>{title}</a>
+              <a className='link--primary link--with-icon' onClick={() => this.props.onTitleClick(this.props.uri)}><span className='link--with-icon-text'>{title}</span>
+                <span className='popover__headline__icon collecticon-chevron-right'></span>
+              </a>
             </div>
             <div className='popover__actions actions'>
               <ul className='actions__menu'>
@@ -246,7 +252,7 @@ class MapPopover extends React.Component {
               </ul>
             </div>
           </header>
-          <div className='popover__body'>
+          <div className='popover__body scrollbar__custom'>
             <p className='popover__stat'>
               <Translate
                 stringId='emergenciesMapPopoverPeopleAffected'

@@ -336,6 +336,11 @@ export function getEventSnippets (eventId) {
   return fetchJSON(`api/v2/event_snippet/?event=${eventId}`, GET_EVENT_SNIPPETS, withToken(), { id: eventId });
 }
 
+export const GET_PERSONNEL_BY_EVENT = 'GET_PERSONNEL_BY_EVENT';
+export function getPersonnelByEvent () {
+  return fetchJSON(`api/v2/personnel_by_event`, GET_PERSONNEL_BY_EVENT);
+}
+
 export const GET_SITREP_TYPES = 'GET_SITREP_TYPES';
 export function getSitrepTypes (type) {
   return fetchJSON('api/v2/situation_report_type/', GET_SITREP_TYPES);
@@ -578,52 +583,121 @@ export function clearLoadedCsv (id) {
   return { type: 'CLEAR_LOADED_CSV', id };
 }
 
-export const SEND_PER_FORM = 'SEND_PER_FORM';
-export function sendPerForm (data) {
-  return postJSON('sendperform', SEND_PER_FORM, data, withToken());
+// export const CREATE_PER_FORM = 'CREATE_PER_FORM';
+// export function createPerForm (data) {
+//   return postJSON('createperform', CREATE_PER_FORM, data, withToken());
+// }
+
+// Update one Form and it's FormData
+export const UPDATE_PER_FORM = 'UPDATE_PER_FORM';
+export function updatePerForm (data) {
+  return postJSON('updateperform', UPDATE_PER_FORM, data, withToken());
+}
+
+// Update multiple Forms at once with their FormData, let backend handle them
+export const UPDATE_MULTIPLE_PER_FORMS = 'UPDATE_MULTIPLE_PER_FORMS';
+export function updatePerForms (data) {
+  return postJSON('updatemultipleperforms', UPDATE_MULTIPLE_PER_FORMS, data, withToken());
+}
+
+// export const DELETE_PER_FORM = 'DELETE_PER_FORM';
+// export function deletePerForm (id) {
+//   return postJSON('deleteperform', DELETE_PER_FORM, { id: id }, withToken());
+// }
+
+export const RESET_PER_STATE = 'RESET_PER_STATE';
+export function resetPerState () {
+  return { type: RESET_PER_STATE };
 }
 
 export const GET_PER_COUNTRIES = 'GET_PER_COUNTRIES';
 export function getPerCountries () {
-  const filters = {};
+  let filters = {};
   filters.limit = 1000;
   const f = buildAPIQS(filters);
   return fetchJSON(`/api/v2/percountry/?${f}`, GET_PER_COUNTRIES, withToken());
 }
 
-export const GET_PER_DOCUMENTS = 'GET_PER_DOCUMENTS';
-export function getPerDocuments () {
-  return fetchJSON(`/api/v2/per/`, GET_PER_DOCUMENTS, withToken());
+export const GET_PER_AREAS = 'GET_PER_AREAS';
+export function getPerAreas (id = null, area_num = null) {
+  let filters = {
+    limit: 500
+  };
+  if (area_num) {
+    filters.area_num = area_num;
+  }
+  if (id) {
+    filters.id = id;
+  }
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v2/per-formarea/?${f}`, GET_PER_AREAS);
 }
 
-export const GET_PER_DOCUMENT = 'GET_PER_DOCUMENT';
-export function getPerDocument (id = null, countryId = null) {
-  const filters = {};
+export const GET_PER_FORMS = 'GET_PER_FORMS';
+export function getPerForms (id = null, overview_id = null, withData = false) {
+  let filters = {};
+  if (id) {
+    filters.id = id;
+  }
+  if (overview_id) {
+    filters.overview_id = overview_id;
+  }
+  if (withData === true) {
+    filters.with_data = true;
+  }
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v2/per/?${f}`, GET_PER_FORMS, withToken());
+}
+
+export const GET_PER_FORM = 'GET_PER_FORM';
+export function getPerForm (formid = null, countryId = null) {
+  let filters = {};
   filters.limit = 1000;
-  if (id !== null) {
-    filters.form = id;
+  if (formid !== null) {
+    filters.form = formid;
   }
   if (countryId !== null) {
     filters.country = countryId;
   }
   const f = buildAPIQS(filters);
-  return fetchJSON(`/api/v2/perdata/?${f}`, GET_PER_DOCUMENT, withToken());
+  return fetchJSON(`/api/v2/perdata/?${f}`, GET_PER_FORM, withToken());
 }
 
-export const GET_PER_DRAFT_DOCUMENT = 'GET_PER_DRAFT_DOCUMENT';
-export function getPerDraftDocument (filters) {
-  const filterString = buildAPIQS(filters);
-  return fetchJSON(`/api/v2/perdraft/?${filterString}`, GET_PER_DRAFT_DOCUMENT, withToken());
+export const GET_PER_QUESTIONS = 'GET_PER_QUESTIONS';
+export function getPerQuestions (area_id = null) {
+  let filters = {
+    limit: 9999
+  };
+  if (area_id) {
+    filters.area_id = area_id;
+  }
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v2/per-formquestion/?${f}`, GET_PER_QUESTIONS);
 }
 
-export const SEND_PER_DRAFT_DOCUMENT = 'SEND_PER_DRAFT_DOCUMENT';
-export function sendPerDraft (data) {
-  return postJSON('sendperdraft', SEND_PER_DRAFT_DOCUMENT, data, withToken());
+export const GET_PER_COMPONENTS = 'GET_PER_COMPONENTS';
+export function getPerComponents (area_id = null) {
+  let filters = {
+    limit: 500
+  };
+  if (area_id) {
+    filters.area_id = area_id;
+  }
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v2/per-formcomponent/?${f}`, GET_PER_COMPONENTS);
 }
 
-export const EDIT_PER_DOCUMENT = 'EDIT_PER_DOCUMENT';
-export function editPerDocument (data) {
-  return postJSON('editperform', EDIT_PER_DOCUMENT, data, withToken());
+export const GET_PER_ASSESSMENT_TYPES = 'GET_PER_ASSESSMENT_TYPES';
+export function getAssessmentTypes () {
+  return fetchJSON('/api/v2/per-assessmenttype/', GET_PER_ASSESSMENT_TYPES);
+}
+
+export const GET_LATEST_COUNTRY_OVERVIEW = 'GET_LATEST_COUNTRY_OVERVIEW';
+export function getLatestCountryOverview(countryId) {
+  if (countryId) {
+    return fetchJSON(`/api/v2/latest_country_overview/?country_id=${countryId}`, GET_LATEST_COUNTRY_OVERVIEW, withToken());
+  }
+  return null;
 }
 
 export const COLLABORATING_PER_COUNTRY = 'COLLABORATING_PER_COUNTRY';
@@ -647,14 +721,23 @@ export function getPerNsPhase (countryId = null) {
   return fetchJSON(`api/v2/per_ns_phase/?${f}`, PER_NS_PHASE, withToken());
 }
 
-export const PER_OVERVIEW_FORM = 'PER_OVERVIEW_FORM';
-export function getPerOverviewForm (countryId = null, formId = null) {
+export const PER_OVERVIEWS = 'PER_OVERVIEWS';
+export function getPerOverviews (countryId = null, formId = null) {
   const f = buildAPIQS({country: countryId, id: formId});
-  return fetchJSON(`api/v2/peroverview/?${f}`, PER_OVERVIEW_FORM, withToken());
+  return fetchJSON(`api/v2/peroverview/?${f}`, PER_OVERVIEWS, withToken());
 }
 
-export function getPerOverviewFormStrict (countryId = null, formId = null) {
+export function getPerOverviewsStrict (countryId = null, formId = null) {
   const f = buildAPIQS({country: countryId, id: formId});
+  return fetchJSON(`api/v2/peroverviewstrict/?${f}`, PER_OVERVIEWS, withToken());
+}
+
+export const PER_OVERVIEW_FORM = 'PER_OVERVIEW_FORM';
+export function getPerOverviewStrict (formId) {
+  if (!formId) {
+    return {};
+  }
+  const f = buildAPIQS({id: formId});
   return fetchJSON(`api/v2/peroverviewstrict/?${f}`, PER_OVERVIEW_FORM, withToken());
 }
 
@@ -664,9 +747,28 @@ export function getPerWorkPlan (countryId = null) {
   return fetchJSON(`api/v2/perworkplan/?${f}`, PER_WORK_PLAN, withToken());
 }
 
-export const PER_SEND_OVERVIEW = 'PER_SEND_OVERVIEW';
-export function sendPerOverview (payload) {
-  return postJSON('sendperoverview', PER_SEND_OVERVIEW, payload, withToken());
+export const PER_EXPORT_TO_CSV = 'PER_EXPORT_TO_CSV';
+export function exportPerToCsv (formId) {
+  if (!formId) {
+    return {};
+  }
+  const f = buildAPIQS({overview_id: formId});
+  return fetchCSV(`api/v2/exportperresults/?${f}`, PER_EXPORT_TO_CSV, withToken());
+}
+
+export const CREATE_PER_OVERVIEW = 'CREATE_PER_OVERVIEW';
+export function createPerOverview (payload) {
+  return postJSON('createperoverview', CREATE_PER_OVERVIEW, payload, withToken());
+}
+
+export const UPDATE_PER_OVERVIEW = 'UPDATE_PER_OVERVIEW';
+export function updatePerOverview (payload) {
+  return postJSON('updateperoverview', UPDATE_PER_OVERVIEW, payload, withToken());
+}
+
+export const DELETE_PER_OVERVIEW = 'DELETE_PER_OVERVIEW';
+export function deletePerOverview (id) {
+  return postJSON('deleteperoverview', DELETE_PER_OVERVIEW, { id: id }, withToken());
 }
 
 export const SEND_PER_WORKPLAN = 'SEND_PER_WORKPLAN';
@@ -677,11 +779,6 @@ export function sendPerWorkplan (payload) {
 export const DELETE_PER_WORKPLAN_API = 'DELETE_PER_WORKPLAN_API';
 export function deletePerWorkplanApi (payload) {
   return postJSON('api/v2/del_perworkplan/', DELETE_PER_WORKPLAN_API, payload, withToken());
-}
-
-export const DELETE_PER_DRAFT = 'DELETE_PER_DRAFT';
-export function deletePerDraft (payload) {
-  return postJSON('api/v2/del_perdraft', DELETE_PER_DRAFT, payload, withToken());
 }
 
 export const GET_PER_UPLOADED_DOCUMENTS = 'GET_PER_UPLOADED_DOCUMENTS';

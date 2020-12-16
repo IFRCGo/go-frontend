@@ -1,0 +1,27 @@
+.state-block {
+	display: flex;
+  align-items: baseline;
+}
+
+.state-name {
+  text-transform: uppercase;
+  font-weight: $base-font-semi-bold;
+}
+
+.state {
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+}
+
+.state--severity-low {
+  background-color: $state-low;
+}
+
+.state--severity-mid {
+  background-color: $state-mid;
+}
+
+.state--severity-high {
+  background-color: $state-high;
+}

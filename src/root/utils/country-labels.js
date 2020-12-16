@@ -4,7 +4,7 @@ export const countryLabels = {
   'type': 'symbol',
   layout: {
     'text-field': ['get', 'name'],
-    'text-font': ['Arial Unicode MS Regular'],
+    'text-font': ['Poppins Regular', 'Arial Unicode MS Regular'],
     'text-letter-spacing': 0.15,
     'text-line-height': 1.2,
     'text-max-width': 8,
@@ -18,8 +18,8 @@ export const countryLabels = {
     ]
   },
   paint: {
-   'text-color': '#2d4662',
-   'text-halo-color': '#2d4662',
+   'text-color': '#000000',
+   'text-halo-color': '#000000',
    'text-halo-width': 0.2
   }
 };

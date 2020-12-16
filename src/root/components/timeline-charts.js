@@ -2,6 +2,7 @@ import React from 'react';
 import { PropTypes as T } from 'prop-types';
 import { connect } from 'react-redux';
 import { ResponsiveContainer, LineChart, Line, Legend, XAxis, YAxis, Tooltip } from 'recharts';
+import { find, sortBy } from 'lodash';
 import { DateTime } from 'luxon';
 
 import { environment } from '#config';
@@ -109,7 +110,7 @@ class TimelineCharts extends React.Component {
       );
     }
 
-    const data = dataDrefs.map((o, i) => {
+    let data = dataDrefs.map((o, i) => {
       const {timespan, ...drefData} = o;
       // Sometimes a month or year will have a DREF, but no appeals data yet.
       // The aggregate URL endpoint won't return an empty object for the appeal,
@@ -122,6 +123,22 @@ class TimelineCharts extends React.Component {
         appeals: appealsData
       };
     });
+
+    // Deal with missing months
+    // We take the min and max month from the data, and use a month by month for loop:
+    // If the loop index date is not in the data, then add a new entry in the 'data' array
+    // with empty drefs and appeals data
+    const dates = dataDrefs.map(({ timespan }) => DateTime.fromISO(timespan, { zone: 'utc' }));
+    const minDate = DateTime.min(...dates);
+    const maxDate = DateTime.max(...dates);
+    for (let curDate = minDate; curDate < maxDate; curDate = curDate.plus({ months: 1})) {
+      if (!find(dates, d => d.equals(curDate))) {
+        data.push({ timespan: curDate.toISODate({ zone: 'utc'}), drefs: { count: 0 }, appeals: { count: 0 }});
+      }
+    }
+
+    // Sort by date
+    data = sortBy(data, [o => DateTime.fromISO(o.timespan, { zone: 'utc'}).ts]);
 
     return (
       <div className='col col-6-sm'>

@@ -3,6 +3,7 @@ import { render } from 'react-dom';
 import { PropTypes as T } from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import mapboxgl from 'mapbox-gl';
+// import _debounce from 'lodash.debounce';
 import chroma from 'chroma-js';
 import { environment } from '#config';
 import BlockLoading from '../block-loading';
@@ -39,6 +40,7 @@ class MainMap extends React.Component {
       selectedDtype: null,
       mapActions: [],
       ready: false,
+      selectedFeatureISO: '',
       filters: {
         startDate: '',
         endDate: ''
@@ -173,37 +175,73 @@ class MainMap extends React.Component {
       this.setState({ ready: true });
     });
 
+    // theMap.on('click', e => {
+    //   console.log('features', e.features);
+    //   this.showOperationsPopover(theMap, e.features[0]);
+    // });
+
+    // theMap.on('mousemove', 'appeals', e => {
+    //   theMap.getCanvas().style.cursor = 'pointer';
+    // });
+
+    // theMap.on('mouseleave', 'appeals', e => {
+    //   theMap.getCanvas().style.cursor = '';
+    // });
+
+    // theMap.on('mousemove', 'icrc_admin0', e => {
+    //   theMap.getCanvas().style.cursor = 'pointer';
+    // });
+
+    // theMap.on('mouseleave', 'icrc_admin0', e => {
+    //   theMap.getCanvas().style.cursor = '';
+    // });
+
+    // theMap.on('mousemove', 'district', e => {
+    //   const id = get(e, 'features.0.properties.OBJECTID').toString();
+    //   if (id && get(this.props, 'deployments.data.areas', []).find(d => d.id === id)) {
+    //     theMap.getCanvas().style.cursor = 'pointer';
+    //   } else {
+    //     theMap.getCanvas().style.cursor = '';
+    //   }
+    // });
+
+    // theMap.on('mousemove', 'icrc_admin0', _debounce(e => {
+    //   const feature = e.features.length ? e.features[0] : undefined;
+    //   if (feature && feature.properties.INDEPENDEN !== 'FALSE' &&
+    //     feature.properties.ISO2 !== this.state.selectedFeatureISO) {
+    //       this.setState({ selectedFeatureISO: feature.properties.ISO2 });
+    //       theMap.setLayoutProperty('icrc_admin0_highlight', 'visibility', 'visible');
+    //       theMap.setFilter('icrc_admin0_highlight', ['==', 'OBJECTID', feature.properties.OBJECTID]);
+    //   }
+    // }, 80));
+
     theMap.on('click', 'appeals', e => {
-      this.showOperationsPopover(theMap, e.features[0]);
-    });
-
-    theMap.on('mousemove', 'appeals', e => {
-      theMap.getCanvas().style.cursor = 'pointer';
-    });
-
-    theMap.on('mouseleave', 'appeals', e => {
-      theMap.getCanvas().style.cursor = '';
-    });
-
-    theMap.on('mousemove', 'country', e => {
-      theMap.getCanvas().style.cursor = 'pointer';
-    });
-
-    theMap.on('mouseleave', 'country', e => {
-      theMap.getCanvas().style.cursor = '';
-    });
-
-    theMap.on('mousemove', 'district', e => {
-      const id = get(e, 'features.0.properties.OBJECTID').toString();
-      if (id && get(this.props, 'deployments.data.areas', []).find(d => d.id === id)) {
-        theMap.getCanvas().style.cursor = 'pointer';
-      } else {
-        theMap.getCanvas().style.cursor = '';
+      const feature = e.features.length ? e.features[0] : undefined;
+      if (feature) {
+        this.showOperationsPopover(theMap, feature, e, this.props.countries, 'appeals');
+        // theMap.setLayoutProperty('icrc_admin0_highlight', 'visibility', 'visible');
+        // theMap.setFilter('icrc_admin0_highlight', ['==', 'OBJECTID', feature.properties.OBJECTID]);
       }
     });
 
+    theMap.on('click', 'icrc_admin0', e => {
+      const feature = e.features.length ? e.features[0] : undefined;
+      if (feature && feature.properties.INDEPENDEN !== 'FALSE') {
+        this.showOperationsPopover(theMap, feature, e, this.props.countries, 'icrc_admin0');
+        // theMap.setLayoutProperty('icrc_admin0_highlight', 'visibility', 'visible');
+        // theMap.setFilter('icrc_admin0_highlight', ['==', 'OBJECTID', feature.properties.OBJECTID]);
+      }
+    });
+
+    // theMap.on('mouseleave', 'icrc_admin0', e => {
+    //   theMap.setLayoutProperty('icrc_admin0_highlight', 'visibility', 'none');
+    // });
+
     if (Array.isArray(this.props.mapBoundingBox)) {
-      theMap.fitBounds(this.props.mapBoundingBox);
+      const infinite = !isFinite(this.props.mapBoundingBox[0]);
+      if (!infinite) {
+        theMap.fitBounds(this.props.mapBoundingBox);
+      }
     }
 
     this.theMap = theMap;
@@ -219,18 +257,52 @@ class MainMap extends React.Component {
     }
   }
 
-  showOperationsPopover (theMap, feature) {
+  // FIXME: move this to a utils
+  getCountryFromIso(iso, countries) {
+    const country = countries.find(country => country.iso && country.iso.toUpperCase() === iso && country.record_type === 1);
+    if (country) {
+      return country;
+    } else {
+      return null;
+    }
+  }
+
+  showOperationsPopover (theMap, feature, event, countries=[], layer) {
     let popoverContent = document.createElement('div');
-    const { properties, geometry } = feature;
-    const operations = !properties.appeals ? []
+    let appealFeature;
+    let iso;
+    if (layer === 'appeals') {
+      appealFeature = feature;
+    } else {
+      iso = feature.properties.ISO2.toUpperCase();
+      appealFeature = this.state.markerGeoJSON.features.find(f => f.properties.iso.toUpperCase() === iso);
+    }
+    let title, pageId, operations, centroid;
+    if (appealFeature) {
+      const { properties } = appealFeature;
+      title = properties.name;
+      pageId = properties.id;
+      operations = !properties.appeals ? []
       : Array.isArray(properties.appeals) ? properties.appeals
         : JSON.parse(properties.appeals);
-    const title = `${properties.name}`;
+      centroid = appealFeature.geometry.coordinates;
+    } else {
+      const country = this.getCountryFromIso(iso, countries);
+      title = country.label;
+      pageId = country.value;
+      operations = [];
+      centroid = event.lngLat;
+    }
+    // const { properties, geometry } = feature;
+    // const operations = !properties.appeals ? []
+    //   : Array.isArray(properties.appeals) ? properties.appeals
+    //     : JSON.parse(properties.appeals);
+    // const title = `${properties.name}`;
 
     render(<OperationsPopover
       title={title}
       navigate={this.navigate}
-      pageId={properties.id}
+      pageId={pageId}
       operations={operations}
       onCloseClick={this.onPopoverCloseClick.bind(this)} />, popoverContent);
 
@@ -241,7 +313,7 @@ class MainMap extends React.Component {
     }
 
     this.popover = new mapboxgl.Popup({closeButton: false})
-      .setLngLat(geometry.coordinates)
+      .setLngLat(centroid)
       .setDOMContent(popoverContent.children[0])
       .addTo(theMap);
   }
@@ -353,7 +425,8 @@ if (environment !== 'production') {
     layers: T.array,
     toggleFullscreen: T.func,
     fullscreen: T.bool,
-    countriesGeojson: T.object
+    countriesGeojson: T.object,
+    countries: T.array
   };
 }
 

@@ -32,7 +32,7 @@ function NSDetails (p) {
       <div className='tc-content'>
         { Object.keys(sectorList).map(sectorId => (
           <div className='tc-sector' key={sectorId}>
-            { sectors[sectorId] }[{ sectorList[sectorId] }]
+            { sectors[sectorId] } <strong>{ sectorList[sectorId] }</strong>
           </div>
         ))}
       </div>
@@ -113,22 +113,24 @@ function ActivityDetails (p) {
             reverseOrder
           />
         </div>
-        <div className='active-ns-count'>
-          <TextOutput
-            label={strings.activityDetailsActiveNationalCount}
-            value={nsSectorList.length}
-            reverseOrder
-          />
-        </div>
-        <div className='ns-sector-details'>
-          { pending ? (
-            <BlockLoading />
-          ) : (
-            nsSectorList.map(d => (
-              <NSDetails data={d} key={d.nsDetails.id} />
-            ))
-          )}
-        </div>
+        <div className='active-ns-count__wrap scrollbar__custom'>
+          <div className='active-ns-count'>
+            <TextOutput
+              label={strings.activityDetailsActiveNationalCount}
+              value={nsSectorList.length}
+              reverseOrder
+            />
+          </div>
+          <div className='ns-sector-details'>
+            { pending ? (
+              <BlockLoading />
+            ) : (
+              nsSectorList.map(d => (
+                <NSDetails data={d} key={d.nsDetails.id} />
+              ))
+            )}
+          </div>
+        </div>  
       </div>
     </div>
   );

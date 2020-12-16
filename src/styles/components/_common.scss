@@ -182,8 +182,9 @@
 }
 
 .tc-confirm-modal {
-  max-height: 40vh;
-  max-width: 600px;
+  border-radius: 4px;
+  max-height: 50vh;
+  width: 420px;
   overflow: auto;
   display: flex;
   flex-direction: column;
@@ -193,31 +194,36 @@
   top: 50%;
   transform: translate(-50%, -50%);
   background-color: #fff;
-  padding: $global-spacing / 2;
+  padding: 0 0 $global-spacing * 1.5 0;
 
   .tc-heading {
+    border-bottom: 1px solid #d1d1d1;
     flex-shrink: 0;
-    padding: $global-spacing / 2 $global-spacing;
+    font-size: $base-font-size;
+    font-weight: $base-font-semi-bold;
+    padding: ($global-spacing * 0.9) ($global-spacing * 1.2) ($global-spacing * 0.9) ($global-spacing * 1.5);
     margin: 0;
   }
 
   .tc-message {
     flex-grow: 1;
     overflow: auto;
-    padding: $global-spacing / 2 $global-spacing;
+    padding-top: $global-spacing * 1.5;
+    padding-left: $global-spacing * 1.5;
+    padding-right: $global-spacing * 1.5;
+    padding-bottom: $global-spacing * 3.5;
   }
 
   .tc-footer {
     flex-shrink: 0;
     display: flex;
     justify-content: flex-end;
+    padding: $global-spacing / 3 $global-spacing * 1.5;
 
     .button {
-      padding: $global-spacing / 2 $global-spacing;
-    }
-
-    .tc-ok-button {
-      color: $primary-color;
+      font-size: $font-size-sm;
+      padding-left: $global-spacing * 2.5;
+      padding-right: $global-spacing * 2.5;
     }
   }
 }
@@ -226,5 +232,117 @@
   td {
     padding-bottom: $spacing-half;
     padding-top: 0;
-  }  
+  }
+}
+  
+.table__cell--progress__personnel {
+  width: 40%;
+}
+
+.progress__block__personnel {
+  .progress-bar {
+    background-color: transparent;
+    display: flex;
+  }
+
+  .progress-bar__value {
+    border-radius: $base-border-radius;
+    height: 24px;
+  }
+}
+
+.progress__block__tooltip__heading {
+  border-bottom: 1px solid $base-border-color;
+  margin: 0 0 $spacing-half 0;
+  padding: 0 0 $spacing-half 0;
+}
+
+.fold__table--deploy-personnel {
+  .fold__body {
+    position: relative;  
+  }
+}
+
+.personnel__table__daterange {
+  width: 40%;
+  display: flex;
+  justify-content: space-between;
+  font-size: $font-size-xxs;
+  font-weight: $base-font-medium;
+  position: relative;
+  top: 0;
+
+  [dir='ltr'] & {
+    margin-left: auto;
+  }
+
+  [dir='rtl'] & {
+    margin-right: auto;
+  }
+
+  @include media(small-down) {
+    display: none;
+  }
+}
+
+.personnel__table__date__current {
+  display: flex;
+  font-size: $font-size-xs;
+  font-weight: $base-font-medium;  
+  width: 40%;
+  position: relative;
+  top: 37px;
+  margin-inline-end: 30px;
+
+  [dir='ltr'] & {
+    margin-left: auto;
+  }
+
+  [dir='rtl'] & {
+    margin-right: auto;
+  }
+
+  @include media(small-down) {
+    display: none;
+  }
+}
+
+.personnel__date__graphic__block {
+  display: flex;
+  width: 40%;
+  position: absolute;
+  left: 60%;
+  top: 0;
+  bottom: 0;
+
+  [dir='rtl'] & {
+    right: 60%;
+  }
+
+  @include media(small-down) {
+    display: none;
+  }
+}
+
+.personnel__date__graphic {
+  position: absolute;
+  bottom: 42px;
+  top: 61px;
+  margin-top: 1px;
+  background:
+    repeating-linear-gradient(to bottom,transparent 0 4px, $white 4px 7px),
+    linear-gradient(to bottom, $grey-platinum, $grey-platinum);
+  background-size: 2px 100%;
+  background-repeat:no-repeat;
+  width: 1px;
+}
+
+.personnel__table__date {
+  &:first-of-type {
+    margin-inline-start: -30px;
+  }
+
+  &:last-of-type {
+    margin-inline-end: 30px;
+  }
 }

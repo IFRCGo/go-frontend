@@ -38,11 +38,11 @@ class ExplanationBubble extends React.Component {
               <Translate stringId='explanationBubbleType'/>
             </label>
             <dl className='legend__dl legend__dl--colors'>
-              <dt className='color color--red'>Red</dt>
+              <dt className='color color--map-red'>Red</dt>
               <dd>
                 <Translate stringId='explanationBubbleEmergencyAppeal'/>
               </dd>
-              <dt className='color color--yellow'>Yellow</dt>
+              <dt className='color color--map-red2'>Yellow</dt>
               <dd>
                 <Translate stringId='explanationBubbleDref'/>
               </dd>
@@ -50,7 +50,7 @@ class ExplanationBubble extends React.Component {
               <dd>
                 <Translate stringId='explanationBubbleMovement'/>
               </dd>
-              <dt className='color color--blue'>Grey</dt>
+              <dt className='color color--map-yellow'>Grey</dt>
               <dd>
                 <Translate stringId='explanationBubbleMultiple'/>
               </dd>

@@ -14,7 +14,8 @@ import {
 import {
   getAllDeploymentERU,
   getActivePersonnel,
-  getEruOwners
+  getEruOwners,
+  getPersonnelByEvent
 } from '#actions';
 import { finishedFetch, datesAgo } from '#utils/utils';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
@@ -26,7 +27,9 @@ import {
 
 import App from './app';
 import Progress from '#components/progress';
-import PersonnelTable from '#components/connected/personnel-table';
+import PersonnelByEventTable from '#components/deployments/personnel-by-event-table';
+import AlertsTable from '#components/connected/alerts-table';
+// import PersonnelTable from '#components/connected/personnel-table';
 import EruTable from '#components/connected/eru-table';
 import { SFPComponent } from '#utils/extendables';
 import DeploymentsMap from '#components/map/deployments-map';
@@ -61,6 +64,7 @@ class Deployments extends SFPComponent {
     this.props._getEruOwners();
     this.props._getAllDeploymentERU();
     this.props._getActivePersonnel();
+    this.props._getPersonnelByEvent();
   }
 
   // eslint-disable-next-line camelcase
@@ -216,7 +220,7 @@ class Deployments extends SFPComponent {
       fetched,
       error
     } = this.props.eruOwners;
-
+    const { strings } = this.context;
     if (!fetched || error) return null;
 
     return (
@@ -227,7 +231,7 @@ class Deployments extends SFPComponent {
               <div className='inpage__headline'>
                 <div className='inpage__headline-content'>
                   <h1 className='inpage__title'>
-                    <Translate stringId="deploymentsPageTitle" />
+                    <Translate stringId="deploymentsPageTitleSurge" />
                   </h1>
                   { /* <div className='presentation__actions'>
                     <div className='inner'>
@@ -259,8 +263,16 @@ class Deployments extends SFPComponent {
             />
           </div>
           <div className='inner margin-4-t'>
+            <div>
+              <AlertsTable
+                title={strings.homeSurgeNotification}
+                limit={5}
+                viewAll={'/alerts/all'}
+                showRecent={true}
+              />
+            </div>
             <div className='table-deployed-personnel-block'>
-              <PersonnelTable limit={20} viewAll={'/deployments/personnel/all'} />
+              <PersonnelByEventTable data={this.props.personnelByEvent} />
             </div>
             <div className='readiness__container container-lg'>
               <Readiness eruOwners={this.props.eruOwners} />
@@ -281,7 +293,7 @@ class Deployments extends SFPComponent {
           </title>
         </Helmet>
         <BreadCrumb crumbs={[
-          {link: this.props.location.pathname, name: strings.breadCrumbDeployments},
+          {link: this.props.location.pathname, name: strings.breadCrumbSurge},
           {link: '/', name: strings.breadCrumbHome}
         ]} />
         {this.renderContent()}
@@ -307,13 +319,15 @@ const selector = (state) => ({
   eruOwners: state.eruOwners,
   activePersonnel: state.deployments.activePersonnel,
   locations: state.deployments.locations,
-  countriesGeojson: countriesGeojsonSelector(state)
+  countriesGeojson: countriesGeojsonSelector(state),
+  personnelByEvent: state.personnelByEvent
 });
 
 const dispatcher = (dispatch) => ({
   _getEruOwners: () => dispatch(getEruOwners()),
   _getAllDeploymentERU: (...args) => dispatch(getAllDeploymentERU(...args)),
-  _getActivePersonnel: (...args) => dispatch(getActivePersonnel(...args))
+  _getActivePersonnel: (...args) => dispatch(getActivePersonnel(...args)),
+  _getPersonnelByEvent: (...args) => dispatch(getPersonnelByEvent(...args))
 });
 
 export default connect(selector, dispatcher)(Deployments);
