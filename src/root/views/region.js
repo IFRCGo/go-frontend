@@ -71,16 +71,17 @@ class AdminArea extends SFPComponent {
     this.toggleFullscreen = this.toggleFullscreen.bind(this);
     this.onFullscreenChange = this.onFullscreenChange.bind(this);
     this.onAdditionalLinkClickAction = this.onAdditionalLinkClickAction.bind(this);
-    this.TAB_DETAILS = [
-      { title: context.strings.regionOperationsTab, hash: '#operations' },
-      { title: context.strings.region3WTab, hash: '#3w' },
-      { title: context.strings.regionProfileTab, hash: '#regional-profile' },
-      // { title: context.strings.regionPreparednessTab, hash: '#preparedness' },
-      // { title: context.strings.regionAdditionalInfoTab, hash: '#additional-info' }
+  }
+
+  getTabDetails () {
+    const { strings } = this.context;
+    return [
+      { title: strings.regionOperationsTab, hash: '#operations' },
+      { title: strings.region3WTab, hash: '#3w' },
+      { title: strings.regionProfileTab, hash: '#regional-profile' },
+      // { title: strings.regionPreparednessTab, hash: '#preparedness' },
+      // { title: strings.regionAdditionalInfoTab, hash: '#additional-info' }
     ];
-
-
-
   }
 
   toggleCountriesSidebar () {
@@ -157,7 +158,7 @@ class AdminArea extends SFPComponent {
 
   // Sets default tab if url param is blank or incorrect
   displayTabContent () {
-    const tabHashArray = this.TAB_DETAILS.map(({ hash }) => hash);
+    const tabHashArray = this.getTabDetails().map(({ hash }) => hash);
     if (!tabHashArray.find(hash => hash === this.props.location.hash)) {
       this.props.history.replace(`${this.props.location.pathname}${tabHashArray[0]}`);
     }
@@ -214,7 +215,7 @@ class AdminArea extends SFPComponent {
 
     const additionalTabName = data.additional_tab_name ? data.additional_tab_name : strings.regionAdditionalInfoTab;
     
-    const tabDetails = [...this.TAB_DETAILS];
+    const tabDetails = [...this.getTabDetails()];
     // Add Preparedness Tab only if Preparedness Snippets exist
     if (data.preparedness_snippets.length > 0) {
       tabDetails.push({
@@ -251,7 +252,7 @@ class AdminArea extends SFPComponent {
       <Link className='fold__title__link' to={'/appeals/all?region=' + data.id}>{resolveToString(strings.regionAppealsTableViewAllText, { regionName: regionName })}</Link>
     );
 
-    // const tabDetails = this.TAB_DETAILS.map(d => {
+    // const tabDetails = this.getTabDetails().map(d => {
     //   d.title = d.hash === '#additional-info' ? additionalTabName : d.title;
     //   return d;
     // });
