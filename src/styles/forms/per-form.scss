@@ -270,3 +270,7 @@
 .per--button--clear-source {
   @include button-trash;
 }
+
+.per-error-message {
+  font-size: .875rem;
+}

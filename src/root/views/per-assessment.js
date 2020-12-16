@@ -531,14 +531,11 @@ function PerAssessment (props) {
                             </button>
 
                             { errors
-                              ? errors.map(err => (
-                                <FormError
-                                  key={err.dataPath}
-                                  errors={errors}
-                                  property={err.dataPath.slice(1)}
-                                />
-                              ))
-                              : null }
+                              ? (
+                                <p className='form__error text-center'>
+                                  <Translate className='per-error-message' stringId='registerSubmitError' />
+                                </p>
+                              ) : null }
                           </div>
                         )
                         : null }
