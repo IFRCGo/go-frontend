@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useEffect } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 import { withRouter } from 'react-router-dom';
@@ -17,16 +17,14 @@ function PreparednessOverview (props) {
     return 0;
   }, [props.getPerNsPhase]);
 
-  useEffect(() => {
-    if (!props.getPerNsPhase.fetched || !props.perOverviewForm.fetched || !props.user.username) {
-      return null;
-    }
+  if (!props.getPerNsPhase.fetched || !props.perOverviewForm.fetched || !props.user.username) {
+    return null;
+  }
 
-    const ovCount = props.perOverviewForm.data?.count || 0;
-    if (phase === 0 && ovCount === 0) {
-      return null;
-    }
-  }, [props.getPerNsPhase, props.perOverviewForm, props.user, phase]);
+  const ovCount = props.perOverviewForm.data?.count || 0;
+  if (phase === 0 && ovCount === 0) {
+    return null;
+  }
 
   const NO_DATA = '--';
   const ov = props.perOverviewForm.data.results[0];

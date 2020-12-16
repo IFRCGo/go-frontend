@@ -247,7 +247,7 @@ class AdminArea extends SFPComponent {
     };
     const hashes = tabDetails.map(t => t.hash);
     const selectedIndex = hashes.indexOf(this.props.location.hash) !== -1 ? hashes.indexOf(this.props.location.hash) : 0;
-    console.log('links', data.links);
+
     const foldLink = (
       <Link className='fold__title__link' to={'/appeals/all?region=' + data.id}>{resolveToString(strings.regionAppealsTableViewAllText, { regionName: regionName })}</Link>
     );
@@ -288,7 +288,9 @@ class AdminArea extends SFPComponent {
                 <span className={this.state.showCountriesSidebar ? 'collecticon-sm-chevron-right' : 'collecticon-sm-chevron-left'}></span>
                 <span className={this.state.showCountriesSidebar ? 'collecticon-sm-chevron-right' : 'collecticon-sm-chevron-left'}></span>
               </span>
-              <span className='link--with-icon-text'>All countries</span>
+              <span className='link--with-icon-text'>
+                {strings.regionAllCountries}
+              </span>
             </div>
 
             <CountryList
