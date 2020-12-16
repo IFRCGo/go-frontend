@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useEffect } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 import { withRouter } from 'react-router-dom';
