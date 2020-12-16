@@ -9,20 +9,24 @@ import TabContent from '#components/tab-content';
 import { PropTypes as T } from 'prop-types';
 import { environment } from '#config';
 import LanguageContext from '#root/languageContext';
+import { withLanguage } from '#root/languageContext';
 import Translate from '#components/Translate';
 
 class Preparedness extends React.Component {
   constructor (props, context) {
     super(props);
 
-    this.tabDetails = [
-      { title: context.strings.prepGlobalTrendsTab, hash: '#global-summary' },
-      { title: context.strings.prepGlobalPerformanceTab, hash: '#global-performance' },
-      { title: context.strings.prepResourceCatalogueTab, hash: '#resources-catalogue' },
-      { title: context.strings.prepOpLearningTab, hash: '#operational-learning' },
-    ];
   }
   
+  getTabDetails() {
+    const { strings } = this.context;
+    return [
+      { title: strings.prepGlobalTrendsTab, hash: '#global-summary' },
+      { title: strings.prepGlobalPerformanceTab, hash: '#global-performance' },
+      { title: strings.prepResourceCatalogueTab, hash: '#resources-catalogue' },
+      { title: strings.prepOpLearningTab, hash: '#operational-learning' },
+    ];
+  }
 
   render () {
     const { strings } = this.context;
@@ -68,11 +72,11 @@ class Preparedness extends React.Component {
 
             <div className='tab__wrap'>
               <Tabs
-                selectedIndex={this.tabDetails.map(({ hash }) => hash).indexOf(this.props.location.hash)}
+                selectedIndex={this.getTabDetails().map(({ hash }) => hash).indexOf(this.props.location.hash)}
                 onSelect={index => handleTabChange(index)}
               >
                 <TabList>
-                  {this.tabDetails.map(tab => (
+                  {this.getTabDetails().map(tab => (
                     <Tab key={tab.title}>{tab.title}</Tab>
                   ))}
                 </TabList>
@@ -144,4 +148,5 @@ const selector = (state) => ({
 });
 
 Preparedness.contextType = LanguageContext;
+
 export default connect(selector)(Preparedness);
