@@ -30,7 +30,7 @@ class Preparedness extends React.Component {
     const { strings } = this.context;
 
     const handleTabChange = index => {
-      const tabHashArray = this.tabDetails.map(({ hash }) => hash);
+      const tabHashArray = this.getTabDetails().map(({ hash }) => hash);
       const url = this.props.location.pathname;
       this.props.history.replace(`${url}${tabHashArray[index]}`);
     };
