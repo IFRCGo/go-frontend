@@ -226,46 +226,46 @@ class Emergency extends React.Component {
           <div>
             <ul className='list-reset'>
               <li className='row spacing-half-v'>
-                <div className='col'>
+                <div className='col col-8'>
                   <Translate stringId="emergencyPotentiallyAffectedLabel" />
                 </div>
-                <div className='col margin-left-auto emergency__affected__no'>
+                <div className='col col-4 emergency__affected__no'>
                   <span className="base-font-semi-bold">
                     {n(numPotentiallyAffected)}
                   </span>
                 </div>
               </li>
               <li className='row flex spacing-half-v'>
-                <div className='col'>
+                <div className='col col-8'>
                   <Translate stringId="emergencyHighestRiskLabel" />
                 </div>
-                <div className='col margin-left-auto emergency__affected__no'>
+                <div className='col col-4 emergency__affected__no'>
                   <span className="base-font-semi-bold">{n(numHighestRisk)}</span>
                 </div>
               </li>
-              <li className='row flex spacing-half-v'>
-                <div className='col'>
+              <li className='row spacing-half-v emergency__affected__figures--pop'>
+                <div className='col col-12'>
                   <Translate stringId="emergencyAffectedPopulationCentresLabel" />
                 </div>
-                <div className='col margin-left-auto emergency__affected__no'>
+                <div className='col col-12 emergency__affected__no'>
                   <span className="base-font-semi-bold">{affectedPopCentres}</span>
                 </div>
               </li>
               <li className='row flex spacing-half-v'>
-                <div className='col'>
+                <div className='col col-8'>
                   <Translate stringId="emergencyAssistedByGovernmentLabel" />
                 </div>
-                <div className='col margin-left-auto emergency__affected__no'>
+                <div className='col col-4 emergency__affected__no'>
                   <span className="base-font-semi-bold">
                     {n(get(report, 'gov_num_assisted'))}
                   </span>
                 </div>
               </li>
               <li className='row flex spacing-half-v'>
-                <div className='col'>
+                <div className='col col-8'>
                   <Translate stringId="emergencyAssistedByRCRCLabel" />
                 </div>
-                <div className='col margin-left-auto emergency__affected__no'>
+                <div className='col col-4 emergency__affected__no'>
                   <span className="base-font-semi-bold">
                     {n(get(report, 'num_assisted'))}
                   </span>
