@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { PropTypes as T } from 'prop-types';
 import Translate from '#components/Translate';
+import LanguageContext from '#root/languageContext';
 
 export default function FormError (props) {
+  const { strings } = useContext(LanguageContext);
   const { errors, property } = props;
   if (!errors) return null;
 
@@ -15,12 +17,13 @@ export default function FormError (props) {
   switch (err.keyword) {
     case 'required':
       message = <Translate id="formElementErrorRequiredMessage" />;
+      message = strings.formElementErrorRequiredMessage;
       break;
     case 'dependencies':
-      message = <Translate id="formElementErrorDependenciesMessage" />;
+      message = strings.formElementErrorDependenciesMessage;
       break;
     case 'const':
-      message = <Translate id="formElementErrorConstMessage" />;
+      message = strings.formElementErrorConstMessage;
       break;
     default:
       message = err.message;
