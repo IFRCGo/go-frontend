@@ -9,7 +9,6 @@ import TabContent from '#components/tab-content';
 import { PropTypes as T } from 'prop-types';
 import { environment } from '#config';
 import LanguageContext from '#root/languageContext';
-import { withLanguage } from '#root/languageContext';
 import Translate from '#components/Translate';
 
 class Preparedness extends React.Component {
