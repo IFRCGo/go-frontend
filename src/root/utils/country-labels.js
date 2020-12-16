@@ -4,7 +4,7 @@ export const countryLabels = {
   'type': 'symbol',
   layout: {
     'text-field': ['get', 'name'],
-    'text-font': ['Poppins Regular'],
+    'text-font': ['Poppins Regular', 'Arial Unicode MS Regular'],
     'text-letter-spacing': 0.15,
     'text-line-height': 1.2,
     'text-max-width': 8,
