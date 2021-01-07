@@ -105,7 +105,9 @@ export default {
 
   loginTitle: 'IFRC Go - Login',
   loginHeader: 'Login',
+  loginSubHeader: 'If you are staff, member or volunteer of the Red Cross Red Crescent Movement (National Societies, the IFRC and the ICRC) login with you email and password.',
   loginUsername: 'Username',
+  loginEmailUsername: 'Email/Username',
   loginPassword: 'Password',
   loginRecoverTitle: 'Recover password',
   loginForgotPassword: 'I forgot my password.',
@@ -113,12 +115,14 @@ export default {
   loginForgotUsername: 'I forgot my username only.',
   loginResendValidation: 'Re-send validation email.',
   loginResendValidationTitle: 'I didn\'t get my validation email',
+  loginForgotUserPass: 'Forgot your password/username?',
   loginInvalid: 'Invalid username or password',
   loginErrorMessage: 'Error: {message}',
   loginButton: 'Login',
   loginDontHaveAccount: 'Don’t have an account? ',
   loginCreateAccountTitle: 'Create new account',
   loginSignUp: 'Sign Up.',
+  loginKeep: 'Keep me logged in',
 
   accountUserGreeting: 'Hello {user}',
 

@@ -13,6 +13,12 @@
     }
   }
 
+  &__subheader {
+    font-size: 0.75rem;
+    padding-top: $spacing-2;
+    margin-bottom: $spacing-2;
+  }
+
   &__nav {
     font-weight: $base-font-medium;
   }
