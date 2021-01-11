@@ -127,7 +127,7 @@ class AdminArea extends SFPComponent {
   }
 
   loadCountry (props, countryId, countries) {
-    this.getData(props);
+    this.getData(props, countryId);
     this.getAdmArea(props.type, countryId);
     this.props._getPerNsPhase(countryId);
     this.props._getPerOverviews(countryId);
@@ -188,16 +188,15 @@ class AdminArea extends SFPComponent {
     }
   }
 
-  getData (props) {
+  getData (props, countryId) {
     const type = 'country';
-    const id = this.props.country.id;
-    this.props._getAdmAreaAppealsList(type, id);
-    this.props._getAdmAreaKeyFigures(type, id);
-    this.props._getAdmAreaSnippets(type, id);
-    this.props._getCountryOperations(type, id);
-    this.props._getPartnerDeployments(type, id);
-    this.props._getFdrs(id);
-    this.props._getAppealsListStats({countryId: id});
+    this.props._getAdmAreaAppealsList(type, countryId);
+    this.props._getAdmAreaKeyFigures(type, countryId);
+    this.props._getAdmAreaSnippets(type, countryId);
+    this.props._getCountryOperations(type, countryId);
+    this.props._getPartnerDeployments(type, countryId);
+    this.props._getFdrs(countryId);
+    this.props._getAppealsListStats({countryId: countryId});
   }
 
   getAdmArea (type, id) {
