@@ -596,7 +596,7 @@ class Emergency extends React.Component {
       return (
         <Fold
           id="field-reports"
-          title={resolveToString(strings.emergencyFieldReportsWithCountTitle, { count: data.field_reports.length })}
+          title={resolveToString(strings.emergencyFieldReportsWithCountTitle, { count: fieldReports.length })}
           foldWrapperClass="event-field-reports fold--main">
           <table className="table table--border-bottom">
             <thead>
