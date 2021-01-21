@@ -153,7 +153,7 @@ class Login extends React.Component {
                   </p>
                 </FormInput>
                 {this.renderError()}
-                <hr/>
+                <hr />
                 <div className='form__footer text-center'>
                   <button
                     className={c('button button--primary-filled button--small', { disabled: !this.allowSubmit() })}
@@ -163,7 +163,7 @@ class Login extends React.Component {
                   </button>
                   <p>
                     <Translate stringId='loginDontHaveAccount' />
-                    <Link to='/register' title={strings.loginCreateAccountTitle}>
+                    <Link className='login-link' to='/register' title={strings.loginCreateAccountTitle}>
                       <Translate stringId='loginSignUp' />
                     </Link>
                   </p>

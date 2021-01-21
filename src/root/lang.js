@@ -101,7 +101,7 @@ export default {
   registerSubmitError: 'There are errors in the form. Please correct them before submitting again.',
   registerAccountPresent: 'Already have an account?',
   registerGotoLogin: 'Go to login page',
-  registerLogin: 'Log in.',
+  registerLogin: 'Login',
 
   loginTitle: 'IFRC Go - Login',
   loginHeader: 'Login',
@@ -121,7 +121,7 @@ export default {
   loginButton: 'Login',
   loginDontHaveAccount: 'Don’t have an account? ',
   loginCreateAccountTitle: 'Create new account',
-  loginSignUp: 'Sign Up.',
+  loginSignUp: 'Sign up',
   loginKeep: 'Keep me logged in',
 
   accountUserGreeting: 'Hello {user}',
