@@ -92,7 +92,7 @@ const profileAttributes = [
   ['username'],
   ['first_name', 'firstName'],
   ['last_name', 'lastName'],
-  ['email'],
+  ['email', 'email'],
   ['profile.phone_number', 'phoneNumber'],
   ['profile.city', 'city'],
   ['profile.org', 'org'],
@@ -128,6 +128,7 @@ class Account extends React.Component {
       profile: {
         firstName: null,
         lastName: null,
+        email: null,
         city: null,
         org: null,
         orgType: null,
@@ -328,6 +329,7 @@ class Account extends React.Component {
   syncProfileState (data) {
     const profile = get(data, 'profile', {});
     const next = {
+      email: data.email || null,
       firstName: data.first_name || null,
       lastName: data.last_name || null,
       city: profile.city || null,
@@ -517,6 +519,15 @@ class Account extends React.Component {
               value={profile.lastName}
               onChange={this.onFieldChange.bind(this, 'profile', 'lastName')} >
             </FormInput>
+            <FormInput
+              label={strings.recoverAccountEmailLabel}
+              type='text'
+              name='email'
+              id='email'
+              classWrapper='form__group__fr'
+              value={profile.email}
+              onChange={this.onFieldChange.bind(this, 'profile', 'email')}
+            />
             <FormInput
               label={strings.accountPhoneNumber}
               type='text'
