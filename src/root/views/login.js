@@ -145,11 +145,11 @@ class Login extends React.Component {
                     {/* <br/>
                     <Link to='/recover-username' title={strings.loginShowUsernameTitle}>
                       <span><Translate stringId='loginForgotUsername' /></span>
-                    </Link>
-                    <br/>
-                    <Link to='/resend-validation' title={strings.loginResendValidationTitle}>
-                      <span><Translate stringId='loginResendValidation' /></span>
                     </Link> */}
+                    <br/>
+                    <Link to='/resend-validation' className='text-underlined' title={strings.loginResendValidationTitle}>
+                      <span><Translate stringId='loginResendValidation' /></span>
+                    </Link>
                   </p>
                 </FormInput>
                 {this.renderError()}

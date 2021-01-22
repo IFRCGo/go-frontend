@@ -246,7 +246,7 @@ export default {
   recoverUsernameSubmitText: 'Send me my username',
 
   resendValidationTitle: 'IFRC Go - Re-send Validation Email',
-  resendValidationUsername: 'Enter the username you used during registration',
+  resendValidationUsername: 'Enter the email/username you used during registration',
   resendValidationUsernameLabel: 'Username',
   resendValidationSubmitText: 'Re-send',
 
