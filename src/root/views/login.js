@@ -7,7 +7,7 @@ import { Helmet } from 'react-helmet';
 
 import { getAuthToken } from '#actions';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
-import BreadCrumb from '#components/breadcrumb';
+// import BreadCrumb from '#components/breadcrumb';
 
 
 import App from './app';
