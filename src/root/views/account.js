@@ -521,7 +521,7 @@ class Account extends React.Component {
             </FormInput>
             <FormInput
               label={strings.recoverAccountEmailLabel}
-              type='text'
+              type='email'
               name='email'
               id='email'
               classWrapper='form__group__fr'
