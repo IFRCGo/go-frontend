@@ -99,11 +99,13 @@ class RecoverAccount extends React.Component {
             property='email'
           />
         </FormInput>
-        <button className={c('mfa-tick', { disabled: !this.allowSubmit() })} type='button' onClick={this.onSubmit}>
-          <span>
-            <Translate stringId='recoverAccountSubmitText' />
-          </span>
-        </button>
+        <div className='text-center'>
+          <button className={c('mfa-tick', { disabled: !this.allowSubmit() })} type='button' onClick={this.onSubmit}>
+            <span>
+              <Translate stringId='recoverAccountSubmitText' />
+            </span>
+          </button>
+        </div>
       </form>
     );
   }

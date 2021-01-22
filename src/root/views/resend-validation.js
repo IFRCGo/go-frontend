@@ -69,7 +69,7 @@ class ResendValidation extends React.Component {
           <Translate stringId='resendValidationUsername' />
         </p>
         <FormInput
-          label={strings.resendValidationUsernameLabel}
+          label={strings.loginEmailUsername}
           type='text'
           name='username'
           id='username'

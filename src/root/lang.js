@@ -101,11 +101,13 @@ export default {
   registerSubmitError: 'There are errors in the form. Please correct them before submitting again.',
   registerAccountPresent: 'Already have an account?',
   registerGotoLogin: 'Go to login page',
-  registerLogin: 'Log in.',
+  registerLogin: 'Login',
 
   loginTitle: 'IFRC Go - Login',
   loginHeader: 'Login',
+  loginSubHeader: 'If you are staff, member or volunteer of the Red Cross Red Crescent Movement (National Societies, the IFRC and the ICRC) login with you email and password.',
   loginUsername: 'Username',
+  loginEmailUsername: 'Email/Username',
   loginPassword: 'Password',
   loginRecoverTitle: 'Recover password',
   loginForgotPassword: 'I forgot my password.',
@@ -113,12 +115,14 @@ export default {
   loginForgotUsername: 'I forgot my username only.',
   loginResendValidation: 'Re-send validation email.',
   loginResendValidationTitle: 'I didn\'t get my validation email',
+  loginForgotUserPass: 'Forgot your password/username?',
   loginInvalid: 'Invalid username or password',
   loginErrorMessage: 'Error: {message}',
   loginButton: 'Login',
   loginDontHaveAccount: 'Don’t have an account? ',
   loginCreateAccountTitle: 'Create new account',
-  loginSignUp: 'Sign Up.',
+  loginSignUp: 'Sign up',
+  loginKeep: 'Keep me logged in',
 
   accountUserGreeting: 'Hello {user}',
 
@@ -242,7 +246,7 @@ export default {
   recoverUsernameSubmitText: 'Send me my username',
 
   resendValidationTitle: 'IFRC Go - Re-send Validation Email',
-  resendValidationUsername: 'Enter the username you used during registration',
+  resendValidationUsername: 'Enter the email/username you used during registration',
   resendValidationUsernameLabel: 'Username',
   resendValidationSubmitText: 'Re-send',
 

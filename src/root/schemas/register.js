@@ -225,7 +225,7 @@ export default {
   },
   required: [
     'email',
-    'username',
+    // 'username',
     'organizationType',
     'organization',
     'firstname',

@@ -175,41 +175,6 @@ class Register extends React.Component {
     return email && isValidEmail(email.toLowerCase()) && !isWhitelistedEmail(email.toLowerCase(), whitelistedDomains);
   }
 
-  renderPasswordFields () {
-    const { strings } = this.context;
-    return (
-      <div className='form__hascol form__hascol--2'>
-        <FormInput
-          label={strings.registerPassword}
-          type='password'
-          name='register-password'
-          id='register-password'
-          classInput={getClassIfError(this.state.errors, 'password')}
-          value={this.state.data.password}
-          onChange={this.onFieldChange.bind(this, 'password')}
-        >
-          <FormError
-            errors={this.state.errors}
-            property='password'
-          />
-        </FormInput>
-        <FormInput
-          label={strings.registerConfirmPassword}
-          type='password'
-          name='register-password-conf'
-          id='register-password-conf'
-          classInput={getClassIfError(this.state.errors, 'passwordConf')}
-          value={this.state.data.passwordConf}
-          onChange={this.onFieldChange.bind(this, 'passwordConf')}
-        >
-          <FormError
-            errors={this.state.errors}
-            property='passwordConf'
-          />
-        </FormInput>
-      </div>
-    );
-  }
 
   renderAdditionalInfo () {
     const { strings } = this.context;
@@ -474,28 +439,41 @@ class Register extends React.Component {
                     property='email'
                   />
                 </FormInput>
-
-                <FormInput
-                  label={strings.registerUsername}
-                  type='text'
-                  name='register-username'
-                  id='register-username'
-                  classInput={getClassIfError(this.state.errors, 'username')}
-                  value={this.state.data.username}
-                  onChange={this.onFieldChange.bind(this, 'username')}
-                >
-                  <p className='text-italic'>
-                    <Translate stringId='registerUsernameInfo' />
-                  </p>
-                  <FormError
-                    errors={this.state.errors}
-                    property='username'
-                  />
-                </FormInput>
+                <div className='form__hascol form__hascol--2'>
+                  <FormInput
+                    label={strings.registerPassword}
+                    type='password'
+                    name='register-password'
+                    id='register-password'
+                    classInput={getClassIfError(this.state.errors, 'password')}
+                    value={this.state.data.password}
+                    onChange={this.onFieldChange.bind(this, 'password')}
+                  >
+                    <FormError
+                      errors={this.state.errors}
+                      property='password'
+                    />
+                  </FormInput>
+                  <FormInput
+                    label={strings.registerConfirmPassword}
+                    type='password'
+                    name='register-password-conf'
+                    id='register-password-conf'
+                    classInput={getClassIfError(this.state.errors, 'passwordConf')}
+                    value={this.state.data.passwordConf}
+                    onChange={this.onFieldChange.bind(this, 'passwordConf')}
+                  >
+                    <FormError
+                      errors={this.state.errors}
+                      property='passwordConf'
+                    />
+                  </FormInput>
+                </div>
+                <hr />
                 {this.renderAdditionalInfo()}
-                {this.renderPasswordFields()}
                 {this.renderContactRequest()}
-                <div className='form__footer'>
+                <hr />
+                <div className='form__footer text-center'>
                   {this.renderSubmitButton()}
                   {this.state.errors ?
                    <p className='form__error'>
@@ -505,7 +483,7 @@ class Register extends React.Component {
                   }
                   <p>
                     <Translate stringId='registerAccountPresent' />
-                    <Link to='/login' title={strings.registerGotoLogin}>
+                    <Link className='login-link' to='/login' title={strings.registerGotoLogin}>
                       <span>
                         <Translate stringId='registerLogin' />
                       </span>
