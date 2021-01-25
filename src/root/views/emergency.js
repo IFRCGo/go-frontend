@@ -9,7 +9,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import { Helmet } from 'react-helmet';
 
-import { api, environment } from '#config';
+import { adminUrl, environment } from '#config';
 import NewGlobalLoading from '#components/NewGlobalLoading';
 import Translate from '#components/Translate';
 import BreadCrumb from '#components/breadcrumb';
@@ -744,7 +744,7 @@ class Emergency extends React.Component {
     // return empty when no data, only on default filters.
     if (!data.length && date === 'all' && type === 'all') return null;
     const { id } = this.props.match.params;
-    const addReportLink = url.resolve(api, `api/event/${id}/change`);
+    const addReportLink = url.resolve(adminUrl, `api/event/${id}/change`);
     const types = this.props.situationReportTypes;
     if (!types.fetched) {
       return null;
@@ -1105,7 +1105,7 @@ class Emergency extends React.Component {
                 {this.props.isLogged ? subscribeButton() : null}
                 <div className='col-sm spacing-half-v flex'>
                   <a
-                    href={url.resolve(api, `api/event/${data.id}/change/`)}
+                    href={url.resolve(adminUrl, `api/event/${data.id}/change/`)}
                     className="button button--xsmall button--primary-bounded button button--edit-action"
                   >
                     <span className='f-icon-pencil margin-half-r'></span>

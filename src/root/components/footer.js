@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { api } from '#config';
+import { adminUrl } from '#config';
 
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
@@ -39,7 +39,7 @@ class Footer extends React.PureComponent {
               <div className="col col-6-xs col-3-mid">
                 <div className='footer-section-heading'><Translate stringId='footerHelpfulLinks'/></div>
                 <div className='footer-section-link'><a href='https://github.com/ifrcgo/go-frontend' title={strings.footerOpenSourceCode} target='_blank'><Translate stringId='footerOpenSourceCode'/></a></div>
-                <a href={`${process.env.NODE_ENV === 'production' ? 'https://goadmin.ifrc.org/' : api}docs`} title={strings.footerApiDocumentation} className='footer-section-link' target='_blank'>
+                <a href={`${adminUrl}docs`} title={strings.footerApiDocumentation} className='footer-section-link' target='_blank'>
                   <Translate stringId='footerApiDocumentation'/>
                 </a>
                 <a href='/about' className='footer-section-link'>
