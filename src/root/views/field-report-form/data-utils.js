@@ -216,6 +216,8 @@ export function convertStateToPayload (originalState) {
     ['epiProbableCases', 'epi_probable_cases', Number],
     ['epiConfirmedCases', 'epi_confirmed_cases', Number],
     ['epiNumDead', 'epi_num_dead', Number],
+    ['epiCasesSinceLastFr', 'epi_cases_since_last_fr', Number],
+    ['epiDeathsSinceLastFr', 'epi_deaths_since_last_fr', Number]
   ];
 
   directMapping.forEach(([src, dest, fn]) => {
@@ -501,6 +503,8 @@ export function convertFieldReportToState (fieldReport, stateData) {
     ['epi_probable_cases', 'epiProbableCases'],
     ['epi_confirmed_cases', 'epiConfirmedCases'],
     ['epi_num_dead', 'epiNumDead'],
+    ['epi_cases_since_last_fr', 'epiCasesSinceLastFr'],
+    ['epi_deaths_since_last_fr', 'epiDeathsSinceLastFr'],
     ['epi_figures_source', 'epiFiguresSource']
   ];
 

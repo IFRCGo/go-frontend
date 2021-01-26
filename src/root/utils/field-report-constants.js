@@ -373,6 +373,20 @@ export const getFieldsStep2 = (strings) => ({
         'label': strings.fieldsStep2SituationFieldsEPIDeadLabel,
         'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
         'desc': strings.fieldsStep2SituationFieldsEPIDeadDescription,
+      },
+      {
+        'name': 'epi-cases-since-last-fr',
+        'key': 'epiCasesSinceLastFr',
+        'label': strings.fieldsStep2SituationFieldsEPICasesSinceLabel,
+        'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
+        'desc': strings.fieldsStep2SituationFieldsEPICasesSinceDesciption,
+      },
+      {
+        'name': 'epi-deaths-since-last-fr',
+        'key': 'epiDeathsSinceLastFr',
+        'label': strings.fieldsStep2SituationFieldsEPIDeathsSinceLabel,
+        'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
+        'desc': strings.fieldsStep2SituationFieldsEPIDeathsSinceDescription,
       }
     ],
     EW: [
