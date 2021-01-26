@@ -207,7 +207,7 @@ export const getFieldsStep1 = (strings) => ({
       desc: strings.fieldsStep1StartDateDescriptionEVT,
     },
     EPI: {
-      label: strings.fieldsStep1StartDateLabelStartDate,
+      label: strings.fieldsStep1StartDateLabelEPI,
       desc: strings.fieldsStep1StartDateDescriptionEPI,
     },
     EW: {
