@@ -9,6 +9,8 @@ import Tooltip from '#components/common/tooltip';
 export default function FormRadioGroup (props) {
   const {
     label,
+    labelTooltipTitle,
+    labelTooltipDescription,
     name,
     description,
     options,
@@ -26,7 +28,17 @@ export default function FormRadioGroup (props) {
       <div className='form__group__wrap'>
         <div className='form__inner-header'>
           <div className='form__inner-headline'>
-            <label className={c('form__label', classLabel)}>{label}</label>
+            <label className={c('form__label', classLabel)}>
+              {label}
+              { labelTooltipTitle || labelTooltipDescription
+                ? (
+                  <Tooltip
+                    title={labelTooltipTitle}
+                    description={labelTooltipDescription}
+                  />
+                )
+                : null }
+            </label>
             <FormDescription value={description} />
           </div>
         </div>

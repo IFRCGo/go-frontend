@@ -1013,6 +1013,12 @@ class FieldReportForm extends React.Component {
 
         <FormRadioGroup
           label={strings.fieldReportFormVisibilityLabel}
+          labelTooltipTitle={strings.fieldReportConstantVisibility}
+          labelTooltipDescription={`
+            ${strings.fieldReportConstantVisibilityPublicLabel} - ${strings.fieldReportConstantVisibilityPublicTooltipTitle}<br/>
+            ${strings.fieldReportConstantVisibilityRCRCMovementLabel} - ${strings.fieldReportConstantVisibilityRCRCMovementTooltipTitle}<br/>
+            ${strings.fieldReportConstantVisibilityIFRCSecretariatLabel} - ${strings.fieldReportConstantVisibilityIFRCSecretariatTooltipTitle}
+          `}
           name='visibility'
           options={formData.getVisibility(strings)}
           selectedOption={this.state.data.visibility}

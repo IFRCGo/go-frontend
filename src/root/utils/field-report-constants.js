@@ -29,27 +29,15 @@ export const statusValues = [
 export const getVisibility = (strings) => [
   {
     label: strings.fieldReportConstantVisibilityPublicLabel,
-    value: '3',
-    tooltip: {
-      title: strings.fieldReportConstantVisibilityPublicTooltipTitle,
-      description: ''
-    }
+    value: '3'
   },
   {
     label: strings.fieldReportConstantVisibilityRCRCMovementLabel,
-    value: '1',
-    tooltip: {
-      title: strings.fieldReportConstantVisibilityRCRCMovementTooltipTitle,
-      description: ''
-    }
+    value: '1'
   },
   {
     label: strings.fieldReportConstantVisibilityIFRCSecretariatLabel,
-    value: '2',
-    tooltip: {
-      title: strings.fieldReportConstantVisibilityIFRCSecretariatTooltipTitle,
-      description: ''
-    }
+    value: '2'
   }
 ];
 

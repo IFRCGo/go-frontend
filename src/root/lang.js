@@ -1187,6 +1187,7 @@ export default {
   fieldReportConstantStatusEventLabel: 'Event',
   fieldReportConstantStatusEventDescription: 'First report for this disaster.',
 
+  fieldReportConstantVisibility: 'Visibility',
   fieldReportConstantVisibilityPublicLabel: 'Public',
   fieldReportConstantVisibilityRCRCMovementLabel: 'RCRC Movement',
   fieldReportConstantVisibilityIFRCSecretariatLabel: 'IFRC Secretariat',
