@@ -1190,6 +1190,9 @@ export default {
   fieldReportConstantVisibilityPublicLabel: 'Public',
   fieldReportConstantVisibilityRCRCMovementLabel: 'RCRC Movement',
   fieldReportConstantVisibilityIFRCSecretariatLabel: 'IFRC Secretariat',
+  fieldReportConstantVisibilityPublicTooltipTitle: 'Available to all stakeholders on the GO platform',
+  fieldReportConstantVisibilityRCRCMovementTooltipTitle: 'Available to those who have an IFRC GO login across the RCRC Movement',
+  fieldReportConstantVisibilityIFRCSecretariatTooltipTitle: 'Available to only those with an active IFRC account',
 
   fieldReportFormSubmitError: 'Could not submit field report',
   fieldReportFormErrorLabel: 'Error:',

@@ -4,6 +4,7 @@ import c from 'classnames';
 
 import { FormDescription } from './misc';
 import FormRadio from './radio';
+import Tooltip from '#components/common/tooltip';
 
 export default function FormRadioGroup (props) {
   const {
@@ -31,18 +32,29 @@ export default function FormRadioGroup (props) {
         </div>
         <div className='form__inner-body'>
           {options.map(o => (
-            <FormRadio
-              key={o.value}
-              label={o.label}
-              name={name}
-              id={`${name}-${o.value}`}
-              value={o.value}
-              inline={inline}
-              checked={selectedOption === o.value}
-              onChange={onChange}
-              onClick={onClick}
-              description={o.description}
-              disabled={o.disabled} />
+            <React.Fragment>
+              <FormRadio
+                key={o.value}
+                label={o.label}
+                name={name}
+                id={`${name}-${o.value}`}
+                value={o.value}
+                inline={inline}
+                checked={selectedOption === o.value}
+                onChange={onChange}
+                onClick={onClick}
+                description={o.description}
+                disabled={o.disabled} />
+              { o.tooltip
+                ? (
+                  <Tooltip
+                    title={o.tooltip.title}
+                    description={o.tooltip.description}
+                  />
+                )
+                : null
+              }
+            </React.Fragment>
           ))}
           {children || null}
         </div>
