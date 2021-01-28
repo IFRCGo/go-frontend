@@ -114,6 +114,15 @@ export const step2 = {
       type: 'integer',
       enum: getValidValues(formData.epiSources, 'value')
     },
+    epiCasesSinceLastFr: {
+      type: 'integer'
+    },
+    epiDeathsSinceLastFr: {
+      type: 'integer'
+    },
+    epiNotesSinceLastFr: {
+      type: 'string'
+    },
     sitFieldsDate: {
       type: 'string'
     },

@@ -142,6 +142,8 @@ export function prepStateForValidation (state) {
     epiProbableCases: toNumIfNum,
     epiConfirmedCases: toNumIfNum,
     epiFiguresSource: (val) => val ? val.value : undefined,
+    epiCasesSinceLastFr: toNumIfNum,
+    epiDeathsSinceLastFr: toNumIfNum,
     numAssistedGov: toNumIfNum,
     numAssistedRedCross: toNumIfNum,
     numLocalStaff: toNumIfNum,
@@ -217,7 +219,8 @@ export function convertStateToPayload (originalState) {
     ['epiConfirmedCases', 'epi_confirmed_cases', Number],
     ['epiNumDead', 'epi_num_dead', Number],
     ['epiCasesSinceLastFr', 'epi_cases_since_last_fr', Number],
-    ['epiDeathsSinceLastFr', 'epi_deaths_since_last_fr', Number]
+    ['epiDeathsSinceLastFr', 'epi_deaths_since_last_fr', Number],
+    ['epiNotesSinceLastFr', 'epi_notes_since_last_fr']
   ];
 
   directMapping.forEach(([src, dest, fn]) => {
@@ -397,6 +400,9 @@ export function getInitialDataState () {
     epiProbableCases: undefined,
     epiConfirmedCases: undefined,
     epiFiguresSource: undefined,
+    epiCasesSinceLastFr: undefined,
+    epiDeathsSinceLastFr: undefined,
+    epiNotesSinceLastFr: undefined,
 
     sitFieldsDate: undefined,
 
@@ -505,7 +511,8 @@ export function convertFieldReportToState (fieldReport, stateData) {
     ['epi_num_dead', 'epiNumDead'],
     ['epi_cases_since_last_fr', 'epiCasesSinceLastFr'],
     ['epi_deaths_since_last_fr', 'epiDeathsSinceLastFr'],
-    ['epi_figures_source', 'epiFiguresSource']
+    ['epi_figures_source', 'epiFiguresSource'],
+    ['epi_notes_since_last_fr', 'epiNotesSinceLastFr']
   ];
 
   directMapping.forEach(([src, dest]) => {

@@ -1103,17 +1103,29 @@ export default {
   fieldsStep2SituationFieldsEPIDeathsSinceLabel: 'Number of New Deaths since last Field Report',
   fieldsStep2SituationFieldsEPIDeathsSinceDescription: 'Number of confirmed dead since the last field report',
 
+  fieldsStep2NotesLabel: 'Notes',
+  fieldsStep2SourceOfFiguresLabel: 'Source (of figures)',
   fieldsStep2DescriptionEVTLabel: 'Situational Overview',
   fieldsStep2DescriptionEVTDescription: 'Describe the effects of the hazard, the current context, the affected population and how they have been affected.',
   fieldsStep2DescriptionEVTPlaceholder: 'Example: According to the local government, the overflow of the Zimbizi river has caused extensive flood water damage to low income housing along the river bank. The majority of the affected households do not have sufficient insurance coverage for their assets. The local branch of the National Society is currently assessing how to best support the most vulnerable families affected by the disaster.',
   fieldsStep2DescriptionEPILabel: 'Situational Overview',
   fieldsStep2DescriptionEPIDescription: 'Describe the primary and secondary effects on the health system and affected population.',
   fieldsStep2DescriptionEPIPlaceholder: 'Description of the epidemic',
+  fieldsStep2DescriptionCOVIDPlaceholder: `Describe succinctly (bullet points, short statements) the primary and secondary effects. Please outline how the situation is evolving and what has changed since the last field report. Below are some guiding questions to help complete this section. These questions are meant to function as a guide only:\n
+  General:
+  - How has the situation evolved since the last field report?
+  Impact on NS:
+  - Since the last field report, how is the situation affecting your National Society and activities?
+  - Since the last field report, has this situation resulted in changes to the way your NS operates?
+  Impact on people and communities:
+  - Since the last field report, how has the population been affected?
+  - Are particular groups or geographic locations being impacted more than others and why?`,
   fieldsStep2DescriptionEWLabel: 'Risk Analysis',
   fieldsStep2DescriptionEWDescription: 'Brief overview of the potential disaster and projected impacts',
   fieldsStep2DescriptionEWPlaceholder: 'Hurricane Sirius is expected to hit the Whinging region early Tuesday morning. The system currently has sustained core wind speeds of 140km/h and gusts up to 170 km/h. The local government has started evacuating thousands of people. The Red Cross branch in Whinging has deployed staff and volunteers to communities at risk to support evacuation and to assist the population in protecting themselves and their livelihoods from the impacts of Sirius.',
 
   fieldsStep2SituationFieldsEstimation: 'Estimation',
+  fieldsStep2EPINotes: 'Notes: Please provide any additional details since the last field report about new geographic locations that are being affected, details on if certain population groups are being affected, and general perspective on if the situation is improving or deteriorating.',
 
   fieldsStep3Section1FieldsAssistedGovEVTEPILabel: 'Assisted by Government',
   fieldsStep3Section1FieldsAssistedGovEWLabel: 'Number of People Assisted by Government - Early Action',

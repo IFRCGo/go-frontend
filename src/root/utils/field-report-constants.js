@@ -427,17 +427,22 @@ export const getFieldsStep2 = (strings) => ({
     EVT: {
       'label': strings.fieldsStep2DescriptionEVTLabel,
       'desc': strings.fieldsStep2DescriptionEVTDescription,
-      'placeholder': strings.fieldsStep2DescriptionEVTPlaceholder,
+      'placeholder': strings.fieldsStep2DescriptionEVTPlaceholder
     },
     EPI: {
       'label': strings.fieldsStep2DescriptionEPILabel,
       'desc': strings.fieldsStep2DescriptionEPIDescription,
-      'placeholder': strings.fieldsStep2DescriptionEPIPlaceholder,
+      'placeholder': strings.fieldsStep2DescriptionEPIPlaceholder
+    },
+    'EPI-COV': {
+      'label': strings.fieldsStep2DescriptionEPILabel,
+      'desc': strings.fieldsStep2DescriptionEPIDescription,
+      'placeholder': strings.fieldsStep2DescriptionCOVIDPlaceholder
     },
     EW: {
       'label': strings.fieldsStep2DescriptionEWLabel,
       'desc': strings.fieldsStep2DescriptionEWDescription,
-      'placeholder': strings.fieldsStep2DescriptionEWPlaceholder,
+      'placeholder': strings.fieldsStep2DescriptionEWPlaceholder
     },
   },
 });

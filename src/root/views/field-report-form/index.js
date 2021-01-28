@@ -702,35 +702,54 @@ class FieldReportForm extends React.Component {
 
         {status === 'EPI'
           ? (
-            <div className='form__group form__group__fr'>
-              <div className='form__group__wrap'>
-                <div className='form__inner-header'>
-                  <div className='form__inner-headline'>
-                    <label className='form__label'>
-                      <Translate stringId="fieldReportFormEPISourceOfFiguresLabel" />
-                    </label>
-                    <p className='form__description'>
-                      <Translate stringId="fieldReportFormEPISourceOfFiguresDescription" />
-                    </p>
+            <React.Fragment>
+              <div className='form__group form__group__fr'>
+                <div className='form__group__wrap'>
+                  <div className='form__inner-header'>
+                    <div className='form__inner-headline'>
+                      <label className='form__label'>
+                        <Translate stringId="fieldReportFormEPISourceOfFiguresLabel" />
+                      </label>
+                      <p className='form__description'>
+                        <Translate stringId="fieldReportFormEPISourceOfFiguresDescription" />
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div className='form__inner-body'>
-                  <div key='epi-figures-source' className='estimation'>
-                    <Select
-                      placeholder='Source (of figures)'
-                      name='epi-figures-source'
-                      value={this.state.data.epiFiguresSource}
-                      onChange={({ value }) => this.onFieldChange('epiFiguresSource', value)}
-                      options={formData.epiSources}
-                    />
-                    <FormError
-                      errors={this.state.errors}
-                      property='country'
-                    />
+                  <div className='form__inner-body'>
+                    <div key='epi-figures-source' className='estimation'>
+                      <Select
+                        placeholder={strings.fieldsStep2SourceOfFiguresLabel}
+                        name='epi-figures-source'
+                        value={this.state.data.epiFiguresSource}
+                        onChange={({ value }) => this.onFieldChange('epiFiguresSource', value)}
+                        options={formData.epiSources}
+                      />
+                      <FormError
+                        errors={this.state.errors}
+                        property='epiFiguresSource'
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+              {/* FIXME: Label */}
+              <FormTextarea
+                label={strings.fieldsStep2NotesLabel}
+                type='text'
+                name='epi-notes-since-last-fr'
+                id='epi-notes-since-last-fr'
+                value={this.state.data.epiNotesSinceLastFr}
+                classInput='textarea--lg'
+                classWrapper='form__group__fr'
+                onChange={this.onFieldChange.bind(this, 'epiNotesSinceLastFr')}
+                placeholder={strings.fieldsStep2EPINotes}
+              >
+                <FormError
+                  errors={this.state.errors}
+                  property='epiNotesSinceLastFr'
+                />
+              </FormTextarea>
+            </React.Fragment>
           )
           : null
         }
@@ -772,13 +791,13 @@ class FieldReportForm extends React.Component {
         </React.Fragment>
         <React.Fragment>
           <FormTextarea
-            label={fields.description[status].label}
+            label={fields.description[status + covidTag].label}
             name='description'
             classInput='textarea--lg'
             classWrapper='form__group__fr'
-            placeholder={fields.description[status].placeholder}
+            placeholder={fields.description[status + covidTag].placeholder}
             id='description'
-            description={fields.description[status].desc}
+            description={fields.description[status + covidTag].desc}
             value={this.state.data.description}
             onChange={this.onFieldChange.bind(this, 'description')} >
             <FormError
