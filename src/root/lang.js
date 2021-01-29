@@ -1150,6 +1150,11 @@ export default {
   fieldsStep3CheckboxSectionsFederationActionsEPICOVDescription: 'Describe the activities taken by the IFRC (could be the Regional office, cluster office or country office)',
   fieldsStep3CheckboxSectionsFederationActionsEWDescription: 'Select the early action activities undertaken by the IFRC and give a brief description',
   fieldsStep3CheckboxSectionsFederationActionsEVTEPIEWPlaceholder: 'Brief description of the action',
+  fieldsStep3CheckboxSectionsFederationActionsEPICOVPlaceholder: `In this section you can provide details as to how you have been working with the IFRC in this operation. To help in completing this section some prompting questions are below which are meant to function as a guide only:
+  - What role has the IFRC been playing in this operation?
+  - What actions has the IFRC taken to support this operation?
+  - What are the recent changes in the actions taken by the IFRC since the last field report?
+  - Are there any areas where you hope IFRC can support with?`,
 
   fieldsStep3CheckboxSectionsPNSActionsEVTLabel: 'Actions taken by any other RCRC Movement actors',
   fieldsStep3CheckboxSectionsPNSActionsEPILabel: 'Actions taken by other RCRC Movement',
@@ -1158,10 +1163,15 @@ export default {
   fieldsStep3CheckboxSectionsPNSActionsEPICOVDescription: 'Describe the activities undertaken by any other RCRC Movement actor(s)',
   fieldsStep3CheckboxSectionsPNSActionsEWDescription: 'Select the early action activities undertaken by the RCRC Movement and give a brief description.',
   fieldsStep3CheckboxSectionsPNSActionsEVTEPIEWPlaceholder: 'Brief description of the action',
+  fieldsStep3CheckboxSectionsPNSActionsEPICOVPlaceholder: `We understand multiple partners may be present so please highlight the main partners you have worked with since the last field report. Below are some guiding questions to help complete this section. These questions are meant to function as a guide only:
+  - Since the last Field Report who has your NS been working with and in what areas of support?
+  - Are there any interesting details about these RCRC partners that are not covered in the 3W?
+  - Are there any new partnerships that your NS may be working with looking forward?`,
 
   fieldsStep3ActionsOthersEVTEPILabel: 'Actions Taken by Others (Governments, UN)',
   fieldsStep3ActionsOthersEWLabel: 'Early Actions Taken by Others (Governments, UN)',
   fieldsStep3ActionsOthersEVTEPIDescription: 'Who else was involved? UN agencies? NGOs? Government? Describe what other actors did. Also mention who the other actors are.',
+  fieldsStep3ActionsOthersEPICOVDescription: 'Who else is your National Society working with? UN agencies? NGOs? Government? Since the last field report, outline the main actors your NS has been engaged with. We understand there may be many partners so please just highlight the main ones since the last field report.',
   fieldsStep3ActionsOthersEWDescription: 'List the early action activities undertaken by other actors, mention who the other actors are, and give a brief description.',
 
   fieldsStep3TooltipTitleRCRC: '',

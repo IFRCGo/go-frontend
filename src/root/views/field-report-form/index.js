@@ -889,13 +889,13 @@ class FieldReportForm extends React.Component {
               });
               values.options = sectionValues;
 
-              const description = this.state.data.isCovidReport === 'true' ? section.desc[status + '-COV'] : section.desc[status];
+              const description = isCov ? section.desc[status + '-COV'] : section.desc[status];
 
               return (
                 <ActionsCheckboxes
                   label={section.label[status]}
                   description={description}
-                  placeholder={section.placeholder[status]}
+                  placeholder={section.placeholder[isCov ? status + '-COV' : status]}
                   name={section.name}
                   key={section.key}
                   classInput='textarea--lg'
@@ -911,7 +911,7 @@ class FieldReportForm extends React.Component {
           label={strings.fieldReportFormInformationBulletinLabel}
           description={strings.fieldReportFormInformationBulletinDescription}
           name='bulletin'
-          classWrapper={`${this.state.data.isCovidReport === 'true' ? 'hidden' : null} form__group__fr`}
+          classWrapper={`${isCov ? 'hidden' : null} form__group__fr`}
           options={[
             {
               label: strings.fieldReportFormOptionNoLabel,
@@ -935,7 +935,7 @@ class FieldReportForm extends React.Component {
           id='actions-others'
           classWrapper='form__group__fr'
           classInput='textarea--lg'
-          description={fields.actionsOthers.desc[status]}
+          description={fields.actionsOthers.desc[isCov ? status + '-COV' : status]}
           placeholder={strings.fieldReportFormOthersActionsPlaceholder}
           value={this.state.data.actionsOthers}
           onChange={this.onFieldChange.bind(this, 'actionsOthers')} />
