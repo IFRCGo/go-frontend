@@ -543,6 +543,7 @@ export default {
   explanationBubbleEmergencyAppeal: 'Emergency appeal',
   explanationBubbleDref: 'DREF',
   explanationBubbleMovement: 'Movement response',
+  explanationBubbleEAP: 'Early Action Protocol Activation',
   explanationBubbleMultiple: 'Multiple types',
   explanationBubbleDeployments: 'Deployments',
   operationPopoverClose: 'Close popover',

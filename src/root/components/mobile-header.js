@@ -112,12 +112,12 @@ class MobileHeader extends React.PureComponent {
                     <Link to='/reports/new'>{strings.headerDropdownNewFieldReport}</Link>
                   </li>
                   <li className='drop__menu-item'>
-                    <a href='https://ee.kob4.ifrc.org/single/::Ho8bHKDr' target='_blank'>
+                    <a href='https://eenew.ifrc.org/single/y300V3lY?returnURL=https://go.ifrc.org/emergencies/3972#actions' target='_blank'>
                       {strings.headerDropdownCovid19IndicatorTracking}
                     </a>
                   </li>
                   <li className='drop__menu-item'>
-                    <a href='https://ee.kob4.ifrc.org/single/::w4KbO3Rc' target='_blank'>
+                    <a href='https://eenew.ifrc.org/single/VmcTHDMh?returnURL=https://go.ifrc.org/emergencies/3972#actions' target='_blank'>
                       {strings.headerDropdownCovid19NSFinancialOverview}
                     </a>
                   </li>                                        
