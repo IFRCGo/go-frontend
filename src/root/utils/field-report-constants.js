@@ -474,6 +474,12 @@ export const getFieldsStep3 = (strings) => ({
         'EVT': strings.fieldsStep3Section1FieldsAssistedRCRCEVTEPILabel,
         'EPI': strings.fieldsStep3Section1FieldsAssistedRCRCEVTEPILabel,
         'EW': strings.fieldsStep3Section1FieldsAssistedRCRCEWLabel,
+      },
+      'tooltip': {
+        'EPI-COV': {
+          'title': strings.fieldsStep3Section1FieldsAssistedRCRCEVTEPILabel,
+          'description': strings.fieldsStep3TooltipDescriptionRCRC
+        }
       }
     },
     {
@@ -486,6 +492,12 @@ export const getFieldsStep3 = (strings) => ({
       'label': {
         'EVT': strings.fieldsStep3Section1FieldsLocalStaffEVTEPILabel,
         'EPI': strings.fieldsStep3Section1FieldsLocalStaffEVTEPILabel,
+      },
+      'tooltip': {
+        'EPI-COV': {
+          'title': strings.fieldsStep3Section1FieldsLocalStaffEVTEPILabel,
+          'description': strings.fieldsStep3TooltipDescriptionNS
+        }
       }
     },
     {
@@ -498,6 +510,12 @@ export const getFieldsStep3 = (strings) => ({
       'label': {
         'EVT': strings.fieldsStep3Section1FieldsVolunteersEVTEPILabel,
         'EPI': strings.fieldsStep3Section1FieldsVolunteersEVTEPILabel,
+      },
+      'tooltip': {
+        'EPI-COV': {
+          'title': strings.fieldsStep3Section1FieldsVolunteersEVTEPILabel,
+          'description': strings.fieldsStep3TooltipDescriptionVolunteers
+        }
       }
     },
     {

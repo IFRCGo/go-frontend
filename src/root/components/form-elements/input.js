@@ -3,6 +3,7 @@ import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 
 import { FormDescription } from './misc';
+import Tooltip from '#components/common/tooltip';
 
 function FormInput (props) {
   const {
@@ -24,7 +25,9 @@ function FormInput (props) {
     maxLength,
     formInnerHeaderClass,
     formInnerBodyClass,
-    inputCol
+    inputCol,
+    tooltipTitle,
+    tooltipDescription
   } = props;
 
   return (
@@ -32,7 +35,11 @@ function FormInput (props) {
       <div className='form__group__wrap'>
         <div className={c('form__inner-header', formInnerHeaderClass)}>
           <div className='form__inner-headline'>
-            <label className={c('form__label', classLabel)} htmlFor={id} >{label}</label>
+            <label className={c('form__label', classLabel)}>
+              {label}
+              { tooltipTitle || tooltipDescription
+                ? (<Tooltip title={tooltipTitle} description={tooltipDescription} />) : null }
+            </label>
             <FormDescription value={description} />
           </div>
         </div>

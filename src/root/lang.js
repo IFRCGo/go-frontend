@@ -1164,6 +1164,13 @@ export default {
   fieldsStep3ActionsOthersEVTEPIDescription: 'Who else was involved? UN agencies? NGOs? Government? Describe what other actors did. Also mention who the other actors are.',
   fieldsStep3ActionsOthersEWDescription: 'List the early action activities undertaken by other actors, mention who the other actors are, and give a brief description.',
 
+  fieldsStep3TooltipTitleRCRC: '',
+  fieldsStep3TooltipTitleNS: '',
+  fieldsStep3TooltipTitleVolunteers: '',
+  fieldsStep3TooltipDescriptionRCRC: 'Number of people who have received RCRC services to prevent COVID-19 transmission or provide healthcare, social, or economic services to reduce the impact of COVID-19. Note one person may receive multiple services.',
+  fieldsStep3TooltipDescriptionNS: 'Number of people currently involved in the response (mobilized for this specific response).',
+  fieldsStep3TooltipDescriptionVolunteers: 'Number of people currently involved in the response (mobilized for this specific response).',
+
   fieldsStep4PlannedResponseRowsDREFValueFieldLabel: 'Amount CHF',
   fieldsStep4PlannedResponseRowsDREFEVTEPILabel: 'DREF Requested',
   fieldsStep4PlannedResponseRowsDREFEWLabel: 'DREF',

@@ -814,10 +814,11 @@ class FieldReportForm extends React.Component {
     const { strings } = this.context;
     const fields = formData.getFieldsStep3(strings);
     const status = this.getStatus();
+    const isCov = this.state.data.isCovidReport === 'true';
 
     // only for filtering the list of actions, we use the COVID type,
     // all other elements will follow the same as the EPI status.
-    const actionsStatus = this.state.data.isCovidReport === 'true' ? 'COVID' : status;
+    const actionsStatus = isCov ? 'COVID' : status;
 
     const { actions } = this.props;
 
@@ -844,9 +845,11 @@ class FieldReportForm extends React.Component {
               if (!field[status]) {
                 return null;
               }
-              if (this.state.data.isCovidReport === 'true' && !field[status + '-COV']) {
+              if (isCov && !field[status + '-COV']) {
                 return null;
               }
+              const tooltip = field.tooltip ? field.tooltip[isCov ? status + '-COV': status] : null;
+
               return (
                 <FormInput
                   label={field.label[status]}
@@ -857,7 +860,10 @@ class FieldReportForm extends React.Component {
                   id={field.name}
                   classWrapper='form__group--kv form__group--kv-actions form__group__fr col col-6-mid'
                   value={this.state.data[field.key]}
-                  onChange={this.onFieldChange.bind(this, field.key)} >
+                  onChange={this.onFieldChange.bind(this, field.key)}
+                  tooltipTitle={tooltip ? tooltip.title : null}
+                  tooltipDescription={tooltip ? tooltip.description : null}
+                >
                   <FormError
                     errors={this.state.errors}
                     property={field.key}
