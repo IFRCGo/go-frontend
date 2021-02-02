@@ -681,6 +681,7 @@ export function filterActions (actions, actionType, status) {
       value: action.id,
       label: action.name,
       category: action.category,
+      tooltip: action.tooltip_text
     };
   });
 }

@@ -56,7 +56,10 @@ export default class FormCheckboxGroupActions extends React.Component {
                         value={option.value}
                         checked={(values.find(({value}) => value === option.value) || {}).checked}
                         onChange={this.onCheckChange.bind(this, option.value)}
-                        description={option.description} />
+                        description={option.description}
+                        // tooltipTitle={option.label} // optionally we can turn this on
+                        tooltipDescription={option.tooltip}
+                      />
                     );
                   })}
                 </div>
