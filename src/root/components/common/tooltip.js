@@ -25,6 +25,26 @@ const Tooltip = ({title, description}) => {
   );
 };
 
+export const HoverTooltip = ({title, description, id}) => {
+  return (
+    <ReactTooltip
+      className='tooltip'
+      id={id}
+    >
+      { title
+        ? (
+          <header className='tooltip__header' >
+            {title}
+          </header>
+        )
+        : null }
+      { description
+        ? (<span className='tooltip__text' dangerouslySetInnerHTML={{ __html: description }} ></span>)
+        : null }      
+    </ReactTooltip>
+  );
+};
+
 export default Tooltip;
 
 if (environment !== 'production') {
