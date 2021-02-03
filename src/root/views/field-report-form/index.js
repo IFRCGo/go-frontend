@@ -648,11 +648,12 @@ class FieldReportForm extends React.Component {
     const { strings } = this.context;
     const fields = formData.getFieldsStep2(strings);
     const status = this.getStatus();
-    const covidTag = this.state.data.isCovidReport === 'true' ? '-COV' : '';
+    const isCov = this.state.data.isCovidReport === 'true';
+    const covidTag = isCov ? '-COV' : '';
 
     /** Indicate whether the date of data for an epidemic
      * is required: it is required when any of these fields
-     * have data 
+     * have data
       * */
     let isSitFieldsDateRequired = [
       'epiCases',
@@ -666,7 +667,11 @@ class FieldReportForm extends React.Component {
     const sitFieldsDateLabelMarker = isSitFieldsDateRequired ? ' *' : '';
 
     return (
-      <Fold title='Numeric Details (People)' foldWrapperClass='fold--main fold--transparent'>
+      <Fold
+        title='Numeric Details (People)'
+        description={isCov ? strings.fieldsStep2HeaderDescription : null}
+        foldWrapperClass='fold--main fold--transparent'
+      >
         {
           fields.situationFields[status + covidTag].map(field => {
             return status !== 'EPI'

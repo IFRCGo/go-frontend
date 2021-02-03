@@ -1063,6 +1063,7 @@ export default {
   fieldsStep1NSAssistanceLabel: 'National Society requests international assistance?',
   fieldsStep1NSAssistanceDescription: 'Indicate if the National Society requested international assistance.',
 
+  fieldsStep2HeaderDescription: 'Note that it is not required to put case numbers into your Field Report, but you can input them if you choose to. WHO or your national Government authoritative figures should be used.',
   fieldsStep2OrganizationsEVTEWLabelRC: 'Red Cross / Red Crescent',
   fieldsStep2OrganizationsEVTEWLabelGovernment: 'Government',
   fieldsStep2OrganizationsLabelOther: 'Other',
