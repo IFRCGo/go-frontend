@@ -33,7 +33,7 @@ class Footer extends React.PureComponent {
                 <div className='footer-section-heading'><Translate stringId='footerFindOutMore'/></div>
                 <a href='https://ifrc.org' className='footer-section-link' target='_blank'>ifrc.org</a>
                 <a href='https://rcrcsims.org' className='footer-section-link' target='_blank'>rcrcsims.org</a>
-                <a href='https://data.ifrc.org' className='footer-section-link' target='_blank'>dataifrc.org</a>
+                <a href='https://data.ifrc.org' className='footer-section-link' target='_blank'>data.ifrc.org</a>
               </div>
 
               <div className="col col-6-xs col-3-mid">
