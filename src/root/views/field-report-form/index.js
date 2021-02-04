@@ -25,7 +25,10 @@ import {
   updateFieldReport,
   getFieldReportById,
   getDistrictsForCountry,
-  getActions
+  getActions,
+  getExternalPartners,
+  getExternalPartnerCategories,
+  getSupportedActivities
 } from '#actions';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 import BreadCrumb from '#components/breadcrumb';
@@ -142,10 +145,17 @@ class FieldReportForm extends React.Component {
       } else {
         this.setActions(nextProps.actions.data.results);
 
-        // only attempt to load existing report once we have actions in the State
-        if (this.props.match.params.id) {
-          // Editing the field report.
-          this.getReport(this.props.match.params.id);
+        // only attempt to load existing report once we have actions, externalPartners,
+        // externalPartnerCategories, supportedActivities in the State
+        if (
+          nextProps.externalPartners.fetched === true &&
+          nextProps.externalPartnerCategories.fetched === true &&
+          nextProps.supportedActivities.fetched === true
+        ) {
+          if (this.props.match.params.id) {
+            // Editing the field report.
+            this.getReport(this.props.match.params.id);
+          }
         }
       }
     }
@@ -164,6 +174,9 @@ class FieldReportForm extends React.Component {
   componentDidMount() {
     // fetch actions data from backend
     this.props._getActions();
+    this.props._getExternalPartners();
+    this.props._getExternalPartnerCategories();
+    this.props._getSupportedActivities();
   }
 
   getReport(id) {
@@ -292,6 +305,45 @@ class FieldReportForm extends React.Component {
     } else {
       return [];
     }
+  }
+
+  getExternalPartnerChoices() {
+    const { externalPartners } = this.props;
+    if (externalPartners.fetched) {
+      return externalPartners.data.results.map(ep => {
+        return {
+          'value': ep.id,
+          'label': ep.name
+        };
+      });
+    }
+    return [];
+  }
+
+  getExternalPartnerCategoriesChoices() {
+    const { externalPartnerCategories } = this.props;
+    if (externalPartnerCategories.fetched) {
+      return externalPartnerCategories.data.results.map(ep => {
+        return {
+          'value': ep.id,
+          'label': ep.name
+        };
+      });
+    }
+    return [];
+  }
+
+  getSupportedActivitiesChoices() {
+    const { supportedActivities } = this.props;
+    if (supportedActivities.fetched) {
+      return supportedActivities.data.results.map(ep => {
+        return {
+          'value': ep.id,
+          'label': ep.name
+        };
+      });
+    }
+    return [];
   }
 
   onCountryChange(e) {
@@ -820,6 +872,9 @@ class FieldReportForm extends React.Component {
     const fields = formData.getFieldsStep3(strings);
     const status = this.getStatus();
     const isCov = this.state.data.isCovidReport === 'true';
+    const extParChoices = this.getExternalPartnerChoices();
+    const extParCatChoices = this.getExternalPartnerCategoriesChoices();
+    const suppActChoices = this.getSupportedActivitiesChoices();
 
     // only for filtering the list of actions, we use the COVID type,
     // all other elements will follow the same as the EPI status.
@@ -944,6 +999,78 @@ class FieldReportForm extends React.Component {
           placeholder={strings.fieldReportFormOthersActionsPlaceholder}
           value={this.state.data.actionsOthers}
           onChange={this.onFieldChange.bind(this, 'actionsOthers')} />
+
+        { isCov
+          ? (
+            <React.Fragment>
+              <div className='form__group form__group__fr'>
+                <div className='form__group__wrap'>
+                  <div className='form__inner-header'>
+                    <div className='form__inner__headline'>
+                      <label className='form__label'>{strings.fieldsStep3ExternalPartnerCategoriesLabel}</label>
+                    </div>
+                  </div>
+                  <div className='form__inner-body'>
+                    <Select
+                      name='externalPartnerCategories'
+                      value={this.state.data.externalPartnerCategories}
+                      onChange={this.onFieldChange.bind(this, 'externalPartnerCategories')}
+                      options={extParCatChoices}
+                      multi
+                    />
+                    <FormError
+                      errors={this.state.errors}
+                      property='externalPartnerCategories'
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className='form__group form__group__fr'>
+                <div className='form__group__wrap'>
+                  <div className='form__inner-header'>
+                    <div className='form__inner__headline'>
+                      <label className='form__label'>{strings.fieldsStep3ExternalPartnersLabel}</label>
+                    </div>
+                  </div>
+                  <div className='form__inner-body'>
+                    <Select
+                      name='externalPartners'
+                      value={this.state.data.externalPartners}
+                      onChange={this.onFieldChange.bind(this, 'externalPartners')}
+                      options={extParChoices}
+                      multi
+                    />
+                    <FormError
+                      errors={this.state.errors}
+                      property='externalPartners'
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className='form__group form__group__fr'>
+                <div className='form__group__wrap'>
+                  <div className='form__inner-header'>
+                    <div className='form__inner__headline'>
+                      <label className='form__label'>{strings.fieldsStep3SupportedActivitiesLabel}</label>
+                    </div>
+                  </div>
+                  <div className='form__inner-body'>
+                    <Select
+                      name='supportedActivities'
+                      value={this.state.data.supportedActivities}
+                      onChange={this.onFieldChange.bind(this, 'supportedActivities')}
+                      options={suppActChoices}
+                      multi
+                    />
+                    <FormError
+                      errors={this.state.errors}
+                      property='supportedActivities'
+                    />
+                  </div>
+                </div>
+              </div>
+            </React.Fragment>
+          ) : null }
       </Fold>
     );
   }
@@ -1164,7 +1291,10 @@ const selector = (state, ownProps) => ({
   }),
   districts: state.districts,
   disasterTypesSelect: disasterTypesSelectSelector(state),
-  countries: countriesSelector(state)
+  countries: countriesSelector(state),
+  externalPartners: state.externalPartners,
+  externalPartnerCategories: state.externalPartnerCategories,
+  supportedActivities: state.supportedActivities
 });
 
 const dispatcher = (dispatch) => ({
@@ -1172,7 +1302,10 @@ const dispatcher = (dispatch) => ({
   _updateFieldReport: (...args) => dispatch(updateFieldReport(...args)),
   _getFieldReportById: (...args) => dispatch(getFieldReportById(...args)),
   _getDistrictsForCountry: (...args) => dispatch(getDistrictsForCountry(...args)),
-  _getActions: (...args) => dispatch(getActions(...args))
+  _getActions: (...args) => dispatch(getActions(...args)),
+  _getExternalPartners: (...args) => dispatch(getExternalPartners(...args)),
+  _getExternalPartnerCategories: (...args) => dispatch(getExternalPartnerCategories(...args)),
+  _getSupportedActivities: (...args) => dispatch(getSupportedActivities(...args))
 });
 FieldReportForm.contextType = LanguageContext;
 export default connect(selector, dispatcher)(FieldReportForm);

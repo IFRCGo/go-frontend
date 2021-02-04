@@ -179,6 +179,9 @@ export function convertStateToPayload (originalState) {
     country,
     disasterType,
     districts,
+    externalPartners,
+    externalPartnerCategories,
+    supportedActivities,
     epiFiguresSource,
     event,
     startDate,
@@ -189,6 +192,9 @@ export function convertStateToPayload (originalState) {
   // if (countries.length) { state.countries = countries.map(o => +o.value); }
   if (disasterType) { state.dtype = +disasterType; }
   if (districts.length) { state.districts = districts.map(o => +o.value); }
+  if (externalPartners.length) { state.external_partners = externalPartners.map(o => +o.value); }
+  if (externalPartnerCategories.length) { state.external_partner_categories = externalPartnerCategories.map(o => +o.value); }
+  if (supportedActivities.length) { state.supported_activities = supportedActivities.map(o => +o.value); }
   if (event && event.value) { state.event = +event.value; }
   if (country) { state.countries = [country.value]; }
 
@@ -370,6 +376,9 @@ export function getInitialDataState () {
     country: undefined,
     // countries: [],
     districts: [],
+    externalPartners: [],
+    externalPartnerCategories: [],
+    supportedActivities: [],
     status: '9', // default to "Event"
     startDate: undefined,
     visibility: '3',
@@ -477,6 +486,21 @@ export function convertFieldReportToState (fieldReport, stateData) {
       value: fieldReport.event.id
     };
   }
+
+  state.externalPartners = fieldReport.external_partners.map(o => ({
+    label: o.name,
+    value: o.id.toString()
+  }));
+
+  state.externalPartnerCategories = fieldReport.external_partner_categories.map(o => ({
+    label: o.name,
+    value: o.id.toString()
+  }));
+
+  state.supportedActivities = fieldReport.supported_activities.map(o => ({
+    label: o.name,
+    value: o.id.toString()
+  }));
 
   // get just YYYY-MM-DD from the full date timestamp
   if (fieldReport.start_date) {

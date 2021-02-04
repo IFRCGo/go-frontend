@@ -1175,6 +1175,10 @@ export default {
   fieldsStep3ActionsOthersEPICOVDescription: 'Who else is your National Society working with? UN agencies? NGOs? Government? Since the last field report, outline the main actors your NS has been engaged with. We understand there may be many partners so please just highlight the main ones since the last field report.',
   fieldsStep3ActionsOthersEWDescription: 'List the early action activities undertaken by other actors, mention who the other actors are, and give a brief description.',
 
+  fieldsStep3ExternalPartnersLabel: 'External partners',
+  fieldsStep3ExternalPartnerCategoriesLabel: 'External partners\' categories',
+  fieldsStep3SupportedActivitiesLabel: 'Supported/partnered activities',
+
   fieldsStep3TooltipTitleRCRC: '',
   fieldsStep3TooltipTitleNS: '',
   fieldsStep3TooltipTitleVolunteers: '',
