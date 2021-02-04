@@ -201,6 +201,27 @@ export function getActions () {
   return fetchJSON(`/api/v2/action/?${f}`, GET_ACTIONS);
 }
 
+export const GET_EXTERNAL_PARTNERS = 'GET_EXTERNAL_PARTNERS';
+export function getExternalPartners () {
+  let filters = {limit: 500};
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v2/external_partner/?${f}`, GET_EXTERNAL_PARTNERS);
+}
+
+export const GET_EXTERNAL_PARTNER_CATEGORIES = 'GET_EXTERNAL_PARTNER_CATEGORIES';
+export function getExternalPartnerCategories () {
+  let filters = {limit: 500};
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v2/external_partner_category/?${f}`, GET_EXTERNAL_PARTNER_CATEGORIES);
+}
+
+export const GET_SUPPORTED_ACTIVITIES = 'GET_SUPPORTED_ACTIVITIES';
+export function getSupportedActivities () {
+  let filters = {limit: 500};
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v2/supported_activity/?${f}`, GET_SUPPORTED_ACTIVITIES);
+}
+
 export const GET_SURGE_ALERTS = 'GET_SURGE_ALERTS';
 export function getSurgeAlerts (page = 1, filters = {}) {
   filters.limit = filters.limit || 5;

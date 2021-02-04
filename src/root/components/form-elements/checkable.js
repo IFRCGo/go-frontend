@@ -2,6 +2,8 @@ import React from 'react';
 import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 
+import { HoverTooltip } from '#components/common/tooltip';
+
 export default function FormCheckable (props) {
   const {
     type,
@@ -14,29 +16,37 @@ export default function FormCheckable (props) {
     inline,
     onChange,
     onClick,
-    checked
+    checked,
+    tooltipTitle,
+    tooltipDescription
   } = props;
 
   return (
-    <label
-      className={c(
-        `form__option form__option--custom-${type}`,
-        {'form__option--inline': inline},
-        {'disabled': disabled})}
-    >
-      <input
-        name={name}
-        id={id}
-        disabled={disabled}
-        value={value}
-        onClick={onClick}
-        onChange={onChange}
-        checked={checked}
-        type={type}
-      />
-      <span className='form__option__ui'></span>
-      <span className='form__option__text'>{label} {description && <em>{description}</em>}</span>
-    </label>
+    <React.Fragment>
+      <label
+        className={c(
+          `form__option form__option--custom-${type}`,
+          {'form__option--inline': inline},
+          {'disabled': disabled})}
+          data-for={id + '-tooltip'}
+          data-tip='' // required for the tooltip to work on hover
+      >
+        <input
+          name={name}
+          id={id}
+          disabled={disabled}
+          value={value}
+          onClick={onClick}
+          onChange={onChange}
+          checked={checked}
+          type={type}
+        />
+        <span className='form__option__ui'></span>
+        <span className='form__option__text'>{label} {description && <em>{description}</em>}</span>
+      </label>
+      { tooltipTitle || tooltipDescription
+        ? (<HoverTooltip title={tooltipTitle} description={tooltipDescription} id={id + '-tooltip'} />) : null }
+    </React.Fragment>
   );
 }
 

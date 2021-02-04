@@ -39,7 +39,10 @@ export default class EPISourceEstimation extends React.Component {
     }
 
     return (
-      <div className={ name === 'epi-num-dead' ? 'form__group estimation-row form__group__fr' : 'form__group estimation-row epi-form-group form__group__fr' }>
+      <div className={ name === 'epi-num-dead' || name === 'epi-deaths-since-last-fr'
+        ? 'form__group estimation-row form__group__fr'
+        : 'form__group estimation-row epi-form-group form__group__fr'
+      }>
         <div className='form__group__wrap'>
           <div className={labelClass}>
             <div className='form__inner-headline'>

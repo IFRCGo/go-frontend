@@ -19,12 +19,29 @@ const Tooltip = ({title, description}) => {
         <header className='tooltip__header' >
           {title}
         </header>
-        <span className='tooltip__text' >
-          {description}
-        </span>
-
+        <span className='tooltip__text' dangerouslySetInnerHTML={{ __html: description }} ></span>
       </ReactTooltip>
     </React.Fragment>
+  );
+};
+
+export const HoverTooltip = ({title, description, id}) => {
+  return (
+    <ReactTooltip
+      className='tooltip'
+      id={id}
+    >
+      { title
+        ? (
+          <header className='tooltip__header' >
+            {title}
+          </header>
+        )
+        : null }
+      { description
+        ? (<span className='tooltip__text' dangerouslySetInnerHTML={{ __html: description }} ></span>)
+        : null }      
+    </ReactTooltip>
   );
 };
 

@@ -9,6 +9,9 @@ import regions from './regions';
 import countries from './countries';
 import districts from './districts';
 import actions from './actions';
+import externalPartners from './external_partners';
+import externalPartnerCategories from './external_partner_categories';
+import supportedActivities from './supported_activities';
 import fieldReportForm from './field-report-form';
 import fieldReport from './field-report';
 import fieldReports from './field-reports';
@@ -66,6 +69,9 @@ export const reducers = {
   districts,
   systemAlertsReducer,
   actions,
+  externalPartners,
+  externalPartnerCategories,
+  supportedActivities,
   fieldReportForm,
   fieldReport,
   fieldReports,
