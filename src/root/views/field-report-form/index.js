@@ -971,7 +971,7 @@ class FieldReportForm extends React.Component {
           label={strings.fieldReportFormInformationBulletinLabel}
           description={strings.fieldReportFormInformationBulletinDescription}
           name='bulletin'
-          classWrapper={`${isCov ? 'hidden' : null} form__group__fr`}
+          classWrapper='form__group__fr'
           options={[
             {
               label: strings.fieldReportFormOptionNoLabel,
