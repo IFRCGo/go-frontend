@@ -436,7 +436,7 @@ export const getFieldsStep2 = (strings) => ({
     },
     'EPI-COV': {
       'label': strings.fieldsStep2DescriptionEPILabel,
-      'desc': strings.fieldsStep2DescriptionEPIDescription,
+      'desc': strings.fieldsStep2DescriptionEPICOVDescription,
       'placeholder': strings.fieldsStep2DescriptionCOVIDPlaceholder
     },
     EW: {
@@ -477,7 +477,7 @@ export const getFieldsStep3 = (strings) => ({
       },
       'tooltip': {
         'EPI-COV': {
-          'title': strings.fieldsStep3Section1FieldsAssistedRCRCEVTEPILabel,
+          'title': null, // strings.fieldsStep3Section1FieldsAssistedRCRCEVTEPILabel,
           'description': strings.fieldsStep3TooltipDescriptionRCRC
         }
       }
@@ -495,7 +495,7 @@ export const getFieldsStep3 = (strings) => ({
       },
       'tooltip': {
         'EPI-COV': {
-          'title': strings.fieldsStep3Section1FieldsLocalStaffEVTEPILabel,
+          'title': null, // strings.fieldsStep3Section1FieldsLocalStaffEVTEPILabel,
           'description': strings.fieldsStep3TooltipDescriptionNS
         }
       }
@@ -513,7 +513,7 @@ export const getFieldsStep3 = (strings) => ({
       },
       'tooltip': {
         'EPI-COV': {
-          'title': strings.fieldsStep3Section1FieldsVolunteersEVTEPILabel,
+          'title': null, // strings.fieldsStep3Section1FieldsVolunteersEVTEPILabel,
           'description': strings.fieldsStep3TooltipDescriptionVolunteers
         }
       }
@@ -575,7 +575,7 @@ export const getFieldsStep3 = (strings) => ({
       'placeholder': {
         'EVT': strings.fieldsStep3CheckboxSectionsFederationActionsEVTEPIEWPlaceholder,
         'EPI': strings.fieldsStep3CheckboxSectionsFederationActionsEVTEPIEWPlaceholder,
-        'EPI-COV': strings.fieldsStep3CheckboxSectionsFederationActionsEPICOVPlaceholder,
+        'EPI-COV': strings.fieldsStep3CheckboxSectionsFederationActionsEVTEPIEWPlaceholder,
         'EW': strings.fieldsStep3CheckboxSectionsFederationActionsEVTEPIEWPlaceholder,
       }
     },
