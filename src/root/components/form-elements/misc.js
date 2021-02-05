@@ -6,7 +6,7 @@ export function FormDescription ({value}) {
   if (React.isValidElement(value)) {
     description = value;
   } else if (value) {
-    description = <p className='form__description'>{value}</p>;
+    description = <p className='form__description' dangerouslySetInnerHTML={{ __html: value }} ></p>;
   }
 
   return description;

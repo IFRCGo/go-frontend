@@ -1088,7 +1088,7 @@ export default {
   fieldsStep2SituationFieldsEPIProbableCasesDescription: 'Probable Cases.',
   fieldsStep2SituationFieldsEPIConfirmedCasesLabel: 'Confirmed Cases',
   fieldsStep2SituationFieldsEPIConfirmedCasesDescription: 'Confirmed Cases.',
-  fieldsStep2SituationFieldsEPIDeadLabel: 'Dead',
+  fieldsStep2SituationFieldsEPIDeadLabel: 'Cumulative Dead',
   fieldsStep2SituationFieldsEPIDeadDescription: 'Number of people confirmed dead since the start of the outbreak.',
   fieldsStep2SituationFieldsEWPotentiallyAffectedLabel: 'Potentially Affected',
   fieldsStep2SituationFieldsEWPotentiallyAffectedDescription: 'Number of people that are located in the geographic area where the hazard is likely to impact',
@@ -1112,8 +1112,7 @@ export default {
   fieldsStep2DescriptionEVTPlaceholder: 'Example: According to the local government, the overflow of the Zimbizi river has caused extensive flood water damage to low income housing along the river bank. The majority of the affected households do not have sufficient insurance coverage for their assets. The local branch of the National Society is currently assessing how to best support the most vulnerable families affected by the disaster.',
   fieldsStep2DescriptionEPILabel: 'Situational Overview',
   fieldsStep2DescriptionEPIDescription: 'Describe the primary and secondary effects on the health system and affected population.',
-  fieldsStep2DescriptionEPIPlaceholder: 'Description of the epidemic',
-  fieldsStep2DescriptionCOVIDPlaceholder: `Describe succinctly (bullet points, short statements) the primary and secondary effects. Please outline how the situation is evolving and what has changed since the last field report. Below are some guiding questions to help complete this section. These questions are meant to function as a guide only:\n
+  fieldsStep2DescriptionEPICOVDescription: `These questions are meant to function as a guide only:
   General:
   - How has the situation evolved since the last field report?
   Impact on NS:
@@ -1122,6 +1121,8 @@ export default {
   Impact on people and communities:
   - Since the last field report, how has the population been affected?
   - Are particular groups or geographic locations being impacted more than others and why?`,
+  fieldsStep2DescriptionEPIPlaceholder: 'Description of the epidemic',
+  fieldsStep2DescriptionCOVIDPlaceholder: 'Describe succinctly (bullet points, short statements) the primary and secondary effects. Please outline how the situation is evolving and what has changed since the last field report. Below are some guiding questions to help complete this section.',
   fieldsStep2DescriptionEWLabel: 'Risk Analysis',
   fieldsStep2DescriptionEWDescription: 'Brief overview of the potential disaster and projected impacts',
   fieldsStep2DescriptionEWPlaceholder: 'Hurricane Sirius is expected to hit the Whinging region early Tuesday morning. The system currently has sustained core wind speeds of 140km/h and gusts up to 170 km/h. The local government has started evacuating thousands of people. The Red Cross branch in Whinging has deployed staff and volunteers to communities at risk to support evacuation and to assist the population in protecting themselves and their livelihoods from the impacts of Sirius.',
@@ -1148,26 +1149,24 @@ export default {
   fieldsStep3CheckboxSectionsFederationActionsEVTEPILabel: 'Actions taken by the IFRC',
   fieldsStep3CheckboxSectionsFederationActionsEWLabel: 'Early Actions Taken by IFRC',
   fieldsStep3CheckboxSectionsFederationActionsEVTEPIDescription: 'Select the activities taken by the IFRC (could be the Regional office, cluster office or country office) and briefly describe.',
-  fieldsStep3CheckboxSectionsFederationActionsEPICOVDescription: 'Describe the activities taken by the IFRC (could be the Regional office, cluster office or country office)',
-  fieldsStep3CheckboxSectionsFederationActionsEWDescription: 'Select the early action activities undertaken by the IFRC and give a brief description',
-  fieldsStep3CheckboxSectionsFederationActionsEVTEPIEWPlaceholder: 'Brief description of the action',
-  fieldsStep3CheckboxSectionsFederationActionsEPICOVPlaceholder: `In this section you can provide details as to how you have been working with the IFRC in this operation. To help in completing this section some prompting questions are below which are meant to function as a guide only:
+  fieldsStep3CheckboxSectionsFederationActionsEPICOVDescription: `In this section you can provide details as to how you have been working with the IFRC in this operation. To help in completing this section some prompting questions are below which are meant to function as a guide only:
   - What role has the IFRC been playing in this operation?
   - What actions has the IFRC taken to support this operation?
   - What are the recent changes in the actions taken by the IFRC since the last field report?
   - Are there any areas where you hope IFRC can support with?`,
+  fieldsStep3CheckboxSectionsFederationActionsEWDescription: 'Select the early action activities undertaken by the IFRC and give a brief description',
+  fieldsStep3CheckboxSectionsFederationActionsEVTEPIEWPlaceholder: 'Brief description of the action',
 
   fieldsStep3CheckboxSectionsPNSActionsEVTLabel: 'Actions taken by any other RCRC Movement actors',
   fieldsStep3CheckboxSectionsPNSActionsEPILabel: 'Actions taken by other RCRC Movement',
   fieldsStep3CheckboxSectionsPNSActionsEWLabel: 'Early Action Taken by other RCRC Movement',
   fieldsStep3CheckboxSectionsPNSActionsEVTEPIDescription: 'Select the activities undertaken by any other RCRC Movement actor(s) and briefly describe.',
-  fieldsStep3CheckboxSectionsPNSActionsEPICOVDescription: 'Describe the activities undertaken by any other RCRC Movement actor(s)',
-  fieldsStep3CheckboxSectionsPNSActionsEWDescription: 'Select the early action activities undertaken by the RCRC Movement and give a brief description.',
-  fieldsStep3CheckboxSectionsPNSActionsEVTEPIEWPlaceholder: 'Brief description of the action',
-  fieldsStep3CheckboxSectionsPNSActionsEPICOVPlaceholder: `We understand multiple partners may be present so please highlight the main partners you have worked with since the last field report. Below are some guiding questions to help complete this section. These questions are meant to function as a guide only:
+  fieldsStep3CheckboxSectionsPNSActionsEPICOVDescription: `We understand multiple partners may be present so please highlight the main partners you have worked with since the last field report. Below are some guiding questions to help complete this section. These questions are meant to function as a guide only:
   - Since the last Field Report who has your NS been working with and in what areas of support?
   - Are there any interesting details about these RCRC partners that are not covered in the 3W?
   - Are there any new partnerships that your NS may be working with looking forward?`,
+  fieldsStep3CheckboxSectionsPNSActionsEWDescription: 'Select the early action activities undertaken by the RCRC Movement and give a brief description.',
+  fieldsStep3CheckboxSectionsPNSActionsEVTEPIEWPlaceholder: 'Brief description of the action',
 
   fieldsStep3ActionsOthersEVTEPILabel: 'Actions Taken by Others (Governments, UN)',
   fieldsStep3ActionsOthersEWLabel: 'Early Actions Taken by Others (Governments, UN)',
@@ -1176,12 +1175,11 @@ export default {
   fieldsStep3ActionsOthersEWDescription: 'List the early action activities undertaken by other actors, mention who the other actors are, and give a brief description.',
 
   fieldsStep3ExternalPartnersLabel: 'External partners',
-  fieldsStep3ExternalPartnerCategoriesLabel: 'External partners\' categories',
   fieldsStep3SupportedActivitiesLabel: 'Supported/partnered activities',
 
-  fieldsStep3TooltipTitleRCRC: '',
-  fieldsStep3TooltipTitleNS: '',
-  fieldsStep3TooltipTitleVolunteers: '',
+  fieldsStep3TooltipTitleRCRC: 'placeholder',
+  fieldsStep3TooltipTitleNS: 'placeholder',
+  fieldsStep3TooltipTitleVolunteers: 'placeholder',
   fieldsStep3TooltipDescriptionRCRC: 'Number of people who have received RCRC services to prevent COVID-19 transmission or provide healthcare, social, or economic services to reduce the impact of COVID-19. Note one person may receive multiple services.',
   fieldsStep3TooltipDescriptionNS: 'Number of people currently involved in the response (mobilized for this specific response).',
   fieldsStep3TooltipDescriptionVolunteers: 'Number of people currently involved in the response (mobilized for this specific response).',

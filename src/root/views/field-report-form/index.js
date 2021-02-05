@@ -27,7 +27,6 @@ import {
   getDistrictsForCountry,
   getActions,
   getExternalPartners,
-  getExternalPartnerCategories,
   getSupportedActivities
 } from '#actions';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
@@ -145,11 +144,9 @@ class FieldReportForm extends React.Component {
       } else {
         this.setActions(nextProps.actions.data.results);
 
-        // only attempt to load existing report once we have actions, externalPartners,
-        // externalPartnerCategories, supportedActivities in the State
+        // only attempt to load existing report once we have actions, externalPartners, supportedActivities in the State
         if (
           nextProps.externalPartners.fetched === true &&
-          nextProps.externalPartnerCategories.fetched === true &&
           nextProps.supportedActivities.fetched === true
         ) {
           if (this.props.match.params.id) {
@@ -175,7 +172,6 @@ class FieldReportForm extends React.Component {
     // fetch actions data from backend
     this.props._getActions();
     this.props._getExternalPartners();
-    this.props._getExternalPartnerCategories();
     this.props._getSupportedActivities();
   }
 
@@ -311,19 +307,6 @@ class FieldReportForm extends React.Component {
     const { externalPartners } = this.props;
     if (externalPartners.fetched) {
       return externalPartners.data.results.map(ep => {
-        return {
-          'value': ep.id,
-          'label': ep.name
-        };
-      });
-    }
-    return [];
-  }
-
-  getExternalPartnerCategoriesChoices() {
-    const { externalPartnerCategories } = this.props;
-    if (externalPartnerCategories.fetched) {
-      return externalPartnerCategories.data.results.map(ep => {
         return {
           'value': ep.id,
           'label': ep.name
@@ -873,7 +856,6 @@ class FieldReportForm extends React.Component {
     const status = this.getStatus();
     const isCov = this.state.data.isCovidReport === 'true';
     const extParChoices = this.getExternalPartnerChoices();
-    const extParCatChoices = this.getExternalPartnerCategoriesChoices();
     const suppActChoices = this.getSupportedActivitiesChoices();
 
     // only for filtering the list of actions, we use the COVID type,
@@ -971,7 +953,7 @@ class FieldReportForm extends React.Component {
           label={strings.fieldReportFormInformationBulletinLabel}
           description={strings.fieldReportFormInformationBulletinDescription}
           name='bulletin'
-          classWrapper='form__group__fr'
+          classWrapper={`${isCov ? 'hidden' : null} form__group__fr`}
           options={[
             {
               label: strings.fieldReportFormOptionNoLabel,
@@ -1003,28 +985,6 @@ class FieldReportForm extends React.Component {
         { isCov
           ? (
             <React.Fragment>
-              <div className='form__group form__group__fr'>
-                <div className='form__group__wrap'>
-                  <div className='form__inner-header'>
-                    <div className='form__inner__headline'>
-                      <label className='form__label'>{strings.fieldsStep3ExternalPartnerCategoriesLabel}</label>
-                    </div>
-                  </div>
-                  <div className='form__inner-body'>
-                    <Select
-                      name='externalPartnerCategories'
-                      value={this.state.data.externalPartnerCategories}
-                      onChange={this.onFieldChange.bind(this, 'externalPartnerCategories')}
-                      options={extParCatChoices}
-                      multi
-                    />
-                    <FormError
-                      errors={this.state.errors}
-                      property='externalPartnerCategories'
-                    />
-                  </div>
-                </div>
-              </div>
               <div className='form__group form__group__fr'>
                 <div className='form__group__wrap'>
                   <div className='form__inner-header'>
@@ -1293,7 +1253,6 @@ const selector = (state, ownProps) => ({
   disasterTypesSelect: disasterTypesSelectSelector(state),
   countries: countriesSelector(state),
   externalPartners: state.externalPartners,
-  externalPartnerCategories: state.externalPartnerCategories,
   supportedActivities: state.supportedActivities
 });
 
@@ -1304,7 +1263,6 @@ const dispatcher = (dispatch) => ({
   _getDistrictsForCountry: (...args) => dispatch(getDistrictsForCountry(...args)),
   _getActions: (...args) => dispatch(getActions(...args)),
   _getExternalPartners: (...args) => dispatch(getExternalPartners(...args)),
-  _getExternalPartnerCategories: (...args) => dispatch(getExternalPartnerCategories(...args)),
   _getSupportedActivities: (...args) => dispatch(getSupportedActivities(...args))
 });
 FieldReportForm.contextType = LanguageContext;
