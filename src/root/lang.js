@@ -1161,13 +1161,12 @@ export default {
   fieldsStep3CheckboxSectionsPNSActionsEPILabel: 'Actions taken by other RCRC Movement',
   fieldsStep3CheckboxSectionsPNSActionsEWLabel: 'Early Action Taken by other RCRC Movement',
   fieldsStep3CheckboxSectionsPNSActionsEVTEPIDescription: 'Select the activities undertaken by any other RCRC Movement actor(s) and briefly describe.',
-  fieldsStep3CheckboxSectionsPNSActionsEPICOVDescription: 'Describe the activities undertaken by any other RCRC Movement actor(s)',
-  fieldsStep3CheckboxSectionsPNSActionsEWDescription: 'Select the early action activities undertaken by the RCRC Movement and give a brief description.',
-  fieldsStep3CheckboxSectionsPNSActionsEVTEPIEWPlaceholder: 'Brief description of the action',
-  fieldsStep3CheckboxSectionsPNSActionsEPICOVPlaceholder: `We understand multiple partners may be present so please highlight the main partners you have worked with since the last field report. Below are some guiding questions to help complete this section. These questions are meant to function as a guide only:
+  fieldsStep3CheckboxSectionsPNSActionsEPICOVDescription: `We understand multiple partners may be present so please highlight the main partners you have worked with since the last field report. Below are some guiding questions to help complete this section. These questions are meant to function as a guide only:
   - Since the last Field Report who has your NS been working with and in what areas of support?
   - Are there any interesting details about these RCRC partners that are not covered in the 3W?
   - Are there any new partnerships that your NS may be working with looking forward?`,
+  fieldsStep3CheckboxSectionsPNSActionsEWDescription: 'Select the early action activities undertaken by the RCRC Movement and give a brief description.',
+  fieldsStep3CheckboxSectionsPNSActionsEVTEPIEWPlaceholder: 'Brief description of the action',
 
   fieldsStep3ActionsOthersEVTEPILabel: 'Actions Taken by Others (Governments, UN)',
   fieldsStep3ActionsOthersEWLabel: 'Early Actions Taken by Others (Governments, UN)',
@@ -1176,7 +1175,6 @@ export default {
   fieldsStep3ActionsOthersEWDescription: 'List the early action activities undertaken by other actors, mention who the other actors are, and give a brief description.',
 
   fieldsStep3ExternalPartnersLabel: 'External partners',
-  fieldsStep3ExternalPartnerCategoriesLabel: 'External partners\' categories',
   fieldsStep3SupportedActivitiesLabel: 'Supported/partnered activities',
 
   fieldsStep3TooltipTitleRCRC: 'placeholder',

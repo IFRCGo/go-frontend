@@ -597,7 +597,7 @@ export const getFieldsStep3 = (strings) => ({
       'placeholder': {
         'EVT': strings.fieldsStep3CheckboxSectionsPNSActionsEVTEPIEWPlaceholder,
         'EPI': strings.fieldsStep3CheckboxSectionsPNSActionsEVTEPIEWPlaceholder,
-        'EPI-COV': strings.fieldsStep3CheckboxSectionsPNSActionsEPICOVPlaceholder,
+        'EPI-COV': strings.fieldsStep3CheckboxSectionsPNSActionsEVTEPIEWPlaceholder,
         'EW': strings.fieldsStep3CheckboxSectionsPNSActionsEVTEPIEWPlaceholder,
       }
     }
