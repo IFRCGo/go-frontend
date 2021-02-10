@@ -377,14 +377,14 @@ export const getFieldsStep2 = (strings) => ({
       {
         'name': 'epi-cases-since-last-fr',
         'key': 'epiCasesSinceLastFr',
-        'label': strings.fieldsStep2SituationFieldsEPICasesSinceLabel,
+        'label': strings.fieldReportCasesSince,
         'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
         'desc': strings.fieldsStep2SituationFieldsEPICasesSinceDesciption,
       },
       {
         'name': 'epi-deaths-since-last-fr',
         'key': 'epiDeathsSinceLastFr',
-        'label': strings.fieldsStep2SituationFieldsEPIDeathsSinceLabel,
+        'label': strings.fieldReportDeathsSince,
         'estimationLabel': strings.fieldsStep2SituationFieldsEstimation,
         'desc': strings.fieldsStep2SituationFieldsEPIDeathsSinceDescription,
       }
