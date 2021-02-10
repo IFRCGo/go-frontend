@@ -1100,9 +1100,7 @@ export default {
   fieldsStep2SituationFieldsDateEPILabel: 'Date of Data',
   fieldsStep2SituationFieldsDateEPIEstimationLabel: 'The key figures above are reported as of this date',
   fieldsStep2SituationFieldsDateEPIDescription: 'Date of figures reported.',
-  fieldsStep2SituationFieldsEPICasesSinceLabel: 'Number of New Cases since last Field Report',
   fieldsStep2SituationFieldsEPICasesSinceDesciption: 'Number of registered cases since the last field report',
-  fieldsStep2SituationFieldsEPIDeathsSinceLabel: 'Number of New Deaths since last Field Report',
   fieldsStep2SituationFieldsEPIDeathsSinceDescription: 'Number of confirmed dead since the last field report',
 
   fieldsStep2NotesLabel: 'Notes',
