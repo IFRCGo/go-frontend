@@ -295,6 +295,11 @@ export function convertStateToPayload (originalState) {
     };
   }).filter(o => o.actions.length || o.summary !== '');
 
+  // Notes mapping
+  state.notes_health = originalState.notes.health;
+  state.notes_ns = originalState.notes.ns;
+  state.notes_socioeco = originalState.notes.socioeco;
+
   // Planned Response Mapping
   // In the payload the status and value may mean different things.
   // The `value` for dref refers to Amount. The `value` for FACT refers to
@@ -433,6 +438,11 @@ export function getInitialDataState () {
       options: [],
       description: undefined
     },
+    notes: {
+      health: '',
+      ns: '',
+      socioeco: ''
+    },
 
     // Step 4
     dref: { status: undefined, value: undefined },
@@ -505,6 +515,12 @@ export function convertFieldReportToState (fieldReport, stateData) {
   state.status = fieldReport.status !== parseInt(formData.statusEarlyWarningValue)
     ? formData.statusEventValue
     : formData.statusEarlyWarningValue;
+
+  state.notes = {
+    health: fieldReport.notes_health,
+    ns: fieldReport.notes_ns,
+    socioeco: fieldReport.notes_socioeco
+  };
 
   const directMapping = [
     // [source, destination]

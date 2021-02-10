@@ -3,9 +3,7 @@ import { PropTypes as T } from 'prop-types';
 
 import { environment } from '#config';
 
-import {
-  FormTextarea
-} from '#components/form-elements/';
+import { FormTextarea } from '#components/form-elements/';
 import FormCheckboxGroupActions from '#components/form-elements/checkbox-group-actions';
 import LanguageContext from '#root/languageContext';
 
@@ -35,6 +33,8 @@ export default class ActionsCheckboxes extends React.Component {
       placeholder,
       options,
       values,
+      noteValues,
+      onNotesChange,
       classInput
     } = this.props;
 
@@ -59,6 +59,8 @@ export default class ActionsCheckboxes extends React.Component {
         classWrapper='action-checkboxes action-checkboxes--textarea form__group__fr'
         options={groupedOptions}
         values={values.options}
+        noteValues={noteValues}
+        onNotesChange={onNotesChange}
         onChange={this.onChecksChange} >
         <FormTextarea
           label={strings.cmpActionDescriptionLabel}
