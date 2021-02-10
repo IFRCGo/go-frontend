@@ -991,43 +991,38 @@ class FieldReportForm extends React.Component {
                 <div className='form__group__wrap'>
                   <div className='form__inner-header'>
                     <div className='form__inner__headline'>
-                      <label className='form__label'>{strings.fieldsStep3ExternalPartnersLabel}</label>
+                      <label className='form__label'>{strings.fieldsStep3CombinedLabelExternalSupported}</label>
                     </div>
                   </div>
                   <div className='form__inner-body'>
-                    <Select
-                      name='externalPartners'
-                      value={this.state.data.externalPartners}
-                      onChange={this.onFieldChange.bind(this, 'externalPartners')}
-                      options={extParChoices}
-                      multi
-                    />
-                    <FormError
-                      errors={this.state.errors}
-                      property='externalPartners'
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className='form__group form__group__fr'>
-                <div className='form__group__wrap'>
-                  <div className='form__inner-header'>
-                    <div className='form__inner__headline'>
-                      <label className='form__label'>{strings.fieldsStep3SupportedActivitiesLabel}</label>
+                    <div className='row flex-mid'>
+                      <div className='col col-6-mid'>
+                        <Select
+                          name='externalPartners'
+                          value={this.state.data.externalPartners}
+                          onChange={this.onFieldChange.bind(this, 'externalPartners')}
+                          options={extParChoices}
+                          multi
+                        />
+                        <FormError
+                          errors={this.state.errors}
+                          property='externalPartners'
+                        />
+                      </div>
+                      <div className='col col-6-mid'>
+                        <Select
+                          name='supportedActivities'
+                          value={this.state.data.supportedActivities}
+                          onChange={this.onFieldChange.bind(this, 'supportedActivities')}
+                          options={suppActChoices}
+                          multi
+                        />
+                        <FormError
+                          errors={this.state.errors}
+                          property='supportedActivities'
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <div className='form__inner-body'>
-                    <Select
-                      name='supportedActivities'
-                      value={this.state.data.supportedActivities}
-                      onChange={this.onFieldChange.bind(this, 'supportedActivities')}
-                      options={suppActChoices}
-                      multi
-                    />
-                    <FormError
-                      errors={this.state.errors}
-                      property='supportedActivities'
-                    />
                   </div>
                 </div>
               </div>

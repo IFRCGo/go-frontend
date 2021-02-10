@@ -677,8 +677,8 @@ export default {
   fieldReportProbableCases: 'Probable Cases: ',
   fieldReportConfirmedCases: 'Confirmed Cases: ',
   fieldReportDeadCases: 'Dead: ',
-  fieldReportCasesSince: 'Number of New Cases since last Field Report',
-  fieldReportDeathsSince: 'Number of New Deaths since last Field Report',
+  fieldReportCasesSince: 'Number of new cases since last Field Report',
+  fieldReportDeathsSince: 'Number of new deaths since last Field Report',
   fieldReportSource: 'Source',
   fieldReportAssistedByGovernment: 'Assisted by Government:',
   fieldReportAssistedRCRC: 'Assisted by RCRC Movement:',
@@ -1113,13 +1113,11 @@ export default {
   fieldsStep2DescriptionEPILabel: 'Situational Overview',
   fieldsStep2DescriptionEPIDescription: 'Describe the primary and secondary effects on the health system and affected population.',
   fieldsStep2DescriptionEPICOVDescription: `These questions are meant to function as a guide only:
-  General:
-  - How has the situation evolved since the last field report?
-  Impact on NS:
-  - Since the last field report, how is the situation affecting your National Society and activities?
-  - Since the last field report, has this situation resulted in changes to the way your NS operates?
-  Impact on people and communities:
-  - Since the last field report, how has the population been affected?
+  Since the last Field Report:
+  - How has the situation evolved?
+  - How is the situation affecting your National Society and activities?
+  - Has this situation resulted in changes to the way your NS operates?
+  - How has the population been affected?
   - Are particular groups or geographic locations being impacted more than others and why?`,
   fieldsStep2DescriptionEPIPlaceholder: 'Description of the epidemic',
   fieldsStep2DescriptionCOVIDPlaceholder: 'Describe succinctly (bullet points, short statements) the primary and secondary effects. Please outline how the situation is evolving and what has changed since the last field report. Below are some guiding questions to help complete this section.',
@@ -1141,7 +1139,7 @@ export default {
 
   fieldsStep3CheckboxSectionsNSActionsEVTEPILabel: 'Actions Taken by National Society Red Cross (if any)',
   fieldsStep3CheckboxSectionsNSActionsEWLabel: 'Early Actions Taken by NS',
-  fieldsStep3CheckboxSectionsNSActionsEVTEPIDescription: 'Since the beginning of the response, what activities has your NS undertaken? Select the activities undertaken by the National Society and briefly describe. A short description is available for each activity and if your NS has been active in this area during this response, please select it by checking the box. There is a section to provide a description of the activities supported. In this section please focus on what is new since the last field report.',
+  fieldsStep3CheckboxSectionsNSActionsEVTEPIDescription: 'Since the beginning of the response, what activities has your NS undertaken? A short description is available for each activity and if your NS has been active in this area during this response, please select it by checking the box. There is a section to provide a description of the activities supported, in this section please focus on what is new since the last field report.',
   fieldsStep3CheckboxSectionsNSActionsEWDescription: 'Select the early action activities undertaken by the National Society and give a brief description',
   fieldsStep3CheckboxSectionsNSActionsEVTPlaceholder: 'Example: The two local branches of the National Society in the affected districts have provided first aid, psychosocial support and basic relief items to the affected families. An evacuation centre has been set up in a local school to accommodate those unable to return to their homes. Groups of Red Cross volunteers are helping the local search and rescue personnel in cleaning storm debris from houses and streets.',
   fieldsStep3CheckboxSectionsNSActionsEPIEWPlaceholder: 'Brief description of the action',
@@ -1177,6 +1175,7 @@ export default {
 
   fieldsStep3ExternalPartnersLabel: 'External partners',
   fieldsStep3SupportedActivitiesLabel: 'Supported/partnered activities',
+  fieldsStep3CombinedLabelExternalSupported: 'External partners / Supported activities',
 
   fieldsStep3TooltipDescriptionRCRC: 'Number of people who have received RCRC services to prevent COVID-19 transmission or provide healthcare, social, or economic services to reduce the impact of COVID-19. Note one person may receive multiple services.',
   fieldsStep3TooltipDescriptionNS: 'Number of people currently involved in the response (mobilized for this specific response).',
