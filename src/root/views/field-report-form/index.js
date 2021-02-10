@@ -943,6 +943,8 @@ class FieldReportForm extends React.Component {
                   classInput='textarea--lg'
                   options={filterActions(actionsData, section.action_type, actionsStatus)}
                   values={this.state.data[section.key]}
+                  noteValues={this.state.data.notes}
+                  onNotesChange={this.onFieldChange.bind(this, 'notes')}
                   onChange={this.onFieldChange.bind(this, section.key)}
                 />
               );

@@ -4,8 +4,10 @@ import c from 'classnames';
 import _cloneDeep from 'lodash.clonedeep';
 import _get from 'lodash.get';
 
+import { FormTextarea } from '#components/form-elements/';
 import { FormDescription } from './misc';
 import FormCheckbox from './checkbox';
+import LanguageContext from '#root/languageContext';
 
 export default class FormCheckboxGroupActions extends React.Component {
   onCheckChange (opValue) {
@@ -18,6 +20,24 @@ export default class FormCheckboxGroupActions extends React.Component {
     onChange(newVals);
   }
 
+  onNotesChange (e, label, noteValues, onNotesChange) {
+    let newVals = noteValues;
+    switch (label) {
+      case 'Health':
+        newVals.health = e.target.value;
+        break;
+      case 'NS Institutional Strengthening':
+        newVals.ns = e.target.value;
+        break;
+      case 'Socioeconomic Interventions':
+        newVals.socioeco = e.target.value;
+        break;
+      default:
+        break;
+    }
+    onNotesChange(newVals);
+  }
+
   render () {
     const {
       label,
@@ -25,10 +45,25 @@ export default class FormCheckboxGroupActions extends React.Component {
       description,
       options,
       values,
+      noteValues,
+      onNotesChange,
       classWrapper,
       classLabel,
       children
     } = this.props;
+
+    const { strings } = this.context;
+
+    const notesMap = {
+      'Health': noteValues.health,
+      'NS Institutional Strengthening': noteValues.ns,
+      'Socioeconomic Interventions': noteValues.socioeco
+    };
+    const notesLabels = {
+      'Health': 'notes-health',
+      'NS Institutional Strengthening': 'notes-ns',
+      'Socioeconomic Interventions': 'notes-socioeco'
+    };
 
     return (
       <div className={c('form__group', classWrapper)}>
@@ -63,6 +98,18 @@ export default class FormCheckboxGroupActions extends React.Component {
                     );
                   })}
                 </div>
+                { options.length > 1
+                  ? (
+                    <FormTextarea
+                      label={strings.fieldsStep2NotesLabel}
+                      classInput='textarea--lg textarea--notes'
+                      placeholder={strings.fieldsStep3ActionsNotesPlaceholder}
+                      name={notesLabels[optionGroup.label]}
+                      id={notesLabels[optionGroup.label]}
+                      classLabel='label-secondary'
+                      value={notesMap[optionGroup.label]}
+                      onChange={(e) => this.onNotesChange(e, optionGroup.label, noteValues, onNotesChange)} />
+                  ) : null }
               </React.Fragment>
             ))}
             {children || null}
@@ -73,6 +120,7 @@ export default class FormCheckboxGroupActions extends React.Component {
   }
 }
 
+FormCheckboxGroupActions.contextType = LanguageContext;
 if (process.env.NODE_ENV !== 'production') {
   FormCheckboxGroupActions.propTypes = {
     label: T.string,

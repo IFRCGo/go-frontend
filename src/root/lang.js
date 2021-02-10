@@ -1173,13 +1173,11 @@ export default {
   fieldsStep3ActionsOthersEVTEPIDescription: 'Who else was involved? UN agencies? NGOs? Government? Describe what other actors did. Also mention who the other actors are.',
   fieldsStep3ActionsOthersEPICOVDescription: 'Who else is your National Society working with? UN agencies? NGOs? Government? Since the last field report, outline the main actors your NS has been engaged with. We understand there may be many partners so please just highlight the main ones since the last field report.',
   fieldsStep3ActionsOthersEWDescription: 'List the early action activities undertaken by other actors, mention who the other actors are, and give a brief description.',
+  fieldsStep3ActionsNotesPlaceholder: 'If selected any of the activities above, please provide brief details as to how individuals were reached by the activities listed above. We encourage you to consult the previous field report and to note any changes in actions (have new activities started or concluded?). Please highlight any key successes or challenges or unique learnings.',
 
   fieldsStep3ExternalPartnersLabel: 'External partners',
   fieldsStep3SupportedActivitiesLabel: 'Supported/partnered activities',
 
-  fieldsStep3TooltipTitleRCRC: 'placeholder',
-  fieldsStep3TooltipTitleNS: 'placeholder',
-  fieldsStep3TooltipTitleVolunteers: 'placeholder',
   fieldsStep3TooltipDescriptionRCRC: 'Number of people who have received RCRC services to prevent COVID-19 transmission or provide healthcare, social, or economic services to reduce the impact of COVID-19. Note one person may receive multiple services.',
   fieldsStep3TooltipDescriptionNS: 'Number of people currently involved in the response (mobilized for this specific response).',
   fieldsStep3TooltipDescriptionVolunteers: 'Number of people currently involved in the response (mobilized for this specific response).',
