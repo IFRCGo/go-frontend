@@ -45,6 +45,7 @@ import domainWhitelist from './domain-whitelist';
 import lang from './lang';
 import disasterTypes from './disaster-types';
 import personnelByEvent from './personnel-by-event';
+import mainContacts from './main_contacts';
 
 import {
   POST_PROJECT,
@@ -114,7 +115,8 @@ export const reducers = {
   allCountries: createReducer(GET_COUNTRIES_ALL),
   allRegions: createReducer(GET_REGIONS_ALL),
   disasterTypes,
-  personnelByEvent
+  personnelByEvent,
+  mainContacts
 };
 
 export default combineReducers(reducers);
