@@ -844,3 +844,8 @@ export const GET_DISASTER_TYPES = 'GET_DISASTER_TYPES';
 export function getDisasterTypes () {
   return fetchJSON('api/v2/disaster_type', GET_DISASTER_TYPES);
 }
+
+export const GET_MAIN_CONTACTS = 'GET_MAIN_CONTACTS';
+export function getMainContacts () {
+  return fetchJSON('api/v2/main_contact/?limit=200', GET_MAIN_CONTACTS);
+}
