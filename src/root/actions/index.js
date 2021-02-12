@@ -239,18 +239,16 @@ export function getAppealsList () {
 export const GET_APPEALS_LIST_STATS = 'GET_APPEALS_LIST_STATS';
 export function getAppealsListStats ({countryId = null, regionId = null} = {}) {
   const filters = {
-    end_date__gt: DateTime.utc().toISO(),
-    limit: 1000
   };
   // Needs !== null, otherwise ID 0 == false
-  if (countryId !== null) {
+  if (typeof(countryId) === 'number') {
     filters.country = countryId;
   }
-  if (regionId !== null) {
+  if (typeof(regionId) === 'number') {
     filters.region = regionId;
   }
   const f = buildAPIQS(filters);
-  return fetchJSON(`api/v2/appeal/?${f}`, GET_APPEALS_LIST_STATS, withToken());
+  return fetchJSON(`api/v2/appeal/aggregated/?${f}`, GET_APPEALS_LIST_STATS, withToken());
 }
 
 export const GET_AGGREGATE_APPEALS = 'GET_AGGREGATE_APPEALS';
