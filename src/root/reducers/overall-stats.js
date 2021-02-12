@@ -111,13 +111,13 @@ function appealsListStats (state = appealsListStatsInitialState, action) {
     case 'GET_APPEALS_LIST_STATS_SUCCESS':
       const data = action.data;
       const resObj = {
-        activeDrefs: data.active_drefs,
-        activeAppeals: data.active_appeals,
-        totalAppeals: data.total_appeals,
-        budget: data.amount_requested_dref_included,
-        appealsBudget: data.amount_requested,
-        appealsFunding: data.amount_funded,
-        targetPop: data.target_population
+        activeDrefs: data.active_drefs || 0,
+        activeAppeals: data.active_appeals || 0,
+        totalAppeals: data.total_appeals || 0,
+        budget: data.amount_requested_dref_included || 0,
+        appealsBudget: data.amount_requested || 0,
+        appealsFunding: data.amount_funded || 0,
+        targetPop: data.target_population || 0
       };
 
       state = Object.assign({}, state, {
