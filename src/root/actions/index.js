@@ -242,10 +242,11 @@ export function getAppealsListStats ({countryId = null, regionId = null} = {}) {
     end_date__gt: DateTime.utc().toISO(),
     limit: 1000
   };
-  if (countryId) {
+  // Needs !== null, otherwise ID 0 == false
+  if (countryId !== null) {
     filters.country = countryId;
   }
-  if (regionId) {
+  if (regionId !== null) {
     filters.region = regionId;
   }
   const f = buildAPIQS(filters);

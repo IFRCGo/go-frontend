@@ -41,7 +41,7 @@ export default function KeyFiguresHeader (props) {
     error
   } = props.appealsListStats;
 
-  const {strings } = useContext(LanguageContext);
+  const { strings } = useContext(LanguageContext);
 
   const keyTitle = {
     activeDrefs: strings.keyFiguresActiveDrefs,
@@ -61,9 +61,6 @@ export default function KeyFiguresHeader (props) {
       description: strings.keyFigureActiveAppealDescription,
     }
   };
-
-
-
 
   if (fetching) {
     return <BlockLoading/>;
