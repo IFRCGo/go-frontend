@@ -1252,7 +1252,6 @@ export default {
   fieldReportFormRegionSelectPlaceholder: 'Select Provinces / Regions',
 
   fieldReportFormEPISourceOfFiguresLabel: 'Source (of figures)',
-  fieldReportFormEPISourceOfFiguresDescription: 'description',
 
   fieldReportFormSourceDetailsLabel: 'Source Details',
   fieldReportFormSourceDetailsPlaceholder: 'Add details for data with sources marked as Other above.',
