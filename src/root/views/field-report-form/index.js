@@ -750,9 +750,6 @@ class FieldReportForm extends React.Component {
                       <label className='form__label'>
                         <Translate stringId="fieldReportFormEPISourceOfFiguresLabel" />
                       </label>
-                      <p className='form__description'>
-                        <Translate stringId="fieldReportFormEPISourceOfFiguresDescription" />
-                      </p>
                     </div>
                   </div>
                   <div className='form__inner-body'>
