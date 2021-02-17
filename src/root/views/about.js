@@ -27,7 +27,6 @@ function About (props) {
     }
     return [];
   }, [props.mainContacts]);
-  console.log(contacts);
 
   return (
     <App className='page--about'>
