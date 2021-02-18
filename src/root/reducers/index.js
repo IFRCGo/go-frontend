@@ -9,6 +9,8 @@ import regions from './regions';
 import countries from './countries';
 import districts from './districts';
 import actions from './actions';
+import externalPartners from './external_partners';
+import supportedActivities from './supported_activities';
 import fieldReportForm from './field-report-form';
 import fieldReport from './field-report';
 import fieldReports from './field-reports';
@@ -43,6 +45,7 @@ import domainWhitelist from './domain-whitelist';
 import lang from './lang';
 import disasterTypes from './disaster-types';
 import personnelByEvent from './personnel-by-event';
+import mainContacts from './main_contacts';
 
 import {
   POST_PROJECT,
@@ -66,6 +69,8 @@ export const reducers = {
   districts,
   systemAlertsReducer,
   actions,
+  externalPartners,
+  supportedActivities,
   fieldReportForm,
   fieldReport,
   fieldReports,
@@ -110,7 +115,8 @@ export const reducers = {
   allCountries: createReducer(GET_COUNTRIES_ALL),
   allRegions: createReducer(GET_REGIONS_ALL),
   disasterTypes,
-  personnelByEvent
+  personnelByEvent,
+  mainContacts
 };
 
 export default combineReducers(reducers);

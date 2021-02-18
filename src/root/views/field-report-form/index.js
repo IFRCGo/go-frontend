@@ -25,7 +25,9 @@ import {
   updateFieldReport,
   getFieldReportById,
   getDistrictsForCountry,
-  getActions
+  getActions,
+  getExternalPartners,
+  getSupportedActivities
 } from '#actions';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 import BreadCrumb from '#components/breadcrumb';
@@ -142,10 +144,15 @@ class FieldReportForm extends React.Component {
       } else {
         this.setActions(nextProps.actions.data.results);
 
-        // only attempt to load existing report once we have actions in the State
-        if (this.props.match.params.id) {
-          // Editing the field report.
-          this.getReport(this.props.match.params.id);
+        // only attempt to load existing report once we have actions, externalPartners, supportedActivities in the State
+        if (
+          nextProps.externalPartners.fetched === true &&
+          nextProps.supportedActivities.fetched === true
+        ) {
+          if (this.props.match.params.id) {
+            // Editing the field report.
+            this.getReport(this.props.match.params.id);
+          }
         }
       }
     }
@@ -164,6 +171,8 @@ class FieldReportForm extends React.Component {
   componentDidMount() {
     // fetch actions data from backend
     this.props._getActions();
+    this.props._getExternalPartners();
+    this.props._getSupportedActivities();
   }
 
   getReport(id) {
@@ -292,6 +301,32 @@ class FieldReportForm extends React.Component {
     } else {
       return [];
     }
+  }
+
+  getExternalPartnerChoices() {
+    const { externalPartners } = this.props;
+    if (externalPartners.fetched) {
+      return externalPartners.data.results.map(ep => {
+        return {
+          'value': ep.id,
+          'label': ep.name
+        };
+      });
+    }
+    return [];
+  }
+
+  getSupportedActivitiesChoices() {
+    const { supportedActivities } = this.props;
+    if (supportedActivities.fetched) {
+      return supportedActivities.data.results.map(ep => {
+        return {
+          'value': ep.id,
+          'label': ep.name
+        };
+      });
+    }
+    return [];
   }
 
   onCountryChange(e) {
@@ -648,11 +683,12 @@ class FieldReportForm extends React.Component {
     const { strings } = this.context;
     const fields = formData.getFieldsStep2(strings);
     const status = this.getStatus();
-    const covidTag = this.state.data.isCovidReport === 'true' ? '-COV' : '';
+    const isCov = this.state.data.isCovidReport === 'true';
+    const covidTag = isCov ? '-COV' : '';
 
     /** Indicate whether the date of data for an epidemic
      * is required: it is required when any of these fields
-     * have data 
+     * have data
       * */
     let isSitFieldsDateRequired = [
       'epiCases',
@@ -666,7 +702,11 @@ class FieldReportForm extends React.Component {
     const sitFieldsDateLabelMarker = isSitFieldsDateRequired ? ' *' : '';
 
     return (
-      <Fold title='Numeric Details (People)' foldWrapperClass='fold--main fold--transparent'>
+      <Fold
+        title='Numeric Details (People)'
+        description={isCov ? strings.fieldsStep2HeaderDescription : null}
+        foldWrapperClass='fold--main fold--transparent'
+      >
         {
           fields.situationFields[status + covidTag].map(field => {
             return status !== 'EPI'
@@ -702,35 +742,51 @@ class FieldReportForm extends React.Component {
 
         {status === 'EPI'
           ? (
-            <div className='form__group form__group__fr'>
-              <div className='form__group__wrap'>
-                <div className='form__inner-header'>
-                  <div className='form__inner-headline'>
-                    <label className='form__label'>
-                      <Translate stringId="fieldReportFormEPISourceOfFiguresLabel" />
-                    </label>
-                    <p className='form__description'>
-                      <Translate stringId="fieldReportFormEPISourceOfFiguresDescription" />
-                    </p>
+            <React.Fragment>
+              <div className='form__group form__group__fr'>
+                <div className='form__group__wrap'>
+                  <div className='form__inner-header'>
+                    <div className='form__inner-headline'>
+                      <label className='form__label'>
+                        <Translate stringId="fieldReportFormEPISourceOfFiguresLabel" />
+                      </label>
+                    </div>
                   </div>
-                </div>
-                <div className='form__inner-body'>
-                  <div key='epi-figures-source' className='estimation'>
-                    <Select
-                      placeholder='Source (of figures)'
-                      name='epi-figures-source'
-                      value={this.state.data.epiFiguresSource}
-                      onChange={({ value }) => this.onFieldChange('epiFiguresSource', value)}
-                      options={formData.epiSources}
-                    />
-                    <FormError
-                      errors={this.state.errors}
-                      property='country'
-                    />
+                  <div className='form__inner-body'>
+                    <div key='epi-figures-source' className='estimation'>
+                      <Select
+                        placeholder={strings.fieldsStep2SourceOfFiguresLabel}
+                        name='epi-figures-source'
+                        value={this.state.data.epiFiguresSource}
+                        onChange={({ value }) => this.onFieldChange('epiFiguresSource', value)}
+                        options={formData.epiSources}
+                      />
+                      <FormError
+                        errors={this.state.errors}
+                        property='epiFiguresSource'
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+              {/* FIXME: Label */}
+              <FormTextarea
+                label={strings.fieldsStep2NotesLabel}
+                type='text'
+                name='epi-notes-since-last-fr'
+                id='epi-notes-since-last-fr'
+                value={this.state.data.epiNotesSinceLastFr}
+                classInput='textarea--lg'
+                classWrapper='form__group__fr'
+                onChange={this.onFieldChange.bind(this, 'epiNotesSinceLastFr')}
+                placeholder={strings.fieldsStep2EPINotes}
+              >
+                <FormError
+                  errors={this.state.errors}
+                  property='epiNotesSinceLastFr'
+                />
+              </FormTextarea>
+            </React.Fragment>
           )
           : null
         }
@@ -772,13 +828,13 @@ class FieldReportForm extends React.Component {
         </React.Fragment>
         <React.Fragment>
           <FormTextarea
-            label={fields.description[status].label}
+            label={fields.description[status + covidTag].label}
             name='description'
             classInput='textarea--lg'
             classWrapper='form__group__fr'
-            placeholder={fields.description[status].placeholder}
+            placeholder={fields.description[status + covidTag].placeholder}
             id='description'
-            description={fields.description[status].desc}
+            description={fields.description[status + covidTag].desc}
             value={this.state.data.description}
             onChange={this.onFieldChange.bind(this, 'description')} >
             <FormError
@@ -795,10 +851,13 @@ class FieldReportForm extends React.Component {
     const { strings } = this.context;
     const fields = formData.getFieldsStep3(strings);
     const status = this.getStatus();
+    const isCov = this.state.data.isCovidReport === 'true';
+    const extParChoices = this.getExternalPartnerChoices();
+    const suppActChoices = this.getSupportedActivitiesChoices();
 
     // only for filtering the list of actions, we use the COVID type,
     // all other elements will follow the same as the EPI status.
-    const actionsStatus = this.state.data.isCovidReport === 'true' ? 'COVID' : status;
+    const actionsStatus = isCov ? 'COVID' : status;
 
     const { actions } = this.props;
 
@@ -825,9 +884,11 @@ class FieldReportForm extends React.Component {
               if (!field[status]) {
                 return null;
               }
-              if (this.state.data.isCovidReport === 'true' && !field[status + '-COV']) {
+              if (isCov && !field[status + '-COV']) {
                 return null;
               }
+              const tooltip = field.tooltip ? field.tooltip[isCov ? status + '-COV': status] : null;
+
               return (
                 <FormInput
                   label={field.label[status]}
@@ -838,7 +899,10 @@ class FieldReportForm extends React.Component {
                   id={field.name}
                   classWrapper='form__group--kv form__group--kv-actions form__group__fr col col-6-mid'
                   value={this.state.data[field.key]}
-                  onChange={this.onFieldChange.bind(this, field.key)} >
+                  onChange={this.onFieldChange.bind(this, field.key)}
+                  tooltipTitle={tooltip ? tooltip.title : null}
+                  tooltipDescription={tooltip ? tooltip.description : null}
+                >
                   <FormError
                     errors={this.state.errors}
                     property={field.key}
@@ -864,18 +928,20 @@ class FieldReportForm extends React.Component {
               });
               values.options = sectionValues;
 
-              const description = this.state.data.isCovidReport === 'true' ? section.desc[status + '-COV'] : section.desc[status];
+              const description = isCov ? section.desc[status + '-COV'] : section.desc[status];
 
               return (
                 <ActionsCheckboxes
                   label={section.label[status]}
                   description={description}
-                  placeholder={section.placeholder[status]}
+                  placeholder={section.placeholder[isCov ? status + '-COV' : status]}
                   name={section.name}
                   key={section.key}
                   classInput='textarea--lg'
                   options={filterActions(actionsData, section.action_type, actionsStatus)}
                   values={this.state.data[section.key]}
+                  noteValues={this.state.data.notes}
+                  onNotesChange={this.onFieldChange.bind(this, 'notes')}
                   onChange={this.onFieldChange.bind(this, section.key)}
                 />
               );
@@ -886,7 +952,7 @@ class FieldReportForm extends React.Component {
           label={strings.fieldReportFormInformationBulletinLabel}
           description={strings.fieldReportFormInformationBulletinDescription}
           name='bulletin'
-          classWrapper={`${this.state.data.isCovidReport === 'true' ? 'hidden' : null} form__group__fr`}
+          classWrapper={`${isCov ? 'hidden' : null} form__group__fr`}
           options={[
             {
               label: strings.fieldReportFormOptionNoLabel,
@@ -910,10 +976,55 @@ class FieldReportForm extends React.Component {
           id='actions-others'
           classWrapper='form__group__fr'
           classInput='textarea--lg'
-          description={fields.actionsOthers.desc[status]}
+          description={fields.actionsOthers.desc[isCov ? status + '-COV' : status]}
           placeholder={strings.fieldReportFormOthersActionsPlaceholder}
           value={this.state.data.actionsOthers}
           onChange={this.onFieldChange.bind(this, 'actionsOthers')} />
+
+        { isCov
+          ? (
+            <React.Fragment>
+              <div className='form__group form__group__fr'>
+                <div className='form__group__wrap'>
+                  <div className='form__inner-header'>
+                    <div className='form__inner__headline'>
+                      <label className='form__label'>{strings.fieldsStep3CombinedLabelExternalSupported}</label>
+                    </div>
+                  </div>
+                  <div className='form__inner-body'>
+                    <div className='row flex-mid'>
+                      <div className='col col-6-mid'>
+                        <Select
+                          name='externalPartners'
+                          value={this.state.data.externalPartners}
+                          onChange={this.onFieldChange.bind(this, 'externalPartners')}
+                          options={extParChoices}
+                          multi
+                        />
+                        <FormError
+                          errors={this.state.errors}
+                          property='externalPartners'
+                        />
+                      </div>
+                      <div className='col col-6-mid'>
+                        <Select
+                          name='supportedActivities'
+                          value={this.state.data.supportedActivities}
+                          onChange={this.onFieldChange.bind(this, 'supportedActivities')}
+                          options={suppActChoices}
+                          multi
+                        />
+                        <FormError
+                          errors={this.state.errors}
+                          property='supportedActivities'
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </React.Fragment>
+          ) : null }
       </Fold>
     );
   }
@@ -1013,6 +1124,12 @@ class FieldReportForm extends React.Component {
 
         <FormRadioGroup
           label={strings.fieldReportFormVisibilityLabel}
+          labelTooltipTitle={strings.fieldReportConstantVisibility}
+          labelTooltipDescription={`
+            ${strings.fieldReportConstantVisibilityPublicLabel} - ${strings.fieldReportConstantVisibilityPublicTooltipTitle}<br/>
+            ${strings.fieldReportConstantVisibilityRCRCMovementLabel} - ${strings.fieldReportConstantVisibilityRCRCMovementTooltipTitle}<br/>
+            ${strings.fieldReportConstantVisibilityIFRCSecretariatLabel} - ${strings.fieldReportConstantVisibilityIFRCSecretariatTooltipTitle}
+          `}
           name='visibility'
           options={formData.getVisibility(strings)}
           selectedOption={this.state.data.visibility}
@@ -1128,7 +1245,9 @@ const selector = (state, ownProps) => ({
   }),
   districts: state.districts,
   disasterTypesSelect: disasterTypesSelectSelector(state),
-  countries: countriesSelector(state)
+  countries: countriesSelector(state),
+  externalPartners: state.externalPartners,
+  supportedActivities: state.supportedActivities
 });
 
 const dispatcher = (dispatch) => ({
@@ -1136,7 +1255,9 @@ const dispatcher = (dispatch) => ({
   _updateFieldReport: (...args) => dispatch(updateFieldReport(...args)),
   _getFieldReportById: (...args) => dispatch(getFieldReportById(...args)),
   _getDistrictsForCountry: (...args) => dispatch(getDistrictsForCountry(...args)),
-  _getActions: (...args) => dispatch(getActions(...args))
+  _getActions: (...args) => dispatch(getActions(...args)),
+  _getExternalPartners: (...args) => dispatch(getExternalPartners(...args)),
+  _getSupportedActivities: (...args) => dispatch(getSupportedActivities(...args))
 });
 FieldReportForm.contextType = LanguageContext;
 export default connect(selector, dispatcher)(FieldReportForm);

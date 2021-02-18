@@ -45,8 +45,10 @@ export function dataPathToDisplay (path, keyword) {
     'numHighestRisk.source': 'Source Highest Risk',
     'affectedPopCentres.estimation': 'Estimation Affected Pop Centres',
     'affectedPopCentres.source': 'Source Affected Pop Centres',
-    epiCases: 'Cases',
-    epiNumDead: 'Confirmed Dead',
+    epiCases: 'Cumulative Cases',
+    epiNumDead: 'Cumulative Dead',
+    epiCasesSinceLastFr: 'Number of new cases',
+    epiDeathsSinceLastFr: 'Number of new deaths',
     epiSuspectedCases: 'Suspected Cases',
     epiProbableCases: 'Probable Cases',
     epiConfirmedCases: 'Confirmed Cases',
@@ -142,6 +144,8 @@ export function prepStateForValidation (state) {
     epiProbableCases: toNumIfNum,
     epiConfirmedCases: toNumIfNum,
     epiFiguresSource: (val) => val ? val.value : undefined,
+    epiCasesSinceLastFr: toNumIfNum,
+    epiDeathsSinceLastFr: toNumIfNum,
     numAssistedGov: toNumIfNum,
     numAssistedRedCross: toNumIfNum,
     numLocalStaff: toNumIfNum,
@@ -177,6 +181,8 @@ export function convertStateToPayload (originalState) {
     country,
     disasterType,
     districts,
+    externalPartners,
+    supportedActivities,
     epiFiguresSource,
     event,
     startDate,
@@ -187,6 +193,8 @@ export function convertStateToPayload (originalState) {
   // if (countries.length) { state.countries = countries.map(o => +o.value); }
   if (disasterType) { state.dtype = +disasterType; }
   if (districts.length) { state.districts = districts.map(o => +o.value); }
+  if (externalPartners.length) { state.external_partners = externalPartners.map(o => +o.value); }
+  if (supportedActivities.length) { state.supported_activities = supportedActivities.map(o => +o.value); }
   if (event && event.value) { state.event = +event.value; }
   if (country) { state.countries = [country.value]; }
 
@@ -216,6 +224,9 @@ export function convertStateToPayload (originalState) {
     ['epiProbableCases', 'epi_probable_cases', Number],
     ['epiConfirmedCases', 'epi_confirmed_cases', Number],
     ['epiNumDead', 'epi_num_dead', Number],
+    ['epiCasesSinceLastFr', 'epi_cases_since_last_fr', Number],
+    ['epiDeathsSinceLastFr', 'epi_deaths_since_last_fr', Number],
+    ['epiNotesSinceLastFr', 'epi_notes_since_last_fr']
   ];
 
   directMapping.forEach(([src, dest, fn]) => {
@@ -285,6 +296,11 @@ export function convertStateToPayload (originalState) {
       actions: originalState[src].options.filter(o => o.checked).map(o => o.value)
     };
   }).filter(o => o.actions.length || o.summary !== '');
+
+  // Notes mapping
+  state.notes_health = originalState.notes.health;
+  state.notes_ns = originalState.notes.ns;
+  state.notes_socioeco = originalState.notes.socioeco;
 
   // Planned Response Mapping
   // In the payload the status and value may mean different things.
@@ -365,6 +381,8 @@ export function getInitialDataState () {
     country: undefined,
     // countries: [],
     districts: [],
+    externalPartners: [],
+    supportedActivities: [],
     status: '9', // default to "Event"
     startDate: undefined,
     visibility: '3',
@@ -395,6 +413,9 @@ export function getInitialDataState () {
     epiProbableCases: undefined,
     epiConfirmedCases: undefined,
     epiFiguresSource: undefined,
+    epiCasesSinceLastFr: undefined,
+    epiDeathsSinceLastFr: undefined,
+    epiNotesSinceLastFr: undefined,
 
     sitFieldsDate: undefined,
 
@@ -418,6 +439,11 @@ export function getInitialDataState () {
     actionsFederation: {
       options: [],
       description: undefined
+    },
+    notes: {
+      health: '',
+      ns: '',
+      socioeco: ''
     },
 
     // Step 4
@@ -470,6 +496,16 @@ export function convertFieldReportToState (fieldReport, stateData) {
     };
   }
 
+  state.externalPartners = fieldReport.external_partners.map(o => ({
+    label: o.name,
+    value: o.id.toString()
+  }));
+
+  state.supportedActivities = fieldReport.supported_activities.map(o => ({
+    label: o.name,
+    value: o.id.toString()
+  }));
+
   // get just YYYY-MM-DD from the full date timestamp
   if (fieldReport.start_date) {
     state.startDate = fieldReport.start_date.split('T')[0];
@@ -481,6 +517,12 @@ export function convertFieldReportToState (fieldReport, stateData) {
   state.status = fieldReport.status !== parseInt(formData.statusEarlyWarningValue)
     ? formData.statusEventValue
     : formData.statusEarlyWarningValue;
+
+  state.notes = {
+    health: fieldReport.notes_health,
+    ns: fieldReport.notes_ns,
+    socioeco: fieldReport.notes_socioeco
+  };
 
   const directMapping = [
     // [source, destination]
@@ -501,7 +543,10 @@ export function convertFieldReportToState (fieldReport, stateData) {
     ['epi_probable_cases', 'epiProbableCases'],
     ['epi_confirmed_cases', 'epiConfirmedCases'],
     ['epi_num_dead', 'epiNumDead'],
-    ['epi_figures_source', 'epiFiguresSource']
+    ['epi_cases_since_last_fr', 'epiCasesSinceLastFr'],
+    ['epi_deaths_since_last_fr', 'epiDeathsSinceLastFr'],
+    ['epi_figures_source', 'epiFiguresSource'],
+    ['epi_notes_since_last_fr', 'epiNotesSinceLastFr']
   ];
 
   directMapping.forEach(([src, dest]) => {
@@ -670,6 +715,7 @@ export function filterActions (actions, actionType, status) {
       value: action.id,
       label: action.name,
       category: action.category,
+      tooltip: action.tooltip_text
     };
   });
 }

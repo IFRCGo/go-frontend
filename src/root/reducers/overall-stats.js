@@ -109,52 +109,23 @@ function appealsListStats (state = appealsListStatsInitialState, action) {
       });
       break;
     case 'GET_APPEALS_LIST_STATS_SUCCESS':
-      const objs = action.data.results;
-      const now = Date.now();
-
-      // Aggregate number of DREFs, number of Appeals,
-      // percent funding, total budget, and targeted population
-      let struct = {
-        activeDrefs: 0,
-        activeAppeals: 0,
-        totalAppeals: 0,
-        budget: 0,
-        appealsBudget: 0,
-        appealsFunding: 0,
-        targetPop: 0
+      const data = action.data;
+      const resObj = {
+        activeDrefs: data.active_drefs || 0,
+        activeAppeals: data.active_appeals || 0,
+        totalAppeals: data.total_appeals || 0,
+        budget: data.amount_requested_dref_included || 0,
+        appealsBudget: data.amount_requested || 0,
+        appealsFunding: data.amount_funded || 0,
+        targetPop: data.target_population || 0
       };
-      struct = objs.reduce((acc, object) => {
-        const endTime = new Date(object.end_date).getTime();
-        const amountRequested = _toNumber(object.amount_requested);
-
-        acc.targetPop += object.num_beneficiaries || 0;
-        acc.budget += amountRequested;
-
-        // Drefs.
-        if (object.atype === 0) {
-          if (endTime > now) {
-            acc.activeDrefs++;
-          }
-
-        // Appeal.
-        } else if (object.atype === 1 || object.atype === 2) {
-          acc.totalAppeals++;
-          if (endTime > now) {
-            acc.activeAppeals++;
-          }
-          const amountFunded = _toNumber(object.amount_funded);
-          acc.appealsBudget += amountRequested;
-          acc.appealsFunding += amountFunded;
-        }
-        return acc;
-      }, struct);
 
       state = Object.assign({}, state, {
         fetching: false,
         fetched: true,
         receivedAt: action.receivedAt,
         data: {
-          stats: struct
+          stats: resObj
         }
       });
       break;

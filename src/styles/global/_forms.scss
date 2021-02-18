@@ -959,9 +959,9 @@ label[for] {
 
 .form__help {
   text-align: right;
-  font-size: $font-size-sm;
+  // font-size: $font-size-sm;
   color: rgba($base-font-color, 0.48);
-  margin-top: $global-spacing / 2;
+  margin-top: $global-spacing;
 
   > *:last-child {
     margin-bottom: 0;

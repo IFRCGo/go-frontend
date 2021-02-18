@@ -101,11 +101,13 @@ export default {
   registerSubmitError: 'There are errors in the form. Please correct them before submitting again.',
   registerAccountPresent: 'Already have an account?',
   registerGotoLogin: 'Go to login page',
-  registerLogin: 'Log in.',
+  registerLogin: 'Login',
 
   loginTitle: 'IFRC Go - Login',
   loginHeader: 'Login',
+  loginSubHeader: 'If you are staff, member or volunteer of the Red Cross Red Crescent Movement (National Societies, the IFRC and the ICRC) login with you email and password.',
   loginUsername: 'Username',
+  loginEmailUsername: 'Email/Username',
   loginPassword: 'Password',
   loginRecoverTitle: 'Recover password',
   loginForgotPassword: 'I forgot my password.',
@@ -113,12 +115,14 @@ export default {
   loginForgotUsername: 'I forgot my username only.',
   loginResendValidation: 'Re-send validation email.',
   loginResendValidationTitle: 'I didn\'t get my validation email',
+  loginForgotUserPass: 'Forgot your password/username?',
   loginInvalid: 'Invalid username or password',
   loginErrorMessage: 'Error: {message}',
   loginButton: 'Login',
   loginDontHaveAccount: 'Don’t have an account? ',
   loginCreateAccountTitle: 'Create new account',
-  loginSignUp: 'Sign Up.',
+  loginSignUp: 'Sign up',
+  loginKeep: 'Keep me logged in',
 
   accountUserGreeting: 'Hello {user}',
 
@@ -242,7 +246,7 @@ export default {
   recoverUsernameSubmitText: 'Send me my username',
 
   resendValidationTitle: 'IFRC Go - Re-send Validation Email',
-  resendValidationUsername: 'Enter the username you used during registration',
+  resendValidationUsername: 'Enter the email/username you used during registration',
   resendValidationUsernameLabel: 'Username',
   resendValidationSubmitText: 'Re-send',
 
@@ -539,6 +543,7 @@ export default {
   explanationBubbleEmergencyAppeal: 'Emergency appeal',
   explanationBubbleDref: 'DREF',
   explanationBubbleMovement: 'Movement response',
+  explanationBubbleEAP: 'Early Action Protocol Activation',
   explanationBubbleMultiple: 'Multiple types',
   explanationBubbleDeployments: 'Deployments',
   operationPopoverClose: 'Close popover',
@@ -672,6 +677,8 @@ export default {
   fieldReportProbableCases: 'Probable Cases: ',
   fieldReportConfirmedCases: 'Confirmed Cases: ',
   fieldReportDeadCases: 'Dead: ',
+  fieldReportCasesSince: 'Number of new cases since last Field Report',
+  fieldReportDeathsSince: 'Number of new deaths since last Field Report',
   fieldReportSource: 'Source',
   fieldReportAssistedByGovernment: 'Assisted by Government:',
   fieldReportAssistedRCRC: 'Assisted by RCRC Movement:',
@@ -1040,6 +1047,7 @@ export default {
   fieldsStep1DisasterTypeDescription: 'If Covid-19 select “Epidemic” as the disaster type',
 
   fieldsStep1StartDateLabelStartDate: 'Start Date *',
+  fieldsStep1StartDateLabelEPI: 'Start Date of emergency/outbreak *',
   fieldsStep1StartDateDescriptionEVT: 'Start date is when some significant effects are felt or when the first significant impact is felt.',
   fieldsStep1StartDateDescriptionEPI: 'The date when the first case is confirmed.',
   fieldsStep1StartDateLabelEW: 'Forecasted Date of Impact *',
@@ -1055,6 +1063,7 @@ export default {
   fieldsStep1NSAssistanceLabel: 'National Society requests international assistance?',
   fieldsStep1NSAssistanceDescription: 'Indicate if the National Society requested international assistance.',
 
+  fieldsStep2HeaderDescription: 'Note that it is not required to put case numbers into your Field Report, but you can input them if you choose to. WHO or your national Government authoritative figures should be used.',
   fieldsStep2OrganizationsEVTEWLabelRC: 'Red Cross / Red Crescent',
   fieldsStep2OrganizationsEVTEWLabelGovernment: 'Government',
   fieldsStep2OrganizationsLabelOther: 'Other',
@@ -1071,16 +1080,16 @@ export default {
   fieldsStep2SituationFieldsEVTAffectedDescription: 'Number of people requiring immediate assistance during a period of emergency; this may include displaced or evacuated people.',
   fieldsStep2SituationFieldsEVTDisplacedLabel: 'Displaced',
   fieldsStep2SituationFieldsEVTDisplacedDescription: 'Number of people displaced.',
-  fieldsStep2SituationFieldsEPICasesLabel: 'Cases',
-  fieldsStep2SituationFieldsEPICasesDescription: 'Number of registered cases.',
+  fieldsStep2SituationFieldsEPICasesLabel: 'Cumulative Cases',
+  fieldsStep2SituationFieldsEPICasesDescription: 'Number of registered cases since the start of the outbreak.',
   fieldsStep2SituationFieldsEPISuspectedCasesLabel: 'Suspected Cases',
   fieldsStep2SituationFieldsEPISuspectedCasesDescription: 'Number of suspected cases.',
   fieldsStep2SituationFieldsEPIProbableCasesLabel: 'Probable Cases',
   fieldsStep2SituationFieldsEPIProbableCasesDescription: 'Probable Cases.',
   fieldsStep2SituationFieldsEPIConfirmedCasesLabel: 'Confirmed Cases',
   fieldsStep2SituationFieldsEPIConfirmedCasesDescription: 'Confirmed Cases.',
-  fieldsStep2SituationFieldsEPIDeadLabel: 'Dead',
-  fieldsStep2SituationFieldsEPIDeadDescription: 'Number of people confirmed dead.',
+  fieldsStep2SituationFieldsEPIDeadLabel: 'Cumulative Dead',
+  fieldsStep2SituationFieldsEPIDeadDescription: 'Number of people confirmed dead since the start of the outbreak.',
   fieldsStep2SituationFieldsEWPotentiallyAffectedLabel: 'Potentially Affected',
   fieldsStep2SituationFieldsEWPotentiallyAffectedDescription: 'Number of people that are located in the geographic area where the hazard is likely to impact',
   fieldsStep2SituationFieldsEWHighestRiskLabel: 'People at Highest Risk',
@@ -1091,31 +1100,44 @@ export default {
   fieldsStep2SituationFieldsDateEPILabel: 'Date of Data',
   fieldsStep2SituationFieldsDateEPIEstimationLabel: 'The key figures above are reported as of this date',
   fieldsStep2SituationFieldsDateEPIDescription: 'Date of figures reported.',
+  fieldsStep2SituationFieldsEPICasesSinceDesciption: 'Number of registered cases since the last field report',
+  fieldsStep2SituationFieldsEPIDeathsSinceDescription: 'Number of confirmed dead since the last field report',
 
+  fieldsStep2NotesLabel: 'Notes',
+  fieldsStep2SourceOfFiguresLabel: 'Source (of figures)',
   fieldsStep2DescriptionEVTLabel: 'Situational Overview',
   fieldsStep2DescriptionEVTDescription: 'Describe the effects of the hazard, the current context, the affected population and how they have been affected.',
   fieldsStep2DescriptionEVTPlaceholder: 'Example: According to the local government, the overflow of the Zimbizi river has caused extensive flood water damage to low income housing along the river bank. The majority of the affected households do not have sufficient insurance coverage for their assets. The local branch of the National Society is currently assessing how to best support the most vulnerable families affected by the disaster.',
   fieldsStep2DescriptionEPILabel: 'Situational Overview',
   fieldsStep2DescriptionEPIDescription: 'Describe the primary and secondary effects on the health system and affected population.',
+  fieldsStep2DescriptionEPICOVDescription: `These questions are meant to function as a guide only:
+  Since the last Field Report:
+  - How has the situation evolved?
+  - How is the situation affecting your National Society and activities?
+  - Has this situation resulted in changes to the way your NS operates?
+  - How has the population been affected?
+  - Are particular groups or geographic locations being impacted more than others and why?`,
   fieldsStep2DescriptionEPIPlaceholder: 'Description of the epidemic',
+  fieldsStep2DescriptionCOVIDPlaceholder: 'Describe succinctly (bullet points, short statements) the primary and secondary effects. Please outline how the situation is evolving and what has changed since the last field report. Below are some guiding questions to help complete this section.',
   fieldsStep2DescriptionEWLabel: 'Risk Analysis',
   fieldsStep2DescriptionEWDescription: 'Brief overview of the potential disaster and projected impacts',
   fieldsStep2DescriptionEWPlaceholder: 'Hurricane Sirius is expected to hit the Whinging region early Tuesday morning. The system currently has sustained core wind speeds of 140km/h and gusts up to 170 km/h. The local government has started evacuating thousands of people. The Red Cross branch in Whinging has deployed staff and volunteers to communities at risk to support evacuation and to assist the population in protecting themselves and their livelihoods from the impacts of Sirius.',
 
   fieldsStep2SituationFieldsEstimation: 'Estimation',
+  fieldsStep2EPINotes: 'Notes: Please provide any additional details since the last field report about new geographic locations that are being affected, details on if certain population groups are being affected, and general perspective on if the situation is improving or deteriorating.',
 
   fieldsStep3Section1FieldsAssistedGovEVTEPILabel: 'Assisted by Government',
   fieldsStep3Section1FieldsAssistedGovEWLabel: 'Number of People Assisted by Government - Early Action',
   fieldsStep3Section1FieldsAssistedRCRCEVTEPILabel: 'Assisted by RCRC Movement',
   fieldsStep3Section1FieldsAssistedRCRCEWLabel: 'Number of People Assisted by RCRC Movement - Early Action',
-  fieldsStep3Section1FieldsLocalStaffEVTEPILabel: 'Number of NS Personnel Involved',
-  fieldsStep3Section1FieldsVolunteersEVTEPILabel: 'Number of Volunteers Involved',
+  fieldsStep3Section1FieldsLocalStaffEVTEPILabel: 'Number of NS Staff Involved',
+  fieldsStep3Section1FieldsVolunteersEVTEPILabel: 'Number of NS Volunteers Involved',
   fieldsStep3Section1FieldsExpatsEVTEPILabel: 'Number of RCRC Partner Personnel Involved',
   fieldsStep3Section1FieldsExpatsEVTEPIDescription: 'Personnel from IFRC, ICRC & PNS',
 
   fieldsStep3CheckboxSectionsNSActionsEVTEPILabel: 'Actions Taken by National Society Red Cross (if any)',
   fieldsStep3CheckboxSectionsNSActionsEWLabel: 'Early Actions Taken by NS',
-  fieldsStep3CheckboxSectionsNSActionsEVTEPIDescription: 'Select the activities undertaken by the National Society and briefly describe.',
+  fieldsStep3CheckboxSectionsNSActionsEVTEPIDescription: 'Since the beginning of the response, what activities has your NS undertaken? A short description is available for each activity and if your NS has been active in this area during this response, please select it by checking the box. There is a section to provide a description of the activities supported, in this section please focus on what is new since the last field report.',
   fieldsStep3CheckboxSectionsNSActionsEWDescription: 'Select the early action activities undertaken by the National Society and give a brief description',
   fieldsStep3CheckboxSectionsNSActionsEVTPlaceholder: 'Example: The two local branches of the National Society in the affected districts have provided first aid, psychosocial support and basic relief items to the affected families. An evacuation centre has been set up in a local school to accommodate those unable to return to their homes. Groups of Red Cross volunteers are helping the local search and rescue personnel in cleaning storm debris from houses and streets.',
   fieldsStep3CheckboxSectionsNSActionsEPIEWPlaceholder: 'Brief description of the action',
@@ -1123,7 +1145,11 @@ export default {
   fieldsStep3CheckboxSectionsFederationActionsEVTEPILabel: 'Actions taken by the IFRC',
   fieldsStep3CheckboxSectionsFederationActionsEWLabel: 'Early Actions Taken by IFRC',
   fieldsStep3CheckboxSectionsFederationActionsEVTEPIDescription: 'Select the activities taken by the IFRC (could be the Regional office, cluster office or country office) and briefly describe.',
-  fieldsStep3CheckboxSectionsFederationActionsEPICOVDescription: 'Describe the activities taken by the IFRC (could be the Regional office, cluster office or country office)',
+  fieldsStep3CheckboxSectionsFederationActionsEPICOVDescription: `In this section you can provide details as to how you have been working with the IFRC in this operation. To help in completing this section some prompting questions are below which are meant to function as a guide only:
+  - What role has the IFRC been playing in this operation?
+  - What actions has the IFRC taken to support this operation?
+  - What are the recent changes in the actions taken by the IFRC since the last field report?
+  - Are there any areas where you hope IFRC can support with?`,
   fieldsStep3CheckboxSectionsFederationActionsEWDescription: 'Select the early action activities undertaken by the IFRC and give a brief description',
   fieldsStep3CheckboxSectionsFederationActionsEVTEPIEWPlaceholder: 'Brief description of the action',
 
@@ -1131,14 +1157,27 @@ export default {
   fieldsStep3CheckboxSectionsPNSActionsEPILabel: 'Actions taken by other RCRC Movement',
   fieldsStep3CheckboxSectionsPNSActionsEWLabel: 'Early Action Taken by other RCRC Movement',
   fieldsStep3CheckboxSectionsPNSActionsEVTEPIDescription: 'Select the activities undertaken by any other RCRC Movement actor(s) and briefly describe.',
-  fieldsStep3CheckboxSectionsPNSActionsEPICOVDescription: 'Describe the activities undertaken by any other RCRC Movement actor(s)',
+  fieldsStep3CheckboxSectionsPNSActionsEPICOVDescription: `We understand multiple partners may be present so please highlight the main partners you have worked with since the last field report. Below are some guiding questions to help complete this section. These questions are meant to function as a guide only:
+  - Since the last Field Report who has your NS been working with and in what areas of support?
+  - Are there any interesting details about these RCRC partners that are not covered in the 3W?
+  - Are there any new partnerships that your NS may be working with looking forward?`,
   fieldsStep3CheckboxSectionsPNSActionsEWDescription: 'Select the early action activities undertaken by the RCRC Movement and give a brief description.',
   fieldsStep3CheckboxSectionsPNSActionsEVTEPIEWPlaceholder: 'Brief description of the action',
 
   fieldsStep3ActionsOthersEVTEPILabel: 'Actions Taken by Others (Governments, UN)',
   fieldsStep3ActionsOthersEWLabel: 'Early Actions Taken by Others (Governments, UN)',
   fieldsStep3ActionsOthersEVTEPIDescription: 'Who else was involved? UN agencies? NGOs? Government? Describe what other actors did. Also mention who the other actors are.',
+  fieldsStep3ActionsOthersEPICOVDescription: 'Who else is your National Society working with? UN agencies? NGOs? Government? Since the last field report, outline the main actors your NS has been engaged with. We understand there may be many partners so please just highlight the main ones since the last field report.',
   fieldsStep3ActionsOthersEWDescription: 'List the early action activities undertaken by other actors, mention who the other actors are, and give a brief description.',
+  fieldsStep3ActionsNotesPlaceholder: 'If selected any of the activities above, please provide brief details as to how individuals were reached by the activities listed above. We encourage you to consult the previous field report and to note any changes in actions (have new activities started or concluded?). Please highlight any key successes or challenges or unique learnings.',
+
+  fieldsStep3ExternalPartnersLabel: 'External partners',
+  fieldsStep3SupportedActivitiesLabel: 'Supported/partnered activities',
+  fieldsStep3CombinedLabelExternalSupported: 'External partners / Supported activities',
+
+  fieldsStep3TooltipDescriptionRCRC: 'Number of people who have received RCRC services to prevent COVID-19 transmission or provide healthcare, social, or economic services to reduce the impact of COVID-19. Note one person may receive multiple services.',
+  fieldsStep3TooltipDescriptionNS: 'Number of people currently involved in the response (mobilized for this specific response).',
+  fieldsStep3TooltipDescriptionVolunteers: 'Number of people currently involved in the response (mobilized for this specific response).',
 
   fieldsStep4PlannedResponseRowsDREFValueFieldLabel: 'Amount CHF',
   fieldsStep4PlannedResponseRowsDREFEVTEPILabel: 'DREF Requested',
@@ -1176,9 +1215,13 @@ export default {
   fieldReportConstantStatusEventLabel: 'Event',
   fieldReportConstantStatusEventDescription: 'First report for this disaster.',
 
+  fieldReportConstantVisibility: 'Visibility',
   fieldReportConstantVisibilityPublicLabel: 'Public',
   fieldReportConstantVisibilityRCRCMovementLabel: 'RCRC Movement',
   fieldReportConstantVisibilityIFRCSecretariatLabel: 'IFRC Secretariat',
+  fieldReportConstantVisibilityPublicTooltipTitle: 'Available to all stakeholders on the GO platform',
+  fieldReportConstantVisibilityRCRCMovementTooltipTitle: 'Available to those who have an IFRC GO login across the RCRC Movement',
+  fieldReportConstantVisibilityIFRCSecretariatTooltipTitle: 'Available to only those with an active IFRC account',
 
   fieldReportFormSubmitError: 'Could not submit field report',
   fieldReportFormErrorLabel: 'Error:',
@@ -1209,7 +1252,6 @@ export default {
   fieldReportFormRegionSelectPlaceholder: 'Select Provinces / Regions',
 
   fieldReportFormEPISourceOfFiguresLabel: 'Source (of figures)',
-  fieldReportFormEPISourceOfFiguresDescription: 'description',
 
   fieldReportFormSourceDetailsLabel: 'Source Details',
   fieldReportFormSourceDetailsPlaceholder: 'Add details for data with sources marked as Other above.',

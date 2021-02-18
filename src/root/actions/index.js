@@ -201,6 +201,20 @@ export function getActions () {
   return fetchJSON(`/api/v2/action/?${f}`, GET_ACTIONS);
 }
 
+export const GET_EXTERNAL_PARTNERS = 'GET_EXTERNAL_PARTNERS';
+export function getExternalPartners () {
+  let filters = {limit: 500};
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v2/external_partner/?${f}`, GET_EXTERNAL_PARTNERS);
+}
+
+export const GET_SUPPORTED_ACTIVITIES = 'GET_SUPPORTED_ACTIVITIES';
+export function getSupportedActivities () {
+  let filters = {limit: 500};
+  const f = buildAPIQS(filters);
+  return fetchJSON(`/api/v2/supported_activity/?${f}`, GET_SUPPORTED_ACTIVITIES);
+}
+
 export const GET_SURGE_ALERTS = 'GET_SURGE_ALERTS';
 export function getSurgeAlerts (page = 1, filters = {}) {
   filters.limit = filters.limit || 5;
@@ -225,17 +239,16 @@ export function getAppealsList () {
 export const GET_APPEALS_LIST_STATS = 'GET_APPEALS_LIST_STATS';
 export function getAppealsListStats ({countryId = null, regionId = null} = {}) {
   const filters = {
-    end_date__gt: DateTime.utc().toISO(),
-    limit: 1000
   };
-  if (countryId) {
+  // Needs !== null, otherwise ID 0 == false
+  if (typeof(countryId) === 'number') {
     filters.country = countryId;
   }
-  if (regionId) {
+  if (typeof(regionId) === 'number') {
     filters.region = regionId;
   }
   const f = buildAPIQS(filters);
-  return fetchJSON(`api/v2/appeal/?${f}`, GET_APPEALS_LIST_STATS, withToken());
+  return fetchJSON(`api/v2/appeal/aggregated/?${f}`, GET_APPEALS_LIST_STATS, withToken());
 }
 
 export const GET_AGGREGATE_APPEALS = 'GET_AGGREGATE_APPEALS';
@@ -829,4 +842,9 @@ export function getRegionsAllAction () {
 export const GET_DISASTER_TYPES = 'GET_DISASTER_TYPES';
 export function getDisasterTypes () {
   return fetchJSON('api/v2/disaster_type', GET_DISASTER_TYPES);
+}
+
+export const GET_MAIN_CONTACTS = 'GET_MAIN_CONTACTS';
+export function getMainContacts () {
+  return fetchJSON('api/v2/main_contact/?limit=200', GET_MAIN_CONTACTS);
 }

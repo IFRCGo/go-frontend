@@ -7,7 +7,7 @@ import { Helmet } from 'react-helmet';
 
 import { getAuthToken } from '#actions';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
-import BreadCrumb from '#components/breadcrumb';
+// import BreadCrumb from '#components/breadcrumb';
 
 
 import App from './app';
@@ -97,10 +97,10 @@ class Login extends React.Component {
         <Helmet>
           <title>{strings.loginTitle}</title>
         </Helmet>
-        <BreadCrumb crumbs={[
+        {/* <BreadCrumb crumbs={[
           {link: '/login', name: strings.breadCrumbLogin},
           {link: '/', name: strings.breadCrumbHome}
-        ]} />
+        ]} /> */}
         <section className='inpage'>
           <header className='inpage__header'>
             <div className='inner'>
@@ -114,10 +114,14 @@ class Login extends React.Component {
             </div>
           </header>
           <div className='inpage__body'>
-            <div className='inner container-lg'>
-              <form className='form form--centered' onSubmit={this.onSubmit}>
+            <div className='inner container-sm'>
+              <form className='form' onSubmit={this.onSubmit}>
+                <p className='inpage__subheader'>
+                  <Translate stringId='loginSubHeader' />
+                </p>
+
                 <FormInput
-                  label={strings.loginUsername}
+                  label={strings.loginEmailUsername}
                   type='text'
                   name='login-username'
                   id='login-username'
@@ -131,25 +135,35 @@ class Login extends React.Component {
                   name='login-password'
                   id='login-password'
                   value={this.state.data.password}
-                  onChange={this.onFieldChange.bind(this, 'password')} >
-
+                  onChange={this.onFieldChange.bind(this, 'password')}
+                >
+                  {/* TODO: keep me logged in */}
                   <p className='form__help'>
-                    <Link to='/recover-account' title={strings.loginRecoverTitle}><span><Translate stringId='loginForgotPassword' /></span></Link>
+                    <Link to='/recover-account' className='text-underlined' title={strings.loginRecoverTitle}>
+                      <span><Translate stringId='loginForgotUserPass' /></span>
+                    </Link>
+                    {/* <br/>
+                    <Link to='/recover-username' title={strings.loginShowUsernameTitle}>
+                      <span><Translate stringId='loginForgotUsername' /></span>
+                    </Link> */}
                     <br/>
-                    <Link to='/recover-username' title={strings.loginShowUsernameTitle}><span><Translate stringId='loginForgotUsername' /></span></Link>
-                    <br/>
-                    <Link to='/resend-validation' title={strings.loginResendValidationTitle}><span><Translate stringId='loginResendValidation' /></span></Link>
+                    <Link to='/resend-validation' className='text-underlined' title={strings.loginResendValidationTitle}>
+                      <span><Translate stringId='loginResendValidation' /></span>
+                    </Link>
                   </p>
                 </FormInput>
-
                 {this.renderError()}
-                <div className='form__footer'>
-                  <button className={c('mfa-tick', { disabled: !this.allowSubmit() })} type='submit' onClick={this.onSubmit}>
+                <hr />
+                <div className='form__footer text-center'>
+                  <button
+                    className={c('button button--primary-filled button--small', { disabled: !this.allowSubmit() })}
+                    type='submit' onClick={this.onSubmit}
+                  >
                     <Translate stringId='loginButton' />
                   </button>
                   <p>
                     <Translate stringId='loginDontHaveAccount' />
-                    <Link to='/register' title={strings.loginCreateAccountTitle}>
+                    <Link className='login-link' to='/register' title={strings.loginCreateAccountTitle}>
                       <Translate stringId='loginSignUp' />
                     </Link>
                   </p>

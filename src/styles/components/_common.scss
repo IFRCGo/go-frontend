@@ -346,3 +346,8 @@
     margin-inline-end: 30px;
   }
 }
+
+.login-link {
+  @include link-underline;
+  padding-left: $spacing / 2;
+}

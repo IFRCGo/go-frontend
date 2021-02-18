@@ -231,6 +231,21 @@ class FieldReport extends React.Component {
                 <Translate stringId='fieldReportDeadCases'/>
               </dt>
               <dd>{n(get(data, 'epi_num_dead'))}</dd>
+              { data.is_covid_report
+                ? (
+                  <React.Fragment>
+                    <dt>
+                      <Translate stringId='fieldReportCasesSince'/>
+                    </dt>
+                    <dd>{n(get(data, 'epi_cases_since_last_fr'))}</dd>
+                    <dt>
+                    <Translate stringId='fieldReportDeathsSince'/>
+                    </dt>
+                  </React.Fragment>
+                )
+                : null
+              }
+              <dd>{n(get(data, 'epi_deaths_since_last_fr'))}</dd>
               { data.dtype.id === 1
                 ? (
                   <p className='epi-figures-source'>
