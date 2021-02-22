@@ -278,6 +278,7 @@ export const allLanguagesSelector = (state) => {
     let objToArray = [];
     Object.keys(excelReadyObj).map(key => {
       objToArray.push([key, ...excelReadyObj[key]]);
+      return null; // linter needs a return
     });
     return objToArray;
   }
