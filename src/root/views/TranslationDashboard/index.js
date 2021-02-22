@@ -14,6 +14,8 @@ import {
 import {
   postLanguageBulkAction,
   getLanguageAction,
+  getAllLanguagesAction,
+  resetAllLanguagesAction
 } from '#actions';
 import lang from '#lang';
 
@@ -22,6 +24,7 @@ import {
   languageDataSelector,
   languageBulkResponseSelector,
   languageResponseSelector,
+  allLanguagesSelector
 } from '#selectors';
 
 
@@ -87,6 +90,10 @@ function TranslationDashboard(p) {
     languageResponse,
     languageBulkResponse,
     getLanguage,
+    getAllLanguages,
+    resetAllLanguages,
+    allLanguages,
+    langAll
   } = p;
 
   const handleExportButtonClick = React.useCallback(() => {
@@ -100,6 +107,26 @@ function TranslationDashboard(p) {
 
     sheet.writeFile(wb, 'go-strings.xlsx');
   }, []);
+
+  const handleExportAllClick = React.useCallback(() => {
+    if (!langAll.fetched && !langAll.fetching) {
+      getAllLanguages();
+    }
+  }, [langAll, getAllLanguages]);
+
+  React.useEffect(() => {
+    if (allLanguages) {
+      const ws = sheet.utils.aoa_to_sheet([
+        ['ID', 'dev', 'en', 'fr', 'es', 'ar'],
+        ...allLanguages,
+      ]);
+      const wb = sheet.utils.book_new();
+      sheet.utils.book_append_sheet(wb, ws);
+
+      sheet.writeFile(wb, 'go-strings-all.xlsx');
+      resetAllLanguages();
+    }
+  }, [allLanguages, resetAllLanguages]);
 
   const conflictedViewKeys = React.useMemo(() => Object.keys(conflictedViews), []);
   const [currentView, setCurrentView] = React.useState(conflictedViewKeys[0]);
@@ -337,6 +364,12 @@ function TranslationDashboard(p) {
             >
               Export dev strings
             </button>
+            <button
+              onClick={handleExportAllClick}
+              className='button button--secondary-bounded'
+            >
+              Export ALL strings
+            </button>
             <LanguageSelect />
           </div>
         </div>
@@ -470,11 +503,15 @@ const mapStateToProps = (state, props) => ({
   currentLanguage: currentLanguageSelector(state),
   languageData: languageDataSelector(state),
   languageResponse: languageResponseSelector(state),
+  allLanguages: allLanguagesSelector(state),
+  langAll: state.langAll
 });
 
 const mapDispatchToProps = (dispatch) => ({
   postLanguageBulk: (...args) => dispatch(postLanguageBulkAction(...args)),
   getLanguage: (...args) => dispatch(getLanguageAction(...args)),
+  getAllLanguages: (...args) => dispatch(getAllLanguagesAction(...args)),
+  resetAllLanguages: (...args) => dispatch(resetAllLanguagesAction(...args))
 });
 
 export default connect(
