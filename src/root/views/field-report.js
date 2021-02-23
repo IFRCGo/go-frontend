@@ -119,6 +119,12 @@ class FieldReport extends React.Component {
       }
     );
 
+    const notesMap = {
+      'Health': data.notes_health,
+      'NS Institutional Strengthening': data.notes_ns,
+      'Socioeconomic Interventions': data.notes_socioeco
+    };
+
     return (
       <DisplaySection title={title}>
         {groupedActions.map(category => (
@@ -127,6 +133,7 @@ class FieldReport extends React.Component {
             <ul className='actions-list'>
               {category.options.map((d, i) => <li key={`action-${i}`}>{d.name}</li>)}
             </ul>
+            <p>Notes: {notesMap[category.label]}</p>
           </React.Fragment>
         ))}
 
@@ -205,7 +212,9 @@ class FieldReport extends React.Component {
           <React.Fragment>
             <dl className='dl-horizontal numeric-list'>
               <dt>
-                <Translate stringId='fieldReportCases'/>
+                { data.is_covid_report
+                  ? (<Translate stringId='fieldsStep2SituationFieldsEPICasesLabel' />)
+                  : (<Translate stringId='fieldReportCases' />) }
               </dt>
               <dd>{n(get(data, 'epi_cases'))}</dd>
               { !data.is_covid_report
@@ -228,7 +237,9 @@ class FieldReport extends React.Component {
                 : null
               }
               <dt>
-                <Translate stringId='fieldReportDeadCases'/>
+                { data.is_covid_report
+                    ? (<Translate stringId='fieldsStep2SituationFieldsEPIDeadLabel' />)
+                    : (<Translate stringId='fieldReportDeadCases' />) }
               </dt>
               <dd>{n(get(data, 'epi_num_dead'))}</dd>
               { data.is_covid_report
@@ -441,10 +452,14 @@ class FieldReport extends React.Component {
     return (
       <React.Fragment>
         <DisplaySection title={strings.fieldReportNumericTitle}>
-          <div className='row flex-xs'>        
+          <div className='row flex-xs'>
             { status === 'EVT' ? evtHtml : ewHtml }
           </div>
         </DisplaySection>
+        <DisplaySection
+          title={strings.fieldsStep2NotesLabel}
+          inner={get(data, 'epi_notes_since_last_fr', '')}
+        />
         <DisplaySection
           title={strings.fieldReportSourcesOther}
           inner={get(data, 'other_sources', false)}
@@ -591,6 +606,24 @@ class FieldReport extends React.Component {
                 {this.renderActionsTaken(data, 'FDRN', strings.fieldReportIFRCLabel)}
                 {this.renderActionsTaken(data, 'PNS', strings.fieldReportPNSLabel) /* instead of PNS Red Cross, go-frontend/issues/822 */ }
                 <DisplaySection title={strings.fieldReportActionTaken} inner={get(data, 'actions_others', false)} />
+                <DisplaySection title={strings.fieldsStep3CombinedLabelExternalSupported}>
+                  <div className='row flex-sm'>
+                    <div className='col col-2-sm'>
+                      <ul className='actions-list'>
+                        {data.external_partners.map(exp => (
+                          <li key={`${exp.id}${exp.name}`}>{exp.name}</li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className='col col-2-sm'>
+                      <ul className='actions-list'>
+                        {data.supported_activities.map(sup => (
+                          <li key={`${sup.id}${sup.name}`}>{sup.name}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </DisplaySection>
                 {data.is_covid_report && this.renderPlannedResponse(data)}
                 {this.renderSources(data)}
                 {this.renderContacts(data)}
