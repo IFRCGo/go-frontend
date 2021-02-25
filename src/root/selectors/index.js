@@ -6,6 +6,8 @@ import { defaultInitialState } from '#utils/reducer-utils';
 import { compareString } from '#utils/utils';
 import { palestineLabel } from '#utils/special-map-labels';
 
+import lang from '#lang';
+
 const initialState = { ...defaultInitialState };
 
 export const countriesSelector = (state) => {
@@ -241,6 +243,47 @@ export const languageBulkResponseSelector = (state) => (
 export const currentLangugageSelector = (state) => (
   languageSelector(state).current || 'en'
 );
+
+export const allLanguagesSelector = (state) => {
+  if (state.langAll.fetched && state.langAll.data) {
+    let excelReadyObj = state.langAll.data.reduce((result, item) => {
+      //                                                         dev         en, fr, es, ar
+      const keyObj = result[item.key] = result[item.key] || [lang[item.key], '', '', '', ''];
+      switch (item.language) {
+        case 'en':
+          keyObj[1] = item.value;
+          break;
+        case 'fr':
+          keyObj[2] = item.value;
+          break;
+        case 'es':
+          keyObj[3] = item.value;
+          break;
+        case 'ar':
+          keyObj[4] = item.value;
+          break;
+        default:
+          break;
+      }
+      return result;
+    });
+
+    // First few elements are weird, we don't need those
+    delete excelReadyObj.id;
+    delete excelReadyObj.key;
+    delete excelReadyObj.hash;
+    delete excelReadyObj.value;
+    delete excelReadyObj.language;
+
+    let objToArray = [];
+    Object.keys(excelReadyObj).map(key => {
+      objToArray.push([key, ...excelReadyObj[key]]);
+      return null; // linter needs a return
+    });
+    return objToArray;
+  }
+  return null;
+};
 
 export const userResponseSelector = (state) => (
   state.me || {}

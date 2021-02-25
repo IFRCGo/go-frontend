@@ -829,6 +829,16 @@ export const postLanguageBulkAction = (langCode, data) => {
   return postJSON(`/api/v2/language/${langCode}/bulk-action/`, POST_LANGUAGE_BULK, data, withToken());
 };
 
+export const GET_ALL_LANGUAGES = 'GET_ALL_LANGUAGES';
+export const getAllLanguagesAction = () => {
+  return fetchJSON('/api/v2/language/all', GET_ALL_LANGUAGES);
+};
+
+export const RESET_ALL_LANGUAGES = 'RESET_ALL_LANGUAGES';
+export function resetAllLanguagesAction () {
+  return { type: RESET_ALL_LANGUAGES };
+}
+
 export const GET_COUNTRIES_ALL = 'GET_COUNTRIES_ALL';
 export function getCountriesAllAction () {
   return fetchJSON('api/v2/country/?limit=1000', GET_COUNTRIES_ALL);
