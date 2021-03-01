@@ -106,6 +106,17 @@ export function dataPathToDisplay (path, keyword) {
   return index[path];
 }
 
+/**
+ * NullBoolean sets data for None types from API
+ * 
+ * @param {*} val - value from API
+ */
+export function NullBoolean(val) {
+  if (!val) return val;
+  else return Boolean(val === 'true');
+}
+
+
 export function prepStateForValidation (state) {
   state = _cloneDeep(state);
 
@@ -235,8 +246,8 @@ export function convertStateToPayload (originalState) {
   });
 
   // Boolean values
-  state.request_assistance = Boolean(originalState.assistance === 'true');
-  state.ns_request_assistance = Boolean(originalState.nsAssistance === 'true');
+  state.request_assistance = NullBoolean(originalState.assistance);
+  state.ns_request_assistance = NullBoolean(originalState.nsAssistance);
   state.is_covid_report = Boolean(originalState.isCovidReport === 'true');
   // For these properties when the source is the Red Cross use the provided,
   // when it's Government prepend gov_. This results in:
