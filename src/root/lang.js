@@ -548,7 +548,7 @@ export default {
   explanationBubbleDeployments: 'Deployments',
   operationPopoverClose: 'Close popover',
   operationPopoverDismiss: 'Dismiss',
-  operationPopoverPeopleAffected: 'People Affected',
+  operationPopoverPeopleAffected: 'People Targeted',
   operationPopoverAmountRequested: 'Amount Requested (CHF)',
   operationPopoverAmountFunded: 'Amount Funded (CHF)',
   operationPopoverActivity: 'Activity: {activity}',
