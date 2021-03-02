@@ -252,6 +252,9 @@ class AdminArea extends SFPComponent {
       <Link className='fold__title__link' to={'/appeals/all?region=' + data.id}>{resolveToString(strings.regionAppealsTableViewAllText, { regionName: regionName })}</Link>
     );
 
+    const countriesInSlider = this.props.countriesByRegion[regionId].filter(d => d.iso &&
+      (d.hasOwnProperty('independent') && (d.independent || d.independent === undefined || d.independent === null))
+    );
     // const tabDetails = this.getTabDetails().map(d => {
     //   d.title = d.hash === '#additional-info' ? additionalTabName : d.title;
     //   return d;
@@ -295,7 +298,7 @@ class AdminArea extends SFPComponent {
 
             <CountryList
               showCountriesSidebar={this.state.showCountriesSidebar}
-              countries={this.props.countriesByRegion[regionId]}
+              countries={countriesInSlider}
               appealStats={this.props.appealStats}
             />
           </div>
