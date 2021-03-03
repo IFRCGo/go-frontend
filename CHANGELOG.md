@@ -1,3 +1,7 @@
+### Release 4.5.1 - Hotfix for bug on region page
+
+ - Hotfix for #1831
+
 ### Release 4.5.0
 
 #### Map Styling Updates: https://github.com/IFRCGo/go-frontend/issues/1202
