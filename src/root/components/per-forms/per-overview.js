@@ -185,7 +185,7 @@ function PerOverview (props) {
             classWrapper='form__group__per'
             onChange={(e) => handleChange(e)}
             disabled={!editable}
-            // description={fields.sitFieldsDate[status].desc}
+            description='(PER, DRCE, WPNS)'
           >
             <FormError
               errors={[]}
