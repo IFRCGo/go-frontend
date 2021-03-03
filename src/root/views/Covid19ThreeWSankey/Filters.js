@@ -46,7 +46,7 @@ function NSActivitiesFilters (p) {
     (data.nodes || []).filter(d => d.type === 'supporting_ns').map(d => ({
       label: d.name,
       value: d.id,
-      countryName: countriesByIso[d.iso].name || '',
+      countryName: countriesByIso[d.iso]?.name || '',
     })).sort((a, b) => a.countryName.localeCompare(b.countryName)),
     (data.nodes || []).filter(d => d.type === 'sector').map(toLabelValue).sort(compareString),
     (data.nodes || [])
