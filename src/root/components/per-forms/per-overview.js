@@ -30,7 +30,6 @@ function PerOverview (props) {
     overviewState,
     setOverviewState,
     editable,
-    origCountry,
     errors
   } = props;
 
@@ -77,7 +76,7 @@ function PerOverview (props) {
         assessment_number: prevOverviewState.assessment_number + 1 || 1
       });
     }
-  }, [prevCountryRef, prevOverviewState]);
+  }, [prevCountryRef, prevOverviewState, overviewState, setOverviewState]);
 
   return (
     <React.Fragment>
