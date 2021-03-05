@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
@@ -17,7 +17,9 @@ import Select from 'react-select';
 
 function PerOverview (props) {
   const { strings } = useContext(LanguageContext);
+  const prevCountryRef = useRef(null);
   const [prevOverviewState, setPrevOverviewState] = useState({
+    country_id: null,
     assessment_number: null,
     date_of_assessment: null,
     type_of_assessment: null
@@ -50,21 +52,32 @@ function PerOverview (props) {
   useEffect(() => {
     if (!overviewState.country_id) {
       setPrevOverviewState({
+        country_id: null,
         assessment_number: null,
         date_of_assessment: null,
         type_of_assessment: null
       });
     } else if (!props.perLatestOverview.fetching && props.perLatestOverview.fetched && !props.perLatestOverview.error) {
-      setPrevOverviewState(props.perLatestOverview.data?.results[0]);
+      // keep it this way, we need to update even if this is null
+      setPrevOverviewState(props.perLatestOverview.data?.results[0] || {
+        country_id: null,
+        assessment_number: null,
+        date_of_assessment: null,
+        type_of_assessment: null
+      });
     }
   }, [overviewState.country_id, props.perLatestOverview]);
 
-  const assessment_number = useMemo(() => {
-    if (overviewState.country_id !== origCountry) {
-      return prevOverviewState?.assessment_number + 1 || 1;
+  // Only update the Assessment number if the Country has changed
+  useEffect(() => {
+    if (prevCountryRef.current !== prevOverviewState.country_id) {
+      prevCountryRef.current = prevOverviewState.country_id;
+      setOverviewState({
+        ...overviewState,
+        assessment_number: prevOverviewState.assessment_number + 1 || 1
+      });
     }
-    return overviewState.assessment_number;
-  }, [origCountry, overviewState, prevOverviewState]);
+  }, [prevCountryRef, prevOverviewState]);
 
   return (
     <React.Fragment>
@@ -148,10 +161,9 @@ function PerOverview (props) {
             type='number'
             name='assessment_number'
             id='assessment_number'
-            value={assessment_number}
+            value={overviewState.assessment_number || 1}
             classWrapper='form__group__per'
-            // onChange={}
-            disabled={true}
+            onChange={(e) => handleChange(e)}
             description={strings.perOverviewAsmtNumberDescription}
             inputCol={6}
           >
