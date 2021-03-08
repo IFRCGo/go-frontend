@@ -178,7 +178,7 @@ class Register extends React.Component {
 
   renderAdditionalInfo () {
     const { strings } = this.context;
-    const countriesList = countries(this.props.countries);
+    const countriesList = countries(this.props.countries, true);
     return (
       <div className='form__hascol form__hascol--2'>
         <div className='form__group'>
