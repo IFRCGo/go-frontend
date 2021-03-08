@@ -221,8 +221,8 @@ class ProjectForm extends React.PureComponent {
   }
 
   getCountryAndNationalSocietyOptions = (countries) => {
-    const countryList = getResultsFromResponse(countries);
-
+    let countryList = getResultsFromResponse(countries);
+    countryList = countryList.filter(c => c.independent !== false && c.record_type === 1);
     const nationalSocietyOptions = countryList
       .filter(d => d.society_name)
       .map(d => ({
@@ -231,10 +231,7 @@ class ProjectForm extends React.PureComponent {
       })).sort(compareString);
 
     const countryOptions = countryList
-      .filter(d => d.iso &&
-        // make sure either this country is explicitly independent or undefined or null. But not false.
-        (d.hasOwnProperty('independent') && (d.independent || d.independent === undefined || d.independent === null))
-      )
+      .filter(d => d.iso)
       .map(d => ({
         value: d.id,
         label: d.name,
