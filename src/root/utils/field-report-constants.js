@@ -52,9 +52,7 @@ export const countries = (countries, independent=false) => {
   if (independent) {
     countriesSelectList = countriesSelectList
     .filter(
-        country => (country.independent === true
-        || country.independent === undefined
-        || country.independent === null)
+        country => country.independent === true
       );
   }
 
