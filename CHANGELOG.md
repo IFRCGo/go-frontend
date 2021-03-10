@@ -1,3 +1,11 @@
+### Release 4.5.2: Geo-fixes and minor improvements
+
+ - Fix country and NS drop-downs through-out site to filter countries correctly: #1845 
+ - Point Admin links to more consistent URL: #1360 
+ - Allow PER Assessment numbers to be editable.
+ - Design changes to home-page map
+
+
 ### Release 4.5.1 - Hotfix for bug on region page
 
  - Hotfix for #1831
