@@ -40,7 +40,9 @@ export const countriesSelector = (state) => {
 export const nsDropdownSelector = (state) => {
   if (state.allCountries.data.results && state.allCountries.data.results.length) {
     return state.allCountries.data.results.reduce((result, country) => {
-      if (country.society_name) {
+
+      // Only countries with NS names and independent=True (exclude null values)
+      if (country.society_name && country.independent === true) {
         result.push({
           'value': country.id,
           'label': country.society_name

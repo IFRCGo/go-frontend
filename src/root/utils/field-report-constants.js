@@ -45,22 +45,19 @@ export const getVisibility = (strings) => [
 // directly in a select dropdown
 export const countries = (countries, independent=false) => {
   let countriesSelectList = [];
-  if (countries[0].hasOwnProperty('value') && countries[0].hasOwnProperty('label')) {
-    countriesSelectList = countries;
-  } else {
-    countriesSelectList = countries.map(country => ({ value: country.id, label: country.name }));
-  }
 
   // show only independent countries (country and region) (include countries with empty or unavailable 'independent' prop)
-  countriesSelectList = countries.filter(country => country.record_type === 1 || country.record_type === 3);
+  countriesSelectList = countries.filter(country => country.record_type === 1);
 
   if (independent) {
     countriesSelectList = countriesSelectList
     .filter(
-        country => (country.independent === true
-        || country.independent === undefined
-        || country.independent === null)
+        country => country.independent === true
       );
+  }
+
+  if (!countries[0].hasOwnProperty('value') && !countries[0].hasOwnProperty('label')) {
+    countriesSelectList = countries.map(country => ({ value: country.id, label: country.name }));
   }
 
   return [

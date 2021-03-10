@@ -20,7 +20,7 @@ export default function newMap (container, mapStyle = 'mapbox://styles/go-ifrc/c
     pitchWithRotate: false,
     dragRotate: false,
     renderWorldCopies: true,
-    attributionControl: false,
+    attributionControl: true,
     preserveDrawingBuffer: true,
     ...mapOptions,
   });

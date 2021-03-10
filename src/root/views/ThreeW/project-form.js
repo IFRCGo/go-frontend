@@ -221,20 +221,20 @@ class ProjectForm extends React.PureComponent {
   }
 
   getCountryAndNationalSocietyOptions = (countries) => {
-    const countryList = getResultsFromResponse(countries);
+    let countryList = getResultsFromResponse(countries);
+    countryList = countryList.filter(c => c.record_type === 1);
 
     const nationalSocietyOptions = countryList
       .filter(d => d.society_name)
+      .filter(c => c.independent !== false) // includes null values (ICRC / IFRC)
       .map(d => ({
         value: d.id,
         label: d.society_name,
       })).sort(compareString);
 
     const countryOptions = countryList
-      .filter(d => d.iso &&
-        // make sure either this country is explicitly independent or undefined or null. But not false.
-        (d.hasOwnProperty('independent') && (d.independent || d.independent === undefined || d.independent === null))
-      )
+      .filter(d => d.iso)
+      .filter(c => c.independent === true)  // excludes null values (ICRC / IFRC)
       .map(d => ({
         value: d.id,
         label: d.name,

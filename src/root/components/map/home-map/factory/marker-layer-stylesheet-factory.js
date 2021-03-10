@@ -12,11 +12,11 @@ class MarkerLayerStylesheetFactory {
       property: 'atype',
       type: 'categorical',
       stops: [
-        ['DREF', '#c02c2c'],
-        ['Appeal', '#f63440'],
+        ['DREF', '#ff9e00'],
+        ['Appeal', '#f5333f'],
         ['Movement', '#CCCCCC'],
-        ['Mixed', '#ff9e00'],
-        ['EAP Activation', '#554c9d']
+        ['Mixed', '#ff6b00'],
+        ['EAP Activation', '#4c5d9b']
       ]
     };
     const cradius = this.getCircleRadiusPaintProp(geoJSON, scaleBy);

@@ -18,7 +18,7 @@ import {
   sectors,
   statuses,
 } from '#utils/constants';
-import { api } from '#config';
+import { adminUrl } from '#config';
 
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
@@ -130,7 +130,7 @@ export default class ProjectListTable extends React.PureComponent {
                 </button>
                 <a
                   className='button'
-                  href={url.resolve(api, `deployments/project/${d.id}/history/`)}
+                  href={url.resolve(adminUrl, `deployments/project/${d.id}/history/`)}
                 >
                   <MdHistory className='tc-icon' />
                   <div className='tc-label'>

@@ -50,10 +50,6 @@ class ExplanationBubble extends React.Component {
               <dd>
                 <Translate stringId='explanationBubbleEAP'/>
               </dd>
-              <dt className='color color--grey'>Grey</dt>
-              <dd>
-                <Translate stringId='explanationBubbleMovement'/>
-              </dd>
               <dt className='color color--map-yellow'>Grey</dt>
               <dd>
                 <Translate stringId='explanationBubbleMultiple'/>
