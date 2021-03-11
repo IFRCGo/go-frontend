@@ -11,7 +11,6 @@ export function filtering (geoJSON, comparator) {
       iso: d.properties.iso,
       appeals: appeals
     });
-    // console.log('properties', properties);
     return {
       geometry: d.geometry,
       properties
