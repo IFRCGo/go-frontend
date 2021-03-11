@@ -9,12 +9,12 @@ export function filtering (geoJSON, comparator) {
       id: d.properties.id,
       name: d.properties.name,
       iso: d.properties.iso,
-      appeals: d.properties.appeals
+      appeals: appeals
     });
     return {
       geometry: d.geometry,
       properties
     };
-  });
+  }).filter(feature => feature.properties.appeals.length > 0);
   return { type: 'FeatureCollection', features };
 }
