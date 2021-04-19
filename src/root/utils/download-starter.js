@@ -26,7 +26,6 @@ export function startDownload (data, filename) {
     const link = document.createElement('a');
 
     link.setAttribute('href', dataUri);
-    console.info('link');
     link.setAttribute('download', filename);
     link.innerHTML = 'Download';
     document.body.appendChild(link);

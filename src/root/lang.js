@@ -875,6 +875,7 @@ export default {
   expandableShowLess: 'Show less',
   expandableShowMore: 'Show more',
   exportButtonExportTable: 'Export Table',
+  exportButtonDownloadingProgress: 'Downloading... {progress}%',
   globalHeaderBannerTitle: 'COVID-19 global situational information and technical guidance available {link}.',
   globalHeaderBannerHere: 'here',
   globalHeaderBannerSurveyTitle: 'Take 5 mins to tell us what you think - {link}',

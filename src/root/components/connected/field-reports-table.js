@@ -102,9 +102,14 @@ function ExportAllFieldReportButton({ className }) {
       )}
     >
       { pending ? (
-        `Downloading... ${progress}%`
+        <Translate
+          stringId='exportButtonDownloadingProgress'
+          params={{
+            progress,
+          }}
+        />
       ) : (
-        'Export'
+        <Translate stringId='exportButtonExportTable'/>
       )}
     </button>
   );
