@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { get as getFromLocalStorage } from 'local-storage';
 import csvParse from 'csv-parse/lib/sync';
 import {resolve as resolveUrl} from 'url';
 import { isFalsyString } from '@togglecorp/fujs';
@@ -27,7 +28,7 @@ const defaultOtherOptions = {
 };
 
 function withAuthToken(options = defaultRequestOptions) {
-  const user = localStorage.get('user');
+  const user = getFromLocalStorage('user');
 
   if (!user) {
     return options;
@@ -211,7 +212,7 @@ export function useRecursiveFetch(url) {
   return [pending, data, total];
 }
 
-const PAGE_SIZE = 200;
+const PAGE_SIZE = 500;
 export function useRecursiveCsvFetch(url) {
   const [requestOptions, setRequestOptions] = React.useState(defaultRequestOptions);
   const [currentUrl, setCurrentUrl] = React.useState('');
