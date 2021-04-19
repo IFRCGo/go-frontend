@@ -5,6 +5,7 @@ import { isFalsyString } from '@togglecorp/fujs';
 import AbortController from 'abort-controller';
 import { api } from '#config';
 
+
 // Type of RequestInit
 export const defaultRequestOptions = {
   headers: {
@@ -24,6 +25,27 @@ const defaultOtherOptions = {
   preserveResponse: true,
   debug: false,
 };
+
+function withAuthToken(options = defaultRequestOptions) {
+  const user = localStorage.get('user');
+
+  if (!user) {
+    return options;
+  }
+
+  const isSessionExpired = Date.parse(user.expires) <= Date.now();
+  if (isSessionExpired) {
+    return options;
+  }
+
+  if (!options.headers) {
+    options.headers = {};
+  }
+
+  options.headers['Authorization'] = `Token ${user.token}`;
+
+  return options;
+}
 
 function useRequest(
   url: string | undefined,
@@ -138,7 +160,7 @@ function useRequest(
         }
       }
 
-      fetchResource(fullUrl, requestOptions, clientIdRef.current);
+      fetchResource(fullUrl, withAuthToken(requestOptions), clientIdRef.current);
 
       return () => {
         controller.abort();
@@ -189,7 +211,7 @@ export function useRecursiveFetch(url) {
   return [pending, data, total];
 }
 
-const PAGE_SIZE = 50;
+const PAGE_SIZE = 200;
 export function useRecursiveCsvFetch(url) {
   const [requestOptions, setRequestOptions] = React.useState(defaultRequestOptions);
   const [currentUrl, setCurrentUrl] = React.useState('');
