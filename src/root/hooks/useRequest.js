@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import csvParse from 'csv-parse/lib/sync';
 import {resolve as resolveUrl} from 'url';
 import { isFalsyString } from '@togglecorp/fujs';
 import AbortController from 'abort-controller';
@@ -12,8 +13,15 @@ export const defaultRequestOptions = {
   },
 };
 
+export const csvRequestOptions = {
+  headers: {
+    Accept: 'text/csv',
+    'Content-Type': 'text/csv; charset=utf-8',
+  },
+};
+
 const defaultOtherOptions = {
-  preserveResponse: false,
+  preserveResponse: true,
   debug: false,
 };
 
@@ -60,7 +68,7 @@ function useRequest(
   );
 
   const fullUrl = React.useMemo(() => (
-    /http/.test(url) ? url: resolveUrl(api, url)
+    isFalsyString(url) ? '' : /http/.test(url) ? url: resolveUrl(api, url)
   ), [url]);
 
   useEffect(
@@ -108,9 +116,14 @@ function useRequest(
         let resBody;
         try {
           const resText = await res.text();
-          if (resText.length > 0) {
-            resBody = JSON.parse(resText);
+          if (fetchOptions.headers['Accept'] === 'application/json') {
+            if (resText.length > 0) {
+              resBody = JSON.parse(resText);
+            }
+          } else {
+            resBody = resText;
           }
+
         } catch (e) {
           // console.warn('Clearing response on parse error');
           setResponseSafe(undefined, clientId);
@@ -136,4 +149,105 @@ function useRequest(
 
   return [pending, response];
 }
+
+export function useRecursiveFetch(url) {
+  const [currentUrl, setCurrentUrl] = React.useState('');
+  const [data, setData] = React.useState([]);
+  const [, currentResponse] = useRequest(currentUrl);
+  const [pending, setPending] = React.useState(!!url);
+  const [total, setTotal] = React.useState(0);
+
+  React.useEffect(() => {
+    if (url) {
+      setCurrentUrl(url);
+      setData([]);
+      setPending(true);
+      setTotal(0);
+    }
+  }, [url, setCurrentUrl, setData, setPending, setTotal]);
+
+  React.useEffect(() => {
+    if (!currentResponse) {
+      return;
+    }
+
+    if (currentResponse.count) {
+      setTotal(currentResponse.count);
+    }
+
+    if (currentResponse.next) {
+      setCurrentUrl(currentResponse.next);
+    } else {
+      setPending(false);
+    }
+
+    if (currentResponse.results) {
+      setData((prevData) => [...prevData, ...currentResponse.results]);
+    }
+  }, [currentResponse, setPending, setData, setCurrentUrl, setTotal]);
+
+  return [pending, data, total];
+}
+
+const PAGE_SIZE = 50;
+export function useRecursiveCsvFetch(url) {
+  const [requestOptions, setRequestOptions] = React.useState(defaultRequestOptions);
+  const [currentUrl, setCurrentUrl] = React.useState('');
+  const [data, setData] = React.useState([]);
+  const [, currentResponse] = useRequest(currentUrl, requestOptions);
+  const [pending, setPending] = React.useState(!!url);
+  const totalRef = React.useRef(0);
+  const requestCountRef = React.useRef(-1);
+
+  React.useEffect(() => {
+    if (!isFalsyString(url)) {
+      setCurrentUrl(`${url}?format=json&limit=1&offset=0`);
+      setData([]);
+      setPending(true);
+      totalRef.current = 0;
+      requestCountRef.current = -1;
+    }
+  }, [url, setCurrentUrl, setData, setPending]);
+
+  React.useEffect(() => {
+    if (requestCountRef.current === -1) {
+      ++requestCountRef.current;
+      return;
+    }
+
+    if (!currentResponse) {
+      return;
+    }
+
+    if (requestCountRef.current === 0) {
+      if (currentResponse.count) {
+        totalRef.current = currentResponse.count;
+        setRequestOptions(csvRequestOptions);
+        const paginatedUrl = `${url}?format=csv&offset=0&limit=${PAGE_SIZE}`;
+        setCurrentUrl(paginatedUrl);
+      }
+    } else {
+      const offset = requestCountRef.current * PAGE_SIZE;
+
+      if (offset <= totalRef.current) {
+        const paginatedUrl = `${url}?format=csv&offset=${offset}&limit=${PAGE_SIZE}`;
+        setCurrentUrl(paginatedUrl);
+      } else {
+        setCurrentUrl('');
+        setPending(false);
+      }
+
+      if (currentResponse) {
+        const rows = csvParse(currentResponse, {
+          columns: true,
+        });
+        setData((prevData) => [...prevData, ...rows]);
+      }
+    }
+    ++requestCountRef.current;
+  }, [currentResponse, url, setPending, setData, setCurrentUrl]);
+
+  return [pending, data, totalRef.current];
+}
+
 export default useRequest;
