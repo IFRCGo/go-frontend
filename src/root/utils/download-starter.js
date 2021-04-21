@@ -1,23 +1,24 @@
 import React from 'react';
 import { showAlert, hideAllAlert } from '#components/system-alerts';
 
-export function startDownload (renderedCanvas, filename) {
+export function startDownload (data, filename) {
   let dataUri = null;
   let isChrome = false;
-  if (typeof renderedCanvas === 'string') {
+
+  if (typeof data === 'string') {
     if (window.navigator.msSaveOrOpenBlob) {
-      window.navigator.msSaveBlob(new Blob([renderedCanvas], {type: 'text/csv', charset: 'utf-8'}), filename);
+      window.navigator.msSaveBlob(new Blob([data], {type: 'text/csv', charset: 'utf-8'}), filename);
     } else {
       isChrome = true;
-      dataUri = renderedCanvas;
+      dataUri = data;
     }
   } else {
     if (window.navigator.msSaveOrOpenBlob) {
-      let blob = renderedCanvas.msToBlob();
+      let blob = data.msToBlob();
       window.navigator.msSaveBlob(blob, filename);
     } else {
       isChrome = true;
-      dataUri = renderedCanvas.toDataURL('image/png');
+      dataUri = data.toDataURL('image/png');
     }
   }
 

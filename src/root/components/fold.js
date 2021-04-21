@@ -20,6 +20,7 @@ export default class Fold extends React.Component {
           <div className="fold__header__block">
             <h2 className={c('fold__title', this.props.foldTitleClass)}>{this.props.title}</h2>
             {this.props.navLink ? <div className="fold__title__linkwrap"><span>{this.props.navLink}</span> <span className="collecticon-chevron-right"></span> </div> : null}
+            {this.props.foldActions}
           </div>
           {this.props.description && <p className='fold__description'>{this.props.description}</p>}
         </div>
@@ -77,6 +78,7 @@ if (environment !== 'production') {
     footer: T.oneOfType([T.element, T.func]),
     foldWrapperClass: T.string,
     foldHeaderClass: T.string,
+    foldActions: T.oneOfType([T.element, T.func]),
     bodyClass: T.string,
     footerClass: T.string,
     children: T.node
