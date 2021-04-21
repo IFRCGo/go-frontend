@@ -43,6 +43,8 @@ class SelectInput extends React.PureComponent {
 
     if (isMulti) {
       value = options.filter(d => (valueFromProp || []).indexOf(d.value) !== -1);
+    } else {
+      value = (options.filter(d => valueFromProp === d.value) || [])[0];
     }
 
     return (

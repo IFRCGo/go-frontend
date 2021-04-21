@@ -529,9 +529,9 @@ class ProjectForm extends React.PureComponent {
 
     const isBudgetAndTotalNotRequired = this.getBudgetAndTotalNotRequired(faramValues.reporting_ns, nationalSocietyOptions);
 
-    const shouldShowDisasterType = String(faramValues.operation_type) === '0' ||
-      shouldShowCurrentOperation ||
-      shouldShowCurrentEmergencyOperation;
+    // const shouldShowDisasterType = String(faramValues.operation_type) === '0' ||
+    //   shouldShowCurrentOperation ||
+    //   shouldShowCurrentEmergencyOperation;
     const shouldDisableDisasterType = String(faramValues.operation_type) === '1';
     const isReachedTotalRequired = String(faramValues.status) === '2' && !isBudgetAndTotalNotRequired;
     const isTargetTotalRequired = !isBudgetAndTotalNotRequired;
@@ -667,19 +667,17 @@ class ProjectForm extends React.PureComponent {
             </InputSection>
           )}
 
-          { shouldShowDisasterType && (
-            <InputSection
-              title={strings.projectFormDisasterType}
-            >
-              <SelectInput
-                faramElementName='dtype'
-                className='project-form-select'
-                options={this.props.disasterTypesSelect}
-                disabled={shouldDisableDisasterType}
-                placeholder={shouldDisableDisasterType ? strings.projectFormDisasterTypePlaceholder : undefined}
-              />
-            </InputSection>
-          )}
+          <InputSection
+            title={strings.projectFormDisasterType}
+          >
+            <SelectInput
+              faramElementName='dtype'
+              className='project-form-select'
+              options={this.props.disasterTypesSelect}
+              disabled={shouldDisableDisasterType}
+              placeholder={shouldDisableDisasterType ? strings.projectFormDisasterTypePlaceholder : undefined}
+            />
+          </InputSection>
 
           <InputSection
             title={strings.projectFormProjectName}
