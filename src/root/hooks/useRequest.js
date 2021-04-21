@@ -23,6 +23,8 @@ export const csvRequestOptions = {
 };
 
 const defaultOtherOptions = {
+  onSuccess: undefined,
+  onFailure: undefined,
   preserveResponse: true,
   debug: false,
 };
@@ -56,38 +58,36 @@ function useRequest(
   const [response, setResponse] = useState();
   const [pending, setPending] = useState(!!url);
 
-  const {
-    preserveResponse,
-    debug,
-  } = {...defaultOtherOptions, ...otherOptions};
+  const otherOptionsRef = React.useRef({
+    ...defaultOtherOptions,
+    ...otherOptions,
+  });
 
   const clientIdRef = useRef(-1);
   const pendingSetByRef = useRef(-1);
   const responseSetByRef = useRef(-1);
 
-  const setPendingSafe = useCallback(
-    (value: boolean, clientId) => {
-      if (clientId >= pendingSetByRef.current) {
-        pendingSetByRef.current = clientId;
-        if (debug) {
-          console.debug('setting pending', value, 'by client', clientId);
-        }
-        setPending(value);
+  const setPendingSafe = useCallback((value: boolean, clientId) => {
+    if (clientId >= pendingSetByRef.current) {
+      pendingSetByRef.current = clientId;
+      if (otherOptionsRef.current.debug) {
+        console.debug('setting pending', value, 'by client', clientId);
       }
-    },
-    [debug],
-  );
+      setPending(value);
+    }
+  }, [setPending]);
+
   const setResponseSafe = useCallback(
     (value: T | undefined, clientId) => {
       if (clientId >= responseSetByRef.current) {
         responseSetByRef.current = clientId;
-        if (debug) {
+        if (otherOptionsRef.current.debug) {
           console.debug('setting response', value, 'by client', clientId);
         }
         setResponse(value);
       }
     },
-    [debug],
+    [],
   );
 
   const fullUrl = React.useMemo(() => (
@@ -101,17 +101,14 @@ function useRequest(
         setPendingSafe(false, clientIdRef.current);
         return () => {};
       }
-      if (!preserveResponse) {
+
+      if (!otherOptionsRef.current.preserveResponse) {
         setResponseSafe(undefined, clientIdRef.current);
       }
 
-      // console.info('Creating new request', url);
       clientIdRef.current += 1;
-
       setPendingSafe(true, clientIdRef.current);
-
       const controller = new AbortController();
-
 
       async function fetchResource(
         fetchUrl,
@@ -130,6 +127,15 @@ function useRequest(
           if (!signal.aborted) {
             console.error(`An error occured while fetching ${fetchUrl}`, e);
             setResponseSafe(undefined, clientId);
+            const {
+              current: {
+                onFailure,
+              }
+            } = otherOptionsRef;
+
+            if (onFailure) {
+              onFailure(e);
+            }
           } else {
             // console.info('Clearing response on network error');
           }
@@ -137,27 +143,41 @@ function useRequest(
         }
 
         let resBody;
-        try {
-          const resText = await res.text();
+        const resText = await res.text();
+
+        const {
+          current: {
+            onSuccess,
+            onFailure,
+          }
+        } = otherOptionsRef;
+
+        if (res.ok) {
           if (fetchOptions.headers['Accept'] === 'application/json') {
             if (resText.length > 0) {
-              resBody = JSON.parse(resText);
+              try {
+                resBody = JSON.parse(resText);
+              } catch(e) {
+                setResponseSafe(undefined, clientId);
+                setPendingSafe(false, clientId);
+                console.error(`An error occured while parsing data from ${fetchUrl}`, e);
+                return;
+              }
             }
           } else {
             resBody = resText;
           }
 
-        } catch (e) {
-          // console.warn('Clearing response on parse error');
-          setResponseSafe(undefined, clientId);
-          setPendingSafe(false, clientId);
-          console.error(`An error occured while parsing data from ${fetchUrl}`, e);
-          return;
-        }
-
-        if (res.ok) {
           setResponseSafe(resBody, clientId);
           setPendingSafe(false, clientId);
+
+          if (onSuccess) {
+            onSuccess(res);
+          }
+        } else {
+          if (onFailure) {
+            onFailure(res);
+          }
         }
       }
 
@@ -167,7 +187,7 @@ function useRequest(
         controller.abort();
       };
     },
-    [fullUrl, requestOptions, preserveResponse, setPendingSafe, setResponseSafe],
+    [fullUrl, requestOptions, setPendingSafe, setResponseSafe],
   );
 
   return [pending, response];
@@ -212,24 +232,34 @@ export function useRecursiveFetch(url) {
   return [pending, data, total];
 }
 
+const emptyList = [];
 const PAGE_SIZE = 500;
-export function useRecursiveCsvFetch(url) {
+export function useRecursiveCsvFetch(url, otherOptions) {
   const [requestOptions, setRequestOptions] = React.useState(defaultRequestOptions);
   const [currentUrl, setCurrentUrl] = React.useState('');
   const [data, setData] = React.useState([]);
-  const [, currentResponse] = useRequest(currentUrl, requestOptions);
+  const [, currentResponse] = useRequest(currentUrl, requestOptions, otherOptions);
   const [pending, setPending] = React.useState(!!url);
   const totalRef = React.useRef(0);
   const requestCountRef = React.useRef(-1);
+  const urlRef = React.useRef(url);
 
   React.useEffect(() => {
     if (!isFalsyString(url)) {
       setCurrentUrl(`${url}?format=json&limit=1&offset=0`);
-      setData([]);
+      setData(emptyList);
       setPending(true);
       totalRef.current = 0;
       requestCountRef.current = -1;
+    } else {
+      setCurrentUrl(url);
+      setData(emptyList);
+      setPending(false);
+      totalRef.current = 0;
+      requestCountRef.current = -1;
     }
+
+    urlRef.current = url;
   }, [url, setCurrentUrl, setData, setPending]);
 
   React.useEffect(() => {
@@ -264,6 +294,7 @@ export function useRecursiveCsvFetch(url) {
         const rows = csvParse(currentResponse, {
           columns: true,
         });
+
         setData((prevData) => [...prevData, ...rows]);
       }
     }

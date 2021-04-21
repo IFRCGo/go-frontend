@@ -18,7 +18,11 @@ import {
 import { get, dateOptions, datesAgo } from '#utils/utils';
 import Fold from '#components/fold';
 import BlockLoading from '#components/block-loading';
-import DisplayTable, { FilterHeader, SortHeader } from '#components/display-table';
+import DisplayTable, {
+  FilterHeader,
+  SortHeader,
+} from '#components/display-table';
+import { showAlert } from '#components/system-alerts';
 import { SFPComponent } from '#utils/extendables';
 import { withLanguage } from '#root/languageContext';
 import Translate from '#components/Translate';
@@ -54,7 +58,20 @@ function formatHeader(headerRow) {
 
 function ExportAllFieldReportButton({ className }) {
   const [url, setUrl] = React.useState('');
-  const [pending, data, total] = useRecursiveCsvFetch(url);
+  const [pending, data, total] = useRecursiveCsvFetch(
+    url,
+    {
+      onFailure: (err) => {
+        console.error('failed to download csv export', err);
+        setUrl('');
+        showAlert('danger', (
+          <p>
+            Failed to download the field reports
+          </p>
+        ), true, 3000);
+      }
+    }
+  );
 
   React.useEffect(() => {
     if (!pending) {
