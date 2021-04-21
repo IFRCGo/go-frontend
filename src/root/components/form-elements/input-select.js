@@ -1,9 +1,10 @@
 import React from 'react';
-import Select from 'react-select';
+import AsyncSelect from 'react-select/async';
 import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 import { FormError } from './';
 import { FormDescription } from './misc';
+import { getSelectInputNoOptionsMessage } from '#utils/utils';
 
 export default function FormInputSelect (props) {
   const {
@@ -44,12 +45,14 @@ export default function FormInputSelect (props) {
         </div>
         <div className={c('form__inner-body', formInnerBodyClass)}>
           <label className='label-secondary'>{selectLabel}</label>
-          <Select.Async
+          <AsyncSelect
+            cacheOptions={false}
             labelSecondary={selectLabel}
             value={selectValue}
             onChange={selectOnChange}
             placeholder={selectPlaceholder}
             loadOptions={selectLoadOptions}
+            noOptionsMessage={getSelectInputNoOptionsMessage}
             disabled={disabled} />
 
           {labelSecondary ? (<label htmlFor={id} className='label-secondary global-margin-t'>{labelSecondary}</label>) : null}

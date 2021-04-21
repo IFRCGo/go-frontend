@@ -131,7 +131,7 @@
     "react-paginate": "^5.0.0",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
-    "react-select": "^1.0.1",
+    "react-select": "^4.3.0",
     "react-tabs": "^3.0.0",
     "react-tether": "^0.6.0",
     "react-through": "^1.1.4",
