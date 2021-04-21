@@ -370,16 +370,34 @@ export function convertStateToPayload (originalState) {
   return state;
 }
 
+export function fetchEventsFromApi (input, callback) {
+  if (!input) {
+    callback([]);
+  }
+
+  request(`${api}api/v1/es_search/?type=event&keyword=${input}`)
+    .then(data => {
+      const options = data.hits.map(o => ({
+        value: o._source.id,
+        label: `${o._source.name} (${DateTime.fromISO(o._source.date).toISODate()})`
+      }));
+
+      callback(options);
+    });
+}
+
 export function getEventsFromApi (input) {
   return !input
     ? Promise.resolve({ options: [] })
     : request(`${api}api/v1/es_search/?type=event&keyword=${input}`)
-      .then(data => ({
-        options: data.hits.map(o => ({
-          value: o._source.id,
-          label: `${o._source.name} (${DateTime.fromISO(o._source.date).toISODate()})`
-        }))
-      }));
+      .then(data => {
+        return {
+          options: data.hits.map(o => ({
+            value: o._source.id,
+            label: `${o._source.name} (${DateTime.fromISO(o._source.date).toISODate()})`
+          }))
+        };
+      });
 }
 
 export function getInitialDataState () {

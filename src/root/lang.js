@@ -1474,4 +1474,7 @@ export default {
 
   fieldReportLastUpdatedBy: 'Last updated by {user} on {date}',
   fieldReportLastUpdatedOn: 'Last updated on {date}',
+
+  searchSelectTypeToSearch: 'Type to search',
+  searchSelectNoOptionsAvailable: 'No options available',
 };

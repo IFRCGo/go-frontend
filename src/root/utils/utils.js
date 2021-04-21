@@ -1,3 +1,4 @@
+import React from 'react';
 import _get from 'lodash.get';
 import _groupBy from 'lodash.groupby';
 import _toNumber from 'lodash.tonumber';
@@ -5,8 +6,15 @@ import _find from 'lodash.find';
 import _filter from 'lodash.filter';
 import * as EmailValidator from 'email-validator';
 import { DateTime } from 'luxon';
-import { isNotDefined } from '@togglecorp/fujs';
+import {
+  isNotDefined,
+  isFalsyString,
+} from '@togglecorp/fujs';
 
+import Translate from '#components/Translate';
+import { request } from '#utils/network';
+import { api } from '#config';
+import { uppercaseFirstLetter as u, isoDate } from '#utils/format';
 import { appealTypes } from '#utils/appeal-type-constants';
 import { getCountryMeta } from '#utils/get-country-meta';
 
@@ -339,3 +347,52 @@ export const getYear = (datetimeStr) => {
   const dt = DateTime.fromISO(datetimeStr);
   return dt.year;
 };
+
+export function getSelectInputNoOptionsMessage(options) {
+  if (isFalsyString(options?.inputValue)) {
+    return <Translate stringId="searchSelectTypeToSearch" />;
+  }
+
+  return <Translate stringId="searchSelectNoOptionsAvailable" />;
+}
+
+function getUriForType (type, id, data) {
+  switch (type) {
+    case 'region':
+      return '/regions/' + id;
+    case 'country':
+      return '/countries/' + id;
+    case 'report':
+      return '/reports/' + id;
+    case 'event':
+      return '/emergencies/' + id;
+    case 'appeal':
+      return data.event_id ? '/emergencies/' + data.event_id : '/appeals/all?record=' + id;
+    default:
+      return '/uhoh';
+  }
+}
+
+export function getElasticSearchOptions(input, callback) {
+  if (!input) {
+    callback([]);
+  }
+
+  request(`${api}api/v1/es_search/?keyword=${input}`)
+    .then(data => {
+      const options = data.hits.map(o => {
+        const d = o._source;
+        const value = getUriForType(d.type, d.id, d);
+        const date = d.date ? ` (${isoDate(d.date)})` : '';
+        const label = `${u(d.type)}: ${d.name}${date}`;
+
+        return {
+          value,
+          label
+        };
+      }).filter(Boolean);
+
+      callback(options);
+    });
+}
+

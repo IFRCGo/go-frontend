@@ -34,7 +34,7 @@ import BreadCrumb from '#components/breadcrumb';
 import {
   dataPathToDisplay,
   prepStateForValidation,
-  getEventsFromApi,
+  fetchEventsFromApi,
   getInitialDataState,
   convertStateToPayload,
   convertFieldReportToState,
@@ -89,21 +89,13 @@ class FieldReportForm extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.onStepBackClick = this.onStepBackClick.bind(this);
 
-    // Basic function to wait until user stops typing to query ES.
-    // Code duplicate of components/header.js:40 (different timeout)
-    let i = 0;
-    this.slowLoad = input => {
-      i += 1;
-      let mirror = i;
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          if (i === mirror) {
-            return resolve(getEventsFromApi(input));
-          } else {
-            return resolve({ options: [] });
-          }
-        }, 350);
-      });
+    this.slowLoad = (input, callback) => {
+      window.clearTimeout(this.eventRequestTimeout);
+      this.eventRequestTimeout = window.setTimeout(() => {
+        fetchEventsFromApi(input, callback);
+      }, 350);
+
+      return false;
     };
   }
 
