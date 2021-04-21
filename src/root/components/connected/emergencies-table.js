@@ -19,15 +19,22 @@ import {
   mostRecentReport
 } from '#utils/utils';
 
-import ExportButton from '../export-button-container';
 import Fold from '../fold';
 import BlockLoading from '../block-loading';
 import DisplayTable, { SortHeader, FilterHeader } from '../display-table';
 import { SFPComponent } from '#utils/extendables';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
+import useExportButton from '#hooks/useExportButton';
 
 import { disasterTypesSelectSelector } from '#selectors';
+import styles from './styles.module.scss';
+
+function ExportAllEmergenciesButton({ className }) {
+  const component = useExportButton('api/v2/event', 'emergencies', className);
+
+  return component;
+}
 
 class EmergenciesTable extends SFPComponent {
   // Methods form SFPComponent:
@@ -113,15 +120,20 @@ class EmergenciesTable extends SFPComponent {
 
   render () {
     const {
-      data,
-      fetching,
-      fetched,
-      error
-    } = this.props.list;
+      id,
+      title,
+      showExport,
+      list : {
+        data,
+        fetching,
+        fetched,
+        error
+      }
+    } = this.props;
 
     if (fetching) {
       return (
-        <Fold title={this.props.title} id={this.props.id}>
+        <Fold title={title} id={id}>
           <BlockLoading/>
         </Fold>
       );
@@ -131,7 +143,7 @@ class EmergenciesTable extends SFPComponent {
 
     if (error) {
       return (
-        <Fold title={this.props.title} id={this.props.id}>
+        <Fold title={title} id={id}>
           <p>
             <Translate stringId='emergenciesTableError' />
           </p>
@@ -206,20 +218,20 @@ class EmergenciesTable extends SFPComponent {
 
       const foldLink = this.props.viewAll ? (<Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || strings.emergenciesTableViewAll}</Link>) : null;
       return (
-        <Fold 
+        <Fold
+          foldHeaderClass={styles.foldHeader}
           foldWrapperClass='fold--main'
           foldTitleClass='fold__title--inline margin-reset'
           navLink={foldLink}
           title={`${title} (${n(data.count)})`}
-          id={this.props.id}
+          id={id}
           showHeader={this.props.hasOwnProperty('showHeader') ? this.props.showHeader : true}
-        >
-          {this.props.showExport ? (
-            <ExportButton filename='emergencies'
-              qs={this.getQs(this.props)}
-              resource='api/v2/event'
+          foldActions={ showExport && (
+            <ExportAllEmergenciesButton
+              className={styles.exportButton}
             />
-          ) : null}
+          )}
+        >
           <DisplayTable
             headings={headings}
             rows={rows}

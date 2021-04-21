@@ -1,11 +1,8 @@
 import React from 'react';
-import stringify from 'csv-stringify/lib/sync';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { DateTime } from 'luxon';
-import _cs from 'classnames';
-import { saveAs } from 'file-saver';
 
 import { environment } from '#config';
 import { getFieldReportsList } from '#actions';
@@ -22,114 +19,18 @@ import DisplayTable, {
   FilterHeader,
   SortHeader,
 } from '#components/display-table';
-import { showAlert } from '#components/system-alerts';
 import { SFPComponent } from '#utils/extendables';
 import { withLanguage } from '#root/languageContext';
 import Translate from '#components/Translate';
-import { useRecursiveCsvFetch } from '#hooks/useRequest';
+import useExportButton from '#hooks/useExportButton';
 import { disasterTypesSelectSelector } from '#selectors';
 
 import styles from './styles.module.scss';
 
-function getFileName(suffix) {
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  const h = date.getHours();
-  const m = date.getMinutes();
-  const s = date.getSeconds();
+function ExportAllFieldReportsButton({ className }) {
+  const component = useExportButton('api/v2/field_report', 'field-reports', className);
 
-  return `field-report-${year}-${month}-${day}-${h}-${m}-${s}.csv`;
-}
-
-function formatHeader(headerRow) {
-  let str = headerRow;
-  str = str.replace(/dtype/gi, 'disaster-type');
-  str = str.replace(/,code,/i, ',appeal_code,');
-  str = str.replace(/atype/gi, 'appeal-type');
-  str = str.replace(/^aid/, 'appeal_id');
-  str = str.replace(/country.society_name/i, 'national_society_name');
-  str = str.replace(/\./g, ' ');
-  str = str.replace(/_/g, '-');
-
-  return str;
-}
-
-function ExportAllFieldReportButton({ className }) {
-  const [url, setUrl] = React.useState('');
-  const [pending, data, total] = useRecursiveCsvFetch(
-    url,
-    {
-      onFailure: (err) => {
-        console.error('failed to download csv export', err);
-        setUrl('');
-        showAlert('danger', (
-          <p>
-            Failed to download the field reports
-          </p>
-        ), true, 3000);
-      }
-    }
-  );
-
-  React.useEffect(() => {
-    if (!pending) {
-      if (data?.length > 0) {
-        if (data.length === total) {
-          const headers = Object.keys(data[0]);
-          const dataString = stringify(data, {
-            columns: headers,
-          });
-          const headerString = formatHeader(headers.join(','));
-          const fullCsvString = `${headerString}\n${dataString}`;
-          const blob = new Blob(
-            [fullCsvString],
-            { type: 'text/csv', charset: 'utf-8'},
-          );
-          const fileName = getFileName();
-          saveAs(blob, fileName);
-        } else {
-          console.error('CSV num rows mismatch', `expected: ${total}`, `got: ${data.length}`);
-        }
-      }
-      setUrl('');
-    }
-  }, [pending, data, total, setUrl]);
-
-  const progress = React.useMemo(() => {
-    if (!total) {
-      return 0;
-    }
-
-    return (100 * (data?.length / total) ?? 0).toFixed(0);
-  }, [data, total]);
-
-  const handleExportClick = React.useCallback(() => {
-    setUrl('api/v2/field_report');
-  }, [setUrl]);
-
-  return (
-    <button
-      onClick={handleExportClick}
-      className={_cs(
-        'button button--primary-bounded button-small',
-        pending && 'disabled',
-        className,
-      )}
-    >
-      { pending ? (
-        <Translate
-          stringId='exportButtonDownloadingProgress'
-          params={{
-            progress,
-          }}
-        />
-      ) : (
-        <Translate stringId='exportButtonExportTable'/>
-      )}
-    </button>
-  );
+  return component;
 }
 
 class FieldReportsTable extends SFPComponent {
@@ -274,7 +175,7 @@ class FieldReportsTable extends SFPComponent {
           foldHeaderClass={styles.foldHeader}
           title={`${title} (${n(data.count)})`}
           foldActions={ showExport && (
-            <ExportAllFieldReportButton
+            <ExportAllFieldReportsButton
               className={styles.exportButton}
             />
           )}
